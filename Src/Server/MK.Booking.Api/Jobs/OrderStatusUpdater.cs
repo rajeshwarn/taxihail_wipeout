@@ -80,7 +80,12 @@ namespace apcurium.MK.Booking.Api.Jobs
         public void Update(IBSOrderInformation orderFromIbs, OrderStatusDetail orderStatusDetail)
         {
             UpdateVehiclePositionAndSendNearbyNotificationIfNecessary(orderFromIbs, orderStatusDetail);
-            
+
+            if (!orderFromIbs.IsAssigned && _serverSettings.ServerData.Network.Enabled)
+            {
+                CheckForOrderTimeOut(orderStatusDetail);
+            }
+
             if (!OrderNeedsUpdate(orderFromIbs, orderStatusDetail))
             {
                 return;
@@ -89,8 +94,6 @@ namespace apcurium.MK.Booking.Api.Jobs
             PopulateFromIbsOrder(orderStatusDetail, orderFromIbs);
 
             CheckForPairingAndHandleIfNecessary(orderStatusDetail, orderFromIbs);
-
-            RunNetworkPairing(orderStatusDetail);
 
             _commandBus.Send(new ChangeOrderStatus
             {
@@ -101,8 +104,6 @@ namespace apcurium.MK.Booking.Api.Jobs
                 Tax = orderFromIbs.VAT,
             });
         }
-
-
 
         private void PopulateFromIbsOrder(OrderStatusDetail orderStatusDetail, IBSOrderInformation ibsOrderInfo)
         {
@@ -128,11 +129,13 @@ namespace apcurium.MK.Booking.Api.Jobs
 
         private void UpdateStatusIfNecessary(OrderStatusDetail orderStatusDetail, IBSOrderInformation ibsOrderInfo)
         {
-            if (orderStatusDetail.Status == OrderStatus.WaitingForPayment)
+            if (orderStatusDetail.Status == OrderStatus.WaitingForPayment
+                || orderStatusDetail.Status == OrderStatus.TimedOut)
             {
                 Log.DebugFormat("Order {1}: Status is: {0}. Don't update since it's a special case outside of IBS.", orderStatusDetail.Status, orderStatusDetail.OrderId);
                 return;
             }
+
             if (ibsOrderInfo.IsCanceled)
             {
                 orderStatusDetail.Status = OrderStatus.Canceled;
@@ -350,30 +353,20 @@ namespace apcurium.MK.Booking.Api.Jobs
             return (ibsOrderInfo.Status.HasValue() && orderStatusDetail.IBSStatusId != ibsOrderInfo.Status) // ibs status changed
                    || (!orderStatusDetail.FareAvailable && ibsOrderInfo.Fare > 0) // fare was not available and ibs now has the information
                    || orderStatusDetail.Status == OrderStatus.WaitingForPayment   // special case for pairing
-                   || !ibsOrderInfo.IsAssigned;
+                   || orderStatusDetail.Status == OrderStatus.TimedOut;           // special case for network
         }
 
-        private void RunNetworkPairing(OrderStatusDetail orderStatusDetail)
+        private void CheckForOrderTimeOut(OrderStatusDetail orderStatusDetail)
         {
-            // TODO: check if company is in network. If not, return. (waiting on MKTAXI-2244)
-
-            if (orderStatusDetail.Status == OrderStatus.TimedOut)
+            if (!_serverSettings.ServerData.Network.Enabled
+                || orderStatusDetail.Status == OrderStatus.TimedOut)
             {
-                // Order already flagged as timed out
+                // Nothing to do
                 return;
             }
 
-            var settings = _serverSettings.ServerData.Network;
-            if (!orderStatusDetail.NetworkPairingTimeout.HasValue)
-            {
-                // Set server time at which the order will timeout
-                orderStatusDetail.NetworkPairingTimeout = DateTime.Now.Add(
-                    TimeSpan.FromSeconds(orderStatusDetail.CompanyKey == null 
-                        ? settings.FirstOrderTimeout
-                        : settings.OrderTimeout));
-            }
-            
-            if (orderStatusDetail.NetworkPairingTimeout.Value <= DateTime.Now)
+            if (orderStatusDetail.NetworkPairingTimeout.HasValue
+                && orderStatusDetail.NetworkPairingTimeout.Value <= DateTime.Now)
             {
                 // Order timed out
                 _commandBus.Send(new NotifyOrderTimedOut { OrderId = orderStatusDetail.OrderId });
