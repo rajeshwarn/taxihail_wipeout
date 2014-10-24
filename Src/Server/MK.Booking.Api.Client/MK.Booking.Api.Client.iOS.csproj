@@ -68,7 +68,7 @@
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
   <ItemGroup>
     <ProjectReference Include="..\CMTPayment\CMTPayment.iOS.csproj">
-      <Project>{9fc63422-3472-42be-b3f2-c296f3fa87db}</Project>
+      <Project>{9FC63422-3472-42BE-B3F2-C296F3FA87DB}</Project>
       <Name>CMTPayment.iOS</Name>
     </ProjectReference>
     <ProjectReference Include="..\MK.Common\MK.Common.iOS.csproj">

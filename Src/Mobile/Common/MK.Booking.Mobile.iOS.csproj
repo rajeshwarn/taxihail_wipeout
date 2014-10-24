@@ -332,7 +332,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\CMTPayment\CMTPayment.iOS.csproj">
-      <Project>{9fc63422-3472-42be-b3f2-c296f3fa87db}</Project>
+      <Project>{9FC63422-3472-42BE-B3F2-C296F3FA87DB}</Project>
       <Name>CMTPayment.iOS</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.iOS.csproj">

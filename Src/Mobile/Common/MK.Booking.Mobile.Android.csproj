@@ -340,7 +340,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\CMTPayment\CMTPayment.Android.csproj">
-      <Project>{fd56efb1-2ed8-4a8a-b7ab-80eb36cf03eb}</Project>
+      <Project>{FD56EFB1-2ED8-4A8A-B7AB-80EB36CF03EB}</Project>
       <Name>CMTPayment.Android</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.Android.csproj">

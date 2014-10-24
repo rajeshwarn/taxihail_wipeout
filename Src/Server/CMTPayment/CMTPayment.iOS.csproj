@@ -1,38 +1,75 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">iPhoneSimulator</Platform>
-    <ProductVersion>8.0.30703</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{9FC63422-3472-42BE-B3F2-C296F3FA87DB}</ProjectGuid>
-    <ProjectTypeGuids>{FEACFBD2-3405-455C-9665-78FE426C6842};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <ProjectTypeGuids>{6BC8ED88-2882-458C-8E55-DFD12B67127B};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
-    <RootNamespace>CMTPayment.iOS</RootNamespace>
-    <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
-    <AssemblyName>CMTPayment.iOS</AssemblyName>
+    <RootNamespace>CMTPayment</RootNamespace>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
+    <DebugSymbols>True</DebugSymbols>
     <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\iPhone\Debug</OutputPath>
-    <DefineConstants>DEBUG</DefineConstants>
+    <Optimize>False</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;CLIENT;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <ConsolePause>false</ConsolePause>
-    <MtouchDebug>true</MtouchDebug>
-    <CodesignKey>iPhone Developer</CodesignKey>
+    <ConsolePause>False</ConsolePause>
+    <AssemblyName>CMTPayment.iOS</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\iPhone\Release</OutputPath>
+    <Optimize>True</Optimize>
+    <OutputPath>bin\Release</OutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <ConsolePause>false</ConsolePause>
+    <ConsolePause>False</ConsolePause>
+    <DefineConstants>CLIENT</DefineConstants>
+    <AssemblyName>CMTPayment.iOS</AssemblyName>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'AdHoc|iPhone' ">
+    <DebugType>none</DebugType>
+    <Optimize>True</Optimize>
+    <OutputPath>bin\iPhone\AdHoc</OutputPath>
+    <WarningLevel>4</WarningLevel>
+    <AssemblyName>CMTPaymentiOS</AssemblyName>
+    <CodesignKey>iPhone Developer</CodesignKey>
+    <DefineConstants>CLIENT</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'AppStore|iPhone' ">
+    <DebugType>none</DebugType>
+    <Optimize>True</Optimize>
+    <OutputPath>bin\iPhone\AdHoc</OutputPath>
+    <DefineConstants>CLIENT</DefineConstants>
+    <WarningLevel>4</WarningLevel>
+    <AssemblyName>CMTPaymentiOS</AssemblyName>
     <CodesignKey>iPhone Developer</CodesignKey>
   </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="Xamarin.iOS" />
+    <Reference Include="ServiceStack.Text.MonoTouch">
+      <HintPath>..\..\Mobile\Libraries\Monotouch\ServiceStack.Text.MonoTouch.dll</HintPath>
+    </Reference>
+    <Reference Include="ServiceStack.Interfaces.MonoTouch">
+      <HintPath>..\..\Mobile\Libraries\Monotouch\ServiceStack.Interfaces.MonoTouch.dll</HintPath>
+    </Reference>
+    <Reference Include="ServiceStack.Common.MonoTouch">
+      <HintPath>..\..\Mobile\Libraries\Monotouch\ServiceStack.Common.MonoTouch.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
+  <ItemGroup>
+    <ProjectReference Include="..\MK.Common\MK.Common.iOS.csproj">
+      <Project>{CF82F47F-A55D-45C6-B605-822458968E12}</Project>
+      <Name>MK.Common.iOS</Name>
+    </ProjectReference>
+  </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseServiceClient.cs" />
     <Compile Include="CmtPaymentServiceClient.cs" />
@@ -45,27 +82,8 @@
     <Compile Include="Tokenize\TokenizeRequest.cs" />
     <Compile Include="Tokenize\TokenizeResponse.cs" />
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <ProjectReference Include="..\MK.Common\MK.Common.iOS.csproj">
-      <Project>{cf82f47f-a55d-45c6-b605-822458968e12}</Project>
-      <Name>MK.Common.iOS</Name>
-    </ProjectReference>
+    <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Web.Services" />
-    <Reference Include="System.Xml" />
-    <Reference Include="System.Core" />
-    <Reference Include="Xamarin.iOS" />
-    <Reference Include="ServiceStack.Text.MonoTouch">
-      <HintPath>..\..\Mobile\Libraries\Monotouch\ServiceStack.Text.MonoTouch.dll</HintPath>
-    </Reference>
-    <Reference Include="ServiceStack.Interfaces.MonoTouch">
-      <HintPath>..\..\Mobile\Libraries\Monotouch\ServiceStack.Interfaces.MonoTouch.dll</HintPath>
-    </Reference>
-    <Reference Include="ServiceStack.Common.MonoTouch">
-      <HintPath>..\..\Mobile\Libraries\Monotouch\ServiceStack.Common.MonoTouch.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-  <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
 </Project>
