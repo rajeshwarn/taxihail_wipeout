@@ -91,7 +91,7 @@ namespace apcurium.MK.Booking.Api.Services
 
             var account = _accountDao.FindById(new Guid(this.GetSession().UserAuthId));
 
-            CreateIbsAccountIfNeeded(ref account);
+            CreateIbsAccountIfNeeded(account);
 
             // User can still create future order, but we allow only one active Book now order.
             if (!request.PickupDate.HasValue)
@@ -229,7 +229,7 @@ namespace apcurium.MK.Booking.Api.Services
             };
         }
 
-        private void CreateIbsAccountIfNeeded(ref AccountDetail account)
+        private void CreateIbsAccountIfNeeded(AccountDetail account)
         {
             if (!account.IBSAccountId.HasValue)
             {
