@@ -59,10 +59,10 @@ namespace apcurium.MK.Booking.Api.Services
             //We need to try many times because sometime the IBS cancel method doesn't return an error but doesn't cancel the ride... after 5 time, we are giving up. But we assume the order is completed.
             Task.Factory.StartNew(() =>
             {
-                Func<bool> cancelOrder = () => _ibsServiceProvider.Booking(order.CompanyKey).CancelOrder(order.IBSOrderId.Value, account.IBSAccountId, order.Settings.Phone);
+                Func<bool> cancelOrder = () => _ibsServiceProvider.Booking(order.CompanyKey).CancelOrder(order.IBSOrderId.Value, account.IBSAccountId.Value, order.Settings.Phone);
                 cancelOrder.Retry(new TimeSpan(0, 0, 0, 10), 5);
             });
-                        
+
             var command = new Commands.CancelOrder { Id = Guid.NewGuid(), OrderId = request.OrderId };
             _commandBus.Send(command);
 

@@ -65,7 +65,7 @@ namespace apcurium.MK.Booking.Api.Services
                 throw new HttpError(HttpStatusCode.Unauthorized, "Not your order");
             }
 
-            var ibsOrder = _ibsServiceProvider.Booking(order.CompanyKey).GetOrderDetails(order.IBSOrderId.Value, account.IBSAccountId, order.Settings.Phone);
+            var ibsOrder = _ibsServiceProvider.Booking(order.CompanyKey).GetOrderDetails(order.IBSOrderId.Value, account.IBSAccountId.Value, order.Settings.Phone);
 
             var orderPayment = _orderPaymentDao.FindByOrderId(order.Id);
             var pairingInfo = _orderDao.FindOrderPairingById(order.Id);
