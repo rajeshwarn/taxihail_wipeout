@@ -363,7 +363,7 @@ namespace apcurium.MK.Booking.Api.Jobs
                 return;
             }
 
-            var settings = _serverSettings.ServerData.NetworkSettings;
+            var settings = _serverSettings.ServerData.Network;
             if (!orderStatusDetail.NetworkPairingTimeout.HasValue)
             {
                 // Set server time at which the order will timeout

@@ -6,10 +6,13 @@ using System.Net.Http;
 using System.Net.Http.Formatting;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+using apcurium.MK.Booking.Api.Contract.Requests;
+using apcurium.MK.Booking.Api.Services;
 using apcurium.MK.Common.Configuration;
 using CustomerPortal.Client;
 using CustomerPortal.Contract.Resources;
 using ServiceStack.CacheAccess;
+using ServiceStack.ServiceClient.Web;
 
 namespace apcurium.MK.Web.Areas.AdminTH.Controllers
 {
@@ -17,13 +20,15 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
     {
         private readonly IServerSettings _serverSettings;
         private readonly ITaxiHailNetworkServiceClient _taxiHailNetworkService;
+        private readonly ConfigurationsService _configurationsService;
         private readonly string _applicationKey;
 
         // GET: AdminTH/TaxiHailNetwork
-        public TaxiHailNetworkController(ICacheClient cache,IServerSettings serverSettings,ITaxiHailNetworkServiceClient taxiHailNetworkService ) : base(cache,serverSettings)
+        public TaxiHailNetworkController(ICacheClient cache,IServerSettings serverSettings,ITaxiHailNetworkServiceClient taxiHailNetworkService ,ConfigurationsService configurationsService) : base(cache,serverSettings)
         {
             _serverSettings = serverSettings;
             _taxiHailNetworkService = taxiHailNetworkService;
+            _configurationsService = configurationsService;
 
             _applicationKey = serverSettings.ServerData.TaxiHail.ApplicationKey;
         }
@@ -75,23 +80,13 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
             return Json(new { Success = false, Message = "All fields are required" });
         }
 
-        private async Task SaveNetworkSettings()
+        private  void SaveNetworkSettings()
         {
-            _serverSettings.ServerData.Network.Enabled = true;
-            var settings = _serverSettings.GetSettings();
-
-            var baseAdress = _serverSettings.ServerData.CustomerPortal.Url;
-            var userName = _serverSettings.ServerData.CustomerPortal.UserName;
-            var password = _serverSettings.ServerData.CustomerPortal.Password;
-
-            var Client = new HttpClient(new HttpClientHandler
+            _configurationsService.Post(new ConfigurationsRequest
             {
-                Credentials = new NetworkCredential(userName, password)
+                AppSettings = new Dictionary<string, string>() { { "Network.Enabled", "true" } }
             });
-            Client.BaseAddress = new Uri(baseAdress);
-            var content = new ObjectContent<IDictionary<string, string>>(settings, new JsonMediaTypeFormatter());
 
-             await Client.PostAsync(@"settings/", content);
         }
     }
 }

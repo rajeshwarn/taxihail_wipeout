@@ -175,6 +175,10 @@
     <Compile Include="Sql\DatabaseHelper.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\CustomerPortal\CustomerPortal.Client\CustomerPortal.Client.csproj">
+      <Project>{15824aae-2d25-414e-b9ff-618de088c9e7}</Project>
+      <Name>CustomerPortal.Client</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DeploymentServiceTools\DeploymentServiceTools.csproj">
       <Project>{78a8b275-4004-4586-893b-607ec1f98f26}</Project>
       <Name>DeploymentServiceTools</Name>
