@@ -82,8 +82,12 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
 
         public void Handle(OrderCancelled @event)
         {
-            // void the preauthorization to prevent misuse fees
-            _paymentService.VoidPreAuthorization(@event.SourceId);
+            // payment might not be enabled
+            if (_paymentService != null)
+            {
+                // void the preauthorization to prevent misuse fees
+                _paymentService.VoidPreAuthorization(@event.SourceId);
+            }
         }
     }
 }
