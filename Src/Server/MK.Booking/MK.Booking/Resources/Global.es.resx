@@ -475,4 +475,8 @@
     <value>AVISO: No se deberá cobrar al cliente al final del servicio.</value>
     <comment>WARNING: The client will NOT be charged at the end of the ride</comment>
   </data>
+  <data name="PushNotification_ChangeNetworkCompany" xml:space="preserve">
+    <value>Due to high demand, no cars are available right now. Do you want to book with {1} instead?</value>
+    <comment>Due to high demand, no cars are available right now. Do you want to book with {1} instead?</comment>
+  </data>
 </root>

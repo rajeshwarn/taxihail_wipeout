@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Entity;
@@ -19,6 +20,7 @@ namespace apcurium.MK.Booking.Domain
         private bool _isRated;
         private OrderStatus _status;
         private double? _fare;
+        private bool _isTimedOut; // TODO reset this when dispatching to another company, otherwise time out will never occur again
 
         protected Order(Guid id)
             : base(id)
@@ -31,8 +33,10 @@ namespace apcurium.MK.Booking.Domain
             Handles<OrderStatusChanged>(OnOrderStatusChanged);
             Handles<OrderPairedForPayment>(NoAction);
             Handles<OrderUnpairedForPayment>(NoAction);
+            Handles<OrderTimedOut>(OnOrderTimedOut);
+            Handles<OrderDispatchCompanyChanged>(NoAction);
         }
-
+        
         public Order(Guid id, IEnumerable<IVersionedEvent> history)
             : this(id)
         {
@@ -133,6 +137,14 @@ namespace apcurium.MK.Booking.Domain
             }
         }
 
+        public void NotifyOrderTimedOut()
+        {
+            if (!_isTimedOut)
+            {
+                Update(new OrderTimedOut());  
+            }
+        }
+
         public void Pair(string medallion, string driverId, string pairingToken, string pairingCode,
             string tokenOfCardToBeUsedForPayment, double? autoTipAmount, int? autoTipPercentage)
         {
@@ -151,6 +163,15 @@ namespace apcurium.MK.Booking.Domain
         public void Unpair()
         {
             Update(new OrderUnpairedForPayment());
+        }
+
+        public void ChangeOrderDispatchCompany(string dispatchCompanyName, string dispatchCompanyKey)
+        {
+            Update(new OrderDispatchCompanyChanged
+            {
+                DispatchCompanyName = dispatchCompanyName,
+                DispatchCompanyKey = dispatchCompanyKey
+            });
         }
 
         private void OnOrderStatusChanged(OrderStatusChanged @event)
@@ -191,6 +212,11 @@ namespace apcurium.MK.Booking.Domain
         private void OnOrderRated(OrderRated obj)
         {
             _isRated = true;
+        }
+
+        private void OnOrderTimedOut(OrderTimedOut obj)
+        {
+            _isTimedOut = true;
         }
     }
 }

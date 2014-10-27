@@ -79,6 +79,13 @@ namespace MK.Common.Configuration
                 Password = "apcurium5200!"
             };
 
+            Network = new NetworkSettingContainer
+            {
+                FirstOrderTimeout = 60 * 5, // 5 mins
+                OrderTimeout = 60 * 2,       // 2 mins
+                Enabled = false
+            };
+
             PayPalConversionRate = 1;
 
             SendDetailedPaymentInfoToDriver = true;
@@ -92,6 +99,7 @@ namespace MK.Common.Configuration
         public EmailSettingContainer Email { get; protected set; }
         public ReceiptSettingContainer Receipt { get; protected set; }
         public CustomerPortalSettingContainer CustomerPortal { get; protected set; }
+        public NetworkSettingContainer Network { get; protected set; }
         public bool IsWebSignupHidden { get; protected set; }
         public string PayPalRegionInfoOverride { get; protected set; }
         public decimal PayPalConversionRate { get; protected set; }

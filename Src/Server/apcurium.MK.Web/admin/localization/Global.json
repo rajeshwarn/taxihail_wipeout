@@ -103,6 +103,8 @@
 	"Receipt.Note" : "Receipt note",
 	"OrderStatus.ClientPollingInterval" : "Client Ride Status Polling (seconds)",
 	"OrderStatus.ServerPollingInterval" : "Server Ride Status Polling (seconds)",
+    "Network.FirstOrderTimeout": "Network -  First Order Timeout (seconds)",
+    "Network.OrderTimeout" : "Network - Order Timeout (seconds)",
 
 	"/******* End settings Aliases *******/": "",
 

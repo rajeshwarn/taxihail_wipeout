@@ -227,5 +227,32 @@ namespace apcurium.MK.Booking.Test.OrderFixture
 
             _sut.ThenHasSingle<OrderRemovedFromHistory>();
         }
+
+        [Test]
+        public void when_order_timed_out()
+        {
+            _sut.When(new NotifyOrderTimedOut
+            {
+                OrderId = _orderId
+            });
+
+            _sut.ThenHasSingle<OrderTimedOut>();
+        }
+
+        [Test]
+        public void when_order_dispatch_company_changed()
+        {
+            _sut.When(new ChangeOrderDispatchCompany
+            {
+                OrderId = _orderId,
+                DispatchCompanyName = "Kukai Foundation",
+                DispatchCompanyKey = "123456"
+            });
+
+            var @event = _sut.ThenHasSingle<OrderDispatchCompanyChanged>();
+            Assert.AreEqual(_orderId, @event.SourceId);
+            Assert.AreEqual("Kukai Foundation", @event.DispatchCompanyName);
+            Assert.AreEqual("123456", @event.DispatchCompanyKey);
+        }
     }
 }

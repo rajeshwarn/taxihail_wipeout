@@ -308,5 +308,29 @@ namespace apcurium.MK.Booking.Test.Integration.OrderFixture
                 Assert.IsTrue(dto.IsRemovedFromHistory);
             }
         }
+
+        [Test]
+        public void when_order_dispatch_company_changed_then_dto_updated()
+        {
+            const string dispatchCompanyName = "Kukai Foundation";
+            const string dispatchCompanyKey = "123456";
+
+            Sut.Handle(new OrderDispatchCompanyChanged
+            {
+                SourceId = _orderId,
+                DispatchCompanyName = dispatchCompanyName,
+                DispatchCompanyKey = dispatchCompanyKey
+            });
+
+            using (var context = new BookingDbContext(DbName))
+            {
+                var dto = context.Find<OrderStatusDetail>(_orderId);
+                Assert.NotNull(dto);
+                Assert.AreEqual(_orderId, dto.OrderId);
+                Assert.AreEqual(dispatchCompanyName, dto.NextDispatchCompanyName);
+                Assert.AreEqual(dispatchCompanyKey, dto.NextDispatchCompanyKey);
+                Assert.AreEqual(OrderStatus.TimedOut, dto.Status);
+            }
+        }
     }
 }

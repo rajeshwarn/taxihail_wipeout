@@ -150,6 +150,7 @@
     <Compile Include="EventHandlers\CreditCardPaymentDetailsGenerator.cs" />
     <Compile Include="EventHandlers\Integration\IIBSOrderService.cs" />
     <Compile Include="EventHandlers\Integration\OrderPairingManager.cs" />
+    <Compile Include="EventHandlers\Integration\OrderDispatchCompanyManager.cs" />
     <Compile Include="EventHandlers\Integration\PaymentSettingsUpdater.cs" />
     <Compile Include="EventHandlers\Integration\OrderPaymentManager.cs" />
     <Compile Include="EventHandlers\NotificationSettingsGenerator.cs" />
@@ -172,6 +173,7 @@
     <Compile Include="ReadModel\AccountAddress.cs" />
     <Compile Include="ReadModel\AccountChargeDetail.cs" />
     <Compile Include="ReadModel\AccountDetail.cs" />
+    <Compile Include="ReadModel\AccountIbsDetail.cs" />
     <Compile Include="ReadModel\AddressDetails.cs" />
     <Compile Include="ReadModel\AppStartUpLogDetail.cs" />
     <Compile Include="ReadModel\CompanyDetail.cs" />
@@ -300,9 +302,21 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\CustomerPortal\CustomerPortal.Client\CustomerPortal.Client.csproj">
+      <Project>{15824AAE-2D25-414E-B9FF-618DE088C9E7}</Project>
+      <Name>CustomerPortal.Client</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\CustomerPortal\CustomerPortal.Contract\CustomerPortal.Contract.csproj">
+      <Project>{6A4623E1-41EF-4286-9A34-2ADC6407E94F}</Project>
+      <Name>CustomerPortal.Contract</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Infrastructure\Infrastructure\Infrastructure.csproj">
       <Project>{B5786D07-5888-4DF5-B295-3FEA593F3BFE}</Project>
       <Name>Infrastructure</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\MK.Booking.IBS\MK.Booking.IBS.csproj">
+      <Project>{7B615EA9-4232-4FFB-B66C-AC7B833973C9}</Project>
+      <Name>MK.Booking.IBS</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\MK.Booking.MapDataProvider\MK.Booking.MapDataProvider.csproj">
       <Project>{ad0bc4ad-6bac-4e02-8202-d7b3bf64d0f1}</Project>

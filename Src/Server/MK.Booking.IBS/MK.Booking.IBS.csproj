@@ -85,10 +85,12 @@
     <Compile Include="IBSOrderDetails.cs" />
     <Compile Include="IBSOrderInformation.cs" />
     <Compile Include="IBSOrderStatus.cs" />
+    <Compile Include="IIBSServiceProvider.cs" />
     <Compile Include="Impl\BaseService.cs" />
     <Compile Include="Impl\AccountWebServiceClient.cs" />
     <Compile Include="IAccountWebServiceClient.cs" />
     <Compile Include="Impl\BookingWebServiceClient.cs" />
+    <Compile Include="Impl\IBSServiceProvider.cs" />
     <Compile Include="IStaticDataWebServiceClient.cs" />
     <Compile Include="Module.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -103,6 +105,14 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\CustomerPortal\CustomerPortal.Client\CustomerPortal.Client.csproj">
+      <Project>{15824aae-2d25-414e-b9ff-618de088c9e7}</Project>
+      <Name>CustomerPortal.Client</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\CustomerPortal\CustomerPortal.Contract\CustomerPortal.Contract.csproj">
+      <Project>{6a4623e1-41ef-4286-9a34-2adc6407e94f}</Project>
+      <Name>CustomerPortal.Contract</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MK.Common\MK.Common.csproj">
       <Project>{65033050-1D55-465A-A772-F3192F9E2428}</Project>
       <Name>MK.Common</Name>

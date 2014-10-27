@@ -58,7 +58,9 @@
     <Compile Include="AddRatingType.cs" />
     <Compile Include="CancelPayPalExpressCheckoutPayment.cs" />
     <Compile Include="CaptureCreditCardPayment.cs" />
+    <Compile Include="ChangeOrderDispatchCompany.cs" />
     <Compile Include="ChangeOrderStatus.cs" />
+    <Compile Include="NotifyOrderTimedOut.cs" />
     <Compile Include="CompletePayPalExpressCheckoutPayment.cs" />
     <Compile Include="DeleteAccountCharge.cs" />
     <Compile Include="DeleteAccountCreditCards.cs" />
@@ -67,6 +69,7 @@
     <Compile Include="DeleteVehicleType.cs" />
     <Compile Include="InitiateCreditCardPayment.cs" />
     <Compile Include="InitiatePayPalExpressCheckoutPayment.cs" />
+    <Compile Include="LinkAccountToIbs.cs" />
     <Compile Include="LogApplicationStartUp.cs" />
     <Compile Include="LogCancellationFailurePayPalPayment.cs" />
     <Compile Include="LogCreditCardError.cs" />

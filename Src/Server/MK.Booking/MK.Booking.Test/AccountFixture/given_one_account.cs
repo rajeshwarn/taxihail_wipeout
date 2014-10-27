@@ -30,7 +30,6 @@ namespace apcurium.MK.Booking.Test.AccountFixture
                 Name = "Bob",
                 Password = null,
                 Email = "bob.smith@apcurium.com",
-                IbsAcccountId = 10,
                 ConfirmationToken = _confimationToken
             });
         }
@@ -292,6 +291,29 @@ namespace apcurium.MK.Booking.Test.AccountFixture
 
             Assert.AreEqual(_accountId, @event.SourceId);
             Assert.AreEqual("Robert", @event.Name);
+        }
+
+        [Test]
+        public void when_linking_account_to_home_ibs()
+        {
+            _sut.When(new LinkAccountToIbs { AccountId = _accountId, IbsAccountId = 123 });
+
+            var @event = _sut.ThenHasSingle<AccountLinkedToIbs>();
+
+            Assert.AreEqual(_accountId, @event.SourceId);
+            Assert.AreEqual(123, @event.IbsAccountId);
+        }
+
+        [Test]
+        public void when_linking_account_to_roaming_ibs()
+        {
+            _sut.When(new LinkAccountToIbs { AccountId = _accountId, IbsAccountId = 123, CompanyKey = "test"});
+
+            var @event = _sut.ThenHasSingle<AccountLinkedToIbs>();
+
+            Assert.AreEqual(_accountId, @event.SourceId);
+            Assert.AreEqual(123, @event.IbsAccountId);
+            Assert.AreEqual("test", @event.CompanyKey);
         }
     }
 }

@@ -17,21 +17,32 @@ namespace apcurium.MK.Booking.IBS.Impl
 {
     public class BookingWebServiceClient : BaseService<WebOrder7Service>, IBookingWebServiceClient
     {
+        private readonly IServerSettings _serverSettings;
         public BookingWebServiceClient(IServerSettings serverSettings, ILogger logger)
-            : base(serverSettings, logger)
+            : base(serverSettings.ServerData.IBS, logger)
         {
+            _serverSettings = serverSettings;
+        }
+
+        public BookingWebServiceClient(IServerSettings serverSettings, IBSSettingContainer ibsSettings, ILogger logger)
+            : base(ibsSettings, logger)
+        {
+            // for now, server settings is for the home server, so if one day we want a real roaming mode (not network),
+            // this will need to be changed
+
+            _serverSettings = serverSettings;
         }
 
         public IbsVehiclePosition[] GetAvailableVehicles(double latitude, double longitude, int? vehicleTypeId)
         {
             var result = new IbsVehiclePosition[0];
 
-            var optionEnabled = ServerSettings.ServerData.AvailableVehicles.Enabled;
+            var optionEnabled = _serverSettings.ServerData.AvailableVehicles.Enabled;
 
             if (optionEnabled)
             {
-                var radius = ServerSettings.ServerData.AvailableVehicles.Radius;
-                var count = ServerSettings.ServerData.AvailableVehicles.Count;
+                var radius = _serverSettings.ServerData.AvailableVehicles.Radius;
+                var count = _serverSettings.ServerData.AvailableVehicles.Count;
 
                 var vehicleTypeFilter = vehicleTypeId.HasValue
                                         ? new[] { new TVehicleTypeItem { ID = vehicleTypeId.Value } }
@@ -45,7 +56,7 @@ namespace apcurium.MK.Booking.IBS.Impl
                 });
             }
 
-            return result;
+            return result.GroupBy(r=>r.VehicleNumber).Select( g=> g.First()).ToArray() ;
         }
 
         public IbsOrderStatus GetOrderStatus(int orderId, int accountId, string contactPhone)
@@ -244,7 +255,6 @@ namespace apcurium.MK.Booking.IBS.Impl
             IbsAddress dropoff, Fare fare = default(Fare))
         {
             Logger.LogMessage("WebService Create Order call : accountID=" + accountId);
-
             
             var order = new TBookOrder_7
             {
@@ -256,8 +266,8 @@ namespace apcurium.MK.Booking.IBS.Impl
                 VAT = (double)fare.TaxAmount
             };
 
-            order.DispByAuto = ServerSettings.ServerData.IBS.AutoDispatch;
-            order.Priority = ServerSettings.ServerData.IBS.OrderPriority 
+            order.DispByAuto = _ibsSettings.AutoDispatch;
+            order.Priority = _ibsSettings.OrderPriority 
                 ? 1 
                 : 0;
 

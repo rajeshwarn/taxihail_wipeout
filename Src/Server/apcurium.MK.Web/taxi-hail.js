@@ -15,6 +15,8 @@ TaxiHail.sessionStorage = window.sessionStorage;
 TaxiHail.loader = {
 
     load: function (callback) {
+        // Disable caching to fix an issue on IE where the pages were not always up to date
+        $.ajaxSetup({ cache: false });
 
         Modernizr.load([{
             test: window.JSON && Modernizr.localstorage,

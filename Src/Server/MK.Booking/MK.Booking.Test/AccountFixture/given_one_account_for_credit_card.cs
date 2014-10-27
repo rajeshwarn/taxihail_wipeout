@@ -28,7 +28,6 @@ namespace apcurium.MK.Booking.Test.AccountFixture
                 Name = "Bob",
                 Password = null,
                 Email = "bob.smith@apcurium.com",
-                IbsAcccountId = 10,
                 ConfirmationToken = "token"
             });
         }

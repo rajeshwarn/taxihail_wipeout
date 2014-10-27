@@ -58,6 +58,8 @@ namespace apcurium.MK.Booking.ReadModel
 
         public double? EstimatedFare { get; set; }
 
+        public string CompanyKey { get; set; }
+
         public string UserAgent { get; set; }
 
         public string ClientLanguageCode { get; set; }
