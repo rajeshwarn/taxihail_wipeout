@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Extensions;
@@ -11,7 +12,7 @@ namespace apcurium.MK.Booking.IBS.Impl
         private readonly IServerSettings _serverSettings;
         private readonly ILogger _logger;
         private readonly ITaxiHailNetworkServiceClient _taxiHailNetworkService;
-        private IDictionary<string, IBSSettingContainer> _ibsSettings = new Dictionary<string, IBSSettingContainer>();
+        private Dictionary<string, IBSSettingContainer> _ibsSettings = new Dictionary<string, IBSSettingContainer>();
 
         public IBSServiceProvider(IServerSettings serverSettings, ILogger logger,ITaxiHailNetworkServiceClient taxiHailNetworkService)
         {
@@ -44,8 +45,18 @@ namespace apcurium.MK.Booking.IBS.Impl
 
             if (!_ibsSettings.ContainsKey(companyKey))
             {
-                var networkFleet = _taxiHailNetworkService.GetNetworkFleet(companyKey);
-                // call customer portal to get info and feed _ibsSettings dictionary
+                var networkFleet = _taxiHailNetworkService.GetNetworkFleet(companyKey).Result;
+
+                foreach (var networkFleetResponse in networkFleet)
+                {
+                    var settingContainer = new IBSSettingContainer
+                    {
+                        WebServicesUrl = networkFleetResponse.IbsUrl,
+                        WebServicesPassword = networkFleetResponse.IbsPassword,
+                        WebServicesUserName = networkFleetResponse.IbsUserName
+                    };
+                    _ibsSettings.Add(networkFleetResponse.CompanyKey,settingContainer);
+                }
             }
 
             return _ibsSettings[companyKey];

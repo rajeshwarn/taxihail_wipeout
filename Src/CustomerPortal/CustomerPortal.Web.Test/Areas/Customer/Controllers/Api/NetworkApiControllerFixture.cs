@@ -302,7 +302,7 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
             var result = JsonConvert.DeserializeObject<List<NetworkFleetResponse>>(json);
             Assert.IsNotEmpty(JsonConvert.DeserializeObject<List<NetworkFleetResponse>>(json));
 
-            var response3 = Sut.Post(_chrisTaxi.Id,new MapCoordinate());
+            var response3 = Sut.Post(_chrisTaxi.Id);
             Assert.True(response3.IsSuccessStatusCode);
             var json3 = response.Content.ReadAsStringAsync().Result;
             var result3 = JsonConvert.DeserializeObject<List<NetworkFleetResponse>>(json3);

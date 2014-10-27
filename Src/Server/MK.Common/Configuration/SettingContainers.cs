@@ -188,13 +188,13 @@ namespace apcurium.MK.Common.Configuration
         public string PickupZoneToExclude { get; protected internal set; }
         
         [RequiredAtStartup]
-        public string WebServicesUrl { get; protected internal set; }
+        public string WebServicesUrl { get; set; }
 
         [RequiredAtStartup]
-        public string WebServicesUserName { get; protected internal set; }
+        public string WebServicesUserName { get; set; }
 
         [RequiredAtStartup]
-        public string WebServicesPassword { get; protected internal set; }
+        public string WebServicesPassword { get;  set; }
     }
 
     public class EmailSettingContainer
