@@ -257,9 +257,6 @@
     <Reference Include="GoogleAnalytics.iOS">
       <HintPath>..\Components\googleanalytics-3.0.3.4\lib\ios\GoogleAnalytics.iOS.dll</HintPath>
     </Reference>
-    <Reference Include="Card.IO.iOS">
-      <HintPath>..\Libraries\Monotouch\Card.IO.iOS.dll</HintPath>
-    </Reference>
     <Reference Include="GoogleConversionTracking">
       <HintPath>..\Libraries\Monotouch\GoogleConversionTracking.dll</HintPath>
     </Reference>
@@ -268,6 +265,9 @@
     </Reference>
     <Reference Include="PLCrashReporter">
       <HintPath>..\packages\Xamarin.Insights.1.6.0\lib\MonoTouch10\PLCrashReporter.dll</HintPath>
+    </Reference>
+    <Reference Include="Card.IO.iOS">
+      <HintPath>..\Libraries\Monotouch\Card.IO.iOS.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -498,7 +498,6 @@
     <Compile Include="Controls\Message\CircularProgressView.cs" />
     <Compile Include="Controls\Message\LoadingOverlay.cs" />
     <Compile Include="Controls\Message\LoadingOverlayView.cs" />
-    <Compile Include="Controls\Delegate\CardScannerDelegate.cs" />
     <Compile Include="Extensions\Helpers\NibHelper.cs" />
     <Compile Include="Views\UpdatedTermsAndConditionsView.cs" />
     <Compile Include="Views\UpdatedTermsAndConditions.designer.cs">

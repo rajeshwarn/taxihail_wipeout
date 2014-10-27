@@ -4,14 +4,16 @@ using MonoTouch.UIKit;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
 using apcurium.MK.Booking.Mobile.Client.Controls.Widgets;
-using Card.IO;
 using apcurium.MK.Booking.Mobile.Extensions;
+using Card.IO;
+using System;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
 	public partial class CreditCardAddView : BaseViewController<CreditCardAddViewModel>
     {
-		private Card.IO.PaymentViewController  _cardScanner;
+		private PaymentViewController _cardScanner;
+        private CardScannerDelegate _cardScannerDelegate;
 
         public CreditCardAddView () : base("CreditCardAddView", null)
         {
@@ -27,6 +29,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
             ChangeThemeOfBarStyle();
             ChangeRightBarButtonFontToBold();
+
+            PaymentViewController.Preload();
         }
 
         public override void ViewDidLoad ()
@@ -59,7 +63,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
             NavigationItem.RightBarButtonItem = new UIBarButtonItem(Localize.GetValue("Save"), UIBarButtonItemStyle.Plain, null);
 
-			if (PaymentViewController.CanReadCardWithCamera  && !string.IsNullOrWhiteSpace(this.Services().Settings.CardIOToken))
+			if (PaymentViewController.CanReadCardWithCamera && !string.IsNullOrWhiteSpace(this.Services().Settings.CardIOToken))
             {
                 FlatButtonStyle.Silver.ApplyTo(btnScanCard);
                 btnScanCard.SetTitle(Localize.GetValue("ScanCreditCard"), UIControlState.Normal);
@@ -126,7 +130,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 					NavigationItem.RightBarButtonItem.Title=ViewModel.CreditCardSaveButtonDisplay;
 				}
 			};
-
         }
 
         private bool GoToNext (UITextField textField)
@@ -140,24 +143,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         {           
             if (_cardScanner == null)
             {
-				var cardScannerDelegate = new  PaymentViewControllerDelegate ();
-				cardScannerDelegate.OnScanCompleted+= (PaymentViewController viewController, CreditCardInfo cardInfo) => 
-				{
-					_cardScanner.DismissViewController(true, () => {});
-					if (cardInfo != null)
-					{
-                        PopulateCreditCardName(cardInfo);
-					}
-                };
-
-				_cardScanner = new PaymentViewController(cardScannerDelegate)
+                _cardScannerDelegate = new CardScannerDelegate(cardInfo => PopulateCreditCardName(cardInfo));
+                _cardScanner = new PaymentViewController(_cardScannerDelegate)
                 {
                     GuideColor = this.View.BackgroundColor,
                     SuppressScanConfirmation = true,
                     CollectCVV = false,
                     CollectExpiry = false,
                     DisableManualEntryButtons = true,
-                    AppToken = this.Services().Settings.CardIOToken
+                    DisableBlurWhenBackgrounding = true,
+                    AutomaticallyAdjustsScrollViewInsets = false
                 };
             }
 
@@ -169,6 +164,27 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             txtCardNumber.Text = info.CardNumber;
             ViewModel.CreditCardNumber = info.CardNumber;
             txtCvv.BecomeFirstResponder();
+        }
+
+        private class CardScannerDelegate : PaymentViewControllerDelegate
+        {
+            private Action<CreditCardInfo> _cardScanned;
+
+            public CardScannerDelegate (Action<CreditCardInfo> cardScanned)
+            {
+                _cardScanned = cardScanned ;
+            }
+
+            public override void UserDidCancel(PaymentViewController paymentViewController)
+            {
+                paymentViewController.DismissViewController(true, null);
+            }
+
+            public override void UserDidProvideCreditCardInfo(CreditCardInfo cardInfo, PaymentViewController paymentViewController)
+            {
+                _cardScanned(cardInfo);
+                paymentViewController.DismissViewController(true, null);
+            }
         }
     }
 }

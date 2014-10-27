@@ -1,10 +1,8 @@
-﻿#region
-
-using System;
+﻿using System;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Contract.Resources.Payments;
+using apcurium.MK.Common.Resources;
 
-#endregion
 
 namespace apcurium.MK.Booking.Api.Client.Payments.Fake
 {
@@ -38,8 +36,7 @@ namespace apcurium.MK.Booking.Api.Client.Payments.Fake
             });
         }
 
-        public Task<PreAuthorizePaymentResponse> PreAuthorize(string cardToken, double amount, double meterAmount,
-            double tipAmount, Guid orderId)
+        public Task<PreAuthorizePaymentResponse> PreAuthorize(string cardToken, double amount, double meterAmount, double tipAmount, Guid orderId)
         {
             return Task.FromResult(new PreAuthorizePaymentResponse
             {
@@ -57,8 +54,7 @@ namespace apcurium.MK.Booking.Api.Client.Payments.Fake
             });
         }
 
-        public Task<CommitPreauthorizedPaymentResponse> CommitPayment(string cardToken, double amount,
-            double meterAmount, double tipAmount, Guid orderId)
+        public Task<CommitPreauthorizedPaymentResponse> CommitPayment(string cardToken, double amount, double meterAmount, double tipAmount, Guid orderId)
         {
             return Task.FromResult(new CommitPreauthorizedPaymentResponse
             {

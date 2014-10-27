@@ -1,8 +1,4 @@
-﻿#region
-
-using System;
-using System.Threading.Tasks;
-using apcurium.MK.Booking.Api.Client.Cmt.Payments;
+﻿using System;
 using apcurium.MK.Booking.Api.Client.Payments.CmtPayments;
 using apcurium.MK.Booking.Api.Client.Payments.Moneris;
 using apcurium.MK.Booking.Api.Contract.Requests.Payment;
@@ -15,8 +11,6 @@ using apcurium.MK.Common.Configuration.Impl;
 using Infrastructure.Messaging;
 using ServiceStack.ServiceInterface;
 using apcurium.MK.Common.Diagnostic;
-
-#endregion
 
 namespace apcurium.MK.Booking.Api.Services.Payment
 {
@@ -126,7 +120,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 
             try
             {
-                if (BraintreePaymentService.TestClient(request.BraintreeServerSettings, request.BraintreeClientSettings))
+                if (BraintreeClientPaymentService.TestClient(request.BraintreeServerSettings, request.BraintreeClientSettings))
                 {
                     return new TestServerPaymentSettingsResponse
                     {

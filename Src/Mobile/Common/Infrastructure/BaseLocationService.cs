@@ -37,7 +37,7 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
                 return BestPosition;
             }
 
-            var position = await GetNextPosition(TimeSpan.FromSeconds(6), 40)
+            var position = await GetNextPosition(TimeSpan.FromSeconds(15), 50)
                 .Take(1)
                 .DefaultIfEmpty() // Will return null in case of a timeout
                 .ToTask();

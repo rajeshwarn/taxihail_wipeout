@@ -133,6 +133,11 @@
     <Compile Include="Entity\BookingSettings.cs" />
     <Compile Include="Patterns\Singleton.cs" />
     <Compile Include="Patterns\ActionDisposable.cs" />
+    <Compile Include="Resources\BasePaymentResponse.cs" />
+    <Compile Include="Resources\CommitPreauthorizedPaymentResponse.cs" />
+    <Compile Include="Resources\DeleteTokenizedCreditcardResponse.cs" />
+    <Compile Include="Resources\PairingResponse.cs" />
+    <Compile Include="Resources\PreAuthorizePaymentResponse.cs" />
     <Compile Include="VehicleStatuses.cs" />
     <Compile Include="Enumeration\AppSettingsType.cs" />
     <Compile Include="Enumeration\AuthenticationErrorCode.cs" />

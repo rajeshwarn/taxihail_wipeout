@@ -1,18 +1,8 @@
+using System;
 using System.Net;
-using System.Net.Cache;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using ServiceStack.ServiceClient.Web;
 using ServiceStack.Text;
-
-#region
-
-using System;
-
-#endregion
-
-#if CLIENT
-
-#endif
 
 namespace apcurium.MK.Booking.Api.Client.TaxiHail
 {

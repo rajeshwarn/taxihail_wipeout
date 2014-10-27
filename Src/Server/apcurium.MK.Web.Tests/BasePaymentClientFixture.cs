@@ -6,17 +6,14 @@ using apcurium.MK.Booking.Api.Client;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
-using apcurium.MK.Booking.Api.Services.Payment;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.EventHandlers.Integration;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
-using apcurium.MK.Web.SelfHost;
 using Microsoft.Practices.Unity;
 using NUnit.Framework;
-using ServiceStack.WebHost.Endpoints.Support;
 using UnityServiceLocator = apcurium.MK.Common.IoC.UnityServiceLocator;
 
 namespace apcurium.MK.Web.Tests
@@ -385,29 +382,5 @@ namespace apcurium.MK.Web.Tests
             var response = await client.Tokenize(TestCreditCards.Visa.Number, TestCreditCards.Visa.ExpirationDate, TestCreditCards.Visa.AvcCvvCvv2 + "");
             Assert.True(response.IsSuccessful, response.Message);
         }
-    }
-
-    public class FakeIbs : IIbsOrderService
-    {
-        public void ConfirmExternalPayment( Guid orderId, int ibsOrderId, decimal totalAmount, decimal tipAmount, decimal meterAmount, string type,
-            string provider, string transactionId, string authorizationCode, string cardToken, int accountID, string name,
-            string phone, string email, string os, string userAgent)
-        {
-            if (Fail)
-            {
-                throw new Exception("ibs failed");
-            }
-        }
-
-        public void SendPaymentNotification(double totalAmount, double meterAmount, double tipAmount, string authorizationCode,
-            string vehicleNumber)
-        {
-        }
-
-        public void SendMessageToDriver(string message, string vehicleNumber)
-        {
-        }
-
-        public bool Fail { get; set; }
     }
 }

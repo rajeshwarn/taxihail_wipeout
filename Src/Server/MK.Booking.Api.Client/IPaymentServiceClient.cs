@@ -1,10 +1,7 @@
-#region
-
 using System;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Contract.Resources.Payments;
-
-#endregion
+using apcurium.MK.Common.Resources;
 
 namespace apcurium.MK.Booking.Api.Client
 {

@@ -40,7 +40,7 @@ namespace apcurium.MK.Booking.Services.Impl
         private readonly ISmsService _smsService;
         private readonly IGeocoding _geocoding;
         private readonly ILogger _logger;
-        private readonly Resources.Resources _resources;
+        private readonly Booking.Resources.Resources _resources;
 
         private BaseUrls _baseUrls;
 
@@ -69,7 +69,7 @@ namespace apcurium.MK.Booking.Services.Impl
             _geocoding = geocoding;
             _logger = logger;
 
-            _resources = new Resources.Resources(serverSettings);
+            _resources = new Booking.Resources.Resources(serverSettings);
         }
 
         public void SetBaseUrl(Uri baseUrl)

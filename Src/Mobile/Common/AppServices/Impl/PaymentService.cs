@@ -17,6 +17,7 @@ using ServiceStack.ServiceClient.Web;
 using ServiceStack.Common.ServiceClient.Web;
 #endif
 using apcurium.MK.Common.Configuration.Impl;
+using apcurium.MK.Common.Resources;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
@@ -29,8 +30,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         private readonly string _baseUrl;
         private readonly string _sessionId;
 
-        private IPaymentServiceClient _client;
-
+		private static IPaymentServiceClient _client;
 		private static ClientPaymentSettings _cachedSettings;
         
         private const string PayedCacheSuffix = "_Payed";

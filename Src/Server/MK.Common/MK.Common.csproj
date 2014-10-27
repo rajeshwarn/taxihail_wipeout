@@ -178,6 +178,11 @@
     <Compile Include="Provider\IPopularAddressProvider.cs" />
     <Compile Include="Provider\ITariffProvider.cs" />
     <Compile Include="Database\ServiceConfigurationSettingConnectionFactory.cs" />
+    <Compile Include="Resources\BasePaymentResponse.cs" />
+    <Compile Include="Resources\CommitPreauthorizedPaymentResponse.cs" />
+    <Compile Include="Resources\DeleteTokenizedCreditcardResponse.cs" />
+    <Compile Include="Resources\PairingResponse.cs" />
+    <Compile Include="Resources\PreAuthorizePaymentResponse.cs" />
     <Compile Include="TestCreditCards.cs" />
     <Compile Include="VehicleStatuses.cs" />
   </ItemGroup>
