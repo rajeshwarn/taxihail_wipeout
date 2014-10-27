@@ -259,7 +259,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 var account = _accountDao.FindById(orderDetail.AccountId);
 
                 //check if already a payment
-                if (_orderPaymentDao.FindByOrderId(orderId) != null)
+                if (_orderPaymentDao.FindNonPayPalByOrderId(orderId) != null)
                 {
                     return new CommitPreauthorizedPaymentResponse
                     {

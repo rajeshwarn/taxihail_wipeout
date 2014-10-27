@@ -38,6 +38,13 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
         {
             // Send message to driver
             SendPaymentConfirmationToDriver(@event.OrderId, @event.Amount, @event.Meter, @event.Tip, PaymentProvider.PayPal.ToString(), @event.PayPalPayerId);
+
+            // payment might not be enabled
+            if (_paymentService != null)
+            {
+                // void the preauthorization to prevent misuse fees
+                _paymentService.VoidPreAuthorization(@event.SourceId);
+            }
         }
 
         public void Handle(CreditCardPaymentCaptured @event)

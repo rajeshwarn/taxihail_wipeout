@@ -86,7 +86,7 @@ namespace apcurium.MK.Booking.Services.Impl
             try
             {
                 // we must do a completion with $0 (see eSELECTplus_DotNet_IG.pdf, Process Flow for PreAuth / Capture Transactions)
-                var paymentDetail = _paymentDao.FindByOrderId(orderId);
+                var paymentDetail = _paymentDao.FindNonPayPalByOrderId(orderId);
                 if (paymentDetail == null)
                 {
                     throw new Exception("Payment not found");
@@ -102,7 +102,7 @@ namespace apcurium.MK.Booking.Services.Impl
             }
             catch (Exception ex)
             {
-                _logger.LogMessage("Can't cancel Moneris transaction");
+                _logger.LogMessage("Can't cancel Moneris preauthorization");
                 _logger.LogError(ex);
                 message = message + ex.Message;
                 //can't cancel transaction, send a command to log later
@@ -233,7 +233,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 throw new Exception("Order has no IBSOrderId");
             }
 
-            var paymentDetail = _paymentDao.FindByOrderId(orderId);
+            var paymentDetail = _paymentDao.FindNonPayPalByOrderId(orderId);
             if (paymentDetail == null)
             {
                 throw new Exception("Payment not found");

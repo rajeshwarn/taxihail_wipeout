@@ -227,7 +227,7 @@ namespace apcurium.MK.Booking.Api.Jobs
                 return;
             }
 
-            var orderPayment = _orderPaymentDao.FindByOrderId(orderStatusDetail.OrderId);
+            var orderPayment = _orderPaymentDao.FindNonPayPalByOrderId(orderStatusDetail.OrderId);
             if (orderPayment != null && (orderPayment.IsCompleted || orderPayment.IsCancelled))
             {
                 // Payment was already processed

@@ -85,7 +85,7 @@ namespace apcurium.MK.Booking.Services.Impl
             var message = string.Empty;
             try
             {
-                var paymentDetail = _paymentDao.FindByOrderId(orderId);
+                var paymentDetail = _paymentDao.FindNonPayPalByOrderId(orderId);
 
                 if (paymentDetail == null)
                     throw new Exception("Payment not found");
@@ -94,7 +94,7 @@ namespace apcurium.MK.Booking.Services.Impl
             }
             catch (Exception ex)
             {
-                _logger.LogMessage("Can't cancel Braintree transaction");
+                _logger.LogMessage("Can't cancel Braintree preauthorization");
                 _logger.LogError(ex);
                 message = message + ex.Message;
                 //can't cancel transaction, send a command to log later
@@ -230,7 +230,7 @@ namespace apcurium.MK.Booking.Services.Impl
 
             var account = _accountDao.FindById(orderDetail.AccountId);
             
-            var paymentDetail = _paymentDao.FindByOrderId(orderId);
+            var paymentDetail = _paymentDao.FindNonPayPalByOrderId(orderId);
             if (paymentDetail == null)
             {
                 throw new Exception("Payment not found");
