@@ -304,6 +304,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			{
 				return this.GetCommand(async () =>
 				{					
+
+					Logger.LogMessage("AutomaticLocateMeAtPickup");
+
 					var addressSelectionMode = await _orderWorkflowService.GetAndObserveAddressSelectionMode ().Take (1).ToTask ();
 					if (_currentState == HomeViewModelState.Initial 
 						&& addressSelectionMode == AddressSelectionMode.PickupSelection)
@@ -331,6 +334,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		private async void SetMapCenterToUserLocation(bool initialZoom = false)
 		{
+			Logger.LogMessage("SetMapCenterToUserLocation : " + initialZoom.ToString());
 			var address = await _orderWorkflowService.SetAddressToUserLocation();
 			if(address.HasValidCoordinate())
 			{
@@ -341,6 +345,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				// do the uber zoom
 				try 
 				{
+					Logger.LogMessage("SetMapCenterToUserLocation : Lat {0} - Lg{1} ",  address.Latitude,address.Longitude);
 					var availableVehicles = await _vehicleService.GetAndObserveAvailableVehicles ().Timeout (TimeSpan.FromSeconds (5)).Where (x => x.Count () > 0).Take (1).ToTask();
 					ZoomOnNearbyVehiclesIfPossible (availableVehicles);
 				}
