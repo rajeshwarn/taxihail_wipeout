@@ -45,7 +45,9 @@ namespace apcurium.MK.Booking.IBS.Impl
 
             if (!_ibsSettings.ContainsKey(companyKey))
             {
-                var networkFleet = _taxiHailNetworkService.GetNetworkFleet(companyKey).Result;
+                var networkFleet = _taxiHailNetworkService.GetNetworkFleet(companyKey);
+
+                _ibsSettings.Clear();
 
                 foreach (var networkFleetResponse in networkFleet)
                 {

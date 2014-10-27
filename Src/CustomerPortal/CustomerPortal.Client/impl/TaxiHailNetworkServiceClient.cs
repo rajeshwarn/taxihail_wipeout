@@ -26,7 +26,19 @@ namespace CustomerPortal.Client.Impl
             }
             return new List<CompanyPreferenceResponse>();
         }
-        public async Task<List<NetworkFleetResponse>> GetNetworkFleet(string companyId,MapCoordinate coordinate=null)
+        public List<NetworkFleetResponse> GetNetworkFleet(string companyId, MapCoordinate coordinate = null)
+        {
+
+            var response = Client.PostAsJsonAsync(@"customer/" + companyId + "/networkfleet", coordinate).Result;
+            var json =  response.Content.ReadAsStringAsync().Result;
+
+            if (response.IsSuccessStatusCode)
+            {
+                return JsonConvert.DeserializeObject<List<NetworkFleetResponse>>(json);
+            }
+            return new List<NetworkFleetResponse>();
+        }
+        public async Task<List<NetworkFleetResponse>> GetNetworkFleetAsync(string companyId,MapCoordinate coordinate=null)
         {
             var response = await Client.PostAsJsonAsync(@"customer/" + companyId + "/networkfleet",coordinate);
             var json = await response.Content.ReadAsStringAsync();

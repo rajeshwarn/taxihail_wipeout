@@ -51,7 +51,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                     var userPosition = new MapCoordinate{Latitude = details.UserLatitude.Value, Longitude = details.UserLongitude.Value};
 
                     // Get network fleet from customer portal
-                    var networkFleet = await _taxiHailNetworkServiceClient.GetNetworkFleet(details.CompanyKey, userPosition);
+                    var networkFleet = await _taxiHailNetworkServiceClient.GetNetworkFleetAsync(details.CompanyKey, userPosition);
 
                     var nextDispatchCompany = FindNextDispatchCompany(details.CompanyKey, userPosition, networkFleet);
                     if (nextDispatchCompany != null)
