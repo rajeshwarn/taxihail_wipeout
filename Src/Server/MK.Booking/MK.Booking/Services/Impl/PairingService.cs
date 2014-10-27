@@ -26,10 +26,22 @@ namespace apcurium.MK.Booking.Services.Impl
         public void Pair(Guid orderId, string cardToken, int? autoTipPercentage)
         {
             var orderStatusDetail = _orderDao.FindOrderStatusById(orderId);
-            if (orderStatusDetail == null) throw new Exception("Order not found");
-            if (orderStatusDetail.IBSOrderId == null)
-                throw new Exception("Order has no IBSOrderId");
+            if (orderStatusDetail == null)
+            {
+                throw new Exception("Order not found");
+            }
 
+            if (orderStatusDetail.IBSOrderId == null)
+            {
+                throw new Exception("Order has no IBSOrderId");
+            }
+
+            var orderPairingDetail = _orderDao.FindOrderPairingById(orderId);
+            if (orderPairingDetail != null)
+            {
+                throw new Exception("Order already paired");
+            }
+                
             // send a message to driver, if it fails we abort the pairing
             _ibs.SendMessageToDriver(_resources.Get("PairingConfirmationToDriver"), orderStatusDetail.VehicleNumber);
 
@@ -45,10 +57,16 @@ namespace apcurium.MK.Booking.Services.Impl
         public void Unpair(Guid orderId)
         {
             var orderPairingDetail = _orderDao.FindOrderPairingById(orderId);
-            if (orderPairingDetail == null) throw new Exception("Order not found");
+            if (orderPairingDetail == null)
+            {
+                throw new Exception("Order Pairing not found");
+            }
 
             var orderStatusDetail = _orderDao.FindOrderStatusById(orderId);
-            if (orderStatusDetail == null) throw new Exception("Order not found");
+            if (orderStatusDetail == null)
+            {
+                throw new Exception("Order not found");
+            }
 
             // send a message to driver, if it fails we abort the unpairing
             _ibs.SendMessageToDriver(_resources.Get("UnpairingConfirmationToDriver"), orderStatusDetail.VehicleNumber);

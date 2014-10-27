@@ -108,17 +108,25 @@ namespace apcurium.MK.Booking.EventHandlers
         {
             using (var context = _contextFactory.Invoke())
             {
-                context.Save(new OrderPairingDetail
+                var existingPairing = context.Find<OrderPairingDetail>(@event.SourceId);
+                if (existingPairing != null)
                 {
-                    OrderId = @event.SourceId,
-                    Medallion = @event.Medallion,
-                    DriverId = @event.DriverId,
-                    PairingToken = @event.PairingToken,
-                    PairingCode = @event.PairingCode,
-                    TokenOfCardToBeUsedForPayment = @event.TokenOfCardToBeUsedForPayment,
-                    AutoTipAmount = @event.AutoTipAmount,
-                    AutoTipPercentage = @event.AutoTipPercentage
-                });
+                    _logger.LogMessage("Order Pairing already existing for Order : " + @event.SourceId);
+                }
+                else
+                {
+                    context.Save(new OrderPairingDetail
+                    {
+                        OrderId = @event.SourceId,
+                        Medallion = @event.Medallion,
+                        DriverId = @event.DriverId,
+                        PairingToken = @event.PairingToken,
+                        PairingCode = @event.PairingCode,
+                        TokenOfCardToBeUsedForPayment = @event.TokenOfCardToBeUsedForPayment,
+                        AutoTipAmount = @event.AutoTipAmount,
+                        AutoTipPercentage = @event.AutoTipPercentage
+                    });
+                }
             }
         }
 
