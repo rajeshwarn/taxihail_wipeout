@@ -14,10 +14,12 @@ using apcurium.MK.Booking.Api.Services.Payment;
 using apcurium.MK.Booking.Calculator;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.IBS;
+using apcurium.MK.Booking.IBS.Impl;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
@@ -41,7 +43,6 @@ namespace apcurium.MK.Booking.Api.Services
         private readonly IOrderDao _orderDao;
         private readonly IPaymentService _paymentService;
         private readonly ICreditCardDao _creditCardDao;
-        private readonly IAccountWebServiceClient _accountWebServiceClient;
         private readonly IAccountChargeDao _accountChargeDao;
         private readonly ICommandBus _commandBus;
         private readonly IServerSettings _serverSettings;
@@ -61,8 +62,7 @@ namespace apcurium.MK.Booking.Api.Services
             IAccountChargeDao accountChargeDao,
             IOrderDao orderDao,
             IPaymentService paymentService,
-            ICreditCardDao creditCardDao,
-            IAccountWebServiceClient accountWebServiceClient)
+            ICreditCardDao creditCardDao)
         {
             _accountChargeDao = accountChargeDao;
             _commandBus = commandBus;
@@ -75,7 +75,6 @@ namespace apcurium.MK.Booking.Api.Services
             _orderDao = orderDao;
             _paymentService = paymentService;
             _creditCardDao = creditCardDao;
-            _accountWebServiceClient = accountWebServiceClient;
 
             _resources = new Resources.Resources(_serverSettings);
         }
@@ -233,9 +232,9 @@ namespace apcurium.MK.Booking.Api.Services
         {
             if (!account.IBSAccountId.HasValue)
             {
-                var ibsAccountId = _accountWebServiceClient.CreateAccount(account.Id,
+                var ibsAccountId = _ibsServiceProvider.Account().CreateAccount(account.Id,
                     account.Email,
-                    "",
+                    string.Empty,
                     account.Name,
                     account.Settings.Phone);
                 account.IBSAccountId = ibsAccountId;

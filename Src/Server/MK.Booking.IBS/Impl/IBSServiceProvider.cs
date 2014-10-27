@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Extensions;
@@ -12,9 +11,9 @@ namespace apcurium.MK.Booking.IBS.Impl
         private readonly IServerSettings _serverSettings;
         private readonly ILogger _logger;
         private readonly ITaxiHailNetworkServiceClient _taxiHailNetworkService;
-        private Dictionary<string, IBSSettingContainer> _ibsSettings = new Dictionary<string, IBSSettingContainer>();
+        private readonly Dictionary<string, IBSSettingContainer> _ibsSettings = new Dictionary<string, IBSSettingContainer>();
 
-        public IBSServiceProvider(IServerSettings serverSettings, ILogger logger,ITaxiHailNetworkServiceClient taxiHailNetworkService)
+        public IBSServiceProvider(IServerSettings serverSettings, ILogger logger, ITaxiHailNetworkServiceClient taxiHailNetworkService)
         {
             _serverSettings = serverSettings;
             _logger = logger;
