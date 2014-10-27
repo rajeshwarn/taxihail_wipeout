@@ -5,6 +5,7 @@ using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.IBS;
+using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
 using CustomerPortal.Client;
@@ -82,19 +83,17 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
 
         private NetworkFleetResponse FindNextAvailableCompanyInIbsZone(string currentCompanyKey, MapCoordinate userPosition, IList<NetworkFleetResponse> networkFleet)
         {
-            int numberOfFleetsInNetwork = networkFleet.Count;
-
             // Find the list index of the current company
             var currentDispatchCompany = networkFleet.First(f => f.CompanyKey == currentCompanyKey);
             var currentDispatchCompanyIndex = networkFleet.IndexOf(currentDispatchCompany);
 
-            if (currentDispatchCompanyIndex == numberOfFleetsInNetwork - 1)
+            if (currentDispatchCompanyIndex == networkFleet.Count - 1)
             {
                 // End of list, no more company in fleet
                 return currentDispatchCompany;
             }
 
-            var nextDispatchCompany = networkFleet.ElementAt(currentDispatchCompanyIndex + 1);
+            var nextDispatchCompany = networkFleet[currentDispatchCompanyIndex + 1];
 
             // Check if company is in IBS zone
             var ibsZone = _ibsServiceProvider.StaticData(currentCompanyKey)

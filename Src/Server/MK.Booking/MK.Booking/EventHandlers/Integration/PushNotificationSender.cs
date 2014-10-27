@@ -93,7 +93,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
         {
             try
             {
-                _notificationService.SendChangeDispatchCompanyPush(@event.OrderId);
+                _notificationService.SendChangeDispatchCompanyPush(@event.SourceId);
             }
             catch (Exception e)
             {
