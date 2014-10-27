@@ -96,7 +96,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             var nextDispatchCompany = networkFleet[currentDispatchCompanyIndex + 1];
 
             // Check if company is in IBS zone
-            var ibsZone = _ibsServiceProvider.StaticData(currentCompanyKey)
+            var ibsZone = _ibsServiceProvider.StaticData(nextDispatchCompany.CompanyKey)
                 .GetZoneByCoordinate(null, userPosition.Latitude, userPosition.Longitude);
 
             // If company is not IBS zone, check the next one until we have browsed the whole fleet

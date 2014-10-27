@@ -49,15 +49,15 @@ namespace apcurium.MK.Booking.Test.Integration.OrderFixture
             {
                 SourceId = _orderId,
                 AccountId = Guid.NewGuid(),
-                UserLatitude = 45.504466,
-                UserLongitude = -73.846313,
+                UserLatitude = 45.463944,
+                UserLongitude = -73.643234,
                 PickupAddress = new Address
                 {
                     Apartment = "3939",
                     Street = "1234 rue Saint-Hubert",
                     RingCode = "3131",
-                    Latitude = 45.504466,
-                    Longitude = -73.846313
+                    Latitude = 45.463944,
+                    Longitude = -73.643234
                 },
                 PickupDate = DateTime.Now,
                 DropOffAddress = new Address
@@ -70,6 +70,7 @@ namespace apcurium.MK.Booking.Test.Integration.OrderFixture
             });
         }
 
+        [Ignore("Too many components tested. Cannot fake companies in network from MKBooking.")]
         [Test]
         public void when_order_timed_out_then_dto_updated()
         {
@@ -78,14 +79,13 @@ namespace apcurium.MK.Booking.Test.Integration.OrderFixture
                 SourceId = _orderId
             });
 
-            Thread.Sleep(3000);
+            Thread.Sleep(500);
 
-            // TODO: check test conditions
             using (var context = new BookingDbContext(DbName))
             {
                 var dto = context.Find<OrderStatusDetail>(_orderId);
                 Assert.NotNull(dto);
-                Assert.AreEqual(null, dto.CompanyKey);
+                Assert.AreEqual(OrderStatus.TimedOut, dto.Status);
                 Assert.NotNull(dto.NextDispatchCompanyKey);
                 Assert.NotNull(dto.NextDispatchCompanyName);
             }
