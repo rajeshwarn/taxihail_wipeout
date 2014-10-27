@@ -30,8 +30,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         private readonly string _baseUrl;
         private readonly string _sessionId;
 
-        private IPaymentServiceClient _client;
-
+		private static IPaymentServiceClient _client;
 		private static ClientPaymentSettings _cachedSettings;
         
         private const string PayedCacheSuffix = "_Payed";
