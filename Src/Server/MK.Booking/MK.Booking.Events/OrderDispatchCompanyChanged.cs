@@ -5,7 +5,6 @@ namespace apcurium.MK.Booking.Events
 {
     public class OrderDispatchCompanyChanged : VersionedEvent
     {
-        public Guid OrderId { get; set; }
         public string DispatchCompanyName { get; set; }
         public string DispatchCompanyKey { get; set; }
     }
