@@ -57,7 +57,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			Order = JsonSerializer.DeserializeFromString<Order> (order);
 			OrderStatusDetail = JsonSerializer.DeserializeFromString<OrderStatusDetail> (orderStatus);
-            DisplayOrderNUmber();
+            DisplayOrderNumber();
 			IsCancelButtonVisible = true;			
 			_waitingToNavigateAfterTimeOut = false;
 		}
@@ -361,7 +361,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
                 UpdatePayCancelButtons(status.IBSStatusId);
 
-                DisplayOrderNUmber();
+                DisplayOrderNumber();
 
                 if (isDone) 
                 {
@@ -380,12 +380,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-	    private void DisplayOrderNUmber()
+	    private void DisplayOrderNumber()
 	    {
 	        if (OrderStatusDetail.IBSOrderId.HasValue)
 	        {
-	            ConfirmationNoTxt = string.Format(this.Services().Localize["StatusDescription"],
-	                OrderStatusDetail.IBSOrderId.Value + "");
+	            ConfirmationNoTxt =
+                    string.Format(this.Services().Localize["StatusDescription"], OrderStatusDetail.IBSOrderId.Value);
 	        }
 	    }
 

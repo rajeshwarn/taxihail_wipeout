@@ -303,7 +303,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					{ 
 						IBSOrderId = Order.IBSOrderId,
 						IBSStatusDescription = this.Services().Localize["LoadingMessage"],
-						IBSStatusId = "",
+						IBSStatusId = string.Empty,
 						OrderId = OrderId,
 						Status = OrderStatus.Unknown,
 						VehicleLatitude = null,
