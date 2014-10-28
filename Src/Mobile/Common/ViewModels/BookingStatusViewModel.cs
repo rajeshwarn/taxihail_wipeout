@@ -324,7 +324,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 								//Call endpoint to book a new order
 							},
 							this.Services().Localize["TaxiHailNetworkTimeOutPopupRefuse"],
-							null
+							()=>{}
 						);
 					}
 				}
