@@ -317,10 +317,12 @@ namespace apcurium.MK.Booking.EventHandlers
             using (var context = _contextFactory.Invoke())
             {
                 var order = context.Find<OrderDetail>(@event.SourceId);
+                order.Status = (int)OrderStatus.Pending;
                 order.IBSOrderId = @event.IBSOrderId;
                 order.CompanyKey = @event.CompanyKey;
 
                 var details = context.Find<OrderStatusDetail>(@event.SourceId);
+                details.Status = OrderStatus.Pending;
                 details.IBSOrderId = @event.IBSOrderId;
                 details.CompanyKey = @event.CompanyKey;
                 details.NextDispatchCompanyKey = null;
