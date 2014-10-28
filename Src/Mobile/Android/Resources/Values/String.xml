@@ -551,4 +551,8 @@
   <string name="Modify">Modify</string>
   <string name="CardExpiredMessage">Your credit card is expired. Add a new card to your account or update card informations to continue.</string>
   <string name="CallDriverUsingProxyMessage">Your driver will call you back in a few minutes</string>
+  <string name="TaxiHailNetworkTimeOutPopupTitle">Busy</string>
+  <string name="TaxiHailNetworkTimeOutPopupMessage">Would you like to try booking company {0}</string>
+  <string name="TaxiHailNetworkTimeOutPopupAccept">Accept</string>
+  <string name="TaxiHailNetworkTimeOutPopupRefuse">Refuse</string>
 </resources>
