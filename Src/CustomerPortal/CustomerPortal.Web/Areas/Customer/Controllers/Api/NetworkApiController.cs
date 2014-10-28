@@ -108,7 +108,7 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
         }
 
         [Route("api/customer/{companyId}/networkfleet")]
-        public HttpResponseMessage Get(string companyId,[FromUri] MapCoordinate coordinate=null)
+        public HttpResponseMessage Post(string companyId,[FromBody] MapCoordinate coordinate)
         {
             var networkSettings = _networkRepository.Select(x => x).ToList();
 
@@ -136,7 +136,7 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
                         IbsUserName = company.IBS.Username,
                         IbsUrl = company.IBS.ServiceUrl
                     };
-                    if (coordinate != null && coordinate.Latitude != 0 && coordinate.Longitude != 0)
+                    if (coordinate != null)
                     {
                         var companyNearCoordinate = networkSettings.Any(n => n.Id == currentCompanyPreferences.CompanyKey && n.Region.Contains(coordinate));
                         if (companyNearCoordinate)
