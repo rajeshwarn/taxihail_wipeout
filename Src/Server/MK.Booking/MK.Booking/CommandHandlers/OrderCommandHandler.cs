@@ -20,7 +20,8 @@ namespace apcurium.MK.Booking.CommandHandlers
         ICommandHandler<PairForPayment>,
         ICommandHandler<UnpairForPayment>,
         ICommandHandler<NotifyOrderTimedOut>,
-        ICommandHandler<ChangeOrderDispatchCompany>
+        ICommandHandler<ChangeOrderDispatchCompany>,
+        ICommandHandler<SwitchOrderToNextDispatchCompany>
     {
         private readonly IEventSourcedRepository<Order> _repository;
 
@@ -99,6 +100,13 @@ namespace apcurium.MK.Booking.CommandHandlers
         {
             var order = _repository.Find(command.OrderId);
             order.ChangeOrderDispatchCompany(command.DispatchCompanyName, command.DispatchCompanyKey);
+            _repository.Save(order, command.Id.ToString());
+        }
+
+        public void Handle(SwitchOrderToNextDispatchCompany command)
+        {
+            var order = _repository.Find(command.OrderId);
+            order.SwitchOrderToNextDispatchCompany(command.IBSOrderId, command.CompanyKey, command.CompanyName);
             _repository.Save(order, command.Id.ToString());
         }
     }

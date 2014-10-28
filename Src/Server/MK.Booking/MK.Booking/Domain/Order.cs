@@ -20,7 +20,7 @@ namespace apcurium.MK.Booking.Domain
         private bool _isRated;
         private OrderStatus _status;
         private double? _fare;
-        private bool _isTimedOut; // TODO reset this when dispatching to another company, otherwise time out will never occur again
+        private bool _isTimedOut;
 
         protected Order(Guid id)
             : base(id)
@@ -35,6 +35,7 @@ namespace apcurium.MK.Booking.Domain
             Handles<OrderUnpairedForPayment>(NoAction);
             Handles<OrderTimedOut>(OnOrderTimedOut);
             Handles<OrderDispatchCompanyChanged>(NoAction);
+            Handles<OrderSwitchedToNextDispatchCompany>(OnOrderSwitchedToNextDispatchCompany);
         }
         
         public Order(Guid id, IEnumerable<IVersionedEvent> history)
@@ -174,6 +175,16 @@ namespace apcurium.MK.Booking.Domain
             });
         }
 
+        public void SwitchOrderToNextDispatchCompany(int ibsOrderId, string companyKey, string companyName)
+        {
+            Update(new OrderSwitchedToNextDispatchCompany
+            {
+                IBSOrderId = ibsOrderId,
+                CompanyKey = companyKey,
+                CompanyName = companyName
+            });
+        }
+
         private void OnOrderStatusChanged(OrderStatusChanged @event)
         {
             // special case for migration
@@ -217,6 +228,11 @@ namespace apcurium.MK.Booking.Domain
         private void OnOrderTimedOut(OrderTimedOut obj)
         {
             _isTimedOut = true;
+        }
+
+        private void OnOrderSwitchedToNextDispatchCompany(OrderSwitchedToNextDispatchCompany obj)
+        {
+            _isTimedOut = false;
         }
     }
 }
