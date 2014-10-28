@@ -29,7 +29,7 @@ namespace CustomerPortal.Client.Impl
         public List<NetworkFleetResponse> GetNetworkFleet(string companyId, MapCoordinate coordinate = null)
         {
 
-            var response = Client.PostAsJsonAsync(@"customer/" + companyId + "/networkfleet", coordinate).Result;
+            var response = Client.GetAsync(string.Format(@"customer/{0}/networkfleet?Latitude={1}&Longitude={2}",companyId,coordinate.Latitude, coordinate.Longitude)).Result;
             var json =  response.Content.ReadAsStringAsync().Result;
 
             if (response.IsSuccessStatusCode)
@@ -40,7 +40,7 @@ namespace CustomerPortal.Client.Impl
         }
         public async Task<List<NetworkFleetResponse>> GetNetworkFleetAsync(string companyId,MapCoordinate coordinate=null)
         {
-            var response = await Client.PostAsJsonAsync(@"customer/" + companyId + "/networkfleet",coordinate);
+            var response = await Client.GetAsync(string.Format(@"customer/{0}/networkfleet?Latitude={1}&Longitude={2}", companyId, coordinate.Latitude, coordinate.Longitude));
             var json = await response.Content.ReadAsStringAsync();
 
             if (response.IsSuccessStatusCode)

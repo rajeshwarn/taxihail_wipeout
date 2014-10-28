@@ -108,7 +108,7 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
         }
 
         [Route("api/customer/{companyId}/networkfleet")]
-        public HttpResponseMessage Post(string companyId,MapCoordinate coordinate=null)
+        public HttpResponseMessage Get(string companyId,[FromUri] MapCoordinate coordinate=null)
         {
             var networkSettings = _networkRepository.Select(x => x).ToList();
 
