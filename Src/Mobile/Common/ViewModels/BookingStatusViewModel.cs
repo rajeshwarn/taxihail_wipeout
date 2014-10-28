@@ -336,7 +336,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 										}
 									);
 								OrderStatusDetail = orderStatusDetail;
-								Order.Id = orderStatusDetail.OrderId;
 							},
 							this.Services().Localize["TaxiHailNetworkTimeOutPopupRefuse"],
 						    () =>
