@@ -136,7 +136,7 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
                         IbsUserName = company.IBS.Username,
                         IbsUrl = company.IBS.ServiceUrl
                     };
-                    if (coordinate != null)
+                    if (coordinate != null && coordinate.Latitude != 0 && coordinate.Longitude != 0)
                     {
                         var companyNearCoordinate = networkSettings.Any(n => n.Id == currentCompanyPreferences.CompanyKey && n.Region.Contains(coordinate));
                         if (companyNearCoordinate)

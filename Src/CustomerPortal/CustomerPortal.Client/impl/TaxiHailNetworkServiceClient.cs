@@ -6,6 +6,7 @@ using CustomerPortal.Contract.Resources;
 using CustomerPortal.Contract.Response;
 using Newtonsoft.Json;
 using apcurium.MK.Common.Configuration;
+using System.Net.Http.Headers;
 
 namespace CustomerPortal.Client.Impl
 {
@@ -28,8 +29,13 @@ namespace CustomerPortal.Client.Impl
         }
         public List<NetworkFleetResponse> GetNetworkFleet(string companyId, MapCoordinate coordinate = null)
         {
+            var url = coordinate == null
+                ? string.Format(@"customer/{0}/networkfleet", companyId)
+                : string.Format(@"customer/{0}/networkfleet?Latitude={1}&Longitude={2}", companyId, coordinate.Latitude, coordinate.Longitude);
 
-            var response = Client.GetAsync(string.Format(@"customer/{0}/networkfleet?Latitude={1}&Longitude={2}",companyId,coordinate.Latitude, coordinate.Longitude)).Result;
+
+            var response = Client.GetAsync(url).Result;
+
             var json =  response.Content.ReadAsStringAsync().Result;
 
             if (response.IsSuccessStatusCode)
@@ -40,7 +46,10 @@ namespace CustomerPortal.Client.Impl
         }
         public async Task<List<NetworkFleetResponse>> GetNetworkFleetAsync(string companyId,MapCoordinate coordinate=null)
         {
-            var response = await Client.GetAsync(string.Format(@"customer/{0}/networkfleet?Latitude={1}&Longitude={2}", companyId, coordinate.Latitude, coordinate.Longitude));
+            var url = coordinate == null
+                ? string.Format(@"customer/{0}/networkfleet", companyId)
+                : string.Format(@"customer/{0}/networkfleet?Latitude={1}&Longitude={2}", companyId, coordinate.Latitude, coordinate.Longitude);
+            var response = await Client.GetAsync(url);
             var json = await response.Content.ReadAsStringAsync();
 
             if (response.IsSuccessStatusCode)

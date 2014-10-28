@@ -11,8 +11,6 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
 
         public Guid OrderId { get; set; }
 
-        public string CompanyKey { get; set; }
-
         public string NextDispatchCompanyKey { get; set; }
 
         public string NextDispatchCompanyName { get; set; }
