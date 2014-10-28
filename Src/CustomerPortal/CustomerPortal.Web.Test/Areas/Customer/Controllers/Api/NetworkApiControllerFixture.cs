@@ -296,13 +296,13 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
         {
             var position = new MapCoordinate{Latitude = 45.463944,Longitude = -73.643234};
 
-            var response = Sut.Post(_chrisTaxi.Id, position);
+            var response = Sut.Get(_chrisTaxi.Id, position);
             Assert.True(response.IsSuccessStatusCode);
             var json = response.Content.ReadAsStringAsync().Result;
             var result = JsonConvert.DeserializeObject<List<NetworkFleetResponse>>(json);
             Assert.IsNotEmpty(JsonConvert.DeserializeObject<List<NetworkFleetResponse>>(json));
 
-            var response3 = Sut.Post(_chrisTaxi.Id);
+            var response3 = Sut.Get(_chrisTaxi.Id);
             Assert.True(response3.IsSuccessStatusCode);
             var json3 = response.Content.ReadAsStringAsync().Result;
             var result3 = JsonConvert.DeserializeObject<List<NetworkFleetResponse>>(json3);
@@ -310,7 +310,7 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
 
             var position2 = new MapCoordinate{Latitude = 46.359854,Longitude = -72.575015 };
 
-            var response2 = Sut.Post(_tonyTaxi.Id, position2);
+            var response2 = Sut.Get(_tonyTaxi.Id, position2);
             Assert.True(response2.IsSuccessStatusCode);
             var json2 = response2.Content.ReadAsStringAsync().Result;
             Assert.IsEmpty(JsonConvert.DeserializeObject<List<NetworkFleetResponse>>(json2));
