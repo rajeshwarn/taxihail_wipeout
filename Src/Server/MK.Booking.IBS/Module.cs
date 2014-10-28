@@ -23,9 +23,7 @@ namespace apcurium.MK.Booking.IBS
             Mapper.AddProfile(profile);
             Mapper.AssertConfigurationIsValid(profile.ProfileName);
 
-            container.RegisterType<IIBSServiceProvider>(new ContainerControlledLifetimeManager(),
-                new InjectionFactory(c => new IBSServiceProvider(c.Resolve<IServerSettings>(), c.Resolve<ILogger>(), c.Resolve<ITaxiHailNetworkServiceClient>())));
-
+            container.RegisterType<IIBSServiceProvider, IBSServiceProvider>();
         }
     }
 }

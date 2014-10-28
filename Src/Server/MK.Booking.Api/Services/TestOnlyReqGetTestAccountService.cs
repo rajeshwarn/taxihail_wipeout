@@ -18,16 +18,13 @@ namespace apcurium.MK.Booking.Api.Services
 {
     public class TestOnlyReqGetTestAccountService : Service
     {
-        private readonly IIBSServiceProvider _ibsServiceProvider;
         private readonly ICommandBus _commandBus;
         private readonly IAccountDao _dao;
 
-        public TestOnlyReqGetTestAccountService(IAccountDao dao, ICommandBus commandBus,
-            IIBSServiceProvider ibsServiceProvider)
+        public TestOnlyReqGetTestAccountService(IAccountDao dao, ICommandBus commandBus)
         {
             _dao = dao;
             _commandBus = commandBus;
-            _ibsServiceProvider = ibsServiceProvider;
         }
 
         protected string TestUserEmail
@@ -57,12 +54,7 @@ namespace apcurium.MK.Booking.Api.Services
             }
 
             var accountId = Guid.NewGuid();
-            var ibsAccountId = _ibsServiceProvider.Account().CreateAccount(
-                accountId,
-                testEmail,
-                "",
-                "Test",
-                "5144567890");
+
             var command = new RegisterAccount
             {
                 AccountId = accountId,
