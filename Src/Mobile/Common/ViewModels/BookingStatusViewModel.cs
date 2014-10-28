@@ -311,7 +311,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				else{
 					status.VehicleNumber = _vehicleNumber;
 				}
-				if(status.IBSStatusId.HasValue() && status.IBSStatusId.Equals(VehicleStatuses.Common.Timeout) )
+
+				if(status.Status.Equals(OrderStatus.TimedOut) )
 				{
 					if(status.NextDispatchCompanyKey!=null)
 					{
