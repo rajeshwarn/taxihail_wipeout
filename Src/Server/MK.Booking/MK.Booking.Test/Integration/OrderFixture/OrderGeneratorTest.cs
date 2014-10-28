@@ -332,5 +332,33 @@ namespace apcurium.MK.Booking.Test.Integration.OrderFixture
                 Assert.AreEqual(OrderStatus.TimedOut, dto.Status);
             }
         }
+
+        [Test]
+        public void when_order_switched_to_next_dispatch_company_then_dto_updated()
+        {
+            const int ibsOrderId = 98754;
+            const string dispatchCompanyKey = "x2s42";
+            const string dispatchCompanyName = "Vector Industries";
+
+            Sut.Handle(new OrderSwitchedToNextDispatchCompany
+            {
+                SourceId = _orderId,
+                IBSOrderId = ibsOrderId,
+                CompanyKey = dispatchCompanyKey,
+                CompanyName = dispatchCompanyName
+            });
+
+            using (var context = new BookingDbContext(DbName))
+            {
+                var dto = context.Find<OrderStatusDetail>(_orderId);
+                Assert.NotNull(dto);
+                Assert.AreEqual(_orderId, dto.OrderId);
+                Assert.AreEqual(ibsOrderId, dto.IBSOrderId);
+                Assert.AreEqual(dispatchCompanyKey, dto.CompanyKey);
+                Assert.IsNull(dto.NextDispatchCompanyKey);
+                Assert.IsNull(dto.NextDispatchCompanyName);
+                Assert.AreEqual(OrderStatus.Created, dto.Status);
+            }
+        }
     }
 }
