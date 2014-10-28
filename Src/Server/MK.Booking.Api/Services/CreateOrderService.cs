@@ -79,6 +79,64 @@ namespace apcurium.MK.Booking.Api.Services
             _resources = new Resources.Resources(_serverSettings);
         }
 
+        public object Post(SwitchOrderToNextDispatchCompanyRequest request)
+        {
+            Log.Info("Switching order to another IBS : " + request.ToJson());
+
+            var account = _accountDao.FindById(new Guid(this.GetSession().UserAuthId));
+            var order = _orderDao.FindById(request.OrderId);
+
+            CreateIbsAccountIfNeeded(account, request.NextDispatchCompanyKey);
+
+            var newOrderRequest = Mapper.Map<CreateOrder>(order);
+            newOrderRequest.Settings.VehicleTypeId = null;
+            newOrderRequest.Settings.VehicleType = null;
+
+            // Payment in app is not supported for now when we use another IBS
+            newOrderRequest.Settings.ChargeTypeId = ChargeTypes.PaymentInCar.Id;
+            newOrderRequest.Settings.ChargeType = ChargeTypes.PaymentInCar.Display;
+
+            var newReferenceData = (ReferenceData)_referenceDataService.Get(new ReferenceDataRequest { CompanyKey = request.NextDispatchCompanyKey });
+
+            // This must be localized with the priceformat to be localized in the language of the company
+            // because it is sent to the driver
+            var chargeTypeIbs = _resources.Get(ChargeTypes.PaymentInCar.Display, _serverSettings.ServerData.PriceFormat);
+
+            // Cancel order on current company IBS
+            if (order.IBSOrderId.HasValue && account.IBSAccountId.HasValue)
+            {
+                _ibsServiceProvider.Booking(request.CompanyKey)
+                    .CancelOrder(order.IBSOrderId.Value, account.IBSAccountId.Value, order.Settings.Phone);
+            }
+
+            // Recreate order on next dispatch company IBS
+            var newIbsOrderId = CreateIbsOrder(account, newOrderRequest, newReferenceData, chargeTypeIbs, request.NextDispatchCompanyKey);
+
+            if (!newIbsOrderId.HasValue
+                || newIbsOrderId <= 0)
+            {
+                var code = !newIbsOrderId.HasValue || (newIbsOrderId.Value >= -1) ? string.Empty : "_" + Math.Abs(newIbsOrderId.Value);
+                return new HttpError(ErrorCode.CreateOrder_CannotCreateInIbs + code);
+            }
+
+            _commandBus.Send(new SwitchOrderToNextDispatchCompany
+            {
+                OrderId = request.OrderId,
+                IBSOrderId = newIbsOrderId.Value,
+                CompanyKey = request.NextDispatchCompanyKey,
+                CompanyName = request.NextDispatchCompanyName
+            });
+
+            return new OrderStatusDetail
+            {
+                OrderId = request.OrderId,
+                Status = OrderStatus.Created,
+                IBSOrderId = newIbsOrderId,
+                IBSStatusId = string.Empty,
+                IBSStatusDescription = _resources.Get("OrderStatus_wosWAITING", order.ClientLanguageCode),
+            };
+        }
+
         public object Post(CreateOrder request)
         {
             Log.Info("Create order request : " + request.ToJson());
@@ -228,11 +286,11 @@ namespace apcurium.MK.Booking.Api.Services
             };
         }
 
-        private void CreateIbsAccountIfNeeded(AccountDetail account)
+        private void CreateIbsAccountIfNeeded(AccountDetail account, string companyKey = null)
         {
-            if (!account.IBSAccountId.HasValue)
+            if (!IsIBSAccountCreated(account.Id, companyKey))
             {
-                var ibsAccountId = _ibsServiceProvider.Account().CreateAccount(account.Id,
+                var ibsAccountId = _ibsServiceProvider.Account(companyKey).CreateAccount(account.Id,
                     account.Email,
                     string.Empty,
                     account.Name,
@@ -243,7 +301,7 @@ namespace apcurium.MK.Booking.Api.Services
                 {
                     AccountId = account.Id,
                     IbsAccountId = ibsAccountId,
-                    CompanyKey = null //for home ibs
+                    CompanyKey = companyKey
                 });
             }
         }
@@ -364,7 +422,7 @@ namespace apcurium.MK.Booking.Api.Services
             return offsetedTime;
         }
 
-        private int? CreateIbsOrder(AccountDetail account, CreateOrder request, ReferenceData referenceData, string chargeType)
+        private int? CreateIbsOrder(AccountDetail account, CreateOrder request, ReferenceData referenceData, string chargeType, string companyKey = null)
         {
             // Provider is optional
             // But if a provider is specified, it must match with one of the ReferenceData values
@@ -384,7 +442,7 @@ namespace apcurium.MK.Booking.Api.Services
 
             Debug.Assert(request.PickupDate != null, "request.PickupDate != null");
 
-            var result = _ibsServiceProvider.Booking().CreateOrder(
+            var result = _ibsServiceProvider.Booking(companyKey).CreateOrder(
                 request.Settings.ProviderId,
                 account.IBSAccountId.Value,
                 request.Settings.Name,
@@ -490,6 +548,11 @@ namespace apcurium.MK.Booking.Api.Services
             }
 
             return null;
+        }
+
+        private bool IsIBSAccountCreated(Guid accountId, string companyKey)
+        {
+            return companyKey == null || _accountDao.GetIbsAccountId(accountId, companyKey).HasValue;
         }
     }
 }

@@ -87,6 +87,7 @@
     <Compile Include="BaseDTO.cs" />
     <Compile Include="Requests\AppStartUpLogRequest.cs" />
     <Compile Include="Requests\AssignedEtaRequest.cs" />
+    <Compile Include="Requests\SwitchOrderToNextDispatchCompanyRequest.cs" />
     <Compile Include="Requests\IbsFareRequest.cs" />
     <Compile Include="Requests\LogApplicationStartUpRequest.cs" />
     <Compile Include="Requests\NotificationSettingsRequest.cs" />
@@ -200,7 +201,6 @@
     <None Include="ClassDiagram1.cd" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -67,6 +67,7 @@
     <Compile Include="NotificationSettingsAddedOrUpdated.cs" />
     <Compile Include="OrderDispatchCompanyChanged.cs" />
     <Compile Include="OrderPairedForPayment.cs" />
+    <Compile Include="OrderSwitchedToNextDispatchCompany.cs" />
     <Compile Include="OrderTimedOut.cs" />
     <Compile Include="OrderUnpairedForPayment.cs" />
     <Compile Include="PaymentModeChanged.cs" />

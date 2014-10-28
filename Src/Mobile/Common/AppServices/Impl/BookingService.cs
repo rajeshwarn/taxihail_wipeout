@@ -67,6 +67,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             return orderDetail;
         }
 
+        public async Task<OrderStatusDetail> SwitchOrderToNextDispatchCompany(SwitchOrderToNextDispatchCompanyRequest request)
+        {
+            return await UseServiceClientAsync<OrderServiceClient, OrderStatusDetail>(service => service.SwitchOrderToNextDispatchCompany(request));
+        }
+
         private void CallCompany (string name, string number)
         {
 			_phoneCallTask.MakePhoneCall (name, number);

@@ -29,6 +29,12 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             return result;
         }
 
+        public Task<OrderStatusDetail> SwitchOrderToNextDispatchCompany(SwitchOrderToNextDispatchCompanyRequest request)
+        {
+            var req = string.Format("/account/orders/switchDispatchCompany");
+            return Client.PostAsync<OrderStatusDetail>(req, request);
+        }
+
         public Task CancelOrder(Guid orderId)
         {
             var req = string.Format("/account/orders/{0}/cancel", orderId);
