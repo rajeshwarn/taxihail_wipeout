@@ -326,7 +326,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 							string.Format(this.Services().Localize["TaxiHailNetworkTimeOutPopupMessage"], status.NextDispatchCompanyName),
 							this.Services().Localize["TaxiHailNetworkTimeOutPopupAccept"],
 							async () => {
+								if(status.Status.Equals(OrderStatus.TimedOut))
+								{
 									_isDispatchPopupVisible = false;
+
 									var orderStatusDetail = await _bookingService.SwitchOrderToNextDispatchCompany(
 										new SwitchOrderToNextDispatchCompanyRequest
 										{
@@ -335,13 +338,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 											NextDispatchCompanyName = status.NextDispatchCompanyName
 										}
 									);
-								OrderStatusDetail = orderStatusDetail;
+									OrderStatusDetail = orderStatusDetail;
+								}
 							},
 							this.Services().Localize["TaxiHailNetworkTimeOutPopupRefuse"],
 						    () =>
                                 {
-						            _bookingService.IgnoreDispatchCompanySwitch(status.OrderId);
-                                    _isDispatchPopupVisible = false;
+									if(status.Status.Equals(OrderStatus.TimedOut))
+									{
+							            _bookingService.IgnoreDispatchCompanySwitch(status.OrderId);
+	                                    _isDispatchPopupVisible = false;
+									}
 						        });
 					}
 				}
