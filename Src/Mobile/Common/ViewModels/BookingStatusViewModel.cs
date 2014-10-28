@@ -301,6 +301,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         private bool _isCurrentlyPairing;
 		string _vehicleNumber;
+		private bool _isDispatchPopupVisible=false;
 		private async void RefreshStatus ()
         {
             try {
@@ -315,15 +316,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 				if(status.Status.Equals(OrderStatus.TimedOut))
 				{
-					if(status.NextDispatchCompanyKey != null)
+					if(status.NextDispatchCompanyKey!=null && !_isDispatchPopupVisible)
 					{
+						_isDispatchPopupVisible=true;
 						this.Services().Message.ShowMessage(
 							this.Services().Localize["TaxiHailNetworkTimeOutPopupTitle"],
 							string.Format(this.Services().Localize["TaxiHailNetworkTimeOutPopupMessage"], status.NextDispatchCompanyName),
 							this.Services().Localize["TaxiHailNetworkTimeOutPopupAccept"],
 							async () => {
-
-									OrderStatusDetail = await _bookingService.SwitchOrderToNextDispatchCompany(
+									_isDispatchPopupVisible=false;
+									var orderStatusDetail=await _bookingService.SwitchOrderToNextDispatchCompany(
 										new SwitchOrderToNextDispatchCompanyRequest
 										{
 											OrderId = status.OrderId,
@@ -331,9 +333,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 											NextDispatchCompanyName = status.NextDispatchCompanyName
 										}
 									);
+								OrderStatusDetail=orderStatusDetail;
+								Order.Id=orderStatusDetail.OrderId;
 							},
 							this.Services().Localize["TaxiHailNetworkTimeOutPopupRefuse"],
 						    () => _bookingService.IgnoreDispatchCompanySwitch(status.OrderId));
+								_isDispatchPopupVisible=false;
 					}
 				}
 
