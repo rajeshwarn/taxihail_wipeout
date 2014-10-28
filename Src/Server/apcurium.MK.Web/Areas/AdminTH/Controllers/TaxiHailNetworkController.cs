@@ -39,6 +39,9 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
             {
                 var response = await _taxiHailNetworkService.GetNetworkCompanyPreferences(_applicationKey);
 
+                var response1 =  _taxiHailNetworkService.GetNetworkFleet(_applicationKey);
+                var response2 =  _taxiHailNetworkService.GetNetworkFleet(_applicationKey,new MapCoordinate{Latitude=45.490827,Longitude=-73.744805});
+
                 return View(response);
             }
 

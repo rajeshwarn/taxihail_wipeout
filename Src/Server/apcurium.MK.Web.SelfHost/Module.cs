@@ -2,6 +2,9 @@
 
 using System.Configuration;
 using System.Data.Entity;
+using apcurium.MK.Common.Configuration;
+using CustomerPortal.Client;
+using CustomerPortal.Client.Impl;
 using Infrastructure;
 using Infrastructure.EventSourcing;
 using Infrastructure.Messaging;
@@ -29,8 +32,16 @@ namespace apcurium.MK.Web.SelfHost
             new Booking.IBS.Module().Init(container);
             new Booking.Api.Module().Init(container);
 
+            RegisterTaxiHailNetwork(container);
             RegisterEventHandlers(container);
             RegisterCommandHandlers(container);
+        }
+
+        private static void RegisterTaxiHailNetwork(IUnityContainer unityContainer)
+        {
+            var thNetworkServiceClient = new TaxiHailNetworkServiceClient(unityContainer.Resolve<IServerSettings>());
+            unityContainer.RegisterInstance<ITaxiHailNetworkServiceClient>(thNetworkServiceClient);
+
         }
 
         private void RegisterInfrastructure(IUnityContainer container, ConnectionStringSettings connectionString)

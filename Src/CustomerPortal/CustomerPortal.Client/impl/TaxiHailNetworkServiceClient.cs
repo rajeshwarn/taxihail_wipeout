@@ -29,12 +29,10 @@ namespace CustomerPortal.Client.Impl
         }
         public List<NetworkFleetResponse> GetNetworkFleet(string companyId, MapCoordinate coordinate = null)
         {
-            var url = coordinate == null
-                ? string.Format(@"customer/{0}/networkfleet", companyId)
-                : string.Format(@"customer/{0}/networkfleet?Latitude={1}&Longitude={2}", companyId, coordinate.Latitude, coordinate.Longitude);
+           
 
-
-            var response = Client.GetAsync(url).Result;
+            HttpContent content = new ObjectContent<MapCoordinate>(coordinate, new JsonMediaTypeFormatter());
+            HttpResponseMessage response = Client.PostAsync(string.Format(@"customer/{0}/networkfleet", companyId), content).Result;
 
             var json =  response.Content.ReadAsStringAsync().Result;
 
@@ -46,11 +44,11 @@ namespace CustomerPortal.Client.Impl
         }
         public async Task<List<NetworkFleetResponse>> GetNetworkFleetAsync(string companyId,MapCoordinate coordinate=null)
         {
-            var url = coordinate == null
-                ? string.Format(@"customer/{0}/networkfleet", companyId)
-                : string.Format(@"customer/{0}/networkfleet?Latitude={1}&Longitude={2}", companyId, coordinate.Latitude, coordinate.Longitude);
-            var response = await Client.GetAsync(url);
+            HttpContent content = new ObjectContent<MapCoordinate>(coordinate, new JsonMediaTypeFormatter());
+            HttpResponseMessage response =await Client.PostAsync(string.Format(@"customer/{0}/networkfleet", companyId), content);
+
             var json = await response.Content.ReadAsStringAsync();
+
 
             if (response.IsSuccessStatusCode)
             {
