@@ -18,12 +18,12 @@
             // Variable use to store the reference to window.timeout
             // after an order has timed out
             this.redirectTimeout = null;
-
-
+            
             status.on('change:ibsStatusId', this.render, this);
             status.on('change:ibsStatusId change:vehicleLatitude', this.onVehicleAssignedAndPositionUpdated, this);
             status.on('change:ibsStatusId', this.onStatusChanged, this);
             status.on('ibs:timeout', this.ontimeout, this);
+            status.on('network:timeout', this.onTHStatusChanged, this);
         },
 
         onVehicleAssignedAndPositionUpdated: function (model, status) {
@@ -83,9 +83,7 @@
 
             return this;
         },
-
-
-
+        
         remove: function() {
 
             // Close popover if it is open
@@ -115,7 +113,6 @@
                     });
                 }, this);
             }
-            
         },
         
         onStatusChanged: function (model, status) {
@@ -166,6 +163,18 @@
 
                     }, this);
             }
+        },
+
+        onTHStatusChanged: function (model, status) {
+            TaxiHail.confirm({
+                title: this.localize('NetworkTimeOutPopupTitle'),
+                message: this.localize('NetworkTimeOutPopupMessage').format(this.model._status.get('NextDispatchCompanyName')),
+                confirmButton: this.localize('NetworkTimeOutPopupAccept'),
+                cancelButton: this.localize('NetworkTimeOutPopupRefuse')
+            }).on('ok', function() {
+                var newStatus = this.model.switchOrderToNextDispatchCompany();
+                this.model._status = newStatus;
+            }, this);
         },
 
         ontimeout: function(model, status) {

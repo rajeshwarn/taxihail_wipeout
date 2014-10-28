@@ -248,13 +248,31 @@ namespace apcurium.MK.Booking.Api.Services
 
             CreateIbsAccountIfNeeded(account, request.NextDispatchCompanyKey);
 
-            var newOrderRequest = Mapper.Map<CreateOrder>(order);
-            newOrderRequest.Settings.VehicleTypeId = null;
-            newOrderRequest.Settings.VehicleType = null;
+            var newOrderRequest = new CreateOrder
+            {
+                PickupDate = GetCurrentOffsetedTime(),
+                PickupAddress = order.PickupAddress,
+                DropOffAddress = order.DropOffAddress,
+                Settings = new BookingSettings
+                {
+                    LargeBags = order.Settings.LargeBags,
+                    Name = order.Settings.Name,
+                    NumberOfTaxi = order.Settings.NumberOfTaxi,
+                    Passengers = order.Settings.Passengers,
+                    Phone = order.Settings.Phone,
+                    ProviderId = null,
 
-            // Payment in app is not supported for now when we use another IBS
-            newOrderRequest.Settings.ChargeTypeId = ChargeTypes.PaymentInCar.Id;
-            newOrderRequest.Settings.ChargeType = ChargeTypes.PaymentInCar.Display;
+                    // Payment in app is not supported for now when we use another IBS
+                    ChargeType = ChargeTypes.PaymentInCar.Display,
+                    ChargeTypeId = ChargeTypes.PaymentInCar.Id,
+                    
+                    // Reset vehicle type
+                    VehicleType = null,
+                    VehicleTypeId = null
+                },
+                Note = order.UserNote,
+                Estimate = new CreateOrder.RideEstimate { Price = order.EstimatedFare }
+            };
 
             var newReferenceData = (ReferenceData)_referenceDataService.Get(new ReferenceDataRequest { CompanyKey = request.NextDispatchCompanyKey });
 

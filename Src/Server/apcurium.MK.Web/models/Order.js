@@ -5,13 +5,11 @@
         idAttribute: 'orderId',
         urlRoot: 'api/account/orders',
 
-        validateOrder: function (forError)
-        {
+        validateOrder: function (forError) {
             return TaxiHail.orderService.validate(this, forError);
         },
 
         save: function(key, value, options) {
-
             if (_.isObject(key) || key == null) {
                 attrs = key;
                 options = value;
@@ -37,7 +35,6 @@
         },
 
         saveLocal: function() {
-
             TaxiHail.orderService.setCurrentOrder(this);
         },
 
@@ -46,11 +43,9 @@
         },
 
         cancel: function() {
-
             return $.post(this.url() + '/cancel', {
                 orderId: this.id
             }, function(){}, 'json');
-
         },
 
         sendReceipt: function() {
@@ -72,8 +67,22 @@
             var settings = this.get('settings');
             return settings.chargeTypeId != null
                 && settings.chargeTypeId != ''
-                && settings.chargeTypeId == 2
+                && settings.chargeTypeId == 2;
         },
+
+        switchOrderToNextDispatchCompany: function () {
+            return $.ajax({
+                type: 'POST',
+                url: TaxiHail.parameters.apiRoot + "/account/orders/switchDispatchCompany",
+                data: JSON.stringify({
+                    orderId: this.id,
+                    nextDispatchCompanyKey: this._status.get('nextDispatchCompanyKey'),
+                    nextDispatchCompanyName: this._status.get('nextDispatchCompanyName')
+                }),
+                contentType: 'application/json'
+            });
+        },
+
         fetchQuestions: function (accountChargeNumber) {
             return $.get('api/admin/accountscharge/' + accountChargeNumber + '/true', function () { }, 'json');
         }

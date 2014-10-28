@@ -74,6 +74,7 @@ namespace apcurium.MK.Booking.Api
             Mapper.CreateMap<CreateOrder, Commands.CreateOrder>()
                 .ForMember(p => p.Id, options => options.Ignore())
                 .ForMember(p => p.EstimatedFare, opt => opt.ResolveUsing(x => x.Estimate.Price))
+                .ForMember(p => p.UserNote, opt => opt.ResolveUsing(x => x.Note))
                 .ForMember(p => p.OrderId,
                     options => options.ResolveUsing(x => x.Id == Guid.Empty ? Guid.NewGuid() : x.Id));
 

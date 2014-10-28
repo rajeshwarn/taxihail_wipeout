@@ -57,7 +57,7 @@ namespace apcurium.MK.Booking.CommandHandlers
         {
             var order = new Order(command.OrderId, command.AccountId, command.IBSOrderId, command.PickupDate,
                 command.PickupAddress, command.DropOffAddress, command.Settings, command.EstimatedFare,
-                command.UserAgent, command.ClientLanguageCode, command.UserLatitude, command.UserLongitude, command.ClientVersion);
+                command.UserAgent, command.ClientLanguageCode, command.UserLatitude, command.UserLongitude, command.UserNote, command.ClientVersion);
 
             if (command.Payment.PayWithCreditCard)
             {

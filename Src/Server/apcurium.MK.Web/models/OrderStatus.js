@@ -8,6 +8,11 @@
                     model.trigger('ibs:timeout');
                 }
             });
+            this.on('change:status', function (model, value, options) {
+                if (value === 'TIMEDOUT' && this.get('nextDispatchCompanyKey') === null) {
+                    model.trigger('network:timeout');
+                }
+            });
         },
 
         url: function() {

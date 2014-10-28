@@ -85,6 +85,7 @@ namespace apcurium.MK.Booking.EventHandlers
                     IsRated = false,
                     EstimatedFare = @event.EstimatedFare,
                     UserAgent = @event.UserAgent,
+                    UserNote = @event.UserNote,
                     ClientLanguageCode = @event.ClientLanguageCode,
                     ClientVersion = @event.ClientVersion
                 });

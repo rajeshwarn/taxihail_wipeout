@@ -12,5 +12,9 @@
     "Send Receipt": "Send Receipt",
     "Sending...": "Sending...",
     "Cannot Send Receipt": "Cannot Send Receipt",
-    "Driver Phone": "Driver's Mobile #"
+    "Driver Phone": "Driver's Mobile #",
+    "NetworkTimeOutPopupTitle":  "Busy",
+    "NetworkTimeOutPopupMessage":  "Would you like to try booking with {0}?",
+    "NetworkTimeOutPopupAccept":  "Accept",
+    "NetworkTimeOutPopupRefuse":  "Refuse"
 }
