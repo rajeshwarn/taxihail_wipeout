@@ -12,9 +12,10 @@ namespace CustomerPortal.Client.Impl
 {
     public class TaxiHailNetworkServiceClient : BaseServiceClient, ITaxiHailNetworkServiceClient
     {
-        public TaxiHailNetworkServiceClient(IServerSettings serverSettings):base(serverSettings) 
-        { 
-
+        private readonly IServerSettings _serverSettings;
+        public TaxiHailNetworkServiceClient(IServerSettings serverSettings):base(serverSettings)
+        {
+            _serverSettings = serverSettings;
         }
         public async Task<List<CompanyPreferenceResponse>> GetNetworkCompanyPreferences(string companyId)
         {
@@ -29,10 +30,11 @@ namespace CustomerPortal.Client.Impl
         }
         public List<NetworkFleetResponse> GetNetworkFleet(string companyId, MapCoordinate coordinate = null)
         {
-           
+            var companyKey = companyId ?? _serverSettings.ServerData.TaxiHail.ApplicationKey;
 
             HttpContent content = new ObjectContent<MapCoordinate>(coordinate, new JsonMediaTypeFormatter());
-            HttpResponseMessage response = Client.PostAsync(string.Format(@"customer/{0}/networkfleet", companyId), content).Result;
+
+            HttpResponseMessage response = Client.PostAsync(string.Format(@"customer/{0}/networkfleet", companyKey), content).Result;
 
             var json =  response.Content.ReadAsStringAsync().Result;
 
@@ -44,11 +46,13 @@ namespace CustomerPortal.Client.Impl
         }
         public async Task<List<NetworkFleetResponse>> GetNetworkFleetAsync(string companyId,MapCoordinate coordinate=null)
         {
+            var companyKey = companyId ?? _serverSettings.ServerData.TaxiHail.ApplicationKey;
+
             HttpContent content = new ObjectContent<MapCoordinate>(coordinate, new JsonMediaTypeFormatter());
-            HttpResponseMessage response =await Client.PostAsync(string.Format(@"customer/{0}/networkfleet", companyId), content);
+
+            HttpResponseMessage response = await Client.PostAsync(string.Format(@"customer/{0}/networkfleet", companyKey), content);
 
             var json = await response.Content.ReadAsStringAsync();
-
 
             if (response.IsSuccessStatusCode)
             {
