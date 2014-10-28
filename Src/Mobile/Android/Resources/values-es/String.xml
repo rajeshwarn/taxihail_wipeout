@@ -522,4 +522,8 @@
   <string name="WarningPushServiceTitle">Notificaciones empujadas</string>
   <string name="WarningTitle">Advertencia</string>
   <string name="YesButton">Si</string>
+  <string name="TaxiHailNetworkTimeOutPopupTitle">Busy</string>
+  <string name="TaxiHailNetworkTimeOutPopupMessage">Would you like to try booking company {0}</string>
+  <string name="TaxiHailNetworkTimeOutPopupAccept">Accept</string>
+  <string name="TaxiHailNetworkTimeOutPopupRefuse">Refuse</string>
 </resources>
