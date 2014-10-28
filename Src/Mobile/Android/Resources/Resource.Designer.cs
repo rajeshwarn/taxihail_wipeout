@@ -4185,14 +4185,14 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f05010a
 			public const int GooglePlayServicesNotAvailableMessage = 2131034378;
 			
-			// aapt resource value: 0x7f05026f
-			public const int GooglePlayServicesNotAvailableMessage1 = 2131034735;
+			// aapt resource value: 0x7f050273
+			public const int GooglePlayServicesNotAvailableMessage1 = 2131034739;
 			
 			// aapt resource value: 0x7f05006a
 			public const int GooglePlayServicesNotAvailableTitle = 2131034218;
 			
-			// aapt resource value: 0x7f050270
-			public const int GooglePlayServicesNotAvailableTitle1 = 2131034736;
+			// aapt resource value: 0x7f050274
+			public const int GooglePlayServicesNotAvailableTitle1 = 2131034740;
 			
 			// aapt resource value: 0x7f05002e
 			public const int Hello = 2131034158;
@@ -5006,6 +5006,18 @@ namespace apcurium.MK.Booking.Mobile.Client
 			
 			// aapt resource value: 0x7f0500ad
 			public const int TabSearch = 2131034285;
+			
+			// aapt resource value: 0x7f050271
+			public const int TaxiHailNetworkTimeOutPopupAccept = 2131034737;
+			
+			// aapt resource value: 0x7f050270
+			public const int TaxiHailNetworkTimeOutPopupMessage = 2131034736;
+			
+			// aapt resource value: 0x7f050272
+			public const int TaxiHailNetworkTimeOutPopupRefuse = 2131034738;
+			
+			// aapt resource value: 0x7f05026f
+			public const int TaxiHailNetworkTimeOutPopupTitle = 2131034735;
 			
 			// aapt resource value: 0x7f0500cd
 			public const int TaxiMapTitle = 2131034317;
@@ -6507,7 +6519,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 					16843055,
 					16843056,
 					16843057,
-					16843948};
+					16843829};
 			
 			// aapt resource value: 4
 			public const int MenuView_android_headerBackground = 4;

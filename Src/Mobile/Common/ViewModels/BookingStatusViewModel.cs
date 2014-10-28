@@ -311,6 +311,23 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				else{
 					status.VehicleNumber = _vehicleNumber;
 				}
+				if(status.IBSStatusId.HasValue() && status.IBSStatusId.Equals(VehicleStatuses.Common.Timeout) )
+				{
+					if(status.NextDispatchCompanyKey!=null)
+					{
+						this.Services().Message.ShowMessage(
+							this.Services().Localize["TaxiHailNetworkTimeOutPopupTitle"],
+							string.Format(this.Services().Localize["TaxiHailNetworkTimeOutPopupMessage"],status.NextDispatchCompanyName),
+							this.Services().Localize["TaxiHailNetworkTimeOutPopupAccept"],
+							()=>{
+								//Call endpoint to book a new order
+							},
+							this.Services().Localize["TaxiHailNetworkTimeOutPopupRefuse"],
+							null
+						);
+					}
+				}
+
 
 				var isDone = _bookingService.IsStatusDone(status.IBSStatusId);
 

@@ -531,3 +531,7 @@
 "View_AccountConfirmation_Label_Code"="Code";
 "CardExpiredMessage"="Votre carte a expiré. Ajoutez une nouvelle carte ou mettez à jour la carte sélectionnée pour continuer.";
 "CallDriverUsingProxyMessage"="Votre chauffeur vous rappellera dans quelques minutes";
+"TaxiHailNetworkTimeOutPopupTitle"="Occupé";
+"TaxiHailNetworkTimeOutPopupMessage"="Voulez-vous essayer de commander avec la compagnie {0}";
+"TaxiHailNetworkTimeOutPopupAccept"="Accepter";
+"TaxiHailNetworkTimeOutPopupRefuse"="Refuser";
