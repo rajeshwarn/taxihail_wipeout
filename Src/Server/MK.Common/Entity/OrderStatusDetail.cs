@@ -36,6 +36,7 @@ namespace apcurium.MK.Common.Entity
         public string CompanyKey { get; set; }
         public string NextDispatchCompanyName { get; set; }
         public string NextDispatchCompanyKey { get; set; }
+        public bool IgnoreDispatchCompanySwitch { get; set; }
 
         public DateTime? NetworkPairingTimeout { get; set; }
         public double? UserLatitude { get; set; }

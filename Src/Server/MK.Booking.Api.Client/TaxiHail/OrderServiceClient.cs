@@ -31,8 +31,14 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 
         public Task<OrderStatusDetail> SwitchOrderToNextDispatchCompany(SwitchOrderToNextDispatchCompanyRequest request)
         {
-            var req = string.Format("/account/orders/switchDispatchCompany");
+            var req = string.Format("/account/orders/{0}/switchDispatchCompany", request.OrderId);
             return Client.PostAsync<OrderStatusDetail>(req, request);
+        }
+
+        public Task IgnoreDispatchCompanySwitch(Guid orderId)
+        {
+            var req = string.Format("/account/orders/{0}/ignoreDispatchCompanySwitch", orderId);
+            return Client.PostAsync<string>(req, new IgnoreDispatchCompanySwitchRequest { OrderId = orderId });
         }
 
         public Task CancelOrder(Guid orderId)

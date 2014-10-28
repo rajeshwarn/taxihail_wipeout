@@ -64,6 +64,7 @@
     <Compile Include="CreditCardPaymentCaptured.cs" />
     <Compile Include="CreditCardPaymentInitiated.cs" />
     <Compile Include="CreditCardUpdated.cs" />
+    <Compile Include="DispatchCompanySwitchIgnored.cs" />
     <Compile Include="NotificationSettingsAddedOrUpdated.cs" />
     <Compile Include="OrderDispatchCompanyChanged.cs" />
     <Compile Include="OrderPairedForPayment.cs" />

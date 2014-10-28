@@ -48,7 +48,11 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
 
                 if (details.UserLatitude.HasValue && details.UserLongitude.HasValue)
                 {
-                    var userPosition = new MapCoordinate{Latitude = details.UserLatitude.Value, Longitude = details.UserLongitude.Value};
+                    var userPosition = new MapCoordinate
+                    {
+                        Latitude = details.UserLatitude.Value,
+                        Longitude = details.UserLongitude.Value
+                    };
 
                     // Get network fleet from customer portal
                     var networkFleet = await _taxiHailNetworkServiceClient.GetNetworkFleetAsync(details.CompanyKey, userPosition);

@@ -7,6 +7,7 @@ using System.Net;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Web.UI;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Api.Jobs;
@@ -291,6 +292,22 @@ namespace apcurium.MK.Booking.Api.Services
                 IBSStatusId = string.Empty,
                 IBSStatusDescription = _resources.Get("OrderStatus_wosWAITING", order.ClientLanguageCode),
             };
+        }
+
+        public object Post(IgnoreDispatchCompanySwitchRequest request)
+        {
+            var order = _orderDao.FindById(request.OrderId);
+            if (order == null)
+            {
+                return new HttpResult(HttpStatusCode.NotFound);
+            }
+
+            _commandBus.Send(new IgnoreDispatchCompanySwitch
+            {
+                OrderId = request.OrderId
+            });
+
+            return new HttpResult(HttpStatusCode.OK);
         }
 
         private void CreateIbsAccountIfNeeded(AccountDetail account, string companyKey = null)

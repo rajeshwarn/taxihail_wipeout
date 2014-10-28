@@ -29,7 +29,8 @@ namespace apcurium.MK.Booking.EventHandlers
         IEventHandler<OrderPairedForPayment>,
         IEventHandler<OrderUnpairedForPayment>,
         IEventHandler<OrderDispatchCompanyChanged>,
-        IEventHandler<OrderSwitchedToNextDispatchCompany>
+        IEventHandler<OrderSwitchedToNextDispatchCompany>,
+        IEventHandler<DispatchCompanySwitchIgnored>
     {
         private readonly Func<BookingDbContext> _contextFactory;
         private readonly ILogger _logger;
@@ -329,6 +330,18 @@ namespace apcurium.MK.Booking.EventHandlers
                 details.NextDispatchCompanyName = null;
 
                 context.Save(details);
+            }
+        }
+
+        public void Handle(DispatchCompanySwitchIgnored @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var details = context.Find<OrderStatusDetail>(@event.SourceId);
+                details.IgnoreDispatchCompanySwitch = true;
+                details.Status = OrderStatus.Created;
+                details.NextDispatchCompanyKey = null;
+                details.NextDispatchCompanyName = null;
             }
         }
     }

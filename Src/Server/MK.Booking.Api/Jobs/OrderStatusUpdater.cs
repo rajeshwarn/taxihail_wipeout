@@ -81,7 +81,7 @@ namespace apcurium.MK.Booking.Api.Jobs
         {
             UpdateVehiclePositionAndSendNearbyNotificationIfNecessary(orderFromIbs, orderStatusDetail);
 
-            if (!orderFromIbs.IsAssigned && _serverSettings.ServerData.Network.Enabled)
+            if (!orderFromIbs.IsAssigned)
             {
                 CheckForOrderTimeOut(orderStatusDetail);
             }
@@ -372,7 +372,8 @@ namespace apcurium.MK.Booking.Api.Jobs
         private void CheckForOrderTimeOut(OrderStatusDetail orderStatusDetail)
         {
             if (!_serverSettings.ServerData.Network.Enabled
-                || orderStatusDetail.Status == OrderStatus.TimedOut)
+                || orderStatusDetail.Status == OrderStatus.TimedOut
+                || orderStatusDetail.IgnoreDispatchCompanySwitch)
             {
                 // Nothing to do
                 return;
