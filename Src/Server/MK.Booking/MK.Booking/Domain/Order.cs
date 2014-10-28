@@ -36,6 +36,7 @@ namespace apcurium.MK.Booking.Domain
             Handles<OrderTimedOut>(OnOrderTimedOut);
             Handles<OrderDispatchCompanyChanged>(NoAction);
             Handles<OrderSwitchedToNextDispatchCompany>(OnOrderSwitchedToNextDispatchCompany);
+            Handles<DispatchCompanySwitchIgnored>(OnNextDispatchCompanySwitchIgnored);
         }
         
         public Order(Guid id, IEnumerable<IVersionedEvent> history)
@@ -184,6 +185,14 @@ namespace apcurium.MK.Booking.Domain
             });
         }
 
+        public void IgnoreDispatchCompanySwitch(Guid orderId)
+        {
+            Update(new DispatchCompanySwitchIgnored
+            {
+                OrderId = orderId
+            });
+        }
+
         private void OnOrderStatusChanged(OrderStatusChanged @event)
         {
             // special case for migration
@@ -230,6 +239,11 @@ namespace apcurium.MK.Booking.Domain
         }
 
         private void OnOrderSwitchedToNextDispatchCompany(OrderSwitchedToNextDispatchCompany obj)
+        {
+            _isTimedOut = false;
+        }
+
+        private void OnNextDispatchCompanySwitchIgnored(DispatchCompanySwitchIgnored obj)
         {
             _isTimedOut = false;
         }

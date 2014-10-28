@@ -60,6 +60,7 @@
     <Compile Include="CaptureCreditCardPayment.cs" />
     <Compile Include="ChangeOrderDispatchCompany.cs" />
     <Compile Include="ChangeOrderStatus.cs" />
+    <Compile Include="IgnoreDispatchCompanySwitch.cs" />
     <Compile Include="NotifyOrderTimedOut.cs" />
     <Compile Include="CompletePayPalExpressCheckoutPayment.cs" />
     <Compile Include="DeleteAccountCharge.cs" />

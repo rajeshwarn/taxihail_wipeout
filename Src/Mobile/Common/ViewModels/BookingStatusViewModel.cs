@@ -313,38 +313,33 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					status.VehicleNumber = _vehicleNumber;
 				}
 
-				if(status.Status.Equals(OrderStatus.TimedOut) )
+				if(status.Status.Equals(OrderStatus.TimedOut))
 				{
-					if(status.NextDispatchCompanyKey!=null)
+					if(status.NextDispatchCompanyKey != null)
 					{
 						this.Services().Message.ShowMessage(
 							this.Services().Localize["TaxiHailNetworkTimeOutPopupTitle"],
-							string.Format(this.Services().Localize["TaxiHailNetworkTimeOutPopupMessage"],status.NextDispatchCompanyName),
+							string.Format(this.Services().Localize["TaxiHailNetworkTimeOutPopupMessage"], status.NextDispatchCompanyName),
 							this.Services().Localize["TaxiHailNetworkTimeOutPopupAccept"],
-							async ()=>{
+							async () => {
 
-									OrderStatusDetail=await _bookingService.SwitchOrderToNextDispatchCompany(
+									OrderStatusDetail = await _bookingService.SwitchOrderToNextDispatchCompany(
 										new SwitchOrderToNextDispatchCompanyRequest
 										{
-											OrderId= status.OrderId,
-											CompanyKey = status.CompanyKey,
-											NextDispatchCompanyKey=status.NextDispatchCompanyKey,
-											NextDispatchCompanyName=status.NextDispatchCompanyName
+											OrderId = status.OrderId,
+											NextDispatchCompanyKey = status.NextDispatchCompanyKey,
+											NextDispatchCompanyName = status.NextDispatchCompanyName
 										}
 									);
 							},
 							this.Services().Localize["TaxiHailNetworkTimeOutPopupRefuse"],
-							()=>{
-								//call endpoint to set timeout to null
-							}
-						);
+						    () => _bookingService.IgnoreDispatchCompanySwitch(status.OrderId));
 					}
 				}
 
-
 				var isDone = _bookingService.IsStatusDone(status.IBSStatusId);
 
-				if(status.IBSStatusId.HasValue() && status.IBSStatusId.Equals(VehicleStatuses.Common.Scheduled) )
+				if(status.IBSStatusId.HasValue() && status.IBSStatusId.Equals(VehicleStatuses.Common.Scheduled))
 				{
 					AddReminder(status);
 				}
