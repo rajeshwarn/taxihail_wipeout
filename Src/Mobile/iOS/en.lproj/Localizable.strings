@@ -452,7 +452,7 @@
 "View_Payment"="Payment Info";
 "Create"="Create";
 "View_CreditCardsList"="Credit Cards";
-"CmtRideLinqConfirmPairViewConfirmPairDetailText"="Check that you are in the vehicle indicated above. If you confirm this ride will be paid automatically using your default payment settings.";
+"CmtRideLinqConfirmPairViewConfirmPairDetailText"="Confirm that you are in the vehicle number indicated below.  By Tapping “Confirm”, this ride will automatically be paid by your credit card on file.";
 "Estimate"="Estimate";
 "ViewAll"="View All";
 "Collapse"="Collapse";
@@ -502,7 +502,7 @@
 "ServiceErrorCreateOrder_PendingOrder"="You cannot book this ride since an order is already pending. View the order status?";
 "View"="View";
 "CreditCardAdded"="Your account is now enabled to pay with your card on file by default. You can still choose to pay in the vehicle by selecting \"Pay in Vehicle\" on the payment screen";
-"PayInCar"="Pay in Car";
+"PayInCar"="Pay Cash/Credit Card in Car";
 "ServiceErrorCreateOrder_CannotCreateInIbs_10000_NoCall"="The charge account information is invalid. Please try again.";
 "ServiceErrorCreateOrder_CannotCreateInIbs_10000"="The charge account information is invalid. Please try again.";
 "EstimateDistance"="";

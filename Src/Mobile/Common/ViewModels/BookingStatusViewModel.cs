@@ -410,17 +410,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 								&& !paymentSettings.AutomaticPayment  			
 								&& _bookingService.IsPaired(Order.Id);      
 
-			IsPayButtonVisible = (!Settings.HidePayNowButtonDuringRide)
-								&& (statusId == VehicleStatuses.Common.Done
+			IsPayButtonVisible = !Settings.HidePayNowButtonDuringRide
+								&& (statusId == VehicleStatuses.Common.Done								// passenger in car
 									|| statusId == VehicleStatuses.Common.Loaded)
-								&& !_paymentService.GetPaymentFromCache(Order.Id).HasValue
-								&& !paymentSettings.AutomaticPayment
-			                    && !IsUnpairButtonVisible
-								&& (Order.Settings.ChargeTypeId == null
+								&& !_paymentService.GetPaymentFromCache(Order.Id).HasValue				// not already paid
+								&& !paymentSettings.AutomaticPayment									// payment is processed automatically
+								&& !IsUnpairButtonVisible												// unpair visible (pair button is pay button in pairing situations) 
+								&& (Order.Settings.ChargeTypeId == null									// user is paying with a charge account
 									|| Order.Settings.ChargeTypeId != ChargeTypes.Account.Id)
-								&& ((paymentSettings.IsPayInTaxiEnabled
+								&& ((paymentSettings.IsPayInTaxiEnabled									// if paypal or user has a credit card
 										&& _accountService.CurrentAccount.DefaultCreditCard != null) 
-									|| paymentSettings.PayPalClientSettings.IsEnabled);
+									|| paymentSettings.PayPalClientSettings.IsEnabled)
+								&& OrderStatusDetail.CompanyKey == null;								// not dispatched to another company
 			
 			IsCancelButtonVisible = _bookingService.IsOrderCancellable (statusId);
 

@@ -153,14 +153,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			get
 			{
-				return ((_paymentSettings.IsPayInTaxiEnabled && _accountService.CurrentAccount.DefaultCreditCard != null) // if paypal or user has a credit card
-							|| _paymentSettings.PayPalClientSettings.IsEnabled) 
-						&& !(Settings.RatingEnabled && Settings.RatingRequired && !HasRated)     					 // user must rate before paying
-						&& !_paymentSettings.AutomaticPayment									 // payment is processed automatically
-						&& _paymentSettings.PaymentMode != PaymentMethod.RideLinqCmt 			 // payment is processed automatically
+				return ((_paymentSettings.IsPayInTaxiEnabled && _accountService.CurrentAccount.DefaultCreditCard != null) 
+							|| _paymentSettings.PayPalClientSettings.IsEnabled) 	     // if paypal or user has a credit card
+						&& !_paymentSettings.AutomaticPayment							 // payment is processed automatically
+						&& _paymentSettings.PaymentMode != PaymentMethod.RideLinqCmt 	 // payment is processed automatically
 						&& !_paymentService.GetPaymentFromCache(Order.Id).HasValue	     // not already paid
 						&& (Order.Settings.ChargeTypeId == null 						 // user is paying with a charge account
-                            || Order.Settings.ChargeTypeId != ChargeTypes.Account.Id);
+                            || Order.Settings.ChargeTypeId != ChargeTypes.Account.Id)
+						&& OrderStatus.CompanyKey == null;						 // not dispatched to another company;
 			}
 		}
 
@@ -203,6 +203,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
+		// for Android only
 	    public ICommand RateOrder
 	    {
 	        get
@@ -210,6 +211,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 	            return this.GetCommand(() =>
 	            {
 					CheckAndSendRatings(true);
+
+					if (CanUserLeaveScreen ())
+					{
+						PrepareNewOrder.ExecuteIfPossible();
+						CloseCommand.ExecuteIfPossible();
+					}
 	            });
 	        }
 	    }
@@ -285,8 +292,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_bookingService.SendRatingReview(orderRating);
 			HasRated = true;
 			CanRate = false;
-
-			this.CloseCommand.ExecuteIfPossible();
 		}
 
 		public bool CanUserLeaveScreen()
