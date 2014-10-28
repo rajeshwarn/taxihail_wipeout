@@ -192,6 +192,29 @@ namespace apcurium.MK.Web.Tests
         }
 
         [Test]
+        public async void order_switched_to_next_dispatch_company()
+        {
+            var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
+            var order = await sut.GetOrder(_orderId);
+
+            var orderStatus = await sut.SwitchOrderToNextDispatchCompany(new SwitchOrderToNextDispatchCompanyRequest
+                {
+                    OrderId = _orderId,
+                    NextDispatchCompanyKey = "x2s42",
+                    NextDispatchCompanyName = "Vector Industries"
+                });
+
+            Assert.NotNull(orderStatus);
+            Assert.AreEqual(_orderId, orderStatus.OrderId);
+            Assert.NotNull(orderStatus.IBSOrderId);
+            Assert.AreNotEqual(order.IBSOrderId, orderStatus.IBSOrderId);
+            Assert.AreEqual(OrderStatus.Created, orderStatus.Status);
+            Assert.AreEqual("x2s42", orderStatus.CompanyKey);
+            Assert.IsNull(orderStatus.NextDispatchCompanyKey);
+            Assert.IsNull(orderStatus.NextDispatchCompanyName);
+        }
+
+        [Test]
         public async void ibs_order_was_created()
         {
             var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo());

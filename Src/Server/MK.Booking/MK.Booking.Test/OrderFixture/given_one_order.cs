@@ -254,5 +254,23 @@ namespace apcurium.MK.Booking.Test.OrderFixture
             Assert.AreEqual("Kukai Foundation", @event.DispatchCompanyName);
             Assert.AreEqual("123456", @event.DispatchCompanyKey);
         }
+
+        [Test]
+        public void when_order_switched_to_next_dispatch_company()
+        {
+            _sut.When(new SwitchOrderToNextDispatchCompany
+            {
+                OrderId = _orderId,
+                IBSOrderId = 67865,
+                CompanyKey = "x2s42",
+                CompanyName = "Vector Industries"
+            });
+
+            var @event = _sut.ThenHasSingle<OrderSwitchedToNextDispatchCompany>();
+            Assert.AreEqual(_orderId, @event.SourceId);
+            Assert.AreEqual(67865, @event.IBSOrderId);
+            Assert.AreEqual("x2s42", @event.CompanyKey);
+            Assert.AreEqual("Vector Industries", @event.CompanyName);
+        }
     }
 }

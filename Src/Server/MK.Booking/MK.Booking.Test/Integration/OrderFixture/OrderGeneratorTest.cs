@@ -350,14 +350,20 @@ namespace apcurium.MK.Booking.Test.Integration.OrderFixture
 
             using (var context = new BookingDbContext(DbName))
             {
-                var dto = context.Find<OrderStatusDetail>(_orderId);
-                Assert.NotNull(dto);
-                Assert.AreEqual(_orderId, dto.OrderId);
-                Assert.AreEqual(ibsOrderId, dto.IBSOrderId);
-                Assert.AreEqual(dispatchCompanyKey, dto.CompanyKey);
-                Assert.IsNull(dto.NextDispatchCompanyKey);
-                Assert.IsNull(dto.NextDispatchCompanyName);
-                Assert.AreEqual(OrderStatus.Created, dto.Status);
+                var orderDto = context.Find<OrderDetail>(_orderId);
+                Assert.NotNull(orderDto);
+                Assert.AreEqual(_orderId, orderDto.Id);
+                Assert.AreEqual(ibsOrderId, orderDto.IBSOrderId);
+                Assert.AreEqual(dispatchCompanyKey, orderDto.CompanyKey);
+
+                var statusDto = context.Find<OrderStatusDetail>(_orderId);
+                Assert.NotNull(statusDto);
+                Assert.AreEqual(_orderId, statusDto.OrderId);
+                Assert.AreEqual(ibsOrderId, statusDto.IBSOrderId);
+                Assert.AreEqual(dispatchCompanyKey, statusDto.CompanyKey);
+                Assert.IsNull(statusDto.NextDispatchCompanyKey);
+                Assert.IsNull(statusDto.NextDispatchCompanyName);
+                Assert.AreEqual(OrderStatus.Created, statusDto.Status);
             }
         }
     }
