@@ -215,6 +215,22 @@ namespace apcurium.MK.Web.Tests
         }
 
         [Test]
+        public async void order_dispatch_company_switch_ignored()
+        {
+            var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
+
+            await sut.IgnoreDispatchCompanySwitch(_orderId);
+
+            var status = await sut.GetOrderStatus(_orderId);
+
+            Assert.NotNull(status);
+            Assert.AreEqual(true, status.IgnoreDispatchCompanySwitch);
+            Assert.AreEqual(OrderStatus.Created, status.Status);
+            Assert.IsNull(status.NextDispatchCompanyKey);
+            Assert.IsNull(status.NextDispatchCompanyName);
+        }
+
+        [Test]
         public async void ibs_order_was_created()
         {
             var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
