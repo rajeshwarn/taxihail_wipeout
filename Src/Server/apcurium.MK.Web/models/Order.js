@@ -73,12 +73,19 @@
         switchOrderToNextDispatchCompany: function () {
             return $.ajax({
                 type: 'POST',
-                url: TaxiHail.parameters.apiRoot + "/account/orders/switchDispatchCompany",
+                url: this.url() + "/switchDispatchCompany",
                 data: JSON.stringify({
-                    orderId: this.id,
                     nextDispatchCompanyKey: this._status.get('nextDispatchCompanyKey'),
                     nextDispatchCompanyName: this._status.get('nextDispatchCompanyName')
                 }),
+                contentType: 'application/json'
+            });
+        },
+
+        ignoreDispatchCompanySwitch: function () {
+            return $.ajax({
+                type: 'POST',
+                url: this.url() + "/ignoreDispatchCompanySwitch",
                 contentType: 'application/json'
             });
         },
@@ -87,5 +94,4 @@
             return $.get('api/admin/accountscharge/' + accountChargeNumber + '/true', function () { }, 'json');
         }
     });
-
 }());

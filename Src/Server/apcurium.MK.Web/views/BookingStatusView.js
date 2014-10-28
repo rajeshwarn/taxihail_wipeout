@@ -174,6 +174,9 @@
             }).on('ok', function() {
                 var newStatus = this.model.switchOrderToNextDispatchCompany();
                 this.model._status = newStatus;
+            }, this)
+            .on('cancel', function() {
+                this.model.ignoreDispatchCompanySwitch();
             }, this);
         },
 
