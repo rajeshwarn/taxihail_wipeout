@@ -22,7 +22,7 @@ namespace apcurium.MK.Booking.IBS.Impl
 
         public IAccountWebServiceClient Account(string companyKey)
         {
-            return new AccountWebServiceClient(GetSettingContainer(companyKey), _logger);
+            return new AccountWebServiceClient(_serverSettings, GetSettingContainer(companyKey), _logger);
         }
 
         public IStaticDataWebServiceClient StaticData(string companyKey)

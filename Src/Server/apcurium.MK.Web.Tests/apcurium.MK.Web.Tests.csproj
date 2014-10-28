@@ -131,6 +131,7 @@
     <Compile Include="Constants.cs" />
     <Compile Include="CreditCardFixture.cs" />
     <Compile Include="FakeIbs.cs" />
+    <Compile Include="FakeTaxiHailNetworkServiceClient.cs" />
     <Compile Include="MonerisPaymentServiceClientFixture.cs" />
     <Compile Include="PushNotificationRegistrationFixture.cs" />
     <Compile Include="PlaceDetailFixture.cs" />
@@ -155,6 +156,14 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\CustomerPortal\CustomerPortal.Client\CustomerPortal.Client.csproj">
+      <Project>{15824aae-2d25-414e-b9ff-618de088c9e7}</Project>
+      <Name>CustomerPortal.Client</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\CustomerPortal\CustomerPortal.Contract\CustomerPortal.Contract.csproj">
+      <Project>{6a4623e1-41ef-4286-9a34-2adc6407e94f}</Project>
+      <Name>CustomerPortal.Contract</Name>
+    </ProjectReference>
     <ProjectReference Include="..\apcurium.MK.Web.SelfHost\apcurium.MK.Web.SelfHost.csproj">
       <Project>{26c054f2-4984-4fe5-811c-4d94ef7eae15}</Project>
       <Name>apcurium.MK.Web.SelfHost</Name>
