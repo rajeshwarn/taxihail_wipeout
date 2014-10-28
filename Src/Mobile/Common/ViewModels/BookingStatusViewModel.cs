@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Linq;
 using apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.Infrastructure;
@@ -320,11 +321,22 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 							this.Services().Localize["TaxiHailNetworkTimeOutPopupTitle"],
 							string.Format(this.Services().Localize["TaxiHailNetworkTimeOutPopupMessage"],status.NextDispatchCompanyName),
 							this.Services().Localize["TaxiHailNetworkTimeOutPopupAccept"],
-							()=>{
-								//Call endpoint to book a new order
+							async ()=>{
+
+									OrderStatusDetail=await _bookingService.SwitchOrderToNextDispatchCompany(
+										new SwitchOrderToNextDispatchCompanyRequest
+										{
+											OrderId= status.OrderId,
+											CompanyKey = status.CompanyKey,
+											NextDispatchCompanyKey=status.NextDispatchCompanyKey,
+											NextDispatchCompanyName=status.NextDispatchCompanyName
+										}
+									);
 							},
 							this.Services().Localize["TaxiHailNetworkTimeOutPopupRefuse"],
-							()=>{}
+							()=>{
+								//call endpoint to set timeout to null
+							}
 						);
 					}
 				}
