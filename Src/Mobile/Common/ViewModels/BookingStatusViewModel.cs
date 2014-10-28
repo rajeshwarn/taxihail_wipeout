@@ -301,8 +301,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         private bool _isCurrentlyPairing;
 		string _vehicleNumber;
-		private bool _isDispatchPopupVisible=false;
-		private async void RefreshStatus ()
+		private bool _isDispatchPopupVisible;
+		private async void RefreshStatus()
         {
             try {
 				var status = await _bookingService.GetOrderStatusAsync(Order.Id);
@@ -310,22 +310,24 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				{
 					_vehicleNumber = status.VehicleNumber;
 				}
-				else{
+				else
+                {
 					status.VehicleNumber = _vehicleNumber;
 				}
 
 				if(status.Status.Equals(OrderStatus.TimedOut))
 				{
-					if(status.NextDispatchCompanyKey!=null && !_isDispatchPopupVisible)
+					if(status.NextDispatchCompanyKey != null && !_isDispatchPopupVisible)
 					{
-						_isDispatchPopupVisible=true;
+						_isDispatchPopupVisible = true;
+
 						this.Services().Message.ShowMessage(
 							this.Services().Localize["TaxiHailNetworkTimeOutPopupTitle"],
 							string.Format(this.Services().Localize["TaxiHailNetworkTimeOutPopupMessage"], status.NextDispatchCompanyName),
 							this.Services().Localize["TaxiHailNetworkTimeOutPopupAccept"],
 							async () => {
-									_isDispatchPopupVisible=false;
-									var orderStatusDetail=await _bookingService.SwitchOrderToNextDispatchCompany(
+									_isDispatchPopupVisible = false;
+									var orderStatusDetail = await _bookingService.SwitchOrderToNextDispatchCompany(
 										new SwitchOrderToNextDispatchCompanyRequest
 										{
 											OrderId = status.OrderId,
@@ -333,12 +335,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 											NextDispatchCompanyName = status.NextDispatchCompanyName
 										}
 									);
-								OrderStatusDetail=orderStatusDetail;
-								Order.Id=orderStatusDetail.OrderId;
+								OrderStatusDetail = orderStatusDetail;
+								Order.Id = orderStatusDetail.OrderId;
 							},
 							this.Services().Localize["TaxiHailNetworkTimeOutPopupRefuse"],
-						    () => _bookingService.IgnoreDispatchCompanySwitch(status.OrderId));
-								_isDispatchPopupVisible=false;
+						    () =>
+                                {
+						            _bookingService.IgnoreDispatchCompanySwitch(status.OrderId);
+                                    _isDispatchPopupVisible = false;
+						        });
 					}
 				}
 
