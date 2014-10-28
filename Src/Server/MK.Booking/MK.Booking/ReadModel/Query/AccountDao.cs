@@ -64,9 +64,15 @@ namespace apcurium.MK.Booking.ReadModel.Query
         {
             using (var context = _contextFactory.Invoke())
             {
+                if (companyKey == null)
+                {
+                    var account = context.Query<AccountDetail>().First(c => c.Id == accountId);
+                    return account.IBSAccountId;
+                }
+
                 var accountIbsInfo = context.Query<AccountIbsDetail>().SingleOrDefault(c => c.AccountId == accountId && c.CompanyKey == companyKey);
-                return accountIbsInfo != null 
-                    ? (int?) accountIbsInfo.IBSAccountId 
+                return accountIbsInfo != null
+                    ? (int?)accountIbsInfo.IBSAccountId
                     : null;
             }
         }

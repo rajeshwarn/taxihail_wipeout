@@ -552,7 +552,7 @@ namespace apcurium.MK.Booking.Api.Services
 
         private bool IsIBSAccountCreated(Guid accountId, string companyKey)
         {
-            return companyKey == null || _accountDao.GetIbsAccountId(accountId, companyKey).HasValue;
+            return _accountDao.GetIbsAccountId(accountId, companyKey).HasValue;
         }
     }
 }
