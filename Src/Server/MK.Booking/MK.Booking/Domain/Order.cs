@@ -187,10 +187,7 @@ namespace apcurium.MK.Booking.Domain
 
         public void IgnoreDispatchCompanySwitch(Guid orderId)
         {
-            Update(new DispatchCompanySwitchIgnored
-            {
-                OrderId = orderId
-            });
+            Update(new DispatchCompanySwitchIgnored());
         }
 
         private void OnOrderStatusChanged(OrderStatusChanged @event)

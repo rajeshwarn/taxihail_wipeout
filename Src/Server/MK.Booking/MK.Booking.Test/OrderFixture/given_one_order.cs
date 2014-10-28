@@ -272,5 +272,17 @@ namespace apcurium.MK.Booking.Test.OrderFixture
             Assert.AreEqual("x2s42", @event.CompanyKey);
             Assert.AreEqual("Vector Industries", @event.CompanyName);
         }
+
+        [Test]
+        public void when_dispatch_company_switch_ignored()
+        {
+            _sut.When(new IgnoreDispatchCompanySwitch
+            {
+                OrderId = _orderId
+            });
+
+            var @event = _sut.ThenHasSingle<DispatchCompanySwitchIgnored>();
+            Assert.AreEqual(_orderId, @event.SourceId);
+        }
     }
 }

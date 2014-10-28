@@ -368,5 +368,24 @@ namespace apcurium.MK.Booking.Test.Integration.OrderFixture
                 Assert.AreEqual(OrderStatus.Created, statusDto.Status);
             }
         }
+
+        [Test]
+        public void when_dispatch_company_switch_ignored_then_dto_updated()
+        {
+            Sut.Handle(new DispatchCompanySwitchIgnored
+            {
+                SourceId = _orderId
+            });
+
+            using (var context = new BookingDbContext(DbName))
+            {
+                var dto = context.Find<OrderStatusDetail>(_orderId);
+                Assert.NotNull(dto);
+                Assert.AreEqual(true, dto.IgnoreDispatchCompanySwitch);
+                Assert.AreEqual(OrderStatus.Created, dto.Status);
+                Assert.IsNull(dto.NextDispatchCompanyKey);
+                Assert.IsNull(dto.NextDispatchCompanyName);
+            }
+        }
     }
 }
