@@ -3,7 +3,6 @@ using Infrastructure.Messaging;
 
 namespace apcurium.MK.Booking.Commands
 {
-
     public class IgnoreDispatchCompanySwitch : ICommand
     {
         public IgnoreDispatchCompanySwitch()

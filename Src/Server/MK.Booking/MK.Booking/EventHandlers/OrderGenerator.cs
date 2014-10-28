@@ -322,6 +322,8 @@ namespace apcurium.MK.Booking.EventHandlers
                 order.IBSOrderId = @event.IBSOrderId;
                 order.CompanyKey = @event.CompanyKey;
 
+                context.Save(order);
+
                 var details = context.Find<OrderStatusDetail>(@event.SourceId);
                 details.Status = OrderStatus.Created;
                 details.IBSOrderId = @event.IBSOrderId;
@@ -342,6 +344,8 @@ namespace apcurium.MK.Booking.EventHandlers
                 details.Status = OrderStatus.Created;
                 details.NextDispatchCompanyKey = null;
                 details.NextDispatchCompanyName = null;
+
+                context.Save(details);
             }
         }
     }
