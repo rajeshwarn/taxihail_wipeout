@@ -104,7 +104,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                 .GetZoneByCoordinate(null, userPosition.Latitude, userPosition.Longitude);
 
             // If company is not IBS zone, check the next one until we have browsed the whole fleet
-            return ibsZone.IsNullOrEmpty()
+            return string.IsNullOrWhiteSpace(ibsZone)
                 ? FindNextAvailableCompanyInIbsZone(nextDispatchCompany.CompanyKey, userPosition, networkFleet)
                 : nextDispatchCompany;
         }
