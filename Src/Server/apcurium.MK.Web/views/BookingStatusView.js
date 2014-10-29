@@ -171,12 +171,16 @@
                 message: this.localize('NetworkTimeOutPopupMessage').format(this.model._status.get('NextDispatchCompanyName')),
                 confirmButton: this.localize('NetworkTimeOutPopupAccept'),
                 cancelButton: this.localize('NetworkTimeOutPopupRefuse')
-            }).on('ok', function() {
-                var newStatus = this.model.switchOrderToNextDispatchCompany();
-                this.model._status = newStatus;
+            }).on('ok', function () {
+                if (this.model._status.get('status') === 'TIMEDOUT') {
+                    var newStatus = this.model.switchOrderToNextDispatchCompany();
+                    this.model._status = newStatus;
+                }
             }, this)
-            .on('cancel', function() {
-                this.model.ignoreDispatchCompanySwitch();
+            .on('cancel', function () {
+                if (this.model._status.get('status') === 'TIMEDOUT') {
+                    this.model.ignoreDispatchCompanySwitch();
+                }
             }, this);
         },
 
