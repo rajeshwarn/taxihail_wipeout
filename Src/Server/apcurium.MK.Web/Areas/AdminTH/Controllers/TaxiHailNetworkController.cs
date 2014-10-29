@@ -1,5 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Net.Http.Formatting;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using apcurium.MK.Booking.Api.Contract.Requests;
@@ -8,19 +12,22 @@ using apcurium.MK.Common.Configuration;
 using CustomerPortal.Client;
 using CustomerPortal.Contract.Resources;
 using ServiceStack.CacheAccess;
+using ServiceStack.ServiceClient.Web;
 
 namespace apcurium.MK.Web.Areas.AdminTH.Controllers
 {
     public class TaxiHailNetworkController : ServiceStackController
     {
+        private readonly IServerSettings _serverSettings;
         private readonly ITaxiHailNetworkServiceClient _taxiHailNetworkService;
         private readonly ConfigurationsService _configurationsService;
         private readonly string _applicationKey;
 
         // GET: AdminTH/TaxiHailNetwork
-        public TaxiHailNetworkController(ICacheClient cache, IServerSettings serverSettings, ITaxiHailNetworkServiceClient taxiHailNetworkService, ConfigurationsService configurationsService)
+        public TaxiHailNetworkController(ICacheClient cache, IServerSettings serverSettings, ITaxiHailNetworkServiceClient taxiHailNetworkService, ConfigurationsService configurationsService) 
             : base(cache, serverSettings)
         {
+            _serverSettings = serverSettings;
             _taxiHailNetworkService = taxiHailNetworkService;
             _configurationsService = configurationsService;
 
@@ -70,7 +77,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                 await _taxiHailNetworkService.SetNetworkCompanyPreferences(_applicationKey, preferences.OrderBy(thn => thn.Order.HasValue)
                     .ThenBy(thn => thn.Order.GetValueOrDefault()).ToArray());
 
-                SaveNetworkSettings();
+                SaveNetworkSettingsIfNecessary();
 
                  return Json(new { Success = true, Message = "Changes Saved" });
             }
@@ -78,13 +85,15 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
             return Json(new { Success = false, Message = "All fields are required" });
         }
 
-        private  void SaveNetworkSettings()
+        private  void SaveNetworkSettingsIfNecessary()
         {
-            _configurationsService.Post(new ConfigurationsRequest
+            if(!_serverSettings.ServerData.Network.Enabled)
             {
-                AppSettings = new Dictionary<string, string> { { "Network.Enabled", "true" } }
-            });
-
+                _configurationsService.Post(new ConfigurationsRequest
+                {
+                    AppSettings = new Dictionary<string, string> { { "Network.Enabled", "true" } }
+                });
+            }
         }
     }
 }
