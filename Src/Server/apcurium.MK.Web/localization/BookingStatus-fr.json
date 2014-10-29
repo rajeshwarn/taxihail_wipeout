@@ -13,8 +13,8 @@
     "Sending...": "En traitement...",
     "Cannot Send Receipt": "Impossible d'envoyer la facture",
     "Driver Phone": "Tel. du chauffeur",
-    "NetworkTimeOutPopupTitle": "Occupé",
-    "NetworkTimeOutPopupMessage": "Désirez-vous commander avec {0}?",
+    "NetworkTimeOutPopupTitle": "Changer de compagnie?",
+    "NetworkTimeOutPopupMessage": "En raison d'un grand nombre de demandes, aucun véhicule n'est disponible présentement. Désirez-vous passer une commande avec {0}?",
     "NetworkTimeOutPopupAccept": "Accepter",
     "NetworkTimeOutPopupRefuse": "Refuser"
 }
