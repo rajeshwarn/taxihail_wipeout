@@ -402,4 +402,7 @@
   <data name="OrderStatus_wosWAITINGRoaming" xml:space="preserve">
     <value>En attente d'affectation chez {0}</value>
   </data>
+  <data name="Network_CannotCreateOrder" xml:space="preserve">
+    <value>Un problème est survenu en passant la commande avec {0}. Votre commande restera active avec {1}.</value>
+  </data>
 </root>
