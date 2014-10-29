@@ -594,10 +594,5 @@ namespace apcurium.MK.Booking.Api.Services
 
             return null;
         }
-
-        private bool IsIBSAccountCreated(Guid accountId, string companyKey)
-        {
-            return _accountDao.GetIbsAccountId(accountId, companyKey).HasValue;
-        }
     }
 }
