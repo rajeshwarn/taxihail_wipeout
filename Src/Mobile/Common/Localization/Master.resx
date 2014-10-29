@@ -1692,6 +1692,18 @@
   <data name="CallDriverUsingProxyMessage" xml:space="preserve">
     <value>Your driver will call you back in a few minutes</value>
   </data>
+  <data name="TaxiHailNetworkTimeOutPopupTitle" xml:space="preserve">
+    <value>Switch company?</value>
+  </data>
+  <data name="TaxiHailNetworkTimeOutPopupMessage" xml:space="preserve">
+    <value>Due to high demand, no vehicles are available right now. Do you want to book with {0} instead?</value>
+  </data>
+  <data name="TaxiHailNetworkTimeOutPopupAccept" xml:space="preserve">
+    <value>Accept</value>
+  </data>
+  <data name="TaxiHailNetworkTimeOutPopupRefuse" xml:space="preserve">
+    <value>Refuse</value>
+  </data>
   <data name="DriverInfoCompany" xml:space="preserve">
     <value>Company:</value>
   </data>

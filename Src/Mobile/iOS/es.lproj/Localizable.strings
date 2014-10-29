@@ -520,8 +520,8 @@
 "PaymentDetails.TipAmountLabel"="Propina";
 "PendingOrderView"="Ver";
 "DriverInfoLicence"="Licencia #:";
-"TaxiHailNetworkTimeOutPopupTitle"="Busy";
-"TaxiHailNetworkTimeOutPopupMessage"="Would you like to try booking company {0}";
+"TaxiHailNetworkTimeOutPopupTitle"="Switch company?";
+"TaxiHailNetworkTimeOutPopupMessage"="Due to high demand, no vehicles are available right now. Do you want to book with {0} instead?";
 "TaxiHailNetworkTimeOutPopupAccept"="Accept";
 "TaxiHailNetworkTimeOutPopupRefuse"="Refuse";
 "DriverInfoCompany"="Company:";
