@@ -114,7 +114,7 @@ namespace apcurium.MK.Booking.CommandHandlers
         public void Handle(IgnoreDispatchCompanySwitch command)
         {
             var order = _repository.Find(command.OrderId);
-            order.IgnoreDispatchCompanySwitch(command.OrderId);
+            order.IgnoreDispatchCompanySwitch();
             _repository.Save(order, command.Id.ToString());
         }
     }
