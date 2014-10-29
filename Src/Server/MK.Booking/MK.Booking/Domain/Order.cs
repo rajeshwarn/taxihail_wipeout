@@ -185,7 +185,7 @@ namespace apcurium.MK.Booking.Domain
             });
         }
 
-        public void IgnoreDispatchCompanySwitch(Guid orderId)
+        public void IgnoreDispatchCompanySwitch()
         {
             Update(new DispatchCompanySwitchIgnored());
         }

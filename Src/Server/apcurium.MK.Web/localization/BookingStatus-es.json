@@ -13,8 +13,8 @@
     "Sending...": "Enviando...",
     "Cannot Send Receipt": "El Recibo no pudo ser enviado",
     "Driver Phone": "Celular del chofer",
-    "NetworkTimeOutPopupTitle": "Busy",
-    "NetworkTimeOutPopupMessage": "Would you like to try booking with {0}?",
+    "NetworkTimeOutPopupTitle": "Switch company?",
+    "NetworkTimeOutPopupMessage": "Due to high demand, no vehicles are available right now. Do you want to book with {0} instead?",
     "NetworkTimeOutPopupAccept": "Accept",
     "NetworkTimeOutPopupRefuse": "Refuse"
 }

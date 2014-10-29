@@ -13,8 +13,8 @@
     "Sending...": "Sending...",
     "Cannot Send Receipt": "Cannot Send Receipt",
     "Driver Phone": "Driver's Mobile #",
-    "NetworkTimeOutPopupTitle":  "Busy",
-    "NetworkTimeOutPopupMessage":  "Would you like to try booking with {0}?",
+    "NetworkTimeOutPopupTitle":  "Switch company?",
+    "NetworkTimeOutPopupMessage":  "Due to high demand, no vehicles are available right now. Do you want to book with {0} instead?",
     "NetworkTimeOutPopupAccept":  "Accept",
     "NetworkTimeOutPopupRefuse":  "Refuse"
 }

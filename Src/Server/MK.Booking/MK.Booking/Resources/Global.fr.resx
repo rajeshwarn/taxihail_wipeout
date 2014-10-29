@@ -397,7 +397,7 @@
     <value>Votre commande ne peut pas être prise en compte, la préauthorisation de votre carte de crédit a échouée.</value>
   </data>
   <data name="PushNotification_ChangeNetworkCompany" xml:space="preserve">
-    <value>En raison d'un grand nombre de demandes, aucun vehicule n'est disponible présentement. Désirez-vous passez une commande avec {0}?</value>
+    <value>En raison d'un grand nombre de demandes, aucun vehicule n'est disponible présentement. Désirez-vous passer une commande avec {0}?</value>
   </data>
   <data name="OrderStatus_wosWAITINGRoaming" xml:space="preserve">
     <value>En attente d'affectation chez {0}</value>
