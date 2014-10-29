@@ -33,12 +33,12 @@ namespace apcurium.MK.Common.Entity
         public DateTime? PairingTimeOut { get; set; }
         public string PairingError { get; set; }
 
-        public string CompanyKey { get; set; }
-        public string CompanyName { get; set; }
+        // network stuff
+        public string CompanyKey { get; set; }                  // not null if created on another ibs
+        public string CompanyName { get; set; }                 // not null if created on another ibs
         public string NextDispatchCompanyName { get; set; }
         public string NextDispatchCompanyKey { get; set; }
         public bool IgnoreDispatchCompanySwitch { get; set; }
-
         public DateTime? NetworkPairingTimeout { get; set; }
         
         public override string ToString()
