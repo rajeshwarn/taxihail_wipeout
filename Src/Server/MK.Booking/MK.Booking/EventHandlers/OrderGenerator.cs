@@ -217,8 +217,8 @@ namespace apcurium.MK.Booking.EventHandlers
                             && _serverSettings.ServerData.Network.Enabled)
                         {
                             details.NetworkPairingTimeout = !details.CompanyKey.HasValue()
-                                ? @event.EventDate.AddSeconds(_serverSettings.ServerData.Network.FirstOrderTimeout)
-                                : @event.EventDate.AddSeconds(_serverSettings.ServerData.Network.OrderTimeout);
+                                ? @event.EventDate.AddSeconds(_serverSettings.ServerData.Network.PrimaryOrderTimeout)
+                                : @event.EventDate.AddSeconds(_serverSettings.ServerData.Network.SecondaryOrderTimeout);
                         }
                         details.IBSStatusId = @event.Status.IBSStatusId;
                         details.DriverInfos = @event.Status.DriverInfos;
@@ -337,6 +337,7 @@ namespace apcurium.MK.Booking.EventHandlers
                 details.CompanyName = @event.CompanyName;
                 details.NextDispatchCompanyKey = null;
                 details.NextDispatchCompanyName = null;
+                details.NetworkPairingTimeout = null;
 
                 context.SaveChanges();
             }

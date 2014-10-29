@@ -227,10 +227,10 @@ namespace apcurium.MK.Common.Configuration
     public class NetworkSettingContainer
     {
         [CustomizableByCompany]
-        public double FirstOrderTimeout { get; protected internal set; }
+        public double PrimaryOrderTimeout { get; protected internal set; }
 
         [CustomizableByCompany]
-        public double OrderTimeout { get; protected internal set; }
+        public double SecondaryOrderTimeout { get; protected internal set; }
 
         public bool Enabled { get;  set; }
     }

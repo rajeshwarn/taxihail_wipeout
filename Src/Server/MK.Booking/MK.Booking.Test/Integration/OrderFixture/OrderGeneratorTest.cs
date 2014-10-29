@@ -365,6 +365,7 @@ namespace apcurium.MK.Booking.Test.Integration.OrderFixture
                 Assert.AreEqual(dispatchCompanyKey, statusDto.CompanyKey);
                 Assert.IsNull(statusDto.NextDispatchCompanyKey);
                 Assert.IsNull(statusDto.NextDispatchCompanyName);
+                Assert.IsNull(statusDto.NetworkPairingTimeout);
                 Assert.AreEqual(OrderStatus.Created, statusDto.Status);
             }
         }
