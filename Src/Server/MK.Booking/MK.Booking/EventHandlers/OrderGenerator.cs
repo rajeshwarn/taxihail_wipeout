@@ -327,6 +327,7 @@ namespace apcurium.MK.Booking.EventHandlers
                 details.Status = OrderStatus.Created;
                 details.IBSOrderId = @event.IBSOrderId;
                 details.CompanyKey = @event.CompanyKey;
+                details.CompanyName = @event.CompanyName;
                 details.NextDispatchCompanyKey = null;
                 details.NextDispatchCompanyName = null;
 

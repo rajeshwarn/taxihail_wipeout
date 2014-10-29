@@ -34,6 +34,7 @@ namespace apcurium.MK.Common.Entity
         public string PairingError { get; set; }
 
         public string CompanyKey { get; set; }
+        public string CompanyName { get; set; }
         public string NextDispatchCompanyName { get; set; }
         public string NextDispatchCompanyKey { get; set; }
         public bool IgnoreDispatchCompanySwitch { get; set; }

@@ -304,6 +304,7 @@ namespace apcurium.MK.Booking.Api.Services
                 OrderId = request.OrderId,
                 Status = OrderStatus.Created,
                 CompanyKey = request.NextDispatchCompanyKey,
+                CompanyName = request.NextDispatchCompanyName,
                 NextDispatchCompanyKey = null,
                 NextDispatchCompanyName = null,
                 IBSOrderId = newIbsOrderId,

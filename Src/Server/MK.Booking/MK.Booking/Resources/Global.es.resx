@@ -476,7 +476,10 @@
     <comment>WARNING: The client will NOT be charged at the end of the ride</comment>
   </data>
   <data name="PushNotification_ChangeNetworkCompany" xml:space="preserve">
-    <value>Due to high demand, no cars are available right now. Do you want to book with {1} instead?</value>
-    <comment>Due to high demand, no cars are available right now. Do you want to book with {1} instead?</comment>
+    <value>Due to high demand, no cars are available right now. Do you want to book with {0} instead?</value>
+    <comment>Due to high demand, no cars are available right now. Do you want to book with {0} instead?</comment>
+  </data>
+  <data name="OrderStatus_wosWAITINGRoaming" xml:space="preserve">
+    <value>Waiting for driver from {0} to be assigned</value>
   </data>
 </root>

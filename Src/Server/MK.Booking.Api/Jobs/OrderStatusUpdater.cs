@@ -124,7 +124,7 @@ namespace apcurium.MK.Booking.Api.Jobs
             
             UpdateStatusIfNecessary(orderStatusDetail, ibsOrderInfo);
 
-            orderStatusDetail.IBSStatusDescription = GetDescription(orderStatusDetail.OrderId, ibsOrderInfo);
+            orderStatusDetail.IBSStatusDescription = GetDescription(orderStatusDetail.OrderId, ibsOrderInfo, orderStatusDetail.CompanyName);
         }
 
         private void UpdateStatusIfNecessary(OrderStatusDetail orderStatusDetail, IBSOrderInformation ibsOrderInfo)
@@ -387,13 +387,21 @@ namespace apcurium.MK.Booking.Api.Jobs
             }
         }
 
-        private string GetDescription(Guid orderId, IBSOrderInformation ibsOrderInfo)
+        private string GetDescription(Guid orderId, IBSOrderInformation ibsOrderInfo, string companyName)
         {
             var orderDetail = _orderDao.FindById(orderId);
             _languageCode = orderDetail != null ? orderDetail.ClientLanguageCode : SupportedLanguages.en.ToString();
 
             string description = null;
-            if (ibsOrderInfo.IsAssigned)
+            if (ibsOrderInfo.IsWaitingToBeAssigned)
+            {
+                if (companyName.HasValue())
+                {
+                    description = string.Format(_resources.Get("OrderStatus_wosWAITINGRoaming", _languageCode), companyName);
+                    Log.DebugFormat("Setting Waiting in roaming status description: {0}", description);
+                }
+            }
+            else if (ibsOrderInfo.IsAssigned)
             {
                 description = string.Format(_resources.Get("OrderStatus_CabDriverNumberAssigned", _languageCode), ibsOrderInfo.VehicleNumber);
                 Log.DebugFormat("Setting Assigned status description: {0}", description);
