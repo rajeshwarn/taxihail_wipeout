@@ -380,7 +380,7 @@ namespace apcurium.MK.Booking.Api.Jobs
             }
 
             if (orderStatusDetail.NetworkPairingTimeout.HasValue
-                && orderStatusDetail.NetworkPairingTimeout.Value <= DateTime.Now)
+                && orderStatusDetail.NetworkPairingTimeout.Value <= DateTime.UtcNow)
             {
                 // Order timed out
                 _commandBus.Send(new NotifyOrderTimedOut { OrderId = orderStatusDetail.OrderId });
