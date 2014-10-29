@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Net.Http.Formatting;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using apcurium.MK.Booking.Api.Contract.Requests;
@@ -12,7 +8,6 @@ using apcurium.MK.Common.Configuration;
 using CustomerPortal.Client;
 using CustomerPortal.Contract.Resources;
 using ServiceStack.CacheAccess;
-using ServiceStack.ServiceClient.Web;
 
 namespace apcurium.MK.Web.Areas.AdminTH.Controllers
 {
@@ -23,7 +18,8 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
         private readonly string _applicationKey;
 
         // GET: AdminTH/TaxiHailNetwork
-        public TaxiHailNetworkController(ICacheClient cache, IServerSettings serverSettings, ITaxiHailNetworkServiceClient taxiHailNetworkService, ConfigurationsService configurationsService) : base(cache, serverSettings)
+        public TaxiHailNetworkController(ICacheClient cache, IServerSettings serverSettings, ITaxiHailNetworkServiceClient taxiHailNetworkService, ConfigurationsService configurationsService)
+            : base(cache, serverSettings)
         {
             _taxiHailNetworkService = taxiHailNetworkService;
             _configurationsService = configurationsService;
@@ -71,7 +67,8 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
 
                 }
 
-                await _taxiHailNetworkService.SetNetworkCompanyPreferences(_applicationKey, preferences.OrderBy(thn => thn.Order.HasValue).ThenBy(thn => thn.Order.GetValueOrDefault()).ToArray());
+                await _taxiHailNetworkService.SetNetworkCompanyPreferences(_applicationKey, preferences.OrderBy(thn => thn.Order.HasValue)
+                    .ThenBy(thn => thn.Order.GetValueOrDefault()).ToArray());
 
                 SaveNetworkSettings();
 
@@ -85,7 +82,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
         {
             _configurationsService.Post(new ConfigurationsRequest
             {
-                AppSettings = new Dictionary<string, string>() { { "Network.Enabled", "true" } }
+                AppSettings = new Dictionary<string, string> { { "Network.Enabled", "true" } }
             });
 
         }

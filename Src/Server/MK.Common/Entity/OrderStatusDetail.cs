@@ -40,8 +40,6 @@ namespace apcurium.MK.Common.Entity
         public bool IgnoreDispatchCompanySwitch { get; set; }
 
         public DateTime? NetworkPairingTimeout { get; set; }
-        public double? UserLatitude { get; set; }
-        public double? UserLongitude { get; set; }
         
         public override string ToString()
         {

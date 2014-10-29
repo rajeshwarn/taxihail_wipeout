@@ -106,8 +106,6 @@ namespace apcurium.MK.Booking.EventHandlers
                         OrderId = @event.SourceId,
                         AccountId = @event.AccountId,
                         IBSOrderId  = @event.IBSOrderId,
-                        UserLatitude = @event.UserLatitude,
-                        UserLongitude = @event.UserLongitude,
                         Status = OrderStatus.Created,
                         IBSStatusDescription = (string)_resources.Get("OrderStatus_wosWAITING", @event.ClientLanguageCode),
                         PickupDate = @event.PickupDate,
