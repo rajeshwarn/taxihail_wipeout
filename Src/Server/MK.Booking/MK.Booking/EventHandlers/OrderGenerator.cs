@@ -10,11 +10,13 @@ using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
+using apcurium.MK.Common.Extensions;
 using AutoMapper;
 using CustomerPortal.Client;
 using CustomerPortal.Contract.Resources;
 using Infrastructure.Messaging.Handling;
 using apcurium.MK.Common.Configuration;
+using ServiceStack.Common;
 
 #endregion
 
@@ -109,9 +111,6 @@ namespace apcurium.MK.Booking.EventHandlers
                         Status = OrderStatus.Created,
                         IBSStatusDescription = (string)_resources.Get("OrderStatus_wosWAITING", @event.ClientLanguageCode),
                         PickupDate = @event.PickupDate,
-                        NetworkPairingTimeout = _serverSettings.ServerData.Network.Enabled 
-                            ? @event.PickupDate.AddSeconds(_serverSettings.ServerData.Network.FirstOrderTimeout)
-                            : (DateTime?) null,
                         Name = @event.Settings != null ? @event.Settings.Name : null
                     });
                 }
@@ -213,6 +212,14 @@ namespace apcurium.MK.Booking.EventHandlers
                 {
                     if (@event.Status != null) 
                     {
+                        if (details.IBSStatusId.SoftEqual(VehicleStatuses.Common.Waiting)
+                            && !details.NetworkPairingTimeout.HasValue
+                            && _serverSettings.ServerData.Network.Enabled)
+                        {
+                            details.NetworkPairingTimeout = !details.CompanyKey.HasValue()
+                                ? @event.EventDate.AddSeconds(_serverSettings.ServerData.Network.FirstOrderTimeout)
+                                : @event.EventDate.AddSeconds(_serverSettings.ServerData.Network.OrderTimeout);
+                        }
                         details.IBSStatusId = @event.Status.IBSStatusId;
                         details.DriverInfos = @event.Status.DriverInfos;
                         details.VehicleNumber = @event.Status.VehicleNumber;
