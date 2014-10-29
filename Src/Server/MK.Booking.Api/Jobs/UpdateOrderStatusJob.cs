@@ -93,11 +93,13 @@ namespace apcurium.MK.Booking.Api.Jobs
                     foreach (var orderGroup in groupedOrders)
                     {
                         var ordersForCompany = orderGroup.ToArray();
-                        Log.DebugFormat("Starting BatchUpdateStatus with {0} orders for company {1}", ordersForCompany.Count(), orderGroup.Key);
+                        Log.DebugFormat("Starting BatchUpdateStatus with {0} orders{1}", ordersForCompany.Count(), string.IsNullOrWhiteSpace(orderGroup.Key) ? string.Empty : string.Format(" for company {0}", orderGroup.Key));
                         Log.DebugFormat("Starting BatchUpdateStatus with {0} orders of status {1}", ordersForCompany.Count(o => o.Status == OrderStatus.WaitingForPayment), "WaitingForPayment");
                         BatchUpdateStatus(orderGroup.Key, ordersForCompany.Where(o => o.Status == OrderStatus.WaitingForPayment));
                         Log.DebugFormat("Starting BatchUpdateStatus with {0} orders of status {1}", ordersForCompany.Count(o => o.Status == OrderStatus.Pending), "Pending");
                         BatchUpdateStatus(orderGroup.Key, ordersForCompany.Where(o => o.Status == OrderStatus.Pending));
+                        Log.DebugFormat("Starting BatchUpdateStatus with {0} orders of status {1}", ordersForCompany.Count(o => o.Status == OrderStatus.TimedOut), "TimedOut");
+                        BatchUpdateStatus(orderGroup.Key, ordersForCompany.Where(o => o.Status == OrderStatus.TimedOut));
                         Log.DebugFormat("Starting BatchUpdateStatus with {0} orders of status {1}", ordersForCompany.Count(o => o.Status == OrderStatus.Created), "Created");
                         BatchUpdateStatus(orderGroup.Key, ordersForCompany.Where(o => o.Status == OrderStatus.Created));
                     }
