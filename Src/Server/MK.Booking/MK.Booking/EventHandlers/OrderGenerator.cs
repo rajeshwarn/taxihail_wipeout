@@ -205,6 +205,8 @@ namespace apcurium.MK.Booking.EventHandlers
                 var details = context.Find<OrderStatusDetail>(@event.SourceId);
                 if (details == null)
                 {
+                    @event.Status.NetworkPairingTimeout = GetNetworkPairingTimeoutIfNecessary(@event.Status, @event.EventDate);
+
                     @event.Status.FareAvailable = fareAvailable;
                     context.Set<OrderStatusDetail>().Add(@event.Status);
                 }
@@ -212,14 +214,8 @@ namespace apcurium.MK.Booking.EventHandlers
                 {
                     if (@event.Status != null) 
                     {
-                        if (details.IBSStatusId.SoftEqual(VehicleStatuses.Common.Waiting)
-                            && !details.NetworkPairingTimeout.HasValue
-                            && _serverSettings.ServerData.Network.Enabled)
-                        {
-                            details.NetworkPairingTimeout = !details.CompanyKey.HasValue()
-                                ? @event.EventDate.AddSeconds(_serverSettings.ServerData.Network.PrimaryOrderTimeout)
-                                : @event.EventDate.AddSeconds(_serverSettings.ServerData.Network.SecondaryOrderTimeout);
-                        }
+                        details.NetworkPairingTimeout = GetNetworkPairingTimeoutIfNecessary(@event.Status, @event.EventDate);
+
                         details.IBSStatusId = @event.Status.IBSStatusId;
                         details.DriverInfos = @event.Status.DriverInfos;
                         details.VehicleNumber = @event.Status.VehicleNumber;
@@ -355,6 +351,19 @@ namespace apcurium.MK.Booking.EventHandlers
 
                 context.Save(details);
             }
+        }
+
+        private DateTime? GetNetworkPairingTimeoutIfNecessary(OrderStatusDetail details, DateTime eventDate)
+        {
+            if (details.IBSStatusId.SoftEqual(VehicleStatuses.Common.Waiting)
+                            && !details.NetworkPairingTimeout.HasValue
+                            && _serverSettings.ServerData.Network.Enabled)
+            {
+                return !details.CompanyKey.HasValue()
+                    ? eventDate.AddSeconds(_serverSettings.ServerData.Network.PrimaryOrderTimeout)
+                    : eventDate.AddSeconds(_serverSettings.ServerData.Network.SecondaryOrderTimeout);
+            }
+            return null;
         }
     }
 }
