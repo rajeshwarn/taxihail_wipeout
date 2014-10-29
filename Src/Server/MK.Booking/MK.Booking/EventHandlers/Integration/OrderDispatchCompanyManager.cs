@@ -5,6 +5,7 @@ using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.IBS;
+using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
@@ -46,27 +47,30 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                     throw new InvalidOperationException("Order Status not found");
                 }
 
-                if (details.UserLatitude.HasValue && details.UserLongitude.HasValue)
+                var order = context.Find<OrderDetail>(@event.SourceId);
+                if (order == null)
                 {
-                    var userPosition = new MapCoordinate
-                    {
-                        Latitude = details.UserLatitude.Value,
-                        Longitude = details.UserLongitude.Value
-                    };
+                    throw new InvalidOperationException("Order not found");
+                }
 
-                    // Get network fleet from customer portal
-                    var networkFleet = await _taxiHailNetworkServiceClient.GetNetworkFleetAsync(details.CompanyKey, userPosition);
+                var userPosition = new MapCoordinate
+                {
+                    Latitude = order.PickupAddress.Latitude,
+                    Longitude = order.PickupAddress.Longitude
+                };
 
-                    var nextDispatchCompany = FindNextDispatchCompany(details.CompanyKey, userPosition, networkFleet);
-                    if (nextDispatchCompany != null)
+                // Get network fleet from customer portal
+                var networkFleet = await _taxiHailNetworkServiceClient.GetNetworkFleetAsync(details.CompanyKey, userPosition);
+
+                var nextDispatchCompany = FindNextDispatchCompany(details.CompanyKey, userPosition, networkFleet);
+                if (nextDispatchCompany != null)
+                {
+                    _commandBus.Send(new ChangeOrderDispatchCompany
                     {
-                        _commandBus.Send(new ChangeOrderDispatchCompany
-                        {
-                            OrderId = details.OrderId,
-                            DispatchCompanyName = nextDispatchCompany.CompanyName,
-                            DispatchCompanyKey = nextDispatchCompany.CompanyKey
-                        });
-                    }
+                        OrderId = details.OrderId,
+                        DispatchCompanyName = nextDispatchCompany.CompanyName,
+                        DispatchCompanyKey = nextDispatchCompany.CompanyKey
+                    });
                 }
             }
         }
