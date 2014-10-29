@@ -91,7 +91,7 @@ namespace apcurium.MK.Booking.Api.Services
 
             var account = _accountDao.FindById(new Guid(this.GetSession().UserAuthId));
 
-            CreateIbsAccountIfNeeded(account);
+            account.IBSAccountId = CreateIbsAccountIfNeeded(account);
 
             // User can still create future order, but we allow only one active Book now order.
             if (!request.PickupDate.HasValue)
@@ -178,7 +178,7 @@ namespace apcurium.MK.Booking.Api.Services
                 chargeTypeEmail = _resources.Get(chargeTypeKey, request.ClientLanguageCode);
             }
 
-            var ibsOrderId = CreateIbsOrder(account, request, referenceData, chargeTypeIbs);
+            var ibsOrderId = CreateIbsOrder(account.IBSAccountId.Value, request, referenceData, chargeTypeIbs);
 
             if (!ibsOrderId.HasValue
                 || ibsOrderId <= 0)
@@ -247,7 +247,7 @@ namespace apcurium.MK.Booking.Api.Services
                 }
             }
 
-            CreateIbsAccountIfNeeded(account, request.NextDispatchCompanyKey);
+            var ibsAccountId = CreateIbsAccountIfNeeded(account, request.NextDispatchCompanyKey);
 
             var newOrderRequest = new CreateOrder
             {
@@ -282,7 +282,7 @@ namespace apcurium.MK.Booking.Api.Services
             var chargeTypeIbs = _resources.Get(ChargeTypes.PaymentInCar.Display, _serverSettings.ServerData.PriceFormat);
 
             // Recreate order on next dispatch company IBS
-            var newIbsOrderId = CreateIbsOrder(account, newOrderRequest, newReferenceData, chargeTypeIbs, request.NextDispatchCompanyKey);
+            var newIbsOrderId = CreateIbsOrder(ibsAccountId, newOrderRequest, newReferenceData, chargeTypeIbs, request.NextDispatchCompanyKey);
 
             if (!newIbsOrderId.HasValue
                 || newIbsOrderId <= 0)
@@ -329,24 +329,26 @@ namespace apcurium.MK.Booking.Api.Services
             return new HttpResult(HttpStatusCode.OK);
         }
 
-        private void CreateIbsAccountIfNeeded(AccountDetail account, string companyKey = null)
+        private int CreateIbsAccountIfNeeded(AccountDetail account, string companyKey = null)
         {
-            if (!IsIBSAccountCreated(account.Id, companyKey))
+            var ibsAccountId = _accountDao.GetIbsAccountId(account.Id, companyKey);
+            if (!ibsAccountId.HasValue)
             {
-                var ibsAccountId = _ibsServiceProvider.Account(companyKey).CreateAccount(account.Id,
+                ibsAccountId = _ibsServiceProvider.Account(companyKey).CreateAccount(account.Id,
                     account.Email,
                     string.Empty,
                     account.Name,
                     account.Settings.Phone);
-                account.IBSAccountId = ibsAccountId;
 
                 _commandBus.Send(new LinkAccountToIbs
                 {
                     AccountId = account.Id,
-                    IbsAccountId = ibsAccountId,
+                    IbsAccountId = ibsAccountId.Value,
                     CompanyKey = companyKey
                 });
             }
+
+            return ibsAccountId.Value;
         }
 
         private void ValidateCreditCard(Guid orderId, AccountDetail account, string clientLanguageCode)
@@ -465,7 +467,7 @@ namespace apcurium.MK.Booking.Api.Services
             return offsetedTime;
         }
 
-        private int? CreateIbsOrder(AccountDetail account, CreateOrder request, ReferenceData referenceData, string chargeType, string companyKey = null)
+        private int? CreateIbsOrder(int ibsAccountId, CreateOrder request, ReferenceData referenceData, string chargeType, string companyKey = null)
         {
             // Provider is optional
             // But if a provider is specified, it must match with one of the ReferenceData values
@@ -487,7 +489,7 @@ namespace apcurium.MK.Booking.Api.Services
 
             var result = _ibsServiceProvider.Booking(companyKey).CreateOrder(
                 request.Settings.ProviderId,
-                account.IBSAccountId.Value,
+                ibsAccountId,
                 request.Settings.Name,
                 request.Settings.Phone,
                 request.Settings.Passengers,
