@@ -18,15 +18,13 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
 {
     public class TaxiHailNetworkController : ServiceStackController
     {
-        private readonly IServerSettings _serverSettings;
         private readonly ITaxiHailNetworkServiceClient _taxiHailNetworkService;
         private readonly ConfigurationsService _configurationsService;
         private readonly string _applicationKey;
 
         // GET: AdminTH/TaxiHailNetwork
-        public TaxiHailNetworkController(ICacheClient cache,IServerSettings serverSettings,ITaxiHailNetworkServiceClient taxiHailNetworkService ,ConfigurationsService configurationsService) : base(cache,serverSettings)
+        public TaxiHailNetworkController(ICacheClient cache, IServerSettings serverSettings, ITaxiHailNetworkServiceClient taxiHailNetworkService, ConfigurationsService configurationsService) : base(cache, serverSettings)
         {
-            _serverSettings = serverSettings;
             _taxiHailNetworkService = taxiHailNetworkService;
             _configurationsService = configurationsService;
 
@@ -56,7 +54,10 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                 for (var i = 0; i < companyPreferences.Count; i++)
                 {
                     int? order=null;
-                    order = form["orderKey_" + companyPreferences[i].CompanyPreference.CompanyKey] == string.Empty ? i : int.Parse(form["orderKey_" + companyPreferences[i].CompanyPreference.CompanyKey]);
+                    order = form["orderKey_" + companyPreferences[i].CompanyPreference.CompanyKey] == string.Empty 
+                        ? i 
+                        : int.Parse(form["orderKey_" + companyPreferences[i].CompanyPreference.CompanyKey]);
+
                     var canAccept = form["acceptKey_" + companyPreferences[i].CompanyPreference.CompanyKey].Contains("true");
                     var canDispatch = form["dispatchKey_" + companyPreferences[i].CompanyPreference.CompanyKey].Contains("true");
                     preferences.Add(new CompanyPreference
@@ -70,7 +71,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
 
                 }
 
-                await _taxiHailNetworkService.SetNetworkCompanyPreferences(_applicationKey, preferences.OrderBy(x=>x.Order.HasValue).ThenBy(x=>x.Order.GetValueOrDefault()).ToArray());
+                await _taxiHailNetworkService.SetNetworkCompanyPreferences(_applicationKey, preferences.OrderBy(thn => thn.Order.HasValue).ThenBy(thn => thn.Order.GetValueOrDefault()).ToArray());
 
                 SaveNetworkSettings();
 
