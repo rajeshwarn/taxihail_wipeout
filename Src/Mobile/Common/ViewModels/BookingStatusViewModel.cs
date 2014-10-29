@@ -23,6 +23,7 @@ using ServiceStack.Text;
 using apcurium.MK.Booking.Maps;
 using Cirrious.CrossCore;
 using System.Net;
+using ServiceStack.ServiceClient.Web;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -335,15 +336,25 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 								{
 									_isDispatchPopupVisible = false;
 
-									var orderStatusDetail = await _bookingService.SwitchOrderToNextDispatchCompany(
-										new SwitchOrderToNextDispatchCompanyRequest
-										{
-											OrderId = status.OrderId,
-											NextDispatchCompanyKey = status.NextDispatchCompanyKey,
-											NextDispatchCompanyName = status.NextDispatchCompanyName
-										}
-									);
-									OrderStatusDetail = orderStatusDetail;
+									try
+									{
+										var orderStatusDetail = await _bookingService.SwitchOrderToNextDispatchCompany(
+											new SwitchOrderToNextDispatchCompanyRequest
+											{
+												OrderId = status.OrderId,
+												NextDispatchCompanyKey = status.NextDispatchCompanyKey,
+												NextDispatchCompanyName = status.NextDispatchCompanyName
+											}
+										);
+										OrderStatusDetail = orderStatusDetail;
+									}
+									catch(WebServiceException ex)
+									{
+										this.Services().Message.ShowMessage(
+											this.Services().Localize["TaxiHailNetworkTimeOutErrorTitle"],
+											ex.ResponseStatus.Message);
+									}
+								
 								}
 							},
 							this.Services().Localize["TaxiHailNetworkTimeOutPopupRefuse"],

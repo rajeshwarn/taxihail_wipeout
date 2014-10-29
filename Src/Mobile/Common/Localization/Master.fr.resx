@@ -164,7 +164,7 @@
   </data>
   <data name="AppNeedUpdateTitle" xml:space="preserve">
     <value>Nouvelle version disponible</value>
-    </data>
+  </data>
   <data name="app_id" xml:space="preserve">
     <value>134284363380764</value>
   </data>
@@ -771,8 +771,8 @@
   <data name="LoginForgotPassword" xml:space="preserve">
     <value>Mot de passe oublié?</value>
   </data>
-<data name="LoginSupport" xml:space="preserve">
-   	<value>Support Technique?</value>
+  <data name="LoginSupport" xml:space="preserve">
+    <value>Support Technique?</value>
   </data>
   <data name="LoginForgotPasswordDetail" xml:space="preserve">
     <value>Saisissez votre email pour recevoir votre nouveau mot de passe</value>
@@ -1110,7 +1110,7 @@
   <data name="Save" xml:space="preserve">
     <value>Enregistrer</value>
   </data>
-<data name="Modify" xml:space="preserve">
+  <data name="Modify" xml:space="preserve">
     <value>Modifier</value>
   </data>
   <data name="SaveAddressEmptyFieldMessage" xml:space="preserve">
@@ -1425,8 +1425,8 @@
   <data name="View_AboutUs" xml:space="preserve">
     <value>À propos</value>
   </data>
-<data name="View_AccountConfirmation_Button" xml:space="preserve">
-    <value>Confirmer</value>
+  <data name="View_AccountConfirmation_Button" xml:space="preserve">
+    <value>Confimer</value>
   </data>
   <data name="View_AccountConfirmationTitle" xml:space="preserve">
     <value>Confirmation de compte</value>
@@ -1435,7 +1435,7 @@
     <value>Code</value>
   </data>
   <data name="View_AccountConfirmation_Label_Instructions" xml:space="preserve">
-    <value>Un message texte vous a été envoyé avec votre code.</value>
+    <value>Un SMS contenant votre code a été envoyé à votre téléphone.</value>
   </data>
   <data name="View_BookingDetail" xml:space="preserve">
     <value>Détails de la réservation</value>
@@ -1674,18 +1674,6 @@
   <data name="AccountConfirmation_ErrorTitle" xml:space="preserve">
     <value>Impossible de confirmer votre compte.</value>
   </data>
-  <data name="View_AccountConfirmationTitle" xml:space="preserve">
-    <value>Confirmation de compte</value>
-  </data>
-  <data name="View_AccountConfirmation_Button" xml:space="preserve">
-    <value>Confimer</value>
-  </data>
-  <data name="View_AccountConfirmation_Label_Code" xml:space="preserve">
-    <value>Code</value>
-  </data>
-  <data name="View_AccountConfirmation_Label_Instructions" xml:space="preserve">
-    <value>Un SMS contenant votre code a été envoyé à votre téléphone.</value>
-  </data>
   <data name="AccountPaymentQuestionsPlaceHolder" xml:space="preserve">
     <value>{0} caractères maximum</value>
   </data>
@@ -1717,7 +1705,7 @@
     <value>Changer de compagnie?</value>
   </data>
   <data name="TaxiHailNetworkTimeOutPopupMessage" xml:space="preserve">
-    <value>En raison d'un grand nombre de demandes, aucun véhicule n'est disponible présentement. Désirez-vous passez une commande avec {0}?</value>
+    <value>En raison d'un grand nombre de demandes, aucun véhicule n'est disponible présentement. Désirez-vous passer une commande avec {0}?</value>
   </data>
   <data name="TaxiHailNetworkTimeOutPopupAccept" xml:space="preserve">
     <value>Accepter</value>
@@ -1727,5 +1715,8 @@
   </data>
   <data name="DriverInfoCompany" xml:space="preserve">
     <value>Compagnie:</value>
+  </data>
+ <data name="TaxiHailNetworkTimeOutErrorTitle" xml:space="preserve">
+    <value>Erreur</value>
   </data>
 </root>

@@ -21,7 +21,8 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
         private readonly IRepository<Company> _companyRepository;
 
 
-        public NetworkApiController():this(new MongoRepository<TaxiHailNetworkSettings>(), new MongoRepository<Company>())
+        public NetworkApiController() 
+            : this(new MongoRepository<TaxiHailNetworkSettings>(), new MongoRepository<Company>())
         {
         }
 

@@ -2222,4 +2222,7 @@
     <value>Company:</value>
     <comment>Company:</comment>
   </data>
+  <data name="TaxiHailNetworkTimeOutErrorTitle" xml:space="preserve">
+    <value>Error</value>
+  </data>
 </root>

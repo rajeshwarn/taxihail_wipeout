@@ -4,6 +4,7 @@ using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
+using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
@@ -236,19 +237,6 @@ namespace apcurium.MK.Booking.Api.Services
             var account = _accountDao.FindById(new Guid(this.GetSession().UserAuthId));
             var order = _orderDao.FindById(request.OrderId);
 
-            // Cancel order on current company IBS
-            if (order.IBSOrderId.HasValue && account.IBSAccountId.HasValue)
-            {
-                var currentIbsAccountId = _accountDao.GetIbsAccountId(account.Id, order.CompanyKey);
-                if (currentIbsAccountId.HasValue)
-                {
-                    _ibsServiceProvider.Booking(order.CompanyKey)
-                        .CancelOrder(order.IBSOrderId.Value, currentIbsAccountId.Value, order.Settings.Phone);
-                }
-            }
-
-            var ibsAccountId = CreateIbsAccountIfNeeded(account, request.NextDispatchCompanyKey);
-
             var newOrderRequest = new CreateOrder
             {
                 PickupDate = GetCurrentOffsetedTime(),
@@ -281,15 +269,32 @@ namespace apcurium.MK.Booking.Api.Services
             // because it is sent to the driver
             var chargeTypeIbs = _resources.Get(ChargeTypes.PaymentInCar.Display, _serverSettings.ServerData.PriceFormat);
 
-            // Recreate order on next dispatch company IBS
-            var newIbsOrderId = CreateIbsOrder(ibsAccountId, newOrderRequest, newReferenceData, chargeTypeIbs, request.NextDispatchCompanyKey);
+            var networkErrorMessage = string.Format(_resources.Get("Network_CannotCreateOrder", order.ClientLanguageCode),
+                request.NextDispatchCompanyKey, order.CompanyKey);
 
-            if (!newIbsOrderId.HasValue
-                || newIbsOrderId <= 0)
+            int ibsAccountId;
+            try
+            {
+                // Recreate order on next dispatch company IBS
+                ibsAccountId = CreateIbsAccountIfNeeded(account, request.NextDispatchCompanyKey);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(networkErrorMessage, ex);
+                throw new HttpError(HttpStatusCode.InternalServerError, networkErrorMessage);
+            }
+
+            var newIbsOrderId = CreateIbsOrder(ibsAccountId, newOrderRequest, newReferenceData, chargeTypeIbs, request.NextDispatchCompanyKey);
+            if (!newIbsOrderId.HasValue || newIbsOrderId <= 0)
             {
                 var code = !newIbsOrderId.HasValue || (newIbsOrderId.Value >= -1) ? string.Empty : "_" + Math.Abs(newIbsOrderId.Value);
-                return new HttpError(ErrorCode.CreateOrder_CannotCreateInIbs + code);
+                Log.Error(string.Format("{0}. IBS error code: {1}", networkErrorMessage, code));
+
+                throw new HttpError(HttpStatusCode.InternalServerError, networkErrorMessage);
             }
+
+            // Cancel order on current company IBS
+            CancelIbsOrder(order, account.Id, account.IBSAccountId);
 
             _commandBus.Send(new SwitchOrderToNextDispatchCompany
             {
@@ -332,21 +337,24 @@ namespace apcurium.MK.Booking.Api.Services
         private int CreateIbsAccountIfNeeded(AccountDetail account, string companyKey = null)
         {
             var ibsAccountId = _accountDao.GetIbsAccountId(account.Id, companyKey);
-            if (!ibsAccountId.HasValue)
+            if (ibsAccountId.HasValue)
             {
-                ibsAccountId = _ibsServiceProvider.Account(companyKey).CreateAccount(account.Id,
-                    account.Email,
-                    string.Empty,
-                    account.Name,
-                    account.Settings.Phone);
-
-                _commandBus.Send(new LinkAccountToIbs
-                {
-                    AccountId = account.Id,
-                    IbsAccountId = ibsAccountId.Value,
-                    CompanyKey = companyKey
-                });
+                return ibsAccountId.Value;
             }
+
+            // Account doesn't exist, create it
+            ibsAccountId = _ibsServiceProvider.Account(companyKey).CreateAccount(account.Id,
+                account.Email,
+                string.Empty,
+                account.Name,
+                account.Settings.Phone);
+
+            _commandBus.Send(new LinkAccountToIbs
+            {
+                AccountId = account.Id,
+                IbsAccountId = ibsAccountId.Value,
+                CompanyKey = companyKey
+            });
 
             return ibsAccountId.Value;
         }
@@ -502,6 +510,25 @@ namespace apcurium.MK.Booking.Api.Services
                 fare);
 
             return result;
+        }
+
+        private void CancelIbsOrder(OrderDetail order, Guid accountId, int? ibsAccountId)
+        {
+            // Cancel order on current company IBS
+            if (order.IBSOrderId.HasValue && ibsAccountId.HasValue)
+            {
+                var currentIbsAccountId = _accountDao.GetIbsAccountId(accountId, order.CompanyKey);
+                if (currentIbsAccountId.HasValue)
+                {
+                    // We need to try many times because sometime the IBS cancel method doesn't return an error but doesn't cancel the ride...
+                    // After 5 time, we are giving up. But we assume the order is completed.
+                    Task.Factory.StartNew(() =>
+                    {
+                        Func<bool> cancelOrder = () => _ibsServiceProvider.Booking(order.CompanyKey).CancelOrder(order.IBSOrderId.Value, currentIbsAccountId.Value, order.Settings.Phone);
+                        cancelOrder.Retry(new TimeSpan(0, 0, 0, 10), 5);
+                    });
+                }
+            }
         }
 
         private bool IsValid(Address address)

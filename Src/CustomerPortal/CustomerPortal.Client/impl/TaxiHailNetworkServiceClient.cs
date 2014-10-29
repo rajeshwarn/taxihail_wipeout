@@ -44,7 +44,7 @@ namespace CustomerPortal.Client.Impl
             }
             return new List<NetworkFleetResponse>();
         }
-        public async Task<List<NetworkFleetResponse>> GetNetworkFleetAsync(string companyId,MapCoordinate coordinate=null)
+        public async Task<List<NetworkFleetResponse>> GetNetworkFleetAsync(string companyId, MapCoordinate coordinate=null)
         {
             var companyKey = companyId ?? _serverSettings.ServerData.TaxiHail.ApplicationKey;
 

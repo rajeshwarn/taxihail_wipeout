@@ -127,7 +127,8 @@ namespace apcurium.MK.Booking.ReadModel.Query
                 var currentOrders = (from order in context.Set<OrderStatusDetail>()
                                      where (order.Status == OrderStatus.Created
                                         || order.Status == OrderStatus.Pending
-                                        || order.Status == OrderStatus.WaitingForPayment) && (order.PickupDate >= startDate)
+                                        || order.Status == OrderStatus.WaitingForPayment
+                                        || order.Status == OrderStatus.TimedOut) && (order.PickupDate >= startDate)
                                      select order).ToList();
                 return currentOrders;
             }

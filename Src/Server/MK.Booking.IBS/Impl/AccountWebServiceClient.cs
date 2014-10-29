@@ -36,7 +36,7 @@ namespace apcurium.MK.Booking.IBS.Impl
             var isSuccess = false;
             var ibsAcccountId = 0;
             var regEx = new Regex(@"\D");
-            var phoneClean = regEx.Replace(phone, "");
+            var phoneClean = regEx.Replace(phone, string.Empty);
 
             UseService(service =>
             {
@@ -45,7 +45,7 @@ namespace apcurium.MK.Booking.IBS.Impl
                     WEBID = accountId.ToString(),
                     Address = new TWEBAddress(),
                     Email2 = email,
-                    Title = "",
+                    Title = string.Empty,
                     FirstName = firstName,                           
                     LastName = lastName,
                     Phone = phoneClean,
@@ -59,8 +59,7 @@ namespace apcurium.MK.Booking.IBS.Impl
 
             if (!isSuccess)
             {
-                //TODO use valid exception
-                throw new InvalidOperationException();
+                throw new InvalidOperationException(string.Format("Error while trying to create IBS account. IBS error code: {0}", ibsAcccountId));
             }
             return ibsAcccountId;
         }
