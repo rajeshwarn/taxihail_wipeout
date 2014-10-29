@@ -21,7 +21,7 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
         private readonly IRepository<Company> _companyRepository;
 
 
-        public NetworkApiController():this(new MongoRepository<TaxiHailNetworkSettings>(),new MongoRepository<Company>())
+        public NetworkApiController():this(new MongoRepository<TaxiHailNetworkSettings>(), new MongoRepository<Company>())
         {
         }
 
@@ -108,7 +108,7 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
         }
 
         [Route("api/customer/{companyId}/networkfleet")]
-        public HttpResponseMessage Post(string companyId,[FromBody] MapCoordinate coordinate)
+        public HttpResponseMessage Post(string companyId, [FromBody] MapCoordinate coordinate)
         {
             var networkSettings = _networkRepository.Select(x => x).ToList();
 
