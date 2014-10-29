@@ -524,4 +524,5 @@
   <string name="TaxiHailNetworkTimeOutPopupMessage">Would you like to try booking company {0}</string>
   <string name="TaxiHailNetworkTimeOutPopupAccept">Accept</string>
   <string name="TaxiHailNetworkTimeOutPopupRefuse">Refuse</string>
+  <string name="DriverInfoCompany">Company:</string>
 </resources>

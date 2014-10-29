@@ -167,6 +167,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
         }
 
+		public bool CompanyHidden
+		{
+			get { return string.IsNullOrWhiteSpace(OrderStatusDetail.CompanyName) || !IsDriverInfoAvailable; }
+		}
 		public bool VehicleDriverHidden
 		{
 			get { return string.IsNullOrWhiteSpace(OrderStatusDetail.DriverInfos.FullName) || !IsDriverInfoAvailable; }
@@ -216,6 +220,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			set {
 				_orderStatusDetail = value;
 				RaisePropertyChanged (() => OrderStatusDetail);
+				RaisePropertyChanged (() => CompanyHidden);
 				RaisePropertyChanged (() => VehicleDriverHidden);
 				RaisePropertyChanged (() => VehicleLicenceHidden);
 				RaisePropertyChanged (() => VehicleTypeHidden);

@@ -1692,4 +1692,7 @@
   <data name="CallDriverUsingProxyMessage" xml:space="preserve">
     <value>Your driver will call you back in a few minutes</value>
   </data>
+  <data name="DriverInfoCompany" xml:space="preserve">
+    <value>Company:</value>
+  </data>
 </root>

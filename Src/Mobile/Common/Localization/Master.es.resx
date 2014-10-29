@@ -2202,4 +2202,8 @@
     <value>Si</value>
     <comment>Yes</comment>
   </data>
+  <data name="DriverInfoCompany" xml:space="preserve">
+    <value>Company:</value>
+    <comment>Company:</comment>
+  </data>
 </root>

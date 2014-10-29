@@ -1713,4 +1713,7 @@
   <data name="CallDriverUsingProxyMessage" xml:space="preserve">
     <value>Votre chauffeur vous rappellera dans quelques minutes</value>
   </data>
+  <data name="DriverInfoCompany" xml:space="preserve">
+    <value>Compagnie:</value>
+  </data>
 </root>

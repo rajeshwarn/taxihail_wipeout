@@ -535,3 +535,4 @@
 "TaxiHailNetworkTimeOutPopupMessage"="Voulez-vous essayer de commander avec la compagnie {0}";
 "TaxiHailNetworkTimeOutPopupAccept"="Accepter";
 "TaxiHailNetworkTimeOutPopupRefuse"="Refuser";
+"DriverInfoCompany"="Compagnie:";

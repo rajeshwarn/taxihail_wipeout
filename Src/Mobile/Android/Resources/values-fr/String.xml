@@ -538,4 +538,5 @@
   <string name="TaxiHailNetworkTimeOutPopupMessage">Voulez-vous essayer de commander avec la compagnie {0}</string>
   <string name="TaxiHailNetworkTimeOutPopupAccept">Accepter</string>
   <string name="TaxiHailNetworkTimeOutPopupRefuse">Refuser</string>
+  <string name="DriverInfoCompany">Compagnie:</string>
 </resources>

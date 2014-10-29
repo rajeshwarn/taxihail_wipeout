@@ -457,7 +457,7 @@
   <string name="Create">Create</string>
   <string name="View_RideSettings">Profile</string>
   <string name="View_CreditCardsList">Credit Cards</string>
-  <string name="CmtRideLinqConfirmPairViewConfirmPairDetailText">Check that you are in the vehicle indicated above. If you confirm this ride will be paid automatically using your default payment settings.</string>
+  <string name="CmtRideLinqConfirmPairViewConfirmPairDetailText">Confirm that you are in the vehicle number indicated below.  By Tapping “Confirm”, this ride will automatically be paid by your credit card on file.</string>
   <string name="Estimate">Estimate</string>
   <string name="ViewAll">View All</string>
   <string name="Collapse">Collapse</string>
@@ -516,7 +516,7 @@
   <string name="StatusEta">and is {0} and {1} {2} away</string>
   <string name="CreditCardAdded">Your account is now enabled to pay with your card on file by default. You can still choose to pay in the vehicle by selecting \"Pay in Vehicle\" on the payment screen</string>
   <string name="EtaNotAvailable">No vehicle available</string>
-  <string name="PayInCar">Pay in Car</string>
+  <string name="PayInCar">Pay Cash/Credit Card in Car</string>
   <string name="CreditCardErrorInvalid">Cannot validate the credit card</string>
   <string name="View_NotificationsSettings">Notifications</string>
   <string name="DontAsk">Don\'t ask</string>
@@ -555,4 +555,5 @@
   <string name="TaxiHailNetworkTimeOutPopupMessage">Would you like to try booking company {0}</string>
   <string name="TaxiHailNetworkTimeOutPopupAccept">Accept</string>
   <string name="TaxiHailNetworkTimeOutPopupRefuse">Refuse</string>
+  <string name="DriverInfoCompany">Company:</string>
 </resources>

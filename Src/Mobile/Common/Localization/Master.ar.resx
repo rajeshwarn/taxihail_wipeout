@@ -1633,4 +1633,7 @@
   <data name="Politeness" xml:space="preserve">
     <value>Politeness</value>
   </data>
+  <data name="DriverInfoCompany" xml:space="preserve">
+    <value>Company:</value>
+  </data>
 </root>
