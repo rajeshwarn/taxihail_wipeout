@@ -1728,4 +1728,7 @@
   <data name="DriverInfoCompany" xml:space="preserve">
     <value>Compagnie:</value>
   </data>
+ <data name="TaxiHailNetworkTimeOutErrorTitle" xml:space="preserve">
+    <value>Erreur</value>
+  </data>
 </root>
