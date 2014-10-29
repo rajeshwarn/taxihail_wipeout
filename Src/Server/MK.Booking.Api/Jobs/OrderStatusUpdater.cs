@@ -81,7 +81,7 @@ namespace apcurium.MK.Booking.Api.Jobs
         {
             UpdateVehiclePositionAndSendNearbyNotificationIfNecessary(orderFromIbs, orderStatusDetail);
 
-            if (!orderFromIbs.IsAssigned)
+            if (orderFromIbs.IsWaitingToBeAssigned)
             {
                 CheckForOrderTimeOut(orderStatusDetail);
             }
@@ -130,7 +130,7 @@ namespace apcurium.MK.Booking.Api.Jobs
         private void UpdateStatusIfNecessary(OrderStatusDetail orderStatusDetail, IBSOrderInformation ibsOrderInfo)
         {
             if (orderStatusDetail.Status == OrderStatus.WaitingForPayment
-                || orderStatusDetail.Status == OrderStatus.TimedOut)
+                || (orderStatusDetail.Status == OrderStatus.TimedOut && ibsOrderInfo.IsWaitingToBeAssigned))
             {
                 Log.DebugFormat("Order {1}: Status is: {0}. Don't update since it's a special case outside of IBS.", orderStatusDetail.Status, orderStatusDetail.OrderId);
                 return;
