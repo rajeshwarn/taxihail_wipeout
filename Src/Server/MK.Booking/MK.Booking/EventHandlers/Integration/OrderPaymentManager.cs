@@ -12,7 +12,8 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
         IIntegrationEventHandler,
         IEventHandler<PayPalExpressCheckoutPaymentCompleted>,
         IEventHandler<CreditCardPaymentCaptured>,
-        IEventHandler<OrderCancelled>
+        IEventHandler<OrderCancelled>,
+        IEventHandler<OrderSwitchedToNextDispatchCompany>
     {
         private readonly IOrderDao _dao;
         private readonly IIbsOrderService _ibs;
@@ -88,6 +89,16 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
         }
 
         public void Handle(OrderCancelled @event)
+        {
+            // payment might not be enabled
+            if (_paymentService != null)
+            {
+                // void the preauthorization to prevent misuse fees
+                _paymentService.VoidPreAuthorization(@event.SourceId);
+            }
+        }
+
+        public void Handle(OrderSwitchedToNextDispatchCompany @event)
         {
             // payment might not be enabled
             if (_paymentService != null)
