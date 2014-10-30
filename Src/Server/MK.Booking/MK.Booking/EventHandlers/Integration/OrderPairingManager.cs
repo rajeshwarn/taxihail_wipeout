@@ -12,8 +12,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
 {
     public class OrderPairingManager:
         IIntegrationEventHandler,
-        IEventHandler<OrderStatusChanged>,
-        IEventHandler<OrderSwitchedToNextDispatchCompany>
+        IEventHandler<OrderStatusChanged>
     {
         private readonly IPairingService _pairingService;
         private readonly INotificationService _notificationService;
@@ -69,16 +68,6 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                     } 
                 }
                 break;
-            }
-        }
-
-        public void Handle(OrderSwitchedToNextDispatchCompany @event)
-        {
-            if (_pairingService != null
-                && _serverSettings.GetPaymentSettings().AutomaticPayment
-                && _serverSettings.GetPaymentSettings().AutomaticPaymentPairing)
-            {
-                _pairingService.Unpair(@event.SourceId);
             }
         }
     }
