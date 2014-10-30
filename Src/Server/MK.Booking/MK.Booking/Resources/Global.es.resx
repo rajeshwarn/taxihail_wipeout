@@ -483,7 +483,7 @@
     <value>Waiting for driver from {0} to be assigned</value>
   </data>
   <data name="Network_CannotCreateOrder" xml:space="preserve">
-    <value>There was a problem while trying to book with {0}. Your order will remain active with {1}.</value>
-    <comment>There was a problem while trying to book with {0}. Your order will remain active with {1}.</comment>
+    <value>There was a problem while trying to book with {0}. Your order will remain active.</value>
+    <comment>There was a problem while trying to book with {0}. Your order will remain active.</comment>
   </data>
 </root>

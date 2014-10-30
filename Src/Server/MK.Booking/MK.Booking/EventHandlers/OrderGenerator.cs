@@ -326,6 +326,8 @@ namespace apcurium.MK.Booking.EventHandlers
 
                 var details = context.Find<OrderStatusDetail>(@event.SourceId);
                 details.Status = OrderStatus.Created;
+                details.IBSStatusId = null;             //set it to null to trigger an update in OrderStatusUpdater
+                details.IBSStatusDescription = string.Format(_resources.Get("OrderStatus_wosWAITINGRoaming", order.ClientLanguageCode), @event.CompanyName);
                 details.IBSOrderId = @event.IBSOrderId;
                 details.CompanyKey = @event.CompanyKey;
                 details.CompanyName = @event.CompanyName;

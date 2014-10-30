@@ -269,8 +269,7 @@ namespace apcurium.MK.Booking.Api.Services
             // because it is sent to the driver
             var chargeTypeIbs = _resources.Get(ChargeTypes.PaymentInCar.Display, _serverSettings.ServerData.PriceFormat);
 
-            var networkErrorMessage = string.Format(_resources.Get("Network_CannotCreateOrder", order.ClientLanguageCode),
-                request.NextDispatchCompanyKey, order.CompanyKey);
+            var networkErrorMessage = string.Format(_resources.Get("Network_CannotCreateOrder", order.ClientLanguageCode), request.NextDispatchCompanyName);
 
             int ibsAccountId;
             try
@@ -314,7 +313,7 @@ namespace apcurium.MK.Booking.Api.Services
                 NextDispatchCompanyName = null,
                 IBSOrderId = newIbsOrderId,
                 IBSStatusId = string.Empty,
-                IBSStatusDescription = _resources.Get("OrderStatus_wosWAITING", order.ClientLanguageCode),
+                IBSStatusDescription = string.Format(_resources.Get("OrderStatus_wosWAITINGRoaming", order.ClientLanguageCode), request.NextDispatchCompanyName),
             };
         }
 
