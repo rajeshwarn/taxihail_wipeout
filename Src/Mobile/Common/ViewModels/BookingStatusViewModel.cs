@@ -331,30 +331,29 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 							this.Services().Localize["TaxiHailNetworkTimeOutPopupTitle"],
 							string.Format(this.Services().Localize["TaxiHailNetworkTimeOutPopupMessage"], status.NextDispatchCompanyName),
 							this.Services().Localize["TaxiHailNetworkTimeOutPopupAccept"],
-							async () => {
+							async () =>
+                            {
 								if(status.Status.Equals(OrderStatus.TimedOut))
 								{
 									_isDispatchPopupVisible = false;
 
-									try
-									{
-										var orderStatusDetail = await _bookingService.SwitchOrderToNextDispatchCompany(
-											new SwitchOrderToNextDispatchCompanyRequest
-											{
-												OrderId = status.OrderId,
-												NextDispatchCompanyKey = status.NextDispatchCompanyKey,
-												NextDispatchCompanyName = status.NextDispatchCompanyName
-											}
-										);
-										OrderStatusDetail = orderStatusDetail;
-									}
-									catch(WebServiceException ex)
-									{
-										this.Services().Message.ShowMessage(
-											this.Services().Localize["TaxiHailNetworkTimeOutErrorTitle"],
-											ex.ResponseStatus.Message);
-									}
-								
+								    try
+								    {
+								        var orderStatusDetail = await _bookingService.SwitchOrderToNextDispatchCompany(
+								            new SwitchOrderToNextDispatchCompanyRequest
+								            {
+								                OrderId = status.OrderId,
+								                NextDispatchCompanyKey = status.NextDispatchCompanyKey,
+								                NextDispatchCompanyName = status.NextDispatchCompanyName
+								            });
+								        OrderStatusDetail = orderStatusDetail;
+								    }
+								    catch (WebServiceException ex)
+								    {
+								        this.Services().Message.ShowMessage(
+								            this.Services().Localize["TaxiHailNetworkTimeOutErrorTitle"],
+								            ex.ErrorMessage);
+								    }
 								}
 							},
 							this.Services().Localize["TaxiHailNetworkTimeOutPopupRefuse"],

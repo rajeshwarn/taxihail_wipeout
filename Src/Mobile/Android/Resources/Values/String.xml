@@ -556,4 +556,5 @@
   <string name="TaxiHailNetworkTimeOutPopupAccept">Accept</string>
   <string name="TaxiHailNetworkTimeOutPopupRefuse">Refuse</string>
   <string name="DriverInfoCompany">Company:</string>
+  <string name="TaxiHailNetworkTimeOutErrorTitle">Error</string>
 </resources>

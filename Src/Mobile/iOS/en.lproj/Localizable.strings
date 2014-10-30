@@ -553,3 +553,4 @@
 "TaxiHailNetworkTimeOutPopupAccept"="Accept";
 "TaxiHailNetworkTimeOutPopupRefuse"="Refuse";
 "DriverInfoCompany"="Company:";
+"TaxiHailNetworkTimeOutErrorTitle"="Error";

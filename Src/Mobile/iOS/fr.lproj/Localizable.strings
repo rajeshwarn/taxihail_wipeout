@@ -532,7 +532,8 @@
 "CardExpiredMessage"="Votre carte a expiré. Ajoutez une nouvelle carte ou mettez à jour la carte sélectionnée pour continuer.";
 "CallDriverUsingProxyMessage"="Votre chauffeur vous rappellera dans quelques minutes";
 "TaxiHailNetworkTimeOutPopupTitle"="Changer de compagnie?";
-"TaxiHailNetworkTimeOutPopupMessage"="En raison d'un grand nombre de demandes, aucun véhicule n'est disponible présentement. Désirez-vous passez une commande avec {0}?";
+"TaxiHailNetworkTimeOutPopupMessage"="En raison d'un grand nombre de demandes, aucun véhicule n'est disponible présentement. Désirez-vous passer une commande avec {0}?";
 "TaxiHailNetworkTimeOutPopupAccept"="Accepter";
 "TaxiHailNetworkTimeOutPopupRefuse"="Refuser";
 "DriverInfoCompany"="Compagnie:";
+"TaxiHailNetworkTimeOutErrorTitle"="Erreur";
