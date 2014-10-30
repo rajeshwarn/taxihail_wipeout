@@ -11,6 +11,5 @@ namespace CustomerPortal.Client
         Task SetNetworkCompanyPreferences(string companyId, CompanyPreference[] companyPreferences);
         Task<List<NetworkFleetResponse>> GetNetworkFleetAsync(string companyId, MapCoordinate coordinate = null);
         List<NetworkFleetResponse> GetNetworkFleet(string companyId, MapCoordinate coordinate = null);
-
     }
 }

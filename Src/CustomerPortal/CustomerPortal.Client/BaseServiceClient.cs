@@ -8,7 +8,8 @@ namespace CustomerPortal.Client
     public class BaseServiceClient
     {
         private readonly IServerSettings _serverSettings;
-        public BaseServiceClient(IServerSettings serverSettings)
+
+        protected BaseServiceClient(IServerSettings serverSettings)
         {
             _serverSettings = serverSettings;
 
@@ -21,18 +22,16 @@ namespace CustomerPortal.Client
             });
             Client.BaseAddress = new Uri(GetUrl());
         }
-        
-        public HttpClient Client { get; set; }
+
+        protected HttpClient Client { get; private set; }
 
         private string GetUrl()
         {
             var url = _serverSettings.ServerData.CustomerPortal.Url;
-            			#if DEBUG
-                        url = "http://localhost/CustomerPortal.Web/api/";
-            			#endif
+#if DEBUG
+            url = "http://localhost/CustomerPortal.Web/api/";
+#endif
             return url;
         }
-
-       
     }
 }

@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Net.Http.Formatting;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using apcurium.MK.Booking.Api.Contract.Requests;
@@ -12,7 +8,6 @@ using apcurium.MK.Common.Configuration;
 using CustomerPortal.Client;
 using CustomerPortal.Contract.Resources;
 using ServiceStack.CacheAccess;
-using ServiceStack.ServiceClient.Web;
 
 namespace apcurium.MK.Web.Areas.AdminTH.Controllers
 {
@@ -43,7 +38,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                 return View(response);
             }
 
-               return Redirect(BaseUrl);
+            return Redirect(BaseUrl);
         }
 
         [HttpPost]
@@ -56,30 +51,28 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                 var preferences = new List<CompanyPreference>();
                 for (var i = 0; i < companyPreferences.Count; i++)
                 {
-                    int? order=null;
-                    order = form["orderKey_" + companyPreferences[i].CompanyPreference.CompanyKey] == string.Empty 
+                    int? order = form["orderKey_" + companyPreferences[i].CompanyPreference.CompanyKey] == string.Empty 
                         ? i 
                         : int.Parse(form["orderKey_" + companyPreferences[i].CompanyPreference.CompanyKey]);
 
-                    var canAccept = form["acceptKey_" + companyPreferences[i].CompanyPreference.CompanyKey].Contains("true");
-                    var canDispatch = form["dispatchKey_" + companyPreferences[i].CompanyPreference.CompanyKey].Contains("true");
                     preferences.Add(new CompanyPreference
                     {
                         CompanyKey = form["idKey_" + companyPreferences[i].CompanyPreference.CompanyKey], 
-                        CanAccept = canAccept, 
-                        CanDispatch = canDispatch,
-                        Order=order
+                        CanAccept = form["acceptKey_" + companyPreferences[i].CompanyPreference.CompanyKey].Contains("true"), 
+                        CanDispatch = form["dispatchKey_" + companyPreferences[i].CompanyPreference.CompanyKey].Contains("true"),
+                        Order = order
                     });
-                    
-
                 }
 
-                await _taxiHailNetworkService.SetNetworkCompanyPreferences(_applicationKey, preferences.OrderBy(thn => thn.Order.HasValue)
-                    .ThenBy(thn => thn.Order.GetValueOrDefault()).ToArray());
+                await _taxiHailNetworkService.SetNetworkCompanyPreferences(
+                        _applicationKey, 
+                        preferences.OrderBy(thn => thn.Order.HasValue)
+                                   .ThenBy(thn => thn.Order.GetValueOrDefault())
+                        .ToArray());
 
                 SaveNetworkSettingsIfNecessary();
 
-                 return Json(new { Success = true, Message = "Changes Saved" });
+                return Json(new { Success = true, Message = "Changes Saved" });
             }
 
             return Json(new { Success = false, Message = "All fields are required" });
