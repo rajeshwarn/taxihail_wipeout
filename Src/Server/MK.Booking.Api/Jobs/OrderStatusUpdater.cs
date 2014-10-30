@@ -136,6 +136,12 @@ namespace apcurium.MK.Booking.Api.Jobs
                 return;
             }
 
+            if (orderStatusDetail.Status == OrderStatus.TimedOut && !ibsOrderInfo.IsWaitingToBeAssigned)
+            {
+                // Ride was assigned while waiting for user input on whether or not to switch company
+                orderStatusDetail.Status = OrderStatus.Created;
+            }
+            
             if (ibsOrderInfo.IsCanceled)
             {
                 orderStatusDetail.Status = OrderStatus.Canceled;
