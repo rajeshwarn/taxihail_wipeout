@@ -236,6 +236,13 @@ namespace apcurium.MK.Booking.Api.Services
 
             var account = _accountDao.FindById(new Guid(this.GetSession().UserAuthId));
             var order = _orderDao.FindById(request.OrderId);
+            var orderStatusDetail = _orderDao.FindOrderStatusById(request.OrderId);
+
+            if (orderStatusDetail.Status != OrderStatus.TimedOut)
+            {
+                // Only switch companies if order is timedout
+                return orderStatusDetail;
+            }
 
             var newOrderRequest = new CreateOrder
             {
