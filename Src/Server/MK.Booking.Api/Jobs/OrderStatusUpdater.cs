@@ -141,7 +141,8 @@ namespace apcurium.MK.Booking.Api.Jobs
                 // Ride was assigned while waiting for user input on whether or not to switch company
                 orderStatusDetail.Status = OrderStatus.Created;
             }
-            else if (ibsOrderInfo.IsCanceled)
+            
+            if (ibsOrderInfo.IsCanceled)
             {
                 orderStatusDetail.Status = OrderStatus.Canceled;
                 ChargeNoShowFeeIfNecessary(ibsOrderInfo, orderStatusDetail);
