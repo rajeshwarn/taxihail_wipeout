@@ -10,6 +10,8 @@ using PushSharp;
 using PushSharp.Android;
 using PushSharp.Apple;
 using PushSharp.Core;
+using ILogger = apcurium.MK.Common.Diagnostic.ILogger;
+
 #endregion
 
 namespace apcurium.MK.Booking.PushNotifications.Impl
