@@ -92,9 +92,9 @@ namespace DatabaseInitializer
 
         private static void RegisterTaxiHailNetwork(IUnityContainer unityContainer)
         {
-            var thNetworkServiceClient = new TaxiHailNetworkServiceClient(unityContainer.Resolve<IServerSettings>());
-            unityContainer.RegisterInstance<ITaxiHailNetworkServiceClient>(thNetworkServiceClient);
-
+            unityContainer.RegisterType<ITaxiHailNetworkServiceClient>(
+                new TransientLifetimeManager(),
+                new InjectionFactory(c => new TaxiHailNetworkServiceClient(c.Resolve<IServerSettings>())));
         }
 
         private static void RegisterEventHandlers(IUnityContainer unityContainer)
