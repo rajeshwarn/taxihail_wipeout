@@ -167,7 +167,7 @@
 
         onTHStatusChanged: function (model, status) {
             if (status.toUpperCase() === 'TIMEDOUT' && this.model._status.get('nextDispatchCompanyKey') != "") {
-
+                model.on("change:status", this.render);
                 TaxiHail.confirm({
                     title: this.localize('NetworkTimeOutPopupTitle'),
                     message: this.localize('NetworkTimeOutPopupMessage').format(this.model._status.get('NextDispatchCompanyName')),
@@ -176,8 +176,12 @@
                 }).on('ok', function () {
                     if (this.model._status.get('status').toUpperCase() === 'TIMEDOUT') {
                         try {
-                            var newStatus = this.model.switchOrderToNextDispatchCompany();
-                            this.model._status = newStatus;
+
+                            var call = this.model.switchOrderToNextDispatchCompany();
+                            call.success(function (response) {
+                                model.set('status', response.status); 
+                            });
+
                         } catch (ex) {
                             TaxiHail.confirm({
                                 title: this.localize('NetworkFleetDispatchErrorTitle'),

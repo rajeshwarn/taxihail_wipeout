@@ -79,7 +79,7 @@
                     nextDispatchCompanyName: this._status.get('nextDispatchCompanyName')
                 }),
                 contentType: 'application/json'
-            });
+            },this);
         },
 
         ignoreDispatchCompanySwitch: function () {
