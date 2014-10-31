@@ -13,9 +13,9 @@
     <meta name="MobileOptimized" content="320">
     <meta name="viewport" content="width=device-width,target-densitydpi=device-dpi,initial-scale=1.0, user-scalable=no">
     <meta http-equiv="cleartype" content="on">
+    <link rel="stylesheet" href='~/themes/@ViewData["ApplicationKey"]/less/combined.less' />
     <link rel="stylesheet" href='~/admin/assets/less/TaxiHail-admin-grid.less' />
     <link rel="stylesheet" href='~/admin/assets/css/admin.css' />
-    <link rel="stylesheet" href='~/themes/@ViewData["ApplicationKey"]/less/combined.less' />
     <link rel="stylesheet" href='~/themes/@ViewData["ApplicationKey"]/less/combined-responsive.less' />
     <script src="~/assets/js/modernizr.min.js"></script>
     <script src="~/scripts/jquery-1.10.2.min.js"></script>
@@ -29,14 +29,19 @@
         </div>
     </header>
 
-
     <div class="container">
         <div class='notification-zone'></div>
         <div class='row'>
-            <div class="menu-zone span3"></div>
+            <div class="menu-zone span3">
+                <div class="well sidebar-nav" >
+                    <ul class="nav nav-list">
+                        <li class="nav-header">Navigation</li>
+                        <li><a href="@(ViewData["BaseUrl"] + "/admin")" class="navbar-brand">Back to Admin</a></li>
+                    </ul>
+                </div>
+            </div>
             <div id='main' class='span9'>
-                <a href="@(ViewData["BaseUrl"]+"/admin")" class="navbar-brand">Back to Admin</a>
-                <div class="well clearfix">
+                <div class="well clearfix form-horizontal">
                     @RenderBody()
                 </div>
             </div>
