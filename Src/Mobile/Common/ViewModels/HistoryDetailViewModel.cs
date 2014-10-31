@@ -40,7 +40,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					await LoadOrder();
 					await LoadStatus();
 
-					RaisePropertyChanged(()=>StatusDescription); 
+					RaisePropertyChanged(() => StatusDescription); 
 				}
 			}
 		}
@@ -66,13 +66,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				{
                     AuthorizationNumber = _order.TransactionId + "";
                 }
-				RaisePropertyChanged(()=>Order); 
-				RaisePropertyChanged(()=>ConfirmationTxt); 
-				RaisePropertyChanged(()=>RequestedTxt); 
-				RaisePropertyChanged(()=>OriginTxt); 
-				RaisePropertyChanged(()=>AptRingTxt); 
-				RaisePropertyChanged(()=>DestinationTxt); 
-				RaisePropertyChanged(()=>PickUpDateTxt); 
+				RaisePropertyChanged(() => Order); 
+				RaisePropertyChanged(() => ConfirmationTxt); 
+				RaisePropertyChanged(() => RequestedTxt); 
+				RaisePropertyChanged(() => OriginTxt); 
+				RaisePropertyChanged(() => AptRingTxt); 
+				RaisePropertyChanged(() => DestinationTxt); 
+				RaisePropertyChanged(() => PickUpDateTxt); 
             }
 		}
 
@@ -144,7 +144,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			{ 
 				_hasRated = value;
 				RaisePropertyChanged ();
-				RaisePropertyChanged(()=>ShowRateButton);  
+				RaisePropertyChanged(() => ShowRateButton);  
 			}
         }
 
