@@ -39,6 +39,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				{
 					await LoadOrder();
 					await LoadStatus();
+
+					RaisePropertyChanged(()=>StatusDescription); 
 				}
 			}
 		}
@@ -256,7 +258,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				var amount = Order.Fare + Order.Tip + Order.Toll;
 
 				return Status.FareAvailable
-					? string.Format ("", Status.IBSStatusDescription, amount)
+					? string.Format ("{0} ({1})", Status.IBSStatusDescription, CultureProvider.FormatCurrency(amount.Value))
 					: Status.IBSStatusDescription;
 			}
 		}
