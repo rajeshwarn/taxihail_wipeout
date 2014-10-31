@@ -385,28 +385,9 @@ namespace apcurium.MK.Booking.Services.Impl
                 RedDotImg = String.Concat(baseUrls.BaseUrlAssetsImg, "email_red_dot.png"),
                 GreenDotImg = String.Concat(baseUrls.BaseUrlAssetsImg, "email_green_dot.png"),
                 GetBaseUrls().LogoImg
-
             };
 
             SendEmail(clientEmailAddress, EmailConstant.Template.Receipt, EmailConstant.Subject.Receipt, templateData, clientLanguageCode);
-        }
-
-        private Position? TryToGetPositionOfDropOffAddress(Guid orderId, Address dropOffAddress)
-        {
-            var orderStatus = _orderDao.FindOrderStatusById(orderId);
-            if (orderStatus != null 
-                && orderStatus.VehicleLatitude.HasValue 
-                && orderStatus.VehicleLongitude.HasValue)
-            {
-                return new Position(orderStatus.VehicleLatitude.Value, orderStatus.VehicleLongitude.Value);
-            }
-                
-            if (dropOffAddress != null)
-            {
-                return new Position(dropOffAddress.Latitude, dropOffAddress.Longitude);
-            }
-
-            return null;
         }
 
         private Address TryToGetExactDropOffAddress(Guid orderId, Address dropOffAddress, string clientLanguageCode)
@@ -426,6 +407,24 @@ namespace apcurium.MK.Booking.Services.Impl
                 clientLanguageCode).FirstOrDefault();
 
             return exactDropOffAddress ?? dropOffAddress;
+        }
+
+        private Position? TryToGetPositionOfDropOffAddress(Guid orderId, Address dropOffAddress)
+        {
+            var orderStatus = _orderDao.FindOrderStatusById(orderId);
+            if (orderStatus != null 
+                && orderStatus.VehicleLatitude.HasValue 
+                && orderStatus.VehicleLongitude.HasValue)
+            {
+                return new Position(orderStatus.VehicleLatitude.Value, orderStatus.VehicleLongitude.Value);
+            }
+                
+            if (dropOffAddress != null)
+            {
+                return new Position(dropOffAddress.Latitude, dropOffAddress.Longitude);
+            }
+
+            return null;
         }
 
         private void SendEmail(string to, string bodyTemplate, string subjectTemplate, object templateData, string languageCode, params KeyValuePair<string, string>[] embeddedIMages)
