@@ -337,6 +337,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 								{
 									_isDispatchPopupVisible = false;
 
+									StatusInfoText=string.Format(
+										this.Services().Localize["NetworkContactingNextDispatchDescription"],
+										status.NextDispatchCompanyName);
+
 								    try
 								    {
 								        var orderStatusDetail = await _bookingService.SwitchOrderToNextDispatchCompany(

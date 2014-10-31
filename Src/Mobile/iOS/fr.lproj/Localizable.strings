@@ -537,3 +537,4 @@
 "TaxiHailNetworkTimeOutPopupRefuse"="Refuser";
 "DriverInfoCompany"="Compagnie:";
 "TaxiHailNetworkTimeOutErrorTitle"="Erreur";
+"NetworkContactingNextDispatchDescription"="En attente de {0} ...";

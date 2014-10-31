@@ -1719,4 +1719,7 @@
  <data name="TaxiHailNetworkTimeOutErrorTitle" xml:space="preserve">
     <value>Erreur</value>
   </data>
+ <data name="NetworkContactingNextDispatchDescription" xml:space="preserve">
+    <value>En attente de {0} ...</value>
+  </data>
 </root>

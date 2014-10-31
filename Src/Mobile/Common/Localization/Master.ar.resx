@@ -1651,4 +1651,7 @@
   <data name="TaxiHailNetworkTimeOutErrorTitle" xml:space="preserve">
     <value>Error</value>
   </data>
+ <data name="NetworkContactingNextDispatchDescription" xml:space="preserve">
+    <value>Contacting {0} ...</value>
+  </data>
 </root>

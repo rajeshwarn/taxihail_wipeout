@@ -526,3 +526,4 @@
 "TaxiHailNetworkTimeOutPopupRefuse"="Refuse";
 "DriverInfoCompany"="Company:";
 "TaxiHailNetworkTimeOutErrorTitle"="Error";
+"NetworkContactingNextDispatchDescription"="Contacting {0} ...";

@@ -540,4 +540,5 @@
   <string name="TaxiHailNetworkTimeOutPopupRefuse">Refuser</string>
   <string name="DriverInfoCompany">Compagnie:</string>
   <string name="TaxiHailNetworkTimeOutErrorTitle">Erreur</string>
+  <string name="NetworkContactingNextDispatchDescription">En attente de {0} ...</string>
 </resources>
