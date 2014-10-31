@@ -249,6 +249,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
+		public string StatusDescription
+		{
+			get
+			{
+				var amount = Order.Fare + Order.Tip + Order.Toll;
+
+				return Status.FareAvailable
+					? string.Format ("", Status.IBSStatusDescription, amount)
+					: Status.IBSStatusDescription;
+			}
+		}
+
         public void RefreshOrderStatus (OrderRated orderRated)
 		{
 			if (orderRated.Content == OrderId) 

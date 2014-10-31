@@ -150,7 +150,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 			set.Bind(txtStatus)
 				.For(v => v.Text)
-                .To(vm => vm.Status.IBSStatusDescription);
+				.To(vm => vm.StatusDescription);
 
 			set.Bind(lblAuthorization)
 				.For(v => v.Hidden)
