@@ -126,7 +126,7 @@ namespace apcurium.MK.Booking.Services.Impl
         {
             var order = _orderDao.FindById(orderId);
             SendPushOrSms(order.AccountId,
-                        _resources.Get("PushNotification_ChangeNetworkCompany", order.ClientLanguageCode),
+                        string.Format(_resources.Get("PushNotification_ChangeNetworkCompany", order.ClientLanguageCode), order.CompanyName),
                         new Dictionary<string, object> { { "orderId", orderId }, { "isPairingNotification", false } });
         }
 

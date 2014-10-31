@@ -323,6 +323,7 @@ namespace apcurium.MK.Booking.EventHandlers
                 order.Status = (int)OrderStatus.Created;
                 order.IBSOrderId = @event.IBSOrderId;
                 order.CompanyKey = @event.CompanyKey;
+                order.CompanyName = @event.CompanyName;
 
                 var details = context.Find<OrderStatusDetail>(@event.SourceId);
                 details.Status = OrderStatus.Created;
