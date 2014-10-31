@@ -105,7 +105,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			{ 
 				_isDone = value; 
 				RaisePropertyChanged(); 
-				RaisePropertyChanged(()=>ShowRateButton); 
+				RaisePropertyChanged(() => ShowRateButton); 
 			}
         }
 

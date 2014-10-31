@@ -170,7 +170,7 @@
                 model.on("change:status", this.render);
                 TaxiHail.confirm({
                     title: this.localize('NetworkTimeOutPopupTitle'),
-                    message: this.localize('NetworkTimeOutPopupMessage').format(this.model._status.get('NextDispatchCompanyName')),
+                    message: this.localize('NetworkTimeOutPopupMessage').format(this.model._status.get('nextDispatchCompanyName')),
                     confirmButton: this.localize('NetworkTimeOutPopupAccept'),
                     cancelButton: this.localize('NetworkTimeOutPopupRefuse')
                 }).on('ok', function () {
