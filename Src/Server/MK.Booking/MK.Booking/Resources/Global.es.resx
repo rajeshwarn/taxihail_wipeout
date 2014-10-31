@@ -351,10 +351,6 @@
     <value>El Vehículo {0} le ha sido asignado</value>
     <comment>Cab {0} is assigned to you</comment>
   </data>
-  <data name="OrderStatus_OrderDoneFareAvailable" xml:space="preserve">
-    <value>Completado ({0})</value>
-    <comment>Completed ({0})</comment>
-  </data>
   <data name="OrderStatus_wosAddrNotValid" xml:space="preserve">
     <value>Esta dirección no es válida</value>
     <comment>The address is not valid</comment>
