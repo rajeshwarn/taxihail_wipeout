@@ -27,9 +27,9 @@ namespace apcurium.MK.Booking.Maps.Impl
             _popularAddressProvider = popularAddressProvider;
         }
 
-        public Address GetPlaceDetail(string name, string referenceId)
+        public Address GetPlaceDetail(string name, string placeId)
         {
-            var place = _client.GetPlaceDetail(referenceId);
+            var place = _client.GetPlaceDetail(placeId);
 
 			var result = new GeoObjToAddressMapper().ConvertToAddress(place.Address, name, true);
 
@@ -102,7 +102,7 @@ namespace apcurium.MK.Booking.Maps.Impl
             var address = new Address
             {
                 Id = Guid.NewGuid(),
-				PlaceReference = place.Id,
+				PlaceId = place.Id,
                 FriendlyName = place.Name,
 				FullAddress = place.Address.FullAddress,
 				Latitude = place.Address.Latitude,

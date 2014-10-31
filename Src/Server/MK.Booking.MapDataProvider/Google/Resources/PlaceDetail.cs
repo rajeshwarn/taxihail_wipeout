@@ -16,7 +16,7 @@ namespace apcurium.MK.Booking.MapDataProvider.Google.Resources
         public string id { get; set; }
         public string international_phone_number { get; set; }
         public string name { get; set; }
-        public string reference { get; set; }
+        public string place_id { get; set; }
         public List<string> types { get; set; }
         public string url { get; set; }
         public int utc_offset { get; set; }

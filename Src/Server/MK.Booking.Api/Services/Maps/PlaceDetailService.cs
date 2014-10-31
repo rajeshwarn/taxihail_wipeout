@@ -21,7 +21,7 @@ namespace apcurium.MK.Booking.Api.Services.Maps
 
         public Address Get(PlaceDetailRequest request)
         {
-            return _client.GetPlaceDetail(request.PlaceName, request.ReferenceId);
+            return _client.GetPlaceDetail(request.PlaceName, request.PlaceId);
         }
     }
 }
