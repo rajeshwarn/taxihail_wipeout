@@ -117,7 +117,7 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
             var client = new JsonServiceClient(PlaceDetailsServiceUrl);
             var @params = new Dictionary<string, string>
             {
-				{"reference", id},
+				{"placeid", id},
                 {"sensor", true.ToString().ToLower()},
                 {"key", PlacesApiKey},
             };
@@ -213,13 +213,17 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
 
 		private GeoPlace ConvertPlaceToGeoPlaces(Place place)
 		{            
-			return
-							new GeoPlace {
-				Id = place.Reference,
+			return new GeoPlace
+            {
 				Name =  place.Name,
-				Address = new GeoAddress { FullAddress = place.Formatted_Address ?? place.Vicinity, Latitude = place.Geometry.Location.Lat ,Longitude = place.Geometry.Location.Lng  },                                                       
-				Types = place.Types
-
+                Id = place.Place_Id,                                                       
+				Types = place.Types,
+				Address = new GeoAddress
+				{
+				    FullAddress = place.Formatted_Address ?? place.Vicinity,
+                    Latitude = place.Geometry.Location.Lat,
+                    Longitude = place.Geometry.Location.Lng
+				}
 			};
 		}
 
@@ -230,7 +234,7 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
                     p =>
 					new GeoPlace
                         {
-								Id = p.Reference,
+								Id = p.Place_Id,
                             	Name = GetNameFromDescription(p.Description),
 								Address = new GeoAddress { FullAddress =  GetAddressFromDescription(p.Description)  },                                                       
                             	Types = p.Types
@@ -288,11 +292,9 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
         }
 
         public GeoAddress ConvertGeoObjectToAddress(GeoObj geoResult)
-        {
-                        
+        {        
             var address = new GeoAddress
             {
-            
                 FullAddress = geoResult.Formatted_address,                
                 Latitude = geoResult.Geometry.Location.Lat,
                 Longitude = geoResult.Geometry.Location.Lng

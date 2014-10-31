@@ -8,7 +8,7 @@ namespace apcurium.MK.Common.Entity
     {
         public Guid Id { get; set; }
 
-        public string PlaceReference { get; set; }
+        public string PlaceId { get; set; }
 
         public string FriendlyName { get; set; }
 
@@ -133,7 +133,7 @@ namespace apcurium.MK.Common.Entity
             address.City = City;
             address.ZipCode = ZipCode;
             address.State = State;
-            address.PlaceReference = PlaceReference;
+            address.PlaceId = PlaceId;
         }
     }
 }
