@@ -26,13 +26,21 @@ namespace MK.DeploymentService.Service
                     }))
             {
                 client.BaseAddress = new Uri(url);
-                var r = client.GetAsync(@"deployments/" + Settings.Default.ServerName + @"/next").Result;
-                if (r.IsSuccessStatusCode)
+
+                try
                 {
-                    return r.Content.ReadAsAsync<DeploymentJob>()
-                        .Result;
+                    var r = client.GetAsync(@"deployments/" + Settings.Default.ServerName + @"/next").Result;
+                    if (r.IsSuccessStatusCode)
+                    {
+                        return r.Content.ReadAsAsync<DeploymentJob>()
+                            .Result;
+                    }
+                    return null;
                 }
-                return null;
+                catch
+                {
+                    return null;
+                }
             }
         }
 

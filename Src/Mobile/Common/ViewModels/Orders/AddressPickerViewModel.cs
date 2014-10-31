@@ -155,7 +155,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		{
 			if ((value != null) && (value.AddressType == "place"))
 			{
-				var place = _placesService.GetPlaceDetail(value.FriendlyName, value.PlaceReference);
+				var place = _placesService.GetPlaceDetail(value.FriendlyName, value.PlaceId);
 				return place;
 			}
 			else
