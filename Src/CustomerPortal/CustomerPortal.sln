@@ -5,13 +5,6 @@ VisualStudioVersion = 12.0.30723.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomerPortal.Web", "CustomerPortal.Web\CustomerPortal.Web.csproj", "{66FB44CA-BF67-4B22-9BF4-0A41EC227F0B}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{FC1AE844-7DA3-4937-8B07-6A5C1C751E42}"
-	ProjectSection(SolutionItems) = preProject
-		.nuget\NuGet.Config = .nuget\NuGet.Config
-		.nuget\NuGet.exe = .nuget\NuGet.exe
-		.nuget\NuGet.targets = .nuget\NuGet.targets
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomerPortal.Web.Test", "CustomerPortal.Web.Test\CustomerPortal.Web.Test.csproj", "{0AD4D49B-51FA-4811-9BFA-5982A695AC87}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{86C5F207-F192-4906-9308-771D7DCC8980}"
