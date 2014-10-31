@@ -113,7 +113,12 @@ namespace apcurium.MK.Booking.ReadModel.Query
                             joinedLine.rating.Score.ToString(CultureInfo.InvariantCulture);
                     }      
                 }
-                list.Add(details);
+
+                if (details != null)
+                {
+                    // Only add details if we have at least one order
+                    list.Add(details);
+                }
             }
             return list;
         }

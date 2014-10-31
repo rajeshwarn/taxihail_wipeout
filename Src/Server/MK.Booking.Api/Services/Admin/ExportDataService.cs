@@ -125,6 +125,7 @@ namespace apcurium.MK.Booking.Api.Services.Admin
                             excelResult["Is Cancelled"] = x.IsCancelled.ToString();
                             excelResult["Is Completed"] = x.IsCompleted.ToString();
 
+                            excelResult["Company Name"] = x.CompanyName;
                             excelResult["Vehicle Number"] = x.VehicleNumber;
                             excelResult["Vehicle Type"] = x.VehicleType;
                             excelResult["Vehicle Make"] = x.VehicleMake;
