@@ -308,6 +308,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         private bool _isCurrentlyPairing;
 		string _vehicleNumber;
 		private bool _isDispatchPopupVisible;
+
 		private async void RefreshStatus()
         {
             try {
@@ -447,12 +448,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             try
             {
                 var orderStatusDetail = await _bookingService.SwitchOrderToNextDispatchCompany(
-                    new SwitchOrderToNextDispatchCompanyRequest
-                    {
-                        OrderId = status.OrderId,
-                        NextDispatchCompanyKey = status.NextDispatchCompanyKey,
-                        NextDispatchCompanyName = status.NextDispatchCompanyName
-                    });
+                    status.OrderId,
+                    status.NextDispatchCompanyKey,
+                    status.NextDispatchCompanyName);
                 OrderStatusDetail = orderStatusDetail;
             }
             catch (WebServiceException ex)
