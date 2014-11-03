@@ -322,10 +322,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				}
 
                 SwitchDispatchCompanyIfNecessary(status);
-									StatusInfoText=string.Format(
-										this.Services().Localize["NetworkContactingNextDispatchDescription"],
-										status.NextDispatchCompanyName);
-
 
 				var isDone = _bookingService.IsStatusDone(status.IBSStatusId);
 
@@ -443,6 +439,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 	        }
 
 	        _isDispatchPopupVisible = false;
+
+			StatusInfoText = string.Format (
+				this.Services ().Localize ["NetworkContactingNextDispatchDescription"]
+				, status.NextDispatchCompanyName);
 
             try
             {
