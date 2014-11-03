@@ -4197,14 +4197,14 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f05010a
 			public const int GooglePlayServicesNotAvailableMessage = 2131034378;
 			
-			// aapt resource value: 0x7f050276
-			public const int GooglePlayServicesNotAvailableMessage1 = 2131034742;
+			// aapt resource value: 0x7f050277
+			public const int GooglePlayServicesNotAvailableMessage1 = 2131034743;
 			
 			// aapt resource value: 0x7f05006a
 			public const int GooglePlayServicesNotAvailableTitle = 2131034218;
 			
-			// aapt resource value: 0x7f050277
-			public const int GooglePlayServicesNotAvailableTitle1 = 2131034743;
+			// aapt resource value: 0x7f050278
+			public const int GooglePlayServicesNotAvailableTitle1 = 2131034744;
 			
 			// aapt resource value: 0x7f05002e
 			public const int Hello = 2131034158;
@@ -4415,6 +4415,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 			
 			// aapt resource value: 0x7f050071
 			public const int NetworkErrorTitle = 2131034225;
+			
+			// aapt resource value: 0x7f050275
+			public const int NetworkTimeOutPopupAlways = 2131034741;
 			
 			// aapt resource value: 0x7f050090
 			public const int NoAmountSelectedMessage = 2131034256;
@@ -5027,6 +5030,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 			
 			// aapt resource value: 0x7f050271
 			public const int TaxiHailNetworkTimeOutPopupAccept = 2131034737;
+			
+			// aapt resource value: 0x7f050276
+			public const int TaxiHailNetworkTimeOutPopupAlways = 2131034742;
 			
 			// aapt resource value: 0x7f050270
 			public const int TaxiHailNetworkTimeOutPopupMessage = 2131034736;

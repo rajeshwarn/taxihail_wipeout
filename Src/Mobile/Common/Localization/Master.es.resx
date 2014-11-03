@@ -2215,7 +2215,7 @@
     <comment>Accept</comment>
   </data>
   <data name="TaxiHailNetworkTimeOutPopupRefuse" xml:space="preserve">
-    <value>Refuse</value>
+    <value>Ignore</value>
     <comment>Refuse</comment>
   </data>
   <data name="DriverInfoCompany" xml:space="preserve">
@@ -2224,6 +2224,12 @@
   </data>
   <data name="TaxiHailNetworkTimeOutErrorTitle" xml:space="preserve">
     <value>Error</value>
+  </data>
+  <data name="NetworkTimeOutPopupAlways" xml:space="preserve">
+    <value>Always Accept</value>
+  </data>
+  <data name="TaxiHailNetworkTimeOutPopupAlways" xml:space="preserve">
+    <value>Always Accept</value>
   </data>
  <data name="NetworkContactingNextDispatchDescription" xml:space="preserve">
     <value>Contacting {0} ...</value>

@@ -527,4 +527,5 @@
   <string name="DriverInfoCompany">Company:</string>
   <string name="TaxiHailNetworkTimeOutErrorTitle">Error</string>
   <string name="NetworkContactingNextDispatchDescription">Contacting {0} ...</string>
+  <string name="TaxiHailNetworkTimeOutPopupAlways">Always Accept</string>
 </resources>

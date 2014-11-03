@@ -321,56 +321,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					status.VehicleNumber = _vehicleNumber;
 				}
 
-				if(status.Status.Equals(OrderStatus.TimedOut))
-				{
-					if(status.NextDispatchCompanyKey != null && !_isDispatchPopupVisible)
-					{
-						_isDispatchPopupVisible = true;
-
-						this.Services().Message.ShowMessage(
-							this.Services().Localize["TaxiHailNetworkTimeOutPopupTitle"],
-							string.Format(this.Services().Localize["TaxiHailNetworkTimeOutPopupMessage"], status.NextDispatchCompanyName),
-							this.Services().Localize["TaxiHailNetworkTimeOutPopupAccept"],
-							async () =>
-                            {
-								if(status.Status.Equals(OrderStatus.TimedOut))
-								{
-									_isDispatchPopupVisible = false;
-
+                SwitchDispatchCompanyIfNecessary(status);
 									StatusInfoText=string.Format(
 										this.Services().Localize["NetworkContactingNextDispatchDescription"],
 										status.NextDispatchCompanyName);
 
-								    try
-								    {
-								        var orderStatusDetail = await _bookingService.SwitchOrderToNextDispatchCompany(
-								            new SwitchOrderToNextDispatchCompanyRequest
-								            {
-								                OrderId = status.OrderId,
-								                NextDispatchCompanyKey = status.NextDispatchCompanyKey,
-								                NextDispatchCompanyName = status.NextDispatchCompanyName
-								            });
-								        OrderStatusDetail = orderStatusDetail;
-								    }
-								    catch (WebServiceException ex)
-								    {
-								        this.Services().Message.ShowMessage(
-								            this.Services().Localize["TaxiHailNetworkTimeOutErrorTitle"],
-								            ex.ErrorMessage);
-								    }
-								}
-							},
-							this.Services().Localize["TaxiHailNetworkTimeOutPopupRefuse"],
-						    () =>
-                                {
-									if(status.Status.Equals(OrderStatus.TimedOut))
-									{
-							            _bookingService.IgnoreDispatchCompanySwitch(status.OrderId);
-	                                    _isDispatchPopupVisible = false;
-									}
-						        });
-					}
-				}
 
 				var isDone = _bookingService.IsStatusDone(status.IBSStatusId);
 
@@ -439,6 +394,74 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 Logger.LogError (ex);
             }
         }
+
+	    private void SwitchDispatchCompanyIfNecessary(OrderStatusDetail status)
+	    {
+            if (status.Status == OrderStatus.TimedOut)
+            {
+                bool alwayAcceptSwitch;
+                bool.TryParse(this.Services().Cache.Get<string>("TaxiHailNetworkTimeOutAlwayAccept"), out alwayAcceptSwitch);
+
+                if (status.NextDispatchCompanyKey != null && alwayAcceptSwitch)
+                {
+                    // Switch without user input
+                    SwitchCompany(status);
+                }
+                else if (status.NextDispatchCompanyKey != null && !_isDispatchPopupVisible && !alwayAcceptSwitch)
+                {
+                    _isDispatchPopupVisible = true;
+
+                    this.Services().Message.ShowMessage(
+                        this.Services().Localize["TaxiHailNetworkTimeOutPopupTitle"],
+                        string.Format(this.Services().Localize["TaxiHailNetworkTimeOutPopupMessage"], status.NextDispatchCompanyName),
+                        this.Services().Localize["TaxiHailNetworkTimeOutPopupAccept"],
+                            () => SwitchCompany(status),
+                        this.Services().Localize["TaxiHailNetworkTimeOutPopupRefuse"],
+                            () =>
+                            {
+                                if (status.Status.Equals(OrderStatus.TimedOut))
+                                {
+                                    _bookingService.IgnoreDispatchCompanySwitch(status.OrderId);
+                                    _isDispatchPopupVisible = false;
+                                }
+                            },
+                        this.Services().Localize["TaxiHailNetworkTimeOutPopupAlways"],
+                            () =>
+                            {
+                                this.Services().Cache.Set("TaxiHailNetworkTimeOutAlwayAccept", "true");
+                                SwitchCompany(status);
+                            });
+                }
+            }
+	    }
+
+	    private async void SwitchCompany(OrderStatusDetail status)
+	    {
+	        if (status.Status != OrderStatus.TimedOut)
+	        {
+	            return;
+	        }
+
+	        _isDispatchPopupVisible = false;
+
+            try
+            {
+                var orderStatusDetail = await _bookingService.SwitchOrderToNextDispatchCompany(
+                    new SwitchOrderToNextDispatchCompanyRequest
+                    {
+                        OrderId = status.OrderId,
+                        NextDispatchCompanyKey = status.NextDispatchCompanyKey,
+                        NextDispatchCompanyName = status.NextDispatchCompanyName
+                    });
+                OrderStatusDetail = orderStatusDetail;
+            }
+            catch (WebServiceException ex)
+            {
+                this.Services().Message.ShowMessage(
+                    this.Services().Localize["TaxiHailNetworkTimeOutErrorTitle"],
+                    ex.ErrorMessage);
+            }
+	    }
 
 	    private void DisplayOrderNumber()
 	    {

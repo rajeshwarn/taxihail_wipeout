@@ -153,7 +153,9 @@
   <data name="ApartmentLabel" xml:space="preserve">
     <value>شقة</value>
   </data>
-  <data name="ApplicationName" xml:space="preserve">TaxiHail</data>
+  <data name="ApplicationName" xml:space="preserve">
+    <value>TaxiHail</value>
+  </data>
   <data name="AppNeedUpdateMessage" xml:space="preserve">
     <value>هناك تحديث جديد متاح للتطبيق ، يرجى تحديث التطبيق للإستمرار.</value>
   </data>
@@ -1387,7 +1389,7 @@
   <data name="View_AboutUs" xml:space="preserve">
     <value>نبذة عنا</value>
   </data>
-<data name="View_AccountConfirmation_Button" xml:space="preserve">
+  <data name="View_AccountConfirmation_Button" xml:space="preserve">
     <value>Confirm</value>
   </data>
   <data name="View_AccountConfirmationTitle" xml:space="preserve">
@@ -1650,6 +1652,9 @@
   </data>
   <data name="TaxiHailNetworkTimeOutErrorTitle" xml:space="preserve">
     <value>Error</value>
+  </data>
+  <data name="TaxiHailNetworkTimeOutPopupAlways" xml:space="preserve">
+    <value>Always Accept</value>
   </data>
  <data name="NetworkContactingNextDispatchDescription" xml:space="preserve">
     <value>Contacting {0} ...</value>
