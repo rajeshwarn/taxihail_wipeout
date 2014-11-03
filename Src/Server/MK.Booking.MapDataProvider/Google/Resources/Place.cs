@@ -14,7 +14,7 @@ namespace apcurium.MK.Booking.MapDataProvider.Google.Resources
         public string Name { get; set; }
         public string Formatted_Address { get; set; }
         public float Rating { get; set; }
-        public string Reference { get; set; }
+        public string Place_Id { get; set; }
         public List<string> Types { get; set; }
         public string Vicinity { get; set; }
         public List<Event> Events { get; set; }

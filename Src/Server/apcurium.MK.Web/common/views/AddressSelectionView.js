@@ -225,10 +225,10 @@
         },
 
         fetchPlaceDetails: function(model) {
-            var placeReference = model && model.get('placeReference');
+            var placeId = model && model.get('placeId');
             var placeName = model && model.get('friendlyName');
-            if(placeReference) {
-                return TaxiHail.places.getPlaceDetails(placeReference, placeName)
+            if (placeId) {
+                return TaxiHail.places.getPlaceDetails(placeId, placeName)
                         .done(function(result){
                             model.set(result);
                         });
@@ -236,7 +236,5 @@
             // Return resolved promise in case the call is not valid
             return $.when();
         }
-
     });
-
 }());
