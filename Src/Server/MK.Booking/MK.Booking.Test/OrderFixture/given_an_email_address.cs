@@ -1,6 +1,4 @@
-﻿#region
-
-using System;
+﻿using System;
 using System.Linq;
 using System.Net.Mail;
 using apcurium.MK.Booking.CommandHandlers;
@@ -9,7 +7,7 @@ using apcurium.MK.Booking.Common.Tests;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Domain;
 using apcurium.MK.Booking.Email;
-using apcurium.MK.Booking.Events;
+using apcurium.MK.Booking.Maps;
 using apcurium.MK.Booking.Maps.Impl;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query;
@@ -23,8 +21,6 @@ using MK.Common.Configuration;
 using Moq;
 using NUnit.Framework;
 
-#endregion
-
 namespace apcurium.MK.Booking.Test.OrderFixture
 {
     public class given_an_email_address : given_a_read_model_database
@@ -33,6 +29,7 @@ namespace apcurium.MK.Booking.Test.OrderFixture
         private TestConfigurationManager _configurationManager;
         private Mock<IEmailSender> _emailSenderMock;
         private Mock<IOrderDao> _orderDaoMock;
+        private Mock<IGeocoding> _geocodingMock;
         private EventSourcingTestHelper<Order> sut;
 
         [TestFixtureSetUp]
@@ -72,12 +69,13 @@ namespace apcurium.MK.Booking.Test.OrderFixture
 
             _emailSenderMock = new Mock<IEmailSender>();
             _orderDaoMock = new Mock<IOrderDao>();
+            _geocodingMock = new Mock<IGeocoding>();
             _configurationManager = new TestConfigurationManager();
             _configurationManager.SetSetting("TaxiHail.ApplicationName", ApplicationName);
 
             var notificationService = new NotificationService(() => new BookingDbContext(DbName),
                 null,
-                new TemplateService(_configurationManager, _configurationManager),
+                new TemplateService(_configurationManager, _configurationManager), 
                 _emailSenderMock.Object,
                 _configurationManager,
                 _configurationManager,
@@ -85,7 +83,7 @@ namespace apcurium.MK.Booking.Test.OrderFixture
                 _orderDaoMock.Object,
                 new StaticMap(),
                 null,
-                null,
+                _geocodingMock.Object,
                 null);
             notificationService.SetBaseUrl(new Uri("http://www.example.net"));
 

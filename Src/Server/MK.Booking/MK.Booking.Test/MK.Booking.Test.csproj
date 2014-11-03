@@ -75,6 +75,7 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -128,6 +129,9 @@
     <Compile Include="Integration\PayPalPaymentFixture\PayPalPaymentGeneratorTest.cs" />
     <Compile Include="Maps\PriceCalculatorFixture\given_a_date.cs" />
     <Compile Include="OrderFixture\given_an_email_address.cs" />
+    <Compile Include="OrderFixture\given_an_email_address_and_an_orderStatus_using_real_geocoding_with_corporate_key.cs" />
+    <Compile Include="OrderFixture\given_an_email_address_and_an_orderStatus.cs" />
+    <Compile Include="OrderFixture\given_a_read_model_database_for_receipt_email_map.cs" />
     <Compile Include="OrderFixture\given_no_order.cs" />
     <Compile Include="OrderFixture\given_one_order.cs" />
     <Compile Include="PayPalPaymentFixture\given_a_completed_payment.cs" />
@@ -157,6 +161,10 @@
     <ProjectReference Include="..\..\MK.Booking.IBS\MK.Booking.IBS.csproj">
       <Project>{7B615EA9-4232-4FFB-B66C-AC7B833973C9}</Project>
       <Name>MK.Booking.IBS</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\MK.Booking.MapDataProvider\MK.Booking.MapDataProvider.csproj">
+      <Project>{ad0bc4ad-6bac-4e02-8202-d7b3bf64d0f1}</Project>
+      <Name>MK.Booking.MapDataProvider</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\MK.Booking.Maps\MK.Booking.Maps.csproj">
       <Project>{C41EA1B3-0E19-41AE-8EFC-AE242532B248}</Project>

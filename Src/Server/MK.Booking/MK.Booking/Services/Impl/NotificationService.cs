@@ -11,6 +11,7 @@ using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Email;
 using apcurium.MK.Booking.Maps;
 using apcurium.MK.Booking.Maps.Geo;
+using apcurium.MK.Booking.Maps.Impl;
 using apcurium.MK.Booking.PushNotifications;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
@@ -337,10 +338,12 @@ namespace apcurium.MK.Booking.Services.Impl
                 && (!string.IsNullOrWhiteSpace(addressToUseForDropOff.FullAddress)
                     || !string.IsNullOrWhiteSpace(addressToUseForDropOff.DisplayAddress));
 
+            var points = _orderDao.GetVehiclePositions(orderId);
+            var encodedPath = PathUtility.GetEncodedPolylines(points);
             var staticMapUri = positionForStaticMap.HasValue
                 ? _staticMap.GetStaticMapUri(
                     new Position(pickupAddress.Latitude, pickupAddress.Longitude),
-                    positionForStaticMap.Value,
+                    positionForStaticMap.Value, encodedPath,
                     300, 300, 1)
                 : string.Empty;
 
@@ -385,28 +388,9 @@ namespace apcurium.MK.Booking.Services.Impl
                 RedDotImg = String.Concat(baseUrls.BaseUrlAssetsImg, "email_red_dot.png"),
                 GreenDotImg = String.Concat(baseUrls.BaseUrlAssetsImg, "email_green_dot.png"),
                 GetBaseUrls().LogoImg
-
             };
 
             SendEmail(clientEmailAddress, EmailConstant.Template.Receipt, EmailConstant.Subject.Receipt, templateData, clientLanguageCode);
-        }
-
-        private Position? TryToGetPositionOfDropOffAddress(Guid orderId, Address dropOffAddress)
-        {
-            var orderStatus = _orderDao.FindOrderStatusById(orderId);
-            if (orderStatus != null 
-                && orderStatus.VehicleLatitude.HasValue 
-                && orderStatus.VehicleLongitude.HasValue)
-            {
-                return new Position(orderStatus.VehicleLatitude.Value, orderStatus.VehicleLongitude.Value);
-            }
-                
-            if (dropOffAddress != null)
-            {
-                return new Position(dropOffAddress.Latitude, dropOffAddress.Longitude);
-            }
-
-            return null;
         }
 
         private Address TryToGetExactDropOffAddress(Guid orderId, Address dropOffAddress, string clientLanguageCode)
@@ -426,6 +410,24 @@ namespace apcurium.MK.Booking.Services.Impl
                 clientLanguageCode).FirstOrDefault();
 
             return exactDropOffAddress ?? dropOffAddress;
+        }
+
+        private Position? TryToGetPositionOfDropOffAddress(Guid orderId, Address dropOffAddress)
+        {
+            var orderStatus = _orderDao.FindOrderStatusById(orderId);
+            if (orderStatus != null 
+                && orderStatus.VehicleLatitude.HasValue 
+                && orderStatus.VehicleLongitude.HasValue)
+            {
+                return new Position(orderStatus.VehicleLatitude.Value, orderStatus.VehicleLongitude.Value);
+            }
+                
+            if (dropOffAddress != null)
+            {
+                return new Position(dropOffAddress.Latitude, dropOffAddress.Longitude);
+            }
+
+            return null;
         }
 
         private void SendEmail(string to, string bodyTemplate, string subjectTemplate, object templateData, string languageCode, params KeyValuePair<string, string>[] embeddedIMages)
