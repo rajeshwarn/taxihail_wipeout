@@ -16,5 +16,6 @@
     "NetworkTimeOutPopupTitle": "Changer de compagnie?",
     "NetworkTimeOutPopupMessage": "En raison d'un grand nombre de demandes, aucun véhicule n'est disponible présentement. Désirez-vous passer une commande avec {0}?",
     "NetworkTimeOutPopupAccept": "Accepter",
-    "NetworkTimeOutPopupRefuse": "Refuser"
+    "NetworkTimeOutPopupRefuse": "Ignorer",
+	"NetworkTimeOutPopupAlways":  "Toujours Accepter"
 }

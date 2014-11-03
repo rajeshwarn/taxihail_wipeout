@@ -417,7 +417,7 @@
   <data name="Save" xml:space="preserve">
     <value>Save</value>
   </data>
- <data name="Modify" xml:space="preserve">
+  <data name="Modify" xml:space="preserve">
     <value>Modify</value>
   </data>
   <data name="Delete" xml:space="preserve">
@@ -620,9 +620,6 @@
   </data>
   <data name="LoginSupport" xml:space="preserve">
     <value>Need support?</value>
-  </data>
-<data name="LoginSupport" xml:space="preserve">
-   	<value>Need support?</value>
   </data>
   <data name="LoginForgotPasswordDetail" xml:space="preserve">
     <value>Enter your email and we'll send you a new one.</value>
@@ -1702,13 +1699,19 @@
     <value>Accept</value>
   </data>
   <data name="TaxiHailNetworkTimeOutPopupRefuse" xml:space="preserve">
-    <value>Refuse</value>
+    <value>Ignore</value>
   </data>
   <data name="DriverInfoCompany" xml:space="preserve">
     <value>Company:</value>
   </data>
-   <data name="TaxiHailNetworkTimeOutErrorTitle" xml:space="preserve">
+  <data name="TaxiHailNetworkTimeOutErrorTitle" xml:space="preserve">
     <value>Error</value>
+  </data>
+  <data name="NetworkTimeOutPopupAlways" xml:space="preserve">
+    <value>Always Accept</value>
+  </data>
+  <data name="TaxiHailNetworkTimeOutPopupAlways" xml:space="preserve">
+    <value>Always Accept</value>
   </data>
  <data name="NetworkContactingNextDispatchDescription" xml:space="preserve">
     <value>Contacting {0} ...</value>

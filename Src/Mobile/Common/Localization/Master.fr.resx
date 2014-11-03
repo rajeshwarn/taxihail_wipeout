@@ -1711,13 +1711,19 @@
     <value>Accepter</value>
   </data>
   <data name="TaxiHailNetworkTimeOutPopupRefuse" xml:space="preserve">
-    <value>Refuser</value>
+    <value>Ignorer</value>
   </data>
   <data name="DriverInfoCompany" xml:space="preserve">
     <value>Compagnie:</value>
   </data>
- <data name="TaxiHailNetworkTimeOutErrorTitle" xml:space="preserve">
+  <data name="TaxiHailNetworkTimeOutErrorTitle" xml:space="preserve">
     <value>Erreur</value>
+  </data>
+  <data name="NetworkTimeOutPopupAlways" xml:space="preserve">
+    <value>Toujours Accepter</value>
+  </data>
+  <data name="TaxiHailNetworkTimeOutPopupAlways" xml:space="preserve">
+    <value>Toujours accepter</value>
   </data>
  <data name="NetworkContactingNextDispatchDescription" xml:space="preserve">
     <value>En attente de {0} ...</value>

@@ -16,5 +16,6 @@
     "NetworkTimeOutPopupTitle":  "Switch company?",
     "NetworkTimeOutPopupMessage":  "Due to high demand, no vehicles are available right now. Do you want to book with {0} instead?",
     "NetworkTimeOutPopupAccept":  "Accept",
-    "NetworkTimeOutPopupRefuse":  "Refuse"
+    "NetworkTimeOutPopupRefuse":  "Ignore",
+	"NetworkTimeOutPopupAlways":  "Always Accept"
 }
