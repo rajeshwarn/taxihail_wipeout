@@ -3,9 +3,9 @@ using Infrastructure.Messaging;
 
 namespace apcurium.MK.Booking.Commands
 {
-    public class ChangeOrderDispatchCompany : ICommand
+    public class PrepareOrderForNextDispatch : ICommand
     {
-        public ChangeOrderDispatchCompany()
+        public PrepareOrderForNextDispatch()
         {
             Id = Guid.NewGuid();
         }

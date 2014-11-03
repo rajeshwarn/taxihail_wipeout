@@ -30,7 +30,7 @@ namespace apcurium.MK.Booking.EventHandlers
         IEventHandler<OrderStatusChanged>,
         IEventHandler<OrderPairedForPayment>,
         IEventHandler<OrderUnpairedForPayment>,
-        IEventHandler<OrderDispatchCompanyChanged>,
+        IEventHandler<OrderPreparedForNextDispatch>,
         IEventHandler<OrderSwitchedToNextDispatchCompany>,
         IEventHandler<DispatchCompanySwitchIgnored>
     {
@@ -302,7 +302,7 @@ namespace apcurium.MK.Booking.EventHandlers
             }
         }
 
-        public void Handle(OrderDispatchCompanyChanged @event)
+        public void Handle(OrderPreparedForNextDispatch @event)
         {
             using (var context = _contextFactory.Invoke())
             {

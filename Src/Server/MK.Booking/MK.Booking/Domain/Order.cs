@@ -34,7 +34,7 @@ namespace apcurium.MK.Booking.Domain
             Handles<OrderPairedForPayment>(NoAction);
             Handles<OrderUnpairedForPayment>(NoAction);
             Handles<OrderTimedOut>(OnOrderTimedOut);
-            Handles<OrderDispatchCompanyChanged>(NoAction);
+            Handles<OrderPreparedForNextDispatch>(NoAction);
             Handles<OrderSwitchedToNextDispatchCompany>(OnOrderSwitchedToNextDispatchCompany);
             Handles<DispatchCompanySwitchIgnored>(OnNextDispatchCompanySwitchIgnored);
         }
@@ -166,9 +166,9 @@ namespace apcurium.MK.Booking.Domain
             Update(new OrderUnpairedForPayment());
         }
 
-        public void ChangeOrderDispatchCompany(string dispatchCompanyName, string dispatchCompanyKey)
+        public void PrepareForNextDispatch(string dispatchCompanyName, string dispatchCompanyKey)
         {
-            Update(new OrderDispatchCompanyChanged
+            Update(new OrderPreparedForNextDispatch
             {
                 DispatchCompanyName = dispatchCompanyName,
                 DispatchCompanyKey = dispatchCompanyKey

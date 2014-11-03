@@ -240,16 +240,16 @@ namespace apcurium.MK.Booking.Test.OrderFixture
         }
 
         [Test]
-        public void when_order_dispatch_company_changed()
+        public void when_order_prepared_for_next_dispatch()
         {
-            _sut.When(new ChangeOrderDispatchCompany
+            _sut.When(new PrepareOrderForNextDispatch
             {
                 OrderId = _orderId,
                 DispatchCompanyName = "Kukai Foundation",
                 DispatchCompanyKey = "123456"
             });
 
-            var @event = _sut.ThenHasSingle<OrderDispatchCompanyChanged>();
+            var @event = _sut.ThenHasSingle<OrderPreparedForNextDispatch>();
             Assert.AreEqual(_orderId, @event.SourceId);
             Assert.AreEqual("Kukai Foundation", @event.DispatchCompanyName);
             Assert.AreEqual("123456", @event.DispatchCompanyKey);

@@ -66,7 +66,7 @@
     <Compile Include="CreditCardUpdated.cs" />
     <Compile Include="DispatchCompanySwitchIgnored.cs" />
     <Compile Include="NotificationSettingsAddedOrUpdated.cs" />
-    <Compile Include="OrderDispatchCompanyChanged.cs" />
+    <Compile Include="OrderPreparedForNextDispatch.cs" />
     <Compile Include="OrderPairedForPayment.cs" />
     <Compile Include="OrderSwitchedToNextDispatchCompany.cs" />
     <Compile Include="OrderTimedOut.cs" />

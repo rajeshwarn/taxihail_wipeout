@@ -65,7 +65,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                 var nextDispatchCompany = FindNextDispatchCompany(details.CompanyKey, userPosition, networkFleet);
                 if (nextDispatchCompany != null)
                 {
-                    _commandBus.Send(new ChangeOrderDispatchCompany
+                    _commandBus.Send(new PrepareOrderForNextDispatch
                     {
                         OrderId = details.OrderId,
                         DispatchCompanyName = nextDispatchCompany.CompanyName,

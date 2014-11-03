@@ -317,7 +317,7 @@ namespace apcurium.MK.Booking.Test.Integration.OrderFixture
             const string dispatchCompanyName = "Kukai Foundation";
             const string dispatchCompanyKey = "123456";
 
-            Sut.Handle(new OrderDispatchCompanyChanged
+            Sut.Handle(new OrderPreparedForNextDispatch
             {
                 SourceId = _orderId,
                 DispatchCompanyName = dispatchCompanyName,

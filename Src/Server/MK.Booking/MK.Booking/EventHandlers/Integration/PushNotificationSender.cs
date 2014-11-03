@@ -27,7 +27,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
     public class PushNotificationSender : IIntegrationEventHandler,
             IEventHandler<OrderStatusChanged>,
             IEventHandler<CreditCardPaymentCaptured>,
-            IEventHandler<OrderDispatchCompanyChanged>
+            IEventHandler<OrderPreparedForNextDispatch>
     {
         private readonly INotificationService _notificationService;
         private readonly IServerSettings _serverSettings;
@@ -89,7 +89,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             }
         }
 
-        public void Handle(OrderDispatchCompanyChanged @event)
+        public void Handle(OrderPreparedForNextDispatch @event)
         {
             try
             {
