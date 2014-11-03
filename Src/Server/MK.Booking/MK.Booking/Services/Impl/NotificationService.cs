@@ -339,7 +339,7 @@ namespace apcurium.MK.Booking.Services.Impl
                     || !string.IsNullOrWhiteSpace(addressToUseForDropOff.DisplayAddress));
 
             var points = _orderDao.GetVehiclePositions(orderId);
-            var encodedPath = PathUtility.Encode(points);
+            var encodedPath = PathUtility.GetEncodedPolylines(points);
             var staticMapUri = positionForStaticMap.HasValue
                 ? _staticMap.GetStaticMapUri(
                     new Position(pickupAddress.Latitude, pickupAddress.Longitude),

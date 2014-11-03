@@ -7,28 +7,11 @@ namespace apcurium.MK.Booking.Maps.Impl
 {
     public static class PathUtility
     {
-        public static string Encode(IEnumerable<Position> points)
+        public static string GetEncodedPolylines(IEnumerable<Position> points)
         {
             try
             {
                 var str = new StringBuilder();
-
-                Action<int> encodeDiff = (diff) =>
-                {
-                    var shifted = diff << 1;
-                    if (diff < 0)
-                    {
-                        shifted = ~shifted;
-                    }
-
-                    var rem = shifted;
-                    while (rem >= 0x20)
-                    {
-                        str.Append((char)((0x20 | (rem & 0x1f)) + 63));
-                        rem >>= 5;
-                    }
-                    str.Append((char)(rem + 63));
-                };
 
                 var lastLat = 0;
                 var lastLng = 0;
@@ -36,8 +19,8 @@ namespace apcurium.MK.Booking.Maps.Impl
                 {
                     var lat = (int)Math.Round(point.Latitude * 1E5);
                     var lng = (int)Math.Round(point.Longitude * 1E5);
-                    encodeDiff(lat - lastLat);
-                    encodeDiff(lng - lastLng);
+                    EncodeSignedValue(lat - lastLat, str);
+                    EncodeSignedValue(lng - lastLng, str);
                     lastLat = lat;
                     lastLng = lng;
                 }
@@ -47,6 +30,26 @@ namespace apcurium.MK.Booking.Maps.Impl
             {
                 return string.Empty;
             }
+        }
+
+        /// <summary>
+        /// Encode using https://developers.google.com/maps/documentation/utilities/polylinealgorithm
+        /// </summary>
+        private static void EncodeSignedValue(int value, StringBuilder str)
+        {
+            var shifted = value << 1;
+            if (value < 0)
+            {
+                shifted = ~shifted;
+            }
+
+            var rem = shifted;
+            while (rem >= 0x20)
+            {
+                str.Append((char)((0x20 | (rem & 0x1f)) + 63));
+                rem >>= 5;
+            }
+            str.Append((char)(rem + 63));
         }
     }
 }
