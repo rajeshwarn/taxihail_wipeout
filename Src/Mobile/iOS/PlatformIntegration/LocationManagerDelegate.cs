@@ -5,6 +5,8 @@ using Cirrious.CrossCore.Touch;
 using MK.Common.iOS.Patterns;
 using MonoTouch.CoreLocation;
 using apcurium.MK.Booking.Mobile.Infrastructure;
+using TinyIoC;
+using apcurium.MK.Common.Diagnostic;
 
 namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 {
@@ -30,6 +32,18 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 
         public override void LocationsUpdated (CLLocationManager manager, CLLocation[] locations)
         {
+			try{
+
+			var logger = TinyIoCContainer.Current.Resolve<ILogger>();
+			logger.LogMessage( string.Format( "LocationsUpdated item found {0}" , locations.Count()) );
+			foreach (var loc in locations) {
+					logger.LogMessage( string.Format("Location update : Lat {0} - Lg {1} - H Accuracy {2} - V Accuracy {3} - T {4}", loc.Coordinate.Latitude, loc.Coordinate.Longitude, loc.HorizontalAccuracy, loc.VerticalAccuracy, loc.Timestamp.ToDateTimeUtc().ToLocalTime().ToLongTimeString() ) 	);
+			}
+
+			}
+			catch{
+			}
+
             var newLocation = locations.Last();
 
             var position = new Position

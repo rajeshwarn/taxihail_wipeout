@@ -12,10 +12,10 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
         {
         }
 
-        public Task<object> GetOrders(ExportDataRequest request)
+        public Task<string> GetOrders(ExportDataRequest request)
         {
             var req = string.Format("/admin/export/{0}?format=csv", request.Target.ToString().ToLower());
-            return Client.PostAsync<object>(req, request);
+            return Client.PostAsync<string>(req, request);
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Security;
+using ExportTool.Properties;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -10,10 +11,9 @@ namespace ExportTool
 {
     class Program
     {
-        const string CONFIG_FILE_NAME = "export.cfg";
+       
         const string FILE_DATE_FORMAT = "yyyy-dd-M--HH-mm-ss";
 
-        private static Dictionary<string, string> _configItems;
         private static TimeSpan _offset;
         private static DateTime _startDate;
         private static DateTime _endDate;
@@ -21,42 +21,14 @@ namespace ExportTool
         private static string _url;
         static void Main(string[] args)
         {
-            string[] config;
-
-            try
+            if ( !Directory.Exists( Settings.Default.ExportPath ) )
             {
-                config = File.ReadAllLines(CONFIG_FILE_NAME);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(string.Format("Please configure the Export Tool in {0} as following:", CONFIG_FILE_NAME));
-
-                var initialConfig = string.Format(@"ExportPath=C:\My\Export\Path{0}ApiUrl=http://Url/To/Api{0}Username=admin_username{0}Password=admin_password",
-                    Environment.NewLine);
-
-                Console.WriteLine(initialConfig);
-                File.WriteAllText(CONFIG_FILE_NAME, initialConfig);
+                Console.WriteLine(string.Format("Export path doesn't exist : {0}", Settings.Default.ExportPath ));
 
                 return;
             }
 
-            _configItems = config.GroupBy(s => s.Replace(s.Split('=')[0] + "=", ""), x => x.Split('=')[0])
-                      .ToDictionary(g => g.First(), g => g.Key);
-
-            if (!Directory.Exists(_configItems["ExportPath"]))
-            {
-                try
-                {
-                    Directory.CreateDirectory(_configItems["ExportPath"]);
-                }
-                catch
-                {
-                    Console.WriteLine(string.Format("Verify your Export Path in {0}", CONFIG_FILE_NAME));
-                    return;
-                }
-            }
-
-            _url = _configItems["ApiUrl"];
+            _url = Settings.Default.ApiUrl ;
 
             _startDate = DateTime.Now.Subtract(TimeSpan.FromDays(1));
             _endDate = DateTime.Now;
@@ -64,13 +36,13 @@ namespace ExportTool
             try
             {
                 var auth = new AuthServiceClient(_url, null, null);
-                var response = auth.Authenticate(_configItems["Username"], _configItems["Password"]);
+                var response = auth.Authenticate(Settings.Default.Username, Settings.Default.Password);
                 response.Wait();
                 _token = response.Result;
             }
             catch
             {
-                Console.WriteLine(string.Format("Verify your admin credentials in {0}", CONFIG_FILE_NAME));
+                Console.WriteLine(string.Format("Verify your admin credentials, user {0} and password {1} are invalid", Settings.Default.Username , Settings.Default.Password ));
                 return;
             }
 
@@ -81,10 +53,10 @@ namespace ExportTool
         {
             try
             {
-                var path = (_configItems["ExportPath"] + @"\").Replace(@"\\", @"\");
+                var path = (Settings.Default.ExportPath + @"\").Replace(@"\\", @"\");
                 var timestamp = DateTime.Now.ToString(FILE_DATE_FORMAT);
-                var accountsFile = path + "account_" + timestamp + ".txt";
-                var ordersFile = path + "orders_" + timestamp + ".txt";
+                var accountsFile = path + "account_" + timestamp + ".csv";
+                var ordersFile = path + "orders_" + timestamp + ".csv";
 
                 var client = new ExportDataServiceClient(_url, _token.SessionId, null);
 
@@ -97,14 +69,20 @@ namespace ExportTool
             }
             catch (Exception e)
             {
+                
                 Console.WriteLine("Problem when trying to export data");
+                Console.WriteLine(e.Message);
+                Console.WriteLine(e.StackTrace);
                 return;
             }
         }
 
         private static string Export(ExportDataServiceClient client, DataType type)
         {
-            var request = new ExportDataRequest() { StartDate = DateTime.Now.Subtract(TimeSpan.FromDays(1)), EndDate = DateTime.Now, Target = type };
+            var start = DateTime.Now.Date.Subtract(TimeSpan.FromDays(1)).Subtract(TimeSpan.FromSeconds(1));
+            var end = DateTime.Now.Date.Subtract(TimeSpan.FromSeconds(1));
+            
+            var request = new ExportDataRequest() { StartDate = start , EndDate = end , Target = type };
             var resultTask = client.GetOrders(request);
             resultTask.Wait();
             return resultTask.Result.ToString();

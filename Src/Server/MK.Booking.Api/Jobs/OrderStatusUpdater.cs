@@ -392,17 +392,8 @@ namespace apcurium.MK.Booking.Api.Jobs
             }
             else if (ibsOrderInfo.IsComplete)
             {
-                //FormatPrice
-                var total =
-                    Params.Get(ibsOrderInfo.Toll, ibsOrderInfo.Fare, ibsOrderInfo.Tip, ibsOrderInfo.VAT)
-                            .Select(amount => amount)
-                            .Sum();
-
-                description = total > 0
-                    ? string.Format(_resources.Get("OrderStatus_OrderDoneFareAvailable", _languageCode), _resources.FormatPrice(total))
-                    : _resources.Get("OrderStatus_wosDONE", _languageCode);
-                    
-               Log.DebugFormat("Setting Complete status description: {0}", description);
+                description = _resources.Get("OrderStatus_wosDONE", _languageCode);    
+                Log.DebugFormat("Setting Complete status description: {0}", description);
             }
             else if (ibsOrderInfo.IsLoaded)
             {
