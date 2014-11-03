@@ -79,5 +79,6 @@
 	"Eta" : "Le véhicule le plus proche est à {1} {2} et {0}",
 	"Estimate Display": "{0} {1}",
 	"AssignedEta" : "Votre véhicule est à {1} {2} et {0}",
-    "NetworkFleetDispatchErrorTitle": "Erreur"
+    "NetworkFleetDispatchErrorTitle": "Erreur",
+    "NetworkContactingNextDispatchDescription": "En attende de {0} ..."
 }

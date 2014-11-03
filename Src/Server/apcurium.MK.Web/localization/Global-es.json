@@ -79,5 +79,6 @@
 	"Estimate Display": "{0} {1}",
 	"Eta": "El Taxi más cercano es {0} y está a {1} {2} de distancia",
 	"AssignedEta": "Su Taxi es {0} y está a {1} {2} de distancia",
-    "NetworkFleetDispatchErrorTitle": "Error"
+    "NetworkFleetDispatchErrorTitle": "Error",
+    "NetworkContactingNextDispatchDescription": "Contacting {0} ..."
 }
