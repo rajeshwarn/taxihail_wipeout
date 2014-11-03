@@ -305,8 +305,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
+		private string _vehicleNumber;
         private bool _isCurrentlyPairing;
-		string _vehicleNumber;
 		private bool _isDispatchPopupVisible;
 
 		private async void RefreshStatus()
@@ -481,35 +481,40 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			return string.Format (this.Services ().Localize ["StatusEta"], direction.FormattedDistance, direction.Duration, durationUnit);
 		}
 
-		async Task UpdatePayCancelButtons (string statusId)
+		private async void UpdatePayCancelButtons (string statusId)
 		{
 			var paymentSettings = await _paymentService.GetPaymentSettings();
-			var isPayEnabled = paymentSettings.IsPayInTaxiEnabled || paymentSettings.PayPalClientSettings.IsEnabled;
+		    var isOrderAlreadyPaid = _paymentService.GetPaymentFromCache(Order.Id).HasValue;
 
-			// unpair is only available for RideLinqCMT
+            IsPayButtonVisible = ShouldDisplayPayButton(statusId, isOrderAlreadyPaid, paymentSettings);
+
+            IsCancelButtonVisible = _bookingService.IsOrderCancellable(statusId);
+
+            IsResendButtonVisible = isOrderAlreadyPaid
+                                && !paymentSettings.AutomaticPayment
+                                && (paymentSettings.IsPayInTaxiEnabled || paymentSettings.PayPalClientSettings.IsEnabled);
+
+			// Unpair button is only available for RideLinqCMT
 			IsUnpairButtonVisible = paymentSettings.PaymentMode == PaymentMethod.RideLinqCmt 
 								&& !paymentSettings.AutomaticPayment  			
-								&& _bookingService.IsPaired(Order.Id);      
-
-			IsPayButtonVisible = !Settings.HidePayNowButtonDuringRide
-								&& (statusId == VehicleStatuses.Common.Done								// passenger in car
-									|| statusId == VehicleStatuses.Common.Loaded)
-								&& !_paymentService.GetPaymentFromCache(Order.Id).HasValue				// not already paid
-								&& !paymentSettings.AutomaticPayment									// payment is processed automatically
-								&& !IsUnpairButtonVisible												// unpair visible (pair button is pay button in pairing situations) 
-								&& (Order.Settings.ChargeTypeId == null									// user is paying with a charge account
-									|| Order.Settings.ChargeTypeId != ChargeTypes.Account.Id)
-								&& ((paymentSettings.IsPayInTaxiEnabled									// if paypal or user has a credit card
-										&& _accountService.CurrentAccount.DefaultCreditCard != null) 
-									|| paymentSettings.PayPalClientSettings.IsEnabled)
-								&& OrderStatusDetail.CompanyKey == null;								// not dispatched to another company
-			
-			IsCancelButtonVisible = _bookingService.IsOrderCancellable (statusId);
-
-            IsResendButtonVisible = isPayEnabled 
-				&& !paymentSettings.AutomaticPayment 
-				&& _paymentService.GetPaymentFromCache(Order.Id).HasValue;
+								&& _bookingService.IsPaired(Order.Id);
 		}
+
+	    private bool ShouldDisplayPayButton(string statusId, bool isOrderAlreadyPaid, ClientPaymentSettings paymentSettings)
+	    {
+	        bool payingByChargeAccount = Order.Settings.ChargeTypeId == ChargeTypes.Account.Id;
+            bool passengersInCar = statusId == VehicleStatuses.Common.Loaded || statusId == VehicleStatuses.Common.Done;
+            bool hasCardOnFile = paymentSettings.IsPayInTaxiEnabled	&& _accountService.CurrentAccount.DefaultCreditCard != null;
+
+	        return !Settings.HidePayNowButtonDuringRide
+                && !paymentSettings.AutomaticPayment
+                && !isOrderAlreadyPaid
+                && !payingByChargeAccount
+	            && passengersInCar
+                && (hasCardOnFile || paymentSettings.PayPalClientSettings.IsEnabled) // Can pay by card or PayPal
+	            && !IsUnpairButtonVisible                                            // Unpair visible (pair button is pay button in pairing situations) 
+	            && OrderStatusDetail.CompanyKey == null;                             // Not dispatched to another company
+	    }
 
 		public void GoToSummary(){
 
