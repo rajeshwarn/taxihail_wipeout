@@ -371,27 +371,27 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                     numberOfItemsHidden++;
                 }
 				if (ViewModel.VehicleDriverHidden){ 
-                    tupleList[0] = Tuple.Create (tupleList[1].Item1, tupleList[1].Item2, true);
+                    tupleList[1] = Tuple.Create (tupleList[1].Item1, tupleList[1].Item2, true);
 					numberOfItemsHidden++;
 				}
 				if (ViewModel.VehicleLicenceHidden){ 
-                    tupleList[1] = Tuple.Create (tupleList[2].Item1, tupleList[2].Item2, true);
+                    tupleList[2] = Tuple.Create (tupleList[2].Item1, tupleList[2].Item2, true);
 					numberOfItemsHidden++;
 				}
 				if (ViewModel.VehicleTypeHidden){ 
-                    tupleList[2] = Tuple.Create (tupleList[3].Item1, tupleList[3].Item2, true);
+                    tupleList[3] = Tuple.Create (tupleList[3].Item1, tupleList[3].Item2, true);
 					numberOfItemsHidden++;
 				}
 				if (ViewModel.VehicleMakeHidden){ 
-                    tupleList[3] = Tuple.Create (tupleList[4].Item1, tupleList[4].Item2, true);
+                    tupleList[4] = Tuple.Create (tupleList[4].Item1, tupleList[4].Item2, true);
 					numberOfItemsHidden++;
 				}
 				if (ViewModel.VehicleModelHidden){ 
-                    tupleList[4] = Tuple.Create (tupleList[5].Item1, tupleList[5].Item2, true);
+                    tupleList[5] = Tuple.Create (tupleList[5].Item1, tupleList[5].Item2, true);
 					numberOfItemsHidden++;
 				}
 				if (ViewModel.VehicleColorHidden){ 
-                    tupleList[5] = Tuple.Create (tupleList[6].Item1, tupleList[6].Item2, true);
+                    tupleList[6] = Tuple.Create (tupleList[6].Item1, tupleList[6].Item2, true);
 					numberOfItemsHidden++;
 				}
 	
