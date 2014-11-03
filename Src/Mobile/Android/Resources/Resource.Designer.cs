@@ -4416,9 +4416,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f050071
 			public const int NetworkErrorTitle = 2131034225;
 			
-			// aapt resource value: 0x7f050275
-			public const int NetworkTimeOutPopupAlways = 2131034741;
-			
 			// aapt resource value: 0x7f050090
 			public const int NoAmountSelectedMessage = 2131034256;
 			

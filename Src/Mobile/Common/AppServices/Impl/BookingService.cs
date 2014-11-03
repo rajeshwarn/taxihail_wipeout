@@ -71,12 +71,12 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         {
             return await UseServiceClientAsync<OrderServiceClient, OrderStatusDetail>(service =>
                 service.SwitchOrderToNextDispatchCompany(
-                    new SwitchOrderToNextDispatchCompanyRequest(
+                    new SwitchOrderToNextDispatchCompanyRequest
                     {
                         OrderId = orderId,
                         NextDispatchCompanyKey = nextDispatchCompanyKey,
                         NextDispatchCompanyName = nextDispatchCompanyName
-                    }));
+					}));
         }
 
         public async Task IgnoreDispatchCompanySwitch(Guid orderId)
