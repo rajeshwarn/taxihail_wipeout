@@ -10,7 +10,7 @@ namespace apcurium.MK.Booking.MapDataProvider.Google.Resources
     {
         public string Description { get; set; }
         public string Id { get; set; }
-        public string Reference { get; set; }
+        public string Place_Id { get; set; }
         public List<string> Types { get; set; }
     }
 }

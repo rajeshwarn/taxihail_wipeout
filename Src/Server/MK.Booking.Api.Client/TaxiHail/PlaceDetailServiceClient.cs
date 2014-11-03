@@ -18,11 +18,11 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
         }
 
 
-        public Task<Address> GetPlaceDetail(string reference, string placeName)
+        public Task<Address> GetPlaceDetail(string placeId, string placeName)
         {
             var result = Client.GetAsync(new PlaceDetailRequest
             {
-                ReferenceId = reference,
+                PlaceId = placeId,
                 PlaceName = placeName
             });
             return result;
