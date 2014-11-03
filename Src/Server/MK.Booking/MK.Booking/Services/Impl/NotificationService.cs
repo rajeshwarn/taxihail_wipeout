@@ -11,6 +11,7 @@ using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Email;
 using apcurium.MK.Booking.Maps;
 using apcurium.MK.Booking.Maps.Geo;
+using apcurium.MK.Booking.Maps.Impl;
 using apcurium.MK.Booking.PushNotifications;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
@@ -337,10 +338,12 @@ namespace apcurium.MK.Booking.Services.Impl
                 && (!string.IsNullOrWhiteSpace(addressToUseForDropOff.FullAddress)
                     || !string.IsNullOrWhiteSpace(addressToUseForDropOff.DisplayAddress));
 
+            var points = _orderDao.GetVehiclePositions(orderId);
+            var encodedPath = PathUtility.Encode(points);
             var staticMapUri = positionForStaticMap.HasValue
                 ? _staticMap.GetStaticMapUri(
                     new Position(pickupAddress.Latitude, pickupAddress.Longitude),
-                    positionForStaticMap.Value,
+                    positionForStaticMap.Value, encodedPath,
                     300, 300, 1)
                 : string.Empty;
 

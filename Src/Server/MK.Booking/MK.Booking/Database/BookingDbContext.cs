@@ -37,6 +37,7 @@ namespace apcurium.MK.Booking.Database
                 .HasKey(x => x.OrderId)
                 .ToTable("OrderPairingDetail", SchemaName);
 
+            modelBuilder.Entity<OrderVehiclePositionDetail>().ToTable("OrderVehiclePositionDetail", SchemaName);
             modelBuilder.Entity<AccountDetail>().ToTable("AccountDetail", SchemaName);
             modelBuilder.Entity<DeviceDetail>().ToTable("DeviceDetail", SchemaName);
             modelBuilder.Entity<OrderStatusUpdateDetail>().ToTable("OrderStatusUpdateDetail", SchemaName);
