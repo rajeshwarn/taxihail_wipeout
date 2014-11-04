@@ -4,6 +4,9 @@ using apcurium.MK.Booking.MapDataProvider.Resources;
 using ServiceStack.ServiceClient.Web;
 using MonoTouch.CoreLocation;
 using System.Linq;
+using MonoTouch.AddressBookUI;
+using MonoTouch.Foundation;
+using System.Collections.Generic;
 
 namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 {
@@ -37,34 +40,37 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 
 			var result = geocoder.ReverseGeocodeLocationAsync (new CLLocation (latitude, longitude));
 			result.Wait ();
-			if (result.Exception != null) {
+
+			if (result.Exception != null) 
+            {
 				return new GeoAddress [0];
 			}
 
 			return result.Result.Select (ConvertPlacemarkToAddress).ToArray ();			
-
 		}
 
 		private GeoAddress ConvertPlacemarkToAddress (CLPlacemark placemark)
 		{		
 			var streetNumber = placemark.SubThoroughfare;
-			if ((streetNumber != null) && (streetNumber.Any (c => c == '–'))) {
+			if ((streetNumber != null) && (streetNumber.Any (c => c == '–'))) 
+            {
 				streetNumber = streetNumber.Substring (0, streetNumber.IndexOf ('–')); 
 			}
-			return  new GeoAddress { 
+
+            var t =  new GeoAddress 
+            { 
 				StreetNumber = streetNumber,
 				Street = placemark.Thoroughfare,
 				Latitude = placemark.Location.Coordinate.Latitude,
 				Longitude = placemark.Location.Coordinate.Longitude,
 				City = placemark.Locality,
-                FullAddress = string.Format("{0}, {1} {2}, {3}", placemark.Name, placemark.PostalCode, placemark.Locality, placemark.Country),
+                FullAddress = placemark.Description.Split(new []{" @"}, StringSplitOptions.RemoveEmptyEntries)[0],
 				State = placemark.AdministrativeArea,
 				ZipCode = placemark.PostalCode
 			};
 
+            return t;
 		}
-
-
 	}
 }
 
