@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CustomerPortal.Contract.Resources;
+﻿using CustomerPortal.Contract.Resources;
 
 namespace CustomerPortal.Contract.Response
 {

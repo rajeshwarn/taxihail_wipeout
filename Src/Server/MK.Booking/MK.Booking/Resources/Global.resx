@@ -123,9 +123,6 @@
   <data name="OrderStatus_CabDriverNumberAssigned" xml:space="preserve">
     <value>Cab {0} is assigned to you</value>
   </data>
-  <data name="OrderStatus_OrderDoneFareAvailable" xml:space="preserve">
-    <value>Completed ({0})</value>
-  </data>
   <data name="OrderStatus_wosAddrNotValid" xml:space="preserve">
     <value>The address is not valid</value>
   </data>

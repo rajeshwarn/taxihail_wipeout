@@ -1,16 +1,14 @@
-﻿#region
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using apcurium.MK.Common.Configuration;
-using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Enumeration;
 using Newtonsoft.Json;
 using PushSharp;
 using PushSharp.Android;
 using PushSharp.Apple;
 using PushSharp.Core;
-#endregion
+using ILogger = apcurium.MK.Common.Diagnostic.ILogger;
 
 namespace apcurium.MK.Booking.PushNotifications.Impl
 {
@@ -28,9 +26,7 @@ namespace apcurium.MK.Booking.PushNotifications.Impl
             _push = new PushBroker();
         }
 
-
-        public void Send(string alert, IDictionary<string, object> data, string deviceToken,
-            PushNotificationServicePlatform platform)
+        public void Send(string alert, IDictionary<string, object> data, string deviceToken, PushNotificationServicePlatform platform)
         {
             EnsureStarted();
 
@@ -101,6 +97,7 @@ namespace apcurium.MK.Booking.PushNotifications.Impl
                 .ForDeviceToken(deviceToken)
                 .WithAlert(alert)
                 .WithSound("default");
+
             foreach (var key in data.Keys)
             {
                 notification.WithCustomItem(key, new[] {data[key]});

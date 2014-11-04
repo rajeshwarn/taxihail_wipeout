@@ -39,6 +39,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				{
 					await LoadOrder();
 					await LoadStatus();
+
+					RaisePropertyChanged(() => StatusDescription); 
 				}
 			}
 		}
@@ -64,13 +66,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				{
                     AuthorizationNumber = _order.TransactionId + "";
                 }
-				RaisePropertyChanged(()=>Order); 
-				RaisePropertyChanged(()=>ConfirmationTxt); 
-				RaisePropertyChanged(()=>RequestedTxt); 
-				RaisePropertyChanged(()=>OriginTxt); 
-				RaisePropertyChanged(()=>AptRingTxt); 
-				RaisePropertyChanged(()=>DestinationTxt); 
-				RaisePropertyChanged(()=>PickUpDateTxt); 
+				RaisePropertyChanged(() => Order); 
+				RaisePropertyChanged(() => ConfirmationTxt); 
+				RaisePropertyChanged(() => RequestedTxt); 
+				RaisePropertyChanged(() => OriginTxt); 
+				RaisePropertyChanged(() => AptRingTxt); 
+				RaisePropertyChanged(() => DestinationTxt); 
+				RaisePropertyChanged(() => PickUpDateTxt); 
             }
 		}
 
@@ -142,7 +144,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			{ 
 				_hasRated = value;
 				RaisePropertyChanged ();
-				RaisePropertyChanged(()=>ShowRateButton);  
+				RaisePropertyChanged(() => ShowRateButton);  
 			}
         }
 
@@ -248,6 +250,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     : null;
             }
         }
+
+		public string StatusDescription
+		{
+			get
+			{
+				var amount = Order.Fare + Order.Tip + Order.Toll;
+
+				return Status.FareAvailable
+					? string.Format ("{0} ({1})", Status.IBSStatusDescription, CultureProvider.FormatCurrency(amount.Value))
+					: Status.IBSStatusDescription;
+			}
+		}
 
         public void RefreshOrderStatus (OrderRated orderRated)
 		{
