@@ -26,12 +26,12 @@ namespace apcurium.MK.Web.Tests
             throw new NotImplementedException();
         }
 
-        public Task<List<NetworkFleetResponse>> GetNetworkFleetAsync(string companyId, MapCoordinate coordinate = null)
+        public Task<List<NetworkFleetResponse>> GetNetworkFleetAsync(string companyId, double? latitude = null, double? longitude = null)
         {
             throw new NotImplementedException();
         }
 
-        public List<NetworkFleetResponse> GetNetworkFleet(string companyId, MapCoordinate coordinate = null)
+        public List<NetworkFleetResponse> GetNetworkFleet(string companyId, double? latitude = null, double? longitude = null)
         {
             return new List<NetworkFleetResponse> { new NetworkFleetResponse
             {

@@ -60,7 +60,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                 };
 
                 // Get network fleet from customer portal
-                var networkFleet = await _taxiHailNetworkServiceClient.GetNetworkFleetAsync(details.CompanyKey, userPosition);
+                var networkFleet = await _taxiHailNetworkServiceClient.GetNetworkFleetAsync(details.CompanyKey, order.PickupAddress.Latitude, order.PickupAddress.Longitude);
 
                 var nextDispatchCompany = FindNextDispatchCompany(details.CompanyKey, userPosition, networkFleet);
                 if (nextDispatchCompany != null)

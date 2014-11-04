@@ -294,23 +294,19 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
         [Test]
         public void When_Getting_Network_From_Coordinate()
         {
-            var position = new MapCoordinate{Latitude = 45.463944,Longitude = -73.643234};
-
-            var response = Sut.Post(_chrisTaxi.Id, position);
+            var response = Sut.Get(_chrisTaxi.Id,  45.463944, -73.643234);
             Assert.True(response.IsSuccessStatusCode);
             var json = response.Content.ReadAsStringAsync().Result;
             var result = JsonConvert.DeserializeObject<List<NetworkFleetResponse>>(json);
             Assert.IsNotEmpty(JsonConvert.DeserializeObject<List<NetworkFleetResponse>>(json));
 
-            var response3 = Sut.Post(_chrisTaxi.Id,new MapCoordinate());
+            var response3 = Sut.Get(_chrisTaxi.Id);
             Assert.True(response3.IsSuccessStatusCode);
             var json3 = response.Content.ReadAsStringAsync().Result;
             var result3 = JsonConvert.DeserializeObject<List<NetworkFleetResponse>>(json3);
             Assert.IsNotEmpty(JsonConvert.DeserializeObject<List<NetworkFleetResponse>>(json3));
 
-            var position2 = new MapCoordinate{Latitude = 46.359854,Longitude = -72.575015 };
-
-            var response2 = Sut.Post(_tonyTaxi.Id, position2);
+            var response2 = Sut.Get(_tonyTaxi.Id, 46.359854, -72.575015);
             Assert.True(response2.IsSuccessStatusCode);
             var json2 = response2.Content.ReadAsStringAsync().Result;
             Assert.IsEmpty(JsonConvert.DeserializeObject<List<NetworkFleetResponse>>(json2));

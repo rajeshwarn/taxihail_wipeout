@@ -1,4 +1,6 @@
-﻿using apcurium.MK.Common.Configuration;
+﻿using System.Collections.Generic;
+using System.Linq;
+using apcurium.MK.Common.Configuration;
 using System;
 using System.Net;
 using System.Net.Http;
@@ -32,6 +34,11 @@ namespace CustomerPortal.Client
             url = "http://localhost/CustomerPortal.Web/api/";
 #endif
             return url;
+        }
+
+        protected static string BuildQueryString(IEnumerable<KeyValuePair<string, string>> @params)
+        {
+            return "?" + string.Join("&", @params.Select(x => string.Join("=", x.Key, x.Value)));
         }
     }
 }

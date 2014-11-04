@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
-using System.Net.Http;
 using System.Threading.Tasks;
 using CustomerPortal.Contract.Resources;
 using CustomerPortal.Contract.Response;
-using Newtonsoft.Json;
 using apcurium.MK.Common.Configuration;
+using CustomerPortal.Client.Http.Extensions;
 
 namespace CustomerPortal.Client.Impl
 {
@@ -12,48 +11,45 @@ namespace CustomerPortal.Client.Impl
     {
         private readonly IServerSettings _serverSettings;
 
-        public TaxiHailNetworkServiceClient(IServerSettings serverSettings):base(serverSettings)
+        public TaxiHailNetworkServiceClient(IServerSettings serverSettings) : base(serverSettings)
         {
             _serverSettings = serverSettings;
         }
 
         public async Task<List<CompanyPreferenceResponse>> GetNetworkCompanyPreferences(string companyId)
         {
-            var response = await Client.GetAsync(string.Format(@"customer/{0}/network", companyId));
-            var json = await response.Content.ReadAsStringAsync();
-
-            return response.IsSuccessStatusCode 
-                ? JsonConvert.DeserializeObject<List<CompanyPreferenceResponse>>(json) 
-                : new List<CompanyPreferenceResponse>();
+            return await Client.Get(string.Format(@"customer/{0}/network", companyId))
+                               .Deserialize<List<CompanyPreferenceResponse>>();
         }
 
-        public List<NetworkFleetResponse> GetNetworkFleet(string companyId, MapCoordinate coordinate = null)
+        public Task<List<NetworkFleetResponse>> GetNetworkFleetAsync(string companyId, double? latitude = null, double? longitude = null)
         {
             var companyKey = companyId ?? _serverSettings.ServerData.TaxiHail.ApplicationKey;
 
-            var response = Client.PostAsJsonAsync(string.Format(@"customer/{0}/networkfleet", companyKey), coordinate).Result;
-            var json =  response.Content.ReadAsStringAsync().Result;
+            var @params = new Dictionary<string, string>
+                {
+                    {"latitude", latitude.ToString() },
+                    {"longitude", longitude.ToString() }
+                };
 
-            return response.IsSuccessStatusCode 
-                ? JsonConvert.DeserializeObject<List<NetworkFleetResponse>>(json) 
-                : new List<NetworkFleetResponse>();
+            string queryString = BuildQueryString(@params);
+
+            return Client.Get(string.Format("customer/{0}/networkfleet/", companyKey) + queryString)
+                         .Deserialize<List<NetworkFleetResponse>>();
         }
 
-        public async Task<List<NetworkFleetResponse>> GetNetworkFleetAsync(string companyId, MapCoordinate coordinate=null)
+
+        public List<NetworkFleetResponse> GetNetworkFleet(string companyId, double? latitude = null, double? longitude = null)
         {
-            var companyKey = companyId ?? _serverSettings.ServerData.TaxiHail.ApplicationKey;
+            var response = GetNetworkFleetAsync(companyId, latitude, longitude);
+            response.Wait();
 
-            var response = await Client.PostAsJsonAsync(string.Format(@"customer/{0}/networkfleet", companyKey), coordinate);
-            var json = await response.Content.ReadAsStringAsync();
-
-            return response.IsSuccessStatusCode 
-                ? JsonConvert.DeserializeObject<List<NetworkFleetResponse>>(json) 
-                : new List<NetworkFleetResponse>();
+            return response.Result;
         }
-        
+
         public Task SetNetworkCompanyPreferences(string companyId, CompanyPreference[] preferences)
         {
-            return Client.PostAsJsonAsync(string.Format(@"customer/{0}/network", companyId), preferences);
+            return Client.Post(string.Format(@"customer/{0}/network", companyId), preferences);
         }
     }
 }

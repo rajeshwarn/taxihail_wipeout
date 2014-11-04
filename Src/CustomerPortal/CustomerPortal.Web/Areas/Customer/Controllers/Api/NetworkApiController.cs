@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -54,7 +55,7 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
             {
 
                 var companyPreference = networkSettings.Preferences.FirstOrDefault(p => p.CompanyKey == nearbyCompany.Id) 
-                			?? new CompanyPreference{CompanyKey = nearbyCompany.Id};
+                			?? new CompanyPreference{ CompanyKey = nearbyCompany.Id };
 
                 var nearbyCompanyAllowUsToDispatch = nearbyCompany.Preferences.Any(x => x.CompanyKey == companyId && x.CanAccept);
 
@@ -64,34 +65,33 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
                     CanDispatchTo = nearbyCompanyAllowUsToDispatch
                 });
             }
-            var sortedCompanyPreferences = preferences
-                .OrderBy(p => p.CompanyPreference.Order==null)
-                .ThenBy(p => p.CompanyPreference.Order);
-            var response = new HttpResponseMessage(HttpStatusCode.OK)
-            {
 
+            var sortedCompanyPreferences = preferences
+                .OrderBy(p => p.CompanyPreference.Order == null)
+                .ThenBy(p => p.CompanyPreference.Order);
+
+            return new HttpResponseMessage(HttpStatusCode.OK)
+            {
                 Content = new StringContent(JsonConvert.SerializeObject(sortedCompanyPreferences))
             };
-            return response;
         }
 
         [Route("api/customer/{companyId}/network")]
         public HttpResponseMessage Post(string companyId, CompanyPreference[] preferences)
         {
-            var taxiHailNetworkSetting = _networkRepository.Select(x => x).ToList();
-            var networkSetting = taxiHailNetworkSetting.FirstOrDefault(x => x.Id==companyId);
+            var networkSetting = _networkRepository.FirstOrDefault(x => x.Id == companyId);
 
             if (networkSetting == null)
             {
                 return new HttpResponseMessage(HttpStatusCode.Forbidden); 
             }
             
-            foreach (var companyPreference in preferences.Where(p=>!p.CanAccept))
+            foreach (var companyPreference in preferences.Where(p => !p.CanAccept))
             {
-                var company = taxiHailNetworkSetting.FirstOrDefault(x => x.Id == companyPreference.CompanyKey);
+                var company = _networkRepository.FirstOrDefault(x => x.Id == companyPreference.CompanyKey);
                 if (company != null)
                 {
-                   var theirPreference= company.Preferences.FirstOrDefault(p => p.CompanyKey == companyId);
+                    var theirPreference = company.Preferences.FirstOrDefault(p => p.CompanyKey == companyId);
                     if (theirPreference != null)
                     {
                         theirPreference.CanDispatch = false;
@@ -99,23 +99,29 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
                     }
                 }
             }
+
             networkSetting.Preferences = preferences.ToList();
 
             _networkRepository.Update(networkSetting);
 
             return new HttpResponseMessage(HttpStatusCode.OK);
-
-
         }
 
         [Route("api/customer/{companyId}/networkfleet")]
-        public HttpResponseMessage Post(string companyId, [FromBody] MapCoordinate coordinate)
+        public HttpResponseMessage Get(string companyId, double? latitude, double? longitude)
         {
-            var networkSettings = _networkRepository.Select(x => x).ToList();
+            MapCoordinate coordinate = null;
 
-            var companies = _companyRepository.Select(x => x).ToList();
+            if (latitude.HasValue && longitude.HasValue)
+            {
+                coordinate = new MapCoordinate
+                {
+                    Latitude = latitude.Value,
+                    Longitude = longitude.Value
+                };
+            }
 
-            var currentCompanyNetworkSettings = networkSettings.FirstOrDefault(n => n.Id == companyId);
+            var currentCompanyNetworkSettings = _networkRepository.FirstOrDefault(n => n.Id == companyId);
 
             if (currentCompanyNetworkSettings == null || !currentCompanyNetworkSettings.IsInNetwork)
             {
@@ -124,9 +130,12 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
 
             var networkFleetResult = new List<NetworkFleetResponse>();
 
-            foreach (var currentCompanyPreferences in currentCompanyNetworkSettings.Preferences.Where(n => n.CanDispatch).OrderBy(n=>n.Order))
+            // Find all companies that are setup to dispatch orders
+            var dispatchableCompanies = currentCompanyNetworkSettings.Preferences.Where(n => n.CanDispatch).OrderBy(n => n.Order);
+
+            foreach (var companyPreferences in dispatchableCompanies)
             {
-                var company = companies.FirstOrDefault(c => c.CompanyKey == currentCompanyPreferences.CompanyKey);
+                var company = _companyRepository.FirstOrDefault(c => c.CompanyKey == companyPreferences.CompanyKey);
                 if (company != null)
                 {
                     var fleet = new NetworkFleetResponse
@@ -137,11 +146,14 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
                         IbsUserName = company.IBS.Username,
                         IbsUrl = company.IBS.ServiceUrl
                     };
+
                     if (coordinate != null)
                     {
-                        var companyNearCoordinate = networkSettings.Any(n => n.Id == currentCompanyPreferences.CompanyKey && n.Region.Contains(coordinate));
-                        if (companyNearCoordinate)
+                        // Do not use Any(...) because the c# mongo driver doesn't support the Any clause with a predicate
+                        var isCompanyInZone = _networkRepository.Where(n => n.Id == companyPreferences.CompanyKey && n.Region.Contains(coordinate)).Any();
+                        if (isCompanyInZone)
                         {
+                            // Company coverage is in the network zone. Add it to the fleet.
                             networkFleetResult.Add(fleet);
                         }
                     }
@@ -152,11 +164,10 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
                 }
             }
 
-            var response = new HttpResponseMessage(HttpStatusCode.OK)
+            return new HttpResponseMessage(HttpStatusCode.OK)
             {
                 Content = new StringContent(JsonConvert.SerializeObject(networkFleetResult))
             };
-            return response;
         }
     }
 }
