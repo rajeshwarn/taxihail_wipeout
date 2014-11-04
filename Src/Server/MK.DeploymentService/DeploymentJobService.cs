@@ -181,7 +181,7 @@ namespace MK.DeploymentService
             bParam.Loggers = new ArraySegment<ILogger>(new ILogger[] {new BuildLogger(txt => Log(txt))});
             
             Log("Restore nuget packages");
-            var restorePackages = ProcessEx.GetProcess("nuget.exe", "restore", null, true);
+            var restorePackages = ProcessEx.GetProcess("nuget.exe", "restore" + " " + slnFilePath, null, true);
             using (var exeProcess = Process.Start(restorePackages))
             {
                 exeProcess.OutputDataReceived += exeProcess_OutputDataReceived;
