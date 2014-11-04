@@ -215,7 +215,7 @@ namespace apcurium.MK.Web.Tests
         public async void try_to_switch_order_to_next_dispatch_company_when_not_timedout()
         {
             var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
-            var order = await sut.GetOrder(_orderId);
+            var order = await sut.GetOrderStatus(_orderId);
 
             var orderStatus = await sut.SwitchOrderToNextDispatchCompany(new SwitchOrderToNextDispatchCompanyRequest
                 {
