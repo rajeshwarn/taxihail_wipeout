@@ -6,6 +6,8 @@ using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.ViewModels.Payment;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Entity;
+using apcurium.MK.Common.Enumeration;
+using ServiceStack.Common;
 using ServiceStack.Text;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
@@ -313,6 +315,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             if (Phone.Count(Char.IsDigit) < 10)
             {
                 this.Services().Message.ShowMessage(this.Services().Localize["UpdateBookingSettingsInvalidDataTitle"], this.Services().Localize["InvalidPhoneErrorMessage"]);
+                return false;
+            }
+            if (ChargeTypeId == ChargeTypes.Account.Id && string.IsNullOrWhiteSpace(AccountNumber))
+            {
+                this.Services().Message.ShowMessage(this.Services().Localize["UpdateBookingSettingsInvalidDataTitle"], this.Services().Localize["UpdateBookingSettingsEmptyAccount"]);
                 return false;
             }
 

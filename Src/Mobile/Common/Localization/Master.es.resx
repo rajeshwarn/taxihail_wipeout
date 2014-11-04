@@ -2231,7 +2231,10 @@
   <data name="TaxiHailNetworkTimeOutPopupAlways" xml:space="preserve">
     <value>Always Accept</value>
   </data>
- <data name="NetworkContactingNextDispatchDescription" xml:space="preserve">
+  <data name="NetworkContactingNextDispatchDescription" xml:space="preserve">
     <value>Contacting {0} ...</value>
+  </data>
+  <data name="UpdateBookingSettingsEmptyAccount" xml:space="preserve">
+    <value>Account number cannot be empty when Charge Type is set to Charge Account</value>
   </data>
 </root>

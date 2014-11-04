@@ -559,4 +559,6 @@
   <string name="TaxiHailNetworkTimeOutErrorTitle">Error</string>
   <string name="NetworkContactingNextDispatchDescription">Contacting {0} ...</string>
   <string name="TaxiHailNetworkTimeOutPopupAlways">Always Accept</string>
+  <string name="NetworkTimeOutPopupAlways">Always Accept</string>
+  <string name="UpdateBookingSettingsEmptyAccount">Account number cannot be empty when Charge Type is set to Charge Account</string>
 </resources>

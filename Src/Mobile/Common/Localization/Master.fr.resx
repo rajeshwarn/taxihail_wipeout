@@ -1725,7 +1725,10 @@
   <data name="TaxiHailNetworkTimeOutPopupAlways" xml:space="preserve">
     <value>Toujours accepter</value>
   </data>
- <data name="NetworkContactingNextDispatchDescription" xml:space="preserve">
+  <data name="NetworkContactingNextDispatchDescription" xml:space="preserve">
     <value>En attente de {0} ...</value>
+  </data>
+  <data name="UpdateBookingSettingsEmptyAccount" xml:space="preserve">
+    <value>Le numéro de compte de peut être vide lorsque le mode de paiement sélectionné est Compte</value>
   </data>
 </root>

@@ -542,4 +542,6 @@
   <string name="TaxiHailNetworkTimeOutErrorTitle">Erreur</string>
   <string name="NetworkContactingNextDispatchDescription">En attente de {0} ...</string>
   <string name="TaxiHailNetworkTimeOutPopupAlways">Toujours accepter</string>
+  <string name="NetworkTimeOutPopupAlways">Toujours Accepter</string>
+  <string name="UpdateBookingSettingsEmptyAccount">Le numéro de compte de peut être vide lorsque le mode de paiement sélectionné est Compte</string>
 </resources>
