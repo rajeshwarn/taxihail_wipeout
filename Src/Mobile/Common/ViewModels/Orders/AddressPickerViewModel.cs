@@ -107,7 +107,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
 			if (_currentAddress != null)
 			{
-				var currentPosition = new apcurium.MK.Booking.Maps.Geo.Position(_currentAddress.Latitude, _currentAddress.Longitude);
+				var currentPosition = new Maps.Geo.Position(_currentAddress.Latitude, _currentAddress.Longitude);
 				addressViewModels = addressViewModels.OrderBy(a => a.ToPosition().DistanceTo(currentPosition)).ToArray();
 			}
 

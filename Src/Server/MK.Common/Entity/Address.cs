@@ -60,8 +60,7 @@ namespace apcurium.MK.Common.Entity
 
         private string ConcatAddressComponents(bool useBuildingName = false)
         {
-            var components =
-                new[] {StreetNumber, Street, City, State, ZipCode}.Where(x => !string.IsNullOrWhiteSpace(x)).ToArray();
+            var components = new[] { StreetNumber, Street, City, State, ZipCode }.Where(x => !string.IsNullOrWhiteSpace(x)).ToArray();
             if ((components.Length > 1) && (StreetNumber.HasValue()) && (Street.HasValue()))
             {
                 // StreetNumber Street, City, State ZipCode
@@ -81,32 +80,14 @@ namespace apcurium.MK.Common.Entity
             return FullAddress;
         }
 
-        public void UpdateStreetOrNumberBuildingName(string streetNumberBuildingName)
-        {
-            if (streetNumberBuildingName.HasValue())
-            {
-                if (streetNumberBuildingName.IsDigit())
-                {
-                    StreetNumber = streetNumberBuildingName;
-                    BuildingName = null;
-                }
-                else
-                {
-                    BuildingName = streetNumberBuildingName;
-                }
-            }
-        }
-
         public string GetFirstPortionOfAddress()
         {
             if ( (DisplayAddress.HasValue()) && ( DisplayAddress.Contains( "," ) ) )
             {
                 return DisplayAddress.Split(',').First();
             }
-            else
-            {
-                return DisplayAddress;
-            }
+
+            return DisplayAddress;
         }
 
         /// <summary>

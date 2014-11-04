@@ -114,8 +114,8 @@ namespace apcurium.MK.Booking.Api
 
             Mapper.CreateMap<PaymentSettings, Commands.CreateOrder.PaymentInformation>();
             Mapper.CreateMap<BookingSettings, SendBookingConfirmationEmail.BookingSettings>();
-            Mapper.CreateMap<Address, IbsAddress>()
-                .ForMember(x => x.FullAddress, y => y.ResolveUsing(a => a.BookAddress));
+            Mapper.CreateMap<Address, IbsAddress>();
+//                .ForMember(x => x.FullAddress, y => y.ResolveUsing(a => a.BookAddress));
 
             Mapper.CreateMap<OrderStatusDetail, OrderStatusRequestResponse>();
             Mapper.CreateMap<OrderPairingDetail, OrderPairingResponse>();
