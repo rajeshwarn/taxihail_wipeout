@@ -185,7 +185,10 @@ namespace MK.DeploymentService
             using (var exeProcess = Process.Start(restorePackages))
             {
                 exeProcess.OutputDataReceived += exeProcess_OutputDataReceived;
+
                 var output = ProcessEx.GetOutput(exeProcess);
+
+                exeProcess.WaitForExit();
                 if (exeProcess.ExitCode > 0)
                 {
                     throw new Exception("Error during nuget package restore step" + output);
