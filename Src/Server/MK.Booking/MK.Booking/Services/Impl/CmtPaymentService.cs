@@ -314,7 +314,6 @@ namespace apcurium.MK.Booking.Services.Impl
                     isSuccessful = true;
                     
                     var paymentId = Guid.NewGuid();
-
                     _commandBus.Send(new InitiateCreditCardPayment
                     {
                         PaymentId = paymentId,
