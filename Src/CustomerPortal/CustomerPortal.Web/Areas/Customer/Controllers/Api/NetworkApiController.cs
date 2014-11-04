@@ -1,16 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using CustomerPortal.Contract.Resources;
 using CustomerPortal.Contract.Response;
-using CustomerPortal.Web.Areas.Customer.Models.RequestResponse;
 using CustomerPortal.Web.Entities;
 using CustomerPortal.Web.Entities.Network;
 using CustomerPortal.Web.Extensions;
-using Microsoft.Ajax.Utilities;
 using MongoRepository;
 using Newtonsoft.Json;
 
@@ -110,6 +107,9 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
         [Route("api/customer/{companyId}/networkfleet")]
         public HttpResponseMessage Get(string companyId, double? latitude, double? longitude)
         {
+            // Cast mongo repo to list to have access to all the LINQ enumerators without the mongo driver restriction
+            var network = _networkRepository.ToList();
+
             MapCoordinate coordinate = null;
 
             if (latitude.HasValue && longitude.HasValue)
@@ -121,7 +121,7 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
                 };
             }
 
-            var currentCompanyNetworkSettings = _networkRepository.FirstOrDefault(n => n.Id == companyId);
+            var currentCompanyNetworkSettings = network.FirstOrDefault(n => n.Id == companyId);
 
             if (currentCompanyNetworkSettings == null || !currentCompanyNetworkSettings.IsInNetwork)
             {
@@ -149,8 +149,7 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
 
                     if (coordinate != null)
                     {
-                        // Do not use Any(...) because the c# mongo driver doesn't support the Any clause with a predicate
-                        var isCompanyInZone = _networkRepository.Where(n => n.Id == companyPreferences.CompanyKey && n.Region.Contains(coordinate)).Any();
+                        var isCompanyInZone = network.Any(n => n.Id == companyPreferences.CompanyKey && n.Region.Contains(coordinate));
                         if (isCompanyInZone)
                         {
                             // Company coverage is in the network zone. Add it to the fleet.
