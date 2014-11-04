@@ -5,6 +5,9 @@ using System.Linq;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.ReadModel;
+using apcurium.MK.Common;
+using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
 using Infrastructure.Messaging.Handling;
 
@@ -16,13 +19,14 @@ namespace apcurium.MK.Booking.EventHandlers
         IEventHandler<CreditCardPaymentInitiated>,
         IEventHandler<CreditCardPaymentCaptured>,
         IEventHandler<CreditCardErrorThrown>
-
     {
         private readonly Func<BookingDbContext> _contextFactory;
+        private readonly Resources.Resources _resources;
 
-        public CreditCardPaymentDetailsGenerator(Func<BookingDbContext> contextFactory)
+        public CreditCardPaymentDetailsGenerator(Func<BookingDbContext> contextFactory, IServerSettings serverSettings)
         {
             _contextFactory = contextFactory;
+            _resources = new Resources.Resources(serverSettings);
         }
 
         public void Handle(CreditCardPaymentCaptured @event)
@@ -31,24 +35,29 @@ namespace apcurium.MK.Booking.EventHandlers
             {
                 var payment = context.Set<OrderPaymentDetail>().Find(@event.SourceId);
                 if (payment == null)
+                {
                     throw new InvalidOperationException("Payment not found");
-
+                }
+                    
                 payment.AuthorizationCode = @event.AuthorizationCode;
                 payment.IsCompleted = true;
                 payment.Amount = @event.Amount;
                 payment.Meter = @event.Meter;
                 payment.Tip = @event.Tip;
 
-                var order = context.Set<OrderDetail>().Single(o => o.Id == payment.OrderId);
+                var order = context.Find<OrderDetail>(payment.OrderId);
                 if (!order.Fare.HasValue || order.Fare == 0)
                 {
                     order.Fare = Convert.ToDouble(payment.Meter);
                 }
-
                 if (!order.Tip.HasValue || order.Tip == 0)
                 {
                     order.Tip = Convert.ToDouble(payment.Tip);
                 }
+
+                var orderStatus = context.Find<OrderStatusDetail>(payment.OrderId);
+                orderStatus.IBSStatusId = VehicleStatuses.Common.Done;
+                orderStatus.IBSStatusDescription = _resources.Get("OrderStatus_wosDone", order.ClientLanguageCode);
 
                 context.SaveChanges();
             }

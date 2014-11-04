@@ -88,7 +88,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 var paymentDetail = _paymentDao.FindNonPayPalByOrderId(orderId);
 
                 if (paymentDetail == null)
-                    throw new Exception("Payment not found");
+                    throw new Exception(string.Format("Payment for order {0} not found", orderId));
 
                 Void(paymentDetail.TransactionId, ref message);
             }

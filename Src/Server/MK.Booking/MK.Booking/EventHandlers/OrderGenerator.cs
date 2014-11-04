@@ -64,7 +64,7 @@ namespace apcurium.MK.Booking.EventHandlers
                 {
                     details.Status = OrderStatus.Canceled;
                     details.IBSStatusId = VehicleStatuses.Common.CancelledDone;
-                    details.IBSStatusDescription = "Order Cancelled";
+                    details.IBSStatusDescription = _resources.Get("OrderStatus_wosCANCELLED", order != null ? order.ClientLanguageCode : "en");
                     context.Save(details);
                 }
             }
@@ -107,7 +107,7 @@ namespace apcurium.MK.Booking.EventHandlers
                         AccountId = @event.AccountId,
                         IBSOrderId  = @event.IBSOrderId,
                         Status = OrderStatus.Created,
-                        IBSStatusDescription = (string)_resources.Get("OrderStatus_wosWAITING", @event.ClientLanguageCode),
+                        IBSStatusDescription = _resources.Get("OrderStatus_wosWAITING", @event.ClientLanguageCode),
                         PickupDate = @event.PickupDate,
                         Name = @event.Settings != null ? @event.Settings.Name : null
                     });
