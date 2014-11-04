@@ -53,16 +53,16 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                     throw new InvalidOperationException("Order not found");
                 }
 
-                var userPosition = new MapCoordinate
+                var pickUpPosition = new MapCoordinate
                 {
                     Latitude = order.PickupAddress.Latitude,
                     Longitude = order.PickupAddress.Longitude
                 };
 
                 // Get network fleet from customer portal
-                var networkFleet = await _taxiHailNetworkServiceClient.GetNetworkFleetAsync(details.CompanyKey, order.PickupAddress.Latitude, order.PickupAddress.Longitude);
+                var networkFleet = await _taxiHailNetworkServiceClient.GetNetworkFleetAsync(details.CompanyKey, pickUpPosition.Latitude, pickUpPosition.Longitude);
 
-                var nextDispatchCompany = FindNextDispatchCompany(details.CompanyKey, userPosition, networkFleet);
+                var nextDispatchCompany = FindNextDispatchCompany(details.CompanyKey, pickUpPosition, networkFleet);
                 if (nextDispatchCompany != null)
                 {
                     _commandBus.Send(new PrepareOrderForNextDispatch
