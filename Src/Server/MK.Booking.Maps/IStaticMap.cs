@@ -4,6 +4,6 @@ namespace apcurium.MK.Booking.Maps
 {
     public interface IStaticMap
     {
-        string GetStaticMapUri(Position pickup, Position dropOff, float width, float height, float scale);
+        string GetStaticMapUri(Position pickup, Position dropOff, string encodedPath, float width, float height, float scale);
     }
 }

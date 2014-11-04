@@ -181,6 +181,29 @@ namespace apcurium.MK.Booking.ReadModel.Query
                 orderStatus.VehicleLongitude = newLongitude;
 
                 context.Save(orderStatus);
+
+                if (newLatitude.HasValue && newLongitude.HasValue)
+                {
+                    context.Save(new OrderVehiclePositionDetail
+                    {
+                        OrderId = orderId,
+                        Latitude = newLatitude.Value,
+                        Longitude = newLongitude.Value,
+                        DateOfPosition = DateTime.UtcNow
+                    });
+                }
+            }
+        }
+
+        public IEnumerable<Position> GetVehiclePositions(Guid orderId)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var vehiclePositions = context.Query<OrderVehiclePositionDetail>().Where(x => x.OrderId == orderId);
+                return vehiclePositions
+                    .OrderBy(x => x.DateOfPosition)
+                    .ToList()
+                    .Select(x => new Position(x.Latitude, x.Longitude));
             }
         }
     }

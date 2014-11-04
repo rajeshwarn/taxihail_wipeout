@@ -61,6 +61,7 @@
     <Compile Include="Impl\Geocoding.cs" />
     <Compile Include="Impl\Addresses.cs" />
     <Compile Include="Impl\Mappers\GeoObjToAddressMapper.cs" />
+    <Compile Include="Impl\PathUtility.cs" />
     <Compile Include="Impl\Places.cs" />
     <Compile Include="Impl\PriceCalculator.cs" />
     <Compile Include="Impl\StaticMap.cs" />

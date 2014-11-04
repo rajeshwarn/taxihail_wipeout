@@ -132,6 +132,7 @@
     <Compile Include="Entity\ListItem.cs" />
     <Compile Include="Entity\OrderStatus.cs" />
     <Compile Include="Entity\OrderStatusDetail.cs" />
+    <Compile Include="Entity\OrderVehiclePositionDetail.cs" />
     <Compile Include="Entity\RatingTypeWrapper.cs" />
     <Compile Include="Entity\Rule.cs" />
     <Compile Include="Entity\RuleCategory.cs" />

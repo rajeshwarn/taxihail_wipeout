@@ -125,6 +125,9 @@ namespace DatabaseInitializer
                         "IIS APPPOOL\\" + param.CompanyName, param.CompanyName);
                 }
 
+                // create indexes
+                creatorDb.CreateIndexes(param.MasterConnectionString, param.CompanyName);
+
                 //Copy Domain Events
                 if (isUpdate)
                 {

@@ -5,10 +5,11 @@ namespace apcurium.MK.Booking.Maps.Impl
 {
     public class StaticMap : IStaticMap
     {
-        public string GetStaticMapUri(Position pickup, Position dropOff, float width, float height, float scale)
+        public string GetStaticMapUri(Position pickup, Position dropOff, string encodedPath, float width, float height, float scale)
         {
-            // When we decide to show the route between pickup and dropoff, use encodedPolylines
-            var encodedPolylines = "";
+            var encodedPolylinesParam = !string.IsNullOrWhiteSpace(encodedPath) 
+                ? string.Format("&path=enc:{0}", encodedPath)
+                : string.Empty;
 
             var dropOffString = string.Empty;
             if (dropOff.Latitude != 0
@@ -23,7 +24,7 @@ namespace apcurium.MK.Booking.Maps.Impl
                 "&size={0}x{1}" +
                 "&scale={2}" +
                 "{5}"
-                , width, height, scale, pickup.ToString(), dropOffString, encodedPolylines));
+                , width, height, scale, pickup.ToString(), dropOffString, encodedPolylinesParam));
         }
     }
 }
