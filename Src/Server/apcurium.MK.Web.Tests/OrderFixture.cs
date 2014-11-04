@@ -1,15 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Data.Entity;
 using System.Linq;
 using System.Threading;
-using apcurium.MK.Booking.Api.Client;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Requests;
-using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Database;
-using apcurium.MK.Booking.EventHandlers.Integration;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Entity;
@@ -216,7 +212,7 @@ namespace apcurium.MK.Web.Tests
         }
 
         [Test]
-        public async void order_switched_to_next_dispatch_company()
+        public async void try_to_switch_order_to_next_dispatch_company_when_not_timedout()
         {
             var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
             var order = await sut.GetOrder(_orderId);
@@ -230,10 +226,8 @@ namespace apcurium.MK.Web.Tests
 
             Assert.NotNull(orderStatus);
             Assert.AreEqual(_orderId, orderStatus.OrderId);
-            Assert.NotNull(orderStatus.IBSOrderId);
-            Assert.AreNotEqual(order.IBSOrderId, orderStatus.IBSOrderId);
-            Assert.AreEqual(OrderStatus.Created, orderStatus.Status);
-            Assert.AreEqual("x2s42", orderStatus.CompanyKey);
+            Assert.AreEqual(order.IBSOrderId, orderStatus.IBSOrderId);
+            Assert.AreEqual(order.Status, orderStatus.Status);
             Assert.IsNull(orderStatus.NextDispatchCompanyKey);
             Assert.IsNull(orderStatus.NextDispatchCompanyName);
         }
