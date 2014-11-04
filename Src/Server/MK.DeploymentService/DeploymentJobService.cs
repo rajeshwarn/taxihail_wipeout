@@ -179,6 +179,20 @@ namespace MK.DeploymentService
             Log("Setting logger");
 
             bParam.Loggers = new ArraySegment<ILogger>(new ILogger[] {new BuildLogger(txt => Log(txt))});
+            
+            Log("Restore nuget packages");
+            var restorePackages = ProcessEx.GetProcess("nuget.exe", "restore", null, true);
+            using (var exeProcess = Process.Start(restorePackages))
+            {
+                exeProcess.OutputDataReceived += exeProcess_OutputDataReceived;
+                var output = ProcessEx.GetOutput(exeProcess);
+                if (exeProcess.ExitCode > 0)
+                {
+                    throw new Exception("Error during nuget package restore step" + output);
+                }
+
+                Log("Restore nuget packages finished");
+            }
 
             var buildResult = BuildManager.DefaultBuildManager.Build(bParam, buildRequestData);
 
