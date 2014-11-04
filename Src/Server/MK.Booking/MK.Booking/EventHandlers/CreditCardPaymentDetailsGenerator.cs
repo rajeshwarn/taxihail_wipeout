@@ -57,7 +57,7 @@ namespace apcurium.MK.Booking.EventHandlers
 
                 var orderStatus = context.Find<OrderStatusDetail>(payment.OrderId);
                 orderStatus.IBSStatusId = VehicleStatuses.Common.Done;
-                orderStatus.IBSStatusDescription = _resources.Get("OrderStatus_wosDone", order.ClientLanguageCode);
+                orderStatus.IBSStatusDescription = _resources.Get("OrderStatus_wosDONE", order.ClientLanguageCode);
 
                 context.SaveChanges();
             }

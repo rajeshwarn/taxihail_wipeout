@@ -11,6 +11,7 @@ using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
+using apcurium.MK.Common.Extensions;
 using AutoMapper;
 
 #endregion
@@ -182,7 +183,9 @@ namespace apcurium.MK.Booking.ReadModel.Query
 
                 context.Save(orderStatus);
 
-                if (newLatitude.HasValue && newLongitude.HasValue)
+                if (VehicleStatuses.LogVehiclePositionForOrderStatuses.Any(s => s.SoftEqual(orderStatus.IBSStatusId))
+                    && newLatitude.HasValue 
+                    && newLongitude.HasValue)
                 {
                     context.Save(new OrderVehiclePositionDetail
                     {
