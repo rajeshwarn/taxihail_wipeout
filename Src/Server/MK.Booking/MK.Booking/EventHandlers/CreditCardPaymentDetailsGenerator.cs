@@ -48,11 +48,11 @@ namespace apcurium.MK.Booking.EventHandlers
                 var order = context.Find<OrderDetail>(payment.OrderId);
                 if (!order.Fare.HasValue || order.Fare == 0)
                 {
-                    order.Fare = Convert.ToDouble(payment.Meter);
+                    order.Fare = Convert.ToDouble(@event.Meter);
                 }
                 if (!order.Tip.HasValue || order.Tip == 0)
                 {
-                    order.Tip = Convert.ToDouble(payment.Tip);
+                    order.Tip = Convert.ToDouble(@event.Tip);
                 }
 
                 var orderStatus = context.Find<OrderStatusDetail>(payment.OrderId);
