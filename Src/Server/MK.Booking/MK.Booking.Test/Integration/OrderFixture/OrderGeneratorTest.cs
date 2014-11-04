@@ -80,7 +80,8 @@ namespace apcurium.MK.Booking.Test.Integration.OrderFixture
                 CreatedDate = createdDate,
                 ClientLanguageCode = "fr",
                 UserAgent = "TestUserAgent",
-                ClientVersion = "1.0.0"
+                ClientVersion = "1.0.0",
+                UserNote = "une note"
             });
 
             using (var context = new BookingDbContext(DbName))
@@ -101,6 +102,7 @@ namespace apcurium.MK.Booking.Test.Integration.OrderFixture
                 Assert.AreEqual("fr", dto.ClientLanguageCode);
                 Assert.AreEqual("TestUserAgent", dto.UserAgent);
                 Assert.AreEqual("1.0.0", dto.ClientVersion);
+                Assert.AreEqual("une note", dto.UserNote);
 
                 //Settings
                 Assert.AreEqual(99, dto.Settings.ChargeTypeId);
@@ -306,6 +308,84 @@ namespace apcurium.MK.Booking.Test.Integration.OrderFixture
                 var dto = context.Find<OrderDetail>(_orderId);
                 Assert.NotNull(dto);
                 Assert.IsTrue(dto.IsRemovedFromHistory);
+            }
+        }
+
+        [Test]
+        public void when_order_dispatch_company_changed_then_dto_updated()
+        {
+            const string dispatchCompanyName = "Kukai Foundation";
+            const string dispatchCompanyKey = "123456";
+
+            Sut.Handle(new OrderPreparedForNextDispatch
+            {
+                SourceId = _orderId,
+                DispatchCompanyName = dispatchCompanyName,
+                DispatchCompanyKey = dispatchCompanyKey
+            });
+
+            using (var context = new BookingDbContext(DbName))
+            {
+                var dto = context.Find<OrderStatusDetail>(_orderId);
+                Assert.NotNull(dto);
+                Assert.AreEqual(_orderId, dto.OrderId);
+                Assert.AreEqual(dispatchCompanyName, dto.NextDispatchCompanyName);
+                Assert.AreEqual(dispatchCompanyKey, dto.NextDispatchCompanyKey);
+                Assert.AreEqual(OrderStatus.TimedOut, dto.Status);
+            }
+        }
+
+        [Test]
+        public void when_order_switched_to_next_dispatch_company_then_dto_updated()
+        {
+            const int ibsOrderId = 98754;
+            const string dispatchCompanyKey = "x2s42";
+            const string dispatchCompanyName = "Vector Industries";
+
+            Sut.Handle(new OrderSwitchedToNextDispatchCompany
+            {
+                SourceId = _orderId,
+                IBSOrderId = ibsOrderId,
+                CompanyKey = dispatchCompanyKey,
+                CompanyName = dispatchCompanyName
+            });
+
+            using (var context = new BookingDbContext(DbName))
+            {
+                var orderDto = context.Find<OrderDetail>(_orderId);
+                Assert.NotNull(orderDto);
+                Assert.AreEqual(_orderId, orderDto.Id);
+                Assert.AreEqual(ibsOrderId, orderDto.IBSOrderId);
+                Assert.AreEqual(dispatchCompanyKey, orderDto.CompanyKey);
+
+                var statusDto = context.Find<OrderStatusDetail>(_orderId);
+                Assert.NotNull(statusDto);
+                Assert.AreEqual(_orderId, statusDto.OrderId);
+                Assert.AreEqual(ibsOrderId, statusDto.IBSOrderId);
+                Assert.AreEqual(dispatchCompanyKey, statusDto.CompanyKey);
+                Assert.IsNull(statusDto.NextDispatchCompanyKey);
+                Assert.IsNull(statusDto.NextDispatchCompanyName);
+                Assert.IsNull(statusDto.NetworkPairingTimeout);
+                Assert.AreEqual(OrderStatus.Created, statusDto.Status);
+            }
+        }
+
+        [Test]
+        public void when_dispatch_company_switch_ignored_then_dto_updated()
+        {
+            Sut.Handle(new DispatchCompanySwitchIgnored
+            {
+                SourceId = _orderId
+            });
+
+            using (var context = new BookingDbContext(DbName))
+            {
+                var dto = context.Find<OrderStatusDetail>(_orderId);
+                Assert.NotNull(dto);
+                Assert.AreEqual(true, dto.IgnoreDispatchCompanySwitch);
+                Assert.AreEqual(OrderStatus.Created, dto.Status);
+                Assert.IsNull(dto.NextDispatchCompanyKey);
+                Assert.IsNull(dto.NextDispatchCompanyName);
             }
         }
     }

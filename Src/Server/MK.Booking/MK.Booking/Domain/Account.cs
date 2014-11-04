@@ -44,6 +44,7 @@ namespace apcurium.MK.Booking.Domain
             Handles<DeviceRegisteredForPushNotifications>(NoAction);
             Handles<DeviceUnregisteredForPushNotifications>(NoAction);
             Handles<NotificationSettingsAddedOrUpdated>(NoAction);
+            Handles<AccountLinkedToIbs>(NoAction);
         }
 
         public Account(Guid id, IEnumerable<IVersionedEvent> history)
@@ -52,12 +53,12 @@ namespace apcurium.MK.Booking.Domain
             LoadFrom(history);
         }
 
-        public Account(Guid id, string name, string phone, string email, byte[] password, int ibsAccountId,
+        public Account(Guid id, string name, string phone, string email, byte[] password, 
             string confirmationToken, string language, bool accountActivationDisabled, bool isAdmin = false)
             : this(id)
         {
             if (Params.Get(name, phone, email, confirmationToken).Any(p => p.IsNullOrEmpty())
-                || ibsAccountId == 0 || (password == null))
+                || (password == null))
             {
                 throw new InvalidOperationException("Missing required fields");
             }
@@ -68,7 +69,6 @@ namespace apcurium.MK.Booking.Domain
                 Email = email,
                 Phone = phone,
                 Password = password,
-                IbsAcccountId = ibsAccountId,
                 ConfirmationToken = confirmationToken,
                 Language = language,
                 IsAdmin = isAdmin,
@@ -76,12 +76,11 @@ namespace apcurium.MK.Booking.Domain
             });
         }
 
-        public Account(Guid id, string name, string phone, string email, int ibsAccountId, string facebookId = null,
+        public Account(Guid id, string name, string phone, string email, string facebookId = null,
             string twitterId = null, string language = null, bool isAdmin = false)
             : this(id)
         {
-            if (Params.Get(name, phone, email).Any(p => p.IsNullOrEmpty())
-                || ibsAccountId == 0)
+            if (Params.Get(name, phone, email).Any(p => p.IsNullOrEmpty()))
             {
                 throw new InvalidOperationException("Missing required fields");
             }
@@ -91,7 +90,6 @@ namespace apcurium.MK.Booking.Domain
                 Name = name,
                 Email = email,
                 Phone = phone,
-                IbsAcccountId = ibsAccountId,
                 TwitterId = twitterId,
                 FacebookId = facebookId,
                 Language = language,
@@ -365,7 +363,6 @@ namespace apcurium.MK.Booking.Domain
 
             if (latitude < -90 || latitude > 90)
             {
-// ReSharper disable LocalizableElement
                 throw new ArgumentOutOfRangeException("latitude", "Invalid latitude");
             }
 
@@ -373,7 +370,6 @@ namespace apcurium.MK.Booking.Domain
             {
                 throw new ArgumentOutOfRangeException("longitude", "Invalid longitude");
             }
-// ReSharper restore LocalizableElement
         }
 
         public void EnableAccountByAdmin()
@@ -393,6 +389,15 @@ namespace apcurium.MK.Booking.Domain
             Update(new NotificationSettingsAddedOrUpdated
             {
                 NotificationSettings = notificationSettings
+            });
+        }
+
+        public void LinkToIbs(string companyKey, int ibsAccountId)
+        {
+            Update(new AccountLinkedToIbs
+            {
+                CompanyKey = companyKey,
+                IbsAccountId = ibsAccountId
             });
         }
     }

@@ -123,6 +123,7 @@
     <Compile Include="Integration\CreditCardPaymentFixture\given_no_payment.cs" />
     <Compile Include="Integration\GivenAConfigReadModelDatabase.cs" />
     <Compile Include="Integration\GivenAReadModelDatabase.cs" />
+    <Compile Include="Integration\OrderFixture\OrderDispatchCompanyManagerTest.cs" />
     <Compile Include="Integration\OrderFixture\OrderGeneratorTest.cs" />
     <Compile Include="Integration\OrderFixture\OrderUserGpsInfoGenerator.cs" />
     <Compile Include="Integration\PaymentUpdatedFixture.cs" />
@@ -151,6 +152,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\CustomerPortal\CustomerPortal.Client\CustomerPortal.Client.csproj">
+      <Project>{15824AAE-2D25-414E-B9FF-618DE088C9E7}</Project>
+      <Name>CustomerPortal.Client</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Infrastructure\Infrastructure\Infrastructure.csproj">
       <Project>{B5786D07-5888-4DF5-B295-3FEA593F3BFE}</Project>
       <Name>Infrastructure</Name>

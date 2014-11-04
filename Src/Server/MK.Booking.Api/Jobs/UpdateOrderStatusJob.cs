@@ -16,6 +16,8 @@ using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Common.Configuration;
 using System.Reactive.Linq;
 using System.Diagnostics;
+using ServiceStack.Common;
+
 #endregion
 
 namespace apcurium.MK.Booking.Api.Jobs
@@ -23,7 +25,7 @@ namespace apcurium.MK.Booking.Api.Jobs
     public class UpdateOrderStatusJob : IUpdateOrderStatusJob
     {
         private readonly IOrderDao _orderDao;
-        private readonly IBookingWebServiceClient _bookingWebServiceClient;
+        private readonly IIBSServiceProvider _ibsServiceProvider;
         private readonly IOrderStatusUpdateDao _orderStatusUpdateDao;
         private readonly OrderStatusUpdater _orderStatusUpdater;
 
@@ -31,11 +33,11 @@ namespace apcurium.MK.Booking.Api.Jobs
 
         private const int NumberOfConcurrentServers = 2;
 
-        public UpdateOrderStatusJob(IOrderDao orderDao, IBookingWebServiceClient bookingWebServiceClient, IOrderStatusUpdateDao orderStatusUpdateDao, OrderStatusUpdater orderStatusUpdater)
+        public UpdateOrderStatusJob(IOrderDao orderDao, IIBSServiceProvider ibsServiceProvider, IOrderStatusUpdateDao orderStatusUpdateDao, OrderStatusUpdater orderStatusUpdater)
         {
             _orderStatusUpdateDao = orderStatusUpdateDao;
             _orderDao = orderDao;
-            _bookingWebServiceClient = bookingWebServiceClient;
+            _ibsServiceProvider = ibsServiceProvider;
             _orderStatusUpdater = orderStatusUpdater;
         }
 
@@ -57,7 +59,7 @@ namespace apcurium.MK.Booking.Api.Jobs
                 if (order != null)
                 {
                     var orderStatus = _orderDao.FindOrderStatusById(orderId);
-                    var status = _bookingWebServiceClient.GetOrdersStatus( new [] { order.IBSOrderId.Value });
+                    var status = _ibsServiceProvider.Booking(orderStatus.CompanyKey).GetOrdersStatus( new [] { order.IBSOrderId.Value });
                  
                     _orderStatusUpdater.Update(status.ElementAt(0), orderStatus);
                 }
@@ -85,15 +87,23 @@ namespace apcurium.MK.Booking.Api.Jobs
 
                 try
                 {
-                    var orders = _orderDao.GetOrdersInProgress().ToArray();
+                    var orders = _orderDao.GetOrdersInProgress();
+                    var groupedOrders = orders.GroupBy(x => x.CompanyKey);
 
-                    Log.DebugFormat("Starting BatchUpdateStatus with {0} orders of status {1}", orders.Count(o => o.Status == OrderStatus.WaitingForPayment), "WaitingForPayment");
-                    BatchUpdateStatus(orders.Where(o => o.Status == OrderStatus.WaitingForPayment));
-                    Log.DebugFormat("Starting BatchUpdateStatus with {0} orders of status {1}", orders.Count(o => o.Status == OrderStatus.Pending), "Pending");
-                    BatchUpdateStatus(orders.Where(o => o.Status == OrderStatus.Pending));
-                    Log.DebugFormat("Starting BatchUpdateStatus with {0} orders of status {1}", orders.Count(o => o.Status == OrderStatus.Created), "Created");
-                    BatchUpdateStatus(orders.Where(o => o.Status == OrderStatus.Created));
-
+                    foreach (var orderGroup in groupedOrders)
+                    {
+                        var ordersForCompany = orderGroup.ToArray();
+                        Log.DebugFormat("Starting BatchUpdateStatus with {0} orders{1}", ordersForCompany.Count(), string.IsNullOrWhiteSpace(orderGroup.Key) ? string.Empty : string.Format(" for company {0}", orderGroup.Key));
+                        Log.DebugFormat("Starting BatchUpdateStatus with {0} orders of status {1}", ordersForCompany.Count(o => o.Status == OrderStatus.WaitingForPayment), "WaitingForPayment");
+                        BatchUpdateStatus(orderGroup.Key, ordersForCompany.Where(o => o.Status == OrderStatus.WaitingForPayment));
+                        Log.DebugFormat("Starting BatchUpdateStatus with {0} orders of status {1}", ordersForCompany.Count(o => o.Status == OrderStatus.Pending), "Pending");
+                        BatchUpdateStatus(orderGroup.Key, ordersForCompany.Where(o => o.Status == OrderStatus.Pending));
+                        Log.DebugFormat("Starting BatchUpdateStatus with {0} orders of status {1}", ordersForCompany.Count(o => o.Status == OrderStatus.TimedOut), "TimedOut");
+                        BatchUpdateStatus(orderGroup.Key, ordersForCompany.Where(o => o.Status == OrderStatus.TimedOut));
+                        Log.DebugFormat("Starting BatchUpdateStatus with {0} orders of status {1}", ordersForCompany.Count(o => o.Status == OrderStatus.Created), "Created");
+                        BatchUpdateStatus(orderGroup.Key, ordersForCompany.Where(o => o.Status == OrderStatus.Created));
+                    }
+                    
                     hasOrdersWaitingForPayment = orders.Any(o => o.Status == OrderStatus.WaitingForPayment);
                 }
                 finally
@@ -109,20 +119,22 @@ namespace apcurium.MK.Booking.Api.Jobs
             return hasOrdersWaitingForPayment;
         }
 
-        private void BatchUpdateStatus(IEnumerable<OrderStatusDetail> orders)
+        private void BatchUpdateStatus(string companyKey, IEnumerable<OrderStatusDetail> orders)
         {
             var ibsOrdersIds = orders.Select(statusDetail => statusDetail.IBSOrderId != null ? statusDetail.IBSOrderId.Value : 0).ToList();
             const int take = 10;
             for (var skip = 0; skip < ibsOrdersIds.Count; skip = skip + take)
             {
                 var nextGroup = ibsOrdersIds.Skip(skip).Take(take).ToList();
-                var orderStatuses = _bookingWebServiceClient.GetOrdersStatus(nextGroup);
+                var orderStatuses = _ibsServiceProvider.Booking(companyKey).GetOrdersStatus(nextGroup);
 
                 foreach (var ibsStatus in orderStatuses)
                 {
                     var order = orders.FirstOrDefault(o => o.IBSOrderId == ibsStatus.IBSOrderId);
-
-                    if (order == null) continue;
+                    if (order == null)
+                    {
+                        continue;
+                    }
 
                     Log.DebugFormat("Starting OrderStatusUpdater for order {0} (IbsOrderId: {1})", order.OrderId, order.IBSOrderId);
                     _orderStatusUpdater.Update(ibsStatus, order);

@@ -107,7 +107,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			{ 
 				_isDone = value; 
 				RaisePropertyChanged(); 
-				RaisePropertyChanged(()=>ShowRateButton); 
+				RaisePropertyChanged(() => ShowRateButton); 
 			}
         }
 
@@ -317,7 +317,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					{ 
 						IBSOrderId = Order.IBSOrderId,
 						IBSStatusDescription = this.Services().Localize["LoadingMessage"],
-						IBSStatusId = "",
+						IBSStatusId = string.Empty,
 						OrderId = OrderId,
 						Status = OrderStatus.Unknown,
 						VehicleLatitude = null,

@@ -70,15 +70,13 @@ namespace apcurium.MK.Web
             var eventBus = new AsynchronousMemoryEventBus(container.Resolve<ITextSerializer>());
             container.RegisterInstance<IEventBus>(eventBus);
             container.RegisterInstance<IEventHandlerRegistry>(eventBus);
-
-          
-
         }
+
         private static void RegisterTaxiHailNetwork(IUnityContainer unityContainer)
         {
-            var thNetworkServiceClient = new TaxiHailNetworkServiceClient(unityContainer.Resolve<IServerSettings>());
-            unityContainer.RegisterInstance<ITaxiHailNetworkServiceClient>(thNetworkServiceClient);
-
+            unityContainer.RegisterType<ITaxiHailNetworkServiceClient>(
+                new TransientLifetimeManager(), 
+                new InjectionFactory(c => new TaxiHailNetworkServiceClient(c.Resolve<IServerSettings>())));
         }
 
         private static void RegisterCommandHandlers(IUnityContainer unityContainer)

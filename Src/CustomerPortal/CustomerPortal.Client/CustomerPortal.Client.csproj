@@ -51,6 +51,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseServiceClient.cs" />
+    <Compile Include="Exceptions\ServiceResponseException.cs" />
+    <Compile Include="Http\Extensions\HttpClientExtensions.cs" />
+    <Compile Include="Http\Extensions\HttpResponseMessageExtensions.cs" />
     <Compile Include="Impl\TaxiHailNetworkServiceClient.cs" />
     <Compile Include="ITaxiHailNetworkServiceClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

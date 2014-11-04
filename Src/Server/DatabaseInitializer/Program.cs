@@ -3,7 +3,6 @@
 using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -19,7 +18,6 @@ using apcurium.MK.Booking.Security;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
-using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
@@ -30,7 +28,6 @@ using log4net;
 using Microsoft.Practices.Unity;
 using MK.Common.Configuration;
 using Newtonsoft.Json.Linq;
-using ServiceStack.ServiceInterface;
 using DeploymentServiceTools;
 using ServiceStack.Text;
 using RegisterAccount = apcurium.MK.Booking.Commands.RegisterAccount;
@@ -387,13 +384,6 @@ namespace DatabaseInitializer
             var confirmationToken = Guid.NewGuid();
             registerAccountCommand.ConfimationToken = confirmationToken.ToString();
 
-            var accountWebServiceClient = container.Resolve<IAccountWebServiceClient>();
-            registerAccountCommand.IbsAccountId =
-                accountWebServiceClient.CreateAccount(registerAccountCommand.AccountId,
-                    registerAccountCommand.Email,
-                    string.Empty,
-                    registerAccountCommand.Name,
-                    registerAccountCommand.Phone);
             commandBus.Send(registerAccountCommand);
 
             commandBus.Send(new ConfirmAccount
@@ -418,12 +408,6 @@ namespace DatabaseInitializer
             var confirmationAdminToken = Guid.NewGuid();
             registerAdminAccountCommand.ConfimationToken = confirmationAdminToken.ToString();
 
-            registerAdminAccountCommand.IbsAccountId =
-                accountWebServiceClient.CreateAccount(registerAdminAccountCommand.AccountId,
-                    registerAdminAccountCommand.Email,
-                    string.Empty,
-                    registerAdminAccountCommand.Name,
-                    registerAdminAccountCommand.Phone);
             commandBus.Send(registerAdminAccountCommand);
             commandBus.Send(new AddRoleToUserAccount
             {
@@ -518,20 +502,20 @@ namespace DatabaseInitializer
             var appSettings = new Dictionary<string, string>(); 
             Console.WriteLine("Calling ibs...");
             //Get default settings from IBS
-            var referenceDataService = container.Resolve<IStaticDataWebServiceClient>();
+            var ibsServiceProvider = container.Resolve<IIBSServiceProvider>();
 
-            var defaultCompany = referenceDataService.GetCompaniesList()
+            var defaultCompany = ibsServiceProvider.StaticData().GetCompaniesList()
                 .FirstOrDefault(x => x.IsDefault.HasValue && x.IsDefault.Value)
-                                 ?? referenceDataService.GetCompaniesList().FirstOrDefault();
+                                 ?? ibsServiceProvider.StaticData().GetCompaniesList().FirstOrDefault();
 
             if (defaultCompany != null)
             {
                 appSettings["DefaultBookingSettings.ProviderId"] = defaultCompany.Id.ToString();
 
                 var defaultvehicule =
-                    referenceDataService.GetVehiclesList(defaultCompany)
+                    ibsServiceProvider.StaticData().GetVehiclesList(defaultCompany)
                         .FirstOrDefault(x => x.IsDefault.HasValue && x.IsDefault.Value) ??
-                    referenceDataService.GetVehiclesList(defaultCompany).First();
+                    ibsServiceProvider.StaticData().GetVehiclesList(defaultCompany).First();
                 appSettings["DefaultBookingSettings.VehicleTypeId"] = defaultvehicule.Id.ToString();
 
                 appSettings["DefaultBookingSettings.ChargeTypeId"] = ChargeTypes.PaymentInCar.Id.ToString();

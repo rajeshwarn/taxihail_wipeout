@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.Net.Mail;
 using apcurium.MK.Common.Configuration.Attributes;
 using apcurium.MK.Common.Entity;
@@ -187,13 +188,13 @@ namespace apcurium.MK.Common.Configuration
         public string PickupZoneToExclude { get; protected internal set; }
         
         [RequiredAtStartup]
-        public string WebServicesUrl { get; protected internal set; }
+        public string WebServicesUrl { get; set; }
 
         [RequiredAtStartup]
-        public string WebServicesUserName { get; protected internal set; }
+        public string WebServicesUserName { get; set; }
 
         [RequiredAtStartup]
-        public string WebServicesPassword { get; protected internal set; }
+        public string WebServicesPassword { get;  set; }
     }
 
     public class EmailSettingContainer
@@ -226,9 +227,11 @@ namespace apcurium.MK.Common.Configuration
     public class NetworkSettingContainer
     {
         [CustomizableByCompany]
-        public double FirstOrderTimeout { get; protected internal set; }
+        public double PrimaryOrderTimeout { get; protected internal set; }
 
         [CustomizableByCompany]
-        public double OrderTimeout { get; protected internal set; }
+        public double SecondaryOrderTimeout { get; protected internal set; }
+
+        public bool Enabled { get;  set; }
     }
 }

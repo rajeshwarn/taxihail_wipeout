@@ -22,15 +22,15 @@ namespace apcurium.MK.Booking.Api.Services
     public class CancelOrderService : Service
     {
         private readonly IAccountDao _accountDao;
-        private readonly IBookingWebServiceClient _bookingWebServiceClient;
+        private readonly IIBSServiceProvider _ibsServiceProvider;
         private readonly ICommandBus _commandBus;
         private readonly IOrderDao _orderDao;
         private readonly IUpdateOrderStatusJob _updateOrderStatusJob;
 
-        public CancelOrderService(ICommandBus commandBus, IBookingWebServiceClient bookingWebServiceClient,
+        public CancelOrderService(ICommandBus commandBus, IIBSServiceProvider ibsServiceProvider,
             IOrderDao orderDao, IAccountDao accountDao, IUpdateOrderStatusJob updateOrderStatusJob)
         {
-            _bookingWebServiceClient = bookingWebServiceClient;
+            _ibsServiceProvider = ibsServiceProvider;
             _orderDao = orderDao;
             _accountDao = accountDao;
             _updateOrderStatusJob = updateOrderStatusJob;
@@ -60,10 +60,10 @@ namespace apcurium.MK.Booking.Api.Services
             //We need to try many times because sometime the IBS cancel method doesn't return an error but doesn't cancel the ride... after 5 time, we are giving up. But we assume the order is completed.
             Task.Factory.StartNew(() =>
             {
-                Func<bool> cancelOrder = () => _bookingWebServiceClient.CancelOrder(order.IBSOrderId.Value, account.IBSAccountId, order.Settings.Phone);
+                Func<bool> cancelOrder = () => _ibsServiceProvider.Booking(order.CompanyKey).CancelOrder(order.IBSOrderId.Value, account.IBSAccountId.Value, order.Settings.Phone);
                 cancelOrder.Retry(new TimeSpan(0, 0, 0, 10), 5);
             });
-            
+
             var command = new Commands.CancelOrder { Id = Guid.NewGuid(), OrderId = request.OrderId };
             _commandBus.Send(command);
 

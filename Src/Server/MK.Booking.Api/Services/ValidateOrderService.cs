@@ -20,28 +20,28 @@ namespace apcurium.MK.Booking.Api.Services
 
         private readonly IServerSettings _serverSettings;
         private readonly IRuleCalculator _ruleCalculator;
-        private readonly IStaticDataWebServiceClient _staticDataWebServiceClient;
+        private readonly IIBSServiceProvider _ibsServiceProvider;
 
         public ValidateOrderService(
             IServerSettings serverSettings,
-            IStaticDataWebServiceClient staticDataWebServiceClient,
+            IIBSServiceProvider ibsServiceProvider,
             IRuleCalculator ruleCalculator)
         {
             _serverSettings = serverSettings;
-            _staticDataWebServiceClient = staticDataWebServiceClient;
+            _ibsServiceProvider = ibsServiceProvider;
             _ruleCalculator = ruleCalculator;
         }
 
         public object Post(ValidateOrderRequest request)
         {
             Func<string> getPickupZone =
-                () => request.TestZone.HasValue() ? request.TestZone : _staticDataWebServiceClient.GetZoneByCoordinate(request.Settings.ProviderId,
+                () => request.TestZone.HasValue() ? request.TestZone : _ibsServiceProvider.StaticData().GetZoneByCoordinate(request.Settings.ProviderId,
                     request.PickupAddress.Latitude, request.PickupAddress.Longitude);
 
             Func<string> getDropoffZone =
                 () =>
                     request.DropOffAddress != null
-                        ? _staticDataWebServiceClient.GetZoneByCoordinate(request.Settings.ProviderId,
+                        ? _ibsServiceProvider.StaticData().GetZoneByCoordinate(request.Settings.ProviderId,
                             request.DropOffAddress.Latitude, request.DropOffAddress.Longitude)
                         : null;
 

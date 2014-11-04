@@ -26,14 +26,17 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
 {
     public class PushNotificationSender : IIntegrationEventHandler,
             IEventHandler<OrderStatusChanged>,
-            IEventHandler<CreditCardPaymentCaptured>
+            IEventHandler<CreditCardPaymentCaptured>,
+            IEventHandler<OrderPreparedForNextDispatch>
     {
         private readonly INotificationService _notificationService;
+        private readonly IServerSettings _serverSettings;
         private static readonly ILog Log = LogManager.GetLogger(typeof(PushNotificationSender));
 
-        public PushNotificationSender(INotificationService notificationService)
+        public PushNotificationSender(INotificationService notificationService, IServerSettings serverSettings)
         {
             _notificationService = notificationService;
+            _serverSettings = serverSettings;
         }
 
         public void Handle(OrderStatusChanged @event)
@@ -52,7 +55,10 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                         _notificationService.SendPairingInquiryPush(@event.Status);
                         break;
                     case VehicleStatuses.Common.Timeout:
-                        _notificationService.SendTimeoutPush(@event.Status);
+                        if (!_serverSettings.ServerData.Network.Enabled)
+                        {
+                            _notificationService.SendTimeoutPush(@event.Status);
+                        }
                         break;
                     default:
                         // No push notification for this order status
@@ -76,6 +82,18 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                 }
 
                 _notificationService.SendPaymentCapturePush(@event.OrderId, @event.Amount);
+            }
+            catch (Exception e)
+            {
+                Log.Debug(e);
+            }
+        }
+
+        public void Handle(OrderPreparedForNextDispatch @event)
+        {
+            try
+            {
+                _notificationService.SendChangeDispatchCompanyPush(@event.SourceId);
             }
             catch (Exception e)
             {

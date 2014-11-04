@@ -22,14 +22,14 @@ namespace apcurium.MK.Booking.Api.Services
         public const string CacheKey = "IBS.StaticData";
         private readonly ICacheClient _cacheClient;
         private readonly IServerSettings _serverSettings;
-        private readonly IStaticDataWebServiceClient _staticDataWebServiceClient;
+        private readonly IIBSServiceProvider _ibsServiceProvider;
 
         public ReferenceDataService(
-            IStaticDataWebServiceClient staticDataWebServiceClient,
+            IIBSServiceProvider ibsServiceProvider,
             ICacheClient cacheClient,
             IServerSettings serverSettings)
         {
-            _staticDataWebServiceClient = staticDataWebServiceClient;
+            _ibsServiceProvider = ibsServiceProvider;
             _cacheClient = cacheClient;
             _serverSettings = serverSettings;
         }
@@ -40,7 +40,7 @@ namespace apcurium.MK.Booking.Api.Services
 
             if (result == null)
             {
-                result = GetReferenceData();
+                result = GetReferenceData(request.CompanyKey);
                 _cacheClient.Add(CacheKey, result);
             }
 
@@ -59,9 +59,9 @@ namespace apcurium.MK.Booking.Api.Services
             return result;
         }
 
-        private ReferenceData GetReferenceData()
+        private ReferenceData GetReferenceData(string companyKey)
         {
-            var companies = _staticDataWebServiceClient.GetCompaniesList();
+            var companies = _ibsServiceProvider.StaticData(companyKey).GetCompaniesList();
             IList<ListItem> payments = new List<ListItem>();
             IList<ListItem> vehicles = new List<ListItem>();
 
@@ -69,7 +69,7 @@ namespace apcurium.MK.Booking.Api.Services
             foreach (var company in companies)
             {
                 payments.AddRange(ChargeTypesClient.GetPaymentsList(company));
-                vehicles.AddRange(_staticDataWebServiceClient.GetVehiclesList(company));
+                vehicles.AddRange(_ibsServiceProvider.StaticData(companyKey).GetVehiclesList(company));
             }
 
             var equalityComparer = new ListItemEqualityComparer();

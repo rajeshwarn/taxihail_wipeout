@@ -1,17 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data.Entity;
 using System.Linq;
 using System.Threading;
+using apcurium.MK.Booking.Api.Client;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Requests;
+using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Database;
+using apcurium.MK.Booking.EventHandlers.Integration;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
+using CustomerPortal.Client;
+using Microsoft.Practices.Unity;
 using NUnit.Framework;
 using ServiceStack.ServiceClient.Web;
+using UnityServiceLocator = apcurium.MK.Common.IoC.UnityServiceLocator;
 
 namespace apcurium.MK.Web.Tests
 {
@@ -144,12 +151,28 @@ namespace apcurium.MK.Web.Tests
     public class given_an_existing_order : BaseTest
     {
         private Guid _orderId;
+        private Type _taxiHailNetworkServiceImplementation;
+        private FakeTaxiHailNetworkServiceClient _taxiHailNetworkService;
+
+        [SetUp]
+        public override void Setup()
+        {
+            base.Setup();
+
+            //replace it with a fake
+            _taxiHailNetworkService = new FakeTaxiHailNetworkServiceClient("x2s42");
+            UnityServiceLocator.Instance.RegisterInstance<ITaxiHailNetworkServiceClient>(_taxiHailNetworkService);
+        }
 
         [TestFixtureSetUp]
         public new void TestFixtureSetup()
         {
             base.TestFixtureSetup();
-
+            var container = UnityServiceLocator.Instance;
+            _taxiHailNetworkServiceImplementation = container.Registrations
+                                            .FirstOrDefault(x => x.RegisteredType == typeof(ITaxiHailNetworkServiceClient))
+                                            .MappedToType;
+            
             _orderId = Guid.NewGuid();
 
             var authTask = new AuthServiceClient(BaseUrl, SessionId, new DummyPackageInfo()).Authenticate(TestAccount.Email, TestAccountPassword);
@@ -159,36 +182,76 @@ namespace apcurium.MK.Web.Tests
 
             var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
             var order = new CreateOrder
+            {
+                Id = _orderId,
+                PickupAddress = TestAddresses.GetAddress1(),
+                PickupDate = DateTime.Now,
+                DropOffAddress = TestAddresses.GetAddress2(),
+                Estimate = new CreateOrder.RideEstimate
                 {
-                    Id = _orderId,
-                    PickupAddress = TestAddresses.GetAddress1(),
-                    PickupDate = DateTime.Now,
-                    DropOffAddress = TestAddresses.GetAddress2(),
-                    Estimate = new CreateOrder.RideEstimate
-                        {
-                            Price = 10,
-                            Distance = 3
-                        },
-                    Settings = new BookingSettings
-                        {
-                            ChargeTypeId = 99,
-                            VehicleTypeId = 1,
-                            ProviderId = Provider.MobileKnowledgeProviderId,
-                            Phone = "514-555-1212",
-                            Passengers = 6,
-                            NumberOfTaxi = 1,
-                            Name = "Joe Smith",
-                            LargeBags = 1
-                        },
-                    ClientLanguageCode = SupportedLanguages.fr.ToString()
-                };
+                    Price = 10,
+                    Distance = 3
+                },
+                Settings = new BookingSettings
+                {
+                    ChargeTypeId = 99,
+                    VehicleTypeId = 1,
+                    ProviderId = Provider.MobileKnowledgeProviderId,
+                    Phone = "514-555-1212",
+                    Passengers = 6,
+                    NumberOfTaxi = 1,
+                    Name = "Joe Smith",
+                    LargeBags = 1
+                },
+                ClientLanguageCode = SupportedLanguages.fr.ToString()
+            };
             sut.CreateOrder(order).Wait();
         }
 
-        [SetUp]
-        public override void Setup()
+        [TestFixtureTearDown]
+        public override void TestFixtureTearDown()
         {
-            base.Setup();
+            base.TestFixtureTearDown();
+            UnityServiceLocator.Instance.RegisterType(typeof(ITaxiHailNetworkServiceClient), _taxiHailNetworkServiceImplementation);
+        }
+
+        [Test]
+        public async void order_switched_to_next_dispatch_company()
+        {
+            var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
+            var order = await sut.GetOrder(_orderId);
+
+            var orderStatus = await sut.SwitchOrderToNextDispatchCompany(new SwitchOrderToNextDispatchCompanyRequest
+                {
+                    OrderId = _orderId,
+                    NextDispatchCompanyKey = "x2s42",
+                    NextDispatchCompanyName = "Vector Industries"
+                });
+
+            Assert.NotNull(orderStatus);
+            Assert.AreEqual(_orderId, orderStatus.OrderId);
+            Assert.NotNull(orderStatus.IBSOrderId);
+            Assert.AreNotEqual(order.IBSOrderId, orderStatus.IBSOrderId);
+            Assert.AreEqual(OrderStatus.Created, orderStatus.Status);
+            Assert.AreEqual("x2s42", orderStatus.CompanyKey);
+            Assert.IsNull(orderStatus.NextDispatchCompanyKey);
+            Assert.IsNull(orderStatus.NextDispatchCompanyName);
+        }
+
+        [Test]
+        public async void order_dispatch_company_switch_ignored()
+        {
+            var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
+
+            await sut.IgnoreDispatchCompanySwitch(_orderId);
+
+            var status = await sut.GetOrderStatus(_orderId);
+
+            Assert.NotNull(status);
+            Assert.AreEqual(true, status.IgnoreDispatchCompanySwitch);
+            Assert.AreEqual(OrderStatus.Created, status.Status);
+            Assert.IsNull(status.NextDispatchCompanyKey);
+            Assert.IsNull(status.NextDispatchCompanyName);
         }
 
         [Test]

@@ -67,6 +67,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
                 if (ViewModel.CanUserLeaveScreen ())
                 {
+                    ViewModel.PrepareNewOrder.ExecuteIfPossible();
                     ViewModel.CloseCommand.ExecuteIfPossible();
                 }
             });

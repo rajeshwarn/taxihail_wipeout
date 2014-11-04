@@ -19,7 +19,7 @@ namespace apcurium.MK.Booking.Api.Services
     public class SendReceiptService : Service
     {
         private readonly IAccountDao _accountDao;
-        private readonly IBookingWebServiceClient _bookingWebServiceClient;
+        private readonly IIBSServiceProvider _ibsServiceProvider;
         private readonly ICommandBus _commandBus;
         private readonly ICreditCardDao _creditCardDao;
         private readonly IOrderDao _orderDao;
@@ -28,7 +28,7 @@ namespace apcurium.MK.Booking.Api.Services
 
         public SendReceiptService(
             ICommandBus commandBus,
-            IBookingWebServiceClient bookingWebServiceClient,
+            IIBSServiceProvider ibsServiceProvider,
             IOrderDao orderDao,
             IOrderPaymentDao orderPaymentDao,
             ICreditCardDao creditCardDao,
@@ -36,7 +36,7 @@ namespace apcurium.MK.Booking.Api.Services
             IServerSettings serverSettings)
         {
             _serverSettings = serverSettings;
-            _bookingWebServiceClient = bookingWebServiceClient;
+            _ibsServiceProvider = ibsServiceProvider;
             _orderDao = orderDao;
             _orderPaymentDao = orderPaymentDao;
             _accountDao = accountDao;
@@ -59,7 +59,7 @@ namespace apcurium.MK.Booking.Api.Services
                 throw new HttpError(HttpStatusCode.Unauthorized, "Not your order");
             }
 
-            var ibsOrder = _bookingWebServiceClient.GetOrderDetails(order.IBSOrderId.Value, account.IBSAccountId, order.Settings.Phone);
+            var ibsOrder = _ibsServiceProvider.Booking(order.CompanyKey).GetOrderDetails(order.IBSOrderId.Value, account.IBSAccountId.Value, order.Settings.Phone);
 
             var orderPayment = _orderPaymentDao.FindByOrderId(order.Id);
             var pairingInfo = _orderDao.FindOrderPairingById(order.Id);

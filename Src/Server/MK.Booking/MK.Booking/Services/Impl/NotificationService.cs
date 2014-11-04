@@ -116,10 +116,18 @@ namespace apcurium.MK.Booking.Services.Impl
 
         public void SendTimeoutPush(OrderStatusDetail orderStatusDetail)
         {
-            var order = _orderDao.FindById(orderStatusDetail.OrderId);
+            var order = _orderDao.FindById(orderStatusDetail.OrderId); 
             SendPushOrSms(order.AccountId,
                         _resources.Get("PushNotification_wosTIMEOUT", order.ClientLanguageCode),
                         new Dictionary<string, object>());
+        }
+
+        public void SendChangeDispatchCompanyPush(Guid orderId)
+        {
+            var order = _orderDao.FindById(orderId);
+            SendPushOrSms(order.AccountId,
+                        string.Format(_resources.Get("PushNotification_ChangeNetworkCompany", order.ClientLanguageCode), order.CompanyName),
+                        new Dictionary<string, object> { { "orderId", orderId }, { "isPairingNotification", false } });
         }
 
         public void SendPaymentCapturePush(Guid orderId, decimal amount)

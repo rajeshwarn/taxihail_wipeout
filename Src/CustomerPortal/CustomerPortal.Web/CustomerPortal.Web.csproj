@@ -233,7 +233,6 @@
     <Compile Include="Entities\CompanySetting.cs" />
     <Compile Include="Entities\DeploymentJob.cs" />
     <Compile Include="Entities\JobStatusDetails.cs" />
-    <Compile Include="Entities\Network\MapCoordinate.cs" />
     <Compile Include="Entities\Network\MapRegion.cs" />
     <Compile Include="Entities\Network\TaxiHailNetworkSettings.cs" />
     <Compile Include="Entities\Payment.cs" />
@@ -535,9 +534,17 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Server\MK.Common\MK.Common.csproj">
+      <Project>{65033050-1D55-465A-A772-F3192F9E2428}</Project>
+      <Name>MK.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Cupertino\Cupertino.csproj">
       <Project>{ef63d209-cc8f-4b7d-9e64-2b59395a3cbe}</Project>
       <Name>Cupertino</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CustomerPortal.Client\CustomerPortal.Client.csproj">
+      <Project>{15824AAE-2D25-414E-B9FF-618DE088C9E7}</Project>
+      <Name>CustomerPortal.Client</Name>
     </ProjectReference>
     <ProjectReference Include="..\CustomerPortal.Contract\CustomerPortal.Contract.csproj">
       <Project>{6a4623e1-41ef-4286-9a34-2adc6407e94f}</Project>

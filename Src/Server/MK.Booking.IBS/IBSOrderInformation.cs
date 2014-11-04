@@ -81,6 +81,11 @@ namespace apcurium.MK.Booking.IBS
             Eta = orderInfoFromIBS.ETATime.ToDateTime();
         }
 
+        public bool IsWaitingToBeAssigned
+        {
+            get { return Status.SoftEqual(VehicleStatuses.Common.Waiting); }
+        }
+
         public bool IsAssigned
         {
             get { return Status.SoftEqual(VehicleStatuses.Common.Assigned); }

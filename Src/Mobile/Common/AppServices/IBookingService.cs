@@ -38,6 +38,10 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 
 		Task<OrderStatusDetail> CreateOrder(CreateOrder info);
 
+        Task<OrderStatusDetail> SwitchOrderToNextDispatchCompany(Guid orderId, string nextDispatchCompanyKey, string nextDispatchCompanyName);
+
+        Task IgnoreDispatchCompanySwitch(Guid orderId);
+
         Task<OrderValidationResult> ValidateOrder (CreateOrder order);
 
 		Task<OrderStatusDetail> GetOrderStatusAsync(Guid orderId);

@@ -76,7 +76,7 @@ namespace apcurium.MK.Booking.ReadModel.Query
 
                 foreach (var joinedLine in joinedLines)
                 {
-                    if (details == null || details.IBSOrderId != joinedLine.order.IBSOrderId)
+                    if (details == null || details.Id != joinedLine.order.Id)
                     {
                         if (details != null)
                         {
@@ -113,7 +113,12 @@ namespace apcurium.MK.Booking.ReadModel.Query
                             joinedLine.rating.Score.ToString(CultureInfo.InvariantCulture);
                     }      
                 }
-                list.Add(details);
+
+                if (details != null)
+                {
+                    // Only add details if we have at least one order
+                    list.Add(details);
+                }
             }
             return list;
         }
@@ -127,7 +132,8 @@ namespace apcurium.MK.Booking.ReadModel.Query
                 var currentOrders = (from order in context.Set<OrderStatusDetail>()
                                      where (order.Status == OrderStatus.Created
                                         || order.Status == OrderStatus.Pending
-                                        || order.Status == OrderStatus.WaitingForPayment) && (order.PickupDate >= startDate)
+                                        || order.Status == OrderStatus.WaitingForPayment
+                                        || order.Status == OrderStatus.TimedOut) && (order.PickupDate >= startDate)
                                      select order).ToList();
                 return currentOrders;
             }

@@ -58,7 +58,8 @@ namespace apcurium.MK.Booking.Test.OrderFixture
                 UserLatitude = 46.50643,
                 UserLongitude = -74.554052,
                 UserAgent = "TestUserAgent",
-                ClientVersion = "1.0.0"
+                ClientVersion = "1.0.0",
+                UserNote = "une note"
             };
             order.Settings = new BookingSettings
             {
@@ -97,6 +98,7 @@ namespace apcurium.MK.Booking.Test.OrderFixture
             Assert.AreEqual(-74.554052, orderCreated.UserLongitude);
             Assert.AreEqual("TestUserAgent", orderCreated.UserAgent);
             Assert.AreEqual("1.0.0", orderCreated.ClientVersion);
+            Assert.AreEqual("une note", orderCreated.UserNote);
         }
 
         [Test]
@@ -119,7 +121,7 @@ namespace apcurium.MK.Booking.Test.OrderFixture
                     },
                 DropOffAddress =
                     new Address {Latitude = 45.50643, Longitude = -73.554052, FullAddress = "Velvet auberge st gabriel"},
-                IBSOrderId = 99,
+                IBSOrderId = 99
             };
             order.Settings = new BookingSettings
             {

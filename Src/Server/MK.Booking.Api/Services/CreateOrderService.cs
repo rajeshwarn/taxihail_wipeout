@@ -4,20 +4,24 @@ using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
+using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Web.UI;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Api.Jobs;
 using apcurium.MK.Booking.Calculator;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.IBS;
+using apcurium.MK.Booking.IBS.Impl;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Services;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
@@ -42,21 +46,19 @@ namespace apcurium.MK.Booking.Api.Services
         private readonly IPaymentService _paymentService;
         private readonly ICreditCardDao _creditCardDao;
         private readonly IAccountChargeDao _accountChargeDao;
-        private readonly IBookingWebServiceClient _bookingWebServiceClient;
         private readonly ICommandBus _commandBus;
         private readonly IServerSettings _serverSettings;
         private readonly ReferenceDataService _referenceDataService;
         private readonly IRuleCalculator _ruleCalculator;
-        private readonly IStaticDataWebServiceClient _staticDataWebServiceClient;
+        private readonly IIBSServiceProvider _ibsServiceProvider;
         private readonly IUpdateOrderStatusJob _updateOrderStatusJob;
         private readonly Resources.Resources _resources;
 
         public CreateOrderService(ICommandBus commandBus,
-            IBookingWebServiceClient bookingWebServiceClient,
             IAccountDao accountDao,
             IServerSettings serverSettings,
             ReferenceDataService referenceDataService,
-            IStaticDataWebServiceClient staticDataWebServiceClient,
+            IIBSServiceProvider ibsServiceProvider,
             IRuleCalculator ruleCalculator,
             IUpdateOrderStatusJob updateOrderStatusJob,
             IAccountChargeDao accountChargeDao,
@@ -66,11 +68,10 @@ namespace apcurium.MK.Booking.Api.Services
         {
             _accountChargeDao = accountChargeDao;
             _commandBus = commandBus;
-            _bookingWebServiceClient = bookingWebServiceClient;
             _accountDao = accountDao;
             _referenceDataService = referenceDataService;
             _serverSettings = serverSettings;
-            _staticDataWebServiceClient = staticDataWebServiceClient;
+            _ibsServiceProvider = ibsServiceProvider;
             _ruleCalculator = ruleCalculator;
             _updateOrderStatusJob = updateOrderStatusJob;
             _orderDao = orderDao;
@@ -83,13 +84,15 @@ namespace apcurium.MK.Booking.Api.Services
         public object Post(CreateOrder request)
         {
             Log.Info("Create order request : " + request.ToJson());
-
+            
             if (!request.FromWebApp)
             {
                 ValidateAppVersion(request.ClientLanguageCode);
             }
 
             var account = _accountDao.FindById(new Guid(this.GetSession().UserAuthId));
+
+            account.IBSAccountId = CreateIbsAccountIfNeeded(account);
 
             // User can still create future order, but we allow only one active Book now order.
             if (!request.PickupDate.HasValue)
@@ -116,12 +119,12 @@ namespace apcurium.MK.Booking.Api.Services
                 request.PickupDate.HasValue 
                     ? request.PickupDate.Value 
                     : GetCurrentOffsetedTime(),
-                () => _staticDataWebServiceClient.GetZoneByCoordinate(
+                () => _ibsServiceProvider.StaticData().GetZoneByCoordinate(
                         request.Settings.ProviderId,
                         request.PickupAddress.Latitude, 
                         request.PickupAddress.Longitude),
                 () => request.DropOffAddress != null 
-                    ? _staticDataWebServiceClient.GetZoneByCoordinate(
+                    ? _ibsServiceProvider.StaticData().GetZoneByCoordinate(
                             request.Settings.ProviderId, 
                             request.DropOffAddress.Latitude,
                             request.DropOffAddress.Longitude) 
@@ -176,7 +179,7 @@ namespace apcurium.MK.Booking.Api.Services
                 chargeTypeEmail = _resources.Get(chargeTypeKey, request.ClientLanguageCode);
             }
 
-            var ibsOrderId = CreateIbsOrder(account, request, referenceData, chargeTypeIbs);
+            var ibsOrderId = CreateIbsOrder(account.IBSAccountId.Value, request, referenceData, chargeTypeIbs);
 
             if (!ibsOrderId.HasValue
                 || ibsOrderId <= 0)
@@ -225,6 +228,141 @@ namespace apcurium.MK.Booking.Api.Services
                 IBSStatusId = "",
                 IBSStatusDescription = (string)_resources.Get("OrderStatus_wosWAITING", command.ClientLanguageCode),
             };
+        }
+
+        public object Post(SwitchOrderToNextDispatchCompanyRequest request)
+        {
+            Log.Info("Switching order to another IBS : " + request.ToJson());
+
+            var account = _accountDao.FindById(new Guid(this.GetSession().UserAuthId));
+            var order = _orderDao.FindById(request.OrderId);
+            var orderStatusDetail = _orderDao.FindOrderStatusById(request.OrderId);
+
+            if (orderStatusDetail.Status != OrderStatus.TimedOut)
+            {
+                // Only switch companies if order is timedout
+                return orderStatusDetail;
+            }
+
+            var newOrderRequest = new CreateOrder
+            {
+                PickupDate = GetCurrentOffsetedTime(),
+                PickupAddress = order.PickupAddress,
+                DropOffAddress = order.DropOffAddress,
+                Settings = new BookingSettings
+                {
+                    LargeBags = order.Settings.LargeBags,
+                    Name = order.Settings.Name,
+                    NumberOfTaxi = order.Settings.NumberOfTaxi,
+                    Passengers = order.Settings.Passengers,
+                    Phone = order.Settings.Phone,
+                    ProviderId = null,
+
+                    // Payment in app is not supported for now when we use another IBS
+                    ChargeType = ChargeTypes.PaymentInCar.Display,
+                    ChargeTypeId = ChargeTypes.PaymentInCar.Id,
+                    
+                    // Reset vehicle type
+                    VehicleType = null,
+                    VehicleTypeId = null
+                },
+                Note = order.UserNote,
+                Estimate = new CreateOrder.RideEstimate { Price = order.EstimatedFare }
+            };
+
+            var newReferenceData = (ReferenceData)_referenceDataService.Get(new ReferenceDataRequest { CompanyKey = request.NextDispatchCompanyKey });
+
+            // This must be localized with the priceformat to be localized in the language of the company
+            // because it is sent to the driver
+            var chargeTypeIbs = _resources.Get(ChargeTypes.PaymentInCar.Display, _serverSettings.ServerData.PriceFormat);
+
+            var networkErrorMessage = string.Format(_resources.Get("Network_CannotCreateOrder", order.ClientLanguageCode), request.NextDispatchCompanyName);
+
+            int ibsAccountId;
+            try
+            {
+                // Recreate order on next dispatch company IBS
+                ibsAccountId = CreateIbsAccountIfNeeded(account, request.NextDispatchCompanyKey);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(networkErrorMessage, ex);
+                throw new HttpError(HttpStatusCode.InternalServerError, networkErrorMessage);
+            }
+
+            var newIbsOrderId = CreateIbsOrder(ibsAccountId, newOrderRequest, newReferenceData, chargeTypeIbs, request.NextDispatchCompanyKey);
+            if (!newIbsOrderId.HasValue || newIbsOrderId <= 0)
+            {
+                var code = !newIbsOrderId.HasValue || (newIbsOrderId.Value >= -1) ? string.Empty : "_" + Math.Abs(newIbsOrderId.Value);
+                Log.Error(string.Format("{0}. IBS error code: {1}", networkErrorMessage, code));
+
+                throw new HttpError(HttpStatusCode.InternalServerError, networkErrorMessage);
+            }
+
+            // Cancel order on current company IBS
+            CancelIbsOrder(order, account.Id, account.IBSAccountId);
+
+            _commandBus.Send(new SwitchOrderToNextDispatchCompany
+            {
+                OrderId = request.OrderId,
+                IBSOrderId = newIbsOrderId.Value,
+                CompanyKey = request.NextDispatchCompanyKey,
+                CompanyName = request.NextDispatchCompanyName
+            });
+
+            return new OrderStatusDetail
+            {
+                OrderId = request.OrderId,
+                Status = OrderStatus.Created,
+                CompanyKey = request.NextDispatchCompanyKey,
+                CompanyName = request.NextDispatchCompanyName,
+                NextDispatchCompanyKey = null,
+                NextDispatchCompanyName = null,
+                IBSOrderId = newIbsOrderId,
+                IBSStatusId = string.Empty,
+                IBSStatusDescription = string.Format(_resources.Get("OrderStatus_wosWAITINGRoaming", order.ClientLanguageCode), request.NextDispatchCompanyName),
+            };
+        }
+
+        public object Post(IgnoreDispatchCompanySwitchRequest request)
+        {
+            var order = _orderDao.FindById(request.OrderId);
+            if (order == null)
+            {
+                return new HttpResult(HttpStatusCode.NotFound);
+            }
+
+            _commandBus.Send(new IgnoreDispatchCompanySwitch
+            {
+                OrderId = request.OrderId
+            });
+
+            return new HttpResult(HttpStatusCode.OK);
+        }
+
+        private int CreateIbsAccountIfNeeded(AccountDetail account, string companyKey = null)
+        {
+            var ibsAccountId = _accountDao.GetIbsAccountId(account.Id, companyKey);
+            if (ibsAccountId.HasValue)
+            {
+                return ibsAccountId.Value;
+            }
+
+            // Account doesn't exist, create it
+            ibsAccountId = _ibsServiceProvider.Account(companyKey).CreateAccount(account.Id,
+                account.Email,
+                string.Empty,
+                account.Name,
+                account.Settings.Phone);
+
+            _commandBus.Send(new LinkAccountToIbs
+            {
+                AccountId = account.Id,
+                IbsAccountId = ibsAccountId.Value,
+                CompanyKey = companyKey
+            });
+
+            return ibsAccountId.Value;
         }
 
         private void ValidateCreditCard(Guid orderId, AccountDetail account, string clientLanguageCode)
@@ -313,7 +451,7 @@ namespace apcurium.MK.Booking.Api.Services
         {
             if (ChargeTypes.Account.Id == request.Settings.ChargeTypeId)
             {
-                return  _bookingWebServiceClient.SendAccountInformation(orderId, ibsOrderId, "Account", request.Settings.AccountNumber, account.IBSAccountId, request.Settings.Name, request.Settings.Phone, account.Email);                
+                return  _ibsServiceProvider.Booking().SendAccountInformation(orderId, ibsOrderId, "Account", request.Settings.AccountNumber, account.IBSAccountId.Value, request.Settings.Name, request.Settings.Phone, account.Email);                
             }
 
             return null;
@@ -343,7 +481,7 @@ namespace apcurium.MK.Booking.Api.Services
             return offsetedTime;
         }
 
-        private int? CreateIbsOrder(AccountDetail account, CreateOrder request, ReferenceData referenceData, string chargeType)
+        private int? CreateIbsOrder(int ibsAccountId, CreateOrder request, ReferenceData referenceData, string chargeType, string companyKey = null)
         {
             // Provider is optional
             // But if a provider is specified, it must match with one of the ReferenceData values
@@ -363,9 +501,9 @@ namespace apcurium.MK.Booking.Api.Services
 
             Debug.Assert(request.PickupDate != null, "request.PickupDate != null");
 
-            var result = _bookingWebServiceClient.CreateOrder(
+            var result = _ibsServiceProvider.Booking(companyKey).CreateOrder(
                 request.Settings.ProviderId,
-                account.IBSAccountId,
+                ibsAccountId,
                 request.Settings.Name,
                 request.Settings.Phone,
                 request.Settings.Passengers,
@@ -378,6 +516,25 @@ namespace apcurium.MK.Booking.Api.Services
                 fare);
 
             return result;
+        }
+
+        private void CancelIbsOrder(OrderDetail order, Guid accountId, int? ibsAccountId)
+        {
+            // Cancel order on current company IBS
+            if (order.IBSOrderId.HasValue && ibsAccountId.HasValue)
+            {
+                var currentIbsAccountId = _accountDao.GetIbsAccountId(accountId, order.CompanyKey);
+                if (currentIbsAccountId.HasValue)
+                {
+                    // We need to try many times because sometime the IBS cancel method doesn't return an error but doesn't cancel the ride...
+                    // After 5 time, we are giving up. But we assume the order is completed.
+                    Task.Factory.StartNew(() =>
+                    {
+                        Func<bool> cancelOrder = () => _ibsServiceProvider.Booking(order.CompanyKey).CancelOrder(order.IBSOrderId.Value, currentIbsAccountId.Value, order.Settings.Phone);
+                        cancelOrder.Retry(new TimeSpan(0, 0, 0, 10), 5);
+                    });
+                }
+            }
         }
 
         private bool IsValid(Address address)

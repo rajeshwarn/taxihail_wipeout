@@ -48,6 +48,7 @@
     <Compile Include="AccountChargeDeleted.cs" />
     <Compile Include="AccountConfirmed.cs" />
     <Compile Include="AccountDisabled.cs" />
+    <Compile Include="AccountLinkedToIbs.cs" />
     <Compile Include="AccountPasswordReset.cs" />
     <Compile Include="AccountPasswordUpdated.cs" />
     <Compile Include="AccountRegistered.cs" />
@@ -63,8 +64,12 @@
     <Compile Include="CreditCardPaymentCaptured.cs" />
     <Compile Include="CreditCardPaymentInitiated.cs" />
     <Compile Include="CreditCardUpdated.cs" />
+    <Compile Include="DispatchCompanySwitchIgnored.cs" />
     <Compile Include="NotificationSettingsAddedOrUpdated.cs" />
+    <Compile Include="OrderPreparedForNextDispatch.cs" />
     <Compile Include="OrderPairedForPayment.cs" />
+    <Compile Include="OrderSwitchedToNextDispatchCompany.cs" />
+    <Compile Include="OrderTimedOut.cs" />
     <Compile Include="OrderUnpairedForPayment.cs" />
     <Compile Include="PaymentModeChanged.cs" />
     <Compile Include="PaymentSettingUpdated.cs" />

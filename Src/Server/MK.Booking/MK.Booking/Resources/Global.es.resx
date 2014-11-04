@@ -471,4 +471,15 @@
     <value>AVISO: No se deberá cobrar al cliente al final del servicio.</value>
     <comment>WARNING: The client will NOT be charged at the end of the ride</comment>
   </data>
+  <data name="PushNotification_ChangeNetworkCompany" xml:space="preserve">
+    <value>Due to high demand, no cars are available right now. Do you want to book with {0} instead?</value>
+    <comment>Due to high demand, no cars are available right now. Do you want to book with {0} instead?</comment>
+  </data>
+  <data name="OrderStatus_wosWAITINGRoaming" xml:space="preserve">
+    <value>Waiting for driver from {0} to be assigned</value>
+  </data>
+  <data name="Network_CannotCreateOrder" xml:space="preserve">
+    <value>There was a problem while trying to book with {0}. Your order will remain active.</value>
+    <comment>There was a problem while trying to book with {0}. Your order will remain active.</comment>
+  </data>
 </root>

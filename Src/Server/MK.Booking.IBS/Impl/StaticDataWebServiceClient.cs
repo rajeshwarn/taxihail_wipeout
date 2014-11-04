@@ -6,7 +6,6 @@ using System.Linq;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
-using apcurium.MK.Common.Extensions;
 
 #endregion
 
@@ -15,7 +14,13 @@ namespace apcurium.MK.Booking.IBS.Impl
     public class StaticDataWebServiceClient : BaseService<StaticDataservice>, IStaticDataWebServiceClient
     {
         public StaticDataWebServiceClient(IServerSettings serverSettings, ILogger logger)
-            : base(serverSettings, logger)
+            : base(serverSettings.ServerData.IBS, logger)
+        {
+            
+        }
+
+        public StaticDataWebServiceClient(IBSSettingContainer ibsSettings, ILogger logger)
+            : base(ibsSettings, logger)
         {
         }
 
@@ -46,7 +51,7 @@ namespace apcurium.MK.Booking.IBS.Impl
             }
 
             var useProvider = providerId.HasValue && providerId > 0;
-            var zoneByCompanyEnabled = ServerSettings.ServerData.IBS.ZoneByCompanyEnabled;
+            var zoneByCompanyEnabled = _ibsSettings.ZoneByCompanyEnabled;
             
             UseService(service =>
             {

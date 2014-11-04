@@ -136,6 +136,10 @@
     <EmbeddedResource Include="Resources\package.ipa" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\CustomerPortal.Client\CustomerPortal.Client.csproj">
+      <Project>{15824AAE-2D25-414E-B9FF-618DE088C9E7}</Project>
+      <Name>CustomerPortal.Client</Name>
+    </ProjectReference>
     <ProjectReference Include="..\CustomerPortal.Contract\CustomerPortal.Contract.csproj">
       <Project>{6a4623e1-41ef-4286-9a34-2adc6407e94f}</Project>
       <Name>CustomerPortal.Contract</Name>
