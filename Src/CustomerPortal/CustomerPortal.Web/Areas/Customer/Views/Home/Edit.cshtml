@@ -1,0 +1,64 @@
+﻿@model CustomerPortal.Web.Entities.Questionnaire
+
+<h2>Edit Application Settings</h2>
+
+@using (Html.BeginForm("Edit", "Home"))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>Company Info</legend>
+      
+        @Html.HelpLabelFor(model => model.AppName)
+        @Html.EditorFor(model => model.AppName)
+        @Html.ValidationMessageFor(model => model.AppName)
+
+        @Html.HelpLabelFor(model => model.CorporateColor)
+        @Html.EditorFor(model => model.CorporateColor)
+        @Html.ValidationMessageFor(model => model.CorporateColor)
+
+        @Html.HelpLabelFor(model => model.CompanyWebsiteUrl)
+        @Html.EditorFor(model => model.CompanyWebsiteUrl)
+        @Html.ValidationMessageFor(model => model.CompanyWebsiteUrl)
+
+        @Html.HelpLabelFor(model => model.CompanyPhoneNumber)
+        @Html.EditorFor(model => model.CompanyPhoneNumber)
+        @Html.ValidationMessageFor(model => model.CompanyPhoneNumber)
+        
+        @Html.HelpLabelFor(model => model.AboutUsLink)
+        @Html.EditorFor(model => model.AboutUsLink)
+        @Html.ValidationMessageFor(model => model.AboutUsLink)
+        
+        @Html.HelpLabelFor(model => model.SupportContactEmail)
+        @Html.EditorFor(model => model.SupportContactEmail)
+        @Html.ValidationMessageFor(model => model.SupportContactEmail)
+
+    </fieldset>
+    <fieldset>
+        <legend>Rates</legend>
+        
+        @Html.HelpLabelFor(model => model.UnitOfLength)
+        @Html.EnumDropDownListFor(model => model.UnitOfLength)
+        @Html.ValidationMessageFor(model => model.UnitOfLength)
+        
+        @Html.HelpLabelFor(model => model.FlagDropRate)
+        @Html.EditorFor(model => model.FlagDropRate)
+        @Html.ValidationMessageFor(model => model.FlagDropRate)
+        
+        @Html.HelpLabelFor(model => model.MileageRate)
+        @Html.EditorFor(model => model.MileageRate)
+        @Html.ValidationMessageFor(model => model.MileageRate)
+        
+
+    </fieldset>
+
+    <div class="form-actions">
+        <input type="submit" value="Save" class="btn btn-primary" />
+        <a href='@Url.Action("Index")' class="btn btn-link">Back to home</a>
+    </div>
+}
+
+@section Scripts {
+    
+}

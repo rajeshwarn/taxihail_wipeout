@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Entity;
@@ -19,6 +20,7 @@ namespace apcurium.MK.Booking.Domain
         private bool _isRated;
         private OrderStatus _status;
         private double? _fare;
+        private bool _isTimedOut;
 
         protected Order(Guid id)
             : base(id)
@@ -31,17 +33,19 @@ namespace apcurium.MK.Booking.Domain
             Handles<OrderStatusChanged>(OnOrderStatusChanged);
             Handles<OrderPairedForPayment>(NoAction);
             Handles<OrderUnpairedForPayment>(NoAction);
+            Handles<OrderTimedOut>(OnOrderTimedOut);
+            Handles<OrderPreparedForNextDispatch>(NoAction);
+            Handles<OrderSwitchedToNextDispatchCompany>(OnOrderSwitchedToNextDispatchCompany);
+            Handles<DispatchCompanySwitchIgnored>(OnNextDispatchCompanySwitchIgnored);
         }
-
+        
         public Order(Guid id, IEnumerable<IVersionedEvent> history)
             : this(id)
         {
             LoadFrom(history);
         }
 
-        public Order(Guid id, Guid accountId, int ibsOrderId, DateTime pickupDate, Address pickupAddress,
-            Address dropOffAddress, BookingSettings settings, double? estimatedFare, string userAgent,
-            string clientLanguageCode, double? userLatitude, double? userLongitude, string clientVersion) : this(id)
+        public Order(Guid id, Guid accountId, int ibsOrderId, DateTime pickupDate, Address pickupAddress, Address dropOffAddress, BookingSettings settings, double? estimatedFare, string userAgent, string clientLanguageCode, double? userLatitude, double? userLongitude, string userNote, string clientVersion) : this(id)
         {
             if ((settings == null) || pickupAddress == null || ibsOrderId <= 0 ||
                 (Params.Get(pickupAddress.FullAddress, settings.Name, settings.Phone).Any(p => p.IsNullOrEmpty())))
@@ -63,6 +67,7 @@ namespace apcurium.MK.Booking.Domain
                 ClientLanguageCode = clientLanguageCode,
                 UserLatitude = userLatitude,
                 UserLongitude = userLongitude,
+                UserNote = userNote,
                 ClientVersion = clientVersion
             });
         }
@@ -133,6 +138,14 @@ namespace apcurium.MK.Booking.Domain
             }
         }
 
+        public void NotifyOrderTimedOut()
+        {
+            if (!_isTimedOut)
+            {
+                Update(new OrderTimedOut());  
+            }
+        }
+
         public void Pair(string medallion, string driverId, string pairingToken, string pairingCode,
             string tokenOfCardToBeUsedForPayment, double? autoTipAmount, int? autoTipPercentage)
         {
@@ -151,6 +164,30 @@ namespace apcurium.MK.Booking.Domain
         public void Unpair()
         {
             Update(new OrderUnpairedForPayment());
+        }
+
+        public void PrepareForNextDispatch(string dispatchCompanyName, string dispatchCompanyKey)
+        {
+            Update(new OrderPreparedForNextDispatch
+            {
+                DispatchCompanyName = dispatchCompanyName,
+                DispatchCompanyKey = dispatchCompanyKey
+            });
+        }
+
+        public void SwitchOrderToNextDispatchCompany(int ibsOrderId, string companyKey, string companyName)
+        {
+            Update(new OrderSwitchedToNextDispatchCompany
+            {
+                IBSOrderId = ibsOrderId,
+                CompanyKey = companyKey,
+                CompanyName = companyName
+            });
+        }
+
+        public void IgnoreDispatchCompanySwitch()
+        {
+            Update(new DispatchCompanySwitchIgnored());
         }
 
         private void OnOrderStatusChanged(OrderStatusChanged @event)
@@ -191,6 +228,21 @@ namespace apcurium.MK.Booking.Domain
         private void OnOrderRated(OrderRated obj)
         {
             _isRated = true;
+        }
+
+        private void OnOrderTimedOut(OrderTimedOut obj)
+        {
+            _isTimedOut = true;
+        }
+
+        private void OnOrderSwitchedToNextDispatchCompany(OrderSwitchedToNextDispatchCompany obj)
+        {
+            _isTimedOut = false;
+        }
+
+        private void OnNextDispatchCompanySwitchIgnored(DispatchCompanySwitchIgnored obj)
+        {
+            _isTimedOut = false;
         }
     }
 }

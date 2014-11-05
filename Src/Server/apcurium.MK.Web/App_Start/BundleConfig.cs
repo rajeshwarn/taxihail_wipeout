@@ -7,12 +7,17 @@ using apcurium.MK.Web.Optimization;
 
 #endregion
 
-namespace apcurium.MK.Web.App_Start
+namespace apcurium.MK.Web
 {
     public class BundleConfig
     {
         public static void RegisterBundles(BundleCollection bundles, string applicationKey)
         {
+            // Use the development version of Modernizr to develop with and learn from. Then, when you're
+            // ready for production, use the build tool at http://modernizr.com to pick only the tests you need.
+            bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
+                        "~/Scripts/modernizr-*"));
+
             bundles.Add(new ScriptBundle("~/bundles/assets").Include(
                 "~/assets/js/localstorage-polyfill.js",
                 "~/assets/js/handlebars-1.0.rc.1.js",
@@ -20,6 +25,7 @@ namespace apcurium.MK.Web.App_Start
                 "~/assets/js/jquery.edit-in-place.js",
                 "~/assets/js/jquery.validate.js",
                 "~/assets/js/additional-methods.js",
+                "~/assets/js/jquery.cookie.js",
                 "~/assets/js/underscore.js",
                 "~/assets/js/backbone.js",
                 "~/assets/bootstrap/js/bootstrap-alert.js",
@@ -122,6 +128,7 @@ namespace apcurium.MK.Web.App_Start
                 "~/assets/js/jquery.edit-in-place.js",
                 "~/assets/js/jquery.validate.js",
                 "~/assets/js/additional-methods.js",
+                "~/assets/js/jquery.cookie.js",
                 "~/assets/js/underscore.js",
                 "~/assets/js/backbone.js",
                 "~/assets/bootstrap/js/bootstrap-alert.js",

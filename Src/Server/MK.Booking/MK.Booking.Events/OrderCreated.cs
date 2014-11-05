@@ -39,6 +39,8 @@ namespace apcurium.MK.Booking.Events
 
         public double? UserLongitude { get; set; }
 
+        public string UserNote { get; set; }
+
         public string ClientVersion { get; set; }  
     }
 }

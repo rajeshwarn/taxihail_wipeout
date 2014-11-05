@@ -20,6 +20,7 @@ using Cirrious.MvvmCross.ViewModels;
 using TinyIoC;
 using TinyMessenger;
 using apcurium.MK.Booking.MapDataProvider;
+using apcurium.MK.Booking.Mobile.AppServices.Social;
 
 
 namespace apcurium.MK.Booking.Mobile
@@ -94,10 +95,10 @@ namespace apcurium.MK.Booking.Mobile
 
 			_container.Register<IPaymentService>((c, p) =>
 			{
-					var baseUrl = c.Resolve<IAppSettings>().Data.ServiceUrl;
+				var baseUrl = c.Resolve<IAppSettings>().Data.ServiceUrl;
                 var sessionId = GetSessionId();
 
-                    return new PaymentService(baseUrl, sessionId, c.Resolve<ConfigurationClientService>(), c.Resolve<ICacheService>(), c.Resolve<IPackageInfo>(), c.Resolve<ILogger>());
+                return new PaymentService(baseUrl, sessionId, c.Resolve<ConfigurationClientService>(), c.Resolve<ICacheService>(), c.Resolve<IPackageInfo>(), c.Resolve<ILogger>());
 			});
             
 			_container.Register<IVehicleClient>((c, p) => new VehicleServiceClient(c.Resolve<IAppSettings>().Data.ServiceUrl, GetSessionId(), c.Resolve<IPackageInfo>(), c.Resolve<ILogger>()));
@@ -120,10 +121,11 @@ namespace apcurium.MK.Booking.Mobile
                 case MvxLifetimeEvent.Deactivated:
                     ClearAppCache ();
                     break;
-                case MvxLifetimeEvent.Launching:
-                case MvxLifetimeEvent.ActivatedFromMemory:
-                case MvxLifetimeEvent.ActivatedFromDisk:
-                    RefreshAppData ();
+				case MvxLifetimeEvent.Launching:
+				case MvxLifetimeEvent.ActivatedFromMemory:
+				case MvxLifetimeEvent.ActivatedFromDisk:
+					RefreshAppData();
+					TryFacebookInitAndPublish();
                     break;
             }
         }
@@ -150,6 +152,18 @@ namespace apcurium.MK.Booking.Mobile
 				LoadAppCache();
 			});
         }
+
+		private void TryFacebookInitAndPublish()
+		{
+			if (Mvx.Resolve<IAppSettings>().Data.FacebookEnabled)
+			{
+				Mvx.Resolve<IFacebookService> ().Init ();
+			}
+			if (Mvx.Resolve<IAppSettings>().Data.FacebookPublishEnabled) 
+			{
+				Mvx.Resolve<IFacebookService>().PublishInstall();
+			}
+		}
         
         private string GetSessionId ()
         {

@@ -1,6 +1,4 @@
-﻿#region
-
-using System;
+﻿using System;
 using System.Globalization;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Client.Extensions;
@@ -9,9 +7,8 @@ using apcurium.MK.Booking.Api.Contract.Requests.Payment;
 using apcurium.MK.Booking.Api.Contract.Requests.Payment.Braintree;
 using apcurium.MK.Booking.Api.Contract.Resources.Payments;
 using apcurium.MK.Booking.Mobile.Infrastructure;
+using apcurium.MK.Common.Resources;
 using BraintreeEncryption.Library;
-
-#endregion
 
 namespace apcurium.MK.Booking.Api.Client.Payments.Braintree
 {
@@ -49,10 +46,10 @@ namespace apcurium.MK.Booking.Api.Client.Payments.Braintree
             });
         }
         
-        public Task<CommitPreauthorizedPaymentResponse> PreAuthorizeAndCommit(string cardToken, double amount,
+        public Task<CommitPreauthorizedPaymentResponse> CommitPayment(string cardToken, double amount,
             double meterAmount, double tipAmount, Guid orderId)
         {
-			return Client.PostAsync(new PreAuthorizeAndCommitPaymentRequest
+			return Client.PostAsync(new CommitPaymentRequest
             {
                 Amount = (decimal) amount,
                 MeterAmount = (decimal) meterAmount,
@@ -78,7 +75,7 @@ namespace apcurium.MK.Booking.Api.Client.Payments.Braintree
             }
             catch (ServiceStack.ServiceClient.Web.WebServiceException)
             {
-                return new PairingResponse { IsSuccessfull = false };
+                return new PairingResponse { IsSuccessful = false };
             }   
         }
 

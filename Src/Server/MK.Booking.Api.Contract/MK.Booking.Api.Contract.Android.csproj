@@ -65,19 +65,20 @@
     <Compile Include="Requests\CurrentAccount.cs" />
     <Compile Include="Requests\DirectionsRequest.cs" />
     <Compile Include="Requests\GeocodingRequest.cs" />
+    <Compile Include="Requests\IgnoreDispatchCompanySwitchRequest.cs" />
     <Compile Include="Requests\NearbyPlacesRequest.cs" />
     <Compile Include="Requests\NotificationSettingsRequest.cs" />
     <Compile Include="Requests\OrderRatingRequest.cs" />
     <Compile Include="Requests\OrderRequest.cs" />
     <Compile Include="Requests\OrderStatusRequest.cs" />
     <Compile Include="Requests\Payment\Braintree\TokenizeCreditCardBraintreeRequest.cs" />
+    <Compile Include="Requests\Payment\CommitPaymentRequest.cs" />
     <Compile Include="Requests\Payment\DeleteTokenizedCreditcardRequest.cs" />
     <Compile Include="Requests\Payment\PairingForPaymentRequest.cs" />
     <Compile Include="Requests\Payment\PaymentSettingsRequest.cs" />
     <Compile Include="Requests\Payment\CancelPayPalExpressCheckoutPaymentRequest.cs" />
     <Compile Include="Requests\Payment\CompletePayPalExpressCheckoutPaymentRequest.cs" />
     <Compile Include="Requests\Payment\InitiatePayPalExpressCheckoutPaymentRequest.cs" />
-    <Compile Include="Requests\Payment\PreAuthorizeAndCommitPaymentRequest.cs" />
     <Compile Include="Requests\Payment\UnpairingForPaymentRequest.cs" />
     <Compile Include="Requests\PlaceDetailRequest.cs" />
     <Compile Include="Requests\ReferenceDataRequest.cs" />
@@ -86,6 +87,7 @@
     <Compile Include="Requests\SaveAddress.cs" />
     <Compile Include="Requests\SearchLocationsRequest.cs" />
     <Compile Include="Requests\SendReceipt.cs" />
+    <Compile Include="Requests\SwitchOrderToNextDispatchCompanyRequest.cs" />
     <Compile Include="Requests\Tariff.cs" />
     <Compile Include="Requests\TermsAndConditionsRequest.cs" />
     <Compile Include="Requests\TestOnlyReqGetTestAccount.cs" />
@@ -98,12 +100,7 @@
     <Compile Include="Resources\ErrorCode.cs" />
     <Compile Include="Resources\Order.cs" />
     <Compile Include="Resources\OrderRatings.cs" />
-    <Compile Include="Resources\Payments\BasePaymentResponse.cs" />
-    <Compile Include="Resources\Payments\CommitPreauthoriedPaymentResponse.cs" />
-    <Compile Include="Resources\Payments\DeleteTokenizedCreditcardResponse.cs" />
-    <Compile Include="Resources\Payments\PairingResponse.cs" />
     <Compile Include="Resources\Payments\PaymentSettingsResponse.cs" />
-    <Compile Include="Resources\Payments\PreAuthorizePaymentResponse.cs" />
     <Compile Include="Resources\Payments\TokenizedCreditCardResponse.cs" />
     <Compile Include="Resources\ReferenceData.cs" />
     <Compile Include="Resources\ApplicationInfo.cs" />
@@ -138,8 +135,5 @@
       <Name>MK.Booking.MapDataProvider.Android</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Resources\Payments\Braintree\" />
-    <Folder Include="Resources\Payments\Cmt\" />
-  </ItemGroup>
+  <ItemGroup />
 </Project>

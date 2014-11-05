@@ -7,10 +7,11 @@
 
         events: {
             'click [data-action=confirm]': 'onConfirm',
+            'click [data-action=always]': 'onAlways',
             'click [data-dismiss=modal]': 'onCancel'
         },
         render: function () {
-            var html = this.renderTemplate(_.pick(this.options, 'title', 'message', 'confirmButton', 'cancelButton'));
+            var html = this.renderTemplate(_.pick(this.options, 'title', 'message', 'confirmButton', 'alwaysButton', 'cancelButton'));
             this.$el.html(html);
             return this;
         },
@@ -27,6 +28,12 @@
             e.preventDefault();
             this.options.autoHide && this.hide();
             this.trigger("ok");
+        },
+
+        onAlways: function (e) {
+            e.preventDefault();
+            this.options.autoHide && this.hide();
+            this.trigger("always");
         },
 
         onCancel: function (e) {

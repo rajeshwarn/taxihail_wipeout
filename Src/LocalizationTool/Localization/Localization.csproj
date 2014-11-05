@@ -47,8 +47,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\Server\MK.Common\Enumeration\SupportedLanguages.cs">
+      <Link>SupportedLanguages.cs</Link>
+    </Compile>
+    <Compile Include="Android\AndroidLanguageFileManager.cs" />
     <Compile Include="Android\AndroidResourceFileHandler.cs" />
+    <Compile Include="CsProjHelper.cs" />
     <Compile Include="Extensions.cs" />
+    <Compile Include="iOS\iOSLanguageFileManager.cs" />
     <Compile Include="iOS\iOSResourceFileHandler.cs" />
     <Compile Include="ResourceFileHandlerBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -1,0 +1,139 @@
+﻿@model CustomerPortal.Web.Entities.Network.TaxiHailNetworkSettings
+
+    
+    <div id="validationPanel" class="alert-success alert" style="display: none" > </div>
+
+   
+    
+@using (Html.BeginForm("Index", "TaxiHailNetworkSettings", FormMethod.Post, new { id = "taxiHailNetworkForm" }))
+{
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+
+        <fieldset>
+            <legend>
+                @Html.DisplayNameFor(x => x.Region)
+            </legend>
+            <div class="editor-coordinate-field">
+                @Html.LabelFor(x => x.Region.CoordinateStart)
+                @Html.TextBoxFor(x => x.Region.CoordinateStart.Latitude, new { id = "StartLatitude", placeholder = "Latitude"  })
+                @Html.TextBoxFor(x => x.Region.CoordinateStart.Longitude, new { id = "StartLongitude", placeholder = "Longitude" })
+            </div>
+            <div class="editor-coordinate-field">
+                @Html.LabelFor(x => x.Region.CoordinateEnd)
+                @Html.TextBoxFor(x => x.Region.CoordinateEnd.Latitude, new { id = "EndLatitude", placeholder = "Latitude" })
+                @Html.TextBoxFor(x => x.Region.CoordinateEnd.Longitude, new { id = "EndLongitude",placeholder = "Longitude" })
+            </div>
+        </fieldset>
+
+        <fieldset>
+            <legend>
+            </legend>
+            <div class="editor-field">
+                @Html.LabelFor(x => x.IsInNetwork)
+                @Html.CheckBoxFor(x => x.IsInNetwork, new { id = "IsInNetworkCheckBox", onchange = "checkChanged(this)" })
+            </div>
+        </fieldset>
+
+        @Html.Hidden("networkId",Model.Id,new {id="networkId"});
+
+    <a href="javascript:void(0)" type="submit" class="btn btn-primary" onclick="save()">Save</a>
+    }
+     
+    <div id="map-canvas"  style="height:320px;width: 600px"></div>
+
+
+
+<script type="text/javascript">
+
+
+    function displayValidationMessage(control, message, valid) {
+        var html = ' <button type="button" id="validationClose" class="close" data-dismiss="alert" onclick="this.parentNode.style.display=\'none\'">&times;</button>';
+        if (valid) {
+            if (control.hasClass("alert-danger")) {
+                control.removeClass("alert-danger");
+            }
+            control.addClass("alert-success");
+        } else {
+            if (control.hasClass("alert-success")) {
+                control.removeClass("alert-success");
+            }
+            control.addClass("alert-danger");
+        }
+
+        control.html(html + message);
+        control.css("display", "block");
+        setTimeout(function () { control.css("display", "none"); }, 2000);
+    }
+
+    function save() {
+        coordinatesChanged();
+        var form = $('#taxiHailNetworkForm');
+        var panel = $('#validationPanel');
+
+        $.ajax({
+            type: "POST",
+            url: form.attr('action'),
+            data: form.serialize(),
+            success: function (response) {
+
+                displayValidationMessage(panel, response.Message,response.Success);
+            }
+        });
+    }
+
+    var map;
+    var mapRegion;
+
+    function initialize() {
+        map = new google.maps.Map(document.getElementById('map-canvas'), {
+            zoom: 10,
+            center: new google.maps.LatLng(45.514466, -73.846313),
+            disableDefaultUI: true
+        });
+        coordinatesChanged();
+    }
+
+    google.maps.event.addDomListener(window, 'load', initialize);
+
+
+    function coordinatesChanged() {
+        var startLat = $("#StartLatitude").val();
+        var startLon = $("#StartLongitude").val();
+        var endLat = $("#EndLatitude").val();
+        var endLon = $("#EndLongitude").val();
+        var form = $('#taxiHailNetworkForm');
+
+        if (form.valid())
+        {
+
+            var bounds = new google.maps.LatLngBounds(
+                new google.maps.LatLng(startLat, startLon),
+                new google.maps.LatLng(endLat, endLon));
+
+            if (mapRegion) {
+                mapRegion.setBounds(bounds);
+            } else {
+                mapRegion = new google.maps.Rectangle({
+                    strokeColor: '#FF0000',
+                    strokeOpacity: 0.8,
+                    strokeWeight: 2,
+                    fillColor: '#FF0000',
+                    fillOpacity: 0.35,
+                    map: map,
+                    bounds: bounds
+                });
+            }
+        
+            map.fitBounds(bounds);
+        }
+    }
+
+
+    function checkChanged(checkbox) {
+        if (checkbox.checked && !$('#taxiHailNetworkForm').valid()) {
+            $('#IsInNetworkCheckBox').attr('checked', false);
+            alert('please enter start and end regions above');
+        }
+    }
+</script>

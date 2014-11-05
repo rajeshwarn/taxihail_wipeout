@@ -16,7 +16,7 @@ namespace apcurium.MK.Booking.Test.OrderFixture
 {
     public class given_a_read_model_database_for_receipt_email_map : given_a_read_model_database
     {
-        protected TestConfigurationManager ConfigurationManager;
+        protected TestServerSettings ConfigurationManager;
         protected Mock<IEmailSender> EmailSenderMock;
         protected Mock<ITemplateService> TemplateServiceMock;
         protected EventSourcingTestHelper<Order> Sut;
@@ -57,7 +57,7 @@ namespace apcurium.MK.Booking.Test.OrderFixture
             Sut = new EventSourcingTestHelper<Order>();
 
             EmailSenderMock = new Mock<IEmailSender>();
-            ConfigurationManager = new TestConfigurationManager();
+            ConfigurationManager = new TestServerSettings();
             TemplateServiceMock = new Mock<ITemplateService>();
 
             TemplateServiceMock.Setup(x => x.Render(It.IsAny<string>(), It.IsAny<object>())).Returns("");

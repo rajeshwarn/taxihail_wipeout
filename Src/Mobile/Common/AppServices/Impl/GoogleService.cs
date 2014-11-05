@@ -9,7 +9,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 	{
         public Address GetPlaceDetail(string name, string placeId)
         {
-            var result = TinyIoCContainer.Current.Resolve<IPlaces>().GetPlaceDetail(name, placeId);
+			var result = TinyIoCContainer.Current.Resolve<IPlaces>().GetPlaceDetail(name, placeId);
             return result;
         }
         public Address[] GetNearbyPlaces(double? latitude, double? longitude, string name = null, int? radius = null)

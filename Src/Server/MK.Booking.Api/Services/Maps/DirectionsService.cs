@@ -21,15 +21,15 @@ namespace apcurium.MK.Booking.Api.Services.Maps
     public class DirectionsService : Service
     {
         private readonly IDirections _client;
-        private readonly IAppSettings _appSettings;
-        private readonly IBookingWebServiceClient _bookingWebServiceClient;
+        private readonly IServerSettings _serverSettings;
+        private readonly IIBSServiceProvider _ibsServiceProvider;
         private readonly IOrderDao _orderDao;
 
-        public DirectionsService(IDirections client, IAppSettings appSettings, IBookingWebServiceClient bookingWebServiceClient, IOrderDao orderDao)
+        public DirectionsService(IDirections client, IServerSettings serverSettings, IIBSServiceProvider ibsServiceProvider, IOrderDao orderDao)
         {
             _client = client;
-            _appSettings = appSettings;
-            _bookingWebServiceClient = bookingWebServiceClient;
+            _serverSettings = serverSettings;
+            _ibsServiceProvider = ibsServiceProvider;
             _orderDao = orderDao;
         }
 
@@ -46,12 +46,12 @@ namespace apcurium.MK.Booking.Api.Services.Maps
                 FormattedPrice = result.FormattedPrice
             };
 
-            if (_appSettings.Data.ShowEta
+            if (_serverSettings.ServerData.ShowEta
                 && request.OriginLat.HasValue
                 && request.OriginLng.HasValue)
             {
                 // Get available vehicles
-                var availableVehicles = _bookingWebServiceClient.GetAvailableVehicles(request.OriginLat.Value, request.OriginLng.Value, null);
+                var availableVehicles = _ibsServiceProvider.Booking().GetAvailableVehicles(request.OriginLat.Value, request.OriginLng.Value, null);
 
                 // Get nearest available vehicle
                 var nearestAvailableVehicle = GetNearestAvailableVehicle(request.OriginLat.Value,

@@ -2,6 +2,8 @@
 
 using System.Configuration;
 using System.Data.Entity;
+using CustomerPortal.Client;
+using CustomerPortal.Client.Impl;
 using Infrastructure;
 using Infrastructure.EventSourcing;
 using Infrastructure.Messaging;
@@ -11,6 +13,7 @@ using Infrastructure.Serialization;
 using Infrastructure.Sql.EventSourcing;
 using Infrastructure.Sql.MessageLog;
 using Microsoft.Practices.Unity;
+using apcurium.MK.Common.Configuration;
 
 #endregion
 
@@ -28,7 +31,8 @@ namespace apcurium.MK.Web
 			new Booking.Maps.Module().Init(container);
             new Booking.IBS.Module().Init(container);
             new Booking.Api.Module().Init(container);
-
+           
+            RegisterTaxiHailNetwork(container);
             RegisterEventHandlers(container);
             RegisterCommandHandlers(container);
         }
@@ -47,6 +51,7 @@ namespace apcurium.MK.Web
             // Event log database and handler.
             container.RegisterType<SqlMessageLog>(new InjectionConstructor(connectionStringSettings.ConnectionString,
                 container.Resolve<ITextSerializer>(), container.Resolve<IMetadataProvider>()));
+
             container.RegisterType<IEventHandler, SqlMessageLogHandler>("SqlMessageLogHandler");
             container.RegisterType<ICommandHandler, SqlMessageLogHandler>("SqlMessageLogHandler");
 
@@ -65,6 +70,13 @@ namespace apcurium.MK.Web
             var eventBus = new AsynchronousMemoryEventBus(container.Resolve<ITextSerializer>());
             container.RegisterInstance<IEventBus>(eventBus);
             container.RegisterInstance<IEventHandlerRegistry>(eventBus);
+        }
+
+        private static void RegisterTaxiHailNetwork(IUnityContainer unityContainer)
+        {
+            unityContainer.RegisterType<ITaxiHailNetworkServiceClient>(
+                new TransientLifetimeManager(), 
+                new InjectionFactory(c => new TaxiHailNetworkServiceClient(c.Resolve<IServerSettings>())));
         }
 
         private static void RegisterCommandHandlers(IUnityContainer unityContainer)

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
+using apcurium.MK.Common.Configuration;
 
 #endregion
 
@@ -56,6 +57,23 @@ namespace apcurium.MK.Booking.ReadModel.Query
             using (var context = _contextFactory.Invoke())
             {
                 return context.Query<AccountDetail>().SingleOrDefault(c => c.TwitterId == id);
+            }
+        }
+
+        public int? GetIbsAccountId(Guid accountId, string companyKey)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                if (companyKey == null)
+                {
+                    var account = context.Query<AccountDetail>().First(c => c.Id == accountId);
+                    return account.IBSAccountId;
+                }
+
+                var accountIbsInfo = context.Query<AccountIbsDetail>().SingleOrDefault(c => c.AccountId == accountId && c.CompanyKey == companyKey);
+                return accountIbsInfo != null
+                    ? (int?)accountIbsInfo.IBSAccountId
+                    : null;
             }
         }
     }

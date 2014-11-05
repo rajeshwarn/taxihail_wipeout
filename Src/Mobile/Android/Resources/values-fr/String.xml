@@ -534,4 +534,12 @@
   <string name="Modify">Modifier</string>
   <string name="CardExpiredMessage">Votre carte a expiré. Ajoutez une nouvelle carte ou mettez à jour la carte sélectionnée pour continuer.</string>
   <string name="CallDriverUsingProxyMessage">Votre chauffeur vous rappellera dans quelques minutes</string>
+  <string name="TaxiHailNetworkTimeOutPopupTitle">Changer de compagnie?</string>
+  <string name="TaxiHailNetworkTimeOutPopupMessage">En raison d\'un grand nombre de demandes, aucun véhicule n\'est disponible présentement. Désirez-vous passer une commande avec {0}?</string>
+  <string name="TaxiHailNetworkTimeOutPopupAccept">Accepter</string>
+  <string name="TaxiHailNetworkTimeOutPopupRefuse">Ignorer</string>
+  <string name="DriverInfoCompany">Compagnie:</string>
+  <string name="TaxiHailNetworkTimeOutErrorTitle">Erreur</string>
+  <string name="NetworkContactingNextDispatchDescription">En attente de {0} ...</string>
+  <string name="TaxiHailNetworkTimeOutPopupAlways">Toujours accepter</string>
 </resources>

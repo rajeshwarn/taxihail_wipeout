@@ -18,7 +18,11 @@ namespace apcurium.MK.Booking.CommandHandlers
         ICommandHandler<RateOrder>,
         ICommandHandler<ChangeOrderStatus>,
         ICommandHandler<PairForPayment>,
-        ICommandHandler<UnpairForPayment>
+        ICommandHandler<UnpairForPayment>,
+        ICommandHandler<NotifyOrderTimedOut>,
+        ICommandHandler<PrepareOrderForNextDispatch>,
+        ICommandHandler<SwitchOrderToNextDispatchCompany>,
+        ICommandHandler<IgnoreDispatchCompanySwitch>
     {
         private readonly IEventSourcedRepository<Order> _repository;
 
@@ -42,11 +46,19 @@ namespace apcurium.MK.Booking.CommandHandlers
             _repository.Save(order, command.Id.ToString());
         }
 
+        public void Handle(NotifyOrderTimedOut command)
+        {
+            var order = _repository.Find(command.OrderId);
+            order.NotifyOrderTimedOut();
+
+            _repository.Save(order, command.Id.ToString());
+        }
+
         public void Handle(CreateOrder command)
         {
             var order = new Order(command.OrderId, command.AccountId, command.IBSOrderId, command.PickupDate,
                 command.PickupAddress, command.DropOffAddress, command.Settings, command.EstimatedFare,
-                command.UserAgent, command.ClientLanguageCode, command.UserLatitude, command.UserLongitude, command.ClientVersion);
+                command.UserAgent, command.ClientLanguageCode, command.UserLatitude, command.UserLongitude, command.UserNote, command.ClientVersion);
 
             if (command.Payment.PayWithCreditCard)
             {
@@ -82,6 +94,27 @@ namespace apcurium.MK.Booking.CommandHandlers
         {
             var order = _repository.Find(command.OrderId);
             order.Unpair();
+            _repository.Save(order, command.Id.ToString());
+        }
+
+        public void Handle(PrepareOrderForNextDispatch command)
+        {
+            var order = _repository.Find(command.OrderId);
+            order.PrepareForNextDispatch(command.DispatchCompanyName, command.DispatchCompanyKey);
+            _repository.Save(order, command.Id.ToString());
+        }
+
+        public void Handle(SwitchOrderToNextDispatchCompany command)
+        {
+            var order = _repository.Find(command.OrderId);
+            order.SwitchOrderToNextDispatchCompany(command.IBSOrderId, command.CompanyKey, command.CompanyName);
+            _repository.Save(order, command.Id.ToString());
+        }
+
+        public void Handle(IgnoreDispatchCompanySwitch command)
+        {
+            var order = _repository.Find(command.OrderId);
+            order.IgnoreDispatchCompanySwitch();
             _repository.Save(order, command.Id.ToString());
         }
     }

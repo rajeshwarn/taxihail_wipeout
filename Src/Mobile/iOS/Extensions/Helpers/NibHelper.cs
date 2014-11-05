@@ -9,7 +9,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Extensions.Helpers
     {
         public static UINib GetNibForView(string defaultNibName)
         {
-            var customNibName = string.Format("{0}_{1}", defaultNibName, TinyIoCContainer.Current.Resolve<IAppSettings>().Data.ApplicationName.Replace(" ", ""));
+            var customNibName = string.Format("{0}_{1}", defaultNibName, TinyIoCContainer.Current.Resolve<IAppSettings>().Data.TaxiHail.ApplicationName.Replace(" ", ""));
 
             UINib nib;
             if (NSBundle.MainBundle.PathForResource(customNibName, "nib") != null)

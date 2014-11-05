@@ -30,24 +30,18 @@ namespace apcurium.MK.Booking.Services.Impl
     {
         private const int TaxiDistanceThresholdForPushNotification = 200; // In meters
 
-        private const string ApplicationNameSetting = "TaxiHail.ApplicationName";
-        private const string AccentColorSetting = "TaxiHail.AccentColor";
-        private const string EmailFontColorSetting = "TaxiHail.EmailFontColor";
-        private const string ApplicationKeySetting = "TaxiHail.ApplicationKey";
-
         private readonly Func<BookingDbContext> _contextFactory;
         private readonly IPushNotificationService _pushNotificationService;
         private readonly ITemplateService _templateService;
         private readonly IEmailSender _emailSender;
-        private readonly IConfigurationManager _configurationManager;
-        private readonly IAppSettings _appSettings;
+        private readonly IServerSettings _serverSettings;
         private readonly IConfigurationDao _configurationDao;
         private readonly IOrderDao _orderDao;
         private readonly IStaticMap _staticMap;
         private readonly ISmsService _smsService;
         private readonly IGeocoding _geocoding;
         private readonly ILogger _logger;
-        private readonly Resources.Resources _resources;
+        private readonly Booking.Resources.Resources _resources;
 
         private BaseUrls _baseUrls;
 
@@ -56,8 +50,7 @@ namespace apcurium.MK.Booking.Services.Impl
             IPushNotificationService pushNotificationService,
             ITemplateService templateService,
             IEmailSender emailSender,
-            IConfigurationManager configurationManager,
-            IAppSettings appSettings,
+            IServerSettings serverSettings,
             IConfigurationDao configurationDao,
             IOrderDao orderDao,
             IStaticMap staticMap,
@@ -69,8 +62,7 @@ namespace apcurium.MK.Booking.Services.Impl
             _pushNotificationService = pushNotificationService;
             _templateService = templateService;
             _emailSender = emailSender;
-            _configurationManager = configurationManager;
-            _appSettings = appSettings;
+            _serverSettings = serverSettings;
             _configurationDao = configurationDao;
             _orderDao = orderDao;
             _staticMap = staticMap;
@@ -78,13 +70,12 @@ namespace apcurium.MK.Booking.Services.Impl
             _geocoding = geocoding;
             _logger = logger;
 
-            var applicationKey = configurationManager.GetSetting(ApplicationKeySetting);
-            _resources = new Resources.Resources(applicationKey, appSettings);
+            _resources = new Booking.Resources.Resources(serverSettings);
         }
 
         public void SetBaseUrl(Uri baseUrl)
         {
-            this._baseUrls = new BaseUrls(baseUrl, _configurationManager);
+            this._baseUrls = new BaseUrls(baseUrl, _serverSettings);
         }
 
 
@@ -113,8 +104,8 @@ namespace apcurium.MK.Booking.Services.Impl
         public void SendPairingInquiryPush(OrderStatusDetail orderStatusDetail)
         {
             var order = _orderDao.FindById(orderStatusDetail.OrderId);
-            if (_configurationManager.GetPaymentSettings().AutomaticPayment
-                    && !_configurationManager.GetPaymentSettings().AutomaticPaymentPairing
+            if (_serverSettings.GetPaymentSettings().AutomaticPayment
+                    && !_serverSettings.GetPaymentSettings().AutomaticPaymentPairing
                     && order.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id // Only send notification if using card on file
                     && ShouldSendNotification(order.AccountId, x => x.ConfirmPairingPush))
             {
@@ -126,10 +117,18 @@ namespace apcurium.MK.Booking.Services.Impl
 
         public void SendTimeoutPush(OrderStatusDetail orderStatusDetail)
         {
-            var order = _orderDao.FindById(orderStatusDetail.OrderId);
+            var order = _orderDao.FindById(orderStatusDetail.OrderId); 
             SendPushOrSms(order.AccountId,
                         _resources.Get("PushNotification_wosTIMEOUT", order.ClientLanguageCode),
                         new Dictionary<string, object>());
+        }
+
+        public void SendChangeDispatchCompanyPush(Guid orderId)
+        {
+            var order = _orderDao.FindById(orderId);
+            SendPushOrSms(order.AccountId,
+                        string.Format(_resources.Get("PushNotification_ChangeNetworkCompany", order.ClientLanguageCode), order.CompanyName),
+                        new Dictionary<string, object> { { "orderId", orderId }, { "isPairingNotification", false } });
         }
 
         public void SendPaymentCapturePush(Guid orderId, decimal amount)
@@ -210,9 +209,9 @@ namespace apcurium.MK.Booking.Services.Impl
             var templateData = new
             {
                 confirmationUrl,
-                ApplicationName = _configurationManager.GetSetting(ApplicationNameSetting),
-                EmailFontColor = _configurationManager.GetSetting(EmailFontColorSetting),
-                AccentColor = _configurationManager.GetSetting(AccentColorSetting),
+                ApplicationName = _serverSettings.ServerData.TaxiHail.ApplicationName,
+                EmailFontColor = _serverSettings.ServerData.TaxiHail.EmailFontColor,
+                AccentColor = _serverSettings.ServerData.TaxiHail.AccentColor,
                 GetBaseUrls().LogoImg
             };
 
@@ -222,7 +221,7 @@ namespace apcurium.MK.Booking.Services.Impl
         public void SendAccountConfirmationSMS(string phoneNumber, string code, string clientLanguageCode)
         {
             var template = _resources.Get(SMSConstant.Template.AccountConfirmation, clientLanguageCode);
-            var message = string.Format(template, _configurationManager.GetSetting(ApplicationNameSetting), code);
+            var message = string.Format(template, _serverSettings.ServerData.TaxiHail.ApplicationName, code);
 
             SendSms(phoneNumber, message);
         }
@@ -246,13 +245,15 @@ namespace apcurium.MK.Booking.Services.Impl
                 && (!string.IsNullOrWhiteSpace(dropOffAddress.FullAddress)
                     || !string.IsNullOrWhiteSpace(dropOffAddress.DisplayAddress));
 
-            var dateFormat = CultureInfo.GetCultureInfo(clientLanguageCode);
+            var dateFormat = CultureInfo.GetCultureInfo(clientLanguageCode.IsNullOrEmpty()
+                    ? SupportedLanguages.en.ToString()
+                    : clientLanguageCode);
 
             var templateData = new
             {
-                ApplicationName = _configurationManager.GetSetting(ApplicationNameSetting),
-                AccentColor = _configurationManager.GetSetting(AccentColorSetting),
-                EmailFontColor = _configurationManager.GetSetting(EmailFontColorSetting),
+                ApplicationName = _serverSettings.ServerData.TaxiHail.ApplicationName,
+                AccentColor = _serverSettings.ServerData.TaxiHail.AccentColor,
+                EmailFontColor = _serverSettings.ServerData.TaxiHail.EmailFontColor,
                 ibsOrderId,
                 PickupDate = pickupDate.ToString("D", dateFormat),
                 PickupTime = pickupDate.ToString("t" /* Short time pattern */),
@@ -269,8 +270,6 @@ namespace apcurium.MK.Booking.Services.Impl
                 Note = string.IsNullOrWhiteSpace(note) ? "-" : note,
                 Apartment = string.IsNullOrWhiteSpace(pickupAddress.Apartment) ? "-" : pickupAddress.Apartment,
                 RingCode = string.IsNullOrWhiteSpace(pickupAddress.RingCode) ? "-" : pickupAddress.RingCode,
-                /* Mandatory visibility settings */
-                VisibilityLargeBags = _configurationManager.GetSetting("Client.ShowLargeBagsIndicator", false) || settings.LargeBags > 0,
                 GetBaseUrls().LogoImg
             };
 
@@ -282,9 +281,9 @@ namespace apcurium.MK.Booking.Services.Impl
             var templateData = new
             {
                 password,
-                ApplicationName = _configurationManager.GetSetting(ApplicationNameSetting),
-                AccentColor = _configurationManager.GetSetting(AccentColorSetting),
-                EmailFontColor = _configurationManager.GetSetting(EmailFontColorSetting),
+                ApplicationName = _serverSettings.ServerData.TaxiHail.ApplicationName,
+                AccentColor = _serverSettings.ServerData.TaxiHail.AccentColor,
+                EmailFontColor = _serverSettings.ServerData.TaxiHail.EmailFontColor,
                 GetBaseUrls().LogoImg
             };
 
@@ -307,7 +306,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 }
             }
 
-            var vatIsEnabled = _appSettings.Data.VATIsEnabled;
+            var vatIsEnabled = _serverSettings.ServerData.VATIsEnabled;
 
             var dateFormat = CultureInfo.GetCultureInfo(clientLanguageCode);
 
@@ -354,9 +353,9 @@ namespace apcurium.MK.Booking.Services.Impl
             var templateData = new
             {
                 // template is missing the toll, if we decide to add it, we need to make sure we hide it if it's empty
-                ApplicationName = _configurationManager.GetSetting(ApplicationNameSetting),
-                AccentColor = _configurationManager.GetSetting(AccentColorSetting),
-                EmailFontColor = _configurationManager.GetSetting(EmailFontColorSetting),
+                ApplicationName = _serverSettings.ServerData.TaxiHail.ApplicationName,
+                AccentColor = _serverSettings.ServerData.TaxiHail.AccentColor,
+                EmailFontColor = _serverSettings.ServerData.TaxiHail.EmailFontColor,
                 ibsOrderId,
                 vehicleNumber,
                 driverName,
@@ -371,7 +370,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 Toll = _resources.FormatPrice(toll),
                 Tip = _resources.FormatPrice(tip),
                 TotalFare = _resources.FormatPrice(totalFare),
-                Note = _configurationManager.GetSetting("Receipt.Note"),
+                Note = _serverSettings.ServerData.Receipt.Note,
                 Tax = _resources.FormatPrice(tax),
                 vatIsEnabled,
                 IsCardOnFile = isCardOnFile,
@@ -440,7 +439,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 throw new InvalidOperationException("Template not found: " + bodyTemplate);
             }
                 
-            var mailMessage = new MailMessage(_configurationManager.GetSetting("Email.NoReply"), to, messageSubject, null)
+            var mailMessage = new MailMessage(_serverSettings.ServerData.Email.NoReply, to, messageSubject, null)
             {
                 IsBodyHtml = true, 
                 BodyEncoding = Encoding.UTF8, 
@@ -466,7 +465,7 @@ namespace apcurium.MK.Booking.Services.Impl
         {
             try
             {
-                if (_appSettings.Data.SendPushAsSMS)
+                if (_serverSettings.ServerData.SendPushAsSMS)
                 {
                     SendSms(accountId, alert);
                 }
@@ -557,9 +556,9 @@ namespace apcurium.MK.Booking.Services.Impl
 
         private class BaseUrls
         {
-            public BaseUrls(Uri baseUrl, IConfigurationManager configurationManager)
+            public BaseUrls(Uri baseUrl, IServerSettings serverSettings)
             {
-                LogoImg = String.Concat(baseUrl, "/themes/" + configurationManager.GetSetting(ApplicationKeySetting) + "/img/email_logo.png");
+                LogoImg = String.Concat(baseUrl, "/themes/" + serverSettings.ServerData.TaxiHail.ApplicationKey + "/img/email_logo.png");
                 BaseUrlAssetsImg = String.Concat(baseUrl, "/assets/img/");
             }
 

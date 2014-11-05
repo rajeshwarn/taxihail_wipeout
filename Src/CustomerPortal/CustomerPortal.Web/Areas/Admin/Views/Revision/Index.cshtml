@@ -1,0 +1,62 @@
+﻿@model IQueryable<CustomerPortal.Web.Entities.Revision>
+@*@model dynamic*@
+
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_SettingsLayout.cshtml"; 
+}
+<div style="width: 980px; overflow: hidden">
+    <div style="width: 860px; float: right; padding-bottom: 20px;">
+        <h4>Revisions</h4>
+        <a class="btn btn-primary" href="@Url.Action("Update", "Revision")">Refresh</a>
+        <a href="@Url.Action("Create", "Revision")" class="btn btn-link">Create new revision</a>
+    </div>
+</div>
+
+<div style="width: 100px; float: left; position: fixed">@Html.Partial("_DeployRevisionPartial")</div>
+<div style="width: 870px; float: right">
+    
+@using (Html.BeginForm())
+{
+    <table class="table table-striped">
+        <tr>
+            <th>Tag</th>
+            <th>Commit</th>
+            <th>Hidden</th>
+            <th>Visible Customer</th>
+            <th>Inactive</th>
+        </tr>
+        @{ int i = 1; }
+        @foreach (var rev in Model.OrderBy(r => r.Tag))
+        {
+            <tr>
+                <td>
+                    @rev.Tag
+                </td>
+                <td>
+                    @rev.Commit
+                </td>
+                <td>                    
+                    @Html.CheckBox("ckb_" + rev.Commit, rev.Hidden)                    
+                </td>
+                <td>
+                    @Html.CheckBox("ckbCV_" + rev.Commit, rev.CustomerVisible)                 
+                    
+                </td>
+                <td>
+                    @Html.CheckBox("ckbInactive_" + rev.Commit, rev.Inactive)
+
+                </td>
+            </tr>
+            i = i + 1;
+        }
+    </table>
+    
+    <input type="submit" class="btn btn-primary" value="Save" />
+}
+    
+
+    
+</div>
+

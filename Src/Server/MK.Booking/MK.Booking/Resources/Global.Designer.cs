@@ -574,6 +574,15 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to There was a problem while trying to book with {0}. Your order will remain active..
+        /// </summary>
+        public static string Network_CannotCreateOrder {
+            get {
+                return ResourceManager.GetString("Network_CannotCreateOrder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ETA: {0}.
         /// </summary>
         public static string OrderStatus_CabDriverETA {
@@ -709,6 +718,15 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Waiting for driver from {0} to be assigned.
+        /// </summary>
+        public static string OrderStatus_wosWAITINGRoaming {
+            get {
+                return ResourceManager.GetString("OrderStatus_wosWAITINGRoaming", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Fare will be paid by the app.
         /// </summary>
         public static string PairingConfirmationToDriver {
@@ -786,6 +804,15 @@ namespace apcurium.MK.Booking.Resources {
         public static string PaymentItemDescription {
             get {
                 return ResourceManager.GetString("PaymentItemDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Due to high demand, no cars are available right now. Do you want to book with {0} instead?.
+        /// </summary>
+        public static string PushNotification_ChangeNetworkCompany {
+            get {
+                return ResourceManager.GetString("PushNotification_ChangeNetworkCompany", resourceCulture);
             }
         }
         

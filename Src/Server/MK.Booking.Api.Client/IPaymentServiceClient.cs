@@ -1,10 +1,7 @@
-#region
-
 using System;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Contract.Resources.Payments;
-
-#endregion
+using apcurium.MK.Common.Resources;
 
 namespace apcurium.MK.Booking.Api.Client
 {
@@ -14,7 +11,7 @@ namespace apcurium.MK.Booking.Api.Client
         Task<TokenizedCreditCardResponse> Tokenize(string creditCardNumber, DateTime expiryDate, string cvv);
         Task<DeleteTokenizedCreditcardResponse> ForgetTokenizedCard(string cardToken);        
 
-        Task<CommitPreauthorizedPaymentResponse> PreAuthorizeAndCommit(string cardToken, double amount, double meterAmount,
+        Task<CommitPreauthorizedPaymentResponse> CommitPayment(string cardToken, double amount, double meterAmount,
             double tipAmount, Guid orderId);
 
         Task<PairingResponse> Pair(Guid orderId, string cardToken, int? autoTipPercentage, double? autoTipAmount);

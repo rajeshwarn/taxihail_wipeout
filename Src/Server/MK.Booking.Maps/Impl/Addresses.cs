@@ -25,7 +25,7 @@ namespace apcurium.MK.Booking.Maps.Impl
         private readonly ILogger _logger;
 		private readonly IPlaceDataProvider _placeProvider;
 
-		public Addresses(IGeocoder geocoder, IPlaceDataProvider placeProvider, IAppSettings appSettings,
+        public Addresses(IGeocoder geocoder, IPlaceDataProvider placeProvider, IAppSettings appSettings,
             IPopularAddressProvider popularAddressProvider, ILogger logger)
         {
 			_placeProvider = placeProvider;

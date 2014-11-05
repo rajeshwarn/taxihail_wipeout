@@ -28,6 +28,7 @@ using apcurium.MK.Booking.MapDataProvider.Google;
 using Cirrious.CrossCore.Droid;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Booking.MapDataProvider.TomTom;
+using apcurium.MK.Booking.Mobile.Client.Helpers;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -71,6 +72,8 @@ namespace apcurium.MK.Booking.Mobile.Client
             _container.Register<IPushNotificationService>((c, p) => new PushNotificationService(ApplicationContext, c.Resolve<IAppSettings>()));
 
             _container.Register<IAppSettings>(new AppSettingsService (_container.Resolve<ICacheService> (), _container.Resolve<ILogger> ()));
+
+            ConfigureInsights ();
 
             _container.Register<IGeocoder>( (c,p)=> new GoogleApiClient(c.Resolve<IAppSettings>(), c.Resolve<ILogger>(), new AndroidGeocoder(c.Resolve<IAppSettings>(), c.Resolve<ILogger>(), c.Resolve<IMvxAndroidGlobals>())) );
 			_container.Register<IPlaceDataProvider, GoogleApiClient>();
@@ -125,8 +128,6 @@ namespace apcurium.MK.Booking.Mobile.Client
                 };
                 return new TwitterServiceMonoDroid( oauthConfig, c.Resolve<IMvxAndroidCurrentTopActivity>());
             });
-
-
 		}
 
 		protected override Cirrious.CrossCore.IoC.IMvxIoCProvider CreateIocProvider()
@@ -137,6 +138,29 @@ namespace apcurium.MK.Booking.Mobile.Client
         protected override Cirrious.MvvmCross.Droid.Views.IMvxAndroidViewPresenter CreateViewPresenter()
         {
             return new PhonePresenter();
+        }
+
+        private void ConfigureInsights ()
+        {
+            #if !DEBUG
+            if(PlatformHelper.APILevel >= 15)
+            {
+                var settings = TinyIoCContainer.Current.Resolve<IAppSettings>().Data;
+                var packageInfo = TinyIoCContainer.Current.Resolve<IPackageInfo>();
+
+                Xamarin.Insights.Initialize(settings.Insights.APIKey, ApplicationContext);
+                Xamarin.Insights.DisableCollection = false;
+                Xamarin.Insights.DisableDataTransmission = false;
+                Xamarin.Insights.DisableExceptionCatching = false;
+
+                // identify with an unknown user in case an exception occurs before the user can log in
+                Xamarin.Insights.Identify(settings.Insights.UnknownUserIdentifier, new Dictionary<string, string>
+                    {
+                        { "ApplicationVersion", packageInfo.Version },
+                        { "Company", settings.TaxiHail.ApplicationName },
+                    });
+            }
+            #endif
         }
     }
 }

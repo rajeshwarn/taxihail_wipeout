@@ -3,7 +3,10 @@
 using System.Configuration;
 using System.Data.Entity;
 using System.Linq;
+using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
+using CustomerPortal.Client;
+using CustomerPortal.Client.Impl;
 using DatabaseInitializer.Services;
 using Infrastructure;
 using Infrastructure.EventSourcing;
@@ -32,6 +35,7 @@ namespace DatabaseInitializer
             new apcurium.MK.Booking.MapDataProvider.Module().Init(container);
             new apcurium.MK.Booking.Maps.Module().Init(container);
 
+            RegisterTaxiHailNetwork(container);
             RegisterEventHandlers(container);
             RegisterCommandHandlers(container);
             
@@ -43,7 +47,6 @@ namespace DatabaseInitializer
             container.RegisterInstance(apcurium.MK.Common.Module.MkConnectionString, connectionString);
             Database.SetInitializer<EventStoreDbContext>(null);
             Database.SetInitializer<MessageLogDbContext>(null);
-
 
             container.RegisterInstance<ITextSerializer>(new JsonTextSerializer());
             container.RegisterInstance<IMetadataProvider>(new StandardMetadataProvider());
@@ -84,6 +87,13 @@ namespace DatabaseInitializer
             {
                 commandHandlerRegistry.Register(commandHandler);
             }
+        }
+
+        private static void RegisterTaxiHailNetwork(IUnityContainer unityContainer)
+        {
+            unityContainer.RegisterType<ITaxiHailNetworkServiceClient>(
+                new TransientLifetimeManager(),
+                new InjectionFactory(c => new TaxiHailNetworkServiceClient(c.Resolve<IServerSettings>())));
         }
 
         private static void RegisterEventHandlers(IUnityContainer unityContainer)

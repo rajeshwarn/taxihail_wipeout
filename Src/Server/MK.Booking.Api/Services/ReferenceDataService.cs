@@ -21,17 +21,17 @@ namespace apcurium.MK.Booking.Api.Services
     {
         public const string CacheKey = "IBS.StaticData";
         private readonly ICacheClient _cacheClient;
-        private readonly IConfigurationManager _configManager;
-        private readonly IStaticDataWebServiceClient _staticDataWebServiceClient;
+        private readonly IServerSettings _serverSettings;
+        private readonly IIBSServiceProvider _ibsServiceProvider;
 
         public ReferenceDataService(
-            IStaticDataWebServiceClient staticDataWebServiceClient,
+            IIBSServiceProvider ibsServiceProvider,
             ICacheClient cacheClient,
-            IConfigurationManager configManager)
+            IServerSettings serverSettings)
         {
-            _staticDataWebServiceClient = staticDataWebServiceClient;
+            _ibsServiceProvider = ibsServiceProvider;
             _cacheClient = cacheClient;
-            _configManager = configManager;
+            _serverSettings = serverSettings;
         }
 
         public object Get(ReferenceDataRequest request)
@@ -40,17 +40,17 @@ namespace apcurium.MK.Booking.Api.Services
 
             if (result == null)
             {
-                result = GetReferenceData();
+                result = GetReferenceData(request.CompanyKey);
                 _cacheClient.Add(CacheKey, result);
             }
 
             if (!request.WithoutFiltering)
             {
-                result.VehiclesList = FilterReferenceData(result.VehiclesList, "IBS.ExcludedVehicleTypeId");
-                result.CompaniesList = FilterReferenceData(result.CompaniesList, "IBS.ExcludedProviderId");
+                result.VehiclesList = FilterReferenceData(result.VehiclesList, _serverSettings.ServerData.IBS.ExcludedVehicleTypeId);
+                result.CompaniesList = FilterReferenceData(result.CompaniesList, _serverSettings.ServerData.IBS.ExcludedProviderId);
             }
 
-            var isChargeAccountPaymentEnabled = _configManager.GetPaymentSettings().IsChargeAccountPaymentEnabled;
+            var isChargeAccountPaymentEnabled = _serverSettings.GetPaymentSettings().IsChargeAccountPaymentEnabled;
             if (!isChargeAccountPaymentEnabled)
             {
                 result.PaymentsList = result.PaymentsList.Where(x => x.Id != ChargeTypes.Account.Id).ToList();
@@ -59,9 +59,9 @@ namespace apcurium.MK.Booking.Api.Services
             return result;
         }
 
-        private ReferenceData GetReferenceData()
+        private ReferenceData GetReferenceData(string companyKey)
         {
-            var companies = _staticDataWebServiceClient.GetCompaniesList();
+            var companies = _ibsServiceProvider.StaticData(companyKey).GetCompaniesList();
             IList<ListItem> payments = new List<ListItem>();
             IList<ListItem> vehicles = new List<ListItem>();
 
@@ -69,7 +69,7 @@ namespace apcurium.MK.Booking.Api.Services
             foreach (var company in companies)
             {
                 payments.AddRange(ChargeTypesClient.GetPaymentsList(company));
-                vehicles.AddRange(_staticDataWebServiceClient.GetVehiclesList(company));
+                vehicles.AddRange(_ibsServiceProvider.StaticData(companyKey).GetVehiclesList(company));
             }
 
             var equalityComparer = new ListItemEqualityComparer();
@@ -83,12 +83,11 @@ namespace apcurium.MK.Booking.Api.Services
             return result;
         }
 
-        private IList<ListItem> FilterReferenceData(IEnumerable<ListItem> reference, string settingName)
+        private IList<ListItem> FilterReferenceData(IEnumerable<ListItem> reference, string excludedTypeId)
         {
-            var excludedVehicleTypeId = _configManager.GetSetting(settingName);
-            var excluded = excludedVehicleTypeId.IsNullOrEmpty()
+            var excluded = excludedTypeId.IsNullOrEmpty()
                 ? new int[0]
-                : excludedVehicleTypeId.Split(';').Select(int.Parse).ToArray();
+                : excludedTypeId.Split(';').Select(int.Parse).ToArray();
 
             return reference.Where(c => excluded.None(e => e == c.Id)).ToList();
         }

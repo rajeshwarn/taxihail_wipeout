@@ -457,7 +457,7 @@
   <string name="Create">Create</string>
   <string name="View_RideSettings">Profile</string>
   <string name="View_CreditCardsList">Credit Cards</string>
-  <string name="CmtRideLinqConfirmPairViewConfirmPairDetailText">Check that you are in the vehicle indicated above. If you confirm this ride will be paid automatically using your default payment settings.</string>
+  <string name="CmtRideLinqConfirmPairViewConfirmPairDetailText">Confirm that you are in the vehicle number indicated below.  By Tapping “Confirm”, this ride will automatically be paid by your credit card on file.</string>
   <string name="Estimate">Estimate</string>
   <string name="ViewAll">View All</string>
   <string name="Collapse">Collapse</string>
@@ -516,7 +516,7 @@
   <string name="StatusEta">and is {0} and {1} {2} away</string>
   <string name="CreditCardAdded">Your account is now enabled to pay with your card on file by default. You can still choose to pay in the vehicle by selecting \"Pay in Vehicle\" on the payment screen</string>
   <string name="EtaNotAvailable">No vehicle available</string>
-  <string name="PayInCar">Pay in Car</string>
+  <string name="PayInCar">Pay Cash/Credit Card in Car</string>
   <string name="CreditCardErrorInvalid">Cannot validate the credit card</string>
   <string name="View_NotificationsSettings">Notifications</string>
   <string name="DontAsk">Don\'t ask</string>
@@ -551,4 +551,12 @@
   <string name="Modify">Modify</string>
   <string name="CardExpiredMessage">Your credit card is expired. Add a new card to your account or update card informations to continue.</string>
   <string name="CallDriverUsingProxyMessage">Your driver will call you back in a few minutes</string>
+  <string name="TaxiHailNetworkTimeOutPopupTitle">Switch company?</string>
+  <string name="TaxiHailNetworkTimeOutPopupMessage">Due to high demand, no vehicles are available right now. Do you want to book with {0} instead?</string>
+  <string name="TaxiHailNetworkTimeOutPopupAccept">Accept</string>
+  <string name="TaxiHailNetworkTimeOutPopupRefuse">Ignore</string>
+  <string name="DriverInfoCompany">Company:</string>
+  <string name="TaxiHailNetworkTimeOutErrorTitle">Error</string>
+  <string name="NetworkContactingNextDispatchDescription">Contacting {0} ...</string>
+  <string name="TaxiHailNetworkTimeOutPopupAlways">Always Accept</string>
 </resources>

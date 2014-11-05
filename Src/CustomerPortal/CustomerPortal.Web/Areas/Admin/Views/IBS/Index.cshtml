@@ -1,0 +1,40 @@
+﻿@model CustomerPortal.Web.Entities.IBSSettings
+
+@{
+    ViewBag.Title = "Edit " + ViewBag.CompanyName;
+}
+
+<h2>@ViewBag.Title</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>IBS setup</legend>
+
+        @Html.LabelFor(model => model.Username)
+        @Html.EditorFor(model => model.Username)
+        @Html.ValidationMessageFor(model => model.Username)
+        
+        @Html.LabelFor(model => model.Password)
+        @Html.EditorFor(model => model.Password)
+        @Html.ValidationMessageFor(model => model.Password)
+
+        @Html.HelpLabelFor(model => model.ServiceUrl)
+        @Html.TextBoxFor(model => model.ServiceUrl, new {@class = "span8"})
+        @Html.ValidationMessageFor(model => model.ServiceUrl)
+        
+        <div class="form-actions">
+            <input type="submit" class="btn btn-primary" value="Save" />
+            <a href="@Url.Action("Test", new {serviceUrl = Model.ServiceUrl, userName = Model.Username, password = Model.Password, id = ViewBag.Id})" class="btn">Test</a>
+            
+            <a href="@Url.Action("Index", "Home")" class="btn btn-link">Back to company list</a>
+        </div>
+    </fieldset>
+}
+
+
+@section Scripts {
+}

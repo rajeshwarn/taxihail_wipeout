@@ -11,8 +11,6 @@ using MonoTouch.UIKit;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using apcurium.MK.Booking.Mobile.Client.Controls.Widgets;
 using apcurium.MK.Booking.Mobile.Client.Style;
-
-
 using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
 using MonoTouch.MapKit;
 using System.Windows.Input;
@@ -51,6 +49,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
                 statusBar.Initialize ( topVisibleStatus, topSlidingStatus );
                 lblConfirmation.Text = Localize.GetValue("LoadingMessage");
+                txtCompany.Text = Localize.GetValue("DriverInfoCompany");
+                txtCompany.TextColor = textColor;
                 txtDriver.Text = Localize.GetValue("DriverInfoDriver");
                 txtDriver.TextColor = textColor;
                 txtLicence.Text = Localize.GetValue("DriverInfoLicence");
@@ -115,6 +115,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
                 textColor = UIColor.FromRGB (50, 50, 50);
 
+                lblCompany.TextColor = textColor;
                 lblDriver.TextColor = textColor;
                 lblLicence.TextColor = textColor;
                 lblTaxiType.TextColor = textColor;
@@ -134,6 +135,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 set.Bind(lblConfirmation)
                     .For(v => v.Text)
                     .To(vm => vm.ConfirmationNoTxt);
+
+                set.Bind(lblCompany)
+                    .For(v => v.Text)
+                    .To(vm => vm.OrderStatusDetail.CompanyName);
+                set.Bind(lblCompany)
+                    .For(v => v.Hidden)
+                    .To(vm => vm.CompanyHidden);
 
                 set.Bind(lblDriver)
                     .For(v => v.Text)
@@ -176,6 +184,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 set.Bind(lblColor)
                     .For(v => v.Hidden)
                     .To(vm => vm.VehicleColorHidden);
+
+                set.Bind(txtCompany)
+                    .For(v => v.Hidden)
+                    .To(vm => vm.CompanyHidden);
 
                 set.Bind(txtDriver)
                     .For(v => v.Hidden)
@@ -343,9 +355,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			if (propertyName == "OrderStatusDetail") 
 			{
 				var numberOfItemsHidden = 0;
-				var defaultHeightOfSlidingView = 130f;
+				var defaultHeightOfSlidingView = 151f;
 
 				var tupleList = new List<Tuple<UILabel, UILabel, bool>> ();
+                tupleList.Add (Tuple.Create (lblCompany, txtCompany, false));
                 tupleList.Add (Tuple.Create (lblDriver, txtDriver, false));
                 tupleList.Add (Tuple.Create (lblLicence, txtLicence, false));
                 tupleList.Add (Tuple.Create (lblTaxiType, txtTaxiType, false));
@@ -353,32 +366,36 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 tupleList.Add (Tuple.Create (lblModel, txtModel, false));
                 tupleList.Add (Tuple.Create (lblColor, txtColor, false));
 
-				if (ViewModel.VehicleDriverHidden){ 
+                if (ViewModel.CompanyHidden){ 
                     tupleList[0] = Tuple.Create (tupleList[0].Item1, tupleList[0].Item2, true);
-					numberOfItemsHidden++;
-				}
-				if (ViewModel.VehicleLicenceHidden){ 
+                    numberOfItemsHidden++;
+                }
+				if (ViewModel.VehicleDriverHidden){ 
                     tupleList[1] = Tuple.Create (tupleList[1].Item1, tupleList[1].Item2, true);
 					numberOfItemsHidden++;
 				}
-				if (ViewModel.VehicleTypeHidden){ 
+				if (ViewModel.VehicleLicenceHidden){ 
                     tupleList[2] = Tuple.Create (tupleList[2].Item1, tupleList[2].Item2, true);
 					numberOfItemsHidden++;
 				}
-				if (ViewModel.VehicleMakeHidden){ 
+				if (ViewModel.VehicleTypeHidden){ 
                     tupleList[3] = Tuple.Create (tupleList[3].Item1, tupleList[3].Item2, true);
 					numberOfItemsHidden++;
 				}
-				if (ViewModel.VehicleModelHidden){ 
+				if (ViewModel.VehicleMakeHidden){ 
                     tupleList[4] = Tuple.Create (tupleList[4].Item1, tupleList[4].Item2, true);
 					numberOfItemsHidden++;
 				}
-				if (ViewModel.VehicleColorHidden){ 
+				if (ViewModel.VehicleModelHidden){ 
                     tupleList[5] = Tuple.Create (tupleList[5].Item1, tupleList[5].Item2, true);
 					numberOfItemsHidden++;
 				}
+				if (ViewModel.VehicleColorHidden){ 
+                    tupleList[6] = Tuple.Create (tupleList[6].Item1, tupleList[6].Item2, true);
+					numberOfItemsHidden++;
+				}
 	
-				if (numberOfItemsHidden == 6) {
+				if (numberOfItemsHidden == 7) {
                     statusBar.SetMaxHeight (VisibleStatusHeight);
 					return;
 				}

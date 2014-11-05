@@ -1,10 +1,8 @@
-﻿#region
-
-using System;
+﻿using System;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Contract.Resources.Payments;
+using apcurium.MK.Common.Resources;
 
-#endregion
 
 namespace apcurium.MK.Booking.Api.Client.Payments.Fake
 {
@@ -24,7 +22,7 @@ namespace apcurium.MK.Booking.Api.Client.Payments.Fake
                 CardOnFileToken = "4043702891740165y",
                 CardType = "Visa",
                 LastFour = creditCardNumber.Substring(creditCardNumber.Length - 4),
-                IsSuccessfull = true,
+                IsSuccessful = true,
                 Message = "Success"
             });
         }
@@ -33,18 +31,17 @@ namespace apcurium.MK.Booking.Api.Client.Payments.Fake
         {
             return Task.FromResult(new DeleteTokenizedCreditcardResponse
             {
-                IsSuccessfull = true,
+                IsSuccessful = true,
                 Message = "Success"
             });
         }
 
-        public Task<PreAuthorizePaymentResponse> PreAuthorize(string cardToken, double amount, double meterAmount,
-            double tipAmount, Guid orderId)
+        public Task<PreAuthorizePaymentResponse> PreAuthorize(string cardToken, double amount, double meterAmount, double tipAmount, Guid orderId)
         {
             return Task.FromResult(new PreAuthorizePaymentResponse
             {
                 TransactionId = 100000000 + _random.Next(999) + "",
-                IsSuccessfull = true
+                IsSuccessful = true
             });
         }
 
@@ -52,17 +49,16 @@ namespace apcurium.MK.Booking.Api.Client.Payments.Fake
         {
             return Task.FromResult(new CommitPreauthorizedPaymentResponse
             {
-                IsSuccessfull = true,
+                IsSuccessful = true,
                 Message = "Success"
             });
         }
 
-        public Task<CommitPreauthorizedPaymentResponse> PreAuthorizeAndCommit(string cardToken, double amount,
-            double meterAmount, double tipAmount, Guid orderId)
+        public Task<CommitPreauthorizedPaymentResponse> CommitPayment(string cardToken, double amount, double meterAmount, double tipAmount, Guid orderId)
         {
             return Task.FromResult(new CommitPreauthorizedPaymentResponse
             {
-                IsSuccessfull = true,
+                IsSuccessful = true,
                 Message = "Success"
             });
         }
@@ -71,7 +67,7 @@ namespace apcurium.MK.Booking.Api.Client.Payments.Fake
         {
             return Task.FromResult(new PairingResponse
             {
-                IsSuccessfull = true
+                IsSuccessful = true
             });
         }
 
@@ -79,7 +75,7 @@ namespace apcurium.MK.Booking.Api.Client.Payments.Fake
         {
             return Task.FromResult(new BasePaymentResponse
             {
-                IsSuccessfull = true
+                IsSuccessful = true
             });
         }
 

@@ -1,0 +1,69 @@
+﻿@model CustomerPortal.Web.Models.LayoutsViewModel
+@{
+    var id = ViewContext.RouteData.Values["id"];
+    ViewBag.Title = "Manage layouts for " + ViewBag.CompnayName;
+}
+
+<h2>@ViewBag.Title</h2>
+
+@if (Model.IsApproved)
+{
+    using (Html.BeginForm("ResetApproval", "Layout", new {id}))
+    {
+        <p>
+            Layouts were approved on @Model.ApprovedDate
+            <button type="submit" class="btn btn-warning">Reset</button>
+        </p>
+    }
+}
+
+<form action="@Url.Action("Index")" method="POST"  enctype="multipart/form-data">
+    <fieldset>
+        <legend>Upload layout files</legend>
+        <input type="file" name="files" multiple accept='image/*' />
+
+        <div class="form-actions">
+            <input type="submit" class="btn btn-primary" value="Upload" />
+            <a href="@Url.Action("Index", "Home")" class="btn btn-link" >Back to company list</a>
+        </div>
+    </fieldset>
+   
+</form>
+@{
+    var rows = Model.Layouts.Select((Path, Index) => new {Path, Index})
+        .GroupBy(x => x.Index/3);
+}
+@if (Model.IsRejected.Any())
+{
+    <div>
+        @foreach (var key in Model.IsRejected.Keys)
+        {
+            <label>Layouts were rejected at @key</label>
+            <p>
+                @Model.IsRejected[key]
+            </p>
+        }
+    </div>
+}
+@foreach (var row in rows)
+{
+    <div class="row">
+        @foreach (var path in row.Select(x => x.Path))
+        {
+            <div class="span4">
+                <div class="thumbnail">
+                    <img alt='' src="@Url.Action("Image", new {id, filename = Path.GetFileName(path)})"/>
+                    <div class="caption">
+                        @using (Html.BeginForm("Delete", "Layout", new {id}))
+                        {
+                            @Html.Hidden("file", Path.GetFileName(path))
+                            ;
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+
+    </div>
+}

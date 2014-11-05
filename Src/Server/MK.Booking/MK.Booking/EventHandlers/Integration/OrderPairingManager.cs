@@ -16,21 +16,21 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
     {
         private readonly IPairingService _pairingService;
         private readonly INotificationService _notificationService;
-        private readonly IConfigurationManager _configurationManager;
+        private readonly IServerSettings _serverSettings;
         private readonly IOrderDao _orderDao;
         private readonly ICreditCardDao _creditCardDao;
         private readonly IAccountDao _accountDao;
 
         public OrderPairingManager(IPairingService pairingService, 
             INotificationService notificationService, 
-            IConfigurationManager configurationManager,
+            IServerSettings serverSettings,
             IOrderDao orderDao,
             ICreditCardDao creditCardDao,
             IAccountDao accountDao)
         {
             _pairingService = pairingService;
             _notificationService = notificationService;
-            _configurationManager = configurationManager;
+            _serverSettings = serverSettings;
             _orderDao = orderDao;
             _creditCardDao = creditCardDao;
             _accountDao = accountDao;
@@ -45,8 +45,8 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                     var order = _orderDao.FindById(@event.SourceId);
                     var creditCardAssociatedToAccount = _creditCardDao.FindByAccountId(@event.Status.AccountId).FirstOrDefault();
 
-                    if (_configurationManager.GetPaymentSettings().AutomaticPayment
-                        && _configurationManager.GetPaymentSettings().AutomaticPaymentPairing
+                    if (_serverSettings.GetPaymentSettings().AutomaticPayment
+                        && _serverSettings.GetPaymentSettings().AutomaticPaymentPairing
                         && order.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id
                         && creditCardAssociatedToAccount != null)        // Only send notification if using card on file
                     {

@@ -50,9 +50,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+    <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\CommonServiceLocator.1.0\lib\NET35\Microsoft.Practices.ServiceLocation.dll</HintPath>
+      <HintPath>..\packages\CommonServiceLocator.1.2\lib\portable-windows8+net40+sl5+windowsphone8\Microsoft.Practices.ServiceLocation.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Practices.Unity, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -130,6 +130,8 @@
     <Compile Include="CompanyPopularAddressFixture.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="CreditCardFixture.cs" />
+    <Compile Include="FakeIbs.cs" />
+    <Compile Include="FakeTaxiHailNetworkServiceClient.cs" />
     <Compile Include="MonerisPaymentServiceClientFixture.cs" />
     <Compile Include="PushNotificationRegistrationFixture.cs" />
     <Compile Include="PlaceDetailFixture.cs" />
@@ -154,9 +156,21 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\CustomerPortal\CustomerPortal.Client\CustomerPortal.Client.csproj">
+      <Project>{15824aae-2d25-414e-b9ff-618de088c9e7}</Project>
+      <Name>CustomerPortal.Client</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\CustomerPortal\CustomerPortal.Contract\CustomerPortal.Contract.csproj">
+      <Project>{6a4623e1-41ef-4286-9a34-2adc6407e94f}</Project>
+      <Name>CustomerPortal.Contract</Name>
+    </ProjectReference>
     <ProjectReference Include="..\apcurium.MK.Web.SelfHost\apcurium.MK.Web.SelfHost.csproj">
       <Project>{26c054f2-4984-4fe5-811c-4d94ef7eae15}</Project>
       <Name>apcurium.MK.Web.SelfHost</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CMTPayment\CMTPayment.csproj">
+      <Project>{5fd750a2-ee19-4a80-9b38-32adbf03765a}</Project>
+      <Name>CMTPayment</Name>
     </ProjectReference>
     <ProjectReference Include="..\Infrastructure\Infrastructure\Infrastructure.csproj">
       <Project>{b5786d07-5888-4df5-b295-3fea593f3bfe}</Project>
@@ -189,7 +203,6 @@
     </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

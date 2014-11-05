@@ -8,7 +8,7 @@
    "Direction.TarifMode" : "Ibs",
    "Direction.NeedAValidTarif" : "true",   
 
-   "DistanceFormat" : "KM",
+   "DistanceFormat" : "Km",
    "Email.NoReply" : "noreply@apcurium.com",  
    "GeoLoc.DefaultLatitude" : "45.516667",
    "GeoLoc.DefaultLongitude" : "-73.65",
@@ -27,7 +27,6 @@
    "IBS.ExcludedVehicleTypeId" : "22;21",
    "Map.PlacesApiKey" : "AIzaSyAd-ezA2SeVTSNqsu6aMmAkdlP3UqEVPWE",
    "NearbyPlacesService.DefaultRadius" : "500",
-   "OrderStatus.DemoMode" : "false",
    "PriceFormat" : "en-US",
    "Smtp.Credentials.Password" : "2wsxCDE#",
    "Smtp.Credentials.Username" : "donotreply@apcurium.com",

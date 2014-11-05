@@ -1,0 +1,16 @@
+﻿@model  CustomerPortal.Web.Areas.Admin.Models.IbsTestResult
+
+@{
+    ViewBag.Title = "Edit " + ViewBag.CompanyName;
+}
+
+<h2>IBS Testing</h2>
+<h4>Server : @Model.ServiceUrl  </h4>
+<h5>User name : @Model.UserName </h5>
+<h5>Password : @Model.Password</h5>
+<br />
+<h5>Result </h5>
+<span style="white-space: pre-line">@Html.Raw(Model.Result)</span>
+
+<br />
+<a href="@Url.Action("Index", new {id = Model.CompanyId})" class="btn btn-link">Back to IBS Settings</a>

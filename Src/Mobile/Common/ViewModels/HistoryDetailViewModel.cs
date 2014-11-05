@@ -107,7 +107,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			{ 
 				_isDone = value; 
 				RaisePropertyChanged(); 
-				RaisePropertyChanged(()=>ShowRateButton); 
+				RaisePropertyChanged(() => ShowRateButton); 
 			}
         }
 
@@ -317,7 +317,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					{ 
 						IBSOrderId = Order.IBSOrderId,
 						IBSStatusDescription = this.Services().Localize["LoadingMessage"],
-						IBSStatusId = "",
+						IBSStatusId = string.Empty,
 						OrderId = OrderId,
 						Status = OrderStatus.Unknown,
 						VehicleLatitude = null,
@@ -400,6 +400,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 								var isSuccess = _bookingService.CancelOrder(OrderId);
 			                    if(isSuccess)
 			                    {
+                                    this.Services().MessengerHub.Publish(new OrderStatusChanged(this, OrderId, OrderStatus.Canceled, null));
 			                        LoadStatus();
 			                    }
 			                    else

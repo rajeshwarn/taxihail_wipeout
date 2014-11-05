@@ -85,26 +85,8 @@
     <Compile Include="Extensions\ServiceClientBaseExtensions.cs" />
     <Compile Include="IIbsFareClient.cs" />
     <Compile Include="Payments\Braintree\BraintreeServiceClient.cs" />
-    <Compile Include="Payments\CmtPayments\Authorization\AuthorizationRequest.cs" />
-    <Compile Include="Payments\CmtPayments\Authorization\AuthorizationResponse.cs" />
-    <Compile Include="Payments\CmtPayments\Authorization\OAuthAuthorizer.cs" />
-    <Compile Include="Payments\CmtPayments\Reverse\ReverseRequest.cs" />
-    <Compile Include="Payments\CmtPayments\CmtMobileServiceClient.cs" />
-    <Compile Include="Payments\CmtPayments\Pair\CmtUnpairingResponse.cs" />
-    <Compile Include="Payments\CmtPayments\Pair\PairingRequest.cs" />
-    <Compile Include="Payments\CmtPayments\Pair\CmtPairingResponse.cs" />
-    <Compile Include="Payments\CmtPayments\Pair\TripRequest.cs" />
-    <Compile Include="Payments\CmtPayments\Pair\UnpairingRequest.cs" />
-    <Compile Include="Payments\CmtPayments\Reverse\ReverseResponse.cs" />
     <Compile Include="Payments\Fake\FakePaymentClient.cs" />
-    <Compile Include="Payments\CmtPayments\CmtPaymentServiceClient.cs" />
-    <Compile Include="Payments\CmtPayments\LevelThreeData.cs" />
-    <Compile Include="Payments\CmtPayments\PaymentResponse.cs" />
     <Compile Include="Payments\CmtPayments\CmtPaymentClient.cs" />
-    <Compile Include="Payments\CmtPayments\Tokenize\TokenizeDeleteRequest.cs" />
-    <Compile Include="Payments\CmtPayments\Tokenize\TokenizeDeleteResponse.cs" />
-    <Compile Include="Payments\CmtPayments\Tokenize\TokenizeRequest.cs" />
-    <Compile Include="Payments\CmtPayments\Tokenize\TokenizeResponse.cs" />
     <Compile Include="IPaymentServiceClient.cs" />
     <Compile Include="IVehicleClient.cs" />
     <Compile Include="Payments\Moneris\MonerisServiceClient.cs" />
@@ -140,9 +122,17 @@
       <Project>{62593c52-2d25-4345-acdd-27124cdea6db}</Project>
       <Name>BrainTreeEncryption.Library.net</Name>
     </ProjectReference>
+    <ProjectReference Include="..\CMTPayment\CMTPayment.csproj">
+      <Project>{5fd750a2-ee19-4a80-9b38-32adbf03765a}</Project>
+      <Name>CMTPayment</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MK.Booking.Api.Contract\MK.Booking.Api.Contract.csproj">
       <Project>{1DD86EC1-75F9-4A57-A8D6-18248048F571}</Project>
       <Name>MK.Booking.Api.Contract</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MK.Booking\MK.Booking\MK.Booking.csproj">
+      <Project>{baf90740-9220-4bb0-b857-1e5927e464e9}</Project>
+      <Name>MK.Booking</Name>
     </ProjectReference>
     <ProjectReference Include="..\MK.Common\MK.Common.csproj">
       <Project>{65033050-1d55-465a-a772-f3192f9e2428}</Project>
@@ -150,11 +140,11 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

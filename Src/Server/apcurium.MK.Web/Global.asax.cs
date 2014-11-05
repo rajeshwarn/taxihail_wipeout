@@ -3,23 +3,28 @@
 using System;
 using System.Diagnostics;
 using System.Globalization;
+using System.Linq;
 using System.Reactive.Linq;
+using System.Reflection;
 using System.Web;
+using System.Web.Mvc;
 using System.Web.Optimization;
+using System.Web.Routing;
 using apcurium.MK.Booking.Api.Jobs;
 using apcurium.MK.Booking.Services;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.IoC;
-using apcurium.MK.Web.App_Start;
+using apcurium.MK.Web;
 using log4net;
 using log4net.Config;
+using MK.Common.Configuration;
 using UnityContainerExtensions = Microsoft.Practices.Unity.UnityContainerExtensions;
 
 #endregion
 
 namespace apcurium.MK.Web
 {
-    public class Global : HttpApplication
+    public class Global : System.Web.HttpApplication
     {
         private static readonly ILog Log = LogManager.GetLogger(typeof(Global));
 
@@ -32,14 +37,16 @@ namespace apcurium.MK.Web
             XmlConfigurator.Configure();
             new MkWebAppHost().Init();
 
-            var config = UnityContainerExtensions.Resolve<IConfigurationManager>(UnityServiceLocator.Instance);
-            BundleConfig.RegisterBundles(BundleTable.Bundles, config.GetSetting("TaxiHail.ApplicationKey"));
+            var config = UnityContainerExtensions.Resolve<IServerSettings>(UnityServiceLocator.Instance);
+            BundleConfig.RegisterBundles(BundleTable.Bundles, config.ServerData.TaxiHail.ApplicationKey);
 
-            var configurationManager =
-                UnityContainerExtensions.Resolve<IConfigurationManager>(UnityServiceLocator.Instance);
+            var serverSettings = UnityContainerExtensions.Resolve<IServerSettings>(UnityServiceLocator.Instance);
 
-            _defaultPollingValue = configurationManager.GetSetting<int>("OrderStatus.ServerPollingInterval", 10);
+            _defaultPollingValue = serverSettings.ServerData.OrderStatus.ServerPollingInterval;
             PollIbs(_defaultPollingValue);
+
+            AreaRegistration.RegisterAllAreas();
+            FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
         }
 
         private void PollIbs(int pollingValue)
@@ -100,9 +107,9 @@ namespace apcurium.MK.Web
                     var watch = (Stopwatch)HttpContext.Current.Items["RequestLoggingWatch"];
                     watch.Stop();
 
-                    var config = UnityContainerExtensions.Resolve<IConfigurationManager>(UnityServiceLocator.Instance);
+                    var config = UnityContainerExtensions.Resolve<IServerSettings>(UnityServiceLocator.Instance);
                     Log.Info(string.Format("[{2}] Request info : {0} completed in {1}ms ", Request.Path,
-                        watch.ElapsedMilliseconds, config.GetSetting("TaxiHail.ApplicationKey")));
+                        watch.ElapsedMilliseconds, config.ServerData.TaxiHail.ApplicationKey));
                 }
             }
         }

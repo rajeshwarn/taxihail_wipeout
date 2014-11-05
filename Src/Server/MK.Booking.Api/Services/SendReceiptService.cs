@@ -1,52 +1,42 @@
-﻿#region
-
-using System;
+﻿using System;
 using System.Net;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.CommandBuilder;
 using apcurium.MK.Booking.IBS;
-using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Extensions;
+using CMTPayment;
+using CMTPayment.Pair;
 using Infrastructure.Messaging;
 using ServiceStack.Common.Web;
 using ServiceStack.ServiceInterface;
-using apcurium.MK.Booking.Api.Client.Payments.CmtPayments;
-using apcurium.MK.Booking.Api.Client.Payments.CmtPayments.Pair;
-using apcurium.MK.Booking.Api.Contract.Resources.Payments.Cmt;
 using apcurium.MK.Common.Configuration;
-
-#endregion
 
 namespace apcurium.MK.Booking.Api.Services
 {
     public class SendReceiptService : Service
     {
         private readonly IAccountDao _accountDao;
-        private readonly IBookingWebServiceClient _bookingWebServiceClient;
+        private readonly IIBSServiceProvider _ibsServiceProvider;
         private readonly ICommandBus _commandBus;
         private readonly ICreditCardDao _creditCardDao;
         private readonly IOrderDao _orderDao;
         private readonly IOrderPaymentDao _orderPaymentDao;
-        private readonly IConfigurationManager _configurationManager;
-        private readonly IAppSettings _appSettings;
+        private readonly IServerSettings _serverSettings;
 
         public SendReceiptService(
             ICommandBus commandBus,
-            IBookingWebServiceClient bookingWebServiceClient,
+            IIBSServiceProvider ibsServiceProvider,
             IOrderDao orderDao,
             IOrderPaymentDao orderPaymentDao,
             ICreditCardDao creditCardDao,
             IAccountDao accountDao,
-            IConfigurationManager configurationManager,
-            IAppSettings appSettings
-            )
+            IServerSettings serverSettings)
         {
-            _configurationManager = configurationManager;
-            _appSettings = appSettings;
-            _bookingWebServiceClient = bookingWebServiceClient;
+            _serverSettings = serverSettings;
+            _ibsServiceProvider = ibsServiceProvider;
             _orderDao = orderDao;
             _orderPaymentDao = orderPaymentDao;
             _accountDao = accountDao;
@@ -69,7 +59,7 @@ namespace apcurium.MK.Booking.Api.Services
                 throw new HttpError(HttpStatusCode.Unauthorized, "Not your order");
             }
 
-            var ibsOrder = _bookingWebServiceClient.GetOrderDetails(order.IBSOrderId.Value, account.IBSAccountId, order.Settings.Phone);
+            var ibsOrder = _ibsServiceProvider.Booking(order.CompanyKey).GetOrderDetails(order.IBSOrderId.Value, account.IBSAccountId.Value, order.Settings.Phone);
 
             var orderPayment = _orderPaymentDao.FindByOrderId(order.Id);
             var pairingInfo = _orderDao.FindOrderPairingById(order.Id);
@@ -138,15 +128,15 @@ namespace apcurium.MK.Booking.Api.Services
                 return 0;
             }
             // if VAT is enabled, we need to substract the VAT amount from the meter amount, otherwise we return it as is
-            return _appSettings.Data.VATIsEnabled
-                ? Fare.FromAmountInclTax(meterAmount.Value, _appSettings.Data.VATPercentage).AmountExclTax
+            return _serverSettings.ServerData.VATIsEnabled
+                ? Fare.FromAmountInclTax(meterAmount.Value, _serverSettings.ServerData.VATPercentage).AmountExclTax
                 : Fare.FromAmountInclTax(meterAmount.Value, 0).AmountExclTax;
         }
 
         private double GetTaxAmount(double? meterAmount, double? taxAmountIfVATIsDisabled)
         {
-            return _appSettings.Data.VATIsEnabled
-                ? Fare.FromAmountInclTax(meterAmount.GetValueOrDefault(0), _appSettings.Data.VATPercentage).TaxAmount
+            return _serverSettings.ServerData.VATIsEnabled
+                ? Fare.FromAmountInclTax(meterAmount.GetValueOrDefault(0), _serverSettings.ServerData.VATPercentage).TaxAmount
                 : taxAmountIfVATIsDisabled.GetValueOrDefault(0);
         }
 
@@ -160,7 +150,7 @@ namespace apcurium.MK.Booking.Api.Services
         {
             try
             {
-                var cmtClient = new CmtMobileServiceClient(_configurationManager.GetPaymentSettings().CmtPaymentSettings, null, null);
+                var cmtClient = new CmtMobileServiceClient(_serverSettings.GetPaymentSettings().CmtPaymentSettings, null, null);
                 var trip = cmtClient.Get(new TripRequest { Token = pairingToken });
 
                 return trip;

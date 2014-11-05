@@ -1,49 +1,62 @@
-﻿#region
-
-using System;
-using apcurium.MK.Booking.Domain;
+﻿using System;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
-using apcurium.MK.Booking.Resources;
+using apcurium.MK.Booking.Services;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Enumeration;
 using Infrastructure.Messaging.Handling;
-
-#endregion
 
 namespace apcurium.MK.Booking.EventHandlers.Integration
 {
     public class OrderPaymentManager :
         IIntegrationEventHandler,
         IEventHandler<PayPalExpressCheckoutPaymentCompleted>,
-        IEventHandler<CreditCardPaymentCaptured>
+        IEventHandler<CreditCardPaymentCaptured>,
+        IEventHandler<OrderCancelled>,
+        IEventHandler<OrderSwitchedToNextDispatchCompany>
     {
         private readonly IOrderDao _dao;
         private readonly IIbsOrderService _ibs;
-        private readonly IConfigurationManager _configurationManager;
+        private readonly IServerSettings _serverSettings;
+        private readonly IPaymentService _paymentService;
         private readonly IOrderPaymentDao _paymentDao;
         private readonly ICreditCardDao _creditCardDao;
         private readonly IAccountDao _accountDao;
 
-        public OrderPaymentManager(IOrderDao dao, IOrderPaymentDao paymentDao, IAccountDao accountDao, ICreditCardDao creditCardDao, IIbsOrderService ibs, IConfigurationManager configurationManager)
+        public OrderPaymentManager(IOrderDao dao, IOrderPaymentDao paymentDao, IAccountDao accountDao, 
+            ICreditCardDao creditCardDao, IIbsOrderService ibs, IServerSettings serverSettings, IPaymentService paymentService)
         {
             _accountDao = accountDao;
             _dao = dao;
             _paymentDao = paymentDao;
             _creditCardDao = creditCardDao;
             _ibs = ibs;
-            _configurationManager = configurationManager;
+            _serverSettings = serverSettings;
+            _paymentService = paymentService;
         }
 
         public void Handle(PayPalExpressCheckoutPaymentCompleted @event)
         {
             // Send message to driver
             SendPaymentConfirmationToDriver(@event.OrderId, @event.Amount, @event.Meter, @event.Tip, PaymentProvider.PayPal.ToString(), @event.PayPalPayerId);
+
+            // payment might not be enabled
+            if (_paymentService != null)
+            {
+                // void the preauthorization to prevent misuse fees
+                _paymentService.VoidPreAuthorization(@event.SourceId);
+            }
         }
 
         public void Handle(CreditCardPaymentCaptured @event)
         {
-            if (_configurationManager.GetSetting("SendDetailedPaymentInfoToDriver", true))
+            if (@event.IsNoShowFee)
+            {
+                // Don't message driver
+                return;
+            }
+
+            if (_serverSettings.ServerData.SendDetailedPaymentInfoToDriver)
             {
                 SendPaymentConfirmationToDriver(@event.OrderId, @event.Amount, @event.Meter, @event.Tip, @event.Provider.ToString(), @event.AuthorizationCode);
             }
@@ -73,6 +86,26 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             }
 
             _ibs.SendPaymentNotification((double)amount, (double)meter, (double)tip, authorizationCode, orderStatusDetail.VehicleNumber);
+        }
+
+        public void Handle(OrderCancelled @event)
+        {
+            // payment might not be enabled
+            if (_paymentService != null)
+            {
+                // void the preauthorization to prevent misuse fees
+                _paymentService.VoidPreAuthorization(@event.SourceId);
+            }
+        }
+
+        public void Handle(OrderSwitchedToNextDispatchCompany @event)
+        {
+            // payment might not be enabled
+            if (_paymentService != null)
+            {
+                // void the preauthorization to prevent misuse fees
+                _paymentService.VoidPreAuthorization(@event.SourceId);
+            }
         }
     }
 }

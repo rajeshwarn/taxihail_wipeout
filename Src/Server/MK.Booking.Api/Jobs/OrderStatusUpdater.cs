@@ -38,47 +38,54 @@ namespace apcurium.MK.Booking.Api.Jobs
     public class OrderStatusUpdater
     {
         private readonly ICommandBus _commandBus;
-        private readonly IConfigurationManager _configurationManager;
+        private readonly IServerSettings _serverSettings;
         private readonly IOrderPaymentDao _orderPaymentDao;
         private readonly IOrderDao _orderDao;
         private readonly IPaymentService _paymentService;
         private readonly INotificationService _notificationService;
         private readonly IDirections _directions;
         private readonly IIbsOrderService _ibsOrderService;
+        private readonly IAccountDao _accountDao;
+        private readonly ICreditCardDao _creditCardDao;
         private readonly Resources.Resources _resources;
-        private readonly IAppSettings _appSettings;
 
         private static readonly ILog Log = LogManager.GetLogger(typeof(OrderStatusUpdater));
 
         private string _languageCode = "";
 
-        public OrderStatusUpdater(IConfigurationManager configurationManager, 
+        public OrderStatusUpdater(IServerSettings serverSettings, 
             ICommandBus commandBus, 
             IOrderPaymentDao orderPaymentDao, 
             IOrderDao orderDao,
             IPaymentService paymentService,
             INotificationService notificationService,
             IDirections directions,
-            IAppSettings appSettings,
-            IIbsOrderService ibsOrderService)
+            IIbsOrderService ibsOrderService,
+            IAccountDao accountDao,
+            ICreditCardDao creditCardDao)
         {
-            _appSettings = appSettings;
             _orderDao = orderDao;
             _paymentService = paymentService;
             _notificationService = notificationService;
             _directions = directions;
             _ibsOrderService = ibsOrderService;
-            _configurationManager = configurationManager;
+            _serverSettings = serverSettings;
+            _accountDao = accountDao;
+            _creditCardDao = creditCardDao;
             _commandBus = commandBus;
             _orderPaymentDao = orderPaymentDao;
-
-            _resources = new Resources.Resources(configurationManager.GetSetting("TaxiHail.ApplicationKey"), appSettings);
+            _resources = new Resources.Resources(serverSettings);
         }
 
         public void Update(IBSOrderInformation orderFromIbs, OrderStatusDetail orderStatusDetail)
         {
             UpdateVehiclePositionAndSendNearbyNotificationIfNecessary(orderFromIbs, orderStatusDetail);
-            
+
+            if (orderFromIbs.IsWaitingToBeAssigned)
+            {
+                CheckForOrderTimeOut(orderStatusDetail);
+            }
+
             if (!OrderNeedsUpdate(orderFromIbs, orderStatusDetail))
             {
                 return;
@@ -100,36 +107,45 @@ namespace apcurium.MK.Booking.Api.Jobs
 
         private void PopulateFromIbsOrder(OrderStatusDetail orderStatusDetail, IBSOrderInformation ibsOrderInfo)
         {
-            orderStatusDetail.IBSStatusId = ibsOrderInfo.Status;
-            orderStatusDetail.DriverInfos.FirstName = ibsOrderInfo.FirstName.GetValue(orderStatusDetail.DriverInfos.FirstName);
-            orderStatusDetail.DriverInfos.LastName = ibsOrderInfo.LastName.GetValue(orderStatusDetail.DriverInfos.LastName);
-            orderStatusDetail.DriverInfos.MobilePhone = ibsOrderInfo.MobilePhone.GetValue(orderStatusDetail.DriverInfos.MobilePhone);
-            orderStatusDetail.DriverInfos.VehicleColor = ibsOrderInfo.VehicleColor.GetValue(orderStatusDetail.DriverInfos.VehicleColor);
-            orderStatusDetail.DriverInfos.VehicleMake = ibsOrderInfo.VehicleMake.GetValue(orderStatusDetail.DriverInfos.VehicleMake);
-            orderStatusDetail.DriverInfos.VehicleModel = ibsOrderInfo.VehicleModel.GetValue(orderStatusDetail.DriverInfos.VehicleModel);
+            orderStatusDetail.IBSStatusId =                     ibsOrderInfo.Status;
+            orderStatusDetail.DriverInfos.FirstName =           ibsOrderInfo.FirstName.GetValue(orderStatusDetail.DriverInfos.FirstName);
+            orderStatusDetail.DriverInfos.LastName =            ibsOrderInfo.LastName.GetValue(orderStatusDetail.DriverInfos.LastName);
+            orderStatusDetail.DriverInfos.MobilePhone =         ibsOrderInfo.MobilePhone.GetValue(orderStatusDetail.DriverInfos.MobilePhone);
+            orderStatusDetail.DriverInfos.VehicleColor =        ibsOrderInfo.VehicleColor.GetValue(orderStatusDetail.DriverInfos.VehicleColor);
+            orderStatusDetail.DriverInfos.VehicleMake =         ibsOrderInfo.VehicleMake.GetValue(orderStatusDetail.DriverInfos.VehicleMake);
+            orderStatusDetail.DriverInfos.VehicleModel =        ibsOrderInfo.VehicleModel.GetValue(orderStatusDetail.DriverInfos.VehicleModel);
             orderStatusDetail.DriverInfos.VehicleRegistration = ibsOrderInfo.VehicleRegistration.GetValue(orderStatusDetail.DriverInfos.VehicleRegistration);
-            orderStatusDetail.DriverInfos.VehicleType = ibsOrderInfo.VehicleType.GetValue(orderStatusDetail.DriverInfos.VehicleType);
-            orderStatusDetail.DriverInfos.DriverId = ibsOrderInfo.DriverId.GetValue(orderStatusDetail.DriverInfos.DriverId);
-            orderStatusDetail.VehicleNumber = ibsOrderInfo.VehicleNumber.GetValue(orderStatusDetail.VehicleNumber);
-            orderStatusDetail.TerminalId = ibsOrderInfo.TerminalId.GetValue(orderStatusDetail.TerminalId);
-            orderStatusDetail.ReferenceNumber = ibsOrderInfo.ReferenceNumber.GetValue(orderStatusDetail.ReferenceNumber);
-            orderStatusDetail.Eta = ibsOrderInfo.Eta ?? orderStatusDetail.Eta;
-
+            orderStatusDetail.DriverInfos.VehicleType =         ibsOrderInfo.VehicleType.GetValue(orderStatusDetail.DriverInfos.VehicleType);
+            orderStatusDetail.DriverInfos.DriverId =            ibsOrderInfo.DriverId.GetValue(orderStatusDetail.DriverInfos.DriverId);
+            orderStatusDetail.VehicleNumber =                   ibsOrderInfo.VehicleNumber.GetValue(orderStatusDetail.VehicleNumber);
+            orderStatusDetail.TerminalId =                      ibsOrderInfo.TerminalId.GetValue(orderStatusDetail.TerminalId);
+            orderStatusDetail.ReferenceNumber =                 ibsOrderInfo.ReferenceNumber.GetValue(orderStatusDetail.ReferenceNumber);
+            orderStatusDetail.Eta =                             ibsOrderInfo.Eta ?? orderStatusDetail.Eta;
+            
             UpdateStatusIfNecessary(orderStatusDetail, ibsOrderInfo);
 
-            orderStatusDetail.IBSStatusDescription = GetDescription(orderStatusDetail.OrderId, ibsOrderInfo);
+            orderStatusDetail.IBSStatusDescription = GetDescription(orderStatusDetail.OrderId, ibsOrderInfo, orderStatusDetail.CompanyName);
         }
 
         private void UpdateStatusIfNecessary(OrderStatusDetail orderStatusDetail, IBSOrderInformation ibsOrderInfo)
         {
-            if (orderStatusDetail.Status == OrderStatus.WaitingForPayment)
+            if (orderStatusDetail.Status == OrderStatus.WaitingForPayment
+                || (orderStatusDetail.Status == OrderStatus.TimedOut && ibsOrderInfo.IsWaitingToBeAssigned))
             {
                 Log.DebugFormat("Order {1}: Status is: {0}. Don't update since it's a special case outside of IBS.", orderStatusDetail.Status, orderStatusDetail.OrderId);
                 return;
             }
+
+            if (orderStatusDetail.Status == OrderStatus.TimedOut && !ibsOrderInfo.IsWaitingToBeAssigned)
+            {
+                // Ride was assigned while waiting for user input on whether or not to switch company
+                orderStatusDetail.Status = OrderStatus.Created;
+            }
+            
             if (ibsOrderInfo.IsCanceled)
             {
                 orderStatusDetail.Status = OrderStatus.Canceled;
+                ChargeNoShowFeeIfNecessary(ibsOrderInfo, orderStatusDetail);
                 Log.DebugFormat("Order {1}: Status updated to: {0}", orderStatusDetail.Status, orderStatusDetail.OrderId);
             }
             else if (ibsOrderInfo.IsTimedOut)
@@ -141,6 +157,51 @@ namespace apcurium.MK.Booking.Api.Jobs
             {
                 orderStatusDetail.Status = OrderStatus.Completed;
                 Log.DebugFormat("Order {1}: Status updated to: {0}", orderStatusDetail.Status, orderStatusDetail.OrderId);
+            }
+        }
+
+        private void ChargeNoShowFeeIfNecessary(IBSOrderInformation ibsOrderInfo, OrderStatusDetail orderStatusDetail)
+        {
+            if (ibsOrderInfo.Status != VehicleStatuses.Common.NoShow)
+            {
+                return;
+            }
+
+            Log.DebugFormat("No show fee will be charged for order {0}.", ibsOrderInfo.IBSOrderId);
+
+            var paymentSettings = _serverSettings.GetPaymentSettings();
+            var account = _accountDao.FindById(orderStatusDetail.AccountId);
+
+            if (paymentSettings.NoShowFee.HasValue
+                && paymentSettings.NoShowFee.Value > 0
+                && account.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id)
+            {
+                var defaultCreditCard = _creditCardDao.FindByAccountId(account.Id).FirstOrDefault();
+
+                if (defaultCreditCard != null)
+                {
+                    try
+                    {
+                        var paymentResult = _paymentService.CommitPayment(
+                            paymentSettings.NoShowFee.Value, paymentSettings.NoShowFee.Value,
+                            0, defaultCreditCard.Token, orderStatusDetail.OrderId, true);
+
+                        if (paymentResult.IsSuccessful)
+                        {
+                            Log.DebugFormat("No show fee of amount {0} was charged for order {1}.", paymentSettings.NoShowFee.Value, ibsOrderInfo.IBSOrderId);
+                        }
+                        else
+                        {
+                            orderStatusDetail.PairingError = paymentResult.Message;
+                            Log.DebugFormat("Could not process no show fee for order {0}: {1}.", ibsOrderInfo.IBSOrderId, paymentResult.Message);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        orderStatusDetail.PairingError = ex.Message;
+                        Log.DebugFormat("Could not process no show fee for order {0}: {1}.", ibsOrderInfo.IBSOrderId, ex.Message);
+                    }
+                }
             }
         }
 
@@ -173,14 +234,14 @@ namespace apcurium.MK.Booking.Api.Jobs
 
         private void HandlePairingForStandardPairing(OrderStatusDetail orderStatusDetail, OrderPairingDetail pairingInfo, IBSOrderInformation ibsOrderInfo)
         {
-            if (!_configurationManager.GetPaymentSettings().AutomaticPayment)
+            if (!_serverSettings.GetPaymentSettings().AutomaticPayment)
             {
                 Log.Debug("Standard Pairing: Automatic payment is disabled, nothing else to do.");
                 return;
             }
 
-            var orderPayment = _orderPaymentDao.FindByOrderId(orderStatusDetail.OrderId);
-            if (orderPayment != null)
+            var orderPayment = _orderPaymentDao.FindNonPayPalByOrderId(orderStatusDetail.OrderId);
+            if (orderPayment != null && (orderPayment.IsCompleted || orderPayment.IsCancelled))
             {
                 // Payment was already processed
                 Log.DebugFormat("Payment for order {0} was already processed, nothing else to do.", orderStatusDetail.OrderId);
@@ -218,47 +279,58 @@ namespace apcurium.MK.Booking.Api.Jobs
             // We received a fare from IBS
             // Send payment for capture, once it's captured, we will set the status to Completed
             var meterAmount = ibsOrderInfo.Fare + ibsOrderInfo.Toll + ibsOrderInfo.VAT;
-            double tipPercentage = pairingInfo.AutoTipPercentage ?? _appSettings.Data.DefaultTipPercentage;
+            double tipPercentage = pairingInfo.AutoTipPercentage ?? _serverSettings.ServerData.DefaultTipPercentage;
             var tipAmount = GetTipAmount(meterAmount, tipPercentage);
 
             Log.DebugFormat(
                     "Order {4}: Received total amount from IBS of {0}, calculated a tip of {1}% (tip amount: {2}), for a total of {3}",
                     meterAmount, tipPercentage, tipAmount, meterAmount + tipAmount, orderStatusDetail.OrderId);
 
-            if (!_appSettings.Data.SendDetailedPaymentInfoToDriver)
+            if (!_serverSettings.ServerData.SendDetailedPaymentInfoToDriver)
             {
                 // this is the only payment related message sent to the driver when this setting is false
                 SendMinimalPaymentProcessedMessageToDriver(ibsOrderInfo.VehicleNumber, meterAmount + tipAmount, meterAmount, tipAmount);
             }
 
-            var paymentResult =  _paymentService.PreAuthorizeAndCommitPayment(new PreAuthorizeAndCommitPaymentRequest
+            try
             {
-                OrderId = orderStatusDetail.OrderId,
-                CardToken = pairingInfo.TokenOfCardToBeUsedForPayment,
-                MeterAmount = Convert.ToDecimal(meterAmount),
-                TipAmount = Convert.ToDecimal(tipAmount),
-                Amount = Convert.ToDecimal(meterAmount + tipAmount)
-            });
+                var paymentResult = _paymentService.CommitPayment(
+                    Convert.ToDecimal(meterAmount + tipAmount), Convert.ToDecimal(meterAmount),
+                    Convert.ToDecimal(tipAmount), pairingInfo.TokenOfCardToBeUsedForPayment,
+                    orderStatusDetail.OrderId, false);
 
-            // whether there's a success or not, we change the status back to Completed since we can't process the payment again
-            orderStatusDetail.Status = OrderStatus.Completed;
+                if (paymentResult.IsSuccessful)
+                {
+                    Log.DebugFormat("Order {0}: Payment Successful (Auth: {1}) [Transaction Id: {2}]", orderStatusDetail.OrderId, paymentResult.AuthorizationCode, paymentResult.TransactionId);
+                }
+                else
+                {
+                    if (_serverSettings.ServerData.SendDetailedPaymentInfoToDriver)
+                    {
+                        _ibsOrderService.SendMessageToDriver(_resources.Get("PaymentFailedToDriver"), orderStatusDetail.VehicleNumber);
+                    }
 
-            if (paymentResult.IsSuccessfull)
-            {
-                Log.DebugFormat("Order {0}: Payment Successful (Auth: {1}) [Transaction Id: {2}]", orderStatusDetail.OrderId, paymentResult.AuthorizationCode, paymentResult.TransactionId);
+                    // set the payment error message in OrderStatusDetail for reporting purpose
+                    orderStatusDetail.PairingError = paymentResult.Message;
+
+                    Log.ErrorFormat("Order {0}: Payment FAILED (Message: {1}) [Transaction Id: {2}]", orderStatusDetail.OrderId, paymentResult.Message, paymentResult.TransactionId);
+                }
             }
-            else
+            catch (Exception ex)
             {
-                if (_appSettings.Data.SendDetailedPaymentInfoToDriver)
+                if (_serverSettings.ServerData.SendDetailedPaymentInfoToDriver)
                 {
                     _ibsOrderService.SendMessageToDriver(_resources.Get("PaymentFailedToDriver"), orderStatusDetail.VehicleNumber);
                 }
-                
-                // set the payment error message in OrderStatusDetail for reporting purpose
-                orderStatusDetail.PairingError = paymentResult.Message;
 
-                Log.ErrorFormat("Order {0}: Payment FAILED (Message: {1}) [Transaction Id: {2}]", orderStatusDetail.OrderId, paymentResult.Message, paymentResult.TransactionId);
+                // set the payment error message in OrderStatusDetail for reporting purpose
+                orderStatusDetail.PairingError = ex.Message;
+
+                Log.ErrorFormat("Order {0}: Payment FAILED (Message: {1}) [Transaction Id: {2}]", orderStatusDetail.OrderId, ex.Message, "UNKNOWN");
             }
+            
+            // whether there's a success or not, we change the status back to Completed since we can't process the payment again
+            orderStatusDetail.Status = OrderStatus.Completed;
         }
         
         private double GetTipAmount(double amount, double percentage)
@@ -276,7 +348,7 @@ namespace apcurium.MK.Booking.Api.Jobs
                 return;
             }
 
-            var paymentMode = _configurationManager.GetPaymentSettings().PaymentMode;
+            var paymentMode = _serverSettings.GetPaymentSettings().PaymentMode;
             switch (paymentMode)
             {
                 case PaymentMethod.Cmt:
@@ -299,21 +371,48 @@ namespace apcurium.MK.Booking.Api.Jobs
         {
             return (ibsOrderInfo.Status.HasValue() && orderStatusDetail.IBSStatusId != ibsOrderInfo.Status) // ibs status changed
                    || (!orderStatusDetail.FareAvailable && ibsOrderInfo.Fare > 0) // fare was not available and ibs now has the information
-                   || orderStatusDetail.Status == OrderStatus.WaitingForPayment; // special case for pairing
+                   || orderStatusDetail.Status == OrderStatus.WaitingForPayment   // special case for pairing
+                   || orderStatusDetail.Status == OrderStatus.TimedOut;           // special case for network
         }
 
-        private string GetDescription(Guid orderId, IBSOrderInformation ibsOrderInfo)
+        private void CheckForOrderTimeOut(OrderStatusDetail orderStatusDetail)
+        {
+            if (!_serverSettings.ServerData.Network.Enabled
+                || orderStatusDetail.Status == OrderStatus.TimedOut
+                || orderStatusDetail.IgnoreDispatchCompanySwitch)
+            {
+                // Nothing to do
+                return;
+            }
+
+            if (orderStatusDetail.NetworkPairingTimeout.HasValue
+                && orderStatusDetail.NetworkPairingTimeout.Value <= DateTime.UtcNow)
+            {
+                // Order timed out
+                _commandBus.Send(new NotifyOrderTimedOut { OrderId = orderStatusDetail.OrderId });
+            }
+        }
+
+        private string GetDescription(Guid orderId, IBSOrderInformation ibsOrderInfo, string companyName)
         {
             var orderDetail = _orderDao.FindById(orderId);
-            _languageCode = orderDetail != null ? orderDetail.ClientLanguageCode : "en";
+            _languageCode = orderDetail != null ? orderDetail.ClientLanguageCode : SupportedLanguages.en.ToString();
 
             string description = null;
-            if (ibsOrderInfo.IsAssigned)
+            if (ibsOrderInfo.IsWaitingToBeAssigned)
+            {
+                if (companyName.HasValue())
+                {
+                    description = string.Format(_resources.Get("OrderStatus_wosWAITINGRoaming", _languageCode), companyName);
+                    Log.DebugFormat("Setting Waiting in roaming status description: {0}", description);
+                }
+            }
+            else if (ibsOrderInfo.IsAssigned)
             {
                 description = string.Format(_resources.Get("OrderStatus_CabDriverNumberAssigned", _languageCode), ibsOrderInfo.VehicleNumber);
                 Log.DebugFormat("Setting Assigned status description: {0}", description);
 
-                if (_configurationManager.GetSetting("Client.ShowEta", false))
+                if (_serverSettings.ServerData.ShowEta)
                 {
                     try
                     {
@@ -338,8 +437,8 @@ namespace apcurium.MK.Booking.Api.Jobs
             }
             else if (ibsOrderInfo.IsLoaded)
             {
-                if (orderDetail != null && (_configurationManager.GetPaymentSettings().AutomaticPayment
-                                            && _configurationManager.GetPaymentSettings().AutomaticPaymentPairing
+                if (orderDetail != null && (_serverSettings.GetPaymentSettings().AutomaticPayment
+                                            && _serverSettings.GetPaymentSettings().AutomaticPaymentPairing
                                             && orderDetail.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id))
                 {
                     description = _resources.Get("OrderStatus_wosLOADEDAutoPairing", _languageCode);

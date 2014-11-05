@@ -9,6 +9,7 @@ using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Common.Diagnostic;
+using apcurium.MK.Common.Resources;
 
 namespace apcurium.MK.Booking.Api.Client.Payments.Moneris
 {
@@ -35,9 +36,9 @@ namespace apcurium.MK.Booking.Api.Client.Payments.Moneris
 			});
 		}
 
-		public Task<CommitPreauthorizedPaymentResponse> PreAuthorizeAndCommit (string cardToken, double amount, double meterAmount, double tipAmount, Guid orderId)
+		public Task<CommitPreauthorizedPaymentResponse> CommitPayment (string cardToken, double amount, double meterAmount, double tipAmount, Guid orderId)
 		{
-			return Client.PostAsync(new PreAuthorizeAndCommitPaymentRequest
+			return Client.PostAsync(new CommitPaymentRequest
 			{
 				Amount = Convert.ToDecimal(amount),
 				MeterAmount = Convert.ToDecimal(meterAmount),
@@ -63,7 +64,7 @@ namespace apcurium.MK.Booking.Api.Client.Payments.Moneris
             }
             catch (ServiceStack.ServiceClient.Web.WebServiceException)
             {
-                return new PairingResponse { IsSuccessfull = false };
+                return new PairingResponse { IsSuccessful = false };
             }       
 		}
 
@@ -120,7 +121,7 @@ namespace apcurium.MK.Booking.Api.Client.Payments.Moneris
 					return new TokenizedCreditCardResponse
 					{
 						CardOnFileToken = response.GetDataKey(),
-						IsSuccessfull = true,
+						IsSuccessful = true,
 						Message = "Success",
 						CardType = GetCreditCardType(cardNumber),
 						LastFour = cardNumber.Substring(cardNumber.Length - 4, 4),
@@ -129,7 +130,7 @@ namespace apcurium.MK.Booking.Api.Client.Payments.Moneris
 
 				return new TokenizedCreditCardResponse()
 				{
-					IsSuccessfull = false,
+					IsSuccessful = false,
 					Message = message
 				};
 			}
@@ -137,7 +138,7 @@ namespace apcurium.MK.Booking.Api.Client.Payments.Moneris
 			{
 				return new TokenizedCreditCardResponse
 				{
-					IsSuccessfull = false,
+					IsSuccessful = false,
 					Message = e.Message
 				};
 			}

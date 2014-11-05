@@ -48,6 +48,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		readonly ISubject<bool> _orderCanBeConfirmed = new BehaviorSubject<bool>(false);
 
         private bool _isOrderRebooked;
+	    private bool _ignoreNextGeoLocResult;
 
 		public OrderWorkflowService(ILocationService locationService,
 			IAccountService accountService,
@@ -90,15 +91,18 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		    var position = await _locationService.GetUserPosition();
 		    if (position == null)
 		    {
-                //this.Services().Message.ShowToast("Cant find location, please try again", ToastDuration.Short);
                 _loadingAddressSubject.OnNext(false);
                 return new Address();
 		    }
 
             var address = await SearchAddressForCoordinate(position);
-            await SetAddressToCurrentSelection(address);
 
-            return address;
+		    if (!_ignoreNextGeoLocResult)
+		    {
+                await SetAddressToCurrentSelection(address);
+		        return address;
+		    }
+		    return new Address();
 		}
 
         public async Task SetAddressToCoordinate(Position coordinate, CancellationToken cancellationToken)
@@ -196,7 +200,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 					CreatedDate = DateTime.Now, 
 					DropOffAddress = order.DropOffAddress, 
 					IBSOrderId = orderStatus.IBSOrderId, 
-					Id = order.Id, PickupAddress = order.PickupAddress,
+					Id = order.Id,
+                    PickupAddress = order.PickupAddress,
 					Note = order.Note, 
 					PickupDate = order.PickupDate.HasValue ? order.PickupDate.Value : DateTime.Now,
 					Settings = order.Settings
@@ -257,17 +262,17 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 					case "CreateOrder_CannotCreateInIbs_10000":   /* Inactive charge account */
 					case "CreateOrder_CardOnFileButNoCreditCard": /* Card on file selected but no card */
                     case "AccountCharge_InvalidAccountNumber":
-						message = string.Format(_localize["ServiceError" + e.ErrorCode], _appSettings.Data.ApplicationName, _appSettings.Data.DefaultPhoneNumberDisplay);
+						message = string.Format(_localize["ServiceError" + e.ErrorCode], _appSettings.Data.TaxiHail.ApplicationName, _appSettings.Data.DefaultPhoneNumberDisplay);
 						messageNoCall = _localize["ServiceError" + e.ErrorCode + "_NoCall"];
 						throw new OrderCreationException(message, messageNoCall);
 					case "CreateOrder_CannotCreateInIbs_3000": /* Disabled account */
-						message = string.Format(_localize["AccountDisabled"], _appSettings.Data.ApplicationName, _appSettings.Data.DefaultPhoneNumberDisplay);
+						message = string.Format(_localize["AccountDisabled"], _appSettings.Data.TaxiHail.ApplicationName, _appSettings.Data.DefaultPhoneNumberDisplay);
 						messageNoCall = _localize["AccountDisabled_NoCall"];
 						throw new OrderCreationException(message, messageNoCall);
 					default:
 						// Unhandled errors
 						// if ibs3000, there's a problem with the account, use a different one
-						message = string.Format(_localize["ServiceError_ErrorCreatingOrderMessage"], _appSettings.Data.ApplicationName, _appSettings.Data.DefaultPhoneNumberDisplay);
+						message = string.Format(_localize["ServiceError_ErrorCreatingOrderMessage"], _appSettings.Data.TaxiHail.ApplicationName, _appSettings.Data.DefaultPhoneNumberDisplay);
 						messageNoCall = _localize["ServiceError_ErrorCreatingOrderMessage_NoCall"];
 						throw new OrderCreationException(message, messageNoCall);
 
@@ -713,6 +718,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 	    {
 	        _isOrderRebooked = false;
 	    }
+
+        public void SetIgnoreNextGeoLocResult(bool ignoreNextGeoLocResult)
+        {
+            _ignoreNextGeoLocResult = ignoreNextGeoLocResult;
+        }
     }
 }
 

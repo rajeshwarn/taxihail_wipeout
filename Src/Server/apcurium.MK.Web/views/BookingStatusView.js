@@ -18,12 +18,12 @@
             // Variable use to store the reference to window.timeout
             // after an order has timed out
             this.redirectTimeout = null;
-
-
+            
             status.on('change:ibsStatusId', this.render, this);
             status.on('change:ibsStatusId change:vehicleLatitude', this.onVehicleAssignedAndPositionUpdated, this);
             status.on('change:ibsStatusId', this.onStatusChanged, this);
             status.on('ibs:timeout', this.ontimeout, this);
+            status.on('change:status', this.onTHStatusChanged, this);
         },
 
         onVehicleAssignedAndPositionUpdated: function (model, status) {
@@ -83,9 +83,7 @@
 
             return this;
         },
-
-
-
+        
         remove: function() {
 
             // Close popover if it is open
@@ -115,7 +113,6 @@
                     });
                 }, this);
             }
-            
         },
         
         onStatusChanged: function (model, status) {
@@ -165,6 +162,61 @@
                         }
 
                     }, this);
+            }
+        },
+
+        onTHStatusChanged: function (model, status) {
+            if (status.toUpperCase() === 'TIMEDOUT' && this.model._status.get('nextDispatchCompanyKey') != "") {
+
+                var alwaysAccept = $.cookie('THNetwork_always_accept');
+
+                if (alwaysAccept && alwaysAccept === 'true') {
+                    this.switchDispatchCompany(this.model);
+                } else {
+                    TaxiHail.confirm({
+                        title: this.localize('NetworkTimeOutPopupTitle'),
+                        message: this.localize('NetworkTimeOutPopupMessage').format(this.model._status.get('nextDispatchCompanyName')),
+                        confirmButton: this.localize('NetworkTimeOutPopupAccept'),
+                        alwaysButton: this.localize('NetworkTimeOutPopupAlways'),
+                        cancelButton: this.localize('NetworkTimeOutPopupRefuse')
+                    }).on('ok', function () {
+                        this.switchDispatchCompany(this.model);
+                    }, this)
+                    .on('always', function () {
+                        $.cookie('THNetwork_always_accept', 'true', { expires: 20 * 365 }); // "Never" expires
+
+                        this.switchDispatchCompany(this.model);
+                    }, this)
+                    .on('cancel', function () {
+                        if (this.model._status.get('status').toUpperCase() === 'TIMEDOUT') {
+                            this.model.ignoreDispatchCompanySwitch();
+                        }
+                    }, this);
+                }
+            }
+        },
+
+        switchDispatchCompany: function(model)
+        {
+            if (model._status.get('status').toUpperCase() === 'TIMEDOUT') {
+                try {
+                    model._status.set('ibsStatusDescription',
+                            this.localize('NetworkContactingNextDispatchDescription').format(model._status.get('nextDispatchCompanyName')));
+
+                    // Refresh the status description
+                    this.render();
+
+                    var call = model.switchOrderToNextDispatchCompany();
+                    call.success(function (response) {
+                        model.set('status', response.status);
+                    });
+
+                } catch (ex) {
+                    TaxiHail.confirm({
+                        title: this.localize('NetworkFleetDispatchErrorTitle'),
+                        message: ex
+                    });
+                }
             }
         },
 
