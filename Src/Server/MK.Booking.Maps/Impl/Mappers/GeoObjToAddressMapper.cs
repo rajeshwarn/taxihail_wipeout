@@ -12,7 +12,7 @@ namespace apcurium.MK.Booking.Maps.Impl.Mappers
 {
     public class GeoObjToAddressMapper
     {
-        public Address ConvertToAddress(GeoAddress geoAddress , string placeName, bool foundByName)
+        public Address ConvertToAddress(GeoAddress geoAddress, string placeName, bool foundByName)
         {
             var address = new Address
             {
@@ -26,7 +26,6 @@ namespace apcurium.MK.Booking.Maps.Impl.Mappers
                 ZipCode = geoAddress.ZipCode,
                 City = geoAddress.City,
                 State = geoAddress.State, 
-
             };
                                     
             address.AddressType = "postal";

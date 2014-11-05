@@ -41,16 +41,6 @@ namespace apcurium.MK.Common.Entity
         public string AddressType { get; set; }
 
         /// <summary>
-        ///     This represents the address sent to the dispatch system.
-        ///     The dispatch system has length constraints for addresses. The address must be short and
-        ///     the most important information must appear first in the address (StreetNumber, Street and City)
-        /// </summary>
-        public string BookAddress
-        {
-            get { return ConcatAddressComponents(); }
-        }
-
-        /// <summary>
         ///     This represents the address displayed to the user in the application
         /// </summary>
         public string DisplayAddress

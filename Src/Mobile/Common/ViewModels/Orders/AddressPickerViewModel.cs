@@ -102,7 +102,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		private AddressViewModel[] ConvertToAddressViewModel(Address[] addresses, AddressType type)
 		{
 			var addressViewModels = addresses
-				.Where(f => f.BookAddress.HasValue())
+				.Where(f => f.FullAddress.HasValue())
 				.Select(a => new AddressViewModel(a, type)).Distinct().ToArray();
 
 			if (_currentAddress != null)

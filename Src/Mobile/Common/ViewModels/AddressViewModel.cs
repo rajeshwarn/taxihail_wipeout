@@ -31,13 +31,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                if ( ( Address.AddressType ==  "place" ) ||  ( Address.FriendlyName.HasValue () ) )
+                if (Address.AddressType ==  "place" || Address.FriendlyName.HasValue())
                 {
                     return Address.FriendlyName;
                 }
-                return Params.Get( Address.StreetNumber,Address.Street).Count ( s=> s.HasValue () ) == 0 
-                    ? Address.FullAddress
-                    : Params.Get( Address.StreetNumber , Address.Street ).Where ( s=> s.HasValue () ).JoinBy( " " );
+				return Address.FullAddress.SplitOnFirst(",")[0];
             }
         }
 
@@ -45,11 +43,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                if ( ( Address.AddressType ==  "place" ) || ( Params.Get( Address.City,Address.State, Address.ZipCode ).Count ( s=> s.HasValue () ) == 0 ) || ( Address.FriendlyName.HasValue () ) )
+                if (Address.AddressType ==  "place" || Address.FriendlyName.HasValue())
                 {
                     return Address.FullAddress;
                 }
-                return Params.Get( Address.City,Address.State, Address.ZipCode ).Where ( s=> s.HasValue () ).JoinBy( ", " );
+				return Address.FullAddress.SplitOnFirst(", ")[1].TrimStart();
             }
         }
 
