@@ -4197,14 +4197,14 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f05010a
 			public const int GooglePlayServicesNotAvailableMessage = 2131034378;
 			
-			// aapt resource value: 0x7f050277
-			public const int GooglePlayServicesNotAvailableMessage1 = 2131034743;
+			// aapt resource value: 0x7f05027a
+			public const int GooglePlayServicesNotAvailableMessage1 = 2131034746;
 			
 			// aapt resource value: 0x7f05006a
 			public const int GooglePlayServicesNotAvailableTitle = 2131034218;
 			
-			// aapt resource value: 0x7f050278
-			public const int GooglePlayServicesNotAvailableTitle1 = 2131034744;
+			// aapt resource value: 0x7f05027b
+			public const int GooglePlayServicesNotAvailableTitle1 = 2131034747;
 			
 			// aapt resource value: 0x7f05002e
 			public const int Hello = 2131034158;
@@ -4415,6 +4415,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 			
 			// aapt resource value: 0x7f050071
 			public const int NetworkErrorTitle = 2131034225;
+			
+			// aapt resource value: 0x7f050277
+			public const int NetworkTimeOutPopupAlways = 2131034743;
 			
 			// aapt resource value: 0x7f050090
 			public const int NoAmountSelectedMessage = 2131034256;
@@ -5115,8 +5118,14 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f05010b
 			public const int UnexpectedError = 2131034379;
 			
+			// aapt resource value: 0x7f050278
+			public const int UpdateBookingSettingsEmptyAccount = 2131034744;
+			
 			// aapt resource value: 0x7f050077
 			public const int UpdateBookingSettingsEmptyField = 2131034231;
+			
+			// aapt resource value: 0x7f050279
+			public const int UpdateBookingSettingsInvalidAccount = 2131034745;
 			
 			// aapt resource value: 0x7f05008e
 			public const int UpdateBookingSettingsInvalidDataTitle = 2131034254;
@@ -6525,7 +6534,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 					16843055,
 					16843056,
 					16843057,
-					16843948};
+					16843832};
 			
 			// aapt resource value: 4
 			public const int MenuView_android_headerBackground = 4;

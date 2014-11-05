@@ -11,7 +11,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 {
 	public interface IAccountService
     {        
-        void UpdateSettings(BookingSettings settings, Guid? creditCardId, int? tipPercent);
+        Task UpdateSettings(BookingSettings settings, Guid? creditCardId, int? tipPercent);
         
 		void UpdateAccountNumber (string accountNumber);
 

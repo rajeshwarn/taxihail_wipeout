@@ -139,8 +139,7 @@ namespace apcurium.MK.Web.Tests
                 ProviderId = 13,
                 VehicleTypeId = 1,
                 DefaultCreditCard = creditCardId,
-                DefaultTipPercent = defaultTipPercent,
-                AccountNumber = "1234"
+                DefaultTipPercent = defaultTipPercent
             };
 
             var sut = new AccountServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
@@ -159,6 +158,31 @@ namespace apcurium.MK.Web.Tests
             Assert.AreEqual(creditCardId, account.DefaultCreditCard);
             Assert.AreEqual(defaultTipPercent, account.DefaultTipPercent);
             Assert.AreEqual(settings.AccountNumber, account.Settings.AccountNumber);
+        }
+
+        [Test]
+        public void Update_Booking_Settings_With_Invalid_Charge_Account_Test_Then_Exception_Thrown()
+        {
+            Guid? creditCardId = Guid.NewGuid();
+            int? defaultTipPercent = 15;
+
+            var settings = new BookingSettingsRequest
+            {
+                ChargeTypeId = 3,
+                Name = "toto",
+                NumberOfTaxi = 6,
+                Passengers = 8,
+                Phone = "12345",
+                ProviderId = 13,
+                VehicleTypeId = 1,
+                DefaultCreditCard = creditCardId,
+                DefaultTipPercent = defaultTipPercent,
+                AccountNumber = "IDONOTEXIST"
+            };
+
+            var sut = new AccountServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
+
+            Assert.Throws<WebServiceException>(async () => await sut.UpdateBookingSettings(settings));
         }
 
         [Test]

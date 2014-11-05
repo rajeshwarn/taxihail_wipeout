@@ -1725,7 +1725,19 @@
   <data name="TaxiHailNetworkTimeOutPopupAlways" xml:space="preserve">
     <value>Toujours accepter</value>
   </data>
- <data name="NetworkContactingNextDispatchDescription" xml:space="preserve">
+  <data name="NetworkContactingNextDispatchDescription" xml:space="preserve">
     <value>En attente de {0} ...</value>
+  </data>
+  <data name="UpdateBookingSettingsEmptyAccount" xml:space="preserve">
+    <value>Le numéro de compte de peut être vide lorsque le mode de paiement sélectionné est Compte</value>
+  </data>
+  <data name="UpdateBookingSettingsInvalidAccount" xml:space="preserve">
+    <value>Le numéro de compte saisi n'existe pas</value>
+  </data>
+  <data name="CreditCardBookingSettingsError" xml:space="preserve">
+    <value>Une erreur est survenue lors de la mise à jour des informations du compte. Vérifiez que le numéro de compte associé au profil est valide et essayez de nouveau.</value>
+  </data>
+  <data name="UpdateBookingSettingsGenericError" xml:space="preserve">
+    <value>Une erreur est survenue lors de la mise à jour des informations du compte</value>
   </data>
 </root>
