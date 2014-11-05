@@ -178,13 +178,14 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
 
             var result = client.Get<GeoResult>(resource);
 
-//			if ( (result.Status == ResultStatus.OVER_QUERY_LIMIT || result.Status == ResultStatus.REQUEST_DENIED) && (_fallbackGeocoder != null )) {
+			if ((result.Status == ResultStatus.OVER_QUERY_LIMIT || result.Status == ResultStatus.REQUEST_DENIED) && _fallbackGeocoder != null)
+            {
 				return _fallbackGeocoder.GeocodeAddress (address, currentLanguage);
-//			} else if (result.Status == ResultStatus.OK) {
-//				return ConvertGeoResultToAddresses(result);
-//			} else {
+			} else if (result.Status == ResultStatus.OK) {
+				return ConvertGeoResultToAddresses(result);
+			} else {
 				return new GeoAddress [0];
-//			}
+			}
         }
 
 		public GeoAddress[] GeocodeLocation(double latitude, double longitude, string currentLanguage)
