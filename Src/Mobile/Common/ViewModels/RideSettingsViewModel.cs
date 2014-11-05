@@ -8,6 +8,7 @@ using apcurium.MK.Booking.Mobile.ViewModels.Payment;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
+using ServiceStack.ServiceClient.Web;
 using ServiceStack.Text;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
@@ -296,22 +297,40 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 {
 					using (this.Services ().Message.ShowProgress ())
 					{
-					    if (await ValidateRideSettings())
+					    if (ValidateRideSettings())
 					    {
 					        var creditCard = PaymentPreferences.SelectedCreditCardId == Guid.Empty
 					            ? default(Guid?)
 					            : PaymentPreferences.SelectedCreditCardId;
 
-					        _accountService.UpdateSettings(_bookingSettings, creditCard, PaymentPreferences.Tip);
-
-					        Close(this);
+					        try
+					        {
+					            await _accountService.UpdateSettings(_bookingSettings, creditCard, PaymentPreferences.Tip);
+                                Close(this);
+					        }
+					        catch (WebServiceException ex)
+					        {
+					            switch (ex.ErrorCode)
+					            {
+					                case "AccountCharge_InvalidAccountNumber":
+					                    this.Services()
+					                        .Message.ShowMessage(this.Services().Localize["UpdateBookingSettingsInvalidDataTitle"],
+					                            this.Services().Localize["UpdateBookingSettingsInvalidAccount"]);
+					                    break;
+					                default:
+					                    this.Services()
+					                        .Message.ShowMessage(this.Services().Localize["UpdateBookingSettingsInvalidDataTitle"],
+					                            this.Services().Localize["UpdateBookingSettingsGenericError"]);
+					                    break;
+					            }
+					        }
 					    }
 					}
                 });
             }
         }
 
-        public async Task<bool> ValidateRideSettings()
+        public bool ValidateRideSettings()
         {
             if (string.IsNullOrEmpty(Name) || string.IsNullOrEmpty(Phone))
             {
@@ -327,20 +346,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 this.Services().Message.ShowMessage(this.Services().Localize["UpdateBookingSettingsInvalidDataTitle"], this.Services().Localize["UpdateBookingSettingsEmptyAccount"]);
                 return false;
-            }
-
-            // Validate account number
-            if (!string.IsNullOrWhiteSpace(AccountNumber))
-            {
-                try
-                {
-                    await _accountPaymentService.GetAccountCharge(AccountNumber);
-                }
-                catch
-                {
-                    this.Services().Message.ShowMessage(this.Services().Localize["UpdateBookingSettingsInvalidDataTitle"], this.Services().Localize["UpdateBookingSettingsInvalidAccount"]);
-                    return false;
-                }
             }
 
             return true;

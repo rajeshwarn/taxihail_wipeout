@@ -1734,4 +1734,10 @@
   <data name="UpdateBookingSettingsInvalidAccount" xml:space="preserve">
     <value>Le numéro de compte saisi n'existe pas</value>
   </data>
+  <data name="CreditCardBookingSettingsError" xml:space="preserve">
+    <value>Une erreur est survenue lors de la mise à jour des informations du compte. Vérifiez que le numéro de compte associé au profil est valide et essayez de nouveau.</value>
+  </data>
+  <data name="UpdateBookingSettingsGenericError" xml:space="preserve">
+    <value>Une erreur est survenue lors de la mise à jour des informations du compte</value>
+  </data>
 </root>
