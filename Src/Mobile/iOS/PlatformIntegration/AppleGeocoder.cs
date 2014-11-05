@@ -1,5 +1,6 @@
 ﻿using System;
 using apcurium.MK.Booking.MapDataProvider;
+using apcurium.MK.Booking.MapDataProvider.Google.Resources;
 using apcurium.MK.Booking.MapDataProvider.Resources;
 using ServiceStack.ServiceClient.Web;
 using MonoTouch.CoreLocation;
@@ -66,6 +67,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
             {
                 fullAddress = fullAddress.Replace(placemark.SubThoroughfare, streetNumber);
             }
+            var test = placemark.SubLocality;
 
             var t =  new GeoAddress  
             { 
@@ -73,7 +75,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
                 Street = placemark.Thoroughfare,
                 Latitude = placemark.Location.Coordinate.Latitude,
                 Longitude = placemark.Location.Coordinate.Longitude,
-                City = placemark.Locality,
+                City = placemark.Locality,  // ?? placemark.SubLocality???
                 FullAddress = fullAddress,
                 State = placemark.AdministrativeArea,
                 ZipCode = placemark.PostalCode
