@@ -254,7 +254,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             }
         }
 		
-        public void UpdateSettings (BookingSettings settings, Guid? creditCardId, int? tipPercent)
+        public async Task UpdateSettings (BookingSettings settings, Guid? creditCardId, int? tipPercent)
         {
             var bsr = new BookingSettingsRequest
             {
@@ -267,10 +267,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 				DefaultTipPercent = tipPercent,
 				AccountNumber = settings.AccountNumber
             };
-            
-			UseServiceClientTask<IAccountServiceClient> (service => {                     
-				return service.UpdateBookingSettings (bsr);                
-            });
+
+            await UseServiceClientAsync<IAccountServiceClient>(service => service.UpdateBookingSettings(bsr));
 
             var account = CurrentAccount;
             account.Settings = settings;
@@ -279,6 +277,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
             //Set to update the cache
             CurrentAccount = account;
+
         }
 
 		public void UpdateAccountNumber (string accountNumber)
