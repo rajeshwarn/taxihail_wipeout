@@ -67,7 +67,6 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
             {
                 fullAddress = fullAddress.Replace(placemark.SubThoroughfare, streetNumber);
             }
-            var test = placemark.SubLocality;
 
             var t =  new GeoAddress  
             { 
@@ -75,7 +74,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
                 Street = placemark.Thoroughfare,
                 Latitude = placemark.Location.Coordinate.Latitude,
                 Longitude = placemark.Location.Coordinate.Longitude,
-                City = placemark.Locality,  // ?? placemark.SubLocality???
+                City = placemark.Locality ?? placemark.SubLocality,
                 FullAddress = fullAddress,
                 State = placemark.AdministrativeArea,
                 ZipCode = placemark.PostalCode
