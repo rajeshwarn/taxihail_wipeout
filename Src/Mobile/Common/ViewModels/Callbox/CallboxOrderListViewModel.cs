@@ -48,7 +48,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
         private TinyMessageSubscriptionToken _token;
         private bool _isClosed;
         private CreateOrderInfo _orderToCreate;
-        private List<int?> _orderNotified;
+        private List<Guid> _orderNotified;
         private IDisposable _refreshTimer;
         private ObservableCollection<CallboxOrderViewModel> _orders;
 
@@ -60,7 +60,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
 
 		public string ApplicationName
 		{
-            get { return Settings.ApplicationName; }
+            get { return Settings.TaxiHail.ApplicationName; }
 		}
 
         public override void OnViewLoaded()
@@ -68,7 +68,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
             base.OnViewLoaded();
 			_isClosed = false;
 
-			_orderNotified = new List<int?>();
+			_orderNotified = new List<Guid>();
 
 			_refreshTimer = Observable.Timer(TimeSpan.FromSeconds(2)).Subscribe(a => RefreshOrderStatus());                           
 
@@ -93,7 +93,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
 				}
 
                 var orderStatus = _accountService.GetActiveOrdersStatus().ToList()
-                    .OrderByDescending(o => o.IBSOrderId)
+                    .OrderByDescending(o => o.PickupDate)
                     .Where(status => _bookingService.IsCallboxStatusActive(status.IBSStatusId));
 
 				InvokeOnMainThread(() =>
@@ -101,11 +101,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
 						Orders.Clear();
 
 					    var orderStatusDetails = orderStatus as OrderStatusDetail[] ?? orderStatus.ToArray();
-					    if ( ( _orderToCreate != null ) && ( _orderToCreate.Order != null ) && orderStatusDetails.Any( os=>os.IBSOrderId == _orderToCreate.Order.IBSOrderId ) )
+					    if (_orderToCreate != null
+                            && _orderToCreate.Order != null
+                            && orderStatusDetails.Any(os => os.OrderId == _orderToCreate.Order.Id))
 						{
 							_orderToCreate = null;
 						}
-						else if (  ( _orderToCreate != null ) && ( _orderToCreate.Order != null ) && orderStatusDetails.None( os=>os.IBSOrderId == _orderToCreate.Order.IBSOrderId ) )
+						else if (_orderToCreate != null
+                            && _orderToCreate.Order != null
+                            && orderStatusDetails.None(os => os.OrderId == _orderToCreate.Order.Id))
 						{
 							Orders.Add(_orderToCreate.Order);
 						}
@@ -118,7 +122,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
 								Id = status.OrderId
 							}));
 
-						if ((!Orders.Any()) && (_orderToCreate == null)) 
+						if (!Orders.Any() && _orderToCreate == null) 
 						{
 							ShowViewModel<CallboxCallTaxiViewModel>();
 							Close();
@@ -132,9 +136,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
 						{
 							foreach (var order in Orders)
 							{
-                                if (_bookingService.IsCallboxStatusCompleted(order.OrderStatus.IBSStatusId) && !_orderNotified.Any(c => c != null && c.Value.Equals(order.IBSOrderId)))
+                                if (_bookingService.IsCallboxStatusCompleted(order.OrderStatus.IBSStatusId)
+                                    && _orderNotified.All(orderId => orderId != order.Id))
 								{
-									_orderNotified.Add(order.IBSOrderId);
+									_orderNotified.Add(order.Id);
 									OrderCompleted(this, null);
 								}
 							}
@@ -227,9 +232,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
 		{
 			var orderToRemove = Orders.FirstOrDefault(o => o.Id.Equals(orderId));
 
-			if (orderToRemove != null && ((_orderToCreate != null) && ( _orderToCreate.Order != null ) && (orderToRemove.IBSOrderId == _orderToCreate.Order.IBSOrderId )))
+			if (orderToRemove != null
+                && _orderToCreate != null
+                && _orderToCreate.Order != null
+                && orderToRemove.Id == _orderToCreate.Order.Id)
 			{
-				_orderToCreate = null;             
+				_orderToCreate = null;
 			}
 
 			InvokeOnMainThread ( ()=>
@@ -311,7 +319,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Callbox
                 Logger.LogError(e);
 				InvokeOnMainThread(() =>
 				{
-                    string err = string.Format(this.Services().Localize["ServiceError_ErrorCreatingOrderMessage"], Settings.ApplicationName, this.Services().Settings.DefaultPhoneNumberDisplay);
+                    string err = string.Format(this.Services().Localize["ServiceError_ErrorCreatingOrderMessage"], Settings.TaxiHail.ApplicationName, this.Services().Settings.DefaultPhoneNumberDisplay);
                     this.Services().Message.ShowMessage(this.Services().Localize["ErrorCreatingOrderTitle"], err);
 				});
 			}

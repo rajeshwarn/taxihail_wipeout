@@ -1,11 +1,8 @@
-﻿#region
-
-using System;
+﻿using System;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Api.Helpers;
 using apcurium.MK.Booking.Commands;
-using apcurium.MK.Booking.IBS;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Extensions;
@@ -16,24 +13,19 @@ using ServiceStack.ServiceHost;
 using ServiceStack.ServiceInterface;
 using RegisterAccount = apcurium.MK.Booking.Api.Contract.Requests.RegisterAccount;
 
-#endregion
-
 namespace apcurium.MK.Booking.Api.Services
 {
     public class RegisterAccountService : Service
     {
         private readonly IAccountDao _accountDao;
-        private readonly IAccountWebServiceClient _accountWebServiceClient;
         private readonly ICommandBus _commandBus;
-        private readonly IConfigurationManager _configManager;
+        private readonly IServerSettings _serverSettings;
 
-        public RegisterAccountService(ICommandBus commandBus, IAccountWebServiceClient accountWebServiceClient,
-            IAccountDao accountDao, IConfigurationManager configManager)
+        public RegisterAccountService(ICommandBus commandBus, IAccountDao accountDao, IServerSettings serverSettings)
         {
             _commandBus = commandBus;
             _accountDao = accountDao;
-            _accountWebServiceClient = accountWebServiceClient;
-            _configManager = configManager;
+            _serverSettings = serverSettings;
         }
 
         public object Post(RegisterAccount request)
@@ -53,11 +45,6 @@ namespace apcurium.MK.Booking.Api.Services
                 var command = new RegisterFacebookAccount();
                 Mapper.Map(request, command);
                 command.Id = Guid.NewGuid();
-                command.IbsAccountId = _accountWebServiceClient.CreateAccount(command.AccountId,
-                    command.Email,
-                    "",
-                    command.Name,
-                    command.Phone);
                 _commandBus.Send(command);
                 return new Account {Id = command.AccountId};
             }
@@ -68,36 +55,22 @@ namespace apcurium.MK.Booking.Api.Services
                 var command = new RegisterTwitterAccount();
                 Mapper.Map(request, command);
                 command.Id = Guid.NewGuid();
-                command.IbsAccountId = _accountWebServiceClient.CreateAccount(command.AccountId,
-                    command.Email,
-                    "",
-                    command.Name,
-                    command.Phone);
                 _commandBus.Send(command);
                 return new Account {Id = command.AccountId};
             }
             else
             {
-                var setting = _configManager.GetSetting("AccountActivationDisabled");
-                var accountActivationDisabled =
-                    bool.Parse(string.IsNullOrWhiteSpace(setting) ? bool.FalseString : setting);
+                var accountActivationDisabled = _serverSettings.ServerData.AccountActivationDisabled;
+                var smsConfirmationEnabled = _serverSettings.ServerData.SMSConfirmationEnabled;
 
-                setting = _configManager.GetSetting("Client.SMSConfirmationEnabled");
-                var smsConfirmationEnabled =
-                    bool.Parse(string.IsNullOrWhiteSpace(setting) ? bool.FalseString : setting);
-
-                var confirmationToken = smsConfirmationEnabled ? GenerateActivationCode() : Guid.NewGuid().ToString();
+                var confirmationToken = smsConfirmationEnabled 
+                    ? GenerateActivationCode() 
+                    : Guid.NewGuid().ToString();
 
                 var command = new Commands.RegisterAccount();
 
                 Mapper.Map(request, command);
                 command.Id = Guid.NewGuid();
-
-                command.IbsAccountId = _accountWebServiceClient.CreateAccount(command.AccountId,
-                    command.Email,
-                    "",
-                    command.Name,
-                    command.Phone);
 
                 command.ConfimationToken = confirmationToken;
                 command.AccountActivationDisabled = accountActivationDisabled;
@@ -108,7 +81,6 @@ namespace apcurium.MK.Booking.Api.Services
 
                 if (!accountActivationDisabled)
                 {
-
                     if (smsConfirmationEnabled
                         && (request.ActivationMethod == null  
                                 || request.ActivationMethod == ActivationMethod.Sms))
@@ -126,13 +98,11 @@ namespace apcurium.MK.Booking.Api.Services
                         {
                             ClientLanguageCode = command.Language,
                             EmailAddress = command.Email,
-                        BaseUrl = new Uri(root),
+                            BaseUrl = new Uri(root),
                             ConfirmationUrl =
-                                new Uri(root +
-                                        string.Format("/api/account/confirm/{0}/{1}", command.Email, confirmationToken)),
+                                new Uri(root + string.Format("/api/account/confirm/{0}/{1}", command.Email, confirmationToken)),
                         });
                     }
-                    
                 }
 
                 return new Account {Id = command.AccountId};

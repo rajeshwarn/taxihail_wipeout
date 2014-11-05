@@ -24,15 +24,15 @@ namespace apcurium.MK.Booking.Api.Services
     {
         private readonly IAccountDao _accountDao;
         private readonly ICommandBus _commandBus;
-        private readonly IConfigurationManager _configurationManager;
+        private readonly IServerSettings _serverSettings;
         private readonly ITemplateService _templateService;
 
         public ConfirmAccountService(ICommandBus commandBus, IAccountDao accountDao, ITemplateService templateService,
-            IConfigurationManager configurationManager)
+            IServerSettings serverSettings)
         {
             _accountDao = accountDao;
             _templateService = templateService;
-            _configurationManager = configurationManager;
+            _serverSettings = serverSettings;
             _commandBus = commandBus;
         }
 
@@ -80,9 +80,9 @@ namespace apcurium.MK.Booking.Api.Services
                 var template = _templateService.Find("AccountConfirmationSuccess",account.Language);
                 var templateData = new
                 {
-                    ApplicationName = _configurationManager.GetSetting("TaxiHail.ApplicationName"),
+                    ApplicationName = _serverSettings.ServerData.TaxiHail.ApplicationName,
                     RootUrl = root,
-                    AccentColor = _configurationManager.GetSetting("TaxiHail.AccentColor")
+                    AccentColor = _serverSettings.ServerData.TaxiHail.AccentColor
                 };
                 var body = _templateService.Render(template, templateData);
                 return new HttpResult(body, ContentType.Html);

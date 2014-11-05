@@ -17,7 +17,7 @@ namespace MK.Booking.IBS.Test.StaticDataWebServiceClientFixture
         [Test]
         public void get_vehicles_test()
         {
-            var sut = new StaticDataWebServiceClient(new FakeConfigurationManager(), new Logger());
+            var sut = new StaticDataWebServiceClient(new FakeServerSettings(), new Logger());
 
             var vehicles = sut.GetVehiclesList(new ListItem {Id = TheChauffeurGroupProviderId});
 

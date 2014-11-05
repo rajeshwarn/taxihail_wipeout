@@ -243,7 +243,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
                                     if (!Settings.HideCallDispatchButton)
                                     {
                                         this.Services().Message.ShowMessage(title, e.Message,
-                                            "Call", () => _phone.MakePhoneCall(Settings.ApplicationName, Settings.DefaultPhoneNumber),
+                                            "Call", () => _phone.MakePhoneCall(Settings.TaxiHail.ApplicationName, Settings.DefaultPhoneNumber),
                                             "Cancel", () => { });
                                     }
                                     else
@@ -420,7 +420,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
             {
                 IBSOrderId = order.IBSOrderId,
                 IBSStatusDescription = this.Services().Localize["LoadingMessage"],
-                IBSStatusId = "",
+                IBSStatusId = string.Empty,
                 OrderId = pendingOrderId,
                 Status = OrderStatus.Unknown,
                 VehicleLatitude = null,

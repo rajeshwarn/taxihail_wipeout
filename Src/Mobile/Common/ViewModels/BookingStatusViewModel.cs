@@ -7,9 +7,11 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Linq;
 using apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.Infrastructure;
+using apcurium.MK.Booking.Mobile.Messages;
 using apcurium.MK.Booking.Mobile.PresentationHints;
 using apcurium.MK.Booking.Mobile.ViewModels.Payment;
 using apcurium.MK.Common;
@@ -21,6 +23,7 @@ using ServiceStack.Text;
 using apcurium.MK.Booking.Maps;
 using Cirrious.CrossCore;
 using System.Net;
+using ServiceStack.ServiceClient.Web;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -56,7 +59,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			Order = JsonSerializer.DeserializeFromString<Order> (order);
 			OrderStatusDetail = JsonSerializer.DeserializeFromString<OrderStatusDetail> (orderStatus);
-            DisplayOrderNUmber();
+            DisplayOrderNumber();
 			IsCancelButtonVisible = true;			
 			_waitingToNavigateAfterTimeOut = false;
 		}
@@ -74,7 +77,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			base.OnViewStarted (firstStart);
 
-			_refreshPeriod = Settings.ClientPollingInterval;
+			_refreshPeriod = Settings.OrderStatus.ClientPollingInterval;
             
 			Observable.Timer(TimeSpan.FromSeconds(4), TimeSpan.FromSeconds (_refreshPeriod))
 				.ObserveOn(SynchronizationContext.Current)
@@ -165,6 +168,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
         }
 
+		public bool CompanyHidden
+		{
+			get { return string.IsNullOrWhiteSpace(OrderStatusDetail.CompanyName) || !IsDriverInfoAvailable; }
+		}
 		public bool VehicleDriverHidden
 		{
 			get { return string.IsNullOrWhiteSpace(OrderStatusDetail.DriverInfos.FullName) || !IsDriverInfoAvailable; }
@@ -214,6 +221,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			set {
 				_orderStatusDetail = value;
 				RaisePropertyChanged (() => OrderStatusDetail);
+				RaisePropertyChanged (() => CompanyHidden);
 				RaisePropertyChanged (() => VehicleDriverHidden);
 				RaisePropertyChanged (() => VehicleLicenceHidden);
 				RaisePropertyChanged (() => VehicleTypeHidden);
@@ -288,7 +296,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     this.Services().Localize["AddReminderMessage"],
                     this.Services().Localize["YesButton"],
 					() => _phoneService.AddEventToCalendarAndReminder(
-						string.Format(this.Services().Localize["ReminderTitle"], Settings.ApplicationName), 
+						string.Format(this.Services().Localize["ReminderTitle"], Settings.TaxiHail.ApplicationName), 
                         string.Format(this.Services().Localize["ReminderDetails"], Order.PickupAddress.FullAddress, CultureProvider.FormatTime(Order.PickupDate), CultureProvider.FormatDate(Order.PickupDate)),						              									 
                     Order.PickupAddress.FullAddress, 
                     Order.PickupDate,
@@ -297,9 +305,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
+		private string _vehicleNumber;
         private bool _isCurrentlyPairing;
-		string _vehicleNumber;
-		private async void RefreshStatus ()
+		private bool _isDispatchPopupVisible;
+
+		private async void RefreshStatus()
         {
             try {
 				var status = await _bookingService.GetOrderStatusAsync(Order.Id);
@@ -307,13 +317,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				{
 					_vehicleNumber = status.VehicleNumber;
 				}
-				else{
+				else
+                {
 					status.VehicleNumber = _vehicleNumber;
 				}
 
+                SwitchDispatchCompanyIfNecessary(status);
+
 				var isDone = _bookingService.IsStatusDone(status.IBSStatusId);
 
-				if(status.IBSStatusId.HasValue() && status.IBSStatusId.Equals(VehicleStatuses.Common.Scheduled) )
+				if(status.IBSStatusId.HasValue() && status.IBSStatusId.Equals(VehicleStatuses.Common.Scheduled))
 				{
 					AddReminder(status);
 				}
@@ -340,8 +353,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
                 CenterMap ();
 
-				var isLoaded = status.IBSStatusId.Equals(VehicleStatuses.Common.Loaded) || status.IBSStatusId.Equals(VehicleStatuses.Common.Done);
-                if (isLoaded && _paymentService.GetPaymentSettings().AutomaticPayment && _accountService.CurrentAccount.DefaultCreditCard != null)
+				var isLoaded = status.IBSStatusId.Equals(VehicleStatuses.Common.Loaded) 
+					|| status.IBSStatusId.Equals(VehicleStatuses.Common.Done);
+				var paymentSettings = await _paymentService.GetPaymentSettings();
+                if (isLoaded 
+					&& paymentSettings.AutomaticPayment 
+					&& _accountService.CurrentAccount.DefaultCreditCard != null)
 				{
 					var isPaired = _bookingService.IsPaired(Order.Id);
                     var pairState = this.Services().Cache.Get<string>("PairState" + Order.Id);
@@ -356,10 +373,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
                 UpdatePayCancelButtons(status.IBSStatusId);
 
-                DisplayOrderNUmber();
+                DisplayOrderNumber();
 
                 if (isDone) 
                 {
+                    this.Services().MessengerHub.Publish(new OrderStatusChanged(this, status.OrderId, OrderStatus.Completed, null));
 					GoToSummary();
                 }
 
@@ -374,12 +392,81 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-	    private void DisplayOrderNUmber()
+	    private void SwitchDispatchCompanyIfNecessary(OrderStatusDetail status)
+	    {
+            if (status.Status == OrderStatus.TimedOut)
+            {
+                bool alwayAcceptSwitch;
+                bool.TryParse(this.Services().Cache.Get<string>("TaxiHailNetworkTimeOutAlwayAccept"), out alwayAcceptSwitch);
+
+                if (status.NextDispatchCompanyKey != null && alwayAcceptSwitch)
+                {
+                    // Switch without user input
+                    SwitchCompany(status);
+                }
+                else if (status.NextDispatchCompanyKey != null && !_isDispatchPopupVisible && !alwayAcceptSwitch)
+                {
+                    _isDispatchPopupVisible = true;
+
+                    this.Services().Message.ShowMessage(
+                        this.Services().Localize["TaxiHailNetworkTimeOutPopupTitle"],
+                        string.Format(this.Services().Localize["TaxiHailNetworkTimeOutPopupMessage"], status.NextDispatchCompanyName),
+                        this.Services().Localize["TaxiHailNetworkTimeOutPopupAccept"],
+                            () => SwitchCompany(status),
+                        this.Services().Localize["TaxiHailNetworkTimeOutPopupRefuse"],
+                            () =>
+                            {
+                                if (status.Status.Equals(OrderStatus.TimedOut))
+                                {
+                                    _bookingService.IgnoreDispatchCompanySwitch(status.OrderId);
+                                    _isDispatchPopupVisible = false;
+                                }
+                            },
+                        this.Services().Localize["TaxiHailNetworkTimeOutPopupAlways"],
+                            () =>
+                            {
+                                this.Services().Cache.Set("TaxiHailNetworkTimeOutAlwayAccept", "true");
+                                SwitchCompany(status);
+                            });
+                }
+            }
+	    }
+
+	    private async void SwitchCompany(OrderStatusDetail status)
+	    {
+	        if (status.Status != OrderStatus.TimedOut)
+	        {
+	            return;
+	        }
+
+	        _isDispatchPopupVisible = false;
+
+			StatusInfoText = string.Format (
+				this.Services ().Localize ["NetworkContactingNextDispatchDescription"]
+				, status.NextDispatchCompanyName);
+
+            try
+            {
+                var orderStatusDetail = await _bookingService.SwitchOrderToNextDispatchCompany(
+                    status.OrderId,
+                    status.NextDispatchCompanyKey,
+                    status.NextDispatchCompanyName);
+                OrderStatusDetail = orderStatusDetail;
+            }
+            catch (WebServiceException ex)
+            {
+                this.Services().Message.ShowMessage(
+                    this.Services().Localize["TaxiHailNetworkTimeOutErrorTitle"],
+                    ex.ErrorMessage);
+            }
+	    }
+
+	    private void DisplayOrderNumber()
 	    {
 	        if (OrderStatusDetail.IBSOrderId.HasValue)
 	        {
-	            ConfirmationNoTxt = string.Format(this.Services().Localize["StatusDescription"],
-	                OrderStatusDetail.IBSOrderId.Value + "");
+	            ConfirmationNoTxt =
+                    string.Format(this.Services().Localize["StatusDescription"], OrderStatusDetail.IBSOrderId.Value);
 	        }
 	    }
 
@@ -394,34 +481,40 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			return string.Format (this.Services ().Localize ["StatusEta"], direction.FormattedDistance, direction.Duration, durationUnit);
 		}
 
-		void UpdatePayCancelButtons (string statusId)
+		private async void UpdatePayCancelButtons (string statusId)
 		{
-			var setting = _paymentService.GetPaymentSettings();
-            var isPayEnabled = setting.IsPayInTaxiEnabled || setting.PayPalClientSettings.IsEnabled;
+			var paymentSettings = await _paymentService.GetPaymentSettings();
+		    var isOrderAlreadyPaid = _paymentService.GetPaymentFromCache(Order.Id).HasValue;
 
-			// unpair is only available for RideLinqCMT
-			IsUnpairButtonVisible = _paymentService.GetPaymentSettings().PaymentMode == PaymentMethod.RideLinqCmt &&
-								!_paymentService.GetPaymentSettings().AutomaticPayment  			
-								&& _bookingService.IsPaired(Order.Id);      
+            IsPayButtonVisible = ShouldDisplayPayButton(statusId, isOrderAlreadyPaid, paymentSettings);
 
-			IsPayButtonVisible = (!Settings.HidePayNowButtonDuringRide)
-								&& (statusId == VehicleStatuses.Common.Done
-									|| statusId == VehicleStatuses.Common.Loaded)
-								&& !_paymentService.GetPaymentFromCache(Order.Id).HasValue
-                                && !_paymentService.GetPaymentSettings().AutomaticPayment
-			                    && !IsUnpairButtonVisible
-								&& (Order.Settings.ChargeTypeId == null
-									|| Order.Settings.ChargeTypeId != ChargeTypes.Account.Id)
-                                && ((setting.IsPayInTaxiEnabled
-										&& _accountService.CurrentAccount.DefaultCreditCard != null) 
-                                    || setting.PayPalClientSettings.IsEnabled);
-			
-			IsCancelButtonVisible = _bookingService.IsOrderCancellable (statusId);
+            IsCancelButtonVisible = _bookingService.IsOrderCancellable(statusId);
 
-            IsResendButtonVisible = isPayEnabled 
-				&& !_paymentService.GetPaymentSettings().AutomaticPayment 
-				&& _paymentService.GetPaymentFromCache(Order.Id).HasValue;
+            IsResendButtonVisible = isOrderAlreadyPaid
+                                && !paymentSettings.AutomaticPayment
+                                && (paymentSettings.IsPayInTaxiEnabled || paymentSettings.PayPalClientSettings.IsEnabled);
+
+			// Unpair button is only available for RideLinqCMT
+			IsUnpairButtonVisible = paymentSettings.PaymentMode == PaymentMethod.RideLinqCmt 
+								&& !paymentSettings.AutomaticPayment  			
+								&& _bookingService.IsPaired(Order.Id);
 		}
+
+	    private bool ShouldDisplayPayButton(string statusId, bool isOrderAlreadyPaid, ClientPaymentSettings paymentSettings)
+	    {
+	        bool payingByChargeAccount = Order.Settings.ChargeTypeId == ChargeTypes.Account.Id;
+            bool passengersInCar = statusId == VehicleStatuses.Common.Loaded || statusId == VehicleStatuses.Common.Done;
+            bool hasCardOnFile = paymentSettings.IsPayInTaxiEnabled	&& _accountService.CurrentAccount.DefaultCreditCard != null;
+
+	        return !Settings.HidePayNowButtonDuringRide
+                && !paymentSettings.AutomaticPayment
+                && !isOrderAlreadyPaid
+                && !payingByChargeAccount
+	            && passengersInCar
+                && (hasCardOnFile || paymentSettings.PayPalClientSettings.IsEnabled) // Can pay by card or PayPal
+	            && !IsUnpairButtonVisible                                            // Unpair visible (pair button is pay button in pairing situations) 
+	            && OrderStatusDetail.CompanyKey == null;                             // Not dispatched to another company
+	    }
 
 		public void GoToSummary(){
 
@@ -447,9 +540,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        public void GoToPairScreen()
+        public async Task GoToPairScreen()
         {
-            if (!_paymentService.GetPaymentSettings().AutomaticPaymentPairing)
+			var paymentSettings = await _paymentService.GetPaymentSettings ();
+			if (!paymentSettings.AutomaticPaymentPairing)
             {
                 ShowViewModel<ConfirmPairViewModel>(new
                 {
@@ -567,7 +661,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                return this.GetCommand(() =>
+                return this.GetCommand(async () =>
                 {
 #if DEBUG
 #else
@@ -579,18 +673,20 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 #endif
 					IsPayButtonVisible = false;
 					this.Services().Analytics.LogEvent("PayButtonTapped");
-                    if (_paymentService.GetPaymentSettings().AutomaticPayment)
+					
+					var paymentSettings = await _paymentService.GetPaymentSettings();
+                    if (paymentSettings.AutomaticPayment)
                     {
                         GoToPairScreen();
                     }
                     else
                     {
-							ShowViewModel<ConfirmCarNumberViewModel>(
-                            new
-                            {
-                                order = Order.ToJson(),
-                                orderStatus = OrderStatusDetail.ToJson()
-                            });
+						ShowViewModel<ConfirmCarNumberViewModel>(
+	                        new
+	                        {
+	                            order = Order.ToJson(),
+	                            orderStatus = OrderStatusDetail.ToJson()
+	                        });
                     }
                 });
             }
@@ -635,7 +731,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 						{
 							var response = await _paymentService.Unpair(Order.Id);
 
-							if(response.IsSuccessfull)
+							if(response.IsSuccessful)
 							{
 								this.Services().Cache.Set("PairState" + Order.Id, PairingState.Unpaired);
 								RefreshStatus();

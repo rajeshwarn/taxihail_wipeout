@@ -38,7 +38,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			FlatButtonStyle.Green.ApplyTo(btnReSendConfirmation);
 			FlatButtonStyle.Green.ApplyTo(btnPay);
 
-            lblSubTitle.Text = String.Format(Localize.GetValue ("RideSummarySubTitleText"), this.Services().Settings.ApplicationName);
+            lblSubTitle.Text = String.Format(Localize.GetValue ("RideSummarySubTitleText"), this.Services().Settings.TaxiHail.ApplicationName);
 
             btnPay.SetTitle(Localize.GetValue("PayNow"), UIControlState.Normal);
             btnReSendConfirmation.SetTitle(Localize.GetValue("ReSendConfirmation"), UIControlState.Normal);
@@ -67,6 +67,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
                 if (ViewModel.CanUserLeaveScreen ())
                 {
+                    ViewModel.PrepareNewOrder.ExecuteIfPossible();
                     ViewModel.CloseCommand.ExecuteIfPossible();
                 }
             });

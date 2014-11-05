@@ -48,17 +48,17 @@ namespace apcurium.MK.Booking
                 new InjectionConstructor(
                     container.Resolve<ConnectionStringSettings>(Common.Module.MkConnectionString).ConnectionString));
 
-            container.RegisterInstance<IEmailSender>(new EmailSender(container.Resolve<IConfigurationManager>()));
-            container.RegisterInstance<ITemplateService>(new TemplateService(container.Resolve<IConfigurationManager>(), container.Resolve<IAppSettings>()));
-            container.RegisterInstance<IPushNotificationService>(new PushNotificationService(container.Resolve<IConfigurationManager>(), container.Resolve<ILogger>()));
+            container.RegisterInstance<IEmailSender>(new EmailSender(container.Resolve<IServerSettings>()));
+            container.RegisterInstance<ITemplateService>(new TemplateService(container.Resolve<IServerSettings>()));
+            container.RegisterInstance<IPushNotificationService>(new PushNotificationService(container.Resolve<IServerSettings>(), container.Resolve<ILogger>()));
             container.RegisterInstance<IOrderDao>(new OrderDao(() => container.Resolve<BookingDbContext>()));
             container.RegisterType<INotificationService, NotificationService>(new ContainerControlledLifetimeManager());
                     
             container.RegisterType<IPairingService>(new ContainerControlledLifetimeManager(), 
-                new InjectionFactory(c => new PairingService(c.Resolve<ICommandBus>(), c.Resolve<IIbsOrderService>(), c.Resolve<IOrderDao>(), c.Resolve<IConfigurationManager>(), c.Resolve<IAppSettings>())));
+                new InjectionFactory(c => new PairingService(c.Resolve<ICommandBus>(), c.Resolve<IIbsOrderService>(), c.Resolve<IOrderDao>(), c.Resolve<IServerSettings>())));
 
             container.RegisterInstance<IAddressDao>(new AddressDao(() => container.Resolve<BookingDbContext>()));
-            container.RegisterInstance<IAccountDao>(new AccountDao(() => container.Resolve<BookingDbContext>()));
+            container.RegisterInstance<IAccountDao>(new AccountDao(() => container.Resolve<BookingDbContext>()));        
             container.RegisterInstance<IOrderStatusUpdateDao>(new OrderStatusUpdateDao(() => container.Resolve<BookingDbContext>()));
             container.RegisterInstance<IDefaultAddressDao>(new DefaultAddressDao(() => container.Resolve<BookingDbContext>()));
             container.RegisterInstance<ITariffDao>(new TariffDao(() => container.Resolve<BookingDbContext>()));
@@ -79,6 +79,25 @@ namespace apcurium.MK.Booking
             RegisterMaps();
             RegisterCommandHandlers(container);
             RegisterEventHandlers(container);
+
+            container.RegisterType<IPaymentService>(
+                new TransientLifetimeManager(),
+                new InjectionFactory(c =>
+                {
+                    var serverSettings = c.Resolve<IServerSettings>();
+                    switch (serverSettings.GetPaymentSettings().PaymentMode)
+                    {
+                        case PaymentMethod.Braintree:
+                            return new BraintreePaymentService(c.Resolve<ICommandBus>(), c.Resolve<IOrderDao>(), c.Resolve<ILogger>(), c.Resolve<IIbsOrderService>(), c.Resolve<IAccountDao>(), c.Resolve<IOrderPaymentDao>(), serverSettings, c.Resolve<IPairingService>());
+                        case PaymentMethod.RideLinqCmt:
+                        case PaymentMethod.Cmt:
+                            return new CmtPaymentService(c.Resolve<ICommandBus>(), c.Resolve<IOrderDao>(), c.Resolve<ILogger>(), c.Resolve<IIbsOrderService>(), c.Resolve<IAccountDao>(), c.Resolve<IOrderPaymentDao>(), serverSettings, c.Resolve<IPairingService>());
+                        case PaymentMethod.Moneris:
+                            return new MonerisPaymentService(c.Resolve<ICommandBus>(), c.Resolve<IOrderDao>(), c.Resolve<ILogger>(), c.Resolve<IIbsOrderService>(), c.Resolve<IAccountDao>(), c.Resolve<IOrderPaymentDao>(), serverSettings, c.Resolve<IPairingService>());
+                        default:
+                            return null;
+                    }
+                }));
         }
 
         public void RegisterMaps()
@@ -166,6 +185,7 @@ namespace apcurium.MK.Booking
             container.RegisterType<IEventHandler, MailSender>("MailSender");
             container.RegisterType<IEventHandler, OrderPaymentManager>("OrderPaymentManager");
             container.RegisterType<IEventHandler, OrderPairingManager>("OrderPairingManager");
+            container.RegisterType<IEventHandler, OrderDispatchCompanyManager>("OrderDispatchCompanyManager");
         }
 
         private void RegisterCommandHandlers(IUnityContainer container)

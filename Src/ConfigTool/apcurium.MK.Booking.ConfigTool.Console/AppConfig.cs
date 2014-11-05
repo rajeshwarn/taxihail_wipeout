@@ -304,11 +304,11 @@ namespace apcurium.MK.Booking.ConfigTool
             var tutorialContent = GetFilesFromAssetsDirectory("json");
             foreach (var file in tutorialContent)
             {
-                _configs.Add(new ConfigFile(this)
-                {
-                    Source = file + ".json",
-                    Destination = @"Mobile\Common\TutorialContent\" + file + ".json"
-                });
+				_configs.Add (new ConfigFile (this) 
+				{
+					Source = file + ".json",
+					Destination = @"Mobile\Common\TutorialContent\" + file + ".json" 
+				});
             }
         }
 
@@ -403,10 +403,41 @@ namespace apcurium.MK.Booking.ConfigTool
 			}
         }
 
+		private string CleanUpSettingKey(string key)
+		{
+			var propertyName = key;
+
+			// remove Client. suffix
+			if (SplitOnFirst(key, ".")[0] == "Client") 
+			{
+				propertyName = SplitOnFirst(key, ".")[1];
+			}
+
+			return propertyName;
+		}
+
 		void CreateConfigFile (string fileName, Func<CompanySetting,bool> predicate)
 		{
 			var newFile = File.CreateText (fileName);
-			var dict = Company.CompanySettings.Where(predicate).ToDictionary (s => s.Key, s => s.Value ?? "");
+			var listOfSettings = Company.CompanySettings
+				.Where (predicate)
+				.Select (s => new
+					{ 
+						Key = CleanUpSettingKey (s.Key),
+						Value = s.Value 
+					});
+
+			var dict = new Dictionary<string, string> ();
+			foreach (var setting in listOfSettings) 
+			{
+                // special case where TaxiHail.ApplicationName could be called ApplicationName
+                if (setting.Key == "ApplicationName")
+                {
+                    dict["TaxiHail.ApplicationName"] = setting.Value ?? string.Empty;
+                }
+				// if we have the same key twice, we take the last one, it doesn't matter since it should be the same value
+				dict [setting.Key] = setting.Value ?? string.Empty;
+			}
 
 			dict["ServiceUrl"] = _serviceUrl;
 
@@ -457,6 +488,26 @@ namespace apcurium.MK.Booking.ConfigTool
             {
                 output.Write(buffer, 0, len);
             }
-        }        
+        }       
+
+		private string[] SplitOnFirst(string strVal, string needle)
+		{
+			if (strVal == null)
+			{
+				return new string[0];
+			}
+
+			int length = strVal.IndexOf(needle);
+			if (length != -1)
+			{
+				return new[]
+				{
+					strVal.Substring(0, length),
+					strVal.Substring(length + 1)
+				};
+			}
+
+			return new[] { strVal };
+		}
     }
 }

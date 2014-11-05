@@ -12,26 +12,20 @@ namespace apcurium.MK.Booking.Api.Services.Maps
 {
     public class DefaultGeoLocationService : Service
     {
-        private readonly IConfigurationManager _configurationManager;
+        private readonly IServerSettings _serverSettings;
 
-        public DefaultGeoLocationService(IConfigurationManager configurationManager)
+        public DefaultGeoLocationService(IServerSettings serverSettings)
         {
-            _configurationManager = configurationManager;
+            _serverSettings = serverSettings;
         }
 
         public object Get(DefaultGeoLocationRequest request)
         {
-            var address = new Address
+            return new Address
             {
-                Latitude =
-                    double.Parse(_configurationManager.GetSetting("GeoLoc.DefaultLatitude"),
-                        CultureInfo.InvariantCulture),
-                Longitude =
-                    double.Parse(_configurationManager.GetSetting("GeoLoc.DefaultLongitude"),
-                        CultureInfo.InvariantCulture)
+                Latitude = _serverSettings.ServerData.GeoLoc.DefaultLatitude,
+                Longitude = _serverSettings.ServerData.GeoLoc.DefaultLongitude
             };
-
-            return address;
         }
     }
 }

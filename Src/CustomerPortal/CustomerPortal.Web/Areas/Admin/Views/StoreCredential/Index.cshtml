@@ -1,0 +1,99 @@
+﻿@using CustomerPortal.Web.Security
+@model  IEnumerable<CustomerPortal.Web.Areas.Admin.Models.StoreInfoModel>
+@{
+    ViewBag.Title = "Home";
+}
+<div class='row'>
+    <div class='span12'>
+        <p>
+            <a class="btn" href='@Url.Action("RefreshStoreAvailability")'>Refresh Store Availability</a>
+            @*<a class="btn" href='@Url.Action("Index", "Membership")'>Manage Users</a>
+
+                @if (SecurityHelper.IsApcuriumUser)
+                {
+                    <a class="btn" href="@Url.Action("Index", "Deployment")">Deployment</a>
+                }
+
+                <a class="btn" href="@Url.Action("RefreshVersions")">Refresh Versions</a>*@
+
+        </p>
+    </div>
+
+    <div class="span12">
+        <table class="table table-striped table-condensed">
+            <thead>
+                <tr>
+                    <th>Company name</th>
+                    <th>Apple</th>
+                    <th>Play</th>
+                    <th>Warnings</th>
+                </tr>
+            </thead>
+            @foreach (var si in Model)
+            {
+                <tr>
+                    <td>
+                        <a href="#">@si.Company.CompanyName</a>
+                    </td>
+                    <td>
+                        User: @si.Company.AppleAppStoreCredentials.Username <br />
+                        Pass: @si.Company.AppleAppStoreCredentials.Password <br />
+                        Team: @si.Company.AppleAppStoreCredentials.Team
+                    </td>
+                    <td>
+                        User: @si.Company.GooglePlayCredentials.Username <br />
+                        Pass: @si.Company.GooglePlayCredentials.Password
+                    </td>
+                    <td>
+                        @if (!si.Company.IsStoreValid())
+                        {
+                            <img data-status title="@si.Company.StoreValidationError()" src="~/Images/warn.jpg" width="20" />
+                        }
+                    </td>
+
+                    <td>
+                        <a href="@Url.Action("CheckAppleCredentials", new { si.Company.Id })">Check</a>
+                        <br />
+                        @if (!string.IsNullOrEmpty(si.Company.Store.AndroidStoreUrl))
+                        {
+                            <a href="@si.Company.Store.AndroidStoreUrl">
+                                <img src="~/Images/android.png" width="20" />
+                            </a>
+                        }
+                        @if (!string.IsNullOrEmpty(si.Company.Store.AppleStoreId))
+                        {
+                            <a href="@si.Company.Store.AppleStoreUrl">
+                                <img src="~/Images/apple.png" width="20" />
+                            </a>
+                        }
+                    </td>
+
+                </tr>
+            }
+        </table>
+    </div>
+</div>
+@section scripts
+{
+    @*<script>
+            function loadVersion() {
+                $(function() {
+                    $('[data-version]').fetchVersion();
+                });
+                $(function() {
+                    $('[data-version-staging]').fetchVersionStaging();
+                });
+            }
+        </script>*@
+
+
+
+    <script type="text/javascript">
+        $(function () {
+            $('[data-status]').tipsy({ html: true, gravity: 'nw' });
+        });
+        $('[data-status]').tipsy({ html: true, gravity: 'nw' });
+
+    </script>
+}
+

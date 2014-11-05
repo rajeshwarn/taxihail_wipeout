@@ -33,7 +33,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			using (this.Services ().Message.ShowProgress ())
 			{
 				_bookingSettings = bookingSettings.FromJson<BookingSettings>();
-			    _paymentSettings = _paymentService.GetPaymentSettings();
+			    _paymentSettings = await _paymentService.GetPaymentSettings();
 
 				var p = await _accountService.GetPaymentsList();
 				_payments = p == null ? new ListItem[0] : p.Select(x => new ListItem { Id = x.Id, Display = this.Services().Localize[x.Display] }).ToArray();

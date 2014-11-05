@@ -27,7 +27,7 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
             "airport", "transit_station", "bus_station", "train_station",
             "route", "postal_code", "street_address"
         };
-		public GoogleApiClient(IAppSettings settings, ILogger logger, IGeocoder fallbackGeocoder = null)
+        public GoogleApiClient(IAppSettings settings, ILogger logger, IGeocoder fallbackGeocoder = null)
         {
             _logger = logger;
             _settings = settings;
@@ -36,13 +36,13 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
 
         protected string PlacesApiKey
         {
-            get { return _settings.Data.PlacesApiKey; }
+            get { return _settings.Data.Map.PlacesApiKey; }
         }
 
 		public GeoPlace[] GetNearbyPlaces(double? latitude, double? longitude, string languageCode, bool sensor, int radius,
             string pipedTypeList = null)
         {
-            pipedTypeList = pipedTypeList ?? new PlaceTypes(_settings.Data.PlacesTypes).GetPipedTypeList();
+            pipedTypeList = pipedTypeList ?? new PlaceTypes(_settings.Data.GeoLoc.PlacesTypes).GetPipedTypeList();
             var client = new JsonServiceClient(PlacesServiceUrl);
 
             var @params = new Dictionary<string, string>
@@ -214,17 +214,17 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
 
 		private GeoPlace ConvertPlaceToGeoPlaces(Place place)
 		{            
-			return new GeoPlace 
+			return new GeoPlace
             {
-                Id = place.Place_Id,
 				Name =  place.Name,
+                Id = place.Place_Id,                                                       
+				Types = place.Types,
 				Address = new GeoAddress
 				{
-				    FullAddress = place.Formatted_Address ?? place.Vicinity, 
+				    FullAddress = place.Formatted_Address ?? place.Vicinity,
                     Latitude = place.Geometry.Location.Lat,
                     Longitude = place.Geometry.Location.Lng
-				},                                                       
-				Types = place.Types
+				}
 			};
 		}
 
@@ -235,10 +235,10 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
                     p =>
 					new GeoPlace
                         {
-                            Id = p.Place_Id,
-                            Name = GetNameFromDescription(p.Description),
-							Address = new GeoAddress { FullAddress = GetAddressFromDescription(p.Description) },                                                       
-                            Types = p.Types
+								Id = p.Place_Id,
+                            	Name = GetNameFromDescription(p.Description),
+								Address = new GeoAddress { FullAddress =  GetAddressFromDescription(p.Description)  },                                                       
+                            	Types = p.Types
                         });
         }
 
@@ -272,7 +272,7 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
         }
 
         public GeoAddress[] ConvertGeoResultToAddresses(GeoResult result)
-        {
+        { 
             if ( result.Status == ResultStatus.OK )
             {
                 return result.Results.Where(r=> r.Formatted_address.HasValue() &&
@@ -280,15 +280,19 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
                                                 r.Geometry.Location.Lng != 0 && r.Geometry.Location.Lat != 0 &&
                                                 (r.AddressComponentTypes.Any(
                                                     type => type == AddressComponentType.Street_address) ||
-                                                (r.Types.Any(
-                                                    t => _otherTypesAllowed.Any(o => o.ToLower() == t.ToLower())))))
-                                                    .Select(ConvertGeoObjectToAddress).ToArray();
+                                                 (r.Types.Any(
+                                                     t => _otherTypesAllowed.Any(o => o.ToLower() == t.ToLower())))))
+                                                     .Select(ConvertGeoObjectToAddress).ToArray();
+            }
+            else
+            {
+                return new GeoAddress[0];
             }
 
-            return new GeoAddress[0];
+         
         }
 
-	    public GeoAddress ConvertGeoObjectToAddress(GeoObj geoResult)
+        public GeoAddress ConvertGeoObjectToAddress(GeoObj geoResult)
         {        
             var address = new GeoAddress
             {
@@ -325,5 +329,6 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
 
 			return address;
         }
+
     }
 }

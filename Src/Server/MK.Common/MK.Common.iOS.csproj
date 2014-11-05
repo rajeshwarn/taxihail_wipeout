@@ -62,18 +62,42 @@
     <Reference Include="Microsoft.Practices.Unity">
       <HintPath>..\..\Mobile\packages\Unity.3.5.1404.0\lib\portable-net45+wp80+win8+MonoAndroid10+MonoTouch10\Microsoft.Practices.Unity.dll</HintPath>
     </Reference>
+    <Reference Include="System.Reactive.Core">
+      <HintPath>..\..\Mobile\Components\rxforxamarin-2.1\lib\ios\System.Reactive.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Debugger">
+      <HintPath>..\..\Mobile\Components\rxforxamarin-2.1\lib\ios\System.Reactive.Debugger.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Experimental">
+      <HintPath>..\..\Mobile\Components\rxforxamarin-2.1\lib\ios\System.Reactive.Experimental.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Interfaces">
+      <HintPath>..\..\Mobile\Components\rxforxamarin-2.1\lib\ios\System.Reactive.Interfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Linq">
+      <HintPath>..\..\Mobile\Components\rxforxamarin-2.1\lib\ios\System.Reactive.Linq.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.PlatformServices">
+      <HintPath>..\..\Mobile\Components\rxforxamarin-2.1\lib\ios\System.Reactive.PlatformServices.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
   <ItemGroup>
+    <Compile Include="Configuration\Attributes\CustomizableByCompanyAttribute.cs" />
+    <Compile Include="Configuration\Attributes\RequiredAtStartup.cs" />
+    <Compile Include="Configuration\Attributes\SendToClientAttribute.cs" />
+    <Compile Include="Configuration\Helpers\SettingsLoader.cs" />
     <Compile Include="Configuration\Impl\BraintreeClientSettings.cs" />
     <Compile Include="Configuration\Impl\ClientPaymentSettings.cs" />
     <Compile Include="Configuration\Impl\MonerisPaymentSettings.cs" />
     <Compile Include="Configuration\Impl\PayPalClientSettings.cs" />
     <Compile Include="Configuration\NotificationSettings.cs" />
+    <Compile Include="Configuration\SettingContainers.cs" />
     <Compile Include="Diagnostic\ILogger.cs" />
     <Compile Include="Entity\ListItem.cs" />
     <Compile Include="Entity\RatingTypeWrapper.cs" />
     <Compile Include="Entity\ToggleItem.cs" />
+    <Compile Include="Enumeration\DistanceFormat.cs" />
     <Compile Include="Enumeration\SupportedLanguages.cs" />
     <Compile Include="Extensions\ActionExtension.cs" />
     <Compile Include="Extensions\AssemblyExtensions.cs" />
@@ -109,6 +133,11 @@
     <Compile Include="Entity\BookingSettings.cs" />
     <Compile Include="Patterns\Singleton.cs" />
     <Compile Include="Patterns\ActionDisposable.cs" />
+    <Compile Include="Resources\BasePaymentResponse.cs" />
+    <Compile Include="Resources\CommitPreauthorizedPaymentResponse.cs" />
+    <Compile Include="Resources\DeleteTokenizedCreditcardResponse.cs" />
+    <Compile Include="Resources\PairingResponse.cs" />
+    <Compile Include="Resources\PreAuthorizePaymentResponse.cs" />
     <Compile Include="VehicleStatuses.cs" />
     <Compile Include="Enumeration\AppSettingsType.cs" />
     <Compile Include="Enumeration\AuthenticationErrorCode.cs" />
@@ -122,9 +151,16 @@
     <Compile Include="Configuration\TaxiHailSetting.cs" />
     <Compile Include="Entity\AccountChargeQuestion.cs" />
     <Compile Include="Enumeration\ChargeTypes.cs" />
+    <Compile Include="Diagnostic\BaseLogger.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <XamarinComponentReference Include="rxforxamarin">
+      <Version>2.1</Version>
+      <Visible>False</Visible>
+    </XamarinComponentReference>
   </ItemGroup>
 </Project>

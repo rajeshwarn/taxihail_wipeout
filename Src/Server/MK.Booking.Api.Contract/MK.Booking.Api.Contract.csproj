@@ -87,13 +87,15 @@
     <Compile Include="BaseDTO.cs" />
     <Compile Include="Requests\AppStartUpLogRequest.cs" />
     <Compile Include="Requests\AssignedEtaRequest.cs" />
+    <Compile Include="Requests\IgnoreDispatchCompanySwitchRequest.cs" />
+    <Compile Include="Requests\SwitchOrderToNextDispatchCompanyRequest.cs" />
     <Compile Include="Requests\IbsFareRequest.cs" />
     <Compile Include="Requests\LogApplicationStartUpRequest.cs" />
     <Compile Include="Requests\NotificationSettingsRequest.cs" />
     <Compile Include="Requests\OrderPairingRequest.cs" />
     <Compile Include="Requests\Payment\DeleteTokenizedCreditcardRequest.cs" />
     <Compile Include="Requests\Payment\PairingForPaymentRequest.cs" />
-    <Compile Include="Requests\Payment\PreAuthorizeAndCommitPaymentRequest.cs" />
+    <Compile Include="Requests\Payment\CommitPaymentRequest.cs" />
     <Compile Include="Requests\Payment\ResendPaymentConfirmationRequest.cs" />
     <Compile Include="Requests\Payment\Braintree\TokenizeCreditCardBraintreeRequest.cs" />
     <Compile Include="Requests\DisableAccountByAdminRequest.cs" />
@@ -172,14 +174,8 @@
     <Compile Include="Resources\OrderRatings.cs" />
     <Compile Include="Resources\OrderValidationResult.cs" />
     <Compile Include="Resources\PaymentSettings.cs" />
-    <Compile Include="Resources\Payments\BasePaymentResponse.cs" />
-    <Compile Include="Resources\Payments\Cmt\Trip.cs" />
-    <Compile Include="Resources\Payments\CommitPreauthoriedPaymentResponse.cs" />
-    <Compile Include="Resources\Payments\PairingResponse.cs" />
     <Compile Include="Resources\Payments\ServerPaymentSettingsResponse.cs" />
-    <Compile Include="Resources\Payments\DeleteTokenizedCreditcardResponse.cs" />
     <Compile Include="Resources\Payments\PaymentSettingsResponse.cs" />
-    <Compile Include="Resources\Payments\PreAuthorizePaymentResponse.cs" />
     <Compile Include="Resources\Payments\TokenizedCreditCardResponse.cs" />
     <Compile Include="Resources\ReferenceData.cs" />
     <Compile Include="Resources\TermsAndConditions.cs" />
@@ -202,12 +198,11 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="ClassDiagram1.cd" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

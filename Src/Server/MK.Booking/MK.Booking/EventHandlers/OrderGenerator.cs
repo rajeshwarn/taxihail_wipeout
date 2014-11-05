@@ -3,15 +3,20 @@
 using System;
 using System.Data.Entity.Core.Metadata.Edm;
 using System.Data.SqlTypes;
+using System.Linq;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
+using apcurium.MK.Common.Extensions;
 using AutoMapper;
+using CustomerPortal.Client;
+using CustomerPortal.Contract.Resources;
 using Infrastructure.Messaging.Handling;
 using apcurium.MK.Common.Configuration;
+using ServiceStack.Common;
 
 #endregion
 
@@ -24,19 +29,23 @@ namespace apcurium.MK.Booking.EventHandlers
         IEventHandler<PaymentInformationSet>,
         IEventHandler<OrderStatusChanged>,
         IEventHandler<OrderPairedForPayment>,
-        IEventHandler<OrderUnpairedForPayment>
+        IEventHandler<OrderUnpairedForPayment>,
+        IEventHandler<OrderPreparedForNextDispatch>,
+        IEventHandler<OrderSwitchedToNextDispatchCompany>,
+        IEventHandler<DispatchCompanySwitchIgnored>
     {
         private readonly Func<BookingDbContext> _contextFactory;
         private readonly ILogger _logger;
+        private readonly IServerSettings _serverSettings;
         private readonly Resources.Resources _resources;
-
-        public OrderGenerator(Func<BookingDbContext> contextFactory, ILogger logger, IConfigurationManager configurationManager, IAppSettings appSettings)
+        public OrderGenerator(Func<BookingDbContext> contextFactory,
+            ILogger logger,
+            IServerSettings serverSettings)
         {
             _contextFactory = contextFactory;
             _logger = logger;
-
-            var applicationKey = configurationManager.GetSetting("TaxiHail.ApplicationKey");
-            _resources = new Resources.Resources(applicationKey, appSettings);
+            _serverSettings = serverSettings;
+            _resources = new Resources.Resources(serverSettings);
         }
 
         public void Handle(OrderCancelled @event)
@@ -55,7 +64,7 @@ namespace apcurium.MK.Booking.EventHandlers
                 {
                     details.Status = OrderStatus.Canceled;
                     details.IBSStatusId = VehicleStatuses.Common.CancelledDone;
-                    details.IBSStatusDescription = "Order Cancelled";
+                    details.IBSStatusDescription = _resources.Get("OrderStatus_wosCANCELLED", order != null ? order.ClientLanguageCode : "en");
                     context.Save(details);
                 }
             }
@@ -79,6 +88,7 @@ namespace apcurium.MK.Booking.EventHandlers
                     IsRated = false,
                     EstimatedFare = @event.EstimatedFare,
                     UserAgent = @event.UserAgent,
+                    UserNote = @event.UserNote,
                     ClientLanguageCode = @event.ClientLanguageCode,
                     ClientVersion = @event.ClientVersion
                 });
@@ -97,7 +107,7 @@ namespace apcurium.MK.Booking.EventHandlers
                         AccountId = @event.AccountId,
                         IBSOrderId  = @event.IBSOrderId,
                         Status = OrderStatus.Created,
-                        IBSStatusDescription = (string)_resources.Get("OrderStatus_wosWAITING", @event.ClientLanguageCode),
+                        IBSStatusDescription = _resources.Get("OrderStatus_wosWAITING", @event.ClientLanguageCode),
                         PickupDate = @event.PickupDate,
                         Name = @event.Settings != null ? @event.Settings.Name : null
                     });
@@ -193,6 +203,8 @@ namespace apcurium.MK.Booking.EventHandlers
                 var details = context.Find<OrderStatusDetail>(@event.SourceId);
                 if (details == null)
                 {
+                    @event.Status.NetworkPairingTimeout = GetNetworkPairingTimeoutIfNecessary(@event.Status, @event.EventDate);
+
                     @event.Status.FareAvailable = fareAvailable;
                     context.Set<OrderStatusDetail>().Add(@event.Status);
                 }
@@ -200,6 +212,8 @@ namespace apcurium.MK.Booking.EventHandlers
                 {
                     if (@event.Status != null) 
                     {
+                        details.NetworkPairingTimeout = GetNetworkPairingTimeoutIfNecessary(@event.Status, @event.EventDate);
+
                         details.IBSStatusId = @event.Status.IBSStatusId;
                         details.DriverInfos = @event.Status.DriverInfos;
                         details.VehicleNumber = @event.Status.VehicleNumber;
@@ -286,6 +300,71 @@ namespace apcurium.MK.Booking.EventHandlers
 
                 context.Save(order);
             }
+        }
+
+        public void Handle(OrderPreparedForNextDispatch @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var details = context.Find<OrderStatusDetail>(@event.SourceId);
+                details.Status = OrderStatus.TimedOut;
+                details.NextDispatchCompanyName = @event.DispatchCompanyName;
+                details.NextDispatchCompanyKey = @event.DispatchCompanyKey;
+
+                context.Save(details);
+            }
+        }
+
+        public void Handle(OrderSwitchedToNextDispatchCompany @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var order = context.Find<OrderDetail>(@event.SourceId);
+                order.Status = (int)OrderStatus.Created;
+                order.IBSOrderId = @event.IBSOrderId;
+                order.CompanyKey = @event.CompanyKey;
+                order.CompanyName = @event.CompanyName;
+
+                var details = context.Find<OrderStatusDetail>(@event.SourceId);
+                details.Status = OrderStatus.Created;
+                details.IBSStatusId = null;             //set it to null to trigger an update in OrderStatusUpdater
+                details.IBSStatusDescription = string.Format(_resources.Get("OrderStatus_wosWAITINGRoaming", order.ClientLanguageCode), @event.CompanyName);
+                details.IBSOrderId = @event.IBSOrderId;
+                details.CompanyKey = @event.CompanyKey;
+                details.CompanyName = @event.CompanyName;
+                details.NextDispatchCompanyKey = null;
+                details.NextDispatchCompanyName = null;
+                details.NetworkPairingTimeout = null;
+
+                context.SaveChanges();
+            }
+        }
+
+        public void Handle(DispatchCompanySwitchIgnored @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var details = context.Find<OrderStatusDetail>(@event.SourceId);
+                details.IgnoreDispatchCompanySwitch = true;
+                details.Status = OrderStatus.Created;
+                details.NextDispatchCompanyKey = null;
+                details.NextDispatchCompanyName = null;
+
+                context.Save(details);
+            }
+        }
+
+        private DateTime? GetNetworkPairingTimeoutIfNecessary(OrderStatusDetail details, DateTime eventDate)
+        {
+            if (details.IBSStatusId.SoftEqual(VehicleStatuses.Common.Waiting)
+                            && !details.NetworkPairingTimeout.HasValue
+                            && _serverSettings.ServerData.Network.Enabled)
+            {
+                return !details.CompanyKey.HasValue()
+                    ? eventDate.AddSeconds(_serverSettings.ServerData.Network.PrimaryOrderTimeout)
+                    : eventDate.AddSeconds(_serverSettings.ServerData.Network.SecondaryOrderTimeout);
+            }
+            return null;
         }
     }
 }

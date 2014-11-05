@@ -12,11 +12,8 @@ namespace apcurium.MK.Booking.Domain
 {
     public class CreditCardPayment : EventSourced
     {
-        private decimal _amount;
         private bool _isCaptured;
-        private decimal _meter;
         private Guid _orderId;
-        private decimal _tip;
         private string _transactionId;
 
         protected CreditCardPayment(Guid id)
@@ -47,11 +44,11 @@ namespace apcurium.MK.Booking.Domain
                 Meter = meter,
                 Tip = tip,
                 CardToken = cardToken,
-                Provider = provider,
+                Provider = provider
             });
         }
 
-        public void Capture(PaymentProvider provider, string authorizationCode)
+        public void Capture(PaymentProvider provider, decimal amount, decimal meterAmount, decimal tipAmount, string authorizationCode, bool isNoShowFee)
         {
             if (_isCaptured)
             {
@@ -63,10 +60,11 @@ namespace apcurium.MK.Booking.Domain
                 OrderId = _orderId,
                 TransactionId = _transactionId,
                 AuthorizationCode = authorizationCode,
-                Amount = _amount,
-                Meter = _meter,
-                Tip = _tip,
-                Provider = provider
+                Amount = amount,
+                Meter = meterAmount,
+                Tip = tipAmount,
+                Provider = provider,
+                IsNoShowFee = isNoShowFee
             });
         }
 
@@ -82,9 +80,6 @@ namespace apcurium.MK.Booking.Domain
         {
             _orderId = obj.OrderId;
             _transactionId = obj.TransactionId;
-            _amount = obj.Amount;
-            _meter = obj.Meter;
-            _tip = obj.Tip;
         }
 
         private void OnCreditCardPaymentCaptured(CreditCardPaymentCaptured obj)

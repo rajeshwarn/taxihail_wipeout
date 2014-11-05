@@ -227,5 +227,62 @@ namespace apcurium.MK.Booking.Test.OrderFixture
 
             _sut.ThenHasSingle<OrderRemovedFromHistory>();
         }
+
+        [Test]
+        public void when_order_timed_out()
+        {
+            _sut.When(new NotifyOrderTimedOut
+            {
+                OrderId = _orderId
+            });
+
+            _sut.ThenHasSingle<OrderTimedOut>();
+        }
+
+        [Test]
+        public void when_order_prepared_for_next_dispatch()
+        {
+            _sut.When(new PrepareOrderForNextDispatch
+            {
+                OrderId = _orderId,
+                DispatchCompanyName = "Kukai Foundation",
+                DispatchCompanyKey = "123456"
+            });
+
+            var @event = _sut.ThenHasSingle<OrderPreparedForNextDispatch>();
+            Assert.AreEqual(_orderId, @event.SourceId);
+            Assert.AreEqual("Kukai Foundation", @event.DispatchCompanyName);
+            Assert.AreEqual("123456", @event.DispatchCompanyKey);
+        }
+
+        [Test]
+        public void when_order_switched_to_next_dispatch_company()
+        {
+            _sut.When(new SwitchOrderToNextDispatchCompany
+            {
+                OrderId = _orderId,
+                IBSOrderId = 67865,
+                CompanyKey = "x2s42",
+                CompanyName = "Vector Industries"
+            });
+
+            var @event = _sut.ThenHasSingle<OrderSwitchedToNextDispatchCompany>();
+            Assert.AreEqual(_orderId, @event.SourceId);
+            Assert.AreEqual(67865, @event.IBSOrderId);
+            Assert.AreEqual("x2s42", @event.CompanyKey);
+            Assert.AreEqual("Vector Industries", @event.CompanyName);
+        }
+
+        [Test]
+        public void when_dispatch_company_switch_ignored()
+        {
+            _sut.When(new IgnoreDispatchCompanySwitch
+            {
+                OrderId = _orderId
+            });
+
+            var @event = _sut.ThenHasSingle<DispatchCompanySwitchIgnored>();
+            Assert.AreEqual(_orderId, @event.SourceId);
+        }
     }
 }

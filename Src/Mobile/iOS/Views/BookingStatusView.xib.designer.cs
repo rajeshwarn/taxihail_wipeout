@@ -43,6 +43,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		MonoTouch.UIKit.UILabel lblColor { get; set; }
 
 		[Outlet]
+		MonoTouch.UIKit.UILabel lblCompany { get; set; }
+
+		[Outlet]
 		MonoTouch.UIKit.UILabel lblConfirmation { get; set; }
 
 		[Outlet]
@@ -79,6 +82,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		MonoTouch.UIKit.UILabel txtColor { get; set; }
 
 		[Outlet]
+		MonoTouch.UIKit.UILabel txtCompany { get; set; }
+
+		[Outlet]
 		MonoTouch.UIKit.UILabel txtDriver { get; set; }
 
 		[Outlet]
@@ -101,6 +107,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			if (bottomBar != null) {
 				bottomBar.Dispose ();
 				bottomBar = null;
+			}
+
+			if (txtCompany != null) {
+				txtCompany.Dispose ();
+				txtCompany = null;
+			}
+
+			if (lblCompany != null) {
+				lblCompany.Dispose ();
+				lblCompany = null;
 			}
 
 			if (btnCall != null) {

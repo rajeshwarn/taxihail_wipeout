@@ -97,6 +97,9 @@
             view.on('cancel', _.once(function(){
                 events.trigger('cancel', view);
             }));
+            view.on('always', _.once(function () {
+                events.trigger('always', view);
+            }));
             return events;
         },
 

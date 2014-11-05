@@ -1,36 +1,32 @@
-﻿#region
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using apcurium.MK.Common.Configuration;
-using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Enumeration;
 using Newtonsoft.Json;
 using PushSharp;
 using PushSharp.Android;
 using PushSharp.Apple;
 using PushSharp.Core;
-#endregion
+using ILogger = apcurium.MK.Common.Diagnostic.ILogger;
 
 namespace apcurium.MK.Booking.PushNotifications.Impl
 {
     public class PushNotificationService : IPushNotificationService
     {
-        private readonly IConfigurationManager _configurationManager;
+        private readonly IServerSettings _serverSettings;
         private readonly ILogger _logger;
         private readonly PushBroker _push;
         private bool _started;
 
-        public PushNotificationService(IConfigurationManager configurationManager, ILogger logger)
+        public PushNotificationService(IServerSettings serverSettings, ILogger logger)
         {
-            _configurationManager = configurationManager;
+            _serverSettings = serverSettings;
             _logger = logger;
             _push = new PushBroker();
         }
 
-
-        public void Send(string alert, IDictionary<string, object> data, string deviceToken,
-            PushNotificationServicePlatform platform)
+        public void Send(string alert, IDictionary<string, object> data, string deviceToken, PushNotificationServicePlatform platform)
         {
             EnsureStarted();
 
@@ -56,17 +52,16 @@ namespace apcurium.MK.Booking.PushNotifications.Impl
 #if DEBUG
             const bool production = false;
             var certificatePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory,
-                _configurationManager.GetSetting("APNS.DevelopmentCertificatePath"));
+                _serverSettings.ServerData.APNS.DevelopmentCertificatePath);
 #else
             const bool production = true;
             var certificatePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, 
-                _configurationManager.GetSetting("APNS.ProductionCertificatePath"));
+                _serverSettings.ServerData.APNS.ProductionCertificatePath);
 #endif
             // Push notifications
-            var test = _configurationManager.GetSetting("GCM.SenderId");
-            var apiKey = _configurationManager.GetSetting("GCM.APIKey");
-            var androidSettings = new GcmPushChannelSettings(test, apiKey,
-                _configurationManager.GetSetting("GCM.PackageName"));
+            var test = _serverSettings.ServerData.GCM.SenderId;
+            var apiKey = _serverSettings.ServerData.GCM.APIKey;
+            var androidSettings = new GcmPushChannelSettings(test, apiKey, _serverSettings.ServerData.GCM.PackageName);
 
             //Wire up the events
             _push.OnDeviceSubscriptionExpired += OnDeviceSubscriptionExpired;
@@ -81,8 +76,7 @@ namespace apcurium.MK.Booking.PushNotifications.Impl
 
             // Apple settings placed next for development purpose. (Crashing the method when certificate is missing.)
             var appleCert = File.ReadAllBytes(certificatePath);
-            var appleSettings = new ApplePushChannelSettings(production, appleCert,
-                _configurationManager.GetSetting("APNS.CertificatePassword"));
+            var appleSettings = new ApplePushChannelSettings(production, appleCert, _serverSettings.ServerData.APNS.CertificatePassword);
             _push.RegisterAppleService(appleSettings);
         }
 
@@ -103,6 +97,7 @@ namespace apcurium.MK.Booking.PushNotifications.Impl
                 .ForDeviceToken(deviceToken)
                 .WithAlert(alert)
                 .WithSound("default");
+
             foreach (var key in data.Keys)
             {
                 notification.WithCustomItem(key, new[] {data[key]});

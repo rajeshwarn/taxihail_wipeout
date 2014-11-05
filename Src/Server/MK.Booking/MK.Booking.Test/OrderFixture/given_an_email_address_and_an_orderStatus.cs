@@ -31,7 +31,6 @@ namespace apcurium.MK.Booking.Test.OrderFixture
                 TemplateServiceMock.Object,
                 EmailSenderMock.Object,
                 ConfigurationManager,
-                ConfigurationManager,
                 new ConfigurationDao(() => new ConfigurationDbContext(DbName)),
                 new OrderDao(() => new BookingDbContext(DbName)), 
                 new StaticMap(),

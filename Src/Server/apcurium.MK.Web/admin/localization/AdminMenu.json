@@ -2,7 +2,7 @@
 	"Address Management" : "Address Management",
 	"Default favorite addresses" : "Default favorite addresses",
 	"Popular addresses" : "Popular addresses",
-	"User Management" : "User Management",
+    "User Management": "User Management",
 	"Test Notifications" : "Test Notifications",
 	"Terms and Conditions" : "Terms and Conditions",
 	"Grant access admin" : "Grant access admin",
@@ -17,7 +17,9 @@
 	"ExportAccounts" : "Accounts",
 	"ExportOrders" : "Orders",
 	"Version" : "Version",
-	"Signup" : "Signup",
+    "Signup": "Signup",
+    "TaxiHail Network": "TaxiHail Network",
+    "Configure": "Configure"
 	
 
 }

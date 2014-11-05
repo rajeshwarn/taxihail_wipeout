@@ -1,15 +1,14 @@
 ﻿using apcurium.MK.Booking.Api.Client;
 using apcurium.MK.Booking.Api.Client.Payments.CmtPayments;
-using apcurium.MK.Booking.Api.Services.Payment;
 using apcurium.MK.Booking.EventHandlers.Integration;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Services;
+using apcurium.MK.Booking.Services.Impl;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Enumeration;
-using apcurium.MK.Common.IoC;
 using Infrastructure.Messaging;
 using Microsoft.Practices.Unity;
 using NUnit.Framework;
@@ -49,9 +48,9 @@ namespace apcurium.MK.Web.Tests
             var ibsOrderService = UnityServiceLocator.Instance.Resolve<IIbsOrderService>();
             var accountDao = UnityServiceLocator.Instance.Resolve<IAccountDao>();
             var orderPaymentDao = UnityServiceLocator.Instance.Resolve<IOrderPaymentDao>();
-            var configManager = UnityServiceLocator.Instance.Resolve<IConfigurationManager>();
+            var serverSettings = UnityServiceLocator.Instance.Resolve<IServerSettings>();
             var pairingService = UnityServiceLocator.Instance.Resolve<IPairingService>();
-            return new CmtPaymentService(commandBus, orderDao, logger, ibsOrderService, accountDao, orderPaymentDao, configManager, pairingService);
+            return new CmtPaymentService(commandBus, orderDao, logger, ibsOrderService, accountDao, orderPaymentDao, serverSettings, pairingService);
         }
     }
 }

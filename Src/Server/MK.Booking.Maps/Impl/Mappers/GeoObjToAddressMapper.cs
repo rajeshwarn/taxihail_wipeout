@@ -74,7 +74,7 @@ namespace apcurium.MK.Booking.Maps.Impl.Mappers
                     address.StreetNumber);
             }
 
-            return address;
+            return address; 
         }
 
         private string AddLeadingZeroIfSingleNumber(string val)

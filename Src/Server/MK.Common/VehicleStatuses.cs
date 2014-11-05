@@ -2,9 +2,10 @@
 {
     public class VehicleStatuses
     {
-        public static string[] DoneStatuses = {Common.Done};
-        public static string[] CancelStatuses = {Common.Cancelled, Common.CancelledDone, Unknown.None, Common.NoShow};
-        public static string[] ShowOnMapStatuses = {Common.Assigned, Common.Arrived, Common.Loaded};
+        public static string[] DoneStatuses = { Common.Done };
+        public static string[] CancelStatuses = { Common.Cancelled, Common.CancelledDone, Unknown.None, Common.NoShow };
+        public static string[] ShowOnMapStatuses = { Common.Assigned, Common.Arrived, Common.Loaded };
+        public static string[] LogVehiclePositionForOrderStatuses = { Common.Arrived, Common.Loaded };
         public static string[] CompletedStatuses = { Common.Cancelled, Common.CancelledDone, Unknown.None, Common.NoShow, Common.Done };
 
         public class Addresses

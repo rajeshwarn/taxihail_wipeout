@@ -12,5 +12,7 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
     public class ReferenceDataRequest : BaseDto
     {
         public bool WithoutFiltering { get; set; }
+
+        public string CompanyKey { get; set; }
     }
 }

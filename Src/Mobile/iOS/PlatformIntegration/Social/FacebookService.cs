@@ -4,46 +4,56 @@ using MonoTouch.Foundation;
 using System.Threading.Tasks;
 using MonoTouch.FacebookConnect;
 using apcurium.MK.Common.Configuration;
+using Cirrious.CrossCore;
+using apcurium.MK.Booking.Mobile.Client.Diagnostics;
 
 namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration.Social
 {
 	public class FacebookService: IFacebookService
     {
-		private readonly IAppSettings _settings;
-
-		public FacebookService( IAppSettings settings )
-		{
-			_settings = settings;
-		}
+        private string _appId;
 
 		public void Init()
 		{
+            try
+            {
+                _appId = Mvx.Resolve<IAppSettings>().Data.FacebookAppId;
 
-			if (_settings.Data.FacebookEnabled) 
-			{
+                FBSettings.DefaultAppID = _appId;
+                FBSettings.DefaultUrlSchemeSuffix = Mvx.Resolve<IAppSettings>().Data.TaxiHail.ApplicationName.ToLower ().Replace (" ", string.Empty);
 
-				FBSettings.DefaultAppID = _settings.Data.FacebookAppId;
-				FBSettings.DefaultUrlSchemeSuffix = _settings.Data.ApplicationName.ToLower ().Replace (" ", string.Empty);
+                if (FBSession.ActiveSession.State == FBSessionState.CreatedTokenLoaded) 
+                {
+                    // If there's one, just open the session silently
+                    FBSession.OpenActiveSession (new[] { "public_profile", "email" },
+                        allowLoginUI: false,
+                        completion: (session, status, error) => {});
+                }                   
 
-				if (FBSession.ActiveSession.State == FBSessionState.CreatedTokenLoaded) {
-					// If there's one, just open the session silently
-					FBSession.OpenActiveSession (new[] { "public_profile", "email" },
-						allowLoginUI: false,
-						completion: (session, status, error) => {
-						});
-				}					
-
-			}
+                FBAppCall.HandleDidBecomeActive();
+            }
+            catch(Exception ex)
+            {
+                Logger.LogMessage("Facebook Init failed");
+                Logger.LogError(ex);
+            }
 		}
 
 		public void PublishInstall()
 		{
-			FBSettings.PublishInstall (_settings.Data.FacebookAppId);
+            try
+            {
+                FBSettings.PublishInstall (_appId);
+            }
+            catch(Exception ex)
+            {
+                Logger.LogMessage("Facebook PublishInstall failed");
+                Logger.LogError(ex);
+            }
 		}
 
 		public Task Connect()
 		{
-
 			// If the session state is any of the two "open" states when the button is clicked
 			if (FBSession.ActiveSession.State == FBSessionState.Open
 				|| FBSession.ActiveSession.State == FBSessionState.OpenTokenExtended)
@@ -91,7 +101,6 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration.Social
 			if (FBSession.ActiveSession.State == FBSessionState.Open
 				|| FBSession.ActiveSession.State == FBSessionState.OpenTokenExtended)
 			{
-
 				// Close the session and remove the access token from the cache
 				// The session state handler (in the app delegate) will be called automatically
 				FBSession.ActiveSession.CloseAndClearTokenInformation();
@@ -103,19 +112,18 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration.Social
 			var tcs = new TaskCompletionSource<FacebookUserInfo>();
 			FBRequestConnection.GetMe((connection, result, error) =>
 			{
-					if(error == null)
-					{
-						var graph = (FBGraphObject)result;
-						tcs.TrySetResult(FacebookUserInfo.CreateFrom(graph));
-					}
-					else
-					{
-						tcs.SetException(new NSErrorException(error));
-					}
+				if(error == null)
+				{
+					var graph = (FBGraphObject)result;
+					tcs.TrySetResult(FacebookUserInfo.CreateFrom(graph));
+				}
+				else
+				{
+					tcs.SetException(new NSErrorException(error));
+				}
 			});
 			return tcs.Task;
 		}
-
     }
 }
 

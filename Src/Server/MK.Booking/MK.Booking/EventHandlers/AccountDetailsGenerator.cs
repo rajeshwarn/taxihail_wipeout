@@ -9,6 +9,7 @@ using apcurium.MK.Booking.Security;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
+using apcurium.MK.Common.Extensions;
 using Infrastructure.Messaging.Handling;
 
 #endregion
@@ -27,14 +28,15 @@ namespace apcurium.MK.Booking.EventHandlers
         IEventHandler<PaymentProfileUpdated>,
         IEventHandler<CreditCardAdded>,
         IEventHandler<CreditCardRemoved>,
-        IEventHandler<AllCreditCardsRemoved>
+        IEventHandler<AllCreditCardsRemoved>,
+        IEventHandler<AccountLinkedToIbs>
     {
-        private readonly IConfigurationManager _configurationManager;
+        private readonly IServerSettings _serverSettings;
         private readonly Func<BookingDbContext> _contextFactory;
 
-        public AccountDetailsGenerator(Func<BookingDbContext> contextFactory, IConfigurationManager configurationManager)
+        public AccountDetailsGenerator(Func<BookingDbContext> contextFactory, IServerSettings serverSettings)
         {
-            _configurationManager = configurationManager;
+            _serverSettings = serverSettings;
             _contextFactory = contextFactory;
         }
 
@@ -104,12 +106,11 @@ namespace apcurium.MK.Booking.EventHandlers
                     account.Roles |= (int) Roles.Admin;
                 }
 
-                var nbPassenger = int.Parse(_configurationManager.GetSetting("DefaultBookingSettings.NbPassenger"));
                 account.Settings = new BookingSettings
                 {
                     Name = account.Name,
                     NumberOfTaxi = 1,
-                    Passengers = nbPassenger,
+                    Passengers = _serverSettings.ServerData.DefaultBookingSettings.NbPassenger,
                     Phone = @event.Phone,
                 };
 
@@ -157,25 +158,20 @@ namespace apcurium.MK.Booking.EventHandlers
                 settings.ProviderId = @event.ProviderId;
                 settings.VehicleTypeId = @event.VehicleTypeId;
 
-                if (settings.ChargeTypeId ==
-                    ParseToNullable(_configurationManager.GetSetting("DefaultBookingSettings.ChargeTypeId")))
+                if (settings.ChargeTypeId == _serverSettings.ServerData.DefaultBookingSettings.ChargeTypeId)
                 {
                     settings.ChargeTypeId = null;
                 }
 
-
-                if (settings.VehicleTypeId ==
-                    ParseToNullable(_configurationManager.GetSetting("DefaultBookingSettings.VehicleTypeId")))
+                if (settings.VehicleTypeId == _serverSettings.ServerData.DefaultBookingSettings.VehicleTypeId)
                 {
                     settings.VehicleTypeId = null;
                 }
 
-                if (settings.ProviderId ==
-                    ParseToNullable(_configurationManager.GetSetting("DefaultBookingSettings.ProviderId")))
+                if (settings.ProviderId == _serverSettings.ServerData.DefaultBookingSettings.ProviderId)
                 {
                     settings.ProviderId = null;
                 }
-
 
                 settings.NumberOfTaxi = @event.NumberOfTaxi;
                 settings.Passengers = @event.Passengers;
@@ -245,6 +241,33 @@ namespace apcurium.MK.Booking.EventHandlers
                 account.DefaultCreditCard = null;
                 account.Settings.ChargeTypeId = ChargeTypes.PaymentInCar.Id;
                 context.Save(account);
+            }
+        }
+
+        public void Handle(AccountLinkedToIbs @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                if (@event.CompanyKey.HasValue())
+                {
+                    var ibsAccountLink = 
+                        context.Query<AccountIbsDetail>().FirstOrDefault(x => x.AccountId == @event.SourceId && x.CompanyKey == @event.CompanyKey) 
+                            ?? new AccountIbsDetail
+                               {
+                                   AccountId = @event.SourceId,
+                                   CompanyKey = @event.CompanyKey
+                               };
+
+                    ibsAccountLink.IBSAccountId = @event.IbsAccountId;
+
+                    context.Save(ibsAccountLink);
+                }
+                else
+                {
+                    var account = context.Find<AccountDetail>(@event.SourceId);
+                    account.IBSAccountId = @event.IbsAccountId;
+                    context.Save(account);
+                }
             }
         }
     }

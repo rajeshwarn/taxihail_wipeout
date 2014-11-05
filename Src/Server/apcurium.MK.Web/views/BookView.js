@@ -22,9 +22,9 @@
             // ===== Ride Estimate & ETA =====
 
             // Validate addresses + Only update ride estimate & eta if enabled
-                this.model.on('change:pickupAddress change:dropOffAddress', function (model, value) {
-                    this.validateOrderAndRefreshEstimate();
-                }, this);
+            this.model.on('change:pickupAddress change:dropOffAddress', function (model, value) {
+                this.validateOrderAndRefreshEstimate();
+            }, this);
             
             TaxiHail.parameters.isEtaEnabled &&
                 this.model.on('change:pickupAddress', function (model, value) {
@@ -219,19 +219,21 @@
                                 .find('.fare')
                                 .text('--');
                             this.model.set({ 'estimate': '' });
-
                         } else {
+
                             if (!TaxiHail.parameters.isDestinationRequired
                                 || (TaxiHail.parameters.isDestinationRequired && this.model.isValidAddress('dropOffAddress'))) {
+
+
 
                                 this.$('.buttons .btn').removeClass('disabled');
                                 this.$('.buttons .btn').removeAttr('disabled');
                             }
-
+                           
                             if (TaxiHail.parameters.isEstimateEnabled) {
                                 this.actualizeEstimate();
                             }
-                        }
+                        }                        
                     }, this));
         },
         

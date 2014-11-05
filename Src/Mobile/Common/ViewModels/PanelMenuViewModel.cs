@@ -41,7 +41,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		public async Task Start()
 		{
-			var paymentSettings = _paymentService.GetPaymentSettings();
+			// Load cached payment settings
+			var paymentSettings = await _paymentService.GetPaymentSettings();
 			IsPayInTaxiEnabled = paymentSettings.IsPayInTaxiEnabled;
 
 			// Load cached notification settings

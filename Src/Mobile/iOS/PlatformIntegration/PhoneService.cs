@@ -63,11 +63,11 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
             
             var mailComposer = new MFMailComposeViewController ();
 
-            var errorLogPath = Path.Combine (Environment.GetFolderPath (Environment.SpecialFolder.MyDocuments), "..", "Library", "errorlog.txt");
- 
+            var errorLogPath = _logger.GetErrorLogPath();
             if (File.Exists (errorLogPath))
             {
                 mailComposer.AddAttachmentData (NSData.FromFile (errorLogPath), "text", "errorlog.txt");
+                _logger.FlushNextWrite();
             }
 
             mailComposer.SetToRecipients (new [] { supportEmail  });
@@ -83,11 +83,6 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 
                 uiViewController.DismissViewController(true, () => { });
                 _modalHost.NativeModalViewControllerDisappearedOnItsOwn();
-
-                if (File.Exists (errorLogPath))
-                {
-                    File.Delete (errorLogPath);
-                }
             };
             _modalHost.PresentModalViewController(mailComposer, true);
         }
