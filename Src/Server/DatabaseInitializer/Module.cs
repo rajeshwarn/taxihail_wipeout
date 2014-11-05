@@ -99,14 +99,17 @@ namespace DatabaseInitializer
         private static void RegisterEventHandlers(IUnityContainer unityContainer)
         {
             var eventHandlerRegistry = unityContainer.Resolve<IEventHandlerRegistry>();
+
             // Filter out Integration Event Handlers
             // They should never replay events
-            var eventHandlers = unityContainer.ResolveAll<IEventHandler>()
-                .Where(x => !(x is IIntegrationEventHandler))
+            var eventHandlerRegistrations = unityContainer.Registrations
+                .Where(x => x.RegisteredType == typeof(IEventHandler) 
+                        && !x.MappedToType.GetInterfaces().Contains(typeof(IIntegrationEventHandler)))
                 .ToArray();
 
-            foreach (var eventHandler in eventHandlers)
+            foreach (var eventHandlerRegistration in eventHandlerRegistrations)
             {
+                var eventHandler = (IEventHandler) unityContainer.Resolve(eventHandlerRegistration.MappedToType);
                 eventHandlerRegistry.Register(eventHandler);
             }
         }

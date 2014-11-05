@@ -181,9 +181,10 @@ namespace apcurium.MK.Booking.Services.Impl
 
                 if (result.IsSuccess())
                 {
+                    var paymentId = Guid.NewGuid();
                     _commandBus.Send(new InitiateCreditCardPayment
                     {
-                        PaymentId = orderId,
+                        PaymentId = paymentId,
                         Amount = 0,
                         Meter = 0,
                         Tip = 0,
