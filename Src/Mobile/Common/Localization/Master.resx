@@ -781,7 +781,7 @@
     <value>Cannot get status. Please call provider.</value>
   </data>
   <data name="UpdateBookingSettingsInvalidDataTitle" xml:space="preserve">
-    <value>Invalid booking settings info.</value>
+    <value>Invalid booking settings info</value>
   </data>
   <data name="UpdateBookingSettingsEmptyField" xml:space="preserve">
     <value>The data is invalid, all the fields are required.</value>
@@ -1718,5 +1718,8 @@
   </data>
   <data name="UpdateBookingSettingsEmptyAccount" xml:space="preserve">
     <value>Account number cannot be empty when Charge Type is set to Charge Account</value>
+  </data>
+  <data name="UpdateBookingSettingsInvalidAccount" xml:space="preserve">
+    <value>The account number that was entered doesn't exist</value>
   </data>
 </root>

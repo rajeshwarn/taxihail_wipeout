@@ -1731,4 +1731,7 @@
   <data name="UpdateBookingSettingsEmptyAccount" xml:space="preserve">
     <value>Le numéro de compte de peut être vide lorsque le mode de paiement sélectionné est Compte</value>
   </data>
+  <data name="UpdateBookingSettingsInvalidAccount" xml:space="preserve">
+    <value>Le numéro de compte saisi n'existe pas</value>
+  </data>
 </root>
