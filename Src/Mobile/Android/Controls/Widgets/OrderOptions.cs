@@ -41,23 +41,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
         void InitializeBinding()
 		{
-			ViewPickup.AddressUpdated = (streetNumber, fullAddress) => {
-				ViewModel.PickupAddress.StreetNumber = streetNumber;
-				ViewModel.PickupAddress.FullAddress = fullAddress;
-
+			ViewPickup.AddressUpdated = streetNumber => {
+				ViewModel.PickupAddress.ChangeStreetNumber(streetNumber);
 				ViewModel.SetAddress.Execute (ViewModel.PickupAddress);
 			};
 
-			ViewDestination.AddressUpdated = (streetNumber, fullAddress) => {
-				ViewModel.DestinationAddress.StreetNumber = streetNumber;
-				ViewModel.DestinationAddress.FullAddress = fullAddress;
-
+			ViewDestination.AddressUpdated = streetNumber => {
+				ViewModel.DestinationAddress.ChangeStreetNumber(streetNumber);
 				ViewModel.SetAddress.Execute (ViewModel.DestinationAddress);
 			};
 
-			ViewVehicleType.VehicleSelected = (vehicleType) => {
-				ViewModel.SetVehicleType.Execute (vehicleType);
-			};
+			ViewVehicleType.VehicleSelected = vehicleType => ViewModel.SetVehicleType.Execute (vehicleType);
 
 			var set = this.CreateBindingSet<OrderOptions, OrderOptionsViewModel> ();
 

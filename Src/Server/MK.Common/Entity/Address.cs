@@ -80,6 +80,12 @@ namespace apcurium.MK.Common.Entity
             return DisplayAddress;
         }
 
+        public void ChangeStreetNumber(string newStreetNumber)
+        {
+            FullAddress = FullAddress.Replace(StreetNumber, newStreetNumber);
+            StreetNumber = newStreetNumber;
+        }
+
         /// <summary>
         ///     Returns a MemberwiseClone of the Address
         /// </summary>

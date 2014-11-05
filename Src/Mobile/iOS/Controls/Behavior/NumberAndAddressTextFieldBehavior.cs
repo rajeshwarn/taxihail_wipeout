@@ -6,15 +6,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Behavior
 {
     public class NumberAndAddressTextFieldBehavior
     {
-        public static void ApplyTo(UITextField address, UITextField number, Action<string,string> addressUpdated)
+        public static void ApplyTo(UITextField address, UITextField number, Action<string> addressUpdated)
         {
             number.Text = "";
             number.EditingDidBegin += (s, e) => FocusOnNumber(number, address);
             number.EditingDidEnd += (sender, e) => {
                 var newFullAddress = number.Text + " " + address.Text.ToSafeString().Trim();
-                if ( addressUpdated != null)
+                if (addressUpdated != null)
                 {
-                    addressUpdated( number.Text, newFullAddress );
+                    addressUpdated(number.Text);
                 }
                 address.Text = newFullAddress;
                 number.Text = "";

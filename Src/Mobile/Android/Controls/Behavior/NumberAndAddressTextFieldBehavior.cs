@@ -8,7 +8,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Behavior
 {
     public class NumberAndAddressTextFieldBehavior
     {
-        public static void ApplyTo(EditText address, EditText number, Action<string,string> addressUpdated)
+        public static void ApplyTo(EditText address, EditText number, Action<string> addressUpdated)
         {
             number.Text = "";
 
@@ -28,8 +28,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Behavior
                 }
                 else
                 {
-                    string newFullAddress = number.Text + " " + address.Text.ToSafeString().Trim();
-                    addressUpdated( number.Text,newFullAddress );
+                    var newFullAddress = number.Text + " " + address.Text.ToSafeString().Trim();
+                    addressUpdated(number.Text);
                     address.Text = newFullAddress;
                     number.Text = "";
                     number.HideKeyboard();
