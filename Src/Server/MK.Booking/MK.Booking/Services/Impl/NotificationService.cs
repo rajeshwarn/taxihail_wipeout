@@ -253,7 +253,10 @@ namespace apcurium.MK.Booking.Services.Impl
                     ? SupportedLanguages.en.ToString()
                     : clientLanguageCode);
 
-            string imageLogoUrl = GetRefreshableImageUrl(GetBaseUrls().LogoImg);
+            var baseUrl = GetBaseUrls();
+
+            _logger.LogMessage("Base Image URL is: ", baseUrl.LogoImg);
+            string imageLogoUrl = GetRefreshableImageUrl(baseUrl.LogoImg);
             _logger.LogMessage("Image URL is: ", imageLogoUrl);
 
             var templateData = new
