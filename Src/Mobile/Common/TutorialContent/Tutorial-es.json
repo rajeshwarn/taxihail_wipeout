@@ -1,0 +1,70 @@
+{ 
+  "Items": [
+    {
+        "Position": "1",
+        "Title": "Bienvenido!",
+        "Text": "Te mostraremos como solicitar un servicio en solo un par de toques.",
+        "ImageUri": "tutorial_screen01"
+    }
+    ,
+    {
+        "Position": "2",
+        "Title": "Afinar la Dirección",
+        "Text": "Toca sobre el signo de número para afinar el número de la dirección",
+        "ImageUri": "tutorial_screen02"
+    }
+    ,
+    {
+        "Position": "3",
+        "Title": "Tarjeta de Crédito en el Perfil",
+        "Text": "Agrega tu tarjeta de crédito para un pago más fácil y rápido.",
+        "ImageUri": "tutorial_screen03",
+    }
+    ,
+    {
+        "Position": "4",
+        "Title": "Reservación a Futuro.",
+        "Text": "Reserva a futuro",
+        "ImageUri": "tutorial_screen04"
+    }
+    ,
+    {
+        "Position": "5",
+        "Title": "Lugares.",
+        "Text": "Agrega Lugares",
+        "ImageUri": "tutorial_screen05"
+    }
+    ,
+    {
+        "Position": "6",
+        "Title": "Historial",
+        "Text": "Recuerda todos tus servicios anteriores, actuales y futuros con tu lista de historial.",
+        "ImageUri": "tutorial_screen06"
+    }
+    ,
+    {
+        "Position": "7",
+        "Title": "Editar Información",
+        "Text": "Modifica tu información",
+        "ImageUri": "tutorial_screen07"
+    }
+    {
+        "Position": "8",
+        "Title": "",
+        "Text": "",
+        "ImageUri":""
+    } ,
+    {
+        "Position": "9",
+        "Title": "",
+        "Text": "",
+        "ImageUri":""
+    },
+    {
+        "Position": "10",
+        "Title": "",
+        "Text": "",
+        "ImageUri":""
+    }                      
+  ]
+}
