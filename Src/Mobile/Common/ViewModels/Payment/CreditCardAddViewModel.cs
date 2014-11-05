@@ -13,6 +13,7 @@ using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
+using ServiceStack.ServiceClient.Web;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 {
@@ -303,7 +304,24 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 					var account = _accountService.CurrentAccount;
 					account.Settings.ChargeTypeId = ChargeTypes.PaymentInCar.Id;
 					account.DefaultCreditCard = null;
-					_accountService.UpdateSettings(account.Settings, null, account.DefaultTipPercent);
+
+                    try
+                    {
+                        _accountService.UpdateSettings(account.Settings, null, account.DefaultTipPercent);
+                    }
+                    catch (WebServiceException ex)
+                    {
+                        switch (ex.ErrorCode)
+                        {
+                            case "AccountCharge_InvalidAccountNumber":
+                                this.Services().Message.ShowMessage(this.Services().Localize["CreditCardErrorTitle"], this.Services().Localize["CreditCardBookingSettingsError"]);
+                                break;
+                            default:
+                                this.Services().Message.ShowMessage(this.Services().Localize["UpdateBookingSettingsInvalidDataTitle"],
+                                    this.Services().Localize["UpdateBookingSettingsGenericError"]);
+                                break;
+                        }
+                    }
                 },
                 this.Services().Localize["Cancel"], () => { });
         }
@@ -353,12 +371,30 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 					var account = _accountService.CurrentAccount;
 					account.Settings.ChargeTypeId = ChargeTypes.CardOnFile.Id;
 					account.DefaultCreditCard = Data.CreditCardId;
-					_accountService.UpdateSettings(account.Settings, Data.CreditCardId, account.DefaultTipPercent);
 
-                    this.Services().Message.ShowMessage(
-                        string.Empty,
-                        this.Services().Localize["CreditCardAdded"],
-                        () => ShowViewModelAndRemoveFromHistory<HomeViewModel>(new { locateUser = bool.TrueString }));
+				    try
+				    {
+				        await _accountService.UpdateSettings(account.Settings, Data.CreditCardId, account.DefaultTipPercent);
+
+				        this.Services().Message.ShowMessage(
+				            string.Empty,
+				            this.Services().Localize["CreditCardAdded"],
+				            () => ShowViewModelAndRemoveFromHistory<HomeViewModel>(new {locateUser = bool.TrueString}));
+				    }
+				    catch (WebServiceException ex)
+				    {
+				        switch (ex.ErrorCode)
+				        {
+				            case "AccountCharge_InvalidAccountNumber":
+                                this.Services().Message.ShowMessage(this.Services().Localize["CreditCardErrorTitle"],
+                                    this.Services().Localize["CreditCardBookingSettingsError"]);
+				                break;
+                            default:
+                                this.Services().Message.ShowMessage(this.Services().Localize["UpdateBookingSettingsInvalidDataTitle"],
+                                    this.Services().Localize["UpdateBookingSettingsGenericError"]);
+				                break;
+				        }
+				    }
 				}
 				else
 				{
