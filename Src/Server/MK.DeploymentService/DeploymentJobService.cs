@@ -280,21 +280,22 @@ namespace MK.DeploymentService
                 iisManager.CommitChanges();
                 Thread.Sleep(2000);
             }
-            if (appPool.State == ObjectState.Started) appPool.Stop();
 
             if (_job.Database)
             {
                 Log("Deploying Database");
                 DeployDataBase(packagesDirectory, companyName);
             }
-
-
+            
             Log("Deploying Server");
             DeployServer(_job.Company.Id, companyName, appPoolName, packagesDirectory, iisManager);
 
             Log("Done Deploying Server");
 
-            appPool.Start();
+            if (appPool.State == ObjectState.Stopped)
+            {
+                appPool.Start();
+            }
         }
 
         private void DeployDataBase(string packagesDirectory, string companyName)

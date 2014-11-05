@@ -21,11 +21,13 @@ using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
+using DatabaseInitializer.Properties;
 using DatabaseInitializer.Services;
 using DatabaseInitializer.Sql;
 using Infrastructure.Messaging;
 using log4net;
 using Microsoft.Practices.Unity;
+using Microsoft.Web.Administration;
 using MK.Common.Configuration;
 using Newtonsoft.Json.Linq;
 using DeploymentServiceTools;
@@ -66,31 +68,17 @@ namespace DatabaseInitializer
             {
                 Console.WriteLine("Creating/updating database for version {0}", CurrentVersion);
 
+                Console.WriteLine("Initializing...");
                 var param = GetParamsFromArgs(args);
-                var connectionString = new ConnectionStringSettings("MkWeb", param.MkWebConnectionString);
-                
+
                 Console.WriteLine("Working..." );
+
+                UnityContainer container;
+                Module module;
 
                 var creatorDb = new DatabaseCreator();
                 var isUpdate = creatorDb.DatabaseExists(param.MasterConnectionString , param.CompanyName);
-                if (isUpdate)
-                {
-                    Console.WriteLine("Updating database...");
-                    var mirrored = creatorDb.IsMirroringSet(param.MasterConnectionString, param.CompanyName);
-                    if (mirrored)
-                    {
-                        Console.WriteLine("Turning off database mirroring...");
-                        creatorDb.TurnOffMirroring(param.MasterConnectionString, param.CompanyName);
-                        Console.WriteLine("Database mirroring turned off.");
-                    }                    
-                }
-                
-                string oldDatabase = null;
-                var container = new UnityContainer();
-                var module = new Module();
-                module.Init(container, connectionString);
-                
-                var serverSettings = container.Resolve<IServerSettings>();
+                IDictionary<string, string> appSettings;
 
                 //for dev company, delete old database to prevent keeping too many databases
                 if (param.CompanyName == LocalDevProjectName && isUpdate)
@@ -106,59 +94,81 @@ namespace DatabaseInitializer
 #endif
                 }
 
+                if (isUpdate)
+                {
+                    Console.WriteLine("Update: Create New Database");
+                    var temporaryDatabaseName = param.CompanyName + "_New";
+                    var connectionStringNewDatabase = new ConnectionStringSettings("MkWeb", string.Format("Data Source=.;Initial Catalog={0};Integrated Security=True; MultipleActiveResultS", temporaryDatabaseName));
+                    
+                    creatorDb.CreateDatabase(param.MasterConnectionString, temporaryDatabaseName, param.SqlInstanceName);
+                    creatorDb.CreateSchemas(connectionStringNewDatabase);
+
+                    creatorDb.CopyEventsAndCacheTables(param.MasterConnectionString, temporaryDatabaseName,
+                        param.CompanyName);
+                    creatorDb.CopyAppStartUpLogTable(param.MasterConnectionString, temporaryDatabaseName,
+                        param.CompanyName);
+                    creatorDb.FixUnorderedEvents(connectionStringNewDatabase.ConnectionString);
+
+                    container = new UnityContainer();
+                    module = new Module();
+                   
+                    module.Init(container, connectionStringNewDatabase);
+
+                    Console.WriteLine("Creating index...");
+                    creatorDb.CreateIndexes(param.MasterConnectionString, param.CompanyName);
+
+                    Console.WriteLine("Migrating events...");
+                    var migrator = container.Resolve<IEventsMigrator>();
+                    migrator.Do();
+
+                    Console.WriteLine("Replaying events...");
+                    var replayService = container.Resolve<IEventsPlayBackService>();
+                    replayService.ReplayAllEvents();
+                    Console.WriteLine("Done playing events...");
+
+                    Console.WriteLine("Stop App Pool to finish Database Migration...");
+                    var iisManager = new ServerManager();
+                    var appPoolName = string.Format(Settings.Default.AppPoolFormat, param.CompanyName); //not sure about that ?
+                    var appPool = iisManager.ApplicationPools.FirstOrDefault(x => x.Name == appPoolName);
+
+                    if (appPool.State == ObjectState.Started)
+                    {
+                        appPool.Stop();
+                    }
+
+                    
+
+                    //var mirrored = creatorDb.IsMirroringSet(param.MasterConnectionString, param.CompanyName);
+                    //if (mirrored)
+                    //{
+                    //    Console.WriteLine("Turning off database mirroring...");
+                    //    creatorDb.TurnOffMirroring(param.MasterConnectionString, param.CompanyName);
+                    //    Console.WriteLine("Database mirroring turned off.");
+                    //}                    
+                }
+                else
+                {
+                    creatorDb.CreateDatabase(param.MasterConnectionString, param.CompanyName, param.SqlInstanceName);
+                    creatorDb.CreateSchemas(new ConnectionStringSettings("MkWeb", param.MkWebConnectionString));
+                    creatorDb.CreateIndexes(param.MasterConnectionString, param.CompanyName);
+                }
+
+                var connectionString = new ConnectionStringSettings("MkWeb", param.MkWebConnectionString);
+                container = new UnityContainer();
+                module = new Module();
+                module.Init(container, connectionString); 
+
+                var serverSettings = container.Resolve<IServerSettings>();
                 var commandBus = container.Resolve<ICommandBus>();
 
-                if (isUpdate)
-                {                    
-                    oldDatabase = creatorDb.RenameDatabase(param.MasterConnectionString, param.CompanyName);
-                }
-               
-                creatorDb.CreateDatabase(param.MasterConnectionString, param.CompanyName, param.SqlInstanceName);
-                creatorDb.CreateSchemas(connectionString);
-
                 Console.WriteLine("Add user for IIS...");
-
-                ////add user for IIS IIS APPPOOL\MyCompany
                 if ((param.CompanyName != LocalDevProjectName) && (connectionString.ConnectionString.ToLower().Contains("integrated security=true")))
                 {
                     creatorDb.AddUserAndRighst(param.MasterConnectionString, connectionString.ConnectionString,
                         "IIS APPPOOL\\" + param.CompanyName, param.CompanyName);
                 }
-
-                // create indexes
-                creatorDb.CreateIndexes(param.MasterConnectionString, param.CompanyName);
-
-                //Copy Domain Events
-                if (isUpdate)
-                {
-                    creatorDb.CopyEventsAndCacheTables(param.MasterConnectionString, oldDatabase, param.CompanyName);
-                    creatorDb.CopyAppStartUpLogTable(param.MasterConnectionString, oldDatabase, param.CompanyName);
-                    creatorDb.FixUnorderedEvents(connectionString.ConnectionString);
-                }
-
                 //Init data
-                var companyIsCreated = container.Resolve<IEventsPlayBackService>().CountEvent("Company") > 0;
-
-                if (!companyIsCreated)
-                {
-                    // Create Default company
-                    commandBus.Send(new CreateCompany
-                    {
-                        CompanyId = AppConstants.CompanyId,
-                        Id = Guid.NewGuid()
-                    });
-                }
-               
-                if (isUpdate)
-                {
-                    Console.WriteLine("Migrating events...");
-                    //migrate events
-                    var migrator = container.Resolve<IEventsMigrator>();
-
-                    migrator.Do();
-                }
-
-                IDictionary<string, string> appSettings = new Dictionary<string, string>();
+                CheckCompanyCreated(container, commandBus);
 
                 if (!isUpdate)
                 {
@@ -166,39 +176,25 @@ namespace DatabaseInitializer
 
                     //Save settings so that next calls to referenceDataService has the IBS Url
                     AddOrUpdateAppSettings(commandBus, appSettings);
-                }
-
-                if (isUpdate)
-                {
-                    Console.WriteLine("Playing events...");
-
-                    //replay events
-                    var replayService = container.Resolve<IEventsPlayBackService>();
-                    replayService.ReplayAllEvents();
-
-                    appSettings = serverSettings.GetSettings();
-
-                    var tariffs = new TariffDao(() => new BookingDbContext(connectionString.ConnectionString));
-                    if (tariffs.GetAll().All(x => x.Type != (int)TariffType.Default))
-                    {
-                        // Default rate does not exist for this company 
-                        CreateDefaultTariff(serverSettings, commandBus);
-                    }
-                    
-                    CheckandMigrateDefaultRules(connectionString, commandBus, appSettings);
-                    Console.WriteLine("Done playing events...");
-
-                    EnsureDefaultAccountsExists(connectionString, commandBus);
-                }
-                else
-                {
-                    // Create default rate for company
-                    CreateDefaultTariff(serverSettings, commandBus);
-                    CheckandMigrateDefaultRules(connectionString, commandBus, appSettings);
 
                     FetchingIbsDefaults(container, commandBus);
 
-                    CreateDefaultAccounts(container, commandBus);                    
+                    CreateDefaultAccounts(container, commandBus);
+                }
+                else
+                {
+                    appSettings = serverSettings.GetSettings();
+                }
+
+                Console.WriteLine("Checking Tariffs, Rules and Accounts...");
+                CheckandMigrateDefaultRules(connectionString, commandBus, appSettings);
+                EnsureDefaultAccountsExists(connectionString, commandBus);
+
+                var tariffs = new TariffDao(() => new BookingDbContext(connectionString.ConnectionString));
+                if (tariffs.GetAll().All(x => x.Type != (int)TariffType.Default))
+                {
+                    // Default rate does not exist for this company 
+                    CreateDefaultTariff(serverSettings, commandBus);
                 }
 
                 // Add or update rating types
@@ -288,6 +284,21 @@ namespace DatabaseInitializer
             }
             return 0;
 // ReSharper restore LocalizableElement
+        }
+
+        private static void CheckCompanyCreated(UnityContainer container, ICommandBus commandBus)
+        {
+            var companyIsCreated = container.Resolve<IEventsPlayBackService>().CountEvent("Company") > 0;
+
+            if (!companyIsCreated)
+            {
+                // Create Default company
+                commandBus.Send(new CreateCompany
+                {
+                    CompanyId = AppConstants.CompanyId,
+                    Id = Guid.NewGuid()
+                });
+            }
         }
 
         private static void UpdateRatings(ICommandBus commandBus, IEnumerable<RatingTypeDetail[]> ratingTypes)
