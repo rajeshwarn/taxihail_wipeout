@@ -254,6 +254,7 @@ namespace apcurium.MK.Booking.Services.Impl
                     : clientLanguageCode);
 
             string imageLogoUrl = GetRefreshableImageUrl(GetBaseUrls().LogoImg);
+            _logger.LogMessage("Image URL is: ", imageLogoUrl);
 
             var templateData = new
             {
@@ -633,12 +634,16 @@ namespace apcurium.MK.Booking.Services.Impl
                         }
 
                         // Append its hash to its URL
+                        _logger.LogMessage("New image url is: ", string.Format("{0}?refresh={1}", imageUrl, sBuilder));
                         return string.Format("{0}?refresh={1}", imageUrl, sBuilder);
                     }
+
+                    _logger.LogMessage("Image is null");
                     return imageUrl;
                 }
                 catch (Exception ex)
                 {
+                    _logger.LogMessage("Exception occured while downloading the image");
                     _logger.LogError(ex);
                     return imageUrl;
                 }
