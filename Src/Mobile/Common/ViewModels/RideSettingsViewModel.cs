@@ -297,12 +297,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 {
 					using (this.Services ().Message.ShowProgress ())
 					{
-					    if (ValidateRideSettings())
-					    {
-					        var creditCard = PaymentPreferences.SelectedCreditCardId == Guid.Empty
-					            ? default(Guid?)
-					            : PaymentPreferences.SelectedCreditCardId;
+                        var creditCard = PaymentPreferences.SelectedCreditCardId == Guid.Empty
+                                ? default(Guid?)
+                                : PaymentPreferences.SelectedCreditCardId;
 
+                        if (await ValidateRideSettings(creditCard))
+					    {
 					        try
 					        {
 					            await _accountService.UpdateSettings(_bookingSettings, creditCard, PaymentPreferences.Tip);
@@ -330,7 +330,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        public bool ValidateRideSettings()
+        public async Task<bool> ValidateRideSettings(Guid? creditCard)
         {
             if (string.IsNullOrEmpty(Name) || string.IsNullOrEmpty(Phone))
             {
@@ -346,6 +346,24 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 this.Services().Message.ShowMessage(this.Services().Localize["UpdateBookingSettingsInvalidDataTitle"], this.Services().Localize["UpdateBookingSettingsEmptyAccount"]);
                 return false;
+            }
+            if (ChargeTypeId == ChargeTypes.Account.Id)
+            {
+                try
+                {
+                    var chargeAccount = await _accountPaymentService.GetAccountCharge(AccountNumber);
+                    if (chargeAccount.UseCardOnFileForPayment && creditCard == default(Guid?))
+                    {
+                        this.Services().Message.ShowMessage(this.Services().Localize["UpdateBookingSettingsInvalidDataTitle"],
+                            this.Services().Localize["UpdateBookingSettingsInvalidCoF"]);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    this.Services().Message.ShowMessage(this.Services().Localize["UpdateBookingSettingsInvalidDataTitle"],
+                        this.Services().Localize["UpdateBookingSettingsInvalidAccount"]);
+                }
+                
             }
 
             return true;
