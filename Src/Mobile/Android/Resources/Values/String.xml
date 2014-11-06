@@ -69,7 +69,7 @@
   <string name="Edit">Edit</string>
   <string name="ServiceErrorDefaultMessage">An error occurred. Please try again.</string>
   <string name="PanelMenuViewSignOutText">Sign Out</string>
-  <string name="UpdateBookingSettingsInvalidDataTitle">Invalid booking settings info.</string>
+  <string name="UpdateBookingSettingsInvalidDataTitle">Invalid booking settings info</string>
   <string name="View_HistoryDetail">Order Details</string>
   <string name="NoAmountSelectedMessage">Please enter the amount</string>
   <string name="CreditCardType">Type of Card</string>
@@ -559,4 +559,9 @@
   <string name="TaxiHailNetworkTimeOutErrorTitle">Error</string>
   <string name="NetworkContactingNextDispatchDescription">Contacting {0} ...</string>
   <string name="TaxiHailNetworkTimeOutPopupAlways">Always Accept</string>
+  <string name="NetworkTimeOutPopupAlways">Always Accept</string>
+  <string name="UpdateBookingSettingsEmptyAccount">Account number cannot be empty when Charge Type is set to Charge Account</string>
+  <string name="UpdateBookingSettingsInvalidAccount">The account number that was entered doesn\'t exist</string>
+  <string name="CreditCardBookingSettingsError">An error occured when updating the booking settings. Please make sure that the account number in your profile is valid and try again.</string>
+  <string name="UpdateBookingSettingsGenericError">An error occured when updating the booking settings</string>
 </resources>
