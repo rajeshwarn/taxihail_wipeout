@@ -135,6 +135,7 @@ namespace apcurium.MK.Booking.IBS.Impl
                 double distance;
                 result.FareEstimate = service.EstimateFare(UserNameApp, PasswordApp, tbook, out fare, out tolls,
                     out distance);
+                
                 result.Distance = distance;
                 result.Tolls = tolls;
             });
