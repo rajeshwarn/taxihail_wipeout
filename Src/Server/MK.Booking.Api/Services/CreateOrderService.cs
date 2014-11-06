@@ -157,16 +157,27 @@ namespace apcurium.MK.Booking.Api.Services
                 throw new HttpError(ErrorCode.CreateOrder_NoFareEstimateAvailable.ToString());
             }
 
-            if (request.Settings.ChargeTypeId.HasValue
-                && request.Settings.ChargeTypeId.Value == ChargeTypes.Account.Id)
-            {
-                ValidateChargeAccountAnswers(request.Settings.AccountNumber, request.QuestionsAndAnswers);
-            }
-
             var chargeTypeKey = ChargeTypes.GetList()
                     .Where(x => x.Id == request.Settings.ChargeTypeId)
                     .Select(x => x.Display)
                     .FirstOrDefault();
+
+            var command = Mapper.Map<Commands.CreateOrder>(request);
+
+            // Payment mode is charge account
+            if (request.Settings.ChargeTypeId.HasValue
+                && request.Settings.ChargeTypeId.Value == ChargeTypes.Account.Id)
+            {
+                ValidateChargeAccountAnswers(request.Settings.AccountNumber, request.QuestionsAndAnswers);
+
+                // Change payment mode to card of file if necessary
+                var accountChargeDetail = _accountChargeDao.FindByAccountNumber(request.Settings.AccountNumber);
+                if (accountChargeDetail.UseCardOnFileForPayment)
+                {
+                    chargeTypeKey = ChargeTypes.CardOnFile.Display;
+                    command.Settings.ChargeTypeId = ChargeTypes.CardOnFile.Id;
+                }
+            }
 
             var chargeTypeIbs = string.Empty;
             var chargeTypeEmail = string.Empty;
@@ -195,9 +206,7 @@ namespace apcurium.MK.Booking.Api.Services
                 return new HttpError(ErrorCode.CreateOrder_CannotCreateInIbs + "_" + Math.Abs(result.Value));
             }
             
-            var command = Mapper.Map<Commands.CreateOrder>(request);
             var emailCommand = Mapper.Map<SendBookingConfirmationEmail>(request);
-
             command.IBSOrderId = emailCommand.IBSOrderId = ibsOrderId.Value;
             command.AccountId = account.Id;
             command.UserAgent = base.Request.UserAgent;

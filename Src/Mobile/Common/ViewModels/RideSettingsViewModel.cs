@@ -358,7 +358,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                             this.Services().Localize["UpdateBookingSettingsInvalidCoF"]);
                     }
                 }
-                catch (Exception ex)
+                catch
                 {
                     this.Services().Message.ShowMessage(this.Services().Localize["UpdateBookingSettingsInvalidDataTitle"],
                         this.Services().Localize["UpdateBookingSettingsInvalidAccount"]);
