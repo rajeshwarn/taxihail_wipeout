@@ -404,7 +404,8 @@ namespace MK.Common.Configuration
         public bool CallDriverUsingProxy { get; protected set; }
         [SendToClient, CustomizableByCompany]
         public string CallDriverUsingProxyUrl { get; protected set; }
-	[SendToClient, CustomizableByCompany]
+
+	    [SendToClient, CustomizableByCompany]
         public int InitialZoomLevel { get; set; }
         [SendToClient, CustomizableByCompany]
         public bool DisableAutomaticZoomOnLocation { get; set; }

@@ -39,7 +39,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public string BookAddress 
 		{
-			get { return _address.BookAddress; }
+			get { return _address.FullAddress; }
         }
 
         public string Apartment 

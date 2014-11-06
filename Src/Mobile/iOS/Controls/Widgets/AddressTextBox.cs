@@ -17,7 +17,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
         public event EventHandler AddressClicked;
 
-        public Action<string,string> AddressUpdated;
+        public Action<string> AddressUpdated;
 
         private FlatTextField StreetNumberTextView { get; set; }
         public FlatTextField AddressTextView { get; set; }
@@ -62,7 +62,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
             AddressButton = new UIButton();
             AddressButton.TouchDown += (sender, e) => {
-                if(!IsReadOnly && AddressClicked!= null)
+                if(!IsReadOnly && AddressClicked != null)
                 {
                     AddressClicked(this, EventArgs.Empty);
                 }
@@ -241,11 +241,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         private void SetBehavior()
         {
             //Order is important
-            NumberAndAddressTextFieldBehavior.ApplyTo(AddressTextView, StreetNumberTextView, (number,full)=> 
+            NumberAndAddressTextFieldBehavior.ApplyTo(AddressTextView, StreetNumberTextView, number => 
                 {
-                    if (AddressUpdated != null )
+                    if (AddressUpdated != null)
                     {
-                        AddressUpdated( number,full );
+                        AddressUpdated(number);
                     }
                 });
 
