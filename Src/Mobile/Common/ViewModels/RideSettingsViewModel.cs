@@ -351,19 +351,21 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 try
                 {
+                    // Validate if the charge account needs to have a card on file to be used
                     var chargeAccount = await _accountPaymentService.GetAccountCharge(AccountNumber);
                     if (chargeAccount.UseCardOnFileForPayment && creditCard == default(Guid?))
                     {
                         this.Services().Message.ShowMessage(this.Services().Localize["UpdateBookingSettingsInvalidDataTitle"],
                             this.Services().Localize["UpdateBookingSettingsInvalidCoF"]);
+                        return false;
                     }
                 }
                 catch
                 {
                     this.Services().Message.ShowMessage(this.Services().Localize["UpdateBookingSettingsInvalidDataTitle"],
                         this.Services().Localize["UpdateBookingSettingsInvalidAccount"]);
+                    return false;
                 }
-                
             }
 
             return true;

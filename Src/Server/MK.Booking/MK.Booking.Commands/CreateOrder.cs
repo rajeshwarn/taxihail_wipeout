@@ -47,6 +47,8 @@ namespace apcurium.MK.Booking.Commands
         public string ClientVersion { get; set; }
 
         public Guid Id { get; private set; }
+
+        public bool IsChargeAccountPaymentWithCardOnFile { get; set; }
         
         public class PaymentInformation
         {

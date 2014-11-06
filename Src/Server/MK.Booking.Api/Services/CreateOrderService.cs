@@ -90,8 +90,9 @@ namespace apcurium.MK.Booking.Api.Services
                 ValidateAppVersion(request.ClientLanguageCode);
             }
 
-            var account = _accountDao.FindById(new Guid(this.GetSession().UserAuthId));
+            var command = Mapper.Map<Commands.CreateOrder>(request);
 
+            var account = _accountDao.FindById(new Guid(this.GetSession().UserAuthId));
             account.IBSAccountId = CreateIbsAccountIfNeeded(account);
 
             // User can still create future order, but we allow only one active Book now order.
@@ -108,10 +109,35 @@ namespace apcurium.MK.Booking.Api.Services
                 }
             }
 
+            var chargeTypeKey = ChargeTypes.GetList()
+                    .Where(x => x.Id == request.Settings.ChargeTypeId)
+                    .Select(x => x.Display)
+                    .FirstOrDefault();
+
+            // Payment mode is card on file
             if (request.Settings.ChargeTypeId.HasValue
                 && request.Settings.ChargeTypeId.Value == ChargeTypes.CardOnFile.Id)
             {
                 ValidateCreditCard(request.Id, account, request.ClientLanguageCode);
+            }
+
+            // Payment mode is charge account (Card on file payment not supported by the web app)
+            if (request.Settings.ChargeTypeId.HasValue
+                && request.Settings.ChargeTypeId.Value == ChargeTypes.Account.Id
+                && !request.FromWebApp)
+            {
+                ValidateChargeAccountAnswers(request.Settings.AccountNumber, request.QuestionsAndAnswers);
+
+                // Change payment mode to card of file if necessary
+                var accountChargeDetail = _accountChargeDao.FindByAccountNumber(request.Settings.AccountNumber);
+                if (accountChargeDetail.UseCardOnFileForPayment)
+                {
+                    ValidateCreditCard(request.Id, account, request.ClientLanguageCode);
+
+                    chargeTypeKey = ChargeTypes.CardOnFile.Display;
+                    command.Settings.ChargeTypeId = ChargeTypes.CardOnFile.Id;
+                    command.IsChargeAccountPaymentWithCardOnFile = true;
+                }
             }
             
             var rule = _ruleCalculator.GetActiveDisableFor(
@@ -157,29 +183,6 @@ namespace apcurium.MK.Booking.Api.Services
                 throw new HttpError(ErrorCode.CreateOrder_NoFareEstimateAvailable.ToString());
             }
 
-            var chargeTypeKey = ChargeTypes.GetList()
-                    .Where(x => x.Id == request.Settings.ChargeTypeId)
-                    .Select(x => x.Display)
-                    .FirstOrDefault();
-
-            var command = Mapper.Map<Commands.CreateOrder>(request);
-
-            // Payment mode is charge account
-            if (request.Settings.ChargeTypeId.HasValue
-                && request.Settings.ChargeTypeId.Value == ChargeTypes.Account.Id)
-            {
-                ValidateChargeAccountAnswers(request.Settings.AccountNumber, request.QuestionsAndAnswers);
-
-                // Change payment mode to card of file if necessary
-                var accountChargeDetail = _accountChargeDao.FindByAccountNumber(request.Settings.AccountNumber);
-                if (accountChargeDetail.UseCardOnFileForPayment)
-                {
-                    chargeTypeKey = ChargeTypes.CardOnFile.Display;
-                    command.Settings.ChargeTypeId = ChargeTypes.CardOnFile.Id;
-                    command.Payment.PayWithCreditCard = true;
-                }
-            }
-
             var chargeTypeIbs = string.Empty;
             var chargeTypeEmail = string.Empty;
             if (chargeTypeKey != null)
@@ -206,7 +209,7 @@ namespace apcurium.MK.Booking.Api.Services
             {
                 return new HttpError(ErrorCode.CreateOrder_CannotCreateInIbs + "_" + Math.Abs(result.Value));
             }
-            
+
             var emailCommand = Mapper.Map<SendBookingConfirmationEmail>(request);
             command.IBSOrderId = emailCommand.IBSOrderId = ibsOrderId.Value;
             command.AccountId = account.Id;
@@ -235,8 +238,9 @@ namespace apcurium.MK.Booking.Api.Services
                 OrderId = command.OrderId,
                 Status = OrderStatus.Created,
                 IBSOrderId =  ibsOrderId,
-                IBSStatusId = "",
+                IBSStatusId = string.Empty,
                 IBSStatusDescription = (string)_resources.Get("OrderStatus_wosWAITING", command.ClientLanguageCode),
+                IsChargeAccountPaymentWithCardOnFile = command.IsChargeAccountPaymentWithCardOnFile
             };
         }
 
