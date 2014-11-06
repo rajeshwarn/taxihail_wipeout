@@ -640,7 +640,11 @@ namespace apcurium.MK.Booking.Services.Impl
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogError(ex);
+                    if (_logger != null)
+                    {
+                        _logger.LogError(ex);
+                    }
+                    
                     return imageUrl;
                 }
             }
