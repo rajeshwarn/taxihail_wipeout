@@ -508,11 +508,15 @@ namespace apcurium.MK.Booking.Api.Services
                 request.Settings.Phone,
                 request.Settings.Passengers,
                 request.Settings.VehicleTypeId,
-                null,
+                null, // null since we don't use the ChargeTypes of ibs anymore
                 note,
                 request.PickupDate.Value,
                 ibsPickupAddress,
                 ibsDropOffAddress,
+                request.Settings.ChargeTypeId == ChargeTypes.Account.Id    // send the account number only if we book using charge account
+                    ? request.Settings.AccountNumber 
+                    : null,
+                null,
                 fare);
 
             return result;
