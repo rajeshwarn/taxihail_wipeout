@@ -31,7 +31,7 @@ namespace apcurium.MK.Booking.Maps.Impl
                     originLat.GetValueOrDefault(), originLng.GetValueOrDefault(),
                     destinationLat.GetValueOrDefault(), destinationLng.GetValueOrDefault(),
                     date);
-            
+
             if (direction.Distance.HasValue)
             {
 				if(direction.Duration.HasValue)
@@ -58,16 +58,6 @@ namespace apcurium.MK.Booking.Maps.Impl
             }
 
             return result;
-        }
-
-        public int? GetDuration(double? originLat, double? originLng, double? destinationLat,
-            double? destinationLng, DateTime? date = default(DateTime?))
-        {
-            var direction = _client.GetDirections(
-                    originLat.GetValueOrDefault(), originLng.GetValueOrDefault(),
-                    destinationLat.GetValueOrDefault(), destinationLng.GetValueOrDefault(),
-                    date);
-            return direction.Duration;
         }
 
         public Direction GetEta(double fromLat, double fromLng, double toLat, double toLng)
