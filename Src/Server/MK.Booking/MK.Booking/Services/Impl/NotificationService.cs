@@ -216,7 +216,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 ApplicationName = _serverSettings.ServerData.TaxiHail.ApplicationName,
                 EmailFontColor = _serverSettings.ServerData.TaxiHail.EmailFontColor,
                 AccentColor = _serverSettings.ServerData.TaxiHail.AccentColor,
-                imageLogoUrl
+                LogoImg = imageLogoUrl
             };
 
             SendEmail(clientEmailAddress, EmailConstant.Template.AccountConfirmation, EmailConstant.Subject.AccountConfirmation, templateData, clientLanguageCode);
@@ -280,7 +280,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 Note = string.IsNullOrWhiteSpace(note) ? "-" : note,
                 Apartment = string.IsNullOrWhiteSpace(pickupAddress.Apartment) ? "-" : pickupAddress.Apartment,
                 RingCode = string.IsNullOrWhiteSpace(pickupAddress.RingCode) ? "-" : pickupAddress.RingCode,
-                imageLogoUrl
+                LogoImg = imageLogoUrl
             };
 
             SendEmail(clientEmailAddress, EmailConstant.Template.BookingConfirmation, EmailConstant.Subject.BookingConfirmation, templateData, clientLanguageCode);
@@ -296,7 +296,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 ApplicationName = _serverSettings.ServerData.TaxiHail.ApplicationName,
                 AccentColor = _serverSettings.ServerData.TaxiHail.AccentColor,
                 EmailFontColor = _serverSettings.ServerData.TaxiHail.EmailFontColor,
-                imageLogoUrl
+                LogoImg = imageLogoUrl
             };
 
             SendEmail(clientEmailAddress, EmailConstant.Template.PasswordReset, EmailConstant.Subject.PasswordReset, templateData, clientLanguageCode);
@@ -401,7 +401,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 BaseUrlImg = baseUrls.BaseUrlAssetsImg,
                 RedDotImg = String.Concat(baseUrls.BaseUrlAssetsImg, "email_red_dot.png"),
                 GreenDotImg = String.Concat(baseUrls.BaseUrlAssetsImg, "email_green_dot.png"),
-                imageLogoUrl
+                LogoImg = imageLogoUrl
             };
 
             SendEmail(clientEmailAddress, EmailConstant.Template.Receipt, EmailConstant.Subject.Receipt, templateData, clientLanguageCode);
