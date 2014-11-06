@@ -29,7 +29,7 @@ namespace apcurium.MK.Booking.Api.Services
         {
             // TODO: Adapt distance format
             var fare = _ibsServiceProvider.Booking().GetFareEstimate(request.PickupLatitude, request.PickupLongitude,
-                request.DropoffLatitude, request.DropoffLongitude);
+                request.DropoffLatitude, request.DropoffLongitude, request.AccountNum, request.CustomerNum, request.WaitTime);
             return fare.FareEstimate != null
                 ? new DirectionInfo
                 {

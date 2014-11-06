@@ -15,13 +15,21 @@
             var dest = this.model.get('dropOffAddress');
             this.showEstimate = TaxiHail.parameters.isEstimateEnabled && pickup && dest;
             this.showEstimateWarning = TaxiHail.parameters.isEstimateWarningEnabled;
+            
+            var accountNumber = null;
+
+            if (this.model.isPayingWithAccountCharge()) {
+                accountNumber = this.model.get('accountNumber');
+            }
+
             if (this.showEstimate) {
                 TaxiHail.directionInfo.getInfo(pickup.latitude,
                     pickup.longitude,
                     dest.latitude,
                     dest.longitude,
                     this.model.get('settings')['vehicleTypeId'],
-                    this.model.get('pickupDate')
+                    this.model.get('pickupDate'),
+                    accountNumber
                     ).done(this.renderResults);
             }
 
@@ -127,8 +135,10 @@
             if (result.noFareEstimate) {
                 this.model.set('estimateDisplay', TaxiHail.localize("NoFareEstimate"));
             } else
-            {
+            if (result.formattedPrice || result.formattedDistance) {
                 this.model.set('estimateDisplay', TaxiHail.localize('Estimate Display').format(result.formattedPrice, "(" + result.formattedDistance + ")"));
+            } else  {
+                this.model.set('estimateDisplay', TaxiHail.localize("NoFareEstimate"));
             }
             this.render();
         },

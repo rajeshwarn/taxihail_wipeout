@@ -105,13 +105,12 @@ namespace apcurium.MK.Booking.IBS.Impl
             return result;
         }
 
-        public IbsFareEstimate GetFareEstimate(double? pickupLat, double? pickupLng, double? dropoffLat,
-            double? dropoffLng)
+        public IbsFareEstimate GetFareEstimate(double? pickupLat, double? pickupLng, double? dropoffLat, double? dropoffLng, string accountNum, int? customerNum, int? waitTime)
         {
             var result = new IbsFareEstimate();
             UseService(service =>
             {
-                var tbook = new TBookOrder_7();
+                var tbook = new TBookOrder_8();
                 if (pickupLat != null
                     && pickupLng != null)
                 {
@@ -130,12 +129,24 @@ namespace apcurium.MK.Booking.IBS.Impl
                         Longitude = (double)dropoffLng
                     };
                 }
+
+                tbook.AccountNum = accountNum;
+
+                if (customerNum.HasValue)
+                {
+                    tbook.CustomerNum = customerNum.Value;
+                }
+
+                if (waitTime.HasValue)
+                {
+                    tbook.WaitTime = waitTime.Value;
+                }
+
                 double fare;
                 double tolls;
                 double distance;
-                result.FareEstimate = service.EstimateFare(UserNameApp, PasswordApp, tbook, out fare, out tolls,
-                    out distance);
-                
+
+                result.FareEstimate = service.EstimateFare_8(UserNameApp, PasswordApp, tbook, out fare, out tolls, out distance);
                 result.Distance = distance;
                 result.Tolls = tolls;
             });
