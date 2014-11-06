@@ -176,6 +176,7 @@ namespace apcurium.MK.Booking.Api.Services
                 {
                     chargeTypeKey = ChargeTypes.CardOnFile.Display;
                     command.Settings.ChargeTypeId = ChargeTypes.CardOnFile.Id;
+                    command.Payment.PayWithCreditCard = true;
                 }
             }
 
