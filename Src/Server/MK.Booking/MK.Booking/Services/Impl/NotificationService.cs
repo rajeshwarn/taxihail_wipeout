@@ -253,11 +253,7 @@ namespace apcurium.MK.Booking.Services.Impl
                     ? SupportedLanguages.en.ToString()
                     : clientLanguageCode);
 
-            var baseUrl = GetBaseUrls();
-
-            _logger.LogMessage("Base Image URL is: ", baseUrl.LogoImg);
-            string imageLogoUrl = GetRefreshableImageUrl(baseUrl.LogoImg);
-            _logger.LogMessage("Image URL is: ", imageLogoUrl);
+            string imageLogoUrl = GetRefreshableImageUrl(GetBaseUrls().LogoImg);
 
             var templateData = new
             {
@@ -363,7 +359,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 : string.Empty;
             var baseUrls = GetBaseUrls();
 
-            string imageLogoUrl = GetRefreshableImageUrl(GetBaseUrls().LogoImg);
+            string imageLogoUrl = GetRefreshableImageUrl(baseUrls.LogoImg);
 
             var templateData = new
             {
@@ -611,7 +607,7 @@ namespace apcurium.MK.Booking.Services.Impl
 
         /// <summary>
         /// This method generates a unique URL that will ensure that the image
-        /// will not be cached be the browser or  email clients if it has changed.
+        /// will not be cached be the browser or email clients if it has changed.
         /// </summary>
         /// <param name="imageUrl">The URL of the image.</param>
         /// <returns>An unique image URL based on the image content.</returns>
@@ -637,16 +633,13 @@ namespace apcurium.MK.Booking.Services.Impl
                         }
 
                         // Append its hash to its URL
-                        _logger.LogMessage("New image url is: ", string.Format("{0}?refresh={1}", imageUrl, sBuilder));
                         return string.Format("{0}?refresh={1}", imageUrl, sBuilder);
                     }
 
-                    _logger.LogMessage("Image is null");
                     return imageUrl;
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogMessage("Exception occured while downloading the image");
                     _logger.LogError(ex);
                     return imageUrl;
                 }
