@@ -17,6 +17,13 @@
                 <input type="text" id="inputAccountName" name="name" value="{{name}}" class='input-block-level'>
             </div>
         </div>
+
+        <div class="control-group">
+          <label class="control-label">{{localize 'Use Card on File for Payment'}}</label>
+          <div class="controls">
+            <input type="checkbox" name="useCardOnFileForPayment" {{#if useCardOnFileForPayment}}checked{{/if}}/>
+          </div>
+        </div>
         
         <br/>
         <h4 style="text-align: left">{{localize "Questions"}}</h4>
