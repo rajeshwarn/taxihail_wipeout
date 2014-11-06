@@ -169,7 +169,7 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
             return Geocode(resource, () => _fallbackGeocoder.GeocodeLocation (latitude, longitude, currentLanguage));
         }
 
-        private GeoAddress[] Geocode(string resource, Func<GeoAddress[]> todo)
+        private GeoAddress[] Geocode(string resource, Func<GeoAddress[]> fallBackAction)
         {
             var client = new JsonServiceClient(MapsServiceUrl);
 
@@ -183,7 +183,7 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
             var result = client.Get<GeoResult>(resource);
 
             if ((result.Status == ResultStatus.OVER_QUERY_LIMIT || result.Status == ResultStatus.REQUEST_DENIED) && _fallbackGeocoder != null) {
-                return todo.Invoke();
+                return fallBackAction.Invoke();
             } else if (result.Status == ResultStatus.OK) {
                 return ConvertGeoResultToAddresses(result);
             } else {

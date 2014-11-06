@@ -59,7 +59,6 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
         private GeoAddress ConvertPlacemarkToAddress (CLPlacemark placemark)
         {       
             var streetNumber = ConvertStreetNumberRangeToSingle(placemark.SubThoroughfare);
-
             var fullAddress = ConvertAddressDictionaryToFullAddress(placemark.AddressDictionary);
 
             // replace corrected street number in the full address
@@ -68,7 +67,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
                 fullAddress = fullAddress.Replace(placemark.SubThoroughfare, streetNumber);
             }
 
-            var t =  new GeoAddress  
+            var geoAddress = new GeoAddress  
             { 
                 StreetNumber = streetNumber,
                 Street = placemark.Thoroughfare,
@@ -80,7 +79,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
                 ZipCode = placemark.PostalCode
             };
 
-            return t;
+            return geoAddress;
         }
 
         private string ConvertStreetNumberRangeToSingle(string subThoroughFare)
