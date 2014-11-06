@@ -100,26 +100,5 @@ namespace apcurium.MK.Common.Configuration.Helpers
             return type.IsGenericType
                 && type.GetGenericTypeDefinition().Equals(typeof(Nullable<>));
         }
-
-        private static string[] SplitOnFirst(this string strVal, string needle)
-        {
-            if (strVal == null)
-            {
-                return new string[0];
-            }
-
-            int length = strVal.IndexOf(needle);
-            if (length != -1)
-            {
-                return new[]
-                {
-                    strVal.Substring(0, length),
-                    strVal.Substring(length + 1)
-                };
-            }
-
-            return new[] { strVal };
-        }
-
     }
 }

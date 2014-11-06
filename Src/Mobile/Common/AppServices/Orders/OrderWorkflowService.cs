@@ -155,7 +155,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		public async Task ValidatePickupAndDestination()
 		{
 			var pickupAddress = await _pickupAddressSubject.Take(1).ToTask();
-			var pickupIsValid = pickupAddress.BookAddress.HasValue()
+			var pickupIsValid = pickupAddress.FullAddress.HasValue()
 				&& pickupAddress.HasValidCoordinate();
 
 			if (!pickupIsValid)
@@ -175,7 +175,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 				}
 
 				var destinationAddress = await _destinationAddressSubject.Take(1).ToTask();
-				var destinationIsValid = destinationAddress.BookAddress.HasValue()
+				var destinationIsValid = destinationAddress.FullAddress.HasValue()
 					&& destinationAddress.HasValidCoordinate();
 
 				if (!destinationIsValid)
