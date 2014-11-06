@@ -262,20 +262,22 @@ namespace apcurium.MK.Booking.IBS.Impl
             var regEx = new Regex(@"\D");
             return regEx.Replace(phone, "");
         }
-        public int? CreateOrder(int? providerId, int accountId, string passengerName, string phone, int nbPassengers,
-            int? vehicleTypeId, int? chargeTypeId, string note, DateTime pickupDateTime, IbsAddress pickup,
-            IbsAddress dropoff, Fare fare = default(Fare))
+
+        public int? CreateOrder(int? providerId, int accountId, string passengerName, string phone, int nbPassengers, int? vehicleTypeId, 
+            int? chargeTypeId, string note, DateTime pickupDateTime, IbsAddress pickup, IbsAddress dropoff, string accountNumber, int? customerNumber, Fare fare = default(Fare))
         {
             Logger.LogMessage("WebService Create Order call : accountID=" + accountId);
             
-            var order = new TBookOrder_7
+            var order = new TBookOrder_8
             {
                 ServiceProviderID = providerId.GetValueOrDefault(),
                 AccountID = accountId,
                 Customer = passengerName,
                 Phone = CleanPhone( phone ),
                 Fare = (double)fare.AmountExclTax,
-                VAT = (double)fare.TaxAmount
+                VAT = (double)fare.TaxAmount,
+                AccountNum = accountNumber,
+                CustomerNum = customerNumber ?? 0 //TODO waiting for MK to know what this is
             };
 
             order.DispByAuto = _ibsSettings.AutoDispatch;
@@ -337,7 +339,7 @@ namespace apcurium.MK.Booking.IBS.Impl
                                   JsonSerializer.SerializeToString(order.DropoffAddress, typeof(TWEBAddress)));
 
 
-                orderId = service.SaveBookOrder_7(UserNameApp, PasswordApp, order);
+                orderId = service.SaveBookOrder_8(UserNameApp, PasswordApp, order);
                 Logger.LogMessage("WebService Create Order, orderid receveid : " + orderId);
             });
             return orderId;
