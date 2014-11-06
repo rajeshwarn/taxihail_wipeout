@@ -4,7 +4,9 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Net;
 using System.Net.Mail;
+using System.Security.Cryptography;
 using System.Text;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Database;
@@ -206,13 +208,15 @@ namespace apcurium.MK.Booking.Services.Impl
 
         public void SendAccountConfirmationEmail(Uri confirmationUrl, string clientEmailAddress, string clientLanguageCode)
         {
+            string imageLogoUrl = GetRefreshableImageUrl(GetBaseUrls().LogoImg);
+
             var templateData = new
             {
                 confirmationUrl,
                 ApplicationName = _serverSettings.ServerData.TaxiHail.ApplicationName,
                 EmailFontColor = _serverSettings.ServerData.TaxiHail.EmailFontColor,
                 AccentColor = _serverSettings.ServerData.TaxiHail.AccentColor,
-                GetBaseUrls().LogoImg
+                LogoImg = imageLogoUrl
             };
 
             SendEmail(clientEmailAddress, EmailConstant.Template.AccountConfirmation, EmailConstant.Subject.AccountConfirmation, templateData, clientLanguageCode);
@@ -249,6 +253,8 @@ namespace apcurium.MK.Booking.Services.Impl
                     ? SupportedLanguages.en.ToString()
                     : clientLanguageCode);
 
+            string imageLogoUrl = GetRefreshableImageUrl(GetBaseUrls().LogoImg);
+
             var templateData = new
             {
                 ApplicationName = _serverSettings.ServerData.TaxiHail.ApplicationName,
@@ -270,7 +276,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 Note = string.IsNullOrWhiteSpace(note) ? "-" : note,
                 Apartment = string.IsNullOrWhiteSpace(pickupAddress.Apartment) ? "-" : pickupAddress.Apartment,
                 RingCode = string.IsNullOrWhiteSpace(pickupAddress.RingCode) ? "-" : pickupAddress.RingCode,
-                GetBaseUrls().LogoImg
+                LogoImg = imageLogoUrl
             };
 
             SendEmail(clientEmailAddress, EmailConstant.Template.BookingConfirmation, EmailConstant.Subject.BookingConfirmation, templateData, clientLanguageCode);
@@ -278,13 +284,15 @@ namespace apcurium.MK.Booking.Services.Impl
 
         public void SendPasswordResetEmail(string password, string clientEmailAddress, string clientLanguageCode)
         {
+            string imageLogoUrl = GetRefreshableImageUrl(GetBaseUrls().LogoImg);
+
             var templateData = new
             {
                 password,
                 ApplicationName = _serverSettings.ServerData.TaxiHail.ApplicationName,
                 AccentColor = _serverSettings.ServerData.TaxiHail.AccentColor,
                 EmailFontColor = _serverSettings.ServerData.TaxiHail.EmailFontColor,
-                GetBaseUrls().LogoImg
+                LogoImg = imageLogoUrl
             };
 
             SendEmail(clientEmailAddress, EmailConstant.Template.PasswordReset, EmailConstant.Subject.PasswordReset, templateData, clientLanguageCode);
@@ -350,6 +358,9 @@ namespace apcurium.MK.Booking.Services.Impl
                 ? dropOffDate.Value.ToString("t" /* Short time pattern */)
                 : string.Empty;
             var baseUrls = GetBaseUrls();
+
+            string imageLogoUrl = GetRefreshableImageUrl(baseUrls.LogoImg);
+
             var templateData = new
             {
                 // template is missing the toll, if we decide to add it, we need to make sure we hide it if it's empty
@@ -386,7 +397,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 BaseUrlImg = baseUrls.BaseUrlAssetsImg,
                 RedDotImg = String.Concat(baseUrls.BaseUrlAssetsImg, "email_red_dot.png"),
                 GreenDotImg = String.Concat(baseUrls.BaseUrlAssetsImg, "email_green_dot.png"),
-                GetBaseUrls().LogoImg
+                LogoImg = imageLogoUrl
             };
 
             SendEmail(clientEmailAddress, EmailConstant.Template.Receipt, EmailConstant.Subject.Receipt, templateData, clientLanguageCode);
@@ -591,6 +602,47 @@ namespace apcurium.MK.Booking.Services.Impl
             public static class Template
             {
                 public const string AccountConfirmation = "AccountConfirmationSmsBody";
+            }
+        }
+
+        /// <summary>
+        /// This method generates a unique URL that will ensure that the image
+        /// will not be cached be the browser or email clients if it has changed.
+        /// </summary>
+        /// <param name="imageUrl">The URL of the image.</param>
+        /// <returns>An unique image URL based on the image content.</returns>
+        private string GetRefreshableImageUrl(string imageUrl)
+        {
+            using (var webClient = new WebClient())
+            {
+                try
+                {
+                    // Get the image
+                    var imageData = webClient.DownloadData(imageUrl);
+                    if (imageData != null)
+                    {
+                        // Hash it
+                        var md5Hasher = MD5.Create();
+                        var hashedImagedata = md5Hasher.ComputeHash(imageData);
+
+                        var sBuilder = new StringBuilder();
+
+                        foreach (byte b in hashedImagedata)
+                        {
+                            sBuilder.Append(b.ToString("x2"));
+                        }
+
+                        // Append its hash to its URL
+                        return string.Format("{0}?refresh={1}", imageUrl, sBuilder);
+                    }
+
+                    return imageUrl;
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex);
+                    return imageUrl;
+                }
             }
         }
     }
