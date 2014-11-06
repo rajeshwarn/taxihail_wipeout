@@ -123,19 +123,28 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
         {
             var streetNumber = subThoroughFare;
 
-            if (streetNumber != null && streetNumber.Contains("-"))
+            // Android geocoder doesn't differentiate the dash character for Queens vs normal range of addresses
+            if (streetNumber == null || !streetNumber.Contains("-"))
             {
-                // Android geocoder doesn't differentiate the dash character for Queens vs normal range of addresses
-                if (streetNumber.Count(x => x == '-') == 3)
-                {
-                    // a range of Queens formatted address
-                    var positionOfFirstDash = streetNumber.IndexOf('-');
-                    streetNumber = streetNumber.Substring(0, streetNumber.IndexOf('-', positionOfFirstDash + 1));
-                }
-                else if (!ListOfQueensZipCodes.Contains(zipCode))
-                {
-                    streetNumber = streetNumber.Substring(0, streetNumber.IndexOf('-'));
-                }
+                return streetNumber;
+            }
+            
+            if (streetNumber.Count(x => x == '-') == 3)
+            {
+                // a range of Queens formatted address
+                var positionOfFirstDash = streetNumber.IndexOf('-');
+                return streetNumber.Substring(0, streetNumber.IndexOf('-', positionOfFirstDash + 1));
+            }
+
+            if (!zipCode.HasValue())
+            {
+                return streetNumber.Substring(0, streetNumber.IndexOf('-'));
+            }
+
+            // leave Queens addresses intact
+            if (!ListOfQueensZipCodes.Contains(zipCode))
+            {
+                return streetNumber.Substring(0, streetNumber.IndexOf('-'));
             }
 
             return streetNumber;
