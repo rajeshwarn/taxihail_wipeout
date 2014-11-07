@@ -41,5 +41,10 @@ namespace apcurium.MK.Web.Tests
                 IbsPassword = "test"
             } };
         }
+
+        public string GetLocalCompanyMarket(string companyId, double latitude, double longitude)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

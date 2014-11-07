@@ -30,6 +30,34 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
             _companyRepository = companyRepository;
         }
 
+        [Route("api/customer/network/localmarket")]
+        public HttpResponseMessage Get(double latitude, double longitude)
+        {
+            var companyMarket = string.Empty;
+
+            var userPosition = new MapCoordinate
+            {
+                Latitude = latitude,
+                Longitude = longitude
+            };
+
+            // Get all companies in network
+            var otherCompaniesInNetwork = _networkRepository.Where(n => n.IsInNetwork).ToArray();
+
+            // Find the first company that includes the user position
+            // (it doesn't matter which one because they will all share the same market key anyway)
+            var localCompany = otherCompaniesInNetwork.FirstOrDefault(x => x.Region.Contains(userPosition));
+            if (localCompany != null)
+            {
+                companyMarket = localCompany.Market;
+            }
+
+            return new HttpResponseMessage(HttpStatusCode.OK)
+            {
+                Content = new StringContent(companyMarket)
+            };
+        }
+
         [Route("api/customer/{companyId}/network")]
         public HttpResponseMessage Get(string companyId)
         {

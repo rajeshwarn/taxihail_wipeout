@@ -44,10 +44,11 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
             {
                 Id = "ChrisTaxi",
                 IsInNetwork = true,
+                Market = "MTL",
                 Region = new MapRegion()
                 {
                     CoordinateStart = new MapCoordinate{Latitude = 45.514466,Longitude = -73.846313}, // MTL Top left 
-                    CoordinateEnd = new MapCoordinate{Latitude = 45.411296,Longitude = 73.513314} // MTL BTM Right
+                    CoordinateEnd = new MapCoordinate{Latitude = 45.411296,Longitude = -73.513314} // MTL BTM Right
                 },
                 Preferences = new List<CompanyPreference>
                 {
@@ -61,6 +62,7 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
             {
                 Id = "ChrisTaxiBis",
                 IsInNetwork = true,
+                Market = "MTL",
                 Region = new MapRegion()
                 {
                     CoordinateStart = new MapCoordinate{Latitude = 45.514466,Longitude = -73.846313}, // MTL Top left 
@@ -79,6 +81,7 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
             {
                 Id = "TonyTaxi",
                 IsInNetwork = true,
+                Market = "CHI",
                 Region = new MapRegion()
                 {
                     CoordinateStart = new MapCoordinate{Latitude = 49994,Longitude = -73.656990}, // Apcuruium 
@@ -90,6 +93,7 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
             {
                 //same Longitude as TonyTaxi
                 Id = "TomTaxi",
+                Market = "CHI",
                 IsInNetwork = true,
                 Region = new MapRegion()
                 {
@@ -109,6 +113,7 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
                 //Same Latitude as ChrisTaxi and Chris TaxiBis
                 Id = "PilouTaxi",
                 IsInNetwork = true,
+                Market = "NYC",
                 Region = new MapRegion()
                 {
                     CoordinateStart = new MapCoordinate{Latitude = 45.514466,Longitude = -73.889451},
@@ -127,6 +132,7 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
                 //Overlap ChrisTaxi and ChrisTaxiBis
                 Id = "LastTaxi",
                 IsInNetwork = true,
+                Market = "SYD",
                 Region = new MapRegion()
                 {
                     CoordinateStart = new MapCoordinate{Latitude = 45.563135,Longitude = -73.71953}, //College Montmorency Laval
@@ -341,5 +347,13 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
             Assert.True(tony.CompanyPreference.CanDispatch);
         }
 
+        [Test]
+        public void When_Getting_Local_Company_Market()
+        {
+            var response = Sut.Get(45.423513, -73.653214);
+            var json = response.Content.ReadAsStringAsync().Result;
+
+            Assert.AreEqual("MTL", json);
+        }
     }
 }
