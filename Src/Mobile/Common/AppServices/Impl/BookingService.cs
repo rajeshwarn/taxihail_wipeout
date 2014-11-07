@@ -212,23 +212,26 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 				&& order.DropOffAddress.HasValidCoordinate())
 			{
 				DirectionInfo directionInfo = null;
-				if (tarifMode != TarifMode.AppTarif)
-				{
-				    int? duration = null;
+			    if (tarifMode != TarifMode.AppTarif)
+			    {
+			        int? duration = null;
 
-                    if (tarifMode == TarifMode.Ibs)
-				    {
-				        duration =
-				            (await
-				                _geolocService.GetDirectionInfo(order.PickupAddress.Latitude, order.PickupAddress.Longitude,
-				                    order.DropOffAddress.Latitude, order.DropOffAddress.Longitude, order.Settings.VehicleTypeId,
-				                    order.PickupDate)).TripDuration;
-				    }
+			        duration =
+			            (await
+			                _geolocService.GetDirectionInfo(order.PickupAddress.Latitude, order.PickupAddress.Longitude,
+			                    order.DropOffAddress.Latitude, order.DropOffAddress.Longitude, order.Settings.VehicleTypeId,
+			                    order.PickupDate)).TripDuration;
 
-                    directionInfo = await UseServiceClientAsync<IIbsFareClient, DirectionInfo>(service => service.GetDirectionInfoFromIbs(order.PickupAddress.Latitude, order.PickupAddress.Longitude, order.DropOffAddress.Latitude, order.DropOffAddress.Longitude, order.Settings.AccountNumber, duration));
-				}
+			        directionInfo =
+			            await
+			                UseServiceClientAsync<IIbsFareClient, DirectionInfo>(
+			                    service =>
+			                        service.GetDirectionInfoFromIbs(order.PickupAddress.Latitude, order.PickupAddress.Longitude,
+			                            order.DropOffAddress.Latitude, order.DropOffAddress.Longitude,
+			                            order.Settings.AccountNumber, duration));
+			    }
 
-                if (tarifMode == TarifMode.AppTarif || (tarifMode == TarifMode.Both && directionInfo != null && directionInfo.Price == 0d))
+			    if (tarifMode == TarifMode.AppTarif || (tarifMode == TarifMode.Both && directionInfo != null && directionInfo.Price == 0d))
                 {
 					directionInfo = await _geolocService.GetDirectionInfo(order.PickupAddress.Latitude, order.PickupAddress.Longitude, order.DropOffAddress.Latitude, order.DropOffAddress.Longitude, order.Settings.VehicleTypeId, order.PickupDate);                    
                 }            

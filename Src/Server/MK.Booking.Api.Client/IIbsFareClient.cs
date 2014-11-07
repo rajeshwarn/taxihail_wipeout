@@ -10,6 +10,6 @@ namespace apcurium.MK.Booking.Api.Client
     public interface IIbsFareClient
     {
         Task<DirectionInfo> GetDirectionInfoFromIbs(double pickupLatitude, double pickupLongitude,
-            double dropoffLatitude, double dropoffLongitude, string accountNum, int? duration);
+            double dropoffLatitude, double dropoffLongitude, string accountNumber, int? duration);
     }
 }

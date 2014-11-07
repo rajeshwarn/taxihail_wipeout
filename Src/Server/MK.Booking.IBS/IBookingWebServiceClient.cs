@@ -18,7 +18,7 @@ namespace apcurium.MK.Booking.IBS
 
         IbsOrderDetails GetOrderDetails(int orderId, int accountId, string contactPhone);
         
-        IbsFareEstimate GetFareEstimate(double? pickupLat, double? pickupLng, double? dropoffLat, double? dropoffLng, string accountNum, int? customerNum, int? waitTime);
+        IbsFareEstimate GetFareEstimate(double? pickupLat, double? pickupLng, double? dropoffLat, double? dropoffLng, string accountNumber, int? customerNumber, int? waitTime);
 
         bool CancelOrder(int orderId, int accountId, string contactPhone);
 

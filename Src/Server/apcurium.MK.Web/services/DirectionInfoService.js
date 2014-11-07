@@ -30,7 +30,7 @@
                         async: false
                     });
 
-                    $.get('api/ibsfare?PickupLatitude={0}&PickupLongitude={1}&DropoffLatitude={2}&DropoffLongitude={3}&AccountNum={4}&CustomerNum={5}&WaitTime={6}'.format(coordinates.originLat, coordinates.originLng, coordinates.destinationLat, coordinates.destinationLng,
+                    $.get('api/ibsfare?PickupLatitude={0}&PickupLongitude={1}&DropoffLatitude={2}&DropoffLongitude={3}&AccountNumber={4}&CustomerNumber={5}&WaitTime={6}'.format(coordinates.originLat, coordinates.originLng, coordinates.destinationLat, coordinates.destinationLng,
                         (account != null) ? account : '', 0, (duration != null) ? duration : ''), function () { }, fmt).then(function (result) {
                         if (result.price == 0 && tarifMode == "Both") {
                             $.get('api/directions/', coordinates, function () { }, fmt).done(function (resultGoogleBoth) {                                

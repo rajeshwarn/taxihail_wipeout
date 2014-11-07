@@ -105,7 +105,7 @@ namespace apcurium.MK.Booking.IBS.Impl
             return result;
         }
 
-        public IbsFareEstimate GetFareEstimate(double? pickupLat, double? pickupLng, double? dropoffLat, double? dropoffLng, string accountNum, int? customerNum, int? waitTime)
+        public IbsFareEstimate GetFareEstimate(double? pickupLat, double? pickupLng, double? dropoffLat, double? dropoffLng, string accountNumber, int? customerNumber, int? waitTime)
         {
             var result = new IbsFareEstimate();
             UseService(service =>
@@ -130,11 +130,11 @@ namespace apcurium.MK.Booking.IBS.Impl
                     };
                 }
 
-                tbook.AccountNum = accountNum;
+                tbook.AccountNum = accountNumber;
 
-                if (customerNum.HasValue)
+                if (customerNumber.HasValue)
                 {
-                    tbook.CustomerNum = customerNum.Value;
+                    tbook.CustomerNum = customerNumber.Value;
                 }
 
                 if (waitTime.HasValue)
