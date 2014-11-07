@@ -5,21 +5,7 @@
                 this.streetZoomLevel = 17;
                 this.cityZoomLevel = 12;
                 var self = this;
-                var market = "";
-
-                $.ajax({
-                    url: "/endpoint/to/market/",
-                    data: { longitude: this._pickupPin.position.lat(), latitude: this._pickupPin.position.lat() },
-                    type: "GET",
-                    dataType: "json",
-                    async: false,
-                    success: function(data) {
-                        TaxiHail.parameters.market = data;
-                    }
-                });
-
-                // TODO: Debug
-                TaxiHail.parameters.market = "BOS";
+                TaxiHail.parameters.market = null;
 
             this.interval = window.setInterval(function () {
                 self.refresh();
@@ -253,6 +239,20 @@
         updateAvailableVehiclesPosition: function () {
 
             // TODO: Used underscore lib to proceed in MapView, should use a view inside AvailableVehicleCollection if it's possible to avoid this dynamic/not managed marker approach (new marker etc)
+
+            // TODO: Assuming we always get a market response. Forcing the app to query until we get one.
+            var position = this._target.get('position');
+
+            if (TaxiHail.parameters.market == null && position != null) { // TODO: Test. How do we know that this is final actual position.
+                $.ajax({
+                    url: "/roaming/localmarket?latitude=" + position.lat() + "&longitude=" + position.lng(),
+                    type: "GET",
+                    dataType: "text",
+                    success: function (data) {
+                        TaxiHail.parameters.market = data; // TODO: Where should it be done?
+                    }
+                });
+            }
 
             // Get vehicle backbone models as simple objects for underscore query purposes
             var _vehicles = _.map(this.availableVehicles.models, function (e) { return ({ vehicleNumber: e.vehicleNumber, latitude: e.latitude, longitude: e.longitude }) });

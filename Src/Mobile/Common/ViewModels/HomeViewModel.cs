@@ -84,9 +84,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			base.OnViewStarted(firstTime);
 
-			//
-			// Fake end point market
-			this.Services ().Cache.Set<string> ("Market", "BOS");
+			// Temporary, missing 
+			//var marketTask = UseServiceClientAsync<NetworkRoamingServiceClient, string> (service => service.GetLocalCompanyMarket (Map.PickupAddress.Latitude, Map.PickupAddress.Longitude)).ConfigureAwait (false);
+			//marketTask.Wait ();
+			//this.Services ().Cache.Set<string> ("Market", market.Result);
+
+			// Fake
+			this.Services ().Cache.Set<string> ("Market", "MTL");
 
 			_locationService.Start();
 
