@@ -1,4 +1,5 @@
-﻿using apcurium.MK.Booking.Api.Client.TaxiHail;
+﻿using System.Runtime.Remoting.Messaging;
+using apcurium.MK.Booking.Api.Client.TaxiHail;
 using NUnit.Framework;
 
 namespace apcurium.MK.Web.Tests
@@ -11,7 +12,7 @@ namespace apcurium.MK.Web.Tests
         {
             base.Setup();
 
-            _sut = new VehicleServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null);
+            _sut = new VehicleServiceClient(BaseUrl, SessionId, new DummyPackageInfo(), null, new DummyCache());
         }
 
         private VehicleServiceClient _sut;

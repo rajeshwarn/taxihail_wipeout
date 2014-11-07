@@ -84,6 +84,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			base.OnViewStarted(firstTime);
 
+			//
+			// Fake end point market
+			this.Services ().Cache.Set<string> ("Market", "BOS");
+
 			_locationService.Start();
 
 			CheckActiveOrderAsync (firstTime);

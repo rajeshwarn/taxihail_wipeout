@@ -4,8 +4,9 @@
         initialize: function (models, options) {
             this.position = options.position;                                 
         },
-        url: function () {            
-            return TaxiHail.parameters.apiRoot + '/vehicles/' + '?latitude=' + this.position.lat() + '&longitude=' + this.position.lng() + "&format=json"
+        url: function () {
+            var market = TaxiHail.parameters.market;
+            return TaxiHail.parameters.apiRoot + '/vehicles/' + '?latitude=' + this.position.lat() + '&longitude=' + this.position.lng() + "&market=" + (market != null ? market : "") + "&format=json"; // TODO: Remove debug
         },
         parse: function (response) {
             var collection = new TaxiHail.AvailableVehicleCollection([], this.position);            

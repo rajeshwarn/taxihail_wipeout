@@ -1,11 +1,26 @@
 ﻿(function () {
-    TaxiHail.MapView = Backbone.View.extend({
+        TaxiHail.MapView = Backbone.View.extend({
+            initialize: function() {
+                _.bindAll(this, "geolocdone", "geoloc");
+                this.streetZoomLevel = 17;
+                this.cityZoomLevel = 12;
+                var self = this;
+                var market = "";
 
-        initialize: function () {
-            _.bindAll(this, "geolocdone", "geoloc");
-            this.streetZoomLevel = 17;
-            this.cityZoomLevel = 12;
-            var self = this;
+                $.ajax({
+                    url: "/endpoint/to/market/",
+                    data: { longitude: this._pickupPin.position.lat(), latitude: this._pickupPin.position.lat() },
+                    type: "GET",
+                    dataType: "json",
+                    async: false,
+                    success: function(data) {
+                        TaxiHail.parameters.market = data;
+                    }
+                });
+
+                // TODO: Debug
+                TaxiHail.parameters.market = "BOS";
+
             this.interval = window.setInterval(function () {
                 self.refresh();
             }, 5000);
