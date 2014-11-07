@@ -416,6 +416,7 @@
     <Content Include="models\CompanySettings.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Areas\AdminTH\Views\PromoCode\Index.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -886,7 +887,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Areas\AdminTH\Models\" />
-    <Folder Include="Areas\AdminTH\Views\PromoCode\" />
     <Folder Include="mixins\" />
   </ItemGroup>
   <ItemGroup>
