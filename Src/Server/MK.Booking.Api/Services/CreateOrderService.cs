@@ -121,16 +121,17 @@ namespace apcurium.MK.Booking.Api.Services
                 ValidateCreditCard(request.Id, account, request.ClientLanguageCode);
             }
 
-            // Payment mode is charge account (Card on file payment not supported by the web app)
+            // Payment mode is charge account
             if (request.Settings.ChargeTypeId.HasValue
-                && request.Settings.ChargeTypeId.Value == ChargeTypes.Account.Id
-                && !request.FromWebApp)
+                && request.Settings.ChargeTypeId.Value == ChargeTypes.Account.Id)
             {
                 ValidateChargeAccountAnswers(request.Settings.AccountNumber, request.QuestionsAndAnswers);
 
                 // Change payment mode to card of file if necessary
                 var accountChargeDetail = _accountChargeDao.FindByAccountNumber(request.Settings.AccountNumber);
-                if (accountChargeDetail.UseCardOnFileForPayment)
+
+                // Card on file payment not supported by the web app
+                if (accountChargeDetail.UseCardOnFileForPayment && !request.FromWebApp)
                 {
                     ValidateCreditCard(request.Id, account, request.ClientLanguageCode);
 
