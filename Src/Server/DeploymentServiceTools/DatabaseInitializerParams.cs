@@ -32,6 +32,8 @@ namespace DeploymentServiceTools
         public string MirroringPrincipalPartner { get; set; }
         public string MirroringWitness { get; set; }
 
+        public string AppPoolName { get; set; }  
+
         
         
     }

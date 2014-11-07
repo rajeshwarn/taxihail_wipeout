@@ -1,8 +1,10 @@
-﻿namespace DatabaseInitializer.Services
+﻿using System;
+
+namespace DatabaseInitializer.Services
 {
     public interface IEventsPlayBackService
     {
         int CountEvent(string aggregateType);
-        void ReplayAllEvents();
+        void ReplayAllEvents(DateTime? after = null);
     }
 }

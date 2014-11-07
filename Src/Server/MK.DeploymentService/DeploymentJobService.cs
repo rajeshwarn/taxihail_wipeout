@@ -284,7 +284,7 @@ namespace MK.DeploymentService
             if (_job.Database)
             {
                 Log("Deploying Database");
-                DeployDataBase(packagesDirectory, companyName);
+                DeployDataBase(packagesDirectory, companyName, appPoolName);
             }
             
             Log("Deploying Server");
@@ -298,7 +298,7 @@ namespace MK.DeploymentService
             }
         }
 
-        private void DeployDataBase(string packagesDirectory, string companyName)
+        private void DeployDataBase(string packagesDirectory, string companyName, string appPoolName)
         {
             Log("Deploying DB");
             var jsonSettings = new JObject();
@@ -336,7 +336,8 @@ namespace MK.DeploymentService
                 MirroringMirrorPartner = Settings.Default.MirroringMirrorPartner,
                 MirroringWitness = Settings.Default.MirroringWitness,
                 MirroringPrincipalPartner = Settings.Default.MirroringPrincipalPartner,
-                MirrorMasterConnectionString = Settings.Default.MirrorMasterConnectionString
+                MirrorMasterConnectionString = Settings.Default.MirrorMasterConnectionString,
+                AppPoolName = appPoolName
             };
 
             var paramFile = Guid.NewGuid().ToString().Replace("-", "") + ".params";

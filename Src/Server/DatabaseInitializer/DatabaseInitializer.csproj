@@ -169,11 +169,6 @@
     <Compile Include="OldEvents\FavoriteAddressv1.cs" />
     <Compile Include="OldEvents\OrderCompleted.cs" />
     <Compile Include="OldEvents\OrderFareUpdated.cs" />
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-      <DependentUpon>Settings.settings</DependentUpon>
-    </Compile>
     <Compile Include="Services\EventsMigrator.cs" />
     <Compile Include="Services\IEventsMigrator.cs" />
     <Compile Include="Module.cs" />
@@ -249,10 +244,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="Properties\app.manifest" />
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
     <None Include="Settings\MKWebDev.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
