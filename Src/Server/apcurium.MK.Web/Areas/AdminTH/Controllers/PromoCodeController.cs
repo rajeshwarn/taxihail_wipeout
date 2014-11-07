@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity.Core;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
+using apcurium.MK.Common.Configuration;
+using ServiceStack.CacheAccess;
 
 namespace apcurium.MK.Web.Areas.AdminTH.Controllers
 {
@@ -12,19 +14,23 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
         public string Name { get; set; }
     }
 
-    public class PromoCodeController : Controller
+    public class PromoCodeController : ServiceStackController
     {
+        private List<PromoCode> promoCodes = new List<PromoCode> { new PromoCode { Id = Guid.NewGuid(), Name = "test" } };
+
+        public PromoCodeController(ICacheClient cache, IServerSettings serverSettings) : base(cache, serverSettings)
+        {
+        }
+
         // GET: AdminTH/PromoCode
         public ActionResult Index()
         {
-            var promoCodes = new List<PromoCode> {new PromoCode {Id = Guid.NewGuid(), Name = "test"}};
-            return View(promoCodes);
-        }
+            if (AuthSession.IsAuthenticated)
+            {
+                return View(promoCodes);
+            }
 
-        // GET: AdminTH/PromoCode/Details/5
-        public ActionResult Details(Guid id)
-        {
-            return View();
+            return Redirect(BaseUrl);
         }
 
         // GET: AdminTH/PromoCode/Create
@@ -35,16 +41,17 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
 
         // POST: AdminTH/PromoCode/Create
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        public ActionResult Create(FormCollection form)
         {
             try
             {
-                // TODO: Add insert logic here
+                // TODO: Add create logic here
 
                 return RedirectToAction("Index");
             }
-            catch
+            catch(Exception ex)
             {
+                ViewBag.Error = ex.Message;
                 return View();
             }
         }
@@ -52,12 +59,13 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
         // GET: AdminTH/PromoCode/Edit/5
         public ActionResult Edit(Guid id)
         {
-            return View();
+            var promoCode = promoCodes.First();
+            return View(promoCode);
         }
 
         // POST: AdminTH/PromoCode/Edit/5
         [HttpPost]
-        public ActionResult Edit(Guid id, FormCollection collection)
+        public ActionResult Edit(Guid id, FormCollection form)
         {
             try
             {
@@ -65,8 +73,9 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
 
                 return RedirectToAction("Index");
             }
-            catch
+            catch (Exception ex)
             {
+                ViewBag.Error = ex.Message;
                 return View();
             }
         }
@@ -74,22 +83,16 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
         // GET: AdminTH/PromoCode/Delete/5
         public ActionResult Delete(Guid id)
         {
-            return View();
-        }
-
-        // POST: AdminTH/PromoCode/Delete/5
-        [HttpPost]
-        public ActionResult Delete(Guid id, FormCollection collection)
-        {
             try
             {
                 // TODO: Add delete logic here
 
                 return RedirectToAction("Index");
             }
-            catch
+            catch (Exception ex)
             {
-                return View();
+                ViewBag.Error = ex.Message;
+                return View("Edit");
             }
         }
     }
