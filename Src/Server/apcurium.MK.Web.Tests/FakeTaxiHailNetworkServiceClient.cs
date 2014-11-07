@@ -42,7 +42,7 @@ namespace apcurium.MK.Web.Tests
             } };
         }
 
-        public string GetLocalCompanyMarket(string companyId, double latitude, double longitude)
+        public string GetLocalCompanyMarket(double latitude, double longitude)
         {
             throw new NotImplementedException();
         }

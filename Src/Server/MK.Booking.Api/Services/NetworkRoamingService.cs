@@ -16,7 +16,7 @@ namespace apcurium.MK.Booking.Api.Services
 
         public object Get(LocalMarketRequest request)
         {
-            return _taxiHailNetworkServiceClient.GetLocalCompanyMarket(null, request.Latitude, request.Longitude);
+            return _taxiHailNetworkServiceClient.GetLocalCompanyMarket(request.Latitude, request.Longitude);
         }
     }
 }
