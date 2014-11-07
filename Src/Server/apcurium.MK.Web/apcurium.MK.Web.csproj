@@ -615,6 +615,7 @@
     <Compile Include="Areas\AdminTH\Controllers\PromoCodeController.cs" />
     <Compile Include="Areas\AdminTH\Controllers\TaxiHailNetworkController.cs" />
     <Compile Include="Areas\AdminTH\Controllers\ServiceStackController.cs" />
+    <Compile Include="Areas\AdminTH\Models\PromoCode.cs" />
     <Compile Include="default.aspx.cs">
       <DependentUpon>default.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -888,7 +889,6 @@
     <Content Include="admin\localization\AddPopularAddress.json" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Areas\AdminTH\Models\" />
     <Folder Include="mixins\" />
   </ItemGroup>
   <ItemGroup>

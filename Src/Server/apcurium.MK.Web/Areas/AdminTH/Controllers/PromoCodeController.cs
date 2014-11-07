@@ -4,19 +4,14 @@ using System.Data.Entity.Core;
 using System.Linq;
 using System.Web.Mvc;
 using apcurium.MK.Common.Configuration;
+using apcurium.MK.Web.Areas.AdminTH.Models;
 using ServiceStack.CacheAccess;
 
 namespace apcurium.MK.Web.Areas.AdminTH.Controllers
 {
-    public class PromoCode
-    {
-        public Guid Id { get; set; }
-        public string Name { get; set; }
-    }
-
     public class PromoCodeController : ServiceStackController
     {
-        private List<PromoCode> promoCodes = new List<PromoCode> { new PromoCode { Id = Guid.NewGuid(), Name = "test" } };
+        private List<PromoCode> promoCodes = new List<PromoCode> { new PromoCode { Name = "test" } };
 
         public PromoCodeController(ICacheClient cache, IServerSettings serverSettings) : base(cache, serverSettings)
         {
