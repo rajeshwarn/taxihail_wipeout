@@ -155,6 +155,7 @@
     <Compile Include="CommandHandlers\EmailCommandHandler.cs" />
     <Compile Include="CommandHandlers\OrderCommandHandler.cs" />
     <Compile Include="CommandHandlers\PayPalPaymentCommandHandler.cs" />
+    <Compile Include="CommandHandlers\PromotionCommandHandler.cs" />
     <Compile Include="CommandHandlers\SmsCommandHandler.cs" />
     <Compile Include="Database\BookingDbContext.cs" />
     <Compile Include="Domain\Account.cs" />
@@ -163,6 +164,7 @@
     <Compile Include="Domain\Order.cs" />
     <Compile Include="Domain\PaymentInformation.cs" />
     <Compile Include="Domain\PayPalPayment.cs" />
+    <Compile Include="Domain\Promotion.cs" />
     <Compile Include="Email\EmailSender.cs" />
     <Compile Include="Email\IEmailSender.cs" />
     <Compile Include="Email\ITemplateService.cs" />
@@ -187,6 +189,7 @@
     <Compile Include="EventHandlers\Integration\PushNotificationSender.cs" />
     <Compile Include="EventHandlers\Integration\MailSender.cs" />
     <Compile Include="EventHandlers\OrderGenerator.cs" />
+    <Compile Include="EventHandlers\PromotionDetailGenerator.cs" />
     <Compile Include="EventHandlers\RuleDetailsGenerator.cs" />
     <Compile Include="EventHandlers\TariffDetailsGenerator.cs" />
     <Compile Include="EventHandlers\RatingTypeDetailsGenerator.cs" />
@@ -204,6 +207,7 @@
     <Compile Include="ReadModel\CompanyDetail.cs" />
     <Compile Include="ReadModel\OrderPaymentDetail.cs" />
     <Compile Include="ReadModel\OrderUserGpsDetail.cs" />
+    <Compile Include="ReadModel\PromotionDetail.cs" />
     <Compile Include="ReadModel\Query\AccountChargeDao.cs" />
     <Compile Include="ReadModel\Query\AppStartUpLogDao.cs" />
     <Compile Include="ReadModel\Query\CompanyDao.cs" />

@@ -58,6 +58,7 @@
     <Compile Include="AddRatingType.cs" />
     <Compile Include="CancelPayPalExpressCheckoutPayment.cs" />
     <Compile Include="CaptureCreditCardPayment.cs" />
+    <Compile Include="CreatePromotion.cs" />
     <Compile Include="PrepareOrderForNextDispatch.cs" />
     <Compile Include="ChangeOrderStatus.cs" />
     <Compile Include="IgnoreDispatchCompanySwitch.cs" />
