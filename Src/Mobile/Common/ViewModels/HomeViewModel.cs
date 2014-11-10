@@ -84,14 +84,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			base.OnViewStarted(firstTime);
 
-			// Temporary, missing 
-			//var marketTask = UseServiceClientAsync<NetworkRoamingServiceClient, string> (service => service.GetLocalCompanyMarket (Map.PickupAddress.Latitude, Map.PickupAddress.Longitude)).ConfigureAwait (false);
-			//marketTask.Wait ();
-			//this.Services ().Cache.Set<string> ("Market", market.Result);
-
-			// Fake
-			this.Services ().Cache.Set<string> ("Market", "MTL");
-
 			_locationService.Start();
 
 			CheckActiveOrderAsync (firstTime);
@@ -337,6 +329,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             _orderWorkflowService.SetIgnoreNextGeoLocResult(false);
 			var address = await _orderWorkflowService.SetAddressToUserLocation();
             
+			// TODO: MKTAXI-2282 - Does an invalid address can mean a invalid coordinate?
+
+			// Temporary, missing 
+			//var marketTask = UseServiceClientAsync<NetworkRoamingServiceClient, string> (service => service.GetLocalCompanyMarket (Map.PickupAddress.Latitude, Map.PickupAddress.Longitude)).ConfigureAwait (false);
+			//marketTask.Wait ();
+			//this.Services ().Cache.Set<string> ("Market", market.Result);
+
+			// Fake
+			this.Services ().Cache.Set<string> ("Market", "MTL");
+
+
 			if(address.HasValidCoordinate())
 			{
 				// zoom like uber means start at user location with street level zoom and when and only when you have vehicle, zoom out
