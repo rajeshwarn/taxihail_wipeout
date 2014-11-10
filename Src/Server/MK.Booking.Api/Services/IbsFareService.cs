@@ -12,7 +12,7 @@ using ServiceStack.ServiceInterface;
 
 #endregion
 
-namespace apcurium.MK.Booking.Api.Services
+namespace apcurium.MK.Booking.Api.Services 
 {
     public class IbsFareService : Service
     {
