@@ -16,7 +16,7 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
         public double DropoffLongitude { get; set; }
         public string AccountNumber { get; set; }
         public int? CustomerNumber { get; set; }
-        public int? WaitTime { get; set; }
+        public int? TripDurationInSeconds { get; set; }
     }
 
     public class IbsFareResponse : DirectionInfo

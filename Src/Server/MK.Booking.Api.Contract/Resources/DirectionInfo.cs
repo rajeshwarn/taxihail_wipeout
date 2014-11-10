@@ -16,6 +16,6 @@
         // Used by the webapp
         public int? EtaDuration { get; set; }
         
-        public int? TripDuration { get; set; }
+        public int? TripDurationInSeconds { get; set; }
     }
 }

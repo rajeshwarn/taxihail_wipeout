@@ -44,7 +44,7 @@ namespace apcurium.MK.Booking.Api.Services.Maps
                 FormattedDistance = result.FormattedDistance,
                 Price = result.Price,
                 FormattedPrice = result.FormattedPrice,
-                TripDuration = result.Duration
+                TripDurationInSeconds = result.Duration
             };
 
             if (_serverSettings.ServerData.ShowEta

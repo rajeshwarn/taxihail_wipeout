@@ -16,7 +16,7 @@
 
             function getDirectionInfoEvent() {
                 var directionInfoDefer = $.Deferred();
-                var duration = null;
+                var tripDurationInSeconds = null;
 
                 if (tarifMode != 'AppTarif') {
 
@@ -25,13 +25,13 @@
                         data: coordinates,
                         dataType: fmt,
                         success: function (result,status) {
-                            duration = result.tripDuration;
+                            tripDurationInSeconds = result.tripDurationInSeconds;
                         },
                         async: false
                     });
 
-                    $.get('api/ibsfare?PickupLatitude={0}&PickupLongitude={1}&DropoffLatitude={2}&DropoffLongitude={3}&AccountNumber={4}&CustomerNumber={5}&WaitTime={6}'.format(coordinates.originLat, coordinates.originLng, coordinates.destinationLat, coordinates.destinationLng,
-                        (account != null) ? account : '', 0, (duration != null) ? duration : ''), function () { }, fmt).then(function (result) {
+                    $.get('api/ibsfare?PickupLatitude={0}&PickupLongitude={1}&DropoffLatitude={2}&DropoffLongitude={3}&AccountNumber={4}&CustomerNumber={5}&TripDurationInSeconds={6}'.format(coordinates.originLat, coordinates.originLng, coordinates.destinationLat, coordinates.destinationLng,
+                        (account != null) ? account : '', 0, (tripDurationInSeconds != null) ? tripDurationInSeconds : ''), function () { }, fmt).then(function (result) {
                         if (result.price == 0 && tarifMode == "Both") {
                             $.get('api/directions/', coordinates, function () { }, fmt).done(function (resultGoogleBoth) {                                
                                 directionInfoDefer.resolve(resultGoogleBoth);
