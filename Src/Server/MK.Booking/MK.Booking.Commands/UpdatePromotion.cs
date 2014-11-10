@@ -1,13 +1,17 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations;
 using apcurium.MK.Common.Enumeration;
+using Infrastructure.Messaging;
 
-namespace apcurium.MK.Booking.ReadModel
+namespace apcurium.MK.Booking.Commands
 {
-    public class PromotionDetail
+    public class UpdatePromotion : ICommand
     {
-        [Key]
-        public Guid Id { get; set; }
+        public UpdatePromotion()
+        {
+            Id = Guid.NewGuid();
+        }
+
+        public Guid PromoId { get; set; }
 
         public string Name { get; set; }
 
@@ -19,7 +23,7 @@ namespace apcurium.MK.Booking.ReadModel
 
         public DateTime? EndTime { get; set; }
 
-        public string DaysOfWeek { get; set; }
+        public DayOfWeek[] DaysOfWeek { get; set; }
 
         public bool AppliesToCurrentBooking { get; set; }
 
@@ -35,6 +39,6 @@ namespace apcurium.MK.Booking.ReadModel
 
         public string Code { get; set; }
 
-        public bool Active { get; set; }
+        public Guid Id { get; private set; }
     }
 }

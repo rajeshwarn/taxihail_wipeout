@@ -5,7 +5,11 @@ using Infrastructure.Messaging.Handling;
 
 namespace apcurium.MK.Booking.CommandHandlers
 {
-    public class PromotionCommandHandler : ICommandHandler<CreatePromotion>
+    public class PromotionCommandHandler : 
+        ICommandHandler<CreatePromotion>,
+        ICommandHandler<UpdatePromotion>,
+        ICommandHandler<ActivatePromotion>,
+        ICommandHandler<DeactivatePromotion>
     {
         private readonly IEventSourcedRepository<Promotion> _repository;
 
@@ -16,7 +20,38 @@ namespace apcurium.MK.Booking.CommandHandlers
 
         public void Handle(CreatePromotion command)
         {
-            var promotion = new Promotion(command.PromoId);
+            var promotion = new Promotion(command.PromoId, command.Name, command.StartDate, command.EndDate, command.StartTime, 
+                command.EndTime, command.DaysOfWeek, command.AppliesToCurrentBooking, command.AppliesToFutureBooking, 
+                command.DiscountValue, command.DiscountType, command.MaxUsagePerUser, command.MaxUsage, command.Code);
+
+            _repository.Save(promotion, command.Id.ToString());
+        }
+
+        public void Handle(UpdatePromotion command)
+        {
+            var promotion = _repository.Get(command.PromoId);
+
+            promotion.Update(command.Name, command.StartDate, command.EndDate, command.StartTime, command.EndTime, 
+                command.DaysOfWeek, command.AppliesToCurrentBooking, command.AppliesToFutureBooking, command.DiscountValue, 
+                command.DiscountType, command.MaxUsagePerUser, command.MaxUsage, command.Code);
+
+            _repository.Save(promotion, command.Id.ToString());
+        }
+
+        public void Handle(ActivatePromotion command)
+        {
+            var promotion = _repository.Get(command.PromoId);
+
+            promotion.Activate();
+
+            _repository.Save(promotion, command.Id.ToString());
+        }
+
+        public void Handle(DeactivatePromotion command)
+        {
+            var promotion = _repository.Get(command.PromoId);
+
+            promotion.Deactivate();
 
             _repository.Save(promotion, command.Id.ToString());
         }

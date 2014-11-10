@@ -47,6 +47,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ActivatePromotion.cs" />
     <Compile Include="AddCreditCard.cs" />
     <Compile Include="AddDefaultFavoriteAddress.cs" />
     <Compile Include="AddFavoriteAddress.cs" />
@@ -59,6 +60,7 @@
     <Compile Include="CancelPayPalExpressCheckoutPayment.cs" />
     <Compile Include="CaptureCreditCardPayment.cs" />
     <Compile Include="CreatePromotion.cs" />
+    <Compile Include="DeactivatePromotion.cs" />
     <Compile Include="PrepareOrderForNextDispatch.cs" />
     <Compile Include="ChangeOrderStatus.cs" />
     <Compile Include="IgnoreDispatchCompanySwitch.cs" />
@@ -87,6 +89,7 @@
     <Compile Include="EnableAccountbyAdmin.cs" />
     <Compile Include="ActivateRule.cs" />
     <Compile Include="DeactivateRule.cs" />
+    <Compile Include="UpdatePromotion.cs" />
     <Compile Include="UpdateRule.cs" />
     <Compile Include="DeleteRule.cs" />
     <Compile Include="CreateRule.cs" />
