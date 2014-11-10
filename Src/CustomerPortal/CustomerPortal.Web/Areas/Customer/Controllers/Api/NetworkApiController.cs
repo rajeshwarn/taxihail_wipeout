@@ -30,7 +30,7 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
             _companyRepository = companyRepository;
         }
 
-        [Route("api/customer/network/localmarket")]
+        [Route("api/customer/network/market")]
         public HttpResponseMessage Get(double latitude, double longitude)
         {
             var companyMarket = string.Empty;
@@ -42,7 +42,7 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
             };
 
             // Get all companies in network
-            var otherCompaniesInNetwork = _networkRepository.Where(n => n.IsInNetwork).ToArray();
+            var otherCompaniesInNetwork = _networkRepository.Where(n => n.IsInNetwork);
 
             // Find the first company that includes the user position
             // (it doesn't matter which one because they will all share the same market key anyway)

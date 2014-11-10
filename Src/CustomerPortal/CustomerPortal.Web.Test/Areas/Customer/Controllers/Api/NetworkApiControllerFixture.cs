@@ -348,7 +348,7 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
         }
 
         [Test]
-        public void When_Getting_Local_Company_Market()
+        public void When_Getting_Company_Market()
         {
             var response = Sut.Get(45.423513, -73.653214);
             var json = response.Content.ReadAsStringAsync().Result;

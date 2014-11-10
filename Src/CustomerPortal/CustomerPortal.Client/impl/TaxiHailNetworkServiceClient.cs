@@ -52,7 +52,7 @@ namespace CustomerPortal.Client.Impl
             return Client.Post(string.Format(@"customer/{0}/network", companyId), preferences);
         }
 
-        public string GetLocalCompanyMarket(double latitude, double longitude)
+        public string GetCompanyMarket(double latitude, double longitude)
         {
             var @params = new Dictionary<string, string>
                 {
@@ -62,9 +62,8 @@ namespace CustomerPortal.Client.Impl
 
             string queryString = BuildQueryString(@params);
 
-            var response = Client.Get("customer/network/localmarket" + queryString)
+            var response = Client.Get("customer/network/market" + queryString)
                                  .Deserialize<string>();
-            response.Wait();
 
             return response.Result;
         }

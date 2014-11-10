@@ -4,8 +4,8 @@ using ServiceStack.ServiceInterface;
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
     [Authenticate]
-    [Route("/roaming/localmarket", "GET")]
-    public class LocalMarketRequest : BaseDto
+    [Route("/roaming/market", "GET")]
+    public class FindMarketRequest : BaseDto
     {
         public double Latitude { get; set; }
 

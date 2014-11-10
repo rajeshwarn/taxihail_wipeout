@@ -12,7 +12,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
         {
         }
 
-        public Task<string> GetLocalCompanyMarket(double latitude, double longitude)
+        public Task<string> GetCompanyMarket(double latitude, double longitude)
         {
             var @params = new Dictionary<string, string>
                 {
@@ -22,7 +22,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 
             string queryString = BuildQueryString(@params);
 
-            return Client.GetAsync<string>("/roaming/localmarket" + queryString);
+            return Client.GetAsync<string>("/roaming/market" + queryString);
         }
     }
 }

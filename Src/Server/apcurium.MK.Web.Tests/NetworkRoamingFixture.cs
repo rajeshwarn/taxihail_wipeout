@@ -26,11 +26,11 @@ namespace apcurium.MK.Web.Tests
         }
 
         [Test]
-        public async void when_getting_the_local_company_market()
+        public async void when_getting_the_company_market()
         {
             var sut = new NetworkRoamingServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
 
-            var market = await sut.GetLocalCompanyMarket(12.34, -77.43);
+            var market = await sut.GetCompanyMarket(12.34, -77.43);
             Assert.AreEqual(string.Empty, market);
         }
     }
