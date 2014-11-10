@@ -42,6 +42,8 @@ namespace DatabaseInitializer.Services
             const int pageSize = 5000;
             after = after ?? DateTime.MinValue;
 
+            Console.WriteLine("Replaying event since {0}", after);
+
             while(hasMore)
             {
                 List<Event> events;
@@ -56,6 +58,12 @@ namespace DatabaseInitializer.Services
                                     .Skip(skip)
                                     .Take(pageSize)
                                     .ToList();
+                }
+
+                if (events.Count == 0)
+                {
+                    Console.WriteLine("No event to be replayed");
+                    return;
                 }
                 
                 hasMore = events.Count == pageSize;

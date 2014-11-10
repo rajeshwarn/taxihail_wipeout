@@ -96,6 +96,7 @@ namespace DatabaseInitializer
                 if (isUpdate)
                 {
                     Console.WriteLine("Update");
+
                     Console.WriteLine("Create Empty Database");
                     var temporaryDatabaseName = param.CompanyName + "_New";
                     var connectionStringNewDatabase = new ConnectionStringSettings("MkWeb", string.Format("Data Source=.;Initial Catalog={0};Integrated Security=True; MultipleActiveResultSets=True", temporaryDatabaseName));
@@ -133,7 +134,7 @@ namespace DatabaseInitializer
                         appPool.Stop();
                     }
 
-                    Console.WriteLine("Copy Events Raised Since the First Copy...");
+                    Console.WriteLine("Copy Events Raised Since the Copy...");
                     var lastEventCopyDateTime = creatorDb.CopyEventsAndCacheTables(param.MasterConnectionString, param.CompanyName, temporaryDatabaseName);
                     replayService.ReplayAllEvents(lastEventCopyDateTime);
                     creatorDb.CopyAppStartUpLogTable(param.MasterConnectionString, param.CompanyName, temporaryDatabaseName);
@@ -148,7 +149,7 @@ namespace DatabaseInitializer
                     }   
                     var oldDatabase = creatorDb.RenameDatabase(param.MasterConnectionString, param.CompanyName);
 
-                    Console.WriteLine("Rename New Database to use company name...");
+                    Console.WriteLine("Rename New Database to use Company Name...");
                     creatorDb.RenameDatabase(param.MasterConnectionString, temporaryDatabaseName, param.CompanyName);
 
                     Console.WriteLine("Restart App Pool...");
@@ -158,7 +159,7 @@ namespace DatabaseInitializer
                         appPool.Start();
                     }
 
-                    if (isUpdate && !string.IsNullOrEmpty(param.BackupFolder))
+                    if (!string.IsNullOrEmpty(param.BackupFolder))
                     {
                         Console.WriteLine("Backup of old database...");
                         var backupFolder = Path.Combine(param.BackupFolder, param.CompanyName + DateTime.Now.ToString("dd-MM-yyyy_hh-mm-ss"));
@@ -190,7 +191,9 @@ namespace DatabaseInitializer
 
                 var serverSettings = container.Resolve<IServerSettings>();
                 var commandBus = container.Resolve<ICommandBus>();
-                //Init data
+
+
+                Console.WriteLine("Checking Company Created...");
                 CheckCompanyCreated(container, commandBus);
 
                 if (!isUpdate)
@@ -259,6 +262,7 @@ namespace DatabaseInitializer
                 }
                 SetupMirroring(param);
 
+                Console.WriteLine("Database Creation/Migration for version {0} finished", CurrentVersion);
             }
             catch (Exception e)
             {
