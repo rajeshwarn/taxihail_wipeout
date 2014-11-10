@@ -221,11 +221,13 @@
     <Compile Include="ReadModel\Query\Contract\IConfigurationDao.cs" />
     <Compile Include="ReadModel\Query\Contract\IDeviceDao.cs" />
     <Compile Include="ReadModel\Query\Contract\IOrderPaymentDao.cs" />
+    <Compile Include="ReadModel\Query\Contract\IPromotionDao.cs" />
     <Compile Include="ReadModel\Query\Contract\IVehicleTypeDao.cs" />
     <Compile Include="ReadModel\Query\Contract\IOrderStatusUpdateDao.cs" />
     <Compile Include="ReadModel\Query\DeviceDao.cs" />
     <Compile Include="ReadModel\Query\OrderPaymentDao.cs" />
     <Compile Include="ReadModel\Query\OrderStatusUpdateDao.cs" />
+    <Compile Include="ReadModel\Query\PromotionDao.cs" />
     <Compile Include="ReadModel\Query\RuleDao.cs" />
     <Compile Include="ReadModel\Query\CreditCardDao.cs" />
     <Compile Include="ReadModel\CreditCardDetails.cs" />
