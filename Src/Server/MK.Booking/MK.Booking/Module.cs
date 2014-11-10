@@ -73,9 +73,10 @@ namespace apcurium.MK.Booking
             container.RegisterInstance<IAccountChargeDao>(new AccountChargeDao(() => container.Resolve<BookingDbContext>()));
             container.RegisterInstance<IVehicleTypeDao>(new VehicleTypeDao(() => container.Resolve<BookingDbContext>()));
             container.RegisterInstance<IAppStartUpLogDao>(new AppStartUpLogDao(() => container.Resolve<BookingDbContext>()));
+            container.RegisterInstance<IPromotionDao>(new PromotionDao(() => container.Resolve<BookingDbContext>()));
             container.RegisterInstance<IPasswordService>(new PasswordService());
             container.RegisterInstance<IRuleCalculator>(new RuleCalculator(container.Resolve<IRuleDao>()));
-
+            
             RegisterMaps();
             RegisterCommandHandlers(container);
             RegisterEventHandlers(container);
@@ -178,6 +179,7 @@ namespace apcurium.MK.Booking
             container.RegisterType<IEventHandler, AccountChargeDetailGenerator>("AccountChargeDetailGenerator");
             container.RegisterType<IEventHandler, VehicleTypeDetailGenerator>("VehicleTypeDetailGenerator");
             container.RegisterType<IEventHandler, NotificationSettingsGenerator>("NotificationSettingsGenerator");
+            container.RegisterType<IEventHandler, PromotionDetailGenerator>("PromotionDetailGenerator");
 
             // Integration event handlers
             container.RegisterType<IEventHandler, PushNotificationSender>("PushNotificationSender");
@@ -197,6 +199,7 @@ namespace apcurium.MK.Booking
             container.RegisterType<ICommandHandler, PayPalPaymentCommandHandler>("PayPalPaymentCommandHandler");
             container.RegisterType<ICommandHandler, CreditCardPaymentCommandHandler>("CreditCardPaymentCommandHandler");
             container.RegisterType<ICommandHandler, SmsCommandHandler>("SmsCommandHandler");
+            container.RegisterType<ICommandHandler, PromotionCommandHandler>("PromotionCommandHandler");
         }
     }
 }

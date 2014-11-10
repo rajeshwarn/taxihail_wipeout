@@ -23,7 +23,14 @@
     <div class="control-group btn-right-alignment">
         <button type="submit" class="btn btn-primary span">Save</button>
         @Html.ActionLink("Cancel", "Index", null, new { @class = "btn span" })
-        @Html.ActionLink("Delete", "Delete", new { id = @Model.Id }, new { @class = "btn btn-danger span" })
+        @if (Model.Active)
+        {
+            @Html.ActionLink("Deactivate", "Deactivate", new { id = @Model.Id }, new { @class = "btn btn-danger span" })
+        }
+        else
+        {
+            @Html.ActionLink("Activate", "Activate", new { id = @Model.Id }, new { @class = "btn btn-success span" })
+        }
     </div>
 }
 
