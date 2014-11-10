@@ -391,7 +391,7 @@
     <None Include="Localization\CINQ-S.fr.resx" />
     <None Include="Localization\CINQ-S.resx" />
     <EmbeddedResource Include="TutorialContent\Tutorial-en.json" />
-    <None Include="TutorialContent\Tutorial-es.json" />
+    <EmbeddedResource Include="TutorialContent\Tutorial-es.json" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <Target Name="BeforeBuild">
