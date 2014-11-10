@@ -1,6 +1,7 @@
 ﻿#region
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using apcurium.MK.Booking.Api.Contract.Requests;
@@ -36,33 +37,30 @@ namespace apcurium.MK.Booking.Api.Services
 
         public AvailableVehiclesResponse Post(AvailableVehicles request)
         {
-            var market = "";
+            var vehicleType = _dao.GetAll().FirstOrDefault(v => v.ReferenceDataVehicleId == request.VehicleTypeId);
+            string logoName = vehicleType != null ? vehicleType.LogoName : null;
 
-            if (string.IsNullOrWhiteSpace(request.Market))
+            var vehicles = new IbsVehiclePosition[0];
+
+            if (string.IsNullOrEmpty((request.Market)))
             {
-                var vehicles = _ibsServiceProvider.Booking().GetAvailableVehicles(request.Latitude, request.Longitude, request.VehicleTypeId);
-                var vehicleType = _dao.GetAll().FirstOrDefault(v => v.ReferenceDataVehicleId == request.VehicleTypeId);
-                string logoName = vehicleType != null ? vehicleType.LogoName : null;
-
-                var availableVehicles = vehicles.Select(Mapper.Map<AvailableVehicle>).ToArray();
-                foreach (var vehicle in availableVehicles)
-                {
-                    vehicle.LogoName = logoName;
-                }
-                return new AvailableVehiclesResponse(availableVehicles);   
+                vehicles = _ibsServiceProvider.Booking()
+                    .GetAvailableVehicles(request.Latitude, request.Longitude, request.VehicleTypeId);
             }
             else
             {
-                // Sample call - http://insight.cmtapi.com:8081/v1.1/availability?market={0}&includeEntities=true&meterState=0
-                // Should use an honey badger client
-
-                market = request.Market.Trim().ToUpperInvariant();
-                // Pass market and vehicleId to honey badger client
-
-                return new AvailableVehiclesResponse();
+                // MKTAXI-2282, wait for MKTAXI-2294
+                // Call to honey badger endpoint:
+                // vehicles = 
             }
 
-            return new AvailableVehiclesResponse();
+            var availableVehicles = vehicles.Select(Mapper.Map<AvailableVehicle>).ToArray();
+                
+            foreach (var vehicle in availableVehicles)
+            {
+                vehicle.LogoName = logoName;
+            }
+            return new AvailableVehiclesResponse(availableVehicles);   
         }
 
         public object Get(VehicleTypeRequest request)
