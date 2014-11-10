@@ -84,6 +84,7 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
                     {
                         CompanyKey = company.CompanyKey,
                         CompanyName = company.CompanyName,
+                        FleetId = availableCompany.FleetId,
                         IbsPassword = company.IBS.Password,
                         IbsUserName = company.IBS.Username,
                         IbsUrl = company.IBS.ServiceUrl
