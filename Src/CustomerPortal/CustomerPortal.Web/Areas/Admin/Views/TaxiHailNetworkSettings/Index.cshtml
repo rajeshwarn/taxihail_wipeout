@@ -29,9 +29,13 @@
     <fieldset>
         <legend>
         </legend>
-        <div class="editor-field">
+        <div class="editor-fleet-field">
             @Html.LabelFor(x => x.Market)
             @Html.TextBoxFor(x => x.Market, new { id = "MarketTextBox" })
+        </div>
+        <div class="editor-fleet-field">
+            @Html.LabelFor(x => x.FleetId)
+            @Html.TextBoxFor(x => x.FleetId, new { id = "FleetTextBox" })
         </div>
     </fieldset>
     

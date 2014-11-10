@@ -16,5 +16,7 @@ namespace CustomerPortal.Client
         List<NetworkFleetResponse> GetNetworkFleet(string companyId, double? latitude = null, double? longitude = null);
 
         string GetCompanyMarket(double latitude, double longitude);
+
+        IEnumerable<NetworkFleetResponse> GetMarketFleets(string market, double latitude, double longitude);
     }
 }

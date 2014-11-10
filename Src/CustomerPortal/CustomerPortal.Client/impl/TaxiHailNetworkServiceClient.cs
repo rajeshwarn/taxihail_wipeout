@@ -28,23 +28,19 @@ namespace CustomerPortal.Client.Impl
 
             var @params = new Dictionary<string, string>
                 {
-                    {"latitude", latitude.ToString() },
-                    {"longitude", longitude.ToString() }
+                    { "latitude", latitude.ToString() },
+                    { "longitude", longitude.ToString() }
                 };
 
-            string queryString = BuildQueryString(@params);
+            var queryString = BuildQueryString(@params);
 
             return Client.Get(string.Format("customer/{0}/networkfleet/", companyKey) + queryString)
                          .Deserialize<List<NetworkFleetResponse>>();
         }
 
-
         public List<NetworkFleetResponse> GetNetworkFleet(string companyId, double? latitude = null, double? longitude = null)
         {
-            var response = GetNetworkFleetAsync(companyId, latitude, longitude);
-            response.Wait();
-
-            return response.Result;
+            return GetNetworkFleetAsync(companyId, latitude, longitude).Result;
         }
 
         public Task SetNetworkCompanyPreferences(string companyId, CompanyPreference[] preferences)
@@ -56,16 +52,31 @@ namespace CustomerPortal.Client.Impl
         {
             var @params = new Dictionary<string, string>
                 {
-                    {"latitude", latitude.ToString() },
-                    {"longitude", longitude.ToString() }
+                    { "latitude", latitude.ToString() },
+                    { "longitude", longitude.ToString() }
                 };
 
-            string queryString = BuildQueryString(@params);
+            var queryString = BuildQueryString(@params);
 
-            var response = Client.Get("customer/network/market" + queryString)
-                                 .Deserialize<string>();
+            return Client.Get("customer/roaming/market" + queryString)
+                         .Deserialize<string>()
+                         .Result;
+        }
 
-            return response.Result;
+        public IEnumerable<NetworkFleetResponse> GetMarketFleets(string market, double latitude, double longitude)
+        {
+            var @params = new Dictionary<string, string>
+                {
+                    { "market", market },
+                    { "latitude", latitude.ToString() },
+                    { "longitude", longitude.ToString() }
+                };
+
+            var queryString = BuildQueryString(@params);
+
+            return Client.Get("customer/roaming/marketfleets" + queryString)
+                         .Deserialize<IEnumerable<NetworkFleetResponse>>()
+                         .Result;
         }
     }
 }

@@ -346,14 +346,5 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
             Assert.True(tony.CompanyPreference.CanAccept);
             Assert.True(tony.CompanyPreference.CanDispatch);
         }
-
-        [Test]
-        public void When_Getting_Company_Market()
-        {
-            var response = Sut.Get(45.423513, -73.653214);
-            var json = response.Content.ReadAsStringAsync().Result;
-
-            Assert.AreEqual("MTL", json);
-        }
     }
 }
