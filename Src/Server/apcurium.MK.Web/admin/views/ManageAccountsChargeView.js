@@ -6,6 +6,16 @@
             this.collection.on('selected', this.edit, this);
         },
 
+        events: {
+            'click [data-action=importdata]': 'importdata'
+        },
+
+        importdata: function (e) {
+            e.preventDefault();
+            // Call the ibschargeaccounts end point
+            // Refresh the page on success
+        },
+
         render: function () {
 
             this.$el.html(this.renderTemplate());
