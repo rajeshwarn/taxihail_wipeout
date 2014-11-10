@@ -249,7 +249,7 @@
                     type: "GET",
                     dataType: "text",
                     success: function (data) {
-                        TaxiHail.parameters.market = data; // TODO: Where should it be done?
+                        TaxiHail.parameters.market = data;
                     }
                 });
             }

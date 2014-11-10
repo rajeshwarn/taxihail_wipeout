@@ -36,16 +36,33 @@ namespace apcurium.MK.Booking.Api.Services
 
         public AvailableVehiclesResponse Post(AvailableVehicles request)
         {
-            var vehicles = _ibsServiceProvider.Booking().GetAvailableVehicles(request.Latitude, request.Longitude, request.VehicleTypeId, request.Market);
-            var vehicleType = _dao.GetAll().FirstOrDefault(v => v.ReferenceDataVehicleId == request.VehicleTypeId);
-            string logoName = vehicleType != null ? vehicleType.LogoName : null;
+            var market = "";
 
-            var availableVehicles = vehicles.Select(Mapper.Map<AvailableVehicle>).ToArray();
-            foreach (var vehicle in availableVehicles)
+            if (string.IsNullOrWhiteSpace(request.Market))
             {
-                vehicle.LogoName = logoName;
+                var vehicles = _ibsServiceProvider.Booking().GetAvailableVehicles(request.Latitude, request.Longitude, request.VehicleTypeId);
+                var vehicleType = _dao.GetAll().FirstOrDefault(v => v.ReferenceDataVehicleId == request.VehicleTypeId);
+                string logoName = vehicleType != null ? vehicleType.LogoName : null;
+
+                var availableVehicles = vehicles.Select(Mapper.Map<AvailableVehicle>).ToArray();
+                foreach (var vehicle in availableVehicles)
+                {
+                    vehicle.LogoName = logoName;
+                }
+                return new AvailableVehiclesResponse(availableVehicles);   
             }
-            return new AvailableVehiclesResponse(availableVehicles);
+            else
+            {
+                // Sample call - http://insight.cmtapi.com:8081/v1.1/availability?market={0}&includeEntities=true&meterState=0
+                // Should use an honey badger client
+
+                market = request.Market.Trim().ToUpperInvariant();
+                // Pass market and vehicleId to honey badger client
+
+                return new AvailableVehiclesResponse();
+            }
+
+            return new AvailableVehiclesResponse();
         }
 
         public object Get(VehicleTypeRequest request)

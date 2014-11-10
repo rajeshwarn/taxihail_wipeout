@@ -33,7 +33,7 @@ namespace apcurium.MK.Booking.IBS.Impl
             _serverSettings = serverSettings;
         }
 
-        public IbsVehiclePosition[] GetAvailableVehicles(double latitude, double longitude, int? vehicleTypeId, string market = "")
+        public IbsVehiclePosition[] GetAvailableVehicles(double latitude, double longitude, int? vehicleTypeId)
         {
             var result = new IbsVehiclePosition[0];
 
@@ -48,22 +48,14 @@ namespace apcurium.MK.Booking.IBS.Impl
                                         ? new[] { new TVehicleTypeItem { ID = vehicleTypeId.Value } }
                                         : new TVehicleTypeItem[0];
                 
-                // Switch between CMT honey badge and IBS approach
-                if (string.IsNullOrEmpty(market))
+                UseService(service =>
                 {
-                    UseService(service =>
-                    {
-                        result = service
-                            .GetAvailableVehicles_4(UserNameApp, PasswordApp, longitude, latitude, radius, count, false,
-                                vehicleTypeFilter)
-                            .Select(Mapper.Map<IbsVehiclePosition>)
-                            .ToArray();
-                    });
-                }
-                else
-                {
-                    // New approach
-                }
+                    result = service
+                        .GetAvailableVehicles_4(UserNameApp, PasswordApp, longitude, latitude, radius, count, false,
+                            vehicleTypeFilter)
+                        .Select(Mapper.Map<IbsVehiclePosition>)
+                        .ToArray();
+                });
             }
 
             return result.GroupBy(r=>r.VehicleNumber).Select( g=> g.First()).ToArray() ;
