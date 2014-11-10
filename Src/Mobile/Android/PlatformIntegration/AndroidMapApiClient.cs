@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using Android.OS;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Extensions;
@@ -30,7 +31,6 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 			_androidGlobals = androidGlobals;
 			_logger = logger;
 			_settings = settings;
-
 		}
 
 		public GeoAddress[] GeocodeAddress (string address, string currentLanguage)
@@ -40,26 +40,24 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 
 			var geocoder = new Geocoder (_androidGlobals.ApplicationContext);
 
-			try {
-
-				if (new[] {
-					_settings.Data.LowerLeftLatitude,
-					_settings.Data.LowerLeftLongitude,
-					_settings.Data.UpperRightLatitude,
-					_settings.Data.UpperRightLongitude
-				}.All (d => d.HasValue)) {
+			try 
+            {
+                if (SettingsForGeocodingRegionAreSet)
+                {
 					var locations = geocoder.GetFromLocationName (address.Replace ("+", " "), 100, _settings.Data.LowerLeftLatitude.Value, _settings.Data.LowerLeftLongitude.Value, _settings.Data.UpperRightLatitude.Value, _settings.Data.UpperRightLongitude.Value);				
 					return locations.Select (ConvertAddressToGeoAddress).ToArray ();			
-				} else {
+				} 
+                else 
+                {
 					var locations = geocoder.GetFromLocationName (address.Replace ("+", " "), 100);				
 					return locations.Select (ConvertAddressToGeoAddress).ToArray ();			
 				}
-
-			} catch (Exception ex) {
+			} 
+            catch (Exception ex) 
+            {
 				_logger.LogError (ex);
 				return new GeoAddress [0];
 			}
-				
 		}
 
 		public GeoAddress[] GeocodeLocation (double latitude, double longitude, string currentLanguage)
@@ -68,90 +66,121 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 			// automatically gets the results using the system language
 
 			var geocoder = new Geocoder (_androidGlobals.ApplicationContext);
-
-
-			try {
-				var locations = geocoder.GetFromLocation (latitude, longitude, 25).ToArray ();
-
-				var result = locations.Where (l => l.HasLatitude && l.HasLongitude).Select (ConvertAddressToGeoAddress).ToArray ();			
-				return result;
-							
-			} catch (Exception ex) {
+            
+			try 
+            {
+                var locations = geocoder.GetFromLocation(latitude, longitude, 25).Where(l => l.HasLatitude && l.HasLongitude);
+				return locations.Select (ConvertAddressToGeoAddress).ToArray ();			
+			} 
+            catch (Exception ex) 
+            {
 				_logger.LogError (ex);
 				return new GeoAddress [0];
 			}
-
-		
-
 		}
-
-		static string GetFormatFullAddres (Address address)
-		{
-			var fullAddressComponents = new List<string> ();
-			for (int i = 0; i < address.MaxAddressLineIndex; i++) {
-				var l = address.GetAddressLine (i);
-				if (l.HasValue () && l.Split (' ').Length > 1 && l.Split (' ') [0].Contains ("-")) {
-					var sNumber = l.Split (' ') [0].Split ('-') [0];
-					l = sNumber + l.Split (' ').Skip (1).JoinBy (" ");
-				}
-				fullAddressComponents.Add (l);
-			}
-			var full = fullAddressComponents.JoinBy (", ");
-			return full;
-		}
-
+        
 		private GeoAddress ConvertAddressToGeoAddress (Address address)
 		{		
-			var streetNumber = address.SubThoroughfare;
-			if ((streetNumber != null) && (streetNumber.Any (c => c == '-'))) {
-				streetNumber = streetNumber.Substring (0, streetNumber.IndexOf ('-')); 			
-			}
+            var streetNumber = ConvertStreetNumberRangeToSingle(address.SubThoroughfare, address.PostalCode);
+            var fullAddress = GetFormatFullAddress(address);
 
-			var full = GetFormatFullAddres (address);
+            // replace corrected street number in the full address
+            if (streetNumber.HasValue())
+            {
+                fullAddress = fullAddress.Replace(address.SubThoroughfare, streetNumber);
+            }
 
-
-			var r = new GeoAddress { 
+			var geoAddress = new GeoAddress 
+            { 
 				StreetNumber = streetNumber,
 				Street = address.Thoroughfare,
 				Latitude = address.Latitude,
 				Longitude = address.Longitude,
 				City = address.Locality ?? address.SubLocality,
-				FullAddress = full,
+                FullAddress = fullAddress,
 				State = address.AdminArea,
 				ZipCode = address.PostalCode
 			};
 
-			return r;
-
+			return geoAddress;
 		}
 
-		private string GetNameFromDescription (string description)
-		{
-			if (string.IsNullOrWhiteSpace (description) || !description.Contains (",")) {
-				return description;
-			}
-			var components = description.Split (',');
-			return components.First ().Trim ();
-		}
+        private string GetFormatFullAddress(Address address)
+        {
+            // address object contains address lines used for displaying an address on Android on separate lines
+            // we combine them with ", " to have the full address on a single line
+            var fullAddressComponents = new List<string>();
+            for (int i = 0; i < address.MaxAddressLineIndex; i++)
+            {
+                var addressLine = address.GetAddressLine(i);
+                fullAddressComponents.Add(addressLine);
+            }
+            var full = fullAddressComponents.JoinBy(", ");
+            return full;
+        }
 
-		private string GetAddressFromDescription (string description)
-		{
-			if (string.IsNullOrWhiteSpace (description) || !description.Contains (",")) {
-				return description;
-			}
-			var components = description.Split (',');
-			if (components.Count () > 1) {
-				return components.Skip (1).Select (c => c.Trim ()).JoinBy (", ");
-			}
-			return components.First ().Trim ();
-		}
+        private string ConvertStreetNumberRangeToSingle(string subThoroughFare, string zipCode)
+        {
+            var streetNumber = subThoroughFare;
 
-		private string BuildQueryString (IDictionary<string, string> @params)
-		{
-			return "?" + string.Join ("&", @params.Select (x => string.Join ("=", x.Key, x.Value)));
-		}
+            // Android geocoder doesn't differentiate the dash character for Queens vs normal range of addresses
+            if (streetNumber == null || !streetNumber.Contains("-"))
+            {
+                return streetNumber;
+            }
+            
+            if (streetNumber.Count(x => x == '-') == 3)
+            {
+                // a range of Queens formatted address
+                var positionOfFirstDash = streetNumber.IndexOf('-');
+                return streetNumber.Substring(0, streetNumber.IndexOf('-', positionOfFirstDash + 1));
+            }
 
+            if (!zipCode.HasValue())
+            {
+                return streetNumber.Substring(0, streetNumber.IndexOf('-'));
+            }
 
+            // leave Queens addresses intact
+            if (!ListOfQueensZipCodes.Contains(zipCode))
+            {
+                return streetNumber.Substring(0, streetNumber.IndexOf('-'));
+            }
+
+            return streetNumber;
+        }
+
+        private IEnumerable<string> ListOfQueensZipCodes
+	    {
+	        get
+	        {
+	            return new[]
+	            {
+	                "11433", "11434", "11692", "11101", "11102", "11103", "11104", "11105", "11106", "11107", "11108",
+	                "11109", "11359", "11360", "11361", "11364", "11357", "11694", "11426", "11427", "11428", "11424", 
+                    "11697", "11435", "11693", "11411", "11356", "11368", "11362", "11363", "11369", "11370", "11371", 
+                    "11690", "11373", "11379", "11691", "11004", "11005", "11351", "11354", "11355", "11358", "11375", 
+                    "11695", "11365", "11366", "11385", "11423", "11414", "11372", "11412", "11413", "11415", "11416",
+                    "11417", "11418", "11419", "11432", "11367", "11378", "11429", "11374", "11422", "11420", "11436", 
+                    "11421", "11377"
+	            };
+	        }
+	    }
+
+        private bool SettingsForGeocodingRegionAreSet
+        {
+            get
+            {
+                return
+                    new[]
+	                {
+	                    _settings.Data.LowerLeftLatitude, 
+                        _settings.Data.LowerLeftLongitude, 
+                        _settings.Data.UpperRightLatitude,
+	                    _settings.Data.UpperRightLongitude
+	                }.All(d => d.HasValue);
+            }
+        }
 	}
 }
 

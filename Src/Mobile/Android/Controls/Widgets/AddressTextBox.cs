@@ -13,7 +13,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
     public class AddressTextBox : LinearLayout
     {
-        public Action<string,string> AddressUpdated { get; set; }
+        public Action<string> AddressUpdated { get; set; }
 
         public event EventHandler AddressClicked;
 
@@ -134,15 +134,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         private void SetBehavior()
         {
             //Order is important
-            NumberAndAddressTextFieldBehavior.ApplyTo(AddressTextView, StreetNumberTextView, (s,n) => 
+            NumberAndAddressTextFieldBehavior.ApplyTo(AddressTextView, StreetNumberTextView, number => 
             {
                 if ( AddressUpdated != null )
                 {
-                    AddressUpdated( s,n );
+                    AddressUpdated(number);
                 }
             });
 
-            AddressTextView.Click += (sender, e) => {
+            AddressTextView.Click += (sender, e) => 
+            {
                 if(!IsReadOnly && AddressClicked!= null)
                 {
                     AddressClicked(this, EventArgs.Empty);

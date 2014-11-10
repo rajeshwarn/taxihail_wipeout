@@ -3969,6 +3969,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f05024a
 			public const int CreditCardAdded = 2131034698;
 			
+			// aapt resource value: 0x7f05027a
+			public const int CreditCardBookingSettingsError = 2131034746;
+			
 			// aapt resource value: 0x7f050182
 			public const int CreditCardCCV = 2131034498;
 			
@@ -4197,14 +4200,14 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f05010a
 			public const int GooglePlayServicesNotAvailableMessage = 2131034378;
 			
-			// aapt resource value: 0x7f05027a
-			public const int GooglePlayServicesNotAvailableMessage1 = 2131034746;
+			// aapt resource value: 0x7f05027c
+			public const int GooglePlayServicesNotAvailableMessage1 = 2131034748;
 			
 			// aapt resource value: 0x7f05006a
 			public const int GooglePlayServicesNotAvailableTitle = 2131034218;
 			
-			// aapt resource value: 0x7f05027b
-			public const int GooglePlayServicesNotAvailableTitle1 = 2131034747;
+			// aapt resource value: 0x7f05027d
+			public const int GooglePlayServicesNotAvailableTitle1 = 2131034749;
 			
 			// aapt resource value: 0x7f05002e
 			public const int Hello = 2131034158;
@@ -5123,6 +5126,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 			
 			// aapt resource value: 0x7f050077
 			public const int UpdateBookingSettingsEmptyField = 2131034231;
+			
+			// aapt resource value: 0x7f05027b
+			public const int UpdateBookingSettingsGenericError = 2131034747;
 			
 			// aapt resource value: 0x7f050279
 			public const int UpdateBookingSettingsInvalidAccount = 2131034745;
@@ -6534,7 +6540,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 					16843055,
 					16843056,
 					16843057,
-					16843832};
+					16843948};
 			
 			// aapt resource value: 4
 			public const int MenuView_android_headerBackground = 4;
