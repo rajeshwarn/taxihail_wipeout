@@ -41,16 +41,6 @@ namespace apcurium.MK.Common.Entity
         public string AddressType { get; set; }
 
         /// <summary>
-        ///     This represents the address sent to the dispatch system.
-        ///     The dispatch system has length constraints for addresses. The address must be short and
-        ///     the most important information must appear first in the address (StreetNumber, Street and City)
-        /// </summary>
-        public string BookAddress
-        {
-            get { return ConcatAddressComponents(); }
-        }
-
-        /// <summary>
         ///     This represents the address displayed to the user in the application
         /// </summary>
         public string DisplayAddress
@@ -60,8 +50,7 @@ namespace apcurium.MK.Common.Entity
 
         private string ConcatAddressComponents(bool useBuildingName = false)
         {
-            var components =
-                new[] {StreetNumber, Street, City, State, ZipCode}.Where(x => !string.IsNullOrWhiteSpace(x)).ToArray();
+            var components = new[] { StreetNumber, Street, City, State, ZipCode }.Where(x => !string.IsNullOrWhiteSpace(x)).ToArray();
             if ((components.Length > 1) && (StreetNumber.HasValue()) && (Street.HasValue()))
             {
                 // StreetNumber Street, City, State ZipCode
@@ -81,32 +70,20 @@ namespace apcurium.MK.Common.Entity
             return FullAddress;
         }
 
-        public void UpdateStreetOrNumberBuildingName(string streetNumberBuildingName)
-        {
-            if (streetNumberBuildingName.HasValue())
-            {
-                if (streetNumberBuildingName.IsDigit())
-                {
-                    StreetNumber = streetNumberBuildingName;
-                    BuildingName = null;
-                }
-                else
-                {
-                    BuildingName = streetNumberBuildingName;
-                }
-            }
-        }
-
         public string GetFirstPortionOfAddress()
         {
             if ( (DisplayAddress.HasValue()) && ( DisplayAddress.Contains( "," ) ) )
             {
                 return DisplayAddress.Split(',').First();
             }
-            else
-            {
-                return DisplayAddress;
-            }
+
+            return DisplayAddress;
+        }
+
+        public void ChangeStreetNumber(string newStreetNumber)
+        {
+            FullAddress = FullAddress.Replace(StreetNumber, newStreetNumber);
+            StreetNumber = newStreetNumber;
         }
 
         /// <summary>

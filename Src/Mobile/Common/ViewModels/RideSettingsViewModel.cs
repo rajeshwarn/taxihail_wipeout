@@ -1,11 +1,14 @@
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.ViewModels.Payment;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Entity;
+using apcurium.MK.Common.Enumeration;
+using ServiceStack.ServiceClient.Web;
 using ServiceStack.Text;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
@@ -14,18 +17,21 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
     {
 		private readonly IAccountService _accountService;
 		private readonly IPaymentService _paymentService;
-		private readonly IOrderWorkflowService _orderWorkflowService;
+	    private readonly IAccountPaymentService _accountPaymentService;
+	    private readonly IOrderWorkflowService _orderWorkflowService;
 
         private BookingSettings _bookingSettings;
 	    private ClientPaymentSettings _paymentSettings;
 
 		public RideSettingsViewModel(IAccountService accountService, 
 			IPaymentService paymentService,
+            IAccountPaymentService accountPaymentService,
 			IOrderWorkflowService orderWorkflowService)
 		{
 			_orderWorkflowService = orderWorkflowService;
 			_paymentService = paymentService;
-			_accountService = accountService;
+		    _accountPaymentService = accountPaymentService;
+		    _accountService = accountService;
 		}
 
 		public async void Init(string bookingSettings)
@@ -287,25 +293,46 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                return this.GetCommand(() => 
+                return this.GetCommand(async () => 
                 {
-                    if (ValidateRideSettings())
-                    {
-						using (this.Services ().Message.ShowProgress ())
-						{
-							var creditCard = PaymentPreferences.SelectedCreditCardId == Guid.Empty ? default(Guid?) : PaymentPreferences.SelectedCreditCardId;
-							_accountService.UpdateSettings(_bookingSettings, creditCard, PaymentPreferences.Tip);
-							Close(this);
-						}
-                    }
+					using (this.Services ().Message.ShowProgress ())
+					{
+					    if (ValidateRideSettings())
+					    {
+					        var creditCard = PaymentPreferences.SelectedCreditCardId == Guid.Empty
+					            ? default(Guid?)
+					            : PaymentPreferences.SelectedCreditCardId;
+
+					        try
+					        {
+					            await _accountService.UpdateSettings(_bookingSettings, creditCard, PaymentPreferences.Tip);
+                                Close(this);
+					        }
+					        catch (WebServiceException ex)
+					        {
+					            switch (ex.ErrorCode)
+					            {
+					                case "AccountCharge_InvalidAccountNumber":
+					                    this.Services()
+					                        .Message.ShowMessage(this.Services().Localize["UpdateBookingSettingsInvalidDataTitle"],
+					                            this.Services().Localize["UpdateBookingSettingsInvalidAccount"]);
+					                    break;
+					                default:
+					                    this.Services()
+					                        .Message.ShowMessage(this.Services().Localize["UpdateBookingSettingsInvalidDataTitle"],
+					                            this.Services().Localize["UpdateBookingSettingsGenericError"]);
+					                    break;
+					            }
+					        }
+					    }
+					}
                 });
             }
         }
 
         public bool ValidateRideSettings()
         {
-            if (string.IsNullOrEmpty(Name) 
-                || string.IsNullOrEmpty(Phone))
+            if (string.IsNullOrEmpty(Name) || string.IsNullOrEmpty(Phone))
             {
                 this.Services().Message.ShowMessage(this.Services().Localize["UpdateBookingSettingsInvalidDataTitle"], this.Services().Localize["UpdateBookingSettingsEmptyField"]);
                 return false;
@@ -313,6 +340,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             if (Phone.Count(Char.IsDigit) < 10)
             {
                 this.Services().Message.ShowMessage(this.Services().Localize["UpdateBookingSettingsInvalidDataTitle"], this.Services().Localize["InvalidPhoneErrorMessage"]);
+                return false;
+            }
+            if (ChargeTypeId == ChargeTypes.Account.Id && string.IsNullOrWhiteSpace(AccountNumber))
+            {
+                this.Services().Message.ShowMessage(this.Services().Localize["UpdateBookingSettingsInvalidDataTitle"], this.Services().Localize["UpdateBookingSettingsEmptyAccount"]);
                 return false;
             }
 

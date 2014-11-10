@@ -11,13 +11,14 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
     public class ServiceStackController : Controller
     {
         private readonly ICacheClient _cache;
-        public ServiceStackController(ICacheClient cache, IServerSettings serverSettings)
+        private object _userSession;
+
+        protected ServiceStackController(ICacheClient cache, IServerSettings serverSettings)
         {
             _cache = cache;
             ViewData["ApplicationName"] = serverSettings.ServerData.TaxiHail.ApplicationName;
             ViewData["ApplicationKey"] = serverSettings.ServerData.TaxiHail.ApplicationKey;
             ViewData["IsAuthenticated"] = AuthSession.IsAuthenticated;
-
         }
 
         public string BaseUrl { get; set; }
@@ -34,17 +35,14 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
             return base.BeginExecute(requestContext, callback, state);
         }
 
-        private object _userSession;
-
         protected TUserSession SessionAs<TUserSession>()
         {
             if (_userSession == null)
             {
                 _userSession = _cache.SessionAs<TUserSession>(System.Web.HttpContext.Current.Request.ToRequest());
             }
+
             return (TUserSession)_userSession;
         }
-
-
     }
 }

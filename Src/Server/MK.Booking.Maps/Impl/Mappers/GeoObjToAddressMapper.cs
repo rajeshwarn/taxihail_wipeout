@@ -12,7 +12,7 @@ namespace apcurium.MK.Booking.Maps.Impl.Mappers
 {
     public class GeoObjToAddressMapper
     {
-        public Address ConvertToAddress(GeoAddress geoAddress , string placeName, bool foundByName)
+        public Address ConvertToAddress(GeoAddress geoAddress, string placeName, bool foundByName)
         {
             var address = new Address
             {
@@ -26,7 +26,6 @@ namespace apcurium.MK.Booking.Maps.Impl.Mappers
                 ZipCode = geoAddress.ZipCode,
                 City = geoAddress.City,
                 State = geoAddress.State, 
-
             };
                                     
             address.AddressType = "postal";
@@ -42,23 +41,26 @@ namespace apcurium.MK.Booking.Maps.Impl.Mappers
             //If the search was done by name ( foundByName == true ), and the address has 2 component 21-7, the second component must be padded with a zero.
             //If this code causes a problem, we need to add a settings and make it active only for Four Twos ( or companies in queens )
 
-            if ((isRange) && address.StreetNumber.Contains("-"))
+            if (isRange && address.StreetNumber.Contains("-"))
             {
                 var components = address.StreetNumber.Split('-');
                 var firstMiddleCount = (components.Count()/2);
-                address.StreetNumber = components.Select(AddLeadingZeroIfSingleNumber).Take(firstMiddleCount).JoinBy("");
+
+                var newStreetNumber = components.Select(AddLeadingZeroIfSingleNumber).Take(firstMiddleCount).JoinBy("");
+                ChangeStreetNumber(address, newStreetNumber);
             }
-
-
+            
             if (address.StreetNumber.Contains("-") && (address.StreetNumber.Split('-').Count() == 2))
             {
                 var streetNumberComponents = address.StreetNumber.Split('-');
-                address.StreetNumber = AddLeadingZeroIfSingleNumber(streetNumberComponents[0]) +
-                                       AddLeadingZeroIfSingleNumber(streetNumberComponents[1]);
+                var newStreetNumber = AddLeadingZeroIfSingleNumber(streetNumberComponents[0]) +
+                                      AddLeadingZeroIfSingleNumber(streetNumberComponents[1]);
+                ChangeStreetNumber(address, newStreetNumber);
             }
             else
             {
-                address.StreetNumber = address.StreetNumber.Replace("-", "");
+                var newStreetNumber = address.StreetNumber.Replace("-", "");
+                ChangeStreetNumber(address, newStreetNumber); 
             }
 
             if (address.StreetNumber.IsNullOrEmpty() && placeName.HasValue())
@@ -86,6 +88,15 @@ namespace apcurium.MK.Booking.Maps.Impl.Mappers
             return val;
         }
 
+        private void ChangeStreetNumber(Address address, string newStreetNumber)
+        {
+            if (address.StreetNumber.HasValue() && newStreetNumber.HasValue())
+            {
+                address.FullAddress = address.FullAddress.Replace(address.StreetNumber, newStreetNumber);
+            }
+            address.StreetNumber = newStreetNumber;
+        }
+        
         public static bool IsOdd(int value)
         {
             return value%2 != 0;
