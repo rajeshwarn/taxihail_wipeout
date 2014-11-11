@@ -47,7 +47,7 @@ namespace apcurium.MK.Booking.Api.Services
             var payment = _orderPaymentDao.FindByOrderId(orderDetail.Id);
             if ( (payment != null) && (!payment.IsCancelled ) && (payment.IsCompleted ))
             {
-                orderDetail.Fare = Convert.ToDouble( payment.Amount);
+                orderDetail.Fare = Convert.ToDouble( payment.Meter );
                 orderDetail.Toll = 0;
                 orderDetail.Tip = Convert.ToDouble( payment.Tip);
             }
