@@ -1,10 +1,5 @@
 ﻿<!DOCTYPE html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!-->
-<html class="no-js">
- <!--<![endif]-->
+<html>
 <head>
     <!-- version : <%: ApplicationVersion %> -->
     <meta charset='utf-8' />
@@ -20,7 +15,6 @@
     <script src="~/assets/js/modernizr.min.js"></script>
     <script src="~/scripts/jquery-1.10.2.min.js"></script>
     <script src="~/scripts/jquery.sortable.min.js"></script>
-    
 </head>
 <body>
     <header>
@@ -49,8 +43,7 @@
     </div>
     <div class='modal-zone'></div>
 
-    <!-- assets -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    @Scripts.Render("~/admin/bundles/assets")
 
 </body>
 </html>

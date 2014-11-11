@@ -3,13 +3,12 @@
 <h4 class="table-title">Add a Promo Code</h4>
 @if (@ViewBag.Error != null)
 {
-    <div class="alert alert-error" style="margin-top: 10px;">@ViewBag.Error</div>
+    <div class="alert alert-error" style="margin-top: 10px;">@ViewBag.Error @Html.ValidationSummary(true)</div>
 }
 
 @using (Html.BeginForm("Create", "PromoCode", FormMethod.Post))
 {
     @Html.AntiForgeryToken()
-    @Html.ValidationSummary(true)
 
     <div class="control-group">
         @Html.LabelFor(x => x.Name, "Name", new { @class = "control-label" })

@@ -36,24 +36,40 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
 
         // POST: AdminTH/PromoCode/Create
         [HttpPost]
-        public ActionResult Create(FormCollection form)
+        public ActionResult Create(PromoCode promoCode)
         {
             try
             {
+                if (!ModelState.IsValid)
+                {
+                    throw new Exception("Something's not right");
+                }
+
                 _commandBus.Send(new CreatePromotion
                 {
                     PromoId = Guid.NewGuid(),
-                    Name = form["Name"],
-                    Code = "code"
+                    Name = promoCode.Name,
+                    StartDate = promoCode.StartDate,
+                    EndDate = promoCode.EndDate,
+                    DaysOfWeek = promoCode.DaysOfWeek,
+                    StartTime = promoCode.StartTime,
+                    EndTime = promoCode.EndTime,
+                    AppliesToCurrentBooking = promoCode.AppliesToCurrentBooking,
+                    AppliesToFutureBooking = promoCode.AppliesToFutureBooking,
+                    DiscountValue = promoCode.DiscountValue,
+                    DiscountType = promoCode.DiscountType,
+                    MaxUsagePerUser = promoCode.MaxUsagePerUser,
+                    MaxUsage = promoCode.MaxUsage,
+                    Code = promoCode.Code
                 });
 
-                TempData["Info"] = string.Format("Promotion \"{0}\" created", form["Name"]);
+                TempData["Info"] = string.Format("Promotion \"{0}\" created", promoCode.Name);
                 return RedirectToAction("Index");
             }
             catch(Exception ex)
             {
                 ViewBag.Error = ex.Message;
-                return View();
+                return View(promoCode);
             }
         }
 
@@ -66,65 +82,65 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
 
         // POST: AdminTH/PromoCode/Edit/5
         [HttpPost]
-        public ActionResult Edit(Guid id, FormCollection form)
+        public ActionResult Edit(PromoCode promoCode)
         {
             try
             {
+                if (!ModelState.IsValid)
+                {
+                    throw new Exception("Something's not right");
+                }
+
                 _commandBus.Send(new UpdatePromotion
                 {
-                    PromoId = id,
-                    Name = form["Name"],
-                    Code = "code"
+                    PromoId = promoCode.Id,
+                    Name = promoCode.Name,
+                    StartDate = promoCode.StartDate,
+                    EndDate = promoCode.EndDate,
+                    DaysOfWeek = promoCode.DaysOfWeek,
+                    StartTime = promoCode.StartTime,
+                    EndTime = promoCode.EndTime,
+                    AppliesToCurrentBooking = promoCode.AppliesToCurrentBooking,
+                    AppliesToFutureBooking = promoCode.AppliesToFutureBooking,
+                    DiscountValue = promoCode.DiscountValue,
+                    DiscountType = promoCode.DiscountType,
+                    MaxUsagePerUser = promoCode.MaxUsagePerUser,
+                    MaxUsage = promoCode.MaxUsage,
+                    Code = promoCode.Code
                 });
 
-                TempData["Info"] = string.Format("Promotion \"{0}\" updated", form["Name"]);
+                TempData["Info"] = string.Format("Promotion \"{0}\" updated", promoCode.Name);
                 return RedirectToAction("Index");
             }
             catch (Exception ex)
             {
-                TempData["Info"] = ex.Message;
-                return View();
+                ViewBag.Error = ex.Message;
+                return View(promoCode);
             }
         }
 
         // GET: AdminTH/PromoCode/Activate/5
         public ActionResult Activate(Guid id)
         {
-            try
+            _commandBus.Send(new ActivatePromotion
             {
-                _commandBus.Send(new ActivatePromotion
-                {
-                    PromoId = id
-                });
+                PromoId = id
+            });
 
-                TempData["Info"] = "Promotion activated";
-                return RedirectToAction("Index");
-            }
-            catch (Exception ex)
-            {
-                ViewBag.Error = ex.Message;
-                return View("Edit");
-            }
+            TempData["Info"] = "Promotion activated";
+            return RedirectToAction("Index");
         }
 
         // GET: AdminTH/PromoCode/Deactivate/5
         public ActionResult Deactivate(Guid id)
         {
-            try
+            _commandBus.Send(new DeactivatePromotion
             {
-                _commandBus.Send(new DeactivatePromotion
-                {
-                    PromoId = id
-                });
+                PromoId = id
+            });
 
-                TempData["Info"] = "Promotion deactivated";
-                return RedirectToAction("Index");
-            }
-            catch (Exception ex)
-            {
-                ViewBag.Error = ex.Message;
-                return View("Edit");
-            }
+            TempData["Info"] = "Promotion deactivated";
+            return RedirectToAction("Index");
         }
     }
 }
