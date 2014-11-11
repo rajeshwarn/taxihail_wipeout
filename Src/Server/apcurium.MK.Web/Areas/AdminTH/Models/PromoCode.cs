@@ -7,10 +7,6 @@ namespace apcurium.MK.Web.Areas.AdminTH.Models
 {
     public class PromoCode
     {
-        public PromoCode()
-        {
-        }
-
         public PromoCode(PromotionDetail promoDetail)
         {
             Id = promoDetail.Id;

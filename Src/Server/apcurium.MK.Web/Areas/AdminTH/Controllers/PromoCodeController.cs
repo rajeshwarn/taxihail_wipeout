@@ -47,6 +47,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                     Code = "code"
                 });
 
+                TempData["Info"] = string.Format("Promotion \"{0}\" created", form["Name"]);
                 return RedirectToAction("Index");
             }
             catch(Exception ex)
@@ -76,11 +77,12 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                     Code = "code"
                 });
 
+                TempData["Info"] = string.Format("Promotion \"{0}\" updated", form["Name"]);
                 return RedirectToAction("Index");
             }
             catch (Exception ex)
             {
-                ViewBag.Error = ex.Message;
+                TempData["Info"] = ex.Message;
                 return View();
             }
         }
@@ -95,6 +97,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                     PromoId = id
                 });
 
+                TempData["Info"] = "Promotion activated";
                 return RedirectToAction("Index");
             }
             catch (Exception ex)
@@ -114,6 +117,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                     PromoId = id
                 });
 
+                TempData["Info"] = "Promotion deactivated";
                 return RedirectToAction("Index");
             }
             catch (Exception ex)
