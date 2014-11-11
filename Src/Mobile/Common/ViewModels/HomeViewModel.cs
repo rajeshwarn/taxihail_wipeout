@@ -328,17 +328,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
             _orderWorkflowService.SetIgnoreNextGeoLocResult(false);
 			var address = await _orderWorkflowService.SetAddressToUserLocation();
-            
-			// TODO: MKTAXI-2282 - Does an invalid address can mean a invalid coordinate?
-
-			// Temporary, missing 
-			//var marketTask = UseServiceClientAsync<NetworkRoamingServiceClient, string> (service => service.GetLocalCompanyMarket (Map.PickupAddress.Latitude, Map.PickupAddress.Longitude)).ConfigureAwait (false);
-			//marketTask.Wait ();
-			//this.Services ().Cache.Set<string> ("Market", market.Result);
-
-			// Fake
-			this.Services ().Cache.Set<string> ("Market", "MTL");
-
 
 			if(address.HasValidCoordinate())
 			{

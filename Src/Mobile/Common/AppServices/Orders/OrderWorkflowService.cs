@@ -46,9 +46,12 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		readonly ISubject<AccountChargeQuestion[]> _accountPaymentQuestions = new BehaviorSubject<AccountChargeQuestion[]> (null);
 
 		readonly ISubject<bool> _orderCanBeConfirmed = new BehaviorSubject<bool>(false);
+		readonly ISubject<string> _marketSubject = new BehaviorSubject<string>("");
 
         private bool _isOrderRebooked;
 	    private bool _ignoreNextGeoLocResult;
+
+	    private Position _lastMarketRequest = new Position();
 
 		public OrderWorkflowService(ILocationService locationService,
 			IAccountService accountService,
@@ -409,6 +412,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		{
 			return _loadingAddressSubject;
 		}
+
+		public IObservable<string> GetAndObserveMarket()
+		{
+			return _marketSubject;
+		}
 		
 		private async Task<Address> SearchAddressForCoordinate(Position p)
 		{
@@ -449,18 +457,16 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
 		private async Task SetAddressToCurrentSelection(Address address, CancellationToken token = default(CancellationToken))
 		{
-			var selectionMode = await _addressSelectionModeSubject.Take(1).ToTask();
-			if (selectionMode == AddressSelectionMode.PickupSelection)
-			{
-				_pickupAddressSubject.OnNext(address);
-			}
-			else
-			{
-				_destinationAddressSubject.OnNext(address);
+			var selectionMode = await _addressSelectionModeSubject.Take (1).ToTask ();
+			if (selectionMode == AddressSelectionMode.PickupSelection) {
+				_pickupAddressSubject.OnNext (address);
+				SetMarket (new Position () { Latitude = address.Latitude, Longitude = address.Longitude });
+			} else {
+				_destinationAddressSubject.OnNext (address);
 			}
 
 			// do NOT await this
-			CalculateEstimatedFare(token);
+			CalculateEstimatedFare (token);
 		}
 
 		private CancellationTokenSource _calculateFareCancellationTokenSource = new CancellationTokenSource();
@@ -723,6 +729,23 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
         {
             _ignoreNextGeoLocResult = ignoreNextGeoLocResult;
         }
+
+	    private void SetMarket(Position currentPosition)
+	    {
+			var distance = MK.Booking.Maps.Geo.Position.CalculateDistance(currentPosition.Latitude, currentPosition.Longitude, _lastMarketRequest.Latitude, _lastMarketRequest.Longitude);
+	        
+            if (distance > 500)
+	        {
+				//var marketTask = UseServiceClientAsync<NetworkRoamingServiceClient, string> (service => service.GetLocalCompanyMarket (currentPosition.Latitude, currentPosition.Longitude));
+				//marketTask.Wait ();
+				//var market = marketTask.Result;
+				//if (market != null) 
+				{
+					//_marketSubject.OnNext(marketTask.Result);
+					_lastMarketRequest = currentPosition;
+				}
+	        }
+	    }
     }
 }
 

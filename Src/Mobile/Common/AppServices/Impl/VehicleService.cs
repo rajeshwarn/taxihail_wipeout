@@ -24,6 +24,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 		readonly IDirections _directions;
 		readonly IAppSettings _settings;
 
+		private IOrderWorkflowService _orderWorkflowService;
+
 		private bool _isStarted { get; set; }
 
 		public VehicleService(IOrderWorkflowService orderWorkflowService,
@@ -32,6 +34,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 		{
 			_directions = directions;
 			_settings = settings;
+			_orderWorkflowService = orderWorkflowService;
 
 			// having publish and connect fixes the problem that caused the code to be executed 2 times
 			// because there was 2 subscriptions
@@ -80,8 +83,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			try
 			{
 				return await UseServiceClientAsync<IVehicleClient, AvailableVehicle[]>(service => 
-					service.GetAvailableVehiclesAsync(address.Latitude, address.Longitude, vehicleTypeId, UserCache.Get<string>("Market")))
-						.ConfigureAwait(false);
+					service.GetAvailableVehiclesAsync(address.Latitude, address.Longitude, vehicleTypeId, _market))
+					.ConfigureAwait(false);
 			}
 			catch (Exception e)
 			{
@@ -173,6 +176,16 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 		public IObservable<Direction> GetAndObserveEta()
 		{
 			return _etaObservable;
+		}
+
+		private string _market
+		{
+			get 
+			{
+				var marketTask = _orderWorkflowService.GetAndObserveMarket ().Take (1).ToTask();
+				marketTask.Wait ();
+				return marketTask.Result;
+			}
 		}
     }
 }
