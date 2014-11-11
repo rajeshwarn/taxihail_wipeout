@@ -46,5 +46,10 @@ namespace apcurium.MK.Web.Tests
         {
             throw new NotImplementedException();
         }
+
+        public IEnumerable<NetworkFleetResponse> GetMarketFleets(string market, double latitude, double longitude)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -31,9 +31,9 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
         }
 
         [Route("api/customer/roaming/market")]
-        public HttpResponseMessage Get(double latitude, double longitude)
+        public HttpResponseMessage GetCompanyMarket(string companyId, double latitude, double longitude)
         {
-            string companyMarket = null;
+            string companyMarket = string.Empty;
 
             var userPosition = new MapCoordinate
             {
@@ -42,14 +42,22 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
             };
 
             // Get all companies in network
-            var companiesInNetwork = _networkRepository.Where(n => n.IsInNetwork);
+            var companiesInNetwork = _networkRepository.Where(n => n.IsInNetwork).ToArray();
 
             // Find the first company that includes the user position
             // (it doesn't matter which one because they will all share the same market key anyway)
             var localCompany = companiesInNetwork.FirstOrDefault(x => x.Region.Contains(userPosition));
             if (localCompany != null)
             {
-                companyMarket = localCompany.Market;
+                // Check if we have changed market
+                var homeCompany = _networkRepository.FirstOrDefault(n => n.Id == companyId);
+                if (homeCompany != null)
+                {
+                    if (localCompany.Market != homeCompany.Market)
+                    {
+                        companyMarket = localCompany.Market;
+                    }
+                }
             }
 
             return new HttpResponseMessage(HttpStatusCode.OK)
@@ -59,7 +67,7 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
         }
 
         [Route("api/customer/roaming/marketfleets")]
-        public HttpResponseMessage Get(string market, double latitude, double longitude)
+        public HttpResponseMessage GetMarketFleets(string market, double latitude, double longitude)
         {
             var marketFleets = new List<NetworkFleetResponse>();
 

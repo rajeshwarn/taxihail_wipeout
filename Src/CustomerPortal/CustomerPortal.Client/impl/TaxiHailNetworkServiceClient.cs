@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using CustomerPortal.Contract.Resources;
 using CustomerPortal.Contract.Response;
@@ -50,8 +51,11 @@ namespace CustomerPortal.Client.Impl
 
         public string GetCompanyMarket(double latitude, double longitude)
         {
+            var homeCompanyKey = _serverSettings.ServerData.TaxiHail.ApplicationKey;
+
             var @params = new Dictionary<string, string>
                 {
+                    { "companyId", homeCompanyKey },
                     { "latitude", latitude.ToString() },
                     { "longitude", longitude.ToString() }
                 };
@@ -59,8 +63,8 @@ namespace CustomerPortal.Client.Impl
             var queryString = BuildQueryString(@params);
 
             return Client.Get("customer/roaming/market" + queryString)
-                         .Deserialize<string>()
-                         .Result;
+                        .Deserialize<string>()
+                        .Result;
         }
 
         public IEnumerable<NetworkFleetResponse> GetMarketFleets(string market, double latitude, double longitude)

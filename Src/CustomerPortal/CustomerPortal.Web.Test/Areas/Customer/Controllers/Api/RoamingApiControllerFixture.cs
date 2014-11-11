@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using CustomerPortal.Contract.Resources;
 using CustomerPortal.Contract.Response;
 using CustomerPortal.Web.Areas.Customer.Controllers.Api;
@@ -139,8 +136,8 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
                 FleetId = "99999",
                 Region = new MapRegion
                 {
-                    CoordinateStart = new MapCoordinate { Latitude = 45.563135, Longitude = -73.71953 }, //College Montmorency Laval
-                    CoordinateEnd = new MapCoordinate { Latitude = 45.498094, Longitude = -73.62233 } //Station cote des neiges
+                    CoordinateStart = new MapCoordinate { Latitude = 45.420595, Longitude = -75.708386 }, // Ottawa
+                    CoordinateEnd = new MapCoordinate { Latitude = 45.411045, Longitude = -75.684568 }
                 }
             };
 
@@ -239,18 +236,27 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
         public RoamingApiController Sut { get; set; }
 
         [Test]
-        public void When_Getting_Company_Market()
+        public void When_Getting_Company_Market_In_Home_Market()
         {
-            var response = Sut.Get(45.423513, -73.653214);
+            var response = Sut.GetCompanyMarket("ChrisTaxi", 45.423513, -73.653214);
             var json = response.Content.ReadAsStringAsync().Result;
 
-            Assert.AreEqual("MTL", json);
+            Assert.AreEqual(string.Empty, json);
+        }
+
+        [Test]
+        public void When_Getting_Company_Market_And_Changed_Market()
+        {
+            var response = Sut.GetCompanyMarket("ChrisTaxi", 45.412042, -75.695321);
+            var json = response.Content.ReadAsStringAsync().Result;
+
+            Assert.AreEqual("SYD", json);
         }
 
         [Test]
         public void When_Getting_Fleets_From_a_Market()
         {
-            var response = Sut.Get("MTL", 45.423513, -73.653214);
+            var response = Sut.GetMarketFleets("MTL", 45.423513, -73.653214);
             var json = response.Content.ReadAsStringAsync().Result;
             var fleets = JsonConvert.DeserializeObject<List<NetworkFleetResponse>>(json);
 
