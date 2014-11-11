@@ -2217,4 +2217,7 @@
   <data name="UpdateBookingSettingsGenericError" xml:space="preserve">
     <value>An error occured when updating the booking settings</value>
   </data>
+  <data name="UpdateBookingSettingsInvalidCoF" xml:space="preserve">
+    <value>You must have a card on file to use this account</value>
+  </data>
 </root>

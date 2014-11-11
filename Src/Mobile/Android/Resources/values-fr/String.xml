@@ -547,4 +547,5 @@
   <string name="UpdateBookingSettingsInvalidAccount">Le numéro de compte saisi n\'existe pas</string>
   <string name="CreditCardBookingSettingsError">Une erreur est survenue lors de la mise à jour des informations du compte. Vérifiez que le numéro de compte associé au profil est valide et essayez de nouveau.</string>
   <string name="UpdateBookingSettingsGenericError">Une erreur est survenue lors de la mise à jour des informations du compte</string>
+  <string name="UpdateBookingSettingsInvalidCoF">Vous devez avoir une carte de crédit enregistrée pour utiliser ce compte</string>
 </resources>

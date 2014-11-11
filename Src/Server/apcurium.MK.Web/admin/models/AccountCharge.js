@@ -39,6 +39,8 @@
             var arrayLength = model.get('questionFields').length;
             model.set('questions', []);
             model.set('answer', []);
+            model.set('useCardOnFileForPayment', model.get('useCardOnFileForPayment') == 'on');
+
             for (var i = 0; i < arrayLength; i++) {
                 model.get('questions')[i] = {
                     question: model.get('questionFields')[i],

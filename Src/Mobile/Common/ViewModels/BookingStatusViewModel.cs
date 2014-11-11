@@ -35,13 +35,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private readonly IPaymentService _paymentService;
 		private readonly IAccountService _accountService;
 		private readonly IVehicleService _vehicleService;
+	    private readonly IAccountPaymentService _accountPaymentService;
 
-		public BookingStatusViewModel(IOrderWorkflowService orderWorkflowService,
+	    public BookingStatusViewModel(IOrderWorkflowService orderWorkflowService,
 			IPhoneService phoneService,
 			IBookingService bookingService,
 			IPaymentService paymentService,
 			IAccountService accountService,
-			IVehicleService vehicleService
+			IVehicleService vehicleService,
+            IAccountPaymentService accountPaymentService
 		)
 		{
 			_orderWorkflowService = orderWorkflowService;
@@ -50,6 +52,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_paymentService = paymentService;
 			_accountService = accountService;
 			_vehicleService = vehicleService;
+		    _accountPaymentService = accountPaymentService;
 		}
 
 		private int _refreshPeriod = 5; //in seconds
@@ -481,7 +484,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			return string.Format (this.Services ().Localize ["StatusEta"], direction.FormattedDistance, direction.Duration, durationUnit);
 		}
 
-		private async void UpdatePayCancelButtons (string statusId)
+		private async void UpdatePayCancelButtons(string statusId)
 		{
 			var paymentSettings = await _paymentService.GetPaymentSettings();
 		    var isOrderAlreadyPaid = _paymentService.GetPaymentFromCache(Order.Id).HasValue;
@@ -503,13 +506,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 	    private bool ShouldDisplayPayButton(string statusId, bool isOrderAlreadyPaid, ClientPaymentSettings paymentSettings)
 	    {
 	        bool payingByChargeAccount = Order.Settings.ChargeTypeId == ChargeTypes.Account.Id;
+            bool payingByChargeAccountCardOnFile = payingByChargeAccount && OrderStatusDetail.IsChargeAccountPaymentWithCardOnFile;
             bool passengersInCar = statusId == VehicleStatuses.Common.Loaded || statusId == VehicleStatuses.Common.Done;
             bool hasCardOnFile = paymentSettings.IsPayInTaxiEnabled	&& _accountService.CurrentAccount.DefaultCreditCard != null;
 
 	        return !Settings.HidePayNowButtonDuringRide
                 && !paymentSettings.AutomaticPayment
                 && !isOrderAlreadyPaid
-                && !payingByChargeAccount
+                && (!payingByChargeAccount || payingByChargeAccountCardOnFile)
 	            && passengersInCar
                 && (hasCardOnFile || paymentSettings.PayPalClientSettings.IsEnabled) // Can pay by card or PayPal
 	            && !IsUnpairButtonVisible                                            // Unpair visible (pair button is pay button in pairing situations) 

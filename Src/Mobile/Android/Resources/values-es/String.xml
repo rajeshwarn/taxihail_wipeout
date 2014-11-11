@@ -535,4 +535,5 @@
   <string name="UpdateBookingSettingsInvalidAccount">The account number that was entered doesn\'t exist</string>
   <string name="CreditCardBookingSettingsError">An error occured when updating the booking settings. Please make sure that the account number in your profile is valid and try again.</string>
   <string name="UpdateBookingSettingsGenericError">An error occured when updating the booking settings</string>
+  <string name="UpdateBookingSettingsInvalidCoF">You must have a card on file to use this account</string>
 </resources>
