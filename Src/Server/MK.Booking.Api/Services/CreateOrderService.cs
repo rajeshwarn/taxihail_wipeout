@@ -130,9 +130,15 @@ namespace apcurium.MK.Booking.Api.Services
                 // Change payment mode to card of file if necessary
                 var accountChargeDetail = _accountChargeDao.FindByAccountNumber(request.Settings.AccountNumber);
 
-                // Card on file payment not supported by the web app
-                if (accountChargeDetail.UseCardOnFileForPayment && !request.FromWebApp)
+                if (accountChargeDetail.UseCardOnFileForPayment)
                 {
+                    if (request.FromWebApp)
+                    {
+                        // Card on file payment not supported by the web app
+                        throw new HttpError(HttpStatusCode.Forbidden, ErrorCode.CreateOrder_RuleDisable.ToString(),
+                            _resources.Get("CannotCreateOrderChargeAccountNotSupported", request.ClientLanguageCode));
+                    }
+
                     ValidateCreditCard(request.Id, account, request.ClientLanguageCode);
 
                     chargeTypeKey = ChargeTypes.CardOnFile.Display;

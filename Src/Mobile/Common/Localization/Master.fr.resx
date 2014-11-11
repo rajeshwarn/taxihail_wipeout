@@ -1741,6 +1741,6 @@
     <value>Une erreur est survenue lors de la mise à jour des informations du compte</value>
   </data>
   <data name="UpdateBookingSettingsInvalidCoF" xml:space="preserve">
-    <value>Vous devez avoir une carte de crédit d'enregistrée pour utiliser ce compte</value>
+    <value>Vous devez avoir une carte de crédit enregistrée pour utiliser ce compte</value>
   </data>
 </root>

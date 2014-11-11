@@ -469,4 +469,7 @@
     <value>AVISO: No se deberá cobrar al cliente al final del servicio.</value>
     <comment>WARNING: The client will NOT be charged at the end of the ride</comment>
   </data>
+  <data name="CannotCreateOrderChargeAccountNotSupported" xml:space="preserve">
+    <value>This account is not supported by the web site.</value>
+  </data>
 </root>
