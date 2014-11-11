@@ -372,6 +372,15 @@ namespace CustomerPortal.Web.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Market.
+        /// </summary>
+        public static string Market {
+            get {
+                return ResourceManager.GetString("Market", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Mileage Rate.
         /// </summary>
         public static string MileageRate {
