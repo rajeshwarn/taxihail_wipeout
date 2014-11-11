@@ -1,0 +1,47 @@
+﻿using System;
+using HoneyBadger.Converters;
+using HoneyBadger.Enums;
+using Newtonsoft.Json;
+
+namespace HoneyBadger.Responses
+{
+    public class HoneyBadgerContent
+    {
+        [JsonProperty("dt")]
+        public DeviceTypes DeviceType { get; set; }
+
+        [JsonProperty("dn")]
+        public string DeviceName { get; set; }
+
+        [JsonProperty("tm")]
+        [JsonConverter(typeof(EpochDateTimeConverter))]
+        public DateTime TimeStamp { get; set; }
+
+        [JsonProperty("lt")]
+        public float Latitude { get; set; }
+
+        [JsonProperty("lg")]
+        public float Longitude { get; set; }
+
+        [JsonProperty("cc")]
+        public float CompassCourse { get; set; }
+
+        [JsonProperty("md")]
+        public string Medaillon { get; set; }
+
+        [JsonProperty("ms")]
+        public MeterStates MeterState { get; set; }
+
+        [JsonProperty("ls")]
+        public LogonStates LogonState { get; set; }
+
+        [JsonProperty("es")]
+        public EHailStates EHailState { get; set; }
+
+        [JsonProperty("fn")]
+        public string FleetName { get; set; }
+
+        [JsonProperty("fi")]
+        public int FleetId { get; set; }
+    }
+}
