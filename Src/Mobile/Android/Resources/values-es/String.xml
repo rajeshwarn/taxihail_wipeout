@@ -163,7 +163,7 @@
   <string name="Error_AccountPaymentTitle">Error</string>
   <string name="EstimatedFareNotAvailable">Costo estimado no disponible</string>
   <string name="EstimateFareCalculating">Calculando…</string>
-  <string name="EstimatePriceFormat">Costo Estimado:</string>
+  <string name="EstimatePriceFormat">Estimado: {0} ({1})</string>
   <string name="EstimatePriceOver100">Llame para confirmar el costo</string>
   <string name="EstimatingFare">Estimando costo de su servicio</string>
   <string name="Eta">El taxi más cercano es {0} y esta a {1} {2} de distancia</string>

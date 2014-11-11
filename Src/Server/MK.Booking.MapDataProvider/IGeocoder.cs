@@ -7,7 +7,6 @@ namespace apcurium.MK.Booking.MapDataProvider
 	{
 		GeoAddress[] GeocodeAddress(string address, string currentLanguage);
 		GeoAddress[]  GeocodeLocation(double latitude, double longitude, string currentLanguage);
-
 	}
 }
 

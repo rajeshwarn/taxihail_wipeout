@@ -769,7 +769,7 @@
     <comment>Calculating...</comment>
   </data>
   <data name="EstimatePriceFormat" xml:space="preserve">
-    <value>Costo Estimado:</value>
+    <value>Estimado: {0} ({1})</value>
     <comment>Estimated Fare : {0} ({1})</comment>
   </data>
   <data name="EstimatePriceOver100" xml:space="preserve">

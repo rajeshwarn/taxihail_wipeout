@@ -540,3 +540,7 @@
 "NetworkContactingNextDispatchDescription"="En attente de {0} ...";
 "TaxiHailNetworkTimeOutPopupAlways"="Toujours accepter";
 "NetworkTimeOutPopupAlways"="Toujours Accepter";
+"UpdateBookingSettingsGenericError"="Une erreur est survenue lors de la mise à jour des informations du compte";
+"UpdateBookingSettingsEmptyAccount"="Le numéro de compte de peut être vide lorsque le mode de paiement sélectionné est Compte";
+"UpdateBookingSettingsInvalidAccount"="Le numéro de compte saisi n'existe pas";
+"CreditCardBookingSettingsError"="Une erreur est survenue lors de la mise à jour des informations du compte. Vérifiez que le numéro de compte associé au profil est valide et essayez de nouveau.";
