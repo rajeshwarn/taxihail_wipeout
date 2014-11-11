@@ -710,7 +710,7 @@
     <comment>Driver:</comment>
   </data>
   <data name="DriverInfoLicence" xml:space="preserve">
-    <value>Licencia #:</value>
+    <value># de Placa:</value>
     <comment>Licence #:</comment>
   </data>
   <data name="DriverInfoMake" xml:space="preserve">
@@ -1372,7 +1372,7 @@
     <comment>Total</comment>
   </data>
   <data name="PayNow" xml:space="preserve">
-    <value>Pagar ahora</value>
+    <value>Pagar con Aplicación</value>
     <comment>Pay now</comment>
   </data>
   <data name="PayPalButton" xml:space="preserve">
@@ -1828,7 +1828,7 @@
     <comment>Address Details</comment>
   </data>
   <data name="Submit" xml:space="preserve">
-    <value>Enviar evaluación</value>
+    <value>Pagar en Efectivo y Terminar</value>
     <comment>Submit Rating</comment>
   </data>
   <data name="SupportEmail" xml:space="preserve">

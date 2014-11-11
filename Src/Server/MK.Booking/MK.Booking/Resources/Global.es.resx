@@ -374,7 +374,7 @@
     <comment>Completed</comment>
   </data>
   <data name="OrderStatus_wosLOADED" xml:space="preserve">
-    <value>Los pasajero(s) abordaron el vehículo</value>
+    <value>Pasajero(s) a bordo</value>
     <comment>Passengers are in the taxi</comment>
   </data>
   <data name="OrderStatus_wosLOADEDAutoPairing" xml:space="preserve">
@@ -398,7 +398,7 @@
     <comment>Sorry no cars are available due to high demand, please try later.</comment>
   </data>
   <data name="OrderStatus_wosWAITING" xml:space="preserve">
-    <value>Espere mientras se le asigna un taxi</value>
+    <value>Espere mientras se le asigna un vehículo</value>
     <comment>Waiting for driver to be assigned</comment>
   </data>
   <data name="PairingConfirmationToDriver" xml:space="preserve">
