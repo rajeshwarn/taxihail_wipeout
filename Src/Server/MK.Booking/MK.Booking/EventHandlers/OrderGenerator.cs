@@ -90,7 +90,10 @@ namespace apcurium.MK.Booking.EventHandlers
                     UserAgent = @event.UserAgent,
                     UserNote = @event.UserNote,
                     ClientLanguageCode = @event.ClientLanguageCode,
-                    ClientVersion = @event.ClientVersion
+                    ClientVersion = @event.ClientVersion,
+                    CompanyKey = @event.CompanyKey,
+                    CompanyName = @event.CompanyName,
+                    Market = @event.Market
                 });
 
                 // Create an empty OrderStatusDetail row
@@ -110,7 +113,10 @@ namespace apcurium.MK.Booking.EventHandlers
                         IBSStatusDescription = _resources.Get("OrderStatus_wosWAITING", @event.ClientLanguageCode),
                         PickupDate = @event.PickupDate,
                         Name = @event.Settings != null ? @event.Settings.Name : null,
-                        IsChargeAccountPaymentWithCardOnFile = @event.IsChargeAccountPaymentWithCardOnFile
+                        IsChargeAccountPaymentWithCardOnFile = @event.IsChargeAccountPaymentWithCardOnFile,
+                        CompanyKey = @event.CompanyKey,
+                        CompanyName = @event.CompanyName,
+                        Market = @event.Market
                     });
                 }
             }
@@ -325,6 +331,7 @@ namespace apcurium.MK.Booking.EventHandlers
                 order.IBSOrderId = @event.IBSOrderId;
                 order.CompanyKey = @event.CompanyKey;
                 order.CompanyName = @event.CompanyName;
+                order.Market = @event.Market;
 
                 var details = context.Find<OrderStatusDetail>(@event.SourceId);
                 details.Status = OrderStatus.Created;
@@ -333,6 +340,7 @@ namespace apcurium.MK.Booking.EventHandlers
                 details.IBSOrderId = @event.IBSOrderId;
                 details.CompanyKey = @event.CompanyKey;
                 details.CompanyName = @event.CompanyName;
+                details.Market = @event.Market;
                 details.NextDispatchCompanyKey = null;
                 details.NextDispatchCompanyName = null;
                 details.NetworkPairingTimeout = null;

@@ -237,6 +237,9 @@ namespace apcurium.MK.Booking.Api.Services
             command.UserAgent = base.Request.UserAgent;
             command.ClientVersion = base.Request.Headers.Get("ClientVersion");
             command.IsChargeAccountPaymentWithCardOnFile = isChargeAccountPaymentWithCardOnFile;
+            command.CompanyKey = companyKey;
+            command.CompanyName = ""; // TODO
+            command.Market = request.Market;
             emailCommand.EmailAddress = account.Email;
 
             // Get Vehicle Type from reference data
@@ -260,8 +263,8 @@ namespace apcurium.MK.Booking.Api.Services
                 OrderId = command.OrderId,
                 Status = OrderStatus.Created,
                 IBSOrderId = ibsOrderId,
-                IBSStatusId = "",
-                IBSStatusDescription = (string)_resources.Get("OrderStatus_wosWAITING", command.ClientLanguageCode),
+                IBSStatusId = string.Empty,
+                IBSStatusDescription = _resources.Get("OrderStatus_wosWAITING", command.ClientLanguageCode),
             };
         }
 
@@ -284,6 +287,7 @@ namespace apcurium.MK.Booking.Api.Services
                 PickupDate = GetCurrentOffsetedTime(request.NextDispatchCompanyKey, null),
                 PickupAddress = order.PickupAddress,
                 DropOffAddress = order.DropOffAddress,
+                Market = order.Market,
                 Settings = new BookingSettings
                 {
                     LargeBags = order.Settings.LargeBags,
@@ -342,7 +346,8 @@ namespace apcurium.MK.Booking.Api.Services
                 OrderId = request.OrderId,
                 IBSOrderId = newIbsOrderId.Value,
                 CompanyKey = request.NextDispatchCompanyKey,
-                CompanyName = request.NextDispatchCompanyName
+                CompanyName = request.NextDispatchCompanyName,
+                Market = order.Market
             });
 
             return new OrderStatusDetail
