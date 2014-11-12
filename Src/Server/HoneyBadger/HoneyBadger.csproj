@@ -54,7 +54,6 @@
     <Compile Include="Extensions\HttpClientExtensions.cs" />
     <Compile Include="Extensions\HttpResponseMessageExtensions.cs" />
     <Compile Include="HoneyBadgerServiceClient.cs" />
-    <Compile Include="IHoneyBadgerServiceClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Responses\HoneyBadgerContent.cs" />
     <Compile Include="Responses\HoneyBadgerResponse.cs" />
