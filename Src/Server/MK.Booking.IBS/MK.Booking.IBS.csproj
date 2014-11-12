@@ -72,6 +72,7 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Net.Http" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -80,6 +81,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ChargeAccounts\BaseServiceClient.cs" />
+    <Compile Include="ChargeAccounts\Impl\ChargeAccountWebServiceClient.cs" />
+    <Compile Include="ChargeAccounts\RequestResponse\IbsAccountCollectionResponse.cs" />
+    <Compile Include="ChargeAccounts\RequestResponse\IbsAccountValidationResponse.cs" />
+    <Compile Include="ChargeAccounts\RequestResponse\IbsResponse.cs" />
+    <Compile Include="ChargeAccounts\IChargeAccountWebServiceClient.cs" />
+    <Compile Include="ChargeAccounts\RequestResponse\IbsAccountResponse.cs" />
+    <Compile Include="ChargeAccounts\RequestResponse\Resources\IbsAccount.cs" />
+    <Compile Include="ChargeAccounts\RequestResponse\Resources\IbsAccountCollection.cs" />
+    <Compile Include="ChargeAccounts\RequestResponse\Resources\IbsAccountValidation.cs" />
+    <Compile Include="ChargeAccounts\RequestResponse\Resources\Prompt.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="IBookingWebServiceClient.cs" />
     <Compile Include="IBSAddress.cs" />

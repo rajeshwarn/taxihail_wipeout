@@ -42,12 +42,6 @@ namespace apcurium.MK.Booking.IBS
         {
             return JsonConvert.DeserializeObject<T>(json);
         }
-        public static string ToJson<T>(this T obj)
-        {
-            return JsonConvert.SerializeObject(obj);
-        }
-
-
         public static HttpRequestHeaders Set(this HttpRequestHeaders headers, string key, string value)
         {
             headers.Remove(key);

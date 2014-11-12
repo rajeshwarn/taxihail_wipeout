@@ -9,6 +9,8 @@ using apcurium.MK.Booking.Api.Providers;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.EventHandlers.Integration;
 using apcurium.MK.Booking.IBS;
+using apcurium.MK.Booking.IBS.ChargeAccounts.RequestResponse;
+using apcurium.MK.Booking.IBS.ChargeAccounts.RequestResponse.Resources;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Security;
@@ -87,6 +89,9 @@ namespace apcurium.MK.Booking.Api
 
             Mapper.CreateMap<OrderStatusDetail, OrderStatusRequestResponse>();
             Mapper.CreateMap<OrderPairingDetail, OrderPairingResponse>();
+
+            Mapper.CreateMap<IbsAccount, IbsChargeAccount>();
+            Mapper.CreateMap<IbsAccountValidation, IbsChargeAccountValidation>();
 
             Mapper.CreateMap<RegisterAccount, Commands.RegisterAccount>()
                 .ForMember(p => p.AccountId,

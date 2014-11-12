@@ -3,6 +3,7 @@ using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Extensions;
 using CustomerPortal.Client;
+using apcurium.MK.Booking.IBS.ChargeAccounts;
 
 namespace apcurium.MK.Booking.IBS.Impl
 {
@@ -33,6 +34,11 @@ namespace apcurium.MK.Booking.IBS.Impl
         public IBookingWebServiceClient Booking(string companyKey)
         {
             return new BookingWebServiceClient(_serverSettings, GetSettingContainer(companyKey), _logger);
+        }
+
+        public IChargeAccountWebServiceClient ChargeAccount(string companyKey)
+        {
+            return new ChargeAccountWebServiceClient(_serverSettings, GetSettingContainer(companyKey), _logger);
         }
 
         private IBSSettingContainer GetSettingContainer(string companyKey)
