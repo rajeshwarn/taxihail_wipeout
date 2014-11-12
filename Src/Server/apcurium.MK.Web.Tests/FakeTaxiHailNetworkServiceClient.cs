@@ -47,7 +47,7 @@ namespace apcurium.MK.Web.Tests
             throw new NotImplementedException();
         }
 
-        public NetworkFleetResponse GetBestAvailableFleet(string market)
+        public IEnumerable<NetworkFleetResponse> GetMarketFleets(string market)
         {
             throw new NotImplementedException();
         }

@@ -4,7 +4,6 @@ using System.Configuration;
 using System.Data.Entity;
 using CustomerPortal.Client;
 using CustomerPortal.Client.Impl;
-using HoneyBadger;
 using Infrastructure;
 using Infrastructure.EventSourcing;
 using Infrastructure.Messaging;
@@ -77,7 +76,7 @@ namespace apcurium.MK.Web
         {
             unityContainer.RegisterType<ITaxiHailNetworkServiceClient>(
                 new TransientLifetimeManager(), 
-                new InjectionFactory(c => new TaxiHailNetworkServiceClient(c.Resolve<IServerSettings>(), c.Resolve<IHoneyBadgerServiceClient>())));
+                new InjectionFactory(c => new TaxiHailNetworkServiceClient(c.Resolve<IServerSettings>())));
         }
 
         private static void RegisterCommandHandlers(IUnityContainer unityContainer)

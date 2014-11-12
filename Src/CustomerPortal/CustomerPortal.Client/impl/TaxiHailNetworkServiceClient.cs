@@ -1,24 +1,20 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using CustomerPortal.Contract.Resources;
 using CustomerPortal.Contract.Response;
 using apcurium.MK.Common.Configuration;
 using CustomerPortal.Client.Http.Extensions;
-using HoneyBadger;
 
 namespace CustomerPortal.Client.Impl
 {
     public class TaxiHailNetworkServiceClient : BaseServiceClient, ITaxiHailNetworkServiceClient
     {
         private readonly IServerSettings _serverSettings;
-        private readonly IHoneyBadgerServiceClient _honeyBadgerServiceClient;
 
-        public TaxiHailNetworkServiceClient(IServerSettings serverSettings, IHoneyBadgerServiceClient honeyBadgerServiceClient)
+        public TaxiHailNetworkServiceClient(IServerSettings serverSettings)
             : base(serverSettings)
         {
             _serverSettings = serverSettings;
-            _honeyBadgerServiceClient = honeyBadgerServiceClient;
         }
 
         public async Task<List<CompanyPreferenceResponse>> GetNetworkCompanyPreferences(string companyId)
@@ -67,21 +63,15 @@ namespace CustomerPortal.Client.Impl
             var queryString = BuildQueryString(@params);
 
             return Client.Get("customer/roaming/market" + queryString)
-                        .Deserialize<string>()
-                        .Result;
+                         .Deserialize<string>()
+                         .Result;
         }
 
-        public NetworkFleetResponse GetBestAvailableFleet(string market)
+        public IEnumerable<NetworkFleetResponse> GetMarketFleets(string market)
         {
-            var fleets = Client.Get(string.Format("customer/roaming/marketfleets?market={0}", market))
+            return Client.Get(string.Format("customer/roaming/marketfleets?market={0}", market))
                                .Deserialize<IEnumerable<NetworkFleetResponse>>()
-                               .Result.ToArray();
-
-            var fleetIds = fleets.Select(f => f.FleetId);
-
-            var bestFleetId = _honeyBadgerServiceClient.GetBestAvailableFleet(market, fleetIds);
-
-            return fleets.FirstOrDefault(f => f.FleetId == bestFleetId);
+                               .Result;
         }
     }
 }

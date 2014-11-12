@@ -14,7 +14,6 @@ using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
 using CustomerPortal.Client.Impl;
-using HoneyBadger;
 using Infrastructure.Messaging;
 using Infrastructure.Messaging.InMemory;
 using Moq;
@@ -42,8 +41,8 @@ namespace apcurium.MK.Booking.Test.Integration.OrderFixture
 
             Sut = new OrderDispatchCompanyManager(bus.Object,
                 () => new BookingDbContext(DbName),
-                new IBSServiceProvider(new TestServerSettings(), new Logger(), new TaxiHailNetworkServiceClient(new TestServerSettings(), new HoneyBadgerServiceClient())),
-                new TaxiHailNetworkServiceClient(new TestServerSettings(), new HoneyBadgerServiceClient()));
+                new IBSServiceProvider(new TestServerSettings(), new Logger(), new TaxiHailNetworkServiceClient(new TestServerSettings())),
+                new TaxiHailNetworkServiceClient(new TestServerSettings()));
 
             var ordetailsGenerator = new OrderGenerator(() => new BookingDbContext(DbName), new Logger(), new TestServerSettings());
             ordetailsGenerator.Handle(new OrderCreated

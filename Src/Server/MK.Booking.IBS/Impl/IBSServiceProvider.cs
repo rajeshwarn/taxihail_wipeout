@@ -67,17 +67,18 @@ namespace apcurium.MK.Booking.IBS.Impl
             // In external market
             if (!_ibsSettings.ContainsKey(companyKey) && market.HasValue())
             {
-                var bestAvailableFleet = _taxiHailNetworkService.GetBestAvailableFleet(market);
-                if (bestAvailableFleet != null)
-                {
-                    var settingContainer = new IBSSettingContainer
-                    {
-                        WebServicesUrl = bestAvailableFleet.IbsUrl,
-                        WebServicesUserName = bestAvailableFleet.IbsUserName,
-                        WebServicesPassword = bestAvailableFleet.IbsPassword
-                    };
-                    _ibsSettings.Add(bestAvailableFleet.CompanyKey, settingContainer);
-                } 
+                // TODO
+                //var bestAvailableFleet = _taxiHailNetworkService.GetBestAvailableFleet(market);
+                //if (bestAvailableFleet != null)
+                //{
+                //    var settingContainer = new IBSSettingContainer
+                //    {
+                //        WebServicesUrl = bestAvailableFleet.IbsUrl,
+                //        WebServicesUserName = bestAvailableFleet.IbsUserName,
+                //        WebServicesPassword = bestAvailableFleet.IbsPassword
+                //    };
+                //    _ibsSettings.Add(bestAvailableFleet.CompanyKey, settingContainer);
+                //} 
             }
 
             return _ibsSettings[companyKey];

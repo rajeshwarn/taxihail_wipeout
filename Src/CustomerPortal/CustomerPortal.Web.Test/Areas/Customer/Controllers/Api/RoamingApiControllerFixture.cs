@@ -239,9 +239,8 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
         public void When_Getting_Company_Market_In_Home_Market()
         {
             var response = Sut.GetCompanyMarket("ChrisTaxi", 45.423513, -73.653214);
-            var json = response.Content.ReadAsStringAsync().Result;
 
-            Assert.AreEqual(string.Empty, json);
+            Assert.IsNull(response.Content);
         }
 
         [Test]

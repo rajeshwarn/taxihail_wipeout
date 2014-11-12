@@ -184,10 +184,6 @@
       <Project>{78a8b275-4004-4586-893b-607ec1f98f26}</Project>
       <Name>DeploymentServiceTools</Name>
     </ProjectReference>
-    <ProjectReference Include="..\HoneyBadger\HoneyBadger.csproj">
-      <Project>{1C2F9D8B-7B65-4D2E-A099-D0040907D59C}</Project>
-      <Name>HoneyBadger</Name>
-    </ProjectReference>
     <ProjectReference Include="..\MK.Booking.Api.Contract\MK.Booking.Api.Contract.csproj">
       <Project>{1DD86EC1-75F9-4A57-A8D6-18248048F571}</Project>
       <Name>MK.Booking.Api.Contract</Name>

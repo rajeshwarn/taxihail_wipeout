@@ -33,7 +33,7 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
         [Route("api/customer/roaming/market")]
         public HttpResponseMessage GetCompanyMarket(string companyId, double latitude, double longitude)
         {
-            string companyMarket = string.Empty;
+            string companyMarket = null;
 
             var userPosition = new MapCoordinate
             {
@@ -60,10 +60,15 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
                 }
             }
 
-            return new HttpResponseMessage(HttpStatusCode.OK)
+            if (companyMarket != null)
             {
-                Content = new StringContent(companyMarket)
-            };
+                return new HttpResponseMessage(HttpStatusCode.OK)
+                {
+                    Content = new StringContent(companyMarket)
+                };
+            }
+
+            return new HttpResponseMessage(HttpStatusCode.OK);
         }
 
         [Route("api/customer/roaming/marketfleets")]

@@ -40,7 +40,7 @@ namespace apcurium.MK.Web.SelfHost
 
         private static void RegisterTaxiHailNetwork(IUnityContainer unityContainer)
         {
-            var thNetworkServiceClient = new TaxiHailNetworkServiceClient(unityContainer.Resolve<IServerSettings>(), unityContainer.Resolve<IHoneyBadgerServiceClient>());
+            var thNetworkServiceClient = new TaxiHailNetworkServiceClient(unityContainer.Resolve<IServerSettings>());
             unityContainer.RegisterInstance<ITaxiHailNetworkServiceClient>(thNetworkServiceClient);
 
         }
