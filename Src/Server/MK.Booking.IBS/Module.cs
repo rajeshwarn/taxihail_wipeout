@@ -2,8 +2,6 @@
 
 using System.Collections;
 using System.Collections.Generic;
-using apcurium.MK.Booking.IBS.ChargeAccounts.RequestResponse;
-using apcurium.MK.Booking.IBS.ChargeAccounts.RequestResponse.Resources;
 using apcurium.MK.Booking.IBS.Impl;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
@@ -24,8 +22,7 @@ namespace apcurium.MK.Booking.IBS
             var profile = new IbsAutoMapperProfile();
             Mapper.AddProfile(profile);
             Mapper.AssertConfigurationIsValid(profile.ProfileName);
-            //Mapper.CreateMap<IbsAccount, IbsAccountResponse>();
-            //Mapper.CreateMap<IbsAccountValidation, IbsAccountValidationResponse>();
+
             container.RegisterType<IIBSServiceProvider, IBSServiceProvider>();
         }
     }
