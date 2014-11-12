@@ -7,7 +7,7 @@ using HoneyBadger.Responses;
 
 namespace HoneyBadger
 {
-    public class HoneyBadgerServiceClient : BaseServiceClient, IHoneyBadgerServiceClient
+    public class HoneyBadgerServiceClient : BaseServiceClient
     {
         public IEnumerable<VehicleResponse> GetAvailableVehicles(string market, string fleetId)
         {
@@ -36,9 +36,9 @@ namespace HoneyBadger
             });
         }
 
-        public string GetBestAvailableFleet(string market, IEnumerable<string> fleetIds)
+        public IEnumerable<VehicleResponse> GetAvailableVehicles(string market, IEnumerable<string> fleetId)
         {
-            // Waiting on MK for this one. Will be completed part of MKTAXI-2283.
+            // Waiting on MK for this one.
             throw new NotImplementedException();
         }
     }

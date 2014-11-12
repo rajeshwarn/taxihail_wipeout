@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
@@ -12,28 +10,24 @@ namespace HoneyBadger.Extensions
 {
     public static class HttpClientExtensions
     {
-        public static async Task<HttpResponseMessage> Get(this HttpClient client, string relativeUrl)
+        public static Task<HttpResponseMessage> Get(this HttpClient client, string relativeUrl)
         {
-            return await client.Send(HttpMethod.Get, new Uri(relativeUrl, UriKind.Relative))
-                .ConfigureAwait(false);
+            return client.Send(HttpMethod.Get, new Uri(relativeUrl, UriKind.Relative));
         }
 
-        public static async Task<HttpResponseMessage> Post<TRequest>(this HttpClient client, string relativeUrl, TRequest content)
+        public static Task<HttpResponseMessage> Post<TRequest>(this HttpClient client, string relativeUrl, TRequest content)
         {
-            return await client.Send(HttpMethod.Post, new Uri(relativeUrl, UriKind.Relative), JsonConvert.SerializeObject(content))
-                .ConfigureAwait(false);
+            return client.Send(HttpMethod.Post, new Uri(relativeUrl, UriKind.Relative), JsonConvert.SerializeObject(content));
         }
 
-        public static async Task<HttpResponseMessage> Put<TRequest>(this HttpClient client, string relativeUrl, TRequest content)
+        public static Task<HttpResponseMessage> Put<TRequest>(this HttpClient client, string relativeUrl, TRequest content)
         {
-            return await client.Send(HttpMethod.Put, new Uri(relativeUrl, UriKind.Relative), JsonConvert.SerializeObject(content))
-                .ConfigureAwait(false);
+            return client.Send(HttpMethod.Put, new Uri(relativeUrl, UriKind.Relative), JsonConvert.SerializeObject(content));
         }
 
-        public static async Task<HttpResponseMessage> Delete(this HttpClient client, string relativeUrl)
+        public static Task<HttpResponseMessage> Delete(this HttpClient client, string relativeUrl)
         {
-            return await client.Send(HttpMethod.Delete, new Uri(relativeUrl, UriKind.Relative))
-                .ConfigureAwait(false);
+            return client.Send(HttpMethod.Delete, new Uri(relativeUrl, UriKind.Relative));
         }
 
         private static async Task<HttpResponseMessage> Send(this HttpClient client, HttpMethod method, Uri requestUri, string jsonPayload = null)
