@@ -7,7 +7,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
     {
         public Task<string> GetLocalCompanyMarket(double latitude, double longitude)
         {
-            return UseServiceClientAsync<NetworkRoamingServiceClient, string>(service => service.GetLocalCompanyMarket(latitude, longitude));
+			return UseServiceClientAsync<NetworkRoamingServiceClient, string>(service => service.GetCompanyMarket(latitude, longitude));
         }
     }
 }
