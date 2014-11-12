@@ -1,0 +1,16 @@
+﻿@model List<apcurium.MK.Web.Areas.AdminTH.Models.PromoCode>
+
+<h4 class="table-title">Promo Codes</h4>
+<ul class="unstyled locations">
+    @foreach (var promoCode in Model)
+    {
+        <li>
+            <a data-action="select-promocode" href="@Url.Action("Edit", new {id = @promoCode.Id})">
+                <span class="location-title">@promoCode.Name</span>
+            </a>
+        </li>
+    }
+    <li>
+        <a class="new" href="@Url.Action("Create")">Add a new promo code</a>
+    </li>
+</ul>
