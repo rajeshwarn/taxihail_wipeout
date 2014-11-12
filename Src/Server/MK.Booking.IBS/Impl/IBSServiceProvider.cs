@@ -3,7 +3,6 @@ using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Extensions;
 using CustomerPortal.Client;
-using CustomerPortal.Contract.Response;
 
 namespace apcurium.MK.Booking.IBS.Impl
 {
@@ -37,7 +36,7 @@ namespace apcurium.MK.Booking.IBS.Impl
             return new BookingWebServiceClient(_serverSettings, GetSettingContainer(companyKey, market), _logger);
         }
 
-        private IBSSettingContainer GetSettingContainer(string companyKey, string market)
+        public IBSSettingContainer GetSettingContainer(string companyKey, string market)
         {
             if (!companyKey.HasValue())
             {
@@ -67,18 +66,20 @@ namespace apcurium.MK.Booking.IBS.Impl
             // In external market
             if (!_ibsSettings.ContainsKey(companyKey) && market.HasValue())
             {
-                // TODO
-                //var bestAvailableFleet = _taxiHailNetworkService.GetBestAvailableFleet(market);
-                //if (bestAvailableFleet != null)
-                //{
-                //    var settingContainer = new IBSSettingContainer
-                //    {
-                //        WebServicesUrl = bestAvailableFleet.IbsUrl,
-                //        WebServicesUserName = bestAvailableFleet.IbsUserName,
-                //        WebServicesPassword = bestAvailableFleet.IbsPassword
-                //    };
-                //    _ibsSettings.Add(bestAvailableFleet.CompanyKey, settingContainer);
-                //} 
+                var marketFleets = _taxiHailNetworkService.GetMarketFleets(market);
+
+                _ibsSettings.Clear();
+
+                foreach (var networkFleetResponse in marketFleets)
+                {
+                    var settingContainer = new IBSSettingContainer
+                    {
+                        WebServicesUrl = networkFleetResponse.IbsUrl,
+                        WebServicesPassword = networkFleetResponse.IbsPassword,
+                        WebServicesUserName = networkFleetResponse.IbsUserName
+                    };
+                    _ibsSettings.Add(networkFleetResponse.CompanyKey, settingContainer);
+                }
             }
 
             return _ibsSettings[companyKey];

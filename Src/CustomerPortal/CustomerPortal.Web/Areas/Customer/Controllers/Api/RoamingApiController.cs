@@ -84,6 +84,13 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
                 var company = _companyRepository.FirstOrDefault(c => c.CompanyKey == availableCompany.Id);
                 if (company != null)
                 {
+                    var ibsTimeDifferenceString = company.CompanySettings.FirstOrDefault(s => s.Key == "IBS.TimeDifference");
+                    long ibsTimeDifference = 0;
+                    if (ibsTimeDifferenceString != null)
+                    {
+                        long.TryParse(ibsTimeDifferenceString.Value, out ibsTimeDifference);
+                    }
+
                     marketFleets.Add(new NetworkFleetResponse
                     {
                         CompanyKey = company.CompanyKey,
@@ -91,7 +98,8 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
                         FleetId = availableCompany.FleetId,
                         IbsPassword = company.IBS.Password,
                         IbsUserName = company.IBS.Username,
-                        IbsUrl = company.IBS.ServiceUrl
+                        IbsUrl = company.IBS.ServiceUrl,
+                        IbsTimeDifference = ibsTimeDifference
                     });
                 }
             }

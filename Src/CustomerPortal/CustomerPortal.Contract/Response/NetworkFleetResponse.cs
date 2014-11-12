@@ -14,5 +14,7 @@ namespace CustomerPortal.Contract.Response
         public string IbsUserName { get; set; }
 
         public string IbsPassword { get; set; }
+
+        public long IbsTimeDifference { get; set; }
     }
 }

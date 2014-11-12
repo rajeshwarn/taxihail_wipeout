@@ -137,13 +137,21 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
                 var company = _companyRepository.FirstOrDefault(c => c.CompanyKey == companyPreferences.CompanyKey);
                 if (company != null)
                 {
+                    var ibsTimeDifferenceString = company.CompanySettings.FirstOrDefault(s => s.Key == "IBS.TimeDifference");
+                    long ibsTimeDifference = 0;
+                    if (ibsTimeDifferenceString != null)
+                    {
+                        long.TryParse(ibsTimeDifferenceString.Value, out ibsTimeDifference);
+                    }
+
                     var fleet = new NetworkFleetResponse
                     {
                         CompanyKey = company.CompanyKey,
                         CompanyName = company.CompanyName,
                         IbsPassword = company.IBS.Password,
                         IbsUserName = company.IBS.Username,
-                        IbsUrl = company.IBS.ServiceUrl
+                        IbsUrl = company.IBS.ServiceUrl,
+                        IbsTimeDifference = ibsTimeDifference
                     };
 
                     if (coordinate != null)

@@ -36,12 +36,13 @@ namespace apcurium.MK.Booking.Api.Services
 
         public object Get(ReferenceDataRequest request)
         {
-            var result = _cacheClient.Get<ReferenceData>(CacheKey);
+            var cacheKey = string.Format("{0}{1}", CacheKey, request.CompanyKey);
+            var result = _cacheClient.Get<ReferenceData>(cacheKey);
 
             if (result == null)
             {
                 result = GetReferenceData(request.CompanyKey, request.Market);
-                _cacheClient.Add(CacheKey, result);
+                _cacheClient.Add(cacheKey, result);
             }
 
             if (!request.WithoutFiltering)

@@ -26,6 +26,7 @@ using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using AutoMapper;
+using HoneyBadger;
 using Infrastructure.Messaging;
 using log4net;
 using ServiceStack.Common.Web;
@@ -45,6 +46,7 @@ namespace apcurium.MK.Booking.Api.Services
         private readonly IOrderDao _orderDao;
         private readonly IPaymentService _paymentService;
         private readonly ICreditCardDao _creditCardDao;
+        private readonly HoneyBadgerServiceClient _honeyBadgerService;
         private readonly IAccountChargeDao _accountChargeDao;
         private readonly ICommandBus _commandBus;
         private readonly IServerSettings _serverSettings;
@@ -64,7 +66,8 @@ namespace apcurium.MK.Booking.Api.Services
             IAccountChargeDao accountChargeDao,
             IOrderDao orderDao,
             IPaymentService paymentService,
-            ICreditCardDao creditCardDao)
+            ICreditCardDao creditCardDao,
+            HoneyBadgerServiceClient honeyBadgerService)
         {
             _accountChargeDao = accountChargeDao;
             _commandBus = commandBus;
@@ -77,6 +80,7 @@ namespace apcurium.MK.Booking.Api.Services
             _orderDao = orderDao;
             _paymentService = paymentService;
             _creditCardDao = creditCardDao;
+            _honeyBadgerService = honeyBadgerService;
 
             _resources = new Resources.Resources(_serverSettings);
         }
@@ -92,10 +96,9 @@ namespace apcurium.MK.Booking.Api.Services
 
             var account = _accountDao.FindById(new Guid(this.GetSession().UserAuthId));
 
-            // choose best ibs if market is not null
-            string companyKeyToBeDispatchedTo = null;
+            var companyKey = FindBestAvailableCompany(request.Market);
 
-            account.IBSAccountId = CreateIbsAccountIfNeeded(account, companyKeyToBeDispatchedTo, request.Market);
+            account.IBSAccountId = CreateIbsAccountIfNeeded(account, companyKey, request.Market);
 
             // User can still create future order, but we allow only one active Book now order.
             if (!request.PickupDate.HasValue)
@@ -117,26 +120,30 @@ namespace apcurium.MK.Booking.Api.Services
                 ValidateCreditCard(request.Id, account, request.ClientLanguageCode);
             }
             
-            var rule = _ruleCalculator.GetActiveDisableFor(
-                request.PickupDate.HasValue,
-                request.PickupDate.HasValue 
-                    ? request.PickupDate.Value 
-                    : GetCurrentOffsetedTime(), //damn
-                () => _ibsServiceProvider.StaticData(companyKeyToBeDispatchedTo, request.Market).GetZoneByCoordinate(
-                        request.Settings.ProviderId,
-                        request.PickupAddress.Latitude, 
-                        request.PickupAddress.Longitude),
-                () => request.DropOffAddress != null
-                    ? _ibsServiceProvider.StaticData(companyKeyToBeDispatchedTo, request.Market).GetZoneByCoordinate(
-                            request.Settings.ProviderId, 
-                            request.DropOffAddress.Latitude,
-                            request.DropOffAddress.Longitude) 
-                    : null);
-
-            if (rule != null)
+            // We can only validate rules when in the local market
+            if (!request.Market.HasValue())
             {
-                var err = new HttpError(HttpStatusCode.Forbidden, ErrorCode.CreateOrder_RuleDisable.ToString(), rule.Message);
-                throw err;
+                var rule = _ruleCalculator.GetActiveDisableFor(
+                    request.PickupDate.HasValue,
+                    request.PickupDate.HasValue
+                        ? request.PickupDate.Value
+                        : GetCurrentOffsetedTime(companyKey, request.Market),
+                    () => _ibsServiceProvider.StaticData(companyKey, request.Market).GetZoneByCoordinate(
+                        request.Settings.ProviderId,
+                        request.PickupAddress.Latitude,
+                        request.PickupAddress.Longitude),
+                    () => request.DropOffAddress != null
+                        ? _ibsServiceProvider.StaticData(companyKey, request.Market).GetZoneByCoordinate(
+                            request.Settings.ProviderId,
+                            request.DropOffAddress.Latitude,
+                            request.DropOffAddress.Longitude)
+                        : null);
+
+                if (rule != null)
+                {
+                    var err = new HttpError(HttpStatusCode.Forbidden, ErrorCode.CreateOrder_RuleDisable.ToString(), rule.Message);
+                    throw err;
+                }
             }
 
             if (Params.Get(request.Settings.Name, request.Settings.Phone).Any(p => p.IsNullOrEmpty()))
@@ -148,7 +155,7 @@ namespace apcurium.MK.Booking.Api.Services
 
             request.PickupDate = request.PickupDate.HasValue
                 ? request.PickupDate.Value
-                : GetCurrentOffsetedTime();
+                : GetCurrentOffsetedTime(companyKey, request.Market);
 
             request.Settings.Passengers = request.Settings.Passengers <= 0 
                 ? 1 
@@ -249,7 +256,7 @@ namespace apcurium.MK.Booking.Api.Services
 
             var newOrderRequest = new CreateOrder
             {
-                PickupDate = GetCurrentOffsetedTime(),
+                PickupDate = GetCurrentOffsetedTime(request.NextDispatchCompanyKey, null),
                 PickupAddress = order.PickupAddress,
                 DropOffAddress = order.DropOffAddress,
                 Settings = new BookingSettings
@@ -470,11 +477,11 @@ namespace apcurium.MK.Booking.Api.Services
             });
         }
 
-        private DateTime GetCurrentOffsetedTime()
+        private DateTime GetCurrentOffsetedTime(string companyKey, string market)
         {
             //TODO : need to check ibs setup for shortesst time.
 
-            var ibsServerTimeDifference = _serverSettings.ServerData.IBS.TimeDifference;
+            var ibsServerTimeDifference = _ibsServiceProvider.GetSettingContainer(companyKey, market).TimeDifference;
             var offsetedTime = DateTime.Now.AddMinutes(2);
             if (ibsServerTimeDifference != 0)
             {
@@ -629,6 +636,24 @@ namespace apcurium.MK.Booking.Api.Services
             }
 
             return null;
+        }
+
+        /// <summary>
+        /// Method that returns the company key to use.
+        /// </summary>
+        /// <param name="market">The pickup address market. Null if home market.</param>
+        /// <returns>Company key with the most available cars in external market; null otherwise.</returns>
+        private string FindBestAvailableCompany(string market)
+        {
+            if (string.IsNullOrWhiteSpace(market))
+            {
+                // In home market, nothing to do
+                return null;
+            }
+
+            // In external market, return company key with most available cars
+            // TODO: Waiting for MK
+            throw new NotImplementedException();
         }
     }
 }
