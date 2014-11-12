@@ -52,7 +52,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Helper
                 ? new SizeF(52, 58)
                 : new SizeF(34, 39);
 
-            if (ImageWasOverridden(image, originalImageSize, UIColor.FromRGBA(0, 0, 0, 0), bigIcon ? new Point(26, 29) : new Point(8, 15)))
+            if (ImageWasOverridden(image, originalImageSize, UIColor.FromRGBA(0, 0, 0, 0), bigIcon ? new Point(26, 29) : new Point(18, 16)))
             {
                 return image;
             }
@@ -222,6 +222,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Helper
 
         private static UIColor GetPixel(UIImage image, int x, int y)
         {
+            var correctedX = (int)(image.CurrentScale * x);
+            var correctedY = (int)(image.CurrentScale * y);
+
             var cgImage = image.CGImage.Clone ();
             var size = new Size (cgImage.Width, cgImage.Height);
             var colorSpace = CGColorSpace.CreateDeviceRGB ();
@@ -235,7 +238,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Helper
             context.DrawImage (new RectangleF (0, 0, size.Width, size.Height), cgImage);
             context.Dispose ();
 
-            var byteIndex = (bytesPerRow * y) + x * bytesPerPixel;
+            var byteIndex = (bytesPerRow * correctedY) + correctedX * bytesPerPixel;
             var red = rawData[byteIndex];
             var green = rawData[byteIndex + 1];
             var blue = rawData[byteIndex + 2];
