@@ -59,6 +59,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Server\HoneyBadger\HoneyBadger.csproj">
+      <Project>{1c2f9d8b-7b65-4d2e-a099-d0040907d59c}</Project>
+      <Name>HoneyBadger</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Server\MK.Common\MK.Common.csproj">
       <Project>{65033050-1d55-465a-a772-f3192f9e2428}</Project>
       <Name>MK.Common</Name>

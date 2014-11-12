@@ -59,7 +59,7 @@ namespace apcurium.MK.Booking.Api.Jobs
                 if (order != null)
                 {
                     var orderStatus = _orderDao.FindOrderStatusById(orderId);
-                    var status = _ibsServiceProvider.Booking(orderStatus.CompanyKey).GetOrdersStatus( new [] { order.IBSOrderId.Value });
+                    var status = _ibsServiceProvider.Booking(orderStatus.CompanyKey, orderStatus.Market).GetOrdersStatus( new [] { order.IBSOrderId.Value });
                  
                     _orderStatusUpdater.Update(status.ElementAt(0), orderStatus);
                 }
@@ -93,15 +93,22 @@ namespace apcurium.MK.Booking.Api.Jobs
                     foreach (var orderGroup in groupedOrders)
                     {
                         var ordersForCompany = orderGroup.ToArray();
+
+                        string market = null;
+                        if (ordersForCompany.Any())
+                        {
+                            market = ordersForCompany.First().Market;
+                        }
+
                         Log.DebugFormat("Starting BatchUpdateStatus with {0} orders{1}", ordersForCompany.Count(), string.IsNullOrWhiteSpace(orderGroup.Key) ? string.Empty : string.Format(" for company {0}", orderGroup.Key));
                         Log.DebugFormat("Starting BatchUpdateStatus with {0} orders of status {1}", ordersForCompany.Count(o => o.Status == OrderStatus.WaitingForPayment), "WaitingForPayment");
-                        BatchUpdateStatus(orderGroup.Key, ordersForCompany.Where(o => o.Status == OrderStatus.WaitingForPayment));
+                        BatchUpdateStatus(orderGroup.Key, market, ordersForCompany.Where(o => o.Status == OrderStatus.WaitingForPayment));
                         Log.DebugFormat("Starting BatchUpdateStatus with {0} orders of status {1}", ordersForCompany.Count(o => o.Status == OrderStatus.Pending), "Pending");
-                        BatchUpdateStatus(orderGroup.Key, ordersForCompany.Where(o => o.Status == OrderStatus.Pending));
+                        BatchUpdateStatus(orderGroup.Key, market, ordersForCompany.Where(o => o.Status == OrderStatus.Pending));
                         Log.DebugFormat("Starting BatchUpdateStatus with {0} orders of status {1}", ordersForCompany.Count(o => o.Status == OrderStatus.TimedOut), "TimedOut");
-                        BatchUpdateStatus(orderGroup.Key, ordersForCompany.Where(o => o.Status == OrderStatus.TimedOut));
+                        BatchUpdateStatus(orderGroup.Key, market, ordersForCompany.Where(o => o.Status == OrderStatus.TimedOut));
                         Log.DebugFormat("Starting BatchUpdateStatus with {0} orders of status {1}", ordersForCompany.Count(o => o.Status == OrderStatus.Created), "Created");
-                        BatchUpdateStatus(orderGroup.Key, ordersForCompany.Where(o => o.Status == OrderStatus.Created));
+                        BatchUpdateStatus(orderGroup.Key, market, ordersForCompany.Where(o => o.Status == OrderStatus.Created));
                     }
                     
                     hasOrdersWaitingForPayment = orders.Any(o => o.Status == OrderStatus.WaitingForPayment);
@@ -119,14 +126,14 @@ namespace apcurium.MK.Booking.Api.Jobs
             return hasOrdersWaitingForPayment;
         }
 
-        private void BatchUpdateStatus(string companyKey, IEnumerable<OrderStatusDetail> orders)
+        private void BatchUpdateStatus(string companyKey, string market, IEnumerable<OrderStatusDetail> orders)
         {
             var ibsOrdersIds = orders.Select(statusDetail => statusDetail.IBSOrderId != null ? statusDetail.IBSOrderId.Value : 0).ToList();
             const int take = 10;
             for (var skip = 0; skip < ibsOrdersIds.Count; skip = skip + take)
             {
                 var nextGroup = ibsOrdersIds.Skip(skip).Take(take).ToList();
-                var orderStatuses = _ibsServiceProvider.Booking(companyKey).GetOrdersStatus(nextGroup);
+                var orderStatuses = _ibsServiceProvider.Booking(companyKey, market).GetOrdersStatus(nextGroup);
 
                 foreach (var ibsStatus in orderStatuses)
                 {

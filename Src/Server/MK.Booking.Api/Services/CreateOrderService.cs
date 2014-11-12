@@ -92,7 +92,10 @@ namespace apcurium.MK.Booking.Api.Services
 
             var account = _accountDao.FindById(new Guid(this.GetSession().UserAuthId));
 
-            account.IBSAccountId = CreateIbsAccountIfNeeded(account);
+            // choose best ibs if market is not null
+            string companyKeyToBeDispatchedTo = null;
+
+            account.IBSAccountId = CreateIbsAccountIfNeeded(account, companyKeyToBeDispatchedTo, request.Market);
 
             // User can still create future order, but we allow only one active Book now order.
             if (!request.PickupDate.HasValue)
@@ -118,13 +121,13 @@ namespace apcurium.MK.Booking.Api.Services
                 request.PickupDate.HasValue,
                 request.PickupDate.HasValue 
                     ? request.PickupDate.Value 
-                    : GetCurrentOffsetedTime(),
-                () => _ibsServiceProvider.StaticData().GetZoneByCoordinate(
+                    : GetCurrentOffsetedTime(), //damn
+                () => _ibsServiceProvider.StaticData(companyKeyToBeDispatchedTo, request.Market).GetZoneByCoordinate(
                         request.Settings.ProviderId,
                         request.PickupAddress.Latitude, 
                         request.PickupAddress.Longitude),
-                () => request.DropOffAddress != null 
-                    ? _ibsServiceProvider.StaticData().GetZoneByCoordinate(
+                () => request.DropOffAddress != null
+                    ? _ibsServiceProvider.StaticData(companyKeyToBeDispatchedTo, request.Market).GetZoneByCoordinate(
                             request.Settings.ProviderId, 
                             request.DropOffAddress.Latitude,
                             request.DropOffAddress.Longitude) 
@@ -340,7 +343,7 @@ namespace apcurium.MK.Booking.Api.Services
             return new HttpResult(HttpStatusCode.OK);
         }
 
-        private int CreateIbsAccountIfNeeded(AccountDetail account, string companyKey = null)
+        private int CreateIbsAccountIfNeeded(AccountDetail account, string companyKey = null, string market = null)
         {
             var ibsAccountId = _accountDao.GetIbsAccountId(account.Id, companyKey);
             if (ibsAccountId.HasValue)
@@ -349,7 +352,7 @@ namespace apcurium.MK.Booking.Api.Services
             }
 
             // Account doesn't exist, create it
-            ibsAccountId = _ibsServiceProvider.Account(companyKey).CreateAccount(account.Id,
+            ibsAccountId = _ibsServiceProvider.Account(companyKey, market).CreateAccount(account.Id,
                 account.Email,
                 string.Empty,
                 account.Name,
@@ -501,7 +504,7 @@ namespace apcurium.MK.Booking.Api.Services
 
             Debug.Assert(request.PickupDate != null, "request.PickupDate != null");
 
-            var result = _ibsServiceProvider.Booking(companyKey).CreateOrder(
+            var result = _ibsServiceProvider.Booking(companyKey, request.Market).CreateOrder(
                 request.Settings.ProviderId,
                 ibsAccountId,
                 request.Settings.Name,
@@ -530,7 +533,7 @@ namespace apcurium.MK.Booking.Api.Services
                     // After 5 time, we are giving up. But we assume the order is completed.
                     Task.Factory.StartNew(() =>
                     {
-                        Func<bool> cancelOrder = () => _ibsServiceProvider.Booking(order.CompanyKey).CancelOrder(order.IBSOrderId.Value, currentIbsAccountId.Value, order.Settings.Phone);
+                        Func<bool> cancelOrder = () => _ibsServiceProvider.Booking(order.CompanyKey, order.Market).CancelOrder(order.IBSOrderId.Value, currentIbsAccountId.Value, order.Settings.Phone);
                         cancelOrder.Retry(new TimeSpan(0, 0, 0, 10), 5);
                     });
                 }

@@ -17,6 +17,6 @@ namespace CustomerPortal.Client
 
         string GetCompanyMarket(double latitude, double longitude);
 
-        IEnumerable<NetworkFleetResponse> GetMarketFleets(string market, double latitude, double longitude);
+        NetworkFleetResponse GetBestAvailableFleet(string market);
     }
 }

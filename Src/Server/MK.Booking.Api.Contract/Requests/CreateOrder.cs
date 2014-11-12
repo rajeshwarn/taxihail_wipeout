@@ -48,6 +48,8 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
 
         public bool FromWebApp { get; set; }
 
+        public string Market { get; set; }
+
         public class RideEstimate
         {
             /// <summary>

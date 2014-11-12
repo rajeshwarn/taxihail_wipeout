@@ -34,6 +34,8 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
 
         public string Note { get; set; }
 
+        public string Market { get; set; }
+
         public Address PickupAddress { get; set; }
 
         public Address DropOffAddress { get; set; }

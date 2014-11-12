@@ -8,6 +8,7 @@ using apcurium.MK.Common.Entity;
 using CustomerPortal.Client;
 using CustomerPortal.Client.Impl;
 using DatabaseInitializer.Services;
+using HoneyBadger;
 using Infrastructure;
 using Infrastructure.EventSourcing;
 using Infrastructure.Messaging;
@@ -93,7 +94,7 @@ namespace DatabaseInitializer
         {
             unityContainer.RegisterType<ITaxiHailNetworkServiceClient>(
                 new TransientLifetimeManager(),
-                new InjectionFactory(c => new TaxiHailNetworkServiceClient(c.Resolve<IServerSettings>())));
+                new InjectionFactory(c => new TaxiHailNetworkServiceClient(c.Resolve<IServerSettings>(), c.Resolve<IHoneyBadgerServiceClient>())));
         }
 
         private static void RegisterEventHandlers(IUnityContainer unityContainer)

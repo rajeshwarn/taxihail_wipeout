@@ -647,6 +647,10 @@
       <Project>{6a4623e1-41ef-4286-9a34-2adc6407e94f}</Project>
       <Name>CustomerPortal.Contract</Name>
     </ProjectReference>
+    <ProjectReference Include="..\HoneyBadger\HoneyBadger.csproj">
+      <Project>{1C2F9D8B-7B65-4D2E-A099-D0040907D59C}</Project>
+      <Name>HoneyBadger</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Infrastructure\Infrastructure\Infrastructure.csproj">
       <Project>{B5786D07-5888-4DF5-B295-3FEA593F3BFE}</Project>
       <Name>Infrastructure</Name>

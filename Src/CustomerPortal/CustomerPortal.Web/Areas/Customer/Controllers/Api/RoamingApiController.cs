@@ -67,23 +67,14 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
         }
 
         [Route("api/customer/roaming/marketfleets")]
-        public HttpResponseMessage GetMarketFleets(string market, double latitude, double longitude)
+        public HttpResponseMessage GetMarketFleets(string market)
         {
             var marketFleets = new List<NetworkFleetResponse>();
-
-            var userPosition = new MapCoordinate
-            {
-                Latitude = latitude,
-                Longitude = longitude
-            };
 
             // Get all companies in the market
             var companiesInMarket = _networkRepository.Where(n => n.IsInNetwork && n.Market == market);
 
-            // Keep only the companies that are within the user's position
-            var availableCompaniesInMarket = companiesInMarket.Where(x => x.Region.Contains(userPosition));
-
-            foreach (var availableCompany in availableCompaniesInMarket)
+            foreach (var availableCompany in companiesInMarket)
             {
                 var company = _companyRepository.FirstOrDefault(c => c.CompanyKey == availableCompany.Id);
                 if (company != null)

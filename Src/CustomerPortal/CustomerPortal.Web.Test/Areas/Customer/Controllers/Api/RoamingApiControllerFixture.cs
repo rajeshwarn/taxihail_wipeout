@@ -256,7 +256,7 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
         [Test]
         public void When_Getting_Fleets_From_a_Market()
         {
-            var response = Sut.GetMarketFleets("MTL", 45.423513, -73.653214);
+            var response = Sut.GetMarketFleets("MTL");
             var json = response.Content.ReadAsStringAsync().Result;
             var fleets = JsonConvert.DeserializeObject<List<NetworkFleetResponse>>(json);
 

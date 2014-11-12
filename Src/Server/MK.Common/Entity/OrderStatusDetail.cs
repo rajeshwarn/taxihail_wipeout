@@ -34,6 +34,7 @@ namespace apcurium.MK.Common.Entity
         public string PairingError { get; set; }
 
         // network stuff
+        public string Market { get; set; }
         public string CompanyKey { get; set; }                  // not null if created on another ibs
         public string CompanyName { get; set; }                 // not null if created on another ibs
         public string NextDispatchCompanyName { get; set; }

@@ -5,6 +5,7 @@ using System.Data.Entity;
 using apcurium.MK.Common.Configuration;
 using CustomerPortal.Client;
 using CustomerPortal.Client.Impl;
+using HoneyBadger;
 using Infrastructure;
 using Infrastructure.EventSourcing;
 using Infrastructure.Messaging;
@@ -39,7 +40,7 @@ namespace apcurium.MK.Web.SelfHost
 
         private static void RegisterTaxiHailNetwork(IUnityContainer unityContainer)
         {
-            var thNetworkServiceClient = new TaxiHailNetworkServiceClient(unityContainer.Resolve<IServerSettings>());
+            var thNetworkServiceClient = new TaxiHailNetworkServiceClient(unityContainer.Resolve<IServerSettings>(), unityContainer.Resolve<IHoneyBadgerServiceClient>());
             unityContainer.RegisterInstance<ITaxiHailNetworkServiceClient>(thNetworkServiceClient);
 
         }
