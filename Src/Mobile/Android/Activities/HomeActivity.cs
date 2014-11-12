@@ -194,27 +194,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         {
             var useCompanyColor = this.Services().Settings.UseThemeColorForMapIcons;
             var companyColor = Resources.GetColor (Resource.Color.company_color);
-            var bigBackgroundIcon = Resources.GetDrawable (Resource.Drawable.map_bigicon_background);
+
+            var red = Color.Argb(255, 255, 0, 23);
+            var green = Color.Argb(255, 30, 192, 34);
 
             var pickupOverlay = FindViewById<ImageView> (Resource.Id.pickupOverlay);
-            pickupOverlay.SetImageBitmap (
-                DrawHelper.GetMapIconBitmap (
-                    Resources.GetDrawable(Resource.Drawable.hail_icon), 
-                    useCompanyColor 
-                        ? companyColor
-                        : Color.Argb(255, 30, 192, 34), 
-                    bigBackgroundIcon, 
-                    new System.Drawing.SizeF(52, 58)));
+            pickupOverlay.SetImageBitmap(DrawHelper.ApplyColorToMapIcon(Resource.Drawable.hail_icon, useCompanyColor ? companyColor : green, true));
 
             var destinationOverlay = FindViewById<ImageView> (Resource.Id.destinationOverlay);
-            destinationOverlay.SetImageBitmap (
-                DrawHelper.GetMapIconBitmap (
-                    Resources.GetDrawable(Resource.Drawable.destination_icon), 
-                    useCompanyColor 
-                        ? companyColor
-                        : Color.Argb(255, 255, 0, 23), 
-                    bigBackgroundIcon, 
-                    new System.Drawing.SizeF(52, 58)));
+            destinationOverlay.SetImageBitmap(DrawHelper.ApplyColorToMapIcon(Resource.Drawable.destination_icon, useCompanyColor ? companyColor : red, true));
         }
 
         protected override void OnViewModelSet()

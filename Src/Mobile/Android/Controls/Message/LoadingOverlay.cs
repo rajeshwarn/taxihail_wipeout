@@ -81,17 +81,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
             _layoutCenter.ClearAnimation();
             _layoutImage.SetBackgroundDrawable(null);
 
-			if (_car == null) {
-				var carDrawable = _activity.Resources.GetDrawable (Resource.Drawable.taxi_progress);
-				_car = DrawHelper.DrawableToBitmap (carDrawable);
-                 
-				_colorToUse = _activity.Resources.GetColor (Resource.Color.company_color);
-
-				if (!IsAssetOverriden (_car, Android.Graphics.Color.Argb (255, 0, 122, 255), new Android.Graphics.Point (10, 20))) {
-					_car = DrawHelper.DrawableToBitmap (carDrawable, _colorToUse);                	
-				}
-                
-				carDrawable = null;
+			if (_car == null) 
+            {
+                _colorToUse = _activity.Resources.GetColor (Resource.Color.company_color);
+                _car = DrawHelper.ApplyThemeColorToImage (Resource.Drawable.taxi_progress, true, new SizeF(52, 20), Android.Graphics.Color.Argb (255, 0, 122, 255), new System.Drawing.Point (25, 10));
 			}
 
             var displaySize = _activity.Resources.DisplayMetrics;
@@ -264,12 +257,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
 
             _layoutCenter.RequestLayout();
             return new BitmapDrawable(_progressImage);
-        }
-
-        private static bool IsAssetOverriden(Bitmap image, Android.Graphics.Color expectedColor, Android.Graphics.Point expectedColorCoordinate)
-        {
-            var detectedColor = image.GetPixel(expectedColorCoordinate.X, expectedColorCoordinate.Y);
-            return !detectedColor.Equals(expectedColor.ToArgb());
         }
     }
 }

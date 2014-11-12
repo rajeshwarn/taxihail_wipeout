@@ -10,6 +10,7 @@ using Android.Widget;
 using apcurium.MK.Booking.Mobile.Style;
 using System.Drawing;
 using Color = Android.Graphics.Color;
+using Point = System.Drawing.Point;
 
 namespace apcurium.MK.Booking.Mobile.Client.Helpers
 {
@@ -34,8 +35,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Helpers
         {
             return (int)TypedValue.ApplyDimension(ComplexUnitType.Pt, ptValue, Application.Context.Resources.DisplayMetrics);
         }
-
-        public static Bitmap DrawableToBitmap (Drawable drawable, Color? colorFilter = null) 
+            
+        private static Bitmap DrawableToBitmap (Drawable drawable, Color? colorFilter = null) 
         {
             if (colorFilter != null)
             {
@@ -51,18 +52,22 @@ namespace apcurium.MK.Booking.Mobile.Client.Helpers
             return bitmap;
         }
 
-        public static BitmapDescriptor DrawableToBitmapDescriptor (Drawable drawable, Color? colorFilter = null) 
+        public static Bitmap ApplyColorToMapIcon(int foregroundResource, Color color, bool isBigIcon)
         {
-            return BitmapDescriptorFactory.FromBitmap(DrawableToBitmap(drawable, colorFilter));
-        }
+            var foreground = Application.Context.Resources.GetDrawable(foregroundResource);
 
-        public static Bitmap GetMapIconBitmap(Drawable foreground, Color color, Drawable backgroundToColorize, SizeF originalImageSize)
-        {
-            var imageWasOverridden = foreground.IntrinsicWidth != originalImageSize.Width.ToPixels();
-            if (imageWasOverridden)
+            var originalImageSize = isBigIcon 
+                ? new SizeF(52, 58)
+                : new SizeF(34, 39);
+
+            if (ImageWasOverridden(foreground, originalImageSize, Color.Transparent, isBigIcon ? new Point(26, 29) : new Point(18, 16)))
             {
                 return DrawableToBitmap(foreground);
             }
+
+            var backgroundToColorize = isBigIcon
+                ? Application.Context.Resources.GetDrawable (Resource.Drawable.map_bigicon_background)
+                : Application.Context.Resources.GetDrawable (Resource.Drawable.map_smallicon_background);
 
             var bitmapOverlay = Bitmap.CreateBitmap(backgroundToColorize.IntrinsicWidth, backgroundToColorize.IntrinsicHeight, Bitmap.Config.Argb8888);
             var canvas = new Canvas(bitmapOverlay);
@@ -71,11 +76,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Helpers
             canvas.DrawBitmap (DrawableToBitmap (foreground), 0, 0, null);
 
             return bitmapOverlay;
-        }
-
-        public static BitmapDescriptor GetMapIcon(Drawable foreground, Color color, Drawable backgroundToColorize, SizeF originalImageSize)
-        {
-            return BitmapDescriptorFactory.FromBitmap(GetMapIconBitmap(foreground, color, backgroundToColorize, originalImageSize));
         }
 
         public static Color GetTextColorForBackground(Color backgroundColor)
@@ -90,6 +90,20 @@ namespace apcurium.MK.Booking.Mobile.Client.Helpers
             return Color.White;
         }
 
+        public static Bitmap ApplyThemeColorToImage(int drawableResource, bool skipApplyIfCustomImage = false, SizeF originalImageSize = new SizeF(), Color? expectedColor = null, Point? expectedColorCoordinate = null)
+        {
+            var drawable = Application.Context.Resources.GetDrawable(drawableResource);
+            if (skipApplyIfCustomImage)
+            {
+                if (ImageWasOverridden(drawable, originalImageSize, expectedColor, expectedColorCoordinate))
+                {
+                    return DrawableToBitmap(drawable);
+                }
+            }
+
+            return DrawableToBitmap(drawable, Application.Context.Resources.GetColor (Resource.Color.company_color));
+        }
+
         public static void SupportLoginTextColor(TextView textView)
         {
             int[][] states = new int[1][];
@@ -97,6 +111,31 @@ namespace apcurium.MK.Booking.Mobile.Client.Helpers
             var colors = new[]{(int)GetTextColorForBackground(textView.Resources.GetColor(Resource.Color.login_color))};
             var colorList = new ColorStateList (states, colors);
             textView.SetTextColor(colorList);
+        }
+
+        private static bool ImageWasOverridden(Drawable image, SizeF originalImageSize, Color? expectedColor, Point? expectedColorCoordinate)
+        {
+            var differentSize = image.IntrinsicWidth != originalImageSize.Width.ToPixels();
+            if (differentSize)
+            {
+                return true;
+            }
+
+            if (expectedColor == null || expectedColorCoordinate == null)
+            {
+                return false;
+            }
+
+            var bitmap = DrawHelper.DrawableToBitmap (image);
+
+            var defaultDensity = 160;
+            var correctedX = expectedColorCoordinate.Value.X * (bitmap.Density / defaultDensity);
+            var correctedY = expectedColorCoordinate.Value.Y * (bitmap.Density / defaultDensity);
+
+            var detectedColor = bitmap.GetPixel(correctedX, correctedY);
+            var differentColorThanExpected = !detectedColor.Equals(expectedColor.Value.ToArgb());
+
+            return differentColorThanExpected;
         }
     }
 }
