@@ -374,7 +374,7 @@
     <comment>Completed</comment>
   </data>
   <data name="OrderStatus_wosLOADED" xml:space="preserve">
-    <value>Los pasajero(s) abordaron el vehículo</value>
+    <value>Pasajero(s) a bordo</value>
     <comment>Passengers are in the taxi</comment>
   </data>
   <data name="OrderStatus_wosLOADEDAutoPairing" xml:space="preserve">
@@ -398,7 +398,7 @@
     <comment>Sorry no cars are available due to high demand, please try later.</comment>
   </data>
   <data name="OrderStatus_wosWAITING" xml:space="preserve">
-    <value>Espere mientras se le asigna un taxi</value>
+    <value>Espere mientras se le asigna un vehículo</value>
     <comment>Waiting for driver to be assigned</comment>
   </data>
   <data name="PairingConfirmationToDriver" xml:space="preserve">
@@ -468,5 +468,8 @@
   <data name="UnpairingConfirmationToDriver" xml:space="preserve">
     <value>AVISO: No se deberá cobrar al cliente al final del servicio.</value>
     <comment>WARNING: The client will NOT be charged at the end of the ride</comment>
+  </data>
+  <data name="CannotCreateOrderChargeAccountNotSupported" xml:space="preserve">
+    <value>This account is not supported by the web site.</value>
   </data>
 </root>

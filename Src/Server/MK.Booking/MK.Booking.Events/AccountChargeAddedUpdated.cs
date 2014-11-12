@@ -9,6 +9,7 @@ namespace apcurium.MK.Booking.Events
         public Guid AccountChargeId { get; set; }
         public string Name { get; set; }
         public string Number { get; set; }
+        public bool UseCardOnFileForPayment { get; set; }
         public AccountChargeQuestion[] Questions { get; set; }
     }
 }
