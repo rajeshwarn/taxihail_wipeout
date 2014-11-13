@@ -40,6 +40,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         private const string UserNotificationSettingsCacheKey = "Account.UserNotificationSettings";
         private const string AuthenticationDataCacheKey = "AuthenticationData";
         private const string VehicleTypesDataCacheKey = "VehicleTypesData";
+        private const string MarketCacheKey = "Market";
 
 		private readonly IAppSettings _appSettings;
 		private readonly IFacebookService _facebookService;
@@ -525,6 +526,19 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			if (!CurrentAccount.DefaultCreditCard.HasValue)
 		    {
 		        refData.PaymentsList.Remove(i => i.Id == ChargeTypes.CardOnFile.Id);
+		    }
+
+            var market = Mvx.Resolve<ICacheService>().Get<string>(MarketCacheKey);
+		    if (!string.IsNullOrWhiteSpace(market))
+		    {
+		        // External market, only pay in card available
+		        foreach (var paymentOption in refData.PaymentsList)
+		        {
+		            if (paymentOption.Id != ChargeTypes.PaymentInCar.Id)
+		            {
+		                refData.PaymentsList.Remove(paymentOption);
+		            }
+		        }
 		    }
 
             return refData.PaymentsList;
