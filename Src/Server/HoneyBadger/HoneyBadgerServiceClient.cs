@@ -14,8 +14,9 @@ namespace HoneyBadger
             var @params = new Dictionary<string, string>
                 {
                     { "market", market },
-                    { "fleetId", fleetId },
-                    { "includeEntities", "true" }
+                    { "fleet", fleetId },
+                    { "includeEntities", "true" },
+                    { "meterState", ((int)MeterStates.ForHire).ToString() }
                 };
 
             var queryString = BuildQueryString(@params);
@@ -24,11 +25,7 @@ namespace HoneyBadger
                                  .Deserialize<HoneyBadgerResponse>()
                                  .Result;
 
-            // Select all vehicles that are available
-            var availableVehicles = response.Entities.Where(e => e.LogonState == LogonStates.LoggedOn
-                && e.MeterState == MeterStates.ForHire);
-
-            return availableVehicles.Select(e => new VehicleResponse
+            return response.Entities.Select(e => new VehicleResponse
             {
                 Timestamp = e.TimeStamp,
                 Latitude = e.Latitude,
