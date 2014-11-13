@@ -316,10 +316,6 @@
     <Content Include="assets\js\storage-polyfill.js" />
     <Content Include="common\collections\AvailableVehicleCollection.js" />
     <Content Include="common\models\AvailableVehicle.js" />
-    <Content Include="Content\bootstrap.css" />
-    <Content Include="Content\bootstrap.min.css" />
-    <Content Include="Content\Site.css" />
-    <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="PayPalExpressCheckout\mobile-cancel.html" />
     <Content Include="PayPalExpressCheckout\mobile-success.html" />
     <Content Include="assets\bootstrap-datepicker\css\datepicker.css" />
@@ -414,16 +410,24 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="models\CompanySettings.js" />
-    <Content Include="Scripts\bootstrap.js" />
-    <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Areas\AdminTH\Views\PromoCode\Index.cshtml" />
     <Content Include="Areas\AdminTH\Views\PromoCode\Create.cshtml" />
     <Content Include="Areas\AdminTH\Views\PromoCode\Edit.cshtml" />
-    <None Include="Scripts\jquery-1.10.2.intellisense.js" />
-    <Content Include="Scripts\jquery-1.10.2.js" />
-    <Content Include="Scripts\jquery-1.10.2.min.js" />
-    <Content Include="Scripts\jquery.sortable.min.js" />
-    <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="assets\js\jquery.sortable.min.js" />
+    <None Include="Scripts\jquery-1.8.2.intellisense.js" />
+    <Content Include="Scripts\jquery-1.8.2.js" />
+    <Content Include="Scripts\jquery-1.8.2.min.js" />
+    <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
+    <Content Include="Scripts\jquery.validate.js" />
+    <Content Include="Scripts\jquery.validate.min.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\moment-with-locales.js" />
+    <Content Include="Scripts\moment-with-locales.min.js" />
+    <Content Include="Scripts\moment.js" />
+    <Content Include="Scripts\moment.min.js" />
     <Content Include="services\MathService.js" />
     <Content Include="models\NewAccount.js" />
     <Content Include="models\OrderStatus.js" />
@@ -557,10 +561,6 @@
     <Content Include="Areas\AdminTH\Views\_ViewStart.cshtml" />
     <Content Include="Areas\AdminTH\Views\Shared\_Layout.cshtml" />
     <Content Include="Areas\AdminTH\Views\TaxiHailNetwork\Index.cshtml" />
-    <Content Include="fonts\glyphicons-halflings-regular.woff" />
-    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
-    <Content Include="fonts\glyphicons-halflings-regular.eot" />
-    <Content Include="Scripts\jquery-1.10.2.min.map" />
     <Content Include="localization\AddFavorite-es.json" />
     <Content Include="localization\AddressSelection-es.json" />
     <Content Include="localization\Book-es.json" />

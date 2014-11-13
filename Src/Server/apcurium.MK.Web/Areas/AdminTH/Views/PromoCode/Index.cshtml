@@ -1,12 +1,17 @@
-﻿@model List<apcurium.MK.Web.Areas.AdminTH.Models.PromoCode>
+﻿@model IEnumerable<apcurium.MK.Web.Areas.AdminTH.Models.PromoCode>
 
 <h4 class="table-title">Promo Codes</h4>
+@if (@TempData["Info"] != null)
+{
+    <div class="alert alert-info" style="margin-top: 10px;">@TempData["Info"]</div>
+}
+
 <ul class="unstyled locations">
     @foreach (var promoCode in Model)
     {
         <li>
             <a data-action="select-promocode" href="@Url.Action("Edit", new {id = @promoCode.Id})">
-                <span class="location-title">@promoCode.Name</span>
+                <span class="location-title">@promoCode.Name (@promoCode.Code)</span>
             </a>
         </li>
     }

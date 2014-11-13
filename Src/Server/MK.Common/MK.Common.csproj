@@ -147,6 +147,7 @@
     <Compile Include="Enumeration\DistanceFormat.cs" />
     <Compile Include="Enumeration\PaymentProvider.cs" />
     <Compile Include="Enumeration\PaymentType.cs" />
+    <Compile Include="Enumeration\PromoDiscountType.cs" />
     <Compile Include="Enumeration\PushNotificationServicePlatform.cs" />
     <Compile Include="Enumeration\SupportedLanguages.cs" />
     <Compile Include="Extensions\ActionExtension.cs" />
