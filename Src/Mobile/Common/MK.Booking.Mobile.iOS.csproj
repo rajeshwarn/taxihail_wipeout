@@ -418,4 +418,7 @@
     </XamarinComponentReference>
   </ItemGroup>
   <ItemGroup />
+  <ItemGroup>
+    <BundleResource Include="TutorialContent\Tutorial-es.json" />
+  </ItemGroup>
 </Project>

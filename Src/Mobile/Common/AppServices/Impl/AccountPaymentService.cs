@@ -1,6 +1,5 @@
 using apcurium.MK.Booking.Api.Contract.Resources;
 using System.Threading.Tasks;
-using System.Collections.Generic;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 

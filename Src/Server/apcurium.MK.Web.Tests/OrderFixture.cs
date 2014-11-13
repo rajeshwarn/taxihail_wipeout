@@ -5,7 +5,10 @@ using System.Linq;
 using System.Threading;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Requests;
+using apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Booking.Api.Services;
 using apcurium.MK.Booking.Database;
+using apcurium.MK.Booking.Domain;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Entity;
@@ -25,6 +28,7 @@ namespace apcurium.MK.Web.Tests
         public override void Setup()
         {
             base.Setup();
+            CreateAndAuthenticateTestAdminAccount().Wait();
         }
 
         [TestFixtureSetUp]
@@ -79,6 +83,72 @@ namespace apcurium.MK.Web.Tests
             Assert.AreEqual(6, orderDetails.Settings.Passengers);
             Assert.AreEqual(1, orderDetails.Settings.LargeBags);
             Assert.AreEqual("123", orderDetails.Settings.AccountNumber);
+        }
+
+        [Test]
+        public void create_order_with_charge_account_with_card_on_file_payment_from_web_app()
+        {
+            var accountChargeSut = new AdministrationServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
+            var accountChargeName = "NAME" + new Random(DateTime.Now.Millisecond).Next(0, 5236985);
+            var accountChargeNumber = "NUMBER" + new Random(DateTime.Now.Millisecond).Next(0, 5236985);
+
+            accountChargeSut.CreateAccountCharge(new AccountChargeRequest
+            {
+                Id = Guid.NewGuid(),
+                Name = accountChargeName,
+                Number = accountChargeNumber,
+                UseCardOnFileForPayment = true,
+                Questions = new[]
+                {
+                    new AccountChargeQuestion
+                    {
+                        Question = "Question?",
+                        Answer = "Answer"
+                    }
+                }
+            });
+
+            var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
+            var order = new CreateOrder
+            {
+                Id = Guid.NewGuid(),
+                FromWebApp = true,
+                PickupAddress = TestAddresses.GetAddress1(),
+                PickupDate = DateTime.Now,
+                DropOffAddress = TestAddresses.GetAddress2(),
+                Estimate = new CreateOrder.RideEstimate
+                {
+                    Price = 10,
+                    Distance = 3
+                },
+                Settings = new BookingSettings
+                {
+                    ChargeTypeId = ChargeTypes.Account.Id,
+                    VehicleTypeId = 1,
+                    ProviderId = Provider.MobileKnowledgeProviderId,
+                    Phone = "514-555-12129",
+                    Passengers = 6,
+                    NumberOfTaxi = 1,
+                    Name = "Joe Smith",
+                    LargeBags = 1,
+                    AccountNumber = accountChargeNumber,
+                },
+                Payment = new PaymentSettings
+                {
+                    CreditCardId = Guid.NewGuid(),
+                    TipPercent = 15
+                },
+                QuestionsAndAnswers = new[]
+                {
+                    new AccountChargeQuestion
+                    {
+                        Answer = "Answer"
+                    }
+                },
+                ClientLanguageCode = SupportedLanguages.fr.ToString()
+            };
+
+            Assert.Throws<WebServiceException>(async () => await sut.CreateOrder(order));
         }
 
         [Test]
