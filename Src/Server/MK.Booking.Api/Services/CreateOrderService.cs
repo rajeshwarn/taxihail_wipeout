@@ -92,9 +92,9 @@ namespace apcurium.MK.Booking.Api.Services
 
             var account = _accountDao.FindById(new Guid(this.GetSession().UserAuthId));
 
-            var companyKey = FindBestAvailableCompany(request.Market);
+            var bestAvailableCompany = FindBestAvailableCompany(request.Market);
 
-            account.IBSAccountId = CreateIbsAccountIfNeeded(account, companyKey, request.Market);
+            account.IBSAccountId = CreateIbsAccountIfNeeded(account, bestAvailableCompany.CompanyKey, request.Market);
 
             // User can still create future order, but we allow only one active Book now order.
             if (!request.PickupDate.HasValue)
@@ -156,13 +156,13 @@ namespace apcurium.MK.Booking.Api.Services
                     request.PickupDate.HasValue,
                 request.PickupDate.HasValue
                     ? request.PickupDate.Value
-                        : GetCurrentOffsetedTime(companyKey, request.Market),
-                    () => _ibsServiceProvider.StaticData(companyKey, request.Market).GetZoneByCoordinate(
+                        : GetCurrentOffsetedTime(bestAvailableCompany.CompanyKey, request.Market),
+                    () => _ibsServiceProvider.StaticData(bestAvailableCompany.CompanyKey, request.Market).GetZoneByCoordinate(
                         request.Settings.ProviderId,
                         request.PickupAddress.Latitude,
                         request.PickupAddress.Longitude),
                 () => request.DropOffAddress != null
-                        ? _ibsServiceProvider.StaticData(companyKey, request.Market).GetZoneByCoordinate(
+                        ? _ibsServiceProvider.StaticData(bestAvailableCompany.CompanyKey, request.Market).GetZoneByCoordinate(
                             request.Settings.ProviderId,
                             request.DropOffAddress.Latitude,
                             request.DropOffAddress.Longitude)
@@ -184,7 +184,7 @@ namespace apcurium.MK.Booking.Api.Services
 
             request.PickupDate = request.PickupDate.HasValue
                 ? request.PickupDate.Value
-                : GetCurrentOffsetedTime(companyKey, request.Market);
+                : GetCurrentOffsetedTime(bestAvailableCompany.CompanyKey, request.Market);
 
             request.Settings.Passengers = request.Settings.Passengers <= 0
                 ? 1
@@ -237,8 +237,8 @@ namespace apcurium.MK.Booking.Api.Services
             command.UserAgent = base.Request.UserAgent;
             command.ClientVersion = base.Request.Headers.Get("ClientVersion");
             command.IsChargeAccountPaymentWithCardOnFile = isChargeAccountPaymentWithCardOnFile;
-            command.CompanyKey = companyKey;
-            command.CompanyName = ""; // TODO
+            command.CompanyKey = bestAvailableCompany.CompanyKey;
+            command.CompanyName = bestAvailableCompany.CompanyName;
             command.Market = request.Market;
             emailCommand.EmailAddress = account.Email;
 
@@ -672,8 +672,8 @@ namespace apcurium.MK.Booking.Api.Services
         /// Method that returns the company key to use.
         /// </summary>
         /// <param name="market">The pickup address market. Null if home market.</param>
-        /// <returns>Company key with the most available cars in external market; null otherwise.</returns>
-        private string FindBestAvailableCompany(string market)
+        /// <returns>Company info with the most available cars in external market; null otherwise.</returns>
+        private BestAvailableCompany FindBestAvailableCompany(string market)
         {
             if (string.IsNullOrWhiteSpace(market))
             {
@@ -682,8 +682,15 @@ namespace apcurium.MK.Booking.Api.Services
             }
 
             // In external market, return company key with most available cars
-            // TODO: Waiting for MK
+            // TODO: Query honey badger. Waiting for MK.
             throw new NotImplementedException();
+        }
+
+        private class BestAvailableCompany
+        {
+            public string CompanyKey { get; set; }
+
+            public string CompanyName { get; set; }
         }
     }
 }
