@@ -24,6 +24,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 		readonly IDirections _directions;
 		readonly IAppSettings _settings;
 
+		private IDisposable _marketDisposable;
+
 		private IOrderWorkflowService _orderWorkflowService;
 
 		private bool _isStarted { get; set; }
@@ -64,6 +66,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 				.Select (x => new { x.address, vehicle =  GetNearestVehicle(x.address, x.vehicles) })
 				.DistinctUntilChanged(x => x.vehicle == null ? double.MaxValue : Position.CalculateDistance (x.vehicle.Latitude, x.vehicle.Longitude, x.address.Latitude, x.address.Longitude))
 				.Select(x => CheckForEta(x.address, x.vehicle));
+
+			_marketDisposable = _orderWorkflowService.GetAndObserveMarket().Subscribe(market => _market = market);
 		}
 
 		public void Start()
@@ -160,6 +164,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			{
 				_timerSubject.OnNext(Observable.Never<long>());
 				_isStarted = false;
+				_marketDisposable.Dispose ();
 			}
 		}
 
@@ -178,14 +183,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			return _etaObservable;
 		}
 
-		private string _market
-		{
-			get 
-			{
-				var marketTask = _orderWorkflowService.GetAndObserveMarket ().Take (1).ToTask();
-				marketTask.Wait ();
-				return marketTask.Result;
-			}
-		}
+		private string _market { get; set; }
     }
 }

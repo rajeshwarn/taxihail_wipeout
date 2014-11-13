@@ -19,6 +19,7 @@ using apcurium.MK.Common.Extensions;
 using ServiceStack.ServiceClient.Web;
 using ServiceStack.ServiceInterface.ServiceModel;
 using ServiceStack.Text;
+using apcurium.MK.Booking.Api.Client.TaxiHail;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 {
@@ -46,7 +47,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		readonly ISubject<AccountChargeQuestion[]> _accountPaymentQuestions = new BehaviorSubject<AccountChargeQuestion[]> (null);
 
 		readonly ISubject<bool> _orderCanBeConfirmed = new BehaviorSubject<bool>(false);
-		readonly ISubject<string> _marketSubject = new BehaviorSubject<string>("");
+		readonly ISubject<string> _marketSubject = new BehaviorSubject<string>(string.Empty);
 
         private bool _isOrderRebooked;
 	    private bool _ignoreNextGeoLocResult;
@@ -730,20 +731,14 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
             _ignoreNextGeoLocResult = ignoreNextGeoLocResult;
         }
 
-	    private void SetMarket(Position currentPosition)
+	    private async void SetMarket(Position currentPosition)
 	    {
-			var distance = MK.Booking.Maps.Geo.Position.CalculateDistance(currentPosition.Latitude, currentPosition.Longitude, _lastMarketRequest.Latitude, _lastMarketRequest.Longitude);
+			var distanceFromLastMarketRequestInMeters = MK.Booking.Maps.Geo.Position.CalculateDistance(currentPosition.Latitude, currentPosition.Longitude, _lastMarketRequest.Latitude, _lastMarketRequest.Longitude);
 	        
-            if (distance > 500)
+			if (distanceFromLastMarketRequestInMeters > 500)
 	        {
-				//var marketTask = UseServiceClientAsync<NetworkRoamingServiceClient, string> (service => service.GetLocalCompanyMarket (currentPosition.Latitude, currentPosition.Longitude));
-				//marketTask.Wait ();
-				//var market = marketTask.Result;
-				//if (market != null) 
-				{
-					//_marketSubject.OnNext(marketTask.Result);
-					_lastMarketRequest = currentPosition;
-				}
+				var market = await UseServiceClientAsync<NetworkRoamingServiceClient, string> (service => service.GetCompanyMarket (currentPosition.Latitude, currentPosition.Longitude));
+				_lastMarketRequest = market != null ? _lastMarketRequest : currentPosition;
 	        }
 	    }
     }
