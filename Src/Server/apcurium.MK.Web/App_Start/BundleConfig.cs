@@ -145,7 +145,8 @@ namespace apcurium.MK.Web
                 "~/assets/bootstrap-datepicker/js/bootstrap-datepicker.js",
                 "~/assets/bootstrap-timepicker/js/bootstrap-timepicker.js",
                 "~/assets/js/spin.js",
-                "~/assets/js/jquery.sortable.min.js"));
+                "~/assets/js/jquery.sortable.min.js",
+                "~/Scripts/moment.js"));
 
             bundles.Add(new ScriptBundle("~/admin/bundles/app").Include(
                 "~/common/utils.js",

@@ -31,7 +31,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
         // GET: AdminTH/PromoCode/Create
         public ActionResult Create()
         {
-            return View();
+            return View(new PromoCode());
         }
 
         // POST: AdminTH/PromoCode/Create

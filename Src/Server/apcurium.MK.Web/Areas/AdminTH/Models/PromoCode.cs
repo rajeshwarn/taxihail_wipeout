@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Common.Enumeration;
+using apcurium.MK.Common.Extensions;
 using ServiceStack.Text;
 
 namespace apcurium.MK.Web.Areas.AdminTH.Models
@@ -10,6 +11,10 @@ namespace apcurium.MK.Web.Areas.AdminTH.Models
     {
         public PromoCode()
         {
+            DaysOfWeek = new [] { DayOfWeek.Sunday, DayOfWeek.Monday, DayOfWeek.Tuesday, DayOfWeek.Wednesday, DayOfWeek.Thursday, DayOfWeek.Friday, DayOfWeek.Saturday };
+            AppliesToCurrentBooking = true;
+            AppliesToFutureBooking = true;
+            DiscountType = PromoDiscountType.Cash;
         }
 
         public PromoCode(PromotionDetail promoDetail)
@@ -43,11 +48,25 @@ namespace apcurium.MK.Web.Areas.AdminTH.Models
         [Display(Name = "End Date")]
         public DateTime? EndDate { get; set; }
 
-        [Display(Name = "Start Time")]
         public DateTime? StartTime { get; set; }
 
-        [Display(Name = "End Time")]
+        [Display(Name = "Start Time")]
+        [RegularExpression(@"^$|^(0[1-9]|1[0-2]):[0-5][0-9] (am|pm|AM|PM)$", ErrorMessage = "Invalid start time")]
+        public string StartTimeValue
+        {
+            get { return StartTime.HasValue ? StartTime.Value.ToString("hh:mm tt") : string.Empty; }
+            set { StartTime = SetTime(value); }
+        }
+
         public DateTime? EndTime { get; set; }
+
+        [Display(Name = "End Time")]
+        [RegularExpression(@"^$|^(0[1-9]|1[0-2]):[0-5][0-9] (am|pm|AM|PM)$", ErrorMessage = "Invalid end time")]
+        public string EndTimeValue
+        {
+            get { return EndTime.HasValue ? EndTime.Value.ToString("hh:mm tt") : string.Empty; } 
+            set { EndTime = SetTime(value); }
+        }
 
         public DayOfWeek[] DaysOfWeek { get; set; }
 
@@ -76,5 +95,15 @@ namespace apcurium.MK.Web.Areas.AdminTH.Models
         public string Code { get; set; }
 
         public bool Active { get; set; }
+
+        private DateTime? SetTime(string timeStringValue)
+        {
+            if (!timeStringValue.HasValue())
+            {
+                return null;
+            }
+
+            return DateTime.Parse(timeStringValue);
+        }
     }
 }
