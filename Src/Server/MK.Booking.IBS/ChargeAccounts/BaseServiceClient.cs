@@ -16,12 +16,23 @@ namespace apcurium.MK.Booking.IBS.ChargeAccounts
 {
     public class BaseServiceClient
     {
+        // TODO: ***** Provide CabMate settings *****
+        // Include Authorization User in these settings
+        // Include Authorization User in these settings
+        
+        private const string AuthorizationUserTest = "EUGENE";
+        private const string AuthorizationSecretTest = "T!?_asF";
+        
         protected IBSSettingContainer _ibsSettings;
 
         protected BaseServiceClient(IBSSettingContainer ibsSettings, ILogger logger)
         {
             Logger = logger;
             _ibsSettings = ibsSettings;
+            
+            // TODO: Should get CabMate settings with user and secret
+            //
+
             SetupClient();
         }
 
@@ -50,22 +61,12 @@ namespace apcurium.MK.Booking.IBS.ChargeAccounts
             var stringToHash = "GET" + pathInfo + dateStr;
             var hash = Encode(stringToHash);
 
-            Client.DefaultRequestHeaders.SetLoose("AUTHORIZATION", "EUGENE:{0}".FormatWith(hash));
+            Client.DefaultRequestHeaders.SetLoose("AUTHORIZATION", "{0}:{1}".FormatWith(AuthorizationUserTest, hash));
             Client.DefaultRequestHeaders.SetLoose("DATE", dateStr);
 
             var response = Client.GetAsync(pathInfo).Result;
 
-            Trace.WriteLine("**Request");
-            Trace.WriteLine(response.RequestMessage);
-            Trace.WriteLine("**Response");
-            Trace.WriteLine(response);
-
             var resultJson = response.Content.ReadAsStringAsync().Result;
-
-            if (response.StatusCode == HttpStatusCode.Unauthorized)
-            {
-                Trace.WriteLine("Hash failed");
-            }
 
             return resultJson.FromJson<T>();
         }
@@ -73,7 +74,7 @@ namespace apcurium.MK.Booking.IBS.ChargeAccounts
         private string Encode(string stringToHash)
         {
 
-            HMAC hmac = new HMACSHA1("T!?_asF".ToBytes());
+            HMAC hmac = new HMACSHA1(AuthorizationSecretTest.ToBytes());
 
             var hash = hmac.ComputeHash(stringToHash.ToBytes());
             var str = hash.FromBytes();
@@ -87,29 +88,16 @@ namespace apcurium.MK.Booking.IBS.ChargeAccounts
         {
             var requestJson = request.ToJson();
 
-
             var dateStr = DateTime.Now.ToString("yyyy-MM-d hh:mm:ss");
 
             var stringToHash = "POST" + pathInfo + dateStr;
             var hash = Encode(stringToHash);
 
-            Client.DefaultRequestHeaders.SetLoose("AUTHORIZATION", "EUGENE:{0}".FormatWith(hash));
+            Client.DefaultRequestHeaders.SetLoose("AUTHORIZATION", "{0}:{1}".FormatWith(AuthorizationUserTest, hash));
             Client.DefaultRequestHeaders.SetLoose("DATE", dateStr);
 
             var response = Client.PostAsync(pathInfo, new StringContent(requestJson, Encoding.UTF8, "application/json")).Result;
             var resultJson = response.Content.ReadAsStringAsync().Result;
-
-            Trace.WriteLine("**Request");
-            Trace.WriteLine(response.RequestMessage);
-            Trace.WriteLine(requestJson);
-            Trace.WriteLine("**Response");
-            Trace.WriteLine(response);
-            Trace.WriteLine(resultJson);
-
-            if (response.StatusCode == HttpStatusCode.Unauthorized)
-            {
-                Trace.WriteLine("Hash failed");
-            }
 
             return resultJson.FromJson<T>();
         }
