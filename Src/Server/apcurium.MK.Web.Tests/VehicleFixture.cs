@@ -1,4 +1,5 @@
-﻿using apcurium.MK.Booking.Api.Client.TaxiHail;
+﻿using System.Runtime.Remoting.Messaging;
+using apcurium.MK.Booking.Api.Client.TaxiHail;
 using NUnit.Framework;
 
 namespace apcurium.MK.Web.Tests
@@ -31,7 +32,7 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public async void get_available_vehicles()
         {
-            await _sut.GetAvailableVehiclesAsync(45.420833, -75.69, 1);
+            await _sut.GetAvailableVehiclesAsync(45.420833, -75.69, 1, "");
 
             Assert.Inconclusive("Service returns no vehicles");
         }

@@ -22,15 +22,15 @@ namespace apcurium.MK.Booking.Api.Services.Maps
     {
         private readonly IDirections _client;
         private readonly IServerSettings _serverSettings;
-        private readonly IIBSServiceProvider _ibsServiceProvider;
         private readonly IOrderDao _orderDao;
+        private readonly IVehicleClient _vehicleClient;
 
-        public DirectionsService(IDirections client, IServerSettings serverSettings, IIBSServiceProvider ibsServiceProvider, IOrderDao orderDao)
+        public DirectionsService(IDirections client, IServerSettings serverSettings, IOrderDao orderDao, IVehicleClient vehicleClient)
         {
             _client = client;
             _serverSettings = serverSettings;
-            _ibsServiceProvider = ibsServiceProvider;
             _orderDao = orderDao;
+            _vehicleClient = vehicleClient;
         }
 
         public object Get(DirectionsRequest request)
@@ -51,7 +51,14 @@ namespace apcurium.MK.Booking.Api.Services.Maps
                 && request.OriginLng.HasValue)
             {
                 // Get available vehicles
-                var availableVehicles = _ibsServiceProvider.Booking().GetAvailableVehicles(request.OriginLat.Value, request.OriginLng.Value, null);
+
+                var market = !string.IsNullOrWhiteSpace(request.Market) ? request.Market : string.Empty;
+                
+                var availableVehiclesTask = _vehicleClient.GetAvailableVehiclesAsync(request.OriginLat.Value,
+                    request.OriginLng.Value, null, market);
+                
+                availableVehiclesTask.Wait();
+                var availableVehicles = availableVehiclesTask.Result;
 
                 // Get nearest available vehicle
                 var nearestAvailableVehicle = GetNearestAvailableVehicle(request.OriginLat.Value,
@@ -81,14 +88,14 @@ namespace apcurium.MK.Booking.Api.Services.Maps
             return _client.GetEta(request.VehicleLat, request.VehicleLng, order.PickupAddress.Latitude, order.PickupAddress.Longitude);
         }
 
-        private IbsVehiclePosition GetNearestAvailableVehicle(double originLat, double originLng, IbsVehiclePosition[] avaiableVehicles)
+        private AvailableVehicle GetNearestAvailableVehicle(double originLat, double originLng, AvailableVehicle[] availableVehicles)
         {
-            if (avaiableVehicles == null || !avaiableVehicles.Any())
+            if (availableVehicles == null || !availableVehicles.Any())
             {
                 return null;
             }
 
-            return avaiableVehicles
+            return availableVehicles
                 .OrderBy(car => Position.CalculateDistance(car.Latitude, car.Longitude, originLat, originLng))
                 .ToArray().First();
         }
