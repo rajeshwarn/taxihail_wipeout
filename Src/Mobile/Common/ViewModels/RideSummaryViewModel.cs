@@ -153,14 +153,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			get
 			{
-				return ((_paymentSettings.IsPayInTaxiEnabled && _accountService.CurrentAccount.DefaultCreditCard != null) 
-							|| _paymentSettings.PayPalClientSettings.IsEnabled) 	     // if paypal or user has a credit card
-						&& !_paymentSettings.AutomaticPayment							 // payment is processed automatically
-						&& _paymentSettings.PaymentMode != PaymentMethod.RideLinqCmt 	 // payment is processed automatically
-						&& !_paymentService.GetPaymentFromCache(Order.Id).HasValue	     // not already paid
-						&& (Order.Settings.ChargeTypeId == null 						 // user is paying with a charge account
-                            || Order.Settings.ChargeTypeId != ChargeTypes.Account.Id)
-						&& OrderStatus.CompanyKey == null;						 // not dispatched to another company;
+                bool payingByChargeAccount = Order.Settings.ChargeTypeId != null && Order.Settings.ChargeTypeId == ChargeTypes.Account.Id;
+                bool payingByChargeAccountCardOnFile = payingByChargeAccount && OrderStatus.IsChargeAccountPaymentWithCardOnFile;
+			    bool isOrderAlreadyPaid = _paymentService.GetPaymentFromCache(Order.Id).HasValue;
+                bool hasCardOnFile = _paymentSettings.IsPayInTaxiEnabled && _accountService.CurrentAccount.DefaultCreditCard != null;
+
+                return !isOrderAlreadyPaid
+                        && !_paymentSettings.AutomaticPayment                                   // Payment is processed automatically
+						&& _paymentSettings.PaymentMode != PaymentMethod.RideLinqCmt            // Payment is processed automatically
+                        && (!payingByChargeAccount || payingByChargeAccountCardOnFile)
+                        && (hasCardOnFile || _paymentSettings.PayPalClientSettings.IsEnabled)   // Can pay by card or PayPal
+						&& OrderStatus.CompanyKey == null;                                      // Not dispatched to another company;
 			}
 		}
 

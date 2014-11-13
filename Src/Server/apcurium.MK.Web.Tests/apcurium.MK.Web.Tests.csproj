@@ -133,6 +133,7 @@
     <Compile Include="FakeIbs.cs" />
     <Compile Include="FakeTaxiHailNetworkServiceClient.cs" />
     <Compile Include="MonerisPaymentServiceClientFixture.cs" />
+    <Compile Include="NetworkRoamingFixture.cs" />
     <Compile Include="PushNotificationRegistrationFixture.cs" />
     <Compile Include="PlaceDetailFixture.cs" />
     <Compile Include="RuleFixture.cs" />

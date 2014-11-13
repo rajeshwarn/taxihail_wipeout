@@ -61,7 +61,7 @@ namespace apcurium.MK.Booking.Api.Services
             }
         }
 
-        private void HideAnswers( IEnumerable<AccountChargeQuestion> questionsAndAnswers)
+        private void HideAnswers(IEnumerable<AccountChargeQuestion> questionsAndAnswers)
         {
             foreach (var accountChargeQuestion in questionsAndAnswers)
             {
@@ -85,6 +85,7 @@ namespace apcurium.MK.Booking.Api.Services
                 Name = request.Name,
                 Number = request.Number,
                 Questions = request.Questions,
+                UseCardOnFileForPayment = request.UseCardOnFileForPayment,
                 CompanyId = AppConstants.CompanyId
             };
 
@@ -122,6 +123,7 @@ namespace apcurium.MK.Booking.Api.Services
                 AccountChargeId = request.Id,
                 Name = request.Name,
                 Number = request.Number,
+                UseCardOnFileForPayment = request.UseCardOnFileForPayment,
                 Questions = request.Questions,
                 CompanyId = AppConstants.CompanyId
             };

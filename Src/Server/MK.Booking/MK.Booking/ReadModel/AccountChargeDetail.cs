@@ -19,6 +19,8 @@ namespace apcurium.MK.Booking.ReadModel
 
         public string Number { get; set; }
 
+        public bool UseCardOnFileForPayment { get; set; }
+
         public virtual IList<AccountChargeQuestion> Questions { get; set; }
 
     }

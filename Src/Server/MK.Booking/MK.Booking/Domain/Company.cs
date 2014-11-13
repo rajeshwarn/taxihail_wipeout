@@ -535,13 +535,15 @@ namespace apcurium.MK.Booking.Domain
             Update(new TermsAndConditionsRetriggered());
         }
 
-        public void AddUpdateAccountCharge(Guid accountChargeId, string number, string name, AccountChargeQuestion[] questions)
+        public void AddUpdateAccountCharge(Guid accountChargeId, string number, string name,
+            bool useCardOnFileForPayment, AccountChargeQuestion[] questions)
         {
             Update(new AccountChargeAddedUpdated
             {
                 Name = name,
                 Number = number,
                 AccountChargeId = accountChargeId,
+                UseCardOnFileForPayment = useCardOnFileForPayment,
                 Questions = questions
             });
         }

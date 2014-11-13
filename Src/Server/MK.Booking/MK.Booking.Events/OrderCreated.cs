@@ -41,6 +41,8 @@ namespace apcurium.MK.Booking.Events
 
         public string UserNote { get; set; }
 
-        public string ClientVersion { get; set; }  
+        public string ClientVersion { get; set; }
+
+        public bool IsChargeAccountPaymentWithCardOnFile { get; set; }
     }
 }

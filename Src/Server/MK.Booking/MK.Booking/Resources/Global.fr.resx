@@ -402,4 +402,7 @@
   <data name="Network_CannotCreateOrder" xml:space="preserve">
     <value>Un problème est survenu en passant la commande avec {0}. Votre commande restera active.</value>
   </data>
+  <data name="CannotCreateOrderChargeAccountNotSupported" xml:space="preserve">
+    <value>Ce compte n'est pas supporté par la page web</value>
+  </data>
 </root>
