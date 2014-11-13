@@ -83,14 +83,14 @@
   <ItemGroup>
     <Compile Include="ChargeAccounts\BaseServiceClient.cs" />
     <Compile Include="ChargeAccounts\Impl\ChargeAccountWebServiceClient.cs" />
-    <Compile Include="ChargeAccounts\RequestResponse\IbsAccountCollectionResponse.cs" />
-    <Compile Include="ChargeAccounts\RequestResponse\IbsAccountValidationResponse.cs" />
+    <Compile Include="ChargeAccounts\RequestResponse\ChargeAccountCollectionResponse.cs" />
+    <Compile Include="ChargeAccounts\RequestResponse\ChargeAccountValidationResponse.cs" />
     <Compile Include="ChargeAccounts\RequestResponse\IbsResponse.cs" />
     <Compile Include="ChargeAccounts\IChargeAccountWebServiceClient.cs" />
-    <Compile Include="ChargeAccounts\RequestResponse\IbsAccountResponse.cs" />
-    <Compile Include="ChargeAccounts\RequestResponse\Resources\IbsAccount.cs" />
-    <Compile Include="ChargeAccounts\RequestResponse\Resources\IbsAccountCollection.cs" />
-    <Compile Include="ChargeAccounts\RequestResponse\Resources\IbsAccountValidation.cs" />
+    <Compile Include="ChargeAccounts\RequestResponse\ChargeAccountResponse.cs" />
+    <Compile Include="ChargeAccounts\RequestResponse\Resources\ChargeAccount.cs" />
+    <Compile Include="ChargeAccounts\RequestResponse\Resources\ChargeAccountCollection.cs" />
+    <Compile Include="ChargeAccounts\RequestResponse\Resources\ChargeAccountValidation.cs" />
     <Compile Include="ChargeAccounts\RequestResponse\Resources\Prompt.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="IBookingWebServiceClient.cs" />

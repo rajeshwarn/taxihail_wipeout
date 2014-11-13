@@ -2,7 +2,7 @@
 
 namespace apcurium.MK.Booking.IBS.ChargeAccounts.RequestResponse
 {
-    public class IbsAccountValidationResponse : IbsResponse<IbsAccountValidation>
+    public class ChargeAccountCollectionResponse : ChargeAccountCollection
     {
     }
 }

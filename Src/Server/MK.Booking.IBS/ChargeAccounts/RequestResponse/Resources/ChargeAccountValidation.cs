@@ -5,7 +5,7 @@ using System.Runtime.Serialization;
 namespace apcurium.MK.Booking.IBS.ChargeAccounts.RequestResponse.Resources
 {
     [DataContract]
-    public class IbsAccountValidation
+    public class ChargeAccountValidation
     {        
         [DataMember(Name = "valid_response")]
         public List<bool> ValidResponse { get; set; }

@@ -14,15 +14,9 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
 {
     [Authenticate(ApplyTo.All)]
     [AuthorizationRequired(ApplyTo.All, RoleName.Admin)]
-    [Route("/admin/ibschargeaccount/", "POST")]
-    public class IbsChargeAccountValidationRequest : IReturn<IbsChargeAccountValidationResponse>
+    [Route("/admin/ibschargeaccount/all", "GET")]
+    public class IbsChargeAccountsRequest : IReturn<List<IbsChargeAccountResponse>>
     {
-        public IEnumerable<string> Prompts { get; set; }
-        public string AccountNumber { get; set; }
-        public string CustomerNumber { get; set; }
-    }
-
-    public class IbsChargeAccountValidationResponse : IbsChargeAccountValidation
-    {
+        
     }
 }

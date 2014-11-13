@@ -18,21 +18,21 @@ namespace apcurium.MK.Booking.IBS.ChargeAccounts
         {
         }
 
-        public IbsAccount GetIbsAccount(string accountNumber, string customerNumber)
+        public ChargeAccount GetIbsAccount(string accountNumber, string customerNumber)
         {
-            var account = Get<IbsAccountResponse>("/account/corporate/{0}/{1}".FormatWith(accountNumber, customerNumber));
+            var account = Get<ChargeAccountResponse>("/account/corporate/{0}/{1}".FormatWith(accountNumber, customerNumber));
             return account.Result;
         }
 
-        public IbsAccountValidation ValidateIbsChargeAccount(IEnumerable<string> prompts, string accountNumber, string customerNumber)
+        public ChargeAccountValidation ValidateIbsChargeAccount(IEnumerable<string> prompts, string account_number, string customer_number)
         {
-            var validation = Post<IbsAccountValidationResponse>("/account/validate/", new {prompts, accountNumber, customerNumber});
+            var validation = Post<ChargeAccountValidationResponse>("/account/validate/", new {prompts, account_number, customer_number});
             return validation.Result;
         }
         
-        public IEnumerable<IbsAccount> GetAllAccount()
+        public IEnumerable<ChargeAccount> GetAllAccount()
         {
-            var allAccounts = Get<IbsAccountCollectionResponse>("/account/corporate/all/");
+            var allAccounts = Get<ChargeAccountCollectionResponse>("/account/corporate/all/");
             return allAccounts.Accounts;
         }
     }

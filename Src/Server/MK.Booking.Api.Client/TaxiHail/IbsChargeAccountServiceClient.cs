@@ -1,5 +1,6 @@
 #region
 
+using System.Collections;
 using System.Collections.Generic;
 using apcurium.MK.Booking.Api.Client.Extensions;
 
@@ -23,9 +24,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 
         public Task<IbsChargeAccount> GetChargeAccount(string accountNumber, string customerNumber)
         {
-            var req = string.Format(CultureInfo.InvariantCulture,
-                "/ibschargeaccount?AccountNumber={0}&CustomerNumber={1}",
-                    accountNumber, customerNumber);
+            var req = string.Format(CultureInfo.InvariantCulture, "/admin/ibschargeaccount/{0}/{1}", accountNumber, customerNumber);
             var result = Client.GetAsync<IbsChargeAccount>(req);
             return result;
         }
@@ -33,14 +32,14 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
         public Task<IbsChargeAccountValidation> ValidateChargeAccount(IbsChargeAccountValidationRequest validationRequest)
         {
             var req = string.Format(CultureInfo.InvariantCulture,
-                "/ibschargeaccount/");
+                "/admin/ibschargeaccount/");
             var result = Client.PostAsync<IbsChargeAccountValidation>(req, validationRequest);
             return result;
         }
 
         public Task<IEnumerable<IbsChargeAccount>> GetAllChargeAccount()
         {
-            var req = string.Format(CultureInfo.InvariantCulture, "/ibschargeaccount/");
+            var req = string.Format(CultureInfo.InvariantCulture, "/admin/ibschargeaccount/all");
             var result = Client.GetAsync<IEnumerable<IbsChargeAccount>>(req);
             return result;
         }

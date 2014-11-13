@@ -87,6 +87,7 @@
     <Compile Include="BaseDTO.cs" />
     <Compile Include="Requests\AppStartUpLogRequest.cs" />
     <Compile Include="Requests\AssignedEtaRequest.cs" />
+    <Compile Include="Requests\IbsChargeAccountsRequest.cs" />
     <Compile Include="Requests\IbsChargeAccountValidationRequest.cs" />
     <Compile Include="Requests\IbsChargeAccountRequest.cs" />
     <Compile Include="Requests\IgnoreDispatchCompanySwitchRequest.cs" />

@@ -4,9 +4,9 @@ using System.Runtime.Serialization;
 namespace apcurium.MK.Booking.IBS.ChargeAccounts.RequestResponse.Resources
 {
     [DataContract]
-    public class IbsAccountCollection
+    public class ChargeAccountCollection
     {
         [DataMember(Name = "accounts")]
-        public List<IbsAccount> Accounts;
+        public List<ChargeAccount> Accounts;
     }
 }

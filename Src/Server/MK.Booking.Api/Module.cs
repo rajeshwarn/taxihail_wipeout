@@ -90,8 +90,9 @@ namespace apcurium.MK.Booking.Api
             Mapper.CreateMap<OrderStatusDetail, OrderStatusRequestResponse>();
             Mapper.CreateMap<OrderPairingDetail, OrderPairingResponse>();
 
-            Mapper.CreateMap<IbsAccount, IbsChargeAccount>();
-            Mapper.CreateMap<IbsAccountValidation, IbsChargeAccountValidation>();
+            Mapper.CreateMap<apcurium.MK.Booking.IBS.ChargeAccounts.RequestResponse.Resources.Prompt, apcurium.MK.Booking.Api.Contract.Resources.Prompt>();
+            Mapper.CreateMap<ChargeAccount, IbsChargeAccount>();
+            Mapper.CreateMap<ChargeAccountValidation, IbsChargeAccountValidation>();
 
             Mapper.CreateMap<RegisterAccount, Commands.RegisterAccount>()
                 .ForMember(p => p.AccountId,

@@ -6,10 +6,10 @@ namespace apcurium.MK.Booking.IBS.ChargeAccounts
 {
     public interface IChargeAccountWebServiceClient
     {
-        IbsAccount GetIbsAccount(string accountNumber, string customerNumber);
+        ChargeAccount GetIbsAccount(string accountNumber, string customerNumber);
 
-        IbsAccountValidation ValidateIbsChargeAccount(IEnumerable<string> prompts, string accountNumber, string customerNumber);
+        ChargeAccountValidation ValidateIbsChargeAccount(IEnumerable<string> prompts, string accountNumber, string customerNumber);
 
-        IEnumerable<IbsAccount> GetAllAccount();
+        IEnumerable<ChargeAccount> GetAllAccount();
     }
 }
