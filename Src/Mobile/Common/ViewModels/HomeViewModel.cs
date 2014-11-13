@@ -1,6 +1,7 @@
 using System.Windows.Input;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Extensions;
+using apcurium.MK.Booking.Mobile.Framework.Extensions;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.PresentationHints;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
@@ -52,9 +53,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 			Panel = new PanelMenuViewModel(this, browserTask, orderWorkflowService, accountService, phoneService, paymentService);
 
-			this.Observe(_vehicleService.GetAndObserveAvailableVehiclesWhenVehicleTypeChanges(), vehicles => ZoomOnNearbyVehiclesIfPossible(vehicles));
+			Observe(_vehicleService.GetAndObserveAvailableVehiclesWhenVehicleTypeChanges(), vehicles => ZoomOnNearbyVehiclesIfPossible(vehicles));
+            Observe(_orderWorkflowService.GetAndObserveMarket(), market => MarketChanged(market));
 		}
 
+	    private string _lastMarket;
 		private bool _isShowingTermsAndConditions;
 		private bool _locateUser;
 		private ZoomToStreetLevelPresentationHint _defaultHintZoomLevel;
@@ -435,6 +438,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				CheckTermsAsync();
 
 				_accountService.LogApplicationStartUp ();
+            }
+        }
+
+        private void MarketChanged(string market)
+        {
+            if (_lastMarket != market)
+            {
+                _lastMarket = market;
+                this.Services().Message.ShowMessage(this.Services().Localize["MarketChangedMessageTitle"],
+                    this.Services().Localize["MarketChangedMessage"]);
             }
         }
     }

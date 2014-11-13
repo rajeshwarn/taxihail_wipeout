@@ -536,4 +536,6 @@
   <string name="CreditCardBookingSettingsError">An error occured when updating the booking settings. Please make sure that the account number in your profile is valid and try again.</string>
   <string name="UpdateBookingSettingsGenericError">An error occured when updating the booking settings</string>
   <string name="UpdateBookingSettingsInvalidCoF">You must have a card on file to use this account</string>
+  <string name="MarketChangedMessage">You are leaving your local service area. Should you decide to book, your order will be dispatched using a taxi company from this area.</string>
+  <string name="MarketChangedMessageTitle">New service area detected</string>
 </resources>
