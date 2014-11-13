@@ -26,9 +26,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
 		private IDisposable _marketDisposable;
 
-		private IOrderWorkflowService _orderWorkflowService;
-
-		private bool _isStarted { get; set; }
+	    private bool _isStarted;
+	    private string _market;
 
 		public VehicleService(IOrderWorkflowService orderWorkflowService,
 			IDirections directions,
@@ -36,7 +35,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 		{
 			_directions = directions;
 			_settings = settings;
-			_orderWorkflowService = orderWorkflowService;
 
 			// having publish and connect fixes the problem that caused the code to be executed 2 times
 			// because there was 2 subscriptions
@@ -67,7 +65,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 				.DistinctUntilChanged(x => x.vehicle == null ? double.MaxValue : Position.CalculateDistance (x.vehicle.Latitude, x.vehicle.Longitude, x.address.Latitude, x.address.Longitude))
 				.Select(x => CheckForEta(x.address, x.vehicle));
 
-			_marketDisposable = _orderWorkflowService.GetAndObserveMarket().Subscribe(market => _market = market);
+			_marketDisposable = orderWorkflowService.GetAndObserveMarket().Subscribe(market => _market = market);
 		}
 
 		public void Start()
@@ -182,7 +180,5 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 		{
 			return _etaObservable;
 		}
-
-		private string _market { get; set; }
     }
 }

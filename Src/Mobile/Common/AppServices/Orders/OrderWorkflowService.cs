@@ -11,11 +11,13 @@ using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.AppServices.Impl;
 using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.Extensions;
+using apcurium.MK.Booking.Mobile.Framework.Extensions.Calendar;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
+using Cirrious.CrossCore;
 using ServiceStack.ServiceClient.Web;
 using ServiceStack.ServiceInterface.ServiceModel;
 using ServiceStack.Text;
@@ -52,7 +54,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
         private bool _isOrderRebooked;
 	    private bool _ignoreNextGeoLocResult;
 
-	    private Position _lastMarketRequest = new Position();
+	    private Position _lastMarketPosition = new Position();
+
+        private const int LastMarketDistanceThreshold = 1000; // In meters
 
 		public OrderWorkflowService(ILocationService locationService,
 			IAccountService accountService,
@@ -302,6 +306,16 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			// bookingsettings to prevent the default vehicle type to override the selected value
 			var vehicleTypeId = await _vehicleTypeSubject.Take (1).ToTask ();
 			bookingSettings.VehicleTypeId = vehicleTypeId;
+
+            // if there's a market and payment preference of the user is set to CardOnFile, change it to PaymentInCar
+		    if (bookingSettings.ChargeTypeId == ChargeTypes.CardOnFile.Id)
+		    {
+                var market = await _marketSubject.Take(1).ToTask();
+		        if (market.HasValue())
+		        {
+		            bookingSettings.ChargeTypeId = ChargeTypes.PaymentInCar.Id;
+		        }
+		    }
 
 			_bookingSettingsSubject.OnNext(bookingSettings);
 		}
@@ -733,14 +747,23 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
 	    private async void SetMarket(Position currentPosition)
 	    {
-			var distanceFromLastMarketRequestInMeters = MK.Booking.Maps.Geo.Position.CalculateDistance(currentPosition.Latitude, currentPosition.Longitude, _lastMarketRequest.Latitude, _lastMarketRequest.Longitude);
-	        
-			if (distanceFromLastMarketRequestInMeters > 500)
+			var distanceFromLastMarketRequest = Maps.Geo.Position.CalculateDistance(
+                currentPosition.Latitude, currentPosition.Longitude,
+                _lastMarketPosition.Latitude, _lastMarketPosition.Longitude);
+
+            if (distanceFromLastMarketRequest > LastMarketDistanceThreshold)
 	        {
-				var market = await UseServiceClientAsync<NetworkRoamingServiceClient, string> (service => service.GetCompanyMarket (currentPosition.Latitude, currentPosition.Longitude));
-				_lastMarketRequest = market != null ? _lastMarketRequest : currentPosition;
+				var market = await UseServiceClientAsync<NetworkRoamingServiceClient, string> (service => 
+                    service.GetCompanyMarket(currentPosition.Latitude, currentPosition.Longitude));
+
+	            if (market.HasValue())
+	            {
+	                _lastMarketPosition = currentPosition;
+	            }
+
+                _marketSubject.OnNext(market);
 	        }
-	    }
+	    }               
     }
 }
 

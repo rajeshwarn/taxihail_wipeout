@@ -64,9 +64,9 @@ namespace apcurium.MK.Booking.Mobile
             
 			_container.Register((c, p) => new ApplicationInfoServiceClient(c.Resolve<IAppSettings>().Data.ServiceUrl, GetSessionId(), c.Resolve<IPackageInfo>()));
 
-			_container.Register<ConfigurationClientService>((c, p) => {
-				return new ConfigurationClientService(c.Resolve<IAppSettings>().Data.ServiceUrl, GetSessionId(), c.Resolve<IPackageInfo>());
-			});
+			_container.Register((c, p) => new ConfigurationClientService(c.Resolve<IAppSettings>().Data.ServiceUrl, GetSessionId(), c.Resolve<IPackageInfo>()));
+
+            _container.Register((c, p) => new NetworkRoamingServiceClient(c.Resolve<IAppSettings>().Data.ServiceUrl, GetSessionId(), c.Resolve<IPackageInfo>()));
 
 			_container.Register<IAccountService, AccountService>();
 			_container.Register<IBookingService, BookingService>();
@@ -88,6 +88,8 @@ namespace apcurium.MK.Booking.Mobile
 			_container.Register<IPlaces, Places>();
 			_container.Register<IPopularAddressProvider, PopularAddressProvider>();
 			_container.Register<ITariffProvider, TariffProvider>();
+
+            _container.Register<INetworkRoamingService, NetworkRoamingService>();
 
             // ***** PayPal *****
 			_container.Register<IPayPalExpressCheckoutService, PayPalExpressCheckoutService> ();
