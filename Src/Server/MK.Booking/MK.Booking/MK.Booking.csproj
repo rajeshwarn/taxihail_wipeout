@@ -155,6 +155,7 @@
     <Compile Include="CommandHandlers\EmailCommandHandler.cs" />
     <Compile Include="CommandHandlers\OrderCommandHandler.cs" />
     <Compile Include="CommandHandlers\PayPalPaymentCommandHandler.cs" />
+    <Compile Include="CommandHandlers\PromotionCommandHandler.cs" />
     <Compile Include="CommandHandlers\SmsCommandHandler.cs" />
     <Compile Include="Database\BookingDbContext.cs" />
     <Compile Include="Domain\Account.cs" />
@@ -163,6 +164,7 @@
     <Compile Include="Domain\Order.cs" />
     <Compile Include="Domain\PaymentInformation.cs" />
     <Compile Include="Domain\PayPalPayment.cs" />
+    <Compile Include="Domain\Promotion.cs" />
     <Compile Include="Email\EmailSender.cs" />
     <Compile Include="Email\IEmailSender.cs" />
     <Compile Include="Email\ITemplateService.cs" />
@@ -187,6 +189,7 @@
     <Compile Include="EventHandlers\Integration\PushNotificationSender.cs" />
     <Compile Include="EventHandlers\Integration\MailSender.cs" />
     <Compile Include="EventHandlers\OrderGenerator.cs" />
+    <Compile Include="EventHandlers\PromotionDetailGenerator.cs" />
     <Compile Include="EventHandlers\RuleDetailsGenerator.cs" />
     <Compile Include="EventHandlers\TariffDetailsGenerator.cs" />
     <Compile Include="EventHandlers\RatingTypeDetailsGenerator.cs" />
@@ -204,6 +207,7 @@
     <Compile Include="ReadModel\CompanyDetail.cs" />
     <Compile Include="ReadModel\OrderPaymentDetail.cs" />
     <Compile Include="ReadModel\OrderUserGpsDetail.cs" />
+    <Compile Include="ReadModel\PromotionDetail.cs" />
     <Compile Include="ReadModel\Query\AccountChargeDao.cs" />
     <Compile Include="ReadModel\Query\AppStartUpLogDao.cs" />
     <Compile Include="ReadModel\Query\CompanyDao.cs" />
@@ -217,11 +221,13 @@
     <Compile Include="ReadModel\Query\Contract\IConfigurationDao.cs" />
     <Compile Include="ReadModel\Query\Contract\IDeviceDao.cs" />
     <Compile Include="ReadModel\Query\Contract\IOrderPaymentDao.cs" />
+    <Compile Include="ReadModel\Query\Contract\IPromotionDao.cs" />
     <Compile Include="ReadModel\Query\Contract\IVehicleTypeDao.cs" />
     <Compile Include="ReadModel\Query\Contract\IOrderStatusUpdateDao.cs" />
     <Compile Include="ReadModel\Query\DeviceDao.cs" />
     <Compile Include="ReadModel\Query\OrderPaymentDao.cs" />
     <Compile Include="ReadModel\Query\OrderStatusUpdateDao.cs" />
+    <Compile Include="ReadModel\Query\PromotionDao.cs" />
     <Compile Include="ReadModel\Query\RuleDao.cs" />
     <Compile Include="ReadModel\Query\CreditCardDao.cs" />
     <Compile Include="ReadModel\CreditCardDetails.cs" />

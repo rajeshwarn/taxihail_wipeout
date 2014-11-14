@@ -129,6 +129,7 @@
     <Compile Include="Integration\OrderFixture\OrderUserGpsInfoGenerator.cs" />
     <Compile Include="Integration\PaymentUpdatedFixture.cs" />
     <Compile Include="Integration\PayPalPaymentFixture\PayPalPaymentGeneratorTest.cs" />
+    <Compile Include="Integration\PromotionFixture\PromotionDetailGenerator.cs" />
     <Compile Include="Maps\PriceCalculatorFixture\given_a_date.cs" />
     <Compile Include="OrderFixture\given_an_email_address.cs" />
     <Compile Include="OrderFixture\given_an_email_address_and_an_orderStatus_using_real_geocoding_with_corporate_key.cs" />
@@ -140,6 +141,8 @@
     <Compile Include="PayPalPaymentFixture\given_a_cancelled_payment.cs" />
     <Compile Include="PayPalPaymentFixture\given_a_payment.cs" />
     <Compile Include="PayPalPaymentFixture\given_no_payment.cs" />
+    <Compile Include="PromotionFixture\given_no_promotion.cs" />
+    <Compile Include="PromotionFixture\given_one_promotion.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Integration\AccountDbContextFixture.cs" />
     <Compile Include="TestServerSettings.cs" />
