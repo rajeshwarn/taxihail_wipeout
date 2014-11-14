@@ -319,8 +319,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			{
 				return this.GetCommand(() =>
 				{					
-					SetMapCenterToUserLocation();							
-				});
+					SetMapCenterToUserLocation();
+				}, () => !_orderWorkflowService.IsLocateMeDisabled());
 			}
 		}
 
