@@ -54,7 +54,6 @@ namespace apcurium.MK.Booking.Api.Services.Maps
                 var availableVehiclesTask = _vehicleClient.GetAvailableVehiclesAsync(request.OriginLat.Value,
                     request.OriginLng.Value, null, request.Market);
                 
-                availableVehiclesTask.Wait();
                 var availableVehicles = availableVehiclesTask.Result;
 
                 // Get nearest available vehicle

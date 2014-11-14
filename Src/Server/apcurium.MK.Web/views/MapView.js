@@ -228,9 +228,9 @@
 
             var distance = calculateDistance(position.latitude, position.longitude, this.lastMarketRequest.Latitude, this.lastMarketRequest.Longitude);
             
-            if (distance > 500) {
+            if (distance > 1000) {
                 $.ajax({
-                    url: "/roaming/localmarket?latitude=" + position.latitude + "&longitude=" + position.longitude,
+                    url: "/roaming/market?latitude=" + position.latitude + "&longitude=" + position.longitude,
                     type: "GET",
                     dataType: "text",
                     success: function (data) {

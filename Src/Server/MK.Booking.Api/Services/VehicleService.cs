@@ -11,6 +11,7 @@ using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.IBS;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common;
+using apcurium.MK.Common.Extensions;
 using AutoMapper;
 using Infrastructure.Messaging;
 using ServiceStack.Common.Web;
@@ -42,13 +43,14 @@ namespace apcurium.MK.Booking.Api.Services
 
             var vehicles = new IbsVehiclePosition[0];
 
-            if (string.IsNullOrEmpty((request.Market)))
+            if (!request.Market.HasValue())
             {
                 vehicles = _ibsServiceProvider.Booking()
                     .GetAvailableVehicles(request.Latitude, request.Longitude, request.VehicleTypeId);
             }
             else
             {
+                // TODO
                 // MKTAXI-2282, wait for MKTAXI-2294
                 // Call to honey badger endpoint:
                 // vehicles = 
