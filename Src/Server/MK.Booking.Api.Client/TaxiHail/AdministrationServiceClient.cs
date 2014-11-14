@@ -155,7 +155,6 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             return result;
         }
 
-        // TODO: Helpers - Place elsewhere?
         public IEnumerable<IbsChargeAccount> GetNewChargeAccounts()
         {
             var req = string.Format("/admin/ibschargeaccount/all");
@@ -170,18 +169,14 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             return newChargeAccounts;
         }
 
-        public IbsChargeAccountImportReport ImportAccounts(IbsChargeAccountImportRequest request)
+        public IbsChargeAccountImportReport ImportAccounts()
         {
-            var accountsToImportInfos = request.Accounts;
-
-            var newIbsChargeAccounts = GetNewChargeAccounts();
-
-            var chargeAccountsToImport = newIbsChargeAccounts.Where(
-                ibsChargeAccount =>
-                    accountsToImportInfos.Any(importable => ibsChargeAccount.CustomerNumber == importable.Value && ibsChargeAccount.AccountNumber == importable.Key)).ToArray();
+            var chargeAccountsToImport = GetNewChargeAccounts().ToList();
+            
+            var existingAccounts = GetAllChargeAccount().ToList().Except(chargeAccountsToImport);
             
             var chargeAccounNumbers = chargeAccountsToImport.ToArray().Select(x => x.AccountNumber).Distinct();
-
+            
             var report = new IbsChargeAccountImportReport();
             
             var importedTaxiHailChargeAccounts = new List<AccountCharge>();
@@ -201,12 +196,12 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
                     taxiHailQuestions.Add(new AccountChargeQuestion
                     {
                         IsCaseSensitive = false,
-                        ErrorMessage = "*** THE WRONG ANSWER IS MISSING FROM THE API ***",
+                        ErrorMessage = "",
                         IsRequired = toBeValidated,
                         MaxLength = length,
                         Question = caption,
                         Id = ++questionIndex,
-                        Answer = "*** THE ANSWER IS MISSING FROM THE API ***"
+                        Answer = ""
                     });
                 });
 
@@ -218,8 +213,10 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
                     Questions = taxiHailQuestions.ToArray()
                 });
 
-                report.ReportLines.Add(string.Format("Imported Account #{0} with {1} questions", ibsChargeAccount,
+                var line = new KeyValuePair<string, string>("new", string.Format("Account {0} imported ({1} questions)", ibsChargeAccount,
                     taxiHailQuestions.Count));
+                report.ReportLines.Add(line);
+
             });
 
             // TODO: Need to implement in CQRS as a single command
@@ -232,6 +229,15 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
                 Number = chargeAccount.Number,
                 Questions = chargeAccount.Questions
             }));
+            
+            
+            existingAccounts.ForEach(existing =>
+            {
+                var existingLine = new KeyValuePair<string, string>("existing", string.Format("Account {0} not imported: Already Existing", existing.AccountNumber,
+                        existing.Prompts.Count));
+            
+                report.ReportLines.Add(existingLine);
+            });
 
             return report;
         }

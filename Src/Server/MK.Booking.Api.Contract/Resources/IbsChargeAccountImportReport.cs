@@ -3,6 +3,6 @@ namespace apcurium.MK.Booking.Api.Contract.Resources
 {
     public class IbsChargeAccountImportReport
     {
-        public List<string> ReportLines = new List<string>();
+        public List<KeyValuePair<string, string>> ReportLines = new List<KeyValuePair<string, string>>();
     }
 }

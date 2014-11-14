@@ -1,80 +1,36 @@
-﻿@model List<string>
+﻿@model List<KeyValuePair<string, string>>
     
 <h3>
-    Import Charge Accounts<!-- TODO: Localize-->
+    Import Charge Accounts
 </h3>
 
-@if (ViewBag.Report != null)
-{
+@if (Model.Any(x => x.Key == "new"))
+{ 
     <div id="validationPanel" class="alert-success alert">
         <ul>
-            @foreach (var line in ViewBag.Report)
+            @foreach (var line in Model.Where(x => x.Key =="new"))
             {
-                <li>@line</li>
+                <li>@line.Value</li>
             }
         </ul>
     </div>
 }
 
-@if (Model.Count > 0)
+@if (Model.Any(x => x.Key == "existing"))
+{ 
+    <div id="validationPanel" class="alert-danger alert">
+        <ul>
+            @foreach (var line in Model.Where(x => x.Key == "existing"))
+            {
+                <li>@line.Value</li>
+            }
+        </ul>
+    </div>
+}
+
+@if (!Model.Any())
 {
-    <table class="table table-striped">
-        <tr>
-            <th>Account No.</th><!-- TODO: Localize-->
-            <th>Customer No.</th><!-- TODO: Localize-->
-            <th>Import</th><!-- TODO: Localize-->
-        </tr>
-        @foreach (var account in Model)
-        {
-            <tr class="chargeAccount">
-                <td>
-                    <div class="accountNumber admin-table-text">@account.AccountNumber</div>
-                </td>
-                <td>
-                    <div class="customerNumber admin-table-text">@account.CustomerNumber</div>
-                </td>
-                <td><div class="shouldBeImported company-preference-order-checkbox ">@Html.CheckBox("importKey_" + account.AccountNumber + "|" + account.CustomerNumber, false)</div></td>
-            </tr>
-        }
-    </table>
-    <form id="form1" runat="server">
-        <button type="submit" class="btn btn-primary" action="/ImportChargeAccount/Index" method="post" onclick="importSelectedAccounts()">Import</button><!-- TODO: Localize-->
-        <input type="hidden" id="ImportedAccounts" name="ImportedAccounts" value='[]' />
-    </form>    
-    
-}
-else
-{
-    <h4>There is no new charge account to import</h4><!-- TODO: Localize-->
+<h4>No account to import</h4><!-- TODO: Localize-->    
 }
 
-
-
-<script type="text/javascript">
-
-$('.sortable').sortable().bind('sortupdate', function (e, ui) {
-
-    $('.sortable').children('li').each(function () {
-        $(this).find('input')[ui.item.find('input').length - 1].value = $(this).index();
-    });
-
-});
-
-function importSelectedAccounts() {
-
-    var accountsToImport = [];
-
-    var form = $('#importChargeAccountForm');
-    $('.chargeAccount').each(function () {
-        console.log('a');
-        var accountNumber = $(this).find('.accountNumber').text().trim();
-        var customerNumber = $(this).find('.customerNumber').text().trim();
-        var checkbox = $(this).find('input[type=checkbox]').is(':checked');
-        if (checkbox) {
-            accountsToImport.push({'key': accountNumber, 'value': customerNumber});
-        }
-    });
-
-    $(document).find('#ImportedAccounts').val(JSON.stringify(accountsToImport));
-}
-</script>
+<a href="../../admin/#accounts" type="submit" class="btn btn-primary" method="post">Back</a><!-- TODO: Localize-->
