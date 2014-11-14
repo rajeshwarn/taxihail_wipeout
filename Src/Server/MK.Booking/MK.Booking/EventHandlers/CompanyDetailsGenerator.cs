@@ -42,7 +42,9 @@ namespace apcurium.MK.Booking.EventHandlers
             using (var context = _contextFactory.Invoke())
             {
                 var company = context.Find<CompanyDetail>(@event.SourceId);
-                company.Version = company.TermsAndConditions.GetHashCode().ToString(CultureInfo.InvariantCulture);
+                var tAndC = company.TermsAndConditions ?? "";
+                company.Version = tAndC.GetHashCode().ToString(CultureInfo.InvariantCulture);
+                
                 context.Save(company);
             }
         }
