@@ -183,7 +183,8 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 
             chargeAccounNumbers.ForEach(ibsChargeAccount =>
             {
-                var questions = chargeAccountsToImport.Where(x => x.AccountNumber == ibsChargeAccount).SelectMany(x => x.Prompts);
+                var questions =
+                    chargeAccountsToImport.Where(x => x.AccountNumber == ibsChargeAccount).SelectMany(x => x.Prompts);
                 var taxiHailQuestions = new List<AccountChargeQuestion>();
                 var questionIndex = 0;
                 
@@ -213,8 +214,9 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
                     Questions = taxiHailQuestions.ToArray()
                 });
 
-                var line = new KeyValuePair<string, string>("new", string.Format("Account {0} imported ({1} questions)", ibsChargeAccount,
-                    taxiHailQuestions.Count));
+                var line = new KeyValuePair<string, string>("new",
+                    string.Format("{0} ({1} questions)", ibsChargeAccount,
+                        taxiHailQuestions.Count));
                 report.ReportLines.Add(line);
 
             });
@@ -233,9 +235,9 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             
             existingAccounts.ForEach(existing =>
             {
-                var existingLine = new KeyValuePair<string, string>("existing", string.Format("Account {0} not imported: Already Existing", existing.AccountNumber,
-                        existing.Prompts.Count));
-            
+                var existingLine = new KeyValuePair<string, string>("existing",
+                    string.Format("{0} (Customer {1}) Already Existing", existing.AccountNumber, existing.CustomerNumber));
+
                 report.ReportLines.Add(existingLine);
             });
 

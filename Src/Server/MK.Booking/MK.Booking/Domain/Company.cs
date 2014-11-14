@@ -546,6 +546,14 @@ namespace apcurium.MK.Booking.Domain
             });
         }
 
+        public void ImportAccountCharges(AccountCharge[] accounts)
+        {
+            Update(new AccountChargesImported()
+            {
+                AccountCharges = accounts
+            });
+        }
+
         public void DeleteAccountCharge(Guid accountChargeId)
         {
             Update(new AccountChargeDeleted

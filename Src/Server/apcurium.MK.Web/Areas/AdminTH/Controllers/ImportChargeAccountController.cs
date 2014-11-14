@@ -24,7 +24,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
             if (AuthSession.IsAuthenticated)
             {
                 _client = new AdministrationServiceClient(BaseUrlAPI, SessionID, null);
-                return View(_client.ImportAccounts().ReportLines);
+                return View(_client.ImportAccounts());
             }
 
             return Redirect(BaseUrl);

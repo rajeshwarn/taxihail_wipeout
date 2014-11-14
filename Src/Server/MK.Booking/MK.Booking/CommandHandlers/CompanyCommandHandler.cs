@@ -302,6 +302,15 @@ namespace apcurium.MK.Booking.CommandHandlers
             _repository.Save(company, command.Id.ToString());
         }
 
+        public void Handle(ImportAccountCharge command)
+        {
+            var company = _repository.Get(command.CompanyId);
+
+            company.ImportAccountCharge(command.AccountCharges);
+
+            _repository.Save(company, command.Id.ToString());
+        }
+
         public void Handle(DeleteAccountCharge command)
         {
             var company = _repository.Get(command.CompanyId);
