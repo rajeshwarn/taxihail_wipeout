@@ -3,7 +3,7 @@ using apcurium.MK.Booking.Api.Client.TaxiHail;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
-    public class NetworkRoamingService : BaseService, INetworkRoamingService
+    public class NetworkRoamingService : BaseService
     {
         public Task<string> GetLocalCompanyMarket(double latitude, double longitude)
         {

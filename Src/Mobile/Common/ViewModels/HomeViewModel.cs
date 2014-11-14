@@ -328,7 +328,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
             _orderWorkflowService.SetIgnoreNextGeoLocResult(false);
 			var address = await _orderWorkflowService.SetAddressToUserLocation();
-            
+
 			if(address.HasValidCoordinate())
 			{
 				// zoom like uber means start at user location with street level zoom and when and only when you have vehicle, zoom out

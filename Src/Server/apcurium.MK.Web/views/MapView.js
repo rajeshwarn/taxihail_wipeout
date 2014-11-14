@@ -1,18 +1,20 @@
 ﻿(function () {
-    TaxiHail.MapView = Backbone.View.extend({
+        TaxiHail.MapView = Backbone.View.extend({
+            initialize: function() {
+                _.bindAll(this, "geolocdone", "geoloc");
+                this.streetZoomLevel = 17;
+                this.cityZoomLevel = 12;
+                this.lastMarketRequest = { Longitude: 0, Latitude: 0};
+                this.market = "";
+                var self = this;
 
-        initialize: function () {
-            _.bindAll(this, "geolocdone", "geoloc");
-            this.streetZoomLevel = 17;
-            this.cityZoomLevel = 12;
-            var self = this;
             this.interval = window.setInterval(function () {
                 self.refresh();
             }, 5000);
         },
 
         refresh: function () {
-            this.availableVehicles = new TaxiHail.AvailableVehicleCollection([], { position: this._pickupPin.position });
+            this.availableVehicles = new TaxiHail.AvailableVehicleCollection([], { position: this._pickupPin.position, market: this.market });
             var self = this;
             this.availableVehicles.fetch({
                 success: function (response) {
@@ -37,6 +39,9 @@
                         this.centerMap(location);
                     }
                 }
+
+                this.setMarket();
+
             }, this);
 
             this.model.on('change:dropOffAddress', function (model, value) {
@@ -201,6 +206,41 @@
             }
         },
 
+        setMarket: function() {
+
+            var position = this.model.get('pickupAddress');
+            
+            function calculateDistance(latitude1, longitude1, latitude2, longitude2) {
+                var radius = 6378137; // Radius of earth
+                var dLat = toRad(latitude2 - latitude1);
+                var dLon = toRad(longitude2 - longitude1);
+                var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                        Math.cos(toRad(latitude1)) * Math.cos(toRad(latitude2)) *
+                        Math.sin(dLon / 2) * Math.sin(dLon / 2);
+                var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+                var dst = radius * c;
+                return dst;
+            }
+
+            function toRad(val) {
+                return val * Math.PI / 180;
+            }
+
+            var distance = calculateDistance(position.latitude, position.longitude, this.lastMarketRequest.Latitude, this.lastMarketRequest.Longitude);
+            
+            if (distance > 500) {
+                $.ajax({
+                    url: "/roaming/localmarket?latitude=" + position.latitude + "&longitude=" + position.longitude,
+                    type: "GET",
+                    dataType: "text",
+                    success: function (data) {
+                        this.market = data;
+                        this.lastMarketRequest = { Latitude: position.latitude, Longitude: position.longitude };
+                    }
+                });
+            }
+        },
+
         centerMapAroundVehicleAndPickup: function () {
             var projection = this._target.getProjection();
             var bounds = new google.maps.LatLngBounds();
@@ -230,14 +270,7 @@
             }
         },
 
-
-        testic: function () {
-
-        },
-
         updateAvailableVehiclesPosition: function () {
-
-            // TODO: Used underscore lib to proceed in MapView, should use a view inside AvailableVehicleCollection if it's possible to avoid this dynamic/not managed marker approach (new marker etc)
 
             // Get vehicle backbone models as simple objects for underscore query purposes
             var _vehicles = _.map(this.availableVehicles.models, function (e) { return ({ vehicleNumber: e.vehicleNumber, latitude: e.latitude, longitude: e.longitude }) });

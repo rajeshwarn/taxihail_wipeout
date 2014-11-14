@@ -5,7 +5,6 @@ using System.Data.Entity;
 using System.Linq;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Database;
-using apcurium.MK.Booking.Mobile.Infrastructure;
 using NUnit.Framework;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Common;
@@ -148,39 +147,6 @@ namespace apcurium.MK.Web.Tests
                 var companyDetail = context.Set<CompanyDetail>().Single(p => p.Id == AppConstants.CompanyId);
                 companyDetail.Version = "2";
                 context.SaveChanges();
-            }
-        }
-
-        public class DummyCache : ICacheService
-        {
-            Dictionary<string, object> _cache = new Dictionary<string, object>();
-            public T Get<T>(string key) where T : class
-            {
-                return _cache.ContainsKey(key) ? (T)_cache[key] : default(T);
-            }
-
-            public void Set<T>(string key, T obj) where T : class
-            {
-                if (_cache.ContainsKey(key))
-                {
-                    _cache.Remove(key);
-                }
-
-                _cache.Add(key, obj);
-            }
-
-            public void Set<T>(string key, T obj, DateTime expiresAt) where T : class
-            {
-               
-            }
-
-            public void Clear(string key)
-            { 
-            }
-
-            public void ClearAll()
-            {
-               
             }
         }
     }

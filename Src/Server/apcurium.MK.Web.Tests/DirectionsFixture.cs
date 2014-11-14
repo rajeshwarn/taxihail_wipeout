@@ -23,16 +23,5 @@ namespace apcurium.MK.Web.Tests
         {
             base.TestFixtureTearDown();
         }
-
-        [Test]
-        public async void BasicDirectionSearch()
-        {
-            var sut = new DirectionsServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
-            var direction = await sut.GetDirectionDistance(45.5062, -73.5726, 45.5273, -73.6344);
-
-            Assert.IsNotNull(direction);
-            Assert.True(direction.Distance.HasValue);
-            Assert.True(direction.Price.HasValue);
-        }
     }
 }
