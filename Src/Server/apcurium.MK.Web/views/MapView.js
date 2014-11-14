@@ -4,8 +4,9 @@
                 _.bindAll(this, "geolocdone", "geoloc");
                 this.streetZoomLevel = 17;
                 this.cityZoomLevel = 12;
-                this.lastMarketRequest = { Longitude: 0, Latitude: 0};
+                this.lastMarketPosition = { Longitude: 0, Latitude: 0 };
                 this.market = "";
+                this.lastMarket = "";
                 var self = this;
 
             this.interval = window.setInterval(function () {
@@ -226,19 +227,36 @@
                 return val * Math.PI / 180;
             }
 
-            var distance = calculateDistance(position.latitude, position.longitude, this.lastMarketRequest.Latitude, this.lastMarketRequest.Longitude);
+            var distance = calculateDistance(position.latitude, position.longitude, this.lastMarketPosition.Latitude, this.lastMarketPosition.Longitude);
             
             if (distance > 1000) {
                 $.ajax({
-                    url: "/roaming/market?latitude=" + position.latitude + "&longitude=" + position.longitude,
+                    url: "api/roaming/market?latitude=" + position.latitude + "&longitude=" + position.longitude,
                     type: "GET",
                     dataType: "text",
-                    success: function (data) {
-                        this.market = data;
-                        this.lastMarketRequest = { Latitude: position.latitude, Longitude: position.longitude };
-                    }
+                    success: _.bind(function (data) {
+                        if (data === "") {
+                            this.market = null;
+                        } else {
+                            this.market = data;
+
+                            if (this.lastMarket !== this.market && this.market !== "") {
+                                this.confirmMarketChange();
+                            }
+                        }
+                        
+                        this.lastMarketPosition = { Latitude: position.latitude, Longitude: position.longitude };
+
+                    }, this)
                 });
             }
+        },
+
+        confirmMarketChange: function() {
+            TaxiHail.message({
+                title: TaxiHail.localize('modal.marketChanged.title'),
+                message: TaxiHail.localize('modal.marketChanged.message')
+            });
         },
 
         centerMapAroundVehicleAndPickup: function () {
