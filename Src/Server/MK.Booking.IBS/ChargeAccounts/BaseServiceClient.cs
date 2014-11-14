@@ -17,8 +17,10 @@ namespace apcurium.MK.Booking.IBS.ChargeAccounts
     public class BaseServiceClient
     {
         // TODO: ***** Provide CabMate settings *****
-        // Include Authorization User in these settings
-        // Include Authorization User in these settings
+        // Include: 
+        // Authorization User
+        // Authorization Secret
+        // WebUrl for CabMate
         
         private const string AuthorizationUserTest = "EUGENE";
         private const string AuthorizationSecretTest = "T!?_asF";
@@ -49,7 +51,6 @@ namespace apcurium.MK.Booking.IBS.ChargeAccounts
             Client = new HttpClient
             {
                 BaseAddress = new Uri(GetUrl()),
-                // _ibsSettings.WebServicesUrl;
             };
 
             Client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));

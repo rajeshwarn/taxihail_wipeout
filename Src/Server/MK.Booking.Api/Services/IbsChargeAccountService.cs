@@ -46,7 +46,7 @@ namespace apcurium.MK.Booking.Api.Services
             return accountValidation;
         }
 
-        public List<IbsChargeAccount> Get(IbsChargeAccountsRequest validationRequest)
+        public List<IbsChargeAccount> Get(IbsChargeAccountsRequest request)
         {
             var accountsFromIbs = _ibsServiceProvider.ChargeAccount().GetAllAccount();
             var accounts = new List<IbsChargeAccount>();

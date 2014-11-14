@@ -88,6 +88,7 @@
     <Compile Include="Requests\AppStartUpLogRequest.cs" />
     <Compile Include="Requests\AssignedEtaRequest.cs" />
     <Compile Include="Requests\IbsChargeAccountsRequest.cs" />
+    <Compile Include="Requests\IbsChargeAccountImportRequest.cs" />
     <Compile Include="Requests\IbsChargeAccountValidationRequest.cs" />
     <Compile Include="Requests\IbsChargeAccountRequest.cs" />
     <Compile Include="Requests\IgnoreDispatchCompanySwitchRequest.cs" />
@@ -172,6 +173,7 @@
     <Compile Include="Resources\CreditCardDetails.cs" />
     <Compile Include="Resources\DirectionInfo.cs" />
     <Compile Include="Resources\ErrorCode.cs" />
+    <Compile Include="Resources\IbsChargeAccountImportReport.cs" />
     <Compile Include="Resources\IbsChargeAccountValidation.cs" />
     <Compile Include="Resources\IbsChargeAccount.cs" />
     <Compile Include="Resources\IbsFare.cs" />

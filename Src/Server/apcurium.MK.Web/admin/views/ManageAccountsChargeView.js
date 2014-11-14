@@ -11,7 +11,8 @@
         },
 
         importdata: function (e) {
-            e.preventDefault();
+            //e.preventDefault();
+            
             // Call the ibschargeaccounts end point
             // Refresh the page on success
         },
