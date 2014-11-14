@@ -84,7 +84,7 @@ namespace apcurium.MK.Booking.Api.Services
         public object Post(CreateOrder request)
         {
             Log.Info("Create order request : " + request.ToJson());
-            
+
             if (!request.FromWebApp)
             {
                 ValidateAppVersion(request.ClientLanguageCode);
@@ -100,34 +100,67 @@ namespace apcurium.MK.Booking.Api.Services
                 var pendingOrderId = GetPendingOrder();
 
                 // We don't allow order creation if there's already an order scheduled
-                if (!_serverSettings.ServerData.AllowSimultaneousAppOrders 
-                    && pendingOrderId != null 
+                if (!_serverSettings.ServerData.AllowSimultaneousAppOrders
+                    && pendingOrderId != null
                     && !request.FromWebApp)
                 {
                     throw new HttpError(HttpStatusCode.Forbidden, ErrorCode.CreateOrder_PendingOrder.ToString(), pendingOrderId.ToString());
                 }
             }
 
+            // Payment mode is card on file
             if (request.Settings.ChargeTypeId.HasValue
                 && request.Settings.ChargeTypeId.Value == ChargeTypes.CardOnFile.Id)
             {
                 ValidateCreditCard(request.Id, account, request.ClientLanguageCode);
             }
-            
+
+            bool isChargeAccountPaymentWithCardOnFile = false;
+            var chargeTypeKey = ChargeTypes.GetList()
+                    .Where(x => x.Id == request.Settings.ChargeTypeId)
+                    .Select(x => x.Display)
+                    .FirstOrDefault();
+
+            // Payment mode is charge account
+            if (request.Settings.ChargeTypeId.HasValue
+                && request.Settings.ChargeTypeId.Value == ChargeTypes.Account.Id)
+            {
+                ValidateChargeAccountAnswers(request.Settings.AccountNumber, request.QuestionsAndAnswers);
+
+                // Change payment mode to card of file if necessary
+                var accountChargeDetail = _accountChargeDao.FindByAccountNumber(request.Settings.AccountNumber);
+
+                if (accountChargeDetail.UseCardOnFileForPayment)
+                {
+                    if (request.FromWebApp)
+                    {
+                        // Card on file payment not supported by the web app
+                        throw new HttpError(HttpStatusCode.Forbidden, ErrorCode.CreateOrder_RuleDisable.ToString(),
+                            _resources.Get("CannotCreateOrderChargeAccountNotSupported", request.ClientLanguageCode));
+                    }
+
+                    ValidateCreditCard(request.Id, account, request.ClientLanguageCode);
+
+                    chargeTypeKey = ChargeTypes.CardOnFile.Display;
+                    request.Settings.ChargeTypeId = ChargeTypes.CardOnFile.Id;
+                    isChargeAccountPaymentWithCardOnFile = true;
+                }
+            }
+
             var rule = _ruleCalculator.GetActiveDisableFor(
                 request.PickupDate.HasValue,
-                request.PickupDate.HasValue 
-                    ? request.PickupDate.Value 
+                request.PickupDate.HasValue
+                    ? request.PickupDate.Value
                     : GetCurrentOffsetedTime(),
                 () => _ibsServiceProvider.StaticData().GetZoneByCoordinate(
                         request.Settings.ProviderId,
-                        request.PickupAddress.Latitude, 
+                        request.PickupAddress.Latitude,
                         request.PickupAddress.Longitude),
-                () => request.DropOffAddress != null 
+                () => request.DropOffAddress != null
                     ? _ibsServiceProvider.StaticData().GetZoneByCoordinate(
-                            request.Settings.ProviderId, 
+                            request.Settings.ProviderId,
                             request.DropOffAddress.Latitude,
-                            request.DropOffAddress.Longitude) 
+                            request.DropOffAddress.Longitude)
                     : null);
 
             if (rule != null)
@@ -140,18 +173,18 @@ namespace apcurium.MK.Booking.Api.Services
             {
                 throw new HttpError(ErrorCode.CreateOrder_SettingsRequired.ToString());
             }
-            
-            var referenceData = (ReferenceData) _referenceDataService.Get(new ReferenceDataRequest());
+
+            var referenceData = (ReferenceData)_referenceDataService.Get(new ReferenceDataRequest());
 
             request.PickupDate = request.PickupDate.HasValue
                 ? request.PickupDate.Value
                 : GetCurrentOffsetedTime();
 
-            request.Settings.Passengers = request.Settings.Passengers <= 0 
-                ? 1 
+            request.Settings.Passengers = request.Settings.Passengers <= 0
+                ? 1
                 : request.Settings.Passengers;
 
-            if (_serverSettings.ServerData.Direction.NeedAValidTarif 
+            if (_serverSettings.ServerData.Direction.NeedAValidTarif
                 && (!request.Estimate.Price.HasValue || request.Estimate.Price == 0))
             {
                 throw new HttpError(ErrorCode.CreateOrder_NoFareEstimateAvailable.ToString());
@@ -162,11 +195,6 @@ namespace apcurium.MK.Booking.Api.Services
             {
                 ValidateChargeAccountAnswers(request.Settings.AccountNumber, request.QuestionsAndAnswers);
             }
-
-            var chargeTypeKey = ChargeTypes.GetList()
-                    .Where(x => x.Id == request.Settings.ChargeTypeId)
-                    .Select(x => x.Display)
-                    .FirstOrDefault();
 
             var chargeTypeIbs = string.Empty;
             var chargeTypeEmail = string.Empty;
@@ -194,7 +222,7 @@ namespace apcurium.MK.Booking.Api.Services
             {
                 return new HttpError(ErrorCode.CreateOrder_CannotCreateInIbs + "_" + Math.Abs(result.Value));
             }
-            
+
             var command = Mapper.Map<Commands.CreateOrder>(request);
             var emailCommand = Mapper.Map<SendBookingConfirmationEmail>(request);
 
@@ -202,6 +230,7 @@ namespace apcurium.MK.Booking.Api.Services
             command.AccountId = account.Id;
             command.UserAgent = base.Request.UserAgent;
             command.ClientVersion = base.Request.Headers.Get("ClientVersion");
+            command.IsChargeAccountPaymentWithCardOnFile = isChargeAccountPaymentWithCardOnFile;
             emailCommand.EmailAddress = account.Email;
 
             // Get Vehicle Type from reference data
@@ -219,12 +248,12 @@ namespace apcurium.MK.Booking.Api.Services
             _commandBus.Send(emailCommand);
 
             UpdateStatusAsync(command.OrderId);
-            
+
             return new OrderStatusDetail
             {
                 OrderId = command.OrderId,
                 Status = OrderStatus.Created,
-                IBSOrderId =  ibsOrderId,
+                IBSOrderId = ibsOrderId,
                 IBSStatusId = "",
                 IBSStatusDescription = (string)_resources.Get("OrderStatus_wosWAITING", command.ClientLanguageCode),
             };

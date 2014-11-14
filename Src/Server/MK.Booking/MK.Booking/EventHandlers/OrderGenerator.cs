@@ -109,7 +109,8 @@ namespace apcurium.MK.Booking.EventHandlers
                         Status = OrderStatus.Created,
                         IBSStatusDescription = _resources.Get("OrderStatus_wosWAITING", @event.ClientLanguageCode),
                         PickupDate = @event.PickupDate,
-                        Name = @event.Settings != null ? @event.Settings.Name : null
+                        Name = @event.Settings != null ? @event.Settings.Name : null,
+                        IsChargeAccountPaymentWithCardOnFile = @event.IsChargeAccountPaymentWithCardOnFile
                     });
                 }
             }

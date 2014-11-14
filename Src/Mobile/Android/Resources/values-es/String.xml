@@ -148,7 +148,7 @@
   <string name="DontHaveAnAccountLabel">No tiene cuenta?</string>
   <string name="DriverInfoColor">Color:</string>
   <string name="DriverInfoDriver">Chofer:</string>
-  <string name="DriverInfoLicence">Licencia #:</string>
+  <string name="DriverInfoLicence"># de Placa:</string>
   <string name="DriverInfoMake">Marca:</string>
   <string name="DriverInfoModel">Modelo:</string>
   <string name="DriverInfoTaxiType">Tipo de taxi:</string>
@@ -314,7 +314,7 @@
   <string name="PaymentViewMeterAmountText">Monto en Taxímetro</string>
   <string name="PaymentViewTipText">Propina</string>
   <string name="PaymentViewTotalText">Total</string>
-  <string name="PayNow">Pagar ahora</string>
+  <string name="PayNow">Pagar con Aplicación</string>
   <string name="PayPalButton">Pagar con Paypal</string>
   <string name="PayPalExpressCheckoutCancelMessage">El pago mediante Paypal se ha cancelado, su cuenta no ha sido cargada</string>
   <string name="PayPalExpressCheckoutCancelTitle">Pago cancelado</string>
@@ -428,7 +428,7 @@
   <string name="StreetNumberPlacesBt">Buscar lugares</string>
   <string name="StreetNumberSearchBt">Usar una dirección diferente</string>
   <string name="StreetNumberTitle">Detalles de la dirección</string>
-  <string name="Submit">Enviar evaluación</string>
+  <string name="Submit">Pagar en Efectivo y Terminar</string>
   <string name="SupportEmail">techsupport@apcurium.com</string>
   <string name="TabBook">De Alta</string>
   <string name="TabContacts">Contactos</string>
@@ -535,4 +535,5 @@
   <string name="UpdateBookingSettingsInvalidAccount">The account number that was entered doesn\'t exist</string>
   <string name="CreditCardBookingSettingsError">An error occured when updating the booking settings. Please make sure that the account number in your profile is valid and try again.</string>
   <string name="UpdateBookingSettingsGenericError">An error occured when updating the booking settings</string>
+  <string name="UpdateBookingSettingsInvalidCoF">You must have a card on file to use this account</string>
 </resources>

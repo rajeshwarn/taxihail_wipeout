@@ -5133,6 +5133,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f050279
 			public const int UpdateBookingSettingsInvalidAccount = 2131034745;
 			
+			// aapt resource value: 0x7f05027c
+			public const int UpdateBookingSettingsInvalidCoF = 2131034748;
+			
 			// aapt resource value: 0x7f05008e
 			public const int UpdateBookingSettingsInvalidDataTitle = 2131034254;
 			
@@ -6540,7 +6543,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 					16843055,
 					16843056,
 					16843057,
-					16843948};
+					16844079};
 			
 			// aapt resource value: 4
 			public const int MenuView_android_headerBackground = 4;

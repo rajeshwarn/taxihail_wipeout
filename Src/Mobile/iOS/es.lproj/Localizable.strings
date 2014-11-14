@@ -335,7 +335,7 @@
 "August"="Ago (08)";
 "CreditCardNumber"="Número de tarjeta";
 "CreditCardRemoveErrorMessage"="Necesita tener al menos una tarjeta de crédito en su cuenta. Si desea eliminar esta tarjeta, necesitará agregar otra antes";
-"PayNow"="Pagar ahora";
+"PayNow"="Pagar con Aplicación";
 "BookRatingErrorTitle"="Aviso";
 "LoginViewEmailPlaceHolder"="Email";
 "Error_AccountPaymentMessage"="Número de cuenta inválida";
@@ -502,7 +502,7 @@
 "DriverInfoMake"="Marca:";
 "DontHaveAnAccountLabel"="No tiene cuenta?";
 "View_UpdatedTermsAndConditions"="Nuevos Términos y Condiciones";
-"Submit"="Enviar evaluación";
+"Submit"="Pagar en Efectivo y Terminar";
 "SaveAddressEmptyFieldTitle"="Nombre";
 "searchHint"="Buscar";
 "CreateAccountEmailPlaceHolder"="Email";
@@ -519,7 +519,7 @@
 "PaymentDetails.InvalidDataTitle"="Información de pago inválida";
 "PaymentDetails.TipAmountLabel"="Propina";
 "PendingOrderView"="Ver";
-"DriverInfoLicence"="Licencia #:";
+"DriverInfoLicence"="# de Placa:";
 "TaxiHailNetworkTimeOutPopupTitle"="Switch company?";
 "TaxiHailNetworkTimeOutPopupMessage"="Due to high demand, no vehicles are available right now. Do you want to book with {0} instead?";
 "TaxiHailNetworkTimeOutPopupAccept"="Accept";
@@ -533,3 +533,4 @@
 "UpdateBookingSettingsEmptyAccount"="Account number cannot be empty when Charge Type is set to Charge Account";
 "UpdateBookingSettingsInvalidAccount"="The account number that was entered doesn't exist";
 "CreditCardBookingSettingsError"="An error occured when updating the booking settings. Please make sure that the account number in your profile is valid and try again.";
+"UpdateBookingSettingsInvalidCoF"="You must have a card on file to use this account";
