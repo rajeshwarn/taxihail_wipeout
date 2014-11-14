@@ -58,6 +58,9 @@ namespace apcurium.MK.Booking.IBS.Impl
                 {
                     var settingContainer = new IBSSettingContainer
                     {
+                        RestApiUrl = networkFleetResponse.RestApiUrl,
+                        RestApiUser = networkFleetResponse.RestApiUser,
+                        RestApiSecret = networkFleetResponse.RestApiSecret,
                         WebServicesUrl = networkFleetResponse.IbsUrl,
                         WebServicesPassword = networkFleetResponse.IbsPassword,
                         WebServicesUserName = networkFleetResponse.IbsUserName

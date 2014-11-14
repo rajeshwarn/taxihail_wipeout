@@ -16,25 +16,12 @@ namespace apcurium.MK.Booking.IBS.ChargeAccounts
 {
     public class BaseServiceClient
     {
-        // TODO: ***** Provide CabMate settings *****
-        // Include: 
-        // Authorization User
-        // Authorization Secret
-        // WebUrl for CabMate
-        
-        private const string AuthorizationUserTest = "EUGENE";
-        private const string AuthorizationSecretTest = "T!?_asF";
-        
         protected IBSSettingContainer _ibsSettings;
 
         protected BaseServiceClient(IBSSettingContainer ibsSettings, ILogger logger)
         {
             Logger = logger;
-            _ibsSettings = ibsSettings;
-            
-            // TODO: Should get CabMate settings with user and secret
-            //
-
+            _ibsSettings = ibsSettings;            
             SetupClient();
         }
 
@@ -42,9 +29,7 @@ namespace apcurium.MK.Booking.IBS.ChargeAccounts
 
         private string GetUrl()
         {
-            return @"http://cabmatedemo.drivelinq.com:8889/";
-            //return @"http://utog.drivelinq.com:23889/";
-            //return _ibsSettings.WebServicesUrl;
+            return _ibsSettings.RestApiUrl;
         }
 
         private void SetupClient()
@@ -63,7 +48,7 @@ namespace apcurium.MK.Booking.IBS.ChargeAccounts
             var stringToHash = "GET" + pathInfo + dateStr;
             var hash = Encode(stringToHash);
 
-            Client.DefaultRequestHeaders.SetLoose("AUTHORIZATION", "{0}:{1}".FormatWith(AuthorizationUserTest, hash));
+            Client.DefaultRequestHeaders.SetLoose("AUTHORIZATION", "{0}:{1}".FormatWith(_ibsSettings.RestApiUser, hash));
             Client.DefaultRequestHeaders.SetLoose("DATE", dateStr);
 
             var response = Client.GetAsync(pathInfo).Result;
@@ -76,7 +61,7 @@ namespace apcurium.MK.Booking.IBS.ChargeAccounts
         private string Encode(string stringToHash)
         {
 
-            HMAC hmac = new HMACSHA1(AuthorizationSecretTest.ToBytes());
+            HMAC hmac = new HMACSHA1(_ibsSettings.RestApiSecret.ToBytes());
 
             var hash = hmac.ComputeHash(stringToHash.ToBytes());
             var str = hash.FromBytes();
@@ -95,7 +80,7 @@ namespace apcurium.MK.Booking.IBS.ChargeAccounts
             var stringToHash = "POST" + pathInfo + dateStr;
             var hash = Encode(stringToHash);
 
-            Client.DefaultRequestHeaders.SetLoose("AUTHORIZATION", "{0}:{1}".FormatWith(AuthorizationUserTest, hash));
+            Client.DefaultRequestHeaders.SetLoose("AUTHORIZATION", "{0}:{1}".FormatWith(_ibsSettings.RestApiUser, hash));
             Client.DefaultRequestHeaders.SetLoose("DATE", dateStr);
 
             var response = Client.PostAsync(pathInfo, new StringContent(requestJson, Encoding.UTF8, "application/json")).Result;
