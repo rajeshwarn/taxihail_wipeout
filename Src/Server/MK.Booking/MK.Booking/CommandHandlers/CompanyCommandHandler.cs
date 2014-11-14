@@ -36,6 +36,7 @@ namespace apcurium.MK.Booking.CommandHandlers
         ICommandHandler<UpdateTermsAndConditions>,
         ICommandHandler<RetriggerTermsAndConditions>,
         ICommandHandler<AddUpdateAccountCharge>,
+        ICommandHandler<ImportAccountCharge>,
         ICommandHandler<DeleteAccountCharge>,
         ICommandHandler<AddUpdateVehicleType>,
         ICommandHandler<DeleteVehicleType>,

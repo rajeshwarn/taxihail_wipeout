@@ -911,7 +911,7 @@
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>http://localhost/apcurium.MK.Web</IISUrl>
           <OverrideIISAppRootUrl>True</OverrideIISAppRootUrl>
-          <IISAppRootUrl>http://localhost/apcurium.MK.Web</IISAppRootUrl>
+          <IISAppRootUrl>http://localhost.fiddler/apcurium.MK.Web</IISAppRootUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

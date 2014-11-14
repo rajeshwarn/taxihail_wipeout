@@ -78,6 +78,7 @@ namespace apcurium.MK.Booking.Domain
 
             Handles<AccountChargeAddedUpdated>(NoAction);
             Handles<AccountChargeDeleted>(NoAction);
+            Handles<AccountChargeImported>(NoAction);
 
             Handles<VehicleTypeAddedUpdated>(NoAction);
             Handles<VehicleTypeDeleted>(NoAction);

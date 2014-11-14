@@ -1,6 +1,5 @@
 using System;
 using System.Net;
-using System.Web.ModelBinding;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using ServiceStack.ServiceClient.Web;
 using ServiceStack.Text;

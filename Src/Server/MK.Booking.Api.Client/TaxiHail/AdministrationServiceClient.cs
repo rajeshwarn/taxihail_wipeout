@@ -9,6 +9,9 @@ using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
+using ServiceStack.Html;
+using ServiceStack.Text;
+using ServiceStack.Text.Json;
 using AccountCharge = apcurium.MK.Booking.Api.Contract.Resources.AccountCharge;
 
 #endregion
@@ -135,6 +138,12 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             Client.Delete<string>(req);
         }
 
+        public void ImportAccountCharge(AccountChargeImportRequest request)
+        {
+            var req = string.Format("/admin/accountscharge/import");
+            Client.Post<string>(req, request);
+        }
+
         public IbsChargeAccount GetChargeAccount(string accountNumber, string customerNumber)
         {
             var req = string.Format("/admin/ibschargeaccount/{0}/{1}", accountNumber, customerNumber);
@@ -180,7 +189,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             
             var report = new IbsChargeAccountImportReport();
             
-            var importedTaxiHailChargeAccounts = new List<AccountCharge>();
+            var importedTaxiHailChargeAccounts = new List<Common.Entity.AccountCharge>();
 
             chargeAccounNumbers.ForEach(ibsChargeAccount =>
             {
@@ -188,7 +197,8 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
                     chargeAccountsToImport.Where(x => x.AccountNumber == ibsChargeAccount).SelectMany(x => x.Prompts);
                 var taxiHailQuestions = new List<AccountChargeQuestion>();
                 var questionIndex = 0;
-                
+                var accountId = Guid.NewGuid();
+
                 questions.ForEach(ibsQuestion =>
                 {
                     var caption = ibsQuestion.Caption;
@@ -203,13 +213,14 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
                         MaxLength = length,
                         Question = caption,
                         Id = ++questionIndex,
-                        Answer = ""
+                        Answer = "",
+                        AccountId = accountId
                     });
                 });
 
-                importedTaxiHailChargeAccounts.Add(new AccountCharge()
+                importedTaxiHailChargeAccounts.Add(new Common.Entity.AccountCharge()
                 {
-                    Id = Guid.NewGuid(),
+                    AccountChargeId = accountId,
                     Name = ibsChargeAccount,
                     Number = ibsChargeAccount,
                     Questions = taxiHailQuestions.ToArray()
@@ -222,18 +233,12 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 
             });
 
-            // TODO: Need to implement in CQRS as a single command
-
-            importedTaxiHailChargeAccounts.ForEach(chargeAccount => UpdateAccountCharge(new AccountChargeRequest()
+            // POST
+            ImportAccountCharge(new AccountChargeImportRequest()
             {
-                HideAnswers = false,
-                Id = chargeAccount.Id,
-                Name = chargeAccount.Number,
-                Number = chargeAccount.Number,
-                Questions = chargeAccount.Questions
-            }));
-            
-            
+                AccountCharges = importedTaxiHailChargeAccounts.ToArray()
+            });
+
             existingAccounts.ForEach(existing =>
             {
                 var existingLine = new KeyValuePair<string, string>("existing",
