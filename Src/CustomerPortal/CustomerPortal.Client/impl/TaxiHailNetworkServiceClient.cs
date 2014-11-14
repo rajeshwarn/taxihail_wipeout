@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using CustomerPortal.Contract.Resources;
 using CustomerPortal.Contract.Response;
@@ -54,11 +56,11 @@ namespace CustomerPortal.Client.Impl
             var homeCompanyKey = _serverSettings.ServerData.TaxiHail.ApplicationKey;
 
             var @params = new Dictionary<string, string>
-                {
-                    { "companyId", homeCompanyKey },
-                    { "latitude", latitude.ToString() },
-                    { "longitude", longitude.ToString() }
-                };
+            {
+                { "companyId", homeCompanyKey },
+                { "latitude", latitude.ToString() },
+                { "longitude", longitude.ToString() }
+            };
 
             var queryString = BuildQueryString(@params);
 

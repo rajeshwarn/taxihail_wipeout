@@ -70,6 +70,7 @@ namespace apcurium.MK.Booking.Mobile
 
 			_container.Register<IAccountService, AccountService>();
 			_container.Register<IBookingService, BookingService>();
+            _container.Register<INetworkRoamingService, NetworkRoamingService>();
 			_container.Register<IOrderWorkflowService, OrderWorkflowService>();
 			_container.Register<IVehicleService, VehicleService>();
 			_container.Register<ITutorialService, TutorialService>();
@@ -88,8 +89,6 @@ namespace apcurium.MK.Booking.Mobile
 			_container.Register<IPlaces, Places>();
 			_container.Register<IPopularAddressProvider, PopularAddressProvider>();
 			_container.Register<ITariffProvider, TariffProvider>();
-
-            _container.Register<INetworkRoamingService, NetworkRoamingService>();
 
             // ***** PayPal *****
 			_container.Register<IPayPalExpressCheckoutService, PayPalExpressCheckoutService> ();

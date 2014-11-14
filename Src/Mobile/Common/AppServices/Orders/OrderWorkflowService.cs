@@ -35,8 +35,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		readonly IBookingService _bookingService;
 		readonly ICacheService _cacheService;
 		readonly IAccountPaymentService _accountPaymentService;
+	    private readonly INetworkRoamingService _networkRoamingService;
 
-		readonly ISubject<Address> _pickupAddressSubject = new BehaviorSubject<Address>(new Address());
+	    readonly ISubject<Address> _pickupAddressSubject = new BehaviorSubject<Address>(new Address());
 		readonly ISubject<Address> _destinationAddressSubject = new BehaviorSubject<Address>(new Address());
 		readonly ISubject<AddressSelectionMode> _addressSelectionModeSubject = new BehaviorSubject<AddressSelectionMode>(AddressSelectionMode.PickupSelection);
 		readonly ISubject<DateTime?> _pickupDateSubject = new BehaviorSubject<DateTime?>(null);
@@ -65,7 +66,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			ILocalization localize,
 			IBookingService bookingService,
 			ICacheService cacheService,
-			IAccountPaymentService accountPaymentService)
+			IAccountPaymentService accountPaymentService,
+            INetworkRoamingService networkRoamingService)
 		{
 			_cacheService = cacheService;
 			_appSettings = configurationManager;
@@ -83,8 +85,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			_localize = localize;
 			_bookingService = bookingService;
 			_accountPaymentService = accountPaymentService;
+		    _networkRoamingService = networkRoamingService;
 
-			_estimatedFareDisplaySubject = new BehaviorSubject<string>(_localize[_appSettings.Data.DestinationIsRequired ? "NoFareTextIfDestinationIsRequired" : "NoFareText"]);
+		    _estimatedFareDisplaySubject = new BehaviorSubject<string>(_localize[_appSettings.Data.DestinationIsRequired ? "NoFareTextIfDestinationIsRequired" : "NoFareText"]);
 		}
 
 		public async Task SetAddress(Address address)
@@ -753,14 +756,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
             if (distanceFromLastMarketRequest > LastMarketDistanceThreshold)
 	        {
-				var market = await UseServiceClientAsync<NetworkRoamingServiceClient, string> (service => 
-                    service.GetCompanyMarket(currentPosition.Latitude, currentPosition.Longitude));
-
-	            if (market.HasValue())
-	            {
-	                _lastMarketPosition = currentPosition;
-	            }
-
+	            var market = await _networkRoamingService.GetCompanyMarket(currentPosition.Latitude, currentPosition.Longitude);
+                
+                _lastMarketPosition = currentPosition;
                 _marketSubject.OnNext(market);
 	        }
 	    }               

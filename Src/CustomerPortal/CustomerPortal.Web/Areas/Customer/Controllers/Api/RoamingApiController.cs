@@ -64,7 +64,7 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
             {
                 return new HttpResponseMessage(HttpStatusCode.OK)
                 {
-                    Content = new StringContent(companyMarket)
+                    Content = new StringContent(JsonConvert.SerializeObject(companyMarket)) 
                 };
             }
 

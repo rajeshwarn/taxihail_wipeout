@@ -57,7 +57,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             Observe(_orderWorkflowService.GetAndObserveMarket(), market => MarketChanged(market));
 		}
 
-	    private string _lastMarket;
+	    private string _lastMarket = string.Empty;
 		private bool _isShowingTermsAndConditions;
 		private bool _locateUser;
 		private ZoomToStreetLevelPresentationHint _defaultHintZoomLevel;
@@ -443,12 +443,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         private void MarketChanged(string market)
         {
-            if (_lastMarket != market)
+            // Market changed and not home market
+            if (_lastMarket != market && market != string.Empty)
             {
-                _lastMarket = market;
                 this.Services().Message.ShowMessage(this.Services().Localize["MarketChangedMessageTitle"],
                     this.Services().Localize["MarketChangedMessage"]);
             }
+            _lastMarket = market;
         }
     }
 }
