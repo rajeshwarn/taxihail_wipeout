@@ -182,8 +182,10 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
         public IbsChargeAccountImportReport ImportAccounts()
         {
             var chargeAccountsToImport = GetNewChargeAccounts().ToList();
-            
-            var existingAccounts = GetAllChargeAccount().ToList().Except(chargeAccountsToImport);
+
+            var existingAccounts =
+                GetAllChargeAccount()
+                    .Where(x => !chargeAccountsToImport.Any(y => y.AccountNumber == x.AccountNumber)).ToList();
             
             var chargeAccounNumbers = chargeAccountsToImport.ToArray().Select(x => x.AccountNumber).Distinct();
             
@@ -208,7 +210,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
                     taxiHailQuestions.Add(new AccountChargeQuestion
                     {
                         IsCaseSensitive = false,
-                        ErrorMessage = "",
+                        ErrorMessage = "Wrong answer",
                         IsRequired = toBeValidated,
                         MaxLength = length,
                         Question = caption,
