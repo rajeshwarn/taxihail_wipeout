@@ -50,12 +50,9 @@ namespace apcurium.MK.Booking.Api.Services.Maps
                 && request.OriginLat.HasValue
                 && request.OriginLng.HasValue)
             {
-                // Get available vehicles
-
-                var market = !string.IsNullOrWhiteSpace(request.Market) ? request.Market : string.Empty;
-                
+                // Get available vehicles                
                 var availableVehiclesTask = _vehicleClient.GetAvailableVehiclesAsync(request.OriginLat.Value,
-                    request.OriginLng.Value, null, market);
+                    request.OriginLng.Value, null, request.Market);
                 
                 availableVehiclesTask.Wait();
                 var availableVehicles = availableVehiclesTask.Result;
