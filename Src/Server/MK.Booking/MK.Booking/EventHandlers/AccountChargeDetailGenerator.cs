@@ -10,7 +10,7 @@ namespace apcurium.MK.Booking.EventHandlers
     public class AccountChargeDetailGenerator :
         IEventHandler<AccountChargeAddedUpdated>,
         IEventHandler<AccountChargeDeleted>,
-        IEventHandler<AccountChargeImported>,
+        IEventHandler<AccountChargeImported>
     {
         private readonly Func<BookingDbContext> _contextFactory;
 

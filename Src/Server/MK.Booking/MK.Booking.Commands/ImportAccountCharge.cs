@@ -4,9 +4,9 @@ using Infrastructure.Messaging;
 
 namespace apcurium.MK.Booking.Commands
 {
-    public class AddAccountCharges : ICommand
+    public class ImportAccountCharge : ICommand
     {
-        public AddAccountCharges()
+        public ImportAccountCharge()
         {
             Id = Guid.NewGuid();
         }

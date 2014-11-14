@@ -88,25 +88,5 @@ namespace apcurium.MK.Web.Tests
             Assert.NotNull(accounts);
             // TODO: Should get all IBS charge accounts, create one with the same AccountNumber in TaxiHail, get the full list, and get the new accounts list. Shouldn't be equal
         }
-
-        [Test]
-        public void when_importing_accounts()
-        {
-            var accountsToImport = new []
-            {
-                accountToImport1,
-                accountToImport2,
-                accountToImport3
-            };
-
-            // Clean existing account before
-            Sut.GetAccountsCharge()
-                .ToArray()
-                .Where(x => accountsToImport.Any(y => y.Key == x.Number))
-                .ForEach(x => Sut.DeleteAccountCharge(x.Number));
-            
-            var report = Sut.ImportAccounts(new IbsChargeAccountImportRequest() {Accounts = accountsToImport.ToList() });
-            var res = report;
-        }
     }
 }

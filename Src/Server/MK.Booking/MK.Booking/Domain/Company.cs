@@ -546,9 +546,9 @@ namespace apcurium.MK.Booking.Domain
             });
         }
 
-        public void ImportAccountCharges(AccountCharge[] accounts)
+        public void ImportAccountCharge(AccountCharge[] accounts)
         {
-            Update(new AccountChargesImported()
+            Update(new AccountChargeImported()
             {
                 AccountCharges = accounts
             });
