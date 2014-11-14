@@ -60,15 +60,10 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
                 }
             }
 
-            if (companyMarket != null)
+            return new HttpResponseMessage(HttpStatusCode.OK)
             {
-                return new HttpResponseMessage(HttpStatusCode.OK)
-                {
-                    Content = new StringContent(JsonConvert.SerializeObject(companyMarket)) 
-                };
-            }
-
-            return new HttpResponseMessage(HttpStatusCode.OK);
+                Content = new StringContent(JsonConvert.SerializeObject(companyMarket)) 
+            };
         }
 
         [Route("api/customer/roaming/marketfleets")]
