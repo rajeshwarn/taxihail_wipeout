@@ -66,7 +66,7 @@
 "Edit"="Edit";
 "ServiceErrorDefaultMessage"="An error occurred. Please try again.";
 "PanelMenuViewSignOutText"="Sign Out";
-"UpdateBookingSettingsInvalidDataTitle"="Invalid booking settings info.";
+"UpdateBookingSettingsInvalidDataTitle"="Invalid booking settings info";
 "View_HistoryDetail"="Order Details";
 "NoAmountSelectedMessage"="Please enter the amount";
 "CreditCardType"="Type of Card";
@@ -557,3 +557,8 @@
 "NetworkContactingNextDispatchDescription"="Contacting {0} ...";
 "TaxiHailNetworkTimeOutPopupAlways"="Always Accept";
 "NetworkTimeOutPopupAlways"="Always Accept";
+"UpdateBookingSettingsGenericError"="An error occured when updating the booking settings";
+"UpdateBookingSettingsEmptyAccount"="Account number cannot be empty when Charge Type is set to Charge Account";
+"UpdateBookingSettingsInvalidAccount"="The account number that was entered doesn't exist";
+"CreditCardBookingSettingsError"="An error occured when updating the booking settings. Please make sure that the account number in your profile is valid and try again.";
+"UpdateBookingSettingsInvalidCoF"="You must have a card on file to use this account";

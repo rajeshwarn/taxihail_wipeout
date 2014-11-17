@@ -1,6 +1,7 @@
 ﻿#region
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using apcurium.MK.Booking.Api.Contract.Requests;
@@ -36,16 +37,30 @@ namespace apcurium.MK.Booking.Api.Services
 
         public AvailableVehiclesResponse Post(AvailableVehicles request)
         {
-            var vehicles = _ibsServiceProvider.Booking().GetAvailableVehicles(request.Latitude, request.Longitude, request.VehicleTypeId);
             var vehicleType = _dao.GetAll().FirstOrDefault(v => v.ReferenceDataVehicleId == request.VehicleTypeId);
             string logoName = vehicleType != null ? vehicleType.LogoName : null;
 
+            var vehicles = new IbsVehiclePosition[0];
+
+            if (string.IsNullOrEmpty((request.Market)))
+            {
+                vehicles = _ibsServiceProvider.Booking()
+                    .GetAvailableVehicles(request.Latitude, request.Longitude, request.VehicleTypeId);
+            }
+            else
+            {
+                // MKTAXI-2282, wait for MKTAXI-2294
+                // Call to honey badger endpoint:
+                // vehicles = 
+            }
+
             var availableVehicles = vehicles.Select(Mapper.Map<AvailableVehicle>).ToArray();
+                
             foreach (var vehicle in availableVehicles)
             {
                 vehicle.LogoName = logoName;
             }
-            return new AvailableVehiclesResponse(availableVehicles);
+            return new AvailableVehiclesResponse(availableVehicles);   
         }
 
         public object Get(VehicleTypeRequest request)

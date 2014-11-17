@@ -255,7 +255,7 @@ namespace apcurium.MK.Booking.ConfigTool
 
             
 
-            foreach (var g in allResources.Where(r=> !r.ToLower().Contains("icon")) ) // The where clause need to be improved. 
+			foreach (var g in allResources.Where(r=> r.ToLower()!="icon.png" && r.ToLower()!="icon@2x.png" ) ) // The where clause need to be improved. 
             {
 
 				_configs.Add (new ConfigFile (this) {

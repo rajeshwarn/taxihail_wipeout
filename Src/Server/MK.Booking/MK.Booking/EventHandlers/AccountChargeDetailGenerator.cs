@@ -25,10 +25,12 @@ namespace apcurium.MK.Booking.EventHandlers
                 var accountChargeDetail = context.Find<AccountChargeDetail>(@event.AccountChargeId);
                 if (accountChargeDetail == null)
                 {
-                    accountChargeDetail = new AccountChargeDetail {Id = @event.AccountChargeId};
+                    accountChargeDetail = new AccountChargeDetail { Id = @event.AccountChargeId };
                 }
+
                 accountChargeDetail.Number = @event.Number;
                 accountChargeDetail.Name = @event.Name;
+                accountChargeDetail.UseCardOnFileForPayment = @event.UseCardOnFileForPayment;
                 accountChargeDetail.Questions.Clear();
                 context.Save(accountChargeDetail);
 

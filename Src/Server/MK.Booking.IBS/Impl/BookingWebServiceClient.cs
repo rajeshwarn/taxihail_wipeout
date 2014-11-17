@@ -47,10 +47,12 @@ namespace apcurium.MK.Booking.IBS.Impl
                 var vehicleTypeFilter = vehicleTypeId.HasValue
                                         ? new[] { new TVehicleTypeItem { ID = vehicleTypeId.Value } }
                                         : new TVehicleTypeItem[0];
+                
                 UseService(service =>
                 {
                     result = service
-                        .GetAvailableVehicles_4(UserNameApp, PasswordApp, longitude, latitude, radius, count, false, vehicleTypeFilter)
+                        .GetAvailableVehicles_4(UserNameApp, PasswordApp, longitude, latitude, radius, count, false,
+                            vehicleTypeFilter)
                         .Select(Mapper.Map<IbsVehiclePosition>)
                         .ToArray();
                 });

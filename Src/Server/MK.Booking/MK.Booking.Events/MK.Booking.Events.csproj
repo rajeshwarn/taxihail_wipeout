@@ -78,6 +78,10 @@
     <Compile Include="PayPalExpressCheckoutPaymentCompleted.cs" />
     <Compile Include="PayPalExpressCheckoutPaymentInitiated.cs" />
     <Compile Include="PayPalPaymentCancellationFailed.cs" />
+    <Compile Include="PromotionActivated.cs" />
+    <Compile Include="PromotionCreated.cs" />
+    <Compile Include="PromotionDeactivated.cs" />
+    <Compile Include="PromotionUpdated.cs" />
     <Compile Include="RatingTypeDeleted.cs" />
     <Compile Include="RoleAddedToUserAccount.cs" />
     <Compile Include="RuleActivated.cs" />

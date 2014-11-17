@@ -56,7 +56,7 @@
                     if (accountNumber && accountNumber != '') {
                         var settings = this.model.get('settings');
                         settings.accountNumber = accountNumber;
-                        this.model.save('settings', settings);
+                        this.model.set('settings', settings);
                     }
 
                     this.refreshValidationRules(data.questions);

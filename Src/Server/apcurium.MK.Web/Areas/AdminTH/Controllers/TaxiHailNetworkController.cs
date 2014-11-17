@@ -31,14 +31,8 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
 
         public async Task<ActionResult> Index()
         {
-            if (AuthSession.IsAuthenticated)
-            {
-                var response = await _taxiHailNetworkService.GetNetworkCompanyPreferences(_applicationKey);
-
-                return View(response);
-            }
-
-            return Redirect(BaseUrl);
+            var response = await _taxiHailNetworkService.GetNetworkCompanyPreferences(_applicationKey);
+            return View(response);
         }
 
         [HttpPost]

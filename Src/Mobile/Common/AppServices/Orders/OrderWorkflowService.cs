@@ -19,6 +19,7 @@ using apcurium.MK.Common.Extensions;
 using ServiceStack.ServiceClient.Web;
 using ServiceStack.ServiceInterface.ServiceModel;
 using ServiceStack.Text;
+using apcurium.MK.Booking.Api.Client.TaxiHail;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 {
@@ -46,9 +47,12 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		readonly ISubject<AccountChargeQuestion[]> _accountPaymentQuestions = new BehaviorSubject<AccountChargeQuestion[]> (null);
 
 		readonly ISubject<bool> _orderCanBeConfirmed = new BehaviorSubject<bool>(false);
+		readonly ISubject<string> _marketSubject = new BehaviorSubject<string>(string.Empty);
 
         private bool _isOrderRebooked;
 	    private bool _ignoreNextGeoLocResult;
+
+	    private Position _lastMarketRequest = new Position();
 
 		public OrderWorkflowService(ILocationService locationService,
 			IAccountService accountService,
@@ -409,6 +413,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		{
 			return _loadingAddressSubject;
 		}
+
+		public IObservable<string> GetAndObserveMarket()
+		{
+			return _marketSubject;
+		}
 		
 		private async Task<Address> SearchAddressForCoordinate(Position p)
 		{
@@ -449,18 +458,16 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
 		private async Task SetAddressToCurrentSelection(Address address, CancellationToken token = default(CancellationToken))
 		{
-			var selectionMode = await _addressSelectionModeSubject.Take(1).ToTask();
-			if (selectionMode == AddressSelectionMode.PickupSelection)
-			{
-				_pickupAddressSubject.OnNext(address);
-			}
-			else
-			{
-				_destinationAddressSubject.OnNext(address);
+			var selectionMode = await _addressSelectionModeSubject.Take (1).ToTask ();
+			if (selectionMode == AddressSelectionMode.PickupSelection) {
+				_pickupAddressSubject.OnNext (address);
+				SetMarket (new Position () { Latitude = address.Latitude, Longitude = address.Longitude });
+			} else {
+				_destinationAddressSubject.OnNext (address);
 			}
 
 			// do NOT await this
-			CalculateEstimatedFare(token);
+			CalculateEstimatedFare (token);
 		}
 
 		private CancellationTokenSource _calculateFareCancellationTokenSource = new CancellationTokenSource();
@@ -723,6 +730,17 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
         {
             _ignoreNextGeoLocResult = ignoreNextGeoLocResult;
         }
+
+	    private async void SetMarket(Position currentPosition)
+	    {
+			var distanceFromLastMarketRequestInMeters = MK.Booking.Maps.Geo.Position.CalculateDistance(currentPosition.Latitude, currentPosition.Longitude, _lastMarketRequest.Latitude, _lastMarketRequest.Longitude);
+	        
+			if (distanceFromLastMarketRequestInMeters > 500)
+	        {
+				var market = await UseServiceClientAsync<NetworkRoamingServiceClient, string> (service => service.GetCompanyMarket (currentPosition.Latitude, currentPosition.Longitude));
+				_lastMarketRequest = market != null ? _lastMarketRequest : currentPosition;
+	        }
+	    }
     }
 }
 

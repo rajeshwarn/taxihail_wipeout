@@ -1,4 +1,5 @@
 ﻿using System.Web.Mvc;
+using System.Web.Routing;
 using ServiceStack.CacheAccess;
 using ServiceStack.ServiceInterface;
 using ServiceStack.ServiceInterface.Auth;
@@ -28,11 +29,20 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
             get { return SessionAs<AuthUserSession>(); }
         }
 
-        protected override IAsyncResult BeginExecute(System.Web.Routing.RequestContext requestContext, AsyncCallback callback, object state)
+        protected override IAsyncResult BeginExecute(RequestContext requestContext, AsyncCallback callback, object state)
         {
             BaseUrl = requestContext.HttpContext.Request.Url.GetLeftPart(UriPartial.Authority) + requestContext.HttpContext.Request.ApplicationPath;
             ViewData["BaseUrl"] = BaseUrl;
             return base.BeginExecute(requestContext, callback, state);
+        }
+
+        protected override void OnActionExecuting(ActionExecutingContext filterContext)
+        {
+            if (!AuthSession.IsAuthenticated)
+            {
+                filterContext.Result = Redirect(BaseUrl);
+            }
+            base.OnActionExecuting(filterContext);
         }
 
         protected TUserSession SessionAs<TUserSession>()
