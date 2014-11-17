@@ -34,7 +34,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		{
 			base.OnViewStarted (firstTime);
 			// TODO: This call makes the app crash on Android Nexus 7 - 4.4.2. When is it necessary? (Working on a test device without it.)
-			//RaisePropertyChanged (() => Questions); //needed for Android
+			RaisePropertyChanged (() => Questions); //needed for Android
 		}
 
 		// the use of list is important here for the binding (doesn't seem to work with an array)

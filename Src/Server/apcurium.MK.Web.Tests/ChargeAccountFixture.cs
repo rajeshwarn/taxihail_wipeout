@@ -80,13 +80,5 @@ namespace apcurium.MK.Web.Tests
             Assert.AreEqual(validation.Message, "OK");
             Assert.AreEqual(validation.Valid, PromptsAreValid);
         }
-
-        [Test]
-        public void when_getting_new_accounts()
-        {   
-            var accounts = Sut.GetNewChargeAccounts();
-            Assert.NotNull(accounts);
-            // TODO: Should get all IBS charge accounts, create one with the same AccountNumber in TaxiHail, get the full list, and get the new accounts list. Shouldn't be equal
-        }
     }
 }
