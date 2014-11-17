@@ -13,13 +13,17 @@
 
             var pickup = this.model.get('pickupAddress');
             var dest = this.model.get('dropOffAddress');
+            var pickupZipCode = pickup.zipCode != null ? pickup.zipCode : '';
+            var dropOffZipCode = dest.zipCode != null ? dest.zipCode : '';
+            
             this.showEstimate = TaxiHail.parameters.isEstimateEnabled && pickup && dest;
             this.showEstimateWarning = TaxiHail.parameters.isEstimateWarningEnabled;
             
-            var accountNumber = null;
-
+            var accountNumber = '';
+            
             if (this.model.isPayingWithAccountCharge()) {
                 accountNumber = this.model.get('accountNumber');
+                accountNumber = accountNumber != null ? accountNumber : '';
             }
 
             if (this.showEstimate) {
@@ -27,6 +31,8 @@
                     pickup.longitude,
                     dest.latitude,
                     dest.longitude,
+                    pickupZipCode,
+                    dropOffZipCode,
                     this.model.get('settings')['vehicleTypeId'],
                     this.model.get('pickupDate'),
                     accountNumber
