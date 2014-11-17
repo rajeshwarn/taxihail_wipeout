@@ -50,15 +50,20 @@ namespace HoneyBadger
                                  .Deserialize<HoneyBadgerResponse>()
                                  .Result;
 
-            return response.Entities
-                .Take(numberOfVehicles)
-                .Select(e => new VehicleResponse
-                {
-                    Timestamp = e.TimeStamp,
-                    Latitude = e.Latitude,
-                    Longitude = e.Longitude,
-                    Medaillon = e.Medaillon
-                });
+            if (response.Entities != null)
+            {
+                return response.Entities
+                               .Take(numberOfVehicles)
+                               .Select(e => new VehicleResponse
+                                {
+                                    Timestamp = e.TimeStamp,
+                                    Latitude = e.Latitude,
+                                    Longitude = e.Longitude,
+                                    Medaillon = e.Medaillon
+                                });
+            }
+
+            return new List<VehicleResponse>();
         }
 
         public IEnumerable<VehicleResponse> GetAvailableVehicles(string market, IEnumerable<string> fleetId)

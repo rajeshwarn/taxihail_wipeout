@@ -90,6 +90,8 @@ namespace apcurium.MK.Booking.Api.Services
                 ValidateAppVersion(request.ClientLanguageCode);
             }
 
+            request.Market = request.Market.HasValue() ? request.Market : null;
+
             var account = _accountDao.FindById(new Guid(this.GetSession().UserAuthId));
 
             var bestAvailableCompany = FindBestAvailableCompany(request.Market);
@@ -675,15 +677,23 @@ namespace apcurium.MK.Booking.Api.Services
         /// <returns>Company info with the most available cars in external market; null otherwise.</returns>
         private BestAvailableCompany FindBestAvailableCompany(string market)
         {
-            if (string.IsNullOrWhiteSpace(market))
+            if (!market.HasValue())
             {
                 // In home market, nothing to do
-                return null;
+                return new BestAvailableCompany
+                {
+                    CompanyKey = null,
+                    CompanyName = null
+                };
             }
 
             // In external market, return company key with most available cars
             // TODO: Query honey badger. Waiting for MK.
-            throw new NotImplementedException();
+            return new BestAvailableCompany
+            {
+                CompanyKey = "Axertis",
+                CompanyName = "Axertis"
+            };
         }
 
         private class BestAvailableCompany

@@ -709,6 +709,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			order.DropOffAddress = await _destinationAddressSubject.Take(1).ToTask();
 			order.Settings = await _bookingSettingsSubject.Take(1).ToTask();
 			order.Note = await _noteToDriverSubject.Take(1).ToTask();
+		    order.Market = await _marketSubject.Take(1).ToTask();
+
 			var e = await _estimatedFareDetailSubject.Take (1).ToTask ();
 			if (e != null) {
 				order.Estimate = new CreateOrder.RideEstimate{ Price = e.Price, Distance = e.Distance.HasValue ? e.Distance.Value :0  };
