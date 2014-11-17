@@ -446,6 +446,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 			var streetLevelZoomHint = hint as ZoomToStreetLevelPresentationHint;
 			if (streetLevelZoomHint != null)
             {
+                // When selecting a popular place, we must not reverse geocode the position (to keep the popular place info)
                 bypassCameraChangeEvent = true;
                 var zoomLevel = streetLevelZoomHint.InitialZoom 
                     ? _settings.InitialZoomLevel 
