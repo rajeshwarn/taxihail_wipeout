@@ -105,7 +105,7 @@ namespace apcurium.MK.Booking.IBS.Impl
             return result;
         }
 
-        public IbsFareEstimate GetFareEstimate(double? pickupLat, double? pickupLng, double? dropoffLat, double? dropoffLng, string accountNumber, int? customerNumber, int? tripDurationInSeconds)
+        public IbsFareEstimate GetFareEstimate(double? pickupLat, double? pickupLng, double? dropoffLat, double? dropoffLng, string pickupZipCode, string dropoffZipCode, string accountNumber, int? customerNumber, int? tripDurationInSeconds)
         {
             var result = new IbsFareEstimate();
             UseService(service =>
@@ -126,7 +126,7 @@ namespace apcurium.MK.Booking.IBS.Impl
                     tbook.DropoffAddress = new TWEBAddress
                     {
                         Latitude = (double)dropoffLat,
-                        Longitude = (double)dropoffLng
+                        Longitude = (double)dropoffLng,
                     };
                 }
 
@@ -134,12 +134,23 @@ namespace apcurium.MK.Booking.IBS.Impl
                 tbook.VehicleTypeID = -1;
                 tbook.ChargeTypeID = -1;
                 
+
+                if (!string.IsNullOrEmpty(pickupZipCode))
+                {
+                    tbook.PickupAddress.Postal = pickupZipCode;
+                }
+
+                if (!string.IsNullOrEmpty(dropoffZipCode))
+                {
+                    tbook.DropoffAddress.Postal = dropoffZipCode;
+                }
+
                 if (customerNumber.HasValue)
                 {
                     tbook.CustomerNum = customerNumber.Value;
                 }
 
-                if (tripDurationInSeconds.HasValue)
+                if (tripDurationInSeconds.HasValue && tripDurationInSeconds > 0)
                 {
                     tbook.WaitTime = tripDurationInSeconds.Value;
                 }

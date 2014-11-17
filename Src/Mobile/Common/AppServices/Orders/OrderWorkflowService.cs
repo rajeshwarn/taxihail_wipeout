@@ -620,6 +620,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		{
 			_accountService.UpdateAccountNumber (accountNumber);
 
+
+
 			var bookingSettings = await _bookingSettingsSubject.Take(1).ToTask();
 			bookingSettings.AccountNumber = accountNumber;
 

@@ -305,7 +305,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					    {
 					        try
 					        {
-					            await _accountService.UpdateSettings(_bookingSettings, creditCard, PaymentPreferences.Tip);
+								await _accountService.UpdateSettings(_bookingSettings, creditCard, PaymentPreferences.Tip);
+								_orderWorkflowService.SetAccountNumber (_bookingSettings.AccountNumber);
                                 Close(this);
 					        }
 					        catch (WebServiceException ex)

@@ -1,7 +1,7 @@
 ﻿(function () {
 
     TaxiHail.directionInfo = _.extend({}, Backbone.Events, {
-        getInfo: function (originLat, originLng, destinationLat, destinationLng, vehicleTypeId, date, account) {
+        getInfo: function (originLat, originLng, destinationLat, destinationLng, pickupZipCode, dropOffZipCode, vehicleTypeId, date, account) {
             
             var preferedPrice = null, tempPrice = null;
 
@@ -30,7 +30,8 @@
                         async: false
                     });
 
-                    $.get('api/ibsfare?PickupLatitude={0}&PickupLongitude={1}&DropoffLatitude={2}&DropoffLongitude={3}&AccountNumber={4}&CustomerNumber={5}&TripDurationInSeconds={6}'.format(coordinates.originLat, coordinates.originLng, coordinates.destinationLat, coordinates.destinationLng,
+                    $.get('api/ibsfare?PickupLatitude={0}&PickupLongitude={1}&DropoffLatitude={2}&DropoffLongitude={3}&PickupZipCode={4}&DropoffZipCode={5}&AccountNumber={6}&CustomerNumber={7}&TripDurationInSeconds={8}'.format(coordinates.originLat, coordinates.originLng, coordinates.destinationLat, coordinates.destinationLng,
+                        pickupZipCode, dropOffZipCode,
                         (account != null) ? account : '', 0, (tripDurationInSeconds != null) ? tripDurationInSeconds : ''), function () { }, fmt).then(function (result) {
                         if (result.price == 0 && tarifMode == "Both") {
                             $.get('api/directions/', coordinates, function () { }, fmt).done(function (resultGoogleBoth) {                                
@@ -53,7 +54,6 @@
 
             return $.when(getDirectionInfoEvent()).done(
               function (result) {
-                  console.log(result);
                   result.noFareEstimate = (result.price == 0);
                   result.callForPrice = (result.price > TaxiHail.parameters.maxFareEstimate);
               }

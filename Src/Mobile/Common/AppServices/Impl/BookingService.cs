@@ -228,6 +228,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			                    service =>
 			                        service.GetDirectionInfoFromIbs(order.PickupAddress.Latitude, order.PickupAddress.Longitude,
 			                            order.DropOffAddress.Latitude, order.DropOffAddress.Longitude,
+										order.PickupAddress.ZipCode, order.DropOffAddress.ZipCode,
 			                            order.Settings.AccountNumber, duration));
 			    }
 

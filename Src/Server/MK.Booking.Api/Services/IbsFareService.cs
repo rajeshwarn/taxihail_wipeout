@@ -30,8 +30,9 @@ namespace apcurium.MK.Booking.Api.Services
             // TODO: Adapt distance format
             var tripDurationInMinutes = (request.TripDurationInSeconds.HasValue ? (int?)TimeSpan.FromSeconds(request.TripDurationInSeconds.Value).TotalMinutes : null);
             var fare = _ibsServiceProvider.Booking().GetFareEstimate(request.PickupLatitude, request.PickupLongitude,
-                request.DropoffLatitude, request.DropoffLongitude, request.AccountNumber, request.CustomerNumber,
-                tripDurationInMinutes);
+                request.DropoffLatitude, request.DropoffLongitude, 
+                request.PickupZipCode, request.DropoffZipCode,
+                request.AccountNumber, request.CustomerNumber, tripDurationInMinutes);
             return fare.FareEstimate != null
                 ? new DirectionInfo
                 {
