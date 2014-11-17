@@ -1,4 +1,5 @@
-﻿using apcurium.MK.Booking.Common.Tests;
+﻿using System.Linq;
+using apcurium.MK.Booking.Common.Tests;
 using NUnit.Framework;
 
 namespace HoneyBadger.Test
@@ -15,10 +16,18 @@ namespace HoneyBadger.Test
         private HoneyBadgerServiceClient _sut;
 
         [Test]
-        public void GetAvailableVehicles_should_return_something()
+        public void when_getting_available_vehicles_inside_a_valide_zone()
         {
             var a = _sut.GetAvailableVehicles("BOS", 42.354045, -71.062289);
             Assert.IsNotEmpty(a);
+            Assert.LessOrEqual(a.Count(), 10);
+        }
+
+        [Test]
+        public void when_getting_available_vehicles_outside_a_valide_zone()
+        {
+            var a = _sut.GetAvailableVehicles("BOS", 45.497765, -73.666280);
+            Assert.IsEmpty(a);
         }
     }
 }

@@ -101,7 +101,7 @@ namespace apcurium.MK.Booking.Api.Services
 
             var account = _accountDao.FindById(new Guid(this.GetSession().UserAuthId));
 
-            var bestAvailableCompany = FindBestAvailableCompany(request.Market, request.UserLatitude.Value, request.UserLongitude.Value);
+            var bestAvailableCompany = FindBestAvailableCompany(request.Market, request.PickupAddress.Latitude, request.PickupAddress.Longitude);
 
             account.IBSAccountId = CreateIbsAccountIfNeeded(account, bestAvailableCompany.CompanyKey, request.Market);
 
@@ -677,25 +677,22 @@ namespace apcurium.MK.Booking.Api.Services
             return null;
         }
 
-        private BestAvailableCompany FindBestAvailableCompany(string market, double latitude, double longitude)
+        private BestAvailableCompany FindBestAvailableCompany(string market, double? latitude, double? longitude)
         {
-            if (!market.HasValue())
+            if (!market.HasValue() || !latitude.HasValue || !longitude.HasValue)
             {
-                // In home market, nothing to do
+                // Do nothing if in home market or don't have position
                 return new BestAvailableCompany();
             }
 
-            // In external market, return company key with most available cars
-
-            // TODO: Waiting for MK to populate the FI field.
             int? bestFleetId = null;
             const int searchExpendLimit = 10;
-            var searchRadius = 2; // In kilometers
+            var searchRadius = 2000; // In meters
 
             for (var i = 1; i < searchExpendLimit; i++)
             {
                 var marketVehicles =
-                    _honeyBadgerServiceClient.GetAvailableVehicles(market, latitude, longitude, searchRadius, null, true)
+                    _honeyBadgerServiceClient.GetAvailableVehicles(market, latitude.Value, longitude.Value, searchRadius, null, true)
                                              .ToArray();
 
                 if (marketVehicles.Any())
@@ -717,11 +714,14 @@ namespace apcurium.MK.Booking.Api.Services
             if (bestFleetId.HasValue)
             {
                 var bestFleet = _taxiHailNetworkServiceClient.GetMarketFleet(market, bestFleetId.Value);
-                return new BestAvailableCompany
+                if (bestFleet != null)
                 {
-                    CompanyKey = bestFleet.CompanyKey,
-                    CompanyName = bestFleet.CompanyName
-                };
+                    return new BestAvailableCompany
+                    {
+                        CompanyKey = bestFleet.CompanyKey,
+                        CompanyName = bestFleet.CompanyName
+                    };
+                }
             }
 
             // Nothing found

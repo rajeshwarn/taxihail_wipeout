@@ -40,7 +40,7 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
                 Id = "ChrisTaxi",
                 IsInNetwork = true,
                 Market = "MTL",
-                FleetId = "424242",
+                FleetId = 424242,
                 Region = new MapRegion
                 {
                     CoordinateStart = new MapCoordinate { Latitude = 45.514466, Longitude = -73.846313 }, // MTL Top left 
@@ -59,7 +59,7 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
                 Id = "ChrisTaxiBis",
                 IsInNetwork = true,
                 Market = "MTL",
-                FleetId = "987564",
+                FleetId = 987564,
                 Region = new MapRegion
                 {
                     CoordinateStart = new MapCoordinate { Latitude = 45.514466, Longitude = -73.846313 }, // MTL Top left 
@@ -79,7 +79,7 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
                 Id = "TonyTaxi",
                 IsInNetwork = true,
                 Market = "CHI",
-                FleetId = "321674",
+                FleetId = 321674,
                 Region = new MapRegion
                 {
                     CoordinateStart = new MapCoordinate { Latitude = 49994, Longitude = -73.656990 }, // Apcuruium 
@@ -92,7 +92,7 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
                 //same Longitude as TonyTaxi
                 Id = "TomTaxi",
                 Market = "CHI",
-                FleetId = "23134",
+                FleetId = 23134,
                 IsInNetwork = true,
                 Region = new MapRegion()
                 {
@@ -113,7 +113,7 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
                 Id = "PilouTaxi",
                 IsInNetwork = true,
                 Market = "NYC",
-                FleetId = "88784",
+                FleetId = 88784,
                 Region = new MapRegion
                 {
                     CoordinateStart = new MapCoordinate { Latitude = 45.514466, Longitude = -73.889451 },
@@ -133,7 +133,7 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
                 Id = "LastTaxi",
                 IsInNetwork = true,
                 Market = "SYD",
-                FleetId = "99999",
+                FleetId = 99999,
                 Region = new MapRegion
                 {
                     CoordinateStart = new MapCoordinate { Latitude = 45.420595, Longitude = -75.708386 }, // Ottawa
@@ -239,8 +239,10 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
         public void When_Getting_Company_Market_In_Home_Market()
         {
             var response = Sut.GetCompanyMarket("ChrisTaxi", 45.423513, -73.653214);
+            var json = response.Content.ReadAsStringAsync().Result;
+            var market = JsonConvert.DeserializeObject<string>(json);
 
-            Assert.IsNull(response.Content);
+            Assert.IsNull(market);
         }
 
         [Test]
@@ -248,8 +250,9 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
         {
             var response = Sut.GetCompanyMarket("ChrisTaxi", 45.412042, -75.695321);
             var json = response.Content.ReadAsStringAsync().Result;
+            var market = JsonConvert.DeserializeObject<string>(json);
 
-            Assert.AreEqual("SYD", json);
+            Assert.AreEqual("SYD", market);
         }
 
         [Test]
@@ -276,6 +279,21 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
             Assert.AreEqual("http://altavista.com", secondFleet.IbsUrl);
             Assert.AreEqual("Alice", secondFleet.IbsUserName);
             Assert.AreEqual("Bob", secondFleet.IbsPassword);
+        }
+
+        [Test]
+        public void When_Getting_Single_Fleet_From_a_Market()
+        {
+            var response = Sut.GetMarketFleet("MTL", 424242);
+            var json = response.Content.ReadAsStringAsync().Result;
+            var fleet = JsonConvert.DeserializeObject<NetworkFleetResponse>(json);
+
+            Assert.NotNull(fleet);
+            Assert.AreEqual("ChrisTaxi", fleet.CompanyKey);
+            Assert.AreEqual("ChrisTaxi", fleet.CompanyName);
+            Assert.AreEqual("http://google.com", fleet.IbsUrl);
+            Assert.AreEqual("Taxi", fleet.IbsUserName);
+            Assert.AreEqual("test", fleet.IbsPassword);
         }
     }
 }
