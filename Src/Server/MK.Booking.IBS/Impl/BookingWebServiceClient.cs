@@ -105,13 +105,12 @@ namespace apcurium.MK.Booking.IBS.Impl
             return result;
         }
 
-        public IbsFareEstimate GetFareEstimate(double? pickupLat, double? pickupLng, double? dropoffLat,
-            double? dropoffLng)
+        public IbsFareEstimate GetFareEstimate(double? pickupLat, double? pickupLng, double? dropoffLat, double? dropoffLng, string accountNumber, int? customerNumber, int? tripDurationInSeconds)
         {
             var result = new IbsFareEstimate();
             UseService(service =>
             {
-                var tbook = new TBookOrder_7();
+                var tbook = new TBookOrder_8();
                 if (pickupLat != null
                     && pickupLng != null)
                 {
@@ -130,11 +129,24 @@ namespace apcurium.MK.Booking.IBS.Impl
                         Longitude = (double)dropoffLng
                     };
                 }
+
+                tbook.AccountNum = accountNumber;
+
+                if (customerNumber.HasValue)
+                {
+                    tbook.CustomerNum = customerNumber.Value;
+                }
+
+                if (tripDurationInSeconds.HasValue)
+                {
+                    tbook.WaitTime = tripDurationInSeconds.Value;
+                }
+
                 double fare;
                 double tolls;
                 double distance;
-                result.FareEstimate = service.EstimateFare(UserNameApp, PasswordApp, tbook, out fare, out tolls,
-                    out distance);
+
+                result.FareEstimate = service.EstimateFare_8(UserNameApp, PasswordApp, tbook, out fare, out tolls, out distance);
                 result.Distance = distance;
                 result.Tolls = tolls;
             });
@@ -250,20 +262,22 @@ namespace apcurium.MK.Booking.IBS.Impl
             var regEx = new Regex(@"\D");
             return regEx.Replace(phone, "");
         }
-        public int? CreateOrder(int? providerId, int accountId, string passengerName, string phone, int nbPassengers,
-            int? vehicleTypeId, int? chargeTypeId, string note, DateTime pickupDateTime, IbsAddress pickup,
-            IbsAddress dropoff, Fare fare = default(Fare))
+
+        public int? CreateOrder(int? providerId, int accountId, string passengerName, string phone, int nbPassengers, int? vehicleTypeId, 
+            int? chargeTypeId, string note, DateTime pickupDateTime, IbsAddress pickup, IbsAddress dropoff, string accountNumber, int? customerNumber, Fare fare = default(Fare))
         {
             Logger.LogMessage("WebService Create Order call : accountID=" + accountId);
             
-            var order = new TBookOrder_7
+            var order = new TBookOrder_8
             {
                 ServiceProviderID = providerId.GetValueOrDefault(),
                 AccountID = accountId,
                 Customer = passengerName,
                 Phone = CleanPhone( phone ),
                 Fare = (double)fare.AmountExclTax,
-                VAT = (double)fare.TaxAmount
+                VAT = (double)fare.TaxAmount,
+                AccountNum = accountNumber,
+                CustomerNum = customerNumber ?? 0 //TODO waiting for MK to know what this is
             };
 
             order.DispByAuto = _ibsSettings.AutoDispatch;
@@ -325,7 +339,7 @@ namespace apcurium.MK.Booking.IBS.Impl
                                   JsonSerializer.SerializeToString(order.DropoffAddress, typeof(TWEBAddress)));
 
 
-                orderId = service.SaveBookOrder_7(UserNameApp, PasswordApp, order);
+                orderId = service.SaveBookOrder_8(UserNameApp, PasswordApp, order);
                 Logger.LogMessage("WebService Create Order, orderid receveid : " + orderId);
             });
             return orderId;

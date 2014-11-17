@@ -12,7 +12,7 @@ using ServiceStack.ServiceInterface;
 
 #endregion
 
-namespace apcurium.MK.Booking.Api.Services
+namespace apcurium.MK.Booking.Api.Services 
 {
     public class IbsFareService : Service
     {
@@ -28,14 +28,16 @@ namespace apcurium.MK.Booking.Api.Services
         public DirectionInfo Get(IbsFareRequest request)
         {
             // TODO: Adapt distance format
+            var tripDurationInMinutes = (request.TripDurationInSeconds.HasValue ? (int?)TimeSpan.FromSeconds(request.TripDurationInSeconds.Value).TotalMinutes : null);
             var fare = _ibsServiceProvider.Booking().GetFareEstimate(request.PickupLatitude, request.PickupLongitude,
-                request.DropoffLatitude, request.DropoffLongitude);
+                request.DropoffLatitude, request.DropoffLongitude, request.AccountNumber, request.CustomerNumber,
+                tripDurationInMinutes);
             return fare.FareEstimate != null
                 ? new DirectionInfo
                 {
                     Distance = (int) (fare.Distance*1000),
                     Price = fare.FareEstimate,
-                    FormattedDistance = FormatDistance((int) (fare.Distance*1000)),                    
+                    FormattedDistance = FormatDistance((int) (fare.Distance*1000)),
                 }
                 : new DirectionInfo();
         }
