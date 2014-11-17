@@ -42,7 +42,7 @@ namespace apcurium.MK.Booking.Api.Services
         private readonly IOrderDao _orderDao;
         private readonly IPaymentService _paymentService;
         private readonly ICreditCardDao _creditCardDao;
-        private readonly HoneyBadgerServiceClient _honeyBadgerService;
+        private readonly HoneyBadgerServiceClient _honeyBadgerServiceClient;
         private readonly IAccountChargeDao _accountChargeDao;
         private readonly ICommandBus _commandBus;
         private readonly IServerSettings _serverSettings;
@@ -63,7 +63,7 @@ namespace apcurium.MK.Booking.Api.Services
             IOrderDao orderDao,
             IPaymentService paymentService,
             ICreditCardDao creditCardDao,
-            HoneyBadgerServiceClient honeyBadgerService)
+            HoneyBadgerServiceClient honeyBadgerServiceClient)
         {
             _accountChargeDao = accountChargeDao;
             _commandBus = commandBus;
@@ -76,7 +76,7 @@ namespace apcurium.MK.Booking.Api.Services
             _orderDao = orderDao;
             _paymentService = paymentService;
             _creditCardDao = creditCardDao;
-            _honeyBadgerService = honeyBadgerService;
+            _honeyBadgerServiceClient = honeyBadgerServiceClient;
 
             _resources = new Resources.Resources(_serverSettings);
         }

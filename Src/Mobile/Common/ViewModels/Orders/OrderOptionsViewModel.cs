@@ -24,19 +24,22 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		private readonly IVehicleService _vehicleService;
         public event EventHandler<HomeViewModelStateRequestedEventArgs> PresentationStateRequested;
 
+	    private string _market;
+
 		public OrderOptionsViewModel(IOrderWorkflowService orderWorkflowService, IAccountService accountService, IVehicleService vehicleService)
 		{
 			_orderWorkflowService = orderWorkflowService;
 			_accountService = accountService;
 			_vehicleService = vehicleService;
 
-			this.Observe(_orderWorkflowService.GetAndObservePickupAddress(), address => PickupAddress = address);
-			this.Observe(_orderWorkflowService.GetAndObserveDestinationAddress(), address => DestinationAddress = address);
-			this.Observe(_orderWorkflowService.GetAndObserveAddressSelectionMode(), selectionMode => AddressSelectionMode = selectionMode);
-			this.Observe(_orderWorkflowService.GetAndObserveEstimatedFare(), fare => EstimatedFare = fare);
-			this.Observe(_orderWorkflowService.GetAndObserveLoadingAddress(), loading => IsLoadingAddress = loading);
-			this.Observe(_orderWorkflowService.GetAndObserveVehicleType(), vehicleType => VehicleTypeId = vehicleType);
-			this.Observe(_vehicleService.GetAndObserveEta(), eta => Eta = eta);
+			Observe(_orderWorkflowService.GetAndObservePickupAddress(), address => PickupAddress = address);
+			Observe(_orderWorkflowService.GetAndObserveDestinationAddress(), address => DestinationAddress = address);
+			Observe(_orderWorkflowService.GetAndObserveAddressSelectionMode(), selectionMode => AddressSelectionMode = selectionMode);
+			Observe(_orderWorkflowService.GetAndObserveEstimatedFare(), fare => EstimatedFare = fare);
+			Observe(_orderWorkflowService.GetAndObserveLoadingAddress(), loading => IsLoadingAddress = loading);
+			Observe(_orderWorkflowService.GetAndObserveVehicleType(), vehicleType => VehicleTypeId = vehicleType);
+            Observe(_orderWorkflowService.GetAndObserveMarket(), market => _market = market);
+			Observe(_vehicleService.GetAndObserveEta(), eta => Eta = eta);
 		}
 
 		public async Task Init()
@@ -263,7 +266,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
 		public bool ShowVehicleSelection
 		{
-			get { return (VehicleTypes.Count() > 1) && Settings.VehicleTypeSelectionEnabled; }
+			get { return (VehicleTypes.Count() > 1) && Settings.VehicleTypeSelectionEnabled && !_market.HasValue(); }
 		}
 			
         public ICommand SetAddress

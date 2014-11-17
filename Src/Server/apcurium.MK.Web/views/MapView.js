@@ -235,11 +235,9 @@
                     type: "GET",
                     dataType: "text",
                     success: _.bind(function (data) {
-                        if (data === "") {
-                            this.market = null;
-                        } else {
-                            this.market = data;
+                        this.market = data;
 
+                        if (data !== "") {
                             if (this.lastMarket !== this.market && this.market !== "") {
                                 this.confirmMarketChange();
                             }

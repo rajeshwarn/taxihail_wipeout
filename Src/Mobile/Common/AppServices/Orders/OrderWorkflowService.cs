@@ -293,7 +293,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
 		public async Task SetVehicleType(int? vehicleTypeId)
 		{
-			if (_appSettings.Data.VehicleTypeSelectionEnabled) {
+		    var market = await _marketSubject.Take(1).ToTask();
+            if (_appSettings.Data.VehicleTypeSelectionEnabled && !market.HasValue())
+            {
 				_vehicleTypeSubject.OnNext (vehicleTypeId);
 			}
 
