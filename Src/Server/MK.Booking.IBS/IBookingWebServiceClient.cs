@@ -12,7 +12,7 @@ namespace apcurium.MK.Booking.IBS
     public interface IBookingWebServiceClient
     {
         int? CreateOrder(int? providerId, int accountId, string passengerName, string phone, int nbPassengers, int? vehicleTypeId, int? chargeTypeId, string note,
-            DateTime pickupDateTime, IbsAddress pickup, IbsAddress dropoff, string accountNumber, int? customerNumber, Fare fare = default(Fare));
+            DateTime pickupDateTime, IbsAddress pickup, IbsAddress dropoff, string accountNumber, int? customerNumber, string[] prompts, Fare fare = default(Fare));
 
         IbsOrderStatus GetOrderStatus(int orderId, int accountId, string contactPhone);
 

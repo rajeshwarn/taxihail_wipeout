@@ -131,7 +131,9 @@ namespace apcurium.MK.Booking.IBS.Impl
                 }
 
                 tbook.AccountNum = accountNumber;
-
+                tbook.VehicleTypeID = -1;
+                tbook.ChargeTypeID = -1;
+                
                 if (customerNumber.HasValue)
                 {
                     tbook.CustomerNum = customerNumber.Value;
@@ -264,14 +266,14 @@ namespace apcurium.MK.Booking.IBS.Impl
         }
 
         public int? CreateOrder(int? providerId, int accountId, string passengerName, string phone, int nbPassengers, int? vehicleTypeId, 
-            int? chargeTypeId, string note, DateTime pickupDateTime, IbsAddress pickup, IbsAddress dropoff, string accountNumber, int? customerNumber, Fare fare = default(Fare))
+            int? chargeTypeId, string note, DateTime pickupDateTime, IbsAddress pickup, IbsAddress dropoff, string accountNumber, int? customerNumber, string[] prompts, Fare fare = default(Fare))
         {
             Logger.LogMessage("WebService Create Order call : accountID=" + accountId);
             
             var order = new TBookOrder_8
             {
                 ServiceProviderID = providerId.GetValueOrDefault(),
-                AccountID = accountId,
+                AccountID = accountId,                
                 Customer = passengerName,
                 Phone = CleanPhone( phone ),
                 Fare = (double)fare.AmountExclTax,
@@ -279,6 +281,9 @@ namespace apcurium.MK.Booking.IBS.Impl
                 AccountNum = accountNumber,
                 CustomerNum = customerNumber ?? 0 //TODO waiting for MK to know what this is
             };
+
+            order.AccountNum =  accountNumber;
+            order.CustomerNum = customerNumber ?? -1; 
 
             order.DispByAuto = _ibsSettings.AutoDispatch;
             order.Priority = _ibsSettings.OrderPriority 
@@ -299,7 +304,7 @@ namespace apcurium.MK.Booking.IBS.Impl
                 Fractions = 0
             };
 
-            order.ChargeTypeID = chargeTypeId ?? 0;
+            order.ChargeTypeID = chargeTypeId ?? -1;
             var aptRing = Params.Get(pickup.Apartment, pickup.RingCode).Where(s => s.HasValue()).JoinBy(" / ");
 
             order.PickupAddress = new TWEBAddress
@@ -321,11 +326,13 @@ namespace apcurium.MK.Booking.IBS.Impl
                     Postal = dropoff.ZipCode
                 };
             order.Passengers = nbPassengers;
-            order.VehicleTypeID = vehicleTypeId ?? 0;
+            order.VehicleTypeID = vehicleTypeId ?? -1;
             order.Note = note;
             order.ContactPhone = CleanPhone( phone );
             order.OrderStatus = TWEBOrderStatusValue.wosPost;
 
+            SetPrompts(order, prompts);
+            //order.Prompt1 
 
             int? orderId = null;
 
@@ -343,6 +350,50 @@ namespace apcurium.MK.Booking.IBS.Impl
                 Logger.LogMessage("WebService Create Order, orderid receveid : " + orderId);
             });
             return orderId;
+        }
+
+        private void SetPrompts(TBookOrder_8 order, string[] prompts)
+        {
+          if ( prompts != null )
+          {
+              if ( prompts.Count() >= 1)
+              {
+                  order.Prompt1 = prompts[0];
+              }
+              if (prompts.Count() >= 2)
+              {
+                  order.Prompt2 = prompts[1];
+              }
+              if (prompts.Count() >= 3)
+              {
+                  order.Prompt3 = prompts[2];
+              }
+              if (prompts.Count() >= 4)
+              {
+                  order.Prompt4 = prompts[3];
+              }
+              if (prompts.Count() >= 5)
+              {
+                  order.Prompt5 = prompts[4];
+              }
+              if (prompts.Count() >= 6)
+              {
+                  order.Prompt6 = prompts[5];
+              }
+
+              if (prompts.Count() >=7 )
+              {
+                  order.Prompt7 = prompts[6];
+              }
+
+              if (prompts.Count() >=8 )
+              {
+                  order.Prompt8 = prompts[7];
+              }
+
+              
+              
+          }
         }
 
         public bool CancelOrder(int orderId, int accountId, string contactPhone)

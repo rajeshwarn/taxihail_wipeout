@@ -36,33 +36,41 @@ namespace MK.Booking.PostSharp
 
         public override void OnExit(MethodExecutionArgs args)
         {
-            if ((!args.Method.IsConstructor) && (args.Method.MemberType == MemberTypes.Method) && (!args.Method.IsSpecialName))
+            try
             {
-// ReSharper disable AssignNullToNotNullAttribute
-                if (!_loggers.ContainsKey(args.Method.DeclaringType))
-
+                if ((!args.Method.IsConstructor) && (args.Method.MemberType == MemberTypes.Method) && (!args.Method.IsSpecialName))
                 {
-                    if (args.Method.DeclaringType != null)
-                        _loggers.Add(args.Method.DeclaringType, LogManager.GetLogger(_prefix + args.Method.DeclaringType.FullName));
+                    // ReSharper disable AssignNullToNotNullAttribute
+                    if (!_loggers.ContainsKey(args.Method.DeclaringType))
+                    {
+                        if (args.Method.DeclaringType != null)
+                        {
+                            _loggers.Add(args.Method.DeclaringType, LogManager.GetLogger(_prefix + args.Method.DeclaringType.FullName));
+                        }
+                    }
+
+                    var logger = _loggers[args.Method.DeclaringType];
+                    // ReSharper restore AssignNullToNotNullAttribute
+
+                    long executionTime = 0;
+                    if (args.MethodExecutionTag is Stopwatch)
+                    {
+                        var watch = (Stopwatch)args.MethodExecutionTag;
+                        executionTime = watch.ElapsedMilliseconds;
+                    }
+
+                    LogInfo(logger, args, executionTime);
+
+
+                    if (args.Exception != null)
+                    {
+                        logger.Error("Critical Error", args.Exception);
+                    }
                 }
+            }
+            catch
+            {
 
-                var logger = _loggers[args.Method.DeclaringType];
- // ReSharper restore AssignNullToNotNullAttribute
-
-                long executionTime = 0;
-                if (args.MethodExecutionTag is Stopwatch)
-                {
-                    var watch = (Stopwatch)args.MethodExecutionTag;
-                    executionTime = watch.ElapsedMilliseconds;
-                }
-
-                LogInfo(logger, args, executionTime);
-
-
-                if (args.Exception != null)
-                {
-                    logger.Error("Critical Error", args.Exception);
-                }
             }
         }
 
