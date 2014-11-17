@@ -9,7 +9,7 @@ namespace HoneyBadger.Test
         [SetUp]
         public void Setup()
         {
-            _sut = new HoneyBadgerServiceClient();
+            _sut = new HoneyBadgerServiceClient(new TestServerSettings());
         }
 
         private HoneyBadgerServiceClient _sut;
@@ -17,7 +17,7 @@ namespace HoneyBadger.Test
         [Test]
         public void GetAvailableVehicles_should_return_something()
         {
-            var a = _sut.GetAvailableVehicles("BOS", "1020301");
+            var a = _sut.GetAvailableVehicles("BOS", 42.354045, -71.062289);
             Assert.IsNotEmpty(a);
         }
     }

@@ -1,6 +1,8 @@
 ﻿#region
 
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
@@ -22,7 +24,9 @@ using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using AutoMapper;
+using CustomerPortal.Client;
 using HoneyBadger;
+using HoneyBadger.Responses;
 using Infrastructure.Messaging;
 using log4net;
 using ServiceStack.Common.Web;
@@ -43,6 +47,7 @@ namespace apcurium.MK.Booking.Api.Services
         private readonly IPaymentService _paymentService;
         private readonly ICreditCardDao _creditCardDao;
         private readonly HoneyBadgerServiceClient _honeyBadgerServiceClient;
+        private readonly ITaxiHailNetworkServiceClient _taxiHailNetworkServiceClient;
         private readonly IAccountChargeDao _accountChargeDao;
         private readonly ICommandBus _commandBus;
         private readonly IServerSettings _serverSettings;
@@ -63,7 +68,8 @@ namespace apcurium.MK.Booking.Api.Services
             IOrderDao orderDao,
             IPaymentService paymentService,
             ICreditCardDao creditCardDao,
-            HoneyBadgerServiceClient honeyBadgerServiceClient)
+            HoneyBadgerServiceClient honeyBadgerServiceClient,
+            ITaxiHailNetworkServiceClient taxiHailNetworkServiceClient)
         {
             _accountChargeDao = accountChargeDao;
             _commandBus = commandBus;
@@ -77,6 +83,7 @@ namespace apcurium.MK.Booking.Api.Services
             _paymentService = paymentService;
             _creditCardDao = creditCardDao;
             _honeyBadgerServiceClient = honeyBadgerServiceClient;
+            _taxiHailNetworkServiceClient = taxiHailNetworkServiceClient;
 
             _resources = new Resources.Resources(_serverSettings);
         }
@@ -94,7 +101,7 @@ namespace apcurium.MK.Booking.Api.Services
 
             var account = _accountDao.FindById(new Guid(this.GetSession().UserAuthId));
 
-            var bestAvailableCompany = FindBestAvailableCompany(request.Market);
+            var bestAvailableCompany = FindBestAvailableCompany(request.Market, request.UserLatitude.Value, request.UserLongitude.Value);
 
             account.IBSAccountId = CreateIbsAccountIfNeeded(account, bestAvailableCompany.CompanyKey, request.Market);
 
@@ -670,30 +677,55 @@ namespace apcurium.MK.Booking.Api.Services
             return null;
         }
 
-        /// <summary>
-        /// Method that returns the company key to use.
-        /// </summary>
-        /// <param name="market">The pickup address market. Null if home market.</param>
-        /// <returns>Company info with the most available cars in external market; null otherwise.</returns>
-        private BestAvailableCompany FindBestAvailableCompany(string market)
+        private BestAvailableCompany FindBestAvailableCompany(string market, double latitude, double longitude)
         {
             if (!market.HasValue())
             {
                 // In home market, nothing to do
-                return new BestAvailableCompany
-                {
-                    CompanyKey = null,
-                    CompanyName = null
-                };
+                return new BestAvailableCompany();
             }
 
             // In external market, return company key with most available cars
-            // TODO: Query honey badger. Waiting for MK.
-            return new BestAvailableCompany
+
+            // TODO: Waiting for MK to populate the FI field.
+            int? bestFleetId = null;
+            const int searchExpendLimit = 10;
+            var searchRadius = 2; // In kilometers
+
+            for (var i = 1; i < searchExpendLimit; i++)
             {
-                CompanyKey = "Axertis",
-                CompanyName = "Axertis"
-            };
+                var marketVehicles =
+                    _honeyBadgerServiceClient.GetAvailableVehicles(market, latitude, longitude, searchRadius, null, true)
+                                             .ToArray();
+
+                if (marketVehicles.Any())
+                {
+                    // Group vehicles by fleet
+                    var vehiclesGroupedByFleet = marketVehicles.GroupBy(v => v.FleetId).Select(g => g.ToArray()).ToArray();
+
+                    // Take fleet with most number of available vehicles
+                    int maxVehiclesCount = vehiclesGroupedByFleet.Max(l => l.Length);
+                    bestFleetId = vehiclesGroupedByFleet.First(l => l.Length == maxVehiclesCount).First().FleetId;
+
+                    break;
+                }
+
+                // Nothing found, extend search radius
+                searchRadius += i;
+            }
+
+            if (bestFleetId.HasValue)
+            {
+                var bestFleet = _taxiHailNetworkServiceClient.GetMarketFleet(market, bestFleetId.Value);
+                return new BestAvailableCompany
+                {
+                    CompanyKey = bestFleet.CompanyKey,
+                    CompanyName = bestFleet.CompanyName
+                };
+            }
+
+            // Nothing found
+            return new BestAvailableCompany();
         }
 
         private class BestAvailableCompany

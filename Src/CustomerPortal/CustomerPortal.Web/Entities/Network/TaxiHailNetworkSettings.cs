@@ -22,7 +22,7 @@ namespace CustomerPortal.Web.Entities.Network
 
         public string Market { get; set; }
 
-        public string FleetId { get; set; }
+        public int FleetId { get; set; }
 
         [Required]
         [Display(Name = "RegionTaxiHailNetworkLabel", ResourceType = typeof(Resources))]

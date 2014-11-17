@@ -75,5 +75,12 @@ namespace CustomerPortal.Client.Impl
                                .Deserialize<IEnumerable<NetworkFleetResponse>>()
                                .Result;
         }
+
+        public NetworkFleetResponse GetMarketFleet(string market, int fleetId)
+        {
+            return Client.Get(string.Format("customer/roaming/marketfleet?market={0}&fleetId={1}", market, fleetId))
+                               .Deserialize<NetworkFleetResponse>()
+                               .Result;
+        }
     }
 }

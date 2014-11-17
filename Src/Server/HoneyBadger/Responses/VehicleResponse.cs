@@ -11,5 +11,7 @@ namespace HoneyBadger.Responses
         public float Longitude { get; set; }
 
         public string Medaillon { get; set; }
+
+        public int FleetId { get; set; }
     }
 }

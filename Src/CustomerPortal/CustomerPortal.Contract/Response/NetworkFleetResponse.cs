@@ -7,7 +7,7 @@ namespace CustomerPortal.Contract.Response
 
         public string CompanyKey { get; set; }
 
-        public string FleetId { get; set; }
+        public int FleetId { get; set; }
 
         public string IbsUrl { get; set; }
 

@@ -104,5 +104,47 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
                 Content = new StringContent(JsonConvert.SerializeObject(marketFleets))
             };
         }
+
+        [Route("api/customer/roaming/marketfleet")]
+        public HttpResponseMessage GetMarketFleet(string market, int fleetId)
+        {
+            // Get all companies in the market
+            var companiesInMarket = _networkRepository.Where(n => n.IsInNetwork && n.Market == market);
+            var fleet = companiesInMarket.FirstOrDefault(c => c.FleetId == fleetId);
+
+            if (fleet != null)
+            {
+                var company = _companyRepository.FirstOrDefault(c => c.CompanyKey == fleet.Id);
+                if (company != null)
+                {
+                    var ibsTimeDifferenceString = company.CompanySettings.FirstOrDefault(s => s.Key == "IBS.TimeDifference");
+                    long ibsTimeDifference = 0;
+                    if (ibsTimeDifferenceString != null)
+                    {
+                        long.TryParse(ibsTimeDifferenceString.Value, out ibsTimeDifference);
+                    }
+
+                    return new HttpResponseMessage(HttpStatusCode.OK)
+                    {
+                        Content = new StringContent(JsonConvert.SerializeObject(
+                            new NetworkFleetResponse
+                            {
+                                CompanyKey = company.CompanyKey,
+                                CompanyName = company.CompanyName,
+                                FleetId = fleet.FleetId,
+                                IbsPassword = company.IBS.Password,
+                                IbsUserName = company.IBS.Username,
+                                IbsUrl = company.IBS.ServiceUrl,
+                                IbsTimeDifference = ibsTimeDifference
+                            }))
+                    };
+                }                
+            }
+
+            return new HttpResponseMessage(HttpStatusCode.OK)
+            {
+                Content = new StringContent(JsonConvert.SerializeObject(null))
+            };
+        }
     }
 }
