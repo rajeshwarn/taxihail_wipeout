@@ -446,6 +446,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 			var streetLevelZoomHint = hint as ZoomToStreetLevelPresentationHint;
 			if (streetLevelZoomHint != null)
             {
+                bypassCameraChangeEvent = true;
                 var zoomLevel = streetLevelZoomHint.InitialZoom 
                     ? _settings.InitialZoomLevel 
                     : MapViewModel.ZoomStreetLevel;
