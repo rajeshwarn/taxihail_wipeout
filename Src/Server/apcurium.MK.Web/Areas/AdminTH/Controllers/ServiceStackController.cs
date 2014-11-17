@@ -1,10 +1,12 @@
 ﻿using System.Web.Mvc;
+using System.Web.Routing;
 using ServiceStack.CacheAccess;
 using ServiceStack.ServiceInterface;
 using ServiceStack.ServiceInterface.Auth;
 using ServiceStack.WebHost.Endpoints.Extensions;
 using apcurium.MK.Common.Configuration;
 using System;
+using System.Web;
 
 namespace apcurium.MK.Web.Areas.AdminTH.Controllers
 {
@@ -17,10 +19,18 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
             ViewData["ApplicationName"] = serverSettings.ServerData.TaxiHail.ApplicationName;
             ViewData["ApplicationKey"] = serverSettings.ServerData.TaxiHail.ApplicationKey;
             ViewData["IsAuthenticated"] = AuthSession.IsAuthenticated;
-
         }
 
+        public RequestContext Context;
+
         public string BaseUrl { get; set; }
+        
+        public string SessionID { get; set; }
+
+        public string BaseUrlAPI
+        {
+            get { return BaseUrl + "/api/"; }
+        }
 
         protected IAuthSession AuthSession
         {
@@ -29,8 +39,11 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
 
         protected override IAsyncResult BeginExecute(System.Web.Routing.RequestContext requestContext, AsyncCallback callback, object state)
         {
-            BaseUrl = requestContext.HttpContext.Request.Url.GetLeftPart(UriPartial.Authority) + requestContext.HttpContext.Request.ApplicationPath;
+            Context = requestContext;
+            BaseUrl = Context.HttpContext.Request.Url.GetLeftPart(UriPartial.Authority) + requestContext.HttpContext.Request.ApplicationPath;
             ViewData["BaseUrl"] = BaseUrl;
+            var sessionCookie = Context.HttpContext.Request.Cookies["ss-pid"];
+            SessionID = sessionCookie != null ? sessionCookie.Value : "";
             return base.BeginExecute(requestContext, callback, state);
         }
 

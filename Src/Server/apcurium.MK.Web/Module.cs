@@ -2,6 +2,10 @@
 
 using System.Configuration;
 using System.Data.Entity;
+using System.Web;
+using apcurium.MK.Booking.Api.Client;
+using apcurium.MK.Booking.Api.Client.TaxiHail;
+using apcurium.MK.Booking.Mobile.Infrastructure;
 using CustomerPortal.Client;
 using CustomerPortal.Client.Impl;
 using Infrastructure;
@@ -14,6 +18,7 @@ using Infrastructure.Sql.EventSourcing;
 using Infrastructure.Sql.MessageLog;
 using Microsoft.Practices.Unity;
 using apcurium.MK.Common.Configuration;
+using ServiceStack.ServiceInterface;
 
 #endregion
 

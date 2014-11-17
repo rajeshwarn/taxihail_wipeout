@@ -78,6 +78,7 @@ namespace apcurium.MK.Booking.Domain
 
             Handles<AccountChargeAddedUpdated>(NoAction);
             Handles<AccountChargeDeleted>(NoAction);
+            Handles<AccountChargeImported>(NoAction);
 
             Handles<VehicleTypeAddedUpdated>(NoAction);
             Handles<VehicleTypeDeleted>(NoAction);
@@ -545,6 +546,14 @@ namespace apcurium.MK.Booking.Domain
                 AccountChargeId = accountChargeId,
                 UseCardOnFileForPayment = useCardOnFileForPayment,
                 Questions = questions
+            });
+        }
+
+        public void ImportAccountCharge(AccountCharge[] accounts)
+        {
+            Update(new AccountChargeImported()
+            {
+                AccountCharges = accounts
             });
         }
 

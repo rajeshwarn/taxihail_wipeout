@@ -416,6 +416,7 @@
     <Content Include="models\CompanySettings.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Areas\AdminTH\Views\ImportChargeAccount\Index.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -496,7 +497,9 @@
     <Content Include="admin\templates\ExportOrders.handlebars">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="admin\templates\ExportAccounts.handlebars" />
+    <Content Include="admin\templates\ExportAccounts.handlebars">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="admin\templates\UpdateTermsAndConditions.handlebars">
       <SubType>Designer</SubType>
     </Content>
@@ -609,6 +612,7 @@
     <Compile Include="App_Start\UnityConfig.cs" />
     <Compile Include="App_Start\UnityMvcActivator.cs" />
     <Compile Include="Areas\AdminTH\AdminTHAreaRegistration.cs" />
+    <Compile Include="Areas\AdminTH\Controllers\ImportChargeAccountController.cs" />
     <Compile Include="Areas\AdminTH\Controllers\TaxiHailNetworkController.cs" />
     <Compile Include="Areas\AdminTH\Controllers\ServiceStackController.cs" />
     <Compile Include="default.aspx.cs">
@@ -906,6 +910,8 @@
           <DevelopmentServerPort>6900</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>http://localhost/apcurium.MK.Web</IISUrl>
+          <OverrideIISAppRootUrl>True</OverrideIISAppRootUrl>
+          <IISAppRootUrl>http://localhost.fiddler/apcurium.MK.Web</IISAppRootUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

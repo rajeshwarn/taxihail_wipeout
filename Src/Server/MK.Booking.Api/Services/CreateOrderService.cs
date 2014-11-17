@@ -450,29 +450,21 @@ namespace apcurium.MK.Booking.Api.Services
             {
                 throw new HttpError(HttpStatusCode.Forbidden, ErrorCode.AccountCharge_InvalidAccountNumber.ToString());
             }
-
-            for (int i = 0; i < accountChargeDetail.Questions.Count; i++)
+            
+            var answers = userQuestionsDetails.Select(x => x.Answer);
+            // TODO: Handle nulls
+            var validation = _ibsServiceProvider.ChargeAccount().ValidateIbsChargeAccount(answers, accountNumber, "0");
+            if (!validation.Valid)
             {
-                var questionDetails = accountChargeDetail.Questions[i];
-                var userQuestionDetails = userQuestionsDetails[i];
-
-                if (!questionDetails.IsRequired)
+                int firstError = 0;
+                for (int i = 0; i < validation.ValidResponse.Count; ++i)
                 {
-                    // Facultative question, do nothing
-                    continue;
+                    firstError = i;
+                    break;
                 }
-
-                var userAnswer = userQuestionDetails.Answer;
-                var validAnswers = questionDetails.Answer.Split(',').Select(a => a.Trim());
-
-                if (!validAnswers.Any(p => String.Equals(userAnswer, p, questionDetails.IsCaseSensitive
-                                                                        ? StringComparison.InvariantCulture
-                                                                        : StringComparison.InvariantCultureIgnoreCase)))
-                {
-                    // User answer is not valid
-                    throw new HttpError(HttpStatusCode.Forbidden, ErrorCode.AccountCharge_InvalidAnswer.ToString(),
-                                        questionDetails.ErrorMessage);
-                }
+                
+                throw new HttpError(HttpStatusCode.Forbidden, ErrorCode.AccountCharge_InvalidAnswer.ToString(),
+                                        accountChargeDetail.Questions[firstError].ErrorMessage);
             }
         }
 
