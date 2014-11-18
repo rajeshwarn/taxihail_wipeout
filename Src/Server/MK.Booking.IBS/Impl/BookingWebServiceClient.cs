@@ -163,6 +163,10 @@ namespace apcurium.MK.Booking.IBS.Impl
                 double distance;
 
                 result.FareEstimate = service.EstimateFare_8(UserNameApp, PasswordApp, tbook, out fare, out tolls, out distance);
+                if ( result.FareEstimate == 0 )
+                {
+                    result.FareEstimate = fare;
+                }
                 result.Distance = distance;
                 result.Tolls = tolls;
             });
