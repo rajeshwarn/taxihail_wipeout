@@ -45,6 +45,11 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                     throw new Exception("Something's not right");
                 }
 
+                if (_promotionDao.FindByPromoCode(promoCode.Code) != null)
+                {
+                    throw new Exception("A promotion with this code already exists");
+                }
+
                 _commandBus.Send(new CreatePromotion
                 {
                     PromoId = Guid.NewGuid(),
@@ -64,6 +69,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                 });
 
                 TempData["Info"] = string.Format("Promotion \"{0}\" created", promoCode.Name);
+                TempData["RefreshButton"] = "<a class='text-warning' href='#' onclick='window.location.reload(true);'>Click here to refresh if you don't see it</a>";
                 return RedirectToAction("Index");
             }
             catch(Exception ex)

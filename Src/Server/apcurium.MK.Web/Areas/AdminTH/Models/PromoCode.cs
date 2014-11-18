@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Web.Mvc;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
@@ -7,10 +10,11 @@ using ServiceStack.Text;
 
 namespace apcurium.MK.Web.Areas.AdminTH.Models
 {
-    public class PromoCode
+    public class PromoCode : IValidatableObject
     {
         public PromoCode()
         {
+            // initial values
             DaysOfWeek = new [] { DayOfWeek.Sunday, DayOfWeek.Monday, DayOfWeek.Tuesday, DayOfWeek.Wednesday, DayOfWeek.Thursday, DayOfWeek.Friday, DayOfWeek.Saturday };
             AppliesToCurrentBooking = true;
             AppliesToFutureBooking = true;
@@ -90,8 +94,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Models
         public int? MaxUsage { get; set; }
 
         [Display(Name = "Promo Code (5-10 characters)")]
-        [Required]
-        [StringLength(10, MinimumLength = 5)]
+        [Required, StringLength(10, MinimumLength = 5)]
         public string Code { get; set; }
 
         public bool Active { get; set; }
@@ -104,6 +107,33 @@ namespace apcurium.MK.Web.Areas.AdminTH.Models
             }
 
             return DateTime.Parse(timeStringValue);
+        }
+
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            var results = new List<ValidationResult>();
+
+            if (StartDate.HasValue && EndDate.HasValue && StartDate >= EndDate)
+            {
+                results.Add(new ValidationResult("Start Date must be before End Date"));
+            }
+
+            if ((StartTime.HasValue && !EndTime.HasValue) || (!StartTime.HasValue && EndTime.HasValue))
+            {
+                results.Add(new ValidationResult("When defining a time range, you must specify both time values"));
+            }
+
+            if (StartTime.HasValue && EndTime.HasValue && StartTime >= EndTime)
+            {
+                results.Add(new ValidationResult("Start Time must be before End Time"));
+            }
+
+            if (!AppliesToCurrentBooking && !AppliesToFutureBooking)
+            {
+                results.Add(new ValidationResult("A promotion must apply to at least one type of booking"));
+            }
+
+            return results;
         }
     }
 }

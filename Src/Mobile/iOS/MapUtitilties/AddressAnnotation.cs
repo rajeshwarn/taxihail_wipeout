@@ -17,8 +17,6 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
 
 	public class AddressAnnotation : MKAnnotation
 	{
-        private static readonly SizeF SizeOfDefaultSmallIcon = new SizeF(34, 39);
-        private static readonly SizeF SizeOfDefaultBigIcon = new SizeF(52, 58);
         private static readonly UIColor Red = UIColor.FromRGB(255, 0, 23);
         private static readonly UIColor Green = UIColor.FromRGB(30, 192, 34);
 
@@ -70,18 +68,18 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
             {
                 case AddressAnnotationType.Destination:
                     return UseThemeColorForIcons
-                        ? ImageHelper.ApplyThemeColorToMapIcon("destination_icon.png", true, SizeOfDefaultBigIcon)
-                        : ImageHelper.ApplyColorToMapIcon("destination_icon.png", Red, true, SizeOfDefaultBigIcon);
+                        ? ImageHelper.ApplyThemeColorToMapIcon("destination_icon.png", true)
+                        : ImageHelper.ApplyColorToMapIcon("destination_icon.png", Red, true);
                 case AddressAnnotationType.Taxi:
-                    return ImageHelper.ApplyThemeColorToMapIcon("taxi_icon.png", true, SizeOfDefaultBigIcon);
+                    return ImageHelper.ApplyThemeColorToMapIcon("taxi_icon.png", true);
                 case AddressAnnotationType.NearbyTaxi:
-                    return ImageHelper.ApplyThemeColorToMapIcon(string.Format("nearby_{0}.png", vehicleTypeLogoName ?? defaultIconName), false, SizeOfDefaultSmallIcon);
+                    return ImageHelper.ApplyThemeColorToMapIcon(string.Format("nearby_{0}.png", vehicleTypeLogoName ?? defaultIconName), false);
                 case AddressAnnotationType.NearbyTaxiCluster:
-                    return ImageHelper.ApplyThemeColorToMapIcon(string.Format("cluster_{0}.png", vehicleTypeLogoName ?? defaultIconName), false, SizeOfDefaultSmallIcon);
+                    return ImageHelper.ApplyThemeColorToMapIcon(string.Format("cluster_{0}.png", vehicleTypeLogoName ?? defaultIconName), false);
                 default:
                     return UseThemeColorForIcons
-                        ? ImageHelper.ApplyThemeColorToMapIcon("hail_icon.png", true, SizeOfDefaultBigIcon)
-                        : ImageHelper.ApplyColorToMapIcon("hail_icon.png", Green, true, SizeOfDefaultBigIcon);
+                        ? ImageHelper.ApplyThemeColorToMapIcon("hail_icon.png", true)
+                        : ImageHelper.ApplyColorToMapIcon("hail_icon.png", Green, true);
             }
         }
 	}

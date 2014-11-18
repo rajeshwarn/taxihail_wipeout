@@ -19,7 +19,7 @@ namespace apcurium.MK.Booking.ReadModel.Query
         {
             using (var context = _contextFactory.Invoke())
             {
-                return context.Query<PromotionDetail>().ToList();
+                return context.Query<PromotionDetail>().OrderBy(x => x.Active).ThenBy(x => x.Name).ToList();
             }
         }
 
@@ -28,6 +28,14 @@ namespace apcurium.MK.Booking.ReadModel.Query
             using (var context = _contextFactory.Invoke())
             {
                 return context.Query<PromotionDetail>().SingleOrDefault(c => c.Id == id);
+            }
+        }
+
+        public PromotionDetail FindByPromoCode(string promoCode)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                return context.Query<PromotionDetail>().SingleOrDefault(c => c.Code == promoCode);
             }
         }
     }

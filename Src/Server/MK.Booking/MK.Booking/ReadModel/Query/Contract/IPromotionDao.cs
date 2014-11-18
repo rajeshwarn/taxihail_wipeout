@@ -7,5 +7,6 @@ namespace apcurium.MK.Booking.ReadModel.Query.Contract
     {
         IEnumerable<PromotionDetail> GetAll();
         PromotionDetail FindById(Guid id);
+        PromotionDetail FindByPromoCode(string promoCode);
     }
 }
