@@ -262,7 +262,7 @@ namespace DatabaseInitializer
                 //        }
                 //    });
                 //}
-                SetupMirroring(param);
+                SetupMirroring(param, isUpdate);
 
                 Console.WriteLine("Database Creation/Migration for version {0} finished", CurrentVersion);
             }
@@ -277,20 +277,19 @@ namespace DatabaseInitializer
 // ReSharper restore LocalizableElement
         }
 
-        public static void SetupMirroring(DatabaseInitializerParams param)
+        public static void SetupMirroring(DatabaseInitializerParams param, bool iUpdate)
         {
             if (!string.IsNullOrEmpty(param.MirroringSharedFolder))
             {
                 Console.WriteLine("Add Mirroring on the new Database ...");
                 var creatorDb = new DatabaseCreator();
+
                 Console.WriteLine("MirroringSharedFolder :" + param.MirroringSharedFolder);
-                Console.WriteLine("Setting up mirroring...");
-                var backupFolder = Path.Combine(param.MirroringSharedFolder, param.CompanyName + DateTime.Now.ToString("dd-MM-yyyy_hh-mm-ss"));
+                var backupFolder = Path.Combine(param.MirroringSharedFolder,
+                    param.CompanyName + DateTime.Now.ToString("dd-MM-yyyy_hh-mm-ss"));
                 Directory.CreateDirectory(backupFolder);
 
                 creatorDb.InitMirroring(param.MasterConnectionString, param.CompanyName);
-                Console.WriteLine("Backup for mirroring...");
-                creatorDb.BackupDatabase(param.MasterConnectionString, backupFolder, param.CompanyName);
 
                 var mirrorDbExist = creatorDb.DatabaseExists(param.MirrorMasterConnectionString, param.CompanyName);
                 if (mirrorDbExist)
@@ -299,9 +298,13 @@ namespace DatabaseInitializer
                     creatorDb.DropDatabase(param.MirrorMasterConnectionString, param.CompanyName, false);
                 }
 
+                Console.WriteLine("Backup for mirroring...");
+                creatorDb.BackupDatabase(param.MasterConnectionString, backupFolder, param.CompanyName);
+
                 Console.WriteLine("Restoring mirroring backup...");
                 creatorDb.RestoreDatabase(param.MirrorMasterConnectionString, backupFolder, param.CompanyName);
 
+                Console.WriteLine("Setting up mirroring...");
                 creatorDb.SetMirroringPartner(param.MirrorMasterConnectionString, param.CompanyName, param.MirroringMirrorPartner);
                 creatorDb.CompleteMirroring(param.MasterConnectionString, param.CompanyName, param.MirroringPrincipalPartner, param.MirroringWitness);
             }
