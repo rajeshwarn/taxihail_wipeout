@@ -522,9 +522,14 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         {
 			var refData = await GetReferenceData();
 
-            if (!CurrentAccount.DefaultCreditCard.HasValue || market.HasValue())
+            if (!CurrentAccount.DefaultCreditCard.HasValue)
 		    {
 		        refData.PaymentsList.Remove(i => i.Id == ChargeTypes.CardOnFile.Id);
+		    }
+
+		    if (market.HasValue())
+		    {
+                refData.PaymentsList.Remove(i => i.Id != ChargeTypes.PaymentInCar.Id);
 		    }
 
             return refData.PaymentsList;

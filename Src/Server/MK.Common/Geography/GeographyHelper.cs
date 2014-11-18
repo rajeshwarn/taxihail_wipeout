@@ -30,7 +30,7 @@ namespace apcurium.MK.Common.Geography
 
             for (var x = 0; x <= 360; x += angleIncrement)
             {
-                // Excecuting magic; do not touch this, you poor soul.
+                // Executing magic; do not touch this, you poor soul.
                 var angle = x * Math.PI / 180;
                 var pointLatitude = Math.Asin(Math.Sin(centerLatitude) * Math.Cos(radius) + Math.Cos(centerLatitude) * Math.Sin(radius) * Math.Cos(angle));
                 var pointLongitude = ((centerLongitude + Math.Atan2(Math.Sin(angle) * Math.Sin(radius) * Math.Cos(centerLatitude), Math.Cos(radius) - Math.Sin(centerLatitude) * Math.Sin(pointLatitude))) * 180) / Math.PI;

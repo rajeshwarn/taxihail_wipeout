@@ -97,7 +97,16 @@ namespace apcurium.MK.Booking.Api.Services
                 ValidateAppVersion(request.ClientLanguageCode);
             }
 
-            request.Market = request.Market.HasValue() ? request.Market : null;
+            if (request.Market.HasValue())
+            {
+                // Only pay in car charge type supported for orders outside house market
+                request.Settings.ChargeTypeId = ChargeTypes.PaymentInCar.Id;
+            }
+            else
+            {
+                // Ensure that the market is not an empty string
+                request.Market = null;
+            }
 
             var account = _accountDao.FindById(new Guid(this.GetSession().UserAuthId));
 

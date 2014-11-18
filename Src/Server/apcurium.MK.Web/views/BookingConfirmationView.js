@@ -60,9 +60,18 @@
 
             var data = this.model.toJSON();
 
+            var chargeTypes = TaxiHail.referenceData.paymentsList;
+            if (this.model.get('market')) {
+                for (var i = 0; i < chargeTypes.length; i++) {
+                    if (chargeTypes[i].id === 1) {
+                        chargeTypes = [chargeTypes[i]];
+                    }
+                }
+            }
+
             _.extend(data, {
                 vehiclesList: TaxiHail.vehicleTypes,
-                paymentsList: TaxiHail.referenceData.paymentsList,
+                paymentsList: chargeTypes,
                 showPassengerNumber: TaxiHail.parameters.showPassengerNumber
             });
 
@@ -145,7 +154,7 @@
             this.model.set('FromWebApp', true);
             this.model.saveLocal();
 
-            if (this.model.isPayingWithAccountCharge()) {
+            if (this.model.isPayingWithAccountCharge() && !this.model.get('market')) {
                 //account charge type payment                
                 TaxiHail.app.navigate('bookaccountcharge', { trigger: true});
             }else{
