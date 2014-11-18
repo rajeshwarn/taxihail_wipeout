@@ -222,7 +222,7 @@ namespace apcurium.MK.Booking.Api.Services
                 chargeTypeEmail = _resources.Get(chargeTypeKey, request.ClientLanguageCode);
             }
 
-            var ibsOrderId = CreateIbsOrder(account.IBSAccountId.Value, request, referenceData, chargeTypeIbs);
+            var ibsOrderId = CreateIbsOrder(account.IBSAccountId.Value, request, referenceData, chargeTypeIbs, bestAvailableCompany.CompanyKey);
 
             if (!ibsOrderId.HasValue
                 || ibsOrderId <= 0)
@@ -685,6 +685,12 @@ namespace apcurium.MK.Booking.Api.Services
                 return new BestAvailableCompany();
             }
 
+            return new BestAvailableCompany
+            {
+                CompanyKey = "Axertis",
+                CompanyName = "Axertis"
+            };
+
             int? bestFleetId = null;
             const int searchExpendLimit = 10;
             var searchRadius = 2000; // In meters
@@ -701,9 +707,8 @@ namespace apcurium.MK.Booking.Api.Services
                     var vehiclesGroupedByFleet = marketVehicles.GroupBy(v => v.FleetId).Select(g => g.ToArray()).ToArray();
 
                     // Take fleet with most number of available vehicles
-                    int maxVehiclesCount = vehiclesGroupedByFleet.Max(l => l.Length);
-                    bestFleetId = vehiclesGroupedByFleet.First(l => l.Length == maxVehiclesCount).First().FleetId;
-
+                    bestFleetId = vehiclesGroupedByFleet.Aggregate(
+                        (fleet1, fleet2) => fleet1.Length > fleet2.Length ? fleet1 : fleet2).First().FleetId;
                     break;
                 }
 

@@ -3,9 +3,10 @@ using System.Collections.Generic;
 
 namespace apcurium.MK.Common.Geography
 {
-    public static class GeographyhHelper
+    public static class GeographyHelper
     {
         /// <summary>
+        /// Method that calculates polygon points of a circle.
         /// Adapted from: http://stackoverflow.com/questions/11688922/create-a-sqlgeography-polygon-circle-from-a-center-and-radius
         /// </summary>
         /// <param name="latitude">Origin latitude</param>

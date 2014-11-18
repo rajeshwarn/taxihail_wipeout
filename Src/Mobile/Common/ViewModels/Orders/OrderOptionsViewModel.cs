@@ -38,7 +38,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			Observe(_orderWorkflowService.GetAndObserveEstimatedFare(), fare => EstimatedFare = fare);
 			Observe(_orderWorkflowService.GetAndObserveLoadingAddress(), loading => IsLoadingAddress = loading);
 			Observe(_orderWorkflowService.GetAndObserveVehicleType(), vehicleType => VehicleTypeId = vehicleType);
-            Observe(_orderWorkflowService.GetAndObserveMarket(), market => _market = market);
+            Observe(_orderWorkflowService.GetAndObserveMarket(), market => MarketChanged(market));
 			Observe(_vehicleService.GetAndObserveEta(), eta => Eta = eta);
 		}
 
@@ -59,6 +59,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
             {
                 VehicleTypes = list;
             }
+	    }
+
+	    private void MarketChanged(string market)
+	    {
+	        _market = market;
+            RaisePropertyChanged(() => ShowVehicleSelection);
 	    }
 
 	    async Task SetDefaultVehicleType ()

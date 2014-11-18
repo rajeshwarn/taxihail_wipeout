@@ -41,7 +41,7 @@ namespace HoneyBadger
                     new KeyValuePair<string, string>("meterState", ((int)MeterStates.ForHire).ToString()),
                 };
 
-            var vertices = GeographyhHelper.CirclePointsFromRadius(latitude, longitude, searchRadiusInKm, 10);
+            var vertices = GeographyHelper.CirclePointsFromRadius(latitude, longitude, searchRadiusInKm, 10);
 
             foreach (var vertex in vertices)
             {
