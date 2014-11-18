@@ -19,8 +19,7 @@ namespace DeploymentServiceTools
 
         public string MasterConnectionString { get; set; }
 
-        public string SqlInstanceName { get; set; }        
-        
+        public string SqlServerDirectory { get; set; }
         public string BackupFolder { get; set; }
 
         public string MirroringSharedFolder { get; set; }

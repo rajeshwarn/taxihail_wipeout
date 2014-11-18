@@ -239,6 +239,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="testmirroring.params">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="app.config">
       <SubType>Designer</SubType>
       <TransformOnBuild>true</TransformOnBuild>

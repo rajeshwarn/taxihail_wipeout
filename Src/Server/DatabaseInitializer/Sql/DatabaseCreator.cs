@@ -11,6 +11,7 @@ using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Common.Caching;
 using apcurium.MK.Common.Configuration.Impl;
+using apcurium.MK.Common.Extensions;
 using Infrastructure.Sql.EventSourcing;
 using Infrastructure.Sql.MessageLog;
 using log4net;
@@ -23,13 +24,15 @@ namespace DatabaseInitializer.Sql
     public class DatabaseCreator
     {
         ILog _logger = LogManager.GetLogger("DatabaseInitializer");
-        public void DropDatabase(string connStringMaster, string database)
+        public void DropDatabase(string connStringMaster, string database, bool setoffline = true)
         {
             var exists = "IF  EXISTS (SELECT name FROM sys.databases WHERE name = N'" + database + "') ";
 
-            DatabaseHelper.ExecuteNonQuery(connStringMaster,
-                exists + "ALTER DATABASE [" + database + "] SET OFFLINE WITH ROLLBACK IMMEDIATE");
-
+            if (setoffline)
+            {
+                DatabaseHelper.ExecuteNonQuery(connStringMaster,
+                    exists + "ALTER DATABASE [" + database + "] SET OFFLINE WITH ROLLBACK IMMEDIATE");
+            }
             DatabaseHelper.ExecuteNonQuery(connStringMaster, exists + "DROP DATABASE [" + database + "]");
         }
 
@@ -60,14 +63,12 @@ namespace DatabaseInitializer.Sql
         public  void CompleteMirroring(string connStringMaster, string companyName, string partner, string witness)
         {
             DatabaseHelper.ExecuteNonQuery(connStringMaster, string.Format(@"ALTER DATABASE {0} SET PARTNER='{1}'", companyName, partner));
-            DatabaseHelper.ExecuteNonQuery(connStringMaster, string.Format(@"ALTER DATABASE {0} SET WITNESS='{1}'", companyName,witness));
-          
+            if (witness.HasValue())
+            {
+                DatabaseHelper.ExecuteNonQuery(connStringMaster,
+                    string.Format(@"ALTER DATABASE {0} SET WITNESS='{1}'", companyName, witness));
+            }
         }
-
-        
-        
-                    
-
 
         public void BackupDatabase(string connStringMaster, string backupFolder, string databaseName)
         {
@@ -143,7 +144,7 @@ namespace DatabaseInitializer.Sql
                 exists + "ALTER DATABASE [" + oldName + "] MODIFY NAME = [" + newName + "]");
         }
 
-        public void CreateDatabase(string connectionString, string databaseName, string instanceName)
+        public void CreateDatabase(string connectionString, string databaseName, string sqlDirectory)
         {
             var exists = "IF  EXISTS (SELECT name FROM sys.databases WHERE name = N'" + databaseName + "') ";
 
@@ -160,8 +161,8 @@ namespace DatabaseInitializer.Sql
                                                                            "( NAME = {3}_{2}, FILENAME = '{0}\\{3}_{2}.mdf' ) " +
                                                                            "LOG ON " +
                                                                            "( NAME = {3}_{2}_log, FILENAME = '{1}\\{3}_{2}.ldf' ) ",
-                GetDataPath(instanceName),
-                GetLogPath(instanceName),
+                sqlDirectory + "DATA",
+                sqlDirectory + "Log",
                 DateTime.Now.ToString("dd_MM_yyyy_HH_mm_ss"),
                 databaseName));
         }
@@ -304,30 +305,6 @@ namespace DatabaseInitializer.Sql
             {
                 // Ignore possible exceptions. Most probable case is trying to copy from source DB without this table
             }
-        }
-
-        private string GetLogPath(string instanceName)
-        {
-            return string.Format("{0}\\{1}", GetSqlRootPath(instanceName), "Log");
-        }
-
-        private string GetDataPath(string instanceName)
-        {
-            return string.Format("{0}\\{1}", GetSqlRootPath(instanceName), "Data");
-        }
-
-        private string GetSqlRootPath(string instanceName)
-        {
-            var key = Registry.LocalMachine;
-            var subkey =
-                key.OpenSubKey(string.Format("SOFTWARE\\Microsoft\\Microsoft SQL Server\\{0}\\Setup", instanceName));
-            if (subkey == null)
-            {
-                throw new Exception(
-                    "Can't retrieve the Data directory, did you specify the right instance name paremeter ?");
-            }
-            var value = subkey.GetValue("SQLDataRoot", string.Empty);
-            return value.ToString();
         }
 
         public void CreateSchemas(ConnectionStringSettings connectionString)
