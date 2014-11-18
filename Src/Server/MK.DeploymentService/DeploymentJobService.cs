@@ -329,7 +329,7 @@ namespace MK.DeploymentService
             {
                 CompanyName = companyName,
                 BackupFolder = Settings.Default.BackupFolder,
-                SqlServerDirectory = _job.Server.SqlServerInstance,
+                SqlServerDirectory = _job.Server.SqlServerDirectory,
                 MkWebConnectionString = string.Format(Settings.Default.ToolSqlConnectionString, companyName),
                 MasterConnectionString = Settings.Default.SqlConnectionStringMaster,
                 MirroringSharedFolder = Settings.Default.MirroringSharedFolder,
