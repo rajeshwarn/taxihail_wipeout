@@ -457,14 +457,8 @@ namespace apcurium.MK.Booking.Api.Services
             // TODO: Handle nulls
             var validation = _ibsServiceProvider.ChargeAccount().ValidateIbsChargeAccount(answers, accountNumber, "0");
             if (!validation.Valid)
-            {
-                int firstError = 0;
-                for (int i = 0; i < validation.ValidResponse.Count; ++i)
-                {
-                    firstError = i;
-                    break;
-                }
-                
+            {                
+                int firstError = validation.ValidResponse.IndexOf(false);                 
                 throw new HttpError(HttpStatusCode.Forbidden, ErrorCode.AccountCharge_InvalidAnswer.ToString(),
                                         accountChargeDetail.Questions[firstError].ErrorMessage);
             }
