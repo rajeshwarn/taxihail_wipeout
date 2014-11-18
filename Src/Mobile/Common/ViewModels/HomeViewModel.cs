@@ -13,6 +13,7 @@ using System;
 using System.Reactive.Threading.Tasks;
 using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Booking.Maps.Geo;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -98,7 +99,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 // Don't await side panel creation
 				Panel.Start();
 				CheckTermsAsync();
-
 
 				this.Services().ApplicationInfo.CheckVersionAsync();
 
@@ -303,7 +303,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					if (_currentState == HomeViewModelState.Initial 
 						&& addressSelectionMode == AddressSelectionMode.PickupSelection)
 					{
-							SetMapCenterToUserLocation(true);
+						SetMapCenterToUserLocation(true);
 					}									
 				});
 			}
@@ -319,8 +319,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			{
 				return this.GetCommand(() =>
 				{					
+					Map.UserMovedMap.Cancel();
 					SetMapCenterToUserLocation();
-				}, () => !_orderWorkflowService.IsLocateMeDisabled());
+				});
 			}
 		}
 

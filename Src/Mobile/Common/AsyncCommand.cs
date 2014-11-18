@@ -273,5 +273,4 @@ namespace apcurium.MK.Booking.Mobile
 
         #endregion
     }
-
 }

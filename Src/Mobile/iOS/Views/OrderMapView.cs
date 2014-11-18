@@ -308,7 +308,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             }            
         }
 
-        public ICommand UserMovedMap { get; set; }
+        public CancellableCommand<MapBounds> UserMovedMap { get; set; }
                      
         private void HandleTouchBegin (object sender, EventArgs e)
         {
@@ -458,9 +458,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
         private void CancelAddressSearch()
         {
-            ((MapViewModel.CancellableCommand<MapBounds>)UserMovedMap).Cancel();
+            UserMovedMap.Cancel();
             _userMovedMapSubsciption.Disposable = null;
-			
         }
 
         private void ChangeState(HomeViewModelPresentationHint hint)

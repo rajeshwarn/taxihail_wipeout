@@ -130,7 +130,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             }
         }
 
-        public ICommand UserMovedMap { get; set; }
+        public CancellableCommand<MapBounds> UserMovedMap { get; set; }
 
         private IList<AvailableVehicle> _availableVehicles = new List<AvailableVehicle>();
         public IList<AvailableVehicle> AvailableVehicles
@@ -173,11 +173,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 {
                     case MotionEventActions.Down:
                         lockGeocoding = true;
-                        ((MapViewModel.CancellableCommand<MapBounds>)UserMovedMap).Cancel();
+                        UserMovedMap.Cancel();
                         break;                    
                     case MotionEventActions.Move:                
                         lockGeocoding = true;
-                        ((MapViewModel.CancellableCommand<MapBounds>)UserMovedMap).Cancel();
+                        UserMovedMap.Cancel();
                         break;                       
                     default:
                         lockGeocoding = false;
