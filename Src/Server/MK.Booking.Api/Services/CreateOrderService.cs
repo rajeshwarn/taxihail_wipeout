@@ -704,15 +704,9 @@ namespace apcurium.MK.Booking.Api.Services
         {
             if (!market.HasValue() || !latitude.HasValue || !longitude.HasValue)
             {
-                // Do nothing if in home market or don't have position
+                // Do nothing if in home market or if we don't have position
                 return new BestAvailableCompany();
             }
-
-            return new BestAvailableCompany
-            {
-                CompanyKey = "Axertis",
-                CompanyName = "Axertis"
-            };
 
             int? bestFleetId = null;
             const int searchExpendLimit = 10;
