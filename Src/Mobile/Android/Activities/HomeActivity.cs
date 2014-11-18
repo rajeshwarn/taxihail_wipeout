@@ -190,33 +190,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             return 400;
         }
 
-        private void InitializeOverlayIcons()
-        {
-            var useCompanyColor = this.Services().Settings.UseThemeColorForMapIcons;
-            var companyColor = Resources.GetColor (Resource.Color.company_color);
-            var bigBackgroundIcon = Resources.GetDrawable (Resource.Drawable.map_bigicon_background);
-
-            var pickupOverlay = FindViewById<ImageView> (Resource.Id.pickupOverlay);
-            pickupOverlay.SetImageBitmap (
-                DrawHelper.GetMapIconBitmap (
-                    Resources.GetDrawable(Resource.Drawable.hail_icon), 
-                    useCompanyColor 
-                        ? companyColor
-                        : Color.Argb(255, 30, 192, 34), 
-                    bigBackgroundIcon, 
-                    new System.Drawing.SizeF(52, 58)));
-
-            var destinationOverlay = FindViewById<ImageView> (Resource.Id.destinationOverlay);
-            destinationOverlay.SetImageBitmap (
-                DrawHelper.GetMapIconBitmap (
-                    Resources.GetDrawable(Resource.Drawable.destination_icon), 
-                    useCompanyColor 
-                        ? companyColor
-                        : Color.Argb(255, 255, 0, 23), 
-                    bigBackgroundIcon, 
-                    new System.Drawing.SizeF(52, 58)));
-        }
-
         protected override void OnViewModelSet()
 		{
 			base.OnViewModelSet ();
@@ -238,8 +211,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             _mapOverlay = (LinearLayout) FindViewById(Resource.Id.mapOverlay);
 			_btnSettings = FindViewById<LinearLayout>(Resource.Id.btnSettings);
             _btnLocation = FindViewById<ImageView>(Resource.Id.btnLocation);
-
-            InitializeOverlayIcons ();
 
             // attach big invisible button to the OrderOptions to be able to pass it to the address text box and clear focus when clicking outside
             _orderOptions.BigInvisibleButton = _bigButton;

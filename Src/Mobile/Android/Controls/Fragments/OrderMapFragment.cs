@@ -68,17 +68,30 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
             _touchableMap = mapFragment;
 
-            _pickupOverlay = (ImageView)mapFragment.Activity.FindViewById(Resource.Id.pickupOverlay);
-            _pickupOverlay.Visibility = ViewStates.Visible;
-            _pickupOverlay.SetPadding(0, 0, 0, _pickupOverlay.Drawable.IntrinsicHeight / 2);
-
-            _destinationOverlay = (ImageView)mapFragment.Activity.FindViewById(Resource.Id.destinationOverlay);
-            _destinationOverlay.Visibility = ViewStates.Visible;
-            _destinationOverlay.SetPadding(0, 0, 0, _destinationOverlay.Drawable.IntrinsicHeight / 2);
+            InitializeOverlayIcons();
 
             this.DelayBind(() => InitializeBinding());
 
             CreatePins();
+        }
+
+        private void InitializeOverlayIcons()
+        {
+            var useCompanyColor = _settings.UseThemeColorForMapIcons;
+            var companyColor = _resources.GetColor (Resource.Color.company_color);
+
+            var red = Color.Argb(255, 255, 0, 23);
+            var green = Color.Argb(255, 30, 192, 34);
+
+            _pickupOverlay = (ImageView)_touchableMap.Activity.FindViewById(Resource.Id.pickupOverlay);
+            _pickupOverlay.Visibility = ViewStates.Visible;
+            _pickupOverlay.SetPadding(0, 0, 0, _pickupOverlay.Drawable.IntrinsicHeight / 2);
+            _pickupOverlay.SetImageBitmap(DrawHelper.ApplyColorToMapIcon(Resource.Drawable.hail_icon, useCompanyColor ? companyColor : green, true));
+
+            _destinationOverlay = (ImageView)_touchableMap.Activity.FindViewById(Resource.Id.destinationOverlay);
+            _destinationOverlay.Visibility = ViewStates.Visible;
+            _destinationOverlay.SetPadding(0, 0, 0, _destinationOverlay.Drawable.IntrinsicHeight / 2);
+            _destinationOverlay.SetImageBitmap(DrawHelper.ApplyColorToMapIcon(Resource.Drawable.destination_icon, useCompanyColor ? companyColor : red, true));
         }
 
         private Address _pickupAddress;
@@ -227,44 +240,18 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 			var useCompanyColor = _settings.UseThemeColorForMapIcons;
             var companyColor = _resources.GetColor (Resource.Color.company_color);
 
-            var destinationIcon =  _resources.GetDrawable(Resource.Drawable.@destination_icon);
-            var hailIcon = _resources.GetDrawable(Resource.Drawable.@hail_icon);
-            var nearbyTaxiIcon = _resources.GetDrawable(Resource.Drawable.@nearby_taxi);
-            var nearbySuvIcon = _resources.GetDrawable(Resource.Drawable.@nearby_suv);
-            var nearbyBlackcarIcon = _resources.GetDrawable(Resource.Drawable.@nearby_blackcar);      
-            var nearbyClusterTaxiIcon = _resources.GetDrawable(Resource.Drawable.@cluster_taxi);
-            var nearbySuvClusterIcon = _resources.GetDrawable(Resource.Drawable.@cluster_suv);
-            var nearbyBlackcarClusterIcon = _resources.GetDrawable(Resource.Drawable.@cluster_blackcar);
-            var bigBackgroundIcon = _resources.GetDrawable (Resource.Drawable.map_bigicon_background);
-            var smallBackgroundIcon = _resources.GetDrawable (Resource.Drawable.map_smallicon_background);
-
-            var sizeOfDefaultSmallIcon = new SizeF(34, 39);
-            var sizeOfDefaultBigIcon = new SizeF(52, 58);
             var red = Color.Argb(255, 255, 0, 23);
             var green = Color.Argb(255, 30, 192, 34);
 
-            _destinationIcon = DrawHelper.GetMapIcon(
-                destinationIcon, 
-                useCompanyColor 
-                    ? companyColor
-                    : red,
-                bigBackgroundIcon,
-                sizeOfDefaultBigIcon);
-
-            _hailIcon = DrawHelper.GetMapIcon(
-                hailIcon, 
-                useCompanyColor 
-                    ? companyColor
-                    : green,
-                bigBackgroundIcon,
-                sizeOfDefaultBigIcon);
+            _destinationIcon = BitmapDescriptorFactory.FromBitmap(DrawHelper.ApplyColorToMapIcon(Resource.Drawable.@destination_icon, useCompanyColor ? companyColor : red, true));
+            _hailIcon = BitmapDescriptorFactory.FromBitmap(DrawHelper.ApplyColorToMapIcon(Resource.Drawable.@hail_icon, useCompanyColor ? companyColor : green, true));
             
-            _vehicleIcons.Add("nearby_taxi", DrawHelper.GetMapIcon(nearbyTaxiIcon, companyColor, smallBackgroundIcon, sizeOfDefaultSmallIcon));
-            _vehicleIcons.Add("nearby_suv", DrawHelper.GetMapIcon(nearbySuvIcon, companyColor, smallBackgroundIcon, sizeOfDefaultSmallIcon));
-            _vehicleIcons.Add("nearby_blackcar", DrawHelper.GetMapIcon(nearbyBlackcarIcon, companyColor, smallBackgroundIcon, sizeOfDefaultSmallIcon));
-            _vehicleIcons.Add("cluster_taxi", DrawHelper.GetMapIcon(nearbyClusterTaxiIcon, companyColor, smallBackgroundIcon, sizeOfDefaultSmallIcon));
-            _vehicleIcons.Add("cluster_suv", DrawHelper.GetMapIcon(nearbySuvClusterIcon, companyColor, smallBackgroundIcon, sizeOfDefaultSmallIcon));
-            _vehicleIcons.Add("cluster_blackcar", DrawHelper.GetMapIcon(nearbyBlackcarClusterIcon, companyColor, smallBackgroundIcon, sizeOfDefaultSmallIcon));
+            _vehicleIcons.Add("nearby_taxi", BitmapDescriptorFactory.FromBitmap(DrawHelper.ApplyColorToMapIcon(Resource.Drawable.@nearby_taxi, companyColor, false)));
+            _vehicleIcons.Add("nearby_suv", BitmapDescriptorFactory.FromBitmap(DrawHelper.ApplyColorToMapIcon(Resource.Drawable.@nearby_suv, companyColor, false)));
+            _vehicleIcons.Add("nearby_blackcar", BitmapDescriptorFactory.FromBitmap(DrawHelper.ApplyColorToMapIcon(Resource.Drawable.@nearby_blackcar, companyColor, false)));
+            _vehicleIcons.Add("cluster_taxi", BitmapDescriptorFactory.FromBitmap(DrawHelper.ApplyColorToMapIcon(Resource.Drawable.@cluster_taxi, companyColor, false)));
+            _vehicleIcons.Add("cluster_suv", BitmapDescriptorFactory.FromBitmap(DrawHelper.ApplyColorToMapIcon(Resource.Drawable.@cluster_suv, companyColor, false)));
+            _vehicleIcons.Add("cluster_blackcar", BitmapDescriptorFactory.FromBitmap(DrawHelper.ApplyColorToMapIcon(Resource.Drawable.@cluster_blackcar, companyColor, false)));
         }
 
         private MapBounds GetMapBoundsFromProjection()
