@@ -115,8 +115,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Addresses
         public void Expand()
         {
             _listLinearLayout.RemoveAllViews();
-            // TODO: Use the good localize approach
-            _viewAllButton.Text = "Collapse";
+			_viewAllButton.Text = this.Services().Localize["Collapse"];
 
             var i = 0;
             foreach (var line in AddressLines)
@@ -147,8 +146,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Addresses
             }
 
             _listLinearLayout.RemoveAllViews();
-            // TODO: Use the good localize approach
-            _viewAllButton.Text = "View All";
+			_viewAllButton.Text = this.Services().Localize["ViewAll"];
 
             var i = 0;
             foreach (var line in AddressLines.Take(3))
