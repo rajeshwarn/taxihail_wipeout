@@ -68,17 +68,30 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
             _touchableMap = mapFragment;
 
-            _pickupOverlay = (ImageView)mapFragment.Activity.FindViewById(Resource.Id.pickupOverlay);
-            _pickupOverlay.Visibility = ViewStates.Visible;
-            _pickupOverlay.SetPadding(0, 0, 0, _pickupOverlay.Drawable.IntrinsicHeight / 2);
-
-            _destinationOverlay = (ImageView)mapFragment.Activity.FindViewById(Resource.Id.destinationOverlay);
-            _destinationOverlay.Visibility = ViewStates.Visible;
-            _destinationOverlay.SetPadding(0, 0, 0, _destinationOverlay.Drawable.IntrinsicHeight / 2);
+            InitializeOverlayIcons();
 
             this.DelayBind(() => InitializeBinding());
 
             CreatePins();
+        }
+
+        private void InitializeOverlayIcons()
+        {
+            var useCompanyColor = _settings.UseThemeColorForMapIcons;
+            var companyColor = _resources.GetColor (Resource.Color.company_color);
+
+            var red = Color.Argb(255, 255, 0, 23);
+            var green = Color.Argb(255, 30, 192, 34);
+
+            _pickupOverlay = (ImageView)_touchableMap.Activity.FindViewById(Resource.Id.pickupOverlay);
+            _pickupOverlay.Visibility = ViewStates.Visible;
+            _pickupOverlay.SetPadding(0, 0, 0, _pickupOverlay.Drawable.IntrinsicHeight / 2);
+            _pickupOverlay.SetImageBitmap(DrawHelper.ApplyColorToMapIcon(Resource.Drawable.hail_icon, useCompanyColor ? companyColor : green, true));
+
+            _destinationOverlay = (ImageView)_touchableMap.Activity.FindViewById(Resource.Id.destinationOverlay);
+            _destinationOverlay.Visibility = ViewStates.Visible;
+            _destinationOverlay.SetPadding(0, 0, 0, _destinationOverlay.Drawable.IntrinsicHeight / 2);
+            _destinationOverlay.SetImageBitmap(DrawHelper.ApplyColorToMapIcon(Resource.Drawable.destination_icon, useCompanyColor ? companyColor : red, true));
         }
 
         private Address _pickupAddress;

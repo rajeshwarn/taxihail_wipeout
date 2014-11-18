@@ -190,21 +190,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             return 400;
         }
 
-        private void InitializeOverlayIcons()
-        {
-            var useCompanyColor = this.Services().Settings.UseThemeColorForMapIcons;
-            var companyColor = Resources.GetColor (Resource.Color.company_color);
-
-            var red = Color.Argb(255, 255, 0, 23);
-            var green = Color.Argb(255, 30, 192, 34);
-
-            var pickupOverlay = FindViewById<ImageView> (Resource.Id.pickupOverlay);
-            pickupOverlay.SetImageBitmap(DrawHelper.ApplyColorToMapIcon(Resource.Drawable.hail_icon, useCompanyColor ? companyColor : green, true));
-
-            var destinationOverlay = FindViewById<ImageView> (Resource.Id.destinationOverlay);
-            destinationOverlay.SetImageBitmap(DrawHelper.ApplyColorToMapIcon(Resource.Drawable.destination_icon, useCompanyColor ? companyColor : red, true));
-        }
-
         protected override void OnViewModelSet()
 		{
 			base.OnViewModelSet ();
@@ -226,8 +211,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             _mapOverlay = (LinearLayout) FindViewById(Resource.Id.mapOverlay);
 			_btnSettings = FindViewById<LinearLayout>(Resource.Id.btnSettings);
             _btnLocation = FindViewById<ImageView>(Resource.Id.btnLocation);
-
-            InitializeOverlayIcons ();
 
             // attach big invisible button to the OrderOptions to be able to pass it to the address text box and clear focus when clicking outside
             _orderOptions.BigInvisibleButton = _bigButton;

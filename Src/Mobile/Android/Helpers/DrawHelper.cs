@@ -129,10 +129,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Helpers
             var bitmap = DrawHelper.DrawableToBitmap (image);
 
             var defaultDensity = 160;
-            var correctedX = expectedColorCoordinate.Value.X * (bitmap.Density / defaultDensity);
-            var correctedY = expectedColorCoordinate.Value.Y * (bitmap.Density / defaultDensity);
+            var factor = (double)bitmap.Density / (double)defaultDensity;
+            var correctedX = expectedColorCoordinate.Value.X * factor;
+            var correctedY = expectedColorCoordinate.Value.Y * factor;
 
-            var detectedColor = bitmap.GetPixel(correctedX, correctedY);
+            var detectedColor = bitmap.GetPixel((int)correctedX, (int)correctedY);
             var differentColorThanExpected = !detectedColor.Equals(expectedColor.Value.ToArgb());
 
             return differentColorThanExpected;
