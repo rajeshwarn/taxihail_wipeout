@@ -76,7 +76,9 @@ namespace apcurium.MK.Booking.IBS.Impl
                     {
                         WebServicesUrl = networkFleetResponse.IbsUrl,
                         WebServicesPassword = networkFleetResponse.IbsPassword,
-                        WebServicesUserName = networkFleetResponse.IbsUserName
+                        WebServicesUserName = networkFleetResponse.IbsUserName,
+                        TimeDifference = networkFleetResponse.IbsTimeDifference
+                        
                     };
                     _ibsSettings.Add(networkFleetResponse.CompanyKey, settingContainer);
                 }

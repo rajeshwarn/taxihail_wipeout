@@ -189,7 +189,16 @@ namespace apcurium.MK.Booking.Api.Services
                 throw new HttpError(ErrorCode.CreateOrder_SettingsRequired.ToString());
             }
 
-            var referenceData = (ReferenceData)_referenceDataService.Get(new ReferenceDataRequest());
+            ReferenceData referenceData;
+
+            if (request.Market.HasValue())
+            {
+                referenceData = (ReferenceData)_referenceDataService.Get(new ReferenceDataRequest { CompanyKey = bestAvailableCompany.CompanyKey, Market = request.Market });
+            }
+            else
+            {
+                referenceData = (ReferenceData)_referenceDataService.Get(new ReferenceDataRequest());
+            }
 
             request.PickupDate = request.PickupDate.HasValue
                 ? request.PickupDate.Value
@@ -532,13 +541,18 @@ namespace apcurium.MK.Booking.Api.Services
 
         private int? CreateIbsOrder(int ibsAccountId, CreateOrder request, ReferenceData referenceData, string chargeType, string companyKey = null)
         {
-            // Provider is optional
+            // Provider is optional for home market
             // But if a provider is specified, it must match with one of the ReferenceData values
             if (request.Settings.ProviderId.HasValue &&
+                !request.Market.HasValue() &&
                 referenceData.CompaniesList.None(c => c.Id == request.Settings.ProviderId.Value))
             {
                 throw new HttpError(ErrorCode.CreateOrder_InvalidProvider.ToString());
             }
+
+            var providerId = request.Market.HasValue() && referenceData.CompaniesList.Any()
+                    ? referenceData.CompaniesList.First().Id
+                    : request.Settings.ProviderId;
 
             var ibsPickupAddress = Mapper.Map<IbsAddress>(request.PickupAddress);
             var ibsDropOffAddress = IsValid(request.DropOffAddress)
@@ -551,7 +565,7 @@ namespace apcurium.MK.Booking.Api.Services
             Debug.Assert(request.PickupDate != null, "request.PickupDate != null");
 
             var result = _ibsServiceProvider.Booking(companyKey, request.Market).CreateOrder(
-                request.Settings.ProviderId,
+                providerId,
                 ibsAccountId,
                 request.Settings.Name,
                 request.Settings.Phone,

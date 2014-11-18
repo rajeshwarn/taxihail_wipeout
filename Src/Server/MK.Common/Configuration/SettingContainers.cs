@@ -164,7 +164,7 @@ namespace apcurium.MK.Common.Configuration
         public string DefaultAccountPassword { get; protected internal set; }
 
         [CustomizableByCompany]
-        public long TimeDifference { get; protected internal set; }
+        public long TimeDifference { get; set; }
 
         public bool FakeOrderStatusUpdate { get; protected internal set; }
 
