@@ -50,6 +50,7 @@
         <Command type="BeforeBuild" command="mono &quot;$(SolutionDir)/../LocalizationTool/output/LocalizationTool.exe&quot; -t=ios -m=&quot;$(SolutionDir)/Common/Localization/Master.resx&quot; -d=&quot;$(ProjectDir)/en.lproj/Localizable.strings&quot; -s=&quot;$(SolutionDir)/Common/Settings/Settings.json&quot;" workingdir="$(SolutionDir)/../LocalizationTool" />
       </CustomCommands>
     </CustomCommands>
+    <AssemblyName>TaxiHail</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhone' ">
     <DebugSymbols>True</DebugSymbols>
@@ -77,6 +78,7 @@
         <Command type="BeforeBuild" command="mono &quot;$(SolutionDir)/../LocalizationTool/output/LocalizationTool.exe&quot; -t=ios -m=&quot;$(SolutionDir)/Common/Localization/Master.resx&quot; -d=&quot;$(ProjectDir)/en.lproj/localizable.strings&quot; -s=&quot;$(SolutionDir)/Common/Settings/Settings.json&quot;" workingdir="$(SolutionDir)/../LocalizationTool" />
       </CustomCommands>
     </CustomCommands>
+    <AssemblyName>TaxiHail</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhone' ">
     <DebugType>none</DebugType>
@@ -132,6 +134,7 @@
         <Command type="BeforeBuild" command="mono &quot;$(SolutionDir)/../LocalizationTool/output/LocalizationTool.exe&quot; -t=ios -m=&quot;$(SolutionDir)/Common/Localization/Master.resx&quot; -d=&quot;$(ProjectDir)/en.lproj/localizable.strings&quot; -s=&quot;$(SolutionDir)/Common/Settings/Settings.json&quot;" workingdir="$(SolutionDir)/../LocalizationTool" />
       </CustomCommands>
     </CustomCommands>
+    <MtouchSdkVersion>7.1</MtouchSdkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'AppStore|iPhone' ">
     <DebugType>none</DebugType>
