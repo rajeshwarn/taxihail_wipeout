@@ -191,11 +191,13 @@ namespace apcurium.MK.Booking.Api.Services
             }
 
             string[] prompts = null;
+            int?[] promptsLength = null;
             if (request.Settings.ChargeTypeId.HasValue
                 && request.Settings.ChargeTypeId.Value == ChargeTypes.Account.Id)
             {
                 ValidateChargeAccountAnswers(request.Settings.AccountNumber, request.QuestionsAndAnswers);
                 prompts = request.QuestionsAndAnswers.Select(q => q.Answer).ToArray();
+                promptsLength = request.QuestionsAndAnswers.Select(q => q.MaxLength).ToArray();
             }
 
             var chargeTypeIbs = string.Empty;
@@ -209,7 +211,7 @@ namespace apcurium.MK.Booking.Api.Services
                 chargeTypeEmail = _resources.Get(chargeTypeKey, request.ClientLanguageCode);
             }
 
-            var ibsOrderId = CreateIbsOrder(account.IBSAccountId.Value, request, referenceData, chargeTypeIbs, prompts);
+            var ibsOrderId = CreateIbsOrder(account.IBSAccountId.Value, request, referenceData, chargeTypeIbs, prompts, promptsLength);
 
             if (!ibsOrderId.HasValue
                 || ibsOrderId <= 0)
@@ -321,12 +323,11 @@ namespace apcurium.MK.Booking.Api.Services
                 throw new HttpError(HttpStatusCode.InternalServerError, networkErrorMessage);
             }
 
-            var newIbsOrderId = CreateIbsOrder(ibsAccountId, newOrderRequest, newReferenceData, chargeTypeIbs, null, request.NextDispatchCompanyKey);
+            var newIbsOrderId = CreateIbsOrder(ibsAccountId, newOrderRequest, newReferenceData, chargeTypeIbs, null, null, request.NextDispatchCompanyKey);
             if (!newIbsOrderId.HasValue || newIbsOrderId <= 0)
             {
                 var code = !newIbsOrderId.HasValue || (newIbsOrderId.Value >= -1) ? string.Empty : "_" + Math.Abs(newIbsOrderId.Value);
                 Log.Error(string.Format("{0}. IBS error code: {1}", networkErrorMessage, code));
-
                 throw new HttpError(HttpStatusCode.InternalServerError, networkErrorMessage);
             }
 
@@ -498,7 +499,7 @@ namespace apcurium.MK.Booking.Api.Services
             return offsetedTime;
         }
 
-        private int? CreateIbsOrder(int ibsAccountId, CreateOrder request, ReferenceData referenceData, string chargeType, string[] prompts, string companyKey = null)
+        private int? CreateIbsOrder(int ibsAccountId, CreateOrder request, ReferenceData referenceData, string chargeType, string[] prompts, int?[] promptsLength, string companyKey = null)
         {
             // Provider is optional
             // But if a provider is specified, it must match with one of the ReferenceData values
@@ -535,6 +536,7 @@ namespace apcurium.MK.Booking.Api.Services
                     : null,
                 null,
                 prompts,
+                promptsLength,
                 fare);
 
             return result;

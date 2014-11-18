@@ -133,7 +133,10 @@ namespace apcurium.MK.Booking.IBS.Impl
                 tbook.AccountNum = accountNumber;
                 tbook.VehicleTypeID = -1;
                 tbook.ChargeTypeID = -1;
-                
+
+                tbook.PickupDate = new TWEBTimeStamp { Year = DateTime.Now.Year, Month = DateTime.Now.Month, Day = DateTime.Now.Day };
+                tbook.PickupTime = new TWEBTimeStamp { Hour = DateTime.Now.Hour, Minute = DateTime.Now.Minute };
+            
 
                 if (!string.IsNullOrEmpty(pickupZipCode))
                 {
@@ -276,8 +279,8 @@ namespace apcurium.MK.Booking.IBS.Impl
             return regEx.Replace(phone, "");
         }
 
-        public int? CreateOrder(int? providerId, int accountId, string passengerName, string phone, int nbPassengers, int? vehicleTypeId, 
-            int? chargeTypeId, string note, DateTime pickupDateTime, IbsAddress pickup, IbsAddress dropoff, string accountNumber, int? customerNumber, string[] prompts, Fare fare = default(Fare))
+        public int? CreateOrder(int? providerId, int accountId, string passengerName, string phone, int nbPassengers, int? vehicleTypeId,
+            int? chargeTypeId, string note, DateTime pickupDateTime, IbsAddress pickup, IbsAddress dropoff, string accountNumber, int? customerNumber, string[] prompts, int?[] promptsLength, Fare fare = default(Fare))
         {
             Logger.LogMessage("WebService Create Order call : accountID=" + accountId);
             
@@ -294,7 +297,7 @@ namespace apcurium.MK.Booking.IBS.Impl
             };
 
             order.AccountNum =  accountNumber;
-            order.CustomerNum = customerNumber ?? -1; 
+            order.CustomerNum = customerNumber ?? 0; 
 
             order.DispByAuto = _ibsSettings.AutoDispatch;
             order.Priority = _ibsSettings.OrderPriority 
@@ -342,7 +345,7 @@ namespace apcurium.MK.Booking.IBS.Impl
             order.ContactPhone = CleanPhone( phone );
             order.OrderStatus = TWEBOrderStatusValue.wosPost;
 
-            SetPrompts(order, prompts);
+            SetPrompts(order, prompts, promptsLength);
             //order.Prompt1 
 
             int? orderId = null;
@@ -363,7 +366,7 @@ namespace apcurium.MK.Booking.IBS.Impl
             return orderId;
         }
 
-        private void SetPrompts(TBookOrder_8 order, string[] prompts)
+        private void SetPrompts(TBookOrder_8 order, string[] prompts, int?[] promptsLength)
         {
           if ( prompts != null )
           {
@@ -400,11 +403,56 @@ namespace apcurium.MK.Booking.IBS.Impl
               if (prompts.Count() >=8 )
               {
                   order.Prompt8 = prompts[7];
+              }                            
+          }
+          if (promptsLength != null)
+          {
+              if (promptsLength.Count() >= 1)
+              {
+                  order.Field1 = ConvertToString( promptsLength[0] );
+              }
+              if (promptsLength.Count() >= 2)
+              {
+                  order.Field2 = ConvertToString( promptsLength[1]);
+              }
+              if (promptsLength.Count() >= 3)
+              {
+                  order.Field3 = ConvertToString(promptsLength[2]);
+              }
+              if (promptsLength.Count() >= 4)
+              {
+                  order.Field4 = ConvertToString(promptsLength[3]);
+              }
+              if (promptsLength.Count() >= 5)
+              {
+                  order.Field5 = ConvertToString(promptsLength[4]);
+              }
+              if (promptsLength.Count() >= 6)
+              {
+                  order.Field6 = ConvertToString(promptsLength[5]);
               }
 
-              
-              
+              if (promptsLength.Count() >= 7)
+              {
+                  order.Field7 = ConvertToString(promptsLength[6]);
+              }
+
+              if (promptsLength.Count() >= 8)
+              {
+                  order.Field8 = ConvertToString(promptsLength[7]);
+              }
           }
+
+
+        }
+
+        private string ConvertToString(int? v)
+        {
+            if (v.HasValue)
+            {
+                return v.Value.ToString();
+            }
+            return null;
         }
 
         public bool CancelOrder(int orderId, int accountId, string contactPhone)
