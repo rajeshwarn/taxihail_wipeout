@@ -459,6 +459,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 			var streetLevelZoomHint = hint as ZoomToStreetLevelPresentationHint;
 			if (streetLevelZoomHint != null)
             {
+                // When doing this presentation change, we don't want to reverse geocode the position since we already know the address and it's already set
+                // It occurs on Android only, because of a Camera Change event
+                bypassCameraChangeEvent = true;
                 var zoomLevel = streetLevelZoomHint.InitialZoom 
                     ? _settings.InitialZoomLevel 
                     : MapViewModel.ZoomStreetLevel;
