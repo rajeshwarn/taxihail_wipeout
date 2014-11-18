@@ -4,13 +4,10 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Extensions;
-using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.ViewModels.Payment;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
-using apcurium.MK.Common.Extensions;
-using Cirrious.CrossCore;
 using ServiceStack.ServiceClient.Web;
 using ServiceStack.Text;
 
