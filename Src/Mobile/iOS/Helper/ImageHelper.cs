@@ -1,12 +1,12 @@
-using apcurium.MK.Booking.Mobile.Client.Diagnostics;
-using apcurium.MK.Booking.Mobile.Framework.Extensions;
-using MonoTouch.UIKit;
 using System.Drawing;
 using MonoTouch.CoreGraphics;
-using apcurium.MK.Booking.Mobile.Client.Style;
 using MonoTouch.CoreImage;
-using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
+using MonoTouch.UIKit;
+using apcurium.MK.Booking.Mobile.Framework.Extensions;
+using apcurium.MK.Booking.Mobile.Client.Diagnostics;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
+using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
+using apcurium.MK.Booking.Mobile.Client.Style;
 
 namespace apcurium.MK.Booking.Mobile.Client.Helper
 {
@@ -44,8 +44,19 @@ namespace apcurium.MK.Booking.Mobile.Client.Helper
             return resultImage;
         }
 
-        private static UIImage ApplyColorToMapIcon(string imagePath, UIColor color, bool bigIcon = true)
+        public static UIImage ApplyColorToMapIcon(string imagePath, UIColor color, bool bigIcon = true)
         {
+            var image = GetImage(imagePath);
+
+            var originalImageSize = bigIcon 
+                ? new SizeF(52, 58)
+                : new SizeF(34, 39);
+
+            if (ImageWasOverridden(image, originalImageSize, UIColor.FromRGBA(0, 0, 0, 0), bigIcon ? new Point(26, 29) : new Point(18, 16)))
+            {
+                return image;
+            }
+
             var backgroundToColorize = bigIcon
                 ? UIImage.FromBundle ("map_bigicon_background")
                 : UIImage.FromBundle ("map_smallicon_background");
@@ -155,32 +166,18 @@ namespace apcurium.MK.Booking.Mobile.Client.Helper
             return new UIImage(transformedImage);
         }
 
-        public static UIImage ApplyColorToMapIcon(string imagePath, UIColor color, bool isBigIcon, SizeF originalImageSize)
+        public static UIImage ApplyThemeColorToMapIcon(string imagePath, bool isBigIcon)
         {
-            var image = GetImage(imagePath);
-
-            var imageWasOverridden = image.Size.Width != originalImageSize.Width;
-            if (imageWasOverridden)
-            {
-                return image;
-            }
-
-            return ApplyColorToMapIcon(imagePath, color, isBigIcon);
+            return ApplyColorToMapIcon(imagePath, Theme.CompanyColor, isBigIcon);
         }
 
-        public static UIImage ApplyThemeColorToMapIcon(string imagePath, bool isBigIcon, SizeF originalImageSize)
-        {
-            return ApplyColorToMapIcon(imagePath, Theme.CompanyColor, isBigIcon, originalImageSize);
-        }
-
-        public static UIImage ApplyThemeColorToImage(string imagePath, bool skipApplyIfCustomImage = false, SizeF originalImageSize = new SizeF())
+        public static UIImage ApplyThemeColorToImage(string imagePath, bool skipApplyIfCustomImage = false, SizeF originalImageSize = new SizeF(), UIColor expectedColor = null, Point? expectedColorCoordinate = null)
         {
             if (skipApplyIfCustomImage)
             {
                 var image = GetImage(imagePath);
-                var imageWasOverridden = image.Size.Width != originalImageSize.Width;
 
-                if (imageWasOverridden)
+                if (ImageWasOverridden(image, originalImageSize, expectedColor, expectedColorCoordinate))
                 {
                     return image;
                 }
@@ -203,6 +200,54 @@ namespace apcurium.MK.Booking.Mobile.Client.Helper
 
             return UIImage.FromFile (imagePath);
 		}
+
+        private static bool ImageWasOverridden(UIImage image, SizeF originalImageSize, UIColor expectedColor, Point? expectedColorCoordinate)
+        {
+            var differentSize = image.Size.Width != originalImageSize.Width;
+            if (differentSize)
+            {
+                return true;
+            }
+
+            if (expectedColor == null || expectedColorCoordinate == null)
+            {
+                return false;
+            }
+                
+            var detectedColor = GetPixel(image, expectedColorCoordinate.Value.X, expectedColorCoordinate.Value.Y);
+            var differentColorThanExpected = !detectedColor.CGColor.Equals(expectedColor.CGColor);
+
+            return differentColorThanExpected;
+        }
+
+        private static UIColor GetPixel(UIImage image, int x, int y)
+        {
+            var correctedX = (int)(image.CurrentScale * x);
+            var correctedY = (int)(image.CurrentScale * y);
+
+            var cgImage = image.CGImage.Clone ();
+            var size = new Size (cgImage.Width, cgImage.Height);
+            var colorSpace = CGColorSpace.CreateDeviceRGB ();
+            var rawData = new byte[size.Height * size.Width * 4];
+            var bytesPerPixel = 4;
+            var bytesPerRow = bytesPerPixel * size.Width;
+            var bitsPerComponent = 8;
+            var context = new CGBitmapContext(rawData, size.Width, size.Height, bitsPerComponent, bytesPerRow, colorSpace, CGBitmapFlags.PremultipliedLast | CGBitmapFlags.ByteOrder32Big);
+            colorSpace.Dispose ();
+
+            context.DrawImage (new RectangleF (0, 0, size.Width, size.Height), cgImage);
+            context.Dispose ();
+
+            var byteIndex = (bytesPerRow * correctedY) + correctedX * bytesPerPixel;
+            var red = rawData[byteIndex];
+            var green = rawData[byteIndex + 1];
+            var blue = rawData[byteIndex + 2];
+            var alpha = rawData[byteIndex + 3];
+
+            cgImage.Dispose ();
+
+            return UIColor.FromRGBA (red, green, blue, alpha);
+        }
 	}
 }
 
