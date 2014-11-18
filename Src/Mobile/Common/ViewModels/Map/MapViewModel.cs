@@ -38,7 +38,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get { return _pickupAddress; }
             set
-            {				
+            {			
 				_pickupAddress = value;					
 				RaisePropertyChanged();	
             }
@@ -90,7 +90,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
 				return _userMovedMap ?? (_userMovedMap = new CancellableCommand<MapBounds>(async (bounds, token) =>
                 {
-                    _orderWorkflowService.SetIgnoreNextGeoLocResult(true);
                 	await _orderWorkflowService.SetAddressToCoordinate(
 						new Position 
 							{ 

@@ -48,7 +48,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		readonly ISubject<bool> _orderCanBeConfirmed = new BehaviorSubject<bool>(false);
 
         private bool _isOrderRebooked;
-	    private bool _ignoreNextGeoLocResult;
 
 		public OrderWorkflowService(ILocationService locationService,
 			IAccountService accountService,
@@ -84,7 +83,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			await SetAddressToCurrentSelection(address);
 		}
 
-		public async Task<Address> SetAddressToUserLocation()
+		public async Task<Address> SetAddressToUserLocation(CancellationToken cancellationToken = default(CancellationToken))
 		{
 			_loadingAddressSubject.OnNext(true);
 
@@ -96,15 +95,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		    }
 
             var address = await SearchAddressForCoordinate(position);
-			await Task.Delay(5000);
-			// if _ignoreNextGeoLocResult is true, it means that while waiting for the above statement, user moved map or selected an address
-			// when the statement will be done, we want to ignore the position detected by the locate me since he manually changed his position
-		    if (!_ignoreNextGeoLocResult)
-		    {
-                await SetAddressToCurrentSelection(address);
-		        return address;
-		    }
-		    return new Address();
+			cancellationToken.ThrowIfCancellationRequested();
+			await SetAddressToCurrentSelection(address);
+			return address;
 		}
 
         public async Task SetAddressToCoordinate(Position coordinate, CancellationToken cancellationToken)
@@ -720,11 +713,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 	    {
 	        _isOrderRebooked = false;
 	    }
-
-        public void SetIgnoreNextGeoLocResult(bool ignoreNextGeoLocResult)
-        {
-            _ignoreNextGeoLocResult = ignoreNextGeoLocResult;
-        }
     }
 }
 

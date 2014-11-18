@@ -21,7 +21,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 
 		Task SetAddress(Address address);
 		Task SetPickupAptAndRingCode(string apt, string ringCode);
-		Task<Address> SetAddressToUserLocation();
+		Task<Address> SetAddressToUserLocation(CancellationToken cancellationToken = default(CancellationToken));
 		Task ClearDestinationAddress();
 
         Task SetAddressToCoordinate(Position coordinate, CancellationToken cancellationToken);
@@ -75,8 +75,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 	    bool IsOrderRebooked();
 
         void CancelRebookOrder();
-
-	    void SetIgnoreNextGeoLocResult(bool ignoreNextGeoLocResult);
     }
 }
 
