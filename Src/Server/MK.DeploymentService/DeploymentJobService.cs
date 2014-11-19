@@ -286,13 +286,6 @@ namespace MK.DeploymentService
                 Log("Deploying Database");
                 DeployDataBase(packagesDirectory, companyName, appPoolName);
             }
-            else
-            {
-                if (appPool.State == ObjectState.Started)
-                {
-                    appPool.Stop();
-                }
-            }
             
             Log("Deploying Server");
             DeployServer(_job.Company.Id, companyName, appPoolName, packagesDirectory, iisManager);
