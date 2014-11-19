@@ -154,6 +154,8 @@ namespace DatabaseInitializer
                     Console.WriteLine("Rename New Database to use Company Name...");
                     creatorDb.RenameDatabase(param.MasterConnectionString, temporaryDatabaseName, param.CompanyName);
 
+                    SetupMirroring(param);
+
                     Console.WriteLine("Restart App Pool...");
                     if (appPool != null
                        && appPool.State == ObjectState.Stopped)
@@ -184,85 +186,87 @@ namespace DatabaseInitializer
                         creatorDb.AddUserAndRighst(param.MasterConnectionString, param.MkWebConnectionString,
                             "IIS APPPOOL\\" + param.AppPoolName, param.CompanyName);
                     }
+
+                    SetupMirroring(param);
                 }
 
                 var connectionString = new ConnectionStringSettings("MkWeb", param.MkWebConnectionString);
                 container = new UnityContainer();
                 module = new Module();
-                module.Init(container, connectionString); 
+                module.Init(container, connectionString);
 
-                //var serverSettings = container.Resolve<IServerSettings>();
-                //var commandBus = container.Resolve<ICommandBus>();
+                var serverSettings = container.Resolve<IServerSettings>();
+                var commandBus = container.Resolve<ICommandBus>();
 
 
-                //Console.WriteLine("Checking Company Created...");
-                //CheckCompanyCreated(container, commandBus);
+                Console.WriteLine("Checking Company Created...");
+                CheckCompanyCreated(container, commandBus);
 
-                //if (!isUpdate)
-                //{
-                //    appSettings = GetCompanySettings(param.CompanyName);
+                if (!isUpdate)
+                {
+                    appSettings = GetCompanySettings(param.CompanyName);
 
-                //    //Save settings so that next calls to referenceDataService has the IBS Url
-                //    AddOrUpdateAppSettings(commandBus, appSettings);
+                    //Save settings so that next calls to referenceDataService has the IBS Url
+                    AddOrUpdateAppSettings(commandBus, appSettings);
 
-                //    FetchingIbsDefaults(container, commandBus);
+                    FetchingIbsDefaults(container, commandBus);
 
-                //    CreateDefaultAccounts(container, commandBus);
-                //}
-                //else
-                //{
-                //    appSettings = serverSettings.GetSettings();
-                //}
+                    CreateDefaultAccounts(container, commandBus);
+                }
+                else
+                {
+                    appSettings = serverSettings.GetSettings();
+                }
 
-                //Console.WriteLine("Checking Rules...");
-                //CheckandMigrateDefaultRules(connectionString, commandBus, appSettings);
-                //Console.WriteLine("Checking Default Account Settings ...");
-                //EnsureDefaultAccountsHasCorrectSettings(connectionString, commandBus);
+                Console.WriteLine("Checking Rules...");
+                CheckandMigrateDefaultRules(connectionString, commandBus, appSettings);
+                Console.WriteLine("Checking Default Account Settings ...");
+                EnsureDefaultAccountsHasCorrectSettings(connectionString, commandBus);
 
-                //Console.WriteLine("Checking Default Tariff ...");
-                //CreateDefaultTariff(connectionString.ConnectionString, serverSettings, commandBus);
+                Console.WriteLine("Checking Default Tariff ...");
+                CreateDefaultTariff(connectionString.ConnectionString, serverSettings, commandBus);
+
+                Console.WriteLine("Checking Ratings ...");
+                var ratingTypes = new RatingTypeDao(() => new BookingDbContext(connectionString.ConnectionString)).GetAll();
+                if (!ratingTypes.Any())
+                {
+                    AddDefaultRatings(commandBus);
+                }
+                else
+                {
+                    UpdateRatings(commandBus, ratingTypes);
+                }
+
+                Console.WriteLine("Checking Vehicles Types ...");
+                var vehicleTypes = new VehicleTypeDao(() => new BookingDbContext(connectionString.ConnectionString));
+                if (!vehicleTypes.GetAll().Any())
+                {
+                    appSettings["VehicleTypeSelectionEnabled"] = "false";
+                    AddOrUpdateAppSettings(commandBus, appSettings);
+                    CreateDefaultVehicleTypes(container, commandBus);
+                }
+
+                Console.WriteLine("Migration of Notification Settings ...");
+                var configDao = new ConfigurationDao(() => new ConfigurationDbContext(connectionString.ConnectionString));
+                if (configDao.GetNotificationSettings() == null)
+                {
+                    commandBus.Send(new AddOrUpdateNotificationSettings
+                    {
+                        CompanyId = AppConstants.CompanyId,
+                        NotificationSettings = new NotificationSettings
+                        {
+                            Enabled = true,
+                            BookingConfirmationEmail = true,
+                            ConfirmPairingPush = true,
+                            DriverAssignedPush = true,
+                            NearbyTaxiPush = true,
+                            PaymentConfirmationPush = true,
+                            ReceiptEmail = true,
+                            VehicleAtPickupPush = true
+                        }
+                    });
+                }
                 
-                //Console.WriteLine("Checking Ratings ...");
-                //var ratingTypes = new RatingTypeDao(() => new BookingDbContext(connectionString.ConnectionString)).GetAll();
-                //if (!ratingTypes.Any())
-                //{
-                //    AddDefaultRatings(commandBus);
-                //}
-                //else
-                //{
-                //    UpdateRatings(commandBus, ratingTypes);
-                //}
-
-                //Console.WriteLine("Checking Vehicles Types ...");
-                //var vehicleTypes = new VehicleTypeDao(() => new BookingDbContext(connectionString.ConnectionString));
-                //if (!vehicleTypes.GetAll().Any())
-                //{
-                //    appSettings["VehicleTypeSelectionEnabled"] = "false";
-                //    AddOrUpdateAppSettings(commandBus, appSettings);
-                //    CreateDefaultVehicleTypes(container, commandBus);
-                //}
-
-                //Console.WriteLine("Migration of Notification Settings ...");
-                //var configDao = new ConfigurationDao(() => new ConfigurationDbContext(connectionString.ConnectionString));
-                //if (configDao.GetNotificationSettings() == null)
-                //{
-                //    commandBus.Send(new AddOrUpdateNotificationSettings
-                //    {
-                //        CompanyId = AppConstants.CompanyId,
-                //        NotificationSettings = new NotificationSettings
-                //        {
-                //            Enabled = true,
-                //            BookingConfirmationEmail = true,
-                //            ConfirmPairingPush = true,
-                //            DriverAssignedPush = true,
-                //            NearbyTaxiPush = true,
-                //            PaymentConfirmationPush = true,
-                //            ReceiptEmail = true,
-                //            VehicleAtPickupPush = true
-                //        }
-                //    });
-                //}
-                SetupMirroring(param, isUpdate);
 
                 Console.WriteLine("Database Creation/Migration for version {0} finished", CurrentVersion);
             }
@@ -277,7 +281,7 @@ namespace DatabaseInitializer
 // ReSharper restore LocalizableElement
         }
 
-        public static void SetupMirroring(DatabaseInitializerParams param, bool iUpdate)
+        public static void SetupMirroring(DatabaseInitializerParams param)
         {
             if (!string.IsNullOrEmpty(param.MirroringSharedFolder))
             {
@@ -477,22 +481,30 @@ namespace DatabaseInitializer
 
                 result = JsonSerializer.DeserializeFromString<DatabaseInitializerParams>(paramFileContent); 
             }
-            else if (args.Length > 0)
-            {
-                result.CompanyName = args[0];
-            }
-
             result.CompanyName = string.IsNullOrWhiteSpace(result.CompanyName) ? LocalDevProjectName : result.CompanyName;
 
             //Sql instance name
             if (string.IsNullOrWhiteSpace(result.MkWebConnectionString) && (args.Length > 1))
             {
-                result.SqlServerDirectory = args[1];
+                result.SqlInstanceName = args[1];
             }
-            else if (string.IsNullOrWhiteSpace(result.SqlServerDirectory))
+            else if (string.IsNullOrWhiteSpace(result.SqlInstanceName))
             {
-                Console.WriteLine("Sql Directory Default is C:\\Program Files\\Microsoft SQL Server\\MSSQL11.MSSQLSERVER\\MSSQL\\");
-                result.SqlServerDirectory = @"C:\Program Files\Microsoft SQL Server\MSSQL11.MSSQLSERVER\MSSQL\";
+                var sqlInstanceName = "MSSQL11.MSSQLSERVER";
+                Console.WriteLine("Sql Instance name ? Default is MSSQL11.MSSQLSERVER , 1- MSSQL10_50.MSSQLSERVER, 2- MSSQL12.MSSQLSERVER");
+
+                var userSqlInstance = Console.ReadLine();
+
+                sqlInstanceName = string.IsNullOrEmpty(userSqlInstance)
+                    ? sqlInstanceName
+                    : userSqlInstance == "1"
+                    ? "MSSQL10_50.MSSQLSERVER"
+                    : userSqlInstance == "2"
+                    ? "MSSQL12.MSSQLSERVER"
+                    : sqlInstanceName;
+
+                result.SqlInstanceName = sqlInstanceName;
+                Console.WriteLine("Sql Directory Default is " + result.SqlServerDirectory);
             }
             
             //Company connection string

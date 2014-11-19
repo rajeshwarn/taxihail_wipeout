@@ -18,6 +18,5 @@ namespace CustomerPortal.Web.Entities
         public EnvironmentRole Role { get; set; }
         public string DeployFolder { get; set; }
         public string DropFolder { get; set; }
-        public string SqlServerDirectory { get; set; }
     }
 }

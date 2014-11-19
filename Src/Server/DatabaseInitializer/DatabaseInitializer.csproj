@@ -239,7 +239,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="testmirroring.params">
+    <Content Include="dev.params">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="app.config">
@@ -247,6 +247,9 @@
       <TransformOnBuild>true</TransformOnBuild>
     </None>
     <None Include="DatabaseInitializer_TemporaryKey.pfx" />
+    <Content Include="testmirroring.params">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="packages.config" />
     <Content Include="log4net.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

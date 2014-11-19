@@ -19,7 +19,8 @@ namespace DeploymentServiceTools
 
         public string MasterConnectionString { get; set; }
 
-        public string SqlServerDirectory { get; set; }
+        public string SqlInstanceName { get; set; }        
+
         public string BackupFolder { get; set; }
 
         public string MirroringSharedFolder { get; set; }
@@ -31,9 +32,13 @@ namespace DeploymentServiceTools
         public string MirroringPrincipalPartner { get; set; }
         public string MirroringWitness { get; set; }
 
-        public string AppPoolName { get; set; }  
+        public string AppPoolName { get; set; }
 
-        
+        public string SqlServerDirectory
+        {
+            get { return string.Format("C:\\Program Files\\Microsoft SQL Server\\{0}\\MSSQL\\", SqlInstanceName); }
+        }
+
         
     }
 }

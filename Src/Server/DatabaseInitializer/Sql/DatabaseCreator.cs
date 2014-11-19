@@ -3,6 +3,7 @@
 using System;
 using System.Data.SqlTypes;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Configuration;
 using System.Data.Entity;
@@ -24,6 +25,7 @@ namespace DatabaseInitializer.Sql
     public class DatabaseCreator
     {
         ILog _logger = LogManager.GetLogger("DatabaseInitializer");
+        
         public void DropDatabase(string connStringMaster, string database, bool setoffline = true)
         {
             var exists = "IF  EXISTS (SELECT name FROM sys.databases WHERE name = N'" + database + "') ";
@@ -156,13 +158,25 @@ namespace DatabaseInitializer.Sql
             DatabaseHelper.ExecuteNonQuery(connectionString, exists + "DROP DATABASE [" + databaseName + "]");
 
 
+            var dataPath = Path.Combine(sqlDirectory, "DATA");
+            if (!Directory.Exists(dataPath))
+            {
+                Directory.CreateDirectory(dataPath);
+            }
+           
+            var logPath = Path.Combine(sqlDirectory, "Log");
+            if (!Directory.Exists(logPath))
+            {
+                Directory.CreateDirectory(logPath);
+            }
+
             DatabaseHelper.ExecuteNonQuery(connectionString, string.Format("CREATE DATABASE [" + databaseName + "] " +
                                                                            "ON " +
                                                                            "( NAME = {3}_{2}, FILENAME = '{0}\\{3}_{2}.mdf' ) " +
                                                                            "LOG ON " +
                                                                            "( NAME = {3}_{2}_log, FILENAME = '{1}\\{3}_{2}.ldf' ) ",
-                sqlDirectory + "DATA",
-                sqlDirectory + "Log",
+                dataPath,
+                logPath,
                 DateTime.Now.ToString("dd_MM_yyyy_HH_mm_ss"),
                 databaseName));
         }

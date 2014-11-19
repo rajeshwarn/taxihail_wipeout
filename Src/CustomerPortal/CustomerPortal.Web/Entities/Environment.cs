@@ -23,6 +23,5 @@ namespace CustomerPortal.Web.Entities
         public string WebSitesFolder { get; set; }
         public bool IsProduction { get; set; }
         public string Id { get; set; }
-        public string SqlServerDirectory { get; set; }
     }
 }
