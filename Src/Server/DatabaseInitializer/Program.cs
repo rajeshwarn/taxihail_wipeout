@@ -102,6 +102,7 @@ namespace DatabaseInitializer
                     var temporaryDatabaseName = param.CompanyName + "_New";
                     var builder = new SqlConnectionStringBuilder(param.MkWebConnectionString);
                     builder.InitialCatalog = temporaryDatabaseName;
+                    creatorDb.DropDatabase(param.MasterConnectionString, temporaryDatabaseName);
                     creatorDb.CreateDatabase(param.MasterConnectionString, temporaryDatabaseName, param.SqlServerDirectory);
                     creatorDb.CreateSchemas(new ConnectionStringSettings("MkWeb", builder.ConnectionString));
 
