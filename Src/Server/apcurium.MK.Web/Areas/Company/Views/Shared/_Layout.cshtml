@@ -1,0 +1,53 @@
+﻿<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js">
+ <!--<![endif]-->
+<head>
+    <!-- version : <%: ApplicationVersion %> -->
+    <meta charset='utf-8' />
+    <title>@ViewData["ApplicationName"] </title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="viewport" content="width=device-width,target-densitydpi=device-dpi,initial-scale=1.0, user-scalable=no">
+    <meta http-equiv="cleartype" content="on">
+    <link rel="stylesheet" href='~/themes/@ViewData["ApplicationKey"]/less/combined.less' />
+    <link rel="stylesheet" href='~/themes/@ViewData["ApplicationKey"]/less/combined-responsive.less' />
+    <script src="~/assets/js/modernizr.min.js"></script>
+    <script src="~/scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/scripts/jquery.sortable.min.js"></script>
+</head>
+<body>
+    <header>
+        <div class="login-status-zone">
+            <div><a href='@ViewData["BaseUrl"]' class='brand'></a></div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class='notification-zone'></div>
+        <div class='row'>
+            <div class="menu-zone span3">
+                <div class="well sidebar-nav">
+                    <ul class="nav nav-list">
+                        <li class="nav-header">Navigation</li>
+                        <li><a href="@(ViewData["BaseUrl"])" class="navbar-brand">Back to Main Page</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div id='main' class='span9'>
+                <div class="well clearfix form-horizontal">
+                    @RenderBody()
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class='modal-zone'></div>
+</body>
+</html>
+    
+
+
+   

@@ -416,6 +416,10 @@
     <Content Include="models\CompanySettings.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Areas\Company\Views\web.config" />
+    <Content Include="Areas\Company\Views\Shared\_Layout.cshtml" />
+    <Content Include="Areas\Company\Views\Privacy\Index.cshtml" />
+    <Content Include="Areas\Company\Views\_ViewStart.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -611,6 +615,9 @@
     <Compile Include="Areas\AdminTH\AdminTHAreaRegistration.cs" />
     <Compile Include="Areas\AdminTH\Controllers\TaxiHailNetworkController.cs" />
     <Compile Include="Areas\AdminTH\Controllers\ServiceStackController.cs" />
+    <Compile Include="Areas\BaseController.cs" />
+    <Compile Include="Areas\Company\CompanyAreaRegistration.cs" />
+    <Compile Include="Areas\Company\Controllers\PrivacyController.cs" />
     <Compile Include="default.aspx.cs">
       <DependentUpon>default.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -885,7 +892,9 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Areas\AdminTH\Models\" />
+    <Folder Include="Areas\Company\Models\" />
     <Folder Include="mixins\" />
+    <Folder Include="views\Base\" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
