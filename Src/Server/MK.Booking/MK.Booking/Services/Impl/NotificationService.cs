@@ -279,7 +279,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 LogoImg = imageLogoUrl
             };
 
-            SendEmail(clientEmailAddress, EmailConstant.Template.BookingConfirmation, EmailConstant.Subject.BookingConfirmation, templateData, clientLanguageCode);
+            SendEmail(clientEmailAddress, EmailConstant.Template.BookingConfirmation, EmailConstant.Subject.BookingConfirmation, templateData, clientLanguageCode, _serverSettings.ServerData.Email.CC);
         }
 
         public void SendPasswordResetEmail(string password, string clientEmailAddress, string clientLanguageCode)
@@ -440,7 +440,7 @@ namespace apcurium.MK.Booking.Services.Impl
             return null;
         }
 
-        private void SendEmail(string to, string bodyTemplate, string subjectTemplate, object templateData, string languageCode, params KeyValuePair<string, string>[] embeddedIMages)
+        private void SendEmail(string to, string bodyTemplate, string subjectTemplate, object templateData, string languageCode, string ccEmailAddress = null, params KeyValuePair<string, string>[] embeddedIMages)
         {
             var messageSubject = _templateService.Render(_resources.Get(subjectTemplate, languageCode), templateData);
 
@@ -456,6 +456,11 @@ namespace apcurium.MK.Booking.Services.Impl
                 BodyEncoding = Encoding.UTF8, 
                 SubjectEncoding = Encoding.UTF8
             };
+
+            if (ccEmailAddress.HasValue())
+            {
+                mailMessage.CC.Add(ccEmailAddress);
+            }
 
             var view = AlternateView.CreateAlternateViewFromString(_templateService.Render(template, templateData), Encoding.UTF8, "text/html");
             mailMessage.AlternateViews.Add(view);

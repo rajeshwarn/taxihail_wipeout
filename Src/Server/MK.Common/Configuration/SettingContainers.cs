@@ -200,6 +200,9 @@ namespace apcurium.MK.Common.Configuration
     public class EmailSettingContainer
     {
         public string NoReply { get; protected internal set; }
+
+        [CustomizableByCompany]
+        public string CC { get; protected internal set; }
     }
 
     public class ReceiptSettingContainer
