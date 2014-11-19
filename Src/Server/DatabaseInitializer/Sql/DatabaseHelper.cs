@@ -78,6 +78,11 @@ namespace DatabaseInitializer.Sql
                 result = sqlCommandCreate.ExecuteScalar();
                 connection.Close();
             }
+
+            if (result is DBNull)
+            {
+                return default(T);
+            }
             return (T) result;
         }
 
