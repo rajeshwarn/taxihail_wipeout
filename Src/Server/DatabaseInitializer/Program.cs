@@ -162,13 +162,6 @@ namespace DatabaseInitializer
 
                     SetupMirroring(param);
 
-                    Console.WriteLine("Restart App Pool...");
-                    if (appPool != null
-                       && appPool.State == ObjectState.Stopped)
-                    {
-                        appPool.Start();
-                    }
-
                     if (!string.IsNullOrEmpty(param.BackupFolder))
                     {
                         Console.WriteLine("Backup of old database...");

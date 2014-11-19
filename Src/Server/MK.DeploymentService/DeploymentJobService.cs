@@ -286,6 +286,13 @@ namespace MK.DeploymentService
                 Log("Deploying Database");
                 DeployDataBase(packagesDirectory, companyName, appPoolName);
             }
+            else
+            {
+                if (appPool.State == ObjectState.Started)
+                {
+                    appPool.Stop();
+                }
+            }
             
             Log("Deploying Server");
             DeployServer(_job.Company.Id, companyName, appPoolName, packagesDirectory, iisManager);
@@ -329,7 +336,7 @@ namespace MK.DeploymentService
             {
                 CompanyName = companyName,
                 BackupFolder = Settings.Default.BackupFolder,
-                SqlServerDirectory = _job.Server.SqlServerDirectory,
+                SqlInstanceName = _job.Server.SqlServerInstance,
                 MkWebConnectionString = string.Format(Settings.Default.ToolSqlConnectionString, companyName),
                 MasterConnectionString = Settings.Default.SqlConnectionStringMaster,
                 MirroringSharedFolder = Settings.Default.MirroringSharedFolder,
