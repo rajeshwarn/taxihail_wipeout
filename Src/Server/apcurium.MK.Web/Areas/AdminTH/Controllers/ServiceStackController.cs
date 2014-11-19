@@ -9,31 +9,21 @@ using System;
 
 namespace apcurium.MK.Web.Areas.AdminTH.Controllers
 {
-    public class ServiceStackController : Controller
+    public class ServiceStackController : BaseController
     {
         private readonly ICacheClient _cache;
         private object _userSession;
 
         protected ServiceStackController(ICacheClient cache, IServerSettings serverSettings)
+           : base(serverSettings)
         {
             _cache = cache;
-            ViewData["ApplicationName"] = serverSettings.ServerData.TaxiHail.ApplicationName;
-            ViewData["ApplicationKey"] = serverSettings.ServerData.TaxiHail.ApplicationKey;
             ViewData["IsAuthenticated"] = AuthSession.IsAuthenticated;
         }
-
-        public string BaseUrl { get; set; }
 
         protected IAuthSession AuthSession
         {
             get { return SessionAs<AuthUserSession>(); }
-        }
-
-        protected override IAsyncResult BeginExecute(RequestContext requestContext, AsyncCallback callback, object state)
-        {
-            BaseUrl = requestContext.HttpContext.Request.Url.GetLeftPart(UriPartial.Authority) + requestContext.HttpContext.Request.ApplicationPath;
-            ViewData["BaseUrl"] = BaseUrl;
-            return base.BeginExecute(requestContext, callback, state);
         }
 
         protected override void OnActionExecuting(ActionExecutingContext filterContext)

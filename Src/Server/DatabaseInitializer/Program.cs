@@ -267,6 +267,8 @@ namespace DatabaseInitializer
                     });
                 }
                 
+                EnsurePrivacyPolicyExists(connectionString, commandBus, serverSettings);
+                
 
                 Console.WriteLine("Database Creation/Migration for version {0} finished", CurrentVersion);
             }
@@ -822,6 +824,21 @@ namespace DatabaseInitializer
                     LogoName = "taxi",
                     ReferenceDataVehicleId = vehicle.Id ?? -1,
                     CompanyId = AppConstants.CompanyId
+                });
+            }
+        }
+
+        private static void EnsurePrivacyPolicyExists(ConnectionStringSettings connectionString, ICommandBus commandBus, IServerSettings serverSettings)
+        {
+            var company = new CompanyDao(() => new BookingDbContext(connectionString.ConnectionString));
+            if (!company.Get().PrivacyPolicy.HasValue())
+            {
+                var privacyTemplate = File.ReadAllText(@"DefaultPrivacy.txt");
+
+                commandBus.Send(new UpdatePrivacyPolicy
+                {
+                    CompanyId = AppConstants.CompanyId,
+                    Policy = string.Format(privacyTemplate, serverSettings.ServerData.TaxiHail.ApplicationName, serverSettings.ServerData.SupportEmail)
                 });
             }
         }

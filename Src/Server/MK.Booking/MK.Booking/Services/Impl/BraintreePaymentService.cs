@@ -166,7 +166,8 @@ namespace apcurium.MK.Booking.Services.Impl
                 {
                     Amount = amountToPreAuthorize,
                     PaymentMethodToken = cardToken,
-                    OrderId = orderId.ToString(),
+                    OrderId = orderId.ToString(),                    
+                    Channel = "MobileKnowledgeSystems_SP_MEC",
                     Options = new TransactionOptionsRequest
                     {
                         SubmitForSettlement = false
