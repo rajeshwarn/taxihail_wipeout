@@ -236,6 +236,9 @@
     </None>
     <None Include="DatabaseInitializer_TemporaryKey.pfx" />
     <None Include="packages.config" />
+    <Content Include="DefaultPrivacy.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="log4net.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
