@@ -543,7 +543,7 @@
       <Name>Cupertino</Name>
     </ProjectReference>
     <ProjectReference Include="..\CustomerPortal.Client\CustomerPortal.Client.csproj">
-      <Project>{15824AAE-2D25-414E-B9FF-618DE088C9E7}</Project>
+      <Project>{15824aae-2d25-414e-b9ff-618de088c9e7}</Project>
       <Name>CustomerPortal.Client</Name>
     </ProjectReference>
     <ProjectReference Include="..\CustomerPortal.Contract\CustomerPortal.Contract.csproj">
