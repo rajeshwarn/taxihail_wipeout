@@ -202,6 +202,7 @@ namespace apcurium.MK.Common.Configuration
         public string NoReply { get; protected internal set; }
 
         [CustomizableByCompany]
+        [Display(Name = "CC Email Address", Description = "Email address to put in CC when sending an email to a user (booking confirmation only for now)")]
         public string CC { get; protected internal set; }
     }
 
