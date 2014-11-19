@@ -172,7 +172,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 				{
                     this.Services().Message.ShowProgressNonModal(false);
 					var detailedAddress = UpdateAddressWithPlaceDetail(vm.Address);
-                    _orderWorkflowService.SetIgnoreNextGeoLocResult(true);
 
 					if(_isInLocationDetail)
 					{
@@ -180,6 +179,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 					}
 					else
 					{
+						((HomeViewModel)Parent).LocateMe.Cancel();
 						_orderWorkflowService.SetAddress(detailedAddress);
                     	PresentationStateRequested.Raise(this, new HomeViewModelStateRequestedEventArgs(HomeViewModelState.Initial));
 						ChangePresentation(new ZoomToStreetLevelPresentationHint(detailedAddress.Latitude, detailedAddress.Longitude));

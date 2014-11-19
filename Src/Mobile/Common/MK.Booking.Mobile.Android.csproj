@@ -337,6 +337,7 @@
     <Compile Include="AppServices\IRegisterWorkflowService.cs" />
     <Compile Include="AppServices\Impl\RegisterWorkflowService.cs" />
     <Compile Include="PresentationHints\ChangeZoomPresentationHint.cs" />
+    <Compile Include="CancellableCommand.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\CMTPayment\CMTPayment.Android.csproj">

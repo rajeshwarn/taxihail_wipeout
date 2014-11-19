@@ -130,8 +130,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             }
         }
 
-        public ICommand UserMovedMap { get; set; }
-
         private IList<AvailableVehicle> _availableVehicles = new List<AvailableVehicle>();
         public IList<AvailableVehicle> AvailableVehicles
         {
@@ -163,6 +161,21 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             }
         }
 
+        public MapViewModel ViewModel
+        {
+            get
+            {
+                return (MapViewModel)DataContext;
+            }
+        }
+
+        private void CancelAddressSearch()
+        {
+            lockGeocoding = true;
+            ((HomeViewModel)(ViewModel.Parent)).LocateMe.Cancel();
+            ViewModel.UserMovedMap.Cancel();
+        }
+
         public void InitializeBinding()
         {
             var set = this.CreateBindingSet<OrderMapFragment, MapViewModel>();
@@ -172,12 +185,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 switch (e.Action)
                 {
                     case MotionEventActions.Down:
-                        lockGeocoding = true;
-                        ((MapViewModel.CancellableCommand<MapBounds>)UserMovedMap).Cancel();
+                        CancelAddressSearch();
                         break;                    
                     case MotionEventActions.Move:                
-                        lockGeocoding = true;
-                        ((MapViewModel.CancellableCommand<MapBounds>)UserMovedMap).Cancel();
+                        CancelAddressSearch();
                         break;                       
                     default:
                         lockGeocoding = false;
@@ -208,10 +219,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 .ObserveOn(SynchronizationContext.Current)
                 .Subscribe(e => OnCameraChanged(e))
                 .DisposeWith(_subscriptions);
-
-            set.Bind()
-                .For(v => v.UserMovedMap)
-                .To(vm => vm.UserMovedMap);
 
             set.Bind()
                 .For(v => v.AddressSelectionMode)
@@ -373,7 +380,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             var bounds = GetMapBoundsFromProjection();
             if (!lockGeocoding)
             {
-                UserMovedMap.ExecuteIfPossible(bounds);
+                ViewModel.UserMovedMap.ExecuteIfPossible(bounds);
             }
 
             ShowAvailableVehicles (VehicleClusterHelper.Clusterize(AvailableVehicles, bounds)); 
