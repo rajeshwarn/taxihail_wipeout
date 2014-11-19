@@ -154,6 +154,12 @@ namespace DatabaseInitializer
                     Console.WriteLine("Rename New Database to use Company Name...");
                     creatorDb.RenameDatabase(param.MasterConnectionString, temporaryDatabaseName, param.CompanyName);
 
+                    if (param.MkWebConnectionString.ToLower().Contains("integrated security=true"))
+                    {
+                        creatorDb.AddUserAndRighst(param.MasterConnectionString, param.MkWebConnectionString,
+                            "IIS APPPOOL\\" + param.AppPoolName, param.CompanyName);
+                    }
+
                     SetupMirroring(param);
 
                     Console.WriteLine("Restart App Pool...");
