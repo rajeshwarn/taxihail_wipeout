@@ -228,6 +228,7 @@
     <Content Include="admin\controllers\NotificationSettingsController.js" />
     <Content Include="admin\controllers\NotificationController.js" />
     <Content Include="admin\controllers\RideRatingsController.js" />
+    <Content Include="admin\controllers\PrivacyPolicyController.js" />
     <Content Include="admin\controllers\VehicleTypesController.js" />
     <Content Include="admin\controllers\Controller.js" />
     <Content Include="admin\controllers\CompanySettingsController.js" />
@@ -244,6 +245,7 @@
     <Content Include="admin\models\EmailTemplates.js" />
     <Content Include="admin\models\NotificationSettings.js" />
     <Content Include="admin\models\RideRatings.js" />
+    <Content Include="admin\models\PrivacyPolicy.js" />
     <Content Include="admin\models\UnassignedReferenceDataVehicles.js" />
     <Content Include="admin\models\VehicleType.js" />
     <Content Include="admin\models\AccountCharge.js" />
@@ -269,6 +271,7 @@
     <Content Include="admin\views\ManageRideRatingsView.js" />
     <Content Include="admin\views\RideRatingItemView.js" />
     <Content Include="admin\views\SendTestEmailView.js" />
+    <Content Include="admin\views\UpdatePrivacyPolicyView.js" />
     <Content Include="admin\views\VehicleTypeItemView.js" />
     <Content Include="admin\views\AddAccountChargeView.js" />
     <Content Include="admin\views\AddFavoriteView.js" />
@@ -416,6 +419,13 @@
     <Content Include="models\CompanySettings.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Areas\Company\Views\web.config" />
+    <Content Include="Areas\Company\Views\Shared\_Layout.cshtml" />
+    <Content Include="Areas\Company\Views\Privacy\Index.cshtml" />
+    <Content Include="Areas\Company\Views\_ViewStart.cshtml" />
+    <Content Include="admin\templates\UpdatePrivacyPolicy.handlebars">
+      <SubType>Designer</SubType>
+    </Content>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -611,6 +621,9 @@
     <Compile Include="Areas\AdminTH\AdminTHAreaRegistration.cs" />
     <Compile Include="Areas\AdminTH\Controllers\TaxiHailNetworkController.cs" />
     <Compile Include="Areas\AdminTH\Controllers\ServiceStackController.cs" />
+    <Compile Include="Areas\BaseController.cs" />
+    <Compile Include="Areas\Company\CompanyAreaRegistration.cs" />
+    <Compile Include="Areas\Company\Controllers\PrivacyController.cs" />
     <Compile Include="default.aspx.cs">
       <DependentUpon>default.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -885,7 +898,9 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Areas\AdminTH\Models\" />
+    <Folder Include="Areas\Company\Models\" />
     <Folder Include="mixins\" />
+    <Folder Include="views\Base\" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
