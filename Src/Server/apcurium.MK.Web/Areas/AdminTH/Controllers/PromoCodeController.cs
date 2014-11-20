@@ -3,19 +3,23 @@ using System.Linq;
 using System.Web.Mvc;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
+using apcurium.MK.Booking.Security;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Web.Areas.AdminTH.Models;
+using apcurium.MK.Web.Attributes;
 using Infrastructure.Messaging;
 using ServiceStack.CacheAccess;
 
 namespace apcurium.MK.Web.Areas.AdminTH.Controllers
 {
+    [AuthorizationRequired(RoleName.Admin)]
     public class PromoCodeController : ServiceStackController
     {
         private readonly IPromotionDao _promotionDao;
         private readonly ICommandBus _commandBus;
 
-        public PromoCodeController(ICacheClient cache, IServerSettings serverSettings, IPromotionDao promotionDao, ICommandBus commandBus) : base(cache, serverSettings)
+        public PromoCodeController(ICacheClient cache, IServerSettings serverSettings, IPromotionDao promotionDao, ICommandBus commandBus) 
+            : base(cache, serverSettings)
         {
             _promotionDao = promotionDao;
             _commandBus = commandBus;
@@ -29,6 +33,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
         }
 
         // GET: AdminTH/PromoCode/Create
+        [SkipAuthentication]
         public ActionResult Create()
         {
             return View(new PromoCode());
@@ -69,7 +74,6 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                 });
 
                 TempData["Info"] = string.Format("Promotion \"{0}\" created", promoCode.Name);
-                TempData["RefreshButton"] = "<a class='text-warning' href='#' onclick='window.location.reload(true);'>Click here to refresh if you don't see it</a>";
                 return RedirectToAction("Index");
             }
             catch(Exception ex)
