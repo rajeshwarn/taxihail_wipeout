@@ -49,7 +49,7 @@ namespace apcurium.MK.Booking.Commands
         public Guid Id { get; private set; }
 
         public bool IsChargeAccountPaymentWithCardOnFile { get; set; }
-        
+
         public class PaymentInformation
         {
             public bool PayWithCreditCard { get; set; }

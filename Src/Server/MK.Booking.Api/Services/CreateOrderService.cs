@@ -14,6 +14,7 @@ using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Api.Jobs;
 using apcurium.MK.Booking.Calculator;
 using apcurium.MK.Booking.Commands;
+using apcurium.MK.Booking.Domain;
 using apcurium.MK.Booking.IBS;
 using apcurium.MK.Booking.IBS.Impl;
 using apcurium.MK.Booking.ReadModel;
@@ -26,6 +27,7 @@ using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using AutoMapper;
+using Infrastructure.EventSourcing;
 using Infrastructure.Messaging;
 using log4net;
 using ServiceStack.Common.Web;
@@ -45,6 +47,8 @@ namespace apcurium.MK.Booking.Api.Services
         private readonly IOrderDao _orderDao;
         private readonly IPaymentService _paymentService;
         private readonly ICreditCardDao _creditCardDao;
+        private readonly IPromotionDao _promotionDao;
+        private readonly IEventSourcedRepository<Promotion> _promoRepository;
         private readonly IAccountChargeDao _accountChargeDao;
         private readonly ICommandBus _commandBus;
         private readonly IServerSettings _serverSettings;
@@ -64,7 +68,9 @@ namespace apcurium.MK.Booking.Api.Services
             IAccountChargeDao accountChargeDao,
             IOrderDao orderDao,
             IPaymentService paymentService,
-            ICreditCardDao creditCardDao)
+            ICreditCardDao creditCardDao,
+            IPromotionDao promotionDao,
+            IEventSourcedRepository<Promotion> promoRepository)
         {
             _accountChargeDao = accountChargeDao;
             _commandBus = commandBus;
@@ -77,6 +83,8 @@ namespace apcurium.MK.Booking.Api.Services
             _orderDao = orderDao;
             _paymentService = paymentService;
             _creditCardDao = creditCardDao;
+            _promotionDao = promotionDao;
+            _promoRepository = promoRepository;
 
             _resources = new Resources.Resources(_serverSettings);
         }
@@ -223,6 +231,9 @@ namespace apcurium.MK.Booking.Api.Services
                 return new HttpError(ErrorCode.CreateOrder_CannotCreateInIbs + "_" + Math.Abs(result.Value));
             }
 
+            //Validate promotion and use it
+            ValidateAndApplyPromotion(request.PromoCode, request.Settings.ChargeTypeId, account.Id, , , isFutureBooking, request.ClientLanguageCode);
+
             var command = Mapper.Map<Commands.CreateOrder>(request);
             var emailCommand = Mapper.Map<SendBookingConfirmationEmail>(request);
 
@@ -258,7 +269,7 @@ namespace apcurium.MK.Booking.Api.Services
                 IBSStatusDescription = (string)_resources.Get("OrderStatus_wosWAITING", command.ClientLanguageCode),
             };
         }
-
+        
         public object Post(SwitchOrderToNextDispatchCompanyRequest request)
         {
             Log.Info("Switching order to another IBS : " + request.ToJson());
@@ -655,6 +666,46 @@ namespace apcurium.MK.Booking.Api.Services
             }
 
             return null;
+        }
+
+        private void ValidateAndApplyPromotion(string promoCode, int? chargeTypeId, Guid accountId, Guid orderId, DateTime pickupDate, bool isFutureBooking, string clientLanguageCode)
+        {
+            if (!promoCode.HasValue())
+            {
+                // No promo code entered
+                return;
+            }
+
+            if (chargeTypeId != ChargeTypes.CardOnFile.Id)
+            {
+                // Should never happen since we will check client-side if there's a promocode and not paying with CoF
+                throw new HttpError(HttpStatusCode.Forbidden, ErrorCode.CreateOrder_RuleDisable.ToString(),
+                    _resources.Get("CannotCreateOrder_PromotionMustUseCardOnFile", clientLanguageCode));
+            }
+
+            var promo = _promotionDao.FindByPromoCode(promoCode);
+            if (promo == null)
+            {
+                throw new HttpError(HttpStatusCode.Forbidden, ErrorCode.CreateOrder_RuleDisable.ToString(),
+                    _resources.Get("CannotCreateOrder_PromotionDoesNotExist", clientLanguageCode));
+            }
+
+            var promoDomainObject = _promoRepository.Get(promo.Id);
+            string errorMessage;
+            if (!promoDomainObject.CanUse(accountId, pickupDate, isFutureBooking, out errorMessage))
+            {
+                throw new HttpError(HttpStatusCode.Forbidden, ErrorCode.CreateOrder_RuleDisable.ToString(),
+                    _resources.Get(errorMessage, clientLanguageCode));
+            }
+
+            _commandBus.Send(new UsePromotion
+            {
+                PromoId = promo.Id,
+                AccountId = accountId,
+                OrderId = orderId,
+                PickupDate = pickupDate,
+                IsFutureBooking = isFutureBooking
+            });
         }
     }
 }

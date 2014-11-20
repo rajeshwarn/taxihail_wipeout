@@ -9,7 +9,8 @@ namespace apcurium.MK.Booking.CommandHandlers
         ICommandHandler<CreatePromotion>,
         ICommandHandler<UpdatePromotion>,
         ICommandHandler<ActivatePromotion>,
-        ICommandHandler<DeactivatePromotion>
+        ICommandHandler<DeactivatePromotion>,
+        ICommandHandler<UsePromotion>
     {
         private readonly IEventSourcedRepository<Promotion> _repository;
 
@@ -52,6 +53,15 @@ namespace apcurium.MK.Booking.CommandHandlers
             var promotion = _repository.Get(command.PromoId);
 
             promotion.Deactivate();
+
+            _repository.Save(promotion, command.Id.ToString());
+        }
+
+        public void Handle(UsePromotion command)
+        {
+            var promotion = _repository.Get(command.PromoId);
+
+            promotion.Use(command.OrderId, command.AccountId, command.PickupDate, command.IsFutureBooking);
 
             _repository.Save(promotion, command.Id.ToString());
         }
