@@ -510,6 +510,31 @@
                                                     </table>
                                                     {{/IsCardOnFile}}
                                                 </div>
+                                                <div class="receiptBottomInfo" style="float: left !important;">
+                                                    <table>
+                                                        <tr>
+                                                            <td class="title_block"><span>{{localize "Email_Body_YourDriver"}}</span></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <table class="invoice" cellpadding="0" cellspacing="0">
+                                                                    <tr style="color:{{EmailFontColor}} !important">
+                                                                        <td class="fare_list_title" style="text-transform: uppercase;">{{ DriverInfos.FullName }}</td>
+                                                                        <td class="list_value" />
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class="fare_list_title">{{ localize "Email_Body_VehicleModel" }}</td>
+                                                                        <td class="list_value">{{ DriverInfos.VehicleMake }} {{ DriverInfos.VehicleModel }}</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class="fare_list_title">{{ localize "Email_Body_VehicleNumber" }}</td>
+                                                                        <td class="list_value">{{ VehicleNumber }}</td>
+                                                                    </tr>
+                                                                </table>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                 </div>
                                             </div>
                                         </td>
                                     </tr>

@@ -471,5 +471,14 @@
   </data>
   <data name="CannotCreateOrderChargeAccountNotSupported" xml:space="preserve">
     <value>This account is not supported by the web site.</value>
+    <comment>This account is not supported by the web site.</comment>
+  </data>
+  <data name="Email_Body_VehicleModel" xml:space="preserve">
+    <value>Vehicle</value>
+    <comment>Vehicle</comment>
+  </data>
+  <data name="Email_Body_YourDriver" xml:space="preserve">
+    <value>Your Driver</value>
+    <comment>Your Driver</comment>
   </data>
 </root>
