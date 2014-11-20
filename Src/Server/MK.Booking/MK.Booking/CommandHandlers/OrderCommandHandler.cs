@@ -49,7 +49,7 @@ namespace apcurium.MK.Booking.CommandHandlers
         public void Handle(NotifyOrderTimedOut command)
         {
             var order = _repository.Find(command.OrderId);
-            order.NotifyOrderTimedOut();
+            order.NotifyOrderTimedOut(command.Market);
 
             _repository.Save(order, command.Id.ToString());
         }

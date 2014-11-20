@@ -311,7 +311,7 @@ namespace apcurium.MK.Booking.Api.Services
 
             var newOrderRequest = new CreateOrder
             {
-                PickupDate = GetCurrentOffsetedTime(request.NextDispatchCompanyKey, null),
+                PickupDate = GetCurrentOffsetedTime(request.NextDispatchCompanyKey, order.Market),
                 PickupAddress = order.PickupAddress,
                 DropOffAddress = order.DropOffAddress,
                 Market = order.Market,

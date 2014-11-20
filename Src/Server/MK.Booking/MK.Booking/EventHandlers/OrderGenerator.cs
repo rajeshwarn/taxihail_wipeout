@@ -369,9 +369,14 @@ namespace apcurium.MK.Booking.EventHandlers
                             && !details.NetworkPairingTimeout.HasValue
                             && _serverSettings.ServerData.Network.Enabled)
             {
-                return !details.CompanyKey.HasValue()
-                    ? eventDate.AddSeconds(_serverSettings.ServerData.Network.PrimaryOrderTimeout)
-                    : eventDate.AddSeconds(_serverSettings.ServerData.Network.SecondaryOrderTimeout);
+                if (!details.CompanyKey.HasValue()
+                    || (details.Market.HasValue() && !details.NextDispatchCompanyKey.HasValue()))
+                {
+                    // First timeout
+                    return eventDate.AddSeconds(_serverSettings.ServerData.Network.PrimaryOrderTimeout);
+                }
+                // Subsequent timeouts
+                return eventDate.AddSeconds(_serverSettings.ServerData.Network.SecondaryOrderTimeout);
             }
             return null;
         }
