@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.EventHandlers.Integration;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
@@ -23,6 +24,7 @@ namespace apcurium.MK.Booking.Services.Impl
         private readonly IAccountDao _accountDao;
         private readonly IOrderPaymentDao _paymentDao;
         private readonly IPairingService _pairingService;
+        private readonly IServerSettings _serverSettings;
 
         private BraintreeGateway BraintreeGateway { get; set; }
 
@@ -42,6 +44,7 @@ namespace apcurium.MK.Booking.Services.Impl
             _accountDao = accountDao;
             _paymentDao = paymentDao;
             _pairingService = pairingService;
+            _serverSettings = serverSettings;
 
             BraintreeGateway = GetBraintreeGateway(serverSettings.GetPaymentSettings().BraintreeServerSettings);
         }
@@ -183,6 +186,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 if (result.IsSuccess())
                 {
                     var paymentId = Guid.NewGuid();
+
                     _commandBus.Send(new InitiateCreditCardPayment
                     {
                         PaymentId = paymentId,
@@ -231,7 +235,24 @@ namespace apcurium.MK.Booking.Services.Impl
             }
 
             var account = _accountDao.FindById(orderDetail.AccountId);
-            
+
+            if (!_serverSettings.GetPaymentSettings().IsPreAuthEnabled)
+            {
+                // Credit card was not validated, so we need to preauth before commiting
+                var preAuthResponse = PreAuthorize(orderId, account.Email, cardToken, amount);
+                if (!preAuthResponse.IsSuccessful)
+                {
+                    return new CommitPreauthorizedPaymentResponse
+                    {
+                        IsSuccessful = false,
+                        Message = "PreAuthorization Failed"
+                    };
+                }
+
+                // Wait for OrderPaymentDetail to be created
+                Thread.Sleep(500);
+            }
+
             var paymentDetail = _paymentDao.FindNonPayPalByOrderId(orderId);
             if (paymentDetail == null)
             {

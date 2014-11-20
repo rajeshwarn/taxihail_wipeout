@@ -1,4 +1,6 @@
-﻿namespace apcurium.MK.Common.Resources
+﻿using System;
+
+namespace apcurium.MK.Common.Resources
 {
     public class PreAuthorizePaymentResponse : BasePaymentResponse
     {
