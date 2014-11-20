@@ -18,7 +18,7 @@ namespace apcurium.MK.Booking.Api.Services
             Dao = dao;
         }
 
-        public IValidator<ClientPopularAddressService> Validator { get; set; }
+        public IValidator<ClientPopularAddress> Validator { get; set; }
         protected IPopularAddressDao Dao { get; set; }
 
         public object Get(ClientPopularAddress request)

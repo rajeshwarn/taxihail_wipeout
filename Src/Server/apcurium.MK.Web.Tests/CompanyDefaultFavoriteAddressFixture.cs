@@ -143,7 +143,7 @@ namespace apcurium.MK.Web.Tests
         {
             var sut = new AdministrationServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
 
-            Assert.Throws<WebServiceException>(() => sut.UpdateDefaultFavoriteAddress(new DefaultFavoriteAddress
+            var ex =  Assert.Throws<WebServiceException>(() => sut.UpdateDefaultFavoriteAddress(new DefaultFavoriteAddress
                 {
                     Id = _knownAddressId,
                     Address = new Address
@@ -158,6 +158,8 @@ namespace apcurium.MK.Web.Tests
                         Longitude = double.NaN
                     }
                 }));
+
+            Assert.AreEqual("InclusiveBetween", ex.Message);
         }
     }
 }

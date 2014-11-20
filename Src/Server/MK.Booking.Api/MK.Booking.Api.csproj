@@ -202,6 +202,7 @@
     <Compile Include="Services\VehicleService.cs" />
     <Compile Include="Validation\CreateOrderValidator.cs" />
     <Compile Include="Validation\DefaultFavoriteAddressValidator.cs" />
+    <Compile Include="Validation\PopularAddressValidator.cs" />
     <Compile Include="Validation\RegisterAccountValidator.cs" />
     <Compile Include="Validation\TariffValidator.cs" />
     <Compile Include="Validation\SaveFavoriteAddressValidator.cs" />
