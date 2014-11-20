@@ -18,11 +18,12 @@ namespace apcurium.MK.Booking.Api.Services
     {
         private readonly IIBSServiceProvider _ibsServiceProvider;
         private readonly IServerSettings _serverSettings;
-
+        private readonly Booking.Resources.Resources _resources;
         public IbsFareService(IIBSServiceProvider ibsServiceProvider, IServerSettings serverSettings)
         {
             _ibsServiceProvider = ibsServiceProvider;
             _serverSettings = serverSettings;
+            _resources = new Booking.Resources.Resources(serverSettings);
         }
 
         public DirectionInfo Get(IbsFareRequest request)
@@ -39,7 +40,8 @@ namespace apcurium.MK.Booking.Api.Services
                     Distance = (int) (fare.Distance*1000),
                     Price = fare.FareEstimate,
                     FormattedDistance = FormatDistance((int) (fare.Distance*1000)),
-                }
+                    FormattedPrice = _resources.FormatPrice( fare.FareEstimate)
+                }            
                 : new DirectionInfo();
         }
 
