@@ -53,8 +53,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		readonly ISubject<string> _marketSubject = new BehaviorSubject<string>(string.Empty);
 
         private bool _isOrderRebooked;
-	    private bool _ignoreNextGeoLocResult;
-		private bool _isCurrentlyReverseGeocodingPosition;
 
 	    private Position _lastMarketPosition = new Position();
 
@@ -90,18 +88,13 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
 		    _estimatedFareDisplaySubject = new BehaviorSubject<string>(_localize[_appSettings.Data.DestinationIsRequired ? "NoFareTextIfDestinationIsRequired" : "NoFareText"]);
 		}
-
-		public bool IsLocateMeDisabled()
-		{
-			return _isCurrentlyReverseGeocodingPosition;
-		}
-
+			
 		public async Task SetAddress(Address address)
 		{
 			await SetAddressToCurrentSelection(address);
 		}
 
-		public async Task<Address> SetAddressToUserLocation()
+		public async Task<Address> SetAddressToUserLocation(CancellationToken cancellationToken = default(CancellationToken))
 		{
 			_loadingAddressSubject.OnNext(true);
 
@@ -113,26 +106,18 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		    }
 
             var address = await SearchAddressForCoordinate(position);
-
-			// if _ignoreNextGeoLocResult is true, it means that while waiting for the above statement, user moved map or selected an address
-			// when the statement will be done, we want to ignore the position detected by the locate me since he manually changed his position
-		    if (!_ignoreNextGeoLocResult)
-		    {
-                await SetAddressToCurrentSelection(address);
-		        return address;
-		    }
-		    return new Address();
+			cancellationToken.ThrowIfCancellationRequested();
+			await SetAddressToCurrentSelection(address);
+			return address;
 		}
 
         public async Task SetAddressToCoordinate(Position coordinate, CancellationToken cancellationToken)
 		{
-			_isCurrentlyReverseGeocodingPosition = true;
 			var address = await SearchAddressForCoordinate(coordinate);
 			address.Latitude = coordinate.Latitude;
 			address.Longitude = coordinate.Longitude;
 			cancellationToken.ThrowIfCancellationRequested();
 			await SetAddressToCurrentSelection(address, cancellationToken);
-			_isCurrentlyReverseGeocodingPosition = false;
 		}
 
 		public async Task ClearDestinationAddress()
@@ -756,11 +741,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 	    {
 	        _isOrderRebooked = false;
 	    }
-
-        public void SetIgnoreNextGeoLocResult(bool ignoreNextGeoLocResult)
-        {
-            _ignoreNextGeoLocResult = ignoreNextGeoLocResult;
-        }
 
 	    private async void SetMarket(Position currentPosition)
 	    {

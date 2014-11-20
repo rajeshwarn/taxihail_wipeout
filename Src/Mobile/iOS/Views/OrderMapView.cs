@@ -69,6 +69,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			};
         }
 
+        public MapViewModel ViewModel
+        {
+            get
+            {
+                return (MapViewModel)DataContext;
+            }
+        }
+
         public override void Draw(RectangleF rect)
         {
             base.Draw(rect);
@@ -90,10 +98,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 set.Bind()
                     .For(v => v.DestinationAddress)
                     .To(vm => vm.DestinationAddress);
-
-                set.Bind()
-                    .For(v => v.UserMovedMap)
-                    .To(vm => vm.UserMovedMap);
 
                 set.Bind()
                     .For(v => v.AddressSelectionMode)
@@ -307,8 +311,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 }
             }            
         }
-
-        public ICommand UserMovedMap { get; set; }
                      
         private void HandleTouchBegin (object sender, EventArgs e)
         {
@@ -350,7 +352,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             {
                 var bounds = GetMapBoundsFromProjection();
                 
-                UserMovedMap.ExecuteIfPossible(bounds);                
+                ViewModel.UserMovedMap.ExecuteIfPossible(bounds);                
             });
         }
 
@@ -458,9 +460,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
         private void CancelAddressSearch()
         {
-            ((MapViewModel.CancellableCommand<MapBounds>)UserMovedMap).Cancel();
+            ((HomeViewModel)(ViewModel.Parent)).LocateMe.Cancel();
+            ViewModel.UserMovedMap.Cancel();
             _userMovedMapSubsciption.Disposable = null;
-			
         }
 
         private void ChangeState(HomeViewModelPresentationHint hint)

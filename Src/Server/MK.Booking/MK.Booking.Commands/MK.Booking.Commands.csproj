@@ -90,6 +90,7 @@
     <Compile Include="ActivateRule.cs" />
     <Compile Include="DeactivateRule.cs" />
     <Compile Include="UpdatePromotion.cs" />
+    <Compile Include="UpdatePrivacyPolicy.cs" />
     <Compile Include="UpdateRule.cs" />
     <Compile Include="DeleteRule.cs" />
     <Compile Include="CreateRule.cs" />
