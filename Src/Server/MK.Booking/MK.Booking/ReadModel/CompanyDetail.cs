@@ -10,6 +10,8 @@ namespace apcurium.MK.Booking.ReadModel
 
         public string TermsAndConditions { get; set; }
 
+        public string PrivacyPolicy { get; set; }
+
         public string Version { get; set; }
     }
 }

@@ -21,6 +21,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public bool IsDeferredLoaded { get; private set; }
 
+		public BaseViewModel Parent { get; set; }
+
 		protected new void RaisePropertyChanged([CallerMemberName]string whichProperty = null)
 		{
 			base.RaisePropertyChanged(whichProperty);
@@ -100,6 +102,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             where TViewModel: BaseViewModel
 		{
 		    var viewModel = builder.Invoke();
+			viewModel.Parent = this;
             viewModel.IsDeferredLoaded = lazyLoad;
 
 		    if (!lazyLoad)
@@ -111,10 +114,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			return viewModel;
 		}
 
-		protected virtual TViewModel AddChild<TViewModel>(bool layzyLoad = false)
+		protected virtual TViewModel AddChild<TViewModel>(bool lazyLoad = false)
             where TViewModel: BaseViewModel
 		{
-			return AddChild(Mvx.IocConstruct<TViewModel>, layzyLoad);
+			return AddChild(Mvx.IocConstruct<TViewModel>, lazyLoad);
 		}
 
 		protected override void InitFromBundle(IMvxBundle parameters)

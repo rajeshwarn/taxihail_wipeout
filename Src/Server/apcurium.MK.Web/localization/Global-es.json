@@ -14,6 +14,7 @@
 	"error.NotANumber": "<!-- Este campo debe ser un número. -->",
 	"error.friendlyNameRequired": "El nombre es requerido",
 	"error.fullAddressRequired": "La dirección es requerida",
+	"error.accountNotSupported" : "Esta cuenta no es apoyada por la página web",
 	"signup.confirmation": "Su cuenta ha sido creada. En unos momentos usted va a recibir un Email con un vínculo que debe seguir para confirmar su registro.",
 	"signup.confirmationWithoutActivation": "Cuenta creada. Mucha Gracias!",
 	"search.no-result": "Comienze a ingresar una dirección o el nombre del lugar.",

@@ -79,6 +79,7 @@
     <Compile Include="PayPalExpressCheckoutPaymentInitiated.cs" />
     <Compile Include="PayPalPaymentCancellationFailed.cs" />
     <Compile Include="PromotionActivated.cs" />
+    <Compile Include="PrivacyPolicyUpdated.cs" />
     <Compile Include="PromotionCreated.cs" />
     <Compile Include="PromotionDeactivated.cs" />
     <Compile Include="PromotionUpdated.cs" />

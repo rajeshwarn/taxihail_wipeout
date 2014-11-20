@@ -83,6 +83,8 @@ namespace apcurium.MK.Booking.Domain
             Handles<VehicleTypeDeleted>(NoAction);
 
             Handles<NotificationSettingsAddedOrUpdated>(NoAction);
+
+            Handles<PrivacyPolicyUpdated>(NoAction);
         }
 
         private void OnPaymentSettingUpdated(PaymentSettingUpdated obj)
@@ -420,12 +422,6 @@ namespace apcurium.MK.Booking.Domain
             });
         }
 
-        private bool GoingFromCmtToRidelinqOrRidelinqToCmt(PaymentMethod original, PaymentMethod newMethod)
-        {
-            return ((original == PaymentMethod.Cmt || original == PaymentMethod.RideLinqCmt) &&
-                    (newMethod == PaymentMethod.Cmt || newMethod == PaymentMethod.RideLinqCmt));
-        }
-
         public void ActivateRule(Guid ruleId)
         {
             Update(new RuleActivated
@@ -440,86 +436,6 @@ namespace apcurium.MK.Booking.Domain
             {
                 RuleId = ruleId
             });
-        }
-
-        private static void ValidateFavoriteAddress(string friendlyName, string fullAddress, double latitude,
-            double longitude)
-        {
-            if (Params.Get(friendlyName, fullAddress).Any(string.IsNullOrEmpty))
-            {
-                throw new InvalidOperationException("Missing required fields");
-            }
-
-            if (latitude < -90 || latitude > 90)
-            {
-// ReSharper disable LocalizableElement
-                throw new ArgumentOutOfRangeException("latitude", "Invalid latitude");
-            }
-
-            if (longitude < -180 || latitude > 180)
-            {
-                throw new ArgumentOutOfRangeException("longitude", "Invalid longitude");
-            }
-// ReSharper restore LocalizableElement
-        }
-
-        private void OnRateCreated(TariffCreated @event)
-        {
-            if (@event.Type == TariffType.Default)
-            {
-                _defaultTariffId = @event.TariffId;
-            }
-        }
-
-        private void OnRuleCreated(RuleCreated @event)
-        {
-            if (@event.Type == RuleType.Default)
-            {
-                if (!_defaultRules.ContainsKey(@event.Category))
-                {
-                    _defaultRules.Add(@event.Category, @event.RuleId);
-                }
-                else
-                {
-                    _defaultRules[@event.Category] = @event.RuleId;
-                }
-            }
-        }
-
-        private void OnRatingTypeAdded(RatingTypeAdded @event)
-        {
-            if (!_ratingTypes.ContainsKey(@event.RatingTypeId))
-            {
-                _ratingTypes.Add(@event.RatingTypeId, new List<RatingType>());
-            }
-
-            _ratingTypes[@event.RatingTypeId].Add(new RatingType
-            {
-                Id = @event.RatingTypeId,
-                Name = @event.Name,
-                Language = @event.Language
-            });
-        }
-
-        private void OnRatingTypeUpdated(RatingTypeUpdated @event)
-        {
-            if (_ratingTypes.ContainsKey(@event.RatingTypeId))
-            {
-                var ratingType = _ratingTypes[@event.RatingTypeId];
-                var ratingTypeToUpdate = ratingType.FirstOrDefault(t => t.Language == @event.Language);
-                if (ratingTypeToUpdate != null)
-                {
-                    ratingTypeToUpdate.Name = @event.Name;
-                }
-            }
-        }
-
-        private void OnRatingTypeDeleted(RatingTypeDeleted @event)
-        {
-            if (_ratingTypes.ContainsKey(@event.RatingTypeId))
-            {
-                _ratingTypes.Remove(@event.RatingTypeId);
-            }
         }
 
         public void UpdateTermsAndConditions(string termsAndConditions)
@@ -583,6 +499,98 @@ namespace apcurium.MK.Booking.Domain
             {
                 NotificationSettings = notificationSettings
             });
+        }
+
+        public void UpdatePrivacyPolicy(string policy)
+        {
+            Update(new PrivacyPolicyUpdated
+            {
+                Policy = policy
+            });
+        }
+
+        private bool GoingFromCmtToRidelinqOrRidelinqToCmt(PaymentMethod original, PaymentMethod newMethod)
+        {
+            return ((original == PaymentMethod.Cmt || original == PaymentMethod.RideLinqCmt) &&
+                    (newMethod == PaymentMethod.Cmt || newMethod == PaymentMethod.RideLinqCmt));
+        }
+
+        private static void ValidateFavoriteAddress(string friendlyName, string fullAddress, double latitude,
+            double longitude)
+        {
+            if (Params.Get(friendlyName, fullAddress).Any(string.IsNullOrEmpty))
+            {
+                throw new InvalidOperationException("Missing required fields");
+            }
+
+            if (double.IsNaN(latitude) || latitude < -90 || latitude > 90)
+            {
+                throw new ArgumentOutOfRangeException("latitude", "Invalid latitude");
+            }
+
+            if (double.IsNaN(longitude) || longitude < -180 || longitude > 180)
+            {
+                throw new ArgumentOutOfRangeException("longitude", "Invalid longitude");
+            }
+        }
+
+        private void OnRateCreated(TariffCreated @event)
+        {
+            if (@event.Type == TariffType.Default)
+            {
+                _defaultTariffId = @event.TariffId;
+            }
+        }
+
+        private void OnRuleCreated(RuleCreated @event)
+        {
+            if (@event.Type == RuleType.Default)
+            {
+                if (!_defaultRules.ContainsKey(@event.Category))
+                {
+                    _defaultRules.Add(@event.Category, @event.RuleId);
+                }
+                else
+                {
+                    _defaultRules[@event.Category] = @event.RuleId;
+                }
+            }
+        }
+
+        private void OnRatingTypeAdded(RatingTypeAdded @event)
+        {
+            if (!_ratingTypes.ContainsKey(@event.RatingTypeId))
+            {
+                _ratingTypes.Add(@event.RatingTypeId, new List<RatingType>());
+            }
+
+            _ratingTypes[@event.RatingTypeId].Add(new RatingType
+            {
+                Id = @event.RatingTypeId,
+                Name = @event.Name,
+                Language = @event.Language
+            });
+        }
+
+        private void OnRatingTypeUpdated(RatingTypeUpdated @event)
+        {
+            if (_ratingTypes.ContainsKey(@event.RatingTypeId))
+            {
+                var ratingType = _ratingTypes[@event.RatingTypeId];
+                var ratingTypeToUpdate = ratingType.FirstOrDefault(t => t.Language == @event.Language);
+                if (ratingTypeToUpdate != null)
+                {
+                    ratingTypeToUpdate.Name = @event.Name;
+                }
+            }
+        }
+
+        private void OnRatingTypeDeleted(RatingTypeDeleted @event)
+        {
+            if (_ratingTypes.ContainsKey(@event.RatingTypeId))
+            {
+                _ratingTypes.Remove(@event.RatingTypeId);
+            }
         }
     }
 }

@@ -14,6 +14,9 @@ using System;
 using System.Reactive.Threading.Tasks;
 using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Booking.Maps.Geo;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -101,7 +104,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 // Don't await side panel creation
 				Panel.Start();
 				CheckTermsAsync();
-
 
 				this.Services().ApplicationInfo.CheckVersionAsync();
 
@@ -306,7 +308,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					if (_currentState == HomeViewModelState.Initial 
 						&& addressSelectionMode == AddressSelectionMode.PickupSelection)
 					{
-							SetMapCenterToUserLocation(true);
+						SetMapCenterToUserLocation(true);
 					}									
 				});
 			}
@@ -316,38 +318,45 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		 * Should ONLY be called by the "Locate me" button
 		 * Use AutomaticLocateMeAtPickup if it's an automatic trigger after app event (appactivated, etc.)
 		 **/
-		public ICommand LocateMe
+		private CancellableCommand _locateMe;
+		public CancellableCommand LocateMe
 		{
 			get
 			{
-				return this.GetCommand(() =>
-				{					
-					SetMapCenterToUserLocation();
-				}, () => !_orderWorkflowService.IsLocateMeDisabled());
+				return _locateMe ?? (_locateMe = new CancellableCommand(token =>
+				{
+					Map.UserMovedMap.Cancel();
+					SetMapCenterToUserLocation(false, token);
+				}));
 			}
 		}
 
-		private async void SetMapCenterToUserLocation(bool initialZoom = false)
+		private async void SetMapCenterToUserLocation(bool initialZoom, CancellationToken cancellationToken = default(CancellationToken))
 		{
-            _orderWorkflowService.SetIgnoreNextGeoLocResult(false);
-			var address = await _orderWorkflowService.SetAddressToUserLocation();
-
-			if(address.HasValidCoordinate())
+			try
 			{
-				// zoom like uber means start at user location with street level zoom and when and only when you have vehicle, zoom out
-				// otherwise, this causes problems on slow networks where the address is found but the pin is not placed correctly and we show the entire map of the world until we get the timeout
-				this.ChangePresentation(new ZoomToStreetLevelPresentationHint(address.Latitude, address.Longitude, initialZoom));
-
-				// do the uber zoom
-				try 
+				var address = await _orderWorkflowService.SetAddressToUserLocation(cancellationToken);
+				if(address.HasValidCoordinate())
 				{
-					var availableVehicles = await _vehicleService.GetAndObserveAvailableVehicles ().Timeout (TimeSpan.FromSeconds (5)).Where (x => x.Count () > 0).Take (1).ToTask();
-					ZoomOnNearbyVehiclesIfPossible (availableVehicles);
+					// zoom like uber means start at user location with street level zoom and when and only when you have vehicle, zoom out
+					// otherwise, this causes problems on slow networks where the address is found but the pin is not placed correctly and we show the entire map of the world until we get the timeout
+					this.ChangePresentation(new ZoomToStreetLevelPresentationHint(address.Latitude, address.Longitude, initialZoom));
+
+					// do the uber zoom
+					try 
+					{
+						var availableVehicles = await _vehicleService.GetAndObserveAvailableVehicles ().Timeout (TimeSpan.FromSeconds (5)).Where (x => x.Count () > 0).Take (1).ToTask();
+						ZoomOnNearbyVehiclesIfPossible (availableVehicles);
+					}
+					catch (TimeoutException)
+					{ 
+						Console.WriteLine("ZoomOnNearbyVehiclesIfPossible: Timeout occured while waiting for available vehicles");
+					}
 				}
-				catch (TimeoutException)
-				{ 
-					Console.WriteLine("ZoomOnNearbyVehiclesIfPossible: Timeout occured while waiting for available vehicles");
-				}
+			}
+			catch(OperationCanceledException)
+			{
+				return;
 			}
 		}
 
