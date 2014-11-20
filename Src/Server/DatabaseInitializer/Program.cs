@@ -85,7 +85,7 @@ namespace DatabaseInitializer
                 {
 #if DEBUG
                     Console.WriteLine("Drop Existing Database? Y or N");
-                    var shouldDrop = args.Length > 2 ? args[2] : Console.ReadLine();
+                    var shouldDrop = args.Length > 1 ? args[1] : Console.ReadLine();
                     if ("Y".Equals(shouldDrop, StringComparison.OrdinalIgnoreCase))
                     {
                         creatorDb.DropDatabase(param.MasterConnectionString, param.CompanyName);
