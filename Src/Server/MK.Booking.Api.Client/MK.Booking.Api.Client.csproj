@@ -105,7 +105,6 @@
     <Compile Include="TaxiHail\PushNotificationAdministrationServiceClient.cs" />
     <Compile Include="TaxiHail\RulesServiceClient.cs" />
     <Compile Include="TaxiHail\DirectionsServiceClient.cs" />
-    <Compile Include="TaxiHail\GeocodingServiceClient.cs" />
     <Compile Include="IAuthServiceClient.cs" />
     <Compile Include="IAccountServiceClient.cs" />
     <Compile Include="TaxiHail\NearbyPlacesClient.cs" />
