@@ -221,8 +221,8 @@
                             }
                         }
 
+                        this.model.set('lastMarket', data);
                         this.model.set('lastMarketPosition', { Latitude: position.latitude, Longitude: position.longitude });
-
                     }, this)
                 });
             }
