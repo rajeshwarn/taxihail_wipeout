@@ -25,9 +25,6 @@
             /* terms and conditions */
             "termsandconditions": "termsAndConditions",
 
-            /* privacy policy */
-            "privacypolicy": "privacyPolicy",
-
             /* settings */
             "settings": "manageCompanySettings",
 
@@ -147,10 +144,6 @@
         
         termsAndConditions: function() {
             action(TaxiHail.TermsAndConditionsController, 'index');
-        },
-
-        privacyPolicy: function () {
-            action(TaxiHail.PrivacyPolicyController, 'index');
         },
 
         manageTariffs: function() {

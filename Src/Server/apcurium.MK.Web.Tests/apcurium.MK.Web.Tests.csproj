@@ -146,7 +146,6 @@
     <Compile Include="SearchLocationsFixture.cs" />
     <Compile Include="DirectionsFixture.cs" />
     <Compile Include="FavoriteAddressFixture.cs" />
-    <Compile Include="GeolocFixture.cs" />
     <Compile Include="NearbyPlacesFixture.cs" />
     <Compile Include="OrderFixture.cs" />
     <Compile Include="OrderStatusFixture.cs" />

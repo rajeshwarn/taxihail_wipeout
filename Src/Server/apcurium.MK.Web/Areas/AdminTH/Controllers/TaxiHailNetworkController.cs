@@ -4,13 +4,16 @@ using System.Threading.Tasks;
 using System.Web.Mvc;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Services;
+using apcurium.MK.Booking.Security;
 using apcurium.MK.Common.Configuration;
+using apcurium.MK.Web.Attributes;
 using CustomerPortal.Client;
 using CustomerPortal.Contract.Resources;
 using ServiceStack.CacheAccess;
 
 namespace apcurium.MK.Web.Areas.AdminTH.Controllers
 {
+    [AuthorizationRequired(RoleName.Admin)]
     public class TaxiHailNetworkController : ServiceStackController
     {
         private readonly IServerSettings _serverSettings;

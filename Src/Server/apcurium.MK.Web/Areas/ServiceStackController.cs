@@ -1,11 +1,14 @@
-﻿using System.Web.Mvc;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Web.Mvc;
+using apcurium.MK.Common.Configuration;
+using apcurium.MK.Web.Attributes;
 using ServiceStack.CacheAccess;
 using ServiceStack.ServiceInterface;
 using ServiceStack.ServiceInterface.Auth;
 using ServiceStack.WebHost.Endpoints.Extensions;
-using apcurium.MK.Common.Configuration;
 
-namespace apcurium.MK.Web.Areas.AdminTH.Controllers
+namespace apcurium.MK.Web.Areas
 {
     public class ServiceStackController : BaseController
     {
@@ -13,7 +16,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
         private object _userSession;
 
         protected ServiceStackController(ICacheClient cache, IServerSettings serverSettings)
-           : base(serverSettings)
+            : base(serverSettings)
         {
             _cache = cache;
             ViewData["IsAuthenticated"] = AuthSession.IsAuthenticated;
@@ -26,10 +29,14 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
 
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
-            if (!AuthSession.IsAuthenticated)
+            if (NeedsToBeAuthenticated(filterContext))
             {
-                filterContext.Result = Redirect(BaseUrl);
+                if (!AuthSession.IsAuthenticated)
+                {
+                    filterContext.Result = Redirect(BaseUrl);
+                }
             }
+            
             base.OnActionExecuting(filterContext);
         }
 
@@ -41,6 +48,19 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
             }
 
             return (TUserSession)_userSession;
+        }
+
+        public bool UserHasPermission(IEnumerable<string> permissions)
+        {
+            return permissions.Any(x => AuthSession.HasPermission(x));
+        }
+
+        private bool NeedsToBeAuthenticated(ActionExecutingContext filterContext)
+        {
+            var skipAuthOnAction = filterContext.ActionDescriptor.GetCustomAttributes(typeof (SkipAuthenticationAttribute), true);
+            var skipAuthOnController = filterContext.ActionDescriptor.ControllerDescriptor.GetCustomAttributes(typeof(SkipAuthenticationAttribute), true);
+            
+            return !(skipAuthOnAction.Any() || skipAuthOnController.Any());
         }
     }
 }
