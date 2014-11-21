@@ -6,6 +6,7 @@ using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.IBS;
 using apcurium.MK.Booking.ReadModel;
+using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
@@ -27,19 +28,22 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
         private readonly IIBSServiceProvider _ibsServiceProvider;
         private readonly ITaxiHailNetworkServiceClient _taxiHailNetworkServiceClient;
         private readonly HoneyBadgerServiceClient _honeyBadgerServiceClient;
+        private readonly IConfigurationDao _configurationDao;
 
         public OrderDispatchCompanyManager(
             ICommandBus commandBus,
             Func<BookingDbContext> contextFactory,
             IIBSServiceProvider ibsServiceProvider,
             ITaxiHailNetworkServiceClient taxiHailNetworkServiceClient,
-            HoneyBadgerServiceClient honeyBadgerServiceClient)
+            HoneyBadgerServiceClient honeyBadgerServiceClient,
+            IConfigurationDao configurationDao)
         {
             _contextFactory = contextFactory;
             _ibsServiceProvider = ibsServiceProvider;
             _commandBus = commandBus;
             _taxiHailNetworkServiceClient = taxiHailNetworkServiceClient;
             _honeyBadgerServiceClient = honeyBadgerServiceClient;
+            _configurationDao = configurationDao;
         }
 
         public async void Handle(OrderTimedOut @event)
@@ -64,7 +68,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                     Longitude = order.PickupAddress.Longitude
                 };
                 
-                NetworkFleetResponse nextDispatchCompany;
+                NetworkFleetResponse nextDispatchCompany = null;
 
                 if (@event.Market.HasValue())
                 {
@@ -75,8 +79,17 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                 else
                 {
                     // Local market
-                    var networkFleet = await _taxiHailNetworkServiceClient.GetNetworkFleetAsync(details.CompanyKey, pickUpPosition.Latitude, pickUpPosition.Longitude);
-                    nextDispatchCompany = FindNextDispatchCompany(details.CompanyKey, pickUpPosition, networkFleet);
+                    var userTaxiHailNetworkSettings = _configurationDao.GetUserTaxiHailNetworkSettings(details.AccountId);
+
+                    if (userTaxiHailNetworkSettings.Enabled)
+                    {
+                        var networkFleet = await _taxiHailNetworkServiceClient.GetNetworkFleetAsync(details.CompanyKey, pickUpPosition.Latitude, pickUpPosition.Longitude);
+
+                        // Remove fleets that were disabled by the user
+                        var userNetworkFleet = FilterNetworkFleet(userTaxiHailNetworkSettings.DisabledFleets, networkFleet);
+
+                        nextDispatchCompany = FindNextDispatchCompany(details.CompanyKey, pickUpPosition, userNetworkFleet);
+                    }
                 }
 
                 if (nextDispatchCompany != null)
@@ -89,6 +102,11 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                     });
                 }
             }
+        }
+
+        private IList<NetworkFleetResponse> FilterNetworkFleet(IEnumerable<string> disabledfleets, IEnumerable<NetworkFleetResponse> networkFleet)
+        {
+            return networkFleet.Where(x => !disabledfleets.Contains(x.CompanyKey)).ToList();
         }
 
         private NetworkFleetResponse FindNextDispatchCompany(string currentCompanyKey, MapCoordinate pickupPosition, IList<NetworkFleetResponse> networkFleet, string market = null)

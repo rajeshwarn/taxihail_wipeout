@@ -1,5 +1,6 @@
 ﻿#region
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -136,6 +137,22 @@ namespace apcurium.MK.Booking.Api.Services
                     NotificationSettings = request.NotificationSettings
                 });
             }
+
+            return new HttpResult(HttpStatusCode.OK, "OK");
+        }
+
+        public object Post(UserTaxiHailNetworkSettingsRequest request)
+        {
+            if (request.AccountId == null)
+            {
+                return new HttpError(HttpStatusCode.BadRequest, "Account Id cannot be null");
+            }
+
+            _commandBus.Send(new AddOrUpdateUserTaxiHailNetworkSettings
+            {
+                AccountId = request.AccountId.Value,
+                UserTaxiHailNetworkSettings = request.UserTaxiHailNetworkSettings
+            });
 
             return new HttpResult(HttpStatusCode.OK, "OK");
         }
