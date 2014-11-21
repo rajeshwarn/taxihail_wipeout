@@ -1,5 +1,4 @@
-﻿using apcurium.MK.Booking.Api.Contract;
-using apcurium.MK.Booking.Api.Contract.Requests;
+﻿using apcurium.MK.Booking.Api.Contract.Requests;
 using CustomerPortal.Client;
 using ServiceStack.ServiceInterface;
 

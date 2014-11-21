@@ -207,7 +207,7 @@
                     android:singleLine="true"
                     android:lines="1"
                     android:text="@string/DeleteCreditCardTitle"
-                    local:MvxBind="Click DeleteCreditCardCommand; Visibility IsEditing, Converter=Visibility"
+                    local:MvxBind="Click DeleteCreditCardCommand; Visibility CanDeleteCreditCard, Converter=Visibility"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp" />
             </LinearLayout>

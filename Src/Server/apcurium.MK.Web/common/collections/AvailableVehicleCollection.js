@@ -6,7 +6,13 @@
             this.market = options.market;
         },
         url: function () {
-            return TaxiHail.parameters.apiRoot + '/vehicles/' + '?latitude=' + this.position.lat() + '&longitude=' + this.position.lng() + "&market=" + this.market + "&format=json";
+            var queryString = '/vehicles/' + '?latitude=' + this.position.lat() + '&longitude=' + this.position.lng();
+            if (this.market) {
+                queryString += "&market=" + this.market;
+            }
+            queryString += "&format=json";
+
+            return TaxiHail.parameters.apiRoot + queryString;
         },
         parse: function (response) {
             var lst = [];

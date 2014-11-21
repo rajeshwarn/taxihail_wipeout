@@ -11,6 +11,7 @@ using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Extensions;
 using Infrastructure.Messaging;
 using ServiceStack.CacheAccess;
+using ServiceStack.CacheAccess.Providers;
 using ServiceStack.ServiceInterface;
 
 #endregion
@@ -66,7 +67,7 @@ namespace apcurium.MK.Booking.Api.Services.Admin
 
             var command = new AddOrUpdateAppSettings {AppSettings = settings, CompanyId = AppConstants.CompanyId};
             _commandBus.Send(command);
-            _cacheClient.Remove(ReferenceDataService.CacheKey);
+            _cacheClient.RemoveByPattern(string.Format("{0}*", ReferenceDataService.CacheKey));
 
             return null;
         }

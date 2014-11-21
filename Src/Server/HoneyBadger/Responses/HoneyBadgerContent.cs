@@ -43,5 +43,8 @@ namespace HoneyBadger.Responses
 
         [JsonProperty("fi")]
         public int FleetId { get; set; }
+
+        [JsonProperty("vl")]
+        public int VehicleType { get; set; }
     }
 }

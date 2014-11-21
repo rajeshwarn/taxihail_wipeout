@@ -1,10 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using CustomerPortal.Client.Impl;
 using CustomerPortal.Contract.Resources;
 using CustomerPortal.Contract.Response;
 using CustomerPortal.Web.Areas.Customer.Controllers.Api;
-using CustomerPortal.Web.Areas.Customer.Models.RequestResponse;
 using CustomerPortal.Web.Entities;
 using CustomerPortal.Web.Entities.Network;
 using CustomerPortal.Web.Test.Helpers.Repository;
@@ -13,7 +11,7 @@ using NUnit.Framework;
 
 namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
 {
-    public class NetworkApiControllerFixture
+    public class RoamingApiControllerFixture
     {
         private TaxiHailNetworkSettings _chrisTaxi;
         private TaxiHailNetworkSettings _chrisTaxiBis;
@@ -29,26 +27,24 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
         private Company _pilouTaxiCompany;
         private Company _lastTaxiCompany;
 
-        const string BaseUrl = "http://localhost/CustomerPortal.Web/";
-
-
         [SetUp]
         public void Setup()
         {
             NetworkRepository = new InMemoryRepository<TaxiHailNetworkSettings>();
             CompanyRepository = new InMemoryRepository<Company>();
 
-            Sut = new NetworkApiController(NetworkRepository, CompanyRepository);
+            Sut = new RoamingApiController(NetworkRepository, CompanyRepository);
 
-            _chrisTaxi = new TaxiHailNetworkSettings()
+            _chrisTaxi = new TaxiHailNetworkSettings
             {
                 Id = "ChrisTaxi",
                 IsInNetwork = true,
                 Market = "MTL",
-                Region = new MapRegion()
+                FleetId = 424242,
+                Region = new MapRegion
                 {
-                    CoordinateStart = new MapCoordinate{Latitude = 45.514466,Longitude = -73.846313}, // MTL Top left 
-                    CoordinateEnd = new MapCoordinate{Latitude = 45.411296,Longitude = -73.513314} // MTL BTM Right
+                    CoordinateStart = new MapCoordinate { Latitude = 45.514466, Longitude = -73.846313 }, // MTL Top left 
+                    CoordinateEnd = new MapCoordinate { Latitude = 45.411296, Longitude = -73.513314 } // MTL BTM Right
                 },
                 Preferences = new List<CompanyPreference>
                 {
@@ -57,16 +53,17 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
                     new CompanyPreference{CompanyKey = "PilouTaxi",CanAccept = true,CanDispatch = true,Order = 1},
                 }
             };
-           
-            _chrisTaxiBis = new TaxiHailNetworkSettings()
+
+            _chrisTaxiBis = new TaxiHailNetworkSettings
             {
                 Id = "ChrisTaxiBis",
                 IsInNetwork = true,
                 Market = "MTL",
-                Region = new MapRegion()
+                FleetId = 987564,
+                Region = new MapRegion
                 {
-                    CoordinateStart = new MapCoordinate{Latitude = 45.514466,Longitude = -73.846313}, // MTL Top left 
-                    CoordinateEnd = new MapCoordinate{Latitude = 45.41129,Longitude = -73.51331} // MTL BTM Right
+                    CoordinateStart = new MapCoordinate { Latitude = 45.514466, Longitude = -73.846313 }, // MTL Top left 
+                    CoordinateEnd = new MapCoordinate { Latitude = 45.41129, Longitude = -73.51331 } // MTL BTM Right
 
                 },
                 Preferences = new List<CompanyPreference>
@@ -77,28 +74,30 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
                 }
             };
 
-            _tonyTaxi = new TaxiHailNetworkSettings()
+            _tonyTaxi = new TaxiHailNetworkSettings
             {
                 Id = "TonyTaxi",
                 IsInNetwork = true,
                 Market = "CHI",
-                Region = new MapRegion()
+                FleetId = 321674,
+                Region = new MapRegion
                 {
-                    CoordinateStart = new MapCoordinate{Latitude = 49994,Longitude = -73.656990}, // Apcuruium 
-                    CoordinateEnd = new MapCoordinate{Latitude = 45.474307,Longitude = -73.58412} // Home
+                    CoordinateStart = new MapCoordinate { Latitude = 49994, Longitude = -73.656990 }, // Apcuruium 
+                    CoordinateEnd = new MapCoordinate { Latitude = 45.474307, Longitude = -73.58412 } // Home
                 }
             };
 
-            _tomTaxi = new TaxiHailNetworkSettings()
+            _tomTaxi = new TaxiHailNetworkSettings
             {
                 //same Longitude as TonyTaxi
                 Id = "TomTaxi",
                 Market = "CHI",
+                FleetId = 23134,
                 IsInNetwork = true,
                 Region = new MapRegion()
                 {
-                    CoordinateStart = new MapCoordinate{Latitude = 5000000,Longitude = -73.656990},  
-                    CoordinateEnd = new MapCoordinate{Latitude = 45.43874,Longitude = -73.58412}
+                    CoordinateStart = new MapCoordinate { Latitude = 5000000, Longitude = -73.656990 },
+                    CoordinateEnd = new MapCoordinate { Latitude = 45.43874, Longitude = -73.58412 }
                 },
                 Preferences = new List<CompanyPreference>
                 {
@@ -108,16 +107,17 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
                 }
             };
 
-            _pilouTaxi = new TaxiHailNetworkSettings()
+            _pilouTaxi = new TaxiHailNetworkSettings
             {
                 //Same Latitude as ChrisTaxi and Chris TaxiBis
                 Id = "PilouTaxi",
                 IsInNetwork = true,
                 Market = "NYC",
-                Region = new MapRegion()
+                FleetId = 88784,
+                Region = new MapRegion
                 {
-                    CoordinateStart = new MapCoordinate{Latitude = 45.514466,Longitude = -73.889451},
-                    CoordinateEnd = new MapCoordinate{Latitude = 45.411296,Longitude = -73.496042}
+                    CoordinateStart = new MapCoordinate { Latitude = 45.514466, Longitude = -73.889451 },
+                    CoordinateEnd = new MapCoordinate { Latitude = 45.411296, Longitude = -73.496042 }
                 },
                 Preferences = new List<CompanyPreference>
                 {
@@ -127,20 +127,21 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
                 }
             };
 
-            _lastTaxi = new TaxiHailNetworkSettings()
+            _lastTaxi = new TaxiHailNetworkSettings
             {
                 //Overlap ChrisTaxi and ChrisTaxiBis
                 Id = "LastTaxi",
                 IsInNetwork = true,
                 Market = "SYD",
-                Region = new MapRegion()
+                FleetId = 99999,
+                Region = new MapRegion
                 {
-                    CoordinateStart = new MapCoordinate{Latitude = 45.563135,Longitude = -73.71953}, //College Montmorency Laval
-                    CoordinateEnd = new MapCoordinate{Latitude = 45.498094,Longitude = -73.62233} //Station cote des neiges
+                    CoordinateStart = new MapCoordinate { Latitude = 45.420595, Longitude = -75.708386 }, // Ottawa
+                    CoordinateEnd = new MapCoordinate { Latitude = 45.411045, Longitude = -75.684568 }
                 }
             };
 
-            _chrisTaxiCompany = new Company()
+            _chrisTaxiCompany = new Company
             {
                 Id = "ChrisTaxi",
                 CompanyKey = "ChrisTaxi",
@@ -152,19 +153,19 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
                     ServiceUrl = "http://google.com"
                 }
             };
-            _chrisTaxiBisCompany= new Company()
+            _chrisTaxiBisCompany = new Company
             {
                 Id = "ChrisTaxiBis",
                 CompanyKey = "ChrisTaxiBis",
                 CompanyName = "ChrisTaxiBis",
                 IBS = new IBSSettings
                 {
-                    Password = "test",
-                    Username = "Taxi",
-                    ServiceUrl = "http://google.com"
+                    Password = "Bob",
+                    Username = "Alice",
+                    ServiceUrl = "http://altavista.com"
                 }
             };
-            _lastTaxiCompany = new Company()
+            _lastTaxiCompany = new Company
             {
                 Id = "LastTaxi",
                 CompanyKey = "LastTaxi",
@@ -176,7 +177,7 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
                     ServiceUrl = "http://google.com"
                 }
             };
-            _pilouTaxiCompany = new Company()
+            _pilouTaxiCompany = new Company
             {
                 Id = "PilouTaxi",
                 CompanyKey = "PilouTaxi",
@@ -188,7 +189,7 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
                     ServiceUrl = "http://google.com"
                 }
             };
-            _tomTaxiCompany = new Company()
+            _tomTaxiCompany = new Company
             {
                 Id = "TomTaxi",
                 CompanyKey = "TomTaxi",
@@ -200,7 +201,7 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
                     ServiceUrl = "http://google.com"
                 }
             };
-            _tonyTaxiCompany = new Company()
+            _tonyTaxiCompany = new Company
             {
                 Id = "TonyTaxi",
                 CompanyKey = "TonyTaxi",
@@ -232,119 +233,67 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
 
         public InMemoryRepository<TaxiHailNetworkSettings> NetworkRepository { get; set; }
         public InMemoryRepository<Company> CompanyRepository { get; set; }
-        public NetworkApiController Sut { get; set; }
-        
-        [Test]
-        public void When_Regions_Inside()
-        {
-
-            var response = Sut.Get(_chrisTaxi.Id);
-             Assert.True(response.IsSuccessStatusCode);
-            var json = response.Content.ReadAsStringAsync().Result;
-            Assert.IsNotEmpty(JsonConvert.DeserializeObject<List<CompanyPreferenceResponse>>(json));
-
-            var response2 = Sut.Get(_tonyTaxi.Id);
-            Assert.True(response2.IsSuccessStatusCode);
-            var json2 = response2.Content.ReadAsStringAsync().Result;
-            Assert.IsNotEmpty(JsonConvert.DeserializeObject<List<CompanyPreferenceResponse>>(json2));
-        }
-
+        public RoamingApiController Sut { get; set; }
 
         [Test]
-        public void When_Regions_Identical()
+        public void When_Getting_Company_Market_In_Home_Market()
         {
-            //should Not return ChrisTaxi
-            var response = Sut.Get(_chrisTaxi.Id);
-            Assert.True(response.IsSuccessStatusCode);
+            var response = Sut.GetCompanyMarket("ChrisTaxi", 45.423513, -73.653214);
             var json = response.Content.ReadAsStringAsync().Result;
-            Assert.IsNotEmpty(JsonConvert.DeserializeObject<List<CompanyPreferenceResponse>>(json));
+            var market = JsonConvert.DeserializeObject<string>(json);
+
+            Assert.IsNull(market);
         }
 
         [Test]
-        public void When_Regions_Overlap()
+        public void When_Getting_Company_Market_And_Changed_Market()
         {
-            var response = Sut.Get(_lastTaxi.Id);
-            Assert.True(response.IsSuccessStatusCode);
+            var response = Sut.GetCompanyMarket("ChrisTaxi", 45.412042, -75.695321);
             var json = response.Content.ReadAsStringAsync().Result;
-            Assert.IsNotEmpty(JsonConvert.DeserializeObject<List<CompanyPreferenceResponse>>(json));
+            var market = JsonConvert.DeserializeObject<string>(json);
+
+            Assert.AreEqual("SYD", market);
         }
 
         [Test]
-        public void When_Regions_Overlap_Same_Latitude()
+        public void When_Getting_Fleets_From_a_Market()
         {
-            var response = Sut.Get(_pilouTaxi.Id);
-            Assert.True(response.IsSuccessStatusCode);
+            var response = Sut.GetMarketFleets("MTL");
             var json = response.Content.ReadAsStringAsync().Result;
-            Assert.IsNotEmpty(JsonConvert.DeserializeObject<List<CompanyPreferenceResponse>>(json));
+            var fleets = JsonConvert.DeserializeObject<List<NetworkFleetResponse>>(json);
+
+            Assert.AreEqual(2, fleets.Count);
+
+            var firstFleet = fleets.FirstOrDefault(f => f.CompanyKey == "ChrisTaxi");
+            Assert.NotNull(firstFleet);
+            Assert.AreEqual("ChrisTaxi", firstFleet.CompanyKey);
+            Assert.AreEqual("ChrisTaxi", firstFleet.CompanyName);
+            Assert.AreEqual("http://google.com", firstFleet.IbsUrl);
+            Assert.AreEqual("Taxi", firstFleet.IbsUserName);
+            Assert.AreEqual("test", firstFleet.IbsPassword);
+
+            var secondFleet = fleets.FirstOrDefault(f => f.CompanyKey == "ChrisTaxiBis");
+            Assert.NotNull(secondFleet);
+            Assert.AreEqual("ChrisTaxiBis", secondFleet.CompanyKey);
+            Assert.AreEqual("ChrisTaxiBis", secondFleet.CompanyName);
+            Assert.AreEqual("http://altavista.com", secondFleet.IbsUrl);
+            Assert.AreEqual("Alice", secondFleet.IbsUserName);
+            Assert.AreEqual("Bob", secondFleet.IbsPassword);
         }
 
         [Test]
-        public void When_Regions_Overlap_Same_Longitude()
+        public void When_Getting_Single_Fleet_From_a_Market()
         {
-            var response = Sut.Get(_tonyTaxi.Id);
-            Assert.True(response.IsSuccessStatusCode);
+            var response = Sut.GetMarketFleet("MTL", 424242);
             var json = response.Content.ReadAsStringAsync().Result;
-            Assert.IsNotEmpty(JsonConvert.DeserializeObject<List<CompanyPreferenceResponse>>(json));
-        }
+            var fleet = JsonConvert.DeserializeObject<NetworkFleetResponse>(json);
 
-        [Test]
-        public void When_Regions_No_Overlap()
-        {
-            //Should return nothing
-            var response = Sut.Get(_chrisTaxi.Id);
-            Assert.True(response.IsSuccessStatusCode);
-            var json = response.Content.ReadAsStringAsync().Result;
-            Assert.IsNotEmpty(JsonConvert.DeserializeObject<List<CompanyPreferenceResponse>>(json));
-        }
-
-        [Test]
-        public void When_Getting_Network_From_Coordinate()
-        {
-            var response = Sut.Get(_chrisTaxi.Id,  45.463944, -73.643234);
-            Assert.True(response.IsSuccessStatusCode);
-            var json = response.Content.ReadAsStringAsync().Result;
-            var result = JsonConvert.DeserializeObject<List<NetworkFleetResponse>>(json);
-            Assert.IsNotEmpty(JsonConvert.DeserializeObject<List<NetworkFleetResponse>>(json));
-
-            var response3 = Sut.Get(_chrisTaxi.Id);
-            Assert.True(response3.IsSuccessStatusCode);
-            var json3 = response.Content.ReadAsStringAsync().Result;
-            var result3 = JsonConvert.DeserializeObject<List<NetworkFleetResponse>>(json3);
-            Assert.IsNotEmpty(JsonConvert.DeserializeObject<List<NetworkFleetResponse>>(json3));
-
-            var response2 = Sut.Get(_tonyTaxi.Id, 46.359854, -72.575015);
-            Assert.True(response2.IsSuccessStatusCode);
-            var json2 = response2.Content.ReadAsStringAsync().Result;
-            Assert.IsEmpty(JsonConvert.DeserializeObject<List<NetworkFleetResponse>>(json2));
-
-        }
-
-        [Test]
-        public void Post_Preferences()
-        {
-            var response = Sut.Get(_chrisTaxi.Id);
-            var json = response.Content.ReadAsStringAsync().Result;
-            var chrisPreferences = JsonConvert.DeserializeObject<List<CompanyPreferenceResponse>>(json);
-
-            var tony = chrisPreferences.FirstOrDefault(p => p.CompanyPreference.CompanyKey == _tonyTaxi.Id);
-            Assert.NotNull(tony,"Precondition Failed");
-            Assert.False(tony.CompanyPreference.CanAccept, "Precondition Failed");
-            Assert.False(tony.CompanyPreference.CanDispatch, "Precondition Failed");
-
-            tony.CompanyPreference.CanAccept = tony.CompanyPreference.CanDispatch = true;
-
-            response = Sut.Post(_chrisTaxi.Id, chrisPreferences.Select(x=>x.CompanyPreference).ToArray());
-            Assert.True(response.IsSuccessStatusCode);
-
-
-            response = Sut.Get(_chrisTaxi.Id);
-            json = response.Content.ReadAsStringAsync().Result;
-            chrisPreferences = JsonConvert.DeserializeObject<List<CompanyPreferenceResponse>>(json);
-
-            tony = chrisPreferences.FirstOrDefault(p => p.CompanyPreference.CompanyKey == _tonyTaxi.Id);
-            Assert.NotNull(tony);
-            Assert.True(tony.CompanyPreference.CanAccept);
-            Assert.True(tony.CompanyPreference.CanDispatch);
+            Assert.NotNull(fleet);
+            Assert.AreEqual("ChrisTaxi", fleet.CompanyKey);
+            Assert.AreEqual("ChrisTaxi", fleet.CompanyName);
+            Assert.AreEqual("http://google.com", fleet.IbsUrl);
+            Assert.AreEqual("Taxi", fleet.IbsUserName);
+            Assert.AreEqual("test", fleet.IbsPassword);
         }
     }
 }

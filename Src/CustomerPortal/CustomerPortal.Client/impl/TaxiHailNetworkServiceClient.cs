@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using CustomerPortal.Contract.Resources;
 using CustomerPortal.Contract.Response;
@@ -11,7 +13,8 @@ namespace CustomerPortal.Client.Impl
     {
         private readonly IServerSettings _serverSettings;
 
-        public TaxiHailNetworkServiceClient(IServerSettings serverSettings) : base(serverSettings)
+        public TaxiHailNetworkServiceClient(IServerSettings serverSettings)
+            : base(serverSettings)
         {
             _serverSettings = serverSettings;
         }
@@ -28,23 +31,19 @@ namespace CustomerPortal.Client.Impl
 
             var @params = new Dictionary<string, string>
                 {
-                    {"latitude", latitude.ToString() },
-                    {"longitude", longitude.ToString() }
+                    { "latitude", latitude.ToString() },
+                    { "longitude", longitude.ToString() }
                 };
 
-            string queryString = BuildQueryString(@params);
+            var queryString = BuildQueryString(@params);
 
             return Client.Get(string.Format("customer/{0}/networkfleet/", companyKey) + queryString)
                          .Deserialize<List<NetworkFleetResponse>>();
         }
 
-
         public List<NetworkFleetResponse> GetNetworkFleet(string companyId, double? latitude = null, double? longitude = null)
         {
-            var response = GetNetworkFleetAsync(companyId, latitude, longitude);
-            response.Wait();
-
-            return response.Result;
+            return GetNetworkFleetAsync(companyId, latitude, longitude).Result;
         }
 
         public Task SetNetworkCompanyPreferences(string companyId, CompanyPreference[] preferences)
@@ -54,18 +53,34 @@ namespace CustomerPortal.Client.Impl
 
         public string GetCompanyMarket(double latitude, double longitude)
         {
+            var homeCompanyKey = _serverSettings.ServerData.TaxiHail.ApplicationKey;
+
             var @params = new Dictionary<string, string>
-                {
-                    {"latitude", latitude.ToString() },
-                    {"longitude", longitude.ToString() }
-                };
+            {
+                { "companyId", homeCompanyKey },
+                { "latitude", latitude.ToString() },
+                { "longitude", longitude.ToString() }
+            };
 
-            string queryString = BuildQueryString(@params);
+            var queryString = BuildQueryString(@params);
 
-            var response = Client.Get("customer/network/market" + queryString)
-                                 .Deserialize<string>();
+            return Client.Get("customer/roaming/market" + queryString)
+                         .Deserialize<string>()
+                         .Result;
+        }
 
-            return response.Result;
+        public IEnumerable<NetworkFleetResponse> GetMarketFleets(string market)
+        {
+            return Client.Get(string.Format("customer/roaming/marketfleets?market={0}", market))
+                               .Deserialize<IEnumerable<NetworkFleetResponse>>()
+                               .Result;
+        }
+
+        public NetworkFleetResponse GetMarketFleet(string market, int fleetId)
+        {
+            return Client.Get(string.Format("customer/roaming/marketfleet?market={0}&fleetId={1}", market, fleetId))
+                               .Deserialize<NetworkFleetResponse>()
+                               .Result;
         }
     }
 }

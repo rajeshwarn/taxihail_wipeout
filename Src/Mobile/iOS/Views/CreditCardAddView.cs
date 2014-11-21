@@ -93,7 +93,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 			set.Bind(btnDeleteCard)
 				.For(v => v.Hidden)
-				.To(vm => vm.IsEditing)
+                .To(vm => vm.CanDeleteCreditCard)
 				.WithConversion("BoolInverter");
 
             set.Bind(txtNameOnCard)

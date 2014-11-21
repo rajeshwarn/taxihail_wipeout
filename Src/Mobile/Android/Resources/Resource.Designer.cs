@@ -4341,14 +4341,14 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f050109
 			public const int GooglePlayServicesNotAvailableMessage = 2131034377;
 			
-			// aapt resource value: 0x7f05027c
-			public const int GooglePlayServicesNotAvailableMessage1 = 2131034748;
+			// aapt resource value: 0x7f05027e
+			public const int GooglePlayServicesNotAvailableMessage1 = 2131034750;
 			
 			// aapt resource value: 0x7f050069
 			public const int GooglePlayServicesNotAvailableTitle = 2131034217;
 			
-			// aapt resource value: 0x7f05027d
-			public const int GooglePlayServicesNotAvailableTitle1 = 2131034749;
+			// aapt resource value: 0x7f05027f
+			public const int GooglePlayServicesNotAvailableTitle1 = 2131034751;
 			
 			// aapt resource value: 0x7f05002d
 			public const int Hello = 2131034157;
@@ -4535,6 +4535,12 @@ namespace apcurium.MK.Booking.Mobile.Client
 			
 			// aapt resource value: 0x7f0501f0
 			public const int March = 2131034608;
+			
+			// aapt resource value: 0x7f05027c
+			public const int MarketChangedMessage = 2131034748;
+			
+			// aapt resource value: 0x7f05027d
+			public const int MarketChangedMessageTitle = 2131034749;
 			
 			// aapt resource value: 0x7f0500d2
 			public const int May = 2131034322;
@@ -6696,7 +6702,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 					16843055,
 					16843056,
 					16843057,
-					16843832};
+					16843948};
 			
 			// aapt resource value: 4
 			public const int MenuView_android_headerBackground = 4;
