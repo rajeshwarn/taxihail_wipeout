@@ -171,6 +171,19 @@ namespace apcurium.MK.Booking.IBS.Impl
             return success;
         }
 
+        public bool UpdateOrderPaymentType(int ibsAccountId, int ibsOrderId, int chargeTypeId)
+        {
+            var success = false;
+            UseService(service =>
+            {
+                var result = service.UpdateJobPaymentType(UserNameApp, PasswordApp, ibsAccountId, ibsOrderId, chargeTypeId);
+                success = result == 1;
+
+            });
+            return success;
+        }
+
+
         public bool ConfirmExternalPayment(Guid orderID, int ibsOrderId, decimal totalAmount, decimal tipAmount, decimal meterAmount, string type, string provider, string transactionId,
            string authorizationCode, string cardToken, int accountID, string name, string phone, string email, string os, string userAgent)
         {
