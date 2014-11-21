@@ -2,7 +2,6 @@
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.ReadModel;
-using CsQuery.ExtensionMethods;
 using Infrastructure.Messaging.Handling;
 using ServiceStack.Text;
 
@@ -12,7 +11,8 @@ namespace apcurium.MK.Booking.EventHandlers
         IEventHandler<PromotionCreated>,
         IEventHandler<PromotionUpdated>,
         IEventHandler<PromotionActivated>,
-        IEventHandler<PromotionDeactivated>
+        IEventHandler<PromotionDeactivated>,
+        IEventHandler<PromotionUsed>
     {
         private readonly Func<BookingDbContext> _contextFactory;
 
@@ -93,6 +93,22 @@ namespace apcurium.MK.Booking.EventHandlers
                 promotionDetail.Active = false;
 
                 context.Save(promotionDetail);
+            }
+        }
+
+        public void Handle(PromotionUsed @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                context.Save(new PromotionUsageDetail
+                {
+                    OrderId = @event.OrderId,
+                    PromoId = @event.SourceId,
+                    @AccountId = @event.AccountId,
+                    Code = @event.Code,
+                    DiscountType = @event.DiscountType,
+                    DiscountValue = @event.DiscountValue
+                });
             }
         }
     }

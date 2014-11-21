@@ -38,5 +38,13 @@ namespace apcurium.MK.Booking.ReadModel.Query
                 return context.Query<PromotionDetail>().SingleOrDefault(c => c.Code == promoCode);
             }
         }
+
+        public PromotionUsageDetail FindByOrderId(Guid orderId)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                return context.Query<PromotionUsageDetail>().SingleOrDefault(c => c.OrderId == orderId);
+            }
+        }
     }
 }

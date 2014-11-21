@@ -101,9 +101,14 @@ namespace apcurium.MK.Booking.Api.Services
             var account = _accountDao.FindById(new Guid(this.GetSession().UserAuthId));
 
             account.IBSAccountId = CreateIbsAccountIfNeeded(account);
+            
+            var isFutureBooking = request.PickupDate.HasValue;
+            var pickupDate = request.PickupDate.HasValue
+                ? request.PickupDate.Value
+                : GetCurrentOffsetedTime();
 
             // User can still create future order, but we allow only one active Book now order.
-            if (!request.PickupDate.HasValue)
+            if (!isFutureBooking)
             {
                 var pendingOrderId = GetPendingOrder();
 
@@ -154,12 +159,10 @@ namespace apcurium.MK.Booking.Api.Services
                     isChargeAccountPaymentWithCardOnFile = true;
                 }
             }
-
+            
             var rule = _ruleCalculator.GetActiveDisableFor(
-                request.PickupDate.HasValue,
-                request.PickupDate.HasValue
-                    ? request.PickupDate.Value
-                    : GetCurrentOffsetedTime(),
+                isFutureBooking,
+                pickupDate,
                 () => _ibsServiceProvider.StaticData().GetZoneByCoordinate(
                         request.Settings.ProviderId,
                         request.PickupAddress.Latitude,
@@ -184,9 +187,7 @@ namespace apcurium.MK.Booking.Api.Services
 
             var referenceData = (ReferenceData)_referenceDataService.Get(new ReferenceDataRequest());
 
-            request.PickupDate = request.PickupDate.HasValue
-                ? request.PickupDate.Value
-                : GetCurrentOffsetedTime();
+            request.PickupDate = pickupDate;
 
             request.Settings.Passengers = request.Settings.Passengers <= 0
                 ? 1
@@ -232,7 +233,7 @@ namespace apcurium.MK.Booking.Api.Services
             }
 
             //Validate promotion and use it
-            ValidateAndApplyPromotion(request.PromoCode, request.Settings.ChargeTypeId, account.Id, , , isFutureBooking, request.ClientLanguageCode);
+            ValidateAndApplyPromotion(request.PromoCode, request.Settings.ChargeTypeId, account.Id, request.Id, pickupDate, isFutureBooking, request.ClientLanguageCode);
 
             var command = Mapper.Map<Commands.CreateOrder>(request);
             var emailCommand = Mapper.Map<SendBookingConfirmationEmail>(request);
