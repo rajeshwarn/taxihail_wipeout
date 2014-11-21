@@ -145,11 +145,14 @@ namespace apcurium.MK.Booking.Domain
             }
         }
 
-        public void NotifyOrderTimedOut()
+        public void NotifyOrderTimedOut(string market)
         {
             if (!_isTimedOut)
             {
-                Update(new OrderTimedOut());  
+                Update(new OrderTimedOut
+                {
+                    Market = market
+                });  
             }
         }
 
