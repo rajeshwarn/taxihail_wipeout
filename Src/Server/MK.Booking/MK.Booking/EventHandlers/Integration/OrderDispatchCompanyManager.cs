@@ -159,8 +159,8 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                             .ToList();
                 }
 
-                // Nothing found, extend search radius
-                searchRadius += i;
+                // Nothing found, extend search radius (total radius after 10 iterations: 3375m)
+                searchRadius += (i * 25);
             }
 
             return new List<NetworkFleetResponse>();

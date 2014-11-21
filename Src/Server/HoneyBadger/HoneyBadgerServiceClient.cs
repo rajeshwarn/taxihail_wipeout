@@ -68,7 +68,7 @@ namespace HoneyBadger
                                     Timestamp = e.TimeStamp,
                                     Latitude = e.Latitude,
                                     Longitude = e.Longitude,
-                                    Medaillon = e.Medaillon,
+                                    Medallion = e.Medallion,
                                     FleetId = e.FleetId
                                 });
             }

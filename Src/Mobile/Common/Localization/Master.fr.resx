@@ -1744,7 +1744,7 @@
     <value>Vous devez avoir une carte de crédit enregistrée pour utiliser ce compte</value>
   </data>
   <data name="MarketChangedMessage" xml:space="preserve">
-    <value>Vous quittez votre zone locale de service. Si vous décidez de commander un véhicule, votre commande sera envoyée à une compagnie locale désservant cette zone.</value>
+    <value>Vous quittez votre zone locale de service. Si vous décidez de commander un véhicule, votre commande sera envoyée à une compagnie désservant cette zone.</value>
     <comment>You are leaving your local service area. Should you decide to book, your order will be dispatched using a taxi company from this area.</comment>
   </data>
   <data name="MarketChangedMessageTitle" xml:space="preserve">

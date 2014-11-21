@@ -16,7 +16,7 @@ namespace HoneyBadger.Test
         private HoneyBadgerServiceClient _sut;
 
         [Test]
-        public void when_getting_available_vehicles_inside_a_valide_zone()
+        public void when_getting_available_vehicles_inside_a_valid_zone()
         {
             var a = _sut.GetAvailableVehicles("BOS", 42.354045, -71.062289);
             Assert.IsNotEmpty(a);

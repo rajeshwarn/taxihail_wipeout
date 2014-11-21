@@ -99,7 +99,7 @@ namespace apcurium.MK.Booking.Api.Services
 
             if (request.Market.HasValue())
             {
-                // Only pay in car charge type supported for orders outside house market
+                // Only pay in car charge type supported for orders outside home market
                 request.Settings.ChargeTypeId = ChargeTypes.PaymentInCar.Id;
             }
             else
@@ -559,8 +559,11 @@ namespace apcurium.MK.Booking.Api.Services
                 throw new HttpError(ErrorCode.CreateOrder_InvalidProvider.ToString());
             }
 
-            var providerId = request.Market.HasValue() && referenceData.CompaniesList.Any()
-                    ? referenceData.CompaniesList.First().Id
+            var defaultCompany = referenceData.CompaniesList.FirstOrDefault(x => x.IsDefault.HasValue && x.IsDefault.Value)
+                    ?? referenceData.CompaniesList.FirstOrDefault();
+
+            var providerId = request.Market.HasValue() && referenceData.CompaniesList.Any() && defaultCompany != null
+                    ? defaultCompany.Id
                     : request.Settings.ProviderId;
 
             var ibsPickupAddress = Mapper.Map<IbsAddress>(request.PickupAddress);
@@ -729,8 +732,8 @@ namespace apcurium.MK.Booking.Api.Services
                     break;
                 }
 
-                // Nothing found, extend search radius
-                searchRadius += i;
+                // Nothing found, extend search radius (total radius after 10 iterations: 3375m)
+                searchRadius += (i * 25);
             }
 
             if (bestFleetId.HasValue)
