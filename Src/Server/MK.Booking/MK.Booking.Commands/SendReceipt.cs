@@ -22,7 +22,7 @@ namespace apcurium.MK.Booking.Commands
         public DateTime PickupDate { get; set; }
         public DateTime? DropOffDate { get; set; }
         public string VehicleNumber { get; set; }
-        public string DriverName { get; set; }
+        public DriverInfos DriverInfos { get; set; }
         public double Tip { get; set; }
         public double Fare { get; set; }
         public double Toll { get; set; }
