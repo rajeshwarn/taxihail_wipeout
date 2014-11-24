@@ -136,7 +136,7 @@
     <value>Confirmation de réservation</value>
   </data>
   <data name="Email_Body_ChargeType" xml:space="preserve">
-    <value>Type de paiment</value>
+    <value>Type de paiement</value>
   </data>
   <data name="Email_Body_Date" xml:space="preserve">
     <value>Date</value>
@@ -379,10 +379,10 @@
     <value>L'ETA affiché au client est de {0} et {1} minutes</value>
   </data>
   <data name="PaymentBeingProcessedMessageToDriver" xml:space="preserve">
-    <value>Paiment en cours via l'application du passager...</value>
+    <value>Paiement en cours via l'application du passager...</value>
   </data>
   <data name="PaymentFailedToDriver" xml:space="preserve">
-    <value>Paiment in App a échoué!</value>
+    <value>Paiement in App a échoué!</value>
   </data>
   <data name="PaymentItemDescription" xml:space="preserve">
     <value>Commande #{0} montant original: {1}</value>
@@ -404,5 +404,8 @@
   </data>
   <data name="CannotCreateOrderChargeAccountNotSupported" xml:space="preserve">
     <value>Ce compte n'est pas supporté par la page web</value>
+  </data>
+  <data name="CannotCreateOrder_PromotionMustUseCardOnFile" xml:space="preserve">
+    <value>Vous devez sélectionner le Paiement In App pour utiliser une promotion.</value>
   </data>
 </root>

@@ -79,6 +79,15 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You must select Card On File to use a promotion..
+        /// </summary>
+        public static string CannotCreateOrder_PromotionMustUseCardOnFile {
+            get {
+                return ResourceManager.GetString("CannotCreateOrder_PromotionMustUseCardOnFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to This account is not supported by the web site..
         /// </summary>
         public static string CannotCreateOrderChargeAccountNotSupported {

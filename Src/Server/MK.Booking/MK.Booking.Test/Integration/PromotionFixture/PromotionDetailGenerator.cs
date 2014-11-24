@@ -175,5 +175,35 @@ namespace apcurium.MK.Booking.Test.Integration.PromotionFixture
                 Assert.AreEqual(true, dto.Active);
             }
         }
+
+        [Test]
+        public void when_promotion_used_then_dto_created()
+        {
+            var accountId = Guid.NewGuid();
+            var orderId = Guid.NewGuid();
+
+            Sut.Handle(new PromotionUsed
+            {
+                SourceId = _promoId,
+                AccountId = accountId,
+                OrderId = orderId,
+                Code = "code",
+                DiscountType = PromoDiscountType.Cash,
+                DiscountValue = 10
+            });
+
+            using (var context = new BookingDbContext(DbName))
+            {
+                var dto = context.Find<PromotionUsageDetail>(orderId);
+
+                Assert.NotNull(dto);
+                Assert.AreEqual(_promoId, dto.PromoId);
+                Assert.AreEqual(orderId, dto.OrderId);
+                Assert.AreEqual(accountId, dto.AccountId);
+                Assert.AreEqual("code", dto.Code);
+                Assert.AreEqual(PromoDiscountType.Cash, dto.DiscountType);
+                Assert.AreEqual(10, dto.DiscountValue);
+            }
+        }
     }
 }

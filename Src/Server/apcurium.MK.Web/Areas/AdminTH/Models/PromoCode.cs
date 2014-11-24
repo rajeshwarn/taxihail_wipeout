@@ -59,7 +59,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Models
         public string StartTimeValue
         {
             get { return StartTime.HasValue ? StartTime.Value.ToString("hh:mm tt") : string.Empty; }
-            set { StartTime = SetTime(value); }
+            set { StartTime = SetTime(value, false); }
         }
 
         public DateTime? EndTime { get; set; }
@@ -69,7 +69,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Models
         public string EndTimeValue
         {
             get { return EndTime.HasValue ? EndTime.Value.ToString("hh:mm tt") : string.Empty; } 
-            set { EndTime = SetTime(value); }
+            set { EndTime = SetTime(value, true); }
         }
 
         public DayOfWeek[] DaysOfWeek { get; set; }
@@ -99,14 +99,24 @@ namespace apcurium.MK.Web.Areas.AdminTH.Models
 
         public bool Active { get; set; }
 
-        private DateTime? SetTime(string timeStringValue)
+        private DateTime? SetTime(string timeStringValue, bool isEndTime)
         {
             if (!timeStringValue.HasValue())
             {
                 return null;
             }
 
-            return DateTime.Parse(timeStringValue);
+            var result = DateTime.Parse(timeStringValue);
+
+            if (isEndTime)
+            {
+                if (StartTime >= result)
+                {
+                    result = result.AddDays(1);
+                }
+            }
+
+            return result;
         }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)

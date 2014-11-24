@@ -472,4 +472,7 @@
   <data name="CannotCreateOrderChargeAccountNotSupported" xml:space="preserve">
     <value>This account is not supported by the web site.</value>
   </data>
+  <data name="CannotCreateOrder_PromotionMustUseCardOnFile" xml:space="preserve">
+    <value>You must select Card On File to use a promotion.</value>
+  </data>
 </root>

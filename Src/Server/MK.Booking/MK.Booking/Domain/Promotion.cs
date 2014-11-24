@@ -172,20 +172,11 @@ namespace apcurium.MK.Booking.Domain
                 return false;
             }
 
-            if (_startTime.HasValue)
+            if (_startTime.HasValue && _endTime.HasValue)
             {
-                var pickupTime = new DateTime(0, 0, 0, pickupDate.Hour, pickupDate.Minute, pickupDate.Second);
-                if (_startTime.Value > pickupTime)
-                {
-                    errorMessage = "This promotion is not available at this time";
-                    return false;
-                }
-            }
-
-            if (_endTime.HasValue)
-            {
-                var pickupTime = new DateTime(0, 0, 0, pickupDate.Hour, pickupDate.Minute, pickupDate.Second);
-                if (_endTime.Value <= pickupTime)
+                var pickupTime = DateTime.MinValue.AddHours(pickupDate.Hour).AddMinutes(pickupDate.Minute);
+                var isInRange = pickupTime >= _startTime.Value && pickupTime < _endTime.Value;
+                if (!isInRange)
                 {
                     errorMessage = "This promotion is not available at this time";
                     return false;
@@ -219,12 +210,6 @@ namespace apcurium.MK.Booking.Domain
 
             _startDate = @event.StartDate;
             _endDate = @event.EndDate;
-            _startTime = @event.StartTime.HasValue 
-                ? new DateTime(0, 0, 0, @event.StartTime.Value.Hour, @event.StartTime.Value.Minute, @event.StartTime.Value.Second) 
-                : (DateTime?) null;
-            _endTime = @event.EndTime.HasValue
-                ? new DateTime(0, 0, 0, @event.EndTime.Value.Hour, @event.EndTime.Value.Minute, @event.EndTime.Value.Second)
-                : (DateTime?)null;
             _daysOfWeek = @event.DaysOfWeek;
             _appliesToCurrentBooking = @event.AppliesToCurrentBooking;
             _appliesToFutureBooking = @event.AppliesToFutureBooking;
@@ -233,18 +218,14 @@ namespace apcurium.MK.Booking.Domain
             _discountValue = @event.DiscountValue;
             _discountType = @event.DiscountType;
             _code = @event.Code;
+
+            SetInternalStartAndEndTimes(@event.StartTime, @event.EndTime);
         }
 
         private void OnPromotionUpdated(PromotionUpdated @event)
         {
             _startDate = @event.StartDate;
             _endDate = @event.EndDate;
-            _startTime = @event.StartTime.HasValue
-                ? new DateTime(0, 0, 0, @event.StartTime.Value.Hour, @event.StartTime.Value.Minute, @event.StartTime.Value.Second)
-                : (DateTime?)null;
-            _endTime = @event.EndTime.HasValue
-                ? new DateTime(0, 0, 0, @event.EndTime.Value.Hour, @event.EndTime.Value.Minute, @event.EndTime.Value.Second)
-                : (DateTime?)null;
             _daysOfWeek = @event.DaysOfWeek;
             _appliesToCurrentBooking = @event.AppliesToCurrentBooking;
             _appliesToFutureBooking = @event.AppliesToFutureBooking;
@@ -253,6 +234,8 @@ namespace apcurium.MK.Booking.Domain
             _discountValue = @event.DiscountValue;
             _discountType = @event.DiscountType;
             _code = @event.Code;
+
+            SetInternalStartAndEndTimes(@event.StartTime, @event.EndTime);
         }
 
         private void OnPromotionActivated(PromotionActivated @event)
@@ -276,6 +259,27 @@ namespace apcurium.MK.Booking.Domain
             }
 
             _usagesPerUser[@event.AccountId] = usagesForThisUser + 1;
+        }
+
+        private void SetInternalStartAndEndTimes(DateTime? startTime, DateTime? endTime)
+        {
+            if (startTime.HasValue && endTime.HasValue)
+            {
+                var dayOffset = 0;
+                if (startTime.Value.Date != endTime.Value.Date)
+                {
+                    // end time is on the next day
+                    dayOffset = 1;
+                }
+
+                _startTime = DateTime.MinValue.AddHours(startTime.Value.Hour).AddMinutes(startTime.Value.Minute);
+                _endTime = DateTime.MinValue.AddDays(dayOffset).AddHours(endTime.Value.Hour).AddMinutes(endTime.Value.Minute);
+            }
+            else
+            {
+                _startTime = null;
+                _endTime = null;
+            }
         }
     }
 }

@@ -100,6 +100,7 @@
                     <span class="add-on"><i class="icon-time"></i></span>
                 </div>
                 <button type="button" class="btn" id="eraseEndTime">x</button>
+                <span class="help-inline next-day-warning">The next day</span>
             </div>
         </div>
     </div>
@@ -160,11 +161,53 @@
 }
 
 <script type="text/javascript">
+    function _getTime($timepicker, date) {
+        var timepicker = $timepicker.data('timepicker');
+
+        if (!timepicker || timepicker.meridian === undefined) {
+            return date;
+        }
+
+        var hour = timepicker.hour;
+
+        date = _.isDate(date) ? new Date(date) : new Date();
+
+        if (timepicker.meridian.toUpperCase() === "PM") {
+            if (hour < 12) {
+                hour += 12;
+            }
+        } else if (timepicker.meridian.toUpperCase() === "AM") {
+            if (hour === 12) {
+                hour = 0;
+            }
+        }
+
+        date.setHours(hour);
+        date.setMinutes(timepicker.minute);
+
+        return date;
+    }
+
+    function ontimepickerchange(e) {
+        var startTime = this._getTime($('#StartTimeValue')),
+            endTime = this._getTime($('#EndTimeValue'));
+
+        if (endTime <= startTime) {
+            $('.next-day-warning').removeClass('hidden');
+        } else {
+            $('.next-day-warning').addClass('hidden');
+        }
+    }
+
     $(document).ready(function () {
+        $('.next-day-warning').addClass('hidden');
+
         $('[data-role=datepicker]').datepicker();
         $('[data-role=timepicker]').timepicker({
             defaultTime: false,
             disableFocus: true
+        }).on('changeTime.timepicker', function (e) {
+            ontimepickerchange(e);
         });
 
         $('#eraseStartDate').click(function () {
@@ -177,18 +220,28 @@
 
         $('#eraseStartTime').click(function () {
             $('#StartTimeValue').val('');
+            $('.next-day-warning').addClass('hidden');
         });
 
         $('#eraseEndTime').click(function () {
             $('#EndTimeValue').val('');
+            $('.next-day-warning').addClass('hidden');
         });
+
+        @if (Model.StartTime.HasValue)
+        {
+            <text>$('[data-role=timepicker][name=StartTimeValue]').data('timepicker').setTime('@Model.StartTimeValue');</text>
+        }
+        @if (Model.EndTime.HasValue)
+        {
+            <text>$('[data-role=timepicker][name=EndTimeValue]').data('timepicker').setTime('@Model.EndTimeValue');</text>
+        }
 
         @if (Model.StartDate.HasValue)
         {
             var startDate = @Html.Raw(Json.Encode(Model.StartDate));
             <text>$('#StartDate').datepicker('setValue', moment(@startDate).format('L'));</text>
         }
-
         @if (Model.EndDate.HasValue)
         {
             var endDate = @Html.Raw(Json.Encode(Model.EndDate));
