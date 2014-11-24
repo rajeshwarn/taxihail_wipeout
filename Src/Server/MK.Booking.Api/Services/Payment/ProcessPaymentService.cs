@@ -41,7 +41,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             {
                 var o = _orderDao.FindById( request.OrderId );
                 var a = _accountDao.FindById( o.AccountId );
-                if ( !SendPayWithCOFUpdate(o.IBSOrderId.Value , a.IBSAccountId.Value, 7) )
+                if (!UpdateOrderPaymentType(a.IBSAccountId.Value, o.IBSOrderId.Value, 7))
                 {
                     response.IsSuccessful = false;
                     _paymentService.VoidPreAuthorization(request.OrderId);
@@ -51,7 +51,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 
         }
 
-        private bool SendPayWithCOFUpdate(int ibsAccountId, int ibsOrderId, int chargeTypeId, string companyKey = null)
+        private bool UpdateOrderPaymentType(int ibsAccountId, int ibsOrderId, int chargeTypeId, string companyKey = null)
         {
             var result = _ibsServiceProvider.Booking(companyKey).UpdateOrderPaymentType( ibsAccountId, ibsOrderId, chargeTypeId );
             return result;
