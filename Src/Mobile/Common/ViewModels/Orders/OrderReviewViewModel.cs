@@ -29,6 +29,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
                 this.Observe(_orderWorkflowService.GetAndObservePickupAddress(), address => Address = address);
                 this.Observe(_orderWorkflowService.GetAndObservePickupDate(), DateUpdated);
                 this.Observe(_orderWorkflowService.GetAndObserveNoteToDriver(), note => Note = note);
+				this.Observe(_orderWorkflowService.GetAndObservePromoCode(), code => PromoCode = code);
             }
         }
 
@@ -138,6 +139,21 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 				{
 					_note = value;
 					_orderWorkflowService.SetNoteToDriver(value);
+					RaisePropertyChanged();
+				}
+			}
+		}
+
+		private string _promoCode;
+		public string PromoCode
+		{
+			get { return _promoCode; }
+			set
+			{
+				if (_promoCode != value)
+				{
+					_promoCode = value;
+					_orderWorkflowService.SetPromoCode(value);
 					RaisePropertyChanged();
 				}
 			}

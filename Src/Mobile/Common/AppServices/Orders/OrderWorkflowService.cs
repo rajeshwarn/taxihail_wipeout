@@ -43,6 +43,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		readonly ISubject<string> _estimatedFareDisplaySubject;
 		readonly ISubject<DirectionInfo> _estimatedFareDetailSubject = new BehaviorSubject<DirectionInfo>( new DirectionInfo() );
 		readonly ISubject<string> _noteToDriverSubject = new BehaviorSubject<string>(string.Empty);
+		readonly ISubject<string> _promoCodeSubject = new BehaviorSubject<string>(string.Empty);
 		readonly ISubject<bool> _loadingAddressSubject = new BehaviorSubject<bool>(false);
 		readonly ISubject<AccountChargeQuestion[]> _accountPaymentQuestions = new BehaviorSubject<AccountChargeQuestion[]> (null);
 
@@ -394,6 +395,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			return _noteToDriverSubject;
 		}
 
+		public IObservable<string> GetAndObservePromoCode()
+		{
+			return _promoCodeSubject;
+		}
+
 		public IObservable<bool> GetAndObserveOrderCanBeConfirmed()
 		{
 			return _orderCanBeConfirmed;
@@ -511,6 +517,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		public async Task PrepareForNewOrder()
 		{
 			_noteToDriverSubject.OnNext(string.Empty);
+			_promoCodeSubject.OnNext(string.Empty);
 			_pickupAddressSubject.OnNext(new Address());
 			_destinationAddressSubject.OnNext(new Address());
 			_addressSelectionModeSubject.OnNext(AddressSelectionMode.PickupSelection);
@@ -539,6 +546,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		public void SetNoteToDriver(string text)
 		{
 			_noteToDriverSubject.OnNext(text);
+		}
+
+		public void SetPromoCode(string code)
+		{
+			_promoCodeSubject.OnNext(code);
 		}
 
 		public async Task<bool> ShouldWarnAboutEstimate()
@@ -685,9 +697,18 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			order.DropOffAddress = await _destinationAddressSubject.Take(1).ToTask();
 			order.Settings = await _bookingSettingsSubject.Take(1).ToTask();
 			order.Note = await _noteToDriverSubject.Take(1).ToTask();
-			var e = await _estimatedFareDetailSubject.Take (1).ToTask ();
-			if (e != null) {
-				order.Estimate = new CreateOrder.RideEstimate{ Price = e.Price, Distance = e.Distance.HasValue ? e.Distance.Value :0  };
+			order.PromoCode = await _promoCodeSubject.Take(1).ToTask();
+			var estimatedFare = await _estimatedFareDetailSubject.Take (1).ToTask();
+
+			if (estimatedFare != null) 
+			{
+				order.Estimate = new CreateOrder.RideEstimate
+				{ 
+					Price = estimatedFare.Price, 
+					Distance = estimatedFare.Distance.HasValue 
+						? estimatedFare.Distance.Value 
+						: 0  
+				};
 			}
 
 		    order.UserLatitude = _locationService.BestPosition != null

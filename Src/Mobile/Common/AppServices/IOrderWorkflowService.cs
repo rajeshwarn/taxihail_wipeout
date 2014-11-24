@@ -38,6 +38,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 		Task SetBookingSettings(BookingSettings bookingSettings);
 		Task SetAccountNumber (string accountNumber);
 		void SetNoteToDriver(string text);
+		void SetPromoCode(string code);
 
 		IObservable<Address> GetAndObservePickupAddress();
 		IObservable<Address> GetAndObserveDestinationAddress();
@@ -47,6 +48,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 		IObservable<DateTime?> GetAndObservePickupDate();
 		IObservable<string> GetAndObserveEstimatedFare();
 		IObservable<string> GetAndObserveNoteToDriver();
+		IObservable<string> GetAndObservePromoCode();
 		IObservable<bool> GetAndObserveLoadingAddress();
 		IObservable<bool> GetAndObserveOrderCanBeConfirmed ();
 		IObservable<string> GetAndObserveMarket ();
