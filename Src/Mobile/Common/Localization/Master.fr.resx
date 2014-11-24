@@ -1743,4 +1743,7 @@
   <data name="UpdateBookingSettingsInvalidCoF" xml:space="preserve">
     <value>Vous devez avoir une carte de crédit enregistrée pour utiliser ce compte</value>
   </data>
+  <data name="PromoCodeLabel" xml:space="preserve">
+    <value>Code promotionnel</value>
+  </data>
 </root>

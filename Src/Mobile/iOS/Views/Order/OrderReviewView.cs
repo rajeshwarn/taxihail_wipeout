@@ -25,6 +25,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
             txtNote.Font = UIFont.FromName(FontName.HelveticaNeueLight, 18f);
             txtNote.Placeholder = Localize.GetValue("NotesToDriveLabel");
             txtNote.ShowCloseButtonOnKeyboard();
+
+            txtPromoCode.BackgroundColor = UIColor.FromRGB(242, 242, 242);
+            txtPromoCode.Placeholder = Localize.GetValue("PromoCodeLabel");
+            DismissKeyboardOnReturn(txtPromoCode);
         }
 
         private void InitializeBinding()
@@ -70,6 +74,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
             set.Bind(txtNote)
                 .For(v => v.Text)
                 .To(vm => vm.Note);
+
+            set.Bind(txtPromoCode)
+                .For(v => v.Text)
+                .To(vm => vm.PromoCode);
 
 			if (!this.Services().Settings.ShowPassengerName)
             {

@@ -1731,4 +1731,7 @@
   <data name="UpdateBookingSettingsInvalidCoF" xml:space="preserve">
     <value>You must have a card on file to use this account</value>
   </data>
+  <data name="PromoCodeLabel" xml:space="preserve">
+    <value>Promo code</value>
+  </data>
 </root>
