@@ -143,7 +143,7 @@ namespace apcurium.MK.Booking.Test.PromotionFixture
                 IsFutureBooking = false,
                 PickupDate = new DateTime(2014, 11, 24, 13, 0, 0)
             }));
-            Assert.AreEqual("This promotion is not active", ex.Message);
+            Assert.AreEqual("CannotCreateOrder_PromotionIsNotActive", ex.Message);
         }
 
         [Test]
@@ -162,7 +162,7 @@ namespace apcurium.MK.Booking.Test.PromotionFixture
                 IsFutureBooking = false,
                 PickupDate = new DateTime(2014, 11, 24, 13, 0, 0)
             }));
-            Assert.AreEqual("Maximum number of uses has been reached for this promotion", ex.Message);
+            Assert.AreEqual("CannotCreateOrder_PromotionHasReachedMaxUsage", ex.Message);
         }
 
         [Test]
@@ -182,7 +182,7 @@ namespace apcurium.MK.Booking.Test.PromotionFixture
                 IsFutureBooking = false,
                 PickupDate = new DateTime(2014, 11, 24, 13, 0, 0)
             }));
-            Assert.AreEqual("Maximum number of uses has been reached for this promotion", ex.Message);
+            Assert.AreEqual("CannotCreateOrder_PromotionHasReachedMaxUsage", ex.Message);
         }
 
         [Test]
@@ -196,7 +196,7 @@ namespace apcurium.MK.Booking.Test.PromotionFixture
                 IsFutureBooking = true,
                 PickupDate = new DateTime(2014, 11, 24, 13, 0, 0)
             }));
-            Assert.AreEqual("This promotion applies to current booking only", ex.Message);
+            Assert.AreEqual("CannotCreateOrder_PromotionAppliesToCurrentBookingOnly", ex.Message);
         }
 
         [Test]
@@ -228,7 +228,7 @@ namespace apcurium.MK.Booking.Test.PromotionFixture
                 IsFutureBooking = false,
                 PickupDate = new DateTime(2014, 11, 24, 13, 0, 0)
             }));
-            Assert.AreEqual("This promotion applies to future booking only", ex.Message);
+            Assert.AreEqual("CannotCreateOrder_PromotionAppliesToFutureBookingOnly", ex.Message);
         }
 
         [Test]
@@ -242,7 +242,7 @@ namespace apcurium.MK.Booking.Test.PromotionFixture
                 IsFutureBooking = false,
                 PickupDate = new DateTime(2014, 11, 26, 13, 0, 0)
             }));
-            Assert.AreEqual("This promotion is not available for this day of the week", ex.Message);
+            Assert.AreEqual("CannotCreateOrder_PromotionNotAvailableForThisDayOfTheWeek", ex.Message);
         }
 
         [Test]
@@ -256,7 +256,7 @@ namespace apcurium.MK.Booking.Test.PromotionFixture
                 IsFutureBooking = false,
                 PickupDate = new DateTime(2012, 9, 24, 13, 0, 0)
             }));
-            Assert.AreEqual("This promotion has not started yet", ex.Message);
+            Assert.AreEqual("CannotCreateOrder_PromotionNotStartedYet", ex.Message);
         }
 
         [Test]
@@ -270,7 +270,7 @@ namespace apcurium.MK.Booking.Test.PromotionFixture
                 IsFutureBooking = false,
                 PickupDate = new DateTime(2016, 11, 21, 13, 0, 0)
             }));
-            Assert.AreEqual("This promotion has expired", ex.Message);
+            Assert.AreEqual("CannotCreateOrder_PromotionHasExpired", ex.Message);
         }
 
         [Test]
@@ -284,7 +284,7 @@ namespace apcurium.MK.Booking.Test.PromotionFixture
                 IsFutureBooking = false,
                 PickupDate = new DateTime(2014, 11, 24, 9, 0, 0)
             }));
-            Assert.AreEqual("This promotion is not available at this time", ex.Message);
+            Assert.AreEqual("CannotCreateOrder_PromotionNotAvailableAtThisTime", ex.Message);
         }
     }
 }

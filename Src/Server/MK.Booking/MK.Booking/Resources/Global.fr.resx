@@ -408,4 +408,28 @@
   <data name="CannotCreateOrder_PromotionMustUseCardOnFile" xml:space="preserve">
     <value>Vous devez sélectionner le Paiement In App pour utiliser une promotion.</value>
   </data>
+  <data name="CannotCreateOrder_PromotionIsNotActive" xml:space="preserve">
+    <value>Cette promotion n'est pas active</value>
+  </data>
+  <data name="CannotCreateOrder_PromotionHasReachedMaxUsage" xml:space="preserve">
+    <value>Le nombre maximal d'utilisation a été atteint pour cette promotion</value>
+  </data>
+  <data name="CannotCreateOrder_PromotionAppliesToCurrentBookingOnly" xml:space="preserve">
+    <value>Cette promotion ne s'applique pas aux commandes futures</value>
+  </data>
+  <data name="CannotCreateOrder_PromotionAppliesToFutureBookingOnly" xml:space="preserve">
+    <value>Cette promotion ne s'applique qu'aux commandes futures</value>
+  </data>
+  <data name="CannotCreateOrder_PromotionNotAvailableForThisDayOfTheWeek" xml:space="preserve">
+    <value>Cette promotion n'est pas disponible pour ce jour de la semaine</value>
+  </data>
+  <data name="CannotCreateOrder_PromotionNotStartedYet" xml:space="preserve">
+    <value>Cette promotion n'a pas encore commencé</value>
+  </data>
+  <data name="CannotCreateOrder_PromotionHasExpired" xml:space="preserve">
+    <value>Cette promotion est expirée</value>
+  </data>
+  <data name="CannotCreateOrder_PromotionNotAvailableAtThisTime" xml:space="preserve">
+    <value>Cette promotion n'est pas disponible en ce moment</value>
+  </data>
 </root>

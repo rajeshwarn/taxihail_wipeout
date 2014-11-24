@@ -115,13 +115,13 @@ namespace apcurium.MK.Booking.Domain
 
             if (!_active)
             {
-                errorMessage = "This promotion is not active";
+                errorMessage = "CannotCreateOrder_PromotionIsNotActive";
                 return false;
             }
 
             if (_maxUsages.HasValue && _usages >= _maxUsages)
             {
-                errorMessage = "Maximum number of uses has been reached for this promotion";
+                errorMessage = "CannotCreateOrder_PromotionHasReachedMaxUsage";
                 return false;
             }
 
@@ -132,7 +132,7 @@ namespace apcurium.MK.Booking.Domain
                     : 0;
                 if (usagesForThisUser >= _maxUsagesPerUser)
                 {
-                    errorMessage = "Maximum number of uses has been reached for this promotion";
+                    errorMessage = "CannotCreateOrder_PromotionHasReachedMaxUsage";
                     return false;
                 }
             }
@@ -141,7 +141,7 @@ namespace apcurium.MK.Booking.Domain
             {
                 if (!_appliesToFutureBooking)
                 {
-                    errorMessage = "This promotion applies to current booking only";
+                    errorMessage = "CannotCreateOrder_PromotionAppliesToCurrentBookingOnly";
                     return false;
                 }
             }
@@ -149,26 +149,26 @@ namespace apcurium.MK.Booking.Domain
             {
                 if (!_appliesToCurrentBooking)
                 {
-                    errorMessage = "This promotion applies to future booking only";
+                    errorMessage = "CannotCreateOrder_PromotionAppliesToFutureBookingOnly";
                     return false;
                 }
             }
 
             if (!_daysOfWeek.Contains(pickupDate.DayOfWeek))
             {
-                errorMessage = "This promotion is not available for this day of the week";
+                errorMessage = "CannotCreateOrder_PromotionNotAvailableForThisDayOfTheWeek";
                 return false;
             }
 
             if (_startDate.HasValue && _startDate > pickupDate)
             {
-                errorMessage = "This promotion has not started yet";
+                errorMessage = "CannotCreateOrder_PromotionNotStartedYet";
                 return false;
             }
 
             if (_endDate.HasValue && _endDate <= pickupDate)
             {
-                errorMessage = "This promotion has expired";
+                errorMessage = "CannotCreateOrder_PromotionHasExpired";
                 return false;
             }
 
@@ -178,7 +178,7 @@ namespace apcurium.MK.Booking.Domain
                 var isInRange = pickupTime >= _startTime.Value && pickupTime < _endTime.Value;
                 if (!isInRange)
                 {
-                    errorMessage = "This promotion is not available at this time";
+                    errorMessage = "CannotCreateOrder_PromotionNotAvailableAtThisTime";
                     return false;
                 }
             }
