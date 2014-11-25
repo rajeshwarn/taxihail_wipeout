@@ -80,6 +80,7 @@
     <Compile Include="Requests\Payment\PairingForPaymentRequest.cs" />
     <Compile Include="Requests\Payment\UnpairingForPaymentRequest.cs" />
     <Compile Include="Requests\SwitchOrderToNextDispatchCompanyRequest.cs" />
+    <Compile Include="Requests\UserTaxiHailNetworkSettingsRequest.cs" />
     <Compile Include="Resources\Account.cs" />
     <Compile Include="Resources\AddressList.cs" />
     <Compile Include="Resources\DirectionInfo.cs" />
@@ -110,6 +111,7 @@
     <Compile Include="Http\NoCacheAttribute.cs" />
     <Compile Include="Requests\OrderRatingRequest.cs" />
     <Compile Include="Resources\TermsAndConditions.cs" />
+    <Compile Include="Resources\UserTaxiHailNetworkSettings.cs" />
     <Compile Include="Security\AuthenticationData.cs" />
     <Compile Include="Requests\CreditCardRequest.cs" />
     <Compile Include="Resources\CreditCardDetails.cs" />

@@ -92,6 +92,7 @@
     <Compile Include="Requests\TermsAndConditionsRequest.cs" />
     <Compile Include="Requests\TestOnlyReqGetTestAccount.cs" />
     <Compile Include="Requests\UpdatePassword.cs" />
+    <Compile Include="Requests\UserTaxiHailNetworkSettingsRequest.cs" />
     <Compile Include="Resources\Account.cs" />
     <Compile Include="Resources\AddressList.cs" />
     <Compile Include="Resources\IbsFare.cs" />
@@ -105,6 +106,7 @@
     <Compile Include="Resources\ReferenceData.cs" />
     <Compile Include="Resources\ApplicationInfo.cs" />
     <Compile Include="Resources\TermsAndConditions.cs" />
+    <Compile Include="Resources\UserTaxiHailNetworkSettings.cs" />
     <Compile Include="Security\AuthenticationData.cs" />
     <Compile Include="Resources\PaymentSettings.cs" />
     <Compile Include="Requests\PushNotificationRegistration.cs" />
