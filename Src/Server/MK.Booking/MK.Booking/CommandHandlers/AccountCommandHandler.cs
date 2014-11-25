@@ -207,7 +207,7 @@ namespace apcurium.MK.Booking.CommandHandlers
         public void Handle(AddOrUpdateUserTaxiHailNetworkSettings command)
         {
             var account = _repository.Get(command.AccountId);
-            account.AddOrUpdateTaxiHailNetworkSettings(command.UserTaxiHailNetworkSettings);
+            account.AddOrUpdateTaxiHailNetworkSettings(command.IsEnabled, command.DisabledFleets);
             _repository.Save(account, command.Id.ToString());
         }
 

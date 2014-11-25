@@ -72,6 +72,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices
         Task<NotificationSettings> GetNotificationSettings(bool companyDefaultOnly = false, bool cleanCache = false);
 	    Task UpdateNotificationSettings(NotificationSettings notificationSettings);
 
+	    Task<UserTaxiHailNetworkSettings> GetUserTaxiHailNetworkSettings(bool cleanCache = false);
+	    Task UpdateUserTaxiHailNetworkSettings(UserTaxiHailNetworkSettings userTaxiHailNetworkSettings);
+
 		void LogApplicationStartUp ();
     }
 }

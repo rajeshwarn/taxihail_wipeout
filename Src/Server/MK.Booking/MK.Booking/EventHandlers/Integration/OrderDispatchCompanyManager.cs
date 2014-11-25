@@ -17,6 +17,7 @@ using HoneyBadger;
 using HoneyBadger.Responses;
 using Infrastructure.Messaging;
 using Infrastructure.Messaging.Handling;
+using ServiceStack.Text;
 
 namespace apcurium.MK.Booking.EventHandlers.Integration
 {
@@ -81,12 +82,14 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                     // Local market
                     var userTaxiHailNetworkSettings = _configurationDao.GetUserTaxiHailNetworkSettings(details.AccountId);
 
-                    if (userTaxiHailNetworkSettings.Enabled)
+                    if (userTaxiHailNetworkSettings.IsEnabled)
                     {
                         var networkFleet = await _taxiHailNetworkServiceClient.GetNetworkFleetAsync(details.CompanyKey, pickUpPosition.Latitude, pickUpPosition.Longitude);
 
+                        var disabledFleets = userTaxiHailNetworkSettings.SerializedDisabledFleets.FromJson<List<string>>();
+
                         // Remove fleets that were disabled by the user
-                        var userNetworkFleet = FilterNetworkFleet(userTaxiHailNetworkSettings.DisabledFleets, networkFleet);
+                        var userNetworkFleet = FilterNetworkFleet(disabledFleets, networkFleet);
 
                         nextDispatchCompany = FindNextDispatchCompany(details.CompanyKey, pickUpPosition, userNetworkFleet);
                     }

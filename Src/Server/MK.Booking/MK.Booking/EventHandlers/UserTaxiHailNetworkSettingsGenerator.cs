@@ -1,7 +1,9 @@
 ﻿using System;
 using apcurium.MK.Booking.Events;
+using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
 using Infrastructure.Messaging.Handling;
+using ServiceStack.Text;
 
 namespace apcurium.MK.Booking.EventHandlers
 {
@@ -24,7 +26,13 @@ namespace apcurium.MK.Booking.EventHandlers
                     context.UserTaxiHailNetworkSettings.Remove(userTaxiHailNetworkSettings);
                 }
 
-                context.UserTaxiHailNetworkSettings.Add(@event.UserTaxiHailNetworkSettings);
+                context.UserTaxiHailNetworkSettings.Add(new UserTaxiHailNetworkSettings
+                {
+                    Id = @event.SourceId,
+                    IsEnabled = @event.IsEnabled,
+                    SerializedDisabledFleets = @event.DisabledFleets.ToJson()
+                });
+
                 context.SaveChanges();
             }
         }

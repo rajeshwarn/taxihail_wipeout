@@ -1,5 +1,5 @@
 ﻿using System;
-using apcurium.MK.Common.Configuration;
+using System.Collections.Generic;
 using Infrastructure.Messaging;
 
 namespace apcurium.MK.Booking.Commands
@@ -11,7 +11,9 @@ namespace apcurium.MK.Booking.Commands
             Id = Guid.NewGuid();
         }
 
-        public UserTaxiHailNetworkSettings UserTaxiHailNetworkSettings { get; set; }
+        public bool IsEnabled { get; set; }
+
+        public List<string> DisabledFleets { get; set; }
 
         public Guid AccountId { get; set; }
 

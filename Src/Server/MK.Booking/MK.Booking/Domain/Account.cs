@@ -394,13 +394,12 @@ namespace apcurium.MK.Booking.Domain
             });
         }
 
-        public void AddOrUpdateTaxiHailNetworkSettings(UserTaxiHailNetworkSettings userTaxiHailNetworkSettings)
+        public void AddOrUpdateTaxiHailNetworkSettings(bool isEnabled, List<string> disabledFleets)
         {
-            userTaxiHailNetworkSettings.Id = Id;
-
             Update(new UserTaxiHailNetworkSettingsAddedOrUpdated
             {
-                UserTaxiHailNetworkSettings = userTaxiHailNetworkSettings
+                IsEnabled = isEnabled,
+                DisabledFleets = disabledFleets
             });
         }
 

@@ -41,12 +41,8 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
             Sut.Handle(new UserTaxiHailNetworkSettingsAddedOrUpdated
             {
                 SourceId = accountId,
-                UserTaxiHailNetworkSettings = new UserTaxiHailNetworkSettings
-                {
-                    Id = accountId,
-                    Enabled = true,
-                    DisabledFleets = disabledFleets
-                }
+                IsEnabled = true,
+                DisabledFleets = disabledFleets
             });
 
             using (var context = new ConfigurationDbContext(DbName))
@@ -55,9 +51,8 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
 
                 Assert.NotNull(dto);
                 Assert.AreEqual(accountId, dto.Id);
-                Assert.AreEqual(true, dto.Enabled);
+                Assert.AreEqual(true, dto.IsEnabled);
                 Assert.AreEqual(disabledFleets.ToJson(), dto.SerializedDisabledFleets);
-                Assert.AreEqual(disabledFleets, dto.DisabledFleets);
             }
         }
     }
@@ -72,12 +67,8 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
             Sut.Handle(new UserTaxiHailNetworkSettingsAddedOrUpdated
             {
                 SourceId = _accountId,
-                UserTaxiHailNetworkSettings = new UserTaxiHailNetworkSettings
-                {
-                    Id = _accountId,
-                    Enabled = true,
-                    DisabledFleets = new List<string> { "Apcurium", "TaxiHailDemo" }
-                }
+                IsEnabled = true,
+                DisabledFleets = new List<string> { "Apcurium", "TaxiHailDemo" }
             });
         }
 
@@ -89,12 +80,8 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
             Sut.Handle(new UserTaxiHailNetworkSettingsAddedOrUpdated
             {
                 SourceId = _accountId,
-                UserTaxiHailNetworkSettings = new UserTaxiHailNetworkSettings
-                {
-                    Id = _accountId,
-                    Enabled = false,
-                    DisabledFleets = disabledFleets
-                }
+                IsEnabled = false,
+                DisabledFleets = disabledFleets
             });
 
             using (var context = new ConfigurationDbContext(DbName))
@@ -103,9 +90,8 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
 
                 Assert.NotNull(dto);
                 Assert.AreEqual(_accountId, dto.Id);
-                Assert.AreEqual(false, dto.Enabled);
+                Assert.AreEqual(false, dto.IsEnabled);
                 Assert.AreEqual(disabledFleets.ToJson(), dto.SerializedDisabledFleets);
-                Assert.AreEqual(disabledFleets, dto.DisabledFleets);
             }
         }
     }
