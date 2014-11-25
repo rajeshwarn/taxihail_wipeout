@@ -144,6 +144,5 @@
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\OrderRatings.cs" />
-    <BundleResource Include="Resources\UserTaxiHailNetworkSettings.cs" />
   </ItemGroup>
 </Project>
