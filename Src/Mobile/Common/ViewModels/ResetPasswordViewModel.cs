@@ -22,7 +22,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			get
 			{
-                return this.GetCommand(() =>
+                return this.GetCommand(async () =>
                 {
 					if (!IsEmail(Email))
 					{
@@ -35,7 +35,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 					try
 					{
-						_accountService.ResetPassword(Email);
+						await _accountService.ResetPassword(Email);
 						this.ReturnResult(Email);
                     }
 					catch(Exception e)

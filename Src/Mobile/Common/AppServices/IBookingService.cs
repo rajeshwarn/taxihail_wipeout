@@ -26,15 +26,15 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 
         bool IsCallboxStatusCompleted(string statusId);
         
-        bool CancelOrder(Guid orderId);
+		Task<bool> CancelOrder(Guid orderId);
 
-        bool SendReceipt(Guid orderId);
+		Task<bool> SendReceipt(Guid orderId);
 
         bool HasLastOrder{get;}
 
         bool HasUnratedLastOrder { get; }
 
-	    bool IsPaired(Guid orderId);
+	    Task<bool> IsPaired(Guid orderId);
 
 		Task<OrderStatusDetail> CreateOrder(CreateOrder info);
 
@@ -54,16 +54,13 @@ namespace apcurium.MK.Booking.Mobile.AppServices
         
 		void ClearLastOrder();
 
-	    void RemoveFromHistory(Guid orderId);
+	    Task RemoveFromHistory(Guid orderId);
 
-        IEnumerable<RatingTypeWrapper> GetRatingTypes();
+		Task<IEnumerable<RatingTypeWrapper>> GetRatingTypes();
 
-		[Obsolete("Migrate to async/await")]
-		OrderRatings GetOrderRating(Guid orderId);
 		Task<OrderRatings> GetOrderRatingAsync(Guid orderId);
 
-	    void SendRatingReview(OrderRatings orderRatings);
-
+	    Task SendRatingReview(OrderRatings orderRatings);
     }
 }
 

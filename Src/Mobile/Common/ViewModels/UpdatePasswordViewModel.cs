@@ -71,7 +71,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			get
 			{
-				return this.GetCommand(() =>
+				return this.GetCommand(async () =>
 				{
 					if (!CanUpdatePassword)
 					{
@@ -83,7 +83,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					this.Services().Message.ShowProgress(true);
 					try
 					{
-						_accountService.UpdatePassword(_accountService.CurrentAccount.Id, CurrentPassword, NewPassword);
+						await _accountService.UpdatePassword(_accountService.CurrentAccount.Id, CurrentPassword, NewPassword);
 						_accountService.SignOut();
 						var msg = this.Services().Localize["ChangePasswordConfirmmation"];
 						var title = Settings.TaxiHail.ApplicationName;
