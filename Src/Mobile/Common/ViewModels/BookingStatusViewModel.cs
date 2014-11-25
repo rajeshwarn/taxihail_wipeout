@@ -312,9 +312,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         private bool _isCurrentlyPairing;
 		private bool _isDispatchPopupVisible;
 
+		private bool _refreshStatusIsExecuting;
 		private async void RefreshStatus()
         {
-            try {
+            try 
+			{
+				if(_refreshStatusIsExecuting)
+				{
+					return;
+				}
+
+				_refreshStatusIsExecuting = true;
+
 				var status = await _bookingService.GetOrderStatusAsync(Order.Id);
 				if(status.VehicleNumber != null)
 				{
@@ -363,7 +372,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					&& paymentSettings.AutomaticPayment 
 					&& _accountService.CurrentAccount.DefaultCreditCard != null)
 				{
-					var isPaired = _bookingService.IsPaired(Order.Id);
+					var isPaired = await _bookingService.IsPaired(Order.Id);
                     var pairState = this.Services().Cache.Get<string>("PairState" + Order.Id);
 					var isPairBypass = (pairState == PairingState.Failed) || (pairState == PairingState.Canceled) || (pairState == PairingState.Unpaired);
 					if (!isPaired && !_isCurrentlyPairing && !isPairBypass)
@@ -393,6 +402,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			{
                 Logger.LogError (ex);
             }
+			finally
+			{
+				_refreshStatusIsExecuting = false;
+			}
         }
 
 	    private void SwitchDispatchCompanyIfNecessary(OrderStatusDetail status)
@@ -498,9 +511,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                                 && (paymentSettings.IsPayInTaxiEnabled || paymentSettings.PayPalClientSettings.IsEnabled);
 
 			// Unpair button is only available for RideLinqCMT
+			var isPaired = await _bookingService.IsPaired(Order.Id);
 			IsUnpairButtonVisible = paymentSettings.PaymentMode == PaymentMethod.RideLinqCmt 
 								&& !paymentSettings.AutomaticPayment  			
-								&& _bookingService.IsPaired(Order.Id);
+								&& isPaired;
 		}
 
 	    private bool ShouldDisplayPayButton(string statusId, bool isOrderAlreadyPaid, ClientPaymentSettings paymentSettings)
@@ -643,7 +657,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 							var isSuccess = false;
 							using(this.Services().Message.ShowProgress())
 							{
-								isSuccess = await Task.Run(() => _bookingService.CancelOrder(Order.Id)); 
+								isSuccess = await _bookingService.CancelOrder(Order.Id); 
 							}
                             if (isSuccess) 
                             {
