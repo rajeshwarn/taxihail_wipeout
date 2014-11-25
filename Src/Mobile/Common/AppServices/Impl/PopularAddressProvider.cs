@@ -21,14 +21,13 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         public IEnumerable<Address> GetPopularAddresses()
         {
-
             var cached = _cacheService.Get<Address[]>(PopularAddressesCacheKey);
-
-            if (cached != null)
+			if (cached != null)
             {
                 return cached;
             }
-            var result = UseServiceClientTask<PopularAddressesServiceClient, IEnumerable<Address>>(service => service.GetPopularAddresses());
+
+			var result = UseServiceClientAsync<PopularAddressesServiceClient, IEnumerable<Address>>(service => service.GetPopularAddresses()).Result;
             var popularAddresses = result as Address[] ?? result.ToArray();
             _cacheService.Set(PopularAddressesCacheKey, popularAddresses.ToArray());
             return popularAddresses;

@@ -335,13 +335,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                return this.GetCommand(() =>
+                return this.GetCommand(async () =>
                 {
 					using(this.Services().Message.ShowProgress())
 					{
 						if (OrderId.HasValue())
 	                    {
-							_bookingService.RemoveFromHistory(OrderId);
+							await _bookingService.RemoveFromHistory(OrderId);
 	                        this.Services().MessengerHub.Publish(new OrderDeleted(this, OrderId, null));
 							Close(this);
 	                    }
@@ -371,13 +371,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                return this.GetCommand(() =>
+                return this.GetCommand(async () =>
                 {
 					using(this.Services().Message.ShowProgress())
 					{
 						if (OrderId.HasValue())
 						{
-							_bookingService.SendReceipt(OrderId);
+							await _bookingService.SendReceipt(OrderId);
 						}
 						Close(this);
 					}
@@ -393,11 +393,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					string.Empty, 
 					this.Services().Localize["StatusConfirmCancelRide"], 
                     this.Services().Localize["YesButton"], 
-					() =>
+					async () =>
 	                	{
 							using(this.Services().Message.ShowProgress())
 							{
-								var isSuccess = _bookingService.CancelOrder(OrderId);
+								var isSuccess = await _bookingService.CancelOrder(OrderId);
 			                    if(isSuccess)
 			                    {
                                     this.Services().MessengerHub.Publish(new OrderStatusChanged(this, OrderId, OrderStatus.Canceled, null));
