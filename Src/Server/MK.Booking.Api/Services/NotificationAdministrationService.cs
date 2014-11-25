@@ -91,15 +91,15 @@ namespace apcurium.MK.Booking.Api.Services
                 {
                     case NotificationService.EmailConstant.Template.AccountConfirmation:
                         _notificationService.SendAccountConfirmationEmail(new Uri("http://www.google.com"),
-                            request.EmailAddress, "en");
+                            request.EmailAddress, request.Language);
                         break;
                     case NotificationService.EmailConstant.Template.BookingConfirmation:
                         _notificationService.SendBookingConfirmationEmail(12345, "This is a standard note",
                             _pickupAddress, _dropOffAddress,
-                            DateTime.Now, _bookingSettings, request.EmailAddress, "en", true);
+                            DateTime.Now, _bookingSettings, request.EmailAddress, request.Language, true);
                         break;
                     case NotificationService.EmailConstant.Template.PasswordReset:
-                        _notificationService.SendPasswordResetEmail("N3wp@s5w0rd", request.EmailAddress, "en");
+                        _notificationService.SendPasswordResetEmail("N3wp@s5w0rd", request.EmailAddress, request.Language);
                         break;
                     case NotificationService.EmailConstant.Template.Receipt:
                         var fareObject = _serverSettings.ServerData.VATIsEnabled
