@@ -46,11 +46,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 			CanRate = false;
 
-			_paymentSettings = await _paymentService.GetPaymentSettings ();
-
-			if (Settings.RatingEnabled) 
+			using (this.Services().Message.ShowProgress())
 			{
-				await InitRating ();
+				_paymentSettings = await _paymentService.GetPaymentSettings ();
+
+				if (Settings.RatingEnabled) 
+				{
+					await InitRating ();
+				}
 			}
 		}
 
