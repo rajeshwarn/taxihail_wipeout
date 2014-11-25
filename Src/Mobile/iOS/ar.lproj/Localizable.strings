@@ -539,3 +539,4 @@
 "PromoMustUseCardOnFileWarningMessage"="Please note that the discount will only be applied if the payment is made using the app";
 "WarningPromoCodeDontShow"="لا تحذر";
 "PromoMustUseCardOnFileMessage"="In order to use a promo code, you need to pay with card on file";
+"PanelMenuViewPromotionsText"="Promotions";

@@ -396,19 +396,26 @@ namespace MK.Common.Configuration
         [SendToClient]
         [Display(Name = "Google AdWords Conversion Tracking ID", Description = "Conversion ID used for Google Conversion Tracking")]
         public string GoogleAdWordsConversionId { get; protected set; }
+
         [SendToClient]
         [Display(Name = "Google AdWords Conversion Tracking Label", Description = "Conversion Label used for Google Conversion Tracking")]
         public string GoogleAdWordsConversionLabel { get; protected set; }
 
         [SendToClient, CustomizableByCompany]
         public bool CallDriverUsingProxy { get; protected set; }
+
         [SendToClient, CustomizableByCompany]
         public string CallDriverUsingProxyUrl { get; protected set; }
 
 	    [SendToClient, CustomizableByCompany]
         public int InitialZoomLevel { get; set; }
+
         [SendToClient, CustomizableByCompany]
         public bool DisableAutomaticZoomOnLocation { get; set; }
+
+        [SendToClient]
+        [Display(Name = "Promotion enabled", Description = "Enables promotion on the client and on the admin portal")]
+        public bool PromotionEnabled { get; set; }
     }
 }
 

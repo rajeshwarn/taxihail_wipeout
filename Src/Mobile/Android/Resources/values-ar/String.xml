@@ -537,4 +537,5 @@
   <string name="PromoMustUseCardOnFileMessage">In order to use a promo code, you need to pay with card on file</string>
   <string name="PromoMustUseCardOnFileWarningMessage">Please note that the discount will only be applied if the payment is made using the app</string>
   <string name="WarningPromoCodeDontShow">لا تحذر</string>
+  <string name="PanelMenuViewPromotionsText">Promotions</string>
 </resources>

@@ -146,8 +146,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 FindViewById<LinearLayout>(Resource.Id.ApartmentInfosLayout).Visibility = ViewStates.Gone;
             }
 
-            // TODO MKTAXI-2308 Disable promo
-            if (false)
+            if (!this.Services().Settings.PromotionEnabled)
             {
                 FindViewById<EditText>(Resource.Id.txtPromoCode).Visibility = ViewStates.Gone;
                 FindViewById<ImageButton>(Resource.Id.btnPromo).Visibility = ViewStates.Gone;

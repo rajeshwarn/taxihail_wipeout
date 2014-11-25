@@ -64,6 +64,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		    {
                 ItemMenuList.Add(new ItemMenuModel { Text = this.Services().Localize["PanelMenuViewNotificationsText"], NavigationCommand = NavigateToNotificationsSettings });
 		    }
+			if (Settings.PromotionEnabled)
+			{
+				ItemMenuList.Add(new ItemMenuModel { Text = this.Services().Localize["PanelMenuViewPromotionsText"], NavigationCommand = NavigateToPromotions });
+			}
 		    if (Settings.TutorialEnabled)
 		    {
                 ItemMenuList.Add(new ItemMenuModel { Text = this.Services().Localize["PanelMenuViewTutorialText"], NavigationCommand = NavigateToTutorial });
@@ -254,6 +258,19 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 });
             }
         }
+
+		public ICommand NavigateToPromotions
+		{
+			get 
+			{
+				return this.GetCommand(() =>
+				{
+					CloseMenu();
+					ShowViewModel<HistoryListViewModel> ();
+					// TODO MKTAXI-2310
+				});
+			}
+		}
 
 		public ICommand NavigateToAboutUs
         {

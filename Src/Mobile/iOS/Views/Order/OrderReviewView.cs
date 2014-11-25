@@ -117,9 +117,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
                 lblPhone.RemoveFromSuperview();
                 iconPhone.RemoveFromSuperview();
             }
-
-            // TODO MKTAXI-2308 Disable promo
-            if (false)
+                
+            if (!this.Services().Settings.PromotionEnabled)
             {
                 txtPromoCode.RemoveFromSuperview();
                 btnPromo.RemoveFromSuperview();

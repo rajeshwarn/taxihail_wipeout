@@ -552,4 +552,5 @@
   <string name="PromoMustUseCardOnFileMessage">Pour utiliser un code promo, vous devez payer avec le paiement in app</string>
   <string name="PromoMustUseCardOnFileWarningMessage">Veuillez noter que le rabais ne sera appliqué que si le paiement est effectué en utilisant l\'application</string>
   <string name="WarningPromoCodeDontShow">Ne pas signaler</string>
+  <string name="PanelMenuViewPromotionsText">Promotions</string>
 </resources>

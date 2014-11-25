@@ -2233,4 +2233,8 @@
     <value>No avisar</value>
     <comment>Don't warn</comment>
   </data>
+  <data name="PanelMenuViewPromotionsText" xml:space="preserve">
+    <value>Promotions</value>
+    <comment>Promotions</comment>
+  </data>
 </root>

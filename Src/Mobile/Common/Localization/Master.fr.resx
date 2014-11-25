@@ -1755,4 +1755,7 @@
   <data name="WarningPromoCodeDontShow" xml:space="preserve">
     <value>Ne pas signaler</value>
   </data>
+  <data name="PanelMenuViewPromotionsText" xml:space="preserve">
+    <value>Promotions</value>
+  </data>
 </root>
