@@ -225,6 +225,16 @@
                     </LinearLayout>
                 </LinearLayout>
                 <apcurium.mk.booking.mobile.client.controls.widgets.EditTextEntry
+                    android:id="@+id/txtPromoCode"
+                    android:imeOptions="actionDone"
+                    android:hint="@string/PromoCodeLabel"
+                    android:layout_width="fill_parent"
+                    android:layout_marginBottom="8dip"
+                    android:layout_height="@dimen/HeightEditTextFlat"
+                    android:background="#f2f2f2"
+                    android:layout_marginTop="12dip"
+                    android:singleLine="true" />
+                <apcurium.mk.booking.mobile.client.controls.widgets.EditTextEntry
                     android:background="#eeeeee"
                     android:inputType="textMultiLine"
                     android:id="@+id/txtNotes"
@@ -235,7 +245,6 @@
                     android:layout_height="fill_parent"
                     android:layout_alignParentLeft="true"
                     android:gravity="start|top"
-                    android:layout_marginTop="16dip"
                     android:minHeight="44dip" />
                 <LinearLayout
                     android:id="@+id/HackBottomPadding"

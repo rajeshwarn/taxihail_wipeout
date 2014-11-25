@@ -536,3 +536,6 @@
 "CreditCardBookingSettingsError"="An error occured when updating the booking settings. Please make sure that the account number in your profile is valid and try again.";
 "UpdateBookingSettingsInvalidCoF"="You must have a card on file to use this account";
 "PromoCodeLabel"="Promo code";
+"PromoMustUseCardOnFileWarningMessage"="Please note that the discount will only be applied if the payment is made using the app";
+"WarningPromoCodeDontShow"="لا تحذر";
+"PromoMustUseCardOnFileMessage"="In order to use a promo code, you need to pay with card on file";

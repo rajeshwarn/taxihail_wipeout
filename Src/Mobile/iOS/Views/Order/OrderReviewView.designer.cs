@@ -13,6 +13,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 	partial class OrderReviewView
 	{
 		[Outlet]
+		MonoTouch.UIKit.UIButton btnPromo { get; set; }
+
+		[Outlet]
 		MonoTouch.UIKit.UIImageView iconApartment { get; set; }
 
 		[Outlet]
@@ -148,6 +151,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 			if (txtPromoCode != null) {
 				txtPromoCode.Dispose ();
 				txtPromoCode = null;
+			}
+
+			if (btnPromo != null) {
+				btnPromo.Dispose ();
+				btnPromo = null;
 			}
 		}
 	}

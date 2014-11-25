@@ -566,4 +566,7 @@
   <string name="UpdateBookingSettingsGenericError">An error occured when updating the booking settings</string>
   <string name="UpdateBookingSettingsInvalidCoF">You must have a card on file to use this account</string>
   <string name="PromoCodeLabel">Promo code</string>
+  <string name="PromoMustUseCardOnFileMessage">In order to use a promo code, you need to pay with card on file</string>
+  <string name="PromoMustUseCardOnFileWarningMessage">Please note that the discount will only be applied if the payment is made using the app</string>
+  <string name="WarningPromoCodeDontShow">Don\'t warn</string>
 </resources>

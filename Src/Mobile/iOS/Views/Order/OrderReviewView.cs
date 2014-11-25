@@ -79,6 +79,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
                 .For(v => v.Text)
                 .To(vm => vm.PromoCode);
 
+            set.Bind(btnPromo)
+                .For("TouchUpInside")
+                .To(vm => vm.NavigateToPromotions);
+
 			if (!this.Services().Settings.ShowPassengerName)
             {
                 lblName.RemoveFromSuperview();
@@ -112,6 +116,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
             {
                 lblPhone.RemoveFromSuperview();
                 iconPhone.RemoveFromSuperview();
+            }
+
+            // TODO MKTAXI-2308 Disable promo
+            if (false)
+            {
+                txtPromoCode.RemoveFromSuperview();
+                btnPromo.RemoveFromSuperview();
             }
 
             set.Apply();

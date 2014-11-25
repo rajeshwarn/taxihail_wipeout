@@ -561,6 +561,13 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 					&& destination.HasValidCoordinate();
 		}
 
+		public async Task<bool> ShouldWarnAboutPromoCode()
+		{
+			var promoCode = await _promoCodeSubject.Take(1).ToTask();
+			return !_cacheService.Get<string>("WarningPromoCodeDontShow").HasValue()
+				&& promoCode.HasValue();
+		}
+
 	    public bool ShouldPromptUserToRateLastRide()
 	    {
             return !_cacheService.Get<string>("RateLastRideDontPrompt").HasValue();
@@ -678,6 +685,20 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 				}
 
 				return true;
+			}
+
+			return true;
+		}
+
+		public async Task<bool> ValidatePromotionUseConditions()
+		{
+			var orderToValidate = await GetOrder ();	
+			if (orderToValidate.PromoCode.HasValue())
+			{
+				if (orderToValidate.Settings.ChargeTypeId != ChargeTypes.CardOnFile.Id)
+				{
+					return false;
+				}
 			}
 
 			return true;

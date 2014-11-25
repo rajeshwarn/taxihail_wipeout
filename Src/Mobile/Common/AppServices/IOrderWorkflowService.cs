@@ -18,6 +18,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 
 		Task<bool> ValidateCardOnFile ();
 		Task<bool> ValidateCardExpiration ();
+		Task<bool> ValidatePromotionUseConditions();
 
 		Task SetAddress(Address address);
 		Task SetPickupAptAndRingCode(string apt, string ringCode);
@@ -58,6 +59,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
         Guid? GetLastUnratedRide();
 
 		Task<bool> ShouldWarnAboutEstimate();
+		Task<bool> ShouldWarnAboutPromoCode();
 
 	    bool ShouldPromptUserToRateLastRide();
 

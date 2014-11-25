@@ -1746,4 +1746,13 @@
   <data name="PromoCodeLabel" xml:space="preserve">
     <value>Code promotionnel</value>
   </data>
+  <data name="PromoMustUseCardOnFileMessage" xml:space="preserve">
+  	<value>Pour utiliser un code promo, vous devez payer avec le paiement in app</value>
+  </data>
+  <data name="PromoMustUseCardOnFileWarningMessage" xml:space="preserve">
+  	<value>Veuillez noter que le rabais ne sera appliqué que si le paiement est effectué en utilisant l'application</value>
+  </data>
+  <data name="WarningPromoCodeDontShow" xml:space="preserve">
+    <value>Ne pas signaler</value>
+  </data>
 </root>

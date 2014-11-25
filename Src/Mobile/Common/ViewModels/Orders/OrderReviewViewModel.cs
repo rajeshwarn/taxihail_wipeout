@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Common.Entity;
+using System.Windows.Input;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 {
@@ -156,6 +157,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 					_orderWorkflowService.SetPromoCode(value);
 					RaisePropertyChanged();
 				}
+			}
+		}
+
+		public ICommand NavigateToPromotions
+		{
+			get 
+			{
+				return this.GetCommand(() =>
+				{
+					ShowViewModel<HistoryListViewModel> ();
+				});
 			}
 		}
     }
