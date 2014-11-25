@@ -27,8 +27,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         private TextView _lblLargeBags;
         private EditTextEntry _editNote;
         private EditTextEntry _editPromoCode;
+        private ImageButton _btnPromo;
         private LinearLayout _bottomPadding;
-        
+                
         public OrderReview(Context context, IAttributeSet attrs) : base (LayoutHelper.GetLayoutForView(Resource.Layout.SubView_OrderReview, context), context, attrs)
         {
             this.DelayBind (() => 
@@ -44,6 +45,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 _lblRingCode = Content.FindViewById<TextView>(Resource.Id.lblRingCode);
                 _editNote = FindViewById<EditTextEntry>(Resource.Id.txtNotes);
                 _editPromoCode = FindViewById<EditTextEntry>(Resource.Id.txtPromoCode);
+                _btnPromo = FindViewById<ImageButton>(Resource.Id.btnPromo);
 
                 _editNote.SetClickAnywhereToDismiss();
 
@@ -108,6 +110,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 .For(v => v.Text)
                 .To(vm => vm.PromoCode);
 
+            set.Bind(_btnPromo)
+                .For("Click")
+                .To(vm => vm.NavigateToPromotions);
+
 			if (!this.Services().Settings.ShowPassengerName)
             {
                 FindViewById<LinearLayout>(Resource.Id.passengerNameLayout).Visibility = ViewStates.Gone;
@@ -143,7 +149,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             // TODO MKTAXI-2308 Disable promo
             if (false)
             {
-                FindViewById<LinearLayout>(Resource.Id.txtPromoCode).Visibility = ViewStates.Gone;
+                FindViewById<EditText>(Resource.Id.txtPromoCode).Visibility = ViewStates.Gone;
+                FindViewById<ImageButton>(Resource.Id.btnPromo).Visibility = ViewStates.Gone;
             }
 
             set.Apply();
