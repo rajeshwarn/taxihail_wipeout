@@ -17,13 +17,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             Manager = manager;
         }
 
-        protected LocationListenerManager Manager
-        {
-            get;
-            set;
-        }
-
-        #region ILocationListener implementation
+        protected LocationListenerManager Manager { get; set; }
 
         public void OnLocationChanged(Location location)
         {
@@ -44,12 +38,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         {
             Manager.OnStatusChanged( provider,  status,  extras);
         }
-
-        #endregion
-
-       
-
-
     }
 
     public class LocationListenerManager : Object, IObservable<Position>
@@ -61,8 +49,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             _observers = new List<IObserver<Position>>();
             GpsListener = new LocationListener(this);
             NetworkListener = new LocationListener(this);
-
-
         }
 
         public LocationListener GpsListener { get; private set; }
@@ -75,7 +61,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         {
             try
             {
-                if ( location == null )
+                if (location == null)
                 {
                     return;
                 }
@@ -117,7 +103,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         public void OnStatusChanged(string provider, Availability status, Bundle extras)
         {
         }
-
 
         public IDisposable Subscribe(IObserver<Position> observer)
         {
