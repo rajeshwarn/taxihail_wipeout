@@ -1740,4 +1740,13 @@
   <data name="PanelMenuViewTaxiHailNetworkText" xml:space="preserve">
     <value>TaxiHail Network</value>
   </data>
+  <data name="UserTaxiHailNetwork_Enabled" xml:space="preserve">
+    <value>Enabled</value>
+  </data>
+  <data name="UserTaxiHailNetwork_Off" xml:space="preserve">
+    <value>Off</value>
+  </data>
+  <data name="UserTaxiHailNetwork_On" xml:space="preserve">
+    <value>On</value>
+  </data>
 </root>
