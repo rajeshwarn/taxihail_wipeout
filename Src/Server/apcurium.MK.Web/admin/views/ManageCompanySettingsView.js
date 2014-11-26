@@ -41,6 +41,8 @@
                      alert.on('ok', alert.remove, alert);
                      this.$('.message').html(alert.render().el);
 
+                     $('.menu-zone').html(new TaxiHail.AdminMenuView().render().el);
+
                  }, this))
                  .fail(_.bind(function(){
 
