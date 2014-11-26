@@ -1,17 +1,7 @@
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
+using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.AppServices;
-using apcurium.MK.Booking.Mobile.Extensions;
 using MK.Common.Entity;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
@@ -19,10 +9,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
     public class UserTaxiHailNetworkSettingsViewModel : PageViewModel
     {
         private readonly IAccountService _accountService;
+        private readonly INetworkRoamingService _networkRoamingService;
 
-        public UserTaxiHailNetworkSettingsViewModel(IAccountService accountService)
+        public UserTaxiHailNetworkSettingsViewModel(IAccountService accountService, INetworkRoamingService networkRoamingService)
         {
             _accountService = accountService;
+            _networkRoamingService = networkRoamingService;
         }
 
         public override void OnViewLoaded()
@@ -54,40 +46,33 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             UserTaxiHailNetworkSettings = new ObservableCollection<ToggleItem>();
 
-            var userTaxiHailNetworkSettings = await _accountService.GetUserTaxiHailNetworkSettings();
-            var type = userTaxiHailNetworkSettings.GetType();
+            var networkFleets = await _networkRoamingService.GetNetworkFleets();
+            var settings = await _accountService.GetUserTaxiHailNetworkSettings();
 
-            foreach (var setting in type.GetProperties())
+            IsTaxiHailNetworkEnabled = settings.IsEnabled;
+
+            foreach (var networkFleet in networkFleets)
             {
-                if (setting.PropertyType == typeof(bool) || setting.PropertyType == typeof(bool?))
+                UserTaxiHailNetworkSettings.Add(new ToggleItem
                 {
-                    var value = (bool?)setting.GetValue(userTaxiHailNetworkSettings);
-
-                    // Special case for this property since it resides outside the MvxListView
-                    if (setting.Name == "IsEnabled")
-                    {
-                        IsTaxiHailNetworkEnabled = value.Value;
-                        continue;
-                    }
-
-                    // if the value is null, this means the company set the setting as "Not available"
-                    // don't show it to the client
-                    if (value.HasValue)
-                    {
-                        UserTaxiHailNetworkSettings.Add(new ToggleItem
-                        {
-                            Name = setting.Name,
-                            Display = this.Services().Localize["Notification_" + setting.Name],
-                            Value = value.Value
-                        });
-                    }
-                }
+                    Display = networkFleet.CompanyName,
+                    Name = networkFleet.CompanyKey,
+                    Value = !settings.DisabledFleets.Contains(networkFleet.CompanyKey)
+                });
             }
         }
 
         private void UpdateUserTaxiHailNetworkSettings()
         {
-            
+            var disabledFleets = UserTaxiHailNetworkSettings.Where(s => !s.Value).Select(s => s.Name);
+
+            var updatedUserTaxiHailNetworkSettings = new UserTaxiHailNetworkSettings
+            {
+                IsEnabled = IsTaxiHailNetworkEnabled,
+                DisabledFleets = disabledFleets.ToList()
+            };
+
+            _accountService.UpdateUserTaxiHailNetworkSettings(updatedUserTaxiHailNetworkSettings);
         }
     }
 }
