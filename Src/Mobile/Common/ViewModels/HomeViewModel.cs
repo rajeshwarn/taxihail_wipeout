@@ -295,19 +295,24 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
-		public ICommand AutomaticLocateMeAtPickup
+		private CancellableCommand _automaticLocateMeAtPickup;
+		public CancellableCommand AutomaticLocateMeAtPickup
 		{
 			get
 			{
-				return this.GetCommand(async () =>
-				{					
+				return _automaticLocateMeAtPickup ?? (_automaticLocateMeAtPickup = new CancellableCommand(async (token) =>
+				{				
+					// we want this command to be top priority, so cancel previous map-related commands
+					LocateMe.Cancel();
+					Map.UserMovedMap.Cancel();
+
 					var addressSelectionMode = await _orderWorkflowService.GetAndObserveAddressSelectionMode ().Take (1).ToTask ();
 					if (_currentState == HomeViewModelState.Initial 
 						&& addressSelectionMode == AddressSelectionMode.PickupSelection)
 					{
-						SetMapCenterToUserLocation(true);
+						SetMapCenterToUserLocation(true, token);
 					}									
-				});
+				}));
 			}
 		}
 
@@ -322,7 +327,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			{
 				return _locateMe ?? (_locateMe = new CancellableCommand(token =>
 				{
+					AutomaticLocateMeAtPickup.Cancel();
 					Map.UserMovedMap.Cancel();
+
 					SetMapCenterToUserLocation(false, token);
 				}));
 			}
