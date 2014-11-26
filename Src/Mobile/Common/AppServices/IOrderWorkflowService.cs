@@ -48,8 +48,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 		IObservable<string> GetAndObserveEstimatedFare();
 		IObservable<string> GetAndObserveNoteToDriver();
 		IObservable<bool> GetAndObserveLoadingAddress();
-		IObservable<bool> GetAndObserveOrderCanBeConfirmed ();
-		IObservable<string> GetAndObserveMarket ();
+		IObservable<bool> GetAndObserveOrderCanBeConfirmed();
+		IObservable<string> GetAndObserveMarket();
 
 		Task<Tuple<Order, OrderStatusDetail>> GetLastActiveOrder();
 

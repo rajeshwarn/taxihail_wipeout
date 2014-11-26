@@ -49,7 +49,7 @@ namespace apcurium.MK.Booking.CommandHandlers
         public void Handle(NotifyOrderTimedOut command)
         {
             var order = _repository.Find(command.OrderId);
-            order.NotifyOrderTimedOut();
+            order.NotifyOrderTimedOut(command.Market);
 
             _repository.Save(order, command.Id.ToString());
         }
@@ -59,7 +59,8 @@ namespace apcurium.MK.Booking.CommandHandlers
             var order = new Order(command.OrderId, command.AccountId, command.IBSOrderId, command.PickupDate,
                 command.PickupAddress, command.DropOffAddress, command.Settings, command.EstimatedFare,
                 command.UserAgent, command.ClientLanguageCode, command.UserLatitude, command.UserLongitude,
-                command.UserNote, command.ClientVersion, command.IsChargeAccountPaymentWithCardOnFile);
+                command.UserNote, command.ClientVersion, command.IsChargeAccountPaymentWithCardOnFile,
+                command.CompanyKey, command.CompanyName, command.Market);
 
             if (command.Payment.PayWithCreditCard)
             {
@@ -108,7 +109,7 @@ namespace apcurium.MK.Booking.CommandHandlers
         public void Handle(SwitchOrderToNextDispatchCompany command)
         {
             var order = _repository.Find(command.OrderId);
-            order.SwitchOrderToNextDispatchCompany(command.IBSOrderId, command.CompanyKey, command.CompanyName);
+            order.SwitchOrderToNextDispatchCompany(command.IBSOrderId, command.CompanyKey, command.CompanyName, command.Market);
             _repository.Save(order, command.Id.ToString());
         }
 

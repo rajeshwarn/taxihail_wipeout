@@ -20,7 +20,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
                     {"longitude", longitude.ToString() }
                 };
 
-            string queryString = BuildQueryString(@params);
+            var queryString = BuildQueryString(@params);
 
             return Client.GetAsync<string>("/roaming/market" + queryString);
         }

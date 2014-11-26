@@ -27,7 +27,7 @@ namespace HoneyBadger.Responses
         public float CompassCourse { get; set; }
 
         [JsonProperty("md")]
-        public string Medaillon { get; set; }
+        public string Medallion { get; set; }
 
         [JsonProperty("ms")]
         public MeterStates MeterState { get; set; }
@@ -43,5 +43,8 @@ namespace HoneyBadger.Responses
 
         [JsonProperty("fi")]
         public int FleetId { get; set; }
+
+        [JsonProperty("vl")]
+        public int VehicleType { get; set; }
     }
 }

@@ -46,5 +46,15 @@ namespace apcurium.MK.Web.Tests
         {
             return string.Empty;
         }
+
+        public IEnumerable<NetworkFleetResponse> GetMarketFleets(string market)
+        {
+            throw new NotImplementedException();
+        }
+
+        public NetworkFleetResponse GetMarketFleet(string market, int fleetId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
