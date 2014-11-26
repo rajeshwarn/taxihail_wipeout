@@ -512,7 +512,9 @@
     <Content Include="admin\templates\UpdateTermsAndConditions.handlebars">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="admin\templates\AddAccountCharge.handlebars" />
+    <Content Include="admin\templates\AddAccountCharge.handlebars">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="admin\templates\ManageAccountsCharge.handlebars" />
     <Content Include="admin\localization\ManageAccountsCharge.json" />
     <Content Include="admin\templates\AccountChargeItem.handlebars" />

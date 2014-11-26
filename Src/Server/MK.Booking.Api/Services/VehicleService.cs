@@ -11,7 +11,9 @@ using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.IBS;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common;
+using apcurium.MK.Common.Extensions;
 using AutoMapper;
+using HoneyBadger;
 using Infrastructure.Messaging;
 using ServiceStack.Common.Web;
 using ServiceStack.ServiceInterface;
@@ -26,13 +28,19 @@ namespace apcurium.MK.Booking.Api.Services
         private readonly IVehicleTypeDao _dao;
         private readonly ICommandBus _commandBus;
         private readonly ReferenceDataService _referenceDataService;
+        private readonly HoneyBadgerServiceClient _honeyBadgerServiceClient;
 
-        public VehicleService(IIBSServiceProvider ibsServiceProvider, IVehicleTypeDao dao, ICommandBus commandBus, ReferenceDataService referenceDataService)
+        public VehicleService(IIBSServiceProvider ibsServiceProvider,
+            IVehicleTypeDao dao,
+            ICommandBus commandBus,
+            ReferenceDataService referenceDataService,
+            HoneyBadgerServiceClient honeyBadgerServiceClient)
         {
             _ibsServiceProvider = ibsServiceProvider;
             _dao = dao;
             _commandBus = commandBus;
             _referenceDataService = referenceDataService;
+            _honeyBadgerServiceClient = honeyBadgerServiceClient;
         }
 
         public AvailableVehiclesResponse Post(AvailableVehicles request)
@@ -42,16 +50,21 @@ namespace apcurium.MK.Booking.Api.Services
 
             var vehicles = new IbsVehiclePosition[0];
 
-            if (string.IsNullOrEmpty((request.Market)))
+            if (!request.Market.HasValue())
             {
                 vehicles = _ibsServiceProvider.Booking()
                     .GetAvailableVehicles(request.Latitude, request.Longitude, request.VehicleTypeId);
             }
             else
             {
-                // MKTAXI-2282, wait for MKTAXI-2294
-                // Call to honey badger endpoint:
-                // vehicles = 
+                var vehicleResponse = _honeyBadgerServiceClient.GetAvailableVehicles(request.Market, request.Latitude, request.Longitude);
+                vehicles = vehicleResponse.Select(v => new IbsVehiclePosition
+                {
+                    Latitude = v.Latitude,
+                    Longitude = v.Longitude,
+                    PositionDate = v.Timestamp,
+                    VehicleNumber = v.Medallion
+                }).ToArray();
             }
 
             var availableVehicles = vehicles.Select(Mapper.Map<AvailableVehicle>).ToArray();

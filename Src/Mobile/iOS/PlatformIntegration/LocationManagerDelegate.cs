@@ -32,16 +32,23 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 
         public override void LocationsUpdated (CLLocationManager manager, CLLocation[] locations)
         {
-			try{
-
-			var logger = TinyIoCContainer.Current.Resolve<ILogger>();
-			logger.LogMessage( string.Format( "LocationsUpdated item found {0}" , locations.Count()) );
-			foreach (var loc in locations) {
-					logger.LogMessage( string.Format("Location update : Lat {0} - Lg {1} - H Accuracy {2} - V Accuracy {3} - T {4}", loc.Coordinate.Latitude, loc.Coordinate.Longitude, loc.HorizontalAccuracy, loc.VerticalAccuracy, loc.Timestamp.ToDateTimeUtc().ToLocalTime().ToLongTimeString() ) 	);
+			try
+            {
+			    var logger = TinyIoCContainer.Current.Resolve<ILogger>();
+			    logger.LogMessage(string.Format("LocationsUpdated item found {0}", locations.Count()));
+    			foreach (var loc in locations) 
+                {
+    			    logger.LogMessage(string.Format(
+                        "Location update : Lat {0} - Lg {1} - H Accuracy {2} - V Accuracy {3} - T {4}", 
+                        loc.Coordinate.Latitude, 
+                        loc.Coordinate.Longitude, 
+                        loc.HorizontalAccuracy, 
+                        loc.VerticalAccuracy, 
+                        loc.Timestamp.ToDateTimeUtc().ToLocalTime().ToLongTimeString()));
+    			}
 			}
-
-			}
-			catch{
+			catch
+            {
 			}
 
             var newLocation = locations.Last();
@@ -67,11 +74,10 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
             LastKnownPosition = position;
         }
 
-
         public IDisposable Subscribe (IObserver<Position> observer)
         {
             Observers.Add(observer);
-            return new ActionDisposable(()=>{
+            return new ActionDisposable(() => {
                 Observers.Remove(observer);
             });
         }

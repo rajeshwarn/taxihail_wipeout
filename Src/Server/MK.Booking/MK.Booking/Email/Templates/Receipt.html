@@ -35,11 +35,10 @@
         table td {
             vertical-align: top;
         }
+
         /* -------------------------------------
             BODY & CONTAINER
         ------------------------------------- */
-
-
         .body-wrap {
             width: 100%;
         }
@@ -95,19 +94,6 @@
             .footer p, .footer a, .footer unsubscribe, .footer td {
                 font-size: 12px;
             }
-
-        /* -------------------------------------
-            GRID AND COLUMNS
-        ------------------------------------- */
-        .column-left {
-            float: left;
-            width: 50%;
-        }
-
-        .column-right {
-            float: left;
-            width: 50%;
-        }
 
         /* -------------------------------------
             TYPOGRAPHY
@@ -248,27 +234,33 @@
                 padding: 5px 0;
             }
 
-            .invoice .invoice-items {
-                width: 100%;
+        /* -------------------------------------
+            DRIVER INFOS
+        ------------------------------------- */
+        .yourdriver {
+            margin: 15px auto;
+            text-align: left;
+            width: 80%;
+            table-layout: fixed;
+            word-wrap: break-word;
+        }
+            .yourdriver td.driver_name {
+                vertical-align: central;
+                font-weight: bold;
+                text-transform: uppercase;
+                width: 45%;
             }
 
-                .invoice .invoice-items td {
-                    border-top: #eee 1px solid;
-                }
+            .yourdriver td {
+                padding: 5px 0;
+            }
 
-                .invoice .invoice-items .total td {
-                    border-top: 2px solid #333;
-                    border-bottom: 2px solid #333;
-                    font-weight: 700;
-                }
-
+            .driver_list_title {
+                font-weight: bold;
+            }
         /* -------------------------------------
             RESPONSIVE AND MOBILE FRIENDLY STYLES
         ------------------------------------- */
-
-
-
-
         .receipt_price {
             text-align: center;
             font-weight: bold;
@@ -280,11 +272,12 @@
             text-transform: uppercase;
         }
 
-        .receiptLeftInfo, .receiptRightInfo {
+        .receiptLeftInfo, 
+        .receiptRightInfo,
+        .receiptBottomInfo {
             width: 100%;
             float: left !important;
         }
-
 
         .route_list {
             text-align: left;
@@ -358,11 +351,9 @@
                 padding: 0 5px 0 5px;
             }
     </style>
-
 </head>
 
 <body>
-
     <table class="body-wrap">
         <tr>
             <td></td>
@@ -445,6 +436,28 @@
                                                         {{/ShowStaticMap}}
                                                     </table>
                                                 </div>
+                                                <div class="receiptBottomInfo" style="float: left !important;">
+                                                    <table width="100%" cellpadding="0" cellspacing="0">
+                                                        <tr>
+                                                            <td class="title_block"><span>{{localize "Email_Body_YourDriver"}}</span></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <table class="yourdriver" cellpadding="0" cellspacing="0">
+                                                                    <tr style="color:{{EmailFontColor}} !important">
+                                                                        <td class="driver_name" rowspan="2">{{ DriverInfos.FullName }}</td>
+                                                                        <td class="driver_list_title">{{ localize "Email_Body_VehicleModel" }}</td>
+                                                                        <td class="list_value">{{ DriverInfos.VehicleMake }} {{ DriverInfos.VehicleModel }}</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class="driver_list_title">{{ localize "Email_Body_VehicleNumber" }}</td>
+                                                                        <td class="list_value">{{ VehicleNumber }}</td>
+                                                                    </tr>
+                                                                </table>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
                                                 <div class="receiptRightInfo" style="float: left !important;">
                                                     <table>
                                                         <tr>
@@ -454,26 +467,26 @@
                                                             <td>
                                                                 <table class="invoice" cellpadding="0" cellspacing="0">
                                                                     <tr>
-                                                                        <td class="fare_list_title">{{ localize "Email_Body_Fare"}}</td>
+                                                                        <td class="list_title">{{ localize "Email_Body_Fare"}}</td>
                                                                         <td class="list_value">{{ Fare }}</td>
                                                                     </tr>
                                                                     <tr>
-                                                                        <td class="fare_list_title">
+                                                                        <td class="list_title">
                                                                             {{#vatIsEnabled}}{{ localize "Email_Body_VAT"}}{{/vatIsEnabled}}
                                                                             {{^vatIsEnabled}}{{ localize "Email_Body_Tax"}}{{/vatIsEnabled}}
                                                                         </td>
                                                                         <td class="list_value">{{ Tax }}</td>
                                                                     </tr>
                                                                     <tr class="fare_list_subtotal" style="color:{{EmailFontColor}} !important">
-                                                                        <td class="fare_list_title">{{ localize "Email_Body_SubTotal" }}</td>
+                                                                        <td class="list_title">{{ localize "Email_Body_SubTotal" }}</td>
                                                                         <td class="list_value">{{ SubTotal }}</td>
                                                                     </tr>
                                                                     <tr>
-                                                                        <td class="fare_list_title">{{ localize "Email_Body_Tip"}}</td>
+                                                                        <td class="list_title">{{ localize "Email_Body_Tip"}}</td>
                                                                         <td class="list_value">{{ Tip }}</td>
                                                                     </tr>
                                                                     <tr class="fare_list_charged" style="color:{{EmailFontColor}} !important">
-                                                                        <td class="fare_list_title">{{ localize "Email_Body_TotalFare"}}</td>
+                                                                        <td class="list_title">{{ localize "Email_Body_TotalFare"}}</td>
                                                                         <td class="list_value">{{ TotalFare }}</td>
                                                                     </tr>
                                                                 </table>

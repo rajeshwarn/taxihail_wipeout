@@ -298,7 +298,7 @@ namespace apcurium.MK.Booking.Services.Impl
             SendEmail(clientEmailAddress, EmailConstant.Template.PasswordReset, EmailConstant.Subject.PasswordReset, templateData, clientLanguageCode);
         }
 
-        public void SendReceiptEmail(Guid orderId, int ibsOrderId, string vehicleNumber, string driverName, double fare, double toll, double tip,
+        public void SendReceiptEmail(Guid orderId, int ibsOrderId, string vehicleNumber, DriverInfos driverInfos, double fare, double toll, double tip,
             double tax, double totalFare, SendReceipt.CardOnFile cardOnFileInfo, Address pickupAddress, Address dropOffAddress,
             DateTime pickupDate, DateTime? dropOffDate, string clientEmailAddress, string clientLanguageCode, bool bypassNotificationSetting = false)
         {
@@ -368,8 +368,8 @@ namespace apcurium.MK.Booking.Services.Impl
                 AccentColor = _serverSettings.ServerData.TaxiHail.AccentColor,
                 EmailFontColor = _serverSettings.ServerData.TaxiHail.EmailFontColor,
                 ibsOrderId,
-                vehicleNumber,
-                driverName,
+                VehicleNumber = vehicleNumber,
+                DriverInfos = driverInfos,
                 PickupDate = pickupDate.ToString("D", dateFormat),
                 PickupTime = pickupDate.ToString("t", dateFormat /* Short time pattern */),
                 DropOffDate = dropOffDate.HasValue

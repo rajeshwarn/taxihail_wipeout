@@ -14,5 +14,6 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
     {
         public string EmailAddress { get; set; }
         public string TemplateName { get; set; }
+        public string Language { get; set; }
     }
 }

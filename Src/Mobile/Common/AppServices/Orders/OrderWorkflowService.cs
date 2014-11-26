@@ -19,7 +19,6 @@ using apcurium.MK.Common.Extensions;
 using ServiceStack.ServiceClient.Web;
 using ServiceStack.ServiceInterface.ServiceModel;
 using ServiceStack.Text;
-using apcurium.MK.Booking.Api.Client.TaxiHail;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 {
@@ -33,8 +32,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		readonly IBookingService _bookingService;
 		readonly ICacheService _cacheService;
 		readonly IAccountPaymentService _accountPaymentService;
+	    private readonly INetworkRoamingService _networkRoamingService;
 
-		readonly ISubject<Address> _pickupAddressSubject = new BehaviorSubject<Address>(new Address());
+	    readonly ISubject<Address> _pickupAddressSubject = new BehaviorSubject<Address>(new Address());
 		readonly ISubject<Address> _destinationAddressSubject = new BehaviorSubject<Address>(new Address());
 		readonly ISubject<AddressSelectionMode> _addressSelectionModeSubject = new BehaviorSubject<AddressSelectionMode>(AddressSelectionMode.PickupSelection);
 		readonly ISubject<DateTime?> _pickupDateSubject = new BehaviorSubject<DateTime?>(null);
@@ -52,7 +52,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
         private bool _isOrderRebooked;
 
-	    private Position _lastMarketRequest = new Position();
+	    private Position _lastMarketPosition = new Position();
+
+        private const int LastMarketDistanceThreshold = 1000; // In meters
 
 		public OrderWorkflowService(ILocationService locationService,
 			IAccountService accountService,
@@ -61,7 +63,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			ILocalization localize,
 			IBookingService bookingService,
 			ICacheService cacheService,
-			IAccountPaymentService accountPaymentService)
+			IAccountPaymentService accountPaymentService,
+            INetworkRoamingService networkRoamingService)
 		{
 			_cacheService = cacheService;
 			_appSettings = configurationManager;
@@ -79,8 +82,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			_localize = localize;
 			_bookingService = bookingService;
 			_accountPaymentService = accountPaymentService;
+		    _networkRoamingService = networkRoamingService;
 
-			_estimatedFareDisplaySubject = new BehaviorSubject<string>(_localize[_appSettings.Data.DestinationIsRequired ? "NoFareTextIfDestinationIsRequired" : "NoFareText"]);
+		    _estimatedFareDisplaySubject = new BehaviorSubject<string>(_localize[_appSettings.Data.DestinationIsRequired ? "NoFareTextIfDestinationIsRequired" : "NoFareText"]);
 		}
 			
 		public async Task SetAddress(Address address)
@@ -282,7 +286,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
 		public async Task SetVehicleType(int? vehicleTypeId)
 		{
-			if (_appSettings.Data.VehicleTypeSelectionEnabled) {
+		    var market = await _marketSubject.Take(1).ToTask();
+            if (_appSettings.Data.VehicleTypeSelectionEnabled && !market.HasValue())
+            {
 				_vehicleTypeSubject.OnNext (vehicleTypeId);
 			}
 
@@ -298,6 +304,16 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			// bookingsettings to prevent the default vehicle type to override the selected value
 			var vehicleTypeId = await _vehicleTypeSubject.Take (1).ToTask ();
 			bookingSettings.VehicleTypeId = vehicleTypeId;
+
+            // if there's a market and payment preference of the user is set to CardOnFile, change it to PaymentInCar
+		    if (bookingSettings.ChargeTypeId == ChargeTypes.CardOnFile.Id)
+		    {
+                var market = await _marketSubject.Take(1).ToTask();
+		        if (market.HasValue())
+		        {
+		            bookingSettings.ChargeTypeId = ChargeTypes.PaymentInCar.Id;
+		        }
+		    }
 
 			_bookingSettingsSubject.OnNext(bookingSettings);
 		}
@@ -718,9 +734,10 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			order.DropOffAddress = await _destinationAddressSubject.Take(1).ToTask();
 			order.Settings = await _bookingSettingsSubject.Take(1).ToTask();
 			order.Note = await _noteToDriverSubject.Take(1).ToTask();
+			order.Market = await _marketSubject.Take(1).ToTask();
 			order.PromoCode = await _promoCodeSubject.Take(1).ToTask();
+			
 			var estimatedFare = await _estimatedFareDetailSubject.Take (1).ToTask();
-
 			if (estimatedFare != null) 
 			{
 				order.Estimate = new CreateOrder.RideEstimate
@@ -765,14 +782,18 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
 	    private async void SetMarket(Position currentPosition)
 	    {
-			var distanceFromLastMarketRequestInMeters = MK.Booking.Maps.Geo.Position.CalculateDistance(currentPosition.Latitude, currentPosition.Longitude, _lastMarketRequest.Latitude, _lastMarketRequest.Longitude);
-	        
-			if (distanceFromLastMarketRequestInMeters > 500)
+			var distanceFromLastMarketRequest = Maps.Geo.Position.CalculateDistance(
+                currentPosition.Latitude, currentPosition.Longitude,
+                _lastMarketPosition.Latitude, _lastMarketPosition.Longitude);
+
+            if (distanceFromLastMarketRequest > LastMarketDistanceThreshold)
 	        {
-				var market = await UseServiceClientAsync<NetworkRoamingServiceClient, string> (service => service.GetCompanyMarket (currentPosition.Latitude, currentPosition.Longitude));
-				_lastMarketRequest = market != null ? _lastMarketRequest : currentPosition;
+	            var market = await _networkRoamingService.GetCompanyMarket(currentPosition.Latitude, currentPosition.Longitude);
+                
+                _lastMarketPosition = currentPosition;
+                _marketSubject.OnNext(market);
 	        }
-	    }
+	    }               
     }
 }
 

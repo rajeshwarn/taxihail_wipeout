@@ -1,6 +1,7 @@
 using System.Windows.Input;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Extensions;
+using apcurium.MK.Booking.Mobile.Framework.Extensions;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.PresentationHints;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
@@ -55,9 +56,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 			Panel = new PanelMenuViewModel(this, browserTask, orderWorkflowService, accountService, phoneService, paymentService);
 
-			this.Observe(_vehicleService.GetAndObserveAvailableVehiclesWhenVehicleTypeChanges(), vehicles => ZoomOnNearbyVehiclesIfPossible(vehicles));
+			Observe(_vehicleService.GetAndObserveAvailableVehiclesWhenVehicleTypeChanges(), vehicles => ZoomOnNearbyVehiclesIfPossible(vehicles));
+            Observe(_orderWorkflowService.GetAndObserveMarket(), market => MarketChanged(market));
 		}
 
+	    private string _lastMarket = string.Empty;
 		private bool _isShowingTermsAndConditions;
 		private bool _locateUser;
 		private ZoomToStreetLevelPresentationHint _defaultHintZoomLevel;
@@ -295,19 +298,24 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
-		public ICommand AutomaticLocateMeAtPickup
+		private CancellableCommand _automaticLocateMeAtPickup;
+		public CancellableCommand AutomaticLocateMeAtPickup
 		{
 			get
 			{
-				return this.GetCommand(async () =>
-				{					
+				return _automaticLocateMeAtPickup ?? (_automaticLocateMeAtPickup = new CancellableCommand(async (token) =>
+				{				
+					// we want this command to be top priority, so cancel previous map-related commands
+					LocateMe.Cancel();
+					Map.UserMovedMap.Cancel();
+
 					var addressSelectionMode = await _orderWorkflowService.GetAndObserveAddressSelectionMode ().Take (1).ToTask ();
 					if (_currentState == HomeViewModelState.Initial 
 						&& addressSelectionMode == AddressSelectionMode.PickupSelection)
 					{
-						SetMapCenterToUserLocation(true);
+						SetMapCenterToUserLocation(true, token);
 					}									
-				});
+				}));
 			}
 		}
 
@@ -322,7 +330,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			{
 				return _locateMe ?? (_locateMe = new CancellableCommand(token =>
 				{
+					AutomaticLocateMeAtPickup.Cancel();
 					Map.UserMovedMap.Cancel();
+
 					SetMapCenterToUserLocation(false, token);
 				}));
 			}
@@ -357,7 +367,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
-		private async void ZoomOnNearbyVehiclesIfPossible(AvailableVehicle[] vehicles)
+		private void ZoomOnNearbyVehiclesIfPossible(AvailableVehicle[] vehicles)
 		{
 			if(Settings.ZoomOnNearbyVehicles)
 			{
@@ -445,6 +455,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 				_accountService.LogApplicationStartUp ();
             }
+        }
+
+        private void MarketChanged(string market)
+        {
+            // Market changed and not home market
+            if (_lastMarket != market && market != string.Empty)
+            {
+                this.Services().Message.ShowMessage(this.Services().Localize["MarketChangedMessageTitle"],
+                    this.Services().Localize["MarketChangedMessage"]);
+            }
+            _lastMarket = market;
         }
     }
 }

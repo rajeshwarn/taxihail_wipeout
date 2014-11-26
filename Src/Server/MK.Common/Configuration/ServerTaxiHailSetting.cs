@@ -111,5 +111,7 @@ namespace MK.Common.Configuration
         [CustomizableByCompany]
         [Display(Name = "Send Payment Detail To Driver", Description = "Inform the driver of auto payment success or failure")]
         public bool SendDetailedPaymentInfoToDriver { get; private set; }
+
+        public string BaseUrl { get; private set; }
     }
 }

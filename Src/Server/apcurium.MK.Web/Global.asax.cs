@@ -13,6 +13,7 @@ using System.Web.Routing;
 using apcurium.MK.Booking.Api.Jobs;
 using apcurium.MK.Booking.Services;
 using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common.IoC;
 using apcurium.MK.Web;
 using log4net;
@@ -87,7 +88,12 @@ namespace apcurium.MK.Web
             if (_firstRequest)
             {
                 var notificationService = UnityContainerExtensions.Resolve<INotificationService>(UnityServiceLocator.Instance);
-                notificationService.SetBaseUrl(new Uri(Request.Url, VirtualPathUtility.ToAbsolute("~")));
+                var appSettings = UnityContainerExtensions.Resolve<IServerSettings>(UnityServiceLocator.Instance);
+
+                notificationService.SetBaseUrl(appSettings.ServerData.BaseUrl.HasValue()
+                            ? new Uri(appSettings.ServerData.BaseUrl)
+                            : new Uri(Request.Url, VirtualPathUtility.ToAbsolute("~")));
+
                 _firstRequest = false;
             }
             if (Request.Path.Contains(@"/api/"))

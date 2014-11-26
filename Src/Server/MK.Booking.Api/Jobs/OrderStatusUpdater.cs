@@ -389,7 +389,11 @@ namespace apcurium.MK.Booking.Api.Jobs
                 && orderStatusDetail.NetworkPairingTimeout.Value <= DateTime.UtcNow)
             {
                 // Order timed out
-                _commandBus.Send(new NotifyOrderTimedOut { OrderId = orderStatusDetail.OrderId });
+                _commandBus.Send(new NotifyOrderTimedOut
+                {
+                    OrderId = orderStatusDetail.OrderId,
+                    Market = orderStatusDetail.Market
+                });
             }
         }
 

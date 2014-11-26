@@ -1731,14 +1731,20 @@
   <data name="UpdateBookingSettingsInvalidCoF" xml:space="preserve">
     <value>You must have a card on file to use this account</value>
   </data>
+  <data name="MarketChangedMessage" xml:space="preserve">
+    <value>You are leaving your local service area. Should you decide to book, your order will be dispatched using a taxi company from this area.</value>
+  </data>
+  <data name="MarketChangedMessageTitle" xml:space="preserve">
+    <value>New service area detected</value>
+  </data>
   <data name="PromoCodeLabel" xml:space="preserve">
     <value>Promo code</value>
   </data>
   <data name="PromoMustUseCardOnFileMessage" xml:space="preserve">
-  	<value>In order to use a promo code, you need to pay with card on file</value>
+    <value>In order to use a promo code, you need to pay with card on file</value>
   </data>
   <data name="PromoMustUseCardOnFileWarningMessage" xml:space="preserve">
-  	<value>Please note that the discount will only be applied if the payment is made using the app</value>
+    <value>Please note that the discount will only be applied if the payment is made using the app</value>
   </data>
   <data name="WarningPromoCodeDontShow" xml:space="preserve">
     <value>Don't warn</value>

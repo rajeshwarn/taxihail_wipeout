@@ -13,7 +13,6 @@ namespace CustomerPortal.Client.Http.Extensions
             var json = await response.Content.ReadAsStringAsync()
                 .ConfigureAwait(false);
 
-
             return JsonConvert.DeserializeObject<T>(json, serializerSettings);
         }
     }

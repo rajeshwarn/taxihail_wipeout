@@ -50,6 +50,12 @@ namespace apcurium.MK.Booking.Commands
 
         public bool IsChargeAccountPaymentWithCardOnFile { get; set; }
 
+        public string CompanyKey { get; set; }
+
+        public string CompanyName { get; set; }
+
+        public string Market { get; set; }
+        
         public class PaymentInformation
         {
             public bool PayWithCreditCard { get; set; }

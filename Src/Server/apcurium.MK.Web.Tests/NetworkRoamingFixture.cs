@@ -6,11 +6,14 @@ namespace apcurium.MK.Web.Tests
     [TestFixture]
     public class NetworkRoamingFixture : BaseTest
     {
+        private NetworkRoamingServiceClient _sut;
+
         [SetUp]
         public override void Setup()
         {
             base.Setup();
             CreateAndAuthenticateTestAdminAccount().Wait();
+            _sut = new NetworkRoamingServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
         }
 
         [TestFixtureSetUp]
@@ -28,9 +31,7 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public async void when_getting_the_company_market()
         {
-            var sut = new NetworkRoamingServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
-
-            var market = await sut.GetCompanyMarket(12.34, -77.43);
+            var market = await _sut.GetCompanyMarket(12.34, -77.43);
             Assert.AreEqual(string.Empty, market);
         }
     }

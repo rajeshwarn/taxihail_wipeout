@@ -149,6 +149,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
 				RaisePropertyChanged(() => Data);
 				RaisePropertyChanged(() => CreditCardNumber);
+                RaisePropertyChanged(() => CanDeleteCreditCard);
 			}
         }
 			
@@ -274,16 +275,21 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 	            {
                     _isEditing = value;
                     RaisePropertyChanged();
-					RaisePropertyChanged(()=>CreditCardSaveButtonDisplay);
+					RaisePropertyChanged(() => CreditCardSaveButtonDisplay);
 	            }
 	        }
 	    }
 
+        public bool CanDeleteCreditCard
+        {
+            get { return IsEditing && !Settings.CreditCardIsMandatory; }
+        }
+
 		public string CreditCardSaveButtonDisplay
 		{
-			get{
-				var text= _isEditing ? this.Services().Localize["Modify"] : this.Services().Localize["Save"];
-				return text; 
+			get
+            {
+				return _isEditing ? this.Services().Localize["Modify"] : this.Services().Localize["Save"];
 			}
 		}	
 		public ICommand SaveCreditCardCommand { get { return this.GetCommand(() => SaveCreditCard()); } }

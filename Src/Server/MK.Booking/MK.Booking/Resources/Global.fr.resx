@@ -432,4 +432,10 @@
   <data name="CannotCreateOrder_PromotionNotAvailableAtThisTime" xml:space="preserve">
     <value>Cette promotion n'est pas disponible en ce moment</value>
   </data>
+  <data name="Email_Body_VehicleModel" xml:space="preserve">
+    <value>Véhicule</value>
+  </data>
+  <data name="Email_Body_YourDriver" xml:space="preserve">
+    <value>Votre chauffeur</value>
+  </data>
 </root>

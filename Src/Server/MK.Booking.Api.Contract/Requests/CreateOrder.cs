@@ -52,6 +52,8 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
 
         public string PromoCode { get; set; }
 
+        public string Market { get; set; }
+
         public class RideEstimate
         {
             /// <summary>

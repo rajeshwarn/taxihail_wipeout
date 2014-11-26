@@ -8,6 +8,7 @@ using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.Messages;
 using apcurium.MK.Booking.Mobile.Models;
 using apcurium.MK.Common.Entity;
+using System.Threading.Tasks;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -61,28 +62,31 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
         }
 
-		public void Init(string orderId, bool canRate = false)
+		public async void Init(string orderId, bool canRate = false)
 		{
-            RatingList = _bookingService.GetRatingTypes().Select(c => new RatingModel
-                {
-                    RatingTypeId = c.Id,
-                    RatingTypeName = c.Name
-                })
-                .OrderBy(c => c.RatingTypeId).ToList();
+			var ratingTypes = await _bookingService.GetRatingTypes();
+
+			RatingList = ratingTypes.Select(c => new RatingModel
+	            {
+	                RatingTypeId = c.Id,
+	                RatingTypeName = c.Name
+	            })
+	            .OrderBy(c => c.RatingTypeId).ToList();
 
 			CanRate = false;
 
 			if (orderId != null)
 			{
-                var ratingTypes = _bookingService.GetRatingTypes();
                 RatingList = ratingTypes.Select(c => new RatingModel(canRate)
-                {
-                    RatingTypeId = c.Id,
-                    RatingTypeName = c.Name
-                }).OrderBy(c => c.RatingTypeId).ToList();
+	                {
+	                    RatingTypeId = c.Id,
+	                    RatingTypeName = c.Name
+	                })
+					.OrderBy(c => c.RatingTypeId).ToList();
 
 				Guid id;
-				if (Guid.TryParse (orderId, out id)) {
+				if (Guid.TryParse (orderId, out id)) 
+				{
 					OrderId = id;
 				}
 
@@ -90,7 +94,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				if(!CanRate)
 				{
 				    _hasRated = true;
-					var orderRatings = _bookingService.GetOrderRating(Guid.Parse(orderId));
+					var orderRatings = await _bookingService.GetOrderRatingAsync(Guid.Parse(orderId));
 					Note = orderRatings.Note;
 					RatingList = orderRatings.RatingScores.Select(c=> new RatingModel
 						{
@@ -106,7 +110,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-				return this.GetCommand(() =>
+				return this.GetCommand(async () =>
 				{
 					if (_ratingList.Any(c => c.Score == 0))
 					{
@@ -128,13 +132,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 							}).ToList()
 					};
 
-					_bookingService.SendRatingReview(orderRating);
+					await _bookingService.SendRatingReview(orderRating);
 					this.ReturnResult(new OrderRated(this, OrderId));
 				});
             }
         }
 
-        public void CheckAndSendRatings()
+		public async Task CheckAndSendRatings()
         {
             if (!Settings.RatingEnabled || _hasRated)
             {
@@ -166,7 +170,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                         }).ToList()
             };
 
-            _bookingService.SendRatingReview(orderRating);
+            await _bookingService.SendRatingReview(orderRating);
             _hasRated = true;
         }
 

@@ -122,30 +122,25 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get 
 			{
-                return this.GetCommand(() =>
+                return this.GetCommand(async () =>
                 {
-                    if (!ValidateFields()) return;
-                    var progressShowing = true;
-                    this.Services().Message.ShowProgress(true);
-                    try 
+                    if (!ValidateFields()) 
 					{
-						_accountService.UpdateAddress(_address);
+						return;
+					}
 
-                        this.Services().Message.ShowProgress(false);
-						progressShowing = false;
-						Close(this);
-                    } 
-					catch (Exception ex) 
+					using (this.Services().Message.ShowProgress())
 					{
-                        Logger.LogError (ex);
-                    } 
-					finally 
-					{
-                        if (progressShowing) 
+						try 
 						{
-							this.Services().Message.ShowProgress(false);
+							await _accountService.UpdateAddress(_address);
+							Close(this);
 						}
-                    }
+						catch (Exception ex) 
+						{
+							Logger.LogError (ex);
+						} 
+					}
                 });
             }
         }
@@ -153,7 +148,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		public ICommand DeleteAddress
         {
             get {
-                return this.GetCommand(() =>
+                return this.GetCommand(async () =>
                 {
                     this.Services().Message.ShowProgress(true);
                 
@@ -161,11 +156,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					{
                         if (_address.IsHistoric) 
 						{
-							_accountService.DeleteHistoryAddress(_address.Id);
+							await _accountService.DeleteHistoryAddress(_address.Id);
                         } 
 						else 
 						{
-							_accountService.DeleteFavoriteAddress(_address.Id);
+							await _accountService.DeleteFavoriteAddress(_address.Id);
                         }
 
 						Close (this);

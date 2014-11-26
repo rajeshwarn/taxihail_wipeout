@@ -173,6 +173,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         {
             lockGeocoding = true;
             ((HomeViewModel)(ViewModel.Parent)).LocateMe.Cancel();
+            ((HomeViewModel)(ViewModel.Parent)).AutomaticLocateMeAtPickup.Cancel();
             ViewModel.UserMovedMap.Cancel();
         }
 

@@ -25,7 +25,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 					Latitude = latitude,
 					Longitude = longitude,
 					VehicleTypeId = vehicleTypeId,
-                    Market = market
+                    Market = market == string.Empty ? null : market
 				});
 
 			_logger.Maybe (() => _logger.LogMessage (string.Format ("Available vehicle found for lat {0}, long {1}, count = {2} on market {3}", latitude, longitude, response.Count, market)));

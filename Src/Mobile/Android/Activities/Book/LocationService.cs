@@ -15,7 +15,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
         private readonly LocationListenerManager _locationListeners;
         private readonly LocationManager _locationManager;
         private readonly IMessageService _messageService;
+
         private bool _isStarted;
+        public override bool IsStarted
+        {
+            get { return _isStarted; }
+        }
 
         public LocationService(IMessageService messageService)
         {
@@ -32,7 +37,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
         public bool IsGpsProviderEnabled
         {
-            get { 
+            get 
+            { 
                 //_locationManager.IsProviderEnabled not working for gps
                 //http://stackoverflow.com/questions/10117587/gps-is-not-enabled-but-isproviderenabled-is-returning-true
                 var context = TinyIoCContainer.Current.Resolve<IMvxAndroidGlobals> ().ApplicationContext;
@@ -58,15 +64,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
         public bool IsLocationServiceEnabled
         {
-            get
-            {            
-                return IsNetworkProviderEnabled || IsGpsProviderEnabled;
-            }
-        }
-
-        public override bool IsStarted
-        {
-            get { return _isStarted; }
+            get { return IsNetworkProviderEnabled || IsGpsProviderEnabled; }
         }
 
         public override void Stop()
@@ -82,7 +80,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
         public override void Start()
         {
-
             if (IsStarted)
             {
                 return;
@@ -93,41 +90,36 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                 var localize = TinyIoCContainer.Current.Resolve<ILocalization>();
 
 				var dontShowLocationWarning = (string)TinyIoCContainer.Current.Resolve<ICacheService>("UserAppCache").Get<string>("WarningLocationServiceDontShow");
-
                 if (dontShowLocationWarning != "yes")
                 {
                     _messageService.ShowMessage(localize["WarningLocationServiceTitle"], localize["WarningLocationService"],
                         "Settings", delegate
-                    { 
-                        var topActivity = TinyIoC.TinyIoCContainer.Current.Resolve<IMvxAndroidCurrentTopActivity>(); 
-                        topActivity.Activity.StartActivity(new Intent(Android.Provider.Settings.ActionLocationSourceSettings));
-                    },
+                        { 
+                            var topActivity = TinyIoC.TinyIoCContainer.Current.Resolve<IMvxAndroidCurrentTopActivity>(); 
+                            topActivity.Activity.StartActivity(new Intent(Android.Provider.Settings.ActionLocationSourceSettings));
+                        },
 						localize["WarningLocationServiceDontShow"], () => TinyIoCContainer.Current.Resolve<ICacheService>("UserAppCache").Set("WarningLocationServiceDontShow", "yes"),
-                        localize["WarningLocationServiceCancel"], delegate
-                    {
-                    } 
+                        localize["WarningLocationServiceCancel"], delegate {} 
                     );
                 }
             }
 
             if (IsNetworkProviderEnabled)
             {
-                _locationManager.RequestLocationUpdates(LocationManager.NetworkProvider, 0, 0, _locationListeners.NetworkListener,
-                    Looper.MainLooper);
-
+                _locationManager.RequestLocationUpdates(LocationManager.NetworkProvider, 0, 0, _locationListeners.NetworkListener, Looper.MainLooper);
                 _locationListeners.OnLocationChanged(_locationManager.GetLastKnownLocation(LocationManager.NetworkProvider));
             }
 
             if (IsGpsProviderEnabled)
             {
-                _locationManager.RequestLocationUpdates(LocationManager.GpsProvider, 0, 0, _locationListeners.GpsListener,
-                    Looper.MainLooper);
+                _locationManager.RequestLocationUpdates(LocationManager.GpsProvider, 0, 0, _locationListeners.GpsListener, Looper.MainLooper);
                 _locationListeners.OnLocationChanged(_locationManager.GetLastKnownLocation(LocationManager.GpsProvider));
             }
+
             _isStarted = true;
         }
 
-        private Position ToPosition( Location location )
+        private Position ToPosition(Location location)
         {
             if (location != null)
             {

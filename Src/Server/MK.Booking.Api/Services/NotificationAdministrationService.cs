@@ -91,15 +91,15 @@ namespace apcurium.MK.Booking.Api.Services
                 {
                     case NotificationService.EmailConstant.Template.AccountConfirmation:
                         _notificationService.SendAccountConfirmationEmail(new Uri("http://www.google.com"),
-                            request.EmailAddress, "en");
+                            request.EmailAddress, request.Language);
                         break;
                     case NotificationService.EmailConstant.Template.BookingConfirmation:
                         _notificationService.SendBookingConfirmationEmail(12345, "This is a standard note",
                             _pickupAddress, _dropOffAddress,
-                            DateTime.Now, _bookingSettings, request.EmailAddress, "en", true);
+                            DateTime.Now, _bookingSettings, request.EmailAddress, request.Language, true);
                         break;
                     case NotificationService.EmailConstant.Template.PasswordReset:
-                        _notificationService.SendPasswordResetEmail("N3wp@s5w0rd", request.EmailAddress, "en");
+                        _notificationService.SendPasswordResetEmail("N3wp@s5w0rd", request.EmailAddress, request.Language);
                         break;
                     case NotificationService.EmailConstant.Template.Receipt:
                         var fareObject = _serverSettings.ServerData.VATIsEnabled
@@ -108,7 +108,20 @@ namespace apcurium.MK.Booking.Api.Services
                         var toll = 0;
                         var tip = (double)45*((double)15/(double)100);
 
-                        _notificationService.SendReceiptEmail(Guid.NewGuid(), 12345, "9007", "Alex Proteau", fareObject.AmountExclTax, toll, tip, fareObject.TaxAmount, fareObject.AmountExclTax + toll + tip + fareObject.TaxAmount,
+                        var driverInfos = new DriverInfos
+                        {
+                            DriverId = "7009",
+                            FirstName = "Alex",
+                            LastName = "Proteau",
+                            MobilePhone = "5551234567",
+                            VehicleColor = "Silver",
+                            VehicleMake = "DMC",
+                            VehicleModel = "Delorean",
+                            VehicleRegistration = "OUTATIME",
+                            VehicleType = "Time Machine"
+                        };
+
+                        _notificationService.SendReceiptEmail(Guid.NewGuid(), 12345, "9007", driverInfos, fareObject.AmountExclTax, toll, tip, fareObject.TaxAmount, fareObject.AmountExclTax + toll + tip + fareObject.TaxAmount,
                             _cardOnFile, _pickupAddress, _dropOffAddress, DateTime.Now.AddMinutes(-15), DateTime.Now, request.EmailAddress, "en", true);
                         break;
                     default:

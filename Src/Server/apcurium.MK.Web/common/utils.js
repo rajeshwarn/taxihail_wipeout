@@ -103,6 +103,28 @@
             return events;
         },
 
+        message: function (options) {
+
+            var defaults = {
+                title: '[Title]',
+                message: '[Message]',
+                confirmButton: TaxiHail.localize('modal.default.okButton')
+            }, events = _.extend({}, Backbone.Events);
+
+            options = _.extend(defaults, options);
+
+            var view = new TaxiHail.BootstrapConfirmationView(options);
+
+            $('.modal-zone').html(view.render().el);
+
+            view.show();
+
+            view.on('ok', _.once(function (arg1, arg2, arg3) {
+                events.trigger('ok', view);
+            }));
+            return events;
+        },
+
         showSpinner: function(container) {
             var spinner = new Spinner({
                 lines: 11, // The number of lines to draw
