@@ -90,7 +90,13 @@ namespace apcurium.MK.Booking.Services.Impl
                 var paymentDetail = _paymentDao.FindNonPayPalByOrderId(orderId);
                 if (paymentDetail == null)
                 {
-                    throw new Exception(string.Format("Payment for order {0} not found", orderId));
+                    if (_serverSettings.GetPaymentSettings().IsPreAuthEnabled)
+                    {
+                        throw new Exception(string.Format("Payment for order {0} not found", orderId));
+                    }
+
+                    // PreAuth disabled, no Void to do
+                    return;
                 }
                 
                 var monerisSettings = _serverSettings.GetPaymentSettings().MonerisPaymentSettings;
@@ -246,7 +252,7 @@ namespace apcurium.MK.Booking.Services.Impl
                     return new CommitPreauthorizedPaymentResponse
                     {
                         IsSuccessful = false,
-                        Message = "PreAuthorization Failed"
+                        Message = string.Format("PreAuthorization Failed: {0}", preAuthResponse.Message)
                     };
                 }
 
