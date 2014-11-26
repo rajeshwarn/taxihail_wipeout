@@ -364,7 +364,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
-		private async void ZoomOnNearbyVehiclesIfPossible(AvailableVehicle[] vehicles)
+		private void ZoomOnNearbyVehiclesIfPossible(AvailableVehicle[] vehicles)
 		{
 			if(Settings.ZoomOnNearbyVehicles)
 			{
