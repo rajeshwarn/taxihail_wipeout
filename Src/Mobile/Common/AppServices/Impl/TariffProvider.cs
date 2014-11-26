@@ -21,14 +21,13 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         public IEnumerable<Tariff> GetTariffs()
         {
-
             var cached = _cacheService.Get<Tariff[]>(CacheKey);
-
-            if (cached != null)
+			if (cached != null)
             {
                 return cached;
             }
-            var result = UseServiceClientTask<TariffsServiceClient, IEnumerable<Tariff>>(service => service.GetTariffs());
+
+			var result = UseServiceClientAsync<TariffsServiceClient, IEnumerable<Tariff>>(service => service.GetTariffs()).Result;
             var enumerable = result as Tariff[] ?? result.ToArray();
             _cacheService.Set(CacheKey, enumerable.ToArray());
             return enumerable;

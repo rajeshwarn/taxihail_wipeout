@@ -62,12 +62,11 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                 var orderStatus = context.Find<OrderStatusDetail>(orderId);
                 if (orderStatus != null)
                 {
-                    var orderPayment =
-                        context.Set<OrderPaymentDetail>().SingleOrDefault(p => p.OrderId == orderStatus.OrderId);
+                    var orderPayment = context.Set<OrderPaymentDetail>().SingleOrDefault(p => p.OrderId == orderStatus.OrderId);
                     var account = context.Find<AccountDetail>(orderStatus.AccountId);
 
                     CreditCardDetails card = null;
-                    if ((orderPayment != null) && (orderPayment.CardToken.HasValue()))
+                    if (orderPayment != null && orderPayment.CardToken.HasValue())
                     {
                         card = _creditCardDao.FindByToken(orderPayment.CardToken);
                     }
@@ -75,7 +74,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                     if (orderPayment != null)
                     {
                         var command = SendReceiptCommandBuilder.GetSendReceiptCommand(order, account,
-                            orderStatus.VehicleNumber, orderStatus.DriverInfos.FullName,
+                            orderStatus.VehicleNumber, orderStatus.DriverInfos,
                             Convert.ToDouble(orderPayment.Meter), 0, Convert.ToDouble(orderPayment.Tip), 0, orderPayment,
                             card);
                         

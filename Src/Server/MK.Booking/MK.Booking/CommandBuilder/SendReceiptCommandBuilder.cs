@@ -3,6 +3,7 @@
 using System;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.ReadModel;
+using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 
@@ -12,7 +13,7 @@ namespace apcurium.MK.Booking.CommandBuilder
 {
     public static class SendReceiptCommandBuilder
     {
-        public static SendReceipt GetSendReceiptCommand(OrderDetail order, AccountDetail account, string vehicleNumber, string driverName,
+        public static SendReceipt GetSendReceiptCommand(OrderDetail order, AccountDetail account, string vehicleNumber, DriverInfos driverInfos,
             double? fare, double? toll, double? tip, double? tax, OrderPaymentDetail orderPayment = null,
             CreditCardDetails creditCard = null, Uri baseUrl = null)
         {
@@ -25,7 +26,7 @@ namespace apcurium.MK.Booking.CommandBuilder
                 PickupDate = order.PickupDate,
                 DropOffDate = order.DropOffDate,
                 VehicleNumber = vehicleNumber,
-                DriverName = driverName,
+                DriverInfos = driverInfos,
                 Fare = fare.GetValueOrDefault(),
                 Toll = toll.GetValueOrDefault(),
                 Tip = tip.GetValueOrDefault(),

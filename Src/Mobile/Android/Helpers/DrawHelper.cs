@@ -11,6 +11,7 @@ using apcurium.MK.Booking.Mobile.Style;
 using System.Drawing;
 using Color = Android.Graphics.Color;
 using Point = System.Drawing.Point;
+using SizeF = System.Drawing.SizeF;
 
 namespace apcurium.MK.Booking.Mobile.Client.Helpers
 {

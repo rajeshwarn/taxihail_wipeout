@@ -32,7 +32,7 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
         public async Task<Position> GetUserPosition()
         {
             // TODO: Handle when location services are not available
-			if(  (BestPosition != null) && BestPosition.IsActive() )
+			if((BestPosition != null) && BestPosition.IsActive())
             {
                 return BestPosition;
             }
@@ -73,7 +73,7 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
 
 		public static bool IsActive(this Position postion)
 		{
-			return postion.Time > DateTime.Now.Subtract (ValidCoordinateTime);
+			return postion.Time > DateTime.UtcNow.Subtract (ValidCoordinateTime);
 		}
 
 		public static bool IsBetterThan(this Position trueIfBetter, Position falseIfBetter)

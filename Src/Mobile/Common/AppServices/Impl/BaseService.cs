@@ -74,63 +74,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			}
 		}
 
-		[Obsolete("Use Async Version. This one is for legacy code not yet migrated to async / await")]
-		protected TResult UseServiceClientTask<TService, TResult>(Func<TService, Task<TResult>> action,string serviceName = null,[CallerMemberName] string method = "")
-            where TResult : class
-            where TService : class
-        {
-			var service = serviceName == null ? 
-			              	TinyIoCContainer.Current.Resolve<TService>()
-			              : TinyIoCContainer.Current.Resolve<TService>(serviceName);
-
-            try
-            {
-                using (Logger.StartStopwatch("*************************************   UseServiceClient : " + method))
-                {
-                     var task = action(service);
-                     task.Wait();
-                     return task.Result;
-                }
-            }
-            catch (AggregateException ex)
-            {
-                ex.Handle(x =>
-                {
-                    Logger.LogError(x);
-                    TinyIoCContainer.Current.Resolve<IErrorHandler>().HandleError(x);
-                    return true;
-                });
-                
-            }
-            return default(TResult);
-        }
-
-		[Obsolete("Use Async Version. This one is for legacy code not yet migrated to async / await")]
-		protected void UseServiceClientTask<TService>(Func<TService, Task> action, [CallerMemberName] string method = "")
-			where TService : class
-		{
-			var service = TinyIoCContainer.Current.Resolve<TService>();
-
-			try
-			{
-				using (Logger.StartStopwatch("*************************************   UseServiceClient : " + method))
-				{
-					var task = action(service);
-					task.Wait();
-				}
-			}
-			catch (AggregateException ex)
-			{
-				ex.Handle(x =>
-					{
-						Logger.LogError(x);
-						TinyIoCContainer.Current.Resolve<IErrorHandler>().HandleError(x);
-						return true;
-					});
-
-			}
-		}
-
         private ILogger _logger;
         protected ILogger Logger
         {
