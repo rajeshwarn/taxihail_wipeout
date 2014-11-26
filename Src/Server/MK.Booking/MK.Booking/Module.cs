@@ -52,10 +52,11 @@ namespace apcurium.MK.Booking
             container.RegisterInstance<ITemplateService>(new TemplateService(container.Resolve<IServerSettings>()));
             container.RegisterInstance<IPushNotificationService>(new PushNotificationService(container.Resolve<IServerSettings>(), container.Resolve<ILogger>()));
             container.RegisterInstance<IOrderDao>(new OrderDao(() => container.Resolve<BookingDbContext>()));
+            container.RegisterInstance<IPromotionDao>(new PromotionDao(() => container.Resolve<BookingDbContext>()));
             container.RegisterType<INotificationService, NotificationService>(new ContainerControlledLifetimeManager());
                     
-            container.RegisterType<IPairingService>(new ContainerControlledLifetimeManager(), 
-                new InjectionFactory(c => new PairingService(c.Resolve<ICommandBus>(), c.Resolve<IIbsOrderService>(), c.Resolve<IOrderDao>(), c.Resolve<IServerSettings>())));
+            container.RegisterType<IPairingService>(new ContainerControlledLifetimeManager(),
+                new InjectionFactory(c => new PairingService(c.Resolve<ICommandBus>(), c.Resolve<IIbsOrderService>(), c.Resolve<IOrderDao>(), c.Resolve<IPromotionDao>(), c.Resolve<IServerSettings>())));
 
             container.RegisterInstance<IAddressDao>(new AddressDao(() => container.Resolve<BookingDbContext>()));
             container.RegisterInstance<IAccountDao>(new AccountDao(() => container.Resolve<BookingDbContext>()));        
@@ -73,7 +74,6 @@ namespace apcurium.MK.Booking
             container.RegisterInstance<IAccountChargeDao>(new AccountChargeDao(() => container.Resolve<BookingDbContext>()));
             container.RegisterInstance<IVehicleTypeDao>(new VehicleTypeDao(() => container.Resolve<BookingDbContext>()));
             container.RegisterInstance<IAppStartUpLogDao>(new AppStartUpLogDao(() => container.Resolve<BookingDbContext>()));
-            container.RegisterInstance<IPromotionDao>(new PromotionDao(() => container.Resolve<BookingDbContext>()));
             container.RegisterInstance<IPasswordService>(new PasswordService());
             container.RegisterInstance<IRuleCalculator>(new RuleCalculator(container.Resolve<IRuleDao>()));
             
