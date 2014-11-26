@@ -459,11 +459,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 	        }
 
 	        _isDispatchPopupVisible = false;
-
-			StatusInfoText = string.Format(
-                this.Services().Localize["NetworkContactingNextDispatchDescription"],
-                status.NextDispatchCompanyName);
-
             _isContactingNextCompany = true;
 
             try
@@ -473,6 +468,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     status.NextDispatchCompanyKey,
                     status.NextDispatchCompanyName);
                 OrderStatusDetail = orderStatusDetail;
+
+                StatusInfoText = string.Format(
+                    this.Services().Localize["NetworkContactingNextDispatchDescription"],
+                    status.NextDispatchCompanyName);
             }
             catch (WebServiceException ex)
             {
