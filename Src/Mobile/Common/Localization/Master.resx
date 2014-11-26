@@ -1749,4 +1749,7 @@
   <data name="UserTaxiHailNetwork_On" xml:space="preserve">
     <value>On</value>
   </data>
+  <data name="View_UserTaxiHailNetworkSettings" xml:space="preserve">
+    <value>TaxiHail Network</value>
+  </data>
 </root>

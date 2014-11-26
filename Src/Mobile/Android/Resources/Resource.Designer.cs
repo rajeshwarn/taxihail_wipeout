@@ -2340,6 +2340,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f070078
 			public const int NearbyAddressList = 2131165304;
 			
+			// aapt resource value: 0x7f07018a
+			public const int NetworkFleetsList = 2131165578;
+			
 			// aapt resource value: 0x7f0700ae
 			public const int NotificationSettingNameTextView = 2131165358;
 			
@@ -2474,6 +2477,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 			
 			// aapt resource value: 0x7f070183
 			public const int UpdatedTermsAndConditionsTextView = 2131165571;
+			
+			// aapt resource value: 0x7f070188
+			public const int UserTaxiHailNetworkSettingNameTextView = 2131165576;
 			
 			// aapt resource value: 0x7f070161
 			public const int Username = 2131165537;
@@ -3330,6 +3336,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f070003
 			public const int useLogo = 2131165187;
 			
+			// aapt resource value: 0x7f070189
+			public const int userTaxiHailNetworkSettingSwitchValue = 2131165577;
+			
 			// aapt resource value: 0x7f0700a3
 			public const int value = 2131165347;
 			
@@ -3754,6 +3763,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 			
 			// aapt resource value: 0x7f03007a
 			public const int View_UpdatePassword = 2130903162;
+			
+			// aapt resource value: 0x7f03007b
+			public const int View_UserTaxiHailNetworkSettings = 2130903163;
 			
 			static Layout()
 			{
@@ -4341,14 +4353,14 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f050109
 			public const int GooglePlayServicesNotAvailableMessage = 2131034377;
 			
-			// aapt resource value: 0x7f05027f
-			public const int GooglePlayServicesNotAvailableMessage1 = 2131034751;
+			// aapt resource value: 0x7f050284
+			public const int GooglePlayServicesNotAvailableMessage1 = 2131034756;
 			
 			// aapt resource value: 0x7f050069
 			public const int GooglePlayServicesNotAvailableTitle = 2131034217;
 			
-			// aapt resource value: 0x7f050280
-			public const int GooglePlayServicesNotAvailableTitle1 = 2131034752;
+			// aapt resource value: 0x7f050285
+			public const int GooglePlayServicesNotAvailableTitle1 = 2131034757;
 			
 			// aapt resource value: 0x7f05002d
 			public const int Hello = 2131034157;
@@ -5301,6 +5313,15 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f050073
 			public const int UpdatedTermsAndConditionsAcceptButton = 2131034227;
 			
+			// aapt resource value: 0x7f05027f
+			public const int UserTaxiHailNetwork_Enabled = 2131034751;
+			
+			// aapt resource value: 0x7f050280
+			public const int UserTaxiHailNetwork_Off = 2131034752;
+			
+			// aapt resource value: 0x7f050281
+			public const int UserTaxiHailNetwork_On = 2131034753;
+			
 			// aapt resource value: 0x7f05015f
 			public const int VehicleNumberErrorMessage = 2131034463;
 			
@@ -5421,6 +5442,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f0500fa
 			public const int View_SignIn = 2131034362;
 			
+			// aapt resource value: 0x7f050282
+			public const int View_TaxiHailNetworkSettings = 2131034754;
+			
 			// aapt resource value: 0x7f050071
 			public const int View_TermsAndConditions = 2131034225;
 			
@@ -5429,6 +5453,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 			
 			// aapt resource value: 0x7f050072
 			public const int View_UpdatedTermsAndConditions = 2131034226;
+			
+			// aapt resource value: 0x7f050283
+			public const int View_UserTaxiHailNetworkSettings = 2131034755;
 			
 			// aapt resource value: 0x7f050133
 			public const int WarningEstimate = 2131034419;

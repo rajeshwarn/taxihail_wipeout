@@ -551,4 +551,6 @@
   <string name="MarketChangedMessage">Vous quittez votre zone locale de service. Si vous décidez de commander un véhicule, votre commande sera envoyée à une compagnie désservant cette zone.</string>
   <string name="MarketChangedMessageTitle">Nouvelle zone détectée</string>
   <string name="PanelMenuViewTaxiHailNetworkText">Réseau TaxiHail</string>
+  <string name="View_TaxiHailNetworkSettings">Réseau TaxiHail</string>
+  <string name="View_UserTaxiHailNetworkSettings">Réseau TaxiHail</string>
 </resources>

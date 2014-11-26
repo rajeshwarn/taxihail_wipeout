@@ -46,7 +46,8 @@ namespace apcurium.MK.Booking.ReadModel.Query
         {
             using (var context = _contextFactory.Invoke())
             {
-                return context.UserTaxiHailNetworkSettings.Find(accountId);
+                var settings = context.UserTaxiHailNetworkSettings.Find(accountId);
+                return settings ?? new UserTaxiHailNetworkSettings {IsEnabled = true};
             }
         }
     }

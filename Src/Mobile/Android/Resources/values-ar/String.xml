@@ -536,4 +536,6 @@
   <string name="MarketChangedMessage">You are leaving your local service area. Should you decide to book, your order will be dispatched using a taxi company from this area.</string>
   <string name="MarketChangedMessageTitle">New service area detected</string>
   <string name="PanelMenuViewTaxiHailNetworkText">TaxiHail Network</string>
+  <string name="View_TaxiHailNetworkSettings">TaxiHail Network</string>
+  <string name="View_UserTaxiHailNetworkSettings">TaxiHail Network</string>
 </resources>

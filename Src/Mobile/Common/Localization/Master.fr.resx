@@ -1753,4 +1753,7 @@
   <data name="PanelMenuViewTaxiHailNetworkText" xml:space="preserve">
     <value>Réseau TaxiHail</value>
   </data>
+  <data name="View_UserTaxiHailNetworkSettings" xml:space="preserve">
+    <value>Réseau TaxiHail</value>
+  </data>
 </root>
