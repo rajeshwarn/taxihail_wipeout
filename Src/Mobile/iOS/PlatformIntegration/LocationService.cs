@@ -11,10 +11,9 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
         private readonly LocationManagerDelegate _locationDelegate;
 
         bool _isStarted;
-        public override bool IsStarted {
-            get {
-                return _isStarted;
-            }
+        public override bool IsStarted 
+        { 
+            get { return _isStarted; } 
         }
 
         public LocationService()
@@ -34,20 +33,20 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
                 return;
             }
 
-
 			var cacheService = TinyIoCContainer.Current.Resolve<ICacheService> ("UserAppCache");
 			var firstStartLocationKey = "firstStartLocationKey" ;
 			var firstStart = cacheService.Get<object> (firstStartLocationKey);
 
-			if (firstStart == null) {
+			if (firstStart == null) 
+            {
 				//don' t check the first time, the OS will ask permission after
 				cacheService.Set (firstStartLocationKey, new object ());
 			}
-			else{
-
+			else
+            {
 				//only warn if user has denied the app, if location are not enabled, th OS display a message
-				if (CLLocationManager.LocationServicesEnabled &&
-					CLLocationManager.Status != CLAuthorizationStatus.Authorized)
+				if (CLLocationManager.LocationServicesEnabled 
+                    && CLLocationManager.Status != CLAuthorizationStatus.Authorized)
 				{ 
 					var localize = TinyIoCContainer.Current.Resolve<ILocalization>();
 
@@ -59,18 +58,16 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 						TinyIoCContainer.Current.Resolve<IMessageService>().ShowMessage(
 							localize["WarningLocationServiceTitle"], 
 							localize["WarningLocationService"],
-							localize[warningKey], 
-							() => cacheService.Set (warningKey, "yes"),
-							localize["WarningLocationServiceCancel"],
-							() => {});
+							localize[warningKey], () => cacheService.Set (warningKey, "yes"),
+							localize["WarningLocationServiceCancel"], () => {});
 					}
 				}
 			}
 
 			_locationManager.StartUpdatingLocation();
 
-            if (_locationManager.Location != null) {
-                
+            if (_locationManager.Location != null) 
+            {
                 _locationDelegate.BestPosition = new Position
                 {
                     Error = (float)_locationManager.Location.HorizontalAccuracy,
@@ -81,7 +78,6 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
             }
 
             _isStarted = true;
-
         }
         
         public override void Stop ()
@@ -92,7 +88,6 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
                 _isStarted = false;
 				_locationDelegate.BestPosition = null;
             }
-
         }
         
         public override Position LastKnownPosition
@@ -104,8 +99,5 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
         {
             get { return _locationDelegate.BestPosition; }
         }
-
-       
-
     }
 }

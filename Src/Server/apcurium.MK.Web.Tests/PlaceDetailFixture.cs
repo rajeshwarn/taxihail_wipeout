@@ -27,6 +27,7 @@ namespace apcurium.MK.Web.Tests
         }
 
         [Test]
+        [Ignore("Use only for debugging purpose")]
         public async void when_place_then_detail()
         {
             try

@@ -5,7 +5,6 @@ using System.Data.Entity;
 using apcurium.MK.Common.Configuration;
 using CustomerPortal.Client;
 using CustomerPortal.Client.Impl;
-using HoneyBadger;
 using Infrastructure;
 using Infrastructure.EventSourcing;
 using Infrastructure.Messaging;

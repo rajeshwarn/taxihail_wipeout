@@ -114,7 +114,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
 
         private NetworkFleetResponse FindNextDispatchCompany(string currentCompanyKey, MapCoordinate pickupPosition, IList<NetworkFleetResponse> networkFleet, string market = null)
         {
-            if (networkFleet == null || !networkFleet.Any() || networkFleet[0] == null)
+            if (networkFleet == null || !networkFleet.Any())
             {
                 return null;
             }
@@ -168,20 +168,27 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                         .OrderBy(v => v.Count())
                         .Select(g => g.First());
 
-                    // Fetch all NetworkFleet objects for this market except the current one
+                    // Fetch all NetworkFleet objects for this market
+                    var allMarketFleets = _taxiHailNetworkServiceClient.GetMarketFleets(market);
+
+                    // All NetworkFleet objects for this market except the current one
                     var marketFleets =
                         _taxiHailNetworkServiceClient.GetMarketFleets(market)
                             .Where(f => f.CompanyKey != currentCompanyKey);
+                    var currentFleet = allMarketFleets.First(f => f.CompanyKey == currentCompanyKey);
 
                     // Return only those from the ordered fleet
-                    return orderedFleets
-                        .Select(v => marketFleets
-                            .FirstOrDefault(f => f.FleetId == v.FleetId))
-                            .ToList();
+                    var test = orderedFleets
+                        .Select(v => marketFleets.FirstOrDefault(f => f.FleetId == v.FleetId))
+                        .Where(f => f != null)
+                        .ToList();
+
+                    test.Insert(0, currentFleet);
+                    return test;
                 }
 
-                // Nothing found, extend search radius
-                searchRadius += i;
+                // Nothing found, extend search radius (total radius after 10 iterations: 3375m)
+                searchRadius += (i * 25);
             }
 
             return new List<NetworkFleetResponse>();

@@ -343,7 +343,7 @@ namespace apcurium.MK.Booking.EventHandlers
                 details.Market = @event.Market;
                 details.NextDispatchCompanyKey = null;
                 details.NextDispatchCompanyName = null;
-                details.NetworkPairingTimeout = null;
+                details.NetworkPairingTimeout = GetNetworkPairingTimeoutIfNecessary(details, @event.EventDate);
 
                 context.SaveChanges();
             }

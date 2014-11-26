@@ -405,4 +405,10 @@
   <data name="CannotCreateOrderChargeAccountNotSupported" xml:space="preserve">
     <value>Ce compte n'est pas supporté par la page web</value>
   </data>
+  <data name="Email_Body_VehicleModel" xml:space="preserve">
+    <value>Véhicule</value>
+  </data>
+  <data name="Email_Body_YourDriver" xml:space="preserve">
+    <value>Votre chauffeur</value>
+  </data>
 </root>

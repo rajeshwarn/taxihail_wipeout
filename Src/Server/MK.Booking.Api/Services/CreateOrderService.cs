@@ -25,6 +25,7 @@ using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using AutoMapper;
 using CustomerPortal.Client;
+using CustomerPortal.Contract.Response;
 using HoneyBadger;
 using HoneyBadger.Responses;
 using Infrastructure.Messaging;
@@ -99,7 +100,7 @@ namespace apcurium.MK.Booking.Api.Services
 
             if (request.Market.HasValue())
             {
-                // Only pay in car charge type supported for orders outside house market
+                // Only pay in car charge type supported for orders outside home market
                 request.Settings.ChargeTypeId = ChargeTypes.PaymentInCar.Id;
             }
             else
@@ -366,7 +367,7 @@ namespace apcurium.MK.Booking.Api.Services
             }
 
             // Cancel order on current company IBS
-            CancelIbsOrder(order, account.Id, account.IBSAccountId);
+            CancelIbsOrder(order, account.Id);
 
             _commandBus.Send(new SwitchOrderToNextDispatchCompany
             {
@@ -559,8 +560,11 @@ namespace apcurium.MK.Booking.Api.Services
                 throw new HttpError(ErrorCode.CreateOrder_InvalidProvider.ToString());
             }
 
-            var providerId = request.Market.HasValue() && referenceData.CompaniesList.Any()
-                    ? referenceData.CompaniesList.First().Id
+            var defaultCompany = referenceData.CompaniesList.FirstOrDefault(x => x.IsDefault.HasValue && x.IsDefault.Value)
+                    ?? referenceData.CompaniesList.FirstOrDefault();
+
+            var providerId = request.Market.HasValue() && referenceData.CompaniesList.Any() && defaultCompany != null
+                    ? defaultCompany.Id
                     : request.Settings.ProviderId;
 
             var ibsPickupAddress = Mapper.Map<IbsAddress>(request.PickupAddress);
@@ -590,10 +594,10 @@ namespace apcurium.MK.Booking.Api.Services
             return result;
         }
 
-        private void CancelIbsOrder(OrderDetail order, Guid accountId, int? ibsAccountId)
+        private void CancelIbsOrder(OrderDetail order, Guid accountId)
         {
             // Cancel order on current company IBS
-            if (order.IBSOrderId.HasValue && ibsAccountId.HasValue)
+            if (order.IBSOrderId.HasValue)
             {
                 var currentIbsAccountId = _accountDao.GetIbsAccountId(accountId, order.CompanyKey);
                 if (currentIbsAccountId.HasValue)
@@ -729,21 +733,24 @@ namespace apcurium.MK.Booking.Api.Services
                     break;
                 }
 
-                // Nothing found, extend search radius
-                searchRadius += i;
+                // Nothing found, extend search radius (total radius after 10 iterations: 3375m)
+                searchRadius += (i * 25);
             }
 
             if (bestFleetId.HasValue)
             {
-                var bestFleet = _taxiHailNetworkServiceClient.GetMarketFleet(market, bestFleetId.Value);
-                if (bestFleet != null)
+                var marketFleets = _taxiHailNetworkServiceClient.GetMarketFleets(market).ToArray();
+
+                // Fallback: If for some reason, we cannot find a match for the best fleet id in the fleets
+                // that were setup for the market, we take the first one
+                var bestFleet = marketFleets.FirstOrDefault(f => f.FleetId == bestFleetId.Value)
+                    ?? marketFleets.FirstOrDefault();
+
+                return new BestAvailableCompany
                 {
-                    return new BestAvailableCompany
-                    {
-                        CompanyKey = bestFleet.CompanyKey,
-                        CompanyName = bestFleet.CompanyName
-                    };
-                }
+                    CompanyKey = bestFleet != null ? bestFleet.CompanyKey : null,
+                    CompanyName = bestFleet != null ? bestFleet.CompanyName : null
+                };
             }
 
             // Nothing found
