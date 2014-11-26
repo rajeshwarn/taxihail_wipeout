@@ -76,9 +76,6 @@ namespace apcurium.MK.Booking.Api.Services
                 command.AccountActivationDisabled = accountActivationDisabled;
                 _commandBus.Send(command);
 
-                // Determine the root path to the app 
-                var root = ApplicationPathResolver.GetApplicationPath(RequestContext);
-
                 if (!accountActivationDisabled)
                 {
                     if (smsConfirmationEnabled
@@ -98,9 +95,8 @@ namespace apcurium.MK.Booking.Api.Services
                         {
                             ClientLanguageCode = command.Language,
                             EmailAddress = command.Email,
-                            BaseUrl = new Uri(root),
                             ConfirmationUrl =
-                                new Uri(root + string.Format("/api/account/confirm/{0}/{1}", command.Email, confirmationToken)),
+                                new Uri(string.Format("/api/account/confirm/{0}/{1}", command.Email, confirmationToken), UriKind.Relative),
                         });
                     }
                 }
