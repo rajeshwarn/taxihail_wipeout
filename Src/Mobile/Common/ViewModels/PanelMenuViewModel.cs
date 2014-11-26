@@ -45,13 +45,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			var paymentSettings = await _paymentService.GetPaymentSettings();
 			IsPayInTaxiEnabled = paymentSettings.IsPayInTaxiEnabled;
 
-			// Load cached notification settings
+			// Load cached settings
 		    var notificationSettings = await _accountService.GetNotificationSettings(true);
+		    var taxiHailNetworkSettings = await _accountService.GetUserTaxiHailNetworkSettings();
 
             // Load and cache user notification settings. DO NOT await.
             _accountService.GetNotificationSettings();
 
 		    IsNotificationsEnabled = notificationSettings.Enabled;
+		    IsTaxiHailNetworkEnabled = taxiHailNetworkSettings.IsEnabled;
 
 			ItemMenuList.Add(new ItemMenuModel { Text = this.Services().Localize["PanelMenuViewLocationsText"], NavigationCommand = NavigateToMyLocations });
 			ItemMenuList.Add(new ItemMenuModel { Text = this.Services().Localize["PanelMenuViewOrderHistoryText"], NavigationCommand = NavigateToOrderHistory });
@@ -63,6 +65,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		    if (IsNotificationsEnabled)
 		    {
                 ItemMenuList.Add(new ItemMenuModel { Text = this.Services().Localize["PanelMenuViewNotificationsText"], NavigationCommand = NavigateToNotificationsSettings });
+		    }
+		    if (IsTaxiHailNetworkEnabled)
+		    {
+                ItemMenuList.Add(new ItemMenuModel { Text = this.Services().Localize["PanelMenuViewTaxiHailNetworkText"], NavigationCommand = NavigateToUserTaxiHailNetworkSettings });
 		    }
 		    if (Settings.TutorialEnabled)
 		    {
@@ -111,6 +117,23 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 if (_isNotificationsEnabled != value)
                 {
                     _isNotificationsEnabled = value;
+                    RaisePropertyChanged();
+                }
+            }
+        }
+
+        private bool _isTaxiHailNetworkEnabled;
+        public bool IsTaxiHailNetworkEnabled
+        {
+            get
+            {
+                return _isTaxiHailNetworkEnabled;
+            }
+            set
+            {
+                if (_isTaxiHailNetworkEnabled != value)
+                {
+                    _isTaxiHailNetworkEnabled = value;
                     RaisePropertyChanged();
                 }
             }
@@ -251,6 +274,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 {
 					CloseMenu();
                     ShowViewModel<NotificationSettingsViewModel>();
+                });
+            }
+        }
+
+        public ICommand NavigateToUserTaxiHailNetworkSettings
+        {
+            get
+            {
+                return this.GetCommand(() =>
+                {
+                    CloseMenu();
+                    ShowViewModel<UserTaxiHailNetworkSettingsViewModel>();
                 });
             }
         }

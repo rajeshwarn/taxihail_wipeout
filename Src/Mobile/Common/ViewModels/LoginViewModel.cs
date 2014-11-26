@@ -394,8 +394,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			};
 
             // Load and cache company notification settings/payment settings
-			await Mvx.Resolve<IAccountService>().GetNotificationSettings(true, true); // resolve because the accountService injected in the constructor is not authorized here
-			await Mvx.Resolve<IPaymentService>().GetPaymentSettings(true);
+            // Resolve because the accountService injected in the constructor is not authorized here
+			await Mvx.Resolve<IAccountService>().GetNotificationSettings(true, true);
+		    await Mvx.Resolve<IAccountService>().GetUserTaxiHailNetworkSettings(true);
+            await Mvx.Resolve<IPaymentService>().GetPaymentSettings(true);
 
             // Log user session start
 			Mvx.Resolve<IAccountService>().LogApplicationStartUp();

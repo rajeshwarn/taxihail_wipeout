@@ -1737,4 +1737,7 @@
   <data name="MarketChangedMessageTitle" xml:space="preserve">
     <value>New service area detected</value>
   </data>
+  <data name="PanelMenuViewTaxiHailNetworkText" xml:space="preserve">
+    <value>TaxiHail Network</value>
+  </data>
 </root>

@@ -1750,4 +1750,7 @@
   <data name="MarketChangedMessageTitle" xml:space="preserve">
     <value>Nouvelle zone détectée</value>
   </data>
+  <data name="PanelMenuViewTaxiHailNetworkText" xml:space="preserve">
+    <value>Réseau TaxiHail</value>
+  </data>
 </root>
