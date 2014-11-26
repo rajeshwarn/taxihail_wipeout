@@ -85,6 +85,7 @@
     <Compile Include="Resources\AddressList.cs" />
     <Compile Include="Resources\DirectionInfo.cs" />
     <Compile Include="Resources\ErrorCode.cs" />
+    <Compile Include="Resources\NetworkFleet.cs" />
     <Compile Include="Resources\Order.cs" />
     <Compile Include="Resources\ReferenceData.cs" />
     <Compile Include="Requests\AccountOrderListRequest.cs" />
