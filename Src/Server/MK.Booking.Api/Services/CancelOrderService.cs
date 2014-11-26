@@ -57,17 +57,21 @@ namespace apcurium.MK.Booking.Api.Services
                 throw new HttpError(HttpStatusCode.Unauthorized, "Can't cancel another account's order");
             }
 
-            //We need to try many times because sometime the IBS cancel method doesn't return an error but doesn't cancel the ride... after 5 time, we are giving up. But we assume the order is completed.
-            Task.Factory.StartNew(() =>
+            var currentIbsAccountId = _accountDao.GetIbsAccountId(account.Id, order.CompanyKey);
+            if (currentIbsAccountId.HasValue)
             {
-                Func<bool> cancelOrder = () => _ibsServiceProvider.Booking(order.CompanyKey, order.Market).CancelOrder(order.IBSOrderId.Value, account.IBSAccountId.Value, order.Settings.Phone);
-                cancelOrder.Retry(new TimeSpan(0, 0, 0, 10), 5);
-            });
+                //We need to try many times because sometime the IBS cancel method doesn't return an error but doesn't cancel the ride... after 5 time, we are giving up. But we assume the order is completed.
+                Task.Factory.StartNew(() =>
+                {
+                    Func<bool> cancelOrder = () => _ibsServiceProvider.Booking(order.CompanyKey, order.Market).CancelOrder(order.IBSOrderId.Value, /*account.IBSAccountId.Value*/currentIbsAccountId.Value, order.Settings.Phone);
+                    cancelOrder.Retry(new TimeSpan(0, 0, 0, 10), 5);
+                });
 
-            var command = new Commands.CancelOrder { Id = Guid.NewGuid(), OrderId = request.OrderId };
-            _commandBus.Send(command);
+                var command = new Commands.CancelOrder { Id = Guid.NewGuid(), OrderId = request.OrderId };
+                _commandBus.Send(command);
 
-            UpdateStatusAsync( command.Id );
+                UpdateStatusAsync( command.Id );
+            }
 
             return new HttpResult(HttpStatusCode.OK);
         }

@@ -201,25 +201,30 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		}
 
 	    private string _statusInfoText;
-		public string StatusInfoText {
+		public string StatusInfoText
+        {
 			get { return _statusInfoText; }
-			set {
+			set
+            {
 				_statusInfoText = value;
-				RaisePropertyChanged ();
+				RaisePropertyChanged();
 			}
 		}
 
 		private Order _order;
-		public Order Order {
+		public Order Order
+        {
 			get { return _order; }
-			set {
+			set
+            {
 				_order = value;
-				RaisePropertyChanged ();
+				RaisePropertyChanged();
 			}
 		}
 		
 		private OrderStatusDetail _orderStatusDetail;
-		public OrderStatusDetail OrderStatusDetail {
+		public OrderStatusDetail OrderStatusDetail
+        {
 			get { return _orderStatusDetail; }
 			set {
 				_orderStatusDetail = value;
@@ -311,6 +316,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private string _vehicleNumber;
         private bool _isCurrentlyPairing;
 		private bool _isDispatchPopupVisible;
+        private bool _isContactingNextCompany;
+	    private int? _currentIbsOrderId; 
 
 		private async void RefreshStatus()
         {
@@ -324,6 +331,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 {
 					status.VehicleNumber = _vehicleNumber;
 				}
+
+                if (_isContactingNextCompany && status.IBSOrderId == _currentIbsOrderId)
+                {
+                    // Don't update status when we're contacting a new dispatch company (switch)
+                    return;
+                }
+
+                _currentIbsOrderId = status.IBSOrderId;
+                _isContactingNextCompany = false;
 
                 SwitchDispatchCompanyIfNecessary(status);
 
@@ -444,9 +460,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 	        _isDispatchPopupVisible = false;
 
-			StatusInfoText = string.Format (
-				this.Services ().Localize ["NetworkContactingNextDispatchDescription"]
-				, status.NextDispatchCompanyName);
+			StatusInfoText = string.Format(
+                this.Services().Localize["NetworkContactingNextDispatchDescription"],
+                status.NextDispatchCompanyName);
+
+            _isContactingNextCompany = true;
 
             try
             {
@@ -458,6 +476,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
             catch (WebServiceException ex)
             {
+                _isContactingNextCompany = false;
                 this.Services().Message.ShowMessage(
                     this.Services().Localize["TaxiHailNetworkTimeOutErrorTitle"],
                     ex.ErrorMessage);
