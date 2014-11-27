@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.EventHandlers.Integration;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
@@ -23,6 +24,7 @@ namespace apcurium.MK.Booking.Services.Impl
         private readonly IAccountDao _accountDao;
         private readonly IOrderPaymentDao _paymentDao;
         private readonly IPairingService _pairingService;
+        private readonly IServerSettings _serverSettings;
 
         private BraintreeGateway BraintreeGateway { get; set; }
 
@@ -42,6 +44,7 @@ namespace apcurium.MK.Booking.Services.Impl
             _accountDao = accountDao;
             _paymentDao = paymentDao;
             _pairingService = pairingService;
+            _serverSettings = serverSettings;
 
             BraintreeGateway = GetBraintreeGateway(serverSettings.GetPaymentSettings().BraintreeServerSettings);
         }
@@ -88,7 +91,15 @@ namespace apcurium.MK.Booking.Services.Impl
                 var paymentDetail = _paymentDao.FindNonPayPalByOrderId(orderId);
 
                 if (paymentDetail == null)
-                    throw new Exception(string.Format("Payment for order {0} not found", orderId));
+                {
+                    if (_serverSettings.GetPaymentSettings().IsPreAuthEnabled)
+                    {
+                        throw new Exception(string.Format("Payment for order {0} not found", orderId));
+                    }
+
+                    // PreAuth disabled, no Void to do
+                    return;
+                } 
 
                 Void(paymentDetail.TransactionId, ref message);
             }
@@ -183,6 +194,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 if (result.IsSuccess())
                 {
                     var paymentId = Guid.NewGuid();
+
                     _commandBus.Send(new InitiateCreditCardPayment
                     {
                         PaymentId = paymentId,
@@ -231,7 +243,7 @@ namespace apcurium.MK.Booking.Services.Impl
             }
 
             var account = _accountDao.FindById(orderDetail.AccountId);
-            
+
             var paymentDetail = _paymentDao.FindNonPayPalByOrderId(orderId);
             if (paymentDetail == null)
             {
