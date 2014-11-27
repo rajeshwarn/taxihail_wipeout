@@ -396,6 +396,11 @@ namespace apcurium.MK.Booking.Api.Services
 
         private void ValidateCreditCard(Guid orderId, AccountDetail account, string clientLanguageCode)
         {
+            if (!_serverSettings.GetPaymentSettings().IsPreAuthEnabled)
+            {
+                return;
+            }
+
             // check if the account has a credit card
             if (!account.DefaultCreditCard.HasValue)
             {

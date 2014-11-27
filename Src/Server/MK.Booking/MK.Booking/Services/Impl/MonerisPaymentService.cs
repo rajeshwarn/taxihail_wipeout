@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Threading;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.EventHandlers.Integration;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
@@ -89,7 +90,13 @@ namespace apcurium.MK.Booking.Services.Impl
                 var paymentDetail = _paymentDao.FindNonPayPalByOrderId(orderId);
                 if (paymentDetail == null)
                 {
-                    throw new Exception(string.Format("Payment for order {0} not found", orderId));
+                    if (_serverSettings.GetPaymentSettings().IsPreAuthEnabled)
+                    {
+                        throw new Exception(string.Format("Payment for order {0} not found", orderId));
+                    }
+
+                    // PreAuth disabled, no Void to do
+                    return;
                 }
                 
                 var monerisSettings = _serverSettings.GetPaymentSettings().MonerisPaymentSettings;
@@ -234,6 +241,8 @@ namespace apcurium.MK.Booking.Services.Impl
                 throw new Exception("Order has no IBSOrderId");
             }
 
+            var account = _accountDao.FindById(orderDetail.AccountId);
+
             var paymentDetail = _paymentDao.FindNonPayPalByOrderId(orderId);
             if (paymentDetail == null)
             {
@@ -247,7 +256,6 @@ namespace apcurium.MK.Booking.Services.Impl
                 string authorizationCode = null;
                 Receipt commitReceipt = null;
 
-                var account = _accountDao.FindById(orderDetail.AccountId);
                 var monerisSettings = _serverSettings.GetPaymentSettings().MonerisPaymentSettings;
                 
                 // commit transaction
