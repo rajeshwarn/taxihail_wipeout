@@ -85,11 +85,9 @@ namespace apcurium.MK.Booking.Api.Security
                     {
                         ClientLanguageCode = account.Language,
                         EmailAddress = account.Email,
-                        BaseUrl = new Uri(root),
                         ConfirmationUrl =
-                            new Uri(root +
-                                    string.Format("/api/account/confirm/{0}/{1}", account.Email,
-                                        account.ConfirmationToken)),
+                            new Uri(string.Format("/api/account/confirm/{0}/{1}", account.Email,
+                                        account.ConfirmationToken), UriKind.Relative),
                     });
                     throw HttpError.Unauthorized(AuthenticationErrorCode.AccountNotActivated);
                 }
