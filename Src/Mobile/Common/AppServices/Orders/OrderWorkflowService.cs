@@ -208,7 +208,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
                     PickupAddress = order.PickupAddress,
 					Note = order.Note, 
 					PickupDate = order.PickupDate.HasValue ? order.PickupDate.Value : DateTime.Now,
-					Settings = order.Settings
+					Settings = order.Settings,
+					PromoCode = order.PromoCode
 				};
 
 				PrepareForNewOrder();
