@@ -14,7 +14,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
         {
             base.OnCreate(bundle);
 
-            SetContentView(Resource.Layout.View_NotificationSettings);
+            SetContentView(Resource.Layout.View_UserTaxiHailNetworkSettings);
         }
     }
 }

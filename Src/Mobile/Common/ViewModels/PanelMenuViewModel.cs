@@ -41,6 +41,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		public async Task Start()
 		{
+            // N.B.: This setup is for iOS only! For Android see: SubView_MainMenu.xaml
+
 			// Load cached payment settings
 			var paymentSettings = await _paymentService.GetPaymentSettings();
 			IsPayInTaxiEnabled = paymentSettings.IsPayInTaxiEnabled;
@@ -66,10 +68,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		    {
                 ItemMenuList.Add(new ItemMenuModel { Text = this.Services().Localize["PanelMenuViewNotificationsText"], NavigationCommand = NavigateToNotificationsSettings });
 		    }
-		    if (IsTaxiHailNetworkEnabled)
-		    {
+            if (IsTaxiHailNetworkEnabled)
+            {
                 ItemMenuList.Add(new ItemMenuModel { Text = this.Services().Localize["PanelMenuViewTaxiHailNetworkText"], NavigationCommand = NavigateToUserTaxiHailNetworkSettings });
-		    }
+            }
 		    if (Settings.TutorialEnabled)
 		    {
                 ItemMenuList.Add(new ItemMenuModel { Text = this.Services().Localize["PanelMenuViewTutorialText"], NavigationCommand = NavigateToTutorial });
