@@ -189,12 +189,12 @@ namespace apcurium.MK.Booking.Test.Integration.PromotionFixture
         }
 
         [Test]
-        public void when_promotion_used_then_dto_created()
+        public void when_promotion_applied_then_dto_created()
         {
             var accountId = Guid.NewGuid();
             var orderId = Guid.NewGuid();
 
-            Sut.Handle(new PromotionUsed
+            Sut.Handle(new PromotionApplied
             {
                 SourceId = _promoId,
                 AccountId = accountId,
@@ -215,6 +215,44 @@ namespace apcurium.MK.Booking.Test.Integration.PromotionFixture
                 Assert.AreEqual("code", dto.Code);
                 Assert.AreEqual(PromoDiscountType.Cash, dto.DiscountType);
                 Assert.AreEqual(10, dto.DiscountValue);
+            }
+        }
+
+        [Test]
+        public void when_promotion_redeemed_then_dto_updated()
+        {
+            var accountId = Guid.NewGuid();
+            var orderId = Guid.NewGuid();
+
+            Sut.Handle(new PromotionApplied
+            {
+                SourceId = _promoId,
+                AccountId = accountId,
+                Code = "code",
+                DiscountType = PromoDiscountType.Cash,
+                DiscountValue = 10,
+                OrderId = orderId
+            });
+
+            Sut.Handle(new PromotionRedeemed
+            {
+                SourceId = _promoId,
+                OrderId = orderId,
+                AmountSaved = 10
+            });
+
+            using (var context = new BookingDbContext(DbName))
+            {
+                var dto = context.Find<PromotionUsageDetail>(orderId);
+
+                Assert.NotNull(dto);
+                Assert.AreEqual(_promoId, dto.PromoId);
+                Assert.AreEqual(orderId, dto.OrderId);
+                Assert.AreEqual(accountId, dto.AccountId);
+                Assert.AreEqual("code", dto.Code);
+                Assert.AreEqual(PromoDiscountType.Cash, dto.DiscountType);
+                Assert.AreEqual(10, dto.DiscountValue);
+                Assert.AreEqual(10, dto.AmountSaved);
             }
         }
     }

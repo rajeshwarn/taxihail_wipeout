@@ -111,12 +111,12 @@ namespace apcurium.MK.Booking.Test.PromotionFixture
         }
 
         [Test]
-        public void when_using_a_promo_successfully()
+        public void when_applying_a_promo_successfully()
         {
             var orderId = Guid.NewGuid();
             var accountId = Guid.NewGuid();
 
-            _sut.When(new UsePromotion
+            _sut.When(new ApplyPromotion
             {
                 PromoId = _promoId,
                 AccountId = accountId,
@@ -125,7 +125,7 @@ namespace apcurium.MK.Booking.Test.PromotionFixture
                 PickupDate = new DateTime(2014, 11, 24, 13, 0, 0)
             });
 
-            var @event = _sut.ThenHasSingle<PromotionUsed>();
+            var @event = _sut.ThenHasSingle<PromotionApplied>();
             Assert.AreEqual(_promoId, @event.SourceId);
             Assert.AreEqual(orderId, @event.OrderId);
             Assert.AreEqual(accountId, @event.AccountId);
@@ -135,14 +135,195 @@ namespace apcurium.MK.Booking.Test.PromotionFixture
         }
 
         [Test]
-        public void when_using_a_promo_that_is_not_active()
+        public void when_redeeming_a_promo_without_having_it_applied_first()
+        {
+            var orderId = Guid.NewGuid();
+
+            _sut.Given(
+                new PromotionUpdated
+                {
+                    SourceId = _promoId,
+                    Name = "promo1",
+                    Code = _code,
+                    AppliesToCurrentBooking = false,
+                    AppliesToFutureBooking = true,
+                    DiscountType = PromoDiscountType.Cash,
+                    DiscountValue = 15,
+                    DaysOfWeek = new[] { DayOfWeek.Monday, DayOfWeek.Tuesday },
+                    MaxUsage = 2,
+                    MaxUsagePerUser = 1,
+                    StartDate = new DateTime(2014, 11, 10),
+                    EndDate = new DateTime(2015, 11, 10),
+                    StartTime = new DateTime(SqlDateTime.MinValue.Value.Year, SqlDateTime.MinValue.Value.Month, SqlDateTime.MinValue.Value.Day, 10, 0, 0),
+                    EndTime = new DateTime(SqlDateTime.MinValue.Value.Year, SqlDateTime.MinValue.Value.Month, SqlDateTime.MinValue.Value.Day, 14, 0, 0)
+                }
+            );
+
+            _sut.When(new RedeemPromotion
+            {
+                PromoId = _promoId,
+                OrderId = orderId,
+                TotalAmountOfOrder = 44.12
+            });
+
+            var @event = _sut.ThenHasSingle<PromotionRedeemed>();
+            Assert.AreEqual(_promoId, @event.SourceId);
+            Assert.AreEqual(orderId, @event.OrderId);
+            Assert.AreEqual(0, @event.AmountSaved);
+        }
+
+        [Test]
+        public void when_redeeming_a_promo_successfully_with_order_amount_higher_than_cash_rebate()
+        {
+            var orderId = Guid.NewGuid();
+
+            _sut.Given(
+                new PromotionUpdated
+                    {
+                        SourceId = _promoId,
+                        Name = "promo1",
+                        Code = _code,
+                        AppliesToCurrentBooking = false,
+                        AppliesToFutureBooking = true,
+                        DiscountType = PromoDiscountType.Cash,
+                        DiscountValue = 15,
+                        DaysOfWeek = new[] { DayOfWeek.Monday, DayOfWeek.Tuesday },
+                        MaxUsage = 2,
+                        MaxUsagePerUser = 1,
+                        StartDate = new DateTime(2014, 11, 10),
+                        EndDate = new DateTime(2015, 11, 10),
+                        StartTime = new DateTime(SqlDateTime.MinValue.Value.Year, SqlDateTime.MinValue.Value.Month, SqlDateTime.MinValue.Value.Day, 10, 0, 0),
+                        EndTime = new DateTime(SqlDateTime.MinValue.Value.Year, SqlDateTime.MinValue.Value.Month, SqlDateTime.MinValue.Value.Day, 14, 0, 0)
+                    },
+                new PromotionApplied
+                    {
+                        SourceId = _promoId,
+                        AccountId = Guid.NewGuid(),
+                        Code = "promo1",
+                        DiscountType = PromoDiscountType.Cash,
+                        DiscountValue = 15,
+                        OrderId = orderId
+                    }
+            );
+
+            _sut.When(new RedeemPromotion
+            {
+                PromoId = _promoId,
+                OrderId = orderId,
+                TotalAmountOfOrder = 44.12
+            });
+
+            var @event = _sut.ThenHasSingle<PromotionRedeemed>();
+            Assert.AreEqual(_promoId, @event.SourceId);
+            Assert.AreEqual(orderId, @event.OrderId);
+            Assert.AreEqual(15, @event.AmountSaved);
+        }
+
+        [Test]
+        public void when_redeeming_a_promo_successfully_with_order_amount_lower_than_cash_rebate()
+        {
+            var orderId = Guid.NewGuid();
+
+            _sut.Given(
+                new PromotionUpdated
+                {
+                    SourceId = _promoId,
+                    Name = "promo1",
+                    Code = _code,
+                    AppliesToCurrentBooking = false,
+                    AppliesToFutureBooking = true,
+                    DiscountType = PromoDiscountType.Cash,
+                    DiscountValue = 15,
+                    DaysOfWeek = new[] { DayOfWeek.Monday, DayOfWeek.Tuesday },
+                    MaxUsage = 2,
+                    MaxUsagePerUser = 1,
+                    StartDate = new DateTime(2014, 11, 10),
+                    EndDate = new DateTime(2015, 11, 10),
+                    StartTime = new DateTime(SqlDateTime.MinValue.Value.Year, SqlDateTime.MinValue.Value.Month, SqlDateTime.MinValue.Value.Day, 10, 0, 0),
+                    EndTime = new DateTime(SqlDateTime.MinValue.Value.Year, SqlDateTime.MinValue.Value.Month, SqlDateTime.MinValue.Value.Day, 14, 0, 0)
+                },
+                new PromotionApplied
+                {
+                    SourceId = _promoId,
+                    AccountId = Guid.NewGuid(),
+                    Code = "promo1",
+                    DiscountType = PromoDiscountType.Cash,
+                    DiscountValue = 15,
+                    OrderId = orderId
+                }
+            );
+
+            _sut.When(new RedeemPromotion
+            {
+                PromoId = _promoId,
+                OrderId = orderId,
+                TotalAmountOfOrder = 12.44
+            });
+
+            var @event = _sut.ThenHasSingle<PromotionRedeemed>();
+            Assert.AreEqual(_promoId, @event.SourceId);
+            Assert.AreEqual(orderId, @event.OrderId);
+            Assert.AreEqual(12.44, @event.AmountSaved);
+        }
+
+        [Test]
+        public void when_redeeming_a_promo_successfully_with_percentage_rebate()
+        {
+            var orderId = Guid.NewGuid();
+
+            _sut.Given(
+                new PromotionUpdated
+                {
+                    SourceId = _promoId,
+                    Name = "promo1",
+                    Code = _code,
+                    AppliesToCurrentBooking = false,
+                    AppliesToFutureBooking = true,
+                    DiscountType = PromoDiscountType.Percentage,
+                    DiscountValue = 50,
+                    DaysOfWeek = new[] { DayOfWeek.Monday, DayOfWeek.Tuesday },
+                    MaxUsage = 2,
+                    MaxUsagePerUser = 1,
+                    StartDate = new DateTime(2014, 11, 10),
+                    EndDate = new DateTime(2015, 11, 10),
+                    StartTime = new DateTime(SqlDateTime.MinValue.Value.Year, SqlDateTime.MinValue.Value.Month, SqlDateTime.MinValue.Value.Day, 10, 0, 0),
+                    EndTime = new DateTime(SqlDateTime.MinValue.Value.Year, SqlDateTime.MinValue.Value.Month, SqlDateTime.MinValue.Value.Day, 14, 0, 0)
+                },
+                new PromotionApplied
+                {
+                    SourceId = _promoId,
+                    AccountId = Guid.NewGuid(),
+                    Code = "promo1",
+                    DiscountType = PromoDiscountType.Percentage,
+                    DiscountValue = 50,
+                    OrderId = orderId
+                }
+            );
+
+            _sut.When(new RedeemPromotion
+            {
+                PromoId = _promoId,
+                OrderId = orderId,
+                TotalAmountOfOrder = 44.12
+            });
+
+            var expectedAmountSaved = 44.12 * 50/100;
+
+            var @event = _sut.ThenHasSingle<PromotionRedeemed>();
+            Assert.AreEqual(_promoId, @event.SourceId);
+            Assert.AreEqual(orderId, @event.OrderId);
+            Assert.AreEqual(expectedAmountSaved, @event.AmountSaved);
+        }
+
+        [Test]
+        public void when_applying_a_promo_that_is_not_active()
         {
             _sut.Given(new PromotionDeactivated
             {
                 SourceId = _promoId
             });
 
-            var ex = Assert.Throws<InvalidOperationException>(() => _sut.When(new UsePromotion
+            var ex = Assert.Throws<InvalidOperationException>(() => _sut.When(new ApplyPromotion
             {
                 PromoId = _promoId,
                 AccountId = Guid.NewGuid(),
@@ -154,14 +335,14 @@ namespace apcurium.MK.Booking.Test.PromotionFixture
         }
 
         [Test]
-        public void when_using_a_promo_that_have_passed_the_max_usage_by_system()
+        public void when_applying_a_promo_that_have_passed_the_max_usage_by_system()
         {
             _sut.Given(
-                new PromotionUsed { SourceId = _promoId, AccountId = Guid.NewGuid() },
-                new PromotionUsed { SourceId = _promoId, AccountId = Guid.NewGuid() }
+                new PromotionApplied { SourceId = _promoId, AccountId = Guid.NewGuid() },
+                new PromotionApplied { SourceId = _promoId, AccountId = Guid.NewGuid() }
             );
 
-            var ex = Assert.Throws<InvalidOperationException>(() => _sut.When(new UsePromotion
+            var ex = Assert.Throws<InvalidOperationException>(() => _sut.When(new ApplyPromotion
             {
                 PromoId = _promoId,
                 AccountId = Guid.NewGuid(),
@@ -173,15 +354,15 @@ namespace apcurium.MK.Booking.Test.PromotionFixture
         }
 
         [Test]
-        public void when_using_a_promo_that_have_passed_the_max_usage_by_user()
+        public void when_applying_a_promo_that_have_passed_the_max_usage_by_user()
         {
             var accountId = Guid.NewGuid();
 
             _sut.Given(
-                new PromotionUsed { SourceId = _promoId, AccountId = accountId }
+                new PromotionApplied { SourceId = _promoId, AccountId = accountId }
             );
 
-            var ex = Assert.Throws<InvalidOperationException>(() => _sut.When(new UsePromotion
+            var ex = Assert.Throws<InvalidOperationException>(() => _sut.When(new ApplyPromotion
             {
                 PromoId = _promoId,
                 AccountId = accountId,
@@ -193,9 +374,9 @@ namespace apcurium.MK.Booking.Test.PromotionFixture
         }
 
         [Test]
-        public void when_using_a_promo_that_is_only_for_current_booking()
+        public void when_applying_a_promo_that_is_only_for_current_booking()
         {
-            var ex = Assert.Throws<InvalidOperationException>(() => _sut.When(new UsePromotion
+            var ex = Assert.Throws<InvalidOperationException>(() => _sut.When(new ApplyPromotion
             {
                 PromoId = _promoId,
                 AccountId = Guid.NewGuid(),
@@ -207,7 +388,7 @@ namespace apcurium.MK.Booking.Test.PromotionFixture
         }
 
         [Test]
-        public void when_using_a_promo_that_is_only_for_future_booking()
+        public void when_applying_a_promo_that_is_only_for_future_booking()
         {
             _sut.Given(new PromotionUpdated
             {
@@ -227,7 +408,7 @@ namespace apcurium.MK.Booking.Test.PromotionFixture
                 EndTime = new DateTime(SqlDateTime.MinValue.Value.Year, SqlDateTime.MinValue.Value.Month, SqlDateTime.MinValue.Value.Day, 14, 0, 0)
             });
 
-            var ex = Assert.Throws<InvalidOperationException>(() => _sut.When(new UsePromotion
+            var ex = Assert.Throws<InvalidOperationException>(() => _sut.When(new ApplyPromotion
             {
                 PromoId = _promoId,
                 AccountId = Guid.NewGuid(),
@@ -239,9 +420,9 @@ namespace apcurium.MK.Booking.Test.PromotionFixture
         }
 
         [Test]
-        public void when_using_a_promo_on_a_day_that_it_is_not_active()
+        public void when_applying_a_promo_on_a_day_that_it_is_not_active()
         {
-            var ex = Assert.Throws<InvalidOperationException>(() => _sut.When(new UsePromotion
+            var ex = Assert.Throws<InvalidOperationException>(() => _sut.When(new ApplyPromotion
             {
                 PromoId = _promoId,
                 AccountId = Guid.NewGuid(),
@@ -253,9 +434,9 @@ namespace apcurium.MK.Booking.Test.PromotionFixture
         }
 
         [Test]
-        public void when_using_a_promo_that_did_not_start_yet()
+        public void when_applying_a_promo_that_did_not_start_yet()
         {
-            var ex = Assert.Throws<InvalidOperationException>(() => _sut.When(new UsePromotion
+            var ex = Assert.Throws<InvalidOperationException>(() => _sut.When(new ApplyPromotion
             {
                 PromoId = _promoId,
                 AccountId = Guid.NewGuid(),
@@ -267,9 +448,9 @@ namespace apcurium.MK.Booking.Test.PromotionFixture
         }
 
         [Test]
-        public void when_using_a_promo_that_expired()
+        public void when_applying_a_promo_that_expired()
         {
-            var ex = Assert.Throws<InvalidOperationException>(() => _sut.When(new UsePromotion
+            var ex = Assert.Throws<InvalidOperationException>(() => _sut.When(new ApplyPromotion
             {
                 PromoId = _promoId,
                 AccountId = Guid.NewGuid(),
@@ -281,9 +462,9 @@ namespace apcurium.MK.Booking.Test.PromotionFixture
         }
 
         [Test]
-        public void when_using_a_promo_at_a_time_of_the_day_that_it_is_not_active()
+        public void when_applying_a_promo_at_a_time_of_the_day_that_it_is_not_active()
         {
-            var ex = Assert.Throws<InvalidOperationException>(() => _sut.When(new UsePromotion
+            var ex = Assert.Throws<InvalidOperationException>(() => _sut.When(new ApplyPromotion
             {
                 PromoId = _promoId,
                 AccountId = Guid.NewGuid(),

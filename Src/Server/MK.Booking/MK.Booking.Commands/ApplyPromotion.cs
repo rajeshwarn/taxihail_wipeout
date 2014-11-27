@@ -3,9 +3,9 @@ using Infrastructure.Messaging;
 
 namespace apcurium.MK.Booking.Commands
 {
-    public class UsePromotion : ICommand
+    public class ApplyPromotion : ICommand
     {
-        public UsePromotion()
+        public ApplyPromotion()
         {
             Id = Guid.NewGuid();
         }

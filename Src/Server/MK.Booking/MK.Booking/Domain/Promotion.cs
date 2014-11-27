@@ -27,6 +27,7 @@ namespace apcurium.MK.Booking.Domain
         private PromoDiscountType _discountType;
 
         private readonly Dictionary<Guid, int> _usagesPerUser = new Dictionary<Guid, int>();
+        private readonly List<Guid> _orderIds = new List<Guid>(); 
         private int _usages;
         
         public Promotion(Guid id) : base(id)
@@ -35,7 +36,8 @@ namespace apcurium.MK.Booking.Domain
             Handles<PromotionUpdated>(OnPromotionUpdated);
             Handles<PromotionActivated>(OnPromotionActivated);
             Handles<PromotionDeactivated>(OnPromotionDeactivated);
-            Handles<PromotionUsed>(OnPromotionUsed);
+            Handles<PromotionApplied>(OnPromotionApplied);
+            Handles<PromotionRedeemed>(NoAction);
         }
 
         public Promotion(Guid id, IEnumerable<IVersionedEvent> history)
@@ -116,7 +118,7 @@ namespace apcurium.MK.Booking.Domain
             Update(new PromotionDeactivated());
         }
 
-        public bool CanUse(Guid accountId, DateTime pickupDate, bool isFutureBooking, out string errorMessage)
+        public bool CanApply(Guid accountId, DateTime pickupDate, bool isFutureBooking, out string errorMessage)
         {
             errorMessage = string.Empty;
 
@@ -193,21 +195,54 @@ namespace apcurium.MK.Booking.Domain
             return true;
         }
 
-        public void Use(Guid orderId, Guid accountId, DateTime pickupDate, bool isFutureBooking)
+        public void Apply(Guid orderId, Guid accountId, DateTime pickupDate, bool isFutureBooking)
         {
             string errorMessage;
-            if (!CanUse(accountId, pickupDate, isFutureBooking, out errorMessage))
+            if (!CanApply(accountId, pickupDate, isFutureBooking, out errorMessage))
             {
                 throw new InvalidOperationException(errorMessage);
             }
 
-            Update(new PromotionUsed
+            Update(new PromotionApplied
             {
                 OrderId = orderId,
                 AccountId = accountId,
                 DiscountValue = _discountValue,
                 DiscountType = _discountType,
                 Code = _code
+            });
+        }
+
+        public double GetAmountSaved(Guid orderId, double totalAmountOfOrder)
+        {
+            if (!_orderIds.Contains(orderId))
+            {
+                return 0;
+            }
+
+            if (_discountType == PromoDiscountType.Cash)
+            {
+                // return smallest value to make sure we don't credit user
+                return Math.Min(totalAmountOfOrder, _discountValue);
+            }
+
+            if (_discountType == PromoDiscountType.Percentage)
+            {
+                var amountSaved = totalAmountOfOrder * (_discountValue / 100d);
+                return Math.Round(amountSaved, 2);
+            }
+
+            return 0;
+        }
+
+        public void Redeem(Guid orderId, double totalAmountOfOrder)
+        {
+            var amountSaved = GetAmountSaved(orderId, totalAmountOfOrder);
+
+            Update(new PromotionRedeemed
+            {
+                OrderId = orderId,
+                AmountSaved = amountSaved
             });
         }
 
@@ -255,7 +290,7 @@ namespace apcurium.MK.Booking.Domain
             _active = false;
         }
 
-        private void OnPromotionUsed(PromotionUsed @event)
+        private void OnPromotionApplied(PromotionApplied @event)
         {
             _usages = _usages + 1;
 
@@ -266,6 +301,8 @@ namespace apcurium.MK.Booking.Domain
             }
 
             _usagesPerUser[@event.AccountId] = usagesForThisUser + 1;
+
+            _orderIds.Add(@event.OrderId);
         }
 
         private void SetInternalStartAndEndTimes(DateTime? startTime, DateTime? endTime)

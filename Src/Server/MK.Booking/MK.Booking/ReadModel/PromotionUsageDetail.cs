@@ -17,6 +17,8 @@ namespace apcurium.MK.Booking.ReadModel
 
         public PromoDiscountType DiscountType { get; set; }
 
+        public double AmountSaved { get; set; }
+
         public string Code { get; set; }
     }
 }

@@ -12,7 +12,8 @@ namespace apcurium.MK.Booking.EventHandlers
         IEventHandler<PromotionUpdated>,
         IEventHandler<PromotionActivated>,
         IEventHandler<PromotionDeactivated>,
-        IEventHandler<PromotionUsed>
+        IEventHandler<PromotionApplied>,
+        IEventHandler<PromotionRedeemed>
     {
         private readonly Func<BookingDbContext> _contextFactory;
 
@@ -102,7 +103,7 @@ namespace apcurium.MK.Booking.EventHandlers
             }
         }
 
-        public void Handle(PromotionUsed @event)
+        public void Handle(PromotionApplied @event)
         {
             using (var context = _contextFactory.Invoke())
             {
@@ -115,6 +116,18 @@ namespace apcurium.MK.Booking.EventHandlers
                     DiscountType = @event.DiscountType,
                     DiscountValue = @event.DiscountValue
                 });
+            }
+        }
+
+        public void Handle(PromotionRedeemed @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var promotionUsageDetail = context.Find<PromotionUsageDetail>(@event.OrderId);
+
+                promotionUsageDetail.AmountSaved = @event.AmountSaved;
+
+                context.Save(promotionUsageDetail);
             }
         }
     }

@@ -792,13 +792,13 @@ namespace apcurium.MK.Booking.Api.Services
 
             var promoDomainObject = _promoRepository.Get(promo.Id);
             string errorMessage;
-            if (!promoDomainObject.CanUse(accountId, pickupDate, isFutureBooking, out errorMessage))
+            if (!promoDomainObject.CanApply(accountId, pickupDate, isFutureBooking, out errorMessage))
             {
                 throw new HttpError(HttpStatusCode.Forbidden, ErrorCode.CreateOrder_RuleDisable.ToString(),
                     _resources.Get(errorMessage, clientLanguageCode));
             }
 
-            _commandBus.Send(new UsePromotion
+            _commandBus.Send(new ApplyPromotion
             {
                 PromoId = promo.Id,
                 AccountId = accountId,

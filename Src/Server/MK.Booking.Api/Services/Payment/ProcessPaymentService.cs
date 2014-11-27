@@ -16,6 +16,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 
         public CommitPreauthorizedPaymentResponse Post(CommitPaymentRequest request)
         {
+            // TODO RedeemPromotion
             return _paymentService.CommitPayment(request.Amount, request.MeterAmount, request.TipAmount, request.CardToken, request.OrderId, request.IsNoShowFee);
         }
 

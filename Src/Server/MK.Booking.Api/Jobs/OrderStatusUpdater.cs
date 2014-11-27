@@ -294,6 +294,8 @@ namespace apcurium.MK.Booking.Api.Jobs
 
             try
             {
+                // TODO RedeemPromotion
+
                 var paymentResult = _paymentService.CommitPayment(
                     Convert.ToDecimal(meterAmount + tipAmount), Convert.ToDecimal(meterAmount),
                     Convert.ToDecimal(tipAmount), pairingInfo.TokenOfCardToBeUsedForPayment,
