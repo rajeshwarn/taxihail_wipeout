@@ -35,12 +35,14 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
         {
             get { return SessionAs<AuthUserSession>(); }
 		}
-  protected override IAsyncResult BeginExecute(System.Web.Routing.RequestContext requestContext, AsyncCallback callback, object state)
+
+        protected override IAsyncResult BeginExecute(System.Web.Routing.RequestContext requestContext, AsyncCallback callback, object state)
         {
             Context = requestContext;
             BaseUrl = requestContext.HttpContext.Request.Url.GetLeftPart(UriPartial.Authority) + requestContext.HttpContext.Request.ApplicationPath;
             var sessionCookie = Context.HttpContext.Request.Cookies["ss-pid"];
             SessionID = sessionCookie != null ? sessionCookie.Value : "";
+            return base.BeginExecute(requestContext, callback, state);
         }
 
         private object _userSession;
