@@ -43,42 +43,53 @@ namespace apcurium.MK.Booking.Api.Services.Payment
         {
             var totalAmount = request.Amount;
 
-            // TODO RedeemPromotion
-            var promotionUsed = _promotionDao.FindByOrderId(request.OrderId);
-            if (promotionUsed != null)
+//            // TODO RedeemPromotion
+//            var promotionUsed = _promotionDao.FindByOrderId(request.OrderId);
+//            if (promotionUsed != null)
+//            {
+//                var promoDomainObject = _promoRepository.Get(promotionUsed.PromoId);
+//                var amountSaved = promoDomainObject.GetAmountSaved(request.OrderId, totalAmount);
+//                totalAmount = totalAmount - amountSaved;
+//            }
+
+            var preAuthResponse = PreauthorizePaymentIfNecessary(request.OrderId, request.CardToken, totalAmount);
+            if (preAuthResponse.IsSuccessful)
             {
-                var promoDomainObject = _promoRepository.Get(promotionUsed.PromoId);
-                var amountSaved = promoDomainObject.GetAmountSaved(request.OrderId, totalAmount);
-                totalAmount = totalAmount - amountSaved;
+                return _paymentService.CommitPayment(totalAmount, request.MeterAmount, request.TipAmount, request.CardToken, request.OrderId, request.IsNoShowFee);
             }
-        
-            if (!_serverSettings.GetPaymentSettings().IsPreAuthEnabled)
+
+            return new CommitPreauthorizedPaymentResponse
             {
-                // PreAutorization was not done on create order, so we do it here before processing the payment
+                IsSuccessful = false,
+                Message = string.Format("PreAuthorization Failed: {0}", preAuthResponse.Message)
+            };
+        }
 
-                var orderDetail = _orderDao.FindById(request.OrderId);
-                if (orderDetail == null)
-                {
-                    throw new HttpError(HttpStatusCode.NotFound, "Order not found");
-                }
+        private PreAuthorizePaymentResponse PreauthorizePaymentIfNecessary(Guid orderId, string cardToken, decimal amount)
+        {
+            if (_serverSettings.GetPaymentSettings().IsPreAuthEnabled)
+            {
+                // Already preautorized on create order, do nothing
+                return new PreAuthorizePaymentResponse { IsSuccessful = true };
+            }
 
-                var account = _accountDao.FindById(orderDetail.AccountId);
+            var orderDetail = _orderDao.FindById(orderId);
+            if (orderDetail == null)
+            {
+                throw new HttpError(HttpStatusCode.NotFound, "Order not found");
+            }
 
-                var preAuthResponse = _paymentService.PreAuthorize(request.OrderId, account.Email, request.CardToken, totalAmount);
-                if (!preAuthResponse.IsSuccessful)
-                {
-                    return new CommitPreauthorizedPaymentResponse
-                    {
-                        IsSuccessful = false,
-                        Message = string.Format("PreAuthorization Failed: {0}", preAuthResponse.Message)
-                    };
-                }
+            var account = _accountDao.FindById(orderDetail.AccountId);
 
+            var result = _paymentService.PreAuthorize(orderId, account.Email, cardToken, amount);
+
+            if (result.IsSuccessful)
+            {
                 // Wait for OrderPaymentDetail to be created
                 Thread.Sleep(500);
             }
 
-            return _paymentService.CommitPayment(totalAmount, request.MeterAmount, request.TipAmount, request.CardToken, request.OrderId, request.IsNoShowFee);
+            return result;
         }
 
         public DeleteTokenizedCreditcardResponse Delete(DeleteTokenizedCreditcardRequest request)

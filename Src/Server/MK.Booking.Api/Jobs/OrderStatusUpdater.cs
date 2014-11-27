@@ -180,7 +180,15 @@ namespace apcurium.MK.Booking.Api.Jobs
 
             var account = _accountDao.FindById(orderDetail.AccountId);
 
-            return _paymentService.PreAuthorize(orderId, account.Email, cardToken, amount);
+            var result = _paymentService.PreAuthorize(orderId, account.Email, cardToken, amount);
+
+            if (result.IsSuccessful)
+            {
+                // Wait for OrderPaymentDetail to be created
+                Thread.Sleep(500);
+            }
+
+            return result;
         }
 
         private void ChargeNoShowFeeIfNecessary(IBSOrderInformation ibsOrderInfo, OrderStatusDetail orderStatusDetail)
@@ -209,9 +217,6 @@ namespace apcurium.MK.Booking.Api.Jobs
                         var preAuthResponse = PreauthorizePaymentIfNecessary(orderStatusDetail.OrderId, defaultCreditCard.Token, paymentSettings.NoShowFee.Value);
                         if (preAuthResponse.IsSuccessful)
                         {
-                            // Wait for OrderPaymentDetail to be created
-                            Thread.Sleep(500);
-
                             // Commit
                             var paymentResult = _paymentService.CommitPayment(
                                 paymentSettings.NoShowFee.Value, paymentSettings.NoShowFee.Value,
@@ -331,8 +336,6 @@ namespace apcurium.MK.Booking.Api.Jobs
 
             try
             {
-            	
-            
                 var totalOrderAmout = Convert.ToDecimal(meterAmount + tipAmount);
 
                 // TODO RedeemPromotion
@@ -341,9 +344,6 @@ namespace apcurium.MK.Booking.Api.Jobs
                 var preAuthResponse = PreauthorizePaymentIfNecessary(orderStatusDetail.OrderId, pairingInfo.TokenOfCardToBeUsedForPayment, totalOrderAmout);
                 if (preAuthResponse.IsSuccessful)
                 {
-                    // Wait for OrderPaymentDetail to be created
-                    Thread.Sleep(500);
-
                     // Commit
                     var paymentResult = _paymentService.CommitPayment(
                         totalOrderAmout, Convert.ToDecimal(meterAmount),
