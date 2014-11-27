@@ -49,13 +49,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 			// Load cached settings
 		    var notificationSettings = await _accountService.GetNotificationSettings(true);
-		    var taxiHailNetworkSettings = await _accountService.GetUserTaxiHailNetworkSettings();
 
             // Load and cache user notification settings. DO NOT await.
             _accountService.GetNotificationSettings();
 
 		    IsNotificationsEnabled = notificationSettings.Enabled;
-		    IsTaxiHailNetworkEnabled = taxiHailNetworkSettings.IsEnabled;
+            IsTaxiHailNetworkEnabled = Settings.Network.Enabled;
 
 			ItemMenuList.Add(new ItemMenuModel { Text = this.Services().Localize["PanelMenuViewLocationsText"], NavigationCommand = NavigateToMyLocations });
 			ItemMenuList.Add(new ItemMenuModel { Text = this.Services().Localize["PanelMenuViewOrderHistoryText"], NavigationCommand = NavigateToOrderHistory });
