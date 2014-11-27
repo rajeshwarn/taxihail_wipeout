@@ -6,10 +6,9 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="UserTaxiHailNetworkSettingsView">
             <connections>
-                <outlet property="_tableTaxiHailNetworkSettings" destination="Mde-1B-uXJ" id="QpJ-Rb-uuM"/>
-                <outlet property="labelTaxiHailNetworkEnabled" destination="6S5-w4-aG7" id="3Wd-cs-qQv"/>
-                <outlet property="switchTaxiHailNetworkEnabled" destination="5dh-yk-ou7" id="Aem-xU-1AZ"/>
-                <outlet property="tableTaxiHailNetworkSettings" destination="Mde-1B-uXJ" id="7QA-Ld-1yN"/>
+                <outlet property="labelTaxiHailNetworkEnabled" destination="NZi-83-dZx" id="zgQ-w3-oEw"/>
+                <outlet property="switchTaxiHailNetworkEnabled" destination="hSH-dD-H4p" id="uhO-I5-3wx"/>
+                <outlet property="tableTaxiHailNetworkSettings" destination="e7V-rR-yTx" id="A0h-V1-oh3"/>
                 <outlet property="view" destination="iN0-l3-epB" id="kCW-yf-GMq"/>
             </connections>
         </placeholder>
@@ -18,30 +17,30 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6S5-w4-aG7">
-                    <rect key="frame" x="15" y="11" width="42" height="20.5"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NZi-83-dZx">
+                    <rect key="frame" x="8" y="16" width="42" height="21"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5dh-yk-ou7">
-                    <rect key="frame" x="255" y="6" width="51" height="31"/>
+                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hSH-dD-H4p">
+                    <rect key="frame" x="263" y="16" width="51" height="31"/>
                 </switch>
-                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="Mde-1B-uXJ">
-                    <rect key="frame" x="0.0" y="46" width="320" height="458"/>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="e7V-rR-yTx">
+                    <rect key="frame" x="0.0" y="54" width="320" height="450"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                 </tableView>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstItem="Mde-1B-uXJ" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="CHI-JG-KvW"/>
-                <constraint firstItem="Mde-1B-uXJ" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="46" id="CdM-Jl-Jwz"/>
-                <constraint firstItem="5dh-yk-ou7" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="6" id="OQs-Eh-Djl"/>
-                <constraint firstItem="6S5-w4-aG7" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="11" id="VSX-u6-6p5"/>
-                <constraint firstItem="6S5-w4-aG7" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="15" id="jDh-5w-1kO"/>
-                <constraint firstAttribute="trailing" secondItem="Mde-1B-uXJ" secondAttribute="trailing" id="n3m-uh-Prl"/>
-                <constraint firstAttribute="bottom" secondItem="Mde-1B-uXJ" secondAttribute="bottom" id="tC1-qL-azO"/>
-                <constraint firstAttribute="trailing" secondItem="5dh-yk-ou7" secondAttribute="trailing" constant="16" id="xyw-zm-IsR"/>
+                <constraint firstItem="NZi-83-dZx" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="16" id="8n4-p6-KXU"/>
+                <constraint firstAttribute="trailing" secondItem="e7V-rR-yTx" secondAttribute="trailing" id="Fds-s1-EEe"/>
+                <constraint firstItem="hSH-dD-H4p" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="16" id="Zx9-bg-E0z"/>
+                <constraint firstItem="e7V-rR-yTx" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="54" id="fE5-hd-mld"/>
+                <constraint firstAttribute="trailing" secondItem="hSH-dD-H4p" secondAttribute="trailing" constant="8" id="fJM-na-o8T"/>
+                <constraint firstItem="NZi-83-dZx" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="8" id="fLZ-q4-GNd"/>
+                <constraint firstItem="e7V-rR-yTx" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="gPz-Gt-auS"/>
+                <constraint firstAttribute="bottom" secondItem="e7V-rR-yTx" secondAttribute="bottom" id="p0f-mf-MDa"/>
             </constraints>
             <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
         </view>

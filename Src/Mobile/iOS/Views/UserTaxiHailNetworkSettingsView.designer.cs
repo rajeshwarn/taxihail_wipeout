@@ -23,6 +23,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		
 		void ReleaseDesignerOutlets ()
 		{
+			if (tableTaxiHailNetworkSettings != null) {
+				tableTaxiHailNetworkSettings.Dispose ();
+				tableTaxiHailNetworkSettings = null;
+			}
+
 			if (labelTaxiHailNetworkEnabled != null) {
 				labelTaxiHailNetworkEnabled.Dispose ();
 				labelTaxiHailNetworkEnabled = null;
@@ -31,11 +36,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			if (switchTaxiHailNetworkEnabled != null) {
 				switchTaxiHailNetworkEnabled.Dispose ();
 				switchTaxiHailNetworkEnabled = null;
-			}
-
-			if (tableTaxiHailNetworkSettings != null) {
-				tableTaxiHailNetworkSettings.Dispose ();
-				tableTaxiHailNetworkSettings = null;
 			}
 		}
 	}
