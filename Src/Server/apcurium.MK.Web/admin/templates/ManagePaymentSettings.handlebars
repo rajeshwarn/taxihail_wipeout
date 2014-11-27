@@ -76,6 +76,14 @@
     <option value="Fake">{{localize "Demo Payment Service"}}</option>
   </select>
 
+  <div class="control-group" id="preAuthAmountEnabledDiv">
+    <label class="control-label settingsLabel" >{{{localize "Enable PreAuthorization "}}}</label>
+    <select  name="isPreAuthEnabled" class="settingsBox">
+      <option value="{{isPreAuthEnabled}}" selected="">{{localizeBool isPreAuthEnabled true="Yes" false="No"}}</option>
+      <option value="{{invertedBool isPreAuthEnabled}}">{{localizeBool isPreAuthEnabled true="No" false="Yes"}}</option>
+    </select>
+  </div>
+
   <div class="control-group" id="preAuthAmountDiv">
     <label class="control-label settingsLabel" >{{{localize "PreAuthorization Amount"}}}</label>
     <input type="text" class="input-block-level settingsBox" name="preAuthAmount" value="{{preAuthAmount}}" />

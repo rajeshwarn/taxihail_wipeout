@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Globalization;
 using System.Linq;
+using System.Net;
+using System.Threading;
 using apcurium.MK.Booking.Api.Contract.Requests.Payment;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Api.Helpers;
@@ -27,9 +29,11 @@ using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
+using apcurium.MK.Common.Resources;
 using Infrastructure.Messaging;
 using System;
 using log4net;
+using ServiceStack.Common.Web;
 
 #endregion
 
@@ -160,6 +164,25 @@ namespace apcurium.MK.Booking.Api.Jobs
             }
         }
 
+        private PreAuthorizePaymentResponse PreauthorizePaymentIfNecessary(Guid orderId, string cardToken, decimal amount)
+        {
+            if (_serverSettings.GetPaymentSettings().IsPreAuthEnabled)
+            {
+                // Already preautorized on create order, do nothing
+                return new PreAuthorizePaymentResponse { IsSuccessful = true };
+            }
+
+            var orderDetail = _orderDao.FindById(orderId);
+            if (orderDetail == null)
+            {
+                throw new HttpError(HttpStatusCode.NotFound, "Order not found");
+            }
+
+            var account = _accountDao.FindById(orderDetail.AccountId);
+
+            return _paymentService.PreAuthorize(orderId, account.Email, cardToken, amount);
+        }
+
         private void ChargeNoShowFeeIfNecessary(IBSOrderInformation ibsOrderInfo, OrderStatusDetail orderStatusDetail)
         {
             if (ibsOrderInfo.Status != VehicleStatuses.Common.NoShow)
@@ -182,18 +205,32 @@ namespace apcurium.MK.Booking.Api.Jobs
                 {
                     try
                     {
-                        var paymentResult = _paymentService.CommitPayment(
-                            paymentSettings.NoShowFee.Value, paymentSettings.NoShowFee.Value,
-                            0, defaultCreditCard.Token, orderStatusDetail.OrderId, true);
-
-                        if (paymentResult.IsSuccessful)
+                        // PreAuthorization
+                        var preAuthResponse = PreauthorizePaymentIfNecessary(orderStatusDetail.OrderId, defaultCreditCard.Token, paymentSettings.NoShowFee.Value);
+                        if (preAuthResponse.IsSuccessful)
                         {
-                            Log.DebugFormat("No show fee of amount {0} was charged for order {1}.", paymentSettings.NoShowFee.Value, ibsOrderInfo.IBSOrderId);
+                            // Wait for OrderPaymentDetail to be created
+                            Thread.Sleep(500);
+
+                            // Commit
+                            var paymentResult = _paymentService.CommitPayment(
+                                paymentSettings.NoShowFee.Value, paymentSettings.NoShowFee.Value,
+                                0, defaultCreditCard.Token, orderStatusDetail.OrderId, true);
+
+                            if (paymentResult.IsSuccessful)
+                            {
+                                Log.DebugFormat("No show fee of amount {0} was charged for order {1}.", paymentSettings.NoShowFee.Value, ibsOrderInfo.IBSOrderId);
+                            }
+                            else
+                            {
+                                orderStatusDetail.PairingError = paymentResult.Message;
+                                Log.DebugFormat("Could not process no show fee for order {0}: {1}.", ibsOrderInfo.IBSOrderId, paymentResult.Message);
+                            }
                         }
                         else
                         {
-                            orderStatusDetail.PairingError = paymentResult.Message;
-                            Log.DebugFormat("Could not process no show fee for order {0}: {1}.", ibsOrderInfo.IBSOrderId, paymentResult.Message);
+                            orderStatusDetail.PairingError = preAuthResponse.Message;
+                            Log.DebugFormat("Could not process no show fee for order {0}: {1}.", ibsOrderInfo.IBSOrderId, preAuthResponse.Message);
                         }
                     }
                     catch (Exception ex)
@@ -294,28 +331,46 @@ namespace apcurium.MK.Booking.Api.Jobs
 
             try
             {
+            	
+            
+                var totalOrderAmout = Convert.ToDecimal(meterAmount + tipAmount);
+
                 // TODO RedeemPromotion
-
-                var paymentResult = _paymentService.CommitPayment(
-                    Convert.ToDecimal(meterAmount + tipAmount), Convert.ToDecimal(meterAmount),
-                    Convert.ToDecimal(tipAmount), pairingInfo.TokenOfCardToBeUsedForPayment,
-                    orderStatusDetail.OrderId, false);
-
-                if (paymentResult.IsSuccessful)
+                
+                // Preautorize
+                var preAuthResponse = PreauthorizePaymentIfNecessary(orderStatusDetail.OrderId, pairingInfo.TokenOfCardToBeUsedForPayment, totalOrderAmout);
+                if (preAuthResponse.IsSuccessful)
                 {
-                    Log.DebugFormat("Order {0}: Payment Successful (Auth: {1}) [Transaction Id: {2}]", orderStatusDetail.OrderId, paymentResult.AuthorizationCode, paymentResult.TransactionId);
+                    // Wait for OrderPaymentDetail to be created
+                    Thread.Sleep(500);
+
+                    // Commit
+                    var paymentResult = _paymentService.CommitPayment(
+                        totalOrderAmout, Convert.ToDecimal(meterAmount),
+                        Convert.ToDecimal(tipAmount), pairingInfo.TokenOfCardToBeUsedForPayment,
+                        orderStatusDetail.OrderId, false);
+
+                    if (paymentResult.IsSuccessful)
+                    {
+                        Log.DebugFormat("Order {0}: Payment Successful (Auth: {1}) [Transaction Id: {2}]", orderStatusDetail.OrderId, paymentResult.AuthorizationCode, paymentResult.TransactionId);
+                    }
+                    else
+                    {
+                        if (_serverSettings.ServerData.SendDetailedPaymentInfoToDriver)
+                        {
+                            _ibsOrderService.SendMessageToDriver(_resources.Get("PaymentFailedToDriver"), orderStatusDetail.VehicleNumber);
+                        }
+
+                        // set the payment error message in OrderStatusDetail for reporting purpose
+                        orderStatusDetail.PairingError = paymentResult.Message;
+
+                        Log.ErrorFormat("Order {0}: Payment FAILED (Message: {1}) [Transaction Id: {2}]", orderStatusDetail.OrderId, paymentResult.Message, paymentResult.TransactionId);
+                    }
                 }
                 else
                 {
-                    if (_serverSettings.ServerData.SendDetailedPaymentInfoToDriver)
-                    {
-                        _ibsOrderService.SendMessageToDriver(_resources.Get("PaymentFailedToDriver"), orderStatusDetail.VehicleNumber);
-                    }
-
-                    // set the payment error message in OrderStatusDetail for reporting purpose
-                    orderStatusDetail.PairingError = paymentResult.Message;
-
-                    Log.ErrorFormat("Order {0}: Payment FAILED (Message: {1}) [Transaction Id: {2}]", orderStatusDetail.OrderId, paymentResult.Message, paymentResult.TransactionId);
+                    orderStatusDetail.PairingError = preAuthResponse.Message;
+                    Log.DebugFormat("Could not process no show fee for order {0}: {1}.", ibsOrderInfo.IBSOrderId, preAuthResponse.Message);
                 }
             }
             catch (Exception ex)
