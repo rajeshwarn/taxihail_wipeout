@@ -86,7 +86,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Models
 
         [Display(Name = "Promo Discount")]
         [Required]
-        public double DiscountValue { get; set; }
+        public decimal DiscountValue { get; set; }
 
         [Required]
         public PromoDiscountType DiscountType { get; set; }

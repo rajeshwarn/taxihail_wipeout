@@ -23,7 +23,7 @@ namespace apcurium.MK.Booking.Domain
         private int? _maxUsagesPerUser;
         private int? _maxUsages;
         private string _code;
-        private double _discountValue;
+        private decimal _discountValue;
         private PromoDiscountType _discountType;
 
         private readonly Dictionary<Guid, int> _usagesPerUser = new Dictionary<Guid, int>();
@@ -47,8 +47,8 @@ namespace apcurium.MK.Booking.Domain
         }
 
         public Promotion(Guid id, string name, string description, DateTime? startDate, DateTime? endDate, DateTime? startTime, 
-            DateTime? endTime, DayOfWeek[] daysOfWeek, bool appliesToCurrentBooking, bool appliesToFutureBooking, 
-            double discountValue,  PromoDiscountType discountType, int? maxUsagePerUser, int? maxUsage, string code,
+            DateTime? endTime, DayOfWeek[] daysOfWeek, bool appliesToCurrentBooking, bool appliesToFutureBooking,
+            decimal discountValue, PromoDiscountType discountType, int? maxUsagePerUser, int? maxUsage, string code,
             DateTime? publishedStartDate, DateTime? publishedEndDate)
             : this(id)
         {
@@ -78,8 +78,8 @@ namespace apcurium.MK.Booking.Domain
             });
         }
 
-        public void Update(string name, string description, DateTime? startDate, DateTime? endDate, DateTime? startTime, DateTime? endTime, 
-            DayOfWeek[] daysOfWeek, bool appliesToCurrentBooking, bool appliesToFutureBooking, double discountValue, PromoDiscountType discountType,
+        public void Update(string name, string description, DateTime? startDate, DateTime? endDate, DateTime? startTime, DateTime? endTime,
+            DayOfWeek[] daysOfWeek, bool appliesToCurrentBooking, bool appliesToFutureBooking, decimal discountValue, PromoDiscountType discountType,
             int? maxUsagePerUser, int? maxUsage, string code, DateTime? publishedStartDate, DateTime? publishedEndDate)
         {
             if (Params.Get(name, code).Any(p => p.IsNullOrEmpty()))
@@ -213,7 +213,7 @@ namespace apcurium.MK.Booking.Domain
             });
         }
 
-        public double GetAmountSaved(Guid orderId, double totalAmountOfOrder)
+        public decimal GetAmountSaved(Guid orderId, decimal totalAmountOfOrder)
         {
             if (!_orderIds.Contains(orderId))
             {
@@ -228,14 +228,14 @@ namespace apcurium.MK.Booking.Domain
 
             if (_discountType == PromoDiscountType.Percentage)
             {
-                var amountSaved = totalAmountOfOrder * (_discountValue / 100d);
+                var amountSaved = totalAmountOfOrder * (_discountValue / 100);
                 return Math.Round(amountSaved, 2);
             }
 
             return 0;
         }
 
-        public void Redeem(Guid orderId, double totalAmountOfOrder)
+        public void Redeem(Guid orderId, decimal totalAmountOfOrder)
         {
             var amountSaved = GetAmountSaved(orderId, totalAmountOfOrder);
 

@@ -16,7 +16,7 @@ namespace apcurium.MK.Booking.Test.PromotionFixture
         private Guid _promoId = Guid.NewGuid();
         private string _code = "code";
         private PromoDiscountType _type = PromoDiscountType.Percentage;
-        private double _value = 10;
+        private decimal _value = 10;
 
         [SetUp]
         public void Setup()
@@ -163,7 +163,7 @@ namespace apcurium.MK.Booking.Test.PromotionFixture
             {
                 PromoId = _promoId,
                 OrderId = orderId,
-                TotalAmountOfOrder = 44.12
+                TotalAmountOfOrder = 44.12m
             });
 
             var @event = _sut.ThenHasSingle<PromotionRedeemed>();
@@ -210,7 +210,7 @@ namespace apcurium.MK.Booking.Test.PromotionFixture
             {
                 PromoId = _promoId,
                 OrderId = orderId,
-                TotalAmountOfOrder = 44.12
+                TotalAmountOfOrder = 44.12m
             });
 
             var @event = _sut.ThenHasSingle<PromotionRedeemed>();
@@ -257,7 +257,7 @@ namespace apcurium.MK.Booking.Test.PromotionFixture
             {
                 PromoId = _promoId,
                 OrderId = orderId,
-                TotalAmountOfOrder = 12.44
+                TotalAmountOfOrder = 12.44m
             });
 
             var @event = _sut.ThenHasSingle<PromotionRedeemed>();
@@ -304,7 +304,7 @@ namespace apcurium.MK.Booking.Test.PromotionFixture
             {
                 PromoId = _promoId,
                 OrderId = orderId,
-                TotalAmountOfOrder = 44.12
+                TotalAmountOfOrder = 44.12m
             });
 
             var expectedAmountSaved = 44.12 * 50/100;

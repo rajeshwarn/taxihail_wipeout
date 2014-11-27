@@ -10,7 +10,7 @@ namespace apcurium.MK.Booking.Events
 
         public Guid AccountId { get; set; }
 
-        public double DiscountValue { get; set; }
+        public decimal DiscountValue { get; set; }
 
         public PromoDiscountType DiscountType { get; set; }
 

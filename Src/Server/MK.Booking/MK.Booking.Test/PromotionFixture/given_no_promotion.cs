@@ -61,7 +61,7 @@ namespace apcurium.MK.Booking.Test.PromotionFixture
             Assert.AreEqual(new DateTime(2015, 11, 10), @event.EndDate);
             Assert.AreEqual(new TimeSpan(10, 0, 0), @event.StartTime.Value.TimeOfDay);
             Assert.AreEqual(new TimeSpan(14, 0, 0), @event.EndTime.Value.TimeOfDay);
-            Assert.AreEqual(new DateTime(2014, 11, 10), @event.PublishedStartDate);
+            Assert.AreEqual(new DateTime(2014, 11, 9), @event.PublishedStartDate);
             Assert.AreEqual(new DateTime(2015, 11, 10), @event.PublishedEndDate);
         }
 

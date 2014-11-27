@@ -31,7 +31,7 @@ namespace apcurium.MK.Booking.Commands
 
         public bool AppliesToFutureBooking { get; set; }
 
-        public double DiscountValue { get; set; }
+        public decimal DiscountValue { get; set; }
 
         public PromoDiscountType DiscountType { get; set; }
 

@@ -27,7 +27,7 @@ namespace apcurium.MK.Booking.ReadModel
 
         public bool AppliesToFutureBooking { get; set; }
 
-        public double DiscountValue { get; set; }
+        public decimal DiscountValue { get; set; }
 
         public PromoDiscountType DiscountType { get; set; }
 

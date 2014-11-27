@@ -13,11 +13,11 @@ namespace apcurium.MK.Booking.ReadModel
 
         public Guid AccountId { get; set; }
 
-        public double DiscountValue { get; set; }
+        public decimal DiscountValue { get; set; }
 
         public PromoDiscountType DiscountType { get; set; }
 
-        public double AmountSaved { get; set; }
+        public decimal AmountSaved { get; set; }
 
         public string Code { get; set; }
     }
