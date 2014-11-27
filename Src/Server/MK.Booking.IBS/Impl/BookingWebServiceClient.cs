@@ -105,7 +105,7 @@ namespace apcurium.MK.Booking.IBS.Impl
             return result;
         }
 
-        public IbsFareEstimate GetFareEstimate(double? pickupLat, double? pickupLng, double? dropoffLat, double? dropoffLng, string pickupZipCode, string dropoffZipCode, string accountNumber, int? customerNumber, int? tripDurationInSeconds)
+        public IbsFareEstimate GetFareEstimate( double? pickupLat, double? pickupLng, double? dropoffLat, double? dropoffLng, string pickupZipCode, string dropoffZipCode, string accountNumber, int? customerNumber, int? tripDurationInSeconds, int? providerId)
         {
             var result = new IbsFareEstimate();
             UseService(service =>
@@ -134,6 +134,7 @@ namespace apcurium.MK.Booking.IBS.Impl
                 tbook.VehicleTypeID = -1;
                 tbook.ChargeTypeID = -1;
 
+                tbook.ServiceProviderID = providerId ?? -1;
                 tbook.PickupDate = new TWEBTimeStamp { Year = DateTime.Now.Year, Month = DateTime.Now.Month, Day = DateTime.Now.Day };
                 tbook.PickupTime = new TWEBTimeStamp { Hour = DateTime.Now.Hour, Minute = DateTime.Now.Minute };
             
