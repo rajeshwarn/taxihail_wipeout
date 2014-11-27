@@ -346,8 +346,8 @@ namespace MK.DeploymentService
             
             var deployDb =
                 ProcessEx.GetProcess(
-                    Path.Combine(packagesDirectory, "DatabaseInitializer\\") + "DatabaseInitializer.exe", 
-                    "f:"+paramFile, null, true);
+                    Path.Combine(packagesDirectory, "DatabaseInitializer\\") + "DatabaseInitializer.exe",
+                    "f:" + paramFile, Path.Combine(packagesDirectory, "DatabaseInitializer\\"), true);
 
 
             using (var exeProcess = Process.Start(deployDb))

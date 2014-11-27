@@ -1,11 +1,13 @@
 ﻿#region
 
 using System;
+using System.Collections.Generic;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
 using MK.Common.Configuration;
+using ServiceStack.Text;
 
 #endregion
 
@@ -47,7 +49,7 @@ namespace apcurium.MK.Booking.ReadModel.Query
             using (var context = _contextFactory.Invoke())
             {
                 var settings = context.UserTaxiHailNetworkSettings.Find(accountId);
-                return settings ?? new UserTaxiHailNetworkSettings {IsEnabled = true};
+                return settings ?? new UserTaxiHailNetworkSettings { IsEnabled = true, SerializedDisabledFleets = new List<string>().ToJson() };
             }
         }
     }
