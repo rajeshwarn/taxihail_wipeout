@@ -29,17 +29,15 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 
 	    void ClearVehicleTypesCache();
         
-        Account RefreshAccount();
-        
         Account CurrentAccount { get; }
         
 		Task<IList<VehicleType>> GetVehiclesList();
         
 		Task<IList<ListItem>> GetPaymentsList();
         
-        void ResetPassword( string email );
+        Task ResetPassword( string email );
         
-        string UpdatePassword( Guid accountId, string currentPassword, string newPassword );
+		Task<string> UpdatePassword( Guid accountId, string currentPassword, string newPassword );
         
 		Task Register (RegisterAccount data);
 
@@ -49,11 +47,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices
         
 		Task<Address[]> GetFavoriteAddresses();
         
-        void UpdateAddress(Address address);
+		Task UpdateAddress(Address address);
         
-        void DeleteFavoriteAddress(Guid addressId);
+        Task DeleteFavoriteAddress(Guid addressId);
         
-        void DeleteHistoryAddress(Guid addressId);
+		Task DeleteHistoryAddress(Guid addressId);
         
 		Task<IList<Order>> GetHistoryOrders();
 		OrderStatusDetail[] GetActiveOrdersStatus();

@@ -208,7 +208,7 @@ namespace apcurium.MK.Booking.Services.Impl
         {
             var templateData = new
             {
-                confirmationUrl,
+                confirmationUrl = new Uri(_baseUrls.Uri,confirmationUrl),
                 ApplicationName = _serverSettings.ServerData.TaxiHail.ApplicationName,
                 EmailFontColor = _serverSettings.ServerData.TaxiHail.EmailFontColor,
                 AccentColor = _serverSettings.ServerData.TaxiHail.AccentColor,
@@ -560,11 +560,14 @@ namespace apcurium.MK.Booking.Services.Impl
             {
                 LogoImg = String.Concat(baseUrl, "/themes/" + serverSettings.ServerData.TaxiHail.ApplicationKey + "/img/email_logo.png");
                 BaseUrlAssetsImg = String.Concat(baseUrl, "/assets/img/");
+                Uri = baseUrl;
             }
 
             public string LogoImg { get; private set; }
 
             public string BaseUrlAssetsImg { get; private set; }
+
+            public Uri Uri { get; private set; }
         }
 
         public static class EmailConstant

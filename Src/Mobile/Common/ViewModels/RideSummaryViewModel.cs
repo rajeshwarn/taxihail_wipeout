@@ -46,11 +46,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 			CanRate = false;
 
-			_paymentSettings = await _paymentService.GetPaymentSettings ();
-
-			if (Settings.RatingEnabled) 
+			using (this.Services().Message.ShowProgress())
 			{
-				await InitRating ();
+				_paymentSettings = await _paymentService.GetPaymentSettings ();
+
+				if (Settings.RatingEnabled) 
+				{
+					await InitRating ();
+				}
 			}
 		}
 
@@ -116,7 +119,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				var orderRatings = await _bookingService.GetOrderRatingAsync(OrderId);
 				HasRated = orderRatings.RatingScores.Any();
 				bool canRate = !HasRated;
-				var ratingTypes = _bookingService.GetRatingTypes();
+				var ratingTypes = await _bookingService.GetRatingTypes();
 				CanRate = canRate;
 				if (canRate) 
 				{
@@ -211,9 +214,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 	    {
 	        get
 	        {
-	            return this.GetCommand(() =>
+	            return this.GetCommand(async () =>
 	            {
-					CheckAndSendRatings(true);
+					await CheckAndSendRatings(true);
 
 					if (CanUserLeaveScreen ())
 					{
@@ -255,44 +258,60 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
-        public void CheckAndSendRatings(bool sendRatingButtonWasPressed = false)
+        public async Task CheckAndSendRatings(bool sendRatingButtonWasPressed = false)
 		{
-            if (!Settings.RatingEnabled || HasRated)
+			this.Logger.LogMessage("CheckAndSendRatings starting");
+			if (!Settings.RatingEnabled || HasRated)
 			{
 				return;
 			}
 
-            if (_ratingList.Any(c => c.Score == 0))
+			if (RatingList == null)
 			{
-			    if (Settings.RatingRequired 
+				this.Logger.LogMessage("RatingList is null");
+			}
+
+			if (RatingList.Any(c => c.Score == 0))
+			{
+				if (Settings.RatingRequired 
 					|| sendRatingButtonWasPressed) // button was pressed, send feedback to user in case of error
 					// CheckAndSendRatings is also called when exiting the view
-			    {
-                    this.Services().Message.ShowMessage(this.Services().Localize["BookRatingErrorTitle"],
-														this.Services().Localize["BookRatingErrorMessage"]);
-                    return;
-			    }
+				{
+					this.Services().Message.ShowMessage(this.Services().Localize["BookRatingErrorTitle"],
+						this.Services().Localize["BookRatingErrorMessage"]);
+				}
 
-                // We don't send the review since it's not complete. The user will have the
-                // possibility to go back to the order history to rate it later if he so desires
-			    return;
+				this.Logger.LogMessage("RatingRequired and some ratings are not set");
+
+				// We don't send the review since it's not complete. The user will have the
+				// possibility to go back to the order history to rate it later if he so desires
+				return;
 			} 
 
-			var orderRating = new apcurium.MK.Common.Entity.OrderRatings
+			try
 			{
-				Note = Note,
-				OrderId = OrderId,
-				RatingScores =
-					_ratingList.Select(
-						c => new RatingScore
+				var orderRating = new apcurium.MK.Common.Entity.OrderRatings
+				{
+					Note = Note,
+					OrderId = OrderId,
+					RatingScores =
+						RatingList.Select(
+							c => new RatingScore
 						{ 
 							RatingTypeId = c.RatingTypeId, 
 							Score = c.Score, 
 							Name = c.RatingTypeName
 						}).ToList()
-				};
+					};
 
-			_bookingService.SendRatingReview(orderRating);
+				await _bookingService.SendRatingReview(orderRating);
+			}
+			catch(Exception ex)
+			{
+				this.Logger.LogMessage("Error while SendRatingReview");
+				this.Logger.LogError(ex);
+			}
+
 			HasRated = true;
 			CanRate = false;
 		}
