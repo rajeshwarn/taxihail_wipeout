@@ -10,8 +10,8 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
     {
         private const string DefaultUserAgent = "TaxiHail";
 
-        private readonly string _sessionId;
-        private readonly string _url;
+        private string _sessionId;
+        private string _url;
         private readonly IPackageInfo _packageInfo;
         private ServiceClientBase _client;
 
@@ -20,6 +20,16 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             _url = url;
             _sessionId = sessionId;
             _packageInfo = packageInfo;
+        }
+
+        public BaseServiceClient()
+        {
+        }
+
+        public void Setup(string url, string sessionId)
+        {
+            _url = url;
+            _sessionId = sessionId;
         }
 
         protected ServiceClientBase Client

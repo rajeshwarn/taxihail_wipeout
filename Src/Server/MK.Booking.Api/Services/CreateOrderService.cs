@@ -190,10 +190,14 @@ namespace apcurium.MK.Booking.Api.Services
                 throw new HttpError(ErrorCode.CreateOrder_NoFareEstimateAvailable.ToString());
             }
 
+            string[] prompts = null;
+            int?[] promptsLength = null;
             if (request.Settings.ChargeTypeId.HasValue
                 && request.Settings.ChargeTypeId.Value == ChargeTypes.Account.Id)
             {
                 ValidateChargeAccountAnswers(request.Settings.AccountNumber, request.QuestionsAndAnswers);
+                prompts = request.QuestionsAndAnswers.Select(q => q.Answer).ToArray();
+                promptsLength = request.QuestionsAndAnswers.Select(q => q.MaxLength).ToArray();
             }
 
             var chargeTypeIbs = string.Empty;
@@ -207,7 +211,7 @@ namespace apcurium.MK.Booking.Api.Services
                 chargeTypeEmail = _resources.Get(chargeTypeKey, request.ClientLanguageCode);
             }
 
-            var ibsOrderId = CreateIbsOrder(account.IBSAccountId.Value, request, referenceData, chargeTypeIbs);
+            var ibsOrderId = CreateIbsOrder(account.IBSAccountId.Value, request, referenceData, chargeTypeIbs, prompts, promptsLength);
 
             if (!ibsOrderId.HasValue
                 || ibsOrderId <= 0)
@@ -319,12 +323,11 @@ namespace apcurium.MK.Booking.Api.Services
                 throw new HttpError(HttpStatusCode.InternalServerError, networkErrorMessage);
             }
 
-            var newIbsOrderId = CreateIbsOrder(ibsAccountId, newOrderRequest, newReferenceData, chargeTypeIbs, request.NextDispatchCompanyKey);
+            var newIbsOrderId = CreateIbsOrder(ibsAccountId, newOrderRequest, newReferenceData, chargeTypeIbs, null, null, request.NextDispatchCompanyKey);
             if (!newIbsOrderId.HasValue || newIbsOrderId <= 0)
             {
                 var code = !newIbsOrderId.HasValue || (newIbsOrderId.Value >= -1) ? string.Empty : "_" + Math.Abs(newIbsOrderId.Value);
                 Log.Error(string.Format("{0}. IBS error code: {1}", networkErrorMessage, code));
-
                 throw new HttpError(HttpStatusCode.InternalServerError, networkErrorMessage);
             }
 
@@ -450,29 +453,15 @@ namespace apcurium.MK.Booking.Api.Services
             {
                 throw new HttpError(HttpStatusCode.Forbidden, ErrorCode.AccountCharge_InvalidAccountNumber.ToString());
             }
-
-            for (int i = 0; i < accountChargeDetail.Questions.Count; i++)
-            {
-                var questionDetails = accountChargeDetail.Questions[i];
-                var userQuestionDetails = userQuestionsDetails[i];
-
-                if (!questionDetails.IsRequired)
-                {
-                    // Facultative question, do nothing
-                    continue;
-                }
-
-                var userAnswer = userQuestionDetails.Answer;
-                var validAnswers = questionDetails.Answer.Split(',').Select(a => a.Trim());
-
-                if (!validAnswers.Any(p => String.Equals(userAnswer, p, questionDetails.IsCaseSensitive
-                                                                        ? StringComparison.InvariantCulture
-                                                                        : StringComparison.InvariantCultureIgnoreCase)))
-                {
-                    // User answer is not valid
-                    throw new HttpError(HttpStatusCode.Forbidden, ErrorCode.AccountCharge_InvalidAnswer.ToString(),
-                                        questionDetails.ErrorMessage);
-                }
+            
+            var answers = userQuestionsDetails.Select(x => x.Answer);
+            // TODO: Handle nulls
+            var validation = _ibsServiceProvider.ChargeAccount().ValidateIbsChargeAccount(answers, accountNumber, "0");
+            if (!validation.Valid)
+            {                
+                int firstError = validation.ValidResponse.IndexOf(false);                 
+                throw new HttpError(HttpStatusCode.Forbidden, ErrorCode.AccountCharge_InvalidAnswer.ToString(),
+                                        accountChargeDetail.Questions[firstError].ErrorMessage);
             }
         }
 
@@ -510,7 +499,7 @@ namespace apcurium.MK.Booking.Api.Services
             return offsetedTime;
         }
 
-        private int? CreateIbsOrder(int ibsAccountId, CreateOrder request, ReferenceData referenceData, string chargeType, string companyKey = null)
+        private int? CreateIbsOrder(int ibsAccountId, CreateOrder request, ReferenceData referenceData, string chargeType, string[] prompts, int?[] promptsLength, string companyKey = null)
         {
             // Provider is optional
             // But if a provider is specified, it must match with one of the ReferenceData values
@@ -537,11 +526,17 @@ namespace apcurium.MK.Booking.Api.Services
                 request.Settings.Phone,
                 request.Settings.Passengers,
                 request.Settings.VehicleTypeId,
-                null,
+                null, // null since we don't use the ChargeTypes of ibs anymore
                 note,
                 request.PickupDate.Value,
                 ibsPickupAddress,
                 ibsDropOffAddress,
+                request.Settings.ChargeTypeId == ChargeTypes.Account.Id    // send the account number only if we book using charge account
+                    ? request.Settings.AccountNumber 
+                    : null,
+                null,
+                prompts,
+                promptsLength,
                 fare);
 
             return result;

@@ -1,2 +1,2 @@
 @REM Generate WSDL
-"C:\Program Files (x86)\Microsoft SDKs\Windows\v8.0A\bin\NETFX 4.0 Tools\wsdl" http://apcuriumibs:6928/XDS_IASPI.DLL/wsdl/IWebOrder_7
+"C:\Program Files (x86)\Microsoft SDKs\Windows\v8.0A\bin\NETFX 4.0 Tools\wsdl" http://64.179.223.211:8080/ibscab/IBSCab.dll/wsdl/IWebOrder_7

@@ -47,10 +47,12 @@ namespace apcurium.MK.Web.Tests
             return new FakePaymentClient();
         }
 
+        public bool AsAdmin = false;
+
         public virtual void TestFixtureSetup()
         {
             AppHost.Start(BaseUrl);
-            var task = AccountService.GetTestAccount(0);
+            var task = !AsAdmin ? AccountService.GetTestAccount(0) : AccountService.GetAdminTestAccount(0);
             task.Wait();
             TestAccount = task.Result;
         }

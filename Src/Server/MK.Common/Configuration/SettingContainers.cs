@@ -188,6 +188,15 @@ namespace apcurium.MK.Common.Configuration
         public string PickupZoneToExclude { get; protected internal set; }
         
         [RequiredAtStartup]
+        public string RestApiUrl { get; set; }
+
+        [RequiredAtStartup]
+        public string RestApiUser { get; set; }
+
+        [RequiredAtStartup]
+        public string RestApiSecret { get; set; }        
+        
+        [RequiredAtStartup]
         public string WebServicesUrl { get; set; }
 
         [RequiredAtStartup]

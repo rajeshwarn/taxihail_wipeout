@@ -1,10 +1,12 @@
 ﻿using System.Web.Mvc;
+using System.Web.Routing;
 using ServiceStack.CacheAccess;
 using ServiceStack.ServiceInterface;
 using ServiceStack.ServiceInterface.Auth;
 using ServiceStack.WebHost.Endpoints.Extensions;
 using apcurium.MK.Common.Configuration;
 using System;
+using System.Web;
 
 namespace apcurium.MK.Web.Areas.AdminTH.Controllers
 {
@@ -18,9 +20,27 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
             ViewData["IsAuthenticated"] = AuthSession.IsAuthenticated;
         }
 
+        public RequestContext Context;
+
+        public string BaseUrl { get; set; }
+        
+        public string SessionID { get; set; }
+
+        public string BaseUrlAPI
+        {
+            get { return BaseUrl + "/api/"; }
+        }
+
         protected IAuthSession AuthSession
         {
             get { return SessionAs<AuthUserSession>(); }
+		}
+  protected override IAsyncResult BeginExecute(System.Web.Routing.RequestContext requestContext, AsyncCallback callback, object state)
+        {
+            Context = requestContext;
+            BaseUrl = requestContext.HttpContext.Request.Url.GetLeftPart(UriPartial.Authority) + requestContext.HttpContext.Request.ApplicationPath;
+            var sessionCookie = Context.HttpContext.Request.Cookies["ss-pid"];
+            SessionID = sessionCookie != null ? sessionCookie.Value : "";
         }
 
         private object _userSession;
