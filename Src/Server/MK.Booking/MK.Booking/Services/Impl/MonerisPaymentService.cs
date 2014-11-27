@@ -243,23 +243,6 @@ namespace apcurium.MK.Booking.Services.Impl
 
             var account = _accountDao.FindById(orderDetail.AccountId);
 
-            if (!_serverSettings.GetPaymentSettings().IsPreAuthEnabled)
-            {
-                // Credit card was not validated, so we need to preauth before commiting
-                var preAuthResponse = PreAuthorize(orderId, account.Email, cardToken, amount);
-                if (!preAuthResponse.IsSuccessful)
-                {
-                    return new CommitPreauthorizedPaymentResponse
-                    {
-                        IsSuccessful = false,
-                        Message = string.Format("PreAuthorization Failed: {0}", preAuthResponse.Message)
-                    };
-                }
-
-                // Wait for OrderPaymentDetail to be created
-                Thread.Sleep(500);
-            }
-
             var paymentDetail = _paymentDao.FindNonPayPalByOrderId(orderId);
             if (paymentDetail == null)
             {
