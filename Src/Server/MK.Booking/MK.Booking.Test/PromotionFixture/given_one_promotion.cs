@@ -28,6 +28,7 @@ namespace apcurium.MK.Booking.Test.PromotionFixture
             {
                 SourceId = _promoId,
                 Name = "promo1",
+                Description = "promodesc1",
                 Code = _code,
                 AppliesToCurrentBooking = true,
                 AppliesToFutureBooking = false,
@@ -39,7 +40,9 @@ namespace apcurium.MK.Booking.Test.PromotionFixture
                 StartDate = new DateTime(2014, 11, 10),
                 EndDate = new DateTime(2015, 11, 10),
                 StartTime = new DateTime(SqlDateTime.MinValue.Value.Year, SqlDateTime.MinValue.Value.Month, SqlDateTime.MinValue.Value.Day, 10, 0, 0),
-                EndTime = new DateTime(SqlDateTime.MinValue.Value.Year, SqlDateTime.MinValue.Value.Month, SqlDateTime.MinValue.Value.Day, 14, 0, 0)
+                EndTime = new DateTime(SqlDateTime.MinValue.Value.Year, SqlDateTime.MinValue.Value.Month, SqlDateTime.MinValue.Value.Day, 14, 0, 0),
+                PublishedStartDate = new DateTime(2014, 11, 9),
+                PublishedEndDate = new DateTime(2015, 11, 10)
             });
         }
 
@@ -52,6 +55,7 @@ namespace apcurium.MK.Booking.Test.PromotionFixture
             {
                 PromoId = _promoId, 
                 Name = "promo2",
+                Description = "promodesc2",
                 Code = "code2",
                 AppliesToCurrentBooking = false,
                 AppliesToFutureBooking = true,
@@ -64,6 +68,7 @@ namespace apcurium.MK.Booking.Test.PromotionFixture
             var @event = _sut.ThenHasSingle<PromotionUpdated>();
             Assert.AreEqual(_promoId, @event.SourceId);
             Assert.AreEqual("promo2", @event.Name);
+            Assert.AreEqual("promodesc2", @event.Description);
             Assert.AreEqual("code2", @event.Code);
             Assert.AreEqual(false, @event.AppliesToCurrentBooking);
             Assert.AreEqual(true, @event.AppliesToFutureBooking);
@@ -76,6 +81,8 @@ namespace apcurium.MK.Booking.Test.PromotionFixture
             Assert.AreEqual(null, @event.EndDate);
             Assert.AreEqual(null, @event.StartTime);
             Assert.AreEqual(null, @event.EndTime);
+            Assert.AreEqual(null, @event.PublishedStartDate);
+            Assert.AreEqual(null, @event.PublishedEndDate);
         }
 
         [Test]

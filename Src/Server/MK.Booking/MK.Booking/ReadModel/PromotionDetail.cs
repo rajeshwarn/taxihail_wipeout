@@ -11,6 +11,8 @@ namespace apcurium.MK.Booking.ReadModel
 
         public string Name { get; set; }
 
+        public string Description { get; set; }
+
         public DateTime? StartDate { get; set; }
 
         public DateTime? EndDate { get; set; }
@@ -34,6 +36,10 @@ namespace apcurium.MK.Booking.ReadModel
         public int? MaxUsage { get; set; }
 
         public string Code { get; set; }
+
+        public DateTime? PublishedStartDate { get; set; }
+
+        public DateTime? PublishedEndDate { get; set; }
 
         public bool Active { get; set; }
     }

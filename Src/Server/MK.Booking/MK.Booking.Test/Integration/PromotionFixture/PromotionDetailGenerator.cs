@@ -42,6 +42,7 @@ namespace apcurium.MK.Booking.Test.Integration.PromotionFixture
             {
                 SourceId = promoId,
                 Name = "promo1",
+                Description = "promodesc1",
                 Code = "code",
                 AppliesToCurrentBooking = true,
                 AppliesToFutureBooking = false,
@@ -53,7 +54,9 @@ namespace apcurium.MK.Booking.Test.Integration.PromotionFixture
                 StartDate = new DateTime(2014, 11, 10),
                 EndDate = new DateTime(2015, 11, 10),
                 StartTime = new DateTime(SqlDateTime.MinValue.Value.Year, SqlDateTime.MinValue.Value.Month, SqlDateTime.MinValue.Value.Day, 10, 0, 0),
-                EndTime = new DateTime(SqlDateTime.MinValue.Value.Year, SqlDateTime.MinValue.Value.Month, SqlDateTime.MinValue.Value.Day, 14, 0, 0)
+                EndTime = new DateTime(SqlDateTime.MinValue.Value.Year, SqlDateTime.MinValue.Value.Month, SqlDateTime.MinValue.Value.Day, 14, 0, 0),
+                PublishedStartDate = new DateTime(2014, 11, 10),
+                PublishedEndDate = new DateTime(2015, 11, 10),
             });
 
             using (var context = new BookingDbContext(DbName))
@@ -64,6 +67,7 @@ namespace apcurium.MK.Booking.Test.Integration.PromotionFixture
                 Assert.AreEqual(promoId, dto.Id);
                 Assert.AreEqual(true, dto.Active);
                 Assert.AreEqual("promo1", dto.Name);
+                Assert.AreEqual("promodesc1", dto.Description);
                 Assert.AreEqual("code", dto.Code);
                 Assert.AreEqual(true, dto.AppliesToCurrentBooking);
                 Assert.AreEqual(false, dto.AppliesToFutureBooking);
@@ -78,6 +82,8 @@ namespace apcurium.MK.Booking.Test.Integration.PromotionFixture
                 Assert.AreEqual(SqlDateTime.MinValue.Value.Date, dto.EndTime.Value.Date);
                 Assert.AreEqual(new TimeSpan(10, 0, 0), dto.StartTime.Value.TimeOfDay);
                 Assert.AreEqual(new TimeSpan(14, 0, 0), dto.EndTime.Value.TimeOfDay);
+                Assert.AreEqual(new DateTime(2014, 11, 10), dto.PublishedStartDate);
+                Assert.AreEqual(new DateTime(2015, 11, 10), dto.PublishedEndDate);
             }
         }
     }
@@ -93,6 +99,7 @@ namespace apcurium.MK.Booking.Test.Integration.PromotionFixture
             {
                 SourceId = _promoId,
                 Name = "promo1",
+                Description = "promodesc1",
                 Code = "code",
                 AppliesToCurrentBooking = true,
                 AppliesToFutureBooking = false,
@@ -104,7 +111,9 @@ namespace apcurium.MK.Booking.Test.Integration.PromotionFixture
                 StartDate = new DateTime(2014, 11, 10),
                 EndDate = new DateTime(2015, 11, 10),
                 StartTime = new DateTime(SqlDateTime.MinValue.Value.Year, SqlDateTime.MinValue.Value.Month, SqlDateTime.MinValue.Value.Day, 10, 0, 0),
-                EndTime = new DateTime(SqlDateTime.MinValue.Value.Year, SqlDateTime.MinValue.Value.Month, SqlDateTime.MinValue.Value.Day, 14, 0, 0)
+                EndTime = new DateTime(SqlDateTime.MinValue.Value.Year, SqlDateTime.MinValue.Value.Month, SqlDateTime.MinValue.Value.Day, 14, 0, 0),
+                PublishedStartDate = new DateTime(2014, 11, 10),
+                PublishedEndDate = new DateTime(2015, 11, 10),
             });
         }
 
@@ -115,6 +124,7 @@ namespace apcurium.MK.Booking.Test.Integration.PromotionFixture
             {
                 SourceId = _promoId,
                 Name = "promo2",
+                Description = "promodesc2",
                 Code = "code2",
                 AppliesToCurrentBooking = false,
                 AppliesToFutureBooking = true,
@@ -143,6 +153,8 @@ namespace apcurium.MK.Booking.Test.Integration.PromotionFixture
                 Assert.AreEqual(null, dto.EndDate);
                 Assert.AreEqual(null, dto.StartTime);
                 Assert.AreEqual(null, dto.EndTime);
+                Assert.AreEqual(null, dto.PublishedStartDate);
+                Assert.AreEqual(null, dto.PublishedEndDate);
             }
         }
 

@@ -59,6 +59,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                 {
                     PromoId = Guid.NewGuid(),
                     Name = promoCode.Name,
+                    Description = promoCode.Description,
                     StartDate = promoCode.StartDate,
                     EndDate = promoCode.EndDate,
                     DaysOfWeek = promoCode.DaysOfWeek,
@@ -70,7 +71,9 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                     DiscountType = promoCode.DiscountType,
                     MaxUsagePerUser = promoCode.MaxUsagePerUser,
                     MaxUsage = promoCode.MaxUsage,
-                    Code = promoCode.Code
+                    Code = promoCode.Code,
+                    PublishedStartDate = promoCode.PublishedStartDate,
+                    PublishedEndDate = promoCode.PublishedEndDate
                 });
 
                 TempData["Info"] = string.Format("Promotion \"{0}\" created", promoCode.Name);
@@ -105,6 +108,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                 {
                     PromoId = promoCode.Id,
                     Name = promoCode.Name,
+                    Description = promoCode.Description,
                     StartDate = promoCode.StartDate,
                     EndDate = promoCode.EndDate,
                     DaysOfWeek = promoCode.DaysOfWeek,
@@ -116,7 +120,9 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                     DiscountType = promoCode.DiscountType,
                     MaxUsagePerUser = promoCode.MaxUsagePerUser,
                     MaxUsage = promoCode.MaxUsage,
-                    Code = promoCode.Code
+                    Code = promoCode.Code,
+                    PublishedStartDate = promoCode.PublishedStartDate,
+                    PublishedEndDate = promoCode.PublishedEndDate
                 });
 
                 TempData["Info"] = string.Format("Promotion \"{0}\" updated", promoCode.Name);

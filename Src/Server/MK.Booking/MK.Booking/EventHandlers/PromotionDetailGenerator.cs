@@ -29,6 +29,7 @@ namespace apcurium.MK.Booking.EventHandlers
                 {
                     Id = @event.SourceId,
                     Name = @event.Name,
+                    Description = @event.Description,
                     StartDate = @event.StartDate,
                     EndDate = @event.EndDate,
                     StartTime = @event.StartTime,
@@ -41,6 +42,8 @@ namespace apcurium.MK.Booking.EventHandlers
                     MaxUsagePerUser = @event.MaxUsagePerUser,
                     MaxUsage = @event.MaxUsage,
                     Code = @event.Code,
+                    PublishedStartDate = @event.PublishedStartDate,
+                    PublishedEndDate = @event.PublishedEndDate,
                     Active = true
                 };
 
@@ -55,6 +58,7 @@ namespace apcurium.MK.Booking.EventHandlers
                 var promotionDetail = context.Find<PromotionDetail>(@event.SourceId);
 
                 promotionDetail.Name = @event.Name;
+                promotionDetail.Description = @event.Description;
                 promotionDetail.StartDate = @event.StartDate;
                 promotionDetail.EndDate = @event.EndDate;
                 promotionDetail.StartTime = @event.StartTime;
@@ -67,6 +71,8 @@ namespace apcurium.MK.Booking.EventHandlers
                 promotionDetail.MaxUsagePerUser = @event.MaxUsagePerUser;
                 promotionDetail.MaxUsage = @event.MaxUsage;
                 promotionDetail.Code = @event.Code;
+                promotionDetail.PublishedStartDate = @event.PublishedStartDate;
+                promotionDetail.PublishedEndDate = @event.PublishedEndDate;
 
                 context.Save(promotionDetail);
             }

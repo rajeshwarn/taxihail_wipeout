@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web.Mvc;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
@@ -25,6 +23,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Models
         {
             Id = promoDetail.Id;
             Name = promoDetail.Name;
+            Description = promoDetail.Description;
             StartDate = promoDetail.StartDate;
             EndDate = promoDetail.EndDate;
             StartTime = promoDetail.StartTime;
@@ -38,6 +37,8 @@ namespace apcurium.MK.Web.Areas.AdminTH.Models
             MaxUsage = promoDetail.MaxUsage;
             Code = promoDetail.Code;
             Active = promoDetail.Active;
+            PublishedStartDate = promoDetail.PublishedStartDate;
+            PublishedEndDate = promoDetail.PublishedEndDate;
         }
 
         public Guid Id { get; set; }
@@ -45,6 +46,9 @@ namespace apcurium.MK.Web.Areas.AdminTH.Models
         [Display(Name = "Name")]
         [Required]
         public string Name { get; set; }
+
+        [Display(Name = "Description")]
+        public string Description { get; set; }
 
         [Display(Name = "Start Date")]
         public DateTime? StartDate { get; set; }
@@ -97,6 +101,12 @@ namespace apcurium.MK.Web.Areas.AdminTH.Models
         [Required, StringLength(10, MinimumLength = 5)]
         public string Code { get; set; }
 
+        [Display(Name = "Published Start Date")]
+        public DateTime? PublishedStartDate { get; set; }
+
+        [Display(Name = "Published End Date")]
+        public DateTime? PublishedEndDate { get; set; }
+
         public bool Active { get; set; }
 
         private DateTime? SetTime(string timeStringValue, bool isEndTime)
@@ -126,6 +136,11 @@ namespace apcurium.MK.Web.Areas.AdminTH.Models
             if (StartDate.HasValue && EndDate.HasValue && StartDate >= EndDate)
             {
                 results.Add(new ValidationResult("Start Date must be before End Date"));
+            }
+
+            if (PublishedStartDate.HasValue && PublishedEndDate.HasValue && PublishedStartDate >= PublishedEndDate)
+            {
+                results.Add(new ValidationResult("Published Start Date must be before Published End Date"));
             }
 
             if ((StartTime.HasValue && !EndTime.HasValue) || (!StartTime.HasValue && EndTime.HasValue))

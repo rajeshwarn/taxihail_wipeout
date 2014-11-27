@@ -23,6 +23,42 @@ namespace apcurium.MK.Booking.ReadModel.Query
             }
         }
 
+        public IEnumerable<PromotionDetail> GetAllCurrentlyActive()
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var result = new List<PromotionDetail>();
+                var activePromos = context.Query<PromotionDetail>().Where(x => x.Active);
+                foreach (var promotionDetail in activePromos)
+                {
+                    var thisPromo = promotionDetail;
+                    if (thisPromo.PublishedStartDate.HasValue || thisPromo.PublishedEndDate.HasValue)
+                    {
+                        // at least one published date set, so it's public
+
+                        if (!thisPromo.PublishedStartDate.HasValue)
+                        {
+                            thisPromo.PublishedStartDate = DateTime.MinValue;
+                        }
+
+                        if (!thisPromo.PublishedEndDate.HasValue)
+                        {
+                            thisPromo.PublishedEndDate = DateTime.MaxValue;
+                        }
+
+                        var now = DateTime.Now.Date;
+                        if (thisPromo.PublishedStartDate <= now
+                            && thisPromo.PublishedEndDate > now)
+                        {
+                            result.Add(promotionDetail);
+                        }
+                    }
+                }
+
+                return result;
+            }
+        }
+
         public PromotionDetail FindById(Guid id)
         {
             using (var context = _contextFactory.Invoke())

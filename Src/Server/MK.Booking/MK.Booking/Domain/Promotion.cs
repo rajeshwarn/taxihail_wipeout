@@ -44,9 +44,10 @@ namespace apcurium.MK.Booking.Domain
             LoadFrom(history);
         }
 
-        public Promotion(Guid id, string name, DateTime? startDate, DateTime? endDate, DateTime? startTime, 
+        public Promotion(Guid id, string name, string description, DateTime? startDate, DateTime? endDate, DateTime? startTime, 
             DateTime? endTime, DayOfWeek[] daysOfWeek, bool appliesToCurrentBooking, bool appliesToFutureBooking, 
-            double discountValue,  PromoDiscountType discountType, int? maxUsagePerUser, int? maxUsage, string code)
+            double discountValue,  PromoDiscountType discountType, int? maxUsagePerUser, int? maxUsage, string code,
+            DateTime? publishedStartDate, DateTime? publishedEndDate)
             : this(id)
         {
             if (Params.Get(name, code).Any(p => p.IsNullOrEmpty()))
@@ -57,6 +58,7 @@ namespace apcurium.MK.Booking.Domain
             Update(new PromotionCreated
             {
                 Name = name,
+                Description = description,
                 StartDate = startDate,
                 EndDate = endDate,
                 StartTime = startTime,
@@ -68,13 +70,15 @@ namespace apcurium.MK.Booking.Domain
                 DiscountType = discountType,
                 MaxUsagePerUser = maxUsagePerUser,
                 MaxUsage = maxUsage,
-                Code = code
+                Code = code,
+                PublishedStartDate = publishedStartDate,
+                PublishedEndDate = publishedEndDate
             });
         }
 
-        public void Update(string name, DateTime? startDate, DateTime? endDate, DateTime? startTime, DateTime? endTime, 
-            DayOfWeek[] daysOfWeek, bool appliesToCurrentBooking, bool appliesToFutureBooking, double discountValue, 
-            PromoDiscountType discountType, int? maxUsagePerUser, int? maxUsage, string code)
+        public void Update(string name, string description, DateTime? startDate, DateTime? endDate, DateTime? startTime, DateTime? endTime, 
+            DayOfWeek[] daysOfWeek, bool appliesToCurrentBooking, bool appliesToFutureBooking, double discountValue, PromoDiscountType discountType,
+            int? maxUsagePerUser, int? maxUsage, string code, DateTime? publishedStartDate, DateTime? publishedEndDate)
         {
             if (Params.Get(name, code).Any(p => p.IsNullOrEmpty()))
             {
@@ -84,6 +88,7 @@ namespace apcurium.MK.Booking.Domain
             Update(new PromotionUpdated
             {
                 Name = name,
+                Description = description,
                 StartDate = startDate,
                 EndDate = endDate,
                 StartTime = startTime,
@@ -95,7 +100,9 @@ namespace apcurium.MK.Booking.Domain
                 DiscountType = discountType,
                 MaxUsagePerUser = maxUsagePerUser,
                 MaxUsage = maxUsage,
-                Code = code
+                Code = code,
+                PublishedStartDate = publishedStartDate,
+                PublishedEndDate = publishedEndDate
             });
         }
 
