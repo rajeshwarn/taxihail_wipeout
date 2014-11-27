@@ -553,4 +553,7 @@
   <string name="PanelMenuViewTaxiHailNetworkText">Réseau TaxiHail</string>
   <string name="View_TaxiHailNetworkSettings">Réseau TaxiHail</string>
   <string name="View_UserTaxiHailNetworkSettings">Réseau TaxiHail</string>
+  <string name="Toggle_Off">Non</string>
+  <string name="Toggle_On">Oui</string>
+  <string name="UserTaxiHailNetwork_Enabled">Réseau TaxiHail</string>
 </resources>

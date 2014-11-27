@@ -820,7 +820,7 @@
     <AndroidResource Include="Resources\Layout\View_NotificationSettings.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\Layout\NotificationSettingListItem.axml">
+    <AndroidResource Include="Resources\Layout\TogglableSettingsListItem.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\Layout\View_UserTaxiHailNetworkSettings.axml" />

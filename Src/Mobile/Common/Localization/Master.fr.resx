@@ -1641,10 +1641,10 @@
   <data name="Notification_VehicleAtPickupPush" xml:space="preserve">
     <value>Taxi au point de ramassage</value>
   </data>
-  <data name="Notification_Off" xml:space="preserve">
+  <data name="Toggle_Off" xml:space="preserve">
     <value>Non</value>
   </data>
-  <data name="Notification_On" xml:space="preserve">
+  <data name="Toggle_On" xml:space="preserve">
     <value>Oui</value>
   </data>
   <data name="PaymentInCar" xml:space="preserve">
@@ -1754,6 +1754,9 @@
     <value>Réseau TaxiHail</value>
   </data>
   <data name="View_UserTaxiHailNetworkSettings" xml:space="preserve">
+    <value>Réseau TaxiHail</value>
+  </data>
+  <data name="UserTaxiHailNetwork_Enabled" xml:space="preserve">
     <value>Réseau TaxiHail</value>
   </data>
 </root>

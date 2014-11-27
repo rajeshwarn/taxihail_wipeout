@@ -48,8 +48,8 @@
                 android:id="@+id/userTaxiHailNetworkSettingSwitchValue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textOn="@string/UserTaxiHailNetwork_On"
-                android:textOff="@string/UserTaxiHailNetwork_Off"
+                android:textOn="@string/Toggle_On"
+                android:textOff="@string/Toggle_Off"
                 android:layout_alignParentRight="true"
                 local:MvxBind="Checked IsTaxiHailNetworkEnabled" />
         </RelativeLayout>
@@ -69,7 +69,7 @@
             android:layout_marginTop="15dip"
             android:layout_height="fill_parent"
             android:layout_marginBottom="5dip"
-            local:MvxItemTemplate="@layout/notificationsettinglistitem"
+            local:MvxItemTemplate="@layout/togglablesettingslistitem"
             local:MvxBind="ItemsSource UserTaxiHailNetworkSettings; Visibility IsTaxiHailNetworkEnabled, Converter=Visibility" />
     </LinearLayout>
 </RelativeLayout>

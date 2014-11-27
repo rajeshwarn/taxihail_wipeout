@@ -541,4 +541,7 @@
   <string name="PanelMenuViewTaxiHailNetworkText">TaxiHail Network</string>
   <string name="View_TaxiHailNetworkSettings">TaxiHail Network</string>
   <string name="View_UserTaxiHailNetworkSettings">TaxiHail Network</string>
+  <string name="Toggle_Off">Apagado</string>
+  <string name="Toggle_On">Encendido</string>
+  <string name="UserTaxiHailNetwork_Enabled">TaxiHail Network</string>
 </resources>
