@@ -552,3 +552,5 @@
 "PanelMenuViewPromotionsText"="Promotions";
 "MarketChangedMessageTitle"="Nouvelle zone détectée";
 "MarketChangedMessage"="Vous quittez votre zone locale de service. Si vous décidez de commander un véhicule, votre commande sera envoyée à une compagnie désservant cette zone.";
+"PromoRequiresToPayWithCOFPairingWarningCancelButton"="Payer dans le taxi";
+"PromoRequiresToPayWithCOFPairingWarningMessage"="Si vous décidez de payer dans le taxi, vous ne serez pas éligible à la promotion";

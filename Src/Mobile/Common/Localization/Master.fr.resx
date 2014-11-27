@@ -1765,4 +1765,10 @@
   <data name="PanelMenuViewPromotionsText" xml:space="preserve">
     <value>Promotions</value>
   </data>
+  <data name="PromoRequiresToPayWithCOFPairingWarningMessage" xml:space="preserve">
+    <value>Si vous décidez de payer dans le taxi, vous ne serez pas éligible à la promotion</value>
+  </data>
+  <data name="PromoRequiresToPayWithCOFPairingWarningCancelButton" xml:space="preserve">
+    <value>Payer dans le taxi</value>
+  </data>
 </root>

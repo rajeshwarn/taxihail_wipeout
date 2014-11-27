@@ -555,4 +555,6 @@
   <string name="PromoMustUseCardOnFileWarningMessage">Veuillez noter que le rabais ne sera appliqué que si le paiement est effectué en utilisant l\'application</string>
   <string name="WarningPromoCodeDontShow">Ne pas signaler</string>
   <string name="PanelMenuViewPromotionsText">Promotions</string>
+  <string name="PromoRequiresToPayWithCOFPairingWarningCancelButton">Payer dans le taxi</string>
+  <string name="PromoRequiresToPayWithCOFPairingWarningMessage">Si vous décidez de payer dans le taxi, vous ne serez pas éligible à la promotion</string>
 </resources>

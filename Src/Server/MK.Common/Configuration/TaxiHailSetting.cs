@@ -91,6 +91,8 @@ namespace MK.Common.Configuration
             TwitterRequestTokenUrl = "https://api.twitter.com/oauth/request_token";
             
             InitialZoomLevel = 14;
+
+            PromotionEnabled = true;
 		}
 
         public TaxiHailSettingContainer TaxiHail { get; protected set; }

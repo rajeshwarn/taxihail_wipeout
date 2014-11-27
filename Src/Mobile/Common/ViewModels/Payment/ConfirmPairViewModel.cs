@@ -123,10 +123,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 					if(Order.PromoCode.HasValue())
 					{
 						this.Services().Message.ShowMessage(
-							"Warning", 
-							"If you decide to pay in car, you will not be able to use the promotion", 
-							"Pay in car", cancelPairing(),
-							"Cancel", () => {});
+							this.Services().Localize["WarningTitle"], 
+							this.Services().Localize["PromoRequiresToPayWithCOFPairingWarningMessage"], 
+							this.Services().Localize["PromoRequiresToPayWithCOFPairingWarningCancelButton"], cancelPairing,
+							this.Services().Localize["Cancel"], () => {});
 					}
 					else
 					{

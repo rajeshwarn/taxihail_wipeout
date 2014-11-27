@@ -542,3 +542,5 @@
 "PanelMenuViewPromotionsText"="Promotions";
 "MarketChangedMessageTitle"="New service area detected";
 "MarketChangedMessage"="You are leaving your local service area. Should you decide to book, your order will be dispatched using a taxi company from this area.";
+"PromoRequiresToPayWithCOFPairingWarningCancelButton"="Pay in car";
+"PromoRequiresToPayWithCOFPairingWarningMessage"="If you decide to pay in car, you will not be able to use the promotion";
