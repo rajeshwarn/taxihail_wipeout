@@ -539,3 +539,5 @@
 "WarningPromoCodeDontShow"="No avisar";
 "PromoMustUseCardOnFileMessage"="In order to use a promo code, you need to pay with card on file";
 "PanelMenuViewPromotionsText"="Promotions";
+"MarketChangedMessageTitle"="New service area detected";
+"MarketChangedMessage"="You are leaving your local service area. Should you decide to book, your order will be dispatched using a taxi company from this area.";

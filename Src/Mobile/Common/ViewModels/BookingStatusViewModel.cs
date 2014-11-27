@@ -35,15 +35,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private readonly IPaymentService _paymentService;
 		private readonly IAccountService _accountService;
 		private readonly IVehicleService _vehicleService;
-	    private readonly IAccountPaymentService _accountPaymentService;
 
 	    public BookingStatusViewModel(IOrderWorkflowService orderWorkflowService,
 			IPhoneService phoneService,
 			IBookingService bookingService,
 			IPaymentService paymentService,
 			IAccountService accountService,
-			IVehicleService vehicleService,
-            IAccountPaymentService accountPaymentService
+			IVehicleService vehicleService
 		)
 		{
 			_orderWorkflowService = orderWorkflowService;
@@ -52,7 +50,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_paymentService = paymentService;
 			_accountService = accountService;
 			_vehicleService = vehicleService;
-		    _accountPaymentService = accountPaymentService;
 		}
 
 		private int _refreshPeriod = 5; //in seconds

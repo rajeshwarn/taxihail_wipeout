@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Api.Client.Extensions;
+using System;
 
 namespace apcurium.MK.Booking.Api.Client.TaxiHail
 {

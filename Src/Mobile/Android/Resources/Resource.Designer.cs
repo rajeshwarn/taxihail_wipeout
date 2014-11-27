@@ -4350,14 +4350,14 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f070109
 			public const int GooglePlayServicesNotAvailableMessage = 2131165449;
 			
-			// aapt resource value: 0x7f070281
-			public const int GooglePlayServicesNotAvailableMessage1 = 2131165825;
+			// aapt resource value: 0x7f070283
+			public const int GooglePlayServicesNotAvailableMessage1 = 2131165827;
 			
 			// aapt resource value: 0x7f070069
 			public const int GooglePlayServicesNotAvailableTitle = 2131165289;
 			
-			// aapt resource value: 0x7f070282
-			public const int GooglePlayServicesNotAvailableTitle1 = 2131165826;
+			// aapt resource value: 0x7f070284
+			public const int GooglePlayServicesNotAvailableTitle1 = 2131165828;
 			
 			// aapt resource value: 0x7f07002d
 			public const int Hello = 2131165229;
@@ -4545,6 +4545,12 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f0701f0
 			public const int March = 2131165680;
 			
+			// aapt resource value: 0x7f07027c
+			public const int MarketChangedMessage = 2131165820;
+			
+			// aapt resource value: 0x7f07027d
+			public const int MarketChangedMessageTitle = 2131165821;
+			
 			// aapt resource value: 0x7f0700d2
 			public const int May = 2131165394;
 			
@@ -4713,8 +4719,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f07023d
 			public const int PanelMenuViewPaymentInfoText = 2131165757;
 			
-			// aapt resource value: 0x7f070280
-			public const int PanelMenuViewPromotionsText = 2131165824;
+			// aapt resource value: 0x7f070282
+			public const int PanelMenuViewPromotionsText = 2131165826;
 			
 			// aapt resource value: 0x7f0701e2
 			public const int PanelMenuViewReportProblemText = 2131165666;
@@ -4842,14 +4848,14 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f070268
 			public const int Politeness = 2131165800;
 			
-			// aapt resource value: 0x7f07027c
-			public const int PromoCodeLabel = 2131165820;
-			
-			// aapt resource value: 0x7f07027d
-			public const int PromoMustUseCardOnFileMessage = 2131165821;
-			
 			// aapt resource value: 0x7f07027e
-			public const int PromoMustUseCardOnFileWarningMessage = 2131165822;
+			public const int PromoCodeLabel = 2131165822;
+			
+			// aapt resource value: 0x7f07027f
+			public const int PromoMustUseCardOnFileMessage = 2131165823;
+			
+			// aapt resource value: 0x7f070280
+			public const int PromoMustUseCardOnFileWarningMessage = 2131165824;
 			
 			// aapt resource value: 0x7f070254
 			public const int RateLastRide = 2131165780;
@@ -5463,8 +5469,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f07021d
 			public const int WarningLocationServiceTitle = 2131165725;
 			
-			// aapt resource value: 0x7f07027f
-			public const int WarningPromoCodeDontShow = 2131165823;
+			// aapt resource value: 0x7f070281
+			public const int WarningPromoCodeDontShow = 2131165825;
 			
 			// aapt resource value: 0x7f070226
 			public const int WarningPushServiceAction = 2131165734;

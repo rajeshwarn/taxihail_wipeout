@@ -550,3 +550,5 @@
 "WarningPromoCodeDontShow"="Ne pas signaler";
 "PromoMustUseCardOnFileMessage"="Pour utiliser un code promo, vous devez payer avec le paiement in app";
 "PanelMenuViewPromotionsText"="Promotions";
+"MarketChangedMessageTitle"="Nouvelle zone détectée";
+"MarketChangedMessage"="Vous quittez votre zone locale de service. Si vous décidez de commander un véhicule, votre commande sera envoyée à une compagnie désservant cette zone.";
