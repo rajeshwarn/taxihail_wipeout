@@ -125,7 +125,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
                 if (ShouldUseClipboardManager())
                 {
 
-                    ClipboardManager cm = (ClipboardManager)GetSystemService(Context.ClipboardService);
+                    Android.Text.ClipboardManager cm = (Android.Text.ClipboardManager)GetSystemService(Context.ClipboardService);
                     cm.Text = ((EditText)sender).Text;
                 }
 
