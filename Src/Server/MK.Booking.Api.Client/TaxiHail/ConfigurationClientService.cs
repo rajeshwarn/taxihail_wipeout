@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using apcurium.MK.Booking.Api.Contract.Requests.Payment;
 using apcurium.MK.Booking.Mobile.Infrastructure;
@@ -5,17 +6,21 @@ using apcurium.MK.Common.Configuration.Impl;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Contract.Resources.Payments;
 using apcurium.MK.Booking.Api.Client.Extensions;
+using apcurium.MK.Common.Diagnostic;
 
 namespace apcurium.MK.Booking.Api.Client.TaxiHail
 {
 	public class ConfigurationClientService : BaseServiceClient
 	{
-		public ConfigurationClientService(string url, string sessionId, IPackageInfo packageInfo)
+	    private readonly ILogger _logger;
+
+	    public ConfigurationClientService(string url, string sessionId, IPackageInfo packageInfo, ILogger logger)
 			: base(url, sessionId, packageInfo)
 		{
+		    _logger = logger;
 		}
 
-		public Task<IDictionary<string, string>> GetSettings()
+	    public Task<IDictionary<string, string>> GetSettings()
 		{
 			var tcs = new TaskCompletionSource<IDictionary<string, string>>();
 
@@ -24,8 +29,9 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 				var result = Client.GetAsync<Dictionary<string, string>>("/settings").Result;
 				tcs.TrySetResult(result);
 			}
-			catch
+			catch (Exception ex)
 			{
+                _logger.LogError(ex);
 				tcs.TrySetResult(new Dictionary<string, string>());
 			}
 
@@ -41,8 +47,9 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 				var result = Client.GetAsync<PaymentSettingsResponse>(new PaymentSettingsRequest()).Result;
 				tcs.TrySetResult(result.ClientPaymentSettings);
 			}
-			catch
+			catch (Exception ex)
 			{
+                _logger.LogError(ex);
 				tcs.TrySetResult(new ClientPaymentSettings());
 			}
 
