@@ -52,7 +52,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			source.CellCreator = CellCreator;
 			tableTaxiHailNetworkSettings.Source = source;
 
-			labelTaxiHailNetworkEnabled.Text = this.Services().Localize["Notification_Enabled"];
+			labelTaxiHailNetworkEnabled.Text = this.Services().Localize["UserTaxiHailNetwork_Enabled"];
 			labelTaxiHailNetworkEnabled.TextColor = UIColor.FromRGB(44, 44, 44);
 			labelTaxiHailNetworkEnabled.BackgroundColor = UIColor.Clear;
 			labelTaxiHailNetworkEnabled.Font = UIFont.FromName(FontName.HelveticaNeueLight, 32 / 2);
@@ -87,3 +87,4 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		}
 	}
 }
+

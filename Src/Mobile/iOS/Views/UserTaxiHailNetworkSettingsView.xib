@@ -6,41 +6,54 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="UserTaxiHailNetworkSettingsView">
             <connections>
-                <outlet property="labelTaxiHailNetworkEnabled" destination="NZi-83-dZx" id="zgQ-w3-oEw"/>
-                <outlet property="switchTaxiHailNetworkEnabled" destination="hSH-dD-H4p" id="uhO-I5-3wx"/>
-                <outlet property="tableTaxiHailNetworkSettings" destination="e7V-rR-yTx" id="A0h-V1-oh3"/>
+                <outlet property="labelTaxiHailNetworkEnabled" destination="F4f-lo-Okg" id="wNX-lm-eJW"/>
+                <outlet property="switchTaxiHailNetworkEnabled" destination="LDY-BN-1iT" id="ANN-Wa-i7G"/>
+                <outlet property="tableTaxiHailNetworkSettings" destination="GM1-H1-CO8" id="Yvj-qV-ABe"/>
                 <outlet property="view" destination="iN0-l3-epB" id="kCW-yf-GMq"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="iN0-l3-epB">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
+            <rect key="frame" x="0.0" y="64" width="320" height="504"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NZi-83-dZx">
-                    <rect key="frame" x="8" y="16" width="42" height="21"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                    <nil key="highlightedColor"/>
-                </label>
-                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hSH-dD-H4p">
-                    <rect key="frame" x="263" y="16" width="51" height="31"/>
-                </switch>
-                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="e7V-rR-yTx">
-                    <rect key="frame" x="0.0" y="54" width="320" height="450"/>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wFc-fa-uiA">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                    <subviews>
+                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="F4f-lo-Okg">
+                            <rect key="frame" x="15" y="11" width="42" height="21"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="LDY-BN-1iT">
+                            <rect key="frame" x="255" y="6" width="51" height="31"/>
+                        </switch>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstItem="F4f-lo-Okg" firstAttribute="leading" secondItem="wFc-fa-uiA" secondAttribute="leading" constant="15" id="2ps-0W-I1k"/>
+                        <constraint firstItem="LDY-BN-1iT" firstAttribute="top" secondItem="wFc-fa-uiA" secondAttribute="top" constant="6" id="I6l-gu-Npg"/>
+                        <constraint firstAttribute="height" constant="44" id="XbI-dG-WaM"/>
+                        <constraint firstItem="F4f-lo-Okg" firstAttribute="top" secondItem="wFc-fa-uiA" secondAttribute="top" constant="11" id="bI1-VH-9pG"/>
+                        <constraint firstAttribute="trailing" secondItem="LDY-BN-1iT" secondAttribute="trailing" constant="16" id="y6a-gu-0ZP"/>
+                    </constraints>
+                </view>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="1" sectionFooterHeight="1" translatesAutoresizingMaskIntoConstraints="NO" id="GM1-H1-CO8">
+                    <rect key="frame" x="0.0" y="46" width="320" height="458"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <inset key="scrollIndicatorInsets" minX="0.0" minY="-20" maxX="0.0" maxY="-20"/>
                 </tableView>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstItem="NZi-83-dZx" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="16" id="8n4-p6-KXU"/>
-                <constraint firstAttribute="trailing" secondItem="e7V-rR-yTx" secondAttribute="trailing" id="Fds-s1-EEe"/>
-                <constraint firstItem="hSH-dD-H4p" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="16" id="Zx9-bg-E0z"/>
-                <constraint firstItem="e7V-rR-yTx" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="54" id="fE5-hd-mld"/>
-                <constraint firstAttribute="trailing" secondItem="hSH-dD-H4p" secondAttribute="trailing" constant="8" id="fJM-na-o8T"/>
-                <constraint firstItem="NZi-83-dZx" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="8" id="fLZ-q4-GNd"/>
-                <constraint firstItem="e7V-rR-yTx" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="gPz-Gt-auS"/>
-                <constraint firstAttribute="bottom" secondItem="e7V-rR-yTx" secondAttribute="bottom" id="p0f-mf-MDa"/>
+                <constraint firstAttribute="trailing" secondItem="wFc-fa-uiA" secondAttribute="trailing" id="HGx-PN-P6L"/>
+                <constraint firstItem="GM1-H1-CO8" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="46" id="KrZ-so-XYB"/>
+                <constraint firstAttribute="bottom" secondItem="GM1-H1-CO8" secondAttribute="bottom" id="OnL-HA-OdS"/>
+                <constraint firstItem="wFc-fa-uiA" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="g9L-fz-kag"/>
+                <constraint firstAttribute="trailing" secondItem="GM1-H1-CO8" secondAttribute="trailing" id="gc3-L5-bwg"/>
+                <constraint firstItem="wFc-fa-uiA" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="h31-Zu-6QB"/>
+                <constraint firstItem="GM1-H1-CO8" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="xZp-OS-yIM"/>
             </constraints>
             <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
         </view>

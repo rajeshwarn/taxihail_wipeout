@@ -23,14 +23,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		
 		void ReleaseDesignerOutlets ()
 		{
-			if (tableTaxiHailNetworkSettings != null) {
-				tableTaxiHailNetworkSettings.Dispose ();
-				tableTaxiHailNetworkSettings = null;
-			}
-
 			if (labelTaxiHailNetworkEnabled != null) {
 				labelTaxiHailNetworkEnabled.Dispose ();
 				labelTaxiHailNetworkEnabled = null;
+			}
+
+			if (tableTaxiHailNetworkSettings != null) {
+				tableTaxiHailNetworkSettings.Dispose ();
+				tableTaxiHailNetworkSettings = null;
 			}
 
 			if (switchTaxiHailNetworkEnabled != null) {
