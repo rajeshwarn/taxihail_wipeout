@@ -28,7 +28,21 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         public Task<List<NetworkFleet>> GetNetworkFleets()
         {
-            return UseServiceClientAsync<NetworkRoamingServiceClient, List<NetworkFleet>>(service => service.GetNetworkFleets());
+			var tcs = new TaskCompletionSource<List<NetworkFleet>>();
+
+			try
+			{
+				var result =
+					UseServiceClientAsync<NetworkRoamingServiceClient, List<NetworkFleet>>(
+						service => service.GetNetworkFleets()).Result;
+				tcs.TrySetResult(result);
+			}
+			catch
+			{
+				tcs.TrySetResult(new List<NetworkFleet>());
+			}
+
+			return tcs.Task;
         }
     }
 }
