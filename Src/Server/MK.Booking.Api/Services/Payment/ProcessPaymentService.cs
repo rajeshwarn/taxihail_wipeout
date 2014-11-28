@@ -59,19 +59,30 @@ namespace apcurium.MK.Booking.Api.Services.Payment
         public CommitPreauthorizedPaymentResponse Post(CommitPaymentRequest request)
         {
             var totalAmount = request.Amount;
+            var amountSaved = 0m;
 
             var promoUsed = _promotionDao.FindByOrderId(request.OrderId);
             if (promoUsed != null)
             {
                 var promoDomainObject = _promoRepository.Get(promoUsed.PromoId);
-                var amountSaved = promoDomainObject.GetAmountSaved(request.OrderId, totalAmount);
+                amountSaved = promoDomainObject.GetAmountSaved(request.OrderId, totalAmount);
                 totalAmount = totalAmount - amountSaved;
             }
 
             var preAuthResponse = PreauthorizePaymentIfNecessary(request.OrderId, request.CardToken, totalAmount);
             if (preAuthResponse.IsSuccessful)
             {
-                return CommitPayment(totalAmount, request.MeterAmount, request.TipAmount, request.CardToken, request.OrderId, request.IsNoShowFee);
+                return CommitPayment(
+                    totalAmount, 
+                    request.MeterAmount, 
+                    request.TipAmount, 
+                    request.CardToken, 
+                    request.OrderId, 
+                    request.IsNoShowFee, 
+                    promoUsed != null 
+                        ? promoUsed.PromoId 
+                        : (Guid?) null, 
+                    amountSaved);
             }
 
             return new CommitPreauthorizedPaymentResponse
@@ -81,7 +92,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             };
         }
 
-        private CommitPreauthorizedPaymentResponse CommitPayment(decimal totalOrderAmount, decimal meterAmount, decimal tipAmount, string cardToken, Guid orderId, bool isNoShowFee)
+        private CommitPreauthorizedPaymentResponse CommitPayment(decimal totalOrderAmount, decimal meterAmount, decimal tipAmount, string cardToken, Guid orderId, bool isNoShowFee, Guid? promoUsedId = null, decimal amountSaved = 0)
         {
             var orderDetail = _orderDao.FindById(orderId);
             if (orderDetail == null)
@@ -187,7 +198,9 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                         MeterAmount = Convert.ToDecimal(meterAmount),
                         TipAmount = Convert.ToDecimal(tipAmount),
                         IsNoShowFee = isNoShowFee,
-                        AuthorizationCode = paymentProviderServiceResponse.AuthorizationCode
+                        AuthorizationCode = paymentProviderServiceResponse.AuthorizationCode,
+                        PromotionUsed = promoUsedId,
+                        AmountSavedByPromotion = amountSaved
                     });
                 }
                 else

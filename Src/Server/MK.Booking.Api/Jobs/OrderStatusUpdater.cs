@@ -348,12 +348,13 @@ namespace apcurium.MK.Booking.Api.Jobs
             try
             {
                 var totalOrderAmount = Convert.ToDecimal(meterAmount + tipAmount);
+                var amountSaved = 0m;
 
                 var promoUsed = _promotionDao.FindByOrderId(orderStatusDetail.OrderId);
                 if (promoUsed != null)
                 {
                     var promoDomainObject = _promoRepository.Get(promoUsed.PromoId);
-                    var amountSaved = promoDomainObject.GetAmountSaved(orderStatusDetail.OrderId, totalOrderAmount);
+                    amountSaved = promoDomainObject.GetAmountSaved(orderStatusDetail.OrderId, totalOrderAmount);
                     totalOrderAmount = totalOrderAmount - amountSaved;
                 }
                 
@@ -362,7 +363,17 @@ namespace apcurium.MK.Booking.Api.Jobs
                 if (preAuthResponse.IsSuccessful)
                 {
                     // Commit
-                    var paymentResult = CommitPayment(totalOrderAmount, Convert.ToDecimal(meterAmount), Convert.ToDecimal(tipAmount), pairingInfo.TokenOfCardToBeUsedForPayment, orderStatusDetail.OrderId, false);
+                    var paymentResult = CommitPayment(
+                        totalOrderAmount, 
+                        Convert.ToDecimal(meterAmount), 
+                        Convert.ToDecimal(tipAmount), 
+                        pairingInfo.TokenOfCardToBeUsedForPayment, 
+                        orderStatusDetail.OrderId, 
+                        false,
+                        promoUsed != null
+                            ? promoUsed.PromoId
+                            : (Guid?) null,
+                        amountSaved);
                     if (paymentResult.IsSuccessful)
                     {
                         Log.DebugFormat("Order {0}: Payment Successful (Auth: {1}) [Transaction Id: {2}]", orderStatusDetail.OrderId, paymentResult.AuthorizationCode, paymentResult.TransactionId);
@@ -410,7 +421,7 @@ namespace apcurium.MK.Booking.Api.Jobs
             orderStatusDetail.Status = OrderStatus.Completed;
         }
 
-        private CommitPreauthorizedPaymentResponse CommitPayment(decimal totalOrderAmount, decimal meterAmount, decimal tipAmount, string cardToken, Guid orderId, bool isNoShowFee)
+        private CommitPreauthorizedPaymentResponse CommitPayment(decimal totalOrderAmount, decimal meterAmount, decimal tipAmount, string cardToken, Guid orderId, bool isNoShowFee, Guid? promoUsedId = null, decimal amountSaved = 0)
         {
             var orderDetail = _orderDao.FindById(orderId);
             if (orderDetail == null)
@@ -516,7 +527,9 @@ namespace apcurium.MK.Booking.Api.Jobs
                         MeterAmount = Convert.ToDecimal(meterAmount),
                         TipAmount = Convert.ToDecimal(tipAmount),
                         IsNoShowFee = isNoShowFee,
-                        AuthorizationCode = paymentProviderServiceResponse.AuthorizationCode
+                        AuthorizationCode = paymentProviderServiceResponse.AuthorizationCode,
+                        PromotionUsed = promoUsedId,
+                        AmountSavedByPromotion = amountSaved
                     });
                 }
                 else

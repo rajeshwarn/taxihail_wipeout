@@ -219,6 +219,10 @@
   <data name="Email_Body_Tip" xml:space="preserve">
     <value>إكرامية</value>
   </data>
+  <data name="Email_Body_Promo" xml:space="preserve">
+    <value>Promo Code</value>
+    <comment>Promo Code</comment>
+  </data>
   <data name="Email_Body_Toll" xml:space="preserve">
     <value />
   </data>
@@ -392,6 +396,9 @@
   </data>
   <data name="Email_Body_YourDriver" xml:space="preserve">
     <value>Your Driver</value>
+  </data>
+  <data name="CannotCreateOrder_PromotionDoesNotExist" xml:space="preserve">
+    <value>There is no promotion associated to this code</value>
   </data>
   <data name="CannotCreateOrder_PromotionMustUseCardOnFile" xml:space="preserve">
     <value>You must select Card On File to use a promotion.</value>

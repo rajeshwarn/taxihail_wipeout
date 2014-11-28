@@ -97,6 +97,15 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to There is no promotion associated to this code.
+        /// </summary>
+        public static string CannotCreateOrder_PromotionDoesNotExist {
+            get {
+                return ResourceManager.GetString("CannotCreateOrder_PromotionDoesNotExist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to This promotion has expired.
         /// </summary>
         public static string CannotCreateOrder_PromotionHasExpired {
@@ -462,6 +471,15 @@ namespace apcurium.MK.Booking.Resources {
         public static string Email_Body_PickupTimeValue {
             get {
                 return ResourceManager.GetString("Email_Body_PickupTimeValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Promo Code.
+        /// </summary>
+        public static string Email_Body_Promo {
+            get {
+                return ResourceManager.GetString("Email_Body_Promo", resourceCulture);
             }
         }
         

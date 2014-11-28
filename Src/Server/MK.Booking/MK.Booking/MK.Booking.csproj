@@ -279,6 +279,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="Resources\Global.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Global.resx</DependentUpon>
+    </Compile>
     <Compile Include="Resources\Global.es.Designer.cs" />
     <Compile Include="Resources\MearsTaxi.Designer.cs" />
     <Compile Include="Resources\Resources.cs" />
@@ -291,11 +296,6 @@
       <DependentUpon>TaxiHailNYC.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Resources\Global.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Global.resx</DependentUpon>
     </Compile>
     <Compile Include="Resources\Thriev.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -420,8 +420,8 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\Global.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Global.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+      <LastGenOutput>Global.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\Thriev.resx">
       <Generator>ResXFileCodeGenerator</Generator>

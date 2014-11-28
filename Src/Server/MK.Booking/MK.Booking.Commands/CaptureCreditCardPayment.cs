@@ -29,5 +29,9 @@ namespace apcurium.MK.Booking.Commands
         public decimal TipAmount { get; set; }
 
         public bool IsNoShowFee { get; set; }
+
+        public Guid? PromotionUsed { get; set; }
+
+        public decimal AmountSavedByPromotion { get; set; }
     }
 }

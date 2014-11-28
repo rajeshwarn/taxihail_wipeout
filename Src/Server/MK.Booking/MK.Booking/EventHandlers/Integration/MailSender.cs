@@ -27,15 +27,18 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
         private readonly ICommandBus _commandBus;
         private readonly Func<BookingDbContext> _contextFactory;
         private readonly ICreditCardDao _creditCardDao;
+        private readonly IPromotionDao _promotionDao;
 
         public MailSender(Func<BookingDbContext> contextFactory,
             ICommandBus commandBus,
-            ICreditCardDao creditCardDao
+            ICreditCardDao creditCardDao,
+            IPromotionDao promotionDao
             )
         {
             _contextFactory = contextFactory;
             _commandBus = commandBus;
             _creditCardDao = creditCardDao;
+            _promotionDao = promotionDao;
         }
 
         public void Handle(CreditCardPaymentCaptured @event)
@@ -46,7 +49,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                 return;
             }
 
-            SendReceipt(@event.OrderId);
+            SendReceipt(@event.OrderId, @event.AmountSavedByPromotion);
         }
 
         public void Handle(PayPalExpressCheckoutPaymentCompleted @event)
@@ -54,7 +57,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             SendReceipt(@event.OrderId);
         }
         
-        private void SendReceipt(Guid orderId)
+        private void SendReceipt(Guid orderId, decimal amountSavedByPromotion = 0m)
         {
             using (var context = _contextFactory.Invoke())
             {
@@ -73,10 +76,12 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
 
                     if (orderPayment != null)
                     {
+                        var promoUsed = _promotionDao.FindByOrderId(orderId);
+
                         var command = SendReceiptCommandBuilder.GetSendReceiptCommand(order, account,
                             orderStatus.VehicleNumber, orderStatus.DriverInfos,
                             Convert.ToDouble(orderPayment.Meter), 0, Convert.ToDouble(orderPayment.Tip), 0, orderPayment,
-                            card);
+                            Convert.ToDouble(amountSavedByPromotion), promoUsed, card);
                         
                         _commandBus.Send(command);
                     }

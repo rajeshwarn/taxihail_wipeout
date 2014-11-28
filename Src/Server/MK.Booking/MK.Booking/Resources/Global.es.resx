@@ -281,6 +281,10 @@
     <value>Propina</value>
     <comment>Tip</comment>
   </data>
+  <data name="Email_Body_Promo" xml:space="preserve">
+    <value>Promo Code</value>
+    <comment>Promo Code</comment>
+  </data>
   <data name="Email_Body_Toll" xml:space="preserve">
     <value>Peaje</value>
     <comment>Toll</comment>
@@ -480,6 +484,10 @@
   <data name="Email_Body_YourDriver" xml:space="preserve">
     <value>Your Driver</value>
     <comment>Your Driver</comment>
+  </data>
+  <data name="CannotCreateOrder_PromotionDoesNotExist" xml:space="preserve">
+    <value>There is no promotion associated to this code</value>
+    <comment>There is no promotion associated to this code</comment>
   </data>
   <data name="CannotCreateOrder_PromotionMustUseCardOnFile" xml:space="preserve">
     <value>You must select Card On File to use a promotion.</value>

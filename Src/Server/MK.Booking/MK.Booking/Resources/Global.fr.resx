@@ -219,6 +219,9 @@
   <data name="Email_Body_Tip" xml:space="preserve">
     <value>Pourboire</value>
   </data>
+  <data name="Email_Body_Promo" xml:space="preserve">
+    <value>Promotion</value>
+  </data>
   <data name="Email_Body_Toll" xml:space="preserve">
     <value>Péage</value>
   </data>
@@ -404,6 +407,9 @@
   </data>
   <data name="CannotCreateOrderChargeAccountNotSupported" xml:space="preserve">
     <value>Ce compte n'est pas supporté par la page web</value>
+  </data>
+  <data name="CannotCreateOrder_PromotionDoesNotExist" xml:space="preserve">
+    <value>Il n'y a pas de promotion associée à ce code</value>
   </data>
   <data name="CannotCreateOrder_PromotionMustUseCardOnFile" xml:space="preserve">
     <value>Vous devez sélectionner le Paiement In App pour utiliser une promotion.</value>

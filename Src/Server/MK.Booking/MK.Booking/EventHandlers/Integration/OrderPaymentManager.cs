@@ -1,9 +1,11 @@
 ﻿using System;
+using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Services;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Enumeration;
+using Infrastructure.Messaging;
 using Infrastructure.Messaging.Handling;
 
 namespace apcurium.MK.Booking.EventHandlers.Integration
@@ -22,11 +24,13 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
         private readonly IOrderPaymentDao _paymentDao;
         private readonly ICreditCardDao _creditCardDao;
         private readonly IAccountDao _accountDao;
+        private readonly ICommandBus _commandBus;
 
-        public OrderPaymentManager(IOrderDao dao, IOrderPaymentDao paymentDao, IAccountDao accountDao, 
+        public OrderPaymentManager(IOrderDao dao, IOrderPaymentDao paymentDao, IAccountDao accountDao, ICommandBus commandBus,
             ICreditCardDao creditCardDao, IIbsOrderService ibs, IServerSettings serverSettings, IPaymentService paymentService)
         {
             _accountDao = accountDao;
+            _commandBus = commandBus;
             _dao = dao;
             _paymentDao = paymentDao;
             _creditCardDao = creditCardDao;
@@ -59,6 +63,16 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             if (_serverSettings.ServerData.SendDetailedPaymentInfoToDriver)
             {
                 SendPaymentConfirmationToDriver(@event.OrderId, @event.Amount, @event.Meter, @event.Tip, @event.Provider.ToString(), @event.AuthorizationCode);
+            }
+
+            if (@event.PromotionUsed.HasValue)
+            {
+                _commandBus.Send(new RedeemPromotion
+                {
+                    OrderId = @event.OrderId,
+                    PromoId = @event.PromotionUsed.Value,
+                    TotalAmountOfOrder = @event.Amount
+                });
             }
         }
 

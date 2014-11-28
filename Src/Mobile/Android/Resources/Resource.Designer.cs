@@ -3750,19 +3750,22 @@ namespace apcurium.MK.Booking.Mobile.Client
 			public const int View_Payments_CreditCardAdd = 2130903157;
 			
 			// aapt resource value: 0x7f030076
-			public const int View_RideSettings = 2130903158;
+			public const int View_Promotion = 2130903158;
 			
 			// aapt resource value: 0x7f030077
-			public const int View_TermsAndConditions = 2130903159;
+			public const int View_RideSettings = 2130903159;
 			
 			// aapt resource value: 0x7f030078
-			public const int View_Tutorial = 2130903160;
+			public const int View_TermsAndConditions = 2130903160;
 			
 			// aapt resource value: 0x7f030079
-			public const int View_UpdatedTermsAndConditions = 2130903161;
+			public const int View_Tutorial = 2130903161;
 			
 			// aapt resource value: 0x7f03007a
-			public const int View_UpdatePassword = 2130903162;
+			public const int View_UpdatedTermsAndConditions = 2130903162;
+			
+			// aapt resource value: 0x7f03007b
+			public const int View_UpdatePassword = 2130903163;
 			
 			static Layout()
 			{
