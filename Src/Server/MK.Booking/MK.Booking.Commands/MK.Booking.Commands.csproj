@@ -52,6 +52,7 @@
     <Compile Include="AddFavoriteAddress.cs" />
     <Compile Include="AddOrUpdateNotificationSettings.cs" />
     <Compile Include="AddPopularAddress.cs" />
+    <Compile Include="ImportAccountCharge.cs" />
     <Compile Include="AddUpdateAccountCharge.cs" />
     <Compile Include="AddUpdateVehicleType.cs" />
     <Compile Include="CancelOrder.cs" />

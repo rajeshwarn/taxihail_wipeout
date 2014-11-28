@@ -36,6 +36,9 @@ namespace apcurium.MK.Web.Tests
             return new List<NetworkFleetResponse> { new NetworkFleetResponse
             {
                 CompanyKey = _companyKeyToReturn, 
+                RestApiUrl = "http://cabmatedemo.drivelinq.com:8889/",
+                RestApiUser = "EUGENE",
+                RestApiSecret = "T!?_asF",
                 IbsUrl = "http://mk.drivelinq.com:6928/XDS_IASPI.DLL/soap/",
                 IbsUserName = "taxi",
                 IbsPassword = "test"

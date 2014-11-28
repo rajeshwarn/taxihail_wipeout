@@ -25,7 +25,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
             _serverSettings = serverSettings;
             _taxiHailNetworkService = taxiHailNetworkService;
             _configurationsService = configurationsService;
-
+            
             _applicationKey = serverSettings.ServerData.TaxiHail.ApplicationKey;
         }
 

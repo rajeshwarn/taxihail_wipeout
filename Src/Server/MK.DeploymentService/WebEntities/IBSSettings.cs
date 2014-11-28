@@ -14,8 +14,16 @@ namespace CustomerPortal.Web.Entities
         [Required]
         public string Password { get; set; }
 
-
         [Required]
         public string ServiceUrl { get; set; }
+
+        [Required]
+        public string RestApiUrl { get; set; }
+
+        [Required]
+        public string RestApiUser { get; set; }
+
+        [Required]
+        public string RestApiSecret { get; set; }        
     }
 }

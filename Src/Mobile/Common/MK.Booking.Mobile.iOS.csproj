@@ -373,6 +373,7 @@
     <EmbeddedResource Include="TutorialContent\Tutorial-en.json" />
     <None Include="Localization\TaxiHail Pro.resx" />
     <None Include="Localization\TaxiHail Pro.fr.resx" />
+    <None Include="Localization\UTOG.resx" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

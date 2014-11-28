@@ -54,7 +54,7 @@ namespace MK.Common.Configuration
                 APIKey = "a34cb0ffa9cae700769950f66237125e8ba4ed0d", // to be replaced when we have an official TaxiHail account
                 UnknownUserIdentifier = "unknown@user.com"
             };
-
+			ShowEstimate = true;
             ShowEstimateWarning = true;
             AccountActivationDisabled = true;
             ShowVehicleInformation = true;

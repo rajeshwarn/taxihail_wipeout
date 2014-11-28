@@ -38,7 +38,7 @@
                 android:paddingLeft="8dp"
                 android:layout_width="45dp"
                 android:layout_height="fill_parent" />
-            <apcurium.MK.Booking.Mobile.Client.Controls.Widgets.AutoResizeTextView
+            <apcurium.mk.booking.mobile.client.controls.widgets.AutoResizeTextView
                 android:paddingLeft="8dp"
                 android:paddingRight="4dp"
                 android:paddingBottom="2dp"
@@ -71,7 +71,7 @@
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="match_parent">
-            <apcurium.MK.Booking.Mobile.Client.Controls.Widgets.AutoResizeTextView
+            <apcurium.mk.booking.mobile.client.controls.widgets.AutoResizeTextView
                 android:id="@+id/estimateFareAutoResizeLabel"
                 android:textSize="19dp"
                 android:paddingLeft="4dp"
@@ -82,7 +82,7 @@
                 android:layout_margin="0px"
                 android:layout_width="match_parent"
                 android:layout_height="21dp" />
-            <apcurium.MK.Booking.Mobile.Client.Controls.Widgets.AutoResizeTextView
+            <apcurium.mk.booking.mobile.client.controls.widgets.AutoResizeTextView
                 android:id="@+id/EtaLabel"
                 android:textSize="16dp"
                 android:paddingLeft="4dp"
