@@ -3,6 +3,7 @@
 using System;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common;
+using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
 using MK.Common.Configuration;
 
@@ -38,6 +39,14 @@ namespace apcurium.MK.Booking.ReadModel.Query
                 }
 
                 return context.NotificationSettings.Find(AppConstants.CompanyId);
+            }
+        }
+
+        public UserTaxiHailNetworkSettings GetUserTaxiHailNetworkSettings(Guid accountId)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                return context.UserTaxiHailNetworkSettings.Find(accountId);
             }
         }
     }

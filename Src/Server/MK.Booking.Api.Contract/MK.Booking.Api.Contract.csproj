@@ -89,6 +89,7 @@
     <Compile Include="Requests\AppStartUpLogRequest.cs" />
     <Compile Include="Requests\AssignedEtaRequest.cs" />
     <Compile Include="Requests\IgnoreDispatchCompanySwitchRequest.cs" />
+    <Compile Include="Requests\NetworkFleetsRequest.cs" />
     <Compile Include="Requests\SwitchOrderToNextDispatchCompanyRequest.cs" />
     <Compile Include="Requests\IbsFareRequest.cs" />
     <Compile Include="Requests\LogApplicationStartUpRequest.cs" />
@@ -155,6 +156,7 @@
     <Compile Include="Requests\SendReceipt.cs" />
     <Compile Include="Requests\EmailTemplateNamesRequest.cs" />
     <Compile Include="Requests\PrivacyPolicyRequest.cs" />
+    <Compile Include="Requests\UserTaxiHailNetworkSettingsRequest.cs" />
     <Compile Include="Requests\TermsAndConditionsRequest.cs" />
     <Compile Include="Requests\TestEmailAdministrationRequest.cs" />
     <Compile Include="Requests\TestOnlyReqGetAdminTestAccount.cs" />
@@ -172,6 +174,7 @@
     <Compile Include="Resources\DirectionInfo.cs" />
     <Compile Include="Resources\ErrorCode.cs" />
     <Compile Include="Resources\IbsFare.cs" />
+    <Compile Include="Resources\NetworkFleet.cs" />
     <Compile Include="Resources\Order.cs" />
     <Compile Include="Resources\OrderRatings.cs" />
     <Compile Include="Resources\OrderValidationResult.cs" />

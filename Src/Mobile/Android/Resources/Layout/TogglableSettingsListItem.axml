@@ -10,7 +10,7 @@
     android:paddingBottom="5dip"
     android:paddingLeft="15dip">
     <TextView
-        android:id="@+id/NotificationSettingNameTextView"
+        android:id="@+id/togglableSettingNameTextView"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:gravity="center_vertical"
@@ -19,11 +19,11 @@
         android:textColor="@color/black"
         local:MvxBind="Text Display" />
     <ToggleButton
-        android:id="@+id/notificationSettingSwitchValue"
+        android:id="@+id/togglableSettingSwitchValue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textOn="@string/Notification_On"
-        android:textOff="@string/Notification_Off"
+        android:textOn="@string/Toggle_On"
+        android:textOff="@string/Toggle_Off"
         android:layout_alignParentRight="true"
         local:MvxBind="Checked Value" />
 </RelativeLayout>

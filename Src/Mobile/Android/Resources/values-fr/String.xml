@@ -548,6 +548,12 @@
   <string name="CreditCardBookingSettingsError">Une erreur est survenue lors de la mise à jour des informations du compte. Vérifiez que le numéro de compte associé au profil est valide et essayez de nouveau.</string>
   <string name="UpdateBookingSettingsGenericError">Une erreur est survenue lors de la mise à jour des informations du compte</string>
   <string name="UpdateBookingSettingsInvalidCoF">Vous devez avoir une carte de crédit enregistrée pour utiliser ce compte</string>
-  <string name="MarketChangedMessage">Vous quittez votre zone locale de service. Si vous décidez de commander un véhicule, votre commande sera envoyée à une compagnie locale désservant cette zone.</string>
+  <string name="MarketChangedMessage">Vous quittez votre zone locale de service. Si vous décidez de commander un véhicule, votre commande sera envoyée à une compagnie désservant cette zone.</string>
   <string name="MarketChangedMessageTitle">Nouvelle zone détectée</string>
+  <string name="PanelMenuViewTaxiHailNetworkText">Réseau TaxiHail</string>
+  <string name="View_TaxiHailNetworkSettings">Réseau TaxiHail</string>
+  <string name="View_UserTaxiHailNetworkSettings">Réseau TaxiHail</string>
+  <string name="Toggle_Off">Non</string>
+  <string name="Toggle_On">Oui</string>
+  <string name="UserTaxiHailNetwork_Enabled">Réseau TaxiHail</string>
 </resources>
