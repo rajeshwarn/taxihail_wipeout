@@ -7,6 +7,7 @@ using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.IBS;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
+using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
@@ -80,13 +81,14 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                 else
                 {
                     // Local market
-                    var userTaxiHailNetworkSettings = _configurationDao.GetUserTaxiHailNetworkSettings(details.AccountId);
+                    var taxiHailNetworkSettings = _configurationDao.GetUserTaxiHailNetworkSettings(details.AccountId)
+                        ?? new UserTaxiHailNetworkSettings { IsEnabled = true, SerializedDisabledFleets = new List<string>().ToJson() };
 
-                    if (userTaxiHailNetworkSettings.IsEnabled)
+                    if (taxiHailNetworkSettings.IsEnabled)
                     {
                         var networkFleet = await _taxiHailNetworkServiceClient.GetNetworkFleetAsync(details.CompanyKey, pickUpPosition.Latitude, pickUpPosition.Longitude);
 
-                        var disabledFleets = userTaxiHailNetworkSettings.SerializedDisabledFleets.FromJson<List<string>>();
+                        var disabledFleets = taxiHailNetworkSettings.SerializedDisabledFleets.FromJson<List<string>>();
 
                         // Remove fleets that were disabled by the user
                         var userNetworkFleet = FilterNetworkFleet(disabledFleets, networkFleet);

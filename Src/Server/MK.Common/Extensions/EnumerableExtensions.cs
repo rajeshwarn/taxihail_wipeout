@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 #endregion
 
@@ -103,6 +104,27 @@ namespace apcurium.MK.Common.Extensions
         {
             var enumerable  = items as T[] ?? items.ToArray();
             return ((enumerable.HasValue()) && (enumerable.Count() == length));
+        }
+
+        public static string Flatten(this IEnumerable items, string separator)
+        {
+            if (items == null)
+            {
+                return null;
+            }
+
+            var sb = new StringBuilder();
+            foreach (var elem in items)
+            {
+                if (sb.Length > 0)
+                {
+                    sb.Append(separator);
+                }
+
+                sb.Append(elem);
+            }
+
+            return sb.ToString();
         }
     }
 }

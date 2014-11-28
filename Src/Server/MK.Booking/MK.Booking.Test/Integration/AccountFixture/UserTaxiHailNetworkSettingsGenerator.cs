@@ -36,7 +36,7 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
         public void when_settings_dont_exist_and_settings_updated_then_dto_populated()
         {
             var accountId = Guid.NewGuid();
-            var disabledFleets = new List<string> {"Apcurium", "TaxiHailDemo"};
+            var disabledFleets = new [] {"Apcurium", "TaxiHailDemo"};
 
             Sut.Handle(new UserTaxiHailNetworkSettingsAddedOrUpdated
             {
@@ -68,14 +68,14 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
             {
                 SourceId = _accountId,
                 IsEnabled = true,
-                DisabledFleets = new List<string> { "Apcurium", "TaxiHailDemo" }
+                DisabledFleets = new[] { "Apcurium", "TaxiHailDemo" }
             });
         }
 
         [Test]
         public void when_settings_exist_and_settings_updated_then_dto_updated()
         {
-            var disabledFleets = new List<string> {"Apcurium"};
+            var disabledFleets = new[] {"Apcurium"};
 
             Sut.Handle(new UserTaxiHailNetworkSettingsAddedOrUpdated
             {

@@ -149,13 +149,15 @@ namespace apcurium.MK.Booking.Api.Services
                 return new HttpError(HttpStatusCode.BadRequest, "Account Id cannot be null");
             }
 
-            var modelSettings = _configDao.GetUserTaxiHailNetworkSettings(request.AccountId.Value);
+            var networkSettings = _configDao.GetUserTaxiHailNetworkSettings(request.AccountId.Value) 
+                ?? new UserTaxiHailNetworkSettings { IsEnabled = true, SerializedDisabledFleets = new List<string>().ToJson() };
 
-            return new Contract.Resources.UserTaxiHailNetworkSettings
+            return new UserTaxiHailNetworkSettings
             {
-                Id = modelSettings.Id,
-                IsEnabled = modelSettings.IsEnabled,
-                DisabledFleets = modelSettings.SerializedDisabledFleets.FromJson<List<string>>()
+                Id = networkSettings.Id,
+                IsEnabled = networkSettings.IsEnabled,
+                DisbledFleets = networkSettings.DisbledFleets
+                //DisabledFleets = networkSettings.SerializedDisabledFleets.FromJson<List<string>>()
             };
         }
 
@@ -170,7 +172,8 @@ namespace apcurium.MK.Booking.Api.Services
             {
                 AccountId = request.AccountId.Value,
                 IsEnabled = request.UserTaxiHailNetworkSettings.IsEnabled,
-                DisabledFleets = request.UserTaxiHailNetworkSettings.DisabledFleets
+                DisabledFleets = request.UserTaxiHailNetworkSettings.DisbledFleets.ToArray()
+                //DisabledFleets = request.UserTaxiHailNetworkSettings.DisabledFleets.ToArray()
             });
 
             return new HttpResult(HttpStatusCode.OK, "OK");

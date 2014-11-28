@@ -1,5 +1,5 @@
 ﻿using System;
-using apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Common.Configuration;
 using ServiceStack.ServiceHost;
 using ServiceStack.ServiceInterface;
 

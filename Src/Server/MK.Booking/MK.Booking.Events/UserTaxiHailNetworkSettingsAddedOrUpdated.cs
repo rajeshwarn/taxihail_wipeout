@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Infrastructure.EventSourcing;
+﻿using Infrastructure.EventSourcing;
 
 namespace apcurium.MK.Booking.Events
 {
@@ -7,6 +6,6 @@ namespace apcurium.MK.Booking.Events
     {
         public bool IsEnabled { get; set; }
 
-        public List<string> DisabledFleets { get; set; }
+        public string[] DisabledFleets { get; set; }
     }
 }

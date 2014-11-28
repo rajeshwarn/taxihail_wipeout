@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using Infrastructure.Messaging;
 
 namespace apcurium.MK.Booking.Commands
@@ -13,7 +12,7 @@ namespace apcurium.MK.Booking.Commands
 
         public bool IsEnabled { get; set; }
 
-        public List<string> DisabledFleets { get; set; }
+        public string[] DisabledFleets { get; set; }
 
         public Guid AccountId { get; set; }
 

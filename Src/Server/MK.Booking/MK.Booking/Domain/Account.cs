@@ -394,7 +394,7 @@ namespace apcurium.MK.Booking.Domain
             });
         }
 
-        public void AddOrUpdateTaxiHailNetworkSettings(bool isEnabled, List<string> disabledFleets)
+        public void AddOrUpdateTaxiHailNetworkSettings(bool isEnabled, string[] disabledFleets)
         {
             Update(new UserTaxiHailNetworkSettingsAddedOrUpdated
             {
