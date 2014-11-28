@@ -99,7 +99,7 @@ namespace MK.Booking.PayPal
                 {                    
                     OrderTotal = amount,
 
-                    PaymentDetailsItem = new PaymentDetailsItemType[] { new PaymentDetailsItemType { Amount = amount, Description = description } },
+                  //  PaymentDetailsItem = new PaymentDetailsItemType[] { new PaymentDetailsItemType { Amount = amount, Description = description } },
                     NoteText = note,                       
                   
                 };
