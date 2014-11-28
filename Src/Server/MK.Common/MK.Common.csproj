@@ -118,6 +118,7 @@
     <Compile Include="Configuration\ServerTaxiHailSetting.cs" />
     <Compile Include="Configuration\SettingContainers.cs" />
     <Compile Include="Configuration\TaxiHailSetting.cs" />
+    <Compile Include="Configuration\UserTaxiHailNetworkSettings.cs" />
     <Compile Include="CreditCard.cs" />
     <Compile Include="CurencyCodes.cs" />
     <Compile Include="Database\CustomDbConfiguration.cs" />

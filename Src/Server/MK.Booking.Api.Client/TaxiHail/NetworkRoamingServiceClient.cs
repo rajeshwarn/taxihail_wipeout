@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Api.Client.Extensions;
 using System;
@@ -24,6 +25,11 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             var queryString = BuildQueryString(@params);
 
             return Client.GetAsync<string>("/roaming/market" + queryString);
+        }
+
+        public Task<List<NetworkFleet>> GetNetworkFleets()
+        {
+            return Client.GetAsync<List<NetworkFleet>>("/network/networkfleets");
         }
     }
 }

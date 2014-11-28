@@ -1195,11 +1195,11 @@
     <value>Taxis cercanos</value>
     <comment>Nearby Taxi</comment>
   </data>
-  <data name="Notification_Off" xml:space="preserve">
+  <data name="Toggle_Off" xml:space="preserve">
     <value>Apagado</value>
     <comment>Off</comment>
   </data>
-  <data name="Notification_On" xml:space="preserve">
+  <data name="Toggle_On" xml:space="preserve">
     <value>Encendido</value>
     <comment>On</comment>
   </data>
@@ -2225,6 +2225,15 @@
   </data>
   <data name="MarketChangedMessageTitle" xml:space="preserve">
     <value>New service area detected</value>
+  </data>
+  <data name="PanelMenuViewTaxiHailNetworkText" xml:space="preserve">
+    <value>TaxiHail Network</value>
+  </data>
+  <data name="View_UserTaxiHailNetworkSettings" xml:space="preserve">
+    <value>TaxiHail Network</value>
+  </data>
+  <data name="UserTaxiHailNetwork_Enabled" xml:space="preserve">
+    <value>TaxiHail Network</value>
   </data>
   <data name="PromoCodeLabel" xml:space="preserve">
     <value>Promo code</value>

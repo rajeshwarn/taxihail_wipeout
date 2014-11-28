@@ -557,6 +557,10 @@
     <BundleResource Include="Resources\map_smallicon_background%402x.png" />
     <BundleResource Include="es.lproj\Localizable.strings" />
     <Compile Include="Views\SplashView.cs" />
+    <Compile Include="Views\UserTaxiHailNetworkSettingsView.cs" />
+    <Compile Include="Views\UserTaxiHailNetworkSettingsView.designer.cs">
+      <DependentUpon>UserTaxiHailNetworkSettingsView.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
   <ProjectExtensions>
@@ -604,6 +608,7 @@
     <InterfaceDefinition Include="Views\AccountConfirmationView.xib" />
     <InterfaceDefinition Include="Views\Payments\ConfirmPairView.xib" />
     <InterfaceDefinition Include="Views\NotificationSettingsView.xib" />
+    <InterfaceDefinition Include="Views\UserTaxiHailNetworkSettingsView.xib" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="en.lproj\Localizable.strings" />

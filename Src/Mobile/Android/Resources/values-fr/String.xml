@@ -556,5 +556,11 @@
   <string name="WarningPromoCodeDontShow">Ne pas signaler</string>
   <string name="PanelMenuViewPromotionsText">Promotions</string>
   <string name="PromoRequiresToPayWithCOFPairingWarningCancelButton">Payer dans le taxi</string>
+  <string name="PanelMenuViewTaxiHailNetworkText">Réseau TaxiHail</string>
+  <string name="View_TaxiHailNetworkSettings">Réseau TaxiHail</string>
+  <string name="View_UserTaxiHailNetworkSettings">Réseau TaxiHail</string>
+  <string name="Toggle_Off">Non</string>
+  <string name="Toggle_On">Oui</string>
+  <string name="UserTaxiHailNetwork_Enabled">Réseau TaxiHail</string>
   <string name="PromoRequiresToPayWithCOFPairingWarningMessage">Si vous décidez de payer dans le taxi, vous ne serez pas éligible à la promotion</string>
 </resources>

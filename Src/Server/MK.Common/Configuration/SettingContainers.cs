@@ -236,6 +236,8 @@ namespace apcurium.MK.Common.Configuration
         [CustomizableByCompany]
         public double SecondaryOrderTimeout { get; protected internal set; }
 
+        [SendToClient]
+        [Display(Name = "Is Network Enabled", Description = "Is TaxiHailNetwork Enabled")]
         public bool Enabled { get;  set; }
     }
 }
