@@ -349,7 +349,13 @@ namespace apcurium.MK.Booking.Api.Jobs
             {
                 var totalOrderAmount = Convert.ToDecimal(meterAmount + tipAmount);
 
-                // TODO RedeemPromotion
+                var promoUsed = _promotionDao.FindByOrderId(orderStatusDetail.OrderId);
+                if (promoUsed != null)
+                {
+                    var promoDomainObject = _promoRepository.Get(promoUsed.PromoId);
+                    var amountSaved = promoDomainObject.GetAmountSaved(orderStatusDetail.OrderId, totalOrderAmount);
+                    totalOrderAmount = totalOrderAmount - amountSaved;
+                }
                 
                 // Preautorize
                 var preAuthResponse = PreauthorizePaymentIfNecessary(orderStatusDetail.OrderId, pairingInfo.TokenOfCardToBeUsedForPayment, totalOrderAmount);
@@ -440,7 +446,20 @@ namespace apcurium.MK.Booking.Api.Jobs
                 }
                 else
                 {
-                    paymentProviderServiceResponse = _paymentService.CommitPayment(orderId, totalOrderAmount, meterAmount, tipAmount, paymentDetail.TransactionId);
+                    if (totalOrderAmount > 0)
+                    {
+                        paymentProviderServiceResponse = _paymentService.CommitPayment(orderId, totalOrderAmount, meterAmount, tipAmount, paymentDetail.TransactionId);
+                        message = paymentProviderServiceResponse.Message;
+                    }
+                    else
+                    {
+                        // promotion made the ride free to the user
+                        // void preauth if it exists
+                        _paymentService.VoidPreAuthorization(orderId);
+
+                        paymentProviderServiceResponse.IsSuccessful = true;
+                        paymentProviderServiceResponse.AuthorizationCode = "AUTH_PROMO_FREE";
+                    }
                 }
 
                 if (paymentProviderServiceResponse.IsSuccessful && !isNoShowFee)
