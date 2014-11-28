@@ -92,12 +92,14 @@
     <Compile Include="Requests\TermsAndConditionsRequest.cs" />
     <Compile Include="Requests\TestOnlyReqGetTestAccount.cs" />
     <Compile Include="Requests\UpdatePassword.cs" />
+    <Compile Include="Requests\UserTaxiHailNetworkSettingsRequest.cs" />
     <Compile Include="Resources\Account.cs" />
     <Compile Include="Resources\AddressList.cs" />
     <Compile Include="Resources\IbsFare.cs" />
     <Compile Include="Resources\CreditCardDetails.cs" />
     <Compile Include="Resources\DirectionInfo.cs" />
     <Compile Include="Resources\ErrorCode.cs" />
+    <Compile Include="Resources\NetworkFleet.cs" />
     <Compile Include="Resources\Order.cs" />
     <Compile Include="Resources\OrderRatings.cs" />
     <Compile Include="Resources\Payments\PaymentSettingsResponse.cs" />

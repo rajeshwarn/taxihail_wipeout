@@ -4,11 +4,11 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="NotificationSettingsView">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="UserTaxiHailNetworkSettingsView">
             <connections>
-                <outlet property="labelNotificationEnabled" destination="F4f-lo-Okg" id="Ww8-AP-pcj"/>
-                <outlet property="switchNotificationEnabled" destination="LDY-BN-1iT" id="SQf-Gv-hF3"/>
-                <outlet property="tableNotifications" destination="GM1-H1-CO8" id="066-Qf-JMa"/>
+                <outlet property="labelTaxiHailNetworkEnabled" destination="F4f-lo-Okg" id="wNX-lm-eJW"/>
+                <outlet property="switchTaxiHailNetworkEnabled" destination="LDY-BN-1iT" id="ANN-Wa-i7G"/>
+                <outlet property="tableTaxiHailNetworkSettings" destination="GM1-H1-CO8" id="Yvj-qV-ABe"/>
                 <outlet property="view" destination="iN0-l3-epB" id="kCW-yf-GMq"/>
             </connections>
         </placeholder>

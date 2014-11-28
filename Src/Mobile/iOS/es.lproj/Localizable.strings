@@ -536,3 +536,9 @@
 "UpdateBookingSettingsInvalidCoF"="You must have a card on file to use this account";
 "MarketChangedMessageTitle"="New service area detected";
 "MarketChangedMessage"="You are leaving your local service area. Should you decide to book, your order will be dispatched using a taxi company from this area.";
+"PanelMenuViewTaxiHailNetworkText"="TaxiHail Network";
+"View_UserTaxiHailNetworkSettings"="TaxiHail Network";
+"Toggle_Off"="Apagado";
+"UserTaxiHailNetwork_Enabled"="TaxiHail Network";
+"MarketChangedMessage"="You are leaving your local service area. Should you decide to book, your order will be dispatched using a taxi company from this area.";
+"Toggle_On"="Encendido";

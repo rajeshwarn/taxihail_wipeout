@@ -1,5 +1,7 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
+using apcurium.MK.Booking.Api.Contract.Resources;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
@@ -22,6 +24,25 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             }
 
             return tcs.Task;
+        }
+
+        public Task<List<NetworkFleet>> GetNetworkFleets()
+        {
+			var tcs = new TaskCompletionSource<List<NetworkFleet>>();
+
+			try
+			{
+				var result =
+					UseServiceClientAsync<NetworkRoamingServiceClient, List<NetworkFleet>>(
+						service => service.GetNetworkFleets()).Result;
+				tcs.TrySetResult(result);
+			}
+			catch
+			{
+				tcs.TrySetResult(new List<NetworkFleet>());
+			}
+
+			return tcs.Task;
         }
     }
 }

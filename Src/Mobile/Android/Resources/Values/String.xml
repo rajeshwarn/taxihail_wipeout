@@ -567,4 +567,12 @@
   <string name="UpdateBookingSettingsInvalidCoF">You must have a card on file to use this account</string>
   <string name="MarketChangedMessage">You are leaving your local service area. Should you decide to book, your order will be dispatched using a taxi company from this area.</string>
   <string name="MarketChangedMessageTitle">New service area detected</string>
+  <string name="PanelMenuViewTaxiHailNetworkText">TaxiHail Network</string>
+  <string name="UserTaxiHailNetwork_Enabled">TaxiHail Network</string>
+  <string name="UserTaxiHailNetwork_Off">Off</string>
+  <string name="UserTaxiHailNetwork_On">On</string>
+  <string name="View_TaxiHailNetworkSettings">TaxiHail Network</string>
+  <string name="View_UserTaxiHailNetworkSettings">TaxiHail Network</string>
+  <string name="Toggle_Off">Off</string>
+  <string name="Toggle_On">On</string>
 </resources>

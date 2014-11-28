@@ -10,6 +10,7 @@ using apcurium.MK.Booking.EventHandlers;
 using apcurium.MK.Booking.EventHandlers.Integration;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.IBS.Impl;
+using apcurium.MK.Booking.ReadModel.Query;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
@@ -44,7 +45,8 @@ namespace apcurium.MK.Booking.Test.Integration.OrderFixture
                 () => new BookingDbContext(DbName),
                 new IBSServiceProvider(new TestServerSettings(), new Logger(), new TaxiHailNetworkServiceClient(new TestServerSettings())),
                 new TaxiHailNetworkServiceClient(new TestServerSettings()),
-                new HoneyBadgerServiceClient(new TestServerSettings()));
+                new HoneyBadgerServiceClient(new TestServerSettings()),
+                new ConfigurationDao(() => new ConfigurationDbContext(DbName)));
 
             var ordetailsGenerator = new OrderGenerator(() => new BookingDbContext(DbName), new Logger(), new TestServerSettings());
             ordetailsGenerator.Handle(new OrderCreated

@@ -193,6 +193,7 @@
     <Compile Include="Activities\Book\LocationService.cs" />
     <Compile Include="Activities\Setting\AboutActivity.cs" />
     <Compile Include="Activities\Setting\NotificationSettingsActivity.cs" />
+    <Compile Include="Activities\Setting\UserTaxiHailNetworkSettingsActivity.cs" />
     <Compile Include="Activities\TutorialActivity.cs" />
     <Compile Include="Adapters\GroupedLocationListAdapter.cs" />
     <Compile Include="Adapters\LocationListAdapter.cs" />
@@ -447,7 +448,9 @@
     <Compile Include="Activities\BaseBindingFragmentActivity.cs" />
     <Compile Include="Controls\Widgets\OrderReview.cs" />
     <AndroidResource Include="Resources\Layout\SubView_OrderOptions.axml" />
-    <AndroidResource Include="Resources\Layout\SubView_MainMenu.axml" />
+    <AndroidResource Include="Resources\Layout\SubView_MainMenu.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
     <AndroidResource Include="Resources\Drawable\cluster_taxi.png" />
     <AndroidResource Include="Resources\Drawable\nearby_taxi.png" />
     <AndroidResource Include="Resources\Drawable\taxi_icon.png" />
@@ -819,8 +822,9 @@
     <AndroidResource Include="Resources\Layout\View_NotificationSettings.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\Layout\NotificationSettingListItem.axml">
+    <AndroidResource Include="Resources\Layout\TogglableSettingsListItem.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
+    <AndroidResource Include="Resources\Layout\View_UserTaxiHailNetworkSettings.axml" />
   </ItemGroup>
 </Project>
