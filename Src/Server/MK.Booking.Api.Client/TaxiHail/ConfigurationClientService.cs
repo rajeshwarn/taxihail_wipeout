@@ -8,22 +8,45 @@ using apcurium.MK.Booking.Api.Client.Extensions;
 
 namespace apcurium.MK.Booking.Api.Client.TaxiHail
 {
-    public class ConfigurationClientService : BaseServiceClient
-    {
-        public ConfigurationClientService(string url, string sessionId, IPackageInfo packageInfo)
-            : base(url, sessionId, packageInfo)
-        {
-        }
+	public class ConfigurationClientService : BaseServiceClient
+	{
+		public ConfigurationClientService(string url, string sessionId, IPackageInfo packageInfo)
+			: base(url, sessionId, packageInfo)
+		{
+		}
 
-        public async Task<IDictionary<string, string>> GetSettings()
-        {
-            return await Client.GetAsync<Dictionary<string, string>>("/settings");
-        }
+		public Task<IDictionary<string, string>> GetSettings()
+		{
+			var tcs = new TaskCompletionSource<IDictionary<string, string>>();
 
-        public async Task<ClientPaymentSettings> GetPaymentSettings()
-        {
-            var paymentSettings = await Client.GetAsync<PaymentSettingsResponse> (new PaymentSettingsRequest ());
-            return paymentSettings.ClientPaymentSettings;
-        }
-    }
+			try
+			{
+				var result = Client.GetAsync<Dictionary<string, string>>("/settings").Result;
+				tcs.TrySetResult(result);
+			}
+			catch
+			{
+				tcs.TrySetResult(new Dictionary<string, string>());
+			}
+
+			return tcs.Task;
+		}
+
+		public Task<ClientPaymentSettings> GetPaymentSettings()
+		{
+			var tcs = new TaskCompletionSource<ClientPaymentSettings>();
+
+			try
+			{
+				var result = Client.GetAsync<PaymentSettingsResponse>(new PaymentSettingsRequest()).Result;
+				tcs.TrySetResult(result.ClientPaymentSettings);
+			}
+			catch
+			{
+				tcs.TrySetResult(new ClientPaymentSettings());
+			}
+
+			return tcs.Task;
+		}
+	}
 }
