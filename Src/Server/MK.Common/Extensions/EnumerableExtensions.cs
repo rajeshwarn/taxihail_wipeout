@@ -114,14 +114,15 @@ namespace apcurium.MK.Common.Extensions
             }
 
             var sb = new StringBuilder();
-            foreach (var elem in items)
+
+            foreach (var item in items)
             {
                 if (sb.Length > 0)
                 {
                     sb.Append(separator);
                 }
 
-                sb.Append(elem);
+                sb.Append(item);
             }
 
             return sb.ToString();
