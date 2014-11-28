@@ -2,6 +2,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.AppServices;
+using apcurium.MK.Common.Configuration;
 using MK.Common.Entity;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
@@ -64,12 +65,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         private void UpdateUserTaxiHailNetworkSettings()
         {
-            var disabledFleets = UserTaxiHailNetworkSettings.Where(s => !s.Value).Select(s => s.Name);
+            var disabledFleets = UserTaxiHailNetworkSettings.Where(s => !s.Value)
+                .Select(s => s.Name)
+                .ToArray();
 
             var updatedUserTaxiHailNetworkSettings = new UserTaxiHailNetworkSettings
             {
                 IsEnabled = IsTaxiHailNetworkEnabled,
-                DisabledFleets = disabledFleets.ToList()
+                DisabledFleets = disabledFleets
             };
 
             _accountService.UpdateUserTaxiHailNetworkSettings(updatedUserTaxiHailNetworkSettings);
