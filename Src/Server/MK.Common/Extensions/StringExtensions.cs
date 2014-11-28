@@ -243,5 +243,10 @@ namespace apcurium.MK.Common.Extensions
 
             return new[] { strVal };
         }
+
+        public static IEnumerable<string> UnFlatten(this string flattenedString, string separator)
+        {
+            return flattenedString.Split(new[] { separator }, StringSplitOptions.RemoveEmptyEntries);
+        }
     }
 }

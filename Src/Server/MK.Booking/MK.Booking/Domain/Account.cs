@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Common;
+using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
@@ -44,6 +45,7 @@ namespace apcurium.MK.Booking.Domain
             Handles<DeviceRegisteredForPushNotifications>(NoAction);
             Handles<DeviceUnregisteredForPushNotifications>(NoAction);
             Handles<NotificationSettingsAddedOrUpdated>(NoAction);
+            Handles<UserTaxiHailNetworkSettingsAddedOrUpdated>(NoAction);
             Handles<AccountLinkedToIbs>(NoAction);
         }
 
@@ -389,6 +391,15 @@ namespace apcurium.MK.Booking.Domain
             Update(new NotificationSettingsAddedOrUpdated
             {
                 NotificationSettings = notificationSettings
+            });
+        }
+
+        public void AddOrUpdateTaxiHailNetworkSettings(bool isEnabled, string[] disabledFleets)
+        {
+            Update(new UserTaxiHailNetworkSettingsAddedOrUpdated
+            {
+                IsEnabled = isEnabled,
+                DisabledFleets = disabledFleets
             });
         }
 

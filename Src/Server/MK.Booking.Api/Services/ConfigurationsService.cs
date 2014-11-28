@@ -1,5 +1,6 @@
 ﻿#region
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -17,6 +18,7 @@ using ServiceStack.Common.Web;
 using ServiceStack.ServiceHost;
 using ServiceStack.ServiceInterface;
 using ServiceStack.ServiceInterface.Auth;
+using ServiceStack.Text;
 
 #endregion
 
@@ -136,6 +138,41 @@ namespace apcurium.MK.Booking.Api.Services
                     NotificationSettings = request.NotificationSettings
                 });
             }
+
+            return new HttpResult(HttpStatusCode.OK, "OK");
+        }
+
+        public object Get(UserTaxiHailNetworkSettingsRequest request)
+        {
+            if (request.AccountId == null)
+            {
+                return new HttpError(HttpStatusCode.BadRequest, "Account Id cannot be null");
+            }
+
+            var networkSettings = _configDao.GetUserTaxiHailNetworkSettings(request.AccountId.Value) 
+                ?? new UserTaxiHailNetworkSettings { IsEnabled = true, DisabledFleets = new string[]{} };
+
+            return new UserTaxiHailNetworkSettings
+            {
+                Id = networkSettings.Id,
+                IsEnabled = networkSettings.IsEnabled,
+                DisabledFleets = networkSettings.DisabledFleets
+            };
+        }
+
+        public object Post(UserTaxiHailNetworkSettingsRequest request)
+        {
+            if (request.AccountId == null)
+            {
+                return new HttpError(HttpStatusCode.BadRequest, "Account Id cannot be null");
+            }
+
+            _commandBus.Send(new AddOrUpdateUserTaxiHailNetworkSettings
+            {
+                AccountId = request.AccountId.Value,
+                IsEnabled = request.UserTaxiHailNetworkSettings.IsEnabled,
+                DisabledFleets = request.UserTaxiHailNetworkSettings.DisabledFleets
+            });
 
             return new HttpResult(HttpStatusCode.OK, "OK");
         }
