@@ -182,19 +182,32 @@ namespace apcurium.MK.Booking.Services.Impl
         public PreAuthorizePaymentResponse PreAuthorize(Guid orderId, string email, string cardToken, decimal amountToPreAuthorize)
         {
             var message = string.Empty;
+            var transactionId = string.Empty;
 
             try
             {
-                var monerisSettings = _serverSettings.GetPaymentSettings().MonerisPaymentSettings;
+                bool isSuccessful;
 
-                // PreAuthorize transaction
-                var preAuthorizeCommand = new ResPreauthCC(cardToken, orderId.ToString(), amountToPreAuthorize.ToString("F"), CryptType_SSLEnabledMerchant);
-                var preAuthRequest = new HttpsPostRequest(monerisSettings.Host, monerisSettings.StoreId, monerisSettings.ApiToken, preAuthorizeCommand);
-                var preAuthReceipt = preAuthRequest.GetReceipt();
+                if (amountToPreAuthorize > 0)
+                {
+                    // PreAuthorize transaction
+                    var monerisSettings = _serverSettings.GetPaymentSettings().MonerisPaymentSettings;
 
-                var transactionId = preAuthReceipt.GetTxnNumber();
-                var isSuccessful = RequestSuccesful(preAuthReceipt, out message);
+                    var preAuthorizeCommand = new ResPreauthCC(cardToken, orderId.ToString(), amountToPreAuthorize.ToString("F"), CryptType_SSLEnabledMerchant);
+                    var preAuthRequest = new HttpsPostRequest(monerisSettings.Host, monerisSettings.StoreId, monerisSettings.ApiToken, preAuthorizeCommand);
+                    var preAuthReceipt = preAuthRequest.GetReceipt();
 
+                    transactionId = preAuthReceipt.GetTxnNumber();
+                    isSuccessful = RequestSuccesful(preAuthReceipt, out message);
+                }
+                else
+                {
+                    // if we're preauthorizing $0, we skip the preauth with payment provider
+                    // but we still send the InitiateCreditCardPayment command
+                    // this should never happen in the case of a real preauth (hence the minimum of $50)
+                    isSuccessful = true;
+                }
+                
                 if (isSuccessful)
                 {
                     var paymentId = Guid.NewGuid();

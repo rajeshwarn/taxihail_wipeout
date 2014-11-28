@@ -86,7 +86,6 @@ namespace apcurium.MK.Booking.Services.Impl
             try
             {
                 var paymentDetail = _paymentDao.FindNonPayPalByOrderId(orderId);
-
                 if (paymentDetail == null)
                 {
                     if (_serverSettings.GetPaymentSettings().IsPreAuthEnabled)
@@ -171,32 +170,45 @@ namespace apcurium.MK.Booking.Services.Impl
 
         public PreAuthorizePaymentResponse PreAuthorize(Guid orderId, string email, string cardToken, decimal amountToPreAuthorize)
         {
-            string message = string.Empty;
+            var message = string.Empty;
+            var transactionId = string.Empty;
 
             try
             {
-                var transactionRequest = new TransactionRequest
+                bool isSuccessful;
+
+                if (amountToPreAuthorize > 0)
                 {
-                    Amount = amountToPreAuthorize,
-                    PaymentMethodToken = cardToken,
-                    OrderId = orderId.ToString(),                    
-                    Channel = "MobileKnowledgeSystems_SP_MEC",
-                    Options = new TransactionOptionsRequest
+                    var transactionRequest = new TransactionRequest
                     {
-                        SubmitForSettlement = false
-                    }
-                };
+                        Amount = amountToPreAuthorize,
+                        PaymentMethodToken = cardToken,
+                        OrderId = orderId.ToString(),
+                        Channel = "MobileKnowledgeSystems_SP_MEC",
+                        Options = new TransactionOptionsRequest
+                        {
+                            SubmitForSettlement = false
+                        }
+                    };
 
-                //sale
-                var result = BraintreeGateway.Transaction.Sale(transactionRequest);
+                    //sale
+                    var result = BraintreeGateway.Transaction.Sale(transactionRequest);
 
-                var transactionId = result.Target.Id;
-                message = result.Message;
+                    transactionId = result.Target.Id;
+                    message = result.Message;
+                    isSuccessful = result.IsSuccess();
+                }
+                else
+                {
+                    // if we're preauthorizing $0, we skip the preauth with payment provider
+                    // but we still send the InitiateCreditCardPayment command
+                    // this should never happen in the case of a real preauth (hence the minimum of $50)
+                    isSuccessful = true;
+                }
 
-                if (result.IsSuccess())
+                if (isSuccessful)
                 {
                     var paymentId = Guid.NewGuid();
-
                     _commandBus.Send(new InitiateCreditCardPayment
                     {
                         PaymentId = paymentId,
@@ -213,7 +225,7 @@ namespace apcurium.MK.Booking.Services.Impl
 
                 return new PreAuthorizePaymentResponse
                 {
-                    IsSuccessful = result.IsSuccess(),
+                    IsSuccessful = isSuccessful,
                     Message = message,
                     TransactionId = transactionId
                 };
