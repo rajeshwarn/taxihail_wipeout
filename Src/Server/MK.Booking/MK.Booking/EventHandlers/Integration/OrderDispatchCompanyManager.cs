@@ -82,16 +82,14 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                 {
                     // Local market
                     var taxiHailNetworkSettings = _configurationDao.GetUserTaxiHailNetworkSettings(details.AccountId)
-                        ?? new UserTaxiHailNetworkSettings { IsEnabled = true, SerializedDisabledFleets = new List<string>().ToJson() };
+                        ?? new UserTaxiHailNetworkSettings { IsEnabled = true, DisabledFleets = new string[]{} };
 
                     if (taxiHailNetworkSettings.IsEnabled)
                     {
                         var networkFleet = await _taxiHailNetworkServiceClient.GetNetworkFleetAsync(details.CompanyKey, pickUpPosition.Latitude, pickUpPosition.Longitude);
 
-                        var disabledFleets = taxiHailNetworkSettings.SerializedDisabledFleets.FromJson<List<string>>();
-
                         // Remove fleets that were disabled by the user
-                        var userNetworkFleet = FilterNetworkFleet(disabledFleets, networkFleet);
+                        var userNetworkFleet = FilterNetworkFleet(taxiHailNetworkSettings.DisabledFleets, networkFleet);
 
                         nextDispatchCompany = FindNextDispatchCompany(details.CompanyKey, pickUpPosition, userNetworkFleet);
                     }

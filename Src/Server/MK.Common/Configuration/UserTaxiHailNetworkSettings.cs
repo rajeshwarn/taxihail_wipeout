@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -17,9 +16,9 @@ namespace apcurium.MK.Common.Configuration
         public string SerializedDisabledFleets { get; set; }
 
         [NotMapped]
-        public List<string> DisbledFleets
+        public string[] DisabledFleets
         {
-            get { return SerializedDisabledFleets.UnFlatten(",").ToList(); }
+            get { return SerializedDisabledFleets.UnFlatten(",").ToArray(); }
             set { SerializedDisabledFleets = value.Flatten(","); }
         }
     }

@@ -3,7 +3,6 @@ using apcurium.MK.Booking.Events;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
 using Infrastructure.Messaging.Handling;
-using ServiceStack.Text;
 
 namespace apcurium.MK.Booking.EventHandlers
 {
@@ -30,7 +29,7 @@ namespace apcurium.MK.Booking.EventHandlers
                 {
                     Id = @event.SourceId,
                     IsEnabled = @event.IsEnabled,
-                    SerializedDisabledFleets = @event.DisabledFleets.ToJson()
+                    DisabledFleets = @event.DisabledFleets
                 });
 
                 context.SaveChanges();

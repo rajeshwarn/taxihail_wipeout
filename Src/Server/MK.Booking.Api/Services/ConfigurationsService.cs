@@ -150,14 +150,13 @@ namespace apcurium.MK.Booking.Api.Services
             }
 
             var networkSettings = _configDao.GetUserTaxiHailNetworkSettings(request.AccountId.Value) 
-                ?? new UserTaxiHailNetworkSettings { IsEnabled = true, SerializedDisabledFleets = new List<string>().ToJson() };
+                ?? new UserTaxiHailNetworkSettings { IsEnabled = true, DisabledFleets = new string[]{} };
 
             return new UserTaxiHailNetworkSettings
             {
                 Id = networkSettings.Id,
                 IsEnabled = networkSettings.IsEnabled,
-                DisbledFleets = networkSettings.DisbledFleets
-                //DisabledFleets = networkSettings.SerializedDisabledFleets.FromJson<List<string>>()
+                DisabledFleets = networkSettings.DisabledFleets
             };
         }
 
@@ -172,8 +171,7 @@ namespace apcurium.MK.Booking.Api.Services
             {
                 AccountId = request.AccountId.Value,
                 IsEnabled = request.UserTaxiHailNetworkSettings.IsEnabled,
-                DisabledFleets = request.UserTaxiHailNetworkSettings.DisbledFleets.ToArray()
-                //DisabledFleets = request.UserTaxiHailNetworkSettings.DisabledFleets.ToArray()
+                DisabledFleets = request.UserTaxiHailNetworkSettings.DisabledFleets
             });
 
             return new HttpResult(HttpStatusCode.OK, "OK");
