@@ -624,7 +624,6 @@
     <AndroidResource Include="Resources\drawable-xhdpi\map_smallicon_background.png" />
     <AndroidResource Include="Resources\Drawable\map_bigicon_background.png" />
     <AndroidResource Include="Resources\Drawable\map_smallicon_background.png" />
-    <AndroidResource Include="Resources\Layout\NotificationSettingListItem.axml" />
     <AndroidResource Include="Resources\Layout\View_Promotion.axml" />
   </ItemGroup>
   <ItemGroup>
@@ -823,5 +822,7 @@
     <AndroidResource Include="Resources\Layout\View_NotificationSettings.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
+    <AndroidResource Include="Resources\Layout\TogglableSettingsListItem.axml" />
+    <AndroidResource Include="Resources\Layout\View_UserTaxiHailNetworkSettings.axml" />
   </ItemGroup>
 </Project>
