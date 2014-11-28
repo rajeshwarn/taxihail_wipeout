@@ -45,12 +45,11 @@ namespace apcurium.MK.Web.Tests
             var commandBus = UnityServiceLocator.Instance.Resolve<ICommandBus>();
             var orderDao = UnityServiceLocator.Instance.Resolve<IOrderDao>();
             var logger = UnityServiceLocator.Instance.Resolve<ILogger>();
-            var ibsOrderService = UnityServiceLocator.Instance.Resolve<IIbsOrderService>();
             var accountDao = UnityServiceLocator.Instance.Resolve<IAccountDao>();
             var orderPaymentDao = UnityServiceLocator.Instance.Resolve<IOrderPaymentDao>();
             var serverSettings = UnityServiceLocator.Instance.Resolve<IServerSettings>();
             var pairingService = UnityServiceLocator.Instance.Resolve<IPairingService>();
-            return new CmtPaymentService(commandBus, orderDao, logger, ibsOrderService, accountDao, orderPaymentDao, serverSettings, pairingService);
+            return new CmtPaymentService(commandBus, orderDao, logger, accountDao, orderPaymentDao, serverSettings, pairingService);
         }
     }
 }

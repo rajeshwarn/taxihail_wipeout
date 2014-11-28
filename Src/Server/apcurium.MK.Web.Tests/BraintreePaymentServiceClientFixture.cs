@@ -44,14 +44,11 @@ namespace apcurium.MK.Web.Tests
         private IPaymentService GetPaymentService()
         {
             var commandBus = UnityServiceLocator.Instance.Resolve<ICommandBus>();
-            var orderDao = UnityServiceLocator.Instance.Resolve<IOrderDao>();
             var logger = UnityServiceLocator.Instance.Resolve<ILogger>();
-            var ibsOrderService = UnityServiceLocator.Instance.Resolve<IIbsOrderService>();
-            var accountDao = UnityServiceLocator.Instance.Resolve<IAccountDao>();
             var orderPaymentDao = UnityServiceLocator.Instance.Resolve<IOrderPaymentDao>();
             var serverSettings = UnityServiceLocator.Instance.Resolve<IServerSettings>();
             var pairingService = UnityServiceLocator.Instance.Resolve<IPairingService>();
-            return new BraintreePaymentService(commandBus, orderDao, logger, ibsOrderService, accountDao, orderPaymentDao, serverSettings, pairingService);
+            return new BraintreePaymentService(commandBus, logger, orderPaymentDao, serverSettings, pairingService);
         }
     }
 }

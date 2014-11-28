@@ -89,12 +89,12 @@ namespace apcurium.MK.Booking
                     switch (serverSettings.GetPaymentSettings().PaymentMode)
                     {
                         case PaymentMethod.Braintree:
-                            return new BraintreePaymentService(c.Resolve<ICommandBus>(), c.Resolve<IOrderDao>(), c.Resolve<ILogger>(), c.Resolve<IIbsOrderService>(), c.Resolve<IAccountDao>(), c.Resolve<IOrderPaymentDao>(), serverSettings, c.Resolve<IPairingService>());
+                            return new BraintreePaymentService(c.Resolve<ICommandBus>(), c.Resolve<ILogger>(), c.Resolve<IOrderPaymentDao>(), serverSettings, c.Resolve<IPairingService>());
                         case PaymentMethod.RideLinqCmt:
                         case PaymentMethod.Cmt:
-                            return new CmtPaymentService(c.Resolve<ICommandBus>(), c.Resolve<IOrderDao>(), c.Resolve<ILogger>(), c.Resolve<IIbsOrderService>(), c.Resolve<IAccountDao>(), c.Resolve<IOrderPaymentDao>(), serverSettings, c.Resolve<IPairingService>());
+                            return new CmtPaymentService(c.Resolve<ICommandBus>(), c.Resolve<IOrderDao>(), c.Resolve<ILogger>(), c.Resolve<IAccountDao>(), c.Resolve<IOrderPaymentDao>(), serverSettings, c.Resolve<IPairingService>());
                         case PaymentMethod.Moneris:
-                            return new MonerisPaymentService(c.Resolve<ICommandBus>(), c.Resolve<IOrderDao>(), c.Resolve<ILogger>(), c.Resolve<IIbsOrderService>(), c.Resolve<IAccountDao>(), c.Resolve<IOrderPaymentDao>(), serverSettings, c.Resolve<IPairingService>());
+                            return new MonerisPaymentService(c.Resolve<ICommandBus>(),c.Resolve<ILogger>(), c.Resolve<IOrderPaymentDao>(), serverSettings, c.Resolve<IPairingService>());
                         default:
                             return null;
                     }
