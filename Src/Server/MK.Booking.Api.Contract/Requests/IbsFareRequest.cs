@@ -19,6 +19,8 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
         public string AccountNumber { get; set; }
         public int? CustomerNumber { get; set; }
         public int? TripDurationInSeconds { get; set; }
+        public int? VehicleType  { get; set; }
+        
     }
 
     public class IbsFareResponse : DirectionInfo

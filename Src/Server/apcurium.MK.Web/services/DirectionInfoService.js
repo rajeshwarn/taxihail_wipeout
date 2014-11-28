@@ -30,9 +30,9 @@
                         async: false
                     });
 
-                    $.get('api/ibsfare?PickupLatitude={0}&PickupLongitude={1}&DropoffLatitude={2}&DropoffLongitude={3}&PickupZipCode={4}&DropoffZipCode={5}&AccountNumber={6}&CustomerNumber={7}&TripDurationInSeconds={8}'.format(coordinates.originLat, coordinates.originLng, coordinates.destinationLat, coordinates.destinationLng,
+                    $.get('api/ibsfare?PickupLatitude={0}&PickupLongitude={1}&DropoffLatitude={2}&DropoffLongitude={3}&PickupZipCode={4}&DropoffZipCode={5}&AccountNumber={6}&CustomerNumber={7}&TripDurationInSeconds={8}&VehicleType={9}'.format(coordinates.originLat, coordinates.originLng, coordinates.destinationLat, coordinates.destinationLng,
                         pickupZipCode, dropOffZipCode,
-                        (account != null) ? account : '', 0, (tripDurationInSeconds != null) ? tripDurationInSeconds : ''), function () { }, fmt).then(function (result) {
+                        (account != null) ? account : '', 0, (tripDurationInSeconds != null) ? tripDurationInSeconds : '', vehicleTypeId), function () { }, fmt).then(function (result) {
                         if (result.price == 0 && tarifMode == "Both") {
                             $.get('api/directions/', coordinates, function () { }, fmt).done(function (resultGoogleBoth) {                                
                                 directionInfoDefer.resolve(resultGoogleBoth);

@@ -105,7 +105,8 @@ namespace apcurium.MK.Booking.IBS.Impl
             return result;
         }
 
-        public IbsFareEstimate GetFareEstimate( double? pickupLat, double? pickupLng, double? dropoffLat, double? dropoffLng, string pickupZipCode, string dropoffZipCode, string accountNumber, int? customerNumber, int? tripDurationInSeconds, int? providerId)
+        public IbsFareEstimate GetFareEstimate( double? pickupLat, double? pickupLng, double? dropoffLat, double? dropoffLng, string pickupZipCode, string dropoffZipCode, string accountNumber, 
+            int? customerNumber, int? tripDurationInSeconds, int? providerId, int? vehicleType)
         {
             var result = new IbsFareEstimate();
             UseService(service =>
@@ -131,7 +132,7 @@ namespace apcurium.MK.Booking.IBS.Impl
                 }
 
                 tbook.AccountNum = accountNumber;
-                tbook.VehicleTypeID = -1;
+                tbook.VehicleTypeID = vehicleType  ?? - 1;
                 tbook.ChargeTypeID = -1;
 
                 tbook.ServiceProviderID = providerId ?? -1;
@@ -297,12 +298,11 @@ namespace apcurium.MK.Booking.IBS.Impl
                 Phone = CleanPhone( phone ),
                 Fare = (double)fare.AmountExclTax,
                 VAT = (double)fare.TaxAmount,
-                AccountNum = accountNumber,
-                CustomerNum = customerNumber ?? 0 //TODO waiting for MK to know what this is
+                AccountNum = accountNumber,            
             };
 
             order.AccountNum =  accountNumber;
-            order.CustomerNum = customerNumber ?? 0; 
+            //order.CustomerNum = customerNumber ?? -1; 
 
             order.DispByAuto = _ibsSettings.AutoDispatch;
             order.Priority = _ibsSettings.OrderPriority 

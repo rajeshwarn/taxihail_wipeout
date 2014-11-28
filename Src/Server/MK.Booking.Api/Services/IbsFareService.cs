@@ -33,7 +33,7 @@ namespace apcurium.MK.Booking.Api.Services
             var fare = _ibsServiceProvider.Booking().GetFareEstimate(request.PickupLatitude, request.PickupLongitude,
                 request.DropoffLatitude, request.DropoffLongitude, 
                 request.PickupZipCode, request.DropoffZipCode,
-                request.AccountNumber, request.CustomerNumber, tripDurationInMinutes, _serverSettings.ServerData.DefaultBookingSettings.ProviderId);
+                request.AccountNumber, request.CustomerNumber, tripDurationInMinutes, _serverSettings.ServerData.DefaultBookingSettings.ProviderId, request.VehicleType);
             return fare.FareEstimate != null
                 ? new DirectionInfo
                 {

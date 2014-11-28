@@ -40,7 +40,7 @@ namespace MK.Booking.PayPal.Test
             var url = sut.GetCheckoutUrl(token);
 
             // Act
-            var transactionId = sut.DoExpressCheckoutPayment(token, "5CX7H5Y7VLBZQ", 12.34m);
+            var transactionId = sut.DoExpressCheckoutPayment(token, "5CX7H5Y7VLBZQ", 12.34m, string.Empty, string.Empty);
 
             // Assert
             Assert.IsNotEmpty(transactionId);
@@ -61,7 +61,7 @@ namespace MK.Booking.PayPal.Test
             var url = sut.GetCheckoutUrl(token);
             Console.WriteLine(url);
 
-            var transactionId = sut.DoExpressCheckoutPayment(token, "5CX7H5Y7VLBZQ", 12.34m);
+            var transactionId = sut.DoExpressCheckoutPayment(token, "5CX7H5Y7VLBZQ", 12.34m, string.Empty, string.Empty);
 
             // Act
             sut.RefundTransaction(transactionId);
