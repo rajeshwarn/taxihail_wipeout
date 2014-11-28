@@ -535,6 +535,7 @@
 "CreditCardBookingSettingsError"="An error occured when updating the booking settings. Please make sure that the account number in your profile is valid and try again.";
 "UpdateBookingSettingsInvalidCoF"="You must have a card on file to use this account";
 "MarketChangedMessageTitle"="New service area detected";
+"MarketChangedMessage"="You are leaving your local service area. Should you decide to book, your order will be dispatched using a taxi company from this area.";
 "PanelMenuViewTaxiHailNetworkText"="TaxiHail Network";
 "View_UserTaxiHailNetworkSettings"="TaxiHail Network";
 "Toggle_Off"="Apagado";
