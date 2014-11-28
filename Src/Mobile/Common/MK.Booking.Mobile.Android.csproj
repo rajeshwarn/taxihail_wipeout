@@ -118,7 +118,9 @@
   <ItemGroup>
     <Compile Include="AppServices\IGeolocService.cs" />
     <Compile Include="AppServices\Impl\NetworkRoamingService.cs" />
+    <Compile Include="AppServices\Impl\PromotionService.cs" />
     <Compile Include="AppServices\INetworkRoamingService.cs" />
+    <Compile Include="AppServices\IPromotionService.cs" />
     <Compile Include="AsyncCommand.cs" />
     <Compile Include="AppServices\Impl\BaseService.cs" />
     <Compile Include="AppServices\Impl\GeolocService.cs" />
@@ -227,6 +229,7 @@
     <Compile Include="ViewModels\Payment\ConfirmPairViewModel.cs" />
     <Compile Include="ViewModels\Payment\PairingState.cs" />
     <Compile Include="ViewModels\NotificationSettingsViewModel.cs" />
+    <Compile Include="ViewModels\PromotionViewModel.cs" />
     <Compile Include="ViewModels\SectionAddressViewModel.cs" />
     <Compile Include="ViewModels\TutorialViewModel.cs" />
     <Compile Include="ViewModels\ZoomLevel.cs" />
