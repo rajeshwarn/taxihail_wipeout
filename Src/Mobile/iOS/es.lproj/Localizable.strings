@@ -546,3 +546,5 @@
 "PromoRequiresToPayWithCOFPairingWarningMessage"="If you decide to pay in car, you will not be able to use the promotion";
 "Toggle_Off"="Apagado";
 "UserTaxiHailNetwork_Enabled"="TaxiHail Network";
+"PanelMenuViewTaxiHailNetworkText"="TaxiHail Network";
+"View_UserTaxiHailNetworkSettings"="TaxiHail Network";

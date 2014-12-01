@@ -551,12 +551,11 @@
 "PromoMustUseCardOnFileMessage"="Pour utiliser un code promo, vous devez payer avec le paiement in app";
 "PanelMenuViewPromotionsText"="Promotions";
 "MarketChangedMessageTitle"="Nouvelle zone détectée";
-"MarketChangedMessageTitle"="Nouvelle zone détectée";
 "View_UserTaxiHailNetworkSettings"="Réseau TaxiHail";
 "UserTaxiHailNetwork_Enabled"="Réseau TaxiHail";
 "MarketChangedMessage"="Vous quittez votre zone locale de service. Si vous décidez de commander un véhicule, votre commande sera envoyée à une compagnie désservant cette zone.";
 "Toggle_On"="Oui";
 "Toggle_Off"="Non";
-"MarketChangedMessage"="Vous quittez votre zone locale de service. Si vous décidez de commander un véhicule, votre commande sera envoyée à une compagnie désservant cette zone.";
 "PromoRequiresToPayWithCOFPairingWarningCancelButton"="Payer dans le taxi";
 "PromoRequiresToPayWithCOFPairingWarningMessage"="Si vous décidez de payer dans le taxi, vous ne serez pas éligible à la promotion";
+"PanelMenuViewTaxiHailNetworkText"="Réseau TaxiHail";
