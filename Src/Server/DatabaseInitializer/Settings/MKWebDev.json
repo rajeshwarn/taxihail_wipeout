@@ -16,7 +16,7 @@
    "TaxiHail.AccentColor" : "#0057a3",
    "TaxiHail.EmailFontColor" : "#000",
    "TaxiHail.SiteName" : "Dev",
-   "IBS.WebServicesUrl" : "http://apcuriumibs:6928/XDS_IASPI.DLL/soap/",
+   "IBS.WebServicesUrl" : "http://ukdemo.drivelinq.com:11928/IBSCab2/IBSCab.dll/soap/",
    "IBS.WebServicesPassword" : "test",   
    "IBS.WebServicesUserName" : "taxi", 
    "GeoLoc.DefaultLatitude" : "45.516667",
