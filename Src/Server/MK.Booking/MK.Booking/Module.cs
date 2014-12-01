@@ -157,6 +157,10 @@ namespace apcurium.MK.Booking
                 .ForMember(d => d.DriverFirstName, opt => opt.MapFrom(m => m.DriverInfos.FirstName))
                 .ForMember(d => d.DriverLastName, opt => opt.MapFrom(m => m.DriverInfos.LastName))
                 .ForMember(d => d.VehicleRegistration, opt => opt.MapFrom(m => m.DriverInfos.VehicleRegistration));
+
+            Mapper.CreateMap<PromotionUsageDetail, OrderDetailWithAccount>()
+                .ForMember(d => d.PromoCode, opt => opt.MapFrom(m => m.Code))
+                .ForMember(d => d.PaymentSavedAmount, opt => opt.MapFrom(m => m.AmountSaved));
         }
 
         private static void RegisterEventHandlers(IUnityContainer container)
