@@ -822,7 +822,7 @@
     <None Include="Calabash\features\step_definitions\my_first_steps.rb" />
     <None Include="Properties\AndroidManifest.xml" />
     <AndroidResource Include="Resources\Layout\View_NotificationSettings.axml">
-      <SubType>AndroidResource</SubType>
+      <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\Layout\TogglableSettingsListItem.axml" />
     <AndroidResource Include="Resources\Layout\View_UserTaxiHailNetworkSettings.axml" />
