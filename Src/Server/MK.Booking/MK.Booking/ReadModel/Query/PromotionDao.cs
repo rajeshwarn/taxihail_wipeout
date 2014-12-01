@@ -46,6 +46,8 @@ namespace apcurium.MK.Booking.ReadModel.Query
                             thisPromo.PublishedEndDate = DateTime.MaxValue;
                         }
 
+                        //TODO PROMO: we should abstract Now with a IClock http://stackoverflow.com/questions/43711/whats-a-good-way-to-overwrite-datetime-now-during-testing
+                        //TODO PROMO: should we be using an UTC, date need to be on the same timezone, admin in France comparing a server in the US ?
                         var now = DateTime.Now.Date;
                         if (thisPromo.PublishedStartDate <= now
                             && thisPromo.PublishedEndDate > now)

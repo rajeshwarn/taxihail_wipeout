@@ -45,7 +45,7 @@ namespace apcurium.MK.Booking.EventHandlers
                     Code = @event.Code,
                     PublishedStartDate = @event.PublishedStartDate,
                     PublishedEndDate = @event.PublishedEndDate,
-                    Active = true
+                    Active = true //TODO PROMO should be false
                 };
 
                 context.Save(promotionDetail);
