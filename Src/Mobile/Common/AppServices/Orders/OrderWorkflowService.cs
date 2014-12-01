@@ -332,6 +332,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			if (_bookingService.HasLastOrder) 
 			{
 				var status = await _bookingService.GetLastOrderStatus (); 
+				if (status == null)
+				{
+					return null;
+				}
+
 				if (!_bookingService.IsStatusCompleted (status.IBSStatusId)) 
 				{
 					var order = await _accountService.GetHistoryOrderAsync (status.OrderId);
