@@ -63,10 +63,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		    {
                 ItemMenuList.Add(new ItemMenuModel { Text = this.Services().Localize["PanelMenuViewPaymentInfoText"], NavigationCommand = NavigateToPaymentInformation });
 		    }
-		    		if (Settings.PromotionEnabled)
-			{
-				ItemMenuList.Add(new ItemMenuModel { Text = this.Services().Localize["PanelMenuViewPromotionsText"], NavigationCommand = NavigateToPromotions });
-	
+		    if (Settings.PromotionEnabled)
+		    {
+		        ItemMenuList.Add(new ItemMenuModel { Text = this.Services().Localize["PanelMenuViewPromotionsText"], NavigationCommand = NavigateToPromotions });
+		    }
 		    if (IsNotificationsEnabled)
 		    {
                 ItemMenuList.Add(new ItemMenuModel { Text = this.Services().Localize["PanelMenuViewNotificationsText"], NavigationCommand = NavigateToNotificationsSettings });
