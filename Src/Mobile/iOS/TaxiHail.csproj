@@ -253,14 +253,14 @@
     <Reference Include="GoogleConversionTracking">
       <HintPath>..\Libraries\Monotouch\GoogleConversionTracking.dll</HintPath>
     </Reference>
-    <Reference Include="Xamarin.Insights">
-      <HintPath>..\packages\Xamarin.Insights.1.6.0\lib\MonoTouch10\Xamarin.Insights.dll</HintPath>
-    </Reference>
-    <Reference Include="PLCrashReporter">
-      <HintPath>..\packages\Xamarin.Insights.1.6.0\lib\MonoTouch10\PLCrashReporter.dll</HintPath>
-    </Reference>
     <Reference Include="Card.IO.iOS">
       <HintPath>..\Libraries\Monotouch\Card.IO.iOS.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Insights">
+      <HintPath>..\packages\Xamarin.Insights.1.7.3.98\lib\MonoTouch10\Xamarin.Insights.dll</HintPath>
+    </Reference>
+    <Reference Include="PLCrashReporter">
+      <HintPath>..\packages\Xamarin.Insights.1.7.3.98\lib\MonoTouch10\PLCrashReporter.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
