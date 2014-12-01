@@ -1710,4 +1710,7 @@
   <data name="PromoRequiresToPayWithCOFPairingWarningCancelButton" xml:space="preserve">
     <value>Pay in car</value>
   </data>
+  <data name="View_Promotions" xml:space="preserve">
+    <value>Promotions</value>
+  </data>
 </root>

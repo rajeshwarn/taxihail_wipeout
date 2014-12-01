@@ -302,8 +302,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				return this.GetCommand(() =>
 				{
 					CloseMenu();
-					ShowViewModel<HistoryListViewModel> ();
-					// TODO MKTAXI-2310
+					ShowViewModel<PromotionViewModel> ();
 				});
 			}
 		}

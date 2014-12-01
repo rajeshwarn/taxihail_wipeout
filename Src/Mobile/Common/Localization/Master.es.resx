@@ -2260,4 +2260,7 @@
     <value>Pay in car</value>
     <comment>Pay in car</comment>
   </data>
+  <data name="View_Promotions" xml:space="preserve">
+    <value>Promotions</value>
+  </data>
 </root>

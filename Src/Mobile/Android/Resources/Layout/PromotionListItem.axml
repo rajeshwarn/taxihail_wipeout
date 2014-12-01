@@ -32,7 +32,7 @@
             android:text="Expires in 3 days"
             local:MvxBind="Text OriginTxt" />
     </LinearLayout>
-    <LinearLayout
+<!--<LinearLayout
         android:orientation="horizontal"
         android:paddingTop="5dip"
         android:paddingBottom="5dip"
@@ -43,5 +43,5 @@
             android:layout_height="wrap_content"
             android:text="Promo Description"
             local:MvxBind="Text Description" />
-    </LinearLayout>
+    </LinearLayout>-->
 </RelativeLayout>
