@@ -5,6 +5,7 @@ using apcurium.MK.Booking.EventHandlers;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
+using apcurium.MK.Common.Extensions;
 using Infrastructure.Messaging;
 using Moq;
 using NUnit.Framework;
@@ -52,7 +53,7 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
                 Assert.NotNull(dto);
                 Assert.AreEqual(accountId, dto.Id);
                 Assert.AreEqual(true, dto.IsEnabled);
-                Assert.AreEqual(disabledFleets.ToJson(), dto.SerializedDisabledFleets);
+                Assert.AreEqual(disabledFleets.Flatten(","), dto.SerializedDisabledFleets);
             }
         }
     }
@@ -91,7 +92,7 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
                 Assert.NotNull(dto);
                 Assert.AreEqual(_accountId, dto.Id);
                 Assert.AreEqual(false, dto.IsEnabled);
-                Assert.AreEqual(disabledFleets.ToJson(), dto.SerializedDisabledFleets);
+                Assert.AreEqual(disabledFleets.Flatten(","), dto.SerializedDisabledFleets);
             }
         }
     }
