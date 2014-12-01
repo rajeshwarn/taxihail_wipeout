@@ -1780,4 +1780,7 @@
   <data name="PromoRequiresToPayWithCOFPairingWarningCancelButton" xml:space="preserve">
     <value>Payer dans le taxi</value>
   </data>
+  <data name="View_Promotions" xml:space="preserve">
+    <value>Promotions</value>
+  </data>
 </root>
