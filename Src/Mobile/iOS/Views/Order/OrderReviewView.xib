@@ -142,7 +142,7 @@
                         <constraint firstAttribute="width" constant="35" id="4sK-sh-U0g"/>
                         <constraint firstAttribute="height" constant="35" id="ASs-fZ-2Cg"/>
                     </constraints>
-                    <state key="normal" image="baggage.png">
+                    <state key="normal" image="promo.png">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                 </button>
@@ -218,10 +218,10 @@
     <resources>
         <image name="account.png" width="16" height="16"/>
         <image name="apartment.png" width="16" height="16"/>
-        <image name="baggage.png" width="16" height="16"/>
         <image name="chargetype.png" width="16" height="16"/>
         <image name="entrycode.png" width="16" height="16"/>
         <image name="passengers.png" width="16" height="16"/>
+        <image name="promo.png" width="16" height="16"/>
         <image name="telephone.png" width="16" height="16"/>
         <image name="time.png" width="16" height="16"/>
         <image name="vehicle.png" width="16" height="16"/>

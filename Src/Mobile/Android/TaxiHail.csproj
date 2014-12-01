@@ -627,6 +627,8 @@
     <AndroidResource Include="Resources\Drawable\map_bigicon_background.png" />
     <AndroidResource Include="Resources\Drawable\map_smallicon_background.png" />
     <AndroidResource Include="Resources\Layout\View_Promotion.axml" />
+    <AndroidResource Include="Resources\Drawable\promo.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\promo.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\View_Login.axml">

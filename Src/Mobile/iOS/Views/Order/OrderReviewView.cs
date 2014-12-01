@@ -28,6 +28,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 
             txtPromoCode.BackgroundColor = UIColor.FromRGB(242, 242, 242);
             txtPromoCode.Placeholder = Localize.GetValue("PromoCodeLabel");
+            txtPromoCode.MoveClearButtonFromUnderRightImage = true;
             DismissKeyboardOnReturn(txtPromoCode);
         }
 
