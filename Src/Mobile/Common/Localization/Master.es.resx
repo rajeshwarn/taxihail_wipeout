@@ -867,6 +867,10 @@
     <value>Estado:</value>
     <comment>Status:</comment>
   </data>
+  <data name="HistoryDetailPromoLabel" xml:space="preserve">
+    <value>Promo Code:</value>
+    <comment>Promo Code:</comment>
+  </data>
   <data name="HistoryInfo" xml:space="preserve">
     <value>Mostrando los viajes del último mes</value>
     <comment>Displaying trips from the last month</comment>

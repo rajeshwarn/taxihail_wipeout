@@ -577,3 +577,4 @@
 "PromoRequiresToPayWithCOFPairingWarningMessage"="If you decide to pay in car, you will not be able to use the promotion";
 "View_UserTaxiHailNetworkSettings"="TaxiHail Network";
 "View_Promotions"="Promotions";
+"HistoryDetailPromoLabel"="Promo Code:";

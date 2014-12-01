@@ -4,6 +4,7 @@ using apcurium.MK.Booking.Mobile.ViewModels;
 using MonoTouch.UIKit;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using apcurium.MK.Booking.Mobile.Client.Controls.Widgets;
+using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
@@ -53,6 +54,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			lblStatus.Text = Localize.GetValue("HistoryDetailStatusLabel");
             txtStatus.Text = Localize.GetValue("LoadingMessage");
 			lblAuthorization.Text = Localize.GetValue("HistoryDetailAuthorizationLabel");
+            lblPromo.Text = Localize.GetValue("HistoryDetailPromoLabel");
 
 			btnRebook.SetTitle(Localize.GetValue("Rebook"), UIControlState.Normal);
 			btnStatus.SetTitle(Localize.GetValue("HistoryViewStatusButton"), UIControlState.Normal);
@@ -70,6 +72,18 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				lblDestination.RemoveFromSuperview();
 				txtDestination.RemoveFromSuperview();
 			}
+
+            ViewModel.PropertyChanged += (sender, e) =>
+            {
+                if (e.PropertyName == "PromoCode")
+                {
+                    if(!ViewModel.PromoCode.HasValue())
+                    {
+                        lblPromo.RemoveFromSuperview();
+                        txtPromo.RemoveFromSuperview();
+                    }
+                }
+            };
 
 			var set = this.CreateBindingSet<HistoryDetailView, HistoryDetailViewModel>();
 
@@ -168,6 +182,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			set.Bind(txtPickupDate)
 				.For(v => v.Text)
 				.To(vm => vm.PickUpDateTxt);
+
+            set.BindSafe(txtPromo)
+                .For(v => v.Text)
+                .To(vm => vm.PromoCode);
 
 			set.Apply();
 		}

@@ -583,4 +583,5 @@
   <string name="Toggle_Off">Off</string>
   <string name="Toggle_On">On</string>
   <string name="View_Promotions">Promotions</string>
+  <string name="HistoryDetailPromoLabel">Promo Code:</string>
 </resources>

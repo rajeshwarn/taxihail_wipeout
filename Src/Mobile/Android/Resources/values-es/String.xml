@@ -552,4 +552,5 @@
   <string name="UserTaxiHailNetwork_Enabled">TaxiHail Network</string>
   <string name="PromoRequiresToPayWithCOFPairingWarningMessage">If you decide to pay in car, you will not be able to use the promotion</string>
   <string name="View_Promotions">Promotions</string>
+  <string name="HistoryDetailPromoLabel">Promo Code:</string>
 </resources>

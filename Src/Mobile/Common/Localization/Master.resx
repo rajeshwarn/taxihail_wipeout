@@ -297,6 +297,9 @@
   <data name="HistoryDetailAuthorizationLabel" xml:space="preserve">
     <value>Authorization:</value>
   </data>
+  <data name="HistoryDetailPromoLabel" xml:space="preserve">
+    <value>Promo Code:</value>
+  </data>
   <data name="Reset" xml:space="preserve">
     <value>Reset</value>
   </data>

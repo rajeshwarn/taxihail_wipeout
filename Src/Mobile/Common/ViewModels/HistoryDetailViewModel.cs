@@ -73,6 +73,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				RaisePropertyChanged(() => AptRingTxt); 
 				RaisePropertyChanged(() => DestinationTxt); 
 				RaisePropertyChanged(() => PickUpDateTxt); 
+				RaisePropertyChanged(() => PromoCode); 
             }
 		}
 
@@ -260,6 +261,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				return Status.FareAvailable
 					? string.Format ("{0} ({1})", Status.IBSStatusDescription, CultureProvider.FormatCurrency(amount.Value))
 					: Status.IBSStatusDescription;
+			}
+		}
+
+		public string PromoCode
+		{
+			get 
+			{
+				return Order != null 
+					? Order.PromoCode
+					: null;
 			}
 		}
 

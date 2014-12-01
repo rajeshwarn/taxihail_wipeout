@@ -560,3 +560,4 @@
 "PromoRequiresToPayWithCOFPairingWarningMessage"="Si vous décidez de payer dans le taxi, vous ne serez pas éligible à la promotion";
 "PanelMenuViewTaxiHailNetworkText"="Réseau TaxiHail";
 "View_Promotions"="Promotions";
+"HistoryDetailPromoLabel"="Code promo:";
