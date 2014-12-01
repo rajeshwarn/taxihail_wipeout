@@ -136,6 +136,7 @@ namespace apcurium.MK.Booking.Domain
 
             if (_maxUsagesPerUser.HasValue)
             {
+                //TODO PROMO use trygetvalue? http://msdn.microsoft.com/en-us/library/bb347013(v=vs.110).aspx
                 var usagesForThisUser = _usagesPerUser.ContainsKey(accountId)
                     ? _usagesPerUser[accountId]
                     : 0;
@@ -215,6 +216,7 @@ namespace apcurium.MK.Booking.Domain
 
         public decimal GetAmountSaved(Guid orderId, decimal totalAmountOfOrder)
         {
+            //TODO PROMO why? explain in comment
             if (!_orderIds.Contains(orderId))
             {
                 return 0;
@@ -248,6 +250,7 @@ namespace apcurium.MK.Booking.Domain
 
         private void OnPromotionCreated(PromotionCreated @event)
         {
+            //TODO PROMO should be inactive by default
             _active = true;
 
             _startDate = @event.StartDate;
@@ -295,20 +298,23 @@ namespace apcurium.MK.Booking.Domain
             _usages = _usages + 1;
 
             var usagesForThisUser = 0;
+            //TODO PROMO optmization, check if  @event.AccountId is not null before doing a dictionary lookup
             if (_usagesPerUser.ContainsKey(@event.AccountId))
             {
                 usagesForThisUser = _usagesPerUser[@event.AccountId];
             }
-
+            //TODO PROMO should be in the if?
             _usagesPerUser[@event.AccountId] = usagesForThisUser + 1;
 
             _orderIds.Add(@event.OrderId);
         }
 
+        //TODO PROMO add comment about what the purpose of this method
         private void SetInternalStartAndEndTimes(DateTime? startTime, DateTime? endTime)
         {
             if (startTime.HasValue && endTime.HasValue)
             {
+                //TODO PROMO not sure about that? endTime < startTime then end time is the next day?
                 var dayOffset = 0;
                 if (startTime.Value.Date != endTime.Value.Date)
                 {

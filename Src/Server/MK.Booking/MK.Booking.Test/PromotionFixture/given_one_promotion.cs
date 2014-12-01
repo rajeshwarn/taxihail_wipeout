@@ -10,6 +10,7 @@ using NUnit.Framework;
 
 namespace apcurium.MK.Booking.Test.PromotionFixture
 {
+    //TODO PROMO how do we check that an order already get a promo code i.e. no multiple promo codes for an order?
     [TestFixture]
     public class given_one_promotion
     {
@@ -134,6 +135,8 @@ namespace apcurium.MK.Booking.Test.PromotionFixture
             Assert.AreEqual(_value, @event.DiscountValue);
         }
 
+
+        //TODO PROMO : should we get an error in this case?
         [Test]
         public void when_redeeming_a_promo_without_having_it_applied_first()
         {
