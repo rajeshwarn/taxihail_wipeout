@@ -71,7 +71,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                 {
                     OrderId = @event.OrderId,
                     PromoId = @event.PromotionUsed.Value,
-                    TotalAmountOfOrder = @event.Amount
+                    TotalAmountOfOrder = @event.Amount + @event.AmountSavedByPromotion
                 });
             }
         }
