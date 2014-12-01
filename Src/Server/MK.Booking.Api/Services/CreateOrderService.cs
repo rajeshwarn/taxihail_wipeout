@@ -259,6 +259,7 @@ namespace apcurium.MK.Booking.Api.Services
                 return new HttpError(ErrorCode.CreateOrder_CannotCreateInIbs + code);
             }
 
+            //TODO PROMO : off topic shoud we removed this code now?
             //Temporary solution for Aexid, we call the save extr payment to send the account info.  if not successful, we cancel the order.
             var result = TryToSendAccountInformation(request.Id, ibsOrderId.Value, request, account);
             if (result.HasValue)
@@ -791,6 +792,7 @@ namespace apcurium.MK.Booking.Api.Services
             var promo = _promotionDao.FindByPromoCode(promoCode);
             if (promo == null)
             {
+                //TODO PROMO : we already have created the order in IBS, what do we do now?
                 throw new HttpError(HttpStatusCode.Forbidden, ErrorCode.CreateOrder_RuleDisable.ToString(),
                     _resources.Get("CannotCreateOrder_PromotionDoesNotExist", clientLanguageCode));
             }
@@ -803,6 +805,7 @@ namespace apcurium.MK.Booking.Api.Services
                     _resources.Get(errorMessage, clientLanguageCode));
             }
 
+            
             _commandBus.Send(new ApplyPromotion
             {
                 PromoId = promo.Id,
