@@ -298,7 +298,11 @@ namespace apcurium.MK.Booking.Domain
             _orderIds.Add(@event.OrderId);
         }
 
-        // this method sets the start/end times with DateTime.MinValue to be used when validating time of day for promo usage
+        /// <summary>
+        /// Sets the start/end times with DateTime.MinValue to be used when validating time of day for promo usage
+        /// </summary>
+        /// <param name="startTime"></param>
+        /// <param name="endTime"></param>
         private void SetInternalStartAndEndTimes(DateTime? startTime, DateTime? endTime)
         {
             if (startTime.HasValue && endTime.HasValue)
