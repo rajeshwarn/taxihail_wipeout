@@ -26,6 +26,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public ObservableCollection<PromotionItemViewModel> ActivePromotions { get; set; }
 
+		public bool HasPromotions 
+		{
+			get 
+			{
+				return ActivePromotions.Count > 0;
+			}
+		}
+
         public ICommand SelectPromotion
         {
             get
@@ -49,6 +57,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 ActivePromotions.Add(activePromotion);
             }
+
+			RaisePropertyChanged(() => HasPromotions);
         }
     }
 }

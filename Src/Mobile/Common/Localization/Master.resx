@@ -1785,4 +1785,7 @@
   <data name="PromoBookRide" xml:space="preserve">
     <value>Book a ride with this promotion</value>
   </data>
+  <data name="PromotionViewNoPromotionLabel" xml:space="preserve">
+    <value>No promotions available</value>
+  </data>
 </root>

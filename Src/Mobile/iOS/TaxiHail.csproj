@@ -563,6 +563,10 @@
     </Compile>
     <BundleResource Include="Resources\promo.png" />
     <BundleResource Include="Resources\promo%402x.png" />
+    <Compile Include="Views\PromotionView.cs" />
+    <Compile Include="Views\PromotionView.designer.cs">
+      <DependentUpon>PromotionView.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
   <ProjectExtensions>
@@ -611,6 +615,7 @@
     <InterfaceDefinition Include="Views\Payments\ConfirmPairView.xib" />
     <InterfaceDefinition Include="Views\NotificationSettingsView.xib" />
     <InterfaceDefinition Include="Views\UserTaxiHailNetworkSettingsView.xib" />
+    <InterfaceDefinition Include="Views\PromotionView.xib" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="en.lproj\Localizable.strings" />

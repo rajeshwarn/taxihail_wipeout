@@ -1798,4 +1798,7 @@
   <data name="PromoBookRide" xml:space="preserve">
     <value>Passer une commande avec cette promotion</value>
   </data>
+  <data name="PromotionViewNoPromotionLabel" xml:space="preserve">
+    <value>Aucune promotion disponible</value>
+  </data>
 </root>

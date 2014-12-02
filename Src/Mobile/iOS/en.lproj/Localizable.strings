@@ -578,3 +578,8 @@
 "View_UserTaxiHailNetworkSettings"="TaxiHail Network";
 "View_Promotions"="Promotions";
 "HistoryDetailPromoLabel"="Promo Code:";
+"PromoExpiringSoonMessage"="Expires in {0} days";
+"PromoBookRide"="Book a ride with this promotion";
+"PromoExpiringIn1DayMessage"="Expires in 1 day";
+"PromoExpiringToday"="Expires today!";
+"PromotionViewNoPromotionLabel"="No promotions available";
