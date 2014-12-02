@@ -7,13 +7,24 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 {
     public class PromotionItemViewModel : SelectableItemViewModel<ActivePromotion>
     {
-        public PromotionItemViewModel(ActivePromotion activePromotion, ICommand promotionSelectedCommand)
-            : base(activePromotion, promotionSelectedCommand)
+        public PromotionItemViewModel(ActivePromotion activePromotion, ICommand promotionRedeemedCommand)
+            : base(activePromotion, promotionRedeemedCommand)
         {
             Name = activePromotion.Name;
             Description = activePromotion.Description;
             ExpiringSoonWarning = GenerateExpiringSoonWarning(activePromotion.ExpirationDate);
-            PromotionSelectedCommand = promotionSelectedCommand;
+            IsExpended = false;
+        }
+
+        public ICommand SelectPromotion
+        {
+            get
+            {
+                return this.GetCommand(() =>
+                {
+                    IsExpended = !IsExpended;
+                });
+            }
         }
 
         public string Name { get; private set; }
@@ -22,7 +33,19 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public string ExpiringSoonWarning { get; private set; }
 
-        public ICommand PromotionSelectedCommand { get; private set; }
+        private bool _isExpended;
+        public bool IsExpended
+        {
+            get { return _isExpended; }
+            set
+            {
+                if (_isExpended != value)
+                {
+                    _isExpended = value;
+                    RaisePropertyChanged();
+                }
+            }
+        }
 
         private string GenerateExpiringSoonWarning(DateTime? expirationDate)
         {

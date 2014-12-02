@@ -6,15 +6,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
     public class SelectableItemViewModel<TItem> : BaseViewModel
     {
         public SelectableItemViewModel(TItem item, ICommand selectedCommand)
-            :this(item, null, selectedCommand)
+            :this(item, selectedCommand, null)
         {
         }
 
-        public SelectableItemViewModel(TItem item, ICommand deleteCommand, ICommand selectedCommand)
+        public SelectableItemViewModel(TItem item, ICommand selectedCommand, ICommand optionalCommand)
         {
             _item = item;
-            _deleteCommand = deleteCommand;
             _selectedCommand = selectedCommand;
+            _optionalCommand = optionalCommand;
         }
 
         TItem _item;
@@ -43,14 +43,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        readonly ICommand _deleteCommand;
-        public ICommand DeleteCommand
+        readonly ICommand _optionalCommand;
+        public ICommand OptionalCommand
         {
             get
             {
                 return this.GetCommand(() =>
                 {
-                    _deleteCommand.Execute(_item);
+                    _optionalCommand.ExecuteIfPossible(Item);
                 });
             }
         }
