@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
+using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
 
 namespace apcurium.MK.Booking.ReadModel.Query
@@ -10,11 +11,13 @@ namespace apcurium.MK.Booking.ReadModel.Query
     public class PromotionDao : IPromotionDao
     {
         private readonly Func<BookingDbContext> _contextFactory;
+        private readonly IClock _clock;
         private readonly IServerSettings _serverSettings;
 
-        public PromotionDao(Func<BookingDbContext> contextFactory, IServerSettings serverSettings)
+        public PromotionDao(Func<BookingDbContext> contextFactory, IClock clock, IServerSettings serverSettings)
         {
             _contextFactory = contextFactory;
+            _clock = clock;
             _serverSettings = serverSettings;
         }
 
@@ -49,7 +52,6 @@ namespace apcurium.MK.Booking.ReadModel.Query
                             thisPromo.PublishedEndDate = DateTime.MaxValue;
                         }
 
-                        //TODO PROMO: we should abstract Now with a IClock http://stackoverflow.com/questions/43711/whats-a-good-way-to-overwrite-datetime-now-during-testing
                         var now = GetCurrentOffsetedTime();
                         if (thisPromo.PublishedStartDate <= now
                             && thisPromo.PublishedEndDate > now
@@ -91,7 +93,7 @@ namespace apcurium.MK.Booking.ReadModel.Query
         private DateTime GetCurrentOffsetedTime()
         {
             var ibsServerTimeDifference = _serverSettings.ServerData.IBS.TimeDifference;
-            var now = DateTime.Now;
+            var now = _clock.Now;
             if (ibsServerTimeDifference != 0)
             {
                 now = now.Add(new TimeSpan(ibsServerTimeDifference));

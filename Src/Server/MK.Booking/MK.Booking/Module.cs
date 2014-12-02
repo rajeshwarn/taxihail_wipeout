@@ -23,6 +23,7 @@ using apcurium.MK.Booking.Services;
 using apcurium.MK.Booking.Services.Impl;
 using apcurium.MK.Booking.SMS;
 using apcurium.MK.Booking.SMS.Impl;
+using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Diagnostic;
@@ -52,7 +53,7 @@ namespace apcurium.MK.Booking
             container.RegisterInstance<ITemplateService>(new TemplateService(container.Resolve<IServerSettings>()));
             container.RegisterInstance<IPushNotificationService>(new PushNotificationService(container.Resolve<IServerSettings>(), container.Resolve<ILogger>()));
             container.RegisterInstance<IOrderDao>(new OrderDao(() => container.Resolve<BookingDbContext>()));
-            container.RegisterInstance<IPromotionDao>(new PromotionDao(() => container.Resolve<BookingDbContext>(), container.Resolve<IServerSettings>()));
+            container.RegisterInstance<IPromotionDao>(new PromotionDao(() => container.Resolve<BookingDbContext>(), container.Resolve<IClock>(), container.Resolve<IServerSettings>()));
             container.RegisterType<INotificationService, NotificationService>(new ContainerControlledLifetimeManager());
                     
             container.RegisterType<IPairingService>(new ContainerControlledLifetimeManager(),

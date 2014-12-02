@@ -23,6 +23,7 @@ namespace apcurium.MK.Common
                     container.Resolve<ConnectionStringSettings>(MkConnectionString).ConnectionString));
 
             container.RegisterInstance<ILogger>(new Logger());
+            container.RegisterInstance<IClock>(new SystemClock());
 
             var settings = new ServerSettings(() => container.Resolve<ConfigurationDbContext>(),
                 container.Resolve<ILogger>());

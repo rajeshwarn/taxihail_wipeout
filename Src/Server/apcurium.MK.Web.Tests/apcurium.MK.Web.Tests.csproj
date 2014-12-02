@@ -142,6 +142,7 @@
     <Compile Include="PushNotificationRegistrationFixture.cs" />
     <Compile Include="PlaceDetailFixture.cs" />
     <Compile Include="RuleFixture.cs" />
+    <Compile Include="StaticClock.cs" />
     <Compile Include="TariffFixture.cs" />
     <Compile Include="SearchLocationsFixture.cs" />
     <Compile Include="DirectionsFixture.cs" />
