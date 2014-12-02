@@ -4389,14 +4389,14 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f050109
 			public const int GooglePlayServicesNotAvailableMessage = 2131034377;
 			
-			// aapt resource value: 0x7f050292
-			public const int GooglePlayServicesNotAvailableMessage1 = 2131034770;
+			// aapt resource value: 0x7f050293
+			public const int GooglePlayServicesNotAvailableMessage1 = 2131034771;
 			
 			// aapt resource value: 0x7f050069
 			public const int GooglePlayServicesNotAvailableTitle = 2131034217;
 			
-			// aapt resource value: 0x7f050293
-			public const int GooglePlayServicesNotAvailableTitle1 = 2131034771;
+			// aapt resource value: 0x7f050294
+			public const int GooglePlayServicesNotAvailableTitle1 = 2131034772;
 			
 			// aapt resource value: 0x7f05002d
 			public const int Hello = 2131034157;
@@ -4892,6 +4892,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 			
 			// aapt resource value: 0x7f050268
 			public const int Politeness = 2131034728;
+			
+			// aapt resource value: 0x7f050292
+			public const int PromoBookRide = 2131034770;
 			
 			// aapt resource value: 0x7f05027e
 			public const int PromoCodeLabel = 2131034750;
