@@ -10,6 +10,7 @@
     android:paddingTop="5dip"
     android:paddingBottom="5dip"
     android:paddingLeft="15dip"
+    android:background="@color/white"
     local:MvxBind="Click SelectPromotion">
     <LinearLayout
         android:orientation="horizontal"
@@ -23,6 +24,7 @@
             android:layout_width="wrap_content"
             android:textStyle="bold"
             android:textColor="@color/black"
+            android:textSize="18dip"
             android:text="Promo Name"
             local:MvxBind="Text Name" />
         <TextView
@@ -34,6 +36,17 @@
             android:textColor="@color/red"
             android:text="Expires in 3 days"
             local:MvxBind="Text ExpiringSoonWarning" />
+        <ImageView
+            android:id="@+id/rightArrow"
+            android:src="@drawable/down_arrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:gravity="right"
+            android:paddingTop="5dp"
+            android:layout_marginRight="20dp"
+            android:paddingBottom="5dp" />
     </LinearLayout>
     <LinearLayout
         android:orientation="vertical"
@@ -45,6 +58,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="@color/black"
             android:text="Promo Description"
             local:MvxBind="Text Description" />
         <RelativeLayout
@@ -57,7 +71,7 @@
                 android:id="@+id/SaveSettingsButton"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/HeightButton"
-                android:paddingTop="5dip"
+                android:paddingTop="7dip"
                 android:paddingBottom="5dip"
                 android:layout_centerInParent="true"
                 android:text="@string/PromoBookRide"

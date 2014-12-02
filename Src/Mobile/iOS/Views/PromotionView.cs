@@ -74,7 +74,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 .To(vm => vm.ActivePromotions);
             set.Bind(source)
                 .For(v => v.SelectedCommand)
-                .To(vm => vm.SelectPromotion);
+                .To(vm => vm.ApplyPromotion);
 
             set.Apply ();
         }

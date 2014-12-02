@@ -567,6 +567,8 @@
     <Compile Include="Views\PromotionView.designer.cs">
       <DependentUpon>PromotionView.cs</DependentUpon>
     </Compile>
+    <BundleResource Include="Resources\down_arrow.png" />
+    <BundleResource Include="Resources\down_arrow%402x.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
   <ProjectExtensions>
