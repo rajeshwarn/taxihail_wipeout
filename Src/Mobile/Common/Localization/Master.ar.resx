@@ -1731,4 +1731,7 @@
   <data name="PromotionViewNoPromotionLabel" xml:space="preserve">
     <value>No promotions available</value>
   </data>
+  <data name="Promo_NoActive" xml:space="preserve">
+    <value>No Active Promotion</value>
+  </data>
 </root>

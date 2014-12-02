@@ -570,4 +570,5 @@
   <string name="PromoExpiringToday">Expire aujourd\'hui!</string>
   <string name="PromoBookRide">Passer une commande avec cette promotion</string>
   <string name="PromotionViewNoPromotionLabel">Aucune promotion disponible</string>
+  <string name="Promo_NoActive">Aucune promotion active</string>
 </resources>
