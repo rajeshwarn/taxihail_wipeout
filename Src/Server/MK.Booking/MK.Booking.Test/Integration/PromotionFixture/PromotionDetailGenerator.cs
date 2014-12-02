@@ -42,6 +42,7 @@ namespace apcurium.MK.Booking.Test.Integration.PromotionFixture
             {
                 SourceId = promoId,
                 Name = "promo1",
+                Description = "promodesc1",
                 Code = "code",
                 AppliesToCurrentBooking = true,
                 AppliesToFutureBooking = false,
@@ -53,7 +54,9 @@ namespace apcurium.MK.Booking.Test.Integration.PromotionFixture
                 StartDate = new DateTime(2014, 11, 10),
                 EndDate = new DateTime(2015, 11, 10),
                 StartTime = new DateTime(SqlDateTime.MinValue.Value.Year, SqlDateTime.MinValue.Value.Month, SqlDateTime.MinValue.Value.Day, 10, 0, 0),
-                EndTime = new DateTime(SqlDateTime.MinValue.Value.Year, SqlDateTime.MinValue.Value.Month, SqlDateTime.MinValue.Value.Day, 14, 0, 0)
+                EndTime = new DateTime(SqlDateTime.MinValue.Value.Year, SqlDateTime.MinValue.Value.Month, SqlDateTime.MinValue.Value.Day, 14, 0, 0),
+                PublishedStartDate = new DateTime(2014, 11, 10),
+                PublishedEndDate = new DateTime(2015, 11, 10),
             });
 
             using (var context = new BookingDbContext(DbName))
@@ -62,8 +65,9 @@ namespace apcurium.MK.Booking.Test.Integration.PromotionFixture
 
                 Assert.NotNull(dto);
                 Assert.AreEqual(promoId, dto.Id);
-                Assert.AreEqual(true, dto.Active);
+                Assert.AreEqual(false, dto.Active);
                 Assert.AreEqual("promo1", dto.Name);
+                Assert.AreEqual("promodesc1", dto.Description);
                 Assert.AreEqual("code", dto.Code);
                 Assert.AreEqual(true, dto.AppliesToCurrentBooking);
                 Assert.AreEqual(false, dto.AppliesToFutureBooking);
@@ -78,6 +82,8 @@ namespace apcurium.MK.Booking.Test.Integration.PromotionFixture
                 Assert.AreEqual(SqlDateTime.MinValue.Value.Date, dto.EndTime.Value.Date);
                 Assert.AreEqual(new TimeSpan(10, 0, 0), dto.StartTime.Value.TimeOfDay);
                 Assert.AreEqual(new TimeSpan(14, 0, 0), dto.EndTime.Value.TimeOfDay);
+                Assert.AreEqual(new DateTime(2014, 11, 10), dto.PublishedStartDate);
+                Assert.AreEqual(new DateTime(2015, 11, 10), dto.PublishedEndDate);
             }
         }
     }
@@ -93,6 +99,7 @@ namespace apcurium.MK.Booking.Test.Integration.PromotionFixture
             {
                 SourceId = _promoId,
                 Name = "promo1",
+                Description = "promodesc1",
                 Code = "code",
                 AppliesToCurrentBooking = true,
                 AppliesToFutureBooking = false,
@@ -104,7 +111,9 @@ namespace apcurium.MK.Booking.Test.Integration.PromotionFixture
                 StartDate = new DateTime(2014, 11, 10),
                 EndDate = new DateTime(2015, 11, 10),
                 StartTime = new DateTime(SqlDateTime.MinValue.Value.Year, SqlDateTime.MinValue.Value.Month, SqlDateTime.MinValue.Value.Day, 10, 0, 0),
-                EndTime = new DateTime(SqlDateTime.MinValue.Value.Year, SqlDateTime.MinValue.Value.Month, SqlDateTime.MinValue.Value.Day, 14, 0, 0)
+                EndTime = new DateTime(SqlDateTime.MinValue.Value.Year, SqlDateTime.MinValue.Value.Month, SqlDateTime.MinValue.Value.Day, 14, 0, 0),
+                PublishedStartDate = new DateTime(2014, 11, 10),
+                PublishedEndDate = new DateTime(2015, 11, 10),
             });
         }
 
@@ -115,6 +124,7 @@ namespace apcurium.MK.Booking.Test.Integration.PromotionFixture
             {
                 SourceId = _promoId,
                 Name = "promo2",
+                Description = "promodesc2",
                 Code = "code2",
                 AppliesToCurrentBooking = false,
                 AppliesToFutureBooking = true,
@@ -143,6 +153,8 @@ namespace apcurium.MK.Booking.Test.Integration.PromotionFixture
                 Assert.AreEqual(null, dto.EndDate);
                 Assert.AreEqual(null, dto.StartTime);
                 Assert.AreEqual(null, dto.EndTime);
+                Assert.AreEqual(null, dto.PublishedStartDate);
+                Assert.AreEqual(null, dto.PublishedEndDate);
             }
         }
 
@@ -173,6 +185,74 @@ namespace apcurium.MK.Booking.Test.Integration.PromotionFixture
                 Assert.NotNull(dto);
                 Assert.AreEqual(_promoId, dto.Id);
                 Assert.AreEqual(true, dto.Active);
+            }
+        }
+
+        [Test]
+        public void when_promotion_applied_then_dto_created()
+        {
+            var accountId = Guid.NewGuid();
+            var orderId = Guid.NewGuid();
+
+            Sut.Handle(new PromotionApplied
+            {
+                SourceId = _promoId,
+                AccountId = accountId,
+                OrderId = orderId,
+                Code = "code",
+                DiscountType = PromoDiscountType.Cash,
+                DiscountValue = 10
+            });
+
+            using (var context = new BookingDbContext(DbName))
+            {
+                var dto = context.Find<PromotionUsageDetail>(orderId);
+
+                Assert.NotNull(dto);
+                Assert.AreEqual(_promoId, dto.PromoId);
+                Assert.AreEqual(orderId, dto.OrderId);
+                Assert.AreEqual(accountId, dto.AccountId);
+                Assert.AreEqual("code", dto.Code);
+                Assert.AreEqual(PromoDiscountType.Cash, dto.DiscountType);
+                Assert.AreEqual(10, dto.DiscountValue);
+            }
+        }
+
+        [Test]
+        public void when_promotion_redeemed_then_dto_updated()
+        {
+            var accountId = Guid.NewGuid();
+            var orderId = Guid.NewGuid();
+
+            Sut.Handle(new PromotionApplied
+            {
+                SourceId = _promoId,
+                AccountId = accountId,
+                Code = "code",
+                DiscountType = PromoDiscountType.Cash,
+                DiscountValue = 10,
+                OrderId = orderId
+            });
+
+            Sut.Handle(new PromotionRedeemed
+            {
+                SourceId = _promoId,
+                OrderId = orderId,
+                AmountSaved = 10
+            });
+
+            using (var context = new BookingDbContext(DbName))
+            {
+                var dto = context.Find<PromotionUsageDetail>(orderId);
+
+                Assert.NotNull(dto);
+                Assert.AreEqual(_promoId, dto.PromoId);
+                Assert.AreEqual(orderId, dto.OrderId);
+                Assert.AreEqual(accountId, dto.AccountId);
+                Assert.AreEqual("code", dto.Code);
+                Assert.AreEqual(PromoDiscountType.Cash, dto.DiscountType);
+                Assert.AreEqual(10, dto.DiscountValue);
+                Assert.AreEqual(10, dto.AmountSaved);
             }
         }
     }

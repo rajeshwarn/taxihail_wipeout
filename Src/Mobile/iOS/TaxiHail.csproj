@@ -561,6 +561,8 @@
     <Compile Include="Views\UserTaxiHailNetworkSettingsView.designer.cs">
       <DependentUpon>UserTaxiHailNetworkSettingsView.cs</DependentUpon>
     </Compile>
+    <BundleResource Include="Resources\promo.png" />
+    <BundleResource Include="Resources\promo%402x.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
   <ProjectExtensions>

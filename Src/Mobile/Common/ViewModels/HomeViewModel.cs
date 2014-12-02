@@ -365,6 +365,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			{
 				return;
 			}
+			catch(Exception)
+			{
+				return;
+			}
 		}
 
 		private void ZoomOnNearbyVehiclesIfPossible(AvailableVehicle[] vehicles)

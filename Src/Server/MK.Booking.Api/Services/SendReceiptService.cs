@@ -19,6 +19,7 @@ namespace apcurium.MK.Booking.Api.Services
     public class SendReceiptService : Service
     {
         private readonly IAccountDao _accountDao;
+        private readonly IPromotionDao _promotionDao;
         private readonly IIBSServiceProvider _ibsServiceProvider;
         private readonly ICommandBus _commandBus;
         private readonly ICreditCardDao _creditCardDao;
@@ -33,6 +34,7 @@ namespace apcurium.MK.Booking.Api.Services
             IOrderPaymentDao orderPaymentDao,
             ICreditCardDao creditCardDao,
             IAccountDao accountDao,
+            IPromotionDao promotionDao,
             IServerSettings serverSettings)
         {
             _serverSettings = serverSettings;
@@ -40,6 +42,7 @@ namespace apcurium.MK.Booking.Api.Services
             _orderDao = orderDao;
             _orderPaymentDao = orderPaymentDao;
             _accountDao = accountDao;
+            _promotionDao = promotionDao;
             _creditCardDao = creditCardDao;
             _commandBus = commandBus;
         }
@@ -71,13 +74,20 @@ namespace apcurium.MK.Booking.Api.Services
                     ? _creditCardDao.FindByToken(orderPayment.CardToken) 
                     : null;
 
+                var promotionUsed = _promotionDao.FindByOrderId(request.OrderId);
+
                 _commandBus.Send(SendReceiptCommandBuilder.GetSendReceiptCommand(
                     order, account, ibsOrder.VehicleNumber, orderStatus.DriverInfos,
-                    GetMeterAmount((double)orderPayment.Meter),
+                    GetMeterAmount((double)orderPayment.Meter), 
                     0, 
                     Convert.ToDouble(orderPayment.Tip),
                     GetTaxAmount((double)orderPayment.Meter, 0), 
-                    orderPayment, creditCard));
+                    orderPayment,
+                    promotionUsed != null 
+                        ? Convert.ToDouble(promotionUsed.AmountSaved) 
+                        : (double?) null, 
+                    promotionUsed, 
+                    creditCard));
             }
             else if ((pairingInfo != null) && (pairingInfo.AutoTipPercentage.HasValue))
             {
@@ -94,7 +104,7 @@ namespace apcurium.MK.Booking.Api.Services
                         Math.Round(((double)tripData.Extra / 2), 2), 
                         Math.Round(((double)tripData.Tip / 100), 2), 
                         Math.Round(((double)tripData.Tax / 100), 2), 
-                        null, creditCard));
+                        null, null, null, creditCard));
                 }
                 else
                 {
@@ -104,7 +114,7 @@ namespace apcurium.MK.Booking.Api.Services
                         ibsOrder.Toll,
                         GetTipAmount(ibsOrder.Fare.GetValueOrDefault(0), pairingInfo.AutoTipPercentage.Value),
                         GetTaxAmount(ibsOrder.Fare, ibsOrder.VAT), 
-                        null, creditCard));
+                        null, null, null, creditCard));
                 }
             }
             else

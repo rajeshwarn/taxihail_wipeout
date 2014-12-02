@@ -47,6 +47,10 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
         public double? UserLongitude { get; set; }
 
         public bool FromWebApp { get; set; }
+        
+		public AccountChargeQuestion[] QuestionsAndAnswers { get; set; }
+
+        public string PromoCode { get; set; }
 
         public string Market { get; set; }
 
@@ -59,7 +63,5 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
 
             public int Distance { get; set; }
         }
-
-		public AccountChargeQuestion[] QuestionsAndAnswers { get; set; }
     }
 }

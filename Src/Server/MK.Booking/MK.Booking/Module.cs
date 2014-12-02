@@ -23,6 +23,7 @@ using apcurium.MK.Booking.Services;
 using apcurium.MK.Booking.Services.Impl;
 using apcurium.MK.Booking.SMS;
 using apcurium.MK.Booking.SMS.Impl;
+using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Diagnostic;
@@ -52,10 +53,11 @@ namespace apcurium.MK.Booking
             container.RegisterInstance<ITemplateService>(new TemplateService(container.Resolve<IServerSettings>()));
             container.RegisterInstance<IPushNotificationService>(new PushNotificationService(container.Resolve<IServerSettings>(), container.Resolve<ILogger>()));
             container.RegisterInstance<IOrderDao>(new OrderDao(() => container.Resolve<BookingDbContext>()));
+            container.RegisterInstance<IPromotionDao>(new PromotionDao(() => container.Resolve<BookingDbContext>(), container.Resolve<IClock>(), container.Resolve<IServerSettings>()));
             container.RegisterType<INotificationService, NotificationService>(new ContainerControlledLifetimeManager());
                     
-            container.RegisterType<IPairingService>(new ContainerControlledLifetimeManager(), 
-                new InjectionFactory(c => new PairingService(c.Resolve<ICommandBus>(), c.Resolve<IIbsOrderService>(), c.Resolve<IOrderDao>(), c.Resolve<IServerSettings>())));
+            container.RegisterType<IPairingService>(new ContainerControlledLifetimeManager(),
+                new InjectionFactory(c => new PairingService(c.Resolve<ICommandBus>(), c.Resolve<IIbsOrderService>(), c.Resolve<IOrderDao>(), c.Resolve<IPromotionDao>(), c.Resolve<IServerSettings>())));
 
             container.RegisterInstance<IAddressDao>(new AddressDao(() => container.Resolve<BookingDbContext>()));
             container.RegisterInstance<IAccountDao>(new AccountDao(() => container.Resolve<BookingDbContext>()));        
@@ -73,7 +75,6 @@ namespace apcurium.MK.Booking
             container.RegisterInstance<IAccountChargeDao>(new AccountChargeDao(() => container.Resolve<BookingDbContext>()));
             container.RegisterInstance<IVehicleTypeDao>(new VehicleTypeDao(() => container.Resolve<BookingDbContext>()));
             container.RegisterInstance<IAppStartUpLogDao>(new AppStartUpLogDao(() => container.Resolve<BookingDbContext>()));
-            container.RegisterInstance<IPromotionDao>(new PromotionDao(() => container.Resolve<BookingDbContext>()));
             container.RegisterInstance<IPasswordService>(new PasswordService());
             container.RegisterInstance<IRuleCalculator>(new RuleCalculator(container.Resolve<IRuleDao>()));
             
@@ -89,12 +90,12 @@ namespace apcurium.MK.Booking
                     switch (serverSettings.GetPaymentSettings().PaymentMode)
                     {
                         case PaymentMethod.Braintree:
-                            return new BraintreePaymentService(c.Resolve<ICommandBus>(), c.Resolve<IOrderDao>(), c.Resolve<ILogger>(), c.Resolve<IIbsOrderService>(), c.Resolve<IAccountDao>(), c.Resolve<IOrderPaymentDao>(), serverSettings, c.Resolve<IPairingService>());
+                            return new BraintreePaymentService(c.Resolve<ICommandBus>(), c.Resolve<ILogger>(), c.Resolve<IOrderPaymentDao>(), serverSettings, c.Resolve<IPairingService>());
                         case PaymentMethod.RideLinqCmt:
                         case PaymentMethod.Cmt:
-                            return new CmtPaymentService(c.Resolve<ICommandBus>(), c.Resolve<IOrderDao>(), c.Resolve<ILogger>(), c.Resolve<IIbsOrderService>(), c.Resolve<IAccountDao>(), c.Resolve<IOrderPaymentDao>(), serverSettings, c.Resolve<IPairingService>());
+                            return new CmtPaymentService(c.Resolve<ICommandBus>(), c.Resolve<IOrderDao>(), c.Resolve<ILogger>(), c.Resolve<IAccountDao>(), c.Resolve<IOrderPaymentDao>(), serverSettings, c.Resolve<IPairingService>());
                         case PaymentMethod.Moneris:
-                            return new MonerisPaymentService(c.Resolve<ICommandBus>(), c.Resolve<IOrderDao>(), c.Resolve<ILogger>(), c.Resolve<IIbsOrderService>(), c.Resolve<IAccountDao>(), c.Resolve<IOrderPaymentDao>(), serverSettings, c.Resolve<IPairingService>());
+                            return new MonerisPaymentService(c.Resolve<ICommandBus>(),c.Resolve<ILogger>(), c.Resolve<IOrderPaymentDao>(), serverSettings, c.Resolve<IPairingService>());
                         default:
                             return null;
                     }
@@ -157,6 +158,10 @@ namespace apcurium.MK.Booking
                 .ForMember(d => d.DriverFirstName, opt => opt.MapFrom(m => m.DriverInfos.FirstName))
                 .ForMember(d => d.DriverLastName, opt => opt.MapFrom(m => m.DriverInfos.LastName))
                 .ForMember(d => d.VehicleRegistration, opt => opt.MapFrom(m => m.DriverInfos.VehicleRegistration));
+
+            Mapper.CreateMap<PromotionUsageDetail, OrderDetailWithAccount>()
+                .ForMember(d => d.PromoCode, opt => opt.MapFrom(m => m.Code))
+                .ForMember(d => d.PaymentSavedAmount, opt => opt.MapFrom(m => m.AmountSaved));
         }
 
         private static void RegisterEventHandlers(IUnityContainer container)

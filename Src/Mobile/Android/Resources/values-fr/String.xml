@@ -550,10 +550,19 @@
   <string name="UpdateBookingSettingsInvalidCoF">Vous devez avoir une carte de crédit enregistrée pour utiliser ce compte</string>
   <string name="MarketChangedMessage">Vous quittez votre zone locale de service. Si vous décidez de commander un véhicule, votre commande sera envoyée à une compagnie désservant cette zone.</string>
   <string name="MarketChangedMessageTitle">Nouvelle zone détectée</string>
+  <string name="PromoCodeLabel">Code promotionnel</string>
+  <string name="PromoMustUseCardOnFileMessage">Pour utiliser un code promo, vous devez payer avec le paiement in app</string>
+  <string name="PromoMustUseCardOnFileWarningMessage">Veuillez noter que le rabais ne sera appliqué que si le paiement est effectué en utilisant l\'application</string>
+  <string name="WarningPromoCodeDontShow">Ne pas signaler</string>
+  <string name="PanelMenuViewPromotionsText">Promotions</string>
+  <string name="PromoRequiresToPayWithCOFPairingWarningCancelButton">Payer dans le taxi</string>
   <string name="PanelMenuViewTaxiHailNetworkText">Réseau TaxiHail</string>
   <string name="View_TaxiHailNetworkSettings">Réseau TaxiHail</string>
   <string name="View_UserTaxiHailNetworkSettings">Réseau TaxiHail</string>
   <string name="Toggle_Off">Non</string>
   <string name="Toggle_On">Oui</string>
   <string name="UserTaxiHailNetwork_Enabled">Réseau TaxiHail</string>
+  <string name="PromoRequiresToPayWithCOFPairingWarningMessage">Si vous décidez de payer dans le taxi, vous ne serez pas éligible à la promotion</string>
+  <string name="View_Promotions">Promotions</string>
+  <string name="HistoryDetailPromoLabel">Code promo:</string>
 </resources>

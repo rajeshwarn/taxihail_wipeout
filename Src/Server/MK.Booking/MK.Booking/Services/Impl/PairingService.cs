@@ -1,8 +1,10 @@
 using System;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.EventHandlers.Integration;
+using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Enumeration;
 using Infrastructure.Messaging;
 
 namespace apcurium.MK.Booking.Services.Impl
@@ -12,15 +14,17 @@ namespace apcurium.MK.Booking.Services.Impl
         private readonly ICommandBus _commandBus;
         private readonly IIbsOrderService _ibs;
         private readonly IOrderDao _orderDao;
-        private readonly Booking.Resources.Resources _resources;
+        private readonly IPromotionDao _promotionDao;
+        private readonly Resources.Resources _resources;
 
-        public PairingService(ICommandBus commandBus, IIbsOrderService ibs, IOrderDao orderDao, IServerSettings serverSettings)
+        public PairingService(ICommandBus commandBus, IIbsOrderService ibs, IOrderDao orderDao, IPromotionDao promotionDao, IServerSettings serverSettings)
         {
             _commandBus = commandBus;
             _ibs = ibs;
             _orderDao = orderDao;
+            _promotionDao = promotionDao;
 
-            _resources = new Booking.Resources.Resources(serverSettings);
+            _resources = new Resources.Resources(serverSettings);
         }
 
         public void Pair(Guid orderId, string cardToken, int? autoTipPercentage)
@@ -44,6 +48,13 @@ namespace apcurium.MK.Booking.Services.Impl
                 
             // send a message to driver, if it fails we abort the pairing
             _ibs.SendMessageToDriver(_resources.Get("PairingConfirmationToDriver"), orderStatusDetail.VehicleNumber);
+
+            // check if promotion exists and send info to the driver
+            var promoUsed = _promotionDao.FindByOrderId(orderId);
+            if (promoUsed != null)
+            {
+                _ibs.SendMessageToDriver(GetPromoDescription(promoUsed), orderStatusDetail.VehicleNumber);
+            }
 
             // send a command to save the pairing state for this order
             _commandBus.Send(new PairForPayment
@@ -76,6 +87,18 @@ namespace apcurium.MK.Booking.Services.Impl
             {
                 OrderId = orderId
             });
+        }
+
+        private string GetPromoDescription(PromotionUsageDetail promotion)
+        {
+            var discountType = promotion.DiscountType == PromoDiscountType.Cash 
+                ? "$" 
+                : "%";
+
+            return string.Format("PROMO,{0},{1},{2}", 
+                promotion.Code,
+                discountType, 
+                promotion.DiscountValue);
         }
     }
 }

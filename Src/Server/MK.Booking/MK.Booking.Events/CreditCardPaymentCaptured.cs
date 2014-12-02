@@ -18,5 +18,7 @@ namespace apcurium.MK.Booking.Events
         public PaymentProvider Provider { get; set; }
         public Guid OrderId { get; set; }
         public bool IsNoShowFee { get; set; }
+        public Guid? PromotionUsed { get; set; }
+        public decimal AmountSavedByPromotion { get; set; }
     }
 }

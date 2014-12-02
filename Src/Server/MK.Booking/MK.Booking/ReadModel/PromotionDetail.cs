@@ -11,6 +11,8 @@ namespace apcurium.MK.Booking.ReadModel
 
         public string Name { get; set; }
 
+        public string Description { get; set; }
+
         public DateTime? StartDate { get; set; }
 
         public DateTime? EndDate { get; set; }
@@ -25,7 +27,7 @@ namespace apcurium.MK.Booking.ReadModel
 
         public bool AppliesToFutureBooking { get; set; }
 
-        public double DiscountValue { get; set; }
+        public decimal DiscountValue { get; set; }
 
         public PromoDiscountType DiscountType { get; set; }
 
@@ -35,6 +37,22 @@ namespace apcurium.MK.Booking.ReadModel
 
         public string Code { get; set; }
 
+        public DateTime? PublishedStartDate { get; set; }
+
+        public DateTime? PublishedEndDate { get; set; }
+
         public bool Active { get; set; }
+
+        public DateTime? GetEndDateTime()
+        {
+            if (!EndDate.HasValue)
+            {
+                return null;
+            }
+
+            return !EndTime.HasValue
+                ? new DateTime(EndDate.Value.Year, EndDate.Value.Month, EndDate.Value.Day)
+                : new DateTime(EndDate.Value.Year, EndDate.Value.Month, EndDate.Value.Day, EndTime.Value.Hour, EndTime.Value.Minute, 0);
+        }
     }
 }

@@ -15,6 +15,8 @@ namespace apcurium.MK.Booking.Commands
 
         public string Name { get; set; }
 
+        public string Description { get; set; }
+
         public DateTime? StartDate { get; set; }
 
         public DateTime? EndDate { get; set; }
@@ -29,7 +31,7 @@ namespace apcurium.MK.Booking.Commands
 
         public bool AppliesToFutureBooking { get; set; }
 
-        public double DiscountValue { get; set; }
+        public decimal DiscountValue { get; set; }
 
         public PromoDiscountType DiscountType { get; set; }
 
@@ -38,6 +40,10 @@ namespace apcurium.MK.Booking.Commands
         public int? MaxUsage { get; set; }
 
         public string Code { get; set; }
+
+        public DateTime? PublishedStartDate { get; set; }
+
+        public DateTime? PublishedEndDate { get; set; }
 
         public Guid Id { get; private set; }
     }

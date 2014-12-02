@@ -2,7 +2,6 @@
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.ReadModel;
-using CsQuery.ExtensionMethods;
 using Infrastructure.Messaging.Handling;
 using ServiceStack.Text;
 
@@ -12,7 +11,9 @@ namespace apcurium.MK.Booking.EventHandlers
         IEventHandler<PromotionCreated>,
         IEventHandler<PromotionUpdated>,
         IEventHandler<PromotionActivated>,
-        IEventHandler<PromotionDeactivated>
+        IEventHandler<PromotionDeactivated>,
+        IEventHandler<PromotionApplied>,
+        IEventHandler<PromotionRedeemed>
     {
         private readonly Func<BookingDbContext> _contextFactory;
 
@@ -29,6 +30,7 @@ namespace apcurium.MK.Booking.EventHandlers
                 {
                     Id = @event.SourceId,
                     Name = @event.Name,
+                    Description = @event.Description,
                     StartDate = @event.StartDate,
                     EndDate = @event.EndDate,
                     StartTime = @event.StartTime,
@@ -41,7 +43,8 @@ namespace apcurium.MK.Booking.EventHandlers
                     MaxUsagePerUser = @event.MaxUsagePerUser,
                     MaxUsage = @event.MaxUsage,
                     Code = @event.Code,
-                    Active = true
+                    PublishedStartDate = @event.PublishedStartDate,
+                    PublishedEndDate = @event.PublishedEndDate
                 };
 
                 context.Save(promotionDetail);
@@ -55,6 +58,7 @@ namespace apcurium.MK.Booking.EventHandlers
                 var promotionDetail = context.Find<PromotionDetail>(@event.SourceId);
 
                 promotionDetail.Name = @event.Name;
+                promotionDetail.Description = @event.Description;
                 promotionDetail.StartDate = @event.StartDate;
                 promotionDetail.EndDate = @event.EndDate;
                 promotionDetail.StartTime = @event.StartTime;
@@ -67,6 +71,8 @@ namespace apcurium.MK.Booking.EventHandlers
                 promotionDetail.MaxUsagePerUser = @event.MaxUsagePerUser;
                 promotionDetail.MaxUsage = @event.MaxUsage;
                 promotionDetail.Code = @event.Code;
+                promotionDetail.PublishedStartDate = @event.PublishedStartDate;
+                promotionDetail.PublishedEndDate = @event.PublishedEndDate;
 
                 context.Save(promotionDetail);
             }
@@ -93,6 +99,34 @@ namespace apcurium.MK.Booking.EventHandlers
                 promotionDetail.Active = false;
 
                 context.Save(promotionDetail);
+            }
+        }
+
+        public void Handle(PromotionApplied @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                context.Save(new PromotionUsageDetail
+                {
+                    OrderId = @event.OrderId,
+                    PromoId = @event.SourceId,
+                    @AccountId = @event.AccountId,
+                    Code = @event.Code,
+                    DiscountType = @event.DiscountType,
+                    DiscountValue = @event.DiscountValue
+                });
+            }
+        }
+
+        public void Handle(PromotionRedeemed @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var promotionUsageDetail = context.Find<PromotionUsageDetail>(@event.OrderId);
+
+                promotionUsageDetail.AmountSaved = @event.AmountSaved;
+
+                context.Save(promotionUsageDetail);
             }
         }
     }

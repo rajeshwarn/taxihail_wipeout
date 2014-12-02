@@ -14,6 +14,7 @@ using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Api.Jobs;
 using apcurium.MK.Booking.Calculator;
 using apcurium.MK.Booking.Commands;
+using apcurium.MK.Booking.Domain;
 using apcurium.MK.Booking.IBS;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
@@ -25,6 +26,7 @@ using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using AutoMapper;
 using CustomerPortal.Client;
+using Infrastructure.EventSourcing;
 using CustomerPortal.Contract.Response;
 using HoneyBadger;
 using HoneyBadger.Responses;
@@ -47,6 +49,8 @@ namespace apcurium.MK.Booking.Api.Services
         private readonly IOrderDao _orderDao;
         private readonly IPaymentService _paymentService;
         private readonly ICreditCardDao _creditCardDao;
+        private readonly IPromotionDao _promotionDao;
+        private readonly IEventSourcedRepository<Promotion> _promoRepository;
         private readonly HoneyBadgerServiceClient _honeyBadgerServiceClient;
         private readonly ITaxiHailNetworkServiceClient _taxiHailNetworkServiceClient;
         private readonly IAccountChargeDao _accountChargeDao;
@@ -69,6 +73,8 @@ namespace apcurium.MK.Booking.Api.Services
             IOrderDao orderDao,
             IPaymentService paymentService,
             ICreditCardDao creditCardDao,
+            IPromotionDao promotionDao,
+            IEventSourcedRepository<Promotion> promoRepository,
             HoneyBadgerServiceClient honeyBadgerServiceClient,
             ITaxiHailNetworkServiceClient taxiHailNetworkServiceClient)
         {
@@ -83,6 +89,8 @@ namespace apcurium.MK.Booking.Api.Services
             _orderDao = orderDao;
             _paymentService = paymentService;
             _creditCardDao = creditCardDao;
+            _promotionDao = promotionDao;
+            _promoRepository = promoRepository;
             _honeyBadgerServiceClient = honeyBadgerServiceClient;
             _taxiHailNetworkServiceClient = taxiHailNetworkServiceClient;
 
@@ -114,9 +122,14 @@ namespace apcurium.MK.Booking.Api.Services
             var bestAvailableCompany = FindBestAvailableCompany(request.Market, request.PickupAddress.Latitude, request.PickupAddress.Longitude);
 
             account.IBSAccountId = CreateIbsAccountIfNeeded(account, bestAvailableCompany.CompanyKey, request.Market);
+            
+            var isFutureBooking = request.PickupDate.HasValue;
+            var pickupDate = request.PickupDate.HasValue
+                ? request.PickupDate.Value
+                : GetCurrentOffsetedTime(bestAvailableCompany.CompanyKey, request.Market);
 
             // User can still create future order, but we allow only one active Book now order.
-            if (!request.PickupDate.HasValue)
+            if (!isFutureBooking)
             {
                 var pendingOrderId = GetPendingOrder();
 
@@ -167,15 +180,13 @@ namespace apcurium.MK.Booking.Api.Services
                     isChargeAccountPaymentWithCardOnFile = true;
                 }
             }
-
+            
             // We can only validate rules when in the local market
             if (!request.Market.HasValue())
             {
                 var rule = _ruleCalculator.GetActiveDisableFor(
-                    request.PickupDate.HasValue,
-                request.PickupDate.HasValue
-                    ? request.PickupDate.Value
-                        : GetCurrentOffsetedTime(bestAvailableCompany.CompanyKey, request.Market),
+                isFutureBooking,
+                pickupDate,
                     () => _ibsServiceProvider.StaticData(bestAvailableCompany.CompanyKey, request.Market).GetZoneByCoordinate(
                         request.Settings.ProviderId,
                         request.PickupAddress.Latitude,
@@ -210,9 +221,7 @@ namespace apcurium.MK.Booking.Api.Services
                 referenceData = (ReferenceData)_referenceDataService.Get(new ReferenceDataRequest());
             }
 
-            request.PickupDate = request.PickupDate.HasValue
-                ? request.PickupDate.Value
-                : GetCurrentOffsetedTime(bestAvailableCompany.CompanyKey, request.Market);
+            request.PickupDate = pickupDate;
 
             request.Settings.Passengers = request.Settings.Passengers <= 0
                 ? 1
@@ -241,20 +250,15 @@ namespace apcurium.MK.Booking.Api.Services
                 chargeTypeEmail = _resources.Get(chargeTypeKey, request.ClientLanguageCode);
             }
 
-            var ibsOrderId = CreateIbsOrder(account.IBSAccountId.Value, request, referenceData, chargeTypeIbs, bestAvailableCompany.CompanyKey);
+            ValidateAndApplyPromotion(request.PromoCode, request.Settings.ChargeTypeId, account.Id, request.Id, pickupDate, isFutureBooking, request.ClientLanguageCode);
 
+            var ibsOrderId = CreateIbsOrder(account.IBSAccountId.Value, request, referenceData, chargeTypeIbs, bestAvailableCompany.CompanyKey);
+            
             if (!ibsOrderId.HasValue
                 || ibsOrderId <= 0)
             {
                 var code = !ibsOrderId.HasValue || (ibsOrderId.Value >= -1) ? "" : "_" + Math.Abs(ibsOrderId.Value);
                 return new HttpError(ErrorCode.CreateOrder_CannotCreateInIbs + code);
-            }
-
-            //Temporary solution for Aexid, we call the save extr payment to send the account info.  if not successful, we cancel the order.
-            var result = TryToSendAccountInformation(request.Id, ibsOrderId.Value, request, account);
-            if (result.HasValue)
-            {
-                return new HttpError(ErrorCode.CreateOrder_CannotCreateInIbs + "_" + Math.Abs(result.Value));
             }
 
             var command = Mapper.Map<Commands.CreateOrder>(request);
@@ -295,7 +299,7 @@ namespace apcurium.MK.Booking.Api.Services
                 IBSStatusDescription = _resources.Get("OrderStatus_wosWAITING", command.ClientLanguageCode),
             };
         }
-
+        
         public object Post(SwitchOrderToNextDispatchCompanyRequest request)
         {
             Log.Info("Switching order to another IBS : " + request.ToJson());
@@ -760,6 +764,46 @@ namespace apcurium.MK.Booking.Api.Services
 
             // Nothing found
             return new BestAvailableCompany();
+        }
+        
+        private void ValidateAndApplyPromotion(string promoCode, int? chargeTypeId, Guid accountId, Guid orderId, DateTime pickupDate, bool isFutureBooking, string clientLanguageCode)
+        {
+            if (!promoCode.HasValue())
+            {
+                // No promo code entered
+                return;
+            }
+
+            if (chargeTypeId != ChargeTypes.CardOnFile.Id)
+            {
+                // Should never happen since we will check client-side if there's a promocode and not paying with CoF
+                throw new HttpError(HttpStatusCode.Forbidden, ErrorCode.CreateOrder_RuleDisable.ToString(),
+                    _resources.Get("CannotCreateOrder_PromotionMustUseCardOnFile", clientLanguageCode));
+            }
+
+            var promo = _promotionDao.FindByPromoCode(promoCode);
+            if (promo == null)
+            {
+                throw new HttpError(HttpStatusCode.Forbidden, ErrorCode.CreateOrder_RuleDisable.ToString(),
+                    _resources.Get("CannotCreateOrder_PromotionDoesNotExist", clientLanguageCode));
+            }
+
+            var promoDomainObject = _promoRepository.Get(promo.Id);
+            string errorMessage;
+            if (!promoDomainObject.CanApply(accountId, pickupDate, isFutureBooking, out errorMessage))
+            {
+                throw new HttpError(HttpStatusCode.Forbidden, ErrorCode.CreateOrder_RuleDisable.ToString(),
+                    _resources.Get(errorMessage, clientLanguageCode));
+            }
+            
+            _commandBus.Send(new ApplyPromotion
+            {
+                PromoId = promo.Id,
+                AccountId = accountId,
+                OrderId = orderId,
+                PickupDate = pickupDate,
+                IsFutureBooking = isFutureBooking
+            });
         }
 
         private class BestAvailableCompany

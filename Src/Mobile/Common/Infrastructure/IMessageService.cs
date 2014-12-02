@@ -9,7 +9,7 @@ namespace apcurium.MK.Booking.Mobile.Infrastructure
 		Task ShowMessage(string title, string message);
 		void ShowMessage(string title, string message, Action additionalAction );
         void ShowMessage(string title, string message, string positiveButtonTitle, Action positiveAction, string negativeButtonTitle, Action negativeAction);
-        void ShowMessage(string title, string message, string positiveButtonTitle, Action positiveAction, string negativeButtonTitle, Action negativeAction, string neutralButtonTitle, Action neutralAction);
+        Task ShowMessage(string title, string message, string positiveButtonTitle, Action positiveAction, string negativeButtonTitle, Action negativeAction, string neutralButtonTitle, Action neutralAction);
         void ShowMessage(string title, string message, List<KeyValuePair<string,Action>> additionalButton);
 		void ShowProgress(bool show);
 		void ShowProgressNonModal(bool show);

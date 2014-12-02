@@ -82,7 +82,9 @@
     <Compile Include="PrivacyPolicyUpdated.cs" />
     <Compile Include="PromotionCreated.cs" />
     <Compile Include="PromotionDeactivated.cs" />
+    <Compile Include="PromotionRedeemed.cs" />
     <Compile Include="PromotionUpdated.cs" />
+    <Compile Include="PromotionApplied.cs" />
     <Compile Include="RatingTypeDeleted.cs" />
     <Compile Include="RoleAddedToUserAccount.cs" />
     <Compile Include="RuleActivated.cs" />

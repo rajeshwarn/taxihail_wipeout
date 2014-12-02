@@ -281,6 +281,10 @@
     <value>Propina</value>
     <comment>Tip</comment>
   </data>
+  <data name="Email_Body_Promo" xml:space="preserve">
+    <value>Promo Code</value>
+    <comment>Promo Code</comment>
+  </data>
   <data name="Email_Body_Toll" xml:space="preserve">
     <value>Peaje</value>
     <comment>Toll</comment>
@@ -480,5 +484,45 @@
   <data name="Email_Body_YourDriver" xml:space="preserve">
     <value>Your Driver</value>
     <comment>Your Driver</comment>
+  </data>
+  <data name="CannotCreateOrder_PromotionDoesNotExist" xml:space="preserve">
+    <value>There is no promotion associated to this code</value>
+    <comment>There is no promotion associated to this code</comment>
+  </data>
+  <data name="CannotCreateOrder_PromotionMustUseCardOnFile" xml:space="preserve">
+    <value>You must select Card On File to use a promotion.</value>
+    <comment>You must select Card On File to use a promotion.</comment>
+  </data>
+  <data name="CannotCreateOrder_PromotionIsNotActive" xml:space="preserve">
+    <value>This promotion is not active</value>
+    <comment>This promotion is not active</comment>
+  </data>
+  <data name="CannotCreateOrder_PromotionHasReachedMaxUsage" xml:space="preserve">
+    <value>Maximum number of uses has been reached for this promotion</value>
+    <comment>Maximum number of uses has been reached for this promotion</comment>
+  </data>
+  <data name="CannotCreateOrder_PromotionAppliesToCurrentBookingOnly" xml:space="preserve">
+    <value>This promotion applies to current booking only</value>
+    <comment>This promotion applies to current booking only</comment>
+  </data>
+  <data name="CannotCreateOrder_PromotionAppliesToFutureBookingOnly" xml:space="preserve">
+    <value>This promotion applies to future booking only</value>
+    <comment>This promotion applies to future booking only</comment>
+  </data>
+  <data name="CannotCreateOrder_PromotionNotAvailableForThisDayOfTheWeek" xml:space="preserve">
+    <value>This promotion is not available for this day of the week</value>
+    <comment>This promotion is not available for this day of the week</comment>
+  </data>
+  <data name="CannotCreateOrder_PromotionNotStartedYet" xml:space="preserve">
+    <value>This promotion has not started yet</value>
+    <comment>This promotion has not started yet</comment>
+  </data>
+  <data name="CannotCreateOrder_PromotionHasExpired" xml:space="preserve">
+    <value>This promotion has expired</value>
+    <comment>This promotion has expired</comment>
+  </data>
+  <data name="CannotCreateOrder_PromotionNotAvailableAtThisTime" xml:space="preserve">
+    <value>This promotion is not available at this time</value>
+    <comment>This promotion is not available at this time</comment>
   </data>
 </root>

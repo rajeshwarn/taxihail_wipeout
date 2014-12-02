@@ -9,7 +9,9 @@ namespace apcurium.MK.Booking.CommandHandlers
         ICommandHandler<CreatePromotion>,
         ICommandHandler<UpdatePromotion>,
         ICommandHandler<ActivatePromotion>,
-        ICommandHandler<DeactivatePromotion>
+        ICommandHandler<DeactivatePromotion>,
+        ICommandHandler<ApplyPromotion>,
+        ICommandHandler<RedeemPromotion>
     {
         private readonly IEventSourcedRepository<Promotion> _repository;
 
@@ -20,9 +22,10 @@ namespace apcurium.MK.Booking.CommandHandlers
 
         public void Handle(CreatePromotion command)
         {
-            var promotion = new Promotion(command.PromoId, command.Name, command.StartDate, command.EndDate, command.StartTime, 
-                command.EndTime, command.DaysOfWeek, command.AppliesToCurrentBooking, command.AppliesToFutureBooking, 
-                command.DiscountValue, command.DiscountType, command.MaxUsagePerUser, command.MaxUsage, command.Code);
+            var promotion = new Promotion(command.PromoId, command.Name, command.Description, command.StartDate, command.EndDate, 
+                command.StartTime, command.EndTime, command.DaysOfWeek, command.AppliesToCurrentBooking, command.AppliesToFutureBooking,
+                command.DiscountValue, command.DiscountType, command.MaxUsagePerUser, command.MaxUsage, command.Code, 
+                command.PublishedStartDate, command.PublishedEndDate);
 
             _repository.Save(promotion, command.Id.ToString());
         }
@@ -31,9 +34,9 @@ namespace apcurium.MK.Booking.CommandHandlers
         {
             var promotion = _repository.Get(command.PromoId);
 
-            promotion.Update(command.Name, command.StartDate, command.EndDate, command.StartTime, command.EndTime, 
-                command.DaysOfWeek, command.AppliesToCurrentBooking, command.AppliesToFutureBooking, command.DiscountValue, 
-                command.DiscountType, command.MaxUsagePerUser, command.MaxUsage, command.Code);
+            promotion.Update(command.Name, command.Description, command.StartDate, command.EndDate, command.StartTime, command.EndTime, 
+                command.DaysOfWeek, command.AppliesToCurrentBooking, command.AppliesToFutureBooking, command.DiscountValue, command.DiscountType, 
+                command.MaxUsagePerUser, command.MaxUsage, command.Code, command.PublishedStartDate, command.PublishedEndDate);
 
             _repository.Save(promotion, command.Id.ToString());
         }
@@ -52,6 +55,24 @@ namespace apcurium.MK.Booking.CommandHandlers
             var promotion = _repository.Get(command.PromoId);
 
             promotion.Deactivate();
+
+            _repository.Save(promotion, command.Id.ToString());
+        }
+
+        public void Handle(ApplyPromotion command)
+        {
+            var promotion = _repository.Get(command.PromoId);
+
+            promotion.Apply(command.OrderId, command.AccountId, command.PickupDate, command.IsFutureBooking);
+
+            _repository.Save(promotion, command.Id.ToString());
+        }
+
+        public void Handle(RedeemPromotion command)
+        {
+            var promotion = _repository.Get(command.PromoId);
+
+            promotion.Redeem(command.OrderId, command.TotalAmountOfOrder);
 
             _repository.Save(promotion, command.Id.ToString());
         }

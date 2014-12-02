@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Data.SqlTypes;
 using System.Linq;
 using apcurium.MK.Booking.CommandHandlers;
 using apcurium.MK.Booking.Commands;
@@ -29,6 +28,7 @@ namespace apcurium.MK.Booking.Test.PromotionFixture
             {
                 PromoId = _promoId,
                 Name = "promo1",
+                Description = "promodesc1",
                 Code = "code",
                 AppliesToCurrentBooking = true,
                 AppliesToFutureBooking = false,
@@ -39,13 +39,16 @@ namespace apcurium.MK.Booking.Test.PromotionFixture
                 MaxUsagePerUser = 1,
                 StartDate = new DateTime(2014, 11, 10),
                 EndDate = new DateTime(2015, 11, 10),
-                StartTime = new DateTime(SqlDateTime.MinValue.Value.Year, SqlDateTime.MinValue.Value.Month, SqlDateTime.MinValue.Value.Day, 10, 0, 0),
-                EndTime = new DateTime(SqlDateTime.MinValue.Value.Year, SqlDateTime.MinValue.Value.Month, SqlDateTime.MinValue.Value.Day, 14, 0, 0)
+                StartTime = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 10, 0, 0),
+                EndTime = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 14, 0, 0),
+                PublishedStartDate = new DateTime(2014, 11, 9),
+                PublishedEndDate = new DateTime(2015, 11, 10)
             });
 
             var @event = _sut.ThenHasSingle<PromotionCreated>();
             Assert.AreEqual(_promoId, @event.SourceId);
             Assert.AreEqual("promo1", @event.Name);
+            Assert.AreEqual("promodesc1", @event.Description);
             Assert.AreEqual("code", @event.Code);
             Assert.AreEqual(true, @event.AppliesToCurrentBooking);
             Assert.AreEqual(false, @event.AppliesToFutureBooking);
@@ -56,10 +59,10 @@ namespace apcurium.MK.Booking.Test.PromotionFixture
             Assert.AreEqual(2, @event.DaysOfWeek.Count());
             Assert.AreEqual(new DateTime(2014, 11, 10), @event.StartDate);
             Assert.AreEqual(new DateTime(2015, 11, 10), @event.EndDate);
-            Assert.AreEqual(SqlDateTime.MinValue.Value.Date, @event.StartTime.Value.Date);
-            Assert.AreEqual(SqlDateTime.MinValue.Value.Date, @event.EndTime.Value.Date);
             Assert.AreEqual(new TimeSpan(10, 0, 0), @event.StartTime.Value.TimeOfDay);
             Assert.AreEqual(new TimeSpan(14, 0, 0), @event.EndTime.Value.TimeOfDay);
+            Assert.AreEqual(new DateTime(2014, 11, 9), @event.PublishedStartDate);
+            Assert.AreEqual(new DateTime(2015, 11, 10), @event.PublishedEndDate);
         }
 
         [Test]

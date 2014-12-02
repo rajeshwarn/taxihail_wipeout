@@ -636,6 +636,9 @@
   <data name="HistoryDetailStatusLabel" xml:space="preserve">
     <value>Statut:</value>
   </data>
+  <data name="HistoryDetailPromoLabel" xml:space="preserve">
+    <value>Code promo:</value>
+  </data>
   <data name="HistoryInfo" xml:space="preserve">
     <value>Synthèse des trajets effectués le mois dernier</value>
   </data>
@@ -1758,5 +1761,29 @@
   </data>
   <data name="UserTaxiHailNetwork_Enabled" xml:space="preserve">
     <value>Réseau TaxiHail</value>
+  </data>
+  <data name="PromoCodeLabel" xml:space="preserve">
+    <value>Code promotionnel</value>
+  </data>
+  <data name="PromoMustUseCardOnFileMessage" xml:space="preserve">
+    <value>Pour utiliser un code promo, vous devez payer avec le paiement in app</value>
+  </data>
+  <data name="PromoMustUseCardOnFileWarningMessage" xml:space="preserve">
+    <value>Veuillez noter que le rabais ne sera appliqué que si le paiement est effectué en utilisant l'application</value>
+  </data>
+  <data name="WarningPromoCodeDontShow" xml:space="preserve">
+    <value>Ne pas signaler</value>
+  </data>
+  <data name="PanelMenuViewPromotionsText" xml:space="preserve">
+    <value>Promotions</value>
+  </data>
+  <data name="PromoRequiresToPayWithCOFPairingWarningMessage" xml:space="preserve">
+    <value>Si vous décidez de payer dans le taxi, vous ne serez pas éligible à la promotion</value>
+  </data>
+  <data name="PromoRequiresToPayWithCOFPairingWarningCancelButton" xml:space="preserve">
+    <value>Payer dans le taxi</value>
+  </data>
+  <data name="View_Promotions" xml:space="preserve">
+    <value>Promotions</value>
   </data>
 </root>

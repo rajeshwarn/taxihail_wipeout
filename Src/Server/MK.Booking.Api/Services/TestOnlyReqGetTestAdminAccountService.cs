@@ -75,6 +75,18 @@ namespace apcurium.MK.Booking.Api.Services
                 ConfimationToken = command.ConfimationToken
             });
 
+            _commandBus.Send(new AddCreditCard
+            {
+                AccountId = command.AccountId,
+                CreditCardCompany = "Visa",
+                CreditCardId = Guid.NewGuid(),
+                ExpirationMonth = DateTime.Now.AddYears(1).ToString("MM"),
+                ExpirationYear = DateTime.Now.AddYears(1).ToString("yy"),
+                Last4Digits = "1234",
+                NameOnCard = "test test",
+                Token = "123456"
+            });
+
             return _dao.FindByEmail(testEmail);
         }
     }

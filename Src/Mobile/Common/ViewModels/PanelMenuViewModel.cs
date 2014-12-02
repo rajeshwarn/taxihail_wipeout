@@ -63,10 +63,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		    {
                 ItemMenuList.Add(new ItemMenuModel { Text = this.Services().Localize["PanelMenuViewPaymentInfoText"], NavigationCommand = NavigateToPaymentInformation });
 		    }
+		    if (Settings.PromotionEnabled)
+		    {
+		        ItemMenuList.Add(new ItemMenuModel { Text = this.Services().Localize["PanelMenuViewPromotionsText"], NavigationCommand = NavigateToPromotions });
+		    }
 		    if (IsNotificationsEnabled)
 		    {
                 ItemMenuList.Add(new ItemMenuModel { Text = this.Services().Localize["PanelMenuViewNotificationsText"], NavigationCommand = NavigateToNotificationsSettings });
-		    }
+		    }			
             if (IsTaxiHailNetworkEnabled)
             {
                 ItemMenuList.Add(new ItemMenuModel { Text = this.Services().Localize["PanelMenuViewTaxiHailNetworkText"], NavigationCommand = NavigateToUserTaxiHailNetworkSettings });
@@ -290,6 +294,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 });
             }
         }
+
+		public ICommand NavigateToPromotions
+		{
+			get 
+			{
+				return this.GetCommand(() =>
+				{
+					CloseMenu();
+					ShowViewModel<PromotionViewModel> ();
+				});
+			}
+		}
 
 		public ICommand NavigateToAboutUs
         {

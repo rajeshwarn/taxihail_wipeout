@@ -136,7 +136,7 @@
     <value>Confirmation de réservation</value>
   </data>
   <data name="Email_Body_ChargeType" xml:space="preserve">
-    <value>Type de paiment</value>
+    <value>Type de paiement</value>
   </data>
   <data name="Email_Body_Date" xml:space="preserve">
     <value>Date</value>
@@ -218,6 +218,9 @@
   </data>
   <data name="Email_Body_Tip" xml:space="preserve">
     <value>Pourboire</value>
+  </data>
+  <data name="Email_Body_Promo" xml:space="preserve">
+    <value>Promotion</value>
   </data>
   <data name="Email_Body_Toll" xml:space="preserve">
     <value>Péage</value>
@@ -379,10 +382,10 @@
     <value>L'ETA affiché au client est de {0} et {1} minutes</value>
   </data>
   <data name="PaymentBeingProcessedMessageToDriver" xml:space="preserve">
-    <value>Paiment en cours via l'application du passager...</value>
+    <value>Paiement en cours via l'application du passager...</value>
   </data>
   <data name="PaymentFailedToDriver" xml:space="preserve">
-    <value>Paiment in App a échoué!</value>
+    <value>Paiement in App a échoué!</value>
   </data>
   <data name="PaymentItemDescription" xml:space="preserve">
     <value>Commande #{0} montant original: {1}</value>
@@ -404,6 +407,36 @@
   </data>
   <data name="CannotCreateOrderChargeAccountNotSupported" xml:space="preserve">
     <value>Ce compte n'est pas supporté par la page web</value>
+  </data>
+  <data name="CannotCreateOrder_PromotionDoesNotExist" xml:space="preserve">
+    <value>Il n'y a pas de promotion associée à ce code</value>
+  </data>
+  <data name="CannotCreateOrder_PromotionMustUseCardOnFile" xml:space="preserve">
+    <value>Vous devez sélectionner le Paiement In App pour utiliser une promotion.</value>
+  </data>
+  <data name="CannotCreateOrder_PromotionIsNotActive" xml:space="preserve">
+    <value>Cette promotion n'est pas active</value>
+  </data>
+  <data name="CannotCreateOrder_PromotionHasReachedMaxUsage" xml:space="preserve">
+    <value>Le nombre maximal d'utilisation a été atteint pour cette promotion</value>
+  </data>
+  <data name="CannotCreateOrder_PromotionAppliesToCurrentBookingOnly" xml:space="preserve">
+    <value>Cette promotion ne s'applique pas aux commandes futures</value>
+  </data>
+  <data name="CannotCreateOrder_PromotionAppliesToFutureBookingOnly" xml:space="preserve">
+    <value>Cette promotion ne s'applique qu'aux commandes futures</value>
+  </data>
+  <data name="CannotCreateOrder_PromotionNotAvailableForThisDayOfTheWeek" xml:space="preserve">
+    <value>Cette promotion n'est pas disponible pour ce jour de la semaine</value>
+  </data>
+  <data name="CannotCreateOrder_PromotionNotStartedYet" xml:space="preserve">
+    <value>Cette promotion n'a pas encore commencé</value>
+  </data>
+  <data name="CannotCreateOrder_PromotionHasExpired" xml:space="preserve">
+    <value>Cette promotion est expirée</value>
+  </data>
+  <data name="CannotCreateOrder_PromotionNotAvailableAtThisTime" xml:space="preserve">
+    <value>Cette promotion n'est pas disponible en ce moment</value>
   </data>
   <data name="Email_Body_VehicleModel" xml:space="preserve">
     <value>Véhicule</value>

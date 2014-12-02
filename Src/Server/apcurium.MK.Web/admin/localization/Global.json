@@ -104,7 +104,8 @@
 	"OrderStatus.ClientPollingInterval" : "Client Ride Status Polling (seconds)",
 	"OrderStatus.ServerPollingInterval" : "Server Ride Status Polling (seconds)",
     "Network.PrimaryOrderTimeout": "Primary Order Timeout (seconds)",
-    "Network.SecondaryOrderTimeout" : "Secondary Order Timeout (seconds)",
+    "Network.SecondaryOrderTimeout": "Secondary Order Timeout (seconds)",
+    "PromotionEnabled" : "PromotionEnabled (refresh to see)",
 
 	"/******* End settings Aliases *******/": "",
 

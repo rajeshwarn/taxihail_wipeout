@@ -48,7 +48,7 @@ namespace apcurium.MK.Booking.Domain
             });
         }
 
-        public void Capture(PaymentProvider provider, decimal amount, decimal meterAmount, decimal tipAmount, string authorizationCode, bool isNoShowFee)
+        public void Capture(PaymentProvider provider, decimal amount, decimal meterAmount, decimal tipAmount, string authorizationCode, bool isNoShowFee, Guid? promotionUsed, decimal amountSavedByPromotion)
         {
             if (_isCaptured)
             {
@@ -64,7 +64,9 @@ namespace apcurium.MK.Booking.Domain
                 Meter = meterAmount,
                 Tip = tipAmount,
                 Provider = provider,
-                IsNoShowFee = isNoShowFee
+                IsNoShowFee = isNoShowFee,
+                PromotionUsed = promotionUsed,
+                AmountSavedByPromotion = amountSavedByPromotion
             });
         }
 

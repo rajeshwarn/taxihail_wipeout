@@ -175,6 +175,7 @@
     <Compile Include="Fare.cs" />
     <Compile Include="Geography\GeographyHelper.cs" />
     <Compile Include="ICacheService.cs" />
+    <Compile Include="IClock.cs" />
     <Compile Include="IoC\UnityContainerAdapter.cs" />
     <Compile Include="IoC\UnityExtension.cs" />
     <Compile Include="IoC\UnityServiceLocator.cs" />

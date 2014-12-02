@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Threading;
 using apcurium.MK.Booking.Commands;
-using apcurium.MK.Booking.EventHandlers.Integration;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
@@ -18,10 +16,7 @@ namespace apcurium.MK.Booking.Services.Impl
     public class BraintreePaymentService : IPaymentService
     {
         private readonly ICommandBus _commandBus;
-        private readonly IOrderDao _orderDao;
         private readonly ILogger _logger;
-        private readonly IIbsOrderService _ibs;
-        private readonly IAccountDao _accountDao;
         private readonly IOrderPaymentDao _paymentDao;
         private readonly IPairingService _pairingService;
         private readonly IServerSettings _serverSettings;
@@ -29,26 +24,28 @@ namespace apcurium.MK.Booking.Services.Impl
         private BraintreeGateway BraintreeGateway { get; set; }
 
         public BraintreePaymentService(ICommandBus commandBus,
-            IOrderDao orderDao,
             ILogger logger,
-            IIbsOrderService ibs,
-            IAccountDao accountDao,
             IOrderPaymentDao paymentDao,
             IServerSettings serverSettings,
             IPairingService pairingService)
         {
             _commandBus = commandBus;
-            _orderDao = orderDao;
             _logger = logger;
-            _ibs = ibs;
-            _accountDao = accountDao;
             _paymentDao = paymentDao;
             _pairingService = pairingService;
             _serverSettings = serverSettings;
 
             BraintreeGateway = GetBraintreeGateway(serverSettings.GetPaymentSettings().BraintreeServerSettings);
         }
-        
+
+        public PaymentProvider ProviderType
+        {
+            get
+            {
+                return PaymentProvider.Braintree;
+            }
+        }
+
         public PairingResponse Pair(Guid orderId, string cardToken, int? autoTipPercentage, double? autoTipAmount)
         {
             try
@@ -89,7 +86,6 @@ namespace apcurium.MK.Booking.Services.Impl
             try
             {
                 var paymentDetail = _paymentDao.FindNonPayPalByOrderId(orderId);
-
                 if (paymentDetail == null)
                 {
                     if (_serverSettings.GetPaymentSettings().IsPreAuthEnabled)
@@ -114,6 +110,11 @@ namespace apcurium.MK.Booking.Services.Impl
             {
                 _logger.LogMessage(message);
             }
+        }
+
+        public void VoidTransaction(Guid orderId, string transactionId, ref string message)
+        {
+            Void(transactionId, ref message);
         }
 
         private void Void(string transactionId, ref string message)
@@ -169,32 +170,45 @@ namespace apcurium.MK.Booking.Services.Impl
 
         public PreAuthorizePaymentResponse PreAuthorize(Guid orderId, string email, string cardToken, decimal amountToPreAuthorize)
         {
-            string message = string.Empty;
+            var message = string.Empty;
+            var transactionId = string.Empty;
 
             try
             {
-                var transactionRequest = new TransactionRequest
+                bool isSuccessful;
+
+                if (amountToPreAuthorize > 0)
                 {
-                    Amount = amountToPreAuthorize,
-                    PaymentMethodToken = cardToken,
-                    OrderId = orderId.ToString(),                    
-                    Channel = "MobileKnowledgeSystems_SP_MEC",
-                    Options = new TransactionOptionsRequest
+                    var transactionRequest = new TransactionRequest
                     {
-                        SubmitForSettlement = false
-                    }
-                };
+                        Amount = amountToPreAuthorize,
+                        PaymentMethodToken = cardToken,
+                        OrderId = orderId.ToString(),
+                        Channel = "MobileKnowledgeSystems_SP_MEC",
+                        Options = new TransactionOptionsRequest
+                        {
+                            SubmitForSettlement = false
+                        }
+                    };
 
-                //sale
-                var result = BraintreeGateway.Transaction.Sale(transactionRequest);
+                    //sale
+                    var result = BraintreeGateway.Transaction.Sale(transactionRequest);
 
-                var transactionId = result.Target.Id;
-                message = result.Message;
+                    transactionId = result.Target.Id;
+                    message = result.Message;
+                    isSuccessful = result.IsSuccess();
+                }
+                else
+                {
+                    // if we're preauthorizing $0, we skip the preauth with payment provider
+                    // but we still send the InitiateCreditCardPayment command
+                    // this should never happen in the case of a real preauth (hence the minimum of $50)
+                    isSuccessful = true;
+                }
 
-                if (result.IsSuccess())
+                if (isSuccessful)
                 {
                     var paymentId = Guid.NewGuid();
-
                     _commandBus.Send(new InitiateCreditCardPayment
                     {
                         PaymentId = paymentId,
@@ -211,7 +225,7 @@ namespace apcurium.MK.Booking.Services.Impl
 
                 return new PreAuthorizePaymentResponse
                 {
-                    IsSuccessful = result.IsSuccess(),
+                    IsSuccessful = isSuccessful,
                     Message = message,
                     TransactionId = transactionId
                 };
@@ -229,130 +243,38 @@ namespace apcurium.MK.Booking.Services.Impl
             }
         }
 
-        public CommitPreauthorizedPaymentResponse CommitPayment(decimal amount, decimal meterAmount, decimal tipAmount, string cardToken, Guid orderId, bool isNoShowFee)
+        public CommitPreauthorizedPaymentResponse CommitPayment(Guid orderId, decimal amount, decimal meterAmount, decimal tipAmount, string transactionId)
         {
-            var orderDetail = _orderDao.FindById(orderId);
-            if (orderDetail == null)
-            {
-                throw new Exception("Order not found");
-            }
-
-            if (orderDetail.IBSOrderId == null)
-            {
-                throw new Exception("Order has no IBSOrderId");
-            }
-
-            var account = _accountDao.FindById(orderDetail.AccountId);
-
-            var paymentDetail = _paymentDao.FindNonPayPalByOrderId(orderId);
-            if (paymentDetail == null)
-            {
-                throw new Exception("Payment not found");
-            }
-
             try
             {
-                string message = "Order already paid or payment currently processing";
-                bool isSuccessful = false;
                 string authorizationCode = null;
-                Result<Transaction> settlementResult = null;
 
-                // commit transaction
-                if (!paymentDetail.IsCompleted)
-                {
-                    settlementResult = BraintreeGateway.Transaction.SubmitForSettlement(paymentDetail.TransactionId, amount);
-                    message = settlementResult.Message;
-
-                    isSuccessful = settlementResult.IsSuccess() 
-                        && settlementResult.Target != null 
-                        && settlementResult.Target.ProcessorAuthorizationCode.HasValue();
-                }
-
-                if (isSuccessful && !isNoShowFee)
-                {
-                    authorizationCode = settlementResult.Target.ProcessorAuthorizationCode;
-
-                    //send information to IBS
-                    try
-                    {
-                        _ibs.ConfirmExternalPayment(orderDetail.Id,
-                            orderDetail.IBSOrderId.Value,
-                            amount,
-                            tipAmount,
-                            meterAmount,
-                            PaymentType.CreditCard.ToString(),
-                            PaymentProvider.Braintree.ToString(),
-                            paymentDetail.TransactionId,
-                            authorizationCode,
-                            cardToken,
-                            account.IBSAccountId.Value,
-                            orderDetail.Settings.Name,
-                            orderDetail.Settings.Phone,
-                            account.Email,
-                            orderDetail.UserAgent.GetOperatingSystem(),
-                            orderDetail.UserAgent);
-                    }
-                    catch (Exception e)
-                    {
-                        _logger.LogError(e);
-                        message = e.Message;
-                        isSuccessful = false;
-
-                        //cancel braintree transaction
-                        try
-                        {
-                            Void(paymentDetail.TransactionId, ref message);
-                        }
-                        catch (Exception ex)
-                        {
-                            _logger.LogMessage("Can't cancel Braintree transaction");
-                            _logger.LogError(ex);
-                            message = message + ex.Message;
-                            //can't cancel transaction, send a command to log later
-                        }
-                    }
-                }
+                var settlementResult = BraintreeGateway.Transaction.SubmitForSettlement(transactionId, amount);
+                
+                var isSuccessful = settlementResult.IsSuccess()
+                    && settlementResult.Target != null
+                    && settlementResult.Target.ProcessorAuthorizationCode.HasValue();
 
                 if (isSuccessful)
                 {
-                    //payment completed
-                    _commandBus.Send(new CaptureCreditCardPayment
-                    {
-                        PaymentId = paymentDetail.PaymentId,
-                        Provider = PaymentProvider.Braintree,
-                        Amount = amount,
-                        MeterAmount = meterAmount,
-                        TipAmount = tipAmount,
-                        IsNoShowFee = isNoShowFee
-                    });
-                }
-                else
-                {
-                    //payment error
-                    _commandBus.Send(new LogCreditCardError
-                    {
-                        PaymentId = paymentDetail.PaymentId,
-                        Reason = message
-                    });
+                    authorizationCode = settlementResult.Target.ProcessorAuthorizationCode;
                 }
 
                 return new CommitPreauthorizedPaymentResponse
                 {
-                    AuthorizationCode = authorizationCode,
-                    TransactionId = paymentDetail.TransactionId,
                     IsSuccessful = isSuccessful,
-                    Message = isSuccessful ? "Success" : message
+                    AuthorizationCode = authorizationCode,
+                    Message = settlementResult.Message,
+                    TransactionId = transactionId
                 };
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                _logger.LogMessage("Error during payment " + e);
-                _logger.LogError(e);
                 return new CommitPreauthorizedPaymentResponse
                 {
                     IsSuccessful = false,
-                    TransactionId = paymentDetail.TransactionId,
-                    Message = e.Message,
+                    TransactionId = transactionId,
+                    Message = ex.Message
                 };
             }
         }

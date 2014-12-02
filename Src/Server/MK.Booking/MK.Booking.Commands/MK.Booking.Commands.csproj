@@ -79,6 +79,7 @@
     <Compile Include="LogCancellationFailurePayPalPayment.cs" />
     <Compile Include="LogCreditCardError.cs" />
     <Compile Include="PairForPayment.cs" />
+    <Compile Include="RedeemPromotion.cs" />
     <Compile Include="RetriggerTermsAndConditions.cs" />
     <Compile Include="SendAccountConfirmationSMS.cs" />
     <Compile Include="SwitchOrderToNextDispatchCompany.cs" />
@@ -128,6 +129,7 @@
     <Compile Include="UpdateTariff.cs" />
     <Compile Include="UpdateRatingType.cs" />
     <Compile Include="UpdateTermsAndConditions.cs" />
+    <Compile Include="ApplyPromotion.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Infrastructure\Infrastructure\Infrastructure.csproj">

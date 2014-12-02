@@ -8,7 +8,7 @@
 	"error.PhoneBadFormat" : "Le numéro de mobile est invalide.",
 	"error.PassengersRequired" : "<!-- The number of passengers is required. -->",
 	"error.VehicleTypeRequired" : "Le type de véhicule est requis.",
-	"error.ChargeTypeRequired" : "Le type de paiment est requis.",		
+	"error.ChargeTypeRequired" : "Le type de paiement est requis.",		
 	"error.EmailRequired" : "Le email est requis.",
 	"error.NotEmailFormat" : "Le email est invalide",
 	"error.NotANumber" : "<!-- This should be a number. -->",

@@ -6,9 +6,7 @@ using System.Threading;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
-using apcurium.MK.Booking.Api.Services;
 using apcurium.MK.Booking.Database;
-using apcurium.MK.Booking.Domain;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Entity;
@@ -148,7 +146,8 @@ namespace apcurium.MK.Web.Tests
                 ClientLanguageCode = SupportedLanguages.fr.ToString()
             };
 
-            Assert.Throws<WebServiceException>(async () => await sut.CreateOrder(order));
+            var ex = Assert.Throws<WebServiceException>(async () => await sut.CreateOrder(order));
+            Assert.AreEqual("Ce compte n'est pas supporté par la page web", ex.ErrorMessage);
         }
 
         [Test]
@@ -182,7 +181,7 @@ namespace apcurium.MK.Web.Tests
                 ClientLanguageCode = SupportedLanguages.en.ToString()
             };
 
-            var details = await sut.CreateOrder(order);
+            await sut.CreateOrder(order);
 
             using (var context = new BookingDbContext(ConfigurationManager.ConnectionStrings["MKWebDev"].ConnectionString))
             {
@@ -210,7 +209,43 @@ namespace apcurium.MK.Web.Tests
                 ClientLanguageCode = SupportedLanguages.fr.ToString()
             };
 
-            Assert.Throws<WebServiceException>(async () => await sut.CreateOrder(order), "CreateOrder_SettingsRequired");
+            var ex = Assert.Throws<WebServiceException>(async () => await sut.CreateOrder(order));
+            Assert.AreEqual("CreateOrder_SettingsRequired", ex.ErrorMessage);
+        }
+
+        [Test]
+        public void when_creating_order_with_promotion_but_not_using_card_on_file()
+        {
+            var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
+            var order = new CreateOrder
+            {
+                Id = Guid.NewGuid(),
+                PickupAddress = TestAddresses.GetAddress1(),
+                PickupDate = DateTime.Now,
+                DropOffAddress = TestAddresses.GetAddress2(),
+                Estimate = new CreateOrder.RideEstimate
+                {
+                    Price = 10,
+                    Distance = 3
+                },
+                Settings = new BookingSettings
+                {
+                    ChargeTypeId = ChargeTypes.PaymentInCar.Id,
+                    VehicleTypeId = 1,
+                    ProviderId = Provider.MobileKnowledgeProviderId,
+                    Phone = "514-555-12129",
+                    Passengers = 6,
+                    NumberOfTaxi = 1,
+                    Name = "Joe Smith",
+                    LargeBags = 1,
+                    AccountNumber = "123"
+                },
+                ClientLanguageCode = SupportedLanguages.fr.ToString(),
+                PromoCode = "123"
+            };
+
+            var ex = Assert.Throws<WebServiceException>(async () => await sut.CreateOrder(order));
+            Assert.AreEqual("Vous devez sélectionner le Paiement In App pour utiliser une promotion.", ex.ErrorMessage);
         }
     }
 
@@ -334,7 +369,8 @@ namespace apcurium.MK.Web.Tests
             await CreateAndAuthenticateTestAccount();
 
             var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
-            Assert.Throws<WebServiceException>(async () => await sut.GetOrder(_orderId));
+            var ex = Assert.Throws<WebServiceException>(async () => await sut.GetOrder(_orderId));
+            Assert.AreEqual("Can't access another account's order", ex.Message);
         }
 
         [Test]
@@ -369,7 +405,8 @@ namespace apcurium.MK.Web.Tests
 
             var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
 
-            Assert.Throws<WebServiceException>(async () => await sut.CancelOrder(_orderId));
+            var ex = Assert.Throws<WebServiceException>(async () => await sut.CancelOrder(_orderId));
+            Assert.AreEqual("Can't cancel another account's order", ex.Message);
         }
 
         [Test]
