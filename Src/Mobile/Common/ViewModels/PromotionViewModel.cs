@@ -1,14 +1,9 @@
-using System;
-using System.Collections.Generic;
+using System.Linq;
 using System.Collections.ObjectModel;
-using System.Reactive.Linq;
-using System.Reactive.Threading.Tasks;
 using System.Windows.Input;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.AppServices;
-using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.Extensions;
-using ServiceStack.Text;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -29,7 +24,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             LoadActivePromotions();
         }
 
-        public ObservableCollection<ActivePromotion> ActivePromotions { get; set; }
+        public ObservableCollection<SelectableItemViewModel<ActivePromotion>> ActivePromotions { get; set; }
 
         public ICommand SelectPromotion
         {
@@ -38,16 +33,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 return this.GetCommand<ActivePromotion>(activePromotion =>
                 {
                     _orderWorkflowService.SetPromoCode(activePromotion.Code);
-                    ShowViewModel<HomeViewModel>();
+                    Close(this);
                 });
             }
         }
 
         private async void LoadActivePromotions()
         {
-            ActivePromotions = new ObservableCollection<ActivePromotion>();
+            ActivePromotions = new ObservableCollection<SelectableItemViewModel<ActivePromotion>>();
 
-            var activePromotions = await _promotionService.GetActivePromotions();
+            var promotions = await _promotionService.GetActivePromotions();
+            var activePromotions = promotions.Select(p => new SelectableItemViewModel<ActivePromotion>(p, SelectPromotion));
 
             foreach (var activePromotion in activePromotions)
             {
