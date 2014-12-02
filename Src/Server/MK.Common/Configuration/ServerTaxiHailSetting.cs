@@ -112,6 +112,7 @@ namespace MK.Common.Configuration
         [Display(Name = "Send Payment Detail To Driver", Description = "Inform the driver of auto payment success or failure")]
         public bool SendDetailedPaymentInfoToDriver { get; private set; }
 
+        [Display(Name = "Overrides base url of the application (ie: in Account confirmation email)")]
         public string BaseUrl { get; private set; }
     }
 }
