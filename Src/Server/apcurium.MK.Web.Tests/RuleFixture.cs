@@ -522,7 +522,7 @@ namespace apcurium.MK.Web.Tests
             {
                 r.Category = RuleCategory.WarningRule;
                 r.Type = RuleType.Default;
-                r.ZoneList = "1";
+                r.ZoneList = "1,2";
                 r.Priority = 2;
                 r.AppliesToPickup = false;
                 r.AppliesToDropoff = true;

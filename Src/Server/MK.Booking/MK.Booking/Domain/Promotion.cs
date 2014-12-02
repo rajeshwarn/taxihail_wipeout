@@ -136,10 +136,8 @@ namespace apcurium.MK.Booking.Domain
 
             if (_maxUsagesPerUser.HasValue)
             {
-                //TODO PROMO use trygetvalue? http://msdn.microsoft.com/en-us/library/bb347013(v=vs.110).aspx
-                var usagesForThisUser = _usagesPerUser.ContainsKey(accountId)
-                    ? _usagesPerUser[accountId]
-                    : 0;
+                int usagesForThisUser;
+                _usagesPerUser.TryGetValue(accountId, out usagesForThisUser);
                 if (usagesForThisUser >= _maxUsagesPerUser)
                 {
                     errorMessage = "CannotCreateOrder_PromotionHasReachedMaxUsage";
@@ -214,14 +212,8 @@ namespace apcurium.MK.Booking.Domain
             });
         }
 
-        public decimal GetAmountSaved(Guid orderId, decimal totalAmountOfOrder)
+        public decimal GetAmountSaved(decimal totalAmountOfOrder)
         {
-            //TODO PROMO why? explain in comment
-            if (!_orderIds.Contains(orderId))
-            {
-                return 0;
-            }
-
             if (_discountType == PromoDiscountType.Cash)
             {
                 // return smallest value to make sure we don't credit user
@@ -239,7 +231,12 @@ namespace apcurium.MK.Booking.Domain
 
         public void Redeem(Guid orderId, decimal totalAmountOfOrder)
         {
-            var amountSaved = GetAmountSaved(orderId, totalAmountOfOrder);
+            if (!_orderIds.Contains(orderId))
+            {
+                throw new InvalidOperationException("Promotion must be applied to an order before being redeemed");
+            }
+
+            var amountSaved = GetAmountSaved(totalAmountOfOrder);
 
             Update(new PromotionRedeemed
             {
@@ -250,9 +247,6 @@ namespace apcurium.MK.Booking.Domain
 
         private void OnPromotionCreated(PromotionCreated @event)
         {
-            //TODO PROMO should be inactive by default
-            _active = true;
-
             _startDate = @event.StartDate;
             _endDate = @event.EndDate;
             _daysOfWeek = @event.DaysOfWeek;
@@ -297,24 +291,20 @@ namespace apcurium.MK.Booking.Domain
         {
             _usages = _usages + 1;
 
-            var usagesForThisUser = 0;
-            //TODO PROMO optmization, check if  @event.AccountId is not null before doing a dictionary lookup
-            if (_usagesPerUser.ContainsKey(@event.AccountId))
-            {
-                usagesForThisUser = _usagesPerUser[@event.AccountId];
-            }
-            //TODO PROMO should be in the if?
+            int usagesForThisUser;
+            _usagesPerUser.TryGetValue(@event.AccountId, out usagesForThisUser);
             _usagesPerUser[@event.AccountId] = usagesForThisUser + 1;
 
             _orderIds.Add(@event.OrderId);
         }
 
-        //TODO PROMO add comment about what the purpose of this method
+        // this method sets the start/end times with DateTime.MinValue to be used when validating time of day for promo usage
         private void SetInternalStartAndEndTimes(DateTime? startTime, DateTime? endTime)
         {
             if (startTime.HasValue && endTime.HasValue)
             {
-                //TODO PROMO not sure about that? endTime < startTime then end time is the next day?
+                // The date received here are always the current day or tomorrow (verified with model validation)
+                // if the date is different, we assume that it's the end time is on the next day
                 var dayOffset = 0;
                 if (startTime.Value.Date != endTime.Value.Date)
                 {

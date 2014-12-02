@@ -3,16 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
+using apcurium.MK.Common.Configuration;
 
 namespace apcurium.MK.Booking.ReadModel.Query
 {
     public class PromotionDao : IPromotionDao
     {
         private readonly Func<BookingDbContext> _contextFactory;
+        private readonly IServerSettings _serverSettings;
 
-        public PromotionDao(Func<BookingDbContext> contextFactory)
+        public PromotionDao(Func<BookingDbContext> contextFactory, IServerSettings serverSettings)
         {
             _contextFactory = contextFactory;
+            _serverSettings = serverSettings;
         }
 
         public IEnumerable<PromotionDetail> GetAll()
@@ -35,7 +38,7 @@ namespace apcurium.MK.Booking.ReadModel.Query
                     if (thisPromo.PublishedStartDate.HasValue || thisPromo.PublishedEndDate.HasValue)
                     {
                         // at least one published date set, so it's public
-
+                        
                         if (!thisPromo.PublishedStartDate.HasValue)
                         {
                             thisPromo.PublishedStartDate = DateTime.MinValue;
@@ -47,10 +50,10 @@ namespace apcurium.MK.Booking.ReadModel.Query
                         }
 
                         //TODO PROMO: we should abstract Now with a IClock http://stackoverflow.com/questions/43711/whats-a-good-way-to-overwrite-datetime-now-during-testing
-                        //TODO PROMO: should we be using an UTC, date need to be on the same timezone, admin in France comparing a server in the US ?
-                        var now = DateTime.Now.Date;
+                        var now = GetCurrentOffsetedTime();
                         if (thisPromo.PublishedStartDate <= now
-                            && thisPromo.PublishedEndDate > now)
+                            && thisPromo.PublishedEndDate > now
+                            && !IsExpired(thisPromo, now))
                         {
                             result.Add(promotionDetail);
                         }
@@ -83,6 +86,30 @@ namespace apcurium.MK.Booking.ReadModel.Query
             {
                 return context.Query<PromotionUsageDetail>().SingleOrDefault(c => c.OrderId == orderId);
             }
+        }
+
+        private DateTime GetCurrentOffsetedTime()
+        {
+            var ibsServerTimeDifference = _serverSettings.ServerData.IBS.TimeDifference;
+            var now = DateTime.Now;
+            if (ibsServerTimeDifference != 0)
+            {
+                now = now.Add(new TimeSpan(ibsServerTimeDifference));
+            }
+
+            return now;
+        }
+
+        private bool IsExpired(PromotionDetail promo, DateTime now)
+        {
+            var endDateTime = promo.GetEndDateTime();
+
+            if (endDateTime.HasValue && endDateTime.Value <= now)
+            {
+                return true;
+            }
+
+            return false;
         }
     }
 }

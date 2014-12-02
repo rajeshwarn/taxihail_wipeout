@@ -10,7 +10,6 @@ using NUnit.Framework;
 
 namespace apcurium.MK.Booking.Test.PromotionFixture
 {
-    //TODO PROMO how do we check that an order already get a promo code i.e. no multiple promo codes for an order?
     [TestFixture]
     public class given_one_promotion
     {
@@ -45,6 +44,7 @@ namespace apcurium.MK.Booking.Test.PromotionFixture
                 PublishedStartDate = new DateTime(2014, 11, 9),
                 PublishedEndDate = new DateTime(2015, 11, 10)
             });
+            _sut.Given(new PromotionActivated{ SourceId = _promoId });
         }
 
         private EventSourcingTestHelper<Promotion> _sut;
@@ -135,8 +135,6 @@ namespace apcurium.MK.Booking.Test.PromotionFixture
             Assert.AreEqual(_value, @event.DiscountValue);
         }
 
-
-        //TODO PROMO : should we get an error in this case?
         [Test]
         public void when_redeeming_a_promo_without_having_it_applied_first()
         {
@@ -162,17 +160,13 @@ namespace apcurium.MK.Booking.Test.PromotionFixture
                 }
             );
 
-            _sut.When(new RedeemPromotion
+            var ex = Assert.Throws<InvalidOperationException>(() => _sut.When(new RedeemPromotion
             {
                 PromoId = _promoId,
                 OrderId = orderId,
                 TotalAmountOfOrder = 44.12m
-            });
-
-            var @event = _sut.ThenHasSingle<PromotionRedeemed>();
-            Assert.AreEqual(_promoId, @event.SourceId);
-            Assert.AreEqual(orderId, @event.OrderId);
-            Assert.AreEqual(0, @event.AmountSaved);
+            }));
+            Assert.AreEqual("Promotion must be applied to an order before being redeemed", ex.Message);
         }
 
         [Test]

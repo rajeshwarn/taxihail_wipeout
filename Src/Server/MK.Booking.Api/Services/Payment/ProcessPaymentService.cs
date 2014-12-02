@@ -65,7 +65,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             if (promoUsed != null)
             {
                 var promoDomainObject = _promoRepository.Get(promoUsed.PromoId);
-                amountSaved = promoDomainObject.GetAmountSaved(request.OrderId, totalAmount);
+                amountSaved = promoDomainObject.GetAmountSaved(totalAmount);
                 totalAmount = totalAmount - amountSaved;
             }
 

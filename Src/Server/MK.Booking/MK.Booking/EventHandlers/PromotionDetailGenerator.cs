@@ -44,8 +44,7 @@ namespace apcurium.MK.Booking.EventHandlers
                     MaxUsage = @event.MaxUsage,
                     Code = @event.Code,
                     PublishedStartDate = @event.PublishedStartDate,
-                    PublishedEndDate = @event.PublishedEndDate,
-                    Active = true //TODO PROMO should be false
+                    PublishedEndDate = @event.PublishedEndDate
                 };
 
                 context.Save(promotionDetail);

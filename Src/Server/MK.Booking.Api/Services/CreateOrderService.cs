@@ -250,24 +250,16 @@ namespace apcurium.MK.Booking.Api.Services
                 chargeTypeEmail = _resources.Get(chargeTypeKey, request.ClientLanguageCode);
             }
 
-            var ibsOrderId = CreateIbsOrder(account.IBSAccountId.Value, request, referenceData, chargeTypeIbs, bestAvailableCompany.CompanyKey);
+            ValidateAndApplyPromotion(request.PromoCode, request.Settings.ChargeTypeId, account.Id, request.Id, pickupDate, isFutureBooking, request.ClientLanguageCode);
 
+            var ibsOrderId = CreateIbsOrder(account.IBSAccountId.Value, request, referenceData, chargeTypeIbs, bestAvailableCompany.CompanyKey);
+            
             if (!ibsOrderId.HasValue
                 || ibsOrderId <= 0)
             {
                 var code = !ibsOrderId.HasValue || (ibsOrderId.Value >= -1) ? "" : "_" + Math.Abs(ibsOrderId.Value);
                 return new HttpError(ErrorCode.CreateOrder_CannotCreateInIbs + code);
             }
-
-            //TODO PROMO : off topic shoud we removed this code now?
-            //Temporary solution for Aexid, we call the save extr payment to send the account info.  if not successful, we cancel the order.
-            var result = TryToSendAccountInformation(request.Id, ibsOrderId.Value, request, account);
-            if (result.HasValue)
-            {
-                return new HttpError(ErrorCode.CreateOrder_CannotCreateInIbs + "_" + Math.Abs(result.Value));
-            }
-
-            ValidateAndApplyPromotion(request.PromoCode, request.Settings.ChargeTypeId, account.Id, request.Id, pickupDate, isFutureBooking, request.ClientLanguageCode);
 
             var command = Mapper.Map<Commands.CreateOrder>(request);
             var emailCommand = Mapper.Map<SendBookingConfirmationEmail>(request);
@@ -792,7 +784,6 @@ namespace apcurium.MK.Booking.Api.Services
             var promo = _promotionDao.FindByPromoCode(promoCode);
             if (promo == null)
             {
-                //TODO PROMO : we already have created the order in IBS, what do we do now?
                 throw new HttpError(HttpStatusCode.Forbidden, ErrorCode.CreateOrder_RuleDisable.ToString(),
                     _resources.Get("CannotCreateOrder_PromotionDoesNotExist", clientLanguageCode));
             }
@@ -804,7 +795,6 @@ namespace apcurium.MK.Booking.Api.Services
                 throw new HttpError(HttpStatusCode.Forbidden, ErrorCode.CreateOrder_RuleDisable.ToString(),
                     _resources.Get(errorMessage, clientLanguageCode));
             }
-
             
             _commandBus.Send(new ApplyPromotion
             {

@@ -65,7 +65,7 @@ namespace apcurium.MK.Booking.Test.Integration.PromotionFixture
 
                 Assert.NotNull(dto);
                 Assert.AreEqual(promoId, dto.Id);
-                Assert.AreEqual(true, dto.Active);
+                Assert.AreEqual(false, dto.Active);
                 Assert.AreEqual("promo1", dto.Name);
                 Assert.AreEqual("promodesc1", dto.Description);
                 Assert.AreEqual("code", dto.Code);

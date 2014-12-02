@@ -354,7 +354,7 @@ namespace apcurium.MK.Booking.Api.Jobs
                 if (promoUsed != null)
                 {
                     var promoDomainObject = _promoRepository.Get(promoUsed.PromoId);
-                    amountSaved = promoDomainObject.GetAmountSaved(orderStatusDetail.OrderId, totalOrderAmount);
+                    amountSaved = promoDomainObject.GetAmountSaved(totalOrderAmount);
                     totalOrderAmount = totalOrderAmount - amountSaved;
                 }
                 
