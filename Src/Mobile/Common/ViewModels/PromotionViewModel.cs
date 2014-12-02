@@ -24,7 +24,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             LoadActivePromotions();
         }
 
-        public ObservableCollection<SelectableItemViewModel<ActivePromotion>> ActivePromotions { get; set; }
+        public ObservableCollection<PromotionItemViewModel> ActivePromotions { get; set; }
 
         public ICommand SelectPromotion
         {
@@ -40,10 +40,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         private async void LoadActivePromotions()
         {
-            ActivePromotions = new ObservableCollection<SelectableItemViewModel<ActivePromotion>>();
+            ActivePromotions = new ObservableCollection<PromotionItemViewModel>();
 
             var promotions = await _promotionService.GetActivePromotions();
-            var activePromotions = promotions.Select(p => new SelectableItemViewModel<ActivePromotion>(p, SelectPromotion));
+            var activePromotions = promotions.Select(p => new PromotionItemViewModel(p, SelectPromotion));
 
             foreach (var activePromotion in activePromotions)
             {

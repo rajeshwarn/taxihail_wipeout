@@ -550,4 +550,8 @@
   <string name="PromoRequiresToPayWithCOFPairingWarningMessage">If you decide to pay in car, you will not be able to use the promotion</string>
   <string name="View_Promotions">Promotions</string>
   <string name="HistoryDetailPromoLabel">Promo Code:</string>
+  <string name="PromoExpiringIn1DayMessage">Expires in 1 day</string>
+  <string name="PromoExpiringSoonMessage">Expires in {0} days</string>
+  <string name="PromoExpiringToday">Expires today!</string>
+  <string name="PromoBookRide">Book a ride with this promotion</string>
 </resources>

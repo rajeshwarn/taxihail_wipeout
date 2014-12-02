@@ -22,7 +22,7 @@
             android:layout_height="wrap_content"
             android:textColor="@color/black"
             android:text="Promo Name"
-            local:MvxBind="Text Item.Name" />
+            local:MvxBind="Text Name" />
         <TextView
             android:id="@+id/ExpiresSoonTxt"
             android:layout_width="130dp"
@@ -31,7 +31,7 @@
             android:paddingRight="5dp"
             android:textColor="@color/red"
             android:text="Expires in 3 days"
-            local:MvxBind="Text Item.OriginTxt" />
+            local:MvxBind="Text ExpiringSoonWarning" />
     </LinearLayout>
     <LinearLayout
         android:orientation="vertical"
@@ -43,7 +43,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Promo Description"
-            local:MvxBind="Text Item.Description" />
+            local:MvxBind="Text Description" />
         <RelativeLayout
             android:layout_width="fill_parent"
             android:layout_height="fill_parent">
@@ -56,7 +56,7 @@
                 android:paddingTop="5dip"
                 android:paddingBottom="5dip"
                 android:layout_centerInParent="true"
-                android:text="Book a ride with this promotion!"
+                android:text="@string/PromoBookRide"
                 local:MvxBind="Click SelectedCommand" />
         </RelativeLayout>
     </LinearLayout>

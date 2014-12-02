@@ -229,6 +229,7 @@
     <Compile Include="ViewModels\Payment\ConfirmPairViewModel.cs" />
     <Compile Include="ViewModels\Payment\PairingState.cs" />
     <Compile Include="ViewModels\NotificationSettingsViewModel.cs" />
+    <Compile Include="ViewModels\PromotionItemViewModel.cs" />
     <Compile Include="ViewModels\SelectableItemViewModel.cs" />
     <Compile Include="ViewModels\PromotionViewModel.cs" />
     <Compile Include="ViewModels\SectionAddressViewModel.cs" />

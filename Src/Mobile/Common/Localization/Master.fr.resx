@@ -1786,4 +1786,16 @@
   <data name="View_Promotions" xml:space="preserve">
     <value>Promotions</value>
   </data>
+  <data name="PromoExpiringIn1DayMessage" xml:space="preserve">
+    <value>Expire dans 1 jour</value>
+  </data>
+  <data name="PromoExpiringSoonMessage" xml:space="preserve">
+    <value>Expire dans {0} jours</value>
+  </data>
+  <data name="PromoExpiringToday" xml:space="preserve">
+    <value>Expire aujourd'hui!</value>
+  </data>
+  <data name="PromoBookRide" xml:space="preserve">
+    <value>Passer une commande avec cette promotion</value>
+  </data>
 </root>

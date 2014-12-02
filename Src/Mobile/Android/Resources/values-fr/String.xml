@@ -565,4 +565,8 @@
   <string name="PromoRequiresToPayWithCOFPairingWarningMessage">Si vous décidez de payer dans le taxi, vous ne serez pas éligible à la promotion</string>
   <string name="View_Promotions">Promotions</string>
   <string name="HistoryDetailPromoLabel">Code promo:</string>
+  <string name="PromoExpiringIn1DayMessage">Expire dans 1 jour</string>
+  <string name="PromoExpiringSoonMessage">Expire dans {0} jours</string>
+  <string name="PromoExpiringToday">Expire aujourd\'hui!</string>
+  <string name="PromoBookRide">Passer une commande avec cette promotion</string>
 </resources>
