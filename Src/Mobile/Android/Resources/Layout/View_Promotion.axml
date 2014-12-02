@@ -32,8 +32,8 @@
             android:layout_height="1px"
             android:background="@color/top_bar_separator_color"
             android:orientation="horizontal" />
-      <TextView
-            android:text="No active promotions"
+        <TextView
+            android:text="@string/PromotionViewNoPromotionLabel"
             style="@style/TopTitleText"
             android:layout_gravity="center"
             android:layout_width="fill_parent"
