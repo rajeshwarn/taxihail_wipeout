@@ -568,7 +568,7 @@
   <string name="PromoExpiringIn1DayMessage">Expire dans 1 jour</string>
   <string name="PromoExpiringSoonMessage">Expire dans {0} jours</string>
   <string name="PromoExpiringToday">Expire aujourd\'hui!</string>
-  <string name="PromoBookRide">Passer une commande avec cette promotion</string>
+  <string name="PromoBookRide">Utiliser sur la prochaine commande</string>
   <string name="PromotionViewNoPromotionLabel">Aucune promotion disponible</string>
   <string name="Promo_NoActive">Aucune promotion active</string>
 </resources>

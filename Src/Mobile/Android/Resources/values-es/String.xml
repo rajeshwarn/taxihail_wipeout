@@ -556,7 +556,7 @@
   <string name="PromoExpiringIn1DayMessage">Expires in 1 day</string>
   <string name="PromoExpiringSoonMessage">Expires in {0} days</string>
   <string name="PromoExpiringToday">Expires today!</string>
-  <string name="PromoBookRide">Book a ride with this promotion</string>
+  <string name="PromoBookRide">Use this promotion on next ride</string>
   <string name="PromotionViewNoPromotionLabel">No promotions available</string>
   <string name="Promo_NoActive">No Active Promotion</string>
 </resources>
