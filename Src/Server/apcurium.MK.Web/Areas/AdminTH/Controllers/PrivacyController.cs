@@ -31,6 +31,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
 
         // POST: AdminTH/Privacy/Update
         [HttpPost]
+        [ValidateInput(false)]
         public ActionResult Update(string privacyPolicy)
         {
             _commandBus.Send(new UpdatePrivacyPolicy
@@ -40,6 +41,8 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
             });
 
             TempData["Info"] = "Privacy policy updated";
+            TempData["PrivacyPolicy"] = privacyPolicy;
+
             return RedirectToAction("Index");
         }
     }

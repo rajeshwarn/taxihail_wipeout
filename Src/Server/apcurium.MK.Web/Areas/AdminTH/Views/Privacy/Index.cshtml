@@ -15,7 +15,10 @@
     <div class="control-group">
         @Html.LabelFor(x => x.PrivacyPolicy, "Content", new {@class = "control-label"})
         <div class="controls">
-            @Html.TextAreaFor(x => x.PrivacyPolicy, new { @class = "input-block-level", @rows = 20 })
+            @{
+                var policyText = (string)TempData["PrivacyPolicy"] ?? Model.PrivacyPolicy;
+            }
+            @Html.TextArea("PrivacyPolicy", policyText, new { @class = "input-block-level", @rows = 20 })
             @Html.ValidationMessageFor(x => x.PrivacyPolicy)
         </div>
     </div>
