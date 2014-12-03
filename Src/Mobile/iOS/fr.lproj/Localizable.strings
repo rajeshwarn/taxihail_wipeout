@@ -562,7 +562,7 @@
 "View_Promotions"="Promotions";
 "HistoryDetailPromoLabel"="Code promo:";
 "PromoExpiringSoonMessage"="Expire dans {0} jours";
-"PromoBookRide"="Passer une commande avec cette promotion";
+"PromoBookRide"="Utiliser sur la prochaine commande";
 "PromoExpiringIn1DayMessage"="Expire dans 1 jour";
 "PromoExpiringToday"="Expire aujourd'hui!";
 "PromotionViewNoPromotionLabel"="Aucune promotion disponible";

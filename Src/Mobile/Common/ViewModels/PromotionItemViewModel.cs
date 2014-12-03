@@ -13,18 +13,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             Name = activePromotion.Name;
             Description = activePromotion.Description;
             ExpiringSoonWarning = GenerateExpiringSoonWarning(activePromotion.ExpirationDate);
-            IsExpanded = false;
-        }
-
-        public ICommand SelectPromotion
-        {
-            get
-            {
-                return this.GetCommand(() =>
-                {
-                    IsExpanded = !IsExpanded;
-                });
-            }
         }
 
         public string Name { get; private set; }
@@ -32,20 +20,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         public string Description { get; private set; }
 
         public string ExpiringSoonWarning { get; private set; }
-
-        private bool _isExpanded;
-        public bool IsExpanded
-        {
-			get { return _isExpanded; }
-            set
-            {
-				if (_isExpanded != value)
-                {
-					_isExpanded = value;
-                    RaisePropertyChanged();
-                }
-            }
-        }
 
         private string GenerateExpiringSoonWarning(DateTime? expirationDate)
         {
