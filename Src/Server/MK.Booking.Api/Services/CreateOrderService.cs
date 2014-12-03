@@ -47,7 +47,7 @@ namespace apcurium.MK.Booking.Api.Services
 
         private readonly IAccountDao _accountDao;
         private readonly IOrderDao _orderDao;
-        private readonly IPaymentService _paymentService;
+        private readonly IPaymentServiceFactory _paymentServiceFactory;
         private readonly ICreditCardDao _creditCardDao;
         private readonly IPromotionDao _promotionDao;
         private readonly IEventSourcedRepository<Promotion> _promoRepository;
@@ -71,7 +71,7 @@ namespace apcurium.MK.Booking.Api.Services
             IUpdateOrderStatusJob updateOrderStatusJob,
             IAccountChargeDao accountChargeDao,
             IOrderDao orderDao,
-            IPaymentService paymentService,
+            IPaymentServiceFactory paymentServiceFactory,
             ICreditCardDao creditCardDao,
             IPromotionDao promotionDao,
             IEventSourcedRepository<Promotion> promoRepository,
@@ -87,7 +87,7 @@ namespace apcurium.MK.Booking.Api.Services
             _ruleCalculator = ruleCalculator;
             _updateOrderStatusJob = updateOrderStatusJob;
             _orderDao = orderDao;
-            _paymentService = paymentService;
+            _paymentServiceFactory = paymentServiceFactory;
             _creditCardDao = creditCardDao;
             _promotionDao = promotionDao;
             _promoRepository = promoRepository;
@@ -456,7 +456,7 @@ namespace apcurium.MK.Booking.Api.Services
             // there's a minimum amount of $50 (warning indicating that on the admin ui)
             var preAuthAmount = Math.Max(_serverSettings.GetPaymentSettings().PreAuthAmount ?? 0, 50);
 
-            var preAuthResponse = _paymentService.PreAuthorize(orderId, account.Email, card.Token, preAuthAmount);
+            var preAuthResponse = _paymentServiceFactory.GetInstance().PreAuthorize(orderId, account.Email, card.Token, preAuthAmount);
             
             if (!preAuthResponse.IsSuccessful)
             {
