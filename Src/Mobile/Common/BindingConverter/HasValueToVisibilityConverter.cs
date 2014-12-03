@@ -5,7 +5,7 @@ using Cirrious.MvvmCross.Plugins.Visibility;
 
 namespace apcurium.MK.Booking.Mobile.BindingConverter
 {
-	public class HasValueToVisibilityConverter: MvxBaseVisibilityValueConverter
+	public class HasValueToVisibilityConverter : MvxBaseVisibilityValueConverter
 	{
 		protected override MvxVisibility Convert(object value, object parameter, CultureInfo culture)
 		{  
@@ -24,8 +24,6 @@ namespace apcurium.MK.Booking.Mobile.BindingConverter
 			return MvxVisibility.Visible;
 
 		}
-
-
 	}
 }
 

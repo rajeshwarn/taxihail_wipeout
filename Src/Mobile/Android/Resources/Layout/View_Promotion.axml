@@ -42,7 +42,7 @@
             android:gravity="center"
             android:includeFontPadding="false"
             android:id="@+id/textViewNoPromo"
-            local:MvxBind="Visibility HasPromotions, Converter=InvertedVisibility" />
+            local:MvxBind="Visibility ActivePromotions, Converter=NoValueToVisibilityConverter" />
         <cirrious.mvvmcross.binding.droid.views.MvxListView
             android:id="@+id/PromotionsList"
             android:minWidth="25px"
