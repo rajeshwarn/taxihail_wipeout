@@ -460,7 +460,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 	    private void ShowPayPalPaymentError()
 	    {
             this.Services().Message.ShowMessage(this.Services().Localize["PayPalExpressCheckoutCancelTitle"],
-                this.Services().Localize["PayPalExpressCheckoutCancelMessage"]);
+                this.Services().Localize["PayPalExpressCheckoutCancelMessage"], () => Close(this));
 	    }
 
         private void ShowCreditCardPaymentConfirmation(string transactionId)
