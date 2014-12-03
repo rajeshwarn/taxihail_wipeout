@@ -13,27 +13,30 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$30 First Ride Promo" lineBreakMode="wordWrap" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GBF-EN-M7I">
-                        <rect key="frame" x="14" y="14" width="138.5" height="17"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="$30 First Ride Promo" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GBF-EN-M7I">
+                        <rect key="frame" x="15" y="15" width="139" height="17"/>
+                        <constraints>
+                            <constraint firstAttribute="width" relation="lessThanOrEqual" constant="200" id="M73-JB-A78"/>
+                        </constraints>
                         <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
                         <color key="textColor" red="0.12941176470588234" green="0.12941176470588234" blue="0.12941176470588234" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Expires in 3 days" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iDZ-64-vgd">
-                        <rect key="frame" x="157" y="17" width="86.5" height="13.5"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="Expires in 3 days" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iDZ-64-vgd">
+                        <rect key="frame" x="156" y="18" width="87" height="14"/>
                         <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="11"/>
                         <color key="textColor" red="0.98431372549019602" green="0.0" blue="0.039215686274509803" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="B0d-CR-od6">
-                        <rect key="frame" x="14" y="33" width="292" height="66.5"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalCompressionResistancePriority="751" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="B0d-CR-od6">
+                        <rect key="frame" x="15" y="37" width="290" height="67"/>
                         <string key="text">Thank you for registering with TaxiHail! We are so excited about your new account we are giving you $30 off your next fare. Just use promo code NS30.</string>
                         <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="14"/>
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mnp-Qw-Mbg" customClass="FlatButton">
-                        <rect key="frame" x="45" y="111" width="230" height="41"/>
+                        <rect key="frame" x="45" y="115" width="230" height="41"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="41" id="IHE-qK-3xQ"/>
                             <constraint firstAttribute="width" constant="230" id="dI4-MG-GlA"/>
@@ -46,15 +49,15 @@
                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                 <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                 <constraints>
-                    <constraint firstAttribute="trailing" secondItem="B0d-CR-od6" secondAttribute="trailing" constant="14" id="32Y-lI-UWS"/>
-                    <constraint firstItem="B0d-CR-od6" firstAttribute="top" secondItem="GBF-EN-M7I" secondAttribute="bottom" constant="2" id="7Md-U7-tuT"/>
-                    <constraint firstItem="GBF-EN-M7I" firstAttribute="top" secondItem="YTl-1W-gDM" secondAttribute="top" constant="14" id="7xT-wd-cEl"/>
-                    <constraint firstItem="GBF-EN-M7I" firstAttribute="baseline" secondItem="iDZ-64-vgd" secondAttribute="baseline" id="87O-RB-n7a"/>
-                    <constraint firstItem="iDZ-64-vgd" firstAttribute="leading" secondItem="GBF-EN-M7I" secondAttribute="trailing" constant="5" id="QGK-By-cCa"/>
-                    <constraint firstItem="B0d-CR-od6" firstAttribute="leading" secondItem="YTl-1W-gDM" secondAttribute="leading" constant="14" id="SzC-Q4-tyE"/>
-                    <constraint firstItem="mnp-Qw-Mbg" firstAttribute="top" secondItem="B0d-CR-od6" secondAttribute="bottom" constant="12" id="Wfq-ZX-hJx"/>
-                    <constraint firstItem="GBF-EN-M7I" firstAttribute="leading" secondItem="YTl-1W-gDM" secondAttribute="leading" constant="14" id="kYX-sh-OYs"/>
-                    <constraint firstAttribute="centerX" secondItem="mnp-Qw-Mbg" secondAttribute="centerX" id="lD2-dE-52J"/>
+                    <constraint firstItem="iDZ-64-vgd" firstAttribute="baseline" secondItem="GBF-EN-M7I" secondAttribute="baseline" id="0OD-3D-fT1"/>
+                    <constraint firstItem="mnp-Qw-Mbg" firstAttribute="top" secondItem="B0d-CR-od6" secondAttribute="bottom" constant="12" id="95B-hM-0Bd"/>
+                    <constraint firstAttribute="trailing" secondItem="B0d-CR-od6" secondAttribute="trailing" constant="15" id="CSp-f6-udY"/>
+                    <constraint firstItem="iDZ-64-vgd" firstAttribute="leading" secondItem="GBF-EN-M7I" secondAttribute="trailing" constant="3" id="FI6-Ca-sf7"/>
+                    <constraint firstItem="GBF-EN-M7I" firstAttribute="leading" secondItem="YTl-1W-gDM" secondAttribute="leading" constant="15" id="HYZ-ZE-6qN"/>
+                    <constraint firstItem="B0d-CR-od6" firstAttribute="leading" secondItem="YTl-1W-gDM" secondAttribute="leading" constant="15" id="LKH-Yx-77H"/>
+                    <constraint firstAttribute="centerX" secondItem="mnp-Qw-Mbg" secondAttribute="centerX" id="Som-GM-Er8"/>
+                    <constraint firstItem="GBF-EN-M7I" firstAttribute="top" secondItem="YTl-1W-gDM" secondAttribute="top" constant="15" id="dcV-pA-R12"/>
+                    <constraint firstItem="B0d-CR-od6" firstAttribute="top" secondItem="GBF-EN-M7I" secondAttribute="bottom" constant="5" id="hfu-5L-hF7"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>

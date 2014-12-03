@@ -13,6 +13,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 {
     public partial class PromotionCell : MvxTableViewCell
     {
+        public static float Height = 44f;
+
         public PromotionCell(IntPtr handle) : base(handle)
         {
             SelectionStyle = UITableViewCellSelectionStyle.None;
@@ -28,7 +30,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             set.Bind(lblExpires).For(v => v.Text).To(vm => vm.ExpiringSoonWarning);
             set.Bind(lblDescription).For(v => v.Text).To(vm => vm.Description);
             set.Bind(btnApplyPromo).For("TouchUpInside").To(vm => vm.SelectedCommand);
-            set.Bind().For(v => v.IsExpanded).To(vm => vm.IsExpanded);
 
             set.Apply(); 
 
@@ -41,10 +42,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             get { return _hideBottomBar; }
             set
             { 
-                if (BackgroundView is CustomCellBackgroundView)
-                {
-                    ((CustomCellBackgroundView)BackgroundView).HideBottomBar = value;
-                }
+                ((CustomCellBackgroundView)BackgroundView).HideBottomBar = value;
                 _hideBottomBar = value;
             }
         }
@@ -69,7 +67,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             lblDescription.Hidden = true;
             btnApplyPromo.Hidden = true;
 
-            BackgroundView = new CustomCellBackgroundView(this.ContentView.Frame, 10, UIColor.White, UIColor.FromRGB(190, 190, 190)) 
+            BackgroundView = new CustomCellBackgroundView(this.ContentView.Frame, 10, UIColor.White, UIColor.Clear) 
             {
                 HideBottomBar = HideBottomBar            
             };

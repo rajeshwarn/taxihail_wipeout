@@ -169,16 +169,37 @@ namespace apcurium.MK.Booking.Mobile.Client
             thisButton.Layer.CornerRadius = radius;
         }
 
-        public static SizeF GetSizeThatFits(this UIView view, string text, UIFont font)
+        public static SizeF GetSizeThatFits(this UIView view, string text, UIFont font, SizeF? maxSize = null)
         {
             if (UIHelper.IsOS7orHigher)
             {
-                return new NSString (text)
-                    .GetSizeUsingAttributes (new UIStringAttributes { Font = font });
+                if (maxSize != null)
+                {
+                    return new NSString(text)
+                        .GetBoundingRect(maxSize.Value,
+                            NSStringDrawingOptions.UsesLineFragmentOrigin,
+                            new UIStringAttributes { Font = font },
+                            new NSStringDrawingContext()).Size;
+                }
+                else
+                {
+                    return new NSString (text)
+                        .GetSizeUsingAttributes (new UIStringAttributes { Font = font });
+                }
             }
             else
             {
-                return view.StringSize (text, font);
+                var result = view.StringSize(text, font);
+
+                if (maxSize != null
+                    && result.Width > maxSize.Value.Width)
+                {
+                    var height = result.Height;
+                    var lines = Math.Round(result.Width / maxSize.Value.Width, MidpointRounding.AwayFromZero);
+                    result = new SizeF(maxSize.Value.Width, (float)lines * height);
+                }
+
+                return result;
             }
         }
 
