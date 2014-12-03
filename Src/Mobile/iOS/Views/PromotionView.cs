@@ -49,13 +49,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             var set = this.CreateBindingSet<PromotionView, PromotionViewModel> ();
 
             set.Bind(tblPromotions)
-                .For(v => v.Hidden)
-                .To(vm => vm.HasPromotions)
-                .WithConversion("BoolInverter");
+                .For("Visibility")
+                .To(vm => vm.ActivePromotions)
+                .WithConversion("Visibility");
 
             set.Bind(lblNoPromotions)
-                .For(v => v.Hidden)
-                .To(vm => vm.HasPromotions);
+                .For("Visibility")
+                .To(vm => vm.ActivePromotions)
+                .WithConversion("NoValueToVisibility");
 
             set.Bind(tableViewSource)
                 .For(v => v.ItemsSource)
