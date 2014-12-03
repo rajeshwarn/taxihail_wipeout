@@ -1796,7 +1796,7 @@
     <value>Expire aujourd'hui!</value>
   </data>
   <data name="PromoBookRide" xml:space="preserve">
-    <value>Passer une commande avec cette promotion</value>
+    <value>Utiliser sur la prochaine commande</value>
   </data>
   <data name="PromotionViewNoPromotionLabel" xml:space="preserve">
     <value>Aucune promotion disponible</value>

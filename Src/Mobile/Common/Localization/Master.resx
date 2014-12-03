@@ -1783,7 +1783,7 @@
     <value>Expires today!</value>
   </data>
   <data name="PromoBookRide" xml:space="preserve">
-    <value>Book a ride with this promotion</value>
+    <value>Use this promotion on next ride</value>
   </data>
   <data name="PromotionViewNoPromotionLabel" xml:space="preserve">
     <value>No promotions available</value>

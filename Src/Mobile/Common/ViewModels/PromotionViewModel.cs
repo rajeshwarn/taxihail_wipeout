@@ -34,7 +34,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
-        public ICommand RedeemPromotion
+        public ICommand ApplyPromotion
         {
             get
             {
@@ -48,17 +48,20 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         private async void LoadActivePromotions()
         {
-            ActivePromotions = new ObservableCollection<PromotionItemViewModel>();
-
-            var promotions = await _promotionService.GetActivePromotions();
-            var activePromotions = promotions.Select(p => new PromotionItemViewModel(p, RedeemPromotion));
-
-            foreach (var activePromotion in activePromotions)
+            using (this.Services().Message.ShowProgress())
             {
-                ActivePromotions.Add(activePromotion);
-            }
+                ActivePromotions = new ObservableCollection<PromotionItemViewModel>();
 
-			RaisePropertyChanged(() => HasPromotions);
+                var promotions = await _promotionService.GetActivePromotions();
+                var activePromotions = promotions.Select(p => new PromotionItemViewModel(p, ApplyPromotion));
+
+                foreach (var activePromotion in activePromotions)
+                {
+                    ActivePromotions.Add(activePromotion);
+                }
+
+                RaisePropertyChanged(() => HasPromotions);
+            }
         }
     }
 }
