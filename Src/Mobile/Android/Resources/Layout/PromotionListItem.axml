@@ -76,22 +76,19 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingLeft="15dip"
+            android:paddingBottom="15dip"
             android:textColor="@color/black"
-            android:text="Promo Description"
+            android:text="Promo Description Promo Description Promo Description Promo Description Promo Description Promo Description Promo Description Promo Description Promo Description Promo Description Promo Description Promo Description Promo Description Promo Description Promo Description"
             local:MvxBind="Text Description" />
         <RelativeLayout
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent">
+            android:layout_height="wrap_content">
             <Button
                 style="@style/ButtonActionGreenStyle"
-                android:layout_marginTop="8dip"
-                android:gravity="center_horizontal"
+                android:layout_centerInParent="true"
                 android:id="@+id/SaveSettingsButton"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/HeightButton"
-                android:paddingTop="7dip"
-                android:paddingBottom="5dip"
-                android:layout_centerInParent="true"
                 android:text="@string/PromoBookRide"
                 local:MvxBind="Click SelectedCommand" />
         </RelativeLayout>
