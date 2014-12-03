@@ -212,7 +212,7 @@ namespace apcurium.MK.Booking.Services.Impl
 
             var templateData = new
             {
-                confirmationUrl = new Uri(_baseUrls.Uri,confirmationUrl),
+                confirmationUrl = new Uri(UrlCombine(_baseUrls.Uri.ToString(), confirmationUrl.ToString())),
                 ApplicationName = _serverSettings.ServerData.TaxiHail.ApplicationName,
                 EmailFontColor = _serverSettings.ServerData.TaxiHail.EmailFontColor,
                 AccentColor = _serverSettings.ServerData.TaxiHail.AccentColor,
@@ -220,6 +220,24 @@ namespace apcurium.MK.Booking.Services.Impl
             };
 
             SendEmail(clientEmailAddress, EmailConstant.Template.AccountConfirmation, EmailConstant.Subject.AccountConfirmation, templateData, clientLanguageCode);
+        }
+
+        private string UrlCombine(string url1, string url2)
+        {
+           if (url1.Length == 0)
+           {
+              return url2;
+           }
+
+           if (url2.Length == 0)
+           {
+            return url1;
+           }
+
+           url1 = url1.TrimEnd('/', '\\');
+           url2 = url2.TrimStart('/', '\\');
+
+           return string.Format("{0}/{1}", url1, url2);
         }
 
         public void SendAccountConfirmationSMS(string phoneNumber, string code, string clientLanguageCode)
