@@ -35,7 +35,7 @@
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mnp-Qw-Mbg" customClass="FlatButton">
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mnp-Qw-Mbg" customClass="FlatButton">
                         <rect key="frame" x="45" y="115" width="230" height="41"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="41" id="IHE-qK-3xQ"/>
@@ -45,6 +45,20 @@
                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                         </state>
                     </button>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="right_arrow.png" translatesAutoresizingMaskIntoConstraints="NO" id="ZjD-yO-ePS">
+                        <rect key="frame" x="304" y="16" width="8" height="13"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="8" id="Q3O-mH-qWI"/>
+                            <constraint firstAttribute="height" constant="13" id="tz5-rC-hbT"/>
+                        </constraints>
+                    </imageView>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="down_arrow.png" translatesAutoresizingMaskIntoConstraints="NO" id="Ie5-c1-8jM">
+                        <rect key="frame" x="299" y="20" width="13" height="8"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="8" id="C2b-A9-iDk"/>
+                            <constraint firstAttribute="width" constant="13" id="ED3-cO-4qm"/>
+                        </constraints>
+                    </imageView>
                 </subviews>
                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                 <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -52,16 +66,22 @@
                     <constraint firstItem="iDZ-64-vgd" firstAttribute="baseline" secondItem="GBF-EN-M7I" secondAttribute="baseline" id="0OD-3D-fT1"/>
                     <constraint firstItem="mnp-Qw-Mbg" firstAttribute="top" secondItem="B0d-CR-od6" secondAttribute="bottom" constant="12" id="95B-hM-0Bd"/>
                     <constraint firstAttribute="trailing" secondItem="B0d-CR-od6" secondAttribute="trailing" constant="15" id="CSp-f6-udY"/>
+                    <constraint firstItem="Ie5-c1-8jM" firstAttribute="trailing" secondItem="YTl-1W-gDM" secondAttribute="trailing" constant="-8" id="Eep-8f-6aU"/>
                     <constraint firstItem="iDZ-64-vgd" firstAttribute="leading" secondItem="GBF-EN-M7I" secondAttribute="trailing" constant="3" id="FI6-Ca-sf7"/>
                     <constraint firstItem="GBF-EN-M7I" firstAttribute="leading" secondItem="YTl-1W-gDM" secondAttribute="leading" constant="15" id="HYZ-ZE-6qN"/>
+                    <constraint firstItem="ZjD-yO-ePS" firstAttribute="trailing" secondItem="YTl-1W-gDM" secondAttribute="trailing" constant="-8" id="IS6-TS-utZ"/>
                     <constraint firstItem="B0d-CR-od6" firstAttribute="leading" secondItem="YTl-1W-gDM" secondAttribute="leading" constant="15" id="LKH-Yx-77H"/>
                     <constraint firstAttribute="centerX" secondItem="mnp-Qw-Mbg" secondAttribute="centerX" id="Som-GM-Er8"/>
+                    <constraint firstItem="Ie5-c1-8jM" firstAttribute="top" secondItem="YTl-1W-gDM" secondAttribute="top" constant="20" id="V01-ey-8Eo"/>
                     <constraint firstItem="GBF-EN-M7I" firstAttribute="top" secondItem="YTl-1W-gDM" secondAttribute="top" constant="15" id="dcV-pA-R12"/>
                     <constraint firstItem="B0d-CR-od6" firstAttribute="top" secondItem="GBF-EN-M7I" secondAttribute="bottom" constant="5" id="hfu-5L-hF7"/>
+                    <constraint firstItem="ZjD-yO-ePS" firstAttribute="top" secondItem="YTl-1W-gDM" secondAttribute="top" constant="16" id="uCC-gP-jdQ"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>
                 <outlet property="btnApplyPromo" destination="mnp-Qw-Mbg" id="tpg-ro-teo"/>
+                <outlet property="imgCollapsed" destination="ZjD-yO-ePS" id="reY-rI-cl2"/>
+                <outlet property="imgExpanded" destination="Ie5-c1-8jM" id="92W-Wb-ksY"/>
                 <outlet property="lblDescription" destination="B0d-CR-od6" id="fQB-8r-DOL"/>
                 <outlet property="lblExpires" destination="iDZ-64-vgd" id="uPW-yA-zrb"/>
                 <outlet property="lblName" destination="GBF-EN-M7I" id="0jL-5k-4HQ"/>
@@ -69,6 +89,10 @@
             <point key="canvasLocation" x="194" y="203"/>
         </tableViewCell>
     </objects>
+    <resources>
+        <image name="down_arrow.png" width="13" height="8"/>
+        <image name="right_arrow.png" width="8" height="13"/>
+    </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>

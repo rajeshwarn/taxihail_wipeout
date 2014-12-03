@@ -16,6 +16,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnApplyPromo { get; set; }
 
 		[Outlet]
+		MonoTouch.UIKit.UIImageView imgCollapsed { get; set; }
+
+		[Outlet]
+		MonoTouch.UIKit.UIImageView imgExpanded { get; set; }
+
+		[Outlet]
 		MonoTouch.UIKit.UILabel lblDescription { get; set; }
 
 		[Outlet]
@@ -26,6 +32,26 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		
 		void ReleaseDesignerOutlets ()
 		{
+			if (btnApplyPromo != null) {
+				btnApplyPromo.Dispose ();
+				btnApplyPromo = null;
+			}
+
+			if (imgCollapsed != null) {
+				imgCollapsed.Dispose ();
+				imgCollapsed = null;
+			}
+
+			if (imgExpanded != null) {
+				imgExpanded.Dispose ();
+				imgExpanded = null;
+			}
+
+			if (lblDescription != null) {
+				lblDescription.Dispose ();
+				lblDescription = null;
+			}
+
 			if (lblExpires != null) {
 				lblExpires.Dispose ();
 				lblExpires = null;
@@ -34,16 +60,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			if (lblName != null) {
 				lblName.Dispose ();
 				lblName = null;
-			}
-
-			if (lblDescription != null) {
-				lblDescription.Dispose ();
-				lblDescription = null;
-			}
-
-			if (btnApplyPromo != null) {
-				btnApplyPromo.Dispose ();
-				btnApplyPromo = null;
 			}
 		}
 	}

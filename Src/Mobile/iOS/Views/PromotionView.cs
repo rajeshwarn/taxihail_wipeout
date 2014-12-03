@@ -87,31 +87,40 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         {
             base.RowSelected(tableView, indexPath);
 
+            PromotionCell cellToExpand = null;
+            PromotionCell cellToCollapse = null;
+
             if (_selectedIndexPath == null || _selectedIndexPath.Row != indexPath.Row)
             {
                 // selected a new cell, collapse previous if it exists and expand new one
                 if (_selectedIndexPath != null)
                 {
-                    var previousCell = (PromotionCell)tableView.CellAt(_selectedIndexPath);
-                    previousCell.IsExpanded = false;
+                    cellToCollapse = (PromotionCell)tableView.CellAt(_selectedIndexPath);
                 }
 
-                var cell = (PromotionCell)tableView.CellAt(indexPath);
-                cell.IsExpanded = true;
+                cellToExpand = (PromotionCell)tableView.CellAt(indexPath);
 
                 _selectedIndexPath = indexPath;
             }
             else
             {
                 // selected the same cell, collapse it
-                var cell = (PromotionCell)tableView.CellAt(indexPath);
-                cell.IsExpanded = false;
+                cellToCollapse = (PromotionCell)tableView.CellAt(indexPath);
 
                 _selectedIndexPath = null;
             }
 
             tableView.BeginUpdates();
             tableView.EndUpdates();
+
+            if (cellToCollapse != null)
+            {
+                cellToCollapse.IsExpanded = false;
+            }
+            if (cellToExpand != null)
+            {
+                cellToExpand.IsExpanded = true;
+            }
         }
 
         public override float GetHeightForRow(UITableView tableView, NSIndexPath indexPath)

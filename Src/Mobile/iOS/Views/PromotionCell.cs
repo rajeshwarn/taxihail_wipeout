@@ -58,6 +58,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                     _isExpanded = value;
                     lblDescription.Hidden = !_isExpanded;
                     btnApplyPromo.Hidden = !_isExpanded;
+                    imgExpanded.Hidden = !_isExpanded;
+                    imgCollapsed.Hidden = _isExpanded;
                 }
             }
         }
@@ -66,10 +68,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         {
             lblDescription.Hidden = true;
             btnApplyPromo.Hidden = true;
+            imgExpanded.Hidden = true;
 
             BackgroundView = new CustomCellBackgroundView(this.ContentView.Frame, 10, UIColor.White, UIColor.Clear) 
             {
-                HideBottomBar = HideBottomBar            
+                HideBottomBar = HideBottomBar
             };
 
             lblName.TextColor = UIColor.FromRGB(44, 44, 44);
