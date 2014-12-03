@@ -16,6 +16,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             _orderWorkflowService = orderWorkflowService;
             _promotionService = promotionService;
+
+            ActivePromotions = new ObservableCollection<PromotionItemViewModel>();
         }
 
         public override void OnViewLoaded()
@@ -24,9 +26,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             LoadActivePromotions();
         }
 
-        public ObservableCollection<SelectableItemViewModel<ActivePromotion>> ActivePromotions { get; set; }
+        public ObservableCollection<PromotionItemViewModel> ActivePromotions { get; set; }
 
-        public ICommand SelectPromotion
+        public ICommand ApplyPromotion
         {
             get
             {
@@ -40,14 +42,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         private async void LoadActivePromotions()
         {
-            ActivePromotions = new ObservableCollection<SelectableItemViewModel<ActivePromotion>>();
-
-            var promotions = await _promotionService.GetActivePromotions();
-            var activePromotions = promotions.Select(p => new SelectableItemViewModel<ActivePromotion>(p, SelectPromotion));
-
-            foreach (var activePromotion in activePromotions)
+            using (this.Services().Message.ShowProgress())
             {
-                ActivePromotions.Add(activePromotion);
+                ActivePromotions.Clear();
+
+                var activePromotions = await _promotionService.GetActivePromotions();
+
+                foreach (var activePromotion in activePromotions)
+                {
+                    ActivePromotions.Add(new PromotionItemViewModel(activePromotion, ApplyPromotion));
+                }
+
+                RaisePropertyChanged(() => ActivePromotions);
             }
         }
     }

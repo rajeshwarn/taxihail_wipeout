@@ -199,6 +199,7 @@
     <Compile Include="ViewModels\CreateAccountViewModel.cs" />
     <Compile Include="ViewModels\NotificationSettingsViewModel.cs" />
     <Compile Include="ViewModels\Payment\ConfirmPairViewModel.cs" />
+    <Compile Include="ViewModels\PromotionItemViewModel.cs" />
     <Compile Include="ViewModels\PromotionViewModel.cs" />
     <Compile Include="ViewModels\SelectableItemViewModel.cs" />
     <Compile Include="ViewModels\UserTaxiHailNetworkSettingsViewModel.cs" />
@@ -337,6 +338,7 @@
     <Compile Include="AppServices\Impl\RegisterWorkflowService.cs" />
     <Compile Include="PresentationHints\ChangeZoomPresentationHint.cs" />
     <Compile Include="CancellableCommand.cs" />
+    <Compile Include="BindingConverter\NoValueToVisibilityConverter.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\CMTPayment\CMTPayment.iOS.csproj">

@@ -30,6 +30,7 @@
             android:id="@+id/listnotifcell1"
             android:orientation="horizontal"
             android:layout_width="fill_parent"
+            android:background="@color/white"
             android:layout_height="50dip"
             android:layout_weight="1"
             android:paddingTop="5dip"
