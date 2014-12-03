@@ -2,6 +2,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.AppServices;
+using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Common.Configuration;
 using MK.Common.Entity;
 
@@ -16,6 +17,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             _accountService = accountService;
             _networkRoamingService = networkRoamingService;
+
+            UserTaxiHailNetworkSettings = new ObservableCollection<ToggleItem>();
         }
 
         public override void OnViewLoaded()
@@ -45,21 +48,24 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         private async void LoadUserTaxiHailNetworkSettings()
         {
-            UserTaxiHailNetworkSettings = new ObservableCollection<ToggleItem>();
-
-            var networkFleets = await _networkRoamingService.GetNetworkFleets();
-            var settings = await _accountService.GetUserTaxiHailNetworkSettings();
-
-            IsTaxiHailNetworkEnabled = settings.IsEnabled;
-
-            foreach (var networkFleet in networkFleets)
+            using (this.Services().Message.ShowProgress())
             {
-                UserTaxiHailNetworkSettings.Add(new ToggleItem
+                UserTaxiHailNetworkSettings.Clear();
+
+                var networkFleets = await _networkRoamingService.GetNetworkFleets();
+                var settings = await _accountService.GetUserTaxiHailNetworkSettings();
+
+                IsTaxiHailNetworkEnabled = settings.IsEnabled;
+
+                foreach (var networkFleet in networkFleets)
                 {
-                    Display = networkFleet.CompanyName,
-                    Name = networkFleet.CompanyKey,
-                    Value = !settings.DisabledFleets.Contains(networkFleet.CompanyKey)
-                });
+                    UserTaxiHailNetworkSettings.Add(new ToggleItem
+                    {
+                        Display = networkFleet.CompanyName,
+                        Name = networkFleet.CompanyKey,
+                        Value = !settings.DisabledFleets.Contains(networkFleet.CompanyKey)
+                    });
+                }
             }
         }
 

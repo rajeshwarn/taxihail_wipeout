@@ -7,8 +7,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 {
     public class PromotionItemViewModel : SelectableItemViewModel<ActivePromotion>
     {
-        public PromotionItemViewModel(ActivePromotion activePromotion, ICommand promotionRedeemedCommand)
-            : base(activePromotion, promotionRedeemedCommand)
+        public PromotionItemViewModel(ActivePromotion activePromotion, ICommand redeemPromotion)
+            : base(activePromotion, redeemPromotion)
         {
             Name = activePromotion.Name;
             Description = activePromotion.Description;
