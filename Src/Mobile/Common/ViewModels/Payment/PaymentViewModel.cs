@@ -24,7 +24,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
 		private ClientPaymentSettings _paymentSettings;
 
-	    private bool _paypalPaymentSucceeded;
+	    private bool? _paypalPaymentSucceeded;
 
 		public PaymentViewModel(IPayPalExpressCheckoutService paypalExpressCheckoutService,
 			IAccountService accountService,
@@ -68,7 +68,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 	    {
 	        base.OnViewStarted(firstTime);
 
-	        if (!firstTime)
+			if (!firstTime && _paypalPaymentSucceeded.HasValue)
 	        {
 	            if (_paypalPaymentSucceeded)
 	            {
