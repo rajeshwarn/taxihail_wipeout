@@ -567,6 +567,11 @@
     <Compile Include="Views\PromotionView.designer.cs">
       <DependentUpon>PromotionView.cs</DependentUpon>
     </Compile>
+    <Compile Include="Views\PromotionCell.cs" />
+    <Compile Include="Views\PromotionCell.designer.cs">
+      <DependentUpon>PromotionCell.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Widgets\AmpTableViewSource.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
   <ProjectExtensions>
@@ -616,6 +621,7 @@
     <InterfaceDefinition Include="Views\NotificationSettingsView.xib" />
     <InterfaceDefinition Include="Views\UserTaxiHailNetworkSettingsView.xib" />
     <InterfaceDefinition Include="Views\PromotionView.xib" />
+    <InterfaceDefinition Include="Views\PromotionCell.xib" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="en.lproj\Localizable.strings" />

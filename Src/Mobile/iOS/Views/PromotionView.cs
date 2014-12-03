@@ -8,17 +8,12 @@ using Cirrious.MvvmCross.Binding.Touch.Views;
 using apcurium.MK.Booking.Mobile.Client.Controls.Widgets;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
+using System.Windows.Input;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
     public partial class PromotionView : BaseViewController<PromotionViewModel>
     {
-        const string CellId = "HistoryCell";
-        const string CellBindingText = @"
-                   FirstLine Name;
-                   SecondLine Description
-                "; 
-
         public PromotionView() : base("PromotionView", null)
         {
         }
@@ -48,15 +43,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             lblNoPromotions.Text = Localize.GetValue("PromotionViewNoPromotionLabel");
             lblNoPromotions.Hidden = true;
 
-            var source = new BindableTableViewSource (
-                tblPromotions, 
-                UITableViewCellStyle.Subtitle, 
-                new NSString (CellId), 
-                CellBindingText, 
-                UITableViewCellAccessory.None
-            );
-            source.CellCreator = CellCreator;
-            tblPromotions.Source = source;
+            var tableViewSource = new PromotionTableViewSource(tblPromotions);
+            tblPromotions.Source = tableViewSource;
 
             var set = this.CreateBindingSet<PromotionView, PromotionViewModel> ();
 
@@ -69,22 +57,35 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 .For(v => v.Hidden)
                 .To(vm => vm.HasPromotions);
 
-            set.Bind(source)
+            set.Bind(tableViewSource)
                 .For(v => v.ItemsSource)
                 .To(vm => vm.ActivePromotions);
-            set.Bind(source)
-                .For(v => v.SelectedCommand)
-                .To(vm => vm.SelectPromotion);
 
             set.Apply ();
         }
+    }
 
-        private MvxStandardTableViewCell CellCreator(UITableView tableView, NSIndexPath indexPath, object state)
+    public class PromotionTableViewSource : AmpTableViewSource<PromotionCell>
+    {
+        public PromotionTableViewSource(UITableView tableView) : base(tableView)
         {
-            var cell = new TwoLinesCell(new NSString(CellId), CellBindingText, UITableViewCellAccessory.Checkmark);
-            cell.HideBottomBar = tableView.IsLastCell(indexPath);
-            cell.RemoveDelay();
+        }
+
+        protected override UITableViewCell GetOrCreateCellFor(UITableView tableView, NSIndexPath indexPath, object item)
+        {
+            var cell = base.GetOrCreateCellFor(tableView, indexPath, item);
+
+            ((PromotionCell)cell).HideBottomBar = tableView.IsLastCell(indexPath);
+
             return cell;
+        }
+
+        public override void RowSelected(UITableView tableView, NSIndexPath indexPath)
+        {
+            base.RowSelected(tableView, indexPath);
+
+            var item = (PromotionItemViewModel)GetItemAt(indexPath);
+            item.SelectPromotion.ExecuteIfPossible();
         }
     }
 }
