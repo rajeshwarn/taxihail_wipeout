@@ -24,6 +24,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
 		private ClientPaymentSettings _paymentSettings;
 
+	    private bool? _paypalPaymentSucceeded;
+
 		public PaymentViewModel(IPayPalExpressCheckoutService paypalExpressCheckoutService,
 			IAccountService accountService,
 			IPaymentService paymentService,
@@ -62,7 +64,24 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			InitAmounts(orderFromServer);
 		}
 
-		void InitAmounts(Order order)
+	    public override void OnViewStarted(bool firstTime)
+	    {
+	        base.OnViewStarted(firstTime);
+
+			if (!firstTime && _paypalPaymentSucceeded.HasValue)
+	        {
+	            if (_paypalPaymentSucceeded)
+	            {
+                    ShowPayPalPaymentConfirmation();
+	            }
+                else
+                {
+                    ShowPayPalPaymentError();
+                }
+	        }
+	    }
+
+	    void InitAmounts(Order order)
 		{
 			if (order == null)
 				return;
@@ -276,8 +295,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			{
 				return this.GetCommand(() =>
 					{ 					
-                        TipAmount = "";	
-                        TipAmountString = "";						
+                        TipAmount = string.Empty;
+                        TipAmountString = string.Empty;						
 						RaisePropertyChanged(() => TipAmountString);
 					});
 			}
@@ -288,8 +307,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			get
 			{
 				return this.GetCommand(() =>
-				{ 					
-					MeterAmount = "";
+				{
+                    MeterAmount = string.Empty;
 					RaisePropertyChanged(() => MeterAmount);
 				});
 			}
@@ -367,16 +386,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 					        .Subscribe(checkoutUrl => {
                                 var @params = new Dictionary<string, string> { { "url", checkoutUrl } };
 						        this.Services().Message.ShowProgress(false);
-						        ShowSubViewModel<PayPalViewModel, bool>(@params, success =>
+
+                                ShowSubViewModel<PayPalViewModel, bool>(@params, success =>
                                 {
+                                    _paypalPaymentSucceeded = success;
+
                                     if (success)
                                     {
-                                        ShowPayPalPaymentConfirmation();
-								        _paymentService.SetPaymentFromCache(Order.Id, Amount);
-                                    }
-                                    else
-                                    {
-                                        this.Services().Message.ShowMessage(this.Services().Localize["PayPalExpressCheckoutCancelTitle"], this.Services().Localize["PayPalExpressCheckoutCancelMessage"]);
+                                        _paymentService.SetPaymentFromCache(Order.Id, Amount);
                                     }
                                 });
                 }, error => { });
@@ -434,18 +451,22 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
             return true;
         }
 
-        private async void ShowPayPalPaymentConfirmation()
+        private void ShowPayPalPaymentConfirmation()
         {
-            await this.Services().Message.ShowMessage(this.Services().Localize["PayPalExpressCheckoutSuccessTitle"],
-                              this.Services().Localize["PayPalExpressCheckoutSuccessMessage"]);
-			Close(this);
+            this.Services().Message.ShowMessage(this.Services().Localize["PayPalExpressCheckoutSuccessTitle"],
+                              this.Services().Localize["PayPalExpressCheckoutSuccessMessage"], () => Close(this));
         }
 
-        private async void ShowCreditCardPaymentConfirmation(string transactionId)
+	    private void ShowPayPalPaymentError()
+	    {
+            this.Services().Message.ShowMessage(this.Services().Localize["PayPalExpressCheckoutCancelTitle"],
+                this.Services().Localize["PayPalExpressCheckoutCancelMessage"], () => Close(this));
+	    }
+
+        private void ShowCreditCardPaymentConfirmation(string transactionId)
         {
-            await this.Services().Message.ShowMessage(this.Services().Localize["CmtTransactionSuccessTitle"],
-                              string.Format(this.Services().Localize["CmtTransactionSuccessMessage"], transactionId));
-			Close(this);
+            this.Services().Message.ShowMessage(this.Services().Localize["CmtTransactionSuccessTitle"],
+                              string.Format(this.Services().Localize["CmtTransactionSuccessMessage"], transactionId), () => Close(this));
         }
     }
 }
