@@ -3,6 +3,7 @@
     xmlns:local="http://schemas.android.com/apk/res-auto"
     android:id="@+id/listnotifcell1"
     android:orientation="horizontal"
+    android:background="@color/white"
     android:layout_width="fill_parent"
     android:layout_height="50dip"
     android:layout_weight="1"

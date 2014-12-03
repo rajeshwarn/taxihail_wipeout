@@ -123,7 +123,10 @@ namespace apcurium.MK.Booking.Services.Impl
 
             var transaction = BraintreeGateway.Transaction.Find(transactionId);
             Result<Transaction> cancellationResult = null;
-            if (transaction.Status == TransactionStatus.SUBMITTED_FOR_SETTLEMENT)
+            if (transaction.Status == TransactionStatus.AUTHORIZING
+                || transaction.Status == TransactionStatus.AUTHORIZED
+                || transaction.Status == TransactionStatus.SUBMITTED_FOR_SETTLEMENT
+                || transaction.Status == TransactionStatus.SETTLING)
             {
                 // can void
                 cancellationResult = BraintreeGateway.Transaction.Void(transactionId);
