@@ -21,7 +21,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 {
     public class ProcessPaymentService : Service
     {
-        private readonly IPaymentService _paymentService;
+        private readonly IPaymentServiceFactory _paymentServiceFactory;
         private readonly IAccountDao _accountDao;
         private readonly IOrderDao _orderDao;
         private readonly IServerSettings _serverSettings;
@@ -33,7 +33,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
         private readonly ILogger _logger;
 
         public ProcessPaymentService(
-            IPaymentService paymentService, 
+            IPaymentServiceFactory paymentServiceFactory, 
             IAccountDao accountDao, 
             IOrderDao orderDao, 
             IServerSettings serverSettings, 
@@ -44,7 +44,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             IEventSourcedRepository<Promotion> promoRepository,
             ILogger logger)
         {
-            _paymentService = paymentService;
+            _paymentServiceFactory = paymentServiceFactory;
             _accountDao = accountDao;
             _orderDao = orderDao;
             _serverSettings = serverSettings;
@@ -130,14 +130,14 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                 {
                     if (totalOrderAmount > 0)
                     {
-                        paymentProviderServiceResponse = _paymentService.CommitPayment(orderId, totalOrderAmount, meterAmount, tipAmount, paymentDetail.TransactionId);
+                        paymentProviderServiceResponse = _paymentServiceFactory.GetInstance().CommitPayment(orderId, totalOrderAmount, meterAmount, tipAmount, paymentDetail.TransactionId);
                         message = paymentProviderServiceResponse.Message;
                     }
                     else
                     {
                         // promotion made the ride free to the user
                         // void preauth if it exists
-                        _paymentService.VoidPreAuthorization(orderId);
+                        _paymentServiceFactory.GetInstance().VoidPreAuthorization(orderId);
 
                         paymentProviderServiceResponse.IsSuccessful = true;
                         paymentProviderServiceResponse.AuthorizationCode = "AUTH_PROMO_FREE";
@@ -155,7 +155,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                             Convert.ToDecimal(tipAmount),
                             Convert.ToDecimal(meterAmount),
                             PaymentType.CreditCard.ToString(),
-                            _paymentService.ProviderType.ToString(),
+                            _paymentServiceFactory.GetInstance().ProviderType.ToString(),
                             paymentProviderServiceResponse.TransactionId,
                             paymentProviderServiceResponse.AuthorizationCode,
                             cardToken,
@@ -175,7 +175,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                         //cancel braintree transaction
                         try
                         {
-                            _paymentService.VoidTransaction(orderId, paymentProviderServiceResponse.TransactionId, ref message);
+                            _paymentServiceFactory.GetInstance().VoidTransaction(orderId, paymentProviderServiceResponse.TransactionId, ref message);
                         }
                         catch (Exception ex)
                         {
@@ -193,7 +193,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                     _commandBus.Send(new CaptureCreditCardPayment
                     {
                         PaymentId = paymentDetail.PaymentId,
-                        Provider = _paymentService.ProviderType,
+                        Provider = _paymentServiceFactory.GetInstance().ProviderType,
                         Amount = totalOrderAmount,
                         MeterAmount = Convert.ToDecimal(meterAmount),
                         TipAmount = Convert.ToDecimal(tipAmount),
@@ -250,7 +250,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 
             var account = _accountDao.FindById(orderDetail.AccountId);
 
-            var result = _paymentService.PreAuthorize(orderId, account.Email, cardToken, amount);
+            var result = _paymentServiceFactory.GetInstance().PreAuthorize(orderId, account.Email, cardToken, amount);
 
             if (result.IsSuccessful)
             {
@@ -263,17 +263,17 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 
         public DeleteTokenizedCreditcardResponse Delete(DeleteTokenizedCreditcardRequest request)
         {
-            return _paymentService.DeleteTokenizedCreditcard(request.CardToken);
+            return _paymentServiceFactory.GetInstance().DeleteTokenizedCreditcard(request.CardToken);
         }
 
         public PairingResponse Post(PairingForPaymentRequest request)
         {
-            return _paymentService.Pair(request.OrderId, request.CardToken, request.AutoTipPercentage, request.AutoTipAmount);
+            return _paymentServiceFactory.GetInstance().Pair(request.OrderId, request.CardToken, request.AutoTipPercentage, request.AutoTipAmount);
         }
 
         public BasePaymentResponse Post(UnpairingForPaymentRequest request)
         {
-            return _paymentService.Unpair(request.OrderId);
+            return _paymentServiceFactory.GetInstance().Unpair(request.OrderId);
         }
     }
 }

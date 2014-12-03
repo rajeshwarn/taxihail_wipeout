@@ -34,5 +34,6 @@
    "Smtp.Credentials.Username" : "TaxiHail",
    "UpperRightLatitude" : "0",
    "UpperRightLongitude" : "0",
-   "VehicleTypeSelectionEnabled" : "true"
+   "VehicleTypeSelectionEnabled": "true",
+   "CustomerPortal.Url": "http://localhost/CustomerPortal.Web/api/",
 }
