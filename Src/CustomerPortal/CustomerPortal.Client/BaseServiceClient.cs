@@ -30,9 +30,6 @@ namespace CustomerPortal.Client
         private string GetUrl()
         {
             var url = _serverSettings.ServerData.CustomerPortal.Url;
-#if DEBUG
-            url = "http://localhost/CustomerPortal.Web/api/";
-#endif
             return url;
         }
 
