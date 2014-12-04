@@ -70,7 +70,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
 			if (!firstTime && _paypalPaymentSucceeded.HasValue)
 	        {
-	            if (_paypalPaymentSucceeded)
+				if (_paypalPaymentSucceeded.Value)
 	            {
                     ShowPayPalPaymentConfirmation();
 	            }
