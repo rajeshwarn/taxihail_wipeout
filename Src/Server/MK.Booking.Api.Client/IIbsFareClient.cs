@@ -12,6 +12,6 @@ namespace apcurium.MK.Booking.Api.Client
         Task<DirectionInfo> GetDirectionInfoFromIbs(double pickupLatitude, double pickupLongitude,
             double dropoffLatitude, double dropoffLongitude, 
 			string pickupZipCode, string dropoffZipCode,
-			string accountNumber, int? duration);
+			string accountNumber, int? duration, int? vehicleType);
     }
 }

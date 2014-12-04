@@ -394,6 +394,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
                                     if (success)
                                     {
                                         _paymentService.SetPaymentFromCache(Order.Id, Amount);
+                                        ShowPayPalPaymentConfirmation();
+								        
                                     }
                                 });
                 }, error => { });
@@ -454,7 +456,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
         private void ShowPayPalPaymentConfirmation()
         {
             this.Services().Message.ShowMessage(this.Services().Localize["PayPalExpressCheckoutSuccessTitle"],
-                              this.Services().Localize["PayPalExpressCheckoutSuccessMessage"], () => Close(this));
+	    				this.Services().Localize["PayPalExpressCheckoutSuccessMessage"], () => Close(this));
+
         }
 
 	    private void ShowPayPalPaymentError()

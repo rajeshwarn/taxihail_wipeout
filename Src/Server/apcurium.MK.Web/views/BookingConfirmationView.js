@@ -14,7 +14,10 @@
             var pickup = this.model.get('pickupAddress');
             var dest = this.model.get('dropOffAddress');
             var pickupZipCode = pickup.zipCode != null ? pickup.zipCode : '';
-            var dropOffZipCode = dest.zipCode != null ? dest.zipCode : '';
+            var dropOffZipCode = (dest != null && dest.zipCode != null) ? dest.zipCode : '';
+
+            
+
             
             this.showEstimate = TaxiHail.parameters.isEstimateEnabled && pickup && dest;
             this.showEstimateWarning = TaxiHail.parameters.isEstimateWarningEnabled;

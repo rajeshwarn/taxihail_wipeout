@@ -229,7 +229,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			                        service.GetDirectionInfoFromIbs(order.PickupAddress.Latitude, order.PickupAddress.Longitude,
 			                            order.DropOffAddress.Latitude, order.DropOffAddress.Longitude,
 										order.PickupAddress.ZipCode, order.DropOffAddress.ZipCode,
-			                            order.Settings.AccountNumber, duration));
+								order.Settings.AccountNumber, duration, order.Settings.VehicleTypeId));
 			    }
 
 			    if (tarifMode == TarifMode.AppTarif || (tarifMode == TarifMode.Both && directionInfo != null && directionInfo.Price == 0d))
