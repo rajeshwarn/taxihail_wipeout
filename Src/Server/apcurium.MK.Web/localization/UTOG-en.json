@@ -1,0 +1,10 @@
+﻿{
+    "CreateOrder_NoFareEstimateAvailable": "No fare is available for the ride. Please specify a valid pickup and destination.",
+    "Estimated Fare": "Base Fare",
+    "Estimate": "Base Price",
+    "Fare estimate": "Base Fare",
+	"Eta" : "The nearest vehicle is {1} {2} away",
+	"Estimate Display": "{0}",
+    "AssignedEta": "Your vehicle is {1} {2} away",
+    "EstimatedFareWarning": "Please note that the price provided by this App is a base fare. The fare does not include extras such as tolls, wait time and parking."
+}

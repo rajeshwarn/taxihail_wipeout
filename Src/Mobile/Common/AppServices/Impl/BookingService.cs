@@ -212,12 +212,27 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 				&& order.DropOffAddress.HasValidCoordinate())
 			{
 				DirectionInfo directionInfo = null;
-				if (tarifMode != TarifMode.AppTarif) 
-				{
-					directionInfo = await UseServiceClientAsync<IIbsFareClient, DirectionInfo> (service => service.GetDirectionInfoFromIbs (order.PickupAddress.Latitude, order.PickupAddress.Longitude, order.DropOffAddress.Latitude, order.DropOffAddress.Longitude));                                                            
-				}
+			    if (tarifMode != TarifMode.AppTarif)
+			    {
+			        int? duration = null;
 
-                if (tarifMode == TarifMode.AppTarif || (tarifMode == TarifMode.Both && directionInfo.Price == 0d))
+			        duration =
+			            (await
+			                _geolocService.GetDirectionInfo(order.PickupAddress.Latitude, order.PickupAddress.Longitude,
+			                    order.DropOffAddress.Latitude, order.DropOffAddress.Longitude, order.Settings.VehicleTypeId,
+			                    order.PickupDate)).TripDurationInSeconds;
+
+			        directionInfo =
+			            await
+			                UseServiceClientAsync<IIbsFareClient, DirectionInfo>(
+			                    service =>
+			                        service.GetDirectionInfoFromIbs(order.PickupAddress.Latitude, order.PickupAddress.Longitude,
+			                            order.DropOffAddress.Latitude, order.DropOffAddress.Longitude,
+										order.PickupAddress.ZipCode, order.DropOffAddress.ZipCode,
+								order.Settings.AccountNumber, duration, order.Settings.VehicleTypeId));
+			    }
+
+			    if (tarifMode == TarifMode.AppTarif || (tarifMode == TarifMode.Both && directionInfo != null && directionInfo.Price == 0d))
                 {
 					directionInfo = await _geolocService.GetDirectionInfo(order.PickupAddress.Latitude, order.PickupAddress.Longitude, order.DropOffAddress.Latitude, order.DropOffAddress.Longitude, order.Settings.VehicleTypeId, order.PickupDate);                    
                 }            

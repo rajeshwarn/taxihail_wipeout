@@ -9,6 +9,12 @@ namespace CustomerPortal.Contract.Response
 
         public int FleetId { get; set; }
 
+        public string RestApiUrl  { get; set; }
+        
+        public string RestApiUser  { get; set; }
+        
+        public string RestApiSecret { get; set; }
+        
         public string IbsUrl { get; set; }
 
         public string IbsUserName { get; set; }

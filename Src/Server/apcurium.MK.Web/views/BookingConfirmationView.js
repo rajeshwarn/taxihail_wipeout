@@ -13,15 +13,32 @@
 
             var pickup = this.model.get('pickupAddress');
             var dest = this.model.get('dropOffAddress');
+            var pickupZipCode = pickup.zipCode != null ? pickup.zipCode : '';
+            var dropOffZipCode = (dest != null && dest.zipCode != null) ? dest.zipCode : '';
+
+            
+
+            
             this.showEstimate = TaxiHail.parameters.isEstimateEnabled && pickup && dest;
             this.showEstimateWarning = TaxiHail.parameters.isEstimateWarningEnabled;
+            
+            var accountNumber = '';
+            
+            if (this.model.isPayingWithAccountCharge()) {
+                accountNumber = this.model.get('accountNumber');
+                accountNumber = accountNumber != null ? accountNumber : '';
+            }
+
             if (this.showEstimate) {
                 TaxiHail.directionInfo.getInfo(pickup.latitude,
                     pickup.longitude,
                     dest.latitude,
                     dest.longitude,
+                    pickupZipCode,
+                    dropOffZipCode,
                     this.model.get('settings')['vehicleTypeId'],
-                    this.model.get('pickupDate')
+                    this.model.get('pickupDate'),
+                    accountNumber
                     ).done(this.renderResults);
             }
 
@@ -136,8 +153,10 @@
             if (result.noFareEstimate) {
                 this.model.set('estimateDisplay', TaxiHail.localize("NoFareEstimate"));
             } else
-            {
+            if (result.formattedPrice || result.formattedDistance) {
                 this.model.set('estimateDisplay', TaxiHail.localize('Estimate Display').format(result.formattedPrice, "(" + result.formattedDistance + ")"));
+            } else  {
+                this.model.set('estimateDisplay', TaxiHail.localize("NoFareEstimate"));
             }
             this.render();
         },

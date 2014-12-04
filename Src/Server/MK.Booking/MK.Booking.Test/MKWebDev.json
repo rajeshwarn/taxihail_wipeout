@@ -25,6 +25,11 @@
    "IBS.WebServicesUserName" : "taxi",
    "IBS.WebServicesPassword" : "test",
    "IBS.DefaultAccountPassword" : "password",
+
+   "IBS.RestApiUrl" : "http://cabmatedemo.drivelinq.com:8889/",
+   "IBS.RestApiUser" : "EUGENE",   
+   "IBS.RestApiSecret" : "T!?_asF", 
+   
    "IBS.ExcludedVehicleTypeId" : "22;21",
    "Map.PlacesApiKey" : "AIzaSyAd-ezA2SeVTSNqsu6aMmAkdlP3UqEVPWE",
    "NearbyPlacesService.DefaultRadius" : "500",

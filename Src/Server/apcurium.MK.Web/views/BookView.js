@@ -292,13 +292,21 @@
                     }, this));
         },
         
-        actualizeEstimate: function () {          
+        actualizeEstimate: function () {
 
-            var pickup = this.model.get('pickupAddress'),
-                dest = this.model.get('dropOffAddress');
+            var pickup = this.model.get('pickupAddress'), dest = this.model.get('dropOffAddress'), accountNumber = this.model.get('accountNumber');
+
+            var pickupZipCode = pickup.zipCode != null ? pickup.zipCode : '';
+            var account = TaxiHail.auth.account; //.attributes.settings.vehicleTypeId
+            var vtype = ( account.id == null ) ? -1 : account.get('settings')['vehicleTypeId'];
+
+            var dropOffZipCode = dest != null ?
+            (dest.zipCode != null ? dest.zipCode : '') : '';
+
+            accountNumber = accountNumber != null ? accountNumber : '';
 
             if (pickup && dest) {
-                TaxiHail.directionInfo.getInfo(pickup.latitude, pickup.longitude, dest.latitude, dest.longitude)
+                TaxiHail.directionInfo.getInfo(pickup.latitude, pickup.longitude, dest.latitude, dest.longitude, pickupZipCode, dropOffZipCode, vtype, '', accountNumber)
                     .done(_.bind(function(result){
 
                         this.model.set({ 'estimate': result });

@@ -9,7 +9,8 @@ namespace apcurium.MK.Booking.EventHandlers
 {
     public class AccountChargeDetailGenerator :
         IEventHandler<AccountChargeAddedUpdated>,
-        IEventHandler<AccountChargeDeleted>
+        IEventHandler<AccountChargeDeleted>,
+        IEventHandler<AccountChargeImported>
     {
         private readonly Func<BookingDbContext> _contextFactory;
 
@@ -40,6 +41,32 @@ namespace apcurium.MK.Booking.EventHandlers
                     question.AccountId = accountChargeDetail.Id;
                 }
                 context.Save(accountChargeDetail);
+            }
+        }
+
+        public void Handle(AccountChargeImported @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                // TODO: Should we check for same Guid in db context?
+
+                foreach (var account in @event.AccountCharges)
+                {
+                    var accountChargeDetail = new AccountChargeDetail { Id = account.AccountChargeId };
+                
+                    accountChargeDetail.Number = account.Number;
+                    accountChargeDetail.Name = account.Name;
+                    accountChargeDetail.Questions.Clear();
+                    context.Save(accountChargeDetail);
+
+                    accountChargeDetail.Questions.AddRange(account.Questions);
+                    foreach (var question in accountChargeDetail.Questions)
+                    {
+                        question.AccountId = accountChargeDetail.Id;
+                    }
+
+                    context.Save(accountChargeDetail);
+                }
             }
         }
 

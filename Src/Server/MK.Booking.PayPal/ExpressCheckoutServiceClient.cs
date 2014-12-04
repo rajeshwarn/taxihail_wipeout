@@ -84,7 +84,7 @@ namespace MK.Booking.PayPal
             return _urls.GetCheckoutUrl(token);
         }
 
-        public string DoExpressCheckoutPayment(string token, string payerId, decimal orderTotal)
+        public string DoExpressCheckoutPayment(string token, string payerId, decimal orderTotal, string description, string note)
         {
             using (var api = CreateApiAaClient())
             {
@@ -94,10 +94,14 @@ namespace MK.Booking.PayPal
                     Value = orderTotal.ToString(CultureInfo.InvariantCulture),
                     currencyID = _currency
                 };
-
+                
                 var paymentDetails = new PaymentDetailsType
-                {
-                    OrderTotal = amount
+                {                    
+                    OrderTotal = amount,
+
+                  //  PaymentDetailsItem = new PaymentDetailsItemType[] { new PaymentDetailsItemType { Amount = amount, Description = description } },
+                    NoteText = note,                       
+                  
                 };
 
                 var requestDetails = new DoExpressCheckoutPaymentRequestDetailsType
@@ -189,10 +193,13 @@ namespace MK.Booking.PayPal
             var paymentDetails = new PaymentDetailsType
             {
                 ItemTotal = amount,
+                NoteText = "NoteText",
+                SoftDescriptor ="SoftDescriptor",
+                
                 PaymentDetailsItem = new[]
                 {
                     new PaymentDetailsItemType
-                    {
+                    {                         
                         Amount = amount,
                         Description = description
                     }
@@ -205,7 +212,8 @@ namespace MK.Booking.PayPal
                 PaymentAction = PaymentActionCodeType.Sale,
                 ReturnURL = returnUrl,
                 CancelURL = cancelUrl,
-                PaymentDetails = new[] { paymentDetails }
+                PaymentDetails = new PaymentDetailsType[] { paymentDetails },
+                
             };
 
             var requestType = new SetExpressCheckoutRequestType

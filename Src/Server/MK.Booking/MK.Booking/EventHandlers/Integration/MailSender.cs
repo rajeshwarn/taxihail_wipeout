@@ -65,7 +65,8 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                 var orderStatus = context.Find<OrderStatusDetail>(orderId);
                 if (orderStatus != null)
                 {
-                    var orderPayment = context.Set<OrderPaymentDetail>().SingleOrDefault(p => p.OrderId == orderStatus.OrderId);
+                    var orderPayment = context.Set<OrderPaymentDetail>().FirstOrDefault(p => p.OrderId == orderStatus.OrderId && p.IsCompleted );
+
                     var account = context.Find<AccountDetail>(orderStatus.AccountId);
 
                     CreditCardDetails card = null;

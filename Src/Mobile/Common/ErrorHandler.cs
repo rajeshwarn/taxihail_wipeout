@@ -14,41 +14,50 @@ namespace apcurium.MK.Booking.Mobile
     public class ErrorHandler : IErrorHandler
     {
         public static DateTime LastConnectError = DateTime.MinValue;
-
+		public static DateTime LastUnauthorizedError = DateTime.MinValue;
 
         public bool HandleError (Exception ex)
         {
 			var handled = false;
-			if (ex is WebServiceException && ((WebServiceException)ex).StatusCode == (int)HttpStatusCode.Unauthorized) 
+			if (ex is WebServiceException 
+				&& ((WebServiceException)ex).StatusCode == (int)HttpStatusCode.Unauthorized) 
             {
-				var mService = TinyIoCContainer.Current.Resolve<IMessageService> ();
-				var localize = TinyIoCContainer.Current.Resolve<ILocalization>();
-				mService.ShowMessage(localize["ServiceErrorCallTitle"], localize["ServiceErrorUnauthorized"], () =>
-                {
-					
-					var dispatch = TinyIoCContainer.Current.Resolve<IMvxViewDispatcher> ();
-					dispatch.ShowViewModel(new MvxViewModelRequest (typeof(LoginViewModel), null, null, MvxRequestedBy.UserAction));
+				if (LastUnauthorizedError.Subtract(DateTime.Now).TotalSeconds < -5)
+				{
+					LastUnauthorizedError = DateTime.Now;
 
-					TinyIoCContainer.Current.Resolve<IOrderWorkflowService> ().PrepareForNewOrder ();
-					TinyIoCContainer.Current.Resolve<IAccountService> ().SignOut ();
-				});
-				handled=  true;
+					var localize = TinyIoCContainer.Current.Resolve<ILocalization>();
+					TinyIoCContainer.Current.Resolve<IMessageService> ().ShowMessage(
+						localize["ServiceErrorCallTitle"], 
+						localize["ServiceErrorUnauthorized"], 
+						() => {					
+							var dispatch = TinyIoCContainer.Current.Resolve<IMvxViewDispatcher> ();
+							dispatch.ShowViewModel(new MvxViewModelRequest (typeof(LoginViewModel), null, null, MvxRequestedBy.UserAction));
+
+							TinyIoCContainer.Current.Resolve<IOrderWorkflowService> ().PrepareForNewOrder ();
+							TinyIoCContainer.Current.Resolve<IAccountService> ().SignOut ();
+						});
+				}
+
+				handled = true;
 			}
 			else if (ex is WebException 
 				&& (((WebException)ex).Status == WebExceptionStatus.ConnectFailure 
-					|| ((WebException)ex).Status == WebExceptionStatus.NameResolutionFailure))
+				 || ((WebException)ex).Status == WebExceptionStatus.NameResolutionFailure))
 			{
 				if(LastConnectError.Subtract(DateTime.Now).TotalSeconds < -5)
 				{
-					LastConnectError=DateTime.Now;
+					LastConnectError = DateTime.Now;
+
 					var localize = TinyIoCContainer.Current.Resolve<ILocalization>();
-					var title = localize["NoConnectionTitle"];
-					var msg = localize["NoConnectionMessage"];
-					var mService = TinyIoCContainer.Current.Resolve<IMessageService> ();
-					mService.ShowMessage (title, msg);
+					TinyIoCContainer.Current.Resolve<IMessageService> ().ShowMessage (
+						localize["NoConnectionTitle"], 
+						localize["NoConnectionMessage"]);
 				}
-				handled =  true;
+
+				handled = true;
 			}
+
 			return handled;
         }
     }

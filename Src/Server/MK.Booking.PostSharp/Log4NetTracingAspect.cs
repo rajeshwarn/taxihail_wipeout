@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Reflection;
 using System.Web.Services.Protocols;
@@ -13,7 +13,7 @@ namespace MK.Booking.PostSharp
     [Log4NetTracingAspect(AttributeExclude = true)]
     public class Log4NetTracingAspect : OnMethodBoundaryAspect
     {
-        private readonly Dictionary<Type, ILog> _loggers = new Dictionary<Type, ILog>();
+        private readonly ConcurrentDictionary<Type, ILog> _loggers = new ConcurrentDictionary<Type, ILog>();
         private readonly string _prefix;
 
         public Log4NetTracingAspect()
@@ -34,35 +34,41 @@ namespace MK.Booking.PostSharp
 
         public override void OnExit(MethodExecutionArgs args)
         {
-            if ((!args.Method.IsConstructor) && (args.Method.MemberType == MemberTypes.Method) && (!args.Method.IsSpecialName))
+            try
             {
-                var declaringType = args.Method.DeclaringType;
-
-                if (declaringType == null)
+                if ((!args.Method.IsConstructor) && (args.Method.MemberType == MemberTypes.Method) && (!args.Method.IsSpecialName))
                 {
-                    return;
-                }
+                    var declaringType = args.Method.DeclaringType;
+                    if (declaringType == null)
+                    {
+                        return;
+                    }
 
-                if (!_loggers.ContainsKey(declaringType))
-                {
-                    _loggers.Add(declaringType, LogManager.GetLogger(_prefix + declaringType.FullName));
-                }
+                    if (!_loggers.ContainsKey(declaringType))
+                    {
+                        _loggers.TryAdd(declaringType, LogManager.GetLogger(_prefix + declaringType.FullName));
+                    }
 
-                var logger = _loggers[declaringType];
+                    var logger = _loggers[declaringType];
 
-                long executionTime = 0;
-                if (args.MethodExecutionTag is Stopwatch)
-                {
-                    var watch = (Stopwatch)args.MethodExecutionTag;
-                    executionTime = watch.ElapsedMilliseconds;
-                }
+                    long executionTime = 0;
+                    if (args.MethodExecutionTag is Stopwatch)
+                    {
+                        var watch = (Stopwatch)args.MethodExecutionTag;
+                        executionTime = watch.ElapsedMilliseconds;
+                    }
 
-                LogInfo(logger, args, executionTime);
+                    LogInfo(logger, args, executionTime);
                 
-                if (args.Exception != null)
-                {
-                    logger.Error("Critical Error", args.Exception);
+                    if (args.Exception != null)
+                    {
+                        logger.Error("Critical Error", args.Exception);
+                    }
                 }
+            }
+            catch
+            {
+
             }
         }
 

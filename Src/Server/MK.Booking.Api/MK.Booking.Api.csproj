@@ -148,6 +148,7 @@
     <Compile Include="Services\ApplicationInfoService.cs" />
     <Compile Include="Services\AppStartUpLogService.cs" />
     <Compile Include="Services\BookingSettingsService.cs" />
+    <Compile Include="Services\IbsChargeAccountService.cs" />
     <Compile Include="Services\LogApplicationStartUpService.cs" />
     <Compile Include="Services\NetworkRoamingService.cs" />
     <Compile Include="Services\OrderPairingService.cs" />

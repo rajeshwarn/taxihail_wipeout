@@ -26,7 +26,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
     {
         private readonly ICommandBus _commandBus;
         private readonly IServerSettings _serverSettings;
-        private readonly IOrderPaymentDao _dao;
+        private readonly IOrderPaymentDao _dao;        
         private readonly ExpressCheckoutServiceFactory _factory;
         private readonly IIbsOrderService _ibs;
         private readonly IAccountDao _accountDao;
@@ -135,7 +135,21 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 
             var amount = Math.Round(payment.Amount * conversionRate, 2);
 
-            var transactionId = service.DoExpressCheckoutPayment(payment.PayPalToken, request.PayerId, amount);
+            var regionName = _serverSettings.ServerData.PayPalRegionInfoOverride;
+            
+            string description = "";
+
+            var order = _orderDao.FindById(payment.OrderId); 
+            if (!string.IsNullOrWhiteSpace(regionName))
+            {
+                description = string.Format(_resources.Get("PaymentItemDescription", order.ClientLanguageCode), order.IBSOrderId, payment.Amount );
+            }
+
+            var status =_orderDao.FindOrderStatusById(payment.OrderId);
+
+            string note = string.Format("Order #{0}, Vehicle #{1}, Driver id {2}, Driver Name {3} {4}, Registration {5}",order.IBSOrderId, status.VehicleNumber, status.DriverInfos.DriverId, status.DriverInfos.FirstName, status.DriverInfos.LastName, status.DriverInfos.VehicleRegistration);
+
+            var transactionId = service.DoExpressCheckoutPayment(payment.PayPalToken, request.PayerId, amount, description,  note);
 
 
             var orderDetail = _orderDao.FindById(payment.OrderId);

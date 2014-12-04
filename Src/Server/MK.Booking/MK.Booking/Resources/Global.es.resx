@@ -170,7 +170,7 @@
     <comment>Destination</comment>
   </data>
   <data name="Email_Body_Driver" xml:space="preserve">
-    <value>Chofer</value>
+    <value>Conductor</value>
     <comment>Driver</comment>
   </data>
   <data name="Email_Body_EmailConfirmationRequired" xml:space="preserve">
@@ -314,7 +314,7 @@
     <comment>VAT</comment>
   </data>
   <data name="Email_Body_VehicleNumber" xml:space="preserve">
-    <value>Vehículo#</value>
+    <value>Unidad #</value>
     <comment>Vehicle #</comment>
   </data>
   <data name="Email_Body_VehicleType" xml:space="preserve">
@@ -478,11 +478,11 @@
     <comment>This account is not supported by the web site.</comment>
   </data>
   <data name="Email_Body_VehicleModel" xml:space="preserve">
-    <value>Vehicle</value>
+    <value>Vehículo</value>
     <comment>Vehicle</comment>
   </data>
   <data name="Email_Body_YourDriver" xml:space="preserve">
-    <value>Your Driver</value>
+    <value>CONDUCTOR / VEHICULO</value>
     <comment>Your Driver</comment>
   </data>
   <data name="CannotCreateOrder_PromotionDoesNotExist" xml:space="preserve">

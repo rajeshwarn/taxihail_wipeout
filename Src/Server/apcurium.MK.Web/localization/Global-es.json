@@ -78,6 +78,7 @@
 	"Account Not Found": "Número de cuenta de servicio inválido",
 	"Enter An Account Rider #": "Por favor ingrese un número de cuenta de servicio válido",
 	"Continue": "Continúe",
+	"Import": "Import from IBS",
 	"EtaDurationUnit": "min",
 	"EtaDurationUnitPlural": "mins",
 	"Estimate Display": "{0} {1}",

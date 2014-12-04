@@ -172,6 +172,12 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             return result;
         }
 
+        public Task<Account> GetAdminTestAccount(int index)
+        {
+            var result = Client.GetAsync<Account>("/account/test/admin/" + index);
+            return result;
+        }
+
         public Task<Account> CreateTestAccount()
         {
             var result = Client.GetAsync<Account>("/account/test/" + Guid.NewGuid());

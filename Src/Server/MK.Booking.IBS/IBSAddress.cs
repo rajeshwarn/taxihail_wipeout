@@ -12,6 +12,8 @@ namespace apcurium.MK.Booking.IBS
 
         public string FriendlyName { get; set; }
 
+        public string City{ get; set; }
+
         public string FullAddress { get; set; }
 
         public double Longitude { get; set; }

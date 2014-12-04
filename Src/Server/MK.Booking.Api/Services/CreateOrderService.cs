@@ -155,13 +155,13 @@ namespace apcurium.MK.Booking.Api.Services
                     .Select(x => x.Display)
                     .FirstOrDefault();
 
+
+            string[] prompts = null;
+            int?[] promptsLength = null;
             // Payment mode is charge account
             if (request.Settings.ChargeTypeId.HasValue
                 && request.Settings.ChargeTypeId.Value == ChargeTypes.Account.Id)
             {
-                ValidateChargeAccountAnswers(request.Settings.AccountNumber, request.QuestionsAndAnswers);
-
-                // Change payment mode to card of file if necessary
                 var accountChargeDetail = _accountChargeDao.FindByAccountNumber(request.Settings.AccountNumber);
 
                 if (accountChargeDetail.UseCardOnFileForPayment)
@@ -179,6 +179,11 @@ namespace apcurium.MK.Booking.Api.Services
                     request.Settings.ChargeTypeId = ChargeTypes.CardOnFile.Id;
                     isChargeAccountPaymentWithCardOnFile = true;
                 }
+
+                ValidateChargeAccountAnswers(request.Settings.AccountNumber, request.QuestionsAndAnswers);
+
+                prompts = request.QuestionsAndAnswers.Select(q => q.Answer).ToArray();
+                promptsLength = request.QuestionsAndAnswers.Select(q => q.MaxLength).ToArray();
             }
             
             // We can only validate rules when in the local market
@@ -233,12 +238,6 @@ namespace apcurium.MK.Booking.Api.Services
                 throw new HttpError(ErrorCode.CreateOrder_NoFareEstimateAvailable.ToString());
             }
 
-            if (request.Settings.ChargeTypeId.HasValue
-                && request.Settings.ChargeTypeId.Value == ChargeTypes.Account.Id)
-            {
-                ValidateChargeAccountAnswers(request.Settings.AccountNumber, request.QuestionsAndAnswers);
-            }
-
             var chargeTypeIbs = string.Empty;
             var chargeTypeEmail = string.Empty;
             if (chargeTypeKey != null)
@@ -250,9 +249,9 @@ namespace apcurium.MK.Booking.Api.Services
                 chargeTypeEmail = _resources.Get(chargeTypeKey, request.ClientLanguageCode);
             }
 
-            ValidateAndApplyPromotion(request.PromoCode, request.Settings.ChargeTypeId, account.Id, request.Id, pickupDate, isFutureBooking, request.ClientLanguageCode);
+            var applyPromoCommand = ValidateAndApplyPromotion(request.PromoCode, request.Settings.ChargeTypeId, account.Id, request.Id, pickupDate, isFutureBooking, request.ClientLanguageCode);
 
-            var ibsOrderId = CreateIbsOrder(account.IBSAccountId.Value, request, referenceData, chargeTypeIbs, bestAvailableCompany.CompanyKey);
+            var ibsOrderId = CreateIbsOrder(account.IBSAccountId.Value, request, referenceData, chargeTypeIbs, prompts, promptsLength, bestAvailableCompany.CompanyKey);
             
             if (!ibsOrderId.HasValue
                 || ibsOrderId <= 0)
@@ -287,6 +286,11 @@ namespace apcurium.MK.Booking.Api.Services
 
             _commandBus.Send(command);
             _commandBus.Send(emailCommand);
+
+            if (applyPromoCommand != null)
+            {
+                _commandBus.Send(applyPromoCommand);
+            }
 
             UpdateStatusAsync(command.OrderId);
 
@@ -361,12 +365,11 @@ namespace apcurium.MK.Booking.Api.Services
                 throw new HttpError(HttpStatusCode.InternalServerError, networkErrorMessage);
             }
 
-            var newIbsOrderId = CreateIbsOrder(ibsAccountId, newOrderRequest, newReferenceData, chargeTypeIbs, request.NextDispatchCompanyKey);
+            var newIbsOrderId = CreateIbsOrder(ibsAccountId, newOrderRequest, newReferenceData, chargeTypeIbs, null, null, request.NextDispatchCompanyKey);
             if (!newIbsOrderId.HasValue || newIbsOrderId <= 0)
             {
                 var code = !newIbsOrderId.HasValue || (newIbsOrderId.Value >= -1) ? string.Empty : "_" + Math.Abs(newIbsOrderId.Value);
                 Log.Error(string.Format("{0}. IBS error code: {1}", networkErrorMessage, code));
-
                 throw new HttpError(HttpStatusCode.InternalServerError, networkErrorMessage);
             }
 
@@ -498,29 +501,20 @@ namespace apcurium.MK.Booking.Api.Services
             {
                 throw new HttpError(HttpStatusCode.Forbidden, ErrorCode.AccountCharge_InvalidAccountNumber.ToString());
             }
+            
+            var answers = userQuestionsDetails.Select(x => x.Answer);
 
-            for (int i = 0; i < accountChargeDetail.Questions.Count; i++)
+            var validation = _ibsServiceProvider.ChargeAccount().ValidateIbsChargeAccount(answers, accountNumber, "0");
+            if (!validation.Valid)
             {
-                var questionDetails = accountChargeDetail.Questions[i];
-                var userQuestionDetails = userQuestionsDetails[i];
-
-                if (!questionDetails.IsRequired)
+                if (validation.ValidResponse != null)
                 {
-                    // Facultative question, do nothing
-                    continue;
-                }
-
-                var userAnswer = userQuestionDetails.Answer;
-                var validAnswers = questionDetails.Answer.Split(',').Select(a => a.Trim());
-
-                if (!validAnswers.Any(p => String.Equals(userAnswer, p, questionDetails.IsCaseSensitive
-                                                                        ? StringComparison.InvariantCulture
-                                                                        : StringComparison.InvariantCultureIgnoreCase)))
-                {
-                    // User answer is not valid
+                    int firstError = validation.ValidResponse.IndexOf(false);
                     throw new HttpError(HttpStatusCode.Forbidden, ErrorCode.AccountCharge_InvalidAnswer.ToString(),
-                                        questionDetails.ErrorMessage);
+                                            accountChargeDetail.Questions[firstError].ErrorMessage);
                 }
+
+                throw new HttpError(HttpStatusCode.Forbidden, ErrorCode.AccountCharge_InvalidAccountNumber.ToString(), validation.Message);
             }
         }
 
@@ -558,7 +552,7 @@ namespace apcurium.MK.Booking.Api.Services
             return offsetedTime;
         }
 
-        private int? CreateIbsOrder(int ibsAccountId, CreateOrder request, ReferenceData referenceData, string chargeType, string companyKey = null)
+        private int? CreateIbsOrder(int ibsAccountId, CreateOrder request, ReferenceData referenceData, string chargeType, string[] prompts, int?[] promptsLength, string companyKey = null)
         {
             // Provider is optional for home market
             // But if a provider is specified, it must match with one of the ReferenceData values
@@ -593,11 +587,17 @@ namespace apcurium.MK.Booking.Api.Services
                 request.Settings.Phone,
                 request.Settings.Passengers,
                 request.Settings.VehicleTypeId,
-                null,
+                null, // null since we don't use the ChargeTypes of ibs anymore
                 note,
                 request.PickupDate.Value,
                 ibsPickupAddress,
                 ibsDropOffAddress,
+                request.Settings.ChargeTypeId == ChargeTypes.Account.Id    // send the account number only if we book using charge account
+                    ? request.Settings.AccountNumber 
+                    : null,
+                null,
+                prompts,
+                promptsLength,
                 fare);
 
             return result;
@@ -765,13 +765,13 @@ namespace apcurium.MK.Booking.Api.Services
             // Nothing found
             return new BestAvailableCompany();
         }
-        
-        private void ValidateAndApplyPromotion(string promoCode, int? chargeTypeId, Guid accountId, Guid orderId, DateTime pickupDate, bool isFutureBooking, string clientLanguageCode)
+
+        private ApplyPromotion ValidateAndApplyPromotion(string promoCode, int? chargeTypeId, Guid accountId, Guid orderId, DateTime pickupDate, bool isFutureBooking, string clientLanguageCode)
         {
             if (!promoCode.HasValue())
             {
                 // No promo code entered
-                return;
+                return null;
             }
 
             if (chargeTypeId != ChargeTypes.CardOnFile.Id)
@@ -795,15 +795,15 @@ namespace apcurium.MK.Booking.Api.Services
                 throw new HttpError(HttpStatusCode.Forbidden, ErrorCode.CreateOrder_RuleDisable.ToString(),
                     _resources.Get(errorMessage, clientLanguageCode));
             }
-            
-            _commandBus.Send(new ApplyPromotion
+
+            return new ApplyPromotion
             {
                 PromoId = promo.Id,
                 AccountId = accountId,
                 OrderId = orderId,
                 PickupDate = pickupDate,
                 IsFutureBooking = isFutureBooking
-            });
+            };
         }
 
         private class BestAvailableCompany

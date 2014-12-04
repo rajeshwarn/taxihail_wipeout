@@ -36,6 +36,7 @@ namespace apcurium.MK.Booking.CommandHandlers
         ICommandHandler<UpdateTermsAndConditions>,
         ICommandHandler<RetriggerTermsAndConditions>,
         ICommandHandler<AddUpdateAccountCharge>,
+        ICommandHandler<ImportAccountCharge>,
         ICommandHandler<DeleteAccountCharge>,
         ICommandHandler<AddUpdateVehicleType>,
         ICommandHandler<DeleteVehicleType>,
@@ -299,6 +300,15 @@ namespace apcurium.MK.Booking.CommandHandlers
             var company = _repository.Get(command.CompanyId);
 
             company.AddUpdateAccountCharge(command.AccountChargeId, command.Number, command.Name, command.UseCardOnFileForPayment, command.Questions);
+
+            _repository.Save(company, command.Id.ToString());
+        }
+
+        public void Handle(ImportAccountCharge command)
+        {
+            var company = _repository.Get(command.CompanyId);
+
+            company.ImportAccountCharge(command.AccountCharges);
 
             _repository.Save(company, command.Id.ToString());
         }

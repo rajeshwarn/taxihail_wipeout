@@ -141,11 +141,16 @@
         
         book: function () {
 
-            
             var model = new TaxiHail.Order();
 
             TaxiHail.geolocation.initialize();
-            
+
+            TaxiHail.auth.account.fetch({
+                success: function (accountModel) {
+                    var accountNumber = accountModel.get('settings').accountNumber;
+                    model.set('accountNumber', accountNumber);
+                }
+            });
 
             TaxiHail.geolocation.getCurrentAddress()
             //    // By default, set pickup address to current user location
@@ -153,6 +158,7 @@
                 
                     model.set('pickupAddress', address);
                 }));
+
             
             mapView.setModel(model, true);
             renderView(TaxiHail.BookView, model);
