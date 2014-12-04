@@ -2,36 +2,41 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
-using apcurium.MK.Booking.Api.Client.TaxiHail;
-using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Booking.Commands;
+using apcurium.MK.Booking.IBS;
+using apcurium.MK.Booking.ReadModel.Query.Contract;
+using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
+using AutoMapper;
+using Infrastructure.Messaging;
 using ServiceStack.CacheAccess;
 using ServiceStack.Common.Extensions;
-using ServiceStack.Messaging.Rcon;
 
 
 namespace apcurium.MK.Web.Areas.AdminTH.Controllers
 {
     public class ImportChargeAccountController : ServiceStackController
     {
-        private readonly IServerSettings _serverSettings;
-        private readonly string _applicationKey;
-        private AdministrationServiceClient _client;
-        
-        public ImportChargeAccountController(ICacheClient cache, IServerSettings serverSettings) 
+        private readonly IAccountChargeDao _dao;
+        private readonly IIBSServiceProvider _ibsServiceProvider;
+        private readonly ICommandBus _commandBus;
+
+        public ImportChargeAccountController(ICacheClient cache, IServerSettings serverSettings,
+                                            IAccountChargeDao dao, IIBSServiceProvider ibsServiceProvider,
+                                            ICommandBus commandBus)
             : base(cache, serverSettings)
         {
-            _serverSettings = serverSettings;
-            _applicationKey = serverSettings.ServerData.TaxiHail.ApplicationKey;
+            _dao = dao;
+            _ibsServiceProvider = ibsServiceProvider;
+            _commandBus = commandBus;
         }
 
         public ActionResult Index()
         {
             if (AuthSession.IsAuthenticated)
             {
-                _client = new AdministrationServiceClient(BaseUrlAPI, SessionID, null);
                 var result = ImportAccounts();
                 return View(result);
             }
@@ -39,26 +44,27 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
             return Redirect(BaseUrl);
         }
 
-        private IEnumerable<IbsChargeAccount> GetNewChargeAccounts(IEnumerable<IbsChargeAccount> allChargeAccounts)
+        private IEnumerable<IbsChargeAccount> GetNewChargeAccounts(List<IbsChargeAccount> ibsAccounts)
         {
-            var ibsChargeAccounts = allChargeAccounts.ToList();
+            var taxiHailChargeAccounts = _dao.GetAll();
 
-            var taxiHailChargeAccounts = _client.GetAccountsCharge();
-
-            var newChargeAccounts = ibsChargeAccounts.Where(
-                newAccount =>
-                    taxiHailChargeAccounts.All(currentAccount => currentAccount.Number != newAccount.AccountNumber));
+            var newChargeAccounts = ibsAccounts.Where(
+                ibsChargeAccount =>
+                    taxiHailChargeAccounts.All(currentAccount => currentAccount.Number != ibsChargeAccount.AccountNumber));
 
             return newChargeAccounts;
         }
 
         private IbsChargeAccountImportReport ImportAccounts()
         {
-            var allCharges = _client.GetAllChargeAccount().ToList();
-            var chargeAccountsToImport = GetNewChargeAccounts(allCharges).ToList();
+            var accountsFromIbs = _ibsServiceProvider.ChargeAccount().GetAllAccount();
+            var ibsAccounts = new List<IbsChargeAccount>();
+            Mapper.Map(accountsFromIbs, ibsAccounts);
 
-            var existingAccounts = allCharges
-                    .Where(x => !chargeAccountsToImport.Any(y => y.AccountNumber == x.AccountNumber)).ToList();
+            var chargeAccountsToImport = GetNewChargeAccounts(ibsAccounts).ToList();
+
+            var existingAccounts = ibsAccounts
+                    .Where(x => chargeAccountsToImport.All(y => y.AccountNumber != x.AccountNumber)).ToList();
 
             var chargeAccounNumbers = chargeAccountsToImport.ToArray().Select(x => x.AccountNumber).Distinct();
 
@@ -121,10 +127,14 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
 
             });
 
-            _client.ImportAccountCharge(new AccountChargeImportRequest()
+
+            var importedAccountCharge = new ImportAccountCharge()
             {
-                AccountCharges = importedTaxiHailChargeAccounts.ToArray()
-            });
+                AccountCharges = importedTaxiHailChargeAccounts.ToArray(),
+                CompanyId = AppConstants.CompanyId
+            };
+
+            _commandBus.Send(importedAccountCharge);
 
             existingAccounts.ForEach(existing =>
             {
