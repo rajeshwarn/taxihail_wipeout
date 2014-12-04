@@ -8,7 +8,7 @@
     <LinearLayout
         android:layout_margin="0dp"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="fill_parent"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:gravity="center_horizontal"
@@ -32,6 +32,17 @@
             android:layout_height="1px"
             android:background="@color/top_bar_separator_color"
             android:orientation="horizontal" />
+        <TextView
+            android:text="@string/HistoryViewNoHistoryLabel"
+            style="@style/TopTitleText"
+            android:layout_gravity="center"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:textColor="@color/black"
+            android:gravity="center"
+            android:includeFontPadding="false"
+            android:id="@+id/textViewEmptyHistory"
+            local:MvxBind="Visibility HasOrders, Converter=InvertedVisibility" />
         <cirrious.mvvmcross.binding.droid.views.MvxListView
             android:id="@+id/HistoryList"
             android:minWidth="25px"
