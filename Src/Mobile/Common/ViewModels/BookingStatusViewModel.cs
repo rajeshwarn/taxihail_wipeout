@@ -371,18 +371,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				}.ToStringDictionary());
 		}
 
-        public void GoToBookingScreen(){
+        public async void GoToBookingScreen(){
 
             if (!_waitingToNavigateAfterTimeOut)
             {
-				Observable.Interval( TimeSpan.FromSeconds (10))
-				.Subscribe(unit => InvokeOnMainThread(() =>
-				{
-					_bookingService.ClearLastOrder();
-		                        _waitingToNavigateAfterTimeOut = true;
-								ShowViewModel<HomeViewModel>(new { locateUser =  true });
-								Close(this);
-                    }));
+				_waitingToNavigateAfterTimeOut = true;
+				await Task.Delay (TimeSpan.FromSeconds (10));
+				_bookingService.ClearLastOrder();
+				ShowViewModelAndRemoveFromHistory<HomeViewModel>(new { locateUser =  true });
             }
         }
 
