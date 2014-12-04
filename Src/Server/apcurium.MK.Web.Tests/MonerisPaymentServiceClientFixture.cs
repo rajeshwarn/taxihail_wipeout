@@ -28,7 +28,9 @@ namespace apcurium.MK.Web.Tests
         public override void Setup()
         {
             base.Setup();
-            UnityServiceLocator.Instance.RegisterInstance<IPaymentService>(GetPaymentService());
+            var paymentService = GetPaymentService();
+            UnityServiceLocator.Instance.RegisterInstance<IPaymentService>(paymentService);
+            UnityServiceLocator.Instance.RegisterInstance<IPaymentServiceFactory>(new SinglePaymentServiceFactory(paymentService));
         }
 
         protected override IPaymentServiceClient GetPaymentClient()
