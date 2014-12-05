@@ -36,7 +36,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
         public async Task<ActionResult> Index()
         {
             var localCompanies = await _taxiHailNetworkService.GetNetworkCompanyPreferences(_applicationKey);
-            var roamingCompanies = await _taxiHailNetworkService.GetNetworkFleetsPreferences(_applicationKey);
+            var roamingCompanies = await _taxiHailNetworkService.GetRoamingCompaniesPreferences(_applicationKey);
 
             var companies = new Dictionary<string, List<CompanyPreferenceResponse>>();
             companies.Add("Local", localCompanies);
