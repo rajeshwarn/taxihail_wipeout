@@ -24,10 +24,10 @@ namespace CustomerPortal.Client.Impl
                                .Deserialize<List<CompanyPreferenceResponse>>();
         }
 
-        public async Task<List<CompanyPreferenceResponse>> GetRoamingCompaniesPreferences(string companyId)
+        public async Task<Dictionary<string, List<CompanyPreferenceResponse>>> GetRoamingCompaniesPreferences(string companyId)
         {
             return await Client.Get(string.Format(@"customer/{0}/roaming/networkfleets", companyId))
-                               .Deserialize<List<CompanyPreferenceResponse>>();
+                               .Deserialize<Dictionary<string, List<CompanyPreferenceResponse>>>();
         }
 
         public Task<List<NetworkFleetResponse>> GetNetworkFleetAsync(string companyId, double? latitude = null, double? longitude = null)

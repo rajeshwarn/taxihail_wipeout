@@ -35,12 +35,18 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
 
         public async Task<ActionResult> Index()
         {
-            var localCompanies = await _taxiHailNetworkService.GetNetworkCompanyPreferences(_applicationKey);
-            var roamingCompanies = await _taxiHailNetworkService.GetRoamingCompaniesPreferences(_applicationKey);
+            var localCompaniesPreferences = await _taxiHailNetworkService.GetNetworkCompanyPreferences(_applicationKey);
+            var roamingCompaniesPreferences = await _taxiHailNetworkService.GetRoamingCompaniesPreferences(_applicationKey);
 
-            var companies = new Dictionary<string, List<CompanyPreferenceResponse>>();
-            companies.Add("Local", localCompanies);
-            companies.Add("Roaming", roamingCompanies);
+            var companies = new Dictionary<string, List<CompanyPreferenceResponse>>
+            {
+                {"Local", localCompaniesPreferences}
+            };
+
+            foreach (var market in roamingCompaniesPreferences.Keys)
+            {
+                companies.Add(market, roamingCompaniesPreferences[market]);
+            }
 
             return View(companies);
         }
@@ -50,22 +56,39 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
         {
             if (ModelState.IsValid)
             {
-                var companyPreferences = await _taxiHailNetworkService.GetNetworkCompanyPreferences(_applicationKey);
+                var localCompaniesPreferences = await _taxiHailNetworkService.GetNetworkCompanyPreferences(_applicationKey);
+                var roamingCompaniesPreferences = await _taxiHailNetworkService.GetRoamingCompaniesPreferences(_applicationKey);
+
+                var companiesPreferences = new Dictionary<string, List<CompanyPreferenceResponse>>
+                {
+                    {"Local", localCompaniesPreferences}
+                };
+                foreach (var roamingCompaniesPreference in roamingCompaniesPreferences)
+                {
+                    companiesPreferences.Add(roamingCompaniesPreference.Key, roamingCompaniesPreference.Value);
+                }
 
                 var preferences = new List<CompanyPreference>();
-                for (var i = 0; i < companyPreferences.Count; i++)
+                foreach (var market in companiesPreferences.Keys)
                 {
-                    int? order = form["orderKey_" + companyPreferences[i].CompanyPreference.CompanyKey] == string.Empty 
-                        ? i 
-                        : int.Parse(form["orderKey_" + companyPreferences[i].CompanyPreference.CompanyKey]);
+                    var marketCompaniesPreferences = companiesPreferences[market];
 
-                    preferences.Add(new CompanyPreference
+                    for (var i = 0; i < marketCompaniesPreferences.Count; i++)
                     {
-                        CompanyKey = form["idKey_" + companyPreferences[i].CompanyPreference.CompanyKey], 
-                        CanAccept = form["acceptKey_" + companyPreferences[i].CompanyPreference.CompanyKey].Contains("true"), 
-                        CanDispatch = form["dispatchKey_" + companyPreferences[i].CompanyPreference.CompanyKey].Contains("true"),
-                        Order = order
-                    });
+                        var orderKey = string.Format("orderKey_{0}_{1}",
+                            market,
+                            marketCompaniesPreferences[i].CompanyPreference.CompanyKey);
+
+                        int? order = form[orderKey] == string.Empty ? i : int.Parse(form[orderKey]);
+
+                        preferences.Add(new CompanyPreference
+                        {
+                            CompanyKey = form["idKey_" + marketCompaniesPreferences[i].CompanyPreference.CompanyKey],
+                            CanAccept = form["acceptKey_" + marketCompaniesPreferences[i].CompanyPreference.CompanyKey].Contains("true"),
+                            CanDispatch = form["dispatchKey_" + marketCompaniesPreferences[i].CompanyPreference.CompanyKey].Contains("true"),
+                            Order = order
+                        });
+                    }
                 }
 
                 await _taxiHailNetworkService.SetNetworkCompanyPreferences(

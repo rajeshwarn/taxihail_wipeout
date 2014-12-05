@@ -46,7 +46,7 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
                     && n.Id != homeCompanySettings.Id
                     && n.Market != homeCompanySettings.Market);
 
-            var preferences = new List<CompanyPreferenceResponse>();
+            var preferences = new Dictionary<string, List<CompanyPreferenceResponse>>();
 
             foreach (var roamingCompany in companiesFromOtherMarkets)
             {
@@ -55,20 +55,41 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
 
                 var roamingCompanyAllowUsToDispatch = roamingCompany.Preferences.Any(x => x.CompanyKey == companyId && x.CanAccept);
 
-                preferences.Add(new CompanyPreferenceResponse
+                if (!preferences.ContainsKey(roamingCompany.Market))
+                {
+                    preferences.Add(roamingCompany.Market, new List<CompanyPreferenceResponse>());
+                }
+
+                preferences[roamingCompany.Market].Add(new CompanyPreferenceResponse
                 {
                     CompanyPreference = companyPreference,
                     CanDispatchTo = roamingCompanyAllowUsToDispatch
                 });
+
+                //preferences.Add(new CompanyPreferenceResponse
+                //{
+                //    CompanyPreference = companyPreference,
+                //    CanDispatchTo = roamingCompanyAllowUsToDispatch
+                //});
             }
 
-            var sortedCompanyPreferences = preferences
-                .OrderBy(p => p.CompanyPreference.Order == null)
-                .ThenBy(p => p.CompanyPreference.Order);
+            var markets = new List<string>(preferences.Keys);
+            foreach (var market in markets)
+            {
+                preferences[market] = preferences[market]
+                    .OrderBy(p => p.CompanyPreference.Order == null)
+                    .ThenBy(p => p.CompanyPreference.Order)
+                    .ToList();
+            }
+
+            //var sortedCompanyPreferences = preferences
+            //    .OrderBy(p => p.CompanyPreference.Order == null)
+            //    .ThenBy(p => p.CompanyPreference.Order);
 
             return new HttpResponseMessage(HttpStatusCode.OK)
             {
-                Content = new StringContent(JsonConvert.SerializeObject(sortedCompanyPreferences))
+                //Content = new StringContent(JsonConvert.SerializeObject(sortedCompanyPreferences))
+                Content = new StringContent(JsonConvert.SerializeObject(preferences))
             };
         }
 
