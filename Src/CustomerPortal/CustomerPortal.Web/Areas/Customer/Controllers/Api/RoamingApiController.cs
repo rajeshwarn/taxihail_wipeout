@@ -32,7 +32,7 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
         }
 
         [Route("api/customer/{companyId}/roaming/networkfleets")]
-        public HttpResponseMessage GetFleetsPreferences(string companyId)
+        public HttpResponseMessage GetRoamingFleetsPreferences(string companyId)
         {
             var homeCompanySettings = _networkRepository.FirstOrDefault(n => n.Id == companyId);
 
@@ -65,12 +65,6 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
                     CompanyPreference = companyPreference,
                     CanDispatchTo = roamingCompanyAllowUsToDispatch
                 });
-
-                //preferences.Add(new CompanyPreferenceResponse
-                //{
-                //    CompanyPreference = companyPreference,
-                //    CanDispatchTo = roamingCompanyAllowUsToDispatch
-                //});
             }
 
             var markets = new List<string>(preferences.Keys);
@@ -82,13 +76,8 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
                     .ToList();
             }
 
-            //var sortedCompanyPreferences = preferences
-            //    .OrderBy(p => p.CompanyPreference.Order == null)
-            //    .ThenBy(p => p.CompanyPreference.Order);
-
             return new HttpResponseMessage(HttpStatusCode.OK)
             {
-                //Content = new StringContent(JsonConvert.SerializeObject(sortedCompanyPreferences))
                 Content = new StringContent(JsonConvert.SerializeObject(preferences))
             };
         }
@@ -129,13 +118,15 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
             };
         }
 
-        [Route("api/customer/roaming/marketfleets")]
-        public HttpResponseMessage GetMarketFleets(string market)
+        [Route("api/customer/{companyId}/roaming/marketfleets")]
+        public HttpResponseMessage GetMarketFleets(string companyId, string market)
         {
             var marketFleets = new List<NetworkFleetResponse>();
 
-            // Get all companies in the market
-            var companiesInMarket = _networkRepository.Where(n => n.IsInNetwork && n.Market == market);
+            // Get all companies in the market that accepts dispatch for the company
+            var companiesInMarket = _networkRepository.Where(n => n.IsInNetwork
+                && n.Market == market
+                && n.Preferences.Any(p => p.CompanyKey == companyId && p.CanAccept));
 
             foreach (var availableCompany in companiesInMarket)
             {

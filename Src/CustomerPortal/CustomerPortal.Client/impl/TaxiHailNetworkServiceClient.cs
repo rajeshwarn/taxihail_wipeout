@@ -74,9 +74,11 @@ namespace CustomerPortal.Client.Impl
                          .Result;
         }
 
-        public IEnumerable<NetworkFleetResponse> GetMarketFleets(string market)
+        public IEnumerable<NetworkFleetResponse> GetMarketFleets(string companyId, string market)
         {
-            return Client.Get(string.Format("customer/roaming/marketfleets?market={0}", market))
+            var companyKey = companyId ?? _serverSettings.ServerData.TaxiHail.ApplicationKey;
+
+            return Client.Get(string.Format("customer/{0}/roaming/marketfleets?market={1}", companyKey, market))
                                .Deserialize<IEnumerable<NetworkFleetResponse>>()
                                .Result;
         }

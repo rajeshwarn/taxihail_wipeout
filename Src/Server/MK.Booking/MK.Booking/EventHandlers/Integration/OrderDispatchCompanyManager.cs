@@ -169,12 +169,10 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                         .Select(g => g.First());
 
                     // Fetch all NetworkFleet objects for this market
-                    var allMarketFleets = _taxiHailNetworkServiceClient.GetMarketFleets(market);
+                    var allMarketFleets = _taxiHailNetworkServiceClient.GetMarketFleets(currentCompanyKey, market).ToArray();
 
                     // All NetworkFleet objects for this market except the current one
-                    var marketFleets =
-                        _taxiHailNetworkServiceClient.GetMarketFleets(market)
-                            .Where(f => f.CompanyKey != currentCompanyKey);
+                    var marketFleets = allMarketFleets.Where(f => f.CompanyKey != currentCompanyKey);
                     var currentFleet = allMarketFleets.First(f => f.CompanyKey == currentCompanyKey);
 
                     // Return only those from the ordered fleet

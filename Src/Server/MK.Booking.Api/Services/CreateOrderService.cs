@@ -748,7 +748,8 @@ namespace apcurium.MK.Booking.Api.Services
 
             if (bestFleetId.HasValue)
             {
-                var marketFleets = _taxiHailNetworkServiceClient.GetMarketFleets(market).ToArray();
+                var companyKey = _serverSettings.ServerData.TaxiHail.ApplicationKey;
+                var marketFleets = _taxiHailNetworkServiceClient.GetMarketFleets(companyKey, market).ToArray();
 
                 // Fallback: If for some reason, we cannot find a match for the best fleet id in the fleets
                 // that were setup for the market, we take the first one

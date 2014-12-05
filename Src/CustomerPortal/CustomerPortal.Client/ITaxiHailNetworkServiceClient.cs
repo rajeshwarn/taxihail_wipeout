@@ -19,7 +19,7 @@ namespace CustomerPortal.Client
 
         string GetCompanyMarket(double latitude, double longitude);
 
-        IEnumerable<NetworkFleetResponse> GetMarketFleets(string market);
+        IEnumerable<NetworkFleetResponse> GetMarketFleets(string companyId, string market);
 
         NetworkFleetResponse GetMarketFleet(string market, int fleetId);
     }
