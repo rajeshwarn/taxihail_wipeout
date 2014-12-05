@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using CustomerPortal.Contract.Resources;
@@ -22,6 +21,13 @@ namespace CustomerPortal.Client.Impl
         public async Task<List<CompanyPreferenceResponse>> GetNetworkCompanyPreferences(string companyId)
         {
             return await Client.Get(string.Format(@"customer/{0}/network", companyId))
+                               .Deserialize<List<CompanyPreferenceResponse>>();
+        }
+
+
+        public async Task<List<CompanyPreferenceResponse>> GetNetworkFleetsPreferences(int companyId)
+        {
+            return await Client.Get(string.Format(@"customer/{0}/roaming/networkfleets", companyId))
                                .Deserialize<List<CompanyPreferenceResponse>>();
         }
 

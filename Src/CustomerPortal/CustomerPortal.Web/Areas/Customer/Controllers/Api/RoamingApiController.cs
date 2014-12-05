@@ -31,6 +31,47 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
             _companyRepository = companyRepository;
         }
 
+        [Route("api/customer/{companyId}/roaming/networkfleets")]
+        public HttpResponseMessage GetFleetsPreferences(string companyId)
+        {
+            var homeCompanySettings = _networkRepository.FirstOrDefault(n => n.Id == companyId);
+
+            if (homeCompanySettings == null || !homeCompanySettings.IsInNetwork)
+            {
+                return null;
+            }
+
+            var companiesFromOtherMarkets = _networkRepository
+                .Where(n => n.IsInNetwork
+                    && n.Id != homeCompanySettings.Id
+                    && n.Market != homeCompanySettings.Market);
+
+            var preferences = new List<CompanyPreferenceResponse>();
+
+            foreach (var roamingCompany in companiesFromOtherMarkets)
+            {
+                var companyPreference = homeCompanySettings.Preferences.FirstOrDefault(p => p.CompanyKey == roamingCompany.Id)
+                            ?? new CompanyPreference { CompanyKey = roamingCompany.Id };
+
+                var roamingCompanyAllowUsToDispatch = roamingCompany.Preferences.Any(x => x.CompanyKey == companyId && x.CanAccept);
+
+                preferences.Add(new CompanyPreferenceResponse
+                {
+                    CompanyPreference = companyPreference,
+                    CanDispatchTo = roamingCompanyAllowUsToDispatch
+                });
+            }
+
+            var sortedCompanyPreferences = preferences
+                .OrderBy(p => p.CompanyPreference.Order == null)
+                .ThenBy(p => p.CompanyPreference.Order);
+
+            return new HttpResponseMessage(HttpStatusCode.OK)
+            {
+                Content = new StringContent(JsonConvert.SerializeObject(sortedCompanyPreferences))
+            };
+        }
+
         [Route("api/customer/roaming/market")]
         public HttpResponseMessage GetCompanyMarket(string companyId, double latitude, double longitude)
         {
