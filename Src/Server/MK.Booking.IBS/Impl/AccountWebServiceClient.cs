@@ -38,11 +38,14 @@ namespace apcurium.MK.Booking.IBS.Impl
             var regEx = new Regex(@"\D");
             var phoneClean = regEx.Replace(phone, string.Empty);
 
+            // webId must be unique
+            var webId = accountId.ToString() + DateTime.Now.Ticks;
+
             UseService(service =>
             {
                 var account = new TBookAccount3
                 {
-                    WEBID = accountId.ToString(),
+                    WEBID = webId,
                     Address = new TWEBAddress(),
                     Email2 = email,
                     Title = string.Empty,
