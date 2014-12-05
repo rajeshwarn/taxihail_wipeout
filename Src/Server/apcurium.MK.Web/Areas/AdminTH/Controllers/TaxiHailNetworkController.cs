@@ -9,6 +9,7 @@ using apcurium.MK.Common.Configuration;
 using apcurium.MK.Web.Attributes;
 using CustomerPortal.Client;
 using CustomerPortal.Contract.Resources;
+using CustomerPortal.Contract.Response;
 using ServiceStack.CacheAccess;
 
 namespace apcurium.MK.Web.Areas.AdminTH.Controllers
@@ -34,8 +35,14 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
 
         public async Task<ActionResult> Index()
         {
-            var response = await _taxiHailNetworkService.GetNetworkCompanyPreferences(_applicationKey);
-            return View(response);
+            var localCompanies = await _taxiHailNetworkService.GetNetworkCompanyPreferences(_applicationKey);
+            var roamingCompanies = await _taxiHailNetworkService.GetNetworkFleetsPreferences(_applicationKey);
+
+            var companies = new Dictionary<string, List<CompanyPreferenceResponse>>();
+            companies.Add("Local", localCompanies);
+            companies.Add("Roaming", roamingCompanies);
+
+            return View(companies);
         }
 
         [HttpPost]
