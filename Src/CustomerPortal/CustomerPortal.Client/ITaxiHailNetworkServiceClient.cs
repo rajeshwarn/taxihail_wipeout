@@ -9,7 +9,7 @@ namespace CustomerPortal.Client
     {
         Task<List<CompanyPreferenceResponse>> GetNetworkCompanyPreferences(string companyId);
 
-        Task<List<CompanyPreferenceResponse>> GetNetworkFleetsPreferences(string companyId);
+        Task<List<CompanyPreferenceResponse>> GetRoamingCompaniesPreferences(string companyId);
 
         Task SetNetworkCompanyPreferences(string companyId, CompanyPreference[] companyPreferences);
 

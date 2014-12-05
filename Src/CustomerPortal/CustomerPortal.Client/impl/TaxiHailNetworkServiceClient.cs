@@ -24,7 +24,7 @@ namespace CustomerPortal.Client.Impl
                                .Deserialize<List<CompanyPreferenceResponse>>();
         }
 
-        public async Task<List<CompanyPreferenceResponse>> GetNetworkFleetsPreferences(string companyId)
+        public async Task<List<CompanyPreferenceResponse>> GetRoamingCompaniesPreferences(string companyId)
         {
             return await Client.Get(string.Format(@"customer/{0}/roaming/networkfleets", companyId))
                                .Deserialize<List<CompanyPreferenceResponse>>();
