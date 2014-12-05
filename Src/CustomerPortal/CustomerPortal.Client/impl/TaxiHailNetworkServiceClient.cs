@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics;
+using System.Globalization;
 using System.Threading.Tasks;
 using CustomerPortal.Contract.Resources;
 using CustomerPortal.Contract.Response;
@@ -36,8 +36,8 @@ namespace CustomerPortal.Client.Impl
 
             var @params = new Dictionary<string, string>
                 {
-                    { "latitude", latitude.ToString() },
-                    { "longitude", longitude.ToString() }
+                    { "latitude", latitude.HasValue ? latitude.Value.ToString(CultureInfo.InvariantCulture) : null},
+                    { "longitude", longitude.HasValue ? longitude.Value.ToString(CultureInfo.InvariantCulture) : null }
                 };
 
             var queryString = BuildQueryString(@params);
@@ -63,8 +63,8 @@ namespace CustomerPortal.Client.Impl
             var @params = new Dictionary<string, string>
             {
                 { "companyId", homeCompanyKey },
-                { "latitude", latitude.ToString() },
-                { "longitude", longitude.ToString() }
+                { "latitude", latitude.ToString(CultureInfo.InvariantCulture) },
+                { "longitude", longitude.ToString(CultureInfo.InvariantCulture) }
             };
 
             var queryString = BuildQueryString(@params);
