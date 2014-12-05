@@ -38,8 +38,8 @@ namespace apcurium.MK.Booking.IBS.Impl
             var regEx = new Regex(@"\D");
             var phoneClean = regEx.Replace(phone, string.Empty);
 
-            // webId must be unique
-            var webId = accountId.ToString() + DateTime.Now.Ticks;
+            // webId must be unique (and must not be too long)
+            var webId = accountId.ToString().Substring(0, 10) + DateTime.Now.Ticks;
 
             UseService(service =>
             {
