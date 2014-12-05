@@ -39,7 +39,8 @@ namespace apcurium.MK.Booking.CommandHandlers
         ICommandHandler<UpdateFavoriteAddress>,
         ICommandHandler<RemoveAddressFromHistory>,
         ICommandHandler<LogApplicationStartUp>,
-        ICommandHandler<LinkAccountToIbs>
+        ICommandHandler<LinkAccountToIbs>,
+        ICommandHandler<UnlinkAccountFromIbs>
     {
         private readonly IPasswordService _passwordService;
         private readonly Func<BookingDbContext> _contextFactory;
@@ -263,6 +264,15 @@ namespace apcurium.MK.Booking.CommandHandlers
             var account = _repository.Find(command.AccountId);
 
             account.LinkToIbs(command.CompanyKey, command.IbsAccountId);
+
+            _repository.Save(account, command.Id.ToString());
+        }
+
+        public void Handle(UnlinkAccountFromIbs command)
+        {
+            var account = _repository.Find(command.AccountId);
+
+            account.UnlinkFromIbs();
 
             _repository.Save(account, command.Id.ToString());
         }
