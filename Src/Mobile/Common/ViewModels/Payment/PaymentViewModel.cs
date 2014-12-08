@@ -342,7 +342,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
                 return this.GetCommand(() =>
                 {                    
                     Action executePayment = () =>
-                    {
+					{
                         if (PayPalSelected)
                         {
                             PayPalFlow();
@@ -369,36 +369,37 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
             }
         }
 
-        private void PayPalFlow()
+        private async void PayPalFlow()
         {
             if (CanProceedToPayment(false))
             {
-				this.Services().Message.ShowProgress(true);
-				_paypalExpressCheckoutService.SetExpressCheckoutForAmount(
-						Order.Id,
-						Convert.ToDecimal(Amount), 
-						Convert.ToDecimal(MeterAmount.ToDouble()), 
-						Convert.ToDecimal(RoundToTwoDecimals(TipAmount.ToDouble())),
-						Order.IBSOrderId,
-						TotalAmount,
-						_localize.CurrentLanguage)
-					        .ToObservable()
-					        .Subscribe(checkoutUrl => {
-                                var @params = new Dictionary<string, string> { { "url", checkoutUrl } };
-						        this.Services().Message.ShowProgress(false);
+				using (this.Services().Message.ShowProgress())
+				{
+					try
+					{
+						var checkoutUrl = await _paypalExpressCheckoutService.SetExpressCheckoutForAmount(
+							Order.Id,
+							Convert.ToDecimal(Amount), 
+							Convert.ToDecimal(MeterAmount.ToDouble()), 
+							Convert.ToDecimal(RoundToTwoDecimals(TipAmount.ToDouble())),
+							Order.IBSOrderId,
+							TotalAmount,
+							_localize.CurrentLanguage);
 
-                                ShowSubViewModel<PayPalViewModel, bool>(@params, success =>
-                                {
-                                    _paypalPaymentSucceeded = success;
+						var @params = new Dictionary<string, string> { { "url", checkoutUrl } };
 
-                                    if (success)
-                                    {
-                                        _paymentService.SetPaymentFromCache(Order.Id, Amount);
-                                        ShowPayPalPaymentConfirmation();
-								        
-                                    }
-                                });
-                }, error => { });
+						ShowSubViewModel<PayPalViewModel, bool>(@params, success =>
+						{
+							_paypalPaymentSucceeded = success;
+
+							if (success)
+							{
+								_paymentService.SetPaymentFromCache(Order.Id, Amount);
+							}
+						});
+					}
+					catch{}
+				}
             }
         }
 
