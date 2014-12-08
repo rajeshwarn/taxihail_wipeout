@@ -315,5 +315,17 @@ namespace apcurium.MK.Booking.Test.AccountFixture
             Assert.AreEqual(123, @event.IbsAccountId);
             Assert.AreEqual("test", @event.CompanyKey);
         }
+
+        [Test]
+        public void when_unlinking_account_from_ibs()
+        {
+            _sut.Given(new AccountLinkedToIbs { SourceId = _accountId, IbsAccountId = 123 });
+            _sut.Given(new AccountLinkedToIbs { SourceId = _accountId, IbsAccountId = 123, CompanyKey = "test" });
+            _sut.When(new UnlinkAccountFromIbs { AccountId = _accountId });
+
+            var @event = _sut.ThenHasSingle<AccountUnlinkedFromIbs>();
+
+            Assert.AreEqual(_accountId, @event.SourceId);
+        }
     }
 }

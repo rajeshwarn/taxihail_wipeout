@@ -1,6 +1,7 @@
 ﻿{
-	"Enable Account" : "Enable Account",
-	"Disable Account" : "Disable Account",
+	"Enable" : "Enable",
+	"Disable" : "Disable",
+	"Unlink" : "Unlink",
 	"Cancel" : "Cancel",
 	"Email Address" : "Email Address"
 }
