@@ -4,5 +4,6 @@
     "Book Now" : "Réserver",
 	"Book Later" : "Plus tard",
 	"Estimated Fare" : "Estimé",
-	"Locate Me" : "Me localiser"
+	"Locate Me" : "Me localiser",
+    "RefineAddress": "Affinez l'adresse en entrant un numéro de rue"
 }
