@@ -52,14 +52,6 @@
 
 <script type="text/javascript">
 
-    $('.sortable').sortable().bind('sortupdate', function (e, ui) {
-
-        $('.sortable').children('li').each(function () {
-            $(this).find('input')[ui.item.find('input').length - 1].value = $(this).index();
-        });
-
-    });
-
     function displayValidationMessage(control, message, valid) {
         var html = ' <button type="button" id="validationClose" class="close" data-dismiss="alert" onclick="this.parentNode.style.display=\'none\'">&times;</button>';
         if (valid) {
@@ -93,4 +85,13 @@
             }
         });
     }
+
+    $(document).ready(function () {
+        $('.sortable').sortable().bind('sortupdate', function (e, ui) {
+            $('.sortable').children('li').each(function () {
+                $(this).find('input')[ui.item.find('input').length - 1].value = $(this).index();
+            });
+
+        });
+    });
 </script>
