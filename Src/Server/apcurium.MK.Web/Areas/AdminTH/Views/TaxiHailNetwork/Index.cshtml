@@ -14,8 +14,8 @@
         <table class="table table-striped">
             <tr>
                 <th>Company Name</th>
-                <th class="admin-table ">Accept Orders From</th>
-                <th class="admin-table ">Dispatch Orders To</th>
+                <th class="company-preference-order-table">Accept Orders From</th>
+                <th class="company-preference-order-table">Dispatch Orders To</th>
             </tr>
         </table>
         <ul class="sortable">
@@ -24,17 +24,17 @@
 
                 <li>
                     
-                    <div class="admin-table-text"><span class="handle">::</span>@company.CompanyPreference.CompanyKey</div>
+                    <div class="company-preference-order-text"><span class="handle">::</span>@company.CompanyPreference.CompanyKey</div>
                     @Html.Hidden("idKey_" + company.CompanyPreference.CompanyKey, company.CompanyPreference.CompanyKey)
-                    <div class="admin-table-checkbox ">@Html.CheckBox("acceptKey_" + company.CompanyPreference.CompanyKey, company.CompanyPreference.CanAccept)</div>
-                    <div class="admin-table-checkbox ">
+                    <div class="company-preference-order-checkbox">@Html.CheckBox("acceptKey_" + company.CompanyPreference.CompanyKey, company.CompanyPreference.CanAccept)</div>
+                    <div class="company-preference-order-checkbox">
                         @if (company.CanDispatchTo)
                         {
-                        @Html.CheckBox("dispatchKey_" + company.CompanyPreference.CompanyKey, company.CompanyPreference.CanDispatch)
+                            @Html.CheckBox("dispatchKey_" + company.CompanyPreference.CompanyKey, company.CompanyPreference.CanDispatch)
                         }
                         else
                         {
-                        @Html.CheckBox("dispatchKey_" + company.CompanyPreference.CompanyKey, company.CompanyPreference.CanDispatch,new { disabled = "disabled" })
+                            @Html.CheckBox("dispatchKey_" + company.CompanyPreference.CompanyKey, company.CompanyPreference.CanDispatch, new { disabled = "disabled" })
                         }
                     </div>
                     @Html.Hidden("orderKey_" + company.CompanyPreference.CompanyKey, company.CompanyPreference.Order)
@@ -51,14 +51,6 @@
 }
 
 <script type="text/javascript">
-
-    $('.sortable').sortable().bind('sortupdate', function (e, ui) {
-
-        $('.sortable').children('li').each(function () {
-            $(this).find('input')[ui.item.find('input').length - 1].value = $(this).index();
-        });
-
-    });
 
     function displayValidationMessage(control, message, valid) {
         var html = ' <button type="button" id="validationClose" class="close" data-dismiss="alert" onclick="this.parentNode.style.display=\'none\'">&times;</button>';
@@ -93,4 +85,13 @@
             }
         });
     }
+
+    $(document).ready(function () {
+        $('.sortable').sortable().bind('sortupdate', function (e, ui) {
+            $('.sortable').children('li').each(function () {
+                $(this).find('input')[ui.item.find('input').length - 1].value = $(this).index();
+            });
+
+        });
+    });
 </script>
