@@ -26,7 +26,10 @@ namespace apcurium.MK.Booking.Api.Services
         public object Put(EnableAccountByAdminRequest request)
         {
             var account = Dao.FindByEmail(request.AccountEmail);
-            if (account == null) throw new HttpError(HttpStatusCode.NotFound, "Not Found");
+            if (account == null)
+            {
+                throw new HttpError(HttpStatusCode.NotFound, "Not Found");
+            }
 
             _commandBus.Send(new EnableAccountByAdmin
             {
@@ -38,7 +41,10 @@ namespace apcurium.MK.Booking.Api.Services
         public object Put(DisableAccountByAdminRequest request)
         {
             var account = Dao.FindByEmail(request.AccountEmail);
-            if (account == null) throw new HttpError(HttpStatusCode.NotFound, "Not Found");
+            if (account == null)
+            {
+                throw new HttpError(HttpStatusCode.NotFound, "Not Found");
+            }
 
             _commandBus.Send(new DisableAccountByAdmin
             {
@@ -50,7 +56,10 @@ namespace apcurium.MK.Booking.Api.Services
         public object Put(UnlinkAccountByAdminRequest request)
         {
             var account = Dao.FindByEmail(request.AccountEmail);
-            if (account == null) throw new HttpError(HttpStatusCode.NotFound, "Not Found");
+            if (account == null)
+            {
+                throw new HttpError(HttpStatusCode.NotFound, "Not Found");
+            }
 
             _commandBus.Send(new UnlinkAccountFromIbs
             {
