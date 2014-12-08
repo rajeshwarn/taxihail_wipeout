@@ -575,7 +575,8 @@ namespace apcurium.MK.Booking.Api.Services
                 ? Mapper.Map<IbsAddress>(request.DropOffAddress)
                 : null;
 
-            var note = BuildNote(chargeType, request.Note, request.PickupAddress.BuildingName, request.Settings.LargeBags);
+            var promoCode = request.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id ? request.PromoCode : null; // promo only applied if payment with card on file
+            var note = BuildNote(chargeType, request.Note, request.PickupAddress.BuildingName, request.Settings.LargeBags, promoCode);
             var fare = GetFare(request.Estimate);
 
             Debug.Assert(request.PickupDate != null, "request.PickupDate != null");
@@ -631,7 +632,7 @@ namespace apcurium.MK.Booking.Api.Services
 // ReSharper restore CompareOfFloatsByEqualityOperator
         }
 
-        private string BuildNote(string chargeType, string note, string buildingName, int largeBags)
+        private string BuildNote(string chargeType, string note, string buildingName, int largeBags, string promoCode)
         {
             // Building Name is not handled by IBS
             // Put Building Name in note, if specified
@@ -661,9 +662,21 @@ namespace apcurium.MK.Booking.Api.Services
                 largeBagsString = "Large bags: " + largeBags;
             }
 
+            var promoCodeString = string.Empty;
+            if (promoCode.HasValue())
+            {
+                var promo = _promotionDao.FindByPromoCode(promoCode);
+                promoCodeString = promo.GetNoteToDriverFormattedString();
+            }
+
             if (!string.IsNullOrWhiteSpace(noteTemplate))
             {
-                noteTemplate = string.Format("{0}{1}{2}", chargeType, Environment.NewLine, noteTemplate);
+                noteTemplate = string.Format("{0}{1}{2}", 
+                    chargeType,
+                    promoCodeString.HasValue()
+                        ? string.Format("{0}{1}{2}", Environment.NewLine, promoCodeString, Environment.NewLine)
+                        : Environment.NewLine,
+                    noteTemplate);
 
                 var transformedTemplate = noteTemplate
                     .Replace("\\r", "\r")
@@ -680,8 +693,13 @@ namespace apcurium.MK.Booking.Api.Services
             // In versions prior to 1.4, there was no note template
             // So if the IBS.NoteTemplate setting does not exist, use the old way 
             var formattedNote = string.Format("{0}{0}{1}{2}{3}", 
-                                                Environment.NewLine, chargeType, 
-                                                Environment.NewLine, note);
+                    Environment.NewLine, 
+                    chargeType,
+                    promoCodeString.HasValue()
+                        ? string.Format("{0}{1}{2}", Environment.NewLine, promoCodeString, Environment.NewLine)
+                        : Environment.NewLine, 
+                    note);
+
             if (!string.IsNullOrWhiteSpace(buildingName))
             {
                 formattedNote += (Environment.NewLine + buildingName).Trim();

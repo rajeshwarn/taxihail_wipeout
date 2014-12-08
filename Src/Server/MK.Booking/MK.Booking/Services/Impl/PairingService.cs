@@ -53,7 +53,7 @@ namespace apcurium.MK.Booking.Services.Impl
             var promoUsed = _promotionDao.FindByOrderId(orderId);
             if (promoUsed != null)
             {
-                _ibs.SendMessageToDriver(GetPromoDescription(promoUsed), orderStatusDetail.VehicleNumber);
+                _ibs.SendMessageToDriver(promoUsed.GetNoteToDriverFormattedString(), orderStatusDetail.VehicleNumber);
             }
 
             // send a command to save the pairing state for this order
@@ -87,18 +87,6 @@ namespace apcurium.MK.Booking.Services.Impl
             {
                 OrderId = orderId
             });
-        }
-
-        private string GetPromoDescription(PromotionUsageDetail promotion)
-        {
-            var discountType = promotion.DiscountType == PromoDiscountType.Cash 
-                ? "$" 
-                : "%";
-
-            return string.Format("PROMO,{0},{1},{2}", 
-                promotion.Code,
-                discountType, 
-                promotion.DiscountValue);
         }
     }
 }
