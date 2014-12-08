@@ -21,6 +21,12 @@ label.radio > input.radio:checked + img{ /* (RADIO CHECKED) IMAGE STYLES */
     width: 100%;
     cursor: move;
 }
+.static-table {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
 
 .handle {
     cursor: move;
@@ -36,6 +42,14 @@ label.radio > input.radio:checked + img{ /* (RADIO CHECKED) IMAGE STYLES */
     padding: 5px;
     height: 22px;
 }
+.static-table li {
+    list-style: none;
+    color: #1C94C4;
+    margin: 5px;
+    padding: 5px;
+    height: 22px;
+}
+
 .company-preference-order-text 
 {
     width: 50%;

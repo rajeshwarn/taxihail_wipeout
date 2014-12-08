@@ -123,12 +123,25 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
         {
             var marketFleets = new List<NetworkFleetResponse>();
 
+            // Current company
+            var currentCompanySettings = _networkRepository.FirstOrDefault(n => n.Id == companyId);
+
+            if (currentCompanySettings == null || !currentCompanySettings.IsInNetwork)
+            {
+                return null;
+            }
+
+            var dispatchableCompany = currentCompanySettings.Preferences.Where(p => p.CanDispatch).ToArray();
+
             // Get all companies in the market that accepts dispatch for the company
             var companiesInMarket = _networkRepository.Where(n => n.IsInNetwork
                 && n.Market == market
-                && n.Preferences.Any(p => p.CompanyKey == companyId && p.CanAccept));
+                && n.Preferences.Any(p => p.CompanyKey == companyId && p.CanAccept)).ToList();
 
-            foreach (var availableCompany in companiesInMarket)
+            var dispatchableCompaniesInMarket =
+                companiesInMarket.Where(c => dispatchableCompany.Any(p => p.CompanyKey == c.Id)).ToArray();
+
+            foreach (var availableCompany in dispatchableCompaniesInMarket)
             {
                 var company = _companyRepository.FirstOrDefault(c => c.CompanyKey == availableCompany.Id);
                 if (company != null)

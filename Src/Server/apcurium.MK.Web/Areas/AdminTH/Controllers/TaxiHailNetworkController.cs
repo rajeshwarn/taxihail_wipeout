@@ -75,11 +75,14 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
 
                     for (var i = 0; i < marketCompaniesPreferences.Count; i++)
                     {
-                        var orderKey = string.Format("orderKey_{0}_{1}",
-                            market,
+                        var orderKey = string.Format("orderKey_{0}",
                             marketCompaniesPreferences[i].CompanyPreference.CompanyKey);
 
-                        int? order = form[orderKey] == string.Empty ? i : int.Parse(form[orderKey]);
+                        var order = 0;
+                        if (form.AllKeys.Contains(orderKey))
+                        {
+                            order = form[orderKey] == string.Empty ? i : int.Parse(form[orderKey]);
+                        }
 
                         preferences.Add(new CompanyPreference
                         {

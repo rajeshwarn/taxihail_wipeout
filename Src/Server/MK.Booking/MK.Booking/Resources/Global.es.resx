@@ -525,4 +525,7 @@
     <value>This promotion is not available at this time</value>
     <comment>This promotion is not available at this time</comment>
   </data>
+  <data name="CannotCreateOrder_NoCompanies" xml:space="preserve">
+    <value>There is no company deserving this region</value>
+  </data>
 </root>

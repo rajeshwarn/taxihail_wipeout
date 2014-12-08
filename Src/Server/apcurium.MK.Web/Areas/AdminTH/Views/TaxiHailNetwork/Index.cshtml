@@ -49,12 +49,13 @@
                         @Html.CheckBox("dispatchKey_" + company.CompanyPreference.CompanyKey, company.CompanyPreference.CanDispatch, new { disabled = "disabled" })
                     }
                 </div>
-                @Html.Hidden("orderKey_Local_" + company.CompanyPreference.CompanyKey, company.CompanyPreference.Order)
+                @Html.Hidden("orderKey_" + company.CompanyPreference.CompanyKey, company.CompanyPreference.Order)
             </li>
         }
     </ul>
 
     <legend>
+        <br/>
         @Html.DisplayName("Roaming")
     </legend>
     
@@ -71,11 +72,11 @@
             <h5>@market</h5>
         </legend>
 
-        <ul class="sortable">
+        <ul class="static-table">
             @foreach (var company in Model[market])
             {
                 <li>
-                    <div class="company-preference-order-text"><span class="handle">::</span>@company.CompanyPreference.CompanyKey</div>
+                    <div class="company-preference-order-text">@company.CompanyPreference.CompanyKey</div>
                     @Html.Hidden("idKey_" + company.CompanyPreference.CompanyKey, company.CompanyPreference.CompanyKey)
                     <div class="company-preference-order-checkbox">@Html.CheckBox("acceptKey_" + company.CompanyPreference.CompanyKey, company.CompanyPreference.CanAccept)</div>
                     <div class="company-preference-order-checkbox ">
@@ -88,7 +89,6 @@
                             @Html.CheckBox("dispatchKey_" + company.CompanyPreference.CompanyKey, company.CompanyPreference.CanDispatch, new { disabled = "disabled" })
                         }
                     </div>
-                    @Html.Hidden("orderKey_" + market + "_" + company.CompanyPreference.CompanyKey, company.CompanyPreference.Order)
                 </li>
             }
         </ul>

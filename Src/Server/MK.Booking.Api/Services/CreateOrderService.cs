@@ -120,6 +120,12 @@ namespace apcurium.MK.Booking.Api.Services
             var account = _accountDao.FindById(new Guid(this.GetSession().UserAuthId));
 
             var bestAvailableCompany = FindBestAvailableCompany(request.Market, request.PickupAddress.Latitude, request.PickupAddress.Longitude);
+            if (request.Market.HasValue() && bestAvailableCompany.CompanyKey == null)
+            {
+                // No companies available that are desserving this region for the company
+                throw new HttpError(HttpStatusCode.Forbidden, ErrorCode.CreateOrder_RuleDisable.ToString(),
+                            _resources.Get("CannotCreateOrder_NoCompanies", request.ClientLanguageCode));
+            }
 
             account.IBSAccountId = CreateIbsAccountIfNeeded(account, bestAvailableCompany.CompanyKey, request.Market);
             
