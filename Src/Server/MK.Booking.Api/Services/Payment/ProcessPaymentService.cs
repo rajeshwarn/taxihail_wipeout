@@ -7,6 +7,7 @@ using apcurium.MK.Booking.Domain;
 using apcurium.MK.Booking.EventHandlers.Integration;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Services;
+using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Enumeration;
@@ -190,13 +191,17 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                 if (paymentProviderServiceResponse.IsSuccessful)
                 {
                     //payment completed
+
+                    var fareObject = Fare.FromAmountInclTax(Convert.ToDouble(meterAmount), _serverSettings.ServerData.VATIsEnabled ? _serverSettings.ServerData.VATPercentage : 0);
+
                     _commandBus.Send(new CaptureCreditCardPayment
                     {
                         PaymentId = paymentDetail.PaymentId,
                         Provider = _paymentServiceFactory.GetInstance().ProviderType,
                         Amount = totalOrderAmount,
-                        MeterAmount = Convert.ToDecimal(meterAmount),
+                        MeterAmount = Convert.ToDecimal(fareObject.AmountExclTax),
                         TipAmount = Convert.ToDecimal(tipAmount),
+                        TaxAmount = Convert.ToDecimal(fareObject.TaxAmount),
                         IsNoShowFee = isNoShowFee,
                         AuthorizationCode = paymentProviderServiceResponse.AuthorizationCode,
                         PromotionUsed = promoUsedId,

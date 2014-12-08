@@ -43,6 +43,7 @@ namespace apcurium.MK.Booking.EventHandlers
                 payment.IsCompleted = true;
                 payment.Amount = @event.Amount;
                 payment.Meter = @event.Meter;
+                payment.Tax = @event.Tax;
                 payment.Tip = @event.Tip;
 
                 var order = context.Find<OrderDetail>(payment.OrderId);
@@ -53,6 +54,10 @@ namespace apcurium.MK.Booking.EventHandlers
                 if (!order.Tip.HasValue || order.Tip == 0)
                 {
                     order.Tip = Convert.ToDouble(@event.Tip);
+                }
+                if (!order.Tax.HasValue || order.Tax == 0)
+                {
+                    order.Tax = Convert.ToDouble(@event.Tax);
                 }
 
                 var orderStatus = context.Find<OrderStatusDetail>(payment.OrderId);

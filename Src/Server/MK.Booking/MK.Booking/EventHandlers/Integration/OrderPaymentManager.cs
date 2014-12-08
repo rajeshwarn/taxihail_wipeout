@@ -42,7 +42,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
         public void Handle(PayPalExpressCheckoutPaymentCompleted @event)
         {
             // Send message to driver
-            SendPaymentConfirmationToDriver(@event.OrderId, @event.Amount, @event.Meter, @event.Tip, PaymentProvider.PayPal.ToString(), @event.PayPalPayerId);
+            SendPaymentConfirmationToDriver(@event.OrderId, @event.Amount, @event.Meter + @event.Tax, @event.Tip, PaymentProvider.PayPal.ToString(), @event.PayPalPayerId);
 
             // payment might not be enabled
             var paymentService = _paymentServiceFactory.GetInstance();
@@ -63,7 +63,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
 
             if (_serverSettings.ServerData.SendDetailedPaymentInfoToDriver)
             {
-                SendPaymentConfirmationToDriver(@event.OrderId, @event.Amount, @event.Meter, @event.Tip, @event.Provider.ToString(), @event.AuthorizationCode);
+                SendPaymentConfirmationToDriver(@event.OrderId, @event.Amount, @event.Meter + @event.Tax, @event.Tip, @event.Provider.ToString(), @event.AuthorizationCode);
             }
 
             if (@event.PromotionUsed.HasValue)

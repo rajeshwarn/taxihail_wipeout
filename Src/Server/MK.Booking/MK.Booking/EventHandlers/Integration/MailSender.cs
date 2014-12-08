@@ -49,15 +49,15 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                 return;
             }
 
-            SendReceipt(@event.OrderId, @event.AmountSavedByPromotion);
+            SendReceipt(@event.OrderId, @event.Meter, @event.Tip, @event.Tax, @event.AmountSavedByPromotion);
         }
 
         public void Handle(PayPalExpressCheckoutPaymentCompleted @event)
         {
-            SendReceipt(@event.OrderId);
+            SendReceipt(@event.OrderId, @event.Meter, @event.Tip, @event.Tax);
         }
-        
-        private void SendReceipt(Guid orderId, decimal amountSavedByPromotion = 0m)
+
+        private void SendReceipt(Guid orderId, decimal meter, decimal tip, decimal tax, decimal amountSavedByPromotion = 0m)
         {
             using (var context = _contextFactory.Invoke())
             {
@@ -75,13 +75,14 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                         card = _creditCardDao.FindByToken(orderPayment.CardToken);
                     }
 
+                    // payment was handled by app, send receipt
                     if (orderPayment != null)
                     {
                         var promoUsed = _promotionDao.FindByOrderId(orderId);
 
                         var command = SendReceiptCommandBuilder.GetSendReceiptCommand(order, account,
                             orderStatus.VehicleNumber, orderStatus.DriverInfos,
-                            Convert.ToDouble(orderPayment.Meter), 0, Convert.ToDouble(orderPayment.Tip), 0, orderPayment,
+                            Convert.ToDouble(meter), 0, Convert.ToDouble(tip), Convert.ToDouble(tax), orderPayment,
                             Convert.ToDouble(amountSavedByPromotion), promoUsed, card);
                         
                         _commandBus.Send(command);
