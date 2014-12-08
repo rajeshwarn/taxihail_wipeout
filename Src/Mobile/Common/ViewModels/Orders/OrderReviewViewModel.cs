@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Common.Entity;
+using System.Windows.Input;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 {
@@ -29,6 +30,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
                 this.Observe(_orderWorkflowService.GetAndObservePickupAddress(), address => Address = address);
                 this.Observe(_orderWorkflowService.GetAndObservePickupDate(), DateUpdated);
                 this.Observe(_orderWorkflowService.GetAndObserveNoteToDriver(), note => Note = note);
+				this.Observe(_orderWorkflowService.GetAndObservePromoCode(), code => PromoCode = code);
             }
         }
 
@@ -140,6 +142,32 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 					_orderWorkflowService.SetNoteToDriver(value);
 					RaisePropertyChanged();
 				}
+			}
+		}
+
+		private string _promoCode;
+		public string PromoCode
+		{
+			get { return _promoCode; }
+			set
+			{
+				if (_promoCode != value)
+				{
+					_promoCode = value;
+					_orderWorkflowService.SetPromoCode(value);
+					RaisePropertyChanged();
+				}
+			}
+		}
+
+		public ICommand NavigateToPromotions
+		{
+			get 
+			{
+				return this.GetCommand(() =>
+				{
+					ShowViewModel<PromotionViewModel>();
+				});
 			}
 		}
     }

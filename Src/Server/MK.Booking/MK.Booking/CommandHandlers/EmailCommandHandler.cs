@@ -48,7 +48,7 @@ namespace apcurium.MK.Booking.CommandHandlers
         {
             _notificationService.SendReceiptEmail(command.OrderId, command.IBSOrderId, command.VehicleNumber, command.DriverInfos, command.Fare, command.Toll, command.Tip, 
                 command.Tax, command.TotalFare, command.CardOnFileInfo, command.PickupAddress, command.DropOffAddress, command.PickupDate, command.DropOffDate, 
-                command.EmailAddress, command.ClientLanguageCode);
+                command.EmailAddress, command.ClientLanguageCode, command.AmountSavedByPromotion, command.PromoCode);
         }
     }
 }

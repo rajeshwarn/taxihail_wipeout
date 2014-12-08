@@ -129,10 +129,17 @@ namespace apcurium.MK.Booking.Calculator
                 if (rule.StartTime != null
                     && rule.EndTime != null)
                 {
+                    var dayOffset = 0;
+                    if (rule.StartTime.Value.Date != rule.EndTime.Value.Date)
+                    {
+                        // end time is on the next day
+                        dayOffset = 1;
+                    }
+
                     var startTime =
                         DateTime.MinValue.AddHours(rule.StartTime.Value.Hour).AddMinutes(rule.StartTime.Value.Minute);
                     var endTime =
-                        DateTime.MinValue.AddHours(rule.EndTime.Value.Hour).AddMinutes(rule.EndTime.Value.Minute);
+                        DateTime.MinValue.AddDays(dayOffset).AddHours(rule.EndTime.Value.Hour).AddMinutes(rule.EndTime.Value.Minute);
                     var time = DateTime.MinValue.AddHours(date.Hour).AddMinutes(date.Minute);
 
                     // Determine if the candidate date is between start time and end time

@@ -219,6 +219,10 @@
   <data name="Email_Body_Tip" xml:space="preserve">
     <value>إكرامية</value>
   </data>
+  <data name="Email_Body_Promo" xml:space="preserve">
+    <value>Promo Code</value>
+    <comment>Promo Code</comment>
+  </data>
   <data name="Email_Body_Toll" xml:space="preserve">
     <value />
   </data>
@@ -392,5 +396,35 @@
   </data>
   <data name="Email_Body_YourDriver" xml:space="preserve">
     <value>Your Driver</value>
+  </data>
+  <data name="CannotCreateOrder_PromotionDoesNotExist" xml:space="preserve">
+    <value>There is no promotion associated to this code</value>
+  </data>
+  <data name="CannotCreateOrder_PromotionMustUseCardOnFile" xml:space="preserve">
+    <value>You must select Card On File to use a promotion.</value>
+  </data>
+  <data name="CannotCreateOrder_PromotionIsNotActive" xml:space="preserve">
+    <value>This promotion is not active</value>
+  </data>
+  <data name="CannotCreateOrder_PromotionHasReachedMaxUsage" xml:space="preserve">
+    <value>Maximum number of uses has been reached for this promotion</value>
+  </data>
+  <data name="CannotCreateOrder_PromotionAppliesToCurrentBookingOnly" xml:space="preserve">
+    <value>This promotion applies to current booking only</value>
+  </data>
+  <data name="CannotCreateOrder_PromotionAppliesToFutureBookingOnly" xml:space="preserve">
+    <value>This promotion applies to future booking only</value>
+  </data>
+  <data name="CannotCreateOrder_PromotionNotAvailableForThisDayOfTheWeek" xml:space="preserve">
+    <value>This promotion is not available for this day of the week</value>
+  </data>
+  <data name="CannotCreateOrder_PromotionNotStartedYet" xml:space="preserve">
+    <value>This promotion has not started yet</value>
+  </data>
+  <data name="CannotCreateOrder_PromotionHasExpired" xml:space="preserve">
+    <value>This promotion has expired</value>
+  </data>
+  <data name="CannotCreateOrder_PromotionNotAvailableAtThisTime" xml:space="preserve">
+    <value>This promotion is not available at this time</value>
   </data>
 </root>

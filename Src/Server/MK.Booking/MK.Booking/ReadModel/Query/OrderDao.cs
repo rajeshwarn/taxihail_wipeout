@@ -71,7 +71,10 @@ namespace apcurium.MK.Booking.ReadModel.Query
                                   join rating in context.Set<RatingScoreDetails>()
                                       on order.Id equals rating.OrderId into ratingOrder
                                   from rating in ratingOrder.DefaultIfEmpty()
-                                  select new { order, account, payment, status, rating, card };
+                                  join promo in context.Set<PromotionUsageDetail>()
+                                      on order.Id equals promo.OrderId into promoUsage
+                                  from promo in promoUsage.DefaultIfEmpty()
+                                  select new { order, account, payment, status, rating, card, promo };
 
                 OrderDetailWithAccount details = null;
 
@@ -99,9 +102,14 @@ namespace apcurium.MK.Booking.ReadModel.Query
                             Mapper.Map(joinedLine.status, details);
                         }
 
-                        if (joinedLine.status != null)
+                        if (joinedLine.card != null)
                         {
                             Mapper.Map(joinedLine.card, details);
+                        }
+
+                        if (joinedLine.promo != null)
+                        {
+                            Mapper.Map(joinedLine.promo, details);
                         }
                     }
 

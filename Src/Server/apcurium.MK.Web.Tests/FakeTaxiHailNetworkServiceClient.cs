@@ -44,5 +44,20 @@ namespace apcurium.MK.Web.Tests
                 IbsPassword = "test"
             } };
         }
+
+        public string GetCompanyMarket(double latitude, double longitude)
+        {
+            return string.Empty;
+        }
+
+        public IEnumerable<NetworkFleetResponse> GetMarketFleets(string market)
+        {
+            throw new NotImplementedException();
+        }
+
+        public NetworkFleetResponse GetMarketFleet(string market, int fleetId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

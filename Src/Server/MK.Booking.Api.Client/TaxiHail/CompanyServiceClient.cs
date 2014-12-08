@@ -2,6 +2,7 @@ using System;
 using System.Net;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Client.Extensions;
+using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using MK.Common.Configuration;
@@ -94,9 +95,14 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             return tcs.Task;
         }
 
-        public async Task<NotificationSettings> GetNotificationSettings()
+        public Task<NotificationSettings> GetNotificationSettings()
         {
-            return await Client.GetAsync<NotificationSettings>("/settings/notifications");
+            return Client.GetAsync<NotificationSettings>("/settings/notifications");
+        }
+
+        public Task<ActivePromotion[]> GetActivePromotions()
+        {
+            return Client.GetAsync(new ActivePromotions());
         }
     }
 }

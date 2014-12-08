@@ -79,6 +79,96 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to This promotion does not applies to future booking.
+        /// </summary>
+        public static string CannotCreateOrder_PromotionAppliesToCurrentBookingOnly {
+            get {
+                return ResourceManager.GetString("CannotCreateOrder_PromotionAppliesToCurrentBookingOnly", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This promotion applies to future booking only.
+        /// </summary>
+        public static string CannotCreateOrder_PromotionAppliesToFutureBookingOnly {
+            get {
+                return ResourceManager.GetString("CannotCreateOrder_PromotionAppliesToFutureBookingOnly", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to There is no promotion associated to this code.
+        /// </summary>
+        public static string CannotCreateOrder_PromotionDoesNotExist {
+            get {
+                return ResourceManager.GetString("CannotCreateOrder_PromotionDoesNotExist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This promotion has expired.
+        /// </summary>
+        public static string CannotCreateOrder_PromotionHasExpired {
+            get {
+                return ResourceManager.GetString("CannotCreateOrder_PromotionHasExpired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Maximum number of uses has been reached for this promotion.
+        /// </summary>
+        public static string CannotCreateOrder_PromotionHasReachedMaxUsage {
+            get {
+                return ResourceManager.GetString("CannotCreateOrder_PromotionHasReachedMaxUsage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This promotion is not active.
+        /// </summary>
+        public static string CannotCreateOrder_PromotionIsNotActive {
+            get {
+                return ResourceManager.GetString("CannotCreateOrder_PromotionIsNotActive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You must select Card On File to use a promotion..
+        /// </summary>
+        public static string CannotCreateOrder_PromotionMustUseCardOnFile {
+            get {
+                return ResourceManager.GetString("CannotCreateOrder_PromotionMustUseCardOnFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This promotion is not available at this time.
+        /// </summary>
+        public static string CannotCreateOrder_PromotionNotAvailableAtThisTime {
+            get {
+                return ResourceManager.GetString("CannotCreateOrder_PromotionNotAvailableAtThisTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This promotion is not available for this day of the week.
+        /// </summary>
+        public static string CannotCreateOrder_PromotionNotAvailableForThisDayOfTheWeek {
+            get {
+                return ResourceManager.GetString("CannotCreateOrder_PromotionNotAvailableForThisDayOfTheWeek", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This promotion has not started yet.
+        /// </summary>
+        public static string CannotCreateOrder_PromotionNotStartedYet {
+            get {
+                return ResourceManager.GetString("CannotCreateOrder_PromotionNotStartedYet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to This account is not supported by the web site..
         /// </summary>
         public static string CannotCreateOrderChargeAccountNotSupported {
@@ -381,6 +471,15 @@ namespace apcurium.MK.Booking.Resources {
         public static string Email_Body_PickupTimeValue {
             get {
                 return ResourceManager.GetString("Email_Body_PickupTimeValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Promo Code.
+        /// </summary>
+        public static string Email_Body_Promo {
+            get {
+                return ResourceManager.GetString("Email_Body_Promo", resourceCulture);
             }
         }
         

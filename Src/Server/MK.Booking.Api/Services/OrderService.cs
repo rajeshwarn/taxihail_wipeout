@@ -18,10 +18,12 @@ namespace apcurium.MK.Booking.Api.Services
         private readonly IAccountDao _accountDao;
         private readonly ICommandBus _commandBus;
         private readonly IOrderPaymentDao _orderPaymentDao;
+        private readonly IPromotionDao _promotionDao;
 
-        public OrderService(IOrderDao dao, IOrderPaymentDao orderPaymentDao, IAccountDao accountDao, ICommandBus commandBus)
+        public OrderService(IOrderDao dao, IOrderPaymentDao orderPaymentDao, IPromotionDao promotionDao, IAccountDao accountDao, ICommandBus commandBus)
         {
             _orderPaymentDao = orderPaymentDao;
+            _promotionDao = promotionDao;
             _accountDao = accountDao;
             _commandBus = commandBus;
             Dao = dao;
@@ -45,14 +47,22 @@ namespace apcurium.MK.Booking.Api.Services
             }
 
             var payment = _orderPaymentDao.FindByOrderId(orderDetail.Id);
-            if ( (payment != null) && (!payment.IsCancelled ) && (payment.IsCompleted ))
+            if (payment != null && !payment.IsCancelled && payment.IsCompleted)
             {
-                orderDetail.Fare = Convert.ToDouble( payment.Meter );
+                orderDetail.Fare = Convert.ToDouble(payment.Meter);
                 orderDetail.Toll = 0;
-                orderDetail.Tip = Convert.ToDouble( payment.Tip);
+                orderDetail.Tip = Convert.ToDouble(payment.Tip);
+            }
+            
+            var result = new OrderMapper().ToResource(orderDetail);
+
+            var promoUsed = _promotionDao.FindByOrderId(orderDetail.Id);
+            if (promoUsed != null)
+            {
+                result.PromoCode = promoUsed.Code;
             }
 
-            return new OrderMapper().ToResource(orderDetail);
+            return result;
         }
 
         public object Delete(OrderRequest request)

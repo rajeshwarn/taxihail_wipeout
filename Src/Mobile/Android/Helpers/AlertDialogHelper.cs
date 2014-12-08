@@ -31,20 +31,24 @@ namespace apcurium.MK.Booking.Mobile.Client.Helpers
 
         public static void Show(Activity owner, string title, string message, Action onClose = null)
         {
-            var dialog = new AlertDialog.Builder(owner).Create();
-            dialog.SetTitle(title);
+			var dialog = new AlertDialog.Builder (owner);
+			dialog.SetTitle(title);
             if (message.HasValue())
             {
                 dialog.SetMessage(message);
             }
-            dialog.SetButton("Ok", delegate
+			dialog.SetPositiveButton("Ok", delegate
             {
                 if (onClose != null)
                 {
                     onClose();
                 }
             });
-            dialog.Show();
+
+			owner.RunOnUiThread(() => { 
+				dialog.Create(); 
+				dialog.Show();
+			});
         }
 
         public static void Show(Activity owner, string title, string message, string positiveButtonTitle,

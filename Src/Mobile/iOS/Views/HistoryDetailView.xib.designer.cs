@@ -58,6 +58,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		MonoTouch.UIKit.UILabel lblPickupDate { get; set; }
 
 		[Outlet]
+		MonoTouch.UIKit.UILabel lblPromo { get; set; }
+
+		[Outlet]
 		MonoTouch.UIKit.UILabel lblRequested { get; set; }
 
 		[Outlet]
@@ -82,6 +85,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		MonoTouch.UIKit.UILabel txtPickupDate { get; set; }
 
 		[Outlet]
+		MonoTouch.UIKit.UILabel txtPromo { get; set; }
+
+		[Outlet]
 		MonoTouch.UIKit.UILabel txtRequested { get; set; }
 
 		[Outlet]
@@ -89,6 +95,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		
 		void ReleaseDesignerOutlets ()
 		{
+			if (lblPromo != null) {
+				lblPromo.Dispose ();
+				lblPromo = null;
+			}
+
+			if (txtPromo != null) {
+				txtPromo.Dispose ();
+				txtPromo = null;
+			}
+
 			if (btnCancel != null) {
 				btnCancel.Dispose ();
 				btnCancel = null;
@@ -109,6 +125,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				btnRebook = null;
 			}
 
+			if (btnSendReceipt != null) {
+				btnSendReceipt.Dispose ();
+				btnSendReceipt = null;
+			}
+
 			if (btnStatus != null) {
 				btnStatus.Dispose ();
 				btnStatus = null;
@@ -117,11 +138,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			if (btnViewRating != null) {
 				btnViewRating.Dispose ();
 				btnViewRating = null;
-			}
-
-			if (btnSendReceipt != null) {
-				btnSendReceipt.Dispose ();
-				btnSendReceipt = null;
 			}
 
 			if (constraintDestinationLabelToAptRingCodeLabelHeight != null) {
@@ -137,6 +153,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			if (lblAptRingCode != null) {
 				lblAptRingCode.Dispose ();
 				lblAptRingCode = null;
+			}
+
+			if (lblAuthorization != null) {
+				lblAuthorization.Dispose ();
+				lblAuthorization = null;
 			}
 
 			if (lblDestination != null) {
@@ -174,6 +195,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				txtAptRingCode = null;
 			}
 
+			if (txtAthorization != null) {
+				txtAthorization.Dispose ();
+				txtAthorization = null;
+			}
+
 			if (txtDestination != null) {
 				txtDestination.Dispose ();
 				txtDestination = null;
@@ -202,16 +228,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			if (txtStatus != null) {
 				txtStatus.Dispose ();
 				txtStatus = null;
-			}
-
-			if (lblAuthorization != null) {
-				lblAuthorization.Dispose ();
-				lblAuthorization = null;
-			}
-
-			if (txtAthorization != null) {
-				txtAthorization.Dispose ();
-				txtAthorization = null;
 			}
 		}
 	}

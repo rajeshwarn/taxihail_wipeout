@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Web.Mvc;
+using System.Web.Routing;
 using apcurium.MK.Common.Configuration;
 
 namespace apcurium.MK.Web.Areas
@@ -14,7 +15,7 @@ namespace apcurium.MK.Web.Areas
             ViewData["ApplicationKey"] = serverSettings.ServerData.TaxiHail.ApplicationKey;
         }
 
-        protected override IAsyncResult BeginExecute(System.Web.Routing.RequestContext requestContext, AsyncCallback callback, object state)
+        protected override IAsyncResult BeginExecute(RequestContext requestContext, AsyncCallback callback, object state)
         {
             BaseUrl = requestContext.HttpContext.Request.Url.GetLeftPart(UriPartial.Authority) + requestContext.HttpContext.Request.ApplicationPath;
             ViewData["BaseUrl"] = BaseUrl;

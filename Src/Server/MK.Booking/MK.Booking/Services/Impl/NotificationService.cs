@@ -224,20 +224,20 @@ namespace apcurium.MK.Booking.Services.Impl
 
         private string UrlCombine(string url1, string url2)
         {
-           if (url1.Length == 0)
-           {
-              return url2;
-           }
+            if (url1.Length == 0)
+            {
+                return url2;
+            }
 
-           if (url2.Length == 0)
-           {
-            return url1;
-           }
+            if (url2.Length == 0)
+            {
+                return url1;
+            }
 
-           url1 = url1.TrimEnd('/', '\\');
-           url2 = url2.TrimStart('/', '\\');
+            url1 = url1.TrimEnd('/', '\\');
+            url2 = url2.TrimStart('/', '\\');
 
-           return string.Format("{0}/{1}", url1, url2);
+            return string.Format("{0}/{1}", url1, url2);
         }
 
         public void SendAccountConfirmationSMS(string phoneNumber, string code, string clientLanguageCode)
@@ -297,7 +297,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 LogoImg = imageLogoUrl
             };
 
-            SendEmail(clientEmailAddress, EmailConstant.Template.BookingConfirmation, EmailConstant.Subject.BookingConfirmation, templateData, clientLanguageCode);
+            SendEmail(clientEmailAddress, EmailConstant.Template.BookingConfirmation, EmailConstant.Subject.BookingConfirmation, templateData, clientLanguageCode, _serverSettings.ServerData.Email.CC);
         }
 
         public void SendPasswordResetEmail(string password, string clientEmailAddress, string clientLanguageCode)
@@ -318,7 +318,8 @@ namespace apcurium.MK.Booking.Services.Impl
 
         public void SendReceiptEmail(Guid orderId, int ibsOrderId, string vehicleNumber, DriverInfos driverInfos, double fare, double toll, double tip,
             double tax, double totalFare, SendReceipt.CardOnFile cardOnFileInfo, Address pickupAddress, Address dropOffAddress,
-            DateTime pickupDate, DateTime? dropOffDate, string clientEmailAddress, string clientLanguageCode, bool bypassNotificationSetting = false)
+            DateTime pickupDate, DateTime? dropOffDate, string clientEmailAddress, string clientLanguageCode, double amountSavedByPromotion, string promoCode, 
+            bool bypassNotificationSetting = false)
         {
             if (!bypassNotificationSetting)
             {
@@ -397,6 +398,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 ShowDropOffTime = !string.IsNullOrEmpty(dropOffTime),
                 Fare = _resources.FormatPrice(fare),
                 Toll = _resources.FormatPrice(toll),
+                SubTotal = _resources.FormatPrice(totalFare + amountSavedByPromotion - tip), // represents everything except tip and the promo discount
                 Tip = _resources.FormatPrice(tip),
                 TotalFare = _resources.FormatPrice(totalFare),
                 Note = _serverSettings.ServerData.Receipt.Note,
@@ -409,13 +411,16 @@ namespace apcurium.MK.Booking.Services.Impl
                 CardOnFileAuthorizationCode = cardOnFileAuthorizationCode,
                 PickupAddress = pickupAddress.DisplayAddress,
                 DropOffAddress = hasDropOffAddress ? addressToUseForDropOff.DisplayAddress : "-",
-                SubTotal = _resources.FormatPrice(totalFare - tip), // represents everything except tip
                 StaticMapUri = staticMapUri,
                 ShowStaticMap = !string.IsNullOrEmpty(staticMapUri),
                 BaseUrlImg = baseUrls.BaseUrlAssetsImg,
                 RedDotImg = String.Concat(baseUrls.BaseUrlAssetsImg, "email_red_dot.png"),
                 GreenDotImg = String.Concat(baseUrls.BaseUrlAssetsImg, "email_green_dot.png"),
-                LogoImg = imageLogoUrl
+                LogoImg = imageLogoUrl,
+
+                PromotionWasUsed = amountSavedByPromotion != 0,
+                promoCode,
+                AmountSavedByPromotion = _resources.FormatPrice(Convert.ToDouble(amountSavedByPromotion))
             };
 
             SendEmail(clientEmailAddress, EmailConstant.Template.Receipt, EmailConstant.Subject.Receipt, templateData, clientLanguageCode);
@@ -458,7 +463,7 @@ namespace apcurium.MK.Booking.Services.Impl
             return null;
         }
 
-        private void SendEmail(string to, string bodyTemplate, string subjectTemplate, object templateData, string languageCode, params KeyValuePair<string, string>[] embeddedIMages)
+        private void SendEmail(string to, string bodyTemplate, string subjectTemplate, object templateData, string languageCode, string ccEmailAddress = null, params KeyValuePair<string, string>[] embeddedIMages)
         {
             var messageSubject = _templateService.Render(_resources.Get(subjectTemplate, languageCode), templateData);
 
@@ -474,6 +479,11 @@ namespace apcurium.MK.Booking.Services.Impl
                 BodyEncoding = Encoding.UTF8, 
                 SubjectEncoding = Encoding.UTF8
             };
+
+            if (ccEmailAddress.HasValue())
+            {
+                mailMessage.CC.Add(ccEmailAddress);
+            }
 
             var view = AlternateView.CreateAlternateViewFromString(_templateService.Render(template, templateData), Encoding.UTF8, "text/html");
             mailMessage.AlternateViews.Add(view);

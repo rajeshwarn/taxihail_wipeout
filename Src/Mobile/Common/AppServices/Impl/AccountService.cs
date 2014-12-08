@@ -38,6 +38,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         private const string RefDataCacheKey = "Account.ReferenceData";
         private const string CompanyNotificationSettingsCacheKey = "Account.CompanyNotificationSettings";
         private const string UserNotificationSettingsCacheKey = "Account.UserNotificationSettings";
+        private const string UserTaxiHailNetworkSettingsCacheKey = "Account.UserTaxiHailNetworkSetting";
         private const string AuthenticationDataCacheKey = "AuthenticationData";
         private const string VehicleTypesDataCacheKey = "VehicleTypesData";
 
@@ -509,13 +510,18 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 		    return vehiclesList;
         }
 
-		public async Task<IList<ListItem>> GetPaymentsList ()
+		public async Task<IList<ListItem>> GetPaymentsList (string market = null)
         {
 			var refData = await GetReferenceData();
 
-			if (!CurrentAccount.DefaultCreditCard.HasValue)
+            if (!CurrentAccount.DefaultCreditCard.HasValue)
 		    {
 		        refData.PaymentsList.Remove(i => i.Id == ChargeTypes.CardOnFile.Id);
+		    }
+
+		    if (market.HasValue())
+		    {
+                refData.PaymentsList.Remove(i => i.Id != ChargeTypes.PaymentInCar.Id);
 		    }
 
             return refData.PaymentsList;
@@ -663,6 +669,35 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             };
 
             await UseServiceClientAsync<IAccountServiceClient>(client => client.UpdateNotificationSettings(request));
+        }
+
+        public async Task<UserTaxiHailNetworkSettings> GetUserTaxiHailNetworkSettings(bool cleanCache = false)
+        {
+            var cachedSetting = UserCache.Get<UserTaxiHailNetworkSettings>(UserTaxiHailNetworkSettingsCacheKey);
+
+            if (cachedSetting != null && !cleanCache)
+            {
+                return cachedSetting;
+            }
+
+            var settings = await UseServiceClientAsync<IAccountServiceClient, UserTaxiHailNetworkSettings>(client => client.GetUserTaxiHailNetworkSettings(CurrentAccount.Id));
+            UserCache.Set(UserTaxiHailNetworkSettingsCacheKey, settings);
+
+            return settings;
+        }
+
+        public async Task UpdateUserTaxiHailNetworkSettings(UserTaxiHailNetworkSettings userTaxiHailNetworkSettings)
+        {
+            // Update cached user settings
+            UserCache.Set(UserTaxiHailNetworkSettingsCacheKey, userTaxiHailNetworkSettings);
+
+            var request = new UserTaxiHailNetworkSettingsRequest
+            {
+                AccountId = CurrentAccount.Id,
+                UserTaxiHailNetworkSettings = userTaxiHailNetworkSettings
+            };
+
+            await UseServiceClientAsync<IAccountServiceClient>(client => client.UpdateUserTaxiHailNetworkSettings(request));
         }
 
 		public async void LogApplicationStartUp()

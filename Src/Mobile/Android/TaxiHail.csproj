@@ -167,9 +167,6 @@
     <Reference Include="CardIO">
       <HintPath>..\Libraries\Monodroid\CardIO.dll</HintPath>
     </Reference>
-    <Reference Include="Xamarin.Insights">
-      <HintPath>..\packages\Xamarin.Insights.1.6.0\lib\MonoAndroid10\Xamarin.Insights.dll</HintPath>
-    </Reference>
     <Reference Include="Xamarin.Android.Support.v13">
       <HintPath>..\packages\Xamarin.Android.Support.v13.20.0.0.4\lib\MonoAndroid32\Xamarin.Android.Support.v13.dll</HintPath>
     </Reference>
@@ -185,14 +182,19 @@
     <Reference Include="GooglePlayServicesLib">
       <HintPath>..\packages\Xamarin.GooglePlayServices.19.0.0.1\lib\MonoAndroid23\GooglePlayServicesLib.dll</HintPath>
     </Reference>
+    <Reference Include="Xamarin.Insights">
+      <HintPath>..\packages\Xamarin.Insights.1.7.3.98\lib\MonoAndroid10\Xamarin.Insights.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Activities\BaseActivity.cs" />
     <Compile Include="Activities\Book\DateTimePickerActivity.cs" />
     <Compile Include="Activities\Book\LocationListener.cs" />
     <Compile Include="Activities\Book\LocationService.cs" />
+    <Compile Include="Activities\Book\PromotionActivity.cs" />
     <Compile Include="Activities\Setting\AboutActivity.cs" />
     <Compile Include="Activities\Setting\NotificationSettingsActivity.cs" />
+    <Compile Include="Activities\Setting\UserTaxiHailNetworkSettingsActivity.cs" />
     <Compile Include="Activities\TutorialActivity.cs" />
     <Compile Include="Adapters\GroupedLocationListAdapter.cs" />
     <Compile Include="Adapters\LocationListAdapter.cs" />
@@ -447,7 +449,9 @@
     <Compile Include="Activities\BaseBindingFragmentActivity.cs" />
     <Compile Include="Controls\Widgets\OrderReview.cs" />
     <AndroidResource Include="Resources\Layout\SubView_OrderOptions.axml" />
-    <AndroidResource Include="Resources\Layout\SubView_MainMenu.axml" />
+    <AndroidResource Include="Resources\Layout\SubView_MainMenu.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
     <AndroidResource Include="Resources\Drawable\cluster_taxi.png" />
     <AndroidResource Include="Resources\Drawable\nearby_taxi.png" />
     <AndroidResource Include="Resources\Drawable\taxi_icon.png" />
@@ -622,6 +626,11 @@
     <AndroidResource Include="Resources\drawable-xhdpi\map_smallicon_background.png" />
     <AndroidResource Include="Resources\Drawable\map_bigicon_background.png" />
     <AndroidResource Include="Resources\Drawable\map_smallicon_background.png" />
+    <AndroidResource Include="Resources\Layout\View_Promotion.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\Drawable\promo.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\promo.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\View_Login.axml">
@@ -745,6 +754,8 @@
     <AndroidResource Include="Resources\drawable-xhdpi\cluster_suv.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\cluster_taxi.png" />
     <AndroidResource Include="Resources\values-es\String.xml" />
+    <AndroidResource Include="Resources\Drawable\down_arrow.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\down_arrow.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <Target Name="BeforeBuild">
@@ -817,10 +828,10 @@
     <None Include="Calabash\features\step_definitions\my_first_steps.rb" />
     <None Include="Properties\AndroidManifest.xml" />
     <AndroidResource Include="Resources\Layout\View_NotificationSettings.axml">
-      <SubType>AndroidResource</SubType>
+      <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\Layout\NotificationSettingListItem.axml">
-      <SubType>AndroidResource</SubType>
-    </AndroidResource>
+    <AndroidResource Include="Resources\Layout\TogglableSettingsListItem.axml" />
+    <AndroidResource Include="Resources\Layout\View_UserTaxiHailNetworkSettings.axml" />
+    <AndroidResource Include="Resources\Layout\PromotionListItem.axml" />
   </ItemGroup>
 </Project>

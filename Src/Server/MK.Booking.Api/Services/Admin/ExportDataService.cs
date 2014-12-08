@@ -112,13 +112,16 @@ namespace apcurium.MK.Booking.Api.Services.Admin
 
                             excelResult["Payment Meter Amount"] = x.PaymentMeterAmount.ToString();
                             excelResult["Payment Tip Amount"] = x.PaymentTipAmount.ToString();
-                            excelResult["Payment Total Amount"] = x.PaymentTotalAmount.ToString();
+                            excelResult["Payment Amount Saved By Promo"] = x.PaymentSavedAmount.ToString();
+                            excelResult["Payment Total Amount Charged"] = x.PaymentTotalAmount.ToString();
                             excelResult["Payment Type"] = x.PaymentType.ToString();
                             excelResult["Payment Provider"] = x.PaymentProvider.ToString();
                             excelResult["Transaction Id"] = transactionId;
                             excelResult["Authorization Code"] = x.AuthorizationCode;
                             excelResult["Card Token"] = x.CardToken;
                             excelResult["Account Card Token"] = x.AccountDefaultCardToken;
+
+                            excelResult["Promotion Used"] = x.PromoCode;
 
                             excelResult["PayPal Payer Id"] = x.PayPalPayerId;
                             excelResult["PayPal Token"] = x.PayPalToken;

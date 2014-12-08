@@ -17,6 +17,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         private UIImageView _leftImageView;
         private UIView _shadowView = null;
 
+        public bool MoveClearButtonFromUnderRightImage { get; set; }
+
 	    public FlatTextField (IntPtr handle) : base (handle)
 		{
 			Initialize();
@@ -209,6 +211,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			}
 		}
 
+        public override RectangleF ClearButtonRect(RectangleF forBounds)
+        {
+            var rect = base.ClearButtonRect(forBounds);
+
+            if (MoveClearButtonFromUnderRightImage)
+            {
+                rect.X -= 25;
+            }
+
+            return rect;
+        }
 	}
 }
 

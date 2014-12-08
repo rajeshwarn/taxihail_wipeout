@@ -2,6 +2,7 @@
 
 using System;
 using apcurium.MK.Common.Entity;
+using apcurium.MK.Common.Enumeration;
 using Infrastructure.Messaging;
 
 #endregion
@@ -27,6 +28,10 @@ namespace apcurium.MK.Booking.Commands
         public double Fare { get; set; }
         public double Toll { get; set; }
         public double Tax { get; set; }
+        public double AmountSavedByPromotion { get; set; }
+        public string PromoCode { get; set; }
+        public PromoDiscountType PromoDiscountType { get; set; }
+        public decimal PromoDiscountValue { get; set; }
 
         public string ClientLanguageCode { get; set; }
 
@@ -37,7 +42,7 @@ namespace apcurium.MK.Booking.Commands
 
         public double TotalFare
         {
-            get { return Fare + Toll + Tip + Tax; }
+            get { return Fare + Toll + Tip + Tax - AmountSavedByPromotion; }
         }
 
         public Guid Id { get; set; }

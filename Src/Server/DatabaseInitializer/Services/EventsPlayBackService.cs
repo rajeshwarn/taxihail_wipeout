@@ -36,11 +36,15 @@ namespace DatabaseInitializer.Services
             }
         }
 
-        public void ReplayAllEvents()
+        public void ReplayAllEvents(DateTime? after = null)
         {
             var skip = 0;
             var hasMore = true;
             const int pageSize = 5000;
+            after = after ?? DateTime.MinValue;
+
+            Console.WriteLine("Replaying event since {0}", after);
+
             while(hasMore)
             {
                 List<Event> events;
@@ -51,9 +55,16 @@ namespace DatabaseInitializer.Services
                     events = context.Set<Event>()
                                     .OrderBy(x => x.EventDate)
                                     .ThenBy(x => x.Version)
+                                    .Where(x => x.EventDate > after)
                                     .Skip(skip)
                                     .Take(pageSize)
                                     .ToList();
+                }
+
+                if (events.Count == 0)
+                {
+                    Console.WriteLine("No event to be replayed");
+                    return;
                 }
                 
                 hasMore = events.Count == pageSize;

@@ -23,7 +23,7 @@ namespace apcurium.MK.Booking.Api.Services
             Dao = dao;
         }
 
-        public IValidator<DefaultFavoriteAddressService> Validator { get; set; }
+        public IValidator<DefaultFavoriteAddress> Validator { get; set; }
         protected IDefaultAddressDao Dao { get; set; }
 
         public object Get(DefaultFavoriteAddress request)

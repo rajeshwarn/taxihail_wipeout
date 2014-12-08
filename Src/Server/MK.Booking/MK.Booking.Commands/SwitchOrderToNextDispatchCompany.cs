@@ -19,5 +19,7 @@ namespace apcurium.MK.Booking.Commands
         public string CompanyKey { get; set; }
 
         public string CompanyName { get; set; }
+
+        public string Market { get; set; }
     }
 }

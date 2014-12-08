@@ -1,6 +1,7 @@
 ﻿#region
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using apcurium.MK.Booking.Api.Contract.Requests;
@@ -10,7 +11,9 @@ using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.IBS;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common;
+using apcurium.MK.Common.Extensions;
 using AutoMapper;
+using HoneyBadger;
 using Infrastructure.Messaging;
 using ServiceStack.Common.Web;
 using ServiceStack.ServiceInterface;
@@ -25,27 +28,52 @@ namespace apcurium.MK.Booking.Api.Services
         private readonly IVehicleTypeDao _dao;
         private readonly ICommandBus _commandBus;
         private readonly ReferenceDataService _referenceDataService;
+        private readonly HoneyBadgerServiceClient _honeyBadgerServiceClient;
 
-        public VehicleService(IIBSServiceProvider ibsServiceProvider, IVehicleTypeDao dao, ICommandBus commandBus, ReferenceDataService referenceDataService)
+        public VehicleService(IIBSServiceProvider ibsServiceProvider,
+            IVehicleTypeDao dao,
+            ICommandBus commandBus,
+            ReferenceDataService referenceDataService,
+            HoneyBadgerServiceClient honeyBadgerServiceClient)
         {
             _ibsServiceProvider = ibsServiceProvider;
             _dao = dao;
             _commandBus = commandBus;
             _referenceDataService = referenceDataService;
+            _honeyBadgerServiceClient = honeyBadgerServiceClient;
         }
 
         public AvailableVehiclesResponse Post(AvailableVehicles request)
         {
-            var vehicles = _ibsServiceProvider.Booking().GetAvailableVehicles(request.Latitude, request.Longitude, request.VehicleTypeId);
             var vehicleType = _dao.GetAll().FirstOrDefault(v => v.ReferenceDataVehicleId == request.VehicleTypeId);
             string logoName = vehicleType != null ? vehicleType.LogoName : null;
 
+            var vehicles = new IbsVehiclePosition[0];
+
+            if (!request.Market.HasValue())
+            {
+                vehicles = _ibsServiceProvider.Booking()
+                    .GetAvailableVehicles(request.Latitude, request.Longitude, request.VehicleTypeId);
+            }
+            else
+            {
+                var vehicleResponse = _honeyBadgerServiceClient.GetAvailableVehicles(request.Market, request.Latitude, request.Longitude);
+                vehicles = vehicleResponse.Select(v => new IbsVehiclePosition
+                {
+                    Latitude = v.Latitude,
+                    Longitude = v.Longitude,
+                    PositionDate = v.Timestamp,
+                    VehicleNumber = v.Medallion
+                }).ToArray();
+            }
+
             var availableVehicles = vehicles.Select(Mapper.Map<AvailableVehicle>).ToArray();
+                
             foreach (var vehicle in availableVehicles)
             {
                 vehicle.LogoName = logoName;
             }
-            return new AvailableVehiclesResponse(availableVehicles);
+            return new AvailableVehiclesResponse(availableVehicles);   
         }
 
         public object Get(VehicleTypeRequest request)

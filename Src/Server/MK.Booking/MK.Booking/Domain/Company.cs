@@ -8,6 +8,7 @@ using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Common;
+using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
@@ -532,12 +533,12 @@ namespace apcurium.MK.Booking.Domain
                 throw new InvalidOperationException("Missing required fields");
             }
 
-            if (latitude < -90 || latitude > 90)
+            if (double.IsNaN(latitude) || latitude < -90 || latitude > 90)
             {
                 throw new ArgumentOutOfRangeException("latitude", "Invalid latitude");
             }
 
-            if (longitude < -180 || latitude > 180)
+            if (double.IsNaN(longitude) || longitude < -180 || longitude > 180)
             {
                 throw new ArgumentOutOfRangeException("longitude", "Invalid longitude");
             }

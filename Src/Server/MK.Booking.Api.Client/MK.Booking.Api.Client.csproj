@@ -102,11 +102,10 @@
     <Compile Include="TaxiHail\ConfigurationClientService.cs" />
     <Compile Include="TaxiHail\IbsChargeAccountServiceClient.cs" />
     <Compile Include="TaxiHail\IbsFareServiceClient.cs" />
+    <Compile Include="TaxiHail\NetworkRoamingServiceClient.cs" />
     <Compile Include="TaxiHail\PayPalServiceClient.cs" />
     <Compile Include="TaxiHail\PushNotificationAdministrationServiceClient.cs" />
     <Compile Include="TaxiHail\RulesServiceClient.cs" />
-    <Compile Include="TaxiHail\DirectionsServiceClient.cs" />
-    <Compile Include="TaxiHail\GeocodingServiceClient.cs" />
     <Compile Include="IAuthServiceClient.cs" />
     <Compile Include="IAccountServiceClient.cs" />
     <Compile Include="TaxiHail\NearbyPlacesClient.cs" />
@@ -127,6 +126,10 @@
     <ProjectReference Include="..\CMTPayment\CMTPayment.csproj">
       <Project>{5fd750a2-ee19-4a80-9b38-32adbf03765a}</Project>
       <Name>CMTPayment</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HoneyBadger\HoneyBadger.csproj">
+      <Project>{1c2f9d8b-7b65-4d2e-a099-d0040907d59c}</Project>
+      <Name>HoneyBadger</Name>
     </ProjectReference>
     <ProjectReference Include="..\MK.Booking.Api.Contract\MK.Booking.Api.Contract.csproj">
       <Project>{1DD86EC1-75F9-4A57-A8D6-18248048F571}</Project>

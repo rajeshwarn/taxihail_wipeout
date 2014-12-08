@@ -1,9 +1,11 @@
 ﻿using System;
+using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Services;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Enumeration;
+using Infrastructure.Messaging;
 using Infrastructure.Messaging.Handling;
 
 namespace apcurium.MK.Booking.EventHandlers.Integration
@@ -18,21 +20,23 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
         private readonly IOrderDao _dao;
         private readonly IIbsOrderService _ibs;
         private readonly IServerSettings _serverSettings;
-        private readonly IPaymentService _paymentService;
+        private readonly IPaymentServiceFactory _paymentServiceFactory;
         private readonly IOrderPaymentDao _paymentDao;
         private readonly ICreditCardDao _creditCardDao;
         private readonly IAccountDao _accountDao;
+        private readonly ICommandBus _commandBus;
 
-        public OrderPaymentManager(IOrderDao dao, IOrderPaymentDao paymentDao, IAccountDao accountDao, 
-            ICreditCardDao creditCardDao, IIbsOrderService ibs, IServerSettings serverSettings, IPaymentService paymentService)
+        public OrderPaymentManager(IOrderDao dao, IOrderPaymentDao paymentDao, IAccountDao accountDao, ICommandBus commandBus,
+            ICreditCardDao creditCardDao, IIbsOrderService ibs, IServerSettings serverSettings, IPaymentServiceFactory paymentServiceFactory)
         {
             _accountDao = accountDao;
+            _commandBus = commandBus;
             _dao = dao;
             _paymentDao = paymentDao;
             _creditCardDao = creditCardDao;
             _ibs = ibs;
             _serverSettings = serverSettings;
-            _paymentService = paymentService;
+            _paymentServiceFactory = paymentServiceFactory;
         }
 
         public void Handle(PayPalExpressCheckoutPaymentCompleted @event)
@@ -41,10 +45,11 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             SendPaymentConfirmationToDriver(@event.OrderId, @event.Amount, @event.Meter, @event.Tip, PaymentProvider.PayPal.ToString(), @event.PayPalPayerId);
 
             // payment might not be enabled
-            if (_paymentService != null)
+            var paymentService = _paymentServiceFactory.GetInstance();
+            if (paymentService != null)
             {
                 // void the preauthorization to prevent misuse fees
-                _paymentService.VoidPreAuthorization(@event.SourceId);
+                paymentService.VoidPreAuthorization(@event.SourceId);
             }
         }
 
@@ -59,6 +64,16 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             if (_serverSettings.ServerData.SendDetailedPaymentInfoToDriver)
             {
                 SendPaymentConfirmationToDriver(@event.OrderId, @event.Amount, @event.Meter, @event.Tip, @event.Provider.ToString(), @event.AuthorizationCode);
+            }
+
+            if (@event.PromotionUsed.HasValue)
+            {
+                _commandBus.Send(new RedeemPromotion
+                {
+                    OrderId = @event.OrderId,
+                    PromoId = @event.PromotionUsed.Value,
+                    TotalAmountOfOrder = @event.Amount + @event.AmountSavedByPromotion
+                });
             }
         }
 
@@ -90,21 +105,23 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
 
         public void Handle(OrderCancelled @event)
         {
+            var paymentService = _paymentServiceFactory.GetInstance();
             // payment might not be enabled
-            if (_paymentService != null)
+            if (paymentService != null)
             {
                 // void the preauthorization to prevent misuse fees
-                _paymentService.VoidPreAuthorization(@event.SourceId);
+                paymentService.VoidPreAuthorization(@event.SourceId);
             }
         }
 
         public void Handle(OrderSwitchedToNextDispatchCompany @event)
         {
+            var paymentService = _paymentServiceFactory.GetInstance();
             // payment might not be enabled
-            if (_paymentService != null)
+            if (paymentService != null)
             {
                 // void the preauthorization to prevent misuse fees
-                _paymentService.VoidPreAuthorization(@event.SourceId);
+                paymentService.VoidPreAuthorization(@event.SourceId);
             }
         }
     }

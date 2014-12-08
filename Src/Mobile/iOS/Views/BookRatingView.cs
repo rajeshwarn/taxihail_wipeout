@@ -47,13 +47,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Order
 			FlatButtonStyle.Green.ApplyTo(btnSubmit);
 			btnSubmit.SetTitle(Localize.GetValue("Submit"), UIControlState.Normal);
 
-            if (ViewModel.CanRate)
-            {
-                // since we can't have dynamic height of tableview, we put a scrollable tableview with a footer containing the submit button
-                var footerView = new UIView(new RectangleF(0f, 0f, 320f, btnSubmit.Frame.Height + BottomPadding * 2));
-                footerView.AddSubview(btnSubmit);
-                ratingTableView.TableFooterView = footerView;
-            }
+            // since we can't have dynamic height of tableview, we put a scrollable tableview with a footer containing the submit button
+            var footerView = new UIView(new RectangleF(0f, 0f, 320f, btnSubmit.Frame.Height + BottomPadding * 2));
+            footerView.AddSubview(btnSubmit);
+            ratingTableView.TableFooterView = footerView;
 
 			var source = new MvxActionBasedTableViewSource(
 				ratingTableView,

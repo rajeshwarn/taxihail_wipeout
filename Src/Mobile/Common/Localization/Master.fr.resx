@@ -636,6 +636,9 @@
   <data name="HistoryDetailStatusLabel" xml:space="preserve">
     <value>Statut:</value>
   </data>
+  <data name="HistoryDetailPromoLabel" xml:space="preserve">
+    <value>Code promo:</value>
+  </data>
   <data name="HistoryInfo" xml:space="preserve">
     <value>Synthèse des trajets effectués le mois dernier</value>
   </data>
@@ -1641,10 +1644,10 @@
   <data name="Notification_VehicleAtPickupPush" xml:space="preserve">
     <value>Taxi au point de ramassage</value>
   </data>
-  <data name="Notification_Off" xml:space="preserve">
+  <data name="Toggle_Off" xml:space="preserve">
     <value>Non</value>
   </data>
-  <data name="Notification_On" xml:space="preserve">
+  <data name="Toggle_On" xml:space="preserve">
     <value>Oui</value>
   </data>
   <data name="PaymentInCar" xml:space="preserve">
@@ -1742,5 +1745,60 @@
   </data>
   <data name="UpdateBookingSettingsInvalidCoF" xml:space="preserve">
     <value>Vous devez avoir une carte de crédit enregistrée pour utiliser ce compte</value>
+  </data>
+  <data name="MarketChangedMessage" xml:space="preserve">
+    <value>Vous quittez votre zone locale de service. Si vous décidez de commander un véhicule, votre commande sera envoyée à une compagnie désservant cette zone.</value>
+    <comment>You are leaving your local service area. Should you decide to book, your order will be dispatched using a taxi company from this area.</comment>
+  </data>
+  <data name="MarketChangedMessageTitle" xml:space="preserve">
+    <value>Nouvelle zone détectée</value>
+  </data>
+  <data name="PanelMenuViewTaxiHailNetworkText" xml:space="preserve">
+    <value>Réseau TaxiHail</value>
+  </data>
+  <data name="View_UserTaxiHailNetworkSettings" xml:space="preserve">
+    <value>Réseau TaxiHail</value>
+  </data>
+  <data name="UserTaxiHailNetwork_Enabled" xml:space="preserve">
+    <value>Réseau TaxiHail</value>
+  </data>
+  <data name="PromoCodeLabel" xml:space="preserve">
+    <value>Code promotionnel</value>
+  </data>
+  <data name="PromoMustUseCardOnFileMessage" xml:space="preserve">
+    <value>Pour utiliser un code promo, vous devez payer avec le paiement in app</value>
+  </data>
+  <data name="PromoMustUseCardOnFileWarningMessage" xml:space="preserve">
+    <value>Veuillez noter que le rabais ne sera appliqué que si le paiement est effectué en utilisant l'application</value>
+  </data>
+  <data name="WarningPromoCodeDontShow" xml:space="preserve">
+    <value>Ne pas signaler</value>
+  </data>
+  <data name="PanelMenuViewPromotionsText" xml:space="preserve">
+    <value>Promotions</value>
+  </data>
+  <data name="PromoRequiresToPayWithCOFPairingWarningMessage" xml:space="preserve">
+    <value>Si vous décidez de payer dans le taxi, vous ne serez pas éligible à la promotion</value>
+  </data>
+  <data name="PromoRequiresToPayWithCOFPairingWarningCancelButton" xml:space="preserve">
+    <value>Payer dans le taxi</value>
+  </data>
+  <data name="View_Promotions" xml:space="preserve">
+    <value>Promotions</value>
+  </data>
+  <data name="PromoExpiringIn1DayMessage" xml:space="preserve">
+    <value>Expire dans 1 jour</value>
+  </data>
+  <data name="PromoExpiringSoonMessage" xml:space="preserve">
+    <value>Expire dans {0} jours</value>
+  </data>
+  <data name="PromoExpiringToday" xml:space="preserve">
+    <value>Expire aujourd'hui!</value>
+  </data>
+  <data name="PromoBookRide" xml:space="preserve">
+    <value>Utiliser sur la prochaine commande</value>
+  </data>
+  <data name="PromotionViewNoPromotionLabel" xml:space="preserve">
+    <value>Aucune promotion disponible</value>
   </data>
 </root>

@@ -12,6 +12,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Converters
         public readonly HasValueToVisibilityConverter HasValueToVisibilityConverter =
             new HasValueToVisibilityConverter();
 
+        public readonly NoValueToVisibilityConverter NoValueToVisibilityConverter =
+            new NoValueToVisibilityConverter();
+
 		public readonly MvxInvertedVisibilityValueConverter InvertedVisibility = new MvxInvertedVisibilityValueConverter();
 
 		public readonly OrderStatusToImageNameConverter OrderStatusToImageNameConverter =

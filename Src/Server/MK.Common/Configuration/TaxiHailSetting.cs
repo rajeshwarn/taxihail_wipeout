@@ -55,6 +55,11 @@ namespace MK.Common.Configuration
                 UnknownUserIdentifier = "unknown@user.com"
             };
 			ShowEstimate = true;
+		    Network = new NetworkSettingContainer
+		    {
+                Enabled = false
+		    };
+
             ShowEstimateWarning = true;
             AccountActivationDisabled = true;
             ShowVehicleInformation = true;
@@ -102,6 +107,7 @@ namespace MK.Common.Configuration
         public GeoLocSettingContainer GeoLoc { get; protected set; }
         public AvailableVehiclesSettingContainer AvailableVehicles { get; protected set; }
         public InsightsSettingContainer Insights { get; protected set; }
+        public NetworkSettingContainer Network { get; protected set; }
 
         [RequiredAtStartup]
 		[Display(Name = "Can Change Service Url", Description="Display a button on the login page to change the API server url")]
@@ -396,19 +402,26 @@ namespace MK.Common.Configuration
         [SendToClient]
         [Display(Name = "Google AdWords Conversion Tracking ID", Description = "Conversion ID used for Google Conversion Tracking")]
         public string GoogleAdWordsConversionId { get; protected set; }
+
         [SendToClient]
         [Display(Name = "Google AdWords Conversion Tracking Label", Description = "Conversion Label used for Google Conversion Tracking")]
         public string GoogleAdWordsConversionLabel { get; protected set; }
 
         [SendToClient, CustomizableByCompany]
         public bool CallDriverUsingProxy { get; protected set; }
+
         [SendToClient, CustomizableByCompany]
         public string CallDriverUsingProxyUrl { get; protected set; }
 
 	    [SendToClient, CustomizableByCompany]
         public int InitialZoomLevel { get; set; }
+
         [SendToClient, CustomizableByCompany]
         public bool DisableAutomaticZoomOnLocation { get; set; }
+
+        [SendToClient]
+        [Display(Name = "Promotion enabled", Description = "Enables promotion on the client and on the admin portal")]
+        public bool PromotionEnabled { get; set; }
     }
 }
 

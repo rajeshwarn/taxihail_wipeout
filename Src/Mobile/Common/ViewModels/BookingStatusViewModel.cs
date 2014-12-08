@@ -35,15 +35,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private readonly IPaymentService _paymentService;
 		private readonly IAccountService _accountService;
 		private readonly IVehicleService _vehicleService;
-	    private readonly IAccountPaymentService _accountPaymentService;
 
 	    public BookingStatusViewModel(IOrderWorkflowService orderWorkflowService,
 			IPhoneService phoneService,
 			IBookingService bookingService,
 			IPaymentService paymentService,
 			IAccountService accountService,
-			IVehicleService vehicleService,
-            IAccountPaymentService accountPaymentService
+			IVehicleService vehicleService
 		)
 		{
 			_orderWorkflowService = orderWorkflowService;
@@ -52,7 +50,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_paymentService = paymentService;
 			_accountService = accountService;
 			_vehicleService = vehicleService;
-		    _accountPaymentService = accountPaymentService;
 		}
 
 		private int _refreshPeriod = 5; //in seconds
@@ -201,25 +198,30 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		}
 
 	    private string _statusInfoText;
-		public string StatusInfoText {
+		public string StatusInfoText
+        {
 			get { return _statusInfoText; }
-			set {
+			set
+            {
 				_statusInfoText = value;
-				RaisePropertyChanged ();
+				RaisePropertyChanged();
 			}
 		}
 
 		private Order _order;
-		public Order Order {
+		public Order Order
+        {
 			get { return _order; }
-			set {
+			set
+            {
 				_order = value;
-				RaisePropertyChanged ();
+				RaisePropertyChanged();
 			}
 		}
 		
 		private OrderStatusDetail _orderStatusDetail;
-		public OrderStatusDetail OrderStatusDetail {
+		public OrderStatusDetail OrderStatusDetail
+        {
 			get { return _orderStatusDetail; }
 			set {
 				_orderStatusDetail = value;
@@ -311,6 +313,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private string _vehicleNumber;
         private bool _isCurrentlyPairing;
 		private bool _isDispatchPopupVisible;
+        private bool _isContactingNextCompany;
+	    private int? _currentIbsOrderId; 
 
 		private bool _refreshStatusIsExecuting;
 		private async void RefreshStatus()
@@ -333,6 +337,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 {
 					status.VehicleNumber = _vehicleNumber;
 				}
+
+                if (_isContactingNextCompany && status.IBSOrderId == _currentIbsOrderId)
+                {
+                    // Don't update status when we're contacting a new dispatch company (switch)
+                    return;
+                }
+
+                _currentIbsOrderId = status.IBSOrderId;
+                _isContactingNextCompany = false;
 
                 SwitchDispatchCompanyIfNecessary(status);
 
@@ -369,7 +382,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					|| status.IBSStatusId.Equals(VehicleStatuses.Common.Done);
 				var paymentSettings = await _paymentService.GetPaymentSettings();
                 if (isLoaded 
-					&& paymentSettings.AutomaticPayment 
+					&& ((paymentSettings.AutomaticPayment && !paymentSettings.AutomaticPaymentPairing)
+						|| paymentSettings.PaymentMode == PaymentMethod.RideLinqCmt)
 					&& _accountService.CurrentAccount.DefaultCreditCard != null)
 				{
 					var isPaired = await _bookingService.IsPaired(Order.Id);
@@ -456,10 +470,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 	        }
 
 	        _isDispatchPopupVisible = false;
-
-			StatusInfoText = string.Format (
-				this.Services ().Localize ["NetworkContactingNextDispatchDescription"]
-				, status.NextDispatchCompanyName);
+            _isContactingNextCompany = true;
 
             try
             {
@@ -468,9 +479,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     status.NextDispatchCompanyKey,
                     status.NextDispatchCompanyName);
                 OrderStatusDetail = orderStatusDetail;
+
+                StatusInfoText = string.Format(
+                    this.Services().Localize["NetworkContactingNextDispatchDescription"],
+                    status.NextDispatchCompanyName);
             }
             catch (WebServiceException ex)
             {
+                _isContactingNextCompany = false;
                 this.Services().Message.ShowMessage(
                     this.Services().Localize["TaxiHailNetworkTimeOutErrorTitle"],
                     ex.ErrorMessage);
@@ -508,6 +524,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
             IsResendButtonVisible = isOrderAlreadyPaid
                                 && !paymentSettings.AutomaticPayment
+								&& paymentSettings.PaymentMode != PaymentMethod.RideLinqCmt
                                 && (paymentSettings.IsPayInTaxiEnabled || paymentSettings.PayPalClientSettings.IsEnabled);
 
 			// Unpair button is only available for RideLinqCMT
@@ -554,17 +571,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        public async Task GoToPairScreen()
+        public void GoToPairScreen()
         {
-			var paymentSettings = await _paymentService.GetPaymentSettings ();
-			if (!paymentSettings.AutomaticPaymentPairing)
-            {
-                ShowViewModel<ConfirmPairViewModel>(new
-                {
-                    order = Order.ToJson(),
-                    orderStatus = OrderStatusDetail.ToJson()
-                }.ToStringDictionary());
-            }
+			ShowViewModel<ConfirmPairViewModel>(new 
+			{
+				order = Order.ToJson(),
+				orderStatus = OrderStatusDetail.ToJson()
+			}.ToStringDictionary());
         }
 
         private void CenterMap ()
@@ -687,9 +700,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 #endif
 					IsPayButtonVisible = false;
 					this.Services().Analytics.LogEvent("PayButtonTapped");
-					
+
 					var paymentSettings = await _paymentService.GetPaymentSettings();
-                    if (paymentSettings.AutomaticPayment)
+					if ((paymentSettings.AutomaticPayment && !paymentSettings.AutomaticPaymentPairing)
+						|| paymentSettings.PaymentMode == PaymentMethod.RideLinqCmt)
                     {
                         GoToPairScreen();
                     }
