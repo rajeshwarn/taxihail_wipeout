@@ -20,5 +20,17 @@ namespace apcurium.MK.Booking.ReadModel
         public decimal AmountSaved { get; set; }
 
         public string Code { get; set; }
+
+        public string GetNoteToDriverFormattedString()
+        {
+            var discountType = DiscountType == PromoDiscountType.Cash
+                ? "$"
+                : "%";
+
+            return string.Format("PROMO,{0},{1},{2}",
+                Code,
+                discountType,
+                DiscountValue);
+        }
     }
 }
