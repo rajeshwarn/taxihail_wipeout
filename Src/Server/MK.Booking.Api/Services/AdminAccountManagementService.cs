@@ -12,12 +12,12 @@ using ServiceStack.ServiceInterface;
 
 namespace apcurium.MK.Booking.Api.Services
 {
-    public class AdminEnableAccountService : Service
+    public class AdminAccountManagementService : Service
     {
         private readonly ICommandBus _commandBus;
         protected IAccountDao Dao;
 
-        public AdminEnableAccountService(IAccountDao dao, ICommandBus commandBus)
+        public AdminAccountManagementService(IAccountDao dao, ICommandBus commandBus)
         {
             Dao = dao;
             _commandBus = commandBus;
@@ -26,7 +26,10 @@ namespace apcurium.MK.Booking.Api.Services
         public object Put(EnableAccountByAdminRequest request)
         {
             var account = Dao.FindByEmail(request.AccountEmail);
-            if (account == null) throw new HttpError(HttpStatusCode.NotFound, "Not Found");
+            if (account == null)
+            {
+                throw new HttpError(HttpStatusCode.NotFound, "Not Found");
+            }
 
             _commandBus.Send(new EnableAccountByAdmin
             {
@@ -34,25 +37,31 @@ namespace apcurium.MK.Booking.Api.Services
             });
             return HttpStatusCode.OK;
         }
-    }
-
-    public class AdminDisableAccountService : Service
-    {
-        private readonly ICommandBus _commandBus;
-        protected IAccountDao Dao;
-
-        public AdminDisableAccountService(IAccountDao dao, ICommandBus commandBus)
-        {
-            Dao = dao;
-            _commandBus = commandBus;
-        }
 
         public object Put(DisableAccountByAdminRequest request)
         {
             var account = Dao.FindByEmail(request.AccountEmail);
-            if (account == null) throw new HttpError(HttpStatusCode.NotFound, "Not Found");
+            if (account == null)
+            {
+                throw new HttpError(HttpStatusCode.NotFound, "Not Found");
+            }
 
             _commandBus.Send(new DisableAccountByAdmin
+            {
+                AccountId = account.Id
+            });
+            return HttpStatusCode.OK;
+        }
+
+        public object Put(UnlinkAccountByAdminRequest request)
+        {
+            var account = Dao.FindByEmail(request.AccountEmail);
+            if (account == null)
+            {
+                throw new HttpError(HttpStatusCode.NotFound, "Not Found");
+            }
+
+            _commandBus.Send(new UnlinkAccountFromIbs
             {
                 AccountId = account.Id
             });

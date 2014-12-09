@@ -519,13 +519,17 @@ namespace apcurium.MK.Booking.Api.Jobs
                 if (paymentProviderServiceResponse.IsSuccessful)
                 {
                     //payment completed
+
+                    var fareObject = Fare.FromAmountInclTax(Convert.ToDouble(meterAmount), _serverSettings.ServerData.VATIsEnabled ? _serverSettings.ServerData.VATPercentage : 0);
+
                     _commandBus.Send(new CaptureCreditCardPayment
                     {
                         PaymentId = paymentDetail.PaymentId,
                         Provider = _paymentServiceFactory.GetInstance().ProviderType,
                         Amount = totalOrderAmount,
-                        MeterAmount = Convert.ToDecimal(meterAmount),
+                        MeterAmount = Convert.ToDecimal(fareObject.AmountExclTax),
                         TipAmount = Convert.ToDecimal(tipAmount),
+                        TaxAmount = Convert.ToDecimal(fareObject.TaxAmount),
                         IsNoShowFee = isNoShowFee,
                         AuthorizationCode = paymentProviderServiceResponse.AuthorizationCode,
                         PromotionUsed = promoUsedId,

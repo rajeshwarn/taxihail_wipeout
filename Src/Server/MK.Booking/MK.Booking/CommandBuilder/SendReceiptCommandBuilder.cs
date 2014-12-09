@@ -15,7 +15,7 @@ namespace apcurium.MK.Booking.CommandBuilder
     {
         public static SendReceipt GetSendReceiptCommand(OrderDetail order, AccountDetail account, string vehicleNumber, DriverInfos driverInfos,
             double? fare, double? toll, double? tip, double? tax, OrderPaymentDetail orderPayment = null, double? amountSavedByPromotion = null,
-            PromotionUsageDetail promotionUsed = null, CreditCardDetails creditCard = null, Uri baseUrl = null)
+            PromotionUsageDetail promotionUsed = null, CreditCardDetails creditCard = null)
         {
             var command = new SendReceipt
             {
@@ -34,7 +34,6 @@ namespace apcurium.MK.Booking.CommandBuilder
                 PickupAddress = order.PickupAddress,
                 DropOffAddress = order.DropOffAddress,
                 ClientLanguageCode = order.ClientLanguageCode,
-                BaseUrl = baseUrl
             };
 
             if (promotionUsed != null)

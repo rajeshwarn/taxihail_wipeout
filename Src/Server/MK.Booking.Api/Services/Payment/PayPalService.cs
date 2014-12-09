@@ -8,6 +8,7 @@ using apcurium.MK.Booking.Api.Payment;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.EventHandlers.Integration;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
+using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Diagnostic;
@@ -30,7 +31,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
         private readonly ExpressCheckoutServiceFactory _factory;
         private readonly IIbsOrderService _ibs;
         private readonly IAccountDao _accountDao;
-        private readonly ILogger _logger;
+        private static ILogger _logger;
         private readonly IOrderDao _orderDao;
         private readonly Resources.Resources _resources;
 
@@ -66,26 +67,29 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             var conversionRate = _serverSettings.ServerData.PayPalConversionRate;
             
             var regionName = _serverSettings.ServerData.PayPalRegionInfoOverride;
-            string description  =  "";
+            var description  =  "";
             if (!string.IsNullOrWhiteSpace(regionName))
             {
                 description = string.Format(_resources.Get("PaymentItemDescription", request.LanguageCode), request.IbsOrderId, request.TotalAmount);
             }                        
             
-            _logger.LogMessage("Paypal Converstion Rate : " + conversionRate.ToString());
+            _logger.LogMessage("Paypal Conversion Rate : " + conversionRate);
             var amount = Math.Round(request.Amount * conversionRate, 2);
             
-            var token = service.SetExpressCheckout( amount , successUrl, cancelUrl, description);
+            var token = service.SetExpressCheckout(amount , successUrl, cancelUrl, description);
             var checkoutUrl = service.GetCheckoutUrl(token);
             
+            var fareObject = Fare.FromAmountInclTax(Convert.ToDouble(request.Meter), _serverSettings.ServerData.VATIsEnabled ? _serverSettings.ServerData.VATPercentage : 0);
+
             _commandBus.Send(new InitiatePayPalExpressCheckoutPayment
             {
                 OrderId = request.OrderId,
                 PaymentId = Guid.NewGuid(),
                 Token = token,
                 Amount = request.Amount,
-                Meter = request.Meter,
+                Meter = Convert.ToDecimal(fareObject.AmountExclTax),
                 Tip = request.Tip,
+                Tax = Convert.ToDecimal(fareObject.TaxAmount)
             });
 
             return new PayPalExpressCheckoutPaymentResponse
@@ -260,7 +264,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
         {
             try
             {
-                var service = new ExpressCheckoutServiceFactory(serverSettings)
+                var service = new ExpressCheckoutServiceFactory(serverSettings, _logger)
                     .CreateService(payPalServerSettings, isSandbox);
                 service.SetExpressCheckout(2, "http://example.net/success", "http://example.net/cancel", string.Empty);
                 return true;

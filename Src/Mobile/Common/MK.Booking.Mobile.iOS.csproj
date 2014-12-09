@@ -383,6 +383,7 @@
     <None Include="Localization\TaxiHail Pro.resx" />
     <None Include="Localization\TaxiHail Pro.fr.resx" />
     <None Include="Localization\UTOG.resx" />
+    <EmbeddedResource Include="TutorialContent\Tutorial-es.json" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
@@ -427,7 +428,4 @@
     </XamarinComponentReference>
   </ItemGroup>
   <ItemGroup />
-  <ItemGroup>
-    <BundleResource Include="TutorialContent\Tutorial-es.json" />
-  </ItemGroup>
 </Project>

@@ -5,6 +5,7 @@ using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Common.Entity;
 using System.Windows.Input;
+using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 {
@@ -111,7 +112,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		private string _vehiculeType;
 		public string VehiculeType
 		{
-			get{ return _vehiculeType; }
+			get 
+			{ 
+				return _vehiculeType.HasValue()
+					? _vehiculeType
+					: this.Services().Localize["NotAvailable"]; 
+			}
 			set
 			{
 				_vehiculeType = value;

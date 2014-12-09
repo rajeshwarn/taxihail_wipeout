@@ -39,8 +39,7 @@ namespace apcurium.MK.Booking.CommandHandlers
 
         public void Handle(InitiatePayPalExpressCheckoutPayment command)
         {
-            var payment = new PayPalPayment(command.PaymentId, command.OrderId, command.Token, command.Amount,
-                command.Meter, command.Tip);
+            var payment = new PayPalPayment(command.PaymentId, command.OrderId, command.Token, command.Amount, command.Meter, command.Tip, command.Tax);
             _repository.Save(payment, command.Id.ToString());
         }
 

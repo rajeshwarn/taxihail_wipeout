@@ -524,15 +524,6 @@ namespace apcurium.MK.Booking.Api.Services
             }
         }
 
-        private int? TryToSendAccountInformation(Guid orderId, int ibsOrderId, CreateOrder request, AccountDetail account)
-        {
-            if (ChargeTypes.Account.Id == request.Settings.ChargeTypeId)
-            {
-                return  _ibsServiceProvider.Booking().SendAccountInformation(orderId, ibsOrderId, "Account", request.Settings.AccountNumber, account.IBSAccountId.Value, request.Settings.Name, request.Settings.Phone, account.Email);                
-            }
-
-            return null;
-        }
         private void UpdateStatusAsync(Guid orderId)
         {
             new TaskFactory().StartNew(() =>
