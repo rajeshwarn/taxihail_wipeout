@@ -60,6 +60,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             IsReadOnly = false;
         }
 
+        public bool UserInputDisabled { get; set; }
+
         bool _isLoadingAddress;
         public bool IsLoadingAddress
         {
@@ -144,7 +146,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
             AddressTextView.Click += (sender, e) => 
             {
-                if(!IsReadOnly && AddressClicked!= null)
+                if(!UserInputDisabled && AddressClicked!= null)
                 {
                     AddressClicked(this, EventArgs.Empty);
                 }
@@ -200,7 +202,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
         void Resize()
         {
-            AddressTextView.Enabled = !IsReadOnly;
+            AddressTextView.Enabled = /*!IsReadOnly;*/ !UserInputDisabled;
             if (IsReadOnly)
             {
                 //not using visibility to avoid triggering focus change

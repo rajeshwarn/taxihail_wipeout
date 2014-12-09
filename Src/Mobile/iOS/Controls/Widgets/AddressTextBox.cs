@@ -63,7 +63,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
             AddressButton = new UIButton();
             AddressButton.TouchDown += (sender, e) => {
-				if(!DisableUserInput && AddressClicked != null)
+				if(!UserInputDisabled && AddressClicked != null)
                 {
                     AddressClicked(this, EventArgs.Empty);
                 }
@@ -87,7 +87,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             Resize();
         }
 
-		public bool DisableUserInput { get; set; }
+		public bool UserInputDisabled { get; set; }
 
         public string Address
         {

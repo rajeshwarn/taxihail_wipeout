@@ -7,13 +7,9 @@ using apcurium.MK.Common.Entity;
 using System.Collections.Generic;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using System.Linq;
-using System.Reactive.Linq;
-using System.Reactive.Threading.Tasks;
 using System.Threading.Tasks;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Booking.Maps;
-using Cirrious.CrossCore;
-using apcurium.MK.Booking.Mobile.Infrastructure;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 {

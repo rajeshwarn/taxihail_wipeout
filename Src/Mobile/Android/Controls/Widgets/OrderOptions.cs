@@ -131,18 +131,26 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             {
                 ViewPickup.IsReadOnly = true;
                 ViewDestination.IsReadOnly = true;
+                ViewPickup.UserInputDisabled = true;
+                ViewDestination.UserInputDisabled = true;
 				ViewVehicleType.IsReadOnly = true;
             }
             else if(hint.State == HomeViewModelState.PickDate)
             {
+                ViewPickup.UserInputDisabled = true;
+                ViewDestination.UserInputDisabled = true;
+
                 ViewPickup.IsReadOnly = true;
                 ViewDestination.IsReadOnly = true;
 				ViewVehicleType.IsReadOnly = true;
             }
             else if(hint.State == HomeViewModelState.Initial)
             {
-                ViewPickup.IsReadOnly = ViewModel.ShowDestination;
-                ViewDestination.IsReadOnly = false;
+                ViewPickup.IsReadOnly = ViewModel.AddressSelectionMode != AddressSelectionMode.PickupSelection;
+                ViewDestination.IsReadOnly = ViewModel.AddressSelectionMode != AddressSelectionMode.DropoffSelection;
+
+                ViewPickup.UserInputDisabled = false;
+                ViewDestination.UserInputDisabled = false;
 				ViewVehicleType.IsReadOnly = false;
             }
         }
