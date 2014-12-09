@@ -27,7 +27,7 @@ namespace DatabaseInitializer.Services
         {
             
             _contextFactory = contextFactory;
-            _serverSettings = serverSettings;
+            _serverSettings = serverSettings; // server settings comes from latest settings on old database
             //deserailize without type
             _deserializer = new JsonSerializer();
             //sereailize with type as expected in infrastructure

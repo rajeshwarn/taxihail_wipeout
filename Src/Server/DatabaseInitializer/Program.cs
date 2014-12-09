@@ -113,7 +113,7 @@ namespace DatabaseInitializer
 
                     container = new UnityContainer();
                     module = new Module();
-                    module.Init(container, new ConnectionStringSettings("MkWeb", builder.ConnectionString));
+                    module.Init(container, new ConnectionStringSettings("MkWeb", builder.ConnectionString), param.MkWebConnectionString);
 
                     Console.WriteLine("Creating index...");
                     creatorDb.CreateIndexes(param.MasterConnectionString, temporaryDatabaseName);
@@ -193,7 +193,7 @@ namespace DatabaseInitializer
                 var connectionString = new ConnectionStringSettings("MkWeb", param.MkWebConnectionString);
                 container = new UnityContainer();
                 module = new Module();
-                module.Init(container, connectionString);
+                module.Init(container, connectionString, param.MkWebConnectionString);
 
                 var serverSettings = container.Resolve<IServerSettings>();
                 var commandBus = container.Resolve<ICommandBus>();

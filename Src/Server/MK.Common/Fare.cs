@@ -1,3 +1,5 @@
+using System;
+
 namespace apcurium.MK.Common
 {
     public struct Fare
@@ -9,7 +11,7 @@ namespace apcurium.MK.Common
 
         public static Fare FromAmountInclTax(double amount, double taxRate)
         {
-            var amountExclTax = amount/(1 + taxRate/100);
+            var amountExclTax = Math.Round(amount/(1 + taxRate/100), 2);
             var taxAmount = amount - amountExclTax;
 
             return new Fare
@@ -17,7 +19,7 @@ namespace apcurium.MK.Common
                 AmountInclTax = amount,
                 TaxRate = taxRate,
                 AmountExclTax = amountExclTax,
-                TaxAmount = taxAmount
+                TaxAmount = Math.Round(taxAmount, 2)
             };
         }
     }
