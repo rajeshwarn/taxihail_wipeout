@@ -28,14 +28,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
 
             View.BackgroundColor = UIColor.FromRGB(242, 242, 242);
 
-			if (!ViewModel.PaymentSelectorToggleIsVisible) {
+			if (!ViewModel.PaymentSelectorToggleIsVisible) 
+            {
                 payPalToggle.RemoveFromSuperview();
 			}
 
             txtTip.Configure(Localize.GetValue("PaymentDetails.TipAmountLabel"), () => ViewModel.PaymentPreferences.Tips, () => ViewModel.PaymentPreferences.Tip,  
                 x => {
                     ViewModel.PaymentPreferences.Tip = (int)x.Id;
-                     ViewModel.ToggleToTipSelector.ExecuteIfPossible();
+                    ViewModel.ToggleToTipSelector.ExecuteIfPossible();
                 });
 
             txtTip.TextAlignment = UITextAlignment.Right;

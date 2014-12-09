@@ -119,6 +119,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
                 _tip = value;
 				RaisePropertyChanged();
 				RaisePropertyChanged(() => TipAmount);
+				RaisePropertyChanged(() => TipAmountDisplay);
             }
         }
 
