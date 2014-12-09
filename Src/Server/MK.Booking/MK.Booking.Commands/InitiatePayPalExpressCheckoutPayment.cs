@@ -20,6 +20,7 @@ namespace apcurium.MK.Booking.Commands
         public decimal Amount { get; set; }
         public decimal Tip { get; set; }
         public decimal Meter { get; set; }
+        public decimal Tax { get; set; }
         public Guid Id { get; private set; }
     }
 }

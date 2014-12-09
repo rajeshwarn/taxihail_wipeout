@@ -41,11 +41,18 @@ namespace apcurium.MK.Booking.Test.CreditCardPaymentFixture
             _sut.When(new CaptureCreditCardPayment
             {
                 PaymentId = _paymentId,
+                MeterAmount = 20,
+                Amount = 24,
+                TipAmount = 2,
+                TaxAmount = 2
             });
 
-            var @event = _sut.ThenHasSingle<CreditCardPaymentCaptured>();
+            var @event = _sut.ThenHasSingle<CreditCardPaymentCaptured_V2>();
             Assert.AreEqual("the transaction", @event.TransactionId);
-            Assert.AreEqual(0, @event.Amount);
+            Assert.AreEqual(24, @event.Amount);
+            Assert.AreEqual(20, @event.Meter);
+            Assert.AreEqual(2, @event.Tip);
+            Assert.AreEqual(2, @event.Tax);
             Assert.AreEqual(_orderId, @event.OrderId);
         }
 

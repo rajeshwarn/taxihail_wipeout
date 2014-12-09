@@ -64,6 +64,7 @@
     <Compile Include="AllCreditCardsRemoved.cs" />
     <Compile Include="CreditCardErrorThrown.cs" />
     <Compile Include="CreditCardPaymentCaptured.cs" />
+    <Compile Include="CreditCardPaymentCaptured_V2.cs" />
     <Compile Include="CreditCardPaymentInitiated.cs" />
     <Compile Include="CreditCardUpdated.cs" />
     <Compile Include="DispatchCompanySwitchIgnored.cs" />

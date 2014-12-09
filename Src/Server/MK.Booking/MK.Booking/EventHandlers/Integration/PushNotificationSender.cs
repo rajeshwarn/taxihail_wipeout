@@ -26,7 +26,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
 {
     public class PushNotificationSender : IIntegrationEventHandler,
             IEventHandler<OrderStatusChanged>,
-            IEventHandler<CreditCardPaymentCaptured>,
+            IEventHandler<CreditCardPaymentCaptured_V2>,
             IEventHandler<OrderPreparedForNextDispatch>
     {
         private readonly INotificationService _notificationService;
@@ -71,7 +71,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             }
         }
 
-        public void Handle(CreditCardPaymentCaptured @event)
+        public void Handle(CreditCardPaymentCaptured_V2 @event)
         {
             try
             {
