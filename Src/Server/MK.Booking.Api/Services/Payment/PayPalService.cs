@@ -30,7 +30,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
         private readonly ExpressCheckoutServiceFactory _factory;
         private readonly IIbsOrderService _ibs;
         private readonly IAccountDao _accountDao;
-        private readonly ILogger _logger;
+        private static ILogger _logger;
         private readonly IOrderDao _orderDao;
         private readonly Resources.Resources _resources;
 
@@ -260,7 +260,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
         {
             try
             {
-                var service = new ExpressCheckoutServiceFactory(serverSettings)
+                var service = new ExpressCheckoutServiceFactory(serverSettings, _logger)
                     .CreateService(payPalServerSettings, isSandbox);
                 service.SetExpressCheckout(2, "http://example.net/success", "http://example.net/cancel", string.Empty);
                 return true;
