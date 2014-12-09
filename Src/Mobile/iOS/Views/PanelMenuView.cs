@@ -58,7 +58,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         {
             menuContainer.BackgroundColor = Theme.MenuColor;
 
-            lblVersion.TextColor = Theme.IsLightContent
+            lblVersion.TextColor = Theme.ShouldHaveLightContent(Theme.MenuColor)
                 ? UIColor.White
                 : UIColor.FromRGB (79, 76, 71);
 
