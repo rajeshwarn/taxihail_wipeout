@@ -9,7 +9,9 @@ using apcurium.MK.Common.Entity;
 namespace apcurium.MK.Booking.Mobile.AppServices
 {
 	public interface IOrderWorkflowService
-    {
+	{
+	    bool WasSelectionModeTriggeredByUserInput();
+
 		Task PrepareForNewOrder();
 
 		void BeginCreateOrder ();
@@ -29,7 +31,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 
 		Task SetPickupDate(DateTime? date);
 
-		Task ToggleBetweenPickupAndDestinationSelectionMode();
+		Task ToggleBetweenPickupAndDestinationSelectionMode(bool triggeredByUserInput = false);
 
 		Task ValidatePickupTime();
 		Task ValidatePickupAndDestination();

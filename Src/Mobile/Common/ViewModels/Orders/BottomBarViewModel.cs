@@ -61,7 +61,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 					{
 						this.Services().Analytics.LogEvent("DestinationButtonTapped");
 					}
-                    _orderWorkflowService.ToggleBetweenPickupAndDestinationSelectionMode();
+                    _orderWorkflowService.ToggleBetweenPickupAndDestinationSelectionMode(true);
                 });
             }
         }

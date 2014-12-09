@@ -295,20 +295,49 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			}
 		}
 
-		public ICommand ShowSearchAddress
+		public ICommand ShowPickUpSearchAddress
 		{
 			get
 			{
 				return this.GetCommand(() =>
 				{
+				    if (AddressSelectionMode == AddressSelectionMode.DropoffSelection)
+				    {
+				        _orderWorkflowService.ToggleBetweenPickupAndDestinationSelectionMode();
+				    }
+
                     PresentationStateRequested.Raise(this, new HomeViewModelStateRequestedEventArgs(HomeViewModelState.AddressSearch));
 				});
 			}
 		}
 
+        public ICommand ShowDestinationSearchAddress
+        {
+            get
+            {
+                return this.GetCommand(() =>
+                {
+                    if (AddressSelectionMode == AddressSelectionMode.PickupSelection)
+                    {
+                        _orderWorkflowService.ToggleBetweenPickupAndDestinationSelectionMode();
+                    }
+
+                    PresentationStateRequested.Raise(this, new HomeViewModelStateRequestedEventArgs(HomeViewModelState.AddressSearch));
+                });
+            }
+        }
+
 		private void OnAddressSelectionModeChanged()
 		{
-			ShowDestination = AddressSelectionMode == AddressSelectionMode.DropoffSelection;
+
+            var test = _orderWorkflowService.WasSelectionModeTriggeredByUserInput();
+
+		    if (ShowDestination && !test)
+		    {
+		        return;
+		    }
+
+		    ShowDestination = AddressSelectionMode == AddressSelectionMode.DropoffSelection;
             if (!ShowDestination)
             {
                 _orderWorkflowService.ClearDestinationAddress();

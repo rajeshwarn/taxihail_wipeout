@@ -98,11 +98,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
 			set.Bind (viewPickup)
                 .For ("AddressClicked")
-				.To (vm => vm.ShowSearchAddress);
+				.To (vm => vm.ShowPickUpSearchAddress);
 
             set.Bind(viewDestination)
                 .For("AddressClicked")
-                .To(vm => vm.ShowSearchAddress);
+                .To(vm => vm.ShowDestinationSearchAddress);
 
             set.Apply();
         }

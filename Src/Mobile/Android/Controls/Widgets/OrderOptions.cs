@@ -98,11 +98,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
 			set.Bind (ViewPickup)
                 .For ("AddressClicked")
-                .To (vm => vm.ShowSearchAddress);
+                .To (vm => vm.ShowPickUpSearchAddress);
 
 			set.Bind (ViewDestination)
                 .For ("AddressClicked")
-                .To (vm => vm.ShowSearchAddress);
+                .To (vm => vm.ShowDestinationSearchAddress);
 
 			set.Bind (ViewVehicleType)
 				.For (v => v.ShowEta)
@@ -135,7 +135,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             }
             else if(hint.State == HomeViewModelState.Initial)
             {
-                ViewPickup.IsReadOnly = ViewModel.ShowDestination;
+                //ViewPickup.IsReadOnly = ViewModel.ShowDestination;
+                ViewPickup.IsReadOnly = false;
                 ViewDestination.IsReadOnly = false;
 				ViewVehicleType.IsReadOnly = false;
             }
