@@ -6,6 +6,7 @@ using apcurium.MK.Booking.Mobile.Client.Controls.Binding;
 using System.Linq;
 using apcurium.MK.Booking.Mobile.PresentationHints;
 using System.Windows.Input;
+using apcurium.MK.Booking.Mobile.Data;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
@@ -51,9 +52,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
             var set = this.CreateBindingSet<OrderOptionsControl, OrderOptionsViewModel>();
 
-            set.Bind(viewPickup)
-                .For(v => v.IsReadOnly)
-                .To(vm => vm.ShowDestination);
+			set.Bind(viewPickup)
+				.For(v => v.IsReadOnly)
+				.To(vm => vm.AddressSelectionMode)
+				.WithConversion("EnumToInvertedBool", AddressSelectionMode.PickupSelection);
             set.Bind(viewPickup)
                 .For(v => v.IsLoadingAddress)
                 .To(vm => vm.IsLoadingAddress);
@@ -64,6 +66,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 .For(v => v.Hidden)
                 .To(vm => vm.ShowDestination)
                 .WithConversion("BoolInverter");
+			set.Bind(viewDestination)
+				.For(v => v.IsReadOnly)
+				.To(vm => vm.AddressSelectionMode)
+				.WithConversion("EnumToInvertedBool", AddressSelectionMode.DropoffSelection);
             set.Bind(viewDestination)
                 .For(v => v.IsLoadingAddress)
                 .To(vm => vm.IsLoadingAddress);
@@ -132,19 +138,27 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         {
             switch (hint.State)
             {
-                case HomeViewModelState.Review:
+				case HomeViewModelState.Review:
                     viewPickup.IsReadOnly = true;
+					viewPickup.DisableUserInput = true;
                     viewDestination.IsReadOnly = true;
+					viewDestination.DisableUserInput = true;
                     viewVehicleType.IsReadOnly = true;
                     break;
                 case HomeViewModelState.PickDate:
+					viewPickup.DisableUserInput = true;
+					viewDestination.DisableUserInput = true;
+
                     viewPickup.IsReadOnly = true;
                     viewDestination.IsReadOnly = true;
                     viewVehicleType.IsReadOnly = true;
                     break;
                 case HomeViewModelState.Initial:
-                    viewPickup.IsReadOnly = ViewModel.ShowDestination;
-                    viewDestination.IsReadOnly = false;
+					viewPickup.IsReadOnly = ViewModel.AddressSelectionMode != AddressSelectionMode.PickupSelection;
+					viewDestination.IsReadOnly = ViewModel.AddressSelectionMode != AddressSelectionMode.DropoffSelection;
+
+					viewPickup.DisableUserInput = false;
+					viewDestination.DisableUserInput = false;
                     viewVehicleType.IsReadOnly = false;
                     break;
             }

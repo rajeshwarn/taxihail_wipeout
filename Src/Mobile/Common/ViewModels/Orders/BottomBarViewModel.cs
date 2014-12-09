@@ -30,8 +30,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
             _orderWorkflowService = orderWorkflowService;
             _accountService = accountService;
 
-            this.Observe(_orderWorkflowService.GetAndObserveAddressSelectionMode(),
-                m => EstimateSelected = m == AddressSelectionMode.DropoffSelection);
+			if (Settings.DestinationIsRequired)
+			{
+				this.Observe(_orderWorkflowService.GetAndObserveIsDestinationModeOpened(),
+					isDestinationModeOpened => EstimateSelected = isDestinationModeOpened);
+			}
         }
 
         private bool _estimateSelected;
@@ -56,12 +59,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
             get
             {
 				return this.GetCommand(async () => {
+					EstimateSelected = !EstimateSelected;
+
 					var mode = await _orderWorkflowService.GetAndObserveAddressSelectionMode().Take(1).ToTask();
 					if(mode == AddressSelectionMode.PickupSelection)
 					{
 						this.Services().Analytics.LogEvent("DestinationButtonTapped");
 					}
-                    _orderWorkflowService.ToggleBetweenPickupAndDestinationSelectionMode(true);
+						
+                    _orderWorkflowService.ToggleBetweenPickupAndDestinationSelectionMode();
+					_orderWorkflowService.ToggleIsDestinationModeOpened();
                 });
             }
         }

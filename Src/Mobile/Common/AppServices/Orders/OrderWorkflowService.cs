@@ -49,6 +49,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
 		readonly ISubject<bool> _orderCanBeConfirmed = new BehaviorSubject<bool>(false);
 		readonly ISubject<string> _marketSubject = new BehaviorSubject<string>(string.Empty);
+		readonly ISubject<bool> _isDestinationModeOpenedSubject = new BehaviorSubject<bool>(false);
 
         private bool _isOrderRebooked;
 
@@ -132,25 +133,17 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			await CalculateEstimatedFare();
 		}
 
-	    private bool _userTriggeredAddressSelectionModeChange;
-
-	    public bool WasSelectionModeTriggeredByUserInput()
-	    {
-	        return _userTriggeredAddressSelectionModeChange;
-	    }
-
-		public async Task ToggleBetweenPickupAndDestinationSelectionMode(bool triggeredByUserInput = false)
+		public async Task ToggleBetweenPickupAndDestinationSelectionMode()
 		{
-		    _userTriggeredAddressSelectionModeChange = triggeredByUserInput;
-
 			var currentSelectionMode = await _addressSelectionModeSubject.Take(1).ToTask();
+
 			if (currentSelectionMode == AddressSelectionMode.PickupSelection)
 			{
-				_addressSelectionModeSubject.OnNext(AddressSelectionMode.DropoffSelection);
-			}
-			else
+				_addressSelectionModeSubject.OnNext (AddressSelectionMode.DropoffSelection);
+			} 
+			else 
 			{
-				_addressSelectionModeSubject.OnNext(AddressSelectionMode.PickupSelection);
+				_addressSelectionModeSubject.OnNext (AddressSelectionMode.PickupSelection);
 			}
 		}
 
@@ -181,15 +174,16 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			if (destinationIsRequired)
 			{
 				var currentSelectionMode = await _addressSelectionModeSubject.Take(1).ToTask();
-				if (currentSelectionMode == AddressSelectionMode.PickupSelection)
-				{
-					await ToggleBetweenPickupAndDestinationSelectionMode();
-					throw new OrderValidationException("Open the destination selection", OrderValidationError.OpenDestinationSelection);
-				}
 
 				var destinationAddress = await _destinationAddressSubject.Take(1).ToTask();
 				var destinationIsValid = destinationAddress.FullAddress.HasValue()
 					&& destinationAddress.HasValidCoordinate();
+
+				if (currentSelectionMode == AddressSelectionMode.PickupSelection && !destinationIsValid)
+				{
+					await ToggleBetweenPickupAndDestinationSelectionMode();
+					throw new OrderValidationException("Open the destination selection", OrderValidationError.OpenDestinationSelection);
+				}
 
 				if (!destinationIsValid)
 				{
@@ -810,7 +804,18 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
                 _lastMarketPosition = currentPosition;
                 _marketSubject.OnNext(market);
 	        }
-	    }               
+	    }
+
+		public async Task ToggleIsDestinationModeOpened(bool? forceValue = null)
+		{
+			bool currentValue = await _isDestinationModeOpenedSubject.Take(1).ToTask();
+			_isDestinationModeOpenedSubject.OnNext(forceValue ?? !currentValue);
+		}
+			
+		public IObservable<bool> GetAndObserveIsDestinationModeOpened()
+		{
+			return _isDestinationModeOpenedSubject;
+		}
     }
 }
 

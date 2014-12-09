@@ -32,6 +32,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			_accountService = accountService;
 			_vehicleService = vehicleService;
 
+			this.Observe (_orderWorkflowService.GetAndObserveIsDestinationModeOpened (),
+				isDestinationModeOpened =>
+				{
+					IsDestinationModeOpened = isDestinationModeOpened;
+					OnDestinationModeOpened();
+				});
 			Observe(_orderWorkflowService.GetAndObservePickupAddress(), address => PickupAddress = address);
 			Observe(_orderWorkflowService.GetAndObserveDestinationAddress(), address => DestinationAddress = address);
 			Observe(_orderWorkflowService.GetAndObserveAddressSelectionMode(), selectionMode => AddressSelectionMode = selectionMode);
@@ -49,6 +55,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
 	    public async Task Start()
 	    {
+			ShowDestination = Settings.DestinationIsRequired;
+
             var list = await _accountService.GetVehiclesList();
 
             if (list.None())
@@ -81,6 +89,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			};
 			VehicleTypeId = defaultId;
 		}
+
+		public bool IsDestinationModeOpened { get; set; }
 
 		private int? _vehicleTypeId;
 		public int? VehicleTypeId
@@ -165,7 +175,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 				{
 					_addressSelectionMode = value;
 					RaisePropertyChanged();
-					OnAddressSelectionModeChanged();
 				}
 			} 
 		}
@@ -196,7 +205,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			}
 			private set
 			{
-				_showDestination = value;
+				_showDestination = value || Settings.DestinationIsRequired;
 				RaisePropertyChanged();
 				RaisePropertyChanged(() => VehicleAndEstimateBoxIsVisible);
 				RaisePropertyChanged (() => ShowEstimate);
@@ -303,6 +312,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 				{
 				    if (AddressSelectionMode == AddressSelectionMode.DropoffSelection)
 				    {
+						if (Settings.DestinationIsRequired)
+						{
+							_orderWorkflowService.ToggleIsDestinationModeOpened(false);
+						}
+
 				        _orderWorkflowService.ToggleBetweenPickupAndDestinationSelectionMode();
 				    }
 
@@ -319,6 +333,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
                 {
                     if (AddressSelectionMode == AddressSelectionMode.PickupSelection)
                     {
+						if (Settings.DestinationIsRequired)
+						{
+							_orderWorkflowService.ToggleIsDestinationModeOpened(true);
+						}
                         _orderWorkflowService.ToggleBetweenPickupAndDestinationSelectionMode();
                     }
 
@@ -327,20 +345,26 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
             }
         }
 
-		private void OnAddressSelectionModeChanged()
+		private void OnDestinationModeOpened()
 		{
+			if (AddressSelectionMode == AddressSelectionMode.None
+				&& ShowDestination == false
+				&& IsDestinationModeOpened == false)
+			{
+				// First launch
+				return;
+			}
 
-            var test = _orderWorkflowService.WasSelectionModeTriggeredByUserInput();
+			ShowDestination = !ShowDestination;
 
-		    if (ShowDestination && !test)
-		    {
-		        return;
-		    }
-
-		    ShowDestination = AddressSelectionMode == AddressSelectionMode.DropoffSelection;
             if (!ShowDestination)
             {
                 _orderWorkflowService.ClearDestinationAddress();
+
+				if (AddressSelectionMode == AddressSelectionMode.DropoffSelection)
+				{
+					_orderWorkflowService.ToggleBetweenPickupAndDestinationSelectionMode();
+				}
             }
 		}
 	}

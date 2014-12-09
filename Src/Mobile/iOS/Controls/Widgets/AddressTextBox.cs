@@ -7,6 +7,7 @@ using System.Drawing;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
 using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
 using apcurium.MK.Booking.Mobile.Client.Controls.Behavior;
+using apcurium.MK.Booking.Mobile.Data;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
@@ -62,7 +63,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
             AddressButton = new UIButton();
             AddressButton.TouchDown += (sender, e) => {
-                if(!IsReadOnly && AddressClicked != null)
+				if(!DisableUserInput && AddressClicked != null)
                 {
                     AddressClicked(this, EventArgs.Empty);
                 }
@@ -85,6 +86,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
             Resize();
         }
+
+		public bool DisableUserInput { get; set; }
 
         public string Address
         {

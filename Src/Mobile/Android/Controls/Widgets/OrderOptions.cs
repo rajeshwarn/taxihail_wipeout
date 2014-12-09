@@ -6,6 +6,7 @@ using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using Cirrious.MvvmCross.Binding.Droid.Views;
 using Android.Views;
+using apcurium.MK.Booking.Mobile.Data;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
@@ -57,7 +58,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
 			set.Bind (ViewPickup)
                 .For (v => v.IsReadOnly)
-                .To (vm => vm.ShowDestination);
+				.To (vm => vm.AddressSelectionMode)
+				.WithConversion("EnumToInvertedBool", AddressSelectionMode.PickupSelection);
 			set.Bind (ViewPickup)
                 .For (v => v.IsLoadingAddress)
                 .To (vm => vm.IsLoadingAddress);
@@ -65,6 +67,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			set.Bind (ViewPickup.AddressTextView)
                 .To (vm => vm.PickupAddress.DisplayAddress);
 
+			set.Bind (ViewDestination)
+				.For (v => v.IsReadOnly)
+				.To (vm => vm.AddressSelectionMode)
+				.WithConversion("EnumToInvertedBool", AddressSelectionMode.DropoffSelection);
 			set.Bind (ViewDestination)
                 .For (v => v.Visibility)
                 .To (vm => vm.ShowDestination)
@@ -135,8 +141,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             }
             else if(hint.State == HomeViewModelState.Initial)
             {
-                //ViewPickup.IsReadOnly = ViewModel.ShowDestination;
-                ViewPickup.IsReadOnly = false;
+                ViewPickup.IsReadOnly = ViewModel.ShowDestination;
                 ViewDestination.IsReadOnly = false;
 				ViewVehicleType.IsReadOnly = false;
             }
