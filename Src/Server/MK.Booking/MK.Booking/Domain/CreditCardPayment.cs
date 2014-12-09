@@ -20,7 +20,7 @@ namespace apcurium.MK.Booking.Domain
             : base(id)
         {
             Handles<CreditCardPaymentInitiated>(OnCreditCardPaymentInitiated);
-            Handles<CreditCardPaymentCaptured>(OnCreditCardPaymentCaptured);
+            Handles<CreditCardPaymentCaptured_V2>(OnCreditCardPaymentCaptured);
             Handles<CreditCardErrorThrown>(OnCreditCardPaymentCancellationFailed);
         }
 
@@ -55,7 +55,7 @@ namespace apcurium.MK.Booking.Domain
                 throw new InvalidOperationException("Payment is already captured");
             }
 
-            Update(new CreditCardPaymentCaptured
+            Update(new CreditCardPaymentCaptured_V2
             {
                 OrderId = _orderId,
                 TransactionId = _transactionId,
@@ -85,7 +85,7 @@ namespace apcurium.MK.Booking.Domain
             _transactionId = obj.TransactionId;
         }
 
-        private void OnCreditCardPaymentCaptured(CreditCardPaymentCaptured obj)
+        private void OnCreditCardPaymentCaptured(CreditCardPaymentCaptured_V2 obj)
         {
             _isCaptured = true;
         }

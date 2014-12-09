@@ -13,7 +13,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
     public class OrderPaymentManager :
         IIntegrationEventHandler,
         IEventHandler<PayPalExpressCheckoutPaymentCompleted>,
-        IEventHandler<CreditCardPaymentCaptured>,
+        IEventHandler<CreditCardPaymentCaptured_V2>,
         IEventHandler<OrderCancelled>,
         IEventHandler<OrderSwitchedToNextDispatchCompany>
     {
@@ -53,7 +53,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             }
         }
 
-        public void Handle(CreditCardPaymentCaptured @event)
+        public void Handle(CreditCardPaymentCaptured_V2 @event)
         {
             if (@event.IsNoShowFee)
             {

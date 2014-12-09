@@ -17,7 +17,7 @@ namespace apcurium.MK.Booking.EventHandlers
 {
     public class CreditCardPaymentDetailsGenerator :
         IEventHandler<CreditCardPaymentInitiated>,
-        IEventHandler<CreditCardPaymentCaptured>,
+        IEventHandler<CreditCardPaymentCaptured_V2>,
         IEventHandler<CreditCardErrorThrown>
     {
         private readonly Func<BookingDbContext> _contextFactory;
@@ -29,7 +29,7 @@ namespace apcurium.MK.Booking.EventHandlers
             _resources = new Resources.Resources(serverSettings);
         }
 
-        public void Handle(CreditCardPaymentCaptured @event)
+        public void Handle(CreditCardPaymentCaptured_V2 @event)
         {
             using (var context = _contextFactory.Invoke())
             {

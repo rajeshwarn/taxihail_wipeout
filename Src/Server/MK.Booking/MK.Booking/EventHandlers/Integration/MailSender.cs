@@ -22,7 +22,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
 {
     public class MailSender : IIntegrationEventHandler,
         IEventHandler<PayPalExpressCheckoutPaymentCompleted>,
-        IEventHandler<CreditCardPaymentCaptured>
+        IEventHandler<CreditCardPaymentCaptured_V2>
     {
         private readonly ICommandBus _commandBus;
         private readonly Func<BookingDbContext> _contextFactory;
@@ -41,7 +41,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             _promotionDao = promotionDao;
         }
 
-        public void Handle(CreditCardPaymentCaptured @event)
+        public void Handle(CreditCardPaymentCaptured_V2 @event)
         {
             if (@event.IsNoShowFee)
             {
