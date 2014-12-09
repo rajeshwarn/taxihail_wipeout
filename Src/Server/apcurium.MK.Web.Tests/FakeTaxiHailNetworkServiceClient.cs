@@ -21,7 +21,7 @@ namespace apcurium.MK.Web.Tests
             throw new NotImplementedException();
         }
 
-        public Task<Dictionary<string, List<CompanyPreferenceResponse>>> GetRoamingCompaniesPreferences(string companyId)
+        public Task<Dictionary<string, List<CompanyPreferenceResponse>>> GetRoamingCompanyPreferences(string companyId)
         {
             throw new NotImplementedException();
         }

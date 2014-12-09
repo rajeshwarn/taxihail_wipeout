@@ -36,7 +36,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
         public async Task<ActionResult> Index()
         {
             var localCompaniesPreferences = await _taxiHailNetworkService.GetNetworkCompanyPreferences(_applicationKey);
-            var roamingCompaniesPreferences = await _taxiHailNetworkService.GetRoamingCompaniesPreferences(_applicationKey);
+            var roamingCompaniesPreferences = await _taxiHailNetworkService.GetRoamingCompanyPreferences(_applicationKey);
 
             var companies = new Dictionary<string, List<CompanyPreferenceResponse>>
             {
@@ -57,7 +57,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
             if (ModelState.IsValid)
             {
                 var localCompaniesPreferences = await _taxiHailNetworkService.GetNetworkCompanyPreferences(_applicationKey);
-                var roamingCompaniesPreferences = await _taxiHailNetworkService.GetRoamingCompaniesPreferences(_applicationKey);
+                var roamingCompaniesPreferences = await _taxiHailNetworkService.GetRoamingCompanyPreferences(_applicationKey);
 
                 var companiesPreferences = new Dictionary<string, List<CompanyPreferenceResponse>>
                 {

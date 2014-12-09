@@ -79,7 +79,7 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to There is no company deserving this region.
+        ///   Looks up a localized string similar to There is no company serving this region.
         /// </summary>
         public static string CannotCreateOrder_NoCompanies {
             get {

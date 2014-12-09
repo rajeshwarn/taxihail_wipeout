@@ -445,6 +445,6 @@
     <value>Votre chauffeur</value>
   </data>
   <data name="CannotCreateOrder_NoCompanies" xml:space="preserve">
-    <value>Aucune compagnie de dessert cette région</value>
+    <value>Aucune compagnie ne sert cette région</value>
   </data>
 </root>
