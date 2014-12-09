@@ -53,6 +53,7 @@
     <Compile Include="AccountPasswordReset.cs" />
     <Compile Include="AccountPasswordUpdated.cs" />
     <Compile Include="AccountRegistered.cs" />
+    <Compile Include="AccountUnlinkedFromIbs.cs" />
     <Compile Include="AccountUpdated.cs" />
     <Compile Include="AddressRemovedFromHistory.cs" />
     <Compile Include="AccountChargeAddedUpdated.cs" />

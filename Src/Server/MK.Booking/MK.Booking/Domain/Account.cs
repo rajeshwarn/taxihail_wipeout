@@ -47,6 +47,7 @@ namespace apcurium.MK.Booking.Domain
             Handles<NotificationSettingsAddedOrUpdated>(NoAction);
             Handles<UserTaxiHailNetworkSettingsAddedOrUpdated>(NoAction);
             Handles<AccountLinkedToIbs>(NoAction);
+            Handles<AccountUnlinkedFromIbs>(NoAction);
         }
 
         public Account(Guid id, IEnumerable<IVersionedEvent> history)
@@ -410,6 +411,11 @@ namespace apcurium.MK.Booking.Domain
                 CompanyKey = companyKey,
                 IbsAccountId = ibsAccountId
             });
+        }
+
+        public void UnlinkFromIbs()
+        {
+            Update(new AccountUnlinkedFromIbs());
         }
     }
 }

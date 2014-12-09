@@ -17,6 +17,7 @@
             "security": "manageSecurity",
             "confirmemail": "confirmEmail",
             "disableemail": "disableEmail",
+            "unlinkaccount": "unlinkAccount",
 
             /* test notifications */
             "sendpushnotification": "sendPushNotification",
@@ -132,6 +133,10 @@
         
         disableEmail: function () {
             action(TaxiHail.SecurityController, 'disableemail');
+        },
+
+        unlinkAccount: function () {
+            action(TaxiHail.SecurityController, 'unlinkaccount');
         },
 
         sendPushNotification: function () {
