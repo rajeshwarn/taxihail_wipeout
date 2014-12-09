@@ -40,6 +40,9 @@ namespace apcurium.MK.Booking.Maps.Impl
         {
             int defaultRadius = _appSettings.Data.NearbyPlacesService.DefaultRadius;
 
+			latitude = (!latitude.HasValue || latitude.Value == 0) ? _appSettings.Data.GeoLoc.DefaultLatitude : latitude;
+			longitude = (!longitude.HasValue || longitude.Value == 0) ? _appSettings.Data.GeoLoc.DefaultLongitude : longitude;
+
             var popularAddresses = Enumerable.Empty<Address>();
             if (latitude.HasValue && longitude.HasValue)
             {
