@@ -57,7 +57,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
             SetBehavior();
 
-            IsReadOnly = false;
+            IsSelected = true;
         }
 
         public bool UserInputDisabled { get; set; }
@@ -74,7 +74,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 {
                     _isLoadingAddress = value;
 
-                    if (_isLoadingAddress && !IsReadOnly)
+                    if (_isLoadingAddress && IsSelected)
                     {
                         ShowLoadingWheel();
                     }
@@ -116,19 +116,21 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         {
             LoadingWheel.Visibility = ViewStates.Gone;
             //not using visibility to avoid triggering focus change
-            StreetNumberTextView.LayoutParameters.Width = IsReadOnly ? 0 : LinearLayout.MarginLayoutParams.WrapContent;
+            StreetNumberTextView.LayoutParameters.Width = IsSelected 
+                ? LinearLayout.MarginLayoutParams.WrapContent 
+                : 0;
         }
 
-        private bool _isReadOnly;
-        public bool IsReadOnly
+        private bool _isSelected;
+        public bool IsSelected
         {
             get
             {
-                return _isReadOnly;
+                return _isSelected;
             }        
             set
             {
-                _isReadOnly = value;
+                _isSelected = value;
                 Resize();
             }
         }
@@ -138,7 +140,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             //Order is important
             NumberAndAddressTextFieldBehavior.ApplyTo(AddressTextView, StreetNumberTextView, number => 
             {
-                if ( AddressUpdated != null )
+                if (AddressUpdated != null)
                 {
                     AddressUpdated(number);
                 }
@@ -203,7 +205,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         void Resize()
         {
             AddressTextView.Enabled = !UserInputDisabled;
-            if (IsReadOnly)
+            if (!IsSelected)
             {
                 //not using visibility to avoid triggering focus change
                 StreetNumberTextView.LayoutParameters.Width = 0;

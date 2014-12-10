@@ -142,7 +142,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             set 
             {
                 _isLoadingAddress = value;
-                if (value && !IsReadOnly)
+                if (value && IsSelected)
                 {
                     ShowLoadingWheel();
                 }
@@ -164,17 +164,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         {
             LoadingWheel.StopAnimating();
             LoadingWheel.Hidden = true;
-            StreetNumberTextView.Hidden = IsReadOnly;
+            StreetNumberTextView.Hidden = !IsSelected;
         }
 
-        private bool _isReadOnly;
-        public bool IsReadOnly
+        private bool _isSelected;
+        public bool IsSelected
         {
-            get { return _isReadOnly; }        
+            get { return _isSelected; }        
             set
             {
-                _isReadOnly = value;
-                StreetNumberTextView.Hidden = value;
+                _isSelected = value;
+                StreetNumberTextView.Hidden = !value;
                 Resize();
             }
         }
@@ -192,11 +192,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
         private void Resize()
         {
-            AddressTextView.UserInteractionEnabled = !IsReadOnly;
+            AddressTextView.UserInteractionEnabled = IsSelected;
 
             var color = IsDestination ? UIColor.FromRGB(255, 0, 0) : UIColor.FromRGB(30, 192, 34);
 
-            if (!IsReadOnly)
+            if (IsSelected)
             {
                 StreetNumberTextView.Hidden = false;
                 StreetNumberTextView.SizeToFit();

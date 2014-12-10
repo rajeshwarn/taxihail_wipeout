@@ -1,3 +1,4 @@
+using System;
 using Android.Content;
 using Android.Util;
 using Android.Widget;
@@ -57,9 +58,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			var set = this.CreateBindingSet<OrderOptions, OrderOptionsViewModel> ();
 
 			set.Bind (ViewPickup)
-                .For (v => v.IsReadOnly)
+                .For (v => v.IsSelected)
 				.To (vm => vm.AddressSelectionMode)
-				.WithConversion("EnumToInvertedBool", AddressSelectionMode.PickupSelection);
+				.WithConversion("EnumToBool", AddressSelectionMode.PickupSelection);
 			set.Bind (ViewPickup)
                 .For (v => v.IsLoadingAddress)
                 .To (vm => vm.IsLoadingAddress);
@@ -68,9 +69,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 .To (vm => vm.PickupAddress.DisplayAddress);
 
 			set.Bind (ViewDestination)
-				.For (v => v.IsReadOnly)
+				.For (v => v.IsSelected)
 				.To (vm => vm.AddressSelectionMode)
-				.WithConversion("EnumToInvertedBool", AddressSelectionMode.DropoffSelection);
+				.WithConversion("EnumToBool", AddressSelectionMode.DropoffSelection);
 			set.Bind (ViewDestination)
                 .For (v => v.Visibility)
                 .To (vm => vm.ShowDestination)
@@ -127,31 +128,29 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
         private void ChangeState(HomeViewModelPresentationHint hint)
         {
-            if (hint.State == HomeViewModelState.Review)
+            switch (hint.State)
             {
-                ViewPickup.IsReadOnly = true;
-                ViewDestination.IsReadOnly = true;
-                ViewPickup.UserInputDisabled = true;
-                ViewDestination.UserInputDisabled = true;
-				ViewVehicleType.IsReadOnly = true;
-            }
-            else if(hint.State == HomeViewModelState.PickDate)
-            {
-                ViewPickup.UserInputDisabled = true;
-                ViewDestination.UserInputDisabled = true;
-
-                ViewPickup.IsReadOnly = true;
-                ViewDestination.IsReadOnly = true;
-				ViewVehicleType.IsReadOnly = true;
-            }
-            else if(hint.State == HomeViewModelState.Initial)
-            {
-                ViewPickup.IsReadOnly = ViewModel.AddressSelectionMode != AddressSelectionMode.PickupSelection;
-                ViewDestination.IsReadOnly = ViewModel.AddressSelectionMode != AddressSelectionMode.DropoffSelection;
-
-                ViewPickup.UserInputDisabled = false;
-                ViewDestination.UserInputDisabled = false;
-				ViewVehicleType.IsReadOnly = false;
+                case HomeViewModelState.Review:
+                    ViewPickup.IsSelected = false;
+                    ViewPickup.UserInputDisabled = true;
+                    ViewDestination.IsSelected = false;
+                    ViewDestination.UserInputDisabled = true;
+                    ViewVehicleType.IsReadOnly = true;
+                    break;
+                case HomeViewModelState.PickDate:
+                    ViewPickup.IsSelected = false;
+                    ViewPickup.UserInputDisabled = true;
+                    ViewDestination.IsSelected = false;
+                    ViewDestination.UserInputDisabled = true;
+                    ViewVehicleType.IsReadOnly = true;
+                    break;
+                case HomeViewModelState.Initial:
+                    ViewPickup.IsSelected = ViewModel.AddressSelectionMode == AddressSelectionMode.PickupSelection;
+                    ViewPickup.UserInputDisabled = false;
+                    ViewDestination.IsSelected = ViewModel.AddressSelectionMode == AddressSelectionMode.DropoffSelection;
+                    ViewDestination.UserInputDisabled = false;
+                    ViewVehicleType.IsReadOnly = false;
+                    break;
             }
         }
 
