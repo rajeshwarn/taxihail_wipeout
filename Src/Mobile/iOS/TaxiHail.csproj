@@ -563,6 +563,9 @@
     <BundleResource Include="Resources\map_smallicon_background%402x.png" />
     <BundleResource Include="es.lproj\Localizable.strings" />
     <Compile Include="Views\SplashView.cs" />
+    <BundleResource Include="Resources\poweredBy4sq.png" />
+    <BundleResource Include="Resources\poweredBy4sq%402x.png" />
+    <Compile Include="PlatformIntegration\AppleDirectionProvider.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
   <ProjectExtensions>
@@ -761,8 +764,6 @@
     <BundleResource Include="Resources\forward.png" />
     <BundleResource Include="Resources\forward%402x.png" />
     <BundleResource Include="Resources\tutorial_background.png" />
-    <BundleResource Include="Resources\poweredby.png" />
-    <BundleResource Include="Resources\poweredByGoogle.png" />
     <BundleResource Include="Resources\places.png" />
     <BundleResource Include="Resources\places%402x.png" />
     <BundleResource Include="Resources\taxi_progress.png" />
