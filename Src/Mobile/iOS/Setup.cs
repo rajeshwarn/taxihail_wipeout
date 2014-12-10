@@ -86,13 +86,14 @@ namespace apcurium.MK.Booking.Mobile.Client
 
             container.Register<IDirectionDataProvider> ((c, p) =>
             {
+				
                 switch (c.Resolve<IAppSettings>().Data.DirectionDataProvider)
                 {
                     case MapProvider.TomTom:
                         return new TomTomProvider(c.Resolve<IAppSettings>(), c.Resolve<ILogger>());
                     case MapProvider.Google:
                     default:
-                        return new GoogleApiClient(c.Resolve<IAppSettings>(), c.Resolve<ILogger>(), new AppleGeocoder());
+						return new AppleDirectionProvider( c.Resolve<ILogger>());
                 }
             });
 
