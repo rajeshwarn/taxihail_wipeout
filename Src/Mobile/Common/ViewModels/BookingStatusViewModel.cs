@@ -319,6 +319,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private bool _refreshStatusIsExecuting;
 		private async void RefreshStatus()
         {
+
             try 
 			{
 				if(_refreshStatusIsExecuting)
@@ -326,6 +327,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					return;
 				}
 
+				Logger.LogMessage ("RefreshStatus starts");
 				_refreshStatusIsExecuting = true;
 
 				var status = await _bookingService.GetOrderStatusAsync(Order.Id);
@@ -417,8 +419,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 Logger.LogError (ex);
             }
 			finally
-			{
-				_refreshStatusIsExecuting = false;
+			{			
+				Logger.LogMessage ("RefreshStatus ends");
+				_refreshStatusIsExecuting = false;			
 			}
         }
 
@@ -553,6 +556,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		public void GoToSummary()
 		{
+			Logger.LogMessage ("GoToSummary");
 			ShowViewModelAndRemoveFromHistory<RideSummaryViewModel> (
 				new {
 					order = Order.ToJson(),

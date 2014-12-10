@@ -3,6 +3,7 @@ using System.Net;
 using System.Threading;
 using apcurium.MK.Booking.Api.Contract.Requests.Payment;
 using apcurium.MK.Booking.Commands;
+using apcurium.MK.Booking.IBS;
 using apcurium.MK.Booking.Domain;
 using apcurium.MK.Booking.EventHandlers.Integration;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
@@ -24,6 +25,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
     {
         private readonly IPaymentServiceFactory _paymentServiceFactory;
         private readonly IAccountDao _accountDao;
+        private readonly IIBSServiceProvider _ibsServiceProvider;
         private readonly IOrderDao _orderDao;
         private readonly IServerSettings _serverSettings;
         private readonly IOrderPaymentDao _paymentDao;
@@ -36,7 +38,8 @@ namespace apcurium.MK.Booking.Api.Services.Payment
         public ProcessPaymentService(
             IPaymentServiceFactory paymentServiceFactory, 
             IAccountDao accountDao, 
-            IOrderDao orderDao, 
+            IOrderDao orderDao,
+            IIBSServiceProvider ibsServiceProvider,
             IServerSettings serverSettings, 
             IOrderPaymentDao paymentDao,
             IIbsOrderService ibs,
@@ -48,6 +51,8 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             _paymentServiceFactory = paymentServiceFactory;
             _accountDao = accountDao;
             _orderDao = orderDao;
+            _paymentService = paymentService;
+            _ibsServiceProvider = ibsServiceProvider;
             _serverSettings = serverSettings;
             _paymentDao = paymentDao;
             _ibs = ibs;
@@ -273,7 +278,25 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 
         public PairingResponse Post(PairingForPaymentRequest request)
         {
-            return _paymentServiceFactory.GetInstance().Pair(request.OrderId, request.CardToken, request.AutoTipPercentage, request.AutoTipAmount);
+            var response =  _paymentServiceFactory.GetInstance().Pair(request.OrderId, request.CardToken, request.AutoTipPercentage, request.AutoTipAmount);
+            if ( response.IsSuccessful )
+            {
+                var o = _orderDao.FindById( request.OrderId );
+                var a = _accountDao.FindById( o.AccountId );
+                if (!UpdateOrderPaymentType(a.IBSAccountId.Value, o.IBSOrderId.Value, 7))
+                {
+                    response.IsSuccessful = false;
+                    _paymentService.VoidPreAuthorization(request.OrderId);
+                }
+            }
+            return response;
+
+        }
+
+        private bool UpdateOrderPaymentType(int ibsAccountId, int ibsOrderId, int chargeTypeId, string companyKey = null)
+        {
+            var result = _ibsServiceProvider.Booking(companyKey).UpdateOrderPaymentType( ibsAccountId, ibsOrderId, chargeTypeId );
+            return result;
         }
 
         public BasePaymentResponse Post(UnpairingForPaymentRequest request)

@@ -325,6 +325,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 responseTask.Wait();
                 var authResponse = responseTask.Result;
 
+
                 var isSuccessful = authResponse.ResponseCode == 1;
                 if (isSuccessful)
                 {
