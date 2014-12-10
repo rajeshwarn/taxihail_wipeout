@@ -1,6 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Collections.Generic;
+using System.Globalization;
 using System.Threading.Tasks;
 using CustomerPortal.Contract.Resources;
 using CustomerPortal.Contract.Response;
@@ -25,14 +24,20 @@ namespace CustomerPortal.Client.Impl
                                .Deserialize<List<CompanyPreferenceResponse>>();
         }
 
+        public async Task<Dictionary<string, List<CompanyPreferenceResponse>>> GetRoamingCompanyPreferences(string companyId)
+        {
+            return await Client.Get(string.Format(@"customer/{0}/roaming/networkfleets", companyId))
+                               .Deserialize<Dictionary<string, List<CompanyPreferenceResponse>>>();
+        }
+
         public Task<List<NetworkFleetResponse>> GetNetworkFleetAsync(string companyId, double? latitude = null, double? longitude = null)
         {
             var companyKey = companyId ?? _serverSettings.ServerData.TaxiHail.ApplicationKey;
 
             var @params = new Dictionary<string, string>
                 {
-                    { "latitude", latitude.ToString() },
-                    { "longitude", longitude.ToString() }
+                    { "latitude", latitude.HasValue ? latitude.Value.ToString(CultureInfo.InvariantCulture) : null},
+                    { "longitude", longitude.HasValue ? longitude.Value.ToString(CultureInfo.InvariantCulture) : null }
                 };
 
             var queryString = BuildQueryString(@params);
@@ -58,8 +63,8 @@ namespace CustomerPortal.Client.Impl
             var @params = new Dictionary<string, string>
             {
                 { "companyId", homeCompanyKey },
-                { "latitude", latitude.ToString() },
-                { "longitude", longitude.ToString() }
+                { "latitude", latitude.ToString(CultureInfo.InvariantCulture) },
+                { "longitude", longitude.ToString(CultureInfo.InvariantCulture) }
             };
 
             var queryString = BuildQueryString(@params);
@@ -69,9 +74,11 @@ namespace CustomerPortal.Client.Impl
                          .Result;
         }
 
-        public IEnumerable<NetworkFleetResponse> GetMarketFleets(string market)
+        public IEnumerable<NetworkFleetResponse> GetMarketFleets(string companyId, string market)
         {
-            return Client.Get(string.Format("customer/roaming/marketfleets?market={0}", market))
+            var companyKey = companyId ?? _serverSettings.ServerData.TaxiHail.ApplicationKey;
+
+            return Client.Get(string.Format("customer/{0}/roaming/marketfleets?market={1}", companyKey, market))
                                .Deserialize<IEnumerable<NetworkFleetResponse>>()
                                .Result;
         }

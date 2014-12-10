@@ -120,6 +120,12 @@ namespace apcurium.MK.Booking.Api.Services
             var account = _accountDao.FindById(new Guid(this.GetSession().UserAuthId));
 
             var bestAvailableCompany = FindBestAvailableCompany(request.Market, request.PickupAddress.Latitude, request.PickupAddress.Longitude);
+            if (request.Market.HasValue() && bestAvailableCompany.CompanyKey == null)
+            {
+                // No companies available that are desserving this region for the company
+                throw new HttpError(HttpStatusCode.Forbidden, ErrorCode.CreateOrder_RuleDisable.ToString(),
+                            _resources.Get("CannotCreateOrder_NoCompanies", request.ClientLanguageCode));
+            }
 
             account.IBSAccountId = CreateIbsAccountIfNeeded(account, bestAvailableCompany.CompanyKey, request.Market);
             
@@ -757,7 +763,8 @@ namespace apcurium.MK.Booking.Api.Services
 
             if (bestFleetId.HasValue)
             {
-                var marketFleets = _taxiHailNetworkServiceClient.GetMarketFleets(market).ToArray();
+                var companyKey = _serverSettings.ServerData.TaxiHail.ApplicationKey;
+                var marketFleets = _taxiHailNetworkServiceClient.GetMarketFleets(companyKey, market).ToArray();
 
                 // Fallback: If for some reason, we cannot find a match for the best fleet id in the fleets
                 // that were setup for the market, we take the first one
