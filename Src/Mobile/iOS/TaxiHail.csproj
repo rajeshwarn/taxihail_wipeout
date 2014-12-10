@@ -33,6 +33,7 @@
     <OptimizePNGs>false</OptimizePNGs>
     <MtouchExtraArgs>-time -time</MtouchExtraArgs>
     <AssemblyName>TaxiHail</AssemblyName>
+    <MtouchSdkVersion>7.1</MtouchSdkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhoneSimulator' ">
     <DebugType>none</DebugType>
