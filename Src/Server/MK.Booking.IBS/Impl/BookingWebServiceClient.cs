@@ -374,12 +374,11 @@ namespace apcurium.MK.Booking.IBS.Impl
             UseService(service =>
             {
                 Logger.LogMessage("WebService Creating IBS Order : " +
-                                  JsonSerializer.SerializeToString(order, typeof(TBookOrder_7)));
+                                  JsonSerializer.SerializeToString(order, typeof(TBookOrder_8)));
                 Logger.LogMessage("WebService Creating IBS Order pickup : " +
                                   JsonSerializer.SerializeToString(order.PickupAddress, typeof(TWEBAddress)));
                 Logger.LogMessage("WebService Creating IBS Order dest : " +
                                   JsonSerializer.SerializeToString(order.DropoffAddress, typeof(TWEBAddress)));
-
 
                 orderId = service.SaveBookOrder_8(UserNameApp, PasswordApp, order);
                 Logger.LogMessage("WebService Create Order, orderid receveid : " + orderId);
