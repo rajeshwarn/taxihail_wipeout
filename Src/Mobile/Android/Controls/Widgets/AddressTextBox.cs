@@ -160,6 +160,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 {
                     if(string.IsNullOrWhiteSpace(StreetNumberTextView.Text))
                     {
+                        StreetNumberTextView.ClearFocus();
                         if(AddressClicked != null)
                         {
                             AddressClicked(this, EventArgs.Empty);
