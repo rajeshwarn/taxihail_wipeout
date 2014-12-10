@@ -82,7 +82,10 @@ namespace apcurium.MK.Common.Entity
 
         public void ChangeStreetNumber(string newStreetNumber)
         {
-            FullAddress = FullAddress.Replace(StreetNumber, newStreetNumber);
+            FullAddress = StreetNumber.HasValue() 
+                ? FullAddress.Replace(StreetNumber, newStreetNumber) 
+                : string.Format("{0} {1}", newStreetNumber, FullAddress);
+
             StreetNumber = newStreetNumber;
         }
 

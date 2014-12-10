@@ -333,11 +333,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             {
                 Position position = new Position(){ Latitude = PickupAddress.Latitude, Longitude = PickupAddress.Longitude };
 
-                if (!DestinationAddress.HasValidCoordinate())
-                {
-                    _destinationPin.Visible = false;
-                }
-
+                _destinationPin.Visible = false;
                 _pickupOverlay.Visibility = ViewStates.Invisible;
                 _destinationOverlay.Visibility = ViewStates.Visible;
 

@@ -21,5 +21,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Converters
 			new OrderStatusToImageNameConverter();
 
 		public readonly MvxVisibilityValueConverter Visibility = new MvxVisibilityValueConverter();
+        public readonly EnumToBoolConverter EnumToInvertedBool = new EnumToBoolConverter(true);
     }
 }

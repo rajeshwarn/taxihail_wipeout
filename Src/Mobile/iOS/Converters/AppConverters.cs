@@ -11,5 +11,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Converters
         public readonly EmptyToResourceConverter EmptyToResource = new EmptyToResourceConverter();
         public readonly PhoneNumberConverter PhoneNumber = new PhoneNumberConverter();
         public readonly EnumToBoolConverter EnumToBool = new EnumToBoolConverter();
+		public readonly EnumToBoolConverter EnumToInvertedBool = new EnumToBoolConverter(true);
 	}
 }
