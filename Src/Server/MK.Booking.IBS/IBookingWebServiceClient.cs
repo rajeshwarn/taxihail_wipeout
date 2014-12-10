@@ -32,5 +32,7 @@ namespace apcurium.MK.Booking.IBS
             string authorizationCode, string cardToken, int accountID, string name, string phone, string email, string os, string userAgent);
  
         int? SendAccountInformation(Guid orderId, int ibsOrderId, string type, string cardToken, int accountID, string name, string phone, string email);
+
+        bool UpdateOrderPaymentType(int ibsAccountId, int ibsOrderId, int chargeTypeId);
    }
 }

@@ -3,6 +3,7 @@ using System.Net;
 using System.Threading;
 using System.Web;
 using apcurium.MK.Booking.Api.Contract.Requests.Payment;
+using apcurium.MK.Booking.IBS;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Services;
 using apcurium.MK.Common.Configuration;
@@ -16,14 +17,19 @@ namespace apcurium.MK.Booking.Api.Services.Payment
     {
         private readonly IPaymentService _paymentService;
         private readonly IAccountDao _accountDao;
+        private readonly IIBSServiceProvider _ibsServiceProvider;
         private readonly IOrderDao _orderDao;
         private readonly IServerSettings _serverSettings;
 
-        public ProcessPaymentService(IPaymentService paymentService, IAccountDao accountDao, IOrderDao orderDao, IServerSettings serverSettings)
+        public ProcessPaymentService(IPaymentService paymentService,
+            IIBSServiceProvider ibsServiceProvider,
+            IOrderDao orderDao, IAccountDao accountDao,
+            IServerSettings serverSettings)
         {
-            _paymentService = paymentService;
             _accountDao = accountDao;
             _orderDao = orderDao;
+            _paymentService = paymentService;
+            _ibsServiceProvider = ibsServiceProvider;
             _serverSettings = serverSettings;
         }
 
@@ -65,7 +71,25 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 
         public PairingResponse Post(PairingForPaymentRequest request)
         {
-            return _paymentService.Pair(request.OrderId, request.CardToken, request.AutoTipPercentage, request.AutoTipAmount);
+            var response =  _paymentService.Pair(request.OrderId, request.CardToken, request.AutoTipPercentage, request.AutoTipAmount);
+            if ( response.IsSuccessful )
+            {
+                var o = _orderDao.FindById( request.OrderId );
+                var a = _accountDao.FindById( o.AccountId );
+                if (!UpdateOrderPaymentType(a.IBSAccountId.Value, o.IBSOrderId.Value, 7))
+                {
+                    response.IsSuccessful = false;
+                    _paymentService.VoidPreAuthorization(request.OrderId);
+                }
+            }
+            return response;
+
+        }
+
+        private bool UpdateOrderPaymentType(int ibsAccountId, int ibsOrderId, int chargeTypeId, string companyKey = null)
+        {
+            var result = _ibsServiceProvider.Booking(companyKey).UpdateOrderPaymentType( ibsAccountId, ibsOrderId, chargeTypeId );
+            return result;
         }
 
         public BasePaymentResponse Post(UnpairingForPaymentRequest request)

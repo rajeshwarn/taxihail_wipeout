@@ -309,23 +309,26 @@ namespace apcurium.MK.Booking.Services.Impl
                 message = authResponse.ResponseMessage;
                 transactionId = authResponse.TransactionId.ToString(CultureInfo.InvariantCulture);
 
+
+                var paymentId = Guid.NewGuid();
+                _commandBus.Send(new InitiateCreditCardPayment
+                {
+                    PaymentId = paymentId,
+                    TransactionId = transactionId,
+                    Amount = 0,
+                    OrderId = orderId,
+                    Tip = 0,
+                    Meter = 0,
+                    CardToken = cardToken,
+                    Provider = PaymentProvider.Cmt,
+                    IsNoShowFee = isNoShowFee
+                });
+                
                 if (authResponse.ResponseCode == 1)
                 {
                     isSuccessful = true;
                     
-                    var paymentId = Guid.NewGuid();
-                    _commandBus.Send(new InitiateCreditCardPayment
-                    {
-                        PaymentId = paymentId,
-                        TransactionId = transactionId,
-                        Amount = 0,
-                        OrderId = orderId,
-                        Tip = 0,
-                        Meter = 0,
-                        CardToken = cardToken,
-                        Provider = PaymentProvider.Cmt,
-                        IsNoShowFee = isNoShowFee
-                    });
+                    
 
                     // wait for OrderPaymentDetail to be created
                     Thread.Sleep(500);
