@@ -1,4 +1,4 @@
-﻿@model List<CustomerPortal.Contract.Response.CompanyPreferenceResponse>
+﻿@model Dictionary<string, List<CustomerPortal.Contract.Response.CompanyPreferenceResponse>>
 
 
 <div id="validationPanel" class="alert-success alert" style="display: none"> </div>
@@ -9,7 +9,10 @@
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)
 
-    if (Model.Count > 0)
+    var hasLocalCompanies = Model.ContainsKey("Local") && Model["Local"].Any();
+    var hasRoamingCompanies = Model.Any(m => m.Key != "Local");
+
+    if (hasLocalCompanies || hasRoamingCompanies)
     {
         <table class="table table-striped">
             <tr>
@@ -18,16 +21,65 @@
                 <th class="company-preference-order-table">Dispatch Orders To</th>
             </tr>
         </table>
-        <ul class="sortable">
-            @foreach (var company in Model)
-            {
+    }
 
+    <legend>
+        @Html.DisplayName("Local")
+    </legend>
+    
+    if (!hasLocalCompanies)
+    {
+        <h4>You don't have any companies within your Local Network</h4>
+    }
+
+    <ul class="sortable">
+        @foreach (var company in Model["Local"])
+        {
+            <li>
+                <div class="company-preference-order-text"><span class="handle">::</span>@company.CompanyPreference.CompanyKey</div>
+                @Html.Hidden("idKey_" + company.CompanyPreference.CompanyKey, company.CompanyPreference.CompanyKey)
+                <div class="company-preference-order-checkbox">@Html.CheckBox("acceptKey_" + company.CompanyPreference.CompanyKey, company.CompanyPreference.CanAccept)</div>
+                <div class="company-preference-order-checkbox">
+                    @if (company.CanDispatchTo)
+                    {
+                        @Html.CheckBox("dispatchKey_" + company.CompanyPreference.CompanyKey, company.CompanyPreference.CanDispatch)
+                    }
+                    else
+                    {
+                        @Html.CheckBox("dispatchKey_" + company.CompanyPreference.CompanyKey, company.CompanyPreference.CanDispatch, new { disabled = "disabled" })
+                    }
+                </div>
+                @Html.Hidden("orderKey_" + company.CompanyPreference.CompanyKey, company.CompanyPreference.Order)
+            </li>
+        }
+    </ul>
+
+    <legend>
+        <br/>
+        @Html.DisplayName("Roaming")
+    </legend>
+    
+    if (!hasRoamingCompanies)
+    {
+        <h4>There is no other company that is part of the the Network.</h4>
+    }
+
+    foreach (var market in Model.Keys)
+    {
+        if (market == "Local") { continue; }
+    
+        <legend>
+            <h5>@market</h5>
+        </legend>
+
+        <ul class="static-table">
+            @foreach (var company in Model[market])
+            {
                 <li>
-                    
-                    <div class="company-preference-order-text"><span class="handle">::</span>@company.CompanyPreference.CompanyKey</div>
+                    <div class="company-preference-order-text">@company.CompanyPreference.CompanyKey</div>
                     @Html.Hidden("idKey_" + company.CompanyPreference.CompanyKey, company.CompanyPreference.CompanyKey)
                     <div class="company-preference-order-checkbox">@Html.CheckBox("acceptKey_" + company.CompanyPreference.CompanyKey, company.CompanyPreference.CanAccept)</div>
-                    <div class="company-preference-order-checkbox">
+                    <div class="company-preference-order-checkbox ">
                         @if (company.CanDispatchTo)
                         {
                             @Html.CheckBox("dispatchKey_" + company.CompanyPreference.CompanyKey, company.CompanyPreference.CanDispatch)
@@ -37,16 +89,14 @@
                             @Html.CheckBox("dispatchKey_" + company.CompanyPreference.CompanyKey, company.CompanyPreference.CanDispatch, new { disabled = "disabled" })
                         }
                     </div>
-                    @Html.Hidden("orderKey_" + company.CompanyPreference.CompanyKey, company.CompanyPreference.Order)
                 </li>
             }
         </ul>
-
-        <a href="javascript:void(0)" type="submit" class="btn btn-primary" onclick=" save()">Save</a>
     }
-    else
+
+    if (hasLocalCompanies || hasRoamingCompanies)
     {
-        <h4>You don't have any companies within your Network</h4>
+        <a href="javascript:void(0)" type="submit" class="btn btn-primary" onclick=" save()">Save</a>
     }
 }
 
@@ -86,9 +136,9 @@
         });
     }
 
-    $(document).ready(function () {
-        $('.sortable').sortable().bind('sortupdate', function (e, ui) {
-            $('.sortable').children('li').each(function () {
+    $(document).ready(function() {
+        $('.sortable').sortable().bind('sortupdate', function(e, ui) {
+            $('.sortable').children('li').each(function() {
                 $(this).find('input')[ui.item.find('input').length - 1].value = $(this).index();
             });
 

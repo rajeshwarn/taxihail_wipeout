@@ -444,4 +444,7 @@
   <data name="Email_Body_YourDriver" xml:space="preserve">
     <value>Votre chauffeur</value>
   </data>
+  <data name="CannotCreateOrder_NoCompanies" xml:space="preserve">
+    <value>Aucune compagnie ne sert cette région</value>
+  </data>
 </root>

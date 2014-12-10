@@ -123,7 +123,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                 ? networkFleet.First()
                 : FindNextAvailableCompanyInIbsZone(currentCompanyKey, pickupPosition, networkFleet, market);
 
-            return nextDispatchCompany;
+            return nextDispatchCompany; 
         }
 
         private NetworkFleetResponse FindNextAvailableCompanyInIbsZone(string currentCompanyKey, MapCoordinate pickupPosition, IList<NetworkFleetResponse> networkFleet, string market = null)
@@ -169,22 +169,20 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                         .Select(g => g.First());
 
                     // Fetch all NetworkFleet objects for this market
-                    var allMarketFleets = _taxiHailNetworkServiceClient.GetMarketFleets(market);
+                    var allMarketFleets = _taxiHailNetworkServiceClient.GetMarketFleets(null, market).ToArray();
 
                     // All NetworkFleet objects for this market except the current one
-                    var marketFleets =
-                        _taxiHailNetworkServiceClient.GetMarketFleets(market)
-                            .Where(f => f.CompanyKey != currentCompanyKey);
+                    var marketFleets = allMarketFleets.Where(f => f.CompanyKey != currentCompanyKey);
                     var currentFleet = allMarketFleets.First(f => f.CompanyKey == currentCompanyKey);
 
                     // Return only those from the ordered fleet
-                    var test = orderedFleets
+                    var nonNullOrdered = orderedFleets
                         .Select(v => marketFleets.FirstOrDefault(f => f.FleetId == v.FleetId))
                         .Where(f => f != null)
                         .ToList();
 
-                    test.Insert(0, currentFleet);
-                    return test;
+                    nonNullOrdered.Insert(0, currentFleet);
+                    return nonNullOrdered;
                 }
 
                 // Nothing found, extend search radius (total radius after 10 iterations: 3375m)

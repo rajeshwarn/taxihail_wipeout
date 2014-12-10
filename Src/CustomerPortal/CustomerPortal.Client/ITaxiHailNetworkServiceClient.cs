@@ -9,6 +9,8 @@ namespace CustomerPortal.Client
     {
         Task<List<CompanyPreferenceResponse>> GetNetworkCompanyPreferences(string companyId);
 
+        Task<Dictionary<string, List<CompanyPreferenceResponse>>> GetRoamingCompanyPreferences(string companyId);
+
         Task SetNetworkCompanyPreferences(string companyId, CompanyPreference[] companyPreferences);
 
         Task<List<NetworkFleetResponse>> GetNetworkFleetAsync(string companyId, double? latitude = null, double? longitude = null);
@@ -17,7 +19,7 @@ namespace CustomerPortal.Client
 
         string GetCompanyMarket(double latitude, double longitude);
 
-        IEnumerable<NetworkFleetResponse> GetMarketFleets(string market);
+        IEnumerable<NetworkFleetResponse> GetMarketFleets(string companyId, string market);
 
         NetworkFleetResponse GetMarketFleet(string market, int fleetId);
     }

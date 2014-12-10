@@ -21,6 +21,11 @@ namespace apcurium.MK.Web.Tests
             throw new NotImplementedException();
         }
 
+        public Task<Dictionary<string, List<CompanyPreferenceResponse>>> GetRoamingCompanyPreferences(string companyId)
+        {
+            throw new NotImplementedException();
+        }
+
         public Task SetNetworkCompanyPreferences(string companyId, CompanyPreference[] companyPreferences)
         {
             throw new NotImplementedException();
@@ -50,7 +55,7 @@ namespace apcurium.MK.Web.Tests
             return string.Empty;
         }
 
-        public IEnumerable<NetworkFleetResponse> GetMarketFleets(string market)
+        public IEnumerable<NetworkFleetResponse> GetMarketFleets(string companyId, string market)
         {
             throw new NotImplementedException();
         }
