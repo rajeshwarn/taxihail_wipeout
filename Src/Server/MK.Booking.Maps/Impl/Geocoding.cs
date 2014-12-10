@@ -86,22 +86,24 @@ namespace apcurium.MK.Booking.Maps.Impl
 
 		private GeoAddress[] SearchUsingName(string name, bool useFilter, string currentLanguage)
         {
+		    if (name == null)
+		    {
+		        return null;
+		    }
+
+		    GeoAddress[] results;
             var filter = _appSettings.Data.GeoLoc.SearchFilter;
-            if (name != null)
-            {
-                GeoAddress[] results;
 
-                if ((filter.HasValue()) && (useFilter))
-                {
-                    var filteredName = string.Format(filter, name.Split(' ').JoinBy("+"));
-					results = _mapApi.GeocodeAddress(filteredName, currentLanguage);
+		    if (filter.HasValue() && useFilter)
+		    {
+		        var filteredName = string.Format(filter, name.Split(' ').JoinBy("+"));
+		        results = _mapApi.GeocodeAddress(filteredName, currentLanguage);
 
-                    return FilterGeoCodingResults(results);
-                }
-                results = _mapApi.GeocodeAddress(name.Split(' ').JoinBy("+"), currentLanguage);
-                return FilterGeoCodingResults(results);
-            }
-            return null;
+		        return FilterGeoCodingResults(results);
+		    }
+		    results = _mapApi.GeocodeAddress(name.Split(' ').JoinBy("+"), currentLanguage);
+
+		    return FilterGeoCodingResults(results);
         }
 
         private Address[] SearchPopularAddresses(string name)
