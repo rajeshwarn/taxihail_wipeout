@@ -75,7 +75,7 @@ namespace apcurium.MK.Booking.IBS.Impl
             // In external market
             if (!_ibsSettings.ContainsKey(companyKey) && market.HasValue())
             {
-                var marketFleets = _taxiHailNetworkService.GetMarketFleets(market);
+                var marketFleets = _taxiHailNetworkService.GetMarketFleets(null, market);
 
                 _ibsSettings.Clear();
 

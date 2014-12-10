@@ -20,7 +20,7 @@ namespace apcurium.MK.Booking.Domain
             : base(id)
         {
             Handles<CreditCardPaymentInitiated>(OnCreditCardPaymentInitiated);
-            Handles<CreditCardPaymentCaptured>(OnCreditCardPaymentCaptured);
+            Handles<CreditCardPaymentCaptured_V2>(OnCreditCardPaymentCaptured);
             Handles<CreditCardErrorThrown>(OnCreditCardPaymentCancellationFailed);
         }
 
@@ -30,7 +30,7 @@ namespace apcurium.MK.Booking.Domain
             LoadFrom(history);
         }
 
-        public CreditCardPayment(Guid id, Guid orderId, string transactionId, decimal amount, decimal meter, decimal tip,
+        public CreditCardPayment(Guid id, Guid orderId, string transactionId, decimal amount, decimal meter, decimal tip, 
             string cardToken, PaymentProvider provider)
             : this(id)
         {
@@ -48,14 +48,14 @@ namespace apcurium.MK.Booking.Domain
             });
         }
 
-        public void Capture(PaymentProvider provider, decimal amount, decimal meterAmount, decimal tipAmount, string authorizationCode, bool isNoShowFee, Guid? promotionUsed, decimal amountSavedByPromotion)
+        public void Capture(PaymentProvider provider, decimal amount, decimal meterAmount, decimal tipAmount, decimal taxAmount, string authorizationCode, bool isNoShowFee, Guid? promotionUsed, decimal amountSavedByPromotion)
         {
             if (_isCaptured)
             {
                 throw new InvalidOperationException("Payment is already captured");
             }
 
-            Update(new CreditCardPaymentCaptured
+            Update(new CreditCardPaymentCaptured_V2
             {
                 OrderId = _orderId,
                 TransactionId = _transactionId,
@@ -63,6 +63,7 @@ namespace apcurium.MK.Booking.Domain
                 Amount = amount,
                 Meter = meterAmount,
                 Tip = tipAmount,
+                Tax = taxAmount,
                 Provider = provider,
                 IsNoShowFee = isNoShowFee,
                 PromotionUsed = promotionUsed,
@@ -84,7 +85,7 @@ namespace apcurium.MK.Booking.Domain
             _transactionId = obj.TransactionId;
         }
 
-        private void OnCreditCardPaymentCaptured(CreditCardPaymentCaptured obj)
+        private void OnCreditCardPaymentCaptured(CreditCardPaymentCaptured_V2 obj)
         {
             _isCaptured = true;
         }

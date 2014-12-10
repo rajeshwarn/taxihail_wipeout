@@ -29,7 +29,8 @@ namespace apcurium.MK.Booking.EventHandlers
         IEventHandler<CreditCardAdded>,
         IEventHandler<CreditCardRemoved>,
         IEventHandler<AllCreditCardsRemoved>,
-        IEventHandler<AccountLinkedToIbs>
+        IEventHandler<AccountLinkedToIbs>,
+        IEventHandler<AccountUnlinkedFromIbs>
     {
         private readonly IServerSettings _serverSettings;
         private readonly Func<BookingDbContext> _contextFactory;
@@ -268,6 +269,18 @@ namespace apcurium.MK.Booking.EventHandlers
                     account.IBSAccountId = @event.IbsAccountId;
                     context.Save(account);
                 }
+            }
+        }
+
+        public void Handle(AccountUnlinkedFromIbs @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var account = context.Find<AccountDetail>(@event.SourceId);
+                account.IBSAccountId = null;
+
+                context.RemoveWhere<AccountIbsDetail>(x => x.AccountId == @event.SourceId);
+                context.SaveChanges();
             }
         }
     }

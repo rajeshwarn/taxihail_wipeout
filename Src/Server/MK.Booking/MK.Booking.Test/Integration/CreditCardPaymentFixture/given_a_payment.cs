@@ -58,7 +58,7 @@ namespace apcurium.MK.Booking.Test.Integration.CreditCardPaymentFixture
         [Test]
         public void when_payment_captured_then_dto_updated()
         {
-            Sut.Handle(new CreditCardPaymentCaptured
+            Sut.Handle(new CreditCardPaymentCaptured_V2
             {
                 SourceId = _paymentId,
             });

@@ -79,6 +79,15 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to There is no company serving this region.
+        /// </summary>
+        public static string CannotCreateOrder_NoCompanies {
+            get {
+                return ResourceManager.GetString("CannotCreateOrder_NoCompanies", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to This promotion does not applies to future booking.
         /// </summary>
         public static string CannotCreateOrder_PromotionAppliesToCurrentBookingOnly {

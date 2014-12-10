@@ -53,6 +53,7 @@
     <Compile Include="AccountPasswordReset.cs" />
     <Compile Include="AccountPasswordUpdated.cs" />
     <Compile Include="AccountRegistered.cs" />
+    <Compile Include="AccountUnlinkedFromIbs.cs" />
     <Compile Include="AccountUpdated.cs" />
     <Compile Include="AddressRemovedFromHistory.cs" />
     <Compile Include="AccountChargeAddedUpdated.cs" />
@@ -63,6 +64,7 @@
     <Compile Include="AllCreditCardsRemoved.cs" />
     <Compile Include="CreditCardErrorThrown.cs" />
     <Compile Include="CreditCardPaymentCaptured.cs" />
+    <Compile Include="CreditCardPaymentCaptured_V2.cs" />
     <Compile Include="CreditCardPaymentInitiated.cs" />
     <Compile Include="CreditCardUpdated.cs" />
     <Compile Include="DispatchCompanySwitchIgnored.cs" />

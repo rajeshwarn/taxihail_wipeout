@@ -48,11 +48,11 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
                 },
                 Preferences = new List<CompanyPreference>
                 {
-                    new CompanyPreference{CompanyKey = "ChrisTaxiBis",CanAccept = true,CanDispatch = true,Order = 2},
-                    new CompanyPreference{CompanyKey = "TomTaxi",CanAccept = true,CanDispatch = false,Order = 0},
-                    new CompanyPreference{CompanyKey = "PilouTaxi",CanAccept = true,CanDispatch = true,Order = 1},
+                    new CompanyPreference{CompanyKey = "ChrisTaxiBis", CanAccept = true, CanDispatch = true, Order = 2},
+                    new CompanyPreference{CompanyKey = "TomTaxi", CanAccept = true, CanDispatch = false, Order = 0},
+                    new CompanyPreference{CompanyKey = "PilouTaxi", CanAccept = true, CanDispatch = true, Order = 1},
                 }
-            };
+            }; 
 
             _chrisTaxiBis = new TaxiHailNetworkSettings
             {
@@ -68,7 +68,7 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
                 },
                 Preferences = new List<CompanyPreference>
                 {
-                    new CompanyPreference{CompanyKey = "ChrisTaxi",CanAccept = false,CanDispatch = true},
+                    new CompanyPreference{CompanyKey = "ChrisTaxi",CanAccept = true,CanDispatch = true},
                     new CompanyPreference{CompanyKey = "TomTaxi",CanAccept = true,CanDispatch = true},
                     new CompanyPreference{CompanyKey = "PilouTaxi",CanAccept = true,CanDispatch = true},
                 }
@@ -236,6 +236,33 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
         public RoamingApiController Sut { get; set; }
 
         [Test]
+        public void When_Getting_Every_Fleets_From_Every_Market()
+        {
+            var response = Sut.GetRoamingFleetsPreferences("ChrisTaxi");
+            var json = response.Content.ReadAsStringAsync().Result;
+            var fleetsPreferences =
+                JsonConvert.DeserializeObject<Dictionary<string, List<CompanyPreferenceResponse>>>(json);
+
+            Assert.NotNull(fleetsPreferences);
+
+            Assert.AreEqual(3, fleetsPreferences.Count);
+            Assert.Contains("CHI", fleetsPreferences.Keys);
+            Assert.Contains("NYC", fleetsPreferences.Keys);
+            Assert.Contains("SYD", fleetsPreferences.Keys);
+
+            var chicagoFleets = fleetsPreferences["CHI"];
+            Assert.AreEqual("TomTaxi", chicagoFleets[0].CompanyPreference.CompanyKey);
+            Assert.AreEqual("TonyTaxi", chicagoFleets[1].CompanyPreference.CompanyKey);
+
+            var newYorkFleets = fleetsPreferences["NYC"];
+            Assert.AreEqual("PilouTaxi", newYorkFleets[0].CompanyPreference.CompanyKey);
+
+            var sydneyFleets = fleetsPreferences["SYD"];
+            Assert.AreEqual("LastTaxi", sydneyFleets[0].CompanyPreference.CompanyKey);
+
+        }
+
+        [Test]
         public void When_Getting_Company_Market_In_Home_Market()
         {
             var response = Sut.GetCompanyMarket("ChrisTaxi", 45.423513, -73.653214);
@@ -258,19 +285,11 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
         [Test]
         public void When_Getting_Fleets_From_a_Market()
         {
-            var response = Sut.GetMarketFleets("MTL");
+            var response = Sut.GetMarketFleets("ChrisTaxi", "MTL");
             var json = response.Content.ReadAsStringAsync().Result;
             var fleets = JsonConvert.DeserializeObject<List<NetworkFleetResponse>>(json);
 
-            Assert.AreEqual(2, fleets.Count);
-
-            var firstFleet = fleets.FirstOrDefault(f => f.CompanyKey == "ChrisTaxi");
-            Assert.NotNull(firstFleet);
-            Assert.AreEqual("ChrisTaxi", firstFleet.CompanyKey);
-            Assert.AreEqual("ChrisTaxi", firstFleet.CompanyName);
-            Assert.AreEqual("http://google.com", firstFleet.IbsUrl);
-            Assert.AreEqual("Taxi", firstFleet.IbsUserName);
-            Assert.AreEqual("test", firstFleet.IbsPassword);
+            Assert.AreEqual(1, fleets.Count);
 
             var secondFleet = fleets.FirstOrDefault(f => f.CompanyKey == "ChrisTaxiBis");
             Assert.NotNull(secondFleet);

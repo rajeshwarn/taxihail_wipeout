@@ -4,6 +4,8 @@ using System.Configuration;
 using System.Data.Entity;
 using System.Linq;
 using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Configuration.Impl;
+using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
 using CustomerPortal.Client;
 using CustomerPortal.Client.Impl;
@@ -24,7 +26,7 @@ namespace DatabaseInitializer
 {
     public class Module
     {
-        public void Init(IUnityContainer container, ConnectionStringSettings connectionString)
+        public void Init(IUnityContainer container, ConnectionStringSettings connectionString, string oldConnectionString)
         {
             RegisterInfrastructure(container, connectionString);
 
@@ -39,7 +41,9 @@ namespace DatabaseInitializer
             RegisterEventHandlers(container);
             RegisterCommandHandlers(container);
             
-            container.RegisterInstance<IEventsMigrator>(new EventsMigrator( () => container.Resolve<EventStoreDbContext>()));
+            container.RegisterInstance<IEventsMigrator>(
+                new EventsMigrator(() => container.Resolve<EventStoreDbContext>(),
+                                   new ServerSettings(() => new ConfigurationDbContext(oldConnectionString), container.Resolve<ILogger>())));
         }
 
         private void RegisterInfrastructure(IUnityContainer container, ConnectionStringSettings connectionString)
