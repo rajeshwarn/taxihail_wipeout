@@ -8,11 +8,13 @@ using apcurium.MK.Booking.Maps.Impl.Mappers;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
+using apcurium.MK.Common.Geography;
 using apcurium.MK.Common.Provider;
 using apcurium.MK.Booking.MapDataProvider;
 using apcurium.MK.Booking.MapDataProvider.Resources;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Booking.MapDataProvider.Google.Resources;
+using MK.Common.Configuration;
 
 #endregion
 
@@ -87,12 +89,17 @@ namespace apcurium.MK.Booking.Maps.Impl
             var filter = _appSettings.Data.GeoLoc.SearchFilter;
             if (name != null)
             {
+                GeoAddress[] results;
+
                 if ((filter.HasValue()) && (useFilter))
                 {
                     var filteredName = string.Format(filter, name.Split(' ').JoinBy("+"));
-					return _mapApi.GeocodeAddress(filteredName, currentLanguage);
+					results = _mapApi.GeocodeAddress(filteredName, currentLanguage);
+
+                    return FilterGeoCodingResults(results);
                 }
-				return _mapApi.GeocodeAddress(name.Split(' ').JoinBy("+"), currentLanguage);
+                results = _mapApi.GeocodeAddress(name.Split(' ').JoinBy("+"), currentLanguage);
+                return FilterGeoCodingResults(results);
             }
             return null;
         }
@@ -123,6 +130,27 @@ namespace apcurium.MK.Booking.Maps.Impl
             var inRange = addressesInRange as Address[] ?? addressesInRange.ToArray();
             inRange.ForEach(a => a.AddressType = "popular");
             return inRange.ToArray();
+        }
+
+        private GeoAddress[] FilterGeoCodingResults(GeoAddress[] resultsToFilter)
+        {
+            if (!_appSettings.Data.UpperRightLatitude.HasValue
+                || !_appSettings.Data.UpperRightLongitude.HasValue
+                || !_appSettings.Data.LowerLeftLatitude.HasValue
+                || !_appSettings.Data.LowerLeftLongitude.HasValue)
+            {
+                return resultsToFilter;
+            }
+
+            // Make sure that the geocoding results are part of the region covered by the app
+            return resultsToFilter.Where(result =>
+                GeographyHelper.RegionContainsCoordinate(
+                    _appSettings.Data.UpperRightLatitude.Value,  // x1
+                    _appSettings.Data.UpperRightLongitude.Value, // y1
+                    _appSettings.Data.LowerLeftLatitude.Value,   // x2
+                    _appSettings.Data.LowerLeftLongitude.Value,  // y2
+                    result.Latitude, result.Longitude))
+                .ToArray();
         }
     }
 }
