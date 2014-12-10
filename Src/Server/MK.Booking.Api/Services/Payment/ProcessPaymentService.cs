@@ -51,7 +51,6 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             _paymentServiceFactory = paymentServiceFactory;
             _accountDao = accountDao;
             _orderDao = orderDao;
-            _paymentService = paymentService;
             _ibsServiceProvider = ibsServiceProvider;
             _serverSettings = serverSettings;
             _paymentDao = paymentDao;
@@ -286,7 +285,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                 if (!UpdateOrderPaymentType(a.IBSAccountId.Value, o.IBSOrderId.Value, 7))
                 {
                     response.IsSuccessful = false;
-                    _paymentService.VoidPreAuthorization(request.OrderId);
+                    _paymentServiceFactory.GetInstance().VoidPreAuthorization(request.OrderId);
                 }
             }
             return response;
