@@ -34,8 +34,8 @@ namespace apcurium.MK.Web.Tests
             var address = addresses.ElementAt(0);
             Assert.AreEqual(true, address.FullAddress.Contains("Chateaubriand"));
             Assert.AreEqual("5661", address.StreetNumber);
-            Assert.AreEqual("Chateaubriand Avenue", address.Street);
-            Assert.AreEqual("Montreal", address.City);
+            Assert.AreEqual("Avenue de Chateaubriand", address.Street);
+            Assert.AreEqual("Montréal", address.City);
             StringAssert.Contains("H2S", address.ZipCode);
         }
         
@@ -51,9 +51,9 @@ namespace apcurium.MK.Web.Tests
         public void BasicNameSearch()
         {
             var sut = new GeocodingServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
-            var addresses = sut.Search("11 hines");
+            var addresses = sut.Search("5250 ferrier");
             Assert.True(addresses.Count() == 1);
-            Assert.True(addresses.ElementAt(0).FullAddress.Contains("11"));
+            Assert.True(addresses.ElementAt(0).FullAddress.Contains("5250"));
         }
 
         [Test]

@@ -85,7 +85,7 @@ namespace apcurium.MK.Web.Tests
         }
 
         [Test]
-        public async void create_order_with_charge_account_with_card_on_file_payment()
+        public async void create_order_with_charge_account_with_card_on_file_payment_from_web_app()
         {
             var accountChargeSut = new AdministrationServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
             var accountChargeName = "NAME" + new Random(DateTime.Now.Millisecond).Next(0, 5236985);
@@ -111,6 +111,7 @@ namespace apcurium.MK.Web.Tests
             var order = new CreateOrder
             {
                 Id = Guid.NewGuid(),
+                FromWebApp = true,
                 PickupAddress = TestAddresses.GetAddress1(),
                 PickupDate = DateTime.Now,
                 DropOffAddress = TestAddresses.GetAddress2(),
@@ -146,12 +147,8 @@ namespace apcurium.MK.Web.Tests
                 ClientLanguageCode = SupportedLanguages.fr.ToString()
             };
 
-            var details = await sut.CreateOrder(order);
-
-            Assert.NotNull(details);
-
-            var orderDetails = await sut.GetOrder(details.OrderId);
-            Assert.AreEqual(orderDetails.Settings.ChargeTypeId, ChargeTypes.CardOnFile.Id);
+            var ex = Assert.Throws<WebServiceException>(async () => await sut.CreateOrder(order));
+            Assert.AreEqual("Ce compte n'est pas supporté par la page web", ex.ErrorMessage);
         }
 
         [Test]

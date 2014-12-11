@@ -128,12 +128,6 @@ namespace apcurium.MK.Booking.Api.Services
             if (request.Settings.ChargeTypeId.HasValue
                 && request.Settings.ChargeTypeId.Value == ChargeTypes.Account.Id)
             {
-                ValidateChargeAccountAnswers(request.Settings.AccountNumber, request.QuestionsAndAnswers);
-
-                prompts = request.QuestionsAndAnswers.Select(q => q.Answer).ToArray();
-                promptsLength = request.QuestionsAndAnswers.Select(q => q.MaxLength).ToArray();
-
-                // Change payment mode to card of file if necessary
                 var accountChargeDetail = _accountChargeDao.FindByAccountNumber(request.Settings.AccountNumber);
 
                 if (accountChargeDetail.UseCardOnFileForPayment)
@@ -151,6 +145,11 @@ namespace apcurium.MK.Booking.Api.Services
                     request.Settings.ChargeTypeId = ChargeTypes.CardOnFile.Id;
                     isChargeAccountPaymentWithCardOnFile = true;
                 }
+
+                ValidateChargeAccountAnswers(request.Settings.AccountNumber, request.QuestionsAndAnswers);
+
+                prompts = request.QuestionsAndAnswers.Select(q => q.Answer).ToArray();
+                promptsLength = request.QuestionsAndAnswers.Select(q => q.MaxLength).ToArray();
             }
 
             var rule = _ruleCalculator.GetActiveDisableFor(
@@ -454,15 +453,20 @@ namespace apcurium.MK.Booking.Api.Services
             {
                 throw new HttpError(HttpStatusCode.Forbidden, ErrorCode.AccountCharge_InvalidAccountNumber.ToString());
             }
-            
+
             var answers = userQuestionsDetails.Select(x => x.Answer);
-            // TODO: Handle nulls
+
             var validation = _ibsServiceProvider.ChargeAccount().ValidateIbsChargeAccount(answers, accountNumber, "0");
             if (!validation.Valid)
-            {                
-                int firstError = validation.ValidResponse.IndexOf(false);                 
-                throw new HttpError(HttpStatusCode.Forbidden, ErrorCode.AccountCharge_InvalidAnswer.ToString(),
-                                        accountChargeDetail.Questions[firstError].ErrorMessage);
+            {
+                if (validation.ValidResponse != null)
+                {
+                    int firstError = validation.ValidResponse.IndexOf(false);
+                    throw new HttpError(HttpStatusCode.Forbidden, ErrorCode.AccountCharge_InvalidAnswer.ToString(),
+                                            accountChargeDetail.Questions[firstError].ErrorMessage);
+                }
+
+                throw new HttpError(HttpStatusCode.Forbidden, ErrorCode.AccountCharge_InvalidAccountNumber.ToString(), validation.Message);
             }
         }
 
