@@ -138,7 +138,7 @@
                 return;
             }
 
-            var promptTitle = TaxiHail.localize("RefineAddress");
+            var promptTitle = TaxiHail.localize('RefineAddress');
             var newStreetNumber = prompt(promptTitle, originalStreetNumber);
             if (!newStreetNumber) {
                 // don't replace if the user cancelled or entered string.empty

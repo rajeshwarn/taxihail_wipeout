@@ -85,5 +85,6 @@
 	"Eta" : "The nearest taxi is {0} and {1} {2} away",
     "AssignedEta": "Your taxi is {0} and {1} {2} away",
     "NetworkFleetDispatchErrorTitle": "Error",
-    "NetworkContactingNextDispatchDescription": "Contacting {0} ..."
+    "NetworkContactingNextDispatchDescription": "Contacting {0} ...",
+    "RefineAddress": "Refine the address by entering a street number"
 }
