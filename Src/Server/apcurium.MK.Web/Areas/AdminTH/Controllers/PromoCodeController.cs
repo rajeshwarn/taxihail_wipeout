@@ -158,5 +158,12 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
             TempData["Info"] = "Promotion deactivated";
             return RedirectToAction("Index");
         }
+
+        // GET: AdminTH/PromoCode/Statistics/5
+        public ActionResult Statistics(Guid id)
+        {
+            var stats = _promotionDao.GetStatistics(id);
+            return View(stats);
+        }
     }
 }

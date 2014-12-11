@@ -427,6 +427,7 @@
     <Content Include="Areas\AdminTH\Views\PromoCode\Edit.cshtml" />
     <Content Include="assets\js\jquery.sortable.min.js" />
     <Content Include="Areas\AdminTH\Views\Privacy\Index.cshtml" />
+    <Content Include="Areas\AdminTH\Views\PromoCode\Statistics.cshtml" />
     <None Include="Scripts\jquery-1.8.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.8.2.js" />
     <Content Include="Scripts\jquery-1.8.2.min.js" />

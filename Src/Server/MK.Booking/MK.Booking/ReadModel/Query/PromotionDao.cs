@@ -90,6 +90,14 @@ namespace apcurium.MK.Booking.ReadModel.Query
             }
         }
 
+        public PromotionStatisticDetail GetStatistics(Guid promoId)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                return context.Query<PromotionStatisticDetail>().SingleOrDefault(c => c.Id == promoId);
+            }
+        }
+
         private DateTime GetCurrentOffsetedTime()
         {
             var ibsServerTimeDifference = _serverSettings.ServerData.IBS.TimeDifference;

@@ -253,6 +253,20 @@ namespace apcurium.MK.Booking.Test.Integration.PromotionFixture
                 Assert.AreEqual(PromoDiscountType.Cash, dto.DiscountType);
                 Assert.AreEqual(10, dto.DiscountValue);
                 Assert.AreEqual(10, dto.AmountSaved);
+
+                var statistics = context.Find<PromotionStatisticDetail>(_promoId);
+                
+                Assert.NotNull(statistics);
+                Assert.AreEqual(dto.PromoId, statistics.Id);
+                Assert.AreEqual(dto.Code, statistics.PromoCode);
+                Assert.AreEqual(1, statistics.UsageCount);
+                Assert.AreEqual(10, statistics.TotalUsageAmount);
+
+                var account = context.Find<AccountDetail>(dto.AccountId);
+
+                Assert.NotNull(account);
+                Assert.IsTrue(statistics.UsersUsage.ContainsKey(account.Email));
+                Assert.AreEqual(1, statistics.UsersUsage[account.Email]);
             }
         }
     }

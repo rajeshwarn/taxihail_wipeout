@@ -229,7 +229,7 @@ namespace apcurium.MK.Booking.Domain
             return 0;
         }
 
-        public void Redeem(Guid orderId, decimal totalAmountOfOrder)
+        public void Redeem(Guid orderId, Guid promoId, decimal totalAmountOfOrder)
         {
             if (!_orderIds.Contains(orderId))
             {
@@ -241,6 +241,7 @@ namespace apcurium.MK.Booking.Domain
             Update(new PromotionRedeemed
             {
                 OrderId = orderId,
+                PromoId = promoId,
                 AmountSaved = amountSaved
             });
         }
