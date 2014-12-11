@@ -5547,7 +5547,6 @@ public partial class TVehiclePosition
 }
 
 /// <remarks/>
-[System.Xml.Serialization.SoapIncludeAttribute(typeof(TVehiclePosition_4))]
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.0.30319.18020")]
 [System.SerializableAttribute()]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
@@ -5578,7 +5577,7 @@ public partial class TVehiclePosition_2 : TVehiclePosition
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.SoapTypeAttribute(Namespace = "urn:TypeOrder")]
-public partial class TVehiclePosition_4 : TVehiclePosition_2
+public partial class TVehiclePosition_4 : TVehiclePosition
 {
 
     private TVehicleTypeItem vehicleTypeField;
@@ -7104,9 +7103,7 @@ public partial class TBookOrder_8 : TBookOrder_7
     private int customerNumField;
 
     private int waitTimeField;
-
-    private bool customerNumSpecified1Field;
-
+    
     /// <remarks/>
     public string AccountNum
     {
@@ -7143,20 +7140,6 @@ public partial class TBookOrder_8 : TBookOrder_7
         set
         {
             this.waitTimeField = value;
-        }
-    }
-
-    /// <remarks/>
-    [System.Xml.Serialization.SoapElementAttribute("CustomerNumSpecified")]
-    public bool CustomerNumSpecified1
-    {
-        get
-        {
-            return this.customerNumSpecified1Field;
-        }
-        set
-        {
-            this.customerNumSpecified1Field = value;
         }
     }
 }

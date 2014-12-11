@@ -16,6 +16,8 @@
    "TaxiHail.AccentColor" : "#0057a3",
    "TaxiHail.EmailFontColor" : "#000",
    "TaxiHail.SiteName": "Dev",
+   "apcuriumibs_DefaultBookingSettings.ProviderId" : "18",
+   "apcuriumibs_IBS.WebServicesUrl": "http://apcuriumibs:6928/XDS_IASPI.DLL/soap/",
    "DefaultBookingSettings.ProviderId" : "2",
    "IBS.WebServicesUrl" : "http://ukdemo.drivelinq.com:11928/IBSCab2/IBSCab.dll/soap/",
    "IBS.RestApiUrl" : "http://cabmatedemo.drivelinq.com:8889/",
@@ -38,5 +40,5 @@
    "UpperRightLatitude" : "0",
    "UpperRightLongitude" : "0",
    "VehicleTypeSelectionEnabled": "true",
-   "CustomerPortal.Url": "http://localhost/CustomerPortal.Web/api/",
+   "CustomerPortal.Url": "http://test.taxihail.biz:8181/CustomerPortal/api/"
 }
