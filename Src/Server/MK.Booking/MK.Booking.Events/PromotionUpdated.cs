@@ -1,4 +1,5 @@
 ﻿using System;
+using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
 using Infrastructure.EventSourcing;
 
@@ -37,5 +38,7 @@ namespace apcurium.MK.Booking.Events
         public DateTime? PublishedStartDate { get; set; }
 
         public DateTime? PublishedEndDate { get; set; }
+
+        public PromotionTriggerSettings TriggerSettings { get; set; }
     }
 }

@@ -44,7 +44,8 @@ namespace apcurium.MK.Booking.EventHandlers
                     MaxUsage = @event.MaxUsage,
                     Code = @event.Code,
                     PublishedStartDate = @event.PublishedStartDate,
-                    PublishedEndDate = @event.PublishedEndDate
+                    PublishedEndDate = @event.PublishedEndDate,
+                    TriggerSettings = @event.TriggerSettings
                 };
 
                 context.Save(promotionDetail);
@@ -73,6 +74,7 @@ namespace apcurium.MK.Booking.EventHandlers
                 promotionDetail.Code = @event.Code;
                 promotionDetail.PublishedStartDate = @event.PublishedStartDate;
                 promotionDetail.PublishedEndDate = @event.PublishedEndDate;
+                promotionDetail.TriggerSettings = @event.TriggerSettings;
 
                 context.Save(promotionDetail);
             }

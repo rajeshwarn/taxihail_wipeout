@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Common;
+using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using Infrastructure.EventSourcing;
@@ -12,6 +13,7 @@ namespace apcurium.MK.Booking.Domain
     public class Promotion : EventSourced
     {
         private bool _active;
+        private PromotionTriggerSettings _triggerSettings;
 
         private DateTime? _startDate;
         private DateTime? _endDate;
@@ -49,7 +51,7 @@ namespace apcurium.MK.Booking.Domain
         public Promotion(Guid id, string name, string description, DateTime? startDate, DateTime? endDate, DateTime? startTime, 
             DateTime? endTime, DayOfWeek[] daysOfWeek, bool appliesToCurrentBooking, bool appliesToFutureBooking,
             decimal discountValue, PromoDiscountType discountType, int? maxUsagePerUser, int? maxUsage, string code,
-            DateTime? publishedStartDate, DateTime? publishedEndDate)
+            DateTime? publishedStartDate, DateTime? publishedEndDate, PromotionTriggerSettings triggerSettings)
             : this(id)
         {
             if (Params.Get(name, code).Any(p => p.IsNullOrEmpty()))
@@ -74,13 +76,14 @@ namespace apcurium.MK.Booking.Domain
                 MaxUsage = maxUsage,
                 Code = code,
                 PublishedStartDate = publishedStartDate,
-                PublishedEndDate = publishedEndDate
+                PublishedEndDate = publishedEndDate,
+                TriggerSettings = triggerSettings
             });
         }
 
         public void Update(string name, string description, DateTime? startDate, DateTime? endDate, DateTime? startTime, DateTime? endTime,
             DayOfWeek[] daysOfWeek, bool appliesToCurrentBooking, bool appliesToFutureBooking, decimal discountValue, PromoDiscountType discountType,
-            int? maxUsagePerUser, int? maxUsage, string code, DateTime? publishedStartDate, DateTime? publishedEndDate)
+            int? maxUsagePerUser, int? maxUsage, string code, DateTime? publishedStartDate, DateTime? publishedEndDate, PromotionTriggerSettings triggerSettings)
         {
             if (Params.Get(name, code).Any(p => p.IsNullOrEmpty()))
             {
@@ -104,7 +107,8 @@ namespace apcurium.MK.Booking.Domain
                 MaxUsage = maxUsage,
                 Code = code,
                 PublishedStartDate = publishedStartDate,
-                PublishedEndDate = publishedEndDate
+                PublishedEndDate = publishedEndDate,
+                TriggerSettings = triggerSettings
             });
         }
 
@@ -257,6 +261,7 @@ namespace apcurium.MK.Booking.Domain
             _discountValue = @event.DiscountValue;
             _discountType = @event.DiscountType;
             _code = @event.Code;
+            _triggerSettings = @event.TriggerSettings;
 
             SetInternalStartAndEndTimes(@event.StartTime, @event.EndTime);
         }
@@ -273,6 +278,7 @@ namespace apcurium.MK.Booking.Domain
             _discountValue = @event.DiscountValue;
             _discountType = @event.DiscountType;
             _code = @event.Code;
+            _triggerSettings = @event.TriggerSettings;
 
             SetInternalStartAndEndTimes(@event.StartTime, @event.EndTime);
         }

@@ -73,7 +73,8 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                     MaxUsage = promoCode.MaxUsage,
                     Code = promoCode.Code,
                     PublishedStartDate = promoCode.PublishedStartDate,
-                    PublishedEndDate = promoCode.PublishedEndDate
+                    PublishedEndDate = promoCode.PublishedEndDate,
+                    TriggerSettings = promoCode.TriggerSettings
                 });
 
                 TempData["Info"] = string.Format("Promotion \"{0}\" created", promoCode.Name);
@@ -122,7 +123,8 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                     MaxUsage = promoCode.MaxUsage,
                     Code = promoCode.Code,
                     PublishedStartDate = promoCode.PublishedStartDate,
-                    PublishedEndDate = promoCode.PublishedEndDate
+                    PublishedEndDate = promoCode.PublishedEndDate,
+                    TriggerSettings = promoCode.TriggerSettings
                 });
 
                 TempData["Info"] = string.Format("Promotion \"{0}\" updated", promoCode.Name);

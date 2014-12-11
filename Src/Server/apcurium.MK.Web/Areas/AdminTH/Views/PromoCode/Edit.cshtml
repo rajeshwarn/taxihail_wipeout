@@ -186,7 +186,11 @@
             @Html.ValidationMessageFor(x => x.Code)
         </div>
     </div>
-    
+    <div class="control-group">
+        @Html.LabelFor(x => x.TriggerSettings.Type, new { @class = "control-label" })
+        @Html.DropDownListFor(x => x.TriggerSettings.Type, new SelectList(PromotionTriggerTypes.GetList(), "Id", "Display", Model.TriggerSettings.Type))
+    </div>
+
     <div class="control-group btn-right-alignment">
         <button type="submit" class="btn btn-primary span">Save</button>
         @Html.ActionLink("Cancel", "Index", null, new { @class = "btn span" })
