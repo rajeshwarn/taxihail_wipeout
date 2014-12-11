@@ -1,2 +1,2 @@
 @REM Generate WSDL
-"C:\Program Files (x86)\Microsoft SDKs\Windows\v8.0A\bin\NETFX 4.0 Tools\wsdl" http://64.179.223.211:8080/ibscab/IBSCab.dll/wsdl/IWebOrder_7
+"C:\Program Files (x86)\Microsoft SDKs\Windows\v8.0A\bin\NETFX 4.0 Tools\wsdl" http://ukdemo.drivelinq.com:11928/IBSCab2/IBSCab.dll/wsdl/IWebOrder_7
