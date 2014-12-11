@@ -163,8 +163,9 @@ namespace apcurium.MK.Booking.IBS.Impl
                 double fare;
                 double tolls;
                 double distance;
+                double tripTime;
 
-                result.FareEstimate = service.EstimateFare_8(UserNameApp, PasswordApp, tbook, out fare, out tolls, out distance);
+                result.FareEstimate = service.EstimateFare_8(UserNameApp, PasswordApp, tbook, out fare, out tolls, out distance, out tripTime);
                 if ( result.FareEstimate == 0 )
                 {
                     result.FareEstimate = fare;
@@ -371,7 +372,7 @@ namespace apcurium.MK.Booking.IBS.Impl
             UseService(service =>
             {
                 Logger.LogMessage("WebService Creating IBS Order : " +
-                                  JsonSerializer.SerializeToString(order, typeof(TBookOrder_7)));
+                                  JsonSerializer.SerializeToString(order, typeof(TBookOrder_8)));
                 Logger.LogMessage("WebService Creating IBS Order pickup : " +
                                   JsonSerializer.SerializeToString(order.PickupAddress, typeof(TWEBAddress)));
                 Logger.LogMessage("WebService Creating IBS Order dest : " +
