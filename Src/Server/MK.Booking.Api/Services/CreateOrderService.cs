@@ -256,6 +256,8 @@ namespace apcurium.MK.Booking.Api.Services
             }
 
             var applyPromoCommand = ValidateAndApplyPromotion(request.PromoCode, request.Settings.ChargeTypeId, account.Id, request.Id, pickupDate, isFutureBooking, request.ClientLanguageCode);
+            applyPromoCommand.RetryCount = 3;
+            applyPromoCommand.RetryInterval = TimeSpan.FromSeconds(0.5);
 
             var ibsOrderId = CreateIbsOrder(account.IBSAccountId.Value, request, referenceData, chargeTypeIbs, prompts, promptsLength, bestAvailableCompany.CompanyKey);
             
@@ -782,7 +784,7 @@ namespace apcurium.MK.Booking.Api.Services
             return new BestAvailableCompany();
         }
 
-        private ApplyPromotion ValidateAndApplyPromotion(string promoCode, int? chargeTypeId, Guid accountId, Guid orderId, DateTime pickupDate, bool isFutureBooking, string clientLanguageCode)
+        private Envelope<ICommand> ValidateAndApplyPromotion(string promoCode, int? chargeTypeId, Guid accountId, Guid orderId, DateTime pickupDate, bool isFutureBooking, string clientLanguageCode)
         {
             if (!promoCode.HasValue())
             {

@@ -40,6 +40,7 @@ namespace Infrastructure.Messaging
         public Envelope(T body)
         {
             this.Body = body;
+            this.RetryCount = 1;
         }
 
         /// <summary>
@@ -56,6 +57,16 @@ namespace Infrastructure.Messaging
         /// Gets or sets the time to live for the message in the queue.
         /// </summary>
         public TimeSpan TimeToLive { get; set; }
+
+        /// <summary>
+        /// Gets or sets the time between 2 retry when failed for Concurrency exception.
+        /// </summary>
+        public TimeSpan RetryInterval { get; set; }
+
+        /// <summary>
+        /// Gets or sets the time between 2 retry when failed for Concurrency exception.
+        /// </summary>
+        public int RetryCount { get; set; }
 
         /// <summary>
         /// Gets the correlation id.

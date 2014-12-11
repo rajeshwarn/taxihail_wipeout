@@ -76,5 +76,6 @@ namespace apcurium.MK.Booking.CommandHandlers
 
             _repository.Save(promotion, command.Id.ToString());
         }
+       
     }
 }

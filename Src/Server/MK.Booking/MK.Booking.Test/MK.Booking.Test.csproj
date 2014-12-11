@@ -106,6 +106,7 @@
     <Compile Include="EnumerableEventsExtensions.cs" />
     <Compile Include="EventSourcingTestHelper.cs" />
     <Compile Include="CompanyFixture\given_a_company.cs" />
+    <Compile Include="Infrastructure\AsynchronousMemoryCommandBusFixture.cs" />
     <Compile Include="Integration\AccountFixture\AccountDetailsGenerator.cs" />
     <Compile Include="Integration\AccountFixture\DeviceDetailsGenerator.cs" />
     <Compile Include="Integration\AccountFixture\NotificationSettingsGenerator.cs" />
