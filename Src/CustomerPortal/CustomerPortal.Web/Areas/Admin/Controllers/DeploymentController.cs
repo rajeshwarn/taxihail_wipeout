@@ -155,7 +155,7 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
 
                 var job = new AddDeploymentJobModel { Android = false, CallBox = false, CompanyId = model.CompanyKey , CreateType = (int)DeploymentJobType.DeployServer, Database = true, IosAdhoc = false, IosAppStore = false, RevisionId = model.RevisionId, ServerUrlOptions = model.ServerUrlOptions };
                 var environments = new MongoRepository<Environment>();
-                job.ServerId = model.ServerUrlOptions == ServerUrlOptions.Production ? environments.Single(e => e.Name == "ProductionV2").Id : environments.Single(e => e.Name == "Staging").Id;
+                job.ServerId = model.ServerUrlOptions == ServerUrlOptions.Production ? environments.Single(e =>  e.Name == (useNewDeploymentService ? "ProductionV2" : "Production")).Id : environments.Single(e => e.Name == "Staging").Id;
                 AddDeploymentJob(job);                
             }
 
