@@ -7103,7 +7103,7 @@ public partial class TBookOrder_8 : TBookOrder_7
     private int customerNumField;
 
     private int waitTimeField;
-    
+
     /// <remarks/>
     public string AccountNum
     {
