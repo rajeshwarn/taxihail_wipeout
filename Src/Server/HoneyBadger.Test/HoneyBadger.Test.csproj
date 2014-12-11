@@ -56,11 +56,11 @@
       <Name>HoneyBadger</Name>
     </ProjectReference>
     <ProjectReference Include="..\MK.Booking\MK.Booking.Test\MK.Booking.Test.csproj">
-      <Project>{2AD48D85-462D-4763-8016-A2AA10F185A7}</Project>
+      <Project>{2ad48d85-462d-4763-8016-a2aa10f185a7}</Project>
       <Name>MK.Booking.Test</Name>
     </ProjectReference>
     <ProjectReference Include="..\MK.Common\MK.Common.csproj">
-      <Project>{65033050-1D55-465A-A772-F3192F9E2428}</Project>
+      <Project>{65033050-1d55-465a-a772-f3192f9e2428}</Project>
       <Name>MK.Common</Name>
     </ProjectReference>
   </ItemGroup>

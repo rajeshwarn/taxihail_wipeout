@@ -2,11 +2,11 @@
 #region
 
 using System.Linq;
-using apcurium.MK.Booking.Common.Tests;
 using apcurium.MK.Common.Diagnostic;
 using NUnit.Framework;
 using apcurium.MK.Booking.MapDataProvider;
 using apcurium.MK.Booking.MapDataProvider.Google;
+using apcurium.MK.Booking.Test;
 using apcurium.MK.Common.Extensions;
 
 #endregion
