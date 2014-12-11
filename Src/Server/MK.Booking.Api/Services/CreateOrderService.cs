@@ -507,7 +507,7 @@ namespace apcurium.MK.Booking.Api.Services
             {
                 throw new HttpError(HttpStatusCode.Forbidden, ErrorCode.AccountCharge_InvalidAccountNumber.ToString());
             }
-            
+
             var answers = userQuestionsDetails.Select(x => x.Answer);
 
             var validation = _ibsServiceProvider.ChargeAccount().ValidateIbsChargeAccount(answers, accountNumber, "0");
@@ -585,7 +585,7 @@ namespace apcurium.MK.Booking.Api.Services
                 request.Settings.Phone,
                 request.Settings.Passengers,
                 request.Settings.VehicleTypeId,
-                null, // null since we don't use the ChargeTypes of ibs anymore
+                6,
                 note,
                 request.PickupDate.Value,
                 ibsPickupAddress,

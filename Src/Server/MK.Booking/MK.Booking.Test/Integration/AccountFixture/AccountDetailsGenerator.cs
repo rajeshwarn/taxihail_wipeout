@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using apcurium.MK.Booking.Common.Tests;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.EventHandlers;
 using apcurium.MK.Booking.Events;

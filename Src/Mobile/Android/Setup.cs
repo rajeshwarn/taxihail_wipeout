@@ -29,6 +29,7 @@ using Cirrious.CrossCore.Droid;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Booking.MapDataProvider.TomTom;
 using apcurium.MK.Booking.Mobile.Client.Helpers;
+using MK.Booking.MapDataProvider.Foursquare;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -76,7 +77,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             ConfigureInsights ();
 
             _container.Register<IGeocoder>( (c,p)=> new GoogleApiClient(c.Resolve<IAppSettings>(), c.Resolve<ILogger>(), new AndroidGeocoder(c.Resolve<IAppSettings>(), c.Resolve<ILogger>(), c.Resolve<IMvxAndroidGlobals>())) );
-			_container.Register<IPlaceDataProvider, GoogleApiClient>();
+			_container.Register<IPlaceDataProvider, FoursquareProvider>();
 			
             _container.Register<IDirectionDataProvider> ((c, p) =>
             {

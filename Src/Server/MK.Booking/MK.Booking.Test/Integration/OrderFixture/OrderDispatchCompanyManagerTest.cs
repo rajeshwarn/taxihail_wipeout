@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using apcurium.MK.Booking.Common.Tests;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.EventHandlers;
 using apcurium.MK.Booking.EventHandlers.Integration;

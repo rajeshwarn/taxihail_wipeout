@@ -165,8 +165,9 @@ namespace apcurium.MK.Booking.IBS.Impl
                 double fare;
                 double tolls;
                 double distance;
+                double tripTime;
 
-                result.FareEstimate = service.EstimateFare_8(UserNameApp, PasswordApp, tbook, out fare, out tolls, out distance);
+                result.FareEstimate = service.EstimateFare_8(UserNameApp, PasswordApp, tbook, out fare, out tolls, out distance, out tripTime);
                 if ( result.FareEstimate == 0 )
                 {
                     result.FareEstimate = fare;
@@ -206,6 +207,19 @@ namespace apcurium.MK.Booking.IBS.Impl
             });
             return success;
         }
+
+        public bool UpdateOrderPaymentType(int ibsAccountId, int ibsOrderId, int chargeTypeId)
+        {
+            var success = false;
+            UseService(service =>
+            {
+                var result = service.UpdateJobPaymentType(UserNameApp, PasswordApp, ibsAccountId, ibsOrderId, chargeTypeId);
+                success = result == 1;
+
+            });
+            return success;
+        }
+
 
         public bool ConfirmExternalPayment(Guid orderID, int ibsOrderId, decimal totalAmount, decimal tipAmount, decimal meterAmount, string type, string provider, string transactionId,
            string authorizationCode, string cardToken, int accountID, string name, string phone, string email, string os, string userAgent)
@@ -360,12 +374,11 @@ namespace apcurium.MK.Booking.IBS.Impl
             UseService(service =>
             {
                 Logger.LogMessage("WebService Creating IBS Order : " +
-                                  JsonSerializer.SerializeToString(order, typeof(TBookOrder_7)));
+                                  JsonSerializer.SerializeToString(order, typeof(TBookOrder_8)));
                 Logger.LogMessage("WebService Creating IBS Order pickup : " +
                                   JsonSerializer.SerializeToString(order.PickupAddress, typeof(TWEBAddress)));
                 Logger.LogMessage("WebService Creating IBS Order dest : " +
                                   JsonSerializer.SerializeToString(order.DropoffAddress, typeof(TWEBAddress)));
-
 
                 orderId = service.SaveBookOrder_8(UserNameApp, PasswordApp, order);
                 Logger.LogMessage("WebService Create Order, orderid receveid : " + orderId);

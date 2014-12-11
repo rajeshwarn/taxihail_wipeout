@@ -1,6 +1,5 @@
 ﻿#region
 
-using apcurium.MK.Booking.Common.Tests;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.EventHandlers;
 
