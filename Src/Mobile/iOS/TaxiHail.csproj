@@ -8,7 +8,7 @@
     <OutputType>Exe</OutputType>
     <RootNamespace>apcurium.MK.Booking.Mobile.Client</RootNamespace>
     <MtouchSdkVersion>7.1</MtouchSdkVersion>
-    <AssemblyName>TaxiMobileApp</AssemblyName>
+    <AssemblyName>TaxiHail</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhoneSimulator' ">
     <DebugSymbols>True</DebugSymbols>
@@ -567,6 +567,9 @@
     <Compile Include="Views\UserTaxiHailNetworkSettingsView.designer.cs">
       <DependentUpon>UserTaxiHailNetworkSettingsView.cs</DependentUpon>
     </Compile>
+    <BundleResource Include="Resources\poweredBy4sq.png" />
+    <BundleResource Include="Resources\poweredBy4sq%402x.png" />
+    <Compile Include="PlatformIntegration\AppleDirectionProvider.cs" />
     <BundleResource Include="Resources\promo.png" />
     <BundleResource Include="Resources\promo%402x.png" />
     <Compile Include="Views\PromotionView.cs" />
@@ -782,8 +785,6 @@
     <BundleResource Include="Resources\forward.png" />
     <BundleResource Include="Resources\forward%402x.png" />
     <BundleResource Include="Resources\tutorial_background.png" />
-    <BundleResource Include="Resources\poweredby.png" />
-    <BundleResource Include="Resources\poweredByGoogle.png" />
     <BundleResource Include="Resources\places.png" />
     <BundleResource Include="Resources\places%402x.png" />
     <BundleResource Include="Resources\taxi_progress.png" />

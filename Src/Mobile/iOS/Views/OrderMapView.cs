@@ -278,13 +278,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         {
             if (AddressSelectionMode == AddressSelectionMode.DropoffSelection)
             {
-                if (!DestinationAddress.HasValidCoordinate())
-                {
-                    SetAnnotation(DestinationAddress, _destinationAnnotation, false);
-                }
-
-                SetOverlay(_pickupCenterPin, false);
-                SetOverlay(_dropoffCenterPin, true);
+				SetAnnotation (DestinationAddress, _destinationAnnotation, false);
+				SetOverlay(_pickupCenterPin, false);
+				SetOverlay(_dropoffCenterPin, true);
+                
 
                 if (PickupAddress.HasValidCoordinate())
                 {
@@ -298,8 +295,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             else
             {
                 SetAnnotation(PickupAddress, _pickupAnnotation, false);
-                SetOverlay(_dropoffCenterPin, false);
-                SetOverlay(_pickupCenterPin, true);
+				SetOverlay(_dropoffCenterPin, false);
+				SetOverlay(_pickupCenterPin, true);
 
                 if (DestinationAddress.HasValidCoordinate())
                 {

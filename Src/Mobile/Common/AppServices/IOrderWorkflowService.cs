@@ -9,7 +9,7 @@ using apcurium.MK.Common.Entity;
 namespace apcurium.MK.Booking.Mobile.AppServices
 {
 	public interface IOrderWorkflowService
-    {
+	{
 		Task PrepareForNewOrder();
 
 		void BeginCreateOrder ();
@@ -30,6 +30,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 		Task SetPickupDate(DateTime? date);
 
 		Task ToggleBetweenPickupAndDestinationSelectionMode();
+		Task ToggleIsDestinationModeOpened(bool? forceValue = null);
 
 		Task ValidatePickupTime();
 		Task ValidatePickupAndDestination();
@@ -53,6 +54,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 		IObservable<bool> GetAndObserveLoadingAddress();
 		IObservable<bool> GetAndObserveOrderCanBeConfirmed();
 		IObservable<string> GetAndObserveMarket();
+		IObservable<bool> GetAndObserveIsDestinationModeOpened();
 
 		Task<Tuple<Order, OrderStatusDetail>> GetLastActiveOrder();
 

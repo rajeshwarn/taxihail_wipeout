@@ -585,7 +585,7 @@ namespace apcurium.MK.Booking.Api.Services
                 request.Settings.Phone,
                 request.Settings.Passengers,
                 request.Settings.VehicleTypeId,
-                null, // null since we don't use the ChargeTypes of ibs anymore
+                6,
                 note,
                 request.PickupDate.Value,
                 ibsPickupAddress,
