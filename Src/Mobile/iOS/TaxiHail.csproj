@@ -274,6 +274,9 @@
     <None Include="features\support\02_pre_stop_hooks.rb" />
     <None Include="features\support\env.rb" />
     <None Include="features\my_first.feature" />
+    <None Include="PlatformIntegration\AppleDirectionProvider.cs" />
+    <None Include="Resources\poweredBy4sq.png" />
+    <None Include="Resources\poweredBy4sq%402x.png" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Annotations.cs" />
@@ -753,8 +756,6 @@
     <BundleResource Include="Resources\tutorial_screen06%402x.png" />
     <BundleResource Include="Resources\tutorial_screen07.png" />
     <BundleResource Include="Resources\tutorial_screen07%402x.png" />
-    <BundleResource Include="Resources\poweredby.png" />
-    <BundleResource Include="Resources\poweredByGoogle.png" />
     <BundleResource Include="Resources\places.png" />
     <BundleResource Include="Resources\places%402x.png" />
     <BundleResource Include="Resources\taxi_progress.png" />
@@ -786,16 +787,6 @@
     </XamarinComponentReference>
   </ItemGroup>
   <ItemGroup />
-  <ItemGroup>
-    <Folder Include="Resources\" />
-    <Folder Include="Controls\Widgets\" />
-    <Folder Include="Controls\Behavior\" />
-    <Folder Include="Controls\Widgets\Booking\" />
-    <Folder Include="Views\Order\" />
-    <Folder Include="Views\AddressPicker\" />
-    <Folder Include="Controls\Message\" />
-    <Folder Include="Controls\Delegate\" />
-  </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Style\Theme.xml">
       <LogicalName>Theme.xml</LogicalName>

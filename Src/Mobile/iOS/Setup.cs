@@ -26,7 +26,8 @@ using Cirrious.MvvmCross.Dialog.Touch;
 using apcurium.MK.Booking.MapDataProvider;
 using apcurium.MK.Booking.MapDataProvider.Google;
 using MonoTouch.Foundation;
-
+using MK.Booking.MapDataProvider.Foursquare;
+using apcurium.MK.Booking.Mobile.Client.PlatformIntegration;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -86,8 +87,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 
 			container.Register<IGeocoder> ((c, p) => new GoogleApiClient (c.Resolve<IAppSettings> (), c.Resolve<ILogger> (), new AppleGeocoder ()));
-			container.Register<IPlaceDataProvider, GoogleApiClient> ();
-			container.Register<IDirectionDataProvider, GoogleApiClient> ();
+			container.Register<IPlaceDataProvider, FoursquareProvider> ();
+			container.Register<IDirectionDataProvider, AppleDirectionProvider> ();
+
 
 			InitializeSocialNetwork ();
 
