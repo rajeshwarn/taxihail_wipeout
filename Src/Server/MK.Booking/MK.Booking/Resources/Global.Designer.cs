@@ -178,6 +178,15 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You are not allowed to use this promotion.
+        /// </summary>
+        public static string CannotCreateOrder_PromotionUserNotAllowed {
+            get {
+                return ResourceManager.GetString("CannotCreateOrder_PromotionUserNotAllowed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to This account is not supported by the web site..
         /// </summary>
         public static string CannotCreateOrderChargeAccountNotSupported {

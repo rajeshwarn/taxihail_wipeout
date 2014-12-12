@@ -28,6 +28,7 @@ namespace apcurium.MK.Booking.Domain
         private decimal _discountValue;
         private PromoDiscountType _discountType;
 
+        private readonly List<Guid> _usersWhiteList = new List<Guid>();
         private readonly Dictionary<Guid, int> _usagesPerUser = new Dictionary<Guid, int>();
         private readonly List<Guid> _orderIds = new List<Guid>(); 
         private int _usages;
@@ -39,7 +40,9 @@ namespace apcurium.MK.Booking.Domain
             Handles<PromotionActivated>(OnPromotionActivated);
             Handles<PromotionDeactivated>(OnPromotionDeactivated);
             Handles<PromotionApplied>(OnPromotionApplied);
-            Handles<PromotionRedeemed>(NoAction);
+            Handles<PromotionRedeemed>(OnPromotionRedeemed);
+            Handles<UserAddedToPromotionWhiteList>(OnUserAddedToWhiteList);
+            Handles<UserRemovedFromPromotionWhiteList>(OnUserRemovedFromWhiteList);
         }
 
         public Promotion(Guid id, IEnumerable<IVersionedEvent> history)
@@ -129,6 +132,13 @@ namespace apcurium.MK.Booking.Domain
             if (!_active)
             {
                 errorMessage = "CannotCreateOrder_PromotionIsNotActive";
+                return false;
+            }
+
+            if (_triggerSettings.Type != PromotionTriggerTypes.NoTrigger.Id
+                && !_usersWhiteList.Contains(accountId))
+            {
+                errorMessage = "CannotCreateOrder_PromotionUserNotAllowed";
                 return false;
             }
 
@@ -233,7 +243,7 @@ namespace apcurium.MK.Booking.Domain
             return 0;
         }
 
-        public void Redeem(Guid orderId, decimal totalAmountOfOrder)
+        public void Redeem(Guid orderId, Guid accountId, decimal totalAmountOfOrder)
         {
             if (!_orderIds.Contains(orderId))
             {
@@ -245,7 +255,16 @@ namespace apcurium.MK.Booking.Domain
             Update(new PromotionRedeemed
             {
                 OrderId = orderId,
+                AccountId = accountId,
                 AmountSaved = amountSaved
+            });
+        }
+
+        public void AddUserToWhiteList(Guid accountId)
+        {
+            Update(new UserAddedToPromotionWhiteList
+            {
+                AccountId = accountId
             });
         }
 
@@ -302,6 +321,27 @@ namespace apcurium.MK.Booking.Domain
             _usagesPerUser[@event.AccountId] = usagesForThisUser + 1;
 
             _orderIds.Add(@event.OrderId);
+        }
+
+        private void OnPromotionRedeemed(PromotionRedeemed @event)
+        {
+            _usersWhiteList.Remove(@event.AccountId);
+        }
+
+        private void OnUserAddedToWhiteList(UserAddedToPromotionWhiteList @event)
+        {
+            if (_usersWhiteList.Contains(@event.AccountId))
+            {
+                // User already white listed
+                return;
+            }
+
+            _usersWhiteList.Add(@event.AccountId);
+        }
+
+        private void OnUserRemovedFromWhiteList(UserRemovedFromPromotionWhiteList @event)
+        {
+            _usersWhiteList.Remove(@event.AccountId);
         }
 
         /// <summary>

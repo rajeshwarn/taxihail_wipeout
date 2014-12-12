@@ -430,4 +430,7 @@
   <data name="CannotCreateOrder_NoCompanies" xml:space="preserve">
     <value>There is no company serving this region</value>
   </data>
+  <data name="CannotCreateOrder_PromotionUserNotAllowed" xml:space="preserve">
+    <value>You are not allowed to use this promotion</value>
+  </data>
 </root>

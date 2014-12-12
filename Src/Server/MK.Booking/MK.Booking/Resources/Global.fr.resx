@@ -447,4 +447,7 @@
   <data name="CannotCreateOrder_NoCompanies" xml:space="preserve">
     <value>Aucune compagnie ne sert cette région</value>
   </data>
+  <data name="CannotCreateOrder_PromotionUserNotAllowed" xml:space="preserve">
+    <value>Vous n'êtes pas autorisé à utiliser cette promotion</value>
+  </data>
 </root>
