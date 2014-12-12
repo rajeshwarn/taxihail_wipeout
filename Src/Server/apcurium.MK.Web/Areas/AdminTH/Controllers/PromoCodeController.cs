@@ -5,6 +5,7 @@ using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Security;
 using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Web.Areas.AdminTH.Models;
 using apcurium.MK.Web.Attributes;
 using Infrastructure.Messaging;
@@ -103,6 +104,20 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                 if (!ModelState.IsValid)
                 {
                     throw new Exception("Something's not right");
+                }
+
+                if (promoCode.TriggerSettings.Type == PromotionTriggerTypes.AmountSpent.Id)
+                {
+                    promoCode.TriggerSettings.RideCount = 0;
+                }
+                else if (promoCode.TriggerSettings.Type == PromotionTriggerTypes.RideCount.Id)
+                {
+                    promoCode.TriggerSettings.AmountSpent = 0;
+                }
+                else
+                {
+                    promoCode.TriggerSettings.RideCount = 0;
+                    promoCode.TriggerSettings.AmountSpent = 0;
                 }
 
                 _commandBus.Send(new UpdatePromotion

@@ -184,27 +184,26 @@
             @Html.ValidationMessageFor(x => x.Code)
         </div>
     </div>
-
-    <div class="control-group">
-        @Html.LabelFor(x => x.Code, new { @class = "control-label" })
-        <div class="controls">
-            @Html.TextBoxFor(x => x.Code, new { @class = "input-small" })
-            @Html.ValidationMessageFor(x => x.Code)
+    <div class="clearfix">
+        <div class="control-group left-control-group">
+            @Html.LabelFor(x => x.TriggerSettings.Type, new { @class = "control-label" })
+            <div class="controls">
+                @Html.DropDownListFor(x => x.TriggerSettings.Type, new SelectList(PromotionTriggerTypes.GetList(), "Id", "Display", Model.TriggerSettings.Type), new { @id="triggerTypeDropDown" })
+            </div>    
+        </div>
+        <div class="control-group right-control-group" id="rideCountTriggerGroup">
+            <div class="controls">
+                @Html.TextBoxFor(x => x.TriggerSettings.RideCount, new { @placeholder = "Number of Rides" })
+                @Html.ValidationMessageFor(x => x.TriggerSettings.RideCount)
+            </div>
+        </div>
+        <div class="control-group right-control-group" id="amountSpentTriggerGroup">
+            <div class="controls">
+                @Html.TextBoxFor(x => x.TriggerSettings.AmountSpent, new { @placeholder = "Amount Spent" })
+                @Html.ValidationMessageFor(x => x.TriggerSettings.AmountSpent)
+            </div>
         </div>
     </div>
-    <div class="control-group control-group">
-        @Html.LabelFor(x => x.TriggerSettings.Type, new { @class = "control-label" })
-        @Html.DropDownListFor(x => x.TriggerSettings.Type, new SelectList(PromotionTriggerTypes.GetList(), "Id", "Display", Model.TriggerSettings.Type), new { @id="triggerTypeDropDown" })
-    </div>
-    <div class="control-group right-control-group" id="rideCountTriggerGroup">
-        @Html.LabelFor(x => x.TriggerSettings.RideCount, new { @class = "control-label" })
-        @Html.TextBoxFor(x => x.TriggerSettings.RideCount)
-    </div>
-    <div class="control-group right-control-group" id="amountSpentTriggerGroup">
-        @Html.LabelFor(x => x.TriggerSettings.AmountSpent, new { @class = "control-label" })
-        @Html.TextBoxFor(x => x.TriggerSettings.AmountSpent)
-    </div>
-
     <div class="control-group btn-right-alignment">
         <button type="submit" class="btn btn-primary span">Create</button>
         @Html.ActionLink("Cancel", "Index", null, new { @class = "btn span" })
@@ -252,10 +251,15 @@
 
     function onTriggerTypeChanged(e) {
         if ($('#triggerTypeDropDown')[0].value == 2) {
+           $('#amountSpentTriggerGroup').addClass('hidden');
            $('#rideCountTriggerGroup').removeClass('hidden');
         }
         else if ($('#triggerTypeDropDown')[0].value == 3) {
             $('#amountSpentTriggerGroup').removeClass('hidden');
+            $('#rideCountTriggerGroup').addClass('hidden');
+        } else {
+            $('#amountSpentTriggerGroup').addClass('hidden');
+            $('#rideCountTriggerGroup').addClass('hidden');
         }
     }
 

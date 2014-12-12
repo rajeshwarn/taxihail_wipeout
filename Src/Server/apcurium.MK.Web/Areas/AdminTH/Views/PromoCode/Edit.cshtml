@@ -186,9 +186,25 @@
             @Html.ValidationMessageFor(x => x.Code)
         </div>
     </div>
-    <div class="control-group">
-        @Html.LabelFor(x => x.TriggerSettings.Type, new { @class = "control-label" })
-        @Html.DropDownListFor(x => x.TriggerSettings.Type, new SelectList(PromotionTriggerTypes.GetList(), "Id", "Display", Model.TriggerSettings.Type))
+    <div class="clearfix">
+        <div class="control-group left-control-group">
+            @Html.LabelFor(x => x.TriggerSettings.Type, new { @class = "control-label" })
+            <div class="controls">
+                @Html.DropDownListFor(x => x.TriggerSettings.Type, new SelectList(PromotionTriggerTypes.GetList(), "Id", "Display", Model.TriggerSettings.Type), new { @id = "triggerTypeDropDown" })
+            </div>
+        </div>
+        <div class="control-group right-control-group" id="rideCountTriggerGroup">
+            <div class="controls">
+                @Html.TextBoxFor(x => x.TriggerSettings.RideCount, new { @placeholder = "Number of Rides" })
+                @Html.ValidationMessageFor(x => x.TriggerSettings.RideCount)
+            </div>
+        </div>
+        <div class="control-group right-control-group" id="amountSpentTriggerGroup">
+            <div class="controls">
+                @Html.TextBoxFor(x => x.TriggerSettings.AmountSpent, new { @placeholder = "Amount Spent" })
+                @Html.ValidationMessageFor(x => x.TriggerSettings.AmountSpent)
+            </div>
+        </div>
     </div>
 
     <div class="control-group btn-right-alignment">
@@ -244,8 +260,35 @@
         }
     }
 
+    function onTriggerTypeChanged(e) {
+        if ($('#triggerTypeDropDown')[0].value == 2) {
+            $('#amountSpentTriggerGroup').addClass('hidden');
+            $('#rideCountTriggerGroup').removeClass('hidden');
+        }
+        else if ($('#triggerTypeDropDown')[0].value == 3) {
+            $('#amountSpentTriggerGroup').removeClass('hidden');
+            $('#rideCountTriggerGroup').addClass('hidden');
+        } else {
+            $('#amountSpentTriggerGroup').addClass('hidden');
+            $('#rideCountTriggerGroup').addClass('hidden');
+        }
+    }
+
     $(document).ready(function () {
         $('.next-day-warning').addClass('hidden');
+
+        if ($('#triggerTypeDropDown')[0].value == 2) {
+            $('#amountSpentTriggerGroup').addClass('hidden');
+        } else if ($('#triggerTypeDropDown')[0].value == 3) {
+            $('#rideCountTriggerGroup').addClass('hidden');
+        } else {
+            $('#rideCountTriggerGroup').addClass('hidden');
+            $('#amountSpentTriggerGroup').addClass('hidden');
+        }
+
+        $('#triggerTypeDropDown').change(function (e) {
+            onTriggerTypeChanged(e);
+        });
 
         $('[data-role=datepicker]').datepicker();
         $('[data-role=timepicker]').timepicker({
