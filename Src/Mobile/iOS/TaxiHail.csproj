@@ -274,7 +274,6 @@
     <None Include="features\support\02_pre_stop_hooks.rb" />
     <None Include="features\support\env.rb" />
     <None Include="features\my_first.feature" />
-    <None Include="PlatformIntegration\AppleDirectionProvider.cs" />
     <None Include="Resources\poweredBy4sq.png" />
     <None Include="Resources\poweredBy4sq%402x.png" />
   </ItemGroup>
@@ -524,6 +523,7 @@
     <Compile Include="Views\Order\InitializeOrderForAccountPaymentView.designer.cs">
       <DependentUpon>InitializeOrderForAccountPaymentView.cs</DependentUpon>
     </Compile>
+    <Compile Include="PlatformIntegration\AppleDirectionProvider.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
   <ProjectExtensions>
