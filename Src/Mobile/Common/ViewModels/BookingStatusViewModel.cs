@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Linq;
 using apcurium.MK.Booking.Api.Contract.Resources;
-using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.Infrastructure;
@@ -21,7 +20,6 @@ using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using ServiceStack.Text;
 using apcurium.MK.Booking.Maps;
-using Cirrious.CrossCore;
 using System.Net;
 using ServiceStack.ServiceClient.Web;
 
@@ -371,7 +369,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					|| status.IBSStatusId.Equals(VehicleStatuses.Common.Done);
 				var paymentSettings = await _paymentService.GetPaymentSettings();
                 if (isLoaded 
-					&& paymentSettings.AutomaticPayment 
+					&& ((paymentSettings.AutomaticPayment && !paymentSettings.AutomaticPaymentPairing)
+						|| paymentSettings.PaymentMode == PaymentMethod.RideLinqCmt)
 					&& _accountService.CurrentAccount.DefaultCreditCard != null)
 				{
 					var isPaired = await _bookingService.IsPaired(Order.Id);
@@ -511,6 +510,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
             IsResendButtonVisible = isOrderAlreadyPaid
                                 && !paymentSettings.AutomaticPayment
+								&& paymentSettings.PaymentMode != PaymentMethod.RideLinqCmt
                                 && (paymentSettings.IsPayInTaxiEnabled || paymentSettings.PayPalClientSettings.IsEnabled);
 
 			// Unpair button is only available for RideLinqCMT
@@ -558,17 +558,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        public async Task GoToPairScreen()
+        public void GoToPairScreen()
         {
-			var paymentSettings = await _paymentService.GetPaymentSettings ();
-			if (!paymentSettings.AutomaticPaymentPairing)
-            {
-                ShowViewModel<ConfirmPairViewModel>(new
-                {
-                    order = Order.ToJson(),
-                    orderStatus = OrderStatusDetail.ToJson()
-                }.ToStringDictionary());
-            }
+			ShowViewModel<ConfirmPairViewModel>(new
+			{
+				order = Order.ToJson(),
+				orderStatus = OrderStatusDetail.ToJson()
+			}.ToStringDictionary());
         }
 
         private void CenterMap ()
@@ -693,7 +689,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					this.Services().Analytics.LogEvent("PayButtonTapped");
 					
 					var paymentSettings = await _paymentService.GetPaymentSettings();
-                    if (paymentSettings.AutomaticPayment)
+					if ((paymentSettings.AutomaticPayment && !paymentSettings.AutomaticPaymentPairing)
+						|| paymentSettings.PaymentMode == PaymentMethod.RideLinqCmt)
                     {
                         GoToPairScreen();
                     }
