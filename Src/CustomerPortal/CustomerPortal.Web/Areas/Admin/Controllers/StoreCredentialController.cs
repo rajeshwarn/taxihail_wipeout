@@ -87,7 +87,7 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
             try
             {
                 var encode = System.Text.Encoding.GetEncoding("utf-8");
-                var searchByBundleId = "http://itunes.apple.com/en/lookup?bundleId=" + bundleId;
+                var searchByBundleId = "https://itunes.apple.com/lookup?bundleId="+ bundleId +"&country=us" ;
                 var wrquest = (HttpWebRequest)WebRequest.Create(searchByBundleId);
                 var getresponse = (HttpWebResponse)wrquest.GetResponse();
                 var objStream = getresponse.GetResponseStream();
