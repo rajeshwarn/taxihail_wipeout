@@ -274,8 +274,6 @@
     <None Include="features\support\02_pre_stop_hooks.rb" />
     <None Include="features\support\env.rb" />
     <None Include="features\my_first.feature" />
-    <None Include="Resources\poweredBy4sq.png" />
-    <None Include="Resources\poweredBy4sq%402x.png" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Annotations.cs" />
@@ -771,6 +769,8 @@
     <BundleResource Include="Resources\destination_small_icon_pressed.png" />
     <BundleResource Include="Resources\destination_small_icon_pressed%402x.png" />
     <BundleResource Include="Resources\Icon-60%402x.png" />
+    <BundleResource Include="Resources\poweredBy4sq.png" />
+    <BundleResource Include="Resources\poweredBy4sq%402x.png" />
   </ItemGroup>
   <ItemGroup>
     <XamarinComponentReference Include="rxforxamarin">
