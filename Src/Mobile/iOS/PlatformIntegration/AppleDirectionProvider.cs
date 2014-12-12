@@ -22,7 +22,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 
 		#region IDirectionDataProvider implementation
 
-		public apcurium.MK.Booking.MapDataProvider.Resources.GeoDirection GetDirections (double originLatitude, double originLongitude, double destinationLatitude, double destinationLongitude, DateTime? date)
+		public apcurium.MK.Booking.MapDataProvider.Resources.GeoDirection GetDirections (double originLatitude, double originLongitude, double destinationLatitude, double destinationLongitude)
 		{
 
 			try {
@@ -43,9 +43,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 						TransportType = MKDirectionsTransportType.Automobile,						 
 					};
 
-					if (date.HasValue) {
-						req.DepartureDate = DateTimeToNSDate (date.Value);
-					}
+
 						
 					var dir = new MKDirections (req);
 					dir.CalculateDirections ((response, error) => { 
