@@ -256,27 +256,46 @@ namespace apcurium.MK.Booking.Api.Services
             }
 
             var applyPromoCommand = ValidateAndApplyPromotion(request.PromoCode, request.Settings.ChargeTypeId, account.Id, request.Id, pickupDate, isFutureBooking, request.ClientLanguageCode);
+            var orderCommand = Mapper.Map<Commands.CreateOrder>(request);
+            var emailCommand = Mapper.Map<SendBookingConfirmationEmail>(request);
 
-            var ibsOrderId = CreateIbsOrder(account.IBSAccountId.Value, request, referenceData, chargeTypeIbs, prompts, promptsLength, bestAvailableCompany.CompanyKey);
+            Task.Run(() => CreateOrderOnIBSAndSendCommands(account, request, referenceData, chargeTypeIbs, chargeTypeEmail, prompts, promptsLength, bestAvailableCompany, isChargeAccountPaymentWithCardOnFile, orderCommand, emailCommand, applyPromoCommand));
             
+            return new OrderStatusDetail
+            {
+                OrderId = orderCommand.OrderId,
+                Status = OrderStatus.Created,
+//                IBSOrderId = ibsOrderId,
+                IBSStatusId = string.Empty,
+                IBSStatusDescription = _resources.Get("OrderStatus_wosWAITING", orderCommand.ClientLanguageCode),
+            };
+        }
+
+        private void CreateOrderOnIBSAndSendCommands(AccountDetail account, CreateOrder request, ReferenceData referenceData, 
+            string chargeTypeIbs, string chargeTypeEmail, string[] prompts, int?[] promptsLength, BestAvailableCompany bestAvailableCompany, 
+            bool isChargeAccountPaymentWithCardOnFile, Commands.CreateOrder orderCommand, SendBookingConfirmationEmail emailCommand, ApplyPromotion applyPromoCommand)
+        {
+            var ibsOrderId = CreateIbsOrder(account.IBSAccountId.Value, request, referenceData, chargeTypeIbs, prompts, promptsLength, bestAvailableCompany.CompanyKey);
+
             if (!ibsOrderId.HasValue
                 || ibsOrderId <= 0)
             {
                 var code = !ibsOrderId.HasValue || (ibsOrderId.Value >= -1) ? "" : "_" + Math.Abs(ibsOrderId.Value);
-                return new HttpError(ErrorCode.CreateOrder_CannotCreateInIbs + code);
+                var ibsError = ErrorCode.CreateOrder_CannotCreateInIbs + code;
+
+                // TODO send command here with orderId + errorCode to be able to show popup with error message to user and send push
+                
+                return;
             }
-
-            var command = Mapper.Map<Commands.CreateOrder>(request);
-            var emailCommand = Mapper.Map<SendBookingConfirmationEmail>(request);
-
-            command.IBSOrderId = emailCommand.IBSOrderId = ibsOrderId.Value;
-            command.AccountId = account.Id;
-            command.UserAgent = base.Request.UserAgent;
-            command.ClientVersion = base.Request.Headers.Get("ClientVersion");
-            command.IsChargeAccountPaymentWithCardOnFile = isChargeAccountPaymentWithCardOnFile;
-            command.CompanyKey = bestAvailableCompany.CompanyKey;
-            command.CompanyName = bestAvailableCompany.CompanyName;
-            command.Market = request.Market;
+            
+            orderCommand.IBSOrderId = emailCommand.IBSOrderId = ibsOrderId.Value;
+            orderCommand.AccountId = account.Id;
+            orderCommand.UserAgent = base.Request.UserAgent;
+            orderCommand.ClientVersion = base.Request.Headers.Get("ClientVersion");
+            orderCommand.IsChargeAccountPaymentWithCardOnFile = isChargeAccountPaymentWithCardOnFile;
+            orderCommand.CompanyKey = bestAvailableCompany.CompanyKey;
+            orderCommand.CompanyName = bestAvailableCompany.CompanyName;
+            orderCommand.Market = request.Market;
             emailCommand.EmailAddress = account.Email;
 
             // Get Vehicle Type from reference data
@@ -285,12 +304,12 @@ namespace apcurium.MK.Booking.Api.Services
                     .Select(x => x.Display)
                     .FirstOrDefault();
 
-            command.Settings.ChargeType = chargeTypeIbs;
-            command.Settings.VehicleType = vehicleType;
+            orderCommand.Settings.ChargeType = chargeTypeIbs;
+            orderCommand.Settings.VehicleType = vehicleType;
             emailCommand.Settings.ChargeType = chargeTypeEmail;
             emailCommand.Settings.VehicleType = vehicleType;
 
-            _commandBus.Send(command);
+            _commandBus.Send(orderCommand);
             _commandBus.Send(emailCommand);
 
             if (applyPromoCommand != null)
@@ -298,16 +317,7 @@ namespace apcurium.MK.Booking.Api.Services
                 _commandBus.Send(applyPromoCommand);
             }
 
-            UpdateStatusAsync(command.OrderId);
-
-            return new OrderStatusDetail
-            {
-                OrderId = command.OrderId,
-                Status = OrderStatus.Created,
-                IBSOrderId = ibsOrderId,
-                IBSStatusId = string.Empty,
-                IBSStatusDescription = _resources.Get("OrderStatus_wosWAITING", command.ClientLanguageCode),
-            };
+            UpdateStatusAsync(orderCommand.OrderId);
         }
         
         public object Post(SwitchOrderToNextDispatchCompanyRequest request)
