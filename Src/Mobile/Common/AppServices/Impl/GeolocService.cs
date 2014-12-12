@@ -1,11 +1,9 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Maps;
-using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
 using TinyIoC;
 using apcurium.MK.Booking.Mobile.Infrastructure;
@@ -18,11 +16,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 		readonly IGeocoding _geocoding;
 		readonly IAddresses _addresses;
 		readonly IDirections _directions;
-		readonly IAccountService _accountService;
 
-		public GeolocService(IGeocoding geocoding, IAddresses addresses, IDirections directions, IAccountService accountService)
+		public GeolocService(IGeocoding geocoding, IAddresses addresses, IDirections directions)
 		{
-			_accountService = accountService;
 			_directions = directions;
 			_addresses = addresses;
 			_geocoding = geocoding;
@@ -87,11 +83,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         {
             try
             {
-			var direction = await Task.Run(() => _directions
-                    .GetDirection(originLat, originLong, destLat, destLong, vehicleTypeId, date));
-
-
-                return new DirectionInfo { Distance = direction.Distance, FormattedDistance = direction.FormattedDistance, Price = direction.Price };
+				var direction = await _directions.GetDirectionAsync(originLat, originLong, destLat, destLong, vehicleTypeId, date);
+				return new DirectionInfo { Distance = direction.Distance, FormattedDistance = direction.FormattedDistance, Price = direction.Price };
             }
             catch
             {

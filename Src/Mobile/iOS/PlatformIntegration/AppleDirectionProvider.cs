@@ -1,11 +1,11 @@
 ﻿using System;
-using System.Linq;
 using apcurium.MK.Booking.MapDataProvider;
 using MonoTouch.MapKit;
 using MonoTouch.CoreLocation;
 using MonoTouch.Foundation;
-using System.Threading;
 using apcurium.MK.Common.Diagnostic;
+using apcurium.MK.Booking.MapDataProvider.Resources;
+using System.Threading.Tasks;
 
 namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 {
@@ -13,76 +13,76 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 	{
 		private readonly ILogger _logger;
 
-		public AppleDirectionProvider (ILogger logger )
+		public AppleDirectionProvider (ILogger logger)
 		{
 			_logger = logger;
 		}
 
-
-
-		#region IDirectionDataProvider implementation
-
-		public apcurium.MK.Booking.MapDataProvider.Resources.GeoDirection GetDirections (double originLatitude, double originLongitude, double destinationLatitude, double destinationLongitude, DateTime? date)
+        public GeoDirection GetDirections (double originLat, double originLng, double destLat, double destLng, DateTime? date)
 		{
-
-			try {
-
-				var auto = new AutoResetEvent (false);
-
-				var d = new apcurium.MK.Booking.MapDataProvider.Resources.GeoDirection ();
-
-				var o = new NSObject ();
-				o.InvokeOnMainThread (() => {
-					var origin = new CLLocationCoordinate2D (originLatitude, originLongitude);
-					var destination = new CLLocationCoordinate2D (destinationLatitude, destinationLongitude);
-
-					var emptyDict = new NSDictionary ();
-					var req = new MKDirectionsRequest () {
-						Source = new MKMapItem (new MKPlacemark (origin, emptyDict)),
-						Destination = new MKMapItem (new MKPlacemark (destination, emptyDict)),
-						TransportType = MKDirectionsTransportType.Automobile,						 
-					};
-
-					if (date.HasValue) {
-						req.DepartureDate = DateTimeToNSDate (date.Value);
-					}
-						
-					var dir = new MKDirections (req);
-					dir.CalculateDirections ((response, error) => { 
-						if (error == null) {
-							var route = response.Routes [0];
-							d.Distance = System.Convert.ToInt32 (route.Distance);
-							d.Duration = System.Convert.ToInt32 (route.ExpectedTravelTime);
-							auto.Set ();
-
-						} else {
-							_logger.LogMessage( "Error with direction api" );
-							_logger.LogMessage( error.Description );
-							_logger.LogMessage( error.DebugDescription );
-
-						}
-
-					});
-				});
-
-				auto.WaitOne ();
-				return d;
-			} catch (Exception ex) {
-				_logger.LogMessage( "Exception with direction api" );
-				_logger.LogError (ex);
-			}
-
-
-			return null;
+            return GetDirectionsAsync(originLat, originLng, destLat, destLng, date).Result;
 		}
 
-		public static MonoTouch.Foundation.NSDate DateTimeToNSDate (DateTime date)
+        public Task<GeoDirection> GetDirectionsAsync (double originLat, double originLng, double destLat, double destLng, DateTime? date)
+        {
+            var tcs = new TaskCompletionSource<GeoDirection>();
+            var result = new GeoDirection();
+
+            try 
+            {
+                var o = new NSObject ();
+                o.InvokeOnMainThread (() => 
+                {
+                    var origin = new CLLocationCoordinate2D (originLat, originLng);
+                    var destination = new CLLocationCoordinate2D (destLat, destLng);
+
+                    var emptyDict = new NSDictionary ();
+                    var req = new MKDirectionsRequest 
+                    {
+                        Source = new MKMapItem (new MKPlacemark (origin, emptyDict)),
+                        Destination = new MKMapItem (new MKPlacemark (destination, emptyDict)),
+                        TransportType = MKDirectionsTransportType.Automobile,                        
+                    };
+
+                    if (date.HasValue) 
+                    {
+                        req.DepartureDate = DateTimeToNSDate (date.Value);
+                    }
+
+                    var dir = new MKDirections (req);
+                    dir.CalculateDirections ((response, error) => 
+                    {
+                        if (error == null) 
+                        {
+                            var route = response.Routes [0];
+                            result.Distance = Convert.ToInt32 (route.Distance);
+                            result.Duration = Convert.ToInt32 (route.ExpectedTravelTime);
+                        } 
+                        else 
+                        {
+                            _logger.LogMessage("Error with CalculateDirections");
+                            _logger.LogMessage("Error Code: " + error.Code);
+                            _logger.LogMessage("Description: " + error.LocalizedDescription);
+                        }
+
+                        tcs.TrySetResult(result);
+                    });
+                });
+            } 
+            catch (Exception ex) 
+            {
+                _logger.LogMessage("Exception in AppleDirectionProvider");
+                _logger.LogError (ex);
+                tcs.TrySetResult(result);
+            }
+
+            return tcs.Task;
+        }
+
+		private static NSDate DateTimeToNSDate (DateTime date)
 		{
-			return MonoTouch.Foundation.NSDate.FromTimeIntervalSinceReferenceDate ((date - (new DateTime (2001, 1, 1, 0, 0, 0))).TotalSeconds);
+			return NSDate.FromTimeIntervalSinceReferenceDate ((date - (new DateTime (2001, 1, 1, 0, 0, 0))).TotalSeconds);
 		}
-
-
-		#endregion
 	}
 }
 
