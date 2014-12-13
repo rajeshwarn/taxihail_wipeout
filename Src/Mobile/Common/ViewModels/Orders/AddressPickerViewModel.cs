@@ -72,7 +72,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
             _ignoreTextChange = true;
 			ShowDefaultResults = true;
 			_currentAddress = await GetCurrentAddressOrUserPosition();
-			StartingText = _currentAddress.GetFirstPortionOfAddress();
+			StartingText = _currentAddress == null ? "" : _currentAddress.GetFirstPortionOfAddress();
 
 			var favoritePlaces = _accountService.GetFavoriteAddresses();
 			var historyPlaces = _accountService.GetHistoryAddresses();

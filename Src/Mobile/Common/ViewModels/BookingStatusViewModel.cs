@@ -513,11 +513,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                                 && !paymentSettings.AutomaticPayment
                                 && (paymentSettings.IsPayInTaxiEnabled || paymentSettings.PayPalClientSettings.IsEnabled);
 
-			// Unpair button is only available for RideLinqCMT
-			var isPaired = await _bookingService.IsPaired(Order.Id);
-			IsUnpairButtonVisible = paymentSettings.PaymentMode == PaymentMethod.RideLinqCmt 
-								&& !paymentSettings.AutomaticPayment  			
-								&& isPaired;
+			if (paymentSettings.PaymentMode == PaymentMethod.RideLinqCmt) {
+				// Unpair button is only available for RideLinqCMT
+				var isPaired = await _bookingService.IsPaired (Order.Id);
+				IsUnpairButtonVisible = paymentSettings.PaymentMode == PaymentMethod.RideLinqCmt
+				&& !paymentSettings.AutomaticPayment
+				&& isPaired;
+			
+			} else {
+				IsUnpairButtonVisible = false;
+			}
+
 		}
 
 	    private bool ShouldDisplayPayButton(string statusId, bool isOrderAlreadyPaid, ClientPaymentSettings paymentSettings)
