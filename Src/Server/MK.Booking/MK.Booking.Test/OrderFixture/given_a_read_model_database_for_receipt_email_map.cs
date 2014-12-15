@@ -45,6 +45,7 @@ namespace apcurium.MK.Booking.Test.OrderFixture
                     PaymentConfirmationPush = true,
                     NearbyTaxiPush = true,
                     ReceiptEmail = true,
+                    PromotionEmail = true,
                     VehicleAtPickupPush = true
                 });
             }

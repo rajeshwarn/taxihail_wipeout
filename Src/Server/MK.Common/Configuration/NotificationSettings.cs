@@ -14,6 +14,7 @@ namespace MK.Common.Configuration
 
         public bool? BookingConfirmationEmail { get; set; }
         public bool? ReceiptEmail { get; set; }
+        public bool? PromotionEmail { get; set; }
 
         public bool? DriverAssignedPush { get; set; }
         public bool? ConfirmPairingPush { get; set; }

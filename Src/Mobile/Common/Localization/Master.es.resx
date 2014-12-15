@@ -2282,4 +2282,7 @@
   <data name="PromotionViewNoPromotionLabel" xml:space="preserve">
     <value>No promotions available</value>
   </data>
+  <data name="Notification_PromotionEmail" xml:space="preserve">
+    <value>Promotions (Email)</value>
+  </data>
 </root>

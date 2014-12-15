@@ -556,4 +556,5 @@
   <string name="PromoBookRide">Use this promotion on next ride</string>
   <string name="PromotionViewNoPromotionLabel">No promotions available</string>
   <string name="Promo_NoActive">No Active Promotion</string>
+  <string name="Notification_PromotionEmail">Promotions (Email)</string>
 </resources>

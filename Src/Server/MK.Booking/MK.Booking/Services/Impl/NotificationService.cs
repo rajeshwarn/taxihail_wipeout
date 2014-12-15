@@ -427,8 +427,20 @@ namespace apcurium.MK.Booking.Services.Impl
         }
 
         public void SendPromotionUnlockedEmail(string name, string code, DateTime? expirationDate, string clientEmailAddress,
-            string clientLanguageCode)
+            string clientLanguageCode, bool bypassNotificationSetting = false)
         {
+            if (!bypassNotificationSetting)
+            {
+                using (var context = _contextFactory.Invoke())
+                {
+                    var account = context.Query<AccountDetail>().SingleOrDefault(c => c.Email.ToLower() == clientEmailAddress.ToLower());
+                    if (account == null || !ShouldSendNotification(account.Id, x => x.PromotionEmail))
+                    {
+                        return;
+                    }
+                }
+            }
+
             string imageLogoUrl = GetRefreshableImageUrl(GetBaseUrls().LogoImg);
             
             var dateFormat = CultureInfo.GetCultureInfo(clientLanguageCode);

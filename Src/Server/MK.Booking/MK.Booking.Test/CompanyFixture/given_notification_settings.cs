@@ -42,6 +42,7 @@ namespace apcurium.MK.Booking.Test.CompanyFixture
                     DriverAssignedPush = true,
                     PaymentConfirmationPush = true,
                     ReceiptEmail = true,
+                    PromotionEmail = true,
                     VehicleAtPickupPush = true
                 }
             });
@@ -57,6 +58,7 @@ namespace apcurium.MK.Booking.Test.CompanyFixture
             Assert.AreEqual(true, evt.NotificationSettings.DriverAssignedPush);
             Assert.AreEqual(true, evt.NotificationSettings.PaymentConfirmationPush);
             Assert.AreEqual(true, evt.NotificationSettings.ReceiptEmail);
+            Assert.AreEqual(true, evt.NotificationSettings.PromotionEmail);
             Assert.AreEqual(true, evt.NotificationSettings.VehicleAtPickupPush);
         }
 
@@ -76,6 +78,7 @@ namespace apcurium.MK.Booking.Test.CompanyFixture
                     DriverAssignedPush = true,
                     PaymentConfirmationPush = true,
                     ReceiptEmail = true,
+                    PromotionEmail = true,
                     VehicleAtPickupPush = true
                 }
             });
@@ -91,6 +94,7 @@ namespace apcurium.MK.Booking.Test.CompanyFixture
             Assert.AreEqual(true, evt.NotificationSettings.DriverAssignedPush);
             Assert.AreEqual(true, evt.NotificationSettings.PaymentConfirmationPush);
             Assert.AreEqual(true, evt.NotificationSettings.ReceiptEmail);
+            Assert.AreEqual(true, evt.NotificationSettings.PromotionEmail);
             Assert.AreEqual(true, evt.NotificationSettings.VehicleAtPickupPush);
         }
     }

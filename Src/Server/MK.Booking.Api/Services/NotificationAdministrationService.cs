@@ -127,7 +127,7 @@ namespace apcurium.MK.Booking.Api.Services
                             _cardOnFile, _pickupAddress, _dropOffAddress, DateTime.Now.AddMinutes(-15), DateTime.Now, request.EmailAddress, "en", amountSavedByPromo, "PROMO10", true);
                         break;
                     case NotificationService.EmailConstant.Template.PromotionUnlocked:
-                        _notificationService.SendPromotionUnlockedEmail("10% Off your next ride", "PROMO123", DateTime.Now.AddMonths(1), request.EmailAddress, request.Language);
+                        _notificationService.SendPromotionUnlockedEmail("10% Off your next ride", "PROMO123", DateTime.Now.AddMonths(1), request.EmailAddress, request.Language, true);
                         break;
                     default:
                         throw new Exception("sendTestEmailErrorNoMatchingTemplate");
