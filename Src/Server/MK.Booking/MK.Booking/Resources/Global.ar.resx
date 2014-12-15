@@ -433,4 +433,13 @@
   <data name="CannotCreateOrder_PromotionUserNotAllowed" xml:space="preserve">
     <value>You are not allowed to use this promotion</value>
   </data>
+  <data name="Email_Body_PromotionUnlockedLine1" xml:space="preserve">
+    <value>Congratulations! You are now eligible to use the "{{ PromotionName }}" promotion. Use code &lt;b&gt;{{ PromotionCode }}&lt;/b&gt; when booking your next ride to redeem it.</value>
+  </data>
+  <data name="Email_Body_PromotionUnlockedLine2" xml:space="preserve">
+    <value>Hurry up! This promotion is only valid until {{ ExpirationDate }} {{ ExpirationTime }}.</value>
+  </data>
+  <data name="Email_Subject_PromotionUnlocked" xml:space="preserve">
+    <value>{{ ApplicationName }} - New Promotion Available!</value>
+  </data>
 </root>

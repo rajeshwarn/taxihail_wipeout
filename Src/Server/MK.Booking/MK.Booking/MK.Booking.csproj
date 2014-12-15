@@ -337,6 +337,9 @@
     <Content Include="Email\Templates\PasswordReset.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Email\Templates\PromotionUnlocked.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Email\Templates\Receipt.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

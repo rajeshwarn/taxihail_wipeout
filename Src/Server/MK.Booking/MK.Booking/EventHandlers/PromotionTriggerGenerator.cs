@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mail;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Database;
+using apcurium.MK.Booking.Email;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
+using apcurium.MK.Booking.Services;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
 using Infrastructure.Messaging;
@@ -21,22 +24,28 @@ namespace apcurium.MK.Booking.EventHandlers
         private readonly ICommandBus _commandBus;
         private readonly IPromotionDao _promotionDao;
         private readonly IOrderDao _orderDao;
+        private readonly IAccountDao _accountDao;
+        private readonly INotificationService _notificationService;
 
         public PromotionTriggerGenerator(
             Func<BookingDbContext> contextFactory,
             ICommandBus commandBus,
             IPromotionDao promotionDao,
-            IOrderDao orderDao)
+            IOrderDao orderDao,
+            IAccountDao accountDao,
+            INotificationService notificationService)
         {
             _contextFactory = contextFactory;
             _commandBus = commandBus;
             _promotionDao = promotionDao;
             _orderDao = orderDao;
+            _accountDao = accountDao;
+            _notificationService = notificationService;
         }
 
         public void Handle(CreditCardPaymentCaptured_V2 @event)
         {
-            var accountId = _orderDao.FindById(@event.SourceId).AccountId;
+            var accountId = _orderDao.FindById(@event.OrderId).AccountId;
             var activePromotions = _promotionDao.GetAllCurrentlyActive().ToArray();
 
             // Update ride count promotions progression
@@ -93,7 +102,7 @@ namespace apcurium.MK.Booking.EventHandlers
                             ? promotionProgress.RideCount + 1
                             : 1;
 
-                        promotionUnlocked = UnlockPromotionIfNecessary(promotion.TriggerSettings.RideCount, promotionProgress.RideCount.Value, accountId, promotion.Id);
+                        promotionUnlocked = UnlockPromotionIfNecessary(promotion.TriggerSettings.RideCount, promotionProgress.RideCount.Value, accountId, promotion);
                         if (promotionUnlocked)
                         {
                             // Reset promotion progress
@@ -106,7 +115,7 @@ namespace apcurium.MK.Booking.EventHandlers
                             ? promotionProgress.AmountSpent + value
                             : value;
 
-                        promotionUnlocked = UnlockPromotionIfNecessary(promotion.TriggerSettings.AmountSpent, promotionProgress.AmountSpent.Value, accountId, promotion.Id);
+                        promotionUnlocked = UnlockPromotionIfNecessary(promotion.TriggerSettings.AmountSpent, promotionProgress.AmountSpent.Value, accountId, promotion);
                         if (promotionUnlocked)
                         {
                             // Reset promotion progress
@@ -119,15 +128,20 @@ namespace apcurium.MK.Booking.EventHandlers
             }
         }
 
-        private bool UnlockPromotionIfNecessary(double promotionThreshold, double promotionProgress, Guid accountId, Guid promoId)
+        private bool UnlockPromotionIfNecessary(double promotionThreshold, double promotionProgress, Guid accountId, PromotionDetail promotion)
         {
             if (promotionProgress >= promotionThreshold)
             {
                 _commandBus.Send(new AddUserToPromotionWhiteList
                 {
                     AccountId = accountId,
-                    PromoId = promoId
+                    PromoId = promotion.Id
                 });
+
+                var account = _accountDao.FindById(accountId);
+
+                _notificationService.SendPromotionUnlockedEmail(promotion.Name, promotion.Code, promotion.GetEndDateTime(), account.Email, account.Language);
+
                 return true;
             }
             return false;
