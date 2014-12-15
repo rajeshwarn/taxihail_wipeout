@@ -124,41 +124,11 @@ namespace apcurium.MK.Booking.EventHandlers
             using (var context = _contextFactory.Invoke())
             {
                 var promotionUsageDetail = context.Find<PromotionUsageDetail>(@event.OrderId);
-
-                promotionUsageDetail.AmountSaved = @event.AmountSaved;
-
-                // Update usage statistics
-                var promotion = context.Find<PromotionDetail>(@event.PromoId);
-                var promotionStatistics = context.Find<PromotionStatisticDetail>(@event.PromoId);
                 var account = context.Find<AccountDetail>(promotionUsageDetail.AccountId);
 
-                if (promotionStatistics == null)
-                {
-                    // First usage of promotion
-                    context.Save(new PromotionStatisticDetail
-                    {
-                        Id = @event.PromoId,
-                        PromoCode = promotion.Code,
-                        TotalUsageAmount = (double)@event.AmountSaved,
-                        UsageCount = 1,
-                        UsersUsage = new Dictionary<string, int>{ {account.Email, 1} }
-                    });
-                }
-                else
-                {
-                    promotionStatistics.TotalUsageAmount += (double)@event.AmountSaved;
-                    promotionStatistics.UsageCount++;
-
-                    // Add user usage statistic
-                    if (promotionStatistics.UsersUsage.ContainsKey(account.Email))
-                    {
-                        promotionStatistics.UsersUsage[account.Email]++;
-                    }
-                    else
-                    {
-                        promotionStatistics.UsersUsage.Add(account.Email, 1);
-                    }
-                }
+                promotionUsageDetail.AmountSaved = @event.AmountSaved;
+                promotionUsageDetail.UserId = account.Email;
+                promotionUsageDetail.DateRedeemed = @event.EventDate;
 
                 context.SaveChanges();
             }

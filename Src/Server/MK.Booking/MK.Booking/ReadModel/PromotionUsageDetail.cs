@@ -21,6 +21,10 @@ namespace apcurium.MK.Booking.ReadModel
 
         public string Code { get; set; }
 
+        public string UserId { get; set; }
+
+        public DateTime? DateRedeemed { get; set; }
+
         public string GetNoteToDriverFormattedString()
         {
             var discountType = DiscountType == PromoDiscountType.Cash

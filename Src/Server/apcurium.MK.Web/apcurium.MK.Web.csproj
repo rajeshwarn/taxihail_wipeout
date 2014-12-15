@@ -641,6 +641,7 @@
     <Compile Include="Areas\AdminTH\Controllers\PromoCodeController.cs" />
     <Compile Include="Areas\AdminTH\Controllers\TaxiHailNetworkController.cs" />
     <Compile Include="Areas\AdminTH\Models\PromoCode.cs" />
+    <Compile Include="Areas\AdminTH\Models\PromoStats.cs" />
     <Compile Include="Areas\BaseController.cs" />
     <Compile Include="Areas\Company\CompanyAreaRegistration.cs" />
     <Compile Include="Areas\Company\Controllers\PrivacyController.cs" />

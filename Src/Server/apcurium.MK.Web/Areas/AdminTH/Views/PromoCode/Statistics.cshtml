@@ -1,5 +1,5 @@
 ﻿@using System.Globalization
-@model apcurium.MK.Booking.ReadModel.PromotionStatisticDetail
+@model apcurium.MK.Web.Areas.AdminTH.Models.PromoStats
 
 @if (Model != null)
 {
@@ -8,12 +8,12 @@
     </h4>
 
     <p>
-        <b>Total Amount Redeemed ($) : </b>
-        @Model.TotalUsageAmount.ToString(CultureInfo.InvariantCulture)
-    </p>
-    <p>
         <b>Number of Times Used : </b>
         @Model.UsageCount.ToString(CultureInfo.InvariantCulture)
+    </p>
+    <p>
+        <b>Total Amount Redeemed ($) : </b>
+        @Model.TotalUsageAmount.ToString(CultureInfo.InvariantCulture)
     </p>
     <p>
         <b>Users that Redeemed this Promotion : </b>

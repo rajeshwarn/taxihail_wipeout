@@ -162,8 +162,8 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
         // GET: AdminTH/PromoCode/Statistics/5
         public ActionResult Statistics(Guid id)
         {
-            var stats = _promotionDao.GetStatistics(id);
-            return View(stats);
+            var promotionUsages = _promotionDao.GetRedeemedPromotionUsages(id).ToArray();
+            return View(promotionUsages.Any() ? new PromoStats(promotionUsages) : null);
         }
     }
 }
