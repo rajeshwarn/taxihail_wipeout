@@ -1804,4 +1804,7 @@
   <data name="Notification_PromotionEmail" xml:space="preserve">
     <value>Promotions (Email)</value>
   </data>
+  <data name="PromoProgress" xml:space="preserve">
+    <value>Progression :</value>
+  </data>
 </root>

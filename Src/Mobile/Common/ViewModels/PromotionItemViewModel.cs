@@ -12,6 +12,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             Name = activePromotion.Name;
             Description = activePromotion.Description;
+            Progress = string.Format("{0}{1}", this.Services().Localize["PromoProgress"], activePromotion.Progress);
             ExpiringSoonWarning = GenerateExpiringSoonWarning(activePromotion.ExpirationDate);
         }
 
@@ -29,6 +30,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         public string Name { get; private set; }
 
         public string Description { get; private set; }
+
+        public string Progress { get; private set; }
 
         public string ExpiringSoonWarning { get; private set; }
 

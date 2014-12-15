@@ -29,6 +29,14 @@ namespace apcurium.MK.Booking.ReadModel.Query
             }
         }
 
+        public IEnumerable<PromotionProgressDetail> GetAllProgress()
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                return context.Query<PromotionProgressDetail>().ToArray();
+            }
+        }
+
         public IEnumerable<PromotionDetail> GetAllCurrentlyActive()
         {
             using (var context = _contextFactory.Invoke())

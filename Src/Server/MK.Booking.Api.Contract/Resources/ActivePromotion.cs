@@ -10,6 +10,8 @@ namespace apcurium.MK.Booking.Api.Contract.Resources
 
         public string Code { get; set; }
 
+        public string Progress { get; set; }
+
         public DateTime? ExpirationDate { get; set; }
     }
 }
