@@ -35,7 +35,6 @@
 "EmailLabel"="بريد إلكتروني";
 "BookingService_MobileBookingNoteBuildingName"="اسم المبنى {0}.";
 "RateRide"="قم بتقييم مشوارك";
-"ServiceErrorCreateOrder_CannotCreateInIbs_1002"="عنوان الإلتقاء يقع خارج نطاق الخدمة المعتادة. رجاء الإتصال  {0} على  {1} للمزيد من المساعدة.";
 "CreateAccountErrorNotSpecified"="لم يستطع السيرفر تحديد سبب عدم إمكانية إنشاء حساب، إن استمر ظهور هذا الخطأ حاول انشاء الحساب من خلال الموقع الإلكتروني.";
 "CmtRideLinqErrorTitle"="خطأ";
 "NetworkErrorTitle"="لا يوجد إتصال بالشبكة";
@@ -210,7 +209,6 @@
 "EntryCodeLabel"="رمز الدخول";
 "ServiceErrorUpdatePassword_NotSame"="كلمة المرور الحالية غير صحيحة";
 "ServiceError_ErrorCreatingOrderMessage"="رجاء الإتصال  {0} على  {1} للمزيد من المساعدة.";
-"ServiceErrorCreateOrder_CannotCreateInIbs_1002_NoCall"="عنوان الإلتقاء يقع خارج نطاق الخدمة المعتادة.";
 "ServiceErrorCreateOrder_InvalidProvider"="لا يمكن إدخال الطلب، مقدم الخدمة غير متاح. رجاء الاتصال  {0} على  {1} للمزيد من المساعدة";
 "ScanCreditCard"="مسح بطاقة الائتمان";
 "TimeNow"="في أقرب وقت ممكن";
@@ -249,7 +247,6 @@
 "SendReceipt"="إرسال إيصال";
 "Locating"="جار البحث عن موقعك...";
 "CreditCardExpYear"="سنة الإنتهاء";
-"ServiceErrorCreateOrder_CannotCreateInIbs_7000"="لا يمكن إدخال الطلب لأن حسابك غير فعال حاليا. رجاء الإتصال  {0} على  {1} للمزيد من المساعدة.";
 "RefineAddressTitle"="قم بتدقيق العنوان";
 "Confirm"="موافق";
 "CreditCardCategory"="التصنيف";
@@ -315,7 +312,6 @@
 "View_CreateAccount"="افتح حسابك";
 "ServiceErrorCreateOrder_NoFareEstimateAvailable"="لا يمكن تقدير الأجرة لهذه الرحلة. رجاء الإتصال  {0} على  {1} للمزيد من المساعدة.";
 "HistoryDetailDestinationLabel"="الوجهة:";
-"ServiceErrorCreateOrder_CannotCreateInIbs_7000_NoCall"="لا يمكن إدخال الطلب لأن حسابك غير فعال حاليا.";
 "ViewRatingBtn"="رؤية التقييمات";
 "NotAvailable"="لا ينطبق";
 "View_RideSettings"="الملف الشخصي";
@@ -359,7 +355,6 @@
 "CmtTransactionSuccessMessage"="تم إرسال التاكيد للسائق (رقم الترخيص: {0})";
 "StatusConfirmCancelRide"="سيؤدي هذا الإختيار لإلغاء طلبك، هل ترغب في الإستمرار؟";
 "ConfirmationOfPaymentSent"="تم إرسال تأكيد السداد للسائق.";
-"ServiceErrorCreateOrder_CannotCreateInIbs"="لا يمكن إدخال الطلب. الرجاء المحاولة من جديد أو اتصل بنا.";
 "Tuto04Bottom"="بذلك سيتم تزويدك بسعر تقريبي للرحلة.";
 "ResetPasswordConfirmationMessage"="تم إرسال كلمة مرور جديدة بالبريد الإلكتروني.";
 "ReminderDetails"="تذكير: سيكون السائق في خدمتك من {0} الساعة {1} يوم {2}.";
@@ -496,8 +491,6 @@
 "RateLastRide"="Rate";
 "NotNow"="Not now";
 "RateLastRideMessage"="We would appreciate your feedback on your last ride, would you like to rate it?";
-"ServiceErrorCreateOrder_CannotCreateInIbs_10000_NoCall"="The charge account information is invalid. Please try again.";
-"ServiceErrorCreateOrder_CannotCreateInIbs_10000"="The charge account information is invalid. Please try again.";
 "EstimateDistance"="";
 "EstimatePrice"="Cost";
 "DontAsk"="Don't ask";
@@ -506,8 +499,6 @@
 "ChargeAccount"="Charge Account";
 "ServiceErrorAccountCharge_InvalidAccountNumber"="Invalid account number";
 "View_AccountConfirmation_Label_Instructions"="A text message with your code has been sent to your phone.";
-"ServiceErrorCreateOrder_CannotCreateInIbs_1452_NoCall"="The specified Destination address lies outside the regular service area.";
-"ServiceErrorCreateOrder_CannotCreateInIbs_1452"="The specified Destination address lies outside the regular service area. Please contact {0} at {1} for further assistance.";
 "Safety"="Safety";
 "View_AccountConfirmationTitle"="Account Confirmation";
 "Politeness"="Politeness";

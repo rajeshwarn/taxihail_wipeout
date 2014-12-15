@@ -441,4 +441,22 @@
   <data name="CannotCreateOrder_NoCompanies" xml:space="preserve">
     <value>There is no company serving this region</value>
   </data>
+  <data name="CreateOrder_CannotCreateInIbs" xml:space="preserve">
+    <value>Order cannot be created. Please try again or call us.</value>
+  </data>
+  <data name="CreateOrder_CannotCreateInIbs_1002" xml:space="preserve">
+    <value>Order cannot be created. The specified Pickup address lies outside the regular service area.</value>
+  </data>
+  <data name="CreateOrder_CannotCreateInIbs_1452" xml:space="preserve">
+    <value>Order cannot be created. The specified Destination address lies outside the regular service area.</value>
+  </data>
+  <data name="CreateOrder_CannotCreateInIbs_3000" xml:space="preserve">
+    <value>Order cannot be created. Your account has been disabled.</value>
+  </data>
+  <data name="CreateOrder_CannotCreateInIbs_7000" xml:space="preserve">
+    <value>Order cannot be created. Your account is currently inactive.</value>
+  </data>
+  <data name="CreateOrder_CannotCreateInIbs_10000" xml:space="preserve">
+    <value>Order cannot be created. The charge account information is invalid. Please try again.</value>
+  </data>
 </root>

@@ -447,4 +447,22 @@
   <data name="CannotCreateOrder_NoCompanies" xml:space="preserve">
     <value>Aucune compagnie ne sert cette région</value>
   </data>
+  <data name="CreateOrder_CannotCreateInIbs" xml:space="preserve">
+    <value>La commande ne peut être créée. Merci d'essayer une nouvelle fois ou de nous appeler.</value>
+  </data>
+  <data name="CreateOrder_CannotCreateInIbs_1002" xml:space="preserve">
+    <value>La commande ne peut être créée. L'adresse de départ est en dehors de la zone de service normale.</value>
+  </data>
+  <data name="CreateOrder_CannotCreateInIbs_1452" xml:space="preserve">
+    <value>La commande ne peut être créée. L'adresse de destination est en dehors de la zone de service normale.</value>
+  </data>
+  <data name="CreateOrder_CannotCreateInIbs_3000" xml:space="preserve">
+    <value>La commande ne peut être créée car votre compte est actuellement désactivé</value>
+  </data>
+  <data name="CreateOrder_CannotCreateInIbs_7000" xml:space="preserve">
+    <value>La commande ne peut être créée car votre compte est actuellement désactivé</value>
+  </data>
+  <data name="CreateOrder_CannotCreateInIbs_10000" xml:space="preserve">
+    <value>La commande ne peut être créée car le numéro de votre compte entreprise est invalide.</value>
+  </data>
 </root>
