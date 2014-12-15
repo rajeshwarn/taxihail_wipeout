@@ -2,6 +2,7 @@ using System;
 using System.Windows.Input;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.Extensions;
+using apcurium.MK.Booking.Mobile.Framework.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -12,7 +13,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             Name = activePromotion.Name;
             Description = activePromotion.Description;
-            Progress = string.Format("{0}{1}", this.Services().Localize["PromoProgress"], activePromotion.Progress);
+			Progress = string.Format("{0} {1}", this.Services().Localize["PromoProgress"], activePromotion.Progress);
+            
             ExpiringSoonWarning = GenerateExpiringSoonWarning(activePromotion.ExpirationDate);
         }
 

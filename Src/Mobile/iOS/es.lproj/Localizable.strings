@@ -555,3 +555,5 @@
 "PromoExpiringSoonMessage"="Expires in {0} days";
 "PromoExpiringToday"="Expires today!";
 "PromotionViewNoPromotionLabel"="No promotions available";
+"PromoProgress"="Progress :";
+"Notification_PromotionEmail"="Promotions (Email)";

@@ -29,9 +29,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 		[Outlet]
 		MonoTouch.UIKit.UILabel lblName { get; set; }
+
+		[Outlet]
+		MonoTouch.UIKit.UILabel lblProgress { get; set; }
 		
 		void ReleaseDesignerOutlets ()
 		{
+			if (lblProgress != null) {
+				lblProgress.Dispose ();
+				lblProgress = null;
+			}
+
 			if (btnApplyPromo != null) {
 				btnApplyPromo.Dispose ();
 				btnApplyPromo = null;
