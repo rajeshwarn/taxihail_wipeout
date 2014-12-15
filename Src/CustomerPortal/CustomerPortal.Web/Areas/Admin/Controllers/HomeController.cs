@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
+using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
 using System.Threading;
@@ -17,6 +18,7 @@ using MongoRepository;
 using Newtonsoft.Json;
 using ApplicationInfo = CustomerPortal.Web.Areas.Admin.Models.ApplicationInfo;
 using CustomerPortal.Web.Services.Impl;
+using Microsoft.Web.Administration;
 
 #endregion
 
@@ -63,8 +65,8 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
             var company = repository.GetById(id);
 
 
-            company.LastKnownStagingVersion = GetVersion("staging", company.CompanyKey);
-            company.LastKnownProductionVersion = GetVersion("services", company.CompanyKey);
+            company.LastKnownStagingVersion = GetVersionV2("staging", company.CompanyKey);
+            company.LastKnownProductionVersion = GetVersionV2("services", company.CompanyKey);
             repository.Update(company);
 
             return RedirectToAction("Index");
@@ -82,12 +84,12 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
                     {
                         if (string.IsNullOrEmpty(company.LastKnownStagingVersion))
                         {
-                            company.LastKnownStagingVersion = GetVersion("staging", company.CompanyKey);
+                            company.LastKnownStagingVersion = GetVersionV2("staging", company.CompanyKey);
                         }
 
                         if (string.IsNullOrEmpty(company.LastKnownProductionVersion))
                         {
-                            company.LastKnownProductionVersion = GetVersion("services", company.CompanyKey);
+                            company.LastKnownProductionVersion = GetVersionV2("services", company.CompanyKey);
                         }
 
                         new MongoRepository<Company>().Update(company);
@@ -99,8 +101,29 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
 
             return RedirectToAction("Index");
         }
+        
+        private string GetVersionV2(string server, string companyKey)
+        {
+            try
+            {
+                ServerManager sm = new ServerManager();
+                var strDLLPath = sm.Sites[(server == "services"? "Default Web Site": "Staging Web Site")].Applications["/"+ companyKey].VirtualDirectories["/"].PhysicalPath + "\\bin\\apcurium.MK.Web.dll";
 
-
+                if (System.IO.File.Exists(strDLLPath))
+                {
+                    FileVersionInfo myFileVersionInfo = FileVersionInfo.GetVersionInfo(strDLLPath);
+                    return myFileVersionInfo.FileVersion;
+                }      
+                else
+                {
+                    return GetVersion(server, companyKey);
+                }
+            }
+            catch
+            {
+                return null;
+            }
+        }
 
 
 
