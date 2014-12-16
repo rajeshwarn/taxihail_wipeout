@@ -28,10 +28,10 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
             var tcs = new TaskCompletionSource<GeoDirection>();
             var result = new GeoDirection();
 
-            try 
+            var o = new NSObject ();
+            o.InvokeOnMainThread (() => 
             {
-                var o = new NSObject ();
-                o.InvokeOnMainThread (() => 
+                try 
                 {
                     var origin = new CLLocationCoordinate2D (originLat, originLng);
                     var destination = new CLLocationCoordinate2D (destLat, destLng);
@@ -48,7 +48,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
                     {
                         req.DepartureDate = DateTimeToNSDate (date.Value);
                     }
-
+                                    
                     var dir = new MKDirections (req);
                     dir.CalculateDirections ((response, error) => 
                     {
@@ -67,14 +67,14 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 
                         tcs.TrySetResult(result);
                     });
-                });
-            } 
-            catch (Exception ex) 
-            {
-                _logger.LogMessage("Exception in AppleDirectionProvider");
-                _logger.LogError (ex);
-                tcs.TrySetResult(result);
-            }
+                } 
+                catch (Exception ex) 
+                {
+                    _logger.LogMessage("Exception in AppleDirectionProvider");
+                    _logger.LogError (ex);
+                    tcs.TrySetResult(result);
+                }
+            });
 
             return tcs.Task;
         }
