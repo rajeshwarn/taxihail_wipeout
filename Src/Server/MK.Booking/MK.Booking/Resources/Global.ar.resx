@@ -454,4 +454,7 @@
     <value>Order cannot be created. The charge account information is invalid. Please try again.</value>
     <comment>Order cannot be created. The charge account information is invalid. Please try again.</comment>
   </data>
+  <data name="CreateOrder_WaitingForIbs" xml:space="preserve">
+    <value>Processing your order...</value>
+  </data>
 </root>

@@ -268,6 +268,15 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Processing your order....
+        /// </summary>
+        public static string CreateOrder_WaitingForIbs {
+            get {
+                return ResourceManager.GetString("CreateOrder_WaitingForIbs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {0:c}.
         /// </summary>
         public static string CurrencyPriceFormat {

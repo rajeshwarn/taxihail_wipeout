@@ -552,4 +552,8 @@
     <value>La información de su cuenta es inválida. Por favor intente nuevamente.</value>
     <comment>Order cannot be created. The charge account information is invalid. Please try again.</comment>
   </data>
+  <data name="CreateOrder_WaitingForIbs" xml:space="preserve">
+    <value>Procesando su pedido...</value>
+    <comment>Processing your order...</comment>
+  </data>
 </root>

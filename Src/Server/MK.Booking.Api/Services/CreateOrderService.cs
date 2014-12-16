@@ -284,7 +284,7 @@ namespace apcurium.MK.Booking.Api.Services
                 OrderId = orderCommand.OrderId,
                 Status = OrderStatus.Created,
                 IBSStatusId = string.Empty,
-                IBSStatusDescription = _resources.Get("OrderStatus_wosWAITING", orderCommand.ClientLanguageCode),
+                IBSStatusDescription = _resources.Get("CreateOrder_WaitingForIbs", orderCommand.ClientLanguageCode),
             };
         }
 
