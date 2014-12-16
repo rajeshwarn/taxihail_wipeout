@@ -1,12 +1,13 @@
 ﻿using System;
+using System.Globalization;
+using System.Threading.Tasks;
+using apcurium.MK.Booking.MapDataProvider.Extensions;
 using apcurium.MK.Booking.MapDataProvider.Resources;
+using apcurium.MK.Booking.MapDataProvider.TomTom.Resources;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
 using ServiceStack.ServiceClient.Web;
-using apcurium.MK.Booking.MapDataProvider.TomTom.Resources;
 using ServiceStack.Text;
-using System.Globalization;
-using System.Threading.Tasks;
 
 namespace apcurium.MK.Booking.MapDataProvider.TomTom
 {
@@ -40,11 +41,8 @@ namespace apcurium.MK.Booking.MapDataProvider.TomTom
             return GetDirectionsAsync(originLat, originLng, destLat, destLng, date).Result;
         }
 
-        public Task<GeoDirection> GetDirectionsAsync (double originLat, double originLng, double destLat, double destLng, DateTime? date)
+        public async Task<GeoDirection> GetDirectionsAsync (double originLat, double originLng, double destLat, double destLng, DateTime? date)
 		{
-            var tcs = new TaskCompletionSource<GeoDirection>();
-            var result = new GeoDirection();
-
 			var client = new JsonServiceClient (ApiUrl);
 			var queryString = string.Format (CultureInfo.InvariantCulture, RoutingServiceUrl, 
 				MapToolkitKey, 
@@ -53,9 +51,10 @@ namespace apcurium.MK.Booking.MapDataProvider.TomTom
 
 			_logger.LogMessage ("Calling TomTom : " + queryString);
 
+            var result = new GeoDirection();
 			try
 			{
-				var direction = client.Get<RoutingResponse>(queryString);
+				var direction = await client.GetAsync<RoutingResponse>(queryString);
 
 				_logger.LogMessage ("TomTom Result : " + direction.ToJson());
 
@@ -68,9 +67,7 @@ namespace apcurium.MK.Booking.MapDataProvider.TomTom
 				_logger.LogError (e);
 			}
 
-            tcs.TrySetResult(result);
-
-            return tcs.Task;
+            return result;
 		}
 
 		private string GetFormattedPoints(double originLatitude, double originLongitude, double destinationLatitude, double destinationLongitude)
