@@ -562,4 +562,5 @@
   <string name="PromoBookRide">Utiliser sur la prochaine commande</string>
   <string name="PromotionViewNoPromotionLabel">Aucune promotion disponible</string>
   <string name="Promo_NoActive">Aucune promotion active</string>
+  <string name="Processing">Traitement de votre commande...</string>
 </resources>

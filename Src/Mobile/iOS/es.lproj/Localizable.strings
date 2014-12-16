@@ -550,3 +550,4 @@
 "PromoExpiringSoonMessage"="Expires in {0} days";
 "PromoExpiringToday"="Expires today!";
 "PromotionViewNoPromotionLabel"="No promotions available";
+"Processing"="Procesando su pedido...";
