@@ -22,39 +22,51 @@ namespace apcurium.MK.Booking.Api.Services
             var progress = _promotionDao.GetAllProgress();
 
             return _promotionDao.GetAllCurrentlyActive()
-                .Select(x => new ActivePromotion
-                    {
-                        Name = x.Name,
-                        Description = x.Description,
-                        Code = x.Code,
-                        ExpirationDate = x.GetEndDateTime(),
-                        Progress = GetFormattedProgressString(x, progress.FirstOrDefault(p => p.PromoId == x.Id))
-                    })
-                .ToArray();
+                .Select(x =>
+                {
+                    var progressDetails = progress.FirstOrDefault(p => p.PromoId == x.Id);
+                    return new ActivePromotion
+                                 {
+                                     Name = x.Name,
+                                     Description = x.Description,
+                                     Code = x.Code,
+                                     ExpirationDate = x.GetEndDateTime(),
+                                     Progress = GetProgress(x, progressDetails),
+                                     UnlockGoal = GetUnlockGoal(x)
+                                 };
+                }).ToArray();
         }
 
-        private string GetFormattedProgressString(PromotionDetail promotionDetail, PromotionProgressDetail progressDetail)
+        private double? GetProgress(PromotionDetail promotionDetail, PromotionProgressDetail progressDetail)
         {
-            var formattedProgressString = string.Empty;
-
             if (promotionDetail.TriggerSettings.Type == PromotionTriggerTypes.RideCount.Id)
             {
-                formattedProgressString = string.Format("{0}/{1}",
-                    (progressDetail == null || progressDetail.RideCount == null) 
-                    ? 0
-                    : progressDetail.RideCount,
-                    promotionDetail.TriggerSettings.RideCount);
+                return (progressDetail == null || progressDetail.RideCount == null)
+                        ? 0
+                        : progressDetail.RideCount;
             }
             else if (promotionDetail.TriggerSettings.Type == PromotionTriggerTypes.AmountSpent.Id)
             {
-                formattedProgressString = string.Format("{0}/{1}",
-                    (progressDetail == null || progressDetail.AmountSpent == null)
-                    ? 0.0
-                    : progressDetail.AmountSpent,
-                    promotionDetail.TriggerSettings.AmountSpent);
+                return (progressDetail == null || progressDetail.AmountSpent == null)
+                        ? 0.0
+                        : progressDetail.AmountSpent;
             }
 
-            return formattedProgressString;
+            return null;
+        }
+
+        private double? GetUnlockGoal(PromotionDetail promotionDetail)
+        {
+            if (promotionDetail.TriggerSettings.Type == PromotionTriggerTypes.RideCount.Id)
+            {
+                return promotionDetail.TriggerSettings.RideCount;
+            }
+            else if (promotionDetail.TriggerSettings.Type == PromotionTriggerTypes.AmountSpent.Id)
+            {
+                return promotionDetail.TriggerSettings.AmountSpent;
+            }
+
+            return null;
         }
     }
 }

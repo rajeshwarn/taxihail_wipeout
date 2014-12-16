@@ -88,7 +88,7 @@
             android:textColor="@color/black"
             android:textStyle="bold"
             android:text="Progress: 1/10"
-            local:MvxBind="Text Progress" />
+            local:MvxBind="Text ProgressDescription; Visibility IsUnlocked, Converter=InvertedVisibility" />
         <RelativeLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content">
@@ -99,7 +99,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/HeightButton"
                 android:text="@string/PromoBookRide"
-                local:MvxBind="Click SelectedCommand" />
+                local:MvxBind="Click SelectedCommand; Visibility IsUnlocked, Converter=Visibility" />
         </RelativeLayout>
     </LinearLayout>
 </LinearLayout>

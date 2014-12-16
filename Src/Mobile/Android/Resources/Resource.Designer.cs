@@ -4401,14 +4401,14 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f050109
 			public const int GooglePlayServicesNotAvailableMessage = 2131034377;
 			
-			// aapt resource value: 0x7f050296
-			public const int GooglePlayServicesNotAvailableMessage1 = 2131034774;
+			// aapt resource value: 0x7f050297
+			public const int GooglePlayServicesNotAvailableMessage1 = 2131034775;
 			
 			// aapt resource value: 0x7f050069
 			public const int GooglePlayServicesNotAvailableTitle = 2131034217;
 			
-			// aapt resource value: 0x7f050297
-			public const int GooglePlayServicesNotAvailableTitle1 = 2131034775;
+			// aapt resource value: 0x7f050298
+			public const int GooglePlayServicesNotAvailableTitle1 = 2131034776;
 			
 			// aapt resource value: 0x7f05002d
 			public const int Hello = 2131034157;
@@ -4928,6 +4928,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 			
 			// aapt resource value: 0x7f050280
 			public const int PromoMustUseCardOnFileWarningMessage = 2131034752;
+			
+			// aapt resource value: 0x7f050296
+			public const int PromoProgress = 2131034774;
 			
 			// aapt resource value: 0x7f050283
 			public const int PromoRequiresToPayWithCOFPairingWarningCancelButton = 2131034755;

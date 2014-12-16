@@ -2,7 +2,6 @@ using System;
 using System.Windows.Input;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.Extensions;
-using apcurium.MK.Booking.Mobile.Framework.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -13,7 +12,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             Name = activePromotion.Name;
             Description = activePromotion.Description;
-			Progress = string.Format("{0} {1}", this.Services().Localize["PromoProgress"], activePromotion.Progress);
+            ProgressDescription = GetProgressDescription(activePromotion);
+            IsUnlocked = GetUnlockedStatus(activePromotion);
             ExpiringSoonWarning = GenerateExpiringSoonWarning(activePromotion.ExpirationDate);
         }
 
@@ -32,7 +32,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public string Description { get; private set; }
 
-        public string Progress { get; private set; }
+        public string ProgressDescription { get; private set; }
+        
+        public bool IsUnlocked { get; set; }
 
         public string ExpiringSoonWarning { get; private set; }
 
@@ -49,6 +51,26 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				}
 			}
 		}
+
+        private string GetProgressDescription(ActivePromotion promotion)
+        {
+            if (!promotion.Progress.HasValue || !promotion.UnlockGoal.HasValue)
+            {
+                return string.Empty;
+            }
+
+            return string.Format("{0} {1}/{2}", this.Services().Localize["PromoProgress"], promotion.Progress, promotion.UnlockGoal);
+        }
+
+        private bool GetUnlockedStatus(ActivePromotion promotion)
+        {
+            if (!promotion.Progress.HasValue || !promotion.UnlockGoal.HasValue)
+            {
+                return true;
+            }
+
+            return promotion.Progress.Value >= promotion.UnlockGoal.Value;
+        }
 
         private string GenerateExpiringSoonWarning(DateTime? expirationDate)
         {
