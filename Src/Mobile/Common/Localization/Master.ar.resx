@@ -1704,4 +1704,7 @@
   <data name="PromotionViewNoPromotionLabel" xml:space="preserve">
     <value>No promotions available</value>
   </data>
+  <data name="Processing" xml:space="preserve">
+    <value>Processing your order...</value>
+  </data>
 </root>
