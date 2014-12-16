@@ -12,5 +12,8 @@ namespace apcurium.MK.Common.Entity
 
         [Display(Name = "Amount Spent")]
         public int AmountSpent { get; set; }
+
+        [Display(Name = "Repeatable")]
+        public bool IsRepeatable { get; set; }
     }
 }

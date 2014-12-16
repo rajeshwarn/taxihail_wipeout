@@ -14,6 +14,8 @@ namespace apcurium.MK.Booking.Commands
 
         public Guid PromoId { get; set; }
 
+        public double? SpendAmount { get; set; }
+
         public Guid Id { get; private set; }
     }
 }

@@ -183,6 +183,7 @@
     <Compile Include="EventHandlers\Integration\OrderDispatchCompanyManager.cs" />
     <Compile Include="EventHandlers\Integration\PaymentSettingsUpdater.cs" />
     <Compile Include="EventHandlers\Integration\OrderPaymentManager.cs" />
+    <Compile Include="EventHandlers\Integration\PromotionTriggerGenerator.cs" />
     <Compile Include="EventHandlers\NotificationSettingsGenerator.cs" />
     <Compile Include="EventHandlers\OrderUserGpsGenerator.cs" />
     <Compile Include="EventHandlers\PayPalExpressCheckoutPaymentDetailsGenerator.cs" />
@@ -193,7 +194,6 @@
     <Compile Include="EventHandlers\Integration\MailSender.cs" />
     <Compile Include="EventHandlers\OrderGenerator.cs" />
     <Compile Include="EventHandlers\PromotionDetailGenerator.cs" />
-    <Compile Include="EventHandlers\PromotionTriggerGenerator.cs" />
     <Compile Include="EventHandlers\RuleDetailsGenerator.cs" />
     <Compile Include="EventHandlers\TariffDetailsGenerator.cs" />
     <Compile Include="EventHandlers\RatingTypeDetailsGenerator.cs" />

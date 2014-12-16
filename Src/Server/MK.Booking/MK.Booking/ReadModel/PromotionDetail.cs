@@ -46,6 +46,18 @@ namespace apcurium.MK.Booking.ReadModel
 
         public PromotionTriggerSettings TriggerSettings { get; set; }
 
+        public DateTime? GetStartDateTime()
+        {
+            if (!StartDate.HasValue)
+            {
+                return null;
+            }
+
+            return !StartTime.HasValue
+                ? new DateTime(StartDate.Value.Year, StartDate.Value.Month, StartDate.Value.Day)
+                : new DateTime(StartDate.Value.Year, StartDate.Value.Month, StartDate.Value.Day, StartTime.Value.Hour, StartTime.Value.Minute, 0);
+        }
+
         public DateTime? GetEndDateTime()
         {
             if (!EndDate.HasValue)

@@ -54,22 +54,28 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         private string GetProgressDescription(ActivePromotion promotion)
         {
-            if (!promotion.Progress.HasValue || !promotion.UnlockGoal.HasValue)
-            {
-                return string.Empty;
-            }
+            return string.Empty;
 
-            return string.Format("{0} {1}/{2}", this.Services().Localize["PromoProgress"], promotion.Progress, promotion.UnlockGoal);
+            // TODO: on hold
+            //if (!promotion.Progress.HasValue || !promotion.UnlockGoal.HasValue)
+            //{
+            //    return string.Empty;
+            //}
+
+            //return string.Format("{0} {1}/{2}", this.Services().Localize["PromoProgress"], promotion.Progress, promotion.UnlockGoal);
         }
 
         private bool GetUnlockedStatus(ActivePromotion promotion)
         {
-            if (!promotion.Progress.HasValue || !promotion.UnlockGoal.HasValue)
-            {
-                return true;
-            }
+            return true;
 
-            return promotion.Progress.Value >= promotion.UnlockGoal.Value;
+            // TODO: on hold
+            //if (!promotion.Progress.HasValue || !promotion.UnlockGoal.HasValue)
+            //{
+            //    return true;
+            //}
+
+            //return promotion.Progress.Value >= promotion.UnlockGoal.Value;
         }
 
         private string GenerateExpiringSoonWarning(DateTime? expirationDate)
