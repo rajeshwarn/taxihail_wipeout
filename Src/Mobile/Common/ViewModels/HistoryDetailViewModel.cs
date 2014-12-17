@@ -256,7 +256,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			get
 			{
-				var amount = Order.Fare + Order.Tip + Order.Toll;
+				var amount = Order.Fare + Order.Tip + Order.Tax + Order.Toll;
 
 				return Status.FareAvailable
 					? string.Format ("{0} ({1})", Status.IBSStatusDescription, CultureProvider.FormatCurrency(amount.Value))
