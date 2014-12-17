@@ -64,11 +64,6 @@ namespace apcurium.MK.Booking.Email
             return Nustache.Core.Render.StringToString(template, data);
         }
 
-        public string InlineCss(string body)
-        {
-            return PreMailer.Net.PreMailer.MoveCssInline(body, true, ignoreElements: "#ignore").Html;
-        }
-
         public string ImagePath(string imageName)
         {
             return Path.Combine(AssemblyDirectory, "Email\\Images", imageName);
