@@ -54,7 +54,7 @@ namespace apcurium.MK.Booking.MapDataProvider.TomTom
             var result = new GeoDirection();
 			try
 			{
-				var direction = await client.GetAsync<RoutingResponse>(queryString);
+                var direction = await client.GetAsync<RoutingResponse>(queryString).ConfigureAwait(false);
 
 				_logger.LogMessage ("TomTom Result : " + direction.ToJson());
 

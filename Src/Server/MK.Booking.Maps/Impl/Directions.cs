@@ -34,7 +34,7 @@ namespace apcurium.MK.Booking.Maps.Impl
             var direction = await _client.GetDirectionsAsync(
                 originLat.GetValueOrDefault(), originLng.GetValueOrDefault(),
                 destinationLat.GetValueOrDefault(), destinationLng.GetValueOrDefault(),
-                date);
+                date).ConfigureAwait(false);
 
             if (direction.Distance.HasValue)
             {
