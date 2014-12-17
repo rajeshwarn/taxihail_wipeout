@@ -1,17 +1,16 @@
-﻿#region
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
-using apcurium.MK.Common.Extensions;
 using ServiceStack.ServiceClient.Web;
 using apcurium.MK.Booking.MapDataProvider.Resources;
 using apcurium.MK.Booking.MapDataProvider.Google.Resources;
+using System.Threading.Tasks;
+using apcurium.MK.Booking.MapDataProvider.Extensions;
+using apcurium.MK.Common.Extensions;
 
-#endregion
 namespace apcurium.MK.Booking.MapDataProvider.Google
 {
 	public class GoogleApiClient : IPlaceDataProvider, IDirectionDataProvider, IGeocoder
@@ -131,30 +130,41 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
 
 		public GeoDirection GetDirections(double originLat, double originLng, double destLat, double destLng, DateTime? date)
         {
+            return GetDirectionsAsync(originLat, originLng, destLat, destLng, date).Result;
+        }
+
+        public async Task<GeoDirection> GetDirectionsAsync(double originLat, double originLng, double destLat, double destLng, DateTime? date)
+        {
             var client = new JsonServiceClient(MapsServiceUrl);
             var resource = string.Format(CultureInfo.InvariantCulture,
-				"directions/json?origin={0},{1}&destination={2},{3}&sensor=true", originLat, originLng, destLat, destLng);
+                "directions/json?origin={0},{1}&destination={2},{3}&sensor=true", originLat, originLng, destLat, destLng);
 
-		    if (_settings.Data.ShowEta
-                && GoogleMapKey.HasValue())
-		    {
-		        //eta requires a Google Map Key for Business server-side when sending the value to the driver
-		        resource += "&key=" + GoogleMapKey;
-		    }
+            if (_settings.Data.ShowEta && GoogleMapKey.HasValue())
+            {
+                //eta requires a Google Map Key for Business server-side when sending the value to the driver
+                resource += "&key=" + GoogleMapKey;
+            }
 
-			var direction = client.Get<DirectionResult>(resource);
-			if (direction.Status == ResultStatus.OK)
-			{
-				var route = direction.Routes.ElementAt(0);
-				if (route.Legs.Count > 0)
-				{
-					var distance = route.Legs.Sum(leg => leg.Distance.Value);
-					var duration = route.Legs.Sum(leg => leg.Duration.Value);
-					return new GeoDirection{ Distance = distance, Duration = duration };
-				}
-			}
+            var result = new GeoDirection();
+            try
+            {
+                var direction = await client.GetAsync<DirectionResult>(resource);
+                if (direction.Status == ResultStatus.OK)
+                {
+                    var route = direction.Routes.ElementAt(0);
+                    if (route.Legs.Count > 0)
+                    {
+                        result.Distance = route.Legs.Sum(leg => leg.Distance.Value);
+                        result.Duration = route.Legs.Sum(leg => leg.Duration.Value);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e);
+            }
 
-			return new GeoDirection ();
+            return result;
         }
 
 		public GeoAddress[] GeocodeAddress(string address, string currentLanguage)

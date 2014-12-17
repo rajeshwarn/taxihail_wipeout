@@ -1,13 +1,10 @@
-﻿#region
-
-using System;
+﻿using System;
 using System.Globalization;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Enumeration;
-using apcurium.MK.Common.Extensions;
 using apcurium.MK.Booking.MapDataProvider;
+using System.Threading.Tasks;
 
-#endregion
 namespace apcurium.MK.Booking.Maps.Impl
 {
     public class Directions : IDirections
@@ -26,20 +23,27 @@ namespace apcurium.MK.Booking.Maps.Impl
         public Direction GetDirection(double? originLat, double? originLng, double? destinationLat,
 		    double? destinationLng, int? vehicleTypeId = null, DateTime? date = default(DateTime?), bool forEta = false)
         {
+            return GetDirectionAsync(originLat, originLng, destinationLat, destinationLng, vehicleTypeId, date, forEta).Result;
+        }
+
+        public async Task<Direction> GetDirectionAsync(double? originLat, double? originLng, double? destinationLat,
+            double? destinationLng, int? vehicleTypeId = null, DateTime? date = default(DateTime?), bool forEta = false)
+        {
             var result = new Direction();
-            var direction = _client.GetDirections(
-                    originLat.GetValueOrDefault(), originLng.GetValueOrDefault(),
-                    destinationLat.GetValueOrDefault(), destinationLng.GetValueOrDefault(),
-                    date);
+
+            var direction = await _client.GetDirectionsAsync(
+                originLat.GetValueOrDefault(), originLng.GetValueOrDefault(),
+                destinationLat.GetValueOrDefault(), destinationLng.GetValueOrDefault(),
+                date);
 
             if (direction.Distance.HasValue)
             {
-				if(direction.Duration.HasValue)
-				{
-					var paddedDuration = (int)Math.Ceiling((direction.Duration.Value * _appSettings.Data.EtaPaddingRatio) / 60);
-					result.Duration = Math.Max (1, paddedDuration);
-				}
-                
+                if(direction.Duration.HasValue)
+                {
+                    var paddedDuration = (int)Math.Ceiling((direction.Duration.Value * _appSettings.Data.EtaPaddingRatio) / 60);
+                    result.Duration = Math.Max (1, paddedDuration);
+                }
+
                 result.Distance = direction.Distance;
 
                 if (!forEta)
