@@ -223,7 +223,7 @@
             if(attr.length > 1 && this.model.has(attr[0])) {
                 this.model.get(attr[0])[attr[1]] = $input.val();
 
-                if ([attr[1]] == "vehicleTypeId") {
+                if ([attr[1]] == "vehicleTypeId" || [attr[1]] == "chargeTypeId") {
                     this.initialize();
                 }
             } else {
