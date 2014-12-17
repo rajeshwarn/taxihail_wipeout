@@ -36,6 +36,17 @@
             });
 
             this.$el.html(this.renderTemplate(data));
+
+            var refineBtn = this.$el.find('[data-action=refine]');
+            var streetNumber = this.model.get('streetNumber');
+            if (streetNumber == null) {
+                refineBtn.addClass('disabled');
+                refineBtn.attr('disabled', 'disabled');
+            } else {
+                refineBtn.removeClass('disabled');
+                refineBtn.removeAttr('disabled');
+            }
+
             this.$("[data-action=toggletarget]").addClass(toggleClass);
 
             this.$('[name=address]').on('keyup', _.debounce(this.onkeyup, 500));

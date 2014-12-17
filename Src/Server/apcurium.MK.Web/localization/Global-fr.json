@@ -81,5 +81,6 @@
 	"Estimate Display": "{0} {1}",
 	"AssignedEta" : "Votre véhicule est à {1} {2} et {0}",
     "NetworkFleetDispatchErrorTitle": "Erreur",
-    "NetworkContactingNextDispatchDescription": "En attente de {0} ..."
+    "NetworkContactingNextDispatchDescription": "En attente de {0} ...",
+    "RefineAddress": "Affinez l'adresse en entrant un numéro de rue"
 }
