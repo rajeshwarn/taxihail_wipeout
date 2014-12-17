@@ -403,6 +403,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 TotalFare = _resources.FormatPrice(totalFare),
                 Note = _serverSettings.ServerData.Receipt.Note,
                 Tax = _resources.FormatPrice(tax),
+                ShowTax = Math.Abs(tax) >= 0.01,
                 vatIsEnabled,
                 IsCardOnFile = isCardOnFile,
                 CardOnFileAmount = cardOnFileAmount,
@@ -418,7 +419,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 GreenDotImg = String.Concat(baseUrls.BaseUrlAssetsImg, "email_green_dot.png"),
                 LogoImg = imageLogoUrl,
 
-                PromotionWasUsed = amountSavedByPromotion != 0,
+                PromotionWasUsed = Math.Abs(amountSavedByPromotion) >= 0.01,
                 promoCode,
                 AmountSavedByPromotion = _resources.FormatPrice(Convert.ToDouble(amountSavedByPromotion))
             };
@@ -485,7 +486,9 @@ namespace apcurium.MK.Booking.Services.Impl
                 mailMessage.CC.Add(ccEmailAddress);
             }
 
-            var view = AlternateView.CreateAlternateViewFromString(_templateService.Render(template, templateData), Encoding.UTF8, "text/html");
+            var renderedBody = _templateService.Render(template, templateData);
+            var inlinedRenderedBody = _templateService.InlineCss(renderedBody);
+            var view = AlternateView.CreateAlternateViewFromString(inlinedRenderedBody, Encoding.UTF8, "text/html");
             mailMessage.AlternateViews.Add(view);
 
             if (embeddedIMages != null)
