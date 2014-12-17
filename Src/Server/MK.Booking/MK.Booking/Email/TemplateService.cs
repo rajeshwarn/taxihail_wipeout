@@ -45,12 +45,9 @@ namespace apcurium.MK.Booking.Email
             var path = GetTemplatePath(templateName, languageCode);
             if (File.Exists(path))
             {
-                
                 var templateBody = File.ReadAllText(path);
                 var translatedTemplateBody = Localizer.Translate(templateBody, _resources.GetLocalizedDictionary(languageCode), "!!MISSING!!");
-                var result = PreMailer.Net.PreMailer.MoveCssInline(translatedTemplateBody, true, ignoreElements: "#ignore")
-                            .Html;
-                return result;
+                return translatedTemplateBody;
             }
 
             return null;
@@ -60,6 +57,11 @@ namespace apcurium.MK.Booking.Email
         {
             if (template == null) throw new ArgumentNullException("template");
             return Nustache.Core.Render.StringToString(template, data);
+        }
+
+        public string InlineCss(string body)
+        {
+            return PreMailer.Net.PreMailer.MoveCssInline(body, true, ignoreElements: "#ignore").Html;
         }
 
         public string ImagePath(string imageName)

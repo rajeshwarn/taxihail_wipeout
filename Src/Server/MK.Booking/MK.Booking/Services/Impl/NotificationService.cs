@@ -475,7 +475,9 @@ namespace apcurium.MK.Booking.Services.Impl
                 SubjectEncoding = Encoding.UTF8
             };
 
-            var view = AlternateView.CreateAlternateViewFromString(_templateService.Render(template, templateData), Encoding.UTF8, "text/html");
+            var renderedBody = _templateService.Render(template, templateData);
+            var inlinedRenderedBody = _templateService.InlineCss(renderedBody);
+            var view = AlternateView.CreateAlternateViewFromString(inlinedRenderedBody, Encoding.UTF8, "text/html");
             mailMessage.AlternateViews.Add(view);
 
             if (embeddedIMages != null)
