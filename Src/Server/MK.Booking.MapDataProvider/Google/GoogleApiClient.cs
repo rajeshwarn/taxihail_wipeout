@@ -148,7 +148,7 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
             var result = new GeoDirection();
             try
             {
-                var direction = await client.GetAsync<DirectionResult>(resource);
+                var direction = await client.GetAsync<DirectionResult>(resource).ConfigureAwait(false);
                 if (direction.Status == ResultStatus.OK)
                 {
                     var route = direction.Routes.ElementAt(0);
