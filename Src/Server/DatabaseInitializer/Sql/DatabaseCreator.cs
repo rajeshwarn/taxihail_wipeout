@@ -272,6 +272,13 @@ namespace DatabaseInitializer.Sql
                                                  "DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON)", newDatabase);
 
             DatabaseHelper.ExecuteNonQuery(connString, createIndexForOrderVehiclePosition);
+
+            var createIndexForPromoIdUsage = string.Format("IF NOT EXISTS(SELECT * FROM sys.indexes WHERE name = 'PromoIdIdx' AND object_id = OBJECT_ID('[{0}].[Booking].[PromotionUsageDetail]')) " +
+                                                 "CREATE NONCLUSTERED INDEX [PromoIdIdx] ON [{0}].[Booking].[PromotionUsageDetail] " +
+                                                 "([PromoId] ASC) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, " +
+                                                 "DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON)", newDatabase);
+
+            DatabaseHelper.ExecuteNonQuery(connString, createIndexForPromoIdUsage);
         }
 
         public DateTime? CopyEventsAndCacheTables(string connString, string oldDatabase, string newDatabase)

@@ -15,6 +15,9 @@
             <a data-action="select-promocode" href="@Url.Action("Edit", new {id = @promoCode.Id})">
                 <span class="location-title">@promoCode.Name (@promoCode.Code)</span>
             </a>
+            <a href="@Url.Action("Statistics", new {id = @promoCode.Id})">
+                <span>[Statistics]</span>
+            </a>
         </li>
     }
     <li>
