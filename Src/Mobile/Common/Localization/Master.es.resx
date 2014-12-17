@@ -1676,8 +1676,8 @@
     <comment>The order cannot be created because your account is currently inactive.</comment>
   </data>
   <data name="ServiceErrorCreateOrder_CannotCreateInIbs_1300" xml:space="preserve">
-    <value>We apologize, we are full, we do not accept reservations in advance for this time slot.</value>
-    <comment>We apologize, we are full, we do not accept reservations in advance for this time slot.</comment>
+    <value>​We apologize but unfortunately we do not have any reservations available for that time period.</value>
+    <comment>​We apologize but unfortunately we do not have any reservations available for that time period.</comment>
   </data>
   <data name="ServiceErrorCreateOrder_CardOnFileButNoCreditCard" xml:space="preserve">
     <value>No tiene Tarjeta de Crédito Registrada en Archivo</value>

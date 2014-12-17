@@ -1573,7 +1573,7 @@
     <value>The charge account information is invalid. Please try again.</value>
   </data>
   <data name="ServiceErrorCreateOrder_CannotCreateInIbs_1300" xml:space="preserve">
-    <value>We apologize, we are full, we do not accept reservations in advance for this time slot.</value>
+    <value>​We apologize but unfortunately we do not have any reservations available for that time period.</value>
   </data>
   <data name="Notification_ConfirmPairingPush" xml:space="preserve">
     <value>Confirm Pairing</value>
