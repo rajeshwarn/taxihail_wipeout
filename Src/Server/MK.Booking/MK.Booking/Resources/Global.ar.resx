@@ -454,6 +454,10 @@
     <value>Order cannot be created. The charge account information is invalid. Please try again.</value>
     <comment>Order cannot be created. The charge account information is invalid. Please try again.</comment>
   </data>
+  <data name="CreateOrder_CannotCreateInIbs_1300" xml:space="preserve">
+    <value>We apologize, we are full, we do not accept reservations in advance for this time slot.</value>
+    <comment>We apologize, we are full, we do not accept reservations in advance for this time slot.</comment>
+  </data>
   <data name="CreateOrder_WaitingForIbs" xml:space="preserve">
     <value>Processing your order...</value>
   </data>

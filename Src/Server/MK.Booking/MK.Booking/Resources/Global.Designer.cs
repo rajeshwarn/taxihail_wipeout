@@ -241,6 +241,15 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to We apologize, we are full, we do not accept reservations in advance for this time slot..
+        /// </summary>
+        public static string CreateOrder_CannotCreateInIbs_1300 {
+            get {
+                return ResourceManager.GetString("CreateOrder_CannotCreateInIbs_1300", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Order cannot be created. The specified Destination address lies outside the regular service area..
         /// </summary>
         public static string CreateOrder_CannotCreateInIbs_1452 {
