@@ -112,6 +112,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <None Include="Extensions\ServiceClientBaseExtension.cs" />
+    <Compile Include="Extensions\ServiceClientBaseExtension.cs" />
   </ItemGroup>
 </Project>

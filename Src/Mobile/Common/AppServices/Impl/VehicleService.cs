@@ -120,7 +120,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 				.Take (vehicleCount)
 				.ToArray();
 
-			if (!vehicles.Any()) {
+			if (!vehicles.Any())
 			{
 				return null;
 			}
