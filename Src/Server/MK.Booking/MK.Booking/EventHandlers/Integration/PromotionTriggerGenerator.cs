@@ -58,12 +58,14 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                 });
 
                 var account = _accountDao.FindById(@event.SourceId);
-
-                _notificationService.SendPromotionUnlockedEmail(accountCreatedPromotion.Name,
+                if (account != null)
+                {
+                    _notificationService.SendPromotionUnlockedEmail(accountCreatedPromotion.Name,
                     accountCreatedPromotion.Code,
                     accountCreatedPromotion.GetEndDateTime(),
                     account.Email,
                     account.Language);
+                }
             }
         }
 
@@ -117,7 +119,12 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                                 x => x.Status == (int)OrderStatus.Completed
                                      && x.AccountId == accountId
                                      && x.PickupDate >= promoStartDate
-                                     && x.PickupDate < promoEndDate);
+                                     && x.PickupDate < promoEndDate).ToArray();
+
+                    var eligibleOrders2 =
+                        context.Set<OrderDetail>()
+                            .Where(
+                                x => x.AccountId == accountId).ToArray();
 
                     if (promotion.TriggerSettings.Type == PromotionTriggerTypes.RideCount.Id)
                     {
@@ -138,9 +145,10 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                         }
 
                         var totalAmountSpent = eligibleOrders.Any(x => x.Id == orderId)
-                            ? eligibleOrders.Sum(x => x.Fare + x.Tax + x.Toll)
-                            : eligibleOrders.Sum(x => x.Fare + x.Tax + x.Toll) + value;
+                            ? eligibleOrders.Sum(x => x.Fare.GetValueOrDefault() + x.Tax.GetValueOrDefault() + x.Toll.GetValueOrDefault())
+                            : eligibleOrders.Sum(x => x.Fare.GetValueOrDefault() + x.Tax.GetValueOrDefault() + x.Toll.GetValueOrDefault()) + value;
 
+                        // To get the current progress of the promo, we need to calculate only from the last time the promo was triggered
                         var amountSpentProgress = totalAmountSpent.GetValueOrDefault() - lastTriggeredAmount;
 
                         UnlockPromotionIfNecessary(amountSpentProgress, promotion.TriggerSettings.AmountSpent, triggerType, accountId, promotion);
@@ -187,7 +195,10 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                 });
 
                 var account = _accountDao.FindById(accountId);
-                _notificationService.SendPromotionUnlockedEmail(promotion.Name, promotion.Code, promotion.GetEndDateTime(), account.Email, account.Language);
+                if (account != null)
+                {
+                    _notificationService.SendPromotionUnlockedEmail(promotion.Name, promotion.Code, promotion.GetEndDateTime(), account.Email, account.Language);
+                }
             }
         }
     }

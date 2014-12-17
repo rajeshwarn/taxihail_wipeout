@@ -131,6 +131,7 @@
     <Compile Include="Integration\PaymentUpdatedFixture.cs" />
     <Compile Include="Integration\PayPalPaymentFixture\PayPalPaymentGeneratorTest.cs" />
     <Compile Include="Integration\PromotionFixture\PromotionDetailGenerator.cs" />
+    <Compile Include="Integration\PromotionFixture\PromotionTriggerGenerator.cs" />
     <Compile Include="Maps\PriceCalculatorFixture\given_a_date.cs" />
     <Compile Include="OrderFixture\given_an_email_address.cs" />
     <Compile Include="OrderFixture\given_an_email_address_and_an_orderStatus_using_real_geocoding_with_corporate_key.cs" />

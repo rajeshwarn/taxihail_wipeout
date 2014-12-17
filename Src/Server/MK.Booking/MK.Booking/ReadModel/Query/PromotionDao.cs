@@ -25,7 +25,7 @@ namespace apcurium.MK.Booking.ReadModel.Query
         {
             using (var context = _contextFactory.Invoke())
             {
-                return context.Query<PromotionDetail>().OrderBy(x => x.Active).ThenBy(x => x.Name).ToList();
+                return context.Query<PromotionDetail>().OrderBy(x => x.Active).ThenBy(x => x.Name).ToArray();
             }
         }
 
@@ -95,6 +95,14 @@ namespace apcurium.MK.Booking.ReadModel.Query
             using (var context = _contextFactory.Invoke())
             {
                 return context.Query<PromotionUsageDetail>().SingleOrDefault(c => c.OrderId == orderId);
+            }
+        }
+
+        public IEnumerable<PromotionUsageDetail> GetRedeemedPromotionUsages(Guid promoId)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                return context.Query<PromotionUsageDetail>().Where(c => c.PromoId == promoId && c.DateRedeemed.HasValue).ToArray();
             }
         }
 

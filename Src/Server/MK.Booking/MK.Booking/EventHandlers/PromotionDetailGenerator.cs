@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.ReadModel;
@@ -125,10 +126,13 @@ namespace apcurium.MK.Booking.EventHandlers
             using (var context = _contextFactory.Invoke())
             {
                 var promotionUsageDetail = context.Find<PromotionUsageDetail>(@event.OrderId);
+                var account = context.Find<AccountDetail>(promotionUsageDetail.AccountId);
 
                 promotionUsageDetail.AmountSaved = @event.AmountSaved;
+                promotionUsageDetail.UserEmail = account.Email;
+                promotionUsageDetail.DateRedeemed = @event.EventDate;
 
-                context.Save(promotionUsageDetail);
+                context.SaveChanges();
             }
         }
     }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 
 namespace apcurium.MK.Common.Geography
 {
@@ -39,6 +40,28 @@ namespace apcurium.MK.Common.Geography
             }
 
             return circlePoints;
+        }
+
+        /// <summary>
+        /// Method that checks if a coordinate is part of a region.
+        /// </summary>
+        /// <param name="regionStartLatitude">Region start x1</param>
+        /// <param name="regionStartLongitude">Region start y1</param>
+        /// <param name="regionEndLatitude">Region end x2</param>
+        /// <param name="regionEndLongitude">Region end y2</param>
+        /// <param name="coordinateLatitude">Coordinate x (latitude)</param>
+        /// <param name="coordinateLongitude">Coordinate y (longitude)</param>
+        /// <returns>True if the coordinate (point) is part of the region; false otherwise</returns>
+        public static bool RegionContainsCoordinate(double regionStartLatitude, double regionStartLongitude, double regionEndLatitude,
+            double regionEndLongitude, double coordinateLatitude, double coordinateLongitude)
+        {
+            var region = new RectangleF(
+                Math.Min((float)regionStartLatitude, (float)regionEndLatitude),
+                Math.Min((float)regionStartLongitude, (float)regionEndLongitude),
+                Math.Abs((float)regionEndLatitude - (float)regionStartLatitude),
+                Math.Abs((float)regionEndLongitude - (float)regionStartLongitude));
+
+            return region.Contains((float)coordinateLatitude, (float)coordinateLongitude);
         }
     }
 }
