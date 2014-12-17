@@ -28,7 +28,6 @@ namespace apcurium.MK.Booking.Domain
         private decimal _discountValue;
         private PromoDiscountType _discountType;
 
-        private readonly List<Guid> _usersBlackList = new List<Guid>();
         private readonly List<Guid> _usersWhiteList = new List<Guid>();
         private readonly Dictionary<Guid, int> _usagesPerUser = new Dictionary<Guid, int>();
         private readonly List<Guid> _orderIds = new List<Guid>(); 
@@ -137,8 +136,7 @@ namespace apcurium.MK.Booking.Domain
             }
 
             if (_triggerSettings.Type != PromotionTriggerTypes.NoTrigger.Id
-                && !_usersWhiteList.Contains(accountId)
-                || _usersBlackList.Contains(accountId))
+                && !_usersWhiteList.Contains(accountId))
             {
                 errorMessage = "CannotCreateOrder_PromotionUserNotAllowed";
                 return false;
@@ -337,13 +335,7 @@ namespace apcurium.MK.Booking.Domain
 
         private void OnUserRemovedFromWhiteList(UserRemovedFromPromotionWhiteList @event)
         {
-            var userRemoved = _usersWhiteList.Remove(@event.AccountId);
-
-            if (userRemoved && !_triggerSettings.IsRepeatable)
-            {
-                // If promo is not repeatable, we must make sure that the user doesn't trigger the promo another time
-                _usersBlackList.Add(@event.AccountId);
-            }
+            _usersWhiteList.Remove(@event.AccountId);
         }
 
         /// <summary>

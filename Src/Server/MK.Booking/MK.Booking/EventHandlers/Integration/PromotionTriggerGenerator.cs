@@ -132,9 +132,9 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                         var promotionProgressDetail = context.Set<PromotionProgressDetail>().Find(accountId, promotion.Id);
                         double lastTriggeredAmount = 0;
 
-                        if (promotionProgressDetail != null && promotionProgressDetail.AmountSpent.HasValue)
+                        if (promotionProgressDetail != null && promotionProgressDetail.LastTriggeredAmount.HasValue)
                         {
-                            lastTriggeredAmount = promotionProgressDetail.AmountSpent.Value;
+                            lastTriggeredAmount = promotionProgressDetail.LastTriggeredAmount.Value;
                         }
 
                         var totalAmountSpent = eligibleOrders.Any(x => x.Id == orderId)
@@ -176,7 +176,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                         context.Save(promotionProgressDetail);
                     }
 
-                    promotionProgressDetail.AmountSpent = promotionProgress;
+                    promotionProgressDetail.LastTriggeredAmount = promotionProgress;
                     context.SaveChanges();
                 }
 

@@ -15,5 +15,7 @@ namespace apcurium.MK.Booking.ReadModel
         public int? RideCount { get; set; }
 
         public double? AmountSpent { get; set; }
+
+        public double? LastTriggeredAmount { get; set; }
     }
 }
