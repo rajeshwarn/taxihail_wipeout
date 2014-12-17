@@ -127,7 +127,7 @@ namespace apcurium.MK.Booking.EventHandlers
                 var account = context.Find<AccountDetail>(promotionUsageDetail.AccountId);
 
                 promotionUsageDetail.AmountSaved = @event.AmountSaved;
-                promotionUsageDetail.UserId = account.Email;
+                promotionUsageDetail.UserEmail = account.Email;
                 promotionUsageDetail.DateRedeemed = @event.EventDate;
 
                 context.SaveChanges();

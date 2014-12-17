@@ -21,18 +21,18 @@ namespace apcurium.MK.Web.Areas.AdminTH.Models
 
             foreach (var promotionUsage in promotionUsageDetails)
             {
-                if (promotionUsage.UserId == null)
+                if (promotionUsage.UserEmail == null)
                 {
                     continue;
                 }
 
-                if (UsersUsage.ContainsKey(promotionUsage.UserId))
+                if (UsersUsage.ContainsKey(promotionUsage.UserEmail))
                 {
-                    UsersUsage[promotionUsage.UserId]++;
+                    UsersUsage[promotionUsage.UserEmail]++;
                 }
                 else
                 {
-                    UsersUsage.Add(promotionUsage.UserId, 1);
+                    UsersUsage.Add(promotionUsage.UserEmail, 1);
                 }
             }
         }

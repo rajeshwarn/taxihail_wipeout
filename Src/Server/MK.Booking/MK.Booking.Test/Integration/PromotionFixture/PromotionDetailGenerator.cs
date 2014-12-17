@@ -257,7 +257,7 @@ namespace apcurium.MK.Booking.Test.Integration.PromotionFixture
                 var account = context.Find<AccountDetail>(dto.AccountId);
 
                 Assert.NotNull(account);
-                Assert.AreEqual(account.Email, dto.UserId);
+                Assert.AreEqual(account.Email, dto.UserEmail);
             }
         }
     }
