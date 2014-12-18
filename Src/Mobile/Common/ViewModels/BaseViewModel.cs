@@ -98,6 +98,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             base.ShowViewModel<TViewModel>(dictionary);
         }
 
+		protected void GoBackToHomeViewModel(object parameter)
+		{
+			var dictionary = parameter.ToSimplePropertyDictionary();
+			dictionary = dictionary ?? new Dictionary<string,string>();
+			dictionary.Add("clearNavigationStack", "notUsed");
+			dictionary.Add("removeFromHistory", "notUsed");
+			base.ShowViewModel<HomeViewModel>(dictionary);
+		}
+
 		protected TViewModel AddChild<TViewModel>(Func<TViewModel> builder, bool lazyLoad = false)
             where TViewModel: BaseViewModel
 		{

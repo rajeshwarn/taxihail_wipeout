@@ -361,6 +361,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
+		public void NavigateToHistoryList()
+		{
+			ShowViewModel<HistoryListViewModel>();
+		}
+
 		public ICommand RebookOrder
         {
             get
@@ -369,10 +374,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 {
 					using(this.Services().Message.ShowProgress())
 					{
-						_orderWorkflowService.Rebook(Order);
-						ShowViewModel<HomeViewModel>(new { 
-							locateUser =  false, 
-							defaultHintZoomLevel = new ZoomToStreetLevelPresentationHint(Order.PickupAddress.Latitude, Order.PickupAddress.Longitude).ToJson()});
+						
+							_orderWorkflowService.Rebook(Order);
+							GoBackToHomeViewModel(new { 
+								locateUser =  false, 
+								defaultHintZoomLevel = new ZoomToStreetLevelPresentationHint(Order.PickupAddress.Latitude, Order.PickupAddress.Longitude).ToJson()});
 					}
 				});
             }

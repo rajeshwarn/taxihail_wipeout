@@ -218,7 +218,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 return this.GetCommand(() =>
                 {
 					CloseMenu();
-					ShowViewModel<HistoryListViewModel> ();
+					ShowViewModel<HistoryListViewModel>();
                 });
             }
         }
