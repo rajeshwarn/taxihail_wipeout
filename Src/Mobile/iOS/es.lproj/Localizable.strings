@@ -555,3 +555,4 @@
 "PromoExpiringSoonMessage"="Expires in {0} days";
 "PromoExpiringToday"="Expires today!";
 "PromotionViewNoPromotionLabel"="No promotions available";
+"ServiceErrorCreateOrder_CannotCreateInIbs_1300"="​We apologize but unfortunately we do not have any reservations available for that time period.";
