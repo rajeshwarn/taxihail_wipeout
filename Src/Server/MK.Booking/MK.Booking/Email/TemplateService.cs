@@ -9,6 +9,7 @@ using apcurium.MK.Booking.Resources;
 using apcurium.MK.Booking.Services.Impl;
 using apcurium.MK.Common.Configuration;
 using Nustache.i18n;
+using RestSharp.Extensions;
 
 #endregion
 
