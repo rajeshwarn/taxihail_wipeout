@@ -39,6 +39,7 @@ namespace apcurium.MK.Booking.Services.Impl
         private readonly IServerSettings _serverSettings;
         private readonly IConfigurationDao _configurationDao;
         private readonly IOrderDao _orderDao;
+        private readonly IAccountDao _accountDao;
         private readonly IStaticMap _staticMap;
         private readonly ISmsService _smsService;
         private readonly IGeocoding _geocoding;
@@ -55,6 +56,7 @@ namespace apcurium.MK.Booking.Services.Impl
             IServerSettings serverSettings,
             IConfigurationDao configurationDao,
             IOrderDao orderDao,
+            IAccountDao accountDao,
             IStaticMap staticMap,
             ISmsService smsService,
             IGeocoding geocoding,
@@ -67,6 +69,7 @@ namespace apcurium.MK.Booking.Services.Impl
             _serverSettings = serverSettings;
             _configurationDao = configurationDao;
             _orderDao = orderDao;
+            _accountDao = accountDao;
             _staticMap = staticMap;
             _smsService = smsService;
             _geocoding = geocoding;
@@ -80,6 +83,17 @@ namespace apcurium.MK.Booking.Services.Impl
             this._baseUrls = new BaseUrls(baseUrl, _serverSettings);
         }
 
+
+        public void SendPromotionUnlockedPush(Guid accountId, PromotionDetail promotionDetail)
+        {
+            var account = _accountDao.FindById(accountId);
+            if (ShouldSendNotification(accountId, x => x.DriverAssignedPush))
+            {
+                SendPushOrSms(accountId,
+                    string.Format(_resources.Get("PushNotification_PromotionUnlocked", account.Language), promotionDetail.Name, promotionDetail.Code),
+                    new Dictionary<string, object>());
+            }
+        }
 
         public void SendAssignedPush(OrderStatusDetail orderStatusDetail)
         {

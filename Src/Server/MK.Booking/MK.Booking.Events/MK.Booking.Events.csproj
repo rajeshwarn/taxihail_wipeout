@@ -122,7 +122,6 @@
     <Compile Include="RatingTypeHidded.cs" />
     <Compile Include="RatingTypeUpdated.cs" />
     <Compile Include="UserAddedToPromotionWhiteList.cs" />
-    <Compile Include="UserRemovedFromPromotionWhiteList.cs" />
     <Compile Include="UserTaxiHailNetworkSettingsAddedOrUpdated.cs" />
     <Compile Include="TermsAndConditionsRetriggered.cs" />
     <Compile Include="TermsAndConditionsUpdated.cs" />

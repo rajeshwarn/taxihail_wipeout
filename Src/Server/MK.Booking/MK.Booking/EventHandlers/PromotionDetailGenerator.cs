@@ -125,11 +125,14 @@ namespace apcurium.MK.Booking.EventHandlers
         {
             using (var context = _contextFactory.Invoke())
             {
-                var promotionUsageDetail = context.Find<PromotionUsageDetail>(@event.OrderId);
+                var promotionUsageDetail = context.Find<PromotionUsageDetail>(@event.OrderId);                
                 var account = context.Find<AccountDetail>(promotionUsageDetail.AccountId);
+                if (account != null)
+                {
+                    promotionUsageDetail.UserEmail = account.Email;
+                }
 
                 promotionUsageDetail.AmountSaved = @event.AmountSaved;
-                promotionUsageDetail.UserEmail = account.Email;
                 promotionUsageDetail.DateRedeemed = @event.EventDate;
 
                 context.SaveChanges();

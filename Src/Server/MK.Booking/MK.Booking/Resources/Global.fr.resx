@@ -459,4 +459,7 @@
   <data name="Email_Subject_PromotionUnlocked" xml:space="preserve">
     <value>{{ ApplicationName }} - Nouvelle promotion disponible!</value>
   </data>
+  <data name="PushNotification_PromotionUnlocked" xml:space="preserve">
+    <value>Félicitations! Vous êtes éligible à la promotion "{0}". Utilisez le code {1} lors de la confirmation d'une commande pour la réclamer.</value>
+  </data>
 </root>

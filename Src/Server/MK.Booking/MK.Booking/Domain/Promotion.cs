@@ -42,7 +42,6 @@ namespace apcurium.MK.Booking.Domain
             Handles<PromotionApplied>(OnPromotionApplied);
             Handles<PromotionRedeemed>(OnPromotionRedeemed);
             Handles<UserAddedToPromotionWhiteList>(OnUserAddedToWhiteList);
-            Handles<UserRemovedFromPromotionWhiteList>(OnUserRemovedFromWhiteList);
         }
 
         public Promotion(Guid id, IEnumerable<IVersionedEvent> history)
@@ -331,11 +330,6 @@ namespace apcurium.MK.Booking.Domain
         private void OnUserAddedToWhiteList(UserAddedToPromotionWhiteList @event)
         {
             _usersWhiteList.Add(@event.AccountId);
-        }
-
-        private void OnUserRemovedFromWhiteList(UserRemovedFromPromotionWhiteList @event)
-        {
-            _usersWhiteList.Remove(@event.AccountId);
         }
 
         /// <summary>

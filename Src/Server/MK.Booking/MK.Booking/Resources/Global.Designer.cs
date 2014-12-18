@@ -1024,6 +1024,15 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Congratulations! You are now eligible to use the &quot;{0}&quot; promotion. Use code {1} when booking your next ride to redeem it..
+        /// </summary>
+        public static string PushNotification_PromotionUnlocked {
+            get {
+                return ResourceManager.GetString("PushNotification_PromotionUnlocked", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Your Taxi (#{0}) has arrived.
         /// </summary>
         public static string PushNotification_wosARRIVED {

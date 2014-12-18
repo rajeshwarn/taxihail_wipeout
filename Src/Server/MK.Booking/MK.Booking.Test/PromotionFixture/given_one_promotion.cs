@@ -5,6 +5,7 @@ using apcurium.MK.Booking.CommandHandlers;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Domain;
 using apcurium.MK.Booking.Events;
+using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
 using NUnit.Framework;
 
@@ -42,7 +43,8 @@ namespace apcurium.MK.Booking.Test.PromotionFixture
                 StartTime = new DateTime(SqlDateTime.MinValue.Value.Year, SqlDateTime.MinValue.Value.Month, SqlDateTime.MinValue.Value.Day, 10, 0, 0),
                 EndTime = new DateTime(SqlDateTime.MinValue.Value.Year, SqlDateTime.MinValue.Value.Month, SqlDateTime.MinValue.Value.Day, 14, 0, 0),
                 PublishedStartDate = new DateTime(2014, 11, 9),
-                PublishedEndDate = new DateTime(2015, 11, 10)
+                PublishedEndDate = new DateTime(2015, 11, 10),
+                TriggerSettings = new PromotionTriggerSettings()
             });
             _sut.Given(new PromotionActivated{ SourceId = _promoId });
         }
@@ -402,7 +404,8 @@ namespace apcurium.MK.Booking.Test.PromotionFixture
                 StartDate = new DateTime(2014, 11, 10),
                 EndDate = new DateTime(2015, 11, 10),
                 StartTime = new DateTime(SqlDateTime.MinValue.Value.Year, SqlDateTime.MinValue.Value.Month, SqlDateTime.MinValue.Value.Day, 10, 0, 0),
-                EndTime = new DateTime(SqlDateTime.MinValue.Value.Year, SqlDateTime.MinValue.Value.Month, SqlDateTime.MinValue.Value.Day, 14, 0, 0)
+                EndTime = new DateTime(SqlDateTime.MinValue.Value.Year, SqlDateTime.MinValue.Value.Month, SqlDateTime.MinValue.Value.Day, 14, 0, 0),
+                TriggerSettings = new PromotionTriggerSettings()
             });
 
             var ex = Assert.Throws<InvalidOperationException>(() => _sut.When(new ApplyPromotion

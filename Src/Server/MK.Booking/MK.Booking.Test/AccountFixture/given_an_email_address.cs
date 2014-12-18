@@ -30,6 +30,7 @@ namespace apcurium.MK.Booking.Test.AccountFixture
         private TestServerSettings _serverSettings;
         private Mock<IEmailSender> _emailSenderMock;
         private Mock<IOrderDao> _orderDaoMock;
+        private Mock<IAccountDao> _accountDaoMock;
         private EventSourcingTestHelper<Account> _sut;
 
         [TestFixtureSetUp]
@@ -70,8 +71,10 @@ namespace apcurium.MK.Booking.Test.AccountFixture
 
             _emailSenderMock = new Mock<IEmailSender>();
             _orderDaoMock = new Mock<IOrderDao>();
+            _accountDaoMock = new Mock<IAccountDao>();
             _serverSettings = new TestServerSettings();
             _serverSettings.SetSetting("TaxiHail.ApplicationName", ApplicationName);
+
             var notificationService = new NotificationService(
                 () => new BookingDbContext(DbName),
                 null,
@@ -80,6 +83,7 @@ namespace apcurium.MK.Booking.Test.AccountFixture
                 _serverSettings,
                 new ConfigurationDao(() => new ConfigurationDbContext(DbName)),
                 _orderDaoMock.Object,
+                _accountDaoMock.Object,
                 new StaticMap(),
                 null,
                 null,

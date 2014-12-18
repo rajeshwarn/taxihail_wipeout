@@ -442,4 +442,7 @@
   <data name="Email_Subject_PromotionUnlocked" xml:space="preserve">
     <value>{{ ApplicationName }} - New Promotion Available!</value>
   </data>
+  <data name="PushNotification_PromotionUnlocked" xml:space="preserve">
+    <value>Congratulations! You are now eligible to use the "{0}" promotion. Use code {1} when booking your next ride to redeem it.</value>
+  </data>
 </root>

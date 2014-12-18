@@ -42,6 +42,7 @@ namespace apcurium.MK.Booking.Test.Integration.PromotionFixture
 
             var smsSenderMock = new Mock<ISmsService>();
             var orderDaoMock = new Mock<IOrderDao>();
+            var accountDaoMock = new Mock<IAccountDao>();
             var serverSettings = new TestServerSettings();
 
             PromoGenerator = new PromotionDetailGenerator(() => new BookingDbContext(DbName));
@@ -49,7 +50,7 @@ namespace apcurium.MK.Booking.Test.Integration.PromotionFixture
             CreditCardGenerator = new CreditCardPaymentDetailsGenerator(() => new BookingDbContext(DbName), new TestServerSettings());
 
             TriggerSut = new PromotionTriggerGenerator(() => new BookingDbContext(DbName), bus.Object,
-                new PromotionDao(() => new BookingDbContext(DbName), new SystemClock(), new TestServerSettings()), new OrderDao(() => new BookingDbContext(DbName)), new AccountDao(() => new BookingDbContext(DbName)), new NotificationService(null, null, null, null, serverSettings, null, orderDaoMock.Object, new StaticMap(), smsSenderMock.Object, null, null));
+                new PromotionDao(() => new BookingDbContext(DbName), new SystemClock(), new TestServerSettings()), new OrderDao(() => new BookingDbContext(DbName)), new AccountDao(() => new BookingDbContext(DbName)), new NotificationService(null, null, null, null, serverSettings, null, orderDaoMock.Object, accountDaoMock.Object, new StaticMap(), smsSenderMock.Object, null, null));
         }
     }
 

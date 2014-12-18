@@ -121,11 +121,6 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                                      && x.PickupDate >= promoStartDate
                                      && x.PickupDate < promoEndDate).ToArray();
 
-                    var eligibleOrders2 =
-                        context.Set<OrderDetail>()
-                            .Where(
-                                x => x.AccountId == accountId).ToArray();
-
                     if (promotion.TriggerSettings.Type == PromotionTriggerTypes.RideCount.Id)
                     {
                         var orderCount = eligibleOrders.Any(x => x.Id == orderId)
