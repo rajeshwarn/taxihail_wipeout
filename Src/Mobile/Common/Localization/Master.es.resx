@@ -1675,6 +1675,10 @@
     <value>Su reservación no puede ser creada porque su cuenta está inactiva</value>
     <comment>The order cannot be created because your account is currently inactive.</comment>
   </data>
+  <data name="ServiceErrorCreateOrder_CannotCreateInIbs_1300" xml:space="preserve">
+    <value>​We apologize but unfortunately we do not have any reservations available for that time period.</value>
+    <comment>​We apologize but unfortunately we do not have any reservations available for that time period.</comment>
+  </data>
   <data name="ServiceErrorCreateOrder_CardOnFileButNoCreditCard" xml:space="preserve">
     <value>No tiene Tarjeta de Crédito Registrada en Archivo</value>
     <comment>No Credit Card On File.</comment>
