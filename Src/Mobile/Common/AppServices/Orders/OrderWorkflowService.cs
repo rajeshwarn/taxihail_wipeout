@@ -541,6 +541,13 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
 		public async Task PrepareForNewOrder()
 		{
+			var isDestinationModeOpened = await _isDestinationModeOpenedSubject.Take(1).ToTask();
+			if (isDestinationModeOpened)
+			{
+				ToggleIsDestinationModeOpened();
+				ToggleBetweenPickupAndDestinationSelectionMode();
+			}
+
 			_noteToDriverSubject.OnNext(string.Empty);
 			_promoCodeSubject.OnNext(string.Empty);
 			_pickupAddressSubject.OnNext(new Address());
@@ -772,13 +779,33 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			return order;
 		}
 
-		public void Rebook(Order previous)
+		public async void Rebook(Order previous)
 		{
             _isOrderRebooked = true;
+			/*if (!previous.DropOffAddress.HasValidCoordinate ()) {
+				var isDestinationModeOpened = await _isDestinationModeOpenedSubject.Take(1).ToTask();
+				if (isDestinationModeOpened)
+				{   
+					await ToggleBetweenPickupAndDestinationSelectionMode();
+					await ToggleIsDestinationModeOpened();
+				}
+			}
+			else
+			{
+				var isDestinationModeOpened = await _isDestinationModeOpenedSubject.Take(1).ToTask();
+				if (!isDestinationModeOpened)
+				{   
+					await ToggleBetweenPickupAndDestinationSelectionMode();
+					await ToggleIsDestinationModeOpened();
+				}
+			}*/
+
 			_pickupAddressSubject.OnNext(previous.PickupAddress);
 			_destinationAddressSubject.OnNext(previous.DropOffAddress);
 			_bookingSettingsSubject.OnNext(previous.Settings);
 			_noteToDriverSubject.OnNext(previous.Note);
+
+
 		}
 
         public bool IsOrderRebooked()

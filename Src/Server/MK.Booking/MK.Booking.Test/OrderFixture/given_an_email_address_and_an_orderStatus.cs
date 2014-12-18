@@ -45,6 +45,10 @@ namespace apcurium.MK.Booking.Test.OrderFixture
             _geocodingMock
                 .Setup(x => x.Search(45, -73, It.IsAny<string>(), It.IsAny<GeoResult>(), false))
                 .Returns(new [] {new Address { FullAddress = "full dropoff" }});
+
+            TemplateServiceMock
+                .Setup(x => x.InlineCss(It.IsAny<string>()))
+                .Returns(string.Empty);
         }
 
         [Test]
