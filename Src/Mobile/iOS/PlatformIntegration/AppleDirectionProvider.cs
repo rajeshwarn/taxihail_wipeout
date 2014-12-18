@@ -18,11 +18,6 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 			_logger = logger;
 		}
 
-        public GeoDirection GetDirections (double originLat, double originLng, double destLat, double destLng, DateTime? date)
-		{
-            return GetDirectionsAsync(originLat, originLng, destLat, destLng, date).Result;
-		}
-
         public Task<GeoDirection> GetDirectionsAsync (double originLat, double originLng, double destLat, double destLng, DateTime? date)
         {
             var tcs = new TaskCompletionSource<GeoDirection>();

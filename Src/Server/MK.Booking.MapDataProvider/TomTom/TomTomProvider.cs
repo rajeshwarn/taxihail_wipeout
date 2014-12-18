@@ -36,11 +36,6 @@ namespace apcurium.MK.Booking.MapDataProvider.TomTom
 			get { return _settings.Data.TomTomMapToolkitKey; }
 		}
 
-        public GeoDirection GetDirections(double originLat, double originLng, double destLat, double destLng, DateTime? date)
-        {
-            return GetDirectionsAsync(originLat, originLng, destLat, destLng, date).Result;
-        }
-
         public async Task<GeoDirection> GetDirectionsAsync (double originLat, double originLng, double destLat, double destLng, DateTime? date)
 		{
 			var client = new JsonServiceClient (ApiUrl);

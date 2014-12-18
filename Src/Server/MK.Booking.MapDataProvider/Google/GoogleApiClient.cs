@@ -10,6 +10,7 @@ using apcurium.MK.Booking.MapDataProvider.Google.Resources;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.MapDataProvider.Extensions;
 using apcurium.MK.Common.Extensions;
+using System.Threading;
 
 namespace apcurium.MK.Booking.MapDataProvider.Google
 {
@@ -68,7 +69,7 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
 
             _logger.LogMessage("Nearby Places API : " + PlacesServiceUrl + r);
 
-			return client.Get<PlacesResponse>(r).Results.Select(ConvertPlaceToGeoPlaces).ToArray();
+            return HandleGoogleResult<GeoPlace[], PlacesResponse>(() => client.Get<PlacesResponse>(r), x => x.Results.Select(ConvertPlaceToGeoPlaces).ToArray(), new GeoPlace[0]);
         }
 
 		public GeoPlace[] SearchPlaces(double? latitude, double? longitude, string name, string languageCode, bool sensor, int radius, string countryCode)
@@ -101,9 +102,7 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
 
             _logger.LogMessage("Search Places API : " + PlacesAutoCompleteServiceUrl + r);
 
-            var result = client.Get<PredictionResponse>(r).predictions;
-
-            return ConvertPredictionToPlaces(result).ToArray();
+            return HandleGoogleResult<GeoPlace[], PredictionResponse>(() => client.Get<PredictionResponse>(r), x => ConvertPredictionToPlaces(x.predictions).ToArray(), new GeoPlace[0]); 
         }
 
 		public GeoPlace GetPlaceDetail(string id)
@@ -119,18 +118,14 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
             var qry = "json" + BuildQueryString(@params);
             Console.WriteLine(qry);
 
-			var placeResponse = client.Get<PlaceDetailResponse> (qry).Result;
-			return new GeoPlace 
+            Func<PlaceDetailResponse, GeoPlace> selector = response => new GeoPlace 
             {
-				Id = id,
-				Name = placeResponse.Formatted_address,
-				Address = ConvertGeoObjectToAddress (placeResponse)
-			};
-        }
+                Id = id,
+                Name = response.Result.Formatted_address,
+                Address = ConvertGeoObjectToAddress (response.Result)
+            };
 
-		public GeoDirection GetDirections(double originLat, double originLng, double destLat, double destLng, DateTime? date)
-        {
-            return GetDirectionsAsync(originLat, originLng, destLat, destLng, date).Result;
+            return HandleGoogleResult<GeoPlace, PlaceDetailResponse>(() => client.Get<PlaceDetailResponse>(qry), selector, new GeoPlace());
         }
 
         public async Task<GeoDirection> GetDirectionsAsync(double originLat, double originLng, double destLat, double destLng, DateTime? date)
@@ -149,6 +144,22 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
             try
             {
                 var direction = await client.GetAsync<DirectionResult>(resource).ConfigureAwait(false);
+                if (direction.Status == ResultStatus.OVER_QUERY_LIMIT)
+                {
+                    // retry 2 more times
+
+                    var attempts = 1;
+                    var success = false;
+
+                    while(!success && attempts < 3)
+                    {
+                        await Task.Delay(1000).ConfigureAwait(false);
+                        direction = await client.GetAsync<DirectionResult>(resource).ConfigureAwait(false);
+                        attempts++;
+                        success = direction.Status == ResultStatus.OK;
+                    }
+                }
+
                 if (direction.Status == ResultStatus.OK)
                 {
                     var route = direction.Routes.ElementAt(0);
@@ -179,6 +190,28 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
             return Geocode(resource, () => _fallbackGeocoder.GeocodeLocation (latitude, longitude, currentLanguage));
         }
 
+        public GeoAddress[] ConvertGeoResultToAddresses(GeoResult result)
+        { 
+            if ( result.Status == ResultStatus.OK )
+            {
+                return result.Results
+                    .Where(r => 
+                        r.Formatted_address.HasValue() 
+                        && r.Geometry != null 
+                        && r.Geometry.Location != null 
+                        && r.Geometry.Location.Lng != 0 
+                        && r.Geometry.Location.Lat != 0 
+                        && (r.AddressComponentTypes.Any(type => type == AddressComponentType.Street_address) 
+                            || (r.Types.Any(t => _otherTypesAllowed.Any(o => o.ToLower() == t.ToLower())))))
+                    .Select(ConvertGeoObjectToAddress)
+                    .ToArray();
+            }
+            else
+            {
+                return new GeoAddress[0];
+            }
+        }
+
         private GeoAddress[] Geocode(string resource, Func<GeoAddress[]> fallBackAction)
         {
             var client = new JsonServiceClient(MapsServiceUrl);
@@ -190,15 +223,49 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
 
             _logger.LogMessage("GeocodeLocation : " + MapsServiceUrl + resource);
 
-            var result = client.Get<GeoResult>(resource);
+            return HandleGoogleResult<GeoAddress[], GeoResult>(() => client.Get<GeoResult>(resource), ConvertGeoResultToAddresses, new GeoAddress [0], fallBackAction);
+        }
 
-            if ((result.Status == ResultStatus.OVER_QUERY_LIMIT || result.Status == ResultStatus.REQUEST_DENIED) && _fallbackGeocoder != null) {
-                return fallBackAction.Invoke();
-            } else if (result.Status == ResultStatus.OK) {
-                return ConvertGeoResultToAddresses(result);
-            } else {
-                return new GeoAddress [0];
+        private TResponse HandleGoogleResult<TResponse, TGoogleResponse>(Func<TGoogleResponse> apiCall, Func<TGoogleResponse, TResponse> selector, TResponse defaultResult, Func<TResponse> fallBackAction = null)
+            where TGoogleResponse : GoogleResult
+        {
+            try
+            {
+                var result = apiCall.Invoke();
+
+                if (result.Status == ResultStatus.OVER_QUERY_LIMIT)
+                {
+                    // retry 2 more times
+
+                    var attempts = 1;
+                    var success = false;
+
+                    while(!success && attempts < 3)
+                    {
+                        Thread.Sleep(1000);
+                        result = apiCall.Invoke();
+                        attempts++;
+                        success = result.Status == ResultStatus.OK;
+                    }
+                }
+
+                // if we still have OVER_QUERY_LIMIT or REQUEST_DENIED and a fallback geocoder, we invoke it
+                if ((result.Status == ResultStatus.OVER_QUERY_LIMIT || result.Status == ResultStatus.REQUEST_DENIED) && _fallbackGeocoder != null && fallBackAction != null) 
+                {
+                    return fallBackAction.Invoke();
+                }
+
+                if (result.Status == ResultStatus.OK) 
+                {
+                    return selector.Invoke(result);
+                } 
             }
+            catch(Exception ex)
+            {
+                _logger.LogError(ex);
+            }
+
+            return defaultResult;
         }
 
 		private GeoPlace ConvertPlaceToGeoPlaces(Place place)
@@ -258,29 +325,7 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
             return "?" + string.Join("&", @params.Select(x => string.Join("=", x.Key, x.Value)));
         }
 
-        public GeoAddress[] ConvertGeoResultToAddresses(GeoResult result)
-        { 
-            if ( result.Status == ResultStatus.OK )
-            {
-                return result.Results
-                    .Where(r => 
-                        r.Formatted_address.HasValue() 
-                        && r.Geometry != null 
-                        && r.Geometry.Location != null 
-                        && r.Geometry.Location.Lng != 0 
-                        && r.Geometry.Location.Lat != 0 
-                        && (r.AddressComponentTypes.Any(type => type == AddressComponentType.Street_address) 
-                            || (r.Types.Any(t => _otherTypesAllowed.Any(o => o.ToLower() == t.ToLower())))))
-                    .Select(ConvertGeoObjectToAddress)
-                    .ToArray();
-            }
-            else
-            {
-                return new GeoAddress[0];
-            }
-        }
-
-        public GeoAddress ConvertGeoObjectToAddress(GeoObj geoResult)
+        private GeoAddress ConvertGeoObjectToAddress(GeoObj geoResult)
         {        
             var address = new GeoAddress
             {

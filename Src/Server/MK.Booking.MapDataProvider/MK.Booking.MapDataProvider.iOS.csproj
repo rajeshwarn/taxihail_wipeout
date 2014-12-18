@@ -110,6 +110,7 @@
     <Compile Include="TomTom\TomTomProvider.cs" />
     <Compile Include="TomTom\Resources\RoutingResponse.cs" />
     <Compile Include="Extensions\ServiceClientBaseExtension.cs" />
+    <Compile Include="Google\Resources\GoogleResult.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
