@@ -49,7 +49,7 @@
             TaxiHail.parameters.defaultLongitude = <%: DefaultLongitude %>;
             TaxiHail.parameters.isLoggedIn = <%: IsAuthenticated ? "true" : "false" %>;
             TaxiHail.parameters.isSuperAdmin = <%: IsSuperAdmin ? "true" : "false" %>;
-            TaxiHail.parameters.promotionIsEnabled = <%: PromotionIsEnabled ? "true" : "false" %>;
+            TaxiHail.parameters.isTaxiHailPro = <%: IsTaxiHailPro ? "true" : "false" %>;
             TaxiHail.parameters.geolocSearchFilter = '<%= GeolocSearchFilter %>';
             TaxiHail.parameters.geolocSearchRegion = '<%= GeolocSearchRegion %>';
             TaxiHail.parameters.geolocSearchBounds = '<%= GeolocSearchBounds %>';

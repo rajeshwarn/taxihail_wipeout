@@ -29,16 +29,13 @@
    "GeoLoc.DefaultLongitude" : "-73.65",
    "GeoLoc.SearchFilter" : "{0},montreal,qc,canada&region=ca",
    "GoogleMapKey": "AIzaSyAd-ezA2SeVTSNqsu6aMmAkdlP3UqEVPWE",
-   "LowerLeftLatitude" : "0",
-   "LowerLeftLongitude" : "0",
    "Map.PlacesApiKey" : "AIzaSyAAgAGS4SjtSwqni_wpgCo2XnY30m0rhLs",
    "PriceFormat" : "en-CA",   
    "SendReceiptAvailable" : "true",
    "ShowEstimate" : "true",   
    "Smtp.Credentials.Password" : "Password01",
    "Smtp.Credentials.Username" : "TaxiHail",
-   "UpperRightLatitude" : "0",
-   "UpperRightLongitude" : "0",
    "VehicleTypeSelectionEnabled": "true",
-   "CustomerPortal.Url": "http://test.taxihail.biz:8181/CustomerPortal/api/"
+   "CustomerPortal.Url": "http://test.taxihail.biz:8181/CustomerPortal/api/",
+   "IsTaxiHailPro": "true"
 }

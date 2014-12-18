@@ -239,10 +239,10 @@ namespace apcurium.MK.Common.Configuration
 
     public class NetworkSettingContainer
     {
-        [CustomizableByCompany]
+        [CustomizableByCompany, RequiresTaxiHailPro]
         public double PrimaryOrderTimeout { get; protected internal set; }
 
-        [CustomizableByCompany]
+        [CustomizableByCompany, RequiresTaxiHailPro]
         public double SecondaryOrderTimeout { get; protected internal set; }
 
         [SendToClient]
