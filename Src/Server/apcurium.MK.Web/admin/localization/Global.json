@@ -107,7 +107,7 @@
 	"OrderStatus.ServerPollingInterval" : "Server Ride Status Polling (seconds)",
     "Network.PrimaryOrderTimeout": "Primary Order Timeout (seconds)",
     "Network.SecondaryOrderTimeout": "Secondary Order Timeout (seconds)",
-    "PromotionEnabled" : "PromotionEnabled (refresh to see)",
+    "IsTaxiHailPro" : "IsTaxiHailPro (refresh to see)",
 
 	"/******* End settings Aliases *******/": "",
 
