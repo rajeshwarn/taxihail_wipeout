@@ -47,31 +47,29 @@ namespace apcurium.MK.Booking.Api.Services
                 return new HttpResult(HttpStatusCode.NotFound);
             }
 
-            if (!order.IBSOrderId.HasValue)
-            {
-                throw new HttpError(ErrorCode.OrderNotInIbs.ToString());
-            }
-
             if (account.Id != order.AccountId)
             {
                 throw new HttpError(HttpStatusCode.Unauthorized, "Can't cancel another account's order");
             }
 
-            var currentIbsAccountId = _accountDao.GetIbsAccountId(account.Id, order.CompanyKey);
-            if (currentIbsAccountId.HasValue)
+            if (order.IBSOrderId.HasValue)
             {
-                //We need to try many times because sometime the IBS cancel method doesn't return an error but doesn't cancel the ride... after 5 time, we are giving up. But we assume the order is completed.
-                Task.Factory.StartNew(() =>
+                var currentIbsAccountId = _accountDao.GetIbsAccountId(account.Id, order.CompanyKey);
+                if (currentIbsAccountId.HasValue)
                 {
-                    Func<bool> cancelOrder = () => _ibsServiceProvider.Booking(order.CompanyKey, order.Market).CancelOrder(order.IBSOrderId.Value, currentIbsAccountId.Value, order.Settings.Phone);
-                    cancelOrder.Retry(new TimeSpan(0, 0, 0, 10), 5);
-                });
-
-                var command = new Commands.CancelOrder { Id = Guid.NewGuid(), OrderId = request.OrderId };
-                _commandBus.Send(command);
-
-                UpdateStatusAsync( command.Id );
+                    //We need to try many times because sometime the IBS cancel method doesn't return an error but doesn't cancel the ride... after 5 time, we are giving up. But we assume the order is completed.
+                    Task.Factory.StartNew(() =>
+                    {
+                        Func<bool> cancelOrder = () => _ibsServiceProvider.Booking(order.CompanyKey, order.Market).CancelOrder(order.IBSOrderId.Value, currentIbsAccountId.Value, order.Settings.Phone);
+                        cancelOrder.Retry(new TimeSpan(0, 0, 0, 10), 5);
+                    });
+                }
             }
+            
+            var command = new Commands.CancelOrder { OrderId = request.OrderId };
+            _commandBus.Send(command);
+
+            UpdateStatusAsync(command.Id);
 
             return new HttpResult(HttpStatusCode.OK);
         }

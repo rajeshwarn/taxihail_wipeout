@@ -16,7 +16,6 @@
 "VehicleNumberNotice"="Please note that if the vehicle number presented above does not match the actual car number of your ride, we regret that payment cannot be processed through the Application. Please press the back button to return to the trip status screen, and pay the driver directly.";
 "Reset"="Reset";
 "SendEmail"="Send mail...";
-"ServiceErrorCreateOrder_CannotCreateInIbs_7000_NoCall"="The order cannot be created because your account is currently inactive.";
 "FavoritesButton"="Favorites";
 "CmtTransactionSuccessTitle"="Payment Received";
 "Register"="Register";
@@ -36,7 +35,6 @@
 "EmailLabel"="Email";
 "BookingService_MobileBookingNoteBuildingName"="Building name {0}.";
 "RateRide"="Rate my ride";
-"ServiceErrorCreateOrder_CannotCreateInIbs_1002"="The specified Pickup address lies outside the regular service area. Please contact {0} at {1} for further assistance.";
 "CreateAccountErrorNotSpecified"="The server didn't specify why the account could not be created, if the error persist try creating the account from the web site.";
 "ListPromptSelectOne"="Select one";
 "NetworkErrorTitle"="No network connection";
@@ -209,7 +207,6 @@
 "CreateAccountErrorTitle"="Error";
 "CreateAccountFullNamePlaceHolder"="Full Name";
 "ServiceError_ErrorCreatingOrderMessage"="Please contact {0} at {1} for further assistance.";
-"ServiceErrorCreateOrder_CannotCreateInIbs_1002_NoCall"="The specified Pickup address lies outside the regular service area.";
 "ServiceErrorCreateOrder_InvalidProvider"="Order cannot be created, invalid provider. Please contact {0} at {1} for further assistance.";
 "View_BookingStatus"="Status";
 "LocationNoHistory"="No history";
@@ -252,7 +249,6 @@
 "Locating"="Finding your position...";
 "CreateAccountCreate"="Create";
 "CreditCardExpYear"="Exp. Year";
-"ServiceErrorCreateOrder_CannotCreateInIbs_7000"="The order cannot be created because your account is currently inactive. Please contact {0} at {1} for further assistance.";
 "RefineAddressTitle"="Refine an address";
 "Confirm"="Confirm";
 "CreditCardCategory"="Category";
@@ -355,7 +351,6 @@
 "CmtTransactionSuccessMessage"="Confirmation sent to the driver (Authorization Code:  {0})";
 "StatusConfirmCancelRide"="This action will cancel your order, do you want to continue ?";
 "CreditCardInvalidCrediCardNUmber"="The Credit Card Number is invalid";
-"ServiceErrorCreateOrder_CannotCreateInIbs"="Order cannot be created. Please try again or call us.";
 "Tuto04Bottom"="Doing so will provide an estimate for the cost for the trip.";
 "ResetPasswordConfirmationMessage"="A new password was send by email.";
 "ReminderDetails"="Reminder: A taxi will pick you up from {0} at {1} on {2}.";
@@ -503,8 +498,6 @@
 "View"="View";
 "CreditCardAdded"="Your account is now enabled to pay with your card on file by default. You can still choose to pay in the vehicle by selecting \"Pay in Vehicle\" on the payment screen";
 "PayInCar"="Pay Cash/Credit Card in Car";
-"ServiceErrorCreateOrder_CannotCreateInIbs_10000_NoCall"="The charge account information is invalid. Please try again.";
-"ServiceErrorCreateOrder_CannotCreateInIbs_10000"="The charge account information is invalid. Please try again.";
 "EstimateDistance"="";
 "EstimatePrice"="Cost";
 "EtaNotAvailable"="No vehicle available";
@@ -533,8 +526,6 @@
 "ServiceErrorAccountCharge_InvalidAccountNumber"="Invalid account number";
 "ServiceErrorCreateOrder_CardOnFileButNoCreditCard"="No Credit Card On File.";
 "EstimateFareCalculating"="Calculating...";
-"ServiceErrorCreateOrder_CannotCreateInIbs_1452_NoCall"="The specified Destination address lies outside the regular service area.";
-"ServiceErrorCreateOrder_CannotCreateInIbs_1452"="The specified Destination address lies outside the regular service area. Please contact {0} at {1} for further assistance.";
 "Safety"="Safety";
 "Politeness"="Politeness";
 "Modify"="Modify";
@@ -584,3 +575,4 @@
 "PromoExpiringToday"="Expires today!";
 "PromotionViewNoPromotionLabel"="No promotions available";
 "ServiceErrorCreateOrder_CannotCreateInIbs_1300"="​We apologize but unfortunately we do not have any reservations available for that time period.";
+"Processing"="Processing your order...";

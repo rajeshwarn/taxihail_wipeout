@@ -27,7 +27,8 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
     public class PushNotificationSender : IIntegrationEventHandler,
             IEventHandler<OrderStatusChanged>,
             IEventHandler<CreditCardPaymentCaptured_V2>,
-            IEventHandler<OrderPreparedForNextDispatch>
+            IEventHandler<OrderPreparedForNextDispatch>,
+            IEventHandler<OrderCancelledBecauseOfIbsError>
     {
         private readonly INotificationService _notificationService;
         private readonly IServerSettings _serverSettings;
@@ -94,6 +95,18 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             try
             {
                 _notificationService.SendChangeDispatchCompanyPush(@event.SourceId);
+            }
+            catch (Exception e)
+            {
+                Log.Debug(e);
+            }
+        }
+
+        public void Handle(OrderCancelledBecauseOfIbsError @event)
+        {
+            try
+            {
+                _notificationService.SendOrderCreationErrorPush(@event.SourceId, @event.ErrorDescription);
             }
             catch (Exception e)
             {

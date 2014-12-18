@@ -214,6 +214,78 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Order cannot be created. Please try again or call us..
+        /// </summary>
+        public static string CreateOrder_CannotCreateInIbs {
+            get {
+                return ResourceManager.GetString("CreateOrder_CannotCreateInIbs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Order cannot be created. The charge account information is invalid. Please try again..
+        /// </summary>
+        public static string CreateOrder_CannotCreateInIbs_10000 {
+            get {
+                return ResourceManager.GetString("CreateOrder_CannotCreateInIbs_10000", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Order cannot be created. The specified Pickup address lies outside the regular service area..
+        /// </summary>
+        public static string CreateOrder_CannotCreateInIbs_1002 {
+            get {
+                return ResourceManager.GetString("CreateOrder_CannotCreateInIbs_1002", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to We apologize, we are full, we do not accept reservations in advance for this time slot..
+        /// </summary>
+        public static string CreateOrder_CannotCreateInIbs_1300 {
+            get {
+                return ResourceManager.GetString("CreateOrder_CannotCreateInIbs_1300", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Order cannot be created. The specified Destination address lies outside the regular service area..
+        /// </summary>
+        public static string CreateOrder_CannotCreateInIbs_1452 {
+            get {
+                return ResourceManager.GetString("CreateOrder_CannotCreateInIbs_1452", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Order cannot be created. Your account has been disabled..
+        /// </summary>
+        public static string CreateOrder_CannotCreateInIbs_3000 {
+            get {
+                return ResourceManager.GetString("CreateOrder_CannotCreateInIbs_3000", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Order cannot be created. Your account is currently inactive..
+        /// </summary>
+        public static string CreateOrder_CannotCreateInIbs_7000 {
+            get {
+                return ResourceManager.GetString("CreateOrder_CannotCreateInIbs_7000", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Processing your order....
+        /// </summary>
+        public static string CreateOrder_WaitingForIbs {
+            get {
+                return ResourceManager.GetString("CreateOrder_WaitingForIbs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {0:c}.
         /// </summary>
         public static string CurrencyPriceFormat {

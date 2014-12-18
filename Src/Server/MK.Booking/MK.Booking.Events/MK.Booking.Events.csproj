@@ -68,7 +68,9 @@
     <Compile Include="CreditCardPaymentInitiated.cs" />
     <Compile Include="CreditCardUpdated.cs" />
     <Compile Include="DispatchCompanySwitchIgnored.cs" />
+    <Compile Include="IbsOrderInfoAddedToOrder.cs" />
     <Compile Include="NotificationSettingsAddedOrUpdated.cs" />
+    <Compile Include="OrderCancelledBecauseOfIbsError.cs" />
     <Compile Include="OrderPreparedForNextDispatch.cs" />
     <Compile Include="OrderPairedForPayment.cs" />
     <Compile Include="OrderSwitchedToNextDispatchCompany.cs" />

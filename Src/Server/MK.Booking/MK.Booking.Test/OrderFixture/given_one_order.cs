@@ -51,6 +51,16 @@ namespace apcurium.MK.Booking.Test.OrderFixture
         private readonly Guid _accountId = Guid.NewGuid();
 
         [Test]
+        public void when_adding_ibs_order_info_to_order()
+        {
+            _sut.When(new AddIbsOrderInfoToOrder { OrderId = _orderId, IBSOrderId = 99});
+
+            var @event = _sut.ThenHasSingle<IbsOrderInfoAddedToOrder>();
+            Assert.AreEqual(_orderId, @event.SourceId);
+            Assert.AreEqual(99, @event.IBSOrderId);
+        }
+
+        [Test]
         public void when_cancelling_successfully()
         {
             _sut.When(new CancelOrder {OrderId = _orderId});
