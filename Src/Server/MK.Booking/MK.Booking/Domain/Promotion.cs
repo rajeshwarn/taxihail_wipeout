@@ -79,7 +79,7 @@ namespace apcurium.MK.Booking.Domain
                 Code = code,
                 PublishedStartDate = publishedStartDate,
                 PublishedEndDate = publishedEndDate,
-                TriggerSettings = triggerSettings
+                TriggerSettings = triggerSettings ?? new PromotionTriggerSettings()
             });
         }
 
@@ -110,7 +110,7 @@ namespace apcurium.MK.Booking.Domain
                 Code = code,
                 PublishedStartDate = publishedStartDate,
                 PublishedEndDate = publishedEndDate,
-                TriggerSettings = triggerSettings
+                TriggerSettings = triggerSettings ?? new PromotionTriggerSettings()
             });
         }
 
