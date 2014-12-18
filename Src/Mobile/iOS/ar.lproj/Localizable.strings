@@ -535,3 +535,4 @@
 "UpdateBookingSettingsInvalidAccount"="The account number that was entered doesn't exist";
 "CreditCardBookingSettingsError"="An error occured when updating the booking settings. Please make sure that the account number in your profile is valid and try again.";
 "UpdateBookingSettingsInvalidCoF"="You must have a card on file to use this account";
+"ServiceErrorCreateOrder_CannotCreateInIbs_1300"="​We apologize but unfortunately we do not have any reservations available for that time period.";
