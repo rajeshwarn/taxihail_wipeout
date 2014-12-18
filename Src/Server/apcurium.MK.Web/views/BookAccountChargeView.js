@@ -94,7 +94,7 @@
                 var question = questions[i];
                 if (question.isEnabled &&
                     (question.isRequired || question.maxLength > 0)) {
-                    var name = 'answer' + (i + 1);
+                    var name = 'answer' + (i);
 
                     var rule = new Object();
                     var message = new Object();
@@ -131,7 +131,7 @@
                 for (var i = 0; i < answers.length; i++) {
                     var answer = answers[i];
                     var index = answer.getAttribute('data-id');
-                    questions[index -1].answer = answer.value;
+                    questions[index].answer = answer.value;
                 }
                 this.model.save({}, {
                     success: TaxiHail.postpone(function (model) {
