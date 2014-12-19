@@ -1679,6 +1679,10 @@
     <value>​We apologize but unfortunately we do not have any reservations available for that time period.</value>
     <comment>​We apologize but unfortunately we do not have any reservations available for that time period.</comment>
   </data>
+  <data name="ServiceErrorCreateOrder_CannotCreateInIbs_1300_NoCall" xml:space="preserve">
+    <value>​We apologize but unfortunately we do not have any reservations available for that time period.</value>
+    <comment>​We apologize but unfortunately we do not have any reservations available for that time period.</comment>
+  </data>
   <data name="ServiceErrorCreateOrder_CardOnFileButNoCreditCard" xml:space="preserve">
     <value>No tiene Tarjeta de Crédito Registrada en Archivo</value>
     <comment>No Credit Card On File.</comment>

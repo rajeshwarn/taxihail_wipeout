@@ -1575,6 +1575,9 @@
   <data name="ServiceErrorCreateOrder_CannotCreateInIbs_1300" xml:space="preserve">
     <value>​We apologize but unfortunately we do not have any reservations available for that time period.</value>
   </data>
+  <data name="ServiceErrorCreateOrder_CannotCreateInIbs_1300_NoCall" xml:space="preserve">
+    <value>​We apologize but unfortunately we do not have any reservations available for that time period.</value>
+  </data>
   <data name="Notification_ConfirmPairingPush" xml:space="preserve">
     <value>Confirm Pairing</value>
   </data>
