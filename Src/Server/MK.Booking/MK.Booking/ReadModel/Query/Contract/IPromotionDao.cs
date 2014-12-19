@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using apcurium.MK.Common.Enumeration;
 
 namespace apcurium.MK.Booking.ReadModel.Query.Contract
 {
@@ -9,7 +10,9 @@ namespace apcurium.MK.Booking.ReadModel.Query.Contract
 
         IEnumerable<PromotionProgressDetail> GetAllProgress();
 
-        IEnumerable<PromotionDetail> GetAllCurrentlyActive();
+        PromotionProgressDetail GetProgress(Guid accountId, Guid promoId);
+
+        IEnumerable<PromotionDetail> GetAllCurrentlyActive(PromotionTriggerTypes? triggerType = null);
 
         PromotionDetail FindById(Guid id);
 

@@ -1,4 +1,7 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.ReadModel;
@@ -19,33 +22,40 @@ namespace apcurium.MK.Booking.Api.Services
 
         public object Get(ActivePromotions request)
         {
-            var progress = _promotionDao.GetAllProgress();
-
             return _promotionDao.GetAllCurrentlyActive()
-                .Select(x =>
+                .Select(promotionDetail =>
                 {
-                    var progressDetails = progress.FirstOrDefault(p => p.PromoId == x.Id);
-                    return new ActivePromotion
-                                 {
-                                     Name = x.Name,
-                                     Description = x.Description,
-                                     Code = x.Code,
-                                     ExpirationDate = x.GetEndDateTime(),
-                                     Progress = GetProgress(x, progressDetails),
-                                     UnlockGoal = GetUnlockGoal(x)
-                                 };
+                    var activePromotion = new ActivePromotion
+                    {
+                        Name = promotionDetail.Name,
+                        Description = promotionDetail.Description,
+                        Code = promotionDetail.Code,
+                        ExpirationDate = promotionDetail.GetEndDateTime()
+                    };
+
+                    var accountId = new Guid(this.GetSession().UserAuthId);
+                    AddProgressToPromotion(accountId, promotionDetail, activePromotion);
+
+                    return activePromotion;
                 }).ToArray();
+        }
+
+        private void AddProgressToPromotion(Guid accoundId, PromotionDetail promotionDetail, ActivePromotion activePromotion)
+        {
+            var progressDetail = _promotionDao.GetProgress(accoundId, promotionDetail.Id);
+            activePromotion.Progress = GetProgress(promotionDetail, progressDetail);
+            activePromotion.UnlockGoal = GetUnlockGoal(promotionDetail);
         }
 
         private double? GetProgress(PromotionDetail promotionDetail, PromotionProgressDetail progressDetail)
         {
-            if (promotionDetail.TriggerSettings.Type == PromotionTriggerTypes.RideCount.Id)
+            if (promotionDetail.TriggerSettings.Type == PromotionTriggerTypes.RideCount)
             {
                 return (progressDetail == null || progressDetail.RideCount == null)
                         ? 0
                         : progressDetail.RideCount;
             }
-            else if (promotionDetail.TriggerSettings.Type == PromotionTriggerTypes.AmountSpent.Id)
+            else if (promotionDetail.TriggerSettings.Type == PromotionTriggerTypes.AmountSpent)
             {
                 return (progressDetail == null || progressDetail.AmountSpent == null)
                         ? 0.0
@@ -57,11 +67,11 @@ namespace apcurium.MK.Booking.Api.Services
 
         private double? GetUnlockGoal(PromotionDetail promotionDetail)
         {
-            if (promotionDetail.TriggerSettings.Type == PromotionTriggerTypes.RideCount.Id)
+            if (promotionDetail.TriggerSettings.Type == PromotionTriggerTypes.RideCount)
             {
                 return promotionDetail.TriggerSettings.RideCount;
             }
-            else if (promotionDetail.TriggerSettings.Type == PromotionTriggerTypes.AmountSpent.Id)
+            else if (promotionDetail.TriggerSettings.Type == PromotionTriggerTypes.AmountSpent)
             {
                 return promotionDetail.TriggerSettings.AmountSpent;
             }

@@ -106,11 +106,11 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                     throw new Exception("Something's not right");
                 }
 
-                if (promoCode.TriggerSettings.Type == PromotionTriggerTypes.AmountSpent.Id)
+                if (promoCode.TriggerSettings.Type == PromotionTriggerTypes.AmountSpent)
                 {
                     promoCode.TriggerSettings.RideCount = 0;
                 }
-                else if (promoCode.TriggerSettings.Type == PromotionTriggerTypes.RideCount.Id)
+                else if (promoCode.TriggerSettings.Type == PromotionTriggerTypes.RideCount)
                 {
                     promoCode.TriggerSettings.AmountSpent = 0;
                 }

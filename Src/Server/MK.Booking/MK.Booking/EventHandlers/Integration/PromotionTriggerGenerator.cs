@@ -44,10 +44,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
         public void Handle(AccountRegistered @event)
         {
             // Check if exists promotion triggered on account creation
-            var activePromotions = _promotionDao.GetAllCurrentlyActive();
-            var accountCreatedPromotion =
-                activePromotions.FirstOrDefault(
-                    p => p.TriggerSettings.Type == PromotionTriggerTypes.AccountCreated.Id);
+            var accountCreatedPromotion = _promotionDao.GetAllCurrentlyActive(PromotionTriggerTypes.AccountCreated).FirstOrDefault();
 
             if (accountCreatedPromotion != null)
             {
@@ -57,15 +54,11 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                     PromoId = accountCreatedPromotion.Id
                 });
 
-                var account = _accountDao.FindById(@event.SourceId);
-                if (account != null)
-                {
-                    _notificationService.SendPromotionUnlockedEmail(accountCreatedPromotion.Name,
-                    accountCreatedPromotion.Code,
-                    accountCreatedPromotion.GetEndDateTime(),
-                    account.Email,
-                    account.Language);
-                }
+                //_notificationService.SendPromotionUnlockedEmail(accountCreatedPromotion.Name,
+                //    accountCreatedPromotion.Code,
+                //    accountCreatedPromotion.GetEndDateTime(),
+                //    @event.Email,
+                //    @event.Language);
             }
         }
 
@@ -95,17 +88,17 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             UpdateRideProgression(activePromotions, PromotionTriggerTypes.AmountSpent, accountId, @event.OrderId, (double)@event.Meter);
         }
 
-        private void UpdateRideProgression(IEnumerable<PromotionDetail> activePromotions, ListItem triggerType, Guid accountId, Guid orderId, double? value = null)
+        private void UpdateRideProgression(IEnumerable<PromotionDetail> activePromotions, PromotionTriggerTypes triggerType, Guid accountId, Guid orderId, double? value = null)
         {
             if (value == null
-                && triggerType.Id == PromotionTriggerTypes.AmountSpent.Id)
+                && triggerType == PromotionTriggerTypes.AmountSpent)
             {
                 throw new ArgumentNullException("value", "Value parameter should not be null with Amount Spent triggerType");
             }
 
             using (var context = _contextFactory.Invoke())
             {
-                var promotions = activePromotions.Where(p => p.TriggerSettings.Type == triggerType.Id);
+                var promotions = activePromotions.Where(p => p.TriggerSettings.Type == triggerType);
 
                 foreach (var promotion in promotions)
                 {
@@ -121,15 +114,15 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                                      && x.PickupDate >= promoStartDate
                                      && x.PickupDate < promoEndDate).ToArray();
 
-                    if (promotion.TriggerSettings.Type == PromotionTriggerTypes.RideCount.Id)
+                    if (promotion.TriggerSettings.Type == PromotionTriggerTypes.RideCount)
                     {
                         var orderCount = eligibleOrders.Any(x => x.Id == orderId)
-                            ? eligibleOrders.Count()
-                            : eligibleOrders.Count() + 1;
+                            ? eligibleOrders.Length
+                            : eligibleOrders.Length + 1;
 
                         UnlockPromotionIfNecessary(orderCount, promotion.TriggerSettings.RideCount, triggerType, accountId, promotion);
                     }
-                    else if (promotion.TriggerSettings.Type == PromotionTriggerTypes.AmountSpent.Id)
+                    else if (promotion.TriggerSettings.Type == PromotionTriggerTypes.AmountSpent)
                     {
                         var promotionProgressDetail = context.Set<PromotionProgressDetail>().Find(accountId, promotion.Id);
                         double lastTriggeredAmount = 0;
@@ -152,18 +145,18 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             }
         }
 
-        private void UnlockPromotionIfNecessary(double promotionProgress, double promotionThreshold, ListItem triggerType, Guid accountId, PromotionDetail promotion)
+        private void UnlockPromotionIfNecessary(double promotionProgress, double promotionThreshold, PromotionTriggerTypes triggerType, Guid accountId, PromotionDetail promotion)
         {
             // Check if promotion needs to be unlocked
             bool isPromotionUnlocked = false;
 
-            if (triggerType.Id == PromotionTriggerTypes.RideCount.Id)
+            if (triggerType == PromotionTriggerTypes.RideCount)
             {
                 isPromotionUnlocked = promotionProgress != 0
                     && promotionProgress >= promotionThreshold
                     && (promotionProgress % promotionThreshold) == 0;
             }
-            else if (triggerType.Id == PromotionTriggerTypes.AmountSpent.Id)
+            else if (triggerType == PromotionTriggerTypes.AmountSpent)
             {
                 isPromotionUnlocked = promotionProgress >= promotionThreshold;
             }

@@ -190,7 +190,7 @@
         <div class="control-group left-control-group">
             @Html.LabelFor(x => x.TriggerSettings.Type, new { @class = "control-label" })
             <div class="controls">
-                @Html.DropDownListFor(x => x.TriggerSettings.Type, new SelectList(PromotionTriggerTypes.GetList(), "Id", "Display", Model.TriggerSettings.Type), new { @id = "triggerTypeDropDown" })
+               @Html.DropDownListFor(x => x.TriggerSettings.Type, new SelectList(Enum.GetValues(typeof(PromotionTriggerTypes))), new { @id = "triggerTypeDropDown" })
             </div>
         </div>
         <div class="control-group right-control-group" id="rideCountTriggerGroup">

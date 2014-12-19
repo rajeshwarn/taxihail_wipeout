@@ -86,7 +86,7 @@ namespace apcurium.MK.Booking.Test.Integration.PromotionFixture
                 Assert.AreEqual(new TimeSpan(14, 0, 0), dto.EndTime.Value.TimeOfDay);
                 Assert.AreEqual(new DateTime(2014, 11, 10), dto.PublishedStartDate);
                 Assert.AreEqual(new DateTime(2015, 11, 10), dto.PublishedEndDate);
-                Assert.AreEqual(PromotionTriggerTypes.NoTrigger.Id, dto.TriggerSettings.Type);
+                Assert.AreEqual(PromotionTriggerTypes.NoTrigger, dto.TriggerSettings.Type);
                 Assert.AreEqual(0, dto.TriggerSettings.RideCount);
                 Assert.AreEqual(0, dto.TriggerSettings.AmountSpent);
             }
@@ -138,7 +138,7 @@ namespace apcurium.MK.Booking.Test.Integration.PromotionFixture
                 DiscountValue = 15,
                 DaysOfWeek = new[] { DayOfWeek.Wednesday, DayOfWeek.Thursday, DayOfWeek.Friday },
                 MaxUsage = 5,
-                TriggerSettings = new PromotionTriggerSettings { Type = PromotionTriggerTypes.RideCount.Id.Value, RideCount = 10 }
+                TriggerSettings = new PromotionTriggerSettings { Type = PromotionTriggerTypes.RideCount, RideCount = 10 }
             });
 
             using (var context = new BookingDbContext(DbName))
@@ -163,7 +163,7 @@ namespace apcurium.MK.Booking.Test.Integration.PromotionFixture
                 Assert.AreEqual(null, dto.PublishedStartDate);
                 Assert.AreEqual(null, dto.PublishedEndDate);
                 
-                Assert.AreEqual(PromotionTriggerTypes.RideCount.Id, dto.TriggerSettings.Type);
+                Assert.AreEqual(PromotionTriggerTypes.RideCount, dto.TriggerSettings.Type);
                 Assert.AreEqual(10, dto.TriggerSettings.RideCount);
             }
         }

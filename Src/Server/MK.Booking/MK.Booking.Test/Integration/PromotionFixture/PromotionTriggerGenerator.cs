@@ -130,15 +130,15 @@ namespace apcurium.MK.Booking.Test.Integration.PromotionFixture
             };
 
             promo.SourceId = _promoAccountTriggerId;
-            promo.TriggerSettings = new PromotionTriggerSettings {Type = PromotionTriggerTypes.AccountCreated.Id.Value};
+            promo.TriggerSettings = new PromotionTriggerSettings {Type = PromotionTriggerTypes.AccountCreated};
             PromoGenerator.Handle(promo);
 
             promo.SourceId = _promoAmountSpentTriggerId;
-            promo.TriggerSettings = new PromotionTriggerSettings {Type = PromotionTriggerTypes.AmountSpent.Id.Value, AmountSpent = 20 };
+            promo.TriggerSettings = new PromotionTriggerSettings {Type = PromotionTriggerTypes.AmountSpent, AmountSpent = 20 };
             PromoGenerator.Handle(promo);
 
             promo.SourceId = _promoRideCountTriggerId;
-            promo.TriggerSettings = new PromotionTriggerSettings {Type = PromotionTriggerTypes.RideCount.Id.Value, RideCount = 2 };
+            promo.TriggerSettings = new PromotionTriggerSettings {Type = PromotionTriggerTypes.RideCount, RideCount = 2 };
             PromoGenerator.Handle(promo);
 
 

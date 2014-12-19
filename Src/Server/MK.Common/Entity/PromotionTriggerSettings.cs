@@ -1,11 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using apcurium.MK.Common.Enumeration;
 
 namespace apcurium.MK.Common.Entity
 {
     public class PromotionTriggerSettings
     {
         [Display(Name = "Trigger")]
-        public int Type { get; set; }
+        public PromotionTriggerTypes Type { get; set; }
 
         [Display(Name = "Ride Count")]
         public int RideCount { get; set; }
