@@ -29,7 +29,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             set.Bind(lblName).For(v => v.Text).To(vm => vm.Name);
             set.Bind(lblExpires).For(v => v.Text).To(vm => vm.ExpiringSoonWarning);
             set.Bind(lblDescription).For(v => v.Text).To(vm => vm.Description);
-			set.Bind (lblProgress).For (v => v.Text).To (vm => vm.Progress);
+			set.Bind (lblProgress).For (v => v.Text).To (vm => vm.ProgressDescription);
             set.Bind(btnApplyPromo).For("TouchUpInside").To(vm => vm.SelectedCommand);
 
             set.Apply(); 

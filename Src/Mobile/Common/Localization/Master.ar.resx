@@ -1707,8 +1707,11 @@
   <data name="Processing" xml:space="preserve">
     <value>Processing your order...</value>
   </data>
-  <data name="Notification_PromotionEmail" xml:space="preserve">
-    <value>Promotions (Email)</value>
+  <data name="Notification_PromotionUnlockedEmail" xml:space="preserve">
+    <value>Promotions unlocked (Email)</value>
+  </data>
+  <data name="Notification_PromotionUnlockedPush" xml:space="preserve">
+    <value>Promotions unlocked (Push)</value>
   </data>
   <data name="PromoProgress" xml:space="preserve">
     <value>Progress :</value>

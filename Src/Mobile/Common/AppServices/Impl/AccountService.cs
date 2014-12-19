@@ -648,9 +648,12 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                     ReceiptEmail = companySettings.ReceiptEmail.HasValue && userSettings.ReceiptEmail.HasValue
                         ? userSettings.ReceiptEmail 
                         : companySettings.ReceiptEmail,
-                    PromotionEmail = companySettings.PromotionEmail.HasValue && userSettings.PromotionEmail.HasValue
-                        ? userSettings.PromotionEmail
-                        : companySettings.PromotionEmail,
+					PromotionUnlockedEmail = companySettings.PromotionUnlockedEmail.HasValue && userSettings.PromotionUnlockedEmail.HasValue
+						? userSettings.PromotionUnlockedEmail
+						: companySettings.PromotionUnlockedEmail,
+					PromotionUnlockedPush = companySettings.PromotionUnlockedPush.HasValue && userSettings.PromotionUnlockedPush.HasValue
+						? userSettings.PromotionUnlockedPush
+						: companySettings.PromotionUnlockedPush,
                     VehicleAtPickupPush = companySettings.VehicleAtPickupPush.HasValue && userSettings.VehicleAtPickupPush.HasValue
                         ? userSettings.VehicleAtPickupPush 
                         : companySettings.VehicleAtPickupPush
