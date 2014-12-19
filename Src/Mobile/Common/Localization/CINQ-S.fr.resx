@@ -249,4 +249,7 @@
   <data name="RateLastRideTitle" xml:space="preserve">
     <value>Évaluer la dernière course</value>
   </data>
+  <data name="HistoryViewTitle" xml:space="preserve">
+    <value>Réservations</value>
+  </data>
 </root>
