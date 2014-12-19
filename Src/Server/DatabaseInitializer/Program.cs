@@ -262,8 +262,9 @@ namespace DatabaseInitializer
                             NearbyTaxiPush = true,
                             PaymentConfirmationPush = true,
                             ReceiptEmail = true,
-                            PromotionEmail = true,
-                            VehicleAtPickupPush = true
+                            PromotionUnlockedEmail = true,
+                            VehicleAtPickupPush = true,
+                            PromotionUnlockedPush = true
                         }
                     });
                 }

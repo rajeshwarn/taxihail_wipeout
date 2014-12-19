@@ -49,8 +49,9 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
                     NearbyTaxiPush = true,
                     PaymentConfirmationPush = true,
                     ReceiptEmail = true,
-                    PromotionEmail = true,
-                    VehicleAtPickupPush = true
+                    PromotionUnlockedEmail = true,
+                    VehicleAtPickupPush = true,
+                    PromotionUnlockedPush = true
                 }
             });
 
@@ -66,8 +67,9 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
                 Assert.AreEqual(true, dto.DriverAssignedPush);
                 Assert.AreEqual(true, dto.NearbyTaxiPush);
                 Assert.AreEqual(true, dto.ReceiptEmail);
-                Assert.AreEqual(true, dto.PromotionEmail);
+                Assert.AreEqual(true, dto.PromotionUnlockedEmail);
                 Assert.AreEqual(true, dto.VehicleAtPickupPush);
+                Assert.AreEqual(true, dto.PromotionUnlockedPush);
             }
         }
     }
@@ -92,8 +94,9 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
                     NearbyTaxiPush = true,
                     PaymentConfirmationPush = true,
                     ReceiptEmail = true,
-                    PromotionEmail = true,
-                    VehicleAtPickupPush = true
+                    PromotionUnlockedEmail = true,
+                    VehicleAtPickupPush = true,
+                    PromotionUnlockedPush = true
                 }
             });
         }
@@ -114,8 +117,9 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
                     NearbyTaxiPush = false,
                     PaymentConfirmationPush = false,
                     ReceiptEmail = false,
-                    PromotionEmail = false,
-                    VehicleAtPickupPush = false
+                    PromotionUnlockedEmail = false,
+                    VehicleAtPickupPush = false,
+                    PromotionUnlockedPush = false
                 }
             });
 
@@ -132,7 +136,8 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
                 Assert.AreEqual(false, dto.NearbyTaxiPush);
                 Assert.AreEqual(false, dto.ReceiptEmail);
                 Assert.AreEqual(false, dto.VehicleAtPickupPush);
-                Assert.AreEqual(false, dto.PromotionEmail);
+                Assert.AreEqual(false, dto.PromotionUnlockedEmail);
+                Assert.AreEqual(false, dto.PromotionUnlockedPush);
             }
         }
     }

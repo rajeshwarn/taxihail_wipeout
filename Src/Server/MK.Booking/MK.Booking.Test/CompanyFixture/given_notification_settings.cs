@@ -42,8 +42,9 @@ namespace apcurium.MK.Booking.Test.CompanyFixture
                     DriverAssignedPush = true,
                     PaymentConfirmationPush = true,
                     ReceiptEmail = true,
-                    PromotionEmail = true,
-                    VehicleAtPickupPush = true
+                    PromotionUnlockedEmail = true,
+                    VehicleAtPickupPush = true,
+                    PromotionUnlockedPush = true
                 }
             });
 
@@ -58,8 +59,9 @@ namespace apcurium.MK.Booking.Test.CompanyFixture
             Assert.AreEqual(true, evt.NotificationSettings.DriverAssignedPush);
             Assert.AreEqual(true, evt.NotificationSettings.PaymentConfirmationPush);
             Assert.AreEqual(true, evt.NotificationSettings.ReceiptEmail);
-            Assert.AreEqual(true, evt.NotificationSettings.PromotionEmail);
+            Assert.AreEqual(true, evt.NotificationSettings.PromotionUnlockedEmail);
             Assert.AreEqual(true, evt.NotificationSettings.VehicleAtPickupPush);
+            Assert.AreEqual(true, evt.NotificationSettings.PromotionUnlockedPush);
         }
 
         [Test]
@@ -78,8 +80,9 @@ namespace apcurium.MK.Booking.Test.CompanyFixture
                     DriverAssignedPush = true,
                     PaymentConfirmationPush = true,
                     ReceiptEmail = true,
-                    PromotionEmail = true,
-                    VehicleAtPickupPush = true
+                    PromotionUnlockedEmail = true,
+                    VehicleAtPickupPush = true,
+                    PromotionUnlockedPush = true
                 }
             });
 
@@ -94,8 +97,9 @@ namespace apcurium.MK.Booking.Test.CompanyFixture
             Assert.AreEqual(true, evt.NotificationSettings.DriverAssignedPush);
             Assert.AreEqual(true, evt.NotificationSettings.PaymentConfirmationPush);
             Assert.AreEqual(true, evt.NotificationSettings.ReceiptEmail);
-            Assert.AreEqual(true, evt.NotificationSettings.PromotionEmail);
+            Assert.AreEqual(true, evt.NotificationSettings.PromotionUnlockedEmail);
             Assert.AreEqual(true, evt.NotificationSettings.VehicleAtPickupPush);
+            Assert.AreEqual(true, evt.NotificationSettings.PromotionUnlockedPush);
         }
     }
 }

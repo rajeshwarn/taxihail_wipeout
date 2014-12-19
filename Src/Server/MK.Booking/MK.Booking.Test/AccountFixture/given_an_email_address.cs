@@ -58,8 +58,9 @@ namespace apcurium.MK.Booking.Test.AccountFixture
                     PaymentConfirmationPush = true,
                     NearbyTaxiPush = true,
                     ReceiptEmail = true,
-                    PromotionEmail = true,
-                    VehicleAtPickupPush = true
+                    PromotionUnlockedEmail = true,
+                    VehicleAtPickupPush = true,
+                    PromotionUnlockedPush = true
                 });
             }
         }
