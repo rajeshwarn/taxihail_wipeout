@@ -655,7 +655,7 @@
     <value>Voir</value>
   </data>
   <data name="HistoryViewTitle" xml:space="preserve">
-    <value>Historique</value>
+    <value>Réservations</value>
   </data>
   <data name="InvalidAccountOnActivatedMessage" xml:space="preserve">
     <value>Votre compte semble ne pas exister. Merci de vérifier la saisie</value>
@@ -898,7 +898,7 @@
     <value>Adresses Favorites</value>
   </data>
   <data name="PanelMenuViewOrderHistoryText" xml:space="preserve">
-    <value>Historique</value>
+    <value>Réservations</value>
   </data>
   <data name="PanelMenuViewReportProblemText" xml:space="preserve">
     <value>Signaler un problème</value>
@@ -1306,7 +1306,7 @@
     <value>Favoris</value>
   </data>
   <data name="TabHistory" xml:space="preserve">
-    <value>Historique</value>
+    <value>Réservations</value>
   </data>
   <data name="TabLocations" xml:space="preserve">
     <value>Adresses Favorites</value>
@@ -1474,7 +1474,7 @@
     <value>Cartes de paiement</value>
   </data>
   <data name="View_History" xml:space="preserve">
-    <value>Historique</value>
+    <value>Réservations</value>
   </data>
   <data name="View_HistoryDetail" xml:space="preserve">
     <value>Détail de la commande</value>
