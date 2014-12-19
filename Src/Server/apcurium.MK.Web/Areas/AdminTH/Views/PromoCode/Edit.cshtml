@@ -261,11 +261,11 @@
     }
 
     function onTriggerTypeChanged(e) {
-        if ($('#triggerTypeDropDown')[0].value == 2) {
+        if ($('#triggerTypeDropDown')[0].value == "RideCount") {
             $('#amountSpentTriggerGroup').addClass('hidden');
             $('#rideCountTriggerGroup').removeClass('hidden');
         }
-        else if ($('#triggerTypeDropDown')[0].value == 3) {
+        else if ($('#triggerTypeDropDown')[0].value == "AmountSpent") {
             $('#amountSpentTriggerGroup').removeClass('hidden');
             $('#rideCountTriggerGroup').addClass('hidden');
         } else {
@@ -277,9 +277,9 @@
     $(document).ready(function () {
         $('.next-day-warning').addClass('hidden');
 
-        if ($('#triggerTypeDropDown')[0].value == 2) {
+        if ($('#triggerTypeDropDown')[0].value == "RideCount") {
             $('#amountSpentTriggerGroup').addClass('hidden');
-        } else if ($('#triggerTypeDropDown')[0].value == 3) {
+        } else if ($('#triggerTypeDropDown')[0].value == "AmountSpent") {
             $('#rideCountTriggerGroup').addClass('hidden');
         } else {
             $('#rideCountTriggerGroup').addClass('hidden');
