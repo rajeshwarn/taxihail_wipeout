@@ -7,6 +7,11 @@ namespace apcurium.MK.Booking.Events
 {
     public class PromotionCreated : VersionedEvent
     {
+        public PromotionCreated()
+        {
+            TriggerSettings = new PromotionTriggerSettings();
+        }
+
         public string Name { get; set; }
 
         public string Description { get; set; }
