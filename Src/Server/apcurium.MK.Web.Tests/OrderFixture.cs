@@ -360,7 +360,7 @@ namespace apcurium.MK.Web.Tests
             var order = await sut.GetOrder(_orderId);
 
             Assert.IsNotNull(order);
-            Assert.IsNotNull(order.IBSOrderId);
+            Assert.IsNull(order.IBSOrderId);
         }
 
         [Test]

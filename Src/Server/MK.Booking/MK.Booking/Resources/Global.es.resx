@@ -543,4 +543,37 @@
   <data name="PushNotification_PromotionUnlocked" xml:space="preserve">
     <value>Congratulations! You are now eligible to use the "{0}" promotion. Use code {1} when booking your next ride to redeem it.</value>
   </data>
+  </data>
+  <data name="CreateOrder_CannotCreateInIbs" xml:space="preserve">
+    <value>Su reservación no se pudo crear, por favor trate de nuevo o llámenos</value>
+    <comment>Order cannot be created. Please try again or call us.</comment>
+  </data>
+  <data name="CreateOrder_CannotCreateInIbs_1002" xml:space="preserve">
+    <value>Su reservación no pudo ser creada. La dirección especificada está fuera de nuestra área de servicio. Por favor contáctenos para asistencia.</value>
+    <comment>Order cannot be created. The specified Pickup address lies outside the regular service area.</comment>
+  </data>
+  <data name="CreateOrder_CannotCreateInIbs_1452" xml:space="preserve">
+    <value>Su reservación no pudo ser creada. La dirección de destino está fuera de nuestra área de servicio. Por favor contáctenos para asistencia.</value>
+    <comment>Order cannot be created. The specified Destination address lies outside the regular service area.</comment>
+  </data>
+  <data name="CreateOrder_CannotCreateInIbs_3000" xml:space="preserve">
+    <value>Su cuenta ha sido deshabilitada</value>
+    <comment>Order cannot be created. Your account has been disabled.</comment>
+  </data>
+  <data name="CreateOrder_CannotCreateInIbs_7000" xml:space="preserve">
+    <value>Su reservación no puede ser creada porque su cuenta está inactiva</value>
+    <comment>Order cannot be created. Your account is currently inactive.</comment>
+  </data>
+  <data name="CreateOrder_CannotCreateInIbs_10000" xml:space="preserve">
+    <value>La información de su cuenta es inválida. Por favor intente nuevamente.</value>
+    <comment>Order cannot be created. The charge account information is invalid. Please try again.</comment>
+  </data>
+  <data name="CreateOrder_CannotCreateInIbs_1300" xml:space="preserve">
+    <value>We apologize but unfortunately we do not have any reservations available for that time period.</value>
+    <comment>We apologize but unfortunately we do not have any reservations available for that time period.</comment>
+  </data>
+  <data name="CreateOrder_WaitingForIbs" xml:space="preserve">
+    <value>Procesando su pedido...</value>
+    <comment>Processing your order...</comment>
+  </data>
 </root>

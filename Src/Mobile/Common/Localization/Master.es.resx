@@ -1659,30 +1659,6 @@
     <value>Código de confirmación inválido</value>
     <comment>The confirmation code is incorrect.</comment>
   </data>
-  <data name="ServiceErrorCreateOrder_CannotCreateInIbs" xml:space="preserve">
-    <value>Su reservación no se pudo crear, por favor trate de nuevo o llámenos</value>
-    <comment>Order cannot be created. Please try again or call us.</comment>
-  </data>
-  <data name="ServiceErrorCreateOrder_CannotCreateInIbs_10000" xml:space="preserve">
-    <value>La información de su cuenta es inválida. Por favor intente nuevamente.</value>
-    <comment>The charge account information is invalid. Please try again.</comment>
-  </data>
-  <data name="ServiceErrorCreateOrder_CannotCreateInIbs_10000_NoCall" xml:space="preserve">
-    <value>La información de su cuenta es inválida. Por favor intente nuevamente.</value>
-    <comment>The charge account information is invalid. Please try again.</comment>
-  </data>
-  <data name="ServiceErrorCreateOrder_CannotCreateInIbs_7000" xml:space="preserve">
-    <value>Su reservación no puede ser creada porque su cuenta está inactiva, por favor contacte {0} al {1} para asistencia</value>
-    <comment>The order cannot be created because your account is currently inactive. Please contact {0} at {1} for further assistance.</comment>
-  </data>
-  <data name="ServiceErrorCreateOrder_CannotCreateInIbs_7000_NoCall" xml:space="preserve">
-    <value>Su reservación no puede ser creada porque su cuenta está inactiva</value>
-    <comment>The order cannot be created because your account is currently inactive.</comment>
-  </data>
-  <data name="ServiceErrorCreateOrder_CannotCreateInIbs_1300" xml:space="preserve">
-    <value>​We apologize but unfortunately we do not have any reservations available for that time period.</value>
-    <comment>​We apologize but unfortunately we do not have any reservations available for that time period.</comment>
-  </data>
   <data name="ServiceErrorCreateOrder_CardOnFileButNoCreditCard" xml:space="preserve">
     <value>No tiene Tarjeta de Crédito Registrada en Archivo</value>
     <comment>No Credit Card On File.</comment>
@@ -2285,6 +2261,9 @@
   </data>
   <data name="PromotionViewNoPromotionLabel" xml:space="preserve">
     <value>No promotions available</value>
+  </data>
+  <data name="Processing" xml:space="preserve">
+    <value>Procesando su pedido...</value>
   </data>
   <data name="Notification_PromotionEmail" xml:space="preserve">
     <value>Promotions (Email)</value>

@@ -28,7 +28,8 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             IEventHandler<OrderStatusChanged>,
             IEventHandler<CreditCardPaymentCaptured_V2>,
             IEventHandler<OrderPreparedForNextDispatch>,
-            IEventHandler<UserAddedToPromotionWhiteList>
+            IEventHandler<UserAddedToPromotionWhiteList>,
+            IEventHandler<OrderCancelledBecauseOfIbsError>
     {
         private readonly INotificationService _notificationService;
         private readonly IServerSettings _serverSettings;
@@ -110,6 +111,18 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             {
                 var promotion = _promotionDao.FindById(@event.SourceId);
                 _notificationService.SendPromotionUnlockedPush(@event.AccountId, promotion);
+            }
+            catch (Exception e)
+            {
+                Log.Debug(e);
+            }
+        }
+        
+        public void Handle(OrderCancelledBecauseOfIbsError @event)
+        {
+            try
+            {
+                _notificationService.SendOrderCreationErrorPush(@event.SourceId, @event.ErrorDescription);
             }
             catch (Exception e)
             {

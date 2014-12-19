@@ -44,11 +44,13 @@ namespace apcurium.MK.Booking.Api.Services
             var isFromAdminPortal = request.AppSettingsType == AppSettingsType.Webapp;
             var settings = _serverSettings.ServerData.GetType().GetAllProperties();
             var returnAllKeys = SessionAs<AuthUserSession>().HasPermission(RoleName.SuperAdmin);
- 
+            var isTaxiHailPro = _serverSettings.ServerData.IsTaxiHailPro;
+
             foreach (var setting in settings)
             {
                 var sendToClient = false;
                 var customizableByCompany = false;
+                var requiresTaxiHailPro = false;
                 var attributes = setting.Value.GetCustomAttributes(false);
 
                 // Check if we have to return this setting to the mobile client
@@ -62,7 +64,19 @@ namespace apcurium.MK.Booking.Api.Services
                 var customizableByCompanyAttribute = attributes.OfType<CustomizableByCompanyAttribute>().FirstOrDefault();
                 if (customizableByCompanyAttribute != null)
                 {
-                    customizableByCompany = isFromAdminPortal;
+                    if (isTaxiHailPro)
+                    {
+                        // company is taxihail pro, no need to check for taxihail pro attribute on setting, we know we return it
+                        customizableByCompany = isFromAdminPortal;
+                    }
+                    else
+                    {
+                        var requiresTaxiHailProAttribute = attributes.OfType<RequiresTaxiHailPro>().FirstOrDefault();
+                        if (requiresTaxiHailProAttribute == null)
+                        {
+                            customizableByCompany = isFromAdminPortal;
+                        }
+                    }
                 }
 
                 if (returnAllKeys                       // in the case of superadmin
