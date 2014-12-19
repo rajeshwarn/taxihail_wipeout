@@ -445,7 +445,6 @@
   <data name="PushNotification_PromotionUnlocked" xml:space="preserve">
     <value>Congratulations! You are now eligible to use the "{0}" promotion. Use code {1} when booking your next ride to redeem it.</value>
   </data>
-  </data>
   <data name="CreateOrder_CannotCreateInIbs" xml:space="preserve">
     <value>لا يمكن إدخال الطلب. الرجاء المحاولة من جديد أو اتصل بنا.</value>
     <comment>Order cannot be created. Please try again or call us.</comment>
