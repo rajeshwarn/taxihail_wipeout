@@ -29,7 +29,7 @@
   <string name="BookDropoffLocationEmptyPlaceholder">Choisissez votre lieu d\'arrivée sur la carte</string>
   <string name="BookingService_MobileBookingNote">Réservé via téléphone mobile</string>
   <string name="BookingService_MobileBookingNoteBuildingName">Bâtiment n° {0}</string>
-  <string name="BookItButton">Réserver</string>
+  <string name="BookItButton">Commander</string>
   <string name="BookItButtonImageName">Assets/Button/btnBookIt_en.png</string>
   <string name="BookItLaterButton">Plus tard</string>
   <string name="BookPickupLabel">Confirmer votre adresse de départ</string>
@@ -299,7 +299,7 @@
   <string name="Rebook">Réinitialiser le trajet</string>
   <string name="ReceiptSent">Facture envoyée</string>
   <string name="RefineAddressTitle">Affiner l\'adresse</string>
-  <string name="Register">S\'enregistrer</string>
+  <string name="Register">Inscription</string>
   <string name="ReminderDetails">Rappel: votre taxi arrivera au {0} à {1} le {2}</string>
   <string name="ReminderTitle">{0} Enregistré</string>
   <string name="RemoveCreditCardMessage">Etes-vous sur de vouloir supprimer cette carte de paiement?</string>
@@ -363,7 +363,7 @@
   <string name="SettingsViewTitle">Paramètres</string>
   <string name="SettingViewLoginInfo">Vous vous être identifié comme: {0}</string>
   <string name="SettingViewNotSignedIn">Désolé, vous n\'êtes pas identifié. Merci de vous identifier pour pouvoir utiliser l\'application</string>
-  <string name="SignIn">S\'identifier</string>
+  <string name="SignIn">Connexion</string>
   <string name="StatusActionBookButton">Réserver un nouveau véhicule</string>
   <string name="StatusActionButton">Appeler/Réserver/Annuler</string>
   <string name="StatusActionCancelButton">Annuler</string>
@@ -548,4 +548,5 @@
   <string name="CreditCardBookingSettingsError">Une erreur est survenue lors de la mise à jour des informations du compte. Vérifiez que le numéro de compte associé au profil est valide et essayez de nouveau.</string>
   <string name="UpdateBookingSettingsGenericError">Une erreur est survenue lors de la mise à jour des informations du compte</string>
   <string name="UpdateBookingSettingsInvalidCoF">Vous devez avoir une carte de crédit enregistrée pour utiliser ce compte</string>
+  <string name="ServiceErrorCreateOrder_CannotCreateInIbs_1300">Veuillez nous excuser, nous sommes complets, nous n\'acceptons plus les réservations à l\'avance pour ce créneau.</string>
 </resources>

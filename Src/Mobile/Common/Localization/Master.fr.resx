@@ -199,7 +199,7 @@
     <value>Bâtiment n° {0}</value>
   </data>
   <data name="BookItButton" xml:space="preserve">
-    <value>Réserver</value>
+    <value>Commander</value>
   </data>
   <data name="BookItButtonImageName" xml:space="preserve">
     <value>Assets/Button/btnBookIt_en.png</value>
@@ -1015,7 +1015,7 @@
     <value>Affiner l'adresse</value>
   </data>
   <data name="Register" xml:space="preserve">
-    <value>S'enregistrer</value>
+    <value>Inscription</value>
   </data>
   <data name="ReminderDetails" xml:space="preserve">
     <value>Rappel: votre taxi arrivera au {0} à {1} le {2}</value>
@@ -1228,7 +1228,7 @@
     <value>Désolé, vous n'êtes pas identifié. Merci de vous identifier pour pouvoir utiliser l'application</value>
   </data>
   <data name="SignIn" xml:space="preserve">
-    <value>S'identifier</value>
+    <value>Connexion</value>
   </data>
   <data name="StatusActionBookButton" xml:space="preserve">
     <value>Réserver un nouveau véhicule</value>
