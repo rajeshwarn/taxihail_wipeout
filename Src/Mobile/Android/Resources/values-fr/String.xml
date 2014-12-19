@@ -565,4 +565,6 @@
   <string name="Processing">Traitement de votre commande...</string>
   <string name="Notification_PromotionEmail">Promotions (Email)</string>
   <string name="PromoProgress">Progression :</string>
+  <string name="Notification_PromotionUnlockedEmail">Promotions déverrouillées (Email)</string>
+  <string name="Notification_PromotionUnlockedPush">Promotions déverrouillées (Push)</string>
 </resources>

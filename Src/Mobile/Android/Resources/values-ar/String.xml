@@ -550,4 +550,6 @@
   <string name="Processing">Processing your order...</string>
   <string name="Notification_PromotionEmail">Promotions (Email)</string>
   <string name="PromoProgress">Progress :</string>
+  <string name="Notification_PromotionUnlockedEmail">Promotions unlocked (Email)</string>
+  <string name="Notification_PromotionUnlockedPush">Promotions unlocked (Push)</string>
 </resources>
