@@ -39,7 +39,7 @@
 
             var refineBtn = this.$el.find('[data-action=refine]');
             var streetNumber = this.model.get('streetNumber');
-            if (streetNumber == null) {
+            if (!streetNumber) {
                 refineBtn.addClass('disabled');
                 refineBtn.attr('disabled', 'disabled');
             } else {
@@ -144,7 +144,7 @@
         refine: function() {
             var originalStreetNumber = this.model.get('streetNumber');
             var fullAddress = this.model.get('fullAddress');
-            if (originalStreetNumber == null || fullAddress == null) {
+            if (!originalStreetNumber || !fullAddress) {
                 // don't show the prompt if there's no address
                 return;
             }
