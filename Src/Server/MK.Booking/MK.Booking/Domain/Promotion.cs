@@ -134,7 +134,7 @@ namespace apcurium.MK.Booking.Domain
                 return false;
             }
 
-            if (_triggerSettings.Type != PromotionTriggerTypes.NoTrigger.Id
+            if (_triggerSettings.Type != PromotionTriggerTypes.NoTrigger
                 && !_usersWhiteList.Contains(accountId))
             {
                 errorMessage = "CannotCreateOrder_PromotionUserNotAllowed";
