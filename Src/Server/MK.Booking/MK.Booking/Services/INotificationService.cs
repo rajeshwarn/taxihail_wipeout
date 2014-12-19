@@ -1,5 +1,6 @@
 using System;
 using apcurium.MK.Booking.Commands;
+using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Booking.Services
@@ -7,6 +8,8 @@ namespace apcurium.MK.Booking.Services
     public interface INotificationService
     {
         void SetBaseUrl(Uri baseUrl);
+
+        void SendPromotionUnlockedPush(Guid orderId, PromotionDetail promotionDetail);
         void SendAssignedPush(OrderStatusDetail orderStatusDetail);
         void SendArrivedPush(OrderStatusDetail orderStatusDetail);
         void SendPairingInquiryPush(OrderStatusDetail orderStatusDetail);
@@ -27,5 +30,6 @@ namespace apcurium.MK.Booking.Services
             double tax, double totalFare, SendReceipt.CardOnFile cardOnFileInfo, Address pickupAddress, Address dropOffAddress,
             DateTime pickupDate, DateTime? dropOffDate, string clientEmailAddress, string clientLanguageCode, double amountSavedByPromotion, string promoCode, 
             bool bypassNotificationSetting = false);
+        void SendPromotionUnlockedEmail(string name, string code, DateTime? expirationDate, string clientEmailAddress, string clientLanguageCode, bool bypassNotificationSettings = false);
     }
 }

@@ -551,3 +551,7 @@
 "PromoExpiringToday"="Expires today!";
 "PromotionViewNoPromotionLabel"="No promotions available";
 "Processing"="Procesando su pedido...";
+"PromoProgress"="Progress :";
+"Notification_PromotionEmail"="Promotions (Email)";
+"Notification_PromotionUnlockedPush"="Promotions unlocked (Push)";
+"Notification_PromotionUnlockedEmail"="Promotions unlocked (Email)";

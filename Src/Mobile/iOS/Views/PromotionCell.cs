@@ -29,6 +29,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             set.Bind(lblName).For(v => v.Text).To(vm => vm.Name);
             set.Bind(lblExpires).For(v => v.Text).To(vm => vm.ExpiringSoonWarning);
             set.Bind(lblDescription).For(v => v.Text).To(vm => vm.Description);
+			set.Bind (lblProgress).For (v => v.Text).To (vm => vm.ProgressDescription);
             set.Bind(btnApplyPromo).For("TouchUpInside").To(vm => vm.SelectedCommand);
 
             set.Apply(); 
@@ -57,6 +58,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 {
                     _isExpanded = value;
                     lblDescription.Hidden = !_isExpanded;
+					lblProgress.Hidden = !_isExpanded;
                     btnApplyPromo.Hidden = !_isExpanded;
                     imgExpanded.Hidden = !_isExpanded;
                     imgCollapsed.Hidden = _isExpanded;
@@ -67,6 +69,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         private void ApplyStyle()
         {
             lblDescription.Hidden = true;
+			lblProgress.Hidden = true;
             btnApplyPromo.Hidden = true;
             imgExpanded.Hidden = true;
 

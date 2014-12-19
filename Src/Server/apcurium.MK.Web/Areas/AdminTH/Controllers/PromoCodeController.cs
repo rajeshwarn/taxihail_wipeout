@@ -5,6 +5,7 @@ using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Security;
 using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Web.Areas.AdminTH.Models;
 using apcurium.MK.Web.Attributes;
 using Infrastructure.Messaging;
@@ -73,7 +74,8 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                     MaxUsage = promoCode.MaxUsage,
                     Code = promoCode.Code,
                     PublishedStartDate = promoCode.PublishedStartDate,
-                    PublishedEndDate = promoCode.PublishedEndDate
+                    PublishedEndDate = promoCode.PublishedEndDate,
+                    TriggerSettings = promoCode.TriggerSettings
                 });
 
                 TempData["Info"] = string.Format("Promotion \"{0}\" created", promoCode.Name);
@@ -104,6 +106,20 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                     throw new Exception("Something's not right");
                 }
 
+                if (promoCode.TriggerSettings.Type == PromotionTriggerTypes.AmountSpent)
+                {
+                    promoCode.TriggerSettings.RideCount = 0;
+                }
+                else if (promoCode.TriggerSettings.Type == PromotionTriggerTypes.RideCount)
+                {
+                    promoCode.TriggerSettings.AmountSpent = 0;
+                }
+                else
+                {
+                    promoCode.TriggerSettings.RideCount = 0;
+                    promoCode.TriggerSettings.AmountSpent = 0;
+                }
+
                 _commandBus.Send(new UpdatePromotion
                 {
                     PromoId = promoCode.Id,
@@ -122,7 +138,8 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                     MaxUsage = promoCode.MaxUsage,
                     Code = promoCode.Code,
                     PublishedStartDate = promoCode.PublishedStartDate,
-                    PublishedEndDate = promoCode.PublishedEndDate
+                    PublishedEndDate = promoCode.PublishedEndDate,
+                    TriggerSettings = promoCode.TriggerSettings
                 });
 
                 TempData["Info"] = string.Format("Promotion \"{0}\" updated", promoCode.Name);

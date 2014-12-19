@@ -24,12 +24,14 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
         private readonly IOrderPaymentDao _paymentDao;
         private readonly ICreditCardDao _creditCardDao;
         private readonly IAccountDao _accountDao;
+        private readonly IOrderDao _orderDao;
         private readonly ICommandBus _commandBus;
 
-        public OrderPaymentManager(IOrderDao dao, IOrderPaymentDao paymentDao, IAccountDao accountDao, ICommandBus commandBus,
+        public OrderPaymentManager(IOrderDao dao, IOrderPaymentDao paymentDao, IAccountDao accountDao, IOrderDao orderDao, ICommandBus commandBus,
             ICreditCardDao creditCardDao, IIbsOrderService ibs, IServerSettings serverSettings, IPaymentServiceFactory paymentServiceFactory)
         {
             _accountDao = accountDao;
+            _orderDao = orderDao;
             _commandBus = commandBus;
             _dao = dao;
             _paymentDao = paymentDao;
@@ -68,9 +70,12 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
 
             if (@event.PromotionUsed.HasValue)
             {
+                var order = _orderDao.FindById(@event.OrderId);
+
                 _commandBus.Send(new RedeemPromotion
                 {
                     OrderId = @event.OrderId,
+                    AccountId = order.AccountId,
                     PromoId = @event.PromotionUsed.Value,
                     TotalAmountOfOrder = @event.Amount + @event.AmountSavedByPromotion
                 });

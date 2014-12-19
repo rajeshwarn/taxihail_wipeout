@@ -55,6 +55,7 @@
     <Compile Include="AddOrUpdateNotificationSettings.cs" />
     <Compile Include="AddOrUpdateUserTaxiHailNetworkSettings.cs" />
     <Compile Include="AddPopularAddress.cs" />
+    <Compile Include="AddUserToPromotionWhiteList.cs" />
     <Compile Include="CancelOrderBecauseOfIbsError.cs" />
     <Compile Include="ImportAccountCharge.cs" />
     <Compile Include="AddUpdateAccountCharge.cs" />

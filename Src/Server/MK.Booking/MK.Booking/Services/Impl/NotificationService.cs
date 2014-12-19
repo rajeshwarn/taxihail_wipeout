@@ -38,6 +38,7 @@ namespace apcurium.MK.Booking.Services.Impl
         private readonly IServerSettings _serverSettings;
         private readonly IConfigurationDao _configurationDao;
         private readonly IOrderDao _orderDao;
+        private readonly IAccountDao _accountDao;
         private readonly IStaticMap _staticMap;
         private readonly ISmsService _smsService;
         private readonly IGeocoding _geocoding;
@@ -54,6 +55,7 @@ namespace apcurium.MK.Booking.Services.Impl
             IServerSettings serverSettings,
             IConfigurationDao configurationDao,
             IOrderDao orderDao,
+            IAccountDao accountDao,
             IStaticMap staticMap,
             ISmsService smsService,
             IGeocoding geocoding,
@@ -66,6 +68,7 @@ namespace apcurium.MK.Booking.Services.Impl
             _serverSettings = serverSettings;
             _configurationDao = configurationDao;
             _orderDao = orderDao;
+            _accountDao = accountDao;
             _staticMap = staticMap;
             _smsService = smsService;
             _geocoding = geocoding;
@@ -79,6 +82,17 @@ namespace apcurium.MK.Booking.Services.Impl
             this._baseUrls = new BaseUrls(baseUrl, _serverSettings);
         }
 
+
+        public void SendPromotionUnlockedPush(Guid accountId, PromotionDetail promotionDetail)
+        {
+            var account = _accountDao.FindById(accountId);
+            if (ShouldSendNotification(accountId, x => x.DriverAssignedPush))
+            {
+                SendPushOrSms(accountId,
+                    string.Format(_resources.Get("PushNotification_PromotionUnlocked", account.Language), promotionDetail.Name, promotionDetail.Code),
+                    new Dictionary<string, object>());
+            }
+        }
 
         public void SendAssignedPush(OrderStatusDetail orderStatusDetail)
         {
@@ -438,6 +452,41 @@ namespace apcurium.MK.Booking.Services.Impl
             SendEmail(clientEmailAddress, EmailConstant.Template.Receipt, EmailConstant.Subject.Receipt, templateData, clientLanguageCode);
         }
 
+        public void SendPromotionUnlockedEmail(string name, string code, DateTime? expirationDate, string clientEmailAddress,
+            string clientLanguageCode, bool bypassNotificationSetting = false)
+        {
+            if (!bypassNotificationSetting)
+            {
+                using (var context = _contextFactory.Invoke())
+                {
+                    var account = context.Query<AccountDetail>().SingleOrDefault(c => c.Email.ToLower() == clientEmailAddress.ToLower());
+                    if (account == null || !ShouldSendNotification(account.Id, x => x.PromotionUnlockedEmail))
+                    {
+                        return;
+                    }
+                }
+            }
+
+            string imageLogoUrl = GetRefreshableImageUrl(GetBaseUrls().LogoImg);
+            
+            var dateFormat = CultureInfo.GetCultureInfo(clientLanguageCode);
+
+            var templateData = new
+            {
+                ApplicationName = _serverSettings.ServerData.TaxiHail.ApplicationName,
+                AccentColor = _serverSettings.ServerData.TaxiHail.AccentColor,
+                EmailFontColor = _serverSettings.ServerData.TaxiHail.EmailFontColor,
+                PromotionName = name,
+                PromotionCode = code,
+                ExpirationDate = expirationDate.HasValue ? expirationDate.Value.ToString("D", dateFormat) : null,
+                ExpirationTime = expirationDate.HasValue ? expirationDate.Value.ToString("t", dateFormat /* Short time pattern */) : null,
+                HasExpirationDate = expirationDate.HasValue,
+                LogoImg = imageLogoUrl
+            };
+
+            SendEmail(clientEmailAddress, EmailConstant.Template.PromotionUnlocked, EmailConstant.Subject.PromotionUnlocked, templateData, clientLanguageCode);
+        }
+
         private Address TryToGetExactDropOffAddress(Guid orderId, Address dropOffAddress, string clientLanguageCode)
         {
             var orderStatus = _orderDao.FindOrderStatusById(orderId);
@@ -631,6 +680,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 public const string Receipt = "Email_Subject_Receipt";
                 public const string AccountConfirmation = "Email_Subject_AccountConfirmation";
                 public const string BookingConfirmation = "Email_Subject_BookingConfirmation";
+                public const string PromotionUnlocked = "Email_Subject_PromotionUnlocked";
             }
 
             public static class Template
@@ -639,6 +689,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 public const string Receipt = "Receipt";
                 public const string AccountConfirmation = "AccountConfirmation";
                 public const string BookingConfirmation = "BookingConfirmation";
+                public const string PromotionUnlocked = "PromotionUnlocked";
             }
         }
 

@@ -178,6 +178,15 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You are not allowed to use this promotion.
+        /// </summary>
+        public static string CannotCreateOrder_PromotionUserNotAllowed {
+            get {
+                return ResourceManager.GetString("CannotCreateOrder_PromotionUserNotAllowed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to This account is not supported by the web site..
         /// </summary>
         public static string CannotCreateOrderChargeAccountNotSupported {
@@ -565,6 +574,24 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Congratulations! You are now eligible to use the &quot;{{ PromotionName }}&quot; promotion. Use code &lt;b&gt;{{ PromotionCode }}&lt;/b&gt; when booking your next ride to redeem it..
+        /// </summary>
+        public static string Email_Body_PromotionUnlockedLine1 {
+            get {
+                return ResourceManager.GetString("Email_Body_PromotionUnlockedLine1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hurry up! This promotion is only valid until {{ ExpirationDate }} {{ ExpirationTime }}..
+        /// </summary>
+        public static string Email_Body_PromotionUnlockedLine2 {
+            get {
+                return ResourceManager.GetString("Email_Body_PromotionUnlockedLine2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Receipt.
         /// </summary>
         public static string Email_Body_Receipt {
@@ -759,6 +786,15 @@ namespace apcurium.MK.Booking.Resources {
         public static string Email_Subject_PasswordReset {
             get {
                 return ResourceManager.GetString("Email_Subject_PasswordReset", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {{ ApplicationName }} - New Promotion Available!.
+        /// </summary>
+        public static string Email_Subject_PromotionUnlocked {
+            get {
+                return ResourceManager.GetString("Email_Subject_PromotionUnlocked", resourceCulture);
             }
         }
         
@@ -1056,6 +1092,15 @@ namespace apcurium.MK.Booking.Resources {
         public static string PushNotification_PaymentReceived {
             get {
                 return ResourceManager.GetString("PushNotification_PaymentReceived", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Congratulations! You are now eligible to use the &quot;{0}&quot; promotion. Use code {1} when booking your next ride to redeem it..
+        /// </summary>
+        public static string PushNotification_PromotionUnlocked {
+            get {
+                return ResourceManager.GetString("PushNotification_PromotionUnlocked", resourceCulture);
             }
         }
         

@@ -5,6 +5,7 @@ using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Enumeration;
 
 namespace apcurium.MK.Booking.ReadModel.Query
 {
@@ -29,12 +30,34 @@ namespace apcurium.MK.Booking.ReadModel.Query
             }
         }
 
-        public IEnumerable<PromotionDetail> GetAllCurrentlyActive()
+        public IEnumerable<PromotionProgressDetail> GetAllProgress()
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                return context.Query<PromotionProgressDetail>().ToArray();
+            }
+        }
+
+        public PromotionProgressDetail GetProgress(Guid accountId, Guid promoId)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                return context.Set<PromotionProgressDetail>().Find(accountId, promoId);
+            }
+        }
+
+        public IEnumerable<PromotionDetail> GetAllCurrentlyActive(PromotionTriggerTypes? triggerType = null)
         {
             using (var context = _contextFactory.Invoke())
             {
                 var result = new List<PromotionDetail>();
                 var activePromos = context.Query<PromotionDetail>().Where(x => x.Active);
+
+                if (triggerType.HasValue)
+                {
+                    activePromos = activePromos.Where(x => x.TriggerSettings.Type == triggerType);
+                }
+
                 foreach (var promotionDetail in activePromos)
                 {
                     var thisPromo = promotionDetail;

@@ -922,8 +922,8 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Areas\Company\Models\" />
+    <Folder Include="helpers\" />
     <Folder Include="mixins\" />
-    <Folder Include="views\Base\" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />

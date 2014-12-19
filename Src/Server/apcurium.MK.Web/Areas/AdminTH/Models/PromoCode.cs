@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using apcurium.MK.Booking.ReadModel;
+using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using ServiceStack.Text;
@@ -17,6 +18,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Models
             AppliesToCurrentBooking = true;
             AppliesToFutureBooking = true;
             DiscountType = PromoDiscountType.Cash;
+            TriggerSettings = new PromotionTriggerSettings();
         }
 
         public PromoCode(PromotionDetail promoDetail)
@@ -39,6 +41,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Models
             Active = promoDetail.Active;
             PublishedStartDate = promoDetail.PublishedStartDate;
             PublishedEndDate = promoDetail.PublishedEndDate;
+            TriggerSettings = promoDetail.TriggerSettings ?? new PromotionTriggerSettings();
         }
 
         public Guid Id { get; set; }
@@ -108,6 +111,8 @@ namespace apcurium.MK.Web.Areas.AdminTH.Models
         public DateTime? PublishedEndDate { get; set; }
 
         public bool Active { get; set; }
+
+        public PromotionTriggerSettings TriggerSettings { get; set; }
 
         private DateTime? SetTime(string timeStringValue, bool isEndTime)
         {

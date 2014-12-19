@@ -558,3 +558,7 @@
 "PromoExpiringToday"="Expire aujourd'hui!";
 "PromotionViewNoPromotionLabel"="Aucune promotion disponible";
 "Processing"="Traitement de votre commande...";
+"PromoProgress"="Progression :";
+"Notification_PromotionEmail"="Promotions (Email)";
+"Notification_PromotionUnlockedPush"="Promotions déverrouillées (Push)";
+"Notification_PromotionUnlockedEmail"="Promotions déverrouillées (Email)";

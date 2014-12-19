@@ -1,4 +1,5 @@
 ﻿@using apcurium.MK.Common.Enumeration
+@using apcurium.MK.Common.Extensions
 @model apcurium.MK.Web.Areas.AdminTH.Models.PromoCode
 
 <h4 class="table-title">Add a Promo Code</h4>
@@ -184,7 +185,26 @@
             @Html.ValidationMessageFor(x => x.Code)
         </div>
     </div>
-
+    <div class="clearfix">
+        <div class="control-group left-control-group">
+            @Html.LabelFor(x => x.TriggerSettings.Type, new { @class = "control-label" })
+            <div class="controls">
+                @Html.DropDownListFor(x => x.TriggerSettings.Type, new SelectList(Enum.GetValues(typeof(PromotionTriggerTypes))), new { @id = "triggerTypeDropDown" })
+            </div>    
+        </div>
+        <div class="control-group right-control-group" id="rideCountTriggerGroup">
+            <div class="controls">
+                @Html.TextBoxFor(x => x.TriggerSettings.RideCount, new { @placeholder = "Number of Rides" })
+                @Html.ValidationMessageFor(x => x.TriggerSettings.RideCount)
+            </div>
+        </div>
+        <div class="control-group right-control-group" id="amountSpentTriggerGroup">
+            <div class="controls">
+                @Html.TextBoxFor(x => x.TriggerSettings.AmountSpent, new { @placeholder = "Amount Spent" })
+                @Html.ValidationMessageFor(x => x.TriggerSettings.AmountSpent)
+            </div>
+        </div>
+    </div>
     <div class="control-group btn-right-alignment">
         <button type="submit" class="btn btn-primary span">Create</button>
         @Html.ActionLink("Cancel", "Index", null, new { @class = "btn span" })
@@ -230,8 +250,28 @@
         }
     }
 
+    function onTriggerTypeChanged(e) {
+        if ($('#triggerTypeDropDown')[0].value == 2) {
+           $('#amountSpentTriggerGroup').addClass('hidden');
+           $('#rideCountTriggerGroup').removeClass('hidden');
+        }
+        else if ($('#triggerTypeDropDown')[0].value == 3) {
+            $('#amountSpentTriggerGroup').removeClass('hidden');
+            $('#rideCountTriggerGroup').addClass('hidden');
+        } else {
+            $('#amountSpentTriggerGroup').addClass('hidden');
+            $('#rideCountTriggerGroup').addClass('hidden');
+        }
+    }
+
     $(document).ready(function () {
         $('.next-day-warning').addClass('hidden');
+        $('#rideCountTriggerGroup').addClass('hidden');
+        $('#amountSpentTriggerGroup').addClass('hidden');
+
+        $('#triggerTypeDropDown').change(function(e) {
+            onTriggerTypeChanged(e);
+        });
 
         $('[data-role=datepicker]').datepicker();
         $('[data-role=timepicker]').timepicker({

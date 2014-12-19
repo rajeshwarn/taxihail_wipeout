@@ -45,7 +45,8 @@ namespace apcurium.MK.Booking.EventHandlers
                     MaxUsage = @event.MaxUsage,
                     Code = @event.Code,
                     PublishedStartDate = @event.PublishedStartDate,
-                    PublishedEndDate = @event.PublishedEndDate
+                    PublishedEndDate = @event.PublishedEndDate,
+                    TriggerSettings = @event.TriggerSettings
                 };
 
                 context.Save(promotionDetail);
@@ -74,6 +75,7 @@ namespace apcurium.MK.Booking.EventHandlers
                 promotionDetail.Code = @event.Code;
                 promotionDetail.PublishedStartDate = @event.PublishedStartDate;
                 promotionDetail.PublishedEndDate = @event.PublishedEndDate;
+                promotionDetail.TriggerSettings = @event.TriggerSettings;
 
                 context.Save(promotionDetail);
             }
@@ -123,12 +125,12 @@ namespace apcurium.MK.Booking.EventHandlers
         {
             using (var context = _contextFactory.Invoke())
             {
-                var promotionUsageDetail = context.Find<PromotionUsageDetail>(@event.OrderId);
+                var promotionUsageDetail = context.Find<PromotionUsageDetail>(@event.OrderId);                
                 var account = context.Find<AccountDetail>(promotionUsageDetail.AccountId);
 
                 promotionUsageDetail.AmountSaved = @event.AmountSaved;
-                promotionUsageDetail.UserEmail = account.Email;
                 promotionUsageDetail.DateRedeemed = @event.EventDate;
+                promotionUsageDetail.UserEmail = account.Email;
 
                 context.SaveChanges();
             }
