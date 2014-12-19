@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Net;
@@ -44,7 +43,7 @@ namespace apcurium.MK.Booking.Services.Impl
         private readonly ISmsService _smsService;
         private readonly IGeocoding _geocoding;
         private readonly ILogger _logger;
-        private readonly Booking.Resources.Resources _resources;
+        private readonly Resources.Resources _resources;
 
         private BaseUrls _baseUrls;
 
@@ -75,7 +74,7 @@ namespace apcurium.MK.Booking.Services.Impl
             _geocoding = geocoding;
             _logger = logger;
 
-            _resources = new Booking.Resources.Resources(serverSettings);
+            _resources = new Resources.Resources(serverSettings);
         }
 
         public void SetBaseUrl(Uri baseUrl)
@@ -217,6 +216,18 @@ namespace apcurium.MK.Booking.Services.Impl
                 var data = new Dictionary<string, object> { { "orderId", orderId } };
 
                 SendPushOrSms(order.AccountId, alert, data);
+            }
+        }
+
+        public void SendOrderCreationErrorPush(Guid orderId, string errorDescription)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var order = context.Find<OrderDetail>(orderId);
+
+                var data = new Dictionary<string, object> { { "orderId", orderId } };
+
+                SendPushOrSms(order.AccountId, errorDescription, data);
             }
         }
 

@@ -333,11 +333,6 @@
   <string name="ServerInfo">({0} v{1})</string>
   <string name="ServiceErrorCallTitle">رسالة</string>
   <string name="ServiceErrorCreateAccount_AccountAlreadyExist">هذا العنوان الإلكتروني مستخدم من قبل.</string>
-  <string name="ServiceErrorCreateOrder_CannotCreateInIbs">لا يمكن إدخال الطلب. الرجاء المحاولة من جديد أو اتصل بنا.</string>
-  <string name="ServiceErrorCreateOrder_CannotCreateInIbs_1002">عنوان الإلتقاء يقع خارج نطاق الخدمة المعتادة. رجاء الإتصال  {0} على  {1} للمزيد من المساعدة.</string>
-  <string name="ServiceErrorCreateOrder_CannotCreateInIbs_1002_NoCall">عنوان الإلتقاء يقع خارج نطاق الخدمة المعتادة.</string>
-  <string name="ServiceErrorCreateOrder_CannotCreateInIbs_7000">لا يمكن إدخال الطلب لأن حسابك غير فعال حاليا. رجاء الإتصال  {0} على  {1} للمزيد من المساعدة.</string>
-  <string name="ServiceErrorCreateOrder_CannotCreateInIbs_7000_NoCall">لا يمكن إدخال الطلب لأن حسابك غير فعال حاليا.</string>
   <string name="ServiceErrorCreateOrder_InvalidProvider">لا يمكن إدخال الطلب، مقدم الخدمة غير متاح. رجاء الاتصال  {0} على  {1} للمزيد من المساعدة</string>
   <string name="ServiceErrorCreateOrder_InvalidProvider_NoCall">لا يمكن إدخال الطلب، مقدم الخدمة غير متاح.</string>
   <string name="ServiceErrorCreateOrder_NoFareEstimateAvailable">لا يمكن تقدير الأجرة لهذه الرحلة. رجاء الإتصال  {0} على  {1} للمزيد من المساعدة.</string>
@@ -492,8 +487,6 @@
   <string name="Notification_NearbyTaxiPush">Nearby Taxi</string>
   <string name="Notification_PaymentConfirmationPush">Payment Confirmation</string>
   <string name="Notification_ReceiptEmail">Receipt (Email)</string>
-  <string name="ServiceErrorCreateOrder_CannotCreateInIbs_10000">The charge account information is invalid. Please try again.</string>
-  <string name="ServiceErrorCreateOrder_CannotCreateInIbs_10000_NoCall">The charge account information is invalid. Please try again.</string>
   <string name="Eta">The nearest taxi is {0} and {1} {2} away</string>
   <string name="EtaDurationUnit">min</string>
   <string name="EtaDurationUnitPlural">mins</string>
@@ -509,8 +502,6 @@
   <string name="PaymentInCar">Payment In Car</string>
   <string name="CardOnFile">Card on File</string>
   <string name="ChargeAccount">Charge Account</string>
-  <string name="ServiceErrorCreateOrder_CannotCreateInIbs_1452">The specified Destination address lies outside the regular service area. Please contact {0} at {1} for further assistance.</string>
-  <string name="ServiceErrorCreateOrder_CannotCreateInIbs_1452_NoCall">The specified Destination address lies outside the regular service area.</string>
   <string name="Knowledgabledriver">Knowledgable driver</string>
   <string name="Safety">Safety</string>
   <string name="Politeness">Politeness</string>
@@ -556,6 +547,7 @@
   <string name="PromoBookRide">Use this promotion on next ride</string>
   <string name="PromotionViewNoPromotionLabel">No promotions available</string>
   <string name="Promo_NoActive">No Active Promotion</string>
+  <string name="Processing">Processing your order...</string>
   <string name="Notification_PromotionEmail">Promotions (Email)</string>
   <string name="PromoProgress">Progress :</string>
 </resources>

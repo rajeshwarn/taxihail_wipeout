@@ -18,7 +18,6 @@
   <string name="VehicleNumberNotice">Please note that if the vehicle number presented above does not match the actual car number of your ride, we regret that payment cannot be processed through the Application. Please press the back button to return to the trip status screen, and pay the driver directly.</string>
   <string name="Reset">Reset</string>
   <string name="SendEmail">Send mail...</string>
-  <string name="ServiceErrorCreateOrder_CannotCreateInIbs_7000_NoCall">The order cannot be created because your account is currently inactive.</string>
   <string name="FavoritesButton">Favorites</string>
   <string name="CmtTransactionSuccessTitle">Payment Received</string>
   <string name="Register">Register</string>
@@ -37,7 +36,6 @@
   <string name="EmailLabel">Email</string>
   <string name="BookingService_MobileBookingNoteBuildingName">Building name {0}.</string>
   <string name="RateRide">Rate my ride</string>
-  <string name="ServiceErrorCreateOrder_CannotCreateInIbs_1002">The specified Pickup address lies outside the regular service area. Please contact {0} at {1} for further assistance.</string>
   <string name="CreateAccountErrorNotSpecified">The server didn\'t specify why the account could not be created, if the error persist try creating the account from the web site.</string>
   <string name="ListPromptSelectOne">Select one</string>
   <string name="NetworkErrorTitle">No network connection</string>
@@ -213,7 +211,6 @@
   <string name="CreateAccountErrorTitle">Error</string>
   <string name="CreateAccountFullNamePlaceHolder">Full Name</string>
   <string name="ServiceError_ErrorCreatingOrderMessage">Please contact {0} at {1} for further assistance.</string>
-  <string name="ServiceErrorCreateOrder_CannotCreateInIbs_1002_NoCall">The specified Pickup address lies outside the regular service area.</string>
   <string name="ServiceErrorCreateOrder_InvalidProvider">Order cannot be created, invalid provider. Please contact {0} at {1} for further assistance.</string>
   <string name="View_BookingStatus">Status</string>
   <string name="LocationNoHistory">No history</string>
@@ -256,7 +253,6 @@
   <string name="Locating">Finding your position...</string>
   <string name="CreateAccountCreate">Create</string>
   <string name="CreditCardExpYear">Exp. Year</string>
-  <string name="ServiceErrorCreateOrder_CannotCreateInIbs_7000">The order cannot be created because your account is currently inactive. Please contact {0} at {1} for further assistance.</string>
   <string name="RefineAddressTitle">Refine an address</string>
   <string name="Confirm">Confirm</string>
   <string name="CreditCardCategory">Category</string>
@@ -360,7 +356,6 @@
   <string name="CmtTransactionSuccessMessage">Confirmation sent to the driver (Authorization Code:  {0})</string>
   <string name="StatusConfirmCancelRide">This action will cancel your order, do you want to continue ?</string>
   <string name="CreditCardInvalidCrediCardNUmber">The Credit Card Number is invalid</string>
-  <string name="ServiceErrorCreateOrder_CannotCreateInIbs">Order cannot be created. Please try again or call us.</string>
   <string name="Tuto04Bottom">Doing so will provide an estimate for the cost for the trip.</string>
   <string name="ResetPasswordConfirmationMessage">A new password was send by email.</string>
   <string name="ReminderDetails">Reminder: A taxi will pick you up from {0} at {1} on {2}.</string>
@@ -508,8 +503,6 @@
   <string name="DeleteCreditCardTitle">Delete credit card</string>
   <string name="ServiceErrorCreateOrder_PendingOrder">You cannot book this ride since an order is already pending. View the order status?</string>
   <string name="View">View</string>
-  <string name="ServiceErrorCreateOrder_CannotCreateInIbs_10000">The charge account information is invalid. Please try again.</string>
-  <string name="ServiceErrorCreateOrder_CannotCreateInIbs_10000_NoCall">The charge account information is invalid. Please try again.</string>
   <string name="Eta">The nearest taxi is {0} and {1} {2} away</string>
   <string name="EtaDurationUnit">min</string>
   <string name="EtaDurationUnitPlural">mins</string>
@@ -541,8 +534,6 @@
   <string name="CardOnFile">Card on File</string>
   <string name="ChargeAccount">Charge Account</string>
   <string name="EstimateFareCalculating">Calculating...</string>
-  <string name="ServiceErrorCreateOrder_CannotCreateInIbs_1452">The specified Destination address lies outside the regular service area. Please contact {0} at {1} for further assistance.</string>
-  <string name="ServiceErrorCreateOrder_CannotCreateInIbs_1452_NoCall">The specified Destination address lies outside the regular service area.</string>
   <string name="Knowledgabledriver">Knowledgable driver</string>
   <string name="Safety">Safety</string>
   <string name="Politeness">Politeness</string>
@@ -590,6 +581,7 @@
   <string name="PromoBookRide">Use this promotion on next ride</string>
   <string name="PromotionViewNoPromotionLabel">No promotions available</string>
   <string name="Promo_NoActive">No Active Promotion</string>
+  <string name="Processing">Processing your order...</string>
   <string name="Notification_PromotionEmail">Promotions (Email)</string>
   <string name="PromoProgress">Progress :</string>
 </resources>

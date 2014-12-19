@@ -135,7 +135,6 @@
 "NoPhoneNumberMessage"="El número de teléfono es inválido para este chofer";
 "May"="May (05)";
 "ServiceErrorCallTitle"="Mensaje";
-"ServiceErrorCreateOrder_CannotCreateInIbs_10000_NoCall"="La información de su cuenta es inválida. Por favor intente nuevamente.";
 "CarAssigned"="Su Taxi {0}";
 "AccountActivationMessage"="Se ha enviado un email, por favor siga el vínculo para confirmar su cuenta";
 "Save"="Guardar";
@@ -283,7 +282,6 @@
 "CreditCardErrorInvalid"="No podemos validar su tarjeta de crédito";
 "CreditCardExpYear"="Mes de expiración";
 "Safety"="Seguridad";
-"ServiceErrorCreateOrder_CannotCreateInIbs_7000"="Su reservación no puede ser creada porque su cuenta está inactiva, por favor contacte {0} al {1} para asistencia";
 "RefineAddressTitle"="Refinar dirección";
 "AccountPaymentNumberRequiredTitle"="Número de cuenta caducado.";
 "Eta"="El taxi más cercano es {0} y esta a {1} {2} de distancia";
@@ -366,7 +364,6 @@
 "ServiceErrorCreateOrder_NoFareEstimateAvailable"="No podemos proveer costo estimado de viaje, por favor contacte {0} al {1} para asistencia";
 "HistoryDetailDestinationLabel"="Destino:";
 "Order"="Reservación";
-"ServiceErrorCreateOrder_CannotCreateInIbs_7000_NoCall"="Su reservación no puede ser creada porque su cuenta está inactiva";
 "ViewRatingBtn"="Ver evaluaciones";
 "NotAvailable"="N/A";
 "View_RideSettings"="Perfil";
@@ -380,7 +377,6 @@
 "December"="Dic (12)";
 "ConfirmPassengersLabel"="Pasajeros:";
 "Rebook"="Reservar viaje nuevamente";
-"ServiceErrorCreateOrder_CannotCreateInIbs_10000"="La información de su cuenta es inválida. Por favor intente nuevamente.";
 "PaymentErrorMessage"="Detalles: {0}";
 "DateTimePickerPickTime"="Seleccione la hora del servicio:";
 "ConfirmRideInformationTitle"="Información del servicio";
@@ -417,7 +413,6 @@
 "CmtTransactionSuccessMessage"="Confirmación enviada al chofer (Código de autorización: {0})";
 "StatusConfirmCancelRide"="Esta accion cancelará su reservacion desea continuar?";
 "ConfirmationOfPaymentSent"="Confirmación de pago enviada al chofer";
-"ServiceErrorCreateOrder_CannotCreateInIbs"="Su reservación no se pudo crear, por favor trate de nuevo o llámenos";
 "Tuto04Bottom"="Haciendo esto se le proveerá un costo estimado para su viaje";
 "ResetPasswordConfirmationMessage"="Una nueva contraseña ha sido enviada a su email";
 "ReminderDetails"="Recordatorio: Un taxi lo vendrá a recoger de {0} al {1} en {2}";
@@ -555,6 +550,6 @@
 "PromoExpiringSoonMessage"="Expires in {0} days";
 "PromoExpiringToday"="Expires today!";
 "PromotionViewNoPromotionLabel"="No promotions available";
-"ServiceErrorCreateOrder_CannotCreateInIbs_1300"="​We apologize but unfortunately we do not have any reservations available for that time period.";
+"Processing"="Procesando su pedido...";
 "PromoProgress"="Progress :";
 "Notification_PromotionEmail"="Promotions (Email)";
