@@ -54,11 +54,11 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                     PromoId = accountCreatedPromotion.Id
                 });
 
-                //_notificationService.SendPromotionUnlockedEmail(accountCreatedPromotion.Name,
-                //    accountCreatedPromotion.Code,
-                //    accountCreatedPromotion.GetEndDateTime(),
-                //    @event.Email,
-                //    @event.Language);
+                _notificationService.SendPromotionUnlockedEmail(accountCreatedPromotion.Name,
+                    accountCreatedPromotion.Code,
+                    accountCreatedPromotion.GetEndDateTime(),
+                    @event.Email,
+                    @event.Language);
             }
         }
 

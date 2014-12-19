@@ -9,6 +9,7 @@ using apcurium.MK.Booking.EventHandlers;
 using apcurium.MK.Booking.EventHandlers.Integration;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.Maps.Impl;
+using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Services.Impl;
@@ -50,7 +51,7 @@ namespace apcurium.MK.Booking.Test.Integration.PromotionFixture
             CreditCardGenerator = new CreditCardPaymentDetailsGenerator(() => new BookingDbContext(DbName), new TestServerSettings());
 
             TriggerSut = new PromotionTriggerGenerator(() => new BookingDbContext(DbName), bus.Object,
-                new PromotionDao(() => new BookingDbContext(DbName), new SystemClock(), new TestServerSettings()), new OrderDao(() => new BookingDbContext(DbName)), new AccountDao(() => new BookingDbContext(DbName)), new NotificationService(null, null, null, null, serverSettings, null, orderDaoMock.Object, accountDaoMock.Object, new StaticMap(), smsSenderMock.Object, null, null));
+                new PromotionDao(() => new BookingDbContext(DbName), new SystemClock(), new TestServerSettings()), new OrderDao(() => new BookingDbContext(DbName)), new AccountDao(() => new BookingDbContext(DbName)), new NotificationService(() => new BookingDbContext(DbName), null, null, null, serverSettings, null, orderDaoMock.Object, accountDaoMock.Object, new StaticMap(), smsSenderMock.Object, null, null));
         }
     }
 
@@ -151,7 +152,8 @@ namespace apcurium.MK.Booking.Test.Integration.PromotionFixture
         public void when_new_account_created_then_promotion_unlocked()
         {
             var accountId = Guid.NewGuid();
-            TriggerSut.Handle(new AccountRegistered { SourceId = accountId });
+
+            TriggerSut.Handle(new AccountRegistered { SourceId = accountId, Email = "test@test.com", Language = "en"});
 
             Thread.Sleep(500);
 
