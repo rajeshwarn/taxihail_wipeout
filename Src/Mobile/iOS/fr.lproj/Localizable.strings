@@ -26,7 +26,7 @@
 "BookDropoffLocationEmptyPlaceholder"="Choisissez votre lieu d'arrivée sur la carte";
 "BookingService_MobileBookingNote"="Réservé via téléphone mobile";
 "BookingService_MobileBookingNoteBuildingName"="Bâtiment n° {0}";
-"BookItButton"="Réserver";
+"BookItButton"="Commander";
 "BookItButtonImageName"="Assets/Button/btnBookIt_en.png";
 "BookItLaterButton"="Plus tard";
 "BookPickupLabel"="Confirmer votre adresse de départ";
@@ -294,7 +294,7 @@
 "Rebook"="Réinitialiser le trajet";
 "ReceiptSent"="Facture envoyée";
 "RefineAddressTitle"="Affiner l'adresse";
-"Register"="S'enregistrer";
+"Register"="Inscription";
 "ReminderDetails"="Rappel: votre taxi arrivera au {0} à {1} le {2}";
 "ReminderTitle"="{0} Enregistré";
 "RemoveCreditCardMessage"="Etes-vous sur de vouloir supprimer cette carte de paiement?";
@@ -353,7 +353,7 @@
 "SettingsViewTitle"="Paramètres";
 "SettingViewLoginInfo"="Vous vous être identifié comme: {0}";
 "SettingViewNotSignedIn"="Désolé, vous n'êtes pas identifié. Merci de vous identifier pour pouvoir utiliser l'application";
-"SignIn"="S'identifier";
+"SignIn"="Connexion";
 "StatusActionBookButton"="Réserver un nouveau véhicule";
 "StatusActionButton"="Appeler/Réserver/Annuler";
 "StatusActionCancelButton"="Annuler";
