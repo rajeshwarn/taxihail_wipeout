@@ -136,10 +136,7 @@ namespace apcurium.MK.Booking.Maps.Impl
 
         private GeoAddress[] FilterGeoCodingResults(GeoAddress[] resultsToFilter)
         {
-            if (!_appSettings.Data.UpperRightLatitude.HasValue
-                || !_appSettings.Data.UpperRightLongitude.HasValue
-                || !_appSettings.Data.LowerLeftLatitude.HasValue
-                || !_appSettings.Data.LowerLeftLongitude.HasValue)
+            if (!ShouldFilterResults())
             {
                 return resultsToFilter;
             }
@@ -153,6 +150,42 @@ namespace apcurium.MK.Booking.Maps.Impl
                     _appSettings.Data.LowerLeftLongitude.Value,  // y2
                     result.Latitude, result.Longitude))
                 .ToArray();
+        }
+
+        private bool ShouldFilterResults()
+        {
+            var settingsHaveValues = _appSettings.Data.LowerLeftLatitude.HasValue
+                                  && _appSettings.Data.LowerLeftLongitude.HasValue
+                                  && _appSettings.Data.UpperRightLatitude.HasValue
+                                  && _appSettings.Data.UpperRightLongitude.HasValue;
+
+            if (!settingsHaveValues)
+            {
+                return false;
+            }
+
+            var lowerLeft = new Address
+            {
+                Latitude = _appSettings.Data.LowerLeftLatitude.Value,
+                Longitude = _appSettings.Data.LowerLeftLongitude.Value
+            };
+            var upperRight = new Address
+            {
+                Latitude = _appSettings.Data.UpperRightLatitude.Value,
+                Longitude = _appSettings.Data.UpperRightLongitude.Value
+            };
+
+            return HasValidCoordinate(lowerLeft) && HasValidCoordinate(upperRight);
+        }
+
+        private bool HasValidCoordinate(Address instance)
+        {
+            return instance.Longitude != 0 
+                && instance.Latitude != 0 
+                && instance.Latitude >= -90 
+                && instance.Latitude <= 90 
+                && instance.Longitude >= -180 
+                && instance.Longitude <= 180;
         }
     }
 }
