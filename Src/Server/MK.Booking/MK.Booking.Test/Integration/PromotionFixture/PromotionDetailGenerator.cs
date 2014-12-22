@@ -204,6 +204,16 @@ namespace apcurium.MK.Booking.Test.Integration.PromotionFixture
             var accountId = Guid.NewGuid();
             var orderId = Guid.NewGuid();
 
+            using (var context = new BookingDbContext(DbName))
+            {
+                context.Save(new AccountDetail
+                {
+                    Id = accountId,
+                    Email = "test@test.com",
+                    CreationDate = DateTime.Now
+                });
+            }
+
             Sut.Handle(new PromotionApplied
             {
                 SourceId = _promoId,
@@ -233,7 +243,7 @@ namespace apcurium.MK.Booking.Test.Integration.PromotionFixture
         {
             var accountId = Guid.NewGuid();
             var orderId = Guid.NewGuid();
-            
+
             using (var context = new BookingDbContext(DbName))
             {
                 context.Save(new AccountDetail
