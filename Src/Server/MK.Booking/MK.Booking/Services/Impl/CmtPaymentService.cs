@@ -303,13 +303,22 @@ namespace apcurium.MK.Booking.Services.Impl
                     Tolls = 0
                 };
 
-                var responseTask = _cmtPaymentServiceClient.PostAsync(authRequest);
-                responseTask.Wait();
-                var authResponse = responseTask.Result;
+                AuthorizationResponse authResponse = new AuthorizationResponse();
+                try
+                {
+                    var responseTask = _cmtPaymentServiceClient.PostAsync(authRequest);
+                    responseTask.Wait();
+                    authResponse = responseTask.Result;                    
+                }
+                catch
+                {
+                    SendDeclineToIbs(amount, meterAmount, tipAmount, cardToken, orderId, isNoShowFee, transactionId, authorizationCode, orderDetail, account);
+                    throw;
+                }
+
+
                 message = authResponse.ResponseMessage;
                 transactionId = authResponse.TransactionId.ToString(CultureInfo.InvariantCulture);
-
-
                 var paymentId = Guid.NewGuid();
                 _commandBus.Send(new InitiateCreditCardPayment
                 {
@@ -400,30 +409,9 @@ namespace apcurium.MK.Booking.Services.Impl
                             Reason = message
                         });
                     }
-                }
+                }                
                 
-                else
-
-                {
-                    _logger.LogMessage("Sending invalid payment info with payment type 0");
-                    _ibs.ConfirmExternalPayment(orderDetail.Id,
-                               orderDetail.IBSOrderId.Value,
-                               Convert.ToDecimal(amount),
-                               Convert.ToDecimal(tipAmount),
-                               Convert.ToDecimal(meterAmount),
-                               "0",
-                               PaymentProvider.Cmt.ToString(),
-                               transactionId,
-                               authorizationCode,
-                               cardToken,
-                               account.IBSAccountId.Value,
-                               orderDetail.Settings.Name,
-                               orderDetail.Settings.Phone,
-                               account.Email,
-                               orderDetail.UserAgent.GetOperatingSystem(),
-                               orderDetail.UserAgent);
-                }
-
+               
                 return new CommitPreauthorizedPaymentResponse
                 {
                     IsSuccessful = isSuccessful,
@@ -456,6 +444,48 @@ namespace apcurium.MK.Booking.Services.Impl
                     TransactionId = transactionId,
                     Message = e.Message,
                 };
+            }
+        }
+
+        private void SendDeclineToIbs(decimal amount, decimal meterAmount, decimal tipAmount, string cardToken, Guid orderId, bool isNoShowFee, string transactionId, string authorizationCode, ReadModel.OrderDetail orderDetail, ReadModel.AccountDetail account)
+        {
+            try
+            {
+                _logger.LogMessage("Sending invalid payment info with payment type 0");
+                _ibs.ConfirmExternalPayment(orderDetail.Id,
+                           orderDetail.IBSOrderId.Value,
+                           Convert.ToDecimal(amount),
+                           Convert.ToDecimal(tipAmount),
+                           Convert.ToDecimal(meterAmount),
+                           "0",
+                           PaymentProvider.Cmt.ToString(),
+                           transactionId,
+                           authorizationCode,
+                           cardToken,
+                           account.IBSAccountId.Value,
+                           orderDetail.Settings.Name,
+                           orderDetail.Settings.Phone,
+                           account.Email,
+                           orderDetail.UserAgent.GetOperatingSystem(),
+                           orderDetail.UserAgent);
+
+                _commandBus.Send(new InitiateCreditCardPayment
+                {
+                    PaymentId = Guid.NewGuid(),
+                    TransactionId = transactionId,
+                    Amount = amount,
+                    OrderId = orderId,
+                    Tip = tipAmount,
+                    Meter = meterAmount,
+                    CardToken = cardToken,
+                    Provider = PaymentProvider.Cmt,
+                    IsNoShowFee = isNoShowFee
+
+                });
+            }
+            catch
+            {
+
             }
         }
 
