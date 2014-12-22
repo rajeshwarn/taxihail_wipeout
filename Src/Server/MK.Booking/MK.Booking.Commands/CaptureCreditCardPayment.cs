@@ -15,6 +15,8 @@ namespace apcurium.MK.Booking.Commands
             Id = Guid.NewGuid();
         }
 
+        public Guid AccountId { get; set; }
+
         public Guid PaymentId { get; set; }
 
         public string AuthorizationCode { get; set; }

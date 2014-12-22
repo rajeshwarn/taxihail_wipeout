@@ -70,12 +70,9 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
 
             if (@event.PromotionUsed.HasValue)
             {
-                var order = _orderDao.FindById(@event.OrderId);
-
                 _commandBus.Send(new RedeemPromotion
                 {
                     OrderId = @event.OrderId,
-                    AccountId = order.AccountId,
                     PromoId = @event.PromotionUsed.Value,
                     TotalAmountOfOrder = @event.Amount + @event.AmountSavedByPromotion
                 });

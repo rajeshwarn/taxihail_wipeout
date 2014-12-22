@@ -82,10 +82,9 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                 return;
             }
 
-            var accountId = _orderDao.FindById(@event.OrderId).AccountId;
             var activePromotions = _promotionDao.GetAllCurrentlyActive().ToArray();
 
-            UpdateRideProgression(activePromotions, PromotionTriggerTypes.AmountSpent, accountId, @event.OrderId, (double)@event.Meter);
+            UpdateRideProgression(activePromotions, PromotionTriggerTypes.AmountSpent, @event.AccountId, @event.OrderId, (double)@event.Meter);
         }
 
         private void UpdateRideProgression(IEnumerable<PromotionDetail> activePromotions, PromotionTriggerTypes triggerType, Guid accountId, Guid orderId, double? value = null)
