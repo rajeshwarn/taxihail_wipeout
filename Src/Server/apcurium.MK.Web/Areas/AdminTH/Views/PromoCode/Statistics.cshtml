@@ -17,17 +17,7 @@
     </p>
     <p>
         <b>Users that Redeemed this Promotion : </b>
-        @foreach (var userUsage in Model.UsersUsage)
-        {
-            if (@userUsage.Value > 1)
-            {
-                <p>@userUsage.Key (@userUsage.Value times)</p>
-            }
-            else
-            {
-                <p>@userUsage.Key (@userUsage.Value time)</p>
-            }
-        }
+        @Html.ActionLink(@Model.UsersUsage.Keys.Count + " (Click for details)", "UserStatistics", new { id = @Url.RequestContext.RouteData.Values["id"] })
     </p>
 }
 else

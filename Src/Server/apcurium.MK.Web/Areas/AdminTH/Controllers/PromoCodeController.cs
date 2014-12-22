@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using apcurium.MK.Booking.Commands;
@@ -178,6 +179,12 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
 
         // GET: AdminTH/PromoCode/Statistics/5
         public ActionResult Statistics(Guid id)
+        {
+            var promotionUsages = _promotionDao.GetRedeemedPromotionUsages(id).ToArray();
+            return View(promotionUsages.Any() ? new PromoStats(promotionUsages) : null);
+        }
+
+        public ActionResult UserStatistics(Guid id)
         {
             var promotionUsages = _promotionDao.GetRedeemedPromotionUsages(id).ToArray();
             return View(promotionUsages.Any() ? new PromoStats(promotionUsages) : null);

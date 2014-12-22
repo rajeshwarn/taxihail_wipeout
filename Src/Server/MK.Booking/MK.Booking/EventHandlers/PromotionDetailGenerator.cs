@@ -110,11 +110,14 @@ namespace apcurium.MK.Booking.EventHandlers
         {
             using (var context = _contextFactory.Invoke())
             {
+                var account = context.Find<AccountDetail>(@event.AccountId);
+
                 context.Save(new PromotionUsageDetail
                 {
                     OrderId = @event.OrderId,
                     PromoId = @event.SourceId,
-                    @AccountId = @event.AccountId,
+                    AccountId = @event.AccountId,
+                    UserEmail = account.Email,
                     Code = @event.Code,
                     DiscountType = @event.DiscountType,
                     DiscountValue = @event.DiscountValue
@@ -127,11 +130,9 @@ namespace apcurium.MK.Booking.EventHandlers
             using (var context = _contextFactory.Invoke())
             {
                 var promotionUsageDetail = context.Find<PromotionUsageDetail>(@event.OrderId);                
-                var account = context.Find<AccountDetail>(promotionUsageDetail.AccountId);
-
+                
                 promotionUsageDetail.AmountSaved = @event.AmountSaved;
                 promotionUsageDetail.DateRedeemed = @event.EventDate;
-                promotionUsageDetail.UserEmail = account.Email;
 
                 context.SaveChanges();
             }
