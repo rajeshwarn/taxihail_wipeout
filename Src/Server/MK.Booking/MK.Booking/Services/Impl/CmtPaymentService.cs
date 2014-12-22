@@ -327,9 +327,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 if (authResponse.ResponseCode == 1)
                 {
                     isSuccessful = true;
-                    
-                    
-
+                                        
                     // wait for OrderPaymentDetail to be created
                     Thread.Sleep(500);
 
@@ -379,6 +377,7 @@ namespace apcurium.MK.Booking.Services.Impl
 
                     if (isSuccessful)
                     {
+
                         //payment completed
                         _commandBus.Send(new CaptureCreditCardPayment
                         {
@@ -393,6 +392,7 @@ namespace apcurium.MK.Booking.Services.Impl
                     }
                     else
                     {
+                       
                         //payment failed
                         _commandBus.Send(new LogCreditCardError
                         {
@@ -400,6 +400,28 @@ namespace apcurium.MK.Booking.Services.Impl
                             Reason = message
                         });
                     }
+                }
+                
+                else
+
+                {
+                    _logger.LogMessage("Sending invalid payment info with payment type 0");
+                    _ibs.ConfirmExternalPayment(orderDetail.Id,
+                               orderDetail.IBSOrderId.Value,
+                               Convert.ToDecimal(amount),
+                               Convert.ToDecimal(tipAmount),
+                               Convert.ToDecimal(meterAmount),
+                               "0",
+                               PaymentProvider.Cmt.ToString(),
+                               transactionId,
+                               authorizationCode,
+                               cardToken,
+                               account.IBSAccountId.Value,
+                               orderDetail.Settings.Name,
+                               orderDetail.Settings.Phone,
+                               account.Email,
+                               orderDetail.UserAgent.GetOperatingSystem(),
+                               orderDetail.UserAgent);
                 }
 
                 return new CommitPreauthorizedPaymentResponse
