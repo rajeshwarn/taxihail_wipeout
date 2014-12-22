@@ -15,5 +15,7 @@ namespace apcurium.MK.Booking.Commands
         public Guid PromoId { get; set; }
 
         public Guid Id { get; private set; }
+
+        public double? LastTriggeredAmount { get; set; }
     }
 }

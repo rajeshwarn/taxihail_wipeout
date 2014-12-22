@@ -9,7 +9,6 @@ using apcurium.MK.Booking.EventHandlers;
 using apcurium.MK.Booking.EventHandlers.Integration;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.Maps.Impl;
-using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Services.Impl;
@@ -160,6 +159,7 @@ namespace apcurium.MK.Booking.Test.Integration.PromotionFixture
             var commands = Commands.OfType<AddUserToPromotionWhiteList>().Where(c => c.AccountId == accountId).ToArray();
 
             Assert.AreEqual(1, commands.Count());
+            Assert.AreEqual(null, commands[0].LastTriggeredAmount);
         }
 
         [Test]
@@ -193,6 +193,7 @@ namespace apcurium.MK.Booking.Test.Integration.PromotionFixture
             var commands = Commands.OfType<AddUserToPromotionWhiteList>().Where(c => c.AccountId == accountId).ToArray();
 
             Assert.AreEqual(1, commands.Count());
+            Assert.AreEqual(2, commands[0].LastTriggeredAmount);
         }
 
         [Test]
@@ -251,6 +252,7 @@ namespace apcurium.MK.Booking.Test.Integration.PromotionFixture
             var commands = Commands.OfType<AddUserToPromotionWhiteList>().Where(c => c.AccountId == accountId).ToArray();
 
             Assert.AreEqual(1, commands.Count());
+            Assert.AreEqual(30.62, commands[0].LastTriggeredAmount);
         }
     }
 }

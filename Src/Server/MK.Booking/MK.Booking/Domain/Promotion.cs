@@ -259,11 +259,12 @@ namespace apcurium.MK.Booking.Domain
             });
         }
 
-        public void AddUserToWhiteList(Guid accountId)
+        public void AddUserToWhiteList(Guid accountId, double? lastTriggeredAmount)
         {
             Update(new UserAddedToPromotionWhiteList
             {
-                AccountId = accountId
+                AccountId = accountId,
+                LastTriggeredAmount = lastTriggeredAmount
             });
         }
 

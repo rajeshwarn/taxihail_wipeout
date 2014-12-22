@@ -163,23 +163,11 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
 
             if (isPromotionUnlocked)
             {
-                using (var context = _contextFactory.Invoke())
-                {
-                    var promotionProgressDetail = context.Set<PromotionProgressDetail>().Find(accountId, promotion.Id);
-                    if (promotionProgressDetail == null)
-                    {
-                        promotionProgressDetail = new PromotionProgressDetail { AccountId = accountId, PromoId = promotion.Id };
-                        context.Save(promotionProgressDetail);
-                    }
-
-                    promotionProgressDetail.LastTriggeredAmount = promotionProgress;
-                    context.SaveChanges();
-                }
-
                 _commandBus.Send(new AddUserToPromotionWhiteList
                 {
                     AccountId = accountId,
-                    PromoId = promotion.Id
+                    PromoId = promotion.Id,
+                    LastTriggeredAmount = promotionProgress
                 });
 
                 var account = _accountDao.FindById(accountId);
