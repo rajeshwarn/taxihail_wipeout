@@ -86,7 +86,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 
             container.Register<IDirectionDataProvider> ((c, p) =>
             {
-				
                 switch (c.Resolve<IAppSettings>().Data.DirectionDataProvider)
                 {
                     case MapProvider.TomTom:

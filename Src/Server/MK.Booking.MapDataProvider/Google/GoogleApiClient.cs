@@ -23,10 +23,7 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
 		private readonly IAppSettings _settings;
 		private readonly ILogger _logger;
 		private readonly IGeocoder _fallbackGeocoder;
-		private readonly string[] _otherTypesAllowed = {
-            "airport", "transit_station", "bus_station", "train_station",
-            "route", "postal_code", "street_address"
-        };
+
         public GoogleApiClient(IAppSettings settings, ILogger logger, IGeocoder fallbackGeocoder = null)
         {
             _logger = logger;
@@ -122,7 +119,7 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
             {
                 Id = id,
                 Name = response.Result.Formatted_address,
-                Address = ConvertGeoObjectToAddress (response.Result)
+                Address = ResourcesExtensions.ConvertGeoObjectToAddress (response.Result)
             };
 
             return HandleGoogleResult<GeoPlace, PlaceDetailResponse>(() => client.Get<PlaceDetailResponse>(qry), selector, new GeoPlace());
@@ -190,28 +187,6 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
             return Geocode(resource, () => _fallbackGeocoder.GeocodeLocation (latitude, longitude, currentLanguage));
         }
 
-        public GeoAddress[] ConvertGeoResultToAddresses(GeoResult result)
-        { 
-            if ( result.Status == ResultStatus.OK )
-            {
-                return result.Results
-                    .Where(r => 
-                        r.Formatted_address.HasValue() 
-                        && r.Geometry != null 
-                        && r.Geometry.Location != null 
-                        && r.Geometry.Location.Lng != 0 
-                        && r.Geometry.Location.Lat != 0 
-                        && (r.AddressComponentTypes.Any(type => type == AddressComponentType.Street_address) 
-                            || (r.Types.Any(t => _otherTypesAllowed.Any(o => o.ToLower() == t.ToLower())))))
-                    .Select(ConvertGeoObjectToAddress)
-                    .ToArray();
-            }
-            else
-            {
-                return new GeoAddress[0];
-            }
-        }
-
         private GeoAddress[] Geocode(string resource, Func<GeoAddress[]> fallBackAction)
         {
             var client = new JsonServiceClient(MapsServiceUrl);
@@ -223,7 +198,7 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
 
             _logger.LogMessage("GeocodeLocation : " + MapsServiceUrl + resource);
 
-            return HandleGoogleResult<GeoAddress[], GeoResult>(() => client.Get<GeoResult>(resource), ConvertGeoResultToAddresses, new GeoAddress [0], fallBackAction);
+            return HandleGoogleResult<GeoAddress[], GeoResult>(() => client.Get<GeoResult>(resource), ResourcesExtensions.ConvertGeoResultToAddresses, new GeoAddress [0], fallBackAction);
         }
 
         private TResponse HandleGoogleResult<TResponse, TGoogleResponse>(Func<TGoogleResponse> apiCall, Func<TGoogleResponse, TResponse> selector, TResponse defaultResult, Func<TResponse> fallBackAction = null)
@@ -323,52 +298,6 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
         private string BuildQueryString(IDictionary<string, string> @params)
         {
             return "?" + string.Join("&", @params.Select(x => string.Join("=", x.Key, x.Value)));
-        }
-
-        private GeoAddress ConvertGeoObjectToAddress(GeoObj geoResult)
-        {        
-            var address = new GeoAddress
-            {
-                FullAddress = geoResult.Formatted_address,                
-                Latitude = geoResult.Geometry.Location.Lat,
-                Longitude = geoResult.Geometry.Location.Lng
-            };
-
-            geoResult.Address_components
-                .FirstOrDefault(x => x.AddressComponentTypes.Any(t => t == AddressComponentType.Street_number))
-                .Maybe(x => address.StreetNumber = x.Long_name);
-
-            var component = (from c in geoResult.Address_components
-                             where
-                                 (c.AddressComponentTypes.Any(
-                                     x => x == AddressComponentType.Route || x == AddressComponentType.Street_address) && 
-                                  !string.IsNullOrEmpty(c.Long_name))
-                             select c).FirstOrDefault();
-            component.Maybe(c => address.Street = c.Long_name);
-
-            geoResult.Address_components
-                .FirstOrDefault(x => x.AddressComponentTypes.Any(t => t == AddressComponentType.Postal_code))
-                .Maybe(x => address.ZipCode = x.Long_name);
-
-            geoResult.Address_components
-                .FirstOrDefault(x => x.AddressComponentTypes.Any(t => t == AddressComponentType.Locality))
-                .Maybe(x => address.City = x.Long_name);
-
-            if (address.City == null)
-            {
-                // some times, the city is not set by Locality, for example in Brooklyn and Queens
-                geoResult.Address_components
-                    .FirstOrDefault(x => x.AddressComponentTypes.Any(t => t == AddressComponentType.Sublocality))
-                    .Maybe(x => address.City = x.Long_name);
-            }
-
-            geoResult.Address_components
-                .FirstOrDefault(x => x.AddressComponentTypes.Any(t => t == AddressComponentType.Administrative_area_level_1))
-                .Maybe(x => address.State = x.Short_name);
-            
-            address.LocationType = geoResult.Geometry.Location_type;
-
-			return address;
         }
     }
 }
