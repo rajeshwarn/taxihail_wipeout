@@ -160,7 +160,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             }
             catch (Exception e)
             {
-                response.Message += e.Message + "\n";
+                response.Message += e.Message + "\n" + e;
             }
 
             return response;
