@@ -252,12 +252,8 @@ namespace apcurium.MK.Booking.ConfigTool
 			/***Optional files ****/
 
             var allResources = GetFilesFromAssetsDirectory("png");
-
-            
-
-			foreach (var g in allResources.Where(r=> r.ToLower()!="icon.png" && r.ToLower()!="icon@2x.png" ) ) // The where clause need to be improved. 
+			foreach (var g in allResources)
             {
-
 				_configs.Add (new ConfigFile (this) {
 					Source = g+"@2x.png",
 					Destination = @"Mobile\Android\Resources\drawable-xhdpi\"+g+".png"

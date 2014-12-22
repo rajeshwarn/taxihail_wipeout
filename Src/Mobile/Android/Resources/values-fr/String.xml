@@ -181,7 +181,7 @@
   <string name="HistoryViewSendReceiptButton">Je souhaite recevoir une facture</string>
   <string name="HistoryViewSendReceiptError">Désolé, nous avons rencontré un problème lors de l\'envoi de la facture</string>
   <string name="HistoryViewStatusButton">Voir le statut</string>
-  <string name="HistoryViewTitle">Historique</string>
+  <string name="HistoryViewTitle">Réservations</string>
   <string name="InvalidAccountOnActivatedMessage">Votre compte semble ne pas exister. Merci de vérifier la saisie</string>
   <string name="InvalidAccountOnActivatedTitle">Compte non valide</string>
   <string name="InvalidAddressMessage">Désolé, l\'adresse saisie semble invalide. Merci de saisir de nouveau</string>
@@ -261,7 +261,7 @@
   <string name="PanelMenuViewAboutUsText">À Propos</string>
   <string name="PanelMenuViewCallDispatchText">Appeler</string>
   <string name="PanelMenuViewLocationsText">Adresses Favorites</string>
-  <string name="PanelMenuViewOrderHistoryText">Historique</string>
+  <string name="PanelMenuViewOrderHistoryText">Réservations</string>
   <string name="PanelMenuViewReportProblemText">Signaler un problème</string>
   <string name="PanelMenuViewSignOutText">Déconnexion</string>
   <string name="PanelMenuViewTutorialText">Aide</string>
@@ -383,7 +383,7 @@
   <string name="TabBook">Réserver maintenant!</string>
   <string name="TabContacts">Contacts</string>
   <string name="TabFavorites">Favoris</string>
-  <string name="TabHistory">Historique</string>
+  <string name="TabHistory">Réservations</string>
   <string name="TabLocations">Adresses Favorites</string>
   <string name="TabPlaces">Points d\'intérêt</string>
   <string name="TabSearch">Rechercher</string>
@@ -434,7 +434,7 @@
   <string name="View_ConfirmCarNumber">Confirmation</string>
   <string name="View_CreateAccount">Créer votre compte</string>
   <string name="View_CreditCardsList">Cartes de paiement</string>
-  <string name="View_History">Historique</string>
+  <string name="View_History">Réservations</string>
   <string name="View_HistoryDetail">Détail de la commande</string>
   <string name="View_InitializeOrderForAccountPayment">Veuillez répondre à ces questions</string>
   <string name="View_LocationDetail">Détails sur votre position</string>

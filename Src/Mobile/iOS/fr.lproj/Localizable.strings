@@ -176,7 +176,7 @@
 "HistoryViewSendReceiptButton"="Je souhaite recevoir une facture";
 "HistoryViewSendReceiptError"="Désolé, nous avons rencontré un problème lors de l'envoi de la facture";
 "HistoryViewStatusButton"="Voir le statut";
-"HistoryViewTitle"="Historique";
+"HistoryViewTitle"="Réservations";
 "InvalidAccountOnActivatedMessage"="Votre compte semble ne pas exister. Merci de vérifier la saisie";
 "InvalidAccountOnActivatedTitle"="Compte non valide";
 "InvalidAddressMessage"="Désolé, l'adresse saisie semble invalide. Merci de saisir de nouveau";
@@ -256,7 +256,7 @@
 "PanelMenuViewAboutUsText"="À Propos";
 "PanelMenuViewCallDispatchText"="Appeler";
 "PanelMenuViewLocationsText"="Adresses Favorites";
-"PanelMenuViewOrderHistoryText"="Historique";
+"PanelMenuViewOrderHistoryText"="Réservations";
 "PanelMenuViewReportProblemText"="Signaler un problème";
 "PanelMenuViewSignOutText"="Déconnexion";
 "PanelMenuViewTutorialText"="Aide";
@@ -379,7 +379,7 @@
 "TabBook"="Réserver maintenant!";
 "TabContacts"="Contacts";
 "TabFavorites"="Favoris";
-"TabHistory"="Historique";
+"TabHistory"="Réservations";
 "TabLocations"="Adresses Favorites";
 "TabPlaces"="Points d'intérêt";
 "TabSearch"="Rechercher";
@@ -430,7 +430,7 @@
 "View_ConfirmCarNumber"="Confirmation";
 "View_CreateAccount"="Créer votre compte";
 "View_CreditCardsList"="Cartes de paiement";
-"View_History"="Historique";
+"View_History"="Réservations";
 "View_HistoryDetail"="Détail de la commande";
 "View_InitializeOrderForAccountPayment"="Veuillez répondre à ces questions";
 "View_LocationDetail"="Détails sur votre position";
