@@ -190,7 +190,7 @@
         <div class="control-group left-control-group">
             @Html.LabelFor(x => x.TriggerSettings.Type, new { @class = "control-label" })
             <div class="controls">
-               @Html.DropDownListFor(x => x.TriggerSettings.Type, new SelectList(Enum.GetValues(typeof(PromotionTriggerTypes))), new { @id = "triggerTypeDropDown" })
+               @Html.EnumDropDownListFor(x => x.TriggerSettings.Type, new { @id = "triggerTypeDropDown" })
             </div>
         </div>
         <div class="control-group right-control-group" id="rideCountTriggerGroup">
@@ -261,11 +261,13 @@
     }
 
     function onTriggerTypeChanged(e) {
-        if ($('#triggerTypeDropDown')[0].value == "RideCount") {
+        var dropDownValue = $('#triggerTypeDropDown')[0].value;
+
+        if (dropDownValue == "@Convert.ToInt32(PromotionTriggerTypes.RideCount)") {
             $('#amountSpentTriggerGroup').addClass('hidden');
             $('#rideCountTriggerGroup').removeClass('hidden');
         }
-        else if ($('#triggerTypeDropDown')[0].value == "AmountSpent") {
+        else if (dropDownValue == "@Convert.ToInt32(PromotionTriggerTypes.AmountSpent)") {
             $('#amountSpentTriggerGroup').removeClass('hidden');
             $('#rideCountTriggerGroup').addClass('hidden');
         } else {
@@ -277,13 +279,19 @@
     $(document).ready(function () {
         $('.next-day-warning').addClass('hidden');
 
-        if ($('#triggerTypeDropDown')[0].value == "RideCount") {
-            $('#amountSpentTriggerGroup').addClass('hidden');
-        } else if ($('#triggerTypeDropDown')[0].value == "AmountSpent") {
-            $('#rideCountTriggerGroup').addClass('hidden');
-        } else {
-            $('#rideCountTriggerGroup').addClass('hidden');
-            $('#amountSpentTriggerGroup').addClass('hidden');
+        @if (Model.TriggerSettings.Type == PromotionTriggerTypes.RideCount)
+        {
+            <text>$('#amountSpentTriggerGroup').addClass('hidden');</text>
+        }
+        else if (Model.TriggerSettings.Type == PromotionTriggerTypes.AmountSpent)
+        {
+            <text>$('#rideCountTriggerGroup').addClass('hidden');</text>
+        }
+        else {
+            <text>
+                $('#rideCountTriggerGroup').addClass('hidden');
+                $('#amountSpentTriggerGroup').addClass('hidden');
+            </text>
         }
 
         $('#triggerTypeDropDown').change(function (e) {
