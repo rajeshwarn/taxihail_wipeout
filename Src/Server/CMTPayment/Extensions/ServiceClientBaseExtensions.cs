@@ -1,5 +1,7 @@
 using System;
 using System.Threading.Tasks;
+using log4net;
+using ServiceStack.Common.Web;
 using ServiceStack.ServiceClient.Web;
 using ServiceStack.ServiceHost;
 
@@ -7,6 +9,8 @@ namespace CMTPayment.Extensions
 {
 	public static class ServiceClientBaseExtensions
     {
+        private static readonly ILog Log = LogManager.GetLogger(typeof(ServiceClientBaseExtensions));
+
         public static Task<TResponse> GetAsync<TResponse>(this ServiceClientBase client, string relativeOrAbsoluteUrl)
         {
             var tcs = new TaskCompletionSource<TResponse>();
@@ -33,9 +37,21 @@ namespace CMTPayment.Extensions
 		{
 			var tcs = new TaskCompletionSource<TResponse>();
 
-			client.PostAsync(request,
-				tcs.SetResult,
-                (result, error) => tcs.SetException(FixWebServiceException(error)));
+            client.PostAsync<string>(request.ToUrl(HttpMethods.Post, client.Format), 
+                request, 
+                result =>
+                {
+                    //TResponse dto = result.To<TResponse>();
+                    var dto = Newtonsoft.Json.JsonConvert.DeserializeObject<TResponse>(result);
+                    tcs.SetResult(dto);
+
+                }, 
+                (response, exception) =>
+                {
+                    Log.Debug("CMT Response Body : " + response);
+                    tcs.SetException(FixWebServiceException(exception));
+                }
+            );
 
 			return tcs.Task;
 		}

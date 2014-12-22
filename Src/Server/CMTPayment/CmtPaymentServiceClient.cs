@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Net;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Mobile.Infrastructure;
@@ -23,6 +24,7 @@ namespace CMTPayment
             _logger = logger;
             Client.Timeout = new TimeSpan(0, 0, 2, 0, 0);
             Client.LocalHttpWebRequestFilter = SignRequest;
+            Client.LocalHttpWebResponseFilter = LogErrorBody;
 
             //Client.Proxy = new WebProxy("192.168.12.122", 8888);
             ConsumerKey = cmtSettings.ConsumerKey;
@@ -37,12 +39,19 @@ namespace CMTPayment
 
         private void SignRequest(WebRequest request)
         {
+            var requestUri = request.RequestUri;
+            if (request.RequestUri.Host.Contains("runscope"))
+            {
+                var url = request.RequestUri.ToString().Replace("payment-cmtapi-com-hqy5tesyhuwv.runscope.net", "payment.cmtapi.com");
+                requestUri = new Uri(url);
+            }
+
             var oauthHeader = OAuthAuthorizer.AuthorizeRequest(ConsumerKey,
                 ConsumerSecretKey,
                 "",
                 "",
                 request.Method,
-                request.RequestUri,
+                requestUri,
                 null);
             request.Headers.Add(HttpRequestHeader.Authorization, oauthHeader);
             request.ContentType = ContentType.Json;
@@ -87,10 +96,22 @@ namespace CMTPayment
                 else if (result.Exception != null)
                 {
                     _logger.LogMessage(message + " EXCEPTION.");
-                    _logger.LogError(result.Exception);                                        
+                    _logger.LogError(result.Exception);
                 }
 
             });
+        }
+
+        private void LogErrorBody(HttpWebResponse response)
+        {
+            if (response.StatusCode != HttpStatusCode.OK)
+            {
+                _logger.LogMessage("CMT Response Status Code : " + response.StatusCode);
+                using (var reader = new StreamReader(response.GetResponseStream()))
+                {
+                    _logger.LogMessage("CMT Response Body : " + reader.ReadToEnd());   
+                }
+            }
         }
     }
 }
