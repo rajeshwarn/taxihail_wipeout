@@ -60,9 +60,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                       
             Map = mapFragment.Map;
 
+			// NOTE: wasn't working on some devices, reverted to standard padding and moved the buttons up in the layout
             // add padding to the map to move the Google logo around
             // the padding must be the same for left/right and top/bottom for the pins to be correctly aligned
-            Map.SetPadding (60.ToPixels(), 6.ToPixels(), 60.ToPixels(), 6.ToPixels());
+            Map.SetPadding (6.ToPixels(), 6.ToPixels(), 6.ToPixels(), 6.ToPixels());
 
             _touchableMap = mapFragment;
 
