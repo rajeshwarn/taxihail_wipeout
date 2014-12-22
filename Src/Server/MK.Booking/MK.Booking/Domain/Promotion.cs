@@ -40,7 +40,7 @@ namespace apcurium.MK.Booking.Domain
             Handles<PromotionActivated>(OnPromotionActivated);
             Handles<PromotionDeactivated>(OnPromotionDeactivated);
             Handles<PromotionApplied>(OnPromotionApplied);
-            Handles<PromotionRedeemed>(OnPromotionRedeemed);
+            Handles<PromotionRedeemed>(NoAction);
             Handles<UserAddedToPromotionWhiteList>(OnUserAddedToWhiteList);
         }
 
@@ -321,10 +321,7 @@ namespace apcurium.MK.Booking.Domain
             _usagesPerUser[@event.AccountId] = usagesForThisUser + 1;
 
             _orderIds.Add(@event.OrderId);
-        }
 
-        private void OnPromotionRedeemed(PromotionRedeemed @event)
-        {
             _usersWhiteList.Remove(@event.AccountId);
         }
 
