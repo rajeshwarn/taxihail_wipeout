@@ -468,20 +468,7 @@ namespace apcurium.MK.Booking.Services.Impl
                            account.Email,
                            orderDetail.UserAgent.GetOperatingSystem(),
                            orderDetail.UserAgent);
-
-                _commandBus.Send(new InitiateCreditCardPayment
-                {
-                    PaymentId = Guid.NewGuid(),
-                    TransactionId = transactionId,
-                    Amount = amount,
-                    OrderId = orderId,
-                    Tip = tipAmount,
-                    Meter = meterAmount,
-                    CardToken = cardToken,
-                    Provider = PaymentProvider.Cmt,
-                    IsNoShowFee = isNoShowFee
-
-                });
+              
             }
             catch
             {
