@@ -26,7 +26,7 @@
 "BookDropoffLocationEmptyPlaceholder"="Choisissez votre lieu d'arrivée sur la carte";
 "BookingService_MobileBookingNote"="Réservé via téléphone mobile";
 "BookingService_MobileBookingNoteBuildingName"="Bâtiment n° {0}";
-"BookItButton"="Réserver";
+"BookItButton"="Commander";
 "BookItButtonImageName"="Assets/Button/btnBookIt_en.png";
 "BookItLaterButton"="Plus tard";
 "BookPickupLabel"="Confirmer votre adresse de départ";
@@ -176,7 +176,7 @@
 "HistoryViewSendReceiptButton"="Je souhaite recevoir une facture";
 "HistoryViewSendReceiptError"="Désolé, nous avons rencontré un problème lors de l'envoi de la facture";
 "HistoryViewStatusButton"="Voir le statut";
-"HistoryViewTitle"="Historique";
+"HistoryViewTitle"="Réservations";
 "InvalidAccountOnActivatedMessage"="Votre compte semble ne pas exister. Merci de vérifier la saisie";
 "InvalidAccountOnActivatedTitle"="Compte non valide";
 "InvalidAddressMessage"="Désolé, l'adresse saisie semble invalide. Merci de saisir de nouveau";
@@ -256,7 +256,7 @@
 "PanelMenuViewAboutUsText"="À Propos";
 "PanelMenuViewCallDispatchText"="Appeler";
 "PanelMenuViewLocationsText"="Adresses Favorites";
-"PanelMenuViewOrderHistoryText"="Historique";
+"PanelMenuViewOrderHistoryText"="Réservations";
 "PanelMenuViewReportProblemText"="Signaler un problème";
 "PanelMenuViewSignOutText"="Déconnexion";
 "PanelMenuViewTutorialText"="Aide";
@@ -294,7 +294,7 @@
 "Rebook"="Réinitialiser le trajet";
 "ReceiptSent"="Facture envoyée";
 "RefineAddressTitle"="Affiner l'adresse";
-"Register"="S'enregistrer";
+"Register"="Inscription";
 "ReminderDetails"="Rappel: votre taxi arrivera au {0} à {1} le {2}";
 "ReminderTitle"="{0} Enregistré";
 "RemoveCreditCardMessage"="Etes-vous sur de vouloir supprimer cette carte de paiement?";
@@ -358,7 +358,7 @@
 "SettingsViewTitle"="Paramètres";
 "SettingViewLoginInfo"="Vous vous être identifié comme: {0}";
 "SettingViewNotSignedIn"="Désolé, vous n'êtes pas identifié. Merci de vous identifier pour pouvoir utiliser l'application";
-"SignIn"="S'identifier";
+"SignIn"="Connexion";
 "StatusActionBookButton"="Réserver un nouveau véhicule";
 "StatusActionButton"="Appeler/Réserver/Annuler";
 "StatusActionCancelButton"="Annuler";
@@ -384,7 +384,7 @@
 "TabBook"="Réserver maintenant!";
 "TabContacts"="Contacts";
 "TabFavorites"="Favoris";
-"TabHistory"="Historique";
+"TabHistory"="Réservations";
 "TabLocations"="Adresses Favorites";
 "TabPlaces"="Points d'intérêt";
 "TabSearch"="Rechercher";
@@ -435,7 +435,7 @@
 "View_ConfirmCarNumber"="Confirmation";
 "View_CreateAccount"="Créer votre compte";
 "View_CreditCardsList"="Cartes de paiement";
-"View_History"="Historique";
+"View_History"="Réservations";
 "View_HistoryDetail"="Détail de la commande";
 "View_InitializeOrderForAccountPayment"="Veuillez répondre à ces questions";
 "View_LocationDetail"="Détails sur votre position";
@@ -546,3 +546,4 @@
 "CreditCardBookingSettingsError"="Une erreur est survenue lors de la mise à jour des informations du compte. Vérifiez que le numéro de compte associé au profil est valide et essayez de nouveau.";
 "UpdateBookingSettingsInvalidCoF"="Vous devez avoir une carte de crédit enregistrée pour utiliser ce compte";
 "ServiceErrorCreateOrder_CannotCreateInIbs_1300"="Veuillez nous excuser, nous sommes complets, nous n'acceptons plus les réservations à l'avance pour ce créneau.";
+"ServiceErrorCreateOrder_CannotCreateInIbs_1300_NoCall"="Veuillez nous excuser, nous sommes complets, nous n'acceptons plus les réservations à l'avance pour ce créneau.";

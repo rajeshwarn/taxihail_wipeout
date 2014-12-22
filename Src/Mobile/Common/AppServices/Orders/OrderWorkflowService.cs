@@ -255,6 +255,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 					case "CreateOrder_CannotCreateInIbs_1452":    /* Dropoff address outside of service area */
 					case "CreateOrder_CannotCreateInIbs_7000":    /* Inactive account */
 					case "CreateOrder_CannotCreateInIbs_10000":   /* Inactive charge account */
+					case "CreateOrder_CannotCreateInIbs_1300":    /* At max capacity */
 					case "CreateOrder_CardOnFileButNoCreditCard": /* Card on file selected but no card */
                     case "AccountCharge_InvalidAccountNumber":
 						message = string.Format(_localize["ServiceError" + e.ErrorCode], _appSettings.Data.TaxiHail.ApplicationName, _appSettings.Data.DefaultPhoneNumberDisplay);
