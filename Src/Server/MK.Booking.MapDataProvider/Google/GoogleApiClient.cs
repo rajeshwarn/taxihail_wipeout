@@ -150,7 +150,7 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
             var result = new GeoDirection();
             try
             {
-                var direction = await client.GetAsync<DirectionResult>(resource).ConfigureAwait(false);
+				var direction = await client.GetAsync<DirectionResult>(signedUrl).ConfigureAwait(false);
                 if (direction.Status == ResultStatus.OVER_QUERY_LIMIT)
                 {
                     // retry 2 more times
@@ -161,7 +161,7 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
                     while(!success && attempts < 3)
                     {
                         await Task.Delay(1000).ConfigureAwait(false);
-                        direction = await client.GetAsync<DirectionResult>(resource).ConfigureAwait(false);
+						direction = await client.GetAsync<DirectionResult>(signedUrl).ConfigureAwait(false);
                         attempts++;
                         success = direction.Status == ResultStatus.OK;
                     }
