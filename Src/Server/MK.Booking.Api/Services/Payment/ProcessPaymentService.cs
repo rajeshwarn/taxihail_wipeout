@@ -200,6 +200,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 
                     _commandBus.Send(new CaptureCreditCardPayment
                     {
+                        AccountId = account.Id,
                         PaymentId = paymentDetail.PaymentId,
                         Provider = _paymentServiceFactory.GetInstance().ProviderType,
                         Amount = totalOrderAmount,
