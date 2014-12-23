@@ -1,4 +1,4 @@
-﻿#region
+#region
 
 using System.Collections.Generic;
 
@@ -6,8 +6,8 @@ using System.Collections.Generic;
 
 namespace apcurium.MK.Booking.MapDataProvider.Google.Resources	
 {
-    public class GeoResult : GoogleResult
+    public class GoogleResult
     {
-        public List<GeoObj> Results { get; set; }
+        public ResultStatus Status { get; set; }
     }
 }
