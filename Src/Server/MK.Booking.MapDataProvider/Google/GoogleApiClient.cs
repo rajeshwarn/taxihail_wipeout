@@ -140,6 +140,11 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
             var resource = string.Format(CultureInfo.InvariantCulture,
 				"directions/json?origin={0},{1}&destination={2},{3}&sensor=true", originLat, originLng, destLat, destLng);
 
+			if (_settings.Data.GoogleMapKey.HasValue ()) 
+			{
+				resource += "&key=" + _settings.Data.GoogleMapKey;
+			}
+
 			var direction = client.Get<DirectionResult>(resource);
 			if (direction.Status == ResultStatus.OK)
 			{
@@ -160,7 +165,13 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
             var client = new JsonServiceClient(MapsServiceUrl);
 
 			var resource = string.Format(CultureInfo.InvariantCulture, "geocode/json?address={0}&sensor=true&language={1}", address, currentLanguage);
-            _logger.LogMessage("GeocodeLocation : " + MapsServiceUrl + resource);
+            
+
+			if (_settings.Data.GoogleMapKey.HasValue ()) 
+			{
+				resource += "&key=" + _settings.Data.GoogleMapKey;
+			}
+			_logger.LogMessage("GeocodeLocation : " + MapsServiceUrl + resource);
 
             var result = client.Get<GeoResult>(resource);
 
@@ -179,6 +190,11 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
 
 			var resource = string.Format(CultureInfo.InvariantCulture, "geocode/json?latlng={0},{1}&sensor=true&language={2}",
 				latitude, longitude, currentLanguage);
+
+			if (_settings.Data.GoogleMapKey.HasValue ()) 
+			{
+				resource += "&key=" + _settings.Data.GoogleMapKey;
+			}
 
             _logger.LogMessage("GeocodeLocation : " + MapsServiceUrl + resource);
 
