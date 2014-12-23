@@ -244,10 +244,6 @@ namespace MK.Common.Configuration
 		[Display(Name = "Show Eta", Description="Show eta")]
 		public bool ShowEta { get; protected set; }
 
-        [SendToClient]
-		[Display(Name = "Google Map Key", Description="Google API Key for business, required for directions aka eta feature")]
-        public string GoogleMapKey { get; protected set; }
-
         [SendToClient, CustomizableByCompany]
         [Display(Name = "Eta Padding Ratio", Description = "Eta duration padding ratio (multiply duration in seconds by...)")]
 		public double EtaPaddingRatio { get; protected set; }
