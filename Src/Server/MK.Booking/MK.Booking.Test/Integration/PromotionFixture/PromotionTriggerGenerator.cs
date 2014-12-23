@@ -218,7 +218,8 @@ namespace apcurium.MK.Booking.Test.Integration.PromotionFixture
             {
                 IsNoShowFee = false,
                 Meter = (decimal)15.31,
-                AuthorizationCode = Guid.NewGuid().ToString()
+                AuthorizationCode = Guid.NewGuid().ToString(),
+                AccountId = accountId
             };
 
             _orderCreatedCommand.AccountId = accountId;

@@ -2,6 +2,10 @@
 using System.Threading.Tasks;
 using ServiceStack.ServiceClient.Web;
 using ServiceStack.ServiceHost;
+using apcurium.MK.Booking.MapDataProvider.Resources;
+using apcurium.MK.Booking.MapDataProvider.Google.Resources;
+using System.Linq;
+using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.MapDataProvider.Extensions
 {
