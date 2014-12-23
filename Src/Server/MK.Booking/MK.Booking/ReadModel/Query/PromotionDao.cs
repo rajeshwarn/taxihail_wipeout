@@ -30,7 +30,7 @@ namespace apcurium.MK.Booking.ReadModel.Query
             }
         }
 
-        public IEnumerable<PromotionProgressDetail> GetAllProgress(Guid promoId)
+        public IEnumerable<PromotionProgressDetail> GetProgressByPromo(Guid promoId)
         {
             using (var context = _contextFactory.Invoke())
             {

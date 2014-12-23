@@ -97,7 +97,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
             var model = new PromoCode(promotion);
             if (promotion.TriggerSettings.Type != PromotionTriggerTypes.NoTrigger)
             {
-                model.CanModifyTriggerGoal = !_promotionDao.GetAllProgress(id).Any();
+                model.CanModifyTriggerGoal = !_promotionDao.GetProgressByPromo(id).Any();
             }
 
             return View(model);
@@ -113,7 +113,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                 {
                     throw new Exception("Something's not right");
                 }
-
+                
                 if (promoCode.TriggerSettings.Type == PromotionTriggerTypes.AmountSpent)
                 {
                     promoCode.TriggerSettings.RideCount = 0;
@@ -126,6 +126,17 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                 {
                     promoCode.TriggerSettings.RideCount = 0;
                     promoCode.TriggerSettings.AmountSpent = 0;
+                }
+
+                if (!promoCode.CanModifyTriggerGoal)
+                {
+                    var promotion = _promotionDao.FindById(promoCode.Id);
+                    if (promotion.TriggerSettings.Type != promoCode.TriggerSettings.Type
+                        || promotion.TriggerSettings.AmountSpent != promoCode.TriggerSettings.AmountSpent
+                        || promotion.TriggerSettings.RideCount != promoCode.TriggerSettings.RideCount)
+                    {
+                        throw new Exception("You cannot modify the trigger type or goal because a user already started progress on the promotion.");
+                    }
                 }
 
                 _commandBus.Send(new UpdatePromotion

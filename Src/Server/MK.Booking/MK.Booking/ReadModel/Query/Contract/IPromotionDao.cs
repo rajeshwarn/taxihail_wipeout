@@ -8,7 +8,7 @@ namespace apcurium.MK.Booking.ReadModel.Query.Contract
     {
         IEnumerable<PromotionDetail> GetAll();
 
-        IEnumerable<PromotionProgressDetail> GetAllProgress(Guid promoId);
+        IEnumerable<PromotionProgressDetail> GetProgressByPromo(Guid promoId);
 
         PromotionProgressDetail GetProgress(Guid accountId, Guid promoId);
 
