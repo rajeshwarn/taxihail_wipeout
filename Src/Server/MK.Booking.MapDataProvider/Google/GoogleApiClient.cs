@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
 using ServiceStack.ServiceClient.Web;
@@ -19,7 +21,9 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
 		private const string PlaceDetailsServiceUrl = "https://maps.googleapis.com/maps/api/place/details/";
 		private const string PlacesServiceUrl = "https://maps.googleapis.com/maps/api/place/search/";
 		private const string PlacesAutoCompleteServiceUrl = "https://maps.googleapis.com/maps/api/place/autocomplete/";
-		private const string MapsServiceUrl = "https://maps.googleapis.com/maps/api/";
+		private const string DirectionsServiceUrl = "https://maps.googleapis.com/maps/api/directions/";
+		private const string GeocodeServiceUrl = "https://maps.googleapis.com/maps/api/geocode/";
+
 		private readonly IAppSettings _settings;
 		private readonly ILogger _logger;
 		private readonly IGeocoder _fallbackGeocoder;
@@ -36,10 +40,15 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
             get { return _settings.Data.Map.PlacesApiKey; }
         }
 
-        protected string GoogleMapKey
-        {
-            get { return _settings.Data.GoogleMapKey; }
-        }
+	    private string GoogleCryptoKey
+	    {
+            get { return "y20g3ePo3ROg4mB-5Vh9C2SojLw=";  }
+	    }
+
+	    private string GoogleClientId
+	    {
+            get { return "gme-taxihailinc"; }
+	    }
 
 		public GeoPlace[] GetNearbyPlaces(double? latitude, double? longitude, string languageCode, bool sensor, int radius, string pipedTypeList = null)
         {
@@ -52,7 +61,7 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
                 {"key", PlacesApiKey},
                 {"radius", radius.ToString(CultureInfo.InvariantCulture)},
                 {"language", languageCode},
-                {"types", pipedTypeList},
+                {"types", pipedTypeList}
             };
 
             if (latitude != null && longitude != null)
@@ -63,8 +72,7 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
             }
 
             var resource = "json" + BuildQueryString(@params);
-
-            _logger.LogMessage("Nearby Places API : " + PlacesServiceUrl + resource);
+            Console.WriteLine(resource);
 
             return HandleGoogleResult(() => client.Get<PlacesResponse>(resource), x => x.Results.Select(ConvertPlaceToGeoPlaces).ToArray(), new GeoPlace[0]);
         }
@@ -80,7 +88,7 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
                 {"radius", radius.ToString(CultureInfo.InvariantCulture)},
                 {"language", languageCode},
                 {"types", "establishment"},
-                {"components", "country:" + countryCode},
+                {"components", "country:" + countryCode}
             };
 
             if (latitude != null && longitude != null)
@@ -96,8 +104,7 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
             }
 
             var resource = "json" + BuildQueryString(@params);
-
-            _logger.LogMessage("Search Places API : " + PlacesAutoCompleteServiceUrl + resource);
+            Console.WriteLine(resource);
 
             return HandleGoogleResult(() => client.Get<PredictionResponse>(resource), x => ConvertPredictionToPlaces(x.predictions).ToArray(), new GeoPlace[0]); 
         }
@@ -127,15 +134,18 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
 
         public async Task<GeoDirection> GetDirectionsAsync(double originLat, double originLng, double destLat, double destLng, DateTime? date)
         {
-            var client = new JsonServiceClient(MapsServiceUrl);
-            var resource = string.Format(CultureInfo.InvariantCulture,
-                "directions/json?origin={0},{1}&destination={2},{3}&sensor=true", originLat, originLng, destLat, destLng);
-
-            if (_settings.Data.ShowEta && GoogleMapKey.HasValue())
+            var client = new JsonServiceClient();
+            var @params = new Dictionary<string, string>
             {
-                //eta requires a Google Map Key for Business server-side when sending the value to the driver
-                resource += "&key=" + GoogleMapKey;
-            }
+                {"origin", string.Format(CultureInfo.InvariantCulture, "{0},{1}", originLat, originLng)},
+                {"destination", string.Format(CultureInfo.InvariantCulture, "{0},{1}", destLat, destLng)},
+                {"sensor", true.ToString().ToLower()}
+            };
+
+            var resource = "json" + BuildQueryString(@params);
+
+            var signedUrl = Sign(DirectionsServiceUrl + resource);
+            Console.WriteLine(signedUrl);
 
             var result = new GeoDirection();
             try
@@ -177,30 +187,67 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
 
 		public GeoAddress[] GeocodeAddress(string address, string currentLanguage)
         {
-			var resource = string.Format(CultureInfo.InvariantCulture, "geocode/json?address={0}&sensor=true&language={1}", address, currentLanguage);
+            var @params = new Dictionary<string, string>
+            {
+                {"address", address.ToString(CultureInfo.InvariantCulture)},
+                {"language", currentLanguage.ToString(CultureInfo.InvariantCulture)},
+                {"sensor", true.ToString().ToLower()}
+            };
+
+            var resource = "json" + BuildQueryString(@params);
+
             return Geocode(resource, () => _fallbackGeocoder.GeocodeAddress (address, currentLanguage));
         }
 
 		public GeoAddress[] GeocodeLocation(double latitude, double longitude, string currentLanguage)
         {
-			var resource = string.Format(CultureInfo.InvariantCulture,"geocode/json?latlng={0},{1}&sensor=true&language={2}", latitude, longitude, currentLanguage);
+            var @params = new Dictionary<string, string>
+            {
+                {"latlng", string.Format(CultureInfo.InvariantCulture, "{0},{1}", latitude, longitude)},
+                {"language", currentLanguage.ToString(CultureInfo.InvariantCulture)},
+                {"sensor", true.ToString().ToLower()}
+            };
+
+            var resource = "json" + BuildQueryString(@params);
+
             return Geocode(resource, () => _fallbackGeocoder.GeocodeLocation (latitude, longitude, currentLanguage));
         }
 
         private GeoAddress[] Geocode(string resource, Func<GeoAddress[]> fallBackAction)
         {
-            var client = new JsonServiceClient(MapsServiceUrl);
+            var client = new JsonServiceClient();
 
-            if (GoogleMapKey.HasValue())
-            {
-                resource += "&key=" + GoogleMapKey;
-            }
+            var signedUrl = Sign(GeocodeServiceUrl + resource);
+            Console.WriteLine(signedUrl);
 
-            _logger.LogMessage("GeocodeLocation : " + MapsServiceUrl + resource);
-
-            return HandleGoogleResult(() => client.Get<GeoResult>(resource), ResourcesExtensions.ConvertGeoResultToAddresses, new GeoAddress [0], fallBackAction);
+            return HandleGoogleResult(() => client.Get<GeoResult>(signedUrl), ResourcesExtensions.ConvertGeoResultToAddresses, new GeoAddress[0], fallBackAction);
         }
 
+        private string Sign(string url)
+        {
+            // add Google Client Id to query
+            url += "&client=" + GoogleClientId;
+
+            var encoding = new ASCIIEncoding();
+
+            // converting key to bytes will throw an exception, need to replace '-' and '_' characters first.
+            var usablePrivateKey = GoogleCryptoKey.Replace("-", "+").Replace("_", "/");
+            var privateKeyBytes = Convert.FromBase64String(usablePrivateKey);
+
+            var uri = new Uri(url);
+            var encodedPathAndQueryBytes = encoding.GetBytes(uri.LocalPath + uri.Query);
+
+            // compute the hash
+            var algorithm = new HMACSHA1(privateKeyBytes);
+            var hash = algorithm.ComputeHash(encodedPathAndQueryBytes);
+
+            // convert the bytes to string and make url-safe by replacing '+' and '/' characters
+            var signature = Convert.ToBase64String(hash).Replace("+", "-").Replace("/", "_");
+
+            // Add the signature to the existing URI.
+            return uri.Scheme + "://" + uri.Host + uri.LocalPath + uri.Query + "&signature=" + signature;
+        }
+ 
         private TResponse HandleGoogleResult<TResponse, TGoogleResponse>(Func<TGoogleResponse> apiCall, Func<TGoogleResponse, TResponse> selector, TResponse defaultResult, Func<TResponse> fallBackAction = null)
             where TGoogleResponse : GoogleResult
         {
