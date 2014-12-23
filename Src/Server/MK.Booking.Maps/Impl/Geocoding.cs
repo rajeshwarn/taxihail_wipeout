@@ -15,6 +15,7 @@ using apcurium.MK.Booking.MapDataProvider.Resources;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Booking.MapDataProvider.Google.Resources;
 using MK.Common.Configuration;
+using apcurium.MK.Booking.MapDataProvider.Extensions;
 
 #endregion
 
@@ -54,7 +55,7 @@ namespace apcurium.MK.Booking.Maps.Impl
             }
             else            
             {
-				var addresses = new MapDataProvider.Google.GoogleApiClient(_appSettings, _logger).ConvertGeoResultToAddresses(geoResult);
+				var addresses = ResourcesExtensions.ConvertGeoResultToAddresses(geoResult);
                  
                 return addresses == null 
                     ? popularPlaces 
@@ -73,7 +74,7 @@ namespace apcurium.MK.Booking.Maps.Impl
 
             if (geoResult != null)
             {
-				var addresses = new MapDataProvider.Google.GoogleApiClient( _appSettings, _logger ).ConvertGeoResultToAddresses(geoResult);
+				var addresses = ResourcesExtensions.ConvertGeoResultToAddresses(geoResult);
                 return addressesInRange.Concat(addresses.Select(a => new GeoObjToAddressMapper().ConvertToAddress(a, null, false))).ToArray();
             }
             else

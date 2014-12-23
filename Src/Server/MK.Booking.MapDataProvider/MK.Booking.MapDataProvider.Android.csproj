@@ -87,6 +87,8 @@
     <Compile Include="TomTom\TomTomProvider.cs" />
     <Compile Include="TomTom\Resources\RoutingResponse.cs" />
     <Compile Include="Extensions\ServiceClientBaseExtension.cs" />
+    <Compile Include="Google\Resources\GoogleResult.cs" />
+    <Compile Include="Extensions\ResourcesExtensions.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

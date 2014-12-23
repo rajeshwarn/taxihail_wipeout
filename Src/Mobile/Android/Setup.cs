@@ -76,18 +76,18 @@ namespace apcurium.MK.Booking.Mobile.Client
 
             ConfigureInsights ();
 
-            _container.Register<IGeocoder>( (c,p)=> new GoogleApiClient(c.Resolve<IAppSettings>(), c.Resolve<ILogger>(), new AndroidGeocoder(c.Resolve<IAppSettings>(), c.Resolve<ILogger>(), c.Resolve<IMvxAndroidGlobals>())) );
+            _container.Register<IGeocoder>((c,p) => new GoogleApiClient(c.Resolve<IAppSettings>(), c.Resolve<ILogger>(), new AndroidGeocoder(c.Resolve<IAppSettings>(), c.Resolve<ILogger>(), c.Resolve<IMvxAndroidGlobals>())));
 			_container.Register<IPlaceDataProvider, FoursquareProvider>();
 			
             _container.Register<IDirectionDataProvider> ((c, p) =>
             {
                 switch (c.Resolve<IAppSettings>().Data.DirectionDataProvider)
                 {
-                case MapProvider.TomTom:
-                    return new TomTomProvider(c.Resolve<IAppSettings>(), c.Resolve<ILogger>());
-                case MapProvider.Google:
-                default:
-                    return new GoogleApiClient(c.Resolve<IAppSettings>(), c.Resolve<ILogger>(), new AndroidGeocoder(c.Resolve<IAppSettings>(), c.Resolve<ILogger>(), c.Resolve<IMvxAndroidGlobals>()));
+	                case MapProvider.TomTom:
+	                    return new TomTomProvider(c.Resolve<IAppSettings>(), c.Resolve<ILogger>());
+	                case MapProvider.Google:
+	                default:
+	                    return new GoogleApiClient(c.Resolve<IAppSettings>(), c.Resolve<ILogger>(), new AndroidGeocoder(c.Resolve<IAppSettings>(), c.Resolve<ILogger>(), c.Resolve<IMvxAndroidGlobals>()));
                 }
             });
 
