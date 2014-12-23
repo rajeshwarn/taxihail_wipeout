@@ -28,6 +28,7 @@ using apcurium.MK.Booking.MapDataProvider.Google;
 using MonoTouch.Foundation;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Booking.MapDataProvider.TomTom;
+using MK.Booking.MapDataProvider.Foursquare;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -80,8 +81,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 
             container.Register<IAppSettings> (new AppSettingsService (container.Resolve<ICacheService> (), container.Resolve<ILogger> ()));
 
-            container.Register<IGeocoder> ((c, p) => new GoogleApiClient (c.Resolve<IAppSettings>(), c.Resolve<ILogger> (), new AppleGeocoder ()));
-			container.Register<IPlaceDataProvider, GoogleApiClient> ();
+            container.Register<IGeocoder> (new AppleGeocoder ());
+			container.Register<IPlaceDataProvider, FoursquareProvider> ();
 
             container.Register<IDirectionDataProvider> ((c, p) =>
             {
