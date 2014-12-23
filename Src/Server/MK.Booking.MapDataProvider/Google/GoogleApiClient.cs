@@ -4,6 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Extensions;
@@ -39,9 +41,14 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
             get { return _settings.Data.Map.PlacesApiKey; }
         }
 
-        protected string GoogleMapKey
+        private string GoogleCryptoKey
         {
-            get { return _settings.Data.GoogleMapKey; }
+            get { return "y20g3ePo3ROg4mB-5Vh9C2SojLw="; }
+        }
+
+        private string GoogleClientId
+        {
+            get { return "gme-taxihailinc"; }
         }
 
 		public GeoPlace[] GetNearbyPlaces(double? latitude, double? longitude, string languageCode, bool sensor, int radius, string pipedTypeList = null)
@@ -131,18 +138,14 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
 
 		public GeoDirection GetDirections(double originLat, double originLng, double destLat, double destLng, DateTime? date)
         {
-            var client = new JsonServiceClient(MapsServiceUrl);
+            var client = new JsonServiceClient();
             var resource = string.Format(CultureInfo.InvariantCulture,
 				"directions/json?origin={0},{1}&destination={2},{3}&sensor=true", originLat, originLng, destLat, destLng);
 
-		    if (_settings.Data.ShowEta
-                && GoogleMapKey.HasValue())
-		    {
-		        //eta requires a Google Map Key for Business server-side when sending the value to the driver
-		        resource += "&key=" + GoogleMapKey;
-		    }
+            var signedUrl = Sign(MapsServiceUrl + resource);
+            Console.WriteLine(signedUrl);
 
-			var direction = client.Get<DirectionResult>(resource);
+            var direction = client.Get<DirectionResult>(signedUrl);
 			if (direction.Status == ResultStatus.OK)
 			{
 				var route = direction.Routes.ElementAt(0);
@@ -171,16 +174,12 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
 
         private GeoAddress[] Geocode(string resource, Func<GeoAddress[]> fallBackAction)
         {
-            var client = new JsonServiceClient(MapsServiceUrl);
+            var client = new JsonServiceClient();
 
-            if (GoogleMapKey.HasValue())
-            {
-                resource += "&key=" + GoogleMapKey;
-            }
+            var signedUrl = Sign(MapsServiceUrl + resource);
+            Console.WriteLine(signedUrl);
 
-            _logger.LogMessage("GeocodeLocation : " + MapsServiceUrl + resource);
-
-            var result = client.Get<GeoResult>(resource);
+            var result = client.Get<GeoResult>(signedUrl);
 
             if ((result.Status == ResultStatus.OVER_QUERY_LIMIT || result.Status == ResultStatus.REQUEST_DENIED) && _fallbackGeocoder != null) {
                 return fallBackAction.Invoke();
@@ -189,6 +188,31 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
             } else {
                 return new GeoAddress [0];
             }
+        }
+
+        private string Sign(string url)
+        {
+            // add Google Client Id to query
+            url += "&client=" + GoogleClientId;
+
+            var encoding = new ASCIIEncoding();
+
+            // converting key to bytes will throw an exception, need to replace '-' and '_' characters first.
+            var usablePrivateKey = GoogleCryptoKey.Replace("-", "+").Replace("_", "/");
+            var privateKeyBytes = Convert.FromBase64String(usablePrivateKey);
+
+            var uri = new Uri(url);
+            var encodedPathAndQueryBytes = encoding.GetBytes(uri.LocalPath + uri.Query);
+
+            // compute the hash
+            var algorithm = new HMACSHA1(privateKeyBytes);
+            var hash = algorithm.ComputeHash(encodedPathAndQueryBytes);
+
+            // convert the bytes to string and make url-safe by replacing '+' and '/' characters
+            var signature = Convert.ToBase64String(hash).Replace("+", "-").Replace("/", "_");
+
+            // Add the signature to the existing URI.
+            return uri.Scheme + "://" + uri.Host + uri.LocalPath + uri.Query + "&signature=" + signature;
         }
 
 		private GeoPlace ConvertPlaceToGeoPlaces(Place place)
