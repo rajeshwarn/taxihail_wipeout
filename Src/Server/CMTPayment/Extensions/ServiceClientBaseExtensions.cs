@@ -1,6 +1,5 @@
 using System;
 using System.Threading.Tasks;
-using log4net;
 using ServiceStack.Common.Web;
 using ServiceStack.ServiceClient.Web;
 using ServiceStack.ServiceHost;
@@ -9,7 +8,7 @@ namespace CMTPayment.Extensions
 {
 	public static class ServiceClientBaseExtensions
     {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(ServiceClientBaseExtensions));
+
 
         public static Task<TResponse> GetAsync<TResponse>(this ServiceClientBase client, string relativeOrAbsoluteUrl)
         {
@@ -33,6 +32,8 @@ namespace CMTPayment.Extensions
             return tcs.Task;
         }
 
+#if !CLIENT
+		private static readonly log4net.ILog Log = log4net.LogManager.GetLogger(typeof(ServiceClientBaseExtensions));
 		public static Task<TResponse> PostAsync<TResponse>(this ServiceClientBase client, IReturn<TResponse> request)
 		{
 			var tcs = new TaskCompletionSource<TResponse>();
@@ -41,7 +42,6 @@ namespace CMTPayment.Extensions
                 request, 
                 result =>
                 {
-                    //TResponse dto = result.To<TResponse>();
                     var dto = Newtonsoft.Json.JsonConvert.DeserializeObject<TResponse>(result);
                     tcs.SetResult(dto);
 
@@ -55,7 +55,19 @@ namespace CMTPayment.Extensions
 
 			return tcs.Task;
 		}
-        
+#else
+		public static Task<TResponse> PostAsync<TResponse>(this ServiceClientBase client, IReturn<TResponse> request)
+		{
+		var tcs = new TaskCompletionSource<TResponse>();
+
+		client.PostAsync(request,
+		tcs.SetResult,
+		(result, error) => tcs.SetException(FixWebServiceException(error)));
+
+		return tcs.Task;
+		}
+
+#endif
 
 		public static Task<TResponse> PostAsync<TResponse>(this ServiceClientBase client, string relativeOrAbsoluteUrl, object request)
 		{
