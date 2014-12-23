@@ -62,11 +62,11 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
                         longitude.Value.ToString(CultureInfo.InvariantCulture)));
             }
 
-            var r = "json" + BuildQueryString(@params);
+            var resource = "json" + BuildQueryString(@params);
 
-            _logger.LogMessage("Nearby Places API : " + PlacesServiceUrl + r);
+            _logger.LogMessage("Nearby Places API : " + PlacesServiceUrl + resource);
 
-            return HandleGoogleResult<GeoPlace[], PlacesResponse>(() => client.Get<PlacesResponse>(r), x => x.Results.Select(ConvertPlaceToGeoPlaces).ToArray(), new GeoPlace[0]);
+            return HandleGoogleResult(() => client.Get<PlacesResponse>(resource), x => x.Results.Select(ConvertPlaceToGeoPlaces).ToArray(), new GeoPlace[0]);
         }
 
 		public GeoPlace[] SearchPlaces(double? latitude, double? longitude, string name, string languageCode, bool sensor, int radius, string countryCode)
@@ -95,11 +95,11 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
                 @params.Add("input", name);
             }
 
-            var r = "json" + BuildQueryString(@params);
+            var resource = "json" + BuildQueryString(@params);
 
-            _logger.LogMessage("Search Places API : " + PlacesAutoCompleteServiceUrl + r);
+            _logger.LogMessage("Search Places API : " + PlacesAutoCompleteServiceUrl + resource);
 
-            return HandleGoogleResult<GeoPlace[], PredictionResponse>(() => client.Get<PredictionResponse>(r), x => ConvertPredictionToPlaces(x.predictions).ToArray(), new GeoPlace[0]); 
+            return HandleGoogleResult(() => client.Get<PredictionResponse>(resource), x => ConvertPredictionToPlaces(x.predictions).ToArray(), new GeoPlace[0]); 
         }
 
 		public GeoPlace GetPlaceDetail(string id)
@@ -112,8 +112,8 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
                 {"key", PlacesApiKey},
             };
 
-            var qry = "json" + BuildQueryString(@params);
-            Console.WriteLine(qry);
+            var resource = "json" + BuildQueryString(@params);
+            Console.WriteLine(resource);
 
             Func<PlaceDetailResponse, GeoPlace> selector = response => new GeoPlace 
             {
@@ -122,7 +122,7 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
                 Address = ResourcesExtensions.ConvertGeoObjectToAddress (response.Result)
             };
 
-            return HandleGoogleResult<GeoPlace, PlaceDetailResponse>(() => client.Get<PlaceDetailResponse>(qry), selector, new GeoPlace());
+            return HandleGoogleResult(() => client.Get<PlaceDetailResponse>(resource), selector, new GeoPlace());
         }
 
         public async Task<GeoDirection> GetDirectionsAsync(double originLat, double originLng, double destLat, double destLng, DateTime? date)
@@ -198,7 +198,7 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
 
             _logger.LogMessage("GeocodeLocation : " + MapsServiceUrl + resource);
 
-            return HandleGoogleResult<GeoAddress[], GeoResult>(() => client.Get<GeoResult>(resource), ResourcesExtensions.ConvertGeoResultToAddresses, new GeoAddress [0], fallBackAction);
+            return HandleGoogleResult(() => client.Get<GeoResult>(resource), ResourcesExtensions.ConvertGeoResultToAddresses, new GeoAddress [0], fallBackAction);
         }
 
         private TResponse HandleGoogleResult<TResponse, TGoogleResponse>(Func<TGoogleResponse> apiCall, Func<TGoogleResponse, TResponse> selector, TResponse defaultResult, Func<TResponse> fallBackAction = null)
@@ -225,7 +225,10 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
                 }
 
                 // if we still have OVER_QUERY_LIMIT or REQUEST_DENIED and a fallback geocoder, we invoke it
-                if ((result.Status == ResultStatus.OVER_QUERY_LIMIT || result.Status == ResultStatus.REQUEST_DENIED) && _fallbackGeocoder != null && fallBackAction != null) 
+                if ((result.Status == ResultStatus.OVER_QUERY_LIMIT 
+                    || result.Status == ResultStatus.REQUEST_DENIED) 
+                        && _fallbackGeocoder != null 
+                        && fallBackAction != null) 
                 {
                     return fallBackAction.Invoke();
                 }
