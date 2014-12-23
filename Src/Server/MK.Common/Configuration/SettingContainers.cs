@@ -204,6 +204,12 @@ namespace apcurium.MK.Common.Configuration
 
         [RequiredAtStartup]
         public string WebServicesPassword { get;  set; }
+
+        [CustomizableByCompany]
+        public int? PaymentTypeCardOnFileId { get; set; }
+
+        [CustomizableByCompany]
+        public int? PaymentTypePaymentInCarId { get; set; }
     }
 
     public class EmailSettingContainer
