@@ -10,6 +10,8 @@ using apcurium.MK.Common.Extensions;
 using ServiceStack.ServiceClient.Web;
 using apcurium.MK.Booking.MapDataProvider.Resources;
 using apcurium.MK.Booking.MapDataProvider.Google.Resources;
+using System.Text;
+using System.Security.Cryptography;
 
 #endregion
 namespace apcurium.MK.Booking.MapDataProvider.Google
@@ -38,6 +40,16 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
         {
             get { return _settings.Data.PlacesApiKey; }
         }
+
+		private string GoogleCryptoKey
+		{
+			get { return "y20g3ePo3ROg4mB-5Vh9C2SojLw=";  }
+		}
+
+		private string GoogleClientId
+		{
+			get { return "gme-taxihailinc"; }
+		}
 
 		public GeoPlace[] GetNearbyPlaces(double? latitude, double? longitude, string languageCode, bool sensor, int radius,
             string pipedTypeList = null)
@@ -136,16 +148,15 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
 
 		public GeoDirection GetDirections(double originLat, double originLng, double destLat, double destLng)
         {
-            var client = new JsonServiceClient(MapsServiceUrl);
+            var client = new JsonServiceClient();
             var resource = string.Format(CultureInfo.InvariantCulture,
                 "directions/json?origin={0},{1}&destination={2},{3}&sensor=true", originLat, originLng, destLat, destLng);
 
-			if (_settings.Data.GoogleMapKey.HasValue ()) 
-			{
-				resource += "&key=" + _settings.Data.GoogleMapKey;
-			}
+			var signedUrl = Sign(MapsServiceUrl + resource);
 
-			var direction = client.Get<DirectionResult>(resource);
+			_logger.LogMessage("GetDirections : " + signedUrl);
+
+			var direction = client.Get<DirectionResult>(signedUrl);
 			if (direction.Status == ResultStatus.OK)
 			{
 				var route = direction.Routes.ElementAt(0);
@@ -163,17 +174,14 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
 
         public GeoAddress[] GeocodeAddress(string address)
         {
-            var client = new JsonServiceClient(MapsServiceUrl);
+            var client = new JsonServiceClient();
             var resource = string.Format(CultureInfo.InvariantCulture, "geocode/json?address={0}&sensor=true", address);
 
-			if (_settings.Data.GoogleMapKey.HasValue ()) 
-			{
-				resource += "&key=" + _settings.Data.GoogleMapKey;
-			}
+			var signedUrl = Sign(MapsServiceUrl + resource);
 
-            _logger.LogMessage("GeocodeLocation : " + MapsServiceUrl + resource);
+			_logger.LogMessage("GeocodeLocation : " + signedUrl);
 
-            var result = client.Get<GeoResult>(resource);
+			var result = client.Get<GeoResult>(signedUrl);
 
 			if ( (result.Status == ResultStatus.OVER_QUERY_LIMIT || result.Status == ResultStatus.REQUEST_DENIED) && (_fallbackGeocoder != null )) {
 				return _fallbackGeocoder.GeocodeAddress (address);
@@ -189,20 +197,17 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
 
         public GeoAddress[] GeocodeLocation(double latitude, double longitude)
         {
-            var client = new JsonServiceClient(MapsServiceUrl);
+            var client = new JsonServiceClient();
 
             var resource = string.Format(CultureInfo.InvariantCulture, "geocode/json?latlng={0},{1}&sensor=true",
                 latitude, longitude);
 
-			if (_settings.Data.GoogleMapKey.HasValue ()) 
-			{
-				resource += "&key=" + _settings.Data.GoogleMapKey;
-			}
+			var signedUrl = Sign(MapsServiceUrl + resource);
 
-            _logger.LogMessage("GeocodeLocation : " + MapsServiceUrl + resource);
-
+			_logger.LogMessage("GeocodeLocation : " + signedUrl);
             
-            var result = client.Get<GeoResult>(resource);
+			var result = client.Get<GeoResult>(signedUrl);
+
 			if ( (result.Status == ResultStatus.OVER_QUERY_LIMIT || result.Status == ResultStatus.REQUEST_DENIED) && (_fallbackGeocoder != null )) {
 				return _fallbackGeocoder.GeocodeLocation (latitude, longitude);
 			} else if (result.Status == ResultStatus.OK) {
@@ -212,6 +217,31 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
 			}
            
         }
+
+		private string Sign(string url)
+		{
+			// add Google Client Id to query
+			url += "&client=" + GoogleClientId;
+
+			var encoding = new ASCIIEncoding();
+
+			// converting key to bytes will throw an exception, need to replace '-' and '_' characters first.
+			var usablePrivateKey = GoogleCryptoKey.Replace("-", "+").Replace("_", "/");
+			var privateKeyBytes = Convert.FromBase64String(usablePrivateKey);
+
+			var uri = new Uri(url);
+			var encodedPathAndQueryBytes = encoding.GetBytes(uri.LocalPath + uri.Query);
+
+			// compute the hash
+			var algorithm = new HMACSHA1(privateKeyBytes);
+			var hash = algorithm.ComputeHash(encodedPathAndQueryBytes);
+
+			// convert the bytes to string and make url-safe by replacing '+' and '/' characters
+			var signature = Convert.ToBase64String(hash).Replace("+", "-").Replace("/", "_");
+
+			// Add the signature to the existing URI.
+			return uri.Scheme + "://" + uri.Host + uri.LocalPath + uri.Query + "&signature=" + signature;
+		}
 
 
 				
@@ -331,6 +361,8 @@ namespace apcurium.MK.Booking.MapDataProvider.Google
 
 			return address;
         }
+
+
 
     }
 }
