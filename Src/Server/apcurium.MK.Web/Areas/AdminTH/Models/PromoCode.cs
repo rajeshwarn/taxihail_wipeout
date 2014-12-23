@@ -19,6 +19,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Models
             AppliesToFutureBooking = true;
             DiscountType = PromoDiscountType.Cash;
             TriggerSettings = new PromotionTriggerSettings();
+            CanModifyTriggerGoal = true;
         }
 
         public PromoCode(PromotionDetail promoDetail)
@@ -113,6 +114,8 @@ namespace apcurium.MK.Web.Areas.AdminTH.Models
         public bool Active { get; set; }
 
         public PromotionTriggerSettings TriggerSettings { get; set; }
+
+        public bool CanModifyTriggerGoal { get; set; }
 
         private DateTime? SetTime(string timeStringValue, bool isEndTime)
         {

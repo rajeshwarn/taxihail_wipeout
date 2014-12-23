@@ -93,7 +93,14 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
         public ActionResult Edit(Guid id)
         {
             var promotion = _promotionDao.FindById(id);
-            return View(new PromoCode(promotion));
+
+            var model = new PromoCode(promotion);
+            if (promotion.TriggerSettings.Type != PromotionTriggerTypes.NoTrigger)
+            {
+                model.CanModifyTriggerGoal = !_promotionDao.GetAllProgress(id).Any();
+            }
+
+            return View(model);
         }
 
         // POST: AdminTH/PromoCode/Edit/5
