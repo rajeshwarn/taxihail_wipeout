@@ -175,7 +175,6 @@
   <string name="FavoritesButton">Favoritos</string>
   <string name="February">Feb (02)</string>
   <string name="GenericTitle"></string>
-  <string name="GoogleMapKey">0XEY3WqKVmJPhADLxOCPUweMcqYg3AfqCp8BvWw</string>
   <string name="GooglePlayServicesNotAvailableMessage">Usted necesita actualizar los servicios de “Google play” para poder utilizar esta aplicación</string>
   <string name="GooglePlayServicesNotAvailableTitle">Actualizacion requerida</string>
   <string name="HistoryDetailAptRingCodeLabel">Depto. / Código de entrada</string>
@@ -537,4 +536,5 @@
   <string name="UpdateBookingSettingsGenericError">An error occured when updating the booking settings</string>
   <string name="UpdateBookingSettingsInvalidCoF">You must have a card on file to use this account</string>
   <string name="ServiceErrorCreateOrder_CannotCreateInIbs_1300">​We apologize but unfortunately we do not have any reservations available for that time period.</string>
+  <string name="ServiceErrorCreateOrder_CannotCreateInIbs_1300_NoCall">​We apologize but unfortunately we do not have any reservations available for that time period.</string>
 </resources>
