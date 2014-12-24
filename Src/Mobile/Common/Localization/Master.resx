@@ -120,6 +120,9 @@
   <data name="ApplicationName" xml:space="preserve">
     <value>TaxiHail</value>
   </data>
+  <data name="GoogleMapKey" xml:space="preserve">
+    <value>0XEY3WqKVmJPhADLxOCPUweMcqYg3AfqCp8BvWw</value>
+  </data>
   <data name="Language" xml:space="preserve">
     <value>English</value>
   </data>

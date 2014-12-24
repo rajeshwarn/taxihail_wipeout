@@ -87,7 +87,8 @@ namespace apcurium.MK.Booking.ConfigTool
 	                
 
                     /** Google Maps */
-                     new ConfigXML(this){  Destination=@"Mobile\Android\Properties\AndroidManifest.xml", NodeSelector=@"//manifest/permission[contains(@android:name,""permission.MAPS_RECEIVE"")]", Attribute="android:name" , SetterAtt = ( app, att )=> att.Value = Config.Package + ".permission.MAPS_RECEIVE" },
+					new ConfigXML(this){  Destination=@"Mobile\Common\Localization\Master.resx", NodeSelector=@"//root/data[@name=""GoogleMapKey""]" , SetterEle= ( app, ele )=> ele.InnerText = Config.GoogleMapKey  },   
+					new ConfigXML(this){  Destination=@"Mobile\Android\Properties\AndroidManifest.xml", NodeSelector=@"//manifest/permission[contains(@android:name,""permission.MAPS_RECEIVE"")]", Attribute="android:name" , SetterAtt = ( app, att )=> att.Value = Config.Package + ".permission.MAPS_RECEIVE" },
 	                new ConfigXML(this){  Destination=@"Mobile\Android\Properties\AndroidManifest.xml", NodeSelector=@"//manifest/uses-permission[contains(@android:name,""permission.MAPS_RECEIVE"")]", Attribute="android:name", SetterAtt = ( app, att )=> 
 					{
                         att.Value = androidPackage + ".permission.MAPS_RECEIVE";
@@ -96,6 +97,7 @@ namespace apcurium.MK.Booking.ConfigTool
 				    new ConfigXML(this){  Destination=@"Mobile\Common\Localization\Master.resx", NodeSelector=@"//root/data[@name=""ApplicationName""]" , SetterEle= ( app, ele )=> ele.InnerText = Config.ApplicationName  },               
                     new ConfigXML(this){  Destination=@"Mobile\Common\Localization\Master.ar.resx", NodeSelector=@"//root/data[@name=""ApplicationName""]" , SetterEle= ( app, ele )=> ele.InnerText = Config.ApplicationName  },   
                     new ConfigXML(this){  Destination=@"Mobile\Common\Localization\Master.fr.resx", NodeSelector=@"//root/data[@name=""ApplicationName""]" , SetterEle= ( app, ele )=> ele.InnerText = Config.ApplicationName  },   
+					new ConfigXML(this){  Destination=@"Mobile\Common\Localization\Master.es.resx", NodeSelector=@"//root/data[@name=""ApplicationName""]" , SetterEle= ( app, ele )=> ele.InnerText = Config.ApplicationName  },   
 
 					new ConfigXML(this){  Destination=@"Mobile\Android\TaxiHail.csproj", NodeSelector=@"//a:Project/a:PropertyGroup[contains(@Condition, ""'Debug|AnyCPU'"")]/a:AndroidSigningKeyAlias" , SetterEle= ( app, ele )=> ele.InnerText = Config.AndroidSigningKeyAlias },               
 					new ConfigXML(this){  Destination=@"Mobile\Android\TaxiHail.csproj", NodeSelector=@"//a:Project/a:PropertyGroup[contains(@Condition, ""'Release|AnyCPU'"")]/a:AndroidSigningKeyAlias" , SetterEle= ( app, ele )=> ele.InnerText = Config.AndroidSigningKeyAlias },               
