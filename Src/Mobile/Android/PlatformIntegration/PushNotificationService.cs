@@ -59,7 +59,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
             bool registered = !string.IsNullOrEmpty(registrationId);
             const string tag = "PushSharp-GCM";
 
-            if (!registered)
+			if (!registered || force)
             {
                 Log.Info(tag, "Registering...");
 
