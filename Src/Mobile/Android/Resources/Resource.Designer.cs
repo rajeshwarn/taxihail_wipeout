@@ -5093,17 +5093,20 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f06017d
 			public const int GenericTitle = 2131100029;
 			
+			// aapt resource value: 0x7f060297
+			public const int GoogleMapKey = 2131100311;
+			
 			// aapt resource value: 0x7f060125
 			public const int GooglePlayServicesNotAvailableMessage = 2131099941;
 			
-			// aapt resource value: 0x7f060297
-			public const int GooglePlayServicesNotAvailableMessage1 = 2131100311;
+			// aapt resource value: 0x7f060298
+			public const int GooglePlayServicesNotAvailableMessage1 = 2131100312;
 			
 			// aapt resource value: 0x7f060085
 			public const int GooglePlayServicesNotAvailableTitle = 2131099781;
 			
-			// aapt resource value: 0x7f060298
-			public const int GooglePlayServicesNotAvailableTitle1 = 2131100312;
+			// aapt resource value: 0x7f060299
+			public const int GooglePlayServicesNotAvailableTitle1 = 2131100313;
 			
 			// aapt resource value: 0x7f060049
 			public const int Hello = 2131099721;
