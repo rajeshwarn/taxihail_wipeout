@@ -1,7 +1,7 @@
 using Android.App;
 using Android.Content.PM;
 using Android.Gms.Common;
-using Android.Gms.Maps;
+using Google.Android.M4b.Maps;
 using Android.OS;
 using apcurium.MK.Booking.Mobile.Client.Controls;
 using apcurium.MK.Booking.Mobile.Client.Diagnostic;
