@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright 2011 Google Inc. All Rights Reserved. -->
+<!-- Turn features on/off in different configurations. -->
+<resources>
+  <!-- Widgets are disabled on the tablet. -->
+  <!-- This is a temporary fix that will break widgets once HC is pushed to phones, but that
+       won't be for awhile... buying us some time to get the widgets done right. -->
+  <!-- TODO(olec): remove this file once the widgets are enabled on HC. -->
+  <bool name="enable_widgets">false</bool>
+
+  <!-- Whether to enable the traffic widget (and its service) -->
+  <bool name="enable_traffic_widget">false</bool>
+
+  <!-- Whether to enable the latitude friends widget (and its service) -->
+  <bool name="enable_latitude_friends_widget">false</bool>
+
+  <!-- Use the tablet UI for XLarge SDK 11 and sw600dp. -->
+  <bool name="is_tablet">true</bool>
+</resources>

@@ -43,7 +43,6 @@
 "BookingService_MobileBookingNoteBuildingName"="Nombre de edificio {0}";
 "RateRide"="Califique su servicio";
 "Error_AccountPaymentTitle"="Error";
-"GoogleMapKey"="0XEY3WqKVmJPhADLxOCPUweMcqYg3AfqCp8BvWw";
 "CreateAccountErrorNotSpecified"="El servidor no ha especificado por que su cuenta no pudo ser creada, si este error continúa trate de crear su cuenta desde nuestro sitio web";
 "CmtRideLinqErrorTitle"="Error";
 "NetworkErrorTitle"="No hay conección de red";

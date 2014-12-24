@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- Copyright 2009 Google Inc. All Rights Reserved. -->
+
+<!-- All color definitions should use capital letters and should always
+    include alpha. -->
+
+<resources>
+  <color name="white">#FFFFFFFF</color>
+  <color name="black">#FF000000</color>
+  <color name="black_semi_transparent">#AA000000</color>
+  <color name="black_transparent">#00000000</color>
+  <color name="focused">#FFFF8d00</color>
+  <color name="pressed">#FFFFC600</color>
+  <color name="red">#FFFF0000</color>
+  <color name="grey">#FF7F7F7F</color>
+  <color name="light_grey">#FFA9A9A9</color>
+  <color name="verylight_grey">#FFDDDDDD</color>
+  <color name="ultralight_grey">#FFEFEFEF</color>
+  <color name="dark_grey">#FF555555</color>
+  <color name="light_text_grey">#FF999999</color>
+  <color name="dot_grey">#B2B2B2</color>
+  <color name="text_grey">#FF323232</color>
+  <color name="disabled_background_grey">#EEEEEE</color>
+  <color name="toll_note">#FFBC2222</color>
+  <color name="list_separator_grey">#FF4B4B4B</color>
+  <color name="list_header_background_grey">#FF828282</color>
+  <color name="list_header_secondary_grey">#FFDADADA</color>
+  <color name="list_separator_tablet_grey">#FFCCCCCC</color>
+  <color name="list_real_time_updating_secondary_orange">#FFFB9039</color>
+  <color name="route_list_turn">#FFFFFFFF</color>
+  <color name="route_list_endpoint">#FFA0A0A0</color>
+  <color name="shadow">#CC222222</color>
+  <color name="link_blue">#FF0F64BA</color>
+  <color name="light_blue">#FF6699ff</color>
+  <color name="entity_blue">#FF178BBD</color>
+  <color name="navy_blue">#FF002E73</color>
+  <color name="dim_background">#55000000</color>
+  <color name="blue">#FF0000FF</color>
+  <color name="directions_alert_red">#FFCC0000</color>
+  <color name="directions_travel_advisories">#C41200</color>
+  <color name="url_link">#FF6B84A9</color>
+  <color name="selected_background">#FFFEF09B</color>
+  <color name="photo_border">#FF666666</color>
+  <color name="attribution_green">#FF208D20</color>
+  <color name="map_default_background">#FFDDDDDD</color>
+  <!-- It must be the local plus blue color. Do not change it to other colors. -->
+  <color name="blue_divider">#6F8DC5</color>
+  <!-- Ad colors for list views, place pages, etc. -->
+  <color name="ad_text">#FF000000</color>
+  <color name="ad_text_gray">#FF787878</color>
+  <color name="ad_url">#FF1111CC</color>
+  <color name="ad_background">#FFFFF8E7</color>
+  <color name="ad_background_pressed">#FFE8C000</color>
+  <color name="ad_background_pressed_ics">#FF35B5E4</color>
+  <color name="ad_link_text">#FF009934</color>
+  <color name="ad_menu_divider">#FF282828</color>
+  <!-- Ad colors for the URL that actually takes you to the web -->
+  <color name="sponsored_link_action_url">#FF4088C8</color>
+  <!-- Ad colors for on-map banner ads -->
+  <color name="banner_ad_website">#FF3E8431</color>
+  <color name="banner_ad_title">#FF000000</color>
+  <color name="banner_ad_text">#FF707070</color>
+  <!-- Colors for place page -->
+  <color name="open_state">#FF208D20</color>
+  <!-- Colors for Latitude history summary -->
+  <color name="history_summary_desc">#FF278C00</color>
+  <!-- Colors for offer ads -->
+  <color name="offer_separator">#FF000000</color>
+  <color name="offers_search_list_item_title">#FFAAAAAA</color>
+  <color name="offers_search_list_separator">#FFAAAAAA</color>
+  <color name="checkin_wizard_separator_text">#023C6E</color>
+  <!-- Colors for RideAbout -->
+  <color name="time_unit_shade">#A0FFFFFF</color>
+  <!-- Colors for LiveEvents -->
+  <color name="category_dark_red">#CC0033</color>
+
+  <!-- Colors for tabs -->
+  <color name="tab_background">#3C3C3C</color>
+  <color name="tab_background_tablet">#FFFFFF</color>
+  <color name="tab_text_color">@color/local_plus_tab_text</color>
+  <color name="tab_text_color_tablet">@color/local_plus_tab_text_tablet</color>
+
+  <!-- Colors for +1 style checkin button. Forked from
+    //depot/google3/java/com/google/android/apps/plusone/widgets/res/values/colors.xml
+    -->
+  <color name="widgets_action_button_enabled_text_color">#FFFFFF</color>
+  <color name="widgets_action_button_disabled_text_color">#FFA9A9A9</color>
+  <color name="widgets_action_button_shadow_color">#FF000000</color>
+  <!-- Colors for floorpicker -->
+  <color name="floorpicker_text">#777777</color>
+
+  <!-- Spicybowl (aka Google Local colours) -->
+  <color name="spicy_refinement">#FFEFEFEF</color>
+  <color name="spicy_light_gray">#FF888888</color>
+  <color name="burgundy">#89001A</color>
+  <color name="spicy_categories">#666666</color>
+  <color name="spicy_gray">#FF7F7F7F</color>
+  <color name="spicy_not_rated_gray">#FFC0C0C0</color>
+  <color name="spicy_title">#FF6F8FC7</color>
+  <color name="spicy_rating_label_gray">#FF545454</color>
+  <color name="zagat_explanation_circle">#D2D2D2</color>
+  <color name="zagat_rating_label_grey">#FF666666</color>
+  <color name="refinement_buttons_background">#FF333333</color>
+  <color name="refinement_buttons_background_tablet">#FFFFFFFF</color>
+  <color name="refinement_button_text">#FFFFFFFF</color>
+  <color name="refinement_button_text_tablet">#FF333333</color>
+
+  <!-- Spicybowl Local Plus Page colors -->
+  <!-- The following colors should match with G+ App. Do not change. -->
+  <color name="local_plus_tab_divider">#636363</color>
+  <color name="local_plus_tab_divider_tablet">#636363</color>
+  <color name="local_plus_tab_text">#FFFFFF</color>
+  <color name="local_plus_tab_text_tablet">#7D7D7D</color>
+  <color name="local_plus_add_photo_text">#FF666666</color>
+  <color name="local_plus_add_photo_background">#FFE5E5E5</color>
+  <color name="local_plus_button_text">#333333</color>
+
+  <!-- Spicybowl opt-in -->
+  <color name="spicy_optin_header">#FFF3F3F3</color>
+  <color name="spicy_optin_footer">#FF292929</color>
+  <color name="spicy_content_public">#FF229911</color>
+  <color name="spicy_content_private">#FF666666</color>
+
+  <!-- Placepage feedback -->
+  <color name="userfeedback_proactive_qn">#FFFFFFCC</color>
+
+  <!-- Colors for rating page -->
+  <color name="aspect_label_text_color">#FF333333</color>
+  <color name="aspect_rating_text_color">#FF636D78</color>
+  <color name="aspect_secondary_text_color">#FF888888</color>
+  <color name="write_review_hint_text_color">#FFC3C3C3</color>
+
+  <!-- Colors for Check-in Awards -->
+  <color name="checkin_awards_primary_text">#FF333333</color>
+  <color name="checkin_awards_secondary_text">#FF666666</color>
+  <color name="checkin_awards_pale_gray">#FFA7A9AC</color>
+  <color name="checkin_awards_sky_blue">#FF5094FD</color>
+  <color name="checkin_awards_header_background_black">#FF222222</color>
+  <color name="checkin_awards_highlight_grad_bottom">#FFEAEAEA</color>
+  <color name="checkin_awards_highlight_grad_top">#FFF4F4F4</color>
+
+  <!-- Colors for transit page -->
+  <color name="transit_blue">#33B5E5</color>
+  <color name="transit_dark">#3C3C3C</color>
+
+  <color name="places_background">#FFF3F3F3</color>
+  <color name="places_dark_gray">#FF2D2D2D</color>
+
+  <color name="tip_overlay_top">#FF000000</color>
+  <color name="tip_overlay_bottom">#83000000</color>
+  <color name="tip_title">#FF33ABE1</color>
+
+  <color name="history_traveling_background">#FFF3F3F3</color>
+
+  <!-- Colors for the ad banner. -->
+  <color name="promo_bg_white">#F8FFFFFF</color>
+  <color name="promo_banner_divider">#CFCFCF</color>
+  <color name="promo_banner_creative">#FF5F5F5F</color>
+
+  <!-- Colors for the Ad dialog. -->
+  <color name="ad_dialog_url_bar_bg">#3C3C3C</color>
+  <color name="ad_dialog_divider">#7F7F7F7F</color>
+
+  <!-- Colors for the elevation graph. -->
+  <color name="elevation_graph_stroke">#FF33B5E5</color>
+  <color name="elevation_graph_fill">#C033B5E5</color>
+
+  <!-- Colors for latitude migration flow -->
+  <color name="lat_plus_migration_footer">#FF292929</color>
+
+  <!-- Color for vehicle selector items of transit station layer -->
+  <color name="vehicle_selector_item_background">@color/black</color>
+
+</resources>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <!-- Copyright string shown at the bottom of the map when there is no additional
+         copyright information.
+         %d is replaced by the current year (ie 2011) -->
+    <string name="dav_map_copyrights_google_only">©<xliff:g id="copyright_year">%1$d</xliff:g> Google</string>
+
+    <!-- Copyright string shown at the bottom of the map when there is no additional
+         copyright information.
+         all %d tokens are replaced by the current year (example "2011")
+         The first %s is replaced with imagery copyrights from server (example "TerraMetrics")
+         The second %s is replaced with map data copyrights from server (example "MapLink") -->
+    <string name="dav_map_copyrights_full">©<xliff:g id="copyright_year">%1$d</xliff:g> Google - Imagery ©<xliff:g id="copyright_year">%2$d</xliff:g> <xliff:g id="imagery_provider_names">%3$s</xliff:g>, Map data ©<xliff:g id="copyright_year">%4$d</xliff:g> <xliff:g id="map_data_provider_names">%5$s</xliff:g></string>
+
+    <!-- Copyright string shown at the bottom of the map when we only have imagery
+         copyright information.
+         all %d tokens are replaced by the current year (example "2011")
+         %s is replaced with imagery copyrights from server (example "TerraMetrics") -->
+    <string name="dav_map_copyrights_imagery_only">©<xliff:g id="copyright_year">%1$d</xliff:g> Google - Imagery ©<xliff:g id="copyright_year">%2$d</xliff:g> <xliff:g id="imagery_provider_names">%3$s</xliff:g></string>
+
+    <!-- Copyright string shown at the bottom of the map when we only have map data
+         copyright information.
+         all %d tokens are replaced by the current year (example "2011")
+         %s is replaced with map data copyrights from server (example "MapLink") -->
+    <string name="dav_map_copyrights_map_data_only">©<xliff:g id="copyright_year">%1$d</xliff:g> Google - Map data  ©<xliff:g id="copyright_year">%2$d</xliff:g> <xliff:g id="map_data_provider_names">%3$s</xliff:g></string>
+</resources>

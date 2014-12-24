@@ -597,9 +597,6 @@
   <data name="GenericTitle" xml:space="preserve">
     <value />
   </data>
-  <data name="GoogleMapKey" xml:space="preserve">
-    <value>0XEY3WqKVmJPhADLxOCPUweMcqYg3AfqCp8BvWw</value>
-  </data>
   <data name="GooglePlayServicesNotAvailableMessage" xml:space="preserve">
     <value>Merci de mettre à jour Google Play pour utiliser cette application mobile.</value>
   </data>

@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="LEVEL_ALT_TEXT">רמה {0}</string>
+    <string name="YOUR_LOCATION" msgid="3304805242996771621">המיקום הנוכחי שלך</string>
+</resources>

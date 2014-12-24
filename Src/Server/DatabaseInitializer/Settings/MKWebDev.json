@@ -28,7 +28,6 @@
    "GeoLoc.DefaultLatitude" : "45.516667",
    "GeoLoc.DefaultLongitude" : "-73.65",
    "GeoLoc.SearchFilter" : "{0},montreal,qc,canada&region=ca",
-   "GoogleMapKey": "AIzaSyAd-ezA2SeVTSNqsu6aMmAkdlP3UqEVPWE",
    "Map.PlacesApiKey" : "AIzaSyAAgAGS4SjtSwqni_wpgCo2XnY30m0rhLs",
    "PriceFormat" : "en-CA",   
    "SendReceiptAvailable" : "true",

@@ -1,0 +1,1558 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<html devsite>
+  <head>
+    <title>StreetViewPanorama</title>
+    <meta name="project_path" value="/maps/documentation/business/_project.yaml" />
+    <meta name="book_path" value="/maps/documentation/business/_book.yaml" />
+    <link rel="stylesheet" href="/+/css/plus.css" />
+  </head>
+
+<body class="">
+<style>
+
+/* Heading for "Parameters", "See Also", etc., in details sections */
+h4.jd-details-title {
+  font-size: 1.15em;
+  margin: 1.5em 0 .6em 0em;
+  padding: 0em 8em 0em 2.5em;
+  text-indent: -2em;
+  background-color: #E9E9E9; /* #DEEAFA */
+}
+h4 .params {
+  font-size:.9em;
+  font-weight:normal;
+}
+h5.jd-tagtitle {
+  margin: 0 0 .25em 1em;
+  font-size: 1em;
+  font-weight: bold;
+}
+/* For the tagdata blocks that make up the detailed description */
+.jd-details-descr {
+  padding: 0;
+  margin: .5em 6px;
+}
+.jd-tagdescr p {
+  margin-bottom: .5em;
+  padding: 0;
+}
+.jd-tagdata {
+  margin-left: .5em 1em .5em .5em;
+}
+/* .jd-typecol should be set to minimum width in place of width="1%" */
+.jd-sumtable, .jd-tagtable {
+  border: none !important;
+  padding: 0px 6px 0px 0px !important;
+  margin-left: 2em !important;
+  margin-bottom: 0.9em;
+}
+.jd-returns {
+  margin-left: 2.1em !important;  /* 0.1em larger than .jd-tagtable */
+}
+.jd-typecol, .jd-linkcol, .jd-enumtype {
+  /* border: none !important; */
+  vertical-align: middle !important;
+  padding: 0px 6px 0px 6px !important;
+}
+.jd-hang {
+  padding-left: 2em;
+  text-indent: -2em;
+}
+.jd-typecol, .jd-paramname, .jd-enumtype {
+  width: 1%;         /* What better way to set min. width? (here and below) */
+}
+.jd-typecol {
+  white-space: nowrap;
+}
+.jd-tagparamname, .jd-tagthrowstype {
+  border: none !important;
+  width: 1%;
+  padding: 0px 6px 0px 0px !important;
+}
+.jd-tagparamname {
+  font-style: italic;
+}
+.jd-tagdescr {
+  border: none !important;
+  padding: 0px 6px 0px 6px !important;
+}
+.jd-sumheading {
+  border: none !important;
+  padding: 0 !important;
+  background-color: #FFF;
+  color: #000;
+}
+#jd-header {
+  margin-bottom: 1em;
+}
+/* extra space between end of method name and open-paren */
+.sympad {
+  margin-right: 2px;
+}
+/* keep method parameter type on the same line with parameter name */
+.nowrap {
+  white-space: nowrap;
+}
+</style>
+
+<div id="api-info-block">
+
+
+
+  
+   
+  
+  
+  
+  
+
+
+<div class="api-level">
+  
+
+
+  
+  
+
+</div>
+</div><!-- end api-info-block -->
+
+
+<!-- ======== START OF CLASS DATA ======== -->
+
+
+
+<div id="jd-header">
+  public     class
+  <b>StreetViewPanorama</b>
+</div><!-- end jd-header -->
+
+
+<div id="naMessage"></div>
+
+<div id="jd-content" class="api apilevel-">
+
+
+
+
+
+
+
+<div class="jd-descr">
+
+
+<p>This is the main class of the Street View feature in the Google Maps Android API and is the
+ entry point for all methods related to Street View panoramas. You cannot instantiate a
+ <code><a href="../../../../../com/google/android/m4b/maps/StreetViewPanorama.html">StreetViewPanorama</a></code> object directly, rather, you must obtain one from the
+ <code>getStreetViewPanorama()</code> method on a <code><a href="../../../../../com/google/android/m4b/maps/MapFragment.html">MapFragment</a></code> or <code><a href="../../../../../com/google/android/m4b/maps/MapView.html">MapView</a></code> that you have
+ added to your application.
+ <p>
+ Note: Similar to a android.view.View View object, a <code><a href="../../../../../com/google/android/m4b/maps/StreetViewPanorama.html">StreetViewPanorama</a></code> can only
+ be read and modified from the main thread. Calling <code><a href="../../../../../com/google/android/m4b/maps/StreetViewPanorama.html">StreetViewPanorama</a></code> methods from
+ another thread will result in an exception.
+ <p>
+ <h3>Developer Guide</h3>
+ <p>
+ To get started with the Google Maps Android API, read the <a
+ href="https://developers.google.com/maps/documentation/android/">Google Maps Android API v2</a>
+ developer guide.
+</p>
+
+
+
+</div><!-- jd-descr -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="jd-descr">
+
+
+<section id="xml-attributes">
+
+
+
+<!-- ======== NESTED CLASS SUMMARY ======== -->
+<section>
+  <h3>Nested Class Summary</h3>
+  <table id="nestedclasses" class="jd-sumtable">
+    
+
+  
+    <tr class="alt-color api apilevel-" >
+      <td class="jd-typecol">
+        
+        
+        
+        
+        interface</td>
+      <td class="jd-linkcol" colspan="2"><a href="../../../../../com/google/android/m4b/maps/StreetViewPanorama.OnStreetViewPanoramaCameraChangeListener.html">StreetViewPanorama.OnStreetViewPanoramaCameraChangeListener</a></td>
+      <td class="jd-descrcol" width="100%">A listener for when the StreetViewPanoramaCamera changes
+&nbsp;</td>
+    </tr>
+    
+    
+    <tr class=" api apilevel-" >
+      <td class="jd-typecol">
+        
+        
+        
+        
+        interface</td>
+      <td class="jd-linkcol" colspan="2"><a href="../../../../../com/google/android/m4b/maps/StreetViewPanorama.OnStreetViewPanoramaChangeListener.html">StreetViewPanorama.OnStreetViewPanoramaChangeListener</a></td>
+      <td class="jd-descrcol" width="100%">A listener for when the Street View panorama loads a new panorama
+&nbsp;</td>
+    </tr>
+    
+    
+    <tr class="alt-color api apilevel-" >
+      <td class="jd-typecol">
+        
+        
+        
+        
+        interface</td>
+      <td class="jd-linkcol" colspan="2"><a href="../../../../../com/google/android/m4b/maps/StreetViewPanorama.OnStreetViewPanoramaClickListener.html">StreetViewPanorama.OnStreetViewPanoramaClickListener</a></td>
+      <td class="jd-descrcol" width="100%">Callback interface for when the user taps on the panorama.&nbsp;</td>
+    </tr>
+    
+    
+
+  </table>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- ========== METHOD SUMMARY =========== -->
+<section>
+  <h3>Public Method Summary</h3>
+  <table id="pubmethods" class="jd-sumtable">
+  
+
+
+    
+    <tr class="alt-color api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            
+            
+            
+            void
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../com/google/android/m4b/maps/StreetViewPanorama.html#animateTo(com.google.android.m4b.maps.model.StreetViewPanoramaCamera, long)">animateTo</a></span>(<span class="nowrap"><a href="../../../../../com/google/android/m4b/maps/model/StreetViewPanoramaCamera.html">StreetViewPanoramaCamera</a> <i>camera</i></span>, <span class="nowrap">long <i>duration</i></span>)
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class=" api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            
+            
+            
+            <a href="../../../../../com/google/android/m4b/maps/model/StreetViewPanoramaLocation.html">StreetViewPanoramaLocation</a>
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../com/google/android/m4b/maps/StreetViewPanorama.html#getLocation()">getLocation</a></span>()
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class="alt-color api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            
+            
+            
+            <a href="../../../../../com/google/android/m4b/maps/model/StreetViewPanoramaCamera.html">StreetViewPanoramaCamera</a>
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../com/google/android/m4b/maps/StreetViewPanorama.html#getPanoramaCamera()">getPanoramaCamera</a></span>()
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class=" api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            
+            
+            
+            boolean
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../com/google/android/m4b/maps/StreetViewPanorama.html#isPanningGesturesEnabled()">isPanningGesturesEnabled</a></span>()
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class="alt-color api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            
+            
+            
+            boolean
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../com/google/android/m4b/maps/StreetViewPanorama.html#isStreetNamesEnabled()">isStreetNamesEnabled</a></span>()
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class=" api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            
+            
+            
+            boolean
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../com/google/android/m4b/maps/StreetViewPanorama.html#isUserNavigationEnabled()">isUserNavigationEnabled</a></span>()
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class="alt-color api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            
+            
+            
+            boolean
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../com/google/android/m4b/maps/StreetViewPanorama.html#isZoomGesturesEnabled()">isZoomGesturesEnabled</a></span>()
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class=" api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            
+            
+            
+            Point
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../com/google/android/m4b/maps/StreetViewPanorama.html#orientationToPoint(com.google.android.m4b.maps.model.StreetViewPanoramaOrientation)">orientationToPoint</a></span>(<span class="nowrap"><a href="../../../../../com/google/android/m4b/maps/model/StreetViewPanoramaOrientation.html">StreetViewPanoramaOrientation</a> <i>orientation</i></span>)
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class="alt-color api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            
+            
+            
+            <a href="../../../../../com/google/android/m4b/maps/model/StreetViewPanoramaOrientation.html">StreetViewPanoramaOrientation</a>
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../com/google/android/m4b/maps/StreetViewPanorama.html#pointToOrientation(android.graphics.Point)">pointToOrientation</a></span>(<span class="nowrap">Point <i>point</i></span>)
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class=" api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            final
+            
+            
+            void
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../com/google/android/m4b/maps/StreetViewPanorama.html#setOnStreetViewPanoramaCameraChangeListener(com.google.android.m4b.maps.StreetViewPanorama.OnStreetViewPanoramaCameraChangeListener)">setOnStreetViewPanoramaCameraChangeListener</a></span>(<span class="nowrap"><a href="../../../../../com/google/android/m4b/maps/StreetViewPanorama.OnStreetViewPanoramaCameraChangeListener.html">StreetViewPanorama.OnStreetViewPanoramaCameraChangeListener</a> <i>listener</i></span>)
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class="alt-color api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            final
+            
+            
+            void
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../com/google/android/m4b/maps/StreetViewPanorama.html#setOnStreetViewPanoramaChangeListener(com.google.android.m4b.maps.StreetViewPanorama.OnStreetViewPanoramaChangeListener)">setOnStreetViewPanoramaChangeListener</a></span>(<span class="nowrap"><a href="../../../../../com/google/android/m4b/maps/StreetViewPanorama.OnStreetViewPanoramaChangeListener.html">StreetViewPanorama.OnStreetViewPanoramaChangeListener</a> <i>listener</i></span>)
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class=" api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            final
+            
+            
+            void
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../com/google/android/m4b/maps/StreetViewPanorama.html#setOnStreetViewPanoramaClickListener(com.google.android.m4b.maps.StreetViewPanorama.OnStreetViewPanoramaClickListener)">setOnStreetViewPanoramaClickListener</a></span>(<span class="nowrap"><a href="../../../../../com/google/android/m4b/maps/StreetViewPanorama.OnStreetViewPanoramaClickListener.html">StreetViewPanorama.OnStreetViewPanoramaClickListener</a> <i>listener</i></span>)
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class="alt-color api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            
+            
+            
+            void
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../com/google/android/m4b/maps/StreetViewPanorama.html#setPanningGesturesEnabled(boolean)">setPanningGesturesEnabled</a></span>(<span class="nowrap">boolean <i>enablePanning</i></span>)
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class=" api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            
+            
+            
+            void
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../com/google/android/m4b/maps/StreetViewPanorama.html#setPosition(com.google.android.m4b.maps.model.LatLng, int)">setPosition</a></span>(<span class="nowrap"><a href="../../../../../com/google/android/m4b/maps/model/LatLng.html">LatLng</a> <i>position</i></span>, <span class="nowrap">int <i>radius</i></span>)
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class="alt-color api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            
+            
+            
+            void
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../com/google/android/m4b/maps/StreetViewPanorama.html#setPosition(com.google.android.m4b.maps.model.LatLng)">setPosition</a></span>(<span class="nowrap"><a href="../../../../../com/google/android/m4b/maps/model/LatLng.html">LatLng</a> <i>position</i></span>)
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class=" api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            
+            
+            
+            void
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../com/google/android/m4b/maps/StreetViewPanorama.html#setPosition(java.lang.String)">setPosition</a></span>(<span class="nowrap">String <i>panoId</i></span>)
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class="alt-color api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            
+            
+            
+            void
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../com/google/android/m4b/maps/StreetViewPanorama.html#setStreetNamesEnabled(boolean)">setStreetNamesEnabled</a></span>(<span class="nowrap">boolean <i>enableStreetNames</i></span>)
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class=" api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            
+            
+            
+            void
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../com/google/android/m4b/maps/StreetViewPanorama.html#setUserNavigationEnabled(boolean)">setUserNavigationEnabled</a></span>(<span class="nowrap">boolean <i>enableUserNavigation</i></span>)
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class="alt-color api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            
+            
+            
+            void
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../com/google/android/m4b/maps/StreetViewPanorama.html#setZoomGesturesEnabled(boolean)">setZoomGesturesEnabled</a></span>(<span class="nowrap">boolean <i>enableZoom</i></span>)
+            
+          </div>
+      </td>
+    </tr>
+
+
+
+  </table>
+</section>
+
+
+
+
+
+
+<!-- ========== METHOD SUMMARY =========== -->
+</section><!--xml-attributes-->
+<!--subcount(class.inners) || subcount(class.attrs) || ...-->
+</div><!-- class="jd-descr" (end of Summary) -->
+
+<!-- Details -->
+
+
+
+
+
+
+
+
+<!-- XML Attributes -->
+
+
+<!-- Enum Values -->
+
+
+<!-- Constants -->
+
+
+<!-- Fields -->
+
+
+<!-- Public ctors -->
+
+
+
+<!-- ========= CONSTRUCTOR DETAIL ======== -->
+<!-- Protected ctors -->
+
+
+
+<!-- ========= METHOD DETAIL ======== -->
+<!-- Public methdos -->
+
+
+<section id="public-methods">
+  <h2>Public Methods</h2>
+  
+
+
+<A NAME="animateTo(com.google.android.m4b.maps.model.StreetViewPanoramaCamera, long)"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        
+        
+        
+        void
+      </span>
+      <span class="sympad"><strong>animateTo</strong></span>
+      <span class="params">(<span class="nowrap"><a href="../../../../../com/google/android/m4b/maps/model/StreetViewPanoramaCamera.html">StreetViewPanoramaCamera</a> <i>camera</i></span>, <span class="nowrap">long <i>duration</i></span>)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Changes the current camera position, orientation and zoom, to a given position over a
+ specified duration</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Parameters</h5>
+      <table class="jd-tagtable">
+        
+        <tr>
+          <td class="jd-tagparamname">camera</td>
+          <td class="jd-tagdescr">The camera position to animate to</td>
+        </tr>
+        
+        <tr>
+          <td class="jd-tagparamname">duration</td>
+          <td class="jd-tagdescr">The length of time, in milliseconds, it takes to transition from the current
+            camera position to the given one
+</td>
+        </tr>
+        
+      </table>
+  </div>
+
+    </div>
+</div>
+
+
+<A NAME="getLocation()"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        
+        
+        
+        <a href="../../../../../com/google/android/m4b/maps/model/StreetViewPanoramaLocation.html">StreetViewPanoramaLocation</a>
+      </span>
+      <span class="sympad"><strong>getLocation</strong></span>
+      <span class="params">()</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Returns the current location of the user and information regarding the current panorama's
+ adjacent panoramas</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Returns</h5>
+      <ul class="nolist jd-returns"><li>The current location of the user
+</li></ul>
+  </div>
+
+    </div>
+</div>
+
+
+<A NAME="getPanoramaCamera()"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        
+        
+        
+        <a href="../../../../../com/google/android/m4b/maps/model/StreetViewPanoramaCamera.html">StreetViewPanoramaCamera</a>
+      </span>
+      <span class="sympad"><strong>getPanoramaCamera</strong></span>
+      <span class="params">()</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Returns the current orientation and zoom</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Returns</h5>
+      <ul class="nolist jd-returns"><li>The current camera
+</li></ul>
+  </div>
+
+    </div>
+</div>
+
+
+<A NAME="isPanningGesturesEnabled()"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        
+        
+        
+        boolean
+      </span>
+      <span class="sympad"><strong>isPanningGesturesEnabled</strong></span>
+      <span class="params">()</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Returns whether or not the panning gestures are enabled for the user</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Returns</h5>
+      <ul class="nolist jd-returns"><li>True if panning gestures are enabled
+</li></ul>
+  </div>
+
+    </div>
+</div>
+
+
+<A NAME="isStreetNamesEnabled()"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        
+        
+        
+        boolean
+      </span>
+      <span class="sympad"><strong>isStreetNamesEnabled</strong></span>
+      <span class="params">()</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Returns whether or not the street names appear on the panorama</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Returns</h5>
+      <ul class="nolist jd-returns"><li>True if street names are shown
+</li></ul>
+  </div>
+
+    </div>
+</div>
+
+
+<A NAME="isUserNavigationEnabled()"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        
+        
+        
+        boolean
+      </span>
+      <span class="sympad"><strong>isUserNavigationEnabled</strong></span>
+      <span class="params">()</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Returns whether or not the navigation is enabled for the user. This includes double tapping
+ as well as using the navigation links</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Returns</h5>
+      <ul class="nolist jd-returns"><li>True if navigation is enabled
+</li></ul>
+  </div>
+
+    </div>
+</div>
+
+
+<A NAME="isZoomGesturesEnabled()"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        
+        
+        
+        boolean
+      </span>
+      <span class="sympad"><strong>isZoomGesturesEnabled</strong></span>
+      <span class="params">()</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Returns whether or not the zoom gestures are enabled for the user</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Returns</h5>
+      <ul class="nolist jd-returns"><li>True if zoom gestures are enabled
+</li></ul>
+  </div>
+
+    </div>
+</div>
+
+
+<A NAME="orientationToPoint(com.google.android.m4b.maps.model.StreetViewPanoramaOrientation)"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        
+        
+        
+        Point
+      </span>
+      <span class="sympad"><strong>orientationToPoint</strong></span>
+      <span class="params">(<span class="nowrap"><a href="../../../../../com/google/android/m4b/maps/model/StreetViewPanoramaOrientation.html">StreetViewPanoramaOrientation</a> <i>orientation</i></span>)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Returns a screen location that corresponds to an orientation
+ (<code><a href="../../../../../com/google/android/m4b/maps/model/StreetViewPanoramaOrientation.html">StreetViewPanoramaOrientation</a></code>). The screen location is in screen pixels
+ (not display pixels) relative to the top left of the Street View panorama
+ (not of the whole screen).</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Parameters</h5>
+      <table class="jd-tagtable">
+        
+        <tr>
+          <td class="jd-tagparamname">orientation</td>
+          <td class="jd-tagdescr">A <code><a href="../../../../../com/google/android/m4b/maps/model/StreetViewPanoramaOrientation.html">StreetViewPanoramaOrientation</a></code> on the Street View panorama to
+        convert to a screen location.</td>
+        </tr>
+        
+      </table>
+  </div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Returns</h5>
+      <ul class="nolist jd-returns"><li>A Point representing the screen location in screen pixels. Returns null if
+         the orientation is unable to be projected on the screen (e.g. behind the user's
+         field of view)
+</li></ul>
+  </div>
+
+    </div>
+</div>
+
+
+<A NAME="pointToOrientation(android.graphics.Point)"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        
+        
+        
+        <a href="../../../../../com/google/android/m4b/maps/model/StreetViewPanoramaOrientation.html">StreetViewPanoramaOrientation</a>
+      </span>
+      <span class="sympad"><strong>pointToOrientation</strong></span>
+      <span class="params">(<span class="nowrap">Point <i>point</i></span>)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Returns the orientation that corresponds to a screen location. The screen location is
+ specified in screen pixels (not display pixels) relative to the top left of the Street View
+ panorama (not the top left of the whole screen).</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Parameters</h5>
+      <table class="jd-tagtable">
+        
+        <tr>
+          <td class="jd-tagparamname">point</td>
+          <td class="jd-tagdescr">A Point on the screen in screen pixels.</td>
+        </tr>
+        
+      </table>
+  </div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Returns</h5>
+      <ul class="nolist jd-returns"><li>The <code><a href="../../../../../com/google/android/m4b/maps/model/StreetViewPanoramaOrientation.html">StreetViewPanoramaOrientation</a></code> corresponding to the <code>point</code> on the
+         screen, or <code>null</code> if the Street View panorama has not been initialized or if
+         the given point is not a valid point on the screen
+</li></ul>
+  </div>
+
+    </div>
+</div>
+
+
+<A NAME="setOnStreetViewPanoramaCameraChangeListener(com.google.android.m4b.maps.StreetViewPanorama.OnStreetViewPanoramaCameraChangeListener)"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        final
+        
+        
+        void
+      </span>
+      <span class="sympad"><strong>setOnStreetViewPanoramaCameraChangeListener</strong></span>
+      <span class="params">(<span class="nowrap"><a href="../../../../../com/google/android/m4b/maps/StreetViewPanorama.OnStreetViewPanoramaCameraChangeListener.html">StreetViewPanorama.OnStreetViewPanoramaCameraChangeListener</a> <i>listener</i></span>)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Sets a callback that's invoked when the camera changes</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Parameters</h5>
+      <table class="jd-tagtable">
+        
+        <tr>
+          <td class="jd-tagparamname">listener</td>
+          <td class="jd-tagdescr">The callback that's invoked when the camera changes. To unset the callback,
+            use <code>null</code>.
+</td>
+        </tr>
+        
+      </table>
+  </div>
+
+    </div>
+</div>
+
+
+<A NAME="setOnStreetViewPanoramaChangeListener(com.google.android.m4b.maps.StreetViewPanorama.OnStreetViewPanoramaChangeListener)"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        final
+        
+        
+        void
+      </span>
+      <span class="sympad"><strong>setOnStreetViewPanoramaChangeListener</strong></span>
+      <span class="params">(<span class="nowrap"><a href="../../../../../com/google/android/m4b/maps/StreetViewPanorama.OnStreetViewPanoramaChangeListener.html">StreetViewPanorama.OnStreetViewPanoramaChangeListener</a> <i>listener</i></span>)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Sets a callback that's invoked when the panorama changes</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Parameters</h5>
+      <table class="jd-tagtable">
+        
+        <tr>
+          <td class="jd-tagparamname">listener</td>
+          <td class="jd-tagdescr">The callback that's invoked when the panorama changes. To unset the callback,
+            use <code>null</code>.
+</td>
+        </tr>
+        
+      </table>
+  </div>
+
+    </div>
+</div>
+
+
+<A NAME="setOnStreetViewPanoramaClickListener(com.google.android.m4b.maps.StreetViewPanorama.OnStreetViewPanoramaClickListener)"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        final
+        
+        
+        void
+      </span>
+      <span class="sympad"><strong>setOnStreetViewPanoramaClickListener</strong></span>
+      <span class="params">(<span class="nowrap"><a href="../../../../../com/google/android/m4b/maps/StreetViewPanorama.OnStreetViewPanoramaClickListener.html">StreetViewPanorama.OnStreetViewPanoramaClickListener</a> <i>listener</i></span>)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Sets a callback that's invoked when the panorama is tapped.</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Parameters</h5>
+      <table class="jd-tagtable">
+        
+        <tr>
+          <td class="jd-tagparamname">listener</td>
+          <td class="jd-tagdescr">The callback that's invoked when the panorama is tapped. To unset the
+            callback, use <code>null</code>.
+</td>
+        </tr>
+        
+      </table>
+  </div>
+
+    </div>
+</div>
+
+
+<A NAME="setPanningGesturesEnabled(boolean)"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        
+        
+        
+        void
+      </span>
+      <span class="sympad"><strong>setPanningGesturesEnabled</strong></span>
+      <span class="params">(<span class="nowrap">boolean <i>enablePanning</i></span>)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Sets whether the user is able to use panning gestures</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Parameters</h5>
+      <table class="jd-tagtable">
+        
+        <tr>
+          <td class="jd-tagparamname">enablePanning</td>
+          <td class="jd-tagdescr">True if users are allowed to use panning gestures
+</td>
+        </tr>
+        
+      </table>
+  </div>
+
+    </div>
+</div>
+
+
+<A NAME="setPosition(com.google.android.m4b.maps.model.LatLng, int)"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        
+        
+        
+        void
+      </span>
+      <span class="sympad"><strong>setPosition</strong></span>
+      <span class="params">(<span class="nowrap"><a href="../../../../../com/google/android/m4b/maps/model/LatLng.html">LatLng</a> <i>position</i></span>, <span class="nowrap">int <i>radius</i></span>)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Sets the StreetViewPanorama to a given location</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Parameters</h5>
+      <table class="jd-tagtable">
+        
+        <tr>
+          <td class="jd-tagparamname">position</td>
+          <td class="jd-tagdescr">Latitude and longitude of the desired location</td>
+        </tr>
+        
+        <tr>
+          <td class="jd-tagparamname">radius</td>
+          <td class="jd-tagdescr">Radius, specified in meters, that defines the area in which to search for a
+            panorama, centered on the given latitude and longitude
+</td>
+        </tr>
+        
+      </table>
+  </div>
+
+    </div>
+</div>
+
+
+<A NAME="setPosition(com.google.android.m4b.maps.model.LatLng)"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        
+        
+        
+        void
+      </span>
+      <span class="sympad"><strong>setPosition</strong></span>
+      <span class="params">(<span class="nowrap"><a href="../../../../../com/google/android/m4b/maps/model/LatLng.html">LatLng</a> <i>position</i></span>)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Sets the StreetViewPanorama to a given location</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Parameters</h5>
+      <table class="jd-tagtable">
+        
+        <tr>
+          <td class="jd-tagparamname">position</td>
+          <td class="jd-tagdescr">Latitude and longitude of the desired location
+</td>
+        </tr>
+        
+      </table>
+  </div>
+
+    </div>
+</div>
+
+
+<A NAME="setPosition(java.lang.String)"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        
+        
+        
+        void
+      </span>
+      <span class="sympad"><strong>setPosition</strong></span>
+      <span class="params">(<span class="nowrap">String <i>panoId</i></span>)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Sets the StreetViewPanorama to a given location</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Parameters</h5>
+      <table class="jd-tagtable">
+        
+        <tr>
+          <td class="jd-tagparamname">panoId</td>
+          <td class="jd-tagdescr">Panorama ID of the desired location
+</td>
+        </tr>
+        
+      </table>
+  </div>
+
+    </div>
+</div>
+
+
+<A NAME="setStreetNamesEnabled(boolean)"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        
+        
+        
+        void
+      </span>
+      <span class="sympad"><strong>setStreetNamesEnabled</strong></span>
+      <span class="params">(<span class="nowrap">boolean <i>enableStreetNames</i></span>)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Sets whether the user is able to see street names on panoramas</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Parameters</h5>
+      <table class="jd-tagtable">
+        
+        <tr>
+          <td class="jd-tagparamname">enableStreetNames</td>
+          <td class="jd-tagdescr">True if users are able to see street names on panoramas
+</td>
+        </tr>
+        
+      </table>
+  </div>
+
+    </div>
+</div>
+
+
+<A NAME="setUserNavigationEnabled(boolean)"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        
+        
+        
+        void
+      </span>
+      <span class="sympad"><strong>setUserNavigationEnabled</strong></span>
+      <span class="params">(<span class="nowrap">boolean <i>enableUserNavigation</i></span>)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Sets whether the user is able to move to another panorama</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Parameters</h5>
+      <table class="jd-tagtable">
+        
+        <tr>
+          <td class="jd-tagparamname">enableUserNavigation</td>
+          <td class="jd-tagdescr">True if users are allowed to move to another panorama
+</td>
+        </tr>
+        
+      </table>
+  </div>
+
+    </div>
+</div>
+
+
+<A NAME="setZoomGesturesEnabled(boolean)"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        
+        
+        
+        void
+      </span>
+      <span class="sympad"><strong>setZoomGesturesEnabled</strong></span>
+      <span class="params">(<span class="nowrap">boolean <i>enableZoom</i></span>)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Sets whether the user is able to use zoom gestures</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Parameters</h5>
+      <table class="jd-tagtable">
+        
+        <tr>
+          <td class="jd-tagparamname">enableZoom</td>
+          <td class="jd-tagdescr">True if users are allowed to use zoom gestures
+</td>
+        </tr>
+        
+      </table>
+  </div>
+
+    </div>
+</div>
+
+
+</section>
+
+
+
+<!-- ========= METHOD DETAIL ======== -->
+
+
+
+<!-- ========= END OF CLASS DATA ========= -->
+<A NAME="navbar_top"></A>
+
+</div> <!-- jd-content -->
+
+</body>
+</html>

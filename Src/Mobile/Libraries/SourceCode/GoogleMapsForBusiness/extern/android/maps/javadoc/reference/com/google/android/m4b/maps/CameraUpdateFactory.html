@@ -1,0 +1,1139 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<html devsite>
+  <head>
+    <title>CameraUpdateFactory</title>
+    <meta name="project_path" value="/maps/documentation/business/_project.yaml" />
+    <meta name="book_path" value="/maps/documentation/business/_book.yaml" />
+    <link rel="stylesheet" href="/+/css/plus.css" />
+  </head>
+
+<body class="">
+<style>
+
+/* Heading for "Parameters", "See Also", etc., in details sections */
+h4.jd-details-title {
+  font-size: 1.15em;
+  margin: 1.5em 0 .6em 0em;
+  padding: 0em 8em 0em 2.5em;
+  text-indent: -2em;
+  background-color: #E9E9E9; /* #DEEAFA */
+}
+h4 .params {
+  font-size:.9em;
+  font-weight:normal;
+}
+h5.jd-tagtitle {
+  margin: 0 0 .25em 1em;
+  font-size: 1em;
+  font-weight: bold;
+}
+/* For the tagdata blocks that make up the detailed description */
+.jd-details-descr {
+  padding: 0;
+  margin: .5em 6px;
+}
+.jd-tagdescr p {
+  margin-bottom: .5em;
+  padding: 0;
+}
+.jd-tagdata {
+  margin-left: .5em 1em .5em .5em;
+}
+/* .jd-typecol should be set to minimum width in place of width="1%" */
+.jd-sumtable, .jd-tagtable {
+  border: none !important;
+  padding: 0px 6px 0px 0px !important;
+  margin-left: 2em !important;
+  margin-bottom: 0.9em;
+}
+.jd-returns {
+  margin-left: 2.1em !important;  /* 0.1em larger than .jd-tagtable */
+}
+.jd-typecol, .jd-linkcol, .jd-enumtype {
+  /* border: none !important; */
+  vertical-align: middle !important;
+  padding: 0px 6px 0px 6px !important;
+}
+.jd-hang {
+  padding-left: 2em;
+  text-indent: -2em;
+}
+.jd-typecol, .jd-paramname, .jd-enumtype {
+  width: 1%;         /* What better way to set min. width? (here and below) */
+}
+.jd-typecol {
+  white-space: nowrap;
+}
+.jd-tagparamname, .jd-tagthrowstype {
+  border: none !important;
+  width: 1%;
+  padding: 0px 6px 0px 0px !important;
+}
+.jd-tagparamname {
+  font-style: italic;
+}
+.jd-tagdescr {
+  border: none !important;
+  padding: 0px 6px 0px 6px !important;
+}
+.jd-sumheading {
+  border: none !important;
+  padding: 0 !important;
+  background-color: #FFF;
+  color: #000;
+}
+#jd-header {
+  margin-bottom: 1em;
+}
+/* extra space between end of method name and open-paren */
+.sympad {
+  margin-right: 2px;
+}
+/* keep method parameter type on the same line with parameter name */
+.nowrap {
+  white-space: nowrap;
+}
+</style>
+
+<div id="api-info-block">
+
+
+
+  
+   
+  
+  
+  
+  
+
+
+<div class="api-level">
+  
+
+
+  
+  
+
+</div>
+</div><!-- end api-info-block -->
+
+
+<!-- ======== START OF CLASS DATA ======== -->
+
+
+
+<div id="jd-header">
+  public  final   class
+  <b>CameraUpdateFactory</b>
+</div><!-- end jd-header -->
+
+
+<div id="naMessage"></div>
+
+<div id="jd-content" class="api apilevel-">
+
+
+
+
+
+
+
+<div class="jd-descr">
+
+
+<p>A class containing methods for creating <code><a href="../../../../../com/google/android/m4b/maps/CameraUpdate.html">CameraUpdate</a></code> objects that change a map's camera.
+ To modify the map's camera, call <code><a href="../../../../../com/google/android/m4b/maps/GoogleMap.html#animateCamera(com.google.android.m4b.maps.CameraUpdate)">animateCamera(CameraUpdate)</a></code>,
+ <code><a href="../../../../../com/google/android/m4b/maps/GoogleMap.html#animateCamera(com.google.android.m4b.maps.CameraUpdate, com.google.android.m4b.maps.GoogleMap.CancelableCallback)">animateCamera(CameraUpdate, GoogleMap.CancelableCallback)</a></code> or
+ <code><a href="../../../../../com/google/android/m4b/maps/GoogleMap.html#moveCamera(com.google.android.m4b.maps.CameraUpdate)">moveCamera(CameraUpdate)</a></code>, using a <code><a href="../../../../../com/google/android/m4b/maps/CameraUpdate.html">CameraUpdate</a></code> object created with this
+ class.
+ <p>
+ For example, to zoom in on a map, you can use the following code:
+ <pre> <code>GoogleMap map = ...;
+   map.animateCamera(CameraUpdateFactory.zoomIn());</code></pre>
+ <p>
+ Prior to using any methods from this class, you must do one of the following to ensure that this
+ class is initialized:
+ <ul>
+ <li> Wait for a <code><a href="../../../../../com/google/android/m4b/maps/GoogleMap.html">GoogleMap</a></code> to become available from a <code><a href="../../../../../com/google/android/m4b/maps/MapFragment.html">MapFragment</a></code> or
+ <code><a href="../../../../../com/google/android/m4b/maps/MapView.html">MapView</a></code> that you have added to your application.  You can verify that the
+ <code><a href="../../../../../com/google/android/m4b/maps/GoogleMap.html">GoogleMap</a></code> is available by calling the <code>getMap()</code> method and checking that the
+ returned object is not null.
+ <li> Call <code><a href="../../../../../com/google/android/m4b/maps/MapsInitializer.html#initialize(android.content.Context)">initialize(Context)</a></code>.  As long as a
+ com.google.android.gms.common.GooglePlayServicesNotAvailableException
+ GooglePlayServicesNotAvailableException isn't thrown, this class will be correctly initialized.
+ </ul>
+ <p>
+ <h3>Developer Guide</h3>
+ <p>
+ For more information, read the <a
+ href="https://developers.google.com/maps/documentation/android/views">Changing the View</a>
+ developer guide.
+</p>
+
+
+
+</div><!-- jd-descr -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="jd-descr">
+
+
+<section id="xml-attributes">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- ========== METHOD SUMMARY =========== -->
+<section>
+  <h3>Public Method Summary</h3>
+  <table id="pubmethods" class="jd-sumtable">
+  
+
+
+    
+    <tr class="alt-color api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            
+            static
+            
+            <a href="../../../../../com/google/android/m4b/maps/CameraUpdate.html">CameraUpdate</a>
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../com/google/android/m4b/maps/CameraUpdateFactory.html#newCameraPosition(com.google.android.m4b.maps.model.CameraPosition)">newCameraPosition</a></span>(<span class="nowrap"><a href="../../../../../com/google/android/m4b/maps/model/CameraPosition.html">CameraPosition</a> <i>cameraPosition</i></span>)
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class=" api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            
+            static
+            
+            <a href="../../../../../com/google/android/m4b/maps/CameraUpdate.html">CameraUpdate</a>
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../com/google/android/m4b/maps/CameraUpdateFactory.html#newLatLng(com.google.android.m4b.maps.model.LatLng)">newLatLng</a></span>(<span class="nowrap"><a href="../../../../../com/google/android/m4b/maps/model/LatLng.html">LatLng</a> <i>latLng</i></span>)
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class="alt-color api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            
+            static
+            
+            <a href="../../../../../com/google/android/m4b/maps/CameraUpdate.html">CameraUpdate</a>
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../com/google/android/m4b/maps/CameraUpdateFactory.html#newLatLngBounds(com.google.android.m4b.maps.model.LatLngBounds, int, int, int)">newLatLngBounds</a></span>(<span class="nowrap"><a href="../../../../../com/google/android/m4b/maps/model/LatLngBounds.html">LatLngBounds</a> <i>bounds</i></span>, <span class="nowrap">int <i>width</i></span>, <span class="nowrap">int <i>height</i></span>, <span class="nowrap">int <i>padding</i></span>)
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class=" api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            
+            static
+            
+            <a href="../../../../../com/google/android/m4b/maps/CameraUpdate.html">CameraUpdate</a>
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../com/google/android/m4b/maps/CameraUpdateFactory.html#newLatLngBounds(com.google.android.m4b.maps.model.LatLngBounds, int)">newLatLngBounds</a></span>(<span class="nowrap"><a href="../../../../../com/google/android/m4b/maps/model/LatLngBounds.html">LatLngBounds</a> <i>bounds</i></span>, <span class="nowrap">int <i>padding</i></span>)
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class="alt-color api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            
+            static
+            
+            <a href="../../../../../com/google/android/m4b/maps/CameraUpdate.html">CameraUpdate</a>
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../com/google/android/m4b/maps/CameraUpdateFactory.html#newLatLngZoom(com.google.android.m4b.maps.model.LatLng, float)">newLatLngZoom</a></span>(<span class="nowrap"><a href="../../../../../com/google/android/m4b/maps/model/LatLng.html">LatLng</a> <i>latLng</i></span>, <span class="nowrap">float <i>zoom</i></span>)
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class=" api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            
+            static
+            
+            <a href="../../../../../com/google/android/m4b/maps/CameraUpdate.html">CameraUpdate</a>
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../com/google/android/m4b/maps/CameraUpdateFactory.html#scrollBy(float, float)">scrollBy</a></span>(<span class="nowrap">float <i>xPixel</i></span>, <span class="nowrap">float <i>yPixel</i></span>)
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class="alt-color api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            
+            static
+            
+            <a href="../../../../../com/google/android/m4b/maps/CameraUpdate.html">CameraUpdate</a>
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../com/google/android/m4b/maps/CameraUpdateFactory.html#zoomBy(float, android.graphics.Point)">zoomBy</a></span>(<span class="nowrap">float <i>amount</i></span>, <span class="nowrap">Point <i>focus</i></span>)
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class=" api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            
+            static
+            
+            <a href="../../../../../com/google/android/m4b/maps/CameraUpdate.html">CameraUpdate</a>
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../com/google/android/m4b/maps/CameraUpdateFactory.html#zoomBy(float)">zoomBy</a></span>(<span class="nowrap">float <i>amount</i></span>)
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class="alt-color api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            
+            static
+            
+            <a href="../../../../../com/google/android/m4b/maps/CameraUpdate.html">CameraUpdate</a>
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../com/google/android/m4b/maps/CameraUpdateFactory.html#zoomIn()">zoomIn</a></span>()
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class=" api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            
+            static
+            
+            <a href="../../../../../com/google/android/m4b/maps/CameraUpdate.html">CameraUpdate</a>
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../com/google/android/m4b/maps/CameraUpdateFactory.html#zoomOut()">zoomOut</a></span>()
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class="alt-color api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            
+            static
+            
+            <a href="../../../../../com/google/android/m4b/maps/CameraUpdate.html">CameraUpdate</a>
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../com/google/android/m4b/maps/CameraUpdateFactory.html#zoomTo(float)">zoomTo</a></span>(<span class="nowrap">float <i>zoom</i></span>)
+            
+          </div>
+      </td>
+    </tr>
+
+
+
+  </table>
+</section>
+
+
+
+
+
+
+<!-- ========== METHOD SUMMARY =========== -->
+</section><!--xml-attributes-->
+<!--subcount(class.inners) || subcount(class.attrs) || ...-->
+</div><!-- class="jd-descr" (end of Summary) -->
+
+<!-- Details -->
+
+
+
+
+
+
+
+
+<!-- XML Attributes -->
+
+
+<!-- Enum Values -->
+
+
+<!-- Constants -->
+
+
+<!-- Fields -->
+
+
+<!-- Public ctors -->
+
+
+
+<!-- ========= CONSTRUCTOR DETAIL ======== -->
+<!-- Protected ctors -->
+
+
+
+<!-- ========= METHOD DETAIL ======== -->
+<!-- Public methdos -->
+
+
+<section id="public-methods">
+  <h2>Public Methods</h2>
+  
+
+
+<A NAME="newCameraPosition(com.google.android.m4b.maps.model.CameraPosition)"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        static
+        
+        
+        
+        <a href="../../../../../com/google/android/m4b/maps/CameraUpdate.html">CameraUpdate</a>
+      </span>
+      <span class="sympad"><strong>newCameraPosition</strong></span>
+      <span class="params">(<span class="nowrap"><a href="../../../../../com/google/android/m4b/maps/model/CameraPosition.html">CameraPosition</a> <i>cameraPosition</i></span>)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Returns a <code><a href="../../../../../com/google/android/m4b/maps/CameraUpdate.html">CameraUpdate</a></code> that moves the camera to a specified <code><a href="../../../../../com/google/android/m4b/maps/model/CameraPosition.html">CameraPosition</a></code>.
+ In effect, this creates a transformation from the <code><a href="../../../../../com/google/android/m4b/maps/model/CameraPosition.html">CameraPosition</a></code> object's latitude,
+ longitude, zoom level, bearing and tilt.</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Returns</h5>
+      <ul class="nolist jd-returns"><li>a <code><a href="../../../../../com/google/android/m4b/maps/CameraUpdate.html">CameraUpdate</a></code> containing the transformation.
+</li></ul>
+  </div>
+
+    </div>
+</div>
+
+
+<A NAME="newLatLng(com.google.android.m4b.maps.model.LatLng)"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        static
+        
+        
+        
+        <a href="../../../../../com/google/android/m4b/maps/CameraUpdate.html">CameraUpdate</a>
+      </span>
+      <span class="sympad"><strong>newLatLng</strong></span>
+      <span class="params">(<span class="nowrap"><a href="../../../../../com/google/android/m4b/maps/model/LatLng.html">LatLng</a> <i>latLng</i></span>)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Returns a <code><a href="../../../../../com/google/android/m4b/maps/CameraUpdate.html">CameraUpdate</a></code> that moves the center of the screen to a latitude and
+ longitude specified by a <code><a href="../../../../../com/google/android/m4b/maps/model/LatLng.html">LatLng</a></code> object. This centers the camera on the <code><a href="../../../../../com/google/android/m4b/maps/model/LatLng.html">LatLng</a></code>
+ object.</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Parameters</h5>
+      <table class="jd-tagtable">
+        
+        <tr>
+          <td class="jd-tagparamname">latLng</td>
+          <td class="jd-tagdescr">a <code><a href="../../../../../com/google/android/m4b/maps/model/LatLng.html">LatLng</a></code> object containing the desired latitude and longitude.</td>
+        </tr>
+        
+      </table>
+  </div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Returns</h5>
+      <ul class="nolist jd-returns"><li>a <code><a href="../../../../../com/google/android/m4b/maps/CameraUpdate.html">CameraUpdate</a></code> containing the transformation.
+</li></ul>
+  </div>
+
+    </div>
+</div>
+
+
+<A NAME="newLatLngBounds(com.google.android.m4b.maps.model.LatLngBounds, int, int, int)"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        static
+        
+        
+        
+        <a href="../../../../../com/google/android/m4b/maps/CameraUpdate.html">CameraUpdate</a>
+      </span>
+      <span class="sympad"><strong>newLatLngBounds</strong></span>
+      <span class="params">(<span class="nowrap"><a href="../../../../../com/google/android/m4b/maps/model/LatLngBounds.html">LatLngBounds</a> <i>bounds</i></span>, <span class="nowrap">int <i>width</i></span>, <span class="nowrap">int <i>height</i></span>, <span class="nowrap">int <i>padding</i></span>)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Returns a <code><a href="../../../../../com/google/android/m4b/maps/CameraUpdate.html">CameraUpdate</a></code> that transforms the camera such that the specified
+ latitude/longitude bounds are centered on screen within a bounding box of specified
+ dimensions at the greatest possible zoom level. You can specify additional padding, to
+ further restrict the size of the bounding box. The returned <code><a href="../../../../../com/google/android/m4b/maps/CameraUpdate.html">CameraUpdate</a></code> has a
+ bearing of 0 and a tilt of 0.
+ <p>
+ Unlike <code><a href="../../../../../com/google/android/m4b/maps/CameraUpdateFactory.html#newLatLngBounds(com.google.android.m4b.maps.model.LatLngBounds, int)">newLatLngBounds(LatLngBounds, int)</a></code>, you can use the <code><a href="../../../../../com/google/android/m4b/maps/CameraUpdate.html">CameraUpdate</a></code>
+ returned by this method to change the camera prior to the map's the layout phase, because the
+ arguments specify the desired size of the bounding box.</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Parameters</h5>
+      <table class="jd-tagtable">
+        
+        <tr>
+          <td class="jd-tagparamname">bounds</td>
+          <td class="jd-tagdescr">the region to fit in the bounding box</td>
+        </tr>
+        
+        <tr>
+          <td class="jd-tagparamname">width</td>
+          <td class="jd-tagdescr">bounding box width in pixels (px)</td>
+        </tr>
+        
+        <tr>
+          <td class="jd-tagparamname">height</td>
+          <td class="jd-tagdescr">bounding box height in pixels (px)</td>
+        </tr>
+        
+        <tr>
+          <td class="jd-tagparamname">padding</td>
+          <td class="jd-tagdescr">additional size restriction (in px) of the bounding box</td>
+        </tr>
+        
+      </table>
+  </div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Returns</h5>
+      <ul class="nolist jd-returns"><li>a <code><a href="../../../../../com/google/android/m4b/maps/CameraUpdate.html">CameraUpdate</a></code> containing the transformation.
+</li></ul>
+  </div>
+
+    </div>
+</div>
+
+
+<A NAME="newLatLngBounds(com.google.android.m4b.maps.model.LatLngBounds, int)"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        static
+        
+        
+        
+        <a href="../../../../../com/google/android/m4b/maps/CameraUpdate.html">CameraUpdate</a>
+      </span>
+      <span class="sympad"><strong>newLatLngBounds</strong></span>
+      <span class="params">(<span class="nowrap"><a href="../../../../../com/google/android/m4b/maps/model/LatLngBounds.html">LatLngBounds</a> <i>bounds</i></span>, <span class="nowrap">int <i>padding</i></span>)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Returns a <code><a href="../../../../../com/google/android/m4b/maps/CameraUpdate.html">CameraUpdate</a></code> that transforms the camera such that the specified
+ latitude/longitude bounds are centered on screen at the greatest possible zoom level. You can
+ specify padding, in order to inset the bounding box from the map view's edges. The returned
+ <code><a href="../../../../../com/google/android/m4b/maps/CameraUpdate.html">CameraUpdate</a></code> has a bearing of 0 and a tilt of 0.
+ <p>
+ Do not change the camera with this camera update until the map has undergone layout (in order
+ for this method to correctly determine the appropriate bounding box and zoom level, the map
+ must have a size).  Otherwise an IllegalStateException will be thrown.  It is NOT
+ sufficient for the map to be available (i.e. <code><a href="../../../../../com/google/android/m4b/maps/MapFragment.html#getMap()">getMap()</a></code> returns a non-null
+ object); the view containing the map must have also undergone layout such that its dimensions
+ have been determined.  If you cannot be sure that this has occured, use
+ <code><a href="../../../../../com/google/android/m4b/maps/CameraUpdateFactory.html#newLatLngBounds(com.google.android.m4b.maps.model.LatLngBounds, int, int, int)">newLatLngBounds(LatLngBounds, int, int, int)</a></code> instead and provide the dimensions of
+ the map manually.</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Parameters</h5>
+      <table class="jd-tagtable">
+        
+        <tr>
+          <td class="jd-tagparamname">bounds</td>
+          <td class="jd-tagdescr">region to fit on screen</td>
+        </tr>
+        
+        <tr>
+          <td class="jd-tagparamname">padding</td>
+          <td class="jd-tagdescr">space (in px) to leave between the bounding box edges and the view edges. This
+            value is applied to all four sides of the bounding box.</td>
+        </tr>
+        
+      </table>
+  </div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Returns</h5>
+      <ul class="nolist jd-returns"><li>a <code><a href="../../../../../com/google/android/m4b/maps/CameraUpdate.html">CameraUpdate</a></code> containing the transformation.
+</li></ul>
+  </div>
+
+    </div>
+</div>
+
+
+<A NAME="newLatLngZoom(com.google.android.m4b.maps.model.LatLng, float)"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        static
+        
+        
+        
+        <a href="../../../../../com/google/android/m4b/maps/CameraUpdate.html">CameraUpdate</a>
+      </span>
+      <span class="sympad"><strong>newLatLngZoom</strong></span>
+      <span class="params">(<span class="nowrap"><a href="../../../../../com/google/android/m4b/maps/model/LatLng.html">LatLng</a> <i>latLng</i></span>, <span class="nowrap">float <i>zoom</i></span>)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Returns a <code><a href="../../../../../com/google/android/m4b/maps/CameraUpdate.html">CameraUpdate</a></code> that moves the center of the screen to a latitude and
+ longitude specified by a <code><a href="../../../../../com/google/android/m4b/maps/model/LatLng.html">LatLng</a></code> object, and moves to the given zoom level.</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Parameters</h5>
+      <table class="jd-tagtable">
+        
+        <tr>
+          <td class="jd-tagparamname">latLng</td>
+          <td class="jd-tagdescr">a <code><a href="../../../../../com/google/android/m4b/maps/model/LatLng.html">LatLng</a></code> object containing the desired latitude and longitude.</td>
+        </tr>
+        
+        <tr>
+          <td class="jd-tagparamname">zoom</td>
+          <td class="jd-tagdescr">the desired zoom level, in the range of 2.0 to 21.0. Values below this range are
+            set to 2.0, and values above it are set to 21.0. Increase the value to zoom in.
+            Not all areas have tiles at the largest zoom levels.</td>
+        </tr>
+        
+      </table>
+  </div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Returns</h5>
+      <ul class="nolist jd-returns"><li>a <code><a href="../../../../../com/google/android/m4b/maps/CameraUpdate.html">CameraUpdate</a></code> containing the transformation.
+</li></ul>
+  </div>
+
+    </div>
+</div>
+
+
+<A NAME="scrollBy(float, float)"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        static
+        
+        
+        
+        <a href="../../../../../com/google/android/m4b/maps/CameraUpdate.html">CameraUpdate</a>
+      </span>
+      <span class="sympad"><strong>scrollBy</strong></span>
+      <span class="params">(<span class="nowrap">float <i>xPixel</i></span>, <span class="nowrap">float <i>yPixel</i></span>)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Returns a <code><a href="../../../../../com/google/android/m4b/maps/CameraUpdate.html">CameraUpdate</a></code> that scrolls the camera over the map, shifting the center of
+ view by the specified number of pixels in the x and y directions.
+ <p>
+ Examples:
+ <ul>
+ <li>If xPixel = 5 and yPixel = 0, the system scrolls right by moving the camera so that the
+ map appears to have shifted 5 pixels to the left.</li>
+ <li>If xPixel = 0 and yPixel = 5, the system scrolls down by moving the camera so that the
+ map appears to have shifted 5 pixels upwards.</li>
+ </ul>
+ <p>
+ The scrolling is relative to the camera's current orientation. For example, if the camera is
+ bearing 90 degrees, then east is "up" and scrolling right will move the camera south.</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Parameters</h5>
+      <table class="jd-tagtable">
+        
+        <tr>
+          <td class="jd-tagparamname">xPixel</td>
+          <td class="jd-tagdescr">the number of pixels to scroll horizontally. A positive value moves the camera
+            to the right, with respect to its current orientation. A negative value moves the
+            camera to the left, with respect to its current orientation.</td>
+        </tr>
+        
+        <tr>
+          <td class="jd-tagparamname">yPixel</td>
+          <td class="jd-tagdescr">the number of pixels to scroll vertically. A positive value moves the camera
+            downwards, with respect to its current orientation. A negative value moves the
+            camera upwards, with respect to its current orientation.</td>
+        </tr>
+        
+      </table>
+  </div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Returns</h5>
+      <ul class="nolist jd-returns"><li>a <code><a href="../../../../../com/google/android/m4b/maps/CameraUpdate.html">CameraUpdate</a></code> containing the transformation.
+</li></ul>
+  </div>
+
+    </div>
+</div>
+
+
+<A NAME="zoomBy(float, android.graphics.Point)"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        static
+        
+        
+        
+        <a href="../../../../../com/google/android/m4b/maps/CameraUpdate.html">CameraUpdate</a>
+      </span>
+      <span class="sympad"><strong>zoomBy</strong></span>
+      <span class="params">(<span class="nowrap">float <i>amount</i></span>, <span class="nowrap">Point <i>focus</i></span>)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Returns a <code><a href="../../../../../com/google/android/m4b/maps/CameraUpdate.html">CameraUpdate</a></code> that shifts the zoom level of the current camera viewpoint.
+ <p>
+ A point specified by focus will remain fixed (i.e., it corresponds to the same lat/long both
+ before and after the zoom process).
+ <p>
+ This method is different to <code><a href="../../../../../com/google/android/m4b/maps/CameraUpdateFactory.html#zoomTo(float)">zoomTo(float)</a></code> in that zoom is relative to the current
+ camera.
+ <p>
+ For example, if the <code><a href="../../../../../com/google/android/m4b/maps/model/LatLng.html">LatLng</a></code> (11.11, 22.22) is currently at the screen location (23,
+ 45). After calling this method with a zoom amount and this <code><a href="../../../../../com/google/android/m4b/maps/model/LatLng.html">LatLng</a></code>, the screen
+ location of this <code><a href="../../../../../com/google/android/m4b/maps/model/LatLng.html">LatLng</a></code> will still be (23, 45).</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Parameters</h5>
+      <table class="jd-tagtable">
+        
+        <tr>
+          <td class="jd-tagparamname">amount</td>
+          <td class="jd-tagdescr">amount to change the zoom level. Positive values indicate zooming closer to the
+            surface of the Earth while negative values indicate zooming away from the surface
+            of the Earth.</td>
+        </tr>
+        
+        <tr>
+          <td class="jd-tagparamname">focus</td>
+          <td class="jd-tagdescr">pixel location on the screen that is to remain fixed after the zooming process.
+            The lat/long that was at that pixel location before the camera move will remain
+            the same after the camera has moved.</td>
+        </tr>
+        
+      </table>
+  </div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Returns</h5>
+      <ul class="nolist jd-returns"><li>a <code><a href="../../../../../com/google/android/m4b/maps/CameraUpdate.html">CameraUpdate</a></code> containing the transformation.
+</li></ul>
+  </div>
+
+    </div>
+</div>
+
+
+<A NAME="zoomBy(float)"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        static
+        
+        
+        
+        <a href="../../../../../com/google/android/m4b/maps/CameraUpdate.html">CameraUpdate</a>
+      </span>
+      <span class="sympad"><strong>zoomBy</strong></span>
+      <span class="params">(<span class="nowrap">float <i>amount</i></span>)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Returns a <code><a href="../../../../../com/google/android/m4b/maps/CameraUpdate.html">CameraUpdate</a></code> that shifts the zoom level of the current camera viewpoint.
+ <p>
+ This method is different to <code><a href="../../../../../com/google/android/m4b/maps/CameraUpdateFactory.html#zoomTo(float)">zoomTo(float)</a></code> in that zoom is relative to the current
+ camera.</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Parameters</h5>
+      <table class="jd-tagtable">
+        
+        <tr>
+          <td class="jd-tagparamname">amount</td>
+          <td class="jd-tagdescr">amount to change the zoom level. Positive values indicate zooming closer to the
+            surface of the Earth while negative values indicate zooming away from the surface
+            of the Earth.</td>
+        </tr>
+        
+      </table>
+  </div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Returns</h5>
+      <ul class="nolist jd-returns"><li>a <code><a href="../../../../../com/google/android/m4b/maps/CameraUpdate.html">CameraUpdate</a></code> containing the transformation.
+</li></ul>
+  </div>
+
+    </div>
+</div>
+
+
+<A NAME="zoomIn()"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        static
+        
+        
+        
+        <a href="../../../../../com/google/android/m4b/maps/CameraUpdate.html">CameraUpdate</a>
+      </span>
+      <span class="sympad"><strong>zoomIn</strong></span>
+      <span class="params">()</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Returns a <code><a href="../../../../../com/google/android/m4b/maps/CameraUpdate.html">CameraUpdate</a></code> that zooms in on the map by moving the viewpoint's height
+ closer to the Earth's surface. The zoom increment is 1.0.</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Returns</h5>
+      <ul class="nolist jd-returns"><li>a <code><a href="../../../../../com/google/android/m4b/maps/CameraUpdate.html">CameraUpdate</a></code> containing the transformation.
+</li></ul>
+  </div>
+
+    </div>
+</div>
+
+
+<A NAME="zoomOut()"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        static
+        
+        
+        
+        <a href="../../../../../com/google/android/m4b/maps/CameraUpdate.html">CameraUpdate</a>
+      </span>
+      <span class="sympad"><strong>zoomOut</strong></span>
+      <span class="params">()</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Returns a <code><a href="../../../../../com/google/android/m4b/maps/CameraUpdate.html">CameraUpdate</a></code> that zooms out on the map by moving the viewpoint's height
+ farther away from the Earth's surface. The zoom increment is -1.0.</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Returns</h5>
+      <ul class="nolist jd-returns"><li>a <code><a href="../../../../../com/google/android/m4b/maps/CameraUpdate.html">CameraUpdate</a></code> containing the transformation.
+</li></ul>
+  </div>
+
+    </div>
+</div>
+
+
+<A NAME="zoomTo(float)"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        static
+        
+        
+        
+        <a href="../../../../../com/google/android/m4b/maps/CameraUpdate.html">CameraUpdate</a>
+      </span>
+      <span class="sympad"><strong>zoomTo</strong></span>
+      <span class="params">(<span class="nowrap">float <i>zoom</i></span>)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Returns a <code><a href="../../../../../com/google/android/m4b/maps/CameraUpdate.html">CameraUpdate</a></code> that moves the camera viewpoint to a particular zoom level.</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Parameters</h5>
+      <table class="jd-tagtable">
+        
+        <tr>
+          <td class="jd-tagparamname">zoom</td>
+          <td class="jd-tagdescr">the desired zoom level, in the range of 2.0 to 21.0. Values below this range are
+            set to 2.0, and values above it are set to 21.0. Increase the value to zoom in.
+            Not all areas have tiles at the largest zoom levels.
+</td>
+        </tr>
+        
+      </table>
+  </div>
+
+    </div>
+</div>
+
+
+</section>
+
+
+
+<!-- ========= METHOD DETAIL ======== -->
+
+
+
+<!-- ========= END OF CLASS DATA ========= -->
+<A NAME="navbar_top"></A>
+
+</div> <!-- jd-content -->
+
+</body>
+</html>

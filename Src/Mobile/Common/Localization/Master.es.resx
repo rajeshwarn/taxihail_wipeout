@@ -815,10 +815,6 @@
   <data name="GenericTitle" xml:space="preserve">
     <value />
   </data>
-  <data name="GoogleMapKey" xml:space="preserve">
-    <value>0XEY3WqKVmJPhADLxOCPUweMcqYg3AfqCp8BvWw</value>
-    <comment>0XEY3WqKVmJPhADLxOCPUweMcqYg3AfqCp8BvWw</comment>
-  </data>
   <data name="GooglePlayServicesNotAvailableMessage" xml:space="preserve">
     <value>Usted necesita actualizar los servicios de “Google play” para poder utilizar esta aplicación</value>
     <comment>You need to update Google Play Services in order to use this application.</comment>

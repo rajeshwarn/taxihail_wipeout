@@ -1,0 +1,6 @@
+<resources>
+   <!-- The wallpaper is off for JellyBean and above because it was deemed
+        "poorly performing". See b/6592404 for more. Note that users who
+        upgrade to JB will have their wallpaper reset to the system default. -->
+   <bool name="wallpaper_enabled">false</bool>
+</resources>
