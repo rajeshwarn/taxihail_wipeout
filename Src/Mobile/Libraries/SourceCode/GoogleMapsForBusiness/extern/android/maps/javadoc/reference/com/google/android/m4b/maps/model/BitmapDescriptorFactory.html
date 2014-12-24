@@ -1,0 +1,1284 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<html devsite>
+  <head>
+    <title>BitmapDescriptorFactory</title>
+    <meta name="project_path" value="/maps/documentation/business/_project.yaml" />
+    <meta name="book_path" value="/maps/documentation/business/_book.yaml" />
+    <link rel="stylesheet" href="/+/css/plus.css" />
+  </head>
+
+<body class="">
+<style>
+
+/* Heading for "Parameters", "See Also", etc., in details sections */
+h4.jd-details-title {
+  font-size: 1.15em;
+  margin: 1.5em 0 .6em 0em;
+  padding: 0em 8em 0em 2.5em;
+  text-indent: -2em;
+  background-color: #E9E9E9; /* #DEEAFA */
+}
+h4 .params {
+  font-size:.9em;
+  font-weight:normal;
+}
+h5.jd-tagtitle {
+  margin: 0 0 .25em 1em;
+  font-size: 1em;
+  font-weight: bold;
+}
+/* For the tagdata blocks that make up the detailed description */
+.jd-details-descr {
+  padding: 0;
+  margin: .5em 6px;
+}
+.jd-tagdescr p {
+  margin-bottom: .5em;
+  padding: 0;
+}
+.jd-tagdata {
+  margin-left: .5em 1em .5em .5em;
+}
+/* .jd-typecol should be set to minimum width in place of width="1%" */
+.jd-sumtable, .jd-tagtable {
+  border: none !important;
+  padding: 0px 6px 0px 0px !important;
+  margin-left: 2em !important;
+  margin-bottom: 0.9em;
+}
+.jd-returns {
+  margin-left: 2.1em !important;  /* 0.1em larger than .jd-tagtable */
+}
+.jd-typecol, .jd-linkcol, .jd-enumtype {
+  /* border: none !important; */
+  vertical-align: middle !important;
+  padding: 0px 6px 0px 6px !important;
+}
+.jd-hang {
+  padding-left: 2em;
+  text-indent: -2em;
+}
+.jd-typecol, .jd-paramname, .jd-enumtype {
+  width: 1%;         /* What better way to set min. width? (here and below) */
+}
+.jd-typecol {
+  white-space: nowrap;
+}
+.jd-tagparamname, .jd-tagthrowstype {
+  border: none !important;
+  width: 1%;
+  padding: 0px 6px 0px 0px !important;
+}
+.jd-tagparamname {
+  font-style: italic;
+}
+.jd-tagdescr {
+  border: none !important;
+  padding: 0px 6px 0px 6px !important;
+}
+.jd-sumheading {
+  border: none !important;
+  padding: 0 !important;
+  background-color: #FFF;
+  color: #000;
+}
+#jd-header {
+  margin-bottom: 1em;
+}
+/* extra space between end of method name and open-paren */
+.sympad {
+  margin-right: 2px;
+}
+/* keep method parameter type on the same line with parameter name */
+.nowrap {
+  white-space: nowrap;
+}
+</style>
+
+<div id="api-info-block">
+
+
+
+  
+   
+  
+  
+  
+  
+
+
+<div class="api-level">
+  
+
+
+  
+  
+
+</div>
+</div><!-- end api-info-block -->
+
+
+<!-- ======== START OF CLASS DATA ======== -->
+
+
+
+<div id="jd-header">
+  public  final   class
+  <b>BitmapDescriptorFactory</b>
+</div><!-- end jd-header -->
+
+
+<div id="naMessage"></div>
+
+<div id="jd-content" class="api apilevel-">
+
+
+
+
+
+
+
+<div class="jd-descr">
+
+
+<p>Used to create a definition of an image, used for marker icons and ground overlays.
+ <p>
+ Prior to using any methods from this class, you must do one of the following to ensure that this
+ class is initialized:
+ <ul>
+ <li>Wait for a <code><a href="../../../../../../com/google/android/m4b/maps/GoogleMap.html">GoogleMap</a></code> to become available from a
+ <code><a href="../../../../../../com/google/android/m4b/maps/MapFragment.html">MapFragment</a></code> or
+ <code><a href="../../../../../../com/google/android/m4b/maps/MapView.html">MapView</a></code> that you have added to your application. You
+ can verify that the <code><a href="../../../../../../com/google/android/m4b/maps/GoogleMap.html">GoogleMap</a></code> is available by
+ calling the <code>getMap()</code> method and checking that the returned object is not null.
+ <li>Call <code><a href="../../../../../../com/google/android/m4b/maps/MapsInitializer.html#initialize(android.content.Context)">MapsInitializer.initialize(Context)</a></code>. As long as a
+ com.google.android.gms.common.GooglePlayServicesNotAvailableException
+ GooglePlayServicesNotAvailableException isn't thrown, this class will be correctly initialized.
+ </ul>
+</p>
+
+
+
+</div><!-- jd-descr -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="jd-descr">
+
+
+<section id="xml-attributes">
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- =========== ENUM CONSTANT SUMMARY =========== -->
+<section id="constants"><h3>Constant Summary</h3>
+  <table class="jd-sumtable">
+    
+
+    
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">float</td>
+        <td class="jd-linkcol"><a href="../../../../../../com/google/android/m4b/maps/model/BitmapDescriptorFactory.html#HUE_AZURE">HUE_AZURE</a></td>
+        <td class="jd-descrcol" width="100%"></td>
+    </tr>
+    
+    
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">float</td>
+        <td class="jd-linkcol"><a href="../../../../../../com/google/android/m4b/maps/model/BitmapDescriptorFactory.html#HUE_BLUE">HUE_BLUE</a></td>
+        <td class="jd-descrcol" width="100%"></td>
+    </tr>
+    
+    
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">float</td>
+        <td class="jd-linkcol"><a href="../../../../../../com/google/android/m4b/maps/model/BitmapDescriptorFactory.html#HUE_CYAN">HUE_CYAN</a></td>
+        <td class="jd-descrcol" width="100%"></td>
+    </tr>
+    
+    
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">float</td>
+        <td class="jd-linkcol"><a href="../../../../../../com/google/android/m4b/maps/model/BitmapDescriptorFactory.html#HUE_GREEN">HUE_GREEN</a></td>
+        <td class="jd-descrcol" width="100%"></td>
+    </tr>
+    
+    
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">float</td>
+        <td class="jd-linkcol"><a href="../../../../../../com/google/android/m4b/maps/model/BitmapDescriptorFactory.html#HUE_MAGENTA">HUE_MAGENTA</a></td>
+        <td class="jd-descrcol" width="100%"></td>
+    </tr>
+    
+    
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">float</td>
+        <td class="jd-linkcol"><a href="../../../../../../com/google/android/m4b/maps/model/BitmapDescriptorFactory.html#HUE_ORANGE">HUE_ORANGE</a></td>
+        <td class="jd-descrcol" width="100%"></td>
+    </tr>
+    
+    
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">float</td>
+        <td class="jd-linkcol"><a href="../../../../../../com/google/android/m4b/maps/model/BitmapDescriptorFactory.html#HUE_RED">HUE_RED</a></td>
+        <td class="jd-descrcol" width="100%"></td>
+    </tr>
+    
+    
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">float</td>
+        <td class="jd-linkcol"><a href="../../../../../../com/google/android/m4b/maps/model/BitmapDescriptorFactory.html#HUE_ROSE">HUE_ROSE</a></td>
+        <td class="jd-descrcol" width="100%"></td>
+    </tr>
+    
+    
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">float</td>
+        <td class="jd-linkcol"><a href="../../../../../../com/google/android/m4b/maps/model/BitmapDescriptorFactory.html#HUE_VIOLET">HUE_VIOLET</a></td>
+        <td class="jd-descrcol" width="100%"></td>
+    </tr>
+    
+    
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">float</td>
+        <td class="jd-linkcol"><a href="../../../../../../com/google/android/m4b/maps/model/BitmapDescriptorFactory.html#HUE_YELLOW">HUE_YELLOW</a></td>
+        <td class="jd-descrcol" width="100%"></td>
+    </tr>
+    
+    
+
+  </table>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- ========== METHOD SUMMARY =========== -->
+<section>
+  <h3>Public Method Summary</h3>
+  <table id="pubmethods" class="jd-sumtable">
+  
+
+
+    
+    <tr class="alt-color api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            
+            static
+            
+            <a href="../../../../../../com/google/android/m4b/maps/model/BitmapDescriptor.html">BitmapDescriptor</a>
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../../com/google/android/m4b/maps/model/BitmapDescriptorFactory.html#defaultMarker()">defaultMarker</a></span>()
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class=" api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            
+            static
+            
+            <a href="../../../../../../com/google/android/m4b/maps/model/BitmapDescriptor.html">BitmapDescriptor</a>
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../../com/google/android/m4b/maps/model/BitmapDescriptorFactory.html#defaultMarker(float)">defaultMarker</a></span>(<span class="nowrap">float <i>hue</i></span>)
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class="alt-color api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            
+            static
+            
+            <a href="../../../../../../com/google/android/m4b/maps/model/BitmapDescriptor.html">BitmapDescriptor</a>
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../../com/google/android/m4b/maps/model/BitmapDescriptorFactory.html#fromAsset(java.lang.String)">fromAsset</a></span>(<span class="nowrap">String <i>assetName</i></span>)
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class=" api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            
+            static
+            
+            <a href="../../../../../../com/google/android/m4b/maps/model/BitmapDescriptor.html">BitmapDescriptor</a>
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../../com/google/android/m4b/maps/model/BitmapDescriptorFactory.html#fromBitmap(android.graphics.Bitmap)">fromBitmap</a></span>(<span class="nowrap">Bitmap <i>image</i></span>)
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class="alt-color api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            
+            static
+            
+            <a href="../../../../../../com/google/android/m4b/maps/model/BitmapDescriptor.html">BitmapDescriptor</a>
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../../com/google/android/m4b/maps/model/BitmapDescriptorFactory.html#fromFile(java.lang.String)">fromFile</a></span>(<span class="nowrap">String <i>fileName</i></span>)
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class=" api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            
+            static
+            
+            <a href="../../../../../../com/google/android/m4b/maps/model/BitmapDescriptor.html">BitmapDescriptor</a>
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../../com/google/android/m4b/maps/model/BitmapDescriptorFactory.html#fromPath(java.lang.String)">fromPath</a></span>(<span class="nowrap">String <i>absolutePath</i></span>)
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class="alt-color api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            
+            static
+            
+            <a href="../../../../../../com/google/android/m4b/maps/model/BitmapDescriptor.html">BitmapDescriptor</a>
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../../com/google/android/m4b/maps/model/BitmapDescriptorFactory.html#fromResource(int)">fromResource</a></span>(<span class="nowrap">int <i>resourceId</i></span>)
+            
+          </div>
+      </td>
+    </tr>
+
+
+
+  </table>
+</section>
+
+
+
+
+
+
+<!-- ========== METHOD SUMMARY =========== -->
+</section><!--xml-attributes-->
+<!--subcount(class.inners) || subcount(class.attrs) || ...-->
+</div><!-- class="jd-descr" (end of Summary) -->
+
+<!-- Details -->
+
+
+
+
+
+
+
+
+<!-- XML Attributes -->
+
+
+<!-- Enum Values -->
+
+
+<!-- Constants -->
+
+
+<!-- ========= ENUM CONSTANTS DETAIL ======== -->
+<section id="constants">
+  <h2>Constants</h2>
+  
+
+
+
+<A NAME="HUE_AZURE"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        static
+        final
+        
+        
+          float
+        
+      </span>
+        <strong>HUE_AZURE</strong>
+    </h4>
+      <div class="api-level">
+        
+
+
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p></p></div>
+
+    
+        <div class="jd-tagdata">
+        <span class="jd-tagtitle jd-tagdescr">Constant Value: </span>
+        <span>
+            
+                210.0
+            
+        </span>
+        </div>
+    
+    </div>
+</div>
+
+
+
+<A NAME="HUE_BLUE"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        static
+        final
+        
+        
+          float
+        
+      </span>
+        <strong>HUE_BLUE</strong>
+    </h4>
+      <div class="api-level">
+        
+
+
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p></p></div>
+
+    
+        <div class="jd-tagdata">
+        <span class="jd-tagtitle jd-tagdescr">Constant Value: </span>
+        <span>
+            
+                240.0
+            
+        </span>
+        </div>
+    
+    </div>
+</div>
+
+
+
+<A NAME="HUE_CYAN"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        static
+        final
+        
+        
+          float
+        
+      </span>
+        <strong>HUE_CYAN</strong>
+    </h4>
+      <div class="api-level">
+        
+
+
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p></p></div>
+
+    
+        <div class="jd-tagdata">
+        <span class="jd-tagtitle jd-tagdescr">Constant Value: </span>
+        <span>
+            
+                180.0
+            
+        </span>
+        </div>
+    
+    </div>
+</div>
+
+
+
+<A NAME="HUE_GREEN"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        static
+        final
+        
+        
+          float
+        
+      </span>
+        <strong>HUE_GREEN</strong>
+    </h4>
+      <div class="api-level">
+        
+
+
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p></p></div>
+
+    
+        <div class="jd-tagdata">
+        <span class="jd-tagtitle jd-tagdescr">Constant Value: </span>
+        <span>
+            
+                120.0
+            
+        </span>
+        </div>
+    
+    </div>
+</div>
+
+
+
+<A NAME="HUE_MAGENTA"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        static
+        final
+        
+        
+          float
+        
+      </span>
+        <strong>HUE_MAGENTA</strong>
+    </h4>
+      <div class="api-level">
+        
+
+
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p></p></div>
+
+    
+        <div class="jd-tagdata">
+        <span class="jd-tagtitle jd-tagdescr">Constant Value: </span>
+        <span>
+            
+                300.0
+            
+        </span>
+        </div>
+    
+    </div>
+</div>
+
+
+
+<A NAME="HUE_ORANGE"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        static
+        final
+        
+        
+          float
+        
+      </span>
+        <strong>HUE_ORANGE</strong>
+    </h4>
+      <div class="api-level">
+        
+
+
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p></p></div>
+
+    
+        <div class="jd-tagdata">
+        <span class="jd-tagtitle jd-tagdescr">Constant Value: </span>
+        <span>
+            
+                30.0
+            
+        </span>
+        </div>
+    
+    </div>
+</div>
+
+
+
+<A NAME="HUE_RED"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        static
+        final
+        
+        
+          float
+        
+      </span>
+        <strong>HUE_RED</strong>
+    </h4>
+      <div class="api-level">
+        
+
+
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p></p></div>
+
+    
+        <div class="jd-tagdata">
+        <span class="jd-tagtitle jd-tagdescr">Constant Value: </span>
+        <span>
+            
+                0.0
+            
+        </span>
+        </div>
+    
+    </div>
+</div>
+
+
+
+<A NAME="HUE_ROSE"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        static
+        final
+        
+        
+          float
+        
+      </span>
+        <strong>HUE_ROSE</strong>
+    </h4>
+      <div class="api-level">
+        
+
+
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p></p></div>
+
+    
+        <div class="jd-tagdata">
+        <span class="jd-tagtitle jd-tagdescr">Constant Value: </span>
+        <span>
+            
+                330.0
+            
+        </span>
+        </div>
+    
+    </div>
+</div>
+
+
+
+<A NAME="HUE_VIOLET"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        static
+        final
+        
+        
+          float
+        
+      </span>
+        <strong>HUE_VIOLET</strong>
+    </h4>
+      <div class="api-level">
+        
+
+
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p></p></div>
+
+    
+        <div class="jd-tagdata">
+        <span class="jd-tagtitle jd-tagdescr">Constant Value: </span>
+        <span>
+            
+                270.0
+            
+        </span>
+        </div>
+    
+    </div>
+</div>
+
+
+
+<A NAME="HUE_YELLOW"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        static
+        final
+        
+        
+          float
+        
+      </span>
+        <strong>HUE_YELLOW</strong>
+    </h4>
+      <div class="api-level">
+        
+
+
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p></p></div>
+
+    
+        <div class="jd-tagdata">
+        <span class="jd-tagtitle jd-tagdescr">Constant Value: </span>
+        <span>
+            
+                60.0
+            
+        </span>
+        </div>
+    
+    </div>
+</div>
+
+
+</section>
+
+
+<!-- Fields -->
+
+
+<!-- Public ctors -->
+
+
+
+<!-- ========= CONSTRUCTOR DETAIL ======== -->
+<!-- Protected ctors -->
+
+
+
+<!-- ========= METHOD DETAIL ======== -->
+<!-- Public methdos -->
+
+
+<section id="public-methods">
+  <h2>Public Methods</h2>
+  
+
+
+<A NAME="defaultMarker()"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        static
+        
+        
+        
+        <a href="../../../../../../com/google/android/m4b/maps/model/BitmapDescriptor.html">BitmapDescriptor</a>
+      </span>
+      <span class="sympad"><strong>defaultMarker</strong></span>
+      <span class="params">()</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Creates a bitmap descriptor that refers to the default marker image. </p></div>
+
+    </div>
+</div>
+
+
+<A NAME="defaultMarker(float)"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        static
+        
+        
+        
+        <a href="../../../../../../com/google/android/m4b/maps/model/BitmapDescriptor.html">BitmapDescriptor</a>
+      </span>
+      <span class="sympad"><strong>defaultMarker</strong></span>
+      <span class="params">(<span class="nowrap">float <i>hue</i></span>)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Creates a bitmap descriptor that refers to a colorization of the default marker image. For
+ convenience, there is a predefined set of hue values. See example <code><a href="../../../../../../com/google/android/m4b/maps/model/BitmapDescriptorFactory.html#HUE_YELLOW">HUE_YELLOW</a></code>.</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Parameters</h5>
+      <table class="jd-tagtable">
+        
+        <tr>
+          <td class="jd-tagparamname">hue</td>
+          <td class="jd-tagdescr">The hue of the marker. Value must be greater or equal to 0 and less than 360.
+</td>
+        </tr>
+        
+      </table>
+  </div>
+
+    </div>
+</div>
+
+
+<A NAME="fromAsset(java.lang.String)"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        static
+        
+        
+        
+        <a href="../../../../../../com/google/android/m4b/maps/model/BitmapDescriptor.html">BitmapDescriptor</a>
+      </span>
+      <span class="sympad"><strong>fromAsset</strong></span>
+      <span class="params">(<span class="nowrap">String <i>assetName</i></span>)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Creates a <code><a href="../../../../../../com/google/android/m4b/maps/model/BitmapDescriptor.html">BitmapDescriptor</a></code> using the name of an image in the assets directory.</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Parameters</h5>
+      <table class="jd-tagtable">
+        
+        <tr>
+          <td class="jd-tagparamname">assetName</td>
+          <td class="jd-tagdescr">The name of an image in the assets directory.</td>
+        </tr>
+        
+      </table>
+  </div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Returns</h5>
+      <ul class="nolist jd-returns"><li>the <code><a href="../../../../../../com/google/android/m4b/maps/model/BitmapDescriptor.html">BitmapDescriptor</a></code> that was loaded from the asset or <code>null</code> if failed
+         to load.
+</li></ul>
+  </div>
+
+    </div>
+</div>
+
+
+<A NAME="fromBitmap(android.graphics.Bitmap)"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        static
+        
+        
+        
+        <a href="../../../../../../com/google/android/m4b/maps/model/BitmapDescriptor.html">BitmapDescriptor</a>
+      </span>
+      <span class="sympad"><strong>fromBitmap</strong></span>
+      <span class="params">(<span class="nowrap">Bitmap <i>image</i></span>)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Creates a bitmap descriptor from a given image.
+</p></div>
+
+    </div>
+</div>
+
+
+<A NAME="fromFile(java.lang.String)"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        static
+        
+        
+        
+        <a href="../../../../../../com/google/android/m4b/maps/model/BitmapDescriptor.html">BitmapDescriptor</a>
+      </span>
+      <span class="sympad"><strong>fromFile</strong></span>
+      <span class="params">(<span class="nowrap">String <i>fileName</i></span>)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Creates a <code><a href="../../../../../../com/google/android/m4b/maps/model/BitmapDescriptor.html">BitmapDescriptor</a></code> using the name of an image file located in the internal
+ storage.  In particular, this calls <code><a href="null#openFileInput(java.lang.String)">openFileInput(String)</a></code>.</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Parameters</h5>
+      <table class="jd-tagtable">
+        
+        <tr>
+          <td class="jd-tagparamname">fileName</td>
+          <td class="jd-tagdescr">The name of the image file.</td>
+        </tr>
+        
+      </table>
+  </div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Returns</h5>
+      <ul class="nolist jd-returns"><li>the <code><a href="../../../../../../com/google/android/m4b/maps/model/BitmapDescriptor.html">BitmapDescriptor</a></code> that was loaded from the asset or <code>null</code> if failed
+         to load.
+</li></ul>
+  </div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">See Also</h5>
+      <ul class="nolist"><li><a href="http://developer.android.com/guide/topics/data/data-storage.html#filesInternal">
+ Using the Internal Storage</a></li>
+      </ul>
+  </div>
+
+    </div>
+</div>
+
+
+<A NAME="fromPath(java.lang.String)"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        static
+        
+        
+        
+        <a href="../../../../../../com/google/android/m4b/maps/model/BitmapDescriptor.html">BitmapDescriptor</a>
+      </span>
+      <span class="sympad"><strong>fromPath</strong></span>
+      <span class="params">(<span class="nowrap">String <i>absolutePath</i></span>)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Creates a bitmap descriptor from an absolute file path.</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Parameters</h5>
+      <table class="jd-tagtable">
+        
+        <tr>
+          <td class="jd-tagparamname">absolutePath</td>
+          <td class="jd-tagdescr">The absolute path of the image.</td>
+        </tr>
+        
+      </table>
+  </div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Returns</h5>
+      <ul class="nolist jd-returns"><li>the <code><a href="../../../../../../com/google/android/m4b/maps/model/BitmapDescriptor.html">BitmapDescriptor</a></code> that was loaded from the absolute path or <code>null</code>
+         if failed to load.
+</li></ul>
+  </div>
+
+    </div>
+</div>
+
+
+<A NAME="fromResource(int)"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        static
+        
+        
+        
+        <a href="../../../../../../com/google/android/m4b/maps/model/BitmapDescriptor.html">BitmapDescriptor</a>
+      </span>
+      <span class="sympad"><strong>fromResource</strong></span>
+      <span class="params">(<span class="nowrap">int <i>resourceId</i></span>)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Creates a <code><a href="../../../../../../com/google/android/m4b/maps/model/BitmapDescriptor.html">BitmapDescriptor</a></code> using the resource id of an image.</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Parameters</h5>
+      <table class="jd-tagtable">
+        
+        <tr>
+          <td class="jd-tagparamname">resourceId</td>
+          <td class="jd-tagdescr">The resource id of an image.</td>
+        </tr>
+        
+      </table>
+  </div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Returns</h5>
+      <ul class="nolist jd-returns"><li>the <code><a href="../../../../../../com/google/android/m4b/maps/model/BitmapDescriptor.html">BitmapDescriptor</a></code> that was loaded from the asset or <code>null</code> if failed
+         to load.
+</li></ul>
+  </div>
+
+    </div>
+</div>
+
+
+</section>
+
+
+
+<!-- ========= METHOD DETAIL ======== -->
+
+
+
+<!-- ========= END OF CLASS DATA ========= -->
+<A NAME="navbar_top"></A>
+
+</div> <!-- jd-content -->
+
+</body>
+</html>

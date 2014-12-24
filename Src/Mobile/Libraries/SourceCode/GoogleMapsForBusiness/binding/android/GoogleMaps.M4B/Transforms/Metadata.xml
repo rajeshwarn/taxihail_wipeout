@@ -1,0 +1,100 @@
+﻿<metadata>
+  
+  <attr path="/api/package[@name='com.google.android.m4b.maps']" name="managedName">Google.Android.M4b.Maps</attr>
+  <attr path="/api/package[@name='com.google.android.m4b.maps.model']" name="managedName">Google.Android.M4b.Maps.Model</attr>
+
+  <attr path="/api/package[@name='com.google.android.m4b.maps.model']/class[@name='MarkerOptions']/method[@name='position' and count(parameter)=1]"
+    name="managedName">SetPosition</attr>
+  <attr path="/api/package[@name='com.google.android.m4b.maps.model']/class[@name='MarkerOptions']/method[@name='title' and count(parameter)=1]"
+    name="managedName">SetTitle</attr>
+
+  <remove-node path="/api/package[@name='com.google.android.m4b.maps.A']" />
+  <remove-node path="/api/package[@name='com.google.android.m4b.maps.B']" />
+  <remove-node path="/api/package[@name='com.google.android.m4b.maps.C']" />
+  <remove-node path="/api/package[@name='com.google.android.m4b.maps.D']" />
+  <remove-node path="/api/package[@name='com.google.android.m4b.maps.E']" />
+  <remove-node path="/api/package[@name='com.google.android.m4b.maps.F']" />
+  <remove-node path="/api/package[@name='com.google.android.m4b.maps.G']" />
+  <remove-node path="/api/package[@name='com.google.android.m4b.maps.H']" />
+  <remove-node path="/api/package[@name='com.google.android.m4b.maps.I']" />
+  <remove-node path="/api/package[@name='com.google.android.m4b.maps.J']" />
+  <remove-node path="/api/package[@name='com.google.android.m4b.maps.K']" />
+  <remove-node path="/api/package[@name='com.google.android.m4b.maps.L']" />
+  <remove-node path="/api/package[@name='com.google.android.m4b.maps.M']" />
+  <remove-node path="/api/package[@name='com.google.android.m4b.maps.N']" />
+  <remove-node path="/api/package[@name='com.google.android.m4b.maps.O']" />
+  <remove-node path="/api/package[@name='com.google.android.m4b.maps.P']" />
+  <remove-node path="/api/package[@name='com.google.android.m4b.maps.Q']" />
+  <remove-node path="/api/package[@name='com.google.android.m4b.maps.R']" />
+  <remove-node path="/api/package[@name='com.google.android.m4b.maps.S']" />
+  <remove-node path="/api/package[@name='com.google.android.m4b.maps.T']" />
+  <remove-node path="/api/package[@name='com.google.android.m4b.maps.U']" />
+  <remove-node path="/api/package[@name='com.google.android.m4b.maps.V']" />
+  <remove-node path="/api/package[@name='com.google.android.m4b.maps.W']" />
+  <remove-node path="/api/package[@name='com.google.android.m4b.maps.X']" />
+  <remove-node path="/api/package[@name='com.google.android.m4b.maps.Y']" />
+  <remove-node path="/api/package[@name='com.google.android.m4b.maps.Z']" />
+  <remove-node path="/api/package[@name='com.google.android.m4b.maps.a']" />
+  <remove-node path="/api/package[@name='com.google.android.m4b.maps.aA']" />
+  <remove-node path="/api/package[@name='com.google.android.m4b.maps.aB']" />
+  <remove-node path="/api/package[@name='com.google.android.m4b.maps.aC']" />
+  <remove-node path="/api/package[@name='com.google.android.m4b.maps.aD']" />
+  <remove-node path="/api/package[@name='com.google.android.m4b.maps.aE']" />
+  <remove-node path="/api/package[@name='com.google.android.m4b.maps.aF']" />
+  <remove-node path="/api/package[@name='com.google.android.m4b.maps.aG']" />
+  <remove-node path="/api/package[@name='com.google.android.m4b.maps.aa']" />
+  <remove-node path="/api/package[@name='com.google.android.m4b.maps.ab']" />
+  <remove-node path="/api/package[@name='com.google.android.m4b.maps.ac']" />
+  <remove-node path="/api/package[@name='com.google.android.m4b.maps.ad']" />
+  <remove-node path="/api/package[@name='com.google.android.m4b.maps.ae']" />
+  <remove-node path="/api/package[@name='com.google.android.m4b.maps.af']" />
+  <remove-node path="/api/package[@name='com.google.android.m4b.maps.ag']" />
+  <remove-node path="/api/package[@name='com.google.android.m4b.maps.ah']" />
+  <remove-node path="/api/package[@name='com.google.android.m4b.maps.ai']" />
+  <remove-node path="/api/package[@name='com.google.android.m4b.maps.aj']" />
+  <remove-node path="/api/package[@name='com.google.android.m4b.maps.ak']" />
+  <remove-node path="/api/package[@name='com.google.android.m4b.maps.al']" />
+  <remove-node path="/api/package[@name='com.google.android.m4b.maps.am']" />
+  <remove-node path="/api/package[@name='com.google.android.m4b.maps.an']" />
+  <remove-node path="/api/package[@name='com.google.android.m4b.maps.ao']" />
+  <remove-node path="/api/package[@name='com.google.android.m4b.maps.ap']" />
+  <remove-node path="/api/package[@name='com.google.android.m4b.maps.aq']" />
+  <remove-node path="/api/package[@name='com.google.android.m4b.maps.ar']" />
+  <remove-node path="/api/package[@name='com.google.android.m4b.maps.as']" />
+  <remove-node path="/api/package[@name='com.google.android.m4b.maps.at']" />
+  <remove-node path="/api/package[@name='com.google.android.m4b.maps.au']" />
+  <remove-node path="/api/package[@name='com.google.android.m4b.maps.av']" />
+  <remove-node path="/api/package[@name='com.google.android.m4b.maps.aw']" />
+  <remove-node path="/api/package[@name='com.google.android.m4b.maps.ax']" />
+  <remove-node path="/api/package[@name='com.google.android.m4b.maps.ay']" />
+  <remove-node path="/api/package[@name='com.google.android.m4b.maps.az']" />
+  <remove-node path="/api/package[@name='com.google.android.m4b.maps.b']" />
+  <remove-node path="/api/package[@name='com.google.android.m4b.maps.c']" />
+  <remove-node path="/api/package[@name='com.google.android.m4b.maps.d']" />
+  <remove-node path="/api/package[@name='com.google.android.m4b.maps.e']" />
+  <remove-node path="/api/package[@name='com.google.android.m4b.maps.f']" />
+  <remove-node path="/api/package[@name='com.google.android.m4b.maps.g']" />
+  <remove-node path="/api/package[@name='com.google.android.m4b.maps.h']" />
+  <remove-node path="/api/package[@name='com.google.android.m4b.maps.i']" />
+  <remove-node path="/api/package[@name='com.google.android.m4b.maps.j']" />
+  <remove-node path="/api/package[@name='com.google.android.m4b.maps.k']" />
+  <remove-node path="/api/package[@name='com.google.android.m4b.maps.l']" />
+  <remove-node path="/api/package[@name='com.google.android.m4b.maps.m']" />
+  <remove-node path="/api/package[@name='com.google.android.m4b.maps.model.internal']" />
+  <remove-node path="/api/package[@name='com.google.android.m4b.maps.n']" />
+  <remove-node path="/api/package[@name='com.google.android.m4b.maps.o']" />
+  <remove-node path="/api/package[@name='com.google.android.m4b.maps.p']" />
+  <remove-node path="/api/package[@name='com.google.android.m4b.maps.q']" />
+  <remove-node path="/api/package[@name='com.google.android.m4b.maps.r']" />
+  <remove-node path="/api/package[@name='com.google.android.m4b.maps.s']" />
+  <remove-node path="/api/package[@name='com.google.android.m4b.maps.t']" />
+  <remove-node path="/api/package[@name='com.google.android.m4b.maps.u']" />
+  <remove-node path="/api/package[@name='com.google.android.m4b.maps.v']" />
+  <remove-node path="/api/package[@name='com.google.android.m4b.maps.w']" />
+  <remove-node path="/api/package[@name='com.google.android.m4b.maps.x']" />
+  <remove-node path="/api/package[@name='com.google.android.m4b.maps.y']" />
+  <remove-node path="/api/package[@name='com.google.android.m4b.maps.z']" />
+
+  <remove-node path="//*[@obfuscated='true']"></remove-node>
+
+</metadata>

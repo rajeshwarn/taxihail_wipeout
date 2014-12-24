@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright 2011 Google Inc. All Rights Reserved. -->
+<!-- Turn features on/off in different configurations. -->
+<resources>
+  <!-- Widgets are enabled (on phones). -->
+  <bool name="enable_widgets">true</bool>
+
+  <!-- Whether to enable the traffic widget (and its service) -->
+  <bool name="enable_traffic_widget">true</bool>
+
+  <!-- Whether to enable the latitude friends widget (and its service) -->
+  <bool name="enable_latitude_friends_widget">false</bool>
+
+  <!-- Whether to enable the latitude shortcut -->
+  <bool name="enable_latitude_shortcut">false</bool>
+
+  <!-- Whether to enable the location history intent service. -->
+  <bool name="enable_history_intent_service">true</bool>
+
+  <!-- Use the tablet UI for XLarge SDK 11 and sw600dp; default is false. -->
+  <bool name="is_tablet">false</bool>
+
+  <!-- The wallpaper is on by default. -->
+  <bool name="wallpaper_enabled">true</bool>
+</resources>
