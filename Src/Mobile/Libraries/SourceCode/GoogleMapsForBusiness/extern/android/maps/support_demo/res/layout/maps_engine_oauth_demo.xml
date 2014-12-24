@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <fragment
+        xmlns:map="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/map"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        class="com.google.android.m4b.maps.SupportMapFragment"
+        map:m4b_cameraTargetLat="37.0"
+        map:m4b_cameraTargetLng="-120"
+        map:m4b_cameraZoom="6" />
+
+</RelativeLayout>

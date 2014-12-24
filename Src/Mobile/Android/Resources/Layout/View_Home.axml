@@ -33,7 +33,6 @@
                         android:id="@+id/mapPickup"
                         android:layout_width="fill_parent"
                         android:layout_height="match_parent"
-                        android:apiKey="@string/GoogleMapKey"
                         android:enabled="true"
                         android:clickable="true" />
                     <LinearLayout

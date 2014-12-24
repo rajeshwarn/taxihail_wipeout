@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <fragment
+        xmlns:map="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/map"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        class="com.google.android.m4b.maps.MapFragment"
+        map:m4b_cameraTargetLat="-34.0"
+        map:m4b_cameraTargetLng="151.0"
+        map:m4b_cameraZoom="10" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:background="#D000"
+        android:orientation="vertical"
+        android:paddingRight="5dp" >
+
+        <CheckBox
+            android:id="@+id/sydney"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:checked="true"
+            android:onClick="toggleSydney"
+            android:text="Sydney" />
+
+        <CheckBox
+            android:id="@+id/urban"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:checked="true"
+            android:onClick="toggleUrban"
+            android:text="Urban Areas" />
+
+        <CheckBox
+            android:id="@+id/coastal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:checked="true"
+            android:onClick="toggleCoastal"
+            android:text="US Coastal" />
+
+        <CheckBox
+            android:id="@+id/airports"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:checked="true"
+            android:onClick="toggleAirports"
+            android:text="US Airports" />
+
+        <CheckBox
+            android:id="@+id/cameras"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:checked="true"
+            android:onClick="toggleCameras"
+            android:text="Webcams" />
+    </LinearLayout>
+
+</RelativeLayout>

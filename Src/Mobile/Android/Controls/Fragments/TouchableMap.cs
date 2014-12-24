@@ -1,7 +1,7 @@
 using System;
 using Android.Content;
-using Android.Gms.Maps;
-using Android.Gms.Maps.Model;
+using Google.Android.M4b.Maps;
+using Google.Android.M4b.Maps.Model;
 using Android.OS;
 using Android.Util;
 using Android.Views;

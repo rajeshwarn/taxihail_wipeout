@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright 2010 Google Inc. All Rights Reserved. -->
+<resources>
+    <!-- Size of polygon that has the my location chevron mapped onto it. -->
+    <dimen name="vm_mylocation_chevron_size">64dp</dimen>
+    <!-- TODO(drg): rename this when MY_LOCATION_NEW_ANIMATION is removed. -->
+    <dimen name="vm_new_mylocation_chevron_size">32dp</dimen>
+</resources>

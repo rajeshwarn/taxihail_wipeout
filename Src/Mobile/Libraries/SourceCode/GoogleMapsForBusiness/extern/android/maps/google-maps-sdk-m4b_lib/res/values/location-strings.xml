@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Location client code resources (prefix with location_client) -->
+
+    <string name="location_client_powered_by_google">Powered by Google</string>
+
+    <!-- End location client resources -->
+</resources>
