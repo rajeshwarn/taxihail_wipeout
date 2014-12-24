@@ -663,7 +663,7 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
             }
             return RedirectToAction("Index", "Home", new { area = "Customer", companyId = id });
         }
-
+        
         public ActionResult GenerateKeystore(string type, string id)
         {
             try

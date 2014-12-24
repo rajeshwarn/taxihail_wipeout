@@ -32,4 +32,15 @@
     </legend>
 
     @Html.DisplayFor(model => model.GooglePlayCredentials)
+    <dl>
+        <dt>Google Map for Work API Fingerprint</dt>
+        <dd>@Html.DisplayFor(x => x.GooglePlayCredentials.KeystoreSHA1Signature + ";" + x.CompanySettings.FirstOrDefault(s => s.Key == "AndroidSigningKeyAlias").Value)</dd>
+        @using (Html.BeginForm("GenerateApiKey", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            @Html.Hidden("id", Model.Id);
+            @Html.Hidden("type", "assets");
+            <input type="submit" class="btn btn-primary" value="Generate Fingerprint" />
+        }
+    </dl>
+
 </fieldset>

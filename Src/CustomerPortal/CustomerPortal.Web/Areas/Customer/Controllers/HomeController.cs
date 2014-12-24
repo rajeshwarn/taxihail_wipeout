@@ -2,9 +2,11 @@
 using System.Linq;
 using System.Web.Mvc;
 using AutoMapper;
+using CustomerPortal.Web.Android;
 using CustomerPortal.Web.Entities;
 using CustomerPortal.Web.Models;
 using CustomerPortal.Web.Security;
+using CustomerPortal.Web.Services.Impl;
 using MongoRepository;
 using System;
 
@@ -17,6 +19,18 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers
     [CustomerCompanyFilter]
     public class HomeController : CustomerControllerBase
     {
+        private readonly KeystoreGenerator _keystoreGenerator;
+
+        //public HomeController(KeystoreGenerator keystoreGenerator)
+        //{
+        //    _keystoreGenerator = keystoreGenerator;
+        //}
+
+        //public HomeController()
+        //    : this(new KeystoreGenerator())
+        //{
+        //}
+
         //
         // GET: /Customer/Home/
 
@@ -96,6 +110,21 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers
             return View(model);
         }
 
+        //public ActionResult GenerateApiKey(string type, string id)
+        //{
+        //    try
+        //    {
+        //        _keystoreGenerator.GetApiKey(id, GetFileManager(type, id).GetFolderPath());
+                
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        TempData["warning"] = e.Message;
+        //    }
+
+        //    return RedirectToAction("Index", "Home", new { area = "Customer", companyId = id });
+        //}
+
 
         [HttpPost]
         public ActionResult Edit(QuestionnaireViewModel model)
@@ -136,6 +165,18 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers
                 }
             }
             return View(model);
+        }
+
+        private FileManagerBase GetFileManager(string type, string id)
+        {
+            switch (type)
+            {
+                case "assets":
+                    return new AssetsManager(id);
+                case "webtheme":
+                    return new WebThemeFilesManager(id);
+            }
+            throw new ArgumentException("file manager type not recognized");
         }
     }
 }
