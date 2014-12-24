@@ -565,6 +565,6 @@
   <string name="UpdateBookingSettingsGenericError">An error occured when updating the booking settings</string>
   <string name="UpdateBookingSettingsInvalidCoF">You must have a card on file to use this account</string>
   <string name="ServiceErrorCreateOrder_CannotCreateInIbs_1300">​We apologize but unfortunately we do not have any reservations available for that time period.</string>
-  <string name="GoogleMapKey">AIzaSyCrzyk3yrgNY91j8ZqZCPCjiWKEUCToilY</string>
+  <string name="GoogleMapKey">AIzaSyCtazVDlL4prQA5f2OnlWTw4u2X581dkzo</string>
   <string name="ServiceErrorCreateOrder_CannotCreateInIbs_1300_NoCall">​We apologize but unfortunately we do not have any reservations available for that time period.</string>
 </resources>
