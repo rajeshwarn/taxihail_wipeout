@@ -444,6 +444,7 @@ namespace MK.DeploymentService.Mobile
 
 			const string configAndroid = "Release";
 			var projectLists = new List<string> {
+                "GoogleMaps.M4B",
 				"MK.Common.Android",
 				"MK.Booking.Google.Android", 
 				"MK.Booking.Maps.Android", 
