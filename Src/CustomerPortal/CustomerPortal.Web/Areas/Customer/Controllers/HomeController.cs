@@ -21,15 +21,15 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers
     {
         private readonly KeystoreGenerator _keystoreGenerator;
 
-        //public HomeController(KeystoreGenerator keystoreGenerator)
-        //{
-        //    _keystoreGenerator = keystoreGenerator;
-        //}
+        public HomeController(KeystoreGenerator keystoreGenerator)
+        {
+            _keystoreGenerator = keystoreGenerator;
+        }
 
-        //public HomeController()
-        //    : this(new KeystoreGenerator())
-        //{
-        //}
+        public HomeController()
+            : this(new KeystoreGenerator())
+        {
+        }
 
         //
         // GET: /Customer/Home/
@@ -110,20 +110,20 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers
             return View(model);
         }
 
-        //public ActionResult GenerateApiKey(string type, string id)
-        //{
-        //    try
-        //    {
-        //        _keystoreGenerator.GetApiKey(id, GetFileManager(type, id).GetFolderPath());
-                
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        TempData["warning"] = e.Message;
-        //    }
+        public ActionResult GenerateApiKey(string type, string id)
+        {
+            try
+            {
+                _keystoreGenerator.GetApiKey(id, GetFileManager(type, id).GetFolderPath());
 
-        //    return RedirectToAction("Index", "Home", new { area = "Customer", companyId = id });
-        //}
+            }
+            catch (Exception e)
+            {
+                TempData["warning"] = e.Message;
+            }
+
+            return RedirectToAction("Index", "Home", new { area = "Customer", companyId = id });
+        }
 
 
         [HttpPost]

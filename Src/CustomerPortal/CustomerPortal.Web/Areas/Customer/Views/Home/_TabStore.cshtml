@@ -34,7 +34,8 @@
     @Html.DisplayFor(model => model.GooglePlayCredentials)
     <dl>
         <dt>Google Map for Work API Fingerprint</dt>
-        <dd>@Html.DisplayFor(x => x.GooglePlayCredentials.KeystoreSHA1Signature + ";" + x.CompanySettings.FirstOrDefault(s => s.Key == "AndroidSigningKeyAlias").Value)</dd>
+        <dd>@Model.GooglePlayCredentials.KeystoreSHA1Signature;@Model.CompanySettings.FirstOrDefault(s => s.Key == "Package").Value </dd>
+        <br/>
         @using (Html.BeginForm("GenerateApiKey", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
         {
             @Html.Hidden("id", Model.Id);
