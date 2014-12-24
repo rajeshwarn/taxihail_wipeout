@@ -1,0 +1,1084 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<html devsite>
+  <head>
+    <title>VisibleRegion</title>
+    <meta name="project_path" value="/maps/documentation/business/_project.yaml" />
+    <meta name="book_path" value="/maps/documentation/business/_book.yaml" />
+    <link rel="stylesheet" href="/+/css/plus.css" />
+  </head>
+
+<body class="">
+<style>
+
+/* Heading for "Parameters", "See Also", etc., in details sections */
+h4.jd-details-title {
+  font-size: 1.15em;
+  margin: 1.5em 0 .6em 0em;
+  padding: 0em 8em 0em 2.5em;
+  text-indent: -2em;
+  background-color: #E9E9E9; /* #DEEAFA */
+}
+h4 .params {
+  font-size:.9em;
+  font-weight:normal;
+}
+h5.jd-tagtitle {
+  margin: 0 0 .25em 1em;
+  font-size: 1em;
+  font-weight: bold;
+}
+/* For the tagdata blocks that make up the detailed description */
+.jd-details-descr {
+  padding: 0;
+  margin: .5em 6px;
+}
+.jd-tagdescr p {
+  margin-bottom: .5em;
+  padding: 0;
+}
+.jd-tagdata {
+  margin-left: .5em 1em .5em .5em;
+}
+/* .jd-typecol should be set to minimum width in place of width="1%" */
+.jd-sumtable, .jd-tagtable {
+  border: none !important;
+  padding: 0px 6px 0px 0px !important;
+  margin-left: 2em !important;
+  margin-bottom: 0.9em;
+}
+.jd-returns {
+  margin-left: 2.1em !important;  /* 0.1em larger than .jd-tagtable */
+}
+.jd-typecol, .jd-linkcol, .jd-enumtype {
+  /* border: none !important; */
+  vertical-align: middle !important;
+  padding: 0px 6px 0px 6px !important;
+}
+.jd-hang {
+  padding-left: 2em;
+  text-indent: -2em;
+}
+.jd-typecol, .jd-paramname, .jd-enumtype {
+  width: 1%;         /* What better way to set min. width? (here and below) */
+}
+.jd-typecol {
+  white-space: nowrap;
+}
+.jd-tagparamname, .jd-tagthrowstype {
+  border: none !important;
+  width: 1%;
+  padding: 0px 6px 0px 0px !important;
+}
+.jd-tagparamname {
+  font-style: italic;
+}
+.jd-tagdescr {
+  border: none !important;
+  padding: 0px 6px 0px 6px !important;
+}
+.jd-sumheading {
+  border: none !important;
+  padding: 0 !important;
+  background-color: #FFF;
+  color: #000;
+}
+#jd-header {
+  margin-bottom: 1em;
+}
+/* extra space between end of method name and open-paren */
+.sympad {
+  margin-right: 2px;
+}
+/* keep method parameter type on the same line with parameter name */
+.nowrap {
+  white-space: nowrap;
+}
+</style>
+
+<div id="api-info-block">
+
+
+
+  
+   
+  
+  
+  
+  
+
+  
+   
+  
+  
+   
+  
+  
+  
+
+  
+  
+   
+  
+  
+  
+
+
+<div class="api-level">
+  
+
+
+  
+  
+
+</div>
+</div><!-- end api-info-block -->
+
+
+<!-- ======== START OF CLASS DATA ======== -->
+
+
+
+<div id="jd-header">
+  public  final   class
+  <b>VisibleRegion</b>
+</div><!-- end jd-header -->
+
+
+<div id="naMessage"></div>
+
+<div id="jd-content" class="api apilevel-">
+
+
+
+
+
+
+
+<div class="jd-descr">
+
+
+<p>Contains the four points defining the four-sided polygon that is visible in a map's camera. This
+ polygon can be a trapezoid instead of a rectangle, because a camera can have tilt. If the camera
+ is directly over the center of the camera, the shape is rectangular, but if the camera is tilted,
+ the shape will appear to be a trapezoid whose smallest side is closest to the point of view.
+</p>
+
+
+
+</div><!-- jd-descr -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="jd-descr">
+
+
+<section id="xml-attributes">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- =========== ENUM CONSTANT SUMMARY =========== -->
+<section id="inhconstants">
+  <h3>Inherited Constant Summary</h3>
+  
+    
+  
+    
+      <div class="expandable api apilevel-">
+        <span class="showalways">
+          From interface
+          android.os.Parcelable
+        </span>
+        <div id="inherited-constants-android.os.Parcelable">
+          <div id="inherited-constants-android.os.Parcelable-list"
+                class="jd-inheritedlinks">
+          </div>
+          <div id="inherited-constants-android.os.Parcelable-summary">
+            <table class="jd-sumtable-expando">
+              
+
+    
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">int</td>
+        <td class="jd-linkcol">CONTENTS_FILE_DESCRIPTOR</td>
+        <td class="jd-descrcol" width="100%"></td>
+    </tr>
+    
+    
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">int</td>
+        <td class="jd-linkcol">PARCELABLE_WRITE_RETURN_VALUE</td>
+        <td class="jd-descrcol" width="100%"></td>
+    </tr>
+    
+    
+
+            </table>
+          </div>
+        </div>
+      </div>
+    
+  
+    
+      <div class="expandable api apilevel-">
+        <span class="showalways">
+          From interface
+          com.google.android.gms.common.internal.safeparcel.SafeParcelable
+        </span>
+        <div id="inherited-constants-com.google.android.gms.common.internal.safeparcel.SafeParcelable">
+          <div id="inherited-constants-com.google.android.gms.common.internal.safeparcel.SafeParcelable-list"
+                class="jd-inheritedlinks">
+          </div>
+          <div id="inherited-constants-com.google.android.gms.common.internal.safeparcel.SafeParcelable-summary">
+            <table class="jd-sumtable-expando">
+              
+
+    
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">String</td>
+        <td class="jd-linkcol">NULL</td>
+        <td class="jd-descrcol" width="100%"></td>
+    </tr>
+    
+    
+
+            </table>
+          </div>
+        </div>
+      </div>
+    
+  
+</section>
+
+
+
+
+<!-- =========== FIELD SUMMARY =========== -->
+<section id="lfields"><h3>Field Summary</h3>
+  <table class="jd-sumtable">
+    
+
+    
+      <tr class="alt-color api apilevel-" >
+          <td class="jd-typecol">
+          public
+          static
+          final
+          VisibleRegionCreator</td>
+          <td class="jd-linkcol"><a href="../../../../../../com/google/android/m4b/maps/model/VisibleRegion.html#CREATOR">CREATOR</a></td>
+          <td class="jd-descrcol" width="100%"></td>
+      </tr>
+      
+    
+      <tr class=" api apilevel-" >
+          <td class="jd-typecol">
+          public
+          
+          final
+          <a href="../../../../../../com/google/android/m4b/maps/model/LatLng.html">LatLng</a></td>
+          <td class="jd-linkcol"><a href="../../../../../../com/google/android/m4b/maps/model/VisibleRegion.html#farLeft">farLeft</a></td>
+          <td class="jd-descrcol" width="100%">LatLng object that defines the far left corner of the camera.</td>
+      </tr>
+      
+    
+      <tr class="alt-color api apilevel-" >
+          <td class="jd-typecol">
+          public
+          
+          final
+          <a href="../../../../../../com/google/android/m4b/maps/model/LatLng.html">LatLng</a></td>
+          <td class="jd-linkcol"><a href="../../../../../../com/google/android/m4b/maps/model/VisibleRegion.html#farRight">farRight</a></td>
+          <td class="jd-descrcol" width="100%">LatLng object that defines the far right corner of the camera.</td>
+      </tr>
+      
+    
+      <tr class=" api apilevel-" >
+          <td class="jd-typecol">
+          public
+          
+          final
+          <a href="../../../../../../com/google/android/m4b/maps/model/LatLngBounds.html">LatLngBounds</a></td>
+          <td class="jd-linkcol"><a href="../../../../../../com/google/android/m4b/maps/model/VisibleRegion.html#latLngBounds">latLngBounds</a></td>
+          <td class="jd-descrcol" width="100%">The smallest bounding box that includes the visible region defined in this class.</td>
+      </tr>
+      
+    
+      <tr class="alt-color api apilevel-" >
+          <td class="jd-typecol">
+          public
+          
+          final
+          <a href="../../../../../../com/google/android/m4b/maps/model/LatLng.html">LatLng</a></td>
+          <td class="jd-linkcol"><a href="../../../../../../com/google/android/m4b/maps/model/VisibleRegion.html#nearLeft">nearLeft</a></td>
+          <td class="jd-descrcol" width="100%">LatLng object that defines the bottom left corner of the camera.</td>
+      </tr>
+      
+    
+      <tr class=" api apilevel-" >
+          <td class="jd-typecol">
+          public
+          
+          final
+          <a href="../../../../../../com/google/android/m4b/maps/model/LatLng.html">LatLng</a></td>
+          <td class="jd-linkcol"><a href="../../../../../../com/google/android/m4b/maps/model/VisibleRegion.html#nearRight">nearRight</a></td>
+          <td class="jd-descrcol" width="100%">LatLng object that defines the bottom right corner of the camera.</td>
+      </tr>
+      
+    
+
+  </table>
+</section>
+
+
+
+
+
+
+
+<!-- ======== CONSTRUCTOR SUMMARY ======== -->
+<section>
+  <h3>Public Constructor Summary</h3>
+  <table id="pubctors" class="jd-sumtable">
+  
+
+
+    
+    <tr class="alt-color api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            
+            
+            
+            
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../../com/google/android/m4b/maps/model/VisibleRegion.html#VisibleRegion(com.google.android.m4b.maps.model.LatLng, com.google.android.m4b.maps.model.LatLng, com.google.android.m4b.maps.model.LatLng, com.google.android.m4b.maps.model.LatLng, com.google.android.m4b.maps.model.LatLngBounds)">VisibleRegion</a></span>(<span class="nowrap"><a href="../../../../../../com/google/android/m4b/maps/model/LatLng.html">LatLng</a> <i>nearLeft</i></span>, <span class="nowrap"><a href="../../../../../../com/google/android/m4b/maps/model/LatLng.html">LatLng</a> <i>nearRight</i></span>, <span class="nowrap"><a href="../../../../../../com/google/android/m4b/maps/model/LatLng.html">LatLng</a> <i>farLeft</i></span>, <span class="nowrap"><a href="../../../../../../com/google/android/m4b/maps/model/LatLng.html">LatLng</a> <i>farRight</i></span>, <span class="nowrap"><a href="../../../../../../com/google/android/m4b/maps/model/LatLngBounds.html">LatLngBounds</a> <i>latLngBounds</i></span>)
+            
+          </div>
+      </td>
+    </tr>
+
+
+
+  </table>
+</section>
+
+
+
+
+
+
+
+<!-- ========== METHOD SUMMARY =========== -->
+<section>
+  <h3>Public Method Summary</h3>
+  <table id="pubmethods" class="jd-sumtable">
+  
+
+
+    
+    <tr class="alt-color api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            
+            
+            
+            int
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../../com/google/android/m4b/maps/model/VisibleRegion.html#describeContents()">describeContents</a></span>()
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class=" api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            
+            
+            
+            boolean
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../../com/google/android/m4b/maps/model/VisibleRegion.html#equals(java.lang.Object)">equals</a></span>(<span class="nowrap">Object <i>o</i></span>)
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class="alt-color api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            
+            
+            
+            int
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../../com/google/android/m4b/maps/model/VisibleRegion.html#hashCode()">hashCode</a></span>()
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class=" api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            
+            
+            
+            String
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../../com/google/android/m4b/maps/model/VisibleRegion.html#toString()">toString</a></span>()
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class="alt-color api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            
+            
+            
+            void
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../../com/google/android/m4b/maps/model/VisibleRegion.html#writeToParcel(android.os.Parcel, int)">writeToParcel</a></span>(<span class="nowrap">Parcel <i>out</i></span>, <span class="nowrap">int <i>flags</i></span>)
+            
+          </div>
+      </td>
+    </tr>
+
+
+
+  </table>
+</section>
+
+
+
+
+
+
+<!-- ========== METHOD SUMMARY =========== -->
+</section><!--xml-attributes-->
+<!--subcount(class.inners) || subcount(class.attrs) || ...-->
+</div><!-- class="jd-descr" (end of Summary) -->
+
+<!-- Details -->
+
+
+
+
+
+
+
+
+<!-- XML Attributes -->
+
+
+<!-- Enum Values -->
+
+
+<!-- Constants -->
+
+
+<!-- Fields -->
+
+
+<!-- ========= FIELD DETAIL ======== -->
+<section id="fields">
+  <h2>Fields</h2>
+  
+
+
+
+<A NAME="CREATOR"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        static
+        final
+        
+        
+          VisibleRegionCreator
+        
+      </span>
+        <strong>CREATOR</strong>
+    </h4>
+      <div class="api-level">
+        
+
+
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p></p></div>
+
+    
+    </div>
+</div>
+
+
+
+<A NAME="farLeft"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        final
+        
+        
+          <a href="../../../../../../com/google/android/m4b/maps/model/LatLng.html">LatLng</a>
+        
+      </span>
+        <strong>farLeft</strong>
+    </h4>
+      <div class="api-level">
+        
+
+
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>LatLng object that defines the far left corner of the camera. </p></div>
+
+    
+    </div>
+</div>
+
+
+
+<A NAME="farRight"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        final
+        
+        
+          <a href="../../../../../../com/google/android/m4b/maps/model/LatLng.html">LatLng</a>
+        
+      </span>
+        <strong>farRight</strong>
+    </h4>
+      <div class="api-level">
+        
+
+
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>LatLng object that defines the far right corner of the camera. </p></div>
+
+    
+    </div>
+</div>
+
+
+
+<A NAME="latLngBounds"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        final
+        
+        
+          <a href="../../../../../../com/google/android/m4b/maps/model/LatLngBounds.html">LatLngBounds</a>
+        
+      </span>
+        <strong>latLngBounds</strong>
+    </h4>
+      <div class="api-level">
+        
+
+
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>The smallest bounding box that includes the visible region defined in this class.
+ <p>
+ If this box crosses the 180&deg meridian (the vertical line from north to south), the
+ longitude in <code><a href="../../../../../../com/google/android/m4b/maps/model/VisibleRegion.html#farRight">farRight</a></code> will be negative and the longitude in
+ <code><a href="../../../../../../com/google/android/m4b/maps/model/VisibleRegion.html#farLeft">farLeft</a></code> will be positive. This rule also applies to <code><a href="../../../../../../com/google/android/m4b/maps/model/VisibleRegion.html#nearRight">nearRight</a></code> and
+ <code><a href="../../../../../../com/google/android/m4b/maps/model/VisibleRegion.html#nearLeft">nearLeft</a></code>.
+</p></div>
+
+    
+    </div>
+</div>
+
+
+
+<A NAME="nearLeft"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        final
+        
+        
+          <a href="../../../../../../com/google/android/m4b/maps/model/LatLng.html">LatLng</a>
+        
+      </span>
+        <strong>nearLeft</strong>
+    </h4>
+      <div class="api-level">
+        
+
+
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>LatLng object that defines the bottom left corner of the camera. </p></div>
+
+    
+    </div>
+</div>
+
+
+
+<A NAME="nearRight"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        final
+        
+        
+          <a href="../../../../../../com/google/android/m4b/maps/model/LatLng.html">LatLng</a>
+        
+      </span>
+        <strong>nearRight</strong>
+    </h4>
+      <div class="api-level">
+        
+
+
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>LatLng object that defines the bottom right corner of the camera. </p></div>
+
+    
+    </div>
+</div>
+
+
+</section>
+
+
+<!-- Public ctors -->
+
+
+<!-- ========= CONSTRUCTOR DETAIL ======== -->
+<section id="public-constructors">
+  <h2>Public Constructors</h2>
+  
+
+
+<A NAME="VisibleRegion(com.google.android.m4b.maps.model.LatLng, com.google.android.m4b.maps.model.LatLng, com.google.android.m4b.maps.model.LatLng, com.google.android.m4b.maps.model.LatLng, com.google.android.m4b.maps.model.LatLngBounds)"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        
+        
+        
+        
+      </span>
+      <span class="sympad"><strong>VisibleRegion</strong></span>
+      <span class="params">(<span class="nowrap"><a href="../../../../../../com/google/android/m4b/maps/model/LatLng.html">LatLng</a> <i>nearLeft</i></span>, <span class="nowrap"><a href="../../../../../../com/google/android/m4b/maps/model/LatLng.html">LatLng</a> <i>nearRight</i></span>, <span class="nowrap"><a href="../../../../../../com/google/android/m4b/maps/model/LatLng.html">LatLng</a> <i>farLeft</i></span>, <span class="nowrap"><a href="../../../../../../com/google/android/m4b/maps/model/LatLng.html">LatLng</a> <i>farRight</i></span>, <span class="nowrap"><a href="../../../../../../com/google/android/m4b/maps/model/LatLngBounds.html">LatLngBounds</a> <i>latLngBounds</i></span>)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Creates a new VisibleRegion given the four corners of the camera. The LatLng parameters must
+ define a convex shape (the edges of the resulting shape mustn't cross). No bounds checking is
+ performed at runtime.</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Parameters</h5>
+      <table class="jd-tagtable">
+        
+        <tr>
+          <td class="jd-tagparamname">nearLeft</td>
+          <td class="jd-tagdescr">a <code><a href="../../../../../../com/google/android/m4b/maps/model/LatLng.html">LatLng</a></code> object containing the latitude and longitude of the near
+        left corner of the region.</td>
+        </tr>
+        
+        <tr>
+          <td class="jd-tagparamname">nearRight</td>
+          <td class="jd-tagdescr">a <code><a href="../../../../../../com/google/android/m4b/maps/model/LatLng.html">LatLng</a></code> object containing the latitude and longitude of the near
+        right corner of the region.</td>
+        </tr>
+        
+        <tr>
+          <td class="jd-tagparamname">farLeft</td>
+          <td class="jd-tagdescr">a <code><a href="../../../../../../com/google/android/m4b/maps/model/LatLng.html">LatLng</a></code> object containing the latitude and longitude of the far left
+        corner of the region.</td>
+        </tr>
+        
+        <tr>
+          <td class="jd-tagparamname">farRight</td>
+          <td class="jd-tagdescr">a <code><a href="../../../../../../com/google/android/m4b/maps/model/LatLng.html">LatLng</a></code> object containing the latitude and longitude of the far
+        right corner of the region.</td>
+        </tr>
+        
+        <tr>
+          <td class="jd-tagparamname">latLngBounds</td>
+          <td class="jd-tagdescr">the smallest bounding box that includes the visible region defined in
+        this class. If this box crosses the 180&deg meridian (the vertical line from north to
+        south), the longitude in <code>farRight</code> will be negative and the longitude in
+        <code>farLeft</code> will be positive. Same applies to <code>nearRight</code> and
+        <code>nearLeft</code>.
+</td>
+        </tr>
+        
+      </table>
+  </div>
+
+    </div>
+</div>
+
+
+</section>
+
+
+
+<!-- ========= CONSTRUCTOR DETAIL ======== -->
+<!-- Protected ctors -->
+
+
+
+<!-- ========= METHOD DETAIL ======== -->
+<!-- Public methdos -->
+
+
+<section id="public-methods">
+  <h2>Public Methods</h2>
+  
+
+
+<A NAME="describeContents()"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        
+        
+        
+        int
+      </span>
+      <span class="sympad"><strong>describeContents</strong></span>
+      <span class="params">()</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p></p></div>
+
+    </div>
+</div>
+
+
+<A NAME="equals(java.lang.Object)"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        
+        
+        
+        boolean
+      </span>
+      <span class="sympad"><strong>equals</strong></span>
+      <span class="params">(<span class="nowrap">Object <i>o</i></span>)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Compares this <code><a href="../../../../../../com/google/android/m4b/maps/model/VisibleRegion.html">VisibleRegion</a></code> to another object. If the other object is actually a
+ pointer to this object, or if all four corners and the bounds of the two objects are the
+ same, this method returns true. Otherwise, this method returns false.</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Parameters</h5>
+      <table class="jd-tagtable">
+        
+        <tr>
+          <td class="jd-tagparamname">o</td>
+          <td class="jd-tagdescr">an java.lang.Object. Return true if both objects are the same object, or if
+        all four corners and the bounds of the two objects are the same. Return false
+        otherwise.
+</td>
+        </tr>
+        
+      </table>
+  </div>
+
+    </div>
+</div>
+
+
+<A NAME="hashCode()"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        
+        
+        
+        int
+      </span>
+      <span class="sympad"><strong>hashCode</strong></span>
+      <span class="params">()</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p></p></div>
+
+    </div>
+</div>
+
+
+<A NAME="toString()"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        
+        
+        
+        String
+      </span>
+      <span class="sympad"><strong>toString</strong></span>
+      <span class="params">()</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p></p></div>
+
+    </div>
+</div>
+
+
+<A NAME="writeToParcel(android.os.Parcel, int)"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        
+        
+        
+        void
+      </span>
+      <span class="sympad"><strong>writeToParcel</strong></span>
+      <span class="params">(<span class="nowrap">Parcel <i>out</i></span>, <span class="nowrap">int <i>flags</i></span>)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p></p></div>
+
+    </div>
+</div>
+
+
+</section>
+
+
+
+<!-- ========= METHOD DETAIL ======== -->
+
+
+
+<!-- ========= END OF CLASS DATA ========= -->
+<A NAME="navbar_top"></A>
+
+</div> <!-- jd-content -->
+
+</body>
+</html>

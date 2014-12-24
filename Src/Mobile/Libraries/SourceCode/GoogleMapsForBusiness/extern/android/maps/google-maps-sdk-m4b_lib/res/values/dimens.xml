@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <dimen name="btn_width">42dp</dimen>
+    <dimen name="btn_myl_height">42dp</dimen>
+    <dimen name="btn_zoom_height">40dp</dimen>
+    <dimen name="btn_margin">10dp</dimen>
+    <dimen name="btn_zoom_x_margin">10dp</dimen>
+    <!-- Lift the zoom button a little to clear the copyright notice -->
+    <dimen name="btn_zoom_y_margin">15dp</dimen>
+    <dimen name="watermark_margin">5dp</dimen>
+</resources>
