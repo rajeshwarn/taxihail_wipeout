@@ -15,12 +15,17 @@ namespace CustomerPortal.Web.Entities.Network
         }
 
         [Required]
-        [Display(Name = "IncludeInTaxiHailNetwork", Description = "IncludeInTaxiHailNetworkHelp",
+        [Display(Name = "IncludeInTaxiHailNetwork",
+            Description = "IncludeInTaxiHailNetworkHelp",
             ResourceType = typeof(Resources))]
         public bool IsInNetwork { get; set; }
 
-         [Display(Name = "RegionTaxiHailNetworkLabel", ResourceType = typeof(Resources))]
-         [Required]
+        public string Market { get; set; }
+
+        public int FleetId { get; set; }
+
+        [Required]
+        [Display(Name = "RegionTaxiHailNetworkLabel", ResourceType = typeof(Resources))]
         public MapRegion Region {get; set; }
 
         public string Id { get; set; }

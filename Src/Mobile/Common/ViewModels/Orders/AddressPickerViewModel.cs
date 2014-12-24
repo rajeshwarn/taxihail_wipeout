@@ -23,6 +23,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		private readonly IPlaces _placesService;
 		private readonly IGeolocService _geolocService;
 		private readonly IAccountService _accountService;
+		private readonly ILocationService _locationService;
+
 		private bool _isInLocationDetail;
 		private Address _currentAddress;	
 		private bool _ignoreTextChange;
@@ -36,12 +38,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		public AddressPickerViewModel(IOrderWorkflowService orderWorkflowService,
 			IPlaces placesService,
 			IGeolocService geolocService,
-			IAccountService accountService)
+			IAccountService accountService,
+			ILocationService locationService)
 		{
 			_orderWorkflowService = orderWorkflowService;
 			_geolocService = geolocService;
 			_placesService = placesService;
 			_accountService = accountService;
+			_locationService = locationService;
 		}
 
 		public void Init(string searchCriteria)
@@ -67,12 +71,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		{            
             _ignoreTextChange = true;
 			ShowDefaultResults = true;
-			_currentAddress = await _orderWorkflowService.GetCurrentAddress();
+			_currentAddress = await GetCurrentAddressOrUserPosition();
 			StartingText = _currentAddress.GetFirstPortionOfAddress();
 
 			var favoritePlaces = _accountService.GetFavoriteAddresses();
 			var historyPlaces = _accountService.GetHistoryAddresses();
-			var neabyPlaces = Task.Run(() => _placesService.SearchPlaces(null, _currentAddress.Latitude, _currentAddress.Longitude, null, _currentLanguage));
+			var neabyPlaces = Task.Run(() => _placesService.SearchPlaces(null, 
+				_currentAddress != null ? _currentAddress.Latitude : (double?)null, 
+				_currentAddress != null ? _currentAddress.Longitude : (double?)null, 
+				null, _currentLanguage));
+
 			try
 			{
 				using(this.Services().Message.ShowProgressNonModal())
@@ -172,7 +180,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 				{
                     this.Services().Message.ShowProgressNonModal(false);
 					var detailedAddress = UpdateAddressWithPlaceDetail(vm.Address);
-                    _orderWorkflowService.SetIgnoreNextGeoLocResult(true);
 
 					if(_isInLocationDetail)
 					{
@@ -180,6 +187,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 					}
 					else
 					{
+						((HomeViewModel)Parent).LocateMe.Cancel();
 						_orderWorkflowService.SetAddress(detailedAddress);
                     	PresentationStateRequested.Raise(this, new HomeViewModelStateRequestedEventArgs(HomeViewModelState.Initial));
 						ChangePresentation(new ZoomToStreetLevelPresentationHint(detailedAddress.Latitude, detailedAddress.Longitude));
@@ -251,14 +259,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
 		protected AddressViewModel[] SearchPlaces(string criteria)
 		{           
-			var position = _currentAddress;
-
-			if (position == null)
-			{
-				return new AddressViewModel[0];
-			}
-				
-			var fullAddresses = _placesService.SearchPlaces(criteria, position.Latitude, position.Longitude, null, _currentLanguage);
+			var fullAddresses = _placesService.SearchPlaces(criteria, 
+				_currentAddress != null ? _currentAddress.Latitude : (double?)null, 
+				_currentAddress != null ? _currentAddress.Longitude : (double?)null, 
+				null, _currentLanguage);
 
 			var addresses = fullAddresses.ToList();
 			return addresses.Select(a => new AddressViewModel(a, AddressType.Places) { IsSearchResult = true }).ToArray();
@@ -303,6 +307,27 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			}
 
 			return addresses.Select(a => new AddressViewModel(a, AddressType.Places) { IsSearchResult = true }).ToArray();
+		}
+
+		private async Task<Address> GetCurrentAddressOrUserPosition()
+		{
+			var currentAddress = await _orderWorkflowService.GetCurrentAddress();
+			if (currentAddress.HasValidCoordinate())
+			{
+				return currentAddress;
+			}
+
+			var userPosition = _locationService.BestPosition;
+			if (userPosition == null)
+			{
+				return null;
+			}
+
+			return new Address
+			{ 
+				Latitude = userPosition.Latitude,
+				Longitude = userPosition.Longitude
+			};
 		}
 	}
 }

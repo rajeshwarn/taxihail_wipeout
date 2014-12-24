@@ -17,9 +17,13 @@ namespace apcurium.MK.Booking.Api.Services
     {
         private readonly IAccountDao _accountDao;
         private readonly ICommandBus _commandBus;
+        private readonly IOrderPaymentDao _orderPaymentDao;
+        private readonly IPromotionDao _promotionDao;
 
-        public OrderService(IOrderDao dao, IAccountDao accountDao, ICommandBus commandBus)
+        public OrderService(IOrderDao dao, IOrderPaymentDao orderPaymentDao, IPromotionDao promotionDao, IAccountDao accountDao, ICommandBus commandBus)
         {
+            _orderPaymentDao = orderPaymentDao;
+            _promotionDao = promotionDao;
             _accountDao = accountDao;
             _commandBus = commandBus;
             Dao = dao;
@@ -42,7 +46,23 @@ namespace apcurium.MK.Booking.Api.Services
                 throw new HttpError(HttpStatusCode.Unauthorized, "Can't access another account's order");
             }
 
-            return new OrderMapper().ToResource(orderDetail);
+            var payment = _orderPaymentDao.FindByOrderId(orderDetail.Id);
+            if (payment != null && !payment.IsCancelled && payment.IsCompleted)
+            {
+                orderDetail.Fare = Convert.ToDouble(payment.Meter);
+                orderDetail.Toll = 0;
+                orderDetail.Tip = Convert.ToDouble(payment.Tip);
+            }
+            
+            var result = new OrderMapper().ToResource(orderDetail);
+
+            var promoUsed = _promotionDao.FindByOrderId(orderDetail.Id);
+            if (promoUsed != null)
+            {
+                result.PromoCode = promoUsed.Code;
+            }
+
+            return result;
         }
 
         public object Delete(OrderRequest request)

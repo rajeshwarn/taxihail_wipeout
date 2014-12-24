@@ -150,7 +150,7 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
                 }
             }
 
-            var emailLogo = new AssetsManager(id).GetAll().FirstOrDefault(f => Path.GetFileName(f).ToLower() == "email_logo.png");
+            var emailLogo = new AssetsManager(id).GetAll().FirstOrDefault(f => Path.GetFileName(f).ToLower() == "logo_1_5.png");
             if (!string.IsNullOrEmpty(emailLogo))
             {
                 var logoDestination = Path.Combine(destination, "email_logo.png");
@@ -253,7 +253,7 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
             model.Settings.Add("TaxiHail.ApplicationName", new Value(company.Application.AppName, true));
             model.Settings.Add("TaxiHail.ApplicationKey", new Value(company.CompanyKey, true));
             model.Settings.Add("TaxiHail.AccentColor", new Value("#0057a3", false));
-            model.Settings.Add("TaxiHail.EmailFontColor", new Value("#000", false));
+            model.Settings.Add("TaxiHail.EmailFontColor", new Value("#000000", false));
             model.Settings.Add("TaxiHail.SiteName", new Value(company.CompanyKey, true));
 
             model.Settings.Add("AndroidSigningKeyAlias", new Value("MK" + company.CompanyKey, false));

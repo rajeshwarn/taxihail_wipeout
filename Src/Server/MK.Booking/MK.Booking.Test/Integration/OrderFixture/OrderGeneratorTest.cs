@@ -13,7 +13,6 @@ using apcurium.MK.Common.Entity;
 using Infrastructure.Messaging;
 using Moq;
 using NUnit.Framework;
-using apcurium.MK.Booking.Common.Tests;
 
 #endregion
 

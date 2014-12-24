@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using apcurium.MK.Booking.Common.Tests;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.EventHandlers;
 using apcurium.MK.Booking.Events;
@@ -428,6 +427,38 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
 
                 Assert.NotNull(dto);
                 Assert.AreEqual(555, dto.IBSAccountId);
+            }
+        }
+
+        [Test]
+        public void when_account_unlinked_from_ibs_then_dto_updated()
+        {
+            Sut.Handle(new AccountLinkedToIbs
+            {
+                SourceId = _accountId,
+                IbsAccountId = 122
+            });
+
+            Sut.Handle(new AccountLinkedToIbs
+            {
+                SourceId = _accountId,
+                IbsAccountId = 555,
+                CompanyKey = "test"
+            });
+
+            Sut.Handle(new AccountUnlinkedFromIbs
+            {
+                SourceId = _accountId
+            });
+
+            using (var context = new BookingDbContext(DbName))
+            {
+                var accountDetail = context.Query<AccountDetail>().FirstOrDefault(x => x.Id == _accountId);
+                var accountIbsDetail = context.Query<AccountIbsDetail>().FirstOrDefault(x => x.AccountId == _accountId);
+
+                Assert.NotNull(accountDetail);
+                Assert.AreEqual(null, accountDetail.IBSAccountId);
+                Assert.Null(accountIbsDetail);
             }
         }
     }

@@ -9,6 +9,7 @@ using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Booking.Mobile.ViewModels.Payment;
+using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 {
@@ -36,18 +37,23 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
                 ChargeTypes = (await _accountService.GetPaymentsList()).Select(x => new ListItem { Id = x.Id, Display = this.Services().Localize[x.Display] }).ToArray();
                 RaisePropertyChanged(() => IsChargeTypesEnabled);
 
-                this.Observe(_orderWorkflowService.GetAndObserveBookingSettings(), bookingSettings => BookingSettings = bookingSettings.Copy());
-                this.Observe(_orderWorkflowService.GetAndObservePickupAddress(), address => PickupAddress = address.Copy());
+                Observe(_orderWorkflowService.GetAndObserveBookingSettings(), bookingSettings => BookingSettings = bookingSettings.Copy());
+                Observe(_orderWorkflowService.GetAndObservePickupAddress(), address => PickupAddress = address.Copy());
+		        Observe(_orderWorkflowService.GetAndObserveMarket(), market => MarketUpdated(market));
 		    }
 		}
+
+	    private async Task MarketUpdated(string market)
+	    {
+            ChargeTypes = (await _accountService.GetPaymentsList(market)).Select(x => new ListItem { Id = x.Id, Display = this.Services().Localize[x.Display] }).ToArray();
+	    }
 
 	    public bool IsChargeTypesEnabled
         {
             get
             {
 				// this is in cache and set correctly when we add/update/delete credit card
-				return !_accountService.CurrentAccount.DefaultCreditCard.HasValue 
-					|| !Settings.DisableChargeTypeWhenCardOnFile;
+				return !_accountService.CurrentAccount.DefaultCreditCard.HasValue || !Settings.DisableChargeTypeWhenCardOnFile;
             }
         }
 

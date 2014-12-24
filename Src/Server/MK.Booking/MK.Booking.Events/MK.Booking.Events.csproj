@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AccountChargeImported.cs" />
     <Compile Include="AccountChargeDeleted.cs" />
     <Compile Include="AccountConfirmed.cs" />
     <Compile Include="AccountDisabled.cs" />
@@ -52,6 +53,7 @@
     <Compile Include="AccountPasswordReset.cs" />
     <Compile Include="AccountPasswordUpdated.cs" />
     <Compile Include="AccountRegistered.cs" />
+    <Compile Include="AccountUnlinkedFromIbs.cs" />
     <Compile Include="AccountUpdated.cs" />
     <Compile Include="AddressRemovedFromHistory.cs" />
     <Compile Include="AccountChargeAddedUpdated.cs" />
@@ -62,10 +64,13 @@
     <Compile Include="AllCreditCardsRemoved.cs" />
     <Compile Include="CreditCardErrorThrown.cs" />
     <Compile Include="CreditCardPaymentCaptured.cs" />
+    <Compile Include="CreditCardPaymentCaptured_V2.cs" />
     <Compile Include="CreditCardPaymentInitiated.cs" />
     <Compile Include="CreditCardUpdated.cs" />
     <Compile Include="DispatchCompanySwitchIgnored.cs" />
+    <Compile Include="IbsOrderInfoAddedToOrder.cs" />
     <Compile Include="NotificationSettingsAddedOrUpdated.cs" />
+    <Compile Include="OrderCancelledBecauseOfIbsError.cs" />
     <Compile Include="OrderPreparedForNextDispatch.cs" />
     <Compile Include="OrderPairedForPayment.cs" />
     <Compile Include="OrderSwitchedToNextDispatchCompany.cs" />
@@ -78,6 +83,13 @@
     <Compile Include="PayPalExpressCheckoutPaymentCompleted.cs" />
     <Compile Include="PayPalExpressCheckoutPaymentInitiated.cs" />
     <Compile Include="PayPalPaymentCancellationFailed.cs" />
+    <Compile Include="PromotionActivated.cs" />
+    <Compile Include="PrivacyPolicyUpdated.cs" />
+    <Compile Include="PromotionCreated.cs" />
+    <Compile Include="PromotionDeactivated.cs" />
+    <Compile Include="PromotionRedeemed.cs" />
+    <Compile Include="PromotionUpdated.cs" />
+    <Compile Include="PromotionApplied.cs" />
     <Compile Include="RatingTypeDeleted.cs" />
     <Compile Include="RoleAddedToUserAccount.cs" />
     <Compile Include="RuleActivated.cs" />
@@ -111,6 +123,8 @@
     <Compile Include="RatingTypeAdded.cs" />
     <Compile Include="RatingTypeHidded.cs" />
     <Compile Include="RatingTypeUpdated.cs" />
+    <Compile Include="UserAddedToPromotionWhiteList.cs" />
+    <Compile Include="UserTaxiHailNetworkSettingsAddedOrUpdated.cs" />
     <Compile Include="TermsAndConditionsRetriggered.cs" />
     <Compile Include="TermsAndConditionsUpdated.cs" />
     <Compile Include="VehicleTypeAddedUpdated.cs" />

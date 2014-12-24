@@ -109,6 +109,9 @@
     <Compile Include="Google\GoogleApiClient.cs" />
     <Compile Include="TomTom\TomTomProvider.cs" />
     <Compile Include="TomTom\Resources\RoutingResponse.cs" />
+    <Compile Include="Extensions\ServiceClientBaseExtension.cs" />
+    <Compile Include="Google\Resources\GoogleResult.cs" />
+    <Compile Include="Extensions\ResourcesExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

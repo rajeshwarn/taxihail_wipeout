@@ -58,6 +58,9 @@ namespace MK.Common.Configuration
                 OrderPriority = true,
                 TimeDifference = 0,
                 ValidatePickupZone = true,
+                RestApiUrl = @"http://cabmatedemo.drivelinq.com:8889/", // TODO: Set proper values
+                RestApiUser = @"EUGENE",
+                RestApiSecret = @"T!?_asF",
                 WebServicesPassword = "test",
                 WebServicesUserName = "taxi"
             };
@@ -108,8 +111,14 @@ namespace MK.Common.Configuration
         [Display(Name = "Minimum Required App Version", Description = "Minimum required app version to create an order.")]
         public string MinimumRequiredAppVersion { get; private set; }
 
-        [CustomizableByCompany]
+        [CustomizableByCompany, RequiresTaxiHailPro]
         [Display(Name = "Send Payment Detail To Driver", Description = "Inform the driver of auto payment success or failure")]
         public bool SendDetailedPaymentInfoToDriver { get; private set; }
+
+        [Display(Name = "Overrides base url of the application (ie: in Account confirmation email)")]
+        public string BaseUrl { get; private set; }
+
+        [Display(Name = "TaxiHail Pro", Description = "Company has access to TaxiHail Pro features")]
+        public bool IsTaxiHailPro { get; protected set; }
     }
 }

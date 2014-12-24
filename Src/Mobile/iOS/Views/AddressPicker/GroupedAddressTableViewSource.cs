@@ -13,7 +13,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.AddressPicker
 {
     public class GroupedAddressTableViewSource : BindableTableViewSource
     {
-        private static UIImage PoweredByGoogleImage = UIImage.FromFile("poweredByGoogle.png");
+        private static UIImage PoweredBy = UIImage.FromFile("poweredBy4sq.png");
         private float NearZero = 0.000001f; // iOS doesn't accept 0 for the height
 
         private int? _expandedSection;
@@ -182,8 +182,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.AddressPicker
                 {
                     var googleLogo = new UIImageView
                     {
-                        Frame = new RectangleF(button.Frame.X, button.Frame.Bottom + 5, PoweredByGoogleImage.Size.Width, PoweredByGoogleImage.Size.Height),
-                        Image = PoweredByGoogleImage,
+						Frame = new RectangleF(button.Frame.X, button.Frame.Bottom + 5, PoweredBy.Size.Width, PoweredBy.Size.Height),
+                        Image = PoweredBy ,
                         AutoresizingMask = UIViewAutoresizing.FlexibleTopMargin
                     };
                     container.AddSubview(googleLogo);

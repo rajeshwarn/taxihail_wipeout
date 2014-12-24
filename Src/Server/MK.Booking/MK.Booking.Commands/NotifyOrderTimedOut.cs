@@ -13,5 +13,7 @@ namespace apcurium.MK.Booking.Commands
         public Guid Id { get; private set; }
 
         public Guid OrderId { get; set; }
+
+        public string Market { get; set; }
     }
 }

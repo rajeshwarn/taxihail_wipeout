@@ -10,10 +10,11 @@
         },
         
         initialize: function () {
+           this.model.set('lastMarketPosition', { Longitude: 0, Latitude: 0 });
 
            this.model.on('change:pickupAddress', function(model, value) {
-                this._pickupAddressView.model.set(value);
-            }, this);
+               this._pickupAddressView.model.set(value);
+           }, this);
 
             this.model.on('change:dropOffAddress', function(model, value) {
                 this._dropOffAddressView.model.set(value);
@@ -23,6 +24,10 @@
 
             // Validate addresses + Only update ride estimate & eta if enabled
             this.model.on('change:pickupAddress change:dropOffAddress', function (model, value) {
+                this.setMarket();
+            }, this);
+
+            this.model.on('change:market', function (model, value) {
                 this.validateOrderAndRefreshEstimate();
             }, this);
             
@@ -180,6 +185,56 @@
             return this;
         },
 
+        setMarket: function () {
+
+            var position = this.model.get('pickupAddress');
+
+            function calculateDistance(latitude1, longitude1, latitude2, longitude2) {
+                var radius = 6378137; // Earth radius
+                var dLat = toRad(latitude2 - latitude1);
+                var dLon = toRad(longitude2 - longitude1);
+                var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                        Math.cos(toRad(latitude1)) * Math.cos(toRad(latitude2)) *
+                        Math.sin(dLon / 2) * Math.sin(dLon / 2);
+                var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+                var dst = radius * c;
+                return dst;
+            }
+
+            function toRad(val) {
+                return val * Math.PI / 180;
+            }
+
+            var distance = calculateDistance(position.latitude, position.longitude, this.model.get('lastMarketPosition').Latitude, this.model.get('lastMarketPosition').Longitude);
+
+            if (distance > 1000) {
+                $.ajax({
+                    url: "api/roaming/market?latitude=" + position.latitude + "&longitude=" + position.longitude,
+                    type: "GET",
+                    dataType: "text",
+                    success: _.bind(function (data) {
+                        this.model.set('market', data);
+
+                        if (data !== "") {
+                            if (this.model.get('lastMarket') !== this.model.get('market') && this.model.get('market') !== "") {
+                                this.confirmMarketChange();
+                            }
+                        }
+
+                        this.model.set('lastMarket', data);
+                        this.model.set('lastMarketPosition', { Latitude: position.latitude, Longitude: position.longitude });
+                    }, this)
+                });
+            }
+        },
+
+        confirmMarketChange: function () {
+            TaxiHail.message({
+                title: TaxiHail.localize('modal.marketChanged.title'),
+                message: TaxiHail.localize('modal.marketChanged.message')
+            });
+        },
+
         validateOrderAndRefreshEstimate: function()
         {
             var $estimate = this.$('.estimate');
@@ -199,7 +254,9 @@
             this.$('.buttons .btn').addClass('disabled');
             this.$('.buttons .btn').attr('disabled', 'disabled');
 
-            this.model.validateOrder(true)
+            var validateForError = this.model.get('market') === "";
+
+            this.model.validateOrder(validateForError)
                     .done(_.bind(function (result) {
 
                         if (result.responseText) {
@@ -224,8 +281,6 @@
                             if (!TaxiHail.parameters.isDestinationRequired
                                 || (TaxiHail.parameters.isDestinationRequired && this.model.isValidAddress('dropOffAddress'))) {
 
-
-
                                 this.$('.buttons .btn').removeClass('disabled');
                                 this.$('.buttons .btn').removeAttr('disabled');
                             }
@@ -237,13 +292,28 @@
                     }, this));
         },
         
-        actualizeEstimate: function () {          
+        actualizeEstimate: function () {
 
-            var pickup = this.model.get('pickupAddress'),
-                dest = this.model.get('dropOffAddress');
+            var pickup = this.model.get('pickupAddress');
+            var dest = this.model.get('dropOffAddress');
+
+            var pickupZipCode = pickup.zipCode != null ? pickup.zipCode : '';
+            var account = TaxiHail.auth.account; //.attributes.settings.vehicleTypeId
+            var vtype = ( account.id == null ) ? -1 : account.get('settings')['vehicleTypeId'];
+
+            var dropOffZipCode = dest != null ?
+            (dest.zipCode != null ? dest.zipCode : '') : '';
+
+            var accountNumber = '';
+
+            var chargeType = (account.id == null) ? -1 : account.get('settings')['chargeTypeId'];
+            if (chargeType == 2) {
+                accountNumber = this.model.get('accountNumber');
+                accountNumber = accountNumber != null ? accountNumber : '';
+            }
 
             if (pickup && dest) {
-                TaxiHail.directionInfo.getInfo(pickup.latitude, pickup.longitude, dest.latitude, dest.longitude)
+                TaxiHail.directionInfo.getInfo(pickup.latitude, pickup.longitude, dest.latitude, dest.longitude, pickupZipCode, dropOffZipCode, vtype, '', accountNumber)
                     .done(_.bind(function(result){
 
                         this.model.set({ 'estimate': result });

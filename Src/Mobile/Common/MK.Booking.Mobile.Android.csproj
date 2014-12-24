@@ -117,6 +117,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppServices\IGeolocService.cs" />
+    <Compile Include="AppServices\Impl\NetworkRoamingService.cs" />
+    <Compile Include="AppServices\Impl\PromotionService.cs" />
+    <Compile Include="AppServices\INetworkRoamingService.cs" />
+    <Compile Include="AppServices\IPromotionService.cs" />
     <Compile Include="AsyncCommand.cs" />
     <Compile Include="AppServices\Impl\BaseService.cs" />
     <Compile Include="AppServices\Impl\GeolocService.cs" />
@@ -125,6 +129,7 @@
     <Compile Include="AppServices\Impl\TutorialService.cs" />
     <Compile Include="AppServices\ITutorialService.cs" />
     <Compile Include="BindingConverter\BoolInverter.cs" />
+    <Compile Include="BindingConverter\NoValueToVisibilityConverter.cs" />
     <Compile Include="CallBoxApp.cs" />
     <Compile Include="Data\Coordinate.cs" />
     <Compile Include="Data\CoordinatePrecision.cs" />
@@ -225,8 +230,12 @@
     <Compile Include="ViewModels\Payment\ConfirmPairViewModel.cs" />
     <Compile Include="ViewModels\Payment\PairingState.cs" />
     <Compile Include="ViewModels\NotificationSettingsViewModel.cs" />
+    <Compile Include="ViewModels\PromotionItemViewModel.cs" />
+    <Compile Include="ViewModels\SelectableItemViewModel.cs" />
+    <Compile Include="ViewModels\PromotionViewModel.cs" />
     <Compile Include="ViewModels\SectionAddressViewModel.cs" />
     <Compile Include="ViewModels\TutorialViewModel.cs" />
+    <Compile Include="ViewModels\UserTaxiHailNetworkSettingsViewModel.cs" />
     <Compile Include="ViewModels\ZoomLevel.cs" />
     <Compile Include="Messages\StatusCloseRequested.cs" />
     <Compile Include="BindingConverter\EmptyToResourceConverter.cs" />
@@ -337,6 +346,7 @@
     <Compile Include="AppServices\IRegisterWorkflowService.cs" />
     <Compile Include="AppServices\Impl\RegisterWorkflowService.cs" />
     <Compile Include="PresentationHints\ChangeZoomPresentationHint.cs" />
+    <Compile Include="CancellableCommand.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\CMTPayment\CMTPayment.Android.csproj">
@@ -368,7 +378,9 @@
     <None Include="Localization\Master.resx">
       <SubType>Designer</SubType>
     </None>
-    <EmbeddedResource Include="Localization\Master.es.resx" />
+    <EmbeddedResource Include="Localization\Master.es.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Localization\Master.fr.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -391,6 +403,8 @@
     <None Include="Localization\CINQ-S.fr.resx" />
     <None Include="Localization\CINQ-S.resx" />
     <EmbeddedResource Include="TutorialContent\Tutorial-en.json" />
+    <EmbeddedResource Include="TutorialContent\Tutorial-es.json" />
+    <None Include="Localization\UTOG.resx" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <Target Name="BeforeBuild">

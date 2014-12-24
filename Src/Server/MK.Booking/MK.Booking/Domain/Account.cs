@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Common;
+using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
@@ -44,7 +45,9 @@ namespace apcurium.MK.Booking.Domain
             Handles<DeviceRegisteredForPushNotifications>(NoAction);
             Handles<DeviceUnregisteredForPushNotifications>(NoAction);
             Handles<NotificationSettingsAddedOrUpdated>(NoAction);
+            Handles<UserTaxiHailNetworkSettingsAddedOrUpdated>(NoAction);
             Handles<AccountLinkedToIbs>(NoAction);
+            Handles<AccountUnlinkedFromIbs>(NoAction);
         }
 
         public Account(Guid id, IEnumerable<IVersionedEvent> history)
@@ -392,6 +395,15 @@ namespace apcurium.MK.Booking.Domain
             });
         }
 
+        public void AddOrUpdateTaxiHailNetworkSettings(bool isEnabled, string[] disabledFleets)
+        {
+            Update(new UserTaxiHailNetworkSettingsAddedOrUpdated
+            {
+                IsEnabled = isEnabled,
+                DisabledFleets = disabledFleets
+            });
+        }
+
         public void LinkToIbs(string companyKey, int ibsAccountId)
         {
             Update(new AccountLinkedToIbs
@@ -399,6 +411,11 @@ namespace apcurium.MK.Booking.Domain
                 CompanyKey = companyKey,
                 IbsAccountId = ibsAccountId
             });
+        }
+
+        public void UnlinkFromIbs()
+        {
+            Update(new AccountUnlinkedFromIbs());
         }
     }
 }

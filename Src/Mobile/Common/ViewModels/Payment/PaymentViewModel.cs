@@ -24,6 +24,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
 		private ClientPaymentSettings _paymentSettings;
 
+	    private bool? _paypalPaymentSucceeded;
+
 		public PaymentViewModel(IPayPalExpressCheckoutService paypalExpressCheckoutService,
 			IAccountService accountService,
 			IPaymentService paymentService,
@@ -62,7 +64,24 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			InitAmounts(orderFromServer);
 		}
 
-		void InitAmounts(Order order)
+	    public override void OnViewStarted(bool firstTime)
+	    {
+	        base.OnViewStarted(firstTime);
+
+			if (!firstTime && _paypalPaymentSucceeded.HasValue)
+	        {
+				if (_paypalPaymentSucceeded.Value)
+	            {
+                    ShowPayPalPaymentConfirmation();
+	            }
+                else
+                {
+                    ShowPayPalPaymentError();
+                }
+	        }
+	    }
+
+	    void InitAmounts(Order order)
 		{
 			if (order == null)
 				return;
@@ -276,8 +295,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			{
 				return this.GetCommand(() =>
 					{ 					
-                        TipAmount = "";	
-                        TipAmountString = "";						
+                        TipAmount = string.Empty;
+                        TipAmountString = string.Empty;						
 						RaisePropertyChanged(() => TipAmountString);
 					});
 			}
@@ -288,8 +307,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			get
 			{
 				return this.GetCommand(() =>
-				{ 					
-					MeterAmount = "";
+				{
+                    MeterAmount = string.Empty;
 					RaisePropertyChanged(() => MeterAmount);
 				});
 			}
@@ -323,7 +342,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
                 return this.GetCommand(() =>
                 {                    
                     Action executePayment = () =>
-                    {
+					{
                         if (PayPalSelected)
                         {
                             PayPalFlow();
@@ -350,36 +369,37 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
             }
         }
 
-        private void PayPalFlow()
+        private async void PayPalFlow()
         {
             if (CanProceedToPayment(false))
             {
-				this.Services().Message.ShowProgress(true);
-				_paypalExpressCheckoutService.SetExpressCheckoutForAmount(
-						Order.Id,
-						Convert.ToDecimal(Amount), 
-						Convert.ToDecimal(MeterAmount.ToDouble()), 
-						Convert.ToDecimal(RoundToTwoDecimals(TipAmount.ToDouble())),
-						Order.IBSOrderId,
-						TotalAmount,
-						_localize.CurrentLanguage)
-					        .ToObservable()
-					        .Subscribe(checkoutUrl => {
-                                var @params = new Dictionary<string, string> { { "url", checkoutUrl } };
-						        this.Services().Message.ShowProgress(false);
-						        ShowSubViewModel<PayPalViewModel, bool>(@params, success =>
-                                {
-                                    if (success)
-                                    {
-                                        ShowPayPalPaymentConfirmation();
-								        _paymentService.SetPaymentFromCache(Order.Id, Amount);
-                                    }
-                                    else
-                                    {
-                                        this.Services().Message.ShowMessage(this.Services().Localize["PayPalExpressCheckoutCancelTitle"], this.Services().Localize["PayPalExpressCheckoutCancelMessage"]);
-                                    }
-                                });
-                }, error => { });
+				using (this.Services().Message.ShowProgress())
+				{
+					try
+					{
+						var checkoutUrl = await _paypalExpressCheckoutService.SetExpressCheckoutForAmount(
+							Order.Id,
+							Convert.ToDecimal(Amount), 
+							Convert.ToDecimal(MeterAmount.ToDouble()), 
+							Convert.ToDecimal(RoundToTwoDecimals(TipAmount.ToDouble())),
+							Order.IBSOrderId,
+							TotalAmount,
+							_localize.CurrentLanguage);
+
+						var @params = new Dictionary<string, string> { { "url", checkoutUrl } };
+
+						ShowSubViewModel<PayPalViewModel, bool>(@params, success =>
+						{
+							_paypalPaymentSucceeded = success;
+
+							if (success)
+							{
+								_paymentService.SetPaymentFromCache(Order.Id, Amount);
+							}
+						});
+					}
+					catch{}
+				}
             }
         }
 
@@ -434,18 +454,23 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
             return true;
         }
 
-        private async void ShowPayPalPaymentConfirmation()
+        private void ShowPayPalPaymentConfirmation()
         {
-            await this.Services().Message.ShowMessage(this.Services().Localize["PayPalExpressCheckoutSuccessTitle"],
-                              this.Services().Localize["PayPalExpressCheckoutSuccessMessage"]);
-			Close(this);
+            this.Services().Message.ShowMessage(this.Services().Localize["PayPalExpressCheckoutSuccessTitle"],
+	    				this.Services().Localize["PayPalExpressCheckoutSuccessMessage"], () => Close(this));
+
         }
 
-        private async void ShowCreditCardPaymentConfirmation(string transactionId)
+	    private void ShowPayPalPaymentError()
+	    {
+            this.Services().Message.ShowMessage(this.Services().Localize["PayPalExpressCheckoutCancelTitle"],
+                this.Services().Localize["PayPalExpressCheckoutCancelMessage"], () => Close(this));
+	    }
+
+        private void ShowCreditCardPaymentConfirmation(string transactionId)
         {
-            await this.Services().Message.ShowMessage(this.Services().Localize["CmtTransactionSuccessTitle"],
-                              string.Format(this.Services().Localize["CmtTransactionSuccessMessage"], transactionId));
-			Close(this);
+            this.Services().Message.ShowMessage(this.Services().Localize["CmtTransactionSuccessTitle"],
+                              string.Format(this.Services().Localize["CmtTransactionSuccessMessage"], transactionId), () => Close(this));
         }
     }
 }

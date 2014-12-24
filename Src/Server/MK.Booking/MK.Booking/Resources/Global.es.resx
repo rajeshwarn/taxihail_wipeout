@@ -170,7 +170,7 @@
     <comment>Destination</comment>
   </data>
   <data name="Email_Body_Driver" xml:space="preserve">
-    <value>Chofer</value>
+    <value>Conductor</value>
     <comment>Driver</comment>
   </data>
   <data name="Email_Body_EmailConfirmationRequired" xml:space="preserve">
@@ -281,6 +281,10 @@
     <value>Propina</value>
     <comment>Tip</comment>
   </data>
+  <data name="Email_Body_Promo" xml:space="preserve">
+    <value>Promo Code</value>
+    <comment>Promo Code</comment>
+  </data>
   <data name="Email_Body_Toll" xml:space="preserve">
     <value>Peaje</value>
     <comment>Toll</comment>
@@ -310,7 +314,7 @@
     <comment>VAT</comment>
   </data>
   <data name="Email_Body_VehicleNumber" xml:space="preserve">
-    <value>Vehículo#</value>
+    <value>Unidad #</value>
     <comment>Vehicle #</comment>
   </data>
   <data name="Email_Body_VehicleType" xml:space="preserve">
@@ -374,7 +378,7 @@
     <comment>Completed</comment>
   </data>
   <data name="OrderStatus_wosLOADED" xml:space="preserve">
-    <value>Los pasajero(s) abordaron el vehículo</value>
+    <value>Pasajero(s) a bordo</value>
     <comment>Passengers are in the taxi</comment>
   </data>
   <data name="OrderStatus_wosLOADEDAutoPairing" xml:space="preserve">
@@ -398,7 +402,7 @@
     <comment>Sorry no cars are available due to high demand, please try later.</comment>
   </data>
   <data name="OrderStatus_wosWAITING" xml:space="preserve">
-    <value>Espere mientras se le asigna un taxi</value>
+    <value>Espere mientras se le asigna un vehículo</value>
     <comment>Waiting for driver to be assigned</comment>
   </data>
   <data name="PairingConfirmationToDriver" xml:space="preserve">
@@ -468,5 +472,107 @@
   <data name="UnpairingConfirmationToDriver" xml:space="preserve">
     <value>AVISO: No se deberá cobrar al cliente al final del servicio.</value>
     <comment>WARNING: The client will NOT be charged at the end of the ride</comment>
+  </data>
+  <data name="CannotCreateOrderChargeAccountNotSupported" xml:space="preserve">
+    <value>This account is not supported by the web site.</value>
+    <comment>This account is not supported by the web site.</comment>
+  </data>
+  <data name="Email_Body_VehicleModel" xml:space="preserve">
+    <value>Vehículo</value>
+    <comment>Vehicle</comment>
+  </data>
+  <data name="Email_Body_YourDriver" xml:space="preserve">
+    <value>CONDUCTOR / VEHICULO</value>
+    <comment>Your Driver</comment>
+  </data>
+  <data name="CannotCreateOrder_PromotionDoesNotExist" xml:space="preserve">
+    <value>There is no promotion associated to this code</value>
+    <comment>There is no promotion associated to this code</comment>
+  </data>
+  <data name="CannotCreateOrder_PromotionMustUseCardOnFile" xml:space="preserve">
+    <value>You must select Card On File to use a promotion.</value>
+    <comment>You must select Card On File to use a promotion.</comment>
+  </data>
+  <data name="CannotCreateOrder_PromotionIsNotActive" xml:space="preserve">
+    <value>This promotion is not active</value>
+    <comment>This promotion is not active</comment>
+  </data>
+  <data name="CannotCreateOrder_PromotionHasReachedMaxUsage" xml:space="preserve">
+    <value>Maximum number of uses has been reached for this promotion</value>
+    <comment>Maximum number of uses has been reached for this promotion</comment>
+  </data>
+  <data name="CannotCreateOrder_PromotionAppliesToCurrentBookingOnly" xml:space="preserve">
+    <value>This promotion applies to current booking only</value>
+    <comment>This promotion applies to current booking only</comment>
+  </data>
+  <data name="CannotCreateOrder_PromotionAppliesToFutureBookingOnly" xml:space="preserve">
+    <value>This promotion applies to future booking only</value>
+    <comment>This promotion applies to future booking only</comment>
+  </data>
+  <data name="CannotCreateOrder_PromotionNotAvailableForThisDayOfTheWeek" xml:space="preserve">
+    <value>This promotion is not available for this day of the week</value>
+    <comment>This promotion is not available for this day of the week</comment>
+  </data>
+  <data name="CannotCreateOrder_PromotionNotStartedYet" xml:space="preserve">
+    <value>This promotion has not started yet</value>
+    <comment>This promotion has not started yet</comment>
+  </data>
+  <data name="CannotCreateOrder_PromotionHasExpired" xml:space="preserve">
+    <value>This promotion has expired</value>
+    <comment>This promotion has expired</comment>
+  </data>
+  <data name="CannotCreateOrder_PromotionNotAvailableAtThisTime" xml:space="preserve">
+    <value>This promotion is not available at this time</value>
+    <comment>This promotion is not available at this time</comment>
+  </data>
+  <data name="CannotCreateOrder_NoCompanies" xml:space="preserve">
+    <value>There is no company serving this region</value>
+  </data>
+  <data name="CannotCreateOrder_PromotionUserNotAllowed" xml:space="preserve">
+    <value>You are not allowed to use this promotion</value>
+  </data>
+  <data name="Email_Body_PromotionUnlockedLine1" xml:space="preserve">
+    <value>Congratulations! You are now eligible to use the "{{ PromotionName }}" promotion. Use code &lt;b&gt;{{ PromotionCode }}&lt;/b&gt; when booking your next ride to redeem it.</value>
+  </data>
+  <data name="Email_Body_PromotionUnlockedLine2" xml:space="preserve">
+    <value>Hurry up! This promotion is only valid until {{ ExpirationDate }} {{ ExpirationTime }}.</value>
+  </data>
+  <data name="Email_Subject_PromotionUnlocked" xml:space="preserve">
+    <value>{{ ApplicationName }} - New Promotion Available!</value>
+  </data>
+  <data name="PushNotification_PromotionUnlocked" xml:space="preserve">
+    <value>Congratulations! You are now eligible to use the "{0}" promotion. Use code {1} when booking your next ride to redeem it.</value>
+  </data>
+  <data name="CreateOrder_CannotCreateInIbs" xml:space="preserve">
+    <value>Su reservación no se pudo crear, por favor trate de nuevo o llámenos</value>
+    <comment>Order cannot be created. Please try again or call us.</comment>
+  </data>
+  <data name="CreateOrder_CannotCreateInIbs_1002" xml:space="preserve">
+    <value>Su reservación no pudo ser creada. La dirección especificada está fuera de nuestra área de servicio. Por favor contáctenos para asistencia.</value>
+    <comment>Order cannot be created. The specified Pickup address lies outside the regular service area.</comment>
+  </data>
+  <data name="CreateOrder_CannotCreateInIbs_1452" xml:space="preserve">
+    <value>Su reservación no pudo ser creada. La dirección de destino está fuera de nuestra área de servicio. Por favor contáctenos para asistencia.</value>
+    <comment>Order cannot be created. The specified Destination address lies outside the regular service area.</comment>
+  </data>
+  <data name="CreateOrder_CannotCreateInIbs_3000" xml:space="preserve">
+    <value>Su cuenta ha sido deshabilitada</value>
+    <comment>Order cannot be created. Your account has been disabled.</comment>
+  </data>
+  <data name="CreateOrder_CannotCreateInIbs_7000" xml:space="preserve">
+    <value>Su reservación no puede ser creada porque su cuenta está inactiva</value>
+    <comment>Order cannot be created. Your account is currently inactive.</comment>
+  </data>
+  <data name="CreateOrder_CannotCreateInIbs_10000" xml:space="preserve">
+    <value>La información de su cuenta es inválida. Por favor intente nuevamente.</value>
+    <comment>Order cannot be created. The charge account information is invalid. Please try again.</comment>
+  </data>
+  <data name="CreateOrder_CannotCreateInIbs_1300" xml:space="preserve">
+    <value>We apologize but unfortunately we do not have any reservations available for that time period.</value>
+    <comment>We apologize but unfortunately we do not have any reservations available for that time period.</comment>
+  </data>
+  <data name="CreateOrder_WaitingForIbs" xml:space="preserve">
+    <value>Procesando su pedido...</value>
+    <comment>Processing your order...</comment>
   </data>
 </root>

@@ -6,6 +6,7 @@ using System.Globalization;
 using System.Linq;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration.Impl;
+using apcurium.MK.Common.Diagnostic;
 using NUnit.Framework;
 
 #endregion
@@ -32,7 +33,7 @@ namespace MK.Booking.PayPal.Test
             // Arrange
             var returnUrl = "http://example.net/return";
             var cancelUrl = "http://example.net/cancel";
-            var sut = new ExpressCheckoutServiceClient(new PayPalCredentials(), new RegionInfo("en-US"), true);
+            var sut = new ExpressCheckoutServiceClient(new PayPalCredentials(), new RegionInfo("en-US"), new Logger(), true);
 
             var token = sut.SetExpressCheckout(12.34m, returnUrl, cancelUrl, string.Empty);
 
@@ -40,7 +41,7 @@ namespace MK.Booking.PayPal.Test
             var url = sut.GetCheckoutUrl(token);
 
             // Act
-            var transactionId = sut.DoExpressCheckoutPayment(token, "5CX7H5Y7VLBZQ", 12.34m);
+            var transactionId = sut.DoExpressCheckoutPayment(token, "5CX7H5Y7VLBZQ", 12.34m, string.Empty, string.Empty);
 
             // Assert
             Assert.IsNotEmpty(transactionId);
@@ -53,7 +54,7 @@ namespace MK.Booking.PayPal.Test
             // Arrange
             var returnUrl = "http://example.net/return";
             var cancelUrl = "http://example.net/cancel";
-            var sut = new ExpressCheckoutServiceClient(new PayPalCredentials(), new RegionInfo("en-US"), true);
+            var sut = new ExpressCheckoutServiceClient(new PayPalCredentials(), new RegionInfo("en-US"), new Logger(), true);
 
             var token = sut.SetExpressCheckout(12.34m, returnUrl, cancelUrl, string.Empty);
 
@@ -61,7 +62,7 @@ namespace MK.Booking.PayPal.Test
             var url = sut.GetCheckoutUrl(token);
             Console.WriteLine(url);
 
-            var transactionId = sut.DoExpressCheckoutPayment(token, "5CX7H5Y7VLBZQ", 12.34m);
+            var transactionId = sut.DoExpressCheckoutPayment(token, "5CX7H5Y7VLBZQ", 12.34m, string.Empty, string.Empty);
 
             // Act
             sut.RefundTransaction(transactionId);
@@ -73,7 +74,7 @@ namespace MK.Booking.PayPal.Test
         [Test]
         public void GetCheckoutUrlTest()
         {
-            var sut = new ExpressCheckoutServiceClient(new PayPalCredentials(), new RegionInfo("en-US"), true);
+            var sut = new ExpressCheckoutServiceClient(new PayPalCredentials(), new RegionInfo("en-US"), new Logger(), true);
 
             var response = sut.GetCheckoutUrl("thetoken");
             Assert.NotNull(response);
@@ -92,7 +93,7 @@ namespace MK.Booking.PayPal.Test
         public void RegionInfo_sets_currency()
         {
             var australia = new RegionInfo("en-AU");
-            var sut = new ExpressCheckoutServiceClient(new PayPalCredentials(), australia, true);
+            var sut = new ExpressCheckoutServiceClient(new PayPalCredentials(), australia, new Logger(), true);
 
             Assert.AreEqual("AUD", sut.ISO4217CurrencySymbol);
         }
@@ -106,7 +107,7 @@ namespace MK.Booking.PayPal.Test
             var dummyServerSettings = new DummyServerSettings();
             dummyServerSettings.AddOrSet("PriceFormat", "en-US");
 
-            var sut = new ExpressCheckoutServiceClient(new PayPalCredentials(), new RegionInfo("en-US"), true);
+            var sut = new ExpressCheckoutServiceClient(new PayPalCredentials(), new RegionInfo("en-US"), new Logger(), true);
 
             var token = sut.SetExpressCheckout(12.34m, returnUrl, cancelUrl, string.Empty);
             Assert.IsNotEmpty(token);

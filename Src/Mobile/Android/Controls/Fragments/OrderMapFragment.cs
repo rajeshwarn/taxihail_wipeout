@@ -62,23 +62,37 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                       
             Map = mapFragment.Map;
 
+            // NOTE: wasn't working on some devices, reverted to standard padding and moved the buttons up in the layout
             // add padding to the map to move the Google logo around
             // the padding must be the same for left/right and top/bottom for the pins to be correctly aligned
-			Map.SetPadding (_mapPadding.ToPixels(), 6.ToPixels(), _mapPadding.ToPixels(), 6.ToPixels());
+			Map.SetPadding (6.ToPixels(), 6.ToPixels(), 6.ToPixels(), 6.ToPixels());
 
             _touchableMap = mapFragment;
 
-            _pickupOverlay = (ImageView)mapFragment.Activity.FindViewById(Resource.Id.pickupOverlay);
-            _pickupOverlay.Visibility = ViewStates.Visible;
-            _pickupOverlay.SetPadding(0, 0, 0, _pickupOverlay.Drawable.IntrinsicHeight / 2);
-
-            _destinationOverlay = (ImageView)mapFragment.Activity.FindViewById(Resource.Id.destinationOverlay);
-            _destinationOverlay.Visibility = ViewStates.Visible;
-            _destinationOverlay.SetPadding(0, 0, 0, _destinationOverlay.Drawable.IntrinsicHeight / 2);
+            InitializeOverlayIcons();
 
             this.DelayBind(() => InitializeBinding());
 
             CreatePins();
+        }
+
+        private void InitializeOverlayIcons()
+        {
+            var useCompanyColor = _settings.UseThemeColorForMapIcons;
+            var companyColor = _resources.GetColor (Resource.Color.company_color);
+
+            var red = Color.Argb(255, 255, 0, 23);
+            var green = Color.Argb(255, 30, 192, 34);
+
+            _pickupOverlay = (ImageView)_touchableMap.Activity.FindViewById(Resource.Id.pickupOverlay);
+            _pickupOverlay.Visibility = ViewStates.Visible;
+            _pickupOverlay.SetPadding(0, 0, 0, _pickupOverlay.Drawable.IntrinsicHeight / 2);
+            _pickupOverlay.SetImageBitmap(DrawHelper.ApplyColorToMapIcon(Resource.Drawable.hail_icon, useCompanyColor ? companyColor : green, true));
+
+            _destinationOverlay = (ImageView)_touchableMap.Activity.FindViewById(Resource.Id.destinationOverlay);
+            _destinationOverlay.Visibility = ViewStates.Visible;
+            _destinationOverlay.SetPadding(0, 0, 0, _destinationOverlay.Drawable.IntrinsicHeight / 2);
+            _destinationOverlay.SetImageBitmap(DrawHelper.ApplyColorToMapIcon(Resource.Drawable.destination_icon, useCompanyColor ? companyColor : red, true));
         }
 
         private Address _pickupAddress;
@@ -117,8 +131,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             }
         }
 
-        public ICommand UserMovedMap { get; set; }
-
         private IList<AvailableVehicle> _availableVehicles = new List<AvailableVehicle>();
         public IList<AvailableVehicle> AvailableVehicles
         {
@@ -150,6 +162,22 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             }
         }
 
+        public MapViewModel ViewModel
+        {
+            get
+            {
+                return (MapViewModel)DataContext;
+            }
+        }
+
+        private void CancelAddressSearch()
+        {
+            lockGeocoding = true;
+            ((HomeViewModel)(ViewModel.Parent)).LocateMe.Cancel();
+            ((HomeViewModel)(ViewModel.Parent)).AutomaticLocateMeAtPickup.Cancel();
+            ViewModel.UserMovedMap.Cancel();
+        }
+
         public void InitializeBinding()
         {
             var set = this.CreateBindingSet<OrderMapFragment, MapViewModel>();
@@ -159,12 +187,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 switch (e.Action)
                 {
                     case MotionEventActions.Down:
-                        lockGeocoding = true;
-                        ((MapViewModel.CancellableCommand<MapBounds>)UserMovedMap).Cancel();
+                        CancelAddressSearch();
                         break;                    
                     case MotionEventActions.Move:                
-                        lockGeocoding = true;
-                        ((MapViewModel.CancellableCommand<MapBounds>)UserMovedMap).Cancel();
+                        CancelAddressSearch();
                         break;                       
                     default:
                         lockGeocoding = false;
@@ -197,10 +223,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 .DisposeWith(_subscriptions);
 
             set.Bind()
-                .For(v => v.UserMovedMap)
-                .To(vm => vm.UserMovedMap);
-
-            set.Bind()
                 .For(v => v.AddressSelectionMode)
                 .To(vm => vm.AddressSelectionMode);
 
@@ -227,44 +249,18 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 			var useCompanyColor = _settings.UseThemeColorForMapIcons;
             var companyColor = _resources.GetColor (Resource.Color.company_color);
 
-            var destinationIcon =  _resources.GetDrawable(Resource.Drawable.@destination_icon);
-            var hailIcon = _resources.GetDrawable(Resource.Drawable.@hail_icon);
-            var nearbyTaxiIcon = _resources.GetDrawable(Resource.Drawable.@nearby_taxi);
-            var nearbySuvIcon = _resources.GetDrawable(Resource.Drawable.@nearby_suv);
-            var nearbyBlackcarIcon = _resources.GetDrawable(Resource.Drawable.@nearby_blackcar);      
-            var nearbyClusterTaxiIcon = _resources.GetDrawable(Resource.Drawable.@cluster_taxi);
-            var nearbySuvClusterIcon = _resources.GetDrawable(Resource.Drawable.@cluster_suv);
-            var nearbyBlackcarClusterIcon = _resources.GetDrawable(Resource.Drawable.@cluster_blackcar);
-            var bigBackgroundIcon = _resources.GetDrawable (Resource.Drawable.map_bigicon_background);
-            var smallBackgroundIcon = _resources.GetDrawable (Resource.Drawable.map_smallicon_background);
-
-            var sizeOfDefaultSmallIcon = new SizeF(34, 39);
-            var sizeOfDefaultBigIcon = new SizeF(52, 58);
             var red = Color.Argb(255, 255, 0, 23);
             var green = Color.Argb(255, 30, 192, 34);
 
-            _destinationIcon = DrawHelper.GetMapIcon(
-                destinationIcon, 
-                useCompanyColor 
-                    ? companyColor
-                    : red,
-                bigBackgroundIcon,
-                sizeOfDefaultBigIcon);
-
-            _hailIcon = DrawHelper.GetMapIcon(
-                hailIcon, 
-                useCompanyColor 
-                    ? companyColor
-                    : green,
-                bigBackgroundIcon,
-                sizeOfDefaultBigIcon);
+            _destinationIcon = BitmapDescriptorFactory.FromBitmap(DrawHelper.ApplyColorToMapIcon(Resource.Drawable.@destination_icon, useCompanyColor ? companyColor : red, true));
+            _hailIcon = BitmapDescriptorFactory.FromBitmap(DrawHelper.ApplyColorToMapIcon(Resource.Drawable.@hail_icon, useCompanyColor ? companyColor : green, true));
             
-            _vehicleIcons.Add("nearby_taxi", DrawHelper.GetMapIcon(nearbyTaxiIcon, companyColor, smallBackgroundIcon, sizeOfDefaultSmallIcon));
-            _vehicleIcons.Add("nearby_suv", DrawHelper.GetMapIcon(nearbySuvIcon, companyColor, smallBackgroundIcon, sizeOfDefaultSmallIcon));
-            _vehicleIcons.Add("nearby_blackcar", DrawHelper.GetMapIcon(nearbyBlackcarIcon, companyColor, smallBackgroundIcon, sizeOfDefaultSmallIcon));
-            _vehicleIcons.Add("cluster_taxi", DrawHelper.GetMapIcon(nearbyClusterTaxiIcon, companyColor, smallBackgroundIcon, sizeOfDefaultSmallIcon));
-            _vehicleIcons.Add("cluster_suv", DrawHelper.GetMapIcon(nearbySuvClusterIcon, companyColor, smallBackgroundIcon, sizeOfDefaultSmallIcon));
-            _vehicleIcons.Add("cluster_blackcar", DrawHelper.GetMapIcon(nearbyBlackcarClusterIcon, companyColor, smallBackgroundIcon, sizeOfDefaultSmallIcon));
+            _vehicleIcons.Add("nearby_taxi", BitmapDescriptorFactory.FromBitmap(DrawHelper.ApplyColorToMapIcon(Resource.Drawable.@nearby_taxi, companyColor, false)));
+            _vehicleIcons.Add("nearby_suv", BitmapDescriptorFactory.FromBitmap(DrawHelper.ApplyColorToMapIcon(Resource.Drawable.@nearby_suv, companyColor, false)));
+            _vehicleIcons.Add("nearby_blackcar", BitmapDescriptorFactory.FromBitmap(DrawHelper.ApplyColorToMapIcon(Resource.Drawable.@nearby_blackcar, companyColor, false)));
+            _vehicleIcons.Add("cluster_taxi", BitmapDescriptorFactory.FromBitmap(DrawHelper.ApplyColorToMapIcon(Resource.Drawable.@cluster_taxi, companyColor, false)));
+            _vehicleIcons.Add("cluster_suv", BitmapDescriptorFactory.FromBitmap(DrawHelper.ApplyColorToMapIcon(Resource.Drawable.@cluster_suv, companyColor, false)));
+            _vehicleIcons.Add("cluster_blackcar", BitmapDescriptorFactory.FromBitmap(DrawHelper.ApplyColorToMapIcon(Resource.Drawable.@cluster_blackcar, companyColor, false)));
         }
 
         private MapBounds GetMapBoundsFromProjection()
@@ -338,11 +334,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             {
                 Position position = new Position(){ Latitude = PickupAddress.Latitude, Longitude = PickupAddress.Longitude };
 
-                if (!DestinationAddress.HasValidCoordinate())
-                {
-                    _destinationPin.Visible = false;
-                }
-
+                _destinationPin.Visible = false;
                 _pickupOverlay.Visibility = ViewStates.Invisible;
                 _destinationOverlay.Visibility = ViewStates.Visible;
 
@@ -386,7 +378,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             var bounds = GetMapBoundsFromProjection();
             if (!lockGeocoding)
             {
-                UserMovedMap.ExecuteIfPossible(bounds);
+                ViewModel.UserMovedMap.ExecuteIfPossible(bounds);
             }
 
             ShowAvailableVehicles (VehicleClusterHelper.Clusterize(AvailableVehicles, bounds)); 
@@ -472,6 +464,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 			var streetLevelZoomHint = hint as ZoomToStreetLevelPresentationHint;
 			if (streetLevelZoomHint != null)
             {
+                // When doing this presentation change, we don't want to reverse geocode the position since we already know the address and it's already set
+                // It occurs on Android only, because of a Camera Change event
+                bypassCameraChangeEvent = true;
                 var zoomLevel = streetLevelZoomHint.InitialZoom 
                     ? _settings.InitialZoomLevel 
                     : MapViewModel.ZoomStreetLevel;

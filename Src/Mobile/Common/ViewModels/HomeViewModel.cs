@@ -1,6 +1,7 @@
 using System.Windows.Input;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Extensions;
+using apcurium.MK.Booking.Mobile.Framework.Extensions;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.PresentationHints;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
@@ -13,6 +14,9 @@ using System;
 using System.Reactive.Threading.Tasks;
 using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Booking.Maps.Geo;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -52,9 +56,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 			Panel = new PanelMenuViewModel(this, browserTask, orderWorkflowService, accountService, phoneService, paymentService);
 
-			this.Observe(_vehicleService.GetAndObserveAvailableVehiclesWhenVehicleTypeChanges(), vehicles => ZoomOnNearbyVehiclesIfPossible(vehicles));
+			Observe(_vehicleService.GetAndObserveAvailableVehiclesWhenVehicleTypeChanges(), vehicles => ZoomOnNearbyVehiclesIfPossible(vehicles));
+            Observe(_orderWorkflowService.GetAndObserveMarket(), market => MarketChanged(market));
 		}
 
+	    private string _lastMarket = string.Empty;
 		private bool _isShowingTermsAndConditions;
 		private bool _locateUser;
 		private ZoomToStreetLevelPresentationHint _defaultHintZoomLevel;
@@ -98,7 +104,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 // Don't await side panel creation
 				Panel.Start();
 				CheckTermsAsync();
-
 
 				this.Services().ApplicationInfo.CheckVersionAsync();
 
@@ -293,19 +298,24 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
-		public ICommand AutomaticLocateMeAtPickup
+		private CancellableCommand _automaticLocateMeAtPickup;
+		public CancellableCommand AutomaticLocateMeAtPickup
 		{
 			get
 			{
-				return this.GetCommand(async () =>
-				{					
+				return _automaticLocateMeAtPickup ?? (_automaticLocateMeAtPickup = new CancellableCommand(async (token) =>
+				{				
+					// we want this command to be top priority, so cancel previous map-related commands
+					LocateMe.Cancel();
+					Map.UserMovedMap.Cancel();
+
 					var addressSelectionMode = await _orderWorkflowService.GetAndObserveAddressSelectionMode ().Take (1).ToTask ();
 					if (_currentState == HomeViewModelState.Initial 
 						&& addressSelectionMode == AddressSelectionMode.PickupSelection)
 					{
-							SetMapCenterToUserLocation(true);
+						SetMapCenterToUserLocation(true, token);
 					}									
-				});
+				}));
 			}
 		}
 
@@ -313,42 +323,55 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		 * Should ONLY be called by the "Locate me" button
 		 * Use AutomaticLocateMeAtPickup if it's an automatic trigger after app event (appactivated, etc.)
 		 **/
-		public ICommand LocateMe
+		private CancellableCommand _locateMe;
+		public CancellableCommand LocateMe
 		{
 			get
 			{
-				return this.GetCommand(() =>
-				{					
-					SetMapCenterToUserLocation();							
-				});
-			}
-		}
-
-		private async void SetMapCenterToUserLocation(bool initialZoom = false)
-		{
-            _orderWorkflowService.SetIgnoreNextGeoLocResult(false);
-			var address = await _orderWorkflowService.SetAddressToUserLocation();
-            
-			if(address.HasValidCoordinate())
-			{
-				// zoom like uber means start at user location with street level zoom and when and only when you have vehicle, zoom out
-				// otherwise, this causes problems on slow networks where the address is found but the pin is not placed correctly and we show the entire map of the world until we get the timeout
-				this.ChangePresentation(new ZoomToStreetLevelPresentationHint(address.Latitude, address.Longitude, initialZoom));
-
-				// do the uber zoom
-				try 
+				return _locateMe ?? (_locateMe = new CancellableCommand(token =>
 				{
-					var availableVehicles = await _vehicleService.GetAndObserveAvailableVehicles ().Timeout (TimeSpan.FromSeconds (5)).Where (x => x.Count () > 0).Take (1).ToTask();
-					ZoomOnNearbyVehiclesIfPossible (availableVehicles);
-				}
-				catch (TimeoutException)
-				{ 
-					Console.WriteLine("ZoomOnNearbyVehiclesIfPossible: Timeout occured while waiting for available vehicles");
-				}
+					AutomaticLocateMeAtPickup.Cancel();
+					Map.UserMovedMap.Cancel();
+
+					SetMapCenterToUserLocation(false, token);
+				}));
 			}
 		}
 
-		private async void ZoomOnNearbyVehiclesIfPossible(AvailableVehicle[] vehicles)
+		private async void SetMapCenterToUserLocation(bool initialZoom, CancellationToken cancellationToken = default(CancellationToken))
+		{
+			try
+			{
+				var address = await _orderWorkflowService.SetAddressToUserLocation(cancellationToken);
+				if(address.HasValidCoordinate())
+				{
+					// zoom like uber means start at user location with street level zoom and when and only when you have vehicle, zoom out
+					// otherwise, this causes problems on slow networks where the address is found but the pin is not placed correctly and we show the entire map of the world until we get the timeout
+					this.ChangePresentation(new ZoomToStreetLevelPresentationHint(address.Latitude, address.Longitude, initialZoom));
+
+					// do the uber zoom
+					try 
+					{
+						var availableVehicles = await _vehicleService.GetAndObserveAvailableVehicles ().Timeout (TimeSpan.FromSeconds (5)).Where (x => x.Count () > 0).Take (1).ToTask();
+						ZoomOnNearbyVehiclesIfPossible (availableVehicles);
+					}
+					catch (TimeoutException)
+					{ 
+						Console.WriteLine("ZoomOnNearbyVehiclesIfPossible: Timeout occured while waiting for available vehicles");
+					}
+				}
+			}
+			catch(OperationCanceledException)
+			{
+				return;
+			}
+			catch(Exception)
+			{
+				return;
+			}
+		}
+
+		private void ZoomOnNearbyVehiclesIfPossible(AvailableVehicle[] vehicles)
 		{
 			if(Settings.ZoomOnNearbyVehicles)
 			{
@@ -436,6 +459,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 				_accountService.LogApplicationStartUp ();
             }
+        }
+
+        private void MarketChanged(string market)
+        {
+            // Market changed and not home market
+            if (_lastMarket != market && market != string.Empty)
+            {
+                this.Services().Message.ShowMessage(this.Services().Localize["MarketChangedMessageTitle"],
+                    this.Services().Localize["MarketChangedMessage"]);
+            }
+            _lastMarket = market;
         }
     }
 }

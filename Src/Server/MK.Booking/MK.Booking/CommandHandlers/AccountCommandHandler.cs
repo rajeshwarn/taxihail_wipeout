@@ -39,7 +39,9 @@ namespace apcurium.MK.Booking.CommandHandlers
         ICommandHandler<UpdateFavoriteAddress>,
         ICommandHandler<RemoveAddressFromHistory>,
         ICommandHandler<LogApplicationStartUp>,
-        ICommandHandler<LinkAccountToIbs>
+        ICommandHandler<LinkAccountToIbs>,
+        ICommandHandler<AddOrUpdateUserTaxiHailNetworkSettings>,
+        ICommandHandler<UnlinkAccountFromIbs>
     {
         private readonly IPasswordService _passwordService;
         private readonly Func<BookingDbContext> _contextFactory;
@@ -203,6 +205,13 @@ namespace apcurium.MK.Booking.CommandHandlers
             _repository.Save(account, command.Id.ToString());
         }
 
+        public void Handle(AddOrUpdateUserTaxiHailNetworkSettings command)
+        {
+            var account = _repository.Get(command.AccountId);
+            account.AddOrUpdateTaxiHailNetworkSettings(command.IsEnabled, command.DisabledFleets);
+            _repository.Save(account, command.Id.ToString());
+        }
+
         #region Addresses
 
         public void Handle(AddFavoriteAddress command)
@@ -263,6 +272,15 @@ namespace apcurium.MK.Booking.CommandHandlers
             var account = _repository.Find(command.AccountId);
 
             account.LinkToIbs(command.CompanyKey, command.IbsAccountId);
+
+            _repository.Save(account, command.Id.ToString());
+        }
+
+        public void Handle(UnlinkAccountFromIbs command)
+        {
+            var account = _repository.Find(command.AccountId);
+
+            account.UnlinkFromIbs();
 
             _repository.Save(account, command.Id.ToString());
         }

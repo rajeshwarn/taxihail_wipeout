@@ -1,13 +1,10 @@
-﻿#region
-
-using System;
+﻿using System;
 using apcurium.MK.Common.Enumeration;
 using Infrastructure.EventSourcing;
 
-#endregion
-
 namespace apcurium.MK.Booking.Events
 {
+    [Obsolete("Replaced by CreditCardPaymentCaptured_V2", false)]
     public class CreditCardPaymentCaptured : VersionedEvent
     {
         public string TransactionId { get; set; }
@@ -18,5 +15,7 @@ namespace apcurium.MK.Booking.Events
         public PaymentProvider Provider { get; set; }
         public Guid OrderId { get; set; }
         public bool IsNoShowFee { get; set; }
+        public Guid? PromotionUsed { get; set; }
+        public decimal AmountSavedByPromotion { get; set; }
     }
 }

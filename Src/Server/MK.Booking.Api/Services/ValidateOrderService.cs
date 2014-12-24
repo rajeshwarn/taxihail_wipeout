@@ -47,9 +47,9 @@ namespace apcurium.MK.Booking.Api.Services
 
             if (request.ForError)
             {
-                    var rule = _ruleCalculator.GetActiveDisableFor(request.PickupDate.HasValue,
-                                           request.PickupDate.HasValue ? request.PickupDate.Value : GetCurrentOffsetedTime(),
-                                           getPickupZone, getDropoffZone);
+                var rule = _ruleCalculator.GetActiveDisableFor(request.PickupDate.HasValue,
+                                        request.PickupDate.HasValue ? request.PickupDate.Value : GetCurrentOffsetedTime(),
+                                        getPickupZone, getDropoffZone);
 
                 var hasError = rule != null;
                 var message = rule != null ? rule.Message : null;
@@ -64,10 +64,9 @@ namespace apcurium.MK.Booking.Api.Services
             }
             else
             {
-
-                    var rule = _ruleCalculator.GetActiveWarningFor(request.PickupDate.HasValue,
-                                            request.PickupDate.HasValue ? request.PickupDate.Value : GetCurrentOffsetedTime(), 
-                                            getPickupZone, getDropoffZone);
+                var rule = _ruleCalculator.GetActiveWarningFor(request.PickupDate.HasValue,
+                                        request.PickupDate.HasValue ? request.PickupDate.Value : GetCurrentOffsetedTime(), 
+                                        getPickupZone, getDropoffZone);
 
                 return new OrderValidationResult
                 {
@@ -75,7 +74,6 @@ namespace apcurium.MK.Booking.Api.Services
                     Message = rule != null ? rule.Message : null
                 };
             }
-    
         }
 
         private DateTime GetCurrentOffsetedTime()

@@ -164,7 +164,7 @@ namespace apcurium.MK.Common.Configuration
         public string DefaultAccountPassword { get; protected internal set; }
 
         [CustomizableByCompany]
-        public long TimeDifference { get; protected internal set; }
+        public long TimeDifference { get; set; }
 
         public bool FakeOrderStatusUpdate { get; protected internal set; }
 
@@ -188,6 +188,15 @@ namespace apcurium.MK.Common.Configuration
         public string PickupZoneToExclude { get; protected internal set; }
         
         [RequiredAtStartup]
+        public string RestApiUrl { get; set; }
+
+        [RequiredAtStartup]
+        public string RestApiUser { get; set; }
+
+        [RequiredAtStartup]
+        public string RestApiSecret { get; set; }        
+        
+        [RequiredAtStartup]
         public string WebServicesUrl { get; set; }
 
         [RequiredAtStartup]
@@ -200,6 +209,10 @@ namespace apcurium.MK.Common.Configuration
     public class EmailSettingContainer
     {
         public string NoReply { get; protected internal set; }
+
+        [CustomizableByCompany]
+        [Display(Name = "CC Email Address", Description = "Email address to put in CC when sending an email to a user (booking confirmation only for now)")]
+        public string CC { get; protected internal set; }
     }
 
     public class ReceiptSettingContainer
@@ -226,12 +239,14 @@ namespace apcurium.MK.Common.Configuration
 
     public class NetworkSettingContainer
     {
-        [CustomizableByCompany]
+        [CustomizableByCompany, RequiresTaxiHailPro]
         public double PrimaryOrderTimeout { get; protected internal set; }
 
-        [CustomizableByCompany]
+        [CustomizableByCompany, RequiresTaxiHailPro]
         public double SecondaryOrderTimeout { get; protected internal set; }
 
+        [SendToClient]
+        [Display(Name = "Is Network Enabled", Description = "Is TaxiHailNetwork Enabled")]
         public bool Enabled { get;  set; }
     }
 }

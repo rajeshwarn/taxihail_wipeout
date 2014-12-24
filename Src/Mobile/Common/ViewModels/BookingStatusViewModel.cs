@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Linq;
 using apcurium.MK.Booking.Api.Contract.Resources;
-using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.Infrastructure;
@@ -21,7 +20,6 @@ using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using ServiceStack.Text;
 using apcurium.MK.Booking.Maps;
-using Cirrious.CrossCore;
 using System.Net;
 using ServiceStack.ServiceClient.Web;
 
@@ -36,7 +34,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private readonly IAccountService _accountService;
 		private readonly IVehicleService _vehicleService;
 
-		public BookingStatusViewModel(IOrderWorkflowService orderWorkflowService,
+	    public BookingStatusViewModel(IOrderWorkflowService orderWorkflowService,
 			IPhoneService phoneService,
 			IBookingService bookingService,
 			IPaymentService paymentService,
@@ -68,7 +66,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
 			base.OnViewLoaded ();
 
-			StatusInfoText = string.Format(this.Services().Localize["LoadingMessage"]);
+			StatusInfoText = string.Format(this.Services().Localize["Processing"]);
 
             CenterMap ();			
         }
@@ -198,25 +196,30 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		}
 
 	    private string _statusInfoText;
-		public string StatusInfoText {
+		public string StatusInfoText
+        {
 			get { return _statusInfoText; }
-			set {
+			set
+            {
 				_statusInfoText = value;
-				RaisePropertyChanged ();
+				RaisePropertyChanged();
 			}
 		}
 
 		private Order _order;
-		public Order Order {
+		public Order Order
+        {
 			get { return _order; }
-			set {
+			set
+            {
 				_order = value;
-				RaisePropertyChanged ();
+				RaisePropertyChanged();
 			}
 		}
 		
 		private OrderStatusDetail _orderStatusDetail;
-		public OrderStatusDetail OrderStatusDetail {
+		public OrderStatusDetail OrderStatusDetail
+        {
 			get { return _orderStatusDetail; }
 			set {
 				_orderStatusDetail = value;
@@ -308,10 +311,23 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private string _vehicleNumber;
         private bool _isCurrentlyPairing;
 		private bool _isDispatchPopupVisible;
+        private bool _isContactingNextCompany;
+	    private int? _currentIbsOrderId; 
 
+		private bool _refreshStatusIsExecuting;
 		private async void RefreshStatus()
         {
-            try {
+
+            try 
+			{
+				if(_refreshStatusIsExecuting)
+				{
+					return;
+				}
+
+				Logger.LogMessage ("RefreshStatus starts");
+				_refreshStatusIsExecuting = true;
+
 				var status = await _bookingService.GetOrderStatusAsync(Order.Id);
 				if(status.VehicleNumber != null)
 				{
@@ -321,6 +337,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 {
 					status.VehicleNumber = _vehicleNumber;
 				}
+
+                if (_isContactingNextCompany && status.IBSOrderId == _currentIbsOrderId)
+                {
+                    // Don't update status when we're contacting a new dispatch company (switch)
+                    return;
+                }
+
+                _currentIbsOrderId = status.IBSOrderId;
+                _isContactingNextCompany = false;
 
                 SwitchDispatchCompanyIfNecessary(status);
 
@@ -344,7 +369,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					&& status.VehicleLatitude.HasValue
 					&& status.VehicleLongitude.HasValue)
 				{
-					Direction d =  _vehicleService.GetEtaBetweenCoordinates(status.VehicleLatitude.Value, status.VehicleLongitude.Value, Order.PickupAddress.Latitude, Order.PickupAddress.Longitude);
+					Direction d =  await _vehicleService.GetEtaBetweenCoordinates(status.VehicleLatitude.Value, status.VehicleLongitude.Value, Order.PickupAddress.Latitude, Order.PickupAddress.Longitude);
 					statusInfoText += " " + FormatEta(d);						
 				}
 
@@ -357,10 +382,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					|| status.IBSStatusId.Equals(VehicleStatuses.Common.Done);
 				var paymentSettings = await _paymentService.GetPaymentSettings();
                 if (isLoaded 
-					&& paymentSettings.AutomaticPayment 
+					&& ((paymentSettings.AutomaticPayment && !paymentSettings.AutomaticPaymentPairing)
+						|| paymentSettings.PaymentMode == PaymentMethod.RideLinqCmt)
 					&& _accountService.CurrentAccount.DefaultCreditCard != null)
 				{
-					var isPaired = _bookingService.IsPaired(Order.Id);
+					var isPaired = await _bookingService.IsPaired(Order.Id);
                     var pairState = this.Services().Cache.Get<string>("PairState" + Order.Id);
 					var isPairBypass = (pairState == PairingState.Failed) || (pairState == PairingState.Canceled) || (pairState == PairingState.Unpaired);
 					if (!isPaired && !_isCurrentlyPairing && !isPairBypass)
@@ -390,6 +416,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			{
                 Logger.LogError (ex);
             }
+			finally
+			{			
+				Logger.LogMessage ("RefreshStatus ends");
+				_refreshStatusIsExecuting = false;			
+			}
         }
 
 	    private void SwitchDispatchCompanyIfNecessary(OrderStatusDetail status)
@@ -440,10 +471,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 	        }
 
 	        _isDispatchPopupVisible = false;
-
-			StatusInfoText = string.Format (
-				this.Services ().Localize ["NetworkContactingNextDispatchDescription"]
-				, status.NextDispatchCompanyName);
+            _isContactingNextCompany = true;
 
             try
             {
@@ -452,9 +480,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     status.NextDispatchCompanyKey,
                     status.NextDispatchCompanyName);
                 OrderStatusDetail = orderStatusDetail;
+
+                StatusInfoText = string.Format(
+                    this.Services().Localize["NetworkContactingNextDispatchDescription"],
+                    status.NextDispatchCompanyName);
             }
             catch (WebServiceException ex)
             {
+                _isContactingNextCompany = false;
                 this.Services().Message.ShowMessage(
                     this.Services().Localize["TaxiHailNetworkTimeOutErrorTitle"],
                     ex.ErrorMessage);
@@ -481,7 +514,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			return string.Format (this.Services ().Localize ["StatusEta"], direction.FormattedDistance, direction.Duration, durationUnit);
 		}
 
-		private async void UpdatePayCancelButtons (string statusId)
+		private async void UpdatePayCancelButtons(string statusId)
 		{
 			var paymentSettings = await _paymentService.GetPaymentSettings();
 		    var isOrderAlreadyPaid = _paymentService.GetPaymentFromCache(Order.Id).HasValue;
@@ -492,32 +525,41 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
             IsResendButtonVisible = isOrderAlreadyPaid
                                 && !paymentSettings.AutomaticPayment
+								&& paymentSettings.PaymentMode != PaymentMethod.RideLinqCmt
                                 && (paymentSettings.IsPayInTaxiEnabled || paymentSettings.PayPalClientSettings.IsEnabled);
 
 			// Unpair button is only available for RideLinqCMT
-			IsUnpairButtonVisible = paymentSettings.PaymentMode == PaymentMethod.RideLinqCmt 
-								&& !paymentSettings.AutomaticPayment  			
-								&& _bookingService.IsPaired(Order.Id);
+			if (paymentSettings.PaymentMode == PaymentMethod.RideLinqCmt) 
+			{
+				var isPaired = await _bookingService.IsPaired(Order.Id);
+				IsUnpairButtonVisible = !paymentSettings.AutomaticPayment && isPaired;
+			} 
+			else 
+			{
+				IsUnpairButtonVisible = false;
+			}
 		}
 
 	    private bool ShouldDisplayPayButton(string statusId, bool isOrderAlreadyPaid, ClientPaymentSettings paymentSettings)
 	    {
 	        bool payingByChargeAccount = Order.Settings.ChargeTypeId == ChargeTypes.Account.Id;
+            bool payingByChargeAccountCardOnFile = payingByChargeAccount && OrderStatusDetail.IsChargeAccountPaymentWithCardOnFile;
             bool passengersInCar = statusId == VehicleStatuses.Common.Loaded || statusId == VehicleStatuses.Common.Done;
             bool hasCardOnFile = paymentSettings.IsPayInTaxiEnabled	&& _accountService.CurrentAccount.DefaultCreditCard != null;
 
 	        return !Settings.HidePayNowButtonDuringRide
                 && !paymentSettings.AutomaticPayment
                 && !isOrderAlreadyPaid
-                && !payingByChargeAccount
+                && (!payingByChargeAccount || payingByChargeAccountCardOnFile)
 	            && passengersInCar
                 && (hasCardOnFile || paymentSettings.PayPalClientSettings.IsEnabled) // Can pay by card or PayPal
 	            && !IsUnpairButtonVisible                                            // Unpair visible (pair button is pay button in pairing situations) 
 	            && OrderStatusDetail.CompanyKey == null;                             // Not dispatched to another company
 	    }
 
-		public void GoToSummary(){
-
+		public void GoToSummary()
+		{
+			Logger.LogMessage ("GoToSummary");
 			ShowViewModelAndRemoveFromHistory<RideSummaryViewModel> (
 				new {
 					order = Order.ToJson(),
@@ -525,32 +567,24 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				}.ToStringDictionary());
 		}
 
-        public void GoToBookingScreen(){
-
+        public async void GoToBookingScreen()
+		{
             if (!_waitingToNavigateAfterTimeOut)
             {
-				Observable.Interval( TimeSpan.FromSeconds (10))
-				.Subscribe(unit => InvokeOnMainThread(() =>
-				{
-					_bookingService.ClearLastOrder();
-		                        _waitingToNavigateAfterTimeOut = true;
-								ShowViewModel<HomeViewModel>(new { locateUser =  true });
-								Close(this);
-                    }));
+				_waitingToNavigateAfterTimeOut = true;
+				await Task.Delay (TimeSpan.FromSeconds (10));
+				_bookingService.ClearLastOrder();
+				ShowViewModelAndRemoveFromHistory<HomeViewModel>(new { locateUser =  true });
             }
         }
 
-        public async Task GoToPairScreen()
+        public void GoToPairScreen()
         {
-			var paymentSettings = await _paymentService.GetPaymentSettings ();
-			if (!paymentSettings.AutomaticPaymentPairing)
-            {
-                ShowViewModel<ConfirmPairViewModel>(new
-                {
-                    order = Order.ToJson(),
-                    orderStatus = OrderStatusDetail.ToJson()
-                }.ToStringDictionary());
-            }
+			ShowViewModel<ConfirmPairViewModel>(new 
+			{
+				order = Order.ToJson(),
+				orderStatus = OrderStatusDetail.ToJson()
+			}.ToStringDictionary());
         }
 
         private void CenterMap ()
@@ -639,7 +673,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 							var isSuccess = false;
 							using(this.Services().Message.ShowProgress())
 							{
-								isSuccess = await Task.Run(() => _bookingService.CancelOrder(Order.Id)); 
+								isSuccess = await _bookingService.CancelOrder(Order.Id); 
 							}
                             if (isSuccess) 
                             {
@@ -673,9 +707,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 #endif
 					IsPayButtonVisible = false;
 					this.Services().Analytics.LogEvent("PayButtonTapped");
-					
+
 					var paymentSettings = await _paymentService.GetPaymentSettings();
-                    if (paymentSettings.AutomaticPayment)
+					if ((paymentSettings.AutomaticPayment && !paymentSettings.AutomaticPaymentPairing)
+						|| paymentSettings.PaymentMode == PaymentMethod.RideLinqCmt)
                     {
                         GoToPairScreen();
                     }

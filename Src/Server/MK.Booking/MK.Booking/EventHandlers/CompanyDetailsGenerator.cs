@@ -10,7 +10,8 @@ namespace apcurium.MK.Booking.EventHandlers
     public class CompanyDetailsGenerator :
         IEventHandler<CompanyCreated>,
         IEventHandler<TermsAndConditionsUpdated>,
-        IEventHandler<TermsAndConditionsRetriggered>
+        IEventHandler<TermsAndConditionsRetriggered>,
+        IEventHandler<PrivacyPolicyUpdated>
     {
         private readonly Func<BookingDbContext> _contextFactory;
 
@@ -42,7 +43,19 @@ namespace apcurium.MK.Booking.EventHandlers
             using (var context = _contextFactory.Invoke())
             {
                 var company = context.Find<CompanyDetail>(@event.SourceId);
-                company.Version = company.TermsAndConditions.GetHashCode().ToString(CultureInfo.InvariantCulture);
+                var tAndC = company.TermsAndConditions ?? "";
+                company.Version = tAndC.GetHashCode().ToString(CultureInfo.InvariantCulture);
+                
+                context.Save(company);
+            }
+        }
+
+        public void Handle(PrivacyPolicyUpdated @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var company = context.Find<CompanyDetail>(@event.SourceId);
+                company.PrivacyPolicy = @event.Policy;
                 context.Save(company);
             }
         }

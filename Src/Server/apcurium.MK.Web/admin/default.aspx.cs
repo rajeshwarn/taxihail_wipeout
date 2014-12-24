@@ -25,6 +25,7 @@ namespace apcurium.MK.Web.admin
         protected string GeolocSearchFilter { get; private set; }
         protected string GeolocSearchRegion { get; private set; }
         protected string GeolocSearchBounds { get; private set; }
+        protected bool IsTaxiHailPro { get; private set; }
 
         protected string Languages { get; private set; }
 
@@ -56,6 +57,8 @@ namespace apcurium.MK.Web.admin
             {
                 Response.Redirect("~");
             }
+
+            IsTaxiHailPro = config.ServerData.IsTaxiHailPro || IsSuperAdmin;
         }
 
         protected string FindParam(string[] filters, string param)

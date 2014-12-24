@@ -4,6 +4,7 @@ using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.CommandBuilder;
 using apcurium.MK.Booking.IBS;
+using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Extensions;
@@ -19,6 +20,7 @@ namespace apcurium.MK.Booking.Api.Services
     public class SendReceiptService : Service
     {
         private readonly IAccountDao _accountDao;
+        private readonly IPromotionDao _promotionDao;
         private readonly IIBSServiceProvider _ibsServiceProvider;
         private readonly ICommandBus _commandBus;
         private readonly ICreditCardDao _creditCardDao;
@@ -33,6 +35,7 @@ namespace apcurium.MK.Booking.Api.Services
             IOrderPaymentDao orderPaymentDao,
             ICreditCardDao creditCardDao,
             IAccountDao accountDao,
+            IPromotionDao promotionDao,
             IServerSettings serverSettings)
         {
             _serverSettings = serverSettings;
@@ -40,6 +43,7 @@ namespace apcurium.MK.Booking.Api.Services
             _orderDao = orderDao;
             _orderPaymentDao = orderPaymentDao;
             _accountDao = accountDao;
+            _promotionDao = promotionDao;
             _creditCardDao = creditCardDao;
             _commandBus = commandBus;
         }
@@ -59,85 +63,81 @@ namespace apcurium.MK.Booking.Api.Services
                 throw new HttpError(HttpStatusCode.Unauthorized, "Not your order");
             }
 
-            var ibsOrder = _ibsServiceProvider.Booking(order.CompanyKey).GetOrderDetails(order.IBSOrderId.Value, account.IBSAccountId.Value, order.Settings.Phone);
+            var ibsOrder = _ibsServiceProvider.Booking(order.CompanyKey, order.Market).GetOrderDetails(order.IBSOrderId.Value, account.IBSAccountId.Value, order.Settings.Phone);
 
             var orderPayment = _orderPaymentDao.FindByOrderId(order.Id);
             var pairingInfo = _orderDao.FindOrderPairingById(order.Id);
             var orderStatus = _orderDao.FindOrderStatusById(request.OrderId);
-            
-            if ((orderPayment != null) && (orderPayment.IsCompleted))
-            {
-                var creditCard = orderPayment.CardToken.HasValue() 
-                    ? _creditCardDao.FindByToken(orderPayment.CardToken) 
-                    : null;
 
-                _commandBus.Send(SendReceiptCommandBuilder.GetSendReceiptCommand(
-                    order, account, ibsOrder.VehicleNumber, orderStatus.DriverInfos.FullName,
-                    GetMeterAmount((double)orderPayment.Meter),
-                    0, 
-                    Convert.ToDouble(orderPayment.Tip),
-                    GetTaxAmount((double)orderPayment.Meter, 0), 
-                    orderPayment, creditCard));
-            }
-            else if ((pairingInfo != null) && (pairingInfo.AutoTipPercentage.HasValue))
+            double? meterAmount;
+            double? tollAmount;
+            double? tipAmount;
+            double? taxAmount;
+            PromotionUsageDetail promotionUsed = null;
+            ReadModel.CreditCardDetails creditCard = null;
+
+            if (orderPayment != null && orderPayment.IsCompleted)
             {
-                var creditCard = pairingInfo.TokenOfCardToBeUsedForPayment.HasValue() 
-                    ? _creditCardDao.FindByToken(pairingInfo.TokenOfCardToBeUsedForPayment) 
+                meterAmount = Convert.ToDouble(orderPayment.Meter);
+                tollAmount = 0;
+                tipAmount = Convert.ToDouble(orderPayment.Tip);
+                taxAmount = Convert.ToDouble(orderPayment.Tax);
+
+                // promotion can only be used with in app payment
+                promotionUsed = _promotionDao.FindByOrderId(request.OrderId);
+
+                creditCard = orderPayment.CardToken.HasValue()
+                    ? _creditCardDao.FindByToken(orderPayment.CardToken)
                     : null;
+            }
+            else if (pairingInfo != null && pairingInfo.AutoTipPercentage.HasValue)
+            {
                 var tripData = GetTripData(pairingInfo.PairingToken);
-                if ((tripData != null) && (tripData.EndTime.HasValue))
+                if (tripData != null && tripData.EndTime.HasValue)
                 {
                     // this is for CMT RideLinq only, no VAT
-                    _commandBus.Send(SendReceiptCommandBuilder.GetSendReceiptCommand(
-                        order, account, ibsOrder.VehicleNumber, orderStatus.DriverInfos.FullName,
-                        Math.Round(((double)tripData.Fare / 100), 2), 
-                        Math.Round(((double)tripData.Extra / 2), 2), 
-                        Math.Round(((double)tripData.Tip / 100), 2), 
-                        Math.Round(((double)tripData.Tax / 100), 2), 
-                        null, creditCard));
+
+                    meterAmount = Math.Round(((double) tripData.Fare/100), 2);
+                    tollAmount = Math.Round(((double) tripData.Extra/2), 2);
+                    tipAmount = Math.Round(((double) tripData.Tip/100), 2);
+                    taxAmount = Math.Round(((double) tripData.Tax/100), 2);
                 }
                 else
                 {
-                    _commandBus.Send(SendReceiptCommandBuilder.GetSendReceiptCommand(
-                        order, account, ibsOrder.VehicleNumber, orderStatus.DriverInfos.FullName,
-                        GetMeterAmount(ibsOrder.Fare),
-                        ibsOrder.Toll,
-                        GetTipAmount(ibsOrder.Fare.GetValueOrDefault(0), pairingInfo.AutoTipPercentage.Value),
-                        GetTaxAmount(ibsOrder.Fare, ibsOrder.VAT), 
-                        null, creditCard));
+                    meterAmount = ibsOrder.Fare;
+                    tollAmount = ibsOrder.Toll;
+                    tipAmount = GetTipAmount(ibsOrder.Fare.GetValueOrDefault(0), pairingInfo.AutoTipPercentage.Value);
+                    taxAmount = ibsOrder.VAT;
                 }
+
+                orderPayment = null;
+                creditCard = pairingInfo.TokenOfCardToBeUsedForPayment.HasValue()
+                    ? _creditCardDao.FindByToken(pairingInfo.TokenOfCardToBeUsedForPayment)
+                    : null;
             }
             else
             {
-                _commandBus.Send(SendReceiptCommandBuilder.GetSendReceiptCommand(
-                    order, account, ibsOrder.VehicleNumber, orderStatus.DriverInfos.FullName,
-                    GetMeterAmount(ibsOrder.Fare), 
-                    ibsOrder.Toll, 
-                    ibsOrder.Tip, 
-                    GetTaxAmount(ibsOrder.Fare, ibsOrder.VAT), 
-                    null, null));
+                meterAmount = ibsOrder.Fare;
+                tollAmount = ibsOrder.Toll;
+                tipAmount = ibsOrder.Tip;
+                taxAmount = ibsOrder.VAT;
+
+                orderPayment = null;
             }
+
+            _commandBus.Send(SendReceiptCommandBuilder.GetSendReceiptCommand(order, account, ibsOrder.VehicleNumber, orderStatus.DriverInfos,
+                    meterAmount,
+                    tollAmount,
+                    tipAmount,
+                    taxAmount,
+                    orderPayment,
+                    promotionUsed != null
+                        ? Convert.ToDouble(promotionUsed.AmountSaved)
+                        : (double?)null,
+                    promotionUsed,
+                    creditCard));
 
             return new HttpResult(HttpStatusCode.OK, "OK");
-        }
-
-        private double GetMeterAmount(double? meterAmount)
-        {
-            if (!meterAmount.HasValue)
-            {
-                return 0;
-            }
-            // if VAT is enabled, we need to substract the VAT amount from the meter amount, otherwise we return it as is
-            return _serverSettings.ServerData.VATIsEnabled
-                ? Fare.FromAmountInclTax(meterAmount.Value, _serverSettings.ServerData.VATPercentage).AmountExclTax
-                : Fare.FromAmountInclTax(meterAmount.Value, 0).AmountExclTax;
-        }
-
-        private double GetTaxAmount(double? meterAmount, double? taxAmountIfVATIsDisabled)
-        {
-            return _serverSettings.ServerData.VATIsEnabled
-                ? Fare.FromAmountInclTax(meterAmount.GetValueOrDefault(0), _serverSettings.ServerData.VATPercentage).TaxAmount
-                : taxAmountIfVATIsDisabled.GetValueOrDefault(0);
         }
 
         private double GetTipAmount(double amount, double percentage)

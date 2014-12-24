@@ -3,6 +3,7 @@
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Common.Configuration;
 using ServiceStack.CacheAccess;
+using ServiceStack.CacheAccess.Providers;
 using ServiceStack.ServiceInterface;
 
 #endregion
@@ -22,7 +23,7 @@ namespace apcurium.MK.Booking.Api.Services
 
         public object Get(ConfigurationResetRequest request)
         {
-            _cacheClient.Remove(ReferenceDataService.CacheKey);
+            _cacheClient.RemoveByPattern(string.Format("{0}*", ReferenceDataService.CacheKey));
             _serverSettings.Reload();
             return true;
         }

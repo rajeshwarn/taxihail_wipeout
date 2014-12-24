@@ -73,6 +73,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				RaisePropertyChanged(() => AptRingTxt); 
 				RaisePropertyChanged(() => DestinationTxt); 
 				RaisePropertyChanged(() => PickUpDateTxt); 
+				RaisePropertyChanged(() => PromoCode); 
             }
 		}
 
@@ -255,11 +256,21 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			get
 			{
-				var amount = Order.Fare + Order.Tip + Order.Toll;
+				var amount = Order.Fare + Order.Tip + Order.Tax + Order.Toll;
 
 				return Status.FareAvailable
 					? string.Format ("{0} ({1})", Status.IBSStatusDescription, CultureProvider.FormatCurrency(amount.Value))
 					: Status.IBSStatusDescription;
+			}
+		}
+
+		public string PromoCode
+		{
+			get 
+			{
+				return Order != null 
+					? Order.PromoCode
+					: null;
 			}
 		}
 
@@ -335,13 +346,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                return this.GetCommand(() =>
+                return this.GetCommand(async () =>
                 {
 					using(this.Services().Message.ShowProgress())
 					{
 						if (OrderId.HasValue())
 	                    {
-							_bookingService.RemoveFromHistory(OrderId);
+							await _bookingService.RemoveFromHistory(OrderId);
 	                        this.Services().MessengerHub.Publish(new OrderDeleted(this, OrderId, null));
 							Close(this);
 	                    }
@@ -349,6 +360,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 });
             }
         }
+
+		public void NavigateToHistoryList()
+		{
+			ShowViewModel<HistoryListViewModel>();
+		}
 
 		public ICommand RebookOrder
         {
@@ -358,10 +374,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 {
 					using(this.Services().Message.ShowProgress())
 					{
-						_orderWorkflowService.Rebook(Order);
-						ShowViewModel<HomeViewModel>(new { 
-							locateUser =  false, 
-							defaultHintZoomLevel = new ZoomToStreetLevelPresentationHint(Order.PickupAddress.Latitude, Order.PickupAddress.Longitude).ToJson()});
+						
+							_orderWorkflowService.Rebook(Order);
+							GoBackToHomeViewModel(new { 
+								locateUser =  false, 
+								defaultHintZoomLevel = new ZoomToStreetLevelPresentationHint(Order.PickupAddress.Latitude, Order.PickupAddress.Longitude).ToJson()});
 					}
 				});
             }
@@ -371,13 +388,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                return this.GetCommand(() =>
+                return this.GetCommand(async () =>
                 {
 					using(this.Services().Message.ShowProgress())
 					{
 						if (OrderId.HasValue())
 						{
-							_bookingService.SendReceipt(OrderId);
+							await _bookingService.SendReceipt(OrderId);
 						}
 						Close(this);
 					}
@@ -393,11 +410,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					string.Empty, 
 					this.Services().Localize["StatusConfirmCancelRide"], 
                     this.Services().Localize["YesButton"], 
-					() =>
+					async () =>
 	                	{
 							using(this.Services().Message.ShowProgress())
 							{
-								var isSuccess = _bookingService.CancelOrder(OrderId);
+								var isSuccess = await _bookingService.CancelOrder(OrderId);
 			                    if(isSuccess)
 			                    {
                                     this.Services().MessengerHub.Publish(new OrderStatusChanged(this, OrderId, OrderStatus.Canceled, null));

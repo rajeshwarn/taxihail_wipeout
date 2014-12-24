@@ -23,12 +23,19 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         public override void Show(MvxViewModelRequest request)
         {
+			if(request.ParameterValues != null 
+				&& request.ParameterValues.ContainsKey("clearNavigationStack"))
+			{
+				ClearNavigationStack();
+				return;
+			}
+
             base.Show(request);
-            if(request.ParameterValues != null
-                && request.ParameterValues.ContainsKey("removeFromHistory"))
-            {
-                RemovePreviousViewFromHistory();
-            }
+			if(request.ParameterValues != null 
+				&& request.ParameterValues.ContainsKey("removeFromHistory"))
+			{
+				RemovePreviousViewFromHistory();
+			}
         }
 
         public override void ChangePresentation(MvxPresentationHint hint)
@@ -42,6 +49,17 @@ namespace apcurium.MK.Booking.Mobile.Client
                 base.ChangePresentation(hint);
             }
         }
+
+		private void ClearNavigationStack()
+		{
+			var navController = Mvx.Resolve<UINavigationController>();
+
+			var controllers = navController.ViewControllers;
+			if (controllers.Length > 1)
+			{
+				navController.ViewControllers = new UIViewController[] {controllers[0]};
+			}
+		}
 
         private void RemovePreviousViewFromHistory()
         { 

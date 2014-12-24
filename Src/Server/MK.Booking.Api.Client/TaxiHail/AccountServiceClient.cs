@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.Infrastructure;
+using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Booking.Api.Client.Extensions;
 using MK.Common.Configuration;
@@ -132,6 +133,18 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             await Client.PostAsync<string>(req, notificationSettingsRequest);
         }
 
+        public async Task<UserTaxiHailNetworkSettings> GetUserTaxiHailNetworkSettings(Guid accountId)
+        {
+            var req = string.Format("/settings/taxihailnetwork/{0}", accountId);
+            return await Client.GetAsync<UserTaxiHailNetworkSettings>(req);
+        }
+
+        public async Task UpdateUserTaxiHailNetworkSettings(UserTaxiHailNetworkSettingsRequest userTaxiHailNetworkSettingsRequest)
+        {
+            string req = string.Format("/settings/taxihailnetwork/{0}", userTaxiHailNetworkSettingsRequest.AccountId);
+            await Client.PostAsync<string>(req, userTaxiHailNetworkSettingsRequest);
+        }
+
         public async Task RemoveCreditCard()
         {
             await UnregisterTokenizedCards ();
@@ -156,6 +169,12 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
         public Task<Account> GetTestAccount(int index)
         {
             var result = Client.GetAsync<Account>("/account/test/" + index);
+            return result;
+        }
+
+        public Task<Account> GetAdminTestAccount(int index)
+        {
+            var result = Client.GetAsync<Account>("/account/test/admin/" + index);
             return result;
         }
 

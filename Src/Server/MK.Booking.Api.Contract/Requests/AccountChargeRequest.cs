@@ -24,6 +24,8 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
 
         public bool HideAnswers { get; set; }
 
+        public bool UseCardOnFileForPayment { get; set; }
+
         public virtual AccountChargeQuestion[] Questions { get; set; }
     }
 }

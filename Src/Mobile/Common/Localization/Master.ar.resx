@@ -612,6 +612,9 @@
   <data name="HistoryDetailStatusLabel" xml:space="preserve">
     <value>الحالة:</value>
   </data>
+  <data name="HistoryDetailPromoLabel" xml:space="preserve">
+    <value>Promo Code:</value>
+  </data>
   <data name="HistoryInfo" xml:space="preserve">
     <value>عرض حجوزاتكم خلال الشهر الماضي</value>
   </data>
@@ -1122,27 +1125,6 @@
   <data name="ServiceErrorCreateAccount_AccountAlreadyExist" xml:space="preserve">
     <value>هذا العنوان الإلكتروني مستخدم من قبل.</value>
   </data>
-  <data name="ServiceErrorCreateOrder_CannotCreateInIbs" xml:space="preserve">
-    <value>لا يمكن إدخال الطلب. الرجاء المحاولة من جديد أو اتصل بنا.</value>
-  </data>
-  <data name="ServiceErrorCreateOrder_CannotCreateInIbs_1002" xml:space="preserve">
-    <value>عنوان الإلتقاء يقع خارج نطاق الخدمة المعتادة. رجاء الإتصال  {0} على  {1} للمزيد من المساعدة.</value>
-  </data>
-  <data name="ServiceErrorCreateOrder_CannotCreateInIbs_1002_NoCall" xml:space="preserve">
-    <value>عنوان الإلتقاء يقع خارج نطاق الخدمة المعتادة.</value>
-  </data>
-  <data name="ServiceErrorCreateOrder_CannotCreateInIbs_1452" xml:space="preserve">
-    <value>The specified Destination address lies outside the regular service area. Please contact {0} at {1} for further assistance.</value>
-  </data>
-  <data name="ServiceErrorCreateOrder_CannotCreateInIbs_1452_NoCall" xml:space="preserve">
-    <value>The specified Destination address lies outside the regular service area.</value>
-  </data>
-  <data name="ServiceErrorCreateOrder_CannotCreateInIbs_7000" xml:space="preserve">
-    <value>لا يمكن إدخال الطلب لأن حسابك غير فعال حاليا. رجاء الإتصال  {0} على  {1} للمزيد من المساعدة.</value>
-  </data>
-  <data name="ServiceErrorCreateOrder_CannotCreateInIbs_7000_NoCall" xml:space="preserve">
-    <value>لا يمكن إدخال الطلب لأن حسابك غير فعال حاليا.</value>
-  </data>
   <data name="ServiceErrorCreateOrder_InvalidProvider" xml:space="preserve">
     <value>لا يمكن إدخال الطلب، مقدم الخدمة غير متاح. رجاء الاتصال  {0} على  {1} للمزيد من المساعدة</value>
   </data>
@@ -1557,9 +1539,6 @@
   <data name="View_NotificationSettings" xml:space="preserve">
     <value>Notifications</value>
   </data>
-  <data name="ServiceErrorCreateOrder_CannotCreateInIbs_10000" xml:space="preserve">
-    <value>The charge account information is invalid. Please try again.</value>
-  </data>
   <data name="PanelMenuViewNotificationsText" xml:space="preserve">
     <value>Notifications</value>
   </data>
@@ -1568,9 +1547,6 @@
   </data>
   <data name="Notification_BookingConfirmationEmail" xml:space="preserve">
     <value>Booking Confirmation (Email)</value>
-  </data>
-  <data name="ServiceErrorCreateOrder_CannotCreateInIbs_10000_NoCall" xml:space="preserve">
-    <value>The charge account information is invalid. Please try again.</value>
   </data>
   <data name="Notification_ConfirmPairingPush" xml:space="preserve">
     <value>Confirm Pairing</value>
@@ -1608,10 +1584,10 @@
   <data name="Notification_VehicleAtPickupPush" xml:space="preserve">
     <value>Vehicle at Pickup</value>
   </data>
-  <data name="Notification_Off" xml:space="preserve">
+  <data name="Toggle_Off" xml:space="preserve">
     <value>Off</value>
   </data>
-  <data name="Notification_On" xml:space="preserve">
+  <data name="Toggle_On" xml:space="preserve">
     <value>On</value>
   </data>
   <data name="PaymentInCar" xml:space="preserve">
@@ -1670,5 +1646,74 @@
   </data>
   <data name="UpdateBookingSettingsGenericError" xml:space="preserve">
     <value>An error occured when updating the booking settings</value>
+  </data>
+  <data name="UpdateBookingSettingsInvalidCoF" xml:space="preserve">
+    <value>You must have a card on file to use this account</value>
+  </data>
+  <data name="MarketChangedMessage" xml:space="preserve">
+    <value>You are leaving your local service area. Should you decide to book, your order will be dispatched using a taxi company from this area.</value>
+  </data>
+  <data name="MarketChangedMessageTitle" xml:space="preserve">
+    <value>New service area detected</value>
+  </data>
+  <data name="PanelMenuViewTaxiHailNetworkText" xml:space="preserve">
+    <value>TaxiHail Network</value>
+  </data>
+  <data name="View_UserTaxiHailNetworkSettings" xml:space="preserve">
+    <value>TaxiHail Network</value>
+  </data>
+  <data name="UserTaxiHailNetwork_Enabled" xml:space="preserve">
+    <value>TaxiHail Network</value>
+  </data>
+  <data name="PromoCodeLabel" xml:space="preserve">
+    <value>Promo code</value>
+  </data>
+  <data name="PromoMustUseCardOnFileMessage" xml:space="preserve">
+    <value>In order to use a promo code, you need to pay with card on file</value>
+  </data>
+  <data name="PromoMustUseCardOnFileWarningMessage" xml:space="preserve">
+    <value>Please note that the discount will only be applied if the payment is made using the app</value>
+  </data>
+  <data name="WarningPromoCodeDontShow" xml:space="preserve">
+    <value>لا تحذر</value>
+  </data>
+  <data name="PanelMenuViewPromotionsText" xml:space="preserve">
+    <value>Promotions</value>
+  </data>
+  <data name="PromoRequiresToPayWithCOFPairingWarningMessage" xml:space="preserve">
+    <value>If you decide to pay in car, you will not be able to use the promotion</value>
+  </data>
+  <data name="PromoRequiresToPayWithCOFPairingWarningCancelButton" xml:space="preserve">
+    <value>Pay in car</value>
+  </data>
+  <data name="View_Promotions" xml:space="preserve">
+    <value>Promotions</value>
+  </data>
+  <data name="PromoExpiringIn1DayMessage" xml:space="preserve">
+    <value>Expires in 1 day</value>
+  </data>
+  <data name="PromoExpiringSoonMessage" xml:space="preserve">
+    <value>Expires in {0} days</value>
+  </data>
+  <data name="PromoExpiringToday" xml:space="preserve">
+    <value>Expires today!</value>
+  </data>
+  <data name="PromoBookRide" xml:space="preserve">
+    <value>Use this promotion on next ride</value>
+  </data>
+  <data name="PromotionViewNoPromotionLabel" xml:space="preserve">
+    <value>No promotions available</value>
+  </data>
+  <data name="Processing" xml:space="preserve">
+    <value>Processing your order...</value>
+  </data>
+  <data name="Notification_PromotionUnlockedEmail" xml:space="preserve">
+    <value>Promotions unlocked (Email)</value>
+  </data>
+  <data name="Notification_PromotionUnlockedPush" xml:space="preserve">
+    <value>Promotions unlocked (Push)</value>
+  </data>
+  <data name="PromoProgress" xml:space="preserve">
+    <value>Progress :</value>
   </data>
 </root>

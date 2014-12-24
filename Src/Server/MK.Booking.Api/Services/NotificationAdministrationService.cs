@@ -16,6 +16,7 @@ using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
+using apcurium.MK.Common.Enumeration;
 using ServiceStack.Common.Web;
 using ServiceStack.ServiceInterface;
 using SendReceipt = apcurium.MK.Booking.Commands.SendReceipt;
@@ -91,15 +92,15 @@ namespace apcurium.MK.Booking.Api.Services
                 {
                     case NotificationService.EmailConstant.Template.AccountConfirmation:
                         _notificationService.SendAccountConfirmationEmail(new Uri("http://www.google.com"),
-                            request.EmailAddress, "en");
+                            request.EmailAddress, request.Language);
                         break;
                     case NotificationService.EmailConstant.Template.BookingConfirmation:
                         _notificationService.SendBookingConfirmationEmail(12345, "This is a standard note",
                             _pickupAddress, _dropOffAddress,
-                            DateTime.Now, _bookingSettings, request.EmailAddress, "en", true);
+                            DateTime.Now, _bookingSettings, request.EmailAddress, request.Language, true);
                         break;
                     case NotificationService.EmailConstant.Template.PasswordReset:
-                        _notificationService.SendPasswordResetEmail("N3wp@s5w0rd", request.EmailAddress, "en");
+                        _notificationService.SendPasswordResetEmail("N3wp@s5w0rd", request.EmailAddress, request.Language);
                         break;
                     case NotificationService.EmailConstant.Template.Receipt:
                         var fareObject = _serverSettings.ServerData.VATIsEnabled
@@ -107,9 +108,26 @@ namespace apcurium.MK.Booking.Api.Services
                             : Fare.FromAmountInclTax(45, 0);
                         var toll = 0;
                         var tip = (double)45*((double)15/(double)100);
+                        var amountSavedByPromo = 10;
+                        
+                        var driverInfos = new DriverInfos
+                        {
+                            DriverId = "7009",
+                            FirstName = "Alex",
+                            LastName = "Proteau",
+                            MobilePhone = "5551234567",
+                            VehicleColor = "Silver",
+                            VehicleMake = "DMC",
+                            VehicleModel = "Delorean",
+                            VehicleRegistration = "OUTATIME",
+                            VehicleType = "Time Machine"
+                        };
 
-                        _notificationService.SendReceiptEmail(Guid.NewGuid(), 12345, "9007", "Alex Proteau", fareObject.AmountExclTax, toll, tip, fareObject.TaxAmount, fareObject.AmountExclTax + toll + tip + fareObject.TaxAmount,
-                            _cardOnFile, _pickupAddress, _dropOffAddress, DateTime.Now.AddMinutes(-15), DateTime.Now, request.EmailAddress, "en", true);
+                        _notificationService.SendReceiptEmail(Guid.NewGuid(), 12345, "9007", driverInfos, fareObject.AmountExclTax, toll, tip, fareObject.TaxAmount, fareObject.AmountExclTax + toll + tip + fareObject.TaxAmount - amountSavedByPromo,
+                            _cardOnFile, _pickupAddress, _dropOffAddress, DateTime.Now.AddMinutes(-15), DateTime.Now, request.EmailAddress, "en", amountSavedByPromo, "PROMO10", true);
+                        break;
+                    case NotificationService.EmailConstant.Template.PromotionUnlocked:
+                        _notificationService.SendPromotionUnlockedEmail("10% Off your next ride", "PROMO123", DateTime.Now.AddMonths(1), request.EmailAddress, request.Language, true);
                         break;
                     default:
                         throw new Exception("sendTestEmailErrorNoMatchingTemplate");
@@ -168,7 +186,7 @@ namespace apcurium.MK.Booking.Api.Services
             VehicleType = "Taxi"
         };
 
-        private readonly SendReceipt.CardOnFile _cardOnFile = new SendReceipt.CardOnFile((decimal) 51.75, "ad51d", "1155", "Visa")
+        private readonly SendReceipt.CardOnFile _cardOnFile = new SendReceipt.CardOnFile((decimal) 41.75, "ad51d", "1155", "Visa")
         {
             ExpirationMonth = "2",
             ExpirationYear = "14",

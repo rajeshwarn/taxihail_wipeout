@@ -37,6 +37,8 @@ namespace apcurium.MK.Booking.Domain
             Handles<OrderPreparedForNextDispatch>(NoAction);
             Handles<OrderSwitchedToNextDispatchCompany>(OnOrderSwitchedToNextDispatchCompany);
             Handles<DispatchCompanySwitchIgnored>(OnNextDispatchCompanySwitchIgnored);
+            Handles<IbsOrderInfoAddedToOrder>(NoAction);
+            Handles<OrderCancelledBecauseOfIbsError>(NoAction);
         }
         
         public Order(Guid id, IEnumerable<IVersionedEvent> history)
@@ -45,9 +47,12 @@ namespace apcurium.MK.Booking.Domain
             LoadFrom(history);
         }
 
-        public Order(Guid id, Guid accountId, int ibsOrderId, DateTime pickupDate, Address pickupAddress, Address dropOffAddress, BookingSettings settings, double? estimatedFare, string userAgent, string clientLanguageCode, double? userLatitude, double? userLongitude, string userNote, string clientVersion) : this(id)
+        public Order(Guid id, Guid accountId, DateTime pickupDate, Address pickupAddress, Address dropOffAddress, BookingSettings settings,
+            double? estimatedFare, string userAgent, string clientLanguageCode, double? userLatitude, double? userLongitude, string userNote, string clientVersion,
+            bool isChargeAccountPaymentWithCardOnFile, string companyKey, string companyName, string market)
+            : this(id)
         {
-            if ((settings == null) || pickupAddress == null || ibsOrderId <= 0 ||
+            if ((settings == null) || pickupAddress == null || 
                 (Params.Get(pickupAddress.FullAddress, settings.Name, settings.Phone).Any(p => p.IsNullOrEmpty())))
             {
                 throw new InvalidOperationException("Missing required fields");
@@ -55,7 +60,6 @@ namespace apcurium.MK.Booking.Domain
 
             Update(new OrderCreated
             {
-                IBSOrderId = ibsOrderId,
                 AccountId = accountId,
                 PickupDate = pickupDate,
                 PickupAddress = pickupAddress,
@@ -68,7 +72,19 @@ namespace apcurium.MK.Booking.Domain
                 UserLatitude = userLatitude,
                 UserLongitude = userLongitude,
                 UserNote = userNote,
-                ClientVersion = clientVersion
+                ClientVersion = clientVersion,
+                IsChargeAccountPaymentWithCardOnFile = isChargeAccountPaymentWithCardOnFile,
+                CompanyKey = companyKey,
+                CompanyName = companyName,
+                Market = market
+            });
+        }
+
+        public void AddIbsOrderInfo(int ibsOrderId)
+        {
+            Update(new IbsOrderInfoAddedToOrder
+            {
+                IBSOrderId = ibsOrderId
             });
         }
 
@@ -100,6 +116,15 @@ namespace apcurium.MK.Booking.Domain
         public void Cancel()
         {
             Update(new OrderCancelled());
+        }
+
+        public void CancelBecauseOfIbsError(string errorCode, string errorDescription)
+        {
+            Update(new OrderCancelledBecauseOfIbsError
+            {
+                ErrorCode = errorCode,
+                ErrorDescription = errorDescription
+            });
         }
 
         public void RemoveFromHistory()
@@ -138,11 +163,14 @@ namespace apcurium.MK.Booking.Domain
             }
         }
 
-        public void NotifyOrderTimedOut()
+        public void NotifyOrderTimedOut(string market)
         {
             if (!_isTimedOut)
             {
-                Update(new OrderTimedOut());  
+                Update(new OrderTimedOut
+                {
+                    Market = market
+                });  
             }
         }
 
@@ -175,13 +203,14 @@ namespace apcurium.MK.Booking.Domain
             });
         }
 
-        public void SwitchOrderToNextDispatchCompany(int ibsOrderId, string companyKey, string companyName)
+        public void SwitchOrderToNextDispatchCompany(int ibsOrderId, string companyKey, string companyName, string market)
         {
             Update(new OrderSwitchedToNextDispatchCompany
             {
                 IBSOrderId = ibsOrderId,
                 CompanyKey = companyKey,
-                CompanyName = companyName
+                CompanyName = companyName,
+                Market = market
             });
         }
 

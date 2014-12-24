@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
@@ -61,7 +62,7 @@ namespace apcurium.MK.Booking.Api.Services
             }
         }
 
-        private void HideAnswers( IEnumerable<AccountChargeQuestion> questionsAndAnswers)
+        private void HideAnswers(IEnumerable<AccountChargeQuestion> questionsAndAnswers)
         {
             foreach (var accountChargeQuestion in questionsAndAnswers)
             {
@@ -85,6 +86,7 @@ namespace apcurium.MK.Booking.Api.Services
                 Name = request.Name,
                 Number = request.Number,
                 Questions = request.Questions,
+                UseCardOnFileForPayment = request.UseCardOnFileForPayment,
                 CompanyId = AppConstants.CompanyId
             };
 
@@ -122,6 +124,7 @@ namespace apcurium.MK.Booking.Api.Services
                 AccountChargeId = request.Id,
                 Name = request.Name,
                 Number = request.Number,
+                UseCardOnFileForPayment = request.UseCardOnFileForPayment,
                 Questions = request.Questions,
                 CompanyId = AppConstants.CompanyId
             };
@@ -152,5 +155,27 @@ namespace apcurium.MK.Booking.Api.Services
 
             return new HttpResult(HttpStatusCode.OK, "OK");
         }
+
+        public object Post(AccountChargeImportRequest request)
+        {
+            var receivedAccounts = request.AccountCharges;
+            
+            // TODO: Should exclude existing with a single call
+            var accounts = (from account in receivedAccounts
+                let existing = _dao.FindByAccountNumber(account.Number)
+                where existing == null
+                select account).ToArray();
+
+            var importedAccountCharge = new ImportAccountCharge()
+            {
+                AccountCharges = accounts,
+                CompanyId = AppConstants.CompanyId
+            };
+
+            _commandBus.Send(importedAccountCharge);
+
+            return new HttpResult(HttpStatusCode.OK, "OK");
+        }
+
     }
 }

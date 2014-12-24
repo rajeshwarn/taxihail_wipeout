@@ -1,6 +1,7 @@
 <div class='control-group'>
     <div class="input-append pull-right">
         <input class="address span" type="text" name='address' value='{{fullAddress}}'>
+        <a href='#' class="add-on btn disabled" disabled='disabled' data-action='refine'><b>#</b></a>
         {{#if options.locate }}
             <a href='#' class="add-on btn" data-action='locate'><i class='icon-locate' id="locateIcon"></i></a>
         {{/if}}

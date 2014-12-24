@@ -6,9 +6,8 @@ using System.Collections.Generic;
 
 namespace apcurium.MK.Booking.MapDataProvider.Google.Resources	
 {
-    public class PredictionResponse
+    public class PredictionResponse : GoogleResult
     {
         public List<Prediction> predictions { get; set; }
-        public string status { get; set; }
     }
 }

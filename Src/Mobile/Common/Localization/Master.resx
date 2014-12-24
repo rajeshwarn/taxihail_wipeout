@@ -297,6 +297,9 @@
   <data name="HistoryDetailAuthorizationLabel" xml:space="preserve">
     <value>Authorization:</value>
   </data>
+  <data name="HistoryDetailPromoLabel" xml:space="preserve">
+    <value>Promo Code:</value>
+  </data>
   <data name="Reset" xml:space="preserve">
     <value>Reset</value>
   </data>
@@ -801,9 +804,6 @@
   <data name="ServiceErrorCreateOrder_PendingOrder" xml:space="preserve">
     <value>You cannot book this ride since an order is already pending. View the order status?</value>
   </data>
-  <data name="ServiceErrorCreateOrder_CannotCreateInIbs" xml:space="preserve">
-    <value>Order cannot be created. Please try again or call us.</value>
-  </data>
   <data name="ServiceErrorCreateOrder_NoProvider" xml:space="preserve">
     <value>Order cannot be created, no provider specified. Please try again or call us.</value>
   </data>
@@ -908,18 +908,6 @@
   </data>
   <data name="AccountDisabled_NoCall" xml:space="preserve">
     <value>Your account has been disabled.</value>
-  </data>
-  <data name="ServiceErrorCreateOrder_CannotCreateInIbs_7000" xml:space="preserve">
-    <value>The order cannot be created because your account is currently inactive. Please contact {0} at {1} for further assistance.</value>
-  </data>
-  <data name="ServiceErrorCreateOrder_CannotCreateInIbs_7000_NoCall" xml:space="preserve">
-    <value>The order cannot be created because your account is currently inactive.</value>
-  </data>
-  <data name="ServiceErrorCreateOrder_CannotCreateInIbs_10000" xml:space="preserve">
-    <value>The charge account information is invalid. Please try again.</value>
-  </data>
-  <data name="ServiceErrorCreateOrder_CannotCreateInIbs_10000_NoCall" xml:space="preserve">
-    <value>The charge account information is invalid. Please try again.</value>
   </data>
   <data name="LocalContactCannotBeResolverTitle" xml:space="preserve">
     <value>Invalid Contact</value>
@@ -1653,10 +1641,10 @@
   <data name="Notification_VehicleAtPickupPush" xml:space="preserve">
     <value>Vehicle at Pickup</value>
   </data>
-  <data name="Notification_Off" xml:space="preserve">
+  <data name="Toggle_Off" xml:space="preserve">
     <value>Off</value>
   </data>
-  <data name="Notification_On" xml:space="preserve">
+  <data name="Toggle_On" xml:space="preserve">
     <value>On</value>
   </data>
   <data name="PaymentInCar" xml:space="preserve">
@@ -1727,5 +1715,74 @@
   </data>
   <data name="UpdateBookingSettingsGenericError" xml:space="preserve">
     <value>An error occured when updating the booking settings</value>
+  </data>
+  <data name="UpdateBookingSettingsInvalidCoF" xml:space="preserve">
+    <value>You must have a card on file to use this account</value>
+  </data>
+  <data name="MarketChangedMessage" xml:space="preserve">
+    <value>You are leaving your local service area. Should you decide to book, your order will be dispatched using a taxi company from this area.</value>
+  </data>
+  <data name="MarketChangedMessageTitle" xml:space="preserve">
+    <value>New service area detected</value>
+  </data>
+  <data name="PanelMenuViewTaxiHailNetworkText" xml:space="preserve">
+    <value>TaxiHail Network</value>
+  </data>
+  <data name="UserTaxiHailNetwork_Enabled" xml:space="preserve">
+    <value>TaxiHail Network</value>
+  </data>
+  <data name="View_UserTaxiHailNetworkSettings" xml:space="preserve">
+    <value>TaxiHail Network</value>
+  </data>
+  <data name="PromoCodeLabel" xml:space="preserve">
+    <value>Promo code</value>
+  </data>
+  <data name="PromoMustUseCardOnFileMessage" xml:space="preserve">
+    <value>In order to use a promo code, you need to pay with card on file</value>
+  </data>
+  <data name="PromoMustUseCardOnFileWarningMessage" xml:space="preserve">
+    <value>Please note that the discount will only be applied if the payment is made using the app</value>
+  </data>
+  <data name="WarningPromoCodeDontShow" xml:space="preserve">
+    <value>Don't warn</value>
+  </data>
+  <data name="PanelMenuViewPromotionsText" xml:space="preserve">
+    <value>Promotions</value>
+  </data>
+  <data name="PromoRequiresToPayWithCOFPairingWarningMessage" xml:space="preserve">
+    <value>If you decide to pay in car, you will not be able to use the promotion</value>
+  </data>
+  <data name="PromoRequiresToPayWithCOFPairingWarningCancelButton" xml:space="preserve">
+    <value>Pay in car</value>
+  </data>
+  <data name="View_Promotions" xml:space="preserve">
+    <value>Promotions</value>
+  </data>
+  <data name="PromoExpiringSoonMessage" xml:space="preserve">
+    <value>Expires in {0} days</value>
+  </data>
+  <data name="PromoExpiringIn1DayMessage" xml:space="preserve">
+    <value>Expires in 1 day</value>
+  </data>
+  <data name="PromoExpiringToday" xml:space="preserve">
+    <value>Expires today!</value>
+  </data>
+  <data name="PromoBookRide" xml:space="preserve">
+    <value>Use this promotion on next ride</value>
+  </data>
+  <data name="PromotionViewNoPromotionLabel" xml:space="preserve">
+    <value>No promotions available</value>
+  </data>
+  <data name="Processing" xml:space="preserve">
+    <value>Processing your order...</value>
+  </data>
+  <data name="Notification_PromotionUnlockedEmail" xml:space="preserve">
+    <value>Promotions unlocked (Email)</value>
+  </data>
+  <data name="Notification_PromotionUnlockedPush" xml:space="preserve">
+    <value>Promotions unlocked (Push)</value>
+  </data>
+  <data name="PromoProgress" xml:space="preserve">
+    <value>Progress :</value>
   </data>
 </root>

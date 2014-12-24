@@ -5,8 +5,9 @@
     "User Management": "User Management",
 	"Test Notifications" : "Test Notifications",
 	"Terms and Conditions" : "Terms and Conditions",
+	"Privacy Policy" : "Privacy Policy",
 	"Grant access admin" : "Grant access admin",
-	"Enable Disable Account" : "Enable/disable account",
+	"Enable Disable Account" : "Account management",
 	"Send Push" : "Send Push",
 	"Send Test Email" : "Send Test Email",
 	"Company Settings" : "Company Settings",
@@ -20,6 +21,4 @@
     "Signup": "Signup",
     "TaxiHail Network": "TaxiHail Network",
     "Configure": "Configure"
-	
-
 }

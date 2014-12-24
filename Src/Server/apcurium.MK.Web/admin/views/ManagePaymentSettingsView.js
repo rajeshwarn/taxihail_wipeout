@@ -158,6 +158,7 @@
 
             var autPaymentDiv = this.$("#automaticPaymentDiv");
             var autPairingDiv = this.$("#automaticPairingDiv");
+            var preAuthAmountEnabledDiv = this.$("#preAuthAmountEnabledDiv");
             var preAuthAmountDiv = this.$("#preAuthAmountDiv");
             var noShowFeeDiv = this.$("#noShowFeeDiv");
 
@@ -195,6 +196,7 @@
                 monerisDiv.hide();
                 autPaymentDiv.show();
                 autPairingDiv.show();
+                preAuthAmountEnabledDiv.show();
                 preAuthAmountDiv.show();
                 noShowFeeDiv.show();
             }
@@ -205,6 +207,7 @@
                 monerisDiv.hide();
                 autPaymentDiv.show();
                 autPairingDiv.show();
+                preAuthAmountEnabledDiv.show();
                 preAuthAmountDiv.show();
                 noShowFeeDiv.show();
             }
@@ -215,6 +218,7 @@
                 monerisDiv.show();
                 autPaymentDiv.show();
                 autPairingDiv.show();
+                preAuthAmountEnabledDiv.show();
                 preAuthAmountDiv.show();
                 noShowFeeDiv.show();
             }
@@ -225,6 +229,7 @@
                 monerisDiv.hide();
                 autPaymentDiv.hide();
                 autPairingDiv.hide();
+                preAuthAmountEnabledDiv.hide();
                 preAuthAmountDiv.hide();
                 noShowFeeDiv.hide();
             }

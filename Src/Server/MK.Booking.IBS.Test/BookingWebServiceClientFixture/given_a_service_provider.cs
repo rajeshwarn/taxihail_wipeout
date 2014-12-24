@@ -25,10 +25,15 @@ namespace MK.Booking.IBS.Test.BookingWebServiceClientFixture
             Mapper.AddProfile(profile);
 
             var service = new BookingWebServiceClient(config, logger);
+            
+            var nbOfAvailableCars = service.GetAvailableVehicles(45.498247, -73.656673, 1).ToList();
+            Console.WriteLine(nbOfAvailableCars.Count);
 
-            var test = service.GetAvailableVehicles(45.498247, -73.656673, 1).ToList();
-
-            Console.WriteLine(test.Count);
+            // IBS Fare Estimate
+            var fareEstimate = service.GetFareEstimate(45.498247, -73.656673, 45.4987, -73.658, null, null, null, null, null, null,null);
+            Console.WriteLine(fareEstimate.Distance);
+            Console.WriteLine(fareEstimate.FareEstimate);
+            Console.WriteLine(fareEstimate.Tolls);
         }
     }
 }

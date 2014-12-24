@@ -1,11 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data.SqlTypes;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters;
-using apcurium.MK.Common.Extensions;
+using apcurium.MK.Common;
+using apcurium.MK.Common.Configuration;
 using DatabaseInitializer.OldEvents;
 using Infrastructure.Sql.EventSourcing;
 using Newtonsoft.Json;
@@ -18,14 +18,16 @@ namespace DatabaseInitializer.Services
     public class EventsMigrator : IEventsMigrator
     {
         private readonly Func<EventStoreDbContext> _contextFactory;
+        private readonly IServerSettings _serverSettings;
         private readonly JsonSerializer _serializer;
         private readonly JsonSerializer _deserializer;
         private ILog _logger;
 
-        public EventsMigrator(Func<EventStoreDbContext> contextFactory)
+        public EventsMigrator(Func<EventStoreDbContext> contextFactory, IServerSettings serverSettings)
         {
             
             _contextFactory = contextFactory;
+            _serverSettings = serverSettings; // server settings comes from latest settings on old database
             //deserailize without type
             _deserializer = new JsonSerializer();
             //sereailize with type as expected in infrastructure
@@ -101,6 +103,16 @@ namespace DatabaseInitializer.Services
                     }
                     context.SaveChanges();
 
+                    // convert CreditCardPaymentCaptured to CreditCardPaymentCaptured_V2
+                    foreach (var message in events.Where(x => x.EventType.Equals("apcurium.MK.Booking.Events.CreditCardPaymentCaptured")).ToList())
+                    {
+                        var @event = Deserialize<CreditCardPaymentCaptured>(message.Payload);
+                        var newEvent = Convert(@event);
+                        message.Payload = Serialize(newEvent);
+                        message.EventType = message.EventType.Replace("CreditCardPaymentCaptured", "CreditCardPaymentCaptured_V2");
+                    }
+                    context.SaveChanges();
+
                     // convert OrderFareUpdated to OrderStatusChanged
                     foreach (var message in events.Where(x => x.EventType.Contains("OrderFareUpdated")).ToList())
                     {
@@ -173,6 +185,30 @@ namespace DatabaseInitializer.Services
                     throw new SerializationException(e.Message, e);
                 }
             }
+        }
+
+        private CreditCardPaymentCaptured_V2 Convert(CreditCardPaymentCaptured oldEvent)
+        {
+            var fareObject = Fare.FromAmountInclTax(System.Convert.ToDouble(oldEvent.Meter), _serverSettings.ServerData.VATIsEnabled ? _serverSettings.ServerData.VATPercentage : 0);
+
+            return new CreditCardPaymentCaptured_V2
+            {
+                EventDate = oldEvent.EventDate,
+                SourceId = oldEvent.SourceId,
+                Version = oldEvent.Version,
+                TransactionId = oldEvent.TransactionId,
+                AuthorizationCode = oldEvent.AuthorizationCode,
+                Amount = oldEvent.Amount,
+                Tip = oldEvent.Tip,
+                Provider = oldEvent.Provider,
+                OrderId = oldEvent.OrderId,
+                IsNoShowFee = oldEvent.IsNoShowFee,
+                PromotionUsed = oldEvent.PromotionUsed,
+                AmountSavedByPromotion = oldEvent.AmountSavedByPromotion,
+
+                Meter = System.Convert.ToDecimal(fareObject.AmountExclTax),
+                Tax = System.Convert.ToDecimal(fareObject.TaxAmount)
+            };
         }
     }
 }

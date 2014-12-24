@@ -13,6 +13,7 @@ namespace apcurium.MK.Booking.Domain
     {
         private decimal _amount;
         private decimal _tip;
+        private decimal _tax;
         private decimal _meter;
         private bool _cancelled;
         private bool _completed;
@@ -34,9 +35,12 @@ namespace apcurium.MK.Booking.Domain
             LoadFrom(history);
         }
 
-        public PayPalPayment(Guid id, Guid orderId, string token, decimal amount, decimal meter, decimal tip) : this(id)
+        public PayPalPayment(Guid id, Guid orderId, string token, decimal amount, decimal meter, decimal tip, decimal tax) : this(id)
         {
-            if (token == null) throw new InvalidOperationException("token cannot be null");
+            if (token == null)
+            {
+                throw new InvalidOperationException("token cannot be null");
+            }
 
             Update(new PayPalExpressCheckoutPaymentInitiated
             {
@@ -45,20 +49,27 @@ namespace apcurium.MK.Booking.Domain
                 Amount = amount,
                 Meter = meter,
                 Tip = tip,
+                Tax = tax
             });
         }
 
         public void Cancel()
         {
-            if (_completed) throw new InvalidOperationException("Payment is completed");
+            if (_completed)
+            {
+                throw new InvalidOperationException("Payment is completed");
+            }
+
             Update(new PayPalExpressCheckoutPaymentCancelled());
         }
-
         
-
         public void Complete(string transactionId, string payerId)
         {
-            if (_cancelled) throw new InvalidOperationException("Payment is cancelled");
+            if (_cancelled)
+            {
+                throw new InvalidOperationException("Payment is cancelled");
+            }
+
             Update(new PayPalExpressCheckoutPaymentCompleted
             {
                 PayPalPayerId = payerId,
@@ -67,7 +78,8 @@ namespace apcurium.MK.Booking.Domain
                 Token = _token,
                 Amount = _amount,
                 Meter = _meter,
-                Tip = _tip
+                Tip = _tip,
+                Tax = _tax
             });
         }
 
@@ -96,6 +108,7 @@ namespace apcurium.MK.Booking.Domain
             _amount = obj.Amount;
             _tip = obj.Tip;
             _meter = obj.Meter;
+            _tax = obj.Tax;
         }
     }
 }

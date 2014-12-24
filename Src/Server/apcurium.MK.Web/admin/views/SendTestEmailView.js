@@ -27,12 +27,14 @@
             e.preventDefault();
             var email = this.$('[name=email]').val();
             var templateName = this.$('[name=templateName]').val();
+            var language = this.$('[name=language]').val();
            
             return $.ajax({
                 type: 'POST',
                 url: this.urlRoot + '/' + email,
                 data: {
-                    templateName: templateName
+                    templateName: templateName,
+                    language: language
                 },
                 dataType: 'json',
                 success: _.bind(function () {

@@ -306,12 +306,18 @@ namespace MK.DeploymentService
             {
                 if ((setting.Key != "IBS.WebServicesUrl") &&
                     (setting.Key != "IBS.WebServicesUserName") &&
-                    (setting.Key != "IBS.WebServicesPassword"))
+                    (setting.Key != "IBS.WebServicesPassword") &&
+                    (setting.Key != "IBS.RestApiUrl") &&
+                    (setting.Key != "IBS.RestApiUser") &&
+                    (setting.Key != "IBS.RestApiSecret"))
                 {
                     jsonSettings.Add(setting.Key, JToken.FromObject(setting.Value ?? ""));
                 }
             }
 
+            jsonSettings.Add("IBS.RestApiUrl", JToken.FromObject(_job.Company.IBS.RestApiUrl ?? ""));
+            jsonSettings.Add("IBS.RestApiUser", JToken.FromObject(_job.Company.IBS.RestApiUser ?? ""));
+            jsonSettings.Add("IBS.RestApiSecret", JToken.FromObject(_job.Company.IBS.RestApiSecret ?? ""));
 
             jsonSettings.Add("IBS.WebServicesUrl", JToken.FromObject(_job.Company.IBS.ServiceUrl ?? ""));
             jsonSettings.Add("IBS.WebServicesUserName", JToken.FromObject(_job.Company.IBS.Username ?? ""));
@@ -346,8 +352,8 @@ namespace MK.DeploymentService
             
             var deployDb =
                 ProcessEx.GetProcess(
-                    Path.Combine(packagesDirectory, "DatabaseInitializer\\") + "DatabaseInitializer.exe", 
-                    "f:"+paramFile, null, true);
+                    Path.Combine(packagesDirectory, "DatabaseInitializer\\") + "DatabaseInitializer.exe",
+                    "f:" + paramFile, Path.Combine(packagesDirectory, "DatabaseInitializer\\"), true);
 
 
             using (var exeProcess = Process.Start(deployDb))

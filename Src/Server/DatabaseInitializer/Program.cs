@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -84,7 +85,7 @@ namespace DatabaseInitializer
                 {
 #if DEBUG
                     Console.WriteLine("Drop Existing Database? Y or N");
-                    var shouldDrop = args.Length > 2 ? args[2] : Console.ReadLine();
+                    var shouldDrop = args.Length > 1 ? args[1] : Console.ReadLine();
                     if ("Y".Equals(shouldDrop, StringComparison.OrdinalIgnoreCase))
                     {
                         creatorDb.DropDatabase(param.MasterConnectionString, param.CompanyName);
@@ -99,18 +100,20 @@ namespace DatabaseInitializer
 
                     Console.WriteLine("Create Empty Database");
                     var temporaryDatabaseName = param.CompanyName + "_New";
-                    var connectionStringNewDatabase = new ConnectionStringSettings("MkWeb", string.Format("Data Source=.;Initial Catalog={0};Integrated Security=True; MultipleActiveResultSets=True", temporaryDatabaseName));
-                    creatorDb.CreateDatabase(param.MasterConnectionString, temporaryDatabaseName, param.SqlInstanceName);
-                    creatorDb.CreateSchemas(connectionStringNewDatabase);
+                    var builder = new SqlConnectionStringBuilder(param.MkWebConnectionString);
+                    builder.InitialCatalog = temporaryDatabaseName;
+                    creatorDb.DropDatabase(param.MasterConnectionString, temporaryDatabaseName);
+                    creatorDb.CreateDatabase(param.MasterConnectionString, temporaryDatabaseName, param.SqlServerDirectory);
+                    creatorDb.CreateSchemas(new ConnectionStringSettings("MkWeb", builder.ConnectionString));
 
                     Console.WriteLine("Copy Events to the Empty Database");
                     creatorDb.CopyEventsAndCacheTables(param.MasterConnectionString, param.CompanyName, temporaryDatabaseName);
                     creatorDb.CopyAppStartUpLogTable(param.MasterConnectionString, param.CompanyName, temporaryDatabaseName);
-                    creatorDb.FixUnorderedEvents(connectionStringNewDatabase.ConnectionString);
+                    creatorDb.FixUnorderedEvents(builder.ConnectionString);
 
                     container = new UnityContainer();
                     module = new Module();
-                    module.Init(container, connectionStringNewDatabase);
+                    module.Init(container, new ConnectionStringSettings("MkWeb", builder.ConnectionString), param.MkWebConnectionString);
 
                     Console.WriteLine("Creating index...");
                     creatorDb.CreateIndexes(param.MasterConnectionString, temporaryDatabaseName);
@@ -152,12 +155,13 @@ namespace DatabaseInitializer
                     Console.WriteLine("Rename New Database to use Company Name...");
                     creatorDb.RenameDatabase(param.MasterConnectionString, temporaryDatabaseName, param.CompanyName);
 
-                    Console.WriteLine("Restart App Pool...");
-                    if (appPool != null
-                       && appPool.State == ObjectState.Stopped)
+                    if (param.MkWebConnectionString.ToLower().Contains("integrated security=true"))
                     {
-                        appPool.Start();
+                        creatorDb.AddUserAndRighst(param.MasterConnectionString, param.MkWebConnectionString,
+                            "IIS APPPOOL\\" + param.AppPoolName, param.CompanyName);
                     }
+
+                    SetupMirroring(param);
 
                     if (!string.IsNullOrEmpty(param.BackupFolder))
                     {
@@ -172,7 +176,7 @@ namespace DatabaseInitializer
                 }
                 else
                 {
-                    creatorDb.CreateDatabase(param.MasterConnectionString, param.CompanyName, param.SqlInstanceName);
+                    creatorDb.CreateDatabase(param.MasterConnectionString, param.CompanyName, param.SqlServerDirectory);
                     creatorDb.CreateSchemas(new ConnectionStringSettings("MkWeb", param.MkWebConnectionString));
                     creatorDb.CreateIndexes(param.MasterConnectionString, param.CompanyName);
 
@@ -182,12 +186,14 @@ namespace DatabaseInitializer
                         creatorDb.AddUserAndRighst(param.MasterConnectionString, param.MkWebConnectionString,
                             "IIS APPPOOL\\" + param.AppPoolName, param.CompanyName);
                     }
+
+                    SetupMirroring(param);
                 }
 
                 var connectionString = new ConnectionStringSettings("MkWeb", param.MkWebConnectionString);
                 container = new UnityContainer();
                 module = new Module();
-                module.Init(container, connectionString); 
+                module.Init(container, connectionString, param.MkWebConnectionString);
 
                 var serverSettings = container.Resolve<IServerSettings>();
                 var commandBus = container.Resolve<ICommandBus>();
@@ -219,7 +225,7 @@ namespace DatabaseInitializer
 
                 Console.WriteLine("Checking Default Tariff ...");
                 CreateDefaultTariff(connectionString.ConnectionString, serverSettings, commandBus);
-                
+
                 Console.WriteLine("Checking Ratings ...");
                 var ratingTypes = new RatingTypeDao(() => new BookingDbContext(connectionString.ConnectionString)).GetAll();
                 if (!ratingTypes.Any())
@@ -256,11 +262,15 @@ namespace DatabaseInitializer
                             NearbyTaxiPush = true,
                             PaymentConfirmationPush = true,
                             ReceiptEmail = true,
-                            VehicleAtPickupPush = true
+                            PromotionUnlockedEmail = true,
+                            VehicleAtPickupPush = true,
+                            PromotionUnlockedPush = true
                         }
                     });
                 }
-                SetupMirroring(param);
+                
+                EnsurePrivacyPolicyExists(connectionString, commandBus, serverSettings);
+                
 
                 Console.WriteLine("Database Creation/Migration for version {0} finished", CurrentVersion);
             }
@@ -281,26 +291,28 @@ namespace DatabaseInitializer
             {
                 Console.WriteLine("Add Mirroring on the new Database ...");
                 var creatorDb = new DatabaseCreator();
+
                 Console.WriteLine("MirroringSharedFolder :" + param.MirroringSharedFolder);
-                Console.WriteLine("Setting up mirroring...");
-                var backupFolder = Path.Combine(param.MirroringSharedFolder, param.CompanyName + DateTime.Now.ToString("dd-MM-yyyy_hh-mm-ss"));
+                var backupFolder = Path.Combine(param.MirroringSharedFolder,
+                    param.CompanyName + DateTime.Now.ToString("dd-MM-yyyy_hh-mm-ss"));
                 Directory.CreateDirectory(backupFolder);
 
                 creatorDb.InitMirroring(param.MasterConnectionString, param.CompanyName);
-                Console.WriteLine("Backup for mirroring...");
-                creatorDb.BackupDatabase(param.MasterConnectionString, backupFolder, param.CompanyName);
 
                 var mirrorDbExist = creatorDb.DatabaseExists(param.MirrorMasterConnectionString, param.CompanyName);
                 if (mirrorDbExist)
                 {
                     Console.WriteLine("Deleting existing mirroring db...");
-                    creatorDb.RestoreToDeleteDatabase(param.MirrorMasterConnectionString, backupFolder, param.CompanyName);
-                    creatorDb.DropDatabase(param.MirrorMasterConnectionString, param.CompanyName);
+                    creatorDb.DropDatabase(param.MirrorMasterConnectionString, param.CompanyName, false);
                 }
+
+                Console.WriteLine("Backup for mirroring...");
+                creatorDb.BackupDatabase(param.MasterConnectionString, backupFolder, param.CompanyName);
 
                 Console.WriteLine("Restoring mirroring backup...");
                 creatorDb.RestoreDatabase(param.MirrorMasterConnectionString, backupFolder, param.CompanyName);
 
+                Console.WriteLine("Setting up mirroring...");
                 creatorDb.SetMirroringPartner(param.MirrorMasterConnectionString, param.CompanyName, param.MirroringMirrorPartner);
                 creatorDb.CompleteMirroring(param.MasterConnectionString, param.CompanyName, param.MirroringPrincipalPartner, param.MirroringWitness);
             }
@@ -473,11 +485,6 @@ namespace DatabaseInitializer
 
                 result = JsonSerializer.DeserializeFromString<DatabaseInitializerParams>(paramFileContent); 
             }
-            else if (args.Length > 0)
-            {
-                result.CompanyName = args[0];
-            }
-
             result.CompanyName = string.IsNullOrWhiteSpace(result.CompanyName) ? LocalDevProjectName : result.CompanyName;
 
             //Sql instance name
@@ -501,6 +508,7 @@ namespace DatabaseInitializer
                     : sqlInstanceName;
 
                 result.SqlInstanceName = sqlInstanceName;
+                Console.WriteLine("Sql Directory Default is " + result.SqlServerDirectory);
             }
             
             //Company connection string
@@ -818,6 +826,21 @@ namespace DatabaseInitializer
                     LogoName = "taxi",
                     ReferenceDataVehicleId = vehicle.Id ?? -1,
                     CompanyId = AppConstants.CompanyId
+                });
+            }
+        }
+
+        private static void EnsurePrivacyPolicyExists(ConnectionStringSettings connectionString, ICommandBus commandBus, IServerSettings serverSettings)
+        {
+            var company = new CompanyDao(() => new BookingDbContext(connectionString.ConnectionString));
+            if (!company.Get().PrivacyPolicy.HasValue())
+            {
+                var privacyTemplate = File.ReadAllText(@"DefaultPrivacy.txt");
+
+                commandBus.Send(new UpdatePrivacyPolicy
+                {
+                    CompanyId = AppConstants.CompanyId,
+                    Policy = string.Format(privacyTemplate, serverSettings.ServerData.TaxiHail.ApplicationName, serverSettings.ServerData.SupportEmail)
                 });
             }
         }

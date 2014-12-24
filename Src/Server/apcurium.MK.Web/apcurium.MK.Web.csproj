@@ -62,6 +62,14 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
     </Reference>
+    <Reference Include="AutoMapper, Version=3.1.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\AutoMapper.3.1.1\lib\net40\AutoMapper.dll</HintPath>
+    </Reference>
+    <Reference Include="AutoMapper.Net4, Version=3.1.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\AutoMapper.3.1.1\lib\net40\AutoMapper.Net4.dll</HintPath>
+    </Reference>
     <Reference Include="dotless.Core, Version=1.4.0.0, Culture=neutral, PublicKeyToken=96b446c9e63eae34, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\dotless.1.4.0.0\lib\dotless.Core.dll</HintPath>
@@ -217,6 +225,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="..\packages\AutoMapper.3.1.1\lib\net40\AutoMapper.Net4.dll">
+      <Link>AutoMapper.Net4.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="admin\assets\img\blackcar_badge.png" />
     <Content Include="admin\assets\img\suv_badge.png" />
     <Content Include="admin\assets\img\taxi_badge.png" />
@@ -316,10 +328,6 @@
     <Content Include="assets\js\storage-polyfill.js" />
     <Content Include="common\collections\AvailableVehicleCollection.js" />
     <Content Include="common\models\AvailableVehicle.js" />
-    <Content Include="Content\bootstrap.css" />
-    <Content Include="Content\bootstrap.min.css" />
-    <Content Include="Content\Site.css" />
-    <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="PayPalExpressCheckout\mobile-cancel.html" />
     <Content Include="PayPalExpressCheckout\mobile-success.html" />
     <Content Include="assets\bootstrap-datepicker\css\datepicker.css" />
@@ -414,16 +422,33 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="models\CompanySettings.js" />
-    <Content Include="Scripts\bootstrap.js" />
-    <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Areas\AdminTH\Views\PromoCode\Index.cshtml" />
     <Content Include="Areas\AdminTH\Views\PromoCode\Create.cshtml" />
     <Content Include="Areas\AdminTH\Views\PromoCode\Edit.cshtml" />
-    <None Include="Scripts\jquery-1.10.2.intellisense.js" />
-    <Content Include="Scripts\jquery-1.10.2.js" />
-    <Content Include="Scripts\jquery-1.10.2.min.js" />
-    <Content Include="Scripts\jquery.sortable.min.js" />
-    <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="assets\js\jquery.sortable.min.js" />
+    <Content Include="Areas\AdminTH\Views\Privacy\Index.cshtml" />
+    <Content Include="Areas\AdminTH\Views\PromoCode\Statistics.cshtml" />
+    <Content Include="Areas\AdminTH\Views\PromoCode\UserStatistics.cshtml" />
+    <None Include="Scripts\jquery-1.8.2.intellisense.js" />
+    <Content Include="Scripts\jquery-1.8.2.js" />
+    <Content Include="Scripts\jquery-1.8.2.min.js" />
+    <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
+    <Content Include="Areas\Company\Views\web.config" />
+    <Content Include="Areas\Company\Views\Shared\_Layout.cshtml" />
+    <Content Include="Areas\Company\Views\Privacy\Index.cshtml" />
+    <Content Include="Areas\Company\Views\_ViewStart.cshtml" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
+    <Content Include="Scripts\jquery.validate.js" />
+    <Content Include="Scripts\jquery.validate.min.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Areas\AdminTH\Views\ImportChargeAccount\Index.cshtml" />
+    <Content Include="localization\UTOG-en.json" />
+    <Content Include="Scripts\moment-with-locales.js" />
+    <Content Include="Scripts\moment-with-locales.min.js" />
+    <Content Include="Scripts\moment.js" />
+    <Content Include="Scripts\moment.min.js" />
     <Content Include="services\MathService.js" />
     <Content Include="models\NewAccount.js" />
     <Content Include="models\OrderStatus.js" />
@@ -499,11 +524,15 @@
     <Content Include="admin\templates\ExportOrders.handlebars">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="admin\templates\ExportAccounts.handlebars" />
+    <Content Include="admin\templates\ExportAccounts.handlebars">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="admin\templates\UpdateTermsAndConditions.handlebars">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="admin\templates\AddAccountCharge.handlebars" />
+    <Content Include="admin\templates\AddAccountCharge.handlebars">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="admin\templates\ManageAccountsCharge.handlebars" />
     <Content Include="admin\localization\ManageAccountsCharge.json" />
     <Content Include="admin\templates\AccountChargeItem.handlebars" />
@@ -557,10 +586,6 @@
     <Content Include="Areas\AdminTH\Views\_ViewStart.cshtml" />
     <Content Include="Areas\AdminTH\Views\Shared\_Layout.cshtml" />
     <Content Include="Areas\AdminTH\Views\TaxiHailNetwork\Index.cshtml" />
-    <Content Include="fonts\glyphicons-halflings-regular.woff" />
-    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
-    <Content Include="fonts\glyphicons-halflings-regular.eot" />
-    <Content Include="Scripts\jquery-1.10.2.min.map" />
     <Content Include="localization\AddFavorite-es.json" />
     <Content Include="localization\AddressSelection-es.json" />
     <Content Include="localization\Book-es.json" />
@@ -612,10 +637,18 @@
     <Compile Include="App_Start\UnityConfig.cs" />
     <Compile Include="App_Start\UnityMvcActivator.cs" />
     <Compile Include="Areas\AdminTH\AdminTHAreaRegistration.cs" />
+    <Compile Include="Areas\AdminTH\Controllers\PrivacyController.cs" />
+    <Compile Include="Areas\AdminTH\Controllers\ImportChargeAccountController.cs" />
     <Compile Include="Areas\AdminTH\Controllers\PromoCodeController.cs" />
     <Compile Include="Areas\AdminTH\Controllers\TaxiHailNetworkController.cs" />
-    <Compile Include="Areas\AdminTH\Controllers\ServiceStackController.cs" />
     <Compile Include="Areas\AdminTH\Models\PromoCode.cs" />
+    <Compile Include="Areas\AdminTH\Models\PromoStats.cs" />
+    <Compile Include="Areas\BaseController.cs" />
+    <Compile Include="Areas\Company\CompanyAreaRegistration.cs" />
+    <Compile Include="Areas\Company\Controllers\PrivacyController.cs" />
+    <Compile Include="Areas\ServiceStackController.cs" />
+    <Compile Include="Attributes\AuthorizationRequiredAttribute.cs" />
+    <Compile Include="Attributes\SkipAuthenticationAttribute.cs" />
     <Compile Include="default.aspx.cs">
       <DependentUpon>default.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -889,6 +922,8 @@
     <Content Include="admin\localization\AddPopularAddress.json" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Areas\Company\Models\" />
+    <Folder Include="helpers\" />
     <Folder Include="mixins\" />
   </ItemGroup>
   <ItemGroup>
@@ -910,6 +945,8 @@
           <DevelopmentServerPort>6900</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>http://localhost/apcurium.MK.Web</IISUrl>
+          <OverrideIISAppRootUrl>True</OverrideIISAppRootUrl>
+          <IISAppRootUrl>http://localhost.fiddler/apcurium.MK.Web</IISAppRootUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

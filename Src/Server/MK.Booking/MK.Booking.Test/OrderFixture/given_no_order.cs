@@ -3,7 +3,6 @@
 using System;
 using apcurium.MK.Booking.CommandHandlers;
 using apcurium.MK.Booking.Commands;
-using apcurium.MK.Booking.Common.Tests;
 using apcurium.MK.Booking.Domain;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Common.Entity;
@@ -53,7 +52,6 @@ namespace apcurium.MK.Booking.Test.OrderFixture
                     },
                 DropOffAddress =
                     new Address {Latitude = 45.50643, Longitude = -73.554052, FullAddress = "Velvet auberge st gabriel"},
-                IBSOrderId = 99,
                 ClientLanguageCode = "fr",
                 UserLatitude = 46.50643,
                 UserLongitude = -74.554052,
@@ -84,7 +82,6 @@ namespace apcurium.MK.Booking.Test.OrderFixture
             Assert.AreEqual(-73.558064, orderCreated.PickupAddress.Longitude);
             Assert.AreEqual("Velvet auberge st gabriel", orderCreated.DropOffAddress.FullAddress);
             Assert.AreEqual(45.50643, orderCreated.DropOffAddress.Latitude);
-            Assert.AreEqual(99, orderCreated.IBSOrderId);
             Assert.AreEqual(-73.554052, orderCreated.DropOffAddress.Longitude);
             Assert.AreEqual(99, orderCreated.Settings.ChargeTypeId);
             Assert.AreEqual(88, orderCreated.Settings.VehicleTypeId);
@@ -121,7 +118,6 @@ namespace apcurium.MK.Booking.Test.OrderFixture
                     },
                 DropOffAddress =
                     new Address {Latitude = 45.50643, Longitude = -73.554052, FullAddress = "Velvet auberge st gabriel"},
-                IBSOrderId = 99
             };
             order.Settings = new BookingSettings
             {
@@ -168,7 +164,6 @@ namespace apcurium.MK.Booking.Test.OrderFixture
                         FullAddress = "1234 rue Saint-Hubert",
                         Apartment = "3939"
                     },
-                IBSOrderId = 99,
             };
             order.Settings = new BookingSettings
             {
@@ -191,7 +186,6 @@ namespace apcurium.MK.Booking.Test.OrderFixture
             Assert.AreEqual("3131", orderCreated.PickupAddress.RingCode);
             Assert.AreEqual(45.515065, orderCreated.PickupAddress.Latitude);
             Assert.AreEqual(-73.558064, orderCreated.PickupAddress.Longitude);
-            Assert.AreEqual(99, orderCreated.IBSOrderId);
             Assert.IsNull(orderCreated.DropOffAddress);
         }
     }

@@ -66,6 +66,7 @@ namespace apcurium.MK.Booking.EventHandlers
                     PaymentId = @event.SourceId,
                     Amount = @event.Amount,
                     Meter = @event.Meter,
+                    Tax = @event.Tax,
                     Tip = @event.Tip,
                     OrderId = @event.OrderId,
                     PayPalToken = @event.Token,

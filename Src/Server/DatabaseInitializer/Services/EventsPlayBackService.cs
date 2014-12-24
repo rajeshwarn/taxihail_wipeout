@@ -8,6 +8,7 @@ using Infrastructure.EventSourcing;
 using Infrastructure.Messaging;
 using Infrastructure.Serialization;
 using Infrastructure.Sql.EventSourcing;
+using ServiceStack.Text;
 
 #endregion
 
@@ -74,10 +75,22 @@ namespace DatabaseInitializer.Services
                 {
                     foreach (var @event in events)
                     {
-                        _eventBus.Publish(new Envelope<IEvent>(Deserialize(@event))
+                        try
                         {
-                            CorrelationId = @event.CorrelationId
-                        });
+                            _eventBus.Publish(new Envelope<IEvent>(Deserialize(@event))
+                            {
+                                CorrelationId = @event.CorrelationId
+                            });
+                        }
+                        catch
+                        {
+                            Console.Write("Error replaying an event : ");
+                            if (@event != null)
+                            {                                
+                                Console.Write(@event.ToJson());
+                            }
+                            throw;
+                        }
                     }
                 }
                 

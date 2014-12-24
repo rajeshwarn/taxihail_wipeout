@@ -85,8 +85,11 @@ namespace apcurium.MK.Booking.ReadModel
 
         public decimal? PaymentTipAmount { get; set; }
 
+        public decimal? PaymentSavedAmount { get; set; }
+
         public decimal? PaymentTotalAmount { get; set; }
 
+        public string PromoCode { get; set; }
 
         public string CardToken { get; set; }
         public string PayPalToken { get; set; }

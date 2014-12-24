@@ -3,6 +3,7 @@
 using System;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.ReadModel;
+using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 
@@ -12,9 +13,9 @@ namespace apcurium.MK.Booking.CommandBuilder
 {
     public static class SendReceiptCommandBuilder
     {
-        public static SendReceipt GetSendReceiptCommand(OrderDetail order, AccountDetail account, string vehicleNumber, string driverName,
-            double? fare, double? toll, double? tip, double? tax, OrderPaymentDetail orderPayment = null,
-            CreditCardDetails creditCard = null, Uri baseUrl = null)
+        public static SendReceipt GetSendReceiptCommand(OrderDetail order, AccountDetail account, string vehicleNumber, DriverInfos driverInfos,
+            double? fare, double? toll, double? tip, double? tax, OrderPaymentDetail orderPayment = null, double? amountSavedByPromotion = null,
+            PromotionUsageDetail promotionUsed = null, CreditCardDetails creditCard = null)
         {
             var command = new SendReceipt
             {
@@ -25,7 +26,7 @@ namespace apcurium.MK.Booking.CommandBuilder
                 PickupDate = order.PickupDate,
                 DropOffDate = order.DropOffDate,
                 VehicleNumber = vehicleNumber,
-                DriverName = driverName,
+                DriverInfos = driverInfos,
                 Fare = fare.GetValueOrDefault(),
                 Toll = toll.GetValueOrDefault(),
                 Tip = tip.GetValueOrDefault(),
@@ -33,9 +34,16 @@ namespace apcurium.MK.Booking.CommandBuilder
                 PickupAddress = order.PickupAddress,
                 DropOffAddress = order.DropOffAddress,
                 ClientLanguageCode = order.ClientLanguageCode,
-                BaseUrl = baseUrl
             };
-            
+
+            if (promotionUsed != null)
+            {
+                command.AmountSavedByPromotion = amountSavedByPromotion.GetValueOrDefault();
+                command.PromoCode = promotionUsed.Code;
+                command.PromoDiscountType = promotionUsed.DiscountType;
+                command.PromoDiscountValue = promotionUsed.DiscountValue;
+            }
+
             if (orderPayment != null)
             {
                 command.CardOnFileInfo = new SendReceipt.CardOnFile(

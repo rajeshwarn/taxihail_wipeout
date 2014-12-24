@@ -44,9 +44,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			return Mvx.Resolve<OrderServiceClient>().ValidateOrder(order);
         }
 
-        public bool IsPaired(Guid orderId)
+        public async Task<bool> IsPaired(Guid orderId)
         {
-			var isPairedResult = UseServiceClientTask<OrderServiceClient, OrderPairingDetail>(service => service.GetOrderPairing(orderId));
+			var isPairedResult = await UseServiceClientAsync<OrderServiceClient, OrderPairingDetail>(service => service.GetOrderPairing(orderId));
 			return isPairedResult != null;
         }
 
@@ -155,9 +155,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             UserCache.Set("LastUnratedOrderId", (string)null); // Need to be cached as a string because of a jit error on device
         }
 
-        public void RemoveFromHistory (Guid orderId)
+        public Task RemoveFromHistory (Guid orderId)
         {
-			UseServiceClientTask<OrderServiceClient> (service => service.RemoveFromHistory (orderId));
+			return UseServiceClientAsync<OrderServiceClient> (service => service.RemoveFromHistory (orderId));
         }
 			
         public bool IsStatusTimedOut(string statusId)
@@ -212,12 +212,27 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 				&& order.DropOffAddress.HasValidCoordinate())
 			{
 				DirectionInfo directionInfo = null;
-				if (tarifMode != TarifMode.AppTarif) 
-				{
-					directionInfo = await UseServiceClientAsync<IIbsFareClient, DirectionInfo> (service => service.GetDirectionInfoFromIbs (order.PickupAddress.Latitude, order.PickupAddress.Longitude, order.DropOffAddress.Latitude, order.DropOffAddress.Longitude));                                                            
-				}
+			    if (tarifMode != TarifMode.AppTarif)
+			    {
+			        int? duration = null;
 
-                if (tarifMode == TarifMode.AppTarif || (tarifMode == TarifMode.Both && directionInfo.Price == 0d))
+			        duration =
+			            (await
+			                _geolocService.GetDirectionInfo(order.PickupAddress.Latitude, order.PickupAddress.Longitude,
+			                    order.DropOffAddress.Latitude, order.DropOffAddress.Longitude, order.Settings.VehicleTypeId,
+			                    order.PickupDate)).TripDurationInSeconds;
+
+			        directionInfo =
+			            await
+			                UseServiceClientAsync<IIbsFareClient, DirectionInfo>(
+			                    service =>
+			                        service.GetDirectionInfoFromIbs(order.PickupAddress.Latitude, order.PickupAddress.Longitude,
+			                            order.DropOffAddress.Latitude, order.DropOffAddress.Longitude,
+										order.PickupAddress.ZipCode, order.DropOffAddress.ZipCode,
+								order.Settings.AccountNumber, duration, order.Settings.VehicleTypeId));
+			    }
+
+			    if (tarifMode == TarifMode.AppTarif || (tarifMode == TarifMode.Both && directionInfo != null && directionInfo.Price == 0d))
                 {
 					directionInfo = await _geolocService.GetDirectionInfo(order.PickupAddress.Latitude, order.PickupAddress.Longitude, order.DropOffAddress.Latitude, order.DropOffAddress.Longitude, order.Settings.VehicleTypeId, order.PickupDate);                    
                 }            
@@ -267,42 +282,37 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             return fareEstimate;
         }
 
-        public bool CancelOrder (Guid orderId)
+		public async Task<bool> CancelOrder (Guid orderId)
         {
 			var isCompleted = true;
-			try{
-				UseServiceClientTask<OrderServiceClient> (service => service.CancelOrder (orderId));
-			}catch{
+			try
+			{
+				await UseServiceClientAsync<OrderServiceClient> (service => service.CancelOrder (orderId));
+			}
+			catch
+			{
 				isCompleted = false;
 			}
             return isCompleted;
         }
 
-        public bool SendReceipt (Guid orderId)
+        public async Task<bool> SendReceipt (Guid orderId)
         {
 			var isCompleted = true;
-			try{
-				UseServiceClientTask<OrderServiceClient> (service => service.SendReceipt (orderId));			
-			}catch{
+			try
+			{
+				await UseServiceClientAsync<OrderServiceClient> (service => service.SendReceipt (orderId));			
+			}
+			catch
+			{
 				isCompleted = false;
 			}
             return isCompleted;
         }
 
-        public IEnumerable<RatingTypeWrapper> GetRatingTypes()
+        public Task<IEnumerable<RatingTypeWrapper>> GetRatingTypes()
         {
-            var ratingType =
-            UseServiceClientTask<OrderServiceClient, IEnumerable<RatingTypeWrapper>>(service => service.GetRatingTypes(_localize.CurrentLanguage));
-            return ratingType;
-
-        }
-
-        public OrderRatings GetOrderRating (Guid orderId)
-        {
-			// TODO: Migrate code to async version
-			var task = GetOrderRatingAsync(orderId);
-			task.Wait();
-			return task.Result;
+			return UseServiceClientAsync<OrderServiceClient, IEnumerable<RatingTypeWrapper>>(service => service.GetRatingTypes(_localize.CurrentLanguage));
         }
 
 		public Task<OrderRatings> GetOrderRatingAsync (Guid orderId)
@@ -310,11 +320,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			return UseServiceClientAsync<OrderServiceClient, OrderRatings> (service => service.GetOrderRatings (orderId));
 		}
 
-        public void SendRatingReview (OrderRatings orderRatings)
+		public Task SendRatingReview (OrderRatings orderRatings)
         {
             ClearLastUnratedOrder();
             var request = new OrderRatingsRequest{ Note = orderRatings.Note, OrderId = orderRatings.OrderId, RatingScores = orderRatings.RatingScores };
-			UseServiceClientTask<OrderServiceClient> (service => service.RateOrder (request));
+			return UseServiceClientAsync<OrderServiceClient> (service => service.RateOrder (request));
         }
     }
 }

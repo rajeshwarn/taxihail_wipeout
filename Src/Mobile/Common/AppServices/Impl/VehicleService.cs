@@ -24,7 +24,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 		readonly IDirections _directions;
 		readonly IAppSettings _settings;
 
-		private bool _isStarted { get; set; }
+	    private bool _isStarted;
+	    private string _market;
 
 		public VehicleService(IOrderWorkflowService orderWorkflowService,
 			IDirections directions,
@@ -60,7 +61,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 				.CombineLatest(orderWorkflowService.GetAndObservePickupAddress (), (vehicles, address) => new { address, vehicles } )
 				.Select (x => new { x.address, vehicle =  GetNearestVehicle(x.address, x.vehicles) })
 				.DistinctUntilChanged(x => x.vehicle == null ? double.MaxValue : Position.CalculateDistance (x.vehicle.Latitude, x.vehicle.Longitude, x.address.Latitude, x.address.Longitude))
-				.Select(x => CheckForEta(x.address, x.vehicle));
+				.SelectMany(x => CheckForEta(x.address, x.vehicle));
+            
+            orderWorkflowService.GetAndObserveMarket().Subscribe(market => _market = market);
 		}
 
 		public void Start()
@@ -80,8 +83,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			try
 			{
 				return await UseServiceClientAsync<IVehicleClient, AvailableVehicle[]>(service => 
-					service.GetAvailableVehiclesAsync(address.Latitude, address.Longitude, vehicleTypeId))
-						.ConfigureAwait(false);
+					service.GetAvailableVehiclesAsync(address.Latitude, address.Longitude, vehicleTypeId, _market))
+					.ConfigureAwait(false);
 			}
 			catch (Exception e)
 			{
@@ -117,10 +120,10 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 				.Take (vehicleCount)
 				.ToArray();
 
-			if (vehicles.Count() == 0) {
+			if (!vehicles.Any())
+			{
 				return null;
 			}
-
 
 			var distanceFromLastVehicle = Position.CalculateDistance (vehicles.Last ().Latitude, vehicles.Last ().Longitude, centerLatitude, centerLongitude); 
 
@@ -136,19 +139,19 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 				.ToArray();
 		}
 
-		public Direction CheckForEta(Address pickup, AvailableVehicle vehicleLocation)
+		private Task<Direction> CheckForEta(Address pickup, AvailableVehicle vehicleLocation)
 		{
 			if(vehicleLocation == null)
 			{
 				return null;
 			}
 
-			return  GetEtaBetweenCoordinates(vehicleLocation.Latitude, vehicleLocation.Longitude, pickup.Latitude, pickup.Longitude);                    	
+			return GetEtaBetweenCoordinates(vehicleLocation.Latitude, vehicleLocation.Longitude, pickup.Latitude, pickup.Longitude);                    	
 		}
 
-		public Direction GetEtaBetweenCoordinates(double fromLat, double fromLng, double toLat, double toLng)
+		public Task<Direction> GetEtaBetweenCoordinates(double fromLat, double fromLng, double toLat, double toLng)
 		{
-			return  _directions.GetDirection(fromLat, fromLng, toLat, toLng, null, null, true);  
+			return _directions.GetDirectionAsync(fromLat, fromLng, toLat, toLng, null, null, true);  
 		}
 
 		public void Stop ()

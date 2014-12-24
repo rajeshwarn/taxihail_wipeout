@@ -69,6 +69,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			};
         }
 
+        public MapViewModel ViewModel
+        {
+            get
+            {
+                return (MapViewModel)DataContext;
+            }
+        }
+
         public override void Draw(RectangleF rect)
         {
             base.Draw(rect);
@@ -90,10 +98,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 set.Bind()
                     .For(v => v.DestinationAddress)
                     .To(vm => vm.DestinationAddress);
-
-                set.Bind()
-                    .For(v => v.UserMovedMap)
-                    .To(vm => vm.UserMovedMap);
 
                 set.Bind()
                     .For(v => v.AddressSelectionMode)
@@ -274,13 +278,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         {
             if (AddressSelectionMode == AddressSelectionMode.DropoffSelection)
             {
-                if (!DestinationAddress.HasValidCoordinate())
-                {
-                    SetAnnotation(DestinationAddress, _destinationAnnotation, false);
-                }
-
-                SetOverlay(_pickupCenterPin, false);
-                SetOverlay(_dropoffCenterPin, true);
+				SetAnnotation (DestinationAddress, _destinationAnnotation, false);
+				SetOverlay(_pickupCenterPin, false);
+				SetOverlay(_dropoffCenterPin, true);
+                
 
                 if (PickupAddress.HasValidCoordinate())
                 {
@@ -294,8 +295,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             else
             {
                 SetAnnotation(PickupAddress, _pickupAnnotation, false);
-                SetOverlay(_dropoffCenterPin, false);
-                SetOverlay(_pickupCenterPin, true);
+				SetOverlay(_dropoffCenterPin, false);
+				SetOverlay(_pickupCenterPin, true);
 
                 if (DestinationAddress.HasValidCoordinate())
                 {
@@ -307,8 +308,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 }
             }            
         }
-
-        public ICommand UserMovedMap { get; set; }
                      
         private void HandleTouchBegin (object sender, EventArgs e)
         {
@@ -350,7 +349,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             {
                 var bounds = GetMapBoundsFromProjection();
                 
-                UserMovedMap.ExecuteIfPossible(bounds);                
+                ViewModel.UserMovedMap.ExecuteIfPossible(bounds);                
             });
         }
 
@@ -458,9 +457,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
         private void CancelAddressSearch()
         {
-            ((MapViewModel.CancellableCommand<MapBounds>)UserMovedMap).Cancel();
+            ((HomeViewModel)(ViewModel.Parent)).LocateMe.Cancel();
+            ((HomeViewModel)(ViewModel.Parent)).AutomaticLocateMeAtPickup.Cancel();
+            ViewModel.UserMovedMap.Cancel();
             _userMovedMapSubsciption.Disposable = null;
-			
         }
 
         private void ChangeState(HomeViewModelPresentationHint hint)

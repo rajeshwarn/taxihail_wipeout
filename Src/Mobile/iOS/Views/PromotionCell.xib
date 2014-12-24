@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="14B25" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="192" id="cxk-wN-pdQ" customClass="PromotionCell">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="192"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="cxk-wN-pdQ" id="YTl-1W-gDM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="$30 First Ride Promo" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GBF-EN-M7I">
+                        <rect key="frame" x="15" y="15" width="139" height="17"/>
+                        <constraints>
+                            <constraint firstAttribute="width" relation="lessThanOrEqual" constant="200" id="M73-JB-A78"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
+                        <color key="textColor" red="0.12941176470588234" green="0.12941176470588234" blue="0.12941176470588234" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="Expires in 3 days" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iDZ-64-vgd">
+                        <rect key="frame" x="156" y="18" width="87" height="14"/>
+                        <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="11"/>
+                        <color key="textColor" red="0.98431372549019602" green="0.0" blue="0.039215686274509803" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalCompressionResistancePriority="751" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="B0d-CR-od6">
+                        <rect key="frame" x="15" y="37" width="290" height="67"/>
+                        <string key="text">Thank you for registering with TaxiHail! We are so excited about your new account we are giving you $30 off your next fare. Just use promo code NS30.</string>
+                        <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="14"/>
+                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mnp-Qw-Mbg" customClass="FlatButton">
+                        <rect key="frame" x="45" y="135" width="230" height="41"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="41" id="IHE-qK-3xQ"/>
+                            <constraint firstAttribute="width" constant="230" id="dI4-MG-GlA"/>
+                        </constraints>
+                        <state key="normal" title="Button">
+                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                        </state>
+                    </button>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="right_arrow.png" translatesAutoresizingMaskIntoConstraints="NO" id="ZjD-yO-ePS">
+                        <rect key="frame" x="304" y="16" width="8" height="13"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="8" id="Q3O-mH-qWI"/>
+                            <constraint firstAttribute="height" constant="13" id="tz5-rC-hbT"/>
+                        </constraints>
+                    </imageView>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="down_arrow.png" translatesAutoresizingMaskIntoConstraints="NO" id="Ie5-c1-8jM">
+                        <rect key="frame" x="299" y="20" width="13" height="8"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="8" id="C2b-A9-iDk"/>
+                            <constraint firstAttribute="width" constant="13" id="ED3-cO-4qm"/>
+                        </constraints>
+                    </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Progress : 1/10" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4Kn-lI-d5n">
+                        <rect key="frame" x="15" y="111" width="125" height="21"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="125" id="iUK-rs-y3B"/>
+                            <constraint firstAttribute="height" constant="21" id="jPa-f2-Jma"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
+                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                <constraints>
+                    <constraint firstItem="iDZ-64-vgd" firstAttribute="baseline" secondItem="GBF-EN-M7I" secondAttribute="baseline" id="0OD-3D-fT1"/>
+                    <constraint firstAttribute="trailing" secondItem="B0d-CR-od6" secondAttribute="trailing" constant="15" id="CSp-f6-udY"/>
+                    <constraint firstItem="Ie5-c1-8jM" firstAttribute="trailing" secondItem="YTl-1W-gDM" secondAttribute="trailing" constant="-8" id="Eep-8f-6aU"/>
+                    <constraint firstItem="iDZ-64-vgd" firstAttribute="leading" secondItem="GBF-EN-M7I" secondAttribute="trailing" constant="3" id="FI6-Ca-sf7"/>
+                    <constraint firstItem="GBF-EN-M7I" firstAttribute="leading" secondItem="YTl-1W-gDM" secondAttribute="leading" constant="15" id="HYZ-ZE-6qN"/>
+                    <constraint firstItem="ZjD-yO-ePS" firstAttribute="trailing" secondItem="YTl-1W-gDM" secondAttribute="trailing" constant="-8" id="IS6-TS-utZ"/>
+                    <constraint firstItem="B0d-CR-od6" firstAttribute="leading" secondItem="YTl-1W-gDM" secondAttribute="leading" constant="15" id="LKH-Yx-77H"/>
+                    <constraint firstAttribute="centerX" secondItem="mnp-Qw-Mbg" secondAttribute="centerX" id="Som-GM-Er8"/>
+                    <constraint firstItem="Ie5-c1-8jM" firstAttribute="top" secondItem="YTl-1W-gDM" secondAttribute="top" constant="20" id="V01-ey-8Eo"/>
+                    <constraint firstItem="mnp-Qw-Mbg" firstAttribute="top" secondItem="4Kn-lI-d5n" secondAttribute="bottom" constant="3" id="aHr-J5-riD"/>
+                    <constraint firstItem="4Kn-lI-d5n" firstAttribute="top" secondItem="B0d-CR-od6" secondAttribute="bottom" constant="7" id="bc2-ZK-Oqm"/>
+                    <constraint firstItem="GBF-EN-M7I" firstAttribute="top" secondItem="YTl-1W-gDM" secondAttribute="top" constant="15" id="dcV-pA-R12"/>
+                    <constraint firstItem="4Kn-lI-d5n" firstAttribute="leading" secondItem="B0d-CR-od6" secondAttribute="leading" id="ewN-Kb-G0Y"/>
+                    <constraint firstItem="B0d-CR-od6" firstAttribute="top" secondItem="GBF-EN-M7I" secondAttribute="bottom" constant="5" id="hfu-5L-hF7"/>
+                    <constraint firstItem="ZjD-yO-ePS" firstAttribute="top" secondItem="YTl-1W-gDM" secondAttribute="top" constant="16" id="uCC-gP-jdQ"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="btnApplyPromo" destination="mnp-Qw-Mbg" id="tpg-ro-teo"/>
+                <outlet property="imgCollapsed" destination="ZjD-yO-ePS" id="reY-rI-cl2"/>
+                <outlet property="imgExpanded" destination="Ie5-c1-8jM" id="92W-Wb-ksY"/>
+                <outlet property="lblDescription" destination="B0d-CR-od6" id="fQB-8r-DOL"/>
+                <outlet property="lblExpires" destination="iDZ-64-vgd" id="uPW-yA-zrb"/>
+                <outlet property="lblName" destination="GBF-EN-M7I" id="0jL-5k-4HQ"/>
+                <outlet property="lblProgress" destination="4Kn-lI-d5n" id="vzj-2R-vgu"/>
+            </connections>
+            <point key="canvasLocation" x="194" y="277"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="down_arrow.png" width="13" height="8"/>
+        <image name="right_arrow.png" width="8" height="13"/>
+    </resources>
+    <simulatedMetricsContainer key="defaultSimulatedMetrics">
+        <simulatedStatusBarMetrics key="statusBar"/>
+        <simulatedOrientationMetrics key="orientation"/>
+        <simulatedScreenMetrics key="destination" type="retina4"/>
+    </simulatedMetricsContainer>
+</document>

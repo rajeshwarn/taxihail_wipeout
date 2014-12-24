@@ -158,6 +158,7 @@
     <Compile Include="CommandHandlers\EmailCommandHandler.cs" />
     <Compile Include="CommandHandlers\OrderCommandHandler.cs" />
     <Compile Include="CommandHandlers\PayPalPaymentCommandHandler.cs" />
+    <Compile Include="CommandHandlers\PromotionCommandHandler.cs" />
     <Compile Include="CommandHandlers\SmsCommandHandler.cs" />
     <Compile Include="Database\BookingDbContext.cs" />
     <Compile Include="Domain\Account.cs" />
@@ -166,6 +167,7 @@
     <Compile Include="Domain\Order.cs" />
     <Compile Include="Domain\PaymentInformation.cs" />
     <Compile Include="Domain\PayPalPayment.cs" />
+    <Compile Include="Domain\Promotion.cs" />
     <Compile Include="Email\EmailSender.cs" />
     <Compile Include="Email\IEmailSender.cs" />
     <Compile Include="Email\ITemplateService.cs" />
@@ -181,6 +183,7 @@
     <Compile Include="EventHandlers\Integration\OrderDispatchCompanyManager.cs" />
     <Compile Include="EventHandlers\Integration\PaymentSettingsUpdater.cs" />
     <Compile Include="EventHandlers\Integration\OrderPaymentManager.cs" />
+    <Compile Include="EventHandlers\Integration\PromotionTriggerGenerator.cs" />
     <Compile Include="EventHandlers\NotificationSettingsGenerator.cs" />
     <Compile Include="EventHandlers\OrderUserGpsGenerator.cs" />
     <Compile Include="EventHandlers\PayPalExpressCheckoutPaymentDetailsGenerator.cs" />
@@ -190,9 +193,11 @@
     <Compile Include="EventHandlers\Integration\PushNotificationSender.cs" />
     <Compile Include="EventHandlers\Integration\MailSender.cs" />
     <Compile Include="EventHandlers\OrderGenerator.cs" />
+    <Compile Include="EventHandlers\PromotionDetailGenerator.cs" />
     <Compile Include="EventHandlers\RuleDetailsGenerator.cs" />
     <Compile Include="EventHandlers\TariffDetailsGenerator.cs" />
     <Compile Include="EventHandlers\RatingTypeDetailsGenerator.cs" />
+    <Compile Include="EventHandlers\UserTaxiHailNetworkSettingsGenerator.cs" />
     <Compile Include="EventHandlers\VehicleTypeDetailGenerator.cs" />
     <Compile Include="Module.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -202,11 +207,14 @@
     <Compile Include="ReadModel\AccountChargeDetail.cs" />
     <Compile Include="ReadModel\AccountDetail.cs" />
     <Compile Include="ReadModel\AccountIbsDetail.cs" />
+    <Compile Include="ReadModel\PromotionProgressDetail.cs" />
     <Compile Include="ReadModel\AddressDetails.cs" />
     <Compile Include="ReadModel\AppStartUpLogDetail.cs" />
     <Compile Include="ReadModel\CompanyDetail.cs" />
     <Compile Include="ReadModel\OrderPaymentDetail.cs" />
     <Compile Include="ReadModel\OrderUserGpsDetail.cs" />
+    <Compile Include="ReadModel\PromotionDetail.cs" />
+    <Compile Include="ReadModel\PromotionUsageDetail.cs" />
     <Compile Include="ReadModel\Query\AccountChargeDao.cs" />
     <Compile Include="ReadModel\Query\AppStartUpLogDao.cs" />
     <Compile Include="ReadModel\Query\CompanyDao.cs" />
@@ -220,11 +228,13 @@
     <Compile Include="ReadModel\Query\Contract\IConfigurationDao.cs" />
     <Compile Include="ReadModel\Query\Contract\IDeviceDao.cs" />
     <Compile Include="ReadModel\Query\Contract\IOrderPaymentDao.cs" />
+    <Compile Include="ReadModel\Query\Contract\IPromotionDao.cs" />
     <Compile Include="ReadModel\Query\Contract\IVehicleTypeDao.cs" />
     <Compile Include="ReadModel\Query\Contract\IOrderStatusUpdateDao.cs" />
     <Compile Include="ReadModel\Query\DeviceDao.cs" />
     <Compile Include="ReadModel\Query\OrderPaymentDao.cs" />
     <Compile Include="ReadModel\Query\OrderStatusUpdateDao.cs" />
+    <Compile Include="ReadModel\Query\PromotionDao.cs" />
     <Compile Include="ReadModel\Query\RuleDao.cs" />
     <Compile Include="ReadModel\Query\CreditCardDao.cs" />
     <Compile Include="ReadModel\CreditCardDetails.cs" />
@@ -272,6 +282,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="Resources\Global.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Global.resx</DependentUpon>
+    </Compile>
     <Compile Include="Resources\Global.es.Designer.cs" />
     <Compile Include="Resources\MearsTaxi.Designer.cs" />
     <Compile Include="Resources\Resources.cs" />
@@ -284,11 +299,6 @@
       <DependentUpon>TaxiHailNYC.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Resources\Global.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Global.resx</DependentUpon>
     </Compile>
     <Compile Include="Resources\Thriev.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -306,6 +316,8 @@
     <Compile Include="Services\Impl\NotificationService.cs" />
     <Compile Include="Services\IPairingService.cs" />
     <Compile Include="Services\IPaymentService.cs" />
+    <Compile Include="Services\IPaymentServiceFactory.cs" />
+    <Compile Include="Services\PaymentServiceFactory.cs" />
     <Compile Include="SMS\Impl\TwilioService.cs" />
     <Compile Include="SMS\ISmsService.cs" />
   </ItemGroup>
@@ -323,6 +335,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Email\Templates\PasswordReset.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Email\Templates\PromotionUnlocked.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Email\Templates\Receipt.html">
@@ -345,6 +360,10 @@
     <ProjectReference Include="..\..\..\CustomerPortal\CustomerPortal.Contract\CustomerPortal.Contract.csproj">
       <Project>{6A4623E1-41EF-4286-9A34-2ADC6407E94F}</Project>
       <Name>CustomerPortal.Contract</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\HoneyBadger\HoneyBadger.csproj">
+      <Project>{1C2F9D8B-7B65-4D2E-A099-D0040907D59C}</Project>
+      <Name>HoneyBadger</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Infrastructure\Infrastructure\Infrastructure.csproj">
       <Project>{B5786D07-5888-4DF5-B295-3FEA593F3BFE}</Project>
@@ -409,8 +428,8 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\Global.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Global.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+      <LastGenOutput>Global.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\Thriev.resx">
       <Generator>ResXFileCodeGenerator</Generator>

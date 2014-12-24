@@ -9,6 +9,7 @@ using apcurium.MK.Booking.Resources;
 using apcurium.MK.Booking.Services.Impl;
 using apcurium.MK.Common.Configuration;
 using Nustache.i18n;
+using RestSharp.Extensions;
 
 #endregion
 
@@ -18,7 +19,6 @@ namespace apcurium.MK.Booking.Email
     {
         private readonly Resources.Resources _resources;
         private const string DefaultLanguageCode = "en";
-        private readonly Dictionary<string, string> _templatesDictionary=new Dictionary<string, string>();
 
         public TemplateService(IServerSettings serverSettings)
         {
@@ -46,27 +46,17 @@ namespace apcurium.MK.Booking.Email
             var path = GetTemplatePath(templateName, languageCode);
             if (File.Exists(path))
             {
-                
                 var templateBody = File.ReadAllText(path);
                 var translatedTemplateBody = Localizer.Translate(templateBody, _resources.GetLocalizedDictionary(languageCode), "!!MISSING!!");
-
-                if (!_templatesDictionary.ContainsKey(templateName))
-                {
-                    var result =
-                        PreMailer.Net.PreMailer.MoveCssInline(translatedTemplateBody, true, ignoreElements: "#ignore")
-                            .Html;
-                    _templatesDictionary.Add(templateName, result);
-                    return result;
-                }
-                else
-                {
-                    return _templatesDictionary[templateName];
-                }
-
-
+                return translatedTemplateBody;
             }
 
             return null;
+        }
+
+        public string InlineCss(string body)
+        {
+            return PreMailer.Net.PreMailer.MoveCssInline(body, true, ignoreElements: "#ignore").Html;
         }
 
         public string Render(string template, object data)

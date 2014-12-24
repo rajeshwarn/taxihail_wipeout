@@ -44,7 +44,7 @@ namespace apcurium.MK.Web.Tests
         public async void when_number_then_postal()
         {
             var sut = new SearchLocationsServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
-            var addresses = await sut.Search("5661 chateaubriand", 45.5227967351675, -73.6242310144007);
+            var addresses = await sut.Search("5661 avenue chateaubriand", 45.5227967351675, -73.6242310144007);
             Assert.True(addresses.Any());
             Assert.True(addresses.ElementAt(0).AddressType.Contains("postal"));
         }

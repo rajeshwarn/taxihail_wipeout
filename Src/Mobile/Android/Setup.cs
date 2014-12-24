@@ -29,6 +29,7 @@ using Cirrious.CrossCore.Droid;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Booking.MapDataProvider.TomTom;
 using apcurium.MK.Booking.Mobile.Client.Helpers;
+using MK.Booking.MapDataProvider.Foursquare;
 
 namespace apcurium.MK.Booking.Mobile.Client
 {
@@ -75,18 +76,18 @@ namespace apcurium.MK.Booking.Mobile.Client
 
             ConfigureInsights ();
 
-            _container.Register<IGeocoder>( (c,p)=> new GoogleApiClient(c.Resolve<IAppSettings>(), c.Resolve<ILogger>(), new AndroidGeocoder(c.Resolve<IAppSettings>(), c.Resolve<ILogger>(), c.Resolve<IMvxAndroidGlobals>())) );
-			_container.Register<IPlaceDataProvider, GoogleApiClient>();
+            _container.Register<IGeocoder>((c,p) => new GoogleApiClient(c.Resolve<IAppSettings>(), c.Resolve<ILogger>(), new AndroidGeocoder(c.Resolve<IAppSettings>(), c.Resolve<ILogger>(), c.Resolve<IMvxAndroidGlobals>())));
+			_container.Register<IPlaceDataProvider, FoursquareProvider>();
 			
             _container.Register<IDirectionDataProvider> ((c, p) =>
             {
                 switch (c.Resolve<IAppSettings>().Data.DirectionDataProvider)
                 {
-                case MapProvider.TomTom:
-                    return new TomTomProvider(c.Resolve<IAppSettings>(), c.Resolve<ILogger>());
-                case MapProvider.Google:
-                default:
-                    return new GoogleApiClient(c.Resolve<IAppSettings>(), c.Resolve<ILogger>(), new AndroidGeocoder(c.Resolve<IAppSettings>(), c.Resolve<ILogger>(), c.Resolve<IMvxAndroidGlobals>()));
+	                case MapProvider.TomTom:
+	                    return new TomTomProvider(c.Resolve<IAppSettings>(), c.Resolve<ILogger>());
+	                case MapProvider.Google:
+	                default:
+	                    return new GoogleApiClient(c.Resolve<IAppSettings>(), c.Resolve<ILogger>(), new AndroidGeocoder(c.Resolve<IAppSettings>(), c.Resolve<ILogger>(), c.Resolve<IMvxAndroidGlobals>()));
                 }
             });
 
@@ -143,23 +144,22 @@ namespace apcurium.MK.Booking.Mobile.Client
         private void ConfigureInsights ()
         {
             #if !DEBUG
-            if(PlatformHelper.APILevel >= 15)
-            {
-                var settings = TinyIoCContainer.Current.Resolve<IAppSettings>().Data;
-                var packageInfo = TinyIoCContainer.Current.Resolve<IPackageInfo>();
+            
+            var settings = TinyIoCContainer.Current.Resolve<IAppSettings>().Data;
+            var packageInfo = TinyIoCContainer.Current.Resolve<IPackageInfo>();
 
-                Xamarin.Insights.Initialize(settings.Insights.APIKey, ApplicationContext);
-                Xamarin.Insights.DisableCollection = false;
-                Xamarin.Insights.DisableDataTransmission = false;
-                Xamarin.Insights.DisableExceptionCatching = false;
+            Xamarin.Insights.Initialize(settings.Insights.APIKey, ApplicationContext);
+            Xamarin.Insights.DisableCollection = false;
+            Xamarin.Insights.DisableDataTransmission = false;
+            Xamarin.Insights.DisableExceptionCatching = false;
 
-                // identify with an unknown user in case an exception occurs before the user can log in
-                Xamarin.Insights.Identify(settings.Insights.UnknownUserIdentifier, new Dictionary<string, string>
-                    {
-                        { "ApplicationVersion", packageInfo.Version },
-                        { "Company", settings.TaxiHail.ApplicationName },
-                    });
-            }
+            // identify with an unknown user in case an exception occurs before the user can log in
+            Xamarin.Insights.Identify(settings.Insights.UnknownUserIdentifier, new Dictionary<string, string>
+                {
+                    { "ApplicationVersion", packageInfo.Version },
+                    { "Company", settings.TaxiHail.ApplicationName },
+                });
+            
             #endif
         }
     }

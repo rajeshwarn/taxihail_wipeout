@@ -53,9 +53,10 @@ namespace apcurium.MK.Booking.Mobile
                 bool isPairingNotification;
                 bool.TryParse(@params["isPairingNotification"], out isPairingNotification);
 
-				// Make sure to reload notification/payment settings even if the user has killed the app
+				// Make sure to reload notification/payment/network settings even if the user has killed the app
 				await Mvx.Resolve<IAccountService>().GetNotificationSettings(true, true);
 				await Mvx.Resolve<IPaymentService>().GetPaymentSettings(true);
+                await Mvx.Resolve<IAccountService>().GetUserTaxiHailNetworkSettings(true);
                 
 				var orderStatus = await Mvx.Resolve<IBookingService>().GetOrderStatusAsync (orderId);
 				var order = await Mvx.Resolve<IAccountService>().GetHistoryOrderAsync(orderId);

@@ -32,8 +32,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		readonly IBookingService _bookingService;
 		readonly ICacheService _cacheService;
 		readonly IAccountPaymentService _accountPaymentService;
+	    private readonly INetworkRoamingService _networkRoamingService;
 
-		readonly ISubject<Address> _pickupAddressSubject = new BehaviorSubject<Address>(new Address());
+	    readonly ISubject<Address> _pickupAddressSubject = new BehaviorSubject<Address>(new Address());
 		readonly ISubject<Address> _destinationAddressSubject = new BehaviorSubject<Address>(new Address());
 		readonly ISubject<AddressSelectionMode> _addressSelectionModeSubject = new BehaviorSubject<AddressSelectionMode>(AddressSelectionMode.PickupSelection);
 		readonly ISubject<DateTime?> _pickupDateSubject = new BehaviorSubject<DateTime?>(null);
@@ -42,13 +43,19 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		readonly ISubject<string> _estimatedFareDisplaySubject;
 		readonly ISubject<DirectionInfo> _estimatedFareDetailSubject = new BehaviorSubject<DirectionInfo>( new DirectionInfo() );
 		readonly ISubject<string> _noteToDriverSubject = new BehaviorSubject<string>(string.Empty);
+		readonly ISubject<string> _promoCodeSubject = new BehaviorSubject<string>(string.Empty);
 		readonly ISubject<bool> _loadingAddressSubject = new BehaviorSubject<bool>(false);
 		readonly ISubject<AccountChargeQuestion[]> _accountPaymentQuestions = new BehaviorSubject<AccountChargeQuestion[]> (null);
 
 		readonly ISubject<bool> _orderCanBeConfirmed = new BehaviorSubject<bool>(false);
+		readonly ISubject<string> _marketSubject = new BehaviorSubject<string>(string.Empty);
+		readonly ISubject<bool> _isDestinationModeOpenedSubject = new BehaviorSubject<bool>(false);
 
         private bool _isOrderRebooked;
-	    private bool _ignoreNextGeoLocResult;
+
+	    private Position _lastMarketPosition = new Position();
+
+        private const int LastMarketDistanceThreshold = 1000; // In meters
 
 		public OrderWorkflowService(ILocationService locationService,
 			IAccountService accountService,
@@ -57,7 +64,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			ILocalization localize,
 			IBookingService bookingService,
 			ICacheService cacheService,
-			IAccountPaymentService accountPaymentService)
+			IAccountPaymentService accountPaymentService,
+            INetworkRoamingService networkRoamingService)
 		{
 			_cacheService = cacheService;
 			_appSettings = configurationManager;
@@ -75,16 +83,17 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			_localize = localize;
 			_bookingService = bookingService;
 			_accountPaymentService = accountPaymentService;
+		    _networkRoamingService = networkRoamingService;
 
-			_estimatedFareDisplaySubject = new BehaviorSubject<string>(_localize[_appSettings.Data.DestinationIsRequired ? "NoFareTextIfDestinationIsRequired" : "NoFareText"]);
+		    _estimatedFareDisplaySubject = new BehaviorSubject<string>(_localize[_appSettings.Data.DestinationIsRequired ? "NoFareTextIfDestinationIsRequired" : "NoFareText"]);
 		}
-
+			
 		public async Task SetAddress(Address address)
 		{
 			await SetAddressToCurrentSelection(address);
 		}
 
-		public async Task<Address> SetAddressToUserLocation()
+		public async Task<Address> SetAddressToUserLocation(CancellationToken cancellationToken = default(CancellationToken))
 		{
 			_loadingAddressSubject.OnNext(true);
 
@@ -96,13 +105,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		    }
 
             var address = await SearchAddressForCoordinate(position);
-
-		    if (!_ignoreNextGeoLocResult)
-		    {
-                await SetAddressToCurrentSelection(address);
-		        return address;
-		    }
-		    return new Address();
+			cancellationToken.ThrowIfCancellationRequested();
+			await SetAddressToCurrentSelection(address);
+			return address;
 		}
 
         public async Task SetAddressToCoordinate(Position coordinate, CancellationToken cancellationToken)
@@ -131,13 +136,14 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		public async Task ToggleBetweenPickupAndDestinationSelectionMode()
 		{
 			var currentSelectionMode = await _addressSelectionModeSubject.Take(1).ToTask();
+
 			if (currentSelectionMode == AddressSelectionMode.PickupSelection)
 			{
-				_addressSelectionModeSubject.OnNext(AddressSelectionMode.DropoffSelection);
-			}
-			else
+				_addressSelectionModeSubject.OnNext (AddressSelectionMode.DropoffSelection);
+			} 
+			else 
 			{
-				_addressSelectionModeSubject.OnNext(AddressSelectionMode.PickupSelection);
+				_addressSelectionModeSubject.OnNext (AddressSelectionMode.PickupSelection);
 			}
 		}
 
@@ -168,15 +174,16 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			if (destinationIsRequired)
 			{
 				var currentSelectionMode = await _addressSelectionModeSubject.Take(1).ToTask();
-				if (currentSelectionMode == AddressSelectionMode.PickupSelection)
-				{
-					await ToggleBetweenPickupAndDestinationSelectionMode();
-					throw new OrderValidationException("Open the destination selection", OrderValidationError.OpenDestinationSelection);
-				}
 
 				var destinationAddress = await _destinationAddressSubject.Take(1).ToTask();
 				var destinationIsValid = destinationAddress.FullAddress.HasValue()
 					&& destinationAddress.HasValidCoordinate();
+
+				if (currentSelectionMode == AddressSelectionMode.PickupSelection && !destinationIsValid)
+				{
+					await ToggleBetweenPickupAndDestinationSelectionMode();
+					throw new OrderValidationException("Open the destination selection", OrderValidationError.OpenDestinationSelection);
+				}
 
 				if (!destinationIsValid)
 				{
@@ -204,7 +211,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
                     PickupAddress = order.PickupAddress,
 					Note = order.Note, 
 					PickupDate = order.PickupDate.HasValue ? order.PickupDate.Value : DateTime.Now,
-					Settings = order.Settings
+					Settings = order.Settings,
+					PromoCode = order.PromoCode
 				};
 
 				PrepareForNewOrder();
@@ -256,18 +264,10 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
                         }
 					case "CreateOrder_InvalidProvider":
 					case "CreateOrder_NoFareEstimateAvailable":   /* Fare estimate is required and was not submitted */
-					case "CreateOrder_CannotCreateInIbs_1002":    /* Pickup address outside of service area */
-					case "CreateOrder_CannotCreateInIbs_1452":    /* Dropoff address outside of service area */
-					case "CreateOrder_CannotCreateInIbs_7000":    /* Inactive account */
-					case "CreateOrder_CannotCreateInIbs_10000":   /* Inactive charge account */
 					case "CreateOrder_CardOnFileButNoCreditCard": /* Card on file selected but no card */
                     case "AccountCharge_InvalidAccountNumber":
 						message = string.Format(_localize["ServiceError" + e.ErrorCode], _appSettings.Data.TaxiHail.ApplicationName, _appSettings.Data.DefaultPhoneNumberDisplay);
 						messageNoCall = _localize["ServiceError" + e.ErrorCode + "_NoCall"];
-						throw new OrderCreationException(message, messageNoCall);
-					case "CreateOrder_CannotCreateInIbs_3000": /* Disabled account */
-						message = string.Format(_localize["AccountDisabled"], _appSettings.Data.TaxiHail.ApplicationName, _appSettings.Data.DefaultPhoneNumberDisplay);
-						messageNoCall = _localize["AccountDisabled_NoCall"];
 						throw new OrderCreationException(message, messageNoCall);
 					default:
 						// Unhandled errors
@@ -282,7 +282,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
 		public async Task SetVehicleType(int? vehicleTypeId)
 		{
-			if (_appSettings.Data.VehicleTypeSelectionEnabled) {
+		    var market = await _marketSubject.Take(1).ToTask();
+            if (_appSettings.Data.VehicleTypeSelectionEnabled && !market.HasValue())
+            {
 				_vehicleTypeSubject.OnNext (vehicleTypeId);
 			}
 
@@ -298,6 +300,16 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			// bookingsettings to prevent the default vehicle type to override the selected value
 			var vehicleTypeId = await _vehicleTypeSubject.Take (1).ToTask ();
 			bookingSettings.VehicleTypeId = vehicleTypeId;
+
+            // if there's a market and payment preference of the user is set to CardOnFile, change it to PaymentInCar
+		    if (bookingSettings.ChargeTypeId == ChargeTypes.CardOnFile.Id)
+		    {
+                var market = await _marketSubject.Take(1).ToTask();
+		        if (market.HasValue())
+		        {
+		            bookingSettings.ChargeTypeId = ChargeTypes.PaymentInCar.Id;
+		        }
+		    }
 
 			_bookingSettingsSubject.OnNext(bookingSettings);
 		}
@@ -315,6 +327,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			if (_bookingService.HasLastOrder) 
 			{
 				var status = await _bookingService.GetLastOrderStatus (); 
+				if (status == null)
+				{
+					return null;
+				}
+
 				if (!_bookingService.IsStatusCompleted (status.IBSStatusId)) 
 				{
 					var order = await _accountService.GetHistoryOrderAsync (status.OrderId);
@@ -395,6 +412,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			return _noteToDriverSubject;
 		}
 
+		public IObservable<string> GetAndObservePromoCode()
+		{
+			return _promoCodeSubject;
+		}
+
 		public IObservable<bool> GetAndObserveOrderCanBeConfirmed()
 		{
 			return _orderCanBeConfirmed;
@@ -408,6 +430,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		public IObservable<bool> GetAndObserveLoadingAddress()
 		{
 			return _loadingAddressSubject;
+		}
+
+		public IObservable<string> GetAndObserveMarket()
+		{
+			return _marketSubject;
 		}
 		
 		private async Task<Address> SearchAddressForCoordinate(Position p)
@@ -449,18 +476,16 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
 		private async Task SetAddressToCurrentSelection(Address address, CancellationToken token = default(CancellationToken))
 		{
-			var selectionMode = await _addressSelectionModeSubject.Take(1).ToTask();
-			if (selectionMode == AddressSelectionMode.PickupSelection)
-			{
-				_pickupAddressSubject.OnNext(address);
-			}
-			else
-			{
-				_destinationAddressSubject.OnNext(address);
+			var selectionMode = await _addressSelectionModeSubject.Take (1).ToTask ();
+			if (selectionMode == AddressSelectionMode.PickupSelection) {
+				_pickupAddressSubject.OnNext (address);
+				SetMarket (new Position () { Latitude = address.Latitude, Longitude = address.Longitude });
+			} else {
+				_destinationAddressSubject.OnNext (address);
 			}
 
 			// do NOT await this
-			CalculateEstimatedFare(token);
+			CalculateEstimatedFare (token);
 		}
 
 		private CancellationTokenSource _calculateFareCancellationTokenSource = new CancellationTokenSource();
@@ -508,7 +533,15 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
 		public async Task PrepareForNewOrder()
 		{
+			var isDestinationModeOpened = await _isDestinationModeOpenedSubject.Take(1).ToTask();
+			if (isDestinationModeOpened)
+			{
+				ToggleIsDestinationModeOpened();
+				ToggleBetweenPickupAndDestinationSelectionMode();
+			}
+
 			_noteToDriverSubject.OnNext(string.Empty);
+			_promoCodeSubject.OnNext(string.Empty);
 			_pickupAddressSubject.OnNext(new Address());
 			_destinationAddressSubject.OnNext(new Address());
 			_addressSelectionModeSubject.OnNext(AddressSelectionMode.PickupSelection);
@@ -539,12 +572,24 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			_noteToDriverSubject.OnNext(text);
 		}
 
+		public void SetPromoCode(string code)
+		{
+			_promoCodeSubject.OnNext(code);
+		}
+
 		public async Task<bool> ShouldWarnAboutEstimate()
 		{
 			var destination = await _destinationAddressSubject.Take(1).ToTask();
 			return _appSettings.Data.ShowEstimateWarning
 					&& !_cacheService.Get<string>("WarningEstimateDontShow").HasValue()
 					&& destination.HasValidCoordinate();
+		}
+
+		public async Task<bool> ShouldWarnAboutPromoCode()
+		{
+			var promoCode = await _promoCodeSubject.Take(1).ToTask();
+			return !_cacheService.Get<string>("WarningPromoCodeDontShow").HasValue()
+				&& promoCode.HasValue();
 		}
 
 	    public bool ShouldPromptUserToRateLastRide()
@@ -610,6 +655,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		{
 			_accountService.UpdateAccountNumber (accountNumber);
 
+
+
 			var bookingSettings = await _bookingSettingsSubject.Take(1).ToTask();
 			bookingSettings.AccountNumber = accountNumber;
 
@@ -669,6 +716,20 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			return true;
 		}
 
+		public async Task<bool> ValidatePromotionUseConditions()
+		{
+			var orderToValidate = await GetOrder ();	
+			if (orderToValidate.PromoCode.HasValue())
+			{
+				if (orderToValidate.Settings.ChargeTypeId != ChargeTypes.CardOnFile.Id)
+				{
+					return false;
+				}
+			}
+
+			return true;
+		}
+
 		public void ConfirmValidationOrder()
 		{
 			_orderCanBeConfirmed.OnNext (true);
@@ -683,9 +744,19 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			order.DropOffAddress = await _destinationAddressSubject.Take(1).ToTask();
 			order.Settings = await _bookingSettingsSubject.Take(1).ToTask();
 			order.Note = await _noteToDriverSubject.Take(1).ToTask();
-			var e = await _estimatedFareDetailSubject.Take (1).ToTask ();
-			if (e != null) {
-				order.Estimate = new CreateOrder.RideEstimate{ Price = e.Price, Distance = e.Distance.HasValue ? e.Distance.Value :0  };
+			order.Market = await _marketSubject.Take(1).ToTask();
+			order.PromoCode = await _promoCodeSubject.Take(1).ToTask();
+			
+			var estimatedFare = await _estimatedFareDetailSubject.Take (1).ToTask();
+			if (estimatedFare != null) 
+			{
+				order.Estimate = new CreateOrder.RideEstimate
+				{ 
+					Price = estimatedFare.Price, 
+					Distance = estimatedFare.Distance.HasValue 
+						? estimatedFare.Distance.Value 
+						: 0  
+				};
 			}
 
 		    order.UserLatitude = _locationService.BestPosition != null
@@ -700,13 +771,33 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			return order;
 		}
 
-		public void Rebook(Order previous)
+		public async void Rebook(Order previous)
 		{
             _isOrderRebooked = true;
+			/*if (!previous.DropOffAddress.HasValidCoordinate ()) {
+				var isDestinationModeOpened = await _isDestinationModeOpenedSubject.Take(1).ToTask();
+				if (isDestinationModeOpened)
+				{   
+					await ToggleBetweenPickupAndDestinationSelectionMode();
+					await ToggleIsDestinationModeOpened();
+				}
+			}
+			else
+			{
+				var isDestinationModeOpened = await _isDestinationModeOpenedSubject.Take(1).ToTask();
+				if (!isDestinationModeOpened)
+				{   
+					await ToggleBetweenPickupAndDestinationSelectionMode();
+					await ToggleIsDestinationModeOpened();
+				}
+			}*/
+
 			_pickupAddressSubject.OnNext(previous.PickupAddress);
 			_destinationAddressSubject.OnNext(previous.DropOffAddress);
 			_bookingSettingsSubject.OnNext(previous.Settings);
 			_noteToDriverSubject.OnNext(previous.Note);
+
+
 		}
 
         public bool IsOrderRebooked()
@@ -719,10 +810,31 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 	        _isOrderRebooked = false;
 	    }
 
-        public void SetIgnoreNextGeoLocResult(bool ignoreNextGeoLocResult)
-        {
-            _ignoreNextGeoLocResult = ignoreNextGeoLocResult;
-        }
+	    private async void SetMarket(Position currentPosition)
+	    {
+			var distanceFromLastMarketRequest = Maps.Geo.Position.CalculateDistance(
+                currentPosition.Latitude, currentPosition.Longitude,
+                _lastMarketPosition.Latitude, _lastMarketPosition.Longitude);
+
+            if (distanceFromLastMarketRequest > LastMarketDistanceThreshold)
+	        {
+	            var market = await _networkRoamingService.GetCompanyMarket(currentPosition.Latitude, currentPosition.Longitude);
+                
+                _lastMarketPosition = currentPosition;
+                _marketSubject.OnNext(market);
+	        }
+	    }
+
+		public async Task ToggleIsDestinationModeOpened(bool? forceValue = null)
+		{
+			bool currentValue = await _isDestinationModeOpenedSubject.Take(1).ToTask();
+			_isDestinationModeOpenedSubject.OnNext(forceValue ?? !currentValue);
+		}
+			
+		public IObservable<bool> GetAndObserveIsDestinationModeOpened()
+		{
+			return _isDestinationModeOpenedSubject;
+		}
     }
 }
 

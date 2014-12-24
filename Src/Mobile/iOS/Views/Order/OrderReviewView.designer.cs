@@ -13,6 +13,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 	partial class OrderReviewView
 	{
 		[Outlet]
+		MonoTouch.UIKit.UIButton btnPromo { get; set; }
+
+		[Outlet]
 		MonoTouch.UIKit.UIImageView iconApartment { get; set; }
 
 		[Outlet]
@@ -59,17 +62,25 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 
 		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatTextView txtNote { get; set; }
+
+		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatTextField txtPromoCode { get; set; }
 		
 		void ReleaseDesignerOutlets ()
 		{
-			if (iconNbPasserngers != null) {
-				iconNbPasserngers.Dispose ();
-				iconNbPasserngers = null;
+			if (iconApartment != null) {
+				iconApartment.Dispose ();
+				iconApartment = null;
 			}
 
 			if (iconNbLargeBags != null) {
 				iconNbLargeBags.Dispose ();
 				iconNbLargeBags = null;
+			}
+
+			if (iconNbPasserngers != null) {
+				iconNbPasserngers.Dispose ();
+				iconNbPasserngers = null;
 			}
 
 			if (iconPassengerName != null) {
@@ -80,11 +91,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 			if (iconPhone != null) {
 				iconPhone.Dispose ();
 				iconPhone = null;
-			}
-
-			if (iconApartment != null) {
-				iconApartment.Dispose ();
-				iconApartment = null;
 			}
 
 			if (iconRingCode != null) {
@@ -112,14 +118,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 				lblName = null;
 			}
 
-			if (lblNbPassengers != null) {
-				lblNbPassengers.Dispose ();
-				lblNbPassengers = null;
-			}
-
 			if (lblNbLargeBags != null) {
 				lblNbLargeBags.Dispose ();
 				lblNbLargeBags = null;
+			}
+
+			if (lblNbPassengers != null) {
+				lblNbPassengers.Dispose ();
+				lblNbPassengers = null;
 			}
 
 			if (lblPhone != null) {
@@ -140,6 +146,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 			if (txtNote != null) {
 				txtNote.Dispose ();
 				txtNote = null;
+			}
+
+			if (txtPromoCode != null) {
+				txtPromoCode.Dispose ();
+				txtPromoCode = null;
+			}
+
+			if (btnPromo != null) {
+				btnPromo.Dispose ();
+				btnPromo = null;
 			}
 		}
 	}

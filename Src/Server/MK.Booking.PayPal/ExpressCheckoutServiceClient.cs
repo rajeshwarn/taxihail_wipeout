@@ -2,7 +2,8 @@
 using System.Diagnostics;
 using System.Globalization;
 using apcurium.MK.Common.Configuration.Impl;
-using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Diagnostic;
+using Newtonsoft.Json;
 
 
 namespace MK.Booking.PayPal
@@ -18,11 +19,12 @@ namespace MK.Booking.PayPal
         const string MobileKnowledgeReferralCode = "MobileKnowledgeSystems_SP_MEC";
         readonly Urls _urls;
         readonly UserIdPasswordType _credentials;
-        readonly CurrencyCodeType _currency;        
+        readonly CurrencyCodeType _currency;
+        private static ILogger _logger;
 
-
-        public ExpressCheckoutServiceClient(PayPalCredentials credentials, RegionInfo region,  bool useSandbox = false)
+        public ExpressCheckoutServiceClient(PayPalCredentials credentials, RegionInfo region, ILogger logger, bool useSandbox = false)
         {
+            _logger = logger;
             if (credentials == null) throw new ArgumentNullException("credentials");
             if (region == null) throw new ArgumentNullException("region");
             
@@ -84,7 +86,7 @@ namespace MK.Booking.PayPal
             return _urls.GetCheckoutUrl(token);
         }
 
-        public string DoExpressCheckoutPayment(string token, string payerId, decimal orderTotal)
+        public string DoExpressCheckoutPayment(string token, string payerId, decimal orderTotal, string description, string note)
         {
             using (var api = CreateApiAaClient())
             {
@@ -94,10 +96,14 @@ namespace MK.Booking.PayPal
                     Value = orderTotal.ToString(CultureInfo.InvariantCulture),
                     currencyID = _currency
                 };
-
+                
                 var paymentDetails = new PaymentDetailsType
-                {
-                    OrderTotal = amount
+                {                    
+                    OrderTotal = amount,
+
+                  //  PaymentDetailsItem = new PaymentDetailsItemType[] { new PaymentDetailsItemType { Amount = amount, Description = description } },
+                    NoteText = note,                       
+                  
                 };
 
                 var requestDetails = new DoExpressCheckoutPaymentRequestDetailsType
@@ -131,9 +137,9 @@ namespace MK.Booking.PayPal
 
         private static void ThrowIfError(AbstractResponseType response)
         {
-            Debug.Assert(response.Ack == AckCodeType.Success);
-            
-            if (response.Ack != AckCodeType.Success)
+            _logger.LogMessage("PayPal response: {0}", JsonConvert.SerializeObject(response));
+
+            if (!ResponseIsSuccess(response))
             {
                 var errors = string.Empty;
                 if (response.Errors != null)
@@ -148,6 +154,17 @@ namespace MK.Booking.PayPal
 
                 throw new ExpressCheckoutException(errors);
             }
+        }
+
+        private static bool ResponseIsSuccess(AbstractResponseType response)
+        {
+            if (response.Ack == AckCodeType.Success
+                || response.Ack == AckCodeType.SuccessWithWarning)
+            {
+                return true;
+            }
+
+            return false;
         }
 
         private PayPalAPIAASoapBinding CreateApiAaClient()
@@ -189,10 +206,13 @@ namespace MK.Booking.PayPal
             var paymentDetails = new PaymentDetailsType
             {
                 ItemTotal = amount,
+                NoteText = "NoteText",
+                SoftDescriptor ="SoftDescriptor",
+                
                 PaymentDetailsItem = new[]
                 {
                     new PaymentDetailsItemType
-                    {
+                    {                         
                         Amount = amount,
                         Description = description
                     }
@@ -205,7 +225,8 @@ namespace MK.Booking.PayPal
                 PaymentAction = PaymentActionCodeType.Sale,
                 ReturnURL = returnUrl,
                 CancelURL = cancelUrl,
-                PaymentDetails = new[] { paymentDetails }
+                PaymentDetails = new PaymentDetailsType[] { paymentDetails },
+                
             };
 
             var requestType = new SetExpressCheckoutRequestType

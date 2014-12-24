@@ -1,5 +1,6 @@
 using System;
 using apcurium.MK.Booking.EventHandlers.Integration;
+using apcurium.MK.Booking.Services;
 
 namespace apcurium.MK.Web.Tests
 {
@@ -25,5 +26,20 @@ namespace apcurium.MK.Web.Tests
         }
 
         public bool Fail { get; set; }
+    }
+
+    public class SinglePaymentServiceFactory : IPaymentServiceFactory
+    {
+        private readonly IPaymentService _instanceService;
+
+        public SinglePaymentServiceFactory(IPaymentService instanceService)
+        {
+            _instanceService = instanceService;
+        }
+
+        public IPaymentService GetInstance()
+        {
+            return _instanceService;
+        }
     }
 }

@@ -109,6 +109,7 @@
     <Compile Include="Integration\AccountFixture\AccountDetailsGenerator.cs" />
     <Compile Include="Integration\AccountFixture\DeviceDetailsGenerator.cs" />
     <Compile Include="Integration\AccountFixture\NotificationSettingsGenerator.cs" />
+    <Compile Include="Integration\AccountFixture\UserTaxiHailNetworkSettingsGenerator.cs" />
     <Compile Include="Integration\AddressListFixture\AddressListGenerator.cs" />
     <Compile Include="Integration\CompanyFixture\CompanyDetailsGenerator.cs" />
     <Compile Include="Integration\CompanyFixture\AccountChargeDetailGenerator.cs" />
@@ -129,6 +130,8 @@
     <Compile Include="Integration\OrderFixture\OrderUserGpsInfoGenerator.cs" />
     <Compile Include="Integration\PaymentUpdatedFixture.cs" />
     <Compile Include="Integration\PayPalPaymentFixture\PayPalPaymentGeneratorTest.cs" />
+    <Compile Include="Integration\PromotionFixture\PromotionDetailGenerator.cs" />
+    <Compile Include="Integration\PromotionFixture\PromotionTriggerGenerator.cs" />
     <Compile Include="Maps\PriceCalculatorFixture\given_a_date.cs" />
     <Compile Include="OrderFixture\given_an_email_address.cs" />
     <Compile Include="OrderFixture\given_an_email_address_and_an_orderStatus_using_real_geocoding_with_corporate_key.cs" />
@@ -140,6 +143,8 @@
     <Compile Include="PayPalPaymentFixture\given_a_cancelled_payment.cs" />
     <Compile Include="PayPalPaymentFixture\given_a_payment.cs" />
     <Compile Include="PayPalPaymentFixture\given_no_payment.cs" />
+    <Compile Include="PromotionFixture\given_no_promotion.cs" />
+    <Compile Include="PromotionFixture\given_one_promotion.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Integration\AccountDbContextFixture.cs" />
     <Compile Include="TestServerSettings.cs" />
@@ -159,6 +164,10 @@
     <ProjectReference Include="..\..\..\CustomerPortal\CustomerPortal.Client\CustomerPortal.Client.csproj">
       <Project>{15824AAE-2D25-414E-B9FF-618DE088C9E7}</Project>
       <Name>CustomerPortal.Client</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\HoneyBadger\HoneyBadger.csproj">
+      <Project>{1C2F9D8B-7B65-4D2E-A099-D0040907D59C}</Project>
+      <Name>HoneyBadger</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Infrastructure\Infrastructure\Infrastructure.csproj">
       <Project>{B5786D07-5888-4DF5-B295-3FEA593F3BFE}</Project>
@@ -193,7 +202,9 @@
       <Name>MK.Booking</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="ChargeAccountFixture\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

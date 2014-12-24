@@ -4,8 +4,6 @@ using ServiceStack.ServiceHost;
 
 #endregion
 
-
-
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
     [Route("/referencedata", "GET")]
@@ -14,5 +12,7 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
         public bool WithoutFiltering { get; set; }
 
         public string CompanyKey { get; set; }
+
+        public string Market { get; set; }
     }
 }

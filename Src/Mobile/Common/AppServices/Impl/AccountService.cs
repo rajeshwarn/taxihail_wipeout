@@ -38,6 +38,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         private const string RefDataCacheKey = "Account.ReferenceData";
         private const string CompanyNotificationSettingsCacheKey = "Account.CompanyNotificationSettings";
         private const string UserNotificationSettingsCacheKey = "Account.UserNotificationSettings";
+        private const string UserTaxiHailNetworkSettingsCacheKey = "Account.UserTaxiHailNetworkSetting";
         private const string AuthenticationDataCacheKey = "AuthenticationData";
         private const string VehicleTypesDataCacheKey = "VehicleTypesData";
 
@@ -159,8 +160,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         public OrderStatusDetail[] GetActiveOrdersStatus()
         {
-            var result = UseServiceClientTask<OrderServiceClient, OrderStatusDetail[]>(service => service.GetActiveOrdersStatus());
-            return result;
+			return UseServiceClientAsync<OrderServiceClient, OrderStatusDetail[]>(service => service.GetActiveOrdersStatus()).Result;
         }
 
 		public async Task<Address[]> GetFavoriteAddresses ()
@@ -284,12 +284,14 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 		{
 			var settings = CurrentAccount.Settings;
 			settings.AccountNumber = accountNumber;
+
+			// no need to await since we're change it locally
 			UpdateSettings (settings, CurrentAccount.DefaultCreditCard, CurrentAccount.DefaultTipPercent);
 		}
 
-        public string UpdatePassword (Guid accountId, string currentPassword, string newPassword)
+        public Task<string> UpdatePassword (Guid accountId, string currentPassword, string newPassword)
         {
-			return UseServiceClientTask<IAccountServiceClient, string> (service => service.UpdatePassword (new UpdatePassword{ AccountId = accountId, CurrentPassword = currentPassword, NewPassword = newPassword }));
+			return UseServiceClientAsync<IAccountServiceClient, string> (service => service.UpdatePassword (new UpdatePassword{ AccountId = accountId, CurrentPassword = currentPassword, NewPassword = newPassword }));
         }
 
 		public async Task<Account> SignIn (string email, string password)
@@ -411,23 +413,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             return data;
         }
 
-        public Account RefreshAccount ()
+        public Task ResetPassword (string email)
         {
-            try 
-			{
-                var account = UseServiceClientTask<IAccountServiceClient, Account>(service => service.GetMyAccount());
-                CurrentAccount = account;
-                return account;
-            } 
-			catch 
-			{
-                return null;
-            }
-        }
-
-        public void ResetPassword (string email)
-        {
-			UseServiceClientTask<IAccountServiceClient> (service => service.ResetPassword (email));  
+			return UseServiceClientAsync<IAccountServiceClient> (service => service.ResetPassword (email));  
         }
 
 		public async Task Register (RegisterAccount data)
@@ -437,7 +425,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			await UseServiceClientAsync<IAccountServiceClient> (service =>  service.RegisterAccount (data)); 
         }
 
-        public void DeleteFavoriteAddress (Guid addressId)
+		public Task DeleteFavoriteAddress (Guid addressId)
         {
             if (addressId.HasValue()) 
 			{
@@ -445,11 +433,13 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 
                 RemoveFromCacheArray<Address> (FavoriteAddressesCacheKey, toDelete, (id, a) => a.Id == id);                
 
-				UseServiceClientTask<IAccountServiceClient> (service => service.RemoveFavoriteAddress (toDelete));
+				return UseServiceClientAsync<IAccountServiceClient> (service => service.RemoveFavoriteAddress (toDelete));
             }
+
+			return Task.Run(() => {});
         }
 
-        public void DeleteHistoryAddress (Guid addressId)
+		public Task DeleteHistoryAddress (Guid addressId)
         {
             if (addressId.HasValue ()) 
 			{
@@ -457,11 +447,13 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
                 RemoveFromCacheArray<Address> (HistoryAddressesCacheKey, toDelete, (id, a) => a.Id == id);
 
-				UseServiceClientTask<IAccountServiceClient> (service => service.RemoveAddress (toDelete));
+				return UseServiceClientAsync<IAccountServiceClient> (service => service.RemoveAddress (toDelete));
             }
+
+			return Task.Run(() => {});
         }
 
-        public void UpdateAddress (Address address)
+        public Task UpdateAddress (Address address)
         {
             bool isNew = address.Id.IsNullOrEmpty ();
             if (isNew) 
@@ -477,7 +469,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
             UpdateCacheArray (FavoriteAddressesCacheKey, address, (a1, a2) => a1.Id.Equals (a2.Id));
 
-			UseServiceClientTask<IAccountServiceClient> (service =>
+			return UseServiceClientAsync<IAccountServiceClient> (service =>
             {
                 var toSave = new SaveAddress
                     {
@@ -518,13 +510,18 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 		    return vehiclesList;
         }
 
-		public async Task<IList<ListItem>> GetPaymentsList ()
+		public async Task<IList<ListItem>> GetPaymentsList (string market = null)
         {
 			var refData = await GetReferenceData();
 
-			if (!CurrentAccount.DefaultCreditCard.HasValue)
+            if (!CurrentAccount.DefaultCreditCard.HasValue)
 		    {
 		        refData.PaymentsList.Remove(i => i.Id == ChargeTypes.CardOnFile.Id);
+		    }
+
+		    if (market.HasValue())
+		    {
+                refData.PaymentsList.Remove(i => i.Id != ChargeTypes.PaymentInCar.Id);
 		    }
 
             return refData.PaymentsList;
@@ -651,6 +648,12 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                     ReceiptEmail = companySettings.ReceiptEmail.HasValue && userSettings.ReceiptEmail.HasValue
                         ? userSettings.ReceiptEmail 
                         : companySettings.ReceiptEmail,
+					PromotionUnlockedEmail = companySettings.PromotionUnlockedEmail.HasValue && userSettings.PromotionUnlockedEmail.HasValue
+						? userSettings.PromotionUnlockedEmail
+						: companySettings.PromotionUnlockedEmail,
+					PromotionUnlockedPush = companySettings.PromotionUnlockedPush.HasValue && userSettings.PromotionUnlockedPush.HasValue
+						? userSettings.PromotionUnlockedPush
+						: companySettings.PromotionUnlockedPush,
                     VehicleAtPickupPush = companySettings.VehicleAtPickupPush.HasValue && userSettings.VehicleAtPickupPush.HasValue
                         ? userSettings.VehicleAtPickupPush 
                         : companySettings.VehicleAtPickupPush
@@ -672,6 +675,35 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             };
 
             await UseServiceClientAsync<IAccountServiceClient>(client => client.UpdateNotificationSettings(request));
+        }
+
+        public async Task<UserTaxiHailNetworkSettings> GetUserTaxiHailNetworkSettings(bool cleanCache = false)
+        {
+            var cachedSetting = UserCache.Get<UserTaxiHailNetworkSettings>(UserTaxiHailNetworkSettingsCacheKey);
+
+            if (cachedSetting != null && !cleanCache)
+            {
+                return cachedSetting;
+            }
+
+            var settings = await UseServiceClientAsync<IAccountServiceClient, UserTaxiHailNetworkSettings>(client => client.GetUserTaxiHailNetworkSettings(CurrentAccount.Id));
+            UserCache.Set(UserTaxiHailNetworkSettingsCacheKey, settings);
+
+            return settings;
+        }
+
+        public async Task UpdateUserTaxiHailNetworkSettings(UserTaxiHailNetworkSettings userTaxiHailNetworkSettings)
+        {
+            // Update cached user settings
+            UserCache.Set(UserTaxiHailNetworkSettingsCacheKey, userTaxiHailNetworkSettings);
+
+            var request = new UserTaxiHailNetworkSettingsRequest
+            {
+                AccountId = CurrentAccount.Id,
+                UserTaxiHailNetworkSettings = userTaxiHailNetworkSettings
+            };
+
+            await UseServiceClientAsync<IAccountServiceClient>(client => client.UpdateUserTaxiHailNetworkSettings(request));
         }
 
 		public async void LogApplicationStartUp()

@@ -8,6 +8,7 @@ using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Common;
+using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
@@ -78,11 +79,14 @@ namespace apcurium.MK.Booking.Domain
 
             Handles<AccountChargeAddedUpdated>(NoAction);
             Handles<AccountChargeDeleted>(NoAction);
+            Handles<AccountChargeImported>(NoAction);
 
             Handles<VehicleTypeAddedUpdated>(NoAction);
             Handles<VehicleTypeDeleted>(NoAction);
 
             Handles<NotificationSettingsAddedOrUpdated>(NoAction);
+
+            Handles<PrivacyPolicyUpdated>(NoAction);
         }
 
         private void OnPaymentSettingUpdated(PaymentSettingUpdated obj)
@@ -420,12 +424,6 @@ namespace apcurium.MK.Booking.Domain
             });
         }
 
-        private bool GoingFromCmtToRidelinqOrRidelinqToCmt(PaymentMethod original, PaymentMethod newMethod)
-        {
-            return ((original == PaymentMethod.Cmt || original == PaymentMethod.RideLinqCmt) &&
-                    (newMethod == PaymentMethod.Cmt || newMethod == PaymentMethod.RideLinqCmt));
-        }
-
         public void ActivateRule(Guid ruleId)
         {
             Update(new RuleActivated
@@ -442,6 +440,91 @@ namespace apcurium.MK.Booking.Domain
             });
         }
 
+        public void UpdateTermsAndConditions(string termsAndConditions)
+        {
+            Update(new TermsAndConditionsUpdated
+            {
+                TermsAndConditions = termsAndConditions
+            });
+        }
+
+        public void RetriggerTermsAndConditions()
+        {
+            Update(new TermsAndConditionsRetriggered());
+        }
+
+        public void AddUpdateAccountCharge(Guid accountChargeId, string number, string name,
+            bool useCardOnFileForPayment, AccountChargeQuestion[] questions)
+        {
+            Update(new AccountChargeAddedUpdated
+            {
+                Name = name,
+                Number = number,
+                AccountChargeId = accountChargeId,
+                UseCardOnFileForPayment = useCardOnFileForPayment,
+                Questions = questions
+            });
+        }
+
+        public void ImportAccountCharge(AccountCharge[] accounts)
+        {
+            Update(new AccountChargeImported()
+            {
+                AccountCharges = accounts
+            });
+        }
+
+        public void DeleteAccountCharge(Guid accountChargeId)
+        {
+            Update(new AccountChargeDeleted
+            {
+                AccountChargeId = accountChargeId
+            });
+        }
+
+        public void AddUpdateVehicleType(Guid vehicleTypeId, string name, string logoName, int referenceDataVehicleId)
+        {
+            Update(new VehicleTypeAddedUpdated
+            {
+                Name = name,
+                LogoName = logoName,
+                VehicleTypeId = vehicleTypeId,
+                ReferenceDataVehicleId = referenceDataVehicleId
+            });
+        }
+
+        public void DeleteVehicleType(Guid vehicleTypeId)
+        {
+            Update(new VehicleTypeDeleted
+            {
+                VehicleTypeId = vehicleTypeId
+            });
+        }
+
+        public void AddOrUpdateNotificationSettings(NotificationSettings notificationSettings)
+        {
+            notificationSettings.Id = Id;
+
+            Update(new NotificationSettingsAddedOrUpdated
+            {
+                NotificationSettings = notificationSettings
+            });
+        }
+
+        public void UpdatePrivacyPolicy(string policy)
+        {
+            Update(new PrivacyPolicyUpdated
+            {
+                Policy = policy
+            });
+        }
+
+        private bool GoingFromCmtToRidelinqOrRidelinqToCmt(PaymentMethod original, PaymentMethod newMethod)
+        {
+            return ((original == PaymentMethod.Cmt || original == PaymentMethod.RideLinqCmt) &&
+                    (newMethod == PaymentMethod.Cmt || newMethod == PaymentMethod.RideLinqCmt));
+        }
+
         private static void ValidateFavoriteAddress(string friendlyName, string fullAddress, double latitude,
             double longitude)
         {
@@ -450,17 +533,15 @@ namespace apcurium.MK.Booking.Domain
                 throw new InvalidOperationException("Missing required fields");
             }
 
-            if (latitude < -90 || latitude > 90)
+            if (double.IsNaN(latitude) || latitude < -90 || latitude > 90)
             {
-// ReSharper disable LocalizableElement
                 throw new ArgumentOutOfRangeException("latitude", "Invalid latitude");
             }
 
-            if (longitude < -180 || latitude > 180)
+            if (double.IsNaN(longitude) || longitude < -180 || longitude > 180)
             {
                 throw new ArgumentOutOfRangeException("longitude", "Invalid longitude");
             }
-// ReSharper restore LocalizableElement
         }
 
         private void OnRateCreated(TariffCreated @event)
@@ -520,67 +601,6 @@ namespace apcurium.MK.Booking.Domain
             {
                 _ratingTypes.Remove(@event.RatingTypeId);
             }
-        }
-
-        public void UpdateTermsAndConditions(string termsAndConditions)
-        {
-            Update(new TermsAndConditionsUpdated
-            {
-                TermsAndConditions = termsAndConditions
-            });
-        }
-
-        public void RetriggerTermsAndConditions()
-        {
-            Update(new TermsAndConditionsRetriggered());
-        }
-
-        public void AddUpdateAccountCharge(Guid accountChargeId, string number, string name, AccountChargeQuestion[] questions)
-        {
-            Update(new AccountChargeAddedUpdated
-            {
-                Name = name,
-                Number = number,
-                AccountChargeId = accountChargeId,
-                Questions = questions
-            });
-        }
-
-        public void DeleteAccountCharge(Guid accountChargeId)
-        {
-            Update(new AccountChargeDeleted
-            {
-                AccountChargeId = accountChargeId
-            });
-        }
-
-        public void AddUpdateVehicleType(Guid vehicleTypeId, string name, string logoName, int referenceDataVehicleId)
-        {
-            Update(new VehicleTypeAddedUpdated
-            {
-                Name = name,
-                LogoName = logoName,
-                VehicleTypeId = vehicleTypeId,
-                ReferenceDataVehicleId = referenceDataVehicleId
-            });
-        }
-
-        public void DeleteVehicleType(Guid vehicleTypeId)
-        {
-            Update(new VehicleTypeDeleted
-            {
-                VehicleTypeId = vehicleTypeId
-            });
-        }
-
-        public void AddOrUpdateNotificationSettings(NotificationSettings notificationSettings)
-        {
-            notificationSettings.Id = Id;
-
-            Update(new NotificationSettingsAddedOrUpdated
-            {
-                NotificationSettings = notificationSettings
-            });
         }
     }
 }

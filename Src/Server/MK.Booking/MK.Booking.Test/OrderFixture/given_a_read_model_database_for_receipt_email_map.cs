@@ -1,6 +1,5 @@
 using System;
 using System.Web.Routing;
-using apcurium.MK.Booking.Common.Tests;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Domain;
 using apcurium.MK.Booking.Email;
@@ -46,6 +45,7 @@ namespace apcurium.MK.Booking.Test.OrderFixture
                     PaymentConfirmationPush = true,
                     NearbyTaxiPush = true,
                     ReceiptEmail = true,
+                    PromotionUnlockedEmail = true,
                     VehicleAtPickupPush = true
                 });
             }

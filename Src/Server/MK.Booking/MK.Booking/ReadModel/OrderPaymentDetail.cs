@@ -17,7 +17,7 @@ namespace apcurium.MK.Booking.ReadModel
         public decimal Amount { get; set; }
         public decimal Meter { get; set; }
         public decimal Tip { get; set; }
-
+        public decimal Tax { get; set; }
 
         public string CardToken { get; set; }
         public string PayPalToken { get; set; }

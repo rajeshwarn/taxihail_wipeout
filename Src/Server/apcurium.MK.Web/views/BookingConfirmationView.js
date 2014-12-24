@@ -13,15 +13,32 @@
 
             var pickup = this.model.get('pickupAddress');
             var dest = this.model.get('dropOffAddress');
+            var pickupZipCode = pickup.zipCode != null ? pickup.zipCode : '';
+            var dropOffZipCode = (dest != null && dest.zipCode != null) ? dest.zipCode : '';
+
+            
+
+            
             this.showEstimate = TaxiHail.parameters.isEstimateEnabled && pickup && dest;
             this.showEstimateWarning = TaxiHail.parameters.isEstimateWarningEnabled;
+            
+            var accountNumber = '';
+            
+            if (this.model.isPayingWithAccountCharge()) {
+                accountNumber = this.model.get('accountNumber');
+                accountNumber = accountNumber != null ? accountNumber : '';
+            }
+
             if (this.showEstimate) {
                 TaxiHail.directionInfo.getInfo(pickup.latitude,
                     pickup.longitude,
                     dest.latitude,
                     dest.longitude,
+                    pickupZipCode,
+                    dropOffZipCode,
                     this.model.get('settings')['vehicleTypeId'],
-                    this.model.get('pickupDate')
+                    this.model.get('pickupDate'),
+                    accountNumber
                     ).done(this.renderResults);
             }
 
@@ -60,9 +77,18 @@
 
             var data = this.model.toJSON();
 
+            var chargeTypes = TaxiHail.referenceData.paymentsList;
+            if (this.model.get('market')) {
+                for (var i = 0; i < chargeTypes.length; i++) {
+                    if (chargeTypes[i].id === 1) {
+                        chargeTypes = [chargeTypes[i]];
+                    }
+                }
+            }
+
             _.extend(data, {
                 vehiclesList: TaxiHail.vehicleTypes,
-                paymentsList: TaxiHail.referenceData.paymentsList,
+                paymentsList: chargeTypes,
                 showPassengerNumber: TaxiHail.parameters.showPassengerNumber
             });
 
@@ -127,8 +153,10 @@
             if (result.noFareEstimate) {
                 this.model.set('estimateDisplay', TaxiHail.localize("NoFareEstimate"));
             } else
-            {
+            if (result.formattedPrice || result.formattedDistance) {
                 this.model.set('estimateDisplay', TaxiHail.localize('Estimate Display').format(result.formattedPrice, "(" + result.formattedDistance + ")"));
+            } else  {
+                this.model.set('estimateDisplay', TaxiHail.localize("NoFareEstimate"));
             }
             this.render();
         },
@@ -145,7 +173,7 @@
             this.model.set('FromWebApp', true);
             this.model.saveLocal();
 
-            if (this.model.isPayingWithAccountCharge()) {
+            if (this.model.isPayingWithAccountCharge() && !this.model.get('market')) {
                 //account charge type payment                
                 TaxiHail.app.navigate('bookaccountcharge', { trigger: true});
             }else{
@@ -204,7 +232,7 @@
             if(attr.length > 1 && this.model.has(attr[0])) {
                 this.model.get(attr[0])[attr[1]] = $input.val();
 
-                if ([attr[1]] == "vehicleTypeId") {
+                if ([attr[1]] == "vehicleTypeId" || [attr[1]] == "chargeTypeId") {
                     this.initialize();
                 }
             } else {

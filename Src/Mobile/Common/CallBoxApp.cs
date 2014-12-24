@@ -6,6 +6,7 @@ using apcurium.MK.Booking.Mobile.AppServices.Impl;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.IoC;
 using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Diagnostic;
 using Cirrious.CrossCore;
 using Cirrious.MvvmCross.ViewModels;
 using TinyIoC;
@@ -47,7 +48,7 @@ namespace apcurium.MK.Booking.Mobile
             
             _container.Register((c, p) => new ApplicationInfoServiceClient(c.Resolve<IAppSettings>().Data.ServiceUrl, GetSessionId(), c.Resolve<IPackageInfo>()));
 
-            _container.Register<ConfigurationClientService>((c, p) => new ConfigurationClientService(c.Resolve<IAppSettings>().Data.ServiceUrl, GetSessionId(), c.Resolve<IPackageInfo>()));
+            _container.Register<ConfigurationClientService>((c, p) => new ConfigurationClientService(c.Resolve<IAppSettings>().Data.ServiceUrl, GetSessionId(), c.Resolve<IPackageInfo>(), c.Resolve<ILogger>()));
 
             _container.Register<IAccountService, AccountService>();
             _container.Register<IBookingService, BookingService>();

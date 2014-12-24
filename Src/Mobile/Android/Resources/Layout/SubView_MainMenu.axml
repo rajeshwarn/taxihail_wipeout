@@ -129,6 +129,25 @@
                             android:paddingRight="8dip"
                             android:layout_width="fill_parent"
                             android:layout_height="1px" />
+                         <Button
+                            android:id="@+id/promotions"
+                            local:MvxBind="Click Panel.NavigateToPromotions; Visibility Panel.Settings.PromotionEnabled, Converter=Visibility"
+                            style="@style/SettingItemTitle"
+                            android:background="@drawable/setting_cell"
+                            android:layout_width="fill_parent"
+                            android:layout_height="42dip"
+                            android:text="@string/PanelMenuViewPromotionsText"
+                            android:paddingRight="10dip"
+                            android:paddingLeft="10dip"
+                            android:gravity="center_vertical"
+                            android:textAlignment="viewStart" />
+                        <View
+                            local:MvxBind="Visibility Panel.Settings.PromotionEnabled, Converter=Visibility"
+                            android:background="@color/setting_menu_separator_color"
+                            android:paddingLeft="8dip"
+                            android:paddingRight="8dip"
+                            android:layout_width="fill_parent"
+                            android:layout_height="1px" />
                         <Button
                             android:id="@+id/notificationsSettings"
                             local:MvxBind="Click Panel.NavigateToNotificationsSettings; Visibility Panel.IsNotificationsEnabled, Converter=Visibility"
@@ -143,6 +162,25 @@
                             android:textAlignment="viewStart" />
                         <View
                             local:MvxBind="Visibility Panel.IsNotificationsEnabled, Converter=Visibility"
+                            android:background="@color/setting_menu_separator_color"
+                            android:paddingLeft="8dip"
+                            android:paddingRight="8dip"
+                            android:layout_width="fill_parent"
+                            android:layout_height="1px" />
+                        <Button
+                            android:id="@+id/userTaxiHailNetworkSettings"
+                            local:MvxBind="Click Panel.NavigateToUserTaxiHailNetworkSettings; Visibility Panel.IsTaxiHailNetworkEnabled, Converter=Visibility"
+                            style="@style/SettingItemTitle"
+                            android:background="@drawable/setting_cell"
+                            android:layout_width="fill_parent"
+                            android:layout_height="42dip"
+                            android:text="@string/PanelMenuViewTaxiHailNetworkText"
+                            android:paddingRight="10dip"
+                            android:paddingLeft="10dip"
+                            android:gravity="center_vertical"
+                            android:textAlignment="viewStart" />
+                        <View
+                            local:MvxBind="Visibility Panel.IsTaxiHailNetworkEnabled, Converter=Visibility"
                             android:background="@color/setting_menu_separator_color"
                             android:paddingLeft="8dip"
                             android:paddingRight="8dip"

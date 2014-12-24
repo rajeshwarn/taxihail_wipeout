@@ -33,7 +33,7 @@ namespace apcurium.MK.Common.Configuration.Helpers
 
 						if (targetType.IsEnum)
 						{
-							var propertyVal = Enum.Parse(targetType, overriddenSetting.Value);
+							var propertyVal = Enum.Parse(targetType, overriddenSetting.Value, true);
 							SetValue(propertyName, objectToInitialize, propertyVal);
 						}
 						else if (IsNullableType(propertyType.PropertyType) && string.IsNullOrEmpty(overriddenSetting.Value))

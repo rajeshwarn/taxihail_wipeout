@@ -3,7 +3,6 @@
 using System;
 using apcurium.MK.Booking.CommandHandlers;
 using apcurium.MK.Booking.Commands;
-using apcurium.MK.Booking.Common.Tests;
 using apcurium.MK.Booking.Domain;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.Security;
@@ -314,6 +313,18 @@ namespace apcurium.MK.Booking.Test.AccountFixture
             Assert.AreEqual(_accountId, @event.SourceId);
             Assert.AreEqual(123, @event.IbsAccountId);
             Assert.AreEqual("test", @event.CompanyKey);
+        }
+
+        [Test]
+        public void when_unlinking_account_from_ibs()
+        {
+            _sut.Given(new AccountLinkedToIbs { SourceId = _accountId, IbsAccountId = 123 });
+            _sut.Given(new AccountLinkedToIbs { SourceId = _accountId, IbsAccountId = 123, CompanyKey = "test" });
+            _sut.When(new UnlinkAccountFromIbs { AccountId = _accountId });
+
+            var @event = _sut.ThenHasSingle<AccountUnlinkedFromIbs>();
+
+            Assert.AreEqual(_accountId, @event.SourceId);
         }
     }
 }

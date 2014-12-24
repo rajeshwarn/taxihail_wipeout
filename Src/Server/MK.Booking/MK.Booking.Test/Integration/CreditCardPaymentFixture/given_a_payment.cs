@@ -8,7 +8,6 @@ using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
 using NUnit.Framework;
-using apcurium.MK.Booking.Common.Tests;
 
 #endregion
 
@@ -58,7 +57,7 @@ namespace apcurium.MK.Booking.Test.Integration.CreditCardPaymentFixture
         [Test]
         public void when_payment_captured_then_dto_updated()
         {
-            Sut.Handle(new CreditCardPaymentCaptured
+            Sut.Handle(new CreditCardPaymentCaptured_V2
             {
                 SourceId = _paymentId,
             });

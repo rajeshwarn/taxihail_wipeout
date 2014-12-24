@@ -3,10 +3,16 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Entity;
+using apcurium.MK.Common.Extensions;
+using ServiceStack.Html;
+using ServiceStack.Text;
+using ServiceStack.Text.Json;
+using AccountCharge = apcurium.MK.Booking.Api.Contract.Resources.AccountCharge;
 
 #endregion
 
@@ -34,6 +40,12 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
         public void DisableAccount(DisableAccountByAdminRequest request)
         {
             var req = string.Format("/account/admindisable");
+            Client.Put<string>(req, request);
+        }
+
+        public void UnlinkAccount(UnlinkAccountByAdminRequest request)
+        {
+            var req = string.Format("/account/unlink");
             Client.Put<string>(req, request);
         }
 
@@ -130,6 +142,33 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
         {
             var req = string.Format("/admin/accountscharge/" + accountNumber);
             Client.Delete<string>(req);
+        }
+
+        public void ImportAccountCharge(AccountChargeImportRequest request)
+        {
+            var req = string.Format("/admin/accountscharge/import");
+            Client.Post<string>(req, request);
+        }
+
+        public IbsChargeAccount GetChargeAccount(string accountNumber, string customerNumber)
+        {
+            var req = string.Format("/admin/ibschargeaccount/{0}/{1}", accountNumber, customerNumber);
+            var result = Client.Get<IbsChargeAccount>(req);
+            return result;
+        }
+
+        public IbsChargeAccountValidation ValidateChargeAccount(IbsChargeAccountValidationRequest validationRequest)
+        {
+            var req = string.Format("/admin/ibschargeaccount/");
+            var result = Client.Post<IbsChargeAccountValidation>(req, validationRequest);
+            return result;
+        }
+
+        public IEnumerable<IbsChargeAccount> GetAllChargeAccount()
+        {
+            var req = string.Format("/admin/ibschargeaccount/all");
+            var result = Client.Get<IEnumerable<IbsChargeAccount>>(req);
+            return result;
         }
     }
 }

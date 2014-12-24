@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.Data;
+using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
 using MK.Common.Configuration;
 
@@ -29,17 +30,15 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 
 	    void ClearVehicleTypesCache();
         
-        Account RefreshAccount();
-        
         Account CurrentAccount { get; }
         
 		Task<IList<VehicleType>> GetVehiclesList();
+
+        Task<IList<ListItem>> GetPaymentsList(string market = null);
         
-		Task<IList<ListItem>> GetPaymentsList();
+        Task ResetPassword( string email );
         
-        void ResetPassword( string email );
-        
-        string UpdatePassword( Guid accountId, string currentPassword, string newPassword );
+		Task<string> UpdatePassword( Guid accountId, string currentPassword, string newPassword );
         
 		Task Register (RegisterAccount data);
 
@@ -49,11 +48,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices
         
 		Task<Address[]> GetFavoriteAddresses();
         
-        void UpdateAddress(Address address);
+		Task UpdateAddress(Address address);
         
-        void DeleteFavoriteAddress(Guid addressId);
+        Task DeleteFavoriteAddress(Guid addressId);
         
-        void DeleteHistoryAddress(Guid addressId);
+		Task DeleteHistoryAddress(Guid addressId);
         
 		Task<IList<Order>> GetHistoryOrders();
 		OrderStatusDetail[] GetActiveOrdersStatus();
@@ -71,6 +70,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 
         Task<NotificationSettings> GetNotificationSettings(bool companyDefaultOnly = false, bool cleanCache = false);
 	    Task UpdateNotificationSettings(NotificationSettings notificationSettings);
+
+	    Task<UserTaxiHailNetworkSettings> GetUserTaxiHailNetworkSettings(bool cleanCache = false);
+	    Task UpdateUserTaxiHailNetworkSettings(UserTaxiHailNetworkSettings userTaxiHailNetworkSettings);
 
 		void LogApplicationStartUp ();
     }

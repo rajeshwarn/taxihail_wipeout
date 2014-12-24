@@ -54,6 +54,11 @@ namespace MK.Common.Configuration
                 APIKey = "a34cb0ffa9cae700769950f66237125e8ba4ed0d", // to be replaced when we have an official TaxiHail account
                 UnknownUserIdentifier = "unknown@user.com"
             };
+			ShowEstimate = true;
+		    Network = new NetworkSettingContainer
+		    {
+                Enabled = false
+		    };
 
             ShowEstimateWarning = true;
             AccountActivationDisabled = true;
@@ -102,6 +107,7 @@ namespace MK.Common.Configuration
         public GeoLocSettingContainer GeoLoc { get; protected set; }
         public AvailableVehiclesSettingContainer AvailableVehicles { get; protected set; }
         public InsightsSettingContainer Insights { get; protected set; }
+        public NetworkSettingContainer Network { get; protected set; }
 
         [RequiredAtStartup]
 		[Display(Name = "Can Change Service Url", Description="Display a button on the login page to change the API server url")]
@@ -159,11 +165,11 @@ namespace MK.Common.Configuration
 		[Display(Name = "Account Activation By SMS", Description="Enable the activation by SMS")]
         public bool SMSConfirmationEnabled { get; protected set; }
 
-        [SendToClient, CustomizableByCompany]
+        [SendToClient, CustomizableByCompany, RequiresTaxiHailPro]
         [Display(Name = "Disable Charge type when card on file", Description = "When active, locks the user on Card on File payment type if a credit card is registered")]
         public bool DisableChargeTypeWhenCardOnFile { get; protected set; }
 
-        [SendToClient, CustomizableByCompany]
+        [SendToClient, CustomizableByCompany, RequiresTaxiHailPro]
         [Display(Name = "Enable vehicle type selection", Description = "Hide the vehicle type selection box")]
         public bool VehicleTypeSelectionEnabled { get; protected set; }
 
@@ -240,7 +246,7 @@ namespace MK.Common.Configuration
         [Display(Name = "Show Estimate", Description="Show an estimate")]
         public bool ShowEstimate { get; protected set; }
 
-        [SendToClient, CustomizableByCompany]
+        [SendToClient, CustomizableByCompany, RequiresTaxiHailPro]
 		[Display(Name = "Show Eta", Description="Show eta")]
 		public bool ShowEta { get; protected set; }
 
@@ -248,7 +254,7 @@ namespace MK.Common.Configuration
 		[Display(Name = "Google Map Key", Description="Google API Key for business, required for directions aka eta feature")]
         public string GoogleMapKey { get; protected set; }
 
-        [SendToClient, CustomizableByCompany]
+        [SendToClient, CustomizableByCompany, RequiresTaxiHailPro]
         [Display(Name = "Eta Padding Ratio", Description = "Eta duration padding ratio (multiply duration in seconds by...)")]
 		public double EtaPaddingRatio { get; protected set; }
 
@@ -304,11 +310,11 @@ namespace MK.Common.Configuration
         [Display(Name = "Hide Call Dispatch Button", Description="Hide button to call dispatch in panel menu, status screens")]
         public bool HideCallDispatchButton { get; protected set; }
 
-        [SendToClient, CustomizableByCompany]
+        [SendToClient, CustomizableByCompany, RequiresTaxiHailPro]
         [Display(Name = "Credit Card Is Mandatory", Description="If true, the user needs to have a card on file")]
         public bool CreditCardIsMandatory { get; protected set; }
 
-        [SendToClient, CustomizableByCompany]
+        [SendToClient, CustomizableByCompany, RequiresTaxiHailPro]
 		[Display(Name = "Default Percentage Tip", Description="default value for the tip percentage ex: 15")]
 		public int DefaultTipPercentage { get; protected set; }
 
@@ -396,19 +402,26 @@ namespace MK.Common.Configuration
         [SendToClient]
         [Display(Name = "Google AdWords Conversion Tracking ID", Description = "Conversion ID used for Google Conversion Tracking")]
         public string GoogleAdWordsConversionId { get; protected set; }
+
         [SendToClient]
         [Display(Name = "Google AdWords Conversion Tracking Label", Description = "Conversion Label used for Google Conversion Tracking")]
         public string GoogleAdWordsConversionLabel { get; protected set; }
 
         [SendToClient, CustomizableByCompany]
         public bool CallDriverUsingProxy { get; protected set; }
+
         [SendToClient, CustomizableByCompany]
         public string CallDriverUsingProxyUrl { get; protected set; }
 
 	    [SendToClient, CustomizableByCompany]
         public int InitialZoomLevel { get; set; }
+
         [SendToClient, CustomizableByCompany]
         public bool DisableAutomaticZoomOnLocation { get; set; }
+
+        [SendToClient]
+        [Display(Name = "Promotion enabled", Description = "Enables promotion on the client and on the admin portal")]
+        public bool PromotionEnabled { get; set; }
     }
 }
 

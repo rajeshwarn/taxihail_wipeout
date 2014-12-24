@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30723.0
+VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{14455101-7665-4CD6-A9F7-235BF1C50A6E}"
 EndProject
@@ -72,6 +72,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomerPortal.Client", "..\CustomerPortal\CustomerPortal.Client\CustomerPortal.Client.csproj", "{15824AAE-2D25-414E-B9FF-618DE088C9E7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CMTPayment", "CMTPayment\CMTPayment.csproj", "{5FD750A2-EE19-4A80-9B38-32ADBF03765A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HoneyBadger", "HoneyBadger\HoneyBadger.csproj", "{1C2F9D8B-7B65-4D2E-A099-D0040907D59C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HoneyBadger.Test", "HoneyBadger.Test\HoneyBadger.Test.csproj", "{E1008E0A-32C7-414E-BF90-96DE7A790F85}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -383,6 +387,25 @@ Global
 		{5FD750A2-EE19-4A80-9B38-32ADBF03765A}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{5FD750A2-EE19-4A80-9B38-32ADBF03765A}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{5FD750A2-EE19-4A80-9B38-32ADBF03765A}.Release|x86.ActiveCfg = Release|Any CPU
+		{1C2F9D8B-7B65-4D2E-A099-D0040907D59C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1C2F9D8B-7B65-4D2E-A099-D0040907D59C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1C2F9D8B-7B65-4D2E-A099-D0040907D59C}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{1C2F9D8B-7B65-4D2E-A099-D0040907D59C}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{1C2F9D8B-7B65-4D2E-A099-D0040907D59C}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{1C2F9D8B-7B65-4D2E-A099-D0040907D59C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1C2F9D8B-7B65-4D2E-A099-D0040907D59C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1C2F9D8B-7B65-4D2E-A099-D0040907D59C}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{1C2F9D8B-7B65-4D2E-A099-D0040907D59C}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{1C2F9D8B-7B65-4D2E-A099-D0040907D59C}.Release|x86.ActiveCfg = Release|Any CPU
+		{E1008E0A-32C7-414E-BF90-96DE7A790F85}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E1008E0A-32C7-414E-BF90-96DE7A790F85}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E1008E0A-32C7-414E-BF90-96DE7A790F85}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{E1008E0A-32C7-414E-BF90-96DE7A790F85}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{E1008E0A-32C7-414E-BF90-96DE7A790F85}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{E1008E0A-32C7-414E-BF90-96DE7A790F85}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E1008E0A-32C7-414E-BF90-96DE7A790F85}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E1008E0A-32C7-414E-BF90-96DE7A790F85}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{E1008E0A-32C7-414E-BF90-96DE7A790F85}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -415,6 +438,8 @@ Global
 		{6A4623E1-41EF-4286-9A34-2ADC6407E94F} = {16EA9BF3-D71F-4005-93EF-0078BA4B3A9F}
 		{15824AAE-2D25-414E-B9FF-618DE088C9E7} = {16EA9BF3-D71F-4005-93EF-0078BA4B3A9F}
 		{5FD750A2-EE19-4A80-9B38-32ADBF03765A} = {14455101-7665-4CD6-A9F7-235BF1C50A6E}
+		{1C2F9D8B-7B65-4D2E-A099-D0040907D59C} = {14455101-7665-4CD6-A9F7-235BF1C50A6E}
+		{E1008E0A-32C7-414E-BF90-96DE7A790F85} = {E0F34126-87A5-46FA-AE8A-6EEEC29C7B79}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.0\lib\NET35;packages\Unity.Interception.2.1.505.0\lib\NET35;packages\EnterpriseLibrary.Common.5.0.505.0\lib\NET35;packages\TransientFaultHandling.Core.5.0.1118.2\lib\NET35;packages\EnterpriseLibrary.WindowsAzure.TransientFaultHandling.5.0.1118.2\lib\NET4;packages\EnterpriseLibrary.WindowsAzure.TransientFaultHandling.5.0.1118.2\DesignTime;packages\Unity.2.1.505.2\lib\NET35
