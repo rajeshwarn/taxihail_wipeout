@@ -43,7 +43,7 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers
             {
                 try
                 {
-                    _keystoreGenerator.GetApiKey(company.Id, GetFileManager("assets", company.Id).GetFolderPath());
+                    _keystoreGenerator.GenerateApiKey(company.Id, GetFileManager("assets", company.Id).GetFolderPath());
                     
                     // refetch company with updated infos
                     company = Service.GetCompany();
@@ -130,7 +130,7 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers
         {
             try
             {
-                _keystoreGenerator.GetApiKey(id, GetFileManager(type, id).GetFolderPath());
+                _keystoreGenerator.GenerateApiKey(id, GetFileManager(type, id).GetFolderPath());
             }
             catch (Exception e)
             {

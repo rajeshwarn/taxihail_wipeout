@@ -153,7 +153,7 @@ namespace CustomerPortal.Web.Android
             }
         }
 
-        public void GetApiKey(string companyId, string companyPath)
+        public void GenerateApiKey(string companyId, string companyPath)
         {
             var keytoolPath = FindKeytoolPath();
 
