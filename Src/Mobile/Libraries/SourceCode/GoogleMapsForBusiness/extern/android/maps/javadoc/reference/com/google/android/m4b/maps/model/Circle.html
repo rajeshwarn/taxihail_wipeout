@@ -1,0 +1,1354 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<html devsite>
+  <head>
+    <title>Circle</title>
+    <meta name="project_path" value="/maps/documentation/business/_project.yaml" />
+    <meta name="book_path" value="/maps/documentation/business/_book.yaml" />
+    <link rel="stylesheet" href="/+/css/plus.css" />
+  </head>
+
+<body class="">
+<style>
+
+/* Heading for "Parameters", "See Also", etc., in details sections */
+h4.jd-details-title {
+  font-size: 1.15em;
+  margin: 1.5em 0 .6em 0em;
+  padding: 0em 8em 0em 2.5em;
+  text-indent: -2em;
+  background-color: #E9E9E9; /* #DEEAFA */
+}
+h4 .params {
+  font-size:.9em;
+  font-weight:normal;
+}
+h5.jd-tagtitle {
+  margin: 0 0 .25em 1em;
+  font-size: 1em;
+  font-weight: bold;
+}
+/* For the tagdata blocks that make up the detailed description */
+.jd-details-descr {
+  padding: 0;
+  margin: .5em 6px;
+}
+.jd-tagdescr p {
+  margin-bottom: .5em;
+  padding: 0;
+}
+.jd-tagdata {
+  margin-left: .5em 1em .5em .5em;
+}
+/* .jd-typecol should be set to minimum width in place of width="1%" */
+.jd-sumtable, .jd-tagtable {
+  border: none !important;
+  padding: 0px 6px 0px 0px !important;
+  margin-left: 2em !important;
+  margin-bottom: 0.9em;
+}
+.jd-returns {
+  margin-left: 2.1em !important;  /* 0.1em larger than .jd-tagtable */
+}
+.jd-typecol, .jd-linkcol, .jd-enumtype {
+  /* border: none !important; */
+  vertical-align: middle !important;
+  padding: 0px 6px 0px 6px !important;
+}
+.jd-hang {
+  padding-left: 2em;
+  text-indent: -2em;
+}
+.jd-typecol, .jd-paramname, .jd-enumtype {
+  width: 1%;         /* What better way to set min. width? (here and below) */
+}
+.jd-typecol {
+  white-space: nowrap;
+}
+.jd-tagparamname, .jd-tagthrowstype {
+  border: none !important;
+  width: 1%;
+  padding: 0px 6px 0px 0px !important;
+}
+.jd-tagparamname {
+  font-style: italic;
+}
+.jd-tagdescr {
+  border: none !important;
+  padding: 0px 6px 0px 6px !important;
+}
+.jd-sumheading {
+  border: none !important;
+  padding: 0 !important;
+  background-color: #FFF;
+  color: #000;
+}
+#jd-header {
+  margin-bottom: 1em;
+}
+/* extra space between end of method name and open-paren */
+.sympad {
+  margin-right: 2px;
+}
+/* keep method parameter type on the same line with parameter name */
+.nowrap {
+  white-space: nowrap;
+}
+</style>
+
+<div id="api-info-block">
+
+
+
+  
+   
+  
+  
+  
+  
+
+
+<div class="api-level">
+  
+
+
+  
+  
+
+</div>
+</div><!-- end api-info-block -->
+
+
+<!-- ======== START OF CLASS DATA ======== -->
+
+
+
+<div id="jd-header">
+  public  final   class
+  <b>Circle</b>
+</div><!-- end jd-header -->
+
+
+<div id="naMessage"></div>
+
+<div id="jd-content" class="api apilevel-">
+
+
+
+
+
+
+
+<div class="jd-descr">
+
+
+<p>A circle on the earth's surface (spherical cap).
+
+ <p>A circle has the following properties.</p>
+ <dl>
+ <dt>Center</dt>
+ <dd>The center of the Circle is specified as a <code><a href="../../../../../../com/google/android/m4b/maps/model/LatLng.html">LatLng</a></code>.</dd>
+ <dt>Radius</dt>
+ <dd>The radius of the circle, specified in meters. It should be zero or greater.</dd>
+ <dt>Stroke Width</dt>
+ <dd>The width of the circle's outline in screen pixels.
+ The width is constant and independent of the camera's
+ zoom level. The default value is 10.</dd>
+ <dt>Stroke Color</dt>
+ <dd>The color of the circle outline in ARGB format, the same format used by
+ android.graphics.Color. The default value is black
+ (<code>0xff000000</code>).</dd>
+ <dt>Fill Color</dt>
+ <dd>The color of the circle fill in ARGB format, the same format used by
+ android.graphics.Color. The default value is transparent
+ (<code>0x00000000</code>).</dd>
+ <dt>Z-Index</dt>
+ <dd>The order in which this tile overlay is drawn with respect to other overlays (including
+ <code><a href="../../../../../../com/google/android/m4b/maps/model/GroundOverlay.html">GroundOverlay</a></code>s, <code><a href="../../../../../../com/google/android/m4b/maps/model/TileOverlay.html">TileOverlay</a></code>s, <code><a href="../../../../../../com/google/android/m4b/maps/model/Polyline.html">Polyline</a></code>s, and <code><a href="../../../../../../com/google/android/m4b/maps/model/Polygon.html">Polygon</a></code>s but
+ not <code><a href="../../../../../../com/google/android/m4b/maps/model/Marker.html">Marker</a></code>s). An overlay with a larger z-index is drawn over overlays with smaller
+ z-indices. The order of overlays with the same z-index is arbitrary.
+ The default zIndex is 0.</dd>
+ <dt>Visibility</dt>
+ <dd>Indicates if the circle is visible or invisible, i.e., whether it is drawn on the map. An
+ invisible circle is not drawn, but retains all of its other properties. The default is
+ <code>true</code>, i.e., visible.</dd>
+ </dl>
+
+ <p>Methods that modify a Circle must be called on the main thread. If not, an
+ IllegalStateException will be thrown at runtime.</p>
+ <h3>Example</h3>
+
+ <pre> <code>GoogleMap map;
+ // ... get a map.
+ // Add a circle in Sydney
+ Circle circle = map.addCircle(new CircleOptions()
+     .center(new LatLng(-33.87365, 151.20689))
+     .radius(10000)
+     .strokeColor(Color.RED)
+     .fillColor(Color.BLUE));
+ </code></pre>
+
+ <p class="note">
+ Note that the current map renderer is unable to draw the circle fill
+ if the circle encompasses either the North or South pole. However, the
+ outline will still be drawn correctly.
+ </p>
+
+ <h3>Developer Guide</h3>
+ <p>
+ For more information, read the <a
+ href="https://developers.google.com/maps/documentation/android/shapes">Shapes</a>
+ developer guide.
+</p>
+
+
+
+</div><!-- jd-descr -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="jd-descr">
+
+
+<section id="xml-attributes">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- ========== METHOD SUMMARY =========== -->
+<section>
+  <h3>Public Method Summary</h3>
+  <table id="pubmethods" class="jd-sumtable">
+  
+
+
+    
+    <tr class="alt-color api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            
+            
+            
+            <a href="../../../../../../com/google/android/m4b/maps/model/LatLng.html">LatLng</a>
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../../com/google/android/m4b/maps/model/Circle.html#getCenter()">getCenter</a></span>()
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class=" api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            
+            
+            
+            int
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../../com/google/android/m4b/maps/model/Circle.html#getFillColor()">getFillColor</a></span>()
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class="alt-color api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            
+            
+            
+            String
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../../com/google/android/m4b/maps/model/Circle.html#getId()">getId</a></span>()
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class=" api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            
+            
+            
+            double
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../../com/google/android/m4b/maps/model/Circle.html#getRadius()">getRadius</a></span>()
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class="alt-color api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            
+            
+            
+            int
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../../com/google/android/m4b/maps/model/Circle.html#getStrokeColor()">getStrokeColor</a></span>()
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class=" api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            
+            
+            
+            float
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../../com/google/android/m4b/maps/model/Circle.html#getStrokeWidth()">getStrokeWidth</a></span>()
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class="alt-color api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            
+            
+            
+            float
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../../com/google/android/m4b/maps/model/Circle.html#getZIndex()">getZIndex</a></span>()
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class=" api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            
+            
+            
+            boolean
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../../com/google/android/m4b/maps/model/Circle.html#isVisible()">isVisible</a></span>()
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class="alt-color api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            
+            
+            
+            void
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../../com/google/android/m4b/maps/model/Circle.html#remove()">remove</a></span>()
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class=" api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            
+            
+            
+            void
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../../com/google/android/m4b/maps/model/Circle.html#setCenter(com.google.android.m4b.maps.model.LatLng)">setCenter</a></span>(<span class="nowrap"><a href="../../../../../../com/google/android/m4b/maps/model/LatLng.html">LatLng</a> <i>center</i></span>)
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class="alt-color api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            
+            
+            
+            void
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../../com/google/android/m4b/maps/model/Circle.html#setFillColor(int)">setFillColor</a></span>(<span class="nowrap">int <i>color</i></span>)
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class=" api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            
+            
+            
+            void
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../../com/google/android/m4b/maps/model/Circle.html#setRadius(double)">setRadius</a></span>(<span class="nowrap">double <i>radius</i></span>)
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class="alt-color api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            
+            
+            
+            void
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../../com/google/android/m4b/maps/model/Circle.html#setStrokeColor(int)">setStrokeColor</a></span>(<span class="nowrap">int <i>color</i></span>)
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class=" api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            
+            
+            
+            void
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../../com/google/android/m4b/maps/model/Circle.html#setStrokeWidth(float)">setStrokeWidth</a></span>(<span class="nowrap">float <i>width</i></span>)
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class="alt-color api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            
+            
+            
+            void
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../../com/google/android/m4b/maps/model/Circle.html#setVisible(boolean)">setVisible</a></span>(<span class="nowrap">boolean <i>visible</i></span>)
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class=" api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            
+            
+            
+            void
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../../com/google/android/m4b/maps/model/Circle.html#setZIndex(float)">setZIndex</a></span>(<span class="nowrap">float <i>zIndex</i></span>)
+            
+          </div>
+      </td>
+    </tr>
+
+
+
+  </table>
+</section>
+
+
+
+
+
+
+<!-- ========== METHOD SUMMARY =========== -->
+</section><!--xml-attributes-->
+<!--subcount(class.inners) || subcount(class.attrs) || ...-->
+</div><!-- class="jd-descr" (end of Summary) -->
+
+<!-- Details -->
+
+
+
+
+
+
+
+
+<!-- XML Attributes -->
+
+
+<!-- Enum Values -->
+
+
+<!-- Constants -->
+
+
+<!-- Fields -->
+
+
+<!-- Public ctors -->
+
+
+
+<!-- ========= CONSTRUCTOR DETAIL ======== -->
+<!-- Protected ctors -->
+
+
+
+<!-- ========= METHOD DETAIL ======== -->
+<!-- Public methdos -->
+
+
+<section id="public-methods">
+  <h2>Public Methods</h2>
+  
+
+
+<A NAME="getCenter()"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        
+        
+        
+        <a href="../../../../../../com/google/android/m4b/maps/model/LatLng.html">LatLng</a>
+      </span>
+      <span class="sympad"><strong>getCenter</strong></span>
+      <span class="params">()</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Returns the center as a <code><a href="../../../../../../com/google/android/m4b/maps/model/LatLng.html">LatLng</a></code>.</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Returns</h5>
+      <ul class="nolist jd-returns"><li>The geographic center as a <code><a href="../../../../../../com/google/android/m4b/maps/model/LatLng.html">LatLng</a></code>.
+</li></ul>
+  </div>
+
+    </div>
+</div>
+
+
+<A NAME="getFillColor()"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        
+        
+        
+        int
+      </span>
+      <span class="sympad"><strong>getFillColor</strong></span>
+      <span class="params">()</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Returns the fill color of this Circle.</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Returns</h5>
+      <ul class="nolist jd-returns"><li>The fill color of the circle in ARGB format.
+</li></ul>
+  </div>
+
+    </div>
+</div>
+
+
+<A NAME="getId()"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        
+        
+        
+        String
+      </span>
+      <span class="sympad"><strong>getId</strong></span>
+      <span class="params">()</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Gets this circle's id.  The id will be unique amongst all Circles on a map.
+</p></div>
+
+    </div>
+</div>
+
+
+<A NAME="getRadius()"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        
+        
+        
+        double
+      </span>
+      <span class="sympad"><strong>getRadius</strong></span>
+      <span class="params">()</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Returns the circle's radius, in meters.</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Returns</h5>
+      <ul class="nolist jd-returns"><li>The radius in meters.
+</li></ul>
+  </div>
+
+    </div>
+</div>
+
+
+<A NAME="getStrokeColor()"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        
+        
+        
+        int
+      </span>
+      <span class="sympad"><strong>getStrokeColor</strong></span>
+      <span class="params">()</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Returns the stroke color.</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Returns</h5>
+      <ul class="nolist jd-returns"><li>The color of the circle in ARGB format.
+</li></ul>
+  </div>
+
+    </div>
+</div>
+
+
+<A NAME="getStrokeWidth()"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        
+        
+        
+        float
+      </span>
+      <span class="sympad"><strong>getStrokeWidth</strong></span>
+      <span class="params">()</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Returns the stroke width.</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Returns</h5>
+      <ul class="nolist jd-returns"><li>The width in screen pixels.
+</li></ul>
+  </div>
+
+    </div>
+</div>
+
+
+<A NAME="getZIndex()"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        
+        
+        
+        float
+      </span>
+      <span class="sympad"><strong>getZIndex</strong></span>
+      <span class="params">()</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Returns the zIndex.</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Returns</h5>
+      <ul class="nolist jd-returns"><li>The zIndex of this circle.
+</li></ul>
+  </div>
+
+    </div>
+</div>
+
+
+<A NAME="isVisible()"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        
+        
+        
+        boolean
+      </span>
+      <span class="sympad"><strong>isVisible</strong></span>
+      <span class="params">()</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Checks whether the circle is visible.</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Returns</h5>
+      <ul class="nolist jd-returns"><li>True if the circle is visible; false if it is invisible.
+</li></ul>
+  </div>
+
+    </div>
+</div>
+
+
+<A NAME="remove()"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        
+        
+        
+        void
+      </span>
+      <span class="sympad"><strong>remove</strong></span>
+      <span class="params">()</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Removes this circle from the map.
+</p></div>
+
+    </div>
+</div>
+
+
+<A NAME="setCenter(com.google.android.m4b.maps.model.LatLng)"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        
+        
+        
+        void
+      </span>
+      <span class="sympad"><strong>setCenter</strong></span>
+      <span class="params">(<span class="nowrap"><a href="../../../../../../com/google/android/m4b/maps/model/LatLng.html">LatLng</a> <i>center</i></span>)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Sets the center using a <code><a href="../../../../../../com/google/android/m4b/maps/model/LatLng.html">LatLng</a></code>.
+
+ <p>The center must not be null, as there is no default value.</p></p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Parameters</h5>
+      <table class="jd-tagtable">
+        
+        <tr>
+          <td class="jd-tagparamname">center</td>
+          <td class="jd-tagdescr">The geographic center of the circle, specified as a <code><a href="../../../../../../com/google/android/m4b/maps/model/LatLng.html">LatLng</a></code>.</td>
+        </tr>
+        
+      </table>
+  </div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Throws</h5>
+      <table class="jd-tagtable">
+          
+        <tr>
+            <td class="jd-tagthrowstype">NullPointerException</td>
+            <td class="jd-tagdescr">if center is null
+</td>
+        </tr>
+        
+      </table>
+  </div>
+
+    </div>
+</div>
+
+
+<A NAME="setFillColor(int)"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        
+        
+        
+        void
+      </span>
+      <span class="sympad"><strong>setFillColor</strong></span>
+      <span class="params">(<span class="nowrap">int <i>color</i></span>)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Sets the fill color.
+
+ <p>The fill color is the color inside the circle, in the integer
+ format specified by android.graphics.Color.
+ If TRANSPARENT is used then no fill is drawn.</p></p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Parameters</h5>
+      <table class="jd-tagtable">
+        
+        <tr>
+          <td class="jd-tagparamname">color</td>
+          <td class="jd-tagdescr">The color in the android.graphics.Color format.
+</td>
+        </tr>
+        
+      </table>
+  </div>
+
+    </div>
+</div>
+
+
+<A NAME="setRadius(double)"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        
+        
+        
+        void
+      </span>
+      <span class="sympad"><strong>setRadius</strong></span>
+      <span class="params">(<span class="nowrap">double <i>radius</i></span>)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Sets the radius in meters.
+
+ <p>The radius must be zero or greater.</p></p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Parameters</h5>
+      <table class="jd-tagtable">
+        
+        <tr>
+          <td class="jd-tagparamname">radius</td>
+          <td class="jd-tagdescr">The radius, in meters.</td>
+        </tr>
+        
+      </table>
+  </div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Throws</h5>
+      <table class="jd-tagtable">
+          
+        <tr>
+            <td class="jd-tagthrowstype">IllegalArgumentException</td>
+            <td class="jd-tagdescr">if radius is negative
+</td>
+        </tr>
+        
+      </table>
+  </div>
+
+    </div>
+</div>
+
+
+<A NAME="setStrokeColor(int)"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        
+        
+        
+        void
+      </span>
+      <span class="sympad"><strong>setStrokeColor</strong></span>
+      <span class="params">(<span class="nowrap">int <i>color</i></span>)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Sets the stroke color.
+
+ <p>The stroke color is the color of this circle's outline, in the integer
+ format specified by android.graphics.Color.
+ If TRANSPARENT is used then no outline is drawn.</p></p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Parameters</h5>
+      <table class="jd-tagtable">
+        
+        <tr>
+          <td class="jd-tagparamname">color</td>
+          <td class="jd-tagdescr">The stroke color in the android.graphics.Color format.
+</td>
+        </tr>
+        
+      </table>
+  </div>
+
+    </div>
+</div>
+
+
+<A NAME="setStrokeWidth(float)"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        
+        
+        
+        void
+      </span>
+      <span class="sympad"><strong>setStrokeWidth</strong></span>
+      <span class="params">(<span class="nowrap">float <i>width</i></span>)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Sets the stroke width.
+
+ <p>The stroke width is the width (in screen pixels) of the circle's
+ outline. It must be zero or greater. If it is zero then no outline is
+ drawn. The default value is 10.</p></p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Parameters</h5>
+      <table class="jd-tagtable">
+        
+        <tr>
+          <td class="jd-tagparamname">width</td>
+          <td class="jd-tagdescr">The stroke width, in screen pixels.</td>
+        </tr>
+        
+      </table>
+  </div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Throws</h5>
+      <table class="jd-tagtable">
+          
+        <tr>
+            <td class="jd-tagthrowstype">IllegalArgumentException</td>
+            <td class="jd-tagdescr">if width is negative
+</td>
+        </tr>
+        
+      </table>
+  </div>
+
+    </div>
+</div>
+
+
+<A NAME="setVisible(boolean)"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        
+        
+        
+        void
+      </span>
+      <span class="sympad"><strong>setVisible</strong></span>
+      <span class="params">(<span class="nowrap">boolean <i>visible</i></span>)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Sets the visibility of the circle.
+
+ <p>If this circle is not visible then it will not be drawn. All other
+ state is preserved. Defaults to True.</p></p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Parameters</h5>
+      <table class="jd-tagtable">
+        
+        <tr>
+          <td class="jd-tagparamname">visible</td>
+          <td class="jd-tagdescr">false to make this circle invisible.
+</td>
+        </tr>
+        
+      </table>
+  </div>
+
+    </div>
+</div>
+
+
+<A NAME="setZIndex(float)"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        
+        
+        
+        void
+      </span>
+      <span class="sympad"><strong>setZIndex</strong></span>
+      <span class="params">(<span class="nowrap">float <i>zIndex</i></span>)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Sets the zIndex.
+
+ <p>Overlays (such as circles) with higher zIndices are drawn above
+ those with lower indices.</p></p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Parameters</h5>
+      <table class="jd-tagtable">
+        
+        <tr>
+          <td class="jd-tagparamname">zIndex</td>
+          <td class="jd-tagdescr">The zIndex value.
+</td>
+        </tr>
+        
+      </table>
+  </div>
+
+    </div>
+</div>
+
+
+</section>
+
+
+
+<!-- ========= METHOD DETAIL ======== -->
+
+
+
+<!-- ========= END OF CLASS DATA ========= -->
+<A NAME="navbar_top"></A>
+
+</div> <!-- jd-content -->
+
+</body>
+</html>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright (C) 2011 Google Inc. -->
+
+<resources>
+    <!-- Color to use for highlighting bubbles and compass -->
+    <color name="dav_highlight">#ffffe673</color>
+</resources>

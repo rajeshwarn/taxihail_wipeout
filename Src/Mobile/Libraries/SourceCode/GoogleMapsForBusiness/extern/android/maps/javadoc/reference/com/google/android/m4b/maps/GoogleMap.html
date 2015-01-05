@@ -1,0 +1,3813 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<html devsite>
+  <head>
+    <title>GoogleMap</title>
+    <meta name="project_path" value="/maps/documentation/business/_project.yaml" />
+    <meta name="book_path" value="/maps/documentation/business/_book.yaml" />
+    <link rel="stylesheet" href="/+/css/plus.css" />
+  </head>
+
+<body class="">
+<style>
+
+/* Heading for "Parameters", "See Also", etc., in details sections */
+h4.jd-details-title {
+  font-size: 1.15em;
+  margin: 1.5em 0 .6em 0em;
+  padding: 0em 8em 0em 2.5em;
+  text-indent: -2em;
+  background-color: #E9E9E9; /* #DEEAFA */
+}
+h4 .params {
+  font-size:.9em;
+  font-weight:normal;
+}
+h5.jd-tagtitle {
+  margin: 0 0 .25em 1em;
+  font-size: 1em;
+  font-weight: bold;
+}
+/* For the tagdata blocks that make up the detailed description */
+.jd-details-descr {
+  padding: 0;
+  margin: .5em 6px;
+}
+.jd-tagdescr p {
+  margin-bottom: .5em;
+  padding: 0;
+}
+.jd-tagdata {
+  margin-left: .5em 1em .5em .5em;
+}
+/* .jd-typecol should be set to minimum width in place of width="1%" */
+.jd-sumtable, .jd-tagtable {
+  border: none !important;
+  padding: 0px 6px 0px 0px !important;
+  margin-left: 2em !important;
+  margin-bottom: 0.9em;
+}
+.jd-returns {
+  margin-left: 2.1em !important;  /* 0.1em larger than .jd-tagtable */
+}
+.jd-typecol, .jd-linkcol, .jd-enumtype {
+  /* border: none !important; */
+  vertical-align: middle !important;
+  padding: 0px 6px 0px 6px !important;
+}
+.jd-hang {
+  padding-left: 2em;
+  text-indent: -2em;
+}
+.jd-typecol, .jd-paramname, .jd-enumtype {
+  width: 1%;         /* What better way to set min. width? (here and below) */
+}
+.jd-typecol {
+  white-space: nowrap;
+}
+.jd-tagparamname, .jd-tagthrowstype {
+  border: none !important;
+  width: 1%;
+  padding: 0px 6px 0px 0px !important;
+}
+.jd-tagparamname {
+  font-style: italic;
+}
+.jd-tagdescr {
+  border: none !important;
+  padding: 0px 6px 0px 6px !important;
+}
+.jd-sumheading {
+  border: none !important;
+  padding: 0 !important;
+  background-color: #FFF;
+  color: #000;
+}
+#jd-header {
+  margin-bottom: 1em;
+}
+/* extra space between end of method name and open-paren */
+.sympad {
+  margin-right: 2px;
+}
+/* keep method parameter type on the same line with parameter name */
+.nowrap {
+  white-space: nowrap;
+}
+</style>
+
+<div id="api-info-block">
+
+
+
+  
+   
+  
+  
+  
+  
+
+
+<div class="api-level">
+  
+
+
+  
+  
+
+</div>
+</div><!-- end api-info-block -->
+
+
+<!-- ======== START OF CLASS DATA ======== -->
+
+
+
+<div id="jd-header">
+  public     class
+  <b>GoogleMap</b>
+</div><!-- end jd-header -->
+
+
+<div id="naMessage"></div>
+
+<div id="jd-content" class="api apilevel-">
+
+
+
+
+
+
+
+<div class="jd-descr">
+
+
+<p>This is the main class of the Google Maps Android API and is the entry point for all methods
+ related to the map.  You cannot instantiate a <code><a href="../../../../../com/google/android/m4b/maps/GoogleMap.html">GoogleMap</a></code> object directly,
+ rather, you must obtain one from the <code>getMap()</code> method on a <code><a href="../../../../../com/google/android/m4b/maps/MapFragment.html">MapFragment</a></code> or
+ <code><a href="../../../../../com/google/android/m4b/maps/MapView.html">MapView</a></code> that you have added to your application.
+ <p>
+ Note: Similar to a android.view.View View object, a <code><a href="../../../../../com/google/android/m4b/maps/GoogleMap.html">GoogleMap</a></code> can only be read
+ and modified from the main thread. Calling <code><a href="../../../../../com/google/android/m4b/maps/GoogleMap.html">GoogleMap</a></code> methods from another thread will
+ result in an exception.
+ <p>
+ <h3>Developer Guide</h3>
+ <p>
+ To get started, read the <a
+ href="https://developers.google.com/maps/documentation/android/">Google Maps Android API v2</a>
+ developer guide.
+</p>
+
+
+
+</div><!-- jd-descr -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="jd-descr">
+
+
+<section id="xml-attributes">
+
+
+
+<!-- ======== NESTED CLASS SUMMARY ======== -->
+<section>
+  <h3>Nested Class Summary</h3>
+  <table id="nestedclasses" class="jd-sumtable">
+    
+
+  
+    <tr class="alt-color api apilevel-" >
+      <td class="jd-typecol">
+        
+        
+        
+        
+        interface</td>
+      <td class="jd-linkcol" colspan="2"><a href="../../../../../com/google/android/m4b/maps/GoogleMap.CancelableCallback.html">GoogleMap.CancelableCallback</a></td>
+      <td class="jd-descrcol" width="100%">A callback interface for reporting when a task is complete or cancelled.&nbsp;</td>
+    </tr>
+    
+    
+    <tr class=" api apilevel-" >
+      <td class="jd-typecol">
+        
+        
+        
+        
+        interface</td>
+      <td class="jd-linkcol" colspan="2"><a href="../../../../../com/google/android/m4b/maps/GoogleMap.InfoWindowAdapter.html">GoogleMap.InfoWindowAdapter</a></td>
+      <td class="jd-descrcol" width="100%">Provides views for customized rendering of info windows.&nbsp;</td>
+    </tr>
+    
+    
+    <tr class="alt-color api apilevel-" >
+      <td class="jd-typecol">
+        
+        
+        
+        
+        interface</td>
+      <td class="jd-linkcol" colspan="2"><a href="../../../../../com/google/android/m4b/maps/GoogleMap.OAuthTokenProvider.html">GoogleMap.OAuthTokenProvider</a></td>
+      <td class="jd-descrcol" width="100%">Provides OAuth tokens.&nbsp;</td>
+    </tr>
+    
+    
+    <tr class=" api apilevel-" >
+      <td class="jd-typecol">
+        
+        
+        
+        
+        interface</td>
+      <td class="jd-linkcol" colspan="2"><a href="../../../../../com/google/android/m4b/maps/GoogleMap.OnCameraChangeListener.html">GoogleMap.OnCameraChangeListener</a></td>
+      <td class="jd-descrcol" width="100%">Defines signatures for methods that are called when the camera changes position.&nbsp;</td>
+    </tr>
+    
+    
+    <tr class="alt-color api apilevel-" >
+      <td class="jd-typecol">
+        
+        
+        
+        
+        interface</td>
+      <td class="jd-linkcol" colspan="2"><a href="../../../../../com/google/android/m4b/maps/GoogleMap.OnIndoorStateChangeListener.html">GoogleMap.OnIndoorStateChangeListener</a></td>
+      <td class="jd-descrcol" width="100%">A listener for when the indoor state changes.&nbsp;</td>
+    </tr>
+    
+    
+    <tr class=" api apilevel-" >
+      <td class="jd-typecol">
+        
+        
+        
+        
+        interface</td>
+      <td class="jd-linkcol" colspan="2"><a href="../../../../../com/google/android/m4b/maps/GoogleMap.OnInfoWindowClickListener.html">GoogleMap.OnInfoWindowClickListener</a></td>
+      <td class="jd-descrcol" width="100%">Callback interface for click/tap events on a marker's info window.&nbsp;</td>
+    </tr>
+    
+    
+    <tr class="alt-color api apilevel-" >
+      <td class="jd-typecol">
+        
+        
+        
+        
+        interface</td>
+      <td class="jd-linkcol" colspan="2"><a href="../../../../../com/google/android/m4b/maps/GoogleMap.OnMapClickListener.html">GoogleMap.OnMapClickListener</a></td>
+      <td class="jd-descrcol" width="100%">Callback interface for when the user taps on the map.&nbsp;</td>
+    </tr>
+    
+    
+    <tr class=" api apilevel-" >
+      <td class="jd-typecol">
+        
+        
+        
+        
+        interface</td>
+      <td class="jd-linkcol" colspan="2"><a href="../../../../../com/google/android/m4b/maps/GoogleMap.OnMapLoadedCallback.html">GoogleMap.OnMapLoadedCallback</a></td>
+      <td class="jd-descrcol" width="100%">Callback interface for when the map has finished rendering.&nbsp;</td>
+    </tr>
+    
+    
+    <tr class="alt-color api apilevel-" >
+      <td class="jd-typecol">
+        
+        
+        
+        
+        interface</td>
+      <td class="jd-linkcol" colspan="2"><a href="../../../../../com/google/android/m4b/maps/GoogleMap.OnMapLongClickListener.html">GoogleMap.OnMapLongClickListener</a></td>
+      <td class="jd-descrcol" width="100%">Callback interface for when the user long presses on the map.&nbsp;</td>
+    </tr>
+    
+    
+    <tr class=" api apilevel-" >
+      <td class="jd-typecol">
+        
+        
+        
+        
+        interface</td>
+      <td class="jd-linkcol" colspan="2"><a href="../../../../../com/google/android/m4b/maps/GoogleMap.OnMapsEngineFeatureClickListener.html">GoogleMap.OnMapsEngineFeatureClickListener</a></td>
+      <td class="jd-descrcol" width="100%">A listener that is notified when a feature on a Maps Engine overlay is tapped.&nbsp;</td>
+    </tr>
+    
+    
+    <tr class="alt-color api apilevel-" >
+      <td class="jd-typecol">
+        
+        
+        
+        
+        interface</td>
+      <td class="jd-linkcol" colspan="2"><a href="../../../../../com/google/android/m4b/maps/GoogleMap.OnMarkerClickListener.html">GoogleMap.OnMarkerClickListener</a></td>
+      <td class="jd-descrcol" width="100%">Defines signatures for methods that are called when a marker is clicked or tapped.&nbsp;</td>
+    </tr>
+    
+    
+    <tr class=" api apilevel-" >
+      <td class="jd-typecol">
+        
+        
+        
+        
+        interface</td>
+      <td class="jd-linkcol" colspan="2"><a href="../../../../../com/google/android/m4b/maps/GoogleMap.OnMarkerDragListener.html">GoogleMap.OnMarkerDragListener</a></td>
+      <td class="jd-descrcol" width="100%">Callback interface for drag events on markers.&nbsp;</td>
+    </tr>
+    
+    
+    <tr class="alt-color api apilevel-" >
+      <td class="jd-typecol">
+        
+        
+        
+        
+        interface</td>
+      <td class="jd-linkcol" colspan="2"><a href="../../../../../com/google/android/m4b/maps/GoogleMap.OnMyLocationButtonClickListener.html">GoogleMap.OnMyLocationButtonClickListener</a></td>
+      <td class="jd-descrcol" width="100%">Callback interface for when the My Location button is clicked.&nbsp;</td>
+    </tr>
+    
+    
+    <tr class=" api apilevel-" >
+      <td class="jd-typecol">
+        
+        
+        
+        
+        interface</td>
+      <td class="jd-linkcol" colspan="2"><a href="../../../../../com/google/android/m4b/maps/GoogleMap.OnMyLocationChangeListener.html">GoogleMap.OnMyLocationChangeListener</a></td>
+      <td class="jd-descrcol" width="100%">
+      <em>
+  This interface is deprecated.
+      use com.google.android.gms.location.LocationClient instead.
+ LocationClient provides improved location finding and power usage and is used by the
+ "My Location" blue dot. See the MyLocationDemoActivity in the sample applications folder
+ for example example code, or the
+ <a href="https://developers.google.com/maps/documentation/android/map/location">
+ Location Developer Guide</a>.
+</em>&nbsp;</td>
+    </tr>
+    
+    
+    <tr class="alt-color api apilevel-" >
+      <td class="jd-typecol">
+        
+        
+        
+        
+        interface</td>
+      <td class="jd-linkcol" colspan="2"><a href="../../../../../com/google/android/m4b/maps/GoogleMap.SnapshotReadyCallback.html">GoogleMap.SnapshotReadyCallback</a></td>
+      <td class="jd-descrcol" width="100%">Callback interface to notify when the snapshot has been taken.&nbsp;</td>
+    </tr>
+    
+    
+
+  </table>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- =========== ENUM CONSTANT SUMMARY =========== -->
+<section id="constants"><h3>Constant Summary</h3>
+  <table class="jd-sumtable">
+    
+
+    
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">int</td>
+        <td class="jd-linkcol"><a href="../../../../../com/google/android/m4b/maps/GoogleMap.html#MAP_TYPE_HYBRID">MAP_TYPE_HYBRID</a></td>
+        <td class="jd-descrcol" width="100%">Satellite maps with a transparent layer of major streets.</td>
+    </tr>
+    
+    
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">int</td>
+        <td class="jd-linkcol"><a href="../../../../../com/google/android/m4b/maps/GoogleMap.html#MAP_TYPE_NONE">MAP_TYPE_NONE</a></td>
+        <td class="jd-descrcol" width="100%">No base map tiles.</td>
+    </tr>
+    
+    
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">int</td>
+        <td class="jd-linkcol"><a href="../../../../../com/google/android/m4b/maps/GoogleMap.html#MAP_TYPE_NORMAL">MAP_TYPE_NORMAL</a></td>
+        <td class="jd-descrcol" width="100%">Basic maps.</td>
+    </tr>
+    
+    
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">int</td>
+        <td class="jd-linkcol"><a href="../../../../../com/google/android/m4b/maps/GoogleMap.html#MAP_TYPE_SATELLITE">MAP_TYPE_SATELLITE</a></td>
+        <td class="jd-descrcol" width="100%">Satellite maps with no labels.</td>
+    </tr>
+    
+    
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">int</td>
+        <td class="jd-linkcol"><a href="../../../../../com/google/android/m4b/maps/GoogleMap.html#MAP_TYPE_TERRAIN">MAP_TYPE_TERRAIN</a></td>
+        <td class="jd-descrcol" width="100%">Terrain maps.</td>
+    </tr>
+    
+    
+
+  </table>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- ========== METHOD SUMMARY =========== -->
+<section>
+  <h3>Public Method Summary</h3>
+  <table id="pubmethods" class="jd-sumtable">
+  
+
+
+    
+    <tr class="alt-color api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            final
+            
+            
+            <a href="../../../../../com/google/android/m4b/maps/model/Circle.html">Circle</a>
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../com/google/android/m4b/maps/GoogleMap.html#addCircle(com.google.android.m4b.maps.model.CircleOptions)">addCircle</a></span>(<span class="nowrap"><a href="../../../../../com/google/android/m4b/maps/model/CircleOptions.html">CircleOptions</a> <i>options</i></span>)
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class=" api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            final
+            
+            
+            <a href="../../../../../com/google/android/m4b/maps/model/GroundOverlay.html">GroundOverlay</a>
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../com/google/android/m4b/maps/GoogleMap.html#addGroundOverlay(com.google.android.m4b.maps.model.GroundOverlayOptions)">addGroundOverlay</a></span>(<span class="nowrap"><a href="../../../../../com/google/android/m4b/maps/model/GroundOverlayOptions.html">GroundOverlayOptions</a> <i>options</i></span>)
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class="alt-color api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            final
+            
+            
+            <a href="../../../../../com/google/android/m4b/maps/model/MapsEngineLayer.html">MapsEngineLayer</a>
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../com/google/android/m4b/maps/GoogleMap.html#addMapsEngineLayer(com.google.android.m4b.maps.model.MapsEngineLayerOptions)">addMapsEngineLayer</a></span>(<span class="nowrap"><a href="../../../../../com/google/android/m4b/maps/model/MapsEngineLayerOptions.html">MapsEngineLayerOptions</a> <i>options</i></span>)
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class=" api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            final
+            
+            
+            <a href="../../../../../com/google/android/m4b/maps/model/Marker.html">Marker</a>
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../com/google/android/m4b/maps/GoogleMap.html#addMarker(com.google.android.m4b.maps.model.MarkerOptions)">addMarker</a></span>(<span class="nowrap"><a href="../../../../../com/google/android/m4b/maps/model/MarkerOptions.html">MarkerOptions</a> <i>options</i></span>)
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class="alt-color api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            final
+            
+            
+            <a href="../../../../../com/google/android/m4b/maps/model/Polygon.html">Polygon</a>
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../com/google/android/m4b/maps/GoogleMap.html#addPolygon(com.google.android.m4b.maps.model.PolygonOptions)">addPolygon</a></span>(<span class="nowrap"><a href="../../../../../com/google/android/m4b/maps/model/PolygonOptions.html">PolygonOptions</a> <i>options</i></span>)
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class=" api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            final
+            
+            
+            <a href="../../../../../com/google/android/m4b/maps/model/Polyline.html">Polyline</a>
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../com/google/android/m4b/maps/GoogleMap.html#addPolyline(com.google.android.m4b.maps.model.PolylineOptions)">addPolyline</a></span>(<span class="nowrap"><a href="../../../../../com/google/android/m4b/maps/model/PolylineOptions.html">PolylineOptions</a> <i>options</i></span>)
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class="alt-color api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            final
+            
+            
+            <a href="../../../../../com/google/android/m4b/maps/model/TileOverlay.html">TileOverlay</a>
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../com/google/android/m4b/maps/GoogleMap.html#addTileOverlay(com.google.android.m4b.maps.model.TileOverlayOptions)">addTileOverlay</a></span>(<span class="nowrap"><a href="../../../../../com/google/android/m4b/maps/model/TileOverlayOptions.html">TileOverlayOptions</a> <i>options</i></span>)
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class=" api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            final
+            
+            
+            void
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../com/google/android/m4b/maps/GoogleMap.html#animateCamera(com.google.android.m4b.maps.CameraUpdate, int, com.google.android.m4b.maps.GoogleMap.CancelableCallback)">animateCamera</a></span>(<span class="nowrap"><a href="../../../../../com/google/android/m4b/maps/CameraUpdate.html">CameraUpdate</a> <i>update</i></span>, <span class="nowrap">int <i>durationMs</i></span>, <span class="nowrap"><a href="../../../../../com/google/android/m4b/maps/GoogleMap.CancelableCallback.html">GoogleMap.CancelableCallback</a> <i>callback</i></span>)
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class="alt-color api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            final
+            
+            
+            void
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../com/google/android/m4b/maps/GoogleMap.html#animateCamera(com.google.android.m4b.maps.CameraUpdate, com.google.android.m4b.maps.GoogleMap.CancelableCallback)">animateCamera</a></span>(<span class="nowrap"><a href="../../../../../com/google/android/m4b/maps/CameraUpdate.html">CameraUpdate</a> <i>update</i></span>, <span class="nowrap"><a href="../../../../../com/google/android/m4b/maps/GoogleMap.CancelableCallback.html">GoogleMap.CancelableCallback</a> <i>callback</i></span>)
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class=" api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            final
+            
+            
+            void
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../com/google/android/m4b/maps/GoogleMap.html#animateCamera(com.google.android.m4b.maps.CameraUpdate)">animateCamera</a></span>(<span class="nowrap"><a href="../../../../../com/google/android/m4b/maps/CameraUpdate.html">CameraUpdate</a> <i>update</i></span>)
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class="alt-color api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            final
+            
+            
+            void
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../com/google/android/m4b/maps/GoogleMap.html#clear()">clear</a></span>()
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class=" api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            final
+            
+            
+            <a href="../../../../../com/google/android/m4b/maps/model/CameraPosition.html">CameraPosition</a>
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../com/google/android/m4b/maps/GoogleMap.html#getCameraPosition()">getCameraPosition</a></span>()
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class="alt-color api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            
+            
+            
+            <a href="../../../../../com/google/android/m4b/maps/model/IndoorBuilding.html">IndoorBuilding</a>
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../com/google/android/m4b/maps/GoogleMap.html#getFocusedBuilding()">getFocusedBuilding</a></span>()
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class=" api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            final
+            
+            
+            int
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../com/google/android/m4b/maps/GoogleMap.html#getMapType()">getMapType</a></span>()
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class="alt-color api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            final
+            
+            
+            float
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../com/google/android/m4b/maps/GoogleMap.html#getMaxZoomLevel()">getMaxZoomLevel</a></span>()
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class=" api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            final
+            
+            
+            float
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../com/google/android/m4b/maps/GoogleMap.html#getMinZoomLevel()">getMinZoomLevel</a></span>()
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class="alt-color api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            final
+            
+            
+            Location
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../com/google/android/m4b/maps/GoogleMap.html#getMyLocation()">getMyLocation</a></span>()
+            
+            <div class="jd-descrdiv">
+      <em>
+  This method is deprecated.
+      use com.google.android.gms.location.LocationClient instead.
+ LocationClient provides improved location finding and power usage and is used by the
+ "My Location" blue dot. See the MyLocationDemoActivity in the sample applications folder
+ for example example code, or the
+ <a href="https://developers.google.com/maps/documentation/android/map/location">
+ Location Developer Guide</a>.
+</em></div>
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class=" api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            final
+            
+            
+            <a href="../../../../../com/google/android/m4b/maps/Projection.html">Projection</a>
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../com/google/android/m4b/maps/GoogleMap.html#getProjection()">getProjection</a></span>()
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class="alt-color api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            final
+            
+            
+            <a href="../../../../../com/google/android/m4b/maps/UiSettings.html">UiSettings</a>
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../com/google/android/m4b/maps/GoogleMap.html#getUiSettings()">getUiSettings</a></span>()
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class=" api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            final
+            
+            
+            boolean
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../com/google/android/m4b/maps/GoogleMap.html#isBuildingsEnabled()">isBuildingsEnabled</a></span>()
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class="alt-color api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            final
+            
+            
+            boolean
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../com/google/android/m4b/maps/GoogleMap.html#isIndoorEnabled()">isIndoorEnabled</a></span>()
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class=" api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            final
+            
+            
+            boolean
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../com/google/android/m4b/maps/GoogleMap.html#isMyLocationEnabled()">isMyLocationEnabled</a></span>()
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class="alt-color api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            final
+            
+            
+            boolean
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../com/google/android/m4b/maps/GoogleMap.html#isTrafficEnabled()">isTrafficEnabled</a></span>()
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class=" api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            final
+            
+            
+            void
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../com/google/android/m4b/maps/GoogleMap.html#moveCamera(com.google.android.m4b.maps.CameraUpdate)">moveCamera</a></span>(<span class="nowrap"><a href="../../../../../com/google/android/m4b/maps/CameraUpdate.html">CameraUpdate</a> <i>update</i></span>)
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class="alt-color api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            final
+            
+            
+            void
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../com/google/android/m4b/maps/GoogleMap.html#setBuildingsEnabled(boolean)">setBuildingsEnabled</a></span>(<span class="nowrap">boolean <i>enabled</i></span>)
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class=" api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            final
+            
+            
+            boolean
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../com/google/android/m4b/maps/GoogleMap.html#setIndoorEnabled(boolean)">setIndoorEnabled</a></span>(<span class="nowrap">boolean <i>enabled</i></span>)
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class="alt-color api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            final
+            
+            
+            void
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../com/google/android/m4b/maps/GoogleMap.html#setInfoWindowAdapter(com.google.android.m4b.maps.GoogleMap.InfoWindowAdapter)">setInfoWindowAdapter</a></span>(<span class="nowrap"><a href="../../../../../com/google/android/m4b/maps/GoogleMap.InfoWindowAdapter.html">GoogleMap.InfoWindowAdapter</a> <i>adapter</i></span>)
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class=" api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            final
+            
+            
+            void
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../com/google/android/m4b/maps/GoogleMap.html#setLocationSource(com.google.android.m4b.maps.LocationSource)">setLocationSource</a></span>(<span class="nowrap"><a href="../../../../../com/google/android/m4b/maps/LocationSource.html">LocationSource</a> <i>source</i></span>)
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class="alt-color api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            final
+            
+            
+            void
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../com/google/android/m4b/maps/GoogleMap.html#setMapType(int)">setMapType</a></span>(<span class="nowrap">int <i>type</i></span>)
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class=" api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            final
+            
+            
+            void
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../com/google/android/m4b/maps/GoogleMap.html#setMyLocationEnabled(boolean)">setMyLocationEnabled</a></span>(<span class="nowrap">boolean <i>enabled</i></span>)
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class="alt-color api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            final
+            
+            
+            void
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../com/google/android/m4b/maps/GoogleMap.html#setOAuthTokenProvider(com.google.android.m4b.maps.GoogleMap.OAuthTokenProvider)">setOAuthTokenProvider</a></span>(<span class="nowrap"><a href="../../../../../com/google/android/m4b/maps/GoogleMap.OAuthTokenProvider.html">GoogleMap.OAuthTokenProvider</a> <i>provider</i></span>)
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class=" api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            final
+            
+            
+            void
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../com/google/android/m4b/maps/GoogleMap.html#setOnCameraChangeListener(com.google.android.m4b.maps.GoogleMap.OnCameraChangeListener)">setOnCameraChangeListener</a></span>(<span class="nowrap"><a href="../../../../../com/google/android/m4b/maps/GoogleMap.OnCameraChangeListener.html">GoogleMap.OnCameraChangeListener</a> <i>listener</i></span>)
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class="alt-color api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            final
+            
+            
+            void
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../com/google/android/m4b/maps/GoogleMap.html#setOnIndoorStateChangeListener(com.google.android.m4b.maps.GoogleMap.OnIndoorStateChangeListener)">setOnIndoorStateChangeListener</a></span>(<span class="nowrap"><a href="../../../../../com/google/android/m4b/maps/GoogleMap.OnIndoorStateChangeListener.html">GoogleMap.OnIndoorStateChangeListener</a> <i>listener</i></span>)
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class=" api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            final
+            
+            
+            void
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../com/google/android/m4b/maps/GoogleMap.html#setOnInfoWindowClickListener(com.google.android.m4b.maps.GoogleMap.OnInfoWindowClickListener)">setOnInfoWindowClickListener</a></span>(<span class="nowrap"><a href="../../../../../com/google/android/m4b/maps/GoogleMap.OnInfoWindowClickListener.html">GoogleMap.OnInfoWindowClickListener</a> <i>listener</i></span>)
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class="alt-color api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            final
+            
+            
+            void
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../com/google/android/m4b/maps/GoogleMap.html#setOnMapClickListener(com.google.android.m4b.maps.GoogleMap.OnMapClickListener)">setOnMapClickListener</a></span>(<span class="nowrap"><a href="../../../../../com/google/android/m4b/maps/GoogleMap.OnMapClickListener.html">GoogleMap.OnMapClickListener</a> <i>listener</i></span>)
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class=" api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            
+            
+            
+            void
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../com/google/android/m4b/maps/GoogleMap.html#setOnMapLoadedCallback(com.google.android.m4b.maps.GoogleMap.OnMapLoadedCallback)">setOnMapLoadedCallback</a></span>(<span class="nowrap"><a href="../../../../../com/google/android/m4b/maps/GoogleMap.OnMapLoadedCallback.html">GoogleMap.OnMapLoadedCallback</a> <i>callback</i></span>)
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class="alt-color api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            final
+            
+            
+            void
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../com/google/android/m4b/maps/GoogleMap.html#setOnMapLongClickListener(com.google.android.m4b.maps.GoogleMap.OnMapLongClickListener)">setOnMapLongClickListener</a></span>(<span class="nowrap"><a href="../../../../../com/google/android/m4b/maps/GoogleMap.OnMapLongClickListener.html">GoogleMap.OnMapLongClickListener</a> <i>listener</i></span>)
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class=" api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            final
+            
+            
+            void
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../com/google/android/m4b/maps/GoogleMap.html#setOnMapsEngineFeatureClickListener(com.google.android.m4b.maps.GoogleMap.OnMapsEngineFeatureClickListener)">setOnMapsEngineFeatureClickListener</a></span>(<span class="nowrap"><a href="../../../../../com/google/android/m4b/maps/GoogleMap.OnMapsEngineFeatureClickListener.html">GoogleMap.OnMapsEngineFeatureClickListener</a> <i>listener</i></span>)
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class="alt-color api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            final
+            
+            
+            void
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../com/google/android/m4b/maps/GoogleMap.html#setOnMarkerClickListener(com.google.android.m4b.maps.GoogleMap.OnMarkerClickListener)">setOnMarkerClickListener</a></span>(<span class="nowrap"><a href="../../../../../com/google/android/m4b/maps/GoogleMap.OnMarkerClickListener.html">GoogleMap.OnMarkerClickListener</a> <i>listener</i></span>)
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class=" api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            final
+            
+            
+            void
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../com/google/android/m4b/maps/GoogleMap.html#setOnMarkerDragListener(com.google.android.m4b.maps.GoogleMap.OnMarkerDragListener)">setOnMarkerDragListener</a></span>(<span class="nowrap"><a href="../../../../../com/google/android/m4b/maps/GoogleMap.OnMarkerDragListener.html">GoogleMap.OnMarkerDragListener</a> <i>listener</i></span>)
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class="alt-color api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            final
+            
+            
+            void
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../com/google/android/m4b/maps/GoogleMap.html#setOnMyLocationButtonClickListener(com.google.android.m4b.maps.GoogleMap.OnMyLocationButtonClickListener)">setOnMyLocationButtonClickListener</a></span>(<span class="nowrap"><a href="../../../../../com/google/android/m4b/maps/GoogleMap.OnMyLocationButtonClickListener.html">GoogleMap.OnMyLocationButtonClickListener</a> <i>listener</i></span>)
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class=" api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            final
+            
+            
+            void
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../com/google/android/m4b/maps/GoogleMap.html#setOnMyLocationChangeListener(com.google.android.m4b.maps.GoogleMap.OnMyLocationChangeListener)">setOnMyLocationChangeListener</a></span>(<span class="nowrap"><a href="../../../../../com/google/android/m4b/maps/GoogleMap.OnMyLocationChangeListener.html">GoogleMap.OnMyLocationChangeListener</a> <i>listener</i></span>)
+            
+            <div class="jd-descrdiv">
+      <em>
+  This method is deprecated.
+      use com.google.android.gms.location.LocationClient instead.
+ LocationClient provides improved location finding and power usage and is used by the
+ "My Location" blue dot. See the MyLocationDemoActivity in the sample applications folder
+ for example example code, or the
+ <a href="https://developers.google.com/maps/documentation/android/map/location">
+ Location Developer Guide</a>.
+</em></div>
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class="alt-color api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            final
+            
+            
+            void
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../com/google/android/m4b/maps/GoogleMap.html#setPadding(int, int, int, int)">setPadding</a></span>(<span class="nowrap">int <i>left</i></span>, <span class="nowrap">int <i>top</i></span>, <span class="nowrap">int <i>right</i></span>, <span class="nowrap">int <i>bottom</i></span>)
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class=" api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            final
+            
+            
+            void
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../com/google/android/m4b/maps/GoogleMap.html#setTrafficEnabled(boolean)">setTrafficEnabled</a></span>(<span class="nowrap">boolean <i>enabled</i></span>)
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class="alt-color api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            final
+            
+            
+            void
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../com/google/android/m4b/maps/GoogleMap.html#snapshot(com.google.android.m4b.maps.GoogleMap.SnapshotReadyCallback)">snapshot</a></span>(<span class="nowrap"><a href="../../../../../com/google/android/m4b/maps/GoogleMap.SnapshotReadyCallback.html">GoogleMap.SnapshotReadyCallback</a> <i>callback</i></span>)
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class=" api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            final
+            
+            
+            void
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../com/google/android/m4b/maps/GoogleMap.html#snapshot(com.google.android.m4b.maps.GoogleMap.SnapshotReadyCallback, android.graphics.Bitmap)">snapshot</a></span>(<span class="nowrap"><a href="../../../../../com/google/android/m4b/maps/GoogleMap.SnapshotReadyCallback.html">GoogleMap.SnapshotReadyCallback</a> <i>callback</i></span>, <span class="nowrap">Bitmap <i>bitmap</i></span>)
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class="alt-color api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            final
+            
+            
+            void
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../com/google/android/m4b/maps/GoogleMap.html#stopAnimation()">stopAnimation</a></span>()
+            
+          </div>
+      </td>
+    </tr>
+
+
+
+  </table>
+</section>
+
+
+
+
+
+
+<!-- ========== METHOD SUMMARY =========== -->
+</section><!--xml-attributes-->
+<!--subcount(class.inners) || subcount(class.attrs) || ...-->
+</div><!-- class="jd-descr" (end of Summary) -->
+
+<!-- Details -->
+
+
+
+
+
+
+
+
+<!-- XML Attributes -->
+
+
+<!-- Enum Values -->
+
+
+<!-- Constants -->
+
+
+<!-- ========= ENUM CONSTANTS DETAIL ======== -->
+<section id="constants">
+  <h2>Constants</h2>
+  
+
+
+
+<A NAME="MAP_TYPE_HYBRID"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        static
+        final
+        
+        
+          int
+        
+      </span>
+        <strong>MAP_TYPE_HYBRID</strong>
+    </h4>
+      <div class="api-level">
+        
+
+
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Satellite maps with a transparent layer of major streets. </p></div>
+
+    
+        <div class="jd-tagdata">
+        <span class="jd-tagtitle jd-tagdescr">Constant Value: </span>
+        <span>
+            
+                4
+            
+        </span>
+        </div>
+    
+    </div>
+</div>
+
+
+
+<A NAME="MAP_TYPE_NONE"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        static
+        final
+        
+        
+          int
+        
+      </span>
+        <strong>MAP_TYPE_NONE</strong>
+    </h4>
+      <div class="api-level">
+        
+
+
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>No base map tiles. </p></div>
+
+    
+        <div class="jd-tagdata">
+        <span class="jd-tagtitle jd-tagdescr">Constant Value: </span>
+        <span>
+            
+                0
+            
+        </span>
+        </div>
+    
+    </div>
+</div>
+
+
+
+<A NAME="MAP_TYPE_NORMAL"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        static
+        final
+        
+        
+          int
+        
+      </span>
+        <strong>MAP_TYPE_NORMAL</strong>
+    </h4>
+      <div class="api-level">
+        
+
+
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Basic maps. </p></div>
+
+    
+        <div class="jd-tagdata">
+        <span class="jd-tagtitle jd-tagdescr">Constant Value: </span>
+        <span>
+            
+                1
+            
+        </span>
+        </div>
+    
+    </div>
+</div>
+
+
+
+<A NAME="MAP_TYPE_SATELLITE"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        static
+        final
+        
+        
+          int
+        
+      </span>
+        <strong>MAP_TYPE_SATELLITE</strong>
+    </h4>
+      <div class="api-level">
+        
+
+
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Satellite maps with no labels. </p></div>
+
+    
+        <div class="jd-tagdata">
+        <span class="jd-tagtitle jd-tagdescr">Constant Value: </span>
+        <span>
+            
+                2
+            
+        </span>
+        </div>
+    
+    </div>
+</div>
+
+
+
+<A NAME="MAP_TYPE_TERRAIN"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        static
+        final
+        
+        
+          int
+        
+      </span>
+        <strong>MAP_TYPE_TERRAIN</strong>
+    </h4>
+      <div class="api-level">
+        
+
+
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Terrain maps. </p></div>
+
+    
+        <div class="jd-tagdata">
+        <span class="jd-tagtitle jd-tagdescr">Constant Value: </span>
+        <span>
+            
+                3
+            
+        </span>
+        </div>
+    
+    </div>
+</div>
+
+
+</section>
+
+
+<!-- Fields -->
+
+
+<!-- Public ctors -->
+
+
+
+<!-- ========= CONSTRUCTOR DETAIL ======== -->
+<!-- Protected ctors -->
+
+
+
+<!-- ========= METHOD DETAIL ======== -->
+<!-- Public methdos -->
+
+
+<section id="public-methods">
+  <h2>Public Methods</h2>
+  
+
+
+<A NAME="addCircle(com.google.android.m4b.maps.model.CircleOptions)"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        final
+        
+        
+        <a href="../../../../../com/google/android/m4b/maps/model/Circle.html">Circle</a>
+      </span>
+      <span class="sympad"><strong>addCircle</strong></span>
+      <span class="params">(<span class="nowrap"><a href="../../../../../com/google/android/m4b/maps/model/CircleOptions.html">CircleOptions</a> <i>options</i></span>)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Add a circle to this map.</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Parameters</h5>
+      <table class="jd-tagtable">
+        
+        <tr>
+          <td class="jd-tagparamname">options</td>
+          <td class="jd-tagdescr">A circle options object that defines how to render the Circle</td>
+        </tr>
+        
+      </table>
+  </div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Returns</h5>
+      <ul class="nolist jd-returns"><li>The <code>Circle</code> object that is added to the map
+</li></ul>
+  </div>
+
+    </div>
+</div>
+
+
+<A NAME="addGroundOverlay(com.google.android.m4b.maps.model.GroundOverlayOptions)"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        final
+        
+        
+        <a href="../../../../../com/google/android/m4b/maps/model/GroundOverlay.html">GroundOverlay</a>
+      </span>
+      <span class="sympad"><strong>addGroundOverlay</strong></span>
+      <span class="params">(<span class="nowrap"><a href="../../../../../com/google/android/m4b/maps/model/GroundOverlayOptions.html">GroundOverlayOptions</a> <i>options</i></span>)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Adds an image to this map.</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Parameters</h5>
+      <table class="jd-tagtable">
+        
+        <tr>
+          <td class="jd-tagparamname">options</td>
+          <td class="jd-tagdescr">A ground-overlay options object that defines how to render the overlay.
+            Options must have an image (AnchoredBitmap) and position specified.</td>
+        </tr>
+        
+      </table>
+  </div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Returns</h5>
+      <ul class="nolist jd-returns"><li>The <code><a href="../../../../../com/google/android/m4b/maps/model/GroundOverlay.html">GroundOverlay</a></code> that was added to the map.</li></ul>
+  </div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Throws</h5>
+      <table class="jd-tagtable">
+          
+        <tr>
+            <td class="jd-tagthrowstype">IllegalArgumentException</td>
+            <td class="jd-tagdescr">if either the image or the position is unspecified in the
+             options.
+</td>
+        </tr>
+        
+      </table>
+  </div>
+
+    </div>
+</div>
+
+
+<A NAME="addMapsEngineLayer(com.google.android.m4b.maps.model.MapsEngineLayerOptions)"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        final
+        
+        
+        <a href="../../../../../com/google/android/m4b/maps/model/MapsEngineLayer.html">MapsEngineLayer</a>
+      </span>
+      <span class="sympad"><strong>addMapsEngineLayer</strong></span>
+      <span class="params">(<span class="nowrap"><a href="../../../../../com/google/android/m4b/maps/model/MapsEngineLayerOptions.html">MapsEngineLayerOptions</a> <i>options</i></span>)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p></p></div>
+
+    </div>
+</div>
+
+
+<A NAME="addMarker(com.google.android.m4b.maps.model.MarkerOptions)"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        final
+        
+        
+        <a href="../../../../../com/google/android/m4b/maps/model/Marker.html">Marker</a>
+      </span>
+      <span class="sympad"><strong>addMarker</strong></span>
+      <span class="params">(<span class="nowrap"><a href="../../../../../com/google/android/m4b/maps/model/MarkerOptions.html">MarkerOptions</a> <i>options</i></span>)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Adds a marker to this map.
+ <p>
+ The marker's icon is rendered on the map at the location Marker.position. Clicking the marker
+ centers the camera on the marker. If Marker.title is defined, the map shows an info box with
+ the marker's title and snippet. If the marker is draggable, long-clicking and then dragging
+ the marker moves it.</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Parameters</h5>
+      <table class="jd-tagtable">
+        
+        <tr>
+          <td class="jd-tagparamname">options</td>
+          <td class="jd-tagdescr">A marker options object that defines how to render the marker.</td>
+        </tr>
+        
+      </table>
+  </div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Returns</h5>
+      <ul class="nolist jd-returns"><li>The <code><a href="../../../../../com/google/android/m4b/maps/model/Marker.html">Marker</a></code> that was added to the map.
+</li></ul>
+  </div>
+
+    </div>
+</div>
+
+
+<A NAME="addPolygon(com.google.android.m4b.maps.model.PolygonOptions)"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        final
+        
+        
+        <a href="../../../../../com/google/android/m4b/maps/model/Polygon.html">Polygon</a>
+      </span>
+      <span class="sympad"><strong>addPolygon</strong></span>
+      <span class="params">(<span class="nowrap"><a href="../../../../../com/google/android/m4b/maps/model/PolygonOptions.html">PolygonOptions</a> <i>options</i></span>)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Adds a polygon to this map.</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Parameters</h5>
+      <table class="jd-tagtable">
+        
+        <tr>
+          <td class="jd-tagparamname">options</td>
+          <td class="jd-tagdescr">A polygon options object that defines how to render the Polygon.</td>
+        </tr>
+        
+      </table>
+  </div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Returns</h5>
+      <ul class="nolist jd-returns"><li>The <code>Polygon</code> object that is added to the map.
+</li></ul>
+  </div>
+
+    </div>
+</div>
+
+
+<A NAME="addPolyline(com.google.android.m4b.maps.model.PolylineOptions)"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        final
+        
+        
+        <a href="../../../../../com/google/android/m4b/maps/model/Polyline.html">Polyline</a>
+      </span>
+      <span class="sympad"><strong>addPolyline</strong></span>
+      <span class="params">(<span class="nowrap"><a href="../../../../../com/google/android/m4b/maps/model/PolylineOptions.html">PolylineOptions</a> <i>options</i></span>)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Adds a polyline to this map.</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Parameters</h5>
+      <table class="jd-tagtable">
+        
+        <tr>
+          <td class="jd-tagparamname">options</td>
+          <td class="jd-tagdescr">A polyline options object that defines how to render the Polyline.</td>
+        </tr>
+        
+      </table>
+  </div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Returns</h5>
+      <ul class="nolist jd-returns"><li>The <code>Polyline</code> object that was added to the map.
+</li></ul>
+  </div>
+
+    </div>
+</div>
+
+
+<A NAME="addTileOverlay(com.google.android.m4b.maps.model.TileOverlayOptions)"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        final
+        
+        
+        <a href="../../../../../com/google/android/m4b/maps/model/TileOverlay.html">TileOverlay</a>
+      </span>
+      <span class="sympad"><strong>addTileOverlay</strong></span>
+      <span class="params">(<span class="nowrap"><a href="../../../../../com/google/android/m4b/maps/model/TileOverlayOptions.html">TileOverlayOptions</a> <i>options</i></span>)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Adds a tile overlay to this map. See <code><a href="../../../../../com/google/android/m4b/maps/model/TileOverlay.html">TileOverlay</a></code> for more information.
+ <p>
+ Note that unlike other overlays, if the map is recreated, tile overlays are not automatically
+ restored and must be re-added manually.</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Parameters</h5>
+      <table class="jd-tagtable">
+        
+        <tr>
+          <td class="jd-tagparamname">options</td>
+          <td class="jd-tagdescr">A tile-overlay options object that defines how to render the overlay. Options
+            must have a <code><a href="../../../../../com/google/android/m4b/maps/model/TileProvider.html">TileProvider</a></code>
+            specified, otherwise an IllegalArgumentException will be thrown.</td>
+        </tr>
+        
+      </table>
+  </div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Returns</h5>
+      <ul class="nolist jd-returns"><li>The <code><a href="../../../../../com/google/android/m4b/maps/model/TileOverlay.html">TileOverlay</a></code> that was added to the map.</li></ul>
+  </div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Throws</h5>
+      <table class="jd-tagtable">
+          
+        <tr>
+            <td class="jd-tagthrowstype">IllegalArgumentException</td>
+            <td class="jd-tagdescr">if the <code><a href="../../../../../com/google/android/m4b/maps/model/TileProvider.html">TileProvider</a></code> is unspecified in the options.
+</td>
+        </tr>
+        
+      </table>
+  </div>
+
+    </div>
+</div>
+
+
+<A NAME="animateCamera(com.google.android.m4b.maps.CameraUpdate, int, com.google.android.m4b.maps.GoogleMap.CancelableCallback)"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        final
+        
+        
+        void
+      </span>
+      <span class="sympad"><strong>animateCamera</strong></span>
+      <span class="params">(<span class="nowrap"><a href="../../../../../com/google/android/m4b/maps/CameraUpdate.html">CameraUpdate</a> <i>update</i></span>, <span class="nowrap">int <i>durationMs</i></span>, <span class="nowrap"><a href="../../../../../com/google/android/m4b/maps/GoogleMap.CancelableCallback.html">GoogleMap.CancelableCallback</a> <i>callback</i></span>)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Moves the map according to the update with an animation over a specified duration, and calls
+ an optional callback on completion. See <code><a href="../../../../../com/google/android/m4b/maps/CameraUpdateFactory.html">CameraUpdateFactory</a></code> for a set of updates.
+ <p>
+ If <code><a href="../../../../../com/google/android/m4b/maps/GoogleMap.html#getCameraPosition()">getCameraPosition()</a></code> is called during the animation, it will return the current
+ location of the camera in flight.</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Parameters</h5>
+      <table class="jd-tagtable">
+        
+        <tr>
+          <td class="jd-tagparamname">durationMs</td>
+          <td class="jd-tagdescr">The duration of the animation in milliseconds. This must be strictly
+            positive, otherwise an IllegalArgumentException will be thrown.
+</td>
+        </tr>
+        
+        <tr>
+          <td class="jd-tagparamname">callback</td>
+          <td class="jd-tagdescr">An optional callback to be notified from the main thread when the animation
+            stops. If the animation stops due to its natural completion, the callback will be
+            notified with <code><a href="../../../../../com/google/android/m4b/maps/GoogleMap.CancelableCallback.html#onFinish()">onFinish()</a></code>. If the animation stops due to
+            interruption by a later camera movement or a user gesture,
+            <code><a href="../../../../../com/google/android/m4b/maps/GoogleMap.CancelableCallback.html#onCancel()">onCancel()</a></code> will be called. The callback should not
+            attempt to move or animate the camera in its cancellation method. If a callback
+            isn't required, leave it as <code>null</code>.</td>
+        </tr>
+        
+      </table>
+  </div>
+
+    </div>
+</div>
+
+
+<A NAME="animateCamera(com.google.android.m4b.maps.CameraUpdate, com.google.android.m4b.maps.GoogleMap.CancelableCallback)"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        final
+        
+        
+        void
+      </span>
+      <span class="sympad"><strong>animateCamera</strong></span>
+      <span class="params">(<span class="nowrap"><a href="../../../../../com/google/android/m4b/maps/CameraUpdate.html">CameraUpdate</a> <i>update</i></span>, <span class="nowrap"><a href="../../../../../com/google/android/m4b/maps/GoogleMap.CancelableCallback.html">GoogleMap.CancelableCallback</a> <i>callback</i></span>)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Animates the movement of the camera from the current position to the position defined in the
+ update and calls an optional callback on completion. See <code><a href="../../../../../com/google/android/m4b/maps/CameraUpdateFactory.html">CameraUpdateFactory</a></code> for a
+ set of updates.
+ <p>
+ During the animation, a call to <code><a href="../../../../../com/google/android/m4b/maps/GoogleMap.html#getCameraPosition()">getCameraPosition()</a></code> returns an intermediate location
+ of the camera.</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Parameters</h5>
+      <table class="jd-tagtable">
+        
+        <tr>
+          <td class="jd-tagparamname">update</td>
+          <td class="jd-tagdescr">The change that should be applied to the camera.</td>
+        </tr>
+        
+        <tr>
+          <td class="jd-tagparamname">callback</td>
+          <td class="jd-tagdescr">The callback to invoke from the main thread when the animation stops. If the
+            animation completes normally, <code><a href="../../../../../com/google/android/m4b/maps/GoogleMap.CancelableCallback.html#onFinish()">onFinish()</a></code> is called;
+            otherwise, <code><a href="../../../../../com/google/android/m4b/maps/GoogleMap.CancelableCallback.html#onCancel()">onCancel()</a></code> is called. Do not update or
+            animate the camera from within <code><a href="../../../../../com/google/android/m4b/maps/GoogleMap.CancelableCallback.html#onCancel()">onCancel()</a></code>.
+</td>
+        </tr>
+        
+      </table>
+  </div>
+
+    </div>
+</div>
+
+
+<A NAME="animateCamera(com.google.android.m4b.maps.CameraUpdate)"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        final
+        
+        
+        void
+      </span>
+      <span class="sympad"><strong>animateCamera</strong></span>
+      <span class="params">(<span class="nowrap"><a href="../../../../../com/google/android/m4b/maps/CameraUpdate.html">CameraUpdate</a> <i>update</i></span>)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Animates the movement of the camera from the current position to the position defined in the
+ update. During the animation, a call to <code><a href="../../../../../com/google/android/m4b/maps/GoogleMap.html#getCameraPosition()">getCameraPosition()</a></code> returns an intermediate
+ location of the camera.
+ <p>
+ See <code><a href="../../../../../com/google/android/m4b/maps/CameraUpdateFactory.html">CameraUpdateFactory</a></code> for a set of updates.</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Parameters</h5>
+      <table class="jd-tagtable">
+        
+        <tr>
+          <td class="jd-tagparamname">update</td>
+          <td class="jd-tagdescr">The change that should be applied to the camera.
+</td>
+        </tr>
+        
+      </table>
+  </div>
+
+    </div>
+</div>
+
+
+<A NAME="clear()"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        final
+        
+        
+        void
+      </span>
+      <span class="sympad"><strong>clear</strong></span>
+      <span class="params">()</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Removes all markers, polylines, polygons, overlays, etc from the map. </p></div>
+
+    </div>
+</div>
+
+
+<A NAME="getCameraPosition()"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        final
+        
+        
+        <a href="../../../../../com/google/android/m4b/maps/model/CameraPosition.html">CameraPosition</a>
+      </span>
+      <span class="sympad"><strong>getCameraPosition</strong></span>
+      <span class="params">()</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Gets the current position of the camera.
+ <p>
+ The <code><a href="../../../../../com/google/android/m4b/maps/model/CameraPosition.html">CameraPosition</a></code> returned is a snapshot of the current position, and will not
+ automatically update when the camera moves.</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Returns</h5>
+      <ul class="nolist jd-returns"><li>The current position of the Camera.
+</li></ul>
+  </div>
+
+    </div>
+</div>
+
+
+<A NAME="getFocusedBuilding()"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        
+        
+        
+        <a href="../../../../../com/google/android/m4b/maps/model/IndoorBuilding.html">IndoorBuilding</a>
+      </span>
+      <span class="sympad"><strong>getFocusedBuilding</strong></span>
+      <span class="params">()</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Gets the currently focused building.</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Returns</h5>
+      <ul class="nolist jd-returns"><li>The current focused building or <code>null</code> if no building is focused.
+</li></ul>
+  </div>
+
+    </div>
+</div>
+
+
+<A NAME="getMapType()"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        final
+        
+        
+        int
+      </span>
+      <span class="sympad"><strong>getMapType</strong></span>
+      <span class="params">()</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Gets the type of map that's currently displayed. See <code><a href="../../../../../com/google/android/m4b/maps/GoogleMap.html#MAP_TYPE_NORMAL">MAP_TYPE_NORMAL</a></code>,
+ <code><a href="../../../../../com/google/android/m4b/maps/GoogleMap.html#MAP_TYPE_SATELLITE">MAP_TYPE_SATELLITE</a></code>, <code><a href="../../../../../com/google/android/m4b/maps/GoogleMap.html#MAP_TYPE_TERRAIN">MAP_TYPE_TERRAIN</a></code> for possible values.</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Returns</h5>
+      <ul class="nolist jd-returns"><li>The map type.
+</li></ul>
+  </div>
+
+    </div>
+</div>
+
+
+<A NAME="getMaxZoomLevel()"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        final
+        
+        
+        float
+      </span>
+      <span class="sympad"><strong>getMaxZoomLevel</strong></span>
+      <span class="params">()</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Returns the maximum zoom level for the current camera position. This takes into account what
+ map type is currently being used, e.g., satellite or terrain may have a lower max zoom level
+ than the base map tiles.</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Returns</h5>
+      <ul class="nolist jd-returns"><li>The maximum zoom level available at the current camera position.
+</li></ul>
+  </div>
+
+    </div>
+</div>
+
+
+<A NAME="getMinZoomLevel()"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        final
+        
+        
+        float
+      </span>
+      <span class="sympad"><strong>getMinZoomLevel</strong></span>
+      <span class="params">()</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Returns the minimum zoom level. This is the same for every location (unlike the maximum zoom
+ level) but may vary between devices and map sizes.</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Returns</h5>
+      <ul class="nolist jd-returns"><li>The minimum zoom level available.
+</li></ul>
+  </div>
+
+    </div>
+</div>
+
+
+<A NAME="getMyLocation()"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        final
+        
+        
+        Location
+      </span>
+      <span class="sympad"><strong>getMyLocation</strong></span>
+      <span class="params">()</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      <p>
+  <p class="caution">
+      <strong>
+  This method is deprecated.</strong><br/> use com.google.android.gms.location.LocationClient instead.
+ LocationClient provides improved location finding and power usage and is used by the
+ "My Location" blue dot. See the MyLocationDemoActivity in the sample applications folder
+ for example example code, or the
+ <a href="https://developers.google.com/maps/documentation/android/map/location">
+ Location Developer Guide</a>.
+
+  </p>
+  <div class="jd-tagdata jd-tagdescr"><p>Returns the currently displayed user location, or <code>null</code> if there is no location data
+ available.</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Returns</h5>
+      <ul class="nolist jd-returns"><li>The currently displayed Location user location.</li></ul>
+  </div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Throws</h5>
+      <table class="jd-tagtable">
+          
+        <tr>
+            <td class="jd-tagthrowstype">IllegalStateException</td>
+            <td class="jd-tagdescr">if the my-location layer is not enabled.</td>
+        </tr>
+        
+      </table>
+  </div>
+
+    </div>
+</div>
+
+
+<A NAME="getProjection()"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        final
+        
+        
+        <a href="../../../../../com/google/android/m4b/maps/Projection.html">Projection</a>
+      </span>
+      <span class="sympad"><strong>getProjection</strong></span>
+      <span class="params">()</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Returns a <code><a href="../../../../../com/google/android/m4b/maps/Projection.html">Projection</a></code> object that you can use to convert between screen coordinates
+ and latitude/longitude coordinates.
+ <p>
+ The <code>Projection</code> returned is a snapshot of the current projection, and will not
+ automatically update when the camera moves. As this operation is expensive, you should get
+ the projection only once per screen. Google Maps uses the Mercator projection to create its
+ maps from geographic data and convert points on the map into geographic coordinates.</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Returns</h5>
+      <ul class="nolist jd-returns"><li>The <code><a href="../../../../../com/google/android/m4b/maps/Projection.html">Projection</a></code> of the map in its current state.
+</li></ul>
+  </div>
+
+    </div>
+</div>
+
+
+<A NAME="getUiSettings()"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        final
+        
+        
+        <a href="../../../../../com/google/android/m4b/maps/UiSettings.html">UiSettings</a>
+      </span>
+      <span class="sympad"><strong>getUiSettings</strong></span>
+      <span class="params">()</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Gets the user interface settings for the map.</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Returns</h5>
+      <ul class="nolist jd-returns"><li>The <code><a href="../../../../../com/google/android/m4b/maps/UiSettings.html">UiSettings</a></code> for this map.
+</li></ul>
+  </div>
+
+    </div>
+</div>
+
+
+<A NAME="isBuildingsEnabled()"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        final
+        
+        
+        boolean
+      </span>
+      <span class="sympad"><strong>isBuildingsEnabled</strong></span>
+      <span class="params">()</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Returns whether 3D buildings layer is enabled.</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Returns</h5>
+      <ul class="nolist jd-returns"><li>True if buildings are enabled, false otherwise.
+</li></ul>
+  </div>
+
+    </div>
+</div>
+
+
+<A NAME="isIndoorEnabled()"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        final
+        
+        
+        boolean
+      </span>
+      <span class="sympad"><strong>isIndoorEnabled</strong></span>
+      <span class="params">()</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Gets whether indoor maps are currently enabled.</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Returns</h5>
+      <ul class="nolist jd-returns"><li><code>true</code> if indoor maps are enabled; <code>false</code> if indoor maps are disabled;
+</li></ul>
+  </div>
+
+    </div>
+</div>
+
+
+<A NAME="isMyLocationEnabled()"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        final
+        
+        
+        boolean
+      </span>
+      <span class="sympad"><strong>isMyLocationEnabled</strong></span>
+      <span class="params">()</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Gets the status of the my-location layer.</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Returns</h5>
+      <ul class="nolist jd-returns"><li>True if the my-location layer is enabled, false otherwise.
+</li></ul>
+  </div>
+
+    </div>
+</div>
+
+
+<A NAME="isTrafficEnabled()"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        final
+        
+        
+        boolean
+      </span>
+      <span class="sympad"><strong>isTrafficEnabled</strong></span>
+      <span class="params">()</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Checks whether the map is drawing traffic data. This is subject to the availability of
+ traffic data.</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Returns</h5>
+      <ul class="nolist jd-returns"><li>True if traffic data is enabled, false otherwise.
+</li></ul>
+  </div>
+
+    </div>
+</div>
+
+
+<A NAME="moveCamera(com.google.android.m4b.maps.CameraUpdate)"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        final
+        
+        
+        void
+      </span>
+      <span class="sympad"><strong>moveCamera</strong></span>
+      <span class="params">(<span class="nowrap"><a href="../../../../../com/google/android/m4b/maps/CameraUpdate.html">CameraUpdate</a> <i>update</i></span>)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Repositions the camera according to the instructions defined in the update. The move is
+ instantaneous, and a subsequent <code><a href="../../../../../com/google/android/m4b/maps/GoogleMap.html#getCameraPosition()">getCameraPosition()</a></code> will reflect the new position.
+ See <code><a href="../../../../../com/google/android/m4b/maps/CameraUpdateFactory.html">CameraUpdateFactory</a></code> for a set of updates.</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Parameters</h5>
+      <table class="jd-tagtable">
+        
+        <tr>
+          <td class="jd-tagparamname">update</td>
+          <td class="jd-tagdescr">The change that should be applied to the camera.
+</td>
+        </tr>
+        
+      </table>
+  </div>
+
+    </div>
+</div>
+
+
+<A NAME="setBuildingsEnabled(boolean)"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        final
+        
+        
+        void
+      </span>
+      <span class="sympad"><strong>setBuildingsEnabled</strong></span>
+      <span class="params">(<span class="nowrap">boolean <i>enabled</i></span>)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Turns the 3D buildings layer on or off.</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Parameters</h5>
+      <table class="jd-tagtable">
+        
+        <tr>
+          <td class="jd-tagparamname">enabled</td>
+          <td class="jd-tagdescr"><code>true</code> to enable the 3D buildings layer; <code>false</code> to disable 3D
+ buildings.
+</td>
+        </tr>
+        
+      </table>
+  </div>
+
+    </div>
+</div>
+
+
+<A NAME="setIndoorEnabled(boolean)"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        final
+        
+        
+        boolean
+      </span>
+      <span class="sympad"><strong>setIndoorEnabled</strong></span>
+      <span class="params">(<span class="nowrap">boolean <i>enabled</i></span>)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Sets whether indoor maps should be enabled. Currently, indoor maps can only be shown on one
+ map at a time and by default, this is the first map added to your application. To enable
+ indoor maps on another map, you must first disable indoor maps on the original map. If you
+ try to enable indoor maps when it is enabled on another map, nothing will happen and this
+ will return <code>false</code>. When Indoor is not enabled for a map, all methods related to
+ indoor will return <code>null</code>, or <code>false</code>.</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Parameters</h5>
+      <table class="jd-tagtable">
+        
+        <tr>
+          <td class="jd-tagparamname">enabled</td>
+          <td class="jd-tagdescr"><code>true</code> to try to enable indoor maps; <code>false</code> to disable indoor
+            maps.</td>
+        </tr>
+        
+      </table>
+  </div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Returns</h5>
+      <ul class="nolist jd-returns"><li>whether it was possible to enable indoor maps.
+</li></ul>
+  </div>
+
+    </div>
+</div>
+
+
+<A NAME="setInfoWindowAdapter(com.google.android.m4b.maps.GoogleMap.InfoWindowAdapter)"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        final
+        
+        
+        void
+      </span>
+      <span class="sympad"><strong>setInfoWindowAdapter</strong></span>
+      <span class="params">(<span class="nowrap"><a href="../../../../../com/google/android/m4b/maps/GoogleMap.InfoWindowAdapter.html">GoogleMap.InfoWindowAdapter</a> <i>adapter</i></span>)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Sets a custom renderer for the contents of info windows.
+ <p>
+ Like the map's event listeners, this state is not serialized with the map. If the map gets
+ re-created (e.g., due to a configuration change), you must ensure that you call this method
+ again in order to preserve the customization.</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Parameters</h5>
+      <table class="jd-tagtable">
+        
+        <tr>
+          <td class="jd-tagparamname">adapter</td>
+          <td class="jd-tagdescr">The adapter to use for info window contents, or <code>null</code> to use the
+            default content rendering in info windows.
+</td>
+        </tr>
+        
+      </table>
+  </div>
+
+    </div>
+</div>
+
+
+<A NAME="setLocationSource(com.google.android.m4b.maps.LocationSource)"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        final
+        
+        
+        void
+      </span>
+      <span class="sympad"><strong>setLocationSource</strong></span>
+      <span class="params">(<span class="nowrap"><a href="../../../../../com/google/android/m4b/maps/LocationSource.html">LocationSource</a> <i>source</i></span>)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Replaces the location source of the my-location layer.</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Parameters</h5>
+      <table class="jd-tagtable">
+        
+        <tr>
+          <td class="jd-tagparamname">source</td>
+          <td class="jd-tagdescr">A location source to use in the my-location layer. Set to <code>null</code> to use
+            the default location source.
+</td>
+        </tr>
+        
+      </table>
+  </div>
+
+    </div>
+</div>
+
+
+<A NAME="setMapType(int)"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        final
+        
+        
+        void
+      </span>
+      <span class="sympad"><strong>setMapType</strong></span>
+      <span class="params">(<span class="nowrap">int <i>type</i></span>)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Sets the type of map tiles that should be displayed. The allowable values are:
+ <ul>
+ <li><code><a href="../../../../../com/google/android/m4b/maps/GoogleMap.html#MAP_TYPE_NORMAL">MAP_TYPE_NORMAL</a></code>: Basic map with roads.</li>
+ <li><code><a href="../../../../../com/google/android/m4b/maps/GoogleMap.html#MAP_TYPE_SATELLITE">MAP_TYPE_SATELLITE</a></code>: Satellite view with roads.</li>
+ <li><code><a href="../../../../../com/google/android/m4b/maps/GoogleMap.html#MAP_TYPE_TERRAIN">MAP_TYPE_TERRAIN</a></code>: Terrain view without roads.</li>
+ </ul></p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Parameters</h5>
+      <table class="jd-tagtable">
+        
+        <tr>
+          <td class="jd-tagparamname">type</td>
+          <td class="jd-tagdescr">The type of map to display.
+</td>
+        </tr>
+        
+      </table>
+  </div>
+
+    </div>
+</div>
+
+
+<A NAME="setMyLocationEnabled(boolean)"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        final
+        
+        
+        void
+      </span>
+      <span class="sympad"><strong>setMyLocationEnabled</strong></span>
+      <span class="params">(<span class="nowrap">boolean <i>enabled</i></span>)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Enables or disables the my-location layer.
+ <p>
+ While enabled, the my-location layer continuously draws an indication of a user's current
+ location and bearing, and displays UI controls that allow a user to interact with their
+ location (for example, to enable or disable camera tracking of their location and bearing).</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Parameters</h5>
+      <table class="jd-tagtable">
+        
+        <tr>
+          <td class="jd-tagparamname">enabled</td>
+          <td class="jd-tagdescr">True to enable; false to disable.
+</td>
+        </tr>
+        
+      </table>
+  </div>
+
+    </div>
+</div>
+
+
+<A NAME="setOAuthTokenProvider(com.google.android.m4b.maps.GoogleMap.OAuthTokenProvider)"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        final
+        
+        
+        void
+      </span>
+      <span class="sympad"><strong>setOAuthTokenProvider</strong></span>
+      <span class="params">(<span class="nowrap"><a href="../../../../../com/google/android/m4b/maps/GoogleMap.OAuthTokenProvider.html">GoogleMap.OAuthTokenProvider</a> <i>provider</i></span>)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p></p></div>
+
+    </div>
+</div>
+
+
+<A NAME="setOnCameraChangeListener(com.google.android.m4b.maps.GoogleMap.OnCameraChangeListener)"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        final
+        
+        
+        void
+      </span>
+      <span class="sympad"><strong>setOnCameraChangeListener</strong></span>
+      <span class="params">(<span class="nowrap"><a href="../../../../../com/google/android/m4b/maps/GoogleMap.OnCameraChangeListener.html">GoogleMap.OnCameraChangeListener</a> <i>listener</i></span>)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Sets a callback that's invoked when the camera changes.</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Parameters</h5>
+      <table class="jd-tagtable">
+        
+        <tr>
+          <td class="jd-tagparamname">listener</td>
+          <td class="jd-tagdescr">The callback that's invoked when the camera changes. To unset the callback,
+            use <code>null</code>.
+</td>
+        </tr>
+        
+      </table>
+  </div>
+
+    </div>
+</div>
+
+
+<A NAME="setOnIndoorStateChangeListener(com.google.android.m4b.maps.GoogleMap.OnIndoorStateChangeListener)"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        final
+        
+        
+        void
+      </span>
+      <span class="sympad"><strong>setOnIndoorStateChangeListener</strong></span>
+      <span class="params">(<span class="nowrap"><a href="../../../../../com/google/android/m4b/maps/GoogleMap.OnIndoorStateChangeListener.html">GoogleMap.OnIndoorStateChangeListener</a> <i>listener</i></span>)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Sets or clears the listener for indoor events. Only one listener can ever be set. Setting
+ a new listener will remove the previous listener.</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Parameters</h5>
+      <table class="jd-tagtable">
+        
+        <tr>
+          <td class="jd-tagparamname">listener</td>
+          <td class="jd-tagdescr">the listener for indoor events if non-null; otherwise, clears the
+        listener
+</td>
+        </tr>
+        
+      </table>
+  </div>
+
+    </div>
+</div>
+
+
+<A NAME="setOnInfoWindowClickListener(com.google.android.m4b.maps.GoogleMap.OnInfoWindowClickListener)"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        final
+        
+        
+        void
+      </span>
+      <span class="sympad"><strong>setOnInfoWindowClickListener</strong></span>
+      <span class="params">(<span class="nowrap"><a href="../../../../../com/google/android/m4b/maps/GoogleMap.OnInfoWindowClickListener.html">GoogleMap.OnInfoWindowClickListener</a> <i>listener</i></span>)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Sets a callback that's invoked when a marker info window is clicked.</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Parameters</h5>
+      <table class="jd-tagtable">
+        
+        <tr>
+          <td class="jd-tagparamname">listener</td>
+          <td class="jd-tagdescr">The callback that's invoked when a marker info window is clicked. To unset
+            the callback, use <code>null</code>.
+</td>
+        </tr>
+        
+      </table>
+  </div>
+
+    </div>
+</div>
+
+
+<A NAME="setOnMapClickListener(com.google.android.m4b.maps.GoogleMap.OnMapClickListener)"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        final
+        
+        
+        void
+      </span>
+      <span class="sympad"><strong>setOnMapClickListener</strong></span>
+      <span class="params">(<span class="nowrap"><a href="../../../../../com/google/android/m4b/maps/GoogleMap.OnMapClickListener.html">GoogleMap.OnMapClickListener</a> <i>listener</i></span>)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Sets a callback that's invoked when the map is tapped.</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Parameters</h5>
+      <table class="jd-tagtable">
+        
+        <tr>
+          <td class="jd-tagparamname">listener</td>
+          <td class="jd-tagdescr">The callback that's invoked when the map is tapped. To unset the callback,
+            use <code>null</code>.
+</td>
+        </tr>
+        
+      </table>
+  </div>
+
+    </div>
+</div>
+
+
+<A NAME="setOnMapLoadedCallback(com.google.android.m4b.maps.GoogleMap.OnMapLoadedCallback)"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        
+        
+        
+        void
+      </span>
+      <span class="sympad"><strong>setOnMapLoadedCallback</strong></span>
+      <span class="params">(<span class="nowrap"><a href="../../../../../com/google/android/m4b/maps/GoogleMap.OnMapLoadedCallback.html">GoogleMap.OnMapLoadedCallback</a> <i>callback</i></span>)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Sets a callback that is invoked when this map has finished rendering. The callback will only
+ be invoked once.
+
+ If this method is called when the map is fully rendered, the callback will be invoked
+ immediately. This event will not fire if the map never loads due to connectivity issues, or
+ if the map is continuously changing and never completes loading due to the user constantly
+ interacting with the map.</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Parameters</h5>
+      <table class="jd-tagtable">
+        
+        <tr>
+          <td class="jd-tagparamname">callback</td>
+          <td class="jd-tagdescr">The callback invoked when the map has finished rendering. To unset the
+     callback, use <code>null</code>.
+</td>
+        </tr>
+        
+      </table>
+  </div>
+
+    </div>
+</div>
+
+
+<A NAME="setOnMapLongClickListener(com.google.android.m4b.maps.GoogleMap.OnMapLongClickListener)"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        final
+        
+        
+        void
+      </span>
+      <span class="sympad"><strong>setOnMapLongClickListener</strong></span>
+      <span class="params">(<span class="nowrap"><a href="../../../../../com/google/android/m4b/maps/GoogleMap.OnMapLongClickListener.html">GoogleMap.OnMapLongClickListener</a> <i>listener</i></span>)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Sets a callback that's invoked when the map is long pressed.</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Parameters</h5>
+      <table class="jd-tagtable">
+        
+        <tr>
+          <td class="jd-tagparamname">listener</td>
+          <td class="jd-tagdescr">The callback that's invoked when the map is long pressed. To unset the
+            callback, use <code>null</code>.
+</td>
+        </tr>
+        
+      </table>
+  </div>
+
+    </div>
+</div>
+
+
+<A NAME="setOnMapsEngineFeatureClickListener(com.google.android.m4b.maps.GoogleMap.OnMapsEngineFeatureClickListener)"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        final
+        
+        
+        void
+      </span>
+      <span class="sympad"><strong>setOnMapsEngineFeatureClickListener</strong></span>
+      <span class="params">(<span class="nowrap"><a href="../../../../../com/google/android/m4b/maps/GoogleMap.OnMapsEngineFeatureClickListener.html">GoogleMap.OnMapsEngineFeatureClickListener</a> <i>listener</i></span>)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p></p></div>
+
+    </div>
+</div>
+
+
+<A NAME="setOnMarkerClickListener(com.google.android.m4b.maps.GoogleMap.OnMarkerClickListener)"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        final
+        
+        
+        void
+      </span>
+      <span class="sympad"><strong>setOnMarkerClickListener</strong></span>
+      <span class="params">(<span class="nowrap"><a href="../../../../../com/google/android/m4b/maps/GoogleMap.OnMarkerClickListener.html">GoogleMap.OnMarkerClickListener</a> <i>listener</i></span>)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Sets a callback that's invoked when a marker is clicked.</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Parameters</h5>
+      <table class="jd-tagtable">
+        
+        <tr>
+          <td class="jd-tagparamname">listener</td>
+          <td class="jd-tagdescr">The callback that's invoked when a marker is clicked. To unset the callback,
+            use <code>null</code>.
+</td>
+        </tr>
+        
+      </table>
+  </div>
+
+    </div>
+</div>
+
+
+<A NAME="setOnMarkerDragListener(com.google.android.m4b.maps.GoogleMap.OnMarkerDragListener)"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        final
+        
+        
+        void
+      </span>
+      <span class="sympad"><strong>setOnMarkerDragListener</strong></span>
+      <span class="params">(<span class="nowrap"><a href="../../../../../com/google/android/m4b/maps/GoogleMap.OnMarkerDragListener.html">GoogleMap.OnMarkerDragListener</a> <i>listener</i></span>)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Sets a callback that's invoked when a marker is dragged.</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Parameters</h5>
+      <table class="jd-tagtable">
+        
+        <tr>
+          <td class="jd-tagparamname">listener</td>
+          <td class="jd-tagdescr">The callback that's invoked on marker drag events. To unset the callback, use
+            <code>null</code>.
+</td>
+        </tr>
+        
+      </table>
+  </div>
+
+    </div>
+</div>
+
+
+<A NAME="setOnMyLocationButtonClickListener(com.google.android.m4b.maps.GoogleMap.OnMyLocationButtonClickListener)"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        final
+        
+        
+        void
+      </span>
+      <span class="sympad"><strong>setOnMyLocationButtonClickListener</strong></span>
+      <span class="params">(<span class="nowrap"><a href="../../../../../com/google/android/m4b/maps/GoogleMap.OnMyLocationButtonClickListener.html">GoogleMap.OnMyLocationButtonClickListener</a> <i>listener</i></span>)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Sets a callback that's invoked when the my location button is clicked.
+
+ <p>If the <code>listener</code> returns <code>true</code>, the event is consumed and the default
+ behavior will not occur. If it returns <code>false</code>, the default behavior will occur (i.e.
+ The camera moves such that it is centered on the user's location).</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Parameters</h5>
+      <table class="jd-tagtable">
+        
+        <tr>
+          <td class="jd-tagparamname">listener</td>
+          <td class="jd-tagdescr">The callback that's invoked when the My Location button is clicked.
+</td>
+        </tr>
+        
+      </table>
+  </div>
+
+    </div>
+</div>
+
+
+<A NAME="setOnMyLocationChangeListener(com.google.android.m4b.maps.GoogleMap.OnMyLocationChangeListener)"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        final
+        
+        
+        void
+      </span>
+      <span class="sympad"><strong>setOnMyLocationChangeListener</strong></span>
+      <span class="params">(<span class="nowrap"><a href="../../../../../com/google/android/m4b/maps/GoogleMap.OnMyLocationChangeListener.html">GoogleMap.OnMyLocationChangeListener</a> <i>listener</i></span>)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      <p>
+  <p class="caution">
+      <strong>
+  This method is deprecated.</strong><br/> use com.google.android.gms.location.LocationClient instead.
+ LocationClient provides improved location finding and power usage and is used by the
+ "My Location" blue dot. See the MyLocationDemoActivity in the sample applications folder
+ for example example code, or the
+ <a href="https://developers.google.com/maps/documentation/android/map/location">
+ Location Developer Guide</a>.
+
+  </p>
+  <div class="jd-tagdata jd-tagdescr"><p>Sets a callback that's invoked when the My Location dot changes location.</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Parameters</h5>
+      <table class="jd-tagtable">
+        
+        <tr>
+          <td class="jd-tagparamname">listener</td>
+          <td class="jd-tagdescr">The callback that's invoked when the My Location dot changes.</td>
+        </tr>
+        
+      </table>
+  </div>
+
+    </div>
+</div>
+
+
+<A NAME="setPadding(int, int, int, int)"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        final
+        
+        
+        void
+      </span>
+      <span class="sympad"><strong>setPadding</strong></span>
+      <span class="params">(<span class="nowrap">int <i>left</i></span>, <span class="nowrap">int <i>top</i></span>, <span class="nowrap">int <i>right</i></span>, <span class="nowrap">int <i>bottom</i></span>)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Sets padding on the map.
+
+ <p>This method allows you to define a visible region on the map, to signal to the map that
+ portions of the map around the edges may be obscured, by setting padding on each of the four
+ edges of the map. Map functions will be adapted to the padding. For example, the zoom
+ controls, compass, copyright notices and Google logo will be moved to fit inside the defined
+ region, camera movements will be relative to the center of the visible region, etc.</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Parameters</h5>
+      <table class="jd-tagtable">
+        
+        <tr>
+          <td class="jd-tagparamname">left</td>
+          <td class="jd-tagdescr">the number of pixels of padding to be added on the left of the map.</td>
+        </tr>
+        
+        <tr>
+          <td class="jd-tagparamname">top</td>
+          <td class="jd-tagdescr">the number of pixels of padding to be added on the top of the map.</td>
+        </tr>
+        
+        <tr>
+          <td class="jd-tagparamname">right</td>
+          <td class="jd-tagdescr">the number of pixels of padding to be added on the right of the map.</td>
+        </tr>
+        
+        <tr>
+          <td class="jd-tagparamname">bottom</td>
+          <td class="jd-tagdescr">the number of pixels of padding to be added on the bottom of the map.
+</td>
+        </tr>
+        
+      </table>
+  </div>
+
+    </div>
+</div>
+
+
+<A NAME="setTrafficEnabled(boolean)"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        final
+        
+        
+        void
+      </span>
+      <span class="sympad"><strong>setTrafficEnabled</strong></span>
+      <span class="params">(<span class="nowrap">boolean <i>enabled</i></span>)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Turns the traffic layer on or off. </p></div>
+
+    </div>
+</div>
+
+
+<A NAME="snapshot(com.google.android.m4b.maps.GoogleMap.SnapshotReadyCallback)"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        final
+        
+        
+        void
+      </span>
+      <span class="sympad"><strong>snapshot</strong></span>
+      <span class="params">(<span class="nowrap"><a href="../../../../../com/google/android/m4b/maps/GoogleMap.SnapshotReadyCallback.html">GoogleMap.SnapshotReadyCallback</a> <i>callback</i></span>)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Takes a snapshot of the map.
+
+ <p>You can use snapshots within your application when an interactive
+ map would be difficult, or impossible, to use. For example, images
+ produced with the <code>snapshot()</code> method can be used to display a
+ thumbnail of the map in your app, or a snapshot in the notification
+ center.
+
+ <p><strong>Note:</strong> Images of the map must not be
+ transmitted to your servers, or otherwise used outside of the
+ application. If you need to send a map to another application or user,
+ send data that allows them to reconstruct the map for the new user
+ instead of a snapshot.</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Parameters</h5>
+      <table class="jd-tagtable">
+        
+        <tr>
+          <td class="jd-tagparamname">callback</td>
+          <td class="jd-tagdescr">Callback method invoked when the snapshot is taken.
+</td>
+        </tr>
+        
+      </table>
+  </div>
+
+    </div>
+</div>
+
+
+<A NAME="snapshot(com.google.android.m4b.maps.GoogleMap.SnapshotReadyCallback, android.graphics.Bitmap)"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        final
+        
+        
+        void
+      </span>
+      <span class="sympad"><strong>snapshot</strong></span>
+      <span class="params">(<span class="nowrap"><a href="../../../../../com/google/android/m4b/maps/GoogleMap.SnapshotReadyCallback.html">GoogleMap.SnapshotReadyCallback</a> <i>callback</i></span>, <span class="nowrap">Bitmap <i>bitmap</i></span>)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Takes a snapshot of the map.
+
+ <p>This method is equivalent to <code><a href="../../../../../com/google/android/m4b/maps/GoogleMap.html#snapshot(com.google.android.m4b.maps.GoogleMap.SnapshotReadyCallback)">snapshot(SnapshotReadyCallback)</a></code> but lets you
+ provide a preallocated Bitmap. If the bitmap does not match the current dimensions of
+ the map, another bitmap will be allocated that fits the map's dimensions.
+
+ <p>Although in most cases the object passed by the callback method is the same as the one
+ given in the parameter to this method, in some cases the returned object can be different
+ (e.g., if the view's dimensions have changed by the time the snapshot is actually taken).
+ Thus, you should only trust the content of the bitmap passed by the callback method.</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Parameters</h5>
+      <table class="jd-tagtable">
+        
+        <tr>
+          <td class="jd-tagparamname">callback</td>
+          <td class="jd-tagdescr">Callback method invoked when the snapshot is taken.</td>
+        </tr>
+        
+        <tr>
+          <td class="jd-tagparamname">bitmap</td>
+          <td class="jd-tagdescr">A preallocated bitmap. If <code>null</code>, behaves like
+     <code><a href="../../../../../com/google/android/m4b/maps/GoogleMap.html#snapshot(com.google.android.m4b.maps.GoogleMap.SnapshotReadyCallback)">snapshot(SnapshotReadyCallback)</a></code>.
+</td>
+        </tr>
+        
+      </table>
+  </div>
+
+    </div>
+</div>
+
+
+<A NAME="stopAnimation()"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        final
+        
+        
+        void
+      </span>
+      <span class="sympad"><strong>stopAnimation</strong></span>
+      <span class="params">()</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Stops the camera animation if there is one in progress. When the method is called, the camera
+ stops moving immediately and remains in that position.
+</p></div>
+
+    </div>
+</div>
+
+
+</section>
+
+
+
+<!-- ========= METHOD DETAIL ======== -->
+
+
+
+<!-- ========= END OF CLASS DATA ========= -->
+<A NAME="navbar_top"></A>
+
+</div> <!-- jd-content -->
+
+</body>
+</html>

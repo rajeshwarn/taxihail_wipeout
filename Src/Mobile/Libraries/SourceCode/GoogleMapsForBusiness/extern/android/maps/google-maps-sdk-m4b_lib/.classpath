@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="gen"/>
+	<classpathentry exported="true" kind="lib" path="libs/maps_m4b.jar" sourcepath="libs/maps_m4b-src.zip"/>
+	<classpathentry exported="true" kind="lib" path="libs/guava-jdk5-14.0.1.jar"/>
+	<classpathentry kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
+	<classpathentry kind="output" path="bin/classes"/>
+</classpath>

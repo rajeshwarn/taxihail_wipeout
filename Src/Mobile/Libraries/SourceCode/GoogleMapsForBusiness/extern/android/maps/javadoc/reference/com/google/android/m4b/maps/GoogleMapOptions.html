@@ -1,0 +1,1782 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<html devsite>
+  <head>
+    <title>GoogleMapOptions</title>
+    <meta name="project_path" value="/maps/documentation/business/_project.yaml" />
+    <meta name="book_path" value="/maps/documentation/business/_book.yaml" />
+    <link rel="stylesheet" href="/+/css/plus.css" />
+  </head>
+
+<body class="">
+<style>
+
+/* Heading for "Parameters", "See Also", etc., in details sections */
+h4.jd-details-title {
+  font-size: 1.15em;
+  margin: 1.5em 0 .6em 0em;
+  padding: 0em 8em 0em 2.5em;
+  text-indent: -2em;
+  background-color: #E9E9E9; /* #DEEAFA */
+}
+h4 .params {
+  font-size:.9em;
+  font-weight:normal;
+}
+h5.jd-tagtitle {
+  margin: 0 0 .25em 1em;
+  font-size: 1em;
+  font-weight: bold;
+}
+/* For the tagdata blocks that make up the detailed description */
+.jd-details-descr {
+  padding: 0;
+  margin: .5em 6px;
+}
+.jd-tagdescr p {
+  margin-bottom: .5em;
+  padding: 0;
+}
+.jd-tagdata {
+  margin-left: .5em 1em .5em .5em;
+}
+/* .jd-typecol should be set to minimum width in place of width="1%" */
+.jd-sumtable, .jd-tagtable {
+  border: none !important;
+  padding: 0px 6px 0px 0px !important;
+  margin-left: 2em !important;
+  margin-bottom: 0.9em;
+}
+.jd-returns {
+  margin-left: 2.1em !important;  /* 0.1em larger than .jd-tagtable */
+}
+.jd-typecol, .jd-linkcol, .jd-enumtype {
+  /* border: none !important; */
+  vertical-align: middle !important;
+  padding: 0px 6px 0px 6px !important;
+}
+.jd-hang {
+  padding-left: 2em;
+  text-indent: -2em;
+}
+.jd-typecol, .jd-paramname, .jd-enumtype {
+  width: 1%;         /* What better way to set min. width? (here and below) */
+}
+.jd-typecol {
+  white-space: nowrap;
+}
+.jd-tagparamname, .jd-tagthrowstype {
+  border: none !important;
+  width: 1%;
+  padding: 0px 6px 0px 0px !important;
+}
+.jd-tagparamname {
+  font-style: italic;
+}
+.jd-tagdescr {
+  border: none !important;
+  padding: 0px 6px 0px 6px !important;
+}
+.jd-sumheading {
+  border: none !important;
+  padding: 0 !important;
+  background-color: #FFF;
+  color: #000;
+}
+#jd-header {
+  margin-bottom: 1em;
+}
+/* extra space between end of method name and open-paren */
+.sympad {
+  margin-right: 2px;
+}
+/* keep method parameter type on the same line with parameter name */
+.nowrap {
+  white-space: nowrap;
+}
+</style>
+
+<div id="api-info-block">
+
+
+
+  
+   
+  
+  
+  
+  
+
+  
+   
+  
+  
+   
+  
+  
+  
+
+  
+  
+   
+  
+  
+  
+
+
+<div class="api-level">
+  
+
+
+  
+  
+
+</div>
+</div><!-- end api-info-block -->
+
+
+<!-- ======== START OF CLASS DATA ======== -->
+
+
+
+<div id="jd-header">
+  public  final   class
+  <b>GoogleMapOptions</b>
+</div><!-- end jd-header -->
+
+
+<div id="naMessage"></div>
+
+<div id="jd-content" class="api apilevel-">
+
+
+
+
+
+
+
+<div class="jd-descr">
+
+
+<p>Defines configuration GoogleMapOptions for a <code><a href="../../../../../com/google/android/m4b/maps/GoogleMap.html">GoogleMap</a></code>. These options can be used when
+ adding a map to your application programmatically (as opposed to via XML). If you are using a
+ <code><a href="../../../../../com/google/android/m4b/maps/MapFragment.html">MapFragment</a></code>, you can pass these options in using the static factory method
+ <code><a href="../../../../../com/google/android/m4b/maps/MapFragment.html#newInstance(com.google.android.m4b.maps.GoogleMapOptions)">newInstance(GoogleMapOptions)</a></code>. If you are using a <code><a href="../../../../../com/google/android/m4b/maps/MapView.html">MapView</a></code>, you can
+ pass these options in using the constructor <code><a href="../../../../../com/google/android/m4b/maps/MapView.html#MapView(android.content.Context, com.google.android.m4b.maps.GoogleMapOptions)">MapView(Context, GoogleMapOptions)</a></code>.
+ <p>
+ If you add a map using XML, then you can apply these options using custom XML tags.
+</p>
+
+
+
+</div><!-- jd-descr -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="jd-descr">
+
+
+<section id="xml-attributes">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- =========== ENUM CONSTANT SUMMARY =========== -->
+<section id="inhconstants">
+  <h3>Inherited Constant Summary</h3>
+  
+    
+  
+    
+      <div class="expandable api apilevel-">
+        <span class="showalways">
+          From interface
+          android.os.Parcelable
+        </span>
+        <div id="inherited-constants-android.os.Parcelable">
+          <div id="inherited-constants-android.os.Parcelable-list"
+                class="jd-inheritedlinks">
+          </div>
+          <div id="inherited-constants-android.os.Parcelable-summary">
+            <table class="jd-sumtable-expando">
+              
+
+    
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">int</td>
+        <td class="jd-linkcol">CONTENTS_FILE_DESCRIPTOR</td>
+        <td class="jd-descrcol" width="100%"></td>
+    </tr>
+    
+    
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">int</td>
+        <td class="jd-linkcol">PARCELABLE_WRITE_RETURN_VALUE</td>
+        <td class="jd-descrcol" width="100%"></td>
+    </tr>
+    
+    
+
+            </table>
+          </div>
+        </div>
+      </div>
+    
+  
+    
+      <div class="expandable api apilevel-">
+        <span class="showalways">
+          From interface
+          com.google.android.gms.common.internal.safeparcel.SafeParcelable
+        </span>
+        <div id="inherited-constants-com.google.android.gms.common.internal.safeparcel.SafeParcelable">
+          <div id="inherited-constants-com.google.android.gms.common.internal.safeparcel.SafeParcelable-list"
+                class="jd-inheritedlinks">
+          </div>
+          <div id="inherited-constants-com.google.android.gms.common.internal.safeparcel.SafeParcelable-summary">
+            <table class="jd-sumtable-expando">
+              
+
+    
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">String</td>
+        <td class="jd-linkcol">NULL</td>
+        <td class="jd-descrcol" width="100%"></td>
+    </tr>
+    
+    
+
+            </table>
+          </div>
+        </div>
+      </div>
+    
+  
+</section>
+
+
+
+
+<!-- =========== FIELD SUMMARY =========== -->
+<section id="lfields"><h3>Field Summary</h3>
+  <table class="jd-sumtable">
+    
+
+    
+      <tr class="alt-color api apilevel-" >
+          <td class="jd-typecol">
+          public
+          static
+          final
+          GoogleMapOptionsCreator</td>
+          <td class="jd-linkcol"><a href="../../../../../com/google/android/m4b/maps/GoogleMapOptions.html#CREATOR">CREATOR</a></td>
+          <td class="jd-descrcol" width="100%"></td>
+      </tr>
+      
+    
+
+  </table>
+</section>
+
+
+
+
+
+
+
+<!-- ======== CONSTRUCTOR SUMMARY ======== -->
+<section>
+  <h3>Public Constructor Summary</h3>
+  <table id="pubctors" class="jd-sumtable">
+  
+
+
+    
+    <tr class="alt-color api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            
+            
+            
+            
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../com/google/android/m4b/maps/GoogleMapOptions.html#GoogleMapOptions()">GoogleMapOptions</a></span>()
+            
+          </div>
+      </td>
+    </tr>
+
+
+
+  </table>
+</section>
+
+
+
+
+
+
+
+<!-- ========== METHOD SUMMARY =========== -->
+<section>
+  <h3>Public Method Summary</h3>
+  <table id="pubmethods" class="jd-sumtable">
+  
+
+
+    
+    <tr class="alt-color api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            
+            
+            
+            <a href="../../../../../com/google/android/m4b/maps/GoogleMapOptions.html">GoogleMapOptions</a>
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../com/google/android/m4b/maps/GoogleMapOptions.html#camera(com.google.android.m4b.maps.model.CameraPosition)">camera</a></span>(<span class="nowrap"><a href="../../../../../com/google/android/m4b/maps/model/CameraPosition.html">CameraPosition</a> <i>camera</i></span>)
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class=" api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            
+            
+            
+            <a href="../../../../../com/google/android/m4b/maps/GoogleMapOptions.html">GoogleMapOptions</a>
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../com/google/android/m4b/maps/GoogleMapOptions.html#compassEnabled(boolean)">compassEnabled</a></span>(<span class="nowrap">boolean <i>enabled</i></span>)
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class="alt-color api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            
+            static
+            
+            <a href="../../../../../com/google/android/m4b/maps/GoogleMapOptions.html">GoogleMapOptions</a>
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../com/google/android/m4b/maps/GoogleMapOptions.html#createFromAttributes(android.content.Context, android.util.AttributeSet)">createFromAttributes</a></span>(<span class="nowrap">Context <i>context</i></span>, <span class="nowrap">AttributeSet <i>attrs</i></span>)
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class=" api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            
+            
+            
+            int
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../com/google/android/m4b/maps/GoogleMapOptions.html#describeContents()">describeContents</a></span>()
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class="alt-color api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            
+            
+            
+            <a href="../../../../../com/google/android/m4b/maps/model/CameraPosition.html">CameraPosition</a>
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../com/google/android/m4b/maps/GoogleMapOptions.html#getCamera()">getCamera</a></span>()
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class=" api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            
+            
+            
+            Boolean
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../com/google/android/m4b/maps/GoogleMapOptions.html#getCompassEnabled()">getCompassEnabled</a></span>()
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class="alt-color api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            
+            
+            
+            int
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../com/google/android/m4b/maps/GoogleMapOptions.html#getMapType()">getMapType</a></span>()
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class=" api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            
+            
+            
+            Boolean
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../com/google/android/m4b/maps/GoogleMapOptions.html#getRotateGesturesEnabled()">getRotateGesturesEnabled</a></span>()
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class="alt-color api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            
+            
+            
+            Boolean
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../com/google/android/m4b/maps/GoogleMapOptions.html#getScrollGesturesEnabled()">getScrollGesturesEnabled</a></span>()
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class=" api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            
+            
+            
+            Boolean
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../com/google/android/m4b/maps/GoogleMapOptions.html#getTiltGesturesEnabled()">getTiltGesturesEnabled</a></span>()
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class="alt-color api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            
+            
+            
+            Boolean
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../com/google/android/m4b/maps/GoogleMapOptions.html#getUseViewLifecycleInFragment()">getUseViewLifecycleInFragment</a></span>()
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class=" api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            
+            
+            
+            Boolean
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../com/google/android/m4b/maps/GoogleMapOptions.html#getZOrderOnTop()">getZOrderOnTop</a></span>()
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class="alt-color api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            
+            
+            
+            Boolean
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../com/google/android/m4b/maps/GoogleMapOptions.html#getZoomControlsEnabled()">getZoomControlsEnabled</a></span>()
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class=" api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            
+            
+            
+            Boolean
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../com/google/android/m4b/maps/GoogleMapOptions.html#getZoomGesturesEnabled()">getZoomGesturesEnabled</a></span>()
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class="alt-color api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            
+            
+            
+            <a href="../../../../../com/google/android/m4b/maps/GoogleMapOptions.html">GoogleMapOptions</a>
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../com/google/android/m4b/maps/GoogleMapOptions.html#mapType(int)">mapType</a></span>(<span class="nowrap">int <i>mapType</i></span>)
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class=" api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            
+            
+            
+            <a href="../../../../../com/google/android/m4b/maps/GoogleMapOptions.html">GoogleMapOptions</a>
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../com/google/android/m4b/maps/GoogleMapOptions.html#rotateGesturesEnabled(boolean)">rotateGesturesEnabled</a></span>(<span class="nowrap">boolean <i>enabled</i></span>)
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class="alt-color api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            
+            
+            
+            <a href="../../../../../com/google/android/m4b/maps/GoogleMapOptions.html">GoogleMapOptions</a>
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../com/google/android/m4b/maps/GoogleMapOptions.html#scrollGesturesEnabled(boolean)">scrollGesturesEnabled</a></span>(<span class="nowrap">boolean <i>enabled</i></span>)
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class=" api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            
+            
+            
+            <a href="../../../../../com/google/android/m4b/maps/GoogleMapOptions.html">GoogleMapOptions</a>
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../com/google/android/m4b/maps/GoogleMapOptions.html#tiltGesturesEnabled(boolean)">tiltGesturesEnabled</a></span>(<span class="nowrap">boolean <i>enabled</i></span>)
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class="alt-color api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            
+            
+            
+            <a href="../../../../../com/google/android/m4b/maps/GoogleMapOptions.html">GoogleMapOptions</a>
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../com/google/android/m4b/maps/GoogleMapOptions.html#useViewLifecycleInFragment(boolean)">useViewLifecycleInFragment</a></span>(<span class="nowrap">boolean <i>useViewLifecycleInFragment</i></span>)
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class=" api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            
+            
+            
+            void
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../com/google/android/m4b/maps/GoogleMapOptions.html#writeToParcel(android.os.Parcel, int)">writeToParcel</a></span>(<span class="nowrap">Parcel <i>out</i></span>, <span class="nowrap">int <i>flags</i></span>)
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class="alt-color api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            
+            
+            
+            <a href="../../../../../com/google/android/m4b/maps/GoogleMapOptions.html">GoogleMapOptions</a>
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../com/google/android/m4b/maps/GoogleMapOptions.html#zOrderOnTop(boolean)">zOrderOnTop</a></span>(<span class="nowrap">boolean <i>zOrderOnTop</i></span>)
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class=" api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            
+            
+            
+            <a href="../../../../../com/google/android/m4b/maps/GoogleMapOptions.html">GoogleMapOptions</a>
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../com/google/android/m4b/maps/GoogleMapOptions.html#zoomControlsEnabled(boolean)">zoomControlsEnabled</a></span>(<span class="nowrap">boolean <i>enabled</i></span>)
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class="alt-color api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            
+            
+            
+            <a href="../../../../../com/google/android/m4b/maps/GoogleMapOptions.html">GoogleMapOptions</a>
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../com/google/android/m4b/maps/GoogleMapOptions.html#zoomGesturesEnabled(boolean)">zoomGesturesEnabled</a></span>(<span class="nowrap">boolean <i>enabled</i></span>)
+            
+          </div>
+      </td>
+    </tr>
+
+
+
+  </table>
+</section>
+
+
+
+
+
+
+<!-- ========== METHOD SUMMARY =========== -->
+</section><!--xml-attributes-->
+<!--subcount(class.inners) || subcount(class.attrs) || ...-->
+</div><!-- class="jd-descr" (end of Summary) -->
+
+<!-- Details -->
+
+
+
+
+
+
+
+
+<!-- XML Attributes -->
+
+
+<!-- Enum Values -->
+
+
+<!-- Constants -->
+
+
+<!-- Fields -->
+
+
+<!-- ========= FIELD DETAIL ======== -->
+<section id="fields">
+  <h2>Fields</h2>
+  
+
+
+
+<A NAME="CREATOR"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        static
+        final
+        
+        
+          GoogleMapOptionsCreator
+        
+      </span>
+        <strong>CREATOR</strong>
+    </h4>
+      <div class="api-level">
+        
+
+
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p></p></div>
+
+    
+    </div>
+</div>
+
+
+</section>
+
+
+<!-- Public ctors -->
+
+
+<!-- ========= CONSTRUCTOR DETAIL ======== -->
+<section id="public-constructors">
+  <h2>Public Constructors</h2>
+  
+
+
+<A NAME="GoogleMapOptions()"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        
+        
+        
+        
+      </span>
+      <span class="sympad"><strong>GoogleMapOptions</strong></span>
+      <span class="params">()</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Creates a new GoogleMapOptions object.
+</p></div>
+
+    </div>
+</div>
+
+
+</section>
+
+
+
+<!-- ========= CONSTRUCTOR DETAIL ======== -->
+<!-- Protected ctors -->
+
+
+
+<!-- ========= METHOD DETAIL ======== -->
+<!-- Public methdos -->
+
+
+<section id="public-methods">
+  <h2>Public Methods</h2>
+  
+
+
+<A NAME="camera(com.google.android.m4b.maps.model.CameraPosition)"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        
+        
+        
+        <a href="../../../../../com/google/android/m4b/maps/GoogleMapOptions.html">GoogleMapOptions</a>
+      </span>
+      <span class="sympad"><strong>camera</strong></span>
+      <span class="params">(<span class="nowrap"><a href="../../../../../com/google/android/m4b/maps/model/CameraPosition.html">CameraPosition</a> <i>camera</i></span>)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Specifies a the initial camera position for the map.
+</p></div>
+
+    </div>
+</div>
+
+
+<A NAME="compassEnabled(boolean)"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        
+        
+        
+        <a href="../../../../../com/google/android/m4b/maps/GoogleMapOptions.html">GoogleMapOptions</a>
+      </span>
+      <span class="sympad"><strong>compassEnabled</strong></span>
+      <span class="params">(<span class="nowrap">boolean <i>enabled</i></span>)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Specifies whether the compass should be enabled. See
+ <code><a href="../../../../../com/google/android/m4b/maps/UiSettings.html#setCompassEnabled(boolean)">setCompassEnabled(boolean)</a></code> for more details. The default value is
+ <code>true</code>.
+</p></div>
+
+    </div>
+</div>
+
+
+<A NAME="createFromAttributes(android.content.Context, android.util.AttributeSet)"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        static
+        
+        
+        
+        <a href="../../../../../com/google/android/m4b/maps/GoogleMapOptions.html">GoogleMapOptions</a>
+      </span>
+      <span class="sympad"><strong>createFromAttributes</strong></span>
+      <span class="params">(<span class="nowrap">Context <i>context</i></span>, <span class="nowrap">AttributeSet <i>attrs</i></span>)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Creates a GoogleMapsOptions from the attribute set
+</p></div>
+
+    </div>
+</div>
+
+
+<A NAME="describeContents()"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        
+        
+        
+        int
+      </span>
+      <span class="sympad"><strong>describeContents</strong></span>
+      <span class="params">()</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p></p></div>
+
+    </div>
+</div>
+
+
+<A NAME="getCamera()"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        
+        
+        
+        <a href="../../../../../com/google/android/m4b/maps/model/CameraPosition.html">CameraPosition</a>
+      </span>
+      <span class="sympad"><strong>getCamera</strong></span>
+      <span class="params">()</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p></p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Returns</h5>
+      <ul class="nolist jd-returns"><li>the camera option, or null if unspecified. </li></ul>
+  </div>
+
+    </div>
+</div>
+
+
+<A NAME="getCompassEnabled()"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        
+        
+        
+        Boolean
+      </span>
+      <span class="sympad"><strong>getCompassEnabled</strong></span>
+      <span class="params">()</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p></p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Returns</h5>
+      <ul class="nolist jd-returns"><li>the compassEnabled option, or null if unspecified. </li></ul>
+  </div>
+
+    </div>
+</div>
+
+
+<A NAME="getMapType()"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        
+        
+        
+        int
+      </span>
+      <span class="sympad"><strong>getMapType</strong></span>
+      <span class="params">()</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p></p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Returns</h5>
+      <ul class="nolist jd-returns"><li>the mapType option, or -1 if unspecified. </li></ul>
+  </div>
+
+    </div>
+</div>
+
+
+<A NAME="getRotateGesturesEnabled()"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        
+        
+        
+        Boolean
+      </span>
+      <span class="sympad"><strong>getRotateGesturesEnabled</strong></span>
+      <span class="params">()</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p></p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Returns</h5>
+      <ul class="nolist jd-returns"><li>the rotateGesturesEnabled option, or null if unspecified. </li></ul>
+  </div>
+
+    </div>
+</div>
+
+
+<A NAME="getScrollGesturesEnabled()"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        
+        
+        
+        Boolean
+      </span>
+      <span class="sympad"><strong>getScrollGesturesEnabled</strong></span>
+      <span class="params">()</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p></p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Returns</h5>
+      <ul class="nolist jd-returns"><li>the scrollGesturesEnabled option, or null if unspecified. </li></ul>
+  </div>
+
+    </div>
+</div>
+
+
+<A NAME="getTiltGesturesEnabled()"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        
+        
+        
+        Boolean
+      </span>
+      <span class="sympad"><strong>getTiltGesturesEnabled</strong></span>
+      <span class="params">()</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p></p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Returns</h5>
+      <ul class="nolist jd-returns"><li>the tiltGesturesEnabled option, or null if unspecified. </li></ul>
+  </div>
+
+    </div>
+</div>
+
+
+<A NAME="getUseViewLifecycleInFragment()"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        
+        
+        
+        Boolean
+      </span>
+      <span class="sympad"><strong>getUseViewLifecycleInFragment</strong></span>
+      <span class="params">()</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p></p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Returns</h5>
+      <ul class="nolist jd-returns"><li>the useViewLifecycleInFragment option, or null if unspecified. </li></ul>
+  </div>
+
+    </div>
+</div>
+
+
+<A NAME="getZOrderOnTop()"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        
+        
+        
+        Boolean
+      </span>
+      <span class="sympad"><strong>getZOrderOnTop</strong></span>
+      <span class="params">()</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p></p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Returns</h5>
+      <ul class="nolist jd-returns"><li>the zOrderOnTop option, or null if unspecified. </li></ul>
+  </div>
+
+    </div>
+</div>
+
+
+<A NAME="getZoomControlsEnabled()"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        
+        
+        
+        Boolean
+      </span>
+      <span class="sympad"><strong>getZoomControlsEnabled</strong></span>
+      <span class="params">()</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p></p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Returns</h5>
+      <ul class="nolist jd-returns"><li>the zoomControlsEnabled option, or null if unspecified. </li></ul>
+  </div>
+
+    </div>
+</div>
+
+
+<A NAME="getZoomGesturesEnabled()"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        
+        
+        
+        Boolean
+      </span>
+      <span class="sympad"><strong>getZoomGesturesEnabled</strong></span>
+      <span class="params">()</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p></p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Returns</h5>
+      <ul class="nolist jd-returns"><li>the zoomGesturesEnabled option, or null if unspecified. </li></ul>
+  </div>
+
+    </div>
+</div>
+
+
+<A NAME="mapType(int)"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        
+        
+        
+        <a href="../../../../../com/google/android/m4b/maps/GoogleMapOptions.html">GoogleMapOptions</a>
+      </span>
+      <span class="sympad"><strong>mapType</strong></span>
+      <span class="params">(<span class="nowrap">int <i>mapType</i></span>)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Specifies a change to the initial map type.
+</p></div>
+
+    </div>
+</div>
+
+
+<A NAME="rotateGesturesEnabled(boolean)"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        
+        
+        
+        <a href="../../../../../com/google/android/m4b/maps/GoogleMapOptions.html">GoogleMapOptions</a>
+      </span>
+      <span class="sympad"><strong>rotateGesturesEnabled</strong></span>
+      <span class="params">(<span class="nowrap">boolean <i>enabled</i></span>)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Specifies whether rotate gestures should be enabled. See
+ <code><a href="../../../../../com/google/android/m4b/maps/UiSettings.html#setRotateGesturesEnabled(boolean)">setRotateGesturesEnabled(boolean)</a></code> for more details. The default value
+ is <code>true</code>.
+</p></div>
+
+    </div>
+</div>
+
+
+<A NAME="scrollGesturesEnabled(boolean)"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        
+        
+        
+        <a href="../../../../../com/google/android/m4b/maps/GoogleMapOptions.html">GoogleMapOptions</a>
+      </span>
+      <span class="sympad"><strong>scrollGesturesEnabled</strong></span>
+      <span class="params">(<span class="nowrap">boolean <i>enabled</i></span>)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Specifies whether scroll gestures should be enabled. See
+ <code><a href="../../../../../com/google/android/m4b/maps/UiSettings.html#setScrollGesturesEnabled(boolean)">setScrollGesturesEnabled(boolean)</a></code> for more details. The default value
+ is <code>true</code>.
+</p></div>
+
+    </div>
+</div>
+
+
+<A NAME="tiltGesturesEnabled(boolean)"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        
+        
+        
+        <a href="../../../../../com/google/android/m4b/maps/GoogleMapOptions.html">GoogleMapOptions</a>
+      </span>
+      <span class="sympad"><strong>tiltGesturesEnabled</strong></span>
+      <span class="params">(<span class="nowrap">boolean <i>enabled</i></span>)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Specifies whether tilt gestures should be enabled. See
+ <code><a href="../../../../../com/google/android/m4b/maps/UiSettings.html#setTiltGesturesEnabled(boolean)">setTiltGesturesEnabled(boolean)</a></code> for more details. The default value is
+ <code>true</code>.
+</p></div>
+
+    </div>
+</div>
+
+
+<A NAME="useViewLifecycleInFragment(boolean)"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        
+        
+        
+        <a href="../../../../../com/google/android/m4b/maps/GoogleMapOptions.html">GoogleMapOptions</a>
+      </span>
+      <span class="sympad"><strong>useViewLifecycleInFragment</strong></span>
+      <span class="params">(<span class="nowrap">boolean <i>useViewLifecycleInFragment</i></span>)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>When using a <code><a href="../../../../../com/google/android/m4b/maps/MapFragment.html">MapFragment</a></code>, this flag specifies whether the lifecycle of the map
+ should be tied to the fragment's view or the fragment itself. The default value is
+ <code>false</code>, tying the lifecycle of the map to the fragment.
+ <p>
+ Using the lifecycle of the fragment allows faster rendering of the map when the fragment
+ is detached and reattached, because the underlying GL context is preserved. This has the
+ cost that detaching the fragment, but not destroying it, will not release memory used by
+ the map.
+ <p>
+ Using the lifecycle of a fragment's view means that a map is not reused when the fragment
+ is detached and reattached. This will cause the map to re-render from scratch, which can
+ take a few seconds. It also means that while a fragment is detached, and therefore has no
+ view, all <code><a href="../../../../../com/google/android/m4b/maps/GoogleMap.html">GoogleMap</a></code> methods will throw NullPointerException.
+</p></div>
+
+    </div>
+</div>
+
+
+<A NAME="writeToParcel(android.os.Parcel, int)"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        
+        
+        
+        void
+      </span>
+      <span class="sympad"><strong>writeToParcel</strong></span>
+      <span class="params">(<span class="nowrap">Parcel <i>out</i></span>, <span class="nowrap">int <i>flags</i></span>)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p></p></div>
+
+    </div>
+</div>
+
+
+<A NAME="zOrderOnTop(boolean)"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        
+        
+        
+        <a href="../../../../../com/google/android/m4b/maps/GoogleMapOptions.html">GoogleMapOptions</a>
+      </span>
+      <span class="sympad"><strong>zOrderOnTop</strong></span>
+      <span class="params">(<span class="nowrap">boolean <i>zOrderOnTop</i></span>)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Control whether the map view's surface is placed on top of its window. See
+ <code><a href="null#setZOrderOnTop(boolean)">setZOrderOnTop(boolean)</a></code> for more details. Note that this
+ will cover all other views that could appear on the map (e.g., the zoom controls, the my
+ location button).
+</p></div>
+
+    </div>
+</div>
+
+
+<A NAME="zoomControlsEnabled(boolean)"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        
+        
+        
+        <a href="../../../../../com/google/android/m4b/maps/GoogleMapOptions.html">GoogleMapOptions</a>
+      </span>
+      <span class="sympad"><strong>zoomControlsEnabled</strong></span>
+      <span class="params">(<span class="nowrap">boolean <i>enabled</i></span>)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Specifies whether the zoom controls should be enabled. See
+ <code><a href="../../../../../com/google/android/m4b/maps/UiSettings.html#setZoomControlsEnabled(boolean)">setZoomControlsEnabled(boolean)</a></code> for more details. The default value is
+ <code>true</code>.
+</p></div>
+
+    </div>
+</div>
+
+
+<A NAME="zoomGesturesEnabled(boolean)"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        
+        
+        
+        <a href="../../../../../com/google/android/m4b/maps/GoogleMapOptions.html">GoogleMapOptions</a>
+      </span>
+      <span class="sympad"><strong>zoomGesturesEnabled</strong></span>
+      <span class="params">(<span class="nowrap">boolean <i>enabled</i></span>)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Specifies whether zoom gestures should be enabled. See
+ <code><a href="../../../../../com/google/android/m4b/maps/UiSettings.html#setZoomGesturesEnabled(boolean)">setZoomGesturesEnabled(boolean)</a></code> for more details. The default value is
+ <code>true</code>.
+</p></div>
+
+    </div>
+</div>
+
+
+</section>
+
+
+
+<!-- ========= METHOD DETAIL ======== -->
+
+
+
+<!-- ========= END OF CLASS DATA ========= -->
+<A NAME="navbar_top"></A>
+
+</div> <!-- jd-content -->
+
+</body>
+</html>

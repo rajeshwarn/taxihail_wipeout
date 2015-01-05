@@ -1,0 +1,1518 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<html devsite>
+  <head>
+    <title>Polygon</title>
+    <meta name="project_path" value="/maps/documentation/business/_project.yaml" />
+    <meta name="book_path" value="/maps/documentation/business/_book.yaml" />
+    <link rel="stylesheet" href="/+/css/plus.css" />
+  </head>
+
+<body class="">
+<style>
+
+/* Heading for "Parameters", "See Also", etc., in details sections */
+h4.jd-details-title {
+  font-size: 1.15em;
+  margin: 1.5em 0 .6em 0em;
+  padding: 0em 8em 0em 2.5em;
+  text-indent: -2em;
+  background-color: #E9E9E9; /* #DEEAFA */
+}
+h4 .params {
+  font-size:.9em;
+  font-weight:normal;
+}
+h5.jd-tagtitle {
+  margin: 0 0 .25em 1em;
+  font-size: 1em;
+  font-weight: bold;
+}
+/* For the tagdata blocks that make up the detailed description */
+.jd-details-descr {
+  padding: 0;
+  margin: .5em 6px;
+}
+.jd-tagdescr p {
+  margin-bottom: .5em;
+  padding: 0;
+}
+.jd-tagdata {
+  margin-left: .5em 1em .5em .5em;
+}
+/* .jd-typecol should be set to minimum width in place of width="1%" */
+.jd-sumtable, .jd-tagtable {
+  border: none !important;
+  padding: 0px 6px 0px 0px !important;
+  margin-left: 2em !important;
+  margin-bottom: 0.9em;
+}
+.jd-returns {
+  margin-left: 2.1em !important;  /* 0.1em larger than .jd-tagtable */
+}
+.jd-typecol, .jd-linkcol, .jd-enumtype {
+  /* border: none !important; */
+  vertical-align: middle !important;
+  padding: 0px 6px 0px 6px !important;
+}
+.jd-hang {
+  padding-left: 2em;
+  text-indent: -2em;
+}
+.jd-typecol, .jd-paramname, .jd-enumtype {
+  width: 1%;         /* What better way to set min. width? (here and below) */
+}
+.jd-typecol {
+  white-space: nowrap;
+}
+.jd-tagparamname, .jd-tagthrowstype {
+  border: none !important;
+  width: 1%;
+  padding: 0px 6px 0px 0px !important;
+}
+.jd-tagparamname {
+  font-style: italic;
+}
+.jd-tagdescr {
+  border: none !important;
+  padding: 0px 6px 0px 6px !important;
+}
+.jd-sumheading {
+  border: none !important;
+  padding: 0 !important;
+  background-color: #FFF;
+  color: #000;
+}
+#jd-header {
+  margin-bottom: 1em;
+}
+/* extra space between end of method name and open-paren */
+.sympad {
+  margin-right: 2px;
+}
+/* keep method parameter type on the same line with parameter name */
+.nowrap {
+  white-space: nowrap;
+}
+</style>
+
+<div id="api-info-block">
+
+
+
+  
+   
+  
+  
+  
+  
+
+
+<div class="api-level">
+  
+
+
+  
+  
+
+</div>
+</div><!-- end api-info-block -->
+
+
+<!-- ======== START OF CLASS DATA ======== -->
+
+
+
+<div id="jd-header">
+  public  final   class
+  <b>Polygon</b>
+</div><!-- end jd-header -->
+
+
+<div id="naMessage"></div>
+
+<div id="jd-content" class="api apilevel-">
+
+
+
+
+
+
+
+<div class="jd-descr">
+
+
+<p>A polygon on the earth's surface. A polygon can be convex or concave, it may span the 180
+ meridian and it can have holes that are not filled in. It has the following properties:
+ <p>
+ <dl>
+ <dt>Outline</dt>
+ <dd>The outline is specified by a list of vertices in clockwise or counterclockwise order. It is
+ not necessary for the start and end points to coincide; if they do not, the polygon will be
+ automatically closed. Line segments are drawn between consecutive points in the shorter of the
+ two directions (east or west).
+ <dt>Holes</dt>
+ <dd>A hole is a region inside the polygon that is not filled. A hole is specified in exactly the
+ same way as the outline. A hole must be fully contained within the outline. Multiple holes can be
+ specified, however overlapping holes are not supported.
+ <dt>Stroke Width</dt>
+ <dd>Line segment width in screen pixels. The width is constant and independent of the camera's
+ zoom level. The default value is 10.</dd>
+ <dt>Stroke Color</dt>
+ <dd>Line segment color in ARGB format, the same format used by android.graphics.Color.
+ The default value is black (<code>0xff000000</code>).</dd>
+ <dt>Fill Color</dt>
+ <dd>Fill color in ARGB format, the same format used by android.graphics.Color. The
+ default value is transparent (<code>0x00000000</code>). If the polygon geometry is not specified
+ correctly (see above for Outline and Holes), then no fill will be drawn.</dd>
+ <dt>Z-Index</dt>
+ <dd>The order in which this polygon is drawn with respect to other overlays, including
+ <code><a href="../../../../../../com/google/android/m4b/maps/model/Polyline.html">Polyline</a></code>s, <code><a href="../../../../../../com/google/android/m4b/maps/model/Circle.html">Circle</a></code>s, <code><a href="../../../../../../com/google/android/m4b/maps/model/GroundOverlay.html">GroundOverlay</a></code>s and <code><a href="../../../../../../com/google/android/m4b/maps/model/TileOverlay.html">TileOverlay</a></code>s, but
+ not <code><a href="../../../../../../com/google/android/m4b/maps/model/Marker.html">Marker</a></code>s. An overlay with a larger z-index is drawn over overlays with
+ smaller z-indices. The order of overlays with the same z-index value is arbitrary.
+ The default is 0.</dd>
+ <dt>Visibility</dt>
+ <dd>Indicates if the polygon is visible or invisible, i.e., whether it is drawn on the map. An
+ invisible polygon is not drawn, but retains all of its other properties. The default is
+ <code>true</code>, i.e., visible.</dd>
+ <dt>Geodesic status</dt>
+ <dd>Indicates whether the segments of the polygon should be drawn as geodesics, as opposed to
+ straight lines on the Mercator projection. A geodesic is the shortest path between two points on
+ the Earth's surface. The geodesic curve is constructed assuming the Earth is a sphere</dd>
+ </dl>
+ <p>
+ Methods that modify a Polygon must be called on the main thread. If not, an
+ IllegalStateException will be thrown at runtime.
+ <h3>Example</h3>
+
+ <pre> <code>GoogleMap map;
+ // ... get a map.
+ // Add a triangle in the Gulf of Guinea
+ Polygon polygon = map.addPolygon(new PolygonOptions()
+     .add(new LatLng(0, 0), new LatLng(0, 5), new LatLng(3, 5), new LatLng(0, 0))
+     .strokeColor(Color.RED)
+     .fillColor(Color.BLUE));</code></pre>
+ <p>
+ <h3>Developer Guide</h3>
+ <p>
+ For more information, read the <a
+ href="https://developers.google.com/maps/documentation/android/shapes">Shapes</a>
+ developer guide.
+</p>
+
+
+
+</div><!-- jd-descr -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="jd-descr">
+
+
+<section id="xml-attributes">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- ========== METHOD SUMMARY =========== -->
+<section>
+  <h3>Public Method Summary</h3>
+  <table id="pubmethods" class="jd-sumtable">
+  
+
+
+    
+    <tr class="alt-color api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            
+            
+            
+            boolean
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../../com/google/android/m4b/maps/model/Polygon.html#equals(java.lang.Object)">equals</a></span>(<span class="nowrap">Object <i>other</i></span>)
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class=" api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            
+            
+            
+            int
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../../com/google/android/m4b/maps/model/Polygon.html#getFillColor()">getFillColor</a></span>()
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class="alt-color api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            
+            
+            
+            List&lt;List&lt;<a href="../../../../../../com/google/android/m4b/maps/model/LatLng.html">LatLng</a>&gt;&gt;
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../../com/google/android/m4b/maps/model/Polygon.html#getHoles()">getHoles</a></span>()
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class=" api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            
+            
+            
+            String
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../../com/google/android/m4b/maps/model/Polygon.html#getId()">getId</a></span>()
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class="alt-color api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            
+            
+            
+            List&lt;<a href="../../../../../../com/google/android/m4b/maps/model/LatLng.html">LatLng</a>&gt;
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../../com/google/android/m4b/maps/model/Polygon.html#getPoints()">getPoints</a></span>()
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class=" api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            
+            
+            
+            int
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../../com/google/android/m4b/maps/model/Polygon.html#getStrokeColor()">getStrokeColor</a></span>()
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class="alt-color api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            
+            
+            
+            float
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../../com/google/android/m4b/maps/model/Polygon.html#getStrokeWidth()">getStrokeWidth</a></span>()
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class=" api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            
+            
+            
+            float
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../../com/google/android/m4b/maps/model/Polygon.html#getZIndex()">getZIndex</a></span>()
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class="alt-color api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            
+            
+            
+            int
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../../com/google/android/m4b/maps/model/Polygon.html#hashCode()">hashCode</a></span>()
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class=" api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            
+            
+            
+            boolean
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../../com/google/android/m4b/maps/model/Polygon.html#isGeodesic()">isGeodesic</a></span>()
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class="alt-color api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            
+            
+            
+            boolean
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../../com/google/android/m4b/maps/model/Polygon.html#isVisible()">isVisible</a></span>()
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class=" api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            
+            
+            
+            void
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../../com/google/android/m4b/maps/model/Polygon.html#remove()">remove</a></span>()
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class="alt-color api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            
+            
+            
+            void
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../../com/google/android/m4b/maps/model/Polygon.html#setFillColor(int)">setFillColor</a></span>(<span class="nowrap">int <i>color</i></span>)
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class=" api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            
+            
+            
+            void
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../../com/google/android/m4b/maps/model/Polygon.html#setGeodesic(boolean)">setGeodesic</a></span>(<span class="nowrap">boolean <i>geodesic</i></span>)
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class="alt-color api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            
+            
+            
+            void
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../../com/google/android/m4b/maps/model/Polygon.html#setHoles(java.util.List<? extends java.util.List<com.google.android.m4b.maps.model.LatLng>>)">setHoles</a></span>(<span class="nowrap">List&lt;?&nbsp;extends&nbsp;List&lt;<a href="../../../../../../com/google/android/m4b/maps/model/LatLng.html">LatLng</a>&gt;&gt; <i>holes</i></span>)
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class=" api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            
+            
+            
+            void
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../../com/google/android/m4b/maps/model/Polygon.html#setPoints(java.util.List<com.google.android.m4b.maps.model.LatLng>)">setPoints</a></span>(<span class="nowrap">List&lt;<a href="../../../../../../com/google/android/m4b/maps/model/LatLng.html">LatLng</a>&gt; <i>points</i></span>)
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class="alt-color api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            
+            
+            
+            void
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../../com/google/android/m4b/maps/model/Polygon.html#setStrokeColor(int)">setStrokeColor</a></span>(<span class="nowrap">int <i>color</i></span>)
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class=" api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            
+            
+            
+            void
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../../com/google/android/m4b/maps/model/Polygon.html#setStrokeWidth(float)">setStrokeWidth</a></span>(<span class="nowrap">float <i>width</i></span>)
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class="alt-color api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            
+            
+            
+            void
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../../com/google/android/m4b/maps/model/Polygon.html#setVisible(boolean)">setVisible</a></span>(<span class="nowrap">boolean <i>visible</i></span>)
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class=" api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            
+            
+            
+            void
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../../com/google/android/m4b/maps/model/Polygon.html#setZIndex(float)">setZIndex</a></span>(<span class="nowrap">float <i>zIndex</i></span>)
+            
+          </div>
+      </td>
+    </tr>
+
+
+
+  </table>
+</section>
+
+
+
+
+
+
+<!-- ========== METHOD SUMMARY =========== -->
+</section><!--xml-attributes-->
+<!--subcount(class.inners) || subcount(class.attrs) || ...-->
+</div><!-- class="jd-descr" (end of Summary) -->
+
+<!-- Details -->
+
+
+
+
+
+
+
+
+<!-- XML Attributes -->
+
+
+<!-- Enum Values -->
+
+
+<!-- Constants -->
+
+
+<!-- Fields -->
+
+
+<!-- Public ctors -->
+
+
+
+<!-- ========= CONSTRUCTOR DETAIL ======== -->
+<!-- Protected ctors -->
+
+
+
+<!-- ========= METHOD DETAIL ======== -->
+<!-- Public methdos -->
+
+
+<section id="public-methods">
+  <h2>Public Methods</h2>
+  
+
+
+<A NAME="equals(java.lang.Object)"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        
+        
+        
+        boolean
+      </span>
+      <span class="sympad"><strong>equals</strong></span>
+      <span class="params">(<span class="nowrap">Object <i>other</i></span>)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p></p></div>
+
+    </div>
+</div>
+
+
+<A NAME="getFillColor()"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        
+        
+        
+        int
+      </span>
+      <span class="sympad"><strong>getFillColor</strong></span>
+      <span class="params">()</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Gets the fill color of this polygon.</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Returns</h5>
+      <ul class="nolist jd-returns"><li>the color in ARGB format.
+</li></ul>
+  </div>
+
+    </div>
+</div>
+
+
+<A NAME="getHoles()"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        
+        
+        
+        List&lt;List&lt;<a href="../../../../../../com/google/android/m4b/maps/model/LatLng.html">LatLng</a>&gt;&gt;
+      </span>
+      <span class="sympad"><strong>getHoles</strong></span>
+      <span class="params">()</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Returns a snapshot of the holes of this polygon at this time . The list returned is a copy of
+ the list of holes and so changes to the polygon's holes will not be reflected by this list,
+ nor will changes to this list be reflected by the polygon.
+</p></div>
+
+    </div>
+</div>
+
+
+<A NAME="getId()"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        
+        
+        
+        String
+      </span>
+      <span class="sympad"><strong>getId</strong></span>
+      <span class="params">()</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Gets this polygon's id.  The id will be unique amongst all Polygons on a map.
+</p></div>
+
+    </div>
+</div>
+
+
+<A NAME="getPoints()"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        
+        
+        
+        List&lt;<a href="../../../../../../com/google/android/m4b/maps/model/LatLng.html">LatLng</a>&gt;
+      </span>
+      <span class="sympad"><strong>getPoints</strong></span>
+      <span class="params">()</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Returns a snapshot of the vertices of this polygon at this time . The list returned is a copy
+ of the list of vertices and so changes to the polygon's vertices will not be reflected by
+ this list, nor will changes to this list be reflected by the polygon. To change the vertices
+ of the polygon, call <code><a href="../../../../../../com/google/android/m4b/maps/model/Polygon.html#setPoints(java.util.List<com.google.android.m4b.maps.model.LatLng>)">setPoints(List)</a></code>.
+</p></div>
+
+    </div>
+</div>
+
+
+<A NAME="getStrokeColor()"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        
+        
+        
+        int
+      </span>
+      <span class="sympad"><strong>getStrokeColor</strong></span>
+      <span class="params">()</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Gets the stroke color of this polygon.</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Returns</h5>
+      <ul class="nolist jd-returns"><li>the color in ARGB format.
+</li></ul>
+  </div>
+
+    </div>
+</div>
+
+
+<A NAME="getStrokeWidth()"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        
+        
+        
+        float
+      </span>
+      <span class="sympad"><strong>getStrokeWidth</strong></span>
+      <span class="params">()</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Gets the stroke width of this polygon.</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Returns</h5>
+      <ul class="nolist jd-returns"><li>the width in screen pixels.
+</li></ul>
+  </div>
+
+    </div>
+</div>
+
+
+<A NAME="getZIndex()"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        
+        
+        
+        float
+      </span>
+      <span class="sympad"><strong>getZIndex</strong></span>
+      <span class="params">()</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Gets the zIndex of this polygon.</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Returns</h5>
+      <ul class="nolist jd-returns"><li>the zIndex of the polygon.
+</li></ul>
+  </div>
+
+    </div>
+</div>
+
+
+<A NAME="hashCode()"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        
+        
+        
+        int
+      </span>
+      <span class="sympad"><strong>hashCode</strong></span>
+      <span class="params">()</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p></p></div>
+
+    </div>
+</div>
+
+
+<A NAME="isGeodesic()"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        
+        
+        
+        boolean
+      </span>
+      <span class="sympad"><strong>isGeodesic</strong></span>
+      <span class="params">()</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Gets whether each segment of the line is drawn as a geodesic or not.</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Returns</h5>
+      <ul class="nolist jd-returns"><li><code>true</code> if each segment is drawn as a geodesic; <code>false</code> if each segment is
+         drawn as a straight line on the Mercator projection.
+</li></ul>
+  </div>
+
+    </div>
+</div>
+
+
+<A NAME="isVisible()"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        
+        
+        
+        boolean
+      </span>
+      <span class="sympad"><strong>isVisible</strong></span>
+      <span class="params">()</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Gets the visibility of this polygon.</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Returns</h5>
+      <ul class="nolist jd-returns"><li>this polygon visibility.
+</li></ul>
+  </div>
+
+    </div>
+</div>
+
+
+<A NAME="remove()"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        
+        
+        
+        void
+      </span>
+      <span class="sympad"><strong>remove</strong></span>
+      <span class="params">()</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Removes the polygon from the map.
+</p></div>
+
+    </div>
+</div>
+
+
+<A NAME="setFillColor(int)"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        
+        
+        
+        void
+      </span>
+      <span class="sympad"><strong>setFillColor</strong></span>
+      <span class="params">(<span class="nowrap">int <i>color</i></span>)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Sets the fill color of this polygon.</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Parameters</h5>
+      <table class="jd-tagtable">
+        
+        <tr>
+          <td class="jd-tagparamname">color</td>
+          <td class="jd-tagdescr">the color in ARGB format
+</td>
+        </tr>
+        
+      </table>
+  </div>
+
+    </div>
+</div>
+
+
+<A NAME="setGeodesic(boolean)"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        
+        
+        
+        void
+      </span>
+      <span class="sympad"><strong>setGeodesic</strong></span>
+      <span class="params">(<span class="nowrap">boolean <i>geodesic</i></span>)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Sets whether to draw each segment of the line as a geodesic or not.</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Parameters</h5>
+      <table class="jd-tagtable">
+        
+        <tr>
+          <td class="jd-tagparamname">geodesic</td>
+          <td class="jd-tagdescr">if <code>true</code>, then each segment is drawn as a geodesic; if <code>false</code>,
+            each segment is drawn as a straight line on the Mercator projection.
+</td>
+        </tr>
+        
+      </table>
+  </div>
+
+    </div>
+</div>
+
+
+<A NAME="setHoles(java.util.List<? extends java.util.List<com.google.android.m4b.maps.model.LatLng>>)"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        
+        
+        
+        void
+      </span>
+      <span class="sympad"><strong>setHoles</strong></span>
+      <span class="params">(<span class="nowrap">List&lt;?&nbsp;extends&nbsp;List&lt;<a href="../../../../../../com/google/android/m4b/maps/model/LatLng.html">LatLng</a>&gt;&gt; <i>holes</i></span>)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Sets the holes of this polygon. This method will take a copy of the holes, so further
+ mutations to <code>holes</code> will have no effect on this polygon.</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Parameters</h5>
+      <table class="jd-tagtable">
+        
+        <tr>
+          <td class="jd-tagparamname">holes</td>
+          <td class="jd-tagdescr">an list of holes, where a hole is an list of <code><a href="../../../../../../com/google/android/m4b/maps/model/LatLng.html">LatLng</a></code>s.
+</td>
+        </tr>
+        
+      </table>
+  </div>
+
+    </div>
+</div>
+
+
+<A NAME="setPoints(java.util.List<com.google.android.m4b.maps.model.LatLng>)"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        
+        
+        
+        void
+      </span>
+      <span class="sympad"><strong>setPoints</strong></span>
+      <span class="params">(<span class="nowrap">List&lt;<a href="../../../../../../com/google/android/m4b/maps/model/LatLng.html">LatLng</a>&gt; <i>points</i></span>)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Sets the points of this polygon. This method will take a copy of the points, so further
+ mutations to <code>points</code> will have no effect on this polygon.</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Parameters</h5>
+      <table class="jd-tagtable">
+        
+        <tr>
+          <td class="jd-tagparamname">points</td>
+          <td class="jd-tagdescr">a list of <code><a href="../../../../../../com/google/android/m4b/maps/model/LatLng.html">LatLng</a></code>s that are the vertices of the polygon.
+</td>
+        </tr>
+        
+      </table>
+  </div>
+
+    </div>
+</div>
+
+
+<A NAME="setStrokeColor(int)"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        
+        
+        
+        void
+      </span>
+      <span class="sympad"><strong>setStrokeColor</strong></span>
+      <span class="params">(<span class="nowrap">int <i>color</i></span>)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Sets the stroke color of this polygon.</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Parameters</h5>
+      <table class="jd-tagtable">
+        
+        <tr>
+          <td class="jd-tagparamname">color</td>
+          <td class="jd-tagdescr">the color in ARGB format
+</td>
+        </tr>
+        
+      </table>
+  </div>
+
+    </div>
+</div>
+
+
+<A NAME="setStrokeWidth(float)"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        
+        
+        
+        void
+      </span>
+      <span class="sympad"><strong>setStrokeWidth</strong></span>
+      <span class="params">(<span class="nowrap">float <i>width</i></span>)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Sets the stroke width of this polygon.</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Parameters</h5>
+      <table class="jd-tagtable">
+        
+        <tr>
+          <td class="jd-tagparamname">width</td>
+          <td class="jd-tagdescr">the width in display pixels.
+</td>
+        </tr>
+        
+      </table>
+  </div>
+
+    </div>
+</div>
+
+
+<A NAME="setVisible(boolean)"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        
+        
+        
+        void
+      </span>
+      <span class="sympad"><strong>setVisible</strong></span>
+      <span class="params">(<span class="nowrap">boolean <i>visible</i></span>)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Sets the visibility of this polygon. When not visible, a polygon is not drawn, but it keeps
+ all its other properties.</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Parameters</h5>
+      <table class="jd-tagtable">
+        
+        <tr>
+          <td class="jd-tagparamname">visible</td>
+          <td class="jd-tagdescr">if <code>true</code>, then the polygon is visible; if <code>false</code>, it is not.
+</td>
+        </tr>
+        
+      </table>
+  </div>
+
+    </div>
+</div>
+
+
+<A NAME="setZIndex(float)"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        
+        
+        
+        void
+      </span>
+      <span class="sympad"><strong>setZIndex</strong></span>
+      <span class="params">(<span class="nowrap">float <i>zIndex</i></span>)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Sets the zIndex of this polygon. Polygons with higher zIndices are drawn above those with
+ lower indices.</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Parameters</h5>
+      <table class="jd-tagtable">
+        
+        <tr>
+          <td class="jd-tagparamname">zIndex</td>
+          <td class="jd-tagdescr">the zIndex of this polygon.
+</td>
+        </tr>
+        
+      </table>
+  </div>
+
+    </div>
+</div>
+
+
+</section>
+
+
+
+<!-- ========= METHOD DETAIL ======== -->
+
+
+
+<!-- ========= END OF CLASS DATA ========= -->
+<A NAME="navbar_top"></A>
+
+</div> <!-- jd-content -->
+
+</body>
+</html>
