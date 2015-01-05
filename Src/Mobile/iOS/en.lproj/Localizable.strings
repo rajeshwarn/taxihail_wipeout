@@ -555,6 +555,7 @@
 "PromoCodeLabel"="Promo code";
 "PromoMustUseCardOnFileWarningMessage"="Please note that the discount will only be applied if the payment is made using the app";
 "WarningPromoCodeDontShow"="Don't warn";
+"GoogleMapKey"="AIzaSyCtazVDlL4prQA5f2OnlWTw4u2X581dkzo";
 "PromoMustUseCardOnFileMessage"="In order to use a promo code, you need to pay with card on file";
 "PanelMenuViewPromotionsText"="Promotions";
 "MarketChangedMessageTitle"="New service area detected";
