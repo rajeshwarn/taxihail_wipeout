@@ -105,13 +105,20 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                     var promoEndDate = promotion.GetEndDateTime();
 
                     // Get all orders from account that are in the date range of the promotion
-                    var eligibleOrders =
+                    var eligibleOrdersQuery =
                         context.Set<OrderDetail>()
                             .Where(
                                 x => x.Status == (int)OrderStatus.Completed
                                      && x.AccountId == accountId
-                                     && x.PickupDate >= promoStartDate
-                                     && x.PickupDate < promoEndDate).ToArray();
+                                     && x.PickupDate >= promoStartDate);
+
+                    // Check for promotion end date
+                    if (promoEndDate.HasValue)
+                    {
+                        eligibleOrdersQuery = eligibleOrdersQuery.Where(x => x.PickupDate < promoEndDate);
+                    }
+
+                    var eligibleOrders = eligibleOrdersQuery.ToArray();
 
                     if (promotion.TriggerSettings.Type == PromotionTriggerTypes.RideCount)
                     {
