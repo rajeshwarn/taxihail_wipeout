@@ -9,7 +9,7 @@ using CustomerPortal.Web.Security;
 using CustomerPortal.Web.Services.Impl;
 using MongoRepository;
 using System;
-
+using apcurium.MK.Common.Extensions;
 
 #endregion
 
@@ -37,7 +37,23 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers
         public ActionResult Index()
         {
             var company = Service.GetCompany();
-            
+
+            // try to auto-generate keystore sha1 signature if it doesn't exist
+            if (!company.GooglePlayCredentials.KeystoreSHA1Signature.HasValue())
+            {
+                try
+                {
+                    _keystoreGenerator.GetApiKey(company.Id, GetFileManager("assets", company.Id).GetFolderPath());
+                    
+                    // refetch company with updated infos
+                    company = Service.GetCompany();
+                }
+                catch (Exception)
+                {
+                    // possible error on auto-generation if missing required info, user will see detailed error message when clicking on the button
+                }
+            }
+
             AddToAccessHistory(company.Id);
 
             return View(CompanyViewModel.CreateFrom(company));
@@ -115,7 +131,6 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers
             try
             {
                 _keystoreGenerator.GetApiKey(id, GetFileManager(type, id).GetFolderPath());
-
             }
             catch (Exception e)
             {
