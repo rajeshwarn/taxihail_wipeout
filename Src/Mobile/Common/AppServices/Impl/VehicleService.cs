@@ -140,7 +140,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 		{
 			if(vehicleLocation == null)
 			{
-				return null;
+				return Task.FromResult(new Direction());
 			}
 
 			return GetEtaBetweenCoordinates(vehicleLocation.Latitude, vehicleLocation.Longitude, pickup.Latitude, pickup.Longitude);                    	
