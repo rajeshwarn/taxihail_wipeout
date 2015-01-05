@@ -370,7 +370,6 @@
     <None Include="Localization\Master.fr.resx">
       <SubType>Designer</SubType>
     </None>
-    <EmbeddedResource Include="Localization\Master.es.resx" />
     <EmbeddedResource Include="Settings\Settings.json" />
     <EmbeddedResource Include="Style\Style.json" />
     <EmbeddedResource Include="TutorialContent\Tutorial-ar.json" />
@@ -384,6 +383,7 @@
     <None Include="Localization\TaxiHail Pro.fr.resx" />
     <None Include="Localization\UTOG.resx" />
     <EmbeddedResource Include="TutorialContent\Tutorial-es.json" />
+    <None Include="Localization\Master.es.resx" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

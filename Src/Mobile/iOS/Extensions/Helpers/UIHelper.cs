@@ -22,10 +22,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Extensions.Helpers
 		public static bool IsOS7orHigher
 		{
 			get{
-				var first = UIDevice.CurrentDevice.SystemVersion.Split('.')[0];
-				return Convert.ToInt32(first) >= 7;
+                return Convert.ToInt32(UIDevice.CurrentDevice.SystemVersion.Split('.')[0]) >= 7;
 			}
 		}
+
+        public static bool IsOS8orHigher
+        {
+            get{
+                return Convert.ToInt32(UIDevice.CurrentDevice.SystemVersion.Split('.')[0]) >= 8;
+            }
+        }
 
         public static float GetConvertedPixel(float pixel)
         {
