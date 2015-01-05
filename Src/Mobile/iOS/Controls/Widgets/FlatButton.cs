@@ -15,6 +15,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 		private const float StandardImagePadding = 10f;
 		private const float StandardImageWidth = 35f;
 
+        private UIImage _leftImage;
+
         public FlatButton (IntPtr handle) : base (handle)
         {
 			ApplyDefaultStyle ();
@@ -109,25 +111,33 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             }
         }
         
-        public void SetLeftImage( string image )
+        public void SetLeftImage(string image)
         {
             if (image != null)
             {
-                var leftImage = UIImage.FromFile(image);
-                SetImage(leftImage, UIControlState.Normal);
+                _leftImage = UIImage.FromFile(image);
+                SetImage(_leftImage, UIControlState.Normal);
                 HorizontalAlignment = UIControlContentHorizontalAlignment.Left;
 
                 //calculate the left padding for this image to have images centered instead of left-aligned
-                var leftPaddingForThisImage = StandardImagePadding + (StandardImageWidth - leftImage.Size.Width) / 2; 
+                var leftPaddingForThisImage = StandardImagePadding + (StandardImageWidth - _leftImage.Size.Width) / 2; 
                 ImageEdgeInsets = new UIEdgeInsets(0.0f, leftPaddingForThisImage, 0.0f, 0.0f);
-
-                //compute the left margin for the text and center it
-                var halfTextSize = TitleLabel.Frame.Width / 2; 
-                var center = (Frame.Width - leftImage.Size.Width - StandardImagePadding - 3) / 2;
-                TitleEdgeInsets = new UIEdgeInsets(0.0f, center - halfTextSize, 0.0f, 0.0f);
 
                 SetNeedsDisplay();
             }
+        }
+
+        public override void LayoutSubviews()
+        {
+            if (_leftImage != null)
+            {
+                //compute the left margin for the text and center it
+                var halfTextSize = TitleLabel.Frame.Width / 2; 
+                var center = (Frame.Width - _leftImage.Size.Width - StandardImagePadding - 3) / 2;
+                TitleEdgeInsets = new UIEdgeInsets(0.0f, center - halfTextSize, 0.0f, 0.0f);
+            }
+
+            base.LayoutSubviews();
         }
     }
 }
