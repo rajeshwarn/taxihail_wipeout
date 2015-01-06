@@ -767,9 +767,6 @@
     <BundleResource Include="Resources\visa_electron%402x.png" />
     <BundleResource Include="Resources\visa.png" />
     <BundleResource Include="Resources\visa%402x.png" />
-    <BundleResource Include="Default.png" />
-    <BundleResource Include="Default%402x.png" />
-    <BundleResource Include="Default-568h%402x.png" />
     <BundleResource Include="Resources\background.png" />
     <BundleResource Include="Resources\background%402x.png" />
     <BundleResource Include="Resources\backPickupDestination.png" />
@@ -858,5 +855,13 @@
     <EmbeddedResource Include="Style\FlatButtonStyle.xml">
       <LogicalName>FlatButtonStyle.xml</LogicalName>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ImageAsset Include="Resources\Images.xcassets\LaunchImage.launchimage\Contents.json" />
+    <ImageAsset Include="Resources\Images.xcassets\LaunchImage.launchimage\Default.png" />
+    <ImageAsset Include="Resources\Images.xcassets\LaunchImage.launchimage\Default%402x.png" />
+    <ImageAsset Include="Resources\Images.xcassets\LaunchImage.launchimage\Default-568h%402x.png" />
+    <ImageAsset Include="Resources\Images.xcassets\LaunchImage.launchimage\Default-667h%402x.png" />
+    <ImageAsset Include="Resources\Images.xcassets\LaunchImage.launchimage\Default-736h%403x.png" />
   </ItemGroup>
 </Project>
