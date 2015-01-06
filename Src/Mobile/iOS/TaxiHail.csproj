@@ -303,7 +303,6 @@
     <Compile Include="PlatformIntegration\PackageInfo.cs" />
     <Compile Include="Setup.cs" />
     <Compile Include="PhonePresenter.cs" />
-    <Compile Include="Animations\SlideViewAnimation.cs" />
     <Compile Include="PlatformIntegration\MessageService.cs" />
     <Compile Include="Views\PanelMenuView.cs">
       <DependentUpon>PanelMenuView.xib</DependentUpon>

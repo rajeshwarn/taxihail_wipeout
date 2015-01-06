@@ -1,21 +1,15 @@
-using System.Linq;
 using Cirrious.MvvmCross.Binding.BindingContext;
-using MonoTouch.Foundation;
 using MonoTouch.UIKit;
-using MonoTouch.CoreLocation;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Booking;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using apcurium.MK.Booking.Mobile.PresentationHints;
-using apcurium.MK.Booking.MapDataProvider.Resources;
-using apcurium.MK.Booking.Mobile.Messages;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
     public partial class HomeView : BaseViewController<HomeViewModel>, IChangePresentation
     {
         private bool _defaultThemeApplied;
-        private PanelMenuView _menu;
         private BookLaterDatePicker _datePicker;
 
         public override void ViewWillAppear (bool animated)
@@ -55,16 +49,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
             btnLocateMe.SetImage(UIImage.FromFile("location_icon.png"), UIControlState.Normal);
 
-            InstantiatePanel();
-
             _datePicker = new BookLaterDatePicker();            
 			_datePicker.UpdateView(UIScreen.MainScreen.Bounds.Height, UIScreen.MainScreen.Bounds.Width);
             _datePicker.Hide();
             View.AddSubview(_datePicker);
 
+            panelMenu.ViewToAnimate = homeView;
+            panelMenu.PanelOffsetConstraint = constraintHomeLeadingSpace;
+
             var set = this.CreateBindingSet<HomeView, HomeViewModel>();
 
-            set.Bind(_menu)
+            set.Bind(panelMenu)
                 .For(v => v.DataContext)
                 .To(vm => vm.Panel);
 
@@ -212,16 +207,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             ctrlOrderReview.SetNeedsDisplay();
             orderEdit.SetNeedsDisplay();
             ctrlOrderOptions.SetNeedsDisplay();
-        }
-
-        private void InstantiatePanel()
-        {
-            var nib = UINib.FromName ("PanelMenuView", null);
-            _menu = (PanelMenuView)nib.Instantiate (this, null)[0];
-            _menu.ViewToAnimate = homeView;
-			_menu.OnInstantiate();
-
-            View.InsertSubviewBelow (_menu, homeView);
         }
     }
 }

@@ -5,10 +5,10 @@ using Cirrious.MvvmCross.Binding.BindingContext;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 using apcurium.MK.Booking.Mobile.ViewModels;
-using apcurium.MK.Booking.Mobile.Client.Animations;
 using apcurium.MK.Booking.Mobile.Client.Controls.Widgets;
 using apcurium.MK.Booking.Mobile.Client.Controls.Binding;
 using apcurium.MK.Booking.Mobile.Client.Style;
+using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
@@ -20,10 +20,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                    SelectedCommand NavigationCommand;
                 ";
         private UIButton _closeMenuButton;
+        private PanelMenuSource _source;
 
         public UIView ViewToAnimate { get; set; }
+        public NSLayoutConstraint PanelOffsetConstraint { get; set; }
         public ICommand ToApcuriumWebsite { get; set; }
         public ICommand ToMobileKnowledgeWebsite { get; set; }
+
+        public PanelMenuView (IntPtr handle) : base(handle)
+        {
+        }
 
 		private bool _menuIsOpen;
 		public bool MenuIsOpen
@@ -39,11 +45,19 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			}
 		}
 
-		PanelMenuSource _source;
-
-        public PanelMenuView (IntPtr handle) : base(handle)
+        public override void AwakeFromNib()
         {
-			this.DelayBind (InitializeMenu);
+            base.AwakeFromNib();
+
+            var nib = NibHelper.GetNibForView("PanelMenuView");
+            var view = (UIView)nib.Instantiate(this, null)[0];
+            AddSubview(view);
+
+            OnInstantiate();
+
+            this.DelayBind (() => {
+                InitializeMenu();
+            });
         }
 
 		public void OnInstantiate ()
@@ -106,10 +120,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         private void AnimateMenu ()
         {
             InvokeOnMainThread (() =>
-            {
-                var slideAnimation = new SlideViewAnimation (ViewToAnimate, new SizeF ((MenuIsOpen ? menuContainer.Frame.Width : -menuContainer.Frame.Width), 0f), AddOrRemoveInvisibleCloseButton);
-                slideAnimation.Animate ();
-            });
+                UIView.Animate(0.5f, () => {
+                    PanelOffsetConstraint.Constant = MenuIsOpen ? menuContainer.Frame.Width : 0;
+                    ViewToAnimate.LayoutIfNeeded();
+                    this.SetNeedsDisplay();
+                }, AddOrRemoveInvisibleCloseButton)
+            );
         }
 
         private void AddOrRemoveInvisibleCloseButton()
