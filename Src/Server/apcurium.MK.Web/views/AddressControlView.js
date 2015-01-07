@@ -36,6 +36,17 @@
             });
 
             this.$el.html(this.renderTemplate(data));
+
+            var refineBtn = this.$el.find('[data-action=refine]');
+            var streetNumber = this.model.get('streetNumber');
+            if (!streetNumber) {
+                refineBtn.addClass('disabled');
+                refineBtn.attr('disabled', 'disabled');
+            } else {
+                refineBtn.removeClass('disabled');
+                refineBtn.removeAttr('disabled');
+            }
+
             this.$("[data-action=toggletarget]").addClass(toggleClass);
 
             this.$('[name=address]').on('keyup', _.debounce(this.onkeyup, 500));
@@ -133,12 +144,12 @@
         refine: function() {
             var originalStreetNumber = this.model.get('streetNumber');
             var fullAddress = this.model.get('fullAddress');
-            if (originalStreetNumber == null || fullAddress == null) {
+            if (!originalStreetNumber || !fullAddress) {
                 // don't show the prompt if there's no address
                 return;
             }
 
-            var promptTitle = TaxiHail.localize("RefineAddress");
+            var promptTitle = TaxiHail.localize('RefineAddress');
             var newStreetNumber = prompt(promptTitle, originalStreetNumber);
             if (!newStreetNumber) {
                 // don't replace if the user cancelled or entered string.empty

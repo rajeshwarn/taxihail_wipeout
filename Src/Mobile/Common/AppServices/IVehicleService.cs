@@ -4,6 +4,7 @@ using apcurium.MK.Booking.Maps;
 using System.Collections.Generic;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Booking.Maps.Geo;
+using System.Threading.Tasks;
 
 namespace apcurium.MK.Booking.Mobile.AppServices
 {
@@ -15,7 +16,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
         IObservable<AvailableVehicle[]> GetAndObserveAvailableVehiclesWhenVehicleTypeChanges();
 		MapBounds GetBoundsForNearestVehicles(Address pickup, IEnumerable<AvailableVehicle> cars);
 		IObservable<Direction> GetAndObserveEta();
-		Direction GetEtaBetweenCoordinates (double fromLat, double fromLng, double toLat, double toLng);
+		Task<Direction> GetEtaBetweenCoordinates (double fromLat, double fromLng, double toLat, double toLng);
 	}
 }
 

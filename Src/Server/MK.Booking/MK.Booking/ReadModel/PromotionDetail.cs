@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
 
 namespace apcurium.MK.Booking.ReadModel
@@ -42,6 +43,20 @@ namespace apcurium.MK.Booking.ReadModel
         public DateTime? PublishedEndDate { get; set; }
 
         public bool Active { get; set; }
+
+        public PromotionTriggerSettings TriggerSettings { get; set; }
+
+        public DateTime? GetStartDateTime()
+        {
+            if (!StartDate.HasValue)
+            {
+                return null;
+            }
+
+            return !StartTime.HasValue
+                ? new DateTime(StartDate.Value.Year, StartDate.Value.Month, StartDate.Value.Day)
+                : new DateTime(StartDate.Value.Year, StartDate.Value.Month, StartDate.Value.Day, StartTime.Value.Hour, StartTime.Value.Minute, 0);
+        }
 
         public DateTime? GetEndDateTime()
         {

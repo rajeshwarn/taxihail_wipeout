@@ -1,4 +1,5 @@
 ﻿using System;
+using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
 using Infrastructure.EventSourcing;
 
@@ -6,6 +7,11 @@ namespace apcurium.MK.Booking.Events
 {
     public class PromotionCreated : VersionedEvent
     {
+        public PromotionCreated()
+        {
+            TriggerSettings = new PromotionTriggerSettings();
+        }
+
         public string Name { get; set; }
 
         public string Description { get; set; }
@@ -37,5 +43,7 @@ namespace apcurium.MK.Booking.Events
         public DateTime? PublishedStartDate { get; set; }
 
         public DateTime? PublishedEndDate { get; set; }
+
+        public PromotionTriggerSettings TriggerSettings { get; set; }
     }
 }

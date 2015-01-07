@@ -27,6 +27,8 @@ namespace apcurium.MK.Booking.Api.Contract.Resources
 
         public double? Fare { get; set; }
 
+        public double? Tax { get; set; }
+
         public double? Toll { get; set; }
 
         public double? Tip { get; set; }

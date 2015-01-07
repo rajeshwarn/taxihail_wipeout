@@ -5,6 +5,7 @@ using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Enumeration;
 
 namespace apcurium.MK.Booking.ReadModel.Query
 {
@@ -25,16 +26,38 @@ namespace apcurium.MK.Booking.ReadModel.Query
         {
             using (var context = _contextFactory.Invoke())
             {
-                return context.Query<PromotionDetail>().OrderBy(x => x.Active).ThenBy(x => x.Name).ToList();
+                return context.Query<PromotionDetail>().OrderBy(x => x.Active).ThenBy(x => x.Name).ToArray();
             }
         }
 
-        public IEnumerable<PromotionDetail> GetAllCurrentlyActive()
+        public IEnumerable<PromotionProgressDetail> GetProgressByPromo(Guid promoId)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                return context.Query<PromotionProgressDetail>().Where(x => x.PromoId == promoId).ToArray();
+            }
+        }
+
+        public PromotionProgressDetail GetProgress(Guid accountId, Guid promoId)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                return context.Set<PromotionProgressDetail>().Find(accountId, promoId);
+            }
+        }
+
+        public IEnumerable<PromotionDetail> GetAllCurrentlyActive(PromotionTriggerTypes? triggerType = null)
         {
             using (var context = _contextFactory.Invoke())
             {
                 var result = new List<PromotionDetail>();
                 var activePromos = context.Query<PromotionDetail>().Where(x => x.Active);
+
+                if (triggerType.HasValue)
+                {
+                    activePromos = activePromos.Where(x => x.TriggerSettings.Type == triggerType);
+                }
+
                 foreach (var promotionDetail in activePromos)
                 {
                     var thisPromo = promotionDetail;
@@ -87,6 +110,14 @@ namespace apcurium.MK.Booking.ReadModel.Query
             using (var context = _contextFactory.Invoke())
             {
                 return context.Query<PromotionUsageDetail>().SingleOrDefault(c => c.OrderId == orderId);
+            }
+        }
+
+        public IEnumerable<PromotionUsageDetail> GetRedeemedPromotionUsages(Guid promoId)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                return context.Query<PromotionUsageDetail>().Where(c => c.PromoId == promoId && c.DateRedeemed.HasValue).ToArray();
             }
         }
 

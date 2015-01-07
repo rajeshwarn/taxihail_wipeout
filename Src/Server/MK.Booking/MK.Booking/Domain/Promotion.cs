@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Common;
+using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using Infrastructure.EventSourcing;
@@ -12,6 +13,7 @@ namespace apcurium.MK.Booking.Domain
     public class Promotion : EventSourced
     {
         private bool _active;
+        private PromotionTriggerSettings _triggerSettings;
 
         private DateTime? _startDate;
         private DateTime? _endDate;
@@ -26,6 +28,7 @@ namespace apcurium.MK.Booking.Domain
         private decimal _discountValue;
         private PromoDiscountType _discountType;
 
+        private readonly List<Guid> _usersWhiteList = new List<Guid>();
         private readonly Dictionary<Guid, int> _usagesPerUser = new Dictionary<Guid, int>();
         private readonly List<Guid> _orderIds = new List<Guid>(); 
         private int _usages;
@@ -38,6 +41,7 @@ namespace apcurium.MK.Booking.Domain
             Handles<PromotionDeactivated>(OnPromotionDeactivated);
             Handles<PromotionApplied>(OnPromotionApplied);
             Handles<PromotionRedeemed>(NoAction);
+            Handles<UserAddedToPromotionWhiteList>(OnUserAddedToWhiteList);
         }
 
         public Promotion(Guid id, IEnumerable<IVersionedEvent> history)
@@ -49,7 +53,7 @@ namespace apcurium.MK.Booking.Domain
         public Promotion(Guid id, string name, string description, DateTime? startDate, DateTime? endDate, DateTime? startTime, 
             DateTime? endTime, DayOfWeek[] daysOfWeek, bool appliesToCurrentBooking, bool appliesToFutureBooking,
             decimal discountValue, PromoDiscountType discountType, int? maxUsagePerUser, int? maxUsage, string code,
-            DateTime? publishedStartDate, DateTime? publishedEndDate)
+            DateTime? publishedStartDate, DateTime? publishedEndDate, PromotionTriggerSettings triggerSettings)
             : this(id)
         {
             if (Params.Get(name, code).Any(p => p.IsNullOrEmpty()))
@@ -74,13 +78,14 @@ namespace apcurium.MK.Booking.Domain
                 MaxUsage = maxUsage,
                 Code = code,
                 PublishedStartDate = publishedStartDate,
-                PublishedEndDate = publishedEndDate
+                PublishedEndDate = publishedEndDate,
+                TriggerSettings = triggerSettings ?? new PromotionTriggerSettings()
             });
         }
 
         public void Update(string name, string description, DateTime? startDate, DateTime? endDate, DateTime? startTime, DateTime? endTime,
             DayOfWeek[] daysOfWeek, bool appliesToCurrentBooking, bool appliesToFutureBooking, decimal discountValue, PromoDiscountType discountType,
-            int? maxUsagePerUser, int? maxUsage, string code, DateTime? publishedStartDate, DateTime? publishedEndDate)
+            int? maxUsagePerUser, int? maxUsage, string code, DateTime? publishedStartDate, DateTime? publishedEndDate, PromotionTriggerSettings triggerSettings)
         {
             if (Params.Get(name, code).Any(p => p.IsNullOrEmpty()))
             {
@@ -104,7 +109,8 @@ namespace apcurium.MK.Booking.Domain
                 MaxUsage = maxUsage,
                 Code = code,
                 PublishedStartDate = publishedStartDate,
-                PublishedEndDate = publishedEndDate
+                PublishedEndDate = publishedEndDate,
+                TriggerSettings = triggerSettings ?? new PromotionTriggerSettings()
             });
         }
 
@@ -125,6 +131,13 @@ namespace apcurium.MK.Booking.Domain
             if (!_active)
             {
                 errorMessage = "CannotCreateOrder_PromotionIsNotActive";
+                return false;
+            }
+
+            if (_triggerSettings.Type != PromotionTriggerTypes.NoTrigger
+                && !_usersWhiteList.Contains(accountId))
+            {
+                errorMessage = "CannotCreateOrder_PromotionUserNotAllowed";
                 return false;
             }
 
@@ -245,6 +258,15 @@ namespace apcurium.MK.Booking.Domain
             });
         }
 
+        public void AddUserToWhiteList(Guid accountId, double? lastTriggeredAmount)
+        {
+            Update(new UserAddedToPromotionWhiteList
+            {
+                AccountId = accountId,
+                LastTriggeredAmount = lastTriggeredAmount
+            });
+        }
+
         private void OnPromotionCreated(PromotionCreated @event)
         {
             _startDate = @event.StartDate;
@@ -257,6 +279,7 @@ namespace apcurium.MK.Booking.Domain
             _discountValue = @event.DiscountValue;
             _discountType = @event.DiscountType;
             _code = @event.Code;
+            _triggerSettings = @event.TriggerSettings;
 
             SetInternalStartAndEndTimes(@event.StartTime, @event.EndTime);
         }
@@ -273,6 +296,7 @@ namespace apcurium.MK.Booking.Domain
             _discountValue = @event.DiscountValue;
             _discountType = @event.DiscountType;
             _code = @event.Code;
+            _triggerSettings = @event.TriggerSettings;
 
             SetInternalStartAndEndTimes(@event.StartTime, @event.EndTime);
         }
@@ -296,6 +320,13 @@ namespace apcurium.MK.Booking.Domain
             _usagesPerUser[@event.AccountId] = usagesForThisUser + 1;
 
             _orderIds.Add(@event.OrderId);
+
+            _usersWhiteList.Remove(@event.AccountId);
+        }
+
+        private void OnUserAddedToWhiteList(UserAddedToPromotionWhiteList @event)
+        {
+            _usersWhiteList.Add(@event.AccountId);
         }
 
         /// <summary>

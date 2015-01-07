@@ -1,6 +1,6 @@
 ﻿using System.Linq;
-using apcurium.MK.Booking.Common.Tests;
 using NUnit.Framework;
+using apcurium.MK.Booking.Test;
 
 namespace HoneyBadger.Test
 {

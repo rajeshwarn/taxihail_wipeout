@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Net;
@@ -39,11 +38,12 @@ namespace apcurium.MK.Booking.Services.Impl
         private readonly IServerSettings _serverSettings;
         private readonly IConfigurationDao _configurationDao;
         private readonly IOrderDao _orderDao;
+        private readonly IAccountDao _accountDao;
         private readonly IStaticMap _staticMap;
         private readonly ISmsService _smsService;
         private readonly IGeocoding _geocoding;
         private readonly ILogger _logger;
-        private readonly Booking.Resources.Resources _resources;
+        private readonly Resources.Resources _resources;
 
         private BaseUrls _baseUrls;
 
@@ -55,6 +55,7 @@ namespace apcurium.MK.Booking.Services.Impl
             IServerSettings serverSettings,
             IConfigurationDao configurationDao,
             IOrderDao orderDao,
+            IAccountDao accountDao,
             IStaticMap staticMap,
             ISmsService smsService,
             IGeocoding geocoding,
@@ -67,12 +68,13 @@ namespace apcurium.MK.Booking.Services.Impl
             _serverSettings = serverSettings;
             _configurationDao = configurationDao;
             _orderDao = orderDao;
+            _accountDao = accountDao;
             _staticMap = staticMap;
             _smsService = smsService;
             _geocoding = geocoding;
             _logger = logger;
 
-            _resources = new Booking.Resources.Resources(serverSettings);
+            _resources = new Resources.Resources(serverSettings);
         }
 
         public void SetBaseUrl(Uri baseUrl)
@@ -80,6 +82,17 @@ namespace apcurium.MK.Booking.Services.Impl
             this._baseUrls = new BaseUrls(baseUrl, _serverSettings);
         }
 
+
+        public void SendPromotionUnlockedPush(Guid accountId, PromotionDetail promotionDetail)
+        {
+            var account = _accountDao.FindById(accountId);
+            if (ShouldSendNotification(accountId, x => x.DriverAssignedPush))
+            {
+                SendPushOrSms(accountId,
+                    string.Format(_resources.Get("PushNotification_PromotionUnlocked", account.Language), promotionDetail.Name, promotionDetail.Code),
+                    new Dictionary<string, object>());
+            }
+        }
 
         public void SendAssignedPush(OrderStatusDetail orderStatusDetail)
         {
@@ -203,6 +216,18 @@ namespace apcurium.MK.Booking.Services.Impl
                 var data = new Dictionary<string, object> { { "orderId", orderId } };
 
                 SendPushOrSms(order.AccountId, alert, data);
+            }
+        }
+
+        public void SendOrderCreationErrorPush(Guid orderId, string errorDescription)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var order = context.Find<OrderDetail>(orderId);
+
+                var data = new Dictionary<string, object> { { "orderId", orderId } };
+
+                SendPushOrSms(order.AccountId, errorDescription, data);
             }
         }
 
@@ -403,6 +428,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 TotalFare = _resources.FormatPrice(totalFare),
                 Note = _serverSettings.ServerData.Receipt.Note,
                 Tax = _resources.FormatPrice(tax),
+                ShowTax = Math.Abs(tax) >= 0.01,
                 vatIsEnabled,
                 IsCardOnFile = isCardOnFile,
                 CardOnFileAmount = cardOnFileAmount,
@@ -418,12 +444,47 @@ namespace apcurium.MK.Booking.Services.Impl
                 GreenDotImg = String.Concat(baseUrls.BaseUrlAssetsImg, "email_green_dot.png"),
                 LogoImg = imageLogoUrl,
 
-                PromotionWasUsed = amountSavedByPromotion != 0,
+                PromotionWasUsed = Math.Abs(amountSavedByPromotion) >= 0.01,
                 promoCode,
                 AmountSavedByPromotion = _resources.FormatPrice(Convert.ToDouble(amountSavedByPromotion))
             };
 
             SendEmail(clientEmailAddress, EmailConstant.Template.Receipt, EmailConstant.Subject.Receipt, templateData, clientLanguageCode);
+        }
+
+        public void SendPromotionUnlockedEmail(string name, string code, DateTime? expirationDate, string clientEmailAddress,
+            string clientLanguageCode, bool bypassNotificationSetting = false)
+        {
+            if (!bypassNotificationSetting)
+            {
+                using (var context = _contextFactory.Invoke())
+                {
+                    var account = context.Query<AccountDetail>().SingleOrDefault(c => c.Email.ToLower() == clientEmailAddress.ToLower());
+                    if (account == null || !ShouldSendNotification(account.Id, x => x.PromotionUnlockedEmail))
+                    {
+                        return;
+                    }
+                }
+            }
+
+            string imageLogoUrl = GetRefreshableImageUrl(GetBaseUrls().LogoImg);
+            
+            var dateFormat = CultureInfo.GetCultureInfo(clientLanguageCode);
+
+            var templateData = new
+            {
+                ApplicationName = _serverSettings.ServerData.TaxiHail.ApplicationName,
+                AccentColor = _serverSettings.ServerData.TaxiHail.AccentColor,
+                EmailFontColor = _serverSettings.ServerData.TaxiHail.EmailFontColor,
+                PromotionName = name,
+                PromotionCode = code,
+                ExpirationDate = expirationDate.HasValue ? expirationDate.Value.ToString("D", dateFormat) : null,
+                ExpirationTime = expirationDate.HasValue ? expirationDate.Value.ToString("t", dateFormat /* Short time pattern */) : null,
+                HasExpirationDate = expirationDate.HasValue,
+                LogoImg = imageLogoUrl
+            };
+
+            SendEmail(clientEmailAddress, EmailConstant.Template.PromotionUnlocked, EmailConstant.Subject.PromotionUnlocked, templateData, clientLanguageCode);
         }
 
         private Address TryToGetExactDropOffAddress(Guid orderId, Address dropOffAddress, string clientLanguageCode)
@@ -485,7 +546,9 @@ namespace apcurium.MK.Booking.Services.Impl
                 mailMessage.CC.Add(ccEmailAddress);
             }
 
-            var view = AlternateView.CreateAlternateViewFromString(_templateService.Render(template, templateData), Encoding.UTF8, "text/html");
+            var renderedBody = _templateService.Render(template, templateData);
+            var inlinedRenderedBody = _templateService.InlineCss(renderedBody);
+            var view = AlternateView.CreateAlternateViewFromString(inlinedRenderedBody, Encoding.UTF8, "text/html");
             mailMessage.AlternateViews.Add(view);
 
             if (embeddedIMages != null)
@@ -617,6 +680,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 public const string Receipt = "Email_Subject_Receipt";
                 public const string AccountConfirmation = "Email_Subject_AccountConfirmation";
                 public const string BookingConfirmation = "Email_Subject_BookingConfirmation";
+                public const string PromotionUnlocked = "Email_Subject_PromotionUnlocked";
             }
 
             public static class Template
@@ -625,6 +689,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 public const string Receipt = "Receipt";
                 public const string AccountConfirmation = "AccountConfirmation";
                 public const string BookingConfirmation = "BookingConfirmation";
+                public const string PromotionUnlocked = "PromotionUnlocked";
             }
         }
 

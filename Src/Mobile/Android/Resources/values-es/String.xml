@@ -385,11 +385,6 @@
   <string name="ServiceErrorCallTitle">Mensaje</string>
   <string name="ServiceErrorCreateAccount_AccountAlreadyExist">Este email está registrado y en uso en nuestro sistema</string>
   <string name="ServiceErrorCreateAccount_InvalidConfirmationToken">Código de confirmación inválido</string>
-  <string name="ServiceErrorCreateOrder_CannotCreateInIbs">Su reservación no se pudo crear, por favor trate de nuevo o llámenos</string>
-  <string name="ServiceErrorCreateOrder_CannotCreateInIbs_10000">La información de su cuenta es inválida. Por favor intente nuevamente.</string>
-  <string name="ServiceErrorCreateOrder_CannotCreateInIbs_10000_NoCall">La información de su cuenta es inválida. Por favor intente nuevamente.</string>
-  <string name="ServiceErrorCreateOrder_CannotCreateInIbs_7000">Su reservación no puede ser creada porque su cuenta está inactiva, por favor contacte {0} al {1} para asistencia</string>
-  <string name="ServiceErrorCreateOrder_CannotCreateInIbs_7000_NoCall">Su reservación no puede ser creada porque su cuenta está inactiva</string>
   <string name="ServiceErrorCreateOrder_CardOnFileButNoCreditCard">No tiene Tarjeta de Crédito Registrada en Archivo</string>
   <string name="ServiceErrorCreateOrder_InvalidProvider">Su reservación no se pudo crear, proveedor inválido. Por favor contacte {0} al  {1} para asistencia</string>
   <string name="ServiceErrorCreateOrder_InvalidProvider_NoCall">Su reservación no se pudo crear, proveedor inválido</string>
@@ -559,4 +554,9 @@
   <string name="PromoBookRide">Use this promotion on next ride</string>
   <string name="PromotionViewNoPromotionLabel">No promotions available</string>
   <string name="Promo_NoActive">No Active Promotion</string>
+  <string name="Processing">Procesando su pedido...</string>
+  <string name="Notification_PromotionEmail">Promotions (Email)</string>
+  <string name="PromoProgress">Progress :</string>
+  <string name="Notification_PromotionUnlockedEmail">Promotions unlocked (Email)</string>
+  <string name="Notification_PromotionUnlockedPush">Promotions unlocked (Push)</string>
 </resources>

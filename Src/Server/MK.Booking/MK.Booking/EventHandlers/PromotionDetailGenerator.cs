@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.ReadModel;
@@ -13,7 +14,8 @@ namespace apcurium.MK.Booking.EventHandlers
         IEventHandler<PromotionActivated>,
         IEventHandler<PromotionDeactivated>,
         IEventHandler<PromotionApplied>,
-        IEventHandler<PromotionRedeemed>
+        IEventHandler<PromotionRedeemed>,
+        IEventHandler<UserAddedToPromotionWhiteList>
     {
         private readonly Func<BookingDbContext> _contextFactory;
 
@@ -44,7 +46,8 @@ namespace apcurium.MK.Booking.EventHandlers
                     MaxUsage = @event.MaxUsage,
                     Code = @event.Code,
                     PublishedStartDate = @event.PublishedStartDate,
-                    PublishedEndDate = @event.PublishedEndDate
+                    PublishedEndDate = @event.PublishedEndDate,
+                    TriggerSettings = @event.TriggerSettings
                 };
 
                 context.Save(promotionDetail);
@@ -73,6 +76,7 @@ namespace apcurium.MK.Booking.EventHandlers
                 promotionDetail.Code = @event.Code;
                 promotionDetail.PublishedStartDate = @event.PublishedStartDate;
                 promotionDetail.PublishedEndDate = @event.PublishedEndDate;
+                promotionDetail.TriggerSettings = @event.TriggerSettings;
 
                 context.Save(promotionDetail);
             }
@@ -106,11 +110,14 @@ namespace apcurium.MK.Booking.EventHandlers
         {
             using (var context = _contextFactory.Invoke())
             {
+                var account = context.Find<AccountDetail>(@event.AccountId);
+
                 context.Save(new PromotionUsageDetail
                 {
                     OrderId = @event.OrderId,
                     PromoId = @event.SourceId,
-                    @AccountId = @event.AccountId,
+                    AccountId = @event.AccountId,
+                    UserEmail = account.Email,
                     Code = @event.Code,
                     DiscountType = @event.DiscountType,
                     DiscountValue = @event.DiscountValue
@@ -122,11 +129,28 @@ namespace apcurium.MK.Booking.EventHandlers
         {
             using (var context = _contextFactory.Invoke())
             {
-                var promotionUsageDetail = context.Find<PromotionUsageDetail>(@event.OrderId);
-
+                var promotionUsageDetail = context.Find<PromotionUsageDetail>(@event.OrderId);                
+                
                 promotionUsageDetail.AmountSaved = @event.AmountSaved;
+                promotionUsageDetail.DateRedeemed = @event.EventDate;
 
-                context.Save(promotionUsageDetail);
+                context.SaveChanges();
+            }
+        }
+
+        public void Handle(UserAddedToPromotionWhiteList @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var promotionProgressDetail = context.Set<PromotionProgressDetail>().Find(@event.AccountId, @event.SourceId);
+                if (promotionProgressDetail == null)
+                {
+                    promotionProgressDetail = new PromotionProgressDetail { AccountId = @event.AccountId, PromoId = @event.SourceId };
+                    context.Save(promotionProgressDetail);
+                }
+
+                promotionProgressDetail.LastTriggeredAmount = @event.LastTriggeredAmount;
+                context.SaveChanges();
             }
         }
     }

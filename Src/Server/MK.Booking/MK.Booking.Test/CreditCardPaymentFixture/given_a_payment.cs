@@ -3,7 +3,6 @@
 using System;
 using apcurium.MK.Booking.CommandHandlers;
 using apcurium.MK.Booking.Commands;
-using apcurium.MK.Booking.Common.Tests;
 using apcurium.MK.Booking.Domain;
 using apcurium.MK.Booking.Events;
 using NUnit.Framework;
@@ -38,13 +37,16 @@ namespace apcurium.MK.Booking.Test.CreditCardPaymentFixture
         [Test]
         public void when_capturing_the_payment()
         {
+            var accountId = Guid.NewGuid();
+
             _sut.When(new CaptureCreditCardPayment
             {
                 PaymentId = _paymentId,
                 MeterAmount = 20,
                 Amount = 24,
                 TipAmount = 2,
-                TaxAmount = 2
+                TaxAmount = 2,
+                AccountId = accountId
             });
 
             var @event = _sut.ThenHasSingle<CreditCardPaymentCaptured_V2>();
@@ -54,6 +56,7 @@ namespace apcurium.MK.Booking.Test.CreditCardPaymentFixture
             Assert.AreEqual(2, @event.Tip);
             Assert.AreEqual(2, @event.Tax);
             Assert.AreEqual(_orderId, @event.OrderId);
+            Assert.AreEqual(accountId, @event.AccountId);
         }
 
         [Test]

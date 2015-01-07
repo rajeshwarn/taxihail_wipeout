@@ -10,6 +10,7 @@ using apcurium.MK.Booking.Mobile.Messages;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
 using TinyMessenger;
+using apcurium.MK.Booking.Api.Contract.Resources;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -125,7 +126,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     new {orderId = vm.Id}));
             }
         }
-
+			
         public override void OnViewUnloaded ()
         {
             base.OnViewUnloaded ();

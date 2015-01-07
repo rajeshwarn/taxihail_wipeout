@@ -125,13 +125,13 @@ namespace apcurium.MK.Booking.Services.Impl
             Result<Transaction> cancellationResult = null;
             if (transaction.Status == TransactionStatus.AUTHORIZING
                 || transaction.Status == TransactionStatus.AUTHORIZED
-                || transaction.Status == TransactionStatus.SUBMITTED_FOR_SETTLEMENT
-                || transaction.Status == TransactionStatus.SETTLING)
+                || transaction.Status == TransactionStatus.SUBMITTED_FOR_SETTLEMENT)
             {
                 // can void
                 cancellationResult = BraintreeGateway.Transaction.Void(transactionId);
             }
-            else if (transaction.Status == TransactionStatus.SETTLED)
+            else if (transaction.Status == TransactionStatus.SETTLED
+                || transaction.Status == TransactionStatus.SETTLING)
             {
                 // will have to refund it
                 cancellationResult = BraintreeGateway.Transaction.Refund(transactionId);
@@ -142,8 +142,8 @@ namespace apcurium.MK.Booking.Services.Impl
             {
                 throw new Exception(cancellationResult != null
                     ? cancellationResult.Message
-                    : string.Format("transaction {0} status unknown, can't cancel it",
-                        transactionId));
+                    : string.Format("transaction {0} status {1}, can't cancel it",
+                        transactionId, transaction.Status));
             }
 
             message = message + " The transaction has been cancelled.";

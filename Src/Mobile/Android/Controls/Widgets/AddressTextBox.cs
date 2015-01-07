@@ -205,7 +205,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
         void Resize()
         {
-            AddressTextView.Enabled = !UserInputDisabled;
             if (!IsSelected)
             {
                 //not using visibility to avoid triggering focus change

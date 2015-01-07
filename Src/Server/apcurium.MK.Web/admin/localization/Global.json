@@ -107,7 +107,7 @@
 	"OrderStatus.ServerPollingInterval" : "Server Ride Status Polling (seconds)",
     "Network.PrimaryOrderTimeout": "Primary Order Timeout (seconds)",
     "Network.SecondaryOrderTimeout": "Secondary Order Timeout (seconds)",
-    "PromotionEnabled" : "PromotionEnabled (refresh to see)",
+    "IsTaxiHailPro" : "IsTaxiHailPro (refresh to see)",
 
 	"/******* End settings Aliases *******/": "",
 
@@ -116,13 +116,15 @@
     "NotificationSettingsWarning": "Notifications other than Email will be sent by Push or SMS depending on the setting \"SendPushAsSMS\"",
     "enabled":  "Enable Notifications",
     "bookingConfirmationEmail":  "Booking Confirmation (Email)",
-    "receiptEmail":  "Receipt (Email)",
+    "receiptEmail": "Receipt (Email)",
+    "promotionUnlockedEmail":  "Promotion Unlocked (Email)",
     "driverAssignedEmail":  "Driver Assigned (Email)",
     "driverAssignedPush":  "Driver Assigned",
     "confirmPairingPush":  "Confirm Pairing",
     "nearbyTaxiPush":  "Nearby Taxi",
     "vehicleAtPickupPush":  "Vehicle at Pickup",
-    "paymentConfirmationPush":  "Payment Confirmation",
+    "paymentConfirmationPush": "Payment Confirmation",
+    "promotionUnlockedPush":  "Promotion Unlocked (Push)",
 
     "/******* End notification settings Aliases ******/": ""
 }

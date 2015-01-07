@@ -51,9 +51,12 @@
     <Compile Include="AddCreditCard.cs" />
     <Compile Include="AddDefaultFavoriteAddress.cs" />
     <Compile Include="AddFavoriteAddress.cs" />
+    <Compile Include="AddIbsOrderInfoToOrder.cs" />
     <Compile Include="AddOrUpdateNotificationSettings.cs" />
     <Compile Include="AddOrUpdateUserTaxiHailNetworkSettings.cs" />
     <Compile Include="AddPopularAddress.cs" />
+    <Compile Include="AddUserToPromotionWhiteList.cs" />
+    <Compile Include="CancelOrderBecauseOfIbsError.cs" />
     <Compile Include="ImportAccountCharge.cs" />
     <Compile Include="AddUpdateAccountCharge.cs" />
     <Compile Include="AddUpdateVehicleType.cs" />

@@ -140,11 +140,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
             var maxSizeForTitle = new SizeF(200, 0);
             var maxSizeForDescription = new SizeF(new UIEdgeInsets(0, 15, 0, 15).InsetRect(tableView.Bounds).Width, 0);
+			var maxSizeForProgress = new SizeF(200, 0);
 
             var titleTextSize = tableView.GetSizeThatFits(item.Name, UIFont.FromName(FontName.HelveticaNeueBold, 28 / 2), maxSizeForTitle);
             var descriptionTextSize = tableView.GetSizeThatFits(item.Description, UIFont.FromName(FontName.HelveticaNeueLight, 28 / 2), maxSizeForDescription);
+			var progressTextSize = tableView.GetSizeThatFits(item.ProgressDescription, UIFont.FromName(FontName.HelveticaNeueLight, 28 / 2), maxSizeForProgress);
 
-            return nonDynamicHeight + titleTextSize.Height + descriptionTextSize.Height;
+			return nonDynamicHeight + titleTextSize.Height + descriptionTextSize.Height + progressTextSize.Height;
         }
     }
 }

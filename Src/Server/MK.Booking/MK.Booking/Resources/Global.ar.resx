@@ -430,4 +430,50 @@
   <data name="CannotCreateOrder_NoCompanies" xml:space="preserve">
     <value>There is no company serving this region</value>
   </data>
+  <data name="CannotCreateOrder_PromotionUserNotAllowed" xml:space="preserve">
+    <value>You are not allowed to use this promotion</value>
+  </data>
+  <data name="Email_Body_PromotionUnlockedLine1" xml:space="preserve">
+    <value>Congratulations! You are now eligible to use the "{{ PromotionName }}" promotion. Use code &lt;b&gt;{{ PromotionCode }}&lt;/b&gt; when booking your next ride to redeem it.</value>
+  </data>
+  <data name="Email_Body_PromotionUnlockedLine2" xml:space="preserve">
+    <value>Hurry up! This promotion is only valid until {{ ExpirationDate }} {{ ExpirationTime }}.</value>
+  </data>
+  <data name="Email_Subject_PromotionUnlocked" xml:space="preserve">
+    <value>{{ ApplicationName }} - New Promotion Available!</value>
+  </data>
+  <data name="PushNotification_PromotionUnlocked" xml:space="preserve">
+    <value>Congratulations! You are now eligible to use the "{0}" promotion. Use code {1} when booking your next ride to redeem it.</value>
+  </data>
+  <data name="CreateOrder_CannotCreateInIbs" xml:space="preserve">
+    <value>لا يمكن إدخال الطلب. الرجاء المحاولة من جديد أو اتصل بنا.</value>
+    <comment>Order cannot be created. Please try again or call us.</comment>
+  </data>
+  <data name="CreateOrder_CannotCreateInIbs_1002" xml:space="preserve">
+    <value>عنوان الإلتقاء يقع خارج نطاق الخدمة المعتادة.</value>
+    <comment>Order cannot be created. The specified Pickup address lies outside the regular service area.</comment>
+  </data>
+  <data name="CreateOrder_CannotCreateInIbs_1452" xml:space="preserve">
+    <value>Order cannot be created. The specified Destination address lies outside the regular service area.</value>
+    <comment>Order cannot be created. The specified Destination address lies outside the regular service area.</comment>
+  </data>
+  <data name="CreateOrder_CannotCreateInIbs_3000" xml:space="preserve">
+    <value>تم إيقاف حسابك.</value>
+    <comment>Order cannot be created. Your account has been disabled.</comment>
+  </data>
+  <data name="CreateOrder_CannotCreateInIbs_7000" xml:space="preserve">
+    <value>لا يمكن إدخال الطلب لأن حسابك غير فعال حاليا.</value>
+    <comment>Order cannot be created. Your account is currently inactive.</comment>
+  </data>
+  <data name="CreateOrder_CannotCreateInIbs_10000" xml:space="preserve">
+    <value>Order cannot be created. The charge account information is invalid. Please try again.</value>
+    <comment>Order cannot be created. The charge account information is invalid. Please try again.</comment>
+  </data>
+  <data name="CreateOrder_CannotCreateInIbs_1300" xml:space="preserve">
+    <value>We apologize but unfortunately we do not have any reservations available for that time period.</value>
+    <comment>We apologize but unfortunately we do not have any reservations available for that time period.</comment>
+  </data>
+  <data name="CreateOrder_WaitingForIbs" xml:space="preserve">
+    <value>Processing your order...</value>
+  </data>
 </root>

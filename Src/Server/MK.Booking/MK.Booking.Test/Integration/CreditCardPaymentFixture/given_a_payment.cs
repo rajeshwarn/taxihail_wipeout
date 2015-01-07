@@ -8,7 +8,6 @@ using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
 using NUnit.Framework;
-using apcurium.MK.Booking.Common.Tests;
 
 #endregion
 

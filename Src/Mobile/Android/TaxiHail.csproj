@@ -661,7 +661,7 @@
       <SubType>AndroidResource</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\Layout\View_LocationList.axml">
-      <SubType>AndroidResource</SubType>
+      <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\Values\Color.xml" />
     <AndroidResource Include="Resources\Layout\SpinnerText.axml" />
@@ -786,6 +786,10 @@
     <ProjectReference Include="..\..\Server\MK.Booking.MapDataProvider\MK.Booking.MapDataProvider.Android.csproj">
       <Project>{742B3C55-5630-4DCA-BBBD-035C313A4647}</Project>
       <Name>MK.Booking.MapDataProvider.Android</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Libraries\SourceCode\GoogleMapsForBusiness\binding\android\GoogleMaps.M4B\GoogleMaps.M4B.csproj">
+      <Project>{8CB25019-45B3-4E49-90C8-5C9B03A2A75C}</Project>
+      <Name>GoogleMaps.M4B</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

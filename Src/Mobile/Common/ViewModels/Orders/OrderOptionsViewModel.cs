@@ -21,6 +21,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
         public event EventHandler<HomeViewModelStateRequestedEventArgs> PresentationStateRequested;
 
 	    private string _market;
+		private bool _isInitialized;
 
 		public OrderOptionsViewModel(IOrderWorkflowService orderWorkflowService, IAccountService accountService, IVehicleService vehicleService)
 		{
@@ -28,31 +29,37 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			_accountService = accountService;
 			_vehicleService = vehicleService;
 
-			this.Observe (_orderWorkflowService.GetAndObserveIsDestinationModeOpened (),
-				isDestinationModeOpened =>
-				{
-					IsDestinationModeOpened = isDestinationModeOpened;
-					OnDestinationModeOpened();
-				});
-			Observe(_orderWorkflowService.GetAndObservePickupAddress(), address => PickupAddress = address);
-			Observe(_orderWorkflowService.GetAndObserveDestinationAddress(), address => DestinationAddress = address);
-			Observe(_orderWorkflowService.GetAndObserveAddressSelectionMode(), selectionMode => AddressSelectionMode = selectionMode);
-			Observe(_orderWorkflowService.GetAndObserveEstimatedFare(), fare => EstimatedFare = fare);
-			Observe(_orderWorkflowService.GetAndObserveLoadingAddress(), loading => IsLoadingAddress = loading);
-			Observe(_orderWorkflowService.GetAndObserveVehicleType(), vehicleType => VehicleTypeId = vehicleType);
-            Observe(_orderWorkflowService.GetAndObserveMarket(), market => MarketChanged(market));
-			Observe(_vehicleService.GetAndObserveEta(), eta => Eta = eta);
+
+				
 		}
 
 		public async Task Init()
 		{
+			if (!_isInitialized)
+			{
+				_isInitialized = true;
+				ShowDestination = Settings.DestinationIsRequired;
+
+				this.Observe (_orderWorkflowService.GetAndObserveIsDestinationModeOpened (),
+					isDestinationModeOpened => {
+						IsDestinationModeOpened = isDestinationModeOpened;
+						OnDestinationModeOpened ();
+					});
+				Observe (_orderWorkflowService.GetAndObservePickupAddress (), address => PickupAddress = address);
+				Observe (_orderWorkflowService.GetAndObserveDestinationAddress (), address => DestinationAddress = address);
+				Observe (_orderWorkflowService.GetAndObserveAddressSelectionMode (), selectionMode => AddressSelectionMode = selectionMode);
+				Observe (_orderWorkflowService.GetAndObserveEstimatedFare (), fare => EstimatedFare = fare);
+				Observe (_orderWorkflowService.GetAndObserveLoadingAddress (), loading => IsLoadingAddress = loading);
+				Observe (_orderWorkflowService.GetAndObserveVehicleType (), vehicleType => VehicleTypeId = vehicleType);
+				Observe (_orderWorkflowService.GetAndObserveMarket (), market => MarketChanged (market));
+				Observe (_vehicleService.GetAndObserveEta (), eta => Eta = eta);
+			}
+
 		    Start();
 		}
 
 	    public async Task Start()
 	    {
-			ShowDestination = Settings.DestinationIsRequired;
-
             var list = await _accountService.GetVehiclesList();
 
             if (list.None())

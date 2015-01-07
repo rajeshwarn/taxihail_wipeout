@@ -1,0 +1,7821 @@
+<api>
+<package name="com.google.android.m4b.maps"
+>
+<class name="CameraUpdate"
+ extends="java.lang.Object"
+ abstract="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</class>
+<class name="CameraUpdateFactory"
+ extends="java.lang.Object"
+ abstract="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<method name="newCameraPosition"
+ return="com.google.android.m4b.maps.CameraUpdate"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="cameraPosition" type="com.google.android.m4b.maps.model.CameraPosition">
+</parameter>
+</method>
+<method name="newLatLng"
+ return="com.google.android.m4b.maps.CameraUpdate"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="latLng" type="com.google.android.m4b.maps.model.LatLng">
+</parameter>
+</method>
+<method name="newLatLngBounds"
+ return="com.google.android.m4b.maps.CameraUpdate"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="bounds" type="com.google.android.m4b.maps.model.LatLngBounds">
+</parameter>
+<parameter name="padding" type="int">
+</parameter>
+</method>
+<method name="newLatLngBounds"
+ return="com.google.android.m4b.maps.CameraUpdate"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="bounds" type="com.google.android.m4b.maps.model.LatLngBounds">
+</parameter>
+<parameter name="width" type="int">
+</parameter>
+<parameter name="height" type="int">
+</parameter>
+<parameter name="padding" type="int">
+</parameter>
+</method>
+<method name="newLatLngZoom"
+ return="com.google.android.m4b.maps.CameraUpdate"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="latLng" type="com.google.android.m4b.maps.model.LatLng">
+</parameter>
+<parameter name="zoom" type="float">
+</parameter>
+</method>
+<method name="scrollBy"
+ return="com.google.android.m4b.maps.CameraUpdate"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="xPixel" type="float">
+</parameter>
+<parameter name="yPixel" type="float">
+</parameter>
+</method>
+<method name="zoomBy"
+ return="com.google.android.m4b.maps.CameraUpdate"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="amount" type="float">
+</parameter>
+</method>
+<method name="zoomBy"
+ return="com.google.android.m4b.maps.CameraUpdate"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="amount" type="float">
+</parameter>
+<parameter name="focus" type="android.graphics.Point">
+</parameter>
+</method>
+<method name="zoomIn"
+ return="com.google.android.m4b.maps.CameraUpdate"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="zoomOut"
+ return="com.google.android.m4b.maps.CameraUpdate"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="zoomTo"
+ return="com.google.android.m4b.maps.CameraUpdate"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="zoom" type="float">
+</parameter>
+</method>
+</class>
+<class name="GoogleMap"
+ extends="java.lang.Object"
+ abstract="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<method name="addCircle"
+ return="com.google.android.m4b.maps.model.Circle"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="options" type="com.google.android.m4b.maps.model.CircleOptions">
+</parameter>
+</method>
+<method name="addGroundOverlay"
+ return="com.google.android.m4b.maps.model.GroundOverlay"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="options" type="com.google.android.m4b.maps.model.GroundOverlayOptions">
+</parameter>
+</method>
+<method name="addMapsEngineLayer"
+ return="com.google.android.m4b.maps.model.MapsEngineLayer"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="options" type="com.google.android.m4b.maps.model.MapsEngineLayerOptions">
+</parameter>
+</method>
+<method name="addMarker"
+ return="com.google.android.m4b.maps.model.Marker"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="options" type="com.google.android.m4b.maps.model.MarkerOptions">
+</parameter>
+</method>
+<method name="addPolygon"
+ return="com.google.android.m4b.maps.model.Polygon"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="options" type="com.google.android.m4b.maps.model.PolygonOptions">
+</parameter>
+</method>
+<method name="addPolyline"
+ return="com.google.android.m4b.maps.model.Polyline"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="options" type="com.google.android.m4b.maps.model.PolylineOptions">
+</parameter>
+</method>
+<method name="addTileOverlay"
+ return="com.google.android.m4b.maps.model.TileOverlay"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="options" type="com.google.android.m4b.maps.model.TileOverlayOptions">
+</parameter>
+</method>
+<method name="animateCamera"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="update" type="com.google.android.m4b.maps.CameraUpdate">
+</parameter>
+</method>
+<method name="animateCamera"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="update" type="com.google.android.m4b.maps.CameraUpdate">
+</parameter>
+<parameter name="callback" type="com.google.android.m4b.maps.GoogleMap.CancelableCallback">
+</parameter>
+</method>
+<method name="animateCamera"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="update" type="com.google.android.m4b.maps.CameraUpdate">
+</parameter>
+<parameter name="durationMs" type="int">
+</parameter>
+<parameter name="callback" type="com.google.android.m4b.maps.GoogleMap.CancelableCallback">
+</parameter>
+</method>
+<method name="clear"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getCameraPosition"
+ return="com.google.android.m4b.maps.model.CameraPosition"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getFocusedBuilding"
+ return="com.google.android.m4b.maps.model.IndoorBuilding"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getMapType"
+ return="int"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getMaxZoomLevel"
+ return="float"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getMinZoomLevel"
+ return="float"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getMyLocation"
+ return="android.location.Location"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="true"
+ deprecated="deprecated"
+ visibility="public"
+>
+</method>
+<method name="getProjection"
+ return="com.google.android.m4b.maps.Projection"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getUiSettings"
+ return="com.google.android.m4b.maps.UiSettings"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="isBuildingsEnabled"
+ return="boolean"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="isIndoorEnabled"
+ return="boolean"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="isMyLocationEnabled"
+ return="boolean"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="isTrafficEnabled"
+ return="boolean"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="moveCamera"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="update" type="com.google.android.m4b.maps.CameraUpdate">
+</parameter>
+</method>
+<method name="setBuildingsEnabled"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="enabled" type="boolean">
+</parameter>
+</method>
+<method name="setIndoorEnabled"
+ return="boolean"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="enabled" type="boolean">
+</parameter>
+</method>
+<method name="setInfoWindowAdapter"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="adapter" type="com.google.android.m4b.maps.GoogleMap.InfoWindowAdapter">
+</parameter>
+</method>
+<method name="setLocationSource"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="source" type="com.google.android.m4b.maps.LocationSource">
+</parameter>
+</method>
+<method name="setMapType"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="type" type="int">
+</parameter>
+</method>
+<method name="setMyLocationEnabled"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="enabled" type="boolean">
+</parameter>
+</method>
+<method name="setOAuthTokenProvider"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="provider" type="com.google.android.m4b.maps.GoogleMap.OAuthTokenProvider">
+</parameter>
+</method>
+<method name="setOnCameraChangeListener"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="listener" type="com.google.android.m4b.maps.GoogleMap.OnCameraChangeListener">
+</parameter>
+</method>
+<method name="setOnIndoorStateChangeListener"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="listener" type="com.google.android.m4b.maps.GoogleMap.OnIndoorStateChangeListener">
+</parameter>
+</method>
+<method name="setOnInfoWindowClickListener"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="listener" type="com.google.android.m4b.maps.GoogleMap.OnInfoWindowClickListener">
+</parameter>
+</method>
+<method name="setOnMapClickListener"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="listener" type="com.google.android.m4b.maps.GoogleMap.OnMapClickListener">
+</parameter>
+</method>
+<method name="setOnMapLoadedCallback"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="callback" type="com.google.android.m4b.maps.GoogleMap.OnMapLoadedCallback">
+</parameter>
+</method>
+<method name="setOnMapLongClickListener"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="listener" type="com.google.android.m4b.maps.GoogleMap.OnMapLongClickListener">
+</parameter>
+</method>
+<method name="setOnMapsEngineFeatureClickListener"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="listener" type="com.google.android.m4b.maps.GoogleMap.OnMapsEngineFeatureClickListener">
+</parameter>
+</method>
+<method name="setOnMarkerClickListener"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="listener" type="com.google.android.m4b.maps.GoogleMap.OnMarkerClickListener">
+</parameter>
+</method>
+<method name="setOnMarkerDragListener"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="listener" type="com.google.android.m4b.maps.GoogleMap.OnMarkerDragListener">
+</parameter>
+</method>
+<method name="setOnMyLocationButtonClickListener"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="listener" type="com.google.android.m4b.maps.GoogleMap.OnMyLocationButtonClickListener">
+</parameter>
+</method>
+<method name="setOnMyLocationChangeListener"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="true"
+ deprecated="deprecated"
+ visibility="public"
+>
+<parameter name="listener" type="com.google.android.m4b.maps.GoogleMap.OnMyLocationChangeListener">
+</parameter>
+</method>
+<method name="setPadding"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="left" type="int">
+</parameter>
+<parameter name="top" type="int">
+</parameter>
+<parameter name="right" type="int">
+</parameter>
+<parameter name="bottom" type="int">
+</parameter>
+</method>
+<method name="setTrafficEnabled"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="enabled" type="boolean">
+</parameter>
+</method>
+<method name="snapshot"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="callback" type="com.google.android.m4b.maps.GoogleMap.SnapshotReadyCallback">
+</parameter>
+</method>
+<method name="snapshot"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="callback" type="com.google.android.m4b.maps.GoogleMap.SnapshotReadyCallback">
+</parameter>
+<parameter name="bitmap" type="android.graphics.Bitmap">
+</parameter>
+</method>
+<method name="stopAnimation"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<field name="MAP_TYPE_HYBRID"
+ type="int"
+ transient="false"
+ volatile="false"
+ value="4"
+ static="true"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="MAP_TYPE_NONE"
+ type="int"
+ transient="false"
+ volatile="false"
+ value="0"
+ static="true"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="MAP_TYPE_NORMAL"
+ type="int"
+ transient="false"
+ volatile="false"
+ value="1"
+ static="true"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="MAP_TYPE_SATELLITE"
+ type="int"
+ transient="false"
+ volatile="false"
+ value="2"
+ static="true"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="MAP_TYPE_TERRAIN"
+ type="int"
+ transient="false"
+ volatile="false"
+ value="3"
+ static="true"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+</class>
+<interface name="GoogleMap.CancelableCallback"
+ abstract="true"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<method name="onCancel"
+ return="void"
+ abstract="true"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="onFinish"
+ return="void"
+ abstract="true"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+</interface>
+<interface name="GoogleMap.InfoWindowAdapter"
+ abstract="true"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<method name="getInfoContents"
+ return="android.view.View"
+ abstract="true"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="marker" type="com.google.android.m4b.maps.model.Marker">
+</parameter>
+</method>
+<method name="getInfoWindow"
+ return="android.view.View"
+ abstract="true"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="marker" type="com.google.android.m4b.maps.model.Marker">
+</parameter>
+</method>
+</interface>
+<interface name="GoogleMap.OAuthTokenProvider"
+ abstract="true"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<method name="getOAuthToken"
+ return="java.lang.String"
+ abstract="true"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="invalidateOAuthToken"
+ return="void"
+ abstract="true"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="token" type="java.lang.String">
+</parameter>
+</method>
+</interface>
+<interface name="GoogleMap.OnCameraChangeListener"
+ abstract="true"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<method name="onCameraChange"
+ return="void"
+ abstract="true"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="position" type="com.google.android.m4b.maps.model.CameraPosition">
+</parameter>
+</method>
+</interface>
+<interface name="GoogleMap.OnIndoorStateChangeListener"
+ abstract="true"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<method name="onIndoorBuildingFocused"
+ return="void"
+ abstract="true"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="onIndoorLevelActivated"
+ return="void"
+ abstract="true"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="building" type="com.google.android.m4b.maps.model.IndoorBuilding">
+</parameter>
+</method>
+</interface>
+<interface name="GoogleMap.OnInfoWindowClickListener"
+ abstract="true"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<method name="onInfoWindowClick"
+ return="void"
+ abstract="true"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="marker" type="com.google.android.m4b.maps.model.Marker">
+</parameter>
+</method>
+</interface>
+<interface name="GoogleMap.OnMapClickListener"
+ abstract="true"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<method name="onMapClick"
+ return="void"
+ abstract="true"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="point" type="com.google.android.m4b.maps.model.LatLng">
+</parameter>
+</method>
+</interface>
+<interface name="GoogleMap.OnMapLoadedCallback"
+ abstract="true"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<method name="onMapLoaded"
+ return="void"
+ abstract="true"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+</interface>
+<interface name="GoogleMap.OnMapLongClickListener"
+ abstract="true"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<method name="onMapLongClick"
+ return="void"
+ abstract="true"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="point" type="com.google.android.m4b.maps.model.LatLng">
+</parameter>
+</method>
+</interface>
+<interface name="GoogleMap.OnMapsEngineFeatureClickListener"
+ abstract="true"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<method name="onFeatureClick"
+ return="void"
+ abstract="true"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="features" type="java.util.List&lt;com.google.android.m4b.maps.model.MapsEngineFeature&gt;">
+</parameter>
+</method>
+<method name="onFeatureInformationReceived"
+ return="void"
+ abstract="true"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="features" type="java.util.List&lt;com.google.android.m4b.maps.model.MapsEngineFeature&gt;">
+</parameter>
+</method>
+</interface>
+<interface name="GoogleMap.OnMarkerClickListener"
+ abstract="true"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<method name="onMarkerClick"
+ return="boolean"
+ abstract="true"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="marker" type="com.google.android.m4b.maps.model.Marker">
+</parameter>
+</method>
+</interface>
+<interface name="GoogleMap.OnMarkerDragListener"
+ abstract="true"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<method name="onMarkerDrag"
+ return="void"
+ abstract="true"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="marker" type="com.google.android.m4b.maps.model.Marker">
+</parameter>
+</method>
+<method name="onMarkerDragEnd"
+ return="void"
+ abstract="true"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="marker" type="com.google.android.m4b.maps.model.Marker">
+</parameter>
+</method>
+<method name="onMarkerDragStart"
+ return="void"
+ abstract="true"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="marker" type="com.google.android.m4b.maps.model.Marker">
+</parameter>
+</method>
+</interface>
+<interface name="GoogleMap.OnMyLocationButtonClickListener"
+ abstract="true"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<method name="onMyLocationButtonClick"
+ return="boolean"
+ abstract="true"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+</interface>
+<interface name="GoogleMap.OnMyLocationChangeListener"
+ abstract="true"
+ static="true"
+ final="false"
+ deprecated="deprecated"
+ visibility="public"
+>
+<method name="onMyLocationChange"
+ return="void"
+ abstract="true"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="location" type="android.location.Location">
+</parameter>
+</method>
+</interface>
+<interface name="GoogleMap.SnapshotReadyCallback"
+ abstract="true"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<method name="onSnapshotReady"
+ return="void"
+ abstract="true"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="snapshot" type="android.graphics.Bitmap">
+</parameter>
+</method>
+</interface>
+<class name="GoogleMapOptions"
+ extends="java.lang.Object"
+ abstract="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<constructor name="GoogleMapOptions"
+ type="com.google.android.m4b.maps.GoogleMapOptions"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</constructor>
+<method name="camera"
+ return="com.google.android.m4b.maps.GoogleMapOptions"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="camera" type="com.google.android.m4b.maps.model.CameraPosition">
+</parameter>
+</method>
+<method name="compassEnabled"
+ return="com.google.android.m4b.maps.GoogleMapOptions"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="enabled" type="boolean">
+</parameter>
+</method>
+<method name="createFromAttributes"
+ return="com.google.android.m4b.maps.GoogleMapOptions"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="context" type="android.content.Context">
+</parameter>
+<parameter name="attrs" type="android.util.AttributeSet">
+</parameter>
+</method>
+<method name="describeContents"
+ return="int"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getCamera"
+ return="com.google.android.m4b.maps.model.CameraPosition"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getCompassEnabled"
+ return="java.lang.Boolean"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getMapType"
+ return="int"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getRotateGesturesEnabled"
+ return="java.lang.Boolean"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getScrollGesturesEnabled"
+ return="java.lang.Boolean"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getTiltGesturesEnabled"
+ return="java.lang.Boolean"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getUseViewLifecycleInFragment"
+ return="java.lang.Boolean"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getZOrderOnTop"
+ return="java.lang.Boolean"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getZoomControlsEnabled"
+ return="java.lang.Boolean"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getZoomGesturesEnabled"
+ return="java.lang.Boolean"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="mapType"
+ return="com.google.android.m4b.maps.GoogleMapOptions"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="mapType" type="int">
+</parameter>
+</method>
+<method name="rotateGesturesEnabled"
+ return="com.google.android.m4b.maps.GoogleMapOptions"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="enabled" type="boolean">
+</parameter>
+</method>
+<method name="scrollGesturesEnabled"
+ return="com.google.android.m4b.maps.GoogleMapOptions"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="enabled" type="boolean">
+</parameter>
+</method>
+<method name="tiltGesturesEnabled"
+ return="com.google.android.m4b.maps.GoogleMapOptions"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="enabled" type="boolean">
+</parameter>
+</method>
+<method name="useViewLifecycleInFragment"
+ return="com.google.android.m4b.maps.GoogleMapOptions"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="useViewLifecycleInFragment" type="boolean">
+</parameter>
+</method>
+<method name="writeToParcel"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="out" type="android.os.Parcel">
+</parameter>
+<parameter name="flags" type="int">
+</parameter>
+</method>
+<method name="zOrderOnTop"
+ return="com.google.android.m4b.maps.GoogleMapOptions"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="zOrderOnTop" type="boolean">
+</parameter>
+</method>
+<method name="zoomControlsEnabled"
+ return="com.google.android.m4b.maps.GoogleMapOptions"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="enabled" type="boolean">
+</parameter>
+</method>
+<method name="zoomGesturesEnabled"
+ return="com.google.android.m4b.maps.GoogleMapOptions"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="enabled" type="boolean">
+</parameter>
+</method>
+<field name="CREATOR"
+ type="com.google.android.m4b.maps.GoogleMapOptionsCreator"
+ transient="false"
+ volatile="false"
+ static="true"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+</class>
+<interface name="LocationSource"
+ abstract="true"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<method name="activate"
+ return="void"
+ abstract="true"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="listener" type="com.google.android.m4b.maps.LocationSource.OnLocationChangedListener">
+</parameter>
+</method>
+<method name="deactivate"
+ return="void"
+ abstract="true"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+</interface>
+<interface name="LocationSource.OnLocationChangedListener"
+ abstract="true"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<method name="onLocationChanged"
+ return="void"
+ abstract="true"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="location" type="android.location.Location">
+</parameter>
+</method>
+</interface>
+<class name="MapFragment"
+ extends="android.app.Fragment"
+ abstract="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<constructor name="MapFragment"
+ type="com.google.android.m4b.maps.MapFragment"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</constructor>
+<method name="getMap"
+ return="com.google.android.m4b.maps.GoogleMap"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="newInstance"
+ return="com.google.android.m4b.maps.MapFragment"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="newInstance"
+ return="com.google.android.m4b.maps.MapFragment"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="options" type="com.google.android.m4b.maps.GoogleMapOptions">
+</parameter>
+</method>
+</class>
+<class name="MapView"
+ extends="android.widget.FrameLayout"
+ abstract="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<constructor name="MapView"
+ type="com.google.android.m4b.maps.MapView"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="context" type="android.content.Context">
+</parameter>
+</constructor>
+<constructor name="MapView"
+ type="com.google.android.m4b.maps.MapView"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="context" type="android.content.Context">
+</parameter>
+<parameter name="attrs" type="android.util.AttributeSet">
+</parameter>
+</constructor>
+<constructor name="MapView"
+ type="com.google.android.m4b.maps.MapView"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="context" type="android.content.Context">
+</parameter>
+<parameter name="attrs" type="android.util.AttributeSet">
+</parameter>
+<parameter name="defStyle" type="int">
+</parameter>
+</constructor>
+<constructor name="MapView"
+ type="com.google.android.m4b.maps.MapView"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="context" type="android.content.Context">
+</parameter>
+<parameter name="options" type="com.google.android.m4b.maps.GoogleMapOptions">
+</parameter>
+</constructor>
+<method name="getMap"
+ return="com.google.android.m4b.maps.GoogleMap"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="onCreate"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="savedInstanceState" type="android.os.Bundle">
+</parameter>
+</method>
+<method name="onDestroy"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="onLowMemory"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="onPause"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="onResume"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="onSaveInstanceState"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="outState" type="android.os.Bundle">
+</parameter>
+</method>
+</class>
+<class name="MapsInitializer"
+ extends="java.lang.Object"
+ abstract="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<method name="initialize"
+ return="int"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="context" type="android.content.Context">
+</parameter>
+</method>
+</class>
+<class name="Projection"
+ extends="java.lang.Object"
+ abstract="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<method name="fromScreenLocation"
+ return="com.google.android.m4b.maps.model.LatLng"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="point" type="android.graphics.Point">
+</parameter>
+</method>
+<method name="getVisibleRegion"
+ return="com.google.android.m4b.maps.model.VisibleRegion"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="toScreenLocation"
+ return="android.graphics.Point"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="location" type="com.google.android.m4b.maps.model.LatLng">
+</parameter>
+</method>
+</class>
+<class name="StreetViewPanorama"
+ extends="java.lang.Object"
+ abstract="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<method name="animateTo"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="camera" type="com.google.android.m4b.maps.model.StreetViewPanoramaCamera">
+</parameter>
+<parameter name="duration" type="long">
+</parameter>
+</method>
+<method name="getLocation"
+ return="com.google.android.m4b.maps.model.StreetViewPanoramaLocation"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getPanoramaCamera"
+ return="com.google.android.m4b.maps.model.StreetViewPanoramaCamera"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="isPanningGesturesEnabled"
+ return="boolean"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="isStreetNamesEnabled"
+ return="boolean"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="isUserNavigationEnabled"
+ return="boolean"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="isZoomGesturesEnabled"
+ return="boolean"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="orientationToPoint"
+ return="android.graphics.Point"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="orientation" type="com.google.android.m4b.maps.model.StreetViewPanoramaOrientation">
+</parameter>
+</method>
+<method name="pointToOrientation"
+ return="com.google.android.m4b.maps.model.StreetViewPanoramaOrientation"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="point" type="android.graphics.Point">
+</parameter>
+</method>
+<method name="setOnStreetViewPanoramaCameraChangeListener"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="listener" type="com.google.android.m4b.maps.StreetViewPanorama.OnStreetViewPanoramaCameraChangeListener">
+</parameter>
+</method>
+<method name="setOnStreetViewPanoramaChangeListener"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="listener" type="com.google.android.m4b.maps.StreetViewPanorama.OnStreetViewPanoramaChangeListener">
+</parameter>
+</method>
+<method name="setOnStreetViewPanoramaClickListener"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="listener" type="com.google.android.m4b.maps.StreetViewPanorama.OnStreetViewPanoramaClickListener">
+</parameter>
+</method>
+<method name="setPanningGesturesEnabled"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="enablePanning" type="boolean">
+</parameter>
+</method>
+<method name="setPosition"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="panoId" type="java.lang.String">
+</parameter>
+</method>
+<method name="setPosition"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="position" type="com.google.android.m4b.maps.model.LatLng">
+</parameter>
+</method>
+<method name="setPosition"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="position" type="com.google.android.m4b.maps.model.LatLng">
+</parameter>
+<parameter name="radius" type="int">
+</parameter>
+</method>
+<method name="setStreetNamesEnabled"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="enableStreetNames" type="boolean">
+</parameter>
+</method>
+<method name="setUserNavigationEnabled"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="enableUserNavigation" type="boolean">
+</parameter>
+</method>
+<method name="setZoomGesturesEnabled"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="enableZoom" type="boolean">
+</parameter>
+</method>
+</class>
+<interface name="StreetViewPanorama.OnStreetViewPanoramaCameraChangeListener"
+ abstract="true"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<method name="onStreetViewPanoramaCameraChange"
+ return="void"
+ abstract="true"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="camera" type="com.google.android.m4b.maps.model.StreetViewPanoramaCamera">
+</parameter>
+</method>
+</interface>
+<interface name="StreetViewPanorama.OnStreetViewPanoramaChangeListener"
+ abstract="true"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<method name="onStreetViewPanoramaChange"
+ return="void"
+ abstract="true"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="location" type="com.google.android.m4b.maps.model.StreetViewPanoramaLocation">
+</parameter>
+</method>
+</interface>
+<interface name="StreetViewPanorama.OnStreetViewPanoramaClickListener"
+ abstract="true"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<method name="onStreetViewPanoramaClick"
+ return="void"
+ abstract="true"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="orientation" type="com.google.android.m4b.maps.model.StreetViewPanoramaOrientation">
+</parameter>
+</method>
+</interface>
+<class name="StreetViewPanoramaFragment"
+ extends="android.app.Fragment"
+ abstract="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<constructor name="StreetViewPanoramaFragment"
+ type="com.google.android.m4b.maps.StreetViewPanoramaFragment"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</constructor>
+<method name="getStreetViewPanorama"
+ return="com.google.android.m4b.maps.StreetViewPanorama"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="newInstance"
+ return="com.google.android.m4b.maps.StreetViewPanoramaFragment"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="newInstance"
+ return="com.google.android.m4b.maps.StreetViewPanoramaFragment"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="options" type="com.google.android.m4b.maps.StreetViewPanoramaOptions">
+</parameter>
+</method>
+</class>
+<class name="StreetViewPanoramaOptions"
+ extends="java.lang.Object"
+ abstract="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<constructor name="StreetViewPanoramaOptions"
+ type="com.google.android.m4b.maps.StreetViewPanoramaOptions"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</constructor>
+<method name="describeContents"
+ return="int"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getPanningGesturesEnabled"
+ return="java.lang.Boolean"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getPanoramaId"
+ return="java.lang.String"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getPosition"
+ return="com.google.android.m4b.maps.model.LatLng"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getRadius"
+ return="java.lang.Integer"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getStreetNamesEnabled"
+ return="java.lang.Boolean"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getStreetViewPanoramaCamera"
+ return="com.google.android.m4b.maps.model.StreetViewPanoramaCamera"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getUseViewLifecycleInFragment"
+ return="java.lang.Boolean"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getUserNavigationEnabled"
+ return="java.lang.Boolean"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getZoomGesturesEnabled"
+ return="java.lang.Boolean"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="panningGesturesEnabled"
+ return="com.google.android.m4b.maps.StreetViewPanoramaOptions"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="enabled" type="boolean">
+</parameter>
+</method>
+<method name="panoramaCamera"
+ return="com.google.android.m4b.maps.StreetViewPanoramaOptions"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="camera" type="com.google.android.m4b.maps.model.StreetViewPanoramaCamera">
+</parameter>
+</method>
+<method name="panoramaId"
+ return="com.google.android.m4b.maps.StreetViewPanoramaOptions"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="panoId" type="java.lang.String">
+</parameter>
+</method>
+<method name="position"
+ return="com.google.android.m4b.maps.StreetViewPanoramaOptions"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="position" type="com.google.android.m4b.maps.model.LatLng">
+</parameter>
+</method>
+<method name="position"
+ return="com.google.android.m4b.maps.StreetViewPanoramaOptions"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="position" type="com.google.android.m4b.maps.model.LatLng">
+</parameter>
+<parameter name="radius" type="java.lang.Integer">
+</parameter>
+</method>
+<method name="streetNamesEnabled"
+ return="com.google.android.m4b.maps.StreetViewPanoramaOptions"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="enabled" type="boolean">
+</parameter>
+</method>
+<method name="useViewLifecycleInFragment"
+ return="com.google.android.m4b.maps.StreetViewPanoramaOptions"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="useViewLifecycleInFragment" type="boolean">
+</parameter>
+</method>
+<method name="userNavigationEnabled"
+ return="com.google.android.m4b.maps.StreetViewPanoramaOptions"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="enabled" type="boolean">
+</parameter>
+</method>
+<method name="writeToParcel"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="out" type="android.os.Parcel">
+</parameter>
+<parameter name="flags" type="int">
+</parameter>
+</method>
+<method name="zoomGesturesEnabled"
+ return="com.google.android.m4b.maps.StreetViewPanoramaOptions"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="enabled" type="boolean">
+</parameter>
+</method>
+<field name="CREATOR"
+ type="com.google.android.m4b.maps.StreetViewPanoramaOptionsCreator"
+ transient="false"
+ volatile="false"
+ static="true"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+</class>
+<class name="StreetViewPanoramaView"
+ extends="android.widget.FrameLayout"
+ abstract="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<constructor name="StreetViewPanoramaView"
+ type="com.google.android.m4b.maps.StreetViewPanoramaView"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="context" type="android.content.Context">
+</parameter>
+</constructor>
+<constructor name="StreetViewPanoramaView"
+ type="com.google.android.m4b.maps.StreetViewPanoramaView"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="context" type="android.content.Context">
+</parameter>
+<parameter name="attrs" type="android.util.AttributeSet">
+</parameter>
+</constructor>
+<constructor name="StreetViewPanoramaView"
+ type="com.google.android.m4b.maps.StreetViewPanoramaView"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="context" type="android.content.Context">
+</parameter>
+<parameter name="attrs" type="android.util.AttributeSet">
+</parameter>
+<parameter name="defStyle" type="int">
+</parameter>
+</constructor>
+<constructor name="StreetViewPanoramaView"
+ type="com.google.android.m4b.maps.StreetViewPanoramaView"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="context" type="android.content.Context">
+</parameter>
+<parameter name="options" type="com.google.android.m4b.maps.StreetViewPanoramaOptions">
+</parameter>
+</constructor>
+<method name="getStreetViewPanorama"
+ return="com.google.android.m4b.maps.StreetViewPanorama"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="onCreate"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="savedInstanceState" type="android.os.Bundle">
+</parameter>
+</method>
+<method name="onDestroy"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="onLowMemory"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="onPause"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="onResume"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="onSaveInstanceState"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="outState" type="android.os.Bundle">
+</parameter>
+</method>
+</class>
+<class name="SupportMapFragment"
+ extends="android.support.v4.app.Fragment"
+ abstract="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<constructor name="SupportMapFragment"
+ type="com.google.android.m4b.maps.SupportMapFragment"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</constructor>
+<method name="getMap"
+ return="com.google.android.m4b.maps.GoogleMap"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="newInstance"
+ return="com.google.android.m4b.maps.SupportMapFragment"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="newInstance"
+ return="com.google.android.m4b.maps.SupportMapFragment"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="options" type="com.google.android.m4b.maps.GoogleMapOptions">
+</parameter>
+</method>
+</class>
+<class name="SupportStreetViewPanoramaFragment"
+ extends="android.support.v4.app.Fragment"
+ abstract="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<constructor name="SupportStreetViewPanoramaFragment"
+ type="com.google.android.m4b.maps.SupportStreetViewPanoramaFragment"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</constructor>
+<method name="getStreetViewPanorama"
+ return="com.google.android.m4b.maps.StreetViewPanorama"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="newInstance"
+ return="com.google.android.m4b.maps.SupportStreetViewPanoramaFragment"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="newInstance"
+ return="com.google.android.m4b.maps.SupportStreetViewPanoramaFragment"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="options" type="com.google.android.m4b.maps.StreetViewPanoramaOptions">
+</parameter>
+</method>
+</class>
+<class name="UiSettings"
+ extends="java.lang.Object"
+ abstract="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<method name="isCompassEnabled"
+ return="boolean"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="isIndoorLevelPickerEnabled"
+ return="boolean"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="isMyLocationButtonEnabled"
+ return="boolean"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="isRotateGesturesEnabled"
+ return="boolean"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="isScrollGesturesEnabled"
+ return="boolean"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="isTiltGesturesEnabled"
+ return="boolean"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="isZoomControlsEnabled"
+ return="boolean"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="isZoomGesturesEnabled"
+ return="boolean"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="setAllGesturesEnabled"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="enabled" type="boolean">
+</parameter>
+</method>
+<method name="setCompassEnabled"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="enabled" type="boolean">
+</parameter>
+</method>
+<method name="setIndoorLevelPickerEnabled"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="enabled" type="boolean">
+</parameter>
+</method>
+<method name="setMyLocationButtonEnabled"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="enabled" type="boolean">
+</parameter>
+</method>
+<method name="setRotateGesturesEnabled"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="enabled" type="boolean">
+</parameter>
+</method>
+<method name="setScrollGesturesEnabled"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="enabled" type="boolean">
+</parameter>
+</method>
+<method name="setTiltGesturesEnabled"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="enabled" type="boolean">
+</parameter>
+</method>
+<method name="setZoomControlsEnabled"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="enabled" type="boolean">
+</parameter>
+</method>
+<method name="setZoomGesturesEnabled"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="enabled" type="boolean">
+</parameter>
+</method>
+</class>
+</package>
+<package name="com.google.android.m4b.maps.model"
+>
+<class name="BitmapDescriptor"
+ extends="java.lang.Object"
+ abstract="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</class>
+<class name="BitmapDescriptorFactory"
+ extends="java.lang.Object"
+ abstract="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<method name="defaultMarker"
+ return="com.google.android.m4b.maps.model.BitmapDescriptor"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="defaultMarker"
+ return="com.google.android.m4b.maps.model.BitmapDescriptor"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="hue" type="float">
+</parameter>
+</method>
+<method name="fromAsset"
+ return="com.google.android.m4b.maps.model.BitmapDescriptor"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="assetName" type="java.lang.String">
+</parameter>
+</method>
+<method name="fromBitmap"
+ return="com.google.android.m4b.maps.model.BitmapDescriptor"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="image" type="android.graphics.Bitmap">
+</parameter>
+</method>
+<method name="fromFile"
+ return="com.google.android.m4b.maps.model.BitmapDescriptor"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="fileName" type="java.lang.String">
+</parameter>
+</method>
+<method name="fromPath"
+ return="com.google.android.m4b.maps.model.BitmapDescriptor"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="absolutePath" type="java.lang.String">
+</parameter>
+</method>
+<method name="fromResource"
+ return="com.google.android.m4b.maps.model.BitmapDescriptor"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="resourceId" type="int">
+</parameter>
+</method>
+<field name="HUE_AZURE"
+ type="float"
+ transient="false"
+ volatile="false"
+ value="210.0f"
+ static="true"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="HUE_BLUE"
+ type="float"
+ transient="false"
+ volatile="false"
+ value="240.0f"
+ static="true"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="HUE_CYAN"
+ type="float"
+ transient="false"
+ volatile="false"
+ value="180.0f"
+ static="true"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="HUE_GREEN"
+ type="float"
+ transient="false"
+ volatile="false"
+ value="120.0f"
+ static="true"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="HUE_MAGENTA"
+ type="float"
+ transient="false"
+ volatile="false"
+ value="300.0f"
+ static="true"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="HUE_ORANGE"
+ type="float"
+ transient="false"
+ volatile="false"
+ value="30.0f"
+ static="true"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="HUE_RED"
+ type="float"
+ transient="false"
+ volatile="false"
+ value="0.0f"
+ static="true"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="HUE_ROSE"
+ type="float"
+ transient="false"
+ volatile="false"
+ value="330.0f"
+ static="true"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="HUE_VIOLET"
+ type="float"
+ transient="false"
+ volatile="false"
+ value="270.0f"
+ static="true"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="HUE_YELLOW"
+ type="float"
+ transient="false"
+ volatile="false"
+ value="60.0f"
+ static="true"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+</class>
+<class name="CameraPosition"
+ extends="java.lang.Object"
+ abstract="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<constructor name="CameraPosition"
+ type="com.google.android.m4b.maps.model.CameraPosition"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="target" type="com.google.android.m4b.maps.model.LatLng">
+</parameter>
+<parameter name="zoom" type="float">
+</parameter>
+<parameter name="tilt" type="float">
+</parameter>
+<parameter name="bearing" type="float">
+</parameter>
+</constructor>
+<method name="builder"
+ return="com.google.android.m4b.maps.model.CameraPosition.Builder"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="builder"
+ return="com.google.android.m4b.maps.model.CameraPosition.Builder"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="camera" type="com.google.android.m4b.maps.model.CameraPosition">
+</parameter>
+</method>
+<method name="createFromAttributes"
+ return="com.google.android.m4b.maps.model.CameraPosition"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="context" type="android.content.Context">
+</parameter>
+<parameter name="attrs" type="android.util.AttributeSet">
+</parameter>
+</method>
+<method name="describeContents"
+ return="int"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="fromLatLngZoom"
+ return="com.google.android.m4b.maps.model.CameraPosition"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="true"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="target" type="com.google.android.m4b.maps.model.LatLng">
+</parameter>
+<parameter name="zoom" type="float">
+</parameter>
+</method>
+<method name="writeToParcel"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="out" type="android.os.Parcel">
+</parameter>
+<parameter name="flags" type="int">
+</parameter>
+</method>
+<field name="CREATOR"
+ type="com.google.android.m4b.maps.model.CameraPositionCreator"
+ transient="false"
+ volatile="false"
+ static="true"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="bearing"
+ type="float"
+ transient="false"
+ volatile="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="target"
+ type="com.google.android.m4b.maps.model.LatLng"
+ transient="false"
+ volatile="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="tilt"
+ type="float"
+ transient="false"
+ volatile="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="zoom"
+ type="float"
+ transient="false"
+ volatile="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+</class>
+<class name="CameraPosition.Builder"
+ extends="java.lang.Object"
+ abstract="false"
+ static="true"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<constructor name="CameraPosition.Builder"
+ type="com.google.android.m4b.maps.model.CameraPosition.Builder"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</constructor>
+<constructor name="CameraPosition.Builder"
+ type="com.google.android.m4b.maps.model.CameraPosition.Builder"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="previous" type="com.google.android.m4b.maps.model.CameraPosition">
+</parameter>
+</constructor>
+<method name="bearing"
+ return="com.google.android.m4b.maps.model.CameraPosition.Builder"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="bearing" type="float">
+</parameter>
+</method>
+<method name="build"
+ return="com.google.android.m4b.maps.model.CameraPosition"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="target"
+ return="com.google.android.m4b.maps.model.CameraPosition.Builder"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="location" type="com.google.android.m4b.maps.model.LatLng">
+</parameter>
+</method>
+<method name="tilt"
+ return="com.google.android.m4b.maps.model.CameraPosition.Builder"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="tilt" type="float">
+</parameter>
+</method>
+<method name="zoom"
+ return="com.google.android.m4b.maps.model.CameraPosition.Builder"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="zoom" type="float">
+</parameter>
+</method>
+</class>
+<class name="Circle"
+ extends="java.lang.Object"
+ abstract="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<method name="getCenter"
+ return="com.google.android.m4b.maps.model.LatLng"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getFillColor"
+ return="int"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getId"
+ return="java.lang.String"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getRadius"
+ return="double"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getStrokeColor"
+ return="int"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getStrokeWidth"
+ return="float"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getZIndex"
+ return="float"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="isVisible"
+ return="boolean"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="remove"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="setCenter"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="center" type="com.google.android.m4b.maps.model.LatLng">
+</parameter>
+</method>
+<method name="setFillColor"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="color" type="int">
+</parameter>
+</method>
+<method name="setRadius"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="radius" type="double">
+</parameter>
+</method>
+<method name="setStrokeColor"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="color" type="int">
+</parameter>
+</method>
+<method name="setStrokeWidth"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="width" type="float">
+</parameter>
+</method>
+<method name="setVisible"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="visible" type="boolean">
+</parameter>
+</method>
+<method name="setZIndex"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="zIndex" type="float">
+</parameter>
+</method>
+</class>
+<class name="CircleOptions"
+ extends="java.lang.Object"
+ abstract="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<constructor name="CircleOptions"
+ type="com.google.android.m4b.maps.model.CircleOptions"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</constructor>
+<method name="center"
+ return="com.google.android.m4b.maps.model.CircleOptions"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="center" type="com.google.android.m4b.maps.model.LatLng">
+</parameter>
+</method>
+<method name="fillColor"
+ return="com.google.android.m4b.maps.model.CircleOptions"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="color" type="int">
+</parameter>
+</method>
+<method name="getCenter"
+ return="com.google.android.m4b.maps.model.LatLng"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getFillColor"
+ return="int"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getRadius"
+ return="double"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getStrokeColor"
+ return="int"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getStrokeWidth"
+ return="float"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getZIndex"
+ return="float"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="isVisible"
+ return="boolean"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="radius"
+ return="com.google.android.m4b.maps.model.CircleOptions"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="radius" type="double">
+</parameter>
+</method>
+<method name="strokeColor"
+ return="com.google.android.m4b.maps.model.CircleOptions"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="color" type="int">
+</parameter>
+</method>
+<method name="strokeWidth"
+ return="com.google.android.m4b.maps.model.CircleOptions"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="width" type="float">
+</parameter>
+</method>
+<method name="visible"
+ return="com.google.android.m4b.maps.model.CircleOptions"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="visible" type="boolean">
+</parameter>
+</method>
+<method name="zIndex"
+ return="com.google.android.m4b.maps.model.CircleOptions"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="zIndex" type="float">
+</parameter>
+</method>
+<field name="CREATOR"
+ type="com.google.android.m4b.maps.model.CircleOptionsCreator"
+ transient="false"
+ volatile="false"
+ static="true"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+</class>
+<class name="GroundOverlay"
+ extends="java.lang.Object"
+ abstract="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<method name="getBearing"
+ return="float"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getBounds"
+ return="com.google.android.m4b.maps.model.LatLngBounds"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getHeight"
+ return="float"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getId"
+ return="java.lang.String"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getPosition"
+ return="com.google.android.m4b.maps.model.LatLng"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getTransparency"
+ return="float"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getWidth"
+ return="float"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getZIndex"
+ return="float"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="isVisible"
+ return="boolean"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="remove"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="setBearing"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="bearing" type="float">
+</parameter>
+</method>
+<method name="setDimensions"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="width" type="float">
+</parameter>
+</method>
+<method name="setDimensions"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="width" type="float">
+</parameter>
+<parameter name="height" type="float">
+</parameter>
+</method>
+<method name="setImage"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="image" type="com.google.android.m4b.maps.model.BitmapDescriptor">
+</parameter>
+</method>
+<method name="setPosition"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="latLng" type="com.google.android.m4b.maps.model.LatLng">
+</parameter>
+</method>
+<method name="setPositionFromBounds"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="bounds" type="com.google.android.m4b.maps.model.LatLngBounds">
+</parameter>
+</method>
+<method name="setTransparency"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="transparency" type="float">
+</parameter>
+</method>
+<method name="setVisible"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="visible" type="boolean">
+</parameter>
+</method>
+<method name="setZIndex"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="zIndex" type="float">
+</parameter>
+</method>
+</class>
+<class name="GroundOverlayOptions"
+ extends="java.lang.Object"
+ abstract="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<constructor name="GroundOverlayOptions"
+ type="com.google.android.m4b.maps.model.GroundOverlayOptions"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</constructor>
+<method name="anchor"
+ return="com.google.android.m4b.maps.model.GroundOverlayOptions"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="u" type="float">
+</parameter>
+<parameter name="v" type="float">
+</parameter>
+</method>
+<method name="bearing"
+ return="com.google.android.m4b.maps.model.GroundOverlayOptions"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="bearing" type="float">
+</parameter>
+</method>
+<method name="describeContents"
+ return="int"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getAnchorU"
+ return="float"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getAnchorV"
+ return="float"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getBearing"
+ return="float"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getBounds"
+ return="com.google.android.m4b.maps.model.LatLngBounds"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getHeight"
+ return="float"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getImage"
+ return="com.google.android.m4b.maps.model.BitmapDescriptor"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getLocation"
+ return="com.google.android.m4b.maps.model.LatLng"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getTransparency"
+ return="float"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getWidth"
+ return="float"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getZIndex"
+ return="float"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="image"
+ return="com.google.android.m4b.maps.model.GroundOverlayOptions"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="image" type="com.google.android.m4b.maps.model.BitmapDescriptor">
+</parameter>
+</method>
+<method name="isVisible"
+ return="boolean"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="position"
+ return="com.google.android.m4b.maps.model.GroundOverlayOptions"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="location" type="com.google.android.m4b.maps.model.LatLng">
+</parameter>
+<parameter name="width" type="float">
+</parameter>
+</method>
+<method name="position"
+ return="com.google.android.m4b.maps.model.GroundOverlayOptions"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="location" type="com.google.android.m4b.maps.model.LatLng">
+</parameter>
+<parameter name="width" type="float">
+</parameter>
+<parameter name="height" type="float">
+</parameter>
+</method>
+<method name="positionFromBounds"
+ return="com.google.android.m4b.maps.model.GroundOverlayOptions"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="bounds" type="com.google.android.m4b.maps.model.LatLngBounds">
+</parameter>
+</method>
+<method name="transparency"
+ return="com.google.android.m4b.maps.model.GroundOverlayOptions"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="transparency" type="float">
+</parameter>
+</method>
+<method name="visible"
+ return="com.google.android.m4b.maps.model.GroundOverlayOptions"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="visible" type="boolean">
+</parameter>
+</method>
+<method name="writeToParcel"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="out" type="android.os.Parcel">
+</parameter>
+<parameter name="flags" type="int">
+</parameter>
+</method>
+<method name="zIndex"
+ return="com.google.android.m4b.maps.model.GroundOverlayOptions"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="zIndex" type="float">
+</parameter>
+</method>
+<field name="CREATOR"
+ type="com.google.android.m4b.maps.model.GroundOverlayOptionsCreator"
+ transient="false"
+ volatile="false"
+ static="true"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="NO_DIMENSION"
+ type="float"
+ transient="false"
+ volatile="false"
+ value="-1.0f"
+ static="true"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+</class>
+<class name="IndoorBuilding"
+ extends="java.lang.Object"
+ abstract="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<method name="getActiveLevelIndex"
+ return="int"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getDefaultLevelIndex"
+ return="int"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getLevels"
+ return="java.util.List&lt;com.google.android.m4b.maps.model.IndoorLevel&gt;"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="isUnderground"
+ return="boolean"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+</class>
+<class name="IndoorLevel"
+ extends="java.lang.Object"
+ abstract="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<method name="activate"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getName"
+ return="java.lang.String"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getShortName"
+ return="java.lang.String"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+</class>
+<class name="LatLng"
+ extends="java.lang.Object"
+ abstract="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<constructor name="LatLng"
+ type="com.google.android.m4b.maps.model.LatLng"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="latitude" type="double">
+</parameter>
+<parameter name="longitude" type="double">
+</parameter>
+</constructor>
+<method name="describeContents"
+ return="int"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="writeToParcel"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="out" type="android.os.Parcel">
+</parameter>
+<parameter name="flags" type="int">
+</parameter>
+</method>
+<field name="CREATOR"
+ type="com.google.android.m4b.maps.model.LatLngCreator"
+ transient="false"
+ volatile="false"
+ static="true"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="latitude"
+ type="double"
+ transient="false"
+ volatile="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="longitude"
+ type="double"
+ transient="false"
+ volatile="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+</class>
+<class name="LatLngBounds"
+ extends="java.lang.Object"
+ abstract="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<constructor name="LatLngBounds"
+ type="com.google.android.m4b.maps.model.LatLngBounds"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="southwest" type="com.google.android.m4b.maps.model.LatLng">
+</parameter>
+<parameter name="northeast" type="com.google.android.m4b.maps.model.LatLng">
+</parameter>
+</constructor>
+<method name="builder"
+ return="com.google.android.m4b.maps.model.LatLngBounds.Builder"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="contains"
+ return="boolean"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="point" type="com.google.android.m4b.maps.model.LatLng">
+</parameter>
+</method>
+<method name="describeContents"
+ return="int"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getCenter"
+ return="com.google.android.m4b.maps.model.LatLng"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="including"
+ return="com.google.android.m4b.maps.model.LatLngBounds"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="point" type="com.google.android.m4b.maps.model.LatLng">
+</parameter>
+</method>
+<method name="writeToParcel"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="out" type="android.os.Parcel">
+</parameter>
+<parameter name="flags" type="int">
+</parameter>
+</method>
+<field name="CREATOR"
+ type="com.google.android.m4b.maps.model.LatLngBoundsCreator"
+ transient="false"
+ volatile="false"
+ static="true"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="northeast"
+ type="com.google.android.m4b.maps.model.LatLng"
+ transient="false"
+ volatile="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="southwest"
+ type="com.google.android.m4b.maps.model.LatLng"
+ transient="false"
+ volatile="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+</class>
+<class name="LatLngBounds.Builder"
+ extends="java.lang.Object"
+ abstract="false"
+ static="true"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<constructor name="LatLngBounds.Builder"
+ type="com.google.android.m4b.maps.model.LatLngBounds.Builder"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</constructor>
+<method name="build"
+ return="com.google.android.m4b.maps.model.LatLngBounds"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="include"
+ return="com.google.android.m4b.maps.model.LatLngBounds.Builder"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="point" type="com.google.android.m4b.maps.model.LatLng">
+</parameter>
+</method>
+</class>
+<class name="MapsEngineFeature"
+ extends="java.lang.Object"
+ abstract="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<method name="getDescription"
+ return="java.lang.String"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getGmeFeatureId"
+ return="java.lang.String"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getLayer"
+ return="com.google.android.m4b.maps.model.MapsEngineLayer"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getPoint"
+ return="com.google.android.m4b.maps.model.LatLng"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+</class>
+<class name="MapsEngineLayer"
+ extends="java.lang.Object"
+ abstract="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<method name="getLayerInfo"
+ return="com.google.android.m4b.maps.model.MapsEngineLayerInfo"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getZIndex"
+ return="float"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="isDefaultUiEnabled"
+ return="boolean"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="isVisible"
+ return="boolean"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="remove"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="setDefaultUiEnabled"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="enabled" type="boolean">
+</parameter>
+</method>
+<method name="setVisible"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="visible" type="boolean">
+</parameter>
+</method>
+<method name="setZIndex"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="zIndex" type="float">
+</parameter>
+</method>
+</class>
+<class name="MapsEngineLayerInfo"
+ extends="java.lang.Object"
+ abstract="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<constructor name="MapsEngineLayerInfo"
+ type="com.google.android.m4b.maps.model.MapsEngineLayerInfo"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</constructor>
+<method name="describeContents"
+ return="int"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getLayerId"
+ return="java.lang.String"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getLayerKey"
+ return="java.lang.String"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getMapId"
+ return="java.lang.String"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getVersion"
+ return="java.lang.String"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="writeToParcel"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="out" type="android.os.Parcel">
+</parameter>
+<parameter name="flags" type="int">
+</parameter>
+</method>
+<field name="CREATOR"
+ type="com.google.android.m4b.maps.model.MapsEngineLayerInfoCreator"
+ transient="false"
+ volatile="false"
+ static="true"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+</class>
+<class name="MapsEngineLayerOptions"
+ extends="java.lang.Object"
+ abstract="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<constructor name="MapsEngineLayerOptions"
+ type="com.google.android.m4b.maps.model.MapsEngineLayerOptions"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</constructor>
+<method name="defaultUi"
+ return="com.google.android.m4b.maps.model.MapsEngineLayerOptions"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="enabled" type="boolean">
+</parameter>
+</method>
+<method name="describeContents"
+ return="int"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getLayerInfo"
+ return="com.google.android.m4b.maps.model.MapsEngineLayerInfo"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getZIndex"
+ return="float"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="isDefaultUiEnabled"
+ return="boolean"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="isVisible"
+ return="boolean"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="layerId"
+ return="com.google.android.m4b.maps.model.MapsEngineLayerOptions"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="layerId" type="java.lang.String">
+</parameter>
+</method>
+<method name="layerInMap"
+ return="com.google.android.m4b.maps.model.MapsEngineLayerOptions"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="mapId" type="java.lang.String">
+</parameter>
+<parameter name="layerKey" type="java.lang.String">
+</parameter>
+</method>
+<method name="version"
+ return="com.google.android.m4b.maps.model.MapsEngineLayerOptions"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="version" type="java.lang.String">
+</parameter>
+</method>
+<method name="visible"
+ return="com.google.android.m4b.maps.model.MapsEngineLayerOptions"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="visible" type="boolean">
+</parameter>
+</method>
+<method name="writeToParcel"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="out" type="android.os.Parcel">
+</parameter>
+<parameter name="flags" type="int">
+</parameter>
+</method>
+<method name="zIndex"
+ return="com.google.android.m4b.maps.model.MapsEngineLayerOptions"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="zIndex" type="float">
+</parameter>
+</method>
+<field name="CREATOR"
+ type="com.google.android.m4b.maps.model.MapsEngineLayerOptionsCreator"
+ transient="false"
+ volatile="false"
+ static="true"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+</class>
+<class name="Marker"
+ extends="java.lang.Object"
+ abstract="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<method name="getAlpha"
+ return="float"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getId"
+ return="java.lang.String"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getPosition"
+ return="com.google.android.m4b.maps.model.LatLng"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getRotation"
+ return="float"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getSnippet"
+ return="java.lang.String"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getTitle"
+ return="java.lang.String"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="hideInfoWindow"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="isDraggable"
+ return="boolean"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="isFlat"
+ return="boolean"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="isInfoWindowShown"
+ return="boolean"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="isVisible"
+ return="boolean"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="remove"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="setAlpha"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="alpha" type="float">
+</parameter>
+</method>
+<method name="setAnchor"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="anchorU" type="float">
+</parameter>
+<parameter name="anchorV" type="float">
+</parameter>
+</method>
+<method name="setDraggable"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="draggable" type="boolean">
+</parameter>
+</method>
+<method name="setFlat"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="flat" type="boolean">
+</parameter>
+</method>
+<method name="setIcon"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="icon" type="com.google.android.m4b.maps.model.BitmapDescriptor">
+</parameter>
+</method>
+<method name="setInfoWindowAnchor"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="anchorU" type="float">
+</parameter>
+<parameter name="anchorV" type="float">
+</parameter>
+</method>
+<method name="setPosition"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="latlng" type="com.google.android.m4b.maps.model.LatLng">
+</parameter>
+</method>
+<method name="setRotation"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="rotation" type="float">
+</parameter>
+</method>
+<method name="setSnippet"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="snippet" type="java.lang.String">
+</parameter>
+</method>
+<method name="setTitle"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="title" type="java.lang.String">
+</parameter>
+</method>
+<method name="setVisible"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="visible" type="boolean">
+</parameter>
+</method>
+<method name="showInfoWindow"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+</class>
+<class name="MarkerOptions"
+ extends="java.lang.Object"
+ abstract="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<constructor name="MarkerOptions"
+ type="com.google.android.m4b.maps.model.MarkerOptions"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</constructor>
+<method name="alpha"
+ return="com.google.android.m4b.maps.model.MarkerOptions"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="alpha" type="float">
+</parameter>
+</method>
+<method name="anchor"
+ return="com.google.android.m4b.maps.model.MarkerOptions"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="u" type="float">
+</parameter>
+<parameter name="v" type="float">
+</parameter>
+</method>
+<method name="describeContents"
+ return="int"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="draggable"
+ return="com.google.android.m4b.maps.model.MarkerOptions"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="draggable" type="boolean">
+</parameter>
+</method>
+<method name="flat"
+ return="com.google.android.m4b.maps.model.MarkerOptions"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="flat" type="boolean">
+</parameter>
+</method>
+<method name="getAlpha"
+ return="float"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getAnchorU"
+ return="float"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getAnchorV"
+ return="float"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getIcon"
+ return="com.google.android.m4b.maps.model.BitmapDescriptor"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getInfoWindowAnchorU"
+ return="float"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getInfoWindowAnchorV"
+ return="float"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getPosition"
+ return="com.google.android.m4b.maps.model.LatLng"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getRotation"
+ return="float"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getSnippet"
+ return="java.lang.String"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getTitle"
+ return="java.lang.String"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="icon"
+ return="com.google.android.m4b.maps.model.MarkerOptions"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="icon" type="com.google.android.m4b.maps.model.BitmapDescriptor">
+</parameter>
+</method>
+<method name="infoWindowAnchor"
+ return="com.google.android.m4b.maps.model.MarkerOptions"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="u" type="float">
+</parameter>
+<parameter name="v" type="float">
+</parameter>
+</method>
+<method name="isDraggable"
+ return="boolean"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="isFlat"
+ return="boolean"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="isVisible"
+ return="boolean"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="position"
+ return="com.google.android.m4b.maps.model.MarkerOptions"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="position" type="com.google.android.m4b.maps.model.LatLng">
+</parameter>
+</method>
+<method name="rotation"
+ return="com.google.android.m4b.maps.model.MarkerOptions"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="rotation" type="float">
+</parameter>
+</method>
+<method name="snippet"
+ return="com.google.android.m4b.maps.model.MarkerOptions"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="snippet" type="java.lang.String">
+</parameter>
+</method>
+<method name="title"
+ return="com.google.android.m4b.maps.model.MarkerOptions"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="title" type="java.lang.String">
+</parameter>
+</method>
+<method name="visible"
+ return="com.google.android.m4b.maps.model.MarkerOptions"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="visible" type="boolean">
+</parameter>
+</method>
+<method name="writeToParcel"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="out" type="android.os.Parcel">
+</parameter>
+<parameter name="flags" type="int">
+</parameter>
+</method>
+<field name="CREATOR"
+ type="com.google.android.m4b.maps.model.MarkerOptionsCreator"
+ transient="false"
+ volatile="false"
+ static="true"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+</class>
+<class name="Polygon"
+ extends="java.lang.Object"
+ abstract="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<method name="getFillColor"
+ return="int"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getHoles"
+ return="java.util.List&lt;java.util.List&lt;com.google.android.m4b.maps.model.LatLng&gt;&gt;"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getId"
+ return="java.lang.String"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getPoints"
+ return="java.util.List&lt;com.google.android.m4b.maps.model.LatLng&gt;"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getStrokeColor"
+ return="int"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getStrokeWidth"
+ return="float"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getZIndex"
+ return="float"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="isGeodesic"
+ return="boolean"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="isVisible"
+ return="boolean"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="remove"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="setFillColor"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="color" type="int">
+</parameter>
+</method>
+<method name="setGeodesic"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="geodesic" type="boolean">
+</parameter>
+</method>
+<method name="setHoles"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="holes" type="java.util.List&lt;? extends java.util.List&lt;com.google.android.m4b.maps.model.LatLng&gt;&gt;">
+</parameter>
+</method>
+<method name="setPoints"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="points" type="java.util.List&lt;com.google.android.m4b.maps.model.LatLng&gt;">
+</parameter>
+</method>
+<method name="setStrokeColor"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="color" type="int">
+</parameter>
+</method>
+<method name="setStrokeWidth"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="width" type="float">
+</parameter>
+</method>
+<method name="setVisible"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="visible" type="boolean">
+</parameter>
+</method>
+<method name="setZIndex"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="zIndex" type="float">
+</parameter>
+</method>
+</class>
+<class name="PolygonOptions"
+ extends="java.lang.Object"
+ abstract="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<constructor name="PolygonOptions"
+ type="com.google.android.m4b.maps.model.PolygonOptions"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</constructor>
+<method name="add"
+ return="com.google.android.m4b.maps.model.PolygonOptions"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="point" type="com.google.android.m4b.maps.model.LatLng">
+</parameter>
+</method>
+<method name="add"
+ return="com.google.android.m4b.maps.model.PolygonOptions"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="points" type="com.google.android.m4b.maps.model.LatLng...">
+</parameter>
+</method>
+<method name="addAll"
+ return="com.google.android.m4b.maps.model.PolygonOptions"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="points" type="java.lang.Iterable&lt;com.google.android.m4b.maps.model.LatLng&gt;">
+</parameter>
+</method>
+<method name="addHole"
+ return="com.google.android.m4b.maps.model.PolygonOptions"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="points" type="java.lang.Iterable&lt;com.google.android.m4b.maps.model.LatLng&gt;">
+</parameter>
+</method>
+<method name="describeContents"
+ return="int"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="fillColor"
+ return="com.google.android.m4b.maps.model.PolygonOptions"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="color" type="int">
+</parameter>
+</method>
+<method name="geodesic"
+ return="com.google.android.m4b.maps.model.PolygonOptions"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="geodesic" type="boolean">
+</parameter>
+</method>
+<method name="getFillColor"
+ return="int"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getHoles"
+ return="java.util.List&lt;java.util.List&lt;com.google.android.m4b.maps.model.LatLng&gt;&gt;"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getPoints"
+ return="java.util.List&lt;com.google.android.m4b.maps.model.LatLng&gt;"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getStrokeColor"
+ return="int"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getStrokeWidth"
+ return="float"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getZIndex"
+ return="float"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="isGeodesic"
+ return="boolean"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="isVisible"
+ return="boolean"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="strokeColor"
+ return="com.google.android.m4b.maps.model.PolygonOptions"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="color" type="int">
+</parameter>
+</method>
+<method name="strokeWidth"
+ return="com.google.android.m4b.maps.model.PolygonOptions"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="width" type="float">
+</parameter>
+</method>
+<method name="visible"
+ return="com.google.android.m4b.maps.model.PolygonOptions"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="visible" type="boolean">
+</parameter>
+</method>
+<method name="writeToParcel"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="out" type="android.os.Parcel">
+</parameter>
+<parameter name="flags" type="int">
+</parameter>
+</method>
+<method name="zIndex"
+ return="com.google.android.m4b.maps.model.PolygonOptions"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="zIndex" type="float">
+</parameter>
+</method>
+<field name="CREATOR"
+ type="com.google.android.m4b.maps.model.PolygonOptionsCreator"
+ transient="false"
+ volatile="false"
+ static="true"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+</class>
+<class name="Polyline"
+ extends="java.lang.Object"
+ abstract="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<constructor name="Polyline"
+ type="com.google.android.m4b.maps.model.Polyline"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="delegate" type="com.google.android.m4b.maps.model.internal.IPolylineDelegate">
+</parameter>
+</constructor>
+<method name="getColor"
+ return="int"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getId"
+ return="java.lang.String"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getPoints"
+ return="java.util.List&lt;com.google.android.m4b.maps.model.LatLng&gt;"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getWidth"
+ return="float"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getZIndex"
+ return="float"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="isGeodesic"
+ return="boolean"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="isVisible"
+ return="boolean"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="remove"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="setColor"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="color" type="int">
+</parameter>
+</method>
+<method name="setGeodesic"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="geodesic" type="boolean">
+</parameter>
+</method>
+<method name="setPoints"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="points" type="java.util.List&lt;com.google.android.m4b.maps.model.LatLng&gt;">
+</parameter>
+</method>
+<method name="setVisible"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="visible" type="boolean">
+</parameter>
+</method>
+<method name="setWidth"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="width" type="float">
+</parameter>
+</method>
+<method name="setZIndex"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="zIndex" type="float">
+</parameter>
+</method>
+</class>
+<class name="PolylineOptions"
+ extends="java.lang.Object"
+ abstract="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<constructor name="PolylineOptions"
+ type="com.google.android.m4b.maps.model.PolylineOptions"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</constructor>
+<method name="add"
+ return="com.google.android.m4b.maps.model.PolylineOptions"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="point" type="com.google.android.m4b.maps.model.LatLng">
+</parameter>
+</method>
+<method name="add"
+ return="com.google.android.m4b.maps.model.PolylineOptions"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="points" type="com.google.android.m4b.maps.model.LatLng...">
+</parameter>
+</method>
+<method name="addAll"
+ return="com.google.android.m4b.maps.model.PolylineOptions"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="points" type="java.lang.Iterable&lt;com.google.android.m4b.maps.model.LatLng&gt;">
+</parameter>
+</method>
+<method name="color"
+ return="com.google.android.m4b.maps.model.PolylineOptions"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="color" type="int">
+</parameter>
+</method>
+<method name="describeContents"
+ return="int"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="geodesic"
+ return="com.google.android.m4b.maps.model.PolylineOptions"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="geodesic" type="boolean">
+</parameter>
+</method>
+<method name="getColor"
+ return="int"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getPoints"
+ return="java.util.List&lt;com.google.android.m4b.maps.model.LatLng&gt;"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getWidth"
+ return="float"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getZIndex"
+ return="float"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="isGeodesic"
+ return="boolean"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="isVisible"
+ return="boolean"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="visible"
+ return="com.google.android.m4b.maps.model.PolylineOptions"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="visible" type="boolean">
+</parameter>
+</method>
+<method name="width"
+ return="com.google.android.m4b.maps.model.PolylineOptions"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="width" type="float">
+</parameter>
+</method>
+<method name="writeToParcel"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="out" type="android.os.Parcel">
+</parameter>
+<parameter name="flags" type="int">
+</parameter>
+</method>
+<method name="zIndex"
+ return="com.google.android.m4b.maps.model.PolylineOptions"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="zIndex" type="float">
+</parameter>
+</method>
+<field name="CREATOR"
+ type="com.google.android.m4b.maps.model.PolylineOptionsCreator"
+ transient="false"
+ volatile="false"
+ static="true"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+</class>
+<class name="RuntimeRemoteException"
+ extends="java.lang.RuntimeException"
+ abstract="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<constructor name="RuntimeRemoteException"
+ type="com.google.android.m4b.maps.model.RuntimeRemoteException"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="e" type="android.os.RemoteException">
+</parameter>
+</constructor>
+</class>
+<class name="StreetViewPanoramaCamera"
+ extends="java.lang.Object"
+ abstract="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<constructor name="StreetViewPanoramaCamera"
+ type="com.google.android.m4b.maps.model.StreetViewPanoramaCamera"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="zoom" type="float">
+</parameter>
+<parameter name="tilt" type="float">
+</parameter>
+<parameter name="bearing" type="float">
+</parameter>
+</constructor>
+<method name="builder"
+ return="com.google.android.m4b.maps.model.StreetViewPanoramaCamera.Builder"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="builder"
+ return="com.google.android.m4b.maps.model.StreetViewPanoramaCamera.Builder"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="camera" type="com.google.android.m4b.maps.model.StreetViewPanoramaCamera">
+</parameter>
+</method>
+<method name="describeContents"
+ return="int"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getOrientation"
+ return="com.google.android.m4b.maps.model.StreetViewPanoramaOrientation"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="writeToParcel"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="out" type="android.os.Parcel">
+</parameter>
+<parameter name="flags" type="int">
+</parameter>
+</method>
+<field name="CREATOR"
+ type="com.google.android.m4b.maps.model.StreetViewPanoramaCameraCreator"
+ transient="false"
+ volatile="false"
+ static="true"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="bearing"
+ type="float"
+ transient="false"
+ volatile="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="tilt"
+ type="float"
+ transient="false"
+ volatile="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="zoom"
+ type="float"
+ transient="false"
+ volatile="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+</class>
+<class name="StreetViewPanoramaCamera.Builder"
+ extends="java.lang.Object"
+ abstract="false"
+ static="true"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<constructor name="StreetViewPanoramaCamera.Builder"
+ type="com.google.android.m4b.maps.model.StreetViewPanoramaCamera.Builder"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</constructor>
+<constructor name="StreetViewPanoramaCamera.Builder"
+ type="com.google.android.m4b.maps.model.StreetViewPanoramaCamera.Builder"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="previous" type="com.google.android.m4b.maps.model.StreetViewPanoramaCamera">
+</parameter>
+</constructor>
+<method name="bearing"
+ return="com.google.android.m4b.maps.model.StreetViewPanoramaCamera.Builder"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="bearing" type="float">
+</parameter>
+</method>
+<method name="build"
+ return="com.google.android.m4b.maps.model.StreetViewPanoramaCamera"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="orientation"
+ return="com.google.android.m4b.maps.model.StreetViewPanoramaCamera.Builder"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="orientation" type="com.google.android.m4b.maps.model.StreetViewPanoramaOrientation">
+</parameter>
+</method>
+<method name="tilt"
+ return="com.google.android.m4b.maps.model.StreetViewPanoramaCamera.Builder"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="tilt" type="float">
+</parameter>
+</method>
+<method name="zoom"
+ return="com.google.android.m4b.maps.model.StreetViewPanoramaCamera.Builder"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="zoom" type="float">
+</parameter>
+</method>
+<field name="bearing"
+ type="float"
+ transient="false"
+ volatile="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="tilt"
+ type="float"
+ transient="false"
+ volatile="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="zoom"
+ type="float"
+ transient="false"
+ volatile="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+</class>
+<class name="StreetViewPanoramaLink"
+ extends="java.lang.Object"
+ abstract="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<method name="describeContents"
+ return="int"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="writeToParcel"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="out" type="android.os.Parcel">
+</parameter>
+<parameter name="flags" type="int">
+</parameter>
+</method>
+<field name="CREATOR"
+ type="com.google.android.m4b.maps.model.StreetViewPanoramaLinkCreator"
+ transient="false"
+ volatile="false"
+ static="true"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="bearing"
+ type="float"
+ transient="false"
+ volatile="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="panoId"
+ type="java.lang.String"
+ transient="false"
+ volatile="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+</class>
+<class name="StreetViewPanoramaLocation"
+ extends="java.lang.Object"
+ abstract="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<constructor name="StreetViewPanoramaLocation"
+ type="com.google.android.m4b.maps.model.StreetViewPanoramaLocation"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="links" type="com.google.android.m4b.maps.model.StreetViewPanoramaLink[]">
+</parameter>
+<parameter name="position" type="com.google.android.m4b.maps.model.LatLng">
+</parameter>
+<parameter name="panoId" type="java.lang.String">
+</parameter>
+</constructor>
+<method name="describeContents"
+ return="int"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="writeToParcel"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="out" type="android.os.Parcel">
+</parameter>
+<parameter name="flags" type="int">
+</parameter>
+</method>
+<field name="CREATOR"
+ type="com.google.android.m4b.maps.model.StreetViewPanoramaLocationCreator"
+ transient="false"
+ volatile="false"
+ static="true"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="links"
+ type="com.google.android.m4b.maps.model.StreetViewPanoramaLink[]"
+ transient="false"
+ volatile="false"
+ value="null"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="panoId"
+ type="java.lang.String"
+ transient="false"
+ volatile="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="position"
+ type="com.google.android.m4b.maps.model.LatLng"
+ transient="false"
+ volatile="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+</class>
+<class name="StreetViewPanoramaOrientation"
+ extends="java.lang.Object"
+ abstract="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<constructor name="StreetViewPanoramaOrientation"
+ type="com.google.android.m4b.maps.model.StreetViewPanoramaOrientation"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="tilt" type="float">
+</parameter>
+<parameter name="bearing" type="float">
+</parameter>
+</constructor>
+<method name="builder"
+ return="com.google.android.m4b.maps.model.StreetViewPanoramaOrientation.Builder"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="builder"
+ return="com.google.android.m4b.maps.model.StreetViewPanoramaOrientation.Builder"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="orientation" type="com.google.android.m4b.maps.model.StreetViewPanoramaOrientation">
+</parameter>
+</method>
+<method name="describeContents"
+ return="int"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="writeToParcel"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="out" type="android.os.Parcel">
+</parameter>
+<parameter name="flags" type="int">
+</parameter>
+</method>
+<field name="CREATOR"
+ type="com.google.android.m4b.maps.model.StreetViewPanoramaOrientationCreator"
+ transient="false"
+ volatile="false"
+ static="true"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="bearing"
+ type="float"
+ transient="false"
+ volatile="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="tilt"
+ type="float"
+ transient="false"
+ volatile="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+</class>
+<class name="StreetViewPanoramaOrientation.Builder"
+ extends="java.lang.Object"
+ abstract="false"
+ static="true"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<constructor name="StreetViewPanoramaOrientation.Builder"
+ type="com.google.android.m4b.maps.model.StreetViewPanoramaOrientation.Builder"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</constructor>
+<constructor name="StreetViewPanoramaOrientation.Builder"
+ type="com.google.android.m4b.maps.model.StreetViewPanoramaOrientation.Builder"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="previous" type="com.google.android.m4b.maps.model.StreetViewPanoramaOrientation">
+</parameter>
+</constructor>
+<method name="bearing"
+ return="com.google.android.m4b.maps.model.StreetViewPanoramaOrientation.Builder"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="bearing" type="float">
+</parameter>
+</method>
+<method name="build"
+ return="com.google.android.m4b.maps.model.StreetViewPanoramaOrientation"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="tilt"
+ return="com.google.android.m4b.maps.model.StreetViewPanoramaOrientation.Builder"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="tilt" type="float">
+</parameter>
+</method>
+<field name="bearing"
+ type="float"
+ transient="false"
+ volatile="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="tilt"
+ type="float"
+ transient="false"
+ volatile="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+</class>
+<class name="Tile"
+ extends="java.lang.Object"
+ abstract="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<constructor name="Tile"
+ type="com.google.android.m4b.maps.model.Tile"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="width" type="int">
+</parameter>
+<parameter name="height" type="int">
+</parameter>
+<parameter name="data" type="byte[]">
+</parameter>
+</constructor>
+<method name="describeContents"
+ return="int"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="writeToParcel"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="out" type="android.os.Parcel">
+</parameter>
+<parameter name="flags" type="int">
+</parameter>
+</method>
+<field name="CREATOR"
+ type="com.google.android.m4b.maps.model.TileCreator"
+ transient="false"
+ volatile="false"
+ static="true"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="data"
+ type="byte[]"
+ transient="false"
+ volatile="false"
+ value="null"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="height"
+ type="int"
+ transient="false"
+ volatile="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="width"
+ type="int"
+ transient="false"
+ volatile="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+</class>
+<class name="TileOverlay"
+ extends="java.lang.Object"
+ abstract="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<method name="clearTileCache"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getFadeIn"
+ return="boolean"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getId"
+ return="java.lang.String"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getZIndex"
+ return="float"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="isVisible"
+ return="boolean"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="remove"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="setFadeIn"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="fadeIn" type="boolean">
+</parameter>
+</method>
+<method name="setVisible"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="visible" type="boolean">
+</parameter>
+</method>
+<method name="setZIndex"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="zIndex" type="float">
+</parameter>
+</method>
+</class>
+<class name="TileOverlayOptions"
+ extends="java.lang.Object"
+ abstract="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<constructor name="TileOverlayOptions"
+ type="com.google.android.m4b.maps.model.TileOverlayOptions"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</constructor>
+<method name="describeContents"
+ return="int"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="fadeIn"
+ return="com.google.android.m4b.maps.model.TileOverlayOptions"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="fadeIn" type="boolean">
+</parameter>
+</method>
+<method name="getFadeIn"
+ return="boolean"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getTileProvider"
+ return="com.google.android.m4b.maps.model.TileProvider"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getZIndex"
+ return="float"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="isVisible"
+ return="boolean"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="tileProvider"
+ return="com.google.android.m4b.maps.model.TileOverlayOptions"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="tileProvider" type="com.google.android.m4b.maps.model.TileProvider">
+</parameter>
+</method>
+<method name="visible"
+ return="com.google.android.m4b.maps.model.TileOverlayOptions"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="visible" type="boolean">
+</parameter>
+</method>
+<method name="writeToParcel"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="out" type="android.os.Parcel">
+</parameter>
+<parameter name="flags" type="int">
+</parameter>
+</method>
+<method name="zIndex"
+ return="com.google.android.m4b.maps.model.TileOverlayOptions"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="zIndex" type="float">
+</parameter>
+</method>
+<field name="CREATOR"
+ type="com.google.android.m4b.maps.model.TileOverlayOptionsCreator"
+ transient="false"
+ volatile="false"
+ static="true"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+</class>
+<interface name="TileProvider"
+ abstract="true"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<method name="getTile"
+ return="com.google.android.m4b.maps.model.Tile"
+ abstract="true"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="x" type="int">
+</parameter>
+<parameter name="y" type="int">
+</parameter>
+<parameter name="zoom" type="int">
+</parameter>
+</method>
+<field name="NO_TILE"
+ type="com.google.android.m4b.maps.model.Tile"
+ transient="false"
+ volatile="false"
+ value="null"
+ static="true"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+</interface>
+<class name="UrlTileProvider"
+ extends="java.lang.Object"
+ abstract="true"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<implements name="com.google.android.m4b.maps.model.TileProvider">
+</implements>
+<constructor name="UrlTileProvider"
+ type="com.google.android.m4b.maps.model.UrlTileProvider"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="width" type="int">
+</parameter>
+<parameter name="height" type="int">
+</parameter>
+</constructor>
+<method name="getTile"
+ return="com.google.android.m4b.maps.model.Tile"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="x" type="int">
+</parameter>
+<parameter name="y" type="int">
+</parameter>
+<parameter name="zoom" type="int">
+</parameter>
+</method>
+<method name="getTileUrl"
+ return="java.net.URL"
+ abstract="true"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="x" type="int">
+</parameter>
+<parameter name="y" type="int">
+</parameter>
+<parameter name="zoom" type="int">
+</parameter>
+</method>
+</class>
+<class name="VisibleRegion"
+ extends="java.lang.Object"
+ abstract="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<constructor name="VisibleRegion"
+ type="com.google.android.m4b.maps.model.VisibleRegion"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="nearLeft" type="com.google.android.m4b.maps.model.LatLng">
+</parameter>
+<parameter name="nearRight" type="com.google.android.m4b.maps.model.LatLng">
+</parameter>
+<parameter name="farLeft" type="com.google.android.m4b.maps.model.LatLng">
+</parameter>
+<parameter name="farRight" type="com.google.android.m4b.maps.model.LatLng">
+</parameter>
+<parameter name="latLngBounds" type="com.google.android.m4b.maps.model.LatLngBounds">
+</parameter>
+</constructor>
+<method name="describeContents"
+ return="int"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="writeToParcel"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="out" type="android.os.Parcel">
+</parameter>
+<parameter name="flags" type="int">
+</parameter>
+</method>
+<field name="CREATOR"
+ type="com.google.android.m4b.maps.model.VisibleRegionCreator"
+ transient="false"
+ volatile="false"
+ static="true"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="farLeft"
+ type="com.google.android.m4b.maps.model.LatLng"
+ transient="false"
+ volatile="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="farRight"
+ type="com.google.android.m4b.maps.model.LatLng"
+ transient="false"
+ volatile="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="latLngBounds"
+ type="com.google.android.m4b.maps.model.LatLngBounds"
+ transient="false"
+ volatile="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="nearLeft"
+ type="com.google.android.m4b.maps.model.LatLng"
+ transient="false"
+ volatile="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="nearRight"
+ type="com.google.android.m4b.maps.model.LatLng"
+ transient="false"
+ volatile="false"
+ static="false"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+</class>
+</package>
+</api>

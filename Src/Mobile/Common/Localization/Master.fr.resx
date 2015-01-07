@@ -199,7 +199,7 @@
     <value>Bâtiment n° {0}</value>
   </data>
   <data name="BookItButton" xml:space="preserve">
-    <value>Réserver</value>
+    <value>Commander</value>
   </data>
   <data name="BookItButtonImageName" xml:space="preserve">
     <value>Assets/Button/btnBookIt_en.png</value>
@@ -597,9 +597,6 @@
   <data name="GenericTitle" xml:space="preserve">
     <value />
   </data>
-  <data name="GoogleMapKey" xml:space="preserve">
-    <value>0XEY3WqKVmJPhADLxOCPUweMcqYg3AfqCp8BvWw</value>
-  </data>
   <data name="GooglePlayServicesNotAvailableMessage" xml:space="preserve">
     <value>Merci de mettre à jour Google Play pour utiliser cette application mobile.</value>
   </data>
@@ -658,7 +655,7 @@
     <value>Voir</value>
   </data>
   <data name="HistoryViewTitle" xml:space="preserve">
-    <value>Historique</value>
+    <value>Réservations</value>
   </data>
   <data name="InvalidAccountOnActivatedMessage" xml:space="preserve">
     <value>Votre compte semble ne pas exister. Merci de vérifier la saisie</value>
@@ -901,7 +898,7 @@
     <value>Adresses Favorites</value>
   </data>
   <data name="PanelMenuViewOrderHistoryText" xml:space="preserve">
-    <value>Historique</value>
+    <value>Réservations</value>
   </data>
   <data name="PanelMenuViewReportProblemText" xml:space="preserve">
     <value>Signaler un problème</value>
@@ -1018,7 +1015,7 @@
     <value>Affiner l'adresse</value>
   </data>
   <data name="Register" xml:space="preserve">
-    <value>S'enregistrer</value>
+    <value>Inscription</value>
   </data>
   <data name="ReminderDetails" xml:space="preserve">
     <value>Rappel: votre taxi arrivera au {0} à {1} le {2}</value>
@@ -1155,33 +1152,6 @@
   <data name="ServiceErrorCreateAccount_AccountAlreadyExist" xml:space="preserve">
     <value>Cette adresse email est déjà utilisée</value>
   </data>
-  <data name="ServiceErrorCreateOrder_CannotCreateInIbs" xml:space="preserve">
-    <value>La commande ne peut être créée. Merci d'essayer une nouvelle fois ou de nous appeler.</value>
-  </data>
-  <data name="ServiceErrorCreateOrder_CannotCreateInIbs_1002" xml:space="preserve">
-    <value>L'adresse de départ est en dehors de la zone de service. Merci de contacter {0} à {1} pour plus d'assistance.</value>
-  </data>
-  <data name="ServiceErrorCreateOrder_CannotCreateInIbs_1002_NoCall" xml:space="preserve">
-    <value>L'adresse de départ est en dehors de la zone de service normale.</value>
-  </data>
-  <data name="ServiceErrorCreateOrder_CannotCreateInIbs_1452" xml:space="preserve">
-    <value>L'adresse de destination est en dehors de la zone de service. Merci de contacter {0} à {1} pour plus d'assistance.</value>
-  </data>
-  <data name="ServiceErrorCreateOrder_CannotCreateInIbs_1452_NoCall" xml:space="preserve">
-    <value>L'adresse de destination est en dehors de la zone de service normale.</value>
-  </data>
-  <data name="ServiceErrorCreateOrder_CannotCreateInIbs_7000" xml:space="preserve">
-    <value>La commande ne peut être créée car votre compte est actuellement désactivé. Merci de contacter {0} à {1} pour plus d'assistance.</value>
-  </data>
-  <data name="ServiceErrorCreateOrder_CannotCreateInIbs_7000_NoCall" xml:space="preserve">
-    <value>La commande ne peut être créée car votre compte est actuellement désactivé</value>
-  </data>
-  <data name="ServiceErrorCreateOrder_CannotCreateInIbs_10000" xml:space="preserve">
-    <value>La commande ne peut être créée car le numéro de votre compte entreprise est invalide.</value>
-  </data>
-  <data name="ServiceErrorCreateOrder_CannotCreateInIbs_10000_NoCall" xml:space="preserve">
-    <value>La commande ne peut être créée car le numéro de votre compte entreprise est invalide.</value>
-  </data>
   <data name="ServiceErrorCreateOrder_InvalidProvider" xml:space="preserve">
     <value>La commande ne peut être créé car le fournisseur est invalide. Merci de contacter {0} à {1} pour plus d'assistance.</value>
   </data>
@@ -1228,7 +1198,7 @@
     <value>Désolé, vous n'êtes pas identifié. Merci de vous identifier pour pouvoir utiliser l'application</value>
   </data>
   <data name="SignIn" xml:space="preserve">
-    <value>S'identifier</value>
+    <value>Connexion</value>
   </data>
   <data name="StatusActionBookButton" xml:space="preserve">
     <value>Réserver un nouveau véhicule</value>
@@ -1303,7 +1273,7 @@
     <value>Favoris</value>
   </data>
   <data name="TabHistory" xml:space="preserve">
-    <value>Historique</value>
+    <value>Réservations</value>
   </data>
   <data name="TabLocations" xml:space="preserve">
     <value>Adresses Favorites</value>
@@ -1471,7 +1441,7 @@
     <value>Cartes de paiement</value>
   </data>
   <data name="View_History" xml:space="preserve">
-    <value>Historique</value>
+    <value>Réservations</value>
   </data>
   <data name="View_HistoryDetail" xml:space="preserve">
     <value>Détail de la commande</value>
@@ -1800,5 +1770,17 @@
   </data>
   <data name="PromotionViewNoPromotionLabel" xml:space="preserve">
     <value>Aucune promotion disponible</value>
+  </data>
+  <data name="Processing" xml:space="preserve">
+    <value>Traitement de votre commande...</value>
+  </data>
+  <data name="Notification_PromotionUnlockedEmail" xml:space="preserve">
+    <value>Promotions déverrouillées (Email)</value>
+  </data>
+  <data name="Notification_PromotionUnlockedPush" xml:space="preserve">
+    <value>Promotions déverrouillées (Push)</value>
+  </data>
+  <data name="PromoProgress" xml:space="preserve">
+    <value>Progression :</value>
   </data>
 </root>

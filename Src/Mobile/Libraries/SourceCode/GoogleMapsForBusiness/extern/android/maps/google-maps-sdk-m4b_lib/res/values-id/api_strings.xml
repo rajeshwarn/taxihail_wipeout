@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="BACK_TO_LIST">"Kembali ke daftar"</string>
+    <string name="LEVEL_ALT_TEXT">Tingkat {0}</string>
+    <string name="YOUR_LOCATION" msgid="3304805242996771621">Lokasi Anda saat ini</string>
+</resources>
+

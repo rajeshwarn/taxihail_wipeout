@@ -2,6 +2,7 @@
 using System.Configuration;
 using System.Data.Entity;
 using System.Linq;
+using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Client;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Requests;
@@ -187,6 +188,9 @@ namespace apcurium.MK.Web.Tests
             var orderServiceClient = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
             await orderServiceClient.CreateOrder(order);
 
+            // wait for ibs order id to be populated
+            await Task.Delay(10000);
+
             const double amount = 31.50;
             const double meter = 21.25;
             const double tip = 10.25;
@@ -309,6 +313,9 @@ namespace apcurium.MK.Web.Tests
 
             var orderServiceClient = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
             await orderServiceClient.CreateOrder(order);
+
+            // wait for ibs order id to be populated
+            await Task.Delay(10000);
 
             const double amount = 31.50;
             const double meter = 21.25;

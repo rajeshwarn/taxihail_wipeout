@@ -1,7 +1,6 @@
 ﻿using System;
 using apcurium.MK.Booking.CommandHandlers;
 using apcurium.MK.Booking.Commands;
-using apcurium.MK.Booking.Common.Tests;
 using apcurium.MK.Booking.Domain;
 using apcurium.MK.Booking.Maps.Impl;
 using apcurium.MK.Booking.ReadModel.Query;
@@ -36,7 +35,7 @@ namespace apcurium.MK.Booking.Test.AccountFixture
             _serverSettings.SetSetting("SMSAuthToken", "9b142e2d163a5688ada040d8c71e3fb1");
             _serverSettings.SetSetting("SMSFromNumber", "15147002781");
 
-            _sut.Setup(new SmsCommandHandler(new NotificationService(null, null, null, null, _serverSettings, null, _orderDaoMock.Object, new StaticMap(), _smsSenderMock.Object, null, null)));
+            _sut.Setup(new SmsCommandHandler(new NotificationService(null, null, null, null, _serverSettings, null, _orderDaoMock.Object, null, new StaticMap(), _smsSenderMock.Object, null, null)));
         }
 
         [Test]

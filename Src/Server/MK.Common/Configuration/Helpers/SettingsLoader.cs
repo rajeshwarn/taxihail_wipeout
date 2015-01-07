@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Extensions;
+using System.Globalization;
 
 namespace apcurium.MK.Common.Configuration.Helpers
 {
@@ -48,7 +49,7 @@ namespace apcurium.MK.Common.Configuration.Helpers
 						    }
                             else
                             {
-                                var propertyVal = Convert.ChangeType(overriddenSetting.Value, targetType);
+                                var propertyVal = Convert.ChangeType(overriddenSetting.Value, targetType, CultureInfo.InvariantCulture);
                                 SetValue(propertyName, objectToInitialize, propertyVal);
                             }
 						}

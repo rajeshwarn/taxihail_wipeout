@@ -27,16 +27,20 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
     public class PushNotificationSender : IIntegrationEventHandler,
             IEventHandler<OrderStatusChanged>,
             IEventHandler<CreditCardPaymentCaptured_V2>,
-            IEventHandler<OrderPreparedForNextDispatch>
+            IEventHandler<OrderPreparedForNextDispatch>,
+            IEventHandler<UserAddedToPromotionWhiteList>,
+            IEventHandler<OrderCancelledBecauseOfIbsError>
     {
         private readonly INotificationService _notificationService;
         private readonly IServerSettings _serverSettings;
+        private readonly IPromotionDao _promotionDao;
         private static readonly ILog Log = LogManager.GetLogger(typeof(PushNotificationSender));
 
-        public PushNotificationSender(INotificationService notificationService, IServerSettings serverSettings)
+        public PushNotificationSender(INotificationService notificationService, IServerSettings serverSettings, IPromotionDao promotionDao)
         {
             _notificationService = notificationService;
             _serverSettings = serverSettings;
+            _promotionDao = promotionDao;
         }
 
         public void Handle(OrderStatusChanged @event)
@@ -94,6 +98,31 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             try
             {
                 _notificationService.SendChangeDispatchCompanyPush(@event.SourceId);
+            }
+            catch (Exception e)
+            {
+                Log.Debug(e);
+            }
+        }
+
+        public void Handle(UserAddedToPromotionWhiteList @event)
+        {
+            try
+            {
+                var promotion = _promotionDao.FindById(@event.SourceId);
+                _notificationService.SendPromotionUnlockedPush(@event.AccountId, promotion);
+            }
+            catch (Exception e)
+            {
+                Log.Debug(e);
+            }
+        }
+        
+        public void Handle(OrderCancelledBecauseOfIbsError @event)
+        {
+            try
+            {
+                _notificationService.SendOrderCreationErrorPush(@event.SourceId, @event.ErrorDescription);
             }
             catch (Exception e)
             {

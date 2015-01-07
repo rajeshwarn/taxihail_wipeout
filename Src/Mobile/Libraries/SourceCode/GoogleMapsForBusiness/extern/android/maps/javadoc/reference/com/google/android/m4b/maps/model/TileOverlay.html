@@ -1,0 +1,991 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<html devsite>
+  <head>
+    <title>TileOverlay</title>
+    <meta name="project_path" value="/maps/documentation/business/_project.yaml" />
+    <meta name="book_path" value="/maps/documentation/business/_book.yaml" />
+    <link rel="stylesheet" href="/+/css/plus.css" />
+  </head>
+
+<body class="">
+<style>
+
+/* Heading for "Parameters", "See Also", etc., in details sections */
+h4.jd-details-title {
+  font-size: 1.15em;
+  margin: 1.5em 0 .6em 0em;
+  padding: 0em 8em 0em 2.5em;
+  text-indent: -2em;
+  background-color: #E9E9E9; /* #DEEAFA */
+}
+h4 .params {
+  font-size:.9em;
+  font-weight:normal;
+}
+h5.jd-tagtitle {
+  margin: 0 0 .25em 1em;
+  font-size: 1em;
+  font-weight: bold;
+}
+/* For the tagdata blocks that make up the detailed description */
+.jd-details-descr {
+  padding: 0;
+  margin: .5em 6px;
+}
+.jd-tagdescr p {
+  margin-bottom: .5em;
+  padding: 0;
+}
+.jd-tagdata {
+  margin-left: .5em 1em .5em .5em;
+}
+/* .jd-typecol should be set to minimum width in place of width="1%" */
+.jd-sumtable, .jd-tagtable {
+  border: none !important;
+  padding: 0px 6px 0px 0px !important;
+  margin-left: 2em !important;
+  margin-bottom: 0.9em;
+}
+.jd-returns {
+  margin-left: 2.1em !important;  /* 0.1em larger than .jd-tagtable */
+}
+.jd-typecol, .jd-linkcol, .jd-enumtype {
+  /* border: none !important; */
+  vertical-align: middle !important;
+  padding: 0px 6px 0px 6px !important;
+}
+.jd-hang {
+  padding-left: 2em;
+  text-indent: -2em;
+}
+.jd-typecol, .jd-paramname, .jd-enumtype {
+  width: 1%;         /* What better way to set min. width? (here and below) */
+}
+.jd-typecol {
+  white-space: nowrap;
+}
+.jd-tagparamname, .jd-tagthrowstype {
+  border: none !important;
+  width: 1%;
+  padding: 0px 6px 0px 0px !important;
+}
+.jd-tagparamname {
+  font-style: italic;
+}
+.jd-tagdescr {
+  border: none !important;
+  padding: 0px 6px 0px 6px !important;
+}
+.jd-sumheading {
+  border: none !important;
+  padding: 0 !important;
+  background-color: #FFF;
+  color: #000;
+}
+#jd-header {
+  margin-bottom: 1em;
+}
+/* extra space between end of method name and open-paren */
+.sympad {
+  margin-right: 2px;
+}
+/* keep method parameter type on the same line with parameter name */
+.nowrap {
+  white-space: nowrap;
+}
+</style>
+
+<div id="api-info-block">
+
+
+
+  
+   
+  
+  
+  
+  
+
+
+<div class="api-level">
+  
+
+
+  
+  
+
+</div>
+</div><!-- end api-info-block -->
+
+
+<!-- ======== START OF CLASS DATA ======== -->
+
+
+
+<div id="jd-header">
+  public  final   class
+  <b>TileOverlay</b>
+</div><!-- end jd-header -->
+
+
+<div id="naMessage"></div>
+
+<div id="jd-content" class="api apilevel-">
+
+
+
+
+
+
+
+<div class="jd-descr">
+
+
+<p>A Tile Overlay is a set of images which are displayed on top of the base map tiles. These tiles
+ may be transparent, allowing you to add features to existing maps. A tile overlay has the
+ following properties:
+ <dl>
+ <dt>Tile Provider</dt>
+ <dd>The <code><a href="../../../../../../com/google/android/m4b/maps/model/TileProvider.html">TileProvider</a></code> provides the images that are used in the tile overlay. You must
+ specify the tile provider before it is added to the map. The tile provider cannot be changed once
+ it has been added; however, you can modify the behavior of the tile provider to return different
+ images for specific coordinates. If the tiles provided by the tile provider change, you must call
+ <code><a href="../../../../../../com/google/android/m4b/maps/model/TileOverlay.html#clearTileCache()">clearTileCache()</a></code> afterwards to ensure that the previous tiles are no longer rendered.
+ </dd>
+ <dt>Z-Index</dt>
+ <dd>The order in which this tile overlay is drawn with respect to other overlays (including
+ <code><a href="../../../../../../com/google/android/m4b/maps/model/GroundOverlay.html">GroundOverlay</a></code>s, <code><a href="../../../../../../com/google/android/m4b/maps/model/Circle.html">Circle</a></code>s, <code><a href="../../../../../../com/google/android/m4b/maps/model/Polyline.html">Polyline</a></code>s, and <code><a href="../../../../../../com/google/android/m4b/maps/model/Polygon.html">Polygon</a></code>s but
+ not <code><a href="../../../../../../com/google/android/m4b/maps/model/Marker.html">Marker</a></code>s). An overlay with a larger z-index is drawn over overlays with smaller
+ z-indices. The order of overlays with the same z-index is arbitrary. The default
+ zIndex is 0.</dd>
+ <dt>Visibility</dt>
+ <dd>Indicates if the tile overlay is visible or invisible, i.e., whether it is drawn on the map.
+ An invisible tile overlay is not drawn, but retains all of its other properties. The default is
+ <code>true</code>, i.e., visible.</dd>
+ </dl>
+ <p>
+ You must only call methods in this class on the main thread. Failure to do so will result in an
+ IllegalStateException.
+ <h3>Tile Coordinates</h3>
+ <p>
+ Note that the world is projected using the Mercator projection (see <a
+ href="http://en.wikipedia.org/wiki/Mercator_projection">Wikipedia</a>) with the left (west) side
+ of the map corresponding to -180 degrees of longitude and the right (east) side of the map
+ corresponding to 180 degrees of longitude. To make the map square, the top (north) side of the
+ map corresponds to 85.0511 degrees of latitude and the bottom (south) side of the map corresponds
+ to -85.0511 degrees of latitude. Areas outside this latitude range are not rendered.
+ <p>
+ At each zoom level, the map is divided into tiles and only the tiles that overlap the screen are
+ downloaded and rendered. Each tile is square and the map is divided into tiles as follows:
+ <ul>
+ <li>At zoom level 0, one tile represents the entire world. The coordinates of that tile are (x,
+ y) = (0, 0).
+ <li>At zoom level 1, the world is divided into 4 tiles arranged in a 2 x 2 grid.
+ <li>...
+ <li>At zoom level N, the world is divided into 4<sup>N</sup> tiles arranged in a 2<sup>N</sup> x
+ 2<sup>N</sup> grid.
+ </ul>
+ Note that the minimum zoom level that the camera supports (which can depend on various factors)
+ is <code><a href="../../../../../../com/google/android/m4b/maps/GoogleMap.html#getMinZoomLevel()">GoogleMap.getMinZoomLevel</a></code> and
+ the maximum zoom level is <code><a href="../../../../../../com/google/android/m4b/maps/GoogleMap.html#getMaxZoomLevel()">GoogleMap.getMaxZoomLevel</a></code>.
+ <p>
+ The coordinates of the tiles are measured from the top left (northwest) corner of the map. At
+ zoom level N, the <code>x</code> values of the tile coordinates range from 0 to 2<sup>N</sup> - 1 and
+ increase from west to east and the <code>y</code> values range from 0 to 2<sup>N</sup> - 1 and
+ increase from north to south.
+ <h3>Example</h3>
+
+ <pre> <code>GoogleMap map; // ... get a map.
+ TileProvider tileProvider; // ... create a tile provider.
+ TileOverlay tileOverlay = map.addTileOverlay(
+     new TileOverlayOptions().tileProvider(tileProvider));</code></pre>
+</p>
+
+
+
+</div><!-- jd-descr -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="jd-descr">
+
+
+<section id="xml-attributes">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- ========== METHOD SUMMARY =========== -->
+<section>
+  <h3>Public Method Summary</h3>
+  <table id="pubmethods" class="jd-sumtable">
+  
+
+
+    
+    <tr class="alt-color api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            
+            
+            
+            void
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../../com/google/android/m4b/maps/model/TileOverlay.html#clearTileCache()">clearTileCache</a></span>()
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class=" api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            
+            
+            
+            boolean
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../../com/google/android/m4b/maps/model/TileOverlay.html#equals(java.lang.Object)">equals</a></span>(<span class="nowrap">Object <i>other</i></span>)
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class="alt-color api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            
+            
+            
+            boolean
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../../com/google/android/m4b/maps/model/TileOverlay.html#getFadeIn()">getFadeIn</a></span>()
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class=" api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            
+            
+            
+            String
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../../com/google/android/m4b/maps/model/TileOverlay.html#getId()">getId</a></span>()
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class="alt-color api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            
+            
+            
+            float
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../../com/google/android/m4b/maps/model/TileOverlay.html#getZIndex()">getZIndex</a></span>()
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class=" api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            
+            
+            
+            int
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../../com/google/android/m4b/maps/model/TileOverlay.html#hashCode()">hashCode</a></span>()
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class="alt-color api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            
+            
+            
+            boolean
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../../com/google/android/m4b/maps/model/TileOverlay.html#isVisible()">isVisible</a></span>()
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class=" api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            
+            
+            
+            void
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../../com/google/android/m4b/maps/model/TileOverlay.html#remove()">remove</a></span>()
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class="alt-color api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            
+            
+            
+            void
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../../com/google/android/m4b/maps/model/TileOverlay.html#setFadeIn(boolean)">setFadeIn</a></span>(<span class="nowrap">boolean <i>fadeIn</i></span>)
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class=" api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            
+            
+            
+            void
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../../com/google/android/m4b/maps/model/TileOverlay.html#setVisible(boolean)">setVisible</a></span>(<span class="nowrap">boolean <i>visible</i></span>)
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class="alt-color api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            
+            
+            
+            void
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../../com/google/android/m4b/maps/model/TileOverlay.html#setZIndex(float)">setZIndex</a></span>(<span class="nowrap">float <i>zIndex</i></span>)
+            
+          </div>
+      </td>
+    </tr>
+
+
+
+  </table>
+</section>
+
+
+
+
+
+
+<!-- ========== METHOD SUMMARY =========== -->
+</section><!--xml-attributes-->
+<!--subcount(class.inners) || subcount(class.attrs) || ...-->
+</div><!-- class="jd-descr" (end of Summary) -->
+
+<!-- Details -->
+
+
+
+
+
+
+
+
+<!-- XML Attributes -->
+
+
+<!-- Enum Values -->
+
+
+<!-- Constants -->
+
+
+<!-- Fields -->
+
+
+<!-- Public ctors -->
+
+
+
+<!-- ========= CONSTRUCTOR DETAIL ======== -->
+<!-- Protected ctors -->
+
+
+
+<!-- ========= METHOD DETAIL ======== -->
+<!-- Public methdos -->
+
+
+<section id="public-methods">
+  <h2>Public Methods</h2>
+  
+
+
+<A NAME="clearTileCache()"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        
+        
+        
+        void
+      </span>
+      <span class="sympad"><strong>clearTileCache</strong></span>
+      <span class="params">()</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Clears the tile cache so that all tiles will be requested again from the
+ <code><a href="../../../../../../com/google/android/m4b/maps/model/TileProvider.html">TileProvider</a></code>. The current tiles from this tile overlay will also be cleared from the
+ map after calling this.
+</p></div>
+
+    </div>
+</div>
+
+
+<A NAME="equals(java.lang.Object)"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        
+        
+        
+        boolean
+      </span>
+      <span class="sympad"><strong>equals</strong></span>
+      <span class="params">(<span class="nowrap">Object <i>other</i></span>)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p></p></div>
+
+    </div>
+</div>
+
+
+<A NAME="getFadeIn()"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        
+        
+        
+        boolean
+      </span>
+      <span class="sympad"><strong>getFadeIn</strong></span>
+      <span class="params">()</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Gets whether the tiles should fade in.</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Returns</h5>
+      <ul class="nolist jd-returns"><li><code>true</code> if the tiles are to fade in; <code>false</code> if it is not.
+</li></ul>
+  </div>
+
+    </div>
+</div>
+
+
+<A NAME="getId()"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        
+        
+        
+        String
+      </span>
+      <span class="sympad"><strong>getId</strong></span>
+      <span class="params">()</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Gets this tile overlay's id.
+</p></div>
+
+    </div>
+</div>
+
+
+<A NAME="getZIndex()"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        
+        
+        
+        float
+      </span>
+      <span class="sympad"><strong>getZIndex</strong></span>
+      <span class="params">()</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Gets the zIndex of this tile overlay.</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Returns</h5>
+      <ul class="nolist jd-returns"><li>the zIndex of the tile overlay.
+</li></ul>
+  </div>
+
+    </div>
+</div>
+
+
+<A NAME="hashCode()"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        
+        
+        
+        int
+      </span>
+      <span class="sympad"><strong>hashCode</strong></span>
+      <span class="params">()</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p></p></div>
+
+    </div>
+</div>
+
+
+<A NAME="isVisible()"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        
+        
+        
+        boolean
+      </span>
+      <span class="sympad"><strong>isVisible</strong></span>
+      <span class="params">()</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Gets the visibility of this tile overlay. Note that this does not return whether the tile
+ overlay is actually within the screen's viewport, but whether it will be drawn if it is
+ contained in the screen's viewport.</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Returns</h5>
+      <ul class="nolist jd-returns"><li>this tile overlay's visibility.
+</li></ul>
+  </div>
+
+    </div>
+</div>
+
+
+<A NAME="remove()"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        
+        
+        
+        void
+      </span>
+      <span class="sympad"><strong>remove</strong></span>
+      <span class="params">()</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Removes this tile overlay from the map.
+</p></div>
+
+    </div>
+</div>
+
+
+<A NAME="setFadeIn(boolean)"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        
+        
+        
+        void
+      </span>
+      <span class="sympad"><strong>setFadeIn</strong></span>
+      <span class="params">(<span class="nowrap">boolean <i>fadeIn</i></span>)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Sets whether the tiles should fade in.</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Parameters</h5>
+      <table class="jd-tagtable">
+        
+        <tr>
+          <td class="jd-tagparamname">fadeIn</td>
+          <td class="jd-tagdescr">if <code>true</code>, then the tiles will fade in; if <code>false</code>, the tiles
+            will not fade in.
+</td>
+        </tr>
+        
+      </table>
+  </div>
+
+    </div>
+</div>
+
+
+<A NAME="setVisible(boolean)"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        
+        
+        
+        void
+      </span>
+      <span class="sympad"><strong>setVisible</strong></span>
+      <span class="params">(<span class="nowrap">boolean <i>visible</i></span>)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Sets the visibility of this tile overlay. When not visible, a tile overlay is not drawn, but
+ it keeps all its other properties.</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Parameters</h5>
+      <table class="jd-tagtable">
+        
+        <tr>
+          <td class="jd-tagparamname">visible</td>
+          <td class="jd-tagdescr">if <code>true</code>, then the tile overlay is visible; if <code>false</code>, it is
+            not.
+</td>
+        </tr>
+        
+      </table>
+  </div>
+
+    </div>
+</div>
+
+
+<A NAME="setZIndex(float)"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        
+        
+        
+        void
+      </span>
+      <span class="sympad"><strong>setZIndex</strong></span>
+      <span class="params">(<span class="nowrap">float <i>zIndex</i></span>)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Sets the zIndex of this tile overlay. See the documentation at the top of this class for more
+ information.</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Parameters</h5>
+      <table class="jd-tagtable">
+        
+        <tr>
+          <td class="jd-tagparamname">zIndex</td>
+          <td class="jd-tagdescr">the zIndex of this tile overlay.
+</td>
+        </tr>
+        
+      </table>
+  </div>
+
+    </div>
+</div>
+
+
+</section>
+
+
+
+<!-- ========= METHOD DETAIL ======== -->
+
+
+
+<!-- ========= END OF CLASS DATA ========= -->
+<A NAME="navbar_top"></A>
+
+</div> <!-- jd-content -->
+
+</body>
+</html>

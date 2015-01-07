@@ -165,11 +165,11 @@ namespace MK.Common.Configuration
 		[Display(Name = "Account Activation By SMS", Description="Enable the activation by SMS")]
         public bool SMSConfirmationEnabled { get; protected set; }
 
-        [SendToClient, CustomizableByCompany]
+        [SendToClient, CustomizableByCompany, RequiresTaxiHailPro]
         [Display(Name = "Disable Charge type when card on file", Description = "When active, locks the user on Card on File payment type if a credit card is registered")]
         public bool DisableChargeTypeWhenCardOnFile { get; protected set; }
 
-        [SendToClient, CustomizableByCompany]
+        [SendToClient, CustomizableByCompany, RequiresTaxiHailPro]
         [Display(Name = "Enable vehicle type selection", Description = "Hide the vehicle type selection box")]
         public bool VehicleTypeSelectionEnabled { get; protected set; }
 
@@ -246,13 +246,9 @@ namespace MK.Common.Configuration
         [Display(Name = "Show Estimate", Description="Show an estimate")]
         public bool ShowEstimate { get; protected set; }
 
-        [SendToClient, CustomizableByCompany]
+        [SendToClient, CustomizableByCompany, RequiresTaxiHailPro]
 		[Display(Name = "Show Eta", Description="Show eta")]
 		public bool ShowEta { get; protected set; }
-
-        [SendToClient]
-		[Display(Name = "Google Map Key", Description="Google API Key for business, required for directions aka eta feature")]
-        public string GoogleMapKey { get; protected set; }
 
         [SendToClient, CustomizableByCompany]
         [Display(Name = "Eta Padding Ratio", Description = "Eta duration padding ratio (multiply duration in seconds by...)")]
@@ -310,11 +306,11 @@ namespace MK.Common.Configuration
         [Display(Name = "Hide Call Dispatch Button", Description="Hide button to call dispatch in panel menu, status screens")]
         public bool HideCallDispatchButton { get; protected set; }
 
-        [SendToClient, CustomizableByCompany]
+        [SendToClient, CustomizableByCompany, RequiresTaxiHailPro]
         [Display(Name = "Credit Card Is Mandatory", Description="If true, the user needs to have a card on file")]
         public bool CreditCardIsMandatory { get; protected set; }
 
-        [SendToClient, CustomizableByCompany]
+        [SendToClient, CustomizableByCompany, RequiresTaxiHailPro]
 		[Display(Name = "Default Percentage Tip", Description="default value for the tip percentage ex: 15")]
 		public int DefaultTipPercentage { get; protected set; }
 

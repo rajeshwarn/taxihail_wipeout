@@ -1,24 +1,13 @@
-﻿#region
-
-using System;
-using System.Data.Entity.Core.Metadata.Edm;
-using System.Data.SqlTypes;
-using System.Linq;
+﻿using System;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Common;
+using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
-using AutoMapper;
-using CustomerPortal.Client;
-using CustomerPortal.Contract.Resources;
 using Infrastructure.Messaging.Handling;
-using apcurium.MK.Common.Configuration;
-using ServiceStack.Common;
-
-#endregion
 
 namespace apcurium.MK.Booking.EventHandlers
 {
@@ -32,7 +21,10 @@ namespace apcurium.MK.Booking.EventHandlers
         IEventHandler<OrderUnpairedForPayment>,
         IEventHandler<OrderPreparedForNextDispatch>,
         IEventHandler<OrderSwitchedToNextDispatchCompany>,
-        IEventHandler<DispatchCompanySwitchIgnored>
+        IEventHandler<DispatchCompanySwitchIgnored>,
+        IEventHandler<IbsOrderInfoAddedToOrder>,
+        IEventHandler<OrderCancelledBecauseOfIbsError>
+
     {
         private readonly Func<BookingDbContext> _contextFactory;
         private readonly ILogger _logger;
@@ -69,7 +61,29 @@ namespace apcurium.MK.Booking.EventHandlers
                 }
             }
         }
-        
+
+        public void Handle(OrderCancelledBecauseOfIbsError @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var order = context.Find<OrderDetail>(@event.SourceId);
+                if (order != null)
+                {
+                    order.Status = (int)OrderStatus.Canceled;
+                    context.Save(order);
+                }
+
+                var details = context.Find<OrderStatusDetail>(@event.SourceId);
+                if (details != null)
+                {
+                    details.Status = OrderStatus.Canceled;
+                    details.IBSStatusId = VehicleStatuses.Common.CancelledDone;
+                    details.IBSStatusDescription = @event.ErrorDescription;
+                    context.Save(details);
+                }
+            }
+        }
+
         public void Handle(OrderCreated @event)
         {
             using (var context = _contextFactory.Invoke())
@@ -110,7 +124,7 @@ namespace apcurium.MK.Booking.EventHandlers
                         AccountId = @event.AccountId,
                         IBSOrderId  = @event.IBSOrderId,
                         Status = OrderStatus.Created,
-                        IBSStatusDescription = _resources.Get("OrderStatus_wosWAITING", @event.ClientLanguageCode),
+                        IBSStatusDescription = _resources.Get("CreateOrder_WaitingForIbs", @event.ClientLanguageCode),
                         PickupDate = @event.PickupDate,
                         Name = @event.Settings != null ? @event.Settings.Name : null,
                         IsChargeAccountPaymentWithCardOnFile = @event.IsChargeAccountPaymentWithCardOnFile,
@@ -379,6 +393,20 @@ namespace apcurium.MK.Booking.EventHandlers
                 return eventDate.AddSeconds(_serverSettings.ServerData.Network.SecondaryOrderTimeout);
             }
             return null;
+        }
+
+        public void Handle(IbsOrderInfoAddedToOrder @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var order = context.Find<OrderDetail>(@event.SourceId);
+                order.IBSOrderId = @event.IBSOrderId;
+
+                var orderStatus = context.Find<OrderStatusDetail>(@event.SourceId);
+                orderStatus.IBSOrderId = @event.IBSOrderId;
+                
+                context.SaveChanges();
+            }
         }
     }
 }

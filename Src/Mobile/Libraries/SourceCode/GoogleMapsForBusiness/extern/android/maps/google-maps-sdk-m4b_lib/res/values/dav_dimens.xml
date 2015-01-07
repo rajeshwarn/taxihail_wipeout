@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 2010 Google Inc. All Rights Reserved. -->
+
+<resources>
+    <!-- Size of the loading spinny. -->
+    <dimen name="dav_loading_spinny_size">32dp</dimen>
+    <!-- Margins of the loading spinny. The margins are negative to offset the
+         transparent area in the texture. -->
+    <dimen name="dav_loading_spinny_right_margin">-4dp</dimen>
+    <dimen name="dav_loading_spinny_top_margin">-3dp</dimen>
+    <!--Size of the compass. -->
+    <dimen name="dav_compass_size">64dp</dimen>
+    <dimen name="dav_compass_size_tablet">96dp</dimen>
+    <dimen name="dav_compass_margin_x_tablet">8dp</dimen>
+    <dimen name="dav_compass_margin_y_tablet">62dp</dimen>
+
+    <!--Dimensions for the heads up display. -->
+    <dimen name="dav_hud_scalebar_maxwidth">120dp</dimen>
+    <dimen name="dav_hud_scalebar_fontsize">12dp</dimen>
+    <dimen name="dav_hud_copyright_fontsize">12dp</dimen>
+    <dimen name="dav_hud_console_fontsize">12dp</dimen>
+    <!-- Vertical offset of My Location bubble. -->
+    <dimen name="dav_my_location_bubble_y_offset">7dp</dimen>
+</resources>

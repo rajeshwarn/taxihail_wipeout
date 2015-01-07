@@ -51,5 +51,7 @@
 
    "FoursquareClientId" : "ZBALTMPLRQURC5BAVHJWXSGBVAPGXYQBMJ24Z1K4RHYP31YW",
    "FoursquareClientSecret" : "L3AEJBI3JJILNLWTWZNVCDUIIZZ0RV3EO3RX3M44RTFKC0VM",
-   "FoursquarePlacesTypes" : ""
+   "FoursquarePlacesTypes": "",
+
+   "IsTaxiHailPro": "true"
 }

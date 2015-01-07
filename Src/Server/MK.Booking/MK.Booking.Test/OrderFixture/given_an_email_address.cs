@@ -3,7 +3,6 @@ using System.Linq;
 using System.Net.Mail;
 using apcurium.MK.Booking.CommandHandlers;
 using apcurium.MK.Booking.Commands;
-using apcurium.MK.Booking.Common.Tests;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Domain;
 using apcurium.MK.Booking.Email;
@@ -29,6 +28,7 @@ namespace apcurium.MK.Booking.Test.OrderFixture
         private TestServerSettings _serverSettings;
         private Mock<IEmailSender> _emailSenderMock;
         private Mock<IOrderDao> _orderDaoMock;
+        private Mock<IAccountDao> _accountDaoMock;
         private Mock<IGeocoding> _geocodingMock;
         private EventSourcingTestHelper<Order> sut;
 
@@ -57,7 +57,9 @@ namespace apcurium.MK.Booking.Test.OrderFixture
                     PaymentConfirmationPush = true,
                     NearbyTaxiPush = true,
                     ReceiptEmail = true,
-                    VehicleAtPickupPush = true
+                    PromotionUnlockedEmail = true,
+                    VehicleAtPickupPush = true,
+                    PromotionUnlockedPush = true
                 });
             }
         }
@@ -69,6 +71,7 @@ namespace apcurium.MK.Booking.Test.OrderFixture
 
             _emailSenderMock = new Mock<IEmailSender>();
             _orderDaoMock = new Mock<IOrderDao>();
+            _accountDaoMock = new Mock<IAccountDao>();
             _serverSettings = new TestServerSettings();
             _geocodingMock = new Mock<IGeocoding>();
             _serverSettings.SetSetting("TaxiHail.ApplicationName", ApplicationName);
@@ -80,6 +83,7 @@ namespace apcurium.MK.Booking.Test.OrderFixture
                 _serverSettings,
                 new ConfigurationDao(() => new ConfigurationDbContext(DbName)),
                 _orderDaoMock.Object,
+                _accountDaoMock.Object,
                 new StaticMap(),
                 null,
                 _geocodingMock.Object,

@@ -3,7 +3,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using apcurium.MK.Booking.Common.Tests;
 using apcurium.MK.Booking.Maps.Impl;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;

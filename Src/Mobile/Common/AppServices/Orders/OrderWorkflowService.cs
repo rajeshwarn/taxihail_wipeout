@@ -264,18 +264,10 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
                         }
 					case "CreateOrder_InvalidProvider":
 					case "CreateOrder_NoFareEstimateAvailable":   /* Fare estimate is required and was not submitted */
-					case "CreateOrder_CannotCreateInIbs_1002":    /* Pickup address outside of service area */
-					case "CreateOrder_CannotCreateInIbs_1452":    /* Dropoff address outside of service area */
-					case "CreateOrder_CannotCreateInIbs_7000":    /* Inactive account */
-					case "CreateOrder_CannotCreateInIbs_10000":   /* Inactive charge account */
 					case "CreateOrder_CardOnFileButNoCreditCard": /* Card on file selected but no card */
                     case "AccountCharge_InvalidAccountNumber":
 						message = string.Format(_localize["ServiceError" + e.ErrorCode], _appSettings.Data.TaxiHail.ApplicationName, _appSettings.Data.DefaultPhoneNumberDisplay);
 						messageNoCall = _localize["ServiceError" + e.ErrorCode + "_NoCall"];
-						throw new OrderCreationException(message, messageNoCall);
-					case "CreateOrder_CannotCreateInIbs_3000": /* Disabled account */
-						message = string.Format(_localize["AccountDisabled"], _appSettings.Data.TaxiHail.ApplicationName, _appSettings.Data.DefaultPhoneNumberDisplay);
-						messageNoCall = _localize["AccountDisabled_NoCall"];
 						throw new OrderCreationException(message, messageNoCall);
 					default:
 						// Unhandled errors
@@ -541,6 +533,13 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
 		public async Task PrepareForNewOrder()
 		{
+			var isDestinationModeOpened = await _isDestinationModeOpenedSubject.Take(1).ToTask();
+			if (isDestinationModeOpened)
+			{
+				ToggleIsDestinationModeOpened();
+				ToggleBetweenPickupAndDestinationSelectionMode();
+			}
+
 			_noteToDriverSubject.OnNext(string.Empty);
 			_promoCodeSubject.OnNext(string.Empty);
 			_pickupAddressSubject.OnNext(new Address());
@@ -772,13 +771,33 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			return order;
 		}
 
-		public void Rebook(Order previous)
+		public async void Rebook(Order previous)
 		{
             _isOrderRebooked = true;
+			/*if (!previous.DropOffAddress.HasValidCoordinate ()) {
+				var isDestinationModeOpened = await _isDestinationModeOpenedSubject.Take(1).ToTask();
+				if (isDestinationModeOpened)
+				{   
+					await ToggleBetweenPickupAndDestinationSelectionMode();
+					await ToggleIsDestinationModeOpened();
+				}
+			}
+			else
+			{
+				var isDestinationModeOpened = await _isDestinationModeOpenedSubject.Take(1).ToTask();
+				if (!isDestinationModeOpened)
+				{   
+					await ToggleBetweenPickupAndDestinationSelectionMode();
+					await ToggleIsDestinationModeOpened();
+				}
+			}*/
+
 			_pickupAddressSubject.OnNext(previous.PickupAddress);
 			_destinationAddressSubject.OnNext(previous.DropOffAddress);
 			_bookingSettingsSubject.OnNext(previous.Settings);
 			_noteToDriverSubject.OnNext(previous.Note);
+
+
 		}
 
         public bool IsOrderRebooked()

@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Security;
 using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Web.Areas.AdminTH.Models;
 using apcurium.MK.Web.Attributes;
 using Infrastructure.Messaging;
@@ -73,7 +75,8 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                     MaxUsage = promoCode.MaxUsage,
                     Code = promoCode.Code,
                     PublishedStartDate = promoCode.PublishedStartDate,
-                    PublishedEndDate = promoCode.PublishedEndDate
+                    PublishedEndDate = promoCode.PublishedEndDate,
+                    TriggerSettings = promoCode.TriggerSettings
                 });
 
                 TempData["Info"] = string.Format("Promotion \"{0}\" created", promoCode.Name);
@@ -90,7 +93,14 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
         public ActionResult Edit(Guid id)
         {
             var promotion = _promotionDao.FindById(id);
-            return View(new PromoCode(promotion));
+
+            var model = new PromoCode(promotion);
+            if (promotion.TriggerSettings.Type != PromotionTriggerTypes.NoTrigger)
+            {
+                model.CanModifyTriggerGoal = !_promotionDao.GetProgressByPromo(id).Any();
+            }
+
+            return View(model);
         }
 
         // POST: AdminTH/PromoCode/Edit/5
@@ -102,6 +112,31 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                 if (!ModelState.IsValid)
                 {
                     throw new Exception("Something's not right");
+                }
+                
+                if (promoCode.TriggerSettings.Type == PromotionTriggerTypes.AmountSpent)
+                {
+                    promoCode.TriggerSettings.RideCount = 0;
+                }
+                else if (promoCode.TriggerSettings.Type == PromotionTriggerTypes.RideCount)
+                {
+                    promoCode.TriggerSettings.AmountSpent = 0;
+                }
+                else
+                {
+                    promoCode.TriggerSettings.RideCount = 0;
+                    promoCode.TriggerSettings.AmountSpent = 0;
+                }
+
+                if (!promoCode.CanModifyTriggerGoal)
+                {
+                    var promotion = _promotionDao.FindById(promoCode.Id);
+                    if (promotion.TriggerSettings.Type != promoCode.TriggerSettings.Type
+                        || promotion.TriggerSettings.AmountSpent != promoCode.TriggerSettings.AmountSpent
+                        || promotion.TriggerSettings.RideCount != promoCode.TriggerSettings.RideCount)
+                    {
+                        throw new Exception("You cannot modify the trigger type or goal because a user already started progress on the promotion.");
+                    }
                 }
 
                 _commandBus.Send(new UpdatePromotion
@@ -122,7 +157,8 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                     MaxUsage = promoCode.MaxUsage,
                     Code = promoCode.Code,
                     PublishedStartDate = promoCode.PublishedStartDate,
-                    PublishedEndDate = promoCode.PublishedEndDate
+                    PublishedEndDate = promoCode.PublishedEndDate,
+                    TriggerSettings = promoCode.TriggerSettings
                 });
 
                 TempData["Info"] = string.Format("Promotion \"{0}\" updated", promoCode.Name);
@@ -157,6 +193,19 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
 
             TempData["Info"] = "Promotion deactivated";
             return RedirectToAction("Index");
+        }
+
+        // GET: AdminTH/PromoCode/Statistics/5
+        public ActionResult Statistics(Guid id)
+        {
+            var promotionUsages = _promotionDao.GetRedeemedPromotionUsages(id).ToArray();
+            return View(promotionUsages.Any() ? new PromoStats(promotionUsages) : null);
+        }
+
+        public ActionResult UserStatistics(Guid id)
+        {
+            var promotionUsages = _promotionDao.GetRedeemedPromotionUsages(id).ToArray();
+            return View(promotionUsages.Any() ? new PromoStats(promotionUsages) : null);
         }
     }
 }

@@ -11,7 +11,8 @@ namespace apcurium.MK.Booking.CommandHandlers
         ICommandHandler<ActivatePromotion>,
         ICommandHandler<DeactivatePromotion>,
         ICommandHandler<ApplyPromotion>,
-        ICommandHandler<RedeemPromotion>
+        ICommandHandler<RedeemPromotion>,
+        ICommandHandler<AddUserToPromotionWhiteList>
     {
         private readonly IEventSourcedRepository<Promotion> _repository;
 
@@ -25,7 +26,7 @@ namespace apcurium.MK.Booking.CommandHandlers
             var promotion = new Promotion(command.PromoId, command.Name, command.Description, command.StartDate, command.EndDate, 
                 command.StartTime, command.EndTime, command.DaysOfWeek, command.AppliesToCurrentBooking, command.AppliesToFutureBooking,
                 command.DiscountValue, command.DiscountType, command.MaxUsagePerUser, command.MaxUsage, command.Code, 
-                command.PublishedStartDate, command.PublishedEndDate);
+                command.PublishedStartDate, command.PublishedEndDate, command.TriggerSettings);
 
             _repository.Save(promotion, command.Id.ToString());
         }
@@ -36,7 +37,7 @@ namespace apcurium.MK.Booking.CommandHandlers
 
             promotion.Update(command.Name, command.Description, command.StartDate, command.EndDate, command.StartTime, command.EndTime, 
                 command.DaysOfWeek, command.AppliesToCurrentBooking, command.AppliesToFutureBooking, command.DiscountValue, command.DiscountType, 
-                command.MaxUsagePerUser, command.MaxUsage, command.Code, command.PublishedStartDate, command.PublishedEndDate);
+                command.MaxUsagePerUser, command.MaxUsage, command.Code, command.PublishedStartDate, command.PublishedEndDate, command.TriggerSettings);
 
             _repository.Save(promotion, command.Id.ToString());
         }
@@ -73,6 +74,15 @@ namespace apcurium.MK.Booking.CommandHandlers
             var promotion = _repository.Get(command.PromoId);
 
             promotion.Redeem(command.OrderId, command.TotalAmountOfOrder);
+
+            _repository.Save(promotion, command.Id.ToString());
+        }
+
+        public void Handle(AddUserToPromotionWhiteList command)
+        {
+            var promotion = _repository.Get(command.PromoId);
+
+            promotion.AddUserToWhiteList(command.AccountId, command.LastTriggeredAmount);
 
             _repository.Save(promotion, command.Id.ToString());
         }

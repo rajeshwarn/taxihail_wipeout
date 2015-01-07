@@ -1,4 +1,5 @@
 ﻿using System;
+using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
 using Infrastructure.Messaging;
 
@@ -44,6 +45,8 @@ namespace apcurium.MK.Booking.Commands
         public DateTime? PublishedStartDate { get; set; }
 
         public DateTime? PublishedEndDate { get; set; }
+
+        public PromotionTriggerSettings TriggerSettings { get; set; }
 
         public Guid Id { get; private set; }
     }

@@ -68,6 +68,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Extensions\ResourcesExtensions.cs" />
+    <Compile Include="Extensions\ServiceClientBaseExtension.cs" />
     <Compile Include="Foursquare\FoursquareProvider.cs" />
     <Compile Include="Foursquare\Venue.cs" />
     <Compile Include="Google\GoogleApiClient.cs" />
@@ -81,6 +83,7 @@
     <Compile Include="Google\Resources\Geometry.cs" />
     <Compile Include="Google\Resources\GeoObj.cs" />
     <Compile Include="Google\Resources\GeoResult.cs" />
+    <Compile Include="Google\Resources\GoogleResult.cs" />
     <Compile Include="Google\Resources\Leg.cs" />
     <Compile Include="Google\Resources\Location.cs" />
     <Compile Include="Google\Resources\OverviewPolyline.cs" />

@@ -1,11 +1,13 @@
 ﻿using System;
+using System.Globalization;
+using System.Threading.Tasks;
+using apcurium.MK.Booking.MapDataProvider.Extensions;
 using apcurium.MK.Booking.MapDataProvider.Resources;
+using apcurium.MK.Booking.MapDataProvider.TomTom.Resources;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
 using ServiceStack.ServiceClient.Web;
-using apcurium.MK.Booking.MapDataProvider.TomTom.Resources;
 using ServiceStack.Text;
-using System.Globalization;
 
 namespace apcurium.MK.Booking.MapDataProvider.TomTom
 {
@@ -34,32 +36,33 @@ namespace apcurium.MK.Booking.MapDataProvider.TomTom
 			get { return _settings.Data.TomTomMapToolkitKey; }
 		}
 
-		public GeoDirection GetDirections (double originLatitude, double originLongitude, double destinationLatitude, double destinationLongitude, DateTime? date)
+        public async Task<GeoDirection> GetDirectionsAsync (double originLat, double originLng, double destLat, double destLng, DateTime? date)
 		{
 			var client = new JsonServiceClient (ApiUrl);
 			var queryString = string.Format (CultureInfo.InvariantCulture, RoutingServiceUrl, 
 				MapToolkitKey, 
-				GetFormattedPoints (originLatitude, originLongitude, destinationLatitude, destinationLongitude),
+                GetFormattedPoints (originLat, originLng, destLat, destLng),
 				GetDayAndTimeParameter(date));
+
 			_logger.LogMessage ("Calling TomTom : " + queryString);
+
+            var result = new GeoDirection();
 			try
 			{
-				var direction = client.Get<RoutingResponse>(queryString);
+                var direction = await client.GetAsync<RoutingResponse>(queryString).ConfigureAwait(false);
 
 				_logger.LogMessage ("TomTom Result : " + direction.ToJson());
 
-				return new GeoDirection
-				{ 
-					Distance = direction.Route.Summary.TotalDistanceMeters,
-					Duration = direction.Route.Summary.TotalTimeSeconds, // based on history for given day and time
-					TrafficDelay = direction.Route.Summary.TotalDelaySeconds // this will only be available if date = null, otherwise it's 0
-				};
+                result.Distance = direction.Route.Summary.TotalDistanceMeters;
+                result.Duration = direction.Route.Summary.TotalTimeSeconds;         // based on history for given day and time
+                result.TrafficDelay = direction.Route.Summary.TotalDelaySeconds;    // this will only be available if date = null, otherwise it's 0
 			}
 			catch(Exception e)
 			{
 				_logger.LogError (e);
-				return new GeoDirection();
 			}
+
+            return result;
 		}
 
 		private string GetFormattedPoints(double originLatitude, double originLongitude, double destinationLatitude, double destinationLongitude)

@@ -13,6 +13,7 @@
   
     @Html.HiddenFor(x => x.Id)
     @Html.HiddenFor(x => x.Active)
+    @Html.HiddenFor(x => x.CanModifyTriggerGoal)
     <div class="control-group">
         @Html.LabelFor(x => x.Name, new { @class = "control-label" })
         <div class="controls">
@@ -186,7 +187,27 @@
             @Html.ValidationMessageFor(x => x.Code)
         </div>
     </div>
-    
+    <div class="clearfix" id="triggerDiv" data-toggle="popover" data-title="Trigger and goal cannot be modified because a user already started progress on the promotion.">
+        <div class="control-group left-control-group" style="width: 55%">
+            @Html.LabelFor(x => x.TriggerSettings.Type, new {@class = "control-label"})
+            <div class="controls">
+                @Html.EnumDropDownListFor(x => x.TriggerSettings.Type, new {@id = "triggerTypeDropDown"})
+            </div>
+        </div>
+        <div class="control-group right-control-group" id="rideCountTriggerGroup" style="width: 45%">
+            <div class="controls" style="margin-left: 20px;">
+                @Html.TextBoxFor(x => x.TriggerSettings.RideCount, new {@placeholder = "Number of Rides"})
+                @Html.ValidationMessageFor(x => x.TriggerSettings.RideCount)
+            </div>
+        </div>
+        <div class="control-group right-control-group" id="amountSpentTriggerGroup" style="width: 45%">
+            <div class="controls" style="margin-left: 20px;">
+                @Html.TextBoxFor(x => x.TriggerSettings.AmountSpent, new {@placeholder = "Amount Spent"})
+                @Html.ValidationMessageFor(x => x.TriggerSettings.AmountSpent)
+            </div>
+        </div>
+    </div>
+
     <div class="control-group btn-right-alignment">
         <button type="submit" class="btn btn-primary span">Save</button>
         @Html.ActionLink("Cancel", "Index", null, new { @class = "btn span" })
@@ -240,8 +261,43 @@
         }
     }
 
+    function onTriggerTypeChanged(e) {
+        var dropDownValue = $('#triggerTypeDropDown')[0].value;
+
+        if (dropDownValue == "@Convert.ToInt32(PromotionTriggerTypes.RideCount)") {
+            $('#amountSpentTriggerGroup').addClass('hidden');
+            $('#rideCountTriggerGroup').removeClass('hidden');
+        }
+        else if (dropDownValue == "@Convert.ToInt32(PromotionTriggerTypes.AmountSpent)") {
+            $('#amountSpentTriggerGroup').removeClass('hidden');
+            $('#rideCountTriggerGroup').addClass('hidden');
+        } else {
+            $('#amountSpentTriggerGroup').addClass('hidden');
+            $('#rideCountTriggerGroup').addClass('hidden');
+        }
+    }
+
     $(document).ready(function () {
         $('.next-day-warning').addClass('hidden');
+
+        @if (Model.TriggerSettings.Type == PromotionTriggerTypes.RideCount)
+        {
+            <text>$('#amountSpentTriggerGroup').addClass('hidden');</text>
+        }
+        else if (Model.TriggerSettings.Type == PromotionTriggerTypes.AmountSpent)
+        {
+            <text>$('#rideCountTriggerGroup').addClass('hidden');</text>
+        }
+        else {
+            <text>
+                $('#rideCountTriggerGroup').addClass('hidden');
+                $('#amountSpentTriggerGroup').addClass('hidden');
+            </text>
+        }
+
+        $('#triggerTypeDropDown').change(function (e) {
+            onTriggerTypeChanged(e);
+        });
 
         $('[data-role=datepicker]').datepicker();
         $('[data-role=timepicker]').timepicker({
@@ -301,6 +357,24 @@
         {
             var publishedEndDate = @Html.Raw(Json.Encode(Model.PublishedEndDate));
             <text>$('#PublishedEndDate').datepicker('setValue', moment(@publishedEndDate).format('L'));</text>
+        }
+
+        @if (!Model.CanModifyTriggerGoal)
+        {
+            <text>
+                $('#triggerTypeDropDown').addClass('disabled');
+                $('#triggerTypeDropDown').attr('disabled', 'disabled');
+                $('#TriggerSettings_RideCount').addClass('disabled');
+                $('#TriggerSettings_RideCount').attr('disabled', 'disabled');
+                $('#TriggerSettings_AmountSpent').addClass('disabled');
+                $('#TriggerSettings_AmountSpent').attr('disabled', 'disabled');
+                $("#triggerDiv").popover({
+                    trigger: 'hover',
+                    container: 'body',
+                    placement: 'left',
+                    show: true
+                });
+            </text>
         }
     });
 </script>

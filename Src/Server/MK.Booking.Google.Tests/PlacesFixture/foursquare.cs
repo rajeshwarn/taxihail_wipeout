@@ -1,5 +1,5 @@
 ﻿using System.Linq;
-using apcurium.MK.Booking.Common.Tests;
+using apcurium.MK.Booking.Test;
 using apcurium.MK.Common.Diagnostic;
 using MK.Booking.Google.Tests.PlacesFixture;
 using MK.Booking.MapDataProvider.Foursquare;

@@ -1,0 +1,1236 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<html devsite>
+  <head>
+    <title>MapsEngineLayerOptions</title>
+    <meta name="project_path" value="/maps/documentation/business/_project.yaml" />
+    <meta name="book_path" value="/maps/documentation/business/_book.yaml" />
+    <link rel="stylesheet" href="/+/css/plus.css" />
+  </head>
+
+<body class="">
+<style>
+
+/* Heading for "Parameters", "See Also", etc., in details sections */
+h4.jd-details-title {
+  font-size: 1.15em;
+  margin: 1.5em 0 .6em 0em;
+  padding: 0em 8em 0em 2.5em;
+  text-indent: -2em;
+  background-color: #E9E9E9; /* #DEEAFA */
+}
+h4 .params {
+  font-size:.9em;
+  font-weight:normal;
+}
+h5.jd-tagtitle {
+  margin: 0 0 .25em 1em;
+  font-size: 1em;
+  font-weight: bold;
+}
+/* For the tagdata blocks that make up the detailed description */
+.jd-details-descr {
+  padding: 0;
+  margin: .5em 6px;
+}
+.jd-tagdescr p {
+  margin-bottom: .5em;
+  padding: 0;
+}
+.jd-tagdata {
+  margin-left: .5em 1em .5em .5em;
+}
+/* .jd-typecol should be set to minimum width in place of width="1%" */
+.jd-sumtable, .jd-tagtable {
+  border: none !important;
+  padding: 0px 6px 0px 0px !important;
+  margin-left: 2em !important;
+  margin-bottom: 0.9em;
+}
+.jd-returns {
+  margin-left: 2.1em !important;  /* 0.1em larger than .jd-tagtable */
+}
+.jd-typecol, .jd-linkcol, .jd-enumtype {
+  /* border: none !important; */
+  vertical-align: middle !important;
+  padding: 0px 6px 0px 6px !important;
+}
+.jd-hang {
+  padding-left: 2em;
+  text-indent: -2em;
+}
+.jd-typecol, .jd-paramname, .jd-enumtype {
+  width: 1%;         /* What better way to set min. width? (here and below) */
+}
+.jd-typecol {
+  white-space: nowrap;
+}
+.jd-tagparamname, .jd-tagthrowstype {
+  border: none !important;
+  width: 1%;
+  padding: 0px 6px 0px 0px !important;
+}
+.jd-tagparamname {
+  font-style: italic;
+}
+.jd-tagdescr {
+  border: none !important;
+  padding: 0px 6px 0px 6px !important;
+}
+.jd-sumheading {
+  border: none !important;
+  padding: 0 !important;
+  background-color: #FFF;
+  color: #000;
+}
+#jd-header {
+  margin-bottom: 1em;
+}
+/* extra space between end of method name and open-paren */
+.sympad {
+  margin-right: 2px;
+}
+/* keep method parameter type on the same line with parameter name */
+.nowrap {
+  white-space: nowrap;
+}
+</style>
+
+<div id="api-info-block">
+
+
+
+  
+   
+  
+  
+  
+  
+
+  
+   
+  
+  
+   
+  
+  
+  
+
+  
+  
+   
+  
+  
+  
+
+
+<div class="api-level">
+  
+
+
+  
+  
+
+</div>
+</div><!-- end api-info-block -->
+
+
+<!-- ======== START OF CLASS DATA ======== -->
+
+
+
+<div id="jd-header">
+  public  final   class
+  <b>MapsEngineLayerOptions</b>
+</div><!-- end jd-header -->
+
+
+<div id="naMessage"></div>
+
+<div id="jd-content" class="api apilevel-">
+
+
+
+
+
+
+
+<div class="jd-descr">
+
+
+<p>Defines options for a Maps Engine overlay.
+
+ You can identify the layer in two different ways:
+ <ul>
+ <li> As part of a map to which the layer belongs via the the map's asset ID and the layer's
+ key within the map. To do this, use <code><a href="../../../../../../com/google/android/m4b/maps/model/MapsEngineLayerOptions.html#layerInMap(java.lang.String, java.lang.String)">layerInMap(String, String)</a></code>.
+ <li> Directly via the layer's asset ID. To do this use <code><a href="../../../../../../com/google/android/m4b/maps/model/MapsEngineLayerOptions.html#layerId(java.lang.String)">layerId(String)</a></code>
+ for platform layers.
+ </ul>
+ If both are specified, we will use the information from the first method as canonical.
+</p>
+
+
+
+</div><!-- jd-descr -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="jd-descr">
+
+
+<section id="xml-attributes">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- =========== ENUM CONSTANT SUMMARY =========== -->
+<section id="inhconstants">
+  <h3>Inherited Constant Summary</h3>
+  
+    
+  
+    
+      <div class="expandable api apilevel-">
+        <span class="showalways">
+          From interface
+          android.os.Parcelable
+        </span>
+        <div id="inherited-constants-android.os.Parcelable">
+          <div id="inherited-constants-android.os.Parcelable-list"
+                class="jd-inheritedlinks">
+          </div>
+          <div id="inherited-constants-android.os.Parcelable-summary">
+            <table class="jd-sumtable-expando">
+              
+
+    
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">int</td>
+        <td class="jd-linkcol">CONTENTS_FILE_DESCRIPTOR</td>
+        <td class="jd-descrcol" width="100%"></td>
+    </tr>
+    
+    
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">int</td>
+        <td class="jd-linkcol">PARCELABLE_WRITE_RETURN_VALUE</td>
+        <td class="jd-descrcol" width="100%"></td>
+    </tr>
+    
+    
+
+            </table>
+          </div>
+        </div>
+      </div>
+    
+  
+    
+      <div class="expandable api apilevel-">
+        <span class="showalways">
+          From interface
+          com.google.android.gms.common.internal.safeparcel.SafeParcelable
+        </span>
+        <div id="inherited-constants-com.google.android.gms.common.internal.safeparcel.SafeParcelable">
+          <div id="inherited-constants-com.google.android.gms.common.internal.safeparcel.SafeParcelable-list"
+                class="jd-inheritedlinks">
+          </div>
+          <div id="inherited-constants-com.google.android.gms.common.internal.safeparcel.SafeParcelable-summary">
+            <table class="jd-sumtable-expando">
+              
+
+    
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">String</td>
+        <td class="jd-linkcol">NULL</td>
+        <td class="jd-descrcol" width="100%"></td>
+    </tr>
+    
+    
+
+            </table>
+          </div>
+        </div>
+      </div>
+    
+  
+</section>
+
+
+
+
+<!-- =========== FIELD SUMMARY =========== -->
+<section id="lfields"><h3>Field Summary</h3>
+  <table class="jd-sumtable">
+    
+
+    
+      <tr class="alt-color api apilevel-" >
+          <td class="jd-typecol">
+          public
+          static
+          final
+          MapsEngineLayerOptionsCreator</td>
+          <td class="jd-linkcol"><a href="../../../../../../com/google/android/m4b/maps/model/MapsEngineLayerOptions.html#CREATOR">CREATOR</a></td>
+          <td class="jd-descrcol" width="100%"></td>
+      </tr>
+      
+    
+
+  </table>
+</section>
+
+
+
+
+
+
+
+<!-- ======== CONSTRUCTOR SUMMARY ======== -->
+<section>
+  <h3>Public Constructor Summary</h3>
+  <table id="pubctors" class="jd-sumtable">
+  
+
+
+    
+    <tr class="alt-color api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            
+            
+            
+            
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../../com/google/android/m4b/maps/model/MapsEngineLayerOptions.html#MapsEngineLayerOptions()">MapsEngineLayerOptions</a></span>()
+            
+          </div>
+      </td>
+    </tr>
+
+
+
+  </table>
+</section>
+
+
+
+
+
+
+
+<!-- ========== METHOD SUMMARY =========== -->
+<section>
+  <h3>Public Method Summary</h3>
+  <table id="pubmethods" class="jd-sumtable">
+  
+
+
+    
+    <tr class="alt-color api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            
+            
+            
+            <a href="../../../../../../com/google/android/m4b/maps/model/MapsEngineLayerOptions.html">MapsEngineLayerOptions</a>
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../../com/google/android/m4b/maps/model/MapsEngineLayerOptions.html#defaultUi(boolean)">defaultUi</a></span>(<span class="nowrap">boolean <i>enabled</i></span>)
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class=" api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            
+            
+            
+            int
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../../com/google/android/m4b/maps/model/MapsEngineLayerOptions.html#describeContents()">describeContents</a></span>()
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class="alt-color api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            
+            
+            
+            <a href="../../../../../../com/google/android/m4b/maps/model/MapsEngineLayerInfo.html">MapsEngineLayerInfo</a>
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../../com/google/android/m4b/maps/model/MapsEngineLayerOptions.html#getLayerInfo()">getLayerInfo</a></span>()
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class=" api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            
+            
+            
+            float
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../../com/google/android/m4b/maps/model/MapsEngineLayerOptions.html#getZIndex()">getZIndex</a></span>()
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class="alt-color api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            
+            
+            
+            boolean
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../../com/google/android/m4b/maps/model/MapsEngineLayerOptions.html#isDefaultUiEnabled()">isDefaultUiEnabled</a></span>()
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class=" api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            
+            
+            
+            boolean
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../../com/google/android/m4b/maps/model/MapsEngineLayerOptions.html#isVisible()">isVisible</a></span>()
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class="alt-color api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            
+            
+            
+            <a href="../../../../../../com/google/android/m4b/maps/model/MapsEngineLayerOptions.html">MapsEngineLayerOptions</a>
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../../com/google/android/m4b/maps/model/MapsEngineLayerOptions.html#layerId(java.lang.String)">layerId</a></span>(<span class="nowrap">String <i>layerId</i></span>)
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class=" api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            
+            
+            
+            <a href="../../../../../../com/google/android/m4b/maps/model/MapsEngineLayerOptions.html">MapsEngineLayerOptions</a>
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../../com/google/android/m4b/maps/model/MapsEngineLayerOptions.html#layerInMap(java.lang.String, java.lang.String)">layerInMap</a></span>(<span class="nowrap">String <i>mapId</i></span>, <span class="nowrap">String <i>layerKey</i></span>)
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class="alt-color api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            
+            
+            
+            <a href="../../../../../../com/google/android/m4b/maps/model/MapsEngineLayerOptions.html">MapsEngineLayerOptions</a>
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../../com/google/android/m4b/maps/model/MapsEngineLayerOptions.html#version(java.lang.String)">version</a></span>(<span class="nowrap">String <i>version</i></span>)
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class=" api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            
+            
+            
+            <a href="../../../../../../com/google/android/m4b/maps/model/MapsEngineLayerOptions.html">MapsEngineLayerOptions</a>
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../../com/google/android/m4b/maps/model/MapsEngineLayerOptions.html#visible(boolean)">visible</a></span>(<span class="nowrap">boolean <i>visible</i></span>)
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class="alt-color api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            
+            
+            
+            void
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../../com/google/android/m4b/maps/model/MapsEngineLayerOptions.html#writeToParcel(android.os.Parcel, int)">writeToParcel</a></span>(<span class="nowrap">Parcel <i>out</i></span>, <span class="nowrap">int <i>flags</i></span>)
+            
+          </div>
+      </td>
+    </tr>
+
+
+    
+    <tr class=" api apilevel-" >
+      <td class="jd-typecol">
+            
+            
+            
+            
+            
+            <a href="../../../../../../com/google/android/m4b/maps/model/MapsEngineLayerOptions.html">MapsEngineLayerOptions</a>
+      </td>
+      <td class="jd-linkcol" width="100%">
+          <div class="jd-hang">
+            <span class="sympad"><a href="../../../../../../com/google/android/m4b/maps/model/MapsEngineLayerOptions.html#zIndex(float)">zIndex</a></span>(<span class="nowrap">float <i>zIndex</i></span>)
+            
+          </div>
+      </td>
+    </tr>
+
+
+
+  </table>
+</section>
+
+
+
+
+
+
+<!-- ========== METHOD SUMMARY =========== -->
+</section><!--xml-attributes-->
+<!--subcount(class.inners) || subcount(class.attrs) || ...-->
+</div><!-- class="jd-descr" (end of Summary) -->
+
+<!-- Details -->
+
+
+
+
+
+
+
+
+<!-- XML Attributes -->
+
+
+<!-- Enum Values -->
+
+
+<!-- Constants -->
+
+
+<!-- Fields -->
+
+
+<!-- ========= FIELD DETAIL ======== -->
+<section id="fields">
+  <h2>Fields</h2>
+  
+
+
+
+<A NAME="CREATOR"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        static
+        final
+        
+        
+          MapsEngineLayerOptionsCreator
+        
+      </span>
+        <strong>CREATOR</strong>
+    </h4>
+      <div class="api-level">
+        
+
+
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p></p></div>
+
+    
+    </div>
+</div>
+
+
+</section>
+
+
+<!-- Public ctors -->
+
+
+<!-- ========= CONSTRUCTOR DETAIL ======== -->
+<section id="public-constructors">
+  <h2>Public Constructors</h2>
+  
+
+
+<A NAME="MapsEngineLayerOptions()"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        
+        
+        
+        
+      </span>
+      <span class="sympad"><strong>MapsEngineLayerOptions</strong></span>
+      <span class="params">()</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Creates a new set of marker options.
+</p></div>
+
+    </div>
+</div>
+
+
+</section>
+
+
+
+<!-- ========= CONSTRUCTOR DETAIL ======== -->
+<!-- Protected ctors -->
+
+
+
+<!-- ========= METHOD DETAIL ======== -->
+<!-- Public methdos -->
+
+
+<section id="public-methods">
+  <h2>Public Methods</h2>
+  
+
+
+<A NAME="defaultUi(boolean)"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        
+        
+        
+        <a href="../../../../../../com/google/android/m4b/maps/model/MapsEngineLayerOptions.html">MapsEngineLayerOptions</a>
+      </span>
+      <span class="sympad"><strong>defaultUi</strong></span>
+      <span class="params">(<span class="nowrap">boolean <i>enabled</i></span>)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Specifies whether or not to show the default infocard UI for this Maps Engine layer. The
+ default is <code>true</code>.</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Returns</h5>
+      <ul class="nolist jd-returns"><li>this <code><a href="../../../../../../com/google/android/m4b/maps/model/MapsEngineLayerOptions.html">MapsEngineLayerOptions</a></code> object with a new default UI setting.
+</li></ul>
+  </div>
+
+    </div>
+</div>
+
+
+<A NAME="describeContents()"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        
+        
+        
+        int
+      </span>
+      <span class="sympad"><strong>describeContents</strong></span>
+      <span class="params">()</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p></p></div>
+
+    </div>
+</div>
+
+
+<A NAME="getLayerInfo()"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        
+        
+        
+        <a href="../../../../../../com/google/android/m4b/maps/model/MapsEngineLayerInfo.html">MapsEngineLayerInfo</a>
+      </span>
+      <span class="sympad"><strong>getLayerInfo</strong></span>
+      <span class="params">()</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Gets the layerInfo set for this <code><a href="../../../../../../com/google/android/m4b/maps/model/MapsEngineLayerOptions.html">MapsEngineLayerOptions</a></code> object.</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Returns</h5>
+      <ul class="nolist jd-returns"><li>the layerInfo of the Maps Engine layer.
+</li></ul>
+  </div>
+
+    </div>
+</div>
+
+
+<A NAME="getZIndex()"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        
+        
+        
+        float
+      </span>
+      <span class="sympad"><strong>getZIndex</strong></span>
+      <span class="params">()</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Gets the zIndex set for this <code><a href="../../../../../../com/google/android/m4b/maps/model/MapsEngineLayerOptions.html">MapsEngineLayerOptions</a></code> object.</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Returns</h5>
+      <ul class="nolist jd-returns"><li>the zIndex of the Maps Engine overlay.
+</li></ul>
+  </div>
+
+    </div>
+</div>
+
+
+<A NAME="isDefaultUiEnabled()"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        
+        
+        
+        boolean
+      </span>
+      <span class="sympad"><strong>isDefaultUiEnabled</strong></span>
+      <span class="params">()</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Returns whether the default UI is enabled or disabled for this Maps Engine layer.</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Returns</h5>
+      <ul class="nolist jd-returns"><li><code>true</code> if the default UI is enabled, <code>false</code> if it is not.
+</li></ul>
+  </div>
+
+    </div>
+</div>
+
+
+<A NAME="isVisible()"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        
+        
+        
+        boolean
+      </span>
+      <span class="sympad"><strong>isVisible</strong></span>
+      <span class="params">()</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Gets the visibility setting for this <code><a href="../../../../../../com/google/android/m4b/maps/model/MapsEngineLayerOptions.html">MapsEngineLayerOptions</a></code> object.</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Returns</h5>
+      <ul class="nolist jd-returns"><li><code>true</code> if the Maps Engine overlay is to be visible; <code>false</code> if it is not.
+</li></ul>
+  </div>
+
+    </div>
+</div>
+
+
+<A NAME="layerId(java.lang.String)"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        
+        
+        
+        <a href="../../../../../../com/google/android/m4b/maps/model/MapsEngineLayerOptions.html">MapsEngineLayerOptions</a>
+      </span>
+      <span class="sympad"><strong>layerId</strong></span>
+      <span class="params">(<span class="nowrap">String <i>layerId</i></span>)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Specifies the Platform Maps Engine layer that you want to display.</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Parameters</h5>
+      <table class="jd-tagtable">
+        
+        <tr>
+          <td class="jd-tagparamname">layerId</td>
+          <td class="jd-tagdescr">the layer ID (asset ID of the layer) for this layer.
+</td>
+        </tr>
+        
+      </table>
+  </div>
+
+    </div>
+</div>
+
+
+<A NAME="layerInMap(java.lang.String, java.lang.String)"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        
+        
+        
+        <a href="../../../../../../com/google/android/m4b/maps/model/MapsEngineLayerOptions.html">MapsEngineLayerOptions</a>
+      </span>
+      <span class="sympad"><strong>layerInMap</strong></span>
+      <span class="params">(<span class="nowrap">String <i>mapId</i></span>, <span class="nowrap">String <i>layerKey</i></span>)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Specifies the Maps Engine layer that you want to display.</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Parameters</h5>
+      <table class="jd-tagtable">
+        
+        <tr>
+          <td class="jd-tagparamname">mapId</td>
+          <td class="jd-tagdescr">the ID of the map to which this layer belongs.</td>
+        </tr>
+        
+        <tr>
+          <td class="jd-tagparamname">layerKey</td>
+          <td class="jd-tagdescr">the layer key of the layer within the map.
+</td>
+        </tr>
+        
+      </table>
+  </div>
+
+    </div>
+</div>
+
+
+<A NAME="version(java.lang.String)"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        
+        
+        
+        <a href="../../../../../../com/google/android/m4b/maps/model/MapsEngineLayerOptions.html">MapsEngineLayerOptions</a>
+      </span>
+      <span class="sympad"><strong>version</strong></span>
+      <span class="params">(<span class="nowrap">String <i>version</i></span>)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Sets the version of map/layer to be requested. If using <code><a href="../../../../../../com/google/android/m4b/maps/model/MapsEngineLayerOptions.html#layerInMap(java.lang.String, java.lang.String)">layerInMap(String, String)</a></code>, this is
+ the map version, otherwise this is the layer version.</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Parameters</h5>
+      <table class="jd-tagtable">
+        
+        <tr>
+          <td class="jd-tagparamname">version</td>
+          <td class="jd-tagdescr">the version of the map to which this layer belongs (e.g., "published").
+</td>
+        </tr>
+        
+      </table>
+  </div>
+
+    </div>
+</div>
+
+
+<A NAME="visible(boolean)"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        
+        
+        
+        <a href="../../../../../../com/google/android/m4b/maps/model/MapsEngineLayerOptions.html">MapsEngineLayerOptions</a>
+      </span>
+      <span class="sympad"><strong>visible</strong></span>
+      <span class="params">(<span class="nowrap">boolean <i>visible</i></span>)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Specifies the visibility for the Maps Engine overlay. The default visibility is <code>true</code>.</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Returns</h5>
+      <ul class="nolist jd-returns"><li>this <code><a href="../../../../../../com/google/android/m4b/maps/model/MapsEngineLayerOptions.html">MapsEngineLayerOptions</a></code> object with a new visibility setting.
+</li></ul>
+  </div>
+
+    </div>
+</div>
+
+
+<A NAME="writeToParcel(android.os.Parcel, int)"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        
+        
+        
+        void
+      </span>
+      <span class="sympad"><strong>writeToParcel</strong></span>
+      <span class="params">(<span class="nowrap">Parcel <i>out</i></span>, <span class="nowrap">int <i>flags</i></span>)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p></p></div>
+
+    </div>
+</div>
+
+
+<A NAME="zIndex(float)"></A>
+
+<div class="jd-details api apilevel-">
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public
+        
+        
+        
+        
+        <a href="../../../../../../com/google/android/m4b/maps/model/MapsEngineLayerOptions.html">MapsEngineLayerOptions</a>
+      </span>
+      <span class="sympad"><strong>zIndex</strong></span>
+      <span class="params">(<span class="nowrap">float <i>zIndex</i></span>)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Specifies the Maps Engine overlay's zIndex, i.e., the order in which it will be drawn where
+ overlays with larger values are drawn above those with lower values.</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Returns</h5>
+      <ul class="nolist jd-returns"><li>this <code><a href="../../../../../../com/google/android/m4b/maps/model/MapsEngineLayerOptions.html">MapsEngineLayerOptions</a></code> object with a new zIndex set.
+</li></ul>
+  </div>
+
+    </div>
+</div>
+
+
+</section>
+
+
+
+<!-- ========= METHOD DETAIL ======== -->
+
+
+
+<!-- ========= END OF CLASS DATA ========= -->
+<A NAME="navbar_top"></A>
+
+</div> <!-- jd-content -->
+
+</body>
+</html>

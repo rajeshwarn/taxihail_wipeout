@@ -183,6 +183,7 @@
     <Compile Include="EventHandlers\Integration\OrderDispatchCompanyManager.cs" />
     <Compile Include="EventHandlers\Integration\PaymentSettingsUpdater.cs" />
     <Compile Include="EventHandlers\Integration\OrderPaymentManager.cs" />
+    <Compile Include="EventHandlers\Integration\PromotionTriggerGenerator.cs" />
     <Compile Include="EventHandlers\NotificationSettingsGenerator.cs" />
     <Compile Include="EventHandlers\OrderUserGpsGenerator.cs" />
     <Compile Include="EventHandlers\PayPalExpressCheckoutPaymentDetailsGenerator.cs" />
@@ -206,6 +207,7 @@
     <Compile Include="ReadModel\AccountChargeDetail.cs" />
     <Compile Include="ReadModel\AccountDetail.cs" />
     <Compile Include="ReadModel\AccountIbsDetail.cs" />
+    <Compile Include="ReadModel\PromotionProgressDetail.cs" />
     <Compile Include="ReadModel\AddressDetails.cs" />
     <Compile Include="ReadModel\AppStartUpLogDetail.cs" />
     <Compile Include="ReadModel\CompanyDetail.cs" />
@@ -333,6 +335,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Email\Templates\PasswordReset.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Email\Templates\PromotionUnlocked.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Email\Templates\Receipt.html">

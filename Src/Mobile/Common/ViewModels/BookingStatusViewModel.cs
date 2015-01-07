@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Linq;
 using apcurium.MK.Booking.Api.Contract.Resources;
-using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.Infrastructure;
@@ -21,7 +20,6 @@ using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using ServiceStack.Text;
 using apcurium.MK.Booking.Maps;
-using Cirrious.CrossCore;
 using System.Net;
 using ServiceStack.ServiceClient.Web;
 
@@ -68,7 +66,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
 			base.OnViewLoaded ();
 
-			StatusInfoText = string.Format(this.Services().Localize["LoadingMessage"]);
+			StatusInfoText = string.Format(this.Services().Localize["Processing"]);
 
             CenterMap ();			
         }
@@ -319,6 +317,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private bool _refreshStatusIsExecuting;
 		private async void RefreshStatus()
         {
+
             try 
 			{
 				if(_refreshStatusIsExecuting)
@@ -326,6 +325,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					return;
 				}
 
+				Logger.LogMessage ("RefreshStatus starts");
 				_refreshStatusIsExecuting = true;
 
 				var status = await _bookingService.GetOrderStatusAsync(Order.Id);
@@ -369,7 +369,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					&& status.VehicleLatitude.HasValue
 					&& status.VehicleLongitude.HasValue)
 				{
-					Direction d =  _vehicleService.GetEtaBetweenCoordinates(status.VehicleLatitude.Value, status.VehicleLongitude.Value, Order.PickupAddress.Latitude, Order.PickupAddress.Longitude);
+					Direction d =  await _vehicleService.GetEtaBetweenCoordinates(status.VehicleLatitude.Value, status.VehicleLongitude.Value, Order.PickupAddress.Latitude, Order.PickupAddress.Longitude);
 					statusInfoText += " " + FormatEta(d);						
 				}
 
@@ -417,8 +417,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 Logger.LogError (ex);
             }
 			finally
-			{
-				_refreshStatusIsExecuting = false;
+			{			
+				Logger.LogMessage ("RefreshStatus ends");
+				_refreshStatusIsExecuting = false;			
 			}
         }
 
@@ -528,10 +529,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                                 && (paymentSettings.IsPayInTaxiEnabled || paymentSettings.PayPalClientSettings.IsEnabled);
 
 			// Unpair button is only available for RideLinqCMT
-			var isPaired = await _bookingService.IsPaired(Order.Id);
-			IsUnpairButtonVisible = paymentSettings.PaymentMode == PaymentMethod.RideLinqCmt 
-								&& !paymentSettings.AutomaticPayment  			
-								&& isPaired;
+			if (paymentSettings.PaymentMode == PaymentMethod.RideLinqCmt) 
+			{
+				var isPaired = await _bookingService.IsPaired(Order.Id);
+				IsUnpairButtonVisible = !paymentSettings.AutomaticPayment && isPaired;
+			} 
+			else 
+			{
+				IsUnpairButtonVisible = false;
+			}
 		}
 
 	    private bool ShouldDisplayPayButton(string statusId, bool isOrderAlreadyPaid, ClientPaymentSettings paymentSettings)
@@ -553,6 +559,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		public void GoToSummary()
 		{
+			Logger.LogMessage ("GoToSummary");
 			ShowViewModelAndRemoveFromHistory<RideSummaryViewModel> (
 				new {
 					order = Order.ToJson(),
