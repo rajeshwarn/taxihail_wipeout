@@ -240,7 +240,9 @@ namespace apcurium.MK.Booking.Api.Services
             if (_serverSettings.ServerData.Direction.NeedAValidTarif
                 && (!request.Estimate.Price.HasValue || request.Estimate.Price == 0))
             {
-                throw new HttpError(HttpStatusCode.Forbidden, GetCreateOrderServiceErrorMessage(ErrorCode.CreateOrder_NoFareEstimateAvailable, request.ClientLanguageCode));
+                throw new HttpError(HttpStatusCode.Forbidden,
+                    ErrorCode.CreateOrder_NoFareEstimateAvailable.ToString(),
+                    GetCreateOrderServiceErrorMessage(ErrorCode.CreateOrder_NoFareEstimateAvailable, request.ClientLanguageCode));
             }
 
             var chargeTypeIbs = string.Empty;
@@ -343,7 +345,9 @@ namespace apcurium.MK.Booking.Api.Services
                 !request.Market.HasValue() &&
                 referenceData.CompaniesList.None(c => c.Id == request.Settings.ProviderId.Value))
             {
-                throw new HttpError(HttpStatusCode.Forbidden, GetCreateOrderServiceErrorMessage(ErrorCode.CreateOrder_InvalidProvider, request.ClientLanguageCode));
+                throw new HttpError(HttpStatusCode.Forbidden,
+                    ErrorCode.CreateOrder_InvalidProvider.ToString(), 
+                    GetCreateOrderServiceErrorMessage(ErrorCode.CreateOrder_InvalidProvider, request.ClientLanguageCode));
             }
         }
 
@@ -495,7 +499,9 @@ namespace apcurium.MK.Booking.Api.Services
             // check if the account has a credit card
             if (!account.DefaultCreditCard.HasValue)
             {
-                throw new HttpError(HttpStatusCode.Forbidden, GetCreateOrderServiceErrorMessage(ErrorCode.CreateOrder_CardOnFileButNoCreditCard, clientLanguageCode));
+                throw new HttpError(HttpStatusCode.Forbidden,
+                    ErrorCode.CreateOrder_CardOnFileButNoCreditCard.ToString(),
+                    GetCreateOrderServiceErrorMessage(ErrorCode.CreateOrder_CardOnFileButNoCreditCard, clientLanguageCode));
             }
 
             // try to preauthorize a small amount on the card to verify the validity
@@ -544,7 +550,9 @@ namespace apcurium.MK.Booking.Api.Services
             var accountChargeDetail = _accountChargeDao.FindByAccountNumber(accountNumber);
             if (accountChargeDetail == null)
             {
-                throw new HttpError(HttpStatusCode.Forbidden, GetCreateOrderServiceErrorMessage(ErrorCode.AccountCharge_InvalidAccountNumber, clientLanguageCode));
+                throw new HttpError(HttpStatusCode.Forbidden,
+                    ErrorCode.AccountCharge_InvalidAccountNumber.ToString(),
+                    GetCreateOrderServiceErrorMessage(ErrorCode.AccountCharge_InvalidAccountNumber, clientLanguageCode));
             }
 
             var answers = userQuestionsDetails.Select(x => x.Answer);
