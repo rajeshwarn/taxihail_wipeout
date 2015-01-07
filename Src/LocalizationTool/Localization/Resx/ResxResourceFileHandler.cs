@@ -22,8 +22,13 @@ namespace apcurium.Tools.Localization.Resx
                //FileRef is null if it is not a file reference.
                if (node.FileRef == null)
                {
-                   TryAdd(node.Name, node.GetValue((ITypeResolutionService)null).ToString());
-               }
+					var value = node.GetValue ((ITypeResolutionService)null);
+					if (value == null) 
+					{
+						throw new Exception ("Missing value for Resource " + node.Name);
+					}
+                   	TryAdd(node.Name, value.ToString());
+               } 
            }
        }
 
