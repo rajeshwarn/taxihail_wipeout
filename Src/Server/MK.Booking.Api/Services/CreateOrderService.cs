@@ -186,7 +186,7 @@ namespace apcurium.MK.Booking.Api.Services
                     isChargeAccountPaymentWithCardOnFile = true;
                 }
 
-                ValidateChargeAccountAnswers(request.Settings.AccountNumber, request.QuestionsAndAnswers);
+                ValidateChargeAccountAnswers(request.Settings.AccountNumber, request.QuestionsAndAnswers, request.ClientLanguageCode);
 
                 prompts = request.QuestionsAndAnswers.Select(q => q.Answer).ToArray();
                 promptsLength = request.QuestionsAndAnswers.Select(q => q.MaxLength).ToArray();
@@ -202,17 +202,16 @@ namespace apcurium.MK.Booking.Api.Services
                         request.Settings.ProviderId,
                         request.PickupAddress.Latitude,
                         request.PickupAddress.Longitude),
-                () => request.DropOffAddress != null
-                        ? _ibsServiceProvider.StaticData(bestAvailableCompany.CompanyKey, request.Market).GetZoneByCoordinate(
-                            request.Settings.ProviderId,
-                            request.DropOffAddress.Latitude,
-                            request.DropOffAddress.Longitude)
-                        : null);
+                    () => request.DropOffAddress != null
+                            ? _ibsServiceProvider.StaticData(bestAvailableCompany.CompanyKey, request.Market).GetZoneByCoordinate(
+                                request.Settings.ProviderId,
+                                request.DropOffAddress.Latitude,
+                                request.DropOffAddress.Longitude)
+                            : null);
 
                 if (rule != null)
                 {
-                    var err = new HttpError(HttpStatusCode.Forbidden, ErrorCode.CreateOrder_RuleDisable.ToString(), rule.Message);
-                    throw err;
+                    throw new HttpError(HttpStatusCode.Forbidden, ErrorCode.CreateOrder_RuleDisable.ToString(), rule.Message);
                 }
             }
 
@@ -241,7 +240,7 @@ namespace apcurium.MK.Booking.Api.Services
             if (_serverSettings.ServerData.Direction.NeedAValidTarif
                 && (!request.Estimate.Price.HasValue || request.Estimate.Price == 0))
             {
-                throw new HttpError(ErrorCode.CreateOrder_NoFareEstimateAvailable.ToString());
+                throw new HttpError(HttpStatusCode.Forbidden, GetCreateOrderServiceErrorMessage(ErrorCode.CreateOrder_NoFareEstimateAvailable, request.ClientLanguageCode));
             }
 
             var chargeTypeIbs = string.Empty;
@@ -344,7 +343,7 @@ namespace apcurium.MK.Booking.Api.Services
                 !request.Market.HasValue() &&
                 referenceData.CompaniesList.None(c => c.Id == request.Settings.ProviderId.Value))
             {
-                throw new HttpError(ErrorCode.CreateOrder_InvalidProvider.ToString());
+                throw new HttpError(HttpStatusCode.Forbidden, GetCreateOrderServiceErrorMessage(ErrorCode.CreateOrder_InvalidProvider, request.ClientLanguageCode));
             }
         }
 
@@ -496,7 +495,7 @@ namespace apcurium.MK.Booking.Api.Services
             // check if the account has a credit card
             if (!account.DefaultCreditCard.HasValue)
             {
-                throw new HttpError(ErrorCode.CreateOrder_CardOnFileButNoCreditCard.ToString());
+                throw new HttpError(HttpStatusCode.Forbidden, GetCreateOrderServiceErrorMessage(ErrorCode.CreateOrder_CardOnFileButNoCreditCard, clientLanguageCode));
             }
 
             // try to preauthorize a small amount on the card to verify the validity
@@ -540,12 +539,12 @@ namespace apcurium.MK.Booking.Api.Services
             }
         }
 
-        private void ValidateChargeAccountAnswers(string accountNumber, AccountChargeQuestion[] userQuestionsDetails)
+        private void ValidateChargeAccountAnswers(string accountNumber, AccountChargeQuestion[] userQuestionsDetails, string clientLanguageCode)
         {
             var accountChargeDetail = _accountChargeDao.FindByAccountNumber(accountNumber);
             if (accountChargeDetail == null)
             {
-                throw new HttpError(HttpStatusCode.Forbidden, ErrorCode.AccountCharge_InvalidAccountNumber.ToString());
+                throw new HttpError(HttpStatusCode.Forbidden, GetCreateOrderServiceErrorMessage(ErrorCode.AccountCharge_InvalidAccountNumber, clientLanguageCode));
             }
 
             var answers = userQuestionsDetails.Select(x => x.Answer);
@@ -848,6 +847,17 @@ namespace apcurium.MK.Booking.Api.Services
                 PickupDate = pickupDate,
                 IsFutureBooking = isFutureBooking
             };
+        }
+
+        private string GetCreateOrderServiceErrorMessage(ErrorCode errorCode, string language)
+        {
+            var callMessage = string.Format(_resources.Get("ServiceError" + errorCode, language),
+                _serverSettings.ServerData.TaxiHail.ApplicationName,
+                _serverSettings.ServerData.DefaultPhoneNumberDisplay);
+
+            var noCallMessage = _resources.Get("ServiceError" + errorCode + "_NoCall", language);
+
+            return _serverSettings.ServerData.HideCallDispatchButton ? noCallMessage : callMessage;
         }
 
         private class BestAvailableCompany
