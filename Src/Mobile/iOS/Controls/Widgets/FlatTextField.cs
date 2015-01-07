@@ -132,11 +132,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
                     if (value)
                     {
-                        var image = UIImage.FromFile ("right_arrow.png");
-                        _rightArrow = new UIImageView (new RectangleF (Frame.Width - image.Size.Width - Padding, (Frame.Height - image.Size.Height) / 2, image.Size.Width, image.Size.Height));
-                        _rightArrow.Image = image;
-
-                        RightView.Frame = RightView.Frame.IncrementWidth (image.Size.Width + Padding); // this is to keep the same padding between the end of the text and the right arrow
+                        _rightArrow = new UIImageView
+                        {
+                            Image = UIImage.FromFile ("right_arrow.png")
+                        };
                         AddSubview (_rightArrow);
 
                         SetNeedsDisplay ();
@@ -145,13 +144,40 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                     {
                         if (_rightArrow != null)
                         {
-                            var imageWidth = _rightArrow.Image != null ? _rightArrow.Image.Size.Width : 0;
-                            RightView.Frame = RightView.Frame.IncrementWidth (-(imageWidth + Padding));
                             _rightArrow.RemoveFromSuperview ();
 
                             SetNeedsDisplay ();
                         }
                     }
+                }
+            }
+        }
+
+        public override void LayoutSubviews()
+        {
+            base.LayoutSubviews();
+
+            if (HasRightArrow)
+            {
+                if (_rightArrow != null)
+                {
+                    _rightArrow.Frame = new RectangleF(
+                        Frame.Width - _rightArrow.Image.Size.Width - Padding, 
+                        (Frame.Height - _rightArrow.Image.Size.Height) / 2, 
+                        _rightArrow.Image.Size.Width, 
+                        _rightArrow.Image.Size.Height);
+
+                    // this is to keep the same padding between the end of the text and the right arrow
+                    RightView.Frame = RightView.Frame.IncrementWidth(_rightArrow.Image.Size.Width + Padding); 
+                }
+            }
+            else
+            {
+                if (_rightArrow != null)
+                {
+                    var imageWidth = _rightArrow.Image != null ? _rightArrow.Image.Size.Width : 0;
+                    RightView.Frame = RightView.Frame.IncrementWidth (-(imageWidth + Padding));
+                    _rightArrow = null;
                 }
             }
         }
