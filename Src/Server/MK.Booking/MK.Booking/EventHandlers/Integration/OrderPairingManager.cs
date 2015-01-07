@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Linq;
 using apcurium.MK.Booking.Events;
+using apcurium.MK.Booking.IBS;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Services;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Enumeration;
 using Infrastructure.Messaging.Handling;
 
@@ -14,26 +16,29 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
         IIntegrationEventHandler,
         IEventHandler<OrderStatusChanged>
     {
-        private readonly IPairingService _pairingService;
+        private readonly IPaymentService _paymentService;
         private readonly INotificationService _notificationService;
         private readonly IServerSettings _serverSettings;
         private readonly IOrderDao _orderDao;
         private readonly ICreditCardDao _creditCardDao;
         private readonly IAccountDao _accountDao;
+        private readonly IIBSServiceProvider _ibsServiceProvider;
 
-        public OrderPairingManager(IPairingService pairingService, 
+        public OrderPairingManager(IPaymentService paymentService, 
             INotificationService notificationService, 
             IServerSettings serverSettings,
             IOrderDao orderDao,
             ICreditCardDao creditCardDao,
-            IAccountDao accountDao)
+            IAccountDao accountDao,
+            IIBSServiceProvider ibsServiceProvider)
         {
-            _pairingService = pairingService;
+            _paymentService = paymentService;
             _notificationService = notificationService;
             _serverSettings = serverSettings;
             _orderDao = orderDao;
             _creditCardDao = creditCardDao;
             _accountDao = accountDao;
+            _ibsServiceProvider = ibsServiceProvider;
         }
 
         public void Handle(OrderStatusChanged @event)
@@ -47,28 +52,33 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
 
                     if (_serverSettings.GetPaymentSettings().AutomaticPayment
                         && _serverSettings.GetPaymentSettings().AutomaticPaymentPairing
+                        && _serverSettings.GetPaymentSettings().PaymentMode != PaymentMethod.RideLinqCmt
                         && order.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id
                         && creditCardAssociatedToAccount != null)        // Only send notification if using card on file
                     {
-                        
                         var account = _accountDao.FindById(@event.Status.AccountId);
 
-                        bool success;
-                        try
+                        var response = _paymentService.Pair(@event.SourceId, creditCardAssociatedToAccount.Token, account.DefaultTipPercent, null);
+                        if (response.IsSuccessful)
                         {
-                            _pairingService.Pair(@event.SourceId, creditCardAssociatedToAccount.Token, account.DefaultTipPercent);
-                            success = true;
-                        }
-                        catch
-                        {
-                            success = false;
+                            var ibsAccountId = _accountDao.GetIbsAccountId(order.AccountId, null);
+                            if (!UpdateOrderPaymentType(ibsAccountId.Value, order.IBSOrderId.Value))
+                            {
+                                response.IsSuccessful = false;
+                                _paymentService.VoidPreAuthorization(@event.SourceId);
+                            }
                         }
 
-                        _notificationService.SendAutomaticPairingPush(@event.SourceId, account.DefaultTipPercent, creditCardAssociatedToAccount.Last4Digits, success);
+                        _notificationService.SendAutomaticPairingPush(@event.SourceId, account.DefaultTipPercent, creditCardAssociatedToAccount.Last4Digits, response.IsSuccessful);
                     } 
                 }
                 break;
             }
+        }
+
+        private bool UpdateOrderPaymentType(int ibsAccountId, int ibsOrderId, string companyKey = null)
+        {
+            return _ibsServiceProvider.Booking(companyKey).UpdateOrderPaymentType(ibsAccountId, ibsOrderId, _serverSettings.ServerData.IBS.PaymentTypeCardOnFileId);
         }
     }
 }

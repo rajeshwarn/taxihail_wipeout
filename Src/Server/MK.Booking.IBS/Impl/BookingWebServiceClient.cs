@@ -58,7 +58,7 @@ namespace apcurium.MK.Booking.IBS.Impl
                 });
             }
 
-            return result.GroupBy(r=>r.VehicleNumber).Select( g=> g.First()).ToArray() ;
+            return result.GroupBy(r=>r.VehicleNumber).Select(g => g.First()).ToArray();
         }
 
         public IbsOrderStatus GetOrderStatus(int orderId, int accountId, string contactPhone)
@@ -208,19 +208,35 @@ namespace apcurium.MK.Booking.IBS.Impl
             return success;
         }
 
-        public bool UpdateOrderPaymentType(int ibsAccountId, int ibsOrderId, int chargeTypeId)
+        /// <summary>
+        /// Informs IBS and terminal in vehicle that the user will pay using the app.  
+        /// This should disable the terminal in the vehicle.
+        /// </summary>
+        /// <param name="ibsAccountId"></param>
+        /// <param name="ibsOrderId"></param>
+        /// <param name="chargeTypeId"></param>
+        /// <returns></returns>
+        public bool UpdateOrderPaymentType(int ibsAccountId, int ibsOrderId, int? chargeTypeId)
         {
+            if (!chargeTypeId.HasValue)
+            {
+                Logger.LogMessage(
+                    "WebService UpdateOrderPaymentType : No Ibs ChargeType Id set for CardOnFile, skipping call to UpdateOrderPaymentType");
+                return true;
+            }
+
+            Logger.LogMessage("WebService UpdateOrderPaymentType : ibsAccountId={0},ibsOrderId={1},chargeTypeId={2}", 
+                ibsAccountId, ibsOrderId, chargeTypeId);
+
             var success = false;
             UseService(service =>
             {
-                var result = service.UpdateJobPaymentType(UserNameApp, PasswordApp, ibsAccountId, ibsOrderId, chargeTypeId);
+                var result = service.UpdateJobPaymentType(UserNameApp, PasswordApp, ibsAccountId, ibsOrderId, chargeTypeId.Value);
                 success = result == 1;
-
             });
             return success;
         }
-
-
+        
         public bool ConfirmExternalPayment(Guid orderID, int ibsOrderId, decimal totalAmount, decimal tipAmount, decimal meterAmount, string type, string provider, string transactionId,
            string authorizationCode, string cardToken, int accountID, string name, string phone, string email, string os, string userAgent)
         {
@@ -267,11 +283,10 @@ namespace apcurium.MK.Booking.IBS.Impl
             int? result = null;
             UseService(service =>
             {
-                
                 result = service.SaveExtrPayment_2(UserNameApp, PasswordApp, ibsOrderId, "", "", cardToken, type,null , 0, 0, 0, 0,
-                 0, 0, 0, accountID, name, CleanPhone(phone), email, "", "", orderId.ToString());
+                    0, 0, 0, accountID, name, CleanPhone(phone), email, "", "", orderId.ToString());
                 
-                if ( result < -9000 ) //Hack unitl we support more code and we get the list of code.
+                if (result < -9000) //Hack unitl we support more code and we get the list of code.
                 {
                     service.CancelBookOrder( UserNameApp, PasswordApp, ibsOrderId, CleanPhone(phone ), null , accountID );
                     result = -10000;
@@ -280,16 +295,11 @@ namespace apcurium.MK.Booking.IBS.Impl
                 {
                     result = null;
                 }
-
-
-
             });
 
             return result;
         }
-
         
-
         private int ToCents(decimal dollarAmout)
         {
             return Convert.ToInt32(dollarAmout * 100);
