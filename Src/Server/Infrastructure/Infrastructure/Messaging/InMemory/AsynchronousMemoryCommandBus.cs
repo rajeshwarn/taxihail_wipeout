@@ -69,6 +69,12 @@ namespace Infrastructure.Messaging.InMemory
             SendInternal(command);
         }
 
+        
+        public Task SendAwaitable(Envelope<ICommand> command)
+        {
+            return SendInternal(command);
+        }
+
         private Task SendInternal(Envelope<ICommand> command)
         {
             return Task.Factory.StartNew(() =>

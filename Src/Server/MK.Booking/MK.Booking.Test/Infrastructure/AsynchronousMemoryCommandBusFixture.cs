@@ -20,22 +20,39 @@ namespace apcurium.MK.Booking.Test.Infrastructure
          }
 
          [Test]
-         public void when_no_exception_then_invoke_once()
+         public async void when_no_exception_then_invoke_once()
          {
              var counthandler = new FakeHandler();
              var sut = new AsynchronousMemoryCommandBus(new JsonTextSerializer(), counthandler);
 
-             sut.Send(new RegisterAccount());
+             await sut.SendAwaitable(new RegisterAccount());
 
-             Thread.Sleep(TimeSpan.FromSeconds(2));
+             Assert.That(counthandler.Invocation, Is.EqualTo(1));
+         }
 
-             Assert.That(counthandler.Invocation, Is.EqualTo(0));
+         [Test]
+         public async void when_exception_then_invoke_retry()
+         {
+             var counthandler = new FakeHandler(true);
+             var sut = new AsynchronousMemoryCommandBus(new JsonTextSerializer(), counthandler);
+
+             var envelope = new Envelope<ICommand>(new RegisterAccount());
+             envelope.RetryCount = 3;
+             await sut.SendAwaitable(envelope);
+
+             Assert.That(counthandler.Invocation, Is.EqualTo(3));
          }
     }
 
     public class FakeHandler : ICommandHandler<RegisterAccount>
     {
+        private readonly bool _throwException;
         private int _invocation;
+
+        public FakeHandler(bool throwException = false)
+        {
+            _throwException = throwException;
+        }
 
         public int Invocation
         {
@@ -46,6 +63,10 @@ namespace apcurium.MK.Booking.Test.Infrastructure
         public void Handle(RegisterAccount command)
         {
             Invocation++;
+            if (_throwException)
+            {
+                throw new Exception();
+            }
         }
     }
 }
