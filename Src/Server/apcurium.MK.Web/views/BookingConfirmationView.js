@@ -202,11 +202,11 @@
             }
 
             var $alert = $('<div class="alert alert-error" />');
-            if (result.errorCode == "CreateOrder_RuleDisable") {
-                $alert.append($('<div />').text(result.message));
+            if (result.errorCode == "CreateOrder_PendingOrder") {
+                $alert.append($('<div />').text(this.localize(result.errorCode)));
             }
-            else if (result.statusText) {
-                $alert.append($('<div />').text(this.localize(result.statusText)));
+            else if (result.errorCode) {
+                $alert.append($('<div />').text(result.message));
             }
             _.each(result.errors, function (error) {
                 $alert.append($('<div />').text(this.localize(error.statusText)));

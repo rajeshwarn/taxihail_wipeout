@@ -5090,6 +5090,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f060133
 			public const int EntryCodeLabel = 2131099955;
 			
+			// aapt resource value: 0x7f0602ad
+			public const int ErrorCreateOrder_PendingOrder = 2131100333;
+			
 			// aapt resource value: 0x7f0600e2
 			public const int ErrorCreatingOrderTitle = 2131099874;
 			
@@ -5159,14 +5162,14 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f060123
 			public const int GooglePlayServicesNotAvailableMessage = 2131099939;
 			
-			// aapt resource value: 0x7f0602ad
-			public const int GooglePlayServicesNotAvailableMessage1 = 2131100333;
+			// aapt resource value: 0x7f0602ae
+			public const int GooglePlayServicesNotAvailableMessage1 = 2131100334;
 			
 			// aapt resource value: 0x7f060084
 			public const int GooglePlayServicesNotAvailableTitle = 2131099780;
 			
-			// aapt resource value: 0x7f0602ae
-			public const int GooglePlayServicesNotAvailableTitle1 = 2131100334;
+			// aapt resource value: 0x7f0602af
+			public const int GooglePlayServicesNotAvailableTitle1 = 2131100335;
 			
 			// aapt resource value: 0x7f060049
 			public const int Hello = 2131099721;
