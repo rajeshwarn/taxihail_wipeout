@@ -349,30 +349,35 @@ namespace MK.DeploymentService.Mobile
 				UpdateJob ("Customize Successful");
 			}
 
-			_logger.DebugFormat ("Customization Finished");
-			_logger.DebugFormat ("Run Localization tool for Android");
+			UpdateJob("Customization Finished");
+			UpdateJob ("Run Localization tool for Android");
 
 			var localizationToolRun = new ProcessStartInfo {
 				FileName = "mono",
 				UseShellExecute = false,
+				RedirectStandardOutput = true,
+				RedirectStandardError = true,
 				WorkingDirectory = Path.Combine (sourceDirectory, "Src", "LocalizationTool"),
 				Arguments = "output/LocalizationTool.exe -t=android -m=\"../Mobile/Common/Localization/Master.resx\" -d=\"../Mobile/Android/Resources/Values/String.xml\" -s=\"../Mobile/Common/Settings/Settings.json\""
 			};
 
 			using (var exeProcess = Process.Start (localizationToolRun)) {
-				exeProcess.WaitForExit ();
+				var outputAndroid = ProcessEx.GetOutput (exeProcess);
 				if (exeProcess.ExitCode > 0) {
 					throw new Exception ("Error during localization tool for android");
 				}
+				UpdateJob (outputAndroid);
 			}
 
-			_logger.DebugFormat ("Run Localization tool for Android Finished");
+			UpdateJob ("Run Localization tool for Android Finished");
 
-            _logger.DebugFormat("Run Localization tool for iOS");
+			UpdateJob("Run Localization tool for iOS");
 
             localizationToolRun = new ProcessStartInfo
             {
                 FileName = "mono",
+				RedirectStandardOutput = true,
+				RedirectStandardError = true,
                 UseShellExecute = false,
                 WorkingDirectory = Path.Combine(sourceDirectory, "Src", "LocalizationTool"),
                 Arguments = "output/LocalizationTool.exe -t=ios -m=\"../Mobile/Common/Localization/Master.resx\" -d=\"../Mobile/iOS/en.lproj/Localizable.strings\" -s=\"../Mobile/Common/Settings/Settings.json\""
@@ -380,14 +385,15 @@ namespace MK.DeploymentService.Mobile
             
             using (var exeProcess = Process.Start(localizationToolRun))
             {
-                exeProcess.WaitForExit();
+				var outputiOS = ProcessEx.GetOutput (exeProcess);
                 if (exeProcess.ExitCode > 0)
                 {
                     throw new Exception("Error during localization tool for iOS");
                 }
+				UpdateJob (outputiOS);
             }
 
-            _logger.DebugFormat("Run Localization tool for iOS Finished");
+			UpdateJob("Run Localization tool for iOS Finished");
 
 		}
 

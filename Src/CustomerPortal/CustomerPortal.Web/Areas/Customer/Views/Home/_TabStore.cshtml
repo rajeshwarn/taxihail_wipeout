@@ -39,12 +39,16 @@
     {
         <dl>
             <dt>Google Map for Work API Fingerprint</dt>
-            @if (!Model.CompanySettings.FirstOrDefault(s => s.Key == "Package").Value.HasValue())
+            @{
+                var packageSetting = Model.CompanySettings.FirstOrDefault(s => s.Key == "Package");
+                var packageName = packageSetting != null ? packageSetting.Value : string.Empty;
+            }
+            @if (!packageName.HasValue())
             {
                 <dd>Warning: Package name setting does not exist. It is required for fingerprint generation.</dd>
             }
             
-            <dd>@Model.GooglePlayCredentials.KeystoreSHA1Signature;@Model.CompanySettings.FirstOrDefault(s => s.Key == "Package").Value</dd>
+            <dd>@Model.GooglePlayCredentials.KeystoreSHA1Signature;@packageName</dd>
             <br />
             @using (Html.BeginForm("GenerateApiKey", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
             {
