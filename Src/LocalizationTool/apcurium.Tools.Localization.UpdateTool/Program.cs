@@ -98,6 +98,7 @@ namespace apcurium.Tools.Localization.UpdateTool
             {
                 Console.Write("error: ");
                 Console.WriteLine(exception.ToString());
+				throw;
             }
         }
 
