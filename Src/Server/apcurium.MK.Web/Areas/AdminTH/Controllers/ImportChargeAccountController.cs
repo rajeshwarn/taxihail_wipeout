@@ -75,7 +75,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
             chargeAccounNumbers.ForEach(ibsChargeAccount =>
             {
                 var questions =
-                    chargeAccountsToImport.Where(x => x.AccountNumber == ibsChargeAccount).SelectMany(x => x.Prompts);
+                    chargeAccountsToImport.Where(x => x.AccountNumber == ibsChargeAccount).SelectMany(x => x.Prompts.Where(p=>!string.IsNullOrWhiteSpace(p.Caption ) ));
                 var taxiHailQuestions = new List<AccountChargeQuestion>();
                 var questionIndex = 0;
                 var accountId = Guid.NewGuid();
