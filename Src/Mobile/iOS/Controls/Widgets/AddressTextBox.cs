@@ -190,6 +190,38 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             }
         }
 
+        public override void LayoutSubviews()
+        {
+            base.LayoutSubviews();
+
+            if (IsSelected)
+            {
+                StreetNumberTextView.SizeToFit();
+                StreetNumberTextView.SetHeight(this.Frame.Height).IncrementWidth(10);
+
+                VerticalDivider.Frame = new RectangleF(StreetNumberTextView.Frame.Right, 6, UIHelper.OnePixel, this.Frame.Height - 12);
+                HorizontalDividerTop.Frame = new RectangleF(0, 0, this.Frame.Width, UIHelper.OnePixel);
+                AddressButton.Frame = AddressTextView.Frame = new RectangleF(VerticalDivider.Frame.Right + 6, 0, this.Frame.Width - VerticalDivider.Frame.Right, this.Frame.Height);
+
+                StreetNumberRoundedCornerView.Frame = LoadingWheel.Frame = StreetNumberTextView.Frame;
+
+                if (_isInStreetNumberEditMode)
+                {
+                    StreetNumberTextView.IncrementWidth(50);
+                }
+            }
+            else
+            {
+                var color = IsDestination ? UIColor.FromRGB(255, 0, 0) : UIColor.FromRGB(30, 192, 34);
+
+                AddressButton.Frame = AddressTextView.Frame = new RectangleF(0, 0, this.Frame.Width, this.Frame.Height);
+                AddressTextView.LeftView = new Dot(6, color, -3)
+                {
+                    Frame = new RectangleF(0, 0, VerticalDivider.Frame.Right + 6, this.Frame.Height)
+                };
+            }
+        }
+
         private void Resize()
         {
             AddressTextView.UserInteractionEnabled = IsSelected;
@@ -199,12 +231,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             if (IsSelected)
             {
                 StreetNumberTextView.Hidden = false;
-                StreetNumberTextView.SizeToFit();
-                StreetNumberTextView.SetHeight(this.Frame.Height).IncrementWidth(10);
 
-                VerticalDivider.Frame = new RectangleF(StreetNumberTextView.Frame.Right, 6, UIHelper.OnePixel, this.Frame.Height - 12);
-                HorizontalDividerTop.Frame = new RectangleF(0, 0, this.Frame.Width, UIHelper.OnePixel);
-                AddressButton.Frame = AddressTextView.Frame = new RectangleF(VerticalDivider.Frame.Right + 6, 0, this.Frame.Width - VerticalDivider.Frame.Right, this.Frame.Height);
 
                 AddressTextView.LeftViewMode = UITextFieldViewMode.Never;
 
@@ -221,43 +248,31 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                     StreetNumberRoundedCornerView.Corners = UIRectCorner.TopLeft | UIRectCorner.BottomLeft;
                     HorizontalDividerTop.Hidden = true;
                 }
-
-                StreetNumberRoundedCornerView.Frame = LoadingWheel.Frame = StreetNumberTextView.Frame;
-
-                if (_isInStreetNumberEditMode)
-                {
-                    StreetNumberTextView.IncrementWidth(50);
-                }
             }
             else
             {
                 StreetNumberTextView.Hidden = true;
-                AddressButton.Frame = AddressTextView.Frame = new RectangleF(0, 0, this.Frame.Width, this.Frame.Height);
-                AddressTextView.LeftView = new Dot(6, color, -3)
-                {
-                    Frame = new RectangleF(0, 0, VerticalDivider.Frame.Right + 6, this.Frame.Height)
-                };
+
                 AddressTextView.LeftViewMode = UITextFieldViewMode.Always;
             }
+
+            SetNeedsLayout();
         }
 
         private void SetBehavior()
         {
             //Order is important
             NumberAndAddressTextFieldBehavior.ApplyTo(AddressTextView, StreetNumberTextView, number => 
-                {
-                    if (AddressUpdated != null)
-                    {
-                        AddressUpdated(number);
-                    }
-                });
-
-            StreetNumberTextView.TapAnywhereToClose(()=>this.Superview.Superview.Superview);
-
-            StreetNumberTextView.EditingChanged += (sender, e) => 
             {
-                Resize();
-            };
+                if (AddressUpdated != null)
+                {
+                    AddressUpdated(number);
+                }
+            });
+
+            StreetNumberTextView.TapAnywhereToClose(() => this.Superview.Superview.Superview);
+
+            StreetNumberTextView.EditingChanged += (sender, e) => { Resize(); };
 
             StreetNumberTextView.EditingDidBegin += (sender, e) => 
             {
