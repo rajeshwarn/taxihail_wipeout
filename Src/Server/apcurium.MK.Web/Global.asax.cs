@@ -13,6 +13,7 @@ using System.Web.Routing;
 using apcurium.MK.Booking.Api.Jobs;
 using apcurium.MK.Booking.Services;
 using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common.IoC;
 using apcurium.MK.Web;
@@ -94,6 +95,8 @@ namespace apcurium.MK.Web
                             ? new Uri(appSettings.ServerData.BaseUrl)
                             : new Uri(Request.Url, VirtualPathUtility.ToAbsolute("~")));
 
+                appSettings.ServerData.Target = ResolveDeploymentTarget(Request.Url.Host);
+
                 _firstRequest = false;
             }
             if (Request.Path.Contains(@"/api/"))
@@ -102,6 +105,25 @@ namespace apcurium.MK.Web
                 watch.Start();
                 HttpContext.Current.Items.Add("RequestLoggingWatch", watch);
             }
+        }
+
+        private DeploymentTargets ResolveDeploymentTarget(string host)
+        {
+            if (host.Contains("localhost", StringComparison.InvariantCultureIgnoreCase))
+            {
+                return DeploymentTargets.Local;
+            }
+            if (host.Contains("test", StringComparison.InvariantCultureIgnoreCase))
+            {
+                return DeploymentTargets.Staging;
+            }
+            if (host.Contains("services") || host.Contains("api"))
+            {
+                return DeploymentTargets.Production;
+            }
+
+            // Default
+            return DeploymentTargets.Staging;
         }
 
         protected void Application_EndRequest(object sender, EventArgs e)

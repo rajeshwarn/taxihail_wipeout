@@ -9,6 +9,7 @@ using System.Net;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
+using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Api.Jobs;
@@ -196,23 +197,36 @@ namespace apcurium.MK.Booking.Api.Services
             if (!request.Market.HasValue())
             {
                 var rule = _ruleCalculator.GetActiveDisableFor(
-                isFutureBooking,
-                pickupDate,
-                    () => _ibsServiceProvider.StaticData(bestAvailableCompany.CompanyKey, request.Market).GetZoneByCoordinate(
-                        request.Settings.ProviderId,
-                        request.PickupAddress.Latitude,
-                        request.PickupAddress.Longitude),
-                () => request.DropOffAddress != null
-                        ? _ibsServiceProvider.StaticData(bestAvailableCompany.CompanyKey, request.Market).GetZoneByCoordinate(
-                            request.Settings.ProviderId,
-                            request.DropOffAddress.Latitude,
-                            request.DropOffAddress.Longitude)
+                    isFutureBooking,
+                    pickupDate,
+                    () =>
+                        _ibsServiceProvider.StaticData(bestAvailableCompany.CompanyKey, request.Market)
+                            .GetZoneByCoordinate(
+                                request.Settings.ProviderId,
+                                request.PickupAddress.Latitude,
+                                request.PickupAddress.Longitude),
+                    () => request.DropOffAddress != null
+                        ? _ibsServiceProvider.StaticData(bestAvailableCompany.CompanyKey, request.Market)
+                            .GetZoneByCoordinate(
+                                request.Settings.ProviderId,
+                                request.DropOffAddress.Latitude,
+                                request.DropOffAddress.Longitude)
                         : null);
 
                 if (rule != null)
                 {
-                    var err = new HttpError(HttpStatusCode.Forbidden, ErrorCode.CreateOrder_RuleDisable.ToString(), rule.Message);
-                    throw err;
+                    throw new HttpError(HttpStatusCode.Forbidden, ErrorCode.CreateOrder_RuleDisable.ToString(), rule.Message);
+                }
+            }
+            else
+            {
+                // External market, query company site directly to validate their rules
+                var orderServiceClient = new RoamingValidationServiceClient(bestAvailableCompany.CompanyKey, _serverSettings.ServerData.Target);
+                
+                var validationResult = orderServiceClient.ValidateOrder(request, true);
+                if (validationResult.HasError)
+                {
+                    throw new HttpError(HttpStatusCode.Forbidden, ErrorCode.CreateOrder_RuleDisable.ToString(), validationResult.Message);
                 }
             }
 
