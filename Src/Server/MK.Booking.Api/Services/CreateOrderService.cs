@@ -258,8 +258,6 @@ namespace apcurium.MK.Booking.Api.Services
             ValidateProvider(request, referenceData);
 
             var applyPromoCommand = ValidateAndApplyPromotion(request.PromoCode, request.Settings.ChargeTypeId, account.Id, request.Id, pickupDate, isFutureBooking, request.ClientLanguageCode);
-            applyPromoCommand.RetryCount = 3;
-            applyPromoCommand.RetryInterval = TimeSpan.FromSeconds(0.5);
             
             // Get Vehicle Type from reference data
             var vehicleType = referenceData.VehiclesList
