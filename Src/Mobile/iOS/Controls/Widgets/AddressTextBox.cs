@@ -196,12 +196,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
             if (IsSelected)
             {
+                StreetNumberTextView.Hidden = false;
                 StreetNumberTextView.SizeToFit();
                 StreetNumberTextView.SetHeight(this.Frame.Height).IncrementWidth(10);
 
                 VerticalDivider.Frame = new RectangleF(StreetNumberTextView.Frame.Right, 6, UIHelper.OnePixel, this.Frame.Height - 12);
                 HorizontalDividerTop.Frame = new RectangleF(0, 0, this.Frame.Width, UIHelper.OnePixel);
                 AddressButton.Frame = AddressTextView.Frame = new RectangleF(VerticalDivider.Frame.Right + 6, 0, this.Frame.Width - VerticalDivider.Frame.Right, this.Frame.Height);
+
+                AddressTextView.LeftViewMode = UITextFieldViewMode.Never;
 
                 StreetNumberRoundedCornerView.Frame = LoadingWheel.Frame = StreetNumberTextView.Frame;
 
@@ -214,11 +217,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             {
                 var color = IsDestination ? UIColor.FromRGB(255, 0, 0) : UIColor.FromRGB(30, 192, 34);
 
+                StreetNumberTextView.Hidden = true;
+
                 AddressButton.Frame = AddressTextView.Frame = new RectangleF(0, 0, this.Frame.Width, this.Frame.Height);
+
+                AddressTextView.SetPadding(VerticalDivider.Frame.Right + 6, 0);
                 AddressTextView.LeftView = new Dot(6, color, -3)
-                {
+                { 
                     Frame = new RectangleF(0, 0, VerticalDivider.Frame.Right + 6, this.Frame.Height)
                 };
+                AddressTextView.LeftViewMode = UITextFieldViewMode.Always;
             }
         }
 
@@ -230,11 +238,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
             if (IsSelected)
             {
-                StreetNumberTextView.Hidden = false;
-
-
-                AddressTextView.LeftViewMode = UITextFieldViewMode.Never;
-
                 StreetNumberRoundedCornerView.BackColor = color;
                 StreetNumberRoundedCornerView.StrokeLineColor = color;
 
@@ -248,12 +251,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                     StreetNumberRoundedCornerView.Corners = UIRectCorner.TopLeft | UIRectCorner.BottomLeft;
                     HorizontalDividerTop.Hidden = true;
                 }
-            }
-            else
-            {
-                StreetNumberTextView.Hidden = true;
-
-                AddressTextView.LeftViewMode = UITextFieldViewMode.Always;
             }
 
             SetNeedsLayout();

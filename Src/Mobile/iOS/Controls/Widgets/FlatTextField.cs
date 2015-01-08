@@ -164,8 +164,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         {
             base.LayoutSubviews();
 
-            LeftView.Frame = new RectangleF(0f, 0f, LeftPadding, 1f);
-            RightView.Frame = new RectangleF(Frame.Right - RightPadding, 0f, RightPadding, 1f);
+            LeftView.Frame = new RectangleF(0f, 0f, LeftPadding, this.Frame.Height);
+            RightView.Frame = new RectangleF(Frame.Right - RightPadding, 0f, RightPadding, this.Frame.Height);
 
             if (HasRightArrow)
             {
