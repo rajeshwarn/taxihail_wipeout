@@ -24,7 +24,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			UITextField textField;
 			if (UIHelper.IsOS7orHigher)
 			{
-                textField  = base.CreateTextField(frame.SetX(Padding).SetWidth(320 - 2*8 - 2*Padding)); // 320 - margin - padding
+                textField  = base.CreateTextField(frame.SetX(Padding).SetWidth(398 - 2*8 - 2*Padding)); // 320 - margin - padding
 				textField.TintColor = UIColor.Black; // cursor color
 			}
 			else

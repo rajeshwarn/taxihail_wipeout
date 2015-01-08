@@ -117,6 +117,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			tableView.BackgroundColor = UIColor.Clear;
             tableView.AddSubview(new TaxiHailDialogViewController (root, true).TableView);
 		}
+
+        public override void ViewDidLayoutSubviews()
+        {
+            base.ViewDidLayoutSubviews();
+
+            tableView.Subviews[0].Frame = new System.Drawing.RectangleF(tableView.Subviews[0].Frame.X, tableView.Subviews[0].Frame.Y, tableView.Frame.Width, tableView.Subviews[0].Frame.Height);
+        }
     }
 }
 
