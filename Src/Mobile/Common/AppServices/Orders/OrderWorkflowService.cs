@@ -226,7 +226,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			    string message;
 			    var error = e.ResponseBody.FromJson<ErrorResponse>();
 
-			    if (e.StatusCode == (int)HttpStatusCode.Forbidden && error.ResponseStatus != null)
+			    if (e.StatusCode == (int)HttpStatusCode.BadRequest && error.ResponseStatus != null)
 			    {
                     message = e.ErrorCode == "CreateOrder_PendingOrder" ? e.ErrorCode : error.ResponseStatus.Message;
 

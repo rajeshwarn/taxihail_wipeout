@@ -123,7 +123,7 @@ namespace apcurium.MK.Booking.Api.Services
             if (request.Market.HasValue() && bestAvailableCompany.CompanyKey == null)
             {
                 // No companies available that are desserving this region for the company
-                throw new HttpError(HttpStatusCode.Forbidden, ErrorCode.CreateOrder_RuleDisable.ToString(),
+                throw new HttpError(HttpStatusCode.BadRequest, ErrorCode.CreateOrder_RuleDisable.ToString(),
                             _resources.Get("CannotCreateOrder_NoCompanies", request.ClientLanguageCode));
             }
 
@@ -144,7 +144,7 @@ namespace apcurium.MK.Booking.Api.Services
                     && pendingOrderId != null
                     && !request.FromWebApp)
                 {
-                    throw new HttpError(HttpStatusCode.Forbidden, ErrorCode.CreateOrder_PendingOrder.ToString(), pendingOrderId.ToString());
+                    throw new HttpError(HttpStatusCode.BadRequest, ErrorCode.CreateOrder_PendingOrder.ToString(), pendingOrderId.ToString());
                 }
             }
 
@@ -175,7 +175,7 @@ namespace apcurium.MK.Booking.Api.Services
                     if (request.FromWebApp || request.Market.HasValue())
                     {
                         // Card on file payment not supported by the web app and when not in home market
-                        throw new HttpError(HttpStatusCode.Forbidden, ErrorCode.CreateOrder_RuleDisable.ToString(),
+                        throw new HttpError(HttpStatusCode.BadRequest, ErrorCode.CreateOrder_RuleDisable.ToString(),
                             _resources.Get("CannotCreateOrderChargeAccountNotSupported", request.ClientLanguageCode));
                     }
 
@@ -211,7 +211,7 @@ namespace apcurium.MK.Booking.Api.Services
 
                 if (rule != null)
                 {
-                    throw new HttpError(HttpStatusCode.Forbidden, ErrorCode.CreateOrder_RuleDisable.ToString(), rule.Message);
+                    throw new HttpError(HttpStatusCode.BadRequest, ErrorCode.CreateOrder_RuleDisable.ToString(), rule.Message);
                 }
             }
 
@@ -240,7 +240,7 @@ namespace apcurium.MK.Booking.Api.Services
             if (_serverSettings.ServerData.Direction.NeedAValidTarif
                 && (!request.Estimate.Price.HasValue || request.Estimate.Price == 0))
             {
-                throw new HttpError(HttpStatusCode.Forbidden,
+                throw new HttpError(HttpStatusCode.BadRequest,
                     ErrorCode.CreateOrder_NoFareEstimateAvailable.ToString(),
                     GetCreateOrderServiceErrorMessage(ErrorCode.CreateOrder_NoFareEstimateAvailable, request.ClientLanguageCode));
             }
@@ -345,7 +345,7 @@ namespace apcurium.MK.Booking.Api.Services
                 !request.Market.HasValue() &&
                 referenceData.CompaniesList.None(c => c.Id == request.Settings.ProviderId.Value))
             {
-                throw new HttpError(HttpStatusCode.Forbidden,
+                throw new HttpError(HttpStatusCode.BadRequest,
                     ErrorCode.CreateOrder_InvalidProvider.ToString(), 
                     GetCreateOrderServiceErrorMessage(ErrorCode.CreateOrder_InvalidProvider, request.ClientLanguageCode));
             }
@@ -499,7 +499,7 @@ namespace apcurium.MK.Booking.Api.Services
             // check if the account has a credit card
             if (!account.DefaultCreditCard.HasValue)
             {
-                throw new HttpError(HttpStatusCode.Forbidden,
+                throw new HttpError(HttpStatusCode.BadRequest,
                     ErrorCode.CreateOrder_CardOnFileButNoCreditCard.ToString(),
                     GetCreateOrderServiceErrorMessage(ErrorCode.CreateOrder_CardOnFileButNoCreditCard, clientLanguageCode));
             }
@@ -514,7 +514,7 @@ namespace apcurium.MK.Booking.Api.Services
             
             if (!preAuthResponse.IsSuccessful)
             {
-                throw new HttpError(HttpStatusCode.Forbidden, ErrorCode.CreateOrder_RuleDisable.ToString(),
+                throw new HttpError(HttpStatusCode.BadRequest, ErrorCode.CreateOrder_RuleDisable.ToString(),
                     _resources.Get("CannotCreateOrder_CreditCardWasDeclined", clientLanguageCode));
             }
         }
@@ -539,7 +539,7 @@ namespace apcurium.MK.Booking.Api.Services
 
                 if (appVersionItem < minimumVersionItem)
                 {
-                    throw new HttpError(HttpStatusCode.Forbidden, ErrorCode.CreateOrder_RuleDisable.ToString(),
+                    throw new HttpError(HttpStatusCode.BadRequest, ErrorCode.CreateOrder_RuleDisable.ToString(),
                                         _resources.Get("CannotCreateOrderInvalidVersion", clientLanguage));
                 }
             }
@@ -550,7 +550,7 @@ namespace apcurium.MK.Booking.Api.Services
             var accountChargeDetail = _accountChargeDao.FindByAccountNumber(accountNumber);
             if (accountChargeDetail == null)
             {
-                throw new HttpError(HttpStatusCode.Forbidden,
+                throw new HttpError(HttpStatusCode.BadRequest,
                     ErrorCode.AccountCharge_InvalidAccountNumber.ToString(),
                     GetCreateOrderServiceErrorMessage(ErrorCode.AccountCharge_InvalidAccountNumber, clientLanguageCode));
             }
@@ -563,11 +563,11 @@ namespace apcurium.MK.Booking.Api.Services
                 if (validation.ValidResponse != null)
                 {
                     int firstError = validation.ValidResponse.IndexOf(false);
-                    throw new HttpError(HttpStatusCode.Forbidden, ErrorCode.AccountCharge_InvalidAnswer.ToString(),
+                    throw new HttpError(HttpStatusCode.BadRequest, ErrorCode.AccountCharge_InvalidAnswer.ToString(),
                                             accountChargeDetail.Questions[firstError].ErrorMessage);
                 }
 
-                throw new HttpError(HttpStatusCode.Forbidden, ErrorCode.AccountCharge_InvalidAccountNumber.ToString(), validation.Message);
+                throw new HttpError(HttpStatusCode.BadRequest, ErrorCode.AccountCharge_InvalidAccountNumber.ToString(), validation.Message);
             }
         }
 
@@ -828,14 +828,14 @@ namespace apcurium.MK.Booking.Api.Services
             if (chargeTypeId != ChargeTypes.CardOnFile.Id)
             {
                 // Should never happen since we will check client-side if there's a promocode and not paying with CoF
-                throw new HttpError(HttpStatusCode.Forbidden, ErrorCode.CreateOrder_RuleDisable.ToString(),
+                throw new HttpError(HttpStatusCode.BadRequest, ErrorCode.CreateOrder_RuleDisable.ToString(),
                     _resources.Get("CannotCreateOrder_PromotionMustUseCardOnFile", clientLanguageCode));
             }
 
             var promo = _promotionDao.FindByPromoCode(promoCode);
             if (promo == null)
             {
-                throw new HttpError(HttpStatusCode.Forbidden, ErrorCode.CreateOrder_RuleDisable.ToString(),
+                throw new HttpError(HttpStatusCode.BadRequest, ErrorCode.CreateOrder_RuleDisable.ToString(),
                     _resources.Get("CannotCreateOrder_PromotionDoesNotExist", clientLanguageCode));
             }
 
@@ -843,7 +843,7 @@ namespace apcurium.MK.Booking.Api.Services
             string errorMessage;
             if (!promoDomainObject.CanApply(accountId, pickupDate, isFutureBooking, out errorMessage))
             {
-                throw new HttpError(HttpStatusCode.Forbidden, ErrorCode.CreateOrder_RuleDisable.ToString(),
+                throw new HttpError(HttpStatusCode.BadRequest, ErrorCode.CreateOrder_RuleDisable.ToString(),
                     _resources.Get(errorMessage, clientLanguageCode));
             }
 
