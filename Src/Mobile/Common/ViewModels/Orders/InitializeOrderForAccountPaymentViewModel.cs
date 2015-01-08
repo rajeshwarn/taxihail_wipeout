@@ -96,7 +96,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 						}
 						else
 						{
-							this.Services().Message.ShowMessage(title, e.MessageNoCall);
+							this.Services().Message.ShowMessage(title, e.Message);
 						}
 					}
 					catch(Exception e)

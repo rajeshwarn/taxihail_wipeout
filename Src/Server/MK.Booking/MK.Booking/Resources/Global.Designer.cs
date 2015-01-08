@@ -250,7 +250,7 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to We apologize, we are full, we do not accept reservations in advance for this time slot..
+        ///   Looks up a localized string similar to We apologize but unfortunately we do not have any reservations available for that time period..
         /// </summary>
         public static string CreateOrder_CannotCreateInIbs_1300 {
             get {
@@ -1137,6 +1137,159 @@ namespace apcurium.MK.Booking.Resources {
         public static string PushNotification_wosTIMEOUT {
             get {
                 return ResourceManager.GetString("PushNotification_wosTIMEOUT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please contact {0} at {1} for further assistance..
+        /// </summary>
+        public static string ServiceError_ErrorCreatingOrderMessage {
+            get {
+                return ResourceManager.GetString("ServiceError_ErrorCreatingOrderMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The order cannot be created..
+        /// </summary>
+        public static string ServiceError_ErrorCreatingOrderMessage_NoCall {
+            get {
+                return ResourceManager.GetString("ServiceError_ErrorCreatingOrderMessage_NoCall", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid account number.
+        /// </summary>
+        public static string ServiceErrorAccountCharge_InvalidAccountNumber {
+            get {
+                return ResourceManager.GetString("ServiceErrorAccountCharge_InvalidAccountNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Message.
+        /// </summary>
+        public static string ServiceErrorCallTitle {
+            get {
+                return ResourceManager.GetString("ServiceErrorCallTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This email is already in use..
+        /// </summary>
+        public static string ServiceErrorCreateAccount_AccountAlreadyExist {
+            get {
+                return ResourceManager.GetString("ServiceErrorCreateAccount_AccountAlreadyExist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The confirmation code is incorrect..
+        /// </summary>
+        public static string ServiceErrorCreateAccount_InvalidConfirmationToken {
+            get {
+                return ResourceManager.GetString("ServiceErrorCreateAccount_InvalidConfirmationToken", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No Credit Card On File..
+        /// </summary>
+        public static string ServiceErrorCreateOrder_CardOnFileButNoCreditCard {
+            get {
+                return ResourceManager.GetString("ServiceErrorCreateOrder_CardOnFileButNoCreditCard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Order cannot be created, invalid provider. Please contact {0} at {1} for further assistance..
+        /// </summary>
+        public static string ServiceErrorCreateOrder_InvalidProvider {
+            get {
+                return ResourceManager.GetString("ServiceErrorCreateOrder_InvalidProvider", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Order cannot be created, invalid provider..
+        /// </summary>
+        public static string ServiceErrorCreateOrder_InvalidProvider_NoCall {
+            get {
+                return ResourceManager.GetString("ServiceErrorCreateOrder_InvalidProvider_NoCall", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No fare estimate available for the ride. Please contact {0} at {1} for further assistance..
+        /// </summary>
+        public static string ServiceErrorCreateOrder_NoFareEstimateAvailable {
+            get {
+                return ResourceManager.GetString("ServiceErrorCreateOrder_NoFareEstimateAvailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No fare estimate available for the ride..
+        /// </summary>
+        public static string ServiceErrorCreateOrder_NoFareEstimateAvailable_NoCall {
+            get {
+                return ResourceManager.GetString("ServiceErrorCreateOrder_NoFareEstimateAvailable_NoCall", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Order cannot be created, no provider specified. Please try again or call us..
+        /// </summary>
+        public static string ServiceErrorCreateOrder_NoProvider {
+            get {
+                return ResourceManager.GetString("ServiceErrorCreateOrder_NoProvider", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Order cannot be created, invalid vehicle type. Please try again or call us..
+        /// </summary>
+        public static string ServiceErrorCreateOrder_VehiculeType {
+            get {
+                return ResourceManager.GetString("ServiceErrorCreateOrder_VehiculeType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to An error occurred. Please try again..
+        /// </summary>
+        public static string ServiceErrorDefaultMessage {
+            get {
+                return ResourceManager.GetString("ServiceErrorDefaultMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No account with this email has been found..
+        /// </summary>
+        public static string ServiceErrorResetPassword_AccountNotFound {
+            get {
+                return ResourceManager.GetString("ServiceErrorResetPassword_AccountNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Your session has expired, please login to continue..
+        /// </summary>
+        public static string ServiceErrorUnauthorized {
+            get {
+                return ResourceManager.GetString("ServiceErrorUnauthorized", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The current password is not valid..
+        /// </summary>
+        public static string ServiceErrorUpdatePassword_NotSame {
+            get {
+                return ResourceManager.GetString("ServiceErrorUpdatePassword_NotSame", resourceCulture);
             }
         }
         
