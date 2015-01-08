@@ -57,27 +57,35 @@ namespace apcurium.MK.Booking.Mobile
 				await Mvx.Resolve<IAccountService>().GetNotificationSettings(true, true);
 				await Mvx.Resolve<IPaymentService>().GetPaymentSettings(true);
                 await Mvx.Resolve<IAccountService>().GetUserTaxiHailNetworkSettings(true);
-                
-				var orderStatus = await Mvx.Resolve<IBookingService>().GetOrderStatusAsync (orderId);
-				var order = await Mvx.Resolve<IAccountService>().GetHistoryOrderAsync(orderId);
 
-				if (order != null && orderStatus != null) 
+                try
                 {
-                    if (isPairingNotification)
+                    var orderStatus = await Mvx.Resolve<IBookingService>().GetOrderStatusAsync(orderId);
+                    var order = await Mvx.Resolve<IAccountService>().GetHistoryOrderAsync(orderId);
+
+                    if (order != null && orderStatus != null)
                     {
-                        ShowViewModel<ConfirmPairViewModel>(new
+                        if (isPairingNotification)
                         {
-                            order = order.ToJson(),
-                            orderStatus = orderStatus.ToJson()
-                        }.ToStringDictionary());
+                            ShowViewModel<ConfirmPairViewModel>(new
+                            {
+                                order = order.ToJson(),
+                                orderStatus = orderStatus.ToJson()
+                            }.ToStringDictionary());
+                        }
+                        else
+                        {
+                            ShowViewModel<BookingStatusViewModel>(new Dictionary<string, string> {
+						        {"order", order.ToJson()},
+                                {"orderStatus", orderStatus.ToJson()}
+                            });
+                        }
                     }
-                    else
-                    {
-                        ShowViewModel<BookingStatusViewModel>(new Dictionary<string, string> {
-						    {"order", order.ToJson()},
-                            {"orderStatus", orderStatus.ToJson()},
-                        });
-                    }
+
+                }
+                catch(Exception)
+                {
+                    ShowViewModel<HomeViewModel>(new { locateUser = true });
                 }
             }
             else
