@@ -10,8 +10,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
 {
     public static class LoadingBar
     {
-        static LoadingBarView _loadingBar;
-        static IDisposable _subscription;
+        private static LoadingBarView _loadingBar;
+        private static IDisposable _subscription;
 
         private static float Top { get; set; }
         public static bool IsShown { get; set; }
@@ -33,14 +33,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
                 }
                 else 
                 {
-                    _loadingBar = new LoadingBarView(0, Top, (int)UIApplication.SharedApplication.KeyWindow.Frame.Width, 2);
+                    _loadingBar = new LoadingBarView(0, Top, (int)UIScreen.MainScreen.Bounds.Width, 2);
                 }
 
                 _loadingBar.RemoveFromSuperview();
                 UIApplication.SharedApplication.KeyWindow.AddSubview(_loadingBar);
             });
 
-            if(hideOnFirstTrue == null) return;
+            if (hideOnFirstTrue == null)
+            {
+                return;
+            }
 
             _subscription = hideOnFirstTrue.Subscribe(hide =>
             {
@@ -55,17 +58,20 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
 
         public static void Hide ()
         {
-            if(_loadingBar == null) return;
+            if (_loadingBar == null)
+            {
+                return;
+            }
 
             //this should put the whole line blue, but it doesn't appear because the view gets disposed too fast
             _loadingBar.BackgroundColor = UIColor.Blue;
 
-            UIApplication.SharedApplication.InvokeOnMainThread(()=>
-            {
-                _loadingBar.RemoveFromSuperviewAnimated(()=>_loadingBar = null);
-            });
+            UIApplication.SharedApplication.InvokeOnMainThread(() => _loadingBar.RemoveFromSuperviewAnimated(() => _loadingBar = null));
 
-            if (_subscription == null) return;
+            if (_subscription == null)
+            {
+                return;
+            }
 
             _subscription.Dispose();
             IsShown = false;
@@ -73,7 +79,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
 
         public class LoadingBarView : UIView
         {
-            LoadingAnimation loader;
+            private LoadingAnimation loader;
+
             public LoadingBarView (float x = 0, float y = 75, int width = 320, int height = 6, UIColor baseColor = null)
             {
                 loader = new LoadingAnimation(width, height, baseColor);
@@ -137,10 +144,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
 
             private class LoadingAnimation : UIView
             {
-                RectangleF StartingRect {
-                    get;
-                    set;
-                }
+                RectangleF StartingRect { get; set; }
 
                 public void ResetFrame ()
                 {
@@ -151,7 +155,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
                 {
                     StartingRect = new RectangleF (0 - width, 0, width, height);
 
-                    if (baseColor == null) {
+                    if (baseColor == null) 
+                    {
                         baseColor = UIColor.Blue;
                     }
 

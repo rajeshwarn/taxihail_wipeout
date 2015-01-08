@@ -233,7 +233,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         private static UIView CreateAccessoryViewWithCloseButton(Action<object, EventArgs> onClose)
         {
-            var accessoryView = new UIView { Frame = new RectangleF(0, 0, 320, 44), BackgroundColor = UIColor.FromRGB(251, 253, 253) };
+            var accessoryView = new UIView { Frame = new RectangleF(0, 0, UIScreen.MainScreen.Bounds.Width, 44), BackgroundColor = UIColor.FromRGB(251, 253, 253) };
 
             var closeButton = new FlatButton();
             var closeButtonText = Localize.GetValue ("OkButtonText");
