@@ -24,7 +24,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			UITextField textField;
 			if (UIHelper.IsOS7orHigher)
 			{
-                textField  = base.CreateTextField(frame.SetX(Padding).SetWidth(398 - 2*8 - 2*Padding)); // 320 - margin - padding
+                textField  = base.CreateTextField(frame.SetX(Padding).SetWidth(UIScreen.MainScreen.Bounds.Width - 2*8 - 2*Padding)); // screenwidth - margin - padding
 				textField.TintColor = UIColor.Black; // cursor color
 			}
 			else
@@ -39,10 +39,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			this.AutocorrectionType = UITextAutocorrectionType.No;
 
 
-			if (_isPassword) {
+			if (_isPassword) 
+            {
 				this.AutocapitalizationType = UITextAutocapitalizationType.None;
 			}
-			else {
+			else 
+            {
 				this.AutocapitalizationType = _autocapitalizationType;
 			}
 

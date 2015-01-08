@@ -10,9 +10,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
     public class TaxiHailDialogViewController : DialogViewController
     {
-        private bool _willBeContainedInOtherView;
+        private readonly bool _willBeContainedInOtherView;
 
-        public TaxiHailDialogViewController(RootElement _rootElement, bool pushing, bool willBeContainedInOtherView = true) : base (_rootElement, pushing)
+        public TaxiHailDialogViewController(RootElement rootElement, bool pushing, bool willBeContainedInOtherView = true) : base (rootElement, pushing)
         {
             _willBeContainedInOtherView = willBeContainedInOtherView;
 
@@ -40,7 +40,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         }
     }
 
-    public class TaxiHailDialogSource : CrossUI.Touch.Dialog.DialogViewController.Source
+    public class TaxiHailDialogSource : DialogViewController.Source
     {
         private bool _willBeContainedInOtherView;
 
@@ -78,7 +78,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
             if (_willBeContainedInOtherView)
             {
-                var cellWidth = 304;
+                var cellWidth = UIScreen.MainScreen.Bounds.Width - 2*8;
                 cell.Frame  = cell.ContentView.Frame.SetWidth(cellWidth);
                 cell.ContentView.Frame = cell.ContentView.Frame.SetWidth(cellWidth);
 
@@ -125,7 +125,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             }
             else
             {
-                var cellWidth = 320;
+                var cellWidth = UIScreen.MainScreen.Bounds.Width;
                 cell.Frame  = cell.ContentView.Frame.SetWidth(cellWidth);
                 cell.ContentView.Frame = cell.ContentView.Frame.SetWidth(cellWidth);
                 cell.SelectedBackgroundView = new UIView(cell.Frame) { BackgroundColor = UIColor.FromRGB(190, 190, 190) };
