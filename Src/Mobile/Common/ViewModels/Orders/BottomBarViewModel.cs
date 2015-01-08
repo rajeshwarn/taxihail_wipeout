@@ -267,9 +267,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
                             case "CreateOrder_PendingOrder":
                                 {
                                     Guid pendingOrderId;
-                                    Guid.TryParse(e.MessageNoCall, out pendingOrderId);
+                                    Guid.TryParse(e.Parameter, out pendingOrderId);
 
-								this.Services().Message.ShowMessage(title, this.Services().Localize["ServiceError" + e.Message],
+								this.Services().Message.ShowMessage(title, this.Services().Localize["Error" + e.Message],
 									this.Services().Localize["View"], async () =>
 									{
 										var orderInfos = await GetOrderInfos(pendingOrderId);
@@ -290,7 +290,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
                                     }
                                     else
                                     {
-                                        this.Services().Message.ShowMessage(title, e.MessageNoCall);
+                                        this.Services().Message.ShowMessage(title, e.Message);
                                     }
                                 }
                                 break;

@@ -30,6 +30,7 @@
     "CreateOrder_NoProvider": "Bad Provider",
     "CreateOrder_InvalidProvider": "Invalid Provider",
     "CreateOrder_VehicleType": "Vehicle Type Invalid",
+    "CreateOrder_PendingOrder": "You cannot book this ride since an order is already pending. View the order status?",
     "OrderNotInIbs": "Unkown Order",
     "NearbyPlaces_LocationRequired": "Location required",
     "Search_Locations_NameRequired": "Name required",

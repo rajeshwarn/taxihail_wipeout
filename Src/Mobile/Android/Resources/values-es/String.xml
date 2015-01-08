@@ -559,4 +559,5 @@
   <string name="PromoProgress">Progress :</string>
   <string name="Notification_PromotionUnlockedEmail">Promotions unlocked (Email)</string>
   <string name="Notification_PromotionUnlockedPush">Promotions unlocked (Push)</string>
+  <string name="ErrorCreateOrder_PendingOrder">No puede reservar este servicio, ya que hay una reservación pendiente. ¿Desea ver esta reservación?</string>
 </resources>
