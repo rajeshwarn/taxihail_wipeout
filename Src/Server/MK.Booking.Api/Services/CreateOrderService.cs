@@ -223,7 +223,7 @@ namespace apcurium.MK.Booking.Api.Services
                 var validationResult = orderServiceClient.ValidateOrder(request, true);
                 if (validationResult.HasError)
                 {
-                    throw new HttpError(HttpStatusCode.Forbidden, ErrorCode.CreateOrder_RuleDisable.ToString(), validationResult.Message);
+                    throw new HttpError(HttpStatusCode.BadRequest, ErrorCode.CreateOrder_RuleDisable.ToString(), validationResult.Message);
                 }
             }
 

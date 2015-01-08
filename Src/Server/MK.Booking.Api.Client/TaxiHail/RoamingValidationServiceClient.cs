@@ -21,10 +21,18 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 
         public OrderValidationResult ValidateOrder(CreateOrder order, bool forError = false)
         {
-            var req = string.Format("api/account/orders/validate/" + forError);
-            return _client.Post(req, order)
-                    .Deserialize<OrderValidationResult>()
-                    .Result;
+            try
+            {
+                var req = string.Format("api/account/orders/validate/" + forError);
+                return _client.Post(req, order)
+                        .Deserialize<OrderValidationResult>()
+                        .Result;
+            }
+            catch(Exception)
+            {
+                // Error while contacting external rule server. Don't validate rules.
+                return new OrderValidationResult { HasError = false };
+            }
         }
 
         private string GetUrl(string applicationKey, DeploymentTargets target)
