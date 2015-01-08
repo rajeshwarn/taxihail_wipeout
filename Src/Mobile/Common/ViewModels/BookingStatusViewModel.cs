@@ -364,7 +364,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				var statusInfoText = status.IBSStatusDescription;
 
 				if(Settings.ShowEta 
-					&& status.IBSStatusId.Equals(VehicleStatuses.Common.Assigned) 
+					&& status.IBSStatusId.SoftEqual(VehicleStatuses.Common.Assigned) 
 					&& status.VehicleNumber.HasValue()
 					&& status.VehicleLatitude.HasValue
 					&& status.VehicleLongitude.HasValue)

@@ -1,6 +1,7 @@
 using System;
 using System.Globalization;
 using System.Linq;
+using System.Net;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.Reactive.Threading.Tasks;
@@ -222,61 +223,23 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			}
 			catch(WebServiceException e)
 			{
-				var message = "";
-				var messageNoCall = "";
+			    string message;
+			    var error = e.ResponseBody.FromJson<ErrorResponse>();
 
-				switch (e.ErrorCode)
-				{
-					case "CreateOrder_PendingOrder":
-						// Quick workaround for a bug in service stack where the response is not properly deserialized
-						var cancelOrderError = e.ResponseBody.FromJson<ErrorResponse> ();
-						if (cancelOrderError.ResponseStatus != null) {
-							string pendingOrderId = cancelOrderError.ResponseStatus.Message;
-							throw new OrderCreationException (e.ErrorCode, pendingOrderId);
-						} 
-						else 
-						{
-							goto default;
-						}
-					case "CreateOrder_RuleDisable":
-						// Exception message comes from Rules admin tool, already localized
-						// Quick workaround for a bug in service stack where the response is not properly deserialized
-						var error = e.ResponseBody.FromJson<ErrorResponse>();
-						if (error.ResponseStatus != null)
-						{
-							throw new OrderCreationException(error.ResponseStatus.Message, error.ResponseStatus.Message);
-						}
-						else
-						{
-							goto default;
-						}
-                    case "AccountCharge_InvalidAnswer":
-                        // Exception message comes from Charge account admin, already localized
-                        // Quick workaround for a bug in service stack where the response is not properly deserialized
-                        var invalidAnswerError = e.ResponseBody.FromJson<ErrorResponse>();
-                        if (invalidAnswerError.ResponseStatus != null)
-                        {
-                            throw new OrderCreationException(invalidAnswerError.ResponseStatus.Message, invalidAnswerError.ResponseStatus.Message);
-                        }
-                        else
-                        {
-                            goto default;
-                        }
-					case "CreateOrder_InvalidProvider":
-					case "CreateOrder_NoFareEstimateAvailable":   /* Fare estimate is required and was not submitted */
-					case "CreateOrder_CardOnFileButNoCreditCard": /* Card on file selected but no card */
-                    case "AccountCharge_InvalidAccountNumber":
-						message = string.Format(_localize["ServiceError" + e.ErrorCode], _appSettings.Data.TaxiHail.ApplicationName, _appSettings.Data.DefaultPhoneNumberDisplay);
-						messageNoCall = _localize["ServiceError" + e.ErrorCode + "_NoCall"];
-						throw new OrderCreationException(message, messageNoCall);
-					default:
-						// Unhandled errors
-						// if ibs3000, there's a problem with the account, use a different one
-						message = string.Format(_localize["ServiceError_ErrorCreatingOrderMessage"], _appSettings.Data.TaxiHail.ApplicationName, _appSettings.Data.DefaultPhoneNumberDisplay);
-						messageNoCall = _localize["ServiceError_ErrorCreatingOrderMessage_NoCall"];
-						throw new OrderCreationException(message, messageNoCall);
+			    if (e.StatusCode == (int)HttpStatusCode.BadRequest && error.ResponseStatus != null)
+			    {
+                    message = e.ErrorCode == "CreateOrder_PendingOrder" ? e.ErrorCode : error.ResponseStatus.Message;
 
-				}
+                    throw new OrderCreationException(message, error.ResponseStatus.Message);
+			    }
+
+			    // Unhandled errors
+				// if ibs3000, there's a problem with the account, use a different one
+			    message = _appSettings.Data.HideCallDispatchButton
+                    ? _localize["ServiceError_ErrorCreatingOrderMessage_NoCall"]
+                    : string.Format(_localize["ServiceError_ErrorCreatingOrderMessage"], _appSettings.Data.TaxiHail.ApplicationName, _appSettings.Data.DefaultPhoneNumberDisplay);
+
+				throw new OrderCreationException(message);		
 			}
 		}
 
@@ -771,33 +734,13 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			return order;
 		}
 
-		public async void Rebook(Order previous)
+		public void Rebook(Order previous)
 		{
             _isOrderRebooked = true;
-			/*if (!previous.DropOffAddress.HasValidCoordinate ()) {
-				var isDestinationModeOpened = await _isDestinationModeOpenedSubject.Take(1).ToTask();
-				if (isDestinationModeOpened)
-				{   
-					await ToggleBetweenPickupAndDestinationSelectionMode();
-					await ToggleIsDestinationModeOpened();
-				}
-			}
-			else
-			{
-				var isDestinationModeOpened = await _isDestinationModeOpenedSubject.Take(1).ToTask();
-				if (!isDestinationModeOpened)
-				{   
-					await ToggleBetweenPickupAndDestinationSelectionMode();
-					await ToggleIsDestinationModeOpened();
-				}
-			}*/
-
 			_pickupAddressSubject.OnNext(previous.PickupAddress);
 			_destinationAddressSubject.OnNext(previous.DropOffAddress);
 			_bookingSettingsSubject.OnNext(previous.Settings);
 			_noteToDriverSubject.OnNext(previous.Note);
-
-
 		}
 
         public bool IsOrderRebooked()

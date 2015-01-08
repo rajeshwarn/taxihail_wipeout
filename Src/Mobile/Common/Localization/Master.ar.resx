@@ -1116,51 +1116,6 @@
   <data name="ServerInfo" xml:space="preserve">
     <value>({0} v{1})</value>
   </data>
-  <data name="ServiceErrorCallTitle" xml:space="preserve">
-    <value>رسالة</value>
-  </data>
-  <data name="ServiceErrorCreateOrder_PendingOrder" xml:space="preserve">
-    <value>You cannot book this ride since an order is already pending. View the order status?</value>
-  </data>
-  <data name="ServiceErrorCreateAccount_AccountAlreadyExist" xml:space="preserve">
-    <value>هذا العنوان الإلكتروني مستخدم من قبل.</value>
-  </data>
-  <data name="ServiceErrorCreateOrder_InvalidProvider" xml:space="preserve">
-    <value>لا يمكن إدخال الطلب، مقدم الخدمة غير متاح. رجاء الاتصال  {0} على  {1} للمزيد من المساعدة</value>
-  </data>
-  <data name="ServiceErrorCreateOrder_InvalidProvider_NoCall" xml:space="preserve">
-    <value>لا يمكن إدخال الطلب، مقدم الخدمة غير متاح.</value>
-  </data>
-  <data name="ServiceErrorCreateOrder_NoFareEstimateAvailable" xml:space="preserve">
-    <value>لا يمكن تقدير الأجرة لهذه الرحلة. رجاء الإتصال  {0} على  {1} للمزيد من المساعدة.</value>
-  </data>
-  <data name="ServiceErrorCreateOrder_NoFareEstimateAvailable_NoCall" xml:space="preserve">
-    <value>لا يمكن تقدير الأجرة لهذه الرحلة.</value>
-  </data>
-  <data name="ServiceErrorCreateOrder_NoProvider" xml:space="preserve">
-    <value>لا يمكن إدخال الطلب.لم نتمكن من تحديد مورد للخدمة. رجاء حاول من جديد أو اتصل بنا.</value>
-  </data>
-  <data name="ServiceErrorCreateOrder_VehiculeType" xml:space="preserve">
-    <value>لا يمكن إدخال الطلب. نوعية السيارة المطلوبة غير متوفرة. الرجاء إعادة المحاولة أوالإتصال بنا.</value>
-  </data>
-  <data name="ServiceErrorDefaultMessage" xml:space="preserve">
-    <value>حدث خطأ. يرجى إعادة المحاولة.</value>
-  </data>
-  <data name="ServiceErrorResetPassword_AccountNotFound" xml:space="preserve">
-    <value>لا يوجد حساب خاص بهذا العنوان الإلكتروني.</value>
-  </data>
-  <data name="ServiceErrorUnauthorized" xml:space="preserve">
-    <value>انتهى وقت اتصالك. رجاء تسجيل الدخول للإستمرار.</value>
-  </data>
-  <data name="ServiceErrorUpdatePassword_NotSame" xml:space="preserve">
-    <value>كلمة المرور الحالية غير صحيحة</value>
-  </data>
-  <data name="ServiceError_ErrorCreatingOrderMessage" xml:space="preserve">
-    <value>رجاء الإتصال  {0} على  {1} للمزيد من المساعدة.</value>
-  </data>
-  <data name="ServiceError_ErrorCreatingOrderMessage_NoCall" xml:space="preserve">
-    <value>لا يمكن إدخال الطلب.</value>
-  </data>
   <data name="SettingsViewTitle" xml:space="preserve">
     <value>إعدادات</value>
   </data>
@@ -1602,9 +1557,6 @@
   <data name="Knowledgabledriver" xml:space="preserve">
     <value>Knowledgable driver</value>
   </data>
-  <data name="ServiceErrorAccountCharge_InvalidAccountNumber" xml:space="preserve">
-    <value>Invalid account number</value>
-  </data>
   <data name="Safety" xml:space="preserve">
     <value>Safety</value>
   </data>
@@ -1715,5 +1667,8 @@
   </data>
   <data name="PromoProgress" xml:space="preserve">
     <value>Progress :</value>
+  </data>
+  <data name="ErrorCreateOrder_PendingOrder" xml:space="preserve">
+    <value>You cannot book this ride since an order is already pending. View the order status?</value>
   </data>
 </root>

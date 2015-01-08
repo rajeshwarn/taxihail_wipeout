@@ -575,4 +575,72 @@
     <value>Procesando su pedido...</value>
     <comment>Processing your order...</comment>
   </data>
+  <data name="ServiceErrorAccountCharge_InvalidAccountNumber" xml:space="preserve">
+    <value>Número de cuenta inválido</value>
+    <comment>Invalid account number</comment>
+  </data>
+  <data name="ServiceErrorCallTitle" xml:space="preserve">
+    <value>Mensaje</value>
+    <comment>Message</comment>
+  </data>
+  <data name="ServiceErrorCreateAccount_AccountAlreadyExist" xml:space="preserve">
+    <value>Este email está registrado y en uso en nuestro sistema</value>
+    <comment>This email is already in use.</comment>
+  </data>
+  <data name="ServiceErrorCreateAccount_InvalidConfirmationToken" xml:space="preserve">
+    <value>Código de confirmación inválido</value>
+    <comment>The confirmation code is incorrect.</comment>
+  </data>
+  <data name="ServiceErrorCreateOrder_CardOnFileButNoCreditCard" xml:space="preserve">
+    <value>No tiene Tarjeta de Crédito Registrada en Archivo</value>
+    <comment>No Credit Card On File.</comment>
+  </data>
+  <data name="ServiceErrorCreateOrder_InvalidProvider" xml:space="preserve">
+    <value>Su reservación no se pudo crear, proveedor inválido. Por favor contacte {0} al  {1} para asistencia</value>
+    <comment>Order cannot be created, invalid provider. Please contact {0} at {1} for further assistance.</comment>
+  </data>
+  <data name="ServiceErrorCreateOrder_InvalidProvider_NoCall" xml:space="preserve">
+    <value>Su reservación no se pudo crear, proveedor inválido</value>
+    <comment>Order cannot be created, invalid provider.</comment>
+  </data>
+  <data name="ServiceErrorCreateOrder_NoFareEstimateAvailable" xml:space="preserve">
+    <value>No podemos proveer costo estimado de viaje, por favor contacte {0} al {1} para asistencia</value>
+    <comment>No fare estimate available for the ride. Please contact {0} at {1} for further assistance.</comment>
+  </data>
+  <data name="ServiceErrorCreateOrder_NoFareEstimateAvailable_NoCall" xml:space="preserve">
+    <value>No podemos proveer costo estimado para su viaje</value>
+    <comment>No fare estimate available for the ride.</comment>
+  </data>
+  <data name="ServiceErrorCreateOrder_NoProvider" xml:space="preserve">
+    <value>Su reservación no se pudo crear, no se especificó proveedor, por favor trate de nuevo o llámenos</value>
+    <comment>Order cannot be created, no provider specified. Please try again or call us.</comment>
+  </data>
+  <data name="ServiceErrorCreateOrder_VehiculeType" xml:space="preserve">
+    <value>Su reservación no se pudo crear, tipo de vehículo inválido. Por favor inténtelo nuevamente o llámenos</value>
+    <comment>Order cannot be created, invalid vehicle type. Please try again or call us.</comment>
+  </data>
+  <data name="ServiceErrorDefaultMessage" xml:space="preserve">
+    <value>Un error ha ocurrido, por favor inténtelo nuevamente</value>
+    <comment>An error occurred. Please try again.</comment>
+  </data>
+  <data name="ServiceErrorResetPassword_AccountNotFound" xml:space="preserve">
+    <value>No se ha encontrado cuenta con este email</value>
+    <comment>No account with this email has been found.</comment>
+  </data>
+  <data name="ServiceErrorUnauthorized" xml:space="preserve">
+    <value>Su sesión ha expirado, por favor re-inicie sesión para continuar</value>
+    <comment>Your session has expired, please login to continue.</comment>
+  </data>
+  <data name="ServiceErrorUpdatePassword_NotSame" xml:space="preserve">
+    <value>Su contraseña no es válida</value>
+    <comment>The current password is not valid.</comment>
+  </data>
+  <data name="ServiceError_ErrorCreatingOrderMessage" xml:space="preserve">
+    <value>Por favor contacte a {0} al {1} para asistencia</value>
+    <comment>Please contact {0} at {1} for further assistance.</comment>
+  </data>
+  <data name="ServiceError_ErrorCreatingOrderMessage_NoCall" xml:space="preserve">
+    <value>Su reservación no puede ser creada</value>
+    <comment>The order cannot be created.</comment>
+  </data>
 </root>

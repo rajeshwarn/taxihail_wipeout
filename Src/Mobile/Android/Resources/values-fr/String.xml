@@ -566,4 +566,5 @@
   <string name="PromoProgress">Progression :</string>
   <string name="Notification_PromotionUnlockedEmail">Promotions déverrouillées (Email)</string>
   <string name="Notification_PromotionUnlockedPush">Promotions déverrouillées (Push)</string>
+  <string name="ErrorCreateOrder_PendingOrder">La commande ne peut être créée car une autre commande est déjà en cours. Voir le statut de la commande?</string>
 </resources>
