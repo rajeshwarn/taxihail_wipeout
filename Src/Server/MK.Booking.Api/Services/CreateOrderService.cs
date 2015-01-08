@@ -624,7 +624,7 @@ namespace apcurium.MK.Booking.Api.Services
                 request.Settings.Phone,
                 request.Settings.Passengers,
                 request.Settings.VehicleTypeId,
-                6,
+                _serverSettings.ServerData.IBS.PaymentTypePaymentInCarId, // this needs to be null if not set or the payment in car payment type id of ibs
                 note,
                 request.PickupDate.Value,
                 ibsPickupAddress,

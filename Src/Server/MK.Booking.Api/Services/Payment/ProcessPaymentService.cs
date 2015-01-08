@@ -279,24 +279,22 @@ namespace apcurium.MK.Booking.Api.Services.Payment
         public PairingResponse Post(PairingForPaymentRequest request)
         {
             var response =  _paymentServiceFactory.GetInstance().Pair(request.OrderId, request.CardToken, request.AutoTipPercentage, request.AutoTipAmount);
-            if ( response.IsSuccessful )
+            if (response.IsSuccessful)
             {
-                var o = _orderDao.FindById( request.OrderId );
-                var a = _accountDao.FindById( o.AccountId );
-                if (!UpdateOrderPaymentType(a.IBSAccountId.Value, o.IBSOrderId.Value, 7))
+                var order = _orderDao.FindById(request.OrderId);
+                var ibsAccountId = _accountDao.GetIbsAccountId(order.AccountId, null);
+                if (!UpdateOrderPaymentType(ibsAccountId.Value, order.IBSOrderId.Value))
                 {
                     response.IsSuccessful = false;
                     _paymentServiceFactory.GetInstance().VoidPreAuthorization(request.OrderId);
                 }
             }
             return response;
-
         }
 
-        private bool UpdateOrderPaymentType(int ibsAccountId, int ibsOrderId, int chargeTypeId, string companyKey = null)
+        private bool UpdateOrderPaymentType(int ibsAccountId, int ibsOrderId, string companyKey = null)
         {
-            var result = _ibsServiceProvider.Booking(companyKey).UpdateOrderPaymentType( ibsAccountId, ibsOrderId, chargeTypeId );
-            return result;
+            return _ibsServiceProvider.Booking(companyKey).UpdateOrderPaymentType(ibsAccountId, ibsOrderId, _serverSettings.ServerData.IBS.PaymentTypeCardOnFileId);
         }
 
         public BasePaymentResponse Post(UnpairingForPaymentRequest request)
