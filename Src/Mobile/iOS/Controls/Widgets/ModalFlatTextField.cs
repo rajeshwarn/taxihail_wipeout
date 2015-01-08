@@ -35,8 +35,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         {
             HasRightArrow = true;
 
-            _button = new UIButton(Bounds);
+            _button = new UIButton();
             AddSubview(_button);
+        }
+
+        public override void LayoutSubviews()
+        {
+            base.LayoutSubviews();
+
+            _button.Frame = this.Bounds;
         }
 
         protected UIButton Button

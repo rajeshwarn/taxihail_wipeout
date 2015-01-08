@@ -53,9 +53,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			Font = UIFont.FromName(FontName.HelveticaNeueLight, 38/2);
 
             //padding
-            LeftView = new UIView(new RectangleF(0f, 0f, Padding, 1f)); 
+            LeftView = new UIView(); 
 			LeftViewMode = UITextFieldViewMode.Always;
-            RightView = new UIView(new RectangleF(Frame.Right - Padding, 0f, Padding, 1f));
+            RightView = new UIView();
             RightViewMode = UITextFieldViewMode.UnlessEditing;
             ClearButtonMode = UITextFieldViewMode.WhileEditing;
 
@@ -156,6 +156,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         public override void LayoutSubviews()
         {
             base.LayoutSubviews();
+
+            LeftView.Frame = new RectangleF(0f, 0f, Padding, 1f);
+            RightView.Frame = new RectangleF(Frame.Right - Padding, 0f, Padding, 1f);
 
             if (HasRightArrow)
             {
