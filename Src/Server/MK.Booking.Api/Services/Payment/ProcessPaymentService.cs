@@ -1,3 +1,4 @@
+using System;
 using System.Net;
 using System.Threading;
 using apcurium.MK.Booking.Api.Contract.Requests.Payment;
