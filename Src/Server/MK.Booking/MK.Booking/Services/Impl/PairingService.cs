@@ -39,7 +39,8 @@ namespace apcurium.MK.Booking.Services.Impl
             var orderPairingDetail = _orderDao.FindOrderPairingById(orderId);
             if (orderPairingDetail != null)
             {
-                throw new Exception("Order already paired");
+                // Do not throw an exception as the client would interpret this as an "error"
+                return;
             }
                 
             // send a message to driver, if it fails we abort the pairing
