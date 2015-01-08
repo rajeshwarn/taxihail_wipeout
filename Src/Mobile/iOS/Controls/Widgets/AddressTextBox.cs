@@ -47,9 +47,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
             StreetNumberTextView = new FlatTextField();
             StreetNumberTextView.BackgroundColor = UIColor.Clear;
+            StreetNumberTextView.ClearButtonMode = UITextFieldViewMode.Never;
             StreetNumberTextView.Placeholder = "#";
-            StreetNumberTextView.SetLeftPadding(15);
-            StreetNumberTextView.SetRightPadding(0);
+            StreetNumberTextView.SetPadding(15, 0);
             StreetNumberTextView.KeyboardType = UIKeyboardType.NumberPad;
             StreetNumberTextView.ShowCloseButtonOnKeyboard();
             StreetNumberTextView.VerticalAlignment = UIControlContentVerticalAlignment.Center;

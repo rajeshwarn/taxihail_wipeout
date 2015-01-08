@@ -34,22 +34,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Extensions
                 ev => text.EditingChanged -= ev)
                     .Select(e=>text.Text);        
         }
-
-        public static void SetLeftPadding( this UITextField text, float padding )
-        {
-            var btn = new UIButton(new RectangleF(0, 0, padding, text.Bounds.Height));
-            text.LeftView = btn;
-            btn.TouchUpInside += (sender, e) => text.BecomeFirstResponder();
-            text.LeftViewMode = UITextFieldViewMode.Always;
-        }
-
-        public static void SetRightPadding( this UITextField text, float padding )
-        {
-            var btn = new UIButton(new RectangleF(0, 0, padding, text.Bounds.Height));
-            text.RightView = btn;
-            btn.TouchUpInside += (sender, e) => text.BecomeFirstResponder();
-            text.RightViewMode = UITextFieldViewMode.Always;
-        }
     }
 }
 

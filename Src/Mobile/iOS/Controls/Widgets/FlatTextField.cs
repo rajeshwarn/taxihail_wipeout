@@ -13,7 +13,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 	public class FlatTextField : UITextField
 	{
 	    private const float RadiusCorner = 2;
-        protected const float Padding = 6.5f;
+        protected float LeftPadding = 6.5f;
+        protected float RightPadding = 6.5f;
         private UIImageView _leftImageView;
         private UIView _shadowView = null;
 
@@ -109,10 +110,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                     AddSubview(_leftImageView);
 
                     // Adjust the left padding of the text for image width
-                    LeftView.Frame = LeftView.Frame.SetWidth(image.Size.Width + Padding);
+                    LeftView.Frame = LeftView.Frame.SetWidth(image.Size.Width + LeftPadding);
 
                     // And the right padding
-                    RightView = new UIView(new RectangleF(Frame.Right - Padding, 0f, Padding, 1f));
+                    RightView = new UIView(new RectangleF(Frame.Right - RightPadding, 0f, RightPadding, 1f));
 
                     SetNeedsDisplay();
                 }
@@ -153,25 +154,31 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             }
         }
 
+        public void SetPadding(float left, float right)
+        {
+            LeftPadding = left;
+            RightPadding = right;
+        }
+
         public override void LayoutSubviews()
         {
             base.LayoutSubviews();
 
-            LeftView.Frame = new RectangleF(0f, 0f, Padding, 1f);
-            RightView.Frame = new RectangleF(Frame.Right - Padding, 0f, Padding, 1f);
+            LeftView.Frame = new RectangleF(0f, 0f, LeftPadding, 1f);
+            RightView.Frame = new RectangleF(Frame.Right - RightPadding, 0f, RightPadding, 1f);
 
             if (HasRightArrow)
             {
                 if (_rightArrow != null)
                 {
                     _rightArrow.Frame = new RectangleF(
-                        Frame.Width - _rightArrow.Image.Size.Width - Padding, 
+                        Frame.Width - _rightArrow.Image.Size.Width - RightPadding, 
                         (Frame.Height - _rightArrow.Image.Size.Height) / 2, 
                         _rightArrow.Image.Size.Width, 
                         _rightArrow.Image.Size.Height);
 
                     // this is to keep the same padding between the end of the text and the right arrow
-                    RightView.Frame = RightView.Frame.IncrementWidth(_rightArrow.Image.Size.Width + Padding); 
+                    RightView.Frame = RightView.Frame.IncrementWidth(_rightArrow.Image.Size.Width + RightPadding); 
                 }
             }
             else
@@ -179,7 +186,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 if (_rightArrow != null)
                 {
                     var imageWidth = _rightArrow.Image != null ? _rightArrow.Image.Size.Width : 0;
-                    RightView.Frame = RightView.Frame.IncrementWidth (-(imageWidth + Padding));
+                    RightView.Frame = RightView.Frame.IncrementWidth (-(imageWidth + RightPadding));
                     _rightArrow = null;
                 }
             }
