@@ -1,13 +1,10 @@
 ﻿#region
 
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Text.RegularExpressions;
-using System.Threading;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Requests;
@@ -28,9 +25,7 @@ using apcurium.MK.Common.Extensions;
 using AutoMapper;
 using CustomerPortal.Client;
 using Infrastructure.EventSourcing;
-using CustomerPortal.Contract.Response;
 using HoneyBadger;
-using HoneyBadger.Responses;
 using Infrastructure.Messaging;
 using log4net;
 using ServiceStack.Common.Web;
@@ -222,7 +217,9 @@ namespace apcurium.MK.Booking.Api.Services
             {
                 // External market, query company site directly to validate their rules
                 var orderServiceClient = new RoamingValidationServiceClient(bestAvailableCompany.CompanyKey, _serverSettings.ServerData.Target);
-                
+
+                Log.Info(string.Format("Validating rules for company in external market... Target: {0}, Server: {1}", _serverSettings.ServerData.Target, orderServiceClient.Url));
+
                 var validationResult = orderServiceClient.ValidateOrder(request, true);
                 if (validationResult.HasError)
                 {

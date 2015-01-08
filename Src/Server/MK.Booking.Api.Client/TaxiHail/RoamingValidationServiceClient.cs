@@ -3,7 +3,6 @@ using System.Net.Http;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Common.Enumeration;
-using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common.Http.Extensions;
 
 namespace apcurium.MK.Booking.Api.Client.TaxiHail
@@ -12,9 +11,12 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
     {
         private readonly HttpClient _client;
 
+        public string Url { get; private set; }
+
         public RoamingValidationServiceClient(string applicationKey, DeploymentTargets target)
         {
-            _client = new HttpClient { BaseAddress = new Uri(GetUrl(applicationKey, target)) };
+            Url = GetUrl(applicationKey, target);
+            _client = new HttpClient { BaseAddress = new Uri(Url) };
         }
 
         public OrderValidationResult ValidateOrder(CreateOrder order, bool forError = false)
@@ -30,7 +32,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             switch (target)
             {
                 case DeploymentTargets.Local:
-                    return string.Format("http://localhost/apcurium.MK.Web/{0}/", applicationKey);
+                    return string.Format("http://test.taxihail.biz:8181/{0}/", applicationKey);
                 case DeploymentTargets.Staging:
                     return string.Format("http://test.taxihail.biz:8181/{0}/", applicationKey);
                 case DeploymentTargets.Production:
