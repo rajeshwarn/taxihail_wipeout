@@ -54,6 +54,7 @@
             TaxiHail.parameters.geolocSearchRegion = '<%= GeolocSearchRegion %>';
             TaxiHail.parameters.geolocSearchBounds = '<%= GeolocSearchBounds %>';
             TaxiHail.parameters.hideDispatchButton = <%: HideDispatchButton ? "true" : "false" %>;
+            TaxiHail.parameters.showCallDriver = <%: ShowCallDriver ? "true" : "false" %>;
             TaxiHail.parameters.accountActivationDisabled = <%: AccountActivationDisabled ? "true" : "false" %>;
             TaxiHail.parameters.isEstimateEnabled = <%: EstimateEnabled ? "true" : "false" %>;
             TaxiHail.parameters.isEtaEnabled = <%: EtaEnabled ? "true" : "false" %>;
