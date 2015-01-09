@@ -4,14 +4,11 @@ using System.Drawing;
 using apcurium.MK.Booking.Mobile.Client.Diagnostics;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
 using apcurium.MK.Booking.Mobile.Client.Localization;
-using apcurium.MK.Booking.Mobile.Client.MapUtitilties;
 using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using MonoTouch.UIKit;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using apcurium.MK.Booking.Mobile.Client.Controls.Widgets;
-using apcurium.MK.Booking.Mobile.Client.Style;
-using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
 using MonoTouch.MapKit;
 using System.Windows.Input;
 
@@ -251,14 +248,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 					.To(vm => vm.IsCancelButtonVisible)
 					.WithConversion("BoolInverter");
 
-				set.Bind(btnPay)
-					.For("TouchUpInside")
-					.To(vm => vm.PayForOrderCommand);
-				set.Bind(btnPay)
-					.For(v => v.Hidden)
-					.To(vm => vm.IsPayButtonVisible)
-					.WithConversion("BoolInverter");
-
 				set.Bind(btnCall)
 					.For(v => v.Hidden)
 					.To(vm => vm.Settings.HideCallDispatchButton);
@@ -269,17 +258,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				set.Bind(btnCall)
 					.For("TouchUpInside")
 					.To(vm => vm.CallCompany);
-
-				set.Bind(btnResend)
-					.For(v => v.Hidden)
-					.To(vm => vm.IsResendButtonVisible)
-					.WithConversion("BoolInverter");
-				set.Bind(btnResend)
-					.For(v => v.Enabled)
-					.To(vm => vm.IsResendButtonVisible);
-				set.Bind(btnResend)
-					.For("TouchUpInside")
-					.To(vm => vm.ResendConfirmationToDriver);
 
 				set.Bind(btnNewRide)
 					.For("TouchUpInside")
@@ -321,7 +299,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
         void UpdateCallButtonSize (RectangleF callFrame)
         {
-            if (!ViewModel.IsCancelButtonVisible && !ViewModel.IsPayButtonVisible && !ViewModel.IsResendButtonVisible)
+            if (!ViewModel.IsCancelButtonVisible)
             {
                 btnCall.SetX ((View.Frame.Width - btnCancel.Frame.Width) / 2).SetWidth (btnCancel.Frame.Width);
                 btnCall.SetTitle(Localize.GetValue("StatusCallButton"), UIControlState.Normal);

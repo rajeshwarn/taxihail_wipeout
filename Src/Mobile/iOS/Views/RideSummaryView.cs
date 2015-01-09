@@ -103,22 +103,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 }
             });
 
-            set.Bind(btnPay)
-                .For("TouchUpInside")
-                .To(vm => vm.PayCommand);
-            set.Bind(btnPay)
-                .For(v => v.HiddenWithConstraints)
-                .To(vm => vm.IsPayButtonShown)
-                .WithConversion("BoolInverter");
-
-            set.Bind(btnReSendConfirmation)
-                .For("TouchUpInside")
-                .To(vm => vm.ResendConfirmationCommand);
-            set.Bind(btnReSendConfirmation)
-                .For(v => v.HiddenWithConstraints)
-                .To(vm => vm.IsResendConfirmationButtonShown)
-                .WithConversion("BoolInverter");
-
             set.Bind(_source)
                 .For(v => v.ItemsSource)
                 .To(vm => vm.RatingList);

@@ -12,14 +12,12 @@ namespace apcurium.MK.Common.Configuration.Impl
 
             IsChargeAccountPaymentEnabled = false;
             IsPayInTaxiEnabled = false;
-            AutomaticPayment = false;
             AutomaticPaymentPairing = false;
         }
 
         public PaymentMethod PaymentMode { get; set; }
         public bool IsPayInTaxiEnabled { get; set; }
         public bool IsChargeAccountPaymentEnabled { get; set; }
-        public bool AutomaticPayment { get; set; }
         public bool AutomaticPaymentPairing { get; set; }
         public CmtPaymentSettings CmtPaymentSettings { get; set; }
         public BraintreeClientSettings BraintreeClientSettings { get; set; }

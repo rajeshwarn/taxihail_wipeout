@@ -94,14 +94,6 @@
     <input type="text" class="input-block-level settingsBox" name="noShowFee" value="{{noShowFee}}" />
   </div>
 
-  <div class="control-group" id="automaticPaymentDiv">
-    <label class="control-label settingsLabel">{{{localize "Automatic Payment"}}}</label>
-    <select  name="automaticPayment" class="settingsBox">
-      <option value="{{automaticPayment}}" selected="">{{localizeBool automaticPayment true="Yes" false="No"}}</option>
-      <option value="{{invertedBool automaticPayment}}">{{localizeBool automaticPayment true="No" false="Yes"}}</option>
-    </select>
-  </div>
-
   <div class="control-group" id="automaticPairingDiv">
     <label class="control-label settingsLabel">{{{localize "Automatic Payment Pairing"}}}</label>
     <select  name="automaticPaymentPairing" class="settingsBox">
