@@ -45,13 +45,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         private void Initialize()
         {
 			_heightConstraint = NSLayoutConstraint.Create(this, NSLayoutAttribute.Height, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1.0f, VehicleSelectionHeight);
-			this.AddConstraint(_heightConstraint);
+			AddConstraint(_heightConstraint);
 
-			HorizontalDividerTop = new UIView(new RectangleF(0, 0, Frame.Width, UIHelper.OnePixel)) 
-            { 
-                BackgroundColor = Theme.LabelTextColor,
-                AutoresizingMask = UIViewAutoresizing.FlexibleWidth
-            };
+            HorizontalDividerTop = Line.CreateHorizontal(Frame.Width, Theme.LabelTextColor);
 
             EstimateSelectedVehicleType = new VehicleTypeView(new RectangleF(0f, 0f, 50f, this.Frame.Height));
 

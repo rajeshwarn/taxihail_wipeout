@@ -59,7 +59,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 			// Horizontal line bellow master notification toggle
 			var enabledToggleSeparator = Line.CreateHorizontal(0, labelTaxiHailNetworkEnabled.Superview.Frame.Height, this.View.Frame.Width, UIColor.LightGray, 1f);
-			enabledToggleSeparator.AutoresizingMask = UIViewAutoresizing.FlexibleWidth;
 			this.View.AddSubview(enabledToggleSeparator);
 
 			var set = this.CreateBindingSet<UserTaxiHailNetworkSettingsView, UserTaxiHailNetworkSettingsViewModel> ();
