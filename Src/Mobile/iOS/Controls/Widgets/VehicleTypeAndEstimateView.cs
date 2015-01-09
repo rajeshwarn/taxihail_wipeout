@@ -23,9 +23,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         private UIView VehicleSelection { get; set; }
 		private UIView EtaContainer { get; set; }
 
-		private const float VehicleSelectionHeight = 52.0f;
-		private const float EtaContainerHeight = 23.0f;
-		private const float VehicleLeftBadgeWidth = 56.0f;
+		private const float VehicleSelectionHeight = 52f;
+		private const float EtaContainerHeight = 23f;
+		private const float VehicleLeftBadgeWidth = 56f;
 		private const float LabelPadding = 5f;
 
         public Action<VehicleType> VehicleSelected { get; set; }
@@ -36,6 +36,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         {
             Initialize();
         }
+
         public VehicleTypeAndEstimateView ()
         {
             Initialize();
@@ -43,17 +44,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
         private void Initialize()
         {
-			_heightConstraint = NSLayoutConstraint.Create(this, NSLayoutAttribute.Height, 
-				NSLayoutRelation.Equal, 
-				null, 
-				NSLayoutAttribute.NoAttribute, 
-				1.0f, VehicleSelectionHeight);
-
+			_heightConstraint = NSLayoutConstraint.Create(this, NSLayoutAttribute.Height, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1.0f, VehicleSelectionHeight);
 			this.AddConstraint(_heightConstraint);
 
 			HorizontalDividerTop = new UIView(new RectangleF(0, 0, Frame.Width, UIHelper.OnePixel)) 
             { 
-                BackgroundColor = Theme.LabelTextColor 
+                BackgroundColor = Theme.LabelTextColor,
+                AutoresizingMask = UIViewAutoresizing.FlexibleWidth
             };
 
             EstimateSelectedVehicleType = new VehicleTypeView(new RectangleF(0f, 0f, 50f, this.Frame.Height));
@@ -99,8 +96,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			EtaContainer.BackgroundColor = Theme.CompanyColor;
 			VehicleSelection.Add (EtaContainer);
 			EtaContainer.Add (EtaBadge = new VehicleTypeView (new RectangleF (0, 0, 0, 0)));
-			AddSubviews(HorizontalDividerTop, EstimateSelectedVehicleType, EstimatedFareLabel, VehicleSelection);
 
+			AddSubviews(HorizontalDividerTop, EstimateSelectedVehicleType, EstimatedFareLabel, VehicleSelection);
         }
 
         public bool IsReadOnly { get; set; }

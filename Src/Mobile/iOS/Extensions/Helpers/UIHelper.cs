@@ -9,14 +9,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Extensions.Helpers
 
 		public static float OnePixel
 		{
-			get{
-				return IsRetinaDisplay ? .5f : 1f;
+			get
+            {
+                return 1f / UIScreen.MainScreen.Scale;
 			}
 		}
 
-        public static bool Is4InchDisplay
+        public static bool Is35InchDisplay
         {
-            get { return UIScreen.MainScreen.Bounds.Height > 500; }
+            get { return UIScreen.MainScreen.Bounds.Height < 500; }
         }
 
 		public static bool IsOS7orHigher
@@ -35,12 +36,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Extensions.Helpers
 
         public static float GetConvertedPixel(float pixel)
         {
-            if (IsRetinaDisplay)
-            {
-                return pixel / 2f;
-            }
-
-            return pixel;
+            return pixel / UIScreen.MainScreen.Scale;
         }
     }
 }

@@ -150,7 +150,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             thisView.Frame = margin.ShrinkRectangle (thisView.Frame);
         }
 
-        public static void RoundCorners(this UIView thisButton,float radius=2, float borderThickness = 0, UIColor borderColor = null)
+        public static void RoundCorners(this UIView thisButton,float radius=2, float borderThickness = 0f, UIColor borderColor = null)
         {
             if (borderColor != null) 
             {
@@ -161,7 +161,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             {
                 if (borderThickness == 1f && UIHelper.IsRetinaDisplay) 
                 {
-                    borderThickness = .5f;
+                    borderThickness = UIHelper.GetConvertedPixel(1f);
                 } 
                 thisButton.Layer.BorderWidth = borderThickness;
             }
