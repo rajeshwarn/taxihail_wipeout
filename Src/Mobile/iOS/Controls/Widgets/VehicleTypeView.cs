@@ -80,6 +80,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
         public float WidthToFitLabel()
         {
+            if (!_vehicleTypeLabel.Text.HasValue())
+            {
+                return EstimateLabelMinimumWidth;
+            }
+
             return Math.Max(EstimateLabelMinimumWidth, this.GetSizeThatFits(_vehicleTypeLabel.Text, _vehicleTypeLabel.Font).Width) + EstimateLabelPadding * 2;
         }
 

@@ -40,7 +40,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 BackgroundColor = UIColor.Clear,
                 Lines = 1,
                 Font = UIFont.FromName(FontName.HelveticaNeueLight, 24 / 2),
-                TextAlignment = NaturalLanguageHelper.GetTextAlignment(),
+                TextAlignment = UITextAlignment.Center,
                 TextColor = Theme.LabelTextColor,
                 ShadowColor = UIColor.Clear,
             };
