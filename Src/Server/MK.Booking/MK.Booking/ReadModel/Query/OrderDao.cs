@@ -65,13 +65,18 @@ namespace apcurium.MK.Booking.ReadModel.Query
                                   join payment in context.Set<OrderPaymentDetail>()
                                       on order.Id equals payment.OrderId into orderPayment
                                   from payment in orderPayment.DefaultIfEmpty()
+                                  
+                                  join pairing in context.Set<OrderPairingDetail>()
+                                    on order.Id equals pairing.OrderId into orderPairing
+                                  from pairing in orderPairing.DefaultIfEmpty()                                  
+
                                   join status in context.Set<OrderStatusDetail>()
                                       on order.Id equals status.OrderId into statusOrder
                                   from status in statusOrder.DefaultIfEmpty()
                                   join rating in context.Set<RatingScoreDetails>()
                                       on order.Id equals rating.OrderId into ratingOrder
                                   from rating in ratingOrder.DefaultIfEmpty()
-                                  select new { order, account, payment, status, rating, card };
+                                  select new { order, account, payment, status, rating, card, pairing };
 
                 OrderDetailWithAccount details = null;
 
@@ -99,10 +104,14 @@ namespace apcurium.MK.Booking.ReadModel.Query
                             Mapper.Map(joinedLine.status, details);
                         }
 
-                        if (joinedLine.status != null)
+                        if (joinedLine.card != null)
                         {
                             Mapper.Map(joinedLine.card, details);
                         }
+
+                        details.WasPaired = joinedLine.pairing != null;
+                        
+
                     }
 
                     details.IsCompleted = joinedLine.status.Status == OrderStatus.Completed;
