@@ -5,13 +5,8 @@ using apcurium.MK.Booking.Mobile.Client.Style;
 using System.Linq;
 using apcurium.MK.Common.Extensions;
 using System.Drawing;
-using apcurium.MK.Booking.Mobile.Client.Helper;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
 using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
-using MonoTouch.CoreGraphics;
-using apcurium.MK.Booking.Mobile.Client.Localization;
-using TinyIoC;
-using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using System.Collections.Generic;
 
@@ -273,7 +268,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             }
 
 			// Since this control doesn't use constraints:
-			var badgeWidth = ShowEstimate ? EstimateSelectedVehicleType.SizeToFitLabel().Frame.Width : VehicleLeftBadgeWidth;
+            var badgeWidth = ShowEstimate ? EstimateSelectedVehicleType.WidthToFitLabel() : VehicleLeftBadgeWidth;
 			EstimateSelectedVehicleType.SetWidth (badgeWidth);
 			EstimatedFareLabel.SetWidth (this.Frame.Width - badgeWidth - LabelPadding * 2);
 			EtaLabel.SetWidth (this.Frame.Width - badgeWidth - LabelPadding * 2);

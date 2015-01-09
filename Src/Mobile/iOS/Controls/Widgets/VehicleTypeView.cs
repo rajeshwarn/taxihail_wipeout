@@ -2,35 +2,30 @@ using System;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 using apcurium.MK.Booking.Mobile.Client.Style;
-using System.Linq;
 using apcurium.MK.Common.Extensions;
 using System.Drawing;
 using apcurium.MK.Booking.Mobile.Client.Helper;
-using apcurium.MK.Booking.Mobile.Client.Extensions;
-using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
-using MonoTouch.CoreGraphics;
 using apcurium.MK.Booking.Mobile.Client.Localization;
-using TinyIoC;
-using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Api.Contract.Resources;
-using System.Collections.Generic;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
     [Register("VehicleTypeView")]
     public class VehicleTypeView : UIControl
     {
-		private const float LabelMinimumWidth = 40f;
-        private const float LabelPadding = 5f;
+		private const float EstimateLabelMinimumWidth = 40f;
+        private const float EstimateLabelPadding = 5f;
+        private SizeF ImageSize = new SizeF(34f, 34f);
 
-        private UIImageView VehicleTypeImage { get; set; }
-        private UILabel VehicleTypeLabel { get; set; }
-        private bool IsForSelection { get; set; }
-		private bool EtaBadge { get; set; }
+        private UIImageView _vehicleTypeImage { get; set; }
+        private UILabel _vehicleTypeLabel { get; set; }
+        private bool _isForEstimate { get; set; }
+		private bool _etaBadge { get; set; }
 
         public VehicleTypeView(RectangleF frame) : base(frame)
         {
-			Subviews.ForEach (x => x.RemoveFromSuperview ());
+            _isForEstimate = true;
+
 			Initialize();
 
             Selected = true;
@@ -38,42 +33,60 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
 		public VehicleTypeView (RectangleF frame, VehicleType vehicle, bool isSelected, bool etaBadge = false) : base (frame)
         {
-			EtaBadge = etaBadge;
-			Initialize();
-			IsForSelection = true;
+            _isForEstimate = false;
+            _etaBadge = etaBadge;
+
+            Initialize();
+
             Vehicle = vehicle;
             Selected = isSelected;
         }
 
         private void Initialize()
         {
-            VehicleTypeImage = new UIImageView(new RectangleF(this.Frame.Width / 2 - 34f / 2, 4f, 34f, 34f));
-			VehicleTypeImage = new UIImageView(new RectangleF(this.Frame.Width / 2 - 34f / 2, 4f, 34f, 34f));
+            _vehicleTypeImage = new UIImageView();
+            _vehicleTypeImage.TranslatesAutoresizingMaskIntoConstraints = false;
+			AddSubview (_vehicleTypeImage);
 
-			AddSubview (VehicleTypeImage);
+            // Constraints for VehicleTypeImage
+            AddConstraints(new [] 
+            {
+                NSLayoutConstraint.Create(_vehicleTypeImage, NSLayoutAttribute.Width, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1f, ImageSize.Width),
+                NSLayoutConstraint.Create(_vehicleTypeImage, NSLayoutAttribute.Height, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1f, ImageSize.Height),
+                NSLayoutConstraint.Create(_vehicleTypeImage, NSLayoutAttribute.CenterX, NSLayoutRelation.Equal, _vehicleTypeImage.Superview, NSLayoutAttribute.CenterX, 1f, 0f),
+                NSLayoutConstraint.Create(_vehicleTypeImage, NSLayoutAttribute.Top, NSLayoutRelation.Equal, _vehicleTypeImage.Superview, NSLayoutAttribute.Top, 1f, 4f)
+            });
 
-			VehicleTypeLabel = new UILabel {
-				BackgroundColor = UIColor.Clear,
-				Font = UIFont.FromName (FontName.HelveticaNeueBold, 18 / 2),
-				TextColor = DefaultColorForTextAndImage,
-				ShadowColor = UIColor.Clear,
-				LineBreakMode = UILineBreakMode.TailTruncation,
-				TextAlignment = UITextAlignment.Center
-			};
+            if (!_etaBadge)
+            {
+                _vehicleTypeLabel = new UILabel 
+                {
+    				BackgroundColor = UIColor.Clear,
+    				Font = UIFont.FromName (FontName.HelveticaNeueBold, 18 / 2),
+    				TextColor = DefaultColorForTextAndImage,
+    				ShadowColor = UIColor.Clear,
+    				LineBreakMode = UILineBreakMode.TailTruncation,
+    				TextAlignment = UITextAlignment.Center
+    			};
 
-			if (!EtaBadge) {
-				AddSubview (VehicleTypeLabel);
+                _vehicleTypeLabel.TranslatesAutoresizingMaskIntoConstraints = false;
+                AddSubview (_vehicleTypeLabel);
+
+                // Constraints for VehicleTypeLabel
+                AddConstraints(new [] 
+                {
+                    NSLayoutConstraint.Create(_vehicleTypeLabel, NSLayoutAttribute.Height, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1f, 12f),
+                    NSLayoutConstraint.Create(_vehicleTypeLabel, NSLayoutAttribute.Top, NSLayoutRelation.Equal, _vehicleTypeImage, NSLayoutAttribute.Bottom, 1f, 0f),
+                    NSLayoutConstraint.Create(_vehicleTypeLabel, NSLayoutAttribute.Left, NSLayoutRelation.Equal, _vehicleTypeLabel.Superview, NSLayoutAttribute.Left, 1f, 0f),
+                    NSLayoutConstraint.Create(_vehicleTypeLabel, NSLayoutAttribute.Right, NSLayoutRelation.Equal, _vehicleTypeLabel.Superview, NSLayoutAttribute.Right, 1f, 0f)
+                });
 			}
         }
 
-		public VehicleTypeView SizeToFitLabel()
-		{
-            var width = Math.Max(LabelMinimumWidth, this.GetSizeThatFits(this.VehicleTypeLabel.Text, this.VehicleTypeLabel.Font).Width) + LabelPadding * 2;
-			VehicleTypeLabel.SetWidth (width);
-			this.SetWidth (width);
-			VehicleTypeImage.SetHorizontalCenter (this.Frame.Width / 2);
-			return this;
-		}
+        public float WidthToFitLabel()
+        {
+            return Math.Max(EstimateLabelMinimumWidth, this.GetSizeThatFits(_vehicleTypeLabel.Text, _vehicleTypeLabel.Font).Width) + EstimateLabelPadding * 2;
+        }
 
         public override bool Selected 
         {
@@ -91,13 +104,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
                     if (value) 
                     {
-						VehicleTypeImage.Image = GetColoredImage(Vehicle.LogoName, Theme.CompanyColor, EtaBadge);
-                        VehicleTypeLabel.TextColor = Theme.CompanyColor;
+						_vehicleTypeImage.Image = GetColoredImage(Vehicle.LogoName, Theme.CompanyColor, _etaBadge);
+                        _vehicleTypeLabel.Maybe(x => x.TextColor = Theme.CompanyColor);
                     } 
                     else 
                     {
-						VehicleTypeImage.Image = GetColoredImage(Vehicle.LogoName, DefaultColorForTextAndImage, EtaBadge);
-                        VehicleTypeLabel.TextColor = DefaultColorForTextAndImage;
+						_vehicleTypeImage.Image = GetColoredImage(Vehicle.LogoName, DefaultColorForTextAndImage, _etaBadge);
+                        _vehicleTypeLabel.Maybe(x => x.TextColor = DefaultColorForTextAndImage);
                     }
                 }
             }
@@ -113,13 +126,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 {
                     _vehicle = value;
 
-					VehicleTypeImage.Image = GetColoredImage (value.LogoName, Theme.LabelTextColor, EtaBadge);
-					if (!EtaBadge) {
-						VehicleTypeLabel.TextColor = DefaultColorForTextAndImage;
-						VehicleTypeLabel.Text = Localize.GetValue (value.Name.ToUpper ());
-						VehicleTypeLabel.SizeToFit ();
-						VehicleTypeLabel.SetWidth (this.Frame.Width);
-						VehicleTypeLabel.SetY (VehicleTypeImage.Frame.Bottom);
+                    _vehicleTypeImage.Image = GetColoredImage (value.LogoName, Theme.LabelTextColor, _etaBadge);
+					if (!_etaBadge) 
+                    {
+						_vehicleTypeLabel.TextColor = DefaultColorForTextAndImage;
+                        _vehicleTypeLabel.Text = Localize.GetValue (value.Name.ToUpper ());
+                        _vehicleTypeLabel.SizeToFit ();
 					}
                 }
             }
@@ -129,9 +141,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         {
             get 
             { 
-                return IsForSelection 
-                    ? UIColor.FromRGB(153, 153, 153)
-                    : Theme.LabelTextColor;
+                return _isForEstimate 
+                    ? Theme.LabelTextColor
+                    : UIColor.FromRGB(153, 153, 153);
             }
         }
 
@@ -140,8 +152,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			return ImageHelper.ApplyColorToImage(
 				string.Format(Selected
 					? "{0}_" + (etaBadge ? "no_" : "") + "badge_selected.png" 
-					: "{0}_" + (etaBadge ? "no_" : "") + "badge.png", 
-                    vehicleTypeLogoName.ToLower()), 
+					: "{0}_" + (etaBadge ? "no_" : "") + "badge.png", vehicleTypeLogoName.ToLower()), 
 				etaBadge 
                     ? Theme.LabelTextColor 
                     : color);
