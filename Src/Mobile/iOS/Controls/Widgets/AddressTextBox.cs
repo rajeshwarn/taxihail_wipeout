@@ -221,7 +221,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
                 AddressButton.Frame = AddressTextView.Frame = new RectangleF(0, 0, this.Frame.Width, this.Frame.Height);
 
-                AddressTextView.SetPadding(VerticalDivider.Frame.Right + 6, 0);
+                AddressTextView.SetPadding(VerticalDivider.Frame.Right + 6, 6);
                 AddressTextView.LeftView = new Dot(6, color, -3)
                 { 
                     Frame = new RectangleF(0, 0, VerticalDivider.Frame.Right + 6, this.Frame.Height)
