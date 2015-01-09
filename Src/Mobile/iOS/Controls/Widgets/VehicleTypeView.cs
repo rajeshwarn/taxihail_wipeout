@@ -20,7 +20,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         private UIImageView _vehicleTypeImage { get; set; }
         private UILabel _vehicleTypeLabel { get; set; }
         private bool _isForEstimate { get; set; }
-		private bool _etaBadge { get; set; }
 
         public VehicleTypeView(RectangleF frame) : base(frame)
         {
@@ -31,10 +30,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             Selected = true;
         }
 
-		public VehicleTypeView (RectangleF frame, VehicleType vehicle, bool isSelected, bool etaBadge = false) : base (frame)
+		public VehicleTypeView (RectangleF frame, VehicleType vehicle, bool isSelected) : base (frame)
         {
             _isForEstimate = false;
-            _etaBadge = etaBadge;
 
             Initialize();
 
@@ -57,30 +55,27 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 NSLayoutConstraint.Create(_vehicleTypeImage, NSLayoutAttribute.Top, NSLayoutRelation.Equal, _vehicleTypeImage.Superview, NSLayoutAttribute.Top, 1f, 4f)
             });
 
-            if (!_etaBadge)
+            _vehicleTypeLabel = new UILabel 
             {
-                _vehicleTypeLabel = new UILabel 
-                {
-    				BackgroundColor = UIColor.Clear,
-    				Font = UIFont.FromName (FontName.HelveticaNeueBold, 18 / 2),
-    				TextColor = DefaultColorForTextAndImage,
-    				ShadowColor = UIColor.Clear,
-    				LineBreakMode = UILineBreakMode.TailTruncation,
-    				TextAlignment = UITextAlignment.Center
-    			};
+                BackgroundColor = UIColor.Clear,
+                Font = UIFont.FromName (FontName.HelveticaNeueBold, 18 / 2),
+                TextColor = DefaultColorForTextAndImage,
+                ShadowColor = UIColor.Clear,
+                LineBreakMode = UILineBreakMode.TailTruncation,
+                TextAlignment = UITextAlignment.Center
+            };
 
-                _vehicleTypeLabel.TranslatesAutoresizingMaskIntoConstraints = false;
-                AddSubview (_vehicleTypeLabel);
+            _vehicleTypeLabel.TranslatesAutoresizingMaskIntoConstraints = false;
+            AddSubview (_vehicleTypeLabel);
 
-                // Constraints for VehicleTypeLabel
-                AddConstraints(new [] 
-                {
-                    NSLayoutConstraint.Create(_vehicleTypeLabel, NSLayoutAttribute.Height, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1f, 12f),
-                    NSLayoutConstraint.Create(_vehicleTypeLabel, NSLayoutAttribute.Top, NSLayoutRelation.Equal, _vehicleTypeImage, NSLayoutAttribute.Bottom, 1f, 0f),
-                    NSLayoutConstraint.Create(_vehicleTypeLabel, NSLayoutAttribute.Left, NSLayoutRelation.Equal, _vehicleTypeLabel.Superview, NSLayoutAttribute.Left, 1f, 0f),
-                    NSLayoutConstraint.Create(_vehicleTypeLabel, NSLayoutAttribute.Right, NSLayoutRelation.Equal, _vehicleTypeLabel.Superview, NSLayoutAttribute.Right, 1f, 0f)
-                });
-			}
+            // Constraints for VehicleTypeLabel
+            AddConstraints(new [] 
+            {
+                NSLayoutConstraint.Create(_vehicleTypeLabel, NSLayoutAttribute.Height, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1f, 12f),
+                NSLayoutConstraint.Create(_vehicleTypeLabel, NSLayoutAttribute.Top, NSLayoutRelation.Equal, _vehicleTypeImage, NSLayoutAttribute.Bottom, 1f, 0f),
+                NSLayoutConstraint.Create(_vehicleTypeLabel, NSLayoutAttribute.Left, NSLayoutRelation.Equal, _vehicleTypeLabel.Superview, NSLayoutAttribute.Left, 1f, 0f),
+                NSLayoutConstraint.Create(_vehicleTypeLabel, NSLayoutAttribute.Right, NSLayoutRelation.Equal, _vehicleTypeLabel.Superview, NSLayoutAttribute.Right, 1f, 0f)
+            });
         }
 
         public float WidthToFitLabel()
@@ -104,13 +99,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
                     if (value) 
                     {
-						_vehicleTypeImage.Image = GetColoredImage(Vehicle.LogoName, Theme.CompanyColor, _etaBadge);
-                        _vehicleTypeLabel.Maybe(x => x.TextColor = Theme.CompanyColor);
+						_vehicleTypeImage.Image = GetColoredImage(Vehicle.LogoName, Theme.CompanyColor);
+                        _vehicleTypeLabel.TextColor = Theme.CompanyColor;
                     } 
                     else 
                     {
-						_vehicleTypeImage.Image = GetColoredImage(Vehicle.LogoName, DefaultColorForTextAndImage, _etaBadge);
-                        _vehicleTypeLabel.Maybe(x => x.TextColor = DefaultColorForTextAndImage);
+						_vehicleTypeImage.Image = GetColoredImage(Vehicle.LogoName, DefaultColorForTextAndImage);
+                        _vehicleTypeLabel.TextColor = DefaultColorForTextAndImage;
                     }
                 }
             }
@@ -126,13 +121,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 {
                     _vehicle = value;
 
-                    _vehicleTypeImage.Image = GetColoredImage (value.LogoName, Theme.LabelTextColor, _etaBadge);
-					if (!_etaBadge) 
-                    {
-						_vehicleTypeLabel.TextColor = DefaultColorForTextAndImage;
-                        _vehicleTypeLabel.Text = Localize.GetValue (value.Name.ToUpper ());
-                        _vehicleTypeLabel.SizeToFit ();
-					}
+                    _vehicleTypeImage.Image = GetColoredImage (value.LogoName, Theme.LabelTextColor);
+                    _vehicleTypeLabel.TextColor = DefaultColorForTextAndImage;
+                    _vehicleTypeLabel.Text = Localize.GetValue (value.Name.ToUpper ());
+                    _vehicleTypeLabel.SizeToFit ();
                 }
             }
         }
@@ -147,15 +139,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             }
         }
 
-		public UIImage GetColoredImage(string vehicleTypeLogoName, UIColor color, bool etaBadge = false)
+		private UIImage GetColoredImage(string vehicleTypeLogoName, UIColor color)
         {			
 			return ImageHelper.ApplyColorToImage(
 				string.Format(Selected
-					? "{0}_" + (etaBadge ? "no_" : "") + "badge_selected.png" 
-					: "{0}_" + (etaBadge ? "no_" : "") + "badge.png", vehicleTypeLogoName.ToLower()), 
-				etaBadge 
-                    ? Theme.LabelTextColor 
-                    : color);
+					? "{0}_badge_selected.png" 
+					: "{0}_badge.png", vehicleTypeLogoName.ToLower()), 
+                color);
         }
     }
 }

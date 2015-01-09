@@ -15,18 +15,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
     [Register("VehicleTypeAndEstimateView")]
     public class VehicleTypeAndEstimateView : UIView
     {
+        private const float VehicleSelectionHeight = 52f;
+        private const float VehicleLeftBadgeWidth = 56f;
+        private const float LabelPadding = 5f;
+
         private UIView HorizontalDividerTop { get; set; }
         private VehicleTypeView EstimateSelectedVehicleType { get; set; }
-		private VehicleTypeView EtaBadge { get; set; }
         private UILabel EstimatedFareLabel { get; set; }
-		private UILabel EtaLabel { get; set; }
         private UIView VehicleSelection { get; set; }
-		private UIView EtaContainer { get; set; }
-
-		private const float VehicleSelectionHeight = 52f;
-		private const float EtaContainerHeight = 23f;
-		private const float VehicleLeftBadgeWidth = 56f;
-		private const float LabelPadding = 5f;
+        private UILabel EtaLabel { get; set; }
 
         public Action<VehicleType> VehicleSelected { get; set; }
 
@@ -81,19 +78,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			};
 
 			EtaLabel.SetWidth(Frame.Width - VehicleLeftBadgeWidth - LabelPadding);
-            EtaLabel.SetHeight(EtaContainerHeight);
+            EtaLabel.SetHeight(23f);
 			EtaLabel.SetHorizontalCenter((Frame.Width / 2) + (VehicleLeftBadgeWidth / 2) - LabelPadding);
 
-			EtaContainer = new UIView (
-				new RectangleF (0f, this.Frame.Height - EtaContainerHeight, 
-					this.Frame.Width, EtaContainerHeight));
-
-
-			EtaContainer.BackgroundColor = Theme.CompanyColor;
-			VehicleSelection.Add (EtaContainer);
-			EtaContainer.Add (EtaBadge = new VehicleTypeView (new RectangleF (0, 0, 0, 0)));
-
-			AddSubviews(HorizontalDividerTop, EstimateSelectedVehicleType, EstimatedFareLabel, VehicleSelection);
+            AddSubviews(HorizontalDividerTop, EstimateSelectedVehicleType, EstimatedFareLabel, VehicleSelection, EtaLabel);
         }
 
         public bool IsReadOnly { get; set; }
@@ -111,20 +99,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 }
             }
         }
-
-		private bool _showEta;
-		public bool ShowEta
-		{
-			get { return _showEta; }
-			set
-			{
-				if (_showEta != value)
-				{
-					_showEta = value;
-					Redraw();
-				}
-			}
-		}
 
 		private bool _showVehicleSelection;
 		public bool ShowVehicleSelection
@@ -194,9 +168,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
         private void Redraw()
         {
-			bool showEta = !Eta.IsNullOrEmpty () && ShowEta;
-			showEtaView (showEta);
-
 			if (ShowEstimate)
             {
 				BackgroundColor = Theme.CompanyColor;
@@ -221,22 +192,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 var width = (this.Frame.Width - leftPadding * 2) / Vehicles.Count ();
                 var i = 0;
 
-				VehicleType etaBadge = null;
-
-
 				foreach (var vehicle in Vehicles) {
 					var vehicleView = new VehicleTypeView (
 						                   new RectangleF (leftPadding + i * width, 0f, width, this.Frame.Height), 
 						                   vehicle, 
 						                   SelectedVehicle != null ? vehicle.Id == SelectedVehicle.Id : false);
-
-					if (etaBadge == null) {
-						if (SelectedVehicle != null) {
-							etaBadge = SelectedVehicle;
-						} else {
-							etaBadge = vehicle;
-						}
-					}
 
 					vehicleView.TouchUpInside += (sender, e) => { 
 						if (!IsReadOnly && VehicleSelected != null) {
@@ -246,18 +206,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
 					VehicleSelection.Add (vehicleView);
 					i++;
-
 				}
-					
-				VehicleSelection.Add (EtaContainer);
-
-				EtaBadge.RemoveFromSuperview ();
-				EtaBadge = new VehicleTypeView (
-                    new RectangleF (4f, (EtaContainerHeight - 40f) / 2, 40f, 40f), // use real size of image
-					etaBadge,
-					true,
-					true);
-				EtaContainer.Add (EtaBadge);
             }
 
 			// Since this control doesn't use constraints:
@@ -267,45 +216,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			EtaLabel.SetWidth (this.Frame.Width - badgeWidth - LabelPadding * 2);
 			EtaLabel.SetX (badgeWidth + LabelPadding);
 			EstimatedFareLabel.SetX (badgeWidth + LabelPadding);
-		}
-
-		private void showEtaView(bool showEta)
-		{
-			EtaLabel.RemoveFromSuperview ();
-			VehicleSelection.Hidden = ShowEstimate;
-
-			float etaTop = (!ShowVehicleSelection && !ShowEstimate) ? 0f : VehicleSelectionHeight;
-			float etaHeight = etaTop + ((showEta && !ShowEstimate) ? EtaContainerHeight : 0f);
-			EtaContainer.SetY (etaTop);
-			this.SetHeight (etaHeight);
-			_heightConstraint.Constant = etaHeight;
-
-			if (Superview != null) {
-				((OrderOptionsControl)Superview.Superview).Resize();
-			}
-
-			this.SetRoundedCorners(UIRectCorner.BottomLeft | UIRectCorner.BottomRight, 3f);
-			EtaContainer.SetRoundedCorners(UIRectCorner.BottomLeft | UIRectCorner.BottomRight, 3f);
-
-			if (!ShowEstimate && showEta) 
-			{
-				EtaContainer.Add (EtaLabel);
-                EtaLabel.SetVerticalCenter(EtaContainerHeight / 2);
-			}
-				
-			if (ShowEstimate) {
-				if (showEta) {
-					this.AddSubview (EtaLabel);
-					EstimatedFareLabel.SetHeight(Frame.Height / 2);
-					EstimatedFareLabel.SetVerticalCenter(16f);
-					EstimatedFareLabel.Font = UIFont.FromName (FontName.HelveticaNeueLight, 32 / 2);
-					EtaLabel.SetVerticalCenter(Frame.Height - 16f);
-				} else {
-					EstimatedFareLabel.SetHeight(Frame.Height - 10f);
-					EstimatedFareLabel.SetVerticalCenter(Frame.Height / 2);
-					EstimatedFareLabel.Font = UIFont.FromName (FontName.HelveticaNeueLight, 38 / 2);
-				}
-			}
 		}
 
         private NSLayoutConstraint[] _hiddenContraints { get; set; }

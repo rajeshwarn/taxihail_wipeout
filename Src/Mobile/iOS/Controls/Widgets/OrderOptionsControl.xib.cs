@@ -7,6 +7,7 @@ using System.Linq;
 using apcurium.MK.Booking.Mobile.PresentationHints;
 using System.Windows.Input;
 using apcurium.MK.Booking.Mobile.Data;
+using apcurium.MK.Booking.Mobile.Client.Style;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
@@ -26,6 +27,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             BackgroundColor = UIColor.Clear;
             viewPickup.BackgroundColor = UIColor.Clear;
             viewDestination.BackgroundColor = UIColor.Clear;
+            viewVehicleType.BackgroundColor = UIColor.Clear;
+            viewEta.BackgroundColor = Theme.CompanyColor;
 
             viewPickup.IsDestination = false;
             viewDestination.IsDestination = true;
@@ -82,9 +85,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 .For(v => v.ShowEstimate)
 				.To(vm => vm.ShowEstimate);
 			set.Bind(viewVehicleType)
-				.For(v => v.ShowEta)
-                .To(vm => vm.ShowEta);
-			set.Bind(viewVehicleType)
 				.For(v => v.ShowVehicleSelection)
 				.To(vm => vm.ShowVehicleSelection);
             set.Bind (viewVehicleType)
@@ -96,6 +96,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			set.Bind (viewVehicleType)
 				.For (v => v.Eta)
 				.To (vm => vm.FormattedEta);
+
+            set.Bind(viewEta)
+                .For(v => v.Hidden)
+                .To(vm => vm.ShowEta)
+                .WithConversion("BoolInverter");
+            set.Bind (viewEta)
+                .For (v => v.SelectedVehicle)
+                .To (vm => vm.SelectedVehicleType);
+            set.Bind (viewEta)
+                .For (v => v.Eta)
+                .To (vm => vm.FormattedEta);
 
 			set.Bind (viewPickup)
                 .For ("AddressClicked")

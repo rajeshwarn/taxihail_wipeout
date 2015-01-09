@@ -586,6 +586,7 @@
     <Content Include="fr.lproj\InfoPlist.strings" />
     <Content Include="es.lproj\InfoPlist.strings" />
     <Content Include="ar.lproj\InfoPlist.strings" />
+    <Compile Include="Controls\Widgets\EtaView.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
   <ProjectExtensions>
