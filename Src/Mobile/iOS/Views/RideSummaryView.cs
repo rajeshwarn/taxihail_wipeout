@@ -37,13 +37,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
             View.BackgroundColor = UIColor.FromRGB(242, 242, 242);
 
-			FlatButtonStyle.Green.ApplyTo(btnReSendConfirmation);
-			FlatButtonStyle.Green.ApplyTo(btnPay);
-
             lblSubTitle.Text = String.Format(Localize.GetValue ("RideSummarySubTitleText"), this.Services().Settings.TaxiHail.ApplicationName);
-
-            btnPay.SetTitle(Localize.GetValue("PayNow"), UIControlState.Normal);
-            btnReSendConfirmation.SetTitle(Localize.GetValue("ReSendConfirmation"), UIControlState.Normal);
 
             PrepareTableView();
 

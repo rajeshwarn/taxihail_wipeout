@@ -554,3 +554,4 @@
 "Notification_PromotionEmail"="Promotions (Email)";
 "Notification_PromotionUnlockedPush"="Promotions unlocked (Push)";
 "Notification_PromotionUnlockedEmail"="Promotions unlocked (Email)";
+"ErrorCreateOrder_PendingOrder"="No puede reservar este servicio, ya que hay una reservación pendiente. ¿Desea ver esta reservación?";

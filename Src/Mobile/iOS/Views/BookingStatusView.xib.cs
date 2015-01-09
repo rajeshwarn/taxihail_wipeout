@@ -70,16 +70,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 btnCall.SetTitle(Localize.GetValue("StatusCallButton"), UIControlState.Normal);
                 btnCancel.SetTitle(Localize.GetValue("StatusCancelButton"), UIControlState.Normal);
                 btnNewRide.SetTitle(Localize.GetValue("StatusNewRideButton"), UIControlState.Normal);
-                btnPay.SetTitle(Localize.GetValue("PayNow"), UIControlState.Normal);
-                btnResend.SetTitle(Localize.GetValue("ReSendConfirmation"), UIControlState.Normal);
                 btnUnpair.SetTitle(Localize.GetValue("CmtRideLinqUnpair"), UIControlState.Normal);
 
                 FlatButtonStyle.Silver.ApplyTo(btnCallDriver);
                 FlatButtonStyle.Silver.ApplyTo(btnCall);
                 FlatButtonStyle.Red.ApplyTo(btnCancel);
                 FlatButtonStyle.Green.ApplyTo(btnNewRide);
-                FlatButtonStyle.Green.ApplyTo(btnPay);
-                FlatButtonStyle.Green.ApplyTo(btnResend);
                 FlatButtonStyle.Red.ApplyTo(btnUnpair);
                                                 
                 View.BringSubviewToFront (bottomBar);
@@ -95,8 +91,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 {
                     btnCancel.SetFrame(8, btnCancel.Frame.Y,  btnCancel.Frame.Width,  btnCancel.Frame.Height );
                     btnCall.SetFrame( 320 - 8 - btnCall.Frame.Width ,  btnCall.Frame.Y,  btnCall.Frame.Width,  btnCall.Frame.Height );
-                    btnPay.SetFrame(btnCancel.Frame);
-                    btnResend.SetFrame(btnCancel.Frame.X, btnCancel.Frame.Y, btnResend.Frame.Width, btnResend.Frame.Height);
 					btnUnpair.SetFrame(btnCancel.Frame.X, btnCancel.Frame.Y, btnUnpair.Frame.Width, btnUnpair.Frame.Height);
 
                     var callFrame = btnCall.Frame;
