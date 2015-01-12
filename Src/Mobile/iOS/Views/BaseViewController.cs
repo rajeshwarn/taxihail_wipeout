@@ -8,6 +8,7 @@ using apcurium.MK.Booking.Mobile.Client.Localization;
 using apcurium.MK.Booking.Mobile.Client.Style;
 using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
 using apcurium.MK.Booking.Mobile.Client.Helper;
+using apcurium.MK.Booking.Mobile.Client.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
@@ -189,6 +190,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			var activeFieldAbsoluteFrame = activeView.Superview.ConvertRectToView(activeView.Frame, this.View);
 			// activeFieldAbsoluteFrame is relative to this.View so does not include any scrollView.ContentOffset
 			activeFieldAbsoluteFrame.Y = activeFieldAbsoluteFrame.Y + this.View.Frame.Y;
+
+            //change width of control before checking because we only check vertically
+            activeFieldAbsoluteFrame.Width = 10f;
 
 			// Check if the activeField will be partially or entirely covered by the keyboard
 			if (!viewRectAboveKeyboard.Contains(activeFieldAbsoluteFrame))
