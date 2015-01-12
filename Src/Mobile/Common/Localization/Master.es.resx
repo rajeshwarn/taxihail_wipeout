@@ -1788,8 +1788,11 @@
     <comment>Support Application Mobile</comment>
   </data>
   <data name="TermsAndConditionsAcknowledgment" xml:space="preserve">
-    <value>Yo reconozco que he leído y entendido los términos y condiciones</value>
+    <value>Yo reconozco que he leído y entendido los Términos y condiciones</value>
     <comment>I acknowledge that I have read and understood the Terms and Conditions.</comment>
+  </data>
+  <data name="TermsAndConditionsLabel" xml:space="preserve">
+    <value>Términos y condiciones</value>
   </data>
   <data name="Time" xml:space="preserve">
     <value>Hora</value>

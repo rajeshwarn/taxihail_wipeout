@@ -551,3 +551,5 @@
 "Notification_PromotionEmail"="Promotions (Email)";
 "Notification_PromotionUnlockedPush"="Promotions unlocked (Push)";
 "Notification_PromotionUnlockedEmail"="Promotions unlocked (Email)";
+"ErrorCreateOrder_PendingOrder"="You cannot book this ride since an order is already pending. View the order status?";
+"TermsAndConditionsLabel"="الأحكام والشروط";

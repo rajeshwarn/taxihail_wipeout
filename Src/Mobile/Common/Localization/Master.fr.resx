@@ -1249,7 +1249,10 @@
     <value>Support application mobile</value>
   </data>
   <data name="TermsAndConditionsAcknowledgment" xml:space="preserve">
-    <value>Je reconnais avoir pris connaissance des conditions générales d'utilisation</value>
+    <value>Je reconnais avoir pris connaissance des Conditions générales d'utilisation</value>
+  </data>
+  <data name="TermsAndConditionsLabel" xml:space="preserve">
+    <value>Conditions générales d'utilisation</value>
   </data>
   <data name="Time" xml:space="preserve">
     <value>Heure</value>

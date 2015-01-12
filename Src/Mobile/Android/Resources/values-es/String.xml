@@ -436,7 +436,7 @@
   <string name="TaxiMapTitle">Su Taxi</string>
   <string name="TaxiServerDownMessage">No se pudo enviar el mensaje al taxi</string>
   <string name="TechSupportEmailTitle">Soporte de applicion móvil</string>
-  <string name="TermsAndConditionsAcknowledgment">Yo reconozco que he leído y entendido los términos y condiciones</string>
+  <string name="TermsAndConditionsAcknowledgment">Yo reconozco que he leído y entendido los Términos y condiciones</string>
   <string name="Time">Hora</string>
   <string name="TimeNow">Cuanto Antes</string>
   <string name="Tuto01Bottom">Comienze seleccionando su ubicación</string>
@@ -560,4 +560,5 @@
   <string name="Notification_PromotionUnlockedEmail">Promotions unlocked (Email)</string>
   <string name="Notification_PromotionUnlockedPush">Promotions unlocked (Push)</string>
   <string name="ErrorCreateOrder_PendingOrder">No puede reservar este servicio, ya que hay una reservación pendiente. ¿Desea ver esta reservación?</string>
+  <string name="TermsAndConditionsLabel">Términos y condiciones</string>
 </resources>

@@ -389,7 +389,7 @@
   <string name="TaxiMapTitle">Votre véhicule</string>
   <string name="TaxiServerDownMessage">Désolé, impossible de contacter le chauffeur</string>
   <string name="TechSupportEmailTitle">Support application mobile</string>
-  <string name="TermsAndConditionsAcknowledgment">Je reconnais avoir pris connaissance des conditions générales d\'utilisation</string>
+  <string name="TermsAndConditionsAcknowledgment">Je reconnais avoir pris connaissance des Conditions générales d\'utilisation</string>
   <string name="Time">Heure</string>
   <string name="TimeNow">Dès que possible.</string>
   <string name="Tuto01Bottom">Commencez par sélectionner votre position actuelle.</string>
@@ -567,4 +567,5 @@
   <string name="Notification_PromotionUnlockedEmail">Promotions déverrouillées (Email)</string>
   <string name="Notification_PromotionUnlockedPush">Promotions déverrouillées (Push)</string>
   <string name="ErrorCreateOrder_PendingOrder">La commande ne peut être créée car une autre commande est déjà en cours. Voir le statut de la commande?</string>
+  <string name="TermsAndConditionsLabel">Conditions générales d\'utilisation</string>
 </resources>
