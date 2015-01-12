@@ -109,21 +109,27 @@ namespace apcurium.MK.Web
 
         private DeploymentTargets ResolveDeploymentTarget(string host)
         {
-            if (host.Contains("localhost", StringComparison.InvariantCultureIgnoreCase))
+            var caseInsensitiveHost = host.ToLower();
+
+            if (caseInsensitiveHost.Contains("localhost"))
             {
                 return DeploymentTargets.Local;
             }
-            if (host.Contains("test", StringComparison.InvariantCultureIgnoreCase))
+            if (caseInsensitiveHost.Contains("test"))
+            {
+                return DeploymentTargets.Dev;
+            }
+            if (caseInsensitiveHost.Contains("staging"))
             {
                 return DeploymentTargets.Staging;
             }
-            if (host.Contains("services") || host.Contains("api"))
+            if (caseInsensitiveHost.Contains("services") || caseInsensitiveHost.Contains("api"))
             {
                 return DeploymentTargets.Production;
             }
 
             // Default
-            return DeploymentTargets.Staging;
+            return DeploymentTargets.Dev;
         }
 
         protected void Application_EndRequest(object sender, EventArgs e)

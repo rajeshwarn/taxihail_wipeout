@@ -58,15 +58,6 @@ namespace apcurium.MK.Common.Extensions
             return bool.TryParse(instance, out isBoolean);
         }
 
-        public static bool Contains(this string instance, string value, StringComparison? comparison = null)
-        {
-            if (comparison.HasValue)
-            {
-                return instance.IndexOf(value, comparison.Value) >= 0;
-            }
-            return instance.Contains(value);
-        }
-
         //TODO Filter Where HasValue()
         public static string JoinBy(this IEnumerable<string> items, string joinBy)
         {

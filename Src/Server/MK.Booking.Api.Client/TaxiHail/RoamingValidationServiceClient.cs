@@ -40,11 +40,12 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             switch (target)
             {
                 case DeploymentTargets.Local:
+                case DeploymentTargets.Dev:
                     return string.Format("http://test.taxihail.biz:8181/{0}/", applicationKey);
                 case DeploymentTargets.Staging:
-                    return string.Format("http://test.taxihail.biz:8181/{0}/", applicationKey);
+                    return string.Format("http://staging.taxihail.com/{0}/", applicationKey);
                 case DeploymentTargets.Production:
-                    return string.Format("http://services.taxihail.com/{0}/", applicationKey);
+                    return string.Format("http://api.taxihail.com/{0}/", applicationKey);
                 default:
                     return string.Format("http://test.taxihail.biz:8181/{0}/", applicationKey);
             }
