@@ -7,6 +7,7 @@ using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 using apcurium.MK.Booking.Mobile.Client.Helper;
 using TinyIoC;
+using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
 
 namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 {
@@ -21,20 +22,33 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 
 		public void RegisterDeviceForPushNotifications (bool force = false)
         {
-            if (force) {
+            if (force) 
+            {
                 NSUserDefaults.StandardUserDefaults.SetString (string.Empty, "PushDeviceToken");
             }
 
-			CheckIfUserHasDiablePushNotification ();
+            CheckIfUserHasDisabledPushNotification ();
 
-            UIApplication.SharedApplication.RegisterForRemoteNotificationTypes(UIRemoteNotificationType.Alert
-                                                                               | UIRemoteNotificationType.Badge
-                                                                               | UIRemoteNotificationType.Sound);
+            if (UIHelper.IsOS8orHigher)
+            {
+                var settings = UIUserNotificationSettings.GetSettingsForTypes (
+                    UIUserNotificationType.Alert |
+                    UIUserNotificationType.Badge |
+                    UIUserNotificationType.Sound, null);
 
-
+                UIApplication.SharedApplication.RegisterUserNotificationSettings (settings);
+                UIApplication.SharedApplication.RegisterForRemoteNotifications ();
+            }
+            else
+            {
+                UIApplication.SharedApplication.RegisterForRemoteNotificationTypes(
+                    UIRemoteNotificationType.Alert | 
+                    UIRemoteNotificationType.Badge | 
+                    UIRemoteNotificationType.Sound);
+            }
         }
 
-		void CheckIfUserHasDiablePushNotification ()
+		private void CheckIfUserHasDisabledPushNotification ()
 		{
 			//check only after the first run (because on the first one we have not yet ask for push notification permission)
 			const string pushFirstStart = "pushFirstStart";
@@ -62,15 +76,23 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 			}
 		}
 
-		bool IsPushDisabled ()
+		private bool IsPushDisabled ()
 		{
-			var enabledTypes = UIApplication.SharedApplication.EnabledRemoteNotificationTypes;
+            if (UIHelper.IsOS8orHigher)
+            {
+                return UIApplication.SharedApplication.IsRegisteredForRemoteNotifications;
+            }
+            else
+            {
+                var enabledTypes = UIApplication.SharedApplication.EnabledRemoteNotificationTypes;
 
-			if (((enabledTypes & UIRemoteNotificationType.Alert) != UIRemoteNotificationType.Alert)) {
-				return true;
-			}
-			return false;
-		}
+                if (((enabledTypes & UIRemoteNotificationType.Alert) != UIRemoteNotificationType.Alert)) 
+                {
+                    return true;
+                }
+                return false;
+            }
+        }
 
         public void SaveDeviceToken(string deviceToken)
         {
