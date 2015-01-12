@@ -13,6 +13,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 	partial class NotificationSettingsView
 	{
 		[Outlet]
+		MonoTouch.UIKit.NSLayoutConstraint constraintLeftLabel { get; set; }
+
+		[Outlet]
+		MonoTouch.UIKit.NSLayoutConstraint constraintRightSwitch { get; set; }
+
+		[Outlet]
 		MonoTouch.UIKit.UILabel labelNotificationEnabled { get; set; }
 
 		[Outlet]
@@ -23,11 +29,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		
 		void ReleaseDesignerOutlets ()
 		{
-			if (tableNotifications != null) {
-				tableNotifications.Dispose ();
-				tableNotifications = null;
-			}
-
 			if (labelNotificationEnabled != null) {
 				labelNotificationEnabled.Dispose ();
 				labelNotificationEnabled = null;
@@ -36,6 +37,21 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			if (switchNotificationEnabled != null) {
 				switchNotificationEnabled.Dispose ();
 				switchNotificationEnabled = null;
+			}
+
+			if (tableNotifications != null) {
+				tableNotifications.Dispose ();
+				tableNotifications = null;
+			}
+
+			if (constraintLeftLabel != null) {
+				constraintLeftLabel.Dispose ();
+				constraintLeftLabel = null;
+			}
+
+			if (constraintRightSwitch != null) {
+				constraintRightSwitch.Dispose ();
+				constraintRightSwitch = null;
 			}
 		}
 	}

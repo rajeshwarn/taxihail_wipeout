@@ -13,6 +13,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 	partial class UserTaxiHailNetworkSettingsView
 	{
 		[Outlet]
+		MonoTouch.UIKit.NSLayoutConstraint constraintLeftLabel { get; set; }
+
+		[Outlet]
+		MonoTouch.UIKit.NSLayoutConstraint constraintRightSwitch { get; set; }
+
+		[Outlet]
 		MonoTouch.UIKit.UILabel labelTaxiHailNetworkEnabled { get; set; }
 
 		[Outlet]
@@ -28,14 +34,24 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				labelTaxiHailNetworkEnabled = null;
 			}
 
+			if (switchTaxiHailNetworkEnabled != null) {
+				switchTaxiHailNetworkEnabled.Dispose ();
+				switchTaxiHailNetworkEnabled = null;
+			}
+
 			if (tableTaxiHailNetworkSettings != null) {
 				tableTaxiHailNetworkSettings.Dispose ();
 				tableTaxiHailNetworkSettings = null;
 			}
 
-			if (switchTaxiHailNetworkEnabled != null) {
-				switchTaxiHailNetworkEnabled.Dispose ();
-				switchTaxiHailNetworkEnabled = null;
+			if (constraintLeftLabel != null) {
+				constraintLeftLabel.Dispose ();
+				constraintLeftLabel = null;
+			}
+
+			if (constraintRightSwitch != null) {
+				constraintRightSwitch.Dispose ();
+				constraintRightSwitch = null;
 			}
 		}
 	}

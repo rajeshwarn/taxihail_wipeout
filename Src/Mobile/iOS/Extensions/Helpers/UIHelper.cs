@@ -20,6 +20,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Extensions.Helpers
             get { return UIScreen.MainScreen.Bounds.Height < 500; }
         }
 
+        public static bool IsOS7
+        {
+            get{
+                return Convert.ToInt32(UIDevice.CurrentDevice.SystemVersion.Split('.')[0]) == 7;
+            }
+        }
+
 		public static bool IsOS7orHigher
 		{
 			get{
