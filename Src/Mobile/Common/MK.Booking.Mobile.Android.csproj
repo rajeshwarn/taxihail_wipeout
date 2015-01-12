@@ -375,7 +375,10 @@
     <EmbeddedResource Include="Localization\Master.fr.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Localization\Ramride.resx" />
+    <None Include="Localization\RamRide.resx" />
+    <None Include="Localization\Norshore.resx" />
+    <None Include="Localization\FlashCab.resx" />
+    <None Include="Localization\Taxi303.resx" />
     <EmbeddedResource Include="Localization\TaxiHail Pro.fr.resx" />
     <EmbeddedResource Include="Localization\TaxiHail Pro.resx" />
     <EmbeddedResource Include="Localization\Taxiworld.resx">
