@@ -16,15 +16,15 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
         IIntegrationEventHandler,
         IEventHandler<OrderStatusChanged>
     {
-        private readonly IPaymentService _paymentService;
         private readonly INotificationService _notificationService;
         private readonly IServerSettings _serverSettings;
         private readonly IOrderDao _orderDao;
         private readonly ICreditCardDao _creditCardDao;
         private readonly IAccountDao _accountDao;
         private readonly IIBSServiceProvider _ibsServiceProvider;
+        private readonly IPaymentServiceFactory _paymentServiceFactory;
 
-        public OrderPairingManager(IPaymentService paymentService, 
+        public OrderPairingManager(IPaymentServiceFactory paymentServiceFactory, 
             INotificationService notificationService, 
             IServerSettings serverSettings,
             IOrderDao orderDao,
@@ -32,7 +32,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             IAccountDao accountDao,
             IIBSServiceProvider ibsServiceProvider)
         {
-            _paymentService = paymentService;
+            _paymentServiceFactory = paymentServiceFactory;
             _notificationService = notificationService;
             _serverSettings = serverSettings;
             _orderDao = orderDao;
@@ -58,14 +58,16 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                     {
                         var account = _accountDao.FindById(@event.Status.AccountId);
 
-                        var response = _paymentService.Pair(@event.SourceId, creditCardAssociatedToAccount.Token, account.DefaultTipPercent, null);
+                        var paymentService = _paymentServiceFactory.GetInstance();
+                        var response = paymentService.Pair(@event.SourceId, creditCardAssociatedToAccount.Token, account.DefaultTipPercent, null);
+
                         if (response.IsSuccessful)
                         {
                             var ibsAccountId = _accountDao.GetIbsAccountId(order.AccountId, null);
                             if (!UpdateOrderPaymentType(ibsAccountId.Value, order.IBSOrderId.Value))
                             {
                                 response.IsSuccessful = false;
-                                _paymentService.VoidPreAuthorization(@event.SourceId);
+                                paymentService.VoidPreAuthorization(@event.SourceId);
                             }
                         }
 

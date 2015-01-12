@@ -795,45 +795,6 @@
   <data name="AccountActivationMessage" xml:space="preserve">
     <value>An email has been sent. Please follow the link in the email to confirm your address.</value>
   </data>
-  <data name="ServiceErrorCallTitle" xml:space="preserve">
-    <value>Message</value>
-  </data>
-  <data name="ServiceErrorDefaultMessage" xml:space="preserve">
-    <value>An error occurred. Please try again.</value>
-  </data>
-  <data name="ServiceErrorCreateOrder_PendingOrder" xml:space="preserve">
-    <value>You cannot book this ride since an order is already pending. View the order status?</value>
-  </data>
-  <data name="ServiceErrorCreateOrder_NoProvider" xml:space="preserve">
-    <value>Order cannot be created, no provider specified. Please try again or call us.</value>
-  </data>
-  <data name="ServiceErrorCreateOrder_InvalidProvider" xml:space="preserve">
-    <value>Order cannot be created, invalid provider. Please contact {0} at {1} for further assistance.</value>
-  </data>
-  <data name="ServiceErrorCreateOrder_InvalidProvider_NoCall" xml:space="preserve">
-    <value>Order cannot be created, invalid provider.</value>
-  </data>
-  <data name="ServiceErrorCreateOrder_VehiculeType" xml:space="preserve">
-    <value>Order cannot be created, invalid vehicle type. Please try again or call us.</value>
-  </data>
-  <data name="ServiceErrorCreateOrder_NoFareEstimateAvailable" xml:space="preserve">
-    <value>No fare estimate available for the ride. Please contact {0} at {1} for further assistance.</value>
-  </data>
-  <data name="ServiceErrorCreateOrder_NoFareEstimateAvailable_NoCall" xml:space="preserve">
-    <value>No fare estimate available for the ride.</value>
-  </data>
-  <data name="ServiceErrorCreateAccount_AccountAlreadyExist" xml:space="preserve">
-    <value>This email is already in use.</value>
-  </data>
-  <data name="ServiceErrorUnauthorized" xml:space="preserve">
-    <value>Your session has expired, please login to continue.</value>
-  </data>
-  <data name="ServiceErrorUpdatePassword_NotSame" xml:space="preserve">
-    <value>The current password is not valid.</value>
-  </data>
-  <data name="ServiceErrorResetPassword_AccountNotFound" xml:space="preserve">
-    <value>No account with this email has been found.</value>
-  </data>
   <data name="BookDateLabel" xml:space="preserve">
     <value>Pick Me Up Later</value>
   </data>
@@ -899,12 +860,6 @@
   </data>
   <data name="ErrorCreatingOrderTitle" xml:space="preserve">
     <value>Booking cannot be completed</value>
-  </data>
-  <data name="ServiceError_ErrorCreatingOrderMessage" xml:space="preserve">
-    <value>Please contact {0} at {1} for further assistance.</value>
-  </data>
-  <data name="ServiceError_ErrorCreatingOrderMessage_NoCall" xml:space="preserve">
-    <value>The order cannot be created.</value>
   </data>
   <data name="AccountDisabled_NoCall" xml:space="preserve">
     <value>Your account has been disabled.</value>
@@ -1545,9 +1500,6 @@
   <data name="AccountConfirmation_ErrorTitle" xml:space="preserve">
     <value>Cannot confirm account</value>
   </data>
-  <data name="ServiceErrorCreateAccount_InvalidConfirmationToken" xml:space="preserve">
-    <value>The confirmation code is incorrect.</value>
-  </data>
   <data name="DeleteCreditCard" xml:space="preserve">
     <value>Delete the credit card registered to this account?</value>
   </data>
@@ -1659,9 +1611,6 @@
   <data name="EstimateFareCalculating" xml:space="preserve">
     <value>Calculating...</value>
   </data>
-  <data name="ServiceErrorAccountCharge_InvalidAccountNumber" xml:space="preserve">
-    <value>Invalid account number</value>
-  </data>
   <data name="Knowledgabledriver" xml:space="preserve">
     <value>Knowledgable driver</value>
   </data>
@@ -1670,9 +1619,6 @@
   </data>
   <data name="Politeness" xml:space="preserve">
     <value>Politeness</value>
-  </data>
-  <data name="ServiceErrorCreateOrder_CardOnFileButNoCreditCard" xml:space="preserve">
-    <value>No Credit Card On File.</value>
   </data>
   <data name="CallDriverUsingProxyMessage" xml:space="preserve">
     <value>Your driver will call you back in a few minutes</value>
@@ -1784,5 +1730,8 @@
   </data>
   <data name="PromoProgress" xml:space="preserve">
     <value>Progress :</value>
+  </data>
+  <data name="ErrorCreateOrder_PendingOrder" xml:space="preserve">
+    <value>You cannot book this ride since an order is already pending. View the order status?</value>
   </data>
 </root>
