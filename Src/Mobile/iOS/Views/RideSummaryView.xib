@@ -6,8 +6,6 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="RideSummaryView">
             <connections>
-                <outlet property="btnPay" destination="13" id="4eG-JV-K6f"/>
-                <outlet property="btnReSendConfirmation" destination="18" id="uar-tO-hJ4"/>
                 <outlet property="constraintRatingTableHeight" destination="NGo-Ev-Jdl" id="w2x-aJ-Xlz"/>
                 <outlet property="lblSubTitle" destination="4" id="rgm-Vd-5cH"/>
                 <outlet property="tableRatingList" destination="lxr-AS-1xd" id="h07-zC-KGF"/>
@@ -25,30 +23,6 @@
                     <color key="textColor" red="0.39215686274509803" green="0.39215686274509803" blue="0.39215686274509803" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="13" customClass="FlatButton">
-                    <rect key="frame" x="8" y="182" width="304" height="41"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="304" id="jsR-eg-2tJ"/>
-                        <constraint firstAttribute="height" constant="41" id="uLV-tb-Llr"/>
-                    </constraints>
-                    <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="20"/>
-                    <state key="normal" title="Pay">
-                        <color key="titleColor" red="0.0" green="0.50196081400000003" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                    </state>
-                </button>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="18" customClass="FlatButton">
-                    <rect key="frame" x="8" y="182" width="304" height="41"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="41" id="kjc-dh-jfj"/>
-                        <constraint firstAttribute="width" constant="304" id="uyE-QG-3l3"/>
-                    </constraints>
-                    <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="20"/>
-                    <state key="normal" title="Resend">
-                        <color key="titleColor" red="0.0" green="0.50196081400000003" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                    </state>
-                </button>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="69" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="lxr-AS-1xd">
                     <rect key="frame" x="0.0" y="100" width="320" height="69"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -63,13 +37,9 @@
             </subviews>
             <color key="backgroundColor" red="0.78431372549019607" green="0.78431372549019607" blue="0.78431372549019607" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
-                <constraint firstAttribute="centerX" secondItem="13" secondAttribute="centerX" id="DGX-Mz-eHT"/>
-                <constraint firstAttribute="centerX" secondItem="18" secondAttribute="centerX" id="DPT-Vx-Zpo"/>
                 <constraint firstItem="lxr-AS-1xd" firstAttribute="top" secondItem="4" secondAttribute="bottom" constant="20" id="Gwa-Tm-0X3"/>
                 <constraint firstItem="lxr-AS-1xd" firstAttribute="leading" secondItem="1" secondAttribute="leading" id="UOm-Mb-Tcj"/>
-                <constraint firstItem="13" firstAttribute="top" secondItem="lxr-AS-1xd" secondAttribute="bottom" constant="13" id="e0O-Ex-tI7"/>
                 <constraint firstAttribute="trailing" secondItem="4" secondAttribute="trailing" constant="20" id="jlQ-5b-QpO"/>
-                <constraint firstItem="18" firstAttribute="top" secondItem="lxr-AS-1xd" secondAttribute="bottom" constant="13" id="lRV-NU-Up5"/>
                 <constraint firstItem="4" firstAttribute="leading" secondItem="1" secondAttribute="leading" constant="20" id="oqH-gg-5Pn"/>
                 <constraint firstItem="4" firstAttribute="top" secondItem="1" secondAttribute="top" constant="20" id="oyS-Ig-Pdv"/>
                 <constraint firstAttribute="trailing" secondItem="lxr-AS-1xd" secondAttribute="trailing" id="xWb-fu-PxE"/>
