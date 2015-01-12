@@ -370,6 +370,10 @@
     <None Include="Localization\Master.fr.resx">
       <SubType>Designer</SubType>
     </None>
+    <None Include="Localization\FlashCab.resx" />
+    <None Include="Localization\Norshore.resx" />
+    <None Include="Localization\Ramride.resx" />
+    <None Include="Localization\Taxi303.resx" />
     <EmbeddedResource Include="Settings\Settings.json" />
     <EmbeddedResource Include="Style\Style.json" />
     <EmbeddedResource Include="TutorialContent\Tutorial-ar.json" />

@@ -287,12 +287,6 @@ namespace apcurium.MK.Booking.Api.Jobs
 
         private void HandlePairingForStandardPairing(OrderStatusDetail orderStatusDetail, OrderPairingDetail pairingInfo, IBSOrderInformation ibsOrderInfo)
         {
-            if (!_serverSettings.GetPaymentSettings().AutomaticPayment)
-            {
-                Log.Debug("Standard Pairing: Automatic payment is disabled, nothing else to do.");
-                return;
-            }
-
             var orderPayment = _paymentDao.FindNonPayPalByOrderId(orderStatusDetail.OrderId);
             if (orderPayment != null && (orderPayment.IsCompleted || orderPayment.IsCancelled))
             {
@@ -676,8 +670,7 @@ namespace apcurium.MK.Booking.Api.Jobs
             }
             else if (ibsOrderInfo.IsLoaded)
             {
-                if (orderDetail != null && (_serverSettings.GetPaymentSettings().AutomaticPayment
-                                            && _serverSettings.GetPaymentSettings().AutomaticPaymentPairing
+                if (orderDetail != null && (_serverSettings.GetPaymentSettings().AutomaticPaymentPairing
                                             && orderDetail.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id))
                 {
                     description = _resources.Get("OrderStatus_wosLOADEDAutoPairing", _languageCode);

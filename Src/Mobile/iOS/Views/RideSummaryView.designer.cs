@@ -13,15 +13,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 	partial class RideSummaryView
 	{
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnPay { get; set; }
-
-		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnReSendConfirmation { get; set; }
-
-		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnSubmit { get; set; }
-
-		[Outlet]
 		MonoTouch.UIKit.NSLayoutConstraint constraintRatingTableHeight { get; set; }
 
 		[Outlet]
@@ -32,21 +23,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		
 		void ReleaseDesignerOutlets ()
 		{
-			if (btnPay != null) {
-				btnPay.Dispose ();
-				btnPay = null;
-			}
-
-			if (btnReSendConfirmation != null) {
-				btnReSendConfirmation.Dispose ();
-				btnReSendConfirmation = null;
-			}
-
-			if (btnSubmit != null) {
-				btnSubmit.Dispose ();
-				btnSubmit = null;
-			}
-
 			if (constraintRatingTableHeight != null) {
 				constraintRatingTableHeight.Dispose ();
 				constraintRatingTableHeight = null;

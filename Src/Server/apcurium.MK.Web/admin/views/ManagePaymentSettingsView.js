@@ -121,7 +121,6 @@
             }
             
             if (data.paymentMode == "None" || data.paymentMode == "RideLinqCmt") {
-                data.automaticPayment = false;
                 data.automaticPaymentPairing = false;
             }
 
@@ -155,8 +154,6 @@
             this.$("[name = acceptChange]").removeAttr("checked");
 
             var newPaymentMode = this.$("[name=paymentMode]").val();
-
-            var autPaymentDiv = this.$("#automaticPaymentDiv");
             var autPairingDiv = this.$("#automaticPairingDiv");
             var preAuthAmountEnabledDiv = this.$("#preAuthAmountEnabledDiv");
             var preAuthAmountDiv = this.$("#preAuthAmountDiv");
@@ -186,7 +183,6 @@
                 btDiv.hide();
                 cmtDiv.show();
                 monerisDiv.hide();
-                autPaymentDiv.hide();
                 autPairingDiv.hide();
             }
             else if (newPaymentMode == "Cmt")
@@ -194,7 +190,6 @@
                 btDiv.hide();
                 cmtDiv.show();
                 monerisDiv.hide();
-                autPaymentDiv.show();
                 autPairingDiv.show();
                 preAuthAmountEnabledDiv.show();
                 preAuthAmountDiv.show();
@@ -205,7 +200,6 @@
                 btDiv.show();
                 cmtDiv.hide();
                 monerisDiv.hide();
-                autPaymentDiv.show();
                 autPairingDiv.show();
                 preAuthAmountEnabledDiv.show();
                 preAuthAmountDiv.show();
@@ -216,7 +210,6 @@
                 btDiv.hide();
                 cmtDiv.hide();
                 monerisDiv.show();
-                autPaymentDiv.show();
                 autPairingDiv.show();
                 preAuthAmountEnabledDiv.show();
                 preAuthAmountDiv.show();
@@ -227,7 +220,6 @@
                 btDiv.hide();
                 cmtDiv.hide();
                 monerisDiv.hide();
-                autPaymentDiv.hide();
                 autPairingDiv.hide();
                 preAuthAmountEnabledDiv.hide();
                 preAuthAmountDiv.hide();
