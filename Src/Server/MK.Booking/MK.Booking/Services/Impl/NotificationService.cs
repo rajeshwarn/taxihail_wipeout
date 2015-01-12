@@ -119,10 +119,9 @@ namespace apcurium.MK.Booking.Services.Impl
         public void SendPairingInquiryPush(OrderStatusDetail orderStatusDetail)
         {
             var order = _orderDao.FindById(orderStatusDetail.OrderId);
-            if (_serverSettings.GetPaymentSettings().AutomaticPayment
-                    && !_serverSettings.GetPaymentSettings().AutomaticPaymentPairing
-                    && order.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id // Only send notification if using card on file
-                    && ShouldSendNotification(order.AccountId, x => x.ConfirmPairingPush))
+            if (!_serverSettings.GetPaymentSettings().AutomaticPaymentPairing
+                && order.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id // Only send notification if using card on file
+                && ShouldSendNotification(order.AccountId, x => x.ConfirmPairingPush))
             {
                 SendPushOrSms(order.AccountId,
                     _resources.Get("PushNotification_wosLOADED", order.ClientLanguageCode),

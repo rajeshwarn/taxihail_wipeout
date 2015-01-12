@@ -37,13 +37,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
             View.BackgroundColor = UIColor.FromRGB(242, 242, 242);
 
-			FlatButtonStyle.Green.ApplyTo(btnReSendConfirmation);
-			FlatButtonStyle.Green.ApplyTo(btnPay);
-
             lblSubTitle.Text = String.Format(Localize.GetValue ("RideSummarySubTitleText"), this.Services().Settings.TaxiHail.ApplicationName);
-
-            btnPay.SetTitle(Localize.GetValue("PayNow"), UIControlState.Normal);
-            btnReSendConfirmation.SetTitle(Localize.GetValue("ReSendConfirmation"), UIControlState.Normal);
 
             PrepareTableView();
 
@@ -102,22 +96,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                     ViewModel.CloseCommand.ExecuteIfPossible();
                 }
             });
-
-            set.Bind(btnPay)
-                .For("TouchUpInside")
-                .To(vm => vm.PayCommand);
-            set.Bind(btnPay)
-                .For(v => v.HiddenWithConstraints)
-                .To(vm => vm.IsPayButtonShown)
-                .WithConversion("BoolInverter");
-
-            set.Bind(btnReSendConfirmation)
-                .For("TouchUpInside")
-                .To(vm => vm.ResendConfirmationCommand);
-            set.Bind(btnReSendConfirmation)
-                .For(v => v.HiddenWithConstraints)
-                .To(vm => vm.IsResendConfirmationButtonShown)
-                .WithConversion("BoolInverter");
 
             set.Bind(_source)
                 .For(v => v.ItemsSource)

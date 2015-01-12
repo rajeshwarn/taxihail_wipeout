@@ -51,8 +51,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                     var order = _orderDao.FindById(@event.SourceId);
                     var creditCardAssociatedToAccount = _creditCardDao.FindByAccountId(@event.Status.AccountId).FirstOrDefault();
 
-                    if (_serverSettings.GetPaymentSettings().AutomaticPayment
-                        && _serverSettings.GetPaymentSettings().AutomaticPaymentPairing
+                    if (_serverSettings.GetPaymentSettings().AutomaticPaymentPairing
                         && _serverSettings.GetPaymentSettings().PaymentMode != PaymentMethod.RideLinqCmt
                         && order.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id
                         && creditCardAssociatedToAccount != null)        // Only send notification if using card on file

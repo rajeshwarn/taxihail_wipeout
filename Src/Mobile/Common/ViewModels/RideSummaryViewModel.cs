@@ -4,10 +4,7 @@ using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.Messages;
 using apcurium.MK.Booking.Mobile.PresentationHints;
-using apcurium.MK.Booking.Mobile.ViewModels.Payment;
-using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Entity;
-using apcurium.MK.Common.Enumeration;
 using ServiceStack.Text;
 using System.Collections.Generic;
 using apcurium.MK.Booking.Mobile.Models;
@@ -21,21 +18,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 	public class RideSummaryViewModel: PageViewModel, ISubViewModel<OrderRated>
 	{
 		private readonly IOrderWorkflowService _orderWorkflowService;
-		private readonly IPaymentService _paymentService;
 		private readonly IBookingService _bookingService;
-        private readonly IAccountService _accountService;
 
-		private ClientPaymentSettings _paymentSettings;
-
-		public RideSummaryViewModel(IOrderWorkflowService orderWorkflowService,
-			IPaymentService paymentService,
-			IBookingService bookingService,
-            IAccountService accountService)
+		public RideSummaryViewModel(IOrderWorkflowService orderWorkflowService, IBookingService bookingService)
 		{
 			_orderWorkflowService = orderWorkflowService;
-			_paymentService = paymentService;
 			_bookingService = bookingService;
-		    _accountService = accountService;
 		}
 
 		public async void Init(string order, string orderStatus)
@@ -48,8 +36,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 			using (this.Services().Message.ShowProgress())
 			{
-				_paymentSettings = await _paymentService.GetPaymentSettings ();
-
 				if (Settings.RatingEnabled) 
 				{
 					await InitRating ();
@@ -61,7 +47,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		public List<RatingModel> RatingList
 		{
 			get { return _ratingList; }
-			set { 
+			set
+            { 
 				_ratingList = value; 
 				RaisePropertyChanged();
 			}
@@ -71,7 +58,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		public string Note
 		{
 			get { return _note; }
-			set { 
+			set 
+            { 
 				_note = value; 
 				RaisePropertyChanged();
 			}
@@ -81,7 +69,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		public bool CanRate
 		{
 			get { return _canRate; }
-			set {
+			set 
+            {
 				_canRate = value;
 				RaisePropertyChanged(); 
 				UpdateRatingList ();
@@ -92,8 +81,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			if (RatingList != null) 
 			{
-				RatingList.ForEach (x => x.CanRate = _canRate);
-				RaisePropertyChanged (() => RatingList);
+				RatingList.ForEach(x => x.CanRate = _canRate);
+				RaisePropertyChanged(() => RatingList);
 			}
 		}
 
@@ -117,13 +106,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				_bookingService.SetLastUnratedOrderId(OrderId);
 
 				var orderRatings = await _bookingService.GetOrderRatingAsync(OrderId);
-				HasRated = orderRatings.RatingScores.Any();
-				bool canRate = !HasRated;
 				var ratingTypes = await _bookingService.GetRatingTypes();
-				CanRate = canRate;
-				if (canRate) 
+
+                HasRated = orderRatings.RatingScores.Any();
+				CanRate = !HasRated;
+
+                if (CanRate) 
 				{
-                    RatingList = ratingTypes.Select(c => new RatingModel(canRate)
+                    RatingList = ratingTypes.Select(c => new RatingModel(CanRate)
                     {
                         RatingTypeId = c.Id,
                         RatingTypeName = c.Name
@@ -133,81 +123,28 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				{
 					Note = orderRatings.Note;
 					RatingList = orderRatings.RatingScores.Select(c=> new RatingModel
-						{
-							RatingTypeId = c.RatingTypeId,
-							Score = c.Score,
-							RatingTypeName = c.Name
-						}).OrderBy(c=>c.RatingTypeId).ToList();
+					{
+						RatingTypeId = c.RatingTypeId,
+						Score = c.Score,
+						RatingTypeName = c.Name
+					}).OrderBy(c=>c.RatingTypeId).ToList();
 				}
 			}
 		}
 
-        public override void OnViewStarted(bool firstStart = false)
-        {
-            base.OnViewStarted(firstStart);
-			RaisePropertyChanged(() => IsPayButtonShown);
-			RaisePropertyChanged(() => IsResendConfirmationButtonShown);
-        }
-
 		private Order Order { get; set; }
 		private OrderStatusDetail OrderStatus { get; set;}
-
-		public bool IsPayButtonShown
-		{
-			get
-			{
-                bool payingByChargeAccount = Order.Settings.ChargeTypeId != null && Order.Settings.ChargeTypeId == ChargeTypes.Account.Id;
-                bool payingByChargeAccountCardOnFile = payingByChargeAccount && OrderStatus.IsChargeAccountPaymentWithCardOnFile;
-			    bool isOrderAlreadyPaid = _paymentService.GetPaymentFromCache(Order.Id).HasValue;
-                bool hasCardOnFile = _paymentSettings.IsPayInTaxiEnabled && _accountService.CurrentAccount.DefaultCreditCard != null;
-
-                return !isOrderAlreadyPaid
-                        && !_paymentSettings.AutomaticPayment                                   // Payment is processed automatically
-						&& _paymentSettings.PaymentMode != PaymentMethod.RideLinqCmt            // Payment is processed automatically
-                        && (!payingByChargeAccount || payingByChargeAccountCardOnFile)
-                        && (hasCardOnFile || _paymentSettings.PayPalClientSettings.IsEnabled)   // Can pay by card or PayPal
-						&& OrderStatus.CompanyKey == null;                                      // Not dispatched to another company;
-			}
-		}
-
-	    public bool IsResendConfirmationButtonShown
-	    {
-	        get
-	        {
-				var isPayEnabled = _paymentSettings.IsPayInTaxiEnabled 
-					|| _paymentSettings.PayPalClientSettings.IsEnabled;
-				return isPayEnabled 
-					&& _paymentSettings.PaymentMode != PaymentMethod.RideLinqCmt
-					&& !_paymentSettings.AutomaticPayment
-					&& _paymentService.GetPaymentFromCache(Order.Id).HasValue;
-	        }
-	    }
 
 		bool _hasRated;		
 		public bool HasRated 
 		{
-			get 
-			{ 
-				return _hasRated;
-			}
+			get { return _hasRated; }
 			set 
 			{ 
 				_hasRated = value;
 				RaisePropertyChanged ();
-				RaisePropertyChanged(() => IsPayButtonShown);
 			}
 		}
-
-		public ICommand ResendConfirmationCommand
-        {
-            get {
-				return this.GetCommand(() =>
-                {
-					this.Services().Message.ShowMessage("Confirmation", this.Services().Localize["ConfirmationOfPaymentSent"]);
-					_paymentService.ResendConfirmationToDriver(Order.Id);
-                });
-            }
-        }
 
 		// for Android only
 	    public ICommand RateOrder
@@ -227,21 +164,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 	        }
 	    }
 
-		public ICommand PayCommand 
-		{
-			get 
-			{
-				return this.GetCommand (() => 
-				{ 
-					this.Services().Analytics.LogEvent("PayButtonTapped");
-					ShowViewModel<ConfirmCarNumberViewModel> (new 
-					{ 
-						order = Order.ToJson (), orderStatus = OrderStatus.ToJson () 
-					});
-				});
-			}
-		}
-
 		public ICommand PrepareNewOrder
 		{
 			get
@@ -260,7 +182,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public async Task CheckAndSendRatings(bool sendRatingButtonWasPressed = false)
 		{
-			this.Logger.LogMessage("CheckAndSendRatings starting");
+			Logger.LogMessage("CheckAndSendRatings starting");
 			if (!Settings.RatingEnabled || HasRated)
 			{
 				return;
@@ -268,7 +190,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 			if (RatingList == null)
 			{
-				this.Logger.LogMessage("RatingList is null");
+				Logger.LogMessage("RatingList is null");
+			    return;
 			}
 
 			if (RatingList.Any(c => c.Score == 0))
@@ -281,7 +204,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 						this.Services().Localize["BookRatingErrorMessage"]);
 				}
 
-				this.Logger.LogMessage("RatingRequired and some ratings are not set");
+				Logger.LogMessage("RatingRequired and some ratings are not set");
 
 				// We don't send the review since it's not complete. The user will have the
 				// possibility to go back to the order history to rate it later if he so desires
@@ -308,8 +231,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 			catch(Exception ex)
 			{
-				this.Logger.LogMessage("Error while SendRatingReview");
-				this.Logger.LogError(ex);
+				Logger.LogMessage("Error while SendRatingReview");
+				Logger.LogError(ex);
 			}
 
 			HasRated = true;

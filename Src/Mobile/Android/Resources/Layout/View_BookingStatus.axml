@@ -48,30 +48,6 @@
                 android:text="@string/StatusCancelButton"
                 local:MvxBind="Click CancelOrder; Visibility IsCancelButtonVisible, Converter=Visibility" />
             <Button
-                android:id="@+id/PayBtn"
-                style="@style/ButtonActionGreenStyle"
-                android:layout_marginTop="13dip"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/HeightButton"
-                android:layout_weight="1"
-                android:layout_marginLeft="8dip"
-                android:layout_marginRight="8dip"
-                android:layout_gravity="center_vertical"
-                android:text="@string/PayNow"
-                local:MvxBind="Click PayForOrderCommand; Visibility IsPayButtonVisible, Converter=Visibility" />
-            <Button
-                android:id="@+id/ResendBtn"
-                style="@style/ButtonActionGreenStyle"
-                android:layout_marginTop="13dip"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/HeightButton"
-                android:layout_weight="1"
-                android:layout_marginLeft="8dip"
-                android:layout_marginRight="8dip"
-                android:layout_gravity="center_vertical"
-                android:text="@string/ReSendConfirmation"
-                local:MvxBind="Click ResendConfirmationToDriver; Visibility IsResendButtonVisible, Converter=Visibility" />
-            <Button
                 android:id="@+id/UnpairBtn"
                 style="@style/ButtonActionRedStyle"
                 android:layout_marginTop="13dip"
