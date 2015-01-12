@@ -242,7 +242,6 @@
     <Content Include="admin\controllers\RideRatingsController.js" />
     <Content Include="admin\controllers\VehicleTypesController.js" />
     <Content Include="admin\controllers\Controller.js" />
-    <Content Include="admin\controllers\CompanySettingsController.js" />
     <Content Include="admin\controllers\AccountsChargeController.js" />
     <Content Include="admin\controllers\TermsAndConditionsController.js" />
     <Content Include="admin\controllers\ExportController.js" />
@@ -271,9 +270,6 @@
     </Content>
     <Content Include="admin\assets\less\TaxiHail-admin-grid.less" />
     <Content Include="admin\localization\ManageCompanySettings.json" />
-    <Content Include="admin\templates\ManageCompanySettings.handlebars">
-      <SubType>Designer</SubType>
-    </Content>
     <Content Include="admin\models\CompanySettings.js" />
     <Content Include="admin\views\AddRideRatingView.js" />
     <Content Include="admin\views\AddVehicleTypeView.js" />
@@ -296,7 +292,6 @@
     <Content Include="admin\views\ManageRulesView.js" />
     <Content Include="admin\views\EditRuleView.js" />
     <Content Include="admin\views\EditTariffView.js" />
-    <Content Include="admin\views\ManageCompanySettingsView.js" />
     <Content Include="admin\views\ManageTariffsView.js" />
     <Content Include="admin\views\SendPushNotificationView.js" />
     <Content Include="admin\views\SettingsItemView.js" />
