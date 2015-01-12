@@ -32,6 +32,24 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
             Positions = _locationDelegate;
         }
 
+        private bool LocationServiceIsEnabledAndAuthorized()
+        {
+            var enabled = CLLocationManager.LocationServicesEnabled;
+
+            if (UIHelper.IsOS8orHigher)
+            {
+                return enabled
+                    && (CLLocationManager.Status != CLAuthorizationStatus.AuthorizedWhenInUse
+                        || CLLocationManager.Status != CLAuthorizationStatus.AuthorizedAlways);
+            }
+            else
+            {
+                return enabled
+                    && CLLocationManager.Status != CLAuthorizationStatus.Authorized;
+            }
+
+        }
+
         public override void Start()
         {   
             if(_isStarted)
@@ -52,8 +70,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 			else
             {
 				//only warn if user has denied the app, if location are not enabled, th OS display a message
-				if (CLLocationManager.LocationServicesEnabled 
-                    && CLLocationManager.Status != CLAuthorizationStatus.AuthorizedWhenInUse)
+                if (LocationServiceIsEnabledAndAuthorized())
 				{ 
 					var localize = TinyIoCContainer.Current.Resolve<ILocalization>();
 
