@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 
-namespace HoneyBadger.Extensions
+namespace apcurium.MK.Common.Http.Extensions
 {
     public static class HttpResponseMessageExtensions
     {

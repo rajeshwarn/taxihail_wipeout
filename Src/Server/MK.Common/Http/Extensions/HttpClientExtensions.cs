@@ -3,10 +3,10 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
-using HoneyBadger.Exceptions;
+using apcurium.MK.Common.Http.Exceptions;
 using Newtonsoft.Json;
 
-namespace HoneyBadger.Extensions
+namespace apcurium.MK.Common.Http.Extensions
 {
     public static class HttpClientExtensions
     {

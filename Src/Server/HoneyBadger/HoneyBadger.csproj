@@ -51,9 +51,6 @@
     <Compile Include="Enums\EHailStates.cs" />
     <Compile Include="Enums\LogonStates.cs" />
     <Compile Include="Enums\MeterStates.cs" />
-    <Compile Include="Exceptions\ServiceResponseException.cs" />
-    <Compile Include="Extensions\HttpClientExtensions.cs" />
-    <Compile Include="Extensions\HttpResponseMessageExtensions.cs" />
     <Compile Include="HoneyBadgerServiceClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Responses\HoneyBadgerContent.cs" />
