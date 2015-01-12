@@ -2,7 +2,7 @@
 using System.Net;
 using System.Net.Http;
 
-namespace HoneyBadger.Exceptions
+namespace apcurium.MK.Common.Http.Exceptions
 {
     public class ServiceResponseException : Exception
     {

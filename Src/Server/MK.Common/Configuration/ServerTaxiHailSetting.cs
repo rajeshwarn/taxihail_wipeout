@@ -120,5 +120,8 @@ namespace MK.Common.Configuration
 
         [Display(Name = "TaxiHail Pro", Description = "Company has access to TaxiHail Pro features")]
         public bool IsTaxiHailPro { get; protected set; }
+
+        [Display(Name = "Target", Description = "Deployment target server")]
+        public DeploymentTargets Target { get; set; }
     }
 }

@@ -4,8 +4,8 @@ using System.Linq;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common.Geography;
+using apcurium.MK.Common.Http.Extensions;
 using HoneyBadger.Enums;
-using HoneyBadger.Extensions;
 using HoneyBadger.Responses;
 
 namespace HoneyBadger
