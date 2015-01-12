@@ -1224,6 +1224,9 @@
   <data name="TermsAndConditionsAcknowledgment" xml:space="preserve">
     <value>أقر بأني قد قرأت وفهمت الأحكام والشروط.</value>
   </data>
+  <data name="TermsAndConditionsLabel" xml:space="preserve">
+    <value>الأحكام والشروط</value>
+  </data>
   <data name="Time" xml:space="preserve">
     <value>الوقت</value>
   </data>

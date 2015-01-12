@@ -210,6 +210,9 @@
   <data name="TermsAndConditionsAcknowledgment" xml:space="preserve">
     <value>I acknowledge that I have read and understood the Terms and Conditions.</value>
   </data>
+  <data name="TermsAndConditionsLabel" xml:space="preserve">
+    <value>Terms and Conditions</value>
+  </data>
   <data name="AcceptButton" xml:space="preserve">
     <value>Accept</value>
   </data>

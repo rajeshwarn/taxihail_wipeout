@@ -109,6 +109,7 @@ namespace apcurium.MK.Booking.Api.Services.Admin
                             excelResult["Mdt Fare"] = x.MdtFare.ToString();
 
                             excelResult["Charge Type"] = x.ChargeType;
+                            excelResult["Vehicle Confirmed"] = x.WasPaired.ToString();
 
                             excelResult["Payment Meter Amount"] = x.PaymentMeterAmount.ToString();
                             excelResult["Payment Tip Amount"] = x.PaymentTipAmount.ToString();

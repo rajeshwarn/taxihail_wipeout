@@ -385,7 +385,7 @@
 "TaxiMapTitle"="Votre véhicule";
 "TaxiServerDownMessage"="Désolé, impossible de contacter le chauffeur";
 "TechSupportEmailTitle"="Support application mobile";
-"TermsAndConditionsAcknowledgment"="Je reconnais avoir pris connaissance des conditions générales d'utilisation";
+"TermsAndConditionsAcknowledgment"="Je reconnais avoir pris connaissance des Conditions générales d'utilisation";
 "Time"="Heure";
 "TimeNow"="Dès que possible.";
 "Tuto01Bottom"="Commencez par sélectionner votre position actuelle.";
@@ -562,3 +562,4 @@
 "Notification_PromotionUnlockedPush"="Promotions déverrouillées (Push)";
 "Notification_PromotionUnlockedEmail"="Promotions déverrouillées (Email)";
 "ErrorCreateOrder_PendingOrder"="La commande ne peut être créée car une autre commande est déjà en cours. Voir le statut de la commande?";
+"TermsAndConditionsLabel"="Conditions générales d'utilisation";
