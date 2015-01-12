@@ -1,7 +1,7 @@
-﻿<!DOCTYPE html>
+﻿@using apcurium.MK.Web.helpers
+<!DOCTYPE html>
 <html>
 <head>
-    <!-- version : <%: ApplicationVersion %> -->
     <meta charset='utf-8' />
     <title>@ViewData["ApplicationName"] </title>
     <meta name="HandheldFriendly" content="True">
@@ -15,44 +15,81 @@
     @Scripts.Render("~/bundles/modernizr")
     <script src="~/scripts/jquery-1.8.2.min.js"></script>
 </head>
-<body>
-    <header>
-        <div class="login-status-zone">
-            <div><a href='@ViewData["BaseUrl"]' class='brand'></a></div>
-        </div>
-    </header>
+    <body>
+        <header>
+            <div class="login-status-zone">
+                <div><a href='@ViewData["BaseUrl"]' class='brand'></a></div>
+            </div>
+        </header>
 
-    <div class="container">
-        <div class='notification-zone'></div>
-        <div class='row'>
-            <div class="menu-zone span3">
-                <div class="well sidebar-nav" >
-                    <ul class="nav nav-list">
-                        <li class="nav-header">TaxiHail Network</li>
-                        <li>@Html.ActionLink("Configure", "Index", "TaxiHailNetwork")</li>
-                        
-                        <li class="nav-header">Promo Codes</li>
-                        <li>@Html.ActionLink("Configure", "Index", "PromoCode")</li>
+        <div class="container">
+            <div class='notification-zone'></div>
+            <div class='row'>
+                <div class="menu-zone span3">
+                    <div class="well sidebar-nav" style='padding: 9px 0;'>
+                        <ul class="nav nav-list">
+                            <li class="nav-header">Address Management</li>
+                            <li><a href="@(ViewData["BaseUrl"] + "/admin")" class="navbar-brand">Default favorite addresses</a></li>
+                            <li><a href="@(ViewData["BaseUrl"] + "/admin/#addresses/popular")" class="navbar-brand">Popular addresses</a></li>
 
-                        <li class="nav-header">Navigation</li>
-                        <li><a href="@(ViewData["BaseUrl"] + "/admin")" class="navbar-brand">Back to Admin</a></li>
-                    </ul>
+                            <li class="nav-header">Settings</li>
+                            <li>@Html.MenuLink("Company Settings", "Index", "CompanySettings")</li>
+                            <li><a href="@(ViewData["BaseUrl"] + "/admin/#notificationSettings")" class="navbar-brand">Notification Settings</a></li>
+                            @if (Convert.ToBoolean(ViewData["IsSuperAdmin"]))
+                            {
+                                <li><a href="@(ViewData["BaseUrl"] + "/admin/#paymentSettings")" class="navbar-brand">Payment Settings</a></li>
+                            }
+                            @if (Convert.ToBoolean(ViewData["IsTaxiHailPro"]))
+                            {
+                                <li><a href="@(ViewData["BaseUrl"] + "/admin/#accounts")" class="navbar-brand">Charge Accounts</a></li>
+                                <li><a href="@(ViewData["BaseUrl"] + "/admin/#vehicleTypes")" class="navbar-brand">Vehicle Types</a></li>
+                            }
+                            <li><a href="@(ViewData["BaseUrl"] + "/admin/#tariffs")" class="navbar-brand">Ride Estimates</a></li>
+                            <li><a href="@(ViewData["BaseUrl"] + "/admin/#ratings")" class="navbar-brand">Ride Ratings</a></li>
+                            <li><a href="@(ViewData["BaseUrl"] + "/admin/#rules")" class="navbar-brand">Booking Rules</a></li>
+                            <li><a href="@(ViewData["BaseUrl"] + "/admin/#termsandconditions")" class="navbar-brand">Terms and Conditions</a></li>
+                            <li>@Html.MenuLink("Privacy Policy", "Index", "Privacy")</li>
+
+                            @if (Convert.ToBoolean(ViewData["IsTaxiHailPro"]))
+                            {
+                                <li class="nav-header">TaxiHail Network</li>
+                                <li>@Html.MenuLink("Configure", "Index", "TaxiHailNetwork")</li>
+                            }
+
+                            @if (Convert.ToBoolean(ViewData["IsTaxiHailPro"]))
+                            {
+                                <li class="nav-header">Promo Codes</li>
+                                <li>@Html.MenuLink("Configure", "Index", "PromoCode")</li>
+                            }
+
+                            <li class="nav-header">User Management</li>
+                            <li><a href="@(ViewData["BaseUrl"] + "/admin/#security")" class="navbar-brand">Grant access admin</a></li>
+                            <li><a href="@(ViewData["BaseUrl"] + "/admin/#confirmemail")" class="navbar-brand">Account Management</a></li>
+                            <li><a href="@(ViewData["BaseUrl"] + "/admin/#signup")" class="navbar-brand">Signup</a></li>
+
+                            <li class="nav-header">Test Notifications</li>
+                            <li><a href="@(ViewData["BaseUrl"] + "/admin/#sendpushnotification")" class="navbar-brand">Send Push</a></li>
+                            <li><a href="@(ViewData["BaseUrl"] + "/admin/#sendtestemail")" class="navbar-brand">Send Test Email</a></li>
+
+                            <li class="nav-header">Export</li>
+                            <li><a href="@(ViewData["BaseUrl"] + "/admin/#exportaccounts")" class="navbar-brand">Accounts</a></li>
+                            <li><a href="@(ViewData["BaseUrl"] + "/admin/#exportorders")" class="navbar-brand">Orders</a></li>
+
+                            <li class="nav-header">Version</li>
+                            <li>@ViewData["version"]</li>
+                        </ul>
+                    </div>
+                </div>
+                <div id='main' class='span9'>
+                    <div class="well clearfix form-horizontal">
+                        @RenderBody()
+                    </div>
                 </div>
             </div>
-            <div id='main' class='span9'>
-                <div class="well clearfix form-horizontal">
-                    @RenderBody()
-                </div>
-            </div>
         </div>
-    </div>
-    <div class='modal-zone'></div>
+        <div class='modal-zone'></div>
     
-    @Scripts.Render("~/bundles/jqueryval")
-    @Scripts.Render("~/admin/bundles/assets")
-</body>
+        @Scripts.Render("~/bundles/jqueryval")
+        @Scripts.Render("~/admin/bundles/assets")
+    </body>
 </html>
-    
-
-
-   
