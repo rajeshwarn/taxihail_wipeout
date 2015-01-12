@@ -18,7 +18,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         
         public void Resize ()
         {
-            var size = new SizeF (Bounds.Size.Width, 0);
+            var size = new SizeF (UIScreen.MainScreen.Bounds.Width, 0);
             var curlFactor = 2.0f;
             var shadowDepth = 5.0f;
             var path = new UIBezierPath ();
@@ -57,11 +57,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             if (_shadowView == null) 
             {
                 _shadowView = new ShadowView (); 
-				_shadowView.Frame = new RectangleF (0, Bounds.Height, Bounds.Width, 200);
+                _shadowView.Frame = new RectangleF (0, Bounds.Height, UIScreen.MainScreen.Bounds.Width, 200);
                 _shadowView.BackgroundColor = UIColor.Clear;
                 AddSubview (_shadowView);
             }
-			_shadowView.Frame = new RectangleF (0, Bounds.Height, Bounds.Width, 10);
+            _shadowView.Frame = new RectangleF (0, Bounds.Height, UIScreen.MainScreen.Bounds.Width, 10);
             _shadowView.Resize ();
         }
         
@@ -70,15 +70,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             if (_visibleView == null) 
             {
                 _visibleView = new UIView ();
-                _visibleView.BackgroundColor = UIColor.DarkGray;
+                _visibleView.BackgroundColor = UIColor.Clear;
                 AddSubview (_visibleView);
 
                 _assignedVisibleView.RemoveFromSuperview ();
                 _visibleView.AddSubview ( _assignedVisibleView );
-                _assignedVisibleView.Frame = new RectangleF(0,0, _visibleView.Bounds.Width , _visibleView.Bounds.Height ); 
+                _assignedVisibleView.Frame = new RectangleF(0,0, UIScreen.MainScreen.Bounds.Width , _visibleView.Bounds.Height ); 
             }
            
-            _visibleView.Frame = new RectangleF (0, Bounds.Height - _minHeight, Bounds.Width, _minHeight);
+            _visibleView.Frame = new RectangleF (0, Bounds.Height - _minHeight, UIScreen.MainScreen.Bounds.Width, _minHeight);
         }
 
         private bool _isEnabled;
@@ -107,18 +107,18 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             if (_slideoutView == null) 
             {
                 _slideoutView = new UIView ();
-                _slideoutView.BackgroundColor = UIColor.LightGray;
+                _slideoutView.BackgroundColor = UIColor.Clear;
                 AddSubview (_slideoutView);
 
                 _assignedSlideoutView.RemoveFromSuperview ();
                 _slideoutView.AddSubview ( _assignedSlideoutView );
-                _assignedSlideoutView.Frame = new RectangleF(0,0, _slideoutView.Bounds.Width , _slideoutView.Bounds.Height ); 
+                _assignedSlideoutView.Frame = new RectangleF(0,0, UIScreen.MainScreen.Bounds.Width , _slideoutView.Bounds.Height ); 
             }
 
             var topVisibleView = Bounds.Height - _minHeight;
             var heightSlideOut = _maxHeight - _minHeight;
             
-            _slideoutView.Frame = new RectangleF (0, topVisibleView - heightSlideOut, Bounds.Width, heightSlideOut);
+            _slideoutView.Frame = new RectangleF (0, topVisibleView - heightSlideOut, UIScreen.MainScreen.Bounds.Width, heightSlideOut);
         }
 
 		public void Initialize (UIView visibleView, UIView slidingView)
@@ -211,7 +211,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         {
             Action changeSize = () => 
             {
-                Frame = new RectangleF (Frame.X, Frame.Y, Bounds.Width, height);
+                Frame = new RectangleF (Frame.X, Frame.Y, UIScreen.MainScreen.Bounds.Width, height);
                 SetShadow ();
                 SetVisibleView ();
                 SetNeedsDisplay ();

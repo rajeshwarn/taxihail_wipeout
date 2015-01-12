@@ -770,8 +770,6 @@
     <BundleResource Include="Resources\visa%402x.png" />
     <BundleResource Include="Resources\background.png" />
     <BundleResource Include="Resources\background%402x.png" />
-    <BundleResource Include="Resources\backPickupDestination.png" />
-    <BundleResource Include="Resources\backPickupDestination%402x.png" />
     <BundleResource Include="Resources\bookLaterIcon.png" />
     <BundleResource Include="Resources\bookLaterIcon%402x.png" />
     <BundleResource Include="Resources\closeButton.png" />

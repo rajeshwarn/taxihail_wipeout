@@ -62,9 +62,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 txtColor.TextColor = textColor;
 
                 topSlidingStatus.BackgroundColor = UIColor.FromPatternImage (UIImage.FromFile ("background.png"));
-                topVisibleStatus.BackgroundColor = UIColor.FromPatternImage (UIImage.FromFile ("backPickupDestination.png"));
 
-                viewLine.Frame = new RectangleF(0, topSlidingStatus.Bounds.Height -1, topSlidingStatus.Bounds.Width, 1);
+                viewLine.Frame = new RectangleF(0, topSlidingStatus.Bounds.Height -1, UIScreen.MainScreen.Bounds.Width, 1);
 
                 btnCallDriver.SetImage(UIImage.FromFile("phone.png"), UIControlState.Normal);
                 btnCall.SetTitle(Localize.GetValue("StatusCallButton"), UIControlState.Normal);
@@ -90,7 +89,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				if(!ViewModel.Settings.HideCallDispatchButton)
                 {
                     btnCancel.SetFrame(8, btnCancel.Frame.Y,  btnCancel.Frame.Width,  btnCancel.Frame.Height );
-                    btnCall.SetFrame( 320 - 8 - btnCall.Frame.Width ,  btnCall.Frame.Y,  btnCall.Frame.Width,  btnCall.Frame.Height );
+                    btnCall.SetFrame( UIScreen.MainScreen.Bounds.Width - 8 - btnCall.Frame.Width ,  btnCall.Frame.Y,  btnCall.Frame.Width,  btnCall.Frame.Height );
 					btnUnpair.SetFrame(btnCancel.Frame.X, btnCancel.Frame.Y, btnUnpair.Frame.Width, btnUnpair.Frame.Height);
 
                     var callFrame = btnCall.Frame;
@@ -271,7 +270,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 mapStatus.AddressSelectionMode = AddressSelectionMode.None;
 
 				UpdateTopSlidingStatus("OrderStatusDetail"); //initial loading
-                var statusLineDivider = Line.CreateHorizontal(320.0f, UIColor.Black.ColorWithAlpha(0.35f));
+                var statusLineDivider = Line.CreateHorizontal(UIScreen.MainScreen.Bounds.Width, UIColor.Black.ColorWithAlpha(0.35f));
                 bottomBar.AddSubview(statusLineDivider);
             
             } 
@@ -295,7 +294,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         {
             if (!ViewModel.IsCancelButtonVisible)
             {
-                btnCall.SetX ((View.Frame.Width - btnCancel.Frame.Width) / 2).SetWidth (btnCancel.Frame.Width);
+                btnCall.SetX ((UIScreen.MainScreen.Bounds.Width - btnCancel.Frame.Width) / 2).SetWidth (btnCancel.Frame.Width);
                 btnCall.SetTitle(Localize.GetValue("StatusCallButton"), UIControlState.Normal);
                 FlatButtonStyle.Silver.ApplyTo(btnCall);
             }
