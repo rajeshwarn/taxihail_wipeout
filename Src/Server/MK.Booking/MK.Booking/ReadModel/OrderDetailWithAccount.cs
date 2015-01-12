@@ -107,5 +107,7 @@ namespace apcurium.MK.Booking.ReadModel
         public string AccountDefaultCardToken { get; set; }
 
         public Dictionary<string, string> Rating { get; set; }
+
+        public bool WasPaired { get; set; }
     }
 }

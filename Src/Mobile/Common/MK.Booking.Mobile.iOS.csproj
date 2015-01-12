@@ -371,7 +371,6 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="Localization\FlashCab.resx" />
-    <EmbeddedResource Include="Localization\Master.es.resx" />
     <None Include="Localization\Norshore.resx" />
     <None Include="Localization\Ramride.resx" />
     <None Include="Localization\Taxi303.resx" />
@@ -388,6 +387,7 @@
     <None Include="Localization\TaxiHail Pro.fr.resx" />
     <None Include="Localization\UTOG.resx" />
     <EmbeddedResource Include="TutorialContent\Tutorial-es.json" />
+    <None Include="Localization\Master.es.resx" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

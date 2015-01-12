@@ -157,7 +157,7 @@
 "BookPickupLabel"="Confirme su ubicación";
 "CreateAccountLanguageFrench"="Francés";
 "NotNow"="Ahora no";
-"TermsAndConditionsAcknowledgment"="Yo reconozco que he leído y entendido los términos y condiciones";
+"TermsAndConditionsAcknowledgment"="Yo reconozco que he leído y entendido los Términos y condiciones";
 "Tuto05Top"="Toque “Reservar ya” y se le asignará un vehiculo lo más pronto posible";
 "OrderNoteGPS"="Usando su GPS";
 "CreateAccountTitleArray"="SrSra";
@@ -555,3 +555,4 @@
 "Notification_PromotionUnlockedPush"="Promotions unlocked (Push)";
 "Notification_PromotionUnlockedEmail"="Promotions unlocked (Email)";
 "ErrorCreateOrder_PendingOrder"="No puede reservar este servicio, ya que hay una reservación pendiente. ¿Desea ver esta reservación?";
+"TermsAndConditionsLabel"="Términos y condiciones";
