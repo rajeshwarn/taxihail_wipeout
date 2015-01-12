@@ -11,6 +11,7 @@ using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using System.Collections.Generic;
 using System;
+using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
@@ -173,7 +174,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 				RideEstimate.Visibility = ViewStates.Visible;
 				VehicleSelection.Visibility = ViewStates.Gone;
 				EtaContainer.Visibility = ViewStates.Gone;
-				EtaLabel.Visibility = ShowEta ? ViewStates.Visible : ViewStates.Gone;
+                EtaLabel.Visibility = Eta.HasValue() ? ViewStates.Visible : ViewStates.Gone;
             }
             else
             {
