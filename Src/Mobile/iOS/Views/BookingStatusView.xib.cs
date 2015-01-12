@@ -76,7 +76,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 FlatButtonStyle.Red.ApplyTo(btnCancel);
                 FlatButtonStyle.Green.ApplyTo(btnNewRide);
                 FlatButtonStyle.Red.ApplyTo(btnUnpair);
-                                                
+                                            
+                btnCallDriver.SetX(UIScreen.MainScreen.Bounds.Width - btnCallDriver.Frame.Width - 12f); // 12f = right margin
+
                 View.BringSubviewToFront (bottomBar);
 
 				ViewModel.PropertyChanged+= (sender, e) => {
@@ -317,6 +319,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                     VisibleStatusHeight = DEFAULT_TOP_VISIBLE_STATUS_HEIGHT + togglePadding;
                     statusBar.SetMinHeight (VisibleStatusHeight);
                     statusBar.SetMaxHeight (VisibleStatusHeight);
+                    statusBar.SetNeedsLayout();
 				}
 			}
 		}
@@ -368,6 +371,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 	
 				if (numberOfItemsHidden == 7) {
                     statusBar.SetMaxHeight (VisibleStatusHeight);
+                    statusBar.SetNeedsLayout();
 					return;
 				}
 
@@ -381,6 +385,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 						i++;
 					}
 				}
+
+                statusBar.SetNeedsLayout();
 			}
 		}
     }

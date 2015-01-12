@@ -120,7 +120,7 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="grip.png" id="232">
-                            <rect key="frame" x="289" y="15" width="19" height="14"/>
+                            <rect key="frame" x="289" y="16" width="19" height="14"/>
                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                         </imageView>
                     </subviews>
