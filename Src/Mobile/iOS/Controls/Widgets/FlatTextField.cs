@@ -100,20 +100,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
                     var image = UIImage.FromFile(value);
 
+                    // remove previous image if it exists
                     if (_leftImageView != null)
                     {
                         _leftImageView.RemoveFromSuperview();
                     }
 
-                    _leftImageView = new UIImageView(new RectangleF(0, (Frame.Height - image.Size.Height)/2, image.Size.Width, image.Size.Height));
-                    _leftImageView.Image = image;
+                    _leftImageView = new UIImageView 
+                    {
+                        Image = image
+                    };
                     AddSubview(_leftImageView);
-
-                    // Adjust the left padding of the text for image width
-                    LeftView.Frame = LeftView.Frame.SetWidth(image.Size.Width + LeftPadding);
-
-                    // And the right padding
-                    RightView = new UIView(new RectangleF(Frame.Right - RightPadding, 0f, RightPadding, 1f));
 
                     SetNeedsDisplay();
                 }
@@ -166,6 +163,21 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
             LeftView.Frame = new RectangleF(0f, 0f, LeftPadding, this.Frame.Height);
             RightView.Frame = new RectangleF(Frame.Right - RightPadding, 0f, RightPadding, this.Frame.Height);
+
+            if (ImageLeftSource.HasValue())
+            {
+                if (_leftImageView != null)
+                {
+                    _leftImageView.Frame = new RectangleF(
+                        0, 
+                        (Frame.Height - _leftImageView.Image.Size.Height) / 2, 
+                        _leftImageView.Image.Size.Width, 
+                        _leftImageView.Image.Size.Height);
+
+                    // Adjust the left padding of the text for image width
+                    LeftView.Frame = LeftView.Frame.SetWidth(_leftImageView.Image.Size.Width + LeftPadding);
+                }
+            }
 
             if (HasRightArrow)
             {
