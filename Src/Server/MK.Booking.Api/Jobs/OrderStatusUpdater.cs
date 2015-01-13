@@ -43,6 +43,8 @@ namespace apcurium.MK.Booking.Api.Jobs
 {
     public class OrderStatusUpdater
     {
+        private static string _failedCode = "0";
+
         private readonly ICommandBus _commandBus;
         private readonly IServerSettings _serverSettings;
         private readonly IOrderPaymentDao _paymentDao;
@@ -287,12 +289,6 @@ namespace apcurium.MK.Booking.Api.Jobs
 
         private void HandlePairingForStandardPairing(OrderStatusDetail orderStatusDetail, OrderPairingDetail pairingInfo, IBSOrderInformation ibsOrderInfo)
         {
-            if (!_serverSettings.GetPaymentSettings().AutomaticPayment)
-            {
-                Log.Debug("Standard Pairing: Automatic payment is disabled, nothing else to do.");
-                return;
-            }
-
             var orderPayment = _paymentDao.FindNonPayPalByOrderId(orderStatusDetail.OrderId);
             if (orderPayment != null && (orderPayment.IsCompleted || orderPayment.IsCancelled))
             {
@@ -473,7 +469,7 @@ namespace apcurium.MK.Booking.Api.Jobs
                     }
                 }
 
-                if (paymentProviderServiceResponse.IsSuccessful && !isNoShowFee)
+                if (!isNoShowFee)
                 {
                     //send information to IBS
                     try
@@ -483,7 +479,7 @@ namespace apcurium.MK.Booking.Api.Jobs
                             totalOrderAmount,
                             Convert.ToDecimal(tipAmount),
                             Convert.ToDecimal(meterAmount),
-                            PaymentType.CreditCard.ToString(),
+                            paymentProviderServiceResponse.IsSuccessful ? PaymentType.CreditCard.ToString() : _failedCode,
                             _paymentServiceFactory.GetInstance().ProviderType.ToString(),
                             paymentProviderServiceResponse.TransactionId,
                             paymentProviderServiceResponse.AuthorizationCode,
@@ -499,12 +495,15 @@ namespace apcurium.MK.Booking.Api.Jobs
                     {
                         _logger.LogError(e);
                         message = e.Message;
-                        paymentProviderServiceResponse.IsSuccessful = false;
+                        
 
                         //cancel braintree transaction
                         try
                         {
-                            _paymentServiceFactory.GetInstance().VoidTransaction(orderId, paymentProviderServiceResponse.TransactionId, ref message);
+                            if (paymentProviderServiceResponse.IsSuccessful)
+                            {
+                                _paymentServiceFactory.GetInstance().VoidTransaction(orderId, paymentProviderServiceResponse.TransactionId, ref message);
+                            }
                         }
                         catch (Exception ex)
                         {
@@ -512,6 +511,10 @@ namespace apcurium.MK.Booking.Api.Jobs
                             _logger.LogError(ex);
                             message = message + ex.Message;
                             //can't cancel transaction, send a command to log later
+                        }
+                        finally
+                        {
+                            paymentProviderServiceResponse.IsSuccessful = false;
                         }
                     }
                 }
@@ -676,8 +679,7 @@ namespace apcurium.MK.Booking.Api.Jobs
             }
             else if (ibsOrderInfo.IsLoaded)
             {
-                if (orderDetail != null && (_serverSettings.GetPaymentSettings().AutomaticPayment
-                                            && _serverSettings.GetPaymentSettings().AutomaticPaymentPairing
+                if (orderDetail != null && (_serverSettings.GetPaymentSettings().AutomaticPaymentPairing
                                             && orderDetail.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id))
                 {
                     description = _resources.Get("OrderStatus_wosLOADEDAutoPairing", _languageCode);

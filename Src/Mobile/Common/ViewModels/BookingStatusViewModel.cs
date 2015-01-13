@@ -16,7 +16,6 @@ using apcurium.MK.Booking.Mobile.ViewModels.Payment;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Entity;
-using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using ServiceStack.Text;
 using apcurium.MK.Booking.Maps;
@@ -91,51 +90,35 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		}
 
 		#region Bindings
+
 		private IEnumerable<CoordinateViewModel> _mapCenter;
-		public IEnumerable<CoordinateViewModel> MapCenter {
+		public IEnumerable<CoordinateViewModel> MapCenter
+        {
 			get { return _mapCenter; }
-			private set {
+			private set 
+            {
 				_mapCenter = value;
 				RaisePropertyChanged ();
 			}
 		}
 
-		bool _isPayButtonVisible;
-		public bool IsPayButtonVisible {
-			get{
-				return _isPayButtonVisible;
-			} set{
-				_isPayButtonVisible = value;
-				RaisePropertyChanged (); 
-			}
-		}
-
 		bool _isCancelButtonVisible;
-		public bool IsCancelButtonVisible{
-			get{
-				return _isCancelButtonVisible;
-			} set{
+		public bool IsCancelButtonVisible
+        {
+			get { return _isCancelButtonVisible; } 
+            set
+            {
 				_isCancelButtonVisible = value;
 				RaisePropertyChanged (); 
 			}
 		}
-		
-        bool _isResendButtonVisible;
-        public bool IsResendButtonVisible{
-            get{
-                return _isResendButtonVisible;
-            } set{
-                _isResendButtonVisible = value;
-				RaisePropertyChanged (); 
-            }
-        }
 
         private string _confirmationNoTxt;
-		public string ConfirmationNoTxt {
-			get {
-				return _confirmationNoTxt;
-			}
-			set {
+		public string ConfirmationNoTxt
+        {
+			get { return _confirmationNoTxt; }
+			set 
+            {
 				_confirmationNoTxt = value;
 				RaisePropertyChanged ();
 			}
@@ -153,7 +136,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public bool IsDriverInfoAvailable
         {
-            get {
+            get 
+            {
 				bool showVehicleInformation = Settings.ShowVehicleInformation;
 				bool isOrderStatusValid = OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Assigned
 					|| OrderStatusDetail.IBSStatusId == VehicleStatuses.Common.Arrived
@@ -359,8 +343,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 #if DEBUG
                 //status.IBSStatusId = VehicleStatuses.Common.Arrived;
 #endif
-                IsPayButtonVisible = false;
-
 				var statusInfoText = status.IBSStatusDescription;
 
 				if(Settings.ShowEta 
@@ -382,8 +364,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					|| status.IBSStatusId.Equals(VehicleStatuses.Common.Done);
 				var paymentSettings = await _paymentService.GetPaymentSettings();
                 if (isLoaded 
-					&& ((paymentSettings.AutomaticPayment && !paymentSettings.AutomaticPaymentPairing)
-						|| paymentSettings.PaymentMode == PaymentMethod.RideLinqCmt)
+					&& (!paymentSettings.AutomaticPaymentPairing || paymentSettings.PaymentMode == PaymentMethod.RideLinqCmt)
 					&& _accountService.CurrentAccount.DefaultCreditCard != null)
 				{
 					var isPaired = await _bookingService.IsPaired(Order.Id);
@@ -397,7 +378,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					}
 				}
 
-                UpdatePayCancelButtons(status.IBSStatusId);
+                UpdateButtonsVisibility(status.IBSStatusId);
 
                 DisplayOrderNumber();
 
@@ -514,48 +495,22 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			return string.Format (this.Services ().Localize ["StatusEta"], direction.FormattedDistance, direction.Duration, durationUnit);
 		}
 
-		private async void UpdatePayCancelButtons(string statusId)
+		private async void UpdateButtonsVisibility(string statusId)
 		{
 			var paymentSettings = await _paymentService.GetPaymentSettings();
-		    var isOrderAlreadyPaid = _paymentService.GetPaymentFromCache(Order.Id).HasValue;
-
-            IsPayButtonVisible = ShouldDisplayPayButton(statusId, isOrderAlreadyPaid, paymentSettings);
 
             IsCancelButtonVisible = _bookingService.IsOrderCancellable(statusId);
-
-            IsResendButtonVisible = isOrderAlreadyPaid
-                                && !paymentSettings.AutomaticPayment
-								&& paymentSettings.PaymentMode != PaymentMethod.RideLinqCmt
-                                && (paymentSettings.IsPayInTaxiEnabled || paymentSettings.PayPalClientSettings.IsEnabled);
 
 			// Unpair button is only available for RideLinqCMT
 			if (paymentSettings.PaymentMode == PaymentMethod.RideLinqCmt) 
 			{
-				var isPaired = await _bookingService.IsPaired(Order.Id);
-				IsUnpairButtonVisible = !paymentSettings.AutomaticPayment && isPaired;
+				IsUnpairButtonVisible = await _bookingService.IsPaired(Order.Id);
 			} 
 			else 
 			{
 				IsUnpairButtonVisible = false;
 			}
 		}
-
-	    private bool ShouldDisplayPayButton(string statusId, bool isOrderAlreadyPaid, ClientPaymentSettings paymentSettings)
-	    {
-	        bool payingByChargeAccount = Order.Settings.ChargeTypeId == ChargeTypes.Account.Id;
-            bool payingByChargeAccountCardOnFile = payingByChargeAccount && OrderStatusDetail.IsChargeAccountPaymentWithCardOnFile;
-            bool passengersInCar = statusId == VehicleStatuses.Common.Loaded || statusId == VehicleStatuses.Common.Done;
-            bool hasCardOnFile = paymentSettings.IsPayInTaxiEnabled	&& _accountService.CurrentAccount.DefaultCreditCard != null;
-
-	        return !Settings.HidePayNowButtonDuringRide
-                && !paymentSettings.AutomaticPayment
-                && !isOrderAlreadyPaid
-                && (!payingByChargeAccount || payingByChargeAccountCardOnFile)
-	            && passengersInCar
-                && (hasCardOnFile || paymentSettings.PayPalClientSettings.IsEnabled) // Can pay by card or PayPal
-	            && !IsUnpairButtonVisible                                            // Unpair visible (pair button is pay button in pairing situations) 
-	            && OrderStatusDetail.CompanyKey == null;                             // Not dispatched to another company
-	    }
 
 		public void GoToSummary()
 		{
@@ -587,7 +542,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}.ToStringDictionary());
         }
 
-        private void CenterMap ()
+        private void CenterMap()
         {   
 			if (Order == null) 
 			{
@@ -691,54 +646,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-		public ICommand PayForOrderCommand
-        {
-            get
-            {
-                return this.GetCommand(async () =>
-                {
-#if DEBUG
-#else
-					if(string.IsNullOrWhiteSpace(OrderStatusDetail.VehicleNumber)){
-							this.Services().Message.ShowMessage(this.Services().Localize["VehicleNumberErrorTitle"], 
-								this.Services().Localize["VehicleNumberErrorMessage"]);
-						return;
-					}
-#endif
-					IsPayButtonVisible = false;
-					this.Services().Analytics.LogEvent("PayButtonTapped");
-
-					var paymentSettings = await _paymentService.GetPaymentSettings();
-					if ((paymentSettings.AutomaticPayment && !paymentSettings.AutomaticPaymentPairing)
-						|| paymentSettings.PaymentMode == PaymentMethod.RideLinqCmt)
-                    {
-                        GoToPairScreen();
-                    }
-                    else
-                    {
-						ShowViewModel<ConfirmCarNumberViewModel>(
-	                        new
-	                        {
-	                            order = Order.ToJson(),
-	                            orderStatus = OrderStatusDetail.ToJson()
-	                        });
-                    }
-                });
-            }
-        }
-
 		public ICommand CallCompany
         {
-            get {
-                return this.GetCommand (() =>
-                {
+            get 
+            {
+                return this.GetCommand (() => 
                     this.Services().Message.ShowMessage(string.Empty,
-												Settings.DefaultPhoneNumberDisplay,
-                                               this.Services().Localize["CallButton"],
-											   () => _phoneService.Call(Settings.DefaultPhoneNumber),
-                                               this.Services().Localize["Cancel"], 
-                                               () => {});                    
-                });
+                        Settings.DefaultPhoneNumberDisplay,
+                        this.Services().Localize["CallButton"],
+                        () => _phoneService.Call(Settings.DefaultPhoneNumber),
+                        this.Services().Localize["Cancel"], 
+                        () => {}));
             }
         }
 
@@ -798,10 +716,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         bool _isUnpairButtonVisible;
         public bool IsUnpairButtonVisible
         {
-            get
-            {
-                return _isUnpairButtonVisible;
-            }
+            get { return _isUnpairButtonVisible; }
             set
             {
                 _isUnpairButtonVisible = value;

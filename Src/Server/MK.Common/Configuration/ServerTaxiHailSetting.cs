@@ -123,5 +123,8 @@ namespace MK.Common.Configuration
 
         [Display(Name = "SettingsAvailableToAdmin", Description = "Comma delimited list of settings that are available to admins")]
         public string SettingsAvailableToAdmin { get; private set; }
+        
+        [Display(Name = "Target", Description = "Deployment target server")]
+        public DeploymentTargets Target { get; set; }
     }
 }

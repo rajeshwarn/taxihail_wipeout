@@ -39,6 +39,10 @@
     <Reference Include="Braintree-2.27.0">
       <HintPath>..\packages\Braintree.2.27.0\lib\Braintree-2.27.0.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.6.0.6\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="ServiceStack, Version=3.9.71.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\ServiceStack.3.9.71\lib\net35\ServiceStack.dll</HintPath>
@@ -105,6 +109,7 @@
     <Compile Include="TaxiHail\NetworkRoamingServiceClient.cs" />
     <Compile Include="TaxiHail\PayPalServiceClient.cs" />
     <Compile Include="TaxiHail\PushNotificationAdministrationServiceClient.cs" />
+    <Compile Include="TaxiHail\RoamingValidationServiceClient.cs" />
     <Compile Include="TaxiHail\RulesServiceClient.cs" />
     <Compile Include="IAuthServiceClient.cs" />
     <Compile Include="IAccountServiceClient.cs" />

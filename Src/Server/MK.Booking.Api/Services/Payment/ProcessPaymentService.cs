@@ -23,6 +23,8 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 {
     public class ProcessPaymentService : Service
     {
+        private static string _failedCode = "0";
+
         private readonly IPaymentServiceFactory _paymentServiceFactory;
         private readonly IAccountDao _accountDao;
         private readonly IIBSServiceProvider _ibsServiceProvider;
@@ -149,7 +151,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                     }
                 }
 
-                if (paymentProviderServiceResponse.IsSuccessful && !isNoShowFee)
+                if (!isNoShowFee)
                 {
                     //send information to IBS
                     try
@@ -159,8 +161,8 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                             totalOrderAmount,
                             Convert.ToDecimal(tipAmount),
                             Convert.ToDecimal(meterAmount),
-                            PaymentType.CreditCard.ToString(),
-                            _paymentServiceFactory.GetInstance().ProviderType.ToString(),
+                            paymentProviderServiceResponse.IsSuccessful ? PaymentType.CreditCard.ToString() : _failedCode, //Hack the MK, 0 indicates that the payment has failed.
+                             _paymentServiceFactory.GetInstance().ProviderType.ToString(),
                             paymentProviderServiceResponse.TransactionId,
                             paymentProviderServiceResponse.AuthorizationCode,
                             cardToken,
@@ -170,17 +172,22 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                             account.Email,
                             orderDetail.UserAgent.GetOperatingSystem(),
                             orderDetail.UserAgent);
+
+                        
+
                     }
                     catch (Exception e)
                     {
                         _logger.LogError(e);
                         message = e.Message;
-                        paymentProviderServiceResponse.IsSuccessful = false;
-
-                        //cancel braintree transaction
+                                                
+                        //cancel transaction
                         try
                         {
-                            _paymentServiceFactory.GetInstance().VoidTransaction(orderId, paymentProviderServiceResponse.TransactionId, ref message);
+                            if (paymentProviderServiceResponse.IsSuccessful)
+                            {
+                                _paymentServiceFactory.GetInstance().VoidTransaction(orderId, paymentProviderServiceResponse.TransactionId, ref message);
+                            }
                         }
                         catch (Exception ex)
                         {
@@ -188,6 +195,10 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                             _logger.LogError(ex);
                             message = message + ex.Message;
                             //can't cancel transaction, send a command to log later
+                        }
+                        finally
+                        {
+                            paymentProviderServiceResponse.IsSuccessful = false;
                         }
                     }
                 }
