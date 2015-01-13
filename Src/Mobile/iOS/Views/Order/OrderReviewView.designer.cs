@@ -16,6 +16,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 		MonoTouch.UIKit.UIButton btnPromo { get; set; }
 
 		[Outlet]
+		MonoTouch.UIKit.NSLayoutConstraint constraintHeight { get; set; }
+
+		[Outlet]
 		MonoTouch.UIKit.UIImageView iconApartment { get; set; }
 
 		[Outlet]
@@ -71,6 +74,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 			if (btnPromo != null) {
 				btnPromo.Dispose ();
 				btnPromo = null;
+			}
+
+			if (constraintHeight != null) {
+				constraintHeight.Dispose ();
+				constraintHeight = null;
 			}
 
 			if (iconApartment != null) {

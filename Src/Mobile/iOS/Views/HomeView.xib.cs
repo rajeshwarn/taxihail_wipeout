@@ -154,7 +154,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                     () =>
                     {
                         constraintOrderReviewTopSpace.Constant = UIScreen.MainScreen.Bounds.Height;
-                        constraintOrderReviewBottomSpace.Constant = 468;
+                        constraintOrderReviewBottomSpace.Constant = constraintOrderReviewBottomSpace.Constant + UIScreen.MainScreen.Bounds.Height;
                         constraintOrderOptionsTopSpace.Constant = -ctrlOrderOptions.Frame.Height;
                         constraintOrderEditTrailingSpace.Constant = 8;
                         homeView.LayoutIfNeeded();
@@ -189,7 +189,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                         ctrlOrderReview.SetNeedsDisplay();
                         ctrlAddressPicker.Close();
                         constraintOrderReviewTopSpace.Constant = UIScreen.MainScreen.Bounds.Height;
-                        constraintOrderReviewBottomSpace.Constant = 468;
+                        constraintOrderReviewBottomSpace.Constant = constraintOrderReviewBottomSpace.Constant + UIScreen.MainScreen.Bounds.Height;
                         constraintOrderOptionsTopSpace.Constant =  22;
                         constraintOrderEditTrailingSpace.Constant = UIScreen.MainScreen.Bounds.Width;
                         homeView.LayoutIfNeeded();

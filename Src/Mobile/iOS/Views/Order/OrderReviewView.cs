@@ -142,6 +142,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
                 InitializeBinding();
             });
         }
+
+        public override void LayoutSubviews()
+        {
+            base.LayoutSubviews();
+
+            constraintHeight.Constant = this.Frame.Height;
+        }
     }
 }
 
