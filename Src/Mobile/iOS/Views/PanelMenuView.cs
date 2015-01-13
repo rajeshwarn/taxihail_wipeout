@@ -75,9 +75,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             lblVersion.TextColor = Theme.ShouldHaveLightContent(Theme.MenuColor)
                 ? UIColor.White
                 : UIColor.FromRGB (79, 76, 71);
-
-            var sideLine = Line.CreateVertical(menuContainer.Frame.Width, Frame.Height, UIColor.FromRGB(190, 190, 190));
-            AddSubview(sideLine);
+                
+            AddSubview(Line.CreateVertical(menuContainer.Frame.Width, Frame.Height, UIColor.FromRGB(190, 190, 190)));
 
 			var set = this.CreateBindingSet<PanelMenuView, PanelMenuViewModel>();
 
@@ -122,8 +121,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             InvokeOnMainThread (() =>
                 UIView.Animate(0.5f, () => {
                     PanelOffsetConstraint.Constant = MenuIsOpen ? menuContainer.Frame.Width : 0;
-                    ViewToAnimate.LayoutIfNeeded();
-                    this.SetNeedsDisplay();
+                    this.Superview.LayoutIfNeeded();
                 }, AddOrRemoveInvisibleCloseButton)
             );
         }

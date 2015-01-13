@@ -43,7 +43,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
             return new Line(new RectangleF(x - convertedThickness, y, convertedThickness, height))
             {
-                BackgroundColor = color
+                BackgroundColor = color,
+                AutoresizingMask = UIViewAutoresizing.FlexibleHeight
             };
         }
 
