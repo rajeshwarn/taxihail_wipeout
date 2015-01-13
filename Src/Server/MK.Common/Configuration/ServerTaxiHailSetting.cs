@@ -120,5 +120,8 @@ namespace MK.Common.Configuration
 
         [Display(Name = "TaxiHail Pro", Description = "Company has access to TaxiHail Pro features")]
         public bool IsTaxiHailPro { get; protected set; }
+
+        [Display(Name = "SettingsAvailableToAdmin", Description = "Comma delimited list of settings that are available to admins")]
+        public string SettingsAvailableToAdmin { get; private set; }
     }
 }

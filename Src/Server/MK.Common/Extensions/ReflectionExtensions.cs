@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
 
@@ -89,6 +90,21 @@ namespace apcurium.MK.Common.Extensions
                    && !type.IsPrimitive
                    && !type.IsEnum
                    && !type.FullName.StartsWith("System.");
+        }
+
+        /// <summary>
+        /// Extension method that returns the display name attibute value of a property.
+        /// </summary>
+        /// <param name="propertyInfo">The property to return the display name from.</param>
+        /// <returns>The display name of the property or the native name if no Display attribute exists.</returns>
+        public static string GetDisplayName(this PropertyInfo propertyInfo)
+        {
+            var attr = (DisplayAttribute)Attribute.GetCustomAttribute(propertyInfo, typeof(DisplayAttribute));
+            if (attr != null)
+            {
+                return attr.Name;
+            }
+            return propertyInfo.Name;
         }
     }
 }
