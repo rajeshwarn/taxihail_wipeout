@@ -58,7 +58,8 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 			{
 				_cacheService.Set (pushFirstStart, new object ());
 
-			} else if(IsPushDisabled())
+			} 
+            else if(IsPushDisabled())
 			{
 				var localize = TinyIoCContainer.Current.Resolve<ILocalization>();
 
@@ -80,7 +81,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 		{
             if (UIHelper.IsOS8orHigher)
             {
-                return UIApplication.SharedApplication.IsRegisteredForRemoteNotifications;
+                return !UIApplication.SharedApplication.IsRegisteredForRemoteNotifications;
             }
             else
             {
