@@ -172,24 +172,6 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration.Social
 
 			UIView.CommitAnimations ();
 		}
-		
-		public static void OpenHtmlString (DialogViewController parent, string htmlString, NSUrl baseUrl)
-		{
-			UIView.BeginAnimations ("foo");
-			Main.HidesBottomBarWhenPushed = true;
-			Main.SetupWeb ("");
-			
-			Main.WebView.LoadHtmlString (htmlString, baseUrl);
-			parent.ActivateController (Main);
-			UIView.CommitAnimations ();
-		}
-		
-		public static void OpenHtmlString (DialogViewController parent, string htmlString)
-		{
-			OpenHtmlString (parent, htmlString, new NSUrl (BaseDir, true));
-		}
-		
-		public readonly static string BaseDir = System.IO.Path.Combine (Environment.GetFolderPath (Environment.SpecialFolder.Personal), "..");
 	}
 }
 
