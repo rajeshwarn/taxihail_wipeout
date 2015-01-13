@@ -112,8 +112,20 @@ namespace apcurium.MK.Booking.ConfigTool
                     new ConfigFile(this){ Source="Default.png", Destination=@"Mobile\iOS\Resources\Images.xcassets\LaunchImage.launchimage\Default.png" },
                     new ConfigFile(this){ Source="Default@2x.png", Destination=@"Mobile\iOS\Resources\Images.xcassets\LaunchImage.launchimage\Default@2x.png" },
                     new ConfigFile(this){ Source="Default-568h@2x.png", Destination=@"Mobile\iOS\Resources\Images.xcassets\LaunchImage.launchimage\Default-568h@2x.png" },
-                    new ConfigFile(this){ Source="Default-667h@2x.png", Destination=@"Mobile\iOS\Resources\Images.xcassets\LaunchImage.launchimage\Default-667h@2x.png" },
-                    new ConfigFile(this){ Source="Default-736h@3x.png", Destination=@"Mobile\iOS\Resources\Images.xcassets\LaunchImage.launchimage\Default-736h@3x.png" },
+                    new ConfigImageResizeIfNotExist(this)
+                    { 
+                        Source="Default-667h@2x.png", 
+                        Destination=@"Mobile\iOS\Resources\Images.xcassets\LaunchImage.launchimage\Default-667h@2x.png",
+                        DefaultSource="Default-568h@2x.png",
+                        OutputSize=new SizeF(750, 1334)
+                    },
+                    new ConfigImageResizeIfNotExist(this)
+                    { 
+                        Source="Default-736h@3x.png", 
+                        Destination=@"Mobile\iOS\Resources\Images.xcassets\LaunchImage.launchimage\Default-736h@3x.png",
+                        DefaultSource="Default-568h@2x.png",
+                        OutputSize=new SizeF(1242, 2208)
+                    },
 
                     new ConfigFile(this){ Source="app.png", Destination=@"Mobile\iOS\app.png" },
                     new ConfigFile(this){ Source="app@2x.png", Destination=@"Mobile\iOS\app@2x.png" },
