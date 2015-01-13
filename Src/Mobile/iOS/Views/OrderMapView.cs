@@ -11,7 +11,6 @@ using MonoTouch.CoreLocation;
 using MonoTouch.Foundation;
 using MonoTouch.MapKit;
 using MonoTouch.UIKit;
-using TinyIoC;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.Extensions;
@@ -19,7 +18,6 @@ using apcurium.MK.Booking.Mobile.PresentationHints;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using MapBounds = apcurium.MK.Booking.Maps.Geo.MapBounds;
-using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Booking.Mobile.Client.Controls;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
@@ -262,6 +260,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             _pickupCenterPin.Frame = 
                 _dropoffCenterPin.Frame = 
 					new RectangleF((this.Bounds.Width - pinSize.Width) / 2, (this.Bounds.Height / 2) - pinSize.Height + mkMapPadding, pinSize.Width, pinSize.Height);
+        }
+
+        public override void LayoutSubviews()
+        {
+            base.LayoutSubviews();
 
             // change position of Legal link on map
             var legalView = Subviews.FirstOrDefault(x => x is UILabel);
@@ -270,7 +273,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 var leftMargin = 8;
                 var bottomMargin = 13;
                 var menuButtonWidth = 39;
-                legalView.SetX(leftMargin + menuButtonWidth + legalView.Frame.Width).SetY(this.Frame.Bottom - legalView.Frame.Height - bottomMargin); 
+                legalView
+                    .SetX(leftMargin + menuButtonWidth + 15)
+                    .SetY(this.Frame.Bottom - legalView.Frame.Height - bottomMargin); 
             }
         }
 
