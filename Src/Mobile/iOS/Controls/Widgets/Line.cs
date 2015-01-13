@@ -41,7 +41,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         {
             var convertedThickness = UIHelper.GetConvertedPixel(thickness);
 
-            return new Line(new RectangleF(x, y, convertedThickness, height))
+            return new Line(new RectangleF(x - convertedThickness, y, convertedThickness, height))
             {
                 BackgroundColor = color
             };
