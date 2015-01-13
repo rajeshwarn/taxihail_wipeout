@@ -39,13 +39,13 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
             if (UIHelper.IsOS8orHigher)
             {
                 return enabled
-                    && (CLLocationManager.Status != CLAuthorizationStatus.AuthorizedWhenInUse
-                        || CLLocationManager.Status != CLAuthorizationStatus.AuthorizedAlways);
+                    && (CLLocationManager.Status == CLAuthorizationStatus.AuthorizedWhenInUse
+                        || CLLocationManager.Status == CLAuthorizationStatus.AuthorizedAlways);
             }
             else
             {
                 return enabled
-                    && CLLocationManager.Status != CLAuthorizationStatus.Authorized;
+                    && CLLocationManager.Status == CLAuthorizationStatus.Authorized;
             }
 
         }
@@ -65,12 +65,13 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
                 || CLLocationManager.Status == CLAuthorizationStatus.NotDetermined) 
             {
 				//don' t check the first time, the OS will ask permission after
+                //or if the user updates from a previous TaxiHail version to a new iOS 8 built version
 				cacheService.Set (firstStartLocationKey, new object ());
 			}
 			else
             {
 				//only warn if user has denied the app, if location are not enabled, th OS display a message
-                if (LocationServiceIsEnabledAndAuthorized())
+                if (!LocationServiceIsEnabledAndAuthorized())
 				{ 
 					var localize = TinyIoCContainer.Current.Resolve<ILocalization>();
 
