@@ -68,6 +68,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 		
 		void ReleaseDesignerOutlets ()
 		{
+			if (btnPromo != null) {
+				btnPromo.Dispose ();
+				btnPromo = null;
+			}
+
 			if (iconApartment != null) {
 				iconApartment.Dispose ();
 				iconApartment = null;
@@ -151,11 +156,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 			if (txtPromoCode != null) {
 				txtPromoCode.Dispose ();
 				txtPromoCode = null;
-			}
-
-			if (btnPromo != null) {
-				btnPromo.Dispose ();
-				btnPromo = null;
 			}
 		}
 	}

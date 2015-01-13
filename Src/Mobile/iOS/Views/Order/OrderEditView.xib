@@ -66,7 +66,7 @@
                                     <textInputTraits key="textInputTraits" keyboardType="phonePad"/>
                                 </textField>
                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Passengers" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dqF-j3-PLn" userLabel="Passengers">
-                                    <rect key="frame" x="161" y="90" width="68.5" height="17"/>
+                                    <rect key="frame" x="161" y="90" width="69" height="17"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="17" id="PY7-er-U3S"/>
                                     </constraints>
@@ -83,7 +83,7 @@
                                     <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
                                 </textField>
                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Apartment" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZrU-4N-hYh" userLabel="Apartment">
-                                    <rect key="frame" x="8" y="166" width="60.5" height="17"/>
+                                    <rect key="frame" x="8" y="166" width="61" height="17"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="17" id="5GO-3k-Yj1"/>
                                     </constraints>
@@ -100,7 +100,7 @@
                                     <textInputTraits key="textInputTraits"/>
                                 </textField>
                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Entry Code" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lYg-9k-Yax" userLabel="Entry Code">
-                                    <rect key="frame" x="161" y="166" width="65.5" height="17"/>
+                                    <rect key="frame" x="161" y="166" width="66" height="17"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="17" id="F1G-mB-q4e"/>
                                     </constraints>
