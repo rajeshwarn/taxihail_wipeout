@@ -53,6 +53,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             StreetNumberTextView.KeyboardType = UIKeyboardType.NumberPad;
             StreetNumberTextView.ShowCloseButtonOnKeyboard();
             StreetNumberTextView.VerticalAlignment = UIControlContentVerticalAlignment.Center;
+            StreetNumberTextView.SizeToFit();
+            StreetNumberTextView.IncrementWidth(10);
             AddSubview(StreetNumberTextView);
 
             AddressTextView = new FlatTextField();   
