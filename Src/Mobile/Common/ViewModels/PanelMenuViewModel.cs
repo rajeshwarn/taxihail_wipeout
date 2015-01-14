@@ -56,6 +56,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		    IsNotificationsEnabled = notificationSettings.Enabled;
             IsTaxiHailNetworkEnabled = Settings.Network.Enabled;
 
+            // Display a watermark indicating on which server the application is pointing
+            SetServerWatermarkText();
+
 			ItemMenuList.Add(new ItemMenuModel { Text = this.Services().Localize["PanelMenuViewLocationsText"], NavigationCommand = NavigateToMyLocations });
 			ItemMenuList.Add(new ItemMenuModel { Text = this.Services().Localize["PanelMenuViewOrderHistoryText"], NavigationCommand = NavigateToOrderHistory });
 			ItemMenuList.Add(new ItemMenuModel { Text = this.Services().Localize["PanelMenuViewUpdateProfileText"], NavigationCommand = NavigateToUpdateProfile });
@@ -92,6 +95,21 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		}
 
 	    public ObservableCollection<ItemMenuModel> ItemMenuList { get; set; }
+
+	    private string _serverWatermarkText;
+	    public string ServerWatermarkText
+	    {
+	        get { return _serverWatermarkText; }
+	        set
+	        {
+	            if (_serverWatermarkText != value)
+	            {
+	                _serverWatermarkText = value;
+                    RaisePropertyChanged();
+	            }
+	        }
+	    }
+
 
 	    private bool _isPayInTaxiEnabled;
         public bool IsPayInTaxiEnabled
@@ -377,6 +395,29 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			IsClosePanelFromMenuItem = true;
 			MenuIsOpen = false;
 		}
+
+	    private void SetServerWatermarkText()
+	    {
+	        var serverTarget = Settings.ServiceUrl.ToLower();
+
+	        if (serverTarget.Contains("test"))
+	        {
+	            ServerWatermarkText = "Dev Version";
+	        }
+            else if (serverTarget.Contains("staging"))
+            {
+                ServerWatermarkText = "Staging Version";
+            }
+            else if (serverTarget.Contains("localhost"))
+            {
+                ServerWatermarkText = "Local Version";
+            }
+            else
+            {
+                // No watermark for production
+                ServerWatermarkText = null;
+            }
+	    }
     }
 }
 

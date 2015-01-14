@@ -318,6 +318,19 @@
                         android:layout_weight="0.25" />
                 </LinearLayout>
                 <TextView
+                    android:text="Local"
+                    android:alpha="0.5"
+                    local:MvxBind="Text Panel.ServerWatermarkText; Visibility Panel.ServerWatermarkText, Converter=HasValueToVisibilityConverter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_gravity="bottom|left"
+                    android:textColor="@color/red"
+                    android:textAllCaps="true"
+                    android:textStyle="bold"
+                    android:textSize="18dp"
+                    android:gravity="left"/>
+                <TextView
                     android:text="2.0.17"
                     local:MvxBind="Text Panel.Version"
                     android:layout_width="wrap_content"
