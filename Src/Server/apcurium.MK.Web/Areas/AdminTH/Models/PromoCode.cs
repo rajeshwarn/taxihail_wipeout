@@ -22,7 +22,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Models
             CanModifyTriggerGoal = true;
         }
 
-        public PromoCode(PromotionDetail promoDetail)
+        public PromoCode(PromotionDetail promoDetail) : this()
         {
             Id = promoDetail.Id;
             Name = promoDetail.Name;
