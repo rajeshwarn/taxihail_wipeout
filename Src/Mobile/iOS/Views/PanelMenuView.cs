@@ -79,6 +79,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 .For (v => v.Text)
                 .To (vm => vm.Version);
 
+			set.Bind (lblServerVersion)
+				.For (v => v.Text)
+				.To (vm => vm.ServerWatermarkText);
+
             set.Bind()
                 .For(v => v.ToApcuriumWebsite)
                 .To(vm => vm.ToApcuriumWebsite);
