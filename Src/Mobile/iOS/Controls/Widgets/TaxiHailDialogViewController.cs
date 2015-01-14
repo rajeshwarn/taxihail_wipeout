@@ -5,6 +5,7 @@ using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
 using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
+using apcurium.MK.Booking.Mobile.Client.Style;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
@@ -37,6 +38,19 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         public override Source CreateSizingSource(bool unevenRows)
         {
             return new TaxiHailDialogSource(this, _willBeContainedInOtherView);
+        }
+
+        public override void ViewWillAppear(bool animated)
+        {
+            base.ViewWillAppear(animated);
+
+            // change color of status bar
+            if (UIHelper.IsOS7orHigher)
+            {
+                NavigationController.NavigationBar.BarStyle = Theme.IsLightContent
+                    ? UIBarStyle.Black
+                    : UIBarStyle.Default;
+            }
         }
     }
 
