@@ -43,7 +43,7 @@ namespace apcurium.MK.Booking.Api.Jobs
 {
     public class OrderStatusUpdater
     {
-        private static string _failedCode = "0";
+        private const string FailedCode = "0";
 
         private readonly ICommandBus _commandBus;
         private readonly IServerSettings _serverSettings;
@@ -324,6 +324,8 @@ namespace apcurium.MK.Booking.Api.Jobs
                     && DateTime.UtcNow > orderStatusDetail.PairingTimeOut)
                 {
                     orderStatusDetail.Status = OrderStatus.Completed;
+                    _paymentServiceFactory.GetInstance().VoidPreAuthorization(orderStatusDetail.OrderId);
+
                     orderStatusDetail.PairingError = "Timed out period reached while waiting for payment informations from IBS.";
                     Log.ErrorFormat("Order {1}: Pairing error: {0}", orderStatusDetail.PairingError, orderStatusDetail.OrderId);
                 }
@@ -485,7 +487,7 @@ namespace apcurium.MK.Booking.Api.Jobs
                             totalOrderAmount,
                             Convert.ToDecimal(tipAmount),
                             Convert.ToDecimal(meterAmount),
-                            paymentProviderServiceResponse.IsSuccessful ? PaymentType.CreditCard.ToString() : _failedCode,
+                            paymentProviderServiceResponse.IsSuccessful ? PaymentType.CreditCard.ToString() : FailedCode,
                             _paymentServiceFactory.GetInstance().ProviderType.ToString(),
                             paymentProviderServiceResponse.TransactionId,
                             paymentProviderServiceResponse.AuthorizationCode,

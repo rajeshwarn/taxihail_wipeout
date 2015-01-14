@@ -4,6 +4,7 @@ using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Services;
 using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Enumeration;
 using Infrastructure.Messaging;
 using Infrastructure.Messaging.Handling;
@@ -15,7 +16,8 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
         IEventHandler<PayPalExpressCheckoutPaymentCompleted>,
         IEventHandler<CreditCardPaymentCaptured_V2>,
         IEventHandler<OrderCancelled>,
-        IEventHandler<OrderSwitchedToNextDispatchCompany>
+        IEventHandler<OrderSwitchedToNextDispatchCompany>,
+        IEventHandler<OrderStatusChanged>
     {
         private readonly IOrderDao _dao;
         private readonly IIbsOrderService _ibs;
@@ -124,6 +126,29 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             {
                 // void the preauthorization to prevent misuse fees
                 paymentService.VoidPreAuthorization(@event.SourceId);
+            }
+        }
+
+        public void Handle(OrderStatusChanged @event)
+        {
+            if (@event.IsCompleted)
+            {
+                var paymentSettings = _serverSettings.GetPaymentSettings();
+                var orderDetails = _orderDao.FindById(@event.SourceId);
+
+                if (paymentSettings.AutomaticPayment
+                    && paymentSettings.PaymentMode != PaymentMethod.RideLinqCmt
+                    && orderDetails.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id
+                    && _orderDao.FindOrderPairingById(@event.SourceId) == null)
+                {
+                    var paymentService = _paymentServiceFactory.GetInstance();
+                    // payment might not be enabled
+                    if (paymentService != null)
+                    {
+                        // void the preauthorization to prevent misuse fees
+                        paymentService.VoidPreAuthorization(@event.SourceId);
+                    }
+                }
             }
         }
     }
