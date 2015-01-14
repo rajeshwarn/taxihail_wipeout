@@ -19,6 +19,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		MonoTouch.UIKit.UIImageView imgLogoMobileKnowledge { get; set; }
 
 		[Outlet]
+		MonoTouch.UIKit.UILabel lblServerVersion { get; set; }
+
+		[Outlet]
 		MonoTouch.UIKit.UILabel lblVersion { get; set; }
 
 		[Outlet]
@@ -60,6 +63,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			if (menuListView != null) {
 				menuListView.Dispose ();
 				menuListView = null;
+			}
+
+			if (lblServerVersion != null) {
+				lblServerVersion.Dispose ();
+				lblServerVersion = null;
 			}
 		}
 	}
