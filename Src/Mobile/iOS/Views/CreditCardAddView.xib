@@ -31,15 +31,15 @@
                     <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hLR-a7-OyV">
-                            <rect key="frame" x="0.0" y="0.0" width="320" height="403.5"/>
+                            <rect key="frame" x="0.0" y="0.0" width="320" height="404"/>
                             <subviews>
                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="In order to use the application, you need to add a credit card to your account." textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="304" translatesAutoresizingMaskIntoConstraints="NO" id="GXd-K4-4cG">
-                                    <rect key="frame" x="8" y="14" width="304" height="40.5"/>
+                                    <rect key="frame" x="8" y="14" width="304" height="41"/>
                                     <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="17"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name as it appears on the card" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ngX-Wq-laP">
-                                    <rect key="frame" x="8" y="68" width="184.5" height="17"/>
+                                    <rect key="frame" x="8" y="68" width="185" height="17"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="17" id="W6I-q4-2OZ"/>
                                     </constraints>
@@ -73,7 +73,7 @@
                                     <textInputTraits key="textInputTraits" keyboardType="numberPad" returnKeyType="next" enablesReturnKeyAutomatically="YES"/>
                                 </textField>
                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="CVV" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tz3-UC-Wg8">
-                                    <rect key="frame" x="244" y="144" width="25.5" height="17"/>
+                                    <rect key="frame" x="244" y="144" width="26" height="17"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="17" id="QSD-rX-z0e"/>
                                     </constraints>
@@ -108,7 +108,7 @@
                                     <textInputTraits key="textInputTraits"/>
                                 </textField>
                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Exp. Year" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WEq-Dm-0h1">
-                                    <rect key="frame" x="168" y="220" width="54.5" height="17"/>
+                                    <rect key="frame" x="168" y="220" width="55" height="17"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="17" id="TQP-WF-c3O"/>
                                     </constraints>
@@ -159,7 +159,6 @@
                                 <constraint firstItem="At1-rh-wQX" firstAttribute="width" secondItem="CKf-21-NCh" secondAttribute="width" id="F1K-yT-Tso"/>
                                 <constraint firstItem="Ipi-wL-ffn" firstAttribute="top" secondItem="RPn-ad-Ae9" secondAttribute="bottom" constant="12" id="FDP-jz-eEW"/>
                                 <constraint firstItem="AHt-1S-sWk" firstAttribute="leading" secondItem="Tz3-UC-Wg8" secondAttribute="leading" id="HdL-pf-co6"/>
-                                <constraint firstItem="WJg-Rj-tzy" firstAttribute="leading" secondItem="hLR-a7-OyV" secondAttribute="leading" constant="8" id="IRw-xi-9Ve"/>
                                 <constraint firstItem="DfD-Yo-WvS" firstAttribute="leading" secondItem="hLR-a7-OyV" secondAttribute="leading" constant="8" id="KKO-52-pjg"/>
                                 <constraint firstItem="3fV-2N-0Oy" firstAttribute="top" secondItem="ngX-Wq-laP" secondAttribute="bottom" constant="6" id="KiQ-XA-MRJ"/>
                                 <constraint firstItem="GXd-K4-4cG" firstAttribute="top" secondItem="hLR-a7-OyV" secondAttribute="top" constant="14" id="LoM-QX-Rb4"/>
@@ -175,6 +174,7 @@
                                 <constraint firstAttribute="trailing" secondItem="AHt-1S-sWk" secondAttribute="trailing" constant="8" id="bNU-99-u08"/>
                                 <constraint firstAttribute="trailing" secondItem="GXd-K4-4cG" secondAttribute="trailing" constant="8" id="c7W-bb-3je"/>
                                 <constraint firstAttribute="centerX" secondItem="IeH-q4-qcf" secondAttribute="centerX" id="cVp-Wj-59t"/>
+                                <constraint firstAttribute="centerX" secondItem="WJg-Rj-tzy" secondAttribute="centerX" id="da7-PT-P6a"/>
                                 <constraint firstItem="IeH-q4-qcf" firstAttribute="top" secondItem="WJg-Rj-tzy" secondAttribute="bottom" constant="2" id="drd-oh-pO4"/>
                                 <constraint firstItem="At1-rh-wQX" firstAttribute="centerY" secondItem="CKf-21-NCh" secondAttribute="centerY" id="oEJ-Aq-Nhy"/>
                                 <constraint firstAttribute="trailing" secondItem="CKf-21-NCh" secondAttribute="trailing" constant="8" id="osu-B2-tO2"/>
