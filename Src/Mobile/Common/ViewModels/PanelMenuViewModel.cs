@@ -400,7 +400,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 	    {
 	        var serverTarget = Settings.ServiceUrl.ToLower();
 
-	        if (serverTarget.Contains("test"))
+	        if (serverTarget.Contains("test.taxihail.biz"))
 	        {
 	            ServerWatermarkText = "Dev Version";
 	        }
