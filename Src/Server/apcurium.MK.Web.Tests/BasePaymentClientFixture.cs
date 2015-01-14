@@ -159,7 +159,6 @@ namespace apcurium.MK.Web.Tests
             {
                 Id = orderId,
                 PickupAddress = TestAddresses.GetAddress1(),
-                PickupDate = DateTime.Now,
                 DropOffAddress = TestAddresses.GetAddress2(),
                 Estimate = new CreateOrder.RideEstimate
                 {
@@ -285,7 +284,6 @@ namespace apcurium.MK.Web.Tests
             {
                 Id = orderId,
                 PickupAddress = TestAddresses.GetAddress1(),
-                PickupDate = DateTime.Now,
                 DropOffAddress = TestAddresses.GetAddress2(),
                 Estimate = new CreateOrder.RideEstimate
                 {
