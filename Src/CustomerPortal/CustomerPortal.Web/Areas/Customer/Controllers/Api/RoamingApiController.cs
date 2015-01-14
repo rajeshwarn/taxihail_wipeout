@@ -35,10 +35,9 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
         public HttpResponseMessage GetRoamingFleetsPreferences(string companyId)
         {
             var homeCompanySettings = _networkRepository.FirstOrDefault(n => n.Id == companyId);
-
             if (homeCompanySettings == null || !homeCompanySettings.IsInNetwork)
             {
-                return null;
+                return new HttpResponseMessage(HttpStatusCode.NoContent);
             }
 
             var companiesFromOtherMarkets = _networkRepository
@@ -125,10 +124,9 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
 
             // Current company
             var currentCompanySettings = _networkRepository.FirstOrDefault(n => n.Id == companyId);
-
             if (currentCompanySettings == null || !currentCompanySettings.IsInNetwork)
             {
-                return null;
+                return new HttpResponseMessage(HttpStatusCode.NoContent);
             }
 
             var dispatchableCompany = currentCompanySettings.Preferences.Where(p => p.CanDispatch).ToArray();
