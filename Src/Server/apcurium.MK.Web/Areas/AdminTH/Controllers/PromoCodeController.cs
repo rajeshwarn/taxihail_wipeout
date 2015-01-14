@@ -6,6 +6,7 @@ using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Security;
 using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Web.Areas.AdminTH.Models;
 using apcurium.MK.Web.Attributes;
@@ -19,17 +20,26 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
     {
         private readonly IPromotionDao _promotionDao;
         private readonly ICommandBus _commandBus;
+        private readonly IServerSettings _serverSettings;
 
         public PromoCodeController(ICacheClient cache, IServerSettings serverSettings, IPromotionDao promotionDao, ICommandBus commandBus) 
             : base(cache, serverSettings)
         {
             _promotionDao = promotionDao;
             _commandBus = commandBus;
+            _serverSettings = serverSettings;
         }
 
         // GET: AdminTH/PromoCode
         public ActionResult Index()
         {
+            var paymentSettings = _serverSettings.GetPaymentSettings();
+            if (paymentSettings.PaymentMode == PaymentMethod.None)
+            {
+                TempData["Warning"] = "No payment Method has been configured. For users to be able to use promo codes, " +
+                                      "go to the Payment Settings section and configure a Payment method.";
+            }
+
             var promotions = _promotionDao.GetAll().Select(x => new PromoCode(x));
             return View(promotions);
         }

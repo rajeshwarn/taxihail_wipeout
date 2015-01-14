@@ -13,6 +13,7 @@ namespace apcurium.MK.Web.Areas
         {
             ViewData["ApplicationName"] = serverSettings.ServerData.TaxiHail.ApplicationName;
             ViewData["ApplicationKey"] = serverSettings.ServerData.TaxiHail.ApplicationKey;
+            ViewData["IsTaxiHailPro"] = serverSettings.ServerData.IsTaxiHailPro;
         }
 
         protected override IAsyncResult BeginExecute(RequestContext requestContext, AsyncCallback callback, object state)

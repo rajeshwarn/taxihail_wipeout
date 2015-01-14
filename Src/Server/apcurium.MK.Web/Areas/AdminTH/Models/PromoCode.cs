@@ -22,7 +22,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Models
             CanModifyTriggerGoal = true;
         }
 
-        public PromoCode(PromotionDetail promoDetail)
+        public PromoCode(PromotionDetail promoDetail) : this()
         {
             Id = promoDetail.Id;
             Name = promoDetail.Name;
@@ -52,6 +52,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Models
         public string Name { get; set; }
 
         [Display(Name = "Description")]
+        [Required]
         public string Description { get; set; }
 
         [Display(Name = "Start Date")]
@@ -90,6 +91,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Models
 
         [Display(Name = "Promo Discount")]
         [Required]
+        [Range(double.Epsilon, double.MaxValue, ErrorMessage = "The value must be greater than 0")]
         public decimal DiscountValue { get; set; }
 
         [Required]
