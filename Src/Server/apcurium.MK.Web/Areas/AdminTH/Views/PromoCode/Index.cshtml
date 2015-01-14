@@ -8,6 +8,13 @@
     </div>
 }
 
+@if (@TempData["Warning"] != null)
+{
+    <div class="alert alert-warning" style="margin-top: 10px;">
+        @TempData["Warning"]
+    </div>
+}
+
 <ul class="unstyled locations">
     @foreach (var promoCode in Model)
     {

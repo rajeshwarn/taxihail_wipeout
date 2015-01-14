@@ -58,7 +58,7 @@ namespace apcurium.MK.Web.admin
                 Response.Redirect("~");
             }
 
-            IsTaxiHailPro = config.ServerData.IsTaxiHailPro || IsSuperAdmin;
+            IsTaxiHailPro = config.ServerData.IsTaxiHailPro;
         }
 
         protected string FindParam(string[] filters, string param)

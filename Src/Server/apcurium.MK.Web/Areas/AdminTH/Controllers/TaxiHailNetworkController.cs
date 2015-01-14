@@ -29,14 +29,17 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
             _serverSettings = serverSettings;
             _taxiHailNetworkService = taxiHailNetworkService;
             _configurationsService = configurationsService;
-            
-            _applicationKey = serverSettings.ServerData.TaxiHail.ApplicationKey;
         }
 
         public async Task<ActionResult> Index()
         {
-            var localCompaniesPreferences = await _taxiHailNetworkService.GetNetworkCompanyPreferences(_applicationKey);
-            var roamingCompaniesPreferences = await _taxiHailNetworkService.GetRoamingCompanyPreferences(_applicationKey);
+            var localCompaniesPreferences = await _taxiHailNetworkService.GetNetworkCompanyPreferences(_serverSettings.ServerData.TaxiHail.ApplicationKey);
+            var roamingCompaniesPreferences = await _taxiHailNetworkService.GetRoamingCompanyPreferences(_serverSettings.ServerData.TaxiHail.ApplicationKey);
+
+            if (localCompaniesPreferences == null || roamingCompaniesPreferences == null)
+            {
+                return View();
+            }
 
             var companies = new Dictionary<string, List<CompanyPreferenceResponse>>
             {
@@ -56,8 +59,8 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
         {
             if (ModelState.IsValid)
             {
-                var localCompaniesPreferences = await _taxiHailNetworkService.GetNetworkCompanyPreferences(_applicationKey);
-                var roamingCompaniesPreferences = await _taxiHailNetworkService.GetRoamingCompanyPreferences(_applicationKey);
+                var localCompaniesPreferences = await _taxiHailNetworkService.GetNetworkCompanyPreferences(_serverSettings.ServerData.TaxiHail.ApplicationKey);
+                var roamingCompaniesPreferences = await _taxiHailNetworkService.GetRoamingCompanyPreferences(_serverSettings.ServerData.TaxiHail.ApplicationKey);
 
                 var companiesPreferences = new Dictionary<string, List<CompanyPreferenceResponse>>
                 {

@@ -28,11 +28,14 @@
             <div class="menu-zone span3">
                 <div class="well sidebar-nav" >
                     <ul class="nav nav-list">
-                        <li class="nav-header">TaxiHail Network</li>
-                        <li>@Html.ActionLink("Configure", "Index", "TaxiHailNetwork")</li>
-                        
-                        <li class="nav-header">Promo Codes</li>
-                        <li>@Html.ActionLink("Configure", "Index", "PromoCode")</li>
+                        @if (Convert.ToBoolean(ViewData["IsTaxiHailPro"]))
+                        {
+                            <li class="nav-header">TaxiHail Network</li>
+                            <li>@Html.ActionLink("Configure", "Index", "TaxiHailNetwork")</li>
+
+                            <li class="nav-header">Promo Codes</li>
+                            <li>@Html.ActionLink("Configure", "Index", "PromoCode")</li>
+                        }
 
                         <li class="nav-header">Navigation</li>
                         <li><a href="@(ViewData["BaseUrl"] + "/admin")" class="navbar-brand">Back to Admin</a></li>

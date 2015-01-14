@@ -8,6 +8,7 @@
             <connections>
                 <outlet property="imgLogoApcurium" destination="8" id="nz3-07-qOO"/>
                 <outlet property="imgLogoMobileKnowledge" destination="bYL-3d-p1o" id="Zl0-qG-keT"/>
+                <outlet property="lblServerVersion" destination="sjE-Ya-KXr" id="YgL-mG-tok"/>
                 <outlet property="lblVersion" destination="9" id="Ood-iZ-7Uj"/>
                 <outlet property="menuContainer" destination="ZSi-EL-Atn" id="v5G-KQ-cil"/>
                 <outlet property="menuListView" destination="7" id="QGf-SZ-3cl"/>
@@ -63,15 +64,23 @@
                                 <constraint firstAttribute="width" constant="50" id="wUz-dr-D0w"/>
                             </constraints>
                         </imageView>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sjE-Ya-KXr">
+                            <rect key="frame" x="8" y="539.5" width="42" height="20.5"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <color key="textColor" red="0.98431372549999996" green="0.0" blue="0.039215686270000001" alpha="1" colorSpace="calibratedRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstItem="bYL-3d-p1o" firstAttribute="centerY" secondItem="8" secondAttribute="centerY" id="6BX-Is-2nx"/>
+                        <constraint firstItem="sjE-Ya-KXr" firstAttribute="leading" secondItem="ZSi-EL-Atn" secondAttribute="leading" constant="8" id="6gE-j1-3hU"/>
                         <constraint firstItem="7" firstAttribute="leading" secondItem="ZSi-EL-Atn" secondAttribute="leading" id="7vP-0g-qeq"/>
                         <constraint firstAttribute="trailing" secondItem="9" secondAttribute="trailing" constant="15" id="B8y-Wo-asv"/>
                         <constraint firstItem="bYL-3d-p1o" firstAttribute="leading" secondItem="ZSi-EL-Atn" secondAttribute="leading" constant="63" id="Ctf-as-KEx"/>
                         <constraint firstAttribute="bottom" secondItem="9" secondAttribute="bottom" constant="5" id="Eiq-hW-qu8"/>
                         <constraint firstAttribute="centerX" secondItem="0aM-QX-Lcs" secondAttribute="centerX" id="MlB-7o-dg4"/>
+                        <constraint firstAttribute="bottom" secondItem="sjE-Ya-KXr" secondAttribute="bottom" constant="8" id="VHq-qV-SAy"/>
                         <constraint firstAttribute="width" constant="266" id="c9M-mO-9Ol"/>
                         <constraint firstItem="0aM-QX-Lcs" firstAttribute="top" secondItem="ZSi-EL-Atn" secondAttribute="top" constant="20" id="eud-HV-6WW"/>
                         <constraint firstItem="7" firstAttribute="top" secondItem="0aM-QX-Lcs" secondAttribute="bottom" constant="2" id="fN5-zK-fFr"/>
