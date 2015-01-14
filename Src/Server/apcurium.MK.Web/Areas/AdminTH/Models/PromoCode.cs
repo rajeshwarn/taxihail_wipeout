@@ -91,6 +91,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Models
 
         [Display(Name = "Promo Discount")]
         [Required]
+        [Range(double.Epsilon, double.MaxValue, ErrorMessage = "The value must be greater than 0")]
         public decimal DiscountValue { get; set; }
 
         [Required]
