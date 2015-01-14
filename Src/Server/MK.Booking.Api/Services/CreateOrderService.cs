@@ -145,11 +145,10 @@ namespace apcurium.MK.Booking.Api.Services
             }
 
             // Payment mode is card on file
-            if (!isFutureBooking                            // No preauth on future booking
-                && request.Settings.ChargeTypeId.HasValue
+            if (request.Settings.ChargeTypeId.HasValue
                 && request.Settings.ChargeTypeId.Value == ChargeTypes.CardOnFile.Id)
             {
-                ValidateCreditCard(request.Id, account, request.ClientLanguageCode);
+                ValidateCreditCard(request.Id, account, request.ClientLanguageCode, isFutureBooking);
             }
 
             bool isChargeAccountPaymentWithCardOnFile = false;
@@ -176,10 +175,7 @@ namespace apcurium.MK.Booking.Api.Services
                             _resources.Get("CannotCreateOrderChargeAccountNotSupported", request.ClientLanguageCode));
                     }
 
-                    if (!isFutureBooking)
-                    {
-                        ValidateCreditCard(request.Id, account, request.ClientLanguageCode);
-                    }
+                    ValidateCreditCard(request.Id, account, request.ClientLanguageCode, isFutureBooking);
                     
                     chargeTypeKey = ChargeTypes.CardOnFile.Display;
                     request.Settings.ChargeTypeId = ChargeTypes.CardOnFile.Id;
@@ -505,19 +501,19 @@ namespace apcurium.MK.Booking.Api.Services
             return ibsAccountId.Value;
         }
 
-        private void ValidateCreditCard(Guid orderId, AccountDetail account, string clientLanguageCode)
+        private void ValidateCreditCard(Guid orderId, AccountDetail account, string clientLanguageCode, bool isFutureBooking)
         {
-            if (!_serverSettings.GetPaymentSettings().IsPreAuthEnabled)
-            {
-                return;
-            }
-
             // check if the account has a credit card
             if (!account.DefaultCreditCard.HasValue)
             {
                 throw new HttpError(HttpStatusCode.BadRequest,
                     ErrorCode.CreateOrder_CardOnFileButNoCreditCard.ToString(),
                     GetCreateOrderServiceErrorMessage(ErrorCode.CreateOrder_CardOnFileButNoCreditCard, clientLanguageCode));
+            }
+
+            if (!_serverSettings.GetPaymentSettings().IsPreAuthEnabled || isFutureBooking)
+            {
+                return;
             }
 
             // try to preauthorize a small amount on the card to verify the validity

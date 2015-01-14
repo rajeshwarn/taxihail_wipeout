@@ -182,6 +182,7 @@ namespace apcurium.MK.Booking.Api.Jobs
 
         private PreAuthorizePaymentResponse PreauthorizePaymentIfNecessary(Guid orderId, string cardToken, decimal amount)
         {
+            // Check payment inteast of PreAuth setting, because we do not preath in the cases of future bookings
             var paymentInfo = _paymentDao.FindByOrderId(orderId);
             if (paymentInfo != null)
             {
