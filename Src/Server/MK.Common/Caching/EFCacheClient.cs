@@ -2,6 +2,8 @@
 
 using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
+using apcurium.MK.Common.Diagnostic;
 using ServiceStack.CacheAccess;
 using ServiceStack.Text;
 
@@ -9,7 +11,7 @@ using ServiceStack.Text;
 
 namespace apcurium.MK.Common.Caching
 {
-    public class EfCacheClient : ICacheClient
+    public class EfCacheClient : ICacheClient, IRemoveByPattern
     {
         private readonly Func<CachingDbContext> _contextFactory;
 
@@ -192,6 +194,27 @@ namespace apcurium.MK.Common.Caching
                 item.ExpiresAt = expiresAt;
                 context.SaveChanges();
                 return true;
+            }
+        }
+
+        public void RemoveByPattern(string pattern)
+        {
+            RemoveByRegex(pattern.Replace("*", ".*").Replace("?", ".+"));
+        }
+
+        public void RemoveByRegex(string pattern)
+        {
+            var regex = new Regex(pattern);
+
+            using (var context = _contextFactory.Invoke())
+            {
+                foreach (var item in context.Set<CacheItem>())
+                {
+                    if (regex.IsMatch(item.Key))
+                    {
+                        this.Remove(item.Key);
+                    }
+                }
             }
         }
     }
