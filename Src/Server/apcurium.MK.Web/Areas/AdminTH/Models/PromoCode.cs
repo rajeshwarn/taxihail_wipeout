@@ -52,6 +52,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Models
         public string Name { get; set; }
 
         [Display(Name = "Description")]
+        [Required]
         public string Description { get; set; }
 
         [Display(Name = "Start Date")]

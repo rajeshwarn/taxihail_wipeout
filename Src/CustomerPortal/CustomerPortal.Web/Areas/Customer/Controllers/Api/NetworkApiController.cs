@@ -37,7 +37,7 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
             
             if (networkSettings == null || !networkSettings.IsInNetwork)
             {
-                return null;
+                return new HttpResponseMessage(HttpStatusCode.NoContent); 
             }
 
             var otherCompaniesInNetwork = _networkRepository.Where(n => n.IsInNetwork && n.Id != networkSettings.Id)
@@ -76,10 +76,9 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
         public HttpResponseMessage Post(string companyId, CompanyPreference[] preferences)
         {
             var networkSetting = _networkRepository.FirstOrDefault(x => x.Id == companyId);
-
             if (networkSetting == null)
             {
-                return new HttpResponseMessage(HttpStatusCode.Forbidden); 
+                return new HttpResponseMessage(HttpStatusCode.NoContent); 
             }
             
             foreach (var companyPreference in preferences.Where(p => !p.CanAccept))
@@ -124,7 +123,7 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
 
             if (currentCompanyNetworkSettings == null || !currentCompanyNetworkSettings.IsInNetwork)
             {
-                return null;
+                return new HttpResponseMessage(HttpStatusCode.NoContent);
             }
 
             var networkFleetResult = new List<NetworkFleetResponse>();

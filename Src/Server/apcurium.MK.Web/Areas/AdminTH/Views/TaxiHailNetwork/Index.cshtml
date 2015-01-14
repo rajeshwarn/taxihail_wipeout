@@ -9,94 +9,104 @@
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)
 
-    var hasLocalCompanies = Model.ContainsKey("Local") && Model["Local"].Any();
-    var hasRoamingCompanies = Model.Any(m => m.Key != "Local");
-
-    if (hasLocalCompanies || hasRoamingCompanies)
+    if (Model == null)
     {
-        <table class="table table-striped">
-            <tr>
-                <th>Company Name</th>
-                <th class="company-preference-order-table">Accept Orders From</th>
-                <th class="company-preference-order-table">Dispatch Orders To</th>
-            </tr>
-        </table>
+        <h4>Your company has not been configured for the network. Please login to the CustomerPortal and do so before continuing.</h4>
     }
-
-    <legend>
-        @Html.DisplayName("Local")
-    </legend>
-    
-    if (!hasLocalCompanies)
+    else
     {
-        <h4>You don't have any companies within your Local Network</h4>
-    }
+        var hasLocalCompanies = Model.ContainsKey("Local") && Model["Local"].Any();
+        var hasRoamingCompanies = Model.Any(m => m.Key != "Local");
 
-    <ul class="sortable">
-        @foreach (var company in Model["Local"])
+        if (hasLocalCompanies || hasRoamingCompanies)
         {
-            <li>
-                <div class="company-preference-order-text"><span class="handle">::</span>@company.CompanyPreference.CompanyKey</div>
-                @Html.Hidden("idKey_" + company.CompanyPreference.CompanyKey, company.CompanyPreference.CompanyKey)
-                <div class="company-preference-order-checkbox">@Html.CheckBox("acceptKey_" + company.CompanyPreference.CompanyKey, company.CompanyPreference.CanAccept)</div>
-                <div class="company-preference-order-checkbox">
-                    @if (company.CanDispatchTo)
-                    {
-                        @Html.CheckBox("dispatchKey_" + company.CompanyPreference.CompanyKey, company.CompanyPreference.CanDispatch)
-                    }
-                    else
-                    {
-                        @Html.CheckBox("dispatchKey_" + company.CompanyPreference.CompanyKey, company.CompanyPreference.CanDispatch, new { disabled = "disabled" })
-                    }
-                </div>
-                @Html.Hidden("orderKey_" + company.CompanyPreference.CompanyKey, company.CompanyPreference.Order)
-            </li>
+            <table class="table table-striped">
+                <tr>
+                    <th>Company Name</th>
+                    <th class="company-preference-order-table">Accept Orders From</th>
+                    <th class="company-preference-order-table">Dispatch Orders To</th>
+                </tr>
+            </table>
         }
-    </ul>
 
-    <legend>
-        <br/>
-        @Html.DisplayName("Roaming")
-    </legend>
-    
-    if (!hasRoamingCompanies)
-    {
-        <h4>There is no other company that is part of the the Network.</h4>
-    }
-
-    foreach (var market in Model.Keys)
-    {
-        if (market == "Local") { continue; }
-    
         <legend>
-            <h5>@market</h5>
+            @Html.DisplayName("Local")
         </legend>
 
-        <ul class="static-table">
-            @foreach (var company in Model[market])
+        if (!hasLocalCompanies)
+        {
+            <h4>You don't have any companies within your Local Network</h4>
+        }
+
+        <ul class="sortable">
+            @foreach (var company in Model["Local"])
             {
                 <li>
-                    <div class="company-preference-order-text">@company.CompanyPreference.CompanyKey</div>
+                    <div class="company-preference-order-text"><span class="handle">::</span>@company.CompanyPreference.CompanyKey</div>
                     @Html.Hidden("idKey_" + company.CompanyPreference.CompanyKey, company.CompanyPreference.CompanyKey)
                     <div class="company-preference-order-checkbox">@Html.CheckBox("acceptKey_" + company.CompanyPreference.CompanyKey, company.CompanyPreference.CanAccept)</div>
-                    <div class="company-preference-order-checkbox ">
+                    <div class="company-preference-order-checkbox">
                         @if (company.CanDispatchTo)
                         {
                             @Html.CheckBox("dispatchKey_" + company.CompanyPreference.CompanyKey, company.CompanyPreference.CanDispatch)
                         }
                         else
                         {
-                            @Html.CheckBox("dispatchKey_" + company.CompanyPreference.CompanyKey, company.CompanyPreference.CanDispatch, new { disabled = "disabled" })
+                            @Html.CheckBox("dispatchKey_" + company.CompanyPreference.CompanyKey, company.CompanyPreference.CanDispatch, new {disabled = "disabled"})
                         }
                     </div>
+                    @Html.Hidden("orderKey_" + company.CompanyPreference.CompanyKey, company.CompanyPreference.Order)
                 </li>
             }
         </ul>
-    }
 
-    if (hasLocalCompanies || hasRoamingCompanies)
-    {
-        <a href="javascript:void(0)" type="submit" class="btn btn-primary" onclick=" save()">Save</a>
+        <legend>
+            <br/>
+            @Html.DisplayName("Roaming")
+        </legend>
+
+        if (!hasRoamingCompanies)
+        {
+            <h4>There is no other company that is part of the the Network.</h4>
+        }
+
+        foreach (var market in Model.Keys)
+        {
+            if (market == "Local")
+            {
+                continue;
+            }
+
+            <legend>
+                <h5>@market</h5>
+            </legend>
+
+            <ul class="static-table">
+                @foreach (var company in Model[market])
+                {
+                    <li>
+                        <div class="company-preference-order-text">@company.CompanyPreference.CompanyKey</div>
+                        @Html.Hidden("idKey_" + company.CompanyPreference.CompanyKey, company.CompanyPreference.CompanyKey)
+                        <div class="company-preference-order-checkbox">@Html.CheckBox("acceptKey_" + company.CompanyPreference.CompanyKey, company.CompanyPreference.CanAccept)</div>
+                        <div class="company-preference-order-checkbox ">
+                            @if (company.CanDispatchTo)
+                            {
+                                @Html.CheckBox("dispatchKey_" + company.CompanyPreference.CompanyKey, company.CompanyPreference.CanDispatch)
+                            }
+                            else
+                            {
+                                @Html.CheckBox("dispatchKey_" + company.CompanyPreference.CompanyKey, company.CompanyPreference.CanDispatch, new {disabled = "disabled"})
+                            }
+                        </div>
+                    </li>
+                }
+            </ul>
+        }
+
+        if (hasLocalCompanies || hasRoamingCompanies)
+        {
+            <a href="javascript:void(0)" type="submit" class="btn btn-primary" onclick=" save() ">Save</a>
+        }
     }
 }
 
