@@ -182,7 +182,8 @@ namespace apcurium.MK.Booking.Api.Jobs
 
         private PreAuthorizePaymentResponse PreauthorizePaymentIfNecessary(Guid orderId, string cardToken, decimal amount)
         {
-            if (_serverSettings.GetPaymentSettings().IsPreAuthEnabled)
+            var paymentInfo = _paymentDao.FindByOrderId(orderId);
+            if (paymentInfo != null)
             {
                 // Already preautorized on create order, do nothing
                 return new PreAuthorizePaymentResponse { IsSuccessful = true };

@@ -145,7 +145,8 @@ namespace apcurium.MK.Booking.Api.Services
             }
 
             // Payment mode is card on file
-            if (request.Settings.ChargeTypeId.HasValue
+            if (!isFutureBooking                            // No preauth on future booking
+                && request.Settings.ChargeTypeId.HasValue
                 && request.Settings.ChargeTypeId.Value == ChargeTypes.CardOnFile.Id)
             {
                 ValidateCreditCard(request.Id, account, request.ClientLanguageCode);
@@ -175,8 +176,11 @@ namespace apcurium.MK.Booking.Api.Services
                             _resources.Get("CannotCreateOrderChargeAccountNotSupported", request.ClientLanguageCode));
                     }
 
-                    ValidateCreditCard(request.Id, account, request.ClientLanguageCode);
-
+                    if (!isFutureBooking)
+                    {
+                        ValidateCreditCard(request.Id, account, request.ClientLanguageCode);
+                    }
+                    
                     chargeTypeKey = ChargeTypes.CardOnFile.Display;
                     request.Settings.ChargeTypeId = ChargeTypes.CardOnFile.Id;
                     isChargeAccountPaymentWithCardOnFile = true;
