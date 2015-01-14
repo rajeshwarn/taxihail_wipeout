@@ -121,7 +121,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
         public void Handle(OrderSwitchedToNextDispatchCompany @event)
         {
             var paymentService = _paymentServiceFactory.GetInstance();
-            // payment might not be enabled
+            // Payment might not be enabled
             if (paymentService != null)
             {
                 // void the preauthorization to prevent misuse fees
@@ -135,14 +135,17 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             {
                 var paymentSettings = _serverSettings.GetPaymentSettings();
                 var orderDetails = _orderDao.FindById(@event.SourceId);
+                var pairingInfo = _orderDao.FindOrderPairingById(@event.SourceId);
 
+                // If the user has decided not to pair (paying the ride in car instead),
+                // we have to void the amount that was preauthorized
                 if (paymentSettings.AutomaticPayment
                     && paymentSettings.PaymentMode != PaymentMethod.RideLinqCmt
                     && orderDetails.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id
-                    && _orderDao.FindOrderPairingById(@event.SourceId) == null)
+                    && pairingInfo == null)
                 {
                     var paymentService = _paymentServiceFactory.GetInstance();
-                    // payment might not be enabled
+                    // Payment might not be enabled
                     if (paymentService != null)
                     {
                         // void the preauthorization to prevent misuse fees
