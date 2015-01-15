@@ -139,8 +139,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
 
                 // If the user has decided not to pair (paying the ride in car instead),
                 // we have to void the amount that was preauthorized
-                if (paymentSettings.AutomaticPayment
-                    && paymentSettings.PaymentMode != PaymentMethod.RideLinqCmt
+                if (paymentSettings.PaymentMode != PaymentMethod.RideLinqCmt
                     && orderDetails.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id
                     && pairingInfo == null)
                 {

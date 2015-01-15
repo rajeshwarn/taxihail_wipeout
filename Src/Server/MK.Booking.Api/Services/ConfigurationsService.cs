@@ -50,7 +50,6 @@ namespace apcurium.MK.Booking.Api.Services
             {
                 var sendToClient = false;
                 var customizableByCompany = false;
-                var requiresTaxiHailPro = false;
                 var attributes = setting.Value.GetCustomAttributes(false);
 
                 // Check if we have to return this setting to the mobile client

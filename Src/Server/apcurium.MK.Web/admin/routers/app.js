@@ -26,9 +26,6 @@
             /* terms and conditions */
             "termsandconditions": "termsAndConditions",
 
-            /* settings */
-            "settings": "manageCompanySettings",
-
             /* notification settings */
             "notificationSettings": "manageNotificationSettings",
 
@@ -85,10 +82,6 @@
         
         signup: function () {
             document.location.href = '../#signup';
-        },
-
-        manageCompanySettings: function () {
-            action(TaxiHail.CompanySettingsController, 'index');
         },
 
         manageNotificationSettings: function () {
