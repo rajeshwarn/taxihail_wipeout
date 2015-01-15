@@ -5,7 +5,7 @@ using UIKit;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
-    public class TouchGesture :UIGestureRecognizer
+    public class TouchGesture : UIGestureRecognizer
     {
         private Stopwatch _stopWatch;
 
@@ -19,12 +19,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         }
 
         public TouchGesture (IntPtr handle) : base(handle)
-        {
-            Initialize();
-        }
-
-        [Export("initWithCoder:")]
-        public TouchGesture (NSCoder coder) : base(coder)
         {
             Initialize();
         }

@@ -1,9 +1,8 @@
+using System;
 using UIKit;
 using Foundation;
 using Cirrious.MvvmCross.Binding.Touch.Views;
 using System.Windows.Input;
-using System.Collections.Generic;
-using Cirrious.MvvmCross.Binding.Bindings;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {

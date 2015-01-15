@@ -2,7 +2,6 @@ using CoreLocation;
 using MapKit;
 using UIKit;
 using apcurium.MK.Booking.Mobile.Client.Helper;
-using CoreGraphics;
 
 namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
 {
@@ -36,10 +35,15 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
 
 		public bool ShowSubtitleOnPin = true;
 
-	    public override CLLocationCoordinate2D Coordinate {
+	    public override CLLocationCoordinate2D Coordinate 
+        {
 			get { return _coordinate; }
-			set { _coordinate = value; }
 		}
+
+        public override void SetCoordinate(CLLocationCoordinate2D value)
+        {
+            _coordinate = value;
+        }
 
         private readonly string _title;
 		public override string Title {

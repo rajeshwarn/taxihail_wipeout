@@ -84,13 +84,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Order
 			base.Dispose (disposing);
 		} 
 		
-		public override string ReuseIdentifier 
-		{
-			get 
-			{
-				return Identifier.ToString();
-			}
-		}
+        public override NSString ReuseIdentifier
+        {
+            get
+            {
+                return (NSString)Identifier.ToString();
+            }
+        }
 
 		public string RatingTypeName
 		{

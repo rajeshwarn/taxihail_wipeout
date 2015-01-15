@@ -7,7 +7,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Extensions.Helpers
     {
         public static bool IsRetinaDisplay { get { return UIScreen.MainScreen.Scale > 1.0; } }
 
-		public static float OnePixel
+		public static nfloat OnePixel
 		{
 			get
             {
@@ -41,7 +41,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Extensions.Helpers
             }
         }
 
-        public static float GetConvertedPixel(float pixel)
+        public static nfloat GetConvertedPixel(nfloat pixel)
         {
             return pixel / UIScreen.MainScreen.Scale;
         }

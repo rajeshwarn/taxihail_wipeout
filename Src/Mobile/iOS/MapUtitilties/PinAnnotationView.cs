@@ -25,32 +25,28 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
 			RefreshPinImage();
 		}
 
-		public override void PrepareForReuse ()
-		{			
-			base.PrepareForReuse ();
-		}
-
-		public override sealed NSObject Annotation
-		{
-			get 
-			{
-				#if DEBUG
-				//problem of getting UIKit Consistency error
-				if (Thread.CurrentThread.IsBackground) {
-					return null;
-				}
-				#endif
-				return base.Annotation; 
-			}
-			set
-			{
-				base.Annotation = value;
-				if( value != null )
-				{
-					RefreshPinImage();
-				}
-			}
-		}
+        public override IMKAnnotation Annotation
+        {
+            get
+            {
+                #if DEBUG
+                //problem of getting UIKit Consistency error
+                if (Thread.CurrentThread.IsBackground) 
+                {
+                    return null;
+                }
+                #endif
+                return base.Annotation;
+            }
+            set
+            {
+                base.Annotation = value;
+                if (value != null)
+                {
+                    RefreshPinImage();
+                }
+            }
+        }
 
 		public void RefreshPinImage ()
         {

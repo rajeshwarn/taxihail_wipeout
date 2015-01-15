@@ -1,19 +1,16 @@
 using System;
-using CoreGraphics;
-using Foundation;
 using UIKit;
 using Cirrious.MvvmCross.Binding.Touch.Views;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Booking.Mobile.Client.Controls.Widgets;
-using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
 using apcurium.MK.Booking.Mobile.Client.Localization;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
     public partial class PromotionCell : MvxTableViewCell
     {
-        public static float Height = 44f;
+        public static nfloat Height = 44f;
 
         public PromotionCell(IntPtr handle) : base(handle)
         {

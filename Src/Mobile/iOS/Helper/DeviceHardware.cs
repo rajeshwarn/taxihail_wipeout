@@ -1,5 +1,6 @@
 using System;
 using System.Runtime.InteropServices;
+using ObjCRuntime;
 
 namespace apcurium.MK.Booking.Mobile.Client.Helper
 {

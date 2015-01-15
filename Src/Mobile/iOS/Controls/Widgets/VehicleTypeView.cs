@@ -13,8 +13,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
     [Register("VehicleTypeView")]
     public class VehicleTypeView : UIControl
     {
-		private const float EstimateLabelMinimumWidth = 40f;
-        private const float EstimateLabelPadding = 5f;
+		private nfloat EstimateLabelMinimumWidth = 40f;
+        private nfloat EstimateLabelPadding = 5f;
         private CGSize ImageSize = new CGSize(34f, 34f);
 
         private UIImageView _vehicleTypeImage { get; set; }
@@ -78,14 +78,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             });
         }
 
-        public float WidthToFitLabel()
+        public nfloat WidthToFitLabel()
         {
             if (!_vehicleTypeLabel.Text.HasValue())
             {
                 return EstimateLabelMinimumWidth;
             }
 
-            return Math.Max(EstimateLabelMinimumWidth, this.GetSizeThatFits(_vehicleTypeLabel.Text, _vehicleTypeLabel.Font).Width) + EstimateLabelPadding * 2;
+            return NMath.Max(EstimateLabelMinimumWidth, this.GetSizeThatFits(_vehicleTypeLabel.Text, _vehicleTypeLabel.Font).Width) + EstimateLabelPadding * 2;
         }
 
         public override bool Selected 

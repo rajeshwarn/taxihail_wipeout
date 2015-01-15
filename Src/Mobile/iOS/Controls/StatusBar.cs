@@ -45,8 +45,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
         private bool _wasTouched;
 
-        private float _minHeight;
-        private float _maxHeight;
+        private nfloat _minHeight;
+        private nfloat _maxHeight;
 
         public StatusBar(IntPtr handle) : base(handle)
         {
@@ -151,7 +151,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         }
 
         CGPoint _startPt;
-        private float _initialHeight;
+        private nfloat _initialHeight;
         
         public override void TouchesBegan (NSSet touches, UIEvent evt)
         {
@@ -187,7 +187,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             base.TouchesMoved (touches, evt);
         }
         
-		public void SetMaxHeight(float height)
+		public void SetMaxHeight(nfloat height)
 		{
 			_maxHeight = height;
 
@@ -197,7 +197,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             }
         }
 
-        public void SetMinHeight(float height)
+        public void SetMinHeight(nfloat height)
         {
             _minHeight = height;
 
@@ -207,7 +207,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             }
         }
 
-        public void SetHeight (float height, bool animate)
+        public void SetHeight (nfloat height, bool animate)
         {
             Action changeSize = () => 
             {

@@ -3,7 +3,7 @@ using CoreLocation;
 using Foundation;
 using apcurium.MK.Booking.Mobile.Client.MapUtitilties;
 
-namespace MonoTouch.MapKit
+namespace MapKit
 {
     public static class MKMapViewExtensions
     {

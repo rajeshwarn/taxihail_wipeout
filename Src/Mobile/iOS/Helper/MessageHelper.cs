@@ -98,9 +98,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Helper
                 LoadingOverlay.StopAnimatingLoading();
                 var av = new UIAlertView(title, message, null, Localize.GetValue("Close"), listTitle);
                 av.Clicked += delegate(object sender, UIButtonEventArgs e) {
-                    if(e.ButtonIndex!=0)
+                    if(e.ButtonIndex != 0)
                     {
-                        additionalButton[e.ButtonIndex-1].Value();
+                        additionalButton[(int)e.ButtonIndex - 1].Value();
                     }
                 };
                 av.Show ();                           

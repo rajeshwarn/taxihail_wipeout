@@ -1,9 +1,9 @@
 using UIKit;
-using CoreGraphics;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
 using apcurium.MK.Booking.Mobile.Client.Helper;
 using apcurium.MK.Booking.Mobile.Client.Style;
 using CoreGraphics;
+using System;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
 {
@@ -12,8 +12,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
         private UIView _dialogView;
         private UIImageView _imageView;
         private CircularProgressView _progressView;
-        private static float _dialogWidth = UIScreen.MainScreen.Bounds.Width;
-        private static float _dialogHeight = 95;
+        private static nfloat _dialogWidth = UIScreen.MainScreen.Bounds.Width;
+        private static nfloat _dialogHeight = 95;
         private static bool _isLoading;
         private UIWindow _modalWindow;
 

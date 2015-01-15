@@ -21,7 +21,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
 
             BackgroundColor = UIColor.Clear;
 
-            _lineWidth = Math.Max(Frame.Width * .025f, 1f);
+            _lineWidth = NMath.Max(Frame.Width * .025f, 1f);
 
             _progressBackgroundLayer = new CAShapeLayer();
             _progressBackgroundLayer.FillColor = BackgroundColor.CGColor;   
@@ -46,8 +46,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
             Color = color;
         }
 
-        float _lineWidth;
-        public float LineWidth
+        nfloat _lineWidth;
+        public nfloat LineWidth
         {
             get
             {
@@ -55,7 +55,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
             }
             set
             {           
-                _lineWidth = Math.Max(value, 1f);
+                _lineWidth = NMath.Max(value, 1f);
 
                 _progressBackgroundLayer.LineWidth = _lineWidth;
                 _progressLayer.LineWidth = _lineWidth * 2f;
@@ -79,8 +79,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
             }
         }
 
-        float _progress;
-        public float Progress
+        nfloat _progress;
+        public nfloat Progress
         {
             get
             {
@@ -94,7 +94,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
                 {
                     _progress = value;
 
-                    if (_progress == 0f) {
+                    if (_progress == 0f) 
+                    {
                         _progressBackgroundLayer.FillColor = BackgroundColor.CGColor;
                     }
 

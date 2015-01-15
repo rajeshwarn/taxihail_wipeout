@@ -1,12 +1,11 @@
 using CoreGraphics;
-using CoreGraphics;
 using CoreImage;
 using UIKit;
 using apcurium.MK.Booking.Mobile.Framework.Extensions;
 using apcurium.MK.Booking.Mobile.Client.Diagnostics;
-using apcurium.MK.Booking.Mobile.Client.Extensions;
 using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
 using apcurium.MK.Booking.Mobile.Client.Style;
+using System;
 
 namespace apcurium.MK.Booking.Mobile.Client.Helper
 {
@@ -18,7 +17,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Helper
             UIGraphics.BeginImageContext(rect.Size);
 
             var context = UIGraphics.GetCurrentContext();
-            context.SetFillColorWithColor(color.CGColor);
+            context.SetFillColor(color.CGColor);
             context.FillRect(rect);
 
             var image = UIGraphics.GetImageFromCurrentImageContext();
@@ -76,7 +75,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Helper
             context.ClipToMask (rect, backgroundToColorize.CGImage);
 
             // Step 3: Colorize the background
-            context.SetFillColorWithColor (color.CGColor);
+            context.SetFillColor (color.CGColor);
             context.SetBlendMode (CGBlendMode.SourceIn);
 
             // Step 4: Add the white portion on top of background
@@ -115,7 +114,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Helper
             // apply clip to mask
             context.ClipToMask (rect, image.CGImage);
 
-            context.SetFillColorWithColor(color.CGColor);
+            context.SetFillColor(color.CGColor);
             context.SetBlendMode(CGBlendMode.Normal);
 
             context.FillRect(rect);
@@ -214,7 +213,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Helper
                 return false;
             }
                 
-            var detectedColor = GetPixel(image, expectedColorCoordinate.Value.X, expectedColorCoordinate.Value.Y);
+            var detectedColor = GetPixel(image, (int)expectedColorCoordinate.Value.X, (int)expectedColorCoordinate.Value.Y);
             var differentColorThanExpected = !detectedColor.CGColor.Equals(expectedColor.CGColor);
 
             return differentColorThanExpected;
@@ -228,21 +227,21 @@ namespace apcurium.MK.Booking.Mobile.Client.Helper
             var cgImage = image.CGImage.Clone ();
             var size = new CGSize (cgImage.Width, cgImage.Height);
             var colorSpace = CGColorSpace.CreateDeviceRGB ();
-            var rawData = new byte[size.Height * size.Width * 4];
+            var rawData = new byte[(int)(size.Height * size.Width * 4)];
             var bytesPerPixel = 4;
             var bytesPerRow = bytesPerPixel * size.Width;
             var bitsPerComponent = 8;
-            var context = new CGBitmapContext(rawData, size.Width, size.Height, bitsPerComponent, bytesPerRow, colorSpace, CGBitmapFlags.PremultipliedLast | CGBitmapFlags.ByteOrder32Big);
+            var context = new CGBitmapContext(rawData, (nint)size.Width, size.Height, bitsPerComponent, bytesPerRow, colorSpace, CGBitmapFlags.PremultipliedLast | CGBitmapFlags.ByteOrder32Big);
             colorSpace.Dispose ();
 
             context.DrawImage (new CGRect (0, 0, size.Width, size.Height), cgImage);
             context.Dispose ();
 
             var byteIndex = (bytesPerRow * correctedY) + correctedX * bytesPerPixel;
-            var red = rawData[byteIndex];
-            var green = rawData[byteIndex + 1];
-            var blue = rawData[byteIndex + 2];
-            var alpha = rawData[byteIndex + 3];
+            var red = rawData[(int)byteIndex];
+            var green = rawData[(int)byteIndex + 1];
+            var blue = rawData[(int)byteIndex + 2];
+            var alpha = rawData[(int)byteIndex + 3];
 
             cgImage.Dispose ();
 
