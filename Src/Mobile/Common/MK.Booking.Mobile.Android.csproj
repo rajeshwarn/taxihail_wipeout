@@ -139,6 +139,7 @@
     <Reference Include="Mono.Android" />
     <Reference Include="System.Json" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Windows" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppServices\IGeolocService.cs" />
