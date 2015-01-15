@@ -270,12 +270,12 @@ namespace apcurium.MK.Common.Configuration
         public string Note { get; protected internal set; }
     }
 
-    public class CustomerPortalSettingContainer 
+    public class CustomerPortalSettingContainer
     {
         [Display(Name = "Customer Portal Url", Description = "Customer Portal Url")]
         public string Url { get; protected internal set; }
 
-        [Display(Name = "Customer UserName", Description = "Customer UserName")]
+        [Display(Name = "Customer Portal UserName", Description = "Customer UserName")]
         public string UserName { get; protected internal set; }
 
         [Display(Name = "Customer Portal Password", Description = "Customer Portal Password")]

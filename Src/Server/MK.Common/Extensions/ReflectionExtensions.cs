@@ -106,5 +106,20 @@ namespace apcurium.MK.Common.Extensions
             }
             return propertyInfo.Name;
         }
+
+        /// <summary>
+        /// Extension method that returns the display description attibute value of a property.
+        /// </summary>
+        /// <param name="propertyInfo">The property to return the display description from.</param>
+        /// <returns>The display name of the property or the native name if no Display attribute exists.</returns>
+        public static string GetDisplayDescription(this PropertyInfo propertyInfo)
+        {
+            var attr = (DisplayAttribute)Attribute.GetCustomAttribute(propertyInfo, typeof(DisplayAttribute));
+            if (attr != null)
+            {
+                return attr.Description;
+            }
+            return null;
+        }
     }
 }
