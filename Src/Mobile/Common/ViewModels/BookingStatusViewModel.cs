@@ -301,7 +301,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private bool _refreshStatusIsExecuting;
 		private async void RefreshStatus()
         {
-
             try 
 			{
 				if(_refreshStatusIsExecuting)
@@ -313,6 +312,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				_refreshStatusIsExecuting = true;
 
 				var status = await _bookingService.GetOrderStatusAsync(Order.Id);
+				while(status.IBSOrderId == null)
+				{
+					Logger.LogMessage ("Waiting for Ibs Order Creation (ibs order id)");
+					await Task.Delay(TimeSpan.FromSeconds(1));
+					status = await _bookingService.GetOrderStatusAsync(Order.Id);
+				}
+
+				Logger.LogMessage ("IBS Order Id: {0}", status.IBSOrderId);
+
 				if(status.VehicleNumber != null)
 				{
 					_vehicleNumber = status.VehicleNumber;
@@ -335,7 +343,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 				var isDone = _bookingService.IsStatusDone(status.IBSStatusId);
 
-				if(status.IBSStatusId.HasValue() && status.IBSStatusId.Equals(VehicleStatuses.Common.Scheduled))
+				if(status.IBSStatusId.SoftEqual(VehicleStatuses.Common.Scheduled))
 				{
 					AddReminder(status);
 				}
@@ -360,8 +368,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
                 CenterMap ();
 
-				var isLoaded = status.IBSStatusId.Equals(VehicleStatuses.Common.Loaded) 
-					|| status.IBSStatusId.Equals(VehicleStatuses.Common.Done);
+				var isLoaded = status.IBSStatusId.SoftEqual(VehicleStatuses.Common.Loaded) 
+					|| status.IBSStatusId.SoftEqual(VehicleStatuses.Common.Done);
 				var paymentSettings = await _paymentService.GetPaymentSettings();
                 if (isLoaded 
 					&& (!paymentSettings.AutomaticPaymentPairing || paymentSettings.PaymentMode == PaymentMethod.RideLinqCmt)
