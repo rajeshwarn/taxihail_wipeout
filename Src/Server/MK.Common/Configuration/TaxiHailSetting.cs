@@ -191,7 +191,7 @@ namespace MK.Common.Configuration
         public bool ShowTermsAndConditions { get; protected set; }
 
         [SendToClient]
-		[Display(Name = "Hide Mobile Knownledge and Apcurium logos", Description="In the menu")]
+		[Display(Name = "Hide Apcurium & MK logos", Description="In the menu")]
 		public bool HideMkApcuriumLogos { get; protected set; }
 
         [SendToClient, CustomizableByCompany]
@@ -207,7 +207,7 @@ namespace MK.Common.Configuration
         public bool HideReportProblem { get; protected set; }
 
         [SendToClient]
-        [Display(Name = "Default Phone Number", Description="Phone number as displayed to the user (1.800.XXX.XXXX)")]
+        [Display(Name = "Default Phone Number (Display)", Description="Phone number as displayed to the user (1.800.XXX.XXXX)")]
         public string DefaultPhoneNumberDisplay { get; protected set; }
 
         [SendToClient]
@@ -291,7 +291,7 @@ namespace MK.Common.Configuration
 		public bool RatingRequired { get; protected set; }
 
         [SendToClient]
-        [Display(Name = "User needs to rate before booking again", Description = "")]
+        [Display(Name = "Can Skip Required Rating", Description = "User needs to rate before booking again")]
         public bool CanSkipRatingRequired { get; protected set; }
 
         [SendToClient, CustomizableByCompany]

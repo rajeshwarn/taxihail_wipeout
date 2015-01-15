@@ -242,7 +242,6 @@
     <Content Include="admin\controllers\RideRatingsController.js" />
     <Content Include="admin\controllers\VehicleTypesController.js" />
     <Content Include="admin\controllers\Controller.js" />
-    <Content Include="admin\controllers\CompanySettingsController.js" />
     <Content Include="admin\controllers\AccountsChargeController.js" />
     <Content Include="admin\controllers\TermsAndConditionsController.js" />
     <Content Include="admin\controllers\ExportController.js" />
@@ -271,9 +270,6 @@
     </Content>
     <Content Include="admin\assets\less\TaxiHail-admin-grid.less" />
     <Content Include="admin\localization\ManageCompanySettings.json" />
-    <Content Include="admin\templates\ManageCompanySettings.handlebars">
-      <SubType>Designer</SubType>
-    </Content>
     <Content Include="admin\models\CompanySettings.js" />
     <Content Include="admin\views\AddRideRatingView.js" />
     <Content Include="admin\views\AddVehicleTypeView.js" />
@@ -296,7 +292,6 @@
     <Content Include="admin\views\ManageRulesView.js" />
     <Content Include="admin\views\EditRuleView.js" />
     <Content Include="admin\views\EditTariffView.js" />
-    <Content Include="admin\views\ManageCompanySettingsView.js" />
     <Content Include="admin\views\ManageTariffsView.js" />
     <Content Include="admin\views\SendPushNotificationView.js" />
     <Content Include="admin\views\SettingsItemView.js" />
@@ -429,6 +424,7 @@
     <Content Include="Areas\AdminTH\Views\Privacy\Index.cshtml" />
     <Content Include="Areas\AdminTH\Views\PromoCode\Statistics.cshtml" />
     <Content Include="Areas\AdminTH\Views\PromoCode\UserStatistics.cshtml" />
+    <Content Include="Areas\AdminTH\Views\CompanySettings\Index.cshtml" />
     <None Include="Scripts\jquery-1.8.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.8.2.js" />
     <Content Include="Scripts\jquery-1.8.2.min.js" />
@@ -637,10 +633,12 @@
     <Compile Include="App_Start\UnityConfig.cs" />
     <Compile Include="App_Start\UnityMvcActivator.cs" />
     <Compile Include="Areas\AdminTH\AdminTHAreaRegistration.cs" />
+    <Compile Include="Areas\AdminTH\Controllers\CompanySettingsController.cs" />
     <Compile Include="Areas\AdminTH\Controllers\PrivacyController.cs" />
     <Compile Include="Areas\AdminTH\Controllers\ImportChargeAccountController.cs" />
     <Compile Include="Areas\AdminTH\Controllers\PromoCodeController.cs" />
     <Compile Include="Areas\AdminTH\Controllers\TaxiHailNetworkController.cs" />
+    <Compile Include="Areas\AdminTH\Models\CompanySettings.cs" />
     <Compile Include="Areas\AdminTH\Models\PromoCode.cs" />
     <Compile Include="Areas\AdminTH\Models\PromoStats.cs" />
     <Compile Include="Areas\BaseController.cs" />
@@ -656,6 +654,7 @@
     <Compile Include="default.aspx.designer.cs">
       <DependentUpon>default.aspx</DependentUpon>
     </Compile>
+    <Compile Include="helpers\HtmlMenuHelper.cs" />
     <Compile Include="MKWebAppHost.cs" />
     <Compile Include="Module.cs" />
     <Compile Include="Global.asax.cs">
@@ -923,7 +922,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Areas\Company\Models\" />
-    <Folder Include="helpers\" />
     <Folder Include="mixins\" />
   </ItemGroup>
   <ItemGroup>
