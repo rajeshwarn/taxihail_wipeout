@@ -48,7 +48,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
 
             if (appSettings.Any())
             {
-                SetSettingsHiddenToAdmin(appSettings);
+                SetSettingsAvailableToAdmin(appSettings);
 
                 var command = new AddOrUpdateAppSettings
                 {
@@ -66,7 +66,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
             return RedirectToAction("Index");
         }
 
-        private void SetSettingsHiddenToAdmin(Dictionary<string, string> appSettings)
+        private void SetSettingsAvailableToAdmin(Dictionary<string, string> appSettings)
         {
             var checkBoxKeys = appSettings.Keys.Where(k => k.StartsWith("CheckBox_")).ToArray();
 

@@ -7,6 +7,7 @@ using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Api.Services;
@@ -223,6 +224,8 @@ namespace DatabaseInitializer
                 Console.WriteLine("Checking Default Account Settings ...");
                 EnsureDefaultAccountsHasCorrectSettings(connectionString, commandBus);
 
+                SetDefaultAdminSettings(serverSettings, appSettings);
+
                 Console.WriteLine("Checking Default Tariff ...");
                 CreateDefaultTariff(connectionString.ConnectionString, serverSettings, commandBus);
 
@@ -369,6 +372,37 @@ namespace DatabaseInitializer
                         });
                     }
                 }
+            }
+        }
+
+        private static void SetDefaultAdminSettings(IServerSettings serverSettings, IDictionary<string, string> appSettings)
+        {
+            if (!serverSettings.ServerData.SettingsAvailableToAdmin.HasValue())
+            {
+                // No settings are visible to admin, make default settings visible
+                Console.WriteLine("Setting default admin settings...");
+
+                var settingsAvailableToAdmin = new StringBuilder();
+                var settings = serverSettings.ServerData.GetType().GetAllProperties();
+
+                foreach (var setting in settings)
+                {
+                    var settingAttributes = setting.Value.GetCustomAttributes(false);
+                    var isSettingAvailableToAdmin =
+                        settingAttributes.OfType<CustomizableByCompanyAttribute>().FirstOrDefault();
+
+                    if (isSettingAvailableToAdmin != null)
+                    {
+                        if (settingsAvailableToAdmin.Length > 0)
+                        {
+                            settingsAvailableToAdmin.Append(',');
+                        }
+
+                        settingsAvailableToAdmin.Append(setting.Key);
+                    }
+                }
+
+                appSettings["SettingsAvailableToAdmin"] = settingsAvailableToAdmin.ToString();
             }
         }
 
