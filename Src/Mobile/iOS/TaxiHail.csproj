@@ -230,9 +230,6 @@
     <Reference Include="SocialNetworks.Services.MonoTouch">
       <HintPath>..\Libraries\Monotouch\SocialNetworks.Services.MonoTouch.dll</HintPath>
     </Reference>
-    <Reference Include="Calabash">
-      <HintPath>..\Libraries\Monotouch\Calabash.dll</HintPath>
-    </Reference>
     <Reference Include="GoogleConversionTracking">
       <HintPath>..\Libraries\Monotouch\GoogleConversionTracking.dll</HintPath>
     </Reference>
@@ -263,6 +260,9 @@
     </Reference>
     <Reference Include="Card.IO">
       <HintPath>..\Components\cardioios-3.10.0.2\lib\ios-unified\Card.IO.dll</HintPath>
+    </Reference>
+    <Reference Include="Calabash">
+      <HintPath>..\Components\calabash-12.0\lib\ios-unified\Calabash.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -873,6 +873,10 @@
     </XamarinComponentReference>
     <XamarinComponentReference Include="cardioios">
       <Version>3.10.0.2</Version>
+      <Visible>False</Visible>
+    </XamarinComponentReference>
+    <XamarinComponentReference Include="calabash">
+      <Version>12.0</Version>
       <Visible>False</Visible>
     </XamarinComponentReference>
   </ItemGroup>
