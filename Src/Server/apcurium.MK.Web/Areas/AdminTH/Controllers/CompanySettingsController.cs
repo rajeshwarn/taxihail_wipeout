@@ -8,6 +8,7 @@ using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Security;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Configuration.Attributes;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Web.Areas.AdminTH.Models;
 using apcurium.MK.Web.Attributes;
@@ -100,9 +101,11 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
             
             foreach (var setting in settings)
             {
-                if (setting.Key == "SettingsAvailableToAdmin")
+                var attributes = setting.Value.GetCustomAttributes(false);
+                var isSettingHidden = attributes.OfType<HiddenAttribute>().FirstOrDefault();
+                if (isSettingHidden != null)
                 {
-                    // Do not display this property as it is displayed as checkboxes to the user
+                    // Setting is hidden, do not display to user
                     continue;
                 }
 

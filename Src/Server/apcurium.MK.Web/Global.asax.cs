@@ -115,7 +115,7 @@ namespace apcurium.MK.Web
             {
                 return DeploymentTargets.Local;
             }
-            if (caseInsensitiveHost.Contains("test"))
+            if (caseInsensitiveHost.Contains("test.taxihail.biz"))
             {
                 return DeploymentTargets.Dev;
             }
@@ -123,13 +123,8 @@ namespace apcurium.MK.Web
             {
                 return DeploymentTargets.Staging;
             }
-            if (caseInsensitiveHost.Contains("services") || caseInsensitiveHost.Contains("api"))
-            {
-                return DeploymentTargets.Production;
-            }
 
-            // Default
-            return DeploymentTargets.Dev;
+            return DeploymentTargets.Production;
         }
 
         protected void Application_EndRequest(object sender, EventArgs e)
