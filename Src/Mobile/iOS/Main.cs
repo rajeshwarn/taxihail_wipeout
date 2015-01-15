@@ -162,8 +162,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         public override void RegisteredForRemoteNotifications (UIApplication application, NSData deviceToken)
         {
-            var strFormat = new NSString("%@");
-            var dt = new NSString(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(new Class("NSString").Handle, new Selector("stringWithFormat:").Handle, strFormat.Handle, deviceToken.Handle));
+            var dt = deviceToken.ToString().Replace("<","").Replace(">","").Replace(" ","");
 			TinyIoCContainer.Current.Resolve<IPushNotificationService>().SaveDeviceToken(dt);
         }
         
