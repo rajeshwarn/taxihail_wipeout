@@ -238,7 +238,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             if (address.HasValidCoordinate() && visible)
             {
                 RemoveAnnotation(addressAnnotation);
-                addressAnnotation.Coordinate = address.GetCoordinate();
+                addressAnnotation.SetCoordinate(address.GetCoordinate());
                 AddAnnotation(addressAnnotation);
             }
             else

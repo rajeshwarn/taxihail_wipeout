@@ -136,7 +136,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
         public void Resize()
         {
-            _heightConstraint.Constant = Subviews[0].Subviews.Where(x => !x.Hidden).Sum(x => x.Frame.Height);
+            _heightConstraint.Constant = (nfloat)Subviews[0].Subviews.Where(x => !x.Hidden).Sum(x => x.Frame.Height);
             SetNeedsDisplay();
         }
 

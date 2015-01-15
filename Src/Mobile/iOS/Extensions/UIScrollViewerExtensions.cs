@@ -1,6 +1,7 @@
 using UIKit;
 using CoreGraphics;
 using System.Linq;
+using System;
 
 namespace apcurium.MK.Booking.Mobile.Client.Extensions
 {
@@ -8,8 +9,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Extensions
     {
         public static void AutoSize(this UIScrollView thisScrollViewer){
             
-            var maxWidth = 0f;
-            var maxHeight = 0f;
+            nfloat maxWidth = 0f;
+            nfloat maxHeight = 0f;
             foreach (var view in thisScrollViewer.Subviews.Where(v=>!v.Hidden)) 
             {   
                 if(view.Frame.Bottom > maxHeight)
@@ -17,7 +18,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Extensions
                     maxHeight = view.Frame.Bottom;
                 }
                 
-                var farRight = view.Frame.Width+view.Frame.X;
+                var farRight = view.Frame.Width + view.Frame.X;
                 if(farRight > maxWidth)
                 {
                     maxWidth = farRight;

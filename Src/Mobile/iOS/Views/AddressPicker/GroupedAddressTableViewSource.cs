@@ -16,7 +16,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.AddressPicker
         private static UIImage PoweredBy = UIImage.FromFile("poweredBy4sq.png");
         private float NearZero = 0.000001f; // iOS doesn't accept 0 for the height
 
-        private int? _expandedSection;
+        private nint? _expandedSection;
         private int _collapseItemCount;
 
         public GroupedAddressTableViewSource (UITableView tableView, UITableViewCellStyle cellStyle, NSString identifier, string bindingText, UITableViewCellAccessory accessory ) : 
@@ -56,11 +56,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.AddressPicker
                 }
                 else if (_expandedSection == section)
                 {
-                    return collection.GroupBy(a => a.Type).ElementAt(section).Count();
+                    return collection.GroupBy(a => a.Type).ElementAt((int)section).Count();
                 }
                 else
                 {
-                    return collection.GroupBy(a => a.Type).ElementAt(section).Take(_collapseItemCount ).Count();
+                    return collection.GroupBy(a => a.Type).ElementAt((int)section).Take(_collapseItemCount ).Count();
                 }
             }
             else
@@ -113,7 +113,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.AddressPicker
             var collection = ItemsSource as ObservableCollection<AddressViewModel>;
             if (collection != null)
             {
-                var items = collection.GroupBy(a => a.Type).ElementAt(section);
+                var items = collection.GroupBy(a => a.Type).ElementAt((int)section);
                 var hasMoreItems = items.Count() > _collapseItemCount;
                 if (hasMoreItems)
                 {
@@ -137,7 +137,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.AddressPicker
             var collection = ItemsSource as ObservableCollection<AddressViewModel>;
             if (collection != null)
             {
-                var items = collection.GroupBy(a => a.Type).ElementAt(section);
+                var items = collection.GroupBy(a => a.Type).ElementAt((int)section);
                 showLoadMore = items.Count() > _collapseItemCount;
                 isPlaces = items.Any(i => i.Address.AddressType ==  "place");
             }

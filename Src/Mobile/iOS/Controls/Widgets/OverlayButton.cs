@@ -56,7 +56,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             context.SaveState ();
             context.BeginTransparencyLayer (null);
             roundedRectanglePath.AddClip ();
-            context.SetFillColorWithColor(_fillColor.CGColor);
+            context.SetFillColor(_fillColor.CGColor);
             context.FillRect(rect);
             context.EndTransparencyLayer ();
             context.RestoreState ();

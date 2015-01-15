@@ -13,8 +13,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 	public class FlatTextField : UITextField
 	{
 	    private const float RadiusCorner = 2;
-        protected float LeftPadding = 6.5f;
-        protected float RightPadding = 6.5f;
+        protected nfloat LeftPadding = 6.5f;
+        protected nfloat RightPadding = 6.5f;
         private UIImageView _leftImageView;
         private UIView _shadowView = null;
 
@@ -151,7 +151,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             }
         }
 
-        public void SetPadding(float left, float right)
+        public void SetPadding(nfloat left, nfloat right)
         {
             LeftPadding = left;
             RightPadding = right;
@@ -209,7 +209,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			context.SaveState ();
 			context.BeginTransparencyLayer (null);
 			roundedRectanglePath.AddClip ();
-            context.SetFillColorWithColor(fillColor);
+            context.SetFillColor(fillColor);
 			context.FillRect(rect);
 			context.EndTransparencyLayer ();
 			context.RestoreState ();
@@ -245,16 +245,18 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             //Hook?
         }
 
-		public int? MaxLength { get; set; }
-
+        public nint? MaxLength { get; set; }
 		private bool CheckMaxLength (UITextField textField, NSRange range, string replacementString)
 		{
-			if (MaxLength.HasValue) {
-				int textLength = Text.HasValue () ? Text.Length : 0;
-				int replaceLength = replacementString.HasValue () ? replacementString.Length : 0;
-				int newLength = textLength + replaceLength - range.Length;
-				return (newLength <= MaxLength);
-			} else {
+			if (MaxLength.HasValue) 
+            {
+				nint textLength = Text.HasValue () ? Text.Length : 0;
+                nint replaceLength = replacementString.HasValue () ? replacementString.Length : 0;
+                nint newLength = textLength + replaceLength - range.Length;
+				return newLength <= MaxLength;
+			} 
+            else 
+            {
 				return true;
 			}
 		}

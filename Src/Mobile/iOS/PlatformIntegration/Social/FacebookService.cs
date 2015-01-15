@@ -43,7 +43,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration.Social
 		{
             try
             {
-                FBSettings.PublishInstall (_appId);
+                FBAppEvents.ActivateApp ();
             }
             catch(Exception ex)
             {

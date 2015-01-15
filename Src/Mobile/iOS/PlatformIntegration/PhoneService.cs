@@ -9,7 +9,7 @@ using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Booking.Mobile.Client.Localization;
 using Cirrious.CrossCore.Touch.Views;
-using Cirrious.CrossCore.Touch;
+using apcurium.MK.Booking.Mobile.Client.Helper;
 
 namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 {
@@ -22,15 +22,13 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
         {
             _modalHost = modalHost;
             _logger = logger;
-
-            
         }
 
         private EKEventStore _eventStore;
-
         public EKEventStore EventStore 
         {
-            get {
+            get 
+            {
                 if (_eventStore == null) 
                 {
                     _eventStore = new EKEventStore ();
@@ -71,7 +69,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
                 _logger.FlushNextWrite();
             }
 
-            mailComposer.SetToRecipients (new [] { supportEmail  });
+            mailComposer.SetToRecipients (new [] { supportEmail });
             mailComposer.SetMessageBody ("", false);
             mailComposer.SetSubject (subject);
             mailComposer.Finished += (sender, args) =>
@@ -88,24 +86,25 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
             _modalHost.PresentModalViewController(mailComposer, true);
         }
 
-
-
         public void AddEventToCalendarAndReminder (string title, string addInfo, string place, DateTime startDate, DateTime alertDate)
         {
             if(EventStore.RespondsToSelector(new Selector("requestAccessToEntityType:completion:")))
             {
                 //iOS6 code
-                EventStore.RequestAccess (EKEntityType.Event,(granted, e) => {
-                        if (granted)
-                        {
-                            AddEvent (title, addInfo, startDate, alertDate);
-                        }
-                        else
-                        {
-                            _logger.LogMessage("Cant save reminder. User Denied Access to Calendar Data");
-                        }
-                } );
-            }else{
+                EventStore.RequestAccess (EKEntityType.Event,(granted, e) => 
+                {
+                    if (granted)
+                    {
+                        AddEvent (title, addInfo, startDate, alertDate);
+                    }
+                    else
+                    {
+                        _logger.LogMessage("Cant save reminder. User Denied Access to Calendar Data");
+                    }
+                });
+            }
+            else
+            {
                 //iOS 5 code
                 AddEvent (title, addInfo, startDate, alertDate);
             }
@@ -114,9 +113,9 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
         void AddEvent (string title, string addInfo, DateTime startDate, DateTime alertDate)
         {
             var newEvent = EKEvent.FromStore (EventStore);
-            newEvent.AddAlarm (EKAlarm.FromDate (alertDate.ToNSDate()));
-            newEvent.StartDate = startDate.ToNSDate();
-            newEvent.EndDate = startDate.AddHours (1).ToNSDate();
+            newEvent.AddAlarm (EKAlarm.FromDate (alertDate.DateTimeToNSDate()));
+            newEvent.StartDate = startDate.DateTimeToNSDate();
+            newEvent.EndDate = startDate.AddHours (1).DateTimeToNSDate();
             newEvent.Title = title;
             newEvent.Notes = addInfo;
             newEvent.Calendar = EventStore.DefaultCalendarForNewEvents;
@@ -132,12 +131,10 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
             }
         }
 
-
         public bool CanUseCalendarAPI ()
         {
             return true;
         }
-
     }
 }
 

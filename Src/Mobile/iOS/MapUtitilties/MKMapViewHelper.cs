@@ -1,11 +1,10 @@
-using Foundation;
 using apcurium.MK.Booking.Mobile.Client.MapUtitilties;
 
 namespace MapKit
 {
     public static class MKMapViewHelper
     {
-        public static MKAnnotationView GetViewForAnnotation (MKMapView mapView, NSObject annotation)
+        public static MKAnnotationView GetViewForAnnotation (MKMapView mapView, IMKAnnotation annotation)
         {
             var ann = annotation as AddressAnnotation;
 

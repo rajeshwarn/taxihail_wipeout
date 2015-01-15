@@ -112,10 +112,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
             {
                 public static CAGradientLayer Make (UIColor baseColor, CGRect frame)
                 {
-                    float red;
-                    float green;
-                    float blue;
-                    float alpha;
+                    nfloat red;
+                    nfloat green;
+                    nfloat blue;
+                    nfloat alpha;
 
                     baseColor.GetRGBA(out red, out green, out blue, out alpha);
 

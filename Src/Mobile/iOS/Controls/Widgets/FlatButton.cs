@@ -43,7 +43,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             UIGraphics.BeginImageContext(rect.Size);
             var context = UIGraphics.GetCurrentContext();
 
-            context.SetFillColorWithColor(color.CGColor);
+            context.SetFillColor(color.CGColor);
             context.FillRect(rect);
 
             var image = UIGraphics.GetImageFromCurrentImageContext();

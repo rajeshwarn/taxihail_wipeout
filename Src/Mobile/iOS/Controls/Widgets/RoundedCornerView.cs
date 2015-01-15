@@ -9,9 +9,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 	public class RoundedCornerView : UIView
 	{
 		private UIRectCorner _roundedCorners = UIRectCorner.AllCorners;
-		private float _strokeLineWidth = UIHelper.OnePixel;
+		private nfloat _strokeLineWidth = UIHelper.OnePixel;
 		private UIColor _strokeLineColor = UIColor.FromRGB(155, 155, 155) ;
-		private float _cornerRadius = 3;
+		private nfloat _cornerRadius = 3;
 		public bool FirstRowOfTwoRowsTable = false;
 		private UIColor _backgroundColor;
 
@@ -88,7 +88,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			{
 				roundedRectanglePath.AddClip ();
 			}
-			context.SetFillColorWithColor(color);
+			context.SetFillColor(color);
 			context.FillRect(rect);
 			context.EndTransparencyLayer ();
 			context.RestoreState ();

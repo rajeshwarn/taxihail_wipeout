@@ -47,7 +47,7 @@ namespace MapKit
             SetCenterCoordinate (mapView, mapView.CenterCoordinate, currentZoomLevel, true);
         }
 
-        public static void ChangeRegionSpanDependingOnPinchScale(this MKMapView mapView, MKCoordinateSpan originalSpan, float scale)
+        public static void ChangeRegionSpanDependingOnPinchScale(this MKMapView mapView, MKCoordinateSpan originalSpan, nfloat scale)
         {
             var centerPixelX = LongitudeToPixelSpaceX (mapView.Region.Center.Longitude);
             var centerPixelY = LatitudeToPixelSpaceY (mapView.Region.Center.Latitude);

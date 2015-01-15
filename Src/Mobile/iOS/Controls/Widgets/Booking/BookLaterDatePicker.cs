@@ -7,6 +7,7 @@ using UIKit;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
 using apcurium.MK.Booking.Mobile.Client.Localization;
+using apcurium.MK.Booking.Mobile.Client.Helper;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Booking
 {
@@ -73,8 +74,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Booking
             set.Apply();
         }
 
-        float _bottom = 0;
-        public void UpdateView(float bottom, float width)
+        nfloat _bottom = 0;
+        public void UpdateView(nfloat bottom, nfloat width)
         {
             var buttonHorizontalPadding = 8f;
             var buttonVerticalPadding = 5f;
@@ -117,10 +118,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Booking
         {
             get 
             {
-                var d = (DateTime?)DatePicker.Date;
-                if (d.HasValue)
+                var date = DatePicker.Date;
+                if (date != null)
                 {
-                    return d.Value.ToLocalTime();
+                    return date.NSDateToDateTime().ToLocalTime();
                 }
                 return null;
             }
@@ -128,11 +129,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Booking
             {
                 if (value == null)
                 {
-                    DatePicker.SetDate(DateTime.UtcNow, true);
+                    DatePicker.SetDate(DateTime.UtcNow.DateTimeToNSDate(), true);
                 }
                 else 
                 {
-                    DatePicker.SetDate(value.Value.ToUniversalTime(), true);
+                    DatePicker.SetDate(value.Value.ToUniversalTime().DateTimeToNSDate(), true);
                 }
             } 
         }
