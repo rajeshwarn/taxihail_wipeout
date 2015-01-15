@@ -60,7 +60,7 @@
                 {
                     <div class="control-group left-control-group" style="width: 50%">
                         <label class="checkbox">
-                            @Html.CheckBox("CheckBox_" + setting.Key, isAvailableToAdmin, new { @class = "checkbox inline", @title = "Check to make setting avaiable to Admin" })
+                            @Html.CheckBox("CheckBox_" + setting.Key, isAvailableToAdmin, new { @class = "checkbox inline", @title = "Check to make setting available to Admin" })
                             @Html.Label(setting.Value.GetDisplayName(), new { @class = "control-label", @style = "margin-right:200px; white-space:nowrap;", @title = setting.Value.GetDisplayDescription() })
                         </label>
                     </div>
