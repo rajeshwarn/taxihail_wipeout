@@ -1,9 +1,9 @@
 using System;
-using System.Drawing;
+using CoreGraphics;
 using apcurium.MK.Booking.Mobile.Models;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using Cirrious.MvvmCross.Touch.Views;
-using MonoTouch.UIKit;
+using UIKit;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
 
@@ -67,7 +67,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 };
                 labelTopTitle.TranslatesAutoresizingMaskIntoConstraints = false;
 
-                var labelTop = new UILabel(new RectangleF(40, 0, pageView.Frame.Width - 40, 0))
+                var labelTop = new UILabel(new CGRect(40, 0, pageView.Frame.Width - 40, 0))
                 {
                     LineBreakMode = UILineBreakMode.WordWrap,
                     TextColor = UIColor.FromRGB(44, 44, 44),
@@ -147,7 +147,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         {
             var page = Math.Floor ((scrollview.ContentOffset.X - scrollview.Frame.Width / 2) / scrollview.Frame.Width) + 1;
 
-            scrollview.ContentOffset = new PointF (scrollview.ContentOffset.X, 0);
+            scrollview.ContentOffset = new CGPoint (scrollview.ContentOffset.X, 0);
 
             pageControl.CurrentPage = (int)page;
         }

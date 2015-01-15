@@ -1,9 +1,9 @@
 using System;
 using System.Windows.Input;
 using Cirrious.MvvmCross.Binding.Touch.Views;
-using MonoTouch.Foundation;
-using MonoTouch.ObjCRuntime;
-using MonoTouch.UIKit;
+using Foundation;
+using ObjCRuntime;
+using UIKit;
 using System.Collections.Generic;
 using RatingState = apcurium.MK.Booking.Mobile.Models.RatingModel.RatingState;
 

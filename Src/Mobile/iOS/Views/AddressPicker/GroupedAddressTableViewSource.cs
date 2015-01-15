@@ -1,9 +1,9 @@
 using System;
 using System.Linq;
-using MonoTouch.UIKit;
-using MonoTouch.Foundation;
+using UIKit;
+using Foundation;
 using System.Collections.ObjectModel;
-using System.Drawing;
+using CoreGraphics;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
 using apcurium.MK.Booking.Mobile.Client.Controls.Widgets;
@@ -25,7 +25,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.AddressPicker
             _collapseItemCount = UIHelper.Is35InchDisplay ? 2 : 3;            
         }
 
-        public override int NumberOfSections(UITableView tableView)
+        public override nint NumberOfSections(UITableView tableView)
         {
             var collection = ItemsSource as ObservableCollection<AddressViewModel>;
             if (collection != null)
@@ -45,7 +45,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.AddressPicker
             }
         }
 
-        public override int RowsInSection(UITableView tableview, int section)
+        public override nint RowsInSection(UITableView tableview, nint section)
         {
             var collection = ItemsSource as ObservableCollection<AddressViewModel>;
             if (collection != null)
@@ -99,7 +99,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.AddressPicker
             }
         }
 
-        public override float GetHeightForHeader(UITableView tableView, int section)
+        public override nfloat GetHeightForHeader(UITableView tableView, nint section)
         {
             if (section == 0)
             {
@@ -108,7 +108,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.AddressPicker
             return 15;
         }
 
-        public override float GetHeightForFooter(UITableView tableView, int section)
+        public override nfloat GetHeightForFooter(UITableView tableView, nint section)
         {
             var collection = ItemsSource as ObservableCollection<AddressViewModel>;
             if (collection != null)
@@ -124,12 +124,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.AddressPicker
             return NearZero;
         }
 
-        public override float GetHeightForRow(UITableView tableView, NSIndexPath indexPath)
+        public override nfloat GetHeightForRow(UITableView tableView, NSIndexPath indexPath)
         {
             return 44;
         }
 
-        public override UIView GetViewForFooter(UITableView tableView, int section)
+        public override UIView GetViewForFooter(UITableView tableView, nint section)
         {
             var showLoadMore = true;
             var isPlaces = false;
@@ -142,7 +142,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.AddressPicker
                 isPlaces = items.Any(i => i.Address.AddressType ==  "place");
             }
 
-            var container = new UIView() { Frame = new RectangleF(0, 0, tableView.Frame.Width, tableView.RowHeight) };
+            var container = new UIView() { Frame = new CGRect(0, 0, tableView.Frame.Width, tableView.RowHeight) };
             container.BackgroundColor = UIColor.Clear;
 
             if (showLoadMore)
@@ -150,7 +150,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.AddressPicker
                 var button = new CommandButton
                 { 
                     BackgroundColor = UIColor.White,
-                    Frame = new RectangleF(0, 0, container.Frame.Width, container.Frame.Height)
+                    Frame = new CGRect(0, 0, container.Frame.Width, container.Frame.Height)
                 };           
                 var title = _expandedSection == section 
                             ? Localize.GetValue("Collapse") 
@@ -168,7 +168,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.AddressPicker
                     }
                     tableView.ReloadData();
 
-                    var newContentSize = new SizeF(tableView.ContentSize.Width, tableView.ContentSize.Height);
+                    var newContentSize = new CGSize(tableView.ContentSize.Width, tableView.ContentSize.Height);
                     if(_expandedSection == section)
                     {
                         newContentSize.Height += 50; 
@@ -182,7 +182,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.AddressPicker
                 {
                     var googleLogo = new UIImageView
                     {
-						Frame = new RectangleF(button.Frame.X, button.Frame.Bottom + 5, PoweredBy.Size.Width, PoweredBy.Size.Height),
+						Frame = new CGRect(button.Frame.X, button.Frame.Bottom + 5, PoweredBy.Size.Width, PoweredBy.Size.Height),
                         Image = PoweredBy ,
                         AutoresizingMask = UIViewAutoresizing.FlexibleTopMargin
                     };

@@ -1,7 +1,7 @@
-﻿using System;
-using MonoTouch.UIKit;
-using System.Drawing;
-using MonoTouch.CoreAnimation;
+using System;
+using UIKit;
+using CoreGraphics;
+using CoreAnimation;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
 using System.Threading.Tasks;
 
@@ -13,7 +13,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
         private CAShapeLayer _progressLayer;
         private CAShapeLayer _iconLayer;
 
-        public CircularProgressView(RectangleF frame, UIColor color) : base(frame)
+        public CircularProgressView(CGRect frame, UIColor color) : base(frame)
         {
             _runningIconView = new UIView();
             _readyIconView = new UIView();
@@ -190,20 +190,20 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
                 .SetY(top);
         }
 
-        public override void Draw(RectangleF rect)
+        public override void Draw(CGRect rect)
         {
             base.Draw(rect);
             _progressBackgroundLayer.Frame = Bounds;
             _progressLayer.Frame = Bounds;
             _iconLayer.Frame = Bounds;
 
-            var center = new PointF(Bounds.Width/2, Bounds.Height/2);
+            var center = new CGPoint(Bounds.Width/2, Bounds.Height/2);
 
             // Draw progress
             var startAngle = - ((float)Math.PI / 2); // 90 degrees
             var endAngle = (Progress * 2 * (float)Math.PI) + startAngle;
             var processPath = new UIBezierPath();
-            processPath.LineCapStyle = MonoTouch.CoreGraphics.CGLineCap.Butt;
+            processPath.LineCapStyle = CoreGraphics.CGLineCap.Butt;
             processPath.LineWidth = _lineWidth;
 
             var radius = (Bounds.Width - _lineWidth * 3f) / 2.0f;

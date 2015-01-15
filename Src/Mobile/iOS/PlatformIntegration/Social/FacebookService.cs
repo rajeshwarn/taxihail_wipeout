@@ -1,6 +1,6 @@
 using System;
 using apcurium.MK.Booking.Mobile.AppServices.Social;
-using MonoTouch.Foundation;
+using Foundation;
 using System.Threading.Tasks;
 using MonoTouch.FacebookConnect;
 using apcurium.MK.Common.Configuration;

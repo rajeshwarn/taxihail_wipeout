@@ -1,8 +1,8 @@
 using System;
-using MonoTouch.Foundation;
-using MonoTouch.UIKit;
-using System.Drawing;
-using MonoTouch.CoreGraphics;
+using Foundation;
+using UIKit;
+using CoreGraphics;
+using CoreGraphics;
 using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
 using apcurium.MK.Common.Extensions;
@@ -30,7 +30,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			Initialize();
 		}
 
-		public FlatTextField (RectangleF frame) : base (frame)
+		public FlatTextField (CGRect frame) : base (frame)
 		{
 			Initialize();
 		}
@@ -63,7 +63,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			HasRightArrow = Enabled && HasRightArrow;
 		}
 
-		public override void Draw (RectangleF rect)
+		public override void Draw (CGRect rect)
 		{   
             var fillColor = BackgroundColor;
 			var roundedRectanglePath = UIBezierPath.FromRoundedRect (rect, RadiusCorner);
@@ -161,14 +161,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         {
             base.LayoutSubviews();
 
-            LeftView.Frame = new RectangleF(0f, 0f, LeftPadding, this.Frame.Height);
-            RightView.Frame = new RectangleF(Frame.Right - RightPadding, 0f, RightPadding, this.Frame.Height);
+            LeftView.Frame = new CGRect(0f, 0f, LeftPadding, this.Frame.Height);
+            RightView.Frame = new CGRect(Frame.Right - RightPadding, 0f, RightPadding, this.Frame.Height);
 
             if (ImageLeftSource.HasValue())
             {
                 if (_leftImageView != null)
                 {
-                    _leftImageView.Frame = new RectangleF(
+                    _leftImageView.Frame = new CGRect(
                         0, 
                         (Frame.Height - _leftImageView.Image.Size.Height) / 2, 
                         _leftImageView.Image.Size.Width, 
@@ -183,7 +183,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             {
                 if (_rightArrow != null)
                 {
-                    _rightArrow.Frame = new RectangleF(
+                    _rightArrow.Frame = new CGRect(
                         Frame.Width - _rightArrow.Image.Size.Width - RightPadding, 
                         (Frame.Height - _rightArrow.Image.Size.Height) / 2, 
                         _rightArrow.Image.Size.Width, 
@@ -204,7 +204,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             }
         }
 
-		private void DrawBackground(CGContext context, RectangleF rect, UIBezierPath roundedRectanglePath, CGColor fillColor)
+		private void DrawBackground(CGContext context, CGRect rect, UIBezierPath roundedRectanglePath, CGColor fillColor)
 		{
 			context.SaveState ();
 			context.BeginTransparencyLayer (null);
@@ -232,7 +232,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                     _shadowView.Layer.ShadowColor = UIColor.FromRGBA(0, 0, 0, 127).CGColor;
                     _shadowView.Layer.ShadowOpacity = 1.0f;
                     _shadowView.Layer.ShadowRadius = RadiusCorner + 1;
-                    _shadowView.Layer.ShadowOffset = new SizeF(0.3f, 0.3f);
+                    _shadowView.Layer.ShadowOffset = new CGSize(0.3f, 0.3f);
                     _shadowView.Layer.ShouldRasterize = true;             
                     this.Superview.InsertSubviewBelow(_shadowView, this);
                 }
@@ -240,7 +240,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             }
 		}
 
-        protected virtual void DrawText(CGContext context, RectangleF rect, CGColor textColor)
+        protected virtual void DrawText(CGContext context, CGRect rect, CGColor textColor)
         {
             //Hook?
         }
@@ -259,7 +259,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			}
 		}
 
-        public override RectangleF ClearButtonRect(RectangleF forBounds)
+        public override CGRect ClearButtonRect(CGRect forBounds)
         {
             var rect = base.ClearButtonRect(forBounds);
 

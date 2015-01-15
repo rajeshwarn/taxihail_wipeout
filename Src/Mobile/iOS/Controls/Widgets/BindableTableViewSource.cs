@@ -1,5 +1,5 @@
-using MonoTouch.UIKit;
-using MonoTouch.Foundation;
+using UIKit;
+using Foundation;
 using Cirrious.MvvmCross.Binding.Touch.Views;
 using System.Windows.Input;
 using System.Collections.Generic;
@@ -24,24 +24,24 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
         public ICommand SelectedCommand { get; set; }
 
-		public override float GetHeightForHeader(UITableView tableView, int section)
+		public override nfloat GetHeightForHeader(UITableView tableView, nint section)
 		{
 			// If header height is 1, that means we actually want 0
 			return tableView.SectionHeaderHeight == 1 ? 0.000001f : tableView.SectionHeaderHeight;
 		}
 
-		public override UIView GetViewForHeader(UITableView tableView, int section)
+		public override UIView GetViewForHeader(UITableView tableView, nint section)
 		{
 			return new UIView { BackgroundColor = UIColor.Clear };
 		}
 
-		public override float GetHeightForFooter(UITableView tableView, int section)
+		public override nfloat GetHeightForFooter(UITableView tableView, nint section)
 		{
 			// If footer height is 1, that means we actually want 0
 			return tableView.SectionFooterHeight == 1 ? 0.000001f : tableView.SectionFooterHeight;
 		}
 
-		public override UIView GetViewForFooter(UITableView tableView, int section)
+		public override UIView GetViewForFooter(UITableView tableView, nint section)
 		{
 			return new UIView { BackgroundColor = UIColor.Clear };
 		}

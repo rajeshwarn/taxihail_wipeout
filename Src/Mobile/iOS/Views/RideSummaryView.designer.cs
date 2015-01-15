@@ -4,7 +4,7 @@
 // actions made in the UI designer. If it is removed, they will be lost.
 // Manual changes to this file may not be handled correctly.
 //
-using MonoTouch.Foundation;
+using Foundation;
 using System.CodeDom.Compiler;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
@@ -13,13 +13,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 	partial class RideSummaryView
 	{
 		[Outlet]
-		MonoTouch.UIKit.NSLayoutConstraint constraintRatingTableHeight { get; set; }
+		UIKit.NSLayoutConstraint constraintRatingTableHeight { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel lblSubTitle { get; set; }
+		UIKit.UILabel lblSubTitle { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UITableView tableRatingList { get; set; }
+		UIKit.UITableView tableRatingList { get; set; }
 		
 		void ReleaseDesignerOutlets ()
 		{

@@ -1,7 +1,7 @@
 using CrossUI.Touch.Dialog.Elements;
-using MonoTouch.UIKit;
+using UIKit;
 using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
-using System.Drawing;
+using CoreGraphics;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
@@ -19,7 +19,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			_isPassword = isPassword;
 		}
 
-		protected override UITextField CreateTextField(RectangleF frame)
+		protected override UITextField CreateTextField(CGRect frame)
 		{
 			UITextField textField;
 			if (UIHelper.IsOS7orHigher)

@@ -1,8 +1,8 @@
 using System;
-using System.Drawing;
-using MonoTouch.Foundation;
-using MonoTouch.MapKit;
-using MonoTouch.UIKit;
+using CoreGraphics;
+using Foundation;
+using MapKit;
+using UIKit;
 using apcurium.MK.Booking.Mobile.Client.Style;
 using System.Threading;
 
@@ -60,7 +60,7 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
             if (ann.AddressType == AddressAnnotationType.Taxi 
 				&& ann.ShowSubtitleOnPin) // The show vehicle number setting is handled at this level so the number can still be populated and used elsewhere
             {
-                var lblVehicleNumber = new UILabel (new RectangleF (0, 8, Image.Size.Width, 16));
+                var lblVehicleNumber = new UILabel (new CGRect (0, 8, Image.Size.Width, 16));
                 lblVehicleNumber.BackgroundColor = UIColor.Clear;
                 lblVehicleNumber.TextColor = Theme.CompanyColor;
                 lblVehicleNumber.TextAlignment = UITextAlignment.Center;
@@ -69,11 +69,11 @@ namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
                 AddSubview (lblVehicleNumber);
             }
 
-            CenterOffset = new PointF (0, -Image.Size.Height / 2);
+            CenterOffset = new CGPoint (0, -Image.Size.Height / 2);
             if (ann.AddressType == AddressAnnotationType.Destination ||
                ann.AddressType == AddressAnnotationType.Pickup)
             {
-                CenterOffset = new PointF(0, -Image.Size.Height / 2 + 2);
+                CenterOffset = new CGPoint(0, -Image.Size.Height / 2 + 2);
             }
 		}
 	}

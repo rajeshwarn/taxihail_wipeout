@@ -1,7 +1,7 @@
-using MonoTouch.Foundation;
-using MonoTouch.UIKit;
+using Foundation;
+using UIKit;
 using System;
-using System.Drawing;
+using CoreGraphics;
 using System.Linq;
 using apcurium.MK.Booking.Mobile.Client.Style;
 using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
@@ -22,7 +22,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			ApplyDefaultStyle ();
         }
 
-        public FlatButton (RectangleF frame) : base (frame)
+        public FlatButton (CGRect frame) : base (frame)
         {
 			ApplyDefaultStyle ();
         }
@@ -39,7 +39,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
         UIImage GetImage(UIColor color)
         {
-            var rect = new RectangleF(0.0f, 0.0f, 1.0f, 1.0f);
+            var rect = new CGRect(0.0f, 0.0f, 1.0f, 1.0f);
             UIGraphics.BeginImageContext(rect.Size);
             var context = UIGraphics.GetCurrentContext();
 

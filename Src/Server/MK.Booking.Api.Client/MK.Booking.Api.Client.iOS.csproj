@@ -4,9 +4,11 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{52A964D2-F9FE-47CD-9C50-781CCEC560ED}</ProjectGuid>
-    <ProjectTypeGuids>{6BC8ED88-2882-458C-8E55-DFD12B67127B};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <ProjectTypeGuids>{FEACFBD2-3405-455C-9665-78FE426C6842};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <RootNamespace>apcurium.MK.Booking.Api.Client</RootNamespace>
+    <TargetFrameworkIdentifier>Xamarin.iOS</TargetFrameworkIdentifier>
+    <TargetFrameworkVersion>v1.0</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>True</DebugSymbols>
@@ -37,6 +39,7 @@
     <AssemblyName>MKBookingApiClientiOS</AssemblyName>
     <CodesignKey>iPhone Developer</CodesignKey>
     <DefineConstants>CLIENT</DefineConstants>
+    <MtouchArch>ARMv7, ARM64</MtouchArch>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'AppStore|iPhone' ">
     <DebugType>none</DebugType>
@@ -46,6 +49,7 @@
     <WarningLevel>4</WarningLevel>
     <AssemblyName>MKBookingApiClientiOS</AssemblyName>
     <CodesignKey>iPhone Developer</CodesignKey>
+    <MtouchArch>ARMv7, ARM64</MtouchArch>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="BrainTreeEncryption.Library">
@@ -64,13 +68,9 @@
       <HintPath>..\..\Mobile\Libraries\Monotouch\ServiceStack.Common.MonoTouch.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.Services" />
+    <Reference Include="Xamarin.iOS" />
   </ItemGroup>
-  <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
   <ItemGroup>
-    <ProjectReference Include="..\CMTPayment\CMTPayment.iOS.csproj">
-      <Project>{9FC63422-3472-42BE-B3F2-C296F3FA87DB}</Project>
-      <Name>CMTPayment.iOS</Name>
-    </ProjectReference>
     <ProjectReference Include="..\MK.Common\MK.Common.iOS.csproj">
       <Project>{CF82F47F-A55D-45C6-B605-822458968E12}</Project>
       <Name>MK.Common.iOS</Name>
@@ -78,6 +78,10 @@
     <ProjectReference Include="..\MK.Booking.Api.Contract\MK.Booking.Api.Contract.iOS.csproj">
       <Project>{0C54E2DC-0852-4EED-A882-60B68FE41C8D}</Project>
       <Name>MK.Booking.Api.Contract.iOS</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CMTPayment\CMTPayment.iOS.csproj">
+      <Project>{9FC63422-3472-42BE-B3F2-C296F3FA87DB}</Project>
+      <Name>CMTPayment.iOS</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -116,4 +120,5 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
 </Project>

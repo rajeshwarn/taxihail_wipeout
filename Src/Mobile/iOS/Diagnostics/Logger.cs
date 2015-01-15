@@ -7,7 +7,7 @@ using apcurium.MK.Common.Diagnostic;
 using TinyIoC;
 using MK.Common.Configuration;
 using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
-using MonoTouch.Foundation;
+using Foundation;
 using System.Collections.Generic;
 
 namespace apcurium.MK.Booking.Mobile.Client.Diagnostics

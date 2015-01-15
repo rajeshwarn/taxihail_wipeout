@@ -1,7 +1,7 @@
 using System;
-using MonoTouch.Foundation;
-using MonoTouch.UIKit;
-using System.Drawing;
+using Foundation;
+using UIKit;
+using CoreGraphics;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 using System.Threading;
@@ -44,7 +44,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.AddressPicker
             base.LayoutSubviews();
 
             var yPositionForTableView = AddressEditText.Frame.Bottom + 13;
-            TableView.Frame = new RectangleF(0, yPositionForTableView, UIScreen.MainScreen.Bounds.Width, UIScreen.MainScreen.Bounds.Height - yPositionForTableView);
+            TableView.Frame = new CGRect(0, yPositionForTableView, UIScreen.MainScreen.Bounds.Width, UIScreen.MainScreen.Bounds.Height - yPositionForTableView);
         }
 
         void Initialize()
@@ -66,7 +66,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.AddressPicker
             CancelButton.SetTitle(Localize.GetValue("Cancel"), UIControlState.Normal);
             FlatButtonStyle.Red.ApplyTo(CancelButton);
 
-            TableView = new UITableView(new RectangleF(), UITableViewStyle.Plain)
+            TableView = new UITableView(new CGRect(), UITableViewStyle.Plain)
             {
                 BackgroundView = new  UIView { BackgroundColor = UIColor.Clear },
                 BackgroundColor = UIColor.FromRGB(242, 242, 242),
@@ -187,12 +187,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.AddressPicker
 			});
 		}
 
-        protected override void DrawStroke(MonoTouch.CoreGraphics.CGColor fillColor, RectangleF rect)
+        protected override void DrawStroke(CoreGraphics.CGColor fillColor, CGRect rect)
         {
             //nothing here, no shadow
         }
 
-        protected override void DrawBackground(MonoTouch.CoreGraphics.CGContext context, RectangleF rect, UIBezierPath roundedRectanglePath, MonoTouch.CoreGraphics.CGColor fillColor)
+        protected override void DrawBackground(CoreGraphics.CGContext context, CGRect rect, UIBezierPath roundedRectanglePath, CoreGraphics.CGColor fillColor)
         {
             //nothing here, we don't want the semitransparent background
         }

@@ -1,6 +1,6 @@
 using System;
-using MonoTouch.UIKit;
-using System.Drawing;
+using UIKit;
+using CoreGraphics;
 using apcurium.MK.Booking.Mobile.Client.Localization;
 using System.Reactive.Linq;
 using apcurium.MK.Booking.Mobile.Client.Controls.Widgets;

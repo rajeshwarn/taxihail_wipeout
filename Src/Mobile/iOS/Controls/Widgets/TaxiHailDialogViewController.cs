@@ -1,8 +1,8 @@
-using System.Drawing;
+using CoreGraphics;
 using CrossUI.Touch.Dialog;
 using CrossUI.Touch.Dialog.Elements;
-using MonoTouch.Foundation;
-using MonoTouch.UIKit;
+using Foundation;
+using UIKit;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
 using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
 using apcurium.MK.Booking.Mobile.Client.Style;
@@ -63,7 +63,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             _willBeContainedInOtherView = willBeContainedInOtherView;
         }
 
-        public override float GetHeightForHeader(UITableView tableView, int section)
+        public override nfloat GetHeightForHeader(UITableView tableView, nint section)
         {
             if (_willBeContainedInOtherView)
             {
@@ -72,7 +72,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             return 22;
         }
 
-        public override float GetHeightForFooter(UITableView tableView, int section)
+        public override nfloat GetHeightForFooter(UITableView tableView, nint section)
         {
             if (_willBeContainedInOtherView)
             {
@@ -126,7 +126,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
                 if (UIHelper.IsOS7orHigher)
                 {
-                    view.Frame = new RectangleF(0, 0, cellWidth, tableView.RowHeight);
+                    view.Frame = new CGRect(0, 0, cellWidth, tableView.RowHeight);
                     var container = new UIView { BackgroundColor = UIColor.Clear };
                     container.AddSubview(view);
                     cell.BackgroundView = container;  

@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using CrossUI.Touch.Dialog.Elements;
-using MonoTouch.Foundation;
-using MonoTouch.UIKit;
+using Foundation;
+using UIKit;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Booking.Mobile.Client.Controls.Widgets;
 using apcurium.MK.Booking.Mobile.Client.Localization;
@@ -122,7 +122,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         {
             base.ViewDidLayoutSubviews();
 
-            tableView.Subviews[0].Frame = new System.Drawing.RectangleF(tableView.Subviews[0].Frame.X, tableView.Subviews[0].Frame.Y, tableView.Frame.Width, tableView.Subviews[0].Frame.Height);
+            tableView.Subviews[0].Frame = new CoreGraphics.CGRect(tableView.Subviews[0].Frame.X, tableView.Subviews[0].Frame.Y, tableView.Frame.Width, tableView.Subviews[0].Frame.Height);
         }
     }
 }

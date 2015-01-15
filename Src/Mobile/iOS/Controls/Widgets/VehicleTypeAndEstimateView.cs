@@ -1,10 +1,10 @@
 using System;
-using MonoTouch.Foundation;
-using MonoTouch.UIKit;
+using Foundation;
+using UIKit;
 using apcurium.MK.Booking.Mobile.Client.Style;
 using System.Linq;
 using apcurium.MK.Common.Extensions;
-using System.Drawing;
+using CoreGraphics;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
 using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
 using apcurium.MK.Booking.Api.Contract.Resources;
@@ -81,7 +81,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
         private void InitializeEstimateContainer()
         {
-            EstimateSelectedVehicleType = new VehicleTypeView(new RectangleF(0f, 0f, 50f, this.Frame.Height));
+            EstimateSelectedVehicleType = new VehicleTypeView(new CGRect(0f, 0f, 50f, this.Frame.Height));
             EstimateSelectedVehicleType.TranslatesAutoresizingMaskIntoConstraints = false;
 
             EstimatedFareLabel = new UILabel
@@ -275,7 +275,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 var i = 0;
 				foreach (var vehicle in Vehicles) 
                 {
-                    var vehicleView = new VehicleTypeView(new RectangleF(), vehicle, SelectedVehicle != null ? vehicle.Id == SelectedVehicle.Id : false);
+                    var vehicleView = new VehicleTypeView(new CGRect(), vehicle, SelectedVehicle != null ? vehicle.Id == SelectedVehicle.Id : false);
                     vehicleView.TranslatesAutoresizingMaskIntoConstraints = false;
 					vehicleView.TouchUpInside += (sender, e) => { 
 						if (!IsReadOnly && VehicleSelected != null) {

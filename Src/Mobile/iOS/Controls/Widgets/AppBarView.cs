@@ -1,7 +1,7 @@
 using System;
-using MonoTouch.Foundation;
-using MonoTouch.UIKit;
-using System.Drawing;
+using Foundation;
+using UIKit;
+using CoreGraphics;
 using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
 using apcurium.MK.Booking.Mobile.Client.Localization;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
@@ -18,7 +18,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         private UIView _reviewButtons;
         private UIView _orderButtons;
         private UIView _editButtons;
-        public static SizeF ButtonSize = new SizeF(60, 46);
+        public static CGSize ButtonSize = new CGSize(60, 46);
 
         protected UIView Line { get; set; }
 
@@ -266,7 +266,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
             if (Line != null)
             {
-                Line.Frame = new RectangleF(0, 0, Frame.Width, UIHelper.OnePixel);
+                Line.Frame = new CGRect(0, 0, Frame.Width, UIHelper.OnePixel);
             }
         }
 

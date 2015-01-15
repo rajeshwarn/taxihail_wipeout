@@ -1,4 +1,4 @@
-﻿using MonoTouch.UIKit;
+using UIKit;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using System.Threading.Tasks;

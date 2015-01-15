@@ -1,5 +1,5 @@
 using Cirrious.CrossCore.Touch;
-using MonoTouch.CoreLocation;
+using CoreLocation;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using TinyIoC;
 using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;

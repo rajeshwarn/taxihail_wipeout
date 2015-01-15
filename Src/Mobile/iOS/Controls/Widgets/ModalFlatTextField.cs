@@ -1,8 +1,8 @@
 using System;
-using System.Drawing;
+using CoreGraphics;
 using CrossUI.Touch.Dialog.Elements;
-using MonoTouch.Foundation;
-using MonoTouch.UIKit;
+using Foundation;
+using UIKit;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
 using apcurium.MK.Booking.Mobile.Client.Localization;
@@ -26,7 +26,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             Initialize();
         }
 
-        public ModalFlatTextField (RectangleF frame) : base (frame)
+        public ModalFlatTextField (CGRect frame) : base (frame)
         {
             Initialize();
         }
@@ -80,7 +80,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                         onItemSelected(value);
                         var controller = this.FindViewController();
                         if (controller != null)
-                            controller.NavigationController.PopViewControllerAnimated(true);
+                            controller.NavigationController.PopViewController(true);
                     };
                     section.Add(item);
                     if (selectedId().Equals(value.Id))

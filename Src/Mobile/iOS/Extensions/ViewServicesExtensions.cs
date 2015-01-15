@@ -1,6 +1,6 @@
-﻿using System;
+using System;
 using apcurium.MK.Booking.Mobile.Extensions;
-using MonoTouch.UIKit;
+using UIKit;
 using Cirrious.MvvmCross.Views;
 
 namespace apcurium.MK.Booking.Mobile.Client

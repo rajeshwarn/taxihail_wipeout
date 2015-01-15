@@ -1,5 +1,5 @@
-using MonoTouch.UIKit;
-using System.Drawing;
+using UIKit;
+using CoreGraphics;
 
 namespace apcurium.MK.Booking.Mobile.Client.Extensions
 {
@@ -70,14 +70,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Extensions
         }
 
         
-        public static UIView SetFrame(this UIView thisView, RectangleF frame)
+        public static UIView SetFrame(this UIView thisView, CGRect frame)
         {
             return thisView.SetFrame(frame.X,frame.Y,frame.Width,frame.Height);
         }
 
         public static UIView SetFrame(this UIView thisView, float x, float y, float width, float height)
         {
-            thisView.Frame = new RectangleF(x,y,width,height);
+            thisView.Frame = new CGRect(x,y,width,height);
             return thisView;
         }
     }

@@ -1,15 +1,15 @@
 using System;
 using System.Collections.Generic;
-using System.Drawing;
+using CoreGraphics;
 using apcurium.MK.Booking.Mobile.Client.Diagnostics;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
 using apcurium.MK.Booking.Mobile.Client.Localization;
 using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.ViewModels;
-using MonoTouch.UIKit;
+using UIKit;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using apcurium.MK.Booking.Mobile.Client.Controls.Widgets;
-using MonoTouch.MapKit;
+using MapKit;
 using System.Windows.Input;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
@@ -63,7 +63,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
                 topSlidingStatus.BackgroundColor = UIColor.FromPatternImage (UIImage.FromFile ("background.png"));
 
-                viewLine.Frame = new RectangleF(0, topSlidingStatus.Bounds.Height -1, UIScreen.MainScreen.Bounds.Width, 1);
+                viewLine.Frame = new CGRect(0, topSlidingStatus.Bounds.Height -1, UIScreen.MainScreen.Bounds.Width, 1);
 
                 btnCallDriver.SetImage(UIImage.FromFile("phone.png"), UIControlState.Normal);
                 btnCall.SetTitle(Localize.GetValue("StatusCallButton"), UIControlState.Normal);
@@ -292,7 +292,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             }
         }
 
-        void UpdateCallButtonSize (RectangleF callFrame)
+        void UpdateCallButtonSize (CGRect callFrame)
         {
             if (!ViewModel.IsCancelButtonVisible)
             {
@@ -380,8 +380,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				var i = 0;
 				foreach (var item in tupleList) {
 					if (!item.Item3) {
-						item.Item1.Frame = new RectangleF(item.Item1.Frame.X, 4 + (20 * i), item.Item1.Frame.Width, item.Item1.Frame.Height);
-						item.Item2.Frame = new RectangleF(item.Item2.Frame.X, 4 + (20 * i), item.Item2.Frame.Width, item.Item2.Frame.Height);
+						item.Item1.Frame = new CGRect(item.Item1.Frame.X, 4 + (20 * i), item.Item1.Frame.Width, item.Item1.Frame.Height);
+						item.Item2.Frame = new CGRect(item.Item2.Frame.X, 4 + (20 * i), item.Item2.Frame.Width, item.Item2.Frame.Height);
 						i++;
 					}
 				}

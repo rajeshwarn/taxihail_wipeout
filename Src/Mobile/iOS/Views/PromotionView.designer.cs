@@ -4,7 +4,7 @@
 // actions made in the UI designer. If it is removed, they will be lost.
 // Manual changes to this file may not be handled correctly.
 //
-using MonoTouch.Foundation;
+using Foundation;
 using System.CodeDom.Compiler;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
@@ -13,10 +13,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 	partial class PromotionView
 	{
 		[Outlet]
-		MonoTouch.UIKit.UILabel lblNoPromotions { get; set; }
+		UIKit.UILabel lblNoPromotions { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UITableView tblPromotions { get; set; }
+		UIKit.UITableView tblPromotions { get; set; }
 		
 		void ReleaseDesignerOutlets ()
 		{

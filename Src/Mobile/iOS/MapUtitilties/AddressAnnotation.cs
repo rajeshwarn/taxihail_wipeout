@@ -1,8 +1,8 @@
-using MonoTouch.CoreLocation;
-using MonoTouch.MapKit;
-using MonoTouch.UIKit;
+using CoreLocation;
+using MapKit;
+using UIKit;
 using apcurium.MK.Booking.Mobile.Client.Helper;
-using System.Drawing;
+using CoreGraphics;
 
 namespace apcurium.MK.Booking.Mobile.Client.MapUtitilties
 {

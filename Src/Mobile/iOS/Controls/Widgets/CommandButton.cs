@@ -1,7 +1,7 @@
 using System;
-using MonoTouch.UIKit;
+using UIKit;
 using System.Windows.Input;
-using System.Drawing;
+using CoreGraphics;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
@@ -12,7 +12,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             Initialize ();
         }
 
-        public CommandButton (RectangleF frame) : base (frame)
+        public CommandButton (CGRect frame) : base (frame)
         {
             Initialize ();
         }

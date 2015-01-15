@@ -1,9 +1,9 @@
 using System;
-using MonoTouch.Foundation;
-using MonoTouch.UIKit;
+using Foundation;
+using UIKit;
 using apcurium.MK.Booking.Mobile.Client.Style;
 using System.Linq;
-using System.Drawing;
+using CoreGraphics;
 using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.Client.Helper;
@@ -14,7 +14,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
     public class EtaView : UIView
     {
         private const float EtaContainerHeight = 23f;
-        private SizeF ImageSize = new SizeF(34f, 34f);
+        private CGSize ImageSize = new CGSize(34f, 34f);
 
         private UIImageView EtaBadge { get; set; }
         private UILabel EtaLabel { get; set; }

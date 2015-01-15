@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
-using System.Drawing;
+using CoreGraphics;
 using System.Linq;
-using MonoTouch.UIKit;
+using UIKit;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
 using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
-using MonoTouch.CoreAnimation;
-using MonoTouch.Foundation;
+using CoreAnimation;
+using Foundation;
 using apcurium.MK.Booking.Mobile.Client.Controls.Widgets;
 using apcurium.MK.Booking.Mobile.Client.Localization;
 
@@ -16,17 +16,17 @@ namespace apcurium.MK.Booking.Mobile.Client
 	{
 		public static void SetPosition(this UIView view, float? x = null, float? y = null )
 		{
-			view.Frame = new RectangleF(x ?? view.Frame.X, y ?? view.Frame.Y, view.Frame.Width, view.Frame.Height);
+			view.Frame = new CGRect(x ?? view.Frame.X, y ?? view.Frame.Y, view.Frame.Width, view.Frame.Height);
 		}
 
 		public static void SetDimensions(this UIView view, float? width = null, float? height = null )
 		{
-			view.Frame = new RectangleF(view.Frame.X, view.Frame.Y, width ?? view.Frame.Width, height ?? view.Frame.Height);
+			view.Frame = new CGRect(view.Frame.X, view.Frame.Y, width ?? view.Frame.Width, height ?? view.Frame.Height);
 		}
 
         public static void SetRoundedCorners(this UIView view, UIRectCorner corners, float radius)
         {
-            var roundedRect = UIBezierPath.FromRoundedRect(new RectangleF(0, 0, view.Frame.Width, view.Frame.Height), corners, new SizeF(radius, radius));
+            var roundedRect = UIBezierPath.FromRoundedRect(new CGRect(0, 0, view.Frame.Width, view.Frame.Height), corners, new CGSize(radius, radius));
             var maskLayer = new CAShapeLayer() { Frame = view.Bounds, Path = roundedRect.CGPath };
             view.Layer.Mask = maskLayer;
         }
@@ -169,7 +169,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             thisButton.Layer.CornerRadius = radius;
         }
 
-        public static SizeF GetSizeThatFits(this UIView view, string text, UIFont font, SizeF? maxSize = null)
+        public static CGSize GetSizeThatFits(this UIView view, string text, UIFont font, CGSize? maxSize = null)
         {
             if (UIHelper.IsOS7orHigher)
             {
@@ -196,7 +196,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                 {
                     var height = result.Height;
                     var lines = Math.Round(result.Width / maxSize.Value.Width, MidpointRounding.AwayFromZero);
-                    result = new SizeF(maxSize.Value.Width, (float)lines * height);
+                    result = new CGSize(maxSize.Value.Width, (float)lines * height);
                 }
 
                 return result;
@@ -233,7 +233,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         private static UIView CreateAccessoryViewWithCloseButton(Action<object, EventArgs> onClose)
         {
-            var accessoryView = new UIView { Frame = new RectangleF(0, 0, UIScreen.MainScreen.Bounds.Width, 44), BackgroundColor = UIColor.FromRGB(251, 253, 253) };
+            var accessoryView = new UIView { Frame = new CGRect(0, 0, UIScreen.MainScreen.Bounds.Width, 44), BackgroundColor = UIColor.FromRGB(251, 253, 253) };
 
             var closeButton = new FlatButton();
             var closeButtonText = Localize.GetValue ("OkButtonText");

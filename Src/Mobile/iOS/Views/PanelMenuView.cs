@@ -1,9 +1,9 @@
 using System;
-using System.Drawing;
+using CoreGraphics;
 using System.Windows.Input;
 using Cirrious.MvvmCross.Binding.BindingContext;
-using MonoTouch.Foundation;
-using MonoTouch.UIKit;
+using Foundation;
+using UIKit;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Booking.Mobile.Client.Controls.Widgets;
 using apcurium.MK.Booking.Mobile.Client.Controls.Binding;
@@ -134,7 +134,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         {
             if(MenuIsOpen && _closeMenuButton == null)
             {
-                _closeMenuButton = new UIButton(new RectangleF(0, 0, Frame.Width - menuContainer.Frame.Width, Frame.Height)) { BackgroundColor = UIColor.Clear };
+                _closeMenuButton = new UIButton(new CGRect(0, 0, Frame.Width - menuContainer.Frame.Width, Frame.Height)) { BackgroundColor = UIColor.Clear };
                 _closeMenuButton.TouchUpInside += (s, ex) => {
                     ViewModel.MenuIsOpen = false;
                 };

@@ -1,9 +1,9 @@
-﻿using System;
-using MonoTouch.UIKit;
-using System.Drawing;
-using MonoTouch.CoreAnimation;
-using MonoTouch.CoreGraphics;
-using MonoTouch.Foundation;
+using System;
+using UIKit;
+using CoreGraphics;
+using CoreAnimation;
+using CoreGraphics;
+using Foundation;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
@@ -85,7 +85,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
             {
                 loader = new LoadingAnimation(width, height, baseColor);
 
-                Frame = new RectangleF (x, y, width, height);
+                Frame = new CGRect (x, y, width, height);
 
                 Add(loader);
                 ClipsToBounds = true;
@@ -110,7 +110,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
 
             public class GradientMaker
             {
-                public static CAGradientLayer Make (UIColor baseColor, RectangleF frame)
+                public static CAGradientLayer Make (UIColor baseColor, CGRect frame)
                 {
                     float red;
                     float green;
@@ -123,8 +123,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
                     var midColor = UIColor.FromRGBA (red, green, blue, 255).CGColor;
                     var endColor = UIColor.FromRGBA (red, green, blue, 255).CGColor;
                     var gradientLayer = new CAGradientLayer () {
-                        StartPoint = new PointF (0, 0),
-                        EndPoint = new Point (1, 0),
+                        StartPoint = new CGPoint (0, 0),
+                        EndPoint = new CGPoint (1, 0),
                         Colors = new [] {
                             startColor,
                             midColor,
@@ -144,7 +144,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
 
             private class LoadingAnimation : UIView
             {
-                RectangleF StartingRect { get; set; }
+                CGRect StartingRect { get; set; }
 
                 public void ResetFrame ()
                 {
@@ -153,7 +153,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
 
                 public LoadingAnimation (int width, int height, UIColor baseColor = null)
                 {
-                    StartingRect = new RectangleF (0 - width, 0, width, height);
+                    StartingRect = new CGRect (0 - width, 0, width, height);
 
                     if (baseColor == null) 
                     {

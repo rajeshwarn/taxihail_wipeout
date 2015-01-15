@@ -1,9 +1,9 @@
 using System;
-using MonoTouch.UIKit;
-using MonoTouch.Foundation;
+using UIKit;
+using Foundation;
 using System.Linq;
 using apcurium.MK.Common.Extensions;
-using System.Drawing;
+using CoreGraphics;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
 using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
 using apcurium.MK.Booking.Mobile.Client.Controls.Behavior;
@@ -202,9 +202,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 StreetNumberTextView.SizeToFit();
                 StreetNumberTextView.SetHeight(this.Frame.Height).IncrementWidth(10);
 
-                VerticalDivider.Frame = new RectangleF(StreetNumberTextView.Frame.Right, 6, UIHelper.OnePixel, this.Frame.Height - 12);
-                HorizontalDividerTop.Frame = new RectangleF(0, 0, this.Frame.Width, UIHelper.OnePixel);
-                AddressButton.Frame = AddressTextView.Frame = new RectangleF(VerticalDivider.Frame.Right + 6, 0, this.Frame.Width - VerticalDivider.Frame.Right, this.Frame.Height);
+                VerticalDivider.Frame = new CGRect(StreetNumberTextView.Frame.Right, 6, UIHelper.OnePixel, this.Frame.Height - 12);
+                HorizontalDividerTop.Frame = new CGRect(0, 0, this.Frame.Width, UIHelper.OnePixel);
+                AddressButton.Frame = AddressTextView.Frame = new CGRect(VerticalDivider.Frame.Right + 6, 0, this.Frame.Width - VerticalDivider.Frame.Right, this.Frame.Height);
 
                 AddressTextView.LeftViewMode = UITextFieldViewMode.Never;
 
@@ -221,12 +221,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
                 StreetNumberTextView.Hidden = true;
 
-                AddressButton.Frame = AddressTextView.Frame = new RectangleF(0, 0, this.Frame.Width, this.Frame.Height);
+                AddressButton.Frame = AddressTextView.Frame = new CGRect(0, 0, this.Frame.Width, this.Frame.Height);
 
                 AddressTextView.SetPadding(VerticalDivider.Frame.Right + 6, 6);
                 AddressTextView.LeftView = new Dot(6, color, -3)
                 { 
-                    Frame = new RectangleF(0, 0, VerticalDivider.Frame.Right + 6, this.Frame.Height)
+                    Frame = new CGRect(0, 0, VerticalDivider.Frame.Right + 6, this.Frame.Height)
                 };
                 AddressTextView.LeftViewMode = UITextFieldViewMode.Always;
             }

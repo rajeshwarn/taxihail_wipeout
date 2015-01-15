@@ -3,7 +3,7 @@ using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Configuration;
 using GoogleAnalytics;
 using GoogleAnalytics.iOS;
-using MonoTouch.Foundation;
+using Foundation;
 using GoogleConversionTracking;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Booking.Mobile.Client.Diagnostics;

@@ -1,9 +1,9 @@
 using System;
-using MonoTouch.Foundation;
-using MonoTouch.UIKit;
+using Foundation;
+using UIKit;
 using apcurium.MK.Booking.Mobile.Client.Style;
 using apcurium.MK.Common.Extensions;
-using System.Drawing;
+using CoreGraphics;
 using apcurium.MK.Booking.Mobile.Client.Helper;
 using apcurium.MK.Booking.Mobile.Client.Localization;
 using apcurium.MK.Booking.Api.Contract.Resources;
@@ -15,13 +15,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
     {
 		private const float EstimateLabelMinimumWidth = 40f;
         private const float EstimateLabelPadding = 5f;
-        private SizeF ImageSize = new SizeF(34f, 34f);
+        private CGSize ImageSize = new CGSize(34f, 34f);
 
         private UIImageView _vehicleTypeImage { get; set; }
         private UILabel _vehicleTypeLabel { get; set; }
         private bool _isForEstimate { get; set; }
 
-        public VehicleTypeView(RectangleF frame) : base(frame)
+        public VehicleTypeView(CGRect frame) : base(frame)
         {
             _isForEstimate = true;
 
@@ -30,7 +30,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             Selected = true;
         }
 
-		public VehicleTypeView (RectangleF frame, VehicleType vehicle, bool isSelected) : base (frame)
+		public VehicleTypeView (CGRect frame, VehicleType vehicle, bool isSelected) : base (frame)
         {
             _isForEstimate = false;
 

@@ -1,7 +1,7 @@
-﻿using System;
+using System;
 using Cirrious.MvvmCross.Binding.Touch.Views;
-using MonoTouch.UIKit;
-using MonoTouch.Foundation;
+using UIKit;
+using Foundation;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using MK.Common.Entity;
 using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;

@@ -1,8 +1,8 @@
 using System;
-using System.Drawing;
+using CoreGraphics;
 using Cirrious.MvvmCross.Touch.Views;
-using MonoTouch.Foundation;
-using MonoTouch.UIKit;
+using Foundation;
+using UIKit;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Booking.Mobile.Client.Localization;
 using apcurium.MK.Booking.Mobile.Client.Style;
@@ -44,13 +44,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		private void Initialize()
 		{
 			// Preserve iOS6 Behavior for compatibility reasons
-			if (this.RespondsToSelector(new MonoTouch.ObjCRuntime.Selector("automaticallyAdjustsScrollViewInsets")))
+			if (this.RespondsToSelector(new ObjCRuntime.Selector("automaticallyAdjustsScrollViewInsets")))
 			{
 				AutomaticallyAdjustsScrollViewInsets = false;
 			}
 
 			// To have the views under the nav bar and not under it
-			if (this.RespondsToSelector(new MonoTouch.ObjCRuntime.Selector("edgesForExtendedLayout")))
+			if (this.RespondsToSelector(new ObjCRuntime.Selector("edgesForExtendedLayout")))
 			{
 				this.EdgesForExtendedLayout = UIRectEdge.Bottom;
 			}
@@ -185,7 +185,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			scrollView.ScrollIndicatorInsets = contentInsets;
 
 			// If activeField is hidden by keyboard, scroll it so it's visible
-			var viewRectAboveKeyboard = new RectangleF(this.View.Frame.Location, new SizeF(this.View.Frame.Width, this.View.Frame.Size.Height - keyboardBounds.Size.Height));
+			var viewRectAboveKeyboard = new CGRect(this.View.Frame.Location, new CGSize(this.View.Frame.Width, this.View.Frame.Size.Height - keyboardBounds.Size.Height));
 
 			var activeFieldAbsoluteFrame = activeView.Superview.ConvertRectToView(activeView.Frame, this.View);
 			// activeFieldAbsoluteFrame is relative to this.View so does not include any scrollView.ContentOffset
@@ -198,7 +198,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			if (!viewRectAboveKeyboard.Contains(activeFieldAbsoluteFrame))
 			{
 				// Scroll to the activeField Y position + activeField.Height + current scrollView.ContentOffset.Y - the keyboard Height
-				var scrollPoint = new PointF(0.0f, activeFieldAbsoluteFrame.Location.Y + activeFieldAbsoluteFrame.Height + scrollView.ContentOffset.Y - viewRectAboveKeyboard.Height);
+				var scrollPoint = new CGPoint(0.0f, activeFieldAbsoluteFrame.Location.Y + activeFieldAbsoluteFrame.Height + scrollView.ContentOffset.Y - viewRectAboveKeyboard.Height);
 				scrollView.SetContentOffset(scrollPoint, true);
 			}
         }

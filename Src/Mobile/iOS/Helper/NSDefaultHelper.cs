@@ -1,5 +1,5 @@
 using apcurium.MK.Booking.Mobile.Framework.Extensions;
-using MonoTouch.Foundation;
+using Foundation;
 
 namespace apcurium.MK.Booking.Mobile.Client.Helper
 {

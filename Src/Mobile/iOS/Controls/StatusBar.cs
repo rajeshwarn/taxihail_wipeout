@@ -1,7 +1,7 @@
 using System;
-using System.Drawing;
-using MonoTouch.Foundation;
-using MonoTouch.UIKit;
+using CoreGraphics;
+using Foundation;
+using UIKit;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls
 {
@@ -13,21 +13,21 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             Layer.ShadowColor = UIColor.Black.CGColor;
             Layer.ShadowOpacity = 0.5f;
             Layer.ShadowRadius = 1f;
-            Layer.ShadowOffset = new SizeF (0f, -1f);
+            Layer.ShadowOffset = new CGSize (0f, -1f);
         }
         
         public void Resize ()
         {
-            var size = new SizeF (UIScreen.MainScreen.Bounds.Width, 0);
+            var size = new CGSize (UIScreen.MainScreen.Bounds.Width, 0);
             var curlFactor = 2.0f;
             var shadowDepth = 5.0f;
             var path = new UIBezierPath ();
-            path.MoveTo (new PointF (-2f, size.Height - 1f));
-            path.AddLineTo (new PointF (size.Width + 2f, size.Height - 1f));
-            path.AddLineTo (new PointF (size.Width + 2f, size.Height - 1f + shadowDepth));
-            path.AddCurveToPoint (new PointF (-2f, size.Height - 1f + shadowDepth),
-                                 new PointF (size.Width + 2f - curlFactor, size.Height - 1f + shadowDepth - curlFactor),
-                                 new PointF (curlFactor, size.Height - 1f + shadowDepth - curlFactor));
+            path.MoveTo (new CGPoint (-2f, size.Height - 1f));
+            path.AddLineTo (new CGPoint (size.Width + 2f, size.Height - 1f));
+            path.AddLineTo (new CGPoint (size.Width + 2f, size.Height - 1f + shadowDepth));
+            path.AddCurveToPoint (new CGPoint (-2f, size.Height - 1f + shadowDepth),
+                                 new CGPoint (size.Width + 2f - curlFactor, size.Height - 1f + shadowDepth - curlFactor),
+                                 new CGPoint (curlFactor, size.Height - 1f + shadowDepth - curlFactor));
             
             Layer.ShadowPath = path.CGPath;
         }
@@ -57,11 +57,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             if (_shadowView == null) 
             {
                 _shadowView = new ShadowView (); 
-                _shadowView.Frame = new RectangleF (0, Bounds.Height, UIScreen.MainScreen.Bounds.Width, 200);
+                _shadowView.Frame = new CGRect (0, Bounds.Height, UIScreen.MainScreen.Bounds.Width, 200);
                 _shadowView.BackgroundColor = UIColor.Clear;
                 AddSubview (_shadowView);
             }
-            _shadowView.Frame = new RectangleF (0, Bounds.Height, UIScreen.MainScreen.Bounds.Width, 10);
+            _shadowView.Frame = new CGRect (0, Bounds.Height, UIScreen.MainScreen.Bounds.Width, 10);
             _shadowView.Resize ();
         }
         
@@ -75,10 +75,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
                 _assignedVisibleView.RemoveFromSuperview ();
                 _visibleView.AddSubview ( _assignedVisibleView );
-                _assignedVisibleView.Frame = new RectangleF(0,0, UIScreen.MainScreen.Bounds.Width , _visibleView.Bounds.Height ); 
+                _assignedVisibleView.Frame = new CGRect(0,0, UIScreen.MainScreen.Bounds.Width , _visibleView.Bounds.Height ); 
             }
            
-            _visibleView.Frame = new RectangleF (0, Bounds.Height - _minHeight, UIScreen.MainScreen.Bounds.Width, _minHeight);
+            _visibleView.Frame = new CGRect (0, Bounds.Height - _minHeight, UIScreen.MainScreen.Bounds.Width, _minHeight);
         }
 
         private bool _isEnabled;
@@ -112,13 +112,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 
                 _assignedSlideoutView.RemoveFromSuperview ();
                 _slideoutView.AddSubview ( _assignedSlideoutView );
-                _assignedSlideoutView.Frame = new RectangleF(0,0, UIScreen.MainScreen.Bounds.Width , _slideoutView.Bounds.Height ); 
+                _assignedSlideoutView.Frame = new CGRect(0,0, UIScreen.MainScreen.Bounds.Width , _slideoutView.Bounds.Height ); 
             }
 
             var topVisibleView = Bounds.Height - _minHeight;
             var heightSlideOut = _maxHeight - _minHeight;
             
-            _slideoutView.Frame = new RectangleF (0, topVisibleView - heightSlideOut, UIScreen.MainScreen.Bounds.Width, heightSlideOut);
+            _slideoutView.Frame = new CGRect (0, topVisibleView - heightSlideOut, UIScreen.MainScreen.Bounds.Width, heightSlideOut);
         }
 
 		public void Initialize (UIView visibleView, UIView slidingView)
@@ -150,7 +150,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             SetHeight (_minHeight, true);
         }
 
-        PointF _startPt;
+        CGPoint _startPt;
         private float _initialHeight;
         
         public override void TouchesBegan (NSSet touches, UIEvent evt)
@@ -167,7 +167,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         }
         
         private bool _goingDown;
-        private PointF _lastPoint;
+        private CGPoint _lastPoint;
         
         public override void TouchesMoved (NSSet touches, UIEvent evt)
         {
@@ -211,7 +211,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
         {
             Action changeSize = () => 
             {
-                Frame = new RectangleF (Frame.X, Frame.Y, UIScreen.MainScreen.Bounds.Width, height);
+                Frame = new CGRect (Frame.X, Frame.Y, UIScreen.MainScreen.Bounds.Width, height);
                 SetShadow ();
                 SetVisibleView ();
                 SetNeedsDisplay ();

@@ -1,10 +1,10 @@
 using System;
 using System.IO;
-using MonoTouch.EventKit;
-using MonoTouch.Foundation;
-using MonoTouch.MessageUI;
-using MonoTouch.ObjCRuntime;
-using MonoTouch.UIKit;
+using EventKit;
+using Foundation;
+using MessageUI;
+using ObjCRuntime;
+using UIKit;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Booking.Mobile.Client.Localization;
@@ -42,7 +42,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
         {
             var url = new NSUrl ("tel://" + phoneNumber);
 
-            var canCall = UIApplication.SharedApplication.CanOpenUrl(new MonoTouch.Foundation.NSUrl("tel:15146543024"));
+            var canCall = UIApplication.SharedApplication.CanOpenUrl(new Foundation.NSUrl("tel:15146543024"));
             if (!canCall)
             {
                 var av = new UIAlertView ("Not supported", "Calls are not supported on this device", null, Localize.GetValue ("Close"), null);

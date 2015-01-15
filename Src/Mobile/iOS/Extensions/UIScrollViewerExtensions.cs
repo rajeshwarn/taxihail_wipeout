@@ -1,5 +1,5 @@
-using MonoTouch.UIKit;
-using System.Drawing;
+using UIKit;
+using CoreGraphics;
 using System.Linq;
 
 namespace apcurium.MK.Booking.Mobile.Client.Extensions
@@ -24,11 +24,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Extensions
                 }
             }
             
-            thisScrollViewer.ContentSize = new SizeF (maxWidth, maxHeight);
+            thisScrollViewer.ContentSize = new CGSize (maxWidth, maxHeight);
         }
         
         public static void DisableHorizontalScroll(this UIScrollView thisScrollViewer){
-            thisScrollViewer.ContentSize = new SizeF (thisScrollViewer.Frame.Width, thisScrollViewer.ContentSize.Height);
+            thisScrollViewer.ContentSize = new CGSize (thisScrollViewer.Frame.Width, thisScrollViewer.ContentSize.Height);
         }
     }
 }

@@ -4,7 +4,7 @@
 // actions made in the UI designer. If it is removed, they will be lost.
 // Manual changes to this file may not be handled correctly.
 //
-using MonoTouch.Foundation;
+using Foundation;
 using System.CodeDom.Compiler;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
@@ -19,22 +19,22 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnScanCard { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel lblCardNumber { get; set; }
+		UIKit.UILabel lblCardNumber { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel lblCvv { get; set; }
+		UIKit.UILabel lblCvv { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel lblExpMonth { get; set; }
+		UIKit.UILabel lblExpMonth { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel lblExpYear { get; set; }
+		UIKit.UILabel lblExpYear { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel lblInstructions { get; set; }
+		UIKit.UILabel lblInstructions { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel lblNameOnCard { get; set; }
+		UIKit.UILabel lblNameOnCard { get; set; }
 
 		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatTextField txtCardNumber { get; set; }

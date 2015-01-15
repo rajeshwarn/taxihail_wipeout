@@ -4,7 +4,7 @@
 // actions made in the UI designer. If it is removed, they will be lost.
 // Manual changes to this file may not be handled correctly.
 //
-using MonoTouch.Foundation;
+using Foundation;
 using System.CodeDom.Compiler;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
@@ -13,19 +13,19 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 	partial class NotificationSettingsView
 	{
 		[Outlet]
-		MonoTouch.UIKit.NSLayoutConstraint constraintLeftLabel { get; set; }
+		UIKit.NSLayoutConstraint constraintLeftLabel { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.NSLayoutConstraint constraintRightSwitch { get; set; }
+		UIKit.NSLayoutConstraint constraintRightSwitch { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel labelNotificationEnabled { get; set; }
+		UIKit.UILabel labelNotificationEnabled { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UISwitch switchNotificationEnabled { get; set; }
+		UIKit.UISwitch switchNotificationEnabled { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UITableView tableNotifications { get; set; }
+		UIKit.UITableView tableNotifications { get; set; }
 		
 		void ReleaseDesignerOutlets ()
 		{

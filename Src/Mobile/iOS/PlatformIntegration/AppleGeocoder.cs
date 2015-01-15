@@ -1,12 +1,12 @@
-﻿using System;
+using System;
 using apcurium.MK.Booking.MapDataProvider;
 using apcurium.MK.Booking.MapDataProvider.Google.Resources;
 using apcurium.MK.Booking.MapDataProvider.Resources;
 using ServiceStack.ServiceClient.Web;
-using MonoTouch.CoreLocation;
+using CoreLocation;
 using System.Linq;
-using MonoTouch.AddressBookUI;
-using MonoTouch.Foundation;
+using AddressBookUI;
+using Foundation;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using apcurium.MK.Common.Extensions;
@@ -114,7 +114,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
             var arr = new List<string>();
             for (uint i = 0; i < addressLines.Count; i++) 
             {
-                var o = MonoTouch.ObjCRuntime.Runtime.GetNSObject(addressLines.ValueAt(i));
+                var o = ObjCRuntime.Runtime.GetNSObject(addressLines.ValueAt(i));
                 arr.Add(o.ToString());
             }
             return string.Join(", ", arr.ToArray());

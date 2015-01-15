@@ -1,9 +1,9 @@
 using System;
-using System.Drawing;
+using CoreGraphics;
 using System.Windows.Input;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using Cirrious.MvvmCross.Binding.Touch.Views;
-using MonoTouch.UIKit;
+using UIKit;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
 using apcurium.MK.Booking.Mobile.Client.Localization;
@@ -81,8 +81,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Booking
             var buttonWidth = 130f;
             _bottom = bottom;
 
-            CancelButton.Frame = new RectangleF(buttonHorizontalPadding, buttonVerticalPadding, buttonWidth, 36f);
-            OrderButton.Frame = new RectangleF(width - buttonWidth - buttonHorizontalPadding, buttonVerticalPadding, buttonWidth, 36f);
+            CancelButton.Frame = new CGRect(buttonHorizontalPadding, buttonVerticalPadding, buttonWidth, 36f);
+            OrderButton.Frame = new CGRect(width - buttonWidth - buttonHorizontalPadding, buttonVerticalPadding, buttonWidth, 36f);
 
             OrderButton.TouchUpInside += (sender, e) => {
                 Command.ExecuteIfPossible(Date);

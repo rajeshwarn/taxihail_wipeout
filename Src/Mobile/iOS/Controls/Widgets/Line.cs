@@ -1,6 +1,6 @@
-using MonoTouch.UIKit;
+using UIKit;
 using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
-using System.Drawing;
+using CoreGraphics;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
@@ -20,7 +20,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         {
             var convertedThickness = UIHelper.GetConvertedPixel(thickness);
 
-            return new Line(new RectangleF(x, y, width, convertedThickness))
+            return new Line(new CGRect(x, y, width, convertedThickness))
             {
                 BackgroundColor = color,
                 AutoresizingMask = UIViewAutoresizing.FlexibleWidth
@@ -41,14 +41,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         {
             var convertedThickness = UIHelper.GetConvertedPixel(thickness);
 
-            return new Line(new RectangleF(x - convertedThickness, y, convertedThickness, height))
+            return new Line(new CGRect(x - convertedThickness, y, convertedThickness, height))
             {
                 BackgroundColor = color,
                 AutoresizingMask = UIViewAutoresizing.FlexibleHeight
             };
         }
 
-        private Line(RectangleF rect) : base(rect)
+        private Line(CGRect rect) : base(rect)
 		{
 		}
 	}

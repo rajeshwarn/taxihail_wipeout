@@ -1,8 +1,8 @@
 using apcurium.MK.Booking.Mobile.AppServices.Social;
 using apcurium.MK.Booking.Mobile.AppServices.Social.OAuth;
 using System;
-using MonoTouch.Foundation;
-using MonoTouch.UIKit;
+using Foundation;
+using UIKit;
 
 namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration.Social
 {
