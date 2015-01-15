@@ -9,6 +9,7 @@ using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Booking.Mobile.Client.Localization;
 using Cirrious.CrossCore.Touch.Views;
+using Cirrious.CrossCore.Touch;
 
 namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 {
@@ -113,18 +114,20 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
         void AddEvent (string title, string addInfo, DateTime startDate, DateTime alertDate)
         {
             var newEvent = EKEvent.FromStore (EventStore);
-            newEvent.AddAlarm (EKAlarm.FromDate (alertDate));
-            newEvent.StartDate = startDate;
-            newEvent.EndDate = startDate.AddHours (1);
+            newEvent.AddAlarm (EKAlarm.FromDate (alertDate.ToNSDate()));
+            newEvent.StartDate = startDate.ToNSDate();
+            newEvent.EndDate = startDate.AddHours (1).ToNSDate();
             newEvent.Title = title;
             newEvent.Notes = addInfo;
             newEvent.Calendar = EventStore.DefaultCalendarForNewEvents;
             NSError err;
             EventStore.SaveEvent (newEvent, EKSpan.ThisEvent, out err);
-            if (err != null) {
+            if (err != null) 
+            {
                 _logger.LogMessage ("Err Saving Event : " + err);
             }
-            else {
+            else 
+            {
                 _logger.LogMessage ("Event Saved,  ID: " + newEvent.EventIdentifier);
             }
         }

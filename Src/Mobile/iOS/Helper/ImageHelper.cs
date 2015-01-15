@@ -225,16 +225,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Helper
             var correctedY = (int)(image.CurrentScale * y);
 
             var cgImage = image.CGImage.Clone ();
-            var size = new CGSize (cgImage.Width, cgImage.Height);
             var colorSpace = CGColorSpace.CreateDeviceRGB ();
-            var rawData = new byte[(int)(size.Height * size.Width * 4)];
+            var rawData = new byte[(int)(cgImage.Height * cgImage.Width * 4)];
             var bytesPerPixel = 4;
-            var bytesPerRow = bytesPerPixel * size.Width;
+            var bytesPerRow = bytesPerPixel * cgImage.Width;
             var bitsPerComponent = 8;
-            var context = new CGBitmapContext(rawData, (nint)size.Width, size.Height, bitsPerComponent, bytesPerRow, colorSpace, CGBitmapFlags.PremultipliedLast | CGBitmapFlags.ByteOrder32Big);
+            var context = new CGBitmapContext(rawData, cgImage.Width, cgImage.Height, bitsPerComponent, bytesPerRow, colorSpace, CGBitmapFlags.PremultipliedLast | CGBitmapFlags.ByteOrder32Big);
             colorSpace.Dispose ();
 
-            context.DrawImage (new CGRect (0, 0, size.Width, size.Height), cgImage);
+            context.DrawImage (new CGRect (0, 0, cgImage.Width, cgImage.Height), cgImage);
             context.Dispose ();
 
             var byteIndex = (bytesPerRow * correctedY) + correctedX * bytesPerPixel;

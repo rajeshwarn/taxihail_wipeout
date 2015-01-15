@@ -150,7 +150,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             thisView.Frame = margin.ShrinkRectangle (thisView.Frame);
         }
 
-        public static void RoundCorners(this UIView thisButton,float radius=2, float borderThickness = 0f, UIColor borderColor = null)
+        public static void RoundCorners(this UIView thisButton, nfloat radius, nfloat borderThickness, UIColor borderColor)
         {
             if (borderColor != null) 
             {
@@ -161,12 +161,12 @@ namespace apcurium.MK.Booking.Mobile.Client
             {
                 if (borderThickness == 1f && UIHelper.IsRetinaDisplay) 
                 {
-                    borderThickness = UIHelper.GetConvertedPixel(1f);
+                    borderThickness = UIHelper.GetConvertedPixel((nfloat)1f);
                 } 
                 thisButton.Layer.BorderWidth = borderThickness;
             }
             
-            thisButton.Layer.CornerRadius = radius;
+            thisButton.Layer.CornerRadius = (nfloat)radius;
         }
 
         public static CGSize GetSizeThatFits(this UIView view, string text, UIFont font, CGSize? maxSize = null)
@@ -189,7 +189,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             }
             else
             {
-                var result = view.StringSize(text, font);
+                var result = UIStringDrawing.StringSize(text, font);
 
                 if (maxSize != null
                     && result.Width > maxSize.Value.Width)

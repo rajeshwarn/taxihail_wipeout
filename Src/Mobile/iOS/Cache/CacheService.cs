@@ -77,7 +77,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Cache
         public void ClearAll()
         {
             Console.WriteLine ( "-----------------------------------  ClearAll :" + GetType ());            
-            var keys = NSUserDefaults.StandardUserDefaults.AsDictionary ().Keys;
+            var keys = NSUserDefaults.StandardUserDefaults.ToDictionary ().Keys;
             keys.Where(k => k.ToString().StartsWith(_cacheKey)).ForEach(k => ClearFullKey(k.ToString()));
         }
         #endregion
