@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using apcurium.MK.Booking.Security;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Web.Attributes;
 using ServiceStack.CacheAccess;
@@ -20,6 +21,7 @@ namespace apcurium.MK.Web.Areas
         {
             _cache = cache;
             ViewData["IsAuthenticated"] = AuthSession.IsAuthenticated;
+            ViewData["IsSuperAdmin"] = AuthSession.HasPermission(RoleName.SuperAdmin);
         }
 
         protected IAuthSession AuthSession

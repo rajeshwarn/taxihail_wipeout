@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using System.Web.Mvc;
 using System.Web.Routing;
 using apcurium.MK.Common.Configuration;
@@ -14,6 +15,7 @@ namespace apcurium.MK.Web.Areas
             ViewData["ApplicationName"] = serverSettings.ServerData.TaxiHail.ApplicationName;
             ViewData["ApplicationKey"] = serverSettings.ServerData.TaxiHail.ApplicationKey;
             ViewData["IsTaxiHailPro"] = serverSettings.ServerData.IsTaxiHailPro;
+            ViewData["Version"] = Assembly.GetAssembly(typeof (_default)).GetName().Version.ToString();
         }
 
         protected override IAsyncResult BeginExecute(RequestContext requestContext, AsyncCallback callback, object state)

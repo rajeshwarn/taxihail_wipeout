@@ -212,7 +212,6 @@ namespace apcurium.MK.Web
                 "~/admin/views/ManageTariffsView.js",
                 "~/admin/views/ManageRulesView.js",
                 "~/admin/views/ManagePopularAddressesView.js",
-                "~/admin/views/ManageCompanySettingsView.js",
                 "~/admin/views/ManageNotificationSettingsView.js",
                 "~/admin/views/ManagePaymentSettingsView.js",
                 "~/admin/views/SettingsItemView.js",
