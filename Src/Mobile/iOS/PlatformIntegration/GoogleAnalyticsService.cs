@@ -10,7 +10,7 @@ using apcurium.MK.Booking.Mobile.Client.Diagnostics;
 
 namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 {
-    // v3.0.3.4
+    // v3.0.10.2
     public class GoogleAnalyticsService: IAnalyticsService
 	{
         private IAppSettings _settings;
