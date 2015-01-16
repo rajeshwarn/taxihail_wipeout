@@ -1,4 +1,3 @@
-using System;
-using MonoTouch.ObjCRuntime;
+using ObjCRuntime;
 
-[assembly: LinkWith ("libGoogleConversionTracking.a", LinkTarget.Simulator | LinkTarget.ArmV7, "-ObjC", ForceLoad = true, WeakFrameworks = "AdSupport")]
+[assembly: LinkWith ("libGoogleConversionTracking.a", LinkTarget.ArmV7 | LinkTarget.ArmV7s | LinkTarget.Simulator, "-ObjC", ForceLoad = true, WeakFrameworks = "AdSupport")]

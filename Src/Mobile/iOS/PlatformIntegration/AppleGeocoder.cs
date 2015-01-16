@@ -2,7 +2,6 @@ using System;
 using apcurium.MK.Booking.MapDataProvider;
 using apcurium.MK.Booking.MapDataProvider.Google.Resources;
 using apcurium.MK.Booking.MapDataProvider.Resources;
-using ServiceStack.ServiceClient.Web;
 using CoreLocation;
 using System.Linq;
 using AddressBookUI;

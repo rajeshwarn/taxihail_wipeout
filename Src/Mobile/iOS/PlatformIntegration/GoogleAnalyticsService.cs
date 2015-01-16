@@ -1,12 +1,11 @@
 using System;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Configuration;
-using GoogleAnalytics;
 using GoogleAnalytics.iOS;
-using Foundation;
-using GoogleConversionTracking;
 using apcurium.MK.Common.Extensions;
+using GoogleConversionTracking.Unified;
 using apcurium.MK.Booking.Mobile.Client.Diagnostics;
+using Foundation;
 
 namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 {
@@ -35,7 +34,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 
 		public void LogViewModel (string viewModelName)
         {
-			var appView = GAIDictionaryBuilder.CreateAppView ();
+            var appView = GAIDictionaryBuilder.CreateScreenView ();
 			appView.Set (viewModelName, GAIConstants.ScreenName);
 			Tracker.Send(appView.Build());
 		}
@@ -71,7 +70,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
             {
                 try
                 {
-                    ACTConversionReporter.ReportWithConversionID(conversionId, label, "1.000000", false);
+                    ACTConversionReporter.ReportWithConversionID((NSString)conversionId, (NSString)label, (NSString)"1.000000", false);
                 }
                 catch (Exception e)
                 {
