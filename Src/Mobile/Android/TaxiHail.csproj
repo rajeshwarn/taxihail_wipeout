@@ -80,27 +80,6 @@
     <Reference Include="GoogleAnalytics.MonoDroid">
       <HintPath>..\Libraries\Monodroid\GoogleAnalytics.MonoDroid.dll</HintPath>
     </Reference>
-    <Reference Include="System.Reactive.Core">
-      <HintPath>..\Components\rxforxamarin-2.1\lib\android\System.Reactive.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Reactive.Debugger">
-      <HintPath>..\Components\rxforxamarin-2.1\lib\android\System.Reactive.Debugger.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Reactive.Experimental">
-      <HintPath>..\Components\rxforxamarin-2.1\lib\android\System.Reactive.Experimental.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Reactive.Interfaces">
-      <HintPath>..\Components\rxforxamarin-2.1\lib\android\System.Reactive.Interfaces.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Reactive.Linq">
-      <HintPath>..\Components\rxforxamarin-2.1\lib\android\System.Reactive.Linq.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Reactive.PlatformServices">
-      <HintPath>..\Components\rxforxamarin-2.1\lib\android\System.Reactive.PlatformServices.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Reactive.Providers">
-      <HintPath>..\Components\rxforxamarin-2.1\lib\android\System.Reactive.Providers.dll</HintPath>
-    </Reference>
     <Reference Include="PushSharp.Client.MonoForAndroid">
       <HintPath>..\Libraries\Monodroid\PushSharp.Client.MonoForAndroid.dll</HintPath>
     </Reference>
@@ -175,6 +154,18 @@
     </Reference>
     <Reference Include="Card.IO.Android">
       <HintPath>..\Components\cardioandroid-3.1.5\lib\android\Card.IO.Android.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Core">
+      <HintPath>..\Components\rxforxamarin-2.2.1\lib\android\System.Reactive.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Interfaces">
+      <HintPath>..\Components\rxforxamarin-2.2.1\lib\android\System.Reactive.Interfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Linq">
+      <HintPath>..\Components\rxforxamarin-2.2.1\lib\android\System.Reactive.Linq.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.PlatformServices">
+      <HintPath>..\Components\rxforxamarin-2.2.1\lib\android\System.Reactive.PlatformServices.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -799,16 +790,16 @@
     <AndroidJavaLibrary Include="libGoogleAnalyticsV2.jar" />
   </ItemGroup>
   <ItemGroup>
-    <XamarinComponentReference Include="rxforxamarin">
-      <Version>2.1</Version>
-      <Visible>False</Visible>
-    </XamarinComponentReference>
     <XamarinComponentReference Include="googleplayservices">
       <Version>19.0.0.2</Version>
       <Visible>False</Visible>
     </XamarinComponentReference>
     <XamarinComponentReference Include="cardioandroid">
       <Version>3.1.5</Version>
+      <Visible>False</Visible>
+    </XamarinComponentReference>
+    <XamarinComponentReference Include="rxforxamarin">
+      <Version>2.2.1</Version>
       <Visible>False</Visible>
     </XamarinComponentReference>
   </ItemGroup>
