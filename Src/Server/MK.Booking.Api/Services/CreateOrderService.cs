@@ -829,7 +829,7 @@ namespace apcurium.MK.Booking.Api.Services
             return new BestAvailableCompany();
         }
 
-        private Envelope<ICommand> ValidateAndApplyPromotion(string promoCode, int? chargeTypeId, Guid accountId, Guid orderId, DateTime pickupDate, bool isFutureBooking, string clientLanguageCode)
+        private ApplyPromotion ValidateAndApplyPromotion(string promoCode, int? chargeTypeId, Guid accountId, Guid orderId, DateTime pickupDate, bool isFutureBooking, string clientLanguageCode)
         {
             if (!promoCode.HasValue())
             {
