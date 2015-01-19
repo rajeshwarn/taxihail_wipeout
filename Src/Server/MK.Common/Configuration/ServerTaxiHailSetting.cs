@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Net.Mail;
 using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Configuration.Attributes;
 using apcurium.MK.Common.Enumeration;
 
 namespace MK.Common.Configuration
@@ -115,15 +116,17 @@ namespace MK.Common.Configuration
         [Display(Name = "Send Payment Detail To Driver", Description = "Inform the driver of auto payment success or failure")]
         public bool SendDetailedPaymentInfoToDriver { get; private set; }
 
-        [Display(Name = "Base Url Override", Description = "Overrides the base url of the application")]
+        [Display(Name = "Base Url Override", Description = "Overrides the base url of the application (ex: In account confirmation email)")]
         public string BaseUrl { get; private set; }
 
         [Display(Name = "TaxiHail Pro", Description = "Company has access to TaxiHail Pro features")]
         public bool IsTaxiHailPro { get; protected set; }
 
+        [Hidden]
         [Display(Name = "SettingsAvailableToAdmin", Description = "Comma delimited list of settings that are available to admins")]
         public string SettingsAvailableToAdmin { get; private set; }
-        
+
+        [Hidden]
         [Display(Name = "Target", Description = "Deployment target server")]
         public DeploymentTargets Target { get; set; }
     }

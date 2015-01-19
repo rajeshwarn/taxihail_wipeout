@@ -52,17 +52,26 @@ namespace apcurium.MK.Booking.EventHandlers
 
                 foreach (var account in @event.AccountCharges)
                 {
-                    var accountChargeDetail = new AccountChargeDetail { Id = account.AccountChargeId };
-                
-                    accountChargeDetail.Number = account.Number;
-                    accountChargeDetail.Name = account.Name;
+                    var accountChargeDetail = new AccountChargeDetail
+                    {
+                        Id = account.AccountChargeId,
+                        Number = account.Number,
+                        Name = account.Name
+                    };
+
                     accountChargeDetail.Questions.Clear();
                     context.Save(accountChargeDetail);
+
+                    var shouldDecreaseQuestionsId = account.Questions.None(x => x.Id == 0);
 
                     accountChargeDetail.Questions.AddRange(account.Questions);
                     foreach (var question in accountChargeDetail.Questions)
                     {
                         question.AccountId = accountChargeDetail.Id;
+                        if (shouldDecreaseQuestionsId)
+                        {
+                            question.Id = question.Id - 1;
+                        }
                     }
 
                     context.Save(accountChargeDetail);

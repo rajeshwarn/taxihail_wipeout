@@ -144,12 +144,6 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             Client.Delete<string>(req);
         }
 
-        public void ImportAccountCharge(AccountChargeImportRequest request)
-        {
-            var req = string.Format("/admin/accountscharge/import");
-            Client.Post<string>(req, request);
-        }
-
         public IbsChargeAccount GetChargeAccount(string accountNumber, string customerNumber)
         {
             var req = string.Format("/admin/ibschargeaccount/{0}/{1}", accountNumber, customerNumber);
