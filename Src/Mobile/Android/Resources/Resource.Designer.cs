@@ -26,6 +26,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 		
 		public static void UpdateIdValues()
 		{
+			global::Xamarin.InsightsCore.Resource.String.ApplicationName = global::apcurium.MK.Booking.Mobile.Client.Resource.String.ApplicationName;
+			global::Xamarin.InsightsCore.Resource.String.Hello = global::apcurium.MK.Booking.Mobile.Client.Resource.String.Hello;
 			global::Cirrious.MvvmCross.Dialog.Droid.Resource.Drawable.dialog_disclosure = global::apcurium.MK.Booking.Mobile.Client.Resource.Drawable.dialog_disclosure;
 			global::Cirrious.MvvmCross.Dialog.Droid.Resource.Drawable.dialog_expander_ic_minimized = global::apcurium.MK.Booking.Mobile.Client.Resource.Drawable.dialog_expander_ic_minimized;
 			global::Cirrious.MvvmCross.Dialog.Droid.Resource.Drawable.dialog_icon = global::apcurium.MK.Booking.Mobile.Client.Resource.Drawable.dialog_icon;
@@ -68,8 +70,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 			global::Cirrious.MvvmCross.Dialog.Droid.Resource.Layout.dialog_textarea = global::apcurium.MK.Booking.Mobile.Client.Resource.Layout.dialog_textarea;
 			global::Cirrious.MvvmCross.Dialog.Droid.Resource.Layout.dialog_textfieldbelow = global::apcurium.MK.Booking.Mobile.Client.Resource.Layout.dialog_textfieldbelow;
 			global::Cirrious.MvvmCross.Dialog.Droid.Resource.Layout.dialog_textfieldright = global::apcurium.MK.Booking.Mobile.Client.Resource.Layout.dialog_textfieldright;
-			global::Xamarin.InsightsCore.Resource.String.ApplicationName = global::apcurium.MK.Booking.Mobile.Client.Resource.String.ApplicationName;
-			global::Xamarin.InsightsCore.Resource.String.Hello = global::apcurium.MK.Booking.Mobile.Client.Resource.String.Hello;
 		}
 		
 		public partial class Animation
