@@ -69,42 +69,66 @@ namespace Infrastructure.Messaging.InMemory
             SendInternal(command);
         }
 
+        
+        public Task SendAwaitable(Envelope<ICommand> command)
+        {
+            return SendInternal(command);
+        }
+
         private Task SendInternal(Envelope<ICommand> command)
         {
             return Task.Factory.StartNew(() =>
             {
-                try
+                for (var retry = 1; retry <= command.RetryCount; retry++)
                 {
-                    if (command.Delay > TimeSpan.Zero)
+                    try
                     {
-                        Thread.Sleep(command.Delay);
+                        if (command.Delay > TimeSpan.Zero)
+                        {
+                            Thread.Sleep(command.Delay);
+                        }
+
+                        var commandType = command.Body.GetType();
+                        ICommandHandler handler = null;
+
+                        if (this.handlers.TryGetValue(commandType, out handler))
+                        {
+                            ((dynamic) handler).Handle((dynamic) command.Body);
+                        }
+
+                        try
+                        {
+                            // There can be a generic logging/tracing/auditing handlers
+                            if (this.handlers.TryGetValue(typeof (ICommand), out handler))
+                            {
+                                ((dynamic) handler).Handle((dynamic) command.Body);
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            //exception here should not trigger a retry
+                            Log.Error("Error in GENERIC handling command " + command.Body.GetType() + Environment.NewLine + e.Message + Environment.NewLine + e.StackTrace, e);
+                        }
+
+                        break;
                     }
-
-                    var commandType = command.Body.GetType();
-                    ICommandHandler handler = null;
-
-                    if (this.handlers.TryGetValue(commandType, out handler))
+                    catch (Exception e)
                     {
-                        ((dynamic)handler).Handle((dynamic)command.Body);
-                    }
+                        var payload = _serializer.Serialize(command);
+                        string innerException = string.Empty;
+                        if (e.InnerException != null)
+                        {
+                            innerException = e.InnerException.ToString();
+                        }
+                        Log.Error("Error in handling command " + command.Body.GetType() + Environment.NewLine + payload +
+                            Environment.NewLine + e.Message + Environment.NewLine + e.StackTrace + Environment.NewLine +
+                            innerException, e);
 
-                    // There can be a generic logging/tracing/auditing handlers
-                    if (this.handlers.TryGetValue(typeof(ICommand), out handler))
-                    {
-                        ((dynamic)handler).Handle((dynamic)command.Body);
+                        if (command.RetryInterval > TimeSpan.Zero)
+                        {
+                            Thread.Sleep(command.RetryInterval);
+                        }
                     }
-
-                }
-                catch (Exception e)
-                {
-                    var payload = _serializer.Serialize(command);
-                    string innerException = string.Empty;
-                    if (e.InnerException != null)
-                    {
-                        innerException = e.InnerException.ToString();
-                    }
-                    Log.Error("Error in handling command " + command.Body.GetType() + Environment.NewLine + payload + Environment.NewLine + e.Message + Environment.NewLine + e.StackTrace + Environment.NewLine + innerException, e);
-
                 }
             });
         }
