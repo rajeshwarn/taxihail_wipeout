@@ -93,7 +93,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                         IsRequired = toBeValidated,
                         MaxLength = length,
                         Question = caption,
-                        Id = (++questionIndex),
+                        Id = questionIndex++,
                         Answer = "",
                         AccountId = accountId
                     });
@@ -103,16 +103,16 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                 var count = taxiHailQuestions.Count;
                 for (int i = 0; i < 8 - count; i++)
                 {
-                    taxiHailQuestions.Add(new AccountChargeQuestion()
+                    taxiHailQuestions.Add(new AccountChargeQuestion
                     {
-                        Id = ++questionIndex,
+                        Id = questionIndex++,
                         IsRequired = false,
                         IsCaseSensitive = false,
                         AccountId = accountId
                     });
                 }
 
-                importedTaxiHailChargeAccounts.Add(new Common.Entity.AccountCharge()
+                importedTaxiHailChargeAccounts.Add(new Common.Entity.AccountCharge
                 {
                     AccountChargeId = accountId,
                     Name = ibsChargeAccount,

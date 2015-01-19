@@ -362,6 +362,14 @@ namespace apcurium.MK.Booking.Services.Impl
 
             var dateFormat = CultureInfo.GetCultureInfo(clientLanguageCode);
 
+            if (vatIsEnabled && tax == 0)
+            {
+                //aexid hotfix compute tax amount from fare
+                var newFare = Fare.FromAmountInclTax(fare, _serverSettings.ServerData.VATPercentage);
+                tax = newFare.TaxAmount;
+                fare = newFare.AmountExclTax;
+            }
+
             var isCardOnFile = cardOnFileInfo != null;
             var cardOnFileAmount = string.Empty;
             var cardNumber = string.Empty;
