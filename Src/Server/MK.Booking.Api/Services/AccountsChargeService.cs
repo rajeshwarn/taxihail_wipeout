@@ -155,27 +155,5 @@ namespace apcurium.MK.Booking.Api.Services
 
             return new HttpResult(HttpStatusCode.OK, "OK");
         }
-
-        public object Post(AccountChargeImportRequest request)
-        {
-            var receivedAccounts = request.AccountCharges;
-            
-            // TODO: Should exclude existing with a single call
-            var accounts = (from account in receivedAccounts
-                let existing = _dao.FindByAccountNumber(account.Number)
-                where existing == null
-                select account).ToArray();
-
-            var importedAccountCharge = new ImportAccountCharge()
-            {
-                AccountCharges = accounts,
-                CompanyId = AppConstants.CompanyId
-            };
-
-            _commandBus.Send(importedAccountCharge);
-
-            return new HttpResult(HttpStatusCode.OK, "OK");
-        }
-
     }
 }
