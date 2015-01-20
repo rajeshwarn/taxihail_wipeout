@@ -40,6 +40,9 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="BraintreeEncryption.Library.Android">
+      <HintPath>..\..\Mobile\Libraries\Monodroid\BraintreeEncryption.Library.Android.dll</HintPath>
+    </Reference>
     <Reference Include="ServiceStack.Common">
       <HintPath>..\..\Mobile\Libraries\Monodroid\ServiceStack.Common.dll</HintPath>
     </Reference>
@@ -48,9 +51,6 @@
     </Reference>
     <Reference Include="ServiceStack.Text">
       <HintPath>..\..\Mobile\Libraries\Monodroid\ServiceStack.Text.dll</HintPath>
-    </Reference>
-    <Reference Include="BraintreeEncryption.Library.Android">
-      <HintPath>..\..\Mobile\Libraries\Monodroid\BraintreeEncryption.Library.Android.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -110,4 +110,7 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup />
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
 </Project>

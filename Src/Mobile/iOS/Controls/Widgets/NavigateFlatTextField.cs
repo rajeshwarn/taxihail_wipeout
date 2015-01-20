@@ -1,8 +1,8 @@
 using System;
-using MonoTouch.Foundation;
-using System.Drawing;
+using Foundation;
+using CoreGraphics;
 using System.Windows.Input;
-using MonoTouch.UIKit;
+using UIKit;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
@@ -22,7 +22,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             Initialize();
         }
 
-        public NavigateFlatTextField (RectangleF frame) : base (frame)
+        public NavigateFlatTextField (CGRect frame) : base (frame)
         {
             Initialize();
         }

@@ -1,8 +1,8 @@
 using Cirrious.MvvmCross.Binding.Touch.Views;
-using MonoTouch.UIKit;
-using MonoTouch.Foundation;
+using UIKit;
+using Foundation;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
-using System.Drawing;
+using CoreGraphics;
 using apcurium.MK.Booking.Mobile.Client.Style;
 using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
 

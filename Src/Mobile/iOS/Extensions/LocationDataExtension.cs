@@ -1,5 +1,5 @@
 using apcurium.MK.Common.Entity;
-using MonoTouch.CoreLocation;
+using CoreLocation;
 
 namespace apcurium.MK.Booking.Mobile.Client.Extensions
 {

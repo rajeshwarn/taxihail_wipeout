@@ -4,7 +4,7 @@
 // actions made in the UI designer. If it is removed, they will be lost.
 // Manual changes to this file may not be handled correctly.
 //
-using MonoTouch.Foundation;
+using Foundation;
 using System.CodeDom.Compiler;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
@@ -13,21 +13,22 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 	partial class NotificationSettingsView
 	{
 		[Outlet]
-		MonoTouch.UIKit.UILabel labelNotificationEnabled { get; set; }
+		UIKit.NSLayoutConstraint constraintLeftLabel { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UISwitch switchNotificationEnabled { get; set; }
+		UIKit.NSLayoutConstraint constraintRightSwitch { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UITableView tableNotifications { get; set; }
+		UIKit.UILabel labelNotificationEnabled { get; set; }
+
+		[Outlet]
+		UIKit.UISwitch switchNotificationEnabled { get; set; }
+
+		[Outlet]
+		UIKit.UITableView tableNotifications { get; set; }
 		
 		void ReleaseDesignerOutlets ()
 		{
-			if (tableNotifications != null) {
-				tableNotifications.Dispose ();
-				tableNotifications = null;
-			}
-
 			if (labelNotificationEnabled != null) {
 				labelNotificationEnabled.Dispose ();
 				labelNotificationEnabled = null;
@@ -36,6 +37,21 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			if (switchNotificationEnabled != null) {
 				switchNotificationEnabled.Dispose ();
 				switchNotificationEnabled = null;
+			}
+
+			if (tableNotifications != null) {
+				tableNotifications.Dispose ();
+				tableNotifications = null;
+			}
+
+			if (constraintLeftLabel != null) {
+				constraintLeftLabel.Dispose ();
+				constraintLeftLabel = null;
+			}
+
+			if (constraintRightSwitch != null) {
+				constraintRightSwitch.Dispose ();
+				constraintRightSwitch = null;
 			}
 		}
 	}

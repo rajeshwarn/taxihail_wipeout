@@ -1,7 +1,8 @@
 using Cirrious.CrossCore.Touch;
-using MonoTouch.CoreLocation;
+using CoreLocation;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using TinyIoC;
+using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
 
 namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 {
@@ -21,11 +22,34 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
             _locationManager = new CLLocationManager();
             _locationManager.DesiredAccuracy = CLLocation.AccuracyBest;
             _locationManager.DistanceFilter = 10;//The minimum distance (measured in meters) a device must move horizontally before an update event is generated.
+            if (UIHelper.IsOS8orHigher)
+            {
+                _locationManager.RequestWhenInUseAuthorization();
+            }
+
             _locationDelegate = new LocationManagerDelegate();
             _locationManager.Delegate = _locationDelegate;
             Positions = _locationDelegate;
         }
-                
+
+        private bool LocationServiceIsEnabledAndAuthorized()
+        {
+            var enabled = CLLocationManager.LocationServicesEnabled;
+
+            if (UIHelper.IsOS8orHigher)
+            {
+                return enabled
+                    && (CLLocationManager.Status == CLAuthorizationStatus.AuthorizedWhenInUse
+                        || CLLocationManager.Status == CLAuthorizationStatus.AuthorizedAlways);
+            }
+            else
+            {
+                return enabled
+                    && CLLocationManager.Status == CLAuthorizationStatus.Authorized;
+            }
+
+        }
+
         public override void Start()
         {   
             if(_isStarted)
@@ -37,16 +61,17 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 			var firstStartLocationKey = "firstStartLocationKey" ;
 			var firstStart = cacheService.Get<object> (firstStartLocationKey);
 
-			if (firstStart == null) 
+			if (firstStart == null
+                || CLLocationManager.Status == CLAuthorizationStatus.NotDetermined) 
             {
 				//don' t check the first time, the OS will ask permission after
+                //or if the user updates from a previous TaxiHail version to a new iOS 8 built version
 				cacheService.Set (firstStartLocationKey, new object ());
 			}
 			else
             {
 				//only warn if user has denied the app, if location are not enabled, th OS display a message
-				if (CLLocationManager.LocationServicesEnabled 
-                    && CLLocationManager.Status != CLAuthorizationStatus.Authorized)
+                if (!LocationServiceIsEnabledAndAuthorized())
 				{ 
 					var localize = TinyIoCContainer.Current.Resolve<ILocalization>();
 

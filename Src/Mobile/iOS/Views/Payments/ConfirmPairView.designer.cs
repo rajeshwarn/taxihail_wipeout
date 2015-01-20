@@ -4,7 +4,7 @@
 // actions made in the UI designer. If it is removed, they will be lost.
 // Manual changes to this file may not be handled correctly.
 //
-using MonoTouch.Foundation;
+using Foundation;
 using System.CodeDom.Compiler;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
@@ -22,25 +22,25 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnConfirm { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel lblCardNumber { get; set; }
+		UIKit.UILabel lblCardNumber { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel lblCardNumberValue { get; set; }
+		UIKit.UILabel lblCardNumberValue { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel lblCarNumber { get; set; }
+		UIKit.UILabel lblCarNumber { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel lblCarNumberValue { get; set; }
+		UIKit.UILabel lblCarNumberValue { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel lblConfirmPairDetail { get; set; }
+		UIKit.UILabel lblConfirmPairDetail { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel lblTip { get; set; }
+		UIKit.UILabel lblTip { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel lblTipValue { get; set; }
+		UIKit.UILabel lblTipValue { get; set; }
 		
 		void ReleaseDesignerOutlets ()
 		{

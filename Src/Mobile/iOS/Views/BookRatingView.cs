@@ -1,11 +1,11 @@
 using apcurium.MK.Booking.Mobile.Client.Localization;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using Cirrious.MvvmCross.Binding.Touch.Views;
-using MonoTouch.UIKit;
+using UIKit;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using apcurium.MK.Booking.Mobile.Client.Views;
 using apcurium.MK.Booking.Mobile.Client.Controls.Widgets;
-using System.Drawing;
+using CoreGraphics;
 
 namespace apcurium.MK.Booking.Mobile.Client.Order
 {
@@ -43,7 +43,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Order
             ratingTableView.SeparatorStyle = UITableViewCellSeparatorStyle.None;
             ratingTableView.DelaysContentTouches = false;
 
-            var btnSubmit = new FlatButton(new RectangleF(8f, BottomPadding, 304f, 41f));
+            var btnSubmit = new FlatButton(new CGRect(8f, BottomPadding, 304f, 41f));
 			FlatButtonStyle.Green.ApplyTo(btnSubmit);
 			btnSubmit.SetTitle(Localize.GetValue("Submit"), UIControlState.Normal);
 

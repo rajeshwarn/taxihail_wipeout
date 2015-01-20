@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="4510" systemVersion="12F45" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="14B25" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3742"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="UpdatedTermsAndConditionsView">
@@ -17,13 +17,8 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" editable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wab-wT-OEO" customClass="FlatTextView">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="346"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="357"/>
                     <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="346" id="n72-bh-tFv"/>
-                        <constraint firstAttribute="width" constant="320" id="vdN-di-7SU"/>
-                    </constraints>
                     <string key="text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec tincidunt mi in dolor convallis elementum. Sed interdum vulputate ultrices. Vivamus eu urna pretium, placerat est vel, viverra leo. Sed porta erat sed sollicitudin suscipit. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Aliquam a aliquet orci. Integer vulputate, sem ut varius semper, libero magna commodo ipsum, porttitor placerat nibh justo et erat. 
 
 Duis vulputate venenatis tincidunt. Cras at sapien aliquet, volutpat massa at, convallis nulla. Nulla orci tellus, scelerisque scelerisque tellus sed, hendrerit egestas diam. Duis vitae sapien eros. Donec at massa ante. Integer scelerisque, libero eu semper faucibus, erat tortor aliquam odio, semper faucibus ante urna vel turpis. 
@@ -37,9 +32,8 @@ Nullam laoreet ac eros vel aliquam. Maecenas luctus consectetur enim, eu aliquam
                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                 </textView>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VBr-tv-58J" customClass="FlatButton">
-                    <rect key="frame" x="8" y="355" width="304" height="41"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VBr-tv-58J" customClass="FlatButton">
+                    <rect key="frame" x="8" y="366" width="304" height="41"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="41" id="6Nt-sY-mbh"/>
                         <constraint firstAttribute="width" constant="304" id="ZPy-Dp-8nx"/>
@@ -51,16 +45,20 @@ Nullam laoreet ac eros vel aliquam. Maecenas luctus consectetur enim, eu aliquam
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstAttribute="trailing" secondItem="VBr-tv-58J" secondAttribute="trailing" constant="8" id="F1N-lB-eJb"/>
-                <constraint firstAttribute="bottom" secondItem="VBr-tv-58J" secondAttribute="bottom" constant="20" id="FoO-op-NGP"/>
-                <constraint firstAttribute="bottom" secondItem="Wab-wT-OEO" secondAttribute="bottom" constant="70" id="GDR-3z-7Kf"/>
+                <constraint firstAttribute="centerX" secondItem="VBr-tv-58J" secondAttribute="centerX" id="3LG-nG-1Bv"/>
+                <constraint firstAttribute="bottom" secondItem="VBr-tv-58J" secondAttribute="bottom" constant="9" id="FoO-op-NGP"/>
+                <constraint firstAttribute="trailing" secondItem="Wab-wT-OEO" secondAttribute="trailing" id="HC9-g0-Myf"/>
                 <constraint firstItem="Wab-wT-OEO" firstAttribute="leading" secondItem="1" secondAttribute="leading" id="IBv-yg-kc0"/>
                 <constraint firstItem="Wab-wT-OEO" firstAttribute="top" secondItem="1" secondAttribute="top" id="Pga-LY-YzE"/>
-                <constraint firstItem="VBr-tv-58J" firstAttribute="leading" secondItem="1" secondAttribute="leading" constant="8" id="im6-eh-97h"/>
+                <constraint firstItem="VBr-tv-58J" firstAttribute="top" secondItem="Wab-wT-OEO" secondAttribute="bottom" constant="9" id="VZX-I5-XdV"/>
             </constraints>
-            <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
             <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
             <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
         </view>
     </objects>
+    <simulatedMetricsContainer key="defaultSimulatedMetrics">
+        <simulatedStatusBarMetrics key="statusBar"/>
+        <simulatedOrientationMetrics key="orientation"/>
+        <simulatedScreenMetrics key="destination" type="retina4"/>
+    </simulatedMetricsContainer>
 </document>

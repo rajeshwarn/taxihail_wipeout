@@ -1,12 +1,8 @@
-using MonoTouch.UIKit;
-using MonoTouch.Foundation;
+using System;
+using UIKit;
 using Cirrious.MvvmCross.Binding.Touch.Views;
 using System.Windows.Input;
-using System.Collections.Generic;
-using Cirrious.MvvmCross.Binding.Bindings;
 using Cirrious.MvvmCross.Binding.ExtensionMethods;
-using apcurium.MK.Booking.Mobile.Client.Extensions;
-using apcurium.MK.Booking.Mobile.Client.Views;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
@@ -23,7 +19,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
         public ICommand ItemClickCommand { get; set; }
 
-        public override int RowsInSection(UITableView tableview, int section)
+        public override nint RowsInSection(UITableView tableview, nint section)
         {
             if (ItemsSource == null)
             {
@@ -34,24 +30,24 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             return itemCount;
         }     
 
-        public override float GetHeightForHeader(UITableView tableView, int section)
+        public override nfloat GetHeightForHeader(UITableView tableView, nint section)
         {
             // If header height is 1, that means we actually want 0
             return tableView.SectionHeaderHeight == 1 ? 0.000001f : tableView.SectionHeaderHeight;
         }
 
-        public override UIView GetViewForHeader(UITableView tableView, int section)
+        public override UIView GetViewForHeader(UITableView tableView, nint section)
         {
             return new UIView { BackgroundColor = UIColor.Clear };
         }
 
-        public override float GetHeightForFooter(UITableView tableView, int section)
+        public override nfloat GetHeightForFooter(UITableView tableView, nint section)
         {
             // If footer height is 1, that means we actually want 0
             return tableView.SectionFooterHeight == 1 ? 0.000001f : tableView.SectionFooterHeight;
         }
 
-        public override UIView GetViewForFooter(UITableView tableView, int section)
+        public override UIView GetViewForFooter(UITableView tableView, nint section)
         {
             return new UIView { BackgroundColor = UIColor.Clear };
         }

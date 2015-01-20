@@ -1,17 +1,17 @@
-﻿using System;
-using MonoTouch.UIKit;
-using System.Drawing;
-using MonoTouch.CoreAnimation;
-using MonoTouch.CoreGraphics;
-using MonoTouch.Foundation;
+using System;
+using UIKit;
+using CoreGraphics;
+using CoreAnimation;
+using CoreGraphics;
+using Foundation;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
 {
     public static class LoadingBar
     {
-        static LoadingBarView _loadingBar;
-        static IDisposable _subscription;
+        private static LoadingBarView _loadingBar;
+        private static IDisposable _subscription;
 
         private static float Top { get; set; }
         public static bool IsShown { get; set; }
@@ -33,14 +33,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
                 }
                 else 
                 {
-                    _loadingBar = new LoadingBarView(0, Top, (int)UIApplication.SharedApplication.KeyWindow.Frame.Width, 2);
+                    _loadingBar = new LoadingBarView(0, Top, (int)UIScreen.MainScreen.Bounds.Width, 2);
                 }
 
                 _loadingBar.RemoveFromSuperview();
                 UIApplication.SharedApplication.KeyWindow.AddSubview(_loadingBar);
             });
 
-            if(hideOnFirstTrue == null) return;
+            if (hideOnFirstTrue == null)
+            {
+                return;
+            }
 
             _subscription = hideOnFirstTrue.Subscribe(hide =>
             {
@@ -55,17 +58,20 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
 
         public static void Hide ()
         {
-            if(_loadingBar == null) return;
+            if (_loadingBar == null)
+            {
+                return;
+            }
 
             //this should put the whole line blue, but it doesn't appear because the view gets disposed too fast
             _loadingBar.BackgroundColor = UIColor.Blue;
 
-            UIApplication.SharedApplication.InvokeOnMainThread(()=>
-            {
-                _loadingBar.RemoveFromSuperviewAnimated(()=>_loadingBar = null);
-            });
+            UIApplication.SharedApplication.InvokeOnMainThread(() => _loadingBar.RemoveFromSuperviewAnimated(() => _loadingBar = null));
 
-            if (_subscription == null) return;
+            if (_subscription == null)
+            {
+                return;
+            }
 
             _subscription.Dispose();
             IsShown = false;
@@ -73,12 +79,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
 
         public class LoadingBarView : UIView
         {
-            LoadingAnimation loader;
+            private LoadingAnimation loader;
+
             public LoadingBarView (float x = 0, float y = 75, int width = 320, int height = 6, UIColor baseColor = null)
             {
                 loader = new LoadingAnimation(width, height, baseColor);
 
-                Frame = new RectangleF (x, y, width, height);
+                Frame = new CGRect (x, y, width, height);
 
                 Add(loader);
                 ClipsToBounds = true;
@@ -103,12 +110,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
 
             public class GradientMaker
             {
-                public static CAGradientLayer Make (UIColor baseColor, RectangleF frame)
+                public static CAGradientLayer Make (UIColor baseColor, CGRect frame)
                 {
-                    float red;
-                    float green;
-                    float blue;
-                    float alpha;
+                    nfloat red;
+                    nfloat green;
+                    nfloat blue;
+                    nfloat alpha;
 
                     baseColor.GetRGBA(out red, out green, out blue, out alpha);
 
@@ -116,8 +123,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
                     var midColor = UIColor.FromRGBA (red, green, blue, 255).CGColor;
                     var endColor = UIColor.FromRGBA (red, green, blue, 255).CGColor;
                     var gradientLayer = new CAGradientLayer () {
-                        StartPoint = new PointF (0, 0),
-                        EndPoint = new Point (1, 0),
+                        StartPoint = new CGPoint (0, 0),
+                        EndPoint = new CGPoint (1, 0),
                         Colors = new [] {
                             startColor,
                             midColor,
@@ -137,10 +144,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
 
             private class LoadingAnimation : UIView
             {
-                RectangleF StartingRect {
-                    get;
-                    set;
-                }
+                CGRect StartingRect { get; set; }
 
                 public void ResetFrame ()
                 {
@@ -149,9 +153,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
 
                 public LoadingAnimation (int width, int height, UIColor baseColor = null)
                 {
-                    StartingRect = new RectangleF (0 - width, 0, width, height);
+                    StartingRect = new CGRect (0 - width, 0, width, height);
 
-                    if (baseColor == null) {
+                    if (baseColor == null) 
+                    {
                         baseColor = UIColor.Blue;
                     }
 

@@ -1,18 +1,20 @@
-using System.Drawing;
+using System;
+using CoreGraphics;
 using CrossUI.Touch.Dialog;
 using CrossUI.Touch.Dialog.Elements;
-using MonoTouch.Foundation;
-using MonoTouch.UIKit;
+using Foundation;
+using UIKit;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
 using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
+using apcurium.MK.Booking.Mobile.Client.Style;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
     public class TaxiHailDialogViewController : DialogViewController
     {
-        private bool _willBeContainedInOtherView;
+        private readonly bool _willBeContainedInOtherView;
 
-        public TaxiHailDialogViewController(RootElement _rootElement, bool pushing, bool willBeContainedInOtherView = true) : base (_rootElement, pushing)
+        public TaxiHailDialogViewController(RootElement rootElement, bool pushing, bool willBeContainedInOtherView = true) : base (rootElement, pushing)
         {
             _willBeContainedInOtherView = willBeContainedInOtherView;
 
@@ -38,9 +40,22 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         {
             return new TaxiHailDialogSource(this, _willBeContainedInOtherView);
         }
+
+        public override void ViewWillAppear(bool animated)
+        {
+            base.ViewWillAppear(animated);
+
+            // change color of status bar
+            if (UIHelper.IsOS7orHigher)
+            {
+                NavigationController.NavigationBar.BarStyle = Theme.IsLightContent
+                    ? UIBarStyle.Black
+                    : UIBarStyle.Default;
+            }
+        }
     }
 
-    public class TaxiHailDialogSource : CrossUI.Touch.Dialog.DialogViewController.Source
+    public class TaxiHailDialogSource : DialogViewController.Source
     {
         private bool _willBeContainedInOtherView;
 
@@ -49,7 +64,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             _willBeContainedInOtherView = willBeContainedInOtherView;
         }
 
-        public override float GetHeightForHeader(UITableView tableView, int section)
+        public override nfloat GetHeightForHeader(UITableView tableView, nint section)
         {
             if (_willBeContainedInOtherView)
             {
@@ -58,7 +73,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             return 22;
         }
 
-        public override float GetHeightForFooter(UITableView tableView, int section)
+        public override nfloat GetHeightForFooter(UITableView tableView, nint section)
         {
             if (_willBeContainedInOtherView)
             {
@@ -78,7 +93,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
             if (_willBeContainedInOtherView)
             {
-                var cellWidth = 304;
+                var cellWidth = UIScreen.MainScreen.Bounds.Width - 2*8;
                 cell.Frame  = cell.ContentView.Frame.SetWidth(cellWidth);
                 cell.ContentView.Frame = cell.ContentView.Frame.SetWidth(cellWidth);
 
@@ -112,7 +127,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
                 if (UIHelper.IsOS7orHigher)
                 {
-                    view.Frame = new RectangleF(0, 0, cellWidth, tableView.RowHeight);
+                    view.Frame = new CGRect(0, 0, cellWidth, tableView.RowHeight);
                     var container = new UIView { BackgroundColor = UIColor.Clear };
                     container.AddSubview(view);
                     cell.BackgroundView = container;  
@@ -125,7 +140,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             }
             else
             {
-                var cellWidth = 320;
+                var cellWidth = UIScreen.MainScreen.Bounds.Width;
                 cell.Frame  = cell.ContentView.Frame.SetWidth(cellWidth);
                 cell.ContentView.Frame = cell.ContentView.Frame.SetWidth(cellWidth);
                 cell.SelectedBackgroundView = new UIView(cell.Frame) { BackgroundColor = UIColor.FromRGB(190, 190, 190) };

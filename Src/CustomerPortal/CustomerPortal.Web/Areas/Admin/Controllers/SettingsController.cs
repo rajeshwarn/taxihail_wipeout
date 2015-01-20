@@ -233,7 +233,7 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
             //company.CompanyKey
 
             model.Settings.Add("APNS.ProductionCertificatePath", new Value(
-                string.Format("../../Certificates/{0}.p12", company.CompanyKey), false));
+                string.Format("../../../Certificates/{0}.p12", company.CompanyKey), false));
 
             model.Settings.Add("GCM.PackageName", new Value(string.Format("com.apcurium.MK.{0}", company.CompanyKey), false));
             model.Settings.Add("Receipt.Note", new Value("Thank You!<br>" + company.Application.AppName, false));
@@ -252,7 +252,7 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
 
             model.Settings.Add("TaxiHail.ApplicationName", new Value(company.Application.AppName, true));
             model.Settings.Add("TaxiHail.ApplicationKey", new Value(company.CompanyKey, true));
-            model.Settings.Add("TaxiHail.AccentColor", new Value("#0057a3", false));
+            model.Settings.Add("TaxiHail.AccentColor", new Value(String.IsNullOrEmpty(company.Style.CompanyColor) ? "#0057a3" : company.Style.CompanyColor, false));
             model.Settings.Add("TaxiHail.EmailFontColor", new Value("#000000", false));
             model.Settings.Add("TaxiHail.SiteName", new Value(company.CompanyKey, true));
 

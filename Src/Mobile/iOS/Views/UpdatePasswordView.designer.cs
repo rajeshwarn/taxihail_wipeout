@@ -4,7 +4,7 @@
 // actions made in the UI designer. If it is removed, they will be lost.
 // Manual changes to this file may not be handled correctly.
 //
-using MonoTouch.Foundation;
+using Foundation;
 using System.CodeDom.Compiler;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
@@ -13,16 +13,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 	partial class UpdatePasswordView
 	{
 		[Outlet]
-		MonoTouch.UIKit.UILabel lblConfirmation { get; set; }
+		UIKit.UILabel lblConfirmation { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel lblCurrentPassword { get; set; }
+		UIKit.UILabel lblCurrentPassword { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel lblNewPassword { get; set; }
+		UIKit.UILabel lblNewPassword { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UIScrollView scrollView { get; set; }
+		UIKit.UIScrollView scrollView { get; set; }
 
 		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatTextField txtConfirmation { get; set; }

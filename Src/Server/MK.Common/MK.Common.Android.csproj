@@ -42,25 +42,16 @@
     <Reference Include="System.Xml" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Reactive.Core">
-      <HintPath>..\..\Mobile\Components\rxforxamarin-2.1\lib\android\System.Reactive.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Reactive.Debugger">
-      <HintPath>..\..\Mobile\Components\rxforxamarin-2.1\lib\android\System.Reactive.Debugger.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Reactive.Experimental">
-      <HintPath>..\..\Mobile\Components\rxforxamarin-2.1\lib\android\System.Reactive.Experimental.dll</HintPath>
+      <HintPath>..\..\Mobile\Components\rxforxamarin-2.2.1\lib\android\System.Reactive.Core.dll</HintPath>
     </Reference>
     <Reference Include="System.Reactive.Interfaces">
-      <HintPath>..\..\Mobile\Components\rxforxamarin-2.1\lib\android\System.Reactive.Interfaces.dll</HintPath>
+      <HintPath>..\..\Mobile\Components\rxforxamarin-2.2.1\lib\android\System.Reactive.Interfaces.dll</HintPath>
     </Reference>
     <Reference Include="System.Reactive.Linq">
-      <HintPath>..\..\Mobile\Components\rxforxamarin-2.1\lib\android\System.Reactive.Linq.dll</HintPath>
+      <HintPath>..\..\Mobile\Components\rxforxamarin-2.2.1\lib\android\System.Reactive.Linq.dll</HintPath>
     </Reference>
     <Reference Include="System.Reactive.PlatformServices">
-      <HintPath>..\..\Mobile\Components\rxforxamarin-2.1\lib\android\System.Reactive.PlatformServices.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Reactive.Providers">
-      <HintPath>..\..\Mobile\Components\rxforxamarin-2.1\lib\android\System.Reactive.Providers.dll</HintPath>
+      <HintPath>..\..\Mobile\Components\rxforxamarin-2.2.1\lib\android\System.Reactive.PlatformServices.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -154,8 +145,11 @@
   </Target>
   -->
   <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
     <XamarinComponentReference Include="rxforxamarin">
-      <Version>2.1</Version>
+      <Version>2.2.1</Version>
       <Visible>False</Visible>
     </XamarinComponentReference>
   </ItemGroup>

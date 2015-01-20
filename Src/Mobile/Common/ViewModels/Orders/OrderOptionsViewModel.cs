@@ -211,7 +211,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 				_showDestination = value || Settings.DestinationIsRequired;
 				RaisePropertyChanged();
 				RaisePropertyChanged(() => VehicleAndEstimateBoxIsVisible);
-				RaisePropertyChanged (() => ShowEstimate);
+				RaisePropertyChanged(() => ShowEstimate);
+				RaisePropertyChanged(() => ShowEta);
 			}
 		}
 
@@ -266,14 +267,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
 		public bool VehicleAndEstimateBoxIsVisible
 		{
-			get { return ShowVehicleSelection || ShowEstimate || ShowEta; }
+			get { return ShowVehicleSelection || ShowEstimate; }
 		}
 
 		public bool ShowEta
 		{
 			get
 			{
-				return Settings.ShowEta && Eta != null;
+				return Settings.ShowEta && Eta != null && FormattedEta.HasValue() && !ShowEstimate;
 			}
 		}
 
