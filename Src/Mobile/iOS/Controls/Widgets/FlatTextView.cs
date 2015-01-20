@@ -1,7 +1,7 @@
 using System;
-using MonoTouch.UIKit;
-using MonoTouch.Foundation;
-using System.Drawing;
+using UIKit;
+using Foundation;
+using CoreGraphics;
 using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
@@ -19,7 +19,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             Initialize();
         }
 
-        public FlatTextView (RectangleF frame) : base (frame)
+        public FlatTextView (CGRect frame) : base (frame)
         {
             Initialize();
         }
@@ -36,7 +36,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             _paragraphStyle.MinimumLineHeight = 20f;
             _paragraphStyle.MaximumLineHeight = 20f;
 
-            _lblPlaceholder = new UILabel(new RectangleF(5, 5, Frame.Width, Frame.Height)) 
+            _lblPlaceholder = new UILabel 
             { 
                 TextColor = PlaceholderFontColor, 
                 Lines = 0, 
@@ -108,8 +108,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             set
             {
                 _lblPlaceholder.Text = value;
-                _lblPlaceholder.SizeToFit();
+                SetNeedsLayout();
             }
+        }
+
+        public override void LayoutSubviews()
+        {
+            base.LayoutSubviews();
+
+            _lblPlaceholder.Frame = new CGRect(5, 5, Frame.Width, Frame.Height);
+            _lblPlaceholder.SizeToFit();
         }
     }
 }

@@ -3,7 +3,7 @@ using System.Linq;
 using apcurium.MK.Booking.Mobile.Client.Helper;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Extensions;
-using MonoTouch.Foundation;
+using Foundation;
 using ServiceStack.Text;
 
 namespace apcurium.MK.Booking.Mobile.Client.Cache
@@ -77,7 +77,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Cache
         public void ClearAll()
         {
             Console.WriteLine ( "-----------------------------------  ClearAll :" + GetType ());            
-            var keys = NSUserDefaults.StandardUserDefaults.AsDictionary ().Keys;
+            var keys = NSUserDefaults.StandardUserDefaults.ToDictionary ().Keys;
             keys.Where(k => k.ToString().StartsWith(_cacheKey)).ForEach(k => ClearFullKey(k.ToString()));
         }
         #endregion

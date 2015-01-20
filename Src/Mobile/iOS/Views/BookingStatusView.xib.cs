@@ -1,15 +1,15 @@
 using System;
 using System.Collections.Generic;
-using System.Drawing;
+using CoreGraphics;
 using apcurium.MK.Booking.Mobile.Client.Diagnostics;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
 using apcurium.MK.Booking.Mobile.Client.Localization;
 using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.ViewModels;
-using MonoTouch.UIKit;
+using UIKit;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using apcurium.MK.Booking.Mobile.Client.Controls.Widgets;
-using MonoTouch.MapKit;
+using MapKit;
 using System.Windows.Input;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
@@ -62,9 +62,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 txtColor.TextColor = textColor;
 
                 topSlidingStatus.BackgroundColor = UIColor.FromPatternImage (UIImage.FromFile ("background.png"));
-                topVisibleStatus.BackgroundColor = UIColor.FromPatternImage (UIImage.FromFile ("backPickupDestination.png"));
 
-                viewLine.Frame = new RectangleF(0, topSlidingStatus.Bounds.Height -1, topSlidingStatus.Bounds.Width, 1);
+                viewLine.Frame = new CGRect(0, topSlidingStatus.Bounds.Height -1, UIScreen.MainScreen.Bounds.Width, 1);
 
                 btnCallDriver.SetImage(UIImage.FromFile("phone.png"), UIControlState.Normal);
                 btnCall.SetTitle(Localize.GetValue("StatusCallButton"), UIControlState.Normal);
@@ -77,7 +76,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 FlatButtonStyle.Red.ApplyTo(btnCancel);
                 FlatButtonStyle.Green.ApplyTo(btnNewRide);
                 FlatButtonStyle.Red.ApplyTo(btnUnpair);
-                                                
+                                            
+                btnCallDriver.SetX(UIScreen.MainScreen.Bounds.Width - btnCallDriver.Frame.Width - 12f); // 12f = right margin
+
                 View.BringSubviewToFront (bottomBar);
 
 				ViewModel.PropertyChanged+= (sender, e) => {
@@ -90,7 +91,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				if(!ViewModel.Settings.HideCallDispatchButton)
                 {
                     btnCancel.SetFrame(8, btnCancel.Frame.Y,  btnCancel.Frame.Width,  btnCancel.Frame.Height );
-                    btnCall.SetFrame( 320 - 8 - btnCall.Frame.Width ,  btnCall.Frame.Y,  btnCall.Frame.Width,  btnCall.Frame.Height );
+                    btnCall.SetFrame( UIScreen.MainScreen.Bounds.Width - 8 - btnCall.Frame.Width ,  btnCall.Frame.Y,  btnCall.Frame.Width,  btnCall.Frame.Height );
 					btnUnpair.SetFrame(btnCancel.Frame.X, btnCancel.Frame.Y, btnUnpair.Frame.Width, btnUnpair.Frame.Height);
 
                     var callFrame = btnCall.Frame;
@@ -271,7 +272,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 mapStatus.AddressSelectionMode = AddressSelectionMode.None;
 
 				UpdateTopSlidingStatus("OrderStatusDetail"); //initial loading
-                var statusLineDivider = Line.CreateHorizontal(320.0f, UIColor.Black.ColorWithAlpha(0.35f));
+                var statusLineDivider = Line.CreateHorizontal(UIScreen.MainScreen.Bounds.Width, UIColor.Black.ColorWithAlpha(0.35f));
                 bottomBar.AddSubview(statusLineDivider);
             
             } 
@@ -291,11 +292,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             }
         }
 
-        void UpdateCallButtonSize (RectangleF callFrame)
+        void UpdateCallButtonSize (CGRect callFrame)
         {
             if (!ViewModel.IsCancelButtonVisible)
             {
-                btnCall.SetX ((View.Frame.Width - btnCancel.Frame.Width) / 2).SetWidth (btnCancel.Frame.Width);
+                btnCall.SetX ((UIScreen.MainScreen.Bounds.Width - btnCancel.Frame.Width) / 2).SetWidth (btnCancel.Frame.Width);
                 btnCall.SetTitle(Localize.GetValue("StatusCallButton"), UIControlState.Normal);
                 FlatButtonStyle.Silver.ApplyTo(btnCall);
             }
@@ -318,6 +319,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                     VisibleStatusHeight = DEFAULT_TOP_VISIBLE_STATUS_HEIGHT + togglePadding;
                     statusBar.SetMinHeight (VisibleStatusHeight);
                     statusBar.SetMaxHeight (VisibleStatusHeight);
+                    statusBar.SetNeedsLayout();
 				}
 			}
 		}
@@ -369,6 +371,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 	
 				if (numberOfItemsHidden == 7) {
                     statusBar.SetMaxHeight (VisibleStatusHeight);
+                    statusBar.SetNeedsLayout();
 					return;
 				}
 
@@ -377,11 +380,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				var i = 0;
 				foreach (var item in tupleList) {
 					if (!item.Item3) {
-						item.Item1.Frame = new RectangleF(item.Item1.Frame.X, 4 + (20 * i), item.Item1.Frame.Width, item.Item1.Frame.Height);
-						item.Item2.Frame = new RectangleF(item.Item2.Frame.X, 4 + (20 * i), item.Item2.Frame.Width, item.Item2.Frame.Height);
+						item.Item1.Frame = new CGRect(item.Item1.Frame.X, 4 + (20 * i), item.Item1.Frame.Width, item.Item1.Frame.Height);
+						item.Item2.Frame = new CGRect(item.Item2.Frame.X, 4 + (20 * i), item.Item2.Frame.Width, item.Item2.Frame.Height);
 						i++;
 					}
 				}
+
+                statusBar.SetNeedsLayout();
 			}
 		}
     }

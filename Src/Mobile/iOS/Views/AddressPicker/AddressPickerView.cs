@@ -1,7 +1,7 @@
 using System;
-using MonoTouch.Foundation;
-using MonoTouch.UIKit;
-using System.Drawing;
+using Foundation;
+using UIKit;
+using CoreGraphics;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 using System.Threading;
@@ -27,8 +27,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.AddressPicker
                    Icon Icon;
                    HideBottomBar IsLast";
 
-        const float Margin = 8;
-        const float Margin2x = Margin * 2;
+//        const float Margin = 8;
+//        const float Margin2x = Margin * 2;
 
         public AddressPickerView(IntPtr h) : base(h)
         {
@@ -39,6 +39,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.AddressPicker
         FlatButton CancelButton { get; set;}
         UITableView TableView {get; set;}
 
+        public override void LayoutSubviews()
+        {
+            base.LayoutSubviews();
+
+            var yPositionForTableView = AddressEditText.Frame.Bottom + 13;
+            TableView.Frame = new CGRect(0, yPositionForTableView, UIScreen.MainScreen.Bounds.Width, UIScreen.MainScreen.Bounds.Height - yPositionForTableView);
+        }
+
         void Initialize()
         {
             BackgroundColor = UIColor.Clear;
@@ -47,25 +55,26 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.AddressPicker
             AddressEditText = new FlatTextField 
             { 
                 ShowShadow = true,
-                Frame = new RectangleF(Margin, UIHelper.IsOS7orHigher ? 22 : 5, 214, 44),
                 VerticalAlignment = UIControlContentVerticalAlignment.Center,
                 AutocapitalizationType = UITextAutocapitalizationType.None,
                 AutocorrectionType = UITextAutocorrectionType.No
             };
+            AddressEditText.TranslatesAutoresizingMaskIntoConstraints = false;
 
-            CancelButton = new FlatButton() { Frame = new RectangleF(AddressEditText.Frame.Right + 9, AddressEditText.Frame.Y, UIScreen.MainScreen.Bounds.Width - AddressEditText.Frame.Width - 9 - Margin2x, 44) };
+            CancelButton = new FlatButton();
+            CancelButton.TranslatesAutoresizingMaskIntoConstraints = false;
             CancelButton.SetTitle(Localize.GetValue("Cancel"), UIControlState.Normal);
             FlatButtonStyle.Red.ApplyTo(CancelButton);
 
-            var yPositionForTableView = AddressEditText.Frame.Bottom + 13;
-
-            TableView = new UITableView(new RectangleF(0, yPositionForTableView, UIScreen.MainScreen.Bounds.Width, UIScreen.MainScreen.Bounds.Height - yPositionForTableView), UITableViewStyle.Plain);
-            TableView.BackgroundView = new  UIView { BackgroundColor = UIColor.Clear };
-            TableView.BackgroundColor = UIColor.FromRGB(242, 242, 242);
-            TableView.SeparatorColor = UIColor.Clear;
-            TableView.SeparatorStyle = UITableViewCellSeparatorStyle.None;
-            TableView.RowHeight = 44;
-            TableView.SectionHeaderHeight = 15;
+            TableView = new UITableView(new CGRect(), UITableViewStyle.Plain)
+            {
+                BackgroundView = new  UIView { BackgroundColor = UIColor.Clear },
+                BackgroundColor = UIColor.FromRGB(242, 242, 242),
+                SeparatorColor = UIColor.Clear,
+                SeparatorStyle = UITableViewCellSeparatorStyle.None,
+                RowHeight = 44,
+                SectionHeaderHeight = 15
+            };
             TableView.AddGestureRecognizer(GetHideKeyboardOnTouchGesture());
 
             var source = new GroupedAddressTableViewSource(
@@ -85,6 +94,20 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.AddressPicker
                 .ObserveOn(SynchronizationContext.Current)
                 .Subscribe(text => ViewModel.TextSearchCommand.ExecuteIfPossible(text));
 				
+            AddConstraints(new [] 
+            {
+                NSLayoutConstraint.Create(AddressEditText, NSLayoutAttribute.Leading, NSLayoutRelation.Equal, this, NSLayoutAttribute.Leading, 1f, 8f),
+                NSLayoutConstraint.Create(AddressEditText, NSLayoutAttribute.Top, NSLayoutRelation.Equal, this, NSLayoutAttribute.Top, 1f, UIHelper.IsOS7orHigher ? 22f : 5f),
+                NSLayoutConstraint.Create(AddressEditText, NSLayoutAttribute.Height, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1f, 44f),
+
+                NSLayoutConstraint.Create(AddressEditText, NSLayoutAttribute.Trailing, NSLayoutRelation.Equal, CancelButton, NSLayoutAttribute.Leading, 1f, -9f),
+
+                NSLayoutConstraint.Create(CancelButton, NSLayoutAttribute.Trailing, NSLayoutRelation.Equal, this, NSLayoutAttribute.Trailing, 1f, -8f),
+                NSLayoutConstraint.Create(CancelButton, NSLayoutAttribute.Top, NSLayoutRelation.Equal, this, NSLayoutAttribute.Top, 1f, UIHelper.IsOS7orHigher ? 22f : 5f),
+                NSLayoutConstraint.Create(CancelButton, NSLayoutAttribute.Height, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1f, 44f),
+                NSLayoutConstraint.Create(CancelButton, NSLayoutAttribute.Width, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1f, 81f),
+            });
+
             var set = this.CreateBindingSet<AddressPickerView, AddressPickerViewModel> ();
 
             set.Bind(source)
@@ -105,6 +128,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.AddressPicker
                 .To(vm => vm.Cancel);
 
             set.Apply ();
+
+            SetNeedsLayout();
         }
 
         private MvxStandardTableViewCell CellCreator(UITableView tableView, NSIndexPath indexPath, object state)
@@ -162,12 +187,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.AddressPicker
 			});
 		}
 
-        protected override void DrawStroke(MonoTouch.CoreGraphics.CGColor fillColor, RectangleF rect)
+        protected override void DrawStroke(CoreGraphics.CGColor fillColor, CGRect rect)
         {
             //nothing here, no shadow
         }
 
-        protected override void DrawBackground(MonoTouch.CoreGraphics.CGContext context, RectangleF rect, UIBezierPath roundedRectanglePath, MonoTouch.CoreGraphics.CGColor fillColor)
+        protected override void DrawBackground(CoreGraphics.CGContext context, CGRect rect, UIBezierPath roundedRectanglePath, CoreGraphics.CGColor fillColor)
         {
             //nothing here, we don't want the semitransparent background
         }

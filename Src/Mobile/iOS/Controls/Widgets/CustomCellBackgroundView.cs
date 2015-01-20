@@ -1,5 +1,5 @@
-using MonoTouch.UIKit;
-using System.Drawing;
+using UIKit;
+using CoreGraphics;
 using apcurium.MK.Booking.Mobile.Client.Style;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
 using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
@@ -14,7 +14,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
         public Line BottomLine;
 
-		public CustomCellBackgroundView(RectangleF rect, float padding, UIColor backgroundColor, UIColor selectedBackgroundColor) : base(rect)
+		public CustomCellBackgroundView(CGRect rect, float padding, UIColor backgroundColor, UIColor selectedBackgroundColor) : base(rect)
 		{
 			_backgroundColor = backgroundColor;
 			_selectedBackgroundColor = selectedBackgroundColor;
@@ -25,7 +25,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			BackgroundColor = _backgroundColor;
 
             BottomLine = Line.CreateHorizontal(padding, rect.Height, rect.Width - padding, _strokeColor, 1f);
-            BottomLine.AutoresizingMask = UIViewAutoresizing.FlexibleWidth;
             AddSubview(BottomLine);
 		}
 
@@ -47,7 +46,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			}
 		}
 
-        public override RectangleF Frame
+        public override CGRect Frame
         {
             get
             {

@@ -4,7 +4,7 @@
 // actions made in the UI designer. If it is removed, they will be lost.
 // Manual changes to this file may not be handled correctly.
 //
-using MonoTouch.Foundation;
+using Foundation;
 using System.CodeDom.Compiler;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
@@ -16,22 +16,22 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnApplyPromo { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UIImageView imgCollapsed { get; set; }
+		UIKit.UIImageView imgCollapsed { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UIImageView imgExpanded { get; set; }
+		UIKit.UIImageView imgExpanded { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel lblDescription { get; set; }
+		UIKit.UILabel lblDescription { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel lblExpires { get; set; }
+		UIKit.UILabel lblExpires { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel lblName { get; set; }
+		UIKit.UILabel lblName { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel lblProgress { get; set; }
+		UIKit.UILabel lblProgress { get; set; }
 		
 		void ReleaseDesignerOutlets ()
 		{

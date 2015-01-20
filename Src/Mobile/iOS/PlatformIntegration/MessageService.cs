@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using apcurium.MK.Booking.Mobile.Client.Helper;
 using apcurium.MK.Booking.Mobile.Infrastructure;
-using MonoTouch.UIKit;
+using UIKit;
 using System.Reactive.Disposables;
 using System.Threading.Tasks;
 using Cirrious.MvvmCross.Touch.Views.Presenters;

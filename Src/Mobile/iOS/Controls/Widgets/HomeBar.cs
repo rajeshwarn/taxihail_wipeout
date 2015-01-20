@@ -1,7 +1,7 @@
-using MonoTouch.UIKit;
-using MonoTouch.Foundation;
+using UIKit;
+using Foundation;
 using System;
-using System.Drawing;
+using CoreGraphics;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
@@ -12,7 +12,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         {
         }
 
-        public HomeBar (RectangleF frame) : base (frame)
+        public HomeBar (CGRect frame) : base (frame)
         {
         }
 

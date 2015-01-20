@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13E28" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="14B25" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <deployment defaultVersion="1792" identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="LoginView">
@@ -26,15 +25,12 @@
             <subviews>
                 <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="65l-5V-CQA">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Oqo-Pz-5ux">
                             <rect key="frame" x="0.0" y="0.0" width="320" height="474"/>
-                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
                                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="th_logo.png" translatesAutoresizingMaskIntoConstraints="NO" id="m7i-I8-AlZ">
                                     <rect key="frame" x="107" y="30" width="107" height="74"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="74" id="pvn-6n-8ez"/>
                                         <constraint firstAttribute="width" constant="107" id="s9T-9T-Kae"/>
@@ -42,7 +38,6 @@
                                 </imageView>
                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" placeholder="Email" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="p8r-Qe-uM1" customClass="FlatTextField">
                                     <rect key="frame" x="8" y="116" width="304" height="40"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <color key="tintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                     <constraints>
@@ -53,7 +48,6 @@
                                 </textField>
                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" placeholder="Password" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="uHJ-ag-0kH" customClass="FlatTextField">
                                     <rect key="frame" x="8" y="170" width="304" height="40"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <color key="tintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                     <constraints>
@@ -64,7 +58,6 @@
                                 </textField>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TOa-Mf-PFs" customClass="FlatButton">
                                     <rect key="frame" x="182" y="220" width="130" height="30"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="15"/>
                                     <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <state key="normal" title="Forgot password?">
@@ -74,10 +67,8 @@
                                 </button>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kn0-uG-mWR" customClass="FlatButton">
                                     <rect key="frame" x="8" y="261" width="143" height="41"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="41" id="L9Z-ey-yrG"/>
-                                        <constraint firstAttribute="width" constant="143" id="bcj-g2-fyy"/>
                                     </constraints>
                                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
                                     <state key="normal" title="Register">
@@ -87,9 +78,7 @@
                                 </button>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4Fj-tf-DCU" customClass="FlatButton">
                                     <rect key="frame" x="169" y="261" width="143" height="41"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <constraints>
-                                        <constraint firstAttribute="width" constant="143" id="5RE-cY-WRL"/>
                                         <constraint firstAttribute="height" constant="41" id="Vfo-Yd-Kka"/>
                                     </constraints>
                                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
@@ -100,7 +89,6 @@
                                 </button>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Vd8-St-kFv" customClass="FlatButton">
                                     <rect key="frame" x="8" y="315" width="304" height="41"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="41" id="HD8-tS-2st"/>
                                     </constraints>
@@ -113,7 +101,6 @@
                                 </button>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gc1-ON-5gQ" customClass="FlatButton">
                                     <rect key="frame" x="8" y="369" width="304" height="41"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="41" id="eQF-md-vXH"/>
                                     </constraints>
@@ -126,7 +113,6 @@
                                 </button>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UK1-rl-h3E" customClass="FlatButton">
                                     <rect key="frame" x="8" y="423" width="304" height="41"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="41" id="FZ8-qe-2yj"/>
                                     </constraints>
@@ -146,6 +132,7 @@
                                 <constraint firstAttribute="trailing" secondItem="UK1-rl-h3E" secondAttribute="trailing" constant="8" id="CWS-Pd-c8P"/>
                                 <constraint firstAttribute="bottom" secondItem="UK1-rl-h3E" secondAttribute="bottom" constant="10" id="HKk-Ky-zgR"/>
                                 <constraint firstItem="UK1-rl-h3E" firstAttribute="leading" secondItem="Oqo-Pz-5ux" secondAttribute="leading" constant="8" id="K5p-U5-sES"/>
+                                <constraint firstItem="kn0-uG-mWR" firstAttribute="width" secondItem="4Fj-tf-DCU" secondAttribute="width" id="KBB-se-dgy"/>
                                 <constraint firstItem="kn0-uG-mWR" firstAttribute="centerY" secondItem="4Fj-tf-DCU" secondAttribute="centerY" id="NEU-Qd-Y3v"/>
                                 <constraint firstItem="gc1-ON-5gQ" firstAttribute="top" secondItem="Vd8-St-kFv" secondAttribute="bottom" constant="13" id="Qe4-NH-9t8"/>
                                 <constraint firstItem="uHJ-ag-0kH" firstAttribute="top" secondItem="p8r-Qe-uM1" secondAttribute="bottom" constant="14" id="Smk-gU-sCV"/>
@@ -168,7 +155,6 @@
                         </view>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Jkc-Gs-pkq" customClass="FlatButton">
                             <rect key="frame" x="204" y="452" width="106" height="30"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="15"/>
                             <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <state key="normal" title="Need support?">
@@ -198,10 +184,14 @@
                 <constraint firstAttribute="trailing" secondItem="65l-5V-CQA" secondAttribute="trailing" id="sMa-Rp-vxW"/>
             </constraints>
             <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="lightContent"/>
-            <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
         </view>
     </objects>
     <resources>
-        <image name="th_logo.png" width="100" height="21"/>
+        <image name="th_logo.png" width="107" height="74"/>
     </resources>
+    <simulatedMetricsContainer key="defaultSimulatedMetrics">
+        <simulatedStatusBarMetrics key="statusBar"/>
+        <simulatedOrientationMetrics key="orientation"/>
+        <simulatedScreenMetrics key="destination" type="retina4"/>
+    </simulatedMetricsContainer>
 </document>

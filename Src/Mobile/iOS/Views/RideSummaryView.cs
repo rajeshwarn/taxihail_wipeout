@@ -1,11 +1,8 @@
 using System;
 using Cirrious.MvvmCross.Binding.BindingContext;
-using MonoTouch.UIKit;
-using apcurium.MK.Booking.Mobile.Extensions;
+using UIKit;
 using apcurium.MK.Booking.Mobile.ViewModels;
-using apcurium.MK.Booking.Mobile.Client.Controls.Widgets;
 using apcurium.MK.Booking.Mobile.Client.Localization;
-using System.Drawing;
 using Cirrious.MvvmCross.Binding.Touch.Views;
 using apcurium.MK.Booking.Mobile.Client.Order;
 using System.Windows.Input;

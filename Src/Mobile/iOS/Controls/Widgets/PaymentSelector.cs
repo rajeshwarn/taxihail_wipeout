@@ -1,9 +1,9 @@
 using System;
 using apcurium.MK.Booking.Mobile.Client.Localization;
-using MonoTouch.UIKit;
-using MonoTouch.Foundation;
-using System.Drawing;
-using MonoTouch.CoreAnimation;
+using UIKit;
+using Foundation;
+using CoreGraphics;
+using CoreAnimation;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
@@ -40,7 +40,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			}
 		}
 
-		public PaymentSelector(RectangleF rect) : base(rect)
+		public PaymentSelector(CGRect rect) : base(rect)
 		{
 			Initialize ();
 		}
@@ -58,7 +58,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			BackgroundColor = UIColor.Clear;
 			this.RoundCorners(borderRadius, 1.5f, UIColor.FromRGB(115, 117, 112));
 
-			_creditCardButton = new UIButton(new RectangleF (Bounds.X, Bounds.Y, Bounds.Width / 2, Bounds.Height));
+			_creditCardButton = new UIButton(new CGRect (Bounds.X, Bounds.Y, Bounds.Width / 2, Bounds.Height));
 			_creditCardButton.ClipsToBounds = true;
 			_creditCardButton.SetTitle(Localize.GetValue("CreditCard"), UIControlState.Normal);
 			_creditCardButton.Font = font;
@@ -66,7 +66,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			_creditCardButton.SetTitleColor(NotSelectedFont, UIControlState.Normal);
 			_creditCardButton.SetTitleColor(SelectedFont, UIControlState.Selected);
 
-			_payPalButton = new UIButton (new RectangleF (Bounds.Width / 2, Bounds.Y, Bounds.Width / 2, Bounds.Height));
+			_payPalButton = new UIButton (new CGRect (Bounds.Width / 2, Bounds.Y, Bounds.Width / 2, Bounds.Height));
 			_payPalButton.ClipsToBounds = true;
 			_payPalButton.SetTitle(Localize.GetValue("View_PayPal"), UIControlState.Normal);
 			_payPalButton.Font = font;
@@ -74,13 +74,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			_payPalButton.SetTitleColor(NotSelectedFont, UIControlState.Normal);
 			_payPalButton.SetTitleColor(SelectedFont, UIControlState.Selected);
 
-			var creditCardMaskPath = UIBezierPath.FromRoundedRect (_creditCardButton.Bounds, UIRectCorner.TopLeft | UIRectCorner.BottomLeft, new SizeF (borderRadius, borderRadius));
+			var creditCardMaskPath = UIBezierPath.FromRoundedRect (_creditCardButton.Bounds, UIRectCorner.TopLeft | UIRectCorner.BottomLeft, new CGSize (borderRadius, borderRadius));
 			var creditCardMaskLayer = new CAShapeLayer ();
 			creditCardMaskLayer.Frame = _creditCardButton.Bounds;
 			creditCardMaskLayer.Path = creditCardMaskPath.CGPath;
 			_creditCardButton.Layer.Mask = creditCardMaskLayer;
 
-			var payPalMaskPath = UIBezierPath.FromRoundedRect (_payPalButton.Bounds, UIRectCorner.TopRight | UIRectCorner.BottomRight, new SizeF (borderRadius, borderRadius));
+			var payPalMaskPath = UIBezierPath.FromRoundedRect (_payPalButton.Bounds, UIRectCorner.TopRight | UIRectCorner.BottomRight, new CGSize (borderRadius, borderRadius));
 			var payPalMaskLayer = new CAShapeLayer ();
 			payPalMaskLayer.Frame = _payPalButton.Bounds;
 			payPalMaskLayer.Path = payPalMaskPath.CGPath;

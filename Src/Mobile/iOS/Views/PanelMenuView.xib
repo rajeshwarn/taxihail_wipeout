@@ -4,9 +4,18 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PanelMenuView"/>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PanelMenuView">
+            <connections>
+                <outlet property="imgLogoApcurium" destination="8" id="nz3-07-qOO"/>
+                <outlet property="imgLogoMobileKnowledge" destination="bYL-3d-p1o" id="Zl0-qG-keT"/>
+                <outlet property="lblServerVersion" destination="sjE-Ya-KXr" id="YgL-mG-tok"/>
+                <outlet property="lblVersion" destination="9" id="Ood-iZ-7Uj"/>
+                <outlet property="menuContainer" destination="ZSi-EL-Atn" id="v5G-KQ-cil"/>
+                <outlet property="menuListView" destination="7" id="QGf-SZ-3cl"/>
+            </connections>
+        </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <view contentMode="scaleAspectFit" id="1" customClass="PanelMenuView">
+        <view contentMode="scaleAspectFit" id="1">
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
@@ -55,28 +64,28 @@
                                 <constraint firstAttribute="width" constant="50" id="wUz-dr-D0w"/>
                             </constraints>
                         </imageView>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Server" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Hxl-4T-ctr">
-                            <rect key="frame" x="8" y="539" width="55" height="21"/>
-                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
-                            <color key="textColor" red="1" green="0.080225848229999994" blue="0.0" alpha="0.75" colorSpace="calibratedRGB"/>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sjE-Ya-KXr">
+                            <rect key="frame" x="8" y="539.5" width="42" height="20.5"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <color key="textColor" red="0.98431372549999996" green="0.0" blue="0.039215686270000001" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstItem="bYL-3d-p1o" firstAttribute="centerY" secondItem="8" secondAttribute="centerY" id="6BX-Is-2nx"/>
+                        <constraint firstItem="sjE-Ya-KXr" firstAttribute="leading" secondItem="ZSi-EL-Atn" secondAttribute="leading" constant="8" id="6gE-j1-3hU"/>
                         <constraint firstItem="7" firstAttribute="leading" secondItem="ZSi-EL-Atn" secondAttribute="leading" id="7vP-0g-qeq"/>
                         <constraint firstAttribute="trailing" secondItem="9" secondAttribute="trailing" constant="15" id="B8y-Wo-asv"/>
                         <constraint firstItem="bYL-3d-p1o" firstAttribute="leading" secondItem="ZSi-EL-Atn" secondAttribute="leading" constant="63" id="Ctf-as-KEx"/>
                         <constraint firstAttribute="bottom" secondItem="9" secondAttribute="bottom" constant="5" id="Eiq-hW-qu8"/>
                         <constraint firstAttribute="centerX" secondItem="0aM-QX-Lcs" secondAttribute="centerX" id="MlB-7o-dg4"/>
-                        <constraint firstItem="Hxl-4T-ctr" firstAttribute="leading" secondItem="ZSi-EL-Atn" secondAttribute="leading" constant="8" id="QZN-cp-zxy"/>
+                        <constraint firstAttribute="bottom" secondItem="sjE-Ya-KXr" secondAttribute="bottom" constant="8" id="VHq-qV-SAy"/>
                         <constraint firstAttribute="width" constant="266" id="c9M-mO-9Ol"/>
                         <constraint firstItem="0aM-QX-Lcs" firstAttribute="top" secondItem="ZSi-EL-Atn" secondAttribute="top" constant="20" id="eud-HV-6WW"/>
                         <constraint firstItem="7" firstAttribute="top" secondItem="0aM-QX-Lcs" secondAttribute="bottom" constant="2" id="fN5-zK-fFr"/>
                         <constraint firstAttribute="trailing" secondItem="7" secondAttribute="trailing" id="ivC-GQ-eqn"/>
                         <constraint firstItem="bYL-3d-p1o" firstAttribute="top" secondItem="7" secondAttribute="bottom" constant="1" id="j8X-0l-Bqq"/>
-                        <constraint firstAttribute="bottom" secondItem="Hxl-4T-ctr" secondAttribute="bottom" constant="8" id="sPz-Hl-wGV"/>
                         <constraint firstItem="9" firstAttribute="top" secondItem="8" secondAttribute="bottom" constant="-5" id="tvp-0C-s2A"/>
                         <constraint firstItem="8" firstAttribute="leading" secondItem="bYL-3d-p1o" secondAttribute="trailing" constant="17" id="x3X-6v-2xg"/>
                     </constraints>
@@ -88,14 +97,6 @@
                 <constraint firstAttribute="bottom" secondItem="ZSi-EL-Atn" secondAttribute="bottom" id="AkF-a1-1ft"/>
                 <constraint firstItem="ZSi-EL-Atn" firstAttribute="left" secondItem="1" secondAttribute="left" id="QBO-kE-9pW"/>
             </constraints>
-            <connections>
-                <outlet property="imgLogoApcurium" destination="8" id="4Fa-pJ-RcP"/>
-                <outlet property="imgLogoMobileKnowledge" destination="bYL-3d-p1o" id="nG6-dD-e9k"/>
-                <outlet property="lblServerVersion" destination="Hxl-4T-ctr" id="ShL-M1-zhr"/>
-                <outlet property="lblVersion" destination="9" id="rYw-pT-kaI"/>
-                <outlet property="menuContainer" destination="ZSi-EL-Atn" id="Ky0-lg-bc7"/>
-                <outlet property="menuListView" destination="7" id="uyM-Sq-xD0"/>
-            </connections>
         </view>
     </objects>
     <resources>

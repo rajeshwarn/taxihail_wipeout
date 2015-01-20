@@ -4,9 +4,9 @@ using Cirrious.CrossCore;
 using Cirrious.MvvmCross.Touch.Platform;
 using Cirrious.MvvmCross.ViewModels;
 using MonoTouch.FacebookConnect;
-using MonoTouch.Foundation;
-using MonoTouch.ObjCRuntime;
-using MonoTouch.UIKit;
+using Foundation;
+using ObjCRuntime;
+using UIKit;
 using ServiceStack.Text;
 using TinyIoC;
 using apcurium.MK.Booking.Mobile.Data;
@@ -162,8 +162,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         public override void RegisteredForRemoteNotifications (UIApplication application, NSData deviceToken)
         {
-            var strFormat = new NSString("%@");
-            var dt = new NSString(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(new Class("NSString").Handle, new Selector("stringWithFormat:").Handle, strFormat.Handle, deviceToken.Handle));
+            var dt = deviceToken.ToString().Replace("<","").Replace(">","").Replace(" ","");
 			TinyIoCContainer.Current.Resolve<IPushNotificationService>().SaveDeviceToken(dt);
         }
         
