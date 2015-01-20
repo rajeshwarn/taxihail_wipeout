@@ -563,3 +563,5 @@
 "Notification_PromotionUnlockedEmail"="Promotions déverrouillées (Email)";
 "ErrorCreateOrder_PendingOrder"="La commande ne peut être créée car une autre commande est déjà en cours. Voir le statut de la commande?";
 "TermsAndConditionsLabel"="Conditions générales d'utilisation";
+"LinkPayPal"="Associer PayPal";
+"UnlinkPayPal"="Dissocier  PayPal";

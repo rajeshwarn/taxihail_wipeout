@@ -156,9 +156,6 @@
     <Reference Include="Cirrious.MvvmCross.Plugins.WebBrowser.Droid">
       <HintPath>..\packages\MvvmCross.HotTuna.Plugin.WebBrowser.3.5.0\lib\MonoAndroid\Cirrious.MvvmCross.Plugins.WebBrowser.Droid.dll</HintPath>
     </Reference>
-    <Reference Include="Card.IO.Android">
-      <HintPath>..\Components\cardioandroid-3.1.5\lib\android\Card.IO.Android.dll</HintPath>
-    </Reference>
     <Reference Include="System.Reactive.Core">
       <HintPath>..\Components\rxforxamarin-2.2.1\lib\android\System.Reactive.Core.dll</HintPath>
     </Reference>
@@ -789,10 +786,6 @@
   <ItemGroup>
     <XamarinComponentReference Include="googleplayservices">
       <Version>19.0.0.2</Version>
-      <Visible>False</Visible>
-    </XamarinComponentReference>
-    <XamarinComponentReference Include="cardioandroid">
-      <Version>3.1.5</Version>
       <Visible>False</Visible>
     </XamarinComponentReference>
     <XamarinComponentReference Include="rxforxamarin">
