@@ -561,4 +561,6 @@
   <string name="Notification_PromotionUnlockedPush">Promotions unlocked (Push)</string>
   <string name="ErrorCreateOrder_PendingOrder">No puede reservar este servicio, ya que hay una reservación pendiente. ¿Desea ver esta reservación?</string>
   <string name="TermsAndConditionsLabel">Términos y condiciones</string>
+  <string name="LinkPayPal">Link PayPal</string>
+  <string name="UnlinkPayPal">Unlink PayPal</string>
 </resources>

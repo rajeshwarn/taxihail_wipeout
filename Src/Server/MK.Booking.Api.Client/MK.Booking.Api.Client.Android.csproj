@@ -79,7 +79,7 @@
     <Compile Include="IVehicleClient.cs" />
     <Compile Include="TaxiHail\PushNotificationRegistrationServiceClient.cs" />
     <Compile Include="IPaymentServiceClient.cs" />
-    <Compile Include="TaxiHail\PayPalServiceClient.cs" />
+    <Compile Include="TaxiHail\PayPalAccountServiceClient.cs" />
     <Compile Include="Payments\Braintree\BraintreeServiceClient.cs" />
     <Compile Include="Extensions\ServiceClientBaseExtensions.cs" />
     <Compile Include="Payments\Moneris\MonerisServiceClient.cs" />

@@ -364,6 +364,5 @@ namespace DatabaseInitializer.Sql
                 _logger.Error("Error during Database Create Schema", e);
             }
         }
-        
     }
 }

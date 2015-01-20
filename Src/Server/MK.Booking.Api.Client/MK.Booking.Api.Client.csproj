@@ -107,7 +107,7 @@
     <Compile Include="TaxiHail\IbsChargeAccountServiceClient.cs" />
     <Compile Include="TaxiHail\IbsFareServiceClient.cs" />
     <Compile Include="TaxiHail\NetworkRoamingServiceClient.cs" />
-    <Compile Include="TaxiHail\PayPalServiceClient.cs" />
+    <Compile Include="TaxiHail\PayPalAccountServiceClient.cs" />
     <Compile Include="TaxiHail\PushNotificationAdministrationServiceClient.cs" />
     <Compile Include="TaxiHail\RoamingValidationServiceClient.cs" />
     <Compile Include="TaxiHail\RulesServiceClient.cs" />

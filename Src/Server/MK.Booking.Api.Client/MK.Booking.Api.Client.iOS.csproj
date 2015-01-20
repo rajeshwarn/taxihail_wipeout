@@ -90,6 +90,7 @@
     <Compile Include="TaxiHail\NearbyPlacesClient.cs" />
     <Compile Include="TaxiHail\NetworkRoamingServiceClient.cs" />
     <Compile Include="TaxiHail\OrderServiceClient.cs" />
+    <Compile Include="TaxiHail\PayPalAccountServiceClient.cs" />
     <Compile Include="TaxiHail\PlaceDetailServiceClient.cs" />
     <Compile Include="TaxiHail\PopularAddressesServiceClient.cs" />
     <Compile Include="TaxiHail\ReferenceDataServiceClient.cs" />
@@ -102,7 +103,6 @@
     <Compile Include="TaxiHail\VehicleServiceClient.cs" />
     <Compile Include="IPaymentServiceClient.cs" />
     <Compile Include="Payments\Braintree\BraintreeServiceClient.cs" />
-    <Compile Include="TaxiHail\PayPalServiceClient.cs" />
     <Compile Include="Payments\CmtPayments\CmtPaymentClient.cs" />
     <Compile Include="Payments\Fake\FakePaymentClient.cs" />
     <Compile Include="IIbsFareClient.cs" />

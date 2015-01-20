@@ -73,6 +73,7 @@
     <Compile Include="Configuration\Impl\CmtPaymentSettings.cs" />
     <Compile Include="Configuration\Impl\MonerisPaymentSettings.cs" />
     <Compile Include="Configuration\Impl\PaymentMethod.cs" />
+    <Compile Include="Configuration\Impl\PayPalClientCredentials.cs" />
     <Compile Include="Configuration\Impl\PayPalClientSettings.cs" />
     <Compile Include="Configuration\NotificationSettings.cs" />
     <Compile Include="Configuration\SettingContainers.cs" />

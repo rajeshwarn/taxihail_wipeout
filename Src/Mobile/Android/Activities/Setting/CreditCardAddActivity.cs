@@ -3,12 +3,19 @@ using Android.App;
 using Android.Content;
 using Android.Content.PM;
 using Android.Runtime;
+using Android.Util;
 using Android.Views;
 using Android.Widget;
+using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Client.Controls;
+using apcurium.MK.Booking.Mobile.Client.Diagnostic;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.ViewModels.Payment;
-using IO.Card.Payment;
+using apcurium.MK.Common.Configuration.Impl;
+using Cirrious.CrossCore;
+using Org.Json;
+using PaypalSdkDroid.CardPayment;
+using PaypalSdkDroid.Payments;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
 {
@@ -19,9 +26,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
     public class CreditCardAddActivity : BaseBindingActivity<CreditCardAddViewModel>
     {
         private Intent _scanIntent { get; set; }
-        private int CardIOScanRequestCode = 981288735; // TODO: Handle arbitrary number in a better way
+        private const int CardIOScanRequestCode = 981288735; // TODO: Handle arbitrary number in a better way
+        private const int LinkPayPalAccountRequestCode = 481516234;
 
-		protected override void OnViewModelSet()
+        private static readonly PayPalConfiguration PayPalConfiguration = new PayPalConfiguration();
+
+        protected override async void OnViewModelSet()
 		{
 			base.OnViewModelSet ();
 
@@ -50,6 +60,48 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
             {
                 btnScanCard.Visibility = ViewStates.Gone;
             }
+
+            var btnLinkPayPalAccount = FindViewById<Button>(Resource.Id.LinkPayPalAccountButton);
+            var btnUnlinkPayPalAccount = FindViewById<Button>(Resource.Id.UnLinkPayPalAccountButton);
+
+            var paymentSettings = await Mvx.Resolve<IPaymentService>().GetPaymentSettings();
+            if (paymentSettings.PayPalClientSettings.IsEnabled)
+            {
+                SetUpPayPalService(paymentSettings.PayPalClientSettings);
+
+                btnLinkPayPalAccount.Click += (sender, e) => LinkPayPayAccount();
+                btnUnlinkPayPalAccount.Click += (sender, e) => ViewModel.UnLinkPayPalAccount();
+            }
+            else
+            {
+                btnLinkPayPalAccount.Visibility = ViewStates.Gone;
+                btnUnlinkPayPalAccount.Visibility = ViewStates.Gone;
+            }
+		}
+
+        private void SetUpPayPalService(PayPalClientSettings paypalSettings)
+        {
+            PayPalConfiguration.Environment(paypalSettings.IsSandbox
+                ? PayPalConfiguration.EnvironmentSandbox
+                : PayPalConfiguration.EnvironmentProduction);
+
+            PayPalConfiguration.ClientId(paypalSettings.IsSandbox
+                ? paypalSettings.SandboxCredentials.ClientId
+                : paypalSettings.Credentials.ClientId);
+
+            PayPalConfiguration.MerchantName(ViewModel.Settings.TaxiHail.ApplicationName);
+            PayPalConfiguration.MerchantPrivacyPolicyUri(Android.Net.Uri.Parse(string.Format("{0}/privacypolicy", ViewModel.Settings.ServiceUrl)));
+            PayPalConfiguration.MerchantUserAgreementUri(Android.Net.Uri.Parse(string.Format("{0}/termsandconditions", ViewModel.Settings.ServiceUrl)));
+
+            var intent = new Intent(this, typeof(PayPalService));
+            intent.PutExtra(PayPalService.ExtraPaypalConfiguration, PayPalConfiguration);
+            StartService(intent);
+        }
+
+        private void LinkPayPayAccount()
+        {
+            var intent = new Intent(this, typeof(PayPalFuturePaymentActivity));
+            StartActivityForResult(intent, LinkPayPalAccountRequestCode);
         }
 
         private void ScanCard()
@@ -66,9 +118,52 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
                 var scanResult = scanRes.JavaCast<CreditCard>();
 
                 var txtCardNumber = FindViewById<EditTextLeftImage>(Resource.Id.CreditCardNumberEditText);
-                ViewModel.Data.CardNumber = scanResult.CardNumber;    
+                ViewModel.Data.CardNumber = scanResult.CardNumber;
                 txtCardNumber.CreditCardNumber = scanResult.CardNumber;
-            }                        
+            }
+            else if (requestCode == LinkPayPalAccountRequestCode && data != null)
+            {
+                if (resultCode == Result.Ok)
+                {
+                    var rawAuthResponse = data.GetParcelableExtra(PayPalFuturePaymentActivity.ExtraResultAuthorization);
+                    var authResponse = rawAuthResponse.JavaCast<PayPalAuthorization>();
+                    if (authResponse != null)
+                    {
+                        try
+                        {
+                            ViewModel.LinkPayPalAccount(authResponse.AuthorizationCode);
+                        }
+                        catch (JSONException e)
+                        {
+                            ShowErrorDialog(e);
+                        }
+                    }
+                }
+                else if (resultCode == Result.Canceled)
+                {
+                    Logger.LogMessage("PayPal LinkAccount: The user canceled the operation");
+                }
+                else if ((int)resultCode == PayPalFuturePaymentActivity.ResultExtrasInvalid)
+                {
+                    Logger.LogMessage("The attempt to previously start the PayPalService had an invalid PayPalConfiguration. Please see the docs.");
+                }
+            }
+        }
+
+        private void ShowErrorDialog(JSONException ex)
+        {
+            Logger.LogError(ex);
+
+            var alert = new AlertDialog.Builder(this);
+
+            alert.SetTitle("Error");
+            alert.SetMessage(ex.GetBaseException().Message);
+
+            var input = new EditText(this);
+            alert.SetView(input);
+
+            alert.Create();
+            alert.Show();
         }
     }
 }

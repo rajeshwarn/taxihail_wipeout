@@ -29,6 +29,7 @@ namespace apcurium.MK.Common.Configuration.Impl
             // Make the name of the views match exactly the name of the corresponding property.
             modelBuilder.Entity<AppSetting>().ToTable("AppSettings", SchemaName);
             modelBuilder.ComplexType<PayPalServerSettings>();
+            modelBuilder.ComplexType<PayPalClientSettings>();
             modelBuilder.Entity<ServerPaymentSettings>().ToTable("PaymentSettings", SchemaName);
             modelBuilder.Entity<NotificationSettings>().ToTable("NotificationSettings", SchemaName);
             modelBuilder.Entity<UserTaxiHailNetworkSettings>().ToTable("UserTaxiHailNetworkSettings", SchemaName);

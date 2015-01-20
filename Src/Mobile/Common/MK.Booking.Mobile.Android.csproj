@@ -118,8 +118,10 @@
   <ItemGroup>
     <Compile Include="AppServices\IGeolocService.cs" />
     <Compile Include="AppServices\Impl\NetworkRoamingService.cs" />
+    <Compile Include="AppServices\Impl\PayPalAccountService.cs" />
     <Compile Include="AppServices\Impl\PromotionService.cs" />
     <Compile Include="AppServices\INetworkRoamingService.cs" />
+    <Compile Include="AppServices\IPayPalAccountService.cs" />
     <Compile Include="AppServices\IPromotionService.cs" />
     <Compile Include="AsyncCommand.cs" />
     <Compile Include="AppServices\Impl\BaseService.cs" />
@@ -257,15 +259,11 @@
     <Compile Include="Extensions\UseServiceClientExtensions.cs" />
     <Compile Include="Infrastructure\IPushNotificationService.cs" />
     <Compile Include="Extensions\ObservableExtensions.cs" />
-    <Compile Include="ViewModels\Payment\ConfirmCarNumberViewModel.cs" />
     <Compile Include="ViewModels\Payment\CreditCardAddViewModel.cs" />
-    <Compile Include="ViewModels\Payment\PaymentViewModel.cs" />
     <Compile Include="CultureProvider.cs" />
     <Compile Include="ViewModels\Payment\PayPalViewModel.cs" />
     <Compile Include="BindingConverter\NoValueToTrueConverter.cs" />
     <Compile Include="BindingConverter\HasValueToVisibilityConverter.cs" />
-    <Compile Include="AppServices\IPayPalExpressCheckoutService.cs" />
-    <Compile Include="AppServices\Impl\PayPalExpressCheckoutService.cs" />
     <Compile Include="ViewModels\RideSummaryViewModel.cs" />
     <Compile Include="AppServices\Impl\PaymentService.cs" />
     <Compile Include="AppServices\IPaymentService.cs" />

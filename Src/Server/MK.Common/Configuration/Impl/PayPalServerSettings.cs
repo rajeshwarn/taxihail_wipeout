@@ -1,16 +1,16 @@
-﻿namespace apcurium.MK.Common.Configuration.Impl
+﻿
+namespace apcurium.MK.Common.Configuration.Impl
 {
     public class PayPalServerSettings
     {
         public PayPalServerSettings()
         {
-            SandboxCredentials = new PayPalCredentials();
-            Credentials = new PayPalCredentials();
-            IsSandbox = true;
+            SandboxCredentials = new PayPalServerCredentials();
+            Credentials = new PayPalServerCredentials();
         }
 
-        public bool IsSandbox { get; set; }
-        public PayPalCredentials SandboxCredentials { get; set; }
-        public PayPalCredentials Credentials { get; set; }
+        public PayPalServerCredentials SandboxCredentials { get; set; }
+
+        public PayPalServerCredentials Credentials { get; set; }
     }
 }

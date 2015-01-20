@@ -324,12 +324,6 @@
   <data name="ConfirmationOfPaymentSent" xml:space="preserve">
     <value>Confirmation du paiement envoyée au chauffeur</value>
   </data>
-  <data name="ConfirmationPaymentAmountOver100" xml:space="preserve">
-    <value>Vous allez être débité d'un montant de {0}. Merci de confirmer le montant.</value>
-  </data>
-  <data name="ConfirmationPaymentAmountOver100Title" xml:space="preserve">
-    <value>Confirmation nécessaire</value>
-  </data>
   <data name="ConfirmCompanyLabel" xml:space="preserve">
     <value>Société: </value>
   </data>
@@ -807,9 +801,6 @@
   <data name="NetworkErrorTitle" xml:space="preserve">
     <value>Aucune connexion disponible</value>
   </data>
-  <data name="NoAmountSelectedMessage" xml:space="preserve">
-    <value>Merci de saisir un montant</value>
-  </data>
   <data name="NoAptText" xml:space="preserve">
     <value>--</value>
   </data>
@@ -833,9 +824,6 @@
   </data>
   <data name="NoMailClient" xml:space="preserve">
     <value>Il n'y a pas d'adresse email client enregistrée</value>
-  </data>
-  <data name="NoOrderId" xml:space="preserve">
-    <value>La commande n'est pas encore finalisée</value>
   </data>
   <data name="NoPhoneNumberMessage" xml:space="preserve">
     <value>Le numéro de téléphone est indisponible</value>
@@ -948,12 +936,6 @@
   <data name="PaymentDetails.TipAmountLabel" xml:space="preserve">
     <value>Montant du pourboire</value>
   </data>
-  <data name="PaymentErrorMessage" xml:space="preserve">
-    <value>Détails: {0}</value>
-  </data>
-  <data name="PaymentErrorTitle" xml:space="preserve">
-    <value>Le paiement n'a pas pu être effectué</value>
-  </data>
   <data name="PaymentViewMeterAmountText" xml:space="preserve">
     <value>Montant</value>
   </data>
@@ -965,21 +947,6 @@
   </data>
   <data name="PayNow" xml:space="preserve">
     <value>Payer maintenant!</value>
-  </data>
-  <data name="PayPalButton" xml:space="preserve">
-    <value>Payer avec votre compte PayPal</value>
-  </data>
-  <data name="PayPalExpressCheckoutCancelMessage" xml:space="preserve">
-    <value>Votre paiement PayPal a été annulé. Votre compte n'a pas été débité</value>
-  </data>
-  <data name="PayPalExpressCheckoutCancelTitle" xml:space="preserve">
-    <value>Paiement annulé</value>
-  </data>
-  <data name="PayPalExpressCheckoutSuccessMessage" xml:space="preserve">
-    <value>Votre paiement PayPal a été confirmé et transmis au chauffeur</value>
-  </data>
-  <data name="PayPalExpressCheckoutSuccessTitle" xml:space="preserve">
-    <value>Paiement confirmé</value>
   </data>
   <data name="PickupDateDisplay" xml:space="preserve">
     <value>Réservation pour {0:ddd, MMM d} à {0:h:mm tt}</value>
@@ -1734,5 +1701,11 @@
   </data>
   <data name="ErrorCreateOrder_PendingOrder" xml:space="preserve">
     <value>La commande ne peut être créée car une autre commande est déjà en cours. Voir le statut de la commande?</value>
+  </data>
+  <data name="LinkPayPal" xml:space="preserve">
+    <value>Associer PayPal</value>
+  </data>
+  <data name="UnlinkPayPal" xml:space="preserve">
+    <value>Dissocier  PayPal</value>
   </data>
 </root>

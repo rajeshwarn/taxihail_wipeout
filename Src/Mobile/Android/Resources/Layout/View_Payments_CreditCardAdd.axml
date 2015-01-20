@@ -210,6 +210,28 @@
                     local:MvxBind="Click DeleteCreditCardCommand; Visibility CanDeleteCreditCard, Converter=Visibility"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp" />
+                <Button
+                    style="@style/ButtonActionGrayStyle"
+                    android:id="@+id/LinkPayPalAccountButton"
+                    android:layout_width="fill_parent"
+                    android:layout_height="@dimen/HeightButton"
+                    android:singleLine="true"
+                    android:lines="1"
+                    android:text="@string/LinkPayPal"
+                    local:MvxBind="Visibility IsPayPalAccountLinked, Converter=InvertedVisibility"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp" />
+                <Button
+                    style="@style/ButtonActionGrayStyle"
+                    android:id="@+id/UnLinkPayPalAccountButton"
+                    android:layout_width="fill_parent"
+                    android:layout_height="@dimen/HeightButton"
+                    android:singleLine="true"
+                    android:lines="1"
+                    android:text="@string/UnlinkPayPal"
+                    local:MvxBind="Visibility IsPayPalAccountLinked, Converter=Visibility"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp" />
             </LinearLayout>
         </ScrollView>
     </LinearLayout>

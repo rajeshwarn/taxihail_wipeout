@@ -15,6 +15,6 @@ namespace apcurium.MK.Booking.Api.Contract.Requests.Payment
     [AuthorizationRequired(ApplyTo.All, RoleName.SuperAdmin)]
     public class TestPayPalProductionSettingsRequest : IReturn<TestServerPaymentSettingsResponse>
     {
-        public PayPalCredentials Credentials { get; set; }
+        public PayPalServerCredentials ServerCredentials { get; set; }
     }
 }

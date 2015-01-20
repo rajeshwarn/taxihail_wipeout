@@ -124,8 +124,10 @@
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
   <ItemGroup>
     <Compile Include="AppServices\Impl\NetworkRoamingService.cs" />
+    <Compile Include="AppServices\Impl\PayPalAccountService.cs" />
     <Compile Include="AppServices\Impl\PromotionService.cs" />
     <Compile Include="AppServices\INetworkRoamingService.cs" />
+    <Compile Include="AppServices\IPayPalAccountService.cs" />
     <Compile Include="AppServices\IPromotionService.cs" />
     <Compile Include="AsyncCommand.cs" />
     <Compile Include="Extensions\DisposableExtensions.cs" />
@@ -249,13 +251,10 @@
     <Compile Include="Infrastructure\IPushNotificationService.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="CultureProvider.cs" />
-    <Compile Include="ViewModels\Payment\PaymentViewModel.cs" />
     <Compile Include="ViewModels\Payment\CreditCardAddViewModel.cs" />
     <Compile Include="ViewModels\BookingStatusViewModel.cs" />
     <Compile Include="ViewModels\Payment\PayPalViewModel.cs" />
     <Compile Include="BindingConverter\NoValueToTrueConverter.cs" />
-    <Compile Include="AppServices\IPayPalExpressCheckoutService.cs" />
-    <Compile Include="AppServices\Impl\PayPalExpressCheckoutService.cs" />
     <Compile Include="ViewModels\RideSummaryViewModel.cs" />
     <Compile Include="AppServices\Impl\PaymentService.cs" />
     <Compile Include="AppServices\IPaymentService.cs" />
@@ -291,7 +290,6 @@
     <Compile Include="AppServices\Auth\AuthException.cs" />
     <Compile Include="AppServices\Auth\AuthFailure.cs" />
     <Compile Include="ViewModels\PanelMenuViewModel.cs" />
-    <Compile Include="ViewModels\Payment\ConfirmCarNumberViewModel.cs" />
     <Compile Include="Bootstrap\WebBrowserPluginBootstrap.cs" />
     <Compile Include="Settings\AppSettingsService.cs" />
     <Compile Include="ViewModels\HistoryListViewModel.cs" />

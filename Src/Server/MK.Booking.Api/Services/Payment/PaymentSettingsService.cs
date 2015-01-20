@@ -32,9 +32,10 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 
         public PaymentSettingsResponse Get(PaymentSettingsRequest request)
         {
+            var test = _configurationDao.GetPaymentSettings();
             return new PaymentSettingsResponse
             {
-                ClientPaymentSettings = _configurationDao.GetPaymentSettings()
+                ClientPaymentSettings = test
             };
         }
 
@@ -68,7 +69,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 
             try
             {
-                if (PayPalService.TestClient(_serverSettings, RequestContext, request.Credentials, false))
+                if (PayPalService.TestClient(_serverSettings, RequestContext, request.ServerCredentials, false))
                 {
                     return new TestServerPaymentSettingsResponse
                     {
@@ -94,7 +95,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 
             try
             {
-                if (PayPalService.TestClient(_serverSettings, RequestContext, request.Credentials, true))
+                if (PayPalService.TestClient(_serverSettings, RequestContext, request.ServerCredentials, true))
                 {
                     return new TestServerPaymentSettingsResponse
                     {

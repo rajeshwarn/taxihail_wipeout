@@ -22,19 +22,19 @@ namespace MK.Booking.PayPal
         readonly CurrencyCodeType _currency;
         private static ILogger _logger;
 
-        public ExpressCheckoutServiceClient(PayPalCredentials credentials, RegionInfo region, ILogger logger, bool useSandbox = false)
+        public ExpressCheckoutServiceClient(PayPalServerCredentials serverCredentials, RegionInfo region, ILogger logger, bool useSandbox = false)
         {
             _logger = logger;
-            if (credentials == null) throw new ArgumentNullException("credentials");
+            if (serverCredentials == null) throw new ArgumentNullException("serverCredentials");
             if (region == null) throw new ArgumentNullException("region");
             
             _urls = new Urls(useSandbox);
             _currency = (CurrencyCodeType)Enum.Parse(typeof(CurrencyCodeType), region.ISOCurrencySymbol);
             _credentials = new UserIdPasswordType
             {
-                Username = credentials.Username,
-                Password = credentials.Password,
-                Signature = credentials.Signature,
+                Username = serverCredentials.Username,
+                Password = serverCredentials.Password,
+                //Signature = serverCredentials.ClientId, // TODO
             };
 
         }

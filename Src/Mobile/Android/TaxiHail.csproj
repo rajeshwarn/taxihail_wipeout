@@ -83,6 +83,10 @@
       <HintPath>..\packages\MvvmCross.HotTuna.CrossCore.3.0.14\lib\MonoAndroid\Cirrious.MvvmCross.Localization.dll</HintPath>
     </Reference>
     <Reference Include="mscorlib" />
+    <Reference Include="PaypalSdkDroid, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Libraries\Monodroid\PaypalSdkDroid.dll</HintPath>
+    </Reference>
     <Reference Include="ServiceStack.Common">
       <HintPath>..\Libraries\Monodroid\ServiceStack.Common.dll</HintPath>
     </Reference>
@@ -163,9 +167,6 @@
     </Reference>
     <Reference Include="Cirrious.MvvmCross.Plugins.WebBrowser.Droid">
       <HintPath>..\packages\MvvmCross.HotTuna.Plugin.WebBrowser.3.0.14\lib\MonoAndroid\Cirrious.MvvmCross.Plugins.WebBrowser.Droid.dll</HintPath>
-    </Reference>
-    <Reference Include="CardIO">
-      <HintPath>..\Libraries\Monodroid\CardIO.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.Android.Support.v13">
       <HintPath>..\packages\Xamarin.Android.Support.v13.20.0.0.4\lib\MonoAndroid32\Xamarin.Android.Support.v13.dll</HintPath>
@@ -261,16 +262,11 @@
     <AndroidResource Include="Resources\Drawable\transparentAllStates.xml" />
     <Compile Include="Binding\CellItemBinding.cs" />
     <AndroidResource Include="Resources\Drawable\visa_electron.png" />
-    <Compile Include="Activities\Book\BookPaymentActivity.cs" />
     <AndroidResource Include="Resources\Layout\View_Payments_CreditCardAdd.axml" />
-    <AndroidResource Include="Resources\Layout\View_Payments_BookPayment.axml" />
     <Compile Include="Binding\CustomBindings.cs" />
     <Compile Include="Binding\TextViewBinding.cs" />
     <Compile Include="Extensions\ViewExtensions.cs" />
     <Compile Include="Extensions\LayoutParametersExtensions.cs" />
-    <Compile Include="Activities\Book\BookPayPalActivity.cs">
-      <DependentUpon>BookPaymentActivity.cs</DependentUpon>
-    </Compile>
     <Compile Include="Extensions\EditTextExtensions.cs" />
     <Compile Include="Extensions\LocationTimeConverter.cs" />
     <Compile Include="Activities\Book\RideSummaryActivity.cs" />
@@ -340,10 +336,6 @@
     <AndroidResource Include="Resources\Drawable\button_action_red_text_selector.xml" />
     <AndroidResource Include="Resources\Layout\View_Payments_ConfirmPair.axml" />
     <Compile Include="Activities\Book\ConfirmPairActivity.cs" />
-    <Compile Include="Activities\Book\ConfirmCarNumberActivity.cs" />
-    <AndroidResource Include="Resources\Layout\View_Payments_ConfirmCarNumber.axml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
     <AndroidResource Include="Resources\Layout\View_CreateAccount.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
@@ -740,7 +732,9 @@
     <AndroidResource Include="Resources\Drawable\backPickupDestination.png" />
     <AndroidResource Include="Resources\Drawable\button_main_rounded.xml" />
     <AndroidResource Include="Resources\Drawable\button_main_selector.xml" />
-    <AndroidResource Include="Resources\Drawable\edit_text_flat.xml" />
+    <AndroidResource Include="Resources\Drawable\edit_text_flat.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
     <AndroidResource Include="Resources\values-fr\String.xml">
       <SubType>Designer</SubType>
     </AndroidResource>

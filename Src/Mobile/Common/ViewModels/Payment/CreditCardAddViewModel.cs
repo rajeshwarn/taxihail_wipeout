@@ -22,14 +22,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 		private readonly ILocationService _locationService;
 		private readonly IPaymentService _paymentService;
 		private readonly IAccountService _accountService;
+	    private readonly IPayPalAccountService _payPalService;
 
-		public CreditCardAddViewModel(ILocationService locationService,
+	    public CreditCardAddViewModel(
+            ILocationService locationService,
 			IPaymentService paymentService, 
-			IAccountService accountService)
+			IAccountService accountService,
+            IPayPalAccountService payPalService)
 		{
 			_locationService = locationService;
 			_paymentService = paymentService;
 			_accountService = accountService;
+		    _payPalService = payPalService;
 		}
 
 #region Const and ReadOnly
@@ -152,7 +156,53 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
                 RaisePropertyChanged(() => CanDeleteCreditCard);
 			}
         }
-			
+
+        #region PayPal
+
+	    private bool _isPayPalAccountLinked;
+	    public bool IsPayPalAccountLinked
+	    {
+            get { return _isPayPalAccountLinked; }
+	        set
+	        {
+	            if (_isPayPalAccountLinked != value)
+	            {
+	                _isPayPalAccountLinked = value;
+                    RaisePropertyChanged();
+	            }
+	        }
+	    }
+
+        public void LinkPayPalAccount(string authCode)
+        {
+            try
+            {
+                _payPalService.LinkAccount(authCode);
+                IsPayPalAccountLinked = true;
+            }
+            catch (Exception ex)
+            {
+
+            }
+            
+        }
+
+        public void UnLinkPayPalAccount()
+        {
+            try
+            {
+                _payPalService.UnLinkAccount();
+                IsPayPalAccountLinked = false;
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+        }
+
+        #endregion Paypal
+
         public string CreditCardNumber
         {
             get{ return Data.CardNumber; }

@@ -90,6 +90,7 @@
     <Compile Include="Configuration\Impl\BraintreeClientSettings.cs" />
     <Compile Include="Configuration\Impl\ClientPaymentSettings.cs" />
     <Compile Include="Configuration\Impl\MonerisPaymentSettings.cs" />
+    <Compile Include="Configuration\Impl\PayPalClientCredentials.cs" />
     <Compile Include="Configuration\Impl\PayPalClientSettings.cs" />
     <Compile Include="Configuration\NotificationSettings.cs" />
     <Compile Include="Configuration\SettingContainers.cs" />

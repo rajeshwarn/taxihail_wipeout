@@ -568,4 +568,6 @@
   <string name="Notification_PromotionUnlockedPush">Promotions déverrouillées (Push)</string>
   <string name="ErrorCreateOrder_PendingOrder">La commande ne peut être créée car une autre commande est déjà en cours. Voir le statut de la commande?</string>
   <string name="TermsAndConditionsLabel">Conditions générales d\'utilisation</string>
+  <string name="LinkPayPal">Associer PayPal</string>
+  <string name="UnlinkPayPal">Dissocier  PayPal</string>
 </resources>

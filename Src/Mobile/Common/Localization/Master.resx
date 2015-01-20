@@ -1251,32 +1251,14 @@
   <data name="CmtTransactionSuccessTitle" xml:space="preserve">
     <value>Payment Received</value>
   </data>
-  <data name="NoAmountSelectedMessage" xml:space="preserve">
-    <value>Please enter the amount</value>
-  </data>
   <data name="CmtTransactionResendConfirmationButtonText" xml:space="preserve">
     <value>Resend</value>
   </data>
   <data name="PaymentConfirmationMessageToDriver" xml:space="preserve">
     <value>The passenger has paid {0} (auth : {1})</value>
   </data>
-  <data name="PaymentErrorMessage" xml:space="preserve">
-    <value>Details: {0}</value>
-  </data>
   <data name="SendMessageErrorMessage" xml:space="preserve">
     <value>Error confirming with driver payment cancelled</value>
-  </data>
-  <data name="PayPalExpressCheckoutCancelTitle" xml:space="preserve">
-    <value>Payment cancelled</value>
-  </data>
-  <data name="PayPalExpressCheckoutCancelMessage" xml:space="preserve">
-    <value>PayPal payment was cancelled. Your account has not been charged.</value>
-  </data>
-  <data name="PayPalExpressCheckoutSuccessTitle" xml:space="preserve">
-    <value>Payment successful</value>
-  </data>
-  <data name="PayPalExpressCheckoutSuccessMessage" xml:space="preserve">
-    <value>PayPal payment was successful. Confirmation sent to the driver.</value>
   </data>
   <data name="ConfirmationOfPaymentSent" xml:space="preserve">
     <value>Confirmation of payment has been sent to the driver.</value>
@@ -1289,12 +1271,6 @@
   </data>
   <data name="OrderNumber" xml:space="preserve">
     <value>Order #</value>
-  </data>
-  <data name="NoOrderId" xml:space="preserve">
-    <value>Order Not ready</value>
-  </data>
-  <data name="PayPalButton" xml:space="preserve">
-    <value>Pay with PayPal</value>
   </data>
   <data name="January" xml:space="preserve">
     <value>Jan (01)</value>
@@ -1344,9 +1320,6 @@
   <data name="CreditCard" xml:space="preserve">
     <value>Credit Card</value>
   </data>
-  <data name="PaymentErrorTitle" xml:space="preserve">
-    <value>Payment cannot be completed</value>
-  </data>
   <data name="VehicleNumberInfo" xml:space="preserve">
     <value>Please confirm your car number with the driver</value>
   </data>
@@ -1358,12 +1331,6 @@
   </data>
   <data name="EstimatingFare" xml:space="preserve">
     <value>Estimating your fare...</value>
-  </data>
-  <data name="ConfirmationPaymentAmountOver100Title" xml:space="preserve">
-    <value>Confirmation Required</value>
-  </data>
-  <data name="ConfirmationPaymentAmountOver100" xml:space="preserve">
-    <value>You will be charged {0}. Please confirm the amount. </value>
   </data>
   <data name="CmtCancelPayment" xml:space="preserve">
     <value>Cancel</value>
@@ -1736,5 +1703,11 @@
   </data>
   <data name="ErrorCreateOrder_PendingOrder" xml:space="preserve">
     <value>You cannot book this ride since an order is already pending. View the order status?</value>
+  </data>
+  <data name="LinkPayPal" xml:space="preserve">
+    <value>Link PayPal</value>
+  </data>
+  <data name="UnlinkPayPal" xml:space="preserve">
+    <value>Unlink PayPal</value>
   </data>
 </root>

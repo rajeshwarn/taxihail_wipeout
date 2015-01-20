@@ -57,12 +57,13 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             var successUrl = root + "/api/payment/paypal/success";
             var cancelUrl = root + "/api/payment/paypal/cancel";
 
-            var payPalSettings = GetPayPalSettings();
-            var credentials = payPalSettings.IsSandbox
-                ? payPalSettings.SandboxCredentials
-                : payPalSettings.Credentials;
+            var paymentSettings = GetPaymentSettings();
 
-            var service = _factory.CreateService(credentials, payPalSettings.IsSandbox);
+            var credentials = paymentSettings.PayPalClientSettings.IsSandbox
+                ? paymentSettings.PayPalServerSettings.SandboxCredentials
+                : paymentSettings.PayPalServerSettings.Credentials;
+
+            var service = _factory.CreateService(credentials, paymentSettings.PayPalClientSettings.IsSandbox);
 
             var conversionRate = _serverSettings.ServerData.PayPalConversionRate;
             
@@ -131,11 +132,11 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                     throw new HttpError(HttpStatusCode.NotFound, "Payment Not Found");
                 }
 
-                var payPalSettings = GetPayPalSettings();
-                var credentials = payPalSettings.IsSandbox
-                    ? payPalSettings.SandboxCredentials
-                    : payPalSettings.Credentials;
-                var service = _factory.CreateService(credentials, payPalSettings.IsSandbox);
+                var paymentSettings = GetPaymentSettings();
+                var credentials = paymentSettings.PayPalClientSettings.IsSandbox
+                    ? paymentSettings.PayPalServerSettings.SandboxCredentials
+                    : paymentSettings.PayPalServerSettings.Credentials;
+                var service = _factory.CreateService(credentials, paymentSettings.PayPalClientSettings.IsSandbox);
 
                 var conversionRate = _serverSettings.ServerData.PayPalConversionRate;
                 _logger.LogMessage("Paypal Converstion Rate : " + conversionRate);
@@ -243,29 +244,28 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             }
         }
 
-        private PayPalServerSettings GetPayPalSettings()
+        private ServerPaymentSettings GetPaymentSettings()
         {
             var paymentSettings = _serverSettings.GetPaymentSettings();
             if (paymentSettings == null)
                 throw new HttpError(HttpStatusCode.InternalServerError, "InternalServerError",
                     "Payment settings not found");
 
-            var payPalSettings = paymentSettings.PayPalServerSettings;
-            if (payPalSettings == null)
+            if (paymentSettings.PayPalServerSettings == null || paymentSettings.PayPalClientSettings == null)
                 throw new HttpError(HttpStatusCode.InternalServerError, "InternalServerError",
                     "PayPal settings not found");
 
-            return payPalSettings;
+            return paymentSettings;
         }
 
 
         public static bool TestClient(IServerSettings serverSettings, IRequestContext requestContext,
-            PayPalCredentials payPalServerSettings, bool isSandbox)
+            PayPalServerCredentials payPalServerServerSettings, bool isSandbox)
         {
             try
             {
                 var service = new ExpressCheckoutServiceFactory(serverSettings, _logger)
-                    .CreateService(payPalServerSettings, isSandbox);
+                    .CreateService(payPalServerServerSettings, isSandbox);
                 service.SetExpressCheckout(2, "http://example.net/success", "http://example.net/cancel", string.Empty);
                 return true;
             }

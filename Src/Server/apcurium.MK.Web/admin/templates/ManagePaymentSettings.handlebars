@@ -11,9 +11,9 @@
 </select>
 
 <label class="control-label settingsLabel" >{{{localize "Sandbox Mode"}}}</label>
-<select  name="payPalServerSettings.isSandbox" class="settingsBox">
-  <option value="{{payPalServerSettings.isSandbox}}" selected="" >{{localizeBool payPalServerSettings.isSandbox true="Yes" false="No"}}</option>
-  <option value="{{invertedBool payPalServerSettings.isSandbox}}">{{localizeBool payPalServerSettings.isSandbox true="No" false="Yes"}}</option>
+<select  name="payPalClientSettings.isSandbox" class="settingsBox">
+  <option value="{{payPalClientSettings.isSandbox}}" selected="" >{{localizeBool payPalClientSettings.isSandbox true="Yes" false="No"}}</option>
+  <option value="{{invertedBool payPalClientSettings.isSandbox}}">{{localizeBool payPalClientSettings.isSandbox true="No" false="Yes"}}</option>
 </select>
 
 <h5  >{{{localize "Sandbox Credentials"}}}</h5>
@@ -24,14 +24,17 @@
 <label class="control-label settingsLabel" >{{{localize "Password"}}}</label>
 <input type="text" class="input-block-level settingsBox" name="payPalServerSettings.sandboxCredentials.password" value="{{payPalServerSettings.sandboxCredentials.password}}" />
 
-<label class="control-label settingsLabel" >{{{localize "Signature"}}}</label>
-<input type="text" class="input-block-level settingsBox" name="payPalServerSettings.sandboxCredentials.signature" value="{{payPalServerSettings.sandboxCredentials.signature}}" />
+<label class="control-label settingsLabel" >{{{localize "ClientId"}}}</label>
+<input type="text" class="input-block-level settingsBox" name="payPalClientSettings.sandboxCredentials.clientId" value="{{payPalClientSettings.sandboxCredentials.clientId}}" />
+
+<label class="control-label settingsLabel">{{{localize "Secret"}}}</label>
+<input type="text" class="input-block-level settingsBox" name="payPalServerSettings.sandboxCredentials.secret" value="{{payPalServerSettings.sandboxCredentials.secret}}" />
 
 <div id="payPalSandboxSettingsMessageZone"></div>
 <button type='button' id="testPayPalSandboxSettingsButton" class='btn' >{{localize "Test"}}</button>
 
 
-<h5  >{{{localize "Production Credentials"}}}</h5>
+<h5>{{{localize "Production Credentials"}}}</h5>
 
 <label class="control-label settingsLabel" >{{{localize "Username"}}}</label>
 <input type="text" class="input-block-level settingsBox" name="payPalServerSettings.credentials.username" value="{{payPalServerSettings.credentials.username}}" />
@@ -39,8 +42,11 @@
 <label class="control-label settingsLabel" >{{{localize "Password"}}}</label>
 <input type="text" class="input-block-level settingsBox" name="payPalServerSettings.credentials.password" value="{{payPalServerSettings.credentials.password}}" />
 
-<label class="control-label settingsLabel" >{{{localize "Signature"}}}</label>
-<input type="text" class="input-block-level settingsBox" name="payPalServerSettings.credentials.signature" value="{{payPalServerSettings.credentials.signature}}" />
+<label class="control-label settingsLabel" >{{{localize "ClientId"}}}</label>
+<input type="text" class="input-block-level settingsBox" name="payPalClientSettings.credentials.clientId" value="{{payPalClientSettings.credentials.clientId}}" />
+
+<label class="control-label settingsLabel">{{{localize "Secret"}}}</label>
+<input type="text" class="input-block-level settingsBox" name="payPalServerSettings.credentials.secret" value="{{payPalServerSettings.credentials.secret}}" />
 
 <div id="payPalProductionSettingsMessageZone"></div>
 <button type='button' id="payPalProductionSettingsButton" class='btn' >{{localize "Test"}}</button>

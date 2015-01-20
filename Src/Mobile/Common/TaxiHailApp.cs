@@ -92,8 +92,8 @@ namespace apcurium.MK.Booking.Mobile
 			_container.Register<ITariffProvider, TariffProvider>();
 
             // ***** PayPal *****
-			_container.Register<IPayPalExpressCheckoutService, PayPalExpressCheckoutService> ();
-			_container.Register ((c, p) => new PayPalServiceClient(c.Resolve<IAppSettings>().Data.ServiceUrl, GetSessionId(), c.Resolve<IPackageInfo>()));
+			_container.Register<IPayPalAccountService, PayPalAccountService> ();
+			_container.Register ((c, p) => new PayPalAccountServiceClient(c.Resolve<IAppSettings>().Data.ServiceUrl, GetSessionId(), c.Resolve<IPackageInfo>()));
 
 			_container.Register<IPaymentService>((c, p) =>
 			{

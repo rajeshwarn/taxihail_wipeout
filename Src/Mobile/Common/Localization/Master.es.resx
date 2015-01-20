@@ -417,14 +417,6 @@
     <value>Confirmación de pago enviada al chofer</value>
     <comment>Confirmation of payment has been sent to the driver.</comment>
   </data>
-  <data name="ConfirmationPaymentAmountOver100" xml:space="preserve">
-    <value>Se le realizará un cobro por {0}. Por favor confirme la cantidad.</value>
-    <comment>You will be charged {0}. Please confirm the amount.</comment>
-  </data>
-  <data name="ConfirmationPaymentAmountOver100Title" xml:space="preserve">
-    <value>Confirmación requerida</value>
-    <comment>Confirmation Required</comment>
-  </data>
   <data name="ConfirmCompanyLabel" xml:space="preserve">
     <value>Compañía:</value>
     <comment>Company:</comment>
@@ -1099,10 +1091,6 @@
     <value>No hay conección de red</value>
     <comment>No network connection</comment>
   </data>
-  <data name="NoAmountSelectedMessage" xml:space="preserve">
-    <value>Por favor ingrese la cantidad</value>
-    <comment>Please enter the amount</comment>
-  </data>
   <data name="NoAptText" xml:space="preserve">
     <value>Número Depto.</value>
     <comment>No apt.</comment>
@@ -1138,10 +1126,6 @@
   <data name="NoMailClient" xml:space="preserve">
     <value>No hay clientes de correo instalados</value>
     <comment>There are no email clients installed.</comment>
-  </data>
-  <data name="NoOrderId" xml:space="preserve">
-    <value>La reservación no esta lista</value>
-    <comment>Order Not ready</comment>
   </data>
   <data name="NoPhoneNumberMessage" xml:space="preserve">
     <value>El número de teléfono es inválido para este chofer</value>
@@ -1347,14 +1331,6 @@
     <value>Propina</value>
     <comment>Tip Amount</comment>
   </data>
-  <data name="PaymentErrorMessage" xml:space="preserve">
-    <value>Detalles: {0}</value>
-    <comment>Details: {0}</comment>
-  </data>
-  <data name="PaymentErrorTitle" xml:space="preserve">
-    <value>El pago no puede ser completado</value>
-    <comment>Payment cannot be completed</comment>
-  </data>
   <data name="PaymentInCar" xml:space="preserve">
     <value>Pago en carro</value>
     <comment>Payment In Car</comment>
@@ -1374,26 +1350,6 @@
   <data name="PayNow" xml:space="preserve">
     <value>Pagar con Aplicación</value>
     <comment>Pay now</comment>
-  </data>
-  <data name="PayPalButton" xml:space="preserve">
-    <value>Pagar con Paypal</value>
-    <comment>Pay with PayPal</comment>
-  </data>
-  <data name="PayPalExpressCheckoutCancelMessage" xml:space="preserve">
-    <value>El pago mediante Paypal se ha cancelado, su cuenta no ha sido cargada</value>
-    <comment>PayPal payment was cancelled. Your account has not been charged.</comment>
-  </data>
-  <data name="PayPalExpressCheckoutCancelTitle" xml:space="preserve">
-    <value>Pago cancelado</value>
-    <comment>Payment cancelled</comment>
-  </data>
-  <data name="PayPalExpressCheckoutSuccessMessage" xml:space="preserve">
-    <value>Pago mediante Paypal fué exitoso. Confirmación enviada al chofer</value>
-    <comment>PayPal payment was successful. Confirmation sent to the driver.</comment>
-  </data>
-  <data name="PayPalExpressCheckoutSuccessTitle" xml:space="preserve">
-    <value>Pago exitoso</value>
-    <comment>Payment successful</comment>
   </data>
   <data name="PendingOrderCancel" xml:space="preserve">
     <value>Cancelar</value>
@@ -2203,5 +2159,11 @@
   </data>
   <data name="ErrorCreateOrder_PendingOrder" xml:space="preserve">
     <value>No puede reservar este servicio, ya que hay una reservación pendiente. ¿Desea ver esta reservación?</value>
+  </data>
+  <data name="LinkPayPal" xml:space="preserve">
+    <value>Link PayPal</value>
+  </data>
+  <data name="UnlinkPayPal" xml:space="preserve">
+    <value>Unlink PayPal</value>
   </data>
 </root>

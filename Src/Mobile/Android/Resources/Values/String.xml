@@ -587,4 +587,6 @@
   <string name="Notification_PromotionUnlockedEmail">Promotions unlocked (Email)</string>
   <string name="Notification_PromotionUnlockedPush">Promotions unlocked (Push)</string>
   <string name="ErrorCreateOrder_PendingOrder">You cannot book this ride since an order is already pending. View the order status?</string>
+  <string name="LinkPayPal">Link PayPal</string>
+  <string name="UnlinkPayPal">Unlink PayPal</string>
 </resources>

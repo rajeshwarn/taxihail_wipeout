@@ -425,13 +425,7 @@
     <Compile Include="Views\BookRatingView.designer.cs">
       <DependentUpon>BookRatingView.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\Payments\PaymentView.cs" />
-    <Compile Include="Views\Payments\PaymentView.designer.cs" />
     <Compile Include="LinkerPleaseInclude.cs" />
-    <Compile Include="Views\Payments\ConfirmCarNumberView.cs" />
-    <Compile Include="Views\Payments\ConfirmCarNumberView.designer.cs">
-      <DependentUpon>ConfirmCarNumberView.cs</DependentUpon>
-    </Compile>
     <Compile Include="Controls\Widgets\PaymentSelector.cs" />
     <Compile Include="Views\BookingStatusView.xib.cs">
       <DependentUpon>BookingStatusView.xib</DependentUpon>
@@ -614,8 +608,6 @@
     <InterfaceDefinition Include="Views\AboutUsView.xib" />
     <InterfaceDefinition Include="Views\BookRatingCell.xib" />
     <InterfaceDefinition Include="Views\BookRatingView.xib" />
-    <InterfaceDefinition Include="Views\Payments\PaymentView.xib" />
-    <InterfaceDefinition Include="Views\Payments\ConfirmCarNumberView.xib" />
     <InterfaceDefinition Include="Views\BookingStatusView.xib" />
     <InterfaceDefinition Include="Views\HistoryListView.xib" />
     <InterfaceDefinition Include="Views\LocationListView.xib" />
