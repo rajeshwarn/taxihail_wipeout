@@ -1,13 +1,10 @@
-using System;
-using MonoTouch.CoreLocation;
-using MonoTouch.Foundation;
 using apcurium.MK.Booking.Mobile.Client.MapUtitilties;
 
-namespace MonoTouch.MapKit
+namespace MapKit
 {
     public static class MKMapViewHelper
     {
-        public static MKAnnotationView GetViewForAnnotation (MKMapView mapView, NSObject annotation)
+        public static MKAnnotationView GetViewForAnnotation (MKMapView mapView, IMKAnnotation annotation)
         {
             var ann = annotation as AddressAnnotation;
 

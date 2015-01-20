@@ -4,7 +4,7 @@
 // actions made in the UI designer. If it is removed, they will be lost.
 // Manual changes to this file may not be handled correctly.
 //
-using MonoTouch.Foundation;
+using Foundation;
 using System.CodeDom.Compiler;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
@@ -13,25 +13,25 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 	partial class RideSettingsView
 	{
 		[Outlet]
-		MonoTouch.UIKit.UILabel lblAccountNumber { get; set; }
+		UIKit.UILabel lblAccountNumber { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel lblChargeType { get; set; }
+		UIKit.UILabel lblChargeType { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel lblName { get; set; }
+		UIKit.UILabel lblName { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel lblPassword { get; set; }
+		UIKit.UILabel lblPassword { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel lblPhone { get; set; }
+		UIKit.UILabel lblPhone { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel lblTip { get; set; }
+		UIKit.UILabel lblTip { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel lblVehicleType { get; set; }
+		UIKit.UILabel lblVehicleType { get; set; }
 
 		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatTextField txtAccountNumber { get; set; }

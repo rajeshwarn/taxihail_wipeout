@@ -1,8 +1,8 @@
-﻿using System;
+using System;
 using apcurium.MK.Booking.MapDataProvider;
-using MonoTouch.MapKit;
-using MonoTouch.CoreLocation;
-using MonoTouch.Foundation;
+using MapKit;
+using CoreLocation;
+using Foundation;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Booking.MapDataProvider.Resources;
 using System.Threading.Tasks;

@@ -1,5 +1,5 @@
-﻿using MonoTouch.Foundation;
-using MonoTouch.UIKit;
+using Foundation;
+using UIKit;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
@@ -7,6 +7,7 @@ using apcurium.MK.Booking.Mobile.Client.Controls.Widgets;
 using Cirrious.MvvmCross.Binding.Touch.Views;
 using apcurium.MK.Booking.Mobile.Client.Localization;
 using MK.Common.Entity;
+using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
@@ -57,8 +58,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 			// Horizontal line bellow master notification toggle
 			var enabledToggleSeparator = Line.CreateHorizontal(0, labelNotificationEnabled.Superview.Frame.Height, this.View.Frame.Width, UIColor.LightGray, 1f);
-			enabledToggleSeparator.AutoresizingMask = UIViewAutoresizing.FlexibleWidth;
 			this.View.AddSubview(enabledToggleSeparator);
+
+            // Adjust constraints for iOS7 (since there's no concept of margin)
+            if (UIHelper.IsOS7)
+            {
+                // hardcoded values since there's only one width for iOS7 devices
+                constraintLeftLabel.Constant = 15;
+                constraintRightSwitch.Constant = -17;
+            }
 
 			var set = this.CreateBindingSet<NotificationSettingsView, NotificationSettingsViewModel> ();
 

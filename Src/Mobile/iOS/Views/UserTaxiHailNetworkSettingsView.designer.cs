@@ -4,7 +4,7 @@
 // actions made in the UI designer. If it is removed, they will be lost.
 // Manual changes to this file may not be handled correctly.
 //
-using MonoTouch.Foundation;
+using Foundation;
 using System.CodeDom.Compiler;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
@@ -13,13 +13,19 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 	partial class UserTaxiHailNetworkSettingsView
 	{
 		[Outlet]
-		MonoTouch.UIKit.UILabel labelTaxiHailNetworkEnabled { get; set; }
+		UIKit.NSLayoutConstraint constraintLeftLabel { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UISwitch switchTaxiHailNetworkEnabled { get; set; }
+		UIKit.NSLayoutConstraint constraintRightSwitch { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UITableView tableTaxiHailNetworkSettings { get; set; }
+		UIKit.UILabel labelTaxiHailNetworkEnabled { get; set; }
+
+		[Outlet]
+		UIKit.UISwitch switchTaxiHailNetworkEnabled { get; set; }
+
+		[Outlet]
+		UIKit.UITableView tableTaxiHailNetworkSettings { get; set; }
 		
 		void ReleaseDesignerOutlets ()
 		{
@@ -28,14 +34,24 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				labelTaxiHailNetworkEnabled = null;
 			}
 
+			if (switchTaxiHailNetworkEnabled != null) {
+				switchTaxiHailNetworkEnabled.Dispose ();
+				switchTaxiHailNetworkEnabled = null;
+			}
+
 			if (tableTaxiHailNetworkSettings != null) {
 				tableTaxiHailNetworkSettings.Dispose ();
 				tableTaxiHailNetworkSettings = null;
 			}
 
-			if (switchTaxiHailNetworkEnabled != null) {
-				switchTaxiHailNetworkEnabled.Dispose ();
-				switchTaxiHailNetworkEnabled = null;
+			if (constraintLeftLabel != null) {
+				constraintLeftLabel.Dispose ();
+				constraintLeftLabel = null;
+			}
+
+			if (constraintRightSwitch != null) {
+				constraintRightSwitch.Dispose ();
+				constraintRightSwitch = null;
 			}
 		}
 	}

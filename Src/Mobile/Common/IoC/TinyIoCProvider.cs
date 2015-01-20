@@ -6,149 +6,173 @@ using TinyIoC;
 
 namespace apcurium.MK.Booking.Mobile.IoC
 {
-	public class TinyIoCProvider : MvxSingleton<IMvxIoCProvider>, IMvxIoCProvider
+    public class TinyIoCProvider : MvxSingleton<IMvxIoCProvider>, IMvxIoCProvider
     {
-		readonly TinyIoCContainer _container;
-		readonly IDictionary<Type, List<Action>> _waiters = new Dictionary<Type, List<Action>>();
-		readonly object _lockObject = new object();
+        readonly TinyIoCContainer _container;
+        readonly IDictionary<Type, List<Action>> _waiters = new Dictionary<Type, List<Action>>();
+        readonly object _lockObject = new object();
 
-		public TinyIoCProvider(TinyIoCContainer container)
-		{
-			_container = container;
-		}
+        public TinyIoCProvider(TinyIoCContainer container)
+        {
+            _container = container;
+        }
 
-		#region IMvxIoCProvider implementation
-		public bool CanResolve<T>() where T : class
-		{
-			return _container.CanResolve<T>();
-		}
-		public bool CanResolve(System.Type type)
-		{
-			return _container.CanResolve(type);
-		}
-		public T Resolve<T>() where T : class
-		{
-			return _container.Resolve<T>();
-		}
-		public object Resolve(System.Type type)
-		{
-			return _container.Resolve(type);
-		}
-		public T Create<T>() where T : class
-		{
-			throw new NotSupportedException();
-		}
-		public object Create(System.Type type)
-		{
-			throw new NotSupportedException();
-		}
-		public T GetSingleton<T>() where T : class
-		{
-			throw new NotSupportedException();
-		}
-		public object GetSingleton(System.Type type)
-		{
-			throw new NotSupportedException();
-		}
-		public bool TryResolve<T>(out T resolved) where T : class
-		{
-			return _container.TryResolve<T>(out resolved);
-		}
-		public bool TryResolve(System.Type type, out object resolved)
-		{
-			return _container.TryResolve(type, out resolved);
-		}
-		public void RegisterType<TFrom, TTo>() where TFrom : class where TTo : class, TFrom
-		{
-			_container.Register<TFrom, TTo>().AsMultiInstance();
-			ExecuteCallback(typeof(TFrom));
-		}
-		public void RegisterType(System.Type tFrom, System.Type tTo)
-		{
-			_container.Register(tFrom, tTo).AsMultiInstance();
-			ExecuteCallback(tFrom);
-		}
-		public void RegisterSingleton<TInterface>(TInterface theObject) where TInterface : class
-		{
-			_container.Register<TInterface>(theObject);
-			ExecuteCallback(typeof(TInterface));
-		}
-		public void RegisterSingleton(System.Type tInterface, object theObject)
-		{
-			_container.Register(tInterface, theObject);
-			ExecuteCallback(tInterface);
-		}
-		public void RegisterSingleton<TInterface>(System.Func<TInterface> theConstructor) where TInterface : class
-		{
-			var lazy = new Lazy<TInterface>(theConstructor);
-			_container.Register<TInterface>((_, __) => lazy.Value);
-			ExecuteCallback(typeof(TInterface));
-		}
-		public void RegisterSingleton(System.Type tInterface, System.Func<object> theConstructor)
-		{
-			var lazy = new Lazy<object>(theConstructor);
-			_container.Register(tInterface, (_, __) => lazy.Value);
-			ExecuteCallback(tInterface);
-		}
-		public T IoCConstruct<T>() where T : class
-		{
-			return _container.Resolve<T>(ResolveOptions.Default);
-		}
-		public object IoCConstruct(System.Type type)
-		{
-			return _container.Resolve(type);
-		}
-		public void CallbackWhenRegistered<T>(System.Action action)
-		{
-			CallbackWhenRegistered(typeof(T), action);
-		}
-		public void CallbackWhenRegistered(System.Type type, System.Action action)
-		{
-			lock (_lockObject)
-			{
-				if (!CanResolve(type))
-				{
-					List<Action> actions;
-					if (_waiters.TryGetValue(type, out actions))
-					{
-						actions.Add(action);
-					}
-					else
-					{
-						actions = new List<Action> {action};
-						_waiters[type] = actions;
-					}
-					return;
-				}
-			}
+        public bool CanResolve<T>() where T : class
+        {
+            return _container.CanResolve<T>();
+        }
 
-			// if we get here then the type is already registered - so call the aciton immediately
-			action();
-		}
+        public bool CanResolve(Type type)
+        {
+            return _container.CanResolve(type);
+        }
 
+        public T Resolve<T>() where T : class
+        {
+            return _container.Resolve<T>();
+        }
 
-		#endregion
+        public object Resolve(Type type)
+        {
+            return _container.Resolve(type);
+        }
 
-		private void ExecuteCallback(Type type)
-		{
-			List<Action> actions;
-			lock (this)
-			{
-				if (_waiters.TryGetValue(type, out actions))
-				{
-					_waiters.Remove(type);
-				}
-			}
+        public T Create<T>() where T : class
+        {
+            throw new NotImplementedException();
+        }
 
-			if (actions != null)
-			{
-				foreach (var action in actions)
-				{
-					action();
-				}
-			}
-		}
+        public object Create(Type type)
+        {
+            throw new NotImplementedException();
+        }
 
+        public T GetSingleton<T>() where T : class
+        {
+            throw new NotImplementedException();
+        }
+
+        public object GetSingleton(Type type)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool TryResolve<T>(out T resolved) where T : class
+        {
+            return _container.TryResolve<T>(out resolved);
+        }
+
+        public bool TryResolve(Type type, out object resolved)
+        {
+            return _container.TryResolve(type, out resolved);
+        }
+
+        public void RegisterType<TFrom, TTo>() where TFrom : class where TTo : class, TFrom
+        {
+            _container.Register<TFrom, TTo>().AsMultiInstance();
+            ExecuteCallback(typeof(TFrom));
+        }
+
+        public void RegisterType<TInterface>(Func<TInterface> constructor) where TInterface : class
+        {
+            throw new NotImplementedException();
+        }
+
+        public void RegisterType(Type t, Func<object> constructor)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void RegisterType(Type tFrom, Type tTo)
+        {
+            _container.Register(tFrom, tTo).AsMultiInstance();
+            ExecuteCallback(tFrom);
+        }
+
+        public void RegisterSingleton<TInterface>(TInterface theObject) where TInterface : class
+        {
+            _container.Register<TInterface>(theObject);
+            ExecuteCallback(typeof(TInterface));
+        }
+
+        public void RegisterSingleton(Type tInterface, object theObject)
+        {
+            _container.Register(tInterface, theObject);
+            ExecuteCallback(tInterface);
+        }
+
+        public void RegisterSingleton<TInterface>(Func<TInterface> theConstructor) where TInterface : class
+        {
+            var lazy = new Lazy<TInterface>(theConstructor);
+            _container.Register<TInterface>((_, __) => lazy.Value);
+            ExecuteCallback(typeof(TInterface));
+        }
+
+        public void RegisterSingleton(Type tInterface, Func<object> theConstructor)
+        {
+            var lazy = new Lazy<object>(theConstructor);
+            _container.Register(tInterface, (_, __) => lazy.Value);
+            ExecuteCallback(tInterface);
+        }
+
+        public T IoCConstruct<T>() where T : class
+        {
+            return _container.Resolve<T>(ResolveOptions.Default);
+        }
+
+        public object IoCConstruct(Type type)
+        {
+            return _container.Resolve(type);
+        }
+
+        public void CallbackWhenRegistered<T>(Action action)
+        {
+            CallbackWhenRegistered(typeof(T), action);
+        }
+
+        public void CallbackWhenRegistered(Type type, Action action)
+        {
+            lock (_lockObject)
+            {
+                if (!CanResolve(type))
+                {
+                    List<Action> actions;
+                    if (_waiters.TryGetValue(type, out actions))
+                    {
+                        actions.Add(action);
+                    }
+                    else
+                    {
+                        actions = new List<Action> {action};
+                        _waiters[type] = actions;
+                    }
+                    return;
+                }
+            }
+
+            // if we get here then the type is already registered - so call the aciton immediately
+            action();
+        }
+
+        private void ExecuteCallback(Type type)
+        {
+            List<Action> actions;
+            lock (this)
+            {
+                if (_waiters.TryGetValue(type, out actions))
+                {
+                    _waiters.Remove(type);
+                }
+            }
+
+            if (actions != null)
+            {
+                foreach (var action in actions)
+                {
+                    action();
+                }
+            }
+        }
     }
 }
 

@@ -4,7 +4,7 @@
 // actions made in the UI designer. If it is removed, they will be lost.
 // Manual changes to this file may not be handled correctly.
 //
-using MonoTouch.Foundation;
+using Foundation;
 using System.CodeDom.Compiler;
 
 namespace apcurium.MK.Booking.Mobile.Client.Order
@@ -13,7 +13,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Order
 	partial class BookRatingView
 	{
 		[Outlet]
-		MonoTouch.UIKit.UITableView ratingTableView { get; set; }
+		UIKit.UITableView ratingTableView { get; set; }
 		
 		void ReleaseDesignerOutlets ()
 		{

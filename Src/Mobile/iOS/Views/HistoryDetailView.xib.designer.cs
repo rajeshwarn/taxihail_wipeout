@@ -4,7 +4,7 @@
 // actions made in the UI designer. If it is removed, they will be lost.
 // Manual changes to this file may not be handled correctly.
 //
-using MonoTouch.Foundation;
+using Foundation;
 using System.CodeDom.Compiler;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
@@ -34,64 +34,64 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnViewRating { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.NSLayoutConstraint constraintDestinationLabelToAptRingCodeLabelHeight { get; set; }
+		UIKit.NSLayoutConstraint constraintDestinationLabelToAptRingCodeLabelHeight { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.NSLayoutConstraint constraintDestinationTextToAptRingCodeTextHeight { get; set; }
+		UIKit.NSLayoutConstraint constraintDestinationTextToAptRingCodeTextHeight { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel lblAptRingCode { get; set; }
+		UIKit.UILabel lblAptRingCode { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel lblAuthorization { get; set; }
+		UIKit.UILabel lblAuthorization { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel lblDestination { get; set; }
+		UIKit.UILabel lblDestination { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel lblOrder { get; set; }
+		UIKit.UILabel lblOrder { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel lblPickup { get; set; }
+		UIKit.UILabel lblPickup { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel lblPickupDate { get; set; }
+		UIKit.UILabel lblPickupDate { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel lblPromo { get; set; }
+		UIKit.UILabel lblPromo { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel lblRequested { get; set; }
+		UIKit.UILabel lblRequested { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel lblStatus { get; set; }
+		UIKit.UILabel lblStatus { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel txtAptRingCode { get; set; }
+		UIKit.UILabel txtAptRingCode { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel txtAthorization { get; set; }
+		UIKit.UILabel txtAthorization { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel txtDestination { get; set; }
+		UIKit.UILabel txtDestination { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel txtOrder { get; set; }
+		UIKit.UILabel txtOrder { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel txtPickup { get; set; }
+		UIKit.UILabel txtPickup { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel txtPickupDate { get; set; }
+		UIKit.UILabel txtPickupDate { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel txtPromo { get; set; }
+		UIKit.UILabel txtPromo { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel txtRequested { get; set; }
+		UIKit.UILabel txtRequested { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel txtStatus { get; set; }
+		UIKit.UILabel txtStatus { get; set; }
 		
 		void ReleaseDesignerOutlets ()
 		{

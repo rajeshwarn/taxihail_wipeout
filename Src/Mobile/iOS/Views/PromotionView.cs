@@ -1,7 +1,7 @@
-﻿using System;
-using System.Drawing;
-using MonoTouch.Foundation;
-using MonoTouch.UIKit;
+using System;
+using CoreGraphics;
+using Foundation;
+using UIKit;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Booking.Mobile.Client.Localization;
 using Cirrious.MvvmCross.Binding.Touch.Views;
@@ -123,7 +123,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             }
         }
 
-        public override float GetHeightForRow(UITableView tableView, NSIndexPath indexPath)
+        public override nfloat GetHeightForRow(UITableView tableView, NSIndexPath indexPath)
         {
             if (_selectedIndexPath == null || _selectedIndexPath.Row != indexPath.Row)
             {
@@ -132,21 +132,21 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
             var item = (PromotionItemViewModel)GetItemAt(indexPath);
 
-            float nonDynamicHeight = 15 /* Top padding */
+            nfloat nonDynamicHeight = 15 /* Top padding */
                 + 5                     /* Vertical spacing between title and description */
                 + 12                    /* Vertical spacing between description and button */
                 + 41                    /* Button height */
                 + 10;                   /* Bottom padding */
 
-            var maxSizeForTitle = new SizeF(200, 0);
-            var maxSizeForDescription = new SizeF(new UIEdgeInsets(0, 15, 0, 15).InsetRect(tableView.Bounds).Width, 0);
-			var maxSizeForProgress = new SizeF(200, 0);
+            var maxSizeForTitle = new CGSize(200, 0);
+            var maxSizeForDescription = new CGSize(new UIEdgeInsets(0, 15, 0, 15).InsetRect(tableView.Bounds).Width, 0);
+            var maxSizeForProgress = new CGSize(200, 0);
 
             var titleTextSize = tableView.GetSizeThatFits(item.Name, UIFont.FromName(FontName.HelveticaNeueBold, 28 / 2), maxSizeForTitle);
             var descriptionTextSize = tableView.GetSizeThatFits(item.Description, UIFont.FromName(FontName.HelveticaNeueLight, 28 / 2), maxSizeForDescription);
-			var progressTextSize = tableView.GetSizeThatFits(item.ProgressDescription, UIFont.FromName(FontName.HelveticaNeueLight, 28 / 2), maxSizeForProgress);
+            var progressTextSize = tableView.GetSizeThatFits(item.ProgressDescription, UIFont.FromName(FontName.HelveticaNeueLight, 28 / 2), maxSizeForProgress);
 
-			return nonDynamicHeight + titleTextSize.Height + descriptionTextSize.Height + progressTextSize.Height;
+            return nonDynamicHeight + titleTextSize.Height + descriptionTextSize.Height + progressTextSize.Height;
         }
     }
 }

@@ -59,6 +59,7 @@
     <Compile Include="Database\IAggregateRoot.cs" />
     <Compile Include="Database\IDataContext.cs" />
     <Compile Include="EntityNotFoundException.cs" />
+    <Compile Include="EventSourcing\ConcurrencyException.cs" />
     <Compile Include="EventSourcing\IMementoOriginator.cs" />
     <Compile Include="EventSourcing\IUpgradableEvent.cs" />
     <Compile Include="IProcessor.cs" />

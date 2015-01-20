@@ -40,8 +40,13 @@
         <dl>
             <dt>Google Map for Work API Fingerprint</dt>
             @{
+                var packageAndroidSetting = Model.CompanySettings.FirstOrDefault(s => s.Key == "PackageAndroid");
                 var packageSetting = Model.CompanySettings.FirstOrDefault(s => s.Key == "Package");
-                var packageName = packageSetting != null ? packageSetting.Value : string.Empty;
+                var packageName = packageAndroidSetting != null
+                    ? packageAndroidSetting.Value
+                    : packageSetting != null
+                        ? packageSetting.Value
+                        : string.Empty;
             }
             @if (!packageName.HasValue())
             {

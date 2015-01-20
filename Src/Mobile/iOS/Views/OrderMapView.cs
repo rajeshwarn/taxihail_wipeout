@@ -1,17 +1,16 @@
 using System;
 using System.Collections.Generic;
-using System.Drawing;
+using CoreGraphics;
 using System.Linq;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Threading;
 using System.Windows.Input;
 using Cirrious.MvvmCross.Binding.BindingContext;
-using MonoTouch.CoreLocation;
-using MonoTouch.Foundation;
-using MonoTouch.MapKit;
-using MonoTouch.UIKit;
-using TinyIoC;
+using CoreLocation;
+using Foundation;
+using MapKit;
+using UIKit;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.Extensions;
@@ -19,7 +18,6 @@ using apcurium.MK.Booking.Mobile.PresentationHints;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using MapBounds = apcurium.MK.Booking.Maps.Geo.MapBounds;
-using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Booking.Mobile.Client.Controls;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
@@ -77,7 +75,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             }
         }
 
-        public override void Draw(RectangleF rect)
+        public override void Draw(CGRect rect)
         {
             base.Draw(rect);
             InitOverlays();
@@ -240,7 +238,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             if (address.HasValidCoordinate() && visible)
             {
                 RemoveAnnotation(addressAnnotation);
-                addressAnnotation.Coordinate = address.GetCoordinate();
+                addressAnnotation.SetCoordinate(address.GetCoordinate());
                 AddAnnotation(addressAnnotation);
             }
             else
@@ -261,7 +259,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
             _pickupCenterPin.Frame = 
                 _dropoffCenterPin.Frame = 
-					new RectangleF((this.Bounds.Width - pinSize.Width) / 2, (this.Bounds.Height / 2) - pinSize.Height + mkMapPadding, pinSize.Width, pinSize.Height);
+					new CGRect((this.Bounds.Width - pinSize.Width) / 2, (this.Bounds.Height / 2) - pinSize.Height + mkMapPadding, pinSize.Width, pinSize.Height);
+        }
+
+        public override void LayoutSubviews()
+        {
+            base.LayoutSubviews();
 
             // change position of Legal link on map
             var legalView = Subviews.FirstOrDefault(x => x is UILabel);
@@ -270,7 +273,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 var leftMargin = 8;
                 var bottomMargin = 13;
                 var menuButtonWidth = 39;
-                legalView.SetX(leftMargin + menuButtonWidth + legalView.Frame.Width).SetY(this.Frame.Bottom - legalView.Frame.Height - bottomMargin); 
+                legalView
+                    .SetX(leftMargin + menuButtonWidth + 15)
+                    .SetY(this.Frame.Bottom - legalView.Frame.Height - bottomMargin); 
             }
         }
 
@@ -433,7 +438,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             if (_mapBlurOverlay == null)
             {
                 var _size = this.Bounds.Size;
-                _mapBlurOverlay = new UIImageView(new RectangleF(new PointF(0, 0), new SizeF(_size.Width, _size.Height)));
+                _mapBlurOverlay = new UIImageView(new CGRect(new CGPoint(0, 0), new CGSize(_size.Width, _size.Height)));
                 _mapBlurOverlay.ContentMode = UIViewContentMode.ScaleToFill;
                 _mapBlurOverlay.Frame = this.Frame;
                 this.AddSubview(_mapBlurOverlay);

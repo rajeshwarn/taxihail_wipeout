@@ -1,68 +1,60 @@
 using System;
-using System.Drawing;
+using ObjCRuntime;
+using Foundation;
+using UIKit;
 
-using MonoTouch.ObjCRuntime;
-using MonoTouch.Foundation;
-using MonoTouch.UIKit;
-using MonoTouch.CoreGraphics;
-
-namespace GoogleConversionTracking
+namespace GoogleConversionTracking.Unified
 {
-    /**
-     * 
-     * Generated using Objective Sharpie with Xcode 5.1.1 - SDK 7.1
-     * 
-     * */
     [BaseType (typeof (NSObject))]
-    public partial interface ACTReporter {
-
+    public partial interface ACTReporter 
+    {
         [Static, Export ("SDKVersion")]
-        string SDKVersion { get; }
+        NSString SDKVersion { get; }
 
         [Export ("report")]
         bool Report { get; }
     }
 
     [BaseType (typeof (ACTReporter))]
-    public partial interface ACTConversionReporter {
-
+    public partial interface ACTConversionReporter 
+    {
         [Export ("value", ArgumentSemantic.Copy)]
-        string Value { get; set; }
+        NSString Value { get; set; }
 
         [Static, Export ("reportWithConversionID:label:value:isRepeatable:")]
-        void ReportWithConversionID (string conversionID, string label, string value, bool isRepeatable);
+        void ReportWithConversionID (NSString conversionID, NSString label, NSString value, bool isRepeatable);
 
         [Static, Export ("reportWithProductID:value:isRepeatable:")]
-        void ReportWithProductID (string productID, string value, bool isRepeatable);
+        void ReportWithProductID (NSString productID, NSString value, bool isRepeatable);
 
         [Static, Export ("registerReferrer:")]
         bool RegisterReferrer (NSUrl clickURL);
 
         [Export ("initWithConversionID:label:value:isRepeatable:")]
-        IntPtr Constructor (string conversionID, string label, string value, bool isRepeatable);
+        IntPtr Constructor (NSString conversionID, NSString label, NSString value, bool isRepeatable);
 
         [Export ("initWithProductID:value:isRepeatable:")]
-        IntPtr Constructor (string productID, string value, bool isRepeatable);
+        IntPtr Constructor (NSString productID, NSString value, bool isRepeatable);
     }
 
     [BaseType (typeof (ACTReporter))]
-    public partial interface ACTRemarketingReporter {
-
+    public partial interface ACTRemarketingReporter 
+    {
         [Static, Export ("reportWithConversionID:customParameters:")]
-        void ReportWithConversionID (string conversionID, NSDictionary customParameters);
+        void ReportWithConversionID (NSString conversionID, NSDictionary customParameters);
 
         [Export ("initWithConversionID:customParameters:")]
-        IntPtr Constructor (string conversionID, NSDictionary customParameters);
+        IntPtr Constructor (NSString conversionID, NSDictionary customParameters);
     }
 
     [BaseType (typeof (NSObject))]
     public partial interface ACTAutomatedUsageTracker {
 
         [Static, Export ("enableAutomatedUsageReportingWithConversionID:")]
-        void EnableAutomatedUsageReportingWithConversionID (string conversionID);
+        void EnableAutomatedUsageReportingWithConversionID (NSString conversionID);
 
         [Static, Export ("disableAutomatedUsageReportingWithConversionID:")]
-        void DisableAutomatedUsageReportingWithConversionID (string conversionID);
+        void DisableAutomatedUsageReportingWithConversionID (NSString conversionID);
     }
 }
 

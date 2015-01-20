@@ -1,9 +1,9 @@
 using System;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Booking.Mobile.Client.Controls.Widgets;
-using MonoTouch.UIKit;
-using MonoTouch.Foundation;
-using System.Drawing;
+using UIKit;
+using Foundation;
+using CoreGraphics;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Binding
 {
@@ -85,7 +85,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Binding
             scrollView.ScrollIndicatorInsets = contentInsets;
 
             // If activeField is hidden by keyboard, scroll it so it's visible
-            var viewRectAboveKeyboard = new RectangleF(this.Superview.Frame.Location, new SizeF(this.Superview.Frame.Width, this.Superview.Frame.Size.Height - keyboardBounds.Size.Height));
+            var viewRectAboveKeyboard = new CGRect(this.Superview.Frame.Location, new CGSize(this.Superview.Frame.Width, this.Superview.Frame.Size.Height - keyboardBounds.Size.Height));
 
             var activeFieldAbsoluteFrame = activeView.Superview.ConvertRectToView(activeView.Frame, this.Superview);
             // activeFieldAbsoluteFrame is relative to this.View so does not include any scrollView.ContentOffset
@@ -95,7 +95,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Binding
             if (!viewRectAboveKeyboard.Contains(activeFieldAbsoluteFrame))
             {
                 // Scroll to the activeField Y position + activeField.Height + current scrollView.ContentOffset.Y - the keyboard Height
-                var scrollPoint = new PointF(0.0f, activeFieldAbsoluteFrame.Location.Y + activeFieldAbsoluteFrame.Height + scrollView.ContentOffset.Y - viewRectAboveKeyboard.Height);
+                var scrollPoint = new CGPoint(0.0f, activeFieldAbsoluteFrame.Location.Y + activeFieldAbsoluteFrame.Height + scrollView.ContentOffset.Y - viewRectAboveKeyboard.Height);
                 scrollView.SetContentOffset(scrollPoint, true);
             }
         }

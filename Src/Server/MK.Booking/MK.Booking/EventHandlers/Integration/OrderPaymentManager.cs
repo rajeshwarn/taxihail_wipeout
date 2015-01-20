@@ -72,12 +72,15 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
 
             if (@event.PromotionUsed.HasValue)
             {
-                _commandBus.Send(new RedeemPromotion
+                var redeemPromotion = new RedeemPromotion
                 {
                     OrderId = @event.OrderId,
                     PromoId = @event.PromotionUsed.Value,
                     TotalAmountOfOrder = @event.Amount + @event.AmountSavedByPromotion
-                });
+                };
+                var envelope = (Envelope<ICommand>) redeemPromotion;
+
+                _commandBus.Send(envelope);
             }
         }
 

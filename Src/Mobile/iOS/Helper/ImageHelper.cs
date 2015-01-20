@@ -1,12 +1,11 @@
-using System.Drawing;
-using MonoTouch.CoreGraphics;
-using MonoTouch.CoreImage;
-using MonoTouch.UIKit;
+using CoreGraphics;
+using CoreImage;
+using UIKit;
 using apcurium.MK.Booking.Mobile.Framework.Extensions;
 using apcurium.MK.Booking.Mobile.Client.Diagnostics;
-using apcurium.MK.Booking.Mobile.Client.Extensions;
 using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
 using apcurium.MK.Booking.Mobile.Client.Style;
+using System;
 
 namespace apcurium.MK.Booking.Mobile.Client.Helper
 {
@@ -14,11 +13,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Helper
 	{
         public static UIImage CreateFromColor(UIColor color)
         {
-            var rect = new RectangleF(0f, 0f, 1f, 1f);
+            var rect = new CGRect(0f, 0f, 1f, 1f);
             UIGraphics.BeginImageContext(rect.Size);
 
             var context = UIGraphics.GetCurrentContext();
-            context.SetFillColorWithColor(color.CGColor);
+            context.SetFillColor(color.CGColor);
             context.FillRect(rect);
 
             var image = UIGraphics.GetImageFromCurrentImageContext();
@@ -27,13 +26,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Helper
             return image;
         }
 
-        public static UIImage ResizeCanvas(this UIImage image, SizeF newSize)
+        public static UIImage ResizeCanvas(this UIImage image, CGSize newSize)
         {
             UIGraphics.BeginImageContextWithOptions(newSize, false, 0f);
 
             var context = UIGraphics.GetCurrentContext();
             UIGraphics.PushContext(context);
-            image.Draw(new PointF((newSize.Width - image.Size.Width) / 2, (newSize.Height - image.Size.Height) / 2));
+            image.Draw(new CGPoint((newSize.Width - image.Size.Width) / 2, (newSize.Height - image.Size.Height) / 2));
             UIGraphics.PopContext();
 
             var resultImage = UIGraphics.GetImageFromCurrentImageContext();
@@ -49,10 +48,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Helper
             var image = GetImage(imagePath);
 
             var originalImageSize = bigIcon 
-                ? new SizeF(52, 58)
-                : new SizeF(34, 39);
+                ? new CGSize(52, 58)
+                : new CGSize(34, 39);
 
-            if (ImageWasOverridden(image, originalImageSize, UIColor.FromRGBA(0, 0, 0, 0), bigIcon ? new Point(26, 29) : new Point(18, 16)))
+            if (ImageWasOverridden(image, originalImageSize, UIColor.FromRGBA(0, 0, 0, 0), bigIcon ? new CGPoint(26, 29) : new CGPoint(18, 16)))
             {
                 return image;
             }
@@ -61,7 +60,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Helper
                 ? UIImage.FromBundle ("map_bigicon_background")
                 : UIImage.FromBundle ("map_smallicon_background");
 
-            var rect = new RectangleF(0f, 0f, backgroundToColorize.Size.Width, backgroundToColorize.Size.Height);
+            var rect = new CGRect(0f, 0f, backgroundToColorize.Size.Width, backgroundToColorize.Size.Height);
             UIGraphics.BeginImageContextWithOptions(rect.Size, false, 0f);
             var context = UIGraphics.GetCurrentContext();
 
@@ -76,7 +75,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Helper
             context.ClipToMask (rect, backgroundToColorize.CGImage);
 
             // Step 3: Colorize the background
-            context.SetFillColorWithColor (color.CGColor);
+            context.SetFillColor (color.CGColor);
             context.SetBlendMode (CGBlendMode.SourceIn);
 
             // Step 4: Add the white portion on top of background
@@ -103,7 +102,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Helper
         {
             var image = UIImage.FromFile(imagePath);
 
-            var rect = new RectangleF(0f, 0f, image.Size.Width, image.Size.Height);
+            var rect = new CGRect(0f, 0f, image.Size.Width, image.Size.Height);
             UIGraphics.BeginImageContextWithOptions(rect.Size, false, 0f);
             var context = UIGraphics.GetCurrentContext();
             image.Draw(rect);
@@ -115,7 +114,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Helper
             // apply clip to mask
             context.ClipToMask (rect, image.CGImage);
 
-            context.SetFillColorWithColor(color.CGColor);
+            context.SetFillColor(color.CGColor);
             context.SetBlendMode(CGBlendMode.Normal);
 
             context.FillRect(rect);
@@ -156,7 +155,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Helper
             gaussianBlurFilter.Radius = blurRadius;
             var resultImage = gaussianBlurFilter.OutputImage;
 
-            var croppedImage = resultImage.ImageByCroppingToRect(new RectangleF(blurRadius, blurRadius, _size.Width - 2*blurRadius, _size.Height - 2*blurRadius));              
+            var croppedImage = resultImage.ImageByCroppingToRect(new CGRect(blurRadius, blurRadius, _size.Width - 2*blurRadius, _size.Height - 2*blurRadius));              
             var transformFilter = new CIAffineTransform();
             var affineTransform = CGAffineTransform.MakeTranslation (-blurRadius, blurRadius);
             transformFilter.Transform = affineTransform;
@@ -171,7 +170,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Helper
             return ApplyColorToMapIcon(imagePath, Theme.CompanyColor, isBigIcon);
         }
 
-        public static UIImage ApplyThemeColorToImage(string imagePath, bool skipApplyIfCustomImage = false, SizeF originalImageSize = new SizeF(), UIColor expectedColor = null, Point? expectedColorCoordinate = null)
+        public static UIImage ApplyThemeColorToImage(string imagePath, bool skipApplyIfCustomImage = false, CGSize originalImageSize = new CGSize(), UIColor expectedColor = null, CGPoint? expectedColorCoordinate = null)
         {
             if (skipApplyIfCustomImage)
             {
@@ -201,7 +200,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Helper
             return UIImage.FromFile (imagePath);
 		}
 
-        private static bool ImageWasOverridden(UIImage image, SizeF originalImageSize, UIColor expectedColor, Point? expectedColorCoordinate)
+        private static bool ImageWasOverridden(UIImage image, CGSize originalImageSize, UIColor expectedColor, CGPoint? expectedColorCoordinate)
         {
             var differentSize = image.Size.Width != originalImageSize.Width;
             if (differentSize)
@@ -214,7 +213,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Helper
                 return false;
             }
                 
-            var detectedColor = GetPixel(image, expectedColorCoordinate.Value.X, expectedColorCoordinate.Value.Y);
+            var detectedColor = GetPixel(image, (int)expectedColorCoordinate.Value.X, (int)expectedColorCoordinate.Value.Y);
             var differentColorThanExpected = !detectedColor.CGColor.Equals(expectedColor.CGColor);
 
             return differentColorThanExpected;
@@ -226,23 +225,22 @@ namespace apcurium.MK.Booking.Mobile.Client.Helper
             var correctedY = (int)(image.CurrentScale * y);
 
             var cgImage = image.CGImage.Clone ();
-            var size = new Size (cgImage.Width, cgImage.Height);
             var colorSpace = CGColorSpace.CreateDeviceRGB ();
-            var rawData = new byte[size.Height * size.Width * 4];
+            var rawData = new byte[(int)(cgImage.Height * cgImage.Width * 4)];
             var bytesPerPixel = 4;
-            var bytesPerRow = bytesPerPixel * size.Width;
+            var bytesPerRow = bytesPerPixel * cgImage.Width;
             var bitsPerComponent = 8;
-            var context = new CGBitmapContext(rawData, size.Width, size.Height, bitsPerComponent, bytesPerRow, colorSpace, CGBitmapFlags.PremultipliedLast | CGBitmapFlags.ByteOrder32Big);
+            var context = new CGBitmapContext(rawData, cgImage.Width, cgImage.Height, bitsPerComponent, bytesPerRow, colorSpace, CGBitmapFlags.PremultipliedLast | CGBitmapFlags.ByteOrder32Big);
             colorSpace.Dispose ();
 
-            context.DrawImage (new RectangleF (0, 0, size.Width, size.Height), cgImage);
+            context.DrawImage (new CGRect (0, 0, cgImage.Width, cgImage.Height), cgImage);
             context.Dispose ();
 
             var byteIndex = (bytesPerRow * correctedY) + correctedX * bytesPerPixel;
-            var red = rawData[byteIndex];
-            var green = rawData[byteIndex + 1];
-            var blue = rawData[byteIndex + 2];
-            var alpha = rawData[byteIndex + 3];
+            var red = rawData[(int)byteIndex];
+            var green = rawData[(int)byteIndex + 1];
+            var blue = rawData[(int)byteIndex + 2];
+            var alpha = rawData[(int)byteIndex + 3];
 
             cgImage.Dispose ();
 

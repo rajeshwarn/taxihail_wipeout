@@ -556,3 +556,5 @@
 "Notification_PromotionUnlockedEmail"="Promotions unlocked (Email)";
 "ErrorCreateOrder_PendingOrder"="No puede reservar este servicio, ya que hay una reservación pendiente. ¿Desea ver esta reservación?";
 "TermsAndConditionsLabel"="Términos y condiciones";
+"LinkPayPal"="Link PayPal";
+"UnlinkPayPal"="Unlink PayPal";

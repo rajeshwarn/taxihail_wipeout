@@ -1,10 +1,10 @@
 using System;
-using MonoTouch.Foundation;
-using MonoTouch.UIKit;
-using System.Drawing;
-using MonoTouch.CoreGraphics;
+using Foundation;
+using UIKit;
+using CoreGraphics;
+using CoreGraphics;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
-using MonoTouch.CoreAnimation;
+using CoreAnimation;
 using Cirrious.MvvmCross.Binding.Touch.Views;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
@@ -20,7 +20,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             Initialize();
         }
 
-        public OverlayView(RectangleF frame) : base(frame)
+        public OverlayView(CGRect frame) : base(frame)
         {
             Initialize();
         }
@@ -35,7 +35,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
         }
 
-        public override void Draw (RectangleF rect)
+        public override void Draw (CGRect rect)
         {           
             var context = UIGraphics.GetCurrentContext ();
 
@@ -47,18 +47,18 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             DrawStroke(fillColor.CGColor, rect);
         }
 
-        protected virtual void DrawBackground (CGContext context, RectangleF rect, UIBezierPath roundedRectanglePath, CGColor fillColor)
+        protected virtual void DrawBackground (CGContext context, CGRect rect, UIBezierPath roundedRectanglePath, CGColor fillColor)
         {
             context.SaveState ();
             context.BeginTransparencyLayer (null);
             roundedRectanglePath.AddClip ();
-            context.SetFillColorWithColor(fillColor);
+            context.SetFillColor(fillColor);
             context.FillRect(rect);
             context.EndTransparencyLayer ();
             context.RestoreState ();
         }
 
-        protected virtual void DrawStroke(CGColor fillColor, RectangleF rect)
+        protected virtual void DrawStroke(CGColor fillColor, CGRect rect)
         {
             if (_shadowView != null)
             {
@@ -71,11 +71,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             var roundedRectanglePath = UIBezierPath.FromRoundedRect (holeRect, _radiusCorner);
 
             var maskPath = new UIBezierPath();
-            maskPath.MoveTo(new PointF(biggerRect.GetMinX(), biggerRect.GetMinY()));
-            maskPath.AddLineTo(new PointF(biggerRect.GetMinX(), biggerRect.GetMaxY()));
-            maskPath.AddLineTo(new PointF(biggerRect.GetMaxX(), biggerRect.GetMaxY()));
-            maskPath.AddLineTo(new PointF(biggerRect.GetMaxX(), biggerRect.GetMinY()));
-            maskPath.AddLineTo(new PointF(biggerRect.GetMinX(), biggerRect.GetMinY()));
+            maskPath.MoveTo(new CGPoint(biggerRect.GetMinX(), biggerRect.GetMinY()));
+            maskPath.AddLineTo(new CGPoint(biggerRect.GetMinX(), biggerRect.GetMaxY()));
+            maskPath.AddLineTo(new CGPoint(biggerRect.GetMaxX(), biggerRect.GetMaxY()));
+            maskPath.AddLineTo(new CGPoint(biggerRect.GetMaxX(), biggerRect.GetMinY()));
+            maskPath.AddLineTo(new CGPoint(biggerRect.GetMinX(), biggerRect.GetMinY()));
             maskPath.AppendPath(roundedRectanglePath);
 
             var maskWithHole = new CAShapeLayer();
@@ -88,7 +88,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             _shadowView.Layer.ShadowColor = UIColor.FromRGBA(0, 0, 0, 127).CGColor;
             _shadowView.Layer.ShadowOpacity = 1.0f;
             _shadowView.Layer.ShadowRadius = _radiusCorner + 1;
-            _shadowView.Layer.ShadowOffset = new SizeF(0.3f, 0.3f);
+            _shadowView.Layer.ShadowOffset = new CGSize(0.3f, 0.3f);
             _shadowView.Layer.ShouldRasterize = true;     
             _shadowView.Layer.Mask = maskWithHole;
             _shadowView.Frame = Frame.Copy().Shrink(1);
