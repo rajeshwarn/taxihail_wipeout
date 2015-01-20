@@ -1,8 +1,10 @@
 using System;
+using System.Text;
 using System.Threading.Tasks;
 using ServiceStack.Common.Web;
 using ServiceStack.ServiceClient.Web;
 using ServiceStack.ServiceHost;
+using ServiceStack.Text;
 
 namespace CMTPayment.Extensions
 {
@@ -41,20 +43,38 @@ namespace CMTPayment.Extensions
                 request, 
                 result =>
                 {
-                    //TResponse dto = result.To<TResponse>();
                     var dto = Newtonsoft.Json.JsonConvert.DeserializeObject<TResponse>(result);
                     tcs.SetResult(dto);
-
                 }, 
                 (response, exception) =>
                 {
-                    Log.Debug("CMT Response Body : " + response);
+                    Log.Debug("CMT Response Body : " + response + Environment.NewLine + Environment.NewLine + 
+                              "Request : " + client.BaseUri + request.ToUrl(HttpMethods.Post, client.Format) + Environment.NewLine + Environment.NewLine +
+                              "Exception : " + LogException(exception));
                     tcs.SetException(FixWebServiceException(exception));
                 }
             );
 
 			return tcs.Task;
 		}
+
+	    private static string LogException(Exception ex)
+	    {
+	        var stringBuilder = new StringBuilder();
+	        stringBuilder.AppendLine(ex.Message);
+            stringBuilder.AppendLine(ex.StackTrace);
+
+	        var inner = ex.InnerException;
+	        while (inner != null)
+	        {
+                stringBuilder.AppendLine();
+                stringBuilder.AppendLine(inner.Message);
+                stringBuilder.AppendLine(inner.StackTrace);
+	            inner = inner.InnerException;
+	        }
+
+	        return stringBuilder.ToString();
+	    }
 #else
 
 		public static Task<TResponse> PostAsync<TResponse>(this ServiceClientBase client, IReturn<TResponse> request)
