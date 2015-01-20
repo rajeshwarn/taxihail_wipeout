@@ -901,7 +901,7 @@
     <value>Compte</value>
   </data>
   <data name="PanelMenuViewPaymentInfoText" xml:space="preserve">
-    <value>Carte de paiement</value>
+    <value>Paiement</value>
   </data>
   <data name="ParameterButton" xml:space="preserve">
     <value>Paramètres</value>

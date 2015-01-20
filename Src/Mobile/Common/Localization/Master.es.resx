@@ -1264,7 +1264,7 @@
     <comment>History</comment>
   </data>
   <data name="PanelMenuViewPaymentInfoText" xml:space="preserve">
-    <value>Tarjeta Archivada</value>
+    <value>Pago</value>
     <comment>Card on File</comment>
   </data>
   <data name="PanelMenuViewReportProblemText" xml:space="preserve">

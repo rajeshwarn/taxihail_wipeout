@@ -45,7 +45,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 			// Load cached payment settings
 			var paymentSettings = await _paymentService.GetPaymentSettings();
-			IsPayInTaxiEnabled = paymentSettings.IsPayInTaxiEnabled;
+			IsPayInTaxiEnabled = paymentSettings.IsPayInTaxiEnabled || paymentSettings.PayPalClientSettings.IsEnabled;
 
 			// Load cached settings
 		    var notificationSettings = await _accountService.GetNotificationSettings(true);

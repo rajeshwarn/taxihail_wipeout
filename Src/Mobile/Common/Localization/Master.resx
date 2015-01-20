@@ -922,7 +922,7 @@
     <value>Update Account</value>
   </data>
   <data name="PanelMenuViewPaymentInfoText" xml:space="preserve">
-    <value>Card on File</value>
+    <value>Payment</value>
   </data>
   <data name="PanelMenuViewTutorialText" xml:space="preserve">
     <value>View Tutorial</value>

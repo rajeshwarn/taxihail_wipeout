@@ -877,7 +877,7 @@
     <value>تحديث الحساب</value>
   </data>
   <data name="PanelMenuViewPaymentInfoText" xml:space="preserve">
-    <value>Card on File</value>
+    <value>Payment</value>
   </data>
   <data name="ParameterButton" xml:space="preserve">
     <value>المعايير</value>
