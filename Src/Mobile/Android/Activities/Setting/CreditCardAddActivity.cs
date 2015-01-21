@@ -110,6 +110,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
 
         private void SetUpPayPalService(PayPalClientSettings paypalSettings)
         {
+            PayPalConfiguration.LanguageOrLocale(this.Services().Localize.CurrentLanguage);
+            PayPalConfiguration.AcceptCreditCards(false);
+
             PayPalConfiguration.Environment(paypalSettings.IsSandbox
                 ? PayPalConfiguration.EnvironmentSandbox
                 : PayPalConfiguration.EnvironmentProduction);
@@ -131,8 +134,18 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
 
         private void LinkPayPayAccount()
         {
-            var intent = new Intent(this, typeof(PayPalFuturePaymentActivity));
-            StartActivityForResult(intent, LinkPayPalAccountRequestCode);
+            if (ViewModel.IsEditing)
+            {
+                this.Services().Message.ShowMessage(
+                    this.Services().Localize["DeleteCreditCardTitle"],
+                    this.Services().Localize["LinkPayPalCCWarning"],
+                    this.Services().Localize["LinkPayPalConfirmation"], () =>
+                    {
+                        var intent = new Intent(this, typeof(PayPalFuturePaymentActivity));
+                        StartActivityForResult(intent, LinkPayPalAccountRequestCode);
+                    },
+                    this.Services().Localize["Cancel"], () => { });
+            }
         }
 
         private void ScanCard()

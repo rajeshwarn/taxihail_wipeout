@@ -61,8 +61,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 				// this should be called last since it calls the server, we don't want to slow down other controls
 				var v = await _accountService.GetVehiclesList();
-				_vehicules = v == null ? new ListItem[0] : v.Select(x => new ListItem { Id = x.ReferenceDataVehicleId, Display = x.Name }).ToArray();
-				RaisePropertyChanged(() => Vehicles );
+                _vehicles = v == null ? new ListItem[0] : v.Select(x => new ListItem { Id = x.ReferenceDataVehicleId, Display = x.Name }).ToArray();
+				RaisePropertyChanged(() => Vehicles);
 				RaisePropertyChanged(() => VehicleTypeId );
 				RaisePropertyChanged(() => VehicleTypeName );
 			}
@@ -106,12 +106,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        private ListItem[] _vehicules;
+        private ListItem[] _vehicles;
         public ListItem[] Vehicles
         {
             get
             {
-                return _vehicules;
+                return _vehicles;
             }
         }
 

@@ -1708,4 +1708,22 @@
   <data name="UnlinkPayPal" xml:space="preserve">
     <value>Dissocier  PayPal</value>
   </data>
+  <data name="LinkPayPalCCWarning" xml:space="preserve">
+    <value>Associer votre compte PayPal supprimera votre carte de crédit enregistrée et PayPal sera utilisé comme mode de paiement par défault. Voulez-vous continuer?</value>
+  </data>
+  <data name="AddCoFPayPalWarning" xml:space="preserve">
+    <value>Ajouter une carte de crédit dissociera votre compte PayPal et configurera cette dernière comme mode de paiement par défaut. Voulez-vous continuer?</value>
+  </data>
+  <data name="PayPalErrorTitle" xml:space="preserve">
+    <value>Erreur PayPal</value>
+  </data>
+  <data name="PayPalLinkError" xml:space="preserve">
+    <value>Impossible d'associer votre compte PayPal</value>
+  </data>
+  <data name="PayPalUnlinkError" xml:space="preserve">
+    <value>Impossible de dissocier votre compte PayPal</value>
+  </data>
+  <data name="LinkPayPalConfirmation" xml:space="preserve">
+    <value>Associer</value>
+  </data>
 </root>

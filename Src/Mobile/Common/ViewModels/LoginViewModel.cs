@@ -418,9 +418,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             // the user to be authenticated and it may not be when the class is initialized
             var paymentSettings = await Mvx.Resolve<IPaymentService>().GetPaymentSettings();
 
-			if (this.Settings.CreditCardIsMandatory && paymentSettings.IsPayInTaxiEnabled)
+			if (Settings.CreditCardIsMandatory && paymentSettings.IsPayInTaxiEnabled)
 			{
-				if (!_accountService.CurrentAccount.DefaultCreditCard.HasValue)
+				if (!_accountService.CurrentAccount.DefaultCreditCard.HasValue
+                    || !_accountService.CurrentAccount.IsPayPalAccountLinked)
 				{
 					return true;
 				}

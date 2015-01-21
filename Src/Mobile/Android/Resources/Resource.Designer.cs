@@ -4598,6 +4598,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f060253
 			public const int AddACardButton = 2131100243;
 			
+			// aapt resource value: 0x7f0602b1
+			public const int AddCoFPayPalWarning = 2131100337;
+			
 			// aapt resource value: 0x7f0601bd
 			public const int AddCreditCardTitle = 2131100093;
 			
@@ -5147,14 +5150,14 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f060123
 			public const int GooglePlayServicesNotAvailableMessage = 2131099939;
 			
-			// aapt resource value: 0x7f0602b0
-			public const int GooglePlayServicesNotAvailableMessage1 = 2131100336;
+			// aapt resource value: 0x7f0602b6
+			public const int GooglePlayServicesNotAvailableMessage1 = 2131100342;
 			
 			// aapt resource value: 0x7f060084
 			public const int GooglePlayServicesNotAvailableTitle = 2131099780;
 			
-			// aapt resource value: 0x7f0602b1
-			public const int GooglePlayServicesNotAvailableTitle1 = 2131100337;
+			// aapt resource value: 0x7f0602b7
+			public const int GooglePlayServicesNotAvailableTitle1 = 2131100343;
 			
 			// aapt resource value: 0x7f060049
 			public const int Hello = 2131099721;
@@ -5284,6 +5287,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 			
 			// aapt resource value: 0x7f0602ae
 			public const int LinkPayPal = 2131100334;
+			
+			// aapt resource value: 0x7f0602b0
+			public const int LinkPayPalCCWarning = 2131100336;
 			
 			// aapt resource value: 0x7f060089
 			public const int ListPromptSelectOne = 2131099785;
@@ -5579,6 +5585,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f060093
 			public const int PayPalButton = 2131099795;
 			
+			// aapt resource value: 0x7f0602b2
+			public const int PayPalErrorTitle = 2131100338;
+			
 			// aapt resource value: 0x7f060173
 			public const int PayPalExpressCheckoutCancelMessage = 2131100019;
 			
@@ -5590,6 +5599,15 @@ namespace apcurium.MK.Booking.Mobile.Client
 			
 			// aapt resource value: 0x7f0601b5
 			public const int PayPalExpressCheckoutSuccessTitle = 2131100085;
+			
+			// aapt resource value: 0x7f0602b5
+			public const int PayPalLink = 2131100341;
+			
+			// aapt resource value: 0x7f0602b3
+			public const int PayPalLinkError = 2131100339;
+			
+			// aapt resource value: 0x7f0602b4
+			public const int PayPalUnlinkError = 2131100340;
 			
 			// aapt resource value: 0x7f060191
 			public const int PaymentConfirmationMessageToDriver = 2131100049;

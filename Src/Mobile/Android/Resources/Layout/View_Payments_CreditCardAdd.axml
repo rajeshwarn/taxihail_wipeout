@@ -226,7 +226,7 @@
                     android:singleLine="true"
                     android:lines="1"
                     android:text="@string/LinkPayPal"
-                    local:MvxBind="Visibility IsPayPalAccountLinked, Converter=InvertedVisibility"
+                    local:MvxBind="Visibility CanUnlickPayPalAccount, Converter=InvertedVisibility"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp" />
                 <Button
@@ -237,7 +237,7 @@
                     android:singleLine="true"
                     android:lines="1"
                     android:text="@string/UnlinkPayPal"
-                    local:MvxBind="Visibility IsPayPalAccountLinked, Converter=Visibility"
+                    local:MvxBind="Visibility CanUnlickPayPalAccount, Converter=Visibility"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp" />
             </LinearLayout>
@@ -250,7 +250,7 @@
             android:singleLine="true"
             android:lines="1"
             android:text="@string/LinkPayPal"
-            local:MvxBind="Visibility IsPayPalAccountLinked, Converter=InvertedVisibility"
+            local:MvxBind="Visibility CanUnlickPayPalAccount, Converter=InvertedVisibility"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
             android:paddingLeft="15dip"
@@ -263,7 +263,7 @@
             android:singleLine="true"
             android:lines="1"
             android:text="@string/UnlinkPayPal"
-            local:MvxBind="Visibility IsPayPalAccountLinked, Converter=Visibility"
+            local:MvxBind="Visibility CanUnlickPayPalAccount, Converter=Visibility"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
             android:paddingLeft="15dip"
