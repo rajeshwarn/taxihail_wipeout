@@ -116,7 +116,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 					CreditCardType = (int)id;
 
 					#if DEBUG
-					var paymentSettings = await _paymentService.GetPaymentSettings();
+                    var paymentSettings = await _paymentService.GetPaymentSettings();
 					if (paymentSettings.PaymentMode == PaymentMethod.Braintree)
 					{
 						CreditCardNumber = DummyVisa.BraintreeNumber;

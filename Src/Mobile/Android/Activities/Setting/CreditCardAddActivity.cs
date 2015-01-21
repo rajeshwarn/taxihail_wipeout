@@ -1,3 +1,4 @@
+using System;
 using System.Globalization;
 using Android.App;
 using Android.Content;
@@ -39,7 +40,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
             ViewModel.CreditCardCompanies[2].Image = Resource.Drawable.amex.ToString(CultureInfo.InvariantCulture);
             ViewModel.CreditCardCompanies[3].Image = Resource.Drawable.visa_electron.ToString(CultureInfo.InvariantCulture);
             ViewModel.CreditCardCompanies[4].Image = Resource.Drawable.credit_card_generic.ToString(CultureInfo.InvariantCulture);
+
             SetContentView(Resource.Layout.View_Payments_CreditCardAdd);
+            
 
             var btnScanCard = FindViewById<Button>(Resource.Id.ScanCreditCardButton);
 
@@ -60,23 +63,50 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
                 btnScanCard.Visibility = ViewStates.Gone;
             }
 
+            HandlePaypalButtonsVisibility();
+		}
+
+        private async void HandlePaypalButtonsVisibility()
+        {
+            var mainScrollView = FindViewById<ScrollView>(Resource.Id.MainScrollView);
+            var paypalSeparator = FindViewById<LinearLayout>(Resource.Id.PayPalSeparator);
             var btnLinkPayPalAccount = FindViewById<Button>(Resource.Id.LinkPayPalAccountButton);
             var btnUnlinkPayPalAccount = FindViewById<Button>(Resource.Id.UnLinkPayPalAccountButton);
+            var btnPayPalOnlyLinkAccount = FindViewById<Button>(Resource.Id.PayPalOnlyLinkAccountButton);
+            var btnPayPalOnlyUnlinkAccount = FindViewById<Button>(Resource.Id.PayPalOnlyUnlinkAccountButton);
 
             var paymentSettings = await Mvx.Resolve<IPaymentService>().GetPaymentSettings();
+            if (paymentSettings.IsPayInTaxiEnabled)
+            {
+                btnPayPalOnlyLinkAccount.Visibility = ViewStates.Gone;
+                btnPayPalOnlyUnlinkAccount.Visibility = ViewStates.Gone;
+            }
+            else
+            {
+                mainScrollView.Visibility = ViewStates.Gone;
+            }
+
+            // Use PayPal settings
             if (paymentSettings.PayPalClientSettings.IsEnabled)
             {
                 SetUpPayPalService(paymentSettings.PayPalClientSettings);
 
                 btnLinkPayPalAccount.Click += (sender, e) => LinkPayPayAccount();
                 btnUnlinkPayPalAccount.Click += (sender, e) => ViewModel.UnLinkPayPalAccount();
+                btnPayPalOnlyLinkAccount.Click += (sender, e) => LinkPayPayAccount();
+                btnPayPalOnlyUnlinkAccount.Click += (sender, e) => ViewModel.UnLinkPayPalAccount();
+
             }
             else
             {
+                // Paypal disabled
+                paypalSeparator.Visibility = ViewStates.Gone;
                 btnLinkPayPalAccount.Visibility = ViewStates.Gone;
                 btnUnlinkPayPalAccount.Visibility = ViewStates.Gone;
+                btnPayPalOnlyLinkAccount.Visibility = ViewStates.Gone;
+                btnPayPalOnlyUnlinkAccount.Visibility = ViewStates.Gone;
             }
-		}
+        }
 
         private void SetUpPayPalService(PayPalClientSettings paypalSettings)
         {
@@ -89,10 +119,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
                 : paypalSettings.Credentials.ClientId);
 
             PayPalConfiguration.MerchantName(ViewModel.Settings.TaxiHail.ApplicationName);
-            PayPalConfiguration.MerchantPrivacyPolicyUri(Android.Net.Uri.Parse(string.Format("{0}/privacypolicy", ViewModel.Settings.ServiceUrl)));
-            PayPalConfiguration.MerchantUserAgreementUri(Android.Net.Uri.Parse(string.Format("{0}/termsandconditions", ViewModel.Settings.ServiceUrl)));
+            PayPalConfiguration.MerchantPrivacyPolicyUri(
+                Android.Net.Uri.Parse(string.Format("{0}/privacypolicy", ViewModel.Settings.ServiceUrl)));
+            PayPalConfiguration.MerchantUserAgreementUri(
+                Android.Net.Uri.Parse(string.Format("{0}/termsandconditions", ViewModel.Settings.ServiceUrl)));
 
-            var intent = new Intent(this, typeof(PayPalService));
+            var intent = new Intent(this, typeof (PayPalService));
             intent.PutExtra(PayPalService.ExtraPaypalConfiguration, PayPalConfiguration);
             StartService(intent);
         }

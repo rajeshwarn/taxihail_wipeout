@@ -291,7 +291,7 @@
   <string name="PanelMenuViewLocationsText">Ubicaciones</string>
   <string name="PanelMenuViewNotificationsText">Notificaciones</string>
   <string name="PanelMenuViewOrderHistoryText">Historia</string>
-  <string name="PanelMenuViewPaymentInfoText">Tarjeta Archivada</string>
+  <string name="PanelMenuViewPaymentInfoText">Pago</string>
   <string name="PanelMenuViewReportProblemText">Reportar problema</string>
   <string name="PanelMenuViewSignOutText">Cerrar Sesión</string>
   <string name="PanelMenuViewTutorialText">Ver tutorial</string>

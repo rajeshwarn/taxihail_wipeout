@@ -126,7 +126,6 @@
             android:layout_width="fill_parent"
             android:layout_height="@dimen/HeightButton"
             android:layout_gravity="center|right"
-            local:MvxBind="Click  CancelCommand"
             android:id="@+id/ServerButton"
             android:text="@string/ChangeServer"
             android:drawablePadding="-2dip"

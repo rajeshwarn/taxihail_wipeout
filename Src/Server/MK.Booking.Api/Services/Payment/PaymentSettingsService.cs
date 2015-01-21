@@ -32,10 +32,9 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 
         public PaymentSettingsResponse Get(PaymentSettingsRequest request)
         {
-            var test = _configurationDao.GetPaymentSettings();
             return new PaymentSettingsResponse
             {
-                ClientPaymentSettings = test
+                ClientPaymentSettings = _configurationDao.GetPaymentSettings()
             };
         }
 

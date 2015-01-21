@@ -466,7 +466,7 @@
   <string name="ServiceErrorCreateOrder_PendingOrder">La commande ne peut être créée car une autre commande est déjà en cours. Voir le statut de la commande?</string>
   <string name="View_CreditCard">Carte de paiement</string>
   <string name="CreditCardAdded">Votre compte est maintenant configuré pour le paiement par défaut via carte de crédit. Vous pouvez quand même choisir de payer dans le véhicule en choisissant l\'option appropriée à l\'écran de paiement.</string>
-  <string name="PanelMenuViewPaymentInfoText">Carte de paiement</string>
+  <string name="PanelMenuViewPaymentInfoText">Paiement</string>
   <string name="LoginSupport">Support Technique?</string>
   <string name="CurrencyPriceFormat">{0:C}</string>
   <string name="PendingOrderMessage">Désolé, cette réservation ne peut être prise en compte. Vous avez déjà une commande en cours. Voir le détail?</string>

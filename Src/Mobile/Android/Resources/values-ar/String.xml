@@ -466,7 +466,7 @@
   <string name="View">View</string>
   <string name="ServiceErrorCreateOrder_PendingOrder">You cannot book this ride since an order is already pending. View the order status?</string>
   <string name="CreditCardAdded">Your account is now enabled to pay with your card on file by default. You can still choose to pay in the vehicle by selecting \"Pay in Vehicle\" on the payment screen</string>
-  <string name="PanelMenuViewPaymentInfoText">Card on File</string>
+  <string name="PanelMenuViewPaymentInfoText">Payment</string>
   <string name="LoginSupport">Need support?</string>
   <string name="CurrencyPriceFormat">{0}ر.س</string>
   <string name="PendingOrderMessage">You cannot book this ride since an order is already pending. View the order status?</string>
