@@ -461,7 +461,7 @@
 "CreditCardAdded"="Votre compte est maintenant configuré pour le paiement par défaut via carte de crédit. Vous pouvez quand même choisir de payer dans le véhicule en choisissant l'option appropriée à l'écran de paiement.";
 "View"="Voir";
 "View_CreditCard"="Carte de paiement";
-"PanelMenuViewPaymentInfoText"="Carte de paiement";
+"PanelMenuViewPaymentInfoText"="Paiement";
 "ServiceErrorCreateOrder_PendingOrder"="La commande ne peut être créée car une autre commande est déjà en cours. Voir le statut de la commande?";
 "CurrencyPriceFormat"="{0:C}";
 "LoginSupport"="Support Technique?";

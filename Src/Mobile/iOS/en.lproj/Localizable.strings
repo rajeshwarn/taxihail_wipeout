@@ -532,7 +532,7 @@
 "ServiceErrorCreateAccount_InvalidConfirmationToken"="The confirmation code is incorrect.";
 "AccountConfirmation_ErrorTitle"="Cannot confirm account";
 "View_AccountConfirmation_Label_Instructions"="A text message with your code has been sent to your phone.";
-"PanelMenuViewPaymentInfoText"="Card on File";
+"PanelMenuViewPaymentInfoText"="Payment";
 "View_AccountConfirmationTitle"="Account Confirmation";
 "View_AccountConfirmation_Button"="Confirm";
 "View_AccountConfirmation_Label_Code"="Code";

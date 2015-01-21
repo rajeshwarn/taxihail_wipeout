@@ -239,7 +239,7 @@
 "EstimateFareCalculating"="Calculando…";
 "ServiceErrorCreateOrder_InvalidProvider"="Su reservación no se pudo crear, proveedor inválido. Por favor contacte {0} al  {1} para asistencia";
 "ScanCreditCard"="Escanear su Tarjeta de crédito";
-"PanelMenuViewPaymentInfoText"="Tarjeta Archivada";
+"PanelMenuViewPaymentInfoText"="Pago";
 "LocationNoHistory"="No hay historial";
 "Tuto07Top"="En la pantalla de estado verá su número de reservación. Una vez que el vehículo sea asignado, usted podrá ver como el vehículo se acerca a su ubicación.";
 "View_PayPal"="PayPal";

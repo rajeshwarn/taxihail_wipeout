@@ -16,6 +16,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnDeleteCard { get; set; }
 
 		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnPaypal { get; set; }
+
+		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnScanCard { get; set; }
 
 		[Outlet]
@@ -53,6 +56,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		
 		void ReleaseDesignerOutlets ()
 		{
+			if (btnDeleteCard != null) {
+				btnDeleteCard.Dispose ();
+				btnDeleteCard = null;
+			}
+
 			if (btnScanCard != null) {
 				btnScanCard.Dispose ();
 				btnScanCard = null;
@@ -113,9 +121,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				txtNameOnCard = null;
 			}
 
-			if (btnDeleteCard != null) {
-				btnDeleteCard.Dispose ();
-				btnDeleteCard = null;
+			if (btnPaypal != null) {
+				btnPaypal.Dispose ();
+				btnPaypal = null;
 			}
 		}
 	}
