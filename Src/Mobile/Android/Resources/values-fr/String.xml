@@ -466,7 +466,7 @@
   <string name="ServiceErrorCreateOrder_PendingOrder">La commande ne peut être créée car une autre commande est déjà en cours. Voir le statut de la commande?</string>
   <string name="View_CreditCard">Carte de paiement</string>
   <string name="CreditCardAdded">Votre compte est maintenant configuré pour le paiement par défaut via carte de crédit. Vous pouvez quand même choisir de payer dans le véhicule en choisissant l\'option appropriée à l\'écran de paiement.</string>
-  <string name="PanelMenuViewPaymentInfoText">Carte de paiement</string>
+  <string name="PanelMenuViewPaymentInfoText">Paiement</string>
   <string name="LoginSupport">Support Technique?</string>
   <string name="CurrencyPriceFormat">{0:C}</string>
   <string name="PendingOrderMessage">Désolé, cette réservation ne peut être prise en compte. Vous avez déjà une commande en cours. Voir le détail?</string>
@@ -570,4 +570,11 @@
   <string name="TermsAndConditionsLabel">Conditions générales d\'utilisation</string>
   <string name="LinkPayPal">Associer PayPal</string>
   <string name="UnlinkPayPal">Dissocier  PayPal</string>
+  <string name="LinkPayPalCCWarning">Associer votre compte PayPal supprimera votre carte de crédit enregistrée et PayPal sera utilisé comme mode de paiement par défault. Voulez-vous continuer?</string>
+  <string name="AddCoFPayPalWarning">Ajouter une carte de crédit dissociera votre compte PayPal et configurera cette dernière comme mode de paiement par défaut. Voulez-vous continuer?</string>
+  <string name="PayPalErrorTitle">Erreur PayPal</string>
+  <string name="PayPalLinkError">Impossible d\'associer votre compte PayPal</string>
+  <string name="PayPalUnlinkError">Impossible de dissocier votre compte PayPal</string>
+  <string name="PayPalLink">Associer</string>
+  <string name="LinkPayPalConfirmation">Associer</string>
 </resources>

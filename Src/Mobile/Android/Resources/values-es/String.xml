@@ -291,7 +291,7 @@
   <string name="PanelMenuViewLocationsText">Ubicaciones</string>
   <string name="PanelMenuViewNotificationsText">Notificaciones</string>
   <string name="PanelMenuViewOrderHistoryText">Historia</string>
-  <string name="PanelMenuViewPaymentInfoText">Tarjeta Archivada</string>
+  <string name="PanelMenuViewPaymentInfoText">Pago</string>
   <string name="PanelMenuViewReportProblemText">Reportar problema</string>
   <string name="PanelMenuViewSignOutText">Cerrar Sesión</string>
   <string name="PanelMenuViewTutorialText">Ver tutorial</string>
@@ -563,4 +563,11 @@
   <string name="TermsAndConditionsLabel">Términos y condiciones</string>
   <string name="LinkPayPal">Link PayPal</string>
   <string name="UnlinkPayPal">Unlink PayPal</string>
+  <string name="LinkPayPalCCWarning">Linking your PayPal account will remove your card on file and PayPal will be set as the default payment method. Proceed?</string>
+  <string name="AddCoFPayPalWarning">Adding a credit card will unlink your PayPal account and Card on File will be set as the default payment method. Proceed?</string>
+  <string name="PayPalErrorTitle">PayPal Error</string>
+  <string name="PayPalLinkError">Unable to link your PayPal account</string>
+  <string name="PayPalUnlinkError">Unable to unlink your PayPal account</string>
+  <string name="PayPalLink">Link</string>
+  <string name="LinkPayPalConfirmation">Link</string>
 </resources>

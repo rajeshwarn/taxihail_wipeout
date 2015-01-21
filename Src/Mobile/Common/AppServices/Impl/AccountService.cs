@@ -277,7 +277,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
             //Set to update the cache
             CurrentAccount = account;
-
         }
 
 		public void UpdateAccountNumber (string accountNumber)
@@ -514,7 +513,12 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         {
 			var refData = await GetReferenceData();
 
-            if (!CurrentAccount.DefaultCreditCard.HasValue)
+            if (!CurrentAccount.IsPayPalAccountLinked)
+		    {
+                refData.PaymentsList.Remove(i => i.Id == ChargeTypes.PayPal.Id);
+		    }
+
+            if (!CurrentAccount.DefaultCreditCard.HasValue || CurrentAccount.IsPayPalAccountLinked)
 		    {
 		        refData.PaymentsList.Remove(i => i.Id == ChargeTypes.CardOnFile.Id);
 		    }

@@ -1647,4 +1647,22 @@
   <data name="UnlinkPayPal" xml:space="preserve">
     <value>Unlink PayPal</value>
   </data>
+  <data name="LinkPayPalCCWarning" xml:space="preserve">
+    <value>Linking your PayPal account will remove your card on file and PayPal will be set as the default payment method. Proceed?</value>
+  </data>
+  <data name="AddCoFPayPalWarning" xml:space="preserve">
+    <value>Adding a credit card will unlink your PayPal account and Card on File will be set as the default payment method. Proceed?</value>
+  </data>
+  <data name="PayPalErrorTitle" xml:space="preserve">
+    <value>PayPal Error</value>
+  </data>
+  <data name="PayPalLinkError" xml:space="preserve">
+    <value>Unable to link your PayPal account</value>
+  </data>
+  <data name="PayPalUnlinkError" xml:space="preserve">
+    <value>Unable to unlink your PayPal account</value>
+  </data>
+  <data name="LinkPayPalConfirmation" xml:space="preserve">
+    <value>Link</value>
+  </data>
 </root>

@@ -466,7 +466,7 @@
   <string name="View">View</string>
   <string name="ServiceErrorCreateOrder_PendingOrder">You cannot book this ride since an order is already pending. View the order status?</string>
   <string name="CreditCardAdded">Your account is now enabled to pay with your card on file by default. You can still choose to pay in the vehicle by selecting \"Pay in Vehicle\" on the payment screen</string>
-  <string name="PanelMenuViewPaymentInfoText">Card on File</string>
+  <string name="PanelMenuViewPaymentInfoText">Payment</string>
   <string name="LoginSupport">Need support?</string>
   <string name="CurrencyPriceFormat">{0}ر.س</string>
   <string name="PendingOrderMessage">You cannot book this ride since an order is already pending. View the order status?</string>
@@ -556,4 +556,11 @@
   <string name="TermsAndConditionsLabel">الأحكام والشروط</string>
   <string name="LinkPayPal">Link PayPal</string>
   <string name="UnlinkPayPal">Unlink PayPal</string>
+  <string name="LinkPayPalCCWarning">Linking your PayPal account will remove your card on file and PayPal will be set as the default payment method. Proceed?</string>
+  <string name="AddCoFPayPalWarning">Adding a credit card will unlink your PayPal account and Card on File will be set as the default payment method. Proceed?</string>
+  <string name="PayPalErrorTitle">PayPal Error</string>
+  <string name="PayPalLinkError">Unable to link your PayPal account</string>
+  <string name="PayPalUnlinkError">Unable to unlink your PayPal account</string>
+  <string name="PayPalLink">Link</string>
+  <string name="LinkPayPalConfirmation">Link</string>
 </resources>
