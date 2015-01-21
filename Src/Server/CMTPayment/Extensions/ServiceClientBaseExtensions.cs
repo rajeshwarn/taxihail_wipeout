@@ -49,7 +49,8 @@ namespace CMTPayment.Extensions
                 (response, exception) =>
                 {
                     Log.Debug("CMT Response Body : " + response + Environment.NewLine + Environment.NewLine + 
-                              "Request : " + client.BaseUri + request.ToUrl(HttpMethods.Post, client.Format) + Environment.NewLine + Environment.NewLine +
+                              "Request : " + client.BaseUri + request.ToUrl(HttpMethods.Post, client.Format) + Environment.NewLine +
+                              request.ToJson() + Environment.NewLine + Environment.NewLine +
                               "Exception : " + LogException(exception));
                     tcs.SetException(FixWebServiceException(exception));
                 }
