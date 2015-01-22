@@ -264,7 +264,6 @@
     <Compile Include="Extensions\ObservableExtensions.cs" />
     <Compile Include="ViewModels\Payment\CreditCardAddViewModel.cs" />
     <Compile Include="CultureProvider.cs" />
-    <Compile Include="ViewModels\Payment\PayPalViewModel.cs" />
     <Compile Include="BindingConverter\NoValueToTrueConverter.cs" />
     <Compile Include="BindingConverter\HasValueToVisibilityConverter.cs" />
     <Compile Include="ViewModels\RideSummaryViewModel.cs" />

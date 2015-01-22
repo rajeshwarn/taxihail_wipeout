@@ -14,7 +14,6 @@ using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
-using Java.Security;
 using ServiceStack.ServiceClient.Web;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Payment

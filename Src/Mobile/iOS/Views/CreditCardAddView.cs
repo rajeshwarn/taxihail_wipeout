@@ -9,6 +9,9 @@ using Cirrious.CrossCore;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Common.Configuration.Impl;
 using PaypalSdkTouch.Unified;
+using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
+using apcurium.MK.Booking.Mobile.Client.Style;
+using CoreGraphics;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
@@ -20,7 +23,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         private CardIOPaymentViewController _cardScanner;
         private CardScannerDelegate _cardScannerDelegate;
 
-        private PayPalFuturePaymentViewController _payPalPayment;
+        private PayPalCustomFuturePaymentViewController _payPalPayment;
         private PayPalDelegate _payPalPaymentDelegate;
 
         private bool CardIOIsEnabled
@@ -194,15 +197,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             if (_payPalPayment == null)
             {
                 _payPalPaymentDelegate = new PayPalDelegate(authCode => SendAuthCodeToServer(authCode));
-                _payPalPayment = new PayPalFuturePaymentViewController(new PayPalConfiguration
+                _payPalPayment = new PayPalCustomFuturePaymentViewController(new PayPalConfiguration
                 {
                     AcceptCreditCards = false, 
                     LanguageOrLocale = (NSString)this.Services().Localize.CurrentLanguage,
                     MerchantName = (NSString)ViewModel.Settings.TaxiHail.ApplicationName,
                     MerchantPrivacyPolicyURL = new NSUrl(string.Format("{0}/privacypolicy", ViewModel.Settings.ServiceUrl)),
                     MerchantUserAgreementURL = new NSUrl(string.Format("{0}/termsandconditions", ViewModel.Settings.ServiceUrl)),
-                    DisableBlurWhenBackgrounding = true,
-                    PresentingInPopover = true
+                    DisableBlurWhenBackgrounding = true
                 }, _payPalPaymentDelegate);
             }
 
@@ -285,6 +287,76 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
                 // Be sure to dismiss the PayPalLoginViewController.
                 futurePaymentViewController.DismissViewController(true, null);
+            }
+        }
+
+        private class PayPalCustomFuturePaymentViewController : PayPalFuturePaymentViewController
+        {
+            public PayPalCustomFuturePaymentViewController(PayPalConfiguration configuration, PayPalFuturePaymentDelegate futurePaymentDelegate)
+                : base(configuration, futurePaymentDelegate)
+            {
+            }
+
+            public override void ViewWillAppear(bool animated)
+            {
+                base.ViewWillAppear(animated);
+
+                ChangeButtonsColorToCompanyColor();
+            }
+
+            private void ChangeButtonsColorToCompanyColor()
+            {
+                var navBarButtonFont = UIFont.FromName (FontName.HelveticaNeueLight, 34/2);
+
+                var textColor = Theme.CompanyColor;
+
+                // set back/left/right button color
+                var buttonTextColor = new UITextAttributes 
+                {
+                    Font = navBarButtonFont,
+                    TextColor = textColor,
+                    TextShadowColor = UIColor.Clear,
+                    TextShadowOffset = new UIOffset(0,0)
+                };
+                var selectedButtonTextColor = new UITextAttributes
+                {
+                    Font = navBarButtonFont,
+                    TextColor = textColor.ColorWithAlpha(0.5f),
+                    TextShadowColor = UIColor.Clear,
+                    TextShadowOffset = new UIOffset(0,0)
+                };
+
+                UIBarButtonItem.Appearance.SetTitleTextAttributes(buttonTextColor, UIControlState.Normal);
+                UIBarButtonItem.Appearance.SetTitleTextAttributes(selectedButtonTextColor, UIControlState.Highlighted);
+                UIBarButtonItem.Appearance.SetTitleTextAttributes(selectedButtonTextColor, UIControlState.Selected);
+            }
+
+            private void ChangeRightBarButtonFontToBold()
+            {
+                if (NavigationItem == null || NavigationItem.RightBarButtonItem == null)
+                {
+                    return;
+                }
+
+                var rightBarButtonFont = UIFont.FromName (FontName.HelveticaNeueMedium, 34/2);
+                var textColor = Theme.CompanyColor;
+
+                var buttonTextColor = new UITextAttributes () {
+                    Font = rightBarButtonFont,
+                    TextColor = textColor,
+                    TextShadowColor = UIColor.Clear,
+                    TextShadowOffset = new UIOffset(0,0)
+                };
+                var selectedButtonTextColor = new UITextAttributes () {
+                    Font = rightBarButtonFont,
+                    TextColor = textColor.ColorWithAlpha(0.5f),
+                    TextShadowColor = UIColor.Clear,
+                    TextShadowOffset = new UIOffset(0,0)
+                };
+
+                NavigationItem.RightBarButtonItem.SetTitleTextAttributes(buttonTextColor, UIControlState.Normal);
+                NavigationItem.RightBarButtonItem.SetTitleTextAttributes(selectedButtonTextColor, UIControlState.Highlighted);
+                NavigationItem.RightBarButtonItem.SetTitleTextAttributes(selectedButtonTextColor, UIControlState.Selected);
             }
         }
     }

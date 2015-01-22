@@ -565,3 +565,9 @@
 "TermsAndConditionsLabel"="Conditions générales d'utilisation";
 "LinkPayPal"="Associer PayPal";
 "UnlinkPayPal"="Dissocier  PayPal";
+"PayPalLinkError"="Impossible d'associer votre compte PayPal";
+"PayPalUnlinkError"="Impossible de dissocier votre compte PayPal";
+"PayPalErrorTitle"="Erreur PayPal";
+"LinkPayPalConfirmation"="Associer";
+"LinkPayPalCCWarning"="Associer votre compte PayPal supprimera votre carte de crédit enregistrée et PayPal sera utilisé comme mode de paiement par défault. Voulez-vous continuer?";
+"AddCoFPayPalWarning"="Ajouter une carte de crédit dissociera votre compte PayPal et configurera cette dernière comme mode de paiement par défaut. Voulez-vous continuer?";
