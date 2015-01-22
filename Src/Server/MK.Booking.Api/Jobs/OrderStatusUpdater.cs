@@ -617,10 +617,13 @@ namespace apcurium.MK.Booking.Api.Jobs
 
         private bool OrderNeedsUpdate(IBSOrderInformation ibsOrderInfo, OrderStatusDetail orderStatusDetail)
         {
-            return (ibsOrderInfo.Status.HasValue() && orderStatusDetail.IBSStatusId != ibsOrderInfo.Status) // ibs status changed
-                   || (!orderStatusDetail.FareAvailable && ibsOrderInfo.Fare > 0) // fare was not available and ibs now has the information
+            return (ibsOrderInfo.Status.HasValue()                                // ibs status changed
+                        && orderStatusDetail.IBSStatusId != ibsOrderInfo.Status) 
+                   || (!orderStatusDetail.FareAvailable                           // fare was not available and ibs now has the information
+                        && ibsOrderInfo.Fare > 0) 
                    || orderStatusDetail.Status == OrderStatus.WaitingForPayment   // special case for pairing
-                   || orderStatusDetail.Status == OrderStatus.TimedOut;           // special case for network
+                   || (orderStatusDetail.Status == OrderStatus.TimedOut           // special case for network
+                        && _serverSettings.ServerData.Network.Enabled);           
         }
 
         private void CheckForOrderTimeOut(OrderStatusDetail orderStatusDetail)
