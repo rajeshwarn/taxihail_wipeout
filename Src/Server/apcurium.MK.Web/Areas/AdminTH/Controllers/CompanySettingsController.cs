@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,7 +26,6 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
         private readonly IServerSettings _serverSettings;
         private readonly ICommandBus _commandBus;
 
-
         // GET: AdminTH/CompanySettings
         public CompanySettingsController(ICacheClient cache, IServerSettings serverSettings, ICommandBus commandBus)
             : base(cache, serverSettings)
@@ -36,7 +36,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
 
         public ActionResult Index()
         {
-            return View(FilterAvailableSettings());
+            return View(GetAvailableSettingsForUser());
         }
 
         // POST: AdminTH/CompanySettings/Update
@@ -46,6 +46,11 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
         {
             var appSettings = form.ToDictionary();
             appSettings.Remove("__RequestVerificationToken");
+
+            if (!ValidateSettingsValue(appSettings))
+            {
+                return RedirectToAction("Index");
+            }
 
             if (appSettings.Any())
             {
@@ -65,6 +70,64 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
             await Task.Delay(2000);
 
             return RedirectToAction("Index");
+        }
+
+        private bool ValidateSettingsValue(Dictionary<string, string> appSettings)
+        {
+            var isValid = true;
+            var errorMessageBuilder = new StringBuilder();
+
+            var model = GetAvailableSettingsForUser();
+
+            foreach (var appSetting in appSettings)
+            {
+                Type settingsType;
+                string settingName;
+
+                if (model.SuperAdminSettings.ContainsKey(appSetting.Key))
+                {
+                    settingsType = model.SuperAdminSettings[appSetting.Key].PropertyType;
+                    settingName = model.SuperAdminSettings[appSetting.Key].GetDisplayName();
+                }
+                else if (model.AdminSettings.ContainsKey(appSetting.Key))
+                {
+                    settingsType = model.AdminSettings[appSetting.Key].PropertyType;
+                    settingName = model.AdminSettings[appSetting.Key].GetDisplayName();
+                }
+                else
+                {
+                    continue;
+                }
+
+                var typeConverter = TypeDescriptor.GetConverter(settingsType);
+                    
+                if (typeConverter.CanConvertFrom(typeof(string)))
+                {
+                    try
+                    {
+                        // Try to convert the value to the setting type
+                        typeConverter.ConvertFrom(appSetting.Value);
+                    }
+                    catch (Exception)
+                    {
+                        isValid = false;
+
+                        if (errorMessageBuilder.Length > 0)
+                        {
+                            errorMessageBuilder.Append(", "); 
+                        }
+                        errorMessageBuilder.Append(settingName);
+                    }
+                }
+            }
+
+            if (!isValid)
+            {
+                // Set error message
+                TempData["ValidationErrors"] = string.Format("Invalid value for settings: {0}", errorMessageBuilder);
+            }
+
+            return isValid;
         }
 
         private void SetSettingsAvailableToAdmin(Dictionary<string, string> appSettings)
@@ -92,7 +155,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
             appSettings["SettingsAvailableToAdmin"] = settingsAvailableToAdmin.ToString();
         }
 
-        private CompanySettings FilterAvailableSettings()
+        private CompanySettings GetAvailableSettingsForUser()
         {
             var settings = _serverSettings.ServerData.GetType().GetAllProperties().OrderBy(s => s.Key);
 

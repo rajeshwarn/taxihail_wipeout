@@ -408,7 +408,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 ServerWatermarkText = "Staging Version";
             }
-            else if (serverTarget.Contains("localhost"))
+            else if (serverTarget.Contains("localhost") || serverTarget.Contains("apcurium.mk.web"))
             {
                 ServerWatermarkText = "Local Version";
             }

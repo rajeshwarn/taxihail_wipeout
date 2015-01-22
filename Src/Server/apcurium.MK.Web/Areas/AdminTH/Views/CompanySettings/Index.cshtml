@@ -9,6 +9,12 @@
         @TempData["Info"]
     </div>
 }
+@if (@TempData["ValidationErrors"] != null)
+{
+    <div class="alert alert-error" style="margin-top: 10px;">
+        @TempData["ValidationErrors"]
+    </div>
+}
 
 @using (Html.BeginForm("Update", "CompanySettings", FormMethod.Post))
 {
@@ -103,10 +109,8 @@
                     else
                     {
                         @Html.TextBox(setting.Key, settingValue, new { @class = "input-block-level", @style = "width:250px; margin-right:15px" })
+
                     }
-                </div>
-                <div class="validation-group">
-                    @Html.ValidationMessage(setting.Key)
                 </div>
             </div>
         }
