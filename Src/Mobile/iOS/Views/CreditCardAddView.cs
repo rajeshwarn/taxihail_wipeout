@@ -301,26 +301,34 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             {
                 base.ViewWillAppear(animated);
 
-                ChangeButtonsColorToCompanyColor();
+                // change navbar colors to PayPal light blue so we see it on the white background
+                var payPalLightBlue = UIColor.FromRGB(40, 155, 228);
+                ChangeNavBarButtonColor(payPalLightBlue);
             }
 
-            private void ChangeButtonsColorToCompanyColor()
+            public override void ViewWillDisappear(bool animated)
             {
-                var navBarButtonFont = UIFont.FromName (FontName.HelveticaNeueLight, 34/2);
+                base.ViewWillDisappear(animated);
 
-                var textColor = Theme.CompanyColor;
+                // revert navbar colors
+                ChangeNavBarButtonColor(Theme.LabelTextColor);
+            }
+
+            private void ChangeNavBarButtonColor(UIColor textColor)
+            {
+                var buttonFont = UIFont.FromName (FontName.HelveticaNeueLight, 34/2);
 
                 // set back/left/right button color
                 var buttonTextColor = new UITextAttributes 
                 {
-                    Font = navBarButtonFont,
+                    Font = buttonFont,
                     TextColor = textColor,
                     TextShadowColor = UIColor.Clear,
                     TextShadowOffset = new UIOffset(0,0)
                 };
                 var selectedButtonTextColor = new UITextAttributes
                 {
-                    Font = navBarButtonFont,
+                    Font = buttonFont,
                     TextColor = textColor.ColorWithAlpha(0.5f),
                     TextShadowColor = UIColor.Clear,
                     TextShadowOffset = new UIOffset(0,0)
@@ -329,34 +337,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 UIBarButtonItem.Appearance.SetTitleTextAttributes(buttonTextColor, UIControlState.Normal);
                 UIBarButtonItem.Appearance.SetTitleTextAttributes(selectedButtonTextColor, UIControlState.Highlighted);
                 UIBarButtonItem.Appearance.SetTitleTextAttributes(selectedButtonTextColor, UIControlState.Selected);
-            }
-
-            private void ChangeRightBarButtonFontToBold()
-            {
-                if (NavigationItem == null || NavigationItem.RightBarButtonItem == null)
-                {
-                    return;
-                }
-
-                var rightBarButtonFont = UIFont.FromName (FontName.HelveticaNeueMedium, 34/2);
-                var textColor = Theme.CompanyColor;
-
-                var buttonTextColor = new UITextAttributes () {
-                    Font = rightBarButtonFont,
-                    TextColor = textColor,
-                    TextShadowColor = UIColor.Clear,
-                    TextShadowOffset = new UIOffset(0,0)
-                };
-                var selectedButtonTextColor = new UITextAttributes () {
-                    Font = rightBarButtonFont,
-                    TextColor = textColor.ColorWithAlpha(0.5f),
-                    TextShadowColor = UIColor.Clear,
-                    TextShadowOffset = new UIOffset(0,0)
-                };
-
-                NavigationItem.RightBarButtonItem.SetTitleTextAttributes(buttonTextColor, UIControlState.Normal);
-                NavigationItem.RightBarButtonItem.SetTitleTextAttributes(selectedButtonTextColor, UIControlState.Highlighted);
-                NavigationItem.RightBarButtonItem.SetTitleTextAttributes(selectedButtonTextColor, UIControlState.Selected);
             }
         }
     }
