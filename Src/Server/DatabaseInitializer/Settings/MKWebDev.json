@@ -36,5 +36,6 @@
    "Smtp.Credentials.Username" : "TaxiHail",
    "VehicleTypeSelectionEnabled": "true",
    "CustomerPortal.Url": "http://test.taxihail.biz:8181/CustomerPortal/api/",
-   "IsTaxiHailPro": "true"
+   "IsTaxiHailPro": "true",
+   "AllowSimultaneousAppOrders": "true"
 }

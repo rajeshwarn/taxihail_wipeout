@@ -121,7 +121,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 var set = this.CreateBindingSet<BookingStatusView, BookingStatusViewModel>();
 
                 set.Bind(this)
-                    .For("StatusInfoText")
+                    .For(v => v.StatusInfoText)
                     .To(vm => vm.StatusInfoText);
 
                 set.Bind(lblConfirmation)
@@ -305,9 +305,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 btnCall.SetFrame (callFrame);
             }
         }
-
+            
 		public string StatusInfoText
 		{
+            get { return lblStatus.Text; }
 			set
 			{
 				if(lblStatus.Text != value)

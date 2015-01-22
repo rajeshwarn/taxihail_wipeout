@@ -82,7 +82,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             }
         }
 
-        private IEnumerable<ListItem> _data; 
+        private IEnumerable<ListItem> _data;
         public IEnumerable<ListItem> Data
         {
             get { return _data; }
