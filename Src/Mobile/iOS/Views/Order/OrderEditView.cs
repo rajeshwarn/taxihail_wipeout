@@ -104,7 +104,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
                 .To(vm => vm.PickupAddress.RingCode);
 
             set.BindSafe(txtChargeType)
-                .For("Text")
                 .To(vm => vm.ChargeTypeName);
 
 			set.BindSafe(txtChargeType)
