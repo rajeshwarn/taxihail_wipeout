@@ -130,7 +130,7 @@
     <Compile Include="Jobs\IUpdateOrderStatusJob.cs" />
     <Compile Include="Jobs\OrderStatusUpdater.cs" />
     <Compile Include="Jobs\UpdateOrderStatusJob.cs" />
-    <Compile Include="Payment\ExpressCheckoutServiceFactory.cs" />
+    <Compile Include="Payment\PayPalServiceFactory.cs" />
     <Compile Include="Payment\IBSOrderService.cs" />
     <Compile Include="Providers\TariffProvider.cs" />
     <Compile Include="Module.cs" />

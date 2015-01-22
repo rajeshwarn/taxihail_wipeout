@@ -36,7 +36,7 @@ namespace apcurium.MK.Booking.Api
                 new PopularAddressProvider(container.Resolve<IPopularAddressDao>()));
             container.RegisterInstance<ITariffProvider>(new TariffProvider(container.Resolve<ITariffDao>()));
 
-            container.RegisterType<ExpressCheckoutServiceFactory, ExpressCheckoutServiceFactory>();
+            container.RegisterType<PayPalServiceFactory, PayPalServiceFactory>();
             container.RegisterType<IIbsOrderService, IbsOrderService>();
 
             container.RegisterType<OrderStatusUpdater, OrderStatusUpdater>();

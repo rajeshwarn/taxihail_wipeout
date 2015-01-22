@@ -381,10 +381,6 @@
       <Project>{C41EA1B3-0E19-41AE-8EFC-AE242532B248}</Project>
       <Name>MK.Booking.Maps</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\MK.Booking.PayPal\MK.Booking.PayPal.csproj">
-      <Project>{910BC792-5EC8-4E56-82C9-95B1D6F4E84A}</Project>
-      <Name>MK.Booking.PayPal</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\MK.Common\MK.Common.csproj">
       <Project>{65033050-1D55-465A-A772-F3192F9E2428}</Project>
       <Name>MK.Common</Name>

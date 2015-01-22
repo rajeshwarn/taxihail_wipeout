@@ -29,6 +29,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
         private const int CardIOScanRequestCode = 981288735; // TODO: Handle arbitrary number in a better way
         private const int LinkPayPalAccountRequestCode = 481516234;
 
+        private ClientPaymentSettings _paymentSettings;
         private static readonly PayPalConfiguration PayPalConfiguration = new PayPalConfiguration();
 
         protected override async void OnViewModelSet()
@@ -43,7 +44,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
 
             SetContentView(Resource.Layout.View_Payments_CreditCardAdd);
             
-
             var btnScanCard = FindViewById<Button>(Resource.Id.ScanCreditCardButton);
 
             if (CardIOActivity.CanReadCardWithCamera() && !string.IsNullOrWhiteSpace(this.Services().Settings.CardIOToken))
@@ -63,10 +63,23 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
                 btnScanCard.Visibility = ViewStates.Gone;
             }
 
-            HandlePaypalButtonsVisibility();
+            _paymentSettings = await Mvx.Resolve<IPaymentService>().GetPaymentSettings();
+
+            SetUpPayPal();
 		}
 
-        private async void HandlePaypalButtonsVisibility()
+        protected override void OnDestroy()
+        {
+            if (_paymentSettings.PayPalClientSettings.IsEnabled)
+            {
+                // Stop service when done
+                StopService(new Intent(this, typeof(PayPalService)));
+            }
+            
+            base.OnDestroy();
+        }
+
+        private void SetUpPayPal()
         {
             var mainScrollView = FindViewById<ScrollView>(Resource.Id.MainScrollView);
             var paypalSeparator = FindViewById<LinearLayout>(Resource.Id.PayPalSeparator);
@@ -75,8 +88,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
             var btnPayPalOnlyLinkAccount = FindViewById<Button>(Resource.Id.PayPalOnlyLinkAccountButton);
             var btnPayPalOnlyUnlinkAccount = FindViewById<Button>(Resource.Id.PayPalOnlyUnlinkAccountButton);
 
-            var paymentSettings = await Mvx.Resolve<IPaymentService>().GetPaymentSettings();
-            if (paymentSettings.IsPayInTaxiEnabled)
+            
+            if (_paymentSettings.IsPayInTaxiEnabled)
             {
                 btnPayPalOnlyLinkAccount.Visibility = ViewStates.Gone;
                 btnPayPalOnlyUnlinkAccount.Visibility = ViewStates.Gone;
@@ -87,9 +100,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
             }
 
             // Use PayPal settings
-            if (paymentSettings.PayPalClientSettings.IsEnabled)
+            if (_paymentSettings.PayPalClientSettings.IsEnabled)
             {
-                SetUpPayPalService(paymentSettings.PayPalClientSettings);
+                SetUpPayPalService(_paymentSettings.PayPalClientSettings);
 
                 btnLinkPayPalAccount.Click += (sender, e) => LinkPayPayAccount();
                 btnUnlinkPayPalAccount.Click += (sender, e) => ViewModel.UnLinkPayPalAccount();

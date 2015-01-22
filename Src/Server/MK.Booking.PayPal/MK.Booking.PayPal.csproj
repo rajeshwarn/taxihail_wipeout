@@ -45,18 +45,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ExpressCheckoutException.cs" />
-    <Compile Include="ExpressCheckoutServiceClient.cs" />
-    <Compile Include="PayPalAPIInterfaceService.cs" />
+    <Compile Include="PayPalException.cs" />
+    <Compile Include="PayPalServiceClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="GenerateWSDL.bat" />
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="README.txt" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MK.Common\MK.Common.csproj">

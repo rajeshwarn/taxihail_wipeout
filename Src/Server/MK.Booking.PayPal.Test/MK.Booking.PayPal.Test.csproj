@@ -46,15 +46,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ExpressCheckoutServiceClientFixture.cs" />
     <Compile Include="PayPalApiTestFixture.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\MK.Booking.PayPal\MK.Booking.PayPal.csproj">
-      <Project>{910bc792-5ec8-4e56-82c9-95b1d6f4e84a}</Project>
-      <Name>MK.Booking.PayPal</Name>
-    </ProjectReference>
     <ProjectReference Include="..\MK.Common\MK.Common.csproj">
       <Project>{65033050-1D55-465A-A772-F3192F9E2428}</Project>
       <Name>MK.Common</Name>
