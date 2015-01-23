@@ -1,6 +1,7 @@
 ﻿using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Services.Impl;
 using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Diagnostic;
 using Infrastructure.Messaging;
 using Microsoft.Practices.Unity;
 
@@ -18,7 +19,7 @@ namespace apcurium.MK.Booking.Services
         public PayPalService GetInstance()
         {
             return new PayPalService(_container.Resolve<IServerSettings>(), _container.Resolve<ICommandBus>(),
-                _container.Resolve<IAccountDao>());
+                _container.Resolve<IAccountDao>(), _container.Resolve<ILogger>());
         }
     }
 }
