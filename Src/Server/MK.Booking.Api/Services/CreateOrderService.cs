@@ -22,6 +22,7 @@ using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
+using apcurium.MK.Common.Resources;
 using AutoMapper;
 using CustomerPortal.Client;
 using Infrastructure.EventSourcing;
@@ -44,6 +45,7 @@ namespace apcurium.MK.Booking.Api.Services
         private readonly IAccountDao _accountDao;
         private readonly IOrderDao _orderDao;
         private readonly IPaymentServiceFactory _paymentServiceFactory;
+        private readonly IPayPalServiceFactory _paypalServiceFactory;
         private readonly ICreditCardDao _creditCardDao;
         private readonly IPromotionDao _promotionDao;
         private readonly IEventSourcedRepository<Promotion> _promoRepository;
@@ -68,6 +70,7 @@ namespace apcurium.MK.Booking.Api.Services
             IAccountChargeDao accountChargeDao,
             IOrderDao orderDao,
             IPaymentServiceFactory paymentServiceFactory,
+            IPayPalServiceFactory paypalServiceFactory,
             ICreditCardDao creditCardDao,
             IPromotionDao promotionDao,
             IEventSourcedRepository<Promotion> promoRepository,
@@ -84,6 +87,7 @@ namespace apcurium.MK.Booking.Api.Services
             _updateOrderStatusJob = updateOrderStatusJob;
             _orderDao = orderDao;
             _paymentServiceFactory = paymentServiceFactory;
+            _paypalServiceFactory = paypalServiceFactory;
             _creditCardDao = creditCardDao;
             _promotionDao = promotionDao;
             _promoRepository = promoRepository;
@@ -144,12 +148,7 @@ namespace apcurium.MK.Booking.Api.Services
                 }
             }
 
-            // Payment mode is card on file
-            if (request.Settings.ChargeTypeId.HasValue
-                && request.Settings.ChargeTypeId.Value == ChargeTypes.CardOnFile.Id)
-            {
-                ValidateCreditCard(request.Id, account, request.ClientLanguageCode, isFutureBooking);
-            }
+            ValidatePayment(request, account, isFutureBooking);
 
             bool isChargeAccountPaymentWithCardOnFile = false;
             var chargeTypeKey = ChargeTypes.GetList()
@@ -175,8 +174,9 @@ namespace apcurium.MK.Booking.Api.Services
                             _resources.Get("CannotCreateOrderChargeAccountNotSupported", request.ClientLanguageCode));
                     }
 
-                    ValidateCreditCard(request.Id, account, request.ClientLanguageCode, isFutureBooking);
+                    ValidatePayment(request, account, isFutureBooking);
                     
+                    // TODO CHECK IF PAYPAL OR NOT
                     chargeTypeKey = ChargeTypes.CardOnFile.Display;
                     request.Settings.ChargeTypeId = ChargeTypes.CardOnFile.Id;
                     isChargeAccountPaymentWithCardOnFile = true;
@@ -501,6 +501,23 @@ namespace apcurium.MK.Booking.Api.Services
             return ibsAccountId.Value;
         }
 
+        private void ValidatePayment(CreateOrder request, AccountDetail account, bool isFutureBooking)
+        {
+            // Payment mode is CardOnFile
+            if (request.Settings.ChargeTypeId.HasValue
+                && request.Settings.ChargeTypeId.Value == ChargeTypes.CardOnFile.Id)
+            {
+                ValidateCreditCard(request.Id, account, request.ClientLanguageCode, isFutureBooking);
+            }
+
+            // Payment mode is PayPal
+            if (request.Settings.ChargeTypeId.HasValue
+                && request.Settings.ChargeTypeId.Value == ChargeTypes.PayPal.Id)
+            {
+                ValidatePayPal(request.Id, account, request.ClientLanguageCode, isFutureBooking);
+            }
+        }
+
         private void ValidateCreditCard(Guid orderId, AccountDetail account, string clientLanguageCode, bool isFutureBooking)
         {
             // check if the account has a credit card
@@ -511,23 +528,51 @@ namespace apcurium.MK.Booking.Api.Services
                     GetCreateOrderServiceErrorMessage(ErrorCode.CreateOrder_CardOnFileButNoCreditCard, clientLanguageCode));
             }
 
+            PreAuthorizePaymentMethod(orderId, account, clientLanguageCode, isFutureBooking, false);
+        }
+
+        private void ValidatePayPal(Guid orderId, AccountDetail account, string clientLanguageCode, bool isFutureBooking)
+        {
+            if (!_serverSettings.GetPaymentSettings().PayPalClientSettings.IsEnabled
+                    || !account.IsPayPalAccountLinked)
+            {
+                throw new HttpError(HttpStatusCode.BadRequest,
+                    ErrorCode.CreateOrder_RuleDisable.ToString(),
+                     _resources.Get("CannotCreateOrder_PayPalButNoPayPal", clientLanguageCode));
+            }
+
+            PreAuthorizePaymentMethod(orderId, account, clientLanguageCode, isFutureBooking, true);
+        }
+
+        private void PreAuthorizePaymentMethod(Guid orderId, AccountDetail account, string clientLanguageCode, bool isFutureBooking, bool isPayPal)
+        {
             if (!_serverSettings.GetPaymentSettings().IsPreAuthEnabled || isFutureBooking)
             {
                 return;
             }
 
-            // try to preauthorize a small amount on the card to verify the validity
-            var card = _creditCardDao.FindByAccountId(account.Id).First();
-
             // there's a minimum amount of $50 (warning indicating that on the admin ui)
             var preAuthAmount = Math.Max(_serverSettings.GetPaymentSettings().PreAuthAmount ?? 0, 50);
 
-            var preAuthResponse = _paymentServiceFactory.GetInstance().PreAuthorize(orderId, account.Email, card.Token, preAuthAmount);
-            
+            PreAuthorizePaymentResponse preAuthResponse;
+            string errorMessage;
+            if (isPayPal)
+            {
+                preAuthResponse = _paypalServiceFactory.GetInstance().PreAuthorize(account.Id, orderId, account.Email, preAuthAmount);
+                errorMessage = _resources.Get("CannotCreateOrder_PayPalWasDeclined", clientLanguageCode);
+            }
+            else
+            {
+                // try to preauthorize a small amount on the card to verify the validity
+                var card = _creditCardDao.FindByAccountId(account.Id).First();
+
+                preAuthResponse = _paymentServiceFactory.GetInstance().PreAuthorize(orderId, account.Email, card.Token, preAuthAmount);
+                errorMessage = _resources.Get("CannotCreateOrder_CreditCardWasDeclined", clientLanguageCode);
+            }
+
             if (!preAuthResponse.IsSuccessful)
             {
-                throw new HttpError(HttpStatusCode.BadRequest, ErrorCode.CreateOrder_RuleDisable.ToString(),
-                    _resources.Get("CannotCreateOrder_CreditCardWasDeclined", clientLanguageCode));
+                throw new HttpError(HttpStatusCode.BadRequest, ErrorCode.CreateOrder_RuleDisable.ToString(), errorMessage);
             }
         }
         

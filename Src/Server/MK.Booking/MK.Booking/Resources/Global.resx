@@ -396,6 +396,9 @@
   <data name="CannotCreateOrder_CreditCardWasDeclined" xml:space="preserve">
     <value>The order cannot be created because your credit card failed the preauthorization check.</value>
   </data>
+  <data name="CannotCreateOrder_PayPalWasDeclined" xml:space="preserve">
+    <value>The order cannot be created because your PayPal account failed the preauthorization check.</value>
+  </data>
   <data name="PushNotification_ChangeNetworkCompany" xml:space="preserve">
     <value>Due to high demand, no cars are available right now. Do you want to book with {0} instead?</value>
   </data>
@@ -494,6 +497,9 @@
   </data>
   <data name="ServiceErrorCreateOrder_CardOnFileButNoCreditCard" xml:space="preserve">
     <value>No Credit Card On File.</value>
+  </data>
+  <data name="CannotCreateOrder_PayPalButNoPayPal" xml:space="preserve">
+    <value>No PayPal account linked</value>
   </data>
   <data name="ServiceErrorCreateOrder_InvalidProvider" xml:space="preserve">
     <value>Order cannot be created, invalid provider. Please contact {0} at {1} for further assistance.</value>

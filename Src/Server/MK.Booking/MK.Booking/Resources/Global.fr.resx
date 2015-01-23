@@ -394,7 +394,10 @@
     <value>Votre commande ne peut pas être prise en compte, vous devez mettre à jour l'application.</value>
   </data>
   <data name="CannotCreateOrder_CreditCardWasDeclined" xml:space="preserve">
-    <value>Votre commande ne peut pas être prise en compte, la préauthorisation de votre carte de crédit a échouée.</value>
+    <value>Votre commande ne peut pas être prise en compte, la préauthorisation de votre carte de crédit a échoué.</value>
+  </data>
+  <data name="CannotCreateOrder_PayPalWasDeclined" xml:space="preserve">
+    <value>Votre commande ne peut pas être prise en compte, la préauthorisation de votre compte PayPal a échoué.</value>
   </data>
   <data name="PushNotification_ChangeNetworkCompany" xml:space="preserve">
     <value>En raison d'un grand nombre de demandes, aucun véhicule n'est disponible présentement. Désirez-vous passer une commande avec {0}?</value>
@@ -500,6 +503,9 @@
   </data>
   <data name="ServiceErrorCreateOrder_CardOnFileButNoCreditCard" xml:space="preserve">
     <value>Aucune carte de crédit enregistrée dans votre compte.</value>
+  </data>
+  <data name="CannotCreateOrder_PayPalButNoPayPal" xml:space="preserve">
+    <value>Aucun compte PayPal enregistré dans votre compte.</value>
   </data>
   <data name="ServiceErrorCreateOrder_InvalidProvider" xml:space="preserve">
     <value>La commande ne peut être créé car le fournisseur est invalide. Merci de contacter {0} à {1} pour plus d'assistance.</value>

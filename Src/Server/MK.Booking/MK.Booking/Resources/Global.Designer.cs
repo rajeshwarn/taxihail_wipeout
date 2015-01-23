@@ -88,6 +88,24 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No PayPal account linked.
+        /// </summary>
+        public static string CannotCreateOrder_PayPalButNoPayPal {
+            get {
+                return ResourceManager.GetString("CannotCreateOrder_PayPalButNoPayPal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The order cannot be created because your PayPal account failed the preauthorization check..
+        /// </summary>
+        public static string CannotCreateOrder_PayPalWasDeclined {
+            get {
+                return ResourceManager.GetString("CannotCreateOrder_PayPalWasDeclined", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to This promotion does not applies to future booking.
         /// </summary>
         public static string CannotCreateOrder_PromotionAppliesToCurrentBookingOnly {
