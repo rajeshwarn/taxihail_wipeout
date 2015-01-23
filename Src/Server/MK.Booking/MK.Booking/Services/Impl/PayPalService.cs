@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
@@ -6,6 +7,7 @@ using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Resources;
 using apcurium.MK.Common.Diagnostic;
 using Infrastructure.Messaging;
+//using PayPal.Api;
 using PayPal.Api;
 
 namespace apcurium.MK.Booking.Services.Impl
@@ -44,14 +46,14 @@ namespace apcurium.MK.Booking.Services.Impl
                 var tokenInfo = Tokeninfo.CreateFromAuthorizationCodeForFuturePayments(GetAPIContext(), authorizationCodeParameters);
 
                 //test
-                var accessTokenParameters = new CreateFromRefreshTokenParameters();
-                accessTokenParameters.SetRefreshToken(tokenInfo.refresh_token);
+                //var accessTokenParameters = new CreateFromRefreshTokenParameters();
+                //accessTokenParameters.SetRefreshToken(tokenInfo.refresh_token);
 
-                var to = new Tokeninfo().CreateFromRefreshToken(GetAPIContext(), accessTokenParameters);
-                if (to != null)
-                {
+                //var to = new Tokeninfo().CreateFromRefreshToken(GetAPIContext(), accessTokenParameters);
+                //if (to != null)
+                //{
                     
-                }
+                //}
 
                 _commandBus.Send(new LinkPayPalAccount
                 {
@@ -125,18 +127,6 @@ namespace apcurium.MK.Booking.Services.Impl
                 : paymentSettings.PayPalServerSettings.Credentials.Secret; 
         }
 
-        private string GetAccessToken()
-        {
-            // ###AccessToken
-            // Retrieve the access token from
-            // OAuthTokenCredential by passing in
-            // ClientID and ClientSecret
-            // It is not mandatory to generate Access Token on a per call basis.
-            // Typically the access token can be generated once and
-            // reused within the expiry window                
-            return new OAuthTokenCredential(GetClientId(), GetSecret()).GetAccessToken();
-        }
-
         // Returns APIContext object
         public APIContext GetAPIContext(string accessToken = "", Guid? orderId = null)
         {
@@ -146,11 +136,35 @@ namespace apcurium.MK.Booking.Services.Impl
             // (that ensures idempotency). The SDK generates
             // a request id if you do not pass one explicitly.
 
-            if (orderId.HasValue)
-            {
-                return new APIContext(string.IsNullOrEmpty(accessToken) ? GetAccessToken() : accessToken, orderId.ToString());
-            }
-            return new APIContext(string.IsNullOrEmpty(accessToken) ? GetAccessToken() : accessToken);
+            var apiContext = orderId.HasValue
+                ? new APIContext(string.IsNullOrEmpty(accessToken) ? GetAccessToken() : accessToken, orderId.ToString())
+                : new APIContext(string.IsNullOrEmpty(accessToken) ? GetAccessToken() : accessToken);
+            
+            apiContext.Config = GetConfig();
+
+            return apiContext;
+        }
+
+        private string GetAccessToken()
+        {
+            // ###AccessToken
+            // Retrieve the access token from
+            // OAuthTokenCredential by passing in
+            // ClientID and ClientSecret
+            // It is not mandatory to generate Access Token on a per call basis.
+            // Typically the access token can be generated once and
+            // reused within the expiry window
+            return new OAuthTokenCredential(GetClientId(), GetSecret(), GetConfig()).GetAccessToken();
+        }
+
+        public Dictionary<string, string> GetConfig()
+        {
+            var payPalConfig = ConfigManager.Instance.GetProperties();
+
+            var paymentSettings = _serverSettings.GetPaymentSettings();
+            payPalConfig.Add("mode", paymentSettings.PayPalClientSettings.IsSandbox ? BaseConstants.SandboxMode : BaseConstants.LiveMode);
+
+            return payPalConfig;
         }
     }
 }

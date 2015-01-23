@@ -94,8 +94,9 @@
     <Reference Include="Nustache.i18n">
       <HintPath>..\..\packages\Nustache.i18n.1.0.0\lib\net40\Nustache.i18n.dll</HintPath>
     </Reference>
-    <Reference Include="PayPal">
-      <HintPath>..\..\packages\PayPal.1.2.2\lib\net45\PayPal.dll</HintPath>
+    <Reference Include="PayPal, Version=1.2.2.0, Culture=neutral, PublicKeyToken=5b4afc1ccaef40fb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Users\mathieu.savaria\Desktop\packages\PayPal.1.2.2\lib\net45\PayPal.dll</HintPath>
     </Reference>
     <Reference Include="PreMailer.Net">
       <HintPath>..\..\packages\PreMailer.Net.1.2.7\lib\net40\PreMailer.Net.dll</HintPath>
