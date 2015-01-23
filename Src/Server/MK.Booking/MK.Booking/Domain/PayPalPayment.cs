@@ -23,9 +23,6 @@ namespace apcurium.MK.Booking.Domain
         protected PayPalPayment(Guid id)
             : base(id)
         {
-            Handles<PayPalExpressCheckoutPaymentInitiated>(OnPayPalExpressCheckoutPaymentInitiated);
-            Handles<PayPalExpressCheckoutPaymentCancelled>(OnPayPalExpressCheckoutPaymentCancelled);
-            Handles<PayPalExpressCheckoutPaymentCompleted>(OnPayPalExpressCheckoutPaymentCompleted);
             Handles<PayPalPaymentCancellationFailed>(NoAction);
         }
 
@@ -42,45 +39,15 @@ namespace apcurium.MK.Booking.Domain
                 throw new InvalidOperationException("token cannot be null");
             }
 
-            Update(new PayPalExpressCheckoutPaymentInitiated
-            {
-                OrderId = orderId,
-                Token = token,
-                Amount = amount,
-                Meter = meter,
-                Tip = tip,
-                Tax = tax
-            });
-        }
-
-        public void Cancel()
-        {
-            if (_completed)
-            {
-                throw new InvalidOperationException("Payment is completed");
-            }
-
-            Update(new PayPalExpressCheckoutPaymentCancelled());
-        }
-        
-        public void Complete(string transactionId, string payerId)
-        {
-            if (_cancelled)
-            {
-                throw new InvalidOperationException("Payment is cancelled");
-            }
-
-            Update(new PayPalExpressCheckoutPaymentCompleted
-            {
-                PayPalPayerId = payerId,
-                TransactionId = transactionId,
-                OrderId = _orderId,
-                Token = _token,
-                Amount = _amount,
-                Meter = _meter,
-                Tip = _tip,
-                Tax = _tax
-            });
+            //Update(new PayPalExpressCheckoutPaymentInitiated
+            //{
+            //    OrderId = orderId,
+            //    Token = token,
+            //    Amount = amount,
+            //    Meter = meter,
+            //    Tip = tip,
+            //    Tax = tax
+            //});
         }
 
         public void LogCancellationError(string reason)
@@ -89,26 +56,6 @@ namespace apcurium.MK.Booking.Domain
             {
                 Reason = reason
             });
-        }
-
-        private void OnPayPalExpressCheckoutPaymentCancelled(PayPalExpressCheckoutPaymentCancelled obj)
-        {
-            _cancelled = true;
-        }
-
-        private void OnPayPalExpressCheckoutPaymentCompleted(PayPalExpressCheckoutPaymentCompleted obj)
-        {
-            _completed = true;
-        }
-
-        private void OnPayPalExpressCheckoutPaymentInitiated(PayPalExpressCheckoutPaymentInitiated obj)
-        {
-            _orderId = obj.OrderId;
-            _token = obj.Token;
-            _amount = obj.Amount;
-            _tip = obj.Tip;
-            _meter = obj.Meter;
-            _tax = obj.Tax;
         }
     }
 }

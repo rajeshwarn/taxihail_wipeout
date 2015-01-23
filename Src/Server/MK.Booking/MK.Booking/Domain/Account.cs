@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
@@ -48,6 +49,8 @@ namespace apcurium.MK.Booking.Domain
             Handles<UserTaxiHailNetworkSettingsAddedOrUpdated>(NoAction);
             Handles<AccountLinkedToIbs>(NoAction);
             Handles<AccountUnlinkedFromIbs>(NoAction);
+            Handles<PayPalAccountLinked>(NoAction);
+            Handles<PayPalAccountUnlinked>(NoAction);
         }
 
         public Account(Guid id, IEnumerable<IVersionedEvent> history)
@@ -416,6 +419,16 @@ namespace apcurium.MK.Booking.Domain
         public void UnlinkFromIbs()
         {
             Update(new AccountUnlinkedFromIbs());
+        }
+
+        public void LinkPayPalAccount(string authCode)
+        {
+            Update(new PayPalAccountLinked{ AuthCode = authCode });
+        }
+
+        public void UnlinkPayPalAccount()
+        {
+            Update(new PayPalAccountUnlinked());
         }
     }
 }

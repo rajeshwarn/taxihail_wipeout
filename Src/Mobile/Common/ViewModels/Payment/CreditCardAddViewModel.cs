@@ -358,7 +358,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
         {
             try
             {
-                _payPalService.LinkAccount(authCode);
+                _payPalService.LinkAccount(_accountService.CurrentAccount.Id, authCode);
                 
                 DeleteCreditCard(false);
             }
@@ -390,7 +390,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
             try
             {
-                _payPalService.UnLinkAccount();
+                _payPalService.UnLinkAccount(_accountService.CurrentAccount.Id);
                 IsPayPalAccountLinked = false;
             }
             catch (Exception ex)
@@ -597,7 +597,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
         {
             try
             {
-                _accountService.UpdateSettings(account.Settings, account.DefaultCreditCard, account.DefaultTipPercent);
+                _accountService.UpdateSettings(account.Settings, account.DefaultCreditCard, account.DefaultTipPercent, account.IsPayPalAccountLinked);
 
                 return true;
             }

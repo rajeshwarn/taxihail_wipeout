@@ -130,7 +130,6 @@
     <Compile Include="Jobs\IUpdateOrderStatusJob.cs" />
     <Compile Include="Jobs\OrderStatusUpdater.cs" />
     <Compile Include="Jobs\UpdateOrderStatusJob.cs" />
-    <Compile Include="Payment\PayPalServiceFactory.cs" />
     <Compile Include="Payment\IBSOrderService.cs" />
     <Compile Include="Providers\TariffProvider.cs" />
     <Compile Include="Module.cs" />
@@ -161,7 +160,6 @@
     <Compile Include="Services\ConfigurationsService.cs" />
     <Compile Include="Services\ConfirmAccountService.cs" />
     <Compile Include="Services\Payment\PaymentSettingsService.cs" />
-    <Compile Include="Services\Payment\PayPalService.cs" />
     <Compile Include="Services\NotificationAdministrationService.cs" />
     <Compile Include="Services\PrivacyPolicyService.cs" />
     <Compile Include="Services\PromotionService.cs" />
@@ -260,10 +258,6 @@
     <ProjectReference Include="..\MK.Booking.Maps\MK.Booking.Maps.csproj">
       <Project>{c41ea1b3-0e19-41ae-8efc-ae242532b248}</Project>
       <Name>MK.Booking.Maps</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\MK.Booking.PayPal\MK.Booking.PayPal.csproj">
-      <Project>{910bc792-5ec8-4e56-82c9-95b1d6f4e84a}</Project>
-      <Name>MK.Booking.PayPal</Name>
     </ProjectReference>
     <ProjectReference Include="..\MK.Booking\MK.Booking.Commands\MK.Booking.Commands.csproj">
       <Project>{20AEA350-AD91-4053-A8B5-582E13ED43AA}</Project>

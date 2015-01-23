@@ -12,7 +12,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 {
 	public interface IAccountService
     {        
-        Task UpdateSettings(BookingSettings settings, Guid? creditCardId, int? tipPercent);
+        Task UpdateSettings(BookingSettings settings, Guid? creditCardId, int? tipPercent, bool? isPayPalAccountLinked = null);
         
 		void UpdateAccountNumber (string accountNumber);
 

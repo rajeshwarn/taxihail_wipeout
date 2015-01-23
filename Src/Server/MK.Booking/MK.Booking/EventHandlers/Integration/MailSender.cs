@@ -21,7 +21,6 @@ using Infrastructure.Messaging.Handling;
 namespace apcurium.MK.Booking.EventHandlers.Integration
 {
     public class MailSender : IIntegrationEventHandler,
-        IEventHandler<PayPalExpressCheckoutPaymentCompleted>,
         IEventHandler<CreditCardPaymentCaptured_V2>
     {
         private readonly ICommandBus _commandBus;
@@ -50,11 +49,6 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             }
 
             SendReceipt(@event.OrderId, @event.Meter, @event.Tip, @event.Tax, @event.AmountSavedByPromotion);
-        }
-
-        public void Handle(PayPalExpressCheckoutPaymentCompleted @event)
-        {
-            SendReceipt(@event.OrderId, @event.Meter, @event.Tip, @event.Tax);
         }
 
         private void SendReceipt(Guid orderId, decimal meter, decimal tip, decimal tax, decimal amountSavedByPromotion = 0m)

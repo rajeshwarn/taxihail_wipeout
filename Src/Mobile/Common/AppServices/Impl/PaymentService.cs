@@ -96,11 +96,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			return await GetClient().ForgetTokenizedCard(cardToken);
         }
 
-        public async Task<CommitPreauthorizedPaymentResponse> CommitPayment(string cardToken, double amount, double meterAmount, double tipAmount, Guid orderId)
-        {
-			return await GetClient().CommitPayment(cardToken, amount, meterAmount, tipAmount, orderId);
-        }
-
         public async Task<PairingResponse> Pair(Guid orderId, string cardToken, int? autoTipPercentage, double? autoTipAmount)
         {
 			return await GetClient().Pair(orderId, cardToken, autoTipPercentage, autoTipAmount);

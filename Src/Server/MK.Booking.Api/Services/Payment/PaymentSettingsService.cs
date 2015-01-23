@@ -68,14 +68,15 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 
             try
             {
-                if (PayPalService.TestClient(_serverSettings, RequestContext, request.ServerCredentials, false))
-                {
-                    return new TestServerPaymentSettingsResponse
-                    {
-                        IsSuccessful = true,
-                        Message = "Paypal Production Credentials are valid\n"
-                    };
-                }
+                // TODO
+                //if (PayPalService.TestClient(_serverSettings, RequestContext, request.ServerCredentials, false))
+                //{
+                //    return new TestServerPaymentSettingsResponse
+                //    {
+                //        IsSuccessful = true,
+                //        Message = "Paypal Production Credentials are valid\n"
+                //    };
+                //}
             }
             catch (Exception e)
             {
@@ -94,14 +95,15 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 
             try
             {
-                if (PayPalService.TestClient(_serverSettings, RequestContext, request.ServerCredentials, true))
-                {
-                    return new TestServerPaymentSettingsResponse
-                    {
-                        IsSuccessful = true,
-                        Message = "Paypal Sandbox Credentials are valid\n"
-                    };
-                }
+                // TODO
+                //if (PayPalService.TestClient(_serverSettings, RequestContext, request.ServerCredentials, true))
+                //{
+                //    return new TestServerPaymentSettingsResponse
+                //    {
+                //        IsSuccessful = true,
+                //        Message = "Paypal Sandbox Credentials are valid\n"
+                //    };
+                //}
             }
             catch (Exception e)
             {

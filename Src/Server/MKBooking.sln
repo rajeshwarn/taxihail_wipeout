@@ -75,8 +75,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HoneyBadger", "HoneyBadger\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HoneyBadger.Test", "HoneyBadger.Test\HoneyBadger.Test.csproj", "{E1008E0A-32C7-414E-BF90-96DE7A790F85}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MK.Booking.PayPal", "MK.Booking.PayPal\MK.Booking.PayPal.csproj", "{910BC792-5EC8-4E56-82C9-95B1D6F4E84A}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -396,16 +394,6 @@ Global
 		{E1008E0A-32C7-414E-BF90-96DE7A790F85}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E1008E0A-32C7-414E-BF90-96DE7A790F85}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{E1008E0A-32C7-414E-BF90-96DE7A790F85}.Release|x86.ActiveCfg = Release|Any CPU
-		{910BC792-5EC8-4E56-82C9-95B1D6F4E84A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{910BC792-5EC8-4E56-82C9-95B1D6F4E84A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{910BC792-5EC8-4E56-82C9-95B1D6F4E84A}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{910BC792-5EC8-4E56-82C9-95B1D6F4E84A}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{910BC792-5EC8-4E56-82C9-95B1D6F4E84A}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{910BC792-5EC8-4E56-82C9-95B1D6F4E84A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{910BC792-5EC8-4E56-82C9-95B1D6F4E84A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{910BC792-5EC8-4E56-82C9-95B1D6F4E84A}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{910BC792-5EC8-4E56-82C9-95B1D6F4E84A}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{910BC792-5EC8-4E56-82C9-95B1D6F4E84A}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -439,7 +427,6 @@ Global
 		{5FD750A2-EE19-4A80-9B38-32ADBF03765A} = {14455101-7665-4CD6-A9F7-235BF1C50A6E}
 		{1C2F9D8B-7B65-4D2E-A099-D0040907D59C} = {14455101-7665-4CD6-A9F7-235BF1C50A6E}
 		{E1008E0A-32C7-414E-BF90-96DE7A790F85} = {E0F34126-87A5-46FA-AE8A-6EEEC29C7B79}
-		{910BC792-5EC8-4E56-82C9-95B1D6F4E84A} = {853645BA-A2C2-4E59-B65E-70A64FB59904}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.0\lib\NET35;packages\Unity.Interception.2.1.505.0\lib\NET35;packages\EnterpriseLibrary.Common.5.0.505.0\lib\NET35;packages\TransientFaultHandling.Core.5.0.1118.2\lib\NET35;packages\EnterpriseLibrary.WindowsAzure.TransientFaultHandling.5.0.1118.2\lib\NET4;packages\EnterpriseLibrary.WindowsAzure.TransientFaultHandling.5.0.1118.2\DesignTime;packages\Unity.2.1.505.2\lib\NET35

@@ -45,19 +45,6 @@ namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments
             return result;
         }
 
-        public Task<CommitPreauthorizedPaymentResponse> CommitPayment(string cardToken, double amount,
-            double meterAmount, double tipAmount, Guid orderId)
-        {
-            return Client.PostAsync(new CommitPaymentRequest
-            {
-                Amount = Convert.ToDecimal(amount),
-                MeterAmount = Convert.ToDecimal(meterAmount),
-                TipAmount = Convert.ToDecimal(tipAmount),
-                CardToken = cardToken,
-                OrderId = orderId
-            });
-        }
-
         public Task ResendConfirmationToDriver(Guid orderId)
         {
             return Client.PostAsync<string>("/payment/ResendConfirmationRequest", new ResendPaymentConfirmationRequest { OrderId = orderId });

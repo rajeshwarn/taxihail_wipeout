@@ -45,19 +45,6 @@ namespace apcurium.MK.Booking.Api.Client.Payments.Braintree
                 CardToken = cardToken,
             });
         }
-        
-        public Task<CommitPreauthorizedPaymentResponse> CommitPayment(string cardToken, double amount,
-            double meterAmount, double tipAmount, Guid orderId)
-        {
-			return Client.PostAsync(new CommitPaymentRequest
-            {
-                Amount = (decimal) amount,
-                MeterAmount = (decimal) meterAmount,
-                TipAmount = (decimal) tipAmount,
-                CardToken = cardToken,
-                OrderId = orderId
-            });
-        }
 
         public async Task<PairingResponse> Pair(Guid orderId, string cardToken, int? autoTipPercentage, double? autoTipAmount)
         {

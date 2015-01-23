@@ -13,7 +13,6 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
 {
     public class OrderPaymentManager :
         IIntegrationEventHandler,
-        IEventHandler<PayPalExpressCheckoutPaymentCompleted>,
         IEventHandler<CreditCardPaymentCaptured_V2>,
         IEventHandler<OrderCancelled>,
         IEventHandler<OrderSwitchedToNextDispatchCompany>,
@@ -41,20 +40,6 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             _ibs = ibs;
             _serverSettings = serverSettings;
             _paymentServiceFactory = paymentServiceFactory;
-        }
-
-        public void Handle(PayPalExpressCheckoutPaymentCompleted @event)
-        {
-            // Send message to driver
-            SendPaymentConfirmationToDriver(@event.OrderId, @event.Amount, @event.Meter + @event.Tax, @event.Tip, PaymentProvider.PayPal.ToString(), @event.PayPalPayerId);
-
-            // payment might not be enabled
-            var paymentService = _paymentServiceFactory.GetInstance();
-            if (paymentService != null)
-            {
-                // void the preauthorization to prevent misuse fees
-                paymentService.VoidPreAuthorization(@event.SourceId);
-            }
         }
 
         public void Handle(CreditCardPaymentCaptured_V2 @event)

@@ -94,6 +94,9 @@
     <Reference Include="Nustache.i18n">
       <HintPath>..\..\packages\Nustache.i18n.1.0.0\lib\net40\Nustache.i18n.dll</HintPath>
     </Reference>
+    <Reference Include="PayPal">
+      <HintPath>..\..\packages\PayPal.1.2.2\lib\net45\PayPal.dll</HintPath>
+    </Reference>
     <Reference Include="PreMailer.Net">
       <HintPath>..\..\packages\PreMailer.Net.1.2.7\lib\net40\PreMailer.Net.dll</HintPath>
     </Reference>
@@ -157,7 +160,6 @@
     <Compile Include="CommandHandlers\CreditCardPaymentCommandHandler.cs" />
     <Compile Include="CommandHandlers\EmailCommandHandler.cs" />
     <Compile Include="CommandHandlers\OrderCommandHandler.cs" />
-    <Compile Include="CommandHandlers\PayPalPaymentCommandHandler.cs" />
     <Compile Include="CommandHandlers\PromotionCommandHandler.cs" />
     <Compile Include="CommandHandlers\SmsCommandHandler.cs" />
     <Compile Include="Database\BookingDbContext.cs" />
@@ -186,7 +188,6 @@
     <Compile Include="EventHandlers\Integration\PromotionTriggerGenerator.cs" />
     <Compile Include="EventHandlers\NotificationSettingsGenerator.cs" />
     <Compile Include="EventHandlers\OrderUserGpsGenerator.cs" />
-    <Compile Include="EventHandlers\PayPalExpressCheckoutPaymentDetailsGenerator.cs" />
     <Compile Include="EventHandlers\PaymentSettingGenerator.cs" />
     <Compile Include="EventHandlers\CreditCardDetailsGenerator.cs" />
     <Compile Include="EventHandlers\DeviceDetailsGenerator.cs" />
@@ -207,6 +208,7 @@
     <Compile Include="ReadModel\AccountChargeDetail.cs" />
     <Compile Include="ReadModel\AccountDetail.cs" />
     <Compile Include="ReadModel\AccountIbsDetail.cs" />
+    <Compile Include="ReadModel\PayPalAccountDetails.cs" />
     <Compile Include="ReadModel\PromotionProgressDetail.cs" />
     <Compile Include="ReadModel\AddressDetails.cs" />
     <Compile Include="ReadModel\AppStartUpLogDetail.cs" />
@@ -312,12 +314,15 @@
     <Compile Include="Services\Impl\CmtPaymentService.cs" />
     <Compile Include="Services\Impl\MonerisPaymentService.cs" />
     <Compile Include="Services\Impl\PairingService.cs" />
+    <Compile Include="Services\Impl\PayPalService.cs" />
     <Compile Include="Services\INotificationService.cs" />
     <Compile Include="Services\Impl\NotificationService.cs" />
     <Compile Include="Services\IPairingService.cs" />
     <Compile Include="Services\IPaymentService.cs" />
     <Compile Include="Services\IPaymentServiceFactory.cs" />
+    <Compile Include="Services\IPayPalServiceFactory.cs" />
     <Compile Include="Services\PaymentServiceFactory.cs" />
+    <Compile Include="Services\PayPalServiceFactory.cs" />
     <Compile Include="SMS\Impl\TwilioService.cs" />
     <Compile Include="SMS\ISmsService.cs" />
   </ItemGroup>

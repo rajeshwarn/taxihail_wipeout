@@ -41,7 +41,9 @@ namespace apcurium.MK.Booking.CommandHandlers
         ICommandHandler<LogApplicationStartUp>,
         ICommandHandler<LinkAccountToIbs>,
         ICommandHandler<AddOrUpdateUserTaxiHailNetworkSettings>,
-        ICommandHandler<UnlinkAccountFromIbs>
+        ICommandHandler<UnlinkAccountFromIbs>,
+        ICommandHandler<LinkPayPalAccount>,
+        ICommandHandler<UnlinkPayPalAccount>
     {
         private readonly IPasswordService _passwordService;
         private readonly Func<BookingDbContext> _contextFactory;
@@ -281,6 +283,24 @@ namespace apcurium.MK.Booking.CommandHandlers
             var account = _repository.Find(command.AccountId);
 
             account.UnlinkFromIbs();
+
+            _repository.Save(account, command.Id.ToString());
+        }
+
+        public void Handle(LinkPayPalAccount command)
+        {
+            var account = _repository.Find(command.AccountId);
+
+            account.LinkPayPalAccount(command.AuthCode);
+
+            _repository.Save(account, command.Id.ToString());
+        }
+
+        public void Handle(UnlinkPayPalAccount command)
+        {
+            var account = _repository.Find(command.AccountId);
+
+            account.UnlinkPayPalAccount();
 
             _repository.Save(account, command.Id.ToString());
         }

@@ -84,6 +84,7 @@ namespace apcurium.MK.Booking
 
 
             container.RegisterType<IPaymentServiceFactory, PaymentServiceFactory>();
+            container.RegisterType<IPayPalServiceFactory, PayPalServiceFactory>();
         }
 
         public void RegisterMaps()
@@ -160,8 +161,6 @@ namespace apcurium.MK.Booking
             container.RegisterType<IEventHandler, AppSettingsGenerator>("AppSettingsGenerator");
             container.RegisterType<IEventHandler, CreditCardDetailsGenerator>("CreditCardDetailsGenerator");
             container.RegisterType<IEventHandler, PaymentSettingGenerator>(typeof (PaymentSettingGenerator).Name);
-            container.RegisterType<IEventHandler, PayPalExpressCheckoutPaymentDetailsGenerator>(
-                "PayPalExpressCheckoutPaymentDetailsGenerator");
             container.RegisterType<IEventHandler, CreditCardPaymentDetailsGenerator>("CreditCardPaymentDetailsGenerator");
             container.RegisterType<IEventHandler, CompanyDetailsGenerator>("CompanyDetailsGenerator");
             container.RegisterType<IEventHandler, OrderUserGpsGenerator>("OrderUserGpsGenerator");
@@ -187,7 +186,6 @@ namespace apcurium.MK.Booking
             container.RegisterType<ICommandHandler, EmailCommandHandler>("EmailCommandHandler");
             container.RegisterType<ICommandHandler, OrderCommandHandler>("OrderCommandHandler");
             container.RegisterType<ICommandHandler, CompanyCommandHandler>("CompanyCommandHandler");
-            container.RegisterType<ICommandHandler, PayPalPaymentCommandHandler>("PayPalPaymentCommandHandler");
             container.RegisterType<ICommandHandler, CreditCardPaymentCommandHandler>("CreditCardPaymentCommandHandler");
             container.RegisterType<ICommandHandler, SmsCommandHandler>("SmsCommandHandler");
             container.RegisterType<ICommandHandler, PromotionCommandHandler>("PromotionCommandHandler");

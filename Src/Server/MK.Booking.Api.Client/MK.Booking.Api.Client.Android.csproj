@@ -59,6 +59,7 @@
     <Compile Include="IIbsFareClient.cs" />
     <Compile Include="Payments\CmtPayments\CmtPaymentClient.cs" />
     <Compile Include="Payments\Fake\FakePaymentClient.cs" />
+    <Compile Include="Payments\PayPal\PayPalServiceClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TaxiHail\AccountServiceClient.cs" />
     <Compile Include="TaxiHail\ApplicationInfoServiceClient.cs" />
@@ -79,7 +80,6 @@
     <Compile Include="IVehicleClient.cs" />
     <Compile Include="TaxiHail\PushNotificationRegistrationServiceClient.cs" />
     <Compile Include="IPaymentServiceClient.cs" />
-    <Compile Include="TaxiHail\PayPalAccountServiceClient.cs" />
     <Compile Include="Payments\Braintree\BraintreeServiceClient.cs" />
     <Compile Include="Extensions\ServiceClientBaseExtensions.cs" />
     <Compile Include="Payments\Moneris\MonerisServiceClient.cs" />

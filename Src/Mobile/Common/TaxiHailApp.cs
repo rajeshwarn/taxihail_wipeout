@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Client;
+using apcurium.MK.Booking.Api.Client.Payments.PayPal;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Security;
 
@@ -93,7 +94,7 @@ namespace apcurium.MK.Booking.Mobile
 
             // ***** PayPal *****
 			_container.Register<IPayPalAccountService, PayPalAccountService> ();
-			_container.Register ((c, p) => new PayPalAccountServiceClient(c.Resolve<IAppSettings>().Data.ServiceUrl, GetSessionId(), c.Resolve<IPackageInfo>()));
+			_container.Register ((c, p) => new PayPalServiceClient(c.Resolve<IAppSettings>().Data.ServiceUrl, GetSessionId(), c.Resolve<IPackageInfo>()));
 
 			_container.Register<IPaymentService>((c, p) =>
 			{

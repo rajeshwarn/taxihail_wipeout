@@ -254,7 +254,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             }
         }
 		
-        public async Task UpdateSettings (BookingSettings settings, Guid? creditCardId, int? tipPercent)
+        public async Task UpdateSettings (BookingSettings settings, Guid? creditCardId, int? tipPercent, bool? isPayPalAccountLinked = null)
         {
             var bsr = new BookingSettingsRequest
             {
@@ -275,6 +275,10 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             account.DefaultCreditCard = creditCardId;
             account.DefaultTipPercent = tipPercent;
 
+            //if (isPayPalAccountLinked.HasValue())
+            //{
+            //    account.IsPayPalAccountLinked = isPayPalAccountLinked;
+            //}
             //Set to update the cache
             CurrentAccount = account;
         }

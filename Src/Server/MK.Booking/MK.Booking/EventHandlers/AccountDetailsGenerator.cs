@@ -10,6 +10,7 @@ using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
+using Infrastructure.Messaging;
 using Infrastructure.Messaging.Handling;
 
 #endregion
@@ -30,7 +31,9 @@ namespace apcurium.MK.Booking.EventHandlers
         IEventHandler<CreditCardRemoved>,
         IEventHandler<AllCreditCardsRemoved>,
         IEventHandler<AccountLinkedToIbs>,
-        IEventHandler<AccountUnlinkedFromIbs>
+        IEventHandler<AccountUnlinkedFromIbs>,
+        IEventHandler<PayPalAccountLinked>,
+        IEventHandler<PayPalAccountUnlinked>
     {
         private readonly IServerSettings _serverSettings;
         private readonly Func<BookingDbContext> _contextFactory;
@@ -280,6 +283,43 @@ namespace apcurium.MK.Booking.EventHandlers
                 account.IBSAccountId = null;
 
                 context.RemoveWhere<AccountIbsDetail>(x => x.AccountId == @event.SourceId);
+                context.SaveChanges();
+            }
+        }
+
+        public void Handle(PayPalAccountLinked @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var account = context.Find<AccountDetail>(@event.SourceId);
+                account.IsPayPalAccountLinked = true;
+
+                var payPalAccountDetails = context.Find<PayPalAccountDetails>(@event.SourceId);
+                if (payPalAccountDetails == null)
+                {
+                    context.Save(new PayPalAccountDetails
+                    {
+                        AccountId = @event.SourceId,
+                        AuthCode = @event.AuthCode
+                    });
+                }
+                else
+                {
+                    payPalAccountDetails.AuthCode = @event.AuthCode;
+                }
+
+                context.SaveChanges();
+            }
+        }
+
+        public void Handle(PayPalAccountUnlinked @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var account = context.Find<AccountDetail>(@event.SourceId);
+                account.IsPayPalAccountLinked = false;
+
+                context.RemoveWhere<PayPalAccountDetails>(x => x.AccountId == @event.SourceId);
                 context.SaveChanges();
             }
         }
