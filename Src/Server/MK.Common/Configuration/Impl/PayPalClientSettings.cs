@@ -17,5 +17,15 @@ namespace apcurium.MK.Common.Configuration.Impl
         public PayPalClientCredentials SandboxCredentials { get; set; }
 
         public PayPalClientCredentials Credentials { get; set; }
+
+        public string ClientId
+        {
+            get
+            {
+                return IsSandbox
+                    ? SandboxCredentials.ClientId
+                    : Credentials.ClientId;
+            }
+        }
     }
 }

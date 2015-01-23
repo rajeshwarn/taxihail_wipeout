@@ -1,20 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Net;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
-using apcurium.MK.Common.Resources;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Enumeration;
-using Braintree;
+using apcurium.MK.Common.Resources;
 using Infrastructure.Messaging;
 using PayPal.Api;
 using RestSharp.Extensions;
-using Authorization = PayPal.Api.Authorization;
-using Transaction = PayPal.Api.Transaction;
 
 namespace apcurium.MK.Booking.Services.Impl
 {
@@ -55,14 +51,14 @@ namespace apcurium.MK.Booking.Services.Impl
                 var tokenInfo = Tokeninfo.CreateFromAuthorizationCodeForFuturePayments(GetAPIContext(), authorizationCodeParameters);
 
                 //test
-                var accessTokenParameters = new CreateFromRefreshTokenParameters();
-                accessTokenParameters.SetRefreshToken(tokenInfo.refresh_token);
+                //var accessTokenParameters = new CreateFromRefreshTokenParameters();
+                //accessTokenParameters.SetRefreshToken(tokenInfo.refresh_token);
 
-                var to = new Tokeninfo().CreateFromRefreshToken(GetAPIContext(), accessTokenParameters);
-                if (to != null)
-                {
+                //var to = new Tokeninfo().CreateFromRefreshToken(GetAPIContext(), accessTokenParameters);
+                //if (to != null)
+                //{
                     
-                }
+                //}
 
                 _commandBus.Send(new LinkPayPalAccount
                 {
@@ -269,6 +265,27 @@ namespace apcurium.MK.Booking.Services.Impl
                 : paymentSettings.PayPalServerSettings.Credentials.Secret; 
         }
 
+        private APIContext GetAPIContext(string accessToken = "", Guid? orderId = null)
+        {
+            // ### Api Context
+            // Pass in a `APIContext` object to authenticate 
+            // the call and to send a unique request id 
+            // (that ensures idempotency). The SDK generates
+            // a request id if you do not pass one explicitly.
+
+            var token = accessToken.HasValue()
+                ? accessToken
+                : GetAccessToken();
+
+            var apiContext = orderId.HasValue
+                ? new APIContext(token, orderId.ToString())
+                : new APIContext(token);
+            
+            apiContext.Config = GetConfig();
+
+            return apiContext;
+        }
+
         private string GetAccessToken()
         {
             // ###AccessToken
@@ -277,24 +294,26 @@ namespace apcurium.MK.Booking.Services.Impl
             // ClientID and ClientSecret
             // It is not mandatory to generate Access Token on a per call basis.
             // Typically the access token can be generated once and
-            // reused within the expiry window                
-            return new OAuthTokenCredential(GetClientId(), GetSecret()).GetAccessToken();
+            // reused within the expiry window
+            return new OAuthTokenCredential(GetClientId(), GetSecret(), GetConfig()).GetAccessToken();
         }
 
-        // Returns APIContext object
-        public APIContext GetAPIContext(string accessToken = "", Guid? orderId = null)
+        private string GetMode()
         {
-            // ### Api Context
-            // Pass in a `APIContext` object to authenticate 
-            // the call and to send a unique request id 
-            // (that ensures idempotency). The SDK generates
-            // a request id if you do not pass one explicitly.
+            return _serverSettings.GetPaymentSettings().PayPalClientSettings.IsSandbox
+                ? BaseConstants.SandboxMode
+                : BaseConstants.LiveMode;
+        }
 
-            if (orderId.HasValue)
-            {
-                return new APIContext(string.IsNullOrEmpty(accessToken) ? GetAccessToken() : accessToken, orderId.ToString());
-            }
-            return new APIContext(string.IsNullOrEmpty(accessToken) ? GetAccessToken() : accessToken);
-	}
+        private Dictionary<string, string> GetConfig()
+        {
+            var payPalConfig = ConfigManager.Instance.GetProperties();
+
+            payPalConfig.Add(BaseConstants.ApplicationModeConfig, GetMode());
+            payPalConfig.Add(BaseConstants.ClientId, GetClientId());
+            payPalConfig.Add(BaseConstants.ClientSecret, GetSecret());
+
+            return payPalConfig;
+	    }
     }
 }
