@@ -14,12 +14,12 @@ namespace apcurium.MK.Booking.Api.Client.Payments.PayPal
         {
         }
 
-        public Task<BasePaymentResponse> LinkAccount(LinkPayPalAccountRequest request)
+        public Task<BasePaymentResponse> LinkPayPalAccount(LinkPayPalAccountRequest request)
         {
             return Client.PostAsync(request);
         }
 
-        public Task<BasePaymentResponse> UnLinkAccount(UnlinkPayPalAccountRequest request)
+        public Task<BasePaymentResponse> UnlinkPayPalAccount(UnlinkPayPalAccountRequest request)
         {
             return Client.PostAsync(request);
         }

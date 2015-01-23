@@ -423,7 +423,7 @@ namespace apcurium.MK.Booking.Domain
 
         public void LinkPayPalAccount(string authCode)
         {
-            Update(new PayPalAccountLinked{ AuthCode = authCode });
+            Update(new PayPalAccountLinked{ RefreshToken = authCode });
         }
 
         public void UnlinkPayPalAccount()

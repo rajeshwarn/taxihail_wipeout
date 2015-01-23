@@ -291,7 +291,7 @@ namespace apcurium.MK.Booking.CommandHandlers
         {
             var account = _repository.Find(command.AccountId);
 
-            account.LinkPayPalAccount(command.AuthCode);
+            account.LinkPayPalAccount(command.RefreshToken);
 
             _repository.Save(account, command.Id.ToString());
         }

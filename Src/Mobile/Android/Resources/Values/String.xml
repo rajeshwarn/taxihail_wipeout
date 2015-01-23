@@ -596,4 +596,5 @@
   <string name="PayPalUnlinkError">Unable to unlink your PayPal account</string>
   <string name="PayPalLink">Link</string>
   <string name="LinkPayPalConfirmation">Link</string>
+  <string name="PayPalLinked">Your account is now enabled to pay with PayPal by default. You can still choose to pay in the vehicle by selecting \"Pay in Vehicle\" on the payment screen</string>
 </resources>

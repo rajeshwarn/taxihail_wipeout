@@ -12,7 +12,7 @@ namespace apcurium.MK.Booking.Commands
 
         public Guid AccountId { get; set; }
 
-        public string AuthCode { get; set; }
+        public string RefreshToken { get; set; }
 
         public Guid Id { get; private set; }
     }

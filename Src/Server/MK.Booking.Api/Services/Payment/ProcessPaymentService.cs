@@ -49,12 +49,12 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             _serverSettings = serverSettings;
         }
 
-        public BasePaymentResponse LinkPayPalAccount(LinkPayPalAccountRequest request)
+        public BasePaymentResponse Post(LinkPayPalAccountRequest request)
         {
             return _payPalServiceFactory.GetInstance().LinkAccount(request.AccountId, request.AuthCode, request.MetadataId);
         }
 
-        public BasePaymentResponse UnlinkPayPalAccount(UnlinkPayPalAccountRequest request)
+        public BasePaymentResponse Post(UnlinkPayPalAccountRequest request)
         {
             return _payPalServiceFactory.GetInstance().UnlinkAccount(request.AccountId);
         }

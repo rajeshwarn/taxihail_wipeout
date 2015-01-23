@@ -23,13 +23,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 		private readonly ILocationService _locationService;
 		private readonly IPaymentService _paymentService;
 		private readonly IAccountService _accountService;
-	    private readonly IPayPalAccountService _payPalService;
+	    private readonly IPayPalService _payPalService;
 
 	    public CreditCardAddViewModel(
             ILocationService locationService,
 			IPaymentService paymentService, 
 			IAccountService accountService,
-            IPayPalAccountService payPalService)
+            IPayPalService payPalService)
 		{
 			_locationService = locationService;
 			_paymentService = paymentService;
@@ -157,6 +157,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 				RaisePropertyChanged(() => Data);
 				RaisePropertyChanged(() => CreditCardNumber);
                 RaisePropertyChanged(() => CanDeleteCreditCard);
+                RaisePropertyChanged(() => CanUnlickPayPalAccount);
 			}
         }
 
@@ -378,7 +379,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
             account.IsPayPalAccountLinked = true;
             account.Settings.ChargeTypeId = ChargeTypes.PayPal.Id;
 
-            UpdateAccountSettings(account);
+            var settingsUpdated = UpdateAccountSettings(account);
+            if (settingsUpdated)
+            {
+                this.Services().Message.ShowMessage(
+                    string.Empty,
+                    this.Services().Localize["PayPalLinked"],
+                    () => ShowViewModelAndRemoveFromHistory<HomeViewModel>(new { locateUser = bool.TrueString }));
+            }
         }
 
         public void UnLinkPayPalAccount(bool updateAccountSettings = true)

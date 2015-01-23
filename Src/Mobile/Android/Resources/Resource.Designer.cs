@@ -5150,14 +5150,14 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f060123
 			public const int GooglePlayServicesNotAvailableMessage = 2131099939;
 			
-			// aapt resource value: 0x7f0602b7
-			public const int GooglePlayServicesNotAvailableMessage1 = 2131100343;
+			// aapt resource value: 0x7f0602b8
+			public const int GooglePlayServicesNotAvailableMessage1 = 2131100344;
 			
 			// aapt resource value: 0x7f060084
 			public const int GooglePlayServicesNotAvailableTitle = 2131099780;
 			
-			// aapt resource value: 0x7f0602b8
-			public const int GooglePlayServicesNotAvailableTitle1 = 2131100344;
+			// aapt resource value: 0x7f0602b9
+			public const int GooglePlayServicesNotAvailableTitle1 = 2131100345;
 			
 			// aapt resource value: 0x7f060049
 			public const int Hello = 2131099721;
@@ -5608,6 +5608,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 			
 			// aapt resource value: 0x7f0602b3
 			public const int PayPalLinkError = 2131100339;
+			
+			// aapt resource value: 0x7f0602b7
+			public const int PayPalLinked = 2131100343;
 			
 			// aapt resource value: 0x7f0602b4
 			public const int PayPalUnlinkError = 2131100340;

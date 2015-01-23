@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace apcurium.MK.Booking.Mobile.AppServices
 {
-    public interface IPayPalAccountService
+    public interface IPayPalService
     {
         Task LinkAccount(Guid accoundId, string authCode);
 

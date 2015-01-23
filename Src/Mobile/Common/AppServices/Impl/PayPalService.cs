@@ -5,22 +5,23 @@ using apcurium.MK.Booking.Api.Contract.Requests.Payment.PayPal;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
-    public class PayPalAccountService : BaseService, IPayPalAccountService
+    public class PayPalService : BaseService, IPayPalService
     {
         public Task LinkAccount(Guid accoundId, string authCode)
         {
             return UseServiceClientAsync<PayPalServiceClient>(service => 
-                service.LinkAccount(new LinkPayPalAccountRequest
+                service.LinkPayPalAccount(new LinkPayPalAccountRequest
                 {
                     AccountId = accoundId,
-                    AuthCode = authCode
+                    AuthCode = authCode,
+                    MetadataId = "test"
                 }));
         }
 
         public Task UnLinkAccount(Guid accoundId)
         {
-            return UseServiceClientAsync<PayPalServiceClient>(service => 
-                service.UnLinkAccount(new UnlinkPayPalAccountRequest
+            return UseServiceClientAsync<PayPalServiceClient>(service =>
+                service.UnlinkPayPalAccount(new UnlinkPayPalAccountRequest
                 {
                     AccountId = accoundId
                 }));

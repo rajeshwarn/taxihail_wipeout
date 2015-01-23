@@ -154,10 +154,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
                     this.Services().Localize["LinkPayPalCCWarning"],
                     this.Services().Localize["LinkPayPalConfirmation"], () =>
                     {
-                        var intent = new Intent(this, typeof(PayPalFuturePaymentActivity));
+                        var intent = new Intent(this, typeof (PayPalFuturePaymentActivity));
                         StartActivityForResult(intent, LinkPayPalAccountRequestCode);
                     },
                     this.Services().Localize["Cancel"], () => { });
+            }
+            else
+            {
+                var intent = new Intent(this, typeof(PayPalFuturePaymentActivity));
+                StartActivityForResult(intent, LinkPayPalAccountRequestCode);
             }
         }
 

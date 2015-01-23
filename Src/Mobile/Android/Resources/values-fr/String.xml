@@ -577,4 +577,5 @@
   <string name="PayPalUnlinkError">Impossible de dissocier votre compte PayPal</string>
   <string name="PayPalLink">Associer</string>
   <string name="LinkPayPalConfirmation">Associer</string>
+  <string name="PayPalLinked">Votre compte est maintenant configuré pour le paiement par défaut via PayPal. Vous pouvez quand même choisir de payer dans le véhicule en choisissant l\'option appropriée à l\'écran de paiement.</string>
 </resources>
