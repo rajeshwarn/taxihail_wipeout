@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
+using apcurium.MK.Booking.Security;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
@@ -57,7 +58,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 _commandBus.Send(new LinkPayPalAccount
                 {
                     AccountId = accountId,
-                    RefreshToken = tokenInfo.refresh_token
+                    RefreshToken = CryptoService.Encrypt(tokenInfo.refresh_token)
                 });
 
                 return new BasePaymentResponse

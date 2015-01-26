@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
+using apcurium.MK.Booking.Security;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Extensions;
 using PayPal.Api;
@@ -77,7 +78,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 throw new ArgumentNullException(string.Format("Refresh token not found for account: {0}", accountId));
             }
 
-            var tokenInfo = new Tokeninfo { refresh_token = refreshToken };
+            var tokenInfo = new Tokeninfo { refresh_token = CryptoService.Decrypt(refreshToken) };
             var tokenResult = tokenInfo.CreateFromRefreshToken(GetAPIContext(), new CreateFromRefreshTokenParameters());
 
             return tokenResult.access_token;
