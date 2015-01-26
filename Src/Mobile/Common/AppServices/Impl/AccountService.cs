@@ -275,10 +275,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             account.DefaultCreditCard = creditCardId;
             account.DefaultTipPercent = tipPercent;
 
-            //if (isPayPalAccountLinked.HasValue())
-            //{
-            //    account.IsPayPalAccountLinked = isPayPalAccountLinked;
-            //}
+            if (isPayPalAccountLinked.HasValue)
+            {
+                account.IsPayPalAccountLinked = isPayPalAccountLinked.Value;
+            }
+
             //Set to update the cache
             CurrentAccount = account;
         }

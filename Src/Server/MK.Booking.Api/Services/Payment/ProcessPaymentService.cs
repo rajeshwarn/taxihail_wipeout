@@ -51,7 +51,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 
         public BasePaymentResponse Post(LinkPayPalAccountRequest request)
         {
-            return _payPalServiceFactory.GetInstance().LinkAccount(request.AccountId, request.AuthCode, request.MetadataId);
+            return _payPalServiceFactory.GetInstance().LinkAccount(request.AccountId, request.AuthCode);
         }
 
         public BasePaymentResponse Post(UnlinkPayPalAccountRequest request)

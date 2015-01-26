@@ -24,7 +24,7 @@ namespace apcurium.MK.Booking.Services.Impl
         private Resources.Resources _resources;
 
         public PayPalService(IServerSettings serverSettings, ICommandBus commandBus, IAccountDao accountDao, IOrderDao orderDao, ILogger logger)
-            : base(serverSettings)
+            : base(serverSettings, accountDao)
         {
             _serverSettings = serverSettings;
             _commandBus = commandBus;
@@ -35,7 +35,7 @@ namespace apcurium.MK.Booking.Services.Impl
             _resources = new Resources.Resources(serverSettings);
         }
 
-        public BasePaymentResponse LinkAccount(Guid accountId, string authCode, string metadataId)
+        public BasePaymentResponse LinkAccount(Guid accountId, string authCode)
         {
             try
             {
@@ -108,6 +108,11 @@ namespace apcurium.MK.Booking.Services.Impl
             }
         }
 
+        public void Pair()
+        {
+            
+        }
+
         public PreAuthorizePaymentResponse PreAuthorize(Guid accountId, Guid orderId, string email, decimal amountToPreAuthorize, string metadataId = "")
         {
             var message = string.Empty;
@@ -158,12 +163,9 @@ namespace apcurium.MK.Booking.Services.Impl
                         throw new Exception("Account has no PayPal refresh token");
                     }
 
-                    var accessTokenParameters = new CreateFromRefreshTokenParameters();
-                    accessTokenParameters.SetRefreshToken(refreshToken);
+                    var accessToken = GetAccessToken(accountId);
 
-                    var tokenInfo = new Tokeninfo().CreateFromRefreshToken(GetAPIContext(), accessTokenParameters);
-                    
-                    var createdPayment = futurePayment.Create(GetAPIContext(tokenInfo.access_token, orderId), metadataId);
+                    var createdPayment = futurePayment.Create(GetAPIContext(accessToken, orderId), metadataId);
                     transactionId = createdPayment.transactions[0].related_resources[0].authorization.id;
 
                     switch (createdPayment.state)

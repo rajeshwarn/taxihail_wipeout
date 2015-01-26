@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Extensions;
 using PayPal.Api;
@@ -9,10 +10,12 @@ namespace apcurium.MK.Booking.Services.Impl
     public class BasePayPalService
     {
         private readonly IServerSettings _serverSettings;
+        private readonly IAccountDao _accountDao;
 
-        public BasePayPalService(IServerSettings serverSettings)
+        public BasePayPalService(IServerSettings serverSettings, IAccountDao accountDao)
         {
             _serverSettings = serverSettings;
+            _accountDao = accountDao;
         }
 
         protected APIContext GetAPIContext(string accessToken = "", Guid? orderId = null)
@@ -66,26 +69,29 @@ namespace apcurium.MK.Booking.Services.Impl
                 : BaseConstants.LiveMode;
         }
 
-        protected string GetAccessToken()
+        protected string GetAccessToken(Guid accountId)
         {
-            // Retrieve the access token from
-            // OAuthTokenCredential by passing in
-            // ClientID and ClientSecret
-            // It is not mandatory to generate Access Token on a per call basis.
-            // Typically the access token can be generated once and
-            // reused within the expiry window
-            return new OAuthTokenCredential(GetClientId(), GetSecret(), GetConfig()).GetAccessToken();
+            var refreshToken = _accountDao.GetPayPalRefreshToken(accountId);
+            if (!refreshToken.HasValue())
+            {
+                throw new ArgumentNullException(string.Format("Refresh token not found for account: {0}", accountId));
+            }
+
+            var tokenInfo = new Tokeninfo { refresh_token = refreshToken };
+            var tokenResult = tokenInfo.CreateFromRefreshToken(GetAPIContext(), new CreateFromRefreshTokenParameters());
+
+            return tokenResult.access_token;
         }
 
         protected Dictionary<string, string> GetConfig()
         {
-            var payPalConfig = ConfigManager.Instance.GetProperties();
+            var config = ConfigManager.Instance.GetProperties();
 
-            payPalConfig.Add(BaseConstants.ApplicationModeConfig, GetMode());
-            payPalConfig.Add(BaseConstants.ClientId, GetClientId());
-            payPalConfig.Add(BaseConstants.ClientSecret, GetSecret());
+            config.Add(BaseConstants.ApplicationModeConfig, GetMode());
+            config.Add(BaseConstants.ClientId, GetClientId());
+            config.Add(BaseConstants.ClientSecret, GetSecret());
 
-            return payPalConfig;
+            return config;
         }
     }
 }
