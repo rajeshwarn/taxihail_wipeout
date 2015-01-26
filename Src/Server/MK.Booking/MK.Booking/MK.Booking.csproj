@@ -307,6 +307,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Thriev.resx</DependentUpon>
     </Compile>
+    <Compile Include="Security\CryptoService.cs" />
     <Compile Include="Security\IPasswordService.cs" />
     <Compile Include="Security\PasswordService.cs" />
     <Compile Include="Security\RolesPermissions.cs" />
