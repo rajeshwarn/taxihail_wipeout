@@ -14,7 +14,7 @@ using RestSharp.Extensions;
 
 namespace apcurium.MK.Booking.Services.Impl
 {
-    public class PayPalService
+    public class PayPalService : BasePayPalService
     {
         private readonly IServerSettings _serverSettings;
         private readonly ICommandBus _commandBus;
@@ -24,6 +24,7 @@ namespace apcurium.MK.Booking.Services.Impl
         private Resources.Resources _resources;
 
         public PayPalService(IServerSettings serverSettings, ICommandBus commandBus, IAccountDao accountDao, IOrderDao orderDao, ILogger logger)
+            : base(serverSettings)
         {
             _serverSettings = serverSettings;
             _commandBus = commandBus;
@@ -52,16 +53,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 // Get refresh and access tokens
                 var tokenInfo = Tokeninfo.CreateFromAuthorizationCodeForFuturePayments(GetAPIContext(), authorizationCodeParameters);
 
-                //test
-                //var accessTokenParameters = new CreateFromRefreshTokenParameters();
-                //accessTokenParameters.SetRefreshToken(tokenInfo.refresh_token);
-
-                //var to = new Tokeninfo().CreateFromRefreshToken(GetAPIContext(), accessTokenParameters);
-                //if (to != null)
-                //{
-                    
-                //}
-
+                // Store access token securely
                 _commandBus.Send(new LinkPayPalAccount
                 {
                     AccountId = accountId,
@@ -252,75 +244,6 @@ namespace apcurium.MK.Booking.Services.Impl
             };
 
             var responseCapture = authorization.Capture(apiContext, capture);
-        }
-        
-        private string GetClientId()
-        {
-            var paymentSettings = _serverSettings.GetPaymentSettings();
-
-            return paymentSettings.PayPalClientSettings.IsSandbox
-                    ? paymentSettings.PayPalClientSettings.SandboxCredentials.ClientId
-                    : paymentSettings.PayPalClientSettings.Credentials.ClientId;
-        }
-
-        private string GetSecret()
-        {
-            var paymentSettings = _serverSettings.GetPaymentSettings();
-
-            return paymentSettings.PayPalClientSettings.IsSandbox
-                ? paymentSettings.PayPalServerSettings.SandboxCredentials.Secret
-                : paymentSettings.PayPalServerSettings.Credentials.Secret; 
-        }
-
-        private APIContext GetAPIContext(string accessToken = "", Guid? orderId = null)
-        {
-            // ### Api Context
-            // Pass in a `APIContext` object to authenticate 
-            // the call and to send a unique request id 
-            // (that ensures idempotency). The SDK generates
-            // a request id if you do not pass one explicitly.
-
-            var token = accessToken.HasValue()
-                ? accessToken
-                : GetAccessToken();
-
-            var apiContext = orderId.HasValue
-                ? new APIContext(token, orderId.ToString())
-                : new APIContext(token);
-            
-            apiContext.Config = GetConfig();
-
-            return apiContext;
-        }
-
-        private string GetAccessToken()
-        {
-            // ###AccessToken
-            // Retrieve the access token from
-            // OAuthTokenCredential by passing in
-            // ClientID and ClientSecret
-            // It is not mandatory to generate Access Token on a per call basis.
-            // Typically the access token can be generated once and
-            // reused within the expiry window
-            return new OAuthTokenCredential(GetClientId(), GetSecret(), GetConfig()).GetAccessToken();
-        }
-
-        private string GetMode()
-        {
-            return _serverSettings.GetPaymentSettings().PayPalClientSettings.IsSandbox
-                ? BaseConstants.SandboxMode
-                : BaseConstants.LiveMode;
-        }
-
-        private Dictionary<string, string> GetConfig()
-        {
-            var payPalConfig = ConfigManager.Instance.GetProperties();
-
-            payPalConfig.Add(BaseConstants.ApplicationModeConfig, GetMode());
-            payPalConfig.Add(BaseConstants.ClientId, GetClientId());
-            payPalConfig.Add(BaseConstants.ClientSecret, GetSecret());
-
-            return payPalConfig;
-	    }
+        }        
     }
 }

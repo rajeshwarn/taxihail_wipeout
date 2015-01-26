@@ -82,7 +82,7 @@ namespace apcurium.MK.Booking.ReadModel.Query
             using (var context = _contextFactory.Invoke())
             {
                 var payPalAccountInfo = context.Query<PayPalAccountDetails>().SingleOrDefault(c => c.AccountId == id);
-                return payPalAccountInfo != null ? payPalAccountInfo.AuthCode : null;
+                return payPalAccountInfo != null ? payPalAccountInfo.RefreshToken : null;
             }
         }
     }

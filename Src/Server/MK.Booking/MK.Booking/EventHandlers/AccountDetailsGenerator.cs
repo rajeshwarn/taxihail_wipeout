@@ -300,12 +300,12 @@ namespace apcurium.MK.Booking.EventHandlers
                     context.Save(new PayPalAccountDetails
                     {
                         AccountId = @event.SourceId,
-                        AuthCode = @event.RefreshToken
+                        RefreshToken = @event.RefreshToken
                     });
                 }
                 else
                 {
-                    payPalAccountDetails.AuthCode = @event.RefreshToken;
+                    payPalAccountDetails.RefreshToken = @event.RefreshToken;
                 }
 
                 context.SaveChanges();
