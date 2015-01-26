@@ -19,14 +19,16 @@ namespace apcurium.MK.Booking.Services.Impl
         private readonly IServerSettings _serverSettings;
         private readonly ICommandBus _commandBus;
         private readonly IAccountDao _accountDao;
+        private readonly IOrderDao _orderDao;
         private readonly ILogger _logger;
         private Resources.Resources _resources;
 
-        public PayPalService(IServerSettings serverSettings, ICommandBus commandBus, IAccountDao accountDao, ILogger logger)
+        public PayPalService(IServerSettings serverSettings, ICommandBus commandBus, IAccountDao accountDao, IOrderDao orderDao, ILogger logger)
         {
             _serverSettings = serverSettings;
             _commandBus = commandBus;
             _accountDao = accountDao;
+            _orderDao = orderDao;
             _logger = logger;
 
             _resources = new Resources.Resources(serverSettings);
@@ -114,7 +116,7 @@ namespace apcurium.MK.Booking.Services.Impl
             }
         }
 
-        public PreAuthorizePaymentResponse PreAuthorize(Guid accountId, Guid orderId, string email, decimal amountToPreAuthorize)
+        public PreAuthorizePaymentResponse PreAuthorize(Guid accountId, Guid orderId, string email, decimal amountToPreAuthorize, string metadataId = "")
         {
             var message = string.Empty;
             var transactionId = string.Empty;
@@ -125,9 +127,13 @@ namespace apcurium.MK.Booking.Services.Impl
 
                 if (amountToPreAuthorize > 0)
                 {
+                    var order = _orderDao.FindById(orderId);
+                    
                     var conversionRate = _serverSettings.ServerData.PayPalConversionRate;
                     _logger.LogMessage("PayPal Conversion Rate: {0}", conversionRate);
                     var amount = Math.Round(amountToPreAuthorize * conversionRate, 2);
+
+                    var regionName = _serverSettings.ServerData.PayPalRegionInfoOverride;
 
                     var futurePayment = new FuturePayment
                     {
@@ -147,7 +153,9 @@ namespace apcurium.MK.Booking.Services.Impl
                                         : _resources.GetCurrencyCode(),
                                     total = amount.ToString(CultureInfo.InvariantCulture)
                                 },
-                                description = "preauthorization"
+                                description = regionName.HasValue()
+                                    ? string.Format("order: {0}", orderId)
+                                    : string.Format(_resources.Get("PaymentItemDescription", order.ClientLanguageCode), orderId, amountToPreAuthorize)
                             }
                         }
                     };
@@ -163,11 +171,10 @@ namespace apcurium.MK.Booking.Services.Impl
 
                     var tokenInfo = new Tokeninfo().CreateFromRefreshToken(GetAPIContext(), accessTokenParameters);
                     
-                    var createdPayment = futurePayment.Create(GetAPIContext(tokenInfo.access_token, orderId), "");
-                    var authorization = createdPayment.transactions[0].related_resources[0].authorization;
-                    transactionId = authorization.id;
-                    
-                    switch (authorization.state)
+                    var createdPayment = futurePayment.Create(GetAPIContext(tokenInfo.access_token, orderId), metadataId);
+                    transactionId = createdPayment.transactions[0].related_resources[0].authorization.id;
+
+                    switch (createdPayment.state)
                     {
                         case "approved":
                             isSuccessful = true;
@@ -175,12 +182,12 @@ namespace apcurium.MK.Booking.Services.Impl
                         case "created":
                         case "pending":
                             // what is that supposed to mean?
-                            message = string.Format("Authorization state was {0}", authorization.state);
+                            message = string.Format("Authorization state was {0}", createdPayment.state);
                             break;
                         case "failed":
                         case "canceled":
                         case "expired":
-                            message = string.Format("Authorization state was {0}", authorization.state);
+                            message = string.Format("Authorization state was {0}", createdPayment.state);
                             break;
                     }
                 }
