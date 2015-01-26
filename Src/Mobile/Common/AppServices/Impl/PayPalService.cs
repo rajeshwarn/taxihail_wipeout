@@ -13,8 +13,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 service.LinkPayPalAccount(new LinkPayPalAccountRequest
                 {
                     AccountId = accoundId,
-                    AuthCode = authCode,
-                    MetadataId = "test"
+                    AuthCode = authCode
                 }));
         }
 

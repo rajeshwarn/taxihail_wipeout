@@ -1,7 +1,6 @@
 ﻿using System;
 using apcurium.MK.Common.Resources;
 using ServiceStack.ServiceHost;
-using ServiceStack.ServiceInterface;
 
 namespace apcurium.MK.Booking.Api.Contract.Requests.Payment.PayPal
 {
@@ -12,7 +11,5 @@ namespace apcurium.MK.Booking.Api.Contract.Requests.Payment.PayPal
         public Guid AccountId { get; set; }
 
         public string AuthCode { get; set; }
-
-        public string MetadataId { get; set; }
     }
 }

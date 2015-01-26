@@ -71,11 +71,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			_locationService.Stop();
 		}
 
+	    private ClientPaymentSettings paymentSettings;
+
 		public override async void Start()
         {
 			using (this.Services ().Message.ShowProgress ())
 			{
 			    IsPayPalAccountLinked = _accountService.CurrentAccount.IsPayPalAccountLinked;
+                paymentSettings = await _paymentService.GetPaymentSettings();
 
 				CreditCardCompanies = new List<ListItem>
 				{
@@ -110,7 +113,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
 				Data = new CreditCardInfos ();
 
-				var creditCard = await _accountService.GetCreditCard ();
+				var creditCard = await _accountService.GetCreditCard();
 				if (creditCard == null)
 				{
 					Data.NameOnCard = _accountService.CurrentAccount.Name;
@@ -119,7 +122,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 					CreditCardType = (int)id;
 
 					#if DEBUG
-                    var paymentSettings = await _paymentService.GetPaymentSettings();
 					if (paymentSettings.PaymentMode == PaymentMethod.Braintree)
 					{
 						CreditCardNumber = DummyVisa.BraintreeNumber;
@@ -157,7 +159,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 				RaisePropertyChanged(() => Data);
 				RaisePropertyChanged(() => CreditCardNumber);
                 RaisePropertyChanged(() => CanDeleteCreditCard);
-                RaisePropertyChanged(() => CanUnlickPayPalAccount);
+                RaisePropertyChanged(() => IsPayPalOnly);
 			}
         }
 
@@ -171,6 +173,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 	            {
 	                _isPayPalAccountLinked = value;
                     RaisePropertyChanged();
+                    RaisePropertyChanged(() => CanLinkPayPalAccount);
+                    RaisePropertyChanged(() => CanUnlinkPayPalAccount);
+                    RaisePropertyChanged(() => ShowLinkedPayPalInfo);
 	            }
 	        }
 	    }
@@ -307,9 +312,24 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
             get { return IsEditing && !Settings.CreditCardIsMandatory; }
         }
 
-	    public bool CanUnlickPayPalAccount
+        public bool CanLinkPayPalAccount
+        {
+            get { return !IsPayPalAccountLinked && paymentSettings.PayPalClientSettings.IsEnabled; }
+        }
+
+	    public bool CanUnlinkPayPalAccount
 	    {
             get { return IsPayPalAccountLinked && !Settings.CreditCardIsMandatory; }
+	    }
+
+	    public bool ShowLinkedPayPalInfo
+	    {
+            get { return IsPayPalAccountLinked && Settings.CreditCardIsMandatory; }
+	    }
+
+	    public bool IsPayPalOnly
+	    {
+            get { return paymentSettings.PayPalClientSettings.IsEnabled && !paymentSettings.IsPayInTaxiEnabled; }
 	    }
 
 		public string CreditCardSaveButtonDisplay
@@ -419,6 +439,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
                 UpdateAccountSettings(account);
             }
+
+            RaisePropertyChanged(() => CanLinkPayPalAccount);
+            RaisePropertyChanged(() => CanUnlinkPayPalAccount);
         }
 
 	    private void DeleteCreditCard(bool updateAccountSettings = true)

@@ -1729,4 +1729,7 @@
   <data name="PayPalLinked" xml:space="preserve">
     <value>Votre compte est maintenant configuré pour le paiement par défaut via PayPal. Vous pouvez quand même choisir de payer dans le véhicule en choisissant l'option appropriée à l'écran de paiement.</value>
   </data>
+  <data name="PayPalLinkedInfo" xml:space="preserve">
+    <value>Compte associé</value>
+  </data>
 </root>

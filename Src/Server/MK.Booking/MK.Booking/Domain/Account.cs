@@ -421,9 +421,9 @@ namespace apcurium.MK.Booking.Domain
             Update(new AccountUnlinkedFromIbs());
         }
 
-        public void LinkPayPalAccount(string authCode)
+        public void LinkPayPalAccount(string refreshToken)
         {
-            Update(new PayPalAccountLinked{ RefreshToken = authCode });
+            Update(new PayPalAccountLinked{ RefreshToken = refreshToken });
         }
 
         public void UnlinkPayPalAccount()
