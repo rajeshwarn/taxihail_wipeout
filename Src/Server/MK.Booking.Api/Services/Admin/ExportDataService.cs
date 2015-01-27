@@ -105,8 +105,8 @@ namespace apcurium.MK.Booking.Api.Services.Admin
                             orderReportEntry["Payment.MeterAmount"] = orderReport.Payment.MeterAmount.ToString();
                             orderReportEntry["Payment.TipAmount"] = orderReport.Payment.TipAmount.ToString();
                             orderReportEntry["Payment.TotalAmountCharged"] = orderReport.Payment.TotalAmountCharged.ToString();
-                            orderReportEntry["Payment.Provider"] = orderReport.Payment.Provider.ToString();
                             orderReportEntry["Payment.Type"] = orderReport.Payment.Type.ToString();
+                            orderReportEntry["Payment.Provider"] = orderReport.Payment.Provider.ToString();
                             orderReportEntry["Payment.TransactionId"] = orderReport.Payment.TransactionId.ToSafeString();
                             orderReportEntry["Payment.AuthorizationCode"] = orderReport.Payment.AuthorizationCode;
                             orderReportEntry["Payment.CardToken"] = orderReport.Payment.CardToken;

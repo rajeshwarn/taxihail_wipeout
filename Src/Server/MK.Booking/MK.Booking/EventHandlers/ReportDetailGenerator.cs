@@ -24,7 +24,6 @@ namespace apcurium.MK.Booking.EventHandlers
         IEventHandler<PromotionApplied>,
         IEventHandler<PromotionRedeemed>,
         IEventHandler<CreditCardPaymentCaptured_V2>,
-        IEventHandler<CreditCardPaymentInitiated>,
         IEventHandler<IbsOrderInfoAddedToOrder>
     {
         private readonly Func<BookingDbContext> _contextFactory;
@@ -46,8 +45,8 @@ namespace apcurium.MK.Booking.EventHandlers
             using (var context = _contextFactory.Invoke())
             {
                 var accountDetails = context.Query<AccountDetail>().FirstOrDefault(x => x.Id == @event.AccountId);
-                
-                context.Save(new OrderReportDetail
+
+                context.Save(new OrderReportDetail()
                 {
                     Id = @event.SourceId,
                     Account = new OrderReportAccount()
@@ -75,10 +74,6 @@ namespace apcurium.MK.Booking.EventHandlers
                         UserAgent = @event.UserAgent,
                         Version = @event.ClientVersion
                     },
-                    OrderStatus = new OrderReportOrderStatus(),
-                    Payment = new OrderReportPayment(),
-                    Promotion = new OrderReportPromotion(),
-                    VehicleInfos = new OrderReportVehicleInfos(),
                     Rating = ""
                 });
             }
@@ -95,6 +90,20 @@ namespace apcurium.MK.Booking.EventHandlers
                 orderReport.Payment.MdtFare = @event.Fare;
                 orderReport.Payment.MdtTip = @event.Tip;
                 orderReport.Payment.MdtToll = @event.Toll;
+                
+                var orderPaymentDetail = context.Set<OrderPaymentDetail>().FirstOrDefault(payment => payment.OrderId == @event.SourceId);
+                
+                if (orderPaymentDetail != null)
+                {
+                    orderReport.Payment.MeterAmount = orderPaymentDetail.Meter;
+                    orderReport.Payment.TipAmount = orderPaymentDetail.Tip;
+                    orderReport.Payment.TotalAmountCharged = orderPaymentDetail.Amount;
+                    orderReport.Payment.Type = orderPaymentDetail.Type;
+                    orderReport.Payment.Provider = orderPaymentDetail.Provider;
+                    orderReport.Payment.CardToken = orderPaymentDetail.CardToken;
+                    orderReport.Payment.TransactionId = orderPaymentDetail.TransactionId.ToSafeString().IsNullOrEmpty() ? "" : "Auth: " + orderPaymentDetail.TransactionId;
+                    orderReport.Payment.AuthorizationCode = orderPaymentDetail.AuthorizationCode;
+                }
 
                 orderReport.VehicleInfos.DriverFirstName = @event.Status.DriverInfos.FirstName;
                 orderReport.VehicleInfos.DriverLastName = @event.Status.DriverInfos.LastName;
@@ -130,9 +139,13 @@ namespace apcurium.MK.Booking.EventHandlers
             using (var context = _contextFactory.Invoke())
             {
                 var orderReport = context.Find<OrderReportDetail>(@event.OrderId);
-                orderReport.Payment.CardToken = @event.CardToken;
-                orderReport.Payment.Type = PaymentType.CreditCard;
-                context.Save(orderReport);
+                if (orderReport != null)
+                {
+                    orderReport.Payment.CardToken = @event.CardToken;
+                    orderReport.Payment.Type = PaymentType.CreditCard;
+                    context.Save(orderReport);
+                }
+                
             }
         }
 
@@ -141,9 +154,17 @@ namespace apcurium.MK.Booking.EventHandlers
             using (var context = _contextFactory.Invoke())
             {
                 var orderReport = context.Find<OrderReportDetail>(@event.OrderId);
-                orderReport.Payment.PayPalToken = @event.Token;
-                orderReport.Payment.Type = PaymentType.PayPal;
-                context.Save(orderReport);
+                if (orderReport != null)
+                {
+                    orderReport.Payment.PayPalToken = @event.Token;
+                    orderReport.Payment.TotalAmountCharged = @event.Amount;
+                    orderReport.Payment.TipAmount = @event.Tip;
+                    orderReport.Payment.MeterAmount = @event.Meter;
+                    orderReport.Payment.Provider = PaymentProvider.PayPal;
+                    orderReport.Payment.Type = PaymentType.PayPal;
+                    context.Save(orderReport);
+                }
+                
             }
         }
 
@@ -152,8 +173,14 @@ namespace apcurium.MK.Booking.EventHandlers
             using (var context = _contextFactory.Invoke())
             {
                 var orderReport = context.Find<OrderReportDetail>(@event.OrderId);
-                orderReport.Payment.PalPayerId = @event.PayPalPayerId;
+                orderReport.Payment.TotalAmountCharged = @event.Amount;
+                orderReport.Payment.TipAmount = @event.Tip;
+                orderReport.Payment.MeterAmount = @event.Meter;
+                orderReport.Payment.Provider = PaymentProvider.PayPal;
+                orderReport.Payment.Type = PaymentType.PayPal;
+                orderReport.Payment.PalPayerId = orderReport.Payment.AuthorizationCode = @event.PayPalPayerId;
                 orderReport.Payment.PayPalToken = @event.Token;
+                orderReport.Payment.TransactionId = @event.TransactionId.ToSafeString().IsNullOrEmpty() ? "" : "Auth: " + @event.TransactionId;
                 context.Save(orderReport);
             }
         }
@@ -192,9 +219,13 @@ namespace apcurium.MK.Booking.EventHandlers
             using (var context = _contextFactory.Invoke())
             {
                 var orderReport = context.Find<OrderReportDetail>(@event.OrderId);
-                orderReport.Promotion.WasApplied = true;
-                orderReport.Promotion.Code = @event.Code;
-                context.Save(orderReport);
+
+                if (orderReport != null)
+                {
+                    orderReport.Promotion.WasApplied = true;
+                    orderReport.Promotion.Code = @event.Code;
+                    context.Save(orderReport);
+                }
             }
         }
 
@@ -214,17 +245,13 @@ namespace apcurium.MK.Booking.EventHandlers
             using (var context = _contextFactory.Invoke())
             {
                 var orderReport = context.Find<OrderReportDetail>(@event.OrderId);
-
-                orderReport.Payment = new OrderReportPayment()
-                {
-                    AuthorizationCode = @event.AuthorizationCode,
-                    MeterAmount = @event.Meter,
-                    TipAmount = @event.Tip,
-                    TotalAmountCharged = @event.Amount,
-                    Provider = @event.Provider,
-                    TransactionId = @event.TransactionId.ToSafeString().IsNullOrEmpty() ? "" : "Auth: " + @event.TransactionId
-                };
-
+                orderReport.Payment.Type = PaymentType.CreditCard;
+                orderReport.Payment.AuthorizationCode = @event.AuthorizationCode;
+                orderReport.Payment.MeterAmount = @event.Meter;
+                orderReport.Payment.TipAmount = @event.Tip;
+                orderReport.Payment.TotalAmountCharged = @event.Amount;
+                orderReport.Payment.Provider = @event.Provider;
+                orderReport.Payment.TransactionId = @event.TransactionId.ToSafeString().IsNullOrEmpty() ? "" : "Auth: " + @event.TransactionId;
                 context.Save(orderReport);
             }
         }
