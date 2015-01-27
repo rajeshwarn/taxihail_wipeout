@@ -46,7 +46,7 @@ namespace apcurium.MK.Booking.Api.Client.Payments.Braintree
             });
         }
 
-        public async Task<PairingResponse> Pair(Guid orderId, string cardToken, int? autoTipPercentage, double? autoTipAmount)
+        public async Task<PairingResponse> Pair(Guid orderId, string cardToken, int? autoTipPercentage)
         {
             try
             {
@@ -54,7 +54,6 @@ namespace apcurium.MK.Booking.Api.Client.Payments.Braintree
                 {
                     OrderId = orderId,
                     CardToken = cardToken,
-                    AutoTipAmount = autoTipAmount,
                     AutoTipPercentage = autoTipPercentage
 
                 });

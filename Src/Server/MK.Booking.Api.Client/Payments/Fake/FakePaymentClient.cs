@@ -63,7 +63,7 @@ namespace apcurium.MK.Booking.Api.Client.Payments.Fake
             });
         }
 
-        public Task<PairingResponse> Pair(Guid orderId, string cardToken, int? autoTipPercentage, double? autoTipAmount)
+        public Task<PairingResponse> Pair(Guid orderId, string cardToken, int? autoTipPercentage)
         {
             return Task.FromResult(new PairingResponse
             {

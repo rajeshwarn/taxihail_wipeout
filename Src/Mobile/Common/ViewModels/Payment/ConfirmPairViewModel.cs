@@ -93,7 +93,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 							return;
 						}
 
-						var pairingResponse = await _paymentService.Pair(Order.Id, _paymentPreferences.SelectedCreditCard.Token, _paymentPreferences.Tip, null);                    
+						var pairingResponse = await _paymentService.Pair(Order.Id, _paymentPreferences.SelectedCreditCard.Token, _paymentPreferences.Tip);                    
 
 						this.Services().Cache.Set("PairState" + Order.Id, pairingResponse.IsSuccessful ? PairingState.Success : PairingState.Failed);
 

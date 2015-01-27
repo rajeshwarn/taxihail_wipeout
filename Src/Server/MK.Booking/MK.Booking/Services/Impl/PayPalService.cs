@@ -252,6 +252,11 @@ namespace apcurium.MK.Booking.Services.Impl
             // TODO
         }
 
+        public bool TestClient()
+        {
+            
+        }
+
         private void Capture(Guid orderId, string authorizationId)
         {
             var apiContext = GetAPIContext("", orderId);

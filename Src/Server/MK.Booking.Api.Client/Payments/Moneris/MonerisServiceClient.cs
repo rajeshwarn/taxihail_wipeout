@@ -36,7 +36,7 @@ namespace apcurium.MK.Booking.Api.Client.Payments.Moneris
 			});
 		}
 
-		public async Task<PairingResponse> Pair (Guid orderId, string cardToken, int? autoTipPercentage, double? autoTipAmount)
+		public async Task<PairingResponse> Pair (Guid orderId, string cardToken, int? autoTipPercentage)
 		{
             try
             {
@@ -44,7 +44,6 @@ namespace apcurium.MK.Booking.Api.Client.Payments.Moneris
                 {
                     OrderId = orderId,
                     CardToken = cardToken,
-                    AutoTipAmount = autoTipAmount,
                     AutoTipPercentage = autoTipPercentage
 
                 });

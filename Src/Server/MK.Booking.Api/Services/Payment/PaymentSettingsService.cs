@@ -5,6 +5,8 @@ using apcurium.MK.Booking.Api.Contract.Requests.Payment;
 using apcurium.MK.Booking.Api.Contract.Resources.Payments;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
+using apcurium.MK.Booking.Services;
+using apcurium.MK.Booking.Services.Impl;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
@@ -20,11 +22,13 @@ namespace apcurium.MK.Booking.Api.Services.Payment
         private readonly IConfigurationDao _configurationDao;
         private readonly IServerSettings _serverSettings;
         private readonly ILogger _logger;
+        private readonly IPayPalServiceFactory _paylServiceFactory;
 
         public PaymentSettingsService(ICommandBus commandBus, IConfigurationDao configurationDao,
-            IServerSettings serverSettings,ILogger logger)
+            IServerSettings serverSettings, ILogger logger, IPayPalServiceFactory paylServiceFactory)
         {
             _logger = logger;
+            _paylServiceFactory = paylServiceFactory;
             _commandBus = commandBus;
             _configurationDao = configurationDao;
             _serverSettings = serverSettings;
@@ -68,15 +72,14 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 
             try
             {
-                // TODO
-                //if (PayPalService.TestClient(_serverSettings, RequestContext, request.ServerCredentials, false))
-                //{
-                //    return new TestServerPaymentSettingsResponse
-                //    {
-                //        IsSuccessful = true,
-                //        Message = "Paypal Production Credentials are valid\n"
-                //    };
-                //}
+                if (_paylServiceFactory.GetInstance().TestClient(_serverSettings, RequestContext, request.ServerCredentials, false))
+                {
+                    return new TestServerPaymentSettingsResponse
+                    {
+                        IsSuccessful = true,
+                        Message = "Paypal Production Credentials are valid\n"
+                    };
+                }
             }
             catch (Exception e)
             {
@@ -95,15 +98,14 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 
             try
             {
-                // TODO
-                //if (PayPalService.TestClient(_serverSettings, RequestContext, request.ServerCredentials, true))
-                //{
-                //    return new TestServerPaymentSettingsResponse
-                //    {
-                //        IsSuccessful = true,
-                //        Message = "Paypal Sandbox Credentials are valid\n"
-                //    };
-                //}
+                if (_paylServiceFactory.GetInstance().TestClient(_serverSettings, RequestContext, request.ServerCredentials, true))
+                {
+                    return new TestServerPaymentSettingsResponse
+                    {
+                        IsSuccessful = true,
+                        Message = "Paypal Sandbox Credentials are valid\n"
+                    };
+                }
             }
             catch (Exception e)
             {
