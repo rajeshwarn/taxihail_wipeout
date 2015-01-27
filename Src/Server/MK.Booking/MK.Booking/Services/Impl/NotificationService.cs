@@ -120,7 +120,8 @@ namespace apcurium.MK.Booking.Services.Impl
         {
             var order = _orderDao.FindById(orderStatusDetail.OrderId);
             if (!_serverSettings.GetPaymentSettings().AutomaticPaymentPairing
-                && order.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id // Only send notification if using card on file
+                && (order.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id        // Only send notification if using CoF
+                    || order.Settings.ChargeTypeId == ChargeTypes.PayPal.Id)        // or PayPal
                 && ShouldSendNotification(order.AccountId, x => x.ConfirmPairingPush))
             {
                 SendPushOrSms(order.AccountId,
@@ -208,7 +209,7 @@ namespace apcurium.MK.Booking.Services.Impl
             {
                 var order = context.Find<OrderDetail>(orderId);
 
-                // TODO change Succesful resource to depend on PayPal or not for last4digits!!!!!!
+                // TODO PAYPAL change Succesful resource to depend on PayPal or not for last4digits!!!!!!
                 var isPayPal = order.Settings.ChargeTypeId == ChargeTypes.PayPal.Id;
                 var last4Digits = isPayPal ? "" : "";
 

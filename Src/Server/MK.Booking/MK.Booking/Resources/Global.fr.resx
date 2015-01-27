@@ -352,7 +352,7 @@
     <value>Itinéraire</value>
   </data>
   <data name="OrderStatus_wosLOADEDAutoPairing" xml:space="preserve">
-    <value>La course sera payée en utilisant votre carte de crédit enregistrée</value>
+    <value>La course sera payée en utilisant le mode de paiement choisie</value>
   </data>
   <data name="AccountConfirmationSmsBody" xml:space="preserve">
     <value>Votre code de confirmation pour {0} est {1} </value>
