@@ -23,16 +23,22 @@ namespace apcurium.MK.Booking.Services.Impl
         private readonly IAccountDao _accountDao;
         private readonly ILogger _logger;
         private readonly IPairingService _pairingService;
+        private readonly IOrderPaymentDao _paymentDao;
         private readonly Resources.Resources _resources;
 
-        public PayPalService(IServerSettings serverSettings, ICommandBus commandBus, IAccountDao accountDao, ILogger logger, IPairingService pairingService)
-            : base(serverSettings, accountDao)
+        public PayPalService(IServerSettings serverSettings,
+            ICommandBus commandBus,
+            IAccountDao accountDao,
+            ILogger logger,
+            IPairingService pairingService,
+            IOrderPaymentDao paymentDao) : base(serverSettings, accountDao)
         {
             _serverSettings = serverSettings;
             _commandBus = commandBus;
             _accountDao = accountDao;
             _logger = logger;
             _pairingService = pairingService;
+            _paymentDao = paymentDao;
 
             _resources = new Resources.Resources(serverSettings);
         }
@@ -261,25 +267,25 @@ namespace apcurium.MK.Booking.Services.Impl
 
         public void VoidPreAuthorization(Guid orderId)
         {
-            // TODO
-        }
+            var paymentDetail = _paymentDao.FindByOrderId(orderId);
+            if (paymentDetail == null)
+            {
+                // Nothing to void
+                return;
+            }
 
-        public bool TestCredentials(PayPalClientCredentials payPalClientSettings, PayPalServerCredentials payPalServerSettings, bool isSandbox)
-        {
+            var apiContext = GetAPIContext(string.Empty, orderId);
+            var authorization = Authorization.Get(apiContext, paymentDetail.TransactionId);
+
             try
             {
-                var payPalMode = isSandbox ? BaseConstants.SandboxMode : BaseConstants.LiveMode;
-
-                var config = new Dictionary<string, string> {{ BaseConstants.ApplicationModeConfig, payPalMode }};
-
-                var tokenCredentials = new OAuthTokenCredential(payPalClientSettings.ClientId, payPalServerSettings.Secret, config);
-                var accessToken = tokenCredentials.GetAccessToken();
-
-                return accessToken.HasValue();
+                authorization.Void(apiContext);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return false;
+                _logger.LogMessage("Can't cancel PayPal preauthorization");
+                _logger.LogError(ex);
+                _logger.LogMessage(ex.Message);
             }
         }
 
@@ -290,7 +296,7 @@ namespace apcurium.MK.Booking.Services.Impl
 
         public CommitPreauthorizedPaymentResponse CommitPayment(Guid orderId, decimal amount, decimal meterAmount, decimal tipAmount, string authorizationId)
         {
-            var apiContext = GetAPIContext("", orderId);
+            var apiContext = GetAPIContext(string.Empty, orderId);
 
             var authorization = Authorization.Get(apiContext, authorizationId);
 
@@ -307,6 +313,25 @@ namespace apcurium.MK.Booking.Services.Impl
             var responseCapture = authorization.Capture(apiContext, capture);
 
             return new CommitPreauthorizedPaymentResponse();
-        }        
+        }
+
+        public bool TestCredentials(PayPalClientCredentials payPalClientSettings, PayPalServerCredentials payPalServerSettings, bool isSandbox)
+        {
+            try
+            {
+                var payPalMode = isSandbox ? BaseConstants.SandboxMode : BaseConstants.LiveMode;
+
+                var config = new Dictionary<string, string> { { BaseConstants.ApplicationModeConfig, payPalMode } };
+
+                var tokenCredentials = new OAuthTokenCredential(payPalClientSettings.ClientId, payPalServerSettings.Secret, config);
+                var accessToken = tokenCredentials.GetAccessToken();
+
+                return accessToken.HasValue();
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
     }
 }
