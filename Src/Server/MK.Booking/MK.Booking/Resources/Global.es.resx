@@ -499,6 +499,14 @@
     <value>You must select Card On File to use a promotion.</value>
     <comment>You must select Card On File to use a promotion.</comment>
   </data>
+  <data name="CannotCreateOrder_PromotionMustUseCardOnFileOrPayPal" xml:space="preserve">
+    <value>You must select Card On File or PayPal to use a promotion.</value>
+    <comment>You must select Card On File or PayPal to use a promotion.</comment>
+  </data>
+  <data name="CannotCreateOrder_PromotionMustUsePayPal" xml:space="preserve">
+    <value>You must select PayPal to use a promotion.</value>
+    <comment>You must select PayPal to use a promotion.</comment>
+  </data>
   <data name="CannotCreateOrder_PromotionIsNotActive" xml:space="preserve">
     <value>This promotion is not active</value>
     <comment>This promotion is not active</comment>

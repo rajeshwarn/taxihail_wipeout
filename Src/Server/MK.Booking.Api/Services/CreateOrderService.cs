@@ -142,7 +142,7 @@ namespace apcurium.MK.Booking.Api.Services
                 }
             }
 
-            ValidatePayment(request, account, isFutureBooking);
+            ValidatePayment(request, account, isFutureBooking, request.Estimate.Price);
 
             var isChargeAccountPaymentWithCardOnFile = false;
             var chargeTypeKey = ChargeTypes.GetList()
@@ -167,12 +167,19 @@ namespace apcurium.MK.Booking.Api.Services
                             _resources.Get("CannotCreateOrderChargeAccountNotSupported", request.ClientLanguageCode));
                     }
 
-                    // TODO PAYPAL WONT WORK
-                    ValidatePayment(request, account, isFutureBooking);
-                    
-                    // TODO PAYPAL OR NOT
-                    chargeTypeKey = ChargeTypes.CardOnFile.Display;
-                    request.Settings.ChargeTypeId = ChargeTypes.CardOnFile.Id;
+                    if (_paymentAbstractionService.IsPayPal(account.Id))
+                    {
+                        chargeTypeKey = ChargeTypes.PayPal.Display;
+                        request.Settings.ChargeTypeId = ChargeTypes.PayPal.Id;
+                    }
+                    else
+                    {
+                        chargeTypeKey = ChargeTypes.CardOnFile.Display;
+                        request.Settings.ChargeTypeId = ChargeTypes.CardOnFile.Id;
+                    }
+
+                    ValidatePayment(request, account, isFutureBooking, request.Estimate.Price);
+
                     isChargeAccountPaymentWithCardOnFile = true;
                 }
 
@@ -495,24 +502,24 @@ namespace apcurium.MK.Booking.Api.Services
             return ibsAccountId.Value;
         }
 
-        private void ValidatePayment(CreateOrder request, AccountDetail account, bool isFutureBooking)
+        private void ValidatePayment(CreateOrder request, AccountDetail account, bool isFutureBooking, double? appEstimate)
         {
             // Payment mode is CardOnFile
             if (request.Settings.ChargeTypeId.HasValue
                 && request.Settings.ChargeTypeId.Value == ChargeTypes.CardOnFile.Id)
             {
-                ValidateCreditCard(request.Id, account, request.ClientLanguageCode, isFutureBooking);
+                ValidateCreditCard(request.Id, account, request.ClientLanguageCode, isFutureBooking, appEstimate.HasValue ? Convert.ToDecimal(appEstimate.Value) : (decimal?) null);
             }
 
             // Payment mode is PayPal
             if (request.Settings.ChargeTypeId.HasValue
                 && request.Settings.ChargeTypeId.Value == ChargeTypes.PayPal.Id)
             {
-                ValidatePayPal(request.Id, account, request.ClientLanguageCode, isFutureBooking);
+                ValidatePayPal(request.Id, account, request.ClientLanguageCode, isFutureBooking, appEstimate.HasValue ? Convert.ToDecimal(appEstimate.Value) : (decimal?)null);
             }
         }
 
-        private void ValidateCreditCard(Guid orderId, AccountDetail account, string clientLanguageCode, bool isFutureBooking)
+        private void ValidateCreditCard(Guid orderId, AccountDetail account, string clientLanguageCode, bool isFutureBooking, decimal? appEstimate)
         {
             // check if the account has a credit card
             if (!account.DefaultCreditCard.HasValue)
@@ -522,10 +529,10 @@ namespace apcurium.MK.Booking.Api.Services
                     GetCreateOrderServiceErrorMessage(ErrorCode.CreateOrder_CardOnFileButNoCreditCard, clientLanguageCode));
             }
 
-            PreAuthorizePaymentMethod(orderId, account, clientLanguageCode, isFutureBooking, false);
+            PreAuthorizePaymentMethod(orderId, account, clientLanguageCode, isFutureBooking, appEstimate, false);
         }
 
-        private void ValidatePayPal(Guid orderId, AccountDetail account, string clientLanguageCode, bool isFutureBooking)
+        private void ValidatePayPal(Guid orderId, AccountDetail account, string clientLanguageCode, bool isFutureBooking, decimal? appEstimate)
         {
             if (!_serverSettings.GetPaymentSettings().PayPalClientSettings.IsEnabled
                     || !account.IsPayPalAccountLinked)
@@ -535,10 +542,10 @@ namespace apcurium.MK.Booking.Api.Services
                      _resources.Get("CannotCreateOrder_PayPalButNoPayPal", clientLanguageCode));
             }
 
-            PreAuthorizePaymentMethod(orderId, account, clientLanguageCode, isFutureBooking, true);
+            PreAuthorizePaymentMethod(orderId, account, clientLanguageCode, isFutureBooking, appEstimate, true);
         }
 
-        private void PreAuthorizePaymentMethod(Guid orderId, AccountDetail account, string clientLanguageCode, bool isFutureBooking, bool isPayPal)
+        private void PreAuthorizePaymentMethod(Guid orderId, AccountDetail account, string clientLanguageCode, bool isFutureBooking, decimal? appEstimate, bool isPayPal)
         {
             if (!_serverSettings.GetPaymentSettings().IsPreAuthEnabled || isFutureBooking)
             {
@@ -546,7 +553,8 @@ namespace apcurium.MK.Booking.Api.Services
             }
 
             // there's a minimum amount of $50 (warning indicating that on the admin ui)
-            var preAuthAmount = Math.Max(_serverSettings.GetPaymentSettings().PreAuthAmount ?? 0, 50);
+            // if app returned an estimate, use it, otherwise use the setting (or 0), then use max between the value and 50
+            var preAuthAmount = Math.Max(appEstimate ?? (_serverSettings.GetPaymentSettings().PreAuthAmount ?? 0), 50);
             
             var preAuthResponse = _paymentAbstractionService.PreAuthorize(orderId, account, preAuthAmount);
 
@@ -875,10 +883,22 @@ namespace apcurium.MK.Booking.Api.Services
             var usingPaymentInApp = chargeTypeId == ChargeTypes.CardOnFile.Id || chargeTypeId == ChargeTypes.PayPal.Id;
             if (!usingPaymentInApp)
             {
+                var payPalIsEnabled = _serverSettings.GetPaymentSettings().PayPalClientSettings.IsEnabled;
+                var cardOnFileIsEnabled = _serverSettings.GetPaymentSettings().IsPayInTaxiEnabled;
+
+                var promotionErrorResourceKey = "CannotCreateOrder_PromotionMustUseCardOnFile";
+                if (payPalIsEnabled && cardOnFileIsEnabled)
+                {
+                    promotionErrorResourceKey = "CannotCreateOrder_PromotionMustUseCardOnFileOrPayPal";
+                }
+                else if (payPalIsEnabled)
+                {
+                    promotionErrorResourceKey = "CannotCreateOrder_PromotionMustUsePayPal";
+                }
+                
                 // Should never happen since we will check client-side if there's a promocode and not paying with CoF/PayPal
                 throw new HttpError(HttpStatusCode.BadRequest, ErrorCode.CreateOrder_RuleDisable.ToString(),
-                    _resources.Get("CannotCreateOrder_PromotionMustUseCardOnFile", clientLanguageCode));
-                // TODO PAYPAL CHANGE RESOUCE VALUE (DYNAMIC IF PAYPAL IS ENABLED OR NOT OR CARD ON FILE OR/AND)
+                    _resources.Get(promotionErrorResourceKey, clientLanguageCode));
             }
 
             var promo = _promotionDao.FindByPromoCode(promoCode);

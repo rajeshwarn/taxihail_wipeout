@@ -417,6 +417,12 @@
   <data name="CannotCreateOrder_PromotionMustUseCardOnFile" xml:space="preserve">
     <value>Vous devez sélectionner le Paiement In App pour utiliser une promotion.</value>
   </data>
+  <data name="CannotCreateOrder_PromotionMustUseCardOnFileOrPayPal" xml:space="preserve">
+    <value>Vous devez sélectionner le Paiement In App ou PayPal pour utiliser une promotion.</value>
+  </data>
+  <data name="CannotCreateOrder_PromotionMustUsePayPal" xml:space="preserve">
+    <value>Vous devez sélectionner PayPal pour utiliser une promotion.</value>
+  </data>
   <data name="CannotCreateOrder_PromotionIsNotActive" xml:space="preserve">
     <value>Cette promotion n'est pas active</value>
   </data>

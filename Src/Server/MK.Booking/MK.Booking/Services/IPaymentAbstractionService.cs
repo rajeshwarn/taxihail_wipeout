@@ -7,6 +7,7 @@ namespace apcurium.MK.Booking.Services
 {
     public interface IPaymentAbstractionService
     {
+        bool IsPayPal(Guid? accountId = null, Guid? orderId = null);
         PaymentProvider ProviderType(Guid orderId);
         PreAuthorizePaymentResponse PreAuthorize(Guid orderId, AccountDetail account, decimal amountToPreAuthorize);
         CommitPreauthorizedPaymentResponse CommitPayment(Guid orderId, decimal amount, decimal meterAmount, decimal tipAmount, string transactionId);

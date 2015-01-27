@@ -28,7 +28,7 @@ namespace apcurium.MK.Booking.Services
             _serverSettings = serverSettings;
         }
 
-        private bool IsPayPal(Guid? accountId = null, Guid? orderId = null)
+        public bool IsPayPal(Guid? accountId = null, Guid? orderId = null)
         {
             AccountDetail account = null;
             if (accountId.HasValue)

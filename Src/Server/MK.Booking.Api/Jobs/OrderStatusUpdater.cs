@@ -607,7 +607,7 @@ namespace apcurium.MK.Booking.Api.Jobs
                 return;
             }
 
-            var isPayPal = _paymentAbstractionService.ProviderType(orderStatusDetail.OrderId) == PaymentProvider.PayPal;
+            var isPayPal = _paymentAbstractionService.IsPayPal(null, orderStatusDetail.OrderId);
             if (isPayPal
                 || paymentMode == PaymentMethod.Cmt
                 || paymentMode == PaymentMethod.Braintree

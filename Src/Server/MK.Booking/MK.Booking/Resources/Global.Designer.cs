@@ -169,6 +169,24 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You must select Card On File or PayPal to use a promotion..
+        /// </summary>
+        public static string CannotCreateOrder_PromotionMustUseCardOnFileOrPayPal {
+            get {
+                return ResourceManager.GetString("CannotCreateOrder_PromotionMustUseCardOnFileOrPayPal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You must select PayPal to use a promotion..
+        /// </summary>
+        public static string CannotCreateOrder_PromotionMustUsePayPal {
+            get {
+                return ResourceManager.GetString("CannotCreateOrder_PromotionMustUsePayPal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to This promotion is not available at this time.
         /// </summary>
         public static string CannotCreateOrder_PromotionNotAvailableAtThisTime {
