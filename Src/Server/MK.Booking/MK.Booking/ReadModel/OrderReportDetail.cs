@@ -25,6 +25,18 @@ namespace apcurium.MK.Booking.ReadModel
         public OrderReportClient Client { get; set; }
 
         public string Rating { get; set; }
+
+        public OrderReportDetail()
+        {
+            Account = new OrderReportAccount();
+            Order = new OrderReportOrder();
+            OrderStatus = new OrderReportOrderStatus();
+            Payment = new OrderReportPayment();
+            Promotion = new OrderReportPromotion();
+            VehicleInfos = new OrderReportVehicleInfos();
+            Client = new OrderReportClient();
+            Rating = "";
+        }
     }
 
     public class OrderReportAccount

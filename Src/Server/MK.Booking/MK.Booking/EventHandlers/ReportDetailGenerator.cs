@@ -89,39 +89,27 @@ namespace apcurium.MK.Booking.EventHandlers
             using (var context = _contextFactory.Invoke())
             {
                 var orderReport = context.Find<OrderReportDetail>(@event.SourceId);
-                
-                var account = orderReport.Account ?? new OrderReportAccount();
-                var order = orderReport.Order ?? new OrderReportOrder();
-                var orderStatus = orderReport.OrderStatus ?? new OrderReportOrderStatus();
-                var payment = orderReport.Payment ?? new OrderReportPayment();
-                var vehicleInfos = orderReport.VehicleInfos ?? new OrderReportVehicleInfos();
-                
-                account.AccountId = @event.Status.AccountId;
 
-                payment.MdtFare = @event.Fare;
-                payment.MdtTip = @event.Tip;
-                payment.MdtToll = @event.Toll;
-                
-                vehicleInfos.DriverFirstName = @event.Status.DriverInfos.FirstName;
-                vehicleInfos.DriverLastName = @event.Status.DriverInfos.LastName;
-                vehicleInfos.Number = @event.Status.VehicleNumber;
-                vehicleInfos.Color = @event.Status.DriverInfos.VehicleColor;
-                vehicleInfos.Make = @event.Status.DriverInfos.VehicleMake;
-                vehicleInfos.Model = @event.Status.DriverInfos.VehicleModel;
-                vehicleInfos.Registration = @event.Status.DriverInfos.VehicleRegistration;
-                vehicleInfos.Type = @event.Status.DriverInfos.VehicleType;
-                
-                orderStatus.Status = (int)@event.Status.Status;
-                orderStatus.OrderIsCompleted = @event.IsCompleted;
-                
-                order.PickupDateTime = @event.Status.PickupDate;
-                order.CompanyName = @event.Status.CompanyName;
-                
-                orderReport.Account = account;
-                orderReport.Order = order;
-                orderReport.OrderStatus = orderStatus;
-                orderReport.Payment = payment;
-                orderReport.VehicleInfos = vehicleInfos;
+                orderReport.Account.AccountId = @event.Status.AccountId;
+
+                orderReport.Payment.MdtFare = @event.Fare;
+                orderReport.Payment.MdtTip = @event.Tip;
+                orderReport.Payment.MdtToll = @event.Toll;
+
+                orderReport.VehicleInfos.DriverFirstName = @event.Status.DriverInfos.FirstName;
+                orderReport.VehicleInfos.DriverLastName = @event.Status.DriverInfos.LastName;
+                orderReport.VehicleInfos.Number = @event.Status.VehicleNumber;
+                orderReport.VehicleInfos.Color = @event.Status.DriverInfos.VehicleColor;
+                orderReport.VehicleInfos.Make = @event.Status.DriverInfos.VehicleMake;
+                orderReport.VehicleInfos.Model = @event.Status.DriverInfos.VehicleModel;
+                orderReport.VehicleInfos.Registration = @event.Status.DriverInfos.VehicleRegistration;
+                orderReport.VehicleInfos.Type = @event.Status.DriverInfos.VehicleType;
+
+                orderReport.OrderStatus.Status = (int)@event.Status.Status;
+                orderReport.OrderStatus.OrderIsCompleted = @event.IsCompleted;
+
+                orderReport.Order.PickupDateTime = @event.Status.PickupDate;
+                orderReport.Order.CompanyName = @event.Status.CompanyName;
 
                 context.Save(orderReport);
             }
@@ -132,9 +120,7 @@ namespace apcurium.MK.Booking.EventHandlers
             using (var context = _contextFactory.Invoke())
             {
                 var orderReport = context.Find<OrderReportDetail>(@event.SourceId);
-                var vehicleInfos = orderReport.VehicleInfos ?? new OrderReportVehicleInfos();
-                vehicleInfos.WasConfirmed = true;
-                orderReport.VehicleInfos = vehicleInfos;
+                orderReport.VehicleInfos.WasConfirmed = true;
                 context.Save(orderReport);
             }
         }
@@ -144,10 +130,8 @@ namespace apcurium.MK.Booking.EventHandlers
             using (var context = _contextFactory.Invoke())
             {
                 var orderReport = context.Find<OrderReportDetail>(@event.OrderId);
-                var payment = orderReport.Payment ?? new OrderReportPayment();
-                payment.CardToken = @event.CardToken;
-                payment.Type = PaymentType.CreditCard;
-                orderReport.Payment = payment;
+                orderReport.Payment.CardToken = @event.CardToken;
+                orderReport.Payment.Type = PaymentType.CreditCard;
                 context.Save(orderReport);
             }
         }
@@ -157,10 +141,8 @@ namespace apcurium.MK.Booking.EventHandlers
             using (var context = _contextFactory.Invoke())
             {
                 var orderReport = context.Find<OrderReportDetail>(@event.OrderId);
-                var payment = orderReport.Payment ?? new OrderReportPayment();
-                payment.PayPalToken = @event.Token;
-                payment.Type = PaymentType.PayPal;
-                orderReport.Payment = payment;
+                orderReport.Payment.PayPalToken = @event.Token;
+                orderReport.Payment.Type = PaymentType.PayPal;
                 context.Save(orderReport);
             }
         }
@@ -170,10 +152,8 @@ namespace apcurium.MK.Booking.EventHandlers
             using (var context = _contextFactory.Invoke())
             {
                 var orderReport = context.Find<OrderReportDetail>(@event.OrderId);
-                var payment = orderReport.Payment ?? new OrderReportPayment();
-                payment.PalPayerId = @event.PayPalPayerId;
-                payment.PayPalToken = @event.Token;
-                orderReport.Payment = payment;
+                orderReport.Payment.PalPayerId = @event.PayPalPayerId;
+                orderReport.Payment.PayPalToken = @event.Token;
                 context.Save(orderReport);
             }
         }
@@ -183,9 +163,7 @@ namespace apcurium.MK.Booking.EventHandlers
             using (var context = _contextFactory.Invoke())
             {
                 var orderReport = context.Find<OrderReportDetail>(@event.SourceId);
-                var status = orderReport.OrderStatus ?? new OrderReportOrderStatus();
-                status.OrderIsCancelled = true;
-                orderReport.OrderStatus = status;
+                orderReport.OrderStatus.OrderIsCancelled = true;
                 context.Save(orderReport);
             }
         }
@@ -214,10 +192,8 @@ namespace apcurium.MK.Booking.EventHandlers
             using (var context = _contextFactory.Invoke())
             {
                 var orderReport = context.Find<OrderReportDetail>(@event.OrderId);
-                var promo = orderReport.Promotion ?? new OrderReportPromotion();
-                promo.WasApplied = true;
-                promo.Code = @event.Code;
-                orderReport.Promotion = promo;
+                orderReport.Promotion.WasApplied = true;
+                orderReport.Promotion.Code = @event.Code;
                 context.Save(orderReport);
             }
         }
@@ -227,10 +203,8 @@ namespace apcurium.MK.Booking.EventHandlers
             using (var context = _contextFactory.Invoke())
             {
                 var orderReport = context.Find<OrderReportDetail>(@event.OrderId);
-                var promo = orderReport.Promotion ?? new OrderReportPromotion();
-                promo.WasRedeemed = true;
-                promo.SavedAmount = @event.AmountSaved;
-                orderReport.Promotion = promo;
+                orderReport.Promotion.WasRedeemed = true;
+                orderReport.Promotion.SavedAmount = @event.AmountSaved;
                 context.Save(orderReport);
             }
         }
@@ -260,9 +234,7 @@ namespace apcurium.MK.Booking.EventHandlers
             using (var context = _contextFactory.Invoke())
             {
                 var orderReport = context.Find<OrderReportDetail>(@event.SourceId);
-                var order = orderReport.Order ?? new OrderReportOrder();
-                order.IBSOrderId = @event.IBSOrderId;
-                orderReport.Order = order;
+                orderReport.Order.IBSOrderId = @event.IBSOrderId;
                 context.Save(orderReport);
             }
         }

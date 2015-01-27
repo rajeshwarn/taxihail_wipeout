@@ -21,14 +21,12 @@ namespace apcurium.MK.Booking.Api.Services.Admin
     {
         private readonly IAccountDao _accountDao;
         private readonly IServerSettings _serverSettings;
-        private readonly IOrderDao _orderDao;
         private readonly IReportDao _reportDao;
         private readonly IAppStartUpLogDao _appStartUpLogDao;
 
-        public ExportDataService(IAccountDao accountDao, IOrderDao orderDao, IReportDao reportDao, IServerSettings serverSettings, IAppStartUpLogDao appStartUpLogDao)
+        public ExportDataService(IAccountDao accountDao, IReportDao reportDao, IServerSettings serverSettings, IAppStartUpLogDao appStartUpLogDao)
         {
             _accountDao = accountDao;
-            _orderDao = orderDao;
             _reportDao = reportDao;
             _serverSettings = serverSettings;
             _appStartUpLogDao = appStartUpLogDao;

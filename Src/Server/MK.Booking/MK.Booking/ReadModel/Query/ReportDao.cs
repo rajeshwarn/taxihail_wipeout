@@ -23,8 +23,7 @@ namespace apcurium.MK.Booking.ReadModel.Query
         {
             using (var context = _contextFactory.Invoke())
             {
-                var result = context.Query<OrderReportDetail>();
-                return !result.Any() ? result.ToList() : result.OrderBy(x => x.Order.CreateDateTime).OrderBy(x => x.Order.CreateDateTime).ToList();
+                return context.Query<OrderReportDetail>().OrderBy(x => x.Order.CreateDateTime).OrderBy(x => x.Order.CreateDateTime).ToList();
             }
         }
 
@@ -32,8 +31,7 @@ namespace apcurium.MK.Booking.ReadModel.Query
         {
             using (var context = _contextFactory.Invoke())
             {
-                var result = context.Query<OrderReportDetail>();
-                return !result.Any() ? result.ToList() : result.OrderBy(x => x.Order.CreateDateTime).Where(x => x.Account.AccountId == accountId).ToList();
+                return context.Query<OrderReportDetail>().OrderBy(x => x.Order.CreateDateTime).Where(x => x.Account.AccountId == accountId).ToList();
             }
         }
 
@@ -41,8 +39,7 @@ namespace apcurium.MK.Booking.ReadModel.Query
         {
             using (var context = _contextFactory.Invoke())
             {
-                var result = context.Query<OrderReportDetail>();
-                return !result.Any() ? result.ToList() : result.OrderBy(x => x.Order.CreateDateTime).Where(x => x.Order.CreateDateTime > startDate && x.Order.CreateDateTime <= endDate).ToList();
+                return context.Query<OrderReportDetail>().OrderBy(x => x.Order.CreateDateTime).Where(x => x.Order.CreateDateTime > startDate && x.Order.CreateDateTime <= endDate).ToList();
             }
         }
     }
