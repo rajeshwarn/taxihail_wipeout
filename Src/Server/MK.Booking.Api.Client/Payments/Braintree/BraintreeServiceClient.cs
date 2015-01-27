@@ -54,7 +54,6 @@ namespace apcurium.MK.Booking.Api.Client.Payments.Braintree
                 {
                     OrderId = orderId,
                     CardToken = cardToken,
-                    AutoTipAmount = autoTipAmount,
                     AutoTipPercentage = autoTipPercentage
 
                 });

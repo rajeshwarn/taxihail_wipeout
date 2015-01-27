@@ -10,7 +10,5 @@ namespace apcurium.MK.Booking.ReadModel.Query.Contract
     {
         OrderPaymentDetail FindByTransactionId(string transactionId);
         OrderPaymentDetail FindByOrderId(Guid orderId);
-        OrderPaymentDetail FindNonPayPalByOrderId(Guid orderId);
-        OrderPaymentDetail FindByPayPalToken(string token);
     }
 }

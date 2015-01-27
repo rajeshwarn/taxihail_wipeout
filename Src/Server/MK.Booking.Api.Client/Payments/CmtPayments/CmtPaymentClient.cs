@@ -58,7 +58,6 @@ namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments
                 {
                     OrderId = orderId,
                     CardToken = cardToken,
-                    AutoTipAmount = autoTipAmount,
                     AutoTipPercentage = autoTipPercentage
 
                 });

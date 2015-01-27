@@ -44,7 +44,6 @@ namespace apcurium.MK.Booking.Api.Client.Payments.Moneris
                 {
                     OrderId = orderId,
                     CardToken = cardToken,
-                    AutoTipAmount = autoTipAmount,
                     AutoTipPercentage = autoTipPercentage
 
                 });

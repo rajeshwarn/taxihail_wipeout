@@ -62,7 +62,7 @@ namespace apcurium.MK.Booking.Services.Impl
             }
         }
 
-        public PairingResponse Pair(Guid orderId, string cardToken, int? autoTipPercentage, double? autoTipAmount)
+        public PairingResponse Pair(Guid orderId, string cardToken, int? autoTipPercentage)
         {
             try
             {
@@ -79,7 +79,7 @@ namespace apcurium.MK.Booking.Services.Impl
                         throw new Exception("Order has no IBSOrderId");
                     }
 
-                    var response = PairWithVehicleUsingRideLinq(orderStatusDetail, orderId, cardToken, autoTipPercentage, autoTipAmount);
+                    var response = PairWithVehicleUsingRideLinq(orderStatusDetail, orderId, cardToken, autoTipPercentage);
 
                     // send a command to save the pairing state for this order
                     _commandBus.Send(new PairForPayment
@@ -90,7 +90,6 @@ namespace apcurium.MK.Booking.Services.Impl
                         PairingToken = response.PairingToken,
                         PairingCode = response.PairingCode,
                         TokenOfCardToBeUsedForPayment = cardToken,
-                        AutoTipAmount = autoTipAmount,
                         AutoTipPercentage = autoTipPercentage
                     });
 
@@ -350,7 +349,7 @@ namespace apcurium.MK.Booking.Services.Impl
             }
         }
 
-        private CmtPairingResponse PairWithVehicleUsingRideLinq(OrderStatusDetail orderStatusDetail, Guid orderId, string cardToken, int? autoTipPercentage, double? autoTipAmount)
+        private CmtPairingResponse PairWithVehicleUsingRideLinq(OrderStatusDetail orderStatusDetail, Guid orderId, string cardToken, int? autoTipPercentage)
         {
             var accountDetail = _accountDao.FindById(orderStatusDetail.AccountId);
 
@@ -358,7 +357,7 @@ namespace apcurium.MK.Booking.Services.Impl
             var cmtPaymentSettings = _serverSettings.GetPaymentSettings().CmtPaymentSettings;
             var pairingRequest = new PairingRequest
             {
-                AutoTipAmount = autoTipAmount,
+                AutoTipAmount = null,
                 AutoTipPercentage = autoTipPercentage,
                 AutoCompletePayment = true,
                 CallbackUrl = "",

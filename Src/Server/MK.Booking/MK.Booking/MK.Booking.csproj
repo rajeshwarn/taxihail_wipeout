@@ -320,9 +320,11 @@
     <Compile Include="Services\INotificationService.cs" />
     <Compile Include="Services\Impl\NotificationService.cs" />
     <Compile Include="Services\IPairingService.cs" />
+    <Compile Include="Services\IPaymentAbstractionService.cs" />
     <Compile Include="Services\IPaymentService.cs" />
     <Compile Include="Services\IPaymentServiceFactory.cs" />
     <Compile Include="Services\IPayPalServiceFactory.cs" />
+    <Compile Include="Services\PaymentAbstrationService.cs" />
     <Compile Include="Services\PaymentServiceFactory.cs" />
     <Compile Include="Services\PayPalServiceFactory.cs" />
     <Compile Include="SMS\Impl\TwilioService.cs" />

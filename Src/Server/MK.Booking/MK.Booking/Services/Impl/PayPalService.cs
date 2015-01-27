@@ -132,6 +132,17 @@ namespace apcurium.MK.Booking.Services.Impl
             }
         }
 
+        public BasePaymentResponse Unpair(Guid orderId)
+        {
+            _pairingService.Unpair(orderId);
+
+            return new BasePaymentResponse
+            {
+                IsSuccessful = true,
+                Message = "Success"
+            };
+        }
+
         public PreAuthorizePaymentResponse PreAuthorize(Guid accountId, Guid orderId, string email, decimal amountToPreAuthorize, string metadataId = "")
         {
             var message = string.Empty;
@@ -252,7 +263,12 @@ namespace apcurium.MK.Booking.Services.Impl
             // TODO
         }
 
-        private void Capture(Guid orderId, string authorizationId)
+        public void VoidTransaction(Guid orderId, string transactionId, ref string message)
+        {
+            // TODO
+        }
+
+        public CommitPreauthorizedPaymentResponse CommitPayment(Guid orderId, decimal amount, decimal meterAmount, decimal tipAmount, string authorizationId)
         {
             var apiContext = GetAPIContext("", orderId);
 
@@ -269,6 +285,8 @@ namespace apcurium.MK.Booking.Services.Impl
             };
 
             var responseCapture = authorization.Capture(apiContext, capture);
+
+            return new CommitPreauthorizedPaymentResponse();
         }        
     }
 }

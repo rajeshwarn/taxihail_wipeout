@@ -44,13 +44,11 @@ namespace apcurium.MK.Booking.Api.Services
 
         private readonly IAccountDao _accountDao;
         private readonly IOrderDao _orderDao;
-        private readonly IPaymentServiceFactory _paymentServiceFactory;
-        private readonly IPayPalServiceFactory _paypalServiceFactory;
-        private readonly ICreditCardDao _creditCardDao;
         private readonly IPromotionDao _promotionDao;
         private readonly IEventSourcedRepository<Promotion> _promoRepository;
         private readonly HoneyBadgerServiceClient _honeyBadgerServiceClient;
         private readonly ITaxiHailNetworkServiceClient _taxiHailNetworkServiceClient;
+        private readonly IPaymentAbstractionService _paymentAbstractionService;
         private readonly IAccountChargeDao _accountChargeDao;
         private readonly ICommandBus _commandBus;
         private readonly IServerSettings _serverSettings;
@@ -69,13 +67,11 @@ namespace apcurium.MK.Booking.Api.Services
             IUpdateOrderStatusJob updateOrderStatusJob,
             IAccountChargeDao accountChargeDao,
             IOrderDao orderDao,
-            IPaymentServiceFactory paymentServiceFactory,
-            IPayPalServiceFactory paypalServiceFactory,
-            ICreditCardDao creditCardDao,
             IPromotionDao promotionDao,
             IEventSourcedRepository<Promotion> promoRepository,
             HoneyBadgerServiceClient honeyBadgerServiceClient,
-            ITaxiHailNetworkServiceClient taxiHailNetworkServiceClient)
+            ITaxiHailNetworkServiceClient taxiHailNetworkServiceClient,
+            IPaymentAbstractionService paymentAbstractionService)
         {
             _accountChargeDao = accountChargeDao;
             _commandBus = commandBus;
@@ -86,13 +82,11 @@ namespace apcurium.MK.Booking.Api.Services
             _ruleCalculator = ruleCalculator;
             _updateOrderStatusJob = updateOrderStatusJob;
             _orderDao = orderDao;
-            _paymentServiceFactory = paymentServiceFactory;
-            _paypalServiceFactory = paypalServiceFactory;
-            _creditCardDao = creditCardDao;
             _promotionDao = promotionDao;
             _promoRepository = promoRepository;
             _honeyBadgerServiceClient = honeyBadgerServiceClient;
             _taxiHailNetworkServiceClient = taxiHailNetworkServiceClient;
+            _paymentAbstractionService = paymentAbstractionService;
 
             _resources = new Resources.Resources(_serverSettings);
         }
@@ -553,22 +547,12 @@ namespace apcurium.MK.Booking.Api.Services
 
             // there's a minimum amount of $50 (warning indicating that on the admin ui)
             var preAuthAmount = Math.Max(_serverSettings.GetPaymentSettings().PreAuthAmount ?? 0, 50);
+            
+            var preAuthResponse = _paymentAbstractionService.PreAuthorize(orderId, account, preAuthAmount);
 
-            PreAuthorizePaymentResponse preAuthResponse;
-            string errorMessage;
-            if (isPayPal)
-            {
-                preAuthResponse = _paypalServiceFactory.GetInstance().PreAuthorize(account.Id, orderId, account.Email, preAuthAmount);
-                errorMessage = _resources.Get("CannotCreateOrder_PayPalWasDeclined", clientLanguageCode);
-            }
-            else
-            {
-                // try to preauthorize a small amount on the card to verify the validity
-                var card = _creditCardDao.FindByAccountId(account.Id).First();
-
-                preAuthResponse = _paymentServiceFactory.GetInstance().PreAuthorize(orderId, account.Email, card.Token, preAuthAmount);
-                errorMessage = _resources.Get("CannotCreateOrder_CreditCardWasDeclined", clientLanguageCode);
-            }
+            var errorMessage = isPayPal
+                ? _resources.Get("CannotCreateOrder_PayPalWasDeclined", clientLanguageCode)
+                : _resources.Get("CannotCreateOrder_CreditCardWasDeclined", clientLanguageCode);
 
             if (!preAuthResponse.IsSuccessful)
             {
@@ -677,7 +661,9 @@ namespace apcurium.MK.Booking.Api.Services
                 request.Settings.Phone,
                 request.Settings.Passengers,
                 request.Settings.VehicleTypeId,
-                _serverSettings.ServerData.IBS.PaymentTypePaymentInCarId, // this needs to be null if not set or the payment in car payment type id of ibs
+                _serverSettings.ServerData.IBS.PaymentTypePaymentInCarId, // this needs to be set to NULL or the Payment In Car payment type id of IBS
+                                                                          // (this makes the taxi hardware active until we pair and change it to Card On file payment type id of IBS
+                                                                          // where it will deactivate the taxi hardware because the user is paying in car)
                 note,
                 request.PickupDate.Value,
                 ibsPickupAddress,

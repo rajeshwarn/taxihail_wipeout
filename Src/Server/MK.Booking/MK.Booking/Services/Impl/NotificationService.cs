@@ -202,11 +202,15 @@ namespace apcurium.MK.Booking.Services.Impl
             }
         }
 
-        public void SendAutomaticPairingPush(Guid orderId, int? autoTipPercentage, string last4Digits, bool success)
+        public void SendAutomaticPairingPush(Guid orderId, int? autoTipPercentage, bool success)
         {
             using (var context = _contextFactory.Invoke())
             {
                 var order = context.Find<OrderDetail>(orderId);
+
+                // TODO change Succesful resource to depend on PayPal or not for last4digits!!!!!!
+                var isPayPal = order.Settings.ChargeTypeId == ChargeTypes.PayPal.Id;
+                var last4Digits = isPayPal ? "" : "";
 
                 var alert = success
                     ? string.Format(_resources.Get("PushNotification_OrderPairingSuccessful", order.ClientLanguageCode), order.IBSOrderId, last4Digits, autoTipPercentage)

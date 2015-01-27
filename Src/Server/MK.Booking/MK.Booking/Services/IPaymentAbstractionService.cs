@@ -1,16 +1,16 @@
 using System;
+using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Resources;
 
 namespace apcurium.MK.Booking.Services
 {
-    public interface IPaymentService
+    public interface IPaymentAbstractionService
     {
-        PaymentProvider ProviderType { get; }
-        PreAuthorizePaymentResponse PreAuthorize(Guid orderId, string email, string cardToken, decimal amountToPreAuthorize);
+        PaymentProvider ProviderType(Guid orderId);
+        PreAuthorizePaymentResponse PreAuthorize(Guid orderId, AccountDetail account, decimal amountToPreAuthorize);
         CommitPreauthorizedPaymentResponse CommitPayment(Guid orderId, decimal amount, decimal meterAmount, decimal tipAmount, string transactionId);
-        DeleteTokenizedCreditcardResponse DeleteTokenizedCreditcard(string cardToken);
-        PairingResponse Pair(Guid orderId, string cardToken, int? autoTipPercentage);
+        PairingResponse Pair(Guid orderId, int? autoTipPercentage);
         BasePaymentResponse Unpair(Guid orderId);
         void VoidPreAuthorization(Guid orderId);
         void VoidTransaction(Guid orderId, string transactionId, ref string message);

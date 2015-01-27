@@ -45,7 +45,7 @@ namespace apcurium.MK.Booking.Services.Impl
             }
         }
 
-        public PairingResponse Pair(Guid orderId, string cardToken, int? autoTipPercentage, double? autoTipAmount)
+        public PairingResponse Pair(Guid orderId, string cardToken, int? autoTipPercentage)
         {
             try
             {
@@ -85,15 +85,10 @@ namespace apcurium.MK.Booking.Services.Impl
             try
             {
                 // we must do a completion with $0 (see eSELECTplus_DotNet_IG.pdf, Process Flow for PreAuth / Capture Transactions)
-                var paymentDetail = _paymentDao.FindNonPayPalByOrderId(orderId);
+                var paymentDetail = _paymentDao.FindByOrderId(orderId);
                 if (paymentDetail == null)
                 {
-                    if (_serverSettings.GetPaymentSettings().IsPreAuthEnabled)
-                    {
-                        throw new Exception(string.Format("Payment for order {0} not found", orderId));
-                    }
-
-                    // PreAuth disabled, no Void to do
+                    // nothing to void
                     return;
                 }
                 
