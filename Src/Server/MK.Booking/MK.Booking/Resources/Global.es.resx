@@ -382,8 +382,8 @@
     <comment>Passengers are in the taxi</comment>
   </data>
   <data name="OrderStatus_wosLOADEDAutoPairing" xml:space="preserve">
-    <value>El costo de servicio sera pagado con la tarjeta de crédito registarada en archivo</value>
-    <comment>Fare will be paid using the credit card on file</comment>
+    <value>El costo de servicio sera pagado por el método de pago seleccionado</value>
+    <comment>Fare will be paid using the selected payment method</comment>
   </data>
   <data name="OrderStatus_wosNone" xml:space="preserve">
     <value>Confirmación inválida, por favor llame nuestro centro de despacho</value>

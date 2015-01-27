@@ -925,7 +925,7 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Fare will be paid using the credit card on file.
+        ///   Looks up a localized string similar to Fare will be paid using the selected payment method.
         /// </summary>
         public static string OrderStatus_wosLOADEDAutoPairing {
             get {

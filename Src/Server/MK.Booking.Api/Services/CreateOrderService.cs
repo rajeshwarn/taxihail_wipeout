@@ -144,12 +144,11 @@ namespace apcurium.MK.Booking.Api.Services
 
             ValidatePayment(request, account, isFutureBooking);
 
-            bool isChargeAccountPaymentWithCardOnFile = false;
+            var isChargeAccountPaymentWithCardOnFile = false;
             var chargeTypeKey = ChargeTypes.GetList()
                     .Where(x => x.Id == request.Settings.ChargeTypeId)
                     .Select(x => x.Display)
                     .FirstOrDefault();
-
 
             string[] prompts = null;
             int?[] promptsLength = null;
@@ -168,9 +167,10 @@ namespace apcurium.MK.Booking.Api.Services
                             _resources.Get("CannotCreateOrderChargeAccountNotSupported", request.ClientLanguageCode));
                     }
 
+                    // TODO PAYPAL WONT WORK
                     ValidatePayment(request, account, isFutureBooking);
                     
-                    // TODO CHECK IF PAYPAL OR NOT
+                    // TODO PAYPAL OR NOT
                     chargeTypeKey = ChargeTypes.CardOnFile.Display;
                     request.Settings.ChargeTypeId = ChargeTypes.CardOnFile.Id;
                     isChargeAccountPaymentWithCardOnFile = true;
@@ -648,7 +648,11 @@ namespace apcurium.MK.Booking.Api.Services
                 ? Mapper.Map<IbsAddress>(request.DropOffAddress)
                 : null;
 
-            var promoCode = request.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id ? request.PromoCode : null; // promo only applied if payment with card on file
+            var promoCode =
+                request.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id     // promo only applied if payment with CoF/PayPal
+                    || request.Settings.ChargeTypeId == ChargeTypes.PayPal.Id
+                        ? request.PromoCode 
+                        : null; 
             var note = BuildNote(chargeType, request.Note, request.PickupAddress.BuildingName, request.Settings.LargeBags, promoCode);
             var fare = GetFare(request.Estimate);
 
@@ -868,11 +872,13 @@ namespace apcurium.MK.Booking.Api.Services
                 return null;
             }
 
-            if (chargeTypeId != ChargeTypes.CardOnFile.Id)
+            var usingPaymentInApp = chargeTypeId == ChargeTypes.CardOnFile.Id || chargeTypeId == ChargeTypes.PayPal.Id;
+            if (!usingPaymentInApp)
             {
-                // Should never happen since we will check client-side if there's a promocode and not paying with CoF
+                // Should never happen since we will check client-side if there's a promocode and not paying with CoF/PayPal
                 throw new HttpError(HttpStatusCode.BadRequest, ErrorCode.CreateOrder_RuleDisable.ToString(),
                     _resources.Get("CannotCreateOrder_PromotionMustUseCardOnFile", clientLanguageCode));
+                // TODO PAYPAL CHANGE RESOUCE VALUE (DYNAMIC IF PAYPAL IS ENABLED OR NOT OR CARD ON FILE OR/AND)
             }
 
             var promo = _promotionDao.FindByPromoCode(promoCode);

@@ -355,7 +355,7 @@
     <value>Route</value>
   </data>
   <data name="OrderStatus_wosLOADEDAutoPairing" xml:space="preserve">
-    <value>Fare will be paid using the credit card on file</value>
+    <value>Fare will be paid using the selected payment method</value>
   </data>
   <data name="CardOnFile" xml:space="preserve">
     <value>Card on File</value>
