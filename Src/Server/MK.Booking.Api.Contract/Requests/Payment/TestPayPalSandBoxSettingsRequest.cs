@@ -16,5 +16,7 @@ namespace apcurium.MK.Booking.Api.Contract.Requests.Payment
     public class TestPayPalSandboxSettingsRequest : IReturn<TestServerPaymentSettingsResponse>
     {
         public PayPalServerCredentials ServerCredentials { get; set; }
+
+        public PayPalClientCredentials ClientCredentials { get; set; }
     }
 }

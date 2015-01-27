@@ -20,18 +20,15 @@ namespace apcurium.MK.Booking.Api.Services.Payment
     {
         private readonly ICommandBus _commandBus;
         private readonly IConfigurationDao _configurationDao;
-        private readonly IServerSettings _serverSettings;
         private readonly ILogger _logger;
         private readonly IPayPalServiceFactory _paylServiceFactory;
 
-        public PaymentSettingsService(ICommandBus commandBus, IConfigurationDao configurationDao,
-            IServerSettings serverSettings, ILogger logger, IPayPalServiceFactory paylServiceFactory)
+        public PaymentSettingsService(ICommandBus commandBus, IConfigurationDao configurationDao, ILogger logger, IPayPalServiceFactory paylServiceFactory)
         {
             _logger = logger;
             _paylServiceFactory = paylServiceFactory;
             _commandBus = commandBus;
             _configurationDao = configurationDao;
-            _serverSettings = serverSettings;
         }
 
         public PaymentSettingsResponse Get(PaymentSettingsRequest request)
@@ -67,23 +64,23 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             var response = new TestServerPaymentSettingsResponse
             {
                 IsSuccessful = false,
-                Message = "Paypal Production Credentials are invalid\n"
+                Message = "Paypal Production Credentials are invalid"
             };
 
             try
             {
-                if (_paylServiceFactory.GetInstance().TestClient(_serverSettings, RequestContext, request.ServerCredentials, false))
+                if (_paylServiceFactory.GetInstance().TestCredentials(request.ClientCredentials, request.ServerCredentials, false))
                 {
                     return new TestServerPaymentSettingsResponse
                     {
                         IsSuccessful = true,
-                        Message = "Paypal Production Credentials are valid\n"
+                        Message = "Paypal Production Credentials are valid"
                     };
                 }
             }
             catch (Exception e)
             {
-                response.Message += e.Message + "\n";
+                response.Message += "\n" + e.Message;
             }
             return response;
         }
@@ -93,23 +90,23 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             var response = new TestServerPaymentSettingsResponse
             {
                 IsSuccessful = false,
-                Message = "Paypal Sandbox Credentials are invalid\n"
+                Message = "Paypal Sandbox Credentials are invalid"
             };
 
             try
             {
-                if (_paylServiceFactory.GetInstance().TestClient(_serverSettings, RequestContext, request.ServerCredentials, true))
+                if (_paylServiceFactory.GetInstance().TestCredentials(request.ClientCredentials, request.ServerCredentials, true))
                 {
                     return new TestServerPaymentSettingsResponse
                     {
                         IsSuccessful = true,
-                        Message = "Paypal Sandbox Credentials are valid\n"
+                        Message = "Paypal Sandbox Credentials are valid"
                     };
                 }
             }
             catch (Exception e)
             {
-                response.Message += e.Message + "\n";
+                response.Message += "\n" + e.Message;
             }
             return response;
         }
@@ -119,7 +116,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             var response = new TestServerPaymentSettingsResponse
             {
                 IsSuccessful = false,
-                Message = "Braintree Settings are invalid\n"
+                Message = "Braintree Settings are invalid"
             };
 
             try
@@ -129,13 +126,13 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                     return new TestServerPaymentSettingsResponse
                     {
                         IsSuccessful = true,
-                        Message = "Braintree Settings are valid\n"
+                        Message = "Braintree Settings are valid"
                     };
                 }
             }
             catch (Exception e)
             {
-                response.Message += e.Message + "\n";
+                response.Message += "\n" + e.Message;
             }
 
             return response;
@@ -146,7 +143,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             var response = new TestServerPaymentSettingsResponse
             {
                 IsSuccessful = false,
-                Message = "CMT Settings are invalid\n"
+                Message = "CMT Settings are invalid"
             };
 
             try
@@ -158,13 +155,13 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                     return new TestServerPaymentSettingsResponse
                     {
                         IsSuccessful = true,
-                        Message = "CMT Settings are valid\n"
+                        Message = "CMT Settings are valid"
                     };
                 }
             }
             catch (Exception e)
             {
-                response.Message += e.Message + "\n" + e;
+                response.Message += "\n" + e.Message + "\n" + e;
             }
 
             return response;
@@ -175,7 +172,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             var response = new TestServerPaymentSettingsResponse
             {
                 IsSuccessful = false,
-                Message = "Moneris Settings are invalid\n"
+                Message = "Moneris Settings are invalid"
             };
 
             try
@@ -187,13 +184,13 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                     return new TestServerPaymentSettingsResponse
                     {
                         IsSuccessful = true,
-                        Message = "Moneris Settings are valid\n"
+                        Message = "Moneris Settings are valid"
                     };
                 }
             }
             catch (Exception e)
             {
-                response.Message += e.Message + "\n";
+                response.Message += "\n" + e.Message;
             }
 
             return response;
