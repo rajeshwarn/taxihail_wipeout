@@ -1,64 +1,18 @@
-﻿<!-- PAYPAL SETTINGS-->
-
-
-<h4 class="table-title">{{localize "PayPal Settings"}}</h4>
-
-
-<label class="control-label settingsLabel" >{{{localize "Use PayPal"}}}</label>
-<select  name="payPalClientSettings.isEnabled" class="settingsBox">
-  <option value="{{payPalClientSettings.isEnabled}}" selected="" >{{localizeBool payPalClientSettings.isEnabled true="Yes" false="No"}}</option>
-  <option value="{{invertedBool payPalClientSettings.isEnabled}}">{{localizeBool payPalClientSettings.isEnabled true="No" false="Yes"}}</option>
-</select>
-
-<label class="control-label settingsLabel" >{{{localize "Sandbox Mode"}}}</label>
-<select  name="payPalClientSettings.isSandbox" class="settingsBox">
-  <option value="{{payPalClientSettings.isSandbox}}" selected="" >{{localizeBool payPalClientSettings.isSandbox true="Yes" false="No"}}</option>
-  <option value="{{invertedBool payPalClientSettings.isSandbox}}">{{localizeBool payPalClientSettings.isSandbox true="No" false="Yes"}}</option>
-</select>
-
-<h5  >{{{localize "Sandbox Credentials"}}}</h5>
-
-<label class="control-label settingsLabel" >{{{localize "Username"}}}</label>
-<input type="text" class="input-block-level settingsBox" name="payPalServerSettings.sandboxCredentials.username" value="{{payPalServerSettings.sandboxCredentials.username}}" />
-
-<label class="control-label settingsLabel" >{{{localize "Password"}}}</label>
-<input type="text" class="input-block-level settingsBox" name="payPalServerSettings.sandboxCredentials.password" value="{{payPalServerSettings.sandboxCredentials.password}}" />
-
-<label class="control-label settingsLabel" >{{{localize "ClientId"}}}</label>
-<input type="text" class="input-block-level settingsBox" name="payPalClientSettings.sandboxCredentials.clientId" value="{{payPalClientSettings.sandboxCredentials.clientId}}" />
-
-<label class="control-label settingsLabel">{{{localize "Secret"}}}</label>
-<input type="text" class="input-block-level settingsBox" name="payPalServerSettings.sandboxCredentials.secret" value="{{payPalServerSettings.sandboxCredentials.secret}}" />
-
-<div id="payPalSandboxSettingsMessageZone"></div>
-<button type='button' id="testPayPalSandboxSettingsButton" class='btn' >{{localize "Test"}}</button>
-
-
-<h5>{{{localize "Production Credentials"}}}</h5>
-
-<label class="control-label settingsLabel" >{{{localize "Username"}}}</label>
-<input type="text" class="input-block-level settingsBox" name="payPalServerSettings.credentials.username" value="{{payPalServerSettings.credentials.username}}" />
-
-<label class="control-label settingsLabel" >{{{localize "Password"}}}</label>
-<input type="text" class="input-block-level settingsBox" name="payPalServerSettings.credentials.password" value="{{payPalServerSettings.credentials.password}}" />
-
-<label class="control-label settingsLabel" >{{{localize "ClientId"}}}</label>
-<input type="text" class="input-block-level settingsBox" name="payPalClientSettings.credentials.clientId" value="{{payPalClientSettings.credentials.clientId}}" />
-
-<label class="control-label settingsLabel">{{{localize "Secret"}}}</label>
-<input type="text" class="input-block-level settingsBox" name="payPalServerSettings.credentials.secret" value="{{payPalServerSettings.credentials.secret}}" />
-
-<div id="payPalProductionSettingsMessageZone"></div>
-<button type='button' id="payPalProductionSettingsButton" class='btn' >{{localize "Test"}}</button>
-
-
-<br />
-<br />
-
-
-
-<!-- PAYMENT OPTION-->
+﻿<!-- PAYMENT OPTION-->
 <h4 class="table-title">{{localize "Payment Mode"}}</h4>
+
+    <div class="control-group" id="preAuthAmountEnabledDiv">
+    <label class="control-label settingsLabel">{{{localize "Enable PreAuthorization "}}}</label>
+    <select name="isPreAuthEnabled" class="settingsBox">
+        <option value="{{isPreAuthEnabled}}" selected="">{{localizeBool isPreAuthEnabled true="Yes" false="No"}}</option>
+        <option value="{{invertedBool isPreAuthEnabled}}">{{localizeBool isPreAuthEnabled true="No" false="Yes"}}</option>
+    </select>
+    </div>
+
+    <div class="control-group" id="preAuthAmountDiv">
+        <label class="control-label settingsLabel">{{{localize "PreAuthorization Amount"}}}</label>
+        <input type="text" class="input-block-level settingsBox" name="preAuthAmount" value="{{preAuthAmount}}" />
+    </div>
 
   <label class="control-label settingsLabel" >{{{localize "Charge Account Payment Enabled"}}}</label>
   <select  name="isChargeAccountPaymentEnabled" class="settingsBox">
@@ -82,19 +36,6 @@
     <option value="Fake">{{localize "Demo Payment Service"}}</option>
   </select>
 
-  <div class="control-group" id="preAuthAmountEnabledDiv">
-    <label class="control-label settingsLabel" >{{{localize "Enable PreAuthorization "}}}</label>
-    <select  name="isPreAuthEnabled" class="settingsBox">
-      <option value="{{isPreAuthEnabled}}" selected="">{{localizeBool isPreAuthEnabled true="Yes" false="No"}}</option>
-      <option value="{{invertedBool isPreAuthEnabled}}">{{localizeBool isPreAuthEnabled true="No" false="Yes"}}</option>
-    </select>
-  </div>
-
-  <div class="control-group" id="preAuthAmountDiv">
-    <label class="control-label settingsLabel" >{{{localize "PreAuthorization Amount"}}}</label>
-    <input type="text" class="input-block-level settingsBox" name="preAuthAmount" value="{{preAuthAmount}}" />
-  </div>
-
   <div class="control-group" id="noShowFeeDiv">
     <label class="control-label settingsLabel" >{{{localize "No Show Fee (Amount)"}}}</label>
     <input type="text" class="input-block-level settingsBox" name="noShowFee" value="{{noShowFee}}" />
@@ -107,7 +48,6 @@
       <option value="{{invertedBool automaticPaymentPairing}}">{{localizeBool automaticPaymentPairing true="No" false="Yes"}}</option>
     </select>
   </div>
-  <br />
   <br />
 
 <!-- BRAINTREE SETTINGS-->
@@ -222,7 +162,65 @@
   <div id="warning" class="alert">
     <input type="checkbox" name="acceptChange"> {{localize "I understand that changing the payment mode will DELETE all stored credit card information for ALL users."}}</input>
   </div>
+</div>
 
-  <button type='submit' id="saveButton" class='btn-primary' >{{localize "Save"}}</button>
-  <div class="message"></div>
+<br />
+
+<!-- PAYPAL SETTINGS-->
+<h4 class="table-title">{{localize "PayPal Settings"}}</h4>
+
+
+<label class="control-label settingsLabel">{{{localize "Use PayPal"}}}</label>
+<select name="isPayPalEnabled" class="settingsBox">
+    <option value="{{payPalClientSettings.isEnabled}}" selected="">{{localizeBool payPalClientSettings.isEnabled true="Yes" false="No"}}</option>
+    <option value="{{invertedBool payPalClientSettings.isEnabled}}">{{localizeBool payPalClientSettings.isEnabled true="No" false="Yes"}}</option>
+</select>
+
+<label class="control-label settingsLabel">{{{localize "Sandbox Mode"}}}</label>
+<select name="payPalClientSettings.isSandbox" class="settingsBox">
+    <option value="{{payPalClientSettings.isSandbox}}" selected="">{{localizeBool payPalClientSettings.isSandbox true="Yes" false="No"}}</option>
+    <option value="{{invertedBool payPalClientSettings.isSandbox}}">{{localizeBool payPalClientSettings.isSandbox true="No" false="Yes"}}</option>
+</select>
+
+<h5>{{{localize "Sandbox Credentials"}}}</h5>
+
+<label class="control-label settingsLabel">{{{localize "Username"}}}</label>
+<input type="text" class="input-block-level settingsBox" name="payPalServerSettings.sandboxCredentials.username" value="{{payPalServerSettings.sandboxCredentials.username}}" />
+
+<label class="control-label settingsLabel">{{{localize "Password"}}}</label>
+<input type="text" class="input-block-level settingsBox" name="payPalServerSettings.sandboxCredentials.password" value="{{payPalServerSettings.sandboxCredentials.password}}" />
+
+<label class="control-label settingsLabel">{{{localize "ClientId"}}}</label>
+<input type="text" class="input-block-level settingsBox" name="payPalClientSettings.sandboxCredentials.clientId" value="{{payPalClientSettings.sandboxCredentials.clientId}}" />
+
+<label class="control-label settingsLabel">{{{localize "Secret"}}}</label>
+<input type="text" class="input-block-level settingsBox" name="payPalServerSettings.sandboxCredentials.secret" value="{{payPalServerSettings.sandboxCredentials.secret}}" />
+
+<div id="payPalSandboxSettingsMessageZone"></div>
+<button type='button' id="testPayPalSandboxSettingsButton" class='btn'>{{localize "Test"}}</button>
+
+
+<h5>{{{localize "Production Credentials"}}}</h5>
+
+<label class="control-label settingsLabel">{{{localize "Username"}}}</label>
+<input type="text" class="input-block-level settingsBox" name="payPalServerSettings.credentials.username" value="{{payPalServerSettings.credentials.username}}" />
+
+<label class="control-label settingsLabel">{{{localize "Password"}}}</label>
+<input type="text" class="input-block-level settingsBox" name="payPalServerSettings.credentials.password" value="{{payPalServerSettings.credentials.password}}" />
+
+<label class="control-label settingsLabel">{{{localize "ClientId"}}}</label>
+<input type="text" class="input-block-level settingsBox" name="payPalClientSettings.credentials.clientId" value="{{payPalClientSettings.credentials.clientId}}" />
+
+<label class="control-label settingsLabel">{{{localize "Secret"}}}</label>
+<input type="text" class="input-block-level settingsBox" name="payPalServerSettings.credentials.secret" value="{{payPalServerSettings.credentials.secret}}" />
+
+<div id="payPalProductionSettingsMessageZone"></div>
+<button type='button' id="payPalProductionSettingsButton" class='btn'>{{localize "Test"}}</button>
+
+<br />
+<br />
+
+<div>
+    <button type='submit' id="saveButton" class='btn-primary'>{{localize "Save"}}</button>
+    <div class="message"></div>
 </div>

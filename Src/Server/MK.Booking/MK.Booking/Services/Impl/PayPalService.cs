@@ -6,6 +6,7 @@ using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Security;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Resources;
@@ -261,6 +262,25 @@ namespace apcurium.MK.Booking.Services.Impl
         public void VoidPreAuthorization(Guid orderId)
         {
             // TODO
+        }
+
+        public bool TestCredentials(PayPalClientCredentials payPalClientSettings, PayPalServerCredentials payPalServerSettings, bool isSandbox)
+        {
+            try
+            {
+                var payPalMode = isSandbox ? BaseConstants.SandboxMode : BaseConstants.LiveMode;
+
+                var config = new Dictionary<string, string> {{ BaseConstants.ApplicationModeConfig, payPalMode }};
+
+                var tokenCredentials = new OAuthTokenCredential(payPalClientSettings.ClientId, payPalServerSettings.Secret, config);
+                var accessToken = tokenCredentials.GetAccessToken();
+
+                return accessToken.HasValue();
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
         public void VoidTransaction(Guid orderId, string transactionId, ref string message)

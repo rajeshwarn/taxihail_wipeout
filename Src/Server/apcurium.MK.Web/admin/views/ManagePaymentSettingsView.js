@@ -6,6 +6,7 @@
 
         events: {
             'change [name=paymentMode]': 'onPaymentModeChanged',
+            'change [name=isPayPalEnabled]': 'onPayPalEnableChanged',
             'change [name=acceptChange]': 'onAcceptPaymentModeChange',
             'click #testPayPalSandboxSettingsButton': 'testPayPalSandboxSettingsButtonClick',
             'click #payPalProductionSettingsButton': 'payPalProductionSettingsButtonClick',
@@ -30,6 +31,7 @@
             this.saveButton = this.$("#saveButton");
             
             this.onPaymentModeChanged();
+            this.onPayPalEnableChanged();
 
             this.validate({
                 rules: {
@@ -113,7 +115,7 @@
 
             this.$("#warning").hide();
             
-            if (data.paymentMode == "None" && data.isPayInTaxiEnabled) {
+            if (data.paymentMode == "None" && data.isPayInTaxiEnabled == 'true') {
                 this.alert("Please select a payment method or disable Pay In Taxi");
 
                 this.$(':submit').button('reset');
@@ -148,20 +150,39 @@
                 this.saveButton.attr('disabled', 'disabled');
             }
         },
-                
+        
+        onPayPalEnableChanged: function () {
+            var paymentMode = this.$("[name=paymentMode]").val();
+            var isPayPalEnabled = this.$("[name=isPayPalEnabled]").val();
+            var preAuthAmountEnabledDiv = this.$("#preAuthAmountEnabledDiv");
+            var preAuthAmountDiv = this.$("#preAuthAmountDiv");
+
+            if ((!isPayPalEnabled && !paymentMode)
+                || (isPayPalEnabled != "true" && (paymentMode == 'None' || paymentMode == 'RideLinqCmt'))) {
+                preAuthAmountEnabledDiv.hide();
+                preAuthAmountDiv.hide();
+            } else {
+                preAuthAmountEnabledDiv.show();
+                preAuthAmountDiv.show();
+            }
+        },
+
         onPaymentModeChanged: function () {
             
             this.$("[name = acceptChange]").removeAttr("checked");
 
             var newPaymentMode = this.$("[name=paymentMode]").val();
             var autPairingDiv = this.$("#automaticPairingDiv");
-            var preAuthAmountEnabledDiv = this.$("#preAuthAmountEnabledDiv");
-            var preAuthAmountDiv = this.$("#preAuthAmountDiv");
             var noShowFeeDiv = this.$("#noShowFeeDiv");
 
             var btDiv = this.$("#braintreeSettingsDiv");
             var cmtDiv = this.$("#cmtSettingsDiv");
             var monerisDiv = this.$("#monerisSettingsDiv");
+
+            
+            var isPayPalEnabled = this.$("[name=isPayPalEnabled]").val();
+            var preAuthAmountEnabledDiv = this.$("#preAuthAmountEnabledDiv");
+            var preAuthAmountDiv = this.$("#preAuthAmountDiv");
 
             var method = this.model.toJSON().serverPaymentSettings.paymentMode;
 
@@ -191,8 +212,6 @@
                 cmtDiv.show();
                 monerisDiv.hide();
                 autPairingDiv.show();
-                preAuthAmountEnabledDiv.show();
-                preAuthAmountDiv.show();
                 noShowFeeDiv.show();
             }
             else if (newPaymentMode == "Braintree")
@@ -201,8 +220,6 @@
                 cmtDiv.hide();
                 monerisDiv.hide();
                 autPairingDiv.show();
-                preAuthAmountEnabledDiv.show();
-                preAuthAmountDiv.show();
                 noShowFeeDiv.show();
             }
             else if (newPaymentMode == "Moneris")
@@ -211,8 +228,6 @@
                 cmtDiv.hide();
                 monerisDiv.show();
                 autPairingDiv.show();
-                preAuthAmountEnabledDiv.show();
-                preAuthAmountDiv.show();
                 noShowFeeDiv.show();
             }
             else
@@ -221,9 +236,16 @@
                 cmtDiv.hide();
                 monerisDiv.hide();
                 autPairingDiv.hide();
+                noShowFeeDiv.hide();
+            }
+
+            if ((!isPayPalEnabled && !newPaymentMode)
+                || (isPayPalEnabled != "true" && (newPaymentMode == 'None' || newPaymentMode == 'RideLinqCmt'))) {
                 preAuthAmountEnabledDiv.hide();
                 preAuthAmountDiv.hide();
-                noShowFeeDiv.hide();
+            } else {
+                preAuthAmountEnabledDiv.show();
+                preAuthAmountDiv.show();
             }
         }
     });

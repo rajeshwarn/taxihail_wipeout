@@ -50,7 +50,7 @@ namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments
             return Client.PostAsync<string>("/payment/ResendConfirmationRequest", new ResendPaymentConfirmationRequest { OrderId = orderId });
         }
 
-        public async Task<PairingResponse> Pair(Guid orderId, string cardToken, int? autoTipPercentage, double? autoTipAmount)
+        public async Task<PairingResponse> Pair(Guid orderId, string cardToken, int? autoTipPercentage)
         {
             try
             {
