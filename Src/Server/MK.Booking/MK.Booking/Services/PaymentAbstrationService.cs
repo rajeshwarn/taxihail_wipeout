@@ -74,6 +74,7 @@ namespace apcurium.MK.Booking.Services
 
         public PreAuthorizePaymentResponse PreAuthorize(Guid orderId, AccountDetail account, decimal amountToPreAuthorize)
         {
+            // we pass the orderId just in case it might exist but most of the time it won't since preauth is done before order creation
             if (IsPayPal(account.Id, orderId))
             {
                 return _payPalServiceFactory.GetInstance().PreAuthorize(account.Id, orderId, account.Email, amountToPreAuthorize);
@@ -123,7 +124,11 @@ namespace apcurium.MK.Booking.Services
                 _payPalServiceFactory.GetInstance().VoidPreAuthorization(orderId);
             }
 
-            _paymentServiceFactory.GetInstance().VoidPreAuthorization(orderId);
+            var paymentService = _paymentServiceFactory.GetInstance();
+            if (paymentService != null) // payment might not be enabled
+            {
+                paymentService.VoidPreAuthorization(orderId);
+            }
         }
 
         public void VoidTransaction(Guid orderId, string transactionId, ref string message)

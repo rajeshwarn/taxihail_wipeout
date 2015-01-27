@@ -21,7 +21,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
         private readonly IOrderDao _dao;
         private readonly IIbsOrderService _ibs;
         private readonly IServerSettings _serverSettings;
-        private readonly IPaymentServiceFactory _paymentServiceFactory;
+        private readonly IPaymentAbstractionService _paymentAbstractionService;
         private readonly IOrderPaymentDao _paymentDao;
         private readonly ICreditCardDao _creditCardDao;
         private readonly IAccountDao _accountDao;
@@ -29,7 +29,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
         private readonly ICommandBus _commandBus;
 
         public OrderPaymentManager(IOrderDao dao, IOrderPaymentDao paymentDao, IAccountDao accountDao, IOrderDao orderDao, ICommandBus commandBus,
-            ICreditCardDao creditCardDao, IIbsOrderService ibs, IServerSettings serverSettings, IPaymentServiceFactory paymentServiceFactory)
+            ICreditCardDao creditCardDao, IIbsOrderService ibs, IServerSettings serverSettings, IPaymentAbstractionService paymentAbstractionService)
         {
             _accountDao = accountDao;
             _orderDao = orderDao;
@@ -39,7 +39,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             _creditCardDao = creditCardDao;
             _ibs = ibs;
             _serverSettings = serverSettings;
-            _paymentServiceFactory = paymentServiceFactory;
+            _paymentAbstractionService = paymentAbstractionService;
         }
 
         public void Handle(CreditCardPaymentCaptured_V2 @event)
@@ -97,24 +97,14 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
 
         public void Handle(OrderCancelled @event)
         {
-            var paymentService = _paymentServiceFactory.GetInstance();
-            // payment might not be enabled
-            if (paymentService != null)
-            {
-                // void the preauthorization to prevent misuse fees
-                paymentService.VoidPreAuthorization(@event.SourceId);
-            }
+            // void the preauthorization to prevent misuse fees
+            _paymentAbstractionService.VoidPreAuthorization(@event.SourceId);
         }
 
         public void Handle(OrderSwitchedToNextDispatchCompany @event)
         {
-            var paymentService = _paymentServiceFactory.GetInstance();
-            // Payment might not be enabled
-            if (paymentService != null)
-            {
-                // void the preauthorization to prevent misuse fees
-                paymentService.VoidPreAuthorization(@event.SourceId);
-            }
+            // void the preauthorization to prevent misuse fees
+            _paymentAbstractionService.VoidPreAuthorization(@event.SourceId);
         }
 
         public void Handle(OrderStatusChanged @event)
@@ -122,22 +112,18 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             if (@event.IsCompleted)
             {
                 var paymentSettings = _serverSettings.GetPaymentSettings();
-                var orderDetails = _orderDao.FindById(@event.SourceId);
+                var order = _orderDao.FindById(@event.SourceId);
                 var pairingInfo = _orderDao.FindOrderPairingById(@event.SourceId);
 
                 // If the user has decided not to pair (paying the ride in car instead),
                 // we have to void the amount that was preauthorized
                 if (paymentSettings.PaymentMode != PaymentMethod.RideLinqCmt
-                    && orderDetails.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id
+                    && (order.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id
+                        || order.Settings.ChargeTypeId == ChargeTypes.PayPal.Id)
                     && pairingInfo == null)
                 {
-                    var paymentService = _paymentServiceFactory.GetInstance();
-                    // Payment might not be enabled
-                    if (paymentService != null)
-                    {
-                        // void the preauthorization to prevent misuse fees
-                        paymentService.VoidPreAuthorization(@event.SourceId);
-                    }
+                    // void the preauthorization to prevent misuse fees
+                    _paymentAbstractionService.VoidPreAuthorization(@event.SourceId);
                 }
             }
         }
