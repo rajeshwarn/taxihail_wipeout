@@ -5,7 +5,6 @@ using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
-using apcurium.MK.Common.Enumeration;
 
 namespace apcurium.MK.Booking.ReadModel.Query
 {
@@ -15,18 +14,17 @@ namespace apcurium.MK.Booking.ReadModel.Query
         private readonly IClock _clock;
         private readonly IServerSettings _serverSettings;
 
-        public ReportDao(Func<BookingDbContext> contextFactory, IClock clock, IServerSettings serverSettings)
+        public ReportDao(Func<BookingDbContext> contextFactory)
         {
             _contextFactory = contextFactory;
-            _clock = clock;
-            _serverSettings = serverSettings;
         }
 
         public IEnumerable<OrderReportDetail> GetAll()
         {
             using (var context = _contextFactory.Invoke())
             {
-                return context.Query<OrderReportDetail>().OrderBy(x => x.CreateDateTime).ToArray();
+                var result = context.Query<OrderReportDetail>();
+                return !result.Any() ? result.ToList() : result.OrderBy(x => x.Order.CreateDateTime).OrderBy(x => x.Order.CreateDateTime).ToList();
             }
         }
 
@@ -34,7 +32,8 @@ namespace apcurium.MK.Booking.ReadModel.Query
         {
             using (var context = _contextFactory.Invoke())
             {
-                return context.Query<OrderReportDetail>().OrderBy(x => x.CreateDateTime).Where(x => x.AccountId == accountId);
+                var result = context.Query<OrderReportDetail>();
+                return !result.Any() ? result.ToList() : result.OrderBy(x => x.Order.CreateDateTime).Where(x => x.Account.AccountId == accountId).ToList();
             }
         }
 
@@ -42,7 +41,8 @@ namespace apcurium.MK.Booking.ReadModel.Query
         {
             using (var context = _contextFactory.Invoke())
             {
-                return context.Query<OrderReportDetail>().OrderBy(x => x.CreateDateTime).Where(x => x.CreateDateTime > startDate && x.CreateDateTime <= endDate).ToArray();
+                var result = context.Query<OrderReportDetail>();
+                return !result.Any() ? result.ToList() : result.OrderBy(x => x.Order.CreateDateTime).Where(x => x.Order.CreateDateTime > startDate && x.Order.CreateDateTime <= endDate).ToList();
             }
         }
     }
