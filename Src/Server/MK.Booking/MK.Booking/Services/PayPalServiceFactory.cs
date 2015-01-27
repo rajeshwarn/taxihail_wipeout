@@ -19,7 +19,7 @@ namespace apcurium.MK.Booking.Services
         public PayPalService GetInstance()
         {
             return new PayPalService(_container.Resolve<IServerSettings>(), _container.Resolve<ICommandBus>(),
-                _container.Resolve<IAccountDao>(), _container.Resolve<IOrderDao>(), _container.Resolve<ILogger>());
+                _container.Resolve<IAccountDao>(), _container.Resolve<ILogger>(),_container.Resolve<IPairingService>());
         }
     }
 }

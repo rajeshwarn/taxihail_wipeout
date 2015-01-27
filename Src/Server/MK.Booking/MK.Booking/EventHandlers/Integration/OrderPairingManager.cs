@@ -8,6 +8,7 @@ using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Enumeration;
+using apcurium.MK.Common.Resources;
 using Infrastructure.Messaging.Handling;
 
 namespace apcurium.MK.Booking.EventHandlers.Integration
@@ -23,6 +24,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
         private readonly ICreditCardDao _creditCardDao;
         private readonly IAccountDao _accountDao;
         private readonly IIBSServiceProvider _ibsServiceProvider;
+        private readonly IPayPalServiceFactory _payPalServiceFactory;
         private readonly IPaymentServiceFactory _paymentServiceFactory;
 
         public OrderPairingManager(IPaymentServiceFactory paymentServiceFactory, 
@@ -31,7 +33,8 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             IOrderDao orderDao,
             ICreditCardDao creditCardDao,
             IAccountDao accountDao,
-            IIBSServiceProvider ibsServiceProvider)
+            IIBSServiceProvider ibsServiceProvider,
+            IPayPalServiceFactory payPalServiceFactory)
         {
             _paymentServiceFactory = paymentServiceFactory;
             _notificationService = notificationService;
@@ -40,6 +43,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             _creditCardDao = creditCardDao;
             _accountDao = accountDao;
             _ibsServiceProvider = ibsServiceProvider;
+            _payPalServiceFactory = payPalServiceFactory;
         }
 
         public void Handle(OrderStatusChanged @event)
@@ -59,14 +63,31 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                         var account = _accountDao.FindById(@event.Status.AccountId);
 
                         var paymentService = _paymentServiceFactory.GetInstance();
-                        var response = paymentService.Pair(@event.SourceId, creditCardAssociatedToAccount.Token, account.DefaultTipPercent, null);
+                        var paypalService = _payPalServiceFactory.GetInstance();
+
+                        var isPayPal = account.IsPayPalAccountLinked
+                            && _serverSettings.GetPaymentSettings().PayPalClientSettings.IsEnabled;
+
+                        var response = isPayPal
+                            ? paypalService.Pair(@event.SourceId, account.DefaultTipPercent)
+                            : paymentService.Pair(@event.SourceId, creditCardAssociatedToAccount.Token, account.DefaultTipPercent, null);
+                        
                         if (response.IsSuccessful)
                         {
                             var ibsAccountId = _accountDao.GetIbsAccountId(order.AccountId, null);
+
                             if (!UpdateOrderPaymentType(ibsAccountId.Value, order.IBSOrderId.Value))
                             {
                                 response.IsSuccessful = false;
-                                paymentService.VoidPreAuthorization(@event.SourceId);
+
+                                if (isPayPal)
+                                {
+                                    paypalService.VoidPreAuthorization(@event.SourceId);
+                                }
+                                else
+                                {
+                                    paymentService.VoidPreAuthorization(@event.SourceId);
+                                }
                             }
                         }
 

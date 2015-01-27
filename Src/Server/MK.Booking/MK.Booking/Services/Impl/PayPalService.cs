@@ -20,18 +20,18 @@ namespace apcurium.MK.Booking.Services.Impl
         private readonly IServerSettings _serverSettings;
         private readonly ICommandBus _commandBus;
         private readonly IAccountDao _accountDao;
-        private readonly IOrderDao _orderDao;
         private readonly ILogger _logger;
-        private Resources.Resources _resources;
+        private readonly IPairingService _pairingService;
+        private readonly Resources.Resources _resources;
 
-        public PayPalService(IServerSettings serverSettings, ICommandBus commandBus, IAccountDao accountDao, IOrderDao orderDao, ILogger logger)
+        public PayPalService(IServerSettings serverSettings, ICommandBus commandBus, IAccountDao accountDao, ILogger logger, IPairingService pairingService)
             : base(serverSettings, accountDao)
         {
             _serverSettings = serverSettings;
             _commandBus = commandBus;
             _accountDao = accountDao;
-            _orderDao = orderDao;
             _logger = logger;
+            _pairingService = pairingService;
 
             _resources = new Resources.Resources(serverSettings);
         }
@@ -109,9 +109,27 @@ namespace apcurium.MK.Booking.Services.Impl
             }
         }
 
-        public void Pair()
+        public PairingResponse Pair(Guid orderId, int? autoTipPercentage)
         {
-            
+            try
+            {
+                _pairingService.Pair(orderId, null, autoTipPercentage);
+
+                return new PairingResponse
+                {
+                    IsSuccessful = true,
+                    Message = "Success"
+                };
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e);
+                return new PairingResponse
+                {
+                    IsSuccessful = false,
+                    Message = e.Message
+                };
+            }
         }
 
         public PreAuthorizePaymentResponse PreAuthorize(Guid accountId, Guid orderId, string email, decimal amountToPreAuthorize, string metadataId = "")
@@ -125,13 +143,12 @@ namespace apcurium.MK.Booking.Services.Impl
 
                 if (amountToPreAuthorize > 0)
                 {
-                    var order = _orderDao.FindById(orderId);
-                    
+                    var account = _accountDao.FindById(accountId);
+                    var regionName = _serverSettings.ServerData.PayPalRegionInfoOverride;
                     var conversionRate = _serverSettings.ServerData.PayPalConversionRate;
                     _logger.LogMessage("PayPal Conversion Rate: {0}", conversionRate);
-                    var amount = Math.Round(amountToPreAuthorize * conversionRate, 2);
 
-                    var regionName = _serverSettings.ServerData.PayPalRegionInfoOverride;
+                    var amount = Math.Round(amountToPreAuthorize * conversionRate, 2);
 
                     var futurePayment = new FuturePayment
                     {
@@ -153,7 +170,7 @@ namespace apcurium.MK.Booking.Services.Impl
                                 },
                                 description = regionName.HasValue()
                                     ? string.Format("order: {0}", orderId)
-                                    : string.Format(_resources.Get("PaymentItemDescription", order.ClientLanguageCode), orderId, amountToPreAuthorize)
+                                    : string.Format(_resources.Get("PaymentItemDescription", account.Language), orderId, amountToPreAuthorize)
                             }
                         }
                     };
@@ -166,7 +183,7 @@ namespace apcurium.MK.Booking.Services.Impl
 
                     var accessToken = GetAccessToken(accountId);
 
-                    var createdPayment = futurePayment.Create(GetAPIContext(accessToken, orderId), metadataId);
+                    var createdPayment = futurePayment.Create(GetAPIContext(accessToken, orderId)/*, metadataId*/);
                     transactionId = createdPayment.transactions[0].related_resources[0].authorization.id;
 
                     switch (createdPayment.state)
@@ -228,6 +245,11 @@ namespace apcurium.MK.Booking.Services.Impl
                     Message = message
                 };
             }
+        }
+
+        public void VoidPreAuthorization(Guid orderId)
+        {
+            // TODO
         }
 
         private void Capture(Guid orderId, string authorizationId)

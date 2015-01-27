@@ -396,6 +396,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
             // Set PayPal as default charge type
             var account = _accountService.CurrentAccount;
+            account.DefaultCreditCard = null;
             account.IsPayPalAccountLinked = true;
             account.Settings.ChargeTypeId = ChargeTypes.PayPal.Id;
 
@@ -511,6 +512,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
                     // update default card and default chargetype
                     var account = _accountService.CurrentAccount;
+                    account.IsPayPalAccountLinked = false;
                     account.Settings.ChargeTypeId = ChargeTypes.CardOnFile.Id;
                     account.DefaultCreditCard = Data.CreditCardId;
 

@@ -66,10 +66,23 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 
         public PairingResponse Post(PairingForPaymentRequest request)
         {
-            var response =  _paymentServiceFactory.GetInstance().Pair(request.OrderId, request.CardToken, request.AutoTipPercentage, request.AutoTipAmount);
+            var order = _orderDao.FindById(request.OrderId);
+            var account = _accountDao.FindById(order.AccountId);
+
+            PairingResponse response;
+
+            if (_serverSettings.GetPaymentSettings().PayPalClientSettings.IsEnabled && account.IsPayPalAccountLinked)
+            {
+                // Pair with PayPal
+                response = _payPalServiceFactory.GetInstance().Pair(request.OrderId, request.AutoTipPercentage);
+            }
+            else
+            {
+                response = _paymentServiceFactory.GetInstance().Pair(request.OrderId, request.CardToken, request.AutoTipPercentage, request.AutoTipAmount);
+            }
+
             if (response.IsSuccessful)
             {
-                var order = _orderDao.FindById(request.OrderId);
                 var ibsAccountId = _accountDao.GetIbsAccountId(order.AccountId, null);
                 if (!UpdateOrderPaymentType(ibsAccountId.Value, order.IBSOrderId.Value))
                 {
