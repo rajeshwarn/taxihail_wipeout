@@ -81,7 +81,7 @@ namespace apcurium.MK.Booking.Services.Impl
             var tokenInfo = new Tokeninfo { refresh_token = CryptoService.Decrypt(refreshToken) };
             var tokenResult = tokenInfo.CreateFromRefreshToken(GetAPIContext(), new CreateFromRefreshTokenParameters());
 
-            return tokenResult.access_token;
+            return string.Format("{0} {1}", tokenResult.token_type, tokenResult.access_token);
         }
 
         protected Dictionary<string, string> GetConfig()
