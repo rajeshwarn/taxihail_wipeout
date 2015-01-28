@@ -82,6 +82,7 @@
     <Compile Include="PayPalAccountLinked.cs" />
     <Compile Include="PayPalAccountUnlinked.cs" />
     <Compile Include="PayPalPaymentCancellationFailed.cs" />
+    <Compile Include="PayPalSettingsChanged.cs" />
     <Compile Include="PromotionActivated.cs" />
     <Compile Include="PrivacyPolicyUpdated.cs" />
     <Compile Include="PromotionCreated.cs" />

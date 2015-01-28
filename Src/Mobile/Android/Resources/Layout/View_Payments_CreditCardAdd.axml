@@ -36,7 +36,8 @@
         <ScrollView
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:id="@+id/MainScrollView">
+            android:id="@+id/MainScrollView"
+            local:MvxBind="Visibility IsPayPalOnly, Converter=InvertedVisibility">
             <LinearLayout
                 android:paddingLeft="15dip"
                 android:paddingRight="15dip"
@@ -262,14 +263,18 @@
             </LinearLayout>
         </ScrollView>
         <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="@dimen/HeightEditTextFlat"
-            android:orientation="horizontal"
+            android:paddingLeft="15dip"
+            android:paddingRight="15dip"
+            android:paddingTop="8dip"
             android:layout_marginBottom="8dp"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
             local:MvxBind="Visibility IsPayPalOnly, Converter=Visibility">
             <Button
-                style="@style/PayPalOnlyLinkAccountButton"
-                android:id="@+id/LinkPayPalAccountButton"
+                android:id="@+id/PayPalOnlyLinkAccountButton"
+                style="@style/ButtonActionGrayStyle"
                 android:layout_width="fill_parent"
                 android:layout_height="@dimen/HeightButton"
                 android:singleLine="true"

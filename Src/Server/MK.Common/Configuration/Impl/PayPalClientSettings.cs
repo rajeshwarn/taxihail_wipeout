@@ -18,7 +18,7 @@ namespace apcurium.MK.Common.Configuration.Impl
 
         public PayPalClientCredentials Credentials { get; set; }
 
-        public string ClientId
+        public string CurrentEnvironmentClientId
         {
             get
             {

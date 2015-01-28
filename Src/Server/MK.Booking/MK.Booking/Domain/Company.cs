@@ -44,6 +44,10 @@ namespace apcurium.MK.Booking.Domain
 
         protected PaymentMethod PaymentMode { get; set; }
 
+        protected PayPalClientSettings PayPalClientSettings { get; set; }
+
+        protected PayPalServerSettings PayPalServerSettings { get; set; }
+
         private void RegisterHandlers()
         {
             Handles<DefaultFavoriteAddressAdded>(NoAction);
@@ -57,6 +61,7 @@ namespace apcurium.MK.Booking.Domain
             Handles<CompanyCreated>(NoAction);
             Handles<AppSettingsAddedOrUpdated>(NoAction);
             Handles<PaymentModeChanged>(NoAction);
+            Handles<PayPalSettingsChanged>(NoAction);
             Handles<PaymentSettingUpdated>(OnPaymentSettingUpdated);
 
             Handles<TariffCreated>(OnRateCreated);
@@ -92,6 +97,8 @@ namespace apcurium.MK.Booking.Domain
         private void OnPaymentSettingUpdated(PaymentSettingUpdated obj)
         {
             PaymentMode = obj.ServerPaymentSettings.PaymentMode;
+            PayPalClientSettings = obj.ServerPaymentSettings.PayPalClientSettings;
+            PayPalServerSettings = obj.ServerPaymentSettings.PayPalServerSettings;
         }
 
         public void AddDefaultFavoriteAddress(Address address)
@@ -418,10 +425,30 @@ namespace apcurium.MK.Booking.Domain
                 Update(new PaymentModeChanged());
             }
 
+            if (HavePayPalSettingsChanged(command.ServerPaymentSettings))
+            {
+                Update(new PayPalSettingsChanged());
+            }
+
             Update(new PaymentSettingUpdated
             {
                 ServerPaymentSettings = command.ServerPaymentSettings
             });
+        }
+
+        private bool HavePayPalSettingsChanged(ServerPaymentSettings newPaymentSettings)
+        {
+            var paypalDisabledStatusChanged = PayPalClientSettings.IsEnabled != newPaymentSettings.PayPalClientSettings.IsEnabled;
+
+            var environmentChanged = PayPalClientSettings.IsSandbox != newPaymentSettings.PayPalClientSettings.IsSandbox;
+
+            var sandboxSettingsChanged = PayPalClientSettings.SandboxCredentials.ClientId != newPaymentSettings.PayPalClientSettings.SandboxCredentials.ClientId
+                || PayPalServerSettings.SandboxCredentials.Secret != newPaymentSettings.PayPalServerSettings.SandboxCredentials.Secret;
+
+            var prodSettingsChanged = PayPalClientSettings.Credentials.ClientId != newPaymentSettings.PayPalClientSettings.Credentials.ClientId
+                   || PayPalServerSettings.Credentials.Secret != newPaymentSettings.PayPalServerSettings.Credentials.Secret;
+
+            return paypalDisabledStatusChanged || environmentChanged || sandboxSettingsChanged || prodSettingsChanged;
         }
 
         public void ActivateRule(Guid ruleId)

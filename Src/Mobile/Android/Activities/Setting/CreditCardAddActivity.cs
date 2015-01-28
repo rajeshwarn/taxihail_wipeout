@@ -81,23 +81,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
 
         private void SetUpPayPal()
         {
-            var mainScrollView = FindViewById<ScrollView>(Resource.Id.MainScrollView);
             var paypalSeparator = FindViewById<LinearLayout>(Resource.Id.PayPalSeparator);
             var btnLinkPayPalAccount = FindViewById<Button>(Resource.Id.LinkPayPalAccountButton);
             var btnUnlinkPayPalAccount = FindViewById<Button>(Resource.Id.UnLinkPayPalAccountButton);
             var btnPayPalOnlyLinkAccount = FindViewById<Button>(Resource.Id.PayPalOnlyLinkAccountButton);
             var btnPayPalOnlyUnlinkAccount = FindViewById<Button>(Resource.Id.PayPalOnlyUnlinkAccountButton);
-
-            
-            if (_paymentSettings.IsPayInTaxiEnabled)
-            {
-                btnPayPalOnlyLinkAccount.Visibility = ViewStates.Gone;
-                btnPayPalOnlyUnlinkAccount.Visibility = ViewStates.Gone;
-            }
-            else
-            {
-                mainScrollView.Visibility = ViewStates.Gone;
-            }
 
             // Use PayPal settings
             if (_paymentSettings.PayPalClientSettings.IsEnabled)
@@ -108,7 +96,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
                 btnUnlinkPayPalAccount.Click += (sender, e) => ViewModel.UnLinkPayPalAccount();
                 btnPayPalOnlyLinkAccount.Click += (sender, e) => LinkPayPayAccount();
                 btnPayPalOnlyUnlinkAccount.Click += (sender, e) => ViewModel.UnLinkPayPalAccount();
-
             }
             else
             {

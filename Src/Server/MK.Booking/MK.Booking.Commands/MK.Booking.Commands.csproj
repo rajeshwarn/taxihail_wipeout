@@ -86,6 +86,7 @@
     <Compile Include="SendAccountConfirmationSMS.cs" />
     <Compile Include="SwitchOrderToNextDispatchCompany.cs" />
     <Compile Include="UnlinkAccountFromIbs.cs" />
+    <Compile Include="UnlinkAllPayPalAccounts.cs" />
     <Compile Include="UnlinkPayPalAccount.cs" />
     <Compile Include="UnpairForPayment.cs" />
     <Compile Include="UpdateCreditCard.cs" />

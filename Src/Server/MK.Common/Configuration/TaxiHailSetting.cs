@@ -307,7 +307,7 @@ namespace MK.Common.Configuration
         public bool HideCallDispatchButton { get; protected set; }
 
         [SendToClient, CustomizableByCompany, RequiresTaxiHailPro]
-        [Display(Name = "Credit Card Is Mandatory", Description="If true, the user needs to have a card on file")]
+        [Display(Name = "Payment Method Mandatory", Description="If true, the user needs to have a payment method associated to his account (ie: Card on File or Paypal)")]
         public bool CreditCardIsMandatory { get; protected set; }
 
         [SendToClient, CustomizableByCompany, RequiresTaxiHailPro]
