@@ -42,6 +42,7 @@ namespace apcurium.MK.Booking.Services.Impl
         private readonly IStaticMap _staticMap;
         private readonly ISmsService _smsService;
         private readonly IGeocoding _geocoding;
+        private readonly ICreditCardDao _creditCardDao;
         private readonly ILogger _logger;
         private readonly Resources.Resources _resources;
 
@@ -59,6 +60,7 @@ namespace apcurium.MK.Booking.Services.Impl
             IStaticMap staticMap,
             ISmsService smsService,
             IGeocoding geocoding,
+            ICreditCardDao creditCardDao,
             ILogger logger)
         {
             _contextFactory = contextFactory;
@@ -72,6 +74,7 @@ namespace apcurium.MK.Booking.Services.Impl
             _staticMap = staticMap;
             _smsService = smsService;
             _geocoding = geocoding;
+            _creditCardDao = creditCardDao;
             _logger = logger;
 
             _resources = new Resources.Resources(serverSettings);
@@ -211,10 +214,24 @@ namespace apcurium.MK.Booking.Services.Impl
 
                 // TODO PAYPAL change Succesful resource to depend on PayPal or not for last4digits!!!!!!
                 var isPayPal = order.Settings.ChargeTypeId == ChargeTypes.PayPal.Id;
-                var last4Digits = isPayPal ? "" : "";
-
+                string successMessage;
+                if (isPayPal)
+                {
+                    successMessage = string.Format(
+                            _resources.Get("PushNotification_OrderPairingSuccessfulPayPal", order.ClientLanguageCode),
+                            order.IBSOrderId, autoTipPercentage);
+                }
+                else
+                {
+                    var card = _creditCardDao.FindByAccountId(order.AccountId).First();
+                    var last4Digits = card.Last4Digits;
+                    successMessage = string.Format(
+                            _resources.Get("PushNotification_OrderPairingSuccessful", order.ClientLanguageCode),
+                            order.IBSOrderId, last4Digits, autoTipPercentage);
+                }
+                
                 var alert = success
-                    ? string.Format(_resources.Get("PushNotification_OrderPairingSuccessful", order.ClientLanguageCode), order.IBSOrderId, last4Digits, autoTipPercentage)
+                    ? successMessage
                     : string.Format(_resources.Get("PushNotification_OrderPairingFailed", order.ClientLanguageCode), order.IBSOrderId);
 
                 var data = new Dictionary<string, object> { { "orderId", orderId } };

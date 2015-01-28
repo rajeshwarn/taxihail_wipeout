@@ -455,6 +455,10 @@
     <value>Su reservación#{0} sera cargada automáticamente al final del servicio usando su tarjeta con terminación en {1} y usando su propina especificada por defecto de {2}%</value>
     <comment>The ride #{0} will be paid automatically at the end of the trip using your credit card ending with {1} and using your default tip of {2}%</comment>
   </data>
+  <data name="PushNotification_OrderPairingSuccessfulPayPal" xml:space="preserve">
+    <value>The ride #{0} will be paid automatically at the end of the trip using your linked PayPal account and using your default tip of {2}%</value>
+    <comment>The ride #{0} will be paid automatically at the end of the trip using your linked PayPal account and using your default tip of {2}%</comment>
+  </data>
   <data name="PushNotification_PaymentReceived" xml:space="preserve">
     <value>Su tarjeta de crédito ha sido cargada por un total de {0}. Este monto incluye tanto su servicio como su propina.</value>
     <comment>Your credit card was successfully charged a total of {0}. This amount includes both fare and tip.</comment>

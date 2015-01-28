@@ -425,7 +425,9 @@
       <LastGenOutput>Global.fr.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Resources\MearsTaxi.resx" />
+    <EmbeddedResource Include="Resources\MearsTaxi.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Resources\TaxiHailNYC.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>TaxiHailNYC.Designer.cs</LastGenOutput>

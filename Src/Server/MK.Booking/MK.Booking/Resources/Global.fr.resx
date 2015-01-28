@@ -340,7 +340,10 @@
     <value>Veuillez confirmer le véhicule avec lequel le paiement de carte de crédit sera effectué.</value>
   </data>
   <data name="PushNotification_OrderPairingSuccessful" xml:space="preserve">
-    <value>La course #{0} sera payée automatiquement à la fin du voyage en utilisant votre carte de crédit se terminant par {1} et en utilisant votre pouroire par défaut de {2}%</value>
+    <value>La course #{0} sera payée automatiquement à la fin du voyage en utilisant votre carte de crédit se terminant par {1} et en utilisant votre pourboire par défaut de {2}%</value>
+  </data>
+  <data name="PushNotification_OrderPairingSuccessfulPayPal" xml:space="preserve">
+    <value>La course #{0} sera payée automatiquement à la fin du voyage en utilisant votre compte PayPal associé et en utilisant votre pourboire par défaut de {2}%</value>
   </data>
   <data name="PushNotification_OrderPairingFailed" xml:space="preserve">
     <value>La course #{0} n'a pas pu être associée automatiquement pour le paiement</value>
