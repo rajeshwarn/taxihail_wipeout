@@ -182,7 +182,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
 				if (currentSelectionMode == AddressSelectionMode.PickupSelection && !destinationIsValid)
 				{
-					await ToggleBetweenPickupAndDestinationSelectionMode();
+					ToggleIsDestinationModeOpened();
+					ToggleBetweenPickupAndDestinationSelectionMode();
 					throw new OrderValidationException("Open the destination selection", OrderValidationError.OpenDestinationSelection);
 				}
 

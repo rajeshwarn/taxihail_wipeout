@@ -28,9 +28,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			_orderWorkflowService = orderWorkflowService;
 			_accountService = accountService;
 			_vehicleService = vehicleService;
-
-
-				
 		}
 
 		public async Task Init()
@@ -38,7 +35,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			if (!_isInitialized)
 			{
 				_isInitialized = true;
-				ShowDestination = Settings.DestinationIsRequired;
+				ShowDestination = false;
 
 				this.Observe (_orderWorkflowService.GetAndObserveIsDestinationModeOpened (),
 					isDestinationModeOpened => {
@@ -208,7 +205,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			}
 			private set
 			{
-				_showDestination = value || Settings.DestinationIsRequired;
+				_showDestination = value;
 				RaisePropertyChanged();
 				RaisePropertyChanged(() => VehicleAndEstimateBoxIsVisible);
 				RaisePropertyChanged (() => ShowEstimate);
@@ -315,11 +312,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 				{
 				    if (AddressSelectionMode == AddressSelectionMode.DropoffSelection)
 				    {
-						if (Settings.DestinationIsRequired)
-						{
-							_orderWorkflowService.ToggleIsDestinationModeOpened(false);
-						}
-
 				        _orderWorkflowService.ToggleBetweenPickupAndDestinationSelectionMode();
 				    }
 
@@ -336,10 +328,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
                 {
                     if (AddressSelectionMode == AddressSelectionMode.PickupSelection)
                     {
-						if (Settings.DestinationIsRequired)
-						{
-							_orderWorkflowService.ToggleIsDestinationModeOpened(true);
-						}
                         _orderWorkflowService.ToggleBetweenPickupAndDestinationSelectionMode();
                     }
 
@@ -351,8 +339,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		private void OnDestinationModeOpened()
 		{
 			if (AddressSelectionMode == AddressSelectionMode.None
-				&& ShowDestination == false
-				&& IsDestinationModeOpened == false)
+				&& !ShowDestination
+				&& !IsDestinationModeOpened)
 			{
 				// First launch
 				return;
