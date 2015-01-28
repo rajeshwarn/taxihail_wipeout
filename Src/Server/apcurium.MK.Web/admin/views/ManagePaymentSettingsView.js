@@ -6,7 +6,7 @@
 
         events: {
             'change [name=paymentMode]': 'onPaymentModeChanged',
-            'change [name=isPayPalEnabled]': 'onPayPalEnableChanged',
+            'change [id=isPayPalEnabled]': 'onPayPalEnableChanged',
             'change [name=acceptChange]': 'onAcceptPaymentModeChange',
             'click #testPayPalSandboxSettingsButton': 'testPayPalSandboxSettingsButtonClick',
             'click #payPalProductionSettingsButton': 'payPalProductionSettingsButtonClick',
@@ -153,7 +153,7 @@
         
         onPayPalEnableChanged: function () {
             var paymentMode = this.$("[name=paymentMode]").val();
-            var isPayPalEnabled = this.$("[name=isPayPalEnabled]").val();
+            var isPayPalEnabled = this.$("[id=isPayPalEnabled]").val();
             var preAuthAmountEnabledDiv = this.$("#preAuthAmountEnabledDiv");
             var preAuthAmountDiv = this.$("#preAuthAmountDiv");
 
@@ -179,8 +179,7 @@
             var cmtDiv = this.$("#cmtSettingsDiv");
             var monerisDiv = this.$("#monerisSettingsDiv");
 
-            
-            var isPayPalEnabled = this.$("[name=isPayPalEnabled]").val();
+            var isPayPalEnabled = this.$("[id=isPayPalEnabled]").val();
             var preAuthAmountEnabledDiv = this.$("#preAuthAmountEnabledDiv");
             var preAuthAmountDiv = this.$("#preAuthAmountDiv");
 

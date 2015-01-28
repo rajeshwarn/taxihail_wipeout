@@ -123,11 +123,13 @@ namespace apcurium.MK.Booking.Services
             {
                 _payPalServiceFactory.GetInstance().VoidPreAuthorization(orderId);
             }
-
-            var paymentService = _paymentServiceFactory.GetInstance();
-            if (paymentService != null) // payment might not be enabled
+            else
             {
-                paymentService.VoidPreAuthorization(orderId);
+                var paymentService = _paymentServiceFactory.GetInstance();
+                if (paymentService != null) // payment might not be enabled
+                {
+                    paymentService.VoidPreAuthorization(orderId);
+                }
             }
         }
 
@@ -137,8 +139,10 @@ namespace apcurium.MK.Booking.Services
             {
                 _payPalServiceFactory.GetInstance().VoidTransaction(orderId, transactionId, ref message);
             }
-
-            _paymentServiceFactory.GetInstance().VoidTransaction(orderId, transactionId, ref message);
+            else
+            {
+                _paymentServiceFactory.GetInstance().VoidTransaction(orderId, transactionId, ref message);
+            }
         }
     }
 }

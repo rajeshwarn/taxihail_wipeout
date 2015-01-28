@@ -21,6 +21,7 @@ namespace apcurium.MK.Booking.Services.Impl
         private readonly IServerSettings _serverSettings;
         private readonly ICommandBus _commandBus;
         private readonly IAccountDao _accountDao;
+        private readonly IOrderDao _orderDao;
         private readonly ILogger _logger;
         private readonly IPairingService _pairingService;
         private readonly IOrderPaymentDao _paymentDao;
@@ -29,6 +30,7 @@ namespace apcurium.MK.Booking.Services.Impl
         public PayPalService(IServerSettings serverSettings,
             ICommandBus commandBus,
             IAccountDao accountDao,
+            IOrderDao orderDao,
             ILogger logger,
             IPairingService pairingService,
             IOrderPaymentDao paymentDao) : base(serverSettings, accountDao)
@@ -36,6 +38,7 @@ namespace apcurium.MK.Booking.Services.Impl
             _serverSettings = serverSettings;
             _commandBus = commandBus;
             _accountDao = accountDao;
+            _orderDao = orderDao;
             _logger = logger;
             _pairingService = pairingService;
             _paymentDao = paymentDao;
@@ -267,31 +270,88 @@ namespace apcurium.MK.Booking.Services.Impl
 
         public void VoidPreAuthorization(Guid orderId)
         {
-            var paymentDetail = _paymentDao.FindByOrderId(orderId);
-            if (paymentDetail == null)
-            {
-                // Nothing to void
-                return;
-            }
-
-            var apiContext = GetAPIContext(string.Empty, orderId);
-            var authorization = Authorization.Get(apiContext, paymentDetail.TransactionId);
-
+            var message = string.Empty;
             try
             {
-                authorization.Void(apiContext);
+                var paymentDetail = _paymentDao.FindByOrderId(orderId);
+                if (paymentDetail == null)
+                {
+                    // nothing to void
+                    return;
+                }
+
+                Void(orderId, paymentDetail.TransactionId, ref message);
             }
             catch (Exception ex)
             {
                 _logger.LogMessage("Can't cancel PayPal preauthorization");
                 _logger.LogError(ex);
-                _logger.LogMessage(ex.Message);
+                message = message + ex.Message;
+            }
+            finally
+            {
+                _logger.LogMessage(message);
             }
         }
 
         public void VoidTransaction(Guid orderId, string transactionId, ref string message)
         {
-            // TODO
+            Void(orderId, transactionId, ref message);
+        }
+
+        private void Void(Guid orderId, string transactionId, ref string message)
+        {
+            try
+            {
+                var order = _orderDao.FindById(orderId);
+                var accessToken = GetAccessToken(order.AccountId);
+                var apiContext = GetAPIContext(accessToken, orderId);
+                bool isTransactionCancelled = false;
+
+                var authorization = Authorization.Get(apiContext, transactionId);
+
+                if (authorization.state == "authorized")
+                {
+                    var cancellationResult = authorization.Void(apiContext);
+                    if (cancellationResult.state == "voided")
+                    {
+                        isTransactionCancelled = true;
+                    }
+                }
+                else if (authorization.state == "captured" || authorization.state == "partially_captured")
+                {
+                    // TODO PayPal test
+                    var payment = Payment.Get(apiContext, authorization.parent_payment);
+                    var captureResponse = payment.transactions[0].related_resources[0].capture;
+
+                    var refund = new Refund
+                    {
+                        amount = new Amount
+                        {
+                            currency = captureResponse.amount.currency,
+                            total = captureResponse.amount.total
+                        }
+                    };
+                    var refundResult = captureResponse.Refund(apiContext, refund);
+                    if (refundResult.state != "failed")
+                    {
+                        isTransactionCancelled = true;
+                    }
+                }
+
+                if (!isTransactionCancelled)
+                {
+                    throw new Exception(string.Format("transaction {0} status {1}, can't cancel it",
+                        transactionId, authorization.state));
+                }
+
+                message = message + " The transaction has been cancelled.";
+            }
+            catch (Exception ex)
+            {
+                message = "The transaction couldn't be cancelled" + ex.Message;
+                throw;
+            }
         }
 
         public CommitPreauthorizedPaymentResponse CommitPayment(Guid orderId, decimal amount, decimal meterAmount, decimal tipAmount, string authorizationId)
@@ -304,15 +364,23 @@ namespace apcurium.MK.Booking.Services.Impl
             {
                 amount = new Amount
                 {
-                    currency = "USD",
-                    total = "4.54"
+                    currency = authorization.amount.currency,
+                    total = amount.ToString(CultureInfo.InvariantCulture)
                 },
                 is_final_capture = true
             };
 
             var responseCapture = authorization.Capture(apiContext, capture);
 
-            return new CommitPreauthorizedPaymentResponse();
+            var isSuccessful = responseCapture.state == "pending" || responseCapture.state == "completed";
+
+            // TODO PayPal test
+            return new CommitPreauthorizedPaymentResponse
+            {
+                IsSuccessful = isSuccessful,
+                AuthorizationCode = responseCapture.id,
+                TransactionId = authorizationId
+            };
         }
 
         public bool TestCredentials(PayPalClientCredentials payPalClientSettings, PayPalServerCredentials payPalServerSettings, bool isSandbox)
