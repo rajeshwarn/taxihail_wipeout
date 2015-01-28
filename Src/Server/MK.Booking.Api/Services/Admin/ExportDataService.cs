@@ -91,10 +91,10 @@ namespace apcurium.MK.Booking.Api.Services.Admin
                             orderReportEntry["Order.CompanyName"] = orderReport.Order.CompanyName;
                             orderReportEntry["Order.IBSOrderId"] = orderReport.Order.IBSOrderId.ToString();
                             orderReportEntry["Order.ChargeType"] = orderReport.Order.ChargeType;
-                            orderReportEntry["Order.PickupDate"] = orderReport.Order.PickupDateTime.ToString("d", CultureInfo.InvariantCulture);
-                            orderReportEntry["Order.PickupTime"] = orderReport.Order.PickupDateTime.ToString("t", CultureInfo.InvariantCulture);
-                            orderReportEntry["Order.CreateDate"] = orderReport.Order.CreateDateTime.Add(offset).ToString("d", CultureInfo.InvariantCulture);
-                            orderReportEntry["Order.CreateTime"] = orderReport.Order.CreateDateTime.Add(offset).ToString("t", CultureInfo.InvariantCulture);
+                            orderReportEntry["Order.PickupDate"] = orderReport.Order.PickupDateTime.Value.ToString("d", CultureInfo.InvariantCulture);
+                            orderReportEntry["Order.PickupTime"] = orderReport.Order.PickupDateTime.Value.ToString("t", CultureInfo.InvariantCulture);
+                            orderReportEntry["Order.CreateDate"] = orderReport.Order.CreateDateTime.Value.Add(offset).ToString("d", CultureInfo.InvariantCulture);
+                            orderReportEntry["Order.CreateTime"] = orderReport.Order.CreateDateTime.Value.Add(offset).ToString("t", CultureInfo.InvariantCulture);
                             orderReportEntry["Order.PickupAddress"] = orderReport.Order.PickupAddress.DisplayAddress;
                             orderReportEntry["Order.DropOffAddress "] = orderReport.Order.DropOffAddress.DisplayAddress;
 

@@ -75,13 +75,19 @@ namespace apcurium.MK.Booking.ReadModel
 
         public string ChargeType { get; set; }
 
-        public DateTime PickupDateTime { get; set; }
+        public DateTime? PickupDateTime { get; set; }
 
-        public DateTime CreateDateTime { get; set; }
+        public DateTime? CreateDateTime { get; set; }
 
         public Address PickupAddress { get; set; }
 
         public Address DropOffAddress { get; set; }
+
+        public OrderReportOrder()
+        {
+            PickupAddress = new Address();
+            DropOffAddress = new Address();
+        }
     }
 
     public class OrderReportOrderStatus

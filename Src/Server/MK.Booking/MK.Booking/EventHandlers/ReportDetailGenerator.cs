@@ -16,14 +16,15 @@ namespace apcurium.MK.Booking.EventHandlers
 {
     public class ReportDetailGenerator : IEventHandler<OrderCreated>,
         IEventHandler<OrderStatusChanged>,
+        IEventHandler<OrderCancelled>,
         IEventHandler<OrderPairedForPayment>,
+        IEventHandler<OrderRated>,
+        IEventHandler<CreditCardPaymentInitiated>,
+        IEventHandler<CreditCardPaymentCaptured_V2>,
         IEventHandler<PayPalExpressCheckoutPaymentInitiated>,
         IEventHandler<PayPalExpressCheckoutPaymentCompleted>,
-        IEventHandler<OrderCancelled>,
-        IEventHandler<OrderRated>,
         IEventHandler<PromotionApplied>,
         IEventHandler<PromotionRedeemed>,
-        IEventHandler<CreditCardPaymentCaptured_V2>,
         IEventHandler<IbsOrderInfoAddedToOrder>
     {
         private readonly Func<BookingDbContext> _contextFactory;
@@ -117,10 +118,16 @@ namespace apcurium.MK.Booking.EventHandlers
                 orderReport.OrderStatus.Status = (int)@event.Status.Status;
                 orderReport.OrderStatus.OrderIsCompleted = @event.IsCompleted;
 
-                orderReport.Order.PickupDateTime = @event.Status.PickupDate;
+                orderReport.Order.PickupDateTime = @event.Status.PickupDate != DateTime.MinValue ? (DateTime?)@event.Status.PickupDate : null;
                 orderReport.Order.CompanyName = @event.Status.CompanyName;
-
-                context.Save(orderReport);
+                try
+                {
+                    context.Save(orderReport);
+                }
+                catch (Exception e)
+                {
+                    var m = e.Message;
+                }
             }
         }
 
@@ -139,13 +146,14 @@ namespace apcurium.MK.Booking.EventHandlers
             using (var context = _contextFactory.Invoke())
             {
                 var orderReport = context.Find<OrderReportDetail>(@event.OrderId);
+
                 if (orderReport != null)
                 {
                     orderReport.Payment.CardToken = @event.CardToken;
                     orderReport.Payment.Type = PaymentType.CreditCard;
+                    orderReport.Payment.Provider = @event.Provider;
                     context.Save(orderReport);
                 }
-                
             }
         }
 
