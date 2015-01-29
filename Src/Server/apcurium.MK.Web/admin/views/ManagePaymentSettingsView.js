@@ -7,10 +7,10 @@
         events: {
             'change [id=isPayPalEnabled]': 'onPayPalSettingsChanged',
             'change [id=isSandbox]': 'onPayPalSettingsChanged',
-            'change [id=SandboxClientId]': 'onPayPalSettingsChanged',
-            'change [id=SandboxClientSecret]': 'onPayPalSettingsChanged',
-            'change [id=ProdClientId]': 'onPayPalSettingsChanged',
-            'change [id=ProdClientSecret]': 'onPayPalSettingsChanged',
+            'change [id=sandboxClientId]': 'onPayPalSettingsChanged',
+            'change [id=sandboxClientSecret]': 'onPayPalSettingsChanged',
+            'change [id=prodClientId]': 'onPayPalSettingsChanged',
+            'change [id=prodClientSecret]': 'onPayPalSettingsChanged',
 
             'change [name=paymentMode]': 'onPaymentModeChanged',
             'change [name=acceptChange]': 'onAcceptPaymentModeChange',
