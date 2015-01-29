@@ -153,7 +153,6 @@
     <Compile Include="Services\OrderPairingService.cs" />
     <Compile Include="Services\Payment\BraintreeClientPaymentService.cs" />
     <Compile Include="Services\Payment\ProcessPaymentService.cs" />
-    <Compile Include="Services\Payment\ResendPaymentConfirmationSevice.cs" />
     <Compile Include="Services\CancelOrderService.cs" />
     <Compile Include="Services\ClientPopularAddressService.cs" />
     <Compile Include="Services\ConfigurationResetService.cs" />

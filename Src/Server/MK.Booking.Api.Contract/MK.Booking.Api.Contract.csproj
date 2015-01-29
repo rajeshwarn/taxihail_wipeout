@@ -103,7 +103,6 @@
     <Compile Include="Requests\OrderPairingRequest.cs" />
     <Compile Include="Requests\Payment\DeleteTokenizedCreditcardRequest.cs" />
     <Compile Include="Requests\Payment\PairingForPaymentRequest.cs" />
-    <Compile Include="Requests\Payment\ResendPaymentConfirmationRequest.cs" />
     <Compile Include="Requests\Payment\Braintree\TokenizeCreditCardBraintreeRequest.cs" />
     <Compile Include="Requests\DisableAccountByAdminRequest.cs" />
     <Compile Include="Requests\EnableAccountByAdminRequest.cs" />

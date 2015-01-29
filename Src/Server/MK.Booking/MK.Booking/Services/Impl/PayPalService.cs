@@ -356,7 +356,9 @@ namespace apcurium.MK.Booking.Services.Impl
 
         public CommitPreauthorizedPaymentResponse CommitPayment(Guid orderId, decimal amount, decimal meterAmount, decimal tipAmount, string authorizationId)
         {
-            var apiContext = GetAPIContext(string.Empty, orderId);
+            var order = _orderDao.FindById(orderId);
+            var accessToken = GetAccessToken(order.AccountId);
+            var apiContext = GetAPIContext(accessToken, orderId);
 
             var authorization = Authorization.Get(apiContext, authorizationId);
 

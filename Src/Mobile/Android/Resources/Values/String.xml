@@ -403,7 +403,7 @@
   <string name="SendMessageErrorMessage">Error confirming with driver payment cancelled</string>
   <string name="CreateAccountInvalidDataTitle">Invalid account info</string>
   <string name="VehicleNumberInfo">Please confirm your car number with the driver</string>
-  <string name="CmtCardNumber">Card Number:</string>
+  <string name="CmtCardNumber">Payment Method:</string>
   <string name="ResetPasswordInvalidDataMessage">The email is invalid.</string>
   <string name="PanelMenuViewReportProblemText">Report A Problem</string>
   <string name="HistoryDetailPickupDateLabel">Pickup Date:</string>
