@@ -85,15 +85,13 @@ namespace apcurium.MK.Booking.EventHandlers
             using (var context = _contextFactory.Invoke())
             {
                 var orderReport = context.Find<OrderReportDetail>(@event.SourceId);
-
-                orderReport.Account.AccountId = @event.Status.AccountId;
-
                 orderReport.Payment.MdtFare = @event.Fare;
                 orderReport.Payment.MdtTip = @event.Tip;
                 orderReport.Payment.MdtToll = @event.Toll;
-                
-                var orderPaymentDetail = context.Set<OrderPaymentDetail>().FirstOrDefault(payment => payment.OrderId == @event.SourceId);
-                
+
+                var orderPaymentDetail =
+                    context.Set<OrderPaymentDetail>().FirstOrDefault(payment => payment.OrderId == @event.SourceId);
+
                 if (orderPaymentDetail != null)
                 {
                     orderReport.Payment.MeterAmount = orderPaymentDetail.Meter;
@@ -102,32 +100,35 @@ namespace apcurium.MK.Booking.EventHandlers
                     orderReport.Payment.Type = orderPaymentDetail.Type;
                     orderReport.Payment.Provider = orderPaymentDetail.Provider;
                     orderReport.Payment.CardToken = orderPaymentDetail.CardToken;
-                    orderReport.Payment.TransactionId = orderPaymentDetail.TransactionId.ToSafeString().IsNullOrEmpty() ? "" : "Auth: " + orderPaymentDetail.TransactionId;
+                    orderReport.Payment.TransactionId =
+                        orderPaymentDetail.TransactionId.ToSafeString().IsNullOrEmpty()
+                            ? ""
+                            : "Auth: " + orderPaymentDetail.TransactionId;
                     orderReport.Payment.AuthorizationCode = orderPaymentDetail.AuthorizationCode;
                 }
 
-                orderReport.VehicleInfos.DriverFirstName = @event.Status.DriverInfos.FirstName;
-                orderReport.VehicleInfos.DriverLastName = @event.Status.DriverInfos.LastName;
-                orderReport.VehicleInfos.Number = @event.Status.VehicleNumber;
-                orderReport.VehicleInfos.Color = @event.Status.DriverInfos.VehicleColor;
-                orderReport.VehicleInfos.Make = @event.Status.DriverInfos.VehicleMake;
-                orderReport.VehicleInfos.Model = @event.Status.DriverInfos.VehicleModel;
-                orderReport.VehicleInfos.Registration = @event.Status.DriverInfos.VehicleRegistration;
-                orderReport.VehicleInfos.Type = @event.Status.DriverInfos.VehicleType;
+                if (@event.Status != null)
+                {
+                    orderReport.Account.AccountId = @event.Status.AccountId;
+                    orderReport.VehicleInfos.DriverFirstName = @event.Status.DriverInfos.FirstName;
+                    orderReport.VehicleInfos.DriverLastName = @event.Status.DriverInfos.LastName;
+                    orderReport.VehicleInfos.Number = @event.Status.VehicleNumber;
+                    orderReport.VehicleInfos.Color = @event.Status.DriverInfos.VehicleColor;
+                    orderReport.VehicleInfos.Make = @event.Status.DriverInfos.VehicleMake;
+                    orderReport.VehicleInfos.Model = @event.Status.DriverInfos.VehicleModel;
+                    orderReport.VehicleInfos.Registration = @event.Status.DriverInfos.VehicleRegistration;
+                    orderReport.VehicleInfos.Type = @event.Status.DriverInfos.VehicleType;
 
-                orderReport.OrderStatus.Status = (int)@event.Status.Status;
+                    orderReport.OrderStatus.Status = (int) @event.Status.Status;
+
+                    orderReport.Order.PickupDateTime = @event.Status.PickupDate != DateTime.MinValue
+                        ? (DateTime?) @event.Status.PickupDate
+                        : null;
+                    orderReport.Order.CompanyName = @event.Status.CompanyName;
+                }
+
                 orderReport.OrderStatus.OrderIsCompleted = @event.IsCompleted;
-
-                orderReport.Order.PickupDateTime = @event.Status.PickupDate != DateTime.MinValue ? (DateTime?)@event.Status.PickupDate : null;
-                orderReport.Order.CompanyName = @event.Status.CompanyName;
-                try
-                {
-                    context.Save(orderReport);
-                }
-                catch (Exception e)
-                {
-                    var m = e.Message;
-                }
+                context.Save(orderReport);
             }
         }
 
