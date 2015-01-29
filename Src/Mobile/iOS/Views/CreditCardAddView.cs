@@ -9,9 +9,10 @@ using Cirrious.CrossCore;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Common.Configuration.Impl;
 using PaypalSdkTouch.Unified;
-using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
 using apcurium.MK.Booking.Mobile.Client.Style;
-using CoreGraphics;
+using apcurium.MK.Booking.Mobile.Client.Diagnostics;
+using ServiceStack.Text;
+using apcurium.MK.Booking.Mobile.Infrastructure;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
@@ -30,7 +31,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         {
             get 
             { 
-                // CardIOToken is only used to know if the user wants it or not
+                // CardIOToken is only used to know if the company wants it or not
                 return CardIOUtilities.CanReadCardWithCamera()
                     && !string.IsNullOrWhiteSpace(this.Services().Settings.CardIOToken); 
             }
@@ -68,82 +69,45 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
             View.BackgroundColor = UIColor.FromRGB (242, 242, 242);
 
-			btnDeleteCard.SetTitle(Localize.GetValue("DeleteCreditCardTitle"), UIControlState.Normal);
-
-            lblInstructions.Text = Localize.GetValue("CreditCardInstructions");
-            lblNameOnCard.Text = Localize.GetValue("CreditCardName");
-            lblCardNumber.Text = Localize.GetValue("CreditCardNumber");
-            lblExpMonth.Text = Localize.GetValue("CreditCardExpMonth");
-            lblExpYear.Text = Localize.GetValue("CreditCardExpYear");
-            lblCvv.Text = Localize.GetValue("CreditCardCCV");
-
-            txtCardNumber.ClearsOnBeginEditing = true;
-            txtCardNumber.ShowCloseButtonOnKeyboard();
-            txtCvv.ShowCloseButtonOnKeyboard();
-
-            ViewModel.CreditCardCompanies[0].Image = "visa.png";
-            ViewModel.CreditCardCompanies[1].Image = "mastercard.png";
-            ViewModel.CreditCardCompanies[2].Image = "amex.png";
-            ViewModel.CreditCardCompanies[3].Image = "visa_electron.png";
-			ViewModel.CreditCardCompanies[4].Image = "credit_card_generic.png";
-
-            txtExpMonth.Configure(Localize.GetValue("CreditCardExpMonth"), () => ViewModel.ExpirationMonths.ToArray(), () => ViewModel.ExpirationMonth, x => ViewModel.ExpirationMonth = x.Id);
-            txtExpYear.Configure(Localize.GetValue("CreditCardExpYear"), () => ViewModel.ExpirationYears.ToArray(), () => ViewModel.ExpirationYear, x => ViewModel.ExpirationYear = x.Id);
-
-            NavigationItem.RightBarButtonItem = new UIBarButtonItem(Localize.GetValue("Save"), UIBarButtonItemStyle.Plain, null);
-
-            if (CardIOIsEnabled)
-            {
-                FlatButtonStyle.Silver.ApplyTo(btnScanCard);
-                btnScanCard.SetTitle(Localize.GetValue("ScanCreditCard"), UIControlState.Normal);
-                btnScanCard.TouchUpInside += (sender, e) => ScanCard();
-            }
-            else
-            {
-                btnScanCard.RemoveFromSuperview();
-            }
-
             var paymentSettings = await Mvx.Resolve<IPaymentService>().GetPaymentSettings();
             _payPalSettings = paymentSettings.PayPalClientSettings;
 
-            if (PayPalIsEnabled)
-            {
-                _payPalEnvironment = _payPalSettings.IsSandbox
-                    ? PayPalMobile.PayPalEnvironmentSandbox
-                    : PayPalMobile.PayPalEnvironmentProduction;
-
-                PayPalMobile.WithClientIds(
-                    (NSString)_payPalSettings.Credentials.ClientId,
-                    (NSString)_payPalSettings.SandboxCredentials.ClientId);
-
-                PayPalMobile.PreconnectWithEnvironment(_payPalEnvironment);
-
-                FlatButtonStyle.Silver.ApplyTo(btnPaypal);
-                btnPaypal.SetTitle(Localize.GetValue("LinkPayPal"), UIControlState.Normal);
-                btnPaypal.TouchUpInside += (sender, e) => PayPalFlow();
-            }
-            else
-            {
-                btnPaypal.RemoveFromSuperview();
-            }
-				
+            lblInstructions.Text = Localize.GetValue("CreditCardInstructions");
             if (!ViewModel.ShowInstructions)
             {
                 lblInstructions.RemoveFromSuperview();
             }
-				
-			FlatButtonStyle.Red.ApplyTo (btnDeleteCard);
+                
+            if (!ViewModel.IsPayPalOnly)
+            {
+                ConfigureCreditCardSection();
+            }
+            else
+            {
+                viewCreditCard.RemoveFromSuperview();
+            }
+
+            if (PayPalIsEnabled)
+            {
+                ConfigurePayPalSection();
+            }
+            else
+            {
+                viewPayPal.RemoveFromSuperview();
+            }
 
 			var set = this.CreateBindingSet<CreditCardAddView, CreditCardAddViewModel>();
 
-            set.Bind(NavigationItem.RightBarButtonItem)
-                .For("Clicked")
+            set.Bind(btnSaveCard)
+                .For("Title")
+                .To(vm => vm.CreditCardSaveButtonDisplay);
+            set.Bind(btnSaveCard)
+                .For("TouchUpInside")
 				.To(vm => vm.SaveCreditCardCommand);
 
 			set.Bind(btnDeleteCard)
 				.For("TouchUpInside")
 				.To(vm => vm.DeleteCreditCardCommand);
-
 			set.Bind(btnDeleteCard)
 				.For(v => v.Hidden)
                 .To(vm => vm.CanDeleteCreditCard)
@@ -172,17 +136,85 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				.For(v => v.Text)
 				.To(vm => vm.Data.CCV);
 
+            set.Bind(btnLinkPayPal)
+                .For(v => v.Hidden)
+                .To(vm => vm.CanLinkPayPalAccount)
+                .WithConversion("BoolInverter");
+
+            set.Bind(btnUnlinkPayPal)
+                .For(v => v.Hidden)
+                .To(vm => vm.CanUnlinkPayPalAccount)
+                .WithConversion("BoolInverter");
+
+            set.Bind(viewPayPalIsLinkedInfo)
+                .For(v => v.Hidden)
+                .To(vm => vm.ShowLinkedPayPalInfo)
+                .WithConversion("BoolInverter");
+
 			set.Apply ();   
 
             txtNameOnCard.ShouldReturn += GoToNext;
+        }
 
-			ViewModel.PropertyChanged += (sender, e) =>
-			{
-				if (e.PropertyName == "IsEditing")
-				{
-					NavigationItem.RightBarButtonItem.Title=ViewModel.CreditCardSaveButtonDisplay;
-				}
-			};
+        private void ConfigureCreditCardSection()
+        {
+            if (CardIOIsEnabled)
+            {
+                FlatButtonStyle.Silver.ApplyTo(btnScanCard);
+                btnScanCard.SetTitle(Localize.GetValue("ScanCreditCard"), UIControlState.Normal);
+                btnScanCard.TouchUpInside += (sender, e) => ScanCard();
+            }
+            else
+            {
+                btnScanCard.RemoveFromSuperview();
+            }
+
+            // Configure CreditCard section
+            FlatButtonStyle.Green.ApplyTo(btnSaveCard);
+            FlatButtonStyle.Red.ApplyTo (btnDeleteCard);
+            btnDeleteCard.SetTitle(Localize.GetValue("DeleteCreditCardTitle"), UIControlState.Normal);
+
+            lblNameOnCard.Text = Localize.GetValue("CreditCardName");
+            lblCardNumber.Text = Localize.GetValue("CreditCardNumber");
+            lblExpMonth.Text = Localize.GetValue("CreditCardExpMonth");
+            lblExpYear.Text = Localize.GetValue("CreditCardExpYear");
+            lblCvv.Text = Localize.GetValue("CreditCardCCV");
+
+            txtCardNumber.ClearsOnBeginEditing = true;
+            txtCardNumber.ShowCloseButtonOnKeyboard();
+            txtCvv.ShowCloseButtonOnKeyboard();
+
+            ViewModel.CreditCardCompanies[0].Image = "visa.png";
+            ViewModel.CreditCardCompanies[1].Image = "mastercard.png";
+            ViewModel.CreditCardCompanies[2].Image = "amex.png";
+            ViewModel.CreditCardCompanies[3].Image = "visa_electron.png";
+            ViewModel.CreditCardCompanies[4].Image = "credit_card_generic.png";
+
+            txtExpMonth.Configure(Localize.GetValue("CreditCardExpMonth"), () => ViewModel.ExpirationMonths.ToArray(), () => ViewModel.ExpirationMonth, x => ViewModel.ExpirationMonth = x.Id);
+            txtExpYear.Configure(Localize.GetValue("CreditCardExpYear"), () => ViewModel.ExpirationYears.ToArray(), () => ViewModel.ExpirationYear, x => ViewModel.ExpirationYear = x.Id);
+        }
+
+        private void ConfigurePayPalSection()
+        {
+            _payPalEnvironment = _payPalSettings.IsSandbox
+                ? PayPalMobile.PayPalEnvironmentSandbox
+                : PayPalMobile.PayPalEnvironmentProduction;
+
+            PayPalMobile.WithClientIds(
+                (NSString)_payPalSettings.Credentials.ClientId,
+                (NSString)_payPalSettings.SandboxCredentials.ClientId);
+
+            PayPalMobile.PreconnectWithEnvironment(_payPalEnvironment);
+
+            lblPayPalLinkedInfo.Text = Localize.GetValue("PayPalLinkedInfo");
+
+            FlatButtonStyle.Silver.ApplyTo(btnLinkPayPal);
+            btnLinkPayPal.SetTitle(Localize.GetValue("LinkPayPal"), UIControlState.Normal);
+            btnLinkPayPal.TouchUpInside += (sender, e) => PayPalFlow();
+
+            FlatButtonStyle.Silver.ApplyTo(btnUnlinkPayPal);
+            btnUnlinkPayPal.SetTitle(Localize.GetValue("UnlinkPayPal"), UIControlState.Normal);
+            btnUnlinkPayPal.TouchUpInside += (sender, e) => ViewModel.UnLinkPayPalAccount();
         }
 
         private bool GoToNext (UITextField textField)
@@ -208,7 +240,21 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 }, _payPalPaymentDelegate);
             }
 
-            PresentViewController(_payPalPayment, true, null);
+            if (ViewModel.IsEditing)
+            {
+                this.Services().Message.ShowMessage(
+                    this.Services().Localize["DeleteCreditCardTitle"],
+                    this.Services().Localize["LinkPayPalCCWarning"],
+                    this.Services().Localize["LinkPayPalConfirmation"], () =>
+                    {
+                        PresentViewController(_payPalPayment, true, null);
+                    },
+                    this.Services().Localize["Cancel"], () => { });
+            }
+            else
+            {
+                PresentViewController(_payPalPayment, true, null);
+            }
         }
 
         private void SendAuthCodeToServer(string authCode)
@@ -275,6 +321,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
             public override void DidCancelFuturePayment(PayPalFuturePaymentViewController futurePaymentViewController)
             {
+                Logger.LogMessage("PayPal LinkAccount: The user canceled the operation");
                 futurePaymentViewController.DismissViewController(true, null);
             }
 
@@ -282,11 +329,45 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             {
                 // The user has successfully logged into PayPal, and has consented to future payments.
                 // Your code must now send the authorization response to your server.
-                var authCode = "";
-                _futurePaymentAuthorized(authCode);
+                try
+                {
+                    NSError error;
+                    var contentJSONData = NSJsonSerialization.Serialize(futurePaymentAuthorization, NSJsonWritingOptions.PrettyPrinted, out error);
 
-                // Be sure to dismiss the PayPalLoginViewController.
-                futurePaymentViewController.DismissViewController(true, null);
+                    if (error != null)
+                    {
+                        throw new Exception(error.LocalizedDescription + " " + error.LocalizedFailureReason);
+                    }
+
+                    var authResponse = JsonSerializer.DeserializeFromString<FuturePaymentAuthorization>(contentJSONData.ToString());
+                    if (authResponse != null)
+                    {
+                        _futurePaymentAuthorized(authResponse.Response.Code);
+                    }
+
+                    // Be sure to dismiss the PayPalLoginViewController.
+                    futurePaymentViewController.DismissViewController(true, null);
+                }
+                catch(Exception e)
+                {
+                    Logger.LogError(e);
+                    Mvx.Resolve<IMessageService>().ShowMessage(Mvx.Resolve<ILocalization>()["Error"], e.GetBaseException().Message);
+                }
+            }
+        }
+
+        private class FuturePaymentAuthorization
+        {
+            public FuturePaymentAuthorization()
+            {
+                Response = new FuturePaymentAuthorizationResponse();
+            }
+
+            public FuturePaymentAuthorizationResponse Response { get; set; }
+
+            public class FuturePaymentAuthorizationResponse
+            {
+                public string Code { get; set; }
             }
         }
 

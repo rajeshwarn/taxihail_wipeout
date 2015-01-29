@@ -735,6 +735,9 @@
   <data name="LocationServiceErrorMessage" xml:space="preserve">
     <value>خدمة تحديد الموقع غير مفعلة</value>
   </data>
+  <data name="Error" xml:space="preserve">
+    <value>خطأ</value>
+  </data>
   <data name="LocationServiceErrorTitle" xml:space="preserve">
     <value>خطأ</value>
   </data>

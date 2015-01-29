@@ -16,6 +16,7 @@ using Cirrious.CrossCore;
 using Org.Json;
 using PaypalSdkDroid.CardPayment;
 using PaypalSdkDroid.Payments;
+using apcurium.MK.Booking.Mobile.Infrastructure;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
 {
@@ -184,7 +185,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
                         }
                         catch (JSONException e)
                         {
-                            ShowErrorDialog(e);
+                            Logger.LogError(e);
+                            Mvx.Resolve<IMessageService>().ShowMessage(Mvx.Resolve<ILocalization>()["Error"], e.GetBaseException().Message);
                         }
                     }
                 }
@@ -197,22 +199,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
                     Logger.LogMessage("The attempt to previously start the PayPalService had an invalid PayPalConfiguration. Please see the docs.");
                 }
             }
-        }
-
-        private void ShowErrorDialog(JSONException ex)
-        {
-            Logger.LogError(ex);
-
-            var alert = new AlertDialog.Builder(this);
-
-            alert.SetTitle("Error");
-            alert.SetMessage(ex.GetBaseException().Message);
-
-            var input = new EditText(this);
-            alert.SetView(input);
-
-            alert.Create();
-            alert.Show();
         }
     }
 }

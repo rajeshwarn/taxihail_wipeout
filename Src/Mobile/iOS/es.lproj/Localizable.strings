@@ -471,7 +471,7 @@
 "SendMessageErrorMessage"="Error de confirmación con el chofer, pago cancelado";
 "CreateAccountInvalidDataTitle"="Información de cuenta inválida";
 "VehicleNumberInfo"="Por favor confirme número de taxi con el chofer";
-"CmtCardNumber"="Número de Tarjeta:";
+"CmtCardNumber"="Método de Pago:";
 "ResetPasswordInvalidDataMessage"="Este email es inválido";
 "PanelMenuViewReportProblemText"="Reportar problema";
 "HistoryDetailPickupDateLabel"="Fecha del servicio:";
@@ -564,3 +564,6 @@
 "PayPalErrorTitle"="PayPal Error";
 "LinkPayPalConfirmation"="Link";
 "AddCoFPayPalWarning"="Adding a credit card will unlink your PayPal account and Card on File will be set as the default payment method. Proceed?";
+"PayPalLinkedInfo"="Account Linked";
+"PayPalLinked"="Your account is now enabled to pay with PayPal by default. You can still choose to pay in the vehicle by selecting \"Pay in Vehicle\" on the payment screen";
+"Error"="Error";

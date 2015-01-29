@@ -404,7 +404,7 @@
 "SendMessageErrorMessage"="حدث خطأ في التأكيد مع السائق تم إلغاء عملية الدفع";
 "CreateAccountInvalidDataTitle"="معلومات الحساب غير صحيحة";
 "VehicleNumberInfo"="رجاء تأكيد رقم سيارتك مع السائق";
-"CmtCardNumber"="رقم البطاقة:";
+"CmtCardNumber"="طريقة الدفع:";
 "ResetPasswordInvalidDataMessage"="البريد الإلكتروني غير صحيح";
 "PanelMenuViewReportProblemText"="بلّغ عن وجود مشكلة";
 "HistoryDetailPickupDateLabel"="تاریخ المشوار:";
@@ -561,3 +561,6 @@
 "LinkPayPalConfirmation"="Link";
 "LinkPayPalCCWarning"="Linking your PayPal account will remove your card on file and PayPal will be set as the default payment method. Proceed?";
 "AddCoFPayPalWarning"="Adding a credit card will unlink your PayPal account and Card on File will be set as the default payment method. Proceed?";
+"PayPalLinkedInfo"="Account Linked";
+"PayPalLinked"="Your account is now enabled to pay with PayPal by default. You can still choose to pay in the vehicle by selecting \"Pay in Vehicle\" on the payment screen";
+"Error"="خطأ";

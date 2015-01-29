@@ -397,7 +397,7 @@
 "SendMessageErrorMessage"="Error confirming with driver payment cancelled";
 "CreateAccountInvalidDataTitle"="Invalid account info";
 "VehicleNumberInfo"="Please confirm your car number with the driver";
-"CmtCardNumber"="Card Number:";
+"CmtCardNumber"="Payment Method:";
 "ResetPasswordInvalidDataMessage"="The email is invalid.";
 "PanelMenuViewReportProblemText"="Report A Problem";
 "HistoryDetailPickupDateLabel"="Pickup Date:";
@@ -588,3 +588,6 @@
 "PayPalErrorTitle"="PayPal Error";
 "LinkPayPalConfirmation"="Link";
 "AddCoFPayPalWarning"="Adding a credit card will unlink your PayPal account and Card on File will be set as the default payment method. Proceed?";
+"PayPalLinkedInfo"="Account Linked";
+"PayPalLinked"="Your account is now enabled to pay with PayPal by default. You can still choose to pay in the vehicle by selecting \"Pay in Vehicle\" on the payment screen";
+"Error"="Error";

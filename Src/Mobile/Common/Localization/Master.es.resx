@@ -1027,6 +1027,9 @@
     <value>Los servicios de localización no estan habilitados</value>
     <comment>The location service is not enabled.</comment>
   </data>
+  <data name="Error" xml:space="preserve">
+    <value>Error</value>
+  </data>
   <data name="LocationServiceErrorTitle" xml:space="preserve">
     <value>Error</value>
     <comment>Error</comment>

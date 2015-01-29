@@ -33,6 +33,17 @@
             android:layout_height="1px"
             android:background="@color/top_bar_separator_color"
             android:orientation="horizontal" />
+        <TextView
+            android:textSize="17dp"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/CreditCardInstructions"
+            style="@style/BlackTextLong"
+            android:gravity="center_horizontal"
+            android:inputType="textMultiLine"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="12dp"
+            local:MvxBind="Visibility ShowInstructions, Converter=Visibility" />
         <ScrollView
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
@@ -46,17 +57,6 @@
                 android:layout_height="fill_parent"
                 android:gravity="center_horizontal"
                 android:orientation="vertical">
-                <TextView
-                    android:textSize="17dp"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/CreditCardInstructions"
-                    style="@style/BlackTextLong"
-                    android:gravity="center_horizontal"
-                    android:inputType="textMultiLine"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginBottom="12dp"
-                    local:MvxBind="Visibility ShowInstructions, Converter=Visibility" />
                 <TextView
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"

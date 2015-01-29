@@ -49,7 +49,7 @@
 "ChooseProviderDialogTitle"="Choisissez un prestataire";
 "Close"="Fermer";
 "CmtCancelPayment"="Annuler";
-"CmtCardNumber"="Numéro de carte:";
+"CmtCardNumber"="Mode de paiement:";
 "CmtCarNumber"="Numéro du véhicule: ";
 "CmtChangePaymentInfo"="Modifier les paramètres de paiement";
 "CmtConfirmPayment"="Confirmer";
@@ -571,3 +571,6 @@
 "LinkPayPalConfirmation"="Associer";
 "LinkPayPalCCWarning"="Associer votre compte PayPal supprimera votre carte de crédit enregistrée et PayPal sera utilisé comme mode de paiement par défault. Voulez-vous continuer?";
 "AddCoFPayPalWarning"="Ajouter une carte de crédit dissociera votre compte PayPal et configurera cette dernière comme mode de paiement par défaut. Voulez-vous continuer?";
+"PayPalLinkedInfo"="Compte associé";
+"PayPalLinked"="Votre compte est maintenant configuré pour le paiement par défaut via PayPal. Vous pouvez quand même choisir de payer dans le véhicule en choisissant l'option appropriée à l'écran de paiement.";
+"Error"="Erreur";

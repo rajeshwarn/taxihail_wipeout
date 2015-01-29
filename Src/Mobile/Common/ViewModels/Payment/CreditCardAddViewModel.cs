@@ -146,8 +146,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 					Data.NameOnCard = creditCard.NameOnCard;
 					Data.CreditCardCompany = creditCard.CreditCardCompany;
 
-				ExpirationMonth = string.IsNullOrWhiteSpace(creditCard.ExpirationMonth) ? (int?)null : int.Parse(creditCard.ExpirationMonth);
-				ExpirationYear = string.IsNullOrWhiteSpace(creditCard.ExpirationYear) ? (int?)null : int.Parse(creditCard.ExpirationYear);
+    				ExpirationMonth = string.IsNullOrWhiteSpace(creditCard.ExpirationMonth) ? (int?)null : int.Parse(creditCard.ExpirationMonth);
+    				ExpirationYear = string.IsNullOrWhiteSpace(creditCard.ExpirationYear) ? (int?)null : int.Parse(creditCard.ExpirationYear);
 
 					var id = CreditCardCompanies.Find(x => x.Display == creditCard.CreditCardCompany).Id;
 					if (id != null)
@@ -336,7 +336,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 		{
 			get
             {
-				return _isEditing ? this.Services().Localize["Modify"] : this.Services().Localize["Save"];
+				return IsEditing ? this.Services().Localize["Modify"] : this.Services().Localize["Save"];
 			}
 		}	
 		public ICommand SaveCreditCardCommand 
