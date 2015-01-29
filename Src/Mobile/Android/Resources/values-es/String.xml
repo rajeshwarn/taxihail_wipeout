@@ -56,7 +56,7 @@
   <string name="ChooseProviderDialogTitle">Seleccionar proveedor</string>
   <string name="Close">Cerrar</string>
   <string name="CmtCancelPayment">Cancelar</string>
-  <string name="CmtCardNumber">Número de Tarjeta:</string>
+  <string name="CmtCardNumber">Método de Pago:</string>
   <string name="CmtCarNumber">Número de Taxi:</string>
   <string name="CmtChangePaymentInfo">Cambiar ajustes de pago</string>
   <string name="CmtConfirmPayment">Confirmar</string>

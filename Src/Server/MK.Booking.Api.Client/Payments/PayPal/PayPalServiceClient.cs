@@ -1,8 +1,10 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Requests.Payment.PayPal;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Api.Client.Extensions;
+using apcurium.MK.Booking.Api.Contract.Requests.Payment;
 using apcurium.MK.Common.Resources;
 
 namespace apcurium.MK.Booking.Api.Client.Payments.PayPal
@@ -20,6 +22,16 @@ namespace apcurium.MK.Booking.Api.Client.Payments.PayPal
         }
 
         public Task<BasePaymentResponse> UnlinkPayPalAccount(UnlinkPayPalAccountRequest request)
+        {
+            return Client.PostAsync(request);
+        }
+
+        public Task<PairingResponse> Pair(PairingForPaymentRequest request)
+        {
+            return Client.PostAsync(request);
+        }
+
+        public Task<BasePaymentResponse> Unpair(UnpairingForPaymentRequest request)
         {
             return Client.PostAsync(request);
         }

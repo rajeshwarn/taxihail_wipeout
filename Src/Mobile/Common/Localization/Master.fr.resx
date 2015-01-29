@@ -268,7 +268,7 @@
     <value>Annuler</value>
   </data>
   <data name="CmtCardNumber" xml:space="preserve">
-    <value>Numéro de carte:</value>
+    <value>Mode de paiement:</value>
   </data>
   <data name="CmtCarNumber" xml:space="preserve">
     <value>Numéro du véhicule: </value>

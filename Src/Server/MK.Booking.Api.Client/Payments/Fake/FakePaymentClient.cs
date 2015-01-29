@@ -78,10 +78,5 @@ namespace apcurium.MK.Booking.Api.Client.Payments.Fake
                 IsSuccessful = true
             });
         }
-
-        public Task ResendConfirmationToDriver(Guid orderId)
-        {
-            return Task.FromResult(true);
-        }
     }
 }

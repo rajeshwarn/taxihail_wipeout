@@ -63,11 +63,6 @@ namespace apcurium.MK.Booking.Api.Client.Payments.Moneris
             });
 		}
 
-		public Task ResendConfirmationToDriver (Guid orderId)
-		{
-			return Client.PostAsync<string>("/payment/ResendConfirmationRequest", new ResendPaymentConfirmationRequest {OrderId = orderId});
-		}
-
         public static bool TestClient(MonerisPaymentSettings serverPaymentSettings, string number, DateTime date, ILogger logger)
         {
             var monerisTokenizeClient = new MonerisTokenizeClient(serverPaymentSettings, logger);

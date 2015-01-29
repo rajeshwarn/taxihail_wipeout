@@ -259,7 +259,7 @@
     <value>الغاء</value>
   </data>
   <data name="CmtCardNumber" xml:space="preserve">
-    <value>رقم البطاقة:</value>
+    <value>طريقة الدفع:</value>
   </data>
   <data name="CmtCarNumber" xml:space="preserve">
     <value>رقم السيارة:</value>
