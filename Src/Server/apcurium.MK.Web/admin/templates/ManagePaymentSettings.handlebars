@@ -14,19 +14,19 @@
         <input type="text" class="input-block-level settingsBox" name="preAuthAmount" value="{{preAuthAmount}}" />
     </div>
 
-  <label class="control-label settingsLabel" >{{{localize "Charge Account Payment Enabled"}}}</label>
+  <label class="control-label settingsLabel" >{{{localize "Enable Charge Account"}}}</label>
   <select  name="isChargeAccountPaymentEnabled" class="settingsBox">
     <option value="{{isChargeAccountPaymentEnabled}}" selected="" >{{localizeBool isChargeAccountPaymentEnabled true="Yes" false="No"}}</option>
     <option value="{{invertedBool isChargeAccountPaymentEnabled}}">{{localizeBool isChargeAccountPaymentEnabled true="No" false="Yes"}}</option>
   </select>
 
-  <label class="control-label settingsLabel" >{{{localize "Pay In Taxi Enabled"}}}</label>
+  <label class="control-label settingsLabel" >{{{localize "Enable Card on File"}}}</label>
   <select  name="isPayInTaxiEnabled" class="settingsBox">
     <option value="{{isPayInTaxiEnabled}}" selected="" >{{localizeBool isPayInTaxiEnabled true="Yes" false="No"}}</option>
     <option value="{{invertedBool isPayInTaxiEnabled}}">{{localizeBool isPayInTaxiEnabled true="No" false="Yes"}}</option>
   </select>
 
-  <label class="control-label settingsLabel" >{{{localize "Payment Method"}}}</label>
+  <label class="control-label settingsLabel" >{{{localize "Card on File Payment Method"}}}</label>
   <select name="paymentMode"  class="settingsBox">
     <option value="None">{{localize "None"}}</option>
     <option value="Cmt">{{localize "CMT Payments"}}</option>
@@ -170,7 +170,7 @@
 <h4 class="table-title">{{localize "PayPal Settings"}}</h4>
 
 
-<label class="control-label settingsLabel">{{{localize "Use PayPal"}}}</label>
+<label class="control-label settingsLabel">{{{localize "Enable PayPal"}}}</label>
 <select id="isPayPalEnabled" name="payPalClientSettings.isEnabled" class="settingsBox">
     <option value="{{payPalClientSettings.isEnabled}}" selected="">{{localizeBool payPalClientSettings.isEnabled true="Yes" false="No"}}</option>
     <option value="{{invertedBool payPalClientSettings.isEnabled}}">{{localizeBool payPalClientSettings.isEnabled true="No" false="Yes"}}</option>

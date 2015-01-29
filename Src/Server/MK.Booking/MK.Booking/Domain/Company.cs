@@ -438,6 +438,11 @@ namespace apcurium.MK.Booking.Domain
 
         private bool HavePayPalSettingsChanged(ServerPaymentSettings newPaymentSettings)
         {
+            if (PayPalClientSettings == null || PayPalServerSettings == null)
+            {
+                return true;
+            }
+
             var paypalDisabledStatusChanged = PayPalClientSettings.IsEnabled != newPaymentSettings.PayPalClientSettings.IsEnabled;
 
             var environmentChanged = PayPalClientSettings.IsSandbox != newPaymentSettings.PayPalClientSettings.IsSandbox;
