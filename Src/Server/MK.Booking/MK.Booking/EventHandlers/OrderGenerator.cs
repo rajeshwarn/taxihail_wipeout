@@ -47,15 +47,18 @@ namespace apcurium.MK.Booking.EventHandlers
             using (var context = _contextFactory.Invoke())
             {
                 var order = context.Find<OrderDetail>(@event.SourceId);
-                order.Status = (int) OrderStatus.Canceled;
-                context.Save(order);
+                if (order != null)
+                {
+                    order.Status = (int)OrderStatus.Canceled;
+                    context.Save(order);
+                }
 
                 var details = context.Find<OrderStatusDetail>(@event.SourceId);
                 if (details != null)
                 {
                     details.Status = OrderStatus.Canceled;
                     details.IBSStatusId = VehicleStatuses.Common.CancelledDone;
-                    details.IBSStatusDescription = "Order Cancelled";
+                    details.IBSStatusDescription = _resources.Get("OrderStatus_wosCANCELLED", order != null ? order.ClientLanguageCode : "en");
                     context.Save(details);
                 }
             }
