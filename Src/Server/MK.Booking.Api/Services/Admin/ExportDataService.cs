@@ -98,7 +98,7 @@ namespace apcurium.MK.Booking.Api.Services.Admin
                             orderReportEntry["Order.PickupAddress"] = orderReport.Order.PickupAddress.DisplayAddress;
                             orderReportEntry["Order.DropOffAddress "] = orderReport.Order.DropOffAddress.DisplayAddress;
 
-                            orderReportEntry["OrderStatus.Status"] = orderReport.OrderStatus.Status.ToString(CultureInfo.InvariantCulture);
+                            orderReportEntry["OrderStatus.Status"] = orderReport.OrderStatus.Status.ToString();
                             orderReportEntry["OrderStatus.OrderIsCancelled"] = orderReport.OrderStatus.OrderIsCancelled.ToString();
                             orderReportEntry["OrderStatus.OrderIsCompleted"] = orderReport.OrderStatus.OrderIsCompleted.ToString();
 

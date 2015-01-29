@@ -92,7 +92,7 @@ namespace apcurium.MK.Booking.ReadModel
 
     public class OrderReportOrderStatus
     {
-        public int Status { get; set; }
+        public OrderStatus Status { get; set; }
 
         public bool OrderIsCancelled { get; set; }
 

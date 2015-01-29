@@ -119,7 +119,7 @@ namespace apcurium.MK.Booking.EventHandlers
                     orderReport.VehicleInfos.Registration = @event.Status.DriverInfos.VehicleRegistration;
                     orderReport.VehicleInfos.Type = @event.Status.DriverInfos.VehicleType;
 
-                    orderReport.OrderStatus.Status = (int) @event.Status.Status;
+                    orderReport.OrderStatus.Status = @event.Status.Status;
 
                     orderReport.Order.PickupDateTime = @event.Status.PickupDate != DateTime.MinValue
                         ? (DateTime?) @event.Status.PickupDate
