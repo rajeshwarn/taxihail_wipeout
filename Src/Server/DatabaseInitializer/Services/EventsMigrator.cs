@@ -65,6 +65,13 @@ namespace DatabaseInitializer.Services
                             message.Payload.Replace("apcurium.MK.Common.Configuration.BraintreeClientSettings",
                                 "apcurium.MK.Common.Configuration.Impl.BraintreeClientSettings");
                     }
+                    foreach (var message in events.Where(x => x.EventType == typeof(PaymentSettingUpdated).FullName).ToList())
+                    {
+                        message.Payload =
+                            message.Payload.Replace("apcurium.MK.Common.Configuration.Impl.PayPalCredentials",
+                                "apcurium.MK.Common.Configuration.Impl.PayPalServerCredentials");
+                    }
+
                     context.SaveChanges();
 
                     // rename Order Pairing events
