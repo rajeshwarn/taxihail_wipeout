@@ -81,6 +81,9 @@
     <Compile Include="DeviceUnregisteredForPushNotifications.cs" />
     <Compile Include="PayPalAccountLinked.cs" />
     <Compile Include="PayPalAccountUnlinked.cs" />
+    <Compile Include="PayPalExpressCheckoutPaymentCancelled.cs" />
+    <Compile Include="PayPalExpressCheckoutPaymentCompleted.cs" />
+    <Compile Include="PayPalExpressCheckoutPaymentInitiated.cs" />
     <Compile Include="PayPalPaymentCancellationFailed.cs" />
     <Compile Include="PayPalSettingsChanged.cs" />
     <Compile Include="PromotionActivated.cs" />

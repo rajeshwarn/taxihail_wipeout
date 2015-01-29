@@ -133,7 +133,6 @@
     <Compile Include="Requests\Payment\PaymentSettingsRequest.cs" />
     <Compile Include="Resources\Payments\PaymentSettingsResponse.cs" />
     <Compile Include="Resources\Payments\TokenizedCreditCardResponse.cs" />
-    <Compile Include="Requests\Payment\ResendPaymentConfirmationRequest.cs" />
     <Compile Include="Requests\TermsAndConditionsRequest.cs" />
     <Compile Include="Resources\AccountCharge.cs" />
     <Compile Include="Requests\LogApplicationStartUpRequest.cs" />

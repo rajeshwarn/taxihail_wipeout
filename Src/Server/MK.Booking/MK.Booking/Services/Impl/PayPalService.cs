@@ -9,6 +9,7 @@ using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Enumeration;
+using apcurium.MK.Common.Enumeration.PayPal;
 using apcurium.MK.Common.Resources;
 using Infrastructure.Messaging;
 using PayPal.Api;
@@ -209,17 +210,17 @@ namespace apcurium.MK.Booking.Services.Impl
 
                     switch (createdPayment.state)
                     {
-                        case "approved":
+                        case PaymentStates.Approved:
                             isSuccessful = true;
                             break;
-                        case "created":
-                        case "pending":
+                        case PaymentStates.Created:
+                        case PaymentStates.Pending:
                             // what is that supposed to mean?
                             message = string.Format("Authorization state was {0}", createdPayment.state);
                             break;
-                        case "failed":
-                        case "canceled":
-                        case "expired":
+                        case PaymentStates.Failed:
+                        case PaymentStates.Canceled:
+                        case PaymentStates.Expired:
                             message = string.Format("Authorization state was {0}", createdPayment.state);
                             break;
                     }
@@ -310,15 +311,15 @@ namespace apcurium.MK.Booking.Services.Impl
 
                 var authorization = Authorization.Get(apiContext, transactionId);
 
-                if (authorization.state == "authorized")
+                if (authorization.state == AuthorizationStates.Authorized)
                 {
                     var cancellationResult = authorization.Void(apiContext);
-                    if (cancellationResult.state == "voided")
+                    if (cancellationResult.state == AuthorizationStates.Voided)
                     {
                         isTransactionCancelled = true;
                     }
                 }
-                else if (authorization.state == "captured" || authorization.state == "partially_captured")
+                else if (authorization.state == AuthorizationStates.Captured || authorization.state == AuthorizationStates.PartiallyCaptured)
                 {
                     // TODO PayPal test
                     var payment = Payment.Get(apiContext, authorization.parent_payment);
@@ -333,7 +334,7 @@ namespace apcurium.MK.Booking.Services.Impl
                         }
                     };
                     var refundResult = captureResponse.Refund(apiContext, refund);
-                    if (refundResult.state != "failed")
+                    if (refundResult.state != PaymentStates.Failed)
                     {
                         isTransactionCancelled = true;
                     }
@@ -356,7 +357,9 @@ namespace apcurium.MK.Booking.Services.Impl
 
         public CommitPreauthorizedPaymentResponse CommitPayment(Guid orderId, decimal amount, decimal meterAmount, decimal tipAmount, string authorizationId)
         {
-            var apiContext = GetAPIContext(string.Empty, orderId);
+            var order = _orderDao.FindById(orderId);
+            var accessToken = GetAccessToken(order.AccountId);
+            var apiContext = GetAPIContext(accessToken, orderId);
 
             var authorization = Authorization.Get(apiContext, authorizationId);
 
@@ -372,7 +375,8 @@ namespace apcurium.MK.Booking.Services.Impl
 
             var responseCapture = authorization.Capture(apiContext, capture);
 
-            var isSuccessful = responseCapture.state == "pending" || responseCapture.state == "completed";
+            var isSuccessful = responseCapture.state == PaymentStates.Pending 
+                || responseCapture.state == PaymentStates.Completed;
 
             // TODO PayPal test
             return new CommitPreauthorizedPaymentResponse

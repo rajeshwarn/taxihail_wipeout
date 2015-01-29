@@ -243,7 +243,11 @@ namespace apcurium.MK.Booking.EventHandlers
             {
                 var account = context.Find<AccountDetail>(@event.SourceId);
                 account.DefaultCreditCard = null;
-                account.Settings.ChargeTypeId = ChargeTypes.PaymentInCar.Id;
+
+                account.Settings.ChargeTypeId = account.IsPayPalAccountLinked
+                    ? ChargeTypes.PayPal.Id
+                    : ChargeTypes.PaymentInCar.Id;
+                
                 context.Save(account);
             }
         }

@@ -163,6 +163,8 @@
     <Compile Include="Enumeration\DistanceFormat.cs" />
     <Compile Include="Enumeration\PaymentProvider.cs" />
     <Compile Include="Enumeration\PaymentType.cs" />
+    <Compile Include="Enumeration\PayPal\AuthorizationStates.cs" />
+    <Compile Include="Enumeration\PayPal\PaymentStates.cs" />
     <Compile Include="Enumeration\PromoDiscountType.cs" />
     <Compile Include="Enumeration\PromotionTriggerTypes.cs" />
     <Compile Include="Enumeration\PushNotificationServicePlatform.cs" />

@@ -10,6 +10,7 @@ using Android.Widget;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Client.Controls;
 using apcurium.MK.Booking.Mobile.Client.Diagnostic;
+using apcurium.MK.Booking.Mobile.Framework.Extensions;
 using apcurium.MK.Booking.Mobile.ViewModels.Payment;
 using apcurium.MK.Common.Configuration.Impl;
 using Cirrious.CrossCore;
@@ -111,6 +112,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
 
         private void SetUpPayPalService(PayPalClientSettings paypalSettings)
         {
+            var clienId = paypalSettings.IsSandbox
+                ? paypalSettings.SandboxCredentials.ClientId
+                : paypalSettings.Credentials.ClientId;
+
+            if (!clienId.HasValue())
+            {
+                return;
+            }
+
             PayPalConfiguration.LanguageOrLocale(this.Services().Localize.CurrentLanguage);
             PayPalConfiguration.AcceptCreditCards(false);
 
@@ -118,9 +128,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
                 ? PayPalConfiguration.EnvironmentSandbox
                 : PayPalConfiguration.EnvironmentProduction);
 
-            PayPalConfiguration.ClientId(paypalSettings.IsSandbox
-                ? paypalSettings.SandboxCredentials.ClientId
-                : paypalSettings.Credentials.ClientId);
+            PayPalConfiguration.ClientId(clienId);
 
             PayPalConfiguration.MerchantName(ViewModel.Settings.TaxiHail.ApplicationName);
             PayPalConfiguration.MerchantPrivacyPolicyUri(
