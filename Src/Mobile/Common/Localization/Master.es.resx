@@ -342,7 +342,7 @@
     <comment>Cancel</comment>
   </data>
   <data name="CmtCardNumber" xml:space="preserve">
-    <value>Número de Tarjeta:</value>
+    <value>Método de Pago:</value>
     <comment>Card Number:</comment>
   </data>
   <data name="CmtCarNumber" xml:space="preserve">

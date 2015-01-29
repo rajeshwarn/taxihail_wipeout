@@ -48,7 +48,7 @@
   <string name="ChooseProviderDialogTitle">اختر مورد خدمة</string>
   <string name="Close">إغلاق</string>
   <string name="CmtCancelPayment">الغاء</string>
-  <string name="CmtCardNumber">رقم البطاقة:</string>
+  <string name="CmtCardNumber">طريقة الدفع:</string>
   <string name="CmtCarNumber">رقم السيارة:</string>
   <string name="CmtChangePaymentInfo">تغيير إعدادات الدفع</string>
   <string name="CmtConfirmPayment">تأكيد</string>

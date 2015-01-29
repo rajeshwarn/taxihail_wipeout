@@ -379,7 +379,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				var paymentSettings = await _paymentService.GetPaymentSettings();
                 if (isLoaded 
 					&& (!paymentSettings.AutomaticPaymentPairing || paymentSettings.PaymentMode == PaymentMethod.RideLinqCmt)
-					&& _accountService.CurrentAccount.DefaultCreditCard != null)
+					&& (_accountService.CurrentAccount.DefaultCreditCard != null || _accountService.CurrentAccount.IsPayPalAccountLinked))
 				{
 					var isPaired = await _bookingService.IsPaired(Order.Id);
                     var pairState = this.Services().Cache.Get<string>("PairState" + Order.Id);
@@ -673,20 +673,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                         () => {}));
             }
         }
-
-		public ICommand ResendConfirmationToDriver
-		{
-			get
-			{
-				return this.GetCommand(() =>
-					{
-						if (_paymentService.GetPaymentFromCache(Order.Id).HasValue)
-						{
-							_paymentService.ResendConfirmationToDriver(Order.Id);
-						}
-					});
-			}
-		}
 
 		public ICommand Unpair
 		{

@@ -52,7 +52,7 @@
   <string name="ChooseProviderDialogTitle">Choisissez un prestataire</string>
   <string name="Close">Fermer</string>
   <string name="CmtCancelPayment">Annuler</string>
-  <string name="CmtCardNumber">Numéro de carte:</string>
+  <string name="CmtCardNumber">Mode de paiement:</string>
   <string name="CmtCarNumber">Numéro du véhicule: </string>
   <string name="CmtChangePaymentInfo">Modifier les paramètres de paiement</string>
   <string name="CmtConfirmPayment">Confirmer</string>

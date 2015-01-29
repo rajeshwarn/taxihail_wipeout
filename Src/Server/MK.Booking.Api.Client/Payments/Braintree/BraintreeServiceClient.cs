@@ -72,10 +72,5 @@ namespace apcurium.MK.Booking.Api.Client.Payments.Braintree
                 OrderId = orderId
             });
         }
-
-        public Task ResendConfirmationToDriver(Guid orderId)
-        {
-            return Client.PostAsync<string>("/payment/ResendConfirmationRequest", new ResendPaymentConfirmationRequest {OrderId = orderId});
-        }
     }
 }

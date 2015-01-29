@@ -1336,7 +1336,7 @@
     <value>Cancel</value>
   </data>
   <data name="CmtCardNumber" xml:space="preserve">
-    <value>Card Number:</value>
+    <value>Payment Method:</value>
   </data>
   <data name="CmtCarNumber" xml:space="preserve">
     <value>Car Number:</value>
