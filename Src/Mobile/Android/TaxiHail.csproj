@@ -732,6 +732,8 @@
     <AndroidResource Include="Resources\values-es\String.xml" />
     <AndroidResource Include="Resources\Drawable\down_arrow.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\down_arrow.png" />
+    <AndroidResource Include="Resources\Drawable\paypal_icon.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\paypal_icon.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <Target Name="BeforeBuild">

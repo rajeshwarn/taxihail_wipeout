@@ -215,7 +215,6 @@ namespace apcurium.MK.Booking.Services.Impl
                             break;
                         case PaymentStates.Created:
                         case PaymentStates.Pending:
-                            // what is that supposed to mean?
                             message = string.Format("Authorization state was {0}", createdPayment.state);
                             break;
                         case PaymentStates.Failed:
@@ -269,6 +268,37 @@ namespace apcurium.MK.Booking.Services.Impl
             }
         }
 
+        public CommitPreauthorizedPaymentResponse CommitPayment(Guid orderId, decimal amount, decimal meterAmount, decimal tipAmount, string authorizationId)
+        {
+            var order = _orderDao.FindById(orderId);
+            var accessToken = GetAccessToken(order.AccountId);
+            var apiContext = GetAPIContext(accessToken, orderId);
+
+            var authorization = Authorization.Get(apiContext, authorizationId);
+
+            var capture = new Capture
+            {
+                amount = new Amount
+                {
+                    currency = authorization.amount.currency,
+                    total = amount.ToString(CultureInfo.InvariantCulture)
+                },
+                is_final_capture = true
+            };
+
+            var responseCapture = authorization.Capture(apiContext, capture);
+
+            var isSuccessful = responseCapture.state == PaymentStates.Pending
+                || responseCapture.state == PaymentStates.Completed;
+
+            return new CommitPreauthorizedPaymentResponse
+            {
+                IsSuccessful = isSuccessful,
+                AuthorizationCode = responseCapture.id,
+                TransactionId = authorizationId
+            };
+        }
+
         public void VoidPreAuthorization(Guid orderId)
         {
             var message = string.Empty;
@@ -313,6 +343,7 @@ namespace apcurium.MK.Booking.Services.Impl
 
                 if (authorization.state == AuthorizationStates.Authorized)
                 {
+                    // Void preauth
                     var cancellationResult = authorization.Void(apiContext);
                     if (cancellationResult.state == AuthorizationStates.Voided)
                     {
@@ -321,9 +352,10 @@ namespace apcurium.MK.Booking.Services.Impl
                 }
                 else if (authorization.state == AuthorizationStates.Captured || authorization.state == AuthorizationStates.PartiallyCaptured)
                 {
-                    // TODO PayPal test
-                    var payment = Payment.Get(apiContext, authorization.parent_payment);
-                    var captureResponse = payment.transactions[0].related_resources[0].capture;
+                    // Refund transaction
+                    var paymentDetails = _paymentDao.FindByOrderId(orderId);
+
+                    var captureResponse = Capture.Get(apiContext, paymentDetails.AuthorizationCode);
 
                     var refund = new Refund
                     {
@@ -333,6 +365,7 @@ namespace apcurium.MK.Booking.Services.Impl
                             total = captureResponse.amount.total
                         }
                     };
+
                     var refundResult = captureResponse.Refund(apiContext, refund);
                     if (refundResult.state != PaymentStates.Failed)
                     {
@@ -353,38 +386,6 @@ namespace apcurium.MK.Booking.Services.Impl
                 message = "The transaction couldn't be cancelled" + ex.Message;
                 throw;
             }
-        }
-
-        public CommitPreauthorizedPaymentResponse CommitPayment(Guid orderId, decimal amount, decimal meterAmount, decimal tipAmount, string authorizationId)
-        {
-            var order = _orderDao.FindById(orderId);
-            var accessToken = GetAccessToken(order.AccountId);
-            var apiContext = GetAPIContext(accessToken, orderId);
-
-            var authorization = Authorization.Get(apiContext, authorizationId);
-
-            var capture = new Capture
-            {
-                amount = new Amount
-                {
-                    currency = authorization.amount.currency,
-                    total = amount.ToString(CultureInfo.InvariantCulture)
-                },
-                is_final_capture = true
-            };
-
-            var responseCapture = authorization.Capture(apiContext, capture);
-
-            var isSuccessful = responseCapture.state == PaymentStates.Pending 
-                || responseCapture.state == PaymentStates.Completed;
-
-            // TODO PayPal test
-            return new CommitPreauthorizedPaymentResponse
-            {
-                IsSuccessful = isSuccessful,
-                AuthorizationCode = responseCapture.id,
-                TransactionId = authorizationId
-            };
         }
 
         public bool TestCredentials(PayPalClientCredentials payPalClientSettings, PayPalServerCredentials payPalServerSettings, bool isSandbox)

@@ -484,7 +484,7 @@
   <string name="View_BookSettingMenu">Ajustes</string>
   <string name="View_ConfirmCarNumber">Confirmación</string>
   <string name="View_CreateAccount">Cree su cuenta</string>
-  <string name="View_CreditCard">Tarjeta de crédito</string>
+  <string name="View_CreditCard">Pago</string>
   <string name="View_CreditCardsList">Tarjetas de crédito</string>
   <string name="View_History">Historia</string>
   <string name="View_HistoryDetail">Detalles de la Reservación</string>
@@ -572,4 +572,5 @@
   <string name="LinkPayPalConfirmation">Link</string>
   <string name="PayPalLinked">Your account is now enabled to pay with PayPal by default. You can still choose to pay in the vehicle by selecting \"Pay in Vehicle\" on the payment screen</string>
   <string name="PayPalLinkedInfo">Account Linked</string>
+  <string name="Error">Error</string>
 </resources>
