@@ -12,7 +12,6 @@ using apcurium.MK.Booking.Email;
 using apcurium.MK.Booking.EventHandlers;
 using apcurium.MK.Booking.EventHandlers.Integration;
 using apcurium.MK.Booking.Events;
-using apcurium.MK.Booking.Maps;
 using apcurium.MK.Booking.PushNotifications;
 using apcurium.MK.Booking.PushNotifications.Impl;
 using apcurium.MK.Booking.ReadModel;
@@ -53,6 +52,7 @@ namespace apcurium.MK.Booking
             container.RegisterInstance<ITemplateService>(new TemplateService(container.Resolve<IServerSettings>()));
             container.RegisterInstance<IPushNotificationService>(new PushNotificationService(container.Resolve<IServerSettings>(), container.Resolve<ILogger>()));
             container.RegisterInstance<IOrderDao>(new OrderDao(() => container.Resolve<BookingDbContext>()));
+            container.RegisterInstance<IReportDao>(new ReportDao(() => container.Resolve<BookingDbContext>()));
             container.RegisterInstance<IPromotionDao>(new PromotionDao(() => container.Resolve<BookingDbContext>(), container.Resolve<IClock>(), container.Resolve<IServerSettings>()));
             container.RegisterType<INotificationService, NotificationService>(new ContainerControlledLifetimeManager());
                     
@@ -112,40 +112,6 @@ namespace apcurium.MK.Booking
                 .ForMember(p => p.AccountId, opt => opt.MapFrom(m => m.SourceId));
 
             Mapper.CreateMap<OrderStatusDetail, OrderStatusDetail>();
-
-            Mapper.CreateMap<OrderDetail, OrderDetailWithAccount>()
-                .ForMember(d => d.MdtFare, opt => opt.MapFrom(m => m.Fare))
-                .ForMember(d => d.MdtTip, opt => opt.MapFrom(m => m.Tip))
-                .ForMember(d => d.ChargeType, opt => opt.MapFrom(m => m.Settings.ChargeType))
-                .ForMember(d => d.MdtToll, opt => opt.MapFrom(m => m.Toll));
-
-            Mapper.CreateMap<AccountDetail, OrderDetailWithAccount>()
-                .ForMember(d => d.Name, opt => opt.MapFrom(m => m.Settings.Name))
-                .ForMember(d => d.Phone, opt => opt.MapFrom(m => m.Settings.Phone));
-
-            Mapper.CreateMap<CreditCardDetails, OrderDetailWithAccount>()
-                .ForMember(d => d.AccountDefaultCardToken, opt => opt.MapFrom(m => m.Token));
-
-
-            Mapper.CreateMap<OrderPaymentDetail, OrderDetailWithAccount>()
-                .ForMember(d => d.PaymentMeterAmount, opt => opt.MapFrom(m => m.Meter))
-                .ForMember(d => d.PaymentTotalAmount, opt => opt.MapFrom(m => m.Amount))
-                .ForMember(d => d.PaymentTipAmount, opt => opt.MapFrom(m => m.Tip))
-                .ForMember(d => d.PaymentType, opt => opt.MapFrom(m => m.Type))
-                .ForMember(d => d.PaymentProvider, opt => opt.MapFrom(m => m.Provider));
-
-            Mapper.CreateMap<OrderStatusDetail, OrderDetailWithAccount>()
-                .ForMember(d => d.VehicleType, opt => opt.MapFrom(m => m.DriverInfos.VehicleType))
-                .ForMember(d => d.VehicleColor, opt => opt.MapFrom(m => m.DriverInfos.VehicleColor))
-                .ForMember(d => d.VehicleMake, opt => opt.MapFrom(m => m.DriverInfos.VehicleMake))
-                .ForMember(d => d.VehicleModel, opt => opt.MapFrom(m => m.DriverInfos.VehicleModel))
-                .ForMember(d => d.DriverFirstName, opt => opt.MapFrom(m => m.DriverInfos.FirstName))
-                .ForMember(d => d.DriverLastName, opt => opt.MapFrom(m => m.DriverInfos.LastName))
-                .ForMember(d => d.VehicleRegistration, opt => opt.MapFrom(m => m.DriverInfos.VehicleRegistration));
-
-            Mapper.CreateMap<PromotionUsageDetail, OrderDetailWithAccount>()
-                .ForMember(d => d.PromoCode, opt => opt.MapFrom(m => m.Code))
-                .ForMember(d => d.PaymentSavedAmount, opt => opt.MapFrom(m => m.AmountSaved));
         }
 
         private static void RegisterEventHandlers(IUnityContainer container)
@@ -154,6 +120,7 @@ namespace apcurium.MK.Booking
             container.RegisterType<IEventHandler, DeviceDetailsGenerator>("DeviceDetailsGenerator");
             container.RegisterType<IEventHandler, AddressListGenerator>("AddressListGenerator");
             container.RegisterType<IEventHandler, OrderGenerator>("OrderGenerator");
+            container.RegisterType<IEventHandler, ReportDetailGenerator>("ReportDetailGenerator");
             container.RegisterType<IEventHandler, TariffDetailsGenerator>("TariffDetailsGenerator");
             container.RegisterType<IEventHandler, RuleDetailsGenerator>("RuleDetailsGenerator");
             container.RegisterType<IEventHandler, RatingTypeDetailsGenerator>("RatingTypeDetailsGenerator");
