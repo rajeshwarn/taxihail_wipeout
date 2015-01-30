@@ -1,6 +1,14 @@
 ﻿<!-- PAYMENT OPTION-->
 <h4 class="table-title">{{localize "Payment Mode"}}</h4>
 
+    <div class="control-group" id="automaticPairingDiv">
+        <label class="control-label settingsLabel">{{{localize "Automatic Pairing"}}}</label>
+        <select name="automaticPaymentPairing" class="settingsBox">
+            <option value="{{automaticPaymentPairing}}" selected="">{{localizeBool automaticPaymentPairing true="Yes" false="No"}}</option>
+            <option value="{{invertedBool automaticPaymentPairing}}">{{localizeBool automaticPaymentPairing true="No" false="Yes"}}</option>
+        </select>
+    </div>
+
     <div class="control-group" id="preAuthAmountEnabledDiv">
     <label class="control-label settingsLabel">{{{localize "Enable PreAuthorization "}}}</label>
     <select name="isPreAuthEnabled" class="settingsBox">
@@ -12,6 +20,11 @@
     <div class="control-group" id="preAuthAmountDiv">
         <label class="control-label settingsLabel">{{{localize "PreAuthorization Amount"}}}</label>
         <input type="text" class="input-block-level settingsBox" name="preAuthAmount" value="{{preAuthAmount}}" />
+    </div>
+
+    <div class="control-group" id="noShowFeeDiv">
+        <label class="control-label settingsLabel">{{{localize "No Show Fee (Amount)"}}}</label>
+        <input type="text" class="input-block-level settingsBox" name="noShowFee" value="{{noShowFee}}" />
     </div>
 
   <label class="control-label settingsLabel" >{{{localize "Enable Charge Account"}}}</label>
@@ -35,24 +48,11 @@
     <option value="Moneris">{{localize "Moneris Payments"}}</option>
     <option value="Fake">{{localize "Demo Payment Service"}}</option>
   </select>
-
-  <div class="control-group" id="noShowFeeDiv">
-    <label class="control-label settingsLabel" >{{{localize "No Show Fee (Amount)"}}}</label>
-    <input type="text" class="input-block-level settingsBox" name="noShowFee" value="{{noShowFee}}" />
-  </div>
-
-  <div class="control-group" id="automaticPairingDiv">
-    <label class="control-label settingsLabel">{{{localize "Automatic Payment Pairing"}}}</label>
-    <select  name="automaticPaymentPairing" class="settingsBox">
-      <option value="{{automaticPaymentPairing}}" selected="" >{{localizeBool automaticPaymentPairing true="Yes" false="No"}}</option>
-      <option value="{{invertedBool automaticPaymentPairing}}">{{localizeBool automaticPaymentPairing true="No" false="Yes"}}</option>
-    </select>
-  </div>
   <br />
 
 <!-- BRAINTREE SETTINGS-->
   <div class="control-group" id="braintreeSettingsDiv">
-
+    <br />
     <h4 class="table-title">{{localize "Braintree Settings"}}</h4>
     
     <h5  >{{{localize "Client Settings"}}}</h5>
@@ -90,7 +90,7 @@
 
 <!-- CMT SETTINGS-->
   <div class="control-group" id="cmtSettingsDiv">
-
+    <br />
     <h4 class="table-title">{{localize "CMT Settings"}}</h4>
 
     <label class="control-label settingsLabel" >{{{localize "Use Sandbox"}}}</label>
@@ -131,7 +131,7 @@
 
 <!-- MONERIS SETTINGS-->
 <div class="control-group" id="monerisSettingsDiv">
-
+    <br />
     <h4 class="table-title">{{localize "Moneris Settings"}}</h4>
 
     <label class="control-label settingsLabel">{{{localize "Use Sandbox"}}}</label>

@@ -26,10 +26,12 @@
         saveButton: {},
         warningDiv: {},
         payPalWarningDiv: {},
+        updatedModel: {},
 
         render: function () {
 
             var data = this.model.toJSON();
+            this.updatedModel = data.serverPaymentSettings;
 
             this.$el.html(this.renderTemplate(data.serverPaymentSettings));
             
@@ -123,6 +125,7 @@
             var data = $(form).serializeObject();
 
             this.$("#warning").hide();
+            this.$("#payPalWarning").hide();
             
             if (data.paymentMode == "None" && data.isPayInTaxiEnabled == 'true') {
                 this.alert("Please select a payment method or disable Pay In Taxi");
@@ -140,7 +143,7 @@
                      this.$(':submit').button('reset');
                  }, this))
                  .done(_.bind(function() {
-
+                     this.updatedModel = data;
                      this.alert('Settings Saved', 'success');
 
                  }, this))
@@ -152,29 +155,48 @@
         },
         
         onAcceptPaymentModeChange: function () {
-            
-            if (this.$("[name = acceptChange]").prop("checked")) {
-                this.saveButton.removeAttr('disabled');
+
+            var paymentWarning = this.$("[name = acceptChange]");
+            var payPalWarning = this.$("[name = acceptPayPalChange]");
+
+            if (payPalWarning.is(":visible")) {
+                if (payPalWarning.prop("checked") && paymentWarning.prop("checked")) {
+                    this.saveButton.removeAttr('disabled');
+                }
             } else {
-                this.saveButton.attr('disabled', 'disabled');
+                if (paymentWarning.prop("checked")) {
+                    this.saveButton.removeAttr('disabled');
+                }
             }
         },
 
         onAcceptPayPalSettingsChange: function () {
 
-            if (this.$("[name = acceptPayPalChange]").prop("checked")) {
-                this.saveButton.removeAttr('disabled');
+            var paymentWarning = this.$("[name = acceptChange]");
+            var payPalWarning = this.$("[name = acceptPayPalChange]");
+
+            if (paymentWarning.is(":visible")) {
+                if (paymentWarning.prop("checked") && payPalWarning.prop("checked")) {
+                    this.saveButton.removeAttr('disabled');
+                }
             } else {
-                this.saveButton.attr('disabled', 'disabled');
+                if (payPalWarning.prop("checked")) {
+                    this.saveButton.removeAttr('disabled');
+                }
             }
         },
         
         onPayPalSettingsChanged: function() {
-            var currentPaymentSettings = this.model.toJSON().serverPaymentSettings;
+
+            var currentPaymentSettings = this.updatedModel;
+            
+            this.$("[name = acceptPayPalChange]").removeAttr("checked");
 
             var paymentMode = this.$("[name=paymentMode]").val();
             var preAuthAmountEnabledDiv = this.$("#preAuthAmountEnabledDiv");
             var preAuthAmountDiv = this.$("#preAuthAmountDiv");
+            var noShowFeeDiv = this.$("#noShowFeeDiv");
+            var automaticPairingDiv = this.$("#automaticPairingDiv");
 
             var newIsPayPalEnabled = this.$("[id=isPayPalEnabled]").val() == 'true';
             var newIsSandboxValue = this.$("[id=isSandbox]").val() == 'true';
@@ -193,22 +215,29 @@
 
             // Show hide unlink warning
             if (environmentChanged || sandboxSettingsChanged || prodSettingsChanged) {
+                this.saveButton.attr('disabled', 'disabled');
                 this.payPalWarningDiv.show();
                 this.onAcceptPayPalSettingsChange();
             } else {
                 this.payPalWarningDiv.hide();
-                if (!this.warningDiv.is(':visible')) {
-                    this.saveButton.removeAttr('disabled');
-                }
             }
 
             // Show/ hide preauth fields
             if (!newIsPayPalEnabled && (paymentMode == 'None' || paymentMode == 'RideLinqCmt')) {
                 preAuthAmountEnabledDiv.hide();
                 preAuthAmountDiv.hide();
+                noShowFeeDiv.hide();
+
+                if (paymentMode == 'RideLinqCmt') {
+                    automaticPairingDiv.show();
+                } else {
+                    automaticPairingDiv.hide();
+                }
             } else {
                 preAuthAmountEnabledDiv.show();
                 preAuthAmountDiv.show();
+                noShowFeeDiv.show();
+                automaticPairingDiv.show();
             }
         },
 
@@ -217,26 +246,24 @@
             this.$("[name = acceptChange]").removeAttr("checked");
 
             var newPaymentMode = this.$("[name=paymentMode]").val();
-            var autPairingDiv = this.$("#automaticPairingDiv");
-            var noShowFeeDiv = this.$("#noShowFeeDiv");
 
             var btDiv = this.$("#braintreeSettingsDiv");
             var cmtDiv = this.$("#cmtSettingsDiv");
             var monerisDiv = this.$("#monerisSettingsDiv");
 
-            var isPayPalEnabled = this.$("[id=isPayPalEnabled]").val();
+            var isPayPalEnabled = this.$("[id=isPayPalEnabled]").val() == 'true';
             var preAuthAmountEnabledDiv = this.$("#preAuthAmountEnabledDiv");
             var preAuthAmountDiv = this.$("#preAuthAmountDiv");
+            var automaticPairingDiv = this.$("#automaticPairingDiv");
+            var noShowFeeDiv = this.$("#noShowFeeDiv");
 
-            var method = this.model.toJSON().serverPaymentSettings.paymentMode;
+            var currentPaymentMode = this.updatedModel.paymentMode;
 
-            if (newPaymentMode != method) {
-                if ((newPaymentMode == "Cmt" && method == "RideLinqCmt") || (newPaymentMode == "RideLinqCmt" && method == "Cmt")) {
+            if (newPaymentMode != currentPaymentMode) {
+                if ((newPaymentMode == "Cmt" && currentPaymentMode == "RideLinqCmt") || (newPaymentMode == "RideLinqCmt" && currentPaymentMode == "Cmt")) {
                     this.warningDiv.hide();
-                    if (!this.payPalWarningDiv.is(':visible')) {
-                        this.saveButton.removeAttr('disabled');
-                    }
                 } else {
+                    this.saveButton.attr('disabled', 'disabled');
                     this.warningDiv.show();
                     this.onAcceptPaymentModeChange();
                 }
@@ -252,48 +279,47 @@
                 btDiv.hide();
                 cmtDiv.show();
                 monerisDiv.hide();
-                autPairingDiv.hide();
             }
             else if (newPaymentMode == "Cmt")
             {
                 btDiv.hide();
                 cmtDiv.show();
                 monerisDiv.hide();
-                autPairingDiv.show();
-                noShowFeeDiv.show();
             }
             else if (newPaymentMode == "Braintree")
             {
                 btDiv.show();
                 cmtDiv.hide();
                 monerisDiv.hide();
-                autPairingDiv.show();
-                noShowFeeDiv.show();
             }
             else if (newPaymentMode == "Moneris")
             {
                 btDiv.hide();
                 cmtDiv.hide();
                 monerisDiv.show();
-                autPairingDiv.show();
-                noShowFeeDiv.show();
             }
             else
             {
                 btDiv.hide();
                 cmtDiv.hide();
                 monerisDiv.hide();
-                autPairingDiv.hide();
-                noShowFeeDiv.hide();
             }
 
-            if ((!isPayPalEnabled && !newPaymentMode)
-                || (isPayPalEnabled != "true" && (newPaymentMode == 'None' || newPaymentMode == 'RideLinqCmt'))) {
+            if (!isPayPalEnabled && (newPaymentMode == 'None' || newPaymentMode == 'RideLinqCmt')) {
                 preAuthAmountEnabledDiv.hide();
                 preAuthAmountDiv.hide();
+                noShowFeeDiv.hide();
+
+                if (newPaymentMode == 'RideLinqCmt') {
+                    automaticPairingDiv.show();
+                } else {
+                    automaticPairingDiv.hide();
+                }
             } else {
                 preAuthAmountEnabledDiv.show();
                 preAuthAmountDiv.show();
+                automaticPairingDiv.show();
+                noShowFeeDiv.show();
             }
         }
     });

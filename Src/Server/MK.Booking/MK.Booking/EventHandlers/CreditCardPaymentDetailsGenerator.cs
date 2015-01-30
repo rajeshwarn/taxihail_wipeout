@@ -83,7 +83,9 @@ namespace apcurium.MK.Booking.EventHandlers
                     CardToken = @event.CardToken,
                     IsCompleted = false,
                     Provider = @event.Provider,
-                    Type = PaymentType.CreditCard,
+                    Type = @event.Provider == PaymentProvider.PayPal
+                        ? PaymentType.PayPal
+                        : PaymentType.CreditCard
                 });
             }
         }
