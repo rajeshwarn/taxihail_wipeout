@@ -110,6 +110,8 @@ namespace apcurium.MK.Booking
                 .ForMember(p => p.AccountId, opt => opt.MapFrom(m => m.SourceId));
             Mapper.CreateMap<CreditCardUpdated, CreditCardDetails>()
                 .ForMember(p => p.AccountId, opt => opt.MapFrom(m => m.SourceId));
+
+            Mapper.CreateMap<OrderStatusDetail, OrderStatusDetail>();
         }
 
         private static void RegisterEventHandlers(IUnityContainer container)
