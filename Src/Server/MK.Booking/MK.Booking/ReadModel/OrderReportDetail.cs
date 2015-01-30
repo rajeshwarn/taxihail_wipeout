@@ -35,7 +35,7 @@ namespace apcurium.MK.Booking.ReadModel
             Promotion = new OrderReportPromotion();
             VehicleInfos = new OrderReportVehicleInfos();
             Client = new OrderReportClient();
-            Rating = "";
+            Rating = string.Empty;
         }
     }
 

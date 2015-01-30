@@ -124,9 +124,7 @@ namespace apcurium.MK.Booking.Api.Services
             account.IBSAccountId = CreateIbsAccountIfNeeded(account, bestAvailableCompany.CompanyKey, request.Market);
             
             var isFutureBooking = request.PickupDate.HasValue;
-            var pickupDate = request.PickupDate.HasValue
-                ? request.PickupDate.Value
-                : GetCurrentOffsetedTime(bestAvailableCompany.CompanyKey, request.Market);
+            var pickupDate = request.PickupDate ?? GetCurrentOffsetedTime(bestAvailableCompany.CompanyKey, request.Market);
 
             // User can still create future order, but we allow only one active Book now order.
             if (!isFutureBooking)
@@ -142,53 +140,6 @@ namespace apcurium.MK.Booking.Api.Services
                 }
             }
 
-            ValidatePayment(request, account, isFutureBooking, request.Estimate.Price);
-
-            var isChargeAccountPaymentWithCardOnFile = false;
-            var chargeTypeKey = ChargeTypes.GetList()
-                    .Where(x => x.Id == request.Settings.ChargeTypeId)
-                    .Select(x => x.Display)
-                    .FirstOrDefault();
-
-            string[] prompts = null;
-            int?[] promptsLength = null;
-            // Payment mode is charge account
-            if (request.Settings.ChargeTypeId.HasValue
-                && request.Settings.ChargeTypeId.Value == ChargeTypes.Account.Id)
-            {
-                var accountChargeDetail = _accountChargeDao.FindByAccountNumber(request.Settings.AccountNumber);
-
-                if (accountChargeDetail.UseCardOnFileForPayment)
-                {
-                    if (request.FromWebApp || request.Market.HasValue())
-                    {
-                        // Card on file payment not supported by the web app and when not in home market
-                        throw new HttpError(HttpStatusCode.BadRequest, ErrorCode.CreateOrder_RuleDisable.ToString(),
-                            _resources.Get("CannotCreateOrderChargeAccountNotSupported", request.ClientLanguageCode));
-                    }
-
-                    if (_paymentAbstractionService.IsPayPal(account.Id))
-                    {
-                        chargeTypeKey = ChargeTypes.PayPal.Display;
-                        request.Settings.ChargeTypeId = ChargeTypes.PayPal.Id;
-                    }
-                    else
-                    {
-                        chargeTypeKey = ChargeTypes.CardOnFile.Display;
-                        request.Settings.ChargeTypeId = ChargeTypes.CardOnFile.Id;
-                    }
-
-                    ValidatePayment(request, account, isFutureBooking, request.Estimate.Price);
-
-                    isChargeAccountPaymentWithCardOnFile = true;
-                }
-
-                ValidateChargeAccountAnswers(request.Settings.AccountNumber, request.QuestionsAndAnswers, request.ClientLanguageCode);
-
-                prompts = request.QuestionsAndAnswers.Select(q => q.Answer).ToArray();
-                promptsLength = request.QuestionsAndAnswers.Select(q => q.MaxLength).ToArray();
-            }
-            
             // We can only validate rules when in the local market
             if (!request.Market.HasValue())
             {
@@ -258,8 +209,27 @@ namespace apcurium.MK.Booking.Api.Services
                     GetCreateOrderServiceErrorMessage(ErrorCode.CreateOrder_NoFareEstimateAvailable, request.ClientLanguageCode));
             }
 
+            // IBS provider validation
+            ValidateProvider(request, referenceData);
+
+            // Promo code validation
+            var applyPromoCommand = ValidateAndApplyPromotion(request.PromoCode, request.Settings.ChargeTypeId, account.Id, request.Id, pickupDate, isFutureBooking, request.ClientLanguageCode);
+            
+            // Payment method validation
+            ValidatePayment(request, account, isFutureBooking, request.Estimate.Price);
+
+            // Charge account validation
+            var accountValidationResult = ValidateChargeAccount(request, account, isFutureBooking);
+
             var chargeTypeIbs = string.Empty;
             var chargeTypeEmail = string.Empty;
+            var chargeTypeKey = ChargeTypes.GetList()
+                    .Where(x => x.Id == request.Settings.ChargeTypeId)
+                    .Select(x => x.Display)
+                    .FirstOrDefault();
+
+            chargeTypeKey = accountValidationResult.ChargeTypeOverride ?? chargeTypeKey;
+
             if (chargeTypeKey != null)
             {
                 // this must be localized with the priceformat to be localized in the language of the company
@@ -269,10 +239,6 @@ namespace apcurium.MK.Booking.Api.Services
                 chargeTypeEmail = _resources.Get(chargeTypeKey, request.ClientLanguageCode);
             }
 
-            ValidateProvider(request, referenceData);
-
-            var applyPromoCommand = ValidateAndApplyPromotion(request.PromoCode, request.Settings.ChargeTypeId, account.Id, request.Id, pickupDate, isFutureBooking, request.ClientLanguageCode);
-            
             // Get Vehicle Type from reference data
             var vehicleType = referenceData.VehiclesList
                 .Where(x => x.Id == request.Settings.VehicleTypeId)
@@ -283,7 +249,7 @@ namespace apcurium.MK.Booking.Api.Services
             orderCommand.AccountId = account.Id;
             orderCommand.UserAgent = base.Request.UserAgent;
             orderCommand.ClientVersion = base.Request.Headers.Get("ClientVersion");
-            orderCommand.IsChargeAccountPaymentWithCardOnFile = isChargeAccountPaymentWithCardOnFile;
+            orderCommand.IsChargeAccountPaymentWithCardOnFile = accountValidationResult.IsChargeAccountPaymentWithCardOnFile;
             orderCommand.CompanyKey = bestAvailableCompany.CompanyKey;
             orderCommand.CompanyName = bestAvailableCompany.CompanyName;
             orderCommand.Market = request.Market;
@@ -291,7 +257,12 @@ namespace apcurium.MK.Booking.Api.Services
             orderCommand.Settings.VehicleType = vehicleType;
             _commandBus.Send(orderCommand);
 
-            Task.Run(() => CreateOrderOnIBSAndSendCommands(orderCommand.OrderId, account, request, referenceData, chargeTypeIbs, chargeTypeEmail, vehicleType, prompts, promptsLength, bestAvailableCompany, applyPromoCommand));
+            // Create order on IBS
+            Task.Run(() => 
+                CreateOrderOnIBSAndSendCommands(orderCommand.OrderId, account,
+                    request, referenceData, chargeTypeIbs, chargeTypeEmail, vehicleType,
+                    accountValidationResult.Prompts, accountValidationResult.PromptsLength,
+                    bestAvailableCompany, applyPromoCommand));
             
             return new OrderStatusDetail
             {
@@ -299,6 +270,58 @@ namespace apcurium.MK.Booking.Api.Services
                 Status = OrderStatus.Created,
                 IBSStatusId = string.Empty,
                 IBSStatusDescription = _resources.Get("CreateOrder_WaitingForIbs", orderCommand.ClientLanguageCode),
+            };
+        }
+
+        private ChargeAccountValidationResult ValidateChargeAccount(CreateOrder request, AccountDetail account, bool isFutureBooking)
+        {
+            string[] prompts = null;
+            int?[] promptsLength = null;
+            string chargeTypeOverride = null;
+            var isChargeAccountPaymentWithCardOnFile = false;
+
+            if (request.Settings.ChargeTypeId.HasValue
+                && request.Settings.ChargeTypeId.Value == ChargeTypes.Account.Id)
+            {
+                var accountChargeDetail = _accountChargeDao.FindByAccountNumber(request.Settings.AccountNumber);
+
+                if (accountChargeDetail.UseCardOnFileForPayment)
+                {
+                    if (request.FromWebApp || request.Market.HasValue())
+                    {
+                        // Card on file payment not supported by the web app and when not in home market
+                        throw new HttpError(HttpStatusCode.BadRequest, ErrorCode.CreateOrder_RuleDisable.ToString(),
+                            _resources.Get("CannotCreateOrderChargeAccountNotSupported", request.ClientLanguageCode));
+                    }
+
+                    if (_paymentAbstractionService.IsPayPal(account.Id))
+                    {
+                        chargeTypeOverride = ChargeTypes.PayPal.Display;
+                        request.Settings.ChargeTypeId = ChargeTypes.PayPal.Id;
+                    }
+                    else
+                    {
+                        chargeTypeOverride = ChargeTypes.CardOnFile.Display;
+                        request.Settings.ChargeTypeId = ChargeTypes.CardOnFile.Id;
+                    }
+
+                    ValidatePayment(request, account, isFutureBooking, request.Estimate.Price);
+
+                    isChargeAccountPaymentWithCardOnFile = true;
+                }
+
+                ValidateChargeAccountAnswers(request.Settings.AccountNumber, request.QuestionsAndAnswers, request.ClientLanguageCode);
+
+                prompts = request.QuestionsAndAnswers.Select(q => q.Answer).ToArray();
+                promptsLength = request.QuestionsAndAnswers.Select(q => q.MaxLength).ToArray();
+            }
+
+            return new ChargeAccountValidationResult
+            {
+                Prompts = prompts,
+                PromptsLength = promptsLength,
+                ChargeTypeOverride = chargeTypeOverride,
+                IsChargeAccountPaymentWithCardOnFile = isChargeAccountPaymentWithCardOnFile
             };
         }
 
@@ -942,6 +965,17 @@ namespace apcurium.MK.Booking.Api.Services
             public string CompanyKey { get; set; }
 
             public string CompanyName { get; set; }
+        }
+
+        private class ChargeAccountValidationResult
+        {
+            public string[] Prompts { get; set; }
+
+            public int?[] PromptsLength { get; set; }
+
+            public string ChargeTypeOverride { get; set; }
+
+            public bool IsChargeAccountPaymentWithCardOnFile { get; set; }
         }
     }
 }
