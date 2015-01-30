@@ -1,82 +1,80 @@
 ﻿using System;
-using System.Linq;
+using System.Collections.Generic;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.ReadModel;
-using apcurium.MK.Common.Configuration;
-using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using Infrastructure.Messaging.Handling;
-using System.Collections.Generic;
 using ServiceStack.Text;
-
 
 namespace apcurium.MK.Booking.EventHandlers
 {
     public class ReportDetailGenerator : IEventHandler<OrderCreated>,
         IEventHandler<OrderStatusChanged>,
         IEventHandler<OrderCancelled>,
+        IEventHandler<OrderCancelledBecauseOfIbsError>,
         IEventHandler<OrderPairedForPayment>,
+        IEventHandler<OrderUnpairedForPayment>,
         IEventHandler<OrderRated>,
         IEventHandler<CreditCardPaymentInitiated>,
         IEventHandler<CreditCardPaymentCaptured_V2>,
+        IEventHandler<CreditCardErrorThrown>,
         IEventHandler<PayPalExpressCheckoutPaymentInitiated>,
         IEventHandler<PayPalExpressCheckoutPaymentCompleted>,
+        IEventHandler<PayPalExpressCheckoutPaymentCancelled>,
+        IEventHandler<PayPalPaymentCancellationFailed>,
         IEventHandler<PromotionApplied>,
         IEventHandler<PromotionRedeemed>,
-        IEventHandler<IbsOrderInfoAddedToOrder>
+        IEventHandler<IbsOrderInfoAddedToOrder>,
+        IEventHandler<OrderSwitchedToNextDispatchCompany>,
+        IEventHandler<OrderTimedOut>
     {
         private readonly Func<BookingDbContext> _contextFactory;
-        private readonly ILogger _logger;
-        private readonly IServerSettings _serverSettings;
-        private readonly Resources.Resources _resources;
-        public ReportDetailGenerator(Func<BookingDbContext> contextFactory,
-            ILogger logger,
-            IServerSettings serverSettings)
+
+        public ReportDetailGenerator(Func<BookingDbContext> contextFactory)
         {
             _contextFactory = contextFactory;
-            _logger = logger;
-            _serverSettings = serverSettings;
-            _resources = new Resources.Resources(serverSettings);
         }
 
         public void Handle(OrderCreated @event)
         {
             using (var context = _contextFactory.Invoke())
             {
-                var accountDetails = context.Query<AccountDetail>().FirstOrDefault(x => x.Id == @event.AccountId);
+                var existingReport = context.Find<OrderReportDetail>(@event.SourceId);
+                var orderReport = existingReport ?? new OrderReportDetail { Id = @event.SourceId };
 
-                context.Save(new OrderReportDetail()
+                var account = context.Find<AccountDetail>(@event.AccountId);
+
+                orderReport.Account = new OrderReportAccount
                 {
-                    Id = @event.SourceId,
-                    Account = new OrderReportAccount()
-                    {
-                        AccountId = @event.AccountId,
-                        Name = @event.Settings.Name,
-                        Phone = @event.Settings.Phone,
-                        Email = accountDetails.Email,
-                        DefaultCardToken = accountDetails.DefaultCreditCard,
-                        IBSAccountId = accountDetails.IBSAccountId
-                    },
-                    Order = new OrderReportOrder()
-                    {
-                        IBSOrderId = @event.IBSOrderId,
-                        ChargeType = @event.Settings.ChargeType,
-                        PickupDateTime = @event.PickupDate,
-                        CreateDateTime = @event.CreatedDate,
-                        PickupAddress = @event.PickupAddress,
-                        DropOffAddress = @event.DropOffAddress,
-                        CompanyName = @event.CompanyName
-                    },
-                    Client = new OrderReportClient()
-                    {
-                        OperatingSystem = @event.UserAgent.GetOperatingSystem(),
-                        UserAgent = @event.UserAgent,
-                        Version = @event.ClientVersion
-                    },
-                    Rating = ""
-                });
+                    AccountId = @event.AccountId,
+                    Name = @event.Settings.Name,
+                    Phone = @event.Settings.Phone,
+                    Email = account.Email,
+                    DefaultCardToken = account.DefaultCreditCard,
+                    IBSAccountId = account.IBSAccountId
+                };
+                orderReport.Order = new OrderReportOrder
+                {
+                    IBSOrderId = @event.IBSOrderId,
+                    ChargeType = @event.Settings.ChargeType,
+                    PickupDateTime = @event.PickupDate,
+                    CreateDateTime = @event.CreatedDate,
+                    PickupAddress = @event.PickupAddress,
+                    DropOffAddress = @event.DropOffAddress,
+                    CompanyName = @event.CompanyName,
+                    CompanyKey = @event.CompanyKey,
+                    Market = @event.Market
+                };
+                orderReport.Client = new OrderReportClient
+                {
+                    OperatingSystem = @event.UserAgent.GetOperatingSystem(),
+                    UserAgent = @event.UserAgent,
+                    Version = @event.ClientVersion
+                };
+
+                context.Save(orderReport);
             }
         }
 
@@ -88,24 +86,6 @@ namespace apcurium.MK.Booking.EventHandlers
                 orderReport.Payment.MdtFare = @event.Fare;
                 orderReport.Payment.MdtTip = @event.Tip;
                 orderReport.Payment.MdtToll = @event.Toll;
-
-                var orderPaymentDetail =
-                    context.Set<OrderPaymentDetail>().FirstOrDefault(payment => payment.OrderId == @event.SourceId);
-
-                if (orderPaymentDetail != null)
-                {
-                    orderReport.Payment.MeterAmount = orderPaymentDetail.Meter;
-                    orderReport.Payment.TipAmount = orderPaymentDetail.Tip;
-                    orderReport.Payment.TotalAmountCharged = orderPaymentDetail.Amount;
-                    orderReport.Payment.Type = orderPaymentDetail.Type;
-                    orderReport.Payment.Provider = orderPaymentDetail.Provider;
-                    orderReport.Payment.CardToken = orderPaymentDetail.CardToken;
-                    orderReport.Payment.TransactionId =
-                        orderPaymentDetail.TransactionId.ToSafeString().IsNullOrEmpty()
-                            ? ""
-                            : "Auth: " + orderPaymentDetail.TransactionId;
-                    orderReport.Payment.AuthorizationCode = orderPaymentDetail.AuthorizationCode;
-                }
 
                 if (@event.Status != null)
                 {
@@ -137,7 +117,17 @@ namespace apcurium.MK.Booking.EventHandlers
             using (var context = _contextFactory.Invoke())
             {
                 var orderReport = context.Find<OrderReportDetail>(@event.SourceId);
-                orderReport.VehicleInfos.WasConfirmed = true;
+                orderReport.Payment.IsPaired = true;
+                context.Save(orderReport);
+            }
+        }
+
+        public void Handle(OrderUnpairedForPayment @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var orderReport = context.Find<OrderReportDetail>(@event.SourceId);
+                orderReport.Payment.IsPaired = false;
                 context.Save(orderReport);
             }
         }
@@ -146,13 +136,49 @@ namespace apcurium.MK.Booking.EventHandlers
         {
             using (var context = _contextFactory.Invoke())
             {
-                var orderReport = context.Find<OrderReportDetail>(@event.OrderId);
+                var existingReport = context.Find<OrderReportDetail>(@event.OrderId);
+                var orderReport = existingReport ?? new OrderReportDetail { Id = @event.SourceId };
 
-                if (orderReport != null)
+                orderReport.Payment.PaymentId = @event.SourceId;
+                orderReport.Payment.TotalAmountCharged = @event.Amount;
+                orderReport.Payment.MeterAmount = @event.Meter;
+                orderReport.Payment.TipAmount = @event.Tip;
+                orderReport.Payment.TransactionId = @event.TransactionId.ToSafeString().IsNullOrEmpty() ? "" : "Auth: " + @event.TransactionId;
+                orderReport.Payment.CardToken = @event.CardToken;
+                orderReport.Payment.Type = @event.Provider == PaymentProvider.PayPal ? PaymentType.PayPal : PaymentType.CreditCard;
+                orderReport.Payment.Provider = @event.Provider;
+
+                context.Save(orderReport);
+            }
+        }
+
+        public void Handle(CreditCardPaymentCaptured_V2 @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var orderReport = context.Find<OrderReportDetail>(@event.OrderId);
+                orderReport.Payment.AuthorizationCode = @event.AuthorizationCode;
+                orderReport.Payment.MeterAmount = @event.Meter;
+                orderReport.Payment.TipAmount = @event.Tip;
+                orderReport.Payment.TotalAmountCharged = @event.Amount;
+                orderReport.Payment.IsCompleted = true;
+                orderReport.Payment.TransactionId = @event.TransactionId.ToSafeString().IsNullOrEmpty() ? "" : "Auth: " + @event.TransactionId;
+                context.Save(orderReport);
+            }
+        }
+
+        public void Handle(CreditCardErrorThrown @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var payment = context.Find<OrderPaymentDetail>(@event.SourceId);
+                if (payment != null)
                 {
-                    orderReport.Payment.CardToken = @event.CardToken;
-                    orderReport.Payment.Type = PaymentType.CreditCard;
-                    orderReport.Payment.Provider = @event.Provider;
+                    var orderReport = context.Find<OrderReportDetail>(payment.OrderId);
+
+                    orderReport.Payment.IsCancelled = true;
+                    orderReport.Payment.Error = @event.Reason;
+
                     context.Save(orderReport);
                 }
             }
@@ -165,6 +191,7 @@ namespace apcurium.MK.Booking.EventHandlers
                 var orderReport = context.Find<OrderReportDetail>(@event.OrderId);
                 if (orderReport != null)
                 {
+                    orderReport.Payment.PaymentId = @event.SourceId;
                     orderReport.Payment.PayPalToken = @event.Token;
                     orderReport.Payment.TotalAmountCharged = @event.Amount;
                     orderReport.Payment.TipAmount = @event.Tip;
@@ -173,7 +200,6 @@ namespace apcurium.MK.Booking.EventHandlers
                     orderReport.Payment.Type = PaymentType.PayPal;
                     context.Save(orderReport);
                 }
-                
             }
         }
 
@@ -185,12 +211,40 @@ namespace apcurium.MK.Booking.EventHandlers
                 orderReport.Payment.TotalAmountCharged = @event.Amount;
                 orderReport.Payment.TipAmount = @event.Tip;
                 orderReport.Payment.MeterAmount = @event.Meter;
-                orderReport.Payment.Provider = PaymentProvider.PayPal;
-                orderReport.Payment.Type = PaymentType.PayPal;
-                orderReport.Payment.PalPayerId = orderReport.Payment.AuthorizationCode = @event.PayPalPayerId;
+                orderReport.Payment.PayPalPayerId = orderReport.Payment.AuthorizationCode = @event.PayPalPayerId;
                 orderReport.Payment.PayPalToken = @event.Token;
                 orderReport.Payment.TransactionId = @event.TransactionId.ToSafeString().IsNullOrEmpty() ? "" : "Auth: " + @event.TransactionId;
+                orderReport.Payment.IsCompleted = true;
                 context.Save(orderReport);
+            }
+        }
+
+        public void Handle(PayPalExpressCheckoutPaymentCancelled @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var payment = context.Find<OrderPaymentDetail>(@event.SourceId);
+                if (payment != null)
+                {
+                    var orderReport = context.Find<OrderReportDetail>(payment.OrderId);
+                    orderReport.Payment.IsCancelled = true;
+                    context.Save(orderReport);
+                }
+            }
+        }
+
+        public void Handle(PayPalPaymentCancellationFailed @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var payment = context.Find<OrderPaymentDetail>(@event.SourceId);
+                if (payment != null)
+                {
+                    var orderReport = context.Find<OrderReportDetail>(payment.OrderId);
+                    orderReport.Payment.Error = @event.Reason;
+                    orderReport.Payment.IsCancelled = true;
+                    context.Save(orderReport);
+                }
             }
         }
 
@@ -200,6 +254,21 @@ namespace apcurium.MK.Booking.EventHandlers
             {
                 var orderReport = context.Find<OrderReportDetail>(@event.SourceId);
                 orderReport.OrderStatus.OrderIsCancelled = true;
+                context.Save(orderReport);
+            }
+        }
+
+        public void Handle(OrderCancelledBecauseOfIbsError @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var orderReport = context.Find<OrderReportDetail>(@event.SourceId);
+
+                if (orderReport != null)
+                {
+                    orderReport.OrderStatus.OrderIsCancelled = true;
+                }
+                
                 context.Save(orderReport);
             }
         }
@@ -249,28 +318,37 @@ namespace apcurium.MK.Booking.EventHandlers
             }
         }
 
-        public void Handle(CreditCardPaymentCaptured_V2 @event)
-        {
-            using (var context = _contextFactory.Invoke())
-            {
-                var orderReport = context.Find<OrderReportDetail>(@event.OrderId);
-                orderReport.Payment.Type = PaymentType.CreditCard;
-                orderReport.Payment.AuthorizationCode = @event.AuthorizationCode;
-                orderReport.Payment.MeterAmount = @event.Meter;
-                orderReport.Payment.TipAmount = @event.Tip;
-                orderReport.Payment.TotalAmountCharged = @event.Amount;
-                orderReport.Payment.Provider = @event.Provider;
-                orderReport.Payment.TransactionId = @event.TransactionId.ToSafeString().IsNullOrEmpty() ? "" : "Auth: " + @event.TransactionId;
-                context.Save(orderReport);
-            }
-        }
-
         public void Handle(IbsOrderInfoAddedToOrder @event)
         {
             using (var context = _contextFactory.Invoke())
             {
                 var orderReport = context.Find<OrderReportDetail>(@event.SourceId);
                 orderReport.Order.IBSOrderId = @event.IBSOrderId;
+                context.Save(orderReport);
+            }
+        }
+
+        public void Handle(OrderSwitchedToNextDispatchCompany @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var orderReport = context.Find<OrderReportDetail>(@event.SourceId);
+                orderReport.Order.CompanyName = @event.CompanyName;
+                orderReport.Order.CompanyKey = @event.CompanyKey;
+                orderReport.Order.Market = @event.Market;
+                orderReport.Order.IBSOrderId = @event.IBSOrderId;
+                orderReport.Order.WasSwitchedToAnotherCompany = true;
+                orderReport.Order.HasTimedOut = false;
+                context.Save(orderReport);
+            }
+        }
+
+        public void Handle(OrderTimedOut @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var orderReport = context.Find<OrderReportDetail>(@event.SourceId);
+                orderReport.Order.HasTimedOut = true;
                 context.Save(orderReport);
             }
         }

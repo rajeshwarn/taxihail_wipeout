@@ -26,19 +26,6 @@ namespace apcurium.MK.Booking.ReadModel
 
         public string Rating { get; set; }
 
-        public OrderReportDetail(Guid orderId)
-        {
-            Id = orderId;
-            Account = new OrderReportAccount();
-            Order = new OrderReportOrder();
-            OrderStatus = new OrderReportOrderStatus();
-            Payment = new OrderReportPayment();
-            Promotion = new OrderReportPromotion();
-            VehicleInfos = new OrderReportVehicleInfos();
-            Client = new OrderReportClient();
-            Rating = "";
-        }
-
         public OrderReportDetail()
         {
             Account = new OrderReportAccount();
@@ -69,9 +56,13 @@ namespace apcurium.MK.Booking.ReadModel
 
     public class OrderReportOrder
     {
+        public int? IBSOrderId { get; set; }
+
         public string CompanyName { get; set; }
 
-        public int? IBSOrderId { get; set; }
+        public string CompanyKey { get; set; }
+
+        public string Market { get; set; }
 
         public string ChargeType { get; set; }
 
@@ -82,6 +73,10 @@ namespace apcurium.MK.Booking.ReadModel
         public Address PickupAddress { get; set; }
 
         public Address DropOffAddress { get; set; }
+
+        public bool WasSwitchedToAnotherCompany { get; set; }
+
+        public bool HasTimedOut { get; set; }
 
         public OrderReportOrder()
         {
@@ -101,6 +96,8 @@ namespace apcurium.MK.Booking.ReadModel
 
     public class OrderReportPayment
     {
+        public Guid? PaymentId { get; set; }
+
         public decimal? MeterAmount { get; set; }
 
         public decimal? TipAmount { get; set; }
@@ -117,7 +114,7 @@ namespace apcurium.MK.Booking.ReadModel
 
         public string CardToken { get; set; }
 
-        public string PalPayerId { get; set; }
+        public string PayPalPayerId { get; set; }
 
         public string PayPalToken { get; set; }
 
@@ -126,6 +123,14 @@ namespace apcurium.MK.Booking.ReadModel
         public double? MdtToll { get; set; }
 
         public double? MdtFare { get; set; }
+
+        public bool IsPaired { get; set; }
+
+        public bool IsCompleted { get; set; }
+
+        public bool IsCancelled { get; set; }
+
+        public string Error { get; set; }
     }
 
     public class OrderReportPromotion
@@ -156,8 +161,6 @@ namespace apcurium.MK.Booking.ReadModel
         public string DriverFirstName { get; set; }
 
         public string DriverLastName { get; set; }
-
-        public bool WasConfirmed { get; set; }
     }
 
     public class OrderReportClient

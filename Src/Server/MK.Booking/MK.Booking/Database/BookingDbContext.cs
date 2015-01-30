@@ -2,6 +2,7 @@
 
 using System;
 using System.Data.Entity;
+using System.Data.Entity.Validation;
 using System.Linq;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Common.Database;
@@ -88,7 +89,16 @@ namespace apcurium.MK.Booking.Database
             if (entry.State == EntityState.Detached)
                 Set<T>().Add(entity);
 
-            SaveChanges();
+            try
+            {
+                SaveChanges();
+            }
+            catch (DbEntityValidationException ex)
+            {
+                
+                throw;
+            }
+            
         }
     }
 }

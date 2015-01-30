@@ -74,7 +74,7 @@ namespace apcurium.MK.Booking.Api.Services.Admin
                             };
                 case DataType.Orders:
 
-                    var orders = _reportDao.GetAll(startDate, endDate);
+                    var orders = _reportDao.GetOrderReports(startDate, endDate);
                     var exportedOrderReports = new List<Dictionary<string, string>>();
                     
                     orders.ForEach(orderReport =>
@@ -89,6 +89,8 @@ namespace apcurium.MK.Booking.Api.Services.Admin
                             orderReportEntry["Account.DefaultCardToken "] = orderReport.Account.DefaultCardToken.ToString();
 
                             orderReportEntry["Order.CompanyName"] = orderReport.Order.CompanyName;
+                            orderReportEntry["Order.CompanyKey"] = orderReport.Order.CompanyKey;
+                            orderReportEntry["Order.Market"] = orderReport.Order.Market;
                             orderReportEntry["Order.IBSOrderId"] = orderReport.Order.IBSOrderId.ToString();
                             orderReportEntry["Order.ChargeType"] = orderReport.Order.ChargeType;
                             orderReportEntry["Order.PickupDate"] = orderReport.Order.PickupDateTime.Value.ToString("d", CultureInfo.InvariantCulture);
@@ -96,12 +98,15 @@ namespace apcurium.MK.Booking.Api.Services.Admin
                             orderReportEntry["Order.CreateDate"] = orderReport.Order.CreateDateTime.Value.Add(offset).ToString("d", CultureInfo.InvariantCulture);
                             orderReportEntry["Order.CreateTime"] = orderReport.Order.CreateDateTime.Value.Add(offset).ToString("t", CultureInfo.InvariantCulture);
                             orderReportEntry["Order.PickupAddress"] = orderReport.Order.PickupAddress.DisplayAddress;
-                            orderReportEntry["Order.DropOffAddress "] = orderReport.Order.DropOffAddress.DisplayAddress;
+                            orderReportEntry["Order.DropOffAddress"] = orderReport.Order.DropOffAddress.DisplayAddress;
+                            orderReportEntry["Order.WasSwitchedToAnotherCompany"] = orderReport.Order.WasSwitchedToAnotherCompany.ToString();
+                            orderReportEntry["Order.HasTimedOut"] = orderReport.Order.HasTimedOut.ToString();
 
                             orderReportEntry["OrderStatus.Status"] = orderReport.OrderStatus.Status.ToString();
                             orderReportEntry["OrderStatus.OrderIsCancelled"] = orderReport.OrderStatus.OrderIsCancelled.ToString();
                             orderReportEntry["OrderStatus.OrderIsCompleted"] = orderReport.OrderStatus.OrderIsCompleted.ToString();
 
+                            orderReportEntry["Payment.Id"] = orderReport.Payment.PaymentId.ToString();
                             orderReportEntry["Payment.MeterAmount"] = orderReport.Payment.MeterAmount.ToString();
                             orderReportEntry["Payment.TipAmount"] = orderReport.Payment.TipAmount.ToString();
                             orderReportEntry["Payment.TotalAmountCharged"] = orderReport.Payment.TotalAmountCharged.ToString();
@@ -110,11 +115,15 @@ namespace apcurium.MK.Booking.Api.Services.Admin
                             orderReportEntry["Payment.TransactionId"] = orderReport.Payment.TransactionId.ToSafeString();
                             orderReportEntry["Payment.AuthorizationCode"] = orderReport.Payment.AuthorizationCode;
                             orderReportEntry["Payment.CardToken"] = orderReport.Payment.CardToken;
-                            orderReportEntry["Payment.PalPayerId"] = orderReport.Payment.PalPayerId;
+                            orderReportEntry["Payment.PayPalPayerId"] = orderReport.Payment.PayPalPayerId;
                             orderReportEntry["Payment.PayPalToken"] = orderReport.Payment.PayPalToken;
                             orderReportEntry["Payment.MdtTip"] = orderReport.Payment.MdtTip.ToString();
                             orderReportEntry["Payment.MdtToll"] = orderReport.Payment.MdtToll.ToString();
                             orderReportEntry["Payment.MdtFare"] = orderReport.Payment.MdtFare.ToString();
+                            orderReportEntry["Payment.IsPaired"] = orderReport.Payment.IsPaired.ToString();
+                            orderReportEntry["Payment.IsCompleted"] = orderReport.Payment.IsCompleted.ToString();
+                            orderReportEntry["Payment.IsCancelled"] = orderReport.Payment.IsCancelled.ToString();
+                            orderReportEntry["Payment.Error"] = orderReport.Payment.Error;
 
                             orderReportEntry["Promotion.Code"] = orderReport.Promotion.Code;
                             orderReportEntry["Promotion.WasApplied"] = orderReport.Promotion.WasApplied.ToString();
@@ -129,8 +138,7 @@ namespace apcurium.MK.Booking.Api.Services.Admin
                             orderReportEntry["VehicleInfos.Registration"] = orderReport.VehicleInfos.Registration;
                             orderReportEntry["VehicleInfos.DriverFirstName"] = orderReport.VehicleInfos.DriverFirstName;
                             orderReportEntry["VehicleInfos.DriverLastName"] = orderReport.VehicleInfos.DriverLastName;
-                            orderReportEntry["VehicleInfos.WasConfirmed"] = orderReport.VehicleInfos.WasConfirmed.ToString();
-
+                            
                             orderReportEntry["Client.OperatingSystem"] = orderReport.Client.OperatingSystem;
                             orderReportEntry["Client.UserAgent"] = orderReport.Client.UserAgent;
                             orderReportEntry["Client.Version"] = orderReport.Client.Version;

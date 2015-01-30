@@ -59,8 +59,7 @@ namespace apcurium.MK.Booking.Test.ExportFixture
 
             accountDetailGenerator.Handle(new AccountConfirmed() { SourceId = _accountId });
 
-            _reportDetailGenerator = new EventHandlers.ReportDetailGenerator(() => new BookingDbContext(DbName),
-                new Logger(), new TestServerSettings());
+            _reportDetailGenerator = new EventHandlers.ReportDetailGenerator(() => new BookingDbContext(DbName));
         }
 
         [Test]
@@ -89,7 +88,7 @@ namespace apcurium.MK.Booking.Test.ExportFixture
             Assert.AreEqual(orderReportDetail.OrderStatus.OrderIsCancelled, false);
             Assert.AreEqual(orderReportDetail.OrderStatus.OrderIsCompleted, true);
             Assert.AreEqual(orderReportDetail.VehicleInfos.Color, VehicleColor);
-            Assert.AreEqual(orderReportDetail.VehicleInfos.WasConfirmed, true);
+            Assert.AreEqual(orderReportDetail.Payment.IsPaired, true);
             Assert.AreEqual(orderReportDetail.Payment.TransactionId, "Auth: " + TransactionIdCcCaptured);
             Assert.AreEqual(orderReportDetail.Promotion.WasApplied, true);
             Assert.AreEqual(orderReportDetail.Promotion.Code, PromoCode);
