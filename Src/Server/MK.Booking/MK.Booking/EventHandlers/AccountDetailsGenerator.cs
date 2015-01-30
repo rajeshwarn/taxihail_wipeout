@@ -208,12 +208,6 @@ namespace apcurium.MK.Booking.EventHandlers
             }
         }
 
-        private static int? ParseToNullable(string val)
-        {
-            int result;
-            return int.TryParse(val, out result) ? result : default(int?);
-        }
-
         public void Handle(CreditCardAdded @event)
         {
             using (var context = _contextFactory.Invoke())
