@@ -59,7 +59,12 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
             {
                 if (!ModelState.IsValid)
                 {
-                    throw new Exception("Something's not right");
+                    var validationErrors = string.Join(", ",
+                        ModelState.Values.Where(x => x.Errors.Count > 0)
+                        .SelectMany(x => x.Errors)
+                        .Select(x => x.ErrorMessage)
+                        .ToArray());
+                    throw new Exception(string.Format("Something's not right.{0}{1}", Environment.NewLine, validationErrors));
                 }
 
                 if (_promotionDao.FindByPromoCode(promoCode.Code) != null)
@@ -121,7 +126,12 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
             {
                 if (!ModelState.IsValid)
                 {
-                    throw new Exception("Something's not right");
+                    var validationErrors = string.Join(", ",
+                        ModelState.Values.Where(x => x.Errors.Count > 0)
+                        .SelectMany(x => x.Errors)
+                        .Select(x => x.ErrorMessage)
+                        .ToArray());
+                    throw new Exception(string.Format("Something's not right.{0}{1}", Environment.NewLine, validationErrors));
                 }
                 
                 if (promoCode.TriggerSettings.Type == PromotionTriggerTypes.AmountSpent)
