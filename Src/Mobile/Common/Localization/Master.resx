@@ -1111,7 +1111,7 @@
     <value>Invalid payment information</value>
   </data>
   <data name="View_CreditCard" xml:space="preserve">
-    <value>Credit Card</value>
+    <value>Payment</value>
   </data>
   <data name="CreditCardInstructions" xml:space="preserve">
     <value>In order to use the application, you need to add a credit card to your account.</value>
