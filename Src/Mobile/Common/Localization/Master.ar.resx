@@ -1336,7 +1336,7 @@
     <value>افتح حسابك</value>
   </data>
   <data name="View_CreditCard" xml:space="preserve">
-    <value>بطاقة إئتمان</value>
+    <value>دفع</value>
   </data>
   <data name="View_CreditCardsList" xml:space="preserve">
     <value>بطاقات إئتمان</value>

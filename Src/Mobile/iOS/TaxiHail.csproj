@@ -565,6 +565,8 @@
     <Compile Include="Bootstrap\PhoneCallPluginBootstrap.cs" />
     <Compile Include="Bootstrap\VisibilityPluginBootstrap.cs" />
     <Compile Include="Bootstrap\WebBrowserPluginBootstrap.cs" />
+    <BundleResource Include="Resources\paypal_icon.png" />
+    <BundleResource Include="Resources\paypal_icon%402x.png" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

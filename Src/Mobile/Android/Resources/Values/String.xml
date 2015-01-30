@@ -498,7 +498,7 @@
   <string name="NoCardOnFileMessage">You chose to pay with a card on file, but you have no default card.  Add a card to your account or change your payment method to continue.</string>
   <string name="AddACardButton">Add Card</string>
   <string name="PanelMenuViewPaymentInfoText">Payment</string>
-  <string name="View_CreditCard">Credit Card</string>
+  <string name="View_CreditCard">Payment</string>
   <string name="DeleteCreditCard">Delete the credit card registered to this account?</string>
   <string name="DeleteCreditCardTitle">Delete credit card</string>
   <string name="ServiceErrorCreateOrder_PendingOrder">You cannot book this ride since an order is already pending. View the order status?</string>
@@ -598,4 +598,5 @@
   <string name="LinkPayPalConfirmation">Link</string>
   <string name="PayPalLinked">Your account is now enabled to pay with PayPal by default. You can still choose to pay in the vehicle by selecting \"Pay in Vehicle\" on the payment screen</string>
   <string name="PayPalLinkedInfo">Account Linked</string>
+  <string name="Error">Error</string>
 </resources>

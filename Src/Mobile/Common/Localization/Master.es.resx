@@ -1942,7 +1942,7 @@
     <comment>Create Your Account</comment>
   </data>
   <data name="View_CreditCard" xml:space="preserve">
-    <value>Tarjeta de crédito</value>
+    <value>Pago</value>
     <comment>Credit Card</comment>
   </data>
   <data name="View_CreditCardsList" xml:space="preserve">

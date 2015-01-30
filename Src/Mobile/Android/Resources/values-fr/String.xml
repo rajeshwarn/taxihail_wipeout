@@ -464,7 +464,7 @@
   <string name="DeleteCreditCardTitle">Supprimer la carte</string>
   <string name="View">Voir</string>
   <string name="ServiceErrorCreateOrder_PendingOrder">La commande ne peut être créée car une autre commande est déjà en cours. Voir le statut de la commande?</string>
-  <string name="View_CreditCard">Carte de paiement</string>
+  <string name="View_CreditCard">Paiement</string>
   <string name="CreditCardAdded">Votre compte est maintenant configuré pour le paiement par défaut via carte de crédit. Vous pouvez quand même choisir de payer dans le véhicule en choisissant l\'option appropriée à l\'écran de paiement.</string>
   <string name="PanelMenuViewPaymentInfoText">Paiement</string>
   <string name="LoginSupport">Support Technique?</string>
@@ -579,4 +579,5 @@
   <string name="LinkPayPalConfirmation">Associer</string>
   <string name="PayPalLinked">Votre compte est maintenant configuré pour le paiement par défaut via PayPal. Vous pouvez quand même choisir de payer dans le véhicule en choisissant l\'option appropriée à l\'écran de paiement.</string>
   <string name="PayPalLinkedInfo">Compte associé</string>
+  <string name="Error">Erreur</string>
 </resources>

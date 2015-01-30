@@ -88,18 +88,11 @@ namespace apcurium.MK.Booking.Database
             var entry = Entry(entity);
 
             if (entry.State == EntityState.Detached)
+            {
                 Set<T>().Add(entity);
+            }
 
-            try
-            {
-                SaveChanges();
-            }
-            catch (DbEntityValidationException ex)
-            {
-                
-                throw;
-            }
-            
+            SaveChanges();
         }
     }
 }
