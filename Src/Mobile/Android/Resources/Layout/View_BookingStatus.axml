@@ -61,7 +61,7 @@
                 local:MvxBind="Click Unpair; Visibility IsUnpairButtonVisible, Converter=Visibility" />
             <Button
                 android:id="@+id/CallBtn"
-                style="@style/ButtonActionBlackStyle"
+                style="@style/ButtonActionGrayStyle"
                 android:layout_marginTop="13dip"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/HeightButton"

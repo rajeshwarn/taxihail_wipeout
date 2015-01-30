@@ -38,9 +38,19 @@ namespace apcurium.MK.Booking.EventHandlers
         {
             using (var context = _contextFactory.Invoke())
             {
-                var details = new CreditCardDetails();
-                Mapper.Map(@event, details);
-                context.Save(details);
+                var creditCard = context.Find<CreditCardDetails>(@event.CreditCardId);
+                
+                if (creditCard == null)
+                {
+                    CreditCardDetails details = new CreditCardDetails();
+                    Mapper.Map(@event, details);
+                    context.Save(details);
+                }
+                else
+                {
+                    Mapper.Map(@event, creditCard);
+                    context.Save(creditCard);
+                }
             }
         }
 

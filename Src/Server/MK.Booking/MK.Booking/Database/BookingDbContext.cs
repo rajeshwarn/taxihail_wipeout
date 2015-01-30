@@ -2,6 +2,7 @@
 
 using System;
 using System.Data.Entity;
+using System.Data.Entity.Validation;
 using System.Linq;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Common.Database;
@@ -60,6 +61,7 @@ namespace apcurium.MK.Booking.Database
             modelBuilder.Entity<OrderUserGpsDetail>().ToTable("OrderUserGpsDetail", SchemaName);
             modelBuilder.Entity<AppStartUpLogDetail>().ToTable("AppStartUpLogDetail", SchemaName);
             modelBuilder.Entity<PayPalAccountDetails>().ToTable("PayPalAccountDetails", SchemaName);
+            modelBuilder.Entity<OrderReportDetail>().ToTable("OrderReportDetail", SchemaName);
 
             modelBuilder.Entity<AccountChargeQuestion>().ToTable("AccountChargeQuestion", SchemaName);
             modelBuilder.Entity<AccountChargeDetail>().ToTable("AccountChargeDetail", SchemaName)
@@ -88,7 +90,16 @@ namespace apcurium.MK.Booking.Database
             if (entry.State == EntityState.Detached)
                 Set<T>().Add(entity);
 
-            SaveChanges();
+            try
+            {
+                SaveChanges();
+            }
+            catch (DbEntityValidationException ex)
+            {
+                
+                throw;
+            }
+            
         }
     }
 }
