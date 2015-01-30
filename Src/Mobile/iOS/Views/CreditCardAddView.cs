@@ -209,10 +209,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             lblPayPalLinkedInfo.Text = Localize.GetValue("PayPalLinkedInfo");
 
             FlatButtonStyle.Silver.ApplyTo(btnLinkPayPal);
+			btnLinkPayPal.SetLeftImage("paypal_icon.png");
             btnLinkPayPal.SetTitle(Localize.GetValue("LinkPayPal"), UIControlState.Normal);
             btnLinkPayPal.TouchUpInside += (sender, e) => PayPalFlow();
 
             FlatButtonStyle.Silver.ApplyTo(btnUnlinkPayPal);
+			btnLinkPayPal.SetLeftImage("paypal_icon.png");
             btnUnlinkPayPal.SetTitle(Localize.GetValue("UnlinkPayPal"), UIControlState.Normal);
             btnUnlinkPayPal.TouchUpInside += (sender, e) => ViewModel.UnLinkPayPalAccount();
         }
