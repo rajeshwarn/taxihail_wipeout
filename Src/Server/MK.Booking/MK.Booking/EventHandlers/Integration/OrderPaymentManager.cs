@@ -16,7 +16,8 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
         IEventHandler<CreditCardPaymentCaptured_V2>,
         IEventHandler<OrderCancelled>,
         IEventHandler<OrderSwitchedToNextDispatchCompany>,
-        IEventHandler<OrderStatusChanged>
+        IEventHandler<OrderStatusChanged>,
+        IEventHandler<OrderCancelledBecauseOfIbsError>
     {
         private readonly IOrderDao _dao;
         private readonly IIbsOrderService _ibs;
@@ -102,6 +103,12 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
         }
 
         public void Handle(OrderSwitchedToNextDispatchCompany @event)
+        {
+            // void the preauthorization to prevent misuse fees
+            _paymentAbstractionService.VoidPreAuthorization(@event.SourceId);
+        }
+
+        public void Handle(OrderCancelledBecauseOfIbsError @event)
         {
             // void the preauthorization to prevent misuse fees
             _paymentAbstractionService.VoidPreAuthorization(@event.SourceId);
