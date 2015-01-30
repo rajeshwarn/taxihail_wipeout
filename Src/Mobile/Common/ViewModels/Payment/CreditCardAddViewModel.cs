@@ -23,18 +23,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 		private readonly ILocationService _locationService;
 		private readonly IPaymentService _paymentService;
 		private readonly IAccountService _accountService;
-	    private readonly IPayPalService _payPalService;
 
 	    public CreditCardAddViewModel(
             ILocationService locationService,
 			IPaymentService paymentService, 
-			IAccountService accountService,
-            IPayPalService payPalService)
+			IAccountService accountService)
 		{
 			_locationService = locationService;
 			_paymentService = paymentService;
 			_accountService = accountService;
-		    _payPalService = payPalService;
 		}
 
 #region Const and ReadOnly
@@ -379,9 +376,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
         {
             try
             {
-                _payPalService.LinkAccount(_accountService.CurrentAccount.Id, authCode);
+				_accountService.LinkAccount(authCode);
                 
-                DeleteCreditCard(false);
+                DeleteCreditCard(true);
             }
             catch (Exception ex)
             {
@@ -394,23 +391,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
             IsPayPalAccountLinked = true;
 
-            // Set PayPal as default charge type
-            var account = _accountService.CurrentAccount;
-            account.DefaultCreditCard = null;
-            account.IsPayPalAccountLinked = true;
-            account.Settings.ChargeTypeId = ChargeTypes.PayPal.Id;
-
-            var settingsUpdated = UpdateAccountSettings(account);
-            if (settingsUpdated)
-            {
-                this.Services().Message.ShowMessage(
-                    string.Empty,
-                    this.Services().Localize["PayPalLinked"],
-                    () => ShowViewModelAndRemoveFromHistory<HomeViewModel>(new { locateUser = bool.TrueString }));
-            }
+			this.Services().Message.ShowMessage(
+				string.Empty,
+				this.Services().Localize["PayPalLinked"],
+				() => ShowViewModelAndRemoveFromHistory<HomeViewModel>(new { locateUser = bool.TrueString }));
         }
 
-        public void UnLinkPayPalAccount(bool updateAccountSettings = true)
+		public void UnlinkPayPalAccount(bool replacedByCreditCard = false)
         {
             if (!IsPayPalAccountLinked)
             {
@@ -419,8 +406,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
             try
             {
-                _payPalService.UnLinkAccount(_accountService.CurrentAccount.Id);
-                IsPayPalAccountLinked = false;
+				_accountService.UnlinkAccount(replacedByCreditCard);
             }
             catch (Exception ex)
             {
@@ -431,40 +417,19 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
                     this.Services().Localize["PayPalUnlinkError"]);
             }
 
-            if (updateAccountSettings)
-            {
-                // update default chargetype
-                var account = _accountService.CurrentAccount;
-                account.IsPayPalAccountLinked = false;
-                account.Settings.ChargeTypeId = ChargeTypes.PaymentInCar.Id;
-
-                UpdateAccountSettings(account);
-            }
-
-            RaisePropertyChanged(() => CanLinkPayPalAccount);
-            RaisePropertyChanged(() => CanUnlinkPayPalAccount);
+			IsPayPalAccountLinked = false;
         }
 
-	    private void DeleteCreditCard(bool updateAccountSettings = true)
+		private void DeleteCreditCard(bool replacedByPayPal = false)
 	    {
 	        if (!IsEditing)
 	        {
 	            return;
 	        }
 
-            _accountService.RemoveCreditCard();
-            this.Services().Cache.Clear("Account.CreditCards");
+			_accountService.RemoveCreditCard(replacedByPayPal);
+            
             ShowViewModelAndRemoveFromHistory<HomeViewModel>(new { locateUser = bool.TrueString });
-
-	        if (updateAccountSettings)
-	        {
-                // remove default card and update default chargetype
-                var account = _accountService.CurrentAccount;
-                account.Settings.ChargeTypeId = ChargeTypes.PaymentInCar.Id;
-                account.DefaultCreditCard = null;
-
-                UpdateAccountSettings(account);
-	        }
 	    }
 
         private async void SaveCreditCard()
@@ -486,53 +451,35 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
                 return;
             }
 
-            try
+            var success = false;
+            using (this.Services().Message.ShowProgress())
             {
-                var success = false;
-                using (this.Services().Message.ShowProgress())
+                Data.Last4Digits = new string(Data.CardNumber.Reverse().Take(4).Reverse().ToArray());
+
+                if (!IsEditing)
                 {
-                    Data.Last4Digits = new string(Data.CardNumber.Reverse().Take(4).Reverse().ToArray());
-
-                    if (!IsEditing)
-                    {
-                        Data.CreditCardId = Guid.NewGuid();
-                    }
-
-                    success = IsEditing
-                        ? await _accountService.UpdateCreditCard(Data)
-                        : await _accountService.AddCreditCard(Data);
+                    Data.CreditCardId = Guid.NewGuid();
                 }
-                if (success)
-                {
-                    UnLinkPayPalAccount(false);
 
-                    this.Services().Analytics.LogEvent("AddCOF");
-                    Data.CardNumber = null;
-                    Data.CCV = null;
+				success = await _accountService.AddOrUpdateCreditCard(Data, IsEditing);
 
-                    // update default card and default chargetype
-                    var account = _accountService.CurrentAccount;
-                    account.IsPayPalAccountLinked = false;
-                    account.Settings.ChargeTypeId = ChargeTypes.CardOnFile.Id;
-                    account.DefaultCreditCard = Data.CreditCardId;
+				if (success)
+				{
+					UnlinkPayPalAccount(true);
 
-                    var settingsUpdated = UpdateAccountSettings(account);
-                    if (settingsUpdated)
-                    {
-                        this.Services().Message.ShowMessage(
-                            string.Empty,
-                            this.Services().Localize["CreditCardAdded"],
-                            () => ShowViewModelAndRemoveFromHistory<HomeViewModel>(new { locateUser = bool.TrueString }));
-                    }
-                }
-                else
-                {
-                    this.Services().Message.ShowMessage(this.Services().Localize["CreditCardErrorTitle"], this.Services().Localize["CreditCardErrorInvalid"]);
-                }
-            }
-            finally
-            {
-                this.Services().Cache.Clear("Account.CreditCards");
+					this.Services().Analytics.LogEvent("AddCOF");
+					Data.CardNumber = null;
+					Data.CCV = null;
+
+					this.Services().Message.ShowMessage(
+						string.Empty,
+						this.Services().Localize["CreditCardAdded"],
+						() => ShowViewModelAndRemoveFromHistory<HomeViewModel>(new { locateUser = bool.TrueString }));
+				}
+				else
+				{
+					this.Services().Message.ShowMessage(this.Services().Localize["CreditCardErrorTitle"], this.Services().Localize["CreditCardErrorInvalid"]);
+				}
             }
 	    }
 
@@ -625,30 +572,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 				}
 			}
 		}
-
-        private bool UpdateAccountSettings(Account account)
-        {
-            try
-            {
-                _accountService.UpdateSettings(account.Settings, account.DefaultCreditCard, account.DefaultTipPercent, account.IsPayPalAccountLinked);
-
-                return true;
-            }
-            catch (WebServiceException ex)
-            {
-                switch (ex.ErrorCode)
-                {
-                    case "AccountCharge_InvalidAccountNumber":
-                        this.Services().Message.ShowMessage(this.Services().Localize["CreditCardErrorTitle"], this.Services().Localize["CreditCardBookingSettingsError"]);
-                        break;
-                    default:
-                        this.Services().Message.ShowMessage(this.Services().Localize["UpdateBookingSettingsInvalidDataTitle"],
-                            this.Services().Localize["UpdateBookingSettingsGenericError"]);
-                        break;
-                }
-                return false;
-            }
-        }
     }
 }
 

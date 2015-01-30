@@ -107,9 +107,7 @@ namespace apcurium.MK.Booking
             Mapper.CreateMap<PopularAddressDetails, Address>();
             Mapper.CreateMap<TariffDetail, Tariff>();
             Mapper.CreateMap<RuleDetail, Rule>();
-            Mapper.CreateMap<CreditCardAdded, CreditCardDetails>()
-                .ForMember(p => p.AccountId, opt => opt.MapFrom(m => m.SourceId));
-            Mapper.CreateMap<CreditCardUpdated, CreditCardDetails>()
+            Mapper.CreateMap<CreditCardAddedOrUpdated, CreditCardDetails>()
                 .ForMember(p => p.AccountId, opt => opt.MapFrom(m => m.SourceId));
 
             Mapper.CreateMap<OrderStatusDetail, OrderStatusDetail>();

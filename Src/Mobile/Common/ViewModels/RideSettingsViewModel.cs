@@ -306,15 +306,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 {
 					using (this.Services ().Message.ShowProgress ())
 					{
-                        var creditCard = PaymentPreferences.SelectedCreditCardId == Guid.Empty
-                                ? default(Guid?)
-                                : PaymentPreferences.SelectedCreditCardId;
-
-                        if (await ValidateRideSettings(creditCard))
+                        if (await ValidateRideSettings())
 					    {
 					        try
 					        {
-								await _accountService.UpdateSettings(_bookingSettings, creditCard, PaymentPreferences.Tip);
+								await _accountService.UpdateSettings(_bookingSettings, PaymentPreferences.Tip);
 								_orderWorkflowService.SetAccountNumber (_bookingSettings.AccountNumber);
                                 Close(this);
 					        }
@@ -340,7 +336,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        public async Task<bool> ValidateRideSettings(Guid? creditCard)
+        public async Task<bool> ValidateRideSettings()
         {
             if (string.IsNullOrEmpty(Name) || string.IsNullOrEmpty(Phone))
             {
@@ -359,6 +355,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
             if (ChargeTypeId == ChargeTypes.Account.Id)
             {
+				var creditCard = PaymentPreferences.SelectedCreditCardId == Guid.Empty
+					? default(Guid?)
+					: PaymentPreferences.SelectedCreditCardId;
+
                 try
                 {
                     // Validate if the charge account needs to have a card on file to be used

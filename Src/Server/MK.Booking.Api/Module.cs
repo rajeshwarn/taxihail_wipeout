@@ -141,11 +141,9 @@ namespace apcurium.MK.Booking.Api
             Mapper.CreateMap<RuleDeactivateRequest, DeactivateRule>()
                 .ForMember(p => p.CompanyId, opt => opt.UseValue(AppConstants.CompanyId));
 
-            Mapper.CreateMap<CreditCardRequest, AddCreditCard>()
+            Mapper.CreateMap<CreditCardRequest, AddOrUpdateCreditCard>()
                 .ForMember(x => x.CreditCardId,
                     opt => opt.ResolveUsing(x => x.CreditCardId == Guid.Empty ? Guid.NewGuid() : x.CreditCardId));
-
-            Mapper.CreateMap<CreditCardRequest, UpdateCreditCard>();
 
             Mapper.CreateMap<PopularAddress, AddPopularAddress>();
             Mapper.CreateMap<PopularAddress, UpdatePopularAddress>();

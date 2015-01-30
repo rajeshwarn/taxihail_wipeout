@@ -13,8 +13,7 @@ using Infrastructure.Messaging.Handling;
 namespace apcurium.MK.Booking.EventHandlers
 {
     public class CreditCardDetailsGenerator :
-        IEventHandler<CreditCardAdded>,
-        IEventHandler<CreditCardUpdated>,
+        IEventHandler<CreditCardAddedOrUpdated>,
         IEventHandler<CreditCardRemoved>,
         IEventHandler<AllCreditCardsRemoved>
     {
@@ -34,27 +33,7 @@ namespace apcurium.MK.Booking.EventHandlers
             }
         }
 
-        public void Handle(CreditCardAdded @event)
-        {
-            using (var context = _contextFactory.Invoke())
-            {
-                var creditCard = context.Find<CreditCardDetails>(@event.CreditCardId);
-                
-                if (creditCard == null)
-                {
-                    CreditCardDetails details = new CreditCardDetails();
-                    Mapper.Map(@event, details);
-                    context.Save(details);
-                }
-                else
-                {
-                    Mapper.Map(@event, creditCard);
-                    context.Save(creditCard);
-                }
-            }
-        }
-
-        public void Handle(CreditCardUpdated @event)
+        public void Handle(CreditCardAddedOrUpdated @event)
         {
             using (var context = _contextFactory.Invoke())
             {
@@ -62,12 +41,10 @@ namespace apcurium.MK.Booking.EventHandlers
                 context.RemoveWhere<CreditCardDetails>(cc => cc.AccountId == @event.SourceId && cc.CreditCardId != @event.CreditCardId);
                 context.SaveChanges();
 
-                var creditCard = context.Find<CreditCardDetails>(@event.CreditCardId);
-                if (creditCard != null)
-                {
-                    Mapper.Map(@event, creditCard);
-                    context.Save(creditCard);
-                }
+                var existingCreditCard = context.Find<CreditCardDetails>(@event.CreditCardId);
+                var creditCard = existingCreditCard ?? new CreditCardDetails();
+                Mapper.Map(@event, creditCard);
+                context.Save(creditCard);
             }
         }
 

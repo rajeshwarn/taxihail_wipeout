@@ -25,7 +25,7 @@ namespace apcurium.MK.Booking.Test.Integration.CreditCardFixture
             const string last4Digits = "4025";
             const string token = "jjwcnSLWm85";
 
-            Sut.Handle(new CreditCardAdded
+            Sut.Handle(new CreditCardAddedOrUpdated
             {
                 SourceId = accountId,
                 CreditCardCompany = creditCardComapny,

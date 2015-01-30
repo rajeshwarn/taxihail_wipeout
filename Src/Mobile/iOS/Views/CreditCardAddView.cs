@@ -214,7 +214,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
             FlatButtonStyle.Silver.ApplyTo(btnUnlinkPayPal);
             btnUnlinkPayPal.SetTitle(Localize.GetValue("UnlinkPayPal"), UIControlState.Normal);
-            btnUnlinkPayPal.TouchUpInside += (sender, e) => ViewModel.UnLinkPayPalAccount();
+            btnUnlinkPayPal.TouchUpInside += (sender, e) => ViewModel.UnlinkPayPalAccount();
         }
 
         private bool GoToNext (UITextField textField)

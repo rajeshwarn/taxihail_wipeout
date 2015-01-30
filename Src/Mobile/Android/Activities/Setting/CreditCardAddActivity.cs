@@ -95,9 +95,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
                 SetUpPayPalService(_paymentSettings.PayPalClientSettings);
 
                 btnLinkPayPalAccount.Click += (sender, e) => LinkPayPayAccount();
-                btnUnlinkPayPalAccount.Click += (sender, e) => ViewModel.UnLinkPayPalAccount();
+                btnUnlinkPayPalAccount.Click += (sender, e) => ViewModel.UnlinkPayPalAccount();
                 btnPayPalOnlyLinkAccount.Click += (sender, e) => LinkPayPayAccount();
-                btnPayPalOnlyUnlinkAccount.Click += (sender, e) => ViewModel.UnLinkPayPalAccount();
+                btnPayPalOnlyUnlinkAccount.Click += (sender, e) => ViewModel.UnlinkPayPalAccount();
             }
             else
             {

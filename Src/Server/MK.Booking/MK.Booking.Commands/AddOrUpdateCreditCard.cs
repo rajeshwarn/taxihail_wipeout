@@ -1,15 +1,11 @@
-﻿#region
-
-using System;
+﻿using System;
 using Infrastructure.Messaging;
-
-#endregion
 
 namespace apcurium.MK.Booking.Commands
 {
-    public class AddCreditCard : ICommand
+    public class AddOrUpdateCreditCard : ICommand
     {
-        public AddCreditCard()
+        public AddOrUpdateCreditCard()
         {
             Id = Guid.NewGuid();
         }

@@ -27,7 +27,7 @@ namespace apcurium.MK.Booking.EventHandlers
         IEventHandler<AccountPasswordUpdated>,
         IEventHandler<RoleAddedToUserAccount>,
         IEventHandler<PaymentProfileUpdated>,
-        IEventHandler<CreditCardAdded>,
+        IEventHandler<CreditCardAddedOrUpdated>,
         IEventHandler<CreditCardRemoved>,
         IEventHandler<AllCreditCardsRemoved>,
         IEventHandler<AccountLinkedToIbs>,
@@ -182,6 +182,8 @@ namespace apcurium.MK.Booking.EventHandlers
                 settings.Phone = @event.Phone;
                 settings.AccountNumber = @event.AccountNumber;
 
+                account.DefaultTipPercent = @event.DefaultTipPercent;
+
                 account.Settings = settings;
                 context.Save(account);
             }
@@ -191,7 +193,7 @@ namespace apcurium.MK.Booking.EventHandlers
         {
             using (var context = _contextFactory.Invoke())
             {
-                var account = context.Find<AccountDetail>(@event.SourceId);
+                var account = context.Find<AccountDetail>(@event.SourceId);          
                 account.DefaultCreditCard = @event.DefaultCreditCard;
                 account.DefaultTipPercent = @event.DefaultTipPercent;
                 context.Save(account);
@@ -208,11 +210,12 @@ namespace apcurium.MK.Booking.EventHandlers
             }
         }
 
-        public void Handle(CreditCardAdded @event)
+        public void Handle(CreditCardAddedOrUpdated @event)
         {
             using (var context = _contextFactory.Invoke())
             {
                 var account = context.Find<AccountDetail>(@event.SourceId);
+                account.DefaultCreditCard = @event.CreditCardId;
                 account.Settings.ChargeTypeId = ChargeTypes.CardOnFile.Id;
                 context.Save(account);
             }

@@ -28,8 +28,7 @@ namespace apcurium.MK.Booking.CommandHandlers
         ICommandHandler<RegisterTwitterAccount>,
         ICommandHandler<UpdateAccountPassword>,
         ICommandHandler<AddRoleToUserAccount>,
-        ICommandHandler<AddCreditCard>,
-        ICommandHandler<UpdateCreditCard>,
+        ICommandHandler<AddOrUpdateCreditCard>,
         ICommandHandler<DeleteAllCreditCards>,
         ICommandHandler<DeleteAccountCreditCards>,
         ICommandHandler<RegisterDeviceForPushNotifications>,
@@ -57,24 +56,10 @@ namespace apcurium.MK.Booking.CommandHandlers
             _contextFactory = contextFactory;
         }
 
-        public void Handle(AddCreditCard command)
+        public void Handle(AddOrUpdateCreditCard command)
         {
             var account = _repository.Find(command.AccountId);
-            account.AddCreditCard(
-                command.CreditCardCompany,
-                command.CreditCardId,
-                command.NameOnCard,
-                command.Last4Digits,
-                command.ExpirationMonth,
-                command.ExpirationYear,
-                command.Token);
-            _repository.Save(account, command.Id.ToString());
-        }
-
-        public void Handle(UpdateCreditCard command)
-        {
-            var account = _repository.Find(command.AccountId);
-            account.UpdateCreditCard(
+            account.AddOrUpdateCreditCard(
                 command.CreditCardCompany,
                 command.CreditCardId,
                 command.NameOnCard,
@@ -202,8 +187,7 @@ namespace apcurium.MK.Booking.CommandHandlers
             var settings = new BookingSettings();
             Mapper.Map(command, settings);
 
-            account.UpdateBookingSettings(settings);
-            account.UpdatePaymentProfile(command.DefaultCreditCard, command.DefaultTipPercent);
+            account.UpdateBookingSettings(settings, command.DefaultTipPercent);
 
             _repository.Save(account, command.Id.ToString());
         }

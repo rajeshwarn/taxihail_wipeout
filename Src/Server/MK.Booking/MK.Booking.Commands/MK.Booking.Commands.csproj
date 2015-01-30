@@ -48,7 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ActivatePromotion.cs" />
-    <Compile Include="AddCreditCard.cs" />
+    <Compile Include="AddOrUpdateCreditCard.cs" />
     <Compile Include="AddDefaultFavoriteAddress.cs" />
     <Compile Include="AddFavoriteAddress.cs" />
     <Compile Include="AddIbsOrderInfoToOrder.cs" />
@@ -89,7 +89,6 @@
     <Compile Include="UnlinkAllPayPalAccounts.cs" />
     <Compile Include="UnlinkPayPalAccount.cs" />
     <Compile Include="UnpairForPayment.cs" />
-    <Compile Include="UpdateCreditCard.cs" />
     <Compile Include="UpdatePaymentSettings.cs" />
     <Compile Include="DisableAccountbyAdmin.cs" />
     <Compile Include="ConfirmAccount.cs" />

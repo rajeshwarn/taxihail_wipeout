@@ -118,7 +118,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             // unregister previous card(s) except the current token in case the token did not change
             await UnregisterTokenizedCards (creditCardRequest.Token);
 
-            await Client.PutAsync<string> ("/account/creditcards", creditCardRequest);
+			await Client.PostAsync<string> ("/account/creditcards", creditCardRequest);
         }
 
         public async Task<NotificationSettings> GetNotificationSettings(Guid accountId)

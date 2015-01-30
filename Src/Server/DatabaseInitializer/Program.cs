@@ -639,7 +639,6 @@ namespace DatabaseInitializer
                     Name = "John Doe",
                     NumberOfTaxi = john.Settings.NumberOfTaxi,
                     ChargeTypeId = john.Settings.ChargeTypeId,
-                    DefaultCreditCard = john.DefaultCreditCard,
                     DefaultTipPercent = john.DefaultTipPercent
                 };
                 commandBus.Send(updateAccountCommand);

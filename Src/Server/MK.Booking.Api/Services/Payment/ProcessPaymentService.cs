@@ -1,3 +1,4 @@
+using System;
 using apcurium.MK.Booking.Api.Contract.Requests.Payment;
 using apcurium.MK.Booking.Api.Contract.Requests.Payment.PayPal;
 using apcurium.MK.Booking.IBS;
@@ -39,12 +40,16 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 
         public BasePaymentResponse Post(LinkPayPalAccountRequest request)
         {
-            return _payPalServiceFactory.GetInstance().LinkAccount(request.AccountId, request.AuthCode);
+            var session = this.GetSession();
+
+            return _payPalServiceFactory.GetInstance().LinkAccount(new Guid(session.UserAuthId), request.AuthCode);
         }
 
         public BasePaymentResponse Post(UnlinkPayPalAccountRequest request)
         {
-            return _payPalServiceFactory.GetInstance().UnlinkAccount(request.AccountId);
+            var session = this.GetSession();
+
+            return _payPalServiceFactory.GetInstance().UnlinkAccount(new Guid(session.UserAuthId));
         }
 
         public DeleteTokenizedCreditcardResponse Delete(DeleteTokenizedCreditcardRequest request)
