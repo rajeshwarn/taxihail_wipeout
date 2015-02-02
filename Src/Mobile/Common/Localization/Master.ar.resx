@@ -415,7 +415,7 @@
     <value>سنة الإنتهاء</value>
   </data>
   <data name="CreditCardInstructions" xml:space="preserve">
-    <value>لكي تستخدم هذا التطبيق، يجب أن تضيف رقم بطاقة إئتمانية لحسابك.</value>
+    <value>In order to use the application, you need to add a payment method to your account.</value>
   </data>
   <data name="CreditCardInvalidCrediCardNUmber" xml:space="preserve">
     <value>رقم البطاقة الائتمانية خاطئة</value>

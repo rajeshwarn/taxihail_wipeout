@@ -377,7 +377,6 @@ namespace apcurium.MK.Booking.IBS.Impl
             order.OrderStatus = TWEBOrderStatusValue.wosPost;
 
             SetPrompts(order, prompts, promptsLength);
-            //order.Prompt1 
 
             int? orderId = null;
 

@@ -1114,7 +1114,7 @@
     <value>Payment</value>
   </data>
   <data name="CreditCardInstructions" xml:space="preserve">
-    <value>In order to use the application, you need to add a credit card to your account.</value>
+    <value>In order to use the application, you need to add a payment method to your account.</value>
   </data>
   <data name="CreditCardRemoveErrorTitle" xml:space="preserve">
     <value>Cannot remove credit card</value>

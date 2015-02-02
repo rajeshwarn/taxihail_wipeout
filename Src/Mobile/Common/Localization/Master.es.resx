@@ -562,8 +562,8 @@
     <comment>Exp. Year</comment>
   </data>
   <data name="CreditCardInstructions" xml:space="preserve">
-    <value>Para usar esta aplicación necesita ingresar una tarjeta de crédito a su cuenta</value>
-    <comment>In order to use the application, you need to add a credit card to your account.</comment>
+    <value>Para usar esta aplicación necesita ingresar un método de pago a su cuenta</value>
+    <comment>In order to use the application, you need to add a payment method to your account.</comment>
   </data>
   <data name="CreditCardInvalidCrediCardNUmber" xml:space="preserve">
     <value>El número de tarjeta de crédito es inválido</value>
