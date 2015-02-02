@@ -86,8 +86,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
             var paypalSeparator = FindViewById<LinearLayout>(Resource.Id.PayPalSeparator);
             var btnLinkPayPalAccount = FindViewById<Button>(Resource.Id.LinkPayPalAccountButton);
             var btnUnlinkPayPalAccount = FindViewById<Button>(Resource.Id.UnLinkPayPalAccountButton);
-            var btnPayPalOnlyLinkAccount = FindViewById<Button>(Resource.Id.PayPalOnlyLinkAccountButton);
-            var btnPayPalOnlyUnlinkAccount = FindViewById<Button>(Resource.Id.PayPalOnlyUnlinkAccountButton);
 
             // Use PayPal settings
             if (_paymentSettings.PayPalClientSettings.IsEnabled)
@@ -96,8 +94,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
 
                 btnLinkPayPalAccount.Click += (sender, e) => LinkPayPayAccount();
                 btnUnlinkPayPalAccount.Click += (sender, e) => ViewModel.UnlinkPayPalAccount();
-                btnPayPalOnlyLinkAccount.Click += (sender, e) => LinkPayPayAccount();
-                btnPayPalOnlyUnlinkAccount.Click += (sender, e) => ViewModel.UnlinkPayPalAccount();
             }
             else
             {
@@ -105,8 +101,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
                 paypalSeparator.Visibility = ViewStates.Gone;
                 btnLinkPayPalAccount.Visibility = ViewStates.Gone;
                 btnUnlinkPayPalAccount.Visibility = ViewStates.Gone;
-                btnPayPalOnlyLinkAccount.Visibility = ViewStates.Gone;
-                btnPayPalOnlyUnlinkAccount.Visibility = ViewStates.Gone;
             }
         }
 
