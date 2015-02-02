@@ -52,11 +52,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         {
             base.ViewWillAppear(animated);
 
-            NavigationController.NavigationBar.Hidden = false;
+            if (NavigationController != null)
+            {
+                NavigationController.NavigationBar.Hidden = false;
+                ChangeThemeOfBarStyle();
+            }
+
 			NavigationItem.HidesBackButton = ViewModel.IsMandatory;
             NavigationItem.Title = Localize.GetValue ("View_CreditCard");
 
-            ChangeThemeOfBarStyle();
             ChangeRightBarButtonFontToBold();
 
             if (CardIOIsEnabled)
