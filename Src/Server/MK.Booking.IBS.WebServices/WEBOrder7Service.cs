@@ -147,6 +147,10 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
 
     private System.Threading.SendOrPostCallback UpdateJobPaymentTypeOperationCompleted;
 
+    private System.Threading.SendOrPostCallback SaveBookOrder_9OperationCompleted;
+
+    private System.Threading.SendOrPostCallback EstimateFare_9OperationCompleted;
+
     /// <remarks/>
     public WebOrder7Service()
     {
@@ -326,6 +330,12 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
 
     /// <remarks/>
     public event UpdateJobPaymentTypeCompletedEventHandler UpdateJobPaymentTypeCompleted;
+
+    /// <remarks/>
+    public event SaveBookOrder_9CompletedEventHandler SaveBookOrder_9Completed;
+
+    /// <remarks/>
+    public event EstimateFare_9CompletedEventHandler EstimateFare_9Completed;
 
     /// <remarks/>
     [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#GetOrderStatus", RequestNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7")]
@@ -4419,6 +4429,131 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
         {
             System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
             this.UpdateJobPaymentTypeCompleted(this, new UpdateJobPaymentTypeCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+        }
+    }
+
+    /// <remarks/>
+    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#SaveBookOrder_9", RequestNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7")]
+    [return: System.Xml.Serialization.SoapElementAttribute("return")]
+    public int SaveBookOrder_9(string Login, string Password, TBookOrder_8 BookOrder, int APBToken)
+    {
+        object[] results = this.Invoke("SaveBookOrder_9", new object[] {
+                    Login,
+                    Password,
+                    BookOrder,
+                    APBToken});
+        return ((int)(results[0]));
+    }
+
+    /// <remarks/>
+    public System.IAsyncResult BeginSaveBookOrder_9(string Login, string Password, TBookOrder_8 BookOrder, int APBToken, System.AsyncCallback callback, object asyncState)
+    {
+        return this.BeginInvoke("SaveBookOrder_9", new object[] {
+                    Login,
+                    Password,
+                    BookOrder,
+                    APBToken}, callback, asyncState);
+    }
+
+    /// <remarks/>
+    public int EndSaveBookOrder_9(System.IAsyncResult asyncResult)
+    {
+        object[] results = this.EndInvoke(asyncResult);
+        return ((int)(results[0]));
+    }
+
+    /// <remarks/>
+    public void SaveBookOrder_9Async(string Login, string Password, TBookOrder_8 BookOrder, int APBToken)
+    {
+        this.SaveBookOrder_9Async(Login, Password, BookOrder, APBToken, null);
+    }
+
+    /// <remarks/>
+    public void SaveBookOrder_9Async(string Login, string Password, TBookOrder_8 BookOrder, int APBToken, object userState)
+    {
+        if ((this.SaveBookOrder_9OperationCompleted == null))
+        {
+            this.SaveBookOrder_9OperationCompleted = new System.Threading.SendOrPostCallback(this.OnSaveBookOrder_9OperationCompleted);
+        }
+        this.InvokeAsync("SaveBookOrder_9", new object[] {
+                    Login,
+                    Password,
+                    BookOrder,
+                    APBToken}, this.SaveBookOrder_9OperationCompleted, userState);
+    }
+
+    private void OnSaveBookOrder_9OperationCompleted(object arg)
+    {
+        if ((this.SaveBookOrder_9Completed != null))
+        {
+            System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+            this.SaveBookOrder_9Completed(this, new SaveBookOrder_9CompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+        }
+    }
+
+    /// <remarks/>
+    [System.Web.Services.Protocols.SoapRpcMethodAttribute("urn:WEBOrder_7Intf-IWEBOrder_7#EstimateFare_9", RequestNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7", ResponseNamespace = "urn:WEBOrder_7Intf-IWEBOrder_7")]
+    [return: System.Xml.Serialization.SoapElementAttribute("aTotalFare")]
+    public double EstimateFare_9(string Login, string Password, TBookOrder_8 aBookOrder, out double aFare, out double aTolls, out double aDistance, out double aTripTime, out int aPBToken)
+    {
+        object[] results = this.Invoke("EstimateFare_9", new object[] {
+                    Login,
+                    Password,
+                    aBookOrder});
+        aFare = ((double)(results[1]));
+        aTolls = ((double)(results[2]));
+        aDistance = ((double)(results[3]));
+        aTripTime = ((double)(results[4]));
+        aPBToken = ((int)(results[5]));
+        return ((double)(results[0]));
+    }
+
+    /// <remarks/>
+    public System.IAsyncResult BeginEstimateFare_9(string Login, string Password, TBookOrder_8 aBookOrder, System.AsyncCallback callback, object asyncState)
+    {
+        return this.BeginInvoke("EstimateFare_9", new object[] {
+                    Login,
+                    Password,
+                    aBookOrder}, callback, asyncState);
+    }
+
+    /// <remarks/>
+    public double EndEstimateFare_9(System.IAsyncResult asyncResult, out double aFare, out double aTolls, out double aDistance, out double aTripTime, out int aPBToken)
+    {
+        object[] results = this.EndInvoke(asyncResult);
+        aFare = ((double)(results[1]));
+        aTolls = ((double)(results[2]));
+        aDistance = ((double)(results[3]));
+        aTripTime = ((double)(results[4]));
+        aPBToken = ((int)(results[5]));
+        return ((double)(results[0]));
+    }
+
+    /// <remarks/>
+    public void EstimateFare_9Async(string Login, string Password, TBookOrder_8 aBookOrder)
+    {
+        this.EstimateFare_9Async(Login, Password, aBookOrder, null);
+    }
+
+    /// <remarks/>
+    public void EstimateFare_9Async(string Login, string Password, TBookOrder_8 aBookOrder, object userState)
+    {
+        if ((this.EstimateFare_9OperationCompleted == null))
+        {
+            this.EstimateFare_9OperationCompleted = new System.Threading.SendOrPostCallback(this.OnEstimateFare_9OperationCompleted);
+        }
+        this.InvokeAsync("EstimateFare_9", new object[] {
+                    Login,
+                    Password,
+                    aBookOrder}, this.EstimateFare_9OperationCompleted, userState);
+    }
+
+    private void OnEstimateFare_9OperationCompleted(object arg)
+    {
+        if ((this.EstimateFare_9Completed != null))
+        {
+            System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+            this.EstimateFare_9Completed(this, new EstimateFare_9CompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
         }
     }
 
@@ -9330,6 +9465,116 @@ public partial class UpdateJobPaymentTypeCompletedEventArgs : System.ComponentMo
         {
             this.RaiseExceptionIfNecessary();
             return ((int)(this.results[0]));
+        }
+    }
+}
+
+/// <remarks/>
+[System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.0.30319.18020")]
+public delegate void SaveBookOrder_9CompletedEventHandler(object sender, SaveBookOrder_9CompletedEventArgs e);
+
+/// <remarks/>
+[System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.0.30319.18020")]
+[System.Diagnostics.DebuggerStepThroughAttribute()]
+[System.ComponentModel.DesignerCategoryAttribute("code")]
+public partial class SaveBookOrder_9CompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs
+{
+
+    private object[] results;
+
+    internal SaveBookOrder_9CompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) :
+        base(exception, cancelled, userState)
+    {
+        this.results = results;
+    }
+
+    /// <remarks/>
+    public int Result
+    {
+        get
+        {
+            this.RaiseExceptionIfNecessary();
+            return ((int)(this.results[0]));
+        }
+    }
+}
+
+/// <remarks/>
+[System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.0.30319.18020")]
+public delegate void EstimateFare_9CompletedEventHandler(object sender, EstimateFare_9CompletedEventArgs e);
+
+/// <remarks/>
+[System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.0.30319.18020")]
+[System.Diagnostics.DebuggerStepThroughAttribute()]
+[System.ComponentModel.DesignerCategoryAttribute("code")]
+public partial class EstimateFare_9CompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs
+{
+
+    private object[] results;
+
+    internal EstimateFare_9CompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) :
+        base(exception, cancelled, userState)
+    {
+        this.results = results;
+    }
+
+    /// <remarks/>
+    public double Result
+    {
+        get
+        {
+            this.RaiseExceptionIfNecessary();
+            return ((double)(this.results[0]));
+        }
+    }
+
+    /// <remarks/>
+    public double aFare
+    {
+        get
+        {
+            this.RaiseExceptionIfNecessary();
+            return ((double)(this.results[1]));
+        }
+    }
+
+    /// <remarks/>
+    public double aTolls
+    {
+        get
+        {
+            this.RaiseExceptionIfNecessary();
+            return ((double)(this.results[2]));
+        }
+    }
+
+    /// <remarks/>
+    public double aDistance
+    {
+        get
+        {
+            this.RaiseExceptionIfNecessary();
+            return ((double)(this.results[3]));
+        }
+    }
+
+    /// <remarks/>
+    public double aTripTime
+    {
+        get
+        {
+            this.RaiseExceptionIfNecessary();
+            return ((double)(this.results[4]));
+        }
+    }
+
+    /// <remarks/>
+    public int aPBToken
+    {
+        get
+        {
+            this.RaiseExceptionIfNecessary();
+            return ((int)(this.results[5]));
         }
     }
 }
