@@ -105,7 +105,7 @@
 "LocalContactCannotBeResolverTitle"="الإسم غير صحيح";
 "VehicleNumberErrorTitle"="خطأ";
 "ResetPasswordSucessMessage"="تم إعادة ضبط كلمة المرور بنجاح";
-"CreditCardInstructions"="لكي تستخدم هذا التطبيق، يجب أن تضيف رقم بطاقة إئتمانية لحسابك.";
+"CreditCardInstructions"="In order to use the application, you need to add a payment method to your account.";
 "ServiceErrorUnauthorized"="انتهى وقت اتصالك. رجاء تسجيل الدخول للإستمرار.";
 "NoFareTextIfDestinationIsRequired"="يجب أن تحدد الوجهة.";
 "LocationDetailAddressLabel"="العنوان";
@@ -505,7 +505,7 @@
 "Knowledgabledriver"="Knowledgable driver";
 "View_AccountConfirmation_Label_Code"="Code";
 "View"="View";
-"View_CreditCard"="بطاقة إئتمان";
+"View_CreditCard"="دفع";
 "CreditCardAdded"="Your account is now enabled to pay with your card on file by default. You can still choose to pay in the vehicle by selecting \"Pay in Vehicle\" on the payment screen";
 "PanelMenuViewPaymentInfoText"="Payment";
 "ServiceErrorCreateOrder_PendingOrder"="You cannot book this ride since an order is already pending. View the order status?";

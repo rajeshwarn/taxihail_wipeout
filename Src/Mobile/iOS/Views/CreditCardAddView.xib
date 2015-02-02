@@ -236,7 +236,7 @@
                                     <rect key="frame" x="70" y="15" width="275" height="41"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Account Linked" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Uey-2u-3uC">
-                                            <rect key="frame" x="125" y="11" width="126" height="21"/>
+                                            <rect key="frame" x="125" y="10" width="126" height="21"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                             <nil key="highlightedColor"/>
@@ -278,7 +278,7 @@
                         <constraint firstItem="GXd-K4-4cG" firstAttribute="leading" secondItem="4" secondAttribute="leading" constant="8" id="E68-3I-Duw"/>
                         <constraint firstItem="hLR-a7-OyV" firstAttribute="top" secondItem="GXd-K4-4cG" secondAttribute="bottom" constant="15" id="HT2-JA-Lq3"/>
                         <constraint firstAttribute="width" secondItem="pfD-TX-kyS" secondAttribute="width" id="L66-Ld-gGQ"/>
-                        <constraint firstItem="pfD-TX-kyS" firstAttribute="top" secondItem="4" secondAttribute="top" priority="500" constant="15" id="Q19-iw-kj2"/>
+                        <constraint firstItem="pfD-TX-kyS" firstAttribute="top" secondItem="4" secondAttribute="top" priority="400" constant="15" id="Q19-iw-kj2"/>
                         <constraint firstAttribute="bottom" secondItem="hLR-a7-OyV" secondAttribute="bottom" priority="500" id="TVt-No-aeZ"/>
                         <constraint firstItem="GXd-K4-4cG" firstAttribute="top" secondItem="4" secondAttribute="top" constant="14" id="cFY-mb-mv8"/>
                         <constraint firstAttribute="trailing" secondItem="pfD-TX-kyS" secondAttribute="trailing" id="coT-4R-TiD"/>

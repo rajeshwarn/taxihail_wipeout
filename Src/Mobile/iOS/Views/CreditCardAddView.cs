@@ -13,6 +13,8 @@ using apcurium.MK.Booking.Mobile.Client.Style;
 using apcurium.MK.Booking.Mobile.Client.Diagnostics;
 using ServiceStack.Text;
 using apcurium.MK.Booking.Mobile.Infrastructure;
+using apcurium.MK.Booking.Mobile.Client.Controls.Widgets;
+using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
@@ -109,7 +111,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				.For("TouchUpInside")
 				.To(vm => vm.DeleteCreditCardCommand);
 			set.Bind(btnDeleteCard)
-				.For(v => v.Hidden)
+                .For(v => v.HiddenWithConstraints)
                 .To(vm => vm.CanDeleteCreditCard)
 				.WithConversion("BoolInverter");
 
@@ -217,6 +219,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			btnLinkPayPal.SetLeftImage("paypal_icon.png");
             btnUnlinkPayPal.SetTitle(Localize.GetValue("UnlinkPayPal"), UIControlState.Normal);
             btnUnlinkPayPal.TouchUpInside += (sender, e) => ViewModel.UnlinkPayPalAccount();
+
+            // Add horizontal separator
+            if (!ViewModel.IsPayPalOnly)
+            {
+                viewPayPal.AddSubview(Line.CreateHorizontal(8f, 0f, viewPayPal.Frame.Width - (2*8f), UIColor.Black, 1f));
+            }
         }
 
         private bool GoToNext (UITextField textField)

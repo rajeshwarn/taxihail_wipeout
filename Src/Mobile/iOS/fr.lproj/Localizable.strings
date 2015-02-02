@@ -105,7 +105,7 @@
 "CreditCardErrorTitle"="Cette carte ne peut être sauvegardée";
 "CreditCardExpMonth"="Date d'expiration (mois)";
 "CreditCardExpYear"="Date d'expiration (année)";
-"CreditCardInstructions"="Afin d'utiliser l'application, vous devez ajouter une carte de crédit à votre compte.";
+"CreditCardInstructions"="Afin d'utiliser l'application, vous devez ajouter un mode de paiement à votre compte.";
 "CreditCardInvalidCrediCardNUmber"="Le numéro de la carte ne semble pas être valide";
 "CreditCardName"="Nom du titulaire (tel qu'il apparaît sur la carte)";
 "CreditCardNumber"="Numéro de la carte";
@@ -460,7 +460,7 @@
 "DeleteCreditCard"="Supprimer la carte associée à ce compte?";
 "CreditCardAdded"="Votre compte est maintenant configuré pour le paiement par défaut via carte de crédit. Vous pouvez quand même choisir de payer dans le véhicule en choisissant l'option appropriée à l'écran de paiement.";
 "View"="Voir";
-"View_CreditCard"="Carte de paiement";
+"View_CreditCard"="Paiement";
 "PanelMenuViewPaymentInfoText"="Paiement";
 "ServiceErrorCreateOrder_PendingOrder"="La commande ne peut être créée car une autre commande est déjà en cours. Voir le statut de la commande?";
 "CurrencyPriceFormat"="{0:C}";

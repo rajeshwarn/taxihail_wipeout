@@ -68,7 +68,7 @@
 "ServiceErrorCreateAccount_InvalidConfirmationToken"="Código de confirmación inválido";
 "LocationHistoryTitle"="Historial de lugares";
 "Notification_NearbyTaxiPush"="Taxis cercanos";
-"View_CreditCard"="Tarjeta de crédito";
+"View_CreditCard"="Pago";
 "NoCreditCardSelected"="Por favor seleccione una tarjeta de crédito";
 "ChargeTypeCreditCardFile"="Tarjeta de crédito guardada";
 "Edit"="Editar";
@@ -123,7 +123,7 @@
 "LocalContactCannotBeResolverTitle"="Contacto inválido";
 "VehicleNumberErrorTitle"="Error";
 "ResetPasswordSucessMessage"="La contraseña ha sido restablecida exitosamente";
-"CreditCardInstructions"="Para usar esta aplicación necesita ingresar una tarjeta de crédito a su cuenta";
+"CreditCardInstructions"="Para usar esta aplicación necesita ingresar un método de pago a su cuenta";
 "ServiceErrorUnauthorized"="Su sesión ha expirado, por favor re-inicie sesión para continuar";
 "NoFareTextIfDestinationIsRequired"="Necesita especificar su destino";
 "LocationDetailAddressLabel"="Dirección";
