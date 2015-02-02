@@ -18,30 +18,30 @@ namespace apcurium.MK.Booking.Api.Services
     {
         private readonly IIBSServiceProvider _ibsServiceProvider;
         private readonly IServerSettings _serverSettings;
-        private readonly Booking.Resources.Resources _resources;
+        private readonly Resources.Resources _resources;
         public IbsFareService(IIBSServiceProvider ibsServiceProvider, IServerSettings serverSettings)
         {
             _ibsServiceProvider = ibsServiceProvider;
             _serverSettings = serverSettings;
-            _resources = new Booking.Resources.Resources(serverSettings);
+            _resources = new Resources.Resources(serverSettings);
         }
 
         public DirectionInfo Get(IbsFareRequest request)
         {
             // TODO: Adapt distance format
             var tripDurationInMinutes = (request.TripDurationInSeconds.HasValue ? (int?)TimeSpan.FromSeconds(request.TripDurationInSeconds.Value).TotalMinutes : null);
-            var fare = _ibsServiceProvider.Booking().GetFareEstimate(request.PickupLatitude, request.PickupLongitude,
-                request.DropoffLatitude, request.DropoffLongitude, 
-                request.PickupZipCode, request.DropoffZipCode,
-                request.AccountNumber, request.CustomerNumber, tripDurationInMinutes, _serverSettings.ServerData.DefaultBookingSettings.ProviderId, request.VehicleType);
+            var fare = _ibsServiceProvider.Booking().GetFareEstimate(request.PickupLatitude, request.PickupLongitude, request.DropoffLatitude, request.DropoffLongitude, 
+                request.PickupZipCode, request.DropoffZipCode, request.AccountNumber, request.CustomerNumber, tripDurationInMinutes, 
+                _serverSettings.ServerData.DefaultBookingSettings.ProviderId, request.VehicleType);
             return fare.FareEstimate != null
                 ? new DirectionInfo
-                {
-                    Distance = (int) (fare.Distance*1000),
-                    Price = fare.FareEstimate,
-                    FormattedDistance = FormatDistance((int) (fare.Distance*1000)),
-                    FormattedPrice = _resources.FormatPrice( fare.FareEstimate)
-                }            
+                    {
+                        Distance = (int) (fare.Distance*1000),
+                        Price = fare.FareEstimate,
+                        FormattedDistance = FormatDistance((int) (fare.Distance*1000)),
+                        FormattedPrice = _resources.FormatPrice( fare.FareEstimate),
+                        Token = fare.Token
+                    }            
                 : new DirectionInfo();
         }
 

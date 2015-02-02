@@ -304,13 +304,7 @@
             var dropOffZipCode = dest != null ?
             (dest.zipCode != null ? dest.zipCode : '') : '';
 
-            var accountNumber = '';
-
-            var chargeType = (account.id == null) ? -1 : account.get('settings')['chargeTypeId'];
-            if (chargeType == 2) {
-                accountNumber = this.model.get('accountNumber');
-                accountNumber = accountNumber != null ? accountNumber : '';
-            }
+            var accountNumber = (account.id == null) ? '' : this.model.get('accountNumber');
 
             if (pickup && dest) {
                 TaxiHail.directionInfo.getInfo(pickup.latitude, pickup.longitude, dest.latitude, dest.longitude, pickupZipCode, dropOffZipCode, vtype, '', accountNumber)

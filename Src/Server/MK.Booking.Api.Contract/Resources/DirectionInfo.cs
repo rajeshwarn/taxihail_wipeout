@@ -17,5 +17,7 @@
         public int? EtaDuration { get; set; }
         
         public int? TripDurationInSeconds { get; set; }
+
+        public int Token { get; set; }
     }
 }

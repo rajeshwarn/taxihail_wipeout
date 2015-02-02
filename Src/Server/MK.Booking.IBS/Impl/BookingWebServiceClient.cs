@@ -166,14 +166,16 @@ namespace apcurium.MK.Booking.IBS.Impl
                 double tolls;
                 double distance;
                 double tripTime;
+                int estimateToken;
 
-                result.FareEstimate = service.EstimateFare_8(UserNameApp, PasswordApp, tbook, out fare, out tolls, out distance, out tripTime);
+                result.FareEstimate = service.EstimateFare_9(UserNameApp, PasswordApp, tbook, out fare, out tolls, out distance, out tripTime, out estimateToken);
                 if ( result.FareEstimate == 0 )
                 {
                     result.FareEstimate = fare;
                 }
                 result.Distance = distance;
                 result.Tolls = tolls;
+                result.Token = estimateToken;
             });
 
             return result;
@@ -311,8 +313,7 @@ namespace apcurium.MK.Booking.IBS.Impl
             return regEx.Replace(phone, "");
         }
 
-        public int? CreateOrder(int? providerId, int accountId, string passengerName, string phone, int nbPassengers, int? vehicleTypeId,
-            int? chargeTypeId, string note, DateTime pickupDateTime, IbsAddress pickup, IbsAddress dropoff, string accountNumber, int? customerNumber, string[] prompts, int?[] promptsLength, Fare fare = default(Fare))
+        public int? CreateOrder(int? providerId, int accountId, string passengerName, string phone, int nbPassengers, int? vehicleTypeId, int? chargeTypeId, string note, DateTime pickupDateTime, IbsAddress pickup, IbsAddress dropoff, string accountNumber, int? customerNumber, string[] prompts, int?[] promptsLength, int estimateToken, Fare fare = default(Fare))
         {
             Logger.LogMessage("WebService Create Order call : accountID=" + accountId);
             
@@ -322,9 +323,9 @@ namespace apcurium.MK.Booking.IBS.Impl
                 AccountID = accountId,                
                 Customer = passengerName,
                 Phone = CleanPhone( phone ),
-                Fare = (double)fare.AmountExclTax,
-                VAT = (double)fare.TaxAmount,
-                AccountNum = accountNumber,            
+                Fare = fare.AmountExclTax,
+                VAT = fare.TaxAmount,
+                AccountNum = accountNumber          
             };
 
             order.AccountNum =  accountNumber;
@@ -377,7 +378,6 @@ namespace apcurium.MK.Booking.IBS.Impl
             order.OrderStatus = TWEBOrderStatusValue.wosPost;
 
             SetPrompts(order, prompts, promptsLength);
-            //order.Prompt1 
 
             int? orderId = null;
 
@@ -389,8 +389,9 @@ namespace apcurium.MK.Booking.IBS.Impl
                                   JsonSerializer.SerializeToString(order.PickupAddress, typeof(TWEBAddress)));
                 Logger.LogMessage("WebService Creating IBS Order dest : " +
                                   JsonSerializer.SerializeToString(order.DropoffAddress, typeof(TWEBAddress)));
+                Logger.LogMessage("WebService Creating IBS Order estimate token : " + estimateToken);
 
-                orderId = service.SaveBookOrder_8(UserNameApp, PasswordApp, order);
+                orderId = service.SaveBookOrder_9(UserNameApp, PasswordApp, order, estimateToken);
                 Logger.LogMessage("WebService Create Order, orderid receveid : " + orderId);
             });
             return orderId;

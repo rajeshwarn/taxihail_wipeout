@@ -16,18 +16,10 @@
             var pickupZipCode = pickup.zipCode != null ? pickup.zipCode : '';
             var dropOffZipCode = (dest != null && dest.zipCode != null) ? dest.zipCode : '';
 
-            
-
-            
             this.showEstimate = TaxiHail.parameters.isEstimateEnabled && pickup && dest;
             this.showEstimateWarning = TaxiHail.parameters.isEstimateWarningEnabled;
             
-            var accountNumber = '';
-            
-            if (this.model.isPayingWithAccountCharge()) {
-                accountNumber = this.model.get('accountNumber');
-                accountNumber = accountNumber != null ? accountNumber : '';
-            }
+            var accountNumber = this.model.get('accountNumber');
 
             if (this.showEstimate) {
                 TaxiHail.directionInfo.getInfo(pickup.latitude,
@@ -147,6 +139,7 @@
         },
         
         renderResults: function (result) {
+            this.model.set({ 'estimate': result });
             if (result.callForPrice) {
                 this.model.set('estimateDisplay', TaxiHail.localize("CallForPrice"));
             } else
