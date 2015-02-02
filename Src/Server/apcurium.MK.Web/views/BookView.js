@@ -212,7 +212,7 @@
                     url: "api/roaming/market?latitude=" + position.latitude + "&longitude=" + position.longitude,
                     type: "GET",
                     dataType: "text",
-                    success: _.bind(function (data) {
+                    success: _.bind(function(data) {
                         this.model.set('market', data);
 
                         if (data !== "") {
@@ -225,6 +225,11 @@
                         this.model.set('lastMarketPosition', { Latitude: position.latitude, Longitude: position.longitude });
                     }, this)
                 });
+            } else {
+                // Retrigger market change so that estimate can be computed
+                var currentMarket = this.model.get('market');
+                this.model.unset('market', { silent: true });
+                this.model.set('market', currentMarket);
             }
         },
 
