@@ -115,6 +115,9 @@ namespace MK.Common.Configuration
         [Display(Name = "Send Payment Detail To Driver", Description = "Inform the driver of auto payment success or failure")]
         public bool SendDetailedPaymentInfoToDriver { get; private set; }
 
+        [Display(Name = "Disable Newer Version Popup", Description = "Disables the popup on the application telling the user that a new version is available")]
+        public bool DisableNewerVersionPopup { get; private set; }
+
         public string BaseUrl { get; private set; }
     }
 }
