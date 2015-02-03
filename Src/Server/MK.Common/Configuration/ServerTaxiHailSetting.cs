@@ -116,7 +116,10 @@ namespace MK.Common.Configuration
         [Display(Name = "Send Payment Detail To Driver", Description = "Inform the driver of auto payment success or failure")]
         public bool SendDetailedPaymentInfoToDriver { get; private set; }
 
-        [Display(Name = "Base Url Override", Description = "Overrides the base url of the application (ex: In account confirmation email)")]
+        [Display(Name = "Disable Newer Version Popup", Description = "Disables the popup on the application telling the user that a new version is available")]
+        public bool DisableNewerVersionPopup { get; private set; }
+
+	    [Display(Name = "Base Url Override", Description = "Overrides the base url of the application (ex: In account confirmation email)")]
         public string BaseUrl { get; private set; }
 
         [Display(Name = "TaxiHail Pro", Description = "Company has access to TaxiHail Pro features")]
