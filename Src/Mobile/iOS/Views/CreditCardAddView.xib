@@ -34,7 +34,7 @@
             <rect key="frame" x="0.0" y="64" width="320" height="504"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4">
+                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
                     <subviews>
                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="In order to use the application, you need to add a credit card to your account." textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="304" translatesAutoresizingMaskIntoConstraints="NO" id="GXd-K4-4cG">
@@ -43,7 +43,7 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hLR-a7-OyV" userLabel="CreditCard">
-                            <rect key="frame" x="0.0" y="70" width="320" height="388"/>
+                            <rect key="frame" x="0.0" y="70" width="320" height="394"/>
                             <subviews>
                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name as it appears on the card" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ngX-Wq-laP">
                                     <rect key="frame" x="8" y="10" width="185" height="17"/>
@@ -144,7 +144,7 @@
                                     </state>
                                 </button>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IeH-q4-qcf" customClass="FlatButton">
-                                    <rect key="frame" x="8" y="332" width="304" height="41"/>
+                                    <rect key="frame" x="8" y="338" width="304" height="41"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="41" id="5gS-ue-E6P"/>
                                         <constraint firstAttribute="width" constant="304" id="66V-f1-zBw"/>
@@ -156,7 +156,7 @@
                                     </state>
                                 </button>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sNz-rV-N8y" customClass="FlatButton">
-                                    <rect key="frame" x="8" y="289" width="304" height="41"/>
+                                    <rect key="frame" x="8" y="292" width="304" height="41"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="41" id="JnM-Ms-ak8"/>
                                         <constraint firstAttribute="width" constant="304" id="aEE-uJ-lIl"/>
@@ -192,7 +192,7 @@
                                 <constraint firstAttribute="centerX" secondItem="IeH-q4-qcf" secondAttribute="centerX" id="cVp-Wj-59t"/>
                                 <constraint firstAttribute="centerX" secondItem="WJg-Rj-tzy" secondAttribute="centerX" id="da7-PT-P6a"/>
                                 <constraint firstItem="ngX-Wq-laP" firstAttribute="top" secondItem="hLR-a7-OyV" secondAttribute="top" constant="10" id="gqs-sv-Jo0"/>
-                                <constraint firstItem="IeH-q4-qcf" firstAttribute="top" secondItem="sNz-rV-N8y" secondAttribute="bottom" constant="2" id="iG0-nP-46y"/>
+                                <constraint firstItem="IeH-q4-qcf" firstAttribute="top" secondItem="sNz-rV-N8y" secondAttribute="bottom" constant="5" id="iG0-nP-46y"/>
                                 <constraint firstItem="At1-rh-wQX" firstAttribute="centerY" secondItem="CKf-21-NCh" secondAttribute="centerY" id="oEJ-Aq-Nhy"/>
                                 <constraint firstAttribute="trailing" secondItem="CKf-21-NCh" secondAttribute="trailing" constant="8" id="osu-B2-tO2"/>
                                 <constraint firstItem="ngX-Wq-laP" firstAttribute="leading" secondItem="hLR-a7-OyV" secondAttribute="leading" constant="8" id="rUa-Qw-u0v"/>
@@ -200,13 +200,13 @@
                                 <constraint firstAttribute="centerX" secondItem="sNz-rV-N8y" secondAttribute="centerX" id="upb-PX-2Kn"/>
                                 <constraint firstAttribute="trailing" secondItem="3fV-2N-0Oy" secondAttribute="trailing" constant="8" id="wnz-dA-pcL"/>
                                 <constraint firstItem="At1-rh-wQX" firstAttribute="leading" secondItem="hLR-a7-OyV" secondAttribute="leading" constant="8" id="x5S-F6-EbY"/>
-                                <constraint firstItem="sNz-rV-N8y" firstAttribute="top" secondItem="WJg-Rj-tzy" secondAttribute="bottom" constant="2" id="x9S-5X-F7o"/>
+                                <constraint firstItem="sNz-rV-N8y" firstAttribute="top" secondItem="WJg-Rj-tzy" secondAttribute="bottom" constant="5" id="x9S-5X-F7o"/>
                                 <constraint firstAttribute="bottom" secondItem="sNz-rV-N8y" secondAttribute="bottom" priority="500" constant="15" id="yYy-hF-plZ"/>
                                 <constraint firstItem="RPn-ad-Ae9" firstAttribute="centerY" secondItem="AHt-1S-sWk" secondAttribute="centerY" id="ziR-t5-qse"/>
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pfD-TX-kyS" userLabel="PayPal">
-                            <rect key="frame" x="0.0" y="458" width="320" height="71"/>
+                            <rect key="frame" x="0.0" y="464" width="320" height="71"/>
                             <subviews>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="btW-1V-APs" customClass="FlatButton">
                                     <rect key="frame" x="8" y="15" width="304" height="41"/>
