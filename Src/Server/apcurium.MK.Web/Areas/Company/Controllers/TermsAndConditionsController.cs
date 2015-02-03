@@ -14,7 +14,7 @@ namespace apcurium.MK.Web.Areas.Company.Controllers
             _companyDao = companyDao;
         }
 
-        // GET: Company/Privacy
+        // GET: Company/TermsAndConditions
         public ActionResult Index()
         {
             return View(_companyDao.Get());
