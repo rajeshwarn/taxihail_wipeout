@@ -5,6 +5,7 @@ using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Common.Configuration;
 using ServiceStack.ServiceInterface;
+using System;
 
 #endregion
 
@@ -21,6 +22,11 @@ namespace apcurium.MK.Booking.Api.Services
 
         public object Get(ApplicationInfoRequest request)
         {
+            if (_serverSettings.ServerData.DisableNewerVersionPopup)
+            {
+                throw new Exception();
+            }
+
             var info = new ApplicationInfo
             {
                 Version = Assembly.GetAssembly(typeof (ApplicationInfoService)).GetName().Version.ToString(),
