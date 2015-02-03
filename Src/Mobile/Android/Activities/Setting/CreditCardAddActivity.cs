@@ -124,11 +124,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
 
             PayPalConfiguration.ClientId(clienId);
 
+            var baseUri = ViewModel.Settings.ServiceUrl.Replace("api/", string.Empty);
+
             PayPalConfiguration.MerchantName(ViewModel.Settings.TaxiHail.ApplicationName);
             PayPalConfiguration.MerchantPrivacyPolicyUri(
-                Android.Net.Uri.Parse(string.Format("{0}/privacypolicy", ViewModel.Settings.ServiceUrl)));
+                Android.Net.Uri.Parse(string.Format("{0}/company/privacy", baseUri)));
             PayPalConfiguration.MerchantUserAgreementUri(
-                Android.Net.Uri.Parse(string.Format("{0}/termsandconditions", ViewModel.Settings.ServiceUrl)));
+                Android.Net.Uri.Parse(string.Format("{0}/company/termsandconditions", baseUri)));
 
             var intent = new Intent(this, typeof (PayPalService));
             intent.PutExtra(PayPalService.ExtraPaypalConfiguration, PayPalConfiguration);

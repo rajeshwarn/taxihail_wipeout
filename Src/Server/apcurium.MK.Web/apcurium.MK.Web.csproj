@@ -425,6 +425,7 @@
     <Content Include="Areas\AdminTH\Views\PromoCode\Statistics.cshtml" />
     <Content Include="Areas\AdminTH\Views\PromoCode\UserStatistics.cshtml" />
     <Content Include="Areas\AdminTH\Views\CompanySettings\Index.cshtml" />
+    <Content Include="Areas\Company\Views\TermsAndConditions\Index.cshtml" />
     <None Include="Scripts\jquery-1.8.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.8.2.js" />
     <Content Include="Scripts\jquery-1.8.2.min.js" />
@@ -644,6 +645,7 @@
     <Compile Include="Areas\BaseController.cs" />
     <Compile Include="Areas\Company\CompanyAreaRegistration.cs" />
     <Compile Include="Areas\Company\Controllers\PrivacyController.cs" />
+    <Compile Include="Areas\Company\Controllers\TermsAndConditionsController.cs" />
     <Compile Include="Areas\ServiceStackController.cs" />
     <Compile Include="Attributes\AuthorizationRequiredAttribute.cs" />
     <Compile Include="Attributes\SkipAuthenticationAttribute.cs" />
