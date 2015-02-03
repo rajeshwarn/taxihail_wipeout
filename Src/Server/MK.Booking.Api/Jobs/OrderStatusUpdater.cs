@@ -599,20 +599,20 @@ namespace apcurium.MK.Booking.Api.Jobs
                 Log.DebugFormat("Order {0}: No pairing to process as no pairing information was found.", orderStatusDetail.OrderId);
                 return;
             }
-            
+
             var paymentMode = _serverSettings.GetPaymentSettings().PaymentMode;
-            if (paymentMode == PaymentMethod.RideLinqCmt)
+            var isPayPal = _paymentAbstractionService.IsPayPal(null, orderStatusDetail.OrderId);
+            
+            if (!isPayPal && paymentMode == PaymentMethod.RideLinqCmt)
             {
                 HandlePairingForRideLinqCmt(pairingInfo, ibsOrderInfo);
                 return;
             }
 
-            var isPayPal = _paymentAbstractionService.IsPayPal(null, orderStatusDetail.OrderId);
             if (isPayPal
                 || paymentMode == PaymentMethod.Cmt
                 || paymentMode == PaymentMethod.Braintree
-                || paymentMode == PaymentMethod.Moneris
-                )
+                || paymentMode == PaymentMethod.Moneris)
             {
                 HandlePairingForStandardPairing(orderStatusDetail, pairingInfo, ibsOrderInfo);
                 return;
