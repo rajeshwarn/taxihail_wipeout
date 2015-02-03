@@ -667,6 +667,12 @@ namespace apcurium.MK.Booking.Api.Services
 
         private int? CreateIbsOrder(int ibsAccountId, CreateOrder request, ReferenceData referenceData, string chargeType, string[] prompts, int?[] promptsLength, string companyKey = null)
         {
+            if (_serverSettings.ServerData.IBS.FakeOrderStatusUpdate)
+            {
+                // Fake IBS order id
+                return new Random(Guid.NewGuid().GetHashCode()).Next(90000, 90000000);
+            }
+
             var defaultCompany = referenceData.CompaniesList.FirstOrDefault(x => x.IsDefault.HasValue && x.IsDefault.Value)
                     ?? referenceData.CompaniesList.FirstOrDefault();
 
