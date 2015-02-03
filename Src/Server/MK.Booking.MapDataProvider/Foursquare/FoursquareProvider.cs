@@ -33,6 +33,10 @@ namespace MK.Booking.MapDataProvider.Foursquare
 
 		public GeoPlace[] GetNearbyPlaces (double? latitude, double? longitude, string languageCode, bool sensor, int radius, string pipedTypeList = null)
 		{
+
+            latitude = (!latitude.HasValue || (latitude.Value == 0)) ? _settings.Data.DefaultLatitude : latitude.Value;
+            longitude = (!longitude.HasValue || (longitude.Value == 0)) ? _settings.Data.DefaultLongitude : longitude.Value;
+
             var searchQueryString = GetBaseQueryString(latitude, longitude, radius);
 
 		    pipedTypeList = pipedTypeList ?? _settings.Data.FoursquarePlacesTypes;
