@@ -429,7 +429,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
 			_accountService.RemoveCreditCard(replacedByPayPal);
             
-            ShowViewModelAndRemoveFromHistory<HomeViewModel>(new { locateUser = bool.TrueString });
+			if (!replacedByPayPal)
+			{
+				ShowViewModelAndRemoveFromHistory<HomeViewModel>(new { locateUser = bool.TrueString });
+			}
 	    }
 
         private async void SaveCreditCard()
