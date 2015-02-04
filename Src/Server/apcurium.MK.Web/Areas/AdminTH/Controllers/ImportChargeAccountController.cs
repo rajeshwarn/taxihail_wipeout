@@ -37,8 +37,16 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
         {
             if (AuthSession.IsAuthenticated)
             {
-                var result = ImportAccounts();
-                return View(result);
+                try
+                {
+                    var result = ImportAccounts();
+                    return View(result);
+                }
+                catch (Exception ex)
+                {
+                    ViewBag.Error = "Cannot import accounts: " + ex.Message;
+                    return View();
+                }
             }
 
             return Redirect(BaseUrl);
@@ -64,9 +72,13 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
             var chargeAccountsToImport = GetNewChargeAccounts(ibsAccounts).ToList();
 
             var existingAccounts = ibsAccounts
-                    .Where(x => chargeAccountsToImport.All(y => y.AccountNumber != x.AccountNumber)).ToList();
+                    .Where(x => chargeAccountsToImport.All(y => y.AccountNumber != x.AccountNumber))
+                    .ToList();
 
-            var chargeAccounNumbers = chargeAccountsToImport.ToArray().Select(x => x.AccountNumber).Distinct();
+            var chargeAccounNumbers = chargeAccountsToImport
+                .ToArray()
+                .Select(x => x.AccountNumber)
+                .Distinct();
 
             var report = new IbsChargeAccountImportReport();
 
@@ -74,8 +86,9 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
 
             chargeAccounNumbers.ForEach(ibsChargeAccount =>
             {
-                var questions =
-                    chargeAccountsToImport.Where(x => x.AccountNumber == ibsChargeAccount).SelectMany(x => x.Prompts.Where(p=>!string.IsNullOrWhiteSpace(p.Caption ) ));
+                var questions = chargeAccountsToImport
+                    .Where(x => x.AccountNumber == ibsChargeAccount)
+                    .SelectMany(x => x.Prompts.Where(p => !string.IsNullOrWhiteSpace(p.Caption)));
                 var taxiHailQuestions = new List<AccountChargeQuestion>();
                 var questionIndex = 0;
                 var accountId = Guid.NewGuid();
@@ -120,21 +133,15 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                     Questions = taxiHailQuestions.ToArray()
                 });
 
-                var line = new KeyValuePair<string, string>("new",
-                    string.Format("{0}", ibsChargeAccount,
-                        taxiHailQuestions.Count));
+                var line = new KeyValuePair<string, string>("new", ibsChargeAccount);
                 report.ReportLines.Add(line);
-
             });
 
-
-            var importedAccountCharge = new ImportAccountCharge()
+            _commandBus.Send(new ImportAccountCharge
             {
                 AccountCharges = importedTaxiHailChargeAccounts.ToArray(),
                 CompanyId = AppConstants.CompanyId
-            };
-
-            _commandBus.Send(importedAccountCharge);
+            });
 
             existingAccounts.ForEach(existing =>
             {

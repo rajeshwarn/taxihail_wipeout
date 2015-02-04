@@ -1,15 +1,11 @@
-﻿using apcurium.MK.Common.Configuration;
-using apcurium.MK.Common.Diagnostic;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Net;
+﻿using System;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
+using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Diagnostic;
+using apcurium.MK.Common.Extensions;
 using ServiceStack.Text;
 
 namespace apcurium.MK.Booking.IBS.ChargeAccounts
@@ -29,7 +25,12 @@ namespace apcurium.MK.Booking.IBS.ChargeAccounts
 
         private string GetUrl()
         {
-            return _ibsSettings.RestApiUrl;
+            var restApiUrl = _ibsSettings.RestApiUrl;
+            if (!restApiUrl.HasValue())
+            {
+                throw new Exception("IBS RestApiUrl is not configured.  Configure it in the Company Settings before retrying.");
+            }
+            return restApiUrl;
         }
 
         private void SetupClient()
