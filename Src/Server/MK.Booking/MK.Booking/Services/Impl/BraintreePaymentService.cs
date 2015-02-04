@@ -19,7 +19,6 @@ namespace apcurium.MK.Booking.Services.Impl
         private readonly ILogger _logger;
         private readonly IOrderPaymentDao _paymentDao;
         private readonly IPairingService _pairingService;
-        private readonly IServerSettings _serverSettings;
 
         private BraintreeGateway BraintreeGateway { get; set; }
 
@@ -33,7 +32,6 @@ namespace apcurium.MK.Booking.Services.Impl
             _logger = logger;
             _paymentDao = paymentDao;
             _pairingService = pairingService;
-            _serverSettings = serverSettings;
 
             BraintreeGateway = GetBraintreeGateway(serverSettings.GetPaymentSettings().BraintreeServerSettings);
         }
@@ -239,7 +237,7 @@ namespace apcurium.MK.Booking.Services.Impl
             }
         }
 
-        public CommitPreauthorizedPaymentResponse CommitPayment(Guid orderId, decimal amount, decimal meterAmount, decimal tipAmount, string transactionId)
+        public CommitPreauthorizedPaymentResponse CommitPayment(Guid orderId, decimal preauthAmount, decimal amount, decimal meterAmount, decimal tipAmount, string transactionId)
         {
             try
             {

@@ -458,7 +458,7 @@ namespace apcurium.MK.Booking.Api.Jobs
                 {
                     if (totalOrderAmount > 0)
                     {
-                        paymentProviderServiceResponse = _paymentAbstractionService.CommitPayment(orderId, totalOrderAmount, meterAmount, tipAmount, paymentDetail.TransactionId);
+                        paymentProviderServiceResponse = _paymentAbstractionService.CommitPayment(orderId, paymentDetail.PreAuthorizedAmount, totalOrderAmount, meterAmount, tipAmount, paymentDetail.TransactionId);
                         message = paymentProviderServiceResponse.Message;
                     }
                     else

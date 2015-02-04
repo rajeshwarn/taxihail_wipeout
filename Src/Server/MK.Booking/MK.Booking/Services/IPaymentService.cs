@@ -8,7 +8,7 @@ namespace apcurium.MK.Booking.Services
     {
         PaymentProvider ProviderType { get; }
         PreAuthorizePaymentResponse PreAuthorize(Guid orderId, string email, string cardToken, decimal amountToPreAuthorize);
-        CommitPreauthorizedPaymentResponse CommitPayment(Guid orderId, decimal amount, decimal meterAmount, decimal tipAmount, string transactionId);
+        CommitPreauthorizedPaymentResponse CommitPayment(Guid orderId, decimal preauthAmount, decimal amount, decimal meterAmount, decimal tipAmount, string transactionId);
         DeleteTokenizedCreditcardResponse DeleteTokenizedCreditcard(string cardToken);
         PairingResponse Pair(Guid orderId, string cardToken, int? autoTipPercentage);
         BasePaymentResponse Unpair(Guid orderId);

@@ -84,14 +84,14 @@ namespace apcurium.MK.Booking.Services
             return _paymentServiceFactory.GetInstance().PreAuthorize(orderId, account.Email, card.Token, amountToPreAuthorize);
         }
 
-        public CommitPreauthorizedPaymentResponse CommitPayment(Guid orderId, decimal amount, decimal meterAmount, decimal tipAmount, string transactionId)
+        public CommitPreauthorizedPaymentResponse CommitPayment(Guid orderId, decimal preauthAmount, decimal amount, decimal meterAmount, decimal tipAmount, string transactionId)
         {
             if (IsPayPal(orderId: orderId))
             {
-                return _payPalServiceFactory.GetInstance().CommitPayment(orderId, amount, meterAmount, tipAmount, transactionId);
+                return _payPalServiceFactory.GetInstance().CommitPayment(orderId, preauthAmount, amount, meterAmount, tipAmount, transactionId);
             }
 
-            return _paymentServiceFactory.GetInstance().CommitPayment(orderId, amount, meterAmount, tipAmount, transactionId);
+            return _paymentServiceFactory.GetInstance().CommitPayment(orderId, preauthAmount, amount, meterAmount, tipAmount, transactionId);
         }
 
         public PairingResponse Pair(Guid orderId, int? autoTipPercentage)

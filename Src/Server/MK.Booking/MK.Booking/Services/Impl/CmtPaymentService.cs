@@ -262,8 +262,10 @@ namespace apcurium.MK.Booking.Services.Impl
             };
         }
 
-        public CommitPreauthorizedPaymentResponse CommitPayment(Guid orderId, decimal amount, decimal meterAmount, decimal tipAmount, string transactionId)
+        public CommitPreauthorizedPaymentResponse CommitPayment(Guid orderId, decimal preauthAmount, decimal amount, decimal meterAmount, decimal tipAmount, string transactionId)
         {
+            // No need to use preauthAmount for CMT because we can't preauthorize
+
             try
             {
                 string authorizationCode = null;

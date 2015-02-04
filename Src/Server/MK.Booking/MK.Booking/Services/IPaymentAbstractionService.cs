@@ -10,7 +10,7 @@ namespace apcurium.MK.Booking.Services
         bool IsPayPal(Guid? accountId = null, Guid? orderId = null);
         PaymentProvider ProviderType(Guid orderId);
         PreAuthorizePaymentResponse PreAuthorize(Guid orderId, AccountDetail account, decimal amountToPreAuthorize);
-        CommitPreauthorizedPaymentResponse CommitPayment(Guid orderId, decimal amount, decimal meterAmount, decimal tipAmount, string transactionId);
+        CommitPreauthorizedPaymentResponse CommitPayment(Guid orderId, decimal preauthAmount, decimal amount, decimal meterAmount, decimal tipAmount, string transactionId);
         PairingResponse Pair(Guid orderId, int? autoTipPercentage);
         BasePaymentResponse Unpair(Guid orderId);
         void VoidPreAuthorization(Guid orderId);
