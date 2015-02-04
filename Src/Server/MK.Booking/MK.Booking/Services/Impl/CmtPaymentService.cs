@@ -241,7 +241,7 @@ namespace apcurium.MK.Booking.Services.Impl
             }
         }
 
-        public PreAuthorizePaymentResponse PreAuthorize(Guid orderId, string email, string cardToken, decimal amountToPreAuthorize)
+        public PreAuthorizePaymentResponse PreAuthorize(Guid orderId, string email, string cardToken, decimal amountToPreAuthorize, bool isReAuth = false)
         {
             var paymentId = Guid.NewGuid();
             _commandBus.Send(new InitiateCreditCardPayment

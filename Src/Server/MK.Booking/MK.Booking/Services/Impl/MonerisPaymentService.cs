@@ -5,6 +5,7 @@ using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Enumeration;
+using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common.Resources;
 using Infrastructure.Messaging;
 using Moneris;
@@ -171,7 +172,7 @@ namespace apcurium.MK.Booking.Services.Impl
             }
         }
 
-        public PreAuthorizePaymentResponse PreAuthorize(Guid orderId, string email, string cardToken, decimal amountToPreAuthorize)
+        public PreAuthorizePaymentResponse PreAuthorize(Guid orderId, string email, string cardToken, decimal amountToPreAuthorize, bool isReAuth = false)
         {
             var message = string.Empty;
             var transactionId = string.Empty;
@@ -199,8 +200,8 @@ namespace apcurium.MK.Booking.Services.Impl
                     // this should never happen in the case of a real preauth (hence the minimum of $50)
                     isSuccessful = true;
                 }
-                
-                if (isSuccessful)
+
+                if (isSuccessful && !isReAuth)
                 {
                     var paymentId = Guid.NewGuid();
                     _commandBus.Send(new InitiateCreditCardPayment
@@ -235,6 +236,23 @@ namespace apcurium.MK.Booking.Services.Impl
             }
         }
 
+        private PreAuthorizePaymentResponse ReAuthorizeIfNecessary(Guid orderId, decimal preauthAmount, decimal amount)
+        {
+            if (amount <= preauthAmount)
+            {
+                return new PreAuthorizePaymentResponse
+                {
+                    IsSuccessful = true
+                };
+            }
+
+            VoidPreAuthorization(orderId);
+
+            var paymentDetail = _paymentDao.FindByOrderId(orderId);
+            
+            return PreAuthorize(orderId, null, paymentDetail.CardToken, amount, true);
+        }
+
         public CommitPreauthorizedPaymentResponse CommitPayment(Guid orderId, decimal preauthAmount, decimal amount, decimal meterAmount, decimal tipAmount, string transactionId)
         {
             try
@@ -242,6 +260,22 @@ namespace apcurium.MK.Booking.Services.Impl
                 string message = null;
                 string authorizationCode = null;
                 string commitTransactionId = transactionId;
+
+                var authResponse = ReAuthorizeIfNecessary(orderId, preauthAmount, amount);
+                if (!authResponse.IsSuccessful)
+                {
+                    return new CommitPreauthorizedPaymentResponse
+                    {
+                        IsSuccessful = false,
+                        TransactionId = commitTransactionId,
+                        Message = string.Format("Moneris Re-Auth of amount {0} failed.", amount)
+                    };
+                }
+
+                if (authResponse.TransactionId.HasValue())
+                {
+                    commitTransactionId = authResponse.TransactionId;
+                }
 
                 var monerisSettings = _serverSettings.GetPaymentSettings().MonerisPaymentSettings;
                 var completionCommand = new Completion(orderId.ToString(), amount.ToString("F"), transactionId,
