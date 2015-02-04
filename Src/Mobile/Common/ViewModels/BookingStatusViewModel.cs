@@ -314,6 +314,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         private bool _isContactingNextCompany;
 	    private int? _currentIbsOrderId; 
 
+		private bool CanRefreshStatus(OrderStatusDetail status)
+		{
+			return status.IBSOrderId.HasValue		// we can exit this loop only if we are assigned an IBSOrderId 
+				|| status.IBSStatusId.HasValue();	// or if we get an IBSStatusId
+		}
+
 		private bool _refreshStatusIsExecuting;
 		private async void RefreshStatus()
         {
@@ -328,7 +334,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				_refreshStatusIsExecuting = true;
 
 				var status = await _bookingService.GetOrderStatusAsync(Order.Id);
-				while(status.IBSOrderId == null)
+				while(!CanRefreshStatus(status))
 				{
 					Logger.LogMessage ("Waiting for Ibs Order Creation (ibs order id)");
 					await Task.Delay(TimeSpan.FromSeconds(1));

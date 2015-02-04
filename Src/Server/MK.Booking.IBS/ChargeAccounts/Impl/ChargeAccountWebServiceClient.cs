@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using apcurium.MK.Booking.IBS.ChargeAccounts.RequestResponse.Resources;
-using CustomerPortal.Client.Http.Extensions;
+﻿using System.Collections.Generic;
 using apcurium.MK.Booking.IBS.ChargeAccounts.RequestResponse;
+using apcurium.MK.Booking.IBS.ChargeAccounts.RequestResponse.Resources;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
 
