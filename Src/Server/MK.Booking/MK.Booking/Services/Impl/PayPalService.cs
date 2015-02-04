@@ -274,29 +274,41 @@ namespace apcurium.MK.Booking.Services.Impl
             var accessToken = GetAccessToken(order.AccountId);
             var apiContext = GetAPIContext(accessToken, orderId);
 
-            var authorization = Authorization.Get(apiContext, authorizationId);
-
-            var capture = new Capture
+            try
             {
-                amount = new Amount
+                var authorization = Authorization.Get(apiContext, authorizationId);
+
+                var capture = new Capture
                 {
-                    currency = authorization.amount.currency,
-                    total = amount.ToString(CultureInfo.InvariantCulture)
-                },
-                is_final_capture = true
-            };
+                    amount = new Amount
+                    {
+                        currency = authorization.amount.currency,
+                        total = amount.ToString(CultureInfo.InvariantCulture)
+                    },
+                    is_final_capture = true
+                };
 
-            var responseCapture = authorization.Capture(apiContext, capture);
+                var responseCapture = authorization.Capture(apiContext, capture);
 
-            var isSuccessful = responseCapture.state == PaymentStates.Pending
-                || responseCapture.state == PaymentStates.Completed;
+                var isSuccessful = responseCapture.state == PaymentStates.Pending
+                    || responseCapture.state == PaymentStates.Completed;
 
-            return new CommitPreauthorizedPaymentResponse
+                return new CommitPreauthorizedPaymentResponse
+                {
+                    IsSuccessful = isSuccessful,
+                    AuthorizationCode = responseCapture.id,
+                    TransactionId = authorizationId
+                };
+            }
+            catch (Exception ex)
             {
-                IsSuccessful = isSuccessful,
-                AuthorizationCode = responseCapture.id,
-                TransactionId = authorizationId
-            };
+                return new CommitPreauthorizedPaymentResponse
+                {
+                    IsSuccessful = false,
+                    TransactionId = authorizationId,
+                    Message = ex.Message
+                };
+            }
         }
 
         public void VoidPreAuthorization(Guid orderId)

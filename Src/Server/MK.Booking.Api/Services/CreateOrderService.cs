@@ -527,19 +527,35 @@ namespace apcurium.MK.Booking.Api.Services
 
         private void ValidatePayment(CreateOrder request, AccountDetail account, bool isFutureBooking, double? appEstimate)
         {
+            var tipPercent = account.DefaultTipPercent ?? _serverSettings.ServerData.DefaultTipPercentage;
+
+            // If there's an estimate, add tip to that estimate
+            if (appEstimate.HasValue)
+            {
+                appEstimate = GetTipAmount(appEstimate.Value, tipPercent);
+            }
+
+            var appEstimateWithTip = appEstimate.HasValue ? Convert.ToDecimal(appEstimate.Value) : (decimal?)null;
+
             // Payment mode is CardOnFile
             if (request.Settings.ChargeTypeId.HasValue
                 && request.Settings.ChargeTypeId.Value == ChargeTypes.CardOnFile.Id)
             {
-                ValidateCreditCard(request.Id, account, request.ClientLanguageCode, isFutureBooking, appEstimate.HasValue ? Convert.ToDecimal(appEstimate.Value) : (decimal?) null);
+                ValidateCreditCard(request.Id, account, request.ClientLanguageCode, isFutureBooking, appEstimateWithTip);
             }
 
             // Payment mode is PayPal
             if (request.Settings.ChargeTypeId.HasValue
                 && request.Settings.ChargeTypeId.Value == ChargeTypes.PayPal.Id)
             {
-                ValidatePayPal(request.Id, account, request.ClientLanguageCode, isFutureBooking, appEstimate.HasValue ? Convert.ToDecimal(appEstimate.Value) : (decimal?)null);
+                ValidatePayPal(request.Id, account, request.ClientLanguageCode, isFutureBooking, appEstimateWithTip);
             }
+        }
+
+        private double GetTipAmount(double amount, double percentage)
+        {
+            var tip = percentage / 100;
+            return Math.Round(amount * tip, 2);
         }
 
         private void ValidateCreditCard(Guid orderId, AccountDetail account, string clientLanguageCode, bool isFutureBooking, decimal? appEstimate)
