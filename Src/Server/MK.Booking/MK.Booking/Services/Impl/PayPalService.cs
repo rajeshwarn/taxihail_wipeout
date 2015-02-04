@@ -277,6 +277,22 @@ namespace apcurium.MK.Booking.Services.Impl
                 };
             }
         }
+        private PreAuthorizePaymentResponse ReAuthorizeIfNecessary(Guid accountId, Guid orderId, decimal preauthAmount, decimal amount)
+        {
+            if (amount <= preauthAmount)
+            {
+                return new PreAuthorizePaymentResponse
+                {
+                    IsSuccessful = true
+                };
+            }
+
+            VoidPreAuthorization(orderId);
+
+            var account = _accountDao.FindById(accountId);
+
+            return PreAuthorize(accountId, orderId, account.Email, amount, true);
+        }
 
         public CommitPreauthorizedPaymentResponse CommitPayment(Guid orderId, decimal preauthAmount, decimal amount, decimal meterAmount, decimal tipAmount, string transactionId)
         {
@@ -346,23 +362,6 @@ namespace apcurium.MK.Booking.Services.Impl
                     Message = string.Format("PayPal commit of amount {0} failed. {1}", amount, exceptionMessage)
                 };
             }
-        }
-
-        private PreAuthorizePaymentResponse ReAuthorizeIfNecessary(Guid accountId, Guid orderId, decimal preauthAmount, decimal amount)
-        {
-            if (amount <= preauthAmount)
-            {
-                return new PreAuthorizePaymentResponse
-                {
-                    IsSuccessful = true
-                };
-            }
-
-            VoidPreAuthorization(orderId);
-
-            var account = _accountDao.FindById(accountId);
-
-            return PreAuthorize(accountId, orderId, account.Email, amount, true);
         }
 
         public void VoidPreAuthorization(Guid orderId)

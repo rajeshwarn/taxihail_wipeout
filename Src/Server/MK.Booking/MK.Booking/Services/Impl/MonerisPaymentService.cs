@@ -255,12 +255,12 @@ namespace apcurium.MK.Booking.Services.Impl
 
         public CommitPreauthorizedPaymentResponse CommitPayment(Guid orderId, decimal preauthAmount, decimal amount, decimal meterAmount, decimal tipAmount, string transactionId)
         {
+            string message;
+            string authorizationCode = null;
+            string commitTransactionId = transactionId;
+
             try
             {
-                string message = null;
-                string authorizationCode = null;
-                string commitTransactionId = transactionId;
-
                 var authResponse = ReAuthorizeIfNecessary(orderId, preauthAmount, amount);
                 if (!authResponse.IsSuccessful)
                 {
@@ -306,7 +306,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 return new CommitPreauthorizedPaymentResponse
                 {
                     IsSuccessful = false,
-                    TransactionId = transactionId,
+                    TransactionId = commitTransactionId,
                     Message = ex.Message
                 };
             }

@@ -202,7 +202,7 @@ namespace apcurium.MK.Booking.Services.Impl
                     isSuccessful = true;
                 }
 
-                if (isSuccessful)
+                if (isSuccessful && !isReAuth)
                 {
                     var paymentId = Guid.NewGuid();
                     _commandBus.Send(new InitiateCreditCardPayment
@@ -237,13 +237,47 @@ namespace apcurium.MK.Booking.Services.Impl
             }
         }
 
+        private PreAuthorizePaymentResponse ReAuthorizeIfNecessary(Guid orderId, decimal preauthAmount, decimal amount)
+        {
+            if (amount <= preauthAmount)
+            {
+                return new PreAuthorizePaymentResponse
+                {
+                    IsSuccessful = true
+                };
+            }
+
+            VoidPreAuthorization(orderId);
+
+            var paymentDetail = _paymentDao.FindByOrderId(orderId);
+
+            return PreAuthorize(orderId, null, paymentDetail.CardToken, amount, true);
+        }
+
         public CommitPreauthorizedPaymentResponse CommitPayment(Guid orderId, decimal preauthAmount, decimal amount, decimal meterAmount, decimal tipAmount, string transactionId)
         {
+            var commitTransactionId = transactionId;
+            string authorizationCode = null;
+
             try
             {
-                string authorizationCode = null;
+                var authResponse = ReAuthorizeIfNecessary(orderId, preauthAmount, amount);
+                if (!authResponse.IsSuccessful)
+                {
+                    return new CommitPreauthorizedPaymentResponse
+                    {
+                        IsSuccessful = false,
+                        TransactionId = commitTransactionId,
+                        Message = string.Format("Braintree Re-Auth of amount {0} failed.", amount)
+                    };
+                }
 
-                var settlementResult = BraintreeGateway.Transaction.SubmitForSettlement(transactionId, amount);
+                if (authResponse.TransactionId.HasValue())
+                {
+                    commitTransactionId = authResponse.TransactionId;
+                }
+
+                var settlementResult = BraintreeGateway.Transaction.SubmitForSettlement(commitTransactionId, amount);
                 
                 var isSuccessful = settlementResult.IsSuccess()
                     && settlementResult.Target != null
@@ -259,7 +293,7 @@ namespace apcurium.MK.Booking.Services.Impl
                     IsSuccessful = isSuccessful,
                     AuthorizationCode = authorizationCode,
                     Message = settlementResult.Message,
-                    TransactionId = transactionId
+                    TransactionId = commitTransactionId
                 };
             }
             catch (Exception ex)
@@ -267,7 +301,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 return new CommitPreauthorizedPaymentResponse
                 {
                     IsSuccessful = false,
-                    TransactionId = transactionId,
+                    TransactionId = commitTransactionId,
                     Message = ex.Message
                 };
             }
