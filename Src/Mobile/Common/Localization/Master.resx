@@ -1483,7 +1483,7 @@
     <value>Pay Cash/Credit Card in Car</value>
   </data>
   <data name="CreditCardAdded" xml:space="preserve">
-    <value>Your account is now enabled to pay with your card on file by default. You can still choose to pay in the vehicle by selecting \"Pay in Vehicle\" on the payment screen</value>
+    <value>Your account is now enabled to pay with your card on file by default. You can still choose to pay in the vehicle by selecting \"Pay in Vehicle\" on the confirmation screen</value>
   </data>
   <data name="PendingOrderMessage" xml:space="preserve">
     <value>You cannot book this ride since an order is already pending. View the order status?</value>
@@ -1732,7 +1732,7 @@
     <value>Link</value>
   </data>
   <data name="PayPalLinked" xml:space="preserve">
-    <value>Your account is now enabled to pay with PayPal by default. You can still choose to pay in the vehicle by selecting \"Pay in Vehicle\" on the payment screen</value>
+    <value>Your account is now enabled to pay with PayPal by default. You can still choose to pay in the vehicle by selecting \"Pay in Vehicle\" on the confirmation screen</value>
   </data>
   <data name="PayPalLinkedInfo" xml:space="preserve">
     <value>Account Linked</value>

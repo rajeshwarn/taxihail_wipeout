@@ -72,13 +72,13 @@ namespace apcurium.MK.Booking.Services.Impl
 
         protected string GetAccessToken(Guid accountId)
         {
-            var refreshToken = _accountDao.GetPayPalRefreshToken(accountId);
-            if (!refreshToken.HasValue())
+            var encodedRefreshToken = _accountDao.GetPayPalEncodedRefreshToken(accountId);
+            if (!encodedRefreshToken.HasValue())
             {
                 throw new ArgumentNullException(string.Format("Refresh token not found for account: {0}", accountId));
             }
 
-            var tokenInfo = new Tokeninfo { refresh_token = CryptoService.Decrypt(refreshToken) };
+            var tokenInfo = new Tokeninfo { refresh_token = CryptoService.Decrypt(encodedRefreshToken) };
             var tokenResult = tokenInfo.CreateFromRefreshToken(GetAPIContext(), new CreateFromRefreshTokenParameters());
 
             return string.Format("{0} {1}", tokenResult.token_type, tokenResult.access_token);

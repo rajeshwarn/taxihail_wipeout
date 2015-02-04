@@ -8,6 +8,6 @@ namespace apcurium.MK.Booking.ReadModel
         [Key]
         public Guid AccountId { get; set; }
 
-        public string RefreshToken { get; set; }
+        public string EncodedRefreshToken { get; set; }
     }
 }

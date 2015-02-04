@@ -1459,7 +1459,7 @@
     <value>Payer dans le taxi</value>
   </data>
   <data name="CreditCardAdded" xml:space="preserve">
-    <value>Votre compte est maintenant configuré pour le paiement par défaut via carte de crédit. Vous pouvez quand même choisir de payer dans le véhicule en choisissant l'option appropriée à l'écran de paiement.</value>
+    <value>Votre compte est maintenant configuré pour le paiement via carte de crédit par défaut. Vous pouvez quand même choisir de payer dans le véhicule en choisissant l'option appropriée à l'écran de confirmation.</value>
   </data>
   <data name="AddACardButton" xml:space="preserve">
     <value>Enregistrez</value>
@@ -1709,7 +1709,7 @@
     <value>Associer PayPal</value>
   </data>
   <data name="UnlinkPayPal" xml:space="preserve">
-    <value>Dissocier  PayPal</value>
+    <value>Dissocier PayPal</value>
   </data>
   <data name="LinkPayPalCCWarning" xml:space="preserve">
     <value>Associer votre compte PayPal supprimera votre carte de crédit enregistrée et PayPal sera utilisé comme mode de paiement par défault. Voulez-vous continuer?</value>
@@ -1730,7 +1730,7 @@
     <value>Associer</value>
   </data>
   <data name="PayPalLinked" xml:space="preserve">
-    <value>Votre compte est maintenant configuré pour le paiement par défaut via PayPal. Vous pouvez quand même choisir de payer dans le véhicule en choisissant l'option appropriée à l'écran de paiement.</value>
+    <value>Votre compte est maintenant configuré pour le paiement via PayPal par défaut. Vous pouvez quand même choisir de payer dans le véhicule en choisissant l'option appropriée à l'écran de confirmation.</value>
   </data>
   <data name="PayPalLinkedInfo" xml:space="preserve">
     <value>Compte associé</value>

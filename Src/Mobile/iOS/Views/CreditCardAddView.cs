@@ -243,14 +243,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         {
             if (_payPalPayment == null)
             {
-                _payPalPaymentDelegate = new PayPalDelegate(authCode => SendAuthCodeToServer(authCode));
+                var baseUri = ViewModel.Settings.ServiceUrl.Replace("api/", string.Empty);
+
+                _payPalPaymentDelegate = new PayPalDelegate(authCode => ViewModel.LinkPayPalAccount(authCode));
                 _payPalPayment = new PayPalCustomFuturePaymentViewController(new PayPalConfiguration
                 {
                     AcceptCreditCards = false, 
                     LanguageOrLocale = (NSString)this.Services().Localize.CurrentLanguage,
                     MerchantName = (NSString)ViewModel.Settings.TaxiHail.ApplicationName,
-                    MerchantPrivacyPolicyURL = new NSUrl(string.Format("{0}/privacypolicy", ViewModel.Settings.ServiceUrl)),
-                    MerchantUserAgreementURL = new NSUrl(string.Format("{0}/termsandconditions", ViewModel.Settings.ServiceUrl)),
+                    MerchantPrivacyPolicyURL = new NSUrl(string.Format("{0}/company/privacy", baseUri)),
+                    MerchantUserAgreementURL = new NSUrl(string.Format("{0}/company/termsandconditions", baseUri)),
                     DisableBlurWhenBackgrounding = true
                 }, _payPalPaymentDelegate);
             }
@@ -270,11 +272,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             {
                 PresentViewController(_payPalPayment, true, null);
             }
-        }
-
-        private void SendAuthCodeToServer(string authCode)
-        {
-            ViewModel.LinkPayPalAccount(authCode);
         }
 
         private void ScanCard ()

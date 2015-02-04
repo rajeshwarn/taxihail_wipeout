@@ -200,7 +200,7 @@ namespace apcurium.MK.Booking.Services.Impl
                         }
                     };
 
-                    var refreshToken = _accountDao.GetPayPalRefreshToken(accountId);
+                    var refreshToken = _accountDao.GetPayPalEncodedRefreshToken(accountId);
                     if (!refreshToken.HasValue())
                     {
                         throw new Exception("Account has no PayPal refresh token");
