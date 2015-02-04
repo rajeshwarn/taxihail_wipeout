@@ -625,6 +625,9 @@ namespace apcurium.MK.Booking.Api.Services
 
             Debug.Assert(request.PickupDate != null, "request.PickupDate != null");
 
+            var isChargeAccount = request.Settings.ChargeTypeId.HasValue
+                                && request.Settings.ChargeTypeId.Value == ChargeTypes.Account.Id;
+
             var result = _ibsServiceProvider.Booking(companyKey, request.Market).CreateOrder(
                 providerId,
                 ibsAccountId,
@@ -632,7 +635,9 @@ namespace apcurium.MK.Booking.Api.Services
                 request.Settings.Phone,
                 request.Settings.Passengers,
                 request.Settings.VehicleTypeId,
-                _serverSettings.ServerData.IBS.PaymentTypePaymentInCarId, // this needs to be null if not set or the payment in car payment type id of ibs
+                isChargeAccount                    // this needs to be null if not set or the payment in car payment type id of ibs                         
+                    ? _serverSettings.ServerData.IBS.PaymentTypeChargeAccountId
+                    : _serverSettings.ServerData.IBS.PaymentTypePaymentInCarId, 
                 note,
                 request.PickupDate.Value,
                 ibsPickupAddress,
