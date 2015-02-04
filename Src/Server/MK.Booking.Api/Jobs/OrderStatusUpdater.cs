@@ -556,12 +556,15 @@ namespace apcurium.MK.Booking.Api.Jobs
                 }
                 else
                 {
-                    //payment error
+                    // Payment error
                     _commandBus.Send(new LogCreditCardError
                     {
                         PaymentId = paymentDetail.PaymentId,
                         Reason = message
                     });
+
+                    // Void PreAuth because commit failed
+                    _paymentAbstractionService.VoidPreAuthorization(orderId);
                 }
 
                 return new CommitPreauthorizedPaymentResponse

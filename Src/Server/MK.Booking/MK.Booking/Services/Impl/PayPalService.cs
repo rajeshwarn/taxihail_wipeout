@@ -306,7 +306,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 {
                     IsSuccessful = false,
                     TransactionId = authorizationId,
-                    Message = ex.Message
+                    Message = string.Format("PayPal commit of amount {0} failed. {1}", amount, ex.Message)
                 };
             }
         }
