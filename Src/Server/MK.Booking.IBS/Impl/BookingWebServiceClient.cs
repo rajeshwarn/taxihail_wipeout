@@ -152,9 +152,13 @@ namespace apcurium.MK.Booking.IBS.Impl
                     tbook.DropoffAddress.Postal = dropoffZipCode;
                 }
 
-                if (customerNumber.HasValue)
+                if ( accountNumber.HasValue()  && customerNumber.HasValue) 
                 {
                     tbook.CustomerNum = customerNumber.Value;
+                }
+                else
+                {
+                    tbook.CustomerNum = -1;
                 }
 
                 if (tripDurationInSeconds.HasValue && tripDurationInSeconds > 0)
@@ -329,13 +333,14 @@ namespace apcurium.MK.Booking.IBS.Impl
             };
 
             order.AccountNum =  accountNumber;
-            //order.CustomerNum = customerNumber ?? -1; 
+            
 
             order.DispByAuto = _ibsSettings.AutoDispatch;
             order.Priority = _ibsSettings.OrderPriority 
                 ? 1 
                 : 0;
 
+            
             order.PickupDate = new TWEBTimeStamp
             {
                 Year = pickupDateTime.Year,
@@ -349,6 +354,16 @@ namespace apcurium.MK.Booking.IBS.Impl
                 Second = 0,
                 Fractions = 0
             };
+
+            if (accountNumber.HasValue() && customerNumber.HasValue)
+            {
+                order.CustomerNum = customerNumber.Value;
+            }
+            else
+            {
+                order.CustomerNum = -1;
+            }
+
 
             order.ChargeTypeID = chargeTypeId ?? -1;
             var aptRing = Params.Get(pickup.Apartment, pickup.RingCode).Where(s => s.HasValue()).JoinBy(" / ");
