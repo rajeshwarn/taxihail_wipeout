@@ -63,10 +63,7 @@ namespace apcurium.MK.Booking.Test.AccountFixture
             Assert.AreEqual(85, @event.ProviderId);
             Assert.AreEqual(69, @event.VehicleTypeId);
             Assert.AreEqual("1234", @event.AccountNumber);
-
-            var @eventPayment = _sut.ThenHasOne<PaymentProfileUpdated>();
-            Assert.AreEqual(_accountId, @eventPayment.SourceId);
-            Assert.AreEqual(defaultTipPercent, @eventPayment.DefaultTipPercent);
+            Assert.AreEqual(defaultTipPercent, @event.DefaultTipPercent);
         }
     }
 }

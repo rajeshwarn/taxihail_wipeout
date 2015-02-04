@@ -26,13 +26,15 @@ namespace apcurium.MK.Booking.Test.CreditCardPaymentFixture
             {
                 SourceId = _paymentId,
                 OrderId = _orderId,
-                TransactionId = "the transaction"
+                TransactionId = "the transaction",
+                Amount = _preAuthAmount
             });
         }
 
         private EventSourcingTestHelper<CreditCardPayment> _sut;
         private Guid _orderId;
         private Guid _paymentId;
+        private readonly decimal _preAuthAmount = 25m;
 
         [Test]
         public void when_capturing_the_payment()

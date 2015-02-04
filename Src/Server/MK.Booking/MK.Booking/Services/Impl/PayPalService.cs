@@ -155,10 +155,11 @@ namespace apcurium.MK.Booking.Services.Impl
             };
         }
 
-        public PreAuthorizePaymentResponse PreAuthorize(Guid accountId, Guid orderId, string email, decimal amountToPreAuthorize, string metadataId = "")
+        public PreAuthorizePaymentResponse PreAuthorize(Guid accountId, Guid orderId, string email, decimal amountToPreAuthorize)
         {
             var message = string.Empty;
             var transactionId = string.Empty;
+            var preAuthAmount = amountToPreAuthorize;
 
             try
             {
@@ -172,6 +173,7 @@ namespace apcurium.MK.Booking.Services.Impl
                     _logger.LogMessage("PayPal Conversion Rate: {0}", conversionRate);
 
                     var amount = Math.Round(amountToPreAuthorize * conversionRate, 2);
+                    preAuthAmount = amount;
 
                     var futurePayment = new FuturePayment
                     {
@@ -206,7 +208,7 @@ namespace apcurium.MK.Booking.Services.Impl
 
                     var accessToken = GetAccessToken(accountId);
 
-                    var createdPayment = futurePayment.Create(GetAPIContext(accessToken, orderId)/*, metadataId*/);
+                    var createdPayment = futurePayment.Create(GetAPIContext(accessToken, orderId));
                     transactionId = createdPayment.transactions[0].related_resources[0].authorization.id;
 
                     switch (createdPayment.state)
@@ -239,9 +241,7 @@ namespace apcurium.MK.Booking.Services.Impl
                     _commandBus.Send(new InitiateCreditCardPayment
                     {
                         PaymentId = paymentId,
-                        Amount = 0,
-                        Meter = 0,
-                        Tip = 0,
+                        Amount = preAuthAmount,
                         TransactionId = transactionId,
                         OrderId = orderId,
                         Provider = PaymentProvider.PayPal,
@@ -278,7 +278,7 @@ namespace apcurium.MK.Booking.Services.Impl
             }
         }
 
-        public CommitPreauthorizedPaymentResponse CommitPayment(Guid orderId, decimal amount, decimal meterAmount, decimal tipAmount, string authorizationId)
+        public CommitPreauthorizedPaymentResponse CommitPayment(Guid orderId, decimal preauthAmount, decimal amount, decimal meterAmount, decimal tipAmount, string authorizationId)
         {
             var order = _orderDao.FindById(orderId);
             var accessToken = GetAccessToken(order.AccountId);

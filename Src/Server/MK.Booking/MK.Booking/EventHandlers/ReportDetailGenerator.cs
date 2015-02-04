@@ -140,9 +140,7 @@ namespace apcurium.MK.Booking.EventHandlers
                 var orderReport = existingReport ?? new OrderReportDetail { Id = @event.SourceId };
 
                 orderReport.Payment.PaymentId = @event.SourceId;
-                orderReport.Payment.TotalAmountCharged = @event.Amount;
-                orderReport.Payment.MeterAmount = @event.Meter;
-                orderReport.Payment.TipAmount = @event.Tip;
+                orderReport.Payment.PreAuthorizedAmount = @event.Amount;
                 orderReport.Payment.TransactionId = @event.TransactionId.ToSafeString().IsNullOrEmpty() ? "" : "Auth: " + @event.TransactionId;
                 orderReport.Payment.CardToken = @event.CardToken;
                 orderReport.Payment.Type = @event.Provider == PaymentProvider.PayPal ? PaymentType.PayPal : PaymentType.CreditCard;

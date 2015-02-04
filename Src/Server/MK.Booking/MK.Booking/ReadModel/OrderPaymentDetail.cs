@@ -14,6 +14,7 @@ namespace apcurium.MK.Booking.ReadModel
         public Guid PaymentId { get; set; }
 
         public Guid OrderId { get; set; }
+        public decimal PreAuthorizedAmount { get; set; }
         public decimal Amount { get; set; }
         public decimal Meter { get; set; }
         public decimal Tip { get; set; }

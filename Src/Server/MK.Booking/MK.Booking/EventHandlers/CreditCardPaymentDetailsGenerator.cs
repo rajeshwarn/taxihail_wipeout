@@ -75,9 +75,7 @@ namespace apcurium.MK.Booking.EventHandlers
                 context.Save(new OrderPaymentDetail
                 {
                     PaymentId = @event.SourceId,
-                    Amount = @event.Amount,
-                    Meter = @event.Meter,
-                    Tip = @event.Tip,
+                    PreAuthorizedAmount = @event.Amount,
                     TransactionId = @event.TransactionId,
                     OrderId = @event.OrderId,
                     CardToken = @event.CardToken,

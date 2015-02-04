@@ -1,13 +1,10 @@
 using System;
 using System.Linq;
-using System.Threading;
 using apcurium.MK.Booking.Commands;
-using apcurium.MK.Booking.EventHandlers.Integration;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Enumeration;
-using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common.Resources;
 using Infrastructure.Messaging;
 using Moneris;
@@ -209,9 +206,7 @@ namespace apcurium.MK.Booking.Services.Impl
                     _commandBus.Send(new InitiateCreditCardPayment
                     {
                         PaymentId = paymentId,
-                        Amount = 0,
-                        Meter = 0,
-                        Tip = 0,
+                        Amount = amountToPreAuthorize,
                         TransactionId = transactionId,
                         OrderId = orderId,
                         CardToken = cardToken,
@@ -240,7 +235,7 @@ namespace apcurium.MK.Booking.Services.Impl
             }
         }
 
-        public CommitPreauthorizedPaymentResponse CommitPayment(Guid orderId, decimal amount, decimal meterAmount, decimal tipAmount, string transactionId)
+        public CommitPreauthorizedPaymentResponse CommitPayment(Guid orderId, decimal preauthAmount, decimal amount, decimal meterAmount, decimal tipAmount, string transactionId)
         {
             try
             {
