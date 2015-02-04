@@ -158,6 +158,7 @@ namespace apcurium.MK.Booking.Services.Impl
         {
             var message = string.Empty;
             var transactionId = string.Empty;
+            var preAuthAmount = amountToPreAuthorize;
 
             try
             {
@@ -171,6 +172,7 @@ namespace apcurium.MK.Booking.Services.Impl
                     _logger.LogMessage("PayPal Conversion Rate: {0}", conversionRate);
 
                     var amount = Math.Round(amountToPreAuthorize * conversionRate, 2);
+                    preAuthAmount = amount;
 
                     var futurePayment = new FuturePayment
                     {
@@ -238,9 +240,7 @@ namespace apcurium.MK.Booking.Services.Impl
                     _commandBus.Send(new InitiateCreditCardPayment
                     {
                         PaymentId = paymentId,
-                        Amount = 0,
-                        Meter = 0,
-                        Tip = 0,
+                        Amount = preAuthAmount,
                         TransactionId = transactionId,
                         OrderId = orderId,
                         Provider = PaymentProvider.PayPal,

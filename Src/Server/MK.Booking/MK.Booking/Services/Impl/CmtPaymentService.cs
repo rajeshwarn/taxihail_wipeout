@@ -248,8 +248,6 @@ namespace apcurium.MK.Booking.Services.Impl
             {
                 PaymentId = paymentId,
                 Amount = 0,
-                Meter = 0,
-                Tip = 0,
                 TransactionId = string.Empty,
                 OrderId = orderId,
                 CardToken = cardToken,

@@ -209,9 +209,7 @@ namespace apcurium.MK.Booking.Services.Impl
                     _commandBus.Send(new InitiateCreditCardPayment
                     {
                         PaymentId = paymentId,
-                        Amount = 0,
-                        Meter = 0,
-                        Tip = 0,
+                        Amount = amountToPreAuthorize,
                         TransactionId = transactionId,
                         OrderId = orderId,
                         CardToken = cardToken,

@@ -102,6 +102,8 @@ namespace apcurium.MK.Booking.ReadModel
 
         public decimal? TipAmount { get; set; }
 
+        public decimal? PreAuthorizedAmount { get; set; }
+
         public decimal? TotalAmountCharged { get; set; }
 
         public PaymentProvider? Provider { get; set; }

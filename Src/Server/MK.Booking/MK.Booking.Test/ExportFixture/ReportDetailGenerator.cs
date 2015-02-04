@@ -89,6 +89,8 @@ namespace apcurium.MK.Booking.Test.ExportFixture
             Assert.AreEqual(orderReportDetail.OrderStatus.OrderIsCompleted, true);
             Assert.AreEqual(orderReportDetail.VehicleInfos.Color, VehicleColor);
             Assert.AreEqual(orderReportDetail.Payment.IsPaired, true);
+            Assert.AreEqual(orderReportDetail.Payment.PreAuthorizedAmount, 25m);
+            Assert.AreEqual(orderReportDetail.Payment.TotalAmountCharged, 20m);
             Assert.AreEqual(orderReportDetail.Payment.TransactionId, "Auth: " + TransactionIdCcCaptured);
             Assert.AreEqual(orderReportDetail.Promotion.WasApplied, true);
             Assert.AreEqual(orderReportDetail.Promotion.Code, PromoCode);
@@ -136,6 +138,7 @@ namespace apcurium.MK.Booking.Test.ExportFixture
                 SourceId = _paymentId,
                 OrderId = _orderId,
                 TransactionId = TransactionIdCcInitiated,
+                Amount = 25m
             });
         }
 
@@ -176,7 +179,8 @@ namespace apcurium.MK.Booking.Test.ExportFixture
                 AuthorizationCode = "x",
                 SourceId = _paymentId,
                 OrderId = _orderId,
-                TransactionId = TransactionIdCcCaptured
+                TransactionId = TransactionIdCcCaptured,
+                Amount = 20m
             });
         }
 
