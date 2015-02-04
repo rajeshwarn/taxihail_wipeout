@@ -38,7 +38,13 @@ namespace apcurium.MK.Booking.EventHandlers
                 {
                     throw new InvalidOperationException("Payment not found");
                 }
-                    
+
+                if (@event.TransactionId != payment.TransactionId)
+                {
+                    // Transaction was updated (ex: in the case of re-auth)
+                    payment.TransactionId = @event.TransactionId;
+                }
+                
                 payment.AuthorizationCode = @event.AuthorizationCode;
                 payment.IsCompleted = true;
                 payment.Amount = @event.Amount;

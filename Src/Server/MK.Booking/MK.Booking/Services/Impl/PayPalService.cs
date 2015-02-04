@@ -155,7 +155,7 @@ namespace apcurium.MK.Booking.Services.Impl
             };
         }
 
-        public PreAuthorizePaymentResponse PreAuthorize(Guid accountId, Guid orderId, string email, decimal amountToPreAuthorize)
+        public PreAuthorizePaymentResponse PreAuthorize(Guid accountId, Guid orderId, string email, decimal amountToPreAuthorize, bool isReAuth = false)
         {
             var message = string.Empty;
             var transactionId = string.Empty;
@@ -208,7 +208,7 @@ namespace apcurium.MK.Booking.Services.Impl
 
                     var accessToken = GetAccessToken(accountId);
 
-                    var createdPayment = futurePayment.Create(GetAPIContext(accessToken, orderId));
+                    var createdPayment = futurePayment.Create(GetAPIContext(accessToken, isReAuth ? Guid.NewGuid() : orderId));
                     transactionId = createdPayment.transactions[0].related_resources[0].authorization.id;
 
                     switch (createdPayment.state)
@@ -235,7 +235,7 @@ namespace apcurium.MK.Booking.Services.Impl
                     isSuccessful = true;
                 }
 
-                if (isSuccessful)
+                if (isSuccessful && !isReAuth)
                 {
                     var paymentId = Guid.NewGuid();
                     _commandBus.Send(new InitiateCreditCardPayment
@@ -278,15 +278,34 @@ namespace apcurium.MK.Booking.Services.Impl
             }
         }
 
-        public CommitPreauthorizedPaymentResponse CommitPayment(Guid orderId, decimal preauthAmount, decimal amount, decimal meterAmount, decimal tipAmount, string authorizationId)
+        public CommitPreauthorizedPaymentResponse CommitPayment(Guid orderId, decimal preauthAmount, decimal amount, decimal meterAmount, decimal tipAmount, string transactionId)
         {
             var order = _orderDao.FindById(orderId);
             var accessToken = GetAccessToken(order.AccountId);
             var apiContext = GetAPIContext(accessToken, orderId);
 
+            var updatedTransactionId = transactionId;
+
             try
             {
-                var authorization = Authorization.Get(apiContext, authorizationId);
+                var authResponse = ReAuthorizeIfNecessary(order.AccountId, orderId, preauthAmount, amount);
+                if (!authResponse.IsSuccessful)
+                {
+                    return new CommitPreauthorizedPaymentResponse
+                    {
+                        IsSuccessful = false,
+                        TransactionId = updatedTransactionId,
+                        Message = string.Format("PayPal Re-Auth of amount {0} failed.", amount)
+                    };
+                }
+
+                // If we need to re-authorize, we have to update the id since it's another transaction
+                if (authResponse.TransactionId.HasValue())
+                {
+                    updatedTransactionId = authResponse.TransactionId;
+                }
+
+                var authorization = Authorization.Get(apiContext, updatedTransactionId);
 
                 var capture = new Capture
                 {
@@ -307,7 +326,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 {
                     IsSuccessful = isSuccessful,
                     AuthorizationCode = responseCapture.id,
-                    TransactionId = authorizationId
+                    TransactionId = updatedTransactionId
                 };
             }
             catch (Exception ex)
@@ -323,10 +342,27 @@ namespace apcurium.MK.Booking.Services.Impl
                 return new CommitPreauthorizedPaymentResponse
                 {
                     IsSuccessful = false,
-                    TransactionId = authorizationId,
+                    TransactionId = updatedTransactionId,
                     Message = string.Format("PayPal commit of amount {0} failed. {1}", amount, exceptionMessage)
                 };
             }
+        }
+
+        private PreAuthorizePaymentResponse ReAuthorizeIfNecessary(Guid accountId, Guid orderId, decimal preauthAmount, decimal amount)
+        {
+            if (amount <= preauthAmount)
+            {
+                return new PreAuthorizePaymentResponse
+                {
+                    IsSuccessful = true
+                };
+            }
+
+            VoidPreAuthorization(orderId);
+
+            var account = _accountDao.FindById(accountId);
+
+            return PreAuthorize(accountId, orderId, account.Email, amount, true);
         }
 
         public void VoidPreAuthorization(Guid orderId)
