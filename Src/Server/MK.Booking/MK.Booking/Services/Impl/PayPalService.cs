@@ -12,6 +12,7 @@ using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Enumeration.PayPal;
 using apcurium.MK.Common.Resources;
 using Infrastructure.Messaging;
+using PayPal;
 using PayPal.Api;
 using RestSharp.Extensions;
 
@@ -255,10 +256,19 @@ namespace apcurium.MK.Booking.Services.Impl
                     TransactionId = transactionId
                 };
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                _logger.LogMessage(string.Format("Error during preauthorization (validation of the PayPal account) for client {0}: {1} - {2}", email, message, e));
-                _logger.LogError(e);
+                var exceptionMessage = ex.Message;
+
+                var paymentException = ex as PaymentsException;
+                if (paymentException != null && paymentException.Details != null)
+                {
+                    exceptionMessage = paymentException.Details.message;
+                }
+
+                _logger.LogMessage(string.Format("Error during preauthorization (validation of the PayPal account) for client {0}: {1} - {2}",
+                    email, message + exceptionMessage, paymentException ?? ex));
+                _logger.LogError(paymentException ?? ex);
 
                 return new PreAuthorizePaymentResponse
                 {
@@ -302,11 +312,19 @@ namespace apcurium.MK.Booking.Services.Impl
             }
             catch (Exception ex)
             {
+                var exceptionMessage = ex.Message;
+
+                var exception = ex as PaymentsException;
+                if (exception != null && exception.Details != null)
+                {
+                    exceptionMessage = exception.Details.message;
+                }
+
                 return new CommitPreauthorizedPaymentResponse
                 {
                     IsSuccessful = false,
                     TransactionId = authorizationId,
-                    Message = string.Format("PayPal commit of amount {0} failed. {1}", amount, ex.Message)
+                    Message = string.Format("PayPal commit of amount {0} failed. {1}", amount, exceptionMessage)
                 };
             }
         }
@@ -395,7 +413,15 @@ namespace apcurium.MK.Booking.Services.Impl
             }
             catch (Exception ex)
             {
-                message = "The transaction couldn't be cancelled" + ex.Message;
+                var exceptionMessage = ex.Message;
+
+                var exception = ex as PaymentsException;
+                if (exception != null && exception.Details != null)
+                {
+                    exceptionMessage = exception.Details.message;
+                }
+
+                message = "The transaction couldn't be cancelled " + exceptionMessage;
                 throw;
             }
         }
