@@ -550,6 +550,7 @@ namespace apcurium.MK.Booking.Api.Jobs
                         TaxAmount = Convert.ToDecimal(fareObject.TaxAmount),
                         IsNoShowFee = isNoShowFee,
                         AuthorizationCode = paymentProviderServiceResponse.AuthorizationCode,
+                        TransactionId = paymentProviderServiceResponse.TransactionId,
                         PromotionUsed = promoUsedId,
                         AmountSavedByPromotion = amountSaved
                     });

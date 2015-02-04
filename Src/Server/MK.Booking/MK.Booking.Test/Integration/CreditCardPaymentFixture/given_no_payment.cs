@@ -38,6 +38,7 @@ namespace apcurium.MK.Booking.Test.Integration.CreditCardPaymentFixture
                 Assert.AreEqual(34.56m, dto.PreAuthorizedAmount);
                 Assert.AreEqual(0, dto.Amount);
                 Assert.AreEqual("the transaction", dto.TransactionId);
+                Assert.AreEqual("the transaction", dto.FirstPreAuthTransactionId);
                 Assert.AreEqual(false, dto.IsCompleted);
                 Assert.AreEqual(t, dto.CardToken);
                 Assert.AreEqual(PaymentProvider.Braintree, dto.Provider);

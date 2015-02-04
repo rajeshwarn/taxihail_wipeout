@@ -48,11 +48,12 @@ namespace apcurium.MK.Booking.Test.CreditCardPaymentFixture
                 Amount = 24,
                 TipAmount = 2,
                 TaxAmount = 2,
-                AccountId = accountId
+                AccountId = accountId,
+                TransactionId = "123"
             });
 
             var @event = _sut.ThenHasSingle<CreditCardPaymentCaptured_V2>();
-            Assert.AreEqual("the transaction", @event.TransactionId);
+            Assert.AreEqual("123", @event.TransactionId);
             Assert.AreEqual(24, @event.Amount);
             Assert.AreEqual(20, @event.Meter);
             Assert.AreEqual(2, @event.Tip);

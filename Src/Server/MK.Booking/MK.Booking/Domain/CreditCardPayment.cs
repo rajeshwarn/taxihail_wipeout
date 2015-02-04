@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Common.Enumeration;
 using Infrastructure.EventSourcing;
+using RestSharp.Extensions;
 
 #endregion
 
@@ -48,7 +49,7 @@ namespace apcurium.MK.Booking.Domain
             });
         }
 
-        public void Capture(PaymentProvider provider, decimal amount, decimal meterAmount, decimal tipAmount, decimal taxAmount, string authorizationCode, bool isNoShowFee, Guid? promotionUsed, decimal amountSavedByPromotion, Guid accountId)
+        public void Capture(PaymentProvider provider, decimal amount, decimal meterAmount, decimal tipAmount, decimal taxAmount, string authorizationCode, string transactionId, bool isNoShowFee, Guid? promotionUsed, decimal amountSavedByPromotion, Guid accountId)
         {
             if (_isCaptured)
             {
@@ -58,7 +59,7 @@ namespace apcurium.MK.Booking.Domain
             Update(new CreditCardPaymentCaptured_V2
             {
                 OrderId = _orderId,
-                TransactionId = _transactionId,
+                TransactionId = transactionId.HasValue() ? transactionId : _transactionId,
                 AuthorizationCode = authorizationCode,
                 Amount = amount,
                 Meter = meterAmount,
@@ -89,6 +90,11 @@ namespace apcurium.MK.Booking.Domain
         private void OnCreditCardPaymentCaptured(CreditCardPaymentCaptured_V2 obj)
         {
             _isCaptured = true;
+
+            if (obj.TransactionId.HasValue())
+            {
+                _transactionId = obj.TransactionId;
+            }
         }
 
         private void OnCreditCardPaymentCancellationFailed(CreditCardErrorThrown obj)

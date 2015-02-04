@@ -27,6 +27,7 @@ namespace apcurium.MK.Booking.ReadModel
         public PaymentProvider Provider { get; set; }
 
         public string PayPalPayerId { get; set; }
+        public string FirstPreAuthTransactionId { get; set; }
         public string TransactionId { get; set; }
         public string AuthorizationCode { get; set; }
 
