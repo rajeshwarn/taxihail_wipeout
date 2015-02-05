@@ -646,7 +646,6 @@ namespace apcurium.MK.Booking.Api.Services
                 null,
                 prompts,
                 promptsLength,
-                request.Estimate.Token,
                 fare);
 
             return result;

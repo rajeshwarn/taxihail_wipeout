@@ -7,7 +7,5 @@
         public double? Tolls { get; set; }
 
         public double? Distance { get; set; }
-
-        public int Token { get; set; }
     }
 }

@@ -62,8 +62,6 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
             public double? Price { get; set; }
 
             public int Distance { get; set; }
-
-            public int Token { get; set; }
         }
     }
 }

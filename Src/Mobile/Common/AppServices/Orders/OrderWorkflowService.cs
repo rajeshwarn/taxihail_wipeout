@@ -719,8 +719,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 					Price = estimatedFare.Price, 
 					Distance = estimatedFare.Distance.HasValue 
 						? estimatedFare.Distance.Value 
-						: 0,
-					Token = estimatedFare.Token
+						: 0
 				};
 			}
 
