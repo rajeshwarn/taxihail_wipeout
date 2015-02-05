@@ -177,12 +177,6 @@ namespace DatabaseInitializer.Services
                         message.Payload = message.Payload.Replace("\"DistanceFormat\":\"KM\"", "\"DistanceFormat\":\"Km\"");
                     }
                     context.SaveChanges();
-
-                    foreach (var message in events.Where(x => x.EventType.Contains("PayPalAccountLinked")))
-                    {
-                        message.Payload = message.Payload.Replace("RefreshToken", "EncryptedRefreshToken");
-                    }
-                    context.SaveChanges();
                 }
             }
         }
