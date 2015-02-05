@@ -250,7 +250,10 @@ namespace DatabaseInitializer.Sql
                     "FROM [{1}].[Events].[Events] " +
                     "WHERE [EventType] NOT LIKE '%OrderVehiclePositionChanged%'", newDatabase, oldDatabase); // delete OrderVehiclePositionChanged events
 
-            DatabaseHelper.ExecuteNonQuery(connString, queryForEvents);
+            var start = DateTime.Now;
+            Console.WriteLine("Starting to copy events: (Timeout: 1800 seconds)");
+            DatabaseHelper.ExecuteNonQuery(connString, queryForEvents, 1800);
+            Console.WriteLine("Finished copying events (Duration: {0})", (DateTime.Now - start).TotalSeconds);
 
             // copy cache table except the static data
             var queryForCache = string.Format("INSERT INTO [{0}].[Cache].[Items]([Key],[Value],[ExpiresAt]) " +
