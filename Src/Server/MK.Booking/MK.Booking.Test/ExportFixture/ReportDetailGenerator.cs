@@ -91,6 +91,7 @@ namespace apcurium.MK.Booking.Test.ExportFixture
             Assert.AreEqual(orderReportDetail.Payment.IsPaired, true);
             Assert.AreEqual(orderReportDetail.Payment.PreAuthorizedAmount, 25m);
             Assert.AreEqual(orderReportDetail.Payment.TotalAmountCharged, 20m);
+            Assert.AreEqual(orderReportDetail.Payment.FirstPreAuthTransactionId, "Auth: " + TransactionIdCcInitiated);
             Assert.AreEqual(orderReportDetail.Payment.TransactionId, "Auth: " + TransactionIdCcCaptured);
             Assert.AreEqual(orderReportDetail.Promotion.WasApplied, true);
             Assert.AreEqual(orderReportDetail.Promotion.Code, PromoCode);

@@ -238,9 +238,9 @@ namespace apcurium.MK.Booking.Services.Impl
             }
         }
 
-        private PreAuthorizePaymentResponse ReAuthorizeIfNecessary(Guid orderId, decimal preauthAmount, decimal amount)
+        private PreAuthorizePaymentResponse ReAuthorizeIfNecessary(Guid orderId, decimal preAuthAmount, decimal amount)
         {
-            if (amount <= preauthAmount)
+            if (amount <= preAuthAmount)
             {
                 return new PreAuthorizePaymentResponse
                 {
@@ -249,7 +249,7 @@ namespace apcurium.MK.Booking.Services.Impl
             }
 
             _logger.LogMessage(string.Format("Re-Authorizing order {0} because it exceeded the original pre-auth amount ", orderId));
-            _logger.LogMessage(string.Format("Voiding original Pre-Auth of {0}", preauthAmount));
+            _logger.LogMessage(string.Format("Voiding original Pre-Auth of {0}", preAuthAmount));
             
             VoidPreAuthorization(orderId);
 

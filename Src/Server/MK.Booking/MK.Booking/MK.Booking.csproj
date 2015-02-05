@@ -169,7 +169,6 @@
     <Compile Include="Domain\CreditCardPayment.cs" />
     <Compile Include="Domain\Order.cs" />
     <Compile Include="Domain\PaymentInformation.cs" />
-    <Compile Include="Domain\PayPalPayment.cs" />
     <Compile Include="Domain\Promotion.cs" />
     <Compile Include="Email\EmailSender.cs" />
     <Compile Include="Email\IEmailSender.cs" />

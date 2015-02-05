@@ -212,7 +212,6 @@ namespace apcurium.MK.Booking.Services.Impl
             {
                 var order = context.Find<OrderDetail>(orderId);
 
-                // TODO PAYPAL change Succesful resource to depend on PayPal or not for last4digits!!!!!!
                 var isPayPal = order.Settings.ChargeTypeId == ChargeTypes.PayPal.Id;
                 string successMessage;
                 if (isPayPal)

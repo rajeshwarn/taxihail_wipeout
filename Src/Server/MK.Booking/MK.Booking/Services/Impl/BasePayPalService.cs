@@ -72,7 +72,7 @@ namespace apcurium.MK.Booking.Services.Impl
 
         protected string GetAccessToken(Guid accountId)
         {
-            var encodedRefreshToken = _accountDao.GetPayPalEncodedRefreshToken(accountId);
+            var encodedRefreshToken = _accountDao.GetPayPalEncryptedRefreshToken(accountId);
             if (!encodedRefreshToken.HasValue())
             {
                 throw new ArgumentNullException(string.Format("Refresh token not found for account: {0}", accountId));
