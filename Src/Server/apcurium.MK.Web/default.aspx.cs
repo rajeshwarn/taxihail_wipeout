@@ -92,7 +92,7 @@ namespace apcurium.MK.Web
             var referenceDataService = ServiceLocator.Current.GetInstance<ReferenceDataService>();
             var referenceData = (ReferenceData) referenceDataService.Get(new ReferenceDataRequest());
 
-            // remove the card on file charge type since it's not possible to use card on file with the web app
+            // Remove unsupported payment methods by the web app
             referenceData.PaymentsList = HidePaymentTypes(referenceData.PaymentsList, new[] { ChargeTypes.CardOnFile.Id , ChargeTypes.PayPal.Id });
 
             ReferenceData = referenceData.ToString();

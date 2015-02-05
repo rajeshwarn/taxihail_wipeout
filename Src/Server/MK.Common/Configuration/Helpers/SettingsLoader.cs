@@ -24,7 +24,9 @@ namespace apcurium.MK.Common.Configuration.Helpers
 
 						if (propertyType == null)
 						{
+#if DEBUG
 							Console.WriteLine("Warning - can't set value for property {0}, value was {1} - property not found", propertyName, overriddenSetting.Value);
+#endif
 							continue;
 						}
 
@@ -45,7 +47,9 @@ namespace apcurium.MK.Common.Configuration.Helpers
 						{
                             if (targetType == typeof(bool) && string.IsNullOrEmpty(overriddenSetting.Value))
 						    {
+#if DEBUG
                                 Console.WriteLine("Warning - can't set value for property {0}, value was {1}", overriddenSetting.Key, overriddenSetting.Value);
+#endif
 						    }
                             else
                             {
@@ -56,9 +60,11 @@ namespace apcurium.MK.Common.Configuration.Helpers
 					}
 					catch (Exception e)
 					{
+#if DEBUG
                         Console.WriteLine("Warning - can't set value for property {0}, value was {1}", propertyName, overriddenSetting.Value);
                         logger.Maybe(() => logger.LogMessage("Warning - can't set value for property {0}, value was {1}", propertyName, overriddenSetting.Value));
-						logger.Maybe(() => logger.LogError(e));
+#endif
+                        logger.Maybe(() => logger.LogError(e));
 					}
 				}
             }
