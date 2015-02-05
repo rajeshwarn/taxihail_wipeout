@@ -514,10 +514,10 @@
     <value>Aucune carte de crédit enregistrée dans votre compte.</value>
   </data>
   <data name="CannotCreateOrder_PayPalButNoPayPal" xml:space="preserve">
-    <value>Aucun compte PayPal enregistré dans votre compte.</value>
+    <value>Aucun compte PayPal associé à votre compte.</value>
   </data>
   <data name="ServiceErrorCreateOrder_InvalidProvider" xml:space="preserve">
-    <value>La commande ne peut être créé car le fournisseur est invalide. Merci de contacter {0} à {1} pour plus d'assistance.</value>
+    <value>La commande ne peut être créée car le fournisseur est invalide. Merci de contacter {0} à {1} pour plus d'assistance.</value>
   </data>
   <data name="ServiceErrorCreateOrder_InvalidProvider_NoCall" xml:space="preserve">
     <value>Désolé, la demande ne peut être prise en compte. Le fournisseur n'est pas valide.</value>
