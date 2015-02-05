@@ -172,6 +172,7 @@ namespace apcurium.MK.Booking.Services.Impl
             try
             {
                 bool isSuccessful;
+                var orderIdentifier = isReAuth ? string.Format("{0}-1", orderId) : orderId.ToString();
 
                 if (amountToPreAuthorize > 0)
                 {
@@ -179,7 +180,7 @@ namespace apcurium.MK.Booking.Services.Impl
                     {
                         Amount = amountToPreAuthorize,
                         PaymentMethodToken = cardToken,
-                        OrderId = orderId.ToString(),
+                        OrderId = orderIdentifier,
                         Channel = "MobileKnowledgeSystems_SP_MEC",
                         Options = new TransactionOptionsRequest
                         {
@@ -221,7 +222,8 @@ namespace apcurium.MK.Booking.Services.Impl
                 {
                     IsSuccessful = isSuccessful,
                     Message = message,
-                    TransactionId = transactionId
+                    TransactionId = transactionId,
+                    ReAuthOrderId = isReAuth ? orderIdentifier : null
                 };
             }
             catch (Exception e)
@@ -247,9 +249,14 @@ namespace apcurium.MK.Booking.Services.Impl
                 };
             }
 
+            _logger.LogMessage(string.Format("Re-Authorizing order {0} because it exceeded the original pre-auth amount ", orderId));
+            _logger.LogMessage(string.Format("Voiding original Pre-Auth of {0}", preauthAmount));
+
             VoidPreAuthorization(orderId);
 
             var paymentDetail = _paymentDao.FindByOrderId(orderId);
+
+            _logger.LogMessage(string.Format("Re-Authorizing order for amount of {0}", amount));
 
             return PreAuthorize(orderId, null, paymentDetail.CardToken, amount, true);
         }

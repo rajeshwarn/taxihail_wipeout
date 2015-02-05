@@ -180,13 +180,14 @@ namespace apcurium.MK.Booking.Services.Impl
             try
             {
                 bool isSuccessful;
+                var orderIdentifier = isReAuth ? string.Format("{0}-1", orderId) : orderId.ToString();
 
                 if (amountToPreAuthorize > 0)
                 {
                     // PreAuthorize transaction
                     var monerisSettings = _serverSettings.GetPaymentSettings().MonerisPaymentSettings;
 
-                    var preAuthorizeCommand = new ResPreauthCC(cardToken, orderId.ToString(), amountToPreAuthorize.ToString("F"), CryptType_SSLEnabledMerchant);
+                    var preAuthorizeCommand = new ResPreauthCC(cardToken, orderIdentifier, amountToPreAuthorize.ToString("F"), CryptType_SSLEnabledMerchant);
                     var preAuthRequest = new HttpsPostRequest(monerisSettings.Host, monerisSettings.StoreId, monerisSettings.ApiToken, preAuthorizeCommand);
                     var preAuthReceipt = preAuthRequest.GetReceipt();
 
@@ -220,7 +221,8 @@ namespace apcurium.MK.Booking.Services.Impl
                 {
                     IsSuccessful = isSuccessful,
                     Message = message,
-                    TransactionId = transactionId
+                    TransactionId = transactionId,
+                    ReAuthOrderId = isReAuth ? orderIdentifier : null
                 };
             }
             catch (Exception e)
@@ -246,10 +248,15 @@ namespace apcurium.MK.Booking.Services.Impl
                 };
             }
 
+            _logger.LogMessage(string.Format("Re-Authorizing order {0} because it exceeded the original pre-auth amount ", orderId));
+            _logger.LogMessage(string.Format("Voiding original Pre-Auth of {0}", preauthAmount));
+            
             VoidPreAuthorization(orderId);
 
             var paymentDetail = _paymentDao.FindByOrderId(orderId);
-            
+
+            _logger.LogMessage(string.Format("Re-Authorizing order for amount of {0}", amount));
+
             return PreAuthorize(orderId, null, paymentDetail.CardToken, amount, true);
         }
 
@@ -278,7 +285,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 }
 
                 var monerisSettings = _serverSettings.GetPaymentSettings().MonerisPaymentSettings;
-                var completionCommand = new Completion(orderId.ToString(), amount.ToString("F"), transactionId,
+                var completionCommand = new Completion(authResponse.ReAuthOrderId ?? orderId.ToString(), amount.ToString("F"), commitTransactionId,
                     CryptType_SSLEnabledMerchant);
                 var commitRequest = new HttpsPostRequest(monerisSettings.Host, monerisSettings.StoreId,
                     monerisSettings.ApiToken, completionCommand);
@@ -298,7 +305,7 @@ namespace apcurium.MK.Booking.Services.Impl
                     IsSuccessful = isSuccessful,
                     AuthorizationCode = authorizationCode,
                     Message = message,
-                    TransactionId = commitTransactionId 
+                    TransactionId = commitTransactionId
                 };
             }
             catch (Exception ex)

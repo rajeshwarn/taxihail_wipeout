@@ -287,9 +287,14 @@ namespace apcurium.MK.Booking.Services.Impl
                 };
             }
 
+            _logger.LogMessage(string.Format("Re-Authorizing order {0} because it exceeded the original pre-auth amount ", orderId));
+            _logger.LogMessage(string.Format("Voiding original Pre-Auth of {0}", preauthAmount));
+
             VoidPreAuthorization(orderId);
 
             var account = _accountDao.FindById(accountId);
+
+            _logger.LogMessage(string.Format("Re-Authorizing order for amount of {0}", amount));
 
             return PreAuthorize(accountId, orderId, account.Email, amount, true);
         }
