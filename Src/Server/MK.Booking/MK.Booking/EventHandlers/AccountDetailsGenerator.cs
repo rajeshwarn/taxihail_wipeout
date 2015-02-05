@@ -294,6 +294,7 @@ namespace apcurium.MK.Booking.EventHandlers
             {
                 var account = context.Find<AccountDetail>(@event.SourceId);
                 account.IsPayPalAccountLinked = true;
+                account.Settings.ChargeTypeId = ChargeTypes.PayPal.Id;
 
                 var payPalAccountDetails = context.Find<PayPalAccountDetails>(@event.SourceId);
                 if (payPalAccountDetails == null)

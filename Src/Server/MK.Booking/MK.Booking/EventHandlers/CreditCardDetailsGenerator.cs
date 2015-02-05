@@ -4,6 +4,7 @@ using System;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.ReadModel;
+using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using AutoMapper;
 using Infrastructure.Messaging.Handling;
@@ -45,6 +46,11 @@ namespace apcurium.MK.Booking.EventHandlers
                 var creditCard = existingCreditCard ?? new CreditCardDetails();
                 Mapper.Map(@event, creditCard);
                 context.Save(creditCard);
+
+                // Update prefered payment type in profile
+                var account = context.Find<AccountDetail>(@event.SourceId);
+                account.Settings.ChargeTypeId = ChargeTypes.CardOnFile.Id;
+                context.Save(account);
             }
         }
 
