@@ -46,11 +46,6 @@ namespace apcurium.MK.Booking.EventHandlers
                 var creditCard = existingCreditCard ?? new CreditCardDetails();
                 Mapper.Map(@event, creditCard);
                 context.Save(creditCard);
-
-                // Update prefered payment type in profile
-                var account = context.Find<AccountDetail>(@event.SourceId);
-                account.Settings.ChargeTypeId = ChargeTypes.CardOnFile.Id;
-                context.Save(account);
             }
         }
 
