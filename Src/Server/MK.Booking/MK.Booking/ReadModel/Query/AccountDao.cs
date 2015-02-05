@@ -77,12 +77,12 @@ namespace apcurium.MK.Booking.ReadModel.Query
             }
         }
 
-        public string GetPayPalEncodedRefreshToken(Guid id)
+        public string GetPayPalEncryptedRefreshToken(Guid id)
         {
             using (var context = _contextFactory.Invoke())
             {
                 var payPalAccountInfo = context.Query<PayPalAccountDetails>().SingleOrDefault(c => c.AccountId == id);
-                return payPalAccountInfo != null ? payPalAccountInfo.EncodedRefreshToken : null;
+                return payPalAccountInfo != null ? payPalAccountInfo.EncryptedRefreshToken : null;
             }
         }
     }

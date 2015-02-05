@@ -112,6 +112,7 @@ namespace apcurium.MK.Booking.Api.Services.Admin
                             orderReportEntry["Payment.TotalAmountCharged"] = orderReport.Payment.TotalAmountCharged.ToString();
                             orderReportEntry["Payment.Type"] = orderReport.Payment.Type.ToString();
                             orderReportEntry["Payment.Provider"] = orderReport.Payment.Provider.ToString();
+                            orderReportEntry["Payment.FirstPreAuthTransactionId"] = orderReport.Payment.FirstPreAuthTransactionId.ToSafeString();
                             orderReportEntry["Payment.TransactionId"] = orderReport.Payment.TransactionId.ToSafeString();
                             orderReportEntry["Payment.AuthorizationCode"] = orderReport.Payment.AuthorizationCode;
                             orderReportEntry["Payment.CardToken"] = orderReport.Payment.CardToken;

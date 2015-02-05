@@ -228,7 +228,7 @@ namespace apcurium.MK.Booking.Api.Services
                     .Select(x => x.Display)
                     .FirstOrDefault();
 
-            chargeTypeKey = accountValidationResult.ChargeTypeOverride ?? chargeTypeKey;
+            chargeTypeKey = accountValidationResult.ChargeTypeKeyOverride ?? chargeTypeKey;
 
             if (chargeTypeKey != null)
             {
@@ -320,7 +320,7 @@ namespace apcurium.MK.Booking.Api.Services
             {
                 Prompts = prompts,
                 PromptsLength = promptsLength,
-                ChargeTypeOverride = chargeTypeOverride,
+                ChargeTypeKeyOverride = chargeTypeOverride,
                 IsChargeAccountPaymentWithCardOnFile = isChargeAccountPaymentWithCardOnFile
             };
         }
@@ -995,7 +995,7 @@ namespace apcurium.MK.Booking.Api.Services
 
             public int?[] PromptsLength { get; set; }
 
-            public string ChargeTypeOverride { get; set; }
+            public string ChargeTypeKeyOverride { get; set; }
 
             public bool IsChargeAccountPaymentWithCardOnFile { get; set; }
         }

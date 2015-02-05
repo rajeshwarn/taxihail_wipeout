@@ -302,12 +302,12 @@ namespace apcurium.MK.Booking.EventHandlers
                     context.Save(new PayPalAccountDetails
                     {
                         AccountId = @event.SourceId,
-                        EncodedRefreshToken = @event.RefreshToken
+                        EncryptedRefreshToken = @event.EncryptedRefreshToken
                     });
                 }
                 else
                 {
-                    payPalAccountDetails.EncodedRefreshToken = @event.RefreshToken;
+                    payPalAccountDetails.EncryptedRefreshToken = @event.EncryptedRefreshToken;
                 }
 
                 context.SaveChanges();

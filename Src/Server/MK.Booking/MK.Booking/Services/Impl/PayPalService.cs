@@ -70,7 +70,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 _commandBus.Send(new LinkPayPalAccount
                 {
                     AccountId = accountId,
-                    RefreshToken = CryptoService.Encrypt(tokenInfo.refresh_token)
+                    EncryptedRefreshToken = CryptoService.Encrypt(tokenInfo.refresh_token)
                 });
 
                 return new BasePaymentResponse
@@ -200,7 +200,7 @@ namespace apcurium.MK.Booking.Services.Impl
                         }
                     };
 
-                    var refreshToken = _accountDao.GetPayPalEncodedRefreshToken(accountId);
+                    var refreshToken = _accountDao.GetPayPalEncryptedRefreshToken(accountId);
                     if (!refreshToken.HasValue())
                     {
                         throw new Exception("Account has no PayPal refresh token");
@@ -277,9 +277,9 @@ namespace apcurium.MK.Booking.Services.Impl
                 };
             }
         }
-        private PreAuthorizePaymentResponse ReAuthorizeIfNecessary(Guid accountId, Guid orderId, decimal preauthAmount, decimal amount)
+        private PreAuthorizePaymentResponse ReAuthorizeIfNecessary(Guid accountId, Guid orderId, decimal preAuthAmount, decimal amount)
         {
-            if (amount <= preauthAmount)
+            if (amount <= preAuthAmount)
             {
                 return new PreAuthorizePaymentResponse
                 {
@@ -288,7 +288,7 @@ namespace apcurium.MK.Booking.Services.Impl
             }
 
             _logger.LogMessage(string.Format("Re-Authorizing order {0} because it exceeded the original pre-auth amount ", orderId));
-            _logger.LogMessage(string.Format("Voiding original Pre-Auth of {0}", preauthAmount));
+            _logger.LogMessage(string.Format("Voiding original Pre-Auth of {0}", preAuthAmount));
 
             VoidPreAuthorization(orderId);
 

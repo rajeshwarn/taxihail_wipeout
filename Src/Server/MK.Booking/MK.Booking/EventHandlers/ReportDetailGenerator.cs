@@ -141,6 +141,7 @@ namespace apcurium.MK.Booking.EventHandlers
 
                 orderReport.Payment.PaymentId = @event.SourceId;
                 orderReport.Payment.PreAuthorizedAmount = @event.Amount;
+                orderReport.Payment.FirstPreAuthTransactionId = @event.TransactionId.ToSafeString().IsNullOrEmpty() ? "" : "Auth: " + @event.TransactionId;
                 orderReport.Payment.TransactionId = @event.TransactionId.ToSafeString().IsNullOrEmpty() ? "" : "Auth: " + @event.TransactionId;
                 orderReport.Payment.CardToken = @event.CardToken;
                 orderReport.Payment.Type = @event.Provider == PaymentProvider.PayPal ? PaymentType.PayPal : PaymentType.CreditCard;
