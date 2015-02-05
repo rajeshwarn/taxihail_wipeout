@@ -110,6 +110,8 @@ namespace apcurium.MK.Booking.ReadModel
 
         public PaymentType? Type { get; set; }
 
+        public string FirstPreAuthTransactionId { get; set; }
+
         public string TransactionId { get; set; }
 
         public string AuthorizationCode { get; set; }
