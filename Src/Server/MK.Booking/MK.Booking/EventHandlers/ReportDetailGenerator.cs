@@ -137,7 +137,7 @@ namespace apcurium.MK.Booking.EventHandlers
             using (var context = _contextFactory.Invoke())
             {
                 var existingReport = context.Find<OrderReportDetail>(@event.OrderId);
-                var orderReport = existingReport ?? new OrderReportDetail { Id = @event.SourceId };
+                var orderReport = existingReport ?? new OrderReportDetail { Id = @event.OrderId };
 
                 orderReport.Payment.PaymentId = @event.SourceId;
                 orderReport.Payment.PreAuthorizedAmount = @event.Amount;
