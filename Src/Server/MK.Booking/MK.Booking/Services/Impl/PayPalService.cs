@@ -155,13 +155,13 @@ namespace apcurium.MK.Booking.Services.Impl
             };
         }
 
-        public InitializeWebPaymentResponse InitializeWebPayment(Guid accoundId, string baseUri, double? estimatedFare)
+        public InitializePayPalCheckoutResponse InitializeWebPayment(Guid accoundId, string baseUri, double? estimatedFare)
         {
             var account = _accountDao.FindById(accoundId);
 
             if (!estimatedFare.HasValue)
             {
-                return new InitializeWebPaymentResponse
+                return new InitializePayPalCheckoutResponse
                 {
                     IsSuccessful = false,
                     Message = "No estimated fare"
@@ -237,7 +237,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 var link = links.Current;
                 if (link.rel.ToLower().Trim().Equals("approval_url"))
                 {
-                    return new InitializeWebPaymentResponse
+                    return new InitializePayPalCheckoutResponse
                     {
                         IsSuccessful = true,
                         PaymentId = createdPayment.id,
@@ -247,16 +247,46 @@ namespace apcurium.MK.Booking.Services.Impl
                 }
             }
 
-            return new InitializeWebPaymentResponse
+            return new InitializePayPalCheckoutResponse
             {
                 IsSuccessful = false
             };
         }
 
-        public string ExecuteWebPayment()
+        public CommitPreauthorizedPaymentResponse ExecuteWebPayment(string payerId, string paymentId)
         {
-            //TODO
-            throw new NotImplementedException();
+            var paymentExecution = new PaymentExecution { payer_id = payerId };
+            var payment = new Payment { id = paymentId };
+
+            try
+            {
+                var executedPayment = payment.Execute(GetAPIContext(), paymentExecution);
+
+                return new CommitPreauthorizedPaymentResponse
+                {
+                    IsSuccessful = true,
+                    TransactionId = paymentId,
+                    AuthorizationCode = executedPayment.id 
+                };
+            }
+            catch (Exception ex)
+            {
+                var exceptionMessage = ex.Message;
+
+                var paymentException = ex as PaymentsException;
+                if (paymentException != null && paymentException.Details != null)
+                {
+                    exceptionMessage = paymentException.Details.message;
+                }
+
+                _logger.LogMessage(string.Format("PayPal checkout for Payer {0} -PaymentId {1}- failed. {2}", payerId, paymentId, exceptionMessage));
+
+                return new CommitPreauthorizedPaymentResponse
+                {
+                    IsSuccessful = false,
+                    Message = exceptionMessage
+                };
+            }
         }
 
         public PreAuthorizePaymentResponse PreAuthorize(Guid accountId, Guid orderId, string email, decimal amountToPreAuthorize, bool isReAuth = false)
@@ -464,11 +494,14 @@ namespace apcurium.MK.Booking.Services.Impl
                     exceptionMessage = exception.Details.message;
                 }
 
+                var errorMessage = string.Format("PayPal commit of amount {0} failed. {1}", amount, exceptionMessage);
+                _logger.LogMessage(errorMessage);
+
                 return new CommitPreauthorizedPaymentResponse
                 {
                     IsSuccessful = false,
                     TransactionId = updatedTransactionId,
-                    Message = string.Format("PayPal commit of amount {0} failed. {1}", amount, exceptionMessage)
+                    Message = errorMessage
                 };
             }
         }

@@ -1,8 +1,7 @@
-﻿using apcurium.MK.Common.Resources;
-
-namespace apcurium.MK.Booking.Services.Impl
+﻿
+namespace apcurium.MK.Common.Resources
 {
-    public class InitializeWebPaymentResponse : BasePaymentResponse
+    public class InitializePayPalCheckoutResponse : BasePaymentResponse
     {
         public string PaymentId { get; set; }
 
