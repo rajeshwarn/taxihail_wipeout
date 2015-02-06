@@ -1087,6 +1087,24 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Taxi booking.
+        /// </summary>
+        public static string PayPalWebItemDescription {
+            get {
+                return ResourceManager.GetString("PayPalWebItemDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Taxi ride of amount {0}.
+        /// </summary>
+        public static string PayPalWebPaymentDescription {
+            get {
+                return ResourceManager.GetString("PayPalWebPaymentDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Due to high demand, no cars are available right now. Do you want to book with {0} instead?.
         /// </summary>
         public static string PushNotification_ChangeNetworkCompany {

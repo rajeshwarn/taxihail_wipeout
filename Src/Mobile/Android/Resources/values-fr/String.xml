@@ -465,7 +465,7 @@
   <string name="View">Voir</string>
   <string name="ServiceErrorCreateOrder_PendingOrder">La commande ne peut être créée car une autre commande est déjà en cours. Voir le statut de la commande?</string>
   <string name="View_CreditCard">Paiement</string>
-  <string name="CreditCardAdded">Votre compte est maintenant configuré pour le paiement par défaut via carte de crédit. Vous pouvez quand même choisir de payer dans le véhicule en choisissant l\'option appropriée à l\'écran de paiement.</string>
+  <string name="CreditCardAdded">Votre compte est maintenant configuré pour le paiement via carte de crédit par défaut. Vous pouvez quand même choisir de payer dans le véhicule en choisissant l\'option appropriée à l\'écran de confirmation.</string>
   <string name="PanelMenuViewPaymentInfoText">Paiement</string>
   <string name="LoginSupport">Support Technique?</string>
   <string name="CurrencyPriceFormat">{0:C}</string>
@@ -569,7 +569,7 @@
   <string name="ErrorCreateOrder_PendingOrder">La commande ne peut être créée car une autre commande est déjà en cours. Voir le statut de la commande?</string>
   <string name="TermsAndConditionsLabel">Conditions générales d\'utilisation</string>
   <string name="LinkPayPal">Associer PayPal</string>
-  <string name="UnlinkPayPal">Dissocier  PayPal</string>
+  <string name="UnlinkPayPal">Dissocier PayPal</string>
   <string name="LinkPayPalCCWarning">Associer votre compte PayPal supprimera votre carte de crédit enregistrée et PayPal sera utilisé comme mode de paiement par défault. Voulez-vous continuer?</string>
   <string name="AddCoFPayPalWarning">Ajouter une carte de crédit dissociera votre compte PayPal et configurera cette dernière comme mode de paiement par défaut. Voulez-vous continuer?</string>
   <string name="PayPalErrorTitle">Erreur PayPal</string>
@@ -577,7 +577,7 @@
   <string name="PayPalUnlinkError">Impossible de dissocier votre compte PayPal</string>
   <string name="PayPalLink">Associer</string>
   <string name="LinkPayPalConfirmation">Associer</string>
-  <string name="PayPalLinked">Votre compte est maintenant configuré pour le paiement par défaut via PayPal. Vous pouvez quand même choisir de payer dans le véhicule en choisissant l\'option appropriée à l\'écran de paiement.</string>
+  <string name="PayPalLinked">Votre compte est maintenant configuré pour le paiement via PayPal par défaut. Vous pouvez quand même choisir de payer dans le véhicule en choisissant l\'option appropriée à l\'écran de confirmation.</string>
   <string name="PayPalLinkedInfo">Compte associé</string>
   <string name="Error">Erreur</string>
 </resources>

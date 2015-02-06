@@ -552,4 +552,10 @@
   <data name="ServiceError_ErrorCreatingOrderMessage_NoCall" xml:space="preserve">
     <value>Votre demande n'a pas pu être prise en compte</value>
   </data>
+  <data name="PayPalWebItemDescription" xml:space="preserve">
+    <value>Payment d'une course</value>
+  </data>
+  <data name="PayPalWebPaymentDescription" xml:space="preserve">
+    <value>Course d'un montant de {0}</value>
+  </data>
 </root>

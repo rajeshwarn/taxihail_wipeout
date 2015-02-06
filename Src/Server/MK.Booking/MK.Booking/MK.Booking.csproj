@@ -319,6 +319,7 @@
     <Compile Include="Services\Impl\BasePayPalService.cs" />
     <Compile Include="Services\Impl\BraintreePaymentService.cs" />
     <Compile Include="Services\Impl\CmtPaymentService.cs" />
+    <Compile Include="Services\Impl\InitializeWebPaymentResponse.cs" />
     <Compile Include="Services\Impl\MonerisPaymentService.cs" />
     <Compile Include="Services\Impl\PairingService.cs" />
     <Compile Include="Services\Impl\PayPalService.cs" />

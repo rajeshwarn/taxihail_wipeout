@@ -49,6 +49,7 @@ namespace apcurium.MK.Booking.Api.Services
         private readonly HoneyBadgerServiceClient _honeyBadgerServiceClient;
         private readonly ITaxiHailNetworkServiceClient _taxiHailNetworkServiceClient;
         private readonly IPaymentAbstractionService _paymentAbstractionService;
+        private readonly IPayPalServiceFactory _payPalServiceFactory;
         private readonly IAccountChargeDao _accountChargeDao;
         private readonly ICommandBus _commandBus;
         private readonly IServerSettings _serverSettings;
@@ -71,7 +72,8 @@ namespace apcurium.MK.Booking.Api.Services
             IEventSourcedRepository<Promotion> promoRepository,
             HoneyBadgerServiceClient honeyBadgerServiceClient,
             ITaxiHailNetworkServiceClient taxiHailNetworkServiceClient,
-            IPaymentAbstractionService paymentAbstractionService)
+            IPaymentAbstractionService paymentAbstractionService,
+            IPayPalServiceFactory payPalServiceFactory)
         {
             _accountChargeDao = accountChargeDao;
             _commandBus = commandBus;
@@ -87,6 +89,7 @@ namespace apcurium.MK.Booking.Api.Services
             _honeyBadgerServiceClient = honeyBadgerServiceClient;
             _taxiHailNetworkServiceClient = taxiHailNetworkServiceClient;
             _paymentAbstractionService = paymentAbstractionService;
+            _payPalServiceFactory = payPalServiceFactory;
 
             _resources = new Resources.Resources(_serverSettings);
         }
@@ -214,7 +217,15 @@ namespace apcurium.MK.Booking.Api.Services
 
             // Promo code validation
             var applyPromoCommand = ValidateAndApplyPromotion(request.PromoCode, request.Settings.ChargeTypeId, account.Id, request.Id, pickupDate, isFutureBooking, request.ClientLanguageCode);
-            
+
+            if (request.FromWebApp
+                && request.Settings.ChargeTypeId == ChargeTypes.PayPal.Id)
+            {
+                var initializeWebPaymentResponse = _payPalServiceFactory.GetInstance().InitializeWebPayment(account.Id, Request.AbsoluteUri, request.Estimate.Price);
+
+                // TODO: return: don't do order creation yet
+            }
+
             // Payment method validation
             ValidatePayment(request, account, isFutureBooking, request.Estimate.Price);
 
@@ -545,7 +556,8 @@ namespace apcurium.MK.Booking.Api.Services
             }
 
             // Payment mode is PayPal
-            if (request.Settings.ChargeTypeId.HasValue
+            if (!request.FromWebApp
+                && request.Settings.ChargeTypeId.HasValue
                 && request.Settings.ChargeTypeId.Value == ChargeTypes.PayPal.Id)
             {
                 ValidatePayPal(request.Id, account, request.ClientLanguageCode, isFutureBooking, appEstimateWithTip);

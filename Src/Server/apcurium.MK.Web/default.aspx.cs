@@ -101,7 +101,7 @@ namespace apcurium.MK.Web
             var referenceData = (ReferenceData) referenceDataService.Get(new ReferenceDataRequest());
 
             // Remove unsupported payment methods by the web app
-            referenceData.PaymentsList = HidePaymentTypes(referenceData.PaymentsList, new[] { ChargeTypes.CardOnFile.Id , ChargeTypes.PayPal.Id });
+            referenceData.PaymentsList = HidePaymentTypes(referenceData.PaymentsList, new[] { ChargeTypes.CardOnFile.Id });
 
             ReferenceData = referenceData.ToString();
 

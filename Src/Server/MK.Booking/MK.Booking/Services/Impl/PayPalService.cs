@@ -155,6 +155,110 @@ namespace apcurium.MK.Booking.Services.Impl
             };
         }
 
+        public InitializeWebPaymentResponse InitializeWebPayment(Guid accoundId, string baseUri, double? estimatedFare)
+        {
+            var account = _accountDao.FindById(accoundId);
+
+            if (!estimatedFare.HasValue)
+            {
+                return new InitializeWebPaymentResponse
+                {
+                    IsSuccessful = false,
+                    Message = "No estimated fare"
+                };
+            }
+
+            var regionName = _serverSettings.ServerData.PayPalRegionInfoOverride;
+            var conversionRate = _serverSettings.ServerData.PayPalConversionRate;
+
+            _logger.LogMessage("PayPal Conversion Rate: {0}", conversionRate);
+            
+            var guid = Guid.NewGuid().ToString();
+            var amount = Math.Round(Convert.ToDecimal(estimatedFare.Value) * conversionRate, 2);
+            var currency = conversionRate != 1
+                ? CurrencyCodes.Main.UnitedStatesDollar
+                : _resources.GetCurrencyCode();
+
+            var redirectUrl = baseUri + "guid=" + guid; // TODO: à changer probablement
+            var redirUrls = new RedirectUrls
+            {
+                cancel_url = redirectUrl + "&cancel=true",
+                return_url = redirectUrl
+            };
+
+            var transactionList = new List<Transaction>
+            {
+                new Transaction
+                {
+                    amount = new Amount
+                    {
+                        currency = currency,
+                        total = amount.ToString(CultureInfo.InvariantCulture)
+                    },	
+
+                    description = string.Format(
+                        _resources.Get("PayPalWebPaymentDescription", regionName.HasValue() 
+                            ? SupportedLanguages.en.ToString()
+                            : account.Language), amount),
+
+                    item_list = new ItemList
+                    {
+                        items = new List<Item>
+                        {
+                            new Item
+                            {
+                                name = string.Format(_resources.Get("PayPalWebItemDescription", regionName.HasValue() 
+                                    ? SupportedLanguages.en.ToString()
+                                    : account.Language)),
+                                currency = currency,
+                                price = amount.ToString(CultureInfo.InvariantCulture)
+                            }
+                        }
+                    }
+                }
+            };
+
+            var payment = new Payment
+            {
+                intent = Intents.Sale,
+                payer = new Payer
+                {
+                    payment_method = "paypal"
+                },
+                transactions = transactionList,
+                redirect_urls = redirUrls
+            };
+
+            var createdPayment = payment.Create(GetAPIContext());
+            var links = createdPayment.links.GetEnumerator();
+
+            while (links.MoveNext())
+            {
+                var link = links.Current;
+                if (link.rel.ToLower().Trim().Equals("approval_url"))
+                {
+                    return new InitializeWebPaymentResponse
+                    {
+                        IsSuccessful = true,
+                        PaymentId = createdPayment.id,
+                        PayerId = createdPayment.payer.payer_info.payer_id,
+                        PayPalCheckoutUrl = link.href       // Links that give the user the option to redirect to PayPal to approve the payment
+                    };
+                }
+            }
+
+            return new InitializeWebPaymentResponse
+            {
+                IsSuccessful = false
+            };
+        }
+
+        public string ExecuteWebPayment()
+        {
+            //TODO
+            throw new NotImplementedException();
+        }
+
         public PreAuthorizePaymentResponse PreAuthorize(Guid accountId, Guid orderId, string email, decimal amountToPreAuthorize, bool isReAuth = false)
         {
             var message = string.Empty;
@@ -177,7 +281,7 @@ namespace apcurium.MK.Booking.Services.Impl
 
                     var futurePayment = new FuturePayment
                     {
-                        intent = "authorize",
+                        intent = Intents.Authorize,
                         payer = new Payer
                         {
                             payment_method = "paypal"
