@@ -643,7 +643,7 @@ namespace apcurium.MK.Booking.Api.Services
                 ibsPickupAddress,
                 ibsDropOffAddress,
                 request.Settings.AccountNumber,
-                null,
+                string.IsNullOrWhiteSpace (request.Settings.AccountNumber ) ?(int?) null:0,
                 prompts,
                 promptsLength,
                 fare);
