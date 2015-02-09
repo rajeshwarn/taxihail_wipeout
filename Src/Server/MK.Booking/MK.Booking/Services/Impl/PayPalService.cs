@@ -279,7 +279,7 @@ namespace apcurium.MK.Booking.Services.Impl
 
             try
             {
-                var executedPayment = payment.Execute(GetAPIContext(), paymentExecution);
+                var executedPayment = payment.Execute(GetAPIContext(GetAccessToken()), paymentExecution);
 
                 return new CommitPreauthorizedPaymentResponse
                 {

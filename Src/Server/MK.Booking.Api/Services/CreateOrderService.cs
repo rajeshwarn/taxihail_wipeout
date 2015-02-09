@@ -107,12 +107,7 @@ namespace apcurium.MK.Booking.Api.Services
             {
                 var temporaryInfo = _orderDao.GetTemporaryInfo(request.OrderId);
                 var response = _payPalServiceFactory.GetInstance().ExecuteWebPayment(request.PayerId, request.PaymentId);
-                if (!response.IsSuccessful || temporaryInfo == null)
-                {
-                    //TODO: send a command like CancelOrderBecauseOfIbsError
-                }
-
-                if (temporaryInfo != null)
+                if (response.IsSuccessful && temporaryInfo != null)
                 {
                     var orderInfo = JsonSerializer.DeserializeFromString<TemporaryOrderCreationInfo>(temporaryInfo.SerializedOrderCreationInfo);
 
@@ -121,6 +116,10 @@ namespace apcurium.MK.Booking.Api.Services
                     Task.Run(() => CreateOrderOnIBSAndSendCommands(orderInfo.OrderId, orderInfo.Account, orderInfo.Request, orderInfo.ReferenceData,
                         orderInfo.ChargeTypeIbs, orderInfo.ChargeTypeEmail, orderInfo.VehicleType, orderInfo.Prompts, orderInfo.PromptsLength,
                         orderInfo.BestAvailableCompany, orderInfo.ApplyPromoCommand));
+                }
+                else
+                {
+                    //TODO: send a command like CancelOrderBecauseOfIbsError
                 }
             }
 
