@@ -221,9 +221,14 @@ namespace apcurium.MK.Booking.Api.Services
             if (request.FromWebApp
                 && request.Settings.ChargeTypeId == ChargeTypes.PayPal.Id)
             {
-                var initializeWebPaymentResponse = _payPalServiceFactory.GetInstance().InitializeWebPayment(account.Id, Request.AbsoluteUri, request.Estimate.Price);
-
-                // TODO: return: don't do order creation yet
+                try
+                {
+                    return _payPalServiceFactory.GetInstance().InitializeWebPayment(Request.AbsoluteUri, request.Estimate.Price, request.ClientLanguageCode);
+                }
+                catch (Exception ex)
+                {
+                    throw new HttpError(HttpStatusCode.BadRequest, ErrorCode.CreateOrder_RuleDisable.ToString(), ex.Message);
+                }
             }
 
             // Payment method validation

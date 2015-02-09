@@ -178,12 +178,16 @@
                 TaxiHail.app.navigate('bookaccountcharge', { trigger: true});
             }else{
                 this.model.save({}, {
-                    success : TaxiHail.postpone(function (model) {
-                        // Wait for order to be created before redirecting to status
-                            ga('send', 'event', 'button', 'click', 'book web', 0);
+                    success: TaxiHail.postpone(function (model) {
+                        // Wait for response before doing anything
+                        ga('send', 'event', 'button', 'click', 'book web', 0);
+                        if (this.model.isPayingWithPayPal()) {
+                            alert('redirect to paypal ' + model.PayPalCheckoutUrl);
+                        } else {
                             TaxiHail.app.navigate('status/' + model.id, { trigger: true, replace: true /* Prevent user from coming back to this screen */ });
+                        }
                     }, this),
-                        error: this.showErrors
+                    error: this.showErrors
                 });
             }
         },

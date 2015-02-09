@@ -155,17 +155,12 @@ namespace apcurium.MK.Booking.Services.Impl
             };
         }
 
-        public InitializePayPalCheckoutResponse InitializeWebPayment(Guid accoundId, string baseUri, double? estimatedFare)
+        public InitializePayPalCheckoutResponse InitializeWebPayment(string baseUri, double? estimatedFare, string clientLanguageCode)
         {
-            var account = _accountDao.FindById(accoundId);
-
             if (!estimatedFare.HasValue)
             {
-                return new InitializePayPalCheckoutResponse
-                {
-                    IsSuccessful = false,
-                    Message = "No estimated fare"
-                };
+                // TODO: Localize
+                throw new Exception("You need an estimated fare to use PayPal");
             }
 
             var regionName = _serverSettings.ServerData.PayPalRegionInfoOverride;
@@ -199,7 +194,7 @@ namespace apcurium.MK.Booking.Services.Impl
                     description = string.Format(
                         _resources.Get("PayPalWebPaymentDescription", regionName.HasValue() 
                             ? SupportedLanguages.en.ToString()
-                            : account.Language), amount),
+                            : clientLanguageCode), amount),
 
                     item_list = new ItemList
                     {
@@ -209,7 +204,7 @@ namespace apcurium.MK.Booking.Services.Impl
                             {
                                 name = string.Format(_resources.Get("PayPalWebItemDescription", regionName.HasValue() 
                                     ? SupportedLanguages.en.ToString()
-                                    : account.Language)),
+                                    : clientLanguageCode)),
                                 currency = currency,
                                 price = amount.ToString(CultureInfo.InvariantCulture)
                             }
