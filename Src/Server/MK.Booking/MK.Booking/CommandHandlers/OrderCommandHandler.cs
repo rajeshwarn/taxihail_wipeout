@@ -1,7 +1,10 @@
 ﻿#region
 
+using System;
 using apcurium.MK.Booking.Commands;
+using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Domain;
+using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Common.Entity;
 using AutoMapper;
 using Infrastructure.EventSourcing;
@@ -24,13 +27,16 @@ namespace apcurium.MK.Booking.CommandHandlers
         ICommandHandler<SwitchOrderToNextDispatchCompany>,
         ICommandHandler<IgnoreDispatchCompanySwitch>,
         ICommandHandler<AddIbsOrderInfoToOrder>,
-        ICommandHandler<CancelOrderBecauseOfIbsError>
+        ICommandHandler<CancelOrderBecauseOfIbsError>,
+        ICommandHandler<SaveTemporaryOrderCreationInfo>
     {
         private readonly IEventSourcedRepository<Order> _repository;
+        private readonly Func<BookingDbContext> _contextFactory;
 
-        public OrderCommandHandler(IEventSourcedRepository<Order> repository)
+        public OrderCommandHandler(IEventSourcedRepository<Order> repository, Func<BookingDbContext> contextFactory)
         {
             _repository = repository;
+            _contextFactory = contextFactory;
         }
 
         public void Handle(CancelOrder command)
@@ -134,6 +140,18 @@ namespace apcurium.MK.Booking.CommandHandlers
             var order = _repository.Find(command.OrderId);
             order.CancelBecauseOfIbsError(command.ErrorCode, command.ErrorDescription);
             _repository.Save(order, command.Id.ToString());
+        }
+
+        public void Handle(SaveTemporaryOrderCreationInfo command)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                context.Save(new TemporaryOrderCreationInfoDetail
+                {
+                    OrderId = command.OrderId,
+                    SerializedOrderCreationInfo = command.SerializedOrderCreationInfo
+                });
+            }
         }
     }
 }

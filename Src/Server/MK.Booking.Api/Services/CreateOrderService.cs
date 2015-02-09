@@ -277,7 +277,24 @@ namespace apcurium.MK.Booking.Api.Services
 
             if (paypalWebPaymentResponse != null)
             {
-                // TODO: Save CreateOrderOnIBSAndSendCommands params to database
+                _commandBus.Send(new SaveTemporaryOrderCreationInfo
+                {
+                    OrderId = orderCommand.OrderId,
+                    SerializedOrderCreationInfo = new TemporaryOrderCreationInfo
+                    {
+                        OrderId = orderCommand.OrderId,
+                        Account = account,
+                        Request = request,
+                        ReferenceData = referenceData,
+                        ChargeTypeIbs = chargeTypeIbs,
+                        ChargeTypeEmail = chargeTypeEmail,
+                        VehicleType = vehicleType,
+                        Prompts = accountValidationResult.Prompts,
+                        PromptsLength = accountValidationResult.PromptsLength,
+                        BestAvailableCompany = bestAvailableCompany,
+                        ApplyPromoCommand = applyPromoCommand
+                    }.ToJson()
+                });
                 return paypalWebPaymentResponse;
             }
 
@@ -1023,6 +1040,21 @@ namespace apcurium.MK.Booking.Api.Services
             public string ChargeTypeKeyOverride { get; set; }
 
             public bool IsChargeAccountPaymentWithCardOnFile { get; set; }
+        }
+
+        private class TemporaryOrderCreationInfo
+        {
+            public Guid OrderId { get; set; } 
+            public AccountDetail Account { get; set; }
+            public CreateOrder Request { get; set; } 
+            public ReferenceData ReferenceData { get; set; }
+            public string ChargeTypeIbs { get; set; } 
+            public string ChargeTypeEmail { get; set; } 
+            public string VehicleType { get; set; } 
+            public string[] Prompts { get; set; } 
+            public int?[] PromptsLength { get; set; } 
+            public BestAvailableCompany BestAvailableCompany { get; set; }
+            public ApplyPromotion ApplyPromoCommand { get; set; }
         }
     }
 }
