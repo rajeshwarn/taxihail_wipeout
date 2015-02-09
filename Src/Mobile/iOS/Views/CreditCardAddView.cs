@@ -21,7 +21,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 	public partial class CreditCardAddView : BaseViewController<CreditCardAddViewModel>
     {
         private PayPalClientSettings _payPalSettings;
-        private NSString _payPalEnvironment;
 
         private CardIOPaymentViewController _cardScanner;
         private CardScannerDelegate _cardScannerDelegate;
@@ -203,16 +202,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
         private void ConfigurePayPalSection()
         {
-            _payPalEnvironment = _payPalSettings.IsSandbox
-                ? PayPalMobile.PayPalEnvironmentSandbox
-                : PayPalMobile.PayPalEnvironmentProduction;
-
-            PayPalMobile.WithClientIds(
-                (NSString)_payPalSettings.Credentials.ClientId,
-                (NSString)_payPalSettings.SandboxCredentials.ClientId);
-
-            PayPalMobile.PreconnectWithEnvironment(_payPalEnvironment);
-
+            Mvx.Resolve<IPayPalConfigurationService>().InitializeService(_payPalSettings);
+            
             lblPayPalLinkedInfo.Text = Localize.GetValue("PayPalLinkedInfo");
 
             FlatButtonStyle.Silver.ApplyTo(btnLinkPayPal);
@@ -243,18 +234,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         {
             if (_payPalPayment == null)
             {
-                var baseUri = ViewModel.Settings.ServiceUrl.Replace("api/", string.Empty);
-
                 _payPalPaymentDelegate = new PayPalDelegate(authCode => ViewModel.LinkPayPalAccount(authCode));
-                _payPalPayment = new PayPalCustomFuturePaymentViewController(new PayPalConfiguration
-                {
-                    AcceptCreditCards = false, 
-                    LanguageOrLocale = (NSString)this.Services().Localize.CurrentLanguage,
-                    MerchantName = (NSString)ViewModel.Settings.TaxiHail.ApplicationName,
-                    MerchantPrivacyPolicyURL = new NSUrl(string.Format("{0}/company/privacy", baseUri)),
-                    MerchantUserAgreementURL = new NSUrl(string.Format("{0}/company/termsandconditions", baseUri)),
-                    DisableBlurWhenBackgrounding = true
-                }, _payPalPaymentDelegate);
+                _payPalPayment = new PayPalCustomFuturePaymentViewController((PayPalConfiguration)Mvx.Resolve<IPayPalConfigurationService>().GetConfiguration(), _payPalPaymentDelegate);
             }
 
             if (ViewModel.IsEditing)

@@ -36,33 +36,6 @@ namespace apcurium.MK.Booking.Api.Client.Payments.Moneris
 			});
 		}
 
-		public async Task<PairingResponse> Pair (Guid orderId, string cardToken, int? autoTipPercentage)
-		{
-            try
-            {
-                var response = await Client.PostAsync(new PairingForPaymentRequest
-                {
-                    OrderId = orderId,
-                    CardToken = cardToken,
-                    AutoTipPercentage = autoTipPercentage
-
-                });
-                return response;
-            }
-            catch (ServiceStack.ServiceClient.Web.WebServiceException)
-            {
-                return new PairingResponse { IsSuccessful = false };
-            }       
-		}
-
-		public Task<BasePaymentResponse> Unpair (Guid orderId)
-		{
-            return Client.PostAsync(new UnpairingForPaymentRequest
-            {
-                OrderId = orderId
-            });
-		}
-
         public static bool TestClient(MonerisPaymentSettings serverPaymentSettings, string number, DateTime date, ILogger logger)
         {
             var monerisTokenizeClient = new MonerisTokenizeClient(serverPaymentSettings, logger);

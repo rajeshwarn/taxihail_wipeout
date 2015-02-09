@@ -67,8 +67,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 		Task<bool> AddOrUpdateCreditCard (CreditCardInfos creditCard, bool isUpdate = false);
 		Task RemoveCreditCard (bool replacedByPayPal = false);
 
-		Task LinkAccount(string authCode);
-		Task UnlinkAccount (bool replacedByCreditCard = false);
+		Task LinkPayPalAccount(string authCode);
+		Task UnlinkPayPalAccount (bool replacedByCreditCard = false);
 
         Task<NotificationSettings> GetNotificationSettings(bool companyDefaultOnly = false, bool cleanCache = false);
 	    Task UpdateNotificationSettings(NotificationSettings notificationSettings);

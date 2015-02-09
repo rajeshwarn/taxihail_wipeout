@@ -197,6 +197,7 @@
     <Compile Include="Activities\Account\PasswordRecoveryActivity.cs" />
     <Compile Include="PlatformIntegration\MessageService.cs" />
     <Compile Include="PlatformIntegration\PackageInfo.cs" />
+    <Compile Include="PlatformIntegration\PayPalConfigurationService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Activities\SplashActivity.cs" />
     <AndroidResource Include="Resources\Layout\RatingListItem.axml">

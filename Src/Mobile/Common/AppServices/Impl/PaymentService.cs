@@ -2,31 +2,27 @@ using System;
 using System.Globalization;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Client;
+using apcurium.MK.Booking.Api.Client.Payments;
 using apcurium.MK.Booking.Api.Client.Payments.Braintree;
 using apcurium.MK.Booking.Api.Client.Payments.CmtPayments;
 using apcurium.MK.Booking.Api.Client.Payments.Fake;
+using apcurium.MK.Booking.Api.Client.Payments.Moneris;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Resources.Payments;
 using apcurium.MK.Booking.Mobile.Infrastructure;
-using apcurium.MK.Booking.Api.Client.Payments.Moneris;
-using apcurium.MK.Booking.Api.Client.Payments.PayPal;
-using apcurium.MK.Booking.Api.Contract.Requests.Payment;
+using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Diagnostic;
-
-
+using apcurium.MK.Common.Resources;
 #if IOS
 using ServiceStack.ServiceClient.Web;
 using ServiceStack.Common.ServiceClient.Web;
 #endif
-using apcurium.MK.Common.Configuration.Impl;
-using apcurium.MK.Common.Resources;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
     public class PaymentService : BaseService, IPaymentService
     {
 		private readonly ConfigurationClientService _serviceClient;
-        private readonly IAccountService _accountService;
         private readonly ICacheService _cache;
 		private readonly IPackageInfo _packageInfo;
         private readonly ILogger _logger; 
@@ -41,7 +37,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
 		public PaymentService(string url, string sessionId,
             ConfigurationClientService serviceClient,
-            IAccountService accountService,
             ICacheService cache,
             IPackageInfo packageInfo,
             ILogger logger)
@@ -52,7 +47,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             _sessionId = sessionId;
             _cache = cache;
 			_serviceClient = serviceClient;
-		    _accountService = accountService;
         }
 
 		public async Task<ClientPaymentSettings> GetPaymentSettings(bool cleanCache = false)
@@ -102,28 +96,14 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         public async Task<PairingResponse> Pair(Guid orderId, string cardToken, int? autoTipPercentage)
         {
-            if (_accountService.CurrentAccount.IsPayPalAccountLinked)
-            {
-                return await new PayPalServiceClient(_baseUrl, _sessionId, _packageInfo)
-                    .Pair(new PairingForPaymentRequest
-                        {
-                            OrderId = orderId,
-                            AutoTipPercentage = autoTipPercentage
-                        });
-            }
-
-			return await GetClient().Pair(orderId, cardToken, autoTipPercentage);
+            return await new PairingServiceClient(_baseUrl, _sessionId, _packageInfo)
+                .Pair(orderId, cardToken, autoTipPercentage);
         }
 
         public async Task<BasePaymentResponse> Unpair(Guid orderId)
         {
-            if (_accountService.CurrentAccount.IsPayPalAccountLinked)
-            {
-                return await new PayPalServiceClient(_baseUrl, _sessionId, _packageInfo)
-                    .Unpair(new UnpairingForPaymentRequest { OrderId = orderId });
-            }
-
-			return await GetClient().Unpair(orderId);
+            return await new PairingServiceClient(_baseUrl, _sessionId, _packageInfo)
+                .Unpair(orderId);
         }
 
 		private IPaymentServiceClient GetClient()

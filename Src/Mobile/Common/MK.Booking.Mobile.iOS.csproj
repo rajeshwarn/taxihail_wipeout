@@ -144,6 +144,7 @@
     <Compile Include="Extensions\ObservableExtensions.cs" />
     <Compile Include="Extensions\UseServiceClientExtensions.cs" />
     <Compile Include="Extensions\ViewModelServicesExtensions.cs" />
+    <Compile Include="Infrastructure\IPayPalConfigurationService.cs" />
     <Compile Include="Messages\OrderStatusChanged.cs" />
     <Compile Include="Practices\TinyMessenger.cs" />
     <Compile Include="Infrastructure\ILocalization.cs" />

@@ -33,5 +33,13 @@ namespace apcurium.MK.Booking.Api.Contract.Resources
         public int? DefaultTipPercent { get; set; }
 
         public bool IsPayPalAccountLinked { get; set; }
+
+        public bool HasValidPaymentInformation
+        {
+            get
+            {
+                return DefaultCreditCard.HasValue || IsPayPalAccountLinked;
+            }
+        }
     }
 }

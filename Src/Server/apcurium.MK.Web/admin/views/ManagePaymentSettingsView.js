@@ -127,8 +127,15 @@
             this.$("#warning").hide();
             this.$("#payPalWarning").hide();
             
-            if (data.paymentMode == "None" && data.isPayInTaxiEnabled == 'true') {
-                this.alert("Please select a payment method or disable Pay In Taxi");
+            if (data.paymentMode == "None" && data.isPayInTaxiEnabled == "true") {
+                this.alert("Please select a payment method or disable Card on File Payment");
+
+                this.$(':submit').button('reset');
+                return;
+            }
+
+            if (data.isPayInTaxiEnabled != "true" && data.isChargeAccountPaymentEnabled != "true" && data.isOutOfAppPaymentDisabled == "true") {
+                this.alert("Please select a payment method or enable In Car Payment");
 
                 this.$(':submit').button('reset');
                 return;

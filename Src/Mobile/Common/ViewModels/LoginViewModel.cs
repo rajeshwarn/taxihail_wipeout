@@ -422,7 +422,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
             if (isPayInTaxiEnabled && Settings.CreditCardIsMandatory)
 			{
-				if (!_accountService.CurrentAccount.DefaultCreditCard.HasValue && !_accountService.CurrentAccount.IsPayPalAccountLinked)
+				if (!_accountService.CurrentAccount.HasValidPaymentInformation)
 				{
 					return true;
 				}
