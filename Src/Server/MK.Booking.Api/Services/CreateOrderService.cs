@@ -123,7 +123,12 @@ namespace apcurium.MK.Booking.Api.Services
                 }
             }
 
-            var redirectUrl = "http://localhost/apcurium.MK.Web/#status/" + request.OrderId;
+            var redirectUrl = Request.AbsoluteUri
+                .Replace(Request.PathInfo, "")
+                .Replace(GetAppHost().Config.ServiceStackHandlerFactoryPath, "")
+                .Replace(Request.QueryString.ToString(), "")
+                .Replace("?", "")
+                .Append(string.Format("#status/{0}", request.OrderId));
             return new HttpResult
             {
                 StatusCode = HttpStatusCode.Redirect,
