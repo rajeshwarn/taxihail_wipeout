@@ -188,7 +188,7 @@ namespace apcurium.MK.Booking.Services.Impl
                     amount = new Amount
                     {
                         currency = currency,
-                        total = amount.ToString(CultureInfo.InvariantCulture)
+                        total = amount.ToString("N")
                     },	
 
                     description = string.Format(
@@ -206,7 +206,8 @@ namespace apcurium.MK.Booking.Services.Impl
                                     ? SupportedLanguages.en.ToString()
                                     : clientLanguageCode)),
                                 currency = currency,
-                                price = amount.ToString(CultureInfo.InvariantCulture)
+                                price = amount.ToString("N"),
+                                quantity = "1"
                             }
                         }
                     }
@@ -224,28 +225,49 @@ namespace apcurium.MK.Booking.Services.Impl
                 redirect_urls = redirUrls
             };
 
-            var createdPayment = payment.Create(GetAPIContext(GetAccessToken()));
-            var links = createdPayment.links.GetEnumerator();
-
-            while (links.MoveNext())
+            try
             {
-                var link = links.Current;
-                if (link.rel.ToLower().Trim().Equals("approval_url"))
+                var createdPayment = payment.Create(GetAPIContext(GetAccessToken()));
+                var links = createdPayment.links.GetEnumerator();
+
+                while (links.MoveNext())
                 {
-                    return new InitializePayPalCheckoutResponse
+                    var link = links.Current;
+                    if (link.rel.ToLower().Trim().Equals("approval_url"))
                     {
-                        IsSuccessful = true,
-                        PaymentId = createdPayment.id,
-                        PayerId = createdPayment.payer.payer_info.payer_id,
-                        PayPalCheckoutUrl = link.href       // Links that give the user the option to redirect to PayPal to approve the payment
-                    };
+                        return new InitializePayPalCheckoutResponse
+                        {
+                            IsSuccessful = true,
+                            PaymentId = createdPayment.id,
+                            //PayerId = createdPayment.payer.payer_info.payer_id, // TODO: PayerId is null...
+                            PayPalCheckoutUrl = link.href       // Links that give the user the option to redirect to PayPal to approve the payment
+                        };
+                    }
                 }
-            }
 
-            return new InitializePayPalCheckoutResponse
+                // No approval_url found
+                return new InitializePayPalCheckoutResponse
+                {
+                    IsSuccessful = false,
+                    Message = "No approval_url found"
+                };
+            }
+            catch (Exception ex)
             {
-                IsSuccessful = false
-            };
+                var exceptionMessage = ex.Message;
+
+                var paymentException = ex as PaymentsException;
+                if (paymentException != null && paymentException.Details != null)
+                {
+                    exceptionMessage = paymentException.Details.message;
+                }
+
+                return new InitializePayPalCheckoutResponse
+                {
+                    IsSuccessful = false,
+                    Message = exceptionMessage
+                };
+            }
         }
 
         public CommitPreauthorizedPaymentResponse ExecuteWebPayment(string payerId, string paymentId)
@@ -320,7 +342,7 @@ namespace apcurium.MK.Booking.Services.Impl
                                     currency = conversionRate != 1 
                                         ? CurrencyCodes.Main.UnitedStatesDollar 
                                         : _resources.GetCurrencyCode(),
-                                    total = amount.ToString(CultureInfo.InvariantCulture)
+                                    total = amount.ToString("N")
                                 },
                                 description = regionName.HasValue()
                                     ? string.Format("order: {0}", orderId)
@@ -462,7 +484,7 @@ namespace apcurium.MK.Booking.Services.Impl
                     amount = new Amount
                     {
                         currency = authorization.amount.currency,
-                        total = amount.ToString(CultureInfo.InvariantCulture)
+                        total = amount.ToString("N")
                     },
                     is_final_capture = true
                 };
