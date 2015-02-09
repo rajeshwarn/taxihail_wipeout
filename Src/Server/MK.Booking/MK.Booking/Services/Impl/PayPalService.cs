@@ -224,7 +224,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 redirect_urls = redirUrls
             };
 
-            var createdPayment = payment.Create(GetAPIContext());
+            var createdPayment = payment.Create(GetAPIContext(GetAccessToken()));
             var links = createdPayment.links.GetEnumerator();
 
             while (links.MoveNext())
