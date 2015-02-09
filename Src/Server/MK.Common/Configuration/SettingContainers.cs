@@ -210,6 +210,9 @@ namespace apcurium.MK.Common.Configuration
 
         [CustomizableByCompany]
         public int? PaymentTypePaymentInCarId { get; set; }
+
+        [CustomizableByCompany]
+        public int? PaymentTypeChargeAccountId { get; set; }
     }
 
     public class EmailSettingContainer

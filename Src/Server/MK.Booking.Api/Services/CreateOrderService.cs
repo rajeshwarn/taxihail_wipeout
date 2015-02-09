@@ -637,15 +637,13 @@ namespace apcurium.MK.Booking.Api.Services
                 request.Settings.Phone,
                 request.Settings.Passengers,
                 request.Settings.VehicleTypeId,
-                ibsChargeTypeId,
+                ibsChargeTypeId,                    
                 note,
                 request.PickupDate.Value,
                 ibsPickupAddress,
                 ibsDropOffAddress,
-                request.Settings.ChargeTypeId == ChargeTypes.Account.Id    // send the account number only if we book using charge account
-                    ? request.Settings.AccountNumber 
-                    : null,
-                null,
+                request.Settings.AccountNumber,
+                string.IsNullOrWhiteSpace (request.Settings.AccountNumber ) ?(int?) null:0,
                 prompts,
                 promptsLength,
                 fare);
