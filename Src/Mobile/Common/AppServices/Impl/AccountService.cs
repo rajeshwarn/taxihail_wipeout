@@ -8,8 +8,10 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Client;
+using apcurium.MK.Booking.Api.Client.Payments.PayPal;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Requests;
+using apcurium.MK.Booking.Api.Contract.Requests.Payment.PayPal;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Api.Contract.Resources.Payments;
 using apcurium.MK.Booking.Api.Contract.Security;
@@ -26,10 +28,6 @@ using MK.Common.Configuration;
 using ServiceStack.Common;
 using ServiceStack.ServiceClient.Web;
 using Position = apcurium.MK.Booking.Maps.Geo.Position;
-using System.Reactive.Linq;
-using System.Reactive.Threading.Tasks;
-using apcurium.MK.Booking.Api.Client.Payments.PayPal;
-using apcurium.MK.Booking.Api.Contract.Requests.Payment.PayPal;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
@@ -597,7 +595,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			await UseServiceClientAsync<IAccountServiceClient>(client => client.RemoveCreditCard());
 		}
 
-		public Task LinkAccount(string authCode)
+		public Task LinkPayPalAccount(string authCode)
 		{
 			// Update cached account
 			var account = CurrentAccount;
@@ -609,7 +607,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			return UseServiceClientAsync<PayPalServiceClient>(service => service.LinkPayPalAccount(new LinkPayPalAccountRequest { AuthCode = authCode }));
 		}
 
-		public Task UnlinkAccount (bool replacedByCreditCard = false)
+		public Task UnlinkPayPalAccount (bool replacedByCreditCard = false)
 		{
 			// Update cached account
 			var account = CurrentAccount;

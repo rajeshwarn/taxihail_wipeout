@@ -376,7 +376,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
         {
             try
             {
-				_accountService.LinkAccount(authCode);
+				_accountService.LinkPayPalAccount(authCode);
                 
                 DeleteCreditCard(true);
             }
@@ -406,7 +406,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
             try
             {
-				_accountService.UnlinkAccount(replacedByCreditCard);
+				_accountService.UnlinkPayPalAccount(replacedByCreditCard);
             }
             catch (Exception ex)
             {
