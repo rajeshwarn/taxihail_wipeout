@@ -53,14 +53,19 @@
 
 <!-- PAYMENT OPTION-->
 <h4 class="table-title">{{localize "Payment Mode"}}</h4>
+<label class="control-label settingsLabel">{{{localize "Disable In Car Payment"}}}</label>
+<select name="isOutOfAppPaymentDisabled" class="settingsBox">
+    <option value="{{isOutOfAppPaymentDisabled}}" selected="">{{localizeBool isOutOfAppPaymentDisabled true="Yes" false="No"}}</option>
+    <option value="{{invertedBool isOutOfAppPaymentDisabled}}">{{localizeBool isOutOfAppPaymentDisabled true="No" false="Yes"}}</option>
+</select>
 
-  <label class="control-label settingsLabel" >{{{localize "Charge Account Payment Enabled"}}}</label>
+<label class="control-label settingsLabel" >{{{localize "Charge Account Payment"}}}</label>
   <select  name="isChargeAccountPaymentEnabled" class="settingsBox">
     <option value="{{isChargeAccountPaymentEnabled}}" selected="" >{{localizeBool isChargeAccountPaymentEnabled true="Yes" false="No"}}</option>
     <option value="{{invertedBool isChargeAccountPaymentEnabled}}">{{localizeBool isChargeAccountPaymentEnabled true="No" false="Yes"}}</option>
   </select>
 
-  <label class="control-label settingsLabel" >{{{localize "Pay In Taxi Enabled"}}}</label>
+  <label class="control-label settingsLabel" >{{{localize "Card on File Payment"}}}</label>
   <select  name="isPayInTaxiEnabled" class="settingsBox">
     <option value="{{isPayInTaxiEnabled}}" selected="" >{{localizeBool isPayInTaxiEnabled true="Yes" false="No"}}</option>
     <option value="{{invertedBool isPayInTaxiEnabled}}">{{localizeBool isPayInTaxiEnabled true="No" false="Yes"}}</option>

@@ -291,8 +291,16 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Global.resx</DependentUpon>
     </Compile>
-    <Compile Include="Resources\Global.es.Designer.cs" />
-    <Compile Include="Resources\MearsTaxi.Designer.cs" />
+    <Compile Include="Resources\Global.es.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Global.es.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\MearsTaxi.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MearsTaxi.resx</DependentUpon>
+    </Compile>
     <Compile Include="Resources\Resources.cs" />
     <Compile Include="Resources\Global.fr.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -308,6 +316,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Thriev.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\UTOG.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>UTOG.resx</DependentUpon>
     </Compile>
     <Compile Include="Security\IPasswordService.cs" />
     <Compile Include="Security\PasswordService.cs" />
@@ -440,6 +453,7 @@
       <LastGenOutput>Thriev.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Resources\UTOG.resx" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

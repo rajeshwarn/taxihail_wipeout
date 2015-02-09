@@ -52,10 +52,20 @@ namespace apcurium.MK.Booking.Api.Services
             }
 
             var isChargeAccountPaymentEnabled = _serverSettings.GetPaymentSettings().IsChargeAccountPaymentEnabled;
+            var isOutOfAppPaymentDisabled = _serverSettings.GetPaymentSettings().IsOutOfAppPaymentDisabled;
+
+            IEnumerable<ListItem> filteredPaymentList = result.PaymentsList;
+
             if (!isChargeAccountPaymentEnabled)
             {
-                result.PaymentsList = result.PaymentsList.Where(x => x.Id != ChargeTypes.Account.Id).ToList();
+                filteredPaymentList = filteredPaymentList.Where(x => x.Id != ChargeTypes.Account.Id);
             }
+            if (isOutOfAppPaymentDisabled)
+            {
+                filteredPaymentList = filteredPaymentList.Where(x => x.Id != ChargeTypes.PaymentInCar.Id);
+            }
+
+            result.PaymentsList = filteredPaymentList.ToList();
 
             return result;
         }

@@ -57,29 +57,13 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                         && creditCardAssociatedToAccount != null)        // Only send notification if using card on file
                     {
                         var account = _accountDao.FindById(@event.Status.AccountId);
-
                         var paymentService = _paymentServiceFactory.GetInstance();
-                        var response = paymentService.Pair(@event.SourceId, creditCardAssociatedToAccount.Token, account.DefaultTipPercent, null);
-                        if (response.IsSuccessful)
-                        {
-                            var ibsAccountId = _accountDao.GetIbsAccountId(order.AccountId, null);
-                            if (!UpdateOrderPaymentType(ibsAccountId.Value, order.IBSOrderId.Value))
-                            {
-                                response.IsSuccessful = false;
-                                paymentService.VoidPreAuthorization(@event.SourceId);
-                            }
-                        }
-
+                        var response = paymentService.Pair(@event.SourceId, creditCardAssociatedToAccount.Token, account.DefaultTipPercent, null);                       
                         _notificationService.SendAutomaticPairingPush(@event.SourceId, account.DefaultTipPercent, creditCardAssociatedToAccount.Last4Digits, response.IsSuccessful);
                     } 
                 }
                 break;
             }
-        }
-
-        private bool UpdateOrderPaymentType(int ibsAccountId, int ibsOrderId, string companyKey = null)
-        {
-            return _ibsServiceProvider.Booking(companyKey).UpdateOrderPaymentType(ibsAccountId, ibsOrderId, _serverSettings.ServerData.IBS.PaymentTypeCardOnFileId);
         }
     }
 }

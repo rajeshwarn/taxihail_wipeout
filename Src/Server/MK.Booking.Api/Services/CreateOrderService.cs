@@ -625,6 +625,11 @@ namespace apcurium.MK.Booking.Api.Services
 
             Debug.Assert(request.PickupDate != null, "request.PickupDate != null");
 
+            // This needs to be null if not set or the payment in car payment type id of ibs
+            int? ibsChargeTypeId = _serverSettings.GetPaymentSettings().AutomaticPaymentPairing
+                ? _serverSettings.ServerData.IBS.PaymentTypeCardOnFileId
+                : _serverSettings.ServerData.IBS.PaymentTypePaymentInCarId;
+
             var result = _ibsServiceProvider.Booking(companyKey, request.Market).CreateOrder(
                 providerId,
                 ibsAccountId,
@@ -632,15 +637,13 @@ namespace apcurium.MK.Booking.Api.Services
                 request.Settings.Phone,
                 request.Settings.Passengers,
                 request.Settings.VehicleTypeId,
-                _serverSettings.ServerData.IBS.PaymentTypePaymentInCarId, // this needs to be null if not set or the payment in car payment type id of ibs
+                ibsChargeTypeId,                    
                 note,
                 request.PickupDate.Value,
                 ibsPickupAddress,
                 ibsDropOffAddress,
-                request.Settings.ChargeTypeId == ChargeTypes.Account.Id    // send the account number only if we book using charge account
-                    ? request.Settings.AccountNumber 
-                    : null,
-                null,
+                request.Settings.AccountNumber,
+                string.IsNullOrWhiteSpace (request.Settings.AccountNumber ) ?(int?) null:0,
                 prompts,
                 promptsLength,
                 fare);
