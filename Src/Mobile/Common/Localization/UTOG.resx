@@ -132,11 +132,9 @@
   <data name="EstimateDistance" xml:space="preserve">
     <value />
   </data>
-
   <data name="WarningEstimate" xml:space="preserve">
     <value>Please note that the price provided by this App is a base fare. The fare does not include extras such as tolls, wait time and parking.</value>
   </data>
-
   <data name="NoFareText" xml:space="preserve">
     <value>Choose a destination to get a price.</value>
   </data>
@@ -187,5 +185,11 @@
   </data>
   <data name="RateLastRideTitle" xml:space="preserve">
     <value>Rate last ride</value>
+  </data>
+  <data name="Notification_NearbyTaxiPush" xml:space="preserve">
+    <value>Nearby Vehicle</value>
+  </data>
+  <data name="StatusConfirmNewBooking" xml:space="preserve">
+    <value>Booking a new vehicle will keep this order active, do you want to continue ?</value>
   </data>
 </root>
