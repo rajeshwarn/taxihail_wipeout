@@ -12,13 +12,25 @@ namespace apcurium.MK.Common.Configuration.Impl
 
             IsChargeAccountPaymentEnabled = false;
             IsPayInTaxiEnabled = false;
+            IsOutOfAppPaymentEnabled = true;
             AutomaticPayment = false;
             AutomaticPaymentPairing = false;
         }
 
         public PaymentMethod PaymentMode { get; set; }
+        
+        /// <summary>
+        /// In app payment
+        /// </summary>
         public bool IsPayInTaxiEnabled { get; set; }
+        
+        /// <summary>
+        /// Manual payment, not through app
+        /// </summary>
+        public bool IsOutOfAppPaymentEnabled { get; set; }
+
         public bool IsChargeAccountPaymentEnabled { get; set; }
+
         public bool AutomaticPayment { get; set; }
         public bool AutomaticPaymentPairing { get; set; }
         public CmtPaymentSettings CmtPaymentSettings { get; set; }

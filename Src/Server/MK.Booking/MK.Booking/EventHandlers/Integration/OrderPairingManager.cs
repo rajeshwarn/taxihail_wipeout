@@ -61,8 +61,9 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                         var paymentService = _paymentServiceFactory.GetInstance();
                         var response = paymentService.Pair(@event.SourceId, creditCardAssociatedToAccount.Token, account.DefaultTipPercent, null);
 
+                        // If auto-pairing was not enabled, change ibs charge type to CoF since it was set to PayInCar when creating the order 
                         if (response.IsSuccessful
-                            && !_serverSettings.GetPaymentSettings().AutomaticPaymentPairing) // Update IBS charge type to CoF if auto-pairing was not enabled
+                            && !_serverSettings.GetPaymentSettings().AutomaticPaymentPairing)
                         {
                             var ibsAccountId = _accountDao.GetIbsAccountId(order.AccountId, null);
                             if (!UpdateOrderPaymentType(ibsAccountId.Value, order.IBSOrderId.Value))
