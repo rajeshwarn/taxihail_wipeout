@@ -177,7 +177,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 ? CurrencyCodes.Main.UnitedStatesDollar
                 : _resources.GetCurrencyCode();
 
-            var redirectUrl = baseUri + "?orderId=" + orderId;
+            var redirectUrl = baseUri + string.Format("/{0}/proceed", orderId);
             var redirUrls = new RedirectUrls
             {
                 cancel_url = redirectUrl + "&cancel=true",

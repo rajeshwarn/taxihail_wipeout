@@ -1,6 +1,7 @@
 ﻿#region
 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
@@ -92,6 +93,43 @@ namespace apcurium.MK.Booking.Api.Services
             _payPalServiceFactory = payPalServiceFactory;
 
             _resources = new Resources.Resources(_serverSettings);
+        }
+
+        public object Get(ExecuteWebPaymentAndProceedWithOrder request)
+        {
+            Log.Info("ExecuteWebPaymentAndProceedWithOrder request : " + request.ToJson());
+
+            if (request.Cancel)
+            {
+                //TODO: send a command like CancelOrderBecauseOfIbsError
+            }
+            else
+            {
+                var temporaryInfo = _orderDao.GetTemporaryInfo(request.OrderId);
+                var response = _payPalServiceFactory.GetInstance().ExecuteWebPayment(request.PayerId, request.PaymentId);
+                if (!response.IsSuccessful || temporaryInfo == null)
+                {
+                    //TODO: send a command like CancelOrderBecauseOfIbsError
+                }
+
+                if (temporaryInfo != null)
+                {
+                    var orderInfo = JsonSerializer.DeserializeFromString<TemporaryOrderCreationInfo>(temporaryInfo.SerializedOrderCreationInfo);
+
+                    _commandBus.Send(new DeleteTemporaryOrderCreationInfo { OrderId = request.OrderId });
+
+                    Task.Run(() => CreateOrderOnIBSAndSendCommands(orderInfo.OrderId, orderInfo.Account, orderInfo.Request, orderInfo.ReferenceData,
+                        orderInfo.ChargeTypeIbs, orderInfo.ChargeTypeEmail, orderInfo.VehicleType, orderInfo.Prompts, orderInfo.PromptsLength,
+                        orderInfo.BestAvailableCompany, orderInfo.ApplyPromoCommand));
+                }
+            }
+
+            var redirectUrl = "http://localhost/apcurium.mk.web/api/testasdasd";
+            return new HttpResult
+            {
+                StatusCode = HttpStatusCode.Redirect,
+                Headers = {{ HttpHeaders.Location, redirectUrl }}
+            };
         }
 
         public object Post(CreateOrder request)

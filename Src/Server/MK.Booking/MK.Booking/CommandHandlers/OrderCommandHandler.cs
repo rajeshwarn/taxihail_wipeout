@@ -1,11 +1,13 @@
 ﻿#region
 
 using System;
+using System.Xml.Linq;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Domain;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Common.Entity;
+using apcurium.MK.Common.Extensions;
 using AutoMapper;
 using Infrastructure.EventSourcing;
 using Infrastructure.Messaging.Handling;
@@ -28,7 +30,8 @@ namespace apcurium.MK.Booking.CommandHandlers
         ICommandHandler<IgnoreDispatchCompanySwitch>,
         ICommandHandler<AddIbsOrderInfoToOrder>,
         ICommandHandler<CancelOrderBecauseOfIbsError>,
-        ICommandHandler<SaveTemporaryOrderCreationInfo>
+        ICommandHandler<SaveTemporaryOrderCreationInfo>,
+        ICommandHandler<DeleteTemporaryOrderCreationInfo>
     {
         private readonly IEventSourcedRepository<Order> _repository;
         private readonly Func<BookingDbContext> _contextFactory;
@@ -151,6 +154,15 @@ namespace apcurium.MK.Booking.CommandHandlers
                     OrderId = command.OrderId,
                     SerializedOrderCreationInfo = command.SerializedOrderCreationInfo
                 });
+            }
+        }
+
+        public void Handle(DeleteTemporaryOrderCreationInfo command)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                context.RemoveWhere<TemporaryOrderCreationInfoDetail>(x => x.OrderId == command.OrderId);
+                context.SaveChanges();
             }
         }
     }
