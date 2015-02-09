@@ -12,7 +12,7 @@ namespace apcurium.MK.Common.Configuration.Impl
 
             IsChargeAccountPaymentEnabled = false;
             IsPayInTaxiEnabled = false;
-            IsOutOfAppPaymentEnabled = true;
+            IsOutOfAppPaymentDisabled = false;
             AutomaticPayment = false;
             AutomaticPaymentPairing = false;
         }
@@ -27,7 +27,7 @@ namespace apcurium.MK.Common.Configuration.Impl
         /// <summary>
         /// Manual payment, not through app
         /// </summary>
-        public bool IsOutOfAppPaymentEnabled { get; set; }
+        public bool IsOutOfAppPaymentDisabled { get; set; }
 
         public bool IsChargeAccountPaymentEnabled { get; set; }
 

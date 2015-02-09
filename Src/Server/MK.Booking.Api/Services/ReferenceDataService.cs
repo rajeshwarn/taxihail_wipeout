@@ -52,7 +52,7 @@ namespace apcurium.MK.Booking.Api.Services
             }
 
             var isChargeAccountPaymentEnabled = _serverSettings.GetPaymentSettings().IsChargeAccountPaymentEnabled;
-            var isOutOfAppPaymentEnabled = _serverSettings.GetPaymentSettings().IsOutOfAppPaymentEnabled;
+            var isOutOfAppPaymentDisabled = _serverSettings.GetPaymentSettings().IsOutOfAppPaymentDisabled;
 
             IEnumerable<ListItem> filteredPaymentList = result.PaymentsList;
 
@@ -60,7 +60,7 @@ namespace apcurium.MK.Booking.Api.Services
             {
                 filteredPaymentList = filteredPaymentList.Where(x => x.Id != ChargeTypes.Account.Id);
             }
-            if (!isOutOfAppPaymentEnabled)
+            if (isOutOfAppPaymentDisabled)
             {
                 filteredPaymentList = filteredPaymentList.Where(x => x.Id != ChargeTypes.PaymentInCar.Id);
             }

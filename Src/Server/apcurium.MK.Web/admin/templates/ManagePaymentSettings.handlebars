@@ -53,10 +53,10 @@
 
 <!-- PAYMENT OPTION-->
 <h4 class="table-title">{{localize "Payment Mode"}}</h4>
-<label class="control-label settingsLabel">{{{localize "In Car Payment"}}}</label>
-<select name="isOutOfAppPaymentEnabled" class="settingsBox">
-    <option value="{{isOutOfAppPaymentEnabled}}" selected="">{{localizeBool isOutOfAppPaymentEnabled true="Yes" false="No"}}</option>
-    <option value="{{invertedBool isOutOfAppPaymentEnabled}}">{{localizeBool isOutOfAppPaymentEnabled true="No" false="Yes"}}</option>
+<label class="control-label settingsLabel">{{{localize "Disable In Car Payment"}}}</label>
+<select name="isOutOfAppPaymentDisabled" class="settingsBox">
+    <option value="{{isOutOfAppPaymentDisabled}}" selected="">{{localizeBool isOutOfAppPaymentDisabled true="Yes" false="No"}}</option>
+    <option value="{{invertedBool isOutOfAppPaymentDisabled}}">{{localizeBool isOutOfAppPaymentDisabled true="No" false="Yes"}}</option>
 </select>
 
 <label class="control-label settingsLabel" >{{{localize "Charge Account Payment"}}}</label>

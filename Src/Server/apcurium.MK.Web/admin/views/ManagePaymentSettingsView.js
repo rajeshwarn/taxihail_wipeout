@@ -120,7 +120,7 @@
                 return;
             }
 
-            if (data.isPayInTaxiEnabled != "true" && data.isChargeAccountPaymentEnabled != "true" && data.isOutOfAppPaymentEnabled != "true") {
+            if (data.isPayInTaxiEnabled != "true" && data.isChargeAccountPaymentEnabled != "true" && data.isOutOfAppPaymentDisabled == "true") {
                 this.alert("Please select a payment method or enable In Car Payment");
 
                 this.$(':submit').button('reset');
