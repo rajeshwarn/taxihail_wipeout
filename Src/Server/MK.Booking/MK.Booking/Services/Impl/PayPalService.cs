@@ -155,7 +155,7 @@ namespace apcurium.MK.Booking.Services.Impl
             };
         }
 
-        public InitializePayPalCheckoutResponse InitializeWebPayment(string baseUri, double? estimatedFare, string clientLanguageCode)
+        public InitializePayPalCheckoutResponse InitializeWebPayment(Guid orderId, string baseUri, double? estimatedFare, string clientLanguageCode)
         {
             if (!estimatedFare.HasValue)
             {
@@ -172,13 +172,12 @@ namespace apcurium.MK.Booking.Services.Impl
 
             _logger.LogMessage("PayPal Conversion Rate: {0}", conversionRate);
             
-            var guid = Guid.NewGuid().ToString();
             var amount = Math.Round(Convert.ToDecimal(estimatedFare.Value) * conversionRate, 2);
             var currency = conversionRate != 1
                 ? CurrencyCodes.Main.UnitedStatesDollar
                 : _resources.GetCurrencyCode();
 
-            var redirectUrl = baseUri + "guid=" + guid; // TODO: à changer probablement
+            var redirectUrl = baseUri + "?orderId=" + orderId;
             var redirUrls = new RedirectUrls
             {
                 cancel_url = redirectUrl + "&cancel=true",
@@ -243,7 +242,6 @@ namespace apcurium.MK.Booking.Services.Impl
                         {
                             IsSuccessful = true,
                             PaymentId = createdPayment.id,
-                            //PayerId = createdPayment.payer.payer_info.payer_id, // TODO: PayerId is null...
                             PayPalCheckoutUrl = link.href       // Links that give the user the option to redirect to PayPal to approve the payment
                         };
                     }

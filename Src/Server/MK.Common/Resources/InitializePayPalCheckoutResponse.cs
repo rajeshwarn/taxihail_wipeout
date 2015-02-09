@@ -5,8 +5,6 @@ namespace apcurium.MK.Common.Resources
     {
         public string PaymentId { get; set; }
 
-        public string PayerId { get; set; }
-
         public string PayPalCheckoutUrl { get; set; }
     }
 }

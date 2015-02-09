@@ -230,7 +230,7 @@ namespace apcurium.MK.Booking.Api.Services
             if (request.FromWebApp
                 && request.Settings.ChargeTypeId == ChargeTypes.PayPal.Id)
             {
-                paypalWebPaymentResponse = _payPalServiceFactory.GetInstance().InitializeWebPayment(Request.AbsoluteUri, request.Estimate.Price, request.ClientLanguageCode);
+                paypalWebPaymentResponse = _payPalServiceFactory.GetInstance().InitializeWebPayment(orderCommand.Id, Request.AbsoluteUri, request.Estimate.Price, request.ClientLanguageCode);
                 if (!paypalWebPaymentResponse.IsSuccessful)
                 {
                     throw new HttpError(HttpStatusCode.BadRequest, ErrorCode.CreateOrder_RuleDisable.ToString(), paypalWebPaymentResponse.Message);
