@@ -182,7 +182,7 @@
                         // Wait for response before doing anything
                         ga('send', 'event', 'button', 'click', 'book web', 0);
                         if (this.model.isPayingWithPayPal()) {
-                            alert('redirect to paypal ' + model.PayPalCheckoutUrl);
+                            window.location.replace(model.get('payPalCheckoutUrl'));
                         } else {
                             TaxiHail.app.navigate('status/' + model.id, { trigger: true, replace: true /* Prevent user from coming back to this screen */ });
                         }
