@@ -458,7 +458,7 @@
 "YesButton"="Oui";
 "DeleteCreditCardTitle"="Supprimer la carte";
 "DeleteCreditCard"="Supprimer la carte associée à ce compte?";
-"CreditCardAdded"="Votre compte est maintenant configuré pour le paiement par défaut via carte de crédit. Vous pouvez quand même choisir de payer dans le véhicule en choisissant l'option appropriée à l'écran de paiement.";
+"CreditCardAdded"="Votre compte est maintenant configuré pour le paiement via carte de crédit par défaut. Vous pouvez quand même choisir de payer dans le véhicule en choisissant l'option appropriée à l'écran de confirmation.";
 "View"="Voir";
 "View_CreditCard"="Paiement";
 "PanelMenuViewPaymentInfoText"="Paiement";
@@ -564,7 +564,7 @@
 "ErrorCreateOrder_PendingOrder"="La commande ne peut être créée car une autre commande est déjà en cours. Voir le statut de la commande?";
 "TermsAndConditionsLabel"="Conditions générales d'utilisation";
 "LinkPayPal"="Associer PayPal";
-"UnlinkPayPal"="Dissocier  PayPal";
+"UnlinkPayPal"="Dissocier PayPal";
 "PayPalLinkError"="Impossible d'associer votre compte PayPal";
 "PayPalUnlinkError"="Impossible de dissocier votre compte PayPal";
 "PayPalErrorTitle"="Erreur PayPal";
@@ -572,5 +572,5 @@
 "LinkPayPalCCWarning"="Associer votre compte PayPal supprimera votre carte de crédit enregistrée et PayPal sera utilisé comme mode de paiement par défault. Voulez-vous continuer?";
 "AddCoFPayPalWarning"="Ajouter une carte de crédit dissociera votre compte PayPal et configurera cette dernière comme mode de paiement par défaut. Voulez-vous continuer?";
 "PayPalLinkedInfo"="Compte associé";
-"PayPalLinked"="Votre compte est maintenant configuré pour le paiement par défaut via PayPal. Vous pouvez quand même choisir de payer dans le véhicule en choisissant l'option appropriée à l'écran de paiement.";
+"PayPalLinked"="Votre compte est maintenant configuré pour le paiement via PayPal par défaut. Vous pouvez quand même choisir de payer dans le véhicule en choisissant l'option appropriée à l'écran de confirmation.";
 "Error"="Erreur";

@@ -495,7 +495,7 @@
 "DeleteCreditCard"="Delete the credit card registered to this account?";
 "ServiceErrorCreateOrder_PendingOrder"="You cannot book this ride since an order is already pending. View the order status?";
 "View"="View";
-"CreditCardAdded"="Your account is now enabled to pay with your card on file by default. You can still choose to pay in the vehicle by selecting \"Pay in Vehicle\" on the payment screen";
+"CreditCardAdded"="Your account is now enabled to pay with your card on file by default. You can still choose to pay in the vehicle by selecting \"Pay in Vehicle\" on the confirmation screen";
 "PayInCar"="Pay Cash/Credit Card in Car";
 "EstimateDistance"="";
 "EstimatePrice"="Cost";
@@ -589,5 +589,5 @@
 "LinkPayPalConfirmation"="Link";
 "AddCoFPayPalWarning"="Adding a credit card will unlink your PayPal account and Card on File will be set as the default payment method. Proceed?";
 "PayPalLinkedInfo"="Account Linked";
-"PayPalLinked"="Your account is now enabled to pay with PayPal by default. You can still choose to pay in the vehicle by selecting \"Pay in Vehicle\" on the payment screen";
+"PayPalLinked"="Your account is now enabled to pay with PayPal by default. You can still choose to pay in the vehicle by selecting \"Pay in Vehicle\" on the confirmation screen";
 "Error"="Error";
