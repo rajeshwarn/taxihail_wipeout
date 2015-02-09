@@ -28,46 +28,21 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
     public class CreditCardAddActivity : BaseBindingActivity<CreditCardAddViewModel>
     {
         private Intent _scanIntent { get; set; }
-        private const int CardIOScanRequestCode = 981288735; // TODO: Handle arbitrary number in a better way
+        private const int CardIOScanRequestCode = 981288735;
         private const int LinkPayPalAccountRequestCode = 481516234;
 
         private ClientPaymentSettings _paymentSettings;
-        private static readonly PayPalConfiguration PayPalConfiguration = new PayPalConfiguration();
 
         protected override async void OnViewModelSet()
 		{
 			base.OnViewModelSet ();
 
-            ViewModel.CreditCardCompanies[0].Image = Resource.Drawable.visa.ToString(CultureInfo.InvariantCulture);
-            ViewModel.CreditCardCompanies[1].Image = Resource.Drawable.mastercard.ToString(CultureInfo.InvariantCulture);
-            ViewModel.CreditCardCompanies[2].Image = Resource.Drawable.amex.ToString(CultureInfo.InvariantCulture);
-            ViewModel.CreditCardCompanies[3].Image = Resource.Drawable.visa_electron.ToString(CultureInfo.InvariantCulture);
-            ViewModel.CreditCardCompanies[4].Image = Resource.Drawable.credit_card_generic.ToString(CultureInfo.InvariantCulture);
-
             SetContentView(Resource.Layout.View_Payments_CreditCardAdd);
-            
-            var btnScanCard = FindViewById<Button>(Resource.Id.ScanCreditCardButton);
-
-            if (CardIOActivity.CanReadCardWithCamera() && !string.IsNullOrWhiteSpace(this.Services().Settings.CardIOToken))
-            {
-                _scanIntent = new Intent(this, typeof(CardIOActivity));
-                _scanIntent.PutExtra(CardIOActivity.ExtraAppToken, this.Services().Settings.CardIOToken);
-                _scanIntent.PutExtra(CardIOActivity.ExtraRequireExpiry, false);
-                _scanIntent.PutExtra(CardIOActivity.ExtraSuppressManualEntry, true);
-                _scanIntent.PutExtra(CardIOActivity.ExtraSuppressConfirmation, true);   
-
-                btnScanCard.Click += (sender, e) => ScanCard();
-
-                btnScanCard.Visibility = ViewStates.Visible;
-            }
-            else
-            {
-                btnScanCard.Visibility = ViewStates.Gone;
-            }
 
             _paymentSettings = await Mvx.Resolve<IPaymentService>().GetPaymentSettings();
 
-            SetUpPayPal();
+            ConfigureCreditCardSection();
+            ConfigurePayPalSection();
 		}
 
         protected override void OnDestroy()
@@ -81,7 +56,35 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
             base.OnDestroy();
         }
 
-        private void SetUpPayPal()
+        private void ConfigureCreditCardSection()
+        {
+            ViewModel.CreditCardCompanies[0].Image = Resource.Drawable.visa.ToString(CultureInfo.InvariantCulture);
+            ViewModel.CreditCardCompanies[1].Image = Resource.Drawable.mastercard.ToString(CultureInfo.InvariantCulture);
+            ViewModel.CreditCardCompanies[2].Image = Resource.Drawable.amex.ToString(CultureInfo.InvariantCulture);
+            ViewModel.CreditCardCompanies[3].Image = Resource.Drawable.visa_electron.ToString(CultureInfo.InvariantCulture);
+            ViewModel.CreditCardCompanies[4].Image = Resource.Drawable.credit_card_generic.ToString(CultureInfo.InvariantCulture);
+
+            var btnScanCard = FindViewById<Button>(Resource.Id.ScanCreditCardButton);
+
+            if (CardIOActivity.CanReadCardWithCamera()
+                && !string.IsNullOrWhiteSpace(this.Services().Settings.CardIOToken))
+            {
+                _scanIntent = new Intent(this, typeof(CardIOActivity));
+                _scanIntent.PutExtra(CardIOActivity.ExtraAppToken, this.Services().Settings.CardIOToken);
+                _scanIntent.PutExtra(CardIOActivity.ExtraRequireExpiry, false);
+                _scanIntent.PutExtra(CardIOActivity.ExtraSuppressManualEntry, true);
+                _scanIntent.PutExtra(CardIOActivity.ExtraSuppressConfirmation, true);
+
+                btnScanCard.Click += (sender, e) => ScanCard();
+                btnScanCard.Visibility = ViewStates.Visible;
+            }
+            else
+            {
+                btnScanCard.Visibility = ViewStates.Gone;
+            }
+        }
+
+        private void ConfigurePayPalSection()
         {
             var paypalSeparator = FindViewById<LinearLayout>(Resource.Id.PayPalSeparator);
             var btnLinkPayPalAccount = FindViewById<Button>(Resource.Id.LinkPayPalAccountButton);
@@ -90,7 +93,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
             // Use PayPal settings
             if (_paymentSettings.PayPalClientSettings.IsEnabled)
             {
-                SetUpPayPalService(_paymentSettings.PayPalClientSettings);
+                var payPalConfigurationService = Mvx.Resolve<IPayPalConfigurationService>();
+                payPalConfigurationService.InitializeService(_paymentSettings.PayPalClientSettings);
+
+                var intent = new Intent(this, typeof(PayPalService));
+                intent.PutExtra(PayPalService.ExtraPaypalConfiguration, (PayPalConfiguration)payPalConfigurationService.GetConfiguration());
+                StartService(intent);
 
                 btnLinkPayPalAccount.Click += (sender, e) => LinkPayPayAccount();
                 btnUnlinkPayPalAccount.Click += (sender, e) => ViewModel.UnlinkPayPalAccount();
@@ -102,39 +110,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
                 btnLinkPayPalAccount.Visibility = ViewStates.Gone;
                 btnUnlinkPayPalAccount.Visibility = ViewStates.Gone;
             }
-        }
-
-        private void SetUpPayPalService(PayPalClientSettings paypalSettings)
-        {
-            var clienId = paypalSettings.IsSandbox
-                ? paypalSettings.SandboxCredentials.ClientId
-                : paypalSettings.Credentials.ClientId;
-
-            if (!clienId.HasValue())
-            {
-                return;
-            }
-
-            PayPalConfiguration.LanguageOrLocale(this.Services().Localize.CurrentLanguage);
-            PayPalConfiguration.AcceptCreditCards(false);
-
-            PayPalConfiguration.Environment(paypalSettings.IsSandbox
-                ? PayPalConfiguration.EnvironmentSandbox
-                : PayPalConfiguration.EnvironmentProduction);
-
-            PayPalConfiguration.ClientId(clienId);
-
-            var baseUri = ViewModel.Settings.ServiceUrl.Replace("api/", string.Empty);
-
-            PayPalConfiguration.MerchantName(ViewModel.Settings.TaxiHail.ApplicationName);
-            PayPalConfiguration.MerchantPrivacyPolicyUri(
-                Android.Net.Uri.Parse(string.Format("{0}/company/privacy", baseUri)));
-            PayPalConfiguration.MerchantUserAgreementUri(
-                Android.Net.Uri.Parse(string.Format("{0}/company/termsandconditions", baseUri)));
-
-            var intent = new Intent(this, typeof (PayPalService));
-            intent.PutExtra(PayPalService.ExtraPaypalConfiguration, PayPalConfiguration);
-            StartService(intent);
         }
 
         private void LinkPayPayAccount()

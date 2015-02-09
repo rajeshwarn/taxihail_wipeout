@@ -288,6 +288,7 @@
     <Compile Include="Extensions\LocationDataExtension.cs" />
     <Compile Include="Controls\StatusBar.cs" />
     <Compile Include="PlatformIntegration\PackageInfo.cs" />
+    <Compile Include="PlatformIntegration\PayPalConfigurationService.cs" />
     <Compile Include="Setup.cs" />
     <Compile Include="PhonePresenter.cs" />
     <Compile Include="PlatformIntegration\MessageService.cs" />
