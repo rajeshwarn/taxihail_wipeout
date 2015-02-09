@@ -137,6 +137,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
         protected override void OnActivityResult(int requestCode, Result resultCode, Intent data)
         {
             base.OnActivityResult(requestCode, resultCode, data);
+            
             if (data == null)
             {
                 return;

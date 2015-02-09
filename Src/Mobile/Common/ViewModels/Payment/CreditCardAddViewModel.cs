@@ -68,14 +68,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			_locationService.Stop();
 		}
 
-	    private ClientPaymentSettings paymentSettings;
+	    private ClientPaymentSettings _paymentSettings;
 
 		public override async void Start()
         {
 			using (this.Services ().Message.ShowProgress ())
 			{
 			    IsPayPalAccountLinked = _accountService.CurrentAccount.IsPayPalAccountLinked;
-                paymentSettings = await _paymentService.GetPaymentSettings();
+                _paymentSettings = await _paymentService.GetPaymentSettings();
 
 				CreditCardCompanies = new List<ListItem>
 				{
@@ -119,7 +119,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 					CreditCardType = (int)id;
 
 					#if DEBUG
-					if (paymentSettings.PaymentMode == PaymentMethod.Braintree)
+					if (_paymentSettings.PaymentMode == PaymentMethod.Braintree)
 					{
 						CreditCardNumber = DummyVisa.BraintreeNumber;
 					}
@@ -311,7 +311,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
         public bool CanLinkPayPalAccount
         {
-            get { return !IsPayPalAccountLinked && paymentSettings.PayPalClientSettings.IsEnabled; }
+            get { return !IsPayPalAccountLinked && _paymentSettings.PayPalClientSettings.IsEnabled; }
         }
 
 	    public bool CanUnlinkPayPalAccount
@@ -326,7 +326,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
 	    public bool IsPayPalOnly
 	    {
-            get { return paymentSettings.PayPalClientSettings.IsEnabled && !paymentSettings.IsPayInTaxiEnabled; }
+            get { return _paymentSettings.PayPalClientSettings.IsEnabled && !_paymentSettings.IsPayInTaxiEnabled; }
 	    }
 
 		public string CreditCardSaveButtonDisplay
