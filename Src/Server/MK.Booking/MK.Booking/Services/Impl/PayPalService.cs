@@ -160,7 +160,11 @@ namespace apcurium.MK.Booking.Services.Impl
             if (!estimatedFare.HasValue)
             {
                 // TODO: Localize
-                throw new Exception("You need an estimated fare to use PayPal");
+                return new InitializePayPalCheckoutResponse
+                {
+                    IsSuccessful = false,
+                    Message = "You need an estimated fare to use PayPal"
+                };
             }
 
             var regionName = _serverSettings.ServerData.PayPalRegionInfoOverride;
@@ -188,7 +192,7 @@ namespace apcurium.MK.Booking.Services.Impl
                     amount = new Amount
                     {
                         currency = currency,
-                        total = amount.ToString("N")
+                        total = amount.ToString("N", CultureInfo.InvariantCulture)
                     },	
 
                     description = string.Format(
@@ -206,7 +210,7 @@ namespace apcurium.MK.Booking.Services.Impl
                                     ? SupportedLanguages.en.ToString()
                                     : clientLanguageCode)),
                                 currency = currency,
-                                price = amount.ToString("N"),
+                                price = amount.ToString("N", CultureInfo.InvariantCulture),
                                 quantity = "1"
                             }
                         }
@@ -342,7 +346,7 @@ namespace apcurium.MK.Booking.Services.Impl
                                     currency = conversionRate != 1 
                                         ? CurrencyCodes.Main.UnitedStatesDollar 
                                         : _resources.GetCurrencyCode(),
-                                    total = amount.ToString("N")
+                                    total = amount.ToString("N", CultureInfo.InvariantCulture)
                                 },
                                 description = regionName.HasValue()
                                     ? string.Format("order: {0}", orderId)
@@ -484,7 +488,7 @@ namespace apcurium.MK.Booking.Services.Impl
                     amount = new Amount
                     {
                         currency = authorization.amount.currency,
-                        total = amount.ToString("N")
+                        total = amount.ToString("N", CultureInfo.InvariantCulture)
                     },
                     is_final_capture = true
                 };

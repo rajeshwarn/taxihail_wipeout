@@ -221,14 +221,12 @@ namespace apcurium.MK.Booking.Api.Services
             if (request.FromWebApp
                 && request.Settings.ChargeTypeId == ChargeTypes.PayPal.Id)
             {
-                try
+                var response = _payPalServiceFactory.GetInstance().InitializeWebPayment(Request.AbsoluteUri, request.Estimate.Price, request.ClientLanguageCode);
+                if (!response.IsSuccessful)
                 {
-                    return _payPalServiceFactory.GetInstance().InitializeWebPayment(Request.AbsoluteUri, request.Estimate.Price, request.ClientLanguageCode);
+                    throw new HttpError(HttpStatusCode.BadRequest, ErrorCode.CreateOrder_RuleDisable.ToString(), response.Message);
                 }
-                catch (Exception ex)
-                {
-                    throw new HttpError(HttpStatusCode.BadRequest, ErrorCode.CreateOrder_RuleDisable.ToString(), ex.Message);
-                }
+                return response;
             }
 
             // Payment method validation
