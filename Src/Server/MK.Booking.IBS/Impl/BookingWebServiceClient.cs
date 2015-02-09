@@ -172,7 +172,7 @@ namespace apcurium.MK.Booking.IBS.Impl
                 double tripTime;
 
                 result.FareEstimate = service.EstimateFare_8(UserNameApp, PasswordApp, tbook, out fare, out tolls, out distance, out tripTime);
-                if ( result.FareEstimate == 0 )
+                if (result.FareEstimate == 0)
                 {
                     result.FareEstimate = fare;
                 }
@@ -315,8 +315,7 @@ namespace apcurium.MK.Booking.IBS.Impl
             return regEx.Replace(phone, "");
         }
 
-        public int? CreateOrder(int? providerId, int accountId, string passengerName, string phone, int nbPassengers, int? vehicleTypeId,
-            int? chargeTypeId, string note, DateTime pickupDateTime, IbsAddress pickup, IbsAddress dropoff, string accountNumber, int? customerNumber, string[] prompts, int?[] promptsLength, Fare fare = default(Fare))
+        public int? CreateOrder(int? providerId, int accountId, string passengerName, string phone, int nbPassengers, int? vehicleTypeId, int? chargeTypeId, string note, DateTime pickupDateTime, IbsAddress pickup, IbsAddress dropoff, string accountNumber, int? customerNumber, string[] prompts, int?[] promptsLength, Fare fare = default(Fare))
         {
             Logger.LogMessage("WebService Create Order call : accountID=" + accountId);
             
@@ -326,9 +325,9 @@ namespace apcurium.MK.Booking.IBS.Impl
                 AccountID = accountId,                
                 Customer = passengerName,
                 Phone = CleanPhone( phone ),
-                Fare = (double)fare.AmountExclTax,
-                VAT = (double)fare.TaxAmount,
-                AccountNum = accountNumber,            
+                Fare = fare.AmountExclTax,
+                VAT = fare.TaxAmount,
+                AccountNum = accountNumber          
             };
 
             order.AccountNum =  accountNumber;

@@ -55,27 +55,11 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                     {
                         var account = _accountDao.FindById(@event.Status.AccountId);
                         var response = _paymentAbstractionService.Pair(@event.SourceId, account.DefaultTipPercent);
-
-                        if (response.IsSuccessful)
-                        {
-                            var ibsAccountId = _accountDao.GetIbsAccountId(order.AccountId, null);
-                            if (!UpdateOrderPaymentType(ibsAccountId.Value, order.IBSOrderId.Value))
-                            {
-                                response.IsSuccessful = false;
-                                _paymentAbstractionService.VoidPreAuthorization(@event.SourceId);
-                            }
-                        }
-
                         _notificationService.SendAutomaticPairingPush(@event.SourceId, account.DefaultTipPercent, response.IsSuccessful);
                     } 
                 }
                 break;
             }
-        }
-
-        private bool UpdateOrderPaymentType(int ibsAccountId, int ibsOrderId, string companyKey = null)
-        {
-            return _ibsServiceProvider.Booking(companyKey).UpdateOrderPaymentType(ibsAccountId, ibsOrderId, _serverSettings.ServerData.IBS.PaymentTypeCardOnFileId);
         }
     }
 }
