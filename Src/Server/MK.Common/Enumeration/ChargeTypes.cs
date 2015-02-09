@@ -9,6 +9,7 @@ namespace apcurium.MK.Common.Enumeration
         public static ListItem Account = new ListItem { Id = 2, Display = "ChargeAccount" };
         public static ListItem CardOnFile = new ListItem { Id = 3, Display = "CardOnFile" };
         public static ListItem PayPal = new ListItem { Id = 4, Display = "PayPal" };
+        public static ListItem PrePaid = new ListItem { Id = 5, Display = "PrePaid" };
 
         public static IEnumerable<ListItem> GetList()
         {

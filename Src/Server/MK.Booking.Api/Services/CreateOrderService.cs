@@ -218,22 +218,24 @@ namespace apcurium.MK.Booking.Api.Services
             // Promo code validation
             var applyPromoCommand = ValidateAndApplyPromotion(request.PromoCode, request.Settings.ChargeTypeId, account.Id, request.Id, pickupDate, isFutureBooking, request.ClientLanguageCode);
 
-            if (request.FromWebApp
-                && request.Settings.ChargeTypeId == ChargeTypes.PayPal.Id)
-            {
-                var response = _payPalServiceFactory.GetInstance().InitializeWebPayment(Request.AbsoluteUri, request.Estimate.Price, request.ClientLanguageCode);
-                if (!response.IsSuccessful)
-                {
-                    throw new HttpError(HttpStatusCode.BadRequest, ErrorCode.CreateOrder_RuleDisable.ToString(), response.Message);
-                }
-                return response;
-            }
-
             // Payment method validation
             ValidatePayment(request, account, isFutureBooking, request.Estimate.Price);
 
             // Charge account validation
             var accountValidationResult = ValidateChargeAccount(request, account, isFutureBooking);
+
+            var orderCommand = Mapper.Map<Commands.CreateOrder>(request);
+            
+            InitializePayPalCheckoutResponse paypalWebPaymentResponse = null;
+            if (request.FromWebApp
+                && request.Settings.ChargeTypeId == ChargeTypes.PayPal.Id)
+            {
+                paypalWebPaymentResponse = _payPalServiceFactory.GetInstance().InitializeWebPayment(Request.AbsoluteUri, request.Estimate.Price, request.ClientLanguageCode);
+                if (!paypalWebPaymentResponse.IsSuccessful)
+                {
+                    throw new HttpError(HttpStatusCode.BadRequest, ErrorCode.CreateOrder_RuleDisable.ToString(), paypalWebPaymentResponse.Message);
+                }
+            }
 
             var chargeTypeIbs = string.Empty;
             var chargeTypeEmail = string.Empty;
@@ -242,7 +244,10 @@ namespace apcurium.MK.Booking.Api.Services
                     .Select(x => x.Display)
                     .FirstOrDefault();
 
-            chargeTypeKey = accountValidationResult.ChargeTypeKeyOverride ?? chargeTypeKey;
+            chargeTypeKey = paypalWebPaymentResponse != null 
+                ? ChargeTypes.PrePaid.Display
+                : accountValidationResult.ChargeTypeKeyOverride 
+                    ?? chargeTypeKey;
 
             if (chargeTypeKey != null)
             {
@@ -259,7 +264,6 @@ namespace apcurium.MK.Booking.Api.Services
                 .Select(x => x.Display)
                 .FirstOrDefault();
 
-            var orderCommand = Mapper.Map<Commands.CreateOrder>(request);
             orderCommand.AccountId = account.Id;
             orderCommand.UserAgent = base.Request.UserAgent;
             orderCommand.ClientVersion = base.Request.Headers.Get("ClientVersion");
@@ -270,6 +274,12 @@ namespace apcurium.MK.Booking.Api.Services
             orderCommand.Settings.ChargeType = chargeTypeIbs;
             orderCommand.Settings.VehicleType = vehicleType;
             _commandBus.Send(orderCommand);
+
+            if (paypalWebPaymentResponse != null)
+            {
+                // TODO: Save CreateOrderOnIBSAndSendCommands params to database
+                return paypalWebPaymentResponse;
+            }
 
             // Create order on IBS
             Task.Run(() => 
