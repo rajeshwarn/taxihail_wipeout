@@ -141,7 +141,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
         protected override void OnActivityResult(int requestCode, Result resultCode, Intent data)
         {
             base.OnActivityResult(requestCode, resultCode, data);
-            if (requestCode == CardIOScanRequestCode && data != null && data.HasExtra(CardIOActivity.ExtraScanResult))
+
+            if (data == null)
+            {
+                return;
+            }
+            
+            if (requestCode == CardIOScanRequestCode && data.HasExtra(CardIOActivity.ExtraScanResult))
             {
                 var scanRes = data.GetParcelableExtra(CardIOActivity.ExtraScanResult);
                 var scanResult = scanRes.JavaCast<CreditCard>();
@@ -150,7 +156,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
                 ViewModel.Data.CardNumber = scanResult.CardNumber;
                 txtCardNumber.CreditCardNumber = scanResult.CardNumber;
             }
-            else if (requestCode == LinkPayPalAccountRequestCode && data != null)
+            else if (requestCode == LinkPayPalAccountRequestCode)
             {
                 if (resultCode == Result.Ok)
                 {
