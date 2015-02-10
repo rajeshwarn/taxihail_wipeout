@@ -102,7 +102,8 @@ namespace apcurium.MK.Booking.Services
         {
             if (IsPayPal())
             {
-                throw new NotImplementedException();
+                // No CC to delete with PayPal
+                return new DeleteTokenizedCreditcardResponse { IsSuccessful = true };
             }
             return GetInstance().DeleteTokenizedCreditcard(cardToken);
         }
