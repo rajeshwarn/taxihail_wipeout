@@ -685,7 +685,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			var orderToValidate = await GetOrder ();	
 			if (orderToValidate.PromoCode.HasValue())
 			{
-				if (orderToValidate.Settings.ChargeTypeId != ChargeTypes.CardOnFile.Id)
+				if (orderToValidate.Settings.ChargeTypeId != ChargeTypes.CardOnFile.Id
+                    && orderToValidate.Settings.ChargeTypeId != ChargeTypes.PayPal.Id)
 				{
 					return false;
 				}

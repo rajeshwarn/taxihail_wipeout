@@ -75,7 +75,7 @@ namespace apcurium.MK.Booking.Api.Services
                 ConfimationToken = command.ConfimationToken
             });
 
-            _commandBus.Send(new AddCreditCard
+            _commandBus.Send(new AddOrUpdateCreditCard
             {
                 AccountId = command.AccountId,
                 CreditCardCompany = "Visa",

@@ -88,6 +88,24 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No PayPal account linked.
+        /// </summary>
+        public static string CannotCreateOrder_PayPalButNoPayPal {
+            get {
+                return ResourceManager.GetString("CannotCreateOrder_PayPalButNoPayPal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The order cannot be created because your PayPal account failed the preauthorization check..
+        /// </summary>
+        public static string CannotCreateOrder_PayPalWasDeclined {
+            get {
+                return ResourceManager.GetString("CannotCreateOrder_PayPalWasDeclined", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to This promotion does not applies to future booking.
         /// </summary>
         public static string CannotCreateOrder_PromotionAppliesToCurrentBookingOnly {
@@ -147,6 +165,24 @@ namespace apcurium.MK.Booking.Resources {
         public static string CannotCreateOrder_PromotionMustUseCardOnFile {
             get {
                 return ResourceManager.GetString("CannotCreateOrder_PromotionMustUseCardOnFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You must select Card On File or PayPal to use a promotion..
+        /// </summary>
+        public static string CannotCreateOrder_PromotionMustUseCardOnFileOrPayPal {
+            get {
+                return ResourceManager.GetString("CannotCreateOrder_PromotionMustUseCardOnFileOrPayPal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You must select PayPal to use a promotion..
+        /// </summary>
+        public static string CannotCreateOrder_PromotionMustUsePayPal {
+            get {
+                return ResourceManager.GetString("CannotCreateOrder_PromotionMustUsePayPal", resourceCulture);
             }
         }
         
@@ -907,7 +943,7 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Fare will be paid using the credit card on file.
+        ///   Looks up a localized string similar to Fare will be paid using the selected payment method.
         /// </summary>
         public static string OrderStatus_wosLOADEDAutoPairing {
             get {
@@ -1083,6 +1119,15 @@ namespace apcurium.MK.Booking.Resources {
         public static string PushNotification_OrderPairingSuccessful {
             get {
                 return ResourceManager.GetString("PushNotification_OrderPairingSuccessful", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The ride #{0} will be paid automatically at the end of the trip using your linked PayPal account and using your default tip of {2}%.
+        /// </summary>
+        public static string PushNotification_OrderPairingSuccessfulPayPal {
+            get {
+                return ResourceManager.GetString("PushNotification_OrderPairingSuccessfulPayPal", resourceCulture);
             }
         }
         

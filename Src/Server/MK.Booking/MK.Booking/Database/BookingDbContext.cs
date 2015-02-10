@@ -60,6 +60,7 @@ namespace apcurium.MK.Booking.Database
             modelBuilder.Entity<CompanyDetail>().ToTable("CompanyDetail", SchemaName);
             modelBuilder.Entity<OrderUserGpsDetail>().ToTable("OrderUserGpsDetail", SchemaName);
             modelBuilder.Entity<AppStartUpLogDetail>().ToTable("AppStartUpLogDetail", SchemaName);
+            modelBuilder.Entity<PayPalAccountDetails>().ToTable("PayPalAccountDetails", SchemaName);
             modelBuilder.Entity<OrderReportDetail>().ToTable("OrderReportDetail", SchemaName);
 
             modelBuilder.Entity<AccountChargeQuestion>().ToTable("AccountChargeQuestion", SchemaName);
@@ -87,18 +88,11 @@ namespace apcurium.MK.Booking.Database
             var entry = Entry(entity);
 
             if (entry.State == EntityState.Detached)
+            {
                 Set<T>().Add(entity);
+            }
 
-            try
-            {
-                SaveChanges();
-            }
-            catch (DbEntityValidationException ex)
-            {
-                
-                throw;
-            }
-            
+            SaveChanges();
         }
     }
 }

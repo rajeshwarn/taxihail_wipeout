@@ -58,15 +58,20 @@ namespace DatabaseInitializer.Services
                     Console.WriteLine("Number of events migrated: " + (hasMore ? skip : (skip + events.Count)));
                     skip += pageSize;
 
-                    // fix BraintreeClientSettings namespace problem
                     foreach (var message in events.Where(x => x.EventType == typeof(PaymentSettingUpdated).FullName).ToList())
                     {
+                        // fix BraintreeClientSettings namespace problem
                         message.Payload =
                             message.Payload.Replace("apcurium.MK.Common.Configuration.BraintreeClientSettings",
                                 "apcurium.MK.Common.Configuration.Impl.BraintreeClientSettings");
+
+                        // fix PaymentSettingsUpdated events containing old PayPalCredentials
+                        message.Payload =
+                            message.Payload.Replace("apcurium.MK.Common.Configuration.Impl.PayPalCredentials",
+                                "apcurium.MK.Common.Configuration.Impl.PayPalServerCredentials");
                     }
                     context.SaveChanges();
-
+  
                     // rename Order Pairing events
                     foreach (var message in events.Where(x =>
                                     x.EventType.Contains("OrderPairedForRideLinqCmtPayment") ||
@@ -80,6 +85,22 @@ namespace DatabaseInitializer.Services
                             "OrderPairedForPayment");
                         message.EventType = message.EventType.Replace("OrderUnpairedForRideLinqCmtPayment",
                             "OrderUnpairedForPayment");
+                    }
+                    context.SaveChanges();
+
+                    // rename CreditCardAdded or CreditCardUpdated to CreditCardAddedOrUpdated
+                    foreach (var message in events.Where(x =>
+                                    x.EventType.Equals("apcurium.MK.Booking.Events.CreditCardAdded") ||
+                                    x.EventType.Equals("apcurium.MK.Booking.Events.CreditCardUpdated")))
+                    {
+                        message.Payload = message.Payload.Replace("CreditCardAdded",
+                            "CreditCardAddedOrUpdated");
+                        message.Payload = message.Payload.Replace("CreditCardUpdated",
+                            "CreditCardAddedOrUpdated");
+                        message.EventType = message.EventType.Replace("CreditCardAdded",
+                            "CreditCardAddedOrUpdated");
+                        message.EventType = message.EventType.Replace("CreditCardUpdated",
+                            "CreditCardAddedOrUpdated");
                     }
                     context.SaveChanges();
 

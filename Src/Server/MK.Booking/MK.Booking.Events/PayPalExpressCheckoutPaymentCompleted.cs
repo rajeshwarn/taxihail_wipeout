@@ -7,6 +7,7 @@ using Infrastructure.EventSourcing;
 
 namespace apcurium.MK.Booking.Events
 {
+    [Obsolete("This event is deprecated. PayPal express checkout is not longer supported.")]
     public class PayPalExpressCheckoutPaymentCompleted : VersionedEvent
     {
         public Guid OrderId { get; set; }

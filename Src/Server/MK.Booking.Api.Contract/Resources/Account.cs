@@ -25,10 +25,21 @@ namespace apcurium.MK.Booking.Api.Contract.Resources
         public string Language { get; set; }
 
         public bool IsAdmin { get; set; }
+
         public bool IsSuperAdmin { get; set; }
 
         public Guid? DefaultCreditCard { get; set; }
 
         public int? DefaultTipPercent { get; set; }
+
+        public bool IsPayPalAccountLinked { get; set; }
+
+        public bool HasValidPaymentInformation
+        {
+            get
+            {
+                return DefaultCreditCard.HasValue || IsPayPalAccountLinked;
+            }
+        }
     }
 }

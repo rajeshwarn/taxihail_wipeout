@@ -114,12 +114,13 @@
     <Compile Include="Configuration\Impl\BrainTreeSettings.cs" />
     <Compile Include="Configuration\Impl\CmtPaymentSettings.cs" />
     <Compile Include="Configuration\Impl\ConfigurationDbContext.cs" />
+    <Compile Include="Configuration\Impl\PayPalClientCredentials.cs" />
     <Compile Include="Configuration\Impl\ServerSettings.cs" />
     <Compile Include="Configuration\IServerSettings.cs" />
     <Compile Include="Configuration\Impl\MonerisPaymentSettings.cs" />
     <Compile Include="Configuration\Impl\PaymentMethod.cs" />
     <Compile Include="Configuration\Impl\PayPalClientSettings.cs" />
-    <Compile Include="Configuration\Impl\PayPalSandboxCredentials.cs" />
+    <Compile Include="Configuration\Impl\PayPalServerCredentials.cs" />
     <Compile Include="Configuration\Impl\PayPalServerSettings.cs" />
     <Compile Include="Configuration\Impl\ServerPaymentSetting.cs" />
     <Compile Include="Configuration\NotificationSettings.cs" />
@@ -162,6 +163,8 @@
     <Compile Include="Enumeration\DistanceFormat.cs" />
     <Compile Include="Enumeration\PaymentProvider.cs" />
     <Compile Include="Enumeration\PaymentType.cs" />
+    <Compile Include="Enumeration\PayPal\AuthorizationStates.cs" />
+    <Compile Include="Enumeration\PayPal\PaymentStates.cs" />
     <Compile Include="Enumeration\PromoDiscountType.cs" />
     <Compile Include="Enumeration\PromotionTriggerTypes.cs" />
     <Compile Include="Enumeration\PushNotificationServicePlatform.cs" />

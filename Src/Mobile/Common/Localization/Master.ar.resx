@@ -259,7 +259,7 @@
     <value>الغاء</value>
   </data>
   <data name="CmtCardNumber" xml:space="preserve">
-    <value>رقم البطاقة:</value>
+    <value>طريقة الدفع:</value>
   </data>
   <data name="CmtCarNumber" xml:space="preserve">
     <value>رقم السيارة:</value>
@@ -314,12 +314,6 @@
   </data>
   <data name="ConfirmationOfPaymentSent" xml:space="preserve">
     <value>تم إرسال تأكيد السداد للسائق.</value>
-  </data>
-  <data name="ConfirmationPaymentAmountOver100" xml:space="preserve">
-    <value>سنقوم بخصم {0}. يرجى تأكيد القيمة.</value>
-  </data>
-  <data name="ConfirmationPaymentAmountOver100Title" xml:space="preserve">
-    <value>مطلوب التأكيد</value>
   </data>
   <data name="ConfirmCompanyLabel" xml:space="preserve">
     <value>الشركة:</value>
@@ -421,7 +415,7 @@
     <value>سنة الإنتهاء</value>
   </data>
   <data name="CreditCardInstructions" xml:space="preserve">
-    <value>لكي تستخدم هذا التطبيق، يجب أن تضيف رقم بطاقة إئتمانية لحسابك.</value>
+    <value>In order to use the application, you need to add a payment method to your account.</value>
   </data>
   <data name="CreditCardInvalidCrediCardNUmber" xml:space="preserve">
     <value>رقم البطاقة الائتمانية خاطئة</value>
@@ -741,6 +735,9 @@
   <data name="LocationServiceErrorMessage" xml:space="preserve">
     <value>خدمة تحديد الموقع غير مفعلة</value>
   </data>
+  <data name="Error" xml:space="preserve">
+    <value>خطأ</value>
+  </data>
   <data name="LocationServiceErrorTitle" xml:space="preserve">
     <value>خطأ</value>
   </data>
@@ -783,9 +780,6 @@
   <data name="NetworkErrorTitle" xml:space="preserve">
     <value>لا يوجد إتصال بالشبكة</value>
   </data>
-  <data name="NoAmountSelectedMessage" xml:space="preserve">
-    <value>رجاء أدخل القيمة</value>
-  </data>
   <data name="NoAptText" xml:space="preserve">
     <value>رقم الشقة</value>
   </data>
@@ -809,9 +803,6 @@
   </data>
   <data name="NoMailClient" xml:space="preserve">
     <value>لا يوجد برنامج لتلقي رسائل البريد الإلكتروني .</value>
-  </data>
-  <data name="NoOrderId" xml:space="preserve">
-    <value>الطلب غير جاهز</value>
   </data>
   <data name="NoPhoneNumberMessage" xml:space="preserve">
     <value>رقم هاتف هذا السائق خاطئ</value>
@@ -889,7 +880,7 @@
     <value>تحديث الحساب</value>
   </data>
   <data name="PanelMenuViewPaymentInfoText" xml:space="preserve">
-    <value>Card on File</value>
+    <value>Payment</value>
   </data>
   <data name="ParameterButton" xml:space="preserve">
     <value>المعايير</value>
@@ -924,12 +915,6 @@
   <data name="PaymentDetails.TipAmountLabel" xml:space="preserve">
     <value>قيمة الإكرامية</value>
   </data>
-  <data name="PaymentErrorMessage" xml:space="preserve">
-    <value>تفاصيل</value>
-  </data>
-  <data name="PaymentErrorTitle" xml:space="preserve">
-    <value>لا يمكن اتمام عملية الدفع</value>
-  </data>
   <data name="PaymentViewMeterAmountText" xml:space="preserve">
     <value>قيمة العداد</value>
   </data>
@@ -941,21 +926,6 @@
   </data>
   <data name="PayNow" xml:space="preserve">
     <value>ادفع الآن</value>
-  </data>
-  <data name="PayPalButton" xml:space="preserve">
-    <value>ادفع من خلال PayPal</value>
-  </data>
-  <data name="PayPalExpressCheckoutCancelMessage" xml:space="preserve">
-    <value>تم إلغاء الدفع من خلال الـ PayPal. لم يتم الخصم من حسابك.</value>
-  </data>
-  <data name="PayPalExpressCheckoutCancelTitle" xml:space="preserve">
-    <value>تم إلغاء عملية الدفع</value>
-  </data>
-  <data name="PayPalExpressCheckoutSuccessMessage" xml:space="preserve">
-    <value>تم الدفع بنجاح من PayPal. تم إرسال تأكيد للسائق.</value>
-  </data>
-  <data name="PayPalExpressCheckoutSuccessTitle" xml:space="preserve">
-    <value>تم الدفع بنجاح</value>
   </data>
   <data name="PickupDateDisplay" xml:space="preserve">
     <value>الحجز لـ {0:ddd, MMM d} at {0:h:mm tt}</value>
@@ -1366,7 +1336,7 @@
     <value>افتح حسابك</value>
   </data>
   <data name="View_CreditCard" xml:space="preserve">
-    <value>بطاقة إئتمان</value>
+    <value>دفع</value>
   </data>
   <data name="View_CreditCardsList" xml:space="preserve">
     <value>بطاقات إئتمان</value>
@@ -1673,5 +1643,38 @@
   </data>
   <data name="ErrorCreateOrder_PendingOrder" xml:space="preserve">
     <value>You cannot book this ride since an order is already pending. View the order status?</value>
+  </data>
+  <data name="LinkPayPal" xml:space="preserve">
+    <value>Link PayPal</value>
+  </data>
+  <data name="UnlinkPayPal" xml:space="preserve">
+    <value>Unlink PayPal</value>
+  </data>
+  <data name="LinkPayPalCCWarning" xml:space="preserve">
+    <value>Linking your PayPal account will remove your card on file and PayPal will be set as the default payment method. Proceed?</value>
+  </data>
+  <data name="AddCoFPayPalWarning" xml:space="preserve">
+    <value>Adding a credit card will unlink your PayPal account and Card on File will be set as the default payment method. Proceed?</value>
+  </data>
+  <data name="PayPalErrorTitle" xml:space="preserve">
+    <value>PayPal Error</value>
+  </data>
+  <data name="PayPalLinkError" xml:space="preserve">
+    <value>Unable to link your PayPal account</value>
+  </data>
+  <data name="PayPalUnlinkError" xml:space="preserve">
+    <value>Unable to unlink your PayPal account</value>
+  </data>
+  <data name="LinkPayPalConfirmation" xml:space="preserve">
+    <value>Link</value>
+  </data>
+  <data name="PayPalLinked" xml:space="preserve">
+    <value>Your account is now enabled to pay with PayPal by default. You can still choose to pay in the vehicle by selecting \"Pay in Vehicle\" on the payment screen</value>
+  </data>
+  <data name="PayPalLinkedInfo" xml:space="preserve">
+    <value>Account Linked</value>
+  </data>
+  <data name="NoPairingCreditCard" xml:space="preserve">
+    <value>None</value>
   </data>
 </root>

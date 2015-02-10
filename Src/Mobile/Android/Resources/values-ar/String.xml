@@ -48,7 +48,7 @@
   <string name="ChooseProviderDialogTitle">اختر مورد خدمة</string>
   <string name="Close">إغلاق</string>
   <string name="CmtCancelPayment">الغاء</string>
-  <string name="CmtCardNumber">رقم البطاقة:</string>
+  <string name="CmtCardNumber">طريقة الدفع:</string>
   <string name="CmtCarNumber">رقم السيارة:</string>
   <string name="CmtChangePaymentInfo">تغيير إعدادات الدفع</string>
   <string name="CmtConfirmPayment">تأكيد</string>
@@ -105,7 +105,7 @@
   <string name="CreditCardErrorTitle">لا يمكنك حفظ هذه البطاقة الائتمانية</string>
   <string name="CreditCardExpMonth">شهر الإنتهاء</string>
   <string name="CreditCardExpYear">سنة الإنتهاء</string>
-  <string name="CreditCardInstructions">لكي تستخدم هذا التطبيق، يجب أن تضيف رقم بطاقة إئتمانية لحسابك.</string>
+  <string name="CreditCardInstructions">In order to use the application, you need to add a payment method to your account.</string>
   <string name="CreditCardInvalidCrediCardNUmber">رقم البطاقة الائتمانية خاطئة</string>
   <string name="CreditCardName">الإسم كما يظهر على البطاقة</string>
   <string name="CreditCardNumber">رقم البطاقة</string>
@@ -460,13 +460,13 @@
   <string name="dummyaaa">xaaa</string>
   <string name="Error_AccountPaymentQuestionRequiredMessage">يجب الإجابة على جميع الأسئلة للإستمرار</string>
   <string name="View_UpdatedTermsAndConditions">أحكام و شروط جديدة</string>
-  <string name="View_CreditCard">بطاقة إئتمان</string>
+  <string name="View_CreditCard">دفع</string>
   <string name="DeleteCreditCardTitle">حذف بطاقة الائتمان</string>
   <string name="DeleteCreditCard">حذف بطاقة الائتمان المسجلة في هذا الحساب؟</string>
   <string name="View">View</string>
   <string name="ServiceErrorCreateOrder_PendingOrder">You cannot book this ride since an order is already pending. View the order status?</string>
   <string name="CreditCardAdded">Your account is now enabled to pay with your card on file by default. You can still choose to pay in the vehicle by selecting \"Pay in Vehicle\" on the payment screen</string>
-  <string name="PanelMenuViewPaymentInfoText">Card on File</string>
+  <string name="PanelMenuViewPaymentInfoText">Payment</string>
   <string name="LoginSupport">Need support?</string>
   <string name="CurrencyPriceFormat">{0}ر.س</string>
   <string name="PendingOrderMessage">You cannot book this ride since an order is already pending. View the order status?</string>
@@ -554,4 +554,17 @@
   <string name="Notification_PromotionUnlockedPush">Promotions unlocked (Push)</string>
   <string name="ErrorCreateOrder_PendingOrder">You cannot book this ride since an order is already pending. View the order status?</string>
   <string name="TermsAndConditionsLabel">الأحكام والشروط</string>
+  <string name="LinkPayPal">Link PayPal</string>
+  <string name="UnlinkPayPal">Unlink PayPal</string>
+  <string name="LinkPayPalCCWarning">Linking your PayPal account will remove your card on file and PayPal will be set as the default payment method. Proceed?</string>
+  <string name="AddCoFPayPalWarning">Adding a credit card will unlink your PayPal account and Card on File will be set as the default payment method. Proceed?</string>
+  <string name="PayPalErrorTitle">PayPal Error</string>
+  <string name="PayPalLinkError">Unable to link your PayPal account</string>
+  <string name="PayPalUnlinkError">Unable to unlink your PayPal account</string>
+  <string name="PayPalLink">Link</string>
+  <string name="LinkPayPalConfirmation">Link</string>
+  <string name="PayPalLinked">Your account is now enabled to pay with PayPal by default. You can still choose to pay in the vehicle by selecting \"Pay in Vehicle\" on the payment screen</string>
+  <string name="PayPalLinkedInfo">Account Linked</string>
+  <string name="Error">خطأ</string>
+  <string name="NoPairingCreditCard">None</string>
 </resources>

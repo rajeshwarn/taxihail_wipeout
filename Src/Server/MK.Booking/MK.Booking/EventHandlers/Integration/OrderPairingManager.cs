@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.IBS;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
@@ -16,30 +15,29 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
         IIntegrationEventHandler,
         IEventHandler<OrderStatusChanged>
     {
-       
         private readonly INotificationService _notificationService;
         private readonly IServerSettings _serverSettings;
         private readonly IOrderDao _orderDao;
         private readonly ICreditCardDao _creditCardDao;
         private readonly IAccountDao _accountDao;
         private readonly IIBSServiceProvider _ibsServiceProvider;
-        private readonly IPaymentServiceFactory _paymentServiceFactory;
+        private readonly IPaymentService _paymentFacadeService;
 
-        public OrderPairingManager(IPaymentServiceFactory paymentServiceFactory, 
-            INotificationService notificationService, 
+        public OrderPairingManager(INotificationService notificationService, 
             IServerSettings serverSettings,
             IOrderDao orderDao,
             ICreditCardDao creditCardDao,
             IAccountDao accountDao,
-            IIBSServiceProvider ibsServiceProvider)
+            IIBSServiceProvider ibsServiceProvider,
+            IPaymentService paymentFacadeService)
         {
-            _paymentServiceFactory = paymentServiceFactory;
             _notificationService = notificationService;
             _serverSettings = serverSettings;
             _orderDao = orderDao;
             _creditCardDao = creditCardDao;
             _accountDao = accountDao;
             _ibsServiceProvider = ibsServiceProvider;
+            _paymentFacadeService = paymentFacadeService;
         }
 
         public void Handle(OrderStatusChanged @event)
@@ -49,17 +47,17 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                 case VehicleStatuses.Common.Loaded:
                 {
                     var order = _orderDao.FindById(@event.SourceId);
-                    var creditCardAssociatedToAccount = _creditCardDao.FindByAccountId(@event.Status.AccountId).FirstOrDefault();
-
+                    
                     if (_serverSettings.GetPaymentSettings().AutomaticPaymentPairing
                         && _serverSettings.GetPaymentSettings().PaymentMode != PaymentMethod.RideLinqCmt
-                        && order.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id
-                        && creditCardAssociatedToAccount != null)        // Only send notification if using card on file
+                        && (order.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id    // Only send notification if using CardOnFile
+                            || order.Settings.ChargeTypeId == ChargeTypes.PayPal.Id))   // or PayPal
                     {
                         var account = _accountDao.FindById(@event.Status.AccountId);
-                        var paymentService = _paymentServiceFactory.GetInstance();
-                        var response = paymentService.Pair(@event.SourceId, creditCardAssociatedToAccount.Token, account.DefaultTipPercent, null);                       
-                        _notificationService.SendAutomaticPairingPush(@event.SourceId, account.DefaultTipPercent, creditCardAssociatedToAccount.Last4Digits, response.IsSuccessful);
+                        var creditCard = _creditCardDao.FindByAccountId(account.Id).First();
+
+                        var response = _paymentFacadeService.Pair(@event.SourceId, creditCard.Token, account.DefaultTipPercent);
+                        _notificationService.SendAutomaticPairingPush(@event.SourceId, account.DefaultTipPercent, response.IsSuccessful);
                     } 
                 }
                 break;

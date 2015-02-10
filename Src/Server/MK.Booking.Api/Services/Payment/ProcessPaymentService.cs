@@ -1,303 +1,72 @@
 using System;
-using System.Net;
-using System.Threading;
 using apcurium.MK.Booking.Api.Contract.Requests.Payment;
-using apcurium.MK.Booking.Commands;
+using apcurium.MK.Booking.Api.Contract.Requests.Payment.PayPal;
 using apcurium.MK.Booking.IBS;
-using apcurium.MK.Booking.Domain;
-using apcurium.MK.Booking.EventHandlers.Integration;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Services;
-using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
-using apcurium.MK.Common.Diagnostic;
-using apcurium.MK.Common.Enumeration;
-using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common.Resources;
-using Infrastructure.EventSourcing;
-using Infrastructure.Messaging;
-using ServiceStack.Common.Web;
 using ServiceStack.ServiceInterface;
 
 namespace apcurium.MK.Booking.Api.Services.Payment
 {
     public class ProcessPaymentService : Service
     {
-        private static string _failedCode = "0";
-
-        private readonly IPaymentServiceFactory _paymentServiceFactory;
+        private readonly IPayPalServiceFactory _payPalServiceFactory;
+        private readonly IPaymentService _paymentService;
         private readonly IAccountDao _accountDao;
         private readonly IIBSServiceProvider _ibsServiceProvider;
         private readonly IOrderDao _orderDao;
         private readonly IServerSettings _serverSettings;
-        private readonly IOrderPaymentDao _paymentDao;
-        private readonly IIbsOrderService _ibs;
-        private readonly ICommandBus _commandBus;
-        private readonly IPromotionDao _promotionDao;
-        private readonly IEventSourcedRepository<Promotion> _promoRepository;
-        private readonly ILogger _logger;
 
         public ProcessPaymentService(
-            IPaymentServiceFactory paymentServiceFactory, 
+            IPayPalServiceFactory payPalServiceFactory,
+            IPaymentService paymentService,
             IAccountDao accountDao, 
             IOrderDao orderDao,
             IIBSServiceProvider ibsServiceProvider,
-            IServerSettings serverSettings, 
-            IOrderPaymentDao paymentDao,
-            IIbsOrderService ibs,
-            ICommandBus commandBus,
-            IPromotionDao promotionDao,
-            IEventSourcedRepository<Promotion> promoRepository,
-            ILogger logger)
+            IServerSettings serverSettings)
         {
-            _paymentServiceFactory = paymentServiceFactory;
+            _payPalServiceFactory = payPalServiceFactory;
+            _paymentService = paymentService;
             _accountDao = accountDao;
             _orderDao = orderDao;
             _ibsServiceProvider = ibsServiceProvider;
             _serverSettings = serverSettings;
-            _paymentDao = paymentDao;
-            _ibs = ibs;
-            _commandBus = commandBus;
-            _promotionDao = promotionDao;
-            _promoRepository = promoRepository;
-            _logger = logger;
         }
 
-        public CommitPreauthorizedPaymentResponse Post(CommitPaymentRequest request)
+        public BasePaymentResponse Post(LinkPayPalAccountRequest request)
         {
-            var totalAmount = request.Amount;
-            var amountSaved = 0m;
+            var session = this.GetSession();
 
-            var promoUsed = _promotionDao.FindByOrderId(request.OrderId);
-            if (promoUsed != null)
-            {
-                var promoDomainObject = _promoRepository.Get(promoUsed.PromoId);
-                amountSaved = promoDomainObject.GetAmountSaved(totalAmount);
-                totalAmount = totalAmount - amountSaved;
-            }
-
-            var preAuthResponse = PreauthorizePaymentIfNecessary(request.OrderId, request.CardToken, totalAmount);
-            if (preAuthResponse.IsSuccessful)
-            {
-                return CommitPayment(
-                    totalAmount, 
-                    request.MeterAmount, 
-                    request.TipAmount, 
-                    request.CardToken, 
-                    request.OrderId, 
-                    request.IsNoShowFee, 
-                    promoUsed != null 
-                        ? promoUsed.PromoId 
-                        : (Guid?) null, 
-                    amountSaved);
-            }
-
-            return new CommitPreauthorizedPaymentResponse
-            {
-                IsSuccessful = false,
-                Message = string.Format("PreAuthorization Failed: {0}", preAuthResponse.Message)
-            };
+            return _payPalServiceFactory.GetInstance().LinkAccount(new Guid(session.UserAuthId), request.AuthCode);
         }
 
-        private CommitPreauthorizedPaymentResponse CommitPayment(decimal totalOrderAmount, decimal meterAmount, decimal tipAmount, string cardToken, Guid orderId, bool isNoShowFee, Guid? promoUsedId = null, decimal amountSaved = 0)
+        public BasePaymentResponse Post(UnlinkPayPalAccountRequest request)
         {
-            var orderDetail = _orderDao.FindById(orderId);
-            if (orderDetail == null)
-            {
-                throw new Exception("Order not found");
-            }
+            var session = this.GetSession();
 
-            if (orderDetail.IBSOrderId == null)
-            {
-                throw new Exception("Order has no IBSOrderId");
-            }
-
-            var account = _accountDao.FindById(orderDetail.AccountId);
-
-            var paymentDetail = _paymentDao.FindNonPayPalByOrderId(orderId);
-            if (paymentDetail == null)
-            {
-                throw new Exception("Payment not found");
-            }
-
-            var paymentProviderServiceResponse = new CommitPreauthorizedPaymentResponse
-            {
-                TransactionId = paymentDetail.TransactionId
-            };
-
-            try
-            {
-                var message = string.Empty;
-
-                if (paymentDetail.IsCompleted)
-                {
-                    message = "Order already paid or payment currently processing";
-                }
-                else
-                {
-                    if (totalOrderAmount > 0)
-                    {
-                        paymentProviderServiceResponse = _paymentServiceFactory.GetInstance().CommitPayment(orderId, totalOrderAmount, meterAmount, tipAmount, paymentDetail.TransactionId);
-                        message = paymentProviderServiceResponse.Message;
-                    }
-                    else
-                    {
-                        // promotion made the ride free to the user
-                        // void preauth if it exists
-                        _paymentServiceFactory.GetInstance().VoidPreAuthorization(orderId);
-
-                        paymentProviderServiceResponse.IsSuccessful = true;
-                        paymentProviderServiceResponse.AuthorizationCode = "AUTH_PROMO_FREE";
-                    }
-                }
-
-                if (!isNoShowFee)
-                {
-                    //send information to IBS
-                    try
-                    {
-                        _ibs.ConfirmExternalPayment(orderDetail.Id,
-                            orderDetail.IBSOrderId.Value,
-                            totalOrderAmount,
-                            Convert.ToDecimal(tipAmount),
-                            Convert.ToDecimal(meterAmount),
-                            paymentProviderServiceResponse.IsSuccessful ? PaymentType.CreditCard.ToString() : _failedCode, //Hack the MK, 0 indicates that the payment has failed.
-                             _paymentServiceFactory.GetInstance().ProviderType.ToString(),
-                            paymentProviderServiceResponse.TransactionId,
-                            paymentProviderServiceResponse.AuthorizationCode,
-                            cardToken,
-                            account.IBSAccountId.Value,
-                            orderDetail.Settings.Name,
-                            orderDetail.Settings.Phone,
-                            account.Email,
-                            orderDetail.UserAgent.GetOperatingSystem(),
-                            orderDetail.UserAgent);
-
-                        
-
-                    }
-                    catch (Exception e)
-                    {
-                        _logger.LogError(e);
-                        message = e.Message;
-                                                
-                        //cancel transaction
-                        try
-                        {
-                            if (paymentProviderServiceResponse.IsSuccessful)
-                            {
-                                _paymentServiceFactory.GetInstance().VoidTransaction(orderId, paymentProviderServiceResponse.TransactionId, ref message);
-                            }
-                        }
-                        catch (Exception ex)
-                        {
-                            _logger.LogMessage("Can't cancel transaction");
-                            _logger.LogError(ex);
-                            message = message + ex.Message;
-                            //can't cancel transaction, send a command to log later
-                        }
-                        finally
-                        {
-                            paymentProviderServiceResponse.IsSuccessful = false;
-                        }
-                    }
-                }
-
-                if (paymentProviderServiceResponse.IsSuccessful)
-                {
-                    //payment completed
-
-                    var fareObject = Fare.FromAmountInclTax(Convert.ToDouble(meterAmount), _serverSettings.ServerData.VATIsEnabled ? _serverSettings.ServerData.VATPercentage : 0);
-
-                    _commandBus.Send(new CaptureCreditCardPayment
-                    {
-                        AccountId = account.Id,
-                        PaymentId = paymentDetail.PaymentId,
-                        Provider = _paymentServiceFactory.GetInstance().ProviderType,
-                        Amount = totalOrderAmount,
-                        MeterAmount = Convert.ToDecimal(fareObject.AmountExclTax),
-                        TipAmount = Convert.ToDecimal(tipAmount),
-                        TaxAmount = Convert.ToDecimal(fareObject.TaxAmount),
-                        IsNoShowFee = isNoShowFee,
-                        AuthorizationCode = paymentProviderServiceResponse.AuthorizationCode,
-                        PromotionUsed = promoUsedId,
-                        AmountSavedByPromotion = amountSaved
-                    });
-                }
-                else
-                {
-                    //payment error
-                    _commandBus.Send(new LogCreditCardError
-                    {
-                        PaymentId = paymentDetail.PaymentId,
-                        Reason = message
-                    });
-                }
-
-                return new CommitPreauthorizedPaymentResponse
-                {
-                    AuthorizationCode = paymentProviderServiceResponse.AuthorizationCode,
-                    TransactionId = paymentProviderServiceResponse.TransactionId,
-                    IsSuccessful = paymentProviderServiceResponse.IsSuccessful,
-                    Message = paymentProviderServiceResponse.IsSuccessful ? "Success" : message
-                };
-            }
-            catch (Exception e)
-            {
-                _logger.LogMessage("Error during payment " + e);
-                _logger.LogError(e);
-                return new CommitPreauthorizedPaymentResponse
-                {
-                    IsSuccessful = false,
-                    TransactionId = paymentProviderServiceResponse.TransactionId,
-                    Message = e.Message,
-                };
-            }
-        }
-
-        private PreAuthorizePaymentResponse PreauthorizePaymentIfNecessary(Guid orderId, string cardToken, decimal amount)
-        {
-            if (_serverSettings.GetPaymentSettings().IsPreAuthEnabled)
-            {
-                // Already preautorized on create order, do nothing
-                return new PreAuthorizePaymentResponse { IsSuccessful = true };
-            }
-
-            var orderDetail = _orderDao.FindById(orderId);
-            if (orderDetail == null)
-            {
-                throw new HttpError(HttpStatusCode.NotFound, "Order not found");
-            }
-
-            var account = _accountDao.FindById(orderDetail.AccountId);
-
-            var result = _paymentServiceFactory.GetInstance().PreAuthorize(orderId, account.Email, cardToken, amount);
-
-            if (result.IsSuccessful)
-            {
-                // Wait for OrderPaymentDetail to be created
-                Thread.Sleep(500);
-            }
-
-            return result;
+            return _payPalServiceFactory.GetInstance().UnlinkAccount(new Guid(session.UserAuthId));
         }
 
         public DeleteTokenizedCreditcardResponse Delete(DeleteTokenizedCreditcardRequest request)
         {
-            return _paymentServiceFactory.GetInstance().DeleteTokenizedCreditcard(request.CardToken);
+            return _paymentService.DeleteTokenizedCreditcard(request.CardToken);
         }
 
         public PairingResponse Post(PairingForPaymentRequest request)
         {
-            var response =  _paymentServiceFactory.GetInstance().Pair(request.OrderId, request.CardToken, request.AutoTipPercentage, request.AutoTipAmount);
+            var order = _orderDao.FindById(request.OrderId);
+
+            var response = _paymentService.Pair(request.OrderId, request.CardToken, request.AutoTipPercentage);
+
             if (response.IsSuccessful)
             {
-                var order = _orderDao.FindById(request.OrderId);
                 var ibsAccountId = _accountDao.GetIbsAccountId(order.AccountId, null);
                 if (!UpdateOrderPaymentType(ibsAccountId.Value, order.IBSOrderId.Value))
                 {
                     response.IsSuccessful = false;
-                    _paymentServiceFactory.GetInstance().VoidPreAuthorization(request.OrderId);
+                    _paymentService.VoidPreAuthorization(request.OrderId);
                 }
             }
             return response;
@@ -310,7 +79,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 
         public BasePaymentResponse Post(UnpairingForPaymentRequest request)
         {
-            return _paymentServiceFactory.GetInstance().Unpair(request.OrderId);
+            return _paymentService.Unpair(request.OrderId);
         }
     }
 }

@@ -105,7 +105,7 @@
 "LocalContactCannotBeResolverTitle"="الإسم غير صحيح";
 "VehicleNumberErrorTitle"="خطأ";
 "ResetPasswordSucessMessage"="تم إعادة ضبط كلمة المرور بنجاح";
-"CreditCardInstructions"="لكي تستخدم هذا التطبيق، يجب أن تضيف رقم بطاقة إئتمانية لحسابك.";
+"CreditCardInstructions"="In order to use the application, you need to add a payment method to your account.";
 "ServiceErrorUnauthorized"="انتهى وقت اتصالك. رجاء تسجيل الدخول للإستمرار.";
 "NoFareTextIfDestinationIsRequired"="يجب أن تحدد الوجهة.";
 "LocationDetailAddressLabel"="العنوان";
@@ -404,7 +404,7 @@
 "SendMessageErrorMessage"="حدث خطأ في التأكيد مع السائق تم إلغاء عملية الدفع";
 "CreateAccountInvalidDataTitle"="معلومات الحساب غير صحيحة";
 "VehicleNumberInfo"="رجاء تأكيد رقم سيارتك مع السائق";
-"CmtCardNumber"="رقم البطاقة:";
+"CmtCardNumber"="طريقة الدفع:";
 "ResetPasswordInvalidDataMessage"="البريد الإلكتروني غير صحيح";
 "PanelMenuViewReportProblemText"="بلّغ عن وجود مشكلة";
 "HistoryDetailPickupDateLabel"="تاریخ المشوار:";
@@ -505,9 +505,9 @@
 "Knowledgabledriver"="Knowledgable driver";
 "View_AccountConfirmation_Label_Code"="Code";
 "View"="View";
-"View_CreditCard"="بطاقة إئتمان";
+"View_CreditCard"="دفع";
 "CreditCardAdded"="Your account is now enabled to pay with your card on file by default. You can still choose to pay in the vehicle by selecting \"Pay in Vehicle\" on the payment screen";
-"PanelMenuViewPaymentInfoText"="Card on File";
+"PanelMenuViewPaymentInfoText"="Payment";
 "ServiceErrorCreateOrder_PendingOrder"="You cannot book this ride since an order is already pending. View the order status?";
 "DeleteCreditCardTitle"="حذف بطاقة الائتمان";
 "DeleteCreditCard"="حذف بطاقة الائتمان المسجلة في هذا الحساب؟";
@@ -553,3 +553,14 @@
 "Notification_PromotionUnlockedEmail"="Promotions unlocked (Email)";
 "ErrorCreateOrder_PendingOrder"="You cannot book this ride since an order is already pending. View the order status?";
 "TermsAndConditionsLabel"="الأحكام والشروط";
+"LinkPayPal"="Link PayPal";
+"UnlinkPayPal"="Unlink PayPal";
+"PayPalLinkError"="Unable to link your PayPal account";
+"PayPalUnlinkError"="Unable to unlink your PayPal account";
+"PayPalErrorTitle"="PayPal Error";
+"LinkPayPalConfirmation"="Link";
+"LinkPayPalCCWarning"="Linking your PayPal account will remove your card on file and PayPal will be set as the default payment method. Proceed?";
+"AddCoFPayPalWarning"="Adding a credit card will unlink your PayPal account and Card on File will be set as the default payment method. Proceed?";
+"PayPalLinkedInfo"="Account Linked";
+"PayPalLinked"="Your account is now enabled to pay with PayPal by default. You can still choose to pay in the vehicle by selecting \"Pay in Vehicle\" on the payment screen";
+"Error"="خطأ";

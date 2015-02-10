@@ -345,6 +345,9 @@
   <data name="PushNotification_OrderPairingSuccessful" xml:space="preserve">
     <value>The ride #{0} will be paid automatically at the end of the trip using your credit card ending with {1} and using your default tip of {2}%</value>
   </data>
+  <data name="PushNotification_OrderPairingSuccessfulPayPal" xml:space="preserve">
+    <value>The ride #{0} will be paid automatically at the end of the trip using your linked PayPal account and using your default tip of {2}%</value>
+  </data>
   <data name="PushNotification_OrderPairingFailed" xml:space="preserve">
     <value>The ride #{0} could not be automatically paired</value>
   </data>
@@ -355,7 +358,7 @@
     <value>Route</value>
   </data>
   <data name="OrderStatus_wosLOADEDAutoPairing" xml:space="preserve">
-    <value>Fare will be paid using the credit card on file</value>
+    <value>Fare will be paid using the selected payment method</value>
   </data>
   <data name="CardOnFile" xml:space="preserve">
     <value>Card on File</value>
@@ -396,6 +399,9 @@
   <data name="CannotCreateOrder_CreditCardWasDeclined" xml:space="preserve">
     <value>The order cannot be created because your credit card failed the preauthorization check.</value>
   </data>
+  <data name="CannotCreateOrder_PayPalWasDeclined" xml:space="preserve">
+    <value>The order cannot be created because your PayPal account failed the preauthorization check.</value>
+  </data>
   <data name="PushNotification_ChangeNetworkCompany" xml:space="preserve">
     <value>Due to high demand, no cars are available right now. Do you want to book with {0} instead?</value>
   </data>
@@ -410,6 +416,12 @@
   </data>
   <data name="CannotCreateOrder_PromotionMustUseCardOnFile" xml:space="preserve">
     <value>You must select Card On File to use a promotion.</value>
+  </data>
+  <data name="CannotCreateOrder_PromotionMustUseCardOnFileOrPayPal" xml:space="preserve">
+    <value>You must select Card On File or PayPal to use a promotion.</value>
+  </data>
+  <data name="CannotCreateOrder_PromotionMustUsePayPal" xml:space="preserve">
+    <value>You must select PayPal to use a promotion.</value>
   </data>
   <data name="CannotCreateOrder_PromotionDoesNotExist" xml:space="preserve">
     <value>There is no promotion associated to this code</value>
@@ -494,6 +506,9 @@
   </data>
   <data name="ServiceErrorCreateOrder_CardOnFileButNoCreditCard" xml:space="preserve">
     <value>No Credit Card On File.</value>
+  </data>
+  <data name="CannotCreateOrder_PayPalButNoPayPal" xml:space="preserve">
+    <value>No PayPal account linked</value>
   </data>
   <data name="ServiceErrorCreateOrder_InvalidProvider" xml:space="preserve">
     <value>Order cannot be created, invalid provider. Please contact {0} at {1} for further assistance.</value>

@@ -15,5 +15,6 @@ namespace apcurium.MK.Booking.ReadModel.Query.Contract
         AccountDetail FindByFacebookId(string id);
         AccountDetail FindByTwitterId(string id);
         int? GetIbsAccountId(Guid accountId, string companyKey);
+        string GetPayPalEncryptedRefreshToken(Guid id);
     }
 }

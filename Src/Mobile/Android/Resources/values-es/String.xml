@@ -56,7 +56,7 @@
   <string name="ChooseProviderDialogTitle">Seleccionar proveedor</string>
   <string name="Close">Cerrar</string>
   <string name="CmtCancelPayment">Cancelar</string>
-  <string name="CmtCardNumber">Número de Tarjeta:</string>
+  <string name="CmtCardNumber">Método de Pago:</string>
   <string name="CmtCarNumber">Número de Taxi:</string>
   <string name="CmtChangePaymentInfo">Cambiar ajustes de pago</string>
   <string name="CmtConfirmPayment">Confirmar</string>
@@ -113,7 +113,7 @@
   <string name="CreditCardErrorTitle">No podemos guardar su tarjeta de crédito</string>
   <string name="CreditCardExpMonth">Fecha de expiración</string>
   <string name="CreditCardExpYear">Mes de expiración</string>
-  <string name="CreditCardInstructions">Para usar esta aplicación necesita ingresar una tarjeta de crédito a su cuenta</string>
+  <string name="CreditCardInstructions">Para usar esta aplicación necesita ingresar un método de pago a su cuenta</string>
   <string name="CreditCardInvalidCrediCardNUmber">El número de tarjeta de crédito es inválido</string>
   <string name="CreditCardName">Nombre tal y como aparece en la tarjeta</string>
   <string name="CreditCardNumber">Número de tarjeta</string>
@@ -291,7 +291,7 @@
   <string name="PanelMenuViewLocationsText">Ubicaciones</string>
   <string name="PanelMenuViewNotificationsText">Notificaciones</string>
   <string name="PanelMenuViewOrderHistoryText">Historia</string>
-  <string name="PanelMenuViewPaymentInfoText">Tarjeta Archivada</string>
+  <string name="PanelMenuViewPaymentInfoText">Pago</string>
   <string name="PanelMenuViewReportProblemText">Reportar problema</string>
   <string name="PanelMenuViewSignOutText">Cerrar Sesión</string>
   <string name="PanelMenuViewTutorialText">Ver tutorial</string>
@@ -484,7 +484,7 @@
   <string name="View_BookSettingMenu">Ajustes</string>
   <string name="View_ConfirmCarNumber">Confirmación</string>
   <string name="View_CreateAccount">Cree su cuenta</string>
-  <string name="View_CreditCard">Tarjeta de crédito</string>
+  <string name="View_CreditCard">Pago</string>
   <string name="View_CreditCardsList">Tarjetas de crédito</string>
   <string name="View_History">Historia</string>
   <string name="View_HistoryDetail">Detalles de la Reservación</string>
@@ -561,4 +561,17 @@
   <string name="Notification_PromotionUnlockedPush">Promotions unlocked (Push)</string>
   <string name="ErrorCreateOrder_PendingOrder">No puede reservar este servicio, ya que hay una reservación pendiente. ¿Desea ver esta reservación?</string>
   <string name="TermsAndConditionsLabel">Términos y condiciones</string>
+  <string name="LinkPayPal">Link PayPal</string>
+  <string name="UnlinkPayPal">Unlink PayPal</string>
+  <string name="LinkPayPalCCWarning">Linking your PayPal account will remove your card on file and PayPal will be set as the default payment method. Proceed?</string>
+  <string name="AddCoFPayPalWarning">Adding a credit card will unlink your PayPal account and Card on File will be set as the default payment method. Proceed?</string>
+  <string name="PayPalErrorTitle">PayPal Error</string>
+  <string name="PayPalLinkError">Unable to link your PayPal account</string>
+  <string name="PayPalUnlinkError">Unable to unlink your PayPal account</string>
+  <string name="PayPalLink">Link</string>
+  <string name="LinkPayPalConfirmation">Link</string>
+  <string name="PayPalLinked">Your account is now enabled to pay with PayPal by default. You can still choose to pay in the vehicle by selecting \"Pay in Vehicle\" on the payment screen</string>
+  <string name="PayPalLinkedInfo">Account Linked</string>
+  <string name="Error">Error</string>
+  <string name="NoPairingCreditCard">None</string>
 </resources>

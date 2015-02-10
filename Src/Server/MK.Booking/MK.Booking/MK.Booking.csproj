@@ -94,6 +94,10 @@
     <Reference Include="Nustache.i18n">
       <HintPath>..\..\packages\Nustache.i18n.1.0.0\lib\net40\Nustache.i18n.dll</HintPath>
     </Reference>
+    <Reference Include="PayPal">
+      <HintPath>..\..\packages\PayPal.1.3.0\lib\net45\PayPal.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="PreMailer.Net">
       <HintPath>..\..\packages\PreMailer.Net.1.2.7\lib\net40\PreMailer.Net.dll</HintPath>
     </Reference>
@@ -157,7 +161,6 @@
     <Compile Include="CommandHandlers\CreditCardPaymentCommandHandler.cs" />
     <Compile Include="CommandHandlers\EmailCommandHandler.cs" />
     <Compile Include="CommandHandlers\OrderCommandHandler.cs" />
-    <Compile Include="CommandHandlers\PayPalPaymentCommandHandler.cs" />
     <Compile Include="CommandHandlers\PromotionCommandHandler.cs" />
     <Compile Include="CommandHandlers\SmsCommandHandler.cs" />
     <Compile Include="Database\BookingDbContext.cs" />
@@ -166,7 +169,6 @@
     <Compile Include="Domain\CreditCardPayment.cs" />
     <Compile Include="Domain\Order.cs" />
     <Compile Include="Domain\PaymentInformation.cs" />
-    <Compile Include="Domain\PayPalPayment.cs" />
     <Compile Include="Domain\Promotion.cs" />
     <Compile Include="Email\EmailSender.cs" />
     <Compile Include="Email\IEmailSender.cs" />
@@ -187,13 +189,13 @@
     <Compile Include="EventHandlers\NotificationSettingsGenerator.cs" />
     <Compile Include="EventHandlers\ReportDetailGenerator.cs" />
     <Compile Include="EventHandlers\OrderUserGpsGenerator.cs" />
-    <Compile Include="EventHandlers\PayPalExpressCheckoutPaymentDetailsGenerator.cs" />
     <Compile Include="EventHandlers\PaymentSettingGenerator.cs" />
     <Compile Include="EventHandlers\CreditCardDetailsGenerator.cs" />
     <Compile Include="EventHandlers\DeviceDetailsGenerator.cs" />
     <Compile Include="EventHandlers\Integration\PushNotificationSender.cs" />
     <Compile Include="EventHandlers\Integration\MailSender.cs" />
     <Compile Include="EventHandlers\OrderGenerator.cs" />
+    <Compile Include="EventHandlers\PayPalExpressCheckoutPaymentDetailsGenerator.cs" />
     <Compile Include="EventHandlers\PromotionDetailGenerator.cs" />
     <Compile Include="EventHandlers\RuleDetailsGenerator.cs" />
     <Compile Include="EventHandlers\TariffDetailsGenerator.cs" />
@@ -208,6 +210,7 @@
     <Compile Include="ReadModel\AccountChargeDetail.cs" />
     <Compile Include="ReadModel\AccountDetail.cs" />
     <Compile Include="ReadModel\AccountIbsDetail.cs" />
+    <Compile Include="ReadModel\PayPalAccountDetails.cs" />
     <Compile Include="ReadModel\OrderReportDetail.cs" />
     <Compile Include="ReadModel\PromotionProgressDetail.cs" />
     <Compile Include="ReadModel\AddressDetails.cs" />
@@ -317,6 +320,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Thriev.resx</DependentUpon>
     </Compile>
+    <Compile Include="Security\CryptoService.cs" />
     <Compile Include="Resources\UTOG.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -325,16 +329,19 @@
     <Compile Include="Security\IPasswordService.cs" />
     <Compile Include="Security\PasswordService.cs" />
     <Compile Include="Security\RolesPermissions.cs" />
+    <Compile Include="Services\Impl\BasePayPalService.cs" />
     <Compile Include="Services\Impl\BraintreePaymentService.cs" />
     <Compile Include="Services\Impl\CmtPaymentService.cs" />
     <Compile Include="Services\Impl\MonerisPaymentService.cs" />
     <Compile Include="Services\Impl\PairingService.cs" />
+    <Compile Include="Services\Impl\PayPalService.cs" />
     <Compile Include="Services\INotificationService.cs" />
     <Compile Include="Services\Impl\NotificationService.cs" />
     <Compile Include="Services\IPairingService.cs" />
     <Compile Include="Services\IPaymentService.cs" />
-    <Compile Include="Services\IPaymentServiceFactory.cs" />
-    <Compile Include="Services\PaymentServiceFactory.cs" />
+    <Compile Include="Services\IPayPalServiceFactory.cs" />
+    <Compile Include="Services\PaymentService.cs" />
+    <Compile Include="Services\PayPalServiceFactory.cs" />
     <Compile Include="SMS\Impl\TwilioService.cs" />
     <Compile Include="SMS\ISmsService.cs" />
   </ItemGroup>
@@ -398,10 +405,6 @@
       <Project>{C41EA1B3-0E19-41AE-8EFC-AE242532B248}</Project>
       <Name>MK.Booking.Maps</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\MK.Booking.PayPal\MK.Booking.PayPal.csproj">
-      <Project>{910BC792-5EC8-4E56-82C9-95B1D6F4E84A}</Project>
-      <Name>MK.Booking.PayPal</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\MK.Common\MK.Common.csproj">
       <Project>{65033050-1D55-465A-A772-F3192F9E2428}</Project>
       <Name>MK.Common</Name>
@@ -437,7 +440,9 @@
       <LastGenOutput>Global.fr.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Resources\MearsTaxi.resx" />
+    <EmbeddedResource Include="Resources\MearsTaxi.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Resources\TaxiHailNYC.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>TaxiHailNYC.Designer.cs</LastGenOutput>

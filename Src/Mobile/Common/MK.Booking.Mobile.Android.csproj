@@ -181,6 +181,7 @@
     <Compile Include="Framework\Params.cs" />
     <Compile Include="Infrastructure\ILocalization.cs" />
     <Compile Include="Infrastructure\IMessageService.cs" />
+    <Compile Include="Infrastructure\IPayPalConfigurationService.cs" />
     <Compile Include="Infrastructure\IPhoneService.cs" />
     <Compile Include="Localization\Taxiworld.Designer.cs">
       <DependentUpon>Taxiworld.resx</DependentUpon>
@@ -260,15 +261,10 @@
     <Compile Include="Extensions\UseServiceClientExtensions.cs" />
     <Compile Include="Infrastructure\IPushNotificationService.cs" />
     <Compile Include="Extensions\ObservableExtensions.cs" />
-    <Compile Include="ViewModels\Payment\ConfirmCarNumberViewModel.cs" />
     <Compile Include="ViewModels\Payment\CreditCardAddViewModel.cs" />
-    <Compile Include="ViewModels\Payment\PaymentViewModel.cs" />
     <Compile Include="CultureProvider.cs" />
-    <Compile Include="ViewModels\Payment\PayPalViewModel.cs" />
     <Compile Include="BindingConverter\NoValueToTrueConverter.cs" />
     <Compile Include="BindingConverter\HasValueToVisibilityConverter.cs" />
-    <Compile Include="AppServices\IPayPalExpressCheckoutService.cs" />
-    <Compile Include="AppServices\Impl\PayPalExpressCheckoutService.cs" />
     <Compile Include="ViewModels\RideSummaryViewModel.cs" />
     <Compile Include="AppServices\Impl\PaymentService.cs" />
     <Compile Include="AppServices\IPaymentService.cs" />

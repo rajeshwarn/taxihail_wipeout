@@ -8,7 +8,6 @@
     <OutputType>Library</OutputType>
     <RootNamespace>apcurium.MK.Booking.Mobile</RootNamespace>
     <TargetFrameworkIdentifier>Xamarin.iOS</TargetFrameworkIdentifier>
-    <TargetFrameworkVersion>v1.0</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>True</DebugSymbols>
@@ -145,6 +144,7 @@
     <Compile Include="Extensions\ObservableExtensions.cs" />
     <Compile Include="Extensions\UseServiceClientExtensions.cs" />
     <Compile Include="Extensions\ViewModelServicesExtensions.cs" />
+    <Compile Include="Infrastructure\IPayPalConfigurationService.cs" />
     <Compile Include="Messages\OrderStatusChanged.cs" />
     <Compile Include="Practices\TinyMessenger.cs" />
     <Compile Include="Infrastructure\ILocalization.cs" />
@@ -262,13 +262,9 @@
     <Compile Include="Infrastructure\IPushNotificationService.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="CultureProvider.cs" />
-    <Compile Include="ViewModels\Payment\PaymentViewModel.cs" />
     <Compile Include="ViewModels\Payment\CreditCardAddViewModel.cs" />
     <Compile Include="ViewModels\BookingStatusViewModel.cs" />
-    <Compile Include="ViewModels\Payment\PayPalViewModel.cs" />
     <Compile Include="BindingConverter\NoValueToTrueConverter.cs" />
-    <Compile Include="AppServices\IPayPalExpressCheckoutService.cs" />
-    <Compile Include="AppServices\Impl\PayPalExpressCheckoutService.cs" />
     <Compile Include="ViewModels\RideSummaryViewModel.cs" />
     <Compile Include="AppServices\Impl\PaymentService.cs" />
     <Compile Include="AppServices\IPaymentService.cs" />
@@ -304,7 +300,6 @@
     <Compile Include="AppServices\Auth\AuthException.cs" />
     <Compile Include="AppServices\Auth\AuthFailure.cs" />
     <Compile Include="ViewModels\PanelMenuViewModel.cs" />
-    <Compile Include="ViewModels\Payment\ConfirmCarNumberViewModel.cs" />
     <Compile Include="Bootstrap\WebBrowserPluginBootstrap.cs" />
     <Compile Include="Settings\AppSettingsService.cs" />
     <Compile Include="ViewModels\HistoryListViewModel.cs" />

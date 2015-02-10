@@ -60,6 +60,8 @@ namespace apcurium.MK.Booking.Test.Integration.CreditCardPaymentFixture
             Sut.Handle(new CreditCardPaymentCaptured_V2
             {
                 SourceId = _paymentId,
+                Amount = 10m,
+                TransactionId = "123"
             });
 
             using (var context = new BookingDbContext(DbName))
@@ -67,6 +69,10 @@ namespace apcurium.MK.Booking.Test.Integration.CreditCardPaymentFixture
                 var dto = context.Find<OrderPaymentDetail>(_paymentId);
                 Assert.NotNull(dto);
                 Assert.AreEqual(true, dto.IsCompleted);
+                Assert.AreEqual(10m, dto.Amount);
+                Assert.AreEqual(12.34m, dto.PreAuthorizedAmount);
+                Assert.AreEqual("123", dto.TransactionId);
+                Assert.AreEqual("the transaction", dto.FirstPreAuthTransactionId);
             }
         }
 

@@ -10,7 +10,6 @@
     <MtouchSdkVersion>8.1</MtouchSdkVersion>
     <AssemblyName>TaxiHail</AssemblyName>
     <TargetFrameworkIdentifier>Xamarin.iOS</TargetFrameworkIdentifier>
-    <TargetFrameworkVersion>v1.0</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhoneSimulator' ">
     <DebugSymbols>True</DebugSymbols>
@@ -196,9 +195,6 @@
     <Reference Include="PLCrashReporterUnifiedBinding">
       <HintPath>..\packages\Xamarin.Insights.1.8.3\lib\Xamarin.iOS10\PLCrashReporterUnifiedBinding.dll</HintPath>
     </Reference>
-    <Reference Include="Card.IO">
-      <HintPath>..\Components\cardioios-3.10.0.2\lib\ios-unified\Card.IO.dll</HintPath>
-    </Reference>
     <Reference Include="Calabash">
       <HintPath>..\Components\calabash-12.0\lib\ios-unified\Calabash.dll</HintPath>
     </Reference>
@@ -256,6 +252,9 @@
     <Reference Include="Cirrious.MvvmCross.Dialog.Touch">
       <HintPath>..\packages\MvvmCross.HotTuna.Touch.Dialog.3.5.0\lib\Xamarin.iOS10\Cirrious.MvvmCross.Dialog.Touch.dll</HintPath>
     </Reference>
+    <Reference Include="PaypalSdkTouch.Unified">
+      <HintPath>..\Libraries\Monotouch\PaypalSdkTouch.Unified.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
@@ -289,6 +288,7 @@
     <Compile Include="Extensions\LocationDataExtension.cs" />
     <Compile Include="Controls\StatusBar.cs" />
     <Compile Include="PlatformIntegration\PackageInfo.cs" />
+    <Compile Include="PlatformIntegration\PayPalConfigurationService.cs" />
     <Compile Include="Setup.cs" />
     <Compile Include="PhonePresenter.cs" />
     <Compile Include="PlatformIntegration\MessageService.cs" />
@@ -361,10 +361,6 @@
     <Compile Include="Extensions\Helpers\UIHelper.cs" />
     <Compile Include="Extensions\UIViewPositioningExtensions.cs" />
     <Compile Include="Controls\Binding\CustomBindingsLoader.cs" />
-    <Compile Include="Views\Payments\PayPalView.cs" />
-    <Compile Include="Views\Payments\PayPalView.designer.cs">
-      <DependentUpon>PayPalView.cs</DependentUpon>
-    </Compile>
     <Compile Include="Controls\Binding\PaymentSelectorBinding.cs" />
     <Compile Include="PlatformIntegration\GoogleAnalyticsService.cs" />
     <Compile Include="Views\TermsAndConditionsView.cs" />
@@ -411,13 +407,7 @@
     <Compile Include="Views\BookRatingView.designer.cs">
       <DependentUpon>BookRatingView.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\Payments\PaymentView.cs" />
-    <Compile Include="Views\Payments\PaymentView.designer.cs" />
     <Compile Include="LinkerPleaseInclude.cs" />
-    <Compile Include="Views\Payments\ConfirmCarNumberView.cs" />
-    <Compile Include="Views\Payments\ConfirmCarNumberView.designer.cs">
-      <DependentUpon>ConfirmCarNumberView.cs</DependentUpon>
-    </Compile>
     <Compile Include="Controls\Widgets\PaymentSelector.cs" />
     <Compile Include="Views\BookingStatusView.xib.cs">
       <DependentUpon>BookingStatusView.xib</DependentUpon>
@@ -576,6 +566,8 @@
     <Compile Include="Bootstrap\PhoneCallPluginBootstrap.cs" />
     <Compile Include="Bootstrap\VisibilityPluginBootstrap.cs" />
     <Compile Include="Bootstrap\WebBrowserPluginBootstrap.cs" />
+    <BundleResource Include="Resources\paypal_icon.png" />
+    <BundleResource Include="Resources\paypal_icon%402x.png" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>
@@ -599,14 +591,11 @@
     <InterfaceDefinition Include="Views\CreateAccountView.xib" />
     <InterfaceDefinition Include="Views\ResetPasswordView.xib" />
     <InterfaceDefinition Include="Views\CreditCardAddView.xib" />
-    <InterfaceDefinition Include="Views\Payments\PayPalView.xib" />
     <InterfaceDefinition Include="Views\TermsAndConditionsView.xib" />
     <InterfaceDefinition Include="Views\RideSummaryView.xib" />
     <InterfaceDefinition Include="Views\AboutUsView.xib" />
     <InterfaceDefinition Include="Views\BookRatingCell.xib" />
     <InterfaceDefinition Include="Views\BookRatingView.xib" />
-    <InterfaceDefinition Include="Views\Payments\PaymentView.xib" />
-    <InterfaceDefinition Include="Views\Payments\ConfirmCarNumberView.xib" />
     <InterfaceDefinition Include="Views\BookingStatusView.xib" />
     <InterfaceDefinition Include="Views\HistoryListView.xib" />
     <InterfaceDefinition Include="Views\LocationListView.xib" />
@@ -861,10 +850,6 @@
     </XamarinComponentReference>
     <XamarinComponentReference Include="rxforxamarin">
       <Version>2.2.1</Version>
-      <Visible>False</Visible>
-    </XamarinComponentReference>
-    <XamarinComponentReference Include="cardioios">
-      <Version>3.10.0.2</Version>
       <Visible>False</Visible>
     </XamarinComponentReference>
     <XamarinComponentReference Include="calabash">

@@ -403,7 +403,7 @@
   <string name="SendMessageErrorMessage">Error confirming with driver payment cancelled</string>
   <string name="CreateAccountInvalidDataTitle">Invalid account info</string>
   <string name="VehicleNumberInfo">Please confirm your car number with the driver</string>
-  <string name="CmtCardNumber">Card Number:</string>
+  <string name="CmtCardNumber">Payment Method:</string>
   <string name="ResetPasswordInvalidDataMessage">The email is invalid.</string>
   <string name="PanelMenuViewReportProblemText">Report A Problem</string>
   <string name="HistoryDetailPickupDateLabel">Pickup Date:</string>
@@ -457,7 +457,7 @@
   <string name="ViewAll">View All</string>
   <string name="Collapse">Collapse</string>
   <string name="ServiceErrorCreateOrder_InvalidProvider_NoCall">Order cannot be created, invalid provider.</string>
-  <string name="CreditCardInstructions">In order to use the application, you need to add a credit card to your account.</string>
+  <string name="CreditCardInstructions">In order to use the application, you need to add a payment method to your account.</string>
   <string name="CreditCardRemoveErrorTitle">Cannot remove credit card</string>
   <string name="CreditCardRemoveErrorMessage">You need to have at least one credit card in your account. If you want to remove a card, you will need to add another one before.</string>
   <string name="ShowCardIO">Scan Credit Card</string>
@@ -497,8 +497,8 @@
   <string name="PendingOrderCancel">Cancel</string>
   <string name="NoCardOnFileMessage">You chose to pay with a card on file, but you have no default card.  Add a card to your account or change your payment method to continue.</string>
   <string name="AddACardButton">Add Card</string>
-  <string name="PanelMenuViewPaymentInfoText">Card on File</string>
-  <string name="View_CreditCard">Credit Card</string>
+  <string name="PanelMenuViewPaymentInfoText">Payment</string>
+  <string name="View_CreditCard">Payment</string>
   <string name="DeleteCreditCard">Delete the credit card registered to this account?</string>
   <string name="DeleteCreditCardTitle">Delete credit card</string>
   <string name="ServiceErrorCreateOrder_PendingOrder">You cannot book this ride since an order is already pending. View the order status?</string>
@@ -507,7 +507,7 @@
   <string name="EtaDurationUnit">min</string>
   <string name="EtaDurationUnitPlural">mins</string>
   <string name="StatusEta">and is {0} and {1} {2} away</string>
-  <string name="CreditCardAdded">Your account is now enabled to pay with your card on file by default. You can still choose to pay in the vehicle by selecting \"Pay in Vehicle\" on the payment screen</string>
+  <string name="CreditCardAdded">Your account is now enabled to pay with your card on file by default. You can still choose to pay in the vehicle by selecting \"Pay in Vehicle\" on the confirmation screen</string>
   <string name="EtaNotAvailable">No vehicle available</string>
   <string name="PayInCar">Pay Cash/Credit Card in Car</string>
   <string name="CreditCardErrorInvalid">Cannot validate the credit card</string>
@@ -587,4 +587,17 @@
   <string name="Notification_PromotionUnlockedEmail">Promotions unlocked (Email)</string>
   <string name="Notification_PromotionUnlockedPush">Promotions unlocked (Push)</string>
   <string name="ErrorCreateOrder_PendingOrder">You cannot book this ride since an order is already pending. View the order status?</string>
+  <string name="LinkPayPal">Link PayPal</string>
+  <string name="UnlinkPayPal">Unlink PayPal</string>
+  <string name="LinkPayPalCCWarning">Linking your PayPal account will remove your card on file and PayPal will be set as the default payment method. Proceed?</string>
+  <string name="AddCoFPayPalWarning">Adding a credit card will unlink your PayPal account and Card on File will be set as the default payment method. Proceed?</string>
+  <string name="PayPalErrorTitle">PayPal Error</string>
+  <string name="PayPalLinkError">Unable to link your PayPal account</string>
+  <string name="PayPalUnlinkError">Unable to unlink your PayPal account</string>
+  <string name="PayPalLink">Link</string>
+  <string name="LinkPayPalConfirmation">Link</string>
+  <string name="PayPalLinked">Your account is now enabled to pay with PayPal by default. You can still choose to pay in the vehicle by selecting \"Pay in Vehicle\" on the confirmation screen</string>
+  <string name="PayPalLinkedInfo">Account Linked</string>
+  <string name="Error">Error</string>
+  <string name="NoPairingCreditCard">None</string>
 </resources>

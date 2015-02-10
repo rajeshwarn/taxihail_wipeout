@@ -20,6 +20,7 @@ using apcurium.MK.Common.Extensions;
 using ServiceStack.Text;
 using apcurium.MK.Booking.Maps;
 using System.Net;
+using apcurium.MK.Common.Enumeration;
 using ServiceStack.ServiceClient.Web;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
@@ -379,7 +380,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				var paymentSettings = await _paymentService.GetPaymentSettings();
                 if (isLoaded 
 					&& (!paymentSettings.AutomaticPaymentPairing || paymentSettings.PaymentMode == PaymentMethod.RideLinqCmt)
-					&& _accountService.CurrentAccount.DefaultCreditCard != null)
+					&& (_accountService.CurrentAccount.DefaultCreditCard != null || _accountService.CurrentAccount.IsPayPalAccountLinked))
 				{
 					var isPaired = await _bookingService.IsPaired(Order.Id);
                     var pairState = this.Services().Cache.Get<string>("PairState" + Order.Id);
@@ -516,7 +517,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             IsCancelButtonVisible = _bookingService.IsOrderCancellable(statusId);
 
 			// Unpair button is only available for RideLinqCMT
-			if (paymentSettings.PaymentMode == PaymentMethod.RideLinqCmt) 
+			if (paymentSettings.PaymentMode == PaymentMethod.RideLinqCmt
+                && _accountService.CurrentAccount.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id) 
 			{
 				IsUnpairButtonVisible = await _bookingService.IsPaired(Order.Id);
 			} 
@@ -673,20 +675,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                         () => {}));
             }
         }
-
-		public ICommand ResendConfirmationToDriver
-		{
-			get
-			{
-				return this.GetCommand(() =>
-					{
-						if (_paymentService.GetPaymentFromCache(Order.Id).HasValue)
-						{
-							_paymentService.ResendConfirmationToDriver(Order.Id);
-						}
-					});
-			}
-		}
 
 		public ICommand Unpair
 		{

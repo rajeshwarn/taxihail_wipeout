@@ -82,8 +82,8 @@ namespace apcurium.MK.Booking
             RegisterCommandHandlers(container);
             RegisterEventHandlers(container);
 
-
-            container.RegisterType<IPaymentServiceFactory, PaymentServiceFactory>();
+            container.RegisterType<IPayPalServiceFactory, PayPalServiceFactory>();
+            container.RegisterType<IPaymentService, PaymentService>();
         }
 
         public void RegisterMaps()
@@ -106,9 +106,7 @@ namespace apcurium.MK.Booking
             Mapper.CreateMap<PopularAddressDetails, Address>();
             Mapper.CreateMap<TariffDetail, Tariff>();
             Mapper.CreateMap<RuleDetail, Rule>();
-            Mapper.CreateMap<CreditCardAdded, CreditCardDetails>()
-                .ForMember(p => p.AccountId, opt => opt.MapFrom(m => m.SourceId));
-            Mapper.CreateMap<CreditCardUpdated, CreditCardDetails>()
+            Mapper.CreateMap<CreditCardAddedOrUpdated, CreditCardDetails>()
                 .ForMember(p => p.AccountId, opt => opt.MapFrom(m => m.SourceId));
 
             Mapper.CreateMap<OrderStatusDetail, OrderStatusDetail>();
@@ -127,8 +125,6 @@ namespace apcurium.MK.Booking
             container.RegisterType<IEventHandler, AppSettingsGenerator>("AppSettingsGenerator");
             container.RegisterType<IEventHandler, CreditCardDetailsGenerator>("CreditCardDetailsGenerator");
             container.RegisterType<IEventHandler, PaymentSettingGenerator>(typeof (PaymentSettingGenerator).Name);
-            container.RegisterType<IEventHandler, PayPalExpressCheckoutPaymentDetailsGenerator>(
-                "PayPalExpressCheckoutPaymentDetailsGenerator");
             container.RegisterType<IEventHandler, CreditCardPaymentDetailsGenerator>("CreditCardPaymentDetailsGenerator");
             container.RegisterType<IEventHandler, CompanyDetailsGenerator>("CompanyDetailsGenerator");
             container.RegisterType<IEventHandler, OrderUserGpsGenerator>("OrderUserGpsGenerator");
@@ -154,7 +150,6 @@ namespace apcurium.MK.Booking
             container.RegisterType<ICommandHandler, EmailCommandHandler>("EmailCommandHandler");
             container.RegisterType<ICommandHandler, OrderCommandHandler>("OrderCommandHandler");
             container.RegisterType<ICommandHandler, CompanyCommandHandler>("CompanyCommandHandler");
-            container.RegisterType<ICommandHandler, PayPalPaymentCommandHandler>("PayPalPaymentCommandHandler");
             container.RegisterType<ICommandHandler, CreditCardPaymentCommandHandler>("CreditCardPaymentCommandHandler");
             container.RegisterType<ICommandHandler, SmsCommandHandler>("SmsCommandHandler");
             container.RegisterType<ICommandHandler, PromotionCommandHandler>("PromotionCommandHandler");

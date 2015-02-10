@@ -66,7 +66,6 @@
     <Compile Include="CreditCardPaymentCaptured.cs" />
     <Compile Include="CreditCardPaymentCaptured_V2.cs" />
     <Compile Include="CreditCardPaymentInitiated.cs" />
-    <Compile Include="CreditCardUpdated.cs" />
     <Compile Include="DispatchCompanySwitchIgnored.cs" />
     <Compile Include="IbsOrderInfoAddedToOrder.cs" />
     <Compile Include="NotificationSettingsAddedOrUpdated.cs" />
@@ -79,10 +78,13 @@
     <Compile Include="PaymentModeChanged.cs" />
     <Compile Include="PaymentSettingUpdated.cs" />
     <Compile Include="DeviceUnregisteredForPushNotifications.cs" />
+    <Compile Include="PayPalAccountLinked.cs" />
+    <Compile Include="PayPalAccountUnlinked.cs" />
     <Compile Include="PayPalExpressCheckoutPaymentCancelled.cs" />
     <Compile Include="PayPalExpressCheckoutPaymentCompleted.cs" />
     <Compile Include="PayPalExpressCheckoutPaymentInitiated.cs" />
     <Compile Include="PayPalPaymentCancellationFailed.cs" />
+    <Compile Include="PayPalSettingsChanged.cs" />
     <Compile Include="PromotionActivated.cs" />
     <Compile Include="PrivacyPolicyUpdated.cs" />
     <Compile Include="PromotionCreated.cs" />
@@ -97,7 +99,7 @@
     <Compile Include="RuleCreated.cs" />
     <Compile Include="RuleDeleted.cs" />
     <Compile Include="RuleUpdated.cs" />
-    <Compile Include="CreditCardAdded.cs" />
+    <Compile Include="CreditCardAddedOrUpdated.cs" />
     <Compile Include="CreditCardRemoved.cs" />
     <Compile Include="DefaultFavoriteAddressAdded.cs" />
     <Compile Include="DefaultFavoriteAddressRemoved.cs" />

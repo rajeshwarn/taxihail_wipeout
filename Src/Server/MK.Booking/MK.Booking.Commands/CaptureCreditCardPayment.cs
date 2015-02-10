@@ -21,6 +21,8 @@ namespace apcurium.MK.Booking.Commands
 
         public string AuthorizationCode { get; set; }
 
+        public string TransactionId { get; set; }
+
         public PaymentProvider Provider { get; set; }
         
         public decimal Amount { get; set; }

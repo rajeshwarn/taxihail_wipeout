@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Linq;
 using System.Threading;
 using apcurium.MK.Booking.Commands;
+using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
@@ -29,6 +30,7 @@ namespace apcurium.MK.Booking.Services.Impl
         private readonly IAccountDao _accountDao;
         private readonly IServerSettings _serverSettings;
         private readonly IPairingService _pairingService;
+        private readonly ICreditCardDao _creditCardDao;
         private readonly ILogger _logger;
         private readonly IOrderPaymentDao _paymentDao;
         private readonly CmtPaymentServiceClient _cmtPaymentServiceClient;
@@ -40,7 +42,8 @@ namespace apcurium.MK.Booking.Services.Impl
             IAccountDao accountDao, 
             IOrderPaymentDao paymentDao,
             IServerSettings serverSettings,
-            IPairingService pairingService)
+            IPairingService pairingService,
+            ICreditCardDao creditCardDao)
         {
             _commandBus = commandBus;
             _orderDao = orderDao;
@@ -49,20 +52,23 @@ namespace apcurium.MK.Booking.Services.Impl
             _paymentDao = paymentDao;
             _serverSettings = serverSettings;
             _pairingService = pairingService;
+            _creditCardDao = creditCardDao;
 
             _cmtPaymentServiceClient = new CmtPaymentServiceClient(serverSettings.GetPaymentSettings().CmtPaymentSettings, null, null, logger);
             _cmtMobileServiceClient = new CmtMobileServiceClient(serverSettings.GetPaymentSettings().CmtPaymentSettings, null, null);
         }
 
-        public PaymentProvider ProviderType
+        public PaymentProvider ProviderType(Guid? orderId = null)
         {
-            get
-            {
-                return PaymentProvider.Cmt;
-            }
+            return PaymentProvider.Cmt;
         }
 
-        public PairingResponse Pair(Guid orderId, string cardToken, int? autoTipPercentage, double? autoTipAmount)
+        public bool IsPayPal(Guid? accountId = null, Guid? orderId = null)
+        {
+            return false;
+        }
+        
+        public PairingResponse Pair(Guid orderId, string cardToken, int? autoTipPercentage)
         {
             try
             {
@@ -79,7 +85,7 @@ namespace apcurium.MK.Booking.Services.Impl
                         throw new Exception("Order has no IBSOrderId");
                     }
 
-                    var response = PairWithVehicleUsingRideLinq(orderStatusDetail, orderId, cardToken, autoTipPercentage, autoTipAmount);
+                    var response = PairWithVehicleUsingRideLinq(orderStatusDetail, orderId, cardToken, autoTipPercentage);
 
                     // send a command to save the pairing state for this order
                     _commandBus.Send(new PairForPayment
@@ -90,7 +96,6 @@ namespace apcurium.MK.Booking.Services.Impl
                         PairingToken = response.PairingToken,
                         PairingCode = response.PairingCode,
                         TokenOfCardToBeUsedForPayment = cardToken,
-                        AutoTipAmount = autoTipAmount,
                         AutoTipPercentage = autoTipPercentage
                     });
 
@@ -242,18 +247,18 @@ namespace apcurium.MK.Booking.Services.Impl
             }
         }
 
-        public PreAuthorizePaymentResponse PreAuthorize(Guid orderId, string email, string cardToken, decimal amountToPreAuthorize)
+        public PreAuthorizePaymentResponse PreAuthorize(Guid orderId, AccountDetail account, decimal amountToPreAuthorize, bool isReAuth = false)
         {
             var paymentId = Guid.NewGuid();
+            var creditCard = _creditCardDao.FindByAccountId(account.Id).First();
+
             _commandBus.Send(new InitiateCreditCardPayment
             {
                 PaymentId = paymentId,
                 Amount = 0,
-                Meter = 0,
-                Tip = 0,
                 TransactionId = string.Empty,
                 OrderId = orderId,
-                CardToken = cardToken,
+                CardToken = creditCard.Token,
                 Provider = PaymentProvider.Cmt,
                 IsNoShowFee = false
             });
@@ -265,8 +270,10 @@ namespace apcurium.MK.Booking.Services.Impl
             };
         }
 
-        public CommitPreauthorizedPaymentResponse CommitPayment(Guid orderId, decimal amount, decimal meterAmount, decimal tipAmount, string transactionId)
+        public CommitPreauthorizedPaymentResponse CommitPayment(Guid orderId, AccountDetail account, decimal preauthAmount, decimal amount, decimal meterAmount, decimal tipAmount, string transactionId)
         {
+            // No need to use preauthAmount for CMT because we can't preauthorize
+
             try
             {
                 string authorizationCode = null;
@@ -350,7 +357,7 @@ namespace apcurium.MK.Booking.Services.Impl
             }
         }
 
-        private CmtPairingResponse PairWithVehicleUsingRideLinq(OrderStatusDetail orderStatusDetail, Guid orderId, string cardToken, int? autoTipPercentage, double? autoTipAmount)
+        private CmtPairingResponse PairWithVehicleUsingRideLinq(OrderStatusDetail orderStatusDetail, Guid orderId, string cardToken, int? autoTipPercentage)
         {
             var accountDetail = _accountDao.FindById(orderStatusDetail.AccountId);
 
@@ -358,7 +365,7 @@ namespace apcurium.MK.Booking.Services.Impl
             var cmtPaymentSettings = _serverSettings.GetPaymentSettings().CmtPaymentSettings;
             var pairingRequest = new PairingRequest
             {
-                AutoTipAmount = autoTipAmount,
+                AutoTipAmount = null,
                 AutoTipPercentage = autoTipPercentage,
                 AutoCompletePayment = true,
                 CallbackUrl = "",

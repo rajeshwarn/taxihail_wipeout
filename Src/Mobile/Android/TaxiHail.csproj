@@ -152,9 +152,6 @@
     <Reference Include="Cirrious.MvvmCross.Plugins.WebBrowser.Droid">
       <HintPath>..\packages\MvvmCross.HotTuna.Plugin.WebBrowser.3.5.0\lib\MonoAndroid\Cirrious.MvvmCross.Plugins.WebBrowser.Droid.dll</HintPath>
     </Reference>
-    <Reference Include="Card.IO.Android">
-      <HintPath>..\Components\cardioandroid-3.1.5\lib\android\Card.IO.Android.dll</HintPath>
-    </Reference>
     <Reference Include="System.Reactive.Core">
       <HintPath>..\Components\rxforxamarin-2.2.1\lib\android\System.Reactive.Core.dll</HintPath>
     </Reference>
@@ -166,6 +163,9 @@
     </Reference>
     <Reference Include="System.Reactive.PlatformServices">
       <HintPath>..\Components\rxforxamarin-2.2.1\lib\android\System.Reactive.PlatformServices.dll</HintPath>
+    </Reference>
+    <Reference Include="PaypalSdkDroid">
+      <HintPath>..\Libraries\Monodroid\PaypalSdkDroid.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -191,11 +191,13 @@
     <Compile Include="Helpers\DrawHelper.cs" />
     <Compile Include="Activities\History\HistoryDetailActivity.cs" />
     <Compile Include="Activities\Account\LoginActivity.cs" />
+    <Compile Include="LinkerPleaseInclude.cs" />
     <Compile Include="ListViewStructure\ListItemData.cs" />
     <Compile Include="Messages\ActivityCompleted.cs" />
     <Compile Include="Activities\Account\PasswordRecoveryActivity.cs" />
     <Compile Include="PlatformIntegration\MessageService.cs" />
     <Compile Include="PlatformIntegration\PackageInfo.cs" />
+    <Compile Include="PlatformIntegration\PayPalConfigurationService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Activities\SplashActivity.cs" />
     <AndroidResource Include="Resources\Layout\RatingListItem.axml">
@@ -243,16 +245,11 @@
     <AndroidResource Include="Resources\Drawable\transparentAllStates.xml" />
     <Compile Include="Binding\CellItemBinding.cs" />
     <AndroidResource Include="Resources\Drawable\visa_electron.png" />
-    <Compile Include="Activities\Book\BookPaymentActivity.cs" />
     <AndroidResource Include="Resources\Layout\View_Payments_CreditCardAdd.axml" />
-    <AndroidResource Include="Resources\Layout\View_Payments_BookPayment.axml" />
     <Compile Include="Binding\CustomBindings.cs" />
     <Compile Include="Binding\TextViewBinding.cs" />
     <Compile Include="Extensions\ViewExtensions.cs" />
     <Compile Include="Extensions\LayoutParametersExtensions.cs" />
-    <Compile Include="Activities\Book\BookPayPalActivity.cs">
-      <DependentUpon>BookPaymentActivity.cs</DependentUpon>
-    </Compile>
     <Compile Include="Extensions\EditTextExtensions.cs" />
     <Compile Include="Extensions\LocationTimeConverter.cs" />
     <Compile Include="Activities\Book\RideSummaryActivity.cs" />
@@ -321,10 +318,6 @@
     <AndroidResource Include="Resources\Drawable\button_action_red_text_selector.xml" />
     <AndroidResource Include="Resources\Layout\View_Payments_ConfirmPair.axml" />
     <Compile Include="Activities\Book\ConfirmPairActivity.cs" />
-    <Compile Include="Activities\Book\ConfirmCarNumberActivity.cs" />
-    <AndroidResource Include="Resources\Layout\View_Payments_ConfirmCarNumber.axml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
     <AndroidResource Include="Resources\Layout\View_CreateAccount.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
@@ -613,7 +606,6 @@
     <AndroidResource Include="Resources\drawable-xhdpi\promo.png" />
     <Compile Include="Bootstrap\PhoneCallPluginBootstrap.cs" />
     <Compile Include="Bootstrap\WebBrowserPluginBootstrap.cs" />
-    <Compile Include="LinkerPleaseInclude.cs" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\View_Login.axml">
@@ -723,7 +715,9 @@
     <AndroidResource Include="Resources\Drawable\backPickupDestination.png" />
     <AndroidResource Include="Resources\Drawable\button_main_rounded.xml" />
     <AndroidResource Include="Resources\Drawable\button_main_selector.xml" />
-    <AndroidResource Include="Resources\Drawable\edit_text_flat.xml" />
+    <AndroidResource Include="Resources\Drawable\edit_text_flat.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
     <AndroidResource Include="Resources\values-fr\String.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
@@ -739,6 +733,8 @@
     <AndroidResource Include="Resources\values-es\String.xml" />
     <AndroidResource Include="Resources\Drawable\down_arrow.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\down_arrow.png" />
+    <AndroidResource Include="Resources\Drawable\paypal_icon.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\paypal_icon.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <Target Name="BeforeBuild">
@@ -793,10 +789,6 @@
   <ItemGroup>
     <XamarinComponentReference Include="googleplayservices">
       <Version>19.0.0.2</Version>
-      <Visible>False</Visible>
-    </XamarinComponentReference>
-    <XamarinComponentReference Include="cardioandroid">
-      <Version>3.1.5</Version>
       <Visible>False</Visible>
     </XamarinComponentReference>
     <XamarinComponentReference Include="rxforxamarin">

@@ -6,6 +6,7 @@ using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Common.Entity;
 using ServiceStack.Text;
 using System;
+using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
@@ -13,13 +14,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 	public class ConfirmPairViewModel : PageViewModel
 	{
 		private readonly IPaymentService _paymentService;
+        private readonly IAccountService _accountService;
 
-		public ConfirmPairViewModel(IPaymentService paymentService)
+		public ConfirmPairViewModel(IPaymentService paymentService, IAccountService accountService)
 		{
-			_paymentService = paymentService;
+		    _paymentService = paymentService;
+		    _accountService = accountService;
 		}
 
-		public async void Init(string order, string orderStatus)
+	    public async void Init(string order, string orderStatus)
 		{
 			Order = order.FromJson<Order>();
 			OrderStatus = orderStatus.FromJson<OrderStatusDetail>();  
@@ -45,7 +48,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			}
 			else
 			{
-				_cardNumber = "";
+				_cardNumber = string.Empty;
 			}
 
 			RaisePropertyChanged(() => CardNumber);
@@ -57,16 +60,21 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			}
 		}
 
-		private string _cardNumber = "";
+		private string _cardNumber = string.Empty;
 		public string CardNumber
 		{
 			get
 			{
-			    if (_cardNumber != "")
+                if (_cardNumber.HasValue())
 				{
 					return _cardNumber;
 				}
-			    return "None";
+			    if (_paymentPreferences.IsPayPalAccountLinked)
+			    {
+			        return ChargeTypes.PayPal.Display;
+			    }
+
+			    return this.Services().Localize["NoPairingCreditCard"];
 			}
 		}
 
@@ -87,13 +95,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 				{         
 					using(this.Services().Message.ShowProgress())
 					{   
-						if (_paymentPreferences.SelectedCreditCard == null)
+						if (!_accountService.CurrentAccount.HasValidPaymentInformation)
 						{
 							this.Services().Message.ShowMessage(this.Services().Localize["CmtRideLinqErrorTitle"], this.Services().Localize["NoCreditCardSelected"]);
 							return;
 						}
 
-						var pairingResponse = await _paymentService.Pair(Order.Id, _paymentPreferences.SelectedCreditCard.Token, _paymentPreferences.Tip, null);                    
+                        var cardToken = _paymentPreferences.SelectedCreditCard != null 
+                            ? _paymentPreferences.SelectedCreditCard.Token 
+                            : null;
+                        var pairingResponse = await _paymentService.Pair(Order.Id, cardToken, _paymentPreferences.Tip);                    
 
 						this.Services().Cache.Set("PairState" + Order.Id, pairingResponse.IsSuccessful ? PairingState.Success : PairingState.Failed);
 

@@ -13,7 +13,7 @@ using apcurium.MK.Booking.Mobile.Client.Localization;
 
 namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 {
-	public class MessageService : IMessageService
+    public class MessageService : IMessageService
 	{
 		public const string ActionServiceMessage = "Mk_Taxi.ACTION_SERVICE_MESSAGE";
 		public const string ActionExtraMessage = "Mk_Taxi.ActionExtraMessage";

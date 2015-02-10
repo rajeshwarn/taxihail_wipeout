@@ -25,7 +25,7 @@ namespace apcurium.MK.Booking.Test.Integration.CreditCardFixture
             const string expirationYear = "2020";
             const string token = "jjwcnSLWm85";
 
-            Sut.Handle(new CreditCardAdded
+            Sut.Handle(new CreditCardAddedOrUpdated
             {
                 SourceId = _accountId,
                 CreditCardCompany = creditCardComapny,

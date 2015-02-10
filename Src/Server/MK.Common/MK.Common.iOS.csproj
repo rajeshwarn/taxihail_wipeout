@@ -8,7 +8,6 @@
     <OutputType>Library</OutputType>
     <RootNamespace>MK.Common.iOS</RootNamespace>
     <TargetFrameworkIdentifier>Xamarin.iOS</TargetFrameworkIdentifier>
-    <TargetFrameworkVersion>v1.0</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>True</DebugSymbols>
@@ -88,6 +87,7 @@
     <Compile Include="Configuration\Impl\BraintreeClientSettings.cs" />
     <Compile Include="Configuration\Impl\ClientPaymentSettings.cs" />
     <Compile Include="Configuration\Impl\MonerisPaymentSettings.cs" />
+    <Compile Include="Configuration\Impl\PayPalClientCredentials.cs" />
     <Compile Include="Configuration\Impl\PayPalClientSettings.cs" />
     <Compile Include="Configuration\NotificationSettings.cs" />
     <Compile Include="Configuration\SettingContainers.cs" />

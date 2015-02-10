@@ -73,13 +73,11 @@
     <Compile Include="Requests\OrderRequest.cs" />
     <Compile Include="Requests\OrderStatusRequest.cs" />
     <Compile Include="Requests\Payment\Braintree\TokenizeCreditCardBraintreeRequest.cs" />
-    <Compile Include="Requests\Payment\CommitPaymentRequest.cs" />
     <Compile Include="Requests\Payment\DeleteTokenizedCreditcardRequest.cs" />
     <Compile Include="Requests\Payment\PairingForPaymentRequest.cs" />
     <Compile Include="Requests\Payment\PaymentSettingsRequest.cs" />
-    <Compile Include="Requests\Payment\CancelPayPalExpressCheckoutPaymentRequest.cs" />
-    <Compile Include="Requests\Payment\CompletePayPalExpressCheckoutPaymentRequest.cs" />
-    <Compile Include="Requests\Payment\InitiatePayPalExpressCheckoutPaymentRequest.cs" />
+    <Compile Include="Requests\Payment\PayPal\LinkPayPalAccountRequest.cs" />
+    <Compile Include="Requests\Payment\PayPal\UnlinkPayPalAccountRequest.cs" />
     <Compile Include="Requests\Payment\UnpairingForPaymentRequest.cs" />
     <Compile Include="Requests\PlaceDetailRequest.cs" />
     <Compile Include="Requests\ReferenceDataRequest.cs" />
@@ -115,7 +113,6 @@
     <Compile Include="Resources\OrderValidationResult.cs" />
     <Compile Include="Resources\AvailableVehicle.cs" />
     <Compile Include="Requests\AvailableVehicles.cs" />
-    <Compile Include="Requests\Payment\ResendPaymentConfirmationRequest.cs" />
     <Compile Include="Resources\AccountCharge.cs" />
     <Compile Include="Requests\LogApplicationStartUpRequest.cs" />
     <Compile Include="Resources\VehicleType.cs" />

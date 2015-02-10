@@ -12,6 +12,5 @@ namespace apcurium.MK.Booking.Api.Contract.Requests.Payment
         public Guid OrderId { get; set; }
         public string CardToken { get; set; }
         public int? AutoTipPercentage { get; set; }
-        public double? AutoTipAmount { get; set; }
     }
 }

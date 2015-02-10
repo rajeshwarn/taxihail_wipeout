@@ -38,7 +38,8 @@ namespace apcurium.MK.Booking.EventHandlers
                 {
                     throw new InvalidOperationException("Payment not found");
                 }
-                    
+
+                payment.TransactionId = @event.TransactionId;
                 payment.AuthorizationCode = @event.AuthorizationCode;
                 payment.IsCompleted = true;
                 payment.Amount = @event.Amount;
@@ -75,15 +76,16 @@ namespace apcurium.MK.Booking.EventHandlers
                 context.Save(new OrderPaymentDetail
                 {
                     PaymentId = @event.SourceId,
-                    Amount = @event.Amount,
-                    Meter = @event.Meter,
-                    Tip = @event.Tip,
+                    PreAuthorizedAmount = @event.Amount,
+                    FirstPreAuthTransactionId = @event.TransactionId,
                     TransactionId = @event.TransactionId,
                     OrderId = @event.OrderId,
                     CardToken = @event.CardToken,
                     IsCompleted = false,
                     Provider = @event.Provider,
-                    Type = PaymentType.CreditCard,
+                    Type = @event.Provider == PaymentProvider.PayPal
+                        ? PaymentType.PayPal
+                        : PaymentType.CreditCard
                 });
             }
         }

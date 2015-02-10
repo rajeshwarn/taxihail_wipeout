@@ -7,10 +7,9 @@ using Infrastructure.EventSourcing;
 
 namespace apcurium.MK.Booking.Events
 {
+    [Obsolete("This event is not used anymore, DefaultTipPercent is modified with the BookingSettingsUpdated event", false)]
     public class PaymentProfileUpdated : VersionedEvent
     {
-        public Guid Id { get; set; }
-        public Guid AccountId { get; set; }
         public Guid? DefaultCreditCard { get; set; }
         public int? DefaultTipPercent { get; set; }
     }

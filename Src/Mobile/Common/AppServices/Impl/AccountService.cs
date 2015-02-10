@@ -8,8 +8,10 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Client;
+using apcurium.MK.Booking.Api.Client.Payments.PayPal;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Requests;
+using apcurium.MK.Booking.Api.Contract.Requests.Payment.PayPal;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Api.Contract.Resources.Payments;
 using apcurium.MK.Booking.Api.Contract.Security;
@@ -26,8 +28,6 @@ using MK.Common.Configuration;
 using ServiceStack.Common;
 using ServiceStack.ServiceClient.Web;
 using Position = apcurium.MK.Booking.Maps.Geo.Position;
-using System.Reactive.Linq;
-using System.Reactive.Threading.Tasks;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
@@ -254,7 +254,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             }
         }
 		
-        public async Task UpdateSettings (BookingSettings settings, Guid? creditCardId, int? tipPercent)
+        public async Task UpdateSettings (BookingSettings settings, int? tipPercent)
         {
             var bsr = new BookingSettingsRequest
             {
@@ -263,21 +263,17 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 VehicleTypeId = settings.VehicleTypeId,
                 ChargeTypeId = settings.ChargeTypeId,
                 ProviderId = settings.ProviderId,
-                DefaultCreditCard = creditCardId,
 				DefaultTipPercent = tipPercent,
 				AccountNumber = settings.AccountNumber
             };
 
             await UseServiceClientAsync<IAccountServiceClient>(service => service.UpdateBookingSettings(bsr));
 
+			// Update cached account
             var account = CurrentAccount;
             account.Settings = settings;
-            account.DefaultCreditCard = creditCardId;
             account.DefaultTipPercent = tipPercent;
-
-            //Set to update the cache
             CurrentAccount = account;
-
         }
 
 		public void UpdateAccountNumber (string accountNumber)
@@ -286,7 +282,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			settings.AccountNumber = accountNumber;
 
 			// no need to await since we're change it locally
-			UpdateSettings (settings, CurrentAccount.DefaultCreditCard, CurrentAccount.DefaultTipPercent);
+			UpdateSettings (settings, CurrentAccount.DefaultTipPercent);
 		}
 
         public Task<string> UpdatePassword (Guid accountId, string currentPassword, string newPassword)
@@ -514,7 +510,12 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         {
 			var refData = await GetReferenceData();
 
-            if (!CurrentAccount.DefaultCreditCard.HasValue)
+            if (!CurrentAccount.IsPayPalAccountLinked)
+		    {
+                refData.PaymentsList.Remove(i => i.Id == ChargeTypes.PayPal.Id);
+		    }
+
+            if (!CurrentAccount.DefaultCreditCard.HasValue || CurrentAccount.IsPayPalAccountLinked)
 		    {
 		        refData.PaymentsList.Remove(i => i.Id == ChargeTypes.CardOnFile.Id);
 		    }
@@ -544,7 +545,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			creditCard.Token = response.CardOnFileToken;       
 		}
 
-		public async Task<bool> AddCreditCard (CreditCardInfos creditCard)
+		public async Task<bool> AddOrUpdateCreditCard (CreditCardInfos creditCard, bool isUpdate = false)
         {
 			try
 			{
@@ -565,43 +566,50 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 				ExpirationMonth = creditCard.ExpirationMonth,
 				ExpirationYear = creditCard.ExpirationYear
             };
-            
-			await UseServiceClientAsync<IAccountServiceClient> (client => client.AddCreditCard (request));  
+
+            UpdateCachedAccount(creditCard.CreditCardId, ChargeTypes.CardOnFile.Id, false);
+
+			await UseServiceClientAsync<IAccountServiceClient> (client => 
+				isUpdate 
+					? client.AddCreditCard (request)
+					: client.UpdateCreditCard(request));  
 
 			return true;
         }
-
-		public async Task<bool> UpdateCreditCard(CreditCardInfos creditCard)
+			
+		public async Task RemoveCreditCard(bool replacedByPayPal = false)
 		{
-			try
-			{
-				await TokenizeCard (creditCard);
-			}
-			catch
-			{
-				return false;
-			}
+            var updatedChargeType = replacedByPayPal ? ChargeTypes.PayPal.Id : ChargeTypes.PaymentInCar.Id;
 
-			var request = new CreditCardRequest
-			{
-				CreditCardCompany = creditCard.CreditCardCompany,
-				CreditCardId = creditCard.CreditCardId,
-				NameOnCard = creditCard.NameOnCard,
-				Last4Digits = creditCard.Last4Digits,
-				Token = creditCard.Token,
-				ExpirationMonth = creditCard.ExpirationMonth,
-				ExpirationYear = creditCard.ExpirationYear
-			};
+            UpdateCachedAccount(null, updatedChargeType, CurrentAccount.IsPayPalAccountLinked);
 
-			await UseServiceClientAsync<IAccountServiceClient> (client => client.UpdateCreditCard (request));  
-
-			return true;
-		}
-
-		public async Task RemoveCreditCard()
-		{
 			await UseServiceClientAsync<IAccountServiceClient>(client => client.RemoveCreditCard());
 		}
+
+		public Task LinkPayPalAccount(string authCode)
+		{
+            UpdateCachedAccount(null, ChargeTypes.PayPal.Id, true);
+
+			return UseServiceClientAsync<PayPalServiceClient>(service => service.LinkPayPalAccount(new LinkPayPalAccountRequest { AuthCode = authCode }));
+		}
+
+		public Task UnlinkPayPalAccount (bool replacedByCreditCard = false)
+		{
+		    var updatedChargeTypeId = replacedByCreditCard ? ChargeTypes.CardOnFile.Id : ChargeTypes.PaymentInCar.Id;
+
+            UpdateCachedAccount(CurrentAccount.DefaultCreditCard, updatedChargeTypeId, false);
+
+			return UseServiceClientAsync<PayPalServiceClient>(service => service.UnlinkPayPalAccount(new UnlinkPayPalAccountRequest()));
+		}
+
+        private void UpdateCachedAccount(Guid? defaultCreditCard, int? chargeTypeId, bool isPayPalAccountLinked)
+        {
+            var account = CurrentAccount;
+            account.DefaultCreditCard = defaultCreditCard;
+            account.Settings.ChargeTypeId = chargeTypeId;
+            account.IsPayPalAccountLinked = isPayPalAccountLinked;
+            CurrentAccount = account;
+        }
 
         public async Task<NotificationSettings> GetNotificationSettings(bool companyDefaultOnly = false, bool cleanCache = false)
         {

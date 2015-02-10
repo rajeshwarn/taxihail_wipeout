@@ -1,4 +1,4 @@
-﻿using System.Collections.Specialized;
+using System.Collections.Specialized;
 using System.Windows.Input;
 using Android.App;
 using Android.Views;
@@ -20,7 +20,7 @@ namespace apcurium.MK.Booking.Mobile.Client
         {
             checkBox.CheckedChange += (sender, args) => checkBox.Checked = !checkBox.Checked;
         }
-
+        
         public void Include(Switch @switch)
         {
             @switch.CheckedChange += (sender, args) => @switch.Checked = !@switch.Checked;
@@ -34,9 +34,9 @@ namespace apcurium.MK.Booking.Mobile.Client
         public void Include(TextView text)
         {
             text.TextChanged += (sender, args) => text.Text = "" + text.Text;
-            text.Hint = "" + text.Hint;
+			text.Hint = "" + text.Hint;
         }
-
+        
         public void Include(CheckedTextView text)
         {
             text.TextChanged += (sender, args) => text.Text = "" + text.Text;
@@ -67,17 +67,17 @@ namespace apcurium.MK.Booking.Mobile.Client
         {
             command.CanExecuteChanged += (s, e) => { if (command.CanExecute(null)) command.Execute(null); };
         }
+		
+		public void Include(Cirrious.CrossCore.IoC.MvxPropertyInjector injector)
+		{
+			injector = new Cirrious.CrossCore.IoC.MvxPropertyInjector ();
+		} 
 
-        public void Include(Cirrious.CrossCore.IoC.MvxPropertyInjector injector)
-        {
-            injector = new Cirrious.CrossCore.IoC.MvxPropertyInjector ();
-        } 
-
-        public void Include(System.ComponentModel.INotifyPropertyChanged changed)
-        {
-            changed.PropertyChanged += (sender, e) =>  {
-                var test = e.PropertyName;
-            };
-        }
+		public void Include(System.ComponentModel.INotifyPropertyChanged changed)
+		{
+			changed.PropertyChanged += (sender, e) =>  {
+				var test = e.PropertyName;
+			};
+		}
     }
 }

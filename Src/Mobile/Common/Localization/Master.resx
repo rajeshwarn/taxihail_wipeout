@@ -216,6 +216,9 @@
   <data name="AcceptButton" xml:space="preserve">
     <value>Accept</value>
   </data>
+  <data name="Error" xml:space="preserve">
+    <value>Error</value>
+  </data>
   <data name="LocationServiceErrorTitle" xml:space="preserve">
     <value>Error</value>
   </data>
@@ -922,7 +925,7 @@
     <value>Update Account</value>
   </data>
   <data name="PanelMenuViewPaymentInfoText" xml:space="preserve">
-    <value>Card on File</value>
+    <value>Payment</value>
   </data>
   <data name="PanelMenuViewTutorialText" xml:space="preserve">
     <value>View Tutorial</value>
@@ -1108,10 +1111,10 @@
     <value>Invalid payment information</value>
   </data>
   <data name="View_CreditCard" xml:space="preserve">
-    <value>Credit Card</value>
+    <value>Payment</value>
   </data>
   <data name="CreditCardInstructions" xml:space="preserve">
-    <value>In order to use the application, you need to add a credit card to your account.</value>
+    <value>In order to use the application, you need to add a payment method to your account.</value>
   </data>
   <data name="CreditCardRemoveErrorTitle" xml:space="preserve">
     <value>Cannot remove credit card</value>
@@ -1251,32 +1254,14 @@
   <data name="CmtTransactionSuccessTitle" xml:space="preserve">
     <value>Payment Received</value>
   </data>
-  <data name="NoAmountSelectedMessage" xml:space="preserve">
-    <value>Please enter the amount</value>
-  </data>
   <data name="CmtTransactionResendConfirmationButtonText" xml:space="preserve">
     <value>Resend</value>
   </data>
   <data name="PaymentConfirmationMessageToDriver" xml:space="preserve">
     <value>The passenger has paid {0} (auth : {1})</value>
   </data>
-  <data name="PaymentErrorMessage" xml:space="preserve">
-    <value>Details: {0}</value>
-  </data>
   <data name="SendMessageErrorMessage" xml:space="preserve">
     <value>Error confirming with driver payment cancelled</value>
-  </data>
-  <data name="PayPalExpressCheckoutCancelTitle" xml:space="preserve">
-    <value>Payment cancelled</value>
-  </data>
-  <data name="PayPalExpressCheckoutCancelMessage" xml:space="preserve">
-    <value>PayPal payment was cancelled. Your account has not been charged.</value>
-  </data>
-  <data name="PayPalExpressCheckoutSuccessTitle" xml:space="preserve">
-    <value>Payment successful</value>
-  </data>
-  <data name="PayPalExpressCheckoutSuccessMessage" xml:space="preserve">
-    <value>PayPal payment was successful. Confirmation sent to the driver.</value>
   </data>
   <data name="ConfirmationOfPaymentSent" xml:space="preserve">
     <value>Confirmation of payment has been sent to the driver.</value>
@@ -1289,12 +1274,6 @@
   </data>
   <data name="OrderNumber" xml:space="preserve">
     <value>Order #</value>
-  </data>
-  <data name="NoOrderId" xml:space="preserve">
-    <value>Order Not ready</value>
-  </data>
-  <data name="PayPalButton" xml:space="preserve">
-    <value>Pay with PayPal</value>
   </data>
   <data name="January" xml:space="preserve">
     <value>Jan (01)</value>
@@ -1344,9 +1323,6 @@
   <data name="CreditCard" xml:space="preserve">
     <value>Credit Card</value>
   </data>
-  <data name="PaymentErrorTitle" xml:space="preserve">
-    <value>Payment cannot be completed</value>
-  </data>
   <data name="VehicleNumberInfo" xml:space="preserve">
     <value>Please confirm your car number with the driver</value>
   </data>
@@ -1359,17 +1335,11 @@
   <data name="EstimatingFare" xml:space="preserve">
     <value>Estimating your fare...</value>
   </data>
-  <data name="ConfirmationPaymentAmountOver100Title" xml:space="preserve">
-    <value>Confirmation Required</value>
-  </data>
-  <data name="ConfirmationPaymentAmountOver100" xml:space="preserve">
-    <value>You will be charged {0}. Please confirm the amount. </value>
-  </data>
   <data name="CmtCancelPayment" xml:space="preserve">
     <value>Cancel</value>
   </data>
   <data name="CmtCardNumber" xml:space="preserve">
-    <value>Card Number:</value>
+    <value>Payment Method:</value>
   </data>
   <data name="CmtCarNumber" xml:space="preserve">
     <value>Car Number:</value>
@@ -1513,7 +1483,7 @@
     <value>Pay Cash/Credit Card in Car</value>
   </data>
   <data name="CreditCardAdded" xml:space="preserve">
-    <value>Your account is now enabled to pay with your card on file by default. You can still choose to pay in the vehicle by selecting \"Pay in Vehicle\" on the payment screen</value>
+    <value>Your account is now enabled to pay with your card on file by default. You can still choose to pay in the vehicle by selecting \"Pay in Vehicle\" on the confirmation screen</value>
   </data>
   <data name="PendingOrderMessage" xml:space="preserve">
     <value>You cannot book this ride since an order is already pending. View the order status?</value>
@@ -1736,5 +1706,38 @@
   </data>
   <data name="ErrorCreateOrder_PendingOrder" xml:space="preserve">
     <value>You cannot book this ride since an order is already pending. View the order status?</value>
+  </data>
+  <data name="LinkPayPal" xml:space="preserve">
+    <value>Link PayPal</value>
+  </data>
+  <data name="UnlinkPayPal" xml:space="preserve">
+    <value>Unlink PayPal</value>
+  </data>
+  <data name="LinkPayPalCCWarning" xml:space="preserve">
+    <value>Linking your PayPal account will remove your card on file and PayPal will be set as the default payment method. Proceed?</value>
+  </data>
+  <data name="AddCoFPayPalWarning" xml:space="preserve">
+    <value>Adding a credit card will unlink your PayPal account and Card on File will be set as the default payment method. Proceed?</value>
+  </data>
+  <data name="PayPalErrorTitle" xml:space="preserve">
+    <value>PayPal Error</value>
+  </data>
+  <data name="PayPalLinkError" xml:space="preserve">
+    <value>Unable to link your PayPal account</value>
+  </data>
+  <data name="PayPalUnlinkError" xml:space="preserve">
+    <value>Unable to unlink your PayPal account</value>
+  </data>
+  <data name="LinkPayPalConfirmation" xml:space="preserve">
+    <value>Link</value>
+  </data>
+  <data name="PayPalLinked" xml:space="preserve">
+    <value>Your account is now enabled to pay with PayPal by default. You can still choose to pay in the vehicle by selecting \"Pay in Vehicle\" on the confirmation screen</value>
+  </data>
+  <data name="PayPalLinkedInfo" xml:space="preserve">
+    <value>Account Linked</value>
+  </data>
+  <data name="NoPairingCreditCard" xml:space="preserve">
+    <value>None</value>
   </data>
 </root>

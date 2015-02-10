@@ -35,7 +35,7 @@ namespace apcurium.MK.Booking.ReadModel
             Promotion = new OrderReportPromotion();
             VehicleInfos = new OrderReportVehicleInfos();
             Client = new OrderReportClient();
-            Rating = "";
+            Rating = string.Empty;
         }
     }
 
@@ -102,11 +102,15 @@ namespace apcurium.MK.Booking.ReadModel
 
         public decimal? TipAmount { get; set; }
 
+        public decimal? PreAuthorizedAmount { get; set; }
+
         public decimal? TotalAmountCharged { get; set; }
 
         public PaymentProvider? Provider { get; set; }
 
         public PaymentType? Type { get; set; }
+
+        public string FirstPreAuthTransactionId { get; set; }
 
         public string TransactionId { get; set; }
 

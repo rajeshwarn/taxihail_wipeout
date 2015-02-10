@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Linq;
 using apcurium.MK.Booking.Commands;
+using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
@@ -19,7 +21,7 @@ namespace apcurium.MK.Booking.Services.Impl
         private readonly ILogger _logger;
         private readonly IOrderPaymentDao _paymentDao;
         private readonly IPairingService _pairingService;
-        private readonly IServerSettings _serverSettings;
+        private readonly ICreditCardDao _creditCardDao;
 
         private BraintreeGateway BraintreeGateway { get; set; }
 
@@ -27,26 +29,29 @@ namespace apcurium.MK.Booking.Services.Impl
             ILogger logger,
             IOrderPaymentDao paymentDao,
             IServerSettings serverSettings,
-            IPairingService pairingService)
+            IPairingService pairingService,
+            ICreditCardDao creditCardDao)
         {
             _commandBus = commandBus;
             _logger = logger;
             _paymentDao = paymentDao;
             _pairingService = pairingService;
-            _serverSettings = serverSettings;
+            _creditCardDao = creditCardDao;
 
             BraintreeGateway = GetBraintreeGateway(serverSettings.GetPaymentSettings().BraintreeServerSettings);
         }
 
-        public PaymentProvider ProviderType
+        public PaymentProvider ProviderType(Guid? orderId = null)
         {
-            get
-            {
-                return PaymentProvider.Braintree;
-            }
+            return PaymentProvider.Braintree;
         }
 
-        public PairingResponse Pair(Guid orderId, string cardToken, int? autoTipPercentage, double? autoTipAmount)
+        public bool IsPayPal(Guid? accountId = null, Guid? orderId = null)
+        {
+            return false;
+        }
+
+        public PairingResponse Pair(Guid orderId, string cardToken, int? autoTipPercentage)
         {
             try
             {
@@ -85,15 +90,10 @@ namespace apcurium.MK.Booking.Services.Impl
             var message = string.Empty;
             try
             {
-                var paymentDetail = _paymentDao.FindNonPayPalByOrderId(orderId);
+                var paymentDetail = _paymentDao.FindByOrderId(orderId);
                 if (paymentDetail == null)
                 {
-                    if (_serverSettings.GetPaymentSettings().IsPreAuthEnabled)
-                    {
-                        throw new Exception(string.Format("Payment for order {0} not found", orderId));
-                    }
-
-                    // PreAuth disabled, no Void to do
+                    // nothing to void
                     return;
                 } 
 
@@ -171,7 +171,7 @@ namespace apcurium.MK.Booking.Services.Impl
             }
         }
 
-        public PreAuthorizePaymentResponse PreAuthorize(Guid orderId, string email, string cardToken, decimal amountToPreAuthorize)
+        public PreAuthorizePaymentResponse PreAuthorize(Guid orderId, AccountDetail account, decimal amountToPreAuthorize, bool isReAuth = false)
         {
             var message = string.Empty;
             var transactionId = string.Empty;
@@ -179,14 +179,16 @@ namespace apcurium.MK.Booking.Services.Impl
             try
             {
                 bool isSuccessful;
+                var orderIdentifier = isReAuth ? string.Format("{0}-1", orderId) : orderId.ToString();
+                var creditCard = _creditCardDao.FindByAccountId(account.Id).First();
 
                 if (amountToPreAuthorize > 0)
                 {
                     var transactionRequest = new TransactionRequest
                     {
                         Amount = amountToPreAuthorize,
-                        PaymentMethodToken = cardToken,
-                        OrderId = orderId.ToString(),
+                        PaymentMethodToken = creditCard.Token,
+                        OrderId = orderIdentifier,
                         Channel = "MobileKnowledgeSystems_SP_MEC",
                         Options = new TransactionOptionsRequest
                         {
@@ -209,18 +211,16 @@ namespace apcurium.MK.Booking.Services.Impl
                     isSuccessful = true;
                 }
 
-                if (isSuccessful)
+                if (isSuccessful && !isReAuth)
                 {
                     var paymentId = Guid.NewGuid();
                     _commandBus.Send(new InitiateCreditCardPayment
                     {
                         PaymentId = paymentId,
-                        Amount = 0,
-                        Meter = 0,
-                        Tip = 0,
+                        Amount = amountToPreAuthorize,
                         TransactionId = transactionId,
                         OrderId = orderId,
-                        CardToken = cardToken,
+                        CardToken = creditCard.Token,
                         Provider = PaymentProvider.Braintree,
                         IsNoShowFee = false
                     });
@@ -230,12 +230,13 @@ namespace apcurium.MK.Booking.Services.Impl
                 {
                     IsSuccessful = isSuccessful,
                     Message = message,
-                    TransactionId = transactionId
+                    TransactionId = transactionId,
+                    ReAuthOrderId = isReAuth ? orderIdentifier : null
                 };
             }
             catch (Exception e)
             {
-                _logger.LogMessage(string.Format("Error during preauthorization (validation of the card) for client {0}: {1} - {2}", email, message, e));
+                _logger.LogMessage(string.Format("Error during preauthorization (validation of the card) for client {0}: {1} - {2}", account.Email, message, e));
                 _logger.LogError(e);
 
                 return new PreAuthorizePaymentResponse
@@ -246,13 +247,50 @@ namespace apcurium.MK.Booking.Services.Impl
             }
         }
 
-        public CommitPreauthorizedPaymentResponse CommitPayment(Guid orderId, decimal amount, decimal meterAmount, decimal tipAmount, string transactionId)
+        private PreAuthorizePaymentResponse ReAuthorizeIfNecessary(Guid orderId, AccountDetail account, decimal preAuthAmount, decimal amount)
         {
+            if (amount <= preAuthAmount)
+            {
+                return new PreAuthorizePaymentResponse
+                {
+                    IsSuccessful = true
+                };
+            }
+
+            _logger.LogMessage(string.Format("Re-Authorizing order {0} because it exceeded the original pre-auth amount ", orderId));
+            _logger.LogMessage(string.Format("Voiding original Pre-Auth of {0}", preAuthAmount));
+
+            VoidPreAuthorization(orderId);
+
+            _logger.LogMessage(string.Format("Re-Authorizing order for amount of {0}", amount));
+
+            return PreAuthorize(orderId, account, amount, true);
+        }
+
+        public CommitPreauthorizedPaymentResponse CommitPayment(Guid orderId, AccountDetail account, decimal preauthAmount, decimal amount, decimal meterAmount, decimal tipAmount, string transactionId)
+        {
+            var commitTransactionId = transactionId;
+            string authorizationCode = null;
+
             try
             {
-                string authorizationCode = null;
+                var authResponse = ReAuthorizeIfNecessary(orderId, account, preauthAmount, amount);
+                if (!authResponse.IsSuccessful)
+                {
+                    return new CommitPreauthorizedPaymentResponse
+                    {
+                        IsSuccessful = false,
+                        TransactionId = commitTransactionId,
+                        Message = string.Format("Braintree Re-Auth of amount {0} failed.", amount)
+                    };
+                }
 
-                var settlementResult = BraintreeGateway.Transaction.SubmitForSettlement(transactionId, amount);
+                if (authResponse.TransactionId.HasValue())
+                {
+                    commitTransactionId = authResponse.TransactionId;
+                }
+
+                var settlementResult = BraintreeGateway.Transaction.SubmitForSettlement(commitTransactionId, amount);
                 
                 var isSuccessful = settlementResult.IsSuccess()
                     && settlementResult.Target != null
@@ -268,7 +306,7 @@ namespace apcurium.MK.Booking.Services.Impl
                     IsSuccessful = isSuccessful,
                     AuthorizationCode = authorizationCode,
                     Message = settlementResult.Message,
-                    TransactionId = transactionId
+                    TransactionId = commitTransactionId
                 };
             }
             catch (Exception ex)
@@ -276,7 +314,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 return new CommitPreauthorizedPaymentResponse
                 {
                     IsSuccessful = false,
-                    TransactionId = transactionId,
+                    TransactionId = commitTransactionId,
                     Message = ex.Message
                 };
             }
@@ -295,7 +333,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 Environment = env,
                 MerchantId = settings.MerchantId,
                 PublicKey = settings.PublicKey,
-                PrivateKey = settings.PrivateKey,
+                PrivateKey = settings.PrivateKey
             };
         }
     }

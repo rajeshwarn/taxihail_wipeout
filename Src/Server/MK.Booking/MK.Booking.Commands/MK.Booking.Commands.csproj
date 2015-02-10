@@ -48,7 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ActivatePromotion.cs" />
-    <Compile Include="AddCreditCard.cs" />
+    <Compile Include="AddOrUpdateCreditCard.cs" />
     <Compile Include="AddDefaultFavoriteAddress.cs" />
     <Compile Include="AddFavoriteAddress.cs" />
     <Compile Include="AddIbsOrderInfoToOrder.cs" />
@@ -62,22 +62,20 @@
     <Compile Include="AddUpdateVehicleType.cs" />
     <Compile Include="CancelOrder.cs" />
     <Compile Include="AddRatingType.cs" />
-    <Compile Include="CancelPayPalExpressCheckoutPayment.cs" />
     <Compile Include="CaptureCreditCardPayment.cs" />
     <Compile Include="CreatePromotion.cs" />
     <Compile Include="DeactivatePromotion.cs" />
+    <Compile Include="LinkPayPalAccount.cs" />
     <Compile Include="PrepareOrderForNextDispatch.cs" />
     <Compile Include="ChangeOrderStatus.cs" />
     <Compile Include="IgnoreDispatchCompanySwitch.cs" />
     <Compile Include="NotifyOrderTimedOut.cs" />
-    <Compile Include="CompletePayPalExpressCheckoutPayment.cs" />
     <Compile Include="DeleteAccountCharge.cs" />
     <Compile Include="DeleteAccountCreditCards.cs" />
     <Compile Include="DeleteAllCreditCards.cs" />
     <Compile Include="DeleteRatingType.cs" />
     <Compile Include="DeleteVehicleType.cs" />
     <Compile Include="InitiateCreditCardPayment.cs" />
-    <Compile Include="InitiatePayPalExpressCheckoutPayment.cs" />
     <Compile Include="LinkAccountToIbs.cs" />
     <Compile Include="LogApplicationStartUp.cs" />
     <Compile Include="LogCancellationFailurePayPalPayment.cs" />
@@ -88,8 +86,9 @@
     <Compile Include="SendAccountConfirmationSMS.cs" />
     <Compile Include="SwitchOrderToNextDispatchCompany.cs" />
     <Compile Include="UnlinkAccountFromIbs.cs" />
+    <Compile Include="UnlinkAllPayPalAccounts.cs" />
+    <Compile Include="UnlinkPayPalAccount.cs" />
     <Compile Include="UnpairForPayment.cs" />
-    <Compile Include="UpdateCreditCard.cs" />
     <Compile Include="UpdatePaymentSettings.cs" />
     <Compile Include="DisableAccountbyAdmin.cs" />
     <Compile Include="ConfirmAccount.cs" />

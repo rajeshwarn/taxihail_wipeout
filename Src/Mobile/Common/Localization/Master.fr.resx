@@ -268,7 +268,7 @@
     <value>Annuler</value>
   </data>
   <data name="CmtCardNumber" xml:space="preserve">
-    <value>Numéro de carte:</value>
+    <value>Mode de paiement:</value>
   </data>
   <data name="CmtCarNumber" xml:space="preserve">
     <value>Numéro du véhicule: </value>
@@ -323,12 +323,6 @@
   </data>
   <data name="ConfirmationOfPaymentSent" xml:space="preserve">
     <value>Confirmation du paiement envoyée au chauffeur</value>
-  </data>
-  <data name="ConfirmationPaymentAmountOver100" xml:space="preserve">
-    <value>Vous allez être débité d'un montant de {0}. Merci de confirmer le montant.</value>
-  </data>
-  <data name="ConfirmationPaymentAmountOver100Title" xml:space="preserve">
-    <value>Confirmation nécessaire</value>
   </data>
   <data name="ConfirmCompanyLabel" xml:space="preserve">
     <value>Société: </value>
@@ -433,7 +427,7 @@
     <value>Date d'expiration (année)</value>
   </data>
   <data name="CreditCardInstructions" xml:space="preserve">
-    <value>Afin d'utiliser l'application, vous devez ajouter une carte de crédit à votre compte.</value>
+    <value>Afin d'utiliser l'application, vous devez ajouter un mode de paiement à votre compte.</value>
   </data>
   <data name="CreditCardInvalidCrediCardNUmber" xml:space="preserve">
     <value>Le numéro de la carte ne semble pas être valide</value>
@@ -762,6 +756,9 @@
   <data name="LocationServiceErrorMessage" xml:space="preserve">
     <value>Le service de localisation est inactif</value>
   </data>
+  <data name="Error" xml:space="preserve">
+    <value>Erreur</value>
+  </data>
   <data name="LocationServiceErrorTitle" xml:space="preserve">
     <value>Erreur</value>
   </data>
@@ -807,9 +804,6 @@
   <data name="NetworkErrorTitle" xml:space="preserve">
     <value>Aucune connexion disponible</value>
   </data>
-  <data name="NoAmountSelectedMessage" xml:space="preserve">
-    <value>Merci de saisir un montant</value>
-  </data>
   <data name="NoAptText" xml:space="preserve">
     <value>--</value>
   </data>
@@ -833,9 +827,6 @@
   </data>
   <data name="NoMailClient" xml:space="preserve">
     <value>Il n'y a pas d'adresse email client enregistrée</value>
-  </data>
-  <data name="NoOrderId" xml:space="preserve">
-    <value>La commande n'est pas encore finalisée</value>
   </data>
   <data name="NoPhoneNumberMessage" xml:space="preserve">
     <value>Le numéro de téléphone est indisponible</value>
@@ -913,7 +904,7 @@
     <value>Compte</value>
   </data>
   <data name="PanelMenuViewPaymentInfoText" xml:space="preserve">
-    <value>Carte de paiement</value>
+    <value>Paiement</value>
   </data>
   <data name="ParameterButton" xml:space="preserve">
     <value>Paramètres</value>
@@ -948,12 +939,6 @@
   <data name="PaymentDetails.TipAmountLabel" xml:space="preserve">
     <value>Montant du pourboire</value>
   </data>
-  <data name="PaymentErrorMessage" xml:space="preserve">
-    <value>Détails: {0}</value>
-  </data>
-  <data name="PaymentErrorTitle" xml:space="preserve">
-    <value>Le paiement n'a pas pu être effectué</value>
-  </data>
   <data name="PaymentViewMeterAmountText" xml:space="preserve">
     <value>Montant</value>
   </data>
@@ -965,21 +950,6 @@
   </data>
   <data name="PayNow" xml:space="preserve">
     <value>Payer maintenant!</value>
-  </data>
-  <data name="PayPalButton" xml:space="preserve">
-    <value>Payer avec votre compte PayPal</value>
-  </data>
-  <data name="PayPalExpressCheckoutCancelMessage" xml:space="preserve">
-    <value>Votre paiement PayPal a été annulé. Votre compte n'a pas été débité</value>
-  </data>
-  <data name="PayPalExpressCheckoutCancelTitle" xml:space="preserve">
-    <value>Paiement annulé</value>
-  </data>
-  <data name="PayPalExpressCheckoutSuccessMessage" xml:space="preserve">
-    <value>Votre paiement PayPal a été confirmé et transmis au chauffeur</value>
-  </data>
-  <data name="PayPalExpressCheckoutSuccessTitle" xml:space="preserve">
-    <value>Paiement confirmé</value>
   </data>
   <data name="PickupDateDisplay" xml:space="preserve">
     <value>Réservation pour {0:ddd, MMM d} à {0:h:mm tt}</value>
@@ -1393,7 +1363,7 @@
     <value>Créer votre compte</value>
   </data>
   <data name="View_CreditCard" xml:space="preserve">
-    <value>Carte de paiement</value>
+    <value>Paiement</value>
   </data>
   <data name="View_CreditCardsList" xml:space="preserve">
     <value>Cartes de paiement</value>
@@ -1489,7 +1459,7 @@
     <value>Payer dans le taxi</value>
   </data>
   <data name="CreditCardAdded" xml:space="preserve">
-    <value>Votre compte est maintenant configuré pour le paiement par défaut via carte de crédit. Vous pouvez quand même choisir de payer dans le véhicule en choisissant l'option appropriée à l'écran de paiement.</value>
+    <value>Votre compte est maintenant configuré pour le paiement via carte de crédit par défaut. Vous pouvez quand même choisir de payer dans le véhicule en choisissant l'option appropriée à l'écran de confirmation.</value>
   </data>
   <data name="AddACardButton" xml:space="preserve">
     <value>Enregistrez</value>
@@ -1734,5 +1704,38 @@
   </data>
   <data name="ErrorCreateOrder_PendingOrder" xml:space="preserve">
     <value>La commande ne peut être créée car une autre commande est déjà en cours. Voir le statut de la commande?</value>
+  </data>
+  <data name="LinkPayPal" xml:space="preserve">
+    <value>Associer PayPal</value>
+  </data>
+  <data name="UnlinkPayPal" xml:space="preserve">
+    <value>Dissocier PayPal</value>
+  </data>
+  <data name="LinkPayPalCCWarning" xml:space="preserve">
+    <value>Associer votre compte PayPal supprimera votre carte de crédit enregistrée et PayPal sera utilisé comme mode de paiement par défault. Voulez-vous continuer?</value>
+  </data>
+  <data name="AddCoFPayPalWarning" xml:space="preserve">
+    <value>Ajouter une carte de crédit dissociera votre compte PayPal et configurera cette dernière comme mode de paiement par défaut. Voulez-vous continuer?</value>
+  </data>
+  <data name="PayPalErrorTitle" xml:space="preserve">
+    <value>Erreur PayPal</value>
+  </data>
+  <data name="PayPalLinkError" xml:space="preserve">
+    <value>Impossible d'associer votre compte PayPal</value>
+  </data>
+  <data name="PayPalUnlinkError" xml:space="preserve">
+    <value>Impossible de dissocier votre compte PayPal</value>
+  </data>
+  <data name="LinkPayPalConfirmation" xml:space="preserve">
+    <value>Associer</value>
+  </data>
+  <data name="PayPalLinked" xml:space="preserve">
+    <value>Votre compte est maintenant configuré pour le paiement via PayPal par défaut. Vous pouvez quand même choisir de payer dans le véhicule en choisissant l'option appropriée à l'écran de confirmation.</value>
+  </data>
+  <data name="PayPalLinkedInfo" xml:space="preserve">
+    <value>Compte associé</value>
+  </data>
+  <data name="NoPairingCreditCard" xml:space="preserve">
+    <value>Aucun</value>
   </data>
 </root>

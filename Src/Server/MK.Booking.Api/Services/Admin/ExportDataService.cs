@@ -73,12 +73,10 @@ namespace apcurium.MK.Booking.Api.Services.Admin
                                 ServerVersion = (m == null ? null : m.ServerVersion)
                             };
                 case DataType.Orders:
-
                     var orders = _reportDao.GetOrderReports(startDate, endDate);
                     var exportedOrderReports = new List<Dictionary<string, string>>();
                     
-                    orders.ForEach(orderReport =>
-                        {
+                    orders.ForEach(orderReport => {
                             var orderReportEntry = new Dictionary<string, string>();
                             
                             orderReportEntry["Account.AccountId"] = orderReport.Account.AccountId.ToString();
@@ -93,10 +91,18 @@ namespace apcurium.MK.Booking.Api.Services.Admin
                             orderReportEntry["Order.Market"] = orderReport.Order.Market;
                             orderReportEntry["Order.IBSOrderId"] = orderReport.Order.IBSOrderId.ToString();
                             orderReportEntry["Order.ChargeType"] = orderReport.Order.ChargeType;
-                            orderReportEntry["Order.PickupDate"] = orderReport.Order.PickupDateTime.Value.ToString("d", CultureInfo.InvariantCulture);
-                            orderReportEntry["Order.PickupTime"] = orderReport.Order.PickupDateTime.Value.ToString("t", CultureInfo.InvariantCulture);
-                            orderReportEntry["Order.CreateDate"] = orderReport.Order.CreateDateTime.Value.Add(offset).ToString("d", CultureInfo.InvariantCulture);
-                            orderReportEntry["Order.CreateTime"] = orderReport.Order.CreateDateTime.Value.Add(offset).ToString("t", CultureInfo.InvariantCulture);
+                            orderReportEntry["Order.PickupDate"] = orderReport.Order.PickupDateTime.HasValue 
+                                ? orderReport.Order.PickupDateTime.Value.ToString("d", CultureInfo.InvariantCulture)
+                                : string.Empty;
+                            orderReportEntry["Order.PickupTime"] = orderReport.Order.PickupDateTime.HasValue 
+                                ? orderReport.Order.PickupDateTime.Value.ToString("t", CultureInfo.InvariantCulture)
+                                : string.Empty;
+                            orderReportEntry["Order.CreateDate"] = orderReport.Order.CreateDateTime.HasValue
+                                ? orderReport.Order.CreateDateTime.Value.Add(offset).ToString("d", CultureInfo.InvariantCulture)
+                                : string.Empty;
+                            orderReportEntry["Order.CreateTime"] = orderReport.Order.CreateDateTime.HasValue
+                                ? orderReport.Order.CreateDateTime.Value.Add(offset).ToString("t", CultureInfo.InvariantCulture)
+                                : string.Empty;
                             orderReportEntry["Order.PickupAddress"] = orderReport.Order.PickupAddress.DisplayAddress;
                             orderReportEntry["Order.DropOffAddress"] = orderReport.Order.DropOffAddress.DisplayAddress;
                             orderReportEntry["Order.WasSwitchedToAnotherCompany"] = orderReport.Order.WasSwitchedToAnotherCompany.ToString();
@@ -112,6 +118,7 @@ namespace apcurium.MK.Booking.Api.Services.Admin
                             orderReportEntry["Payment.TotalAmountCharged"] = orderReport.Payment.TotalAmountCharged.ToString();
                             orderReportEntry["Payment.Type"] = orderReport.Payment.Type.ToString();
                             orderReportEntry["Payment.Provider"] = orderReport.Payment.Provider.ToString();
+                            orderReportEntry["Payment.FirstPreAuthTransactionId"] = orderReport.Payment.FirstPreAuthTransactionId.ToSafeString();
                             orderReportEntry["Payment.TransactionId"] = orderReport.Payment.TransactionId.ToSafeString();
                             orderReportEntry["Payment.AuthorizationCode"] = orderReport.Payment.AuthorizationCode;
                             orderReportEntry["Payment.CardToken"] = orderReport.Payment.CardToken;
