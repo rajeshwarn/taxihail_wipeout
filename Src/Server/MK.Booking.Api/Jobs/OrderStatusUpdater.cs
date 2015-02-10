@@ -56,7 +56,7 @@ namespace apcurium.MK.Booking.Api.Jobs
         private readonly IIbsOrderService _ibs;
         private readonly IPromotionDao _promotionDao;
         private readonly IEventSourcedRepository<Promotion> _promoRepository;
-        private readonly IPaymentAbstractionService _paymentAbstractionService;
+        private readonly IPaymentFacadeService _paymentFacadeService;
         private readonly ICreditCardDao _creditCardDao;
         private readonly ILogger _logger;
         private readonly Resources.Resources _resources;
@@ -76,7 +76,7 @@ namespace apcurium.MK.Booking.Api.Jobs
             IIbsOrderService ibs,
             IPromotionDao promotionDao,
             IEventSourcedRepository<Promotion> promoRepository,
-            IPaymentAbstractionService paymentAbstractionService,
+            IPaymentFacadeService paymentFacadeService,
             ICreditCardDao creditCardDao,
             ILogger logger)
         {
@@ -89,7 +89,7 @@ namespace apcurium.MK.Booking.Api.Jobs
             _ibs = ibs;
             _promotionDao = promotionDao;
             _promoRepository = promoRepository;
-            _paymentAbstractionService = paymentAbstractionService;
+            _paymentFacadeService = paymentFacadeService;
             _creditCardDao = creditCardDao;
             _logger = logger;
             _commandBus = commandBus;
@@ -202,7 +202,7 @@ namespace apcurium.MK.Booking.Api.Jobs
 
             var account = _accountDao.FindById(orderDetail.AccountId);
 
-            var result = _paymentAbstractionService.PreAuthorize(orderId, account, amount);
+            var result = _paymentFacadeService.PreAuthorize(orderId, account, amount);
 
             if (result.IsSuccessful)
             {
@@ -320,7 +320,7 @@ namespace apcurium.MK.Booking.Api.Jobs
                     && DateTime.UtcNow > orderStatusDetail.PairingTimeOut)
                 {
                     orderStatusDetail.Status = OrderStatus.Completed;
-                    _paymentAbstractionService.VoidPreAuthorization(orderStatusDetail.OrderId);
+                    _paymentFacadeService.VoidPreAuthorization(orderStatusDetail.OrderId);
 
                     orderStatusDetail.PairingError = "Timed out period reached while waiting for payment informations from IBS.";
                     Log.ErrorFormat("Order {1}: Pairing error: {0}", orderStatusDetail.PairingError, orderStatusDetail.OrderId);
@@ -458,14 +458,14 @@ namespace apcurium.MK.Booking.Api.Jobs
                 {
                     if (totalOrderAmount > 0)
                     {
-                        paymentProviderServiceResponse = _paymentAbstractionService.CommitPayment(orderId, paymentDetail.PreAuthorizedAmount, totalOrderAmount, meterAmount, tipAmount, paymentDetail.TransactionId);
+                        paymentProviderServiceResponse = _paymentFacadeService.CommitPayment(orderId, paymentDetail.PreAuthorizedAmount, totalOrderAmount, meterAmount, tipAmount, paymentDetail.TransactionId);
                         message = paymentProviderServiceResponse.Message;
                     }
                     else
                     {
                         // promotion made the ride free to the user
                         // void preauth if it exists
-                        _paymentAbstractionService.VoidPreAuthorization(orderId);
+                        _paymentFacadeService.VoidPreAuthorization(orderId);
 
                         paymentProviderServiceResponse.IsSuccessful = true;
                         paymentProviderServiceResponse.AuthorizationCode = "AUTH_PROMO_FREE";
@@ -477,7 +477,7 @@ namespace apcurium.MK.Booking.Api.Jobs
                     //send information to IBS
                     try
                     {
-                        var providerType = _paymentAbstractionService.ProviderType(orderDetail.Id);
+                        var providerType = _paymentFacadeService.ProviderType(orderDetail.Id);
 
                         string cardToken;
                         if (providerType == PaymentProvider.PayPal)
@@ -516,7 +516,7 @@ namespace apcurium.MK.Booking.Api.Jobs
                         {
                             if (paymentProviderServiceResponse.IsSuccessful)
                             {
-                                _paymentAbstractionService.VoidTransaction(orderId, paymentProviderServiceResponse.TransactionId, ref message);
+                                _paymentFacadeService.VoidTransaction(orderId, paymentProviderServiceResponse.TransactionId, ref message);
                             }
                         }
                         catch (Exception ex)
@@ -543,7 +543,7 @@ namespace apcurium.MK.Booking.Api.Jobs
                     {
                         AccountId = account.Id,
                         PaymentId = paymentDetail.PaymentId,
-                        Provider = _paymentAbstractionService.ProviderType(orderDetail.Id),
+                        Provider = _paymentFacadeService.ProviderType(orderDetail.Id),
                         Amount = totalOrderAmount,
                         MeterAmount = Convert.ToDecimal(fareObject.AmountExclTax),
                         TipAmount = Convert.ToDecimal(tipAmount),
@@ -565,7 +565,7 @@ namespace apcurium.MK.Booking.Api.Jobs
                     });
 
                     // Void PreAuth because commit failed
-                    _paymentAbstractionService.VoidPreAuthorization(orderId);
+                    _paymentFacadeService.VoidPreAuthorization(orderId);
                 }
 
                 return new CommitPreauthorizedPaymentResponse
@@ -605,7 +605,7 @@ namespace apcurium.MK.Booking.Api.Jobs
             }
 
             var paymentMode = _serverSettings.GetPaymentSettings().PaymentMode;
-            var isPayPal = _paymentAbstractionService.IsPayPal(null, orderStatusDetail.OrderId);
+            var isPayPal = _paymentFacadeService.IsPayPal(null, orderStatusDetail.OrderId);
             
             if (!isPayPal && paymentMode == PaymentMethod.RideLinqCmt)
             {

@@ -22,7 +22,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
         private readonly IOrderDao _dao;
         private readonly IIbsOrderService _ibs;
         private readonly IServerSettings _serverSettings;
-        private readonly IPaymentAbstractionService _paymentAbstractionService;
+        private readonly IPaymentFacadeService _paymentFacadeService;
         private readonly IOrderPaymentDao _paymentDao;
         private readonly ICreditCardDao _creditCardDao;
         private readonly IAccountDao _accountDao;
@@ -30,7 +30,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
         private readonly ICommandBus _commandBus;
 
         public OrderPaymentManager(IOrderDao dao, IOrderPaymentDao paymentDao, IAccountDao accountDao, IOrderDao orderDao, ICommandBus commandBus,
-            ICreditCardDao creditCardDao, IIbsOrderService ibs, IServerSettings serverSettings, IPaymentAbstractionService paymentAbstractionService)
+            ICreditCardDao creditCardDao, IIbsOrderService ibs, IServerSettings serverSettings, IPaymentFacadeService paymentFacadeService)
         {
             _accountDao = accountDao;
             _orderDao = orderDao;
@@ -40,7 +40,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             _creditCardDao = creditCardDao;
             _ibs = ibs;
             _serverSettings = serverSettings;
-            _paymentAbstractionService = paymentAbstractionService;
+            _paymentFacadeService = paymentFacadeService;
         }
 
         public void Handle(CreditCardPaymentCaptured_V2 @event)
@@ -99,19 +99,19 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
         public void Handle(OrderCancelled @event)
         {
             // void the preauthorization to prevent misuse fees
-            _paymentAbstractionService.VoidPreAuthorization(@event.SourceId);
+            _paymentFacadeService.VoidPreAuthorization(@event.SourceId);
         }
 
         public void Handle(OrderSwitchedToNextDispatchCompany @event)
         {
             // void the preauthorization to prevent misuse fees
-            _paymentAbstractionService.VoidPreAuthorization(@event.SourceId);
+            _paymentFacadeService.VoidPreAuthorization(@event.SourceId);
         }
 
         public void Handle(OrderCancelledBecauseOfIbsError @event)
         {
             // void the preauthorization to prevent misuse fees
-            _paymentAbstractionService.VoidPreAuthorization(@event.SourceId);
+            _paymentFacadeService.VoidPreAuthorization(@event.SourceId);
         }
 
         public void Handle(OrderStatusChanged @event)
@@ -130,7 +130,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                     && pairingInfo == null)
                 {
                     // void the preauthorization to prevent misuse fees
-                    _paymentAbstractionService.VoidPreAuthorization(@event.SourceId);
+                    _paymentFacadeService.VoidPreAuthorization(@event.SourceId);
                 }
             }
         }

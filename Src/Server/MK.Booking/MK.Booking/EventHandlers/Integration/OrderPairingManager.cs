@@ -21,7 +21,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
         private readonly ICreditCardDao _creditCardDao;
         private readonly IAccountDao _accountDao;
         private readonly IIBSServiceProvider _ibsServiceProvider;
-        private readonly IPaymentAbstractionService _paymentAbstractionService;
+        private readonly IPaymentFacadeService _paymentFacadeService;
 
         public OrderPairingManager(INotificationService notificationService, 
             IServerSettings serverSettings,
@@ -29,7 +29,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             ICreditCardDao creditCardDao,
             IAccountDao accountDao,
             IIBSServiceProvider ibsServiceProvider,
-            IPaymentAbstractionService paymentAbstractionService)
+            IPaymentFacadeService paymentFacadeService)
         {
             _notificationService = notificationService;
             _serverSettings = serverSettings;
@@ -37,7 +37,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             _creditCardDao = creditCardDao;
             _accountDao = accountDao;
             _ibsServiceProvider = ibsServiceProvider;
-            _paymentAbstractionService = paymentAbstractionService;
+            _paymentFacadeService = paymentFacadeService;
         }
 
         public void Handle(OrderStatusChanged @event)
@@ -54,7 +54,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                             || order.Settings.ChargeTypeId == ChargeTypes.PayPal.Id))   // or PayPal
                     {
                         var account = _accountDao.FindById(@event.Status.AccountId);
-                        var response = _paymentAbstractionService.Pair(@event.SourceId, account.DefaultTipPercent);
+                        var response = _paymentFacadeService.Pair(@event.SourceId, account.DefaultTipPercent);
                         _notificationService.SendAutomaticPairingPush(@event.SourceId, account.DefaultTipPercent, response.IsSuccessful);
                     } 
                 }

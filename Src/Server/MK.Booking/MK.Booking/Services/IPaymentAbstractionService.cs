@@ -5,7 +5,7 @@ using apcurium.MK.Common.Resources;
 
 namespace apcurium.MK.Booking.Services
 {
-    public interface IPaymentAbstractionService
+    public interface IPaymentFacadeService
     {
         bool IsPayPal(Guid? accountId = null, Guid? orderId = null);
         PaymentProvider ProviderType(Guid orderId);

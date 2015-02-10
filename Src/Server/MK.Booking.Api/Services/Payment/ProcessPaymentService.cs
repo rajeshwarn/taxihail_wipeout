@@ -14,7 +14,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
     {
         private readonly IPayPalServiceFactory _payPalServiceFactory;
         private readonly IPaymentServiceFactory _paymentServiceFactory;
-        private readonly IPaymentAbstractionService _paymentAbstractionService;
+        private readonly IPaymentFacadeService _paymentFacadeService;
         private readonly IAccountDao _accountDao;
         private readonly IIBSServiceProvider _ibsServiceProvider;
         private readonly IOrderDao _orderDao;
@@ -23,7 +23,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
         public ProcessPaymentService(
             IPayPalServiceFactory payPalServiceFactory,
             IPaymentServiceFactory paymentServiceFactory, 
-            IPaymentAbstractionService paymentAbstractionService,
+            IPaymentFacadeService paymentFacadeService,
             IAccountDao accountDao, 
             IOrderDao orderDao,
             IIBSServiceProvider ibsServiceProvider,
@@ -31,7 +31,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
         {
             _payPalServiceFactory = payPalServiceFactory;
             _paymentServiceFactory = paymentServiceFactory;
-            _paymentAbstractionService = paymentAbstractionService;
+            _paymentFacadeService = paymentFacadeService;
             _accountDao = accountDao;
             _orderDao = orderDao;
             _ibsServiceProvider = ibsServiceProvider;
@@ -61,7 +61,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
         {
             var order = _orderDao.FindById(request.OrderId);
 
-            var response = _paymentAbstractionService.Pair(request.OrderId, request.AutoTipPercentage);
+            var response = _paymentFacadeService.Pair(request.OrderId, request.AutoTipPercentage);
 
             if (response.IsSuccessful)
             {
@@ -69,7 +69,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                 if (!UpdateOrderPaymentType(ibsAccountId.Value, order.IBSOrderId.Value))
                 {
                     response.IsSuccessful = false;
-                    _paymentAbstractionService.VoidPreAuthorization(request.OrderId);
+                    _paymentFacadeService.VoidPreAuthorization(request.OrderId);
                 }
             }
             return response;
@@ -82,7 +82,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 
         public BasePaymentResponse Post(UnpairingForPaymentRequest request)
         {
-            return _paymentAbstractionService.Unpair(request.OrderId);
+            return _paymentFacadeService.Unpair(request.OrderId);
         }
     }
 }

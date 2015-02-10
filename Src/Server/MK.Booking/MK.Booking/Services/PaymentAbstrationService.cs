@@ -8,7 +8,7 @@ using apcurium.MK.Common.Resources;
 
 namespace apcurium.MK.Booking.Services
 {
-    public class PaymentAbstrationService : IPaymentAbstractionService
+    public class PaymentFacadeService : IPaymentFacadeService
     {
         private readonly IPayPalServiceFactory _payPalServiceFactory;
         private readonly IPaymentServiceFactory _paymentServiceFactory;
@@ -17,7 +17,7 @@ namespace apcurium.MK.Booking.Services
         private readonly ICreditCardDao _creditCardDao;
         private readonly IServerSettings _serverSettings;
 
-        public PaymentAbstrationService(IPayPalServiceFactory payPalServiceFactory, IPaymentServiceFactory paymentServiceFactory, 
+        public PaymentFacadeService(IPayPalServiceFactory payPalServiceFactory, IPaymentServiceFactory paymentServiceFactory, 
             IAccountDao accountDao, IOrderDao orderDao, ICreditCardDao creditCardDao, IServerSettings serverSettings)
         {
             _payPalServiceFactory = payPalServiceFactory;
