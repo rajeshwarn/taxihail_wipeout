@@ -1,4 +1,5 @@
 using System;
+using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Resources;
 
@@ -6,9 +7,10 @@ namespace apcurium.MK.Booking.Services
 {
     public interface IPaymentService
     {
-        PaymentProvider ProviderType { get; }
-        PreAuthorizePaymentResponse PreAuthorize(Guid orderId, string email, string cardToken, decimal amountToPreAuthorize, bool isReAuth = false);
-        CommitPreauthorizedPaymentResponse CommitPayment(Guid orderId, decimal preauthAmount, decimal amount, decimal meterAmount, decimal tipAmount, string transactionId);
+        bool IsPayPal(Guid? accountId = null, Guid? orderId = null);
+        PaymentProvider ProviderType(Guid? orderId = null);
+        PreAuthorizePaymentResponse PreAuthorize(Guid orderId, AccountDetail account, decimal amountToPreAuthorize, bool isReAuth = false);
+        CommitPreauthorizedPaymentResponse CommitPayment(Guid orderId, AccountDetail account, decimal preauthAmount, decimal amount, decimal meterAmount, decimal tipAmount, string transactionId);
         DeleteTokenizedCreditcardResponse DeleteTokenizedCreditcard(string cardToken);
         PairingResponse Pair(Guid orderId, string cardToken, int? autoTipPercentage);
         BasePaymentResponse Unpair(Guid orderId);

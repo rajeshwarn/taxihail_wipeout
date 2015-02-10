@@ -13,8 +13,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
     public class ProcessPaymentService : Service
     {
         private readonly IPayPalServiceFactory _payPalServiceFactory;
-        private readonly IPaymentServiceFactory _paymentServiceFactory;
-        private readonly IPaymentFacadeService _paymentFacadeService;
+        private readonly IPaymentService _paymentService;
         private readonly IAccountDao _accountDao;
         private readonly IIBSServiceProvider _ibsServiceProvider;
         private readonly IOrderDao _orderDao;
@@ -22,16 +21,14 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 
         public ProcessPaymentService(
             IPayPalServiceFactory payPalServiceFactory,
-            IPaymentServiceFactory paymentServiceFactory, 
-            IPaymentFacadeService paymentFacadeService,
+            IPaymentService paymentService,
             IAccountDao accountDao, 
             IOrderDao orderDao,
             IIBSServiceProvider ibsServiceProvider,
             IServerSettings serverSettings)
         {
             _payPalServiceFactory = payPalServiceFactory;
-            _paymentServiceFactory = paymentServiceFactory;
-            _paymentFacadeService = paymentFacadeService;
+            _paymentService = paymentService;
             _accountDao = accountDao;
             _orderDao = orderDao;
             _ibsServiceProvider = ibsServiceProvider;
@@ -54,14 +51,14 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 
         public DeleteTokenizedCreditcardResponse Delete(DeleteTokenizedCreditcardRequest request)
         {
-            return _paymentServiceFactory.GetInstance().DeleteTokenizedCreditcard(request.CardToken);
+            return _paymentService.DeleteTokenizedCreditcard(request.CardToken);
         }
 
         public PairingResponse Post(PairingForPaymentRequest request)
         {
             var order = _orderDao.FindById(request.OrderId);
 
-            var response = _paymentFacadeService.Pair(request.OrderId, request.AutoTipPercentage);
+            var response = _paymentService.Pair(request.OrderId, request.CardToken, request.AutoTipPercentage);
 
             if (response.IsSuccessful)
             {
@@ -69,7 +66,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                 if (!UpdateOrderPaymentType(ibsAccountId.Value, order.IBSOrderId.Value))
                 {
                     response.IsSuccessful = false;
-                    _paymentFacadeService.VoidPreAuthorization(request.OrderId);
+                    _paymentService.VoidPreAuthorization(request.OrderId);
                 }
             }
             return response;
@@ -82,7 +79,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 
         public BasePaymentResponse Post(UnpairingForPaymentRequest request)
         {
-            return _paymentFacadeService.Unpair(request.OrderId);
+            return _paymentService.Unpair(request.OrderId);
         }
     }
 }

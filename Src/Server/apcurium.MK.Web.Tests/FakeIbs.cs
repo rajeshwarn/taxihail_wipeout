@@ -27,19 +27,4 @@ namespace apcurium.MK.Web.Tests
 
         public bool Fail { get; set; }
     }
-
-    public class SinglePaymentServiceFactory : IPaymentServiceFactory
-    {
-        private readonly IPaymentService _instanceService;
-
-        public SinglePaymentServiceFactory(IPaymentService instanceService)
-        {
-            _instanceService = instanceService;
-        }
-
-        public IPaymentService GetInstance()
-        {
-            return _instanceService;
-        }
-    }
 }

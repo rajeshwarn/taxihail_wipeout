@@ -2,30 +2,35 @@ using System;
 using System.Linq;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
+using apcurium.MK.Booking.Services.Impl;
 using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Resources;
+using Infrastructure.Messaging;
+using Microsoft.Practices.Unity;
+using apcurium.MK.Common.Diagnostic;
 
 namespace apcurium.MK.Booking.Services
 {
-    public class PaymentFacadeService : IPaymentFacadeService
+    public class PaymentService : IPaymentService
     {
         private readonly IPayPalServiceFactory _payPalServiceFactory;
-        private readonly IPaymentServiceFactory _paymentServiceFactory;
         private readonly IAccountDao _accountDao;
         private readonly IOrderDao _orderDao;
         private readonly ICreditCardDao _creditCardDao;
         private readonly IServerSettings _serverSettings;
+        private readonly IUnityContainer _container;
 
-        public PaymentFacadeService(IPayPalServiceFactory payPalServiceFactory, IPaymentServiceFactory paymentServiceFactory, 
-            IAccountDao accountDao, IOrderDao orderDao, ICreditCardDao creditCardDao, IServerSettings serverSettings)
+        public PaymentService(IPayPalServiceFactory payPalServiceFactory, 
+            IAccountDao accountDao, IOrderDao orderDao, ICreditCardDao creditCardDao, IServerSettings serverSettings, IUnityContainer container)
         {
             _payPalServiceFactory = payPalServiceFactory;
-            _paymentServiceFactory = paymentServiceFactory;
             _accountDao = accountDao;
             _orderDao = orderDao;
             _creditCardDao = creditCardDao;
             _serverSettings = serverSettings;
+            _container = container;
         }
 
         public bool IsPayPal(Guid? accountId = null, Guid? orderId = null)
@@ -62,39 +67,47 @@ namespace apcurium.MK.Booking.Services
             return account.IsPayPalAccountLinked;
         }
 
-        public PaymentProvider ProviderType(Guid orderId)
+        public PaymentProvider ProviderType(Guid? orderId = null)
         {
             if (IsPayPal(orderId: orderId))
             {
                 return PaymentProvider.PayPal;
             }
 
-            return _paymentServiceFactory.GetInstance().ProviderType;
+            return GetInstance().ProviderType(orderId);
         }
 
-        public PreAuthorizePaymentResponse PreAuthorize(Guid orderId, AccountDetail account, decimal amountToPreAuthorize)
+        public PreAuthorizePaymentResponse PreAuthorize(Guid orderId, AccountDetail account, decimal amountToPreAuthorize, bool isReAuth = false)
         {
             // we pass the orderId just in case it might exist but most of the time it won't since preauth is done before order creation
             if (IsPayPal(account.Id, orderId))
             {
                 return _payPalServiceFactory.GetInstance().PreAuthorize(account.Id, orderId, account.Email, amountToPreAuthorize);
             }
-            
-            var card = _creditCardDao.FindByAccountId(account.Id).First();
-            return _paymentServiceFactory.GetInstance().PreAuthorize(orderId, account.Email, card.Token, amountToPreAuthorize);
+
+            return GetInstance().PreAuthorize(orderId, account, amountToPreAuthorize);
         }
 
-        public CommitPreauthorizedPaymentResponse CommitPayment(Guid orderId, decimal preauthAmount, decimal amount, decimal meterAmount, decimal tipAmount, string transactionId)
+        public CommitPreauthorizedPaymentResponse CommitPayment(Guid orderId, AccountDetail account, decimal preauthAmount, decimal amount, decimal meterAmount, decimal tipAmount, string transactionId)
         {
             if (IsPayPal(orderId: orderId))
             {
                 return _payPalServiceFactory.GetInstance().CommitPayment(orderId, preauthAmount, amount, meterAmount, tipAmount, transactionId);
             }
 
-            return _paymentServiceFactory.GetInstance().CommitPayment(orderId, preauthAmount, amount, meterAmount, tipAmount, transactionId);
+            return GetInstance().CommitPayment(orderId, account, preauthAmount, amount, meterAmount, tipAmount, transactionId);
         }
 
-        public PairingResponse Pair(Guid orderId, int? autoTipPercentage)
+        public DeleteTokenizedCreditcardResponse DeleteTokenizedCreditcard(string cardToken)
+        {
+            if (IsPayPal())
+            {
+                throw new NotImplementedException();
+            }
+            return GetInstance().DeleteTokenizedCreditcard(cardToken);
+        }
+
+        public PairingResponse Pair(Guid orderId,string cardToken, int? autoTipPercentage)
         {
             var order = _orderDao.FindById(orderId);
 
@@ -104,7 +117,7 @@ namespace apcurium.MK.Booking.Services
             }
 
             var card = _creditCardDao.FindByAccountId(order.AccountId).First();
-            return _paymentServiceFactory.GetInstance().Pair(orderId, card.Token, autoTipPercentage);
+            return GetInstance().Pair(orderId, card.Token, autoTipPercentage);
         }
 
         public BasePaymentResponse Unpair(Guid orderId)
@@ -114,7 +127,7 @@ namespace apcurium.MK.Booking.Services
                 return _payPalServiceFactory.GetInstance().Unpair(orderId);
             }
 
-            return _paymentServiceFactory.GetInstance().Unpair(orderId);
+            return GetInstance().Unpair(orderId);
         }
 
         public void VoidPreAuthorization(Guid orderId)
@@ -125,7 +138,7 @@ namespace apcurium.MK.Booking.Services
             }
             else
             {
-                var paymentService = _paymentServiceFactory.GetInstance();
+                var paymentService = GetInstance();
                 if (paymentService != null) // payment might not be enabled
                 {
                     paymentService.VoidPreAuthorization(orderId);
@@ -141,7 +154,24 @@ namespace apcurium.MK.Booking.Services
             }
             else
             {
-                _paymentServiceFactory.GetInstance().VoidTransaction(orderId, transactionId, ref message);
+                GetInstance().VoidTransaction(orderId, transactionId, ref message);
+            }
+        }
+
+        private IPaymentService GetInstance()
+        {
+            var serverSettings = _container.Resolve<IServerSettings>();
+            switch (serverSettings.GetPaymentSettings().PaymentMode)
+            {
+                case PaymentMethod.Braintree:
+                    return new BraintreePaymentService(_container.Resolve<ICommandBus>(), _container.Resolve<ILogger>(), _container.Resolve<IOrderPaymentDao>(), serverSettings, _container.Resolve<IPairingService>(), _container.Resolve<ICreditCardDao>());
+                case PaymentMethod.RideLinqCmt:
+                case PaymentMethod.Cmt:
+                    return new CmtPaymentService(_container.Resolve<ICommandBus>(), _container.Resolve<IOrderDao>(), _container.Resolve<ILogger>(), _container.Resolve<IAccountDao>(), _container.Resolve<IOrderPaymentDao>(), serverSettings, _container.Resolve<IPairingService>(), _container.Resolve<ICreditCardDao>());
+                case PaymentMethod.Moneris:
+                    return new MonerisPaymentService(_container.Resolve<ICommandBus>(), _container.Resolve<ILogger>(), _container.Resolve<IOrderPaymentDao>(), serverSettings, _container.Resolve<IPairingService>(), _container.Resolve<ICreditCardDao>());
+                default:
+                    return null;
             }
         }
     }

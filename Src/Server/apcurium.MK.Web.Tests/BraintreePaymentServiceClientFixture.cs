@@ -30,7 +30,6 @@ namespace apcurium.MK.Web.Tests
             base.Setup();
             var paymentService = GetPaymentService();
             UnityServiceLocator.Instance.RegisterInstance<IPaymentService>(paymentService);
-            UnityServiceLocator.Instance.RegisterInstance<IPaymentServiceFactory>(new SinglePaymentServiceFactory(paymentService));
         }
 
         protected override IPaymentServiceClient GetPaymentClient()
@@ -50,7 +49,8 @@ namespace apcurium.MK.Web.Tests
             var orderPaymentDao = UnityServiceLocator.Instance.Resolve<IOrderPaymentDao>();
             var serverSettings = UnityServiceLocator.Instance.Resolve<IServerSettings>();
             var pairingService = UnityServiceLocator.Instance.Resolve<IPairingService>();
-            return new BraintreePaymentService(commandBus, logger, orderPaymentDao, serverSettings, pairingService);
+            var creditCardDao = UnityServiceLocator.Instance.Resolve<ICreditCardDao>();
+            return new BraintreePaymentService(commandBus, logger, orderPaymentDao, serverSettings, pairingService, creditCardDao);
         }
     }
 }

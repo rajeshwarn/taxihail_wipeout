@@ -22,7 +22,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
         private readonly IOrderDao _dao;
         private readonly IIbsOrderService _ibs;
         private readonly IServerSettings _serverSettings;
-        private readonly IPaymentFacadeService _paymentFacadeService;
+        private readonly IPaymentService _paymentFacadeService;
         private readonly IOrderPaymentDao _paymentDao;
         private readonly ICreditCardDao _creditCardDao;
         private readonly IAccountDao _accountDao;
@@ -30,7 +30,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
         private readonly ICommandBus _commandBus;
 
         public OrderPaymentManager(IOrderDao dao, IOrderPaymentDao paymentDao, IAccountDao accountDao, IOrderDao orderDao, ICommandBus commandBus,
-            ICreditCardDao creditCardDao, IIbsOrderService ibs, IServerSettings serverSettings, IPaymentFacadeService paymentFacadeService)
+            ICreditCardDao creditCardDao, IIbsOrderService ibs, IServerSettings serverSettings, IPaymentService paymentFacadeService)
         {
             _accountDao = accountDao;
             _orderDao = orderDao;

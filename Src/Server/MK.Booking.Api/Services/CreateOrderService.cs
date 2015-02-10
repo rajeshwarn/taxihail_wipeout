@@ -48,7 +48,7 @@ namespace apcurium.MK.Booking.Api.Services
         private readonly IEventSourcedRepository<Promotion> _promoRepository;
         private readonly HoneyBadgerServiceClient _honeyBadgerServiceClient;
         private readonly ITaxiHailNetworkServiceClient _taxiHailNetworkServiceClient;
-        private readonly IPaymentFacadeService _paymentFacadeService;
+        private readonly IPaymentService _paymentService;
         private readonly IAccountChargeDao _accountChargeDao;
         private readonly ICommandBus _commandBus;
         private readonly IServerSettings _serverSettings;
@@ -71,7 +71,7 @@ namespace apcurium.MK.Booking.Api.Services
             IEventSourcedRepository<Promotion> promoRepository,
             HoneyBadgerServiceClient honeyBadgerServiceClient,
             ITaxiHailNetworkServiceClient taxiHailNetworkServiceClient,
-            IPaymentFacadeService paymentFacadeService)
+            IPaymentService paymentService)
         {
             _accountChargeDao = accountChargeDao;
             _commandBus = commandBus;
@@ -86,7 +86,7 @@ namespace apcurium.MK.Booking.Api.Services
             _promoRepository = promoRepository;
             _honeyBadgerServiceClient = honeyBadgerServiceClient;
             _taxiHailNetworkServiceClient = taxiHailNetworkServiceClient;
-            _paymentFacadeService = paymentFacadeService;
+            _paymentService = paymentService;
 
             _resources = new Resources.Resources(_serverSettings);
         }
@@ -294,7 +294,7 @@ namespace apcurium.MK.Booking.Api.Services
                             _resources.Get("CannotCreateOrderChargeAccountNotSupported", request.ClientLanguageCode));
                     }
 
-                    if (_paymentFacadeService.IsPayPal(account.Id))
+                    if (_paymentService.IsPayPal(account.Id))
                     {
                         chargeTypeOverride = ChargeTypes.PayPal.Display;
                         request.Settings.ChargeTypeId = ChargeTypes.PayPal.Id;
@@ -595,7 +595,7 @@ namespace apcurium.MK.Booking.Api.Services
             // if app returned an estimate, use it, otherwise use the setting (or 0), then use max between the value and 50
             var preAuthAmount = Math.Max(appEstimate ?? (_serverSettings.GetPaymentSettings().PreAuthAmount ?? 0), 50);
             
-            var preAuthResponse = _paymentFacadeService.PreAuthorize(orderId, account, preAuthAmount);
+            var preAuthResponse = _paymentService.PreAuthorize(orderId, account, preAuthAmount);
 
             var errorMessage = isPayPal
                 ? _resources.Get("CannotCreateOrder_PayPalWasDeclined", clientLanguageCode)

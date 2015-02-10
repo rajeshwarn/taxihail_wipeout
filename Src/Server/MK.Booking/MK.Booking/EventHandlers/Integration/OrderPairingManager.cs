@@ -21,7 +21,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
         private readonly ICreditCardDao _creditCardDao;
         private readonly IAccountDao _accountDao;
         private readonly IIBSServiceProvider _ibsServiceProvider;
-        private readonly IPaymentFacadeService _paymentFacadeService;
+        private readonly IPaymentService _paymentFacadeService;
 
         public OrderPairingManager(INotificationService notificationService, 
             IServerSettings serverSettings,
@@ -29,7 +29,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             ICreditCardDao creditCardDao,
             IAccountDao accountDao,
             IIBSServiceProvider ibsServiceProvider,
-            IPaymentFacadeService paymentFacadeService)
+            IPaymentService paymentFacadeService)
         {
             _notificationService = notificationService;
             _serverSettings = serverSettings;
@@ -54,7 +54,9 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                             || order.Settings.ChargeTypeId == ChargeTypes.PayPal.Id))   // or PayPal
                     {
                         var account = _accountDao.FindById(@event.Status.AccountId);
-                        var response = _paymentFacadeService.Pair(@event.SourceId, account.DefaultTipPercent);
+                        var creditCard = _creditCardDao.FindByAccountId(account.Id).First();
+
+                        var response = _paymentFacadeService.Pair(@event.SourceId, creditCard.Token, account.DefaultTipPercent);
                         _notificationService.SendAutomaticPairingPush(@event.SourceId, account.DefaultTipPercent, response.IsSuccessful);
                     } 
                 }
