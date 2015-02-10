@@ -14,13 +14,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 	public class ConfirmPairViewModel : PageViewModel
 	{
 		private readonly IPaymentService _paymentService;
+        private readonly IAccountService _accountService;
 
-		public ConfirmPairViewModel(IPaymentService paymentService)
+		public ConfirmPairViewModel(IPaymentService paymentService, IAccountService accountService)
 		{
-			_paymentService = paymentService;
+		    _paymentService = paymentService;
+		    _accountService = accountService;
 		}
 
-		public async void Init(string order, string orderStatus)
+	    public async void Init(string order, string orderStatus)
 		{
 			Order = order.FromJson<Order>();
 			OrderStatus = orderStatus.FromJson<OrderStatusDetail>();  
@@ -93,7 +95,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 				{         
 					using(this.Services().Message.ShowProgress())
 					{   
-						if (!_paymentPreferences.HasCreditCard && !_paymentPreferences.IsPayPalAccountLinked)
+						if (!_accountService.CurrentAccount.HasValidPaymentInformation)
 						{
 							this.Services().Message.ShowMessage(this.Services().Localize["CmtRideLinqErrorTitle"], this.Services().Localize["NoCreditCardSelected"]);
 							return;
