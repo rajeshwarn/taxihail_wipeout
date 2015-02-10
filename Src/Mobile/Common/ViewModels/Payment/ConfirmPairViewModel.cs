@@ -72,7 +72,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			        return ChargeTypes.PayPal.Display;
 			    }
 
-			    return "None";
+			    return this.Services().Localize["NoPairingCreditCard"];
 			}
 		}
 

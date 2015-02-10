@@ -1737,4 +1737,7 @@
   <data name="PayPalLinkedInfo" xml:space="preserve">
     <value>Account Linked</value>
   </data>
+  <data name="NoPairingCreditCard" xml:space="preserve">
+    <value>None</value>
+  </data>
 </root>

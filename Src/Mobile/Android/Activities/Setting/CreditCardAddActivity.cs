@@ -80,7 +80,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
             }
             else
             {
-                btnScanCard.Visibility = ViewStates.Gone;
+                btnScanCard.Visibility = ViewStates.Gone; 
             }
         }
 
@@ -88,6 +88,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
         {
             var paypalSeparator = FindViewById<LinearLayout>(Resource.Id.PayPalSeparator);
             var btnLinkPayPalAccount = FindViewById<Button>(Resource.Id.LinkPayPalAccountButton);
+            var btnUnlinkPayPalAccount = FindViewById<Button>(Resource.Id.UnLinkPayPalAccountButton);
 
             // Use PayPal settings
             if (_paymentSettings.PayPalClientSettings.IsEnabled)
@@ -100,6 +101,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
                 StartService(intent);
 
                 btnLinkPayPalAccount.Click += (sender, e) => LinkPayPayAccount();
+                btnUnlinkPayPalAccount.Click += (sender, e) => ViewModel.UnlinkPayPalAccount();
             }
             else
             {
