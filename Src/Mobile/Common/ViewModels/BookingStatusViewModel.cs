@@ -398,7 +398,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 if (isLoaded 
 					&& ((paymentSettings.AutomaticPayment && !paymentSettings.AutomaticPaymentPairing)
 						|| paymentSettings.PaymentMode == PaymentMethod.RideLinqCmt)
-                    && _accountService.CurrentAccount.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id)
+                    && Order.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id)
 				{
 					var isPaired = await _bookingService.IsPaired(Order.Id);
                     var pairState = this.Services().Cache.Get<string>("PairState" + Order.Id);
@@ -723,7 +723,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					this.Services().Analytics.LogEvent("PayButtonTapped");
 
 					var paymentSettings = await _paymentService.GetPaymentSettings();
-					if (_accountService.CurrentAccount.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id
+					if (Order.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id
                         && ((paymentSettings.AutomaticPayment && !paymentSettings.AutomaticPaymentPairing) || paymentSettings.PaymentMode == PaymentMethod.RideLinqCmt))
                     {
                         GoToPairScreen();
