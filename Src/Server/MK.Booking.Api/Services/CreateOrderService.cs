@@ -626,9 +626,20 @@ namespace apcurium.MK.Booking.Api.Services
             Debug.Assert(request.PickupDate != null, "request.PickupDate != null");
 
             // This needs to be null if not set or the payment in car payment type id of ibs
-            int? ibsChargeTypeId = _serverSettings.GetPaymentSettings().AutomaticPaymentPairing
-                ? _serverSettings.ServerData.IBS.PaymentTypeCardOnFileId
-                : _serverSettings.ServerData.IBS.PaymentTypePaymentInCarId;
+            int? ibsChargeTypeId;
+            if (_serverSettings.GetPaymentSettings().AutomaticPaymentPairing
+                && request.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id)
+            {
+                ibsChargeTypeId = _serverSettings.ServerData.IBS.PaymentTypeCardOnFileId;
+            }
+            else if (request.Settings.ChargeTypeId == ChargeTypes.Account.Id)
+            {
+                ibsChargeTypeId = _serverSettings.ServerData.IBS.PaymentTypeChargeAccountId;
+            }
+            else
+            {
+                ibsChargeTypeId = _serverSettings.ServerData.IBS.PaymentTypePaymentInCarId;
+            }
 
             var result = _ibsServiceProvider.Booking(companyKey, request.Market).CreateOrder(
                 providerId,
