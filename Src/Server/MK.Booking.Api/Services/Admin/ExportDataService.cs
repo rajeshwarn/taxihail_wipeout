@@ -109,7 +109,8 @@ namespace apcurium.MK.Booking.Api.Services.Admin
                             orderReportEntry["Order.HasTimedOut"] = orderReport.Order.HasTimedOut.ToString();
 
                             orderReportEntry["OrderStatus.Status"] = orderReport.OrderStatus.Status.ToString();
-                            orderReportEntry["OrderStatus.OrderIsCancelled"] = orderReport.OrderStatus.OrderIsCancelled.ToString();
+                            orderReportEntry["Charge Account with Card on File Payment"] = x.IsChargeAccountPaymentWithCardOnFile.ToString();
+                            orderReportEntry["OrderStatus.OrderIsCancelled"] = orderReport.OrderStatus.OrderIsCancelled.ToString();                            
                             orderReportEntry["OrderStatus.OrderIsCompleted"] = orderReport.OrderStatus.OrderIsCompleted.ToString();
 
                             orderReportEntry["Payment.Id"] = orderReport.Payment.PaymentId.ToString();
