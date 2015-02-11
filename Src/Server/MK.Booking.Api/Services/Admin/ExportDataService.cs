@@ -91,6 +91,7 @@ namespace apcurium.MK.Booking.Api.Services.Admin
                             orderReportEntry["Order.Market"] = orderReport.Order.Market;
                             orderReportEntry["Order.IBSOrderId"] = orderReport.Order.IBSOrderId.ToString();
                             orderReportEntry["Order.ChargeType"] = orderReport.Order.ChargeType;
+                            orderReportEntry["Charge Account with Card on File Payment"] = orderReport.Order.IsChargeAccountPaymentWithCardOnFile.ToString();
                             orderReportEntry["Order.PickupDate"] = orderReport.Order.PickupDateTime.HasValue 
                                 ? orderReport.Order.PickupDateTime.Value.ToString("d", CultureInfo.InvariantCulture)
                                 : string.Empty;
@@ -109,7 +110,6 @@ namespace apcurium.MK.Booking.Api.Services.Admin
                             orderReportEntry["Order.HasTimedOut"] = orderReport.Order.HasTimedOut.ToString();
 
                             orderReportEntry["OrderStatus.Status"] = orderReport.OrderStatus.Status.ToString();
-                            orderReportEntry["Charge Account with Card on File Payment"] = x.IsChargeAccountPaymentWithCardOnFile.ToString();
                             orderReportEntry["OrderStatus.OrderIsCancelled"] = orderReport.OrderStatus.OrderIsCancelled.ToString();                            
                             orderReportEntry["OrderStatus.OrderIsCompleted"] = orderReport.OrderStatus.OrderIsCompleted.ToString();
 

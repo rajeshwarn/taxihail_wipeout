@@ -66,6 +66,8 @@ namespace apcurium.MK.Booking.ReadModel
 
         public string ChargeType { get; set; }
 
+        public bool IsChargeAccountPaymentWithCardOnFile { get; set; }
+
         public DateTime? PickupDateTime { get; set; }
 
         public DateTime? CreateDateTime { get; set; }
