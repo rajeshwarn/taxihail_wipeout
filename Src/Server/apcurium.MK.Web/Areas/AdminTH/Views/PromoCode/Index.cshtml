@@ -1,6 +1,14 @@
-﻿@model IEnumerable<apcurium.MK.Web.Areas.AdminTH.Models.PromoCode>
+﻿@using apcurium.MK.Web.Areas.AdminTH.Controllers
+@using apcurium.MK.Web.Areas.AdminTH.Models
+@model IEnumerable<apcurium.MK.Web.Areas.AdminTH.Models.PromoCode>
 
 <h4 class="table-title">Promo Codes</h4>
+@if (@TempData["Warning"] != null)
+{
+    <div class="alert alert-warning" style="margin-top: 10px;">
+        @TempData["Warning"]
+    </div>
+}
 @if (@TempData["Info"] != null)
 {
     <div class="alert alert-info" style="margin-top: 10px;">
@@ -8,25 +16,38 @@
     </div>
 }
 
-@if (@TempData["Warning"] != null)
-{
-    <div class="alert alert-warning" style="margin-top: 10px;">
-        @TempData["Warning"]
-    </div>
-}
-
 <ul class="unstyled locations">
-    @foreach (var promoCode in Model)
-    {
-        <li>
-            <a data-action="select-promocode" href="@Url.Action("Edit", new {id = @promoCode.Id})">
-                <span class="location-title">@promoCode.Name (@promoCode.Code)</span>
-            </a>
-            <a href="@Url.Action("Statistics", new {id = @promoCode.Id})">
-                <span>[Statistics]</span>
-            </a>
-        </li>
+    @{
+        PromoCode createdPromotion = null;
+
+        if (TempData["CreatedPromotionDetails"] != null)
+        {
+            createdPromotion = TempData["CreatedPromotionDetails"] as PromoCode;
+            TempData.Remove("CreatedPromotionDetails");
+        }
+
+        var promoCodes = Model.ToList();
+
+        if (createdPromotion != null
+           && promoCodes.All(p => p.Id != createdPromotion.Id))
+        {
+            promoCodes.Add(createdPromotion);
+            promoCodes = new List<PromoCode>(promoCodes.OrderBy(p => p.Name));
+        }
+
+        foreach (var promoCode in promoCodes)
+        {           
+            <li>
+                <a data-action="select-promocode" href="@Url.Action("Edit", new {id = @promoCode.Id})">
+                    <span class="location-title">@promoCode.Name (@promoCode.Code)</span>
+                </a>
+                <a href="@Url.Action("Statistics", new {id = @promoCode.Id})">
+                    <span>[Statistics]</span>
+                </a>
+            </li>
+        }
     }
+
     <li>
         <a class="new" href="@Url.Action("Create")">Add a new promo code</a>
     </li>

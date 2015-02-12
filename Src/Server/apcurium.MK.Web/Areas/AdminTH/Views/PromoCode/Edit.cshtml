@@ -213,11 +213,11 @@
         @Html.ActionLink("Cancel", "Index", null, new { @class = "btn span" })
         @if (Model.Active)
         {
-            @Html.ActionLink("Deactivate", "Deactivate", new { id = @Model.Id }, new { @class = "btn btn-danger span" })
+            @Html.ActionLink("Disable", "Deactivate", new { id = @Model.Id }, new { @class = "btn btn-danger span" })
         }
         else
         {
-            @Html.ActionLink("Activate", "Activate", new { id = @Model.Id }, new { @class = "btn btn-success span" })
+            @Html.ActionLink("Enable", "Activate", new { id = @Model.Id }, new { @class = "btn btn-success span" })
         }
     </div>
 }

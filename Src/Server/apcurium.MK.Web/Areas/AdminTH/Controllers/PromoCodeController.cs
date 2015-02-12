@@ -72,9 +72,11 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                     throw new Exception("A promotion with this code already exists");
                 }
 
+                var promotionId = Guid.NewGuid();
+
                 _commandBus.Send(new CreatePromotion
                 {
-                    PromoId = Guid.NewGuid(),
+                    PromoId = promotionId,
                     Name = promoCode.Name,
                     Description = promoCode.Description,
                     StartDate = promoCode.StartDate,
@@ -95,6 +97,8 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                 });
 
                 TempData["Info"] = string.Format("Promotion \"{0}\" created", promoCode.Name);
+                TempData["CreatedPromotionDetails"] = promoCode;
+
                 return RedirectToAction("Index");
             }
             catch(Exception ex)
@@ -199,7 +203,9 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                 PromoId = id
             });
 
-            TempData["Info"] = "Promotion activated";
+            var promotion = _promotionDao.FindById(id);
+            TempData["Info"] = string.Format("Promotion \"{0}\" Enabled", promotion.Name);
+
             return RedirectToAction("Index");
         }
 
@@ -211,7 +217,9 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                 PromoId = id
             });
 
-            TempData["Info"] = "Promotion deactivated";
+            var promotion = _promotionDao.FindById(id);
+            TempData["Info"] = string.Format("Promotion \"{0}\" Disabled", promotion.Name);
+
             return RedirectToAction("Index");
         }
 

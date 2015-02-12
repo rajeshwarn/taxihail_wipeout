@@ -47,7 +47,8 @@ namespace apcurium.MK.Booking.EventHandlers
                     Code = @event.Code,
                     PublishedStartDate = @event.PublishedStartDate,
                     PublishedEndDate = @event.PublishedEndDate,
-                    TriggerSettings = @event.TriggerSettings
+                    TriggerSettings = @event.TriggerSettings,
+                    Active = true
                 };
 
                 context.Save(promotionDetail);
