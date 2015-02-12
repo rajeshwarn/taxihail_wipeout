@@ -735,13 +735,14 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			return order;
 		}
 
-		public void Rebook(Order previous)
+		public async Task Rebook(Order previous)
 		{
             _isOrderRebooked = true;
 			_pickupAddressSubject.OnNext(previous.PickupAddress);
 			_destinationAddressSubject.OnNext(previous.DropOffAddress);
 			_bookingSettingsSubject.OnNext(previous.Settings);
 			_noteToDriverSubject.OnNext(previous.Note);
+            await CalculateEstimatedFare();
 		}
 
         public bool IsOrderRebooked()
