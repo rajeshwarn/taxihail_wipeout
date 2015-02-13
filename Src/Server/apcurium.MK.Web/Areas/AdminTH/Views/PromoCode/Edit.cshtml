@@ -7,18 +7,7 @@
     <div class="alert alert-error" style="margin-top: 10px;">@ViewBag.Error @Html.ValidationSummary(true)</div>
 }
 @{
-    var isExpired = false;
-
-    if (Model.EndDate.HasValue && Model.EndTime.HasValue)
-    {
-        isExpired = Model.EndDate.Value.Add(Model.EndTime.Value.TimeOfDay) < DateTime.Now;
-    }
-    else if (Model.EndDate.HasValue)
-    {
-        isExpired = Model.EndDate.Value.AddDays(1) < DateTime.Now;
-    }
-
-    if (isExpired)
+    if (Model.IsExpired)
     {
         <div class="alert alert-warning" style="margin-top: 10px;">
             This promotion has expired and is no longer active

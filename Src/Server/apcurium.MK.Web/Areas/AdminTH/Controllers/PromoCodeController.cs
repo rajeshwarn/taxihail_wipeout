@@ -73,6 +73,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                 }
 
                 var promotionId = Guid.NewGuid();
+                promoCode.Id = promotionId;
 
                 _commandBus.Send(new CreatePromotion
                 {
@@ -97,9 +98,12 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                 });
 
                 TempData["Info"] = string.Format("Promotion \"{0}\" created", promoCode.Name);
-                TempData["CreatedPromotionDetails"] = promoCode;
 
-                return RedirectToAction("Index");
+                var promotions = _promotionDao.GetAll().Select(x => new PromoCode(x)).ToList();
+                promotions.Add(promoCode);
+                var orderedPromotions = promotions.OrderBy(p => p.Name);
+
+                return View("Index", orderedPromotions);
             }
             catch(Exception ex)
             {
