@@ -6,6 +6,14 @@
 {
     <div class="alert alert-error" style="margin-top: 10px;">@ViewBag.Error @Html.ValidationSummary(true)</div>
 }
+@{
+    if (Model.IsExpired)
+    {
+        <div class="alert alert-warning" style="margin-top: 10px;">
+            This promotion has expired and is no longer active
+        </div>
+    }
+}
 
 @using (Html.BeginForm("Edit", "PromoCode", FormMethod.Post))
 {
@@ -213,11 +221,11 @@
         @Html.ActionLink("Cancel", "Index", null, new { @class = "btn span" })
         @if (Model.Active)
         {
-            @Html.ActionLink("Deactivate", "Deactivate", new { id = @Model.Id }, new { @class = "btn btn-danger span" })
+            @Html.ActionLink("Disable", "Deactivate", new { id = @Model.Id }, new { @class = "btn btn-danger span" })
         }
         else
         {
-            @Html.ActionLink("Activate", "Activate", new { id = @Model.Id }, new { @class = "btn btn-success span" })
+            @Html.ActionLink("Enable", "Activate", new { id = @Model.Id }, new { @class = "btn btn-success span" })
         }
     </div>
 }

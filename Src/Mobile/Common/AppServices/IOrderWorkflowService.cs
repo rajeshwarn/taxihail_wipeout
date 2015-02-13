@@ -73,7 +73,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 		Task<OrderValidationResult> ValidateOrder();
 		void ConfirmValidationOrder ();
 
-		void Rebook(Order previous);
+        Task Rebook(Order previous);
 
 		Task<Address> GetCurrentAddress();
 

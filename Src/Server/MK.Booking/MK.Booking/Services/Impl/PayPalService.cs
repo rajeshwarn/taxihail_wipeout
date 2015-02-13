@@ -191,7 +191,7 @@ namespace apcurium.MK.Booking.Services.Impl
                                     currency = conversionRate != 1 
                                         ? CurrencyCodes.Main.UnitedStatesDollar 
                                         : _resources.GetCurrencyCode(),
-                                    total = amount.ToString(CultureInfo.InvariantCulture)
+                                    total = amount.ToString("N", CultureInfo.InvariantCulture)
                                 },
                                 description = regionName.HasValue()
                                     ? string.Format("order: {0}", orderId)
@@ -333,7 +333,7 @@ namespace apcurium.MK.Booking.Services.Impl
                     amount = new Amount
                     {
                         currency = authorization.amount.currency,
-                        total = amount.ToString(CultureInfo.InvariantCulture)
+                        total = amount.ToString("N", CultureInfo.InvariantCulture)
                     },
                     is_final_capture = true
                 };

@@ -370,12 +370,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                return this.GetCommand(() =>
+                return this.GetCommand(async () =>
                 {
 					using(this.Services().Message.ShowProgress())
 					{
 						
-							_orderWorkflowService.Rebook(Order);
+							await _orderWorkflowService.Rebook(Order);
 							GoBackToHomeViewModel(new { 
 								locateUser =  false, 
 								defaultHintZoomLevel = new ZoomToStreetLevelPresentationHint(Order.PickupAddress.Latitude, Order.PickupAddress.Longitude).ToJson()});

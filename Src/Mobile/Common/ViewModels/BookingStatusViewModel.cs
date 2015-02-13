@@ -380,7 +380,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				var paymentSettings = await _paymentService.GetPaymentSettings();
                 if (isLoaded 
 					&& (!paymentSettings.AutomaticPaymentPairing || paymentSettings.PaymentMode == PaymentMethod.RideLinqCmt)
-					&& (_accountService.CurrentAccount.DefaultCreditCard != null || _accountService.CurrentAccount.IsPayPalAccountLinked))
+                    && (Order.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id || Order.Settings.ChargeTypeId == ChargeTypes.PayPal.Id))
 				{
 					var isPaired = await _bookingService.IsPaired(Order.Id);
                     var pairState = this.Services().Cache.Get<string>("PairState" + Order.Id);
