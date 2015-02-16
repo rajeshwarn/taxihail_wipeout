@@ -669,7 +669,7 @@ namespace apcurium.MK.Booking.Api.Services
 
         private DateTime GetCurrentOffsetedTime(string companyKey, string market)
         {
-            //TODO : need to check ibs setup for shortesst time.
+            //TODO : need to check ibs setup for shortesst time
 
             var ibsServerTimeDifference = _ibsServiceProvider.GetSettingContainer(companyKey, market).TimeDifference;
             var offsetedTime = DateTime.Now.AddMinutes(2);
