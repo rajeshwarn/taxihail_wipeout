@@ -22,7 +22,11 @@
 // depending on platform features. If the platform has an appropriate
 // #DEFINE then these should be set automatically below.
 #define EXPRESSIONS                         // Platform supports System.Linq.Expressions
-#define COMPILED_EXPRESSIONS                // Platform supports compiling expressions
+
+//Can't use compiled expression on Xamarin.iOS and Xamarin.Android because the Linker doesn't
+//detect dynamic usage of API
+#undef COMPILED_EXPRESSIONS                // Platform supports compiling expressions
+
 #define APPDOMAIN_GETASSEMBLIES             // Platform supports getting all assemblies from the AppDomain object
 #define UNBOUND_GENERICS_GETCONSTRUCTORS    // Platform supports GetConstructors on unbound generic types
 #define GETPARAMETERS_OPEN_GENERICS         // Platform supports GetParameters on open generics

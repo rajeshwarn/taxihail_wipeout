@@ -813,6 +813,7 @@
   <ItemGroup>
     <EmbeddedResource Include="Style\Theme.xml">
       <LogicalName>Theme.xml</LogicalName>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Style\FlatButtonStyle.xml">
       <LogicalName>FlatButtonStyle.xml</LogicalName>
