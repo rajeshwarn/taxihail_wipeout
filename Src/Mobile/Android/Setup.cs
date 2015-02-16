@@ -67,17 +67,17 @@ namespace apcurium.MK.Booking.Mobile.Client
 
             container.Register<ILocationService, LocationService>();
 
-		    container.Register<ILocalization>((c, x) => new Localize(ApplicationContext, c.Resolve<ILogger>()));
+            container.Register<ILocalization>(new Localize(ApplicationContext, container.Resolve<ILogger>()));
             container.Register<ICacheService>(new CacheService());
             container.Register<ICacheService>(new CacheService("MK.Booking.Application.Cache"), "UserAppCache");
             container.Register<IPhoneService>(new PhoneService(ApplicationContext));
             container.Register<IPushNotificationService>((c, p) => new PushNotificationService(ApplicationContext, c.Resolve<IAppSettings>()));
 
-            container.Register<IAppSettings>((c, x) => new AppSettingsService(container.Resolve<ICacheService>(), c.Resolve<ILogger>()));
+            container.Register<IAppSettings>(new AppSettingsService(container.Resolve<ICacheService>(), container.Resolve<ILogger>()));
 
 		    container.Register<IPayPalConfigurationService, PayPalConfigurationService>();
 
-            //ConfigureInsights ();
+            ConfigureInsights ();
 
             container.Register<IGeocoder>((c,p) => new GoogleApiClient(c.Resolve<IAppSettings>(), c.Resolve<ILogger>(), new AndroidGeocoder(c.Resolve<IAppSettings>(), c.Resolve<ILogger>(), c.Resolve<IMvxAndroidGlobals>())));
 			container.Register<IPlaceDataProvider, FoursquareProvider>();
