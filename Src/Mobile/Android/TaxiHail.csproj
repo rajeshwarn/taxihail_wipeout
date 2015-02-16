@@ -39,7 +39,7 @@
     <EmbedAssembliesIntoApk>True</EmbedAssembliesIntoApk>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <Optimize>True</Optimize>
+    <Optimize>false</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>CLIENT</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
@@ -59,6 +59,8 @@
     </JavaOptions>
     <MonoDroidExtraArgs>
     </MonoDroidExtraArgs>
+    <DebugType>full</DebugType>
+    <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="mscorlib" />

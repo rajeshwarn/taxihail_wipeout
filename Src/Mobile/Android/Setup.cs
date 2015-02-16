@@ -35,11 +35,10 @@ namespace apcurium.MK.Booking.Mobile.Client
 {
 	public class Setup : MvxAndroidDialogSetup
     {
-        readonly TinyIoCContainer _container;
+        
 
 		public Setup(Context applicationContext) : base(applicationContext)
         {
-            _container = TinyIoCContainer.Current;
         }
 
 		protected override IMvxApplication CreateApp()
@@ -59,29 +58,31 @@ namespace apcurium.MK.Booking.Mobile.Client
         {
 			base.InitializeLastChance();
 
-            _container.Register<IPackageInfo>(new PackageInfo(ApplicationContext));
-            _container.Register<ILogger, LoggerImpl>();
-            _container.Register<IMessageService, MessageService>();
-            _container.Register<IAnalyticsService>((c, x) => new GoogleAnalyticsService(Application.Context, c.Resolve<IPackageInfo>(), c.Resolve<IAppSettings>(), c.Resolve<ILogger>()));
+		    var container = TinyIoCContainer.Current;
 
-            _container.Register<ILocationService, LocationService>();
+            container.Register<IPackageInfo>(new PackageInfo(ApplicationContext));
+            container.Register<ILogger>(new LoggerImpl());
+            container.Register<IMessageService, MessageService>();
+            container.Register<IAnalyticsService>((c, x) => new GoogleAnalyticsService(Application.Context, c.Resolve<IPackageInfo>(), c.Resolve<IAppSettings>(), c.Resolve<ILogger>()));
 
-			_container.Register<ILocalization>(new Localize(ApplicationContext,_container.Resolve<ILogger>()));
-            _container.Register<ICacheService>(new CacheService());
-            _container.Register<ICacheService>(new CacheService("MK.Booking.Application.Cache"), "UserAppCache");
-            _container.Register<IPhoneService>(new PhoneService(ApplicationContext));
-            _container.Register<IPushNotificationService>((c, p) => new PushNotificationService(ApplicationContext, c.Resolve<IAppSettings>()));
+            container.Register<ILocationService, LocationService>();
 
-            _container.Register<IAppSettings>(new AppSettingsService (_container.Resolve<ICacheService> (), _container.Resolve<ILogger> ()));
+		    container.Register<ILocalization>((c, x) => new Localize(ApplicationContext, c.Resolve<ILogger>()));
+            container.Register<ICacheService>(new CacheService());
+            container.Register<ICacheService>(new CacheService("MK.Booking.Application.Cache"), "UserAppCache");
+            container.Register<IPhoneService>(new PhoneService(ApplicationContext));
+            container.Register<IPushNotificationService>((c, p) => new PushNotificationService(ApplicationContext, c.Resolve<IAppSettings>()));
 
-		    _container.Register<IPayPalConfigurationService, PayPalConfigurationService>();
+            container.Register<IAppSettings>((c, x) => new AppSettingsService(container.Resolve<ICacheService>(), c.Resolve<ILogger>()));
 
-            ConfigureInsights ();
+		    container.Register<IPayPalConfigurationService, PayPalConfigurationService>();
 
-            _container.Register<IGeocoder>((c,p) => new GoogleApiClient(c.Resolve<IAppSettings>(), c.Resolve<ILogger>(), new AndroidGeocoder(c.Resolve<IAppSettings>(), c.Resolve<ILogger>(), c.Resolve<IMvxAndroidGlobals>())));
-			_container.Register<IPlaceDataProvider, FoursquareProvider>();
+            //ConfigureInsights ();
+
+            container.Register<IGeocoder>((c,p) => new GoogleApiClient(c.Resolve<IAppSettings>(), c.Resolve<ILogger>(), new AndroidGeocoder(c.Resolve<IAppSettings>(), c.Resolve<ILogger>(), c.Resolve<IMvxAndroidGlobals>())));
+			container.Register<IPlaceDataProvider, FoursquareProvider>();
 			
-            _container.Register<IDirectionDataProvider> ((c, p) =>
+            container.Register<IDirectionDataProvider> ((c, p) =>
             {
                 switch (c.Resolve<IAppSettings>().Data.DirectionDataProvider)
                 {
@@ -115,9 +116,10 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 		private void InitializeSocialNetwork()
 		{
-			_container.Register<IFacebookService,FacebookService> ();
+            var container = TinyIoCContainer.Current;
+			container.Register<IFacebookService,FacebookService> ();
 
-            _container.Register<ITwitterService>((c,p) => 
+            container.Register<ITwitterService>((c,p) => 
             {
                 var settings = c.Resolve<IAppSettings>();
                 var oauthConfig = new OAuthConfig

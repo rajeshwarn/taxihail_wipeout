@@ -21,19 +21,22 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		public HistoryListViewModel(IAccountService accountService)
         {
 			_accountService = accountService;
-
-			_orderDeletedToken = this.Services().MessengerHub.Subscribe<OrderDeleted>(c => OnOrderDeleted(c.Content));
-            _orderStatusChangedToken = this.Services().MessengerHub.Subscribe<OrderStatusChanged>(c => OnOrderStatusChanged(c.Content, c.Status));
         }
 
 		private ObservableCollection<OrderViewModel> _orders;
 
-		private readonly TinyMessageSubscriptionToken _orderDeletedToken;
-        private readonly TinyMessageSubscriptionToken _orderStatusChangedToken;
+		private TinyMessageSubscriptionToken _orderDeletedToken;
+        private TinyMessageSubscriptionToken _orderStatusChangedToken;
 
 		public void Init()
 		{
 			HasOrders = true; //Needs to be true otherwise we see the no order for a few seconds 
+
+            var services = this.Services();
+            var msgHub = services.MessengerHub;
+
+            _orderDeletedToken = msgHub.Subscribe<OrderDeleted>(c => OnOrderDeleted(c.Content));
+            _orderStatusChangedToken = msgHub.Subscribe<OrderStatusChanged>(c => OnOrderStatusChanged(c.Content, c.Status));
 		}
 
         public ObservableCollection<OrderViewModel> Orders
