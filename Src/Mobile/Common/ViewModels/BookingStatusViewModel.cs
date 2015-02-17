@@ -31,14 +31,19 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private readonly IPhoneService _phoneService;
 		private readonly IBookingService _bookingService;
 		private readonly IPaymentService _paymentService;
-		private readonly IAccountService _accountService;
 		private readonly IVehicleService _vehicleService;
+
+        private int _refreshPeriod = 5;              // in seconds
+        private bool _waitingToNavigateAfterTimeOut;
+        private string _vehicleNumber;
+        private bool _isDispatchPopupVisible;
+        private bool _isContactingNextCompany;
+        private int? _currentIbsOrderId; 
 
 	    public BookingStatusViewModel(IOrderWorkflowService orderWorkflowService,
 			IPhoneService phoneService,
 			IBookingService bookingService,
 			IPaymentService paymentService,
-			IAccountService accountService,
 			IVehicleService vehicleService
 		)
 		{
@@ -46,12 +51,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_phoneService = phoneService;
 			_bookingService = bookingService;
 			_paymentService = paymentService;
-			_accountService = accountService;
 			_vehicleService = vehicleService;
 		}
-
-		private int _refreshPeriod = 5; //in seconds
-		private bool _waitingToNavigateAfterTimeOut;
 
 		public void Init(string order, string orderStatus)
 		{
@@ -293,12 +294,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-		private string _vehicleNumber;
-        private bool _isCurrentlyPairing;
-		private bool _isDispatchPopupVisible;
-        private bool _isContactingNextCompany;
-	    private int? _currentIbsOrderId; 
-
 		private bool CanRefreshStatus(OrderStatusDetail status)
 		{
 			return status.IBSOrderId.HasValue		// we can exit this loop only if we are assigned an IBSOrderId 
@@ -374,24 +369,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 OrderStatusDetail = status;
 
                 CenterMap ();
-
-				var isLoaded = status.IBSStatusId.SoftEqual(VehicleStatuses.Common.Loaded) 
-					|| status.IBSStatusId.SoftEqual(VehicleStatuses.Common.Done);
-				var paymentSettings = await _paymentService.GetPaymentSettings();
-                if (isLoaded 
-					&& paymentSettings.PaymentMode == PaymentMethod.RideLinqCmt
-                    && (Order.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id || Order.Settings.ChargeTypeId == ChargeTypes.PayPal.Id))
-				{
-					var isPaired = await _bookingService.IsPaired(Order.Id);
-                    var pairState = this.Services().Cache.Get<string>("PairState" + Order.Id);
-					var isPairBypass = (pairState == PairingState.Failed) || (pairState == PairingState.Canceled) || (pairState == PairingState.Unpaired);
-					if (!isPaired && !_isCurrentlyPairing && !isPairBypass)
-					{
-						_isCurrentlyPairing = true;
-                        GoToPairScreen();
-						return;
-					}
-				}
 
                 UpdateButtonsVisibility(status.IBSStatusId);
 
@@ -549,15 +526,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        public void GoToPairScreen()
-        {
-			ShowViewModel<ConfirmPairViewModel>(new 
-			{
-				order = Order.ToJson(),
-				orderStatus = OrderStatusDetail.ToJson()
-			}.ToStringDictionary());
-        }
-
         private void CenterMap()
         {   
 			if (Order == null) 
@@ -688,7 +656,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 							if(response.IsSuccessful)
 							{
-								this.Services().Cache.Set("PairState" + Order.Id, PairingState.Unpaired);
 								RefreshStatus();
 							}
 							else
