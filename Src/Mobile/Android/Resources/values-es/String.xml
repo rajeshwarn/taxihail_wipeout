@@ -574,4 +574,6 @@
   <string name="PayPalLinkedInfo">Account Linked</string>
   <string name="Error">Error</string>
   <string name="NoPairingCreditCard">None</string>
+  <string name="Unpair">Pagar en el vehículo</string>
+  <string name="UnpairErrorMessage">Hubo un error desincronizando, por favor intente nuevamente</string>
 </resources>

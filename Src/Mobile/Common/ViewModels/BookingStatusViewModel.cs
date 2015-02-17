@@ -379,7 +379,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					|| status.IBSStatusId.SoftEqual(VehicleStatuses.Common.Done);
 				var paymentSettings = await _paymentService.GetPaymentSettings();
                 if (isLoaded 
-					&& (!paymentSettings.AutomaticPaymentPairing || paymentSettings.PaymentMode == PaymentMethod.RideLinqCmt)
+					&& paymentSettings.PaymentMode == PaymentMethod.RideLinqCmt
                     && (Order.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id || Order.Settings.ChargeTypeId == ChargeTypes.PayPal.Id))
 				{
 					var isPaired = await _bookingService.IsPaired(Order.Id);
@@ -512,13 +512,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		private async void UpdateButtonsVisibility(string statusId)
 		{
-			var paymentSettings = await _paymentService.GetPaymentSettings();
-
             IsCancelButtonVisible = _bookingService.IsOrderCancellable(statusId);
 
-			// Unpair button is only available for RideLinqCMT
-			if (paymentSettings.PaymentMode == PaymentMethod.RideLinqCmt
-                && _accountService.CurrentAccount.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id) 
+		    var isInUnpairingWindow = DateTime.UtcNow <= OrderStatusDetail.UnpairingTimeOut;
+
+            if (isInUnpairingWindow &&
+                (Order.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id
+                || Order.Settings.ChargeTypeId == ChargeTypes.PayPal.Id)) 
 			{
 				IsUnpairButtonVisible = await _bookingService.IsPaired(Order.Id);
 			} 
@@ -693,7 +693,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 							}
 							else
 							{
-								this.Services().Message.ShowMessage(this.Services().Localize["CmtRideLinqErrorTitle"], this.Services().Localize["CmtRideLinqUnpairErrorMessage"]);
+								this.Services().Message.ShowMessage(this.Services().Localize["CmtRideLinqErrorTitle"], this.Services().Localize["UnpairErrorMessage"]);
 							}
 						}
 					});

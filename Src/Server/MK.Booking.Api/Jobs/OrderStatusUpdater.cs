@@ -101,6 +101,8 @@ namespace apcurium.MK.Booking.Api.Jobs
         {
             UpdateVehiclePositionAndSendNearbyNotificationIfNecessary(orderFromIbs, orderStatusDetail);
 
+            SendUnpairWarningNotificationIfNecessary(orderStatusDetail);
+
             if (orderFromIbs.IsWaitingToBeAssigned)
             {
                 CheckForOrderTimeOut(orderStatusDetail);
@@ -271,6 +273,21 @@ namespace apcurium.MK.Booking.Api.Jobs
                 _notificationService.SendTaxiNearbyPush(orderStatus.OrderId, ibsOrderInfo.Status, ibsOrderInfo.VehicleLatitude, ibsOrderInfo.VehicleLongitude);
 
                 Log.DebugFormat("Vehicle position updated. New position: ({0}, {1}).", ibsOrderInfo.VehicleLatitude, ibsOrderInfo.VehicleLongitude);
+            }
+        }
+
+        private void SendUnpairWarningNotificationIfNecessary(OrderStatusDetail orderStatus)
+        {
+            var paymentSettings = _serverSettings.GetPaymentSettings();
+            if (!paymentSettings.AutomaticPaymentPairing && orderStatus.UnpairingTimeOut.HasValue)
+            {
+                var halfwayUnpairTimeout = orderStatus.UnpairingTimeOut.Value.AddSeconds(-0.5 * paymentSettings.UnpairingTimeOut);
+
+                if (DateTime.UtcNow >= halfwayUnpairTimeout)
+                {
+                    // Send unpair timeout reminder halfway through
+                    _notificationService.SendUnpairingReminderPush(orderStatus.OrderId);
+                }
             }
         }
 

@@ -297,10 +297,10 @@
   <data name="CmtRideLinqSaveChanges" xml:space="preserve">
     <value>Enregistrer</value>
   </data>
-  <data name="CmtRideLinqUnpair" xml:space="preserve">
-    <value>Réinitialiser</value>
+  <data name="Unpair" xml:space="preserve">
+    <value>Payer dans le taxi</value>
   </data>
-  <data name="CmtRideLinqUnpairErrorMessage" xml:space="preserve">
+  <data name="UnpairErrorMessage" xml:space="preserve">
     <value>Désolé, le système a rencontré un problème lors de la réinitialisation</value>
   </data>
   <data name="CmtTipAmount" xml:space="preserve">

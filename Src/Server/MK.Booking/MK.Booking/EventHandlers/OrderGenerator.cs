@@ -158,6 +158,15 @@ namespace apcurium.MK.Booking.EventHandlers
                         AutoTipAmount = @event.AutoTipAmount,
                         AutoTipPercentage = @event.AutoTipPercentage
                     });
+
+                    var paymentSettings = _serverSettings.GetPaymentSettings();
+                    if (!paymentSettings.AutomaticPaymentPairing)
+                    {
+                        // Unpair only available if automatic pairing is disabled
+                        var orderStatus = context.Find<OrderStatusDetail>(@event.SourceId);
+                        orderStatus.UnpairingTimeOut = DateTime.UtcNow.AddSeconds(paymentSettings.UnpairingTimeOut);
+                        context.Save(orderStatus);
+                    }
                 }
             }
         }

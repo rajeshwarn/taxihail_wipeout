@@ -204,7 +204,7 @@
             var preAuthAmountDiv = this.$("#preAuthAmountDiv");
             var noShowFeeDiv = this.$("#noShowFeeDiv");
             var automaticPairingDiv = this.$("#automaticPairingDiv");
-            var unpairTimeLimitDiv = this.$("#unpairTimeLimitDiv");
+            var unpairingTimeOutDiv = this.$("#unpairingTimeOutDiv");
 
             var newIsPayPalEnabled = this.$("[id=isPayPalEnabled]").val() == 'true';
             var newIsSandboxValue = this.$("[id=isSandbox]").val() == 'true';
@@ -236,13 +236,13 @@
                 preAuthAmountDiv.hide();
                 noShowFeeDiv.hide();
                 automaticPairingDiv.hide();
-                unpairTimeLimitDiv.hide();
+                unpairingTimeOutDiv.hide();
             } else {
                 preAuthAmountEnabledDiv.show();
                 preAuthAmountDiv.show();
                 noShowFeeDiv.show();
                 automaticPairingDiv.show();
-                unpairTimeLimitDiv.show();
+                unpairingTimeOutDiv.show();
             }
         },
 
@@ -260,7 +260,7 @@
             var preAuthAmountEnabledDiv = this.$("#preAuthAmountEnabledDiv");
             var preAuthAmountDiv = this.$("#preAuthAmountDiv");
             var automaticPairingDiv = this.$("#automaticPairingDiv");
-            var unpairTimeLimitDiv = this.$("#unpairTimeLimitDiv");
+            var unpairingTimeOutDiv = this.$("#unpairingTimeOutDiv");
             var noShowFeeDiv = this.$("#noShowFeeDiv");
 
             var currentPaymentMode = this.updatedModel.paymentMode;
@@ -316,12 +316,12 @@
                 preAuthAmountDiv.hide();
                 noShowFeeDiv.hide();
                 automaticPairingDiv.hide();
-                unpairTimeLimitDiv.hide();
+                unpairingTimeOutDiv.hide();
             } else {
                 preAuthAmountEnabledDiv.show();
                 preAuthAmountDiv.show();
                 automaticPairingDiv.show();
-                unpairTimeLimitDiv.show();
+                unpairingTimeOutDiv.show();
                 noShowFeeDiv.show();
             }
         }

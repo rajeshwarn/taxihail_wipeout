@@ -1132,6 +1132,33 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The ride #{0} will be paid at the end of the trip using your PayPal account. If you&apos;re in the wrong car, choose the Pay in Car option below to ensure you are not charged for the ride..
+        /// </summary>
+        public static string PushNotification_OrderPairingSuccessfulPayPalUnpair {
+            get {
+                return ResourceManager.GetString("PushNotification_OrderPairingSuccessfulPayPalUnpair", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The ride #{0} will be paid at the end of the trip using your credit card on file. If you&apos;re in the wrong car, choose the Pay in Car option below to ensure you are not charged for the ride. .
+        /// </summary>
+        public static string PushNotification_OrderPairingSuccessfulUnpair {
+            get {
+                return ResourceManager.GetString("PushNotification_OrderPairingSuccessfulUnpair", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reminder: If you&apos;re in the wrong car, choose the Pay in Car option below to ensure you are not charged for the ride..
+        /// </summary>
+        public static string PushNotification_OrderUnpairingTimeOutWarning {
+            get {
+                return ResourceManager.GetString("PushNotification_OrderUnpairingTimeOutWarning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Your credit card was successfully charged a total of {0}. This amount includes both fare and tip..
         /// </summary>
         public static string PushNotification_PaymentReceived {

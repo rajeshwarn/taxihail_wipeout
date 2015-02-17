@@ -713,8 +713,7 @@ namespace apcurium.MK.Booking.Api.Services
 
             // This needs to be null if not set or the payment in car payment type id of ibs
             int? ibsChargeTypeId;
-            if (_serverSettings.GetPaymentSettings().AutomaticPaymentPairing
-                && request.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id)
+            if (request.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id)
             {
                 ibsChargeTypeId = _serverSettings.ServerData.IBS.PaymentTypeCardOnFileId;
             }

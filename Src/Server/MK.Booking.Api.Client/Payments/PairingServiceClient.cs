@@ -35,12 +35,20 @@ namespace apcurium.MK.Booking.Api.Client.Payments
             }
         }
 
-        public Task<BasePaymentResponse> Unpair(Guid orderId)
+        public async Task<BasePaymentResponse> Unpair(Guid orderId)
         {
-            return Client.PostAsync(new UnpairingForPaymentRequest
+            try
             {
-                OrderId = orderId
-            });
+                var response = await Client.PostAsync(new UnpairingForPaymentRequest
+                {
+                    OrderId = orderId
+                });
+                return response;
+            }
+            catch (WebServiceException)
+            {
+                return new PairingResponse { IsSuccessful = false };
+            }
         }
     }
 }

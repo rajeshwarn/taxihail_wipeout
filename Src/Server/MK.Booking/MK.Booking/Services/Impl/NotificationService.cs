@@ -206,6 +206,29 @@ namespace apcurium.MK.Booking.Services.Impl
             }
         }
 
+        public void SendUnpairingReminderPush(Guid orderId)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var orderStatus = context.Query<OrderStatusDetail>().Single(x => x.OrderId == orderId);
+
+                if (!ShouldSendNotification(orderStatus.AccountId, x => x.UnpairingReminderPush)
+                    || orderStatus.IsUnpairingReminderNotificationSent)
+                {
+                    return;
+                }
+
+                var order = context.Find<OrderDetail>(orderId);
+                orderStatus.IsUnpairingReminderNotificationSent = true;
+                context.Save(orderStatus);
+
+                var alert = string.Format(_resources.Get("PushNotification_OrderUnpairingTimeOutWarning", order.ClientLanguageCode));
+                var data = new Dictionary<string, object> { { "orderId", order.Id } };
+
+                SendPushOrSms(order.AccountId, alert, data);
+            }
+        }
+
         public void SendAutomaticPairingPush(Guid orderId, int? autoTipPercentage, bool success)
         {
             using (var context = _contextFactory.Invoke())
@@ -213,20 +236,26 @@ namespace apcurium.MK.Booking.Services.Impl
                 var order = context.Find<OrderDetail>(orderId);
 
                 var isPayPal = order.Settings.ChargeTypeId == ChargeTypes.PayPal.Id;
+                var isAutomaticPairingEnabled = !_serverSettings.GetPaymentSettings().AutomaticPaymentPairing;
+
                 string successMessage;
                 if (isPayPal)
                 {
                     successMessage = string.Format(
-                            _resources.Get("PushNotification_OrderPairingSuccessfulPayPal", order.ClientLanguageCode),
-                            order.IBSOrderId, autoTipPercentage);
+                        isAutomaticPairingEnabled
+                            ? _resources.Get("PushNotification_OrderPairingSuccessfulPayPalUnpair", order.ClientLanguageCode)
+                            : _resources.Get("PushNotification_OrderPairingSuccessfulPayPal", order.ClientLanguageCode),
+                        order.IBSOrderId,
+                        autoTipPercentage);
                 }
                 else
                 {
-                    var card = _creditCardDao.FindByAccountId(order.AccountId).First();
-                    var last4Digits = card.Last4Digits;
                     successMessage = string.Format(
-                            _resources.Get("PushNotification_OrderPairingSuccessful", order.ClientLanguageCode),
-                            order.IBSOrderId, last4Digits, autoTipPercentage);
+                        isAutomaticPairingEnabled
+                            ? _resources.Get("PushNotification_OrderPairingSuccessfulUnpair", order.ClientLanguageCode)
+                            : _resources.Get("PushNotification_OrderPairingSuccessful", order.ClientLanguageCode),
+                        order.IBSOrderId,
+                        autoTipPercentage);
                 }
                 
                 var alert = success

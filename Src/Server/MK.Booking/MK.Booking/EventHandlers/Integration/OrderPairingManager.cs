@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.IBS;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
@@ -20,7 +21,6 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
         private readonly IOrderDao _orderDao;
         private readonly ICreditCardDao _creditCardDao;
         private readonly IAccountDao _accountDao;
-        private readonly IIBSServiceProvider _ibsServiceProvider;
         private readonly IPaymentService _paymentFacadeService;
 
         public OrderPairingManager(INotificationService notificationService, 
@@ -28,7 +28,6 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             IOrderDao orderDao,
             ICreditCardDao creditCardDao,
             IAccountDao accountDao,
-            IIBSServiceProvider ibsServiceProvider,
             IPaymentService paymentFacadeService)
         {
             _notificationService = notificationService;
@@ -36,7 +35,6 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             _orderDao = orderDao;
             _creditCardDao = creditCardDao;
             _accountDao = accountDao;
-            _ibsServiceProvider = ibsServiceProvider;
             _paymentFacadeService = paymentFacadeService;
         }
 
@@ -48,15 +46,15 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                 {
                     var order = _orderDao.FindById(@event.SourceId);
                     
-                    if (_serverSettings.GetPaymentSettings().AutomaticPaymentPairing
-                        && _serverSettings.GetPaymentSettings().PaymentMode != PaymentMethod.RideLinqCmt
-                        && (order.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id    // Only send notification if using CardOnFile
-                            || order.Settings.ChargeTypeId == ChargeTypes.PayPal.Id))   // or PayPal
+                    if (_serverSettings.GetPaymentSettings().PaymentMode != PaymentMethod.RideLinqCmt // No auto-pairing for RideLinqCmt
+                        && (order.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id                  // Only Pair and send notification if using CardOnFile
+                            || order.Settings.ChargeTypeId == ChargeTypes.PayPal.Id))                 // or PayPal
                     {
                         var account = _accountDao.FindById(@event.Status.AccountId);
                         var creditCard = _creditCardDao.FindByAccountId(account.Id).First();
 
                         var response = _paymentFacadeService.Pair(@event.SourceId, creditCard.Token, account.DefaultTipPercent);
+
                         _notificationService.SendAutomaticPairingPush(@event.SourceId, account.DefaultTipPercent, response.IsSuccessful);
                     } 
                 }

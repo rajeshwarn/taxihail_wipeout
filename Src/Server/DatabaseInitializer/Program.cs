@@ -263,6 +263,7 @@ namespace DatabaseInitializer
                             ConfirmPairingPush = true,
                             DriverAssignedPush = true,
                             NearbyTaxiPush = true,
+                            UnpairingReminderPush = true,
                             PaymentConfirmationPush = true,
                             ReceiptEmail = true,
                             PromotionUnlockedEmail = true,
