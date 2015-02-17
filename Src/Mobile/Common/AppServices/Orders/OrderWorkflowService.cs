@@ -204,15 +204,17 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			{
 				var orderStatus = await _bookingService.CreateOrder(order);
 
+			    var currentDate = DateTime.Now;
+
 				var orderCreated = new Order
 				{
-					CreatedDate = DateTime.Now, 
+                    CreatedDate = currentDate, 
 					DropOffAddress = order.DropOffAddress, 
 					IBSOrderId = orderStatus.IBSOrderId, 
 					Id = order.Id,
                     PickupAddress = order.PickupAddress,
-					Note = order.Note, 
-					PickupDate = order.PickupDate.HasValue ? order.PickupDate.Value : DateTime.Now,
+					Note = order.Note,
+                    PickupDate = order.PickupDate ?? currentDate,
 					Settings = order.Settings,
 					PromoCode = order.PromoCode
 				};
