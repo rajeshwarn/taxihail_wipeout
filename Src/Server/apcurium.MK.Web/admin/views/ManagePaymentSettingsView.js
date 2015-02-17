@@ -204,6 +204,7 @@
             var preAuthAmountDiv = this.$("#preAuthAmountDiv");
             var noShowFeeDiv = this.$("#noShowFeeDiv");
             var automaticPairingDiv = this.$("#automaticPairingDiv");
+            var unpairTimeLimitDiv = this.$("#unpairTimeLimitDiv");
 
             var newIsPayPalEnabled = this.$("[id=isPayPalEnabled]").val() == 'true';
             var newIsSandboxValue = this.$("[id=isSandbox]").val() == 'true';
@@ -234,17 +235,14 @@
                 preAuthAmountEnabledDiv.hide();
                 preAuthAmountDiv.hide();
                 noShowFeeDiv.hide();
-
-                if (paymentMode == 'RideLinqCmt') {
-                    automaticPairingDiv.show();
-                } else {
-                    automaticPairingDiv.hide();
-                }
+                automaticPairingDiv.hide();
+                unpairTimeLimitDiv.hide();
             } else {
                 preAuthAmountEnabledDiv.show();
                 preAuthAmountDiv.show();
                 noShowFeeDiv.show();
                 automaticPairingDiv.show();
+                unpairTimeLimitDiv.show();
             }
         },
 
@@ -262,6 +260,7 @@
             var preAuthAmountEnabledDiv = this.$("#preAuthAmountEnabledDiv");
             var preAuthAmountDiv = this.$("#preAuthAmountDiv");
             var automaticPairingDiv = this.$("#automaticPairingDiv");
+            var unpairTimeLimitDiv = this.$("#unpairTimeLimitDiv");
             var noShowFeeDiv = this.$("#noShowFeeDiv");
 
             var currentPaymentMode = this.updatedModel.paymentMode;
@@ -316,16 +315,13 @@
                 preAuthAmountEnabledDiv.hide();
                 preAuthAmountDiv.hide();
                 noShowFeeDiv.hide();
-
-                if (newPaymentMode == 'RideLinqCmt') {
-                    automaticPairingDiv.show();
-                } else {
-                    automaticPairingDiv.hide();
-                }
+                automaticPairingDiv.hide();
+                unpairTimeLimitDiv.hide();
             } else {
                 preAuthAmountEnabledDiv.show();
                 preAuthAmountDiv.show();
                 automaticPairingDiv.show();
+                unpairTimeLimitDiv.show();
                 noShowFeeDiv.show();
             }
         }
