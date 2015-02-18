@@ -267,7 +267,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 										var orderInfos = await GetOrderInfos(pendingOrderId);
 
 										PresentationStateRequested.Raise(this, new HomeViewModelStateRequestedEventArgs(HomeViewModelState.Initial, true));
-										ShowViewModel<BookingStatusViewModel>(new {order = orderInfos.Item1, orderStatus = orderInfos.Item2});
+										ShowViewModelAndRemoveFromHistory<BookingStatusViewModel>(new {order = orderInfos.Item1, orderStatus = orderInfos.Item2});
 									},
                                         this.Services().Localize["Cancel"], () => {});
                                 }
