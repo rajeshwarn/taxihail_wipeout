@@ -194,6 +194,14 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			}
 		}
 
+		public Task<bool> IsFutureBooking()
+		{
+			return _pickupDateSubject
+				.Select(date => date.HasValue)
+				.Take(1)
+				.ToTask();
+		}
+
 		public async Task<Tuple<Order, OrderStatusDetail>> ConfirmOrder()
 		{
 		    _isOrderRebooked = false;
