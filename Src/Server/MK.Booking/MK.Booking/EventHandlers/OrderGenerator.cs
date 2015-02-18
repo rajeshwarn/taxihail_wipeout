@@ -6,6 +6,7 @@ using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
+using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using Infrastructure.Messaging.Handling;
 
@@ -160,7 +161,7 @@ namespace apcurium.MK.Booking.EventHandlers
                     });
 
                     var paymentSettings = _serverSettings.GetPaymentSettings();
-                    if (!paymentSettings.AutomaticPaymentPairing)
+                    if (!paymentSettings.IsUnpairingDisabled)
                     {
                         // Unpair only available if automatic pairing is disabled
                         var orderStatus = context.Find<OrderStatusDetail>(@event.SourceId);
@@ -313,8 +314,13 @@ namespace apcurium.MK.Booking.EventHandlers
                 if (orderPairingDetail != null)
                 {
                     context.Set<OrderPairingDetail>().Remove(orderPairingDetail);
-                    context.SaveChanges();
+                    context.Save(orderPairingDetail);
                 }
+
+                var orderDetail = context.Find<OrderDetail>(@event.SourceId);
+                orderDetail.Settings.ChargeTypeId = ChargeTypes.PaymentInCar.Id;
+                orderDetail.Settings.ChargeType = ChargeTypes.PaymentInCar.Display;
+                context.Save(orderDetail);
             }
         }
 

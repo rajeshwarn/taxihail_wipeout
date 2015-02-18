@@ -88,7 +88,6 @@ namespace apcurium.MK.Booking.Test.OrderFixture
                 new StaticMap(),
                 null,
                 _geocodingMock.Object,
-                null,
                 null);
             notificationService.SetBaseUrl(new Uri("http://www.example.net"));
 

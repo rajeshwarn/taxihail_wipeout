@@ -42,7 +42,6 @@ namespace apcurium.MK.Booking.Services.Impl
         private readonly IStaticMap _staticMap;
         private readonly ISmsService _smsService;
         private readonly IGeocoding _geocoding;
-        private readonly ICreditCardDao _creditCardDao;
         private readonly ILogger _logger;
         private readonly Resources.Resources _resources;
 
@@ -60,7 +59,6 @@ namespace apcurium.MK.Booking.Services.Impl
             IStaticMap staticMap,
             ISmsService smsService,
             IGeocoding geocoding,
-            ICreditCardDao creditCardDao,
             ILogger logger)
         {
             _contextFactory = contextFactory;
@@ -74,7 +72,6 @@ namespace apcurium.MK.Booking.Services.Impl
             _staticMap = staticMap;
             _smsService = smsService;
             _geocoding = geocoding;
-            _creditCardDao = creditCardDao;
             _logger = logger;
 
             _resources = new Resources.Resources(serverSettings);
@@ -122,7 +119,7 @@ namespace apcurium.MK.Booking.Services.Impl
         public void SendPairingInquiryPush(OrderStatusDetail orderStatusDetail)
         {
             var order = _orderDao.FindById(orderStatusDetail.OrderId);
-            if (!_serverSettings.GetPaymentSettings().AutomaticPaymentPairing
+            if (!_serverSettings.GetPaymentSettings().IsUnpairingDisabled
                 && (order.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id        // Only send notification if using CoF
                     || order.Settings.ChargeTypeId == ChargeTypes.PayPal.Id)        // or PayPal
                 && ShouldSendNotification(order.AccountId, x => x.ConfirmPairingPush))
@@ -236,7 +233,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 var order = context.Find<OrderDetail>(orderId);
 
                 var isPayPal = order.Settings.ChargeTypeId == ChargeTypes.PayPal.Id;
-                var isAutomaticPairingEnabled = !_serverSettings.GetPaymentSettings().AutomaticPaymentPairing;
+                var isAutomaticPairingEnabled = !_serverSettings.GetPaymentSettings().IsUnpairingDisabled;
 
                 string successMessage;
                 if (isPayPal)

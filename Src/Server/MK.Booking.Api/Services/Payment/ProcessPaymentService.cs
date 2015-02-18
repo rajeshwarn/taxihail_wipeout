@@ -56,25 +56,6 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             return _paymentService.DeleteTokenizedCreditcard(request.CardToken);
         }
 
-        // DELETE?
-        public PairingResponse Post(PairingForPaymentRequest request)
-        {
-            var order = _orderDao.FindById(request.OrderId);
-
-            var response = _paymentService.Pair(request.OrderId, request.CardToken, request.AutoTipPercentage);
-
-            if (response.IsSuccessful)
-            {
-                var ibsAccountId = _accountDao.GetIbsAccountId(order.AccountId, null);
-                if (!UpdateOrderPaymentType(ibsAccountId.Value, order.IBSOrderId.Value, ChargeTypes.CardOnFile.Id))
-                {
-                    response.IsSuccessful = false;
-                    _paymentService.VoidPreAuthorization(request.OrderId);
-                }
-            }
-            return response;
-        }
-
         public BasePaymentResponse Post(UnpairingForPaymentRequest request)
         {
             var order = _orderDao.FindById(request.OrderId);
@@ -83,7 +64,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             if (response.IsSuccessful)
             {
                 var ibsAccountId = _accountDao.GetIbsAccountId(order.AccountId, null);
-                if (UpdateOrderPaymentType(ibsAccountId.Value, order.IBSOrderId.Value, ChargeTypes.PaymentInCar.Id))
+                if (UpdateIBSOrderPaymentType(ibsAccountId.Value, order.IBSOrderId.Value))
                 {
                     _paymentService.VoidPreAuthorization(request.OrderId);
                 }
@@ -95,20 +76,10 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             return response;
         }
 
-        // TODO: refactor if PairingForPaymentRequest is removed
-        private bool UpdateOrderPaymentType(int ibsAccountId, int ibsOrderId, int? chargeTypeId, string companyKey = null)
+        private bool UpdateIBSOrderPaymentType(int ibsAccountId, int ibsOrderId, string companyKey = null)
         {
-            int? ibsChargeType = null;
-            if (chargeTypeId == ChargeTypes.CardOnFile.Id)
-            {
-                ibsChargeType = _serverSettings.ServerData.IBS.PaymentTypeCardOnFileId;
-            }
-            else if (chargeTypeId == ChargeTypes.PaymentInCar.Id)
-            {
-                ibsChargeType = _serverSettings.ServerData.IBS.PaymentTypePaymentInCarId;
-            }
-
-            return _ibsServiceProvider.Booking(companyKey).UpdateOrderPaymentType(ibsAccountId, ibsOrderId, ibsChargeType);
+            // Change payment type to Pay in Car            
+            return _ibsServiceProvider.Booking(companyKey).UpdateOrderPaymentType(ibsAccountId, ibsOrderId, _serverSettings.ServerData.IBS.PaymentTypePaymentInCarId);
         }
     }
 }

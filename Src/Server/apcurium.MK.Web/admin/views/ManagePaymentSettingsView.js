@@ -203,7 +203,7 @@
             var preAuthAmountEnabledDiv = this.$("#preAuthAmountEnabledDiv");
             var preAuthAmountDiv = this.$("#preAuthAmountDiv");
             var noShowFeeDiv = this.$("#noShowFeeDiv");
-            var automaticPairingDiv = this.$("#automaticPairingDiv");
+            var isUnpairingDisabledDiv = this.$("#isUnpairingDisabledDiv");
             var unpairingTimeOutDiv = this.$("#unpairingTimeOutDiv");
 
             var newIsPayPalEnabled = this.$("[id=isPayPalEnabled]").val() == 'true';
@@ -231,17 +231,17 @@
             }
 
             // Show/ hide preauth fields
-            if (!newIsPayPalEnabled && (paymentMode == 'None' || paymentMode == 'RideLinqCmt')) {
+            if (!newIsPayPalEnabled && paymentMode == 'None') {
                 preAuthAmountEnabledDiv.hide();
                 preAuthAmountDiv.hide();
                 noShowFeeDiv.hide();
-                automaticPairingDiv.hide();
+                isUnpairingDisabledDiv.hide();
                 unpairingTimeOutDiv.hide();
             } else {
                 preAuthAmountEnabledDiv.show();
                 preAuthAmountDiv.show();
                 noShowFeeDiv.show();
-                automaticPairingDiv.show();
+                isUnpairingDisabledDiv.show();
                 unpairingTimeOutDiv.show();
             }
         },
@@ -259,7 +259,7 @@
             var isPayPalEnabled = this.$("[id=isPayPalEnabled]").val() == 'true';
             var preAuthAmountEnabledDiv = this.$("#preAuthAmountEnabledDiv");
             var preAuthAmountDiv = this.$("#preAuthAmountDiv");
-            var automaticPairingDiv = this.$("#automaticPairingDiv");
+            var isUnpairingDisabledDiv = this.$("#isUnpairingDisabledDiv");
             var unpairingTimeOutDiv = this.$("#unpairingTimeOutDiv");
             var noShowFeeDiv = this.$("#noShowFeeDiv");
 
@@ -280,13 +280,7 @@
                 }
             }
 
-            if (newPaymentMode == "RideLinqCmt")
-            {
-                btDiv.hide();
-                cmtDiv.show();
-                monerisDiv.hide();
-            }
-            else if (newPaymentMode == "Cmt")
+            if (newPaymentMode == "Cmt" || newPaymentMode == "RideLinqCmt")
             {
                 btDiv.hide();
                 cmtDiv.show();
@@ -311,16 +305,16 @@
                 monerisDiv.hide();
             }
 
-            if (!isPayPalEnabled && (newPaymentMode == 'None' || newPaymentMode == 'RideLinqCmt')) {
+            if (!isPayPalEnabled && newPaymentMode == 'None') {
                 preAuthAmountEnabledDiv.hide();
                 preAuthAmountDiv.hide();
                 noShowFeeDiv.hide();
-                automaticPairingDiv.hide();
+                isUnpairingDisabledDiv.hide();
                 unpairingTimeOutDiv.hide();
             } else {
                 preAuthAmountEnabledDiv.show();
                 preAuthAmountDiv.show();
-                automaticPairingDiv.show();
+                isUnpairingDisabledDiv.show();
                 unpairingTimeOutDiv.show();
                 noShowFeeDiv.show();
             }

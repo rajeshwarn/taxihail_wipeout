@@ -279,7 +279,7 @@ namespace apcurium.MK.Booking.Api.Jobs
         private void SendUnpairWarningNotificationIfNecessary(OrderStatusDetail orderStatus)
         {
             var paymentSettings = _serverSettings.GetPaymentSettings();
-            if (!paymentSettings.AutomaticPaymentPairing && orderStatus.UnpairingTimeOut.HasValue)
+            if (!paymentSettings.IsUnpairingDisabled && orderStatus.UnpairingTimeOut.HasValue)
             {
                 var halfwayUnpairTimeout = orderStatus.UnpairingTimeOut.Value.AddSeconds(-0.5 * paymentSettings.UnpairingTimeOut);
 
@@ -720,7 +720,7 @@ namespace apcurium.MK.Booking.Api.Jobs
             else if (ibsOrderInfo.IsLoaded)
             {
                 if (orderDetail != null 
-                    && _serverSettings.GetPaymentSettings().AutomaticPaymentPairing
+                    && _serverSettings.GetPaymentSettings().IsUnpairingDisabled
                     && (orderDetail.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id
                         || orderDetail.Settings.ChargeTypeId == ChargeTypes.PayPal.Id))
                 {

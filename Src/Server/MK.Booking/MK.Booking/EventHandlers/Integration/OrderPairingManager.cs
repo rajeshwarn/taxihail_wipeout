@@ -46,14 +46,14 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                 {
                     var order = _orderDao.FindById(@event.SourceId);
                     
-                    if (_serverSettings.GetPaymentSettings().PaymentMode != PaymentMethod.RideLinqCmt // No auto-pairing for RideLinqCmt
-                        && (order.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id                  // Only Pair and send notification if using CardOnFile
-                            || order.Settings.ChargeTypeId == ChargeTypes.PayPal.Id))                 // or PayPal
+                    if (order.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id
+                        || order.Settings.ChargeTypeId == ChargeTypes.PayPal.Id)
                     {
                         var account = _accountDao.FindById(@event.Status.AccountId);
-                        var creditCard = _creditCardDao.FindByAccountId(account.Id).First();
+                        var creditCard = _creditCardDao.FindByAccountId(account.Id).FirstOrDefault();
+                        var cardToken = creditCard != null ? creditCard.Token : null;
 
-                        var response = _paymentFacadeService.Pair(@event.SourceId, creditCard.Token, account.DefaultTipPercent);
+                        var response = _paymentFacadeService.Pair(@event.SourceId, cardToken, account.DefaultTipPercent);
 
                         _notificationService.SendAutomaticPairingPush(@event.SourceId, account.DefaultTipPercent, response.IsSuccessful);
                     } 
