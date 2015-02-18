@@ -131,7 +131,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			var lastOrder = await _orderWorkflowService.GetLastActiveOrder ();
 			if(lastOrder != null)
 			{
-				ShowViewModel<BookingStatusViewModel> (new
+				ShowViewModelAndRemoveFromHistory<BookingStatusViewModel> (new
 				{
 					order = lastOrder.Item1.ToJson (),
 					orderStatus = lastOrder.Item2.ToJson ()

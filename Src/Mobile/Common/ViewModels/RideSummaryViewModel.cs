@@ -158,7 +158,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					if (CanUserLeaveScreen ())
 					{
 						PrepareNewOrder.ExecuteIfPossible();
-						CloseCommand.ExecuteIfPossible();
+                        ShowViewModelAndRemoveFromHistory<HomeViewModel>(new { locateUser = true });
 					}
 	            });
 	        }

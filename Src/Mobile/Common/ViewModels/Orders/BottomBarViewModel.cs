@@ -233,7 +233,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
 									this.Services().Analytics.LogEvent("Book");
 									PresentationStateRequested.Raise(this, new HomeViewModelStateRequestedEventArgs(HomeViewModelState.Initial, true));
-									ShowViewModel<BookingStatusViewModel>(new
+                                    ShowViewModelAndRemoveFromHistory<BookingStatusViewModel>(new
 									{
 										order = result.Item1.ToJson(),
 										orderStatus = result.Item2.ToJson()
@@ -248,7 +248,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 								var result = await _orderWorkflowService.ConfirmOrder();
 
 								PresentationStateRequested.Raise(this, new HomeViewModelStateRequestedEventArgs(HomeViewModelState.Initial, true));
-								ShowViewModel<BookingStatusViewModel>(new
+								ShowViewModelAndRemoveFromHistory<BookingStatusViewModel>(new
 								{
 									order = result.Item1.ToJson(),
 									orderStatus = result.Item2.ToJson()
