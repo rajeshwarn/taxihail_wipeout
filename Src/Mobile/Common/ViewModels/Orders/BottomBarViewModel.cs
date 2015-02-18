@@ -227,12 +227,25 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 							}
 							else
 							{
-								await GotoBookingStatus(true);
+								using (this.Services().Message.ShowProgress())
+								{
+									var result = await _orderWorkflowService.ConfirmOrder();
+
+									this.Services().Analytics.LogEvent("Book");
+
+									await GotoBookingStatus(result);
+								}
 							}
 						}
 						else
 						{
-							await GotoBookingStatus(false);
+							using (this.Services().Message.ShowProgress())
+							{
+								var result = await _orderWorkflowService.ConfirmOrder();
+
+								await GotoBookingStatus(result);
+							}
+							
 						}
                     }
                     catch (OrderCreationException e)
@@ -287,33 +300,22 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
             }
         }
 
-		private async Task GotoBookingStatus(bool shouldGoToAccountNumberFlow)
+		private async Task GotoBookingStatus(Tuple<Order, OrderStatusDetail> result)
 		{
-			using (this.Services().Message.ShowProgress())
+			PresentationStateRequested.Raise(this, new HomeViewModelStateRequestedEventArgs(HomeViewModelState.Initial, true));
+			if (await _orderWorkflowService.IsFutureBooking())
 			{
-				var result = await _orderWorkflowService.ConfirmOrder();
-
-				if (shouldGoToAccountNumberFlow)
-				{
-					this.Services().Analytics.LogEvent("Book");
-				}
-
-				var isFutureBooking = await _orderWorkflowService.IsFutureBooking();
-				PresentationStateRequested.Raise(this, new HomeViewModelStateRequestedEventArgs(HomeViewModelState.Initial, true));
-				if (isFutureBooking)
-				{
-					ShowViewModel<BookingStatusViewModel>(new {
-						order = result.Item1.ToJson(),
-						orderStatus = result.Item2.ToJson()
-					});
-				}
-				else
-				{
-					ShowViewModelAndRemoveFromHistory<BookingStatusViewModel>(new {
-						order = result.Item1.ToJson(),
-						orderStatus = result.Item2.ToJson()
-					});
-				}
+				ShowViewModel<BookingStatusViewModel>(new {
+					order = result.Item1.ToJson(),
+					orderStatus = result.Item2.ToJson()
+				});
+			}
+			else
+			{
+				ShowViewModelAndRemoveFromHistory<BookingStatusViewModel>(new {
+					order = result.Item1.ToJson(),
+					orderStatus = result.Item2.ToJson()
+				});
 			}
 		}
 
