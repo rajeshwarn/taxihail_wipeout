@@ -145,8 +145,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				RaisePropertyChanged ();
 			}
 		}
-
-		// for Android only
+			
 	    public ICommand RateOrder
 	    {
 	        get
