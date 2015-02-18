@@ -673,4 +673,7 @@
   <data name="PushNotification_OrderUnpairingTimeOutWarning" xml:space="preserve">
     <value>Reminder: If you're in the wrong car, choose the Pay in Car option below to ensure you are not charged for the ride.</value>
   </data>
+  <data name="PayPal" xml:space="preserve">
+    <value>PayPal</value>
+  </data>
 </root>

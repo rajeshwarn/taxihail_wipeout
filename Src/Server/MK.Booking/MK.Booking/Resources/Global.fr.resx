@@ -561,4 +561,7 @@
   <data name="PushNotification_OrderUnpairingTimeOutWarning" xml:space="preserve">
     <value>Rappel: Si vous n'êtes pas dans le bon véhicule, choisissez payer dans le taxi pour ne pas être débité du montant de la course</value>
   </data>
+  <data name="PayPal" xml:space="preserve">
+    <value>PayPal</value>
+  </data>
 </root>
