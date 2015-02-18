@@ -491,10 +491,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
             IsCancelButtonVisible = _bookingService.IsOrderCancellable(statusId);
 
-		    var isInUnpairingWindow = DateTime.UtcNow <= OrderStatusDetail.UnpairingTimeOut;
-
-            if (isInUnpairingWindow &&
-                (Order.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id
+		    var arePassengersOnBoard = OrderStatusDetail.IBSStatusId.SoftEqual(VehicleStatuses.Common.Loaded);
+            var isInUnpairingWindow = DateTime.UtcNow <= OrderStatusDetail.UnpairingTimeOut;
+		    
+            if (arePassengersOnBoard
+                && isInUnpairingWindow
+                && (Order.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id
                 || Order.Settings.ChargeTypeId == ChargeTypes.PayPal.Id)) 
 			{
 				IsUnpairButtonVisible = await _bookingService.IsPaired(Order.Id);
