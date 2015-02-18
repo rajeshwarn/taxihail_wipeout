@@ -1,3 +1,4 @@
+using System;
 using Android.App;
 using Android.Content;
 using apcurium.MK.Booking.Mobile.PresentationHints;
@@ -14,10 +15,10 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         public override void Show(Cirrious.MvvmCross.ViewModels.MvxViewModelRequest request)
         {
-            bool removeFromHistory = request.ParameterValues != null
+            var removeFromHistory = request.ParameterValues != null
                                      && request.ParameterValues.ContainsKey("removeFromHistory");
 
-            Intent intent = this.CreateIntentForRequest (request);
+            var intent = this.CreateIntentForRequest (request);
             this.Show (intent, removeFromHistory);
         }
 
@@ -35,7 +36,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         private void Show (Intent intent, bool removeFromHistory)
         {
-            Activity activity = this.Activity;
+            var activity = this.Activity;
             if (activity == null)
             {
                 MvxTrace.Warning ("Cannot Resolve current top activity", new object[0]);
