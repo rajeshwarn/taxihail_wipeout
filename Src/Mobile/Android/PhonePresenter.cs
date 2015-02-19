@@ -18,8 +18,12 @@ namespace apcurium.MK.Booking.Mobile.Client
             var removeFromHistory = request.ParameterValues != null
                                      && request.ParameterValues.ContainsKey("removeFromHistory");
 
+            var clearHistory = request.ParameterValues != null
+                                     && request.ParameterValues.ContainsKey("clearHistory");
+
             var intent = this.CreateIntentForRequest (request);
-            this.Show (intent, removeFromHistory);
+
+            this.Show(intent, removeFromHistory, clearHistory);
         }
 
         public override void ChangePresentation(Cirrious.MvvmCross.ViewModels.MvxPresentationHint hint)
@@ -34,7 +38,7 @@ namespace apcurium.MK.Booking.Mobile.Client
             }
         }
 
-        private void Show (Intent intent, bool removeFromHistory)
+        private void Show (Intent intent, bool removeFromHistory, bool clearHistory)
         {
             var activity = this.Activity;
             if (activity == null)
@@ -42,6 +46,12 @@ namespace apcurium.MK.Booking.Mobile.Client
                 MvxTrace.Warning ("Cannot Resolve current top activity", new object[0]);
                 return;
             }
+
+            if (clearHistory)
+            {
+                intent.AddFlags(ActivityFlags.NewTask | ActivityFlags.ClearTask);
+            }
+
             activity.StartActivity (intent);
             if (removeFromHistory)
             {

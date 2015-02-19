@@ -312,7 +312,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			}
 			else
 			{
-				ShowViewModelAndRemoveFromHistory<BookingStatusViewModel>(new {
+                ShowViewModelAndRemoveFromHistory<BookingStatusViewModel>(new
+                {
 					order = result.Item1.ToJson(),
 					orderStatus = result.Item2.ToJson()
 				});

@@ -98,6 +98,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             base.ShowViewModel<TViewModel>(dictionary);
         }
 
+        protected void ShowViewModelAndClearHistory<TViewModel>(object parameter) where TViewModel : IMvxViewModel
+        {
+            var dictionary = parameter.ToSimplePropertyDictionary();
+            dictionary = dictionary ?? new Dictionary<string, string>();
+            dictionary.Add("clearHistory", "notUsed");
+            base.ShowViewModel<TViewModel>(dictionary);
+        }
+
 		protected void GoBackToHomeViewModel(object parameter)
 		{
 			var dictionary = parameter.ToSimplePropertyDictionary();
