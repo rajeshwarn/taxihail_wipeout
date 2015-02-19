@@ -30,6 +30,12 @@ namespace apcurium.MK.Booking.Mobile.Client
 				return;
 			}
 
+			if (request.ParameterValues != null
+			   && request.ParameterValues.ContainsKey("clearPreviousHistory"))
+			{
+				ClearNavigationStack();
+			}
+
             base.Show(request);
 			if(request.ParameterValues != null 
 				&& request.ParameterValues.ContainsKey("removeFromHistory"))

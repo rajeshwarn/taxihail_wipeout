@@ -19,7 +19,7 @@ namespace apcurium.MK.Booking.Mobile.Client
                                      && request.ParameterValues.ContainsKey("removeFromHistory");
 
             var clearHistory = request.ParameterValues != null
-                                     && request.ParameterValues.ContainsKey("clearNavigationStack");
+                                     && request.ParameterValues.ContainsKey("clearPreviousHistory");
 
             var intent = this.CreateIntentForRequest (request);
 
