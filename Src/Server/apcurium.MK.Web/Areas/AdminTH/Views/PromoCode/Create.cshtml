@@ -250,6 +250,12 @@
         }
     }
 
+    function ondatepickerchange(e) {
+        if (e.viewMode == "days") {
+            $('.datepicker').hide();
+        }
+    }
+
     function onTriggerTypeChanged(e) {
         var dropDownValue = $('#triggerTypeDropDown')[0].value;
 
@@ -288,7 +294,13 @@
             onTriggerTypeChanged(e);
         });
 
-        $('[data-role=datepicker]').datepicker();
+        $('[data-role=datepicker]').datepicker({
+            todayBtn: true,
+            todayHighlight: true
+        }).on("changeDate", function(e) {
+             ondatepickerchange(e);
+        });
+
         $('[data-role=timepicker]').timepicker({
             defaultTime: false,
             disableFocus: true
