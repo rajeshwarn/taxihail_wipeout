@@ -222,9 +222,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					CloseMenu();
 					_orderWorkflowService.PrepareForNewOrder();
 					_accountService.SignOut();         
-					ShowViewModel<LoginViewModel> ();
-
-                    Close( _parent );
+					ShowViewModelAndClearHistory<LoginViewModel> ();
                 });
             }
         }
