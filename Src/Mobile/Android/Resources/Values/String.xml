@@ -602,4 +602,5 @@
   <string name="NoPairingCreditCard">None</string>
   <string name="Unpair">Pay in Car</string>
   <string name="UnpairErrorMessage">There was an error during unpairing, please try again later.</string>
+  <string name="UnpairPayInCar">Pay in Car</string>
 </resources>

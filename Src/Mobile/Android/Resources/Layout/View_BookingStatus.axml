@@ -57,7 +57,7 @@
                 android:layout_marginLeft="8dip"
                 android:layout_marginRight="8dip"
                 android:layout_gravity="center_vertical"
-                android:text="@string/Unpair"
+                android:text="@string/UnpairPayInCar"
                 local:MvxBind="Click Unpair; Visibility IsUnpairButtonVisible, Converter=Visibility" />
             <Button
                 android:id="@+id/CallBtn"

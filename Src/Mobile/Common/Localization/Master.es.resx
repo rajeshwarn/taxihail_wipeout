@@ -381,7 +381,7 @@
     <value>Guardar</value>
     <comment>Save</comment>
   </data>
-  <data name="Unpair" xml:space="preserve">
+  <data name="UnpairPayInCar" xml:space="preserve">
     <value>Pagar en el vehículo</value>
     <comment>Unpair</comment>
   </data>

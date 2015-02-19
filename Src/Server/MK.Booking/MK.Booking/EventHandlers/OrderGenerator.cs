@@ -165,7 +165,7 @@ namespace apcurium.MK.Booking.EventHandlers
                     {
                         // Unpair only available if automatic pairing is disabled
                         var orderStatus = context.Find<OrderStatusDetail>(@event.SourceId);
-                        orderStatus.UnpairingTimeOut = DateTime.UtcNow.AddSeconds(paymentSettings.UnpairingTimeOut);
+                        orderStatus.UnpairingTimeOut = @event.EventDate.AddSeconds(paymentSettings.UnpairingTimeOut);
                         context.Save(orderStatus);
                     }
                 }

@@ -1353,7 +1353,7 @@
   <data name="CmtConfirmPayment" xml:space="preserve">
     <value>Confirm</value>
   </data>
-  <data name="Unpair" xml:space="preserve">
+  <data name="UnpairPayInCar" xml:space="preserve">
     <value>Pay in Car</value>
   </data>
   <data name="CmtRideLinqCancelChanges" xml:space="preserve">

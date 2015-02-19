@@ -370,7 +370,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
                 CenterMap ();
 
-                UpdateButtonsVisibility(status.IBSStatusId);
+                UpdateActionsPossibleOnOrder(status.IBSStatusId);
 
                 DisplayOrderNumber();
 
@@ -487,21 +487,21 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			return string.Format (this.Services ().Localize ["StatusEta"], direction.FormattedDistance, direction.Duration, durationUnit);
 		}
 
-		private async void UpdateButtonsVisibility(string statusId)
+        private async void UpdateActionsPossibleOnOrder(string statusId)
 		{
             IsCancelButtonVisible = _bookingService.IsOrderCancellable(statusId);
 
 		    var arePassengersOnBoard = OrderStatusDetail.IBSStatusId.SoftEqual(VehicleStatuses.Common.Loaded);
-            var isInUnpairingWindow = DateTime.UtcNow <= OrderStatusDetail.UnpairingTimeOut;
+            var isUnPairPossible = DateTime.UtcNow <= OrderStatusDetail.UnpairingTimeOut;
 		    
             if (arePassengersOnBoard
-                && isInUnpairingWindow
+                && isUnPairPossible
                 && (Order.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id
                 || Order.Settings.ChargeTypeId == ChargeTypes.PayPal.Id)) 
 			{
 				IsUnpairButtonVisible = await _bookingService.IsPaired(Order.Id);
 			} 
-			else 
+			else
 			{
 				IsUnpairButtonVisible = false;
 			}

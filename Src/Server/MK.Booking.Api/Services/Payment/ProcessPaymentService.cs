@@ -59,12 +59,12 @@ namespace apcurium.MK.Booking.Api.Services.Payment
         public BasePaymentResponse Post(UnpairingForPaymentRequest request)
         {
             var order = _orderDao.FindById(request.OrderId);
-            var response = _paymentService.Unpair(request.OrderId);
+            var ibsAccountId = _accountDao.GetIbsAccountId(order.AccountId, null);
 
-            if (response.IsSuccessful)
+            if (UpdateIBSOrderPaymentType(ibsAccountId.Value, order.IBSOrderId.Value))
             {
-                var ibsAccountId = _accountDao.GetIbsAccountId(order.AccountId, null);
-                if (UpdateIBSOrderPaymentType(ibsAccountId.Value, order.IBSOrderId.Value))
+                var response = _paymentService.Unpair(request.OrderId);
+                if (response.IsSuccessful)
                 {
                     _paymentService.VoidPreAuthorization(request.OrderId);
                 }
@@ -72,8 +72,9 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                 {
                     response.IsSuccessful = false;
                 }
+                return response;
             }
-            return response;
+            return new BasePaymentResponse { IsSuccessful = false };
         }
 
         private bool UpdateIBSOrderPaymentType(int ibsAccountId, int ibsOrderId, string companyKey = null)

@@ -177,10 +177,13 @@ namespace apcurium.MK.Booking.Services.Impl
                     return;
                 }
 
-                var shouldSendPushNotification = newLatitude.HasValue &&
-                                                 newLongitude.HasValue &&
-                                                 ibsStatus == VehicleStatuses.Common.Assigned &&
-                                                 !orderStatus.IsTaxiNearbyNotificationSent;
+                var orderNotifications = context.Query<OrderNotificationDetail>().SingleOrDefault(x => x.Id == orderId);
+
+                var shouldSendPushNotification = 
+                    newLatitude.HasValue
+                    && newLongitude.HasValue
+                    && ibsStatus == VehicleStatuses.Common.Assigned
+                    && (orderNotifications == null || !orderNotifications.IsTaxiNearbyNotificationSent);
 
                 if (shouldSendPushNotification)
                 {
@@ -191,9 +194,20 @@ namespace apcurium.MK.Booking.Services.Impl
 
                     if (taxiPosition.DistanceTo(pickupPosition) <= TaxiDistanceThresholdForPushNotification)
                     {
-                        orderStatus.IsTaxiNearbyNotificationSent = true;
-                        context.Save(orderStatus);
-
+                        if (orderNotifications == null)
+                        {
+                            context.Save(new OrderNotificationDetail
+                            {
+                                Id = order.Id,
+                                IsTaxiNearbyNotificationSent = true
+                            });
+                        }
+                        else
+                        {
+                            orderNotifications.IsTaxiNearbyNotificationSent = true;
+                            context.Save(orderNotifications);
+                        }
+   
                         var alert = string.Format(_resources.Get("PushNotification_NearbyTaxi", order.ClientLanguageCode));
                         var data = new Dictionary<string, object> { { "orderId", order.Id } };
 
@@ -208,16 +222,29 @@ namespace apcurium.MK.Booking.Services.Impl
             using (var context = _contextFactory.Invoke())
             {
                 var orderStatus = context.Query<OrderStatusDetail>().Single(x => x.OrderId == orderId);
+                var orderNotifications = context.Query<OrderNotificationDetail>().SingleOrDefault(x => x.Id == orderId);
 
                 if (!ShouldSendNotification(orderStatus.AccountId, x => x.UnpairingReminderPush)
-                    || orderStatus.IsUnpairingReminderNotificationSent)
+                    || (orderNotifications != null && orderNotifications.IsUnpairingReminderNotificationSent))
                 {
                     return;
                 }
 
                 var order = context.Find<OrderDetail>(orderId);
-                orderStatus.IsUnpairingReminderNotificationSent = true;
-                context.Save(orderStatus);
+
+                if (orderNotifications == null)
+                {
+                    context.Save(new OrderNotificationDetail
+                    {
+                        Id = order.Id,
+                        IsUnpairingReminderNotificationSent = true
+                    });
+                }
+                else
+                {
+                    orderNotifications.IsUnpairingReminderNotificationSent = true;
+                    context.Save(orderNotifications);
+                }
 
                 var alert = string.Format(_resources.Get("PushNotification_OrderUnpairingTimeOutWarning", order.ClientLanguageCode));
                 var data = new Dictionary<string, object> { { "orderId", order.Id } };
