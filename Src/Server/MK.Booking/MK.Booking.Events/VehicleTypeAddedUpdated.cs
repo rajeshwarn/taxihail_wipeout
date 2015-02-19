@@ -9,5 +9,6 @@ namespace apcurium.MK.Booking.Events
         public string Name { get; set; }
         public string LogoName { get; set; }
         public int ReferenceDataVehicleId { get; set; }
+        public int MaxNumberPassengers { get; set; }
     }
 }
