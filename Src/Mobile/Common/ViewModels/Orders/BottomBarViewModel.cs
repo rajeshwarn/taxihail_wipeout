@@ -90,6 +90,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
                     {
                         await _orderWorkflowService.ValidatePickupAndDestination();
                         await _orderWorkflowService.ValidatePickupTime();
+						await _orderWorkflowService.ValidateVehicleType();
                     }
                     catch (OrderValidationException e)
                     {
@@ -107,6 +108,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
                             case OrderValidationError.InvalidPickupDate:
                                 this.Services().Message.ShowMessage(this.Services().Localize["InvalidBookinInfoTitle"], this.Services().Localize["BookViewInvalidDate"]);
                                 return;
+							case OrderValidationError.InvalidPassengersNumber:
+								this.Services().Message.ShowMessage(this.Services().Localize["InvalidPassengersNumberTitle"], this.Services().Localize["InvalidPassengersNumber"]);
+								return;
                             default:
                                 Logger.LogError(e);
                                 return;
