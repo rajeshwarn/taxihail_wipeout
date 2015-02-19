@@ -102,7 +102,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             var dictionary = parameter.ToSimplePropertyDictionary();
             dictionary = dictionary ?? new Dictionary<string, string>();
-            dictionary.Add("clearHistory", "notUsed");
+            dictionary.Add("clearNavigationStack", "notUsed");
             base.ShowViewModel<TViewModel>(dictionary);
         }
 
