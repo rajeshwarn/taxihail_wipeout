@@ -124,7 +124,8 @@
     "nearbyTaxiPush":  "Nearby Taxi",
     "vehicleAtPickupPush":  "Vehicle at Pickup",
     "paymentConfirmationPush": "Payment Confirmation",
-    "promotionUnlockedPush":  "Promotion Unlocked (Push)",
+    "promotionUnlockedPush": "Promotion Unlocked",
+    "unpairingReminderPush": "Unpairing Reminder",
 
     "/******* End notification settings Aliases ******/": ""
 }

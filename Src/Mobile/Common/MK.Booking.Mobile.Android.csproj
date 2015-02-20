@@ -231,8 +231,6 @@
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\CoordinateViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
-    <Compile Include="ViewModels\Payment\ConfirmPairViewModel.cs" />
-    <Compile Include="ViewModels\Payment\PairingState.cs" />
     <Compile Include="ViewModels\NotificationSettingsViewModel.cs" />
     <Compile Include="ViewModels\PromotionItemViewModel.cs" />
     <Compile Include="ViewModels\SelectableItemViewModel.cs" />

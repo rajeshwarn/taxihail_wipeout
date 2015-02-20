@@ -552,4 +552,22 @@
   <data name="Email_Subject_CreditCardDeactivated" xml:space="preserve">
     <value>{{ ApplicationName }} - Your credit card has been deactivated</value>
   </data>
+<data name="PushNotification_OrderPairingSuccessfulPayPalUnpair" xml:space="preserve">
+    <value>The ride #{0} will be paid at the end of the trip using your PayPal account. If you're in the wrong car, choose the Pay in Car option below to ensure you are not charged for the ride.</value>
+  </data>
+  <data name="PushNotification_OrderPairingSuccessfulUnpair" xml:space="preserve">
+    <value>The ride #{0} will be paid at the end of the trip using your credit card on file. If you're in the wrong car, choose the Pay in Car option below to ensure you are not charged for the ride. </value>
+  </data>
+  <data name="PushNotification_OrderUnpairingTimeOutWarning" xml:space="preserve">
+    <value>Reminder: If you're in the wrong car, choose the Pay in Car option below to ensure you are not charged for the ride.</value>
+  </data>
+  <data name="PayPal" xml:space="preserve">
+    <value>PayPal</value>
+  </data>
+  <data name="PushNotification_OrderUnpairingTimeOutWarning" xml:space="preserve">
+    <value>Reminder: If you're in the wrong car, choose the Pay in Car option below to ensure you are not charged for the ride.</value>
+  </data>
+  <data name="PayPal" xml:space="preserve">
+    <value>PayPal</value>
+  </data>
 </root>

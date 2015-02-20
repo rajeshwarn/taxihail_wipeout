@@ -558,4 +558,23 @@
   <data name="Email_Subject_CreditCardDeactivated" xml:space="preserve">
     <value>{{ ApplicationName }} - Votre carte de crédit a été désactivée</value>
   </data>
+  <data name="PushNotification_OrderPairingSuccessfulPayPalUnpair" xml:space="preserve">
+    <value>La course #{0} sera payée à la fin du voyage en utilisant votre compte PayPal. Si vous n'êtes pas dans le bon véhicule, choisissez payer dans le taxi</value>
+  </data>
+  <data name="PushNotification_OrderPairingSuccessfulUnpair" xml:space="preserve">
+    <value>La course #{0} sera payée à la fin du voyage en utilisant votre carte de crédit. Si vous n'êtes pas dans le bon véhicule, choisissez payer dans le taxi</value>
+  </data>
+  <data name="PushNotification_OrderUnpairingTimeOutWarning" xml:space="preserve">
+    <value>Rappel: Si vous n'êtes pas dans le bon véhicule, choisissez payer dans le taxi pour ne pas être débité du montant de la course</value>
+  </data>
+  <data name="PayPal" xml:space="preserve">
+    <value>PayPal</value>
+  </data>
+
+  <data name="PushNotification_OrderUnpairingTimeOutWarning" xml:space="preserve">
+    <value>Rappel: Si vous n'êtes pas dans le bon véhicule, choisissez payer dans le taxi pour ne pas être débité du montant de la course</value>
+  </data>
+  <data name="PayPal" xml:space="preserve">
+    <value>PayPal</value>
+  </data>
 </root>

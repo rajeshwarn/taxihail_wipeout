@@ -211,7 +211,6 @@
     <Compile Include="ViewModels\CoordinateViewModel.cs" />
     <Compile Include="ViewModels\CreateAccountViewModel.cs" />
     <Compile Include="ViewModels\NotificationSettingsViewModel.cs" />
-    <Compile Include="ViewModels\Payment\ConfirmPairViewModel.cs" />
     <Compile Include="ViewModels\PromotionItemViewModel.cs" />
     <Compile Include="ViewModels\PromotionViewModel.cs" />
     <Compile Include="ViewModels\SelectableItemViewModel.cs" />
@@ -274,7 +273,6 @@
     <Compile Include="AppServices\ITermsAndConditionsService.cs" />
     <Compile Include="AppServices\Impl\TermsAndConditionsService.cs" />
     <Compile Include="Extensions\NotifyPropertyChangedExtensions.cs" />
-    <Compile Include="ViewModels\Payment\PairingState.cs" />
     <Compile Include="AppServices\IVehicleService.cs" />
     <Compile Include="AppServices\Impl\VehicleService.cs" />
     <Compile Include="AppServices\Social\FacebookUserInfo.iOS.cs">

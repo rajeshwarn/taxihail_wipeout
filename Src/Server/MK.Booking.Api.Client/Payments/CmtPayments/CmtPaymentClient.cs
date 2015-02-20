@@ -45,25 +45,6 @@ namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments
             return result;
         }
 
-        public async Task<PairingResponse> Pair(Guid orderId, string cardToken, int? autoTipPercentage)
-        {
-            try
-            {
-                var response = await Client.PostAsync(new PairingForPaymentRequest
-                {
-                    OrderId = orderId,
-                    CardToken = cardToken,
-                    AutoTipPercentage = autoTipPercentage
-
-                });
-                return response;
-            }
-            catch (ServiceStack.ServiceClient.Web.WebServiceException)
-            {                
-                return new PairingResponse { IsSuccessful = false };
-            }            
-        }
-
         public Task<BasePaymentResponse> Unpair(Guid orderId)
         {
             return Client.PostAsync(new UnpairingForPaymentRequest
