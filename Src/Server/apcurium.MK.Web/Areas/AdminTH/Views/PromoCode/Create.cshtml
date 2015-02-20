@@ -310,6 +310,11 @@
         }).on('changeTime.timepicker', function (e) {
             ontimepickerchange(e);
         });
+        
+        // Ensures that click in the date textbox fields also open the datepicker.
+        $('[data-role=datepicker]>[class=input-small]').on("click", function (e) {
+            $('#' + e.target.id).datepicker('show');
+        });
 
         $('#eraseStartDate').click(function (e) {
             onClearDateButtonPress("StartDate");
