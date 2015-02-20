@@ -63,7 +63,8 @@ namespace apcurium.MK.Booking.Api.Services
                     Latitude = v.Latitude,
                     Longitude = v.Longitude,
                     PositionDate = v.Timestamp,
-                    VehicleNumber = v.Medallion
+                    VehicleNumber = v.Medallion,
+                    FleetId = v.FleetId
                 }).ToArray();
             }
 
