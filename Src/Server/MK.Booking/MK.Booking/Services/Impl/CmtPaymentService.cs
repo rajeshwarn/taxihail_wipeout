@@ -252,6 +252,16 @@ namespace apcurium.MK.Booking.Services.Impl
             var paymentId = Guid.NewGuid();
             var creditCard = _creditCardDao.FindByAccountId(account.Id).First();
 
+            if (creditCard.IsDeactivated)
+            {
+                // If card was deactivated, do not accept further payment with this card
+                return new PreAuthorizePaymentResponse
+                {
+                    IsDeclined = true,
+                    Message = "Credit card was deactivated"
+                };
+            }
+
             _commandBus.Send(new InitiateCreditCardPayment
             {
                 PaymentId = paymentId,

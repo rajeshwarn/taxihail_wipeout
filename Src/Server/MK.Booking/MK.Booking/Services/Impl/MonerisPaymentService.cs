@@ -190,6 +190,16 @@ namespace apcurium.MK.Booking.Services.Impl
                 var orderIdentifier = isReAuth ? string.Format("{0}-1", orderId) : orderId.ToString();
                 var creditCard = _creditCardDao.FindByAccountId(account.Id).First();
 
+                if (creditCard.IsDeactivated)
+                {
+                    // If card was deactivated, do not accept further payment with this card
+                    return new PreAuthorizePaymentResponse
+                    {
+                        IsDeclined = true, 
+                        Message = "Credit card was deactivated"
+                    };
+                }
+
                 if (amountToPreAuthorize > 0)
                 {
                     // PreAuthorize transaction

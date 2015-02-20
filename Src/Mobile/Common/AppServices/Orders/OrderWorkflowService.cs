@@ -275,6 +275,17 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		        }
 		    }
 
+            // If no booking settings matches the available payment types, take PayInCar
+            // or the first one by default if PayInCar was deactivated
+		    var paymentList = await _accountService.GetPaymentsList();
+		    if (paymentList.All(x => x.Id != bookingSettings.ChargeTypeId))
+		    {
+		        var matchingPaymentType = paymentList.FirstOrDefault(p => p.Id == ChargeTypes.PaymentInCar.Id)
+                                          ?? paymentList.FirstOrDefault();
+
+		        bookingSettings.ChargeTypeId = matchingPaymentType != null ? matchingPaymentType.Id : null;
+		    }
+            
 			_bookingSettingsSubject.OnNext(bookingSettings);
 		}
 

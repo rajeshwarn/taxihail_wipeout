@@ -570,11 +570,7 @@
   <data name="PayPal" xml:space="preserve">
     <value>PayPal</value>
   </data>
-
-  <data name="PushNotification_OrderUnpairingTimeOutWarning" xml:space="preserve">
-    <value>Rappel: Si vous n'êtes pas dans le bon véhicule, choisissez payer dans le taxi pour ne pas être débité du montant de la course</value>
-  </data>
-  <data name="PayPal" xml:space="preserve">
-    <value>PayPal</value>
+  <data name="CannotCreateOrder_CreditCardDeactivated" xml:space="preserve">
+    <value>Votre carte de crédit a été désactivée car le paiement de votre dernière course a été refusé. Pour être en mesure de l'utiliser de nouveau, naviguez vers l'écran de Paiement. À partir de cet écran, vous serez en mesure de régler le montant en souffrance</value>
   </data>
 </root>

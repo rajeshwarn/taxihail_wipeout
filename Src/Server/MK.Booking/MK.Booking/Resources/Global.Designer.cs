@@ -70,6 +70,15 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Your card of file was deactivated because the payment of your last ride was declined. To be able to use it again, go to the Payment screen to settle any overdue payment.
+        /// </summary>
+        public static string CannotCreateOrder_CreditCardDeactivated {
+            get {
+                return ResourceManager.GetString("CannotCreateOrder_CreditCardDeactivated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The order cannot be created because your credit card failed the preauthorization check..
         /// </summary>
         public static string CannotCreateOrder_CreditCardWasDeclined {
