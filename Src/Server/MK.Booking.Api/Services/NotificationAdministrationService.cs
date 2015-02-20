@@ -129,6 +129,9 @@ namespace apcurium.MK.Booking.Api.Services
                     case NotificationService.EmailConstant.Template.PromotionUnlocked:
                         _notificationService.SendPromotionUnlockedEmail("10% Off your next ride", "PROMO123", DateTime.Now.AddMonths(1), request.EmailAddress, request.Language, true);
                         break;
+                    case NotificationService.EmailConstant.Template.CreditCardDeactivated:
+                        _notificationService.SendCreditCardDeactivatedEmail("Visa", "1234", request.EmailAddress, request.Language, true);
+                        break;
                     default:
                         throw new Exception("sendTestEmailErrorNoMatchingTemplate");
                 }

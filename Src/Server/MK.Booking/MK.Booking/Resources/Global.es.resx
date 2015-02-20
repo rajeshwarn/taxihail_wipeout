@@ -664,4 +664,10 @@
     <value>Su reservación no puede ser creada</value>
     <comment>The order cannot be created.</comment>
   </data>
+  <data name="Email_Body_CreditCardDeactivatedLine" xml:space="preserve">
+    <value>Your &lt;b&gt;{{ CreditCardCompany }}&lt;/b&gt; credit card ending by &lt;b&gt;{{ Last4Digits }}&lt;/b&gt; has been deactivated because the payment of your last ride was declined. To be able to use it again, open {{ ApplicationName }} on your smart phone and go to the Payment screen to settle any overdue payment.</value>
+  </data>
+  <data name="Email_Subject_CreditCardDeactivated" xml:space="preserve">
+    <value>{{ ApplicationName }} - Your credit card has been deactivated</value>
+  </data>
 </root>

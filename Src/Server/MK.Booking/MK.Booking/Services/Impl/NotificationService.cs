@@ -515,9 +515,33 @@ namespace apcurium.MK.Booking.Services.Impl
             SendEmail(clientEmailAddress, EmailConstant.Template.PromotionUnlocked, EmailConstant.Subject.PromotionUnlocked, templateData, clientLanguageCode);
         }
 
-        public void SendCreditCardDeactivatedEmail(Guid accountId, string clientEmailAddress, string clientLanguageCode, bool bypassNotificationSetting = false)
+        public void SendCreditCardDeactivatedEmail(string creditCardCompany, string last4Digits, string clientEmailAddress, string clientLanguageCode, bool bypassNotificationSetting = false)
         {
-            // TODO
+            if (!bypassNotificationSetting)
+            {
+                using (var context = _contextFactory.Invoke())
+                {
+                    var account = context.Query<AccountDetail>().SingleOrDefault(c => c.Email.ToLower() == clientEmailAddress.ToLower());
+                    if (account == null || !ShouldSendNotification(account.Id, x => x.PromotionUnlockedEmail))
+                    {
+                        return;
+                    }
+                }
+            }
+
+            string imageLogoUrl = GetRefreshableImageUrl(GetBaseUrls().LogoImg);
+
+            var templateData = new
+            {
+                ApplicationName = _serverSettings.ServerData.TaxiHail.ApplicationName,
+                AccentColor = _serverSettings.ServerData.TaxiHail.AccentColor,
+                EmailFontColor = _serverSettings.ServerData.TaxiHail.EmailFontColor,
+                CreditCardCompany = creditCardCompany,
+                Last4Digits = last4Digits,
+                LogoImg = imageLogoUrl
+            };
+
+            SendEmail(clientEmailAddress, EmailConstant.Template.CreditCardDeactivated, EmailConstant.Subject.CreditCardDeactivated, templateData, clientLanguageCode);
         }
 
         private Address TryToGetExactDropOffAddress(Guid orderId, Address dropOffAddress, string clientLanguageCode)
@@ -714,6 +738,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 public const string AccountConfirmation = "Email_Subject_AccountConfirmation";
                 public const string BookingConfirmation = "Email_Subject_BookingConfirmation";
                 public const string PromotionUnlocked = "Email_Subject_PromotionUnlocked";
+                public const string CreditCardDeactivated = "Email_Subject_CreditCardDeactivated";
             }
 
             public static class Template
@@ -723,6 +748,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 public const string AccountConfirmation = "AccountConfirmation";
                 public const string BookingConfirmation = "BookingConfirmation";
                 public const string PromotionUnlocked = "PromotionUnlocked";
+                public const string CreditCardDeactivated = "CreditCardDeactivated";
             }
         }
 

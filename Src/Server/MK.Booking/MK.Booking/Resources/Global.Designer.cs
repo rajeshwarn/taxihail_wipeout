@@ -403,6 +403,15 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Your &lt;b&gt;{{ CreditCardCompany }}&lt;/b&gt; credit card ending by &lt;b&gt;{{ Last4Digits }}&lt;/b&gt; has been deactivated because the payment of your last ride was declined. To be able to use it again, open {{ ApplicationName }} on your smart phone and go to the Payment screen to settle any overdue payment..
+        /// </summary>
+        public static string Email_Body_CreditCardDeactivatedLine {
+            get {
+                return ResourceManager.GetString("Email_Body_CreditCardDeactivatedLine", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Date.
         /// </summary>
         public static string Email_Body_Date {
@@ -813,6 +822,15 @@ namespace apcurium.MK.Booking.Resources {
         public static string Email_Subject_BookingConfirmation {
             get {
                 return ResourceManager.GetString("Email_Subject_BookingConfirmation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {{ ApplicationName }} - Your credit card has been deactivated.
+        /// </summary>
+        public static string Email_Subject_CreditCardDeactivated {
+            get {
+                return ResourceManager.GetString("Email_Subject_CreditCardDeactivated", resourceCulture);
             }
         }
         

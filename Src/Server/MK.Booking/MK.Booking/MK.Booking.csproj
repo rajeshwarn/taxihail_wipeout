@@ -359,6 +359,9 @@
     <Content Include="Email\Templates\BookingConfirmation.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Email\Templates\CreditCardDeactivated.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Email\Templates\PasswordReset.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

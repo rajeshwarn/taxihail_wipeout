@@ -552,4 +552,10 @@
   <data name="ServiceError_ErrorCreatingOrderMessage_NoCall" xml:space="preserve">
     <value>Votre demande n'a pas pu être prise en compte</value>
   </data>
+  <data name="Email_Body_CreditCardDeactivatedLine" xml:space="preserve">
+    <value>Votre carte de crédit &lt;b&gt;{{ CreditCardCompany }}&lt;/b&gt; se terminant par &lt;b&gt;{{ Last4Digits }}&lt;/b&gt; a été désactivée car le paiement de votre dernière course a été refusé. Pour être en mesure de l'utiliser de nouveau, veuillez ouvrir {{ ApplicationName }} sur votre téléphone et naviguez vers l'écran de Paiement. À partir de cet écran, vous serez en mesure de régler le montant en souffrance.</value>
+  </data>
+  <data name="Email_Subject_CreditCardDeactivated" xml:space="preserve">
+    <value>{{ ApplicationName }} - Votre carte de crédit a été désactivée</value>
+  </data>
 </root>
