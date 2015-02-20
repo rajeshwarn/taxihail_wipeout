@@ -12,6 +12,8 @@ namespace apcurium.MK.Booking.Commands
 
         public Guid PaymentId { get; set; }
 
+        public Guid AccountId { get; set; }
+
         public string Reason { get; set; }
 
         public Guid Id { get; private set; }

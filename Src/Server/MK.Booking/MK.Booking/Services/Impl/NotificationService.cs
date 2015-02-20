@@ -515,6 +515,11 @@ namespace apcurium.MK.Booking.Services.Impl
             SendEmail(clientEmailAddress, EmailConstant.Template.PromotionUnlocked, EmailConstant.Subject.PromotionUnlocked, templateData, clientLanguageCode);
         }
 
+        public void SendCreditCardDeactivatedEmail(Guid accountId, string clientEmailAddress, string clientLanguageCode, bool bypassNotificationSetting = false)
+        {
+            // TODO
+        }
+
         private Address TryToGetExactDropOffAddress(Guid orderId, Address dropOffAddress, string clientLanguageCode)
         {
             var orderStatus = _orderDao.FindOrderStatusById(orderId);

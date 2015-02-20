@@ -11,5 +11,7 @@
         /// !! Only used for reporting purpose for now
         /// </summary>
         public string TransactionId { get; set; }
+
+        public bool IsDeclined { get; set; }
     }
 }

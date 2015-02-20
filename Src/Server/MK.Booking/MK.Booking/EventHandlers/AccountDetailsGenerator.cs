@@ -33,7 +33,8 @@ namespace apcurium.MK.Booking.EventHandlers
         IEventHandler<AccountLinkedToIbs>,
         IEventHandler<AccountUnlinkedFromIbs>,
         IEventHandler<PayPalAccountLinked>,
-        IEventHandler<PayPalAccountUnlinked>
+        IEventHandler<PayPalAccountUnlinked>,
+        IEventHandler<CreditCardDeactivated>
     {
         private readonly IServerSettings _serverSettings;
         private readonly Func<BookingDbContext> _contextFactory;
@@ -324,6 +325,20 @@ namespace apcurium.MK.Booking.EventHandlers
 
                 context.RemoveWhere<PayPalAccountDetails>(x => x.AccountId == @event.SourceId);
                 context.SaveChanges();
+            }
+        }
+
+        public void Handle(CreditCardDeactivated @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                // Deactivate credit card was declined
+                var creditCardDetails = context.Query<CreditCardDetails>().FirstOrDefault(c => c.AccountId == @event.SourceId);
+                if (creditCardDetails != null)
+                {
+                    creditCardDetails.IsDeactivated = true;
+                    context.Save(creditCardDetails);
+                }
             }
         }
     }
