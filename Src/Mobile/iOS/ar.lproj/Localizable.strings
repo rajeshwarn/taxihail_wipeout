@@ -567,3 +567,4 @@
 "Unpair"="Pay in Car";
 "UnpairErrorMessage"="حدث خطأ أثناء الفصل، رجاء المحاولة في وقت لاحق.";
 "NoPairingCreditCard"="None";
+"UnpairPayInCar"="Pay in Car";

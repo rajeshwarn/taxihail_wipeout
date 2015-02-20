@@ -577,3 +577,4 @@
 "Unpair"="Payer dans le taxi";
 "UnpairErrorMessage"="Désolé, le système a rencontré un problème lors de la réinitialisation";
 "NoPairingCreditCard"="Aucun";
+"UnpairPayInCar"="Payer dans le taxi";

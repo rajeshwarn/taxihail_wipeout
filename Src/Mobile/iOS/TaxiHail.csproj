@@ -566,6 +566,7 @@
     <Compile Include="Bootstrap\WebBrowserPluginBootstrap.cs" />
     <BundleResource Include="Resources\paypal_icon.png" />
     <BundleResource Include="Resources\paypal_icon%402x.png" />
+    <Compile Include="Extensions\NSErrorExtensions.cs" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>
