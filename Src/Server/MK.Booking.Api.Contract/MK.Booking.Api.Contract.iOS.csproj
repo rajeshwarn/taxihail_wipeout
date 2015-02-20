@@ -81,7 +81,6 @@
     <Compile Include="Requests\IgnoreDispatchCompanySwitchRequest.cs" />
     <Compile Include="Requests\NotificationSettingsRequest.cs" />
     <Compile Include="Requests\Payment\DeleteTokenizedCreditcardRequest.cs" />
-    <Compile Include="Requests\Payment\PairingForPaymentRequest.cs" />
     <Compile Include="Requests\Payment\PayPal\LinkPayPalAccountRequest.cs" />
     <Compile Include="Requests\Payment\PayPal\UnlinkPayPalAccountRequest.cs" />
     <Compile Include="Requests\Payment\UnpairingForPaymentRequest.cs" />
