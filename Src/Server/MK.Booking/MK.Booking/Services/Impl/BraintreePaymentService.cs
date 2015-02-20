@@ -212,9 +212,8 @@ namespace apcurium.MK.Booking.Services.Impl
                     
                     message = result.Message;
                     isSuccessful = result.IsSuccess();
-                    isCardDeclined = result.Transaction.Status == TransactionStatus.PROCESSOR_DECLINED
-                                     || result.Transaction.Status == TransactionStatus.GATEWAY_REJECTED;
-
+                    isCardDeclined = IsCardDeclined(result.Transaction);
+                    
                     if (isSuccessful)
                     {
                         transactionId = result.Target.Id;
@@ -315,8 +314,7 @@ namespace apcurium.MK.Booking.Services.Impl
                     && settlementResult.Target != null
                     && settlementResult.Target.ProcessorAuthorizationCode.HasValue();
 
-                var isCardDeclined = settlementResult.Transaction.Status == TransactionStatus.PROCESSOR_DECLINED
-                                     || settlementResult.Transaction.Status == TransactionStatus.GATEWAY_REJECTED;
+                var isCardDeclined = IsCardDeclined(settlementResult.Transaction);
 
                 if (isSuccessful)
                 {
@@ -342,7 +340,18 @@ namespace apcurium.MK.Booking.Services.Impl
                 };
             }
         }
-        
+
+        private bool IsCardDeclined(Transaction transaction)
+        {
+            if (transaction == null || transaction.Status == null)
+            {
+                return false;
+            }
+
+            return transaction.Status == TransactionStatus.PROCESSOR_DECLINED
+                || transaction.Status == TransactionStatus.GATEWAY_REJECTED;
+        }
+
         private static BraintreeGateway GetBraintreeGateway(BraintreeServerSettings settings)
         {
             var env = Environment.SANDBOX;

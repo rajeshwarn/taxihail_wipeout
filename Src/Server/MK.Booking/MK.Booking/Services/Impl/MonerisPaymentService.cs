@@ -366,7 +366,13 @@ namespace apcurium.MK.Booking.Services.Impl
 
         private bool IsCardDeclined(Receipt receipt)
         {
-            var responseCode = int.Parse(receipt.GetResponseCode());
+            int responseCode;
+            var isNumber = int.TryParse(receipt.GetResponseCode(), out responseCode);
+            if (!isNumber)
+            {
+                // GetResponseCode will return "null" string when transaction is a success...
+                return false;
+            }
 
             return MonerisResponseCodes.GetDeclinedCodes().Contains(responseCode);
         }
