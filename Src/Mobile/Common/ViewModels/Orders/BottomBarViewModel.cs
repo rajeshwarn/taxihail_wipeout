@@ -90,7 +90,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
                     {
                         await _orderWorkflowService.ValidatePickupAndDestination();
                         await _orderWorkflowService.ValidatePickupTime();
-						await _orderWorkflowService.ValidateVehicleType();
+						await _orderWorkflowService.ValidateNumberOfPassengers(null);
                     }
                     catch (OrderValidationException e)
                     {
