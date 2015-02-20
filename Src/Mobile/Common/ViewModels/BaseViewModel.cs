@@ -102,8 +102,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             var dictionary = parameter.ToSimplePropertyDictionary();
             dictionary = dictionary ?? new Dictionary<string, string>();
-			dictionary.Add("clearPreviousHistory", "notUsed");
-			dictionary.Add("removeFromHistory", "notUsed");
+            dictionary.Add("clearNavigationStack", "notUsed");
             base.ShowViewModel<TViewModel>(dictionary);
         }
 
@@ -111,8 +110,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			var dictionary = parameter.ToSimplePropertyDictionary();
 			dictionary = dictionary ?? new Dictionary<string,string>();
-			dictionary.Add("clearNavigationStack", "notUsed");
-			dictionary.Add("removeFromHistory", "notUsed");
+			dictionary.Add("clearHistoryExceptFirstElement", "notUsed"); // iOS only: this will not actually cause a navigation.
+			dictionary.Add("removeFromHistory", "notUsed"); //Android
 			base.ShowViewModel<HomeViewModel>(dictionary);
 		}
 
