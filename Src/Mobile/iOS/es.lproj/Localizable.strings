@@ -567,3 +567,4 @@
 "PayPalLinkedInfo"="Account Linked";
 "PayPalLinked"="Your account is now enabled to pay with PayPal by default. You can still choose to pay in the vehicle by selecting \"Pay in Vehicle\" on the payment screen";
 "Error"="Error";
+"NoPairingCreditCard"="None";

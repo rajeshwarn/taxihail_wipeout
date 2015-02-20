@@ -8,6 +8,7 @@ using apcurium.MK.Booking.Mobile.Client.Diagnostic;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using Android.Widget;
 using System.Windows.Input;
+using Android.Views;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {
@@ -72,11 +73,5 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
             _touchMap.OnLowMemory();
         }
-
-		public override void OnBackPressed ()
-		{
-			base.OnBackPressed ();
-            ViewModel.PrepareNewOrder.ExecuteIfPossible();
-		}
     }
 }
