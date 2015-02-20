@@ -57,6 +57,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 		IObservable<string> GetAndObserveMarket();
 		IObservable<bool> GetAndObserveIsDestinationModeOpened();
 
+		Task<bool> IsFutureBooking();
+
 		Task<Tuple<Order, OrderStatusDetail>> GetLastActiveOrder();
 
         Guid? GetLastUnratedRide();

@@ -7,7 +7,6 @@
 	"TwitterConsumerKey" : "3nNkJ5EcI7yyi56ifLSAA",
 	"TwitterConsumerSecret" : "Th6nCDTgPiI3JPwHxgm8fQheMaLczUeHHG5liHGZRqs",
 	"TwitterEnabled" : "true",
-	"ServiceUrlDev" : "http://api.taxihail.com/utog/api/",
-	"ServiceUrl" : "http://192.168.12.119/apcurium.MK.Web/api/",
+	"ServiceUrl" : "http://test.taxihail.biz:8181/Apcurium/api",
 	"CanChangeServiceUrl": "true"
 }
