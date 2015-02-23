@@ -1,9 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Text.RegularExpressions;
 using System.Web.Http;
+using apcurium.MK.Common.Extensions;
 using CustomerPortal.Contract.Resources;
 using CustomerPortal.Contract.Response;
 using CustomerPortal.Web.Entities;
@@ -49,11 +50,18 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
 
             foreach (var roamingCompany in companiesFromOtherMarkets)
             {
+                if (!IsFleetIdWhitelisted(roamingCompany.FleetId, homeCompanySettings))
+                {
+                    // Roaming company is not allowed by the home company
+                    continue;
+                }
+
                 var companyPreference = homeCompanySettings.Preferences.FirstOrDefault(p => p.CompanyKey == roamingCompany.Id)
                             ?? new CompanyPreference { CompanyKey = roamingCompany.Id };
 
                 var roamingCompanyAllowUsToDispatch = roamingCompany.Preferences.Any(x => x.CompanyKey == companyId && x.CanAccept);
 
+                // Add the roaming company to its corresponding market in the response dictionnary
                 if (!preferences.ContainsKey(roamingCompany.Market))
                 {
                     preferences.Add(roamingCompany.Market, new List<CompanyPreferenceResponse>());
@@ -117,6 +125,12 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
             };
         }
 
+        /// <summary>
+        /// Returns all the fleets from a market
+        /// </summary>
+        /// <param name="companyId">The home company id</param>
+        /// <param name="market">The market to return the fleets from</param>
+        /// <returns>The NetworkFleets from the market</returns>
         [Route("api/customer/{companyId}/roaming/marketfleets")]
         public HttpResponseMessage GetMarketFleets(string companyId, string market)
         {
@@ -134,6 +148,7 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
             // Get all companies in the market that accepts dispatch for the company
             var companiesInMarket = _networkRepository.Where(n => n.IsInNetwork
                 && n.Market == market
+                && IsFleetIdWhitelisted(n.FleetId, currentCompanySettings)
                 && n.Preferences.Any(p => p.CompanyKey == companyId && p.CanAccept)).ToList();
 
             var dispatchableCompaniesInMarket =
@@ -163,6 +178,12 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
             };
         }
 
+        /// <summary>
+        /// Returns a single fleet/company from an external market
+        /// </summary>
+        /// <param name="market">The market of the fleet/company</param>
+        /// <param name="fleetId">The fleet id of the fleet</param>
+        /// <returns>The matching NetworkFleet</returns>
         [Route("api/customer/roaming/marketfleet")]
         public HttpResponseMessage GetMarketFleet(string market, int fleetId)
         {
@@ -209,6 +230,20 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
             }
 
             return ibsTimeDifference;
+        }
+
+        private bool IsFleetIdWhitelisted(int fleetId, TaxiHailNetworkSettings homeCompanySettings)
+        {
+            if (!homeCompanySettings.WhiteListedFleetIds.HasValue())
+            {
+                return true;
+            }
+
+            // Remove all whitespaces and split
+            var whiteListedFleetIds = Regex.Replace(homeCompanySettings.WhiteListedFleetIds, @"\s+", string.Empty).Split(',');
+
+            // Whitelisted if list is empty or if the id is in the list
+            return !whiteListedFleetIds.Any() || whiteListedFleetIds.Contains(fleetId.ToString());
         }
     }
 }

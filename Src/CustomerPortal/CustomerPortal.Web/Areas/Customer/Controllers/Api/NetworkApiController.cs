@@ -2,7 +2,9 @@
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Text.RegularExpressions;
 using System.Web.Http;
+using apcurium.MK.Common.Extensions;
 using CustomerPortal.Contract.Resources;
 using CustomerPortal.Contract.Response;
 using CustomerPortal.Web.Entities;
@@ -50,6 +52,12 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
 
             foreach (var nearbyCompany in overlappingCompanies)
             {
+                if (!IsFleetIdWhitelisted(nearbyCompany.FleetId, networkSettings))
+                {
+                    // Local company is not allowed by the home company
+                    continue;
+                }
+
                 var companyPreference = networkSettings.Preferences.FirstOrDefault(p => p.CompanyKey == nearbyCompany.Id) 
                 			?? new CompanyPreference{ CompanyKey = nearbyCompany.Id };
 
@@ -136,6 +144,16 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
                 var company = _companyRepository.FirstOrDefault(c => c.CompanyKey == companyPreferences.CompanyKey);
                 if (company != null)
                 {
+                    var networkSettings = network.FirstOrDefault(n => n.Id == company.CompanyKey);
+                    var isWhitelisted = networkSettings != null
+                        && IsFleetIdWhitelisted(networkSettings.FleetId, currentCompanyNetworkSettings);
+
+                    if (!isWhitelisted)
+                    {
+                        // Local company is not allowed by the home company
+                        continue;
+                    }
+
                     var ibsTimeDifferenceString = company.CompanySettings.FirstOrDefault(s => s.Key == "IBS.TimeDifference");
                     long ibsTimeDifference = 0;
                     if (ibsTimeDifferenceString != null)
@@ -173,6 +191,20 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
             {
                 Content = new StringContent(JsonConvert.SerializeObject(networkFleetResult))
             };
+        }
+
+        private bool IsFleetIdWhitelisted(int fleetId, TaxiHailNetworkSettings homeCompanySettings)
+        {
+            if (!homeCompanySettings.WhiteListedFleetIds.HasValue())
+            {
+                return true;
+            }
+
+            // Remove all whitespaces and split
+            var whiteListedFleetIds = Regex.Replace(homeCompanySettings.WhiteListedFleetIds, @"\s+", string.Empty).Split(',');
+
+            // Whitelisted if list is empty or if the id is in the list
+            return !whiteListedFleetIds.Any() || whiteListedFleetIds.Contains(fleetId.ToString());
         }
     }
 }

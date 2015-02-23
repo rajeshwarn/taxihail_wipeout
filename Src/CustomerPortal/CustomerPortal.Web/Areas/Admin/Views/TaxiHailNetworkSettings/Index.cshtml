@@ -35,7 +35,11 @@
         </div>
         <div class="editor-fleet-field">
             @Html.LabelFor(x => x.FleetId)
-            @Html.TextBoxFor(x => x.FleetId, new { id = "FleetTextBox" })
+            @Html.TextBoxFor(x => x.FleetId, new {id = "FleetTextBox"})
+        </div>
+        <div class="editor-fleet-field">
+            @Html.LabelFor(x => x.WhiteListedFleetIds)
+            @Html.TextBoxFor(x => x.WhiteListedFleetIds, new { id = "FleetIdWhiteList", placeholder = "Comma delimited FleetIds" })
         </div>
     </fieldset>
     
