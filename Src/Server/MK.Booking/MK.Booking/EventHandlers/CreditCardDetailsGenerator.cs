@@ -1,6 +1,7 @@
 ﻿#region
 
 using System;
+using System.Linq;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.ReadModel;
@@ -16,7 +17,8 @@ namespace apcurium.MK.Booking.EventHandlers
     public class CreditCardDetailsGenerator :
         IEventHandler<CreditCardAddedOrUpdated>,
         IEventHandler<CreditCardRemoved>,
-        IEventHandler<AllCreditCardsRemoved>
+        IEventHandler<AllCreditCardsRemoved>,
+        IEventHandler<CreditCardDeactivated>
     {
         private readonly Func<BookingDbContext> _contextFactory;
 
@@ -58,6 +60,20 @@ namespace apcurium.MK.Booking.EventHandlers
                 {
                     context.Set<CreditCardDetails>().Remove(creditCard);
                     context.SaveChanges();
+                }
+            }
+        }
+
+        public void Handle(CreditCardDeactivated @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                // Deactivate credit card was declined
+                var creditCardDetails = context.Query<CreditCardDetails>().FirstOrDefault(c => c.AccountId == @event.SourceId);
+                if (creditCardDetails != null)
+                {
+                    creditCardDetails.IsDeactivated = true;
+                    context.Save(creditCardDetails);
                 }
             }
         }

@@ -250,6 +250,21 @@ namespace apcurium.MK.Booking.EventHandlers
             }
         }
 
+        public void Handle(CreditCardDeactivated @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var account = context.Find<AccountDetail>(@event.SourceId);
+                if (!_serverSettings.GetPaymentSettings().IsOutOfAppPaymentDisabled)
+                {
+                    // If pay in taxi is not disable, this becomes the default payment method
+                    account.Settings.ChargeTypeId = ChargeTypes.PaymentInCar.Id;
+                }
+                
+                context.Save(account);
+            }
+        }
+
         public void Handle(AccountLinkedToIbs @event)
         {
             using (var context = _contextFactory.Invoke())
@@ -325,20 +340,6 @@ namespace apcurium.MK.Booking.EventHandlers
 
                 context.RemoveWhere<PayPalAccountDetails>(x => x.AccountId == @event.SourceId);
                 context.SaveChanges();
-            }
-        }
-
-        public void Handle(CreditCardDeactivated @event)
-        {
-            using (var context = _contextFactory.Invoke())
-            {
-                // Deactivate credit card was declined
-                var creditCardDetails = context.Query<CreditCardDetails>().FirstOrDefault(c => c.AccountId == @event.SourceId);
-                if (creditCardDetails != null)
-                {
-                    creditCardDetails.IsDeactivated = true;
-                    context.Save(creditCardDetails);
-                }
             }
         }
     }

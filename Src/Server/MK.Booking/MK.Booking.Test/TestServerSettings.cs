@@ -64,7 +64,8 @@ namespace apcurium.MK.Booking.Test
 
         public ServerPaymentSettings GetPaymentSettings()
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
+            return new ServerPaymentSettings();
         }
 
         public void Reload()

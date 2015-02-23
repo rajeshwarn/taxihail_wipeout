@@ -96,7 +96,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                 var account = context.Find<AccountDetail>(@event.SourceId);
                 var creditCard = _creditCardDao.FindByAccountId(@event.SourceId).First();
 
-                _notificationService.SendCreditCardDeactivatedEmail(creditCard.CreditCardCompany, creditCard.CreditCardCompany, account.Email, account.Language);
+                _notificationService.SendCreditCardDeactivatedEmail(creditCard.CreditCardCompany, creditCard.Last4Digits, account.Email, account.Language);
             }
         }
     }
