@@ -131,6 +131,13 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
                     Text = r.Tag
                 });
 
+            var environments = new MongoRepository<Environment>();
+            model.Environment = environments.ToArray().Where(e => e.Role == EnvironmentRole.BuildMobile).OrderBy(e => e.Name).Select(e => new SelectListItem
+                {
+                    Value = e.Id,
+                    Text = e.Name
+                });
+
             return View(model);
         }
 
@@ -143,7 +150,7 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
                 var job = new AddDeploymentJobModel { Android = true, CallBox = false, CompanyId = model.CompanyKey, CreateType = (int) DeploymentJobType.DeployClient , Database = false, IosAdhoc = true, IosAppStore = true, RevisionId = model.RevisionId , ServerUrlOptions = model.ServerUrlOptions  };                
                 
                 var environments = new MongoRepository<Environment>();
-                job.ServerId = environments.Single(e => e.Name == "MobileBuildServer").Id;                
+                job.ServerId = model.ServerId;                
                 AddDeploymentJob(job);                
             }
 
