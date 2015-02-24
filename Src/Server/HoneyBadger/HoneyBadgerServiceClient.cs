@@ -26,10 +26,10 @@ namespace HoneyBadger
         /// <param name="latitude">Search origin latitude.</param>
         /// <param name="longitude">Search origin longitude</param>
         /// <param name="searchRadius">Search radius in meters</param>
-        /// <param name="fleetId">The id of the fleet to search.</param>
+        /// <param name="fleetIds">The id of the fleet to search.</param>
         /// <param name="returnAll">True to return all the available vehicles; false will return a set number defined by the admin settings.</param>
         /// <returns>The available vehicles.</returns>
-        public IEnumerable<VehicleResponse> GetAvailableVehicles(string market, double latitude, double longitude, int? searchRadius = null, int? fleetId = null, bool returnAll = false)
+        public IEnumerable<VehicleResponse> GetAvailableVehicles(string market, double latitude, double longitude, int? searchRadius = null, IEnumerable<int> fleetIds = null, bool returnAll = false)
         {
             var searchRadiusInKm = (searchRadius ?? _serverSettings.ServerData.AvailableVehicles.Radius) / 1000;
             var numberOfVehicles = _serverSettings.ServerData.AvailableVehicles.Count;
@@ -49,9 +49,12 @@ namespace HoneyBadger
                 @params.Add(new KeyValuePair<string, string>("poly", point));
             }
 
-            if (fleetId.HasValue)
+            if (fleetIds != null)
             {
-                @params.Add(new KeyValuePair<string, string>("fleet", fleetId.ToString()));
+                foreach (var fleetId in fleetIds)
+                {
+                    @params.Add(new KeyValuePair<string, string>("fleet", fleetId.ToString()));
+                }
             }
 
             var queryString = BuildQueryString(@params);
