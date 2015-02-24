@@ -165,13 +165,19 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			var vehicleTypes = await _accountService.GetVehiclesList();
 			var data = await _accountService.GetReferenceData();
 			var settings = await _bookingSettingsSubject.Take(1).ToTask();
+			var defaultVehicleType = data.VehiclesList.FirstOrDefault (x => x.IsDefault.HasValue && x.IsDefault.Value);
 
-			vehicleTypeId = vehicleTypeId ?? data.VehiclesList.First(x => x.IsDefault.HasValue && x.IsDefault.Value).Id;
-			var vehicleType = vehicleTypes.First (v => v.ReferenceDataVehicleId == vehicleTypeId);
+			if (vehicleTypeId == null
+				&& defaultVehicleType != null)
+			{
+				vehicleTypeId = defaultVehicleType.Id;
+			}
 
+			var vehicleType = vehicleTypes.FirstOrDefault(v => v.ReferenceDataVehicleId == vehicleTypeId);
 			numberOfPassengers = numberOfPassengers ?? settings.Passengers;
 
-			if (vehicleType.MaxNumberPassengers > 0
+			if (vehicleType != null
+				&& vehicleType.MaxNumberPassengers > 0
 				&& numberOfPassengers > vehicleType.MaxNumberPassengers)
 			{
 				throw new OrderValidationException("Number of passengers is too large", OrderValidationError.InvalidPassengersNumber);
