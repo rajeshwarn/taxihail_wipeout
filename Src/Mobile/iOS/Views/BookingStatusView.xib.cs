@@ -285,7 +285,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         public override void ViewWillDisappear(bool animated)
         {
             base.ViewWillDisappear(animated);
-            if (IsMovingFromParentViewController)
+            if (IsMovingFromParentViewController && animated)
             {
                 // Back button pressed
                 ViewModel.PrepareNewOrder.ExecuteIfPossible(null);

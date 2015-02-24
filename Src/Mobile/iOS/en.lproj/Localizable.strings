@@ -591,6 +591,8 @@
 "PayPalLinkedInfo"="Account Linked";
 "PayPalLinked"="Your account is now enabled to pay with PayPal by default. You can still choose to pay in the vehicle by selecting \"Pay in Vehicle\" on the confirmation screen";
 "Error"="Error";
+"NoPairingCreditCard"="None";
 "Unpair"="Pay in Car";
 "UnpairErrorMessage"="There was an error during unpairing, please try again later.";
 "NoPairingCreditCard"="None";
+"UnpairPayInCar"="Pay in Car";

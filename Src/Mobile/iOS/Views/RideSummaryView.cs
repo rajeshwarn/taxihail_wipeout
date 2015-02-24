@@ -83,15 +83,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
             var set = this.CreateBindingSet<RideSummaryView, RideSummaryViewModel> ();
 
-            NavigationItem.RightBarButtonItem = new UIBarButtonItem(Localize.GetValue("Done"), UIBarButtonItemStyle.Bordered, async (o, e) => 
+            NavigationItem.RightBarButtonItem = new UIBarButtonItem(Localize.GetValue("Done"), UIBarButtonItemStyle.Bordered, (o, e) => 
             {  
-                await ViewModel.CheckAndSendRatings();
-
-                if (ViewModel.CanUserLeaveScreen ())
-                {
-                    ViewModel.PrepareNewOrder.ExecuteIfPossible();
-                    ViewModel.CloseCommand.ExecuteIfPossible();
-                }
+					ViewModel.RateOrder.ExecuteIfPossible();
             });
 
             set.Bind(_source)

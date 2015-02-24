@@ -14,23 +14,20 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 {
 	public class PanelMenuViewModel : BaseViewModel
     {
-		private readonly BaseViewModel _parent;
-		private readonly IMvxWebBrowserTask _browserTask;
+	    private readonly IMvxWebBrowserTask _browserTask;
 
 		private readonly IOrderWorkflowService _orderWorkflowService;
 		private readonly IAccountService _accountService;
 		private readonly IPhoneService _phoneService;
 		private readonly IPaymentService _paymentService;
 
-		public PanelMenuViewModel (BaseViewModel parent, 
-			IMvxWebBrowserTask browserTask, 
+		public PanelMenuViewModel (IMvxWebBrowserTask browserTask, 
 			IOrderWorkflowService orderWorkflowService,
 			IAccountService accountService,
 			IPhoneService phoneService,
 			IPaymentService paymentService)
         {
-            _parent = parent;
-			_browserTask = browserTask;
+		    _browserTask = browserTask;
 
 			_orderWorkflowService = orderWorkflowService;
 			_accountService = accountService;
@@ -51,7 +48,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		    var notificationSettings = await _accountService.GetNotificationSettings(true);
 
             // Load and cache user notification settings. DO NOT await.
+#pragma warning disable 4014
             _accountService.GetNotificationSettings();
+#pragma warning restore 4014
 
 		    IsNotificationsEnabled = notificationSettings.Enabled;
             IsTaxiHailNetworkEnabled = Settings.Network.Enabled;
@@ -222,9 +221,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					CloseMenu();
 					_orderWorkflowService.PrepareForNewOrder();
 					_accountService.SignOut();         
-					ShowViewModel<LoginViewModel> ();
-
-                    Close( _parent );
+					ShowViewModelAndClearHistory<LoginViewModel> ();
                 });
             }
         }

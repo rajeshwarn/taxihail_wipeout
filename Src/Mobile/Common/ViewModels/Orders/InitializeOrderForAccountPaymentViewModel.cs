@@ -49,7 +49,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			}
 		}
 
-		public ICommand ConfirmOrder
+	    public ICommand ConfirmOrder
 		{
 			get
 			{
@@ -71,7 +71,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
 							var result = await _orderWorkflowService.ConfirmOrder();
 
-								ShowViewModelAndRemoveFromHistory<BookingStatusViewModel>(new
+                            ShowViewModelAndClearHistory<BookingStatusViewModel>(new
 							{
 								order = result.Item1.ToJson(),
 								orderStatus = result.Item2.ToJson()
