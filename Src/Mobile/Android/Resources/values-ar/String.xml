@@ -567,4 +567,7 @@
   <string name="PayPalLinkedInfo">Account Linked</string>
   <string name="Error">خطأ</string>
   <string name="NoPairingCreditCard">None</string>
+  <string name="Unpair">Pay in Car</string>
+  <string name="UnpairErrorMessage">حدث خطأ أثناء الفصل، رجاء المحاولة في وقت لاحق.</string>
+  <string name="UnpairPayInCar">Pay in Car</string>
 </resources>

@@ -5,6 +5,8 @@ using apcurium.MK.Booking.IBS;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Services;
 using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Configuration.Impl;
+using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Resources;
 using ServiceStack.ServiceInterface;
 
@@ -54,32 +56,31 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             return _paymentService.DeleteTokenizedCreditcard(request.CardToken);
         }
 
-        public PairingResponse Post(PairingForPaymentRequest request)
-        {
-            var order = _orderDao.FindById(request.OrderId);
-
-            var response = _paymentService.Pair(request.OrderId, request.CardToken, request.AutoTipPercentage);
-
-            if (response.IsSuccessful)
-            {
-                var ibsAccountId = _accountDao.GetIbsAccountId(order.AccountId, null);
-                if (!UpdateOrderPaymentType(ibsAccountId.Value, order.IBSOrderId.Value))
-                {
-                    response.IsSuccessful = false;
-                    _paymentService.VoidPreAuthorization(request.OrderId);
-                }
-            }
-            return response;
-        }
-
-        private bool UpdateOrderPaymentType(int ibsAccountId, int ibsOrderId, string companyKey = null)
-        {
-            return _ibsServiceProvider.Booking(companyKey).UpdateOrderPaymentType(ibsAccountId, ibsOrderId, _serverSettings.ServerData.IBS.PaymentTypeCardOnFileId);
-        }
-
         public BasePaymentResponse Post(UnpairingForPaymentRequest request)
         {
-            return _paymentService.Unpair(request.OrderId);
+            var order = _orderDao.FindById(request.OrderId);
+            var ibsAccountId = _accountDao.GetIbsAccountId(order.AccountId, null);
+
+            if (UpdateIBSOrderPaymentType(ibsAccountId.Value, order.IBSOrderId.Value))
+            {
+                var response = _paymentService.Unpair(request.OrderId);
+                if (response.IsSuccessful)
+                {
+                    _paymentService.VoidPreAuthorization(request.OrderId);
+                }
+                else
+                {
+                    response.IsSuccessful = false;
+                }
+                return response;
+            }
+            return new BasePaymentResponse { IsSuccessful = false };
+        }
+
+        private bool UpdateIBSOrderPaymentType(int ibsAccountId, int ibsOrderId, string companyKey = null)
+        {
+            // Change payment type to Pay in Car            
+            return _ibsServiceProvider.Booking(companyKey).UpdateOrderPaymentType(ibsAccountId, ibsOrderId, _serverSettings.ServerData.IBS.PaymentTypePaymentInCarId);
         }
     }
 }

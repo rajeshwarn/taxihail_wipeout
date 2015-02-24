@@ -581,4 +581,7 @@
   <string name="PayPalLinkedInfo">Compte associé</string>
   <string name="Error">Erreur</string>
   <string name="NoPairingCreditCard">Aucun</string>
+  <string name="Unpair">Payer dans le taxi</string>
+  <string name="UnpairErrorMessage">Désolé, le système a rencontré un problème lors de la réinitialisation</string>
+  <string name="UnpairPayInCar">Payer dans le taxi</string>
 </resources>

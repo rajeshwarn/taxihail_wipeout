@@ -65,21 +65,10 @@ namespace apcurium.MK.Booking.Mobile
 
                     if (order != null && orderStatus != null)
                     {
-                        if (isPairingNotification)
-                        {
-                            ShowViewModel<ConfirmPairViewModel>(new
-                            {
-                                order = order.ToJson(),
-                                orderStatus = orderStatus.ToJson()
-                            }.ToStringDictionary());
-                        }
-                        else
-                        {
-                            ShowViewModel<BookingStatusViewModel>(new Dictionary<string, string> {
-						        {"order", order.ToJson()},
-                                {"orderStatus", orderStatus.ToJson()}
-                            });
-                        }
+                        ShowViewModel<BookingStatusViewModel>(new Dictionary<string, string> {
+						    {"order", order.ToJson()},
+                            {"orderStatus", orderStatus.ToJson()}
+                        });
                     }
 
                 }
