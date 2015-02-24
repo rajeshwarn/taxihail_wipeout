@@ -59,7 +59,7 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
                 var companyPreference = homeCompanySettings.Preferences.FirstOrDefault(p => p.CompanyKey == roamingCompany.Id)
                             ?? new CompanyPreference { CompanyKey = roamingCompany.Id };
 
-                var roamingCompanyAllowUsToDispatch = roamingCompany.Preferences.Any(x => x.CompanyKey == companyId && x.CanAccept);
+                var doesRoamingCompanyAllowUsToDispatch = roamingCompany.Preferences.Any(x => x.CompanyKey == companyId && x.CanAccept);
 
                 // Add the roaming company to its corresponding market in the response dictionnary
                 if (!preferences.ContainsKey(roamingCompany.Market))
@@ -70,7 +70,8 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
                 preferences[roamingCompany.Market].Add(new CompanyPreferenceResponse
                 {
                     CompanyPreference = companyPreference,
-                    CanDispatchTo = roamingCompanyAllowUsToDispatch
+                    CanDispatchTo = doesRoamingCompanyAllowUsToDispatch,
+                    FleetId = roamingCompany.FleetId
                 });
             }
 

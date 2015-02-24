@@ -61,12 +61,13 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
                 var companyPreference = networkSettings.Preferences.FirstOrDefault(p => p.CompanyKey == nearbyCompany.Id) 
                 			?? new CompanyPreference{ CompanyKey = nearbyCompany.Id };
 
-                var nearbyCompanyAllowUsToDispatch = nearbyCompany.Preferences.Any(x => x.CompanyKey == companyId && x.CanAccept);
+                var doesNearbyCompanyAllowUsToDispatch = nearbyCompany.Preferences.Any(x => x.CompanyKey == companyId && x.CanAccept);
 
                 preferences.Add(new CompanyPreferenceResponse
                 {
                     CompanyPreference = companyPreference,
-                    CanDispatchTo = nearbyCompanyAllowUsToDispatch
+                    CanDispatchTo = doesNearbyCompanyAllowUsToDispatch,
+                    FleetId = nearbyCompany.FleetId
                 });
             }
 

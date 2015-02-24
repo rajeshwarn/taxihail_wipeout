@@ -57,7 +57,7 @@ namespace apcurium.MK.Booking.Api.Services
             }
             else
             {
-                var vehicleResponse = _honeyBadgerServiceClient.GetAvailableVehicles(request.Market, request.Latitude, request.Longitude);
+                var vehicleResponse = _honeyBadgerServiceClient.GetAvailableVehicles(request.Market, request.Latitude, request.Longitude, null, request.FleetId);
                 vehicles = vehicleResponse.Select(v => new IbsVehiclePosition
                 {
                     Latitude = v.Latitude,

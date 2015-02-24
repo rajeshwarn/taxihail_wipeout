@@ -15,7 +15,7 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
         public double Longitude { get; set; }
         public int? VehicleTypeId { get; set; }
         public string Market { get; set; }
-        public int FleetId { get; set; }
+        public int? FleetId { get; set; }
     }
 
     public class AvailableVehiclesResponse : List<AvailableVehicle>
