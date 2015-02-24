@@ -1,3 +1,5 @@
+using System;
+
 namespace apcurium.MK.Common.Configuration.Impl
 {
     public class ClientPaymentSettings
@@ -13,7 +15,7 @@ namespace apcurium.MK.Common.Configuration.Impl
             IsChargeAccountPaymentEnabled = false;
             IsPayInTaxiEnabled = false;
             IsOutOfAppPaymentDisabled = false;
-            AutomaticPaymentPairing = false;
+            //IsUnpairingDisabled = false;
         }
 
         public PaymentMethod PaymentMode { get; set; }
@@ -30,7 +32,10 @@ namespace apcurium.MK.Common.Configuration.Impl
 
         public bool IsChargeAccountPaymentEnabled { get; set; }
 
+        [Obsolete("This property is deprecated. It is only kept to support older versions.", false)]
         public bool AutomaticPaymentPairing { get; set; }
+
+        //public bool IsUnpairingDisabled { get; set; }
         public CmtPaymentSettings CmtPaymentSettings { get; set; }
         public BraintreeClientSettings BraintreeClientSettings { get; set; }
         public MonerisPaymentSettings MonerisPaymentSettings { get; set; }

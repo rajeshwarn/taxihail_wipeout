@@ -16,6 +16,8 @@ namespace apcurium.MK.Common.Configuration.Impl
             PayPalServerSettings = new PayPalServerSettings();
             IsPreAuthEnabled = true;
             PreAuthAmount = 200;
+            UnpairingTimeOut = 120;
+            IsUnpairingDisabled = false;
         }
 
         [Key]
@@ -29,5 +31,9 @@ namespace apcurium.MK.Common.Configuration.Impl
         public bool IsPreAuthEnabled { get; set; }
 
         public decimal? PreAuthAmount { get; set; }
+
+        public bool IsUnpairingDisabled { get; set; }
+
+        public int UnpairingTimeOut { get; protected set; }
     }
 }
