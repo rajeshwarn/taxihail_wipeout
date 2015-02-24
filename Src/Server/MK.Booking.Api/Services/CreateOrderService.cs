@@ -352,7 +352,7 @@ namespace apcurium.MK.Booking.Api.Services
             {
                 var ibsCommand = new AddIbsOrderInfoToOrder
                 {
-                    OrderId = orderId, 
+                    OrderId = orderId,
                     IBSOrderId = ibsOrderId.Value
                 };
                 _commandBus.Send(ibsCommand);
