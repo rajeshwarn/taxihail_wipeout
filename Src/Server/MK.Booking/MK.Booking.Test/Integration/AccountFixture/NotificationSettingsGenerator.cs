@@ -47,6 +47,7 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
                     ConfirmPairingPush = true,
                     DriverAssignedPush = true,
                     NearbyTaxiPush = true,
+                    UnpairingReminderPush = true,
                     PaymentConfirmationPush = true,
                     ReceiptEmail = true,
                     PromotionUnlockedEmail = true,
@@ -65,6 +66,7 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
                 Assert.AreEqual(true, dto.BookingConfirmationEmail);
                 Assert.AreEqual(true, dto.ConfirmPairingPush);
                 Assert.AreEqual(true, dto.DriverAssignedPush);
+                Assert.AreEqual(true, dto.UnpairingReminderPush);
                 Assert.AreEqual(true, dto.NearbyTaxiPush);
                 Assert.AreEqual(true, dto.ReceiptEmail);
                 Assert.AreEqual(true, dto.PromotionUnlockedEmail);
@@ -91,6 +93,7 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
                     BookingConfirmationEmail = true,
                     ConfirmPairingPush = true,
                     DriverAssignedPush = true,
+                    UnpairingReminderPush = true,
                     NearbyTaxiPush = true,
                     PaymentConfirmationPush = true,
                     ReceiptEmail = true,
@@ -114,6 +117,7 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
                     BookingConfirmationEmail = false,
                     ConfirmPairingPush = false,
                     DriverAssignedPush = false,
+                    UnpairingReminderPush = false,
                     NearbyTaxiPush = false,
                     PaymentConfirmationPush = false,
                     ReceiptEmail = false,
@@ -133,6 +137,7 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
                 Assert.AreEqual(false, dto.BookingConfirmationEmail);
                 Assert.AreEqual(false, dto.ConfirmPairingPush);
                 Assert.AreEqual(false, dto.DriverAssignedPush);
+                Assert.AreEqual(false, dto.UnpairingReminderPush);
                 Assert.AreEqual(false, dto.NearbyTaxiPush);
                 Assert.AreEqual(false, dto.ReceiptEmail);
                 Assert.AreEqual(false, dto.VehicleAtPickupPush);

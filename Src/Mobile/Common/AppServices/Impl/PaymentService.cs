@@ -94,12 +94,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			return await GetClient().ForgetTokenizedCard(cardToken);
         }
 
-        public async Task<PairingResponse> Pair(Guid orderId, string cardToken, int? autoTipPercentage)
-        {
-            return await new PairingServiceClient(_baseUrl, _sessionId, _packageInfo)
-                .Pair(orderId, cardToken, autoTipPercentage);
-        }
-
         public async Task<BasePaymentResponse> Unpair(Guid orderId)
         {
             return await new PairingServiceClient(_baseUrl, _sessionId, _packageInfo)

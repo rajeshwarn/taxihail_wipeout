@@ -594,3 +594,7 @@
 "InvalidPassengersNumberTitle"="Invalid Number of Passengers";
 "InvalidPassengersNumber"="Sorry, but unfortunately we do not have a big enough vehicle to accommodate the number of passengers. Please book more than one car to accommodate your party size.";
 "NoPairingCreditCard"="None";
+"Unpair"="Pay in Car";
+"UnpairErrorMessage"="There was an error during unpairing, please try again later.";
+"NoPairingCreditCard"="None";
+"UnpairPayInCar"="Pay in Car";

@@ -381,11 +381,11 @@
     <value>Guardar</value>
     <comment>Save</comment>
   </data>
-  <data name="CmtRideLinqUnpair" xml:space="preserve">
-    <value>Desemparejar</value>
+  <data name="UnpairPayInCar" xml:space="preserve">
+    <value>Pagar en el vehículo</value>
     <comment>Unpair</comment>
   </data>
-  <data name="CmtRideLinqUnpairErrorMessage" xml:space="preserve">
+  <data name="UnpairErrorMessage" xml:space="preserve">
     <value>Hubo un error desincronizando, por favor intente nuevamente</value>
     <comment>There was an error during unpairing, please try again later.</comment>
   </data>

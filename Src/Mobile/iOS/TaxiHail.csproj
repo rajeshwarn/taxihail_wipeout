@@ -502,8 +502,6 @@
     <Compile Include="MapUtitilties\MKMapViewHelper.cs" />
     <BundleResource Include="Resources\nearby_suv.png" />
     <BundleResource Include="Resources\nearby_suv%402x.png" />
-    <Compile Include="Views\Payments\ConfirmPairView.cs" />
-    <Compile Include="Views\Payments\ConfirmPairView.designer.cs" />
     <Compile Include="Views\NotificationSettingsView.cs" />
     <Compile Include="Views\NotificationSettingsView.designer.cs">
       <DependentUpon>NotificationSettingsView.cs</DependentUpon>
@@ -568,6 +566,7 @@
     <Compile Include="Bootstrap\WebBrowserPluginBootstrap.cs" />
     <BundleResource Include="Resources\paypal_icon.png" />
     <BundleResource Include="Resources\paypal_icon%402x.png" />
+    <Compile Include="Extensions\NSErrorExtensions.cs" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>
@@ -578,7 +577,9 @@
       </Properties>
     </MonoDevelop>
   </ProjectExtensions>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Views\Payments\" />
+  </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="MainWindow.xib" />
     <InterfaceDefinition Include="Views\PanelMenuView.xib" />
@@ -609,7 +610,6 @@
     <InterfaceDefinition Include="Views\AddressPickerContainerView.xib" />
     <InterfaceDefinition Include="Views\Order\InitializeOrderForAccountPaymentView.xib" />
     <InterfaceDefinition Include="Views\AccountConfirmationView.xib" />
-    <InterfaceDefinition Include="Views\Payments\ConfirmPairView.xib" />
     <InterfaceDefinition Include="Views\NotificationSettingsView.xib" />
     <InterfaceDefinition Include="Views\UserTaxiHailNetworkSettingsView.xib" />
     <InterfaceDefinition Include="Views\PromotionView.xib" />

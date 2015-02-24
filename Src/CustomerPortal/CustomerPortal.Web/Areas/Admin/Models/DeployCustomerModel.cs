@@ -35,8 +35,15 @@ namespace CustomerPortal.Web.Areas.Admin.Models
         [Display(Name = "Revision")]
         public string RevisionId { get; set; }
 
-        
+        public DeploymentModel ModelForView { get; set; }
 
+        [Required]
+        [Display(Name = "Mobile Build Server")]
+        public string ServerId { get; set; }
+
+        [Required]
+        [Display(Name = "Mobile build Server")]
+        public IEnumerable<SelectListItem> Environment { get; set; }
 
     }
 }

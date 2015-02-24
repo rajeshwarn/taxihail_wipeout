@@ -1087,6 +1087,15 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to PayPal.
+        /// </summary>
+        public static string PayPal {
+            get {
+                return ResourceManager.GetString("PayPal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Due to high demand, no cars are available right now. Do you want to book with {0} instead?.
         /// </summary>
         public static string PushNotification_ChangeNetworkCompany {
@@ -1128,6 +1137,33 @@ namespace apcurium.MK.Booking.Resources {
         public static string PushNotification_OrderPairingSuccessfulPayPal {
             get {
                 return ResourceManager.GetString("PushNotification_OrderPairingSuccessfulPayPal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The ride #{0} will be paid at the end of the trip using your PayPal account. If you&apos;re in the wrong car, choose the Pay in Car option below to ensure you are not charged for the ride..
+        /// </summary>
+        public static string PushNotification_OrderPairingSuccessfulPayPalUnpair {
+            get {
+                return ResourceManager.GetString("PushNotification_OrderPairingSuccessfulPayPalUnpair", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The ride #{0} will be paid at the end of the trip using your credit card on file. If you&apos;re in the wrong car, choose the Pay in Car option below to ensure you are not charged for the ride. .
+        /// </summary>
+        public static string PushNotification_OrderPairingSuccessfulUnpair {
+            get {
+                return ResourceManager.GetString("PushNotification_OrderPairingSuccessfulUnpair", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reminder: If you&apos;re in the wrong car, choose the Pay in Car option below to ensure you are not charged for the ride..
+        /// </summary>
+        public static string PushNotification_OrderUnpairingTimeOutWarning {
+            get {
+                return ResourceManager.GetString("PushNotification_OrderUnpairingTimeOutWarning", resourceCulture);
             }
         }
         
