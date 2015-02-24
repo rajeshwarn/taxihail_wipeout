@@ -511,16 +511,14 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			var refData = await GetReferenceData();
             var creditCard = await GetCreditCard();
 
-		    var isCreditCardDeactivated = creditCard != null && creditCard.IsDeactivated;
-
             if (!CurrentAccount.IsPayPalAccountLinked)
 		    {
                 refData.PaymentsList.Remove(i => i.Id == ChargeTypes.PayPal.Id);
 		    }
 
-            if (!CurrentAccount.DefaultCreditCard.HasValue
+            if (creditCard == null
                 || CurrentAccount.IsPayPalAccountLinked
-                || isCreditCardDeactivated)
+                || creditCard.IsDeactivated)
 		    {
 		        refData.PaymentsList.Remove(i => i.Id == ChargeTypes.CardOnFile.Id);
 		    }
