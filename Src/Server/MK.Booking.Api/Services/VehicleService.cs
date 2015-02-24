@@ -65,7 +65,7 @@ namespace apcurium.MK.Booking.Api.Services
             }
             else
             {
-                IEnumerable<int> roamingFleetIds = null;
+                IList<int> roamingFleetIds = null;
 
                 try
                 {
@@ -73,8 +73,8 @@ namespace apcurium.MK.Booking.Api.Services
                     var roamingCompanies = _taxiHailNetworkServiceClient.GetMarketFleets(_serverSettings.ServerData.TaxiHail.ApplicationKey, request.Market);
                     if (roamingCompanies != null)
                     {
-                        roamingFleetIds = roamingCompanies.Select(r => r.FleetId);
-                    } 
+                        roamingFleetIds = roamingCompanies.Select(r => r.FleetId).ToArray();
+                    }
                 }
                 catch
                 {

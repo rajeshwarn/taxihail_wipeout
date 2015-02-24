@@ -50,7 +50,7 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
 
             foreach (var roamingCompany in companiesFromOtherMarkets)
             {
-                if (!IsFleetIdWhitelisted(roamingCompany.FleetId, homeCompanySettings))
+                if (!IsFleetIdWhitelisted(roamingCompany.FleetId, homeCompanySettings.WhiteListedFleetIds))
                 {
                     // Roaming company is not allowed by the home company
                     continue;
@@ -149,11 +149,13 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
             // Get all companies in the market that accepts dispatch for the company
             var companiesInMarket = _networkRepository.Where(n => n.IsInNetwork
                 && n.Market == market
-                && IsFleetIdWhitelisted(n.FleetId, currentCompanySettings)
                 && n.Preferences.Any(p => p.CompanyKey == companyId && p.CanAccept)).ToList();
 
             var dispatchableCompaniesInMarket =
-                companiesInMarket.Where(c => dispatchableCompany.Any(p => p.CompanyKey == c.Id)).ToArray();
+                companiesInMarket.Where(c =>
+                    dispatchableCompany.Any(p => p.CompanyKey == c.Id)
+                    && IsFleetIdWhitelisted(c.FleetId, currentCompanySettings.WhiteListedFleetIds))
+                    .ToArray();
 
             foreach (var availableCompany in dispatchableCompaniesInMarket)
             {
@@ -233,15 +235,15 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
             return ibsTimeDifference;
         }
 
-        private bool IsFleetIdWhitelisted(int fleetId, TaxiHailNetworkSettings homeCompanySettings)
+        private bool IsFleetIdWhitelisted(int fleetId, string witeListedFleetIds)
         {
-            if (!homeCompanySettings.WhiteListedFleetIds.HasValue())
+            if (!witeListedFleetIds.HasValue())
             {
                 return true;
             }
 
             // Remove all whitespaces and split
-            var whiteListedFleetIds = Regex.Replace(homeCompanySettings.WhiteListedFleetIds, @"\s+", string.Empty).Split(',');
+            var whiteListedFleetIds = Regex.Replace(witeListedFleetIds, @"\s+", string.Empty).Split(',');
 
             // Whitelisted if list is empty or if the id is in the list
             return !whiteListedFleetIds.Any() || whiteListedFleetIds.Contains(fleetId.ToString());

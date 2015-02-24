@@ -29,8 +29,14 @@ namespace HoneyBadger
         /// <param name="fleetIds">The id of the fleet to search.</param>
         /// <param name="returnAll">True to return all the available vehicles; false will return a set number defined by the admin settings.</param>
         /// <returns>The available vehicles.</returns>
-        public IEnumerable<VehicleResponse> GetAvailableVehicles(string market, double latitude, double longitude, int? searchRadius = null, IEnumerable<int> fleetIds = null, bool returnAll = false)
+        public IEnumerable<VehicleResponse> GetAvailableVehicles(string market, double latitude, double longitude, int? searchRadius = null, IList<int> fleetIds = null, bool returnAll = false)
         {
+            if (fleetIds != null && !fleetIds.Any())
+            {
+                // No fleetId allowed for available vehicles
+                return new List<VehicleResponse>();
+            }
+
             var searchRadiusInKm = (searchRadius ?? _serverSettings.ServerData.AvailableVehicles.Radius) / 1000;
             var numberOfVehicles = _serverSettings.ServerData.AvailableVehicles.Count;
 
