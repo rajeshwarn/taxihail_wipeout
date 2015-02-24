@@ -21,8 +21,10 @@ namespace CustomerPortal.Web.Entities.Network
         [Display(Name = "RegionTaxiHailNetworkLabel", ResourceType = typeof(Resources))]
         public MapRegion Region { get; set; }
 
+        [Required]
         public string Market { get; set; }
 
+        [Required]
         public int FleetId { get; set; }
 
         [Display(Name = "FleetIdWhiteListLabel", ResourceType = typeof(Resources))]
