@@ -12,6 +12,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 		public OverduePayementViewModel(IAccountService accountService)
 		{
 			_accountService = accountService;
+
 		}
 
 		public override void OnViewStarted(bool firstTime)
@@ -19,8 +20,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			base.OnViewStarted(firstTime);
 
 		}
-
-
+			
 		public string TransactionNumber
 		{
 			get { return "AVX1212121"; }
@@ -35,15 +35,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
 		public double Amount
 		{
-			get;
-			set;
+			get { return 0.0;}
+			set { }
 		}
 
 		public ICommand Retry
 		{
 			get
 			{
-				return this.GetCommand(() => { });
+				return this.GetCommand(() => 
+				{ 
+					var s = Amount;
+				});
 			}
 		}
 
@@ -51,7 +54,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 		{
 			get
 			{
-				return this.GetCommand(() => { });
+				return this.GetCommand(() => 
+				{
+					var s = Amount;
+				});
 			}
 		}
 	}
