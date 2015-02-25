@@ -882,6 +882,7 @@ namespace DatabaseInitializer
             var currentVersion = Assembly.GetAssembly(typeof(Program)).GetName().Version;
             var versionIntroduceCapacity = new Version(2,2,1);
 
+            //before version 2.2.1 vehicle type have no capacity, we need to set the value from IBS if any
             if (currentVersion.CompareTo(versionIntroduceCapacity) <= 0)
             {
                 var referenceDataService = container.Resolve<ReferenceDataService>();
