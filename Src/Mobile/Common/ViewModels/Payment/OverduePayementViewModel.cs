@@ -24,10 +24,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 		public string TransactionNumber
 		{
 			get { return "AVX1212121"; }
-			set;
+			set { }
 		}
 
-		public DateTime DateOfRide
+		public DateTime DateOfTransaction
 		{
 			get;
 			set;
