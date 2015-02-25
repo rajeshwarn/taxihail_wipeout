@@ -254,14 +254,13 @@ namespace apcurium.MK.Booking.EventHandlers
         {
             using (var context = _contextFactory.Invoke())
             {
-                var account = context.Find<AccountDetail>(@event.SourceId);
                 if (!_serverSettings.GetPaymentSettings().IsOutOfAppPaymentDisabled)
                 {
                     // If pay in taxi is not disable, this becomes the default payment method
+                    var account = context.Find<AccountDetail>(@event.SourceId);
                     account.Settings.ChargeTypeId = ChargeTypes.PaymentInCar.Id;
+                    context.Save(account);
                 }
-                
-                context.Save(account);
             }
         }
 

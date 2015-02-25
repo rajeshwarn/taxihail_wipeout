@@ -116,7 +116,18 @@ namespace apcurium.MK.Booking.Api.Services
 
             var account = _accountDao.FindById(new Guid(this.GetSession().UserAuthId));
 
-            var bestAvailableCompany = FindBestAvailableCompany(request.Market, request.PickupAddress.Latitude, request.PickupAddress.Longitude);
+            BestAvailableCompany bestAvailableCompany;
+
+            if (request.OrderCompanyKey.HasValue() || request.OrderFleetId.HasValue)
+            {
+                // For API user, it's possible to manually specify which company to dispatch to
+                bestAvailableCompany = FindSpecificCompany(request.Market, request.OrderCompanyKey, request.OrderFleetId);
+            }
+            else
+            {
+                bestAvailableCompany = FindBestAvailableCompany(request.Market, request.PickupAddress.Latitude, request.PickupAddress.Longitude);
+            }
+
             if (request.Market.HasValue() && bestAvailableCompany.CompanyKey == null)
             {
                 // No companies available that are desserving this region for the company
@@ -933,6 +944,46 @@ namespace apcurium.MK.Booking.Api.Services
                     CompanyKey = bestFleet != null ? bestFleet.CompanyKey : null,
                     CompanyName = bestFleet != null ? bestFleet.CompanyName : null
                 };
+            }
+
+            // Nothing found
+            return new BestAvailableCompany();
+        }
+
+        private BestAvailableCompany FindSpecificCompany(string market, string orderCompanyKey = null, int? orderFleetId = null)
+        {
+            if (!orderCompanyKey.HasValue() && !orderFleetId.HasValue)
+            {
+                throw new ArgumentNullException("You must at least provide a value for orderCompanyKey or orderFleetId");
+            }
+
+            var companyKey = _serverSettings.ServerData.TaxiHail.ApplicationKey;
+            var marketFleets = _taxiHailNetworkServiceClient.GetMarketFleets(companyKey, market).ToArray();
+
+            if (orderCompanyKey.HasValue())
+            {
+                var match = marketFleets.FirstOrDefault(f => f.CompanyKey == orderCompanyKey);
+                if (match != null)
+                {
+                    return new BestAvailableCompany
+                    {
+                        CompanyKey = match.CompanyKey,
+                        CompanyName = match.CompanyName
+                    };
+                }
+            }
+
+            if (orderFleetId.HasValue)
+            {
+                var match = marketFleets.FirstOrDefault(f => f.FleetId == orderFleetId.Value);
+                if (match != null)
+                {
+                    return new BestAvailableCompany
+                    {
+                        CompanyKey = match.CompanyKey,
+                        CompanyName = match.CompanyName
+                    };
+                }
             }
 
             // Nothing found

@@ -1,10 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using CustomerPortal.Client.Impl;
 using CustomerPortal.Contract.Resources;
 using CustomerPortal.Contract.Response;
 using CustomerPortal.Web.Areas.Customer.Controllers.Api;
-using CustomerPortal.Web.Areas.Customer.Models.RequestResponse;
 using CustomerPortal.Web.Entities;
 using CustomerPortal.Web.Entities.Network;
 using CustomerPortal.Web.Test.Helpers.Repository;
@@ -45,6 +43,7 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
                 Id = "ChrisTaxi",
                 IsInNetwork = true,
                 Market = "MTL",
+                WhiteListedFleetIds = "123456,564321", // And excluding PilouTaxi and TomTaxi
                 Region = new MapRegion()
                 {
                     CoordinateStart = new MapCoordinate{Latitude = 45.514466,Longitude = -73.846313}, // MTL Top left 
@@ -63,6 +62,7 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
                 Id = "ChrisTaxiBis",
                 IsInNetwork = true,
                 Market = "MTL",
+                FleetId = 123456,
                 Region = new MapRegion()
                 {
                     CoordinateStart = new MapCoordinate{Latitude = 45.514466,Longitude = -73.846313}, // MTL Top left 
@@ -82,6 +82,7 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
                 Id = "TonyTaxi",
                 IsInNetwork = true,
                 Market = "CHI",
+                FleetId = 564321,
                 Region = new MapRegion()
                 {
                     CoordinateStart = new MapCoordinate{Latitude = 49994,Longitude = -73.656990}, // Apcuruium 
@@ -95,6 +96,7 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
                 Id = "TomTaxi",
                 Market = "CHI",
                 IsInNetwork = true,
+                FleetId = 99999,
                 Region = new MapRegion()
                 {
                     CoordinateStart = new MapCoordinate{Latitude = 5000000,Longitude = -73.656990},  
@@ -114,6 +116,7 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
                 Id = "PilouTaxi",
                 IsInNetwork = true,
                 Market = "NYC",
+                FleetId = 44444,
                 Region = new MapRegion()
                 {
                     CoordinateStart = new MapCoordinate{Latitude = 45.514466,Longitude = -73.889451},
@@ -253,11 +256,32 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
         [Test]
         public void When_Regions_Identical()
         {
-            //should Not return ChrisTaxi
             var response = Sut.Get(_chrisTaxi.Id);
             Assert.True(response.IsSuccessStatusCode);
             var json = response.Content.ReadAsStringAsync().Result;
-            Assert.IsNotEmpty(JsonConvert.DeserializeObject<List<CompanyPreferenceResponse>>(json));
+
+            var results = JsonConvert.DeserializeObject<List<CompanyPreferenceResponse>>(json);
+
+            Assert.IsNotEmpty(results);
+
+            // Should Not return ChrisTaxi
+            Assert.AreNotEqual(true, results.Any(t => t.CompanyPreference.CompanyKey == "ChrisTaxi"));
+        }
+
+        [Test]
+        public void When_Company_Not_In_Whitelist()
+        {
+            var response = Sut.Get(_chrisTaxi.Id);
+            Assert.True(response.IsSuccessStatusCode);
+            var json = response.Content.ReadAsStringAsync().Result;
+
+            var results = JsonConvert.DeserializeObject<List<CompanyPreferenceResponse>>(json);
+
+            Assert.AreEqual(2, results.Count);
+
+            // Should Not return ChrisTaxi nor TonyTaxi
+            Assert.AreNotEqual(true, results.Any(t => t.CompanyPreference.CompanyKey == "ChrisTaxi"));
+            Assert.AreNotEqual(true, results.Any(t => t.CompanyPreference.CompanyKey == "PilouTaxi"));
         }
 
         [Test]
@@ -304,19 +328,20 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
             Assert.True(response.IsSuccessStatusCode);
             var json = response.Content.ReadAsStringAsync().Result;
             var result = JsonConvert.DeserializeObject<List<NetworkFleetResponse>>(json);
-            Assert.IsNotEmpty(JsonConvert.DeserializeObject<List<NetworkFleetResponse>>(json));
+            Assert.IsNotEmpty(result);
 
             var response3 = Sut.Get(_chrisTaxi.Id);
             Assert.True(response3.IsSuccessStatusCode);
             var json3 = response.Content.ReadAsStringAsync().Result;
             var result3 = JsonConvert.DeserializeObject<List<NetworkFleetResponse>>(json3);
-            Assert.IsNotEmpty(JsonConvert.DeserializeObject<List<NetworkFleetResponse>>(json3));
+            Assert.AreEqual(1, result3.Count);
+            Assert.AreEqual("ChrisTaxiBis", result3[0].CompanyKey);
 
             var response2 = Sut.Get(_tonyTaxi.Id, 46.359854, -72.575015);
             Assert.True(response2.IsSuccessStatusCode);
             var json2 = response2.Content.ReadAsStringAsync().Result;
-            Assert.IsEmpty(JsonConvert.DeserializeObject<List<NetworkFleetResponse>>(json2));
-
+            var result2 = JsonConvert.DeserializeObject<List<NetworkFleetResponse>>(json2);
+            Assert.IsEmpty(result2);
         }
 
         [Test]
