@@ -186,6 +186,7 @@ namespace apcurium.MK.Booking.Services.Impl
             try
             {
                 bool isSuccessful;
+                bool isCardDeclined = false;
                 var orderIdentifier = isReAuth ? string.Format("{0}-1", orderId) : orderId.ToString();
                 var creditCard = _creditCardDao.FindByAccountId(account.Id).First();
 
@@ -198,8 +199,14 @@ namespace apcurium.MK.Booking.Services.Impl
                     var preAuthRequest = new HttpsPostRequest(monerisSettings.Host, monerisSettings.StoreId, monerisSettings.ApiToken, preAuthorizeCommand);
                     var preAuthReceipt = preAuthRequest.GetReceipt();
 
-                    transactionId = preAuthReceipt.GetTxnNumber();
+                    
                     isSuccessful = RequestSuccesful(preAuthReceipt, out message);
+                    isCardDeclined = IsCardDeclined(preAuthReceipt);
+
+                    if (isSuccessful)
+                    {
+                        transactionId = preAuthReceipt.GetTxnNumber();
+                    }
                 }
                 else
                 {
@@ -229,7 +236,8 @@ namespace apcurium.MK.Booking.Services.Impl
                     IsSuccessful = isSuccessful,
                     Message = message,
                     TransactionId = transactionId,
-                    ReAuthOrderId = isReAuth ? orderIdentifier : null
+                    ReAuthOrderId = isReAuth ? orderIdentifier : null,
+                    IsDeclined = isCardDeclined
                 };
             }
             catch (Exception e)
@@ -280,7 +288,8 @@ namespace apcurium.MK.Booking.Services.Impl
                     {
                         IsSuccessful = false,
                         TransactionId = commitTransactionId,
-                        Message = string.Format("Moneris Re-Auth of amount {0} failed.", amount)
+                        Message = string.Format("Moneris Re-Auth of amount {0} failed.", amount),
+                        IsDeclined = true
                     };
                 }
 
@@ -297,6 +306,8 @@ namespace apcurium.MK.Booking.Services.Impl
                 var commitReceipt = commitRequest.GetReceipt();
 
                 var isSuccessful = RequestSuccesful(commitReceipt, out message);
+                var isCardDeclined = IsCardDeclined(commitReceipt);
+
                 if (isSuccessful)
                 {
                     authorizationCode = commitReceipt.GetAuthCode();
@@ -310,7 +321,8 @@ namespace apcurium.MK.Booking.Services.Impl
                     IsSuccessful = isSuccessful,
                     AuthorizationCode = authorizationCode,
                     Message = message,
-                    TransactionId = commitTransactionId
+                    TransactionId = commitTransactionId,
+                    IsDeclined = isCardDeclined
                 };
             }
             catch (Exception ex)
@@ -333,13 +345,26 @@ namespace apcurium.MK.Booking.Services.Impl
                 return false;
             }
 
-            if (int.Parse(receipt.GetResponseCode()) >= 50)
+            if (int.Parse(receipt.GetResponseCode()) >= MonerisResponseCodes.DECLINED)
             {
                 message = receipt.GetMessage();
                 return false;
             }
 
             return true;
+        }
+
+        private bool IsCardDeclined(Receipt receipt)
+        {
+            int responseCode;
+            var isNumber = int.TryParse(receipt.GetResponseCode(), out responseCode);
+            if (!isNumber)
+            {
+                // GetResponseCode will return "null" string when transaction is a success...
+                return false;
+            }
+
+            return MonerisResponseCodes.GetDeclinedCodes().Contains(responseCode);
         }
     }
 }

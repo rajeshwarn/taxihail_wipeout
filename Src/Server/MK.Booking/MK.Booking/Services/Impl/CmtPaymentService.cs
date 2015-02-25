@@ -330,8 +330,9 @@ namespace apcurium.MK.Booking.Services.Impl
                 responseTask.Wait();
                 var authResponse = responseTask.Result;
 
-
                 var isSuccessful = authResponse.ResponseCode == 1;
+                var isCardDeclined = authResponse.ResponseCode == 607;
+
                 if (isSuccessful)
                 {
                     commitTransactionId = authResponse.TransactionId.ToString(CultureInfo.InvariantCulture);
@@ -343,7 +344,8 @@ namespace apcurium.MK.Booking.Services.Impl
                     IsSuccessful = isSuccessful,
                     AuthorizationCode = authorizationCode,
                     Message = authResponse.ResponseMessage,
-                    TransactionId = commitTransactionId
+                    TransactionId = commitTransactionId,
+                    IsDeclined = isCardDeclined
                 };
             }
             catch (Exception ex)

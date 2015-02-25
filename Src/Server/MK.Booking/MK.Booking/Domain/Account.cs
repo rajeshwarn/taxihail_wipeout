@@ -48,6 +48,7 @@ namespace apcurium.MK.Booking.Domain
             Handles<AccountUnlinkedFromIbs>(NoAction);
             Handles<PayPalAccountLinked>(NoAction);
             Handles<PayPalAccountUnlinked>(NoAction);
+            Handles<CreditCardDeactivated>(NoAction);
         }
 
         public Account(Guid id, IEnumerable<IVersionedEvent> history)
@@ -356,6 +357,11 @@ namespace apcurium.MK.Booking.Domain
         public void UnlinkPayPalAccount()
         {
             Update(new PayPalAccountUnlinked());
+        }
+
+        public void DeactivateCreditCard()
+        {
+            Update(new CreditCardDeactivated());
         }
     }
 }

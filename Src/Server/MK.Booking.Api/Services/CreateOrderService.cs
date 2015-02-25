@@ -50,6 +50,7 @@ namespace apcurium.MK.Booking.Api.Services
         private readonly ITaxiHailNetworkServiceClient _taxiHailNetworkServiceClient;
         private readonly IPaymentService _paymentService;
         private readonly IAccountChargeDao _accountChargeDao;
+        private readonly ICreditCardDao _creditCardDao;
         private readonly ICommandBus _commandBus;
         private readonly IServerSettings _serverSettings;
         private readonly ReferenceDataService _referenceDataService;
@@ -66,6 +67,7 @@ namespace apcurium.MK.Booking.Api.Services
             IRuleCalculator ruleCalculator,
             IUpdateOrderStatusJob updateOrderStatusJob,
             IAccountChargeDao accountChargeDao,
+            ICreditCardDao creditCardDao,
             IOrderDao orderDao,
             IPromotionDao promotionDao,
             IEventSourcedRepository<Promotion> promoRepository,
@@ -74,6 +76,7 @@ namespace apcurium.MK.Booking.Api.Services
             IPaymentService paymentService)
         {
             _accountChargeDao = accountChargeDao;
+            _creditCardDao = creditCardDao;
             _commandBus = commandBus;
             _accountDao = accountDao;
             _referenceDataService = referenceDataService;
@@ -579,6 +582,14 @@ namespace apcurium.MK.Booking.Api.Services
                     GetCreateOrderServiceErrorMessage(ErrorCode.CreateOrder_CardOnFileButNoCreditCard, clientLanguageCode));
             }
 
+            var creditCard = _creditCardDao.FindByAccountId(account.Id).First();
+            if (creditCard.IsDeactivated)
+            {
+                throw new HttpError(HttpStatusCode.BadRequest,
+                    ErrorCode.CreateOrder_CardOnFileDeactivated.ToString(),
+                    _resources.Get("CannotCreateOrder_CreditCardDeactivated", clientLanguageCode));
+            }
+
             PreAuthorizePaymentMethod(orderId, account, clientLanguageCode, isFutureBooking, appEstimate, false);
         }
 
@@ -601,7 +612,7 @@ namespace apcurium.MK.Booking.Api.Services
             {
                 return;
             }
-
+            
             // there's a minimum amount of $50 (warning indicating that on the admin ui)
             // if app returned an estimate, use it, otherwise use the setting (or 0), then use max between the value and 50
             var preAuthAmount = Math.Max(appEstimate ?? (_serverSettings.GetPaymentSettings().PreAuthAmount ?? 0), 50);

@@ -37,7 +37,7 @@ namespace apcurium.MK.Booking.CommandHandlers
         public void Handle(LogCreditCardError command)
         {
             var payment = _repository.Get(command.PaymentId);
-            payment.ErrorThrown(command.Reason);
+            payment.ErrorThrown(command.Reason, command.AccountId);
             _repository.Save(payment, command.Id.ToString());
         }
     }
