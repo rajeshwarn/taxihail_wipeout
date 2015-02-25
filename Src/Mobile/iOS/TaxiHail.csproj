@@ -567,6 +567,10 @@
     <BundleResource Include="Resources\paypal_icon.png" />
     <BundleResource Include="Resources\paypal_icon%402x.png" />
     <Compile Include="Extensions\NSErrorExtensions.cs" />
+    <Compile Include="Views\Payments\OverduePayementView.cs" />
+    <Compile Include="Views\Payments\OverduePayementView.designer.cs">
+      <DependentUpon>OverduePayementView.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>
@@ -614,6 +618,7 @@
     <InterfaceDefinition Include="Views\UserTaxiHailNetworkSettingsView.xib" />
     <InterfaceDefinition Include="Views\PromotionView.xib" />
     <InterfaceDefinition Include="Views\PromotionCell.xib" />
+    <InterfaceDefinition Include="Views\Payments\OverduePayementView.xib" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="en.lproj\Localizable.strings" />
