@@ -73,8 +73,11 @@ namespace MK.DeploymentService.Mobile
 
 					UpdateJob ("Starting", JobStatus.Inprogress);
 
-					var sourceDirectory = Path.Combine (Path.GetTempPath (), "TaxiHailSourceNewService");
+					var sourceDirectoryConfig = System.Configuration.ConfigurationManager.AppSettings["CheckoutDir"];
 
+					var sourceDirectory = string.IsNullOrEmpty(sourceDirectoryConfig)
+						? Path.Combine (Path.GetTempPath (), "TaxiHailSourceNewService")
+						: sourceDirectoryConfig;
 
 					var releaseiOSAdHocDir = Path.Combine (sourceDirectory, "Src", "Mobile", "iOS", "bin", "iPhone", "AdHoc");
 					if (Directory.Exists (releaseiOSAdHocDir))
