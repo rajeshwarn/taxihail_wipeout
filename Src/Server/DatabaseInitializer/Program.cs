@@ -241,12 +241,17 @@ namespace DatabaseInitializer
                 }
 
                 Console.WriteLine("Checking Vehicles Types ...");
-                var vehicleTypes = new VehicleTypeDao(() => new BookingDbContext(connectionString.ConnectionString));
-                if (!vehicleTypes.GetAll().Any())
+                var vehicleTypeDao = new VehicleTypeDao(() => new BookingDbContext(connectionString.ConnectionString));
+                var vehicleTypeDetails = vehicleTypeDao.GetAll();
+                if (!vehicleTypeDetails.Any())
                 {
                     appSettings["VehicleTypeSelectionEnabled"] = "false";
                     AddOrUpdateAppSettings(commandBus, appSettings);
                     CreateDefaultVehicleTypes(container, commandBus);
+                }
+                else
+                {
+                    CheckAndAddCapacity(vehicleTypeDetails, container, commandBus);
                 }
 
                 Console.WriteLine("Migration of Notification Settings ...");
@@ -288,6 +293,8 @@ namespace DatabaseInitializer
             return 0;
 // ReSharper restore LocalizableElement
         }
+
+        
 
         public static void SetupMirroring(DatabaseInitializerParams param)
         {
@@ -851,16 +858,57 @@ namespace DatabaseInitializer
             var referenceDataService = container.Resolve<ReferenceDataService>();
             var referenceData = (ReferenceData) referenceDataService.Get(new ReferenceDataRequest());
 
-            foreach (var vehicle in referenceData.VehiclesList)
+            foreach (var company in referenceData.CompaniesList)
             {
-                commandBus.Send(new AddUpdateVehicleType
+                var vehicles = container.Resolve<IIBSServiceProvider>().StaticData().GetVehicles(company);
+                foreach (var vehicle in vehicles)
                 {
-                    VehicleTypeId = Guid.NewGuid(),
-                    Name = string.Format("{0}", vehicle.Display),
-                    LogoName = "taxi",
-                    ReferenceDataVehicleId = vehicle.Id ?? -1,
-                    CompanyId = AppConstants.CompanyId
-                });
+                     commandBus.Send(new AddUpdateVehicleType
+                    {
+                        VehicleTypeId = Guid.NewGuid(),
+                        Name = string.Format("{0}", vehicle.Name),
+                        LogoName = "taxi",
+                        ReferenceDataVehicleId = vehicle.ID,
+                        CompanyId = AppConstants.CompanyId,
+                        MaxNumberPassengers = vehicle.Capacity
+                    });
+                }
+               
+            }
+        }
+
+        private static void CheckAndAddCapacity(IEnumerable<VehicleTypeDetail> vehicleTypeDetails, UnityContainer container, ICommandBus commandBus)
+        {
+            var currentVersion = Assembly.GetAssembly(typeof(Program)).GetName().Version;
+            var versionIntroduceCapacity = new Version(2,2,1);
+
+            if (currentVersion.CompareTo(versionIntroduceCapacity) <= 0)
+            {
+                var referenceDataService = container.Resolve<ReferenceDataService>();
+                var referenceData = (ReferenceData) referenceDataService.Get(new ReferenceDataRequest());
+                var ibsVehicleData = new List<TVehicleTypeItem>();
+
+                foreach (var company in referenceData.CompaniesList)
+                {
+                    ibsVehicleData.AddRange(container.Resolve<IIBSServiceProvider>().StaticData().GetVehicles(company));
+                }
+
+                foreach (var typeDetail in vehicleTypeDetails)
+                {
+                    var ibsData = ibsVehicleData.FirstOrDefault(x => x.ID == typeDetail.ReferenceDataVehicleId);
+                    if (ibsData != null)
+                    {
+                        commandBus.Send(new AddUpdateVehicleType
+                        {
+                            VehicleTypeId = typeDetail.Id,
+                            Name = string.Format("{0}", typeDetail.Name),
+                            LogoName = typeDetail.LogoName,
+                            ReferenceDataVehicleId = typeDetail.ReferenceDataVehicleId,
+                            CompanyId = AppConstants.CompanyId,
+                            MaxNumberPassengers = ibsData.Capacity
+                        });
+                    }
+                }
             }
         }
 
