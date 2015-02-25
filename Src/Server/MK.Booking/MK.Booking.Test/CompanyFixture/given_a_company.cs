@@ -317,7 +317,8 @@ namespace apcurium.MK.Booking.Test.CompanyFixture
                 VehicleTypeId = Guid.NewGuid(),
                 Name = "Taxi",
                 LogoName = "Taxi",
-                ReferenceDataVehicleId = 123
+                ReferenceDataVehicleId = 123,
+                MaxNumberPassengers = 2
             };
 
             _sut.When(command);
@@ -328,6 +329,7 @@ namespace apcurium.MK.Booking.Test.CompanyFixture
             Assert.AreEqual(command.LogoName, evt.LogoName);
             Assert.AreEqual(command.VehicleTypeId, evt.VehicleTypeId);
             Assert.AreEqual(command.ReferenceDataVehicleId, evt.ReferenceDataVehicleId);
+            Assert.AreEqual(command.MaxNumberPassengers, evt.MaxNumberPassengers);
         }
 
         [Test]

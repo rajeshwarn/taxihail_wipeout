@@ -159,6 +159,31 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			}
 		}
 
+		public async Task ValidateNumberOfPassengers(int? numberOfPassengers)
+		{
+			var vehicleTypeId = await _vehicleTypeSubject.Take(1).ToTask();
+			var vehicleTypes = await _accountService.GetVehiclesList();
+			var data = await _accountService.GetReferenceData();
+			var settings = await _bookingSettingsSubject.Take(1).ToTask();
+			var defaultVehicleType = data.VehiclesList.FirstOrDefault (x => x.IsDefault.HasValue && x.IsDefault.Value);
+
+			if (vehicleTypeId == null
+				&& defaultVehicleType != null)
+			{
+				vehicleTypeId = defaultVehicleType.Id;
+			}
+
+			var vehicleType = vehicleTypes.FirstOrDefault(v => v.ReferenceDataVehicleId == vehicleTypeId);
+			numberOfPassengers = numberOfPassengers ?? settings.Passengers;
+
+			if (vehicleType != null
+				&& vehicleType.MaxNumberPassengers > 0
+				&& numberOfPassengers > vehicleType.MaxNumberPassengers)
+			{
+				throw new OrderValidationException("Number of passengers is too large", OrderValidationError.InvalidPassengersNumber);
+			}
+		}
+
 		public async Task ValidatePickupAndDestination()
 		{
 			var pickupAddress = await _pickupAddressSubject.Take(1).ToTask();

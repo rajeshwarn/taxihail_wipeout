@@ -10,6 +10,7 @@ using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Booking.Mobile.ViewModels.Payment;
 using apcurium.MK.Common.Extensions;
+using apcurium.MK.Booking.Mobile.AppServices.Orders;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 {
@@ -95,8 +96,22 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			{
 				return this.GetCommand(async () =>
 				{
+					try
+					{
+						await _orderWorkflowService.ValidateNumberOfPassengers(BookingSettings.Passengers);
+					}
+					catch (OrderValidationException e)
+					{
+						switch (e.Error)
+						{							
+							case OrderValidationError.InvalidPassengersNumber:								
+								this.Services().Message.ShowMessage(this.Services().Localize["InvalidPassengersNumberTitle"], this.Services().Localize["InvalidPassengersNumber"]);
+								return;
+						}
+					}
 					await _orderWorkflowService.SetBookingSettings(BookingSettings);
 					await _orderWorkflowService.SetPickupAptAndRingCode(PickupAddress.Apartment, PickupAddress.RingCode);
+					
 
 					if ((BookingSettings.ChargeTypeId == apcurium.MK.Common.Enumeration.ChargeTypes.CardOnFile.Id)  &&
 						(!_accountService.CurrentAccount.DefaultCreditCard.HasValue))

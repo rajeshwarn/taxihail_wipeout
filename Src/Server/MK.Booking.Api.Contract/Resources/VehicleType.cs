@@ -11,5 +11,7 @@ namespace apcurium.MK.Booking.Api.Contract.Resources
         public string LogoName { get; set; }
 
         public int ReferenceDataVehicleId { get; set; }
+
+        public int MaxNumberPassengers { get; set; }
     }
 }
