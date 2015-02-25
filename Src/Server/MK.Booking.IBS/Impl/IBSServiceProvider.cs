@@ -14,41 +14,44 @@ namespace apcurium.MK.Booking.IBS.Impl
         private readonly ITaxiHailNetworkServiceClient _taxiHailNetworkService;
         private readonly Dictionary<string, IBSSettingContainer> _ibsSettings = new Dictionary<string, IBSSettingContainer>();
 
-        public IBSServiceProvider(IServerSettings serverSettings, ILogger logger, ITaxiHailNetworkServiceClient taxiHailNetworkService)
+        public IBSServiceProvider(IServerSettings serverSettings, ILogger logger,
+            ITaxiHailNetworkServiceClient taxiHailNetworkService)
         {
             _serverSettings = serverSettings;
             _logger = logger;
             _taxiHailNetworkService = taxiHailNetworkService;
         }
 
-        public IAccountWebServiceClient Account(string companyKey)
+        public IAccountWebServiceClient Account(string companyKey, string market)
         {
-            return new AccountWebServiceClient(_serverSettings, GetSettingContainer(companyKey), _logger);
+            return new AccountWebServiceClient(_serverSettings, GetSettingContainer(companyKey, market), _logger);
         }
 
-        public IStaticDataWebServiceClient StaticData(string companyKey)
+        public IStaticDataWebServiceClient StaticData(string companyKey, string market)
         {
-            return new StaticDataWebServiceClient(GetSettingContainer(companyKey), _logger);
+            return new StaticDataWebServiceClient(GetSettingContainer(companyKey, market), _logger);
         }
 
-        public IBookingWebServiceClient Booking(string companyKey)
+        public IBookingWebServiceClient Booking(string companyKey, string market)
         {
-            return new BookingWebServiceClient(_serverSettings, GetSettingContainer(companyKey), _logger);
+            return new BookingWebServiceClient(_serverSettings, GetSettingContainer(companyKey, market), _logger);
         }
 
-        public IChargeAccountWebServiceClient ChargeAccount(string companyKey)
+        public IChargeAccountWebServiceClient ChargeAccount(string companyKey, string market)
         {
-            return new ChargeAccountWebServiceClient(_serverSettings, GetSettingContainer(companyKey), _logger);
+            return new ChargeAccountWebServiceClient(_serverSettings, GetSettingContainer(companyKey, market), _logger);
         }
 
-        private IBSSettingContainer GetSettingContainer(string companyKey)
+        public IBSSettingContainer GetSettingContainer(string companyKey, string market)
         {
             if (!companyKey.HasValue())
             {
+                // In home market
                 return _serverSettings.ServerData.IBS;
             }
 
-            if (!_ibsSettings.ContainsKey(companyKey))
+            // In local market but switched companies
+            if (!_ibsSettings.ContainsKey(companyKey) && !market.HasValue())
             {
                 var networkFleet = _taxiHailNetworkService.GetNetworkFleet(_serverSettings.ServerData.TaxiHail.ApplicationKey);
 
@@ -65,7 +68,28 @@ namespace apcurium.MK.Booking.IBS.Impl
                         WebServicesPassword = networkFleetResponse.IbsPassword,
                         WebServicesUserName = networkFleetResponse.IbsUserName
                     };
-                    _ibsSettings.Add(networkFleetResponse.CompanyKey,settingContainer);
+                    _ibsSettings.Add(networkFleetResponse.CompanyKey, settingContainer);
+                }
+            }
+
+            // In external market
+            if (!_ibsSettings.ContainsKey(companyKey) && market.HasValue())
+            {
+                var marketFleets = _taxiHailNetworkService.GetMarketFleets(null, market);
+
+                _ibsSettings.Clear();
+
+                foreach (var networkFleetResponse in marketFleets)
+                {
+                    var settingContainer = new IBSSettingContainer
+                    {
+                        WebServicesUrl = networkFleetResponse.IbsUrl,
+                        WebServicesPassword = networkFleetResponse.IbsPassword,
+                        WebServicesUserName = networkFleetResponse.IbsUserName,
+                        TimeDifference = networkFleetResponse.IbsTimeDifference
+                        
+                    };
+                    _ibsSettings.Add(networkFleetResponse.CompanyKey, settingContainer);
                 }
             }
 

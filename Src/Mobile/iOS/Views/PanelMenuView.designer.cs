@@ -4,7 +4,7 @@
 // actions made in the UI designer. If it is removed, they will be lost.
 // Manual changes to this file may not be handled correctly.
 //
-using MonoTouch.Foundation;
+using Foundation;
 using System.CodeDom.Compiler;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
@@ -13,22 +13,25 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 	partial class PanelMenuView
 	{
 		[Outlet]
-		MonoTouch.UIKit.UIImageView imgLogoApcurium { get; set; }
+		UIKit.UIImageView imgLogoApcurium { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UIImageView imgLogoMobileKnowledge { get; set; }
+		UIKit.UIImageView imgLogoMobileKnowledge { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel lblVersion { get; set; }
+		UIKit.UILabel lblServerVersion { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UIImageView logoImageView { get; set; }
+		UIKit.UILabel lblVersion { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UIView menuContainer { get; set; }
+		UIKit.UIImageView logoImageView { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UITableView menuListView { get; set; }
+		UIKit.UIView menuContainer { get; set; }
+
+		[Outlet]
+		UIKit.UITableView menuListView { get; set; }
 		
 		void ReleaseDesignerOutlets ()
 		{
@@ -60,6 +63,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			if (menuListView != null) {
 				menuListView.Dispose ();
 				menuListView = null;
+			}
+
+			if (lblServerVersion != null) {
+				lblServerVersion.Dispose ();
+				lblServerVersion = null;
 			}
 		}
 	}

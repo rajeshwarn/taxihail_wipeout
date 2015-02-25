@@ -470,13 +470,15 @@
                                                                         <td class="list_title">{{ localize "Email_Body_Fare"}}</td>
                                                                         <td class="list_value">{{ Fare }}</td>
                                                                     </tr>
-                                                                    <tr>
-                                                                        <td class="list_title">
-                                                                            {{#vatIsEnabled}}{{ localize "Email_Body_VAT"}}{{/vatIsEnabled}}
-                                                                            {{^vatIsEnabled}}{{ localize "Email_Body_Tax"}}{{/vatIsEnabled}}
-                                                                        </td>
-                                                                        <td class="list_value">{{ Tax }}</td>
-                                                                    </tr>
+                                                                    {{#ShowTax}}
+                                                                        <tr>
+                                                                            <td class="list_title">
+                                                                                {{#vatIsEnabled}}{{ localize "Email_Body_VAT"}}{{/vatIsEnabled}}
+                                                                                {{^vatIsEnabled}}{{ localize "Email_Body_Tax"}}{{/vatIsEnabled}}
+                                                                            </td>
+                                                                            <td class="list_value">{{ Tax }}</td>
+                                                                        </tr>
+                                                                    {{/ShowTax}}
                                                                     <tr class="fare_list_subtotal" style="color:{{EmailFontColor}} !important">
                                                                         <td class="list_title">{{ localize "Email_Body_SubTotal" }}</td>
                                                                         <td class="list_value">{{ SubTotal }}</td>
@@ -485,6 +487,12 @@
                                                                         <td class="list_title">{{ localize "Email_Body_Tip"}}</td>
                                                                         <td class="list_value">{{ Tip }}</td>
                                                                     </tr>
+                                                                    {{#PromotionWasUsed}}
+                                                                    <tr>
+                                                                        <td class="list_title">{{ localize "Email_Body_Promo" }} ({{ PromoCode }})</td>
+                                                                        <td class="list_value">({{ AmountSavedByPromotion }})</td>
+                                                                    </tr>
+                                                                    {{/PromotionWasUsed}}
                                                                     <tr class="fare_list_charged" style="color:{{EmailFontColor}} !important">
                                                                         <td class="list_title">{{ localize "Email_Body_TotalFare"}}</td>
                                                                         <td class="list_value">{{ TotalFare }}</td>

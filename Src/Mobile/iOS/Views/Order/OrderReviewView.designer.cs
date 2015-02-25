@@ -4,7 +4,7 @@
 // actions made in the UI designer. If it is removed, they will be lost.
 // Manual changes to this file may not be handled correctly.
 //
-using MonoTouch.Foundation;
+using Foundation;
 using System.CodeDom.Compiler;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views.Order
@@ -13,63 +13,87 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 	partial class OrderReviewView
 	{
 		[Outlet]
-		MonoTouch.UIKit.UIImageView iconApartment { get; set; }
+		UIKit.UIButton btnPromo { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UIImageView iconNbLargeBags { get; set; }
+		UIKit.NSLayoutConstraint constraintHeight { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UIImageView iconNbPasserngers { get; set; }
+		UIKit.UIImageView iconApartment { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UIImageView iconPassengerName { get; set; }
+		UIKit.UIImageView iconNbLargeBags { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UIImageView iconPhone { get; set; }
+		UIKit.UIImageView iconNbPasserngers { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UIImageView iconRingCode { get; set; }
+		UIKit.UIImageView iconPassengerName { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel lblApt { get; set; }
+		UIKit.UIImageView iconPhone { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel lblChargeType { get; set; }
+		UIKit.UIImageView iconRingCode { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel lblDate { get; set; }
+		UIKit.UILabel lblApt { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel lblName { get; set; }
+		UIKit.UILabel lblChargeType { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel lblNbLargeBags { get; set; }
+		UIKit.UILabel lblDate { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel lblNbPassengers { get; set; }
+		UIKit.UILabel lblName { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel lblPhone { get; set; }
+		UIKit.UILabel lblNbLargeBags { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel lblRingCode { get; set; }
+		UIKit.UILabel lblNbPassengers { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel lblVehicule { get; set; }
+		UIKit.UILabel lblPhone { get; set; }
+
+		[Outlet]
+		UIKit.UILabel lblRingCode { get; set; }
+
+		[Outlet]
+		UIKit.UILabel lblVehicule { get; set; }
 
 		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatTextView txtNote { get; set; }
+
+		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatTextField txtPromoCode { get; set; }
 		
 		void ReleaseDesignerOutlets ()
 		{
-			if (iconNbPasserngers != null) {
-				iconNbPasserngers.Dispose ();
-				iconNbPasserngers = null;
+			if (btnPromo != null) {
+				btnPromo.Dispose ();
+				btnPromo = null;
+			}
+
+			if (constraintHeight != null) {
+				constraintHeight.Dispose ();
+				constraintHeight = null;
+			}
+
+			if (iconApartment != null) {
+				iconApartment.Dispose ();
+				iconApartment = null;
 			}
 
 			if (iconNbLargeBags != null) {
 				iconNbLargeBags.Dispose ();
 				iconNbLargeBags = null;
+			}
+
+			if (iconNbPasserngers != null) {
+				iconNbPasserngers.Dispose ();
+				iconNbPasserngers = null;
 			}
 
 			if (iconPassengerName != null) {
@@ -80,11 +104,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 			if (iconPhone != null) {
 				iconPhone.Dispose ();
 				iconPhone = null;
-			}
-
-			if (iconApartment != null) {
-				iconApartment.Dispose ();
-				iconApartment = null;
 			}
 
 			if (iconRingCode != null) {
@@ -112,14 +131,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 				lblName = null;
 			}
 
-			if (lblNbPassengers != null) {
-				lblNbPassengers.Dispose ();
-				lblNbPassengers = null;
-			}
-
 			if (lblNbLargeBags != null) {
 				lblNbLargeBags.Dispose ();
 				lblNbLargeBags = null;
+			}
+
+			if (lblNbPassengers != null) {
+				lblNbPassengers.Dispose ();
+				lblNbPassengers = null;
 			}
 
 			if (lblPhone != null) {
@@ -140,6 +159,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 			if (txtNote != null) {
 				txtNote.Dispose ();
 				txtNote = null;
+			}
+
+			if (txtPromoCode != null) {
+				txtPromoCode.Dispose ();
+				txtPromoCode = null;
 			}
 		}
 	}

@@ -4,7 +4,7 @@
 // actions made in the UI designer. If it is removed, they will be lost.
 // Manual changes to this file may not be handled correctly.
 //
-using MonoTouch.Foundation;
+using Foundation;
 using System.CodeDom.Compiler;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
@@ -16,28 +16,28 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnConfirm { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UIButton ClearKeyboardButton { get; set; }
+		UIKit.UIButton ClearKeyboardButton { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UIImageView imgPayPal { get; set; }
+		UIKit.UIImageView imgPayPal { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel lblCreditCard { get; set; }
+		UIKit.UILabel lblCreditCard { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel lblMeterAmount { get; set; }
+		UIKit.UILabel lblMeterAmount { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel lblTip { get; set; }
+		UIKit.UILabel lblTip { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel lblTipAmount { get; set; }
+		UIKit.UILabel lblTipAmount { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel lblTotal { get; set; }
+		UIKit.UILabel lblTotal { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel lblTotalValue { get; set; }
+		UIKit.UILabel lblTotalValue { get; set; }
 
 		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.PaymentSelector payPalToggle { get; set; }

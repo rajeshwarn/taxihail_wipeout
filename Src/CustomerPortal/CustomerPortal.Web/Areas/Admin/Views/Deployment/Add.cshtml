@@ -1,6 +1,8 @@
 ﻿@using CustomerPortal.Web.Areas.Admin.Models
 @using CustomerPortal.Web.Entities
-@model CustomerPortal.Web.Areas.Admin.Models.AddDeploymentJobModel
+@using GridMvc.Html
+@using GridMvc.Sorting
+@model AddDeploymentJobModel
 @{
     ViewBag.Title = "Add Deployment";
     Layout = "~/Views/Shared/_SettingsLayout.cshtml"; 
@@ -14,9 +16,39 @@
     {
         if (Model.Type != DeploymentJobType.ServerPackage)
         {
-            <div>
-                @Html.LabelFor(m => m.ModelForView.Company)
+            <div id="companiesDropdown">
+                @Html.LabelFor(m => m.ModelForView.Company)    
                 @Html.DropDownListFor(m => m.CompanyId, Model.ModelForView.Company, "-- select --")
+                (<a href="#" id="displayAllCompaniesTableLabel">Show all</a>)
+            </div>
+        
+            <div id="companiesTable" hidden="hidden">
+                (<a href="#" id="hideAllCompaniesTableLabel">Collapse List</a>)
+                @Html.Grid(Model.ModelForView.CompanyDetails).Named("ordersGrid").Columns(column =>
+                {
+                    column.Add()
+                        .Encoded(false)
+                        .Sanitized(false)
+                        .SetWidth(30)
+                        .RenderValueAs(c => Html.CheckBox("checkbox_" + c.CompanyKey, false, new { @class = "checkbox" }));
+                    column.Add(c => c.CompanyDisplayName)
+                        .Titled("Company")
+                        .Filterable(true)
+                        .Sortable(true);
+                    column.Add(c => c.LastKnownStagingVersion)
+                        .Titled("Staging Version")
+                        .Filterable(true)
+                        .Sortable(true);
+                    column.Add(c => c.LastKnownProductionVersion)
+                        .Titled("Production Version")
+                        .Filterable(true)
+                        .Sortable(true);
+                    column.Add()
+                        .Encoded(false)
+                        .Sanitized(false)
+                        .SetWidth(100)
+                        .RenderValueAs(c => Html.Label(string.Empty));
+                }).Selectable(false)
             </div>
         }
         <div>
@@ -55,7 +87,10 @@
         {
             <div>
                 <label>Options</label>
-                @Html.CheckBoxFor(m => m.Database, false) Deploy Database
+                <label class="checkbox">
+                    @Html.CheckBoxFor(m => m.Database, false)
+                    @Html.LabelFor(m => m.Database)
+                </label>
             </div>
         }
 
@@ -86,6 +121,35 @@
             }else {
                 return true;
             }
+        }
+
+        $(function() {
+            $(document).ready(function() {
+                if ($.cookie('showCompanyDetails')) {
+                    showCompanyDetails();
+                }
+            });
+
+            $('#displayAllCompaniesTableLabel').click(function () {
+                showCompanyDetails();
+            });
+
+            $('#hideAllCompaniesTableLabel').click(function () {
+                hideCompanyDetails();
+            });
+        });
+
+        function showCompanyDetails() {
+            $('#companiesTable').show();
+            $('#companiesDropdown').hide();
+            $.cookie('showCompanyDetails', true);
+        }
+
+        function hideCompanyDetails() {
+            $(".checkbox").removeAttr("checked");
+            $('#companiesTable').hide();
+            $('#companiesDropdown').show();
+            $.removeCookie('showCompanyDetails');
         }
     </script>
 }

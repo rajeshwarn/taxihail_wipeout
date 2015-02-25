@@ -39,6 +39,8 @@ namespace apcurium.MK.Booking.ReadModel
         public Guid? DefaultCreditCard { get; set; }
         public int? DefaultTipPercent { get; set; }
 
+        public bool IsPayPalAccountLinked { get; set; }
+
         public DateTime CreationDate { get; set; }
 
         public bool IsAdmin

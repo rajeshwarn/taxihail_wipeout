@@ -3,7 +3,6 @@
 using System;
 using apcurium.MK.Booking.CommandHandlers;
 using apcurium.MK.Booking.Commands;
-using apcurium.MK.Booking.Common.Tests;
 using apcurium.MK.Booking.Domain;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.Security;
@@ -49,7 +48,6 @@ namespace apcurium.MK.Booking.Test.AccountFixture
                 Passengers = 3,
                 ProviderId = 85,
                 VehicleTypeId = 69,
-                DefaultCreditCard = creditCardId,
                 DefaultTipPercent = defaultTipPercent,
                 AccountNumber = "1234"
             });
@@ -65,11 +63,7 @@ namespace apcurium.MK.Booking.Test.AccountFixture
             Assert.AreEqual(85, @event.ProviderId);
             Assert.AreEqual(69, @event.VehicleTypeId);
             Assert.AreEqual("1234", @event.AccountNumber);
-
-            var @eventPayment = _sut.ThenHasOne<PaymentProfileUpdated>();
-            Assert.AreEqual(_accountId, @eventPayment.SourceId);
-            Assert.AreEqual(creditCardId, @eventPayment.DefaultCreditCard);
-            Assert.AreEqual(defaultTipPercent, @eventPayment.DefaultTipPercent);
+            Assert.AreEqual(defaultTipPercent, @event.DefaultTipPercent);
         }
     }
 }

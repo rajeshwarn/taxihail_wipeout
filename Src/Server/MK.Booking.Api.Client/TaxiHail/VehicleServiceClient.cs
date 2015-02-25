@@ -11,23 +11,24 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 {
 	public class VehicleServiceClient: BaseServiceClient, IVehicleClient
     {
-		private readonly ILogger _logger;
+        private readonly ILogger _logger;
         public VehicleServiceClient(string url, string sessionId, IPackageInfo packageInfo, ILogger logger)
             : base(url, sessionId, packageInfo)
         {
 			_logger = logger;
         }
 
-		public async Task<AvailableVehicle[]> GetAvailableVehiclesAsync(double latitude, double longitude, int? vehicleTypeId)
+		public async Task<AvailableVehicle[]> GetAvailableVehiclesAsync(double latitude, double longitude, int? vehicleTypeId, string market = null)
 		{
 			var response = await  Client.PostAsync(new AvailableVehicles
 				{
 					Latitude = latitude,
 					Longitude = longitude,
-					VehicleTypeId = vehicleTypeId
+					VehicleTypeId = vehicleTypeId,
+                    Market = market == string.Empty ? null : market
 				});
 
-			_logger.Maybe(() => _logger.LogMessage (string.Format("Available vehicle found for lat {0}, long {1} count = {2}",latitude,longitude, response.Count )));
+			_logger.Maybe (() => _logger.LogMessage (string.Format ("Available vehicle found for lat {0}, long {1}, count = {2} on market {3}", latitude, longitude, response.Count, market)));
 
 			return response.ToArray();
 		}

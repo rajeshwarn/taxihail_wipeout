@@ -15,19 +15,30 @@ namespace apcurium.MK.Booking.Commands
             Id = Guid.NewGuid();
         }
 
+        public Guid AccountId { get; set; }
+
         public Guid PaymentId { get; set; }
 
         public string AuthorizationCode { get; set; }
 
-        public PaymentProvider Provider { get; set; }
-        public Guid Id { get; private set; }
+        public string TransactionId { get; set; }
 
+        public PaymentProvider Provider { get; set; }
+        
         public decimal Amount { get; set; }
 
         public decimal MeterAmount { get; set; }
 
         public decimal TipAmount { get; set; }
 
+        public decimal TaxAmount { get; set; }
+
         public bool IsNoShowFee { get; set; }
+
+        public Guid? PromotionUsed { get; set; }
+
+        public decimal AmountSavedByPromotion { get; set; }
+
+        public Guid Id { get; private set; }
     }
 }

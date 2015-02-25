@@ -23,8 +23,7 @@
             }
             return this;
         },
-        refreshPrompts: function(accountNumber)
-        {
+        refreshPrompts: function (accountNumber) {
             this.$('.errors').empty();
             this.$('#btBook').button('loading');
 
@@ -35,32 +34,38 @@
                 .done(_.bind(function (data) {
 
                     this.$('#btBook').button('reset');
-                    this.$('#title').show();
-
                     var $ul = this.$('ul');
 
-                    var items = data.questions.reduce(function (memo, model) {
-                        if (model.question
-                            && model.question != '') {
-                            memo.push(new TaxiHail.QuestionItemView({
-                                model: model
-                            }).render().el);
+                    if (data.useCardOnFileForPayment) {
+                        var $alert = $('<div class="alert alert-error" />');
+                        $alert.append($('<div />').text(this.localize('error.accountNotSupported')));
+                        this.$('.errors').html($alert);
+                        this.$('#btBook').addClass('disabled');
+
+                    } else {
+                        this.$('#title').show();
+                        var items = data.questions.reduce(function (memo, model) {
+                            if (model.question
+                                && model.question != '') {
+                                memo.push(new TaxiHail.QuestionItemView({
+                                    model: model
+                                }).render().el);
+                            }
+                            return memo;
+                        }, []);
+
+                        $ul.first().append(items);
+
+                        this.model.set('questionsAndAnswers', data.questions);
+
+                        if (accountNumber && accountNumber != '') {
+                            var settings = this.model.get('settings');
+                            settings.accountNumber = accountNumber;
+                            this.model.set('settings', settings);
                         }
-                        return memo;
-                    }, []);
 
-                    $ul.first().append(items);
-
-                    this.model.set('questionsAndAnswers', data.questions);
-
-                    if (accountNumber && accountNumber != '') {
-                        var settings = this.model.get('settings');
-                        settings.accountNumber = accountNumber;
-                        this.model.set('settings', settings);
+                        this.refreshValidationRules(data.questions);
                     }
-
-                    this.refreshValidationRules(data.questions);
-
                 }, this))
                 .fail(_.bind(function (response) {
 
@@ -76,6 +81,7 @@
 
                 }, this));
         },
+
         loadPrompts: function()
         {
             var accountNumber = $('#inputAccountNumber').val();
@@ -84,6 +90,7 @@
                 this.refreshPrompts(accountNumber);
             }
         },
+
         refreshValidationRules: function (questions) {
 
             var questionRules = new Object();

@@ -22,7 +22,9 @@ namespace apcurium.MK.Booking.CommandHandlers
         ICommandHandler<NotifyOrderTimedOut>,
         ICommandHandler<PrepareOrderForNextDispatch>,
         ICommandHandler<SwitchOrderToNextDispatchCompany>,
-        ICommandHandler<IgnoreDispatchCompanySwitch>
+        ICommandHandler<IgnoreDispatchCompanySwitch>,
+        ICommandHandler<AddIbsOrderInfoToOrder>,
+        ICommandHandler<CancelOrderBecauseOfIbsError>
     {
         private readonly IEventSourcedRepository<Order> _repository;
 
@@ -49,17 +51,18 @@ namespace apcurium.MK.Booking.CommandHandlers
         public void Handle(NotifyOrderTimedOut command)
         {
             var order = _repository.Find(command.OrderId);
-            order.NotifyOrderTimedOut();
+            order.NotifyOrderTimedOut(command.Market);
 
             _repository.Save(order, command.Id.ToString());
         }
 
         public void Handle(CreateOrder command)
         {
-            var order = new Order(command.OrderId, command.AccountId, command.IBSOrderId, command.PickupDate,
+            var order = new Order(command.OrderId, command.AccountId, command.PickupDate,
                 command.PickupAddress, command.DropOffAddress, command.Settings, command.EstimatedFare,
                 command.UserAgent, command.ClientLanguageCode, command.UserLatitude, command.UserLongitude,
-                command.UserNote, command.ClientVersion, command.IsChargeAccountPaymentWithCardOnFile);
+                command.UserNote, command.ClientVersion, command.IsChargeAccountPaymentWithCardOnFile,
+                command.CompanyKey, command.CompanyName, command.Market);
 
             if (command.Payment.PayWithCreditCard)
             {
@@ -108,7 +111,7 @@ namespace apcurium.MK.Booking.CommandHandlers
         public void Handle(SwitchOrderToNextDispatchCompany command)
         {
             var order = _repository.Find(command.OrderId);
-            order.SwitchOrderToNextDispatchCompany(command.IBSOrderId, command.CompanyKey, command.CompanyName);
+            order.SwitchOrderToNextDispatchCompany(command.IBSOrderId, command.CompanyKey, command.CompanyName, command.Market);
             _repository.Save(order, command.Id.ToString());
         }
 
@@ -116,6 +119,20 @@ namespace apcurium.MK.Booking.CommandHandlers
         {
             var order = _repository.Find(command.OrderId);
             order.IgnoreDispatchCompanySwitch();
+            _repository.Save(order, command.Id.ToString());
+        }
+
+        public void Handle(AddIbsOrderInfoToOrder command)
+        {
+            var order = _repository.Find(command.OrderId);
+            order.AddIbsOrderInfo(command.IBSOrderId);
+            _repository.Save(order, command.Id.ToString());
+        }
+
+        public void Handle(CancelOrderBecauseOfIbsError command)
+        {
+            var order = _repository.Find(command.OrderId);
+            order.CancelBecauseOfIbsError(command.ErrorCode, command.ErrorDescription);
             _repository.Save(order, command.Id.ToString());
         }
     }

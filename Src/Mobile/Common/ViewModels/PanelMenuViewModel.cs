@@ -14,23 +14,20 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 {
 	public class PanelMenuViewModel : BaseViewModel
     {
-		private readonly BaseViewModel _parent;
-		private readonly IMvxWebBrowserTask _browserTask;
+	    private readonly IMvxWebBrowserTask _browserTask;
 
 		private readonly IOrderWorkflowService _orderWorkflowService;
 		private readonly IAccountService _accountService;
 		private readonly IPhoneService _phoneService;
 		private readonly IPaymentService _paymentService;
 
-		public PanelMenuViewModel (BaseViewModel parent, 
-			IMvxWebBrowserTask browserTask, 
+		public PanelMenuViewModel (IMvxWebBrowserTask browserTask, 
 			IOrderWorkflowService orderWorkflowService,
 			IAccountService accountService,
 			IPhoneService phoneService,
 			IPaymentService paymentService)
         {
-            _parent = parent;
-			_browserTask = browserTask;
+		    _browserTask = browserTask;
 
 			_orderWorkflowService = orderWorkflowService;
 			_accountService = accountService;
@@ -41,17 +38,25 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		public async Task Start()
 		{
+            // N.B.: This setup is for iOS only! For Android see: SubView_MainMenu.xaml
+
 			// Load cached payment settings
 			var paymentSettings = await _paymentService.GetPaymentSettings();
-			IsPayInTaxiEnabled = paymentSettings.IsPayInTaxiEnabled;
+			IsPayInTaxiEnabled = paymentSettings.IsPayInTaxiEnabled || paymentSettings.PayPalClientSettings.IsEnabled;
 
-			// Load cached notification settings
+			// Load cached settings
 		    var notificationSettings = await _accountService.GetNotificationSettings(true);
 
             // Load and cache user notification settings. DO NOT await.
+#pragma warning disable 4014
             _accountService.GetNotificationSettings();
+#pragma warning restore 4014
 
 		    IsNotificationsEnabled = notificationSettings.Enabled;
+            IsTaxiHailNetworkEnabled = Settings.Network.Enabled;
+
+            // Display a watermark indicating on which server the application is pointing
+            SetServerWatermarkText();
 
 			ItemMenuList.Add(new ItemMenuModel { Text = this.Services().Localize["PanelMenuViewLocationsText"], NavigationCommand = NavigateToMyLocations });
 			ItemMenuList.Add(new ItemMenuModel { Text = this.Services().Localize["PanelMenuViewOrderHistoryText"], NavigationCommand = NavigateToOrderHistory });
@@ -60,10 +65,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		    {
                 ItemMenuList.Add(new ItemMenuModel { Text = this.Services().Localize["PanelMenuViewPaymentInfoText"], NavigationCommand = NavigateToPaymentInformation });
 		    }
+		    if (Settings.PromotionEnabled)
+		    {
+		        ItemMenuList.Add(new ItemMenuModel { Text = this.Services().Localize["PanelMenuViewPromotionsText"], NavigationCommand = NavigateToPromotions });
+		    }
 		    if (IsNotificationsEnabled)
 		    {
                 ItemMenuList.Add(new ItemMenuModel { Text = this.Services().Localize["PanelMenuViewNotificationsText"], NavigationCommand = NavigateToNotificationsSettings });
-		    }
+		    }			
+            if (IsTaxiHailNetworkEnabled)
+            {
+                ItemMenuList.Add(new ItemMenuModel { Text = this.Services().Localize["PanelMenuViewTaxiHailNetworkText"], NavigationCommand = NavigateToUserTaxiHailNetworkSettings });
+            }
 		    if (Settings.TutorialEnabled)
 		    {
                 ItemMenuList.Add(new ItemMenuModel { Text = this.Services().Localize["PanelMenuViewTutorialText"], NavigationCommand = NavigateToTutorial });
@@ -81,6 +94,21 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		}
 
 	    public ObservableCollection<ItemMenuModel> ItemMenuList { get; set; }
+
+	    private string _serverWatermarkText;
+	    public string ServerWatermarkText
+	    {
+	        get { return _serverWatermarkText; }
+	        set
+	        {
+	            if (_serverWatermarkText != value)
+	            {
+	                _serverWatermarkText = value;
+                    RaisePropertyChanged();
+	            }
+	        }
+	    }
+
 
 	    private bool _isPayInTaxiEnabled;
         public bool IsPayInTaxiEnabled
@@ -111,6 +139,23 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 if (_isNotificationsEnabled != value)
                 {
                     _isNotificationsEnabled = value;
+                    RaisePropertyChanged();
+                }
+            }
+        }
+
+        private bool _isTaxiHailNetworkEnabled;
+        public bool IsTaxiHailNetworkEnabled
+        {
+            get
+            {
+                return _isTaxiHailNetworkEnabled;
+            }
+            set
+            {
+                if (_isTaxiHailNetworkEnabled != value)
+                {
+                    _isTaxiHailNetworkEnabled = value;
                     RaisePropertyChanged();
                 }
             }
@@ -176,9 +221,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					CloseMenu();
 					_orderWorkflowService.PrepareForNewOrder();
 					_accountService.SignOut();         
-					ShowViewModel<LoginViewModel> ();
-
-                    Close( _parent );
+					ShowViewModelAndClearHistory<LoginViewModel> ();
                 });
             }
         }
@@ -190,7 +233,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 return this.GetCommand(() =>
                 {
 					CloseMenu();
-					ShowViewModel<HistoryListViewModel> ();
+					ShowViewModel<HistoryListViewModel>();
                 });
             }
         }
@@ -254,6 +297,30 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 });
             }
         }
+
+        public ICommand NavigateToUserTaxiHailNetworkSettings
+        {
+            get
+            {
+                return this.GetCommand(() =>
+                {
+                    CloseMenu();
+                    ShowViewModel<UserTaxiHailNetworkSettingsViewModel>();
+                });
+            }
+        }
+
+		public ICommand NavigateToPromotions
+		{
+			get 
+			{
+				return this.GetCommand(() =>
+				{
+					CloseMenu();
+					ShowViewModel<PromotionViewModel> ();
+				});
+			}
+		}
 
 		public ICommand NavigateToAboutUs
         {
@@ -325,6 +392,29 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			IsClosePanelFromMenuItem = true;
 			MenuIsOpen = false;
 		}
+
+	    private void SetServerWatermarkText()
+	    {
+	        var serverTarget = Settings.ServiceUrl.ToLower();
+
+	        if (serverTarget.Contains("test.taxihail.biz"))
+	        {
+	            ServerWatermarkText = "Dev Version";
+	        }
+            else if (serverTarget.Contains("staging"))
+            {
+                ServerWatermarkText = "Staging Version";
+            }
+            else if (serverTarget.Contains("localhost") || serverTarget.Contains("apcurium.mk.web"))
+            {
+                ServerWatermarkText = "Local Version";
+            }
+            else
+            {
+                // No watermark for production
+                ServerWatermarkText = null;
+            }
+	    }
     }
 }
 

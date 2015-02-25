@@ -2,6 +2,7 @@
 
 using System;
 using System.Data.Entity;
+using System.Data.Entity.Validation;
 using System.Linq;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Common.Database;
@@ -38,6 +39,9 @@ namespace apcurium.MK.Booking.Database
                 .ToTable("OrderPairingDetail", SchemaName);
 
             modelBuilder.Entity<OrderVehiclePositionDetail>().ToTable("OrderVehiclePositionDetail", SchemaName);
+            modelBuilder.Entity<PromotionDetail>().ToTable("PromotionDetail", SchemaName);
+            modelBuilder.Entity<PromotionUsageDetail>().ToTable("PromotionUsageDetail", SchemaName);
+            modelBuilder.Entity<PromotionProgressDetail>().ToTable("PromotionProgressDetail", SchemaName);
             modelBuilder.Entity<AccountDetail>().ToTable("AccountDetail", SchemaName);
             modelBuilder.Entity<AccountIbsDetail>().ToTable("AccountIbsDetail", SchemaName);
             modelBuilder.Entity<DeviceDetail>().ToTable("DeviceDetail", SchemaName);
@@ -56,6 +60,9 @@ namespace apcurium.MK.Booking.Database
             modelBuilder.Entity<CompanyDetail>().ToTable("CompanyDetail", SchemaName);
             modelBuilder.Entity<OrderUserGpsDetail>().ToTable("OrderUserGpsDetail", SchemaName);
             modelBuilder.Entity<AppStartUpLogDetail>().ToTable("AppStartUpLogDetail", SchemaName);
+            modelBuilder.Entity<PayPalAccountDetails>().ToTable("PayPalAccountDetails", SchemaName);
+            modelBuilder.Entity<OrderReportDetail>().ToTable("OrderReportDetail", SchemaName);
+            modelBuilder.Entity<OrderNotificationDetail>().ToTable("OrderNotificationDetail", SchemaName);
 
             modelBuilder.Entity<AccountChargeQuestion>().ToTable("AccountChargeQuestion", SchemaName);
             modelBuilder.Entity<AccountChargeDetail>().ToTable("AccountChargeDetail", SchemaName)
@@ -82,7 +89,9 @@ namespace apcurium.MK.Booking.Database
             var entry = Entry(entity);
 
             if (entry.State == EntityState.Detached)
+            {
                 Set<T>().Add(entity);
+            }
 
             SaveChanges();
         }

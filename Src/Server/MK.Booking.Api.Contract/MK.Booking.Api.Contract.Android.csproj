@@ -53,6 +53,7 @@
     <Compile Include="Http\NoCacheAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Requests\AccountOrderListRequest.cs" />
+    <Compile Include="Requests\ActivePromotions.cs" />
     <Compile Include="Requests\Addresses.cs" />
     <Compile Include="Requests\AddressHistoryRequest.cs" />
     <Compile Include="Requests\ApplicationInfoRequest.cs" />
@@ -72,13 +73,10 @@
     <Compile Include="Requests\OrderRequest.cs" />
     <Compile Include="Requests\OrderStatusRequest.cs" />
     <Compile Include="Requests\Payment\Braintree\TokenizeCreditCardBraintreeRequest.cs" />
-    <Compile Include="Requests\Payment\CommitPaymentRequest.cs" />
     <Compile Include="Requests\Payment\DeleteTokenizedCreditcardRequest.cs" />
-    <Compile Include="Requests\Payment\PairingForPaymentRequest.cs" />
     <Compile Include="Requests\Payment\PaymentSettingsRequest.cs" />
-    <Compile Include="Requests\Payment\CancelPayPalExpressCheckoutPaymentRequest.cs" />
-    <Compile Include="Requests\Payment\CompletePayPalExpressCheckoutPaymentRequest.cs" />
-    <Compile Include="Requests\Payment\InitiatePayPalExpressCheckoutPaymentRequest.cs" />
+    <Compile Include="Requests\Payment\PayPal\LinkPayPalAccountRequest.cs" />
+    <Compile Include="Requests\Payment\PayPal\UnlinkPayPalAccountRequest.cs" />
     <Compile Include="Requests\Payment\UnpairingForPaymentRequest.cs" />
     <Compile Include="Requests\PlaceDetailRequest.cs" />
     <Compile Include="Requests\ReferenceDataRequest.cs" />
@@ -92,12 +90,15 @@
     <Compile Include="Requests\TermsAndConditionsRequest.cs" />
     <Compile Include="Requests\TestOnlyReqGetTestAccount.cs" />
     <Compile Include="Requests\UpdatePassword.cs" />
+    <Compile Include="Requests\UserTaxiHailNetworkSettingsRequest.cs" />
     <Compile Include="Resources\Account.cs" />
+    <Compile Include="Resources\ActivePromotion.cs" />
     <Compile Include="Resources\AddressList.cs" />
     <Compile Include="Resources\IbsFare.cs" />
     <Compile Include="Resources\CreditCardDetails.cs" />
     <Compile Include="Resources\DirectionInfo.cs" />
     <Compile Include="Resources\ErrorCode.cs" />
+    <Compile Include="Resources\NetworkFleet.cs" />
     <Compile Include="Resources\Order.cs" />
     <Compile Include="Resources\OrderRatings.cs" />
     <Compile Include="Resources\Payments\PaymentSettingsResponse.cs" />
@@ -111,7 +112,6 @@
     <Compile Include="Resources\OrderValidationResult.cs" />
     <Compile Include="Resources\AvailableVehicle.cs" />
     <Compile Include="Requests\AvailableVehicles.cs" />
-    <Compile Include="Requests\Payment\ResendPaymentConfirmationRequest.cs" />
     <Compile Include="Resources\AccountCharge.cs" />
     <Compile Include="Requests\LogApplicationStartUpRequest.cs" />
     <Compile Include="Resources\VehicleType.cs" />

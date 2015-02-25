@@ -45,51 +45,5 @@ namespace apcurium.MK.Booking.Api.Client.Payments.Braintree
                 CardToken = cardToken,
             });
         }
-        
-        public Task<CommitPreauthorizedPaymentResponse> CommitPayment(string cardToken, double amount,
-            double meterAmount, double tipAmount, Guid orderId)
-        {
-			return Client.PostAsync(new CommitPaymentRequest
-            {
-                Amount = (decimal) amount,
-                MeterAmount = (decimal) meterAmount,
-                TipAmount = (decimal) tipAmount,
-                CardToken = cardToken,
-                OrderId = orderId
-            });
-        }
-
-        public async Task<PairingResponse> Pair(Guid orderId, string cardToken, int? autoTipPercentage, double? autoTipAmount)
-        {
-            try
-            {
-                var response = await Client.PostAsync(new PairingForPaymentRequest
-                {
-                    OrderId = orderId,
-                    CardToken = cardToken,
-                    AutoTipAmount = autoTipAmount,
-                    AutoTipPercentage = autoTipPercentage
-
-                });
-                return response;
-            }
-            catch (ServiceStack.ServiceClient.Web.WebServiceException)
-            {
-                return new PairingResponse { IsSuccessful = false };
-            }   
-        }
-
-        public Task<BasePaymentResponse> Unpair(Guid orderId)
-        {
-            return Client.PostAsync(new UnpairingForPaymentRequest
-            {
-                OrderId = orderId
-            });
-        }
-
-        public Task ResendConfirmationToDriver(Guid orderId)
-        {
-            return Client.PostAsync<string>("/payment/ResendConfirmationRequest", new ResendPaymentConfirmationRequest {OrderId = orderId});
-        }
     }
 }

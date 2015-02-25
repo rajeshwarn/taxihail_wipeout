@@ -1,7 +1,7 @@
 using System;
-using MonoTouch.Foundation;
-using System.Drawing;
-using MonoTouch.UIKit;
+using Foundation;
+using CoreGraphics;
+using UIKit;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
@@ -18,7 +18,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             HasRightArrow = false;
         }
 
-        public FlatCreditCardTextField (RectangleF frame) : base (frame)
+        public FlatCreditCardTextField (CGRect frame) : base (frame)
         {
             HasRightArrow = false;
         }
@@ -30,7 +30,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             set 
             {
                 _last4Digits = string.IsNullOrEmpty (value) ? string.Empty : "\u2022\u2022\u2022\u2022 " + value;
-                RightView = new UILabel(new RectangleF(0, 0, 100 + Padding, Bounds.Height))
+                RightView = new UILabel(new CGRect(0, 0, 100 + RightPadding, Bounds.Height))
                 {
                     Text = _last4Digits,
                     BackgroundColor = UIColor.Clear,
@@ -56,7 +56,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                         Button.SetImage(image, UIControlState.Normal);
                         Button.HorizontalAlignment = UIControlContentHorizontalAlignment.Left;
                         LeftViewMode = UITextFieldViewMode.Always;
-                        LeftView = new UIView(new Rectangle(0, 0, (int)image.Size.Width, (int)image.Size.Height));
+                        LeftView = new UIView(new CGRect(0, 0, (int)image.Size.Width, (int)image.Size.Height));
                     }
                     else
                     {

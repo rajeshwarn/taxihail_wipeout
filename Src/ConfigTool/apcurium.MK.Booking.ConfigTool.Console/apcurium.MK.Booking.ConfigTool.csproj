@@ -3,8 +3,6 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
-    <ProductVersion>8.0.30703</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{730CE534-1EC9-466D-A6B1-DA7C347E2FAB}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -75,6 +73,7 @@
     <Compile Include="Unzip.cs" />
     <Compile Include="Entities\CompanySetting.cs" />
     <Compile Include="Entities\Style.cs" />
+    <Compile Include="ConfigImageResizeIfNotExist.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

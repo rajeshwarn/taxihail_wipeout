@@ -394,8 +394,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			};
 
             // Load and cache company notification settings/payment settings
-			await Mvx.Resolve<IAccountService>().GetNotificationSettings(true, true); // resolve because the accountService injected in the constructor is not authorized here
-			await Mvx.Resolve<IPaymentService>().GetPaymentSettings(true);
+            // Resolve because the accountService injected in the constructor is not authorized here
+			await Mvx.Resolve<IAccountService>().GetNotificationSettings(true, true);
+		    await Mvx.Resolve<IAccountService>().GetUserTaxiHailNetworkSettings(true);
+            await Mvx.Resolve<IPaymentService>().GetPaymentSettings(true);
 
             // Log user session start
 			Mvx.Resolve<IAccountService>().LogApplicationStartUp();
@@ -416,9 +418,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             // the user to be authenticated and it may not be when the class is initialized
             var paymentSettings = await Mvx.Resolve<IPaymentService>().GetPaymentSettings();
 
-			if (this.Settings.CreditCardIsMandatory && paymentSettings.IsPayInTaxiEnabled)
+            var isPayInTaxiEnabled = paymentSettings.IsPayInTaxiEnabled || paymentSettings.PayPalClientSettings.IsEnabled;
+
+            if (isPayInTaxiEnabled && Settings.CreditCardIsMandatory)
 			{
-				if (!_accountService.CurrentAccount.DefaultCreditCard.HasValue)
+				if (!_accountService.CurrentAccount.HasValidPaymentInformation)
 				{
 					return true;
 				}

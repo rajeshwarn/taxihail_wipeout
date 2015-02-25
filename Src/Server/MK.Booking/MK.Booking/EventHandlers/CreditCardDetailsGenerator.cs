@@ -4,6 +4,7 @@ using System;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.ReadModel;
+using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using AutoMapper;
 using Infrastructure.Messaging.Handling;
@@ -13,8 +14,7 @@ using Infrastructure.Messaging.Handling;
 namespace apcurium.MK.Booking.EventHandlers
 {
     public class CreditCardDetailsGenerator :
-        IEventHandler<CreditCardAdded>,
-        IEventHandler<CreditCardUpdated>,
+        IEventHandler<CreditCardAddedOrUpdated>,
         IEventHandler<CreditCardRemoved>,
         IEventHandler<AllCreditCardsRemoved>
     {
@@ -34,17 +34,7 @@ namespace apcurium.MK.Booking.EventHandlers
             }
         }
 
-        public void Handle(CreditCardAdded @event)
-        {
-            using (var context = _contextFactory.Invoke())
-            {
-                var details = new CreditCardDetails();
-                Mapper.Map(@event, details);
-                context.Save(details);
-            }
-        }
-
-        public void Handle(CreditCardUpdated @event)
+        public void Handle(CreditCardAddedOrUpdated @event)
         {
             using (var context = _contextFactory.Invoke())
             {
@@ -52,12 +42,10 @@ namespace apcurium.MK.Booking.EventHandlers
                 context.RemoveWhere<CreditCardDetails>(cc => cc.AccountId == @event.SourceId && cc.CreditCardId != @event.CreditCardId);
                 context.SaveChanges();
 
-                var creditCard = context.Find<CreditCardDetails>(@event.CreditCardId);
-                if (creditCard != null)
-                {
-                    Mapper.Map(@event, creditCard);
-                    context.Save(creditCard);
-                }
+                var existingCreditCard = context.Find<CreditCardDetails>(@event.CreditCardId);
+                var creditCard = existingCreditCard ?? new CreditCardDetails();
+                Mapper.Map(@event, creditCard);
+                context.Save(creditCard);
             }
         }
 

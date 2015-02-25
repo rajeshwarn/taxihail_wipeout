@@ -4,7 +4,7 @@
 // actions made in the UI designer. If it is removed, they will be lost.
 // Manual changes to this file may not be handled correctly.
 //
-using MonoTouch.Foundation;
+using Foundation;
 using System.CodeDom.Compiler;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
@@ -13,40 +13,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 	partial class RideSummaryView
 	{
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnPay { get; set; }
+		UIKit.NSLayoutConstraint constraintRatingTableHeight { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnReSendConfirmation { get; set; }
+		UIKit.UILabel lblSubTitle { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnSubmit { get; set; }
-
-		[Outlet]
-		MonoTouch.UIKit.NSLayoutConstraint constraintRatingTableHeight { get; set; }
-
-		[Outlet]
-		MonoTouch.UIKit.UILabel lblSubTitle { get; set; }
-
-		[Outlet]
-		MonoTouch.UIKit.UITableView tableRatingList { get; set; }
+		UIKit.UITableView tableRatingList { get; set; }
 		
 		void ReleaseDesignerOutlets ()
 		{
-			if (btnPay != null) {
-				btnPay.Dispose ();
-				btnPay = null;
-			}
-
-			if (btnReSendConfirmation != null) {
-				btnReSendConfirmation.Dispose ();
-				btnReSendConfirmation = null;
-			}
-
-			if (btnSubmit != null) {
-				btnSubmit.Dispose ();
-				btnSubmit = null;
-			}
-
 			if (constraintRatingTableHeight != null) {
 				constraintRatingTableHeight.Dispose ();
 				constraintRatingTableHeight = null;

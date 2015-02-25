@@ -8,7 +8,8 @@ namespace apcurium.MK.Web.Areas.Company.Controllers
     {
         private readonly ICompanyDao _companyDao;
 
-        public PrivacyController(ICompanyDao companyDao, IServerSettings serverSettings) : base(serverSettings)
+        public PrivacyController(ICompanyDao companyDao, IServerSettings serverSettings) 
+            : base(serverSettings)
         {
             _companyDao = companyDao;
         }

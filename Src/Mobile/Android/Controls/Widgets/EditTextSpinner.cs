@@ -84,12 +84,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             }
         }
 
+        private IEnumerable<ListItem> _data;
         public IEnumerable<ListItem> Data
         {
+            get { return _data; }
             set
             {
                 if (value != null)
                 {
+                    _data = value;
+
                     var data = value.Select(i => i.Id.HasValue
                         ? new ListItemData {Key = i.Id.Value, Value = i.Display, Image = i.Image}
                         : ListItemData.NullListItemData).ToList();

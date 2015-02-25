@@ -1,7 +1,7 @@
 using System;
-using MonoTouch.UIKit;
-using System.Drawing;
-using MonoTouch.Foundation;
+using UIKit;
+using CoreGraphics;
+using Foundation;
 using apcurium.MK.Booking.Mobile.Client.Helper;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
@@ -16,7 +16,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             Initialize ();
         }
 
-        public FlatCheckBox (RectangleF frame) : base (frame)
+        public FlatCheckBox (CGRect frame) : base (frame)
         {
             Initialize ();
         }

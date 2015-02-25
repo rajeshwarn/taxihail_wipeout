@@ -150,7 +150,7 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
                 }
             }
 
-            var emailLogo = new AssetsManager(id).GetAll().FirstOrDefault(f => Path.GetFileName(f).ToLower() == "email_logo.png");
+            var emailLogo = new AssetsManager(id).GetAll().FirstOrDefault(f => Path.GetFileName(f).ToLower() == "logo_1_5.png");
             if (!string.IsNullOrEmpty(emailLogo))
             {
                 var logoDestination = Path.Combine(destination, "email_logo.png");
@@ -233,7 +233,7 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
             //company.CompanyKey
 
             model.Settings.Add("APNS.ProductionCertificatePath", new Value(
-                string.Format("../../Certificates/{0}.p12", company.CompanyKey), false));
+                string.Format("../../../Certificates/{0}.p12", company.CompanyKey), false));
 
             model.Settings.Add("GCM.PackageName", new Value(string.Format("com.apcurium.MK.{0}", company.CompanyKey), false));
             model.Settings.Add("Receipt.Note", new Value("Thank You!<br>" + company.Application.AppName, false));
@@ -252,8 +252,8 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
 
             model.Settings.Add("TaxiHail.ApplicationName", new Value(company.Application.AppName, true));
             model.Settings.Add("TaxiHail.ApplicationKey", new Value(company.CompanyKey, true));
-            model.Settings.Add("TaxiHail.AccentColor", new Value("#0057a3", false));
-            model.Settings.Add("TaxiHail.EmailFontColor", new Value("#000", false));
+            model.Settings.Add("TaxiHail.AccentColor", new Value(String.IsNullOrEmpty(company.Style.CompanyColor) ? "#0057a3" : company.Style.CompanyColor, false));
+            model.Settings.Add("TaxiHail.EmailFontColor", new Value("#000000", false));
             model.Settings.Add("TaxiHail.SiteName", new Value(company.CompanyKey, true));
 
             model.Settings.Add("AndroidSigningKeyAlias", new Value("MK" + company.CompanyKey, false));
@@ -663,7 +663,7 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
             }
             return RedirectToAction("Index", "Home", new { area = "Customer", companyId = id });
         }
-
+        
         public ActionResult GenerateKeystore(string type, string id)
         {
             try

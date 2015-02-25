@@ -72,13 +72,16 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\CommonServiceLocator.1.2\lib\portable-windows8+net40+sl5+windowsphone8\Microsoft.Practices.ServiceLocation.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Practices.Unity, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+    <Reference Include="Microsoft.Practices.Unity, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\Unity.3.0.1304.1\lib\Net45\Microsoft.Practices.Unity.dll</HintPath>
+      <HintPath>..\..\packages\Unity.3.5.1404.0\lib\net45\Microsoft.Practices.Unity.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Practices.Unity.Configuration, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+    <Reference Include="Microsoft.Practices.Unity.Configuration, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\Unity.3.0.1304.1\lib\Net45\Microsoft.Practices.Unity.Configuration.dll</HintPath>
+      <HintPath>..\..\packages\Unity.3.5.1404.0\lib\net45\Microsoft.Practices.Unity.Configuration.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity.RegistrationByConvention">
+      <HintPath>..\..\packages\Unity.3.5.1404.0\lib\net45\Microsoft.Practices.Unity.RegistrationByConvention.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -90,6 +93,10 @@
     </Reference>
     <Reference Include="Nustache.i18n">
       <HintPath>..\..\packages\Nustache.i18n.1.0.0\lib\net40\Nustache.i18n.dll</HintPath>
+    </Reference>
+    <Reference Include="PayPal">
+      <HintPath>..\..\packages\PayPal.1.3.0\lib\net45\PayPal.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="PreMailer.Net">
       <HintPath>..\..\packages\PreMailer.Net.1.2.7\lib\net40\PreMailer.Net.dll</HintPath>
@@ -154,7 +161,7 @@
     <Compile Include="CommandHandlers\CreditCardPaymentCommandHandler.cs" />
     <Compile Include="CommandHandlers\EmailCommandHandler.cs" />
     <Compile Include="CommandHandlers\OrderCommandHandler.cs" />
-    <Compile Include="CommandHandlers\PayPalPaymentCommandHandler.cs" />
+    <Compile Include="CommandHandlers\PromotionCommandHandler.cs" />
     <Compile Include="CommandHandlers\SmsCommandHandler.cs" />
     <Compile Include="Database\BookingDbContext.cs" />
     <Compile Include="Domain\Account.cs" />
@@ -162,7 +169,7 @@
     <Compile Include="Domain\CreditCardPayment.cs" />
     <Compile Include="Domain\Order.cs" />
     <Compile Include="Domain\PaymentInformation.cs" />
-    <Compile Include="Domain\PayPalPayment.cs" />
+    <Compile Include="Domain\Promotion.cs" />
     <Compile Include="Email\EmailSender.cs" />
     <Compile Include="Email\IEmailSender.cs" />
     <Compile Include="Email\ITemplateService.cs" />
@@ -178,18 +185,22 @@
     <Compile Include="EventHandlers\Integration\OrderDispatchCompanyManager.cs" />
     <Compile Include="EventHandlers\Integration\PaymentSettingsUpdater.cs" />
     <Compile Include="EventHandlers\Integration\OrderPaymentManager.cs" />
+    <Compile Include="EventHandlers\Integration\PromotionTriggerGenerator.cs" />
     <Compile Include="EventHandlers\NotificationSettingsGenerator.cs" />
+    <Compile Include="EventHandlers\ReportDetailGenerator.cs" />
     <Compile Include="EventHandlers\OrderUserGpsGenerator.cs" />
-    <Compile Include="EventHandlers\PayPalExpressCheckoutPaymentDetailsGenerator.cs" />
     <Compile Include="EventHandlers\PaymentSettingGenerator.cs" />
     <Compile Include="EventHandlers\CreditCardDetailsGenerator.cs" />
     <Compile Include="EventHandlers\DeviceDetailsGenerator.cs" />
     <Compile Include="EventHandlers\Integration\PushNotificationSender.cs" />
     <Compile Include="EventHandlers\Integration\MailSender.cs" />
     <Compile Include="EventHandlers\OrderGenerator.cs" />
+    <Compile Include="EventHandlers\PayPalExpressCheckoutPaymentDetailsGenerator.cs" />
+    <Compile Include="EventHandlers\PromotionDetailGenerator.cs" />
     <Compile Include="EventHandlers\RuleDetailsGenerator.cs" />
     <Compile Include="EventHandlers\TariffDetailsGenerator.cs" />
     <Compile Include="EventHandlers\RatingTypeDetailsGenerator.cs" />
+    <Compile Include="EventHandlers\UserTaxiHailNetworkSettingsGenerator.cs" />
     <Compile Include="EventHandlers\VehicleTypeDetailGenerator.cs" />
     <Compile Include="Module.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -199,11 +210,16 @@
     <Compile Include="ReadModel\AccountChargeDetail.cs" />
     <Compile Include="ReadModel\AccountDetail.cs" />
     <Compile Include="ReadModel\AccountIbsDetail.cs" />
+    <Compile Include="ReadModel\PayPalAccountDetails.cs" />
+    <Compile Include="ReadModel\OrderReportDetail.cs" />
+    <Compile Include="ReadModel\PromotionProgressDetail.cs" />
     <Compile Include="ReadModel\AddressDetails.cs" />
     <Compile Include="ReadModel\AppStartUpLogDetail.cs" />
     <Compile Include="ReadModel\CompanyDetail.cs" />
     <Compile Include="ReadModel\OrderPaymentDetail.cs" />
     <Compile Include="ReadModel\OrderUserGpsDetail.cs" />
+    <Compile Include="ReadModel\PromotionDetail.cs" />
+    <Compile Include="ReadModel\PromotionUsageDetail.cs" />
     <Compile Include="ReadModel\Query\AccountChargeDao.cs" />
     <Compile Include="ReadModel\Query\AppStartUpLogDao.cs" />
     <Compile Include="ReadModel\Query\CompanyDao.cs" />
@@ -217,11 +233,15 @@
     <Compile Include="ReadModel\Query\Contract\IConfigurationDao.cs" />
     <Compile Include="ReadModel\Query\Contract\IDeviceDao.cs" />
     <Compile Include="ReadModel\Query\Contract\IOrderPaymentDao.cs" />
+    <Compile Include="ReadModel\Query\Contract\IReportDao.cs" />
+    <Compile Include="ReadModel\Query\Contract\IPromotionDao.cs" />
     <Compile Include="ReadModel\Query\Contract\IVehicleTypeDao.cs" />
     <Compile Include="ReadModel\Query\Contract\IOrderStatusUpdateDao.cs" />
     <Compile Include="ReadModel\Query\DeviceDao.cs" />
     <Compile Include="ReadModel\Query\OrderPaymentDao.cs" />
     <Compile Include="ReadModel\Query\OrderStatusUpdateDao.cs" />
+    <Compile Include="ReadModel\Query\ReportDao.cs" />
+    <Compile Include="ReadModel\Query\PromotionDao.cs" />
     <Compile Include="ReadModel\Query\RuleDao.cs" />
     <Compile Include="ReadModel\Query\CreditCardDao.cs" />
     <Compile Include="ReadModel\CreditCardDetails.cs" />
@@ -269,8 +289,21 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Resources\Global.es.Designer.cs" />
-    <Compile Include="Resources\MearsTaxi.Designer.cs" />
+    <Compile Include="Resources\Global.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Global.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\Global.es.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Global.es.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\MearsTaxi.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MearsTaxi.resx</DependentUpon>
+    </Compile>
     <Compile Include="Resources\Resources.cs" />
     <Compile Include="Resources\Global.fr.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -282,27 +315,33 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Resources\Global.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Global.resx</DependentUpon>
-    </Compile>
     <Compile Include="Resources\Thriev.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Thriev.resx</DependentUpon>
     </Compile>
+    <Compile Include="Security\CryptoService.cs" />
+    <Compile Include="Resources\UTOG.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>UTOG.resx</DependentUpon>
+    </Compile>
     <Compile Include="Security\IPasswordService.cs" />
     <Compile Include="Security\PasswordService.cs" />
     <Compile Include="Security\RolesPermissions.cs" />
+    <Compile Include="Services\Impl\BasePayPalService.cs" />
     <Compile Include="Services\Impl\BraintreePaymentService.cs" />
     <Compile Include="Services\Impl\CmtPaymentService.cs" />
     <Compile Include="Services\Impl\MonerisPaymentService.cs" />
     <Compile Include="Services\Impl\PairingService.cs" />
+    <Compile Include="Services\Impl\PayPalService.cs" />
     <Compile Include="Services\INotificationService.cs" />
     <Compile Include="Services\Impl\NotificationService.cs" />
     <Compile Include="Services\IPairingService.cs" />
     <Compile Include="Services\IPaymentService.cs" />
+    <Compile Include="Services\IPayPalServiceFactory.cs" />
+    <Compile Include="Services\PaymentService.cs" />
+    <Compile Include="Services\PayPalServiceFactory.cs" />
     <Compile Include="SMS\Impl\TwilioService.cs" />
     <Compile Include="SMS\ISmsService.cs" />
   </ItemGroup>
@@ -320,6 +359,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Email\Templates\PasswordReset.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Email\Templates\PromotionUnlocked.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Email\Templates\Receipt.html">
@@ -343,6 +385,10 @@
       <Project>{6A4623E1-41EF-4286-9A34-2ADC6407E94F}</Project>
       <Name>CustomerPortal.Contract</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\HoneyBadger\HoneyBadger.csproj">
+      <Project>{1C2F9D8B-7B65-4D2E-A099-D0040907D59C}</Project>
+      <Name>HoneyBadger</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Infrastructure\Infrastructure\Infrastructure.csproj">
       <Project>{B5786D07-5888-4DF5-B295-3FEA593F3BFE}</Project>
       <Name>Infrastructure</Name>
@@ -358,10 +404,6 @@
     <ProjectReference Include="..\..\MK.Booking.Maps\MK.Booking.Maps.csproj">
       <Project>{C41EA1B3-0E19-41AE-8EFC-AE242532B248}</Project>
       <Name>MK.Booking.Maps</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\MK.Booking.PayPal\MK.Booking.PayPal.csproj">
-      <Project>{910BC792-5EC8-4E56-82C9-95B1D6F4E84A}</Project>
-      <Name>MK.Booking.PayPal</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\MK.Common\MK.Common.csproj">
       <Project>{65033050-1D55-465A-A772-F3192F9E2428}</Project>
@@ -398,7 +440,9 @@
       <LastGenOutput>Global.fr.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Resources\MearsTaxi.resx" />
+    <EmbeddedResource Include="Resources\MearsTaxi.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Resources\TaxiHailNYC.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>TaxiHailNYC.Designer.cs</LastGenOutput>
@@ -406,14 +450,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\Global.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Global.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+      <LastGenOutput>Global.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\Thriev.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Thriev.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Resources\UTOG.resx" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

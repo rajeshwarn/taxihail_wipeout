@@ -1,14 +1,14 @@
 using System;
-using System.Diagnostics;
 using System.IO;
-using System.Reactive.Disposables;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
 using TinyIoC;
-using System.Collections.Generic;
 using MK.Common.Configuration;
+using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
+using Foundation;
+using System.Collections.Generic;
 
 namespace apcurium.MK.Booking.Mobile.Client.Diagnostics
 {
@@ -27,7 +27,21 @@ namespace apcurium.MK.Booking.Mobile.Client.Diagnostics
 
     public class LoggerWrapper : BaseLogger
     {
-        private readonly string BaseDir = Path.Combine (Environment.GetFolderPath (Environment.SpecialFolder.MyDocuments), "..", "Library");
+        private string BaseDir 
+        {
+            get
+            {
+                if (UIHelper.IsOS8orHigher)
+                {
+                    var docs = NSFileManager.DefaultManager.GetUrls (NSSearchPathDirectory.LibraryDirectory, NSSearchPathDomain.User) [0];
+                    return docs.Path;
+                }
+                else
+                {
+                    return Path.Combine (Environment.GetFolderPath (Environment.SpecialFolder.MyDocuments), "..", "Library");
+                }
+            }
+        }
 
         public override string GetErrorLogPath ()
         {

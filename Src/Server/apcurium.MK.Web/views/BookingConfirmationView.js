@@ -16,18 +16,10 @@
             var pickupZipCode = pickup.zipCode != null ? pickup.zipCode : '';
             var dropOffZipCode = (dest != null && dest.zipCode != null) ? dest.zipCode : '';
 
-            
-
-            
             this.showEstimate = TaxiHail.parameters.isEstimateEnabled && pickup && dest;
             this.showEstimateWarning = TaxiHail.parameters.isEstimateWarningEnabled;
             
-            var accountNumber = '';
-            
-            if (this.model.isPayingWithAccountCharge()) {
-                accountNumber = this.model.get('accountNumber');
-                accountNumber = accountNumber != null ? accountNumber : '';
-            }
+            var accountNumber = this.model.get('accountNumber');
 
             if (this.showEstimate) {
                 TaxiHail.directionInfo.getInfo(pickup.latitude,
@@ -77,9 +69,18 @@
 
             var data = this.model.toJSON();
 
+            var chargeTypes = TaxiHail.referenceData.paymentsList;
+            if (this.model.get('market')) {
+                for (var i = 0; i < chargeTypes.length; i++) {
+                    if (chargeTypes[i].id === 1) {
+                        chargeTypes = [chargeTypes[i]];
+                    }
+                }
+            }
+
             _.extend(data, {
                 vehiclesList: TaxiHail.vehicleTypes,
-                paymentsList: TaxiHail.referenceData.paymentsList,
+                paymentsList: chargeTypes,
                 showPassengerNumber: TaxiHail.parameters.showPassengerNumber
             });
 
@@ -138,6 +139,7 @@
         },
         
         renderResults: function (result) {
+            this.model.set({ 'estimate': result });
             if (result.callForPrice) {
                 this.model.set('estimateDisplay', TaxiHail.localize("CallForPrice"));
             } else
@@ -164,7 +166,7 @@
             this.model.set('FromWebApp', true);
             this.model.saveLocal();
 
-            if (this.model.isPayingWithAccountCharge()) {
+            if (this.model.isPayingWithAccountCharge() && !this.model.get('market')) {
                 //account charge type payment                
                 TaxiHail.app.navigate('bookaccountcharge', { trigger: true});
             }else{
@@ -193,11 +195,11 @@
             }
 
             var $alert = $('<div class="alert alert-error" />');
-            if (result.errorCode == "CreateOrder_RuleDisable") {
-                $alert.append($('<div />').text(result.message));
+            if (result.errorCode == "CreateOrder_PendingOrder") {
+                $alert.append($('<div />').text(this.localize(result.errorCode)));
             }
-            else if (result.statusText) {
-                $alert.append($('<div />').text(this.localize(result.statusText)));
+            else if (result.errorCode) {
+                $alert.append($('<div />').text(result.message));
             }
             _.each(result.errors, function (error) {
                 $alert.append($('<div />').text(this.localize(error.statusText)));

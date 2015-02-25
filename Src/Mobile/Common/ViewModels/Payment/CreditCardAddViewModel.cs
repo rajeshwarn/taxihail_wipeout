@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Input;
+using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.Extensions;
@@ -23,7 +24,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 		private readonly IPaymentService _paymentService;
 		private readonly IAccountService _accountService;
 
-		public CreditCardAddViewModel(ILocationService locationService,
+	    public CreditCardAddViewModel(
+            ILocationService locationService,
 			IPaymentService paymentService, 
 			IAccountService accountService)
 		{
@@ -66,10 +68,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			_locationService.Stop();
 		}
 
+	    private ClientPaymentSettings _paymentSettings;
+
 		public override async void Start()
         {
 			using (this.Services ().Message.ShowProgress ())
 			{
+			    IsPayPalAccountLinked = _accountService.CurrentAccount.IsPayPalAccountLinked;
+                _paymentSettings = await _paymentService.GetPaymentSettings();
+
 				CreditCardCompanies = new List<ListItem>
 				{
 					new ListItem {Display = Visa, Id = 0},
@@ -103,7 +110,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
 				Data = new CreditCardInfos ();
 
-				var creditCard = await _accountService.GetCreditCard ();
+				var creditCard = await _accountService.GetCreditCard();
 				if (creditCard == null)
 				{
 					Data.NameOnCard = _accountService.CurrentAccount.Name;
@@ -112,8 +119,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 					CreditCardType = (int)id;
 
 					#if DEBUG
-					var paymentSettings = await _paymentService.GetPaymentSettings();
-					if (paymentSettings.PaymentMode == PaymentMethod.Braintree)
+					if (_paymentSettings.PaymentMode == PaymentMethod.Braintree)
 					{
 						CreditCardNumber = DummyVisa.BraintreeNumber;
 					}
@@ -137,8 +143,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 					Data.NameOnCard = creditCard.NameOnCard;
 					Data.CreditCardCompany = creditCard.CreditCardCompany;
 
-				ExpirationMonth = string.IsNullOrWhiteSpace(creditCard.ExpirationMonth) ? (int?)null : int.Parse(creditCard.ExpirationMonth);
-				ExpirationYear = string.IsNullOrWhiteSpace(creditCard.ExpirationYear) ? (int?)null : int.Parse(creditCard.ExpirationYear);
+    				ExpirationMonth = string.IsNullOrWhiteSpace(creditCard.ExpirationMonth) ? (int?)null : int.Parse(creditCard.ExpirationMonth);
+    				ExpirationYear = string.IsNullOrWhiteSpace(creditCard.ExpirationYear) ? (int?)null : int.Parse(creditCard.ExpirationYear);
 
 					var id = CreditCardCompanies.Find(x => x.Display == creditCard.CreditCardCompany).Id;
 					if (id != null)
@@ -149,9 +155,28 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
 				RaisePropertyChanged(() => Data);
 				RaisePropertyChanged(() => CreditCardNumber);
+                RaisePropertyChanged(() => CanDeleteCreditCard);
+                RaisePropertyChanged(() => IsPayPalOnly);
 			}
         }
-			
+
+	    private bool _isPayPalAccountLinked;
+	    public bool IsPayPalAccountLinked
+	    {
+            get { return _isPayPalAccountLinked; }
+	        set
+	        {
+	            if (_isPayPalAccountLinked != value)
+	            {
+	                _isPayPalAccountLinked = value;
+                    RaisePropertyChanged();
+                    RaisePropertyChanged(() => CanLinkPayPalAccount);
+                    RaisePropertyChanged(() => CanUnlinkPayPalAccount);
+                    RaisePropertyChanged(() => ShowLinkedPayPalInfo);
+	            }
+	        }
+	    }
+
         public string CreditCardNumber
         {
             get{ return Data.CardNumber; }
@@ -274,138 +299,192 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 	            {
                     _isEditing = value;
                     RaisePropertyChanged();
-					RaisePropertyChanged(()=>CreditCardSaveButtonDisplay);
+					RaisePropertyChanged(() => CreditCardSaveButtonDisplay);
 	            }
 	        }
 	    }
 
-		public string CreditCardSaveButtonDisplay
-		{
-			get{
-				var text= _isEditing ? this.Services().Localize["Modify"] : this.Services().Localize["Save"];
-				return text; 
-			}
-		}	
-		public ICommand SaveCreditCardCommand { get { return this.GetCommand(() => SaveCreditCard()); } }
-		public ICommand DeleteCreditCardCommand { get { return this.GetCommand(() => DeleteCreditCard()); } }
-
-        private void DeleteCreditCard()
+        public bool CanDeleteCreditCard
         {
-            this.Services().Message.ShowMessage(
-                this.Services().Localize["DeleteCreditCardTitle"],
-                this.Services().Localize["DeleteCreditCard"],
-                this.Services().Localize["Delete"], () =>
-                {
-                    _accountService.RemoveCreditCard();
-                    this.Services().Cache.Clear("Account.CreditCards");
-                    ShowViewModelAndRemoveFromHistory<HomeViewModel>(new { locateUser = bool.TrueString });
-
-					// remove default card and update default chargetype
-					var account = _accountService.CurrentAccount;
-					account.Settings.ChargeTypeId = ChargeTypes.PaymentInCar.Id;
-					account.DefaultCreditCard = null;
-
-                    try
-                    {
-                        _accountService.UpdateSettings(account.Settings, null, account.DefaultTipPercent);
-                    }
-                    catch (WebServiceException ex)
-                    {
-                        switch (ex.ErrorCode)
-                        {
-                            case "AccountCharge_InvalidAccountNumber":
-                                this.Services().Message.ShowMessage(this.Services().Localize["CreditCardErrorTitle"], this.Services().Localize["CreditCardBookingSettingsError"]);
-                                break;
-                            default:
-                                this.Services().Message.ShowMessage(this.Services().Localize["UpdateBookingSettingsInvalidDataTitle"],
-                                    this.Services().Localize["UpdateBookingSettingsGenericError"]);
-                                break;
-                        }
-                    }
-                },
-                this.Services().Localize["Cancel"], () => { });
+            get { return IsEditing && !Settings.CreditCardIsMandatory; }
         }
 
-		private async void SaveCreditCard ()
+        public bool CanLinkPayPalAccount
         {
-            Data.CreditCardCompany = CreditCardTypeName;
-            if (Params.Get (Data.NameOnCard, Data.CardNumber, 
-                                   Data.CreditCardCompany, 
-                                   Data.ExpirationMonth, 
-                                   Data.ExpirationYear, 
-                                   Data.CCV).Any (x => x.IsNullOrEmpty ())) 
+            get { return !IsPayPalAccountLinked && _paymentSettings.PayPalClientSettings.IsEnabled; }
+        }
+
+	    public bool CanUnlinkPayPalAccount
+	    {
+            get { return IsPayPalAccountLinked && !Settings.CreditCardIsMandatory; }
+	    }
+
+	    public bool ShowLinkedPayPalInfo
+	    {
+            get { return IsPayPalAccountLinked && Settings.CreditCardIsMandatory; }
+	    }
+
+	    public bool IsPayPalOnly
+	    {
+            get { return _paymentSettings.PayPalClientSettings.IsEnabled && !_paymentSettings.IsPayInTaxiEnabled; }
+	    }
+
+		public string CreditCardSaveButtonDisplay
+		{
+			get
             {
-                this.Services().Message.ShowMessage(this.Services().Localize["CreditCardErrorTitle"], this.Services().Localize["CreditCardRequiredFields"]);
-				return;
+				return IsEditing ? this.Services().Localize["Modify"] : this.Services().Localize["Save"];
+			}
+		}	
+		public ICommand SaveCreditCardCommand 
+        { 
+            get
+            {
+                return this.GetCommand(() =>
+		        {
+                    if (IsPayPalAccountLinked)
+                    {
+                        this.Services().Message.ShowMessage(
+                            this.Services().Localize["AddCreditCardTitle"],
+                            this.Services().Localize["AddCoFPayPalWarning"],
+                            this.Services().Localize["AddACardButton"], SaveCreditCard,
+                            this.Services().Localize["Cancel"], () => { });
+                    }
+                    else
+                    {
+                        SaveCreditCard();
+                    }
+		        });
+            } 
+        }
+
+	    public ICommand DeleteCreditCardCommand
+	    {
+	        get
+	        {
+	            return this.GetCommand(() => 
+                    this.Services().Message.ShowMessage(
+	                    this.Services().Localize["DeleteCreditCardTitle"],
+	                    this.Services().Localize["DeleteCreditCard"],
+	                    this.Services().Localize["Delete"], () => DeleteCreditCard(),
+	                    this.Services().Localize["Cancel"], () => { }));
+	        } 
+	        
+	    }
+
+        public void LinkPayPalAccount(string authCode)
+        {
+            try
+            {
+				_accountService.LinkPayPalAccount(authCode);
+                
+                DeleteCreditCard(true);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex);
+
+                this.Services().Message.ShowMessage(
+                    this.Services().Localize["PayPalErrorTitle"],
+                    this.Services().Localize["PayPalLinkError"]);
             }
 
-			if (!IsValid (Data.CardNumber)) 
-			{
-                this.Services().Message.ShowMessage(this.Services().Localize["CreditCardErrorTitle"], this.Services().Localize["CreditCardInvalidCrediCardNUmber"]);
-				return;
+            IsPayPalAccountLinked = true;
+
+			this.Services().Message.ShowMessage(
+				string.Empty,
+				this.Services().Localize["PayPalLinked"],
+				() => ShowViewModelAndRemoveFromHistory<HomeViewModel>(new { locateUser = bool.TrueString }));
+        }
+
+		public void UnlinkPayPalAccount(bool replacedByCreditCard = false)
+        {
+            if (!IsPayPalAccountLinked)
+            {
+                return;
             }
 
             try
             {
-				var success = false;
-				using(this.Services().Message.ShowProgress())
-				{
-	                Data.Last4Digits = new string(Data.CardNumber.Reverse().Take(4).Reverse().ToArray());
+				_accountService.UnlinkPayPalAccount(replacedByCreditCard);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex);
 
-					if(!IsEditing)
-					{
-						Data.CreditCardId = Guid.NewGuid();
-					}
-	                
-					success = IsEditing 
-						? await _accountService.UpdateCreditCard(Data) 
-						: await _accountService.AddCreditCard(Data);
-				}
+                this.Services().Message.ShowMessage(
+                    this.Services().Localize["PayPalErrorTitle"],
+                    this.Services().Localize["PayPalUnlinkError"]);
+            }
+
+			IsPayPalAccountLinked = false;
+        }
+
+		private void DeleteCreditCard(bool replacedByPayPal = false)
+	    {
+	        if (!IsEditing)
+	        {
+	            return;
+	        }
+
+			_accountService.RemoveCreditCard(replacedByPayPal);
+            
+			if (!replacedByPayPal)
+			{
+				ShowViewModelAndRemoveFromHistory<HomeViewModel>(new { locateUser = bool.TrueString });
+			}
+	    }
+
+        private async void SaveCreditCard()
+	    {
+            Data.CreditCardCompany = CreditCardTypeName;
+            if (Params.Get(Data.NameOnCard, Data.CardNumber,
+                                   Data.CreditCardCompany,
+                                   Data.ExpirationMonth,
+                                   Data.ExpirationYear,
+                                   Data.CCV).Any(x => x.IsNullOrEmpty()))
+            {
+                this.Services().Message.ShowMessage(this.Services().Localize["CreditCardErrorTitle"], this.Services().Localize["CreditCardRequiredFields"]);
+                return;
+            }
+
+            if (!IsValid(Data.CardNumber))
+            {
+                this.Services().Message.ShowMessage(this.Services().Localize["CreditCardErrorTitle"], this.Services().Localize["CreditCardInvalidCrediCardNUmber"]);
+                return;
+            }
+
+            var success = false;
+            using (this.Services().Message.ShowProgress())
+            {
+                Data.Last4Digits = new string(Data.CardNumber.Reverse().Take(4).Reverse().ToArray());
+
+                if (!IsEditing)
+                {
+                    Data.CreditCardId = Guid.NewGuid();
+                }
+
+				success = await _accountService.AddOrUpdateCreditCard(Data, IsEditing);
+
 				if (success)
-				{	
+				{
+					UnlinkPayPalAccount(true);
+
 					this.Services().Analytics.LogEvent("AddCOF");
 					Data.CardNumber = null;
 					Data.CCV = null;
 
-					// update default card and default chargetype
-					var account = _accountService.CurrentAccount;
-					account.Settings.ChargeTypeId = ChargeTypes.CardOnFile.Id;
-					account.DefaultCreditCard = Data.CreditCardId;
-
-				    try
-				    {
-				        await _accountService.UpdateSettings(account.Settings, Data.CreditCardId, account.DefaultTipPercent);
-
-				        this.Services().Message.ShowMessage(
-				            string.Empty,
-				            this.Services().Localize["CreditCardAdded"],
-				            () => ShowViewModelAndRemoveFromHistory<HomeViewModel>(new {locateUser = bool.TrueString}));
-				    }
-				    catch (WebServiceException ex)
-				    {
-				        switch (ex.ErrorCode)
-				        {
-				            case "AccountCharge_InvalidAccountNumber":
-                                this.Services().Message.ShowMessage(this.Services().Localize["CreditCardErrorTitle"],
-                                    this.Services().Localize["CreditCardBookingSettingsError"]);
-				                break;
-                            default:
-                                this.Services().Message.ShowMessage(this.Services().Localize["UpdateBookingSettingsInvalidDataTitle"],
-                                    this.Services().Localize["UpdateBookingSettingsGenericError"]);
-				                break;
-				        }
-				    }
+					this.Services().Message.ShowMessage(
+						string.Empty,
+						this.Services().Localize["CreditCardAdded"],
+						() => ShowViewModelAndRemoveFromHistory<HomeViewModel>(new { locateUser = bool.TrueString }));
 				}
 				else
 				{
-                    this.Services().Message.ShowMessage(this.Services().Localize["CreditCardErrorTitle"], this.Services().Localize["CreditCardErrorInvalid"]);
+					this.Services().Message.ShowMessage(this.Services().Localize["CreditCardErrorTitle"], this.Services().Localize["CreditCardErrorInvalid"]);
 				}
             }
-			finally 
-			{
-				this.Services().Cache.Clear("Account.CreditCards");
-			}
-        }
+	    }
 
         private bool IsValid(string cardNumber)
         {

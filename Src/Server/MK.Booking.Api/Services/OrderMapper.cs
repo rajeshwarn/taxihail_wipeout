@@ -33,6 +33,7 @@ namespace apcurium.MK.Booking.Api.Services
                     AccountNumber = order.Settings.AccountNumber
                 },
                 Fare = order.Fare,
+                Tax = order.Tax,
                 Tip = order.Tip,
                 Toll = order.Toll,
                 Status = (OrderStatus) order.Status,

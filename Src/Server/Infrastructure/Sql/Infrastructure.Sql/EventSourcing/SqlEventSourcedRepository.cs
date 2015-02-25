@@ -11,6 +11,9 @@
 // See the License for the specific language governing permissions and limitations under the License.
 // ==============================================================================================================
 
+using System.Data.Entity.Core;
+using System.Data.SqlClient;
+
 namespace Infrastructure.Sql.EventSourcing
 {
     using System;
@@ -88,15 +91,28 @@ namespace Infrastructure.Sql.EventSourcing
         {
             // TODO: guarantee that only incremental versions of the event are stored
             var events = eventSourced.Events.ToArray();
-            using (var context = this.contextFactory.Invoke())
+            try
             {
-                var eventsSet = context.Set<Event>();
-                foreach (var e in events)
+                using (var context = this.contextFactory.Invoke())
                 {
-                    eventsSet.Add(this.Serialize(e, correlationId));
-                }
+                    var eventsSet = context.Set<Event>();
+                    foreach (var e in events)
+                    {
+                        eventsSet.Add(this.Serialize(e, correlationId));
+                    }
 
-                context.SaveChanges();
+                    context.SaveChanges();
+                }
+            }
+            catch (UpdateException exception)
+            {
+                var innerException = exception.InnerException as SqlException;
+                if (innerException != null 
+                    && innerException.Number == 2627) //unique constraint error code
+                {
+                    throw new ConcurrencyException();
+                }
+                throw;
             }
 
             // TODO: guarantee delivery or roll back, or have a way to resume after a system crash

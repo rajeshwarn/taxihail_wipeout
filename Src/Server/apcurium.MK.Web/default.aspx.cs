@@ -92,8 +92,8 @@ namespace apcurium.MK.Web
             var referenceDataService = ServiceLocator.Current.GetInstance<ReferenceDataService>();
             var referenceData = (ReferenceData) referenceDataService.Get(new ReferenceDataRequest());
 
-            // remove the card on file charge type since it's not possible to use card on file with the web app
-            referenceData.PaymentsList = HidePaymentType(referenceData.PaymentsList, ChargeTypes.CardOnFile.Id);
+            // Remove unsupported payment methods by the web app
+            referenceData.PaymentsList = HidePaymentTypes(referenceData.PaymentsList, new[] { ChargeTypes.CardOnFile.Id , ChargeTypes.PayPal.Id });
 
             ReferenceData = referenceData.ToString();
 
@@ -110,9 +110,9 @@ namespace apcurium.MK.Web
                 : Uri.UnescapeDataString(pair.Split('=')[1]);
         }
 
-        private List<Common.Entity.ListItem> HidePaymentType(IEnumerable<Common.Entity.ListItem> paymentList, int? paymentTypeToHide)
+        private List<Common.Entity.ListItem> HidePaymentTypes(IEnumerable<Common.Entity.ListItem> paymentList, IEnumerable<int?> paymentTypesToHide)
         {
-            return paymentList.Where(i => i.Id != paymentTypeToHide).ToList();
+            return paymentList.Where(paymentType => !paymentTypesToHide.Contains(paymentType.Id)).ToList();
         }
     }
 }

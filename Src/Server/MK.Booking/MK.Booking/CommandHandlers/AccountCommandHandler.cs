@@ -28,8 +28,7 @@ namespace apcurium.MK.Booking.CommandHandlers
         ICommandHandler<RegisterTwitterAccount>,
         ICommandHandler<UpdateAccountPassword>,
         ICommandHandler<AddRoleToUserAccount>,
-        ICommandHandler<AddCreditCard>,
-        ICommandHandler<UpdateCreditCard>,
+        ICommandHandler<AddOrUpdateCreditCard>,
         ICommandHandler<DeleteAllCreditCards>,
         ICommandHandler<DeleteAccountCreditCards>,
         ICommandHandler<RegisterDeviceForPushNotifications>,
@@ -39,7 +38,12 @@ namespace apcurium.MK.Booking.CommandHandlers
         ICommandHandler<UpdateFavoriteAddress>,
         ICommandHandler<RemoveAddressFromHistory>,
         ICommandHandler<LogApplicationStartUp>,
-        ICommandHandler<LinkAccountToIbs>
+        ICommandHandler<LinkAccountToIbs>,
+        ICommandHandler<AddOrUpdateUserTaxiHailNetworkSettings>,
+        ICommandHandler<UnlinkAccountFromIbs>,
+        ICommandHandler<LinkPayPalAccount>,
+        ICommandHandler<UnlinkPayPalAccount>,
+        ICommandHandler<UnlinkAllPayPalAccounts>
     {
         private readonly IPasswordService _passwordService;
         private readonly Func<BookingDbContext> _contextFactory;
@@ -52,24 +56,10 @@ namespace apcurium.MK.Booking.CommandHandlers
             _contextFactory = contextFactory;
         }
 
-        public void Handle(AddCreditCard command)
+        public void Handle(AddOrUpdateCreditCard command)
         {
             var account = _repository.Find(command.AccountId);
-            account.AddCreditCard(
-                command.CreditCardCompany,
-                command.CreditCardId,
-                command.NameOnCard,
-                command.Last4Digits,
-                command.ExpirationMonth,
-                command.ExpirationYear,
-                command.Token);
-            _repository.Save(account, command.Id.ToString());
-        }
-
-        public void Handle(UpdateCreditCard command)
-        {
-            var account = _repository.Find(command.AccountId);
-            account.UpdateCreditCard(
+            account.AddOrUpdateCreditCard(
                 command.CreditCardCompany,
                 command.CreditCardId,
                 command.NameOnCard,
@@ -197,9 +187,15 @@ namespace apcurium.MK.Booking.CommandHandlers
             var settings = new BookingSettings();
             Mapper.Map(command, settings);
 
-            account.UpdateBookingSettings(settings);
-            account.UpdatePaymentProfile(command.DefaultCreditCard, command.DefaultTipPercent);
+            account.UpdateBookingSettings(settings, command.DefaultTipPercent);
 
+            _repository.Save(account, command.Id.ToString());
+        }
+
+        public void Handle(AddOrUpdateUserTaxiHailNetworkSettings command)
+        {
+            var account = _repository.Get(command.AccountId);
+            account.AddOrUpdateTaxiHailNetworkSettings(command.IsEnabled, command.DisabledFleets);
             _repository.Save(account, command.Id.ToString());
         }
 
@@ -265,6 +261,43 @@ namespace apcurium.MK.Booking.CommandHandlers
             account.LinkToIbs(command.CompanyKey, command.IbsAccountId);
 
             _repository.Save(account, command.Id.ToString());
+        }
+
+        public void Handle(UnlinkAccountFromIbs command)
+        {
+            var account = _repository.Find(command.AccountId);
+
+            account.UnlinkFromIbs();
+
+            _repository.Save(account, command.Id.ToString());
+        }
+
+        public void Handle(LinkPayPalAccount command)
+        {
+            var account = _repository.Find(command.AccountId);
+
+            account.LinkPayPalAccount(command.EncryptedRefreshToken);
+
+            _repository.Save(account, command.Id.ToString());
+        }
+
+        public void Handle(UnlinkPayPalAccount command)
+        {
+            var account = _repository.Find(command.AccountId);
+
+            account.UnlinkPayPalAccount();
+
+            _repository.Save(account, command.Id.ToString());
+        }
+
+        public void Handle(UnlinkAllPayPalAccounts command)
+        {
+            foreach (var accountId in command.AccountIds)
+            {
+                var account = _repository.Find(accountId);
+                account.UnlinkPayPalAccount();
+                _repository.Save(account, command.Id.ToString());
+            }
         }
     }
 }

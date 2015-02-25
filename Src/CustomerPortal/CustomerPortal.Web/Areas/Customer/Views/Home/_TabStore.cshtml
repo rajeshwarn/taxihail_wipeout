@@ -1,4 +1,6 @@
-﻿@model CustomerPortal.Web.Entities.Company
+﻿@using apcurium.MK.Common.Extensions
+@using CustomerPortal.Web
+@model CustomerPortal.Web.Entities.Company
 
 <fieldset>
         
@@ -32,4 +34,33 @@
     </legend>
 
     @Html.DisplayFor(model => model.GooglePlayCredentials)
+
+    @if (User.IsInRole(RoleName.Admin))
+    {
+        <dl>
+            <dt>Google Map for Work API Fingerprint</dt>
+            @{
+                var packageAndroidSetting = Model.CompanySettings.FirstOrDefault(s => s.Key == "PackageAndroid");
+                var packageSetting = Model.CompanySettings.FirstOrDefault(s => s.Key == "Package");
+                var packageName = packageAndroidSetting != null
+                    ? packageAndroidSetting.Value
+                    : packageSetting != null
+                        ? packageSetting.Value
+                        : string.Empty;
+            }
+            @if (!packageName.HasValue())
+            {
+                <dd>Warning: Package name setting does not exist. It is required for fingerprint generation.</dd>
+            }
+            
+            <dd>@Model.GooglePlayCredentials.KeystoreSHA1Signature;@packageName</dd>
+            <br />
+            @using (Html.BeginForm("GenerateApiKey", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                @Html.Hidden("id", Model.Id);
+                @Html.Hidden("type", "assets");
+                <input type="submit" class="btn btn-primary" value="Generate Fingerprint" />
+            }
+        </dl>
+    }
 </fieldset>

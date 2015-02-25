@@ -1,18 +1,15 @@
 using System;
 using System.Collections.Generic;
-using System.Drawing;
+using CoreGraphics;
 using apcurium.MK.Booking.Mobile.Client.Diagnostics;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
 using apcurium.MK.Booking.Mobile.Client.Localization;
-using apcurium.MK.Booking.Mobile.Client.MapUtitilties;
 using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.ViewModels;
-using MonoTouch.UIKit;
+using UIKit;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using apcurium.MK.Booking.Mobile.Client.Controls.Widgets;
-using apcurium.MK.Booking.Mobile.Client.Style;
-using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
-using MonoTouch.MapKit;
+using MapKit;
 using System.Windows.Input;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
@@ -65,26 +62,23 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 txtColor.TextColor = textColor;
 
                 topSlidingStatus.BackgroundColor = UIColor.FromPatternImage (UIImage.FromFile ("background.png"));
-                topVisibleStatus.BackgroundColor = UIColor.FromPatternImage (UIImage.FromFile ("backPickupDestination.png"));
 
-                viewLine.Frame = new RectangleF(0, topSlidingStatus.Bounds.Height -1, topSlidingStatus.Bounds.Width, 1);
+                viewLine.Frame = new CGRect(0, topSlidingStatus.Bounds.Height -1, UIScreen.MainScreen.Bounds.Width, 1);
 
                 btnCallDriver.SetImage(UIImage.FromFile("phone.png"), UIControlState.Normal);
                 btnCall.SetTitle(Localize.GetValue("StatusCallButton"), UIControlState.Normal);
                 btnCancel.SetTitle(Localize.GetValue("StatusCancelButton"), UIControlState.Normal);
                 btnNewRide.SetTitle(Localize.GetValue("StatusNewRideButton"), UIControlState.Normal);
-                btnPay.SetTitle(Localize.GetValue("PayNow"), UIControlState.Normal);
-                btnResend.SetTitle(Localize.GetValue("ReSendConfirmation"), UIControlState.Normal);
-                btnUnpair.SetTitle(Localize.GetValue("CmtRideLinqUnpair"), UIControlState.Normal);
+                btnUnpair.SetTitle(Localize.GetValue("UnpairPayInCar"), UIControlState.Normal);
 
                 FlatButtonStyle.Silver.ApplyTo(btnCallDriver);
                 FlatButtonStyle.Silver.ApplyTo(btnCall);
                 FlatButtonStyle.Red.ApplyTo(btnCancel);
                 FlatButtonStyle.Green.ApplyTo(btnNewRide);
-                FlatButtonStyle.Green.ApplyTo(btnPay);
-                FlatButtonStyle.Green.ApplyTo(btnResend);
                 FlatButtonStyle.Red.ApplyTo(btnUnpair);
-                                                
+                                            
+                btnCallDriver.SetX(UIScreen.MainScreen.Bounds.Width - btnCallDriver.Frame.Width - 12f); // 12f = right margin
+
                 View.BringSubviewToFront (bottomBar);
 
 				ViewModel.PropertyChanged+= (sender, e) => {
@@ -97,9 +91,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				if(!ViewModel.Settings.HideCallDispatchButton)
                 {
                     btnCancel.SetFrame(8, btnCancel.Frame.Y,  btnCancel.Frame.Width,  btnCancel.Frame.Height );
-                    btnCall.SetFrame( 320 - 8 - btnCall.Frame.Width ,  btnCall.Frame.Y,  btnCall.Frame.Width,  btnCall.Frame.Height );
-                    btnPay.SetFrame(btnCancel.Frame);
-                    btnResend.SetFrame(btnCancel.Frame.X, btnCancel.Frame.Y, btnResend.Frame.Width, btnResend.Frame.Height);
+                    btnCall.SetFrame( UIScreen.MainScreen.Bounds.Width - 8 - btnCall.Frame.Width ,  btnCall.Frame.Y,  btnCall.Frame.Width,  btnCall.Frame.Height );
 					btnUnpair.SetFrame(btnCancel.Frame.X, btnCancel.Frame.Y, btnUnpair.Frame.Width, btnUnpair.Frame.Height);
 
                     var callFrame = btnCall.Frame;
@@ -129,7 +121,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 var set = this.CreateBindingSet<BookingStatusView, BookingStatusViewModel>();
 
                 set.Bind(this)
-                    .For("StatusInfoText")
+                    .For(v => v.StatusInfoText)
                     .To(vm => vm.StatusInfoText);
 
                 set.Bind(lblConfirmation)
@@ -251,14 +243,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 					.To(vm => vm.IsCancelButtonVisible)
 					.WithConversion("BoolInverter");
 
-				set.Bind(btnPay)
-					.For("TouchUpInside")
-					.To(vm => vm.PayForOrderCommand);
-				set.Bind(btnPay)
-					.For(v => v.Hidden)
-					.To(vm => vm.IsPayButtonVisible)
-					.WithConversion("BoolInverter");
-
 				set.Bind(btnCall)
 					.For(v => v.Hidden)
 					.To(vm => vm.Settings.HideCallDispatchButton);
@@ -269,17 +253,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				set.Bind(btnCall)
 					.For("TouchUpInside")
 					.To(vm => vm.CallCompany);
-
-				set.Bind(btnResend)
-					.For(v => v.Hidden)
-					.To(vm => vm.IsResendButtonVisible)
-					.WithConversion("BoolInverter");
-				set.Bind(btnResend)
-					.For(v => v.Enabled)
-					.To(vm => vm.IsResendButtonVisible);
-				set.Bind(btnResend)
-					.For("TouchUpInside")
-					.To(vm => vm.ResendConfirmationToDriver);
 
 				set.Bind(btnNewRide)
 					.For("TouchUpInside")
@@ -299,7 +272,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 mapStatus.AddressSelectionMode = AddressSelectionMode.None;
 
 				UpdateTopSlidingStatus("OrderStatusDetail"); //initial loading
-                var statusLineDivider = Line.CreateHorizontal(320.0f, UIColor.Black.ColorWithAlpha(0.35f));
+                var statusLineDivider = Line.CreateHorizontal(UIScreen.MainScreen.Bounds.Width, UIColor.Black.ColorWithAlpha(0.35f));
                 bottomBar.AddSubview(statusLineDivider);
             
             } 
@@ -312,18 +285,18 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         public override void ViewWillDisappear(bool animated)
         {
             base.ViewWillDisappear(animated);
-            if (IsMovingFromParentViewController)
+            if (IsMovingFromParentViewController && animated)
             {
                 // Back button pressed
                 ViewModel.PrepareNewOrder.ExecuteIfPossible(null);
             }
         }
 
-        void UpdateCallButtonSize (RectangleF callFrame)
+        void UpdateCallButtonSize (CGRect callFrame)
         {
-            if (!ViewModel.IsCancelButtonVisible && !ViewModel.IsPayButtonVisible && !ViewModel.IsResendButtonVisible)
+            if (!ViewModel.IsCancelButtonVisible)
             {
-                btnCall.SetX ((View.Frame.Width - btnCancel.Frame.Width) / 2).SetWidth (btnCancel.Frame.Width);
+                btnCall.SetX ((UIScreen.MainScreen.Bounds.Width - btnCancel.Frame.Width) / 2).SetWidth (btnCancel.Frame.Width);
                 btnCall.SetTitle(Localize.GetValue("StatusCallButton"), UIControlState.Normal);
                 FlatButtonStyle.Silver.ApplyTo(btnCall);
             }
@@ -332,9 +305,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 btnCall.SetFrame (callFrame);
             }
         }
-
+            
 		public string StatusInfoText
 		{
+            get { return lblStatus.Text; }
 			set
 			{
 				if(lblStatus.Text != value)
@@ -346,6 +320,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                     VisibleStatusHeight = DEFAULT_TOP_VISIBLE_STATUS_HEIGHT + togglePadding;
                     statusBar.SetMinHeight (VisibleStatusHeight);
                     statusBar.SetMaxHeight (VisibleStatusHeight);
+                    statusBar.SetNeedsLayout();
 				}
 			}
 		}
@@ -397,6 +372,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 	
 				if (numberOfItemsHidden == 7) {
                     statusBar.SetMaxHeight (VisibleStatusHeight);
+                    statusBar.SetNeedsLayout();
 					return;
 				}
 
@@ -405,11 +381,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				var i = 0;
 				foreach (var item in tupleList) {
 					if (!item.Item3) {
-						item.Item1.Frame = new RectangleF(item.Item1.Frame.X, 4 + (20 * i), item.Item1.Frame.Width, item.Item1.Frame.Height);
-						item.Item2.Frame = new RectangleF(item.Item2.Frame.X, 4 + (20 * i), item.Item2.Frame.Width, item.Item2.Frame.Height);
+						item.Item1.Frame = new CGRect(item.Item1.Frame.X, 4 + (20 * i), item.Item1.Frame.Width, item.Item1.Frame.Height);
+						item.Item2.Frame = new CGRect(item.Item2.Frame.X, 4 + (20 * i), item.Item2.Frame.Width, item.Item2.Frame.Height);
 						i++;
 					}
 				}
+
+                statusBar.SetNeedsLayout();
 			}
 		}
     }

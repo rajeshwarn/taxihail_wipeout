@@ -37,7 +37,7 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
             
             if (networkSettings == null || !networkSettings.IsInNetwork)
             {
-                return null;
+                return new HttpResponseMessage(HttpStatusCode.NoContent); 
             }
 
             var otherCompaniesInNetwork = _networkRepository.Where(n => n.IsInNetwork && n.Id != networkSettings.Id)
@@ -50,7 +50,6 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
 
             foreach (var nearbyCompany in overlappingCompanies)
             {
-
                 var companyPreference = networkSettings.Preferences.FirstOrDefault(p => p.CompanyKey == nearbyCompany.Id) 
                 			?? new CompanyPreference{ CompanyKey = nearbyCompany.Id };
 
@@ -77,10 +76,9 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
         public HttpResponseMessage Post(string companyId, CompanyPreference[] preferences)
         {
             var networkSetting = _networkRepository.FirstOrDefault(x => x.Id == companyId);
-
             if (networkSetting == null)
             {
-                return new HttpResponseMessage(HttpStatusCode.Forbidden); 
+                return new HttpResponseMessage(HttpStatusCode.NoContent); 
             }
             
             foreach (var companyPreference in preferences.Where(p => !p.CanAccept))
@@ -125,7 +123,7 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
 
             if (currentCompanyNetworkSettings == null || !currentCompanyNetworkSettings.IsInNetwork)
             {
-                return null;
+                return new HttpResponseMessage(HttpStatusCode.NoContent);
             }
 
             var networkFleetResult = new List<NetworkFleetResponse>();
@@ -138,13 +136,21 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
                 var company = _companyRepository.FirstOrDefault(c => c.CompanyKey == companyPreferences.CompanyKey);
                 if (company != null)
                 {
+                    var ibsTimeDifferenceString = company.CompanySettings.FirstOrDefault(s => s.Key == "IBS.TimeDifference");
+                    long ibsTimeDifference = 0;
+                    if (ibsTimeDifferenceString != null)
+                    {
+                        long.TryParse(ibsTimeDifferenceString.Value, out ibsTimeDifference);
+                    }
+
                     var fleet = new NetworkFleetResponse
                     {
                         CompanyKey = company.CompanyKey,
                         CompanyName = company.CompanyName,
                         IbsPassword = company.IBS.Password,
                         IbsUserName = company.IBS.Username,
-                        IbsUrl = company.IBS.ServiceUrl
+                        IbsUrl = company.IBS.ServiceUrl,
+                        IbsTimeDifference = ibsTimeDifference
                     };
 
                     if (coordinate != null)

@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using Cirrious.CrossCore;
 using Cirrious.MvvmCross.Touch.Views.Presenters;
 using Cirrious.MvvmCross.ViewModels;
-using MonoTouch.UIKit;
+using UIKit;
 using apcurium.MK.Booking.Mobile.PresentationHints;
 
 namespace apcurium.MK.Booking.Mobile.Client
@@ -23,12 +23,25 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         public override void Show(MvxViewModelRequest request)
         {
+			if(request.ParameterValues != null
+                && request.ParameterValues.ContainsKey("clearHistoryExceptFirstElement"))
+			{
+				ClearNavigationStackExceptFirstElement();
+				return;
+			}
+
+			if (request.ParameterValues != null
+			   && request.ParameterValues.ContainsKey("clearNavigationStack"))
+			{
+                ClearNavigationStack();
+			}
+
             base.Show(request);
-            if(request.ParameterValues != null
-                && request.ParameterValues.ContainsKey("removeFromHistory"))
-            {
-                RemovePreviousViewFromHistory();
-            }
+			if(request.ParameterValues != null 
+				&& request.ParameterValues.ContainsKey("removeFromHistory"))
+			{
+				RemovePreviousViewFromHistory();
+			}
         }
 
         public override void ChangePresentation(MvxPresentationHint hint)
@@ -42,6 +55,24 @@ namespace apcurium.MK.Booking.Mobile.Client
                 base.ChangePresentation(hint);
             }
         }
+
+        private void ClearNavigationStack()
+        {
+            var navController = Mvx.Resolve<UINavigationController>();
+
+            navController.ViewControllers = new UIViewController[0];
+        }
+
+		private void ClearNavigationStackExceptFirstElement()
+		{
+			var navController = Mvx.Resolve<UINavigationController>();
+
+			var controllers = navController.ViewControllers;
+			if (controllers.Length > 1)
+			{
+				navController.ViewControllers = new UIViewController[] {controllers[0]};
+			}
+		}
 
         private void RemovePreviousViewFromHistory()
         { 

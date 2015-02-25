@@ -1,5 +1,6 @@
 using System;
 using System.Runtime.InteropServices;
+using ObjCRuntime;
 
 namespace apcurium.MK.Booking.Mobile.Client.Helper
 {
@@ -7,7 +8,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Helper
     {
         private const string HardwareProperty = "hw.machine";
 
-        [DllImport(MonoTouch.Constants.SystemLibrary)]
+        [DllImport(Constants.SystemLibrary)]
         static internal extern int sysctlbyname([MarshalAs(UnmanagedType.LPStr)] string property, IntPtr output, IntPtr oldLen, IntPtr newp, uint newlen);
 
         static HardwareInfo()

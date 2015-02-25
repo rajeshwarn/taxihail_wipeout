@@ -17,6 +17,7 @@
             "security": "manageSecurity",
             "confirmemail": "confirmEmail",
             "disableemail": "disableEmail",
+            "unlinkaccount": "unlinkAccount",
 
             /* test notifications */
             "sendpushnotification": "sendPushNotification",
@@ -24,12 +25,6 @@
             
             /* terms and conditions */
             "termsandconditions": "termsAndConditions",
-
-            /* privacy policy */
-            "privacypolicy": "privacyPolicy",
-
-            /* settings */
-            "settings": "manageCompanySettings",
 
             /* notification settings */
             "notificationSettings": "manageNotificationSettings",
@@ -89,10 +84,6 @@
             document.location.href = '../#signup';
         },
 
-        manageCompanySettings: function () {
-            action(TaxiHail.CompanySettingsController, 'index');
-        },
-
         manageNotificationSettings: function () {
             action(TaxiHail.NotificationSettingsController, 'index');
         },
@@ -137,6 +128,10 @@
             action(TaxiHail.SecurityController, 'disableemail');
         },
 
+        unlinkAccount: function () {
+            action(TaxiHail.SecurityController, 'unlinkaccount');
+        },
+
         sendPushNotification: function () {
             action(TaxiHail.NotificationController, 'sendpushnotification');
         },
@@ -147,10 +142,6 @@
         
         termsAndConditions: function() {
             action(TaxiHail.TermsAndConditionsController, 'index');
-        },
-
-        privacyPolicy: function () {
-            action(TaxiHail.PrivacyPolicyController, 'index');
         },
 
         manageTariffs: function() {

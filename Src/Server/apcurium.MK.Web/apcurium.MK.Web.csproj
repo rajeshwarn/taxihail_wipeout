@@ -240,10 +240,8 @@
     <Content Include="admin\controllers\NotificationSettingsController.js" />
     <Content Include="admin\controllers\NotificationController.js" />
     <Content Include="admin\controllers\RideRatingsController.js" />
-    <Content Include="admin\controllers\PrivacyPolicyController.js" />
     <Content Include="admin\controllers\VehicleTypesController.js" />
     <Content Include="admin\controllers\Controller.js" />
-    <Content Include="admin\controllers\CompanySettingsController.js" />
     <Content Include="admin\controllers\AccountsChargeController.js" />
     <Content Include="admin\controllers\TermsAndConditionsController.js" />
     <Content Include="admin\controllers\ExportController.js" />
@@ -257,7 +255,6 @@
     <Content Include="admin\models\EmailTemplates.js" />
     <Content Include="admin\models\NotificationSettings.js" />
     <Content Include="admin\models\RideRatings.js" />
-    <Content Include="admin\models\PrivacyPolicy.js" />
     <Content Include="admin\models\UnassignedReferenceDataVehicles.js" />
     <Content Include="admin\models\VehicleType.js" />
     <Content Include="admin\models\AccountCharge.js" />
@@ -273,9 +270,6 @@
     </Content>
     <Content Include="admin\assets\less\TaxiHail-admin-grid.less" />
     <Content Include="admin\localization\ManageCompanySettings.json" />
-    <Content Include="admin\templates\ManageCompanySettings.handlebars">
-      <SubType>Designer</SubType>
-    </Content>
     <Content Include="admin\models\CompanySettings.js" />
     <Content Include="admin\views\AddRideRatingView.js" />
     <Content Include="admin\views\AddVehicleTypeView.js" />
@@ -283,7 +277,6 @@
     <Content Include="admin\views\ManageRideRatingsView.js" />
     <Content Include="admin\views\RideRatingItemView.js" />
     <Content Include="admin\views\SendTestEmailView.js" />
-    <Content Include="admin\views\UpdatePrivacyPolicyView.js" />
     <Content Include="admin\views\VehicleTypeItemView.js" />
     <Content Include="admin\views\AddAccountChargeView.js" />
     <Content Include="admin\views\AddFavoriteView.js" />
@@ -299,7 +292,6 @@
     <Content Include="admin\views\ManageRulesView.js" />
     <Content Include="admin\views\EditRuleView.js" />
     <Content Include="admin\views\EditTariffView.js" />
-    <Content Include="admin\views\ManageCompanySettingsView.js" />
     <Content Include="admin\views\ManageTariffsView.js" />
     <Content Include="admin\views\SendPushNotificationView.js" />
     <Content Include="admin\views\SettingsItemView.js" />
@@ -331,10 +323,6 @@
     <Content Include="assets\js\storage-polyfill.js" />
     <Content Include="common\collections\AvailableVehicleCollection.js" />
     <Content Include="common\models\AvailableVehicle.js" />
-    <Content Include="Content\bootstrap.css" />
-    <Content Include="Content\bootstrap.min.css" />
-    <Content Include="Content\Site.css" />
-    <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="PayPalExpressCheckout\mobile-cancel.html" />
     <Content Include="PayPalExpressCheckout\mobile-success.html" />
     <Content Include="assets\bootstrap-datepicker\css\datepicker.css" />
@@ -429,22 +417,35 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="models\CompanySettings.js" />
-    <Content Include="Scripts\bootstrap.js" />
-    <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Areas\AdminTH\Views\PromoCode\Index.cshtml" />
+    <Content Include="Areas\AdminTH\Views\PromoCode\Create.cshtml" />
+    <Content Include="Areas\AdminTH\Views\PromoCode\Edit.cshtml" />
+    <Content Include="assets\js\jquery.sortable.min.js" />
+    <Content Include="Areas\AdminTH\Views\Privacy\Index.cshtml" />
+    <Content Include="Areas\AdminTH\Views\PromoCode\Statistics.cshtml" />
+    <Content Include="Areas\AdminTH\Views\PromoCode\UserStatistics.cshtml" />
+    <Content Include="Areas\AdminTH\Views\CompanySettings\Index.cshtml" />
+    <Content Include="Areas\Company\Views\TermsAndConditions\Index.cshtml" />
+    <None Include="Scripts\jquery-1.8.2.intellisense.js" />
+    <Content Include="Scripts\jquery-1.8.2.js" />
+    <Content Include="Scripts\jquery-1.8.2.min.js" />
+    <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
     <Content Include="Areas\Company\Views\web.config" />
     <Content Include="Areas\Company\Views\Shared\_Layout.cshtml" />
     <Content Include="Areas\Company\Views\Privacy\Index.cshtml" />
     <Content Include="Areas\Company\Views\_ViewStart.cshtml" />
-    <Content Include="admin\templates\UpdatePrivacyPolicy.handlebars">
-      <SubType>Designer</SubType>
-    </Content>
+    <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
+    <Content Include="Scripts\jquery.validate.js" />
+    <Content Include="Scripts\jquery.validate.min.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Areas\AdminTH\Views\ImportChargeAccount\Index.cshtml" />
     <Content Include="localization\UTOG-en.json" />
-    <None Include="Scripts\jquery-1.10.2.intellisense.js" />
-    <Content Include="Scripts\jquery-1.10.2.js" />
-    <Content Include="Scripts\jquery-1.10.2.min.js" />
-    <Content Include="Scripts\jquery.sortable.min.js" />
-    <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="Scripts\moment-with-locales.js" />
+    <Content Include="Scripts\moment-with-locales.min.js" />
+    <Content Include="Scripts\moment.js" />
+    <Content Include="Scripts\moment.min.js" />
     <Content Include="services\MathService.js" />
     <Content Include="models\NewAccount.js" />
     <Content Include="models\OrderStatus.js" />
@@ -526,7 +527,9 @@
     <Content Include="admin\templates\UpdateTermsAndConditions.handlebars">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="admin\templates\AddAccountCharge.handlebars" />
+    <Content Include="admin\templates\AddAccountCharge.handlebars">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="admin\templates\ManageAccountsCharge.handlebars" />
     <Content Include="admin\localization\ManageAccountsCharge.json" />
     <Content Include="admin\templates\AccountChargeItem.handlebars" />
@@ -580,10 +583,6 @@
     <Content Include="Areas\AdminTH\Views\_ViewStart.cshtml" />
     <Content Include="Areas\AdminTH\Views\Shared\_Layout.cshtml" />
     <Content Include="Areas\AdminTH\Views\TaxiHailNetwork\Index.cshtml" />
-    <Content Include="fonts\glyphicons-halflings-regular.woff" />
-    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
-    <Content Include="fonts\glyphicons-halflings-regular.eot" />
-    <Content Include="Scripts\jquery-1.10.2.min.map" />
     <Content Include="localization\AddFavorite-es.json" />
     <Content Include="localization\AddressSelection-es.json" />
     <Content Include="localization\Book-es.json" />
@@ -635,12 +634,21 @@
     <Compile Include="App_Start\UnityConfig.cs" />
     <Compile Include="App_Start\UnityMvcActivator.cs" />
     <Compile Include="Areas\AdminTH\AdminTHAreaRegistration.cs" />
+    <Compile Include="Areas\AdminTH\Controllers\CompanySettingsController.cs" />
+    <Compile Include="Areas\AdminTH\Controllers\PrivacyController.cs" />
     <Compile Include="Areas\AdminTH\Controllers\ImportChargeAccountController.cs" />
+    <Compile Include="Areas\AdminTH\Controllers\PromoCodeController.cs" />
     <Compile Include="Areas\AdminTH\Controllers\TaxiHailNetworkController.cs" />
-    <Compile Include="Areas\AdminTH\Controllers\ServiceStackController.cs" />
+    <Compile Include="Areas\AdminTH\Models\CompanySettings.cs" />
+    <Compile Include="Areas\AdminTH\Models\PromoCode.cs" />
+    <Compile Include="Areas\AdminTH\Models\PromoStats.cs" />
     <Compile Include="Areas\BaseController.cs" />
     <Compile Include="Areas\Company\CompanyAreaRegistration.cs" />
     <Compile Include="Areas\Company\Controllers\PrivacyController.cs" />
+    <Compile Include="Areas\Company\Controllers\TermsAndConditionsController.cs" />
+    <Compile Include="Areas\ServiceStackController.cs" />
+    <Compile Include="Attributes\AuthorizationRequiredAttribute.cs" />
+    <Compile Include="Attributes\SkipAuthenticationAttribute.cs" />
     <Compile Include="default.aspx.cs">
       <DependentUpon>default.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -648,6 +656,7 @@
     <Compile Include="default.aspx.designer.cs">
       <DependentUpon>default.aspx</DependentUpon>
     </Compile>
+    <Compile Include="helpers\HtmlMenuHelper.cs" />
     <Compile Include="MKWebAppHost.cs" />
     <Compile Include="Module.cs" />
     <Compile Include="Global.asax.cs">
@@ -914,10 +923,8 @@
     <Content Include="admin\localization\AddPopularAddress.json" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Areas\AdminTH\Models\" />
     <Folder Include="Areas\Company\Models\" />
     <Folder Include="mixins\" />
-    <Folder Include="views\Base\" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />

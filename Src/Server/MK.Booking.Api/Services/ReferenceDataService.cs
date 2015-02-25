@@ -36,12 +36,13 @@ namespace apcurium.MK.Booking.Api.Services
 
         public object Get(ReferenceDataRequest request)
         {
-            var result = _cacheClient.Get<ReferenceData>(CacheKey);
+            var cacheKey = string.Format("{0}{1}", CacheKey, request.CompanyKey);
+            var result = _cacheClient.Get<ReferenceData>(cacheKey);
 
             if (result == null)
             {
-                result = GetReferenceData(request.CompanyKey);
-                _cacheClient.Add(CacheKey, result);
+                result = GetReferenceData(request.CompanyKey, request.Market);
+                _cacheClient.Add(cacheKey, result);
             }
 
             if (!request.WithoutFiltering)
@@ -51,25 +52,34 @@ namespace apcurium.MK.Booking.Api.Services
             }
 
             var isChargeAccountPaymentEnabled = _serverSettings.GetPaymentSettings().IsChargeAccountPaymentEnabled;
+            var isOutOfAppPaymentDisabled = _serverSettings.GetPaymentSettings().IsOutOfAppPaymentDisabled;
+
+            IEnumerable<ListItem> filteredPaymentList = result.PaymentsList;
+
             if (!isChargeAccountPaymentEnabled)
             {
-                result.PaymentsList = result.PaymentsList.Where(x => x.Id != ChargeTypes.Account.Id).ToList();
+                filteredPaymentList = filteredPaymentList.Where(x => x.Id != ChargeTypes.Account.Id);
             }
+            if (isOutOfAppPaymentDisabled)
+            {
+                filteredPaymentList = filteredPaymentList.Where(x => x.Id != ChargeTypes.PaymentInCar.Id);
+            }
+
+            result.PaymentsList = filteredPaymentList.ToList();
 
             return result;
         }
 
-        private ReferenceData GetReferenceData(string companyKey)
+        private ReferenceData GetReferenceData(string companyKey, string market)
         {
-            var companies = _ibsServiceProvider.StaticData(companyKey).GetCompaniesList();
-            IList<ListItem> payments = new List<ListItem>();
-            IList<ListItem> vehicles = new List<ListItem>();
-
+            var companies = _ibsServiceProvider.StaticData(companyKey, market).GetCompaniesList();
+            var payments = new List<ListItem>();
+            var vehicles = new List<ListItem>();
 
             foreach (var company in companies)
             {
                 payments.AddRange(ChargeTypesClient.GetPaymentsList(company));
-                vehicles.AddRange(_ibsServiceProvider.StaticData(companyKey).GetVehiclesList(company));
+                vehicles.AddRange(_ibsServiceProvider.StaticData(companyKey, market).GetVehiclesList(company));
             }
 
             var equalityComparer = new ListItemEqualityComparer();

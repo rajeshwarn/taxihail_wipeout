@@ -1,9 +1,9 @@
 using System;
-using System.Drawing;
+using CoreGraphics;
 using apcurium.MK.Booking.Mobile.Models;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using Cirrious.MvvmCross.Touch.Views;
-using MonoTouch.UIKit;
+using UIKit;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
 
@@ -11,13 +11,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 {
     public partial class TutorialView : MvxViewController, IMvxModalTouchView
     {
-        public TutorialView () 
-			: base("TutorialView", null)
-        {
-            Initialize ();
-        }
-        
-        void Initialize ()
+        private int PageCount;
+
+        public TutorialView () : base("TutorialView", null)
         {
         }
 
@@ -50,63 +46,108 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         private void CreatePanels (TutorialItemModel[] listTutorial)
         {
             scrollview.Scrolled += ScrollViewScrolled;
-            var count = listTutorial.Length;
-            var scrollFrame = scrollview.Frame;
-            scrollFrame.Width = scrollFrame.Width * count;
-            scrollview.ContentSize = scrollFrame.Size;
 
-            for (var i = 0; i < count; i++)
+            PageCount = listTutorial.Length;
+
+            for (var i = 0; i < PageCount; i++)
             {
-                var pageView = new UIView(new RectangleF(i * scrollview.Frame.Width, 0, scrollview.Frame.Width, scrollview.Frame.Height)) { BackgroundColor = UIColor.Clear };
+                var pageView = new UIView { BackgroundColor = UIColor.Clear };
+                pageView.TranslatesAutoresizingMaskIntoConstraints = false;
                 scrollview.AddSubview(pageView);
 
-                var labelTopTitle = new UILabel(new RectangleF(0, 0, pageView.Frame.Width, 0))
+                var labelTopTitle = new UILabel
                 {
                     LineBreakMode = UILineBreakMode.WordWrap,
                     TextColor = UIColor.FromRGB(44, 44, 44),
                     BackgroundColor = UIColor.Clear,
                     TextAlignment = UITextAlignment.Center,
                     Font = UIFont.FromName(FontName.HelveticaNeueBold, 17.0f),
-                    Lines = 1
+                    Lines = 1,
+                    Text = listTutorial[i].Title
                 };
-                labelTopTitle.Text = listTutorial[i].Title;  
-                labelTopTitle.SizeToFit();
-                labelTopTitle.SetX((pageView.Frame.Width - labelTopTitle.Frame.Width) / 2)
-                    .SetY(0);
-                pageView.AddSubview(labelTopTitle);               
+                labelTopTitle.TranslatesAutoresizingMaskIntoConstraints = false;
 
-                var labelTop = new UILabel(new RectangleF(40, 0, pageView.Frame.Width - 40, 0))
+                var labelTop = new UILabel(new CGRect(40, 0, pageView.Frame.Width - 40, 0))
                 {
                     LineBreakMode = UILineBreakMode.WordWrap,
                     TextColor = UIColor.FromRGB(44, 44, 44),
                     BackgroundColor = UIColor.Clear,
                     TextAlignment = UITextAlignment.Center,
                     Font = UIFont.FromName(FontName.HelveticaNeueLight, 17.0f),
-                    Lines = 0
+                    Lines = 0,
+                    Text = listTutorial[i].Text
                 };
-                labelTop.Text = listTutorial[i].Text;  
-                labelTop.SizeToFit();
-                labelTop.SetX((pageView.Frame.Width - labelTop.Frame.Width) / 2)
-                        .SetY(labelTopTitle.Frame.Bottom);
-                pageView.AddSubview(labelTop);
+                labelTop.TranslatesAutoresizingMaskIntoConstraints = false;
 
-                var image = new UIImageView();
-				image.Image = UIImage.FromBundle (listTutorial [i].ImageUri);
-                image.SetWidth(pageView.Frame.Width);
-				image.SetHeight(pageView.Frame.Width);
-                image.ContentMode = UIViewContentMode.ScaleAspectFit;
-                image.SetX(0).SetY(96f);
-                pageView.AddSubview(image);
+                var image = new UIImageView
+                {
+                    Image = UIImage.FromBundle (listTutorial [i].ImageUri),
+                    ContentMode = UIViewContentMode.ScaleAspectFit
+                };
+                image.TranslatesAutoresizingMaskIntoConstraints = false;
+
+                pageView.AddSubviews(labelTopTitle, labelTop, image);
+
+                // constraints for pageView
+                View.AddConstraints(new [] 
+                {
+                    NSLayoutConstraint.Create(pageView, NSLayoutAttribute.Height, NSLayoutRelation.Equal, scrollview, NSLayoutAttribute.Height, 1f, 0f),
+                    NSLayoutConstraint.Create(pageView, NSLayoutAttribute.Width, NSLayoutRelation.Equal, scrollview.Superview, NSLayoutAttribute.Width, 1f, 0f),
+                    NSLayoutConstraint.Create(pageView, NSLayoutAttribute.Top, NSLayoutRelation.Equal, scrollview, NSLayoutAttribute.Top, 1f, 0f)
+                });
+
+                if (i == 0)
+                {
+                    // no previous page
+                    View.AddConstraint(NSLayoutConstraint.Create(pageView, NSLayoutAttribute.Left, NSLayoutRelation.Equal, scrollview, NSLayoutAttribute.Left, 1f, 0f));
+                }
+                else
+                {
+                    // add constraint relative to previous page
+                    View.AddConstraint(NSLayoutConstraint.Create(pageView, NSLayoutAttribute.Left, NSLayoutRelation.Equal, scrollview.Subviews[i - 1], NSLayoutAttribute.Right, 1f, 0f));
+                }
+
+                if (i == (PageCount - 1))
+                {
+                    // last page
+                    View.AddConstraint(NSLayoutConstraint.Create(pageView, NSLayoutAttribute.Right, NSLayoutRelation.Equal, scrollview, NSLayoutAttribute.Right, 1f, 0f));
+                }
+
+                // constraints for labelTopTitle
+                View.AddConstraints(new [] 
+                {
+                    NSLayoutConstraint.Create(labelTopTitle, NSLayoutAttribute.Left, NSLayoutRelation.Equal, pageView, NSLayoutAttribute.Left, 1f, 0f),
+                    NSLayoutConstraint.Create(labelTopTitle, NSLayoutAttribute.Right, NSLayoutRelation.Equal, pageView, NSLayoutAttribute.Right, 1f, 0f),
+                    NSLayoutConstraint.Create(labelTopTitle, NSLayoutAttribute.Top, NSLayoutRelation.Equal, pageView, NSLayoutAttribute.Top, 1f, 0f),
+                });
+
+                // constraints for labelTop
+                View.AddConstraints(new [] 
+                {
+                    NSLayoutConstraint.Create(labelTop, NSLayoutAttribute.Left, NSLayoutRelation.Equal, pageView, NSLayoutAttribute.Left, 1f, 0f),
+                    NSLayoutConstraint.Create(labelTop, NSLayoutAttribute.Right, NSLayoutRelation.Equal, pageView, NSLayoutAttribute.Right, 1f, 0f),
+                    NSLayoutConstraint.Create(labelTop, NSLayoutAttribute.Top, NSLayoutRelation.Equal, labelTopTitle, NSLayoutAttribute.Bottom, 1f, 5f),
+                });
+
+                // constraints for image
+                View.AddConstraints(new [] 
+                {
+                    NSLayoutConstraint.Create(image, NSLayoutAttribute.Width, NSLayoutRelation.Equal, pageView, NSLayoutAttribute.Width, 1f, 0f),
+                    NSLayoutConstraint.Create(image, NSLayoutAttribute.Height, NSLayoutRelation.Equal, pageView, NSLayoutAttribute.Height, 1f, 0f),
+                    NSLayoutConstraint.Create(image, NSLayoutAttribute.CenterX, NSLayoutRelation.Equal, pageView, NSLayoutAttribute.CenterX, 1f, 0f),
+                    NSLayoutConstraint.Create(image, NSLayoutAttribute.CenterY, NSLayoutRelation.Equal, pageView, NSLayoutAttribute.CenterY, 1f, 30f),
+                });
             }
+
             pageControl.Hidden = false;
-            pageControl.Pages = count;
+            pageControl.Pages = PageCount;
         }
 
         private void ScrollViewScrolled (object sender, EventArgs e)
         {
             var page = Math.Floor ((scrollview.ContentOffset.X - scrollview.Frame.Width / 2) / scrollview.Frame.Width) + 1;
 
-            scrollview.ContentOffset = new PointF (scrollview.ContentOffset.X, 0);
+            scrollview.ContentOffset = new CGPoint (scrollview.ContentOffset.X, 0);
 
             pageControl.CurrentPage = (int)page;
         }

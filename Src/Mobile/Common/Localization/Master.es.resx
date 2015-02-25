@@ -342,7 +342,7 @@
     <comment>Cancel</comment>
   </data>
   <data name="CmtCardNumber" xml:space="preserve">
-    <value>Número de Tarjeta:</value>
+    <value>Método de Pago:</value>
     <comment>Card Number:</comment>
   </data>
   <data name="CmtCarNumber" xml:space="preserve">
@@ -381,11 +381,11 @@
     <value>Guardar</value>
     <comment>Save</comment>
   </data>
-  <data name="CmtRideLinqUnpair" xml:space="preserve">
-    <value>Desemparejar</value>
+  <data name="UnpairPayInCar" xml:space="preserve">
+    <value>Pagar en el vehículo</value>
     <comment>Unpair</comment>
   </data>
-  <data name="CmtRideLinqUnpairErrorMessage" xml:space="preserve">
+  <data name="UnpairErrorMessage" xml:space="preserve">
     <value>Hubo un error desincronizando, por favor intente nuevamente</value>
     <comment>There was an error during unpairing, please try again later.</comment>
   </data>
@@ -416,14 +416,6 @@
   <data name="ConfirmationOfPaymentSent" xml:space="preserve">
     <value>Confirmación de pago enviada al chofer</value>
     <comment>Confirmation of payment has been sent to the driver.</comment>
-  </data>
-  <data name="ConfirmationPaymentAmountOver100" xml:space="preserve">
-    <value>Se le realizará un cobro por {0}. Por favor confirme la cantidad.</value>
-    <comment>You will be charged {0}. Please confirm the amount.</comment>
-  </data>
-  <data name="ConfirmationPaymentAmountOver100Title" xml:space="preserve">
-    <value>Confirmación requerida</value>
-    <comment>Confirmation Required</comment>
   </data>
   <data name="ConfirmCompanyLabel" xml:space="preserve">
     <value>Compañía:</value>
@@ -570,8 +562,8 @@
     <comment>Exp. Year</comment>
   </data>
   <data name="CreditCardInstructions" xml:space="preserve">
-    <value>Para usar esta aplicación necesita ingresar una tarjeta de crédito a su cuenta</value>
-    <comment>In order to use the application, you need to add a credit card to your account.</comment>
+    <value>Para usar esta aplicación necesita ingresar un método de pago a su cuenta</value>
+    <comment>In order to use the application, you need to add a payment method to your account.</comment>
   </data>
   <data name="CreditCardInvalidCrediCardNUmber" xml:space="preserve">
     <value>El número de tarjeta de crédito es inválido</value>
@@ -863,6 +855,10 @@
     <value>Estado:</value>
     <comment>Status:</comment>
   </data>
+  <data name="HistoryDetailPromoLabel" xml:space="preserve">
+    <value>Promo Code:</value>
+    <comment>Promo Code:</comment>
+  </data>
   <data name="HistoryInfo" xml:space="preserve">
     <value>Mostrando los viajes del último mes</value>
     <comment>Displaying trips from the last month</comment>
@@ -1031,6 +1027,9 @@
     <value>Los servicios de localización no estan habilitados</value>
     <comment>The location service is not enabled.</comment>
   </data>
+  <data name="Error" xml:space="preserve">
+    <value>Error</value>
+  </data>
   <data name="LocationServiceErrorTitle" xml:space="preserve">
     <value>Error</value>
     <comment>Error</comment>
@@ -1095,10 +1094,6 @@
     <value>No hay conección de red</value>
     <comment>No network connection</comment>
   </data>
-  <data name="NoAmountSelectedMessage" xml:space="preserve">
-    <value>Por favor ingrese la cantidad</value>
-    <comment>Please enter the amount</comment>
-  </data>
   <data name="NoAptText" xml:space="preserve">
     <value>Número Depto.</value>
     <comment>No apt.</comment>
@@ -1134,10 +1129,6 @@
   <data name="NoMailClient" xml:space="preserve">
     <value>No hay clientes de correo instalados</value>
     <comment>There are no email clients installed.</comment>
-  </data>
-  <data name="NoOrderId" xml:space="preserve">
-    <value>La reservación no esta lista</value>
-    <comment>Order Not ready</comment>
   </data>
   <data name="NoPhoneNumberMessage" xml:space="preserve">
     <value>El número de teléfono es inválido para este chofer</value>
@@ -1191,11 +1182,11 @@
     <value>Taxis cercanos</value>
     <comment>Nearby Taxi</comment>
   </data>
-  <data name="Notification_Off" xml:space="preserve">
+  <data name="Toggle_Off" xml:space="preserve">
     <value>Apagado</value>
     <comment>Off</comment>
   </data>
-  <data name="Notification_On" xml:space="preserve">
+  <data name="Toggle_On" xml:space="preserve">
     <value>Encendido</value>
     <comment>On</comment>
   </data>
@@ -1276,7 +1267,7 @@
     <comment>History</comment>
   </data>
   <data name="PanelMenuViewPaymentInfoText" xml:space="preserve">
-    <value>Tarjeta Archivada</value>
+    <value>Pago</value>
     <comment>Card on File</comment>
   </data>
   <data name="PanelMenuViewReportProblemText" xml:space="preserve">
@@ -1343,14 +1334,6 @@
     <value>Propina</value>
     <comment>Tip Amount</comment>
   </data>
-  <data name="PaymentErrorMessage" xml:space="preserve">
-    <value>Detalles: {0}</value>
-    <comment>Details: {0}</comment>
-  </data>
-  <data name="PaymentErrorTitle" xml:space="preserve">
-    <value>El pago no puede ser completado</value>
-    <comment>Payment cannot be completed</comment>
-  </data>
   <data name="PaymentInCar" xml:space="preserve">
     <value>Pago en carro</value>
     <comment>Payment In Car</comment>
@@ -1370,26 +1353,6 @@
   <data name="PayNow" xml:space="preserve">
     <value>Pagar con Aplicación</value>
     <comment>Pay now</comment>
-  </data>
-  <data name="PayPalButton" xml:space="preserve">
-    <value>Pagar con Paypal</value>
-    <comment>Pay with PayPal</comment>
-  </data>
-  <data name="PayPalExpressCheckoutCancelMessage" xml:space="preserve">
-    <value>El pago mediante Paypal se ha cancelado, su cuenta no ha sido cargada</value>
-    <comment>PayPal payment was cancelled. Your account has not been charged.</comment>
-  </data>
-  <data name="PayPalExpressCheckoutCancelTitle" xml:space="preserve">
-    <value>Pago cancelado</value>
-    <comment>Payment cancelled</comment>
-  </data>
-  <data name="PayPalExpressCheckoutSuccessMessage" xml:space="preserve">
-    <value>Pago mediante Paypal fué exitoso. Confirmación enviada al chofer</value>
-    <comment>PayPal payment was successful. Confirmation sent to the driver.</comment>
-  </data>
-  <data name="PayPalExpressCheckoutSuccessTitle" xml:space="preserve">
-    <value>Pago exitoso</value>
-    <comment>Payment successful</comment>
   </data>
   <data name="PendingOrderCancel" xml:space="preserve">
     <value>Cancelar</value>
@@ -1635,106 +1598,6 @@
     <value>({0} v{1})</value>
     <comment>({0} v{1})</comment>
   </data>
-  <data name="ServiceErrorAccountCharge_InvalidAccountNumber" xml:space="preserve">
-    <value>Número de cuenta inválido</value>
-    <comment>Invalid account number</comment>
-  </data>
-  <data name="ServiceErrorCallTitle" xml:space="preserve">
-    <value>Mensaje</value>
-    <comment>Message</comment>
-  </data>
-  <data name="ServiceErrorCreateAccount_AccountAlreadyExist" xml:space="preserve">
-    <value>Este email está registrado y en uso en nuestro sistema</value>
-    <comment>This email is already in use.</comment>
-  </data>
-  <data name="ServiceErrorCreateAccount_InvalidConfirmationToken" xml:space="preserve">
-    <value>Código de confirmación inválido</value>
-    <comment>The confirmation code is incorrect.</comment>
-  </data>
-  <data name="ServiceErrorCreateOrder_CannotCreateInIbs" xml:space="preserve">
-    <value>Su reservación no se pudo crear, por favor trate de nuevo o llámenos</value>
-    <comment>Order cannot be created. Please try again or call us.</comment>
-  </data>
-  <data name="ServiceErrorCreateOrder_CannotCreateInIbs_10000" xml:space="preserve">
-    <value>La información de su cuenta es inválida. Por favor intente nuevamente.</value>
-    <comment>The charge account information is invalid. Please try again.</comment>
-  </data>
-  <data name="ServiceErrorCreateOrder_CannotCreateInIbs_10000_NoCall" xml:space="preserve">
-    <value>La información de su cuenta es inválida. Por favor intente nuevamente.</value>
-    <comment>The charge account information is invalid. Please try again.</comment>
-  </data>
-  <data name="ServiceErrorCreateOrder_CannotCreateInIbs_7000" xml:space="preserve">
-    <value>Su reservación no puede ser creada porque su cuenta está inactiva, por favor contacte {0} al {1} para asistencia</value>
-    <comment>The order cannot be created because your account is currently inactive. Please contact {0} at {1} for further assistance.</comment>
-  </data>
-  <data name="ServiceErrorCreateOrder_CannotCreateInIbs_7000_NoCall" xml:space="preserve">
-    <value>Su reservación no puede ser creada porque su cuenta está inactiva</value>
-    <comment>The order cannot be created because your account is currently inactive.</comment>
-  </data>
-  <data name="ServiceErrorCreateOrder_CannotCreateInIbs_1300" xml:space="preserve">
-    <value>​We apologize but unfortunately we do not have any reservations available for that time period.</value>
-    <comment>​We apologize but unfortunately we do not have any reservations available for that time period.</comment>
-  </data>
-  <data name="ServiceErrorCreateOrder_CannotCreateInIbs_1300_NoCall" xml:space="preserve">
-    <value>​We apologize but unfortunately we do not have any reservations available for that time period.</value>
-    <comment>​We apologize but unfortunately we do not have any reservations available for that time period.</comment>
-  </data>
-  <data name="ServiceErrorCreateOrder_CardOnFileButNoCreditCard" xml:space="preserve">
-    <value>No tiene Tarjeta de Crédito Registrada en Archivo</value>
-    <comment>No Credit Card On File.</comment>
-  </data>
-  <data name="ServiceErrorCreateOrder_InvalidProvider" xml:space="preserve">
-    <value>Su reservación no se pudo crear, proveedor inválido. Por favor contacte {0} al  {1} para asistencia</value>
-    <comment>Order cannot be created, invalid provider. Please contact {0} at {1} for further assistance.</comment>
-  </data>
-  <data name="ServiceErrorCreateOrder_InvalidProvider_NoCall" xml:space="preserve">
-    <value>Su reservación no se pudo crear, proveedor inválido</value>
-    <comment>Order cannot be created, invalid provider.</comment>
-  </data>
-  <data name="ServiceErrorCreateOrder_NoFareEstimateAvailable" xml:space="preserve">
-    <value>No podemos proveer costo estimado de viaje, por favor contacte {0} al {1} para asistencia</value>
-    <comment>No fare estimate available for the ride. Please contact {0} at {1} for further assistance.</comment>
-  </data>
-  <data name="ServiceErrorCreateOrder_NoFareEstimateAvailable_NoCall" xml:space="preserve">
-    <value>No podemos proveer costo estimado para su viaje</value>
-    <comment>No fare estimate available for the ride.</comment>
-  </data>
-  <data name="ServiceErrorCreateOrder_NoProvider" xml:space="preserve">
-    <value>Su reservación no se pudo crear, no se especificó proveedor, por favor trate de nuevo o llámenos</value>
-    <comment>Order cannot be created, no provider specified. Please try again or call us.</comment>
-  </data>
-  <data name="ServiceErrorCreateOrder_PendingOrder" xml:space="preserve">
-    <value>No puede reservar este servicio, ya que hay una reservación pendiente. ¿Desea ver esta reservación?</value>
-    <comment>You cannot book this ride since an order is already pending. View the order status?</comment>
-  </data>
-  <data name="ServiceErrorCreateOrder_VehiculeType" xml:space="preserve">
-    <value>Su reservación no se pudo crear, tipo de vehículo inválido. Por favor inténtelo nuevamente o llámenos</value>
-    <comment>Order cannot be created, invalid vehicle type. Please try again or call us.</comment>
-  </data>
-  <data name="ServiceErrorDefaultMessage" xml:space="preserve">
-    <value>Un error ha ocurrido, por favor inténtelo nuevamente</value>
-    <comment>An error occurred. Please try again.</comment>
-  </data>
-  <data name="ServiceErrorResetPassword_AccountNotFound" xml:space="preserve">
-    <value>No se ha encontrado cuenta con este email</value>
-    <comment>No account with this email has been found.</comment>
-  </data>
-  <data name="ServiceErrorUnauthorized" xml:space="preserve">
-    <value>Su sesión ha expirado, por favor re-inicie sesión para continuar</value>
-    <comment>Your session has expired, please login to continue.</comment>
-  </data>
-  <data name="ServiceErrorUpdatePassword_NotSame" xml:space="preserve">
-    <value>Su contraseña no es válida</value>
-    <comment>The current password is not valid.</comment>
-  </data>
-  <data name="ServiceError_ErrorCreatingOrderMessage" xml:space="preserve">
-    <value>Por favor contacte a {0} al {1} para asistencia</value>
-    <comment>Please contact {0} at {1} for further assistance.</comment>
-  </data>
-  <data name="ServiceError_ErrorCreatingOrderMessage_NoCall" xml:space="preserve">
-    <value>Su reservación no puede ser creada</value>
-    <comment>The order cannot be created.</comment>
-  </data>
   <data name="SettingsViewTitle" xml:space="preserve">
     <value>Ajustes</value>
     <comment>Settings</comment>
@@ -1884,8 +1747,11 @@
     <comment>Support Application Mobile</comment>
   </data>
   <data name="TermsAndConditionsAcknowledgment" xml:space="preserve">
-    <value>Yo reconozco que he leído y entendido los términos y condiciones</value>
+    <value>Yo reconozco que he leído y entendido los Términos y condiciones</value>
     <comment>I acknowledge that I have read and understood the Terms and Conditions.</comment>
+  </data>
+  <data name="TermsAndConditionsLabel" xml:space="preserve">
+    <value>Términos y condiciones</value>
   </data>
   <data name="Time" xml:space="preserve">
     <value>Hora</value>
@@ -2076,7 +1942,7 @@
     <comment>Create Your Account</comment>
   </data>
   <data name="View_CreditCard" xml:space="preserve">
-    <value>Tarjeta de crédito</value>
+    <value>Pago</value>
     <comment>Credit Card</comment>
   </data>
   <data name="View_CreditCardsList" xml:space="preserve">
@@ -2223,5 +2089,111 @@
   </data>
   <data name="UpdateBookingSettingsInvalidCoF" xml:space="preserve">
     <value>You must have a card on file to use this account</value>
+  </data>
+  <data name="MarketChangedMessage" xml:space="preserve">
+    <value>You are leaving your local service area. Should you decide to book, your order will be dispatched using a taxi company from this area.</value>
+  </data>
+  <data name="MarketChangedMessageTitle" xml:space="preserve">
+    <value>New service area detected</value>
+  </data>
+  <data name="PanelMenuViewTaxiHailNetworkText" xml:space="preserve">
+    <value>TaxiHail Network</value>
+  </data>
+  <data name="View_UserTaxiHailNetworkSettings" xml:space="preserve">
+    <value>TaxiHail Network</value>
+  </data>
+  <data name="UserTaxiHailNetwork_Enabled" xml:space="preserve">
+    <value>TaxiHail Network</value>
+  </data>
+  <data name="PromoCodeLabel" xml:space="preserve">
+    <value>Promo code</value>
+  </data>
+  <data name="PromoMustUseCardOnFileMessage" xml:space="preserve">
+    <value>In order to use a promo code, you need to pay with card on file</value>
+  </data>
+  <data name="PromoMustUseCardOnFileWarningMessage" xml:space="preserve">
+    <value>Please note that the discount will only be applied if the payment is made using the app</value>
+  </data>
+  <data name="WarningPromoCodeDontShow" xml:space="preserve">
+    <value>No avisar</value>
+    <comment>Don't warn</comment>
+  </data>
+  <data name="PanelMenuViewPromotionsText" xml:space="preserve">
+    <value>Promotions</value>
+    <comment>Promotions</comment>
+  </data>
+  <data name="PromoRequiresToPayWithCOFPairingWarningMessage" xml:space="preserve">
+    <value>If you decide to pay in car, you will not be able to use the promotion</value>
+    <comment>If you decide to pay in car, you will not be able to use the promotion</comment>
+  </data>
+  <data name="PromoRequiresToPayWithCOFPairingWarningCancelButton" xml:space="preserve">
+    <value>Pay in car</value>
+    <comment>Pay in car</comment>
+  </data>
+  <data name="View_Promotions" xml:space="preserve">
+    <value>Promotions</value>
+  </data>
+  <data name="PromoExpiringIn1DayMessage" xml:space="preserve">
+    <value>Expires in 1 day</value>
+  </data>
+  <data name="PromoExpiringSoonMessage" xml:space="preserve">
+    <value>Expires in {0} days</value>
+  </data>
+  <data name="PromoExpiringToday" xml:space="preserve">
+    <value>Expires today!</value>
+  </data>
+  <data name="PromoBookRide" xml:space="preserve">
+    <value>Use this promotion on next ride</value>
+  </data>
+  <data name="PromotionViewNoPromotionLabel" xml:space="preserve">
+    <value>No promotions available</value>
+  </data>
+  <data name="Processing" xml:space="preserve">
+    <value>Procesando su pedido...</value>
+  </data>
+  <data name="Notification_PromotionUnlockedEmail" xml:space="preserve">
+    <value>Promotions unlocked (Email)</value>
+  </data>
+  <data name="Notification_PromotionUnlockedPush" xml:space="preserve">
+    <value>Promotions unlocked (Push)</value>
+  </data>
+  <data name="PromoProgress" xml:space="preserve">
+    <value>Progress :</value>
+  </data>
+  <data name="ErrorCreateOrder_PendingOrder" xml:space="preserve">
+    <value>No puede reservar este servicio, ya que hay una reservación pendiente. ¿Desea ver esta reservación?</value>
+  </data>
+  <data name="LinkPayPal" xml:space="preserve">
+    <value>Link PayPal</value>
+  </data>
+  <data name="UnlinkPayPal" xml:space="preserve">
+    <value>Unlink PayPal</value>
+  </data>
+  <data name="LinkPayPalCCWarning" xml:space="preserve">
+    <value>Linking your PayPal account will remove your card on file and PayPal will be set as the default payment method. Proceed?</value>
+  </data>
+  <data name="AddCoFPayPalWarning" xml:space="preserve">
+    <value>Adding a credit card will unlink your PayPal account and Card on File will be set as the default payment method. Proceed?</value>
+  </data>
+  <data name="PayPalErrorTitle" xml:space="preserve">
+    <value>PayPal Error</value>
+  </data>
+  <data name="PayPalLinkError" xml:space="preserve">
+    <value>Unable to link your PayPal account</value>
+  </data>
+  <data name="PayPalUnlinkError" xml:space="preserve">
+    <value>Unable to unlink your PayPal account</value>
+  </data>
+  <data name="LinkPayPalConfirmation" xml:space="preserve">
+    <value>Link</value>
+  </data>
+  <data name="PayPalLinked" xml:space="preserve">
+    <value>Your account is now enabled to pay with PayPal by default. You can still choose to pay in the vehicle by selecting \"Pay in Vehicle\" on the payment screen</value>
+  </data>
+  <data name="PayPalLinkedInfo" xml:space="preserve">
+    <value>Account Linked</value>
+  </data>
+  <data name="NoPairingCreditCard" xml:space="preserve">
+    <value>None</value>
   </data>
 </root>

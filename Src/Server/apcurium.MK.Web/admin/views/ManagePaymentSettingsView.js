@@ -5,8 +5,16 @@
         className: 'well clearfix form-horizontal',
 
         events: {
+            'change [id=isPayPalEnabled]': 'onPayPalSettingsChanged',
+            'change [id=isSandbox]': 'onPayPalSettingsChanged',
+            'change [id=sandboxClientId]': 'onPayPalSettingsChanged',
+            'change [id=sandboxClientSecret]': 'onPayPalSettingsChanged',
+            'change [id=prodClientId]': 'onPayPalSettingsChanged',
+            'change [id=prodClientSecret]': 'onPayPalSettingsChanged',
+
             'change [name=paymentMode]': 'onPaymentModeChanged',
             'change [name=acceptChange]': 'onAcceptPaymentModeChange',
+            'change [name=acceptPayPalChange]': 'onAcceptPayPalSettingsChange',
             'click #testPayPalSandboxSettingsButton': 'testPayPalSandboxSettingsButtonClick',
             'click #payPalProductionSettingsButton': 'payPalProductionSettingsButtonClick',
             'click #brainTreeSettingsButton': 'brainTreeSettingsButtonClick',
@@ -17,19 +25,24 @@
 
         saveButton: {},
         warningDiv: {},
+        payPalWarningDiv: {},
+        updatedModel: {},
 
         render: function () {
 
             var data = this.model.toJSON();
+            this.updatedModel = data.serverPaymentSettings;
 
             this.$el.html(this.renderTemplate(data.serverPaymentSettings));
             
             this.$("[name=paymentMode] option[value=" + data.serverPaymentSettings.paymentMode + "]").attr("selected", "selected");
 
             this.warningDiv = this.$("#warning");
+            this.payPalWarningDiv = this.$("#payPalWarning");
             this.saveButton = this.$("#saveButton");
             
             this.onPaymentModeChanged();
+            this.onPayPalSettingsChanged();
 
             this.validate({
                 rules: {
@@ -112,16 +125,23 @@
             var data = $(form).serializeObject();
 
             this.$("#warning").hide();
+            this.$("#payPalWarning").hide();
             
-            if (data.paymentMode == "None" && data.isPayInTaxiEnabled) {
-                this.alert("Please select a payment method or disable Pay In Taxi");
+            if (data.paymentMode == "None" && data.isPayInTaxiEnabled == "true") {
+                this.alert("Please select a payment method or disable Card on File Payment");
+
+                this.$(':submit').button('reset');
+                return;
+            }
+
+            if (data.isPayInTaxiEnabled != "true" && data.isChargeAccountPaymentEnabled != "true" && data.isOutOfAppPaymentDisabled == "true") {
+                this.alert("Please select a payment method or enable In Car Payment");
 
                 this.$(':submit').button('reset');
                 return;
             }
             
             if (data.paymentMode == "None" || data.paymentMode == "RideLinqCmt") {
-                data.automaticPayment = false;
                 data.automaticPaymentPairing = false;
             }
 
@@ -130,7 +150,7 @@
                      this.$(':submit').button('reset');
                  }, this))
                  .done(_.bind(function() {
-
+                     this.updatedModel = data;
                      this.alert('Settings Saved', 'success');
 
                  }, this))
@@ -142,96 +162,161 @@
         },
         
         onAcceptPaymentModeChange: function () {
-            
-            if (this.$("[name = acceptChange]").prop("checked")) {
-                this.saveButton.removeAttr('disabled');
+
+            var paymentWarning = this.$("[name = acceptChange]");
+            var payPalWarning = this.$("[name = acceptPayPalChange]");
+
+            if (payPalWarning.is(":visible")) {
+                if (payPalWarning.prop("checked") && paymentWarning.prop("checked")) {
+                    this.saveButton.removeAttr('disabled');
+                }
             } else {
-                this.saveButton.attr('disabled', 'disabled');
+                if (paymentWarning.prop("checked")) {
+                    this.saveButton.removeAttr('disabled');
+                }
             }
         },
-                
+
+        onAcceptPayPalSettingsChange: function () {
+
+            var paymentWarning = this.$("[name = acceptChange]");
+            var payPalWarning = this.$("[name = acceptPayPalChange]");
+
+            if (paymentWarning.is(":visible")) {
+                if (paymentWarning.prop("checked") && payPalWarning.prop("checked")) {
+                    this.saveButton.removeAttr('disabled');
+                }
+            } else {
+                if (payPalWarning.prop("checked")) {
+                    this.saveButton.removeAttr('disabled');
+                }
+            }
+        },
+        
+        onPayPalSettingsChanged: function() {
+
+            var currentPaymentSettings = this.updatedModel;
+            
+            this.$("[name = acceptPayPalChange]").removeAttr("checked");
+
+            var paymentMode = this.$("[name=paymentMode]").val();
+            var preAuthAmountEnabledDiv = this.$("#preAuthAmountEnabledDiv");
+            var preAuthAmountDiv = this.$("#preAuthAmountDiv");
+            var noShowFeeDiv = this.$("#noShowFeeDiv");
+            var isUnpairingDisabledDiv = this.$("#isUnpairingDisabledDiv");
+            var unpairingTimeOutDiv = this.$("#unpairingTimeOutDiv");
+
+            var newIsPayPalEnabled = this.$("[id=isPayPalEnabled]").val() == 'true';
+            var newIsSandboxValue = this.$("[id=isSandbox]").val() == 'true';
+            var newSandboxClientId = this.$("[id=sandboxClientId]").val();
+            var newSandboxClientSecret = this.$("[id=sandboxClientSecret]").val();
+            var newProdClientId = this.$("[id=prodClientId]").val();
+            var newProdClientSecret = this.$("[id=prodClientSecret]").val();
+
+            var environmentChanged = newIsSandboxValue != currentPaymentSettings.payPalClientSettings.isSandbox;
+
+            var sandboxSettingsChanged = newSandboxClientId != currentPaymentSettings.payPalClientSettings.sandboxCredentials.clientId
+                || newSandboxClientSecret != currentPaymentSettings.payPalServerSettings.sandboxCredentials.secret;
+
+            var prodSettingsChanged = newProdClientId != currentPaymentSettings.payPalClientSettings.credentials.clientId
+                || newProdClientSecret != currentPaymentSettings.payPalServerSettings.credentials.secret;
+
+            // Show hide unlink warning
+            if (environmentChanged || sandboxSettingsChanged || prodSettingsChanged) {
+                this.saveButton.attr('disabled', 'disabled');
+                this.payPalWarningDiv.show();
+                this.onAcceptPayPalSettingsChange();
+            } else {
+                this.payPalWarningDiv.hide();
+            }
+
+            // Show/ hide preauth fields
+            if (!newIsPayPalEnabled && paymentMode == 'None') {
+                preAuthAmountEnabledDiv.hide();
+                preAuthAmountDiv.hide();
+                noShowFeeDiv.hide();
+                isUnpairingDisabledDiv.hide();
+                unpairingTimeOutDiv.hide();
+            } else {
+                preAuthAmountEnabledDiv.show();
+                preAuthAmountDiv.show();
+                noShowFeeDiv.show();
+                isUnpairingDisabledDiv.show();
+                unpairingTimeOutDiv.show();
+            }
+        },
+
         onPaymentModeChanged: function () {
             
             this.$("[name = acceptChange]").removeAttr("checked");
 
             var newPaymentMode = this.$("[name=paymentMode]").val();
 
-            var autPaymentDiv = this.$("#automaticPaymentDiv");
-            var autPairingDiv = this.$("#automaticPairingDiv");
-            var preAuthAmountEnabledDiv = this.$("#preAuthAmountEnabledDiv");
-            var preAuthAmountDiv = this.$("#preAuthAmountDiv");
-            var noShowFeeDiv = this.$("#noShowFeeDiv");
-
             var btDiv = this.$("#braintreeSettingsDiv");
             var cmtDiv = this.$("#cmtSettingsDiv");
             var monerisDiv = this.$("#monerisSettingsDiv");
 
-            var method = this.model.toJSON().serverPaymentSettings.paymentMode;
+            var isPayPalEnabled = this.$("[id=isPayPalEnabled]").val() == 'true';
+            var preAuthAmountEnabledDiv = this.$("#preAuthAmountEnabledDiv");
+            var preAuthAmountDiv = this.$("#preAuthAmountDiv");
+            var isUnpairingDisabledDiv = this.$("#isUnpairingDisabledDiv");
+            var unpairingTimeOutDiv = this.$("#unpairingTimeOutDiv");
+            var noShowFeeDiv = this.$("#noShowFeeDiv");
 
-            if (newPaymentMode != method) {
-                if ((newPaymentMode == "Cmt" && method == "RideLinqCmt") || (newPaymentMode == "RideLinqCmt" && method == "Cmt")) {
+            var currentPaymentMode = this.updatedModel.paymentMode;
+
+            if (newPaymentMode != currentPaymentMode) {
+                if ((newPaymentMode == "Cmt" && currentPaymentMode == "RideLinqCmt") || (newPaymentMode == "RideLinqCmt" && currentPaymentMode == "Cmt")) {
                     this.warningDiv.hide();
-                    this.saveButton.removeAttr('disabled');
                 } else {
+                    this.saveButton.attr('disabled', 'disabled');
                     this.warningDiv.show();
                     this.onAcceptPaymentModeChange();
                 }
             } else {
                 this.warningDiv.hide();
-                this.saveButton.removeAttr('disabled');
+                if (!this.payPalWarningDiv.is(':visible')) {
+                    this.saveButton.removeAttr('disabled');
+                }
             }
 
-            if (newPaymentMode == "RideLinqCmt")
+            if (newPaymentMode == "Cmt" || newPaymentMode == "RideLinqCmt")
             {
                 btDiv.hide();
                 cmtDiv.show();
                 monerisDiv.hide();
-                autPaymentDiv.hide();
-                autPairingDiv.hide();
-            }
-            else if (newPaymentMode == "Cmt")
-            {
-                btDiv.hide();
-                cmtDiv.show();
-                monerisDiv.hide();
-                autPaymentDiv.show();
-                autPairingDiv.show();
-                preAuthAmountEnabledDiv.show();
-                preAuthAmountDiv.show();
-                noShowFeeDiv.show();
             }
             else if (newPaymentMode == "Braintree")
             {
                 btDiv.show();
                 cmtDiv.hide();
                 monerisDiv.hide();
-                autPaymentDiv.show();
-                autPairingDiv.show();
-                preAuthAmountEnabledDiv.show();
-                preAuthAmountDiv.show();
-                noShowFeeDiv.show();
             }
             else if (newPaymentMode == "Moneris")
             {
                 btDiv.hide();
                 cmtDiv.hide();
                 monerisDiv.show();
-                autPaymentDiv.show();
-                autPairingDiv.show();
-                preAuthAmountEnabledDiv.show();
-                preAuthAmountDiv.show();
-                noShowFeeDiv.show();
             }
             else
             {
                 btDiv.hide();
                 cmtDiv.hide();
                 monerisDiv.hide();
-                autPaymentDiv.hide();
-                autPairingDiv.hide();
+            }
+
+            if (!isPayPalEnabled && newPaymentMode == 'None') {
                 preAuthAmountEnabledDiv.hide();
                 preAuthAmountDiv.hide();
                 noShowFeeDiv.hide();
+                isUnpairingDisabledDiv.hide();
+                unpairingTimeOutDiv.hide();
+            } else {
+                preAuthAmountEnabledDiv.show();
+                preAuthAmountDiv.show();
+                isUnpairingDisabledDiv.show();
+                unpairingTimeOutDiv.show();
+                noShowFeeDiv.show();
             }
         }
     });

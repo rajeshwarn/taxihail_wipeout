@@ -4,7 +4,7 @@
 // actions made in the UI designer. If it is removed, they will be lost.
 // Manual changes to this file may not be handled correctly.
 //
-using MonoTouch.Foundation;
+using Foundation;
 using System.CodeDom.Compiler;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views.Order
@@ -16,28 +16,28 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnConfirm { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel lblQuestion1 { get; set; }
+		UIKit.UILabel lblQuestion1 { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel lblQuestion2 { get; set; }
+		UIKit.UILabel lblQuestion2 { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel lblQuestion3 { get; set; }
+		UIKit.UILabel lblQuestion3 { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel lblQuestion4 { get; set; }
+		UIKit.UILabel lblQuestion4 { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel lblQuestion5 { get; set; }
+		UIKit.UILabel lblQuestion5 { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel lblQuestion6 { get; set; }
+		UIKit.UILabel lblQuestion6 { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel lblQuestion7 { get; set; }
+		UIKit.UILabel lblQuestion7 { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel lblQuestion8 { get; set; }
+		UIKit.UILabel lblQuestion8 { get; set; }
 
 		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatTextField txtQuestion1 { get; set; }

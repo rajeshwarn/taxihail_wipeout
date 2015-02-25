@@ -16,7 +16,8 @@ namespace CustomerPortal.Web
                 "~/assets/js/jquery.highlight-curly-brackets.js",
                 "~/assets/js/jquery.fetch-version.js",
                 "~/assets/js/tipsy.js",                
-                "~/assets/js/jquery.fetch-status.js"
+                "~/assets/js/jquery.fetch-status.js",
+                "~/Scripts/jquery.cookie.js"
                 ));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(

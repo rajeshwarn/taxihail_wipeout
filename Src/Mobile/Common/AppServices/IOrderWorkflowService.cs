@@ -9,7 +9,7 @@ using apcurium.MK.Common.Entity;
 namespace apcurium.MK.Booking.Mobile.AppServices
 {
 	public interface IOrderWorkflowService
-    {
+	{
 		Task PrepareForNewOrder();
 
 		void BeginCreateOrder ();
@@ -18,6 +18,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 
 		Task<bool> ValidateCardOnFile ();
 		Task<bool> ValidateCardExpiration ();
+		Task<bool> ValidatePromotionUseConditions();
 
 		Task SetAddress(Address address);
 		Task SetPickupAptAndRingCode(string apt, string ringCode);
@@ -29,6 +30,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 		Task SetPickupDate(DateTime? date);
 
 		Task ToggleBetweenPickupAndDestinationSelectionMode();
+		Task ToggleIsDestinationModeOpened(bool? forceValue = null);
 
 		Task ValidatePickupTime();
 		Task ValidatePickupAndDestination();
@@ -38,6 +40,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 		Task SetBookingSettings(BookingSettings bookingSettings);
 		Task SetAccountNumber (string accountNumber);
 		void SetNoteToDriver(string text);
+		void SetPromoCode(string code);
 
 		IObservable<Address> GetAndObservePickupAddress();
 		IObservable<Address> GetAndObserveDestinationAddress();
@@ -47,14 +50,20 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 		IObservable<DateTime?> GetAndObservePickupDate();
 		IObservable<string> GetAndObserveEstimatedFare();
 		IObservable<string> GetAndObserveNoteToDriver();
+		IObservable<string> GetAndObservePromoCode();
 		IObservable<bool> GetAndObserveLoadingAddress();
-		IObservable<bool> GetAndObserveOrderCanBeConfirmed ();
+		IObservable<bool> GetAndObserveOrderCanBeConfirmed();
+		IObservable<string> GetAndObserveMarket();
+		IObservable<bool> GetAndObserveIsDestinationModeOpened();
+
+		Task<bool> IsFutureBooking();
 
 		Task<Tuple<Order, OrderStatusDetail>> GetLastActiveOrder();
 
         Guid? GetLastUnratedRide();
 
 		Task<bool> ShouldWarnAboutEstimate();
+		Task<bool> ShouldWarnAboutPromoCode();
 
 	    bool ShouldPromptUserToRateLastRide();
 
@@ -66,7 +75,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 		Task<OrderValidationResult> ValidateOrder();
 		void ConfirmValidationOrder ();
 
-		void Rebook(Order previous);
+        Task Rebook(Order previous);
 
 		Task<Address> GetCurrentAddress();
 

@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.Data;
+using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
 using MK.Common.Configuration;
 
@@ -11,7 +12,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 {
 	public interface IAccountService
     {        
-        Task UpdateSettings(BookingSettings settings, Guid? creditCardId, int? tipPercent);
+        Task UpdateSettings(BookingSettings settings, int? tipPercent);
         
 		void UpdateAccountNumber (string accountNumber);
 
@@ -32,8 +33,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices
         Account CurrentAccount { get; }
         
 		Task<IList<VehicleType>> GetVehiclesList();
-        
-		Task<IList<ListItem>> GetPaymentsList();
+
+        Task<IList<ListItem>> GetPaymentsList(string market = null);
         
         Task ResetPassword( string email );
         
@@ -63,12 +64,17 @@ namespace apcurium.MK.Booking.Mobile.AppServices
         void SignOut();
         
 		Task<CreditCardDetails> GetCreditCard ();
-		Task<bool> AddCreditCard (CreditCardInfos creditCard);
-		Task<bool> UpdateCreditCard (CreditCardInfos creditCard);
-		Task RemoveCreditCard ();
+		Task<bool> AddOrUpdateCreditCard (CreditCardInfos creditCard, bool isUpdate = false);
+		Task RemoveCreditCard (bool replacedByPayPal = false);
+
+		Task LinkPayPalAccount(string authCode);
+		Task UnlinkPayPalAccount (bool replacedByCreditCard = false);
 
         Task<NotificationSettings> GetNotificationSettings(bool companyDefaultOnly = false, bool cleanCache = false);
 	    Task UpdateNotificationSettings(NotificationSettings notificationSettings);
+
+	    Task<UserTaxiHailNetworkSettings> GetUserTaxiHailNetworkSettings(bool cleanCache = false);
+	    Task UpdateUserTaxiHailNetworkSettings(UserTaxiHailNetworkSettings userTaxiHailNetworkSettings);
 
 		void LogApplicationStartUp ();
     }

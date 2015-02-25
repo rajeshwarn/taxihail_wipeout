@@ -1,8 +1,4 @@
-﻿using System;
-using System.Drawing;
-using MonoTouch.Foundation;
-using MonoTouch.UIKit;
-using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
+using UIKit;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
@@ -12,8 +8,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         {
             base.ViewDidLoad ();
 
-            var imageView = new UIImageView(GetSplashImage());
-            View.AddSubview(imageView);
+            var splashImage = GetSplashImage();
+            if (splashImage != null)
+            {
+                var imageView = new UIImageView(splashImage);
+                View.AddSubview(imageView);
+            }
 
             var activityIndicator = new UIActivityIndicatorView (UIActivityIndicatorViewStyle.WhiteLarge) 
             {
@@ -33,13 +33,25 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
         private UIImage GetSplashImage()
         {
-            //TODO needs to be fixed when migrating to XCode6
-            if (UIHelper.Is4InchDisplay)
-            {
-                return UIImage.FromBundle("Default-568h");
-            }
+            // LaunchImage doesn't correctly work as an asset catalog
+            // We have to use the standardized names given by Apple
 
-            return UIImage.FromBundle("Default");
+            var backgroundImage = UIImage.FromBundle ("LaunchImage");
+
+            if (UIScreen.MainScreen.Bounds.Height == 568)
+            {
+                backgroundImage = UIImage.FromBundle("LaunchImage-568h");
+            }
+            else if (UIScreen.MainScreen.Bounds.Height == 667)
+            {
+                backgroundImage = UIImage.FromBundle("LaunchImage-800-667h");
+            }
+            else if (UIScreen.MainScreen.Bounds.Height == 736)
+            {
+                backgroundImage = UIImage.FromBundle ("LaunchImage-800-Portrait-736h");
+            }
+                
+            return backgroundImage;
         }
     }
 }

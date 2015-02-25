@@ -41,5 +41,7 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
         public BookingSettings Settings { get; set; }
 
         public PaymentSettings Payment { get; set; }
+
+        public string Market { get; set; }
     }
 }

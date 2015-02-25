@@ -9,6 +9,7 @@ using apcurium.MK.Booking.Resources;
 using apcurium.MK.Booking.Services.Impl;
 using apcurium.MK.Common.Configuration;
 using Nustache.i18n;
+using RestSharp.Extensions;
 
 #endregion
 
@@ -53,15 +54,15 @@ namespace apcurium.MK.Booking.Email
             return null;
         }
 
+        public string InlineCss(string body)
+        {
+            return PreMailer.Net.PreMailer.MoveCssInline(body, true, ignoreElements: "#ignore").Html;
+        }
+
         public string Render(string template, object data)
         {
             if (template == null) throw new ArgumentNullException("template");
             return Nustache.Core.Render.StringToString(template, data);
-        }
-
-        public string InlineCss(string body)
-        {
-            return PreMailer.Net.PreMailer.MoveCssInline(body, true, ignoreElements: "#ignore").Html;
         }
 
         public string ImagePath(string imageName)

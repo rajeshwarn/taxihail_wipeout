@@ -1,6 +1,4 @@
-﻿using ServiceStack.DataAnnotations;
-
-namespace apcurium.MK.Booking.Api.Contract.Resources
+﻿namespace apcurium.MK.Booking.Api.Contract.Resources
 {
     public class AvailableVehicle : BaseDto
     {

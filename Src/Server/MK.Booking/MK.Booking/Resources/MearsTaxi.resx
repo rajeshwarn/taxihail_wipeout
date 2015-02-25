@@ -117,10 +117,13 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Email_Body_PickupTime" xml:space="preserve">
+    <value>Booking Time</value>
+  </data>
   <data name="OrderStatus_wosWAITING" xml:space="preserve">
     <value>Driver assignment may take up to 5 min.</value>
   </data>
-  <data name="PushNotification_OrderPairingSuccessful" xml:space="preserve">
+  <data name="PushNotification_wosLOADED" xml:space="preserve">
     <value>Confirm that you are in the vehicle number indicated below. Your vehicle number is shown on the right rear window. By tapping confirm, this ride will automatically be paid by your credit card on file.</value>
   </data>
 </root>

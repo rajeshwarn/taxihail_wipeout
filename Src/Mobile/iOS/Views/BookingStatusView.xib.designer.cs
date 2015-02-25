@@ -4,7 +4,7 @@
 // actions made in the UI designer. If it is removed, they will be lost.
 // Manual changes to this file may not be handled correctly.
 //
-using MonoTouch.Foundation;
+using Foundation;
 using System.CodeDom.Compiler;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
@@ -13,7 +13,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 	partial class BookingStatusView
 	{
 		[Outlet]
-		MonoTouch.UIKit.UIView bottomBar { get; set; }
+		UIKit.UIView bottomBar { get; set; }
 
 		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnCall { get; set; }
@@ -37,34 +37,34 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnUnpair { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UIImageView imgGrip { get; set; }
+		UIKit.UIImageView imgGrip { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel lblColor { get; set; }
+		UIKit.UILabel lblColor { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel lblCompany { get; set; }
+		UIKit.UILabel lblCompany { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel lblConfirmation { get; set; }
+		UIKit.UILabel lblConfirmation { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel lblDriver { get; set; }
+		UIKit.UILabel lblDriver { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel lblLicence { get; set; }
+		UIKit.UILabel lblLicence { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel lblMake { get; set; }
+		UIKit.UILabel lblMake { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel lblModel { get; set; }
+		UIKit.UILabel lblModel { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel lblStatus { get; set; }
+		UIKit.UILabel lblStatus { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel lblTaxiType { get; set; }
+		UIKit.UILabel lblTaxiType { get; set; }
 
 		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Controls.TouchMap mapStatus { get; set; }
@@ -73,34 +73,34 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		apcurium.MK.Booking.Mobile.Client.Controls.StatusBar statusBar { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UIView topSlidingStatus { get; set; }
+		UIKit.UIView topSlidingStatus { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UIView topVisibleStatus { get; set; }
+		UIKit.UIView topVisibleStatus { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel txtColor { get; set; }
+		UIKit.UILabel txtColor { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel txtCompany { get; set; }
+		UIKit.UILabel txtCompany { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel txtDriver { get; set; }
+		UIKit.UILabel txtDriver { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel txtLicence { get; set; }
+		UIKit.UILabel txtLicence { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel txtMake { get; set; }
+		UIKit.UILabel txtMake { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel txtModel { get; set; }
+		UIKit.UILabel txtModel { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel txtTaxiType { get; set; }
+		UIKit.UILabel txtTaxiType { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UIView viewLine { get; set; }
+		UIKit.UIView viewLine { get; set; }
 		
 		void ReleaseDesignerOutlets ()
 		{

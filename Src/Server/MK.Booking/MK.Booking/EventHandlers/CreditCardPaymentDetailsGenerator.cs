@@ -17,7 +17,7 @@ namespace apcurium.MK.Booking.EventHandlers
 {
     public class CreditCardPaymentDetailsGenerator :
         IEventHandler<CreditCardPaymentInitiated>,
-        IEventHandler<CreditCardPaymentCaptured>,
+        IEventHandler<CreditCardPaymentCaptured_V2>,
         IEventHandler<CreditCardErrorThrown>
     {
         private readonly Func<BookingDbContext> _contextFactory;
@@ -29,7 +29,7 @@ namespace apcurium.MK.Booking.EventHandlers
             _resources = new Resources.Resources(serverSettings);
         }
 
-        public void Handle(CreditCardPaymentCaptured @event)
+        public void Handle(CreditCardPaymentCaptured_V2 @event)
         {
             using (var context = _contextFactory.Invoke())
             {
@@ -38,11 +38,13 @@ namespace apcurium.MK.Booking.EventHandlers
                 {
                     throw new InvalidOperationException("Payment not found");
                 }
-                    
+
+                payment.TransactionId = @event.TransactionId;
                 payment.AuthorizationCode = @event.AuthorizationCode;
                 payment.IsCompleted = true;
                 payment.Amount = @event.Amount;
                 payment.Meter = @event.Meter;
+                payment.Tax = @event.Tax;
                 payment.Tip = @event.Tip;
 
                 var order = context.Find<OrderDetail>(payment.OrderId);
@@ -53,6 +55,10 @@ namespace apcurium.MK.Booking.EventHandlers
                 if (!order.Tip.HasValue || order.Tip == 0)
                 {
                     order.Tip = Convert.ToDouble(@event.Tip);
+                }
+                if (!order.Tax.HasValue || order.Tax == 0)
+                {
+                    order.Tax = Convert.ToDouble(@event.Tax);
                 }
 
                 var orderStatus = context.Find<OrderStatusDetail>(payment.OrderId);
@@ -70,15 +76,16 @@ namespace apcurium.MK.Booking.EventHandlers
                 context.Save(new OrderPaymentDetail
                 {
                     PaymentId = @event.SourceId,
-                    Amount = @event.Amount,
-                    Meter = @event.Meter,
-                    Tip = @event.Tip,
+                    PreAuthorizedAmount = @event.Amount,
+                    FirstPreAuthTransactionId = @event.TransactionId,
                     TransactionId = @event.TransactionId,
                     OrderId = @event.OrderId,
                     CardToken = @event.CardToken,
                     IsCompleted = false,
                     Provider = @event.Provider,
-                    Type = PaymentType.CreditCard,
+                    Type = @event.Provider == PaymentProvider.PayPal
+                        ? PaymentType.PayPal
+                        : PaymentType.CreditCard
                 });
             }
         }

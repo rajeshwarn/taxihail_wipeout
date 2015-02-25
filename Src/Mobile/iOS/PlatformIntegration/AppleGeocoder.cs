@@ -1,21 +1,20 @@
-﻿using System;
+using System;
 using apcurium.MK.Booking.MapDataProvider;
 using apcurium.MK.Booking.MapDataProvider.Google.Resources;
 using apcurium.MK.Booking.MapDataProvider.Resources;
-using ServiceStack.ServiceClient.Web;
-using MonoTouch.CoreLocation;
+using CoreLocation;
 using System.Linq;
-using MonoTouch.AddressBookUI;
-using MonoTouch.Foundation;
+using Foundation;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using apcurium.MK.Common.Extensions;
-using System.Text.RegularExpressions;
+using apcurium.MK.Booking.Mobile.Client.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 {
     public class AppleGeocoder : IGeocoder
     {
+
         public AppleGeocoder ()
         {
         }
@@ -24,36 +23,58 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
         {   
             // Do nothing with currentLanguage parameter since Apple Geocoder
             // automatically gets the results using the system language
+            try{
+                var geocoder = new CLGeocoder ();
 
-            var geocoder = new CLGeocoder ();
+                var result = geocoder.GeocodeAddressAsync (address.Replace ("+", " "));
+                result.Wait ();
 
-            var result = geocoder.GeocodeAddressAsync (address.Replace ("+", " "));
-            result.Wait ();
+                if (result.Exception != null) 
+                {
+                    return new GeoAddress [0];
+                }
+                return result.Result.Select (ConvertPlacemarkToAddress).ToArray ();  
 
-            if (result.Exception != null) 
+            }catch(Exception ex)
             {
-                return new GeoAddress [0];
-            }
-
-            return result.Result.Select (ConvertPlacemarkToAddress).ToArray ();         
+                var inner = ex.InnerException as NSErrorException;
+                if (inner != null)
+                {
+                    Console.WriteLine(inner.Error.GetNSErrorString());
+                }
+                throw;
+            }                   
         }
+
+
 
         public GeoAddress[] GeocodeLocation (double latitude, double longitude, string currentLanguage)
         {
             // Do nothing with currentLanguage parameter since Apple Geocoder
             // automatically gets the results using the system language
 
-            var geocoder = new CLGeocoder ();
+            try{
+                var geocoder = new CLGeocoder ();
 
-            var result = geocoder.ReverseGeocodeLocationAsync (new CLLocation (latitude, longitude));
-            result.Wait ();
+                var result = geocoder.ReverseGeocodeLocationAsync (new CLLocation (latitude, longitude));
+                result.Wait ();
 
-            if (result.Exception != null) 
+                if (result.Exception != null) 
+                {
+                    return new GeoAddress [0];
+                }
+                return result.Result.Select (ConvertPlacemarkToAddress).ToArray (); 
+
+            }catch(Exception ex)
             {
-                return new GeoAddress [0];
+                var inner = ex.InnerException as NSErrorException;
+                if (inner != null)
+                {
+                    Console.WriteLine(inner.Error.GetNSErrorString());
+                }
+                throw;
             }
-
-            return result.Result.Select (ConvertPlacemarkToAddress).ToArray ();         
+                 
         }
 
         private GeoAddress ConvertPlacemarkToAddress (CLPlacemark placemark)
@@ -114,7 +135,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
             var arr = new List<string>();
             for (uint i = 0; i < addressLines.Count; i++) 
             {
-                var o = MonoTouch.ObjCRuntime.Runtime.GetNSObject(addressLines.ValueAt(i));
+                var o = ObjCRuntime.Runtime.GetNSObject(addressLines.ValueAt(i));
                 arr.Add(o.ToString());
             }
             return string.Join(", ", arr.ToArray());

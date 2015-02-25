@@ -21,6 +21,11 @@ namespace apcurium.MK.Web.Tests
             throw new NotImplementedException();
         }
 
+        public Task<Dictionary<string, List<CompanyPreferenceResponse>>> GetRoamingCompanyPreferences(string companyId)
+        {
+            throw new NotImplementedException();
+        }
+
         public Task SetNetworkCompanyPreferences(string companyId, CompanyPreference[] companyPreferences)
         {
             throw new NotImplementedException();
@@ -43,6 +48,21 @@ namespace apcurium.MK.Web.Tests
                 IbsUserName = "taxi",
                 IbsPassword = "test"
             } };
+        }
+
+        public string GetCompanyMarket(double latitude, double longitude)
+        {
+            return string.Empty;
+        }
+
+        public IEnumerable<NetworkFleetResponse> GetMarketFleets(string companyId, string market)
+        {
+            throw new NotImplementedException();
+        }
+
+        public NetworkFleetResponse GetMarketFleet(string market, int fleetId)
+        {
+            throw new NotImplementedException();
         }
     }
 }

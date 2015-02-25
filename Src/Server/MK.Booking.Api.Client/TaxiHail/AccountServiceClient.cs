@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.Infrastructure;
+using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Booking.Api.Client.Extensions;
 using MK.Common.Configuration;
@@ -117,7 +118,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             // unregister previous card(s) except the current token in case the token did not change
             await UnregisterTokenizedCards (creditCardRequest.Token);
 
-            await Client.PutAsync<string> ("/account/creditcards", creditCardRequest);
+			await Client.PostAsync<string> ("/account/creditcards", creditCardRequest);
         }
 
         public async Task<NotificationSettings> GetNotificationSettings(Guid accountId)
@@ -130,6 +131,18 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
         {
             string req = string.Format("/settings/notifications/{0}", notificationSettingsRequest.AccountId);
             await Client.PostAsync<string>(req, notificationSettingsRequest);
+        }
+
+        public async Task<UserTaxiHailNetworkSettings> GetUserTaxiHailNetworkSettings(Guid accountId)
+        {
+            var req = string.Format("/settings/taxihailnetwork/{0}", accountId);
+            return await Client.GetAsync<UserTaxiHailNetworkSettings>(req);
+        }
+
+        public async Task UpdateUserTaxiHailNetworkSettings(UserTaxiHailNetworkSettingsRequest userTaxiHailNetworkSettingsRequest)
+        {
+            string req = string.Format("/settings/taxihailnetwork/{0}", userTaxiHailNetworkSettingsRequest.AccountId);
+            await Client.PostAsync<string>(req, userTaxiHailNetworkSettingsRequest);
         }
 
         public async Task RemoveCreditCard()

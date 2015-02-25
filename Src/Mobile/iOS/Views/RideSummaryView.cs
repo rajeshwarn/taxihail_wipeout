@@ -1,11 +1,8 @@
 using System;
 using Cirrious.MvvmCross.Binding.BindingContext;
-using MonoTouch.UIKit;
-using apcurium.MK.Booking.Mobile.Extensions;
+using UIKit;
 using apcurium.MK.Booking.Mobile.ViewModels;
-using apcurium.MK.Booking.Mobile.Client.Controls.Widgets;
 using apcurium.MK.Booking.Mobile.Client.Localization;
-using System.Drawing;
 using Cirrious.MvvmCross.Binding.Touch.Views;
 using apcurium.MK.Booking.Mobile.Client.Order;
 using System.Windows.Input;
@@ -37,13 +34,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
             View.BackgroundColor = UIColor.FromRGB(242, 242, 242);
 
-			FlatButtonStyle.Green.ApplyTo(btnReSendConfirmation);
-			FlatButtonStyle.Green.ApplyTo(btnPay);
-
             lblSubTitle.Text = String.Format(Localize.GetValue ("RideSummarySubTitleText"), this.Services().Settings.TaxiHail.ApplicationName);
-
-            btnPay.SetTitle(Localize.GetValue("PayNow"), UIControlState.Normal);
-            btnReSendConfirmation.SetTitle(Localize.GetValue("ReSendConfirmation"), UIControlState.Normal);
 
             PrepareTableView();
 
@@ -92,32 +83,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
             var set = this.CreateBindingSet<RideSummaryView, RideSummaryViewModel> ();
 
-            NavigationItem.RightBarButtonItem = new UIBarButtonItem(Localize.GetValue("Done"), UIBarButtonItemStyle.Bordered, async (o, e) => 
+            NavigationItem.RightBarButtonItem = new UIBarButtonItem(Localize.GetValue("Done"), UIBarButtonItemStyle.Bordered, (o, e) => 
             {  
-                await ViewModel.CheckAndSendRatings();
-
-                if (ViewModel.CanUserLeaveScreen ())
-                {
-                    ViewModel.PrepareNewOrder.ExecuteIfPossible();
-                    ViewModel.CloseCommand.ExecuteIfPossible();
-                }
+					ViewModel.RateOrder.ExecuteIfPossible();
             });
-
-            set.Bind(btnPay)
-                .For("TouchUpInside")
-                .To(vm => vm.PayCommand);
-            set.Bind(btnPay)
-                .For(v => v.HiddenWithConstraints)
-                .To(vm => vm.IsPayButtonShown)
-                .WithConversion("BoolInverter");
-
-            set.Bind(btnReSendConfirmation)
-                .For("TouchUpInside")
-                .To(vm => vm.ResendConfirmationCommand);
-            set.Bind(btnReSendConfirmation)
-                .For(v => v.HiddenWithConstraints)
-                .To(vm => vm.IsResendConfirmationButtonShown)
-                .WithConversion("BoolInverter");
 
             set.Bind(_source)
                 .For(v => v.ItemsSource)

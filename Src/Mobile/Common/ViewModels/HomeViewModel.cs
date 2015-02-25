@@ -1,6 +1,7 @@
 using System.Windows.Input;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Extensions;
+using apcurium.MK.Booking.Mobile.Framework.Extensions;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.PresentationHints;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
@@ -53,11 +54,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		    _mvxLifetime = mvxLifetime;
 			_accountService = accountService;
 
-			Panel = new PanelMenuViewModel(this, browserTask, orderWorkflowService, accountService, phoneService, paymentService);
+			Panel = new PanelMenuViewModel(browserTask, orderWorkflowService, accountService, phoneService, paymentService);
 
-			this.Observe(_vehicleService.GetAndObserveAvailableVehiclesWhenVehicleTypeChanges(), vehicles => ZoomOnNearbyVehiclesIfPossible(vehicles));
+			Observe(_vehicleService.GetAndObserveAvailableVehiclesWhenVehicleTypeChanges(), vehicles => ZoomOnNearbyVehiclesIfPossible(vehicles));
+            Observe(_orderWorkflowService.GetAndObserveMarket(), market => MarketChanged(market));
 		}
 
+	    private string _lastMarket = string.Empty;
 		private bool _isShowingTermsAndConditions;
 		private bool _locateUser;
 		private ZoomToStreetLevelPresentationHint _defaultHintZoomLevel;
@@ -128,7 +131,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			var lastOrder = await _orderWorkflowService.GetLastActiveOrder ();
 			if(lastOrder != null)
 			{
-				ShowViewModel<BookingStatusViewModel> (new
+				ShowViewModelAndRemoveFromHistory<BookingStatusViewModel> (new
 				{
 					order = lastOrder.Item1.ToJson (),
 					orderStatus = lastOrder.Item2.ToJson ()
@@ -362,6 +365,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			{
 				return;
 			}
+			catch(Exception)
+			{
+				return;
+			}
 		}
 
 		private void ZoomOnNearbyVehiclesIfPossible(AvailableVehicle[] vehicles)
@@ -452,6 +459,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 				_accountService.LogApplicationStartUp ();
             }
+        }
+
+        private void MarketChanged(string market)
+        {
+            // Market changed and not home market
+            if (_lastMarket != market && market != string.Empty)
+            {
+                this.Services().Message.ShowMessage(this.Services().Localize["MarketChangedMessageTitle"],
+                    this.Services().Localize["MarketChangedMessage"]);
+            }
+            _lastMarket = market;
         }
     }
 }

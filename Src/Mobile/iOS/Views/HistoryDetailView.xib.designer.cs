@@ -4,7 +4,7 @@
 // actions made in the UI designer. If it is removed, they will be lost.
 // Manual changes to this file may not be handled correctly.
 //
-using MonoTouch.Foundation;
+using Foundation;
 using System.CodeDom.Compiler;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
@@ -34,61 +34,77 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnViewRating { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.NSLayoutConstraint constraintDestinationLabelToAptRingCodeLabelHeight { get; set; }
+		UIKit.NSLayoutConstraint constraintDestinationLabelToAptRingCodeLabelHeight { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.NSLayoutConstraint constraintDestinationTextToAptRingCodeTextHeight { get; set; }
+		UIKit.NSLayoutConstraint constraintDestinationTextToAptRingCodeTextHeight { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel lblAptRingCode { get; set; }
+		UIKit.UILabel lblAptRingCode { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel lblAuthorization { get; set; }
+		UIKit.UILabel lblAuthorization { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel lblDestination { get; set; }
+		UIKit.UILabel lblDestination { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel lblOrder { get; set; }
+		UIKit.UILabel lblOrder { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel lblPickup { get; set; }
+		UIKit.UILabel lblPickup { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel lblPickupDate { get; set; }
+		UIKit.UILabel lblPickupDate { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel lblRequested { get; set; }
+		UIKit.UILabel lblPromo { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel lblStatus { get; set; }
+		UIKit.UILabel lblRequested { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel txtAptRingCode { get; set; }
+		UIKit.UILabel lblStatus { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel txtAthorization { get; set; }
+		UIKit.UILabel txtAptRingCode { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel txtDestination { get; set; }
+		UIKit.UILabel txtAthorization { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel txtOrder { get; set; }
+		UIKit.UILabel txtDestination { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel txtPickup { get; set; }
+		UIKit.UILabel txtOrder { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel txtPickupDate { get; set; }
+		UIKit.UILabel txtPickup { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel txtRequested { get; set; }
+		UIKit.UILabel txtPickupDate { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel txtStatus { get; set; }
+		UIKit.UILabel txtPromo { get; set; }
+
+		[Outlet]
+		UIKit.UILabel txtRequested { get; set; }
+
+		[Outlet]
+		UIKit.UILabel txtStatus { get; set; }
 		
 		void ReleaseDesignerOutlets ()
 		{
+			if (lblPromo != null) {
+				lblPromo.Dispose ();
+				lblPromo = null;
+			}
+
+			if (txtPromo != null) {
+				txtPromo.Dispose ();
+				txtPromo = null;
+			}
+
 			if (btnCancel != null) {
 				btnCancel.Dispose ();
 				btnCancel = null;
@@ -109,6 +125,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				btnRebook = null;
 			}
 
+			if (btnSendReceipt != null) {
+				btnSendReceipt.Dispose ();
+				btnSendReceipt = null;
+			}
+
 			if (btnStatus != null) {
 				btnStatus.Dispose ();
 				btnStatus = null;
@@ -117,11 +138,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			if (btnViewRating != null) {
 				btnViewRating.Dispose ();
 				btnViewRating = null;
-			}
-
-			if (btnSendReceipt != null) {
-				btnSendReceipt.Dispose ();
-				btnSendReceipt = null;
 			}
 
 			if (constraintDestinationLabelToAptRingCodeLabelHeight != null) {
@@ -137,6 +153,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			if (lblAptRingCode != null) {
 				lblAptRingCode.Dispose ();
 				lblAptRingCode = null;
+			}
+
+			if (lblAuthorization != null) {
+				lblAuthorization.Dispose ();
+				lblAuthorization = null;
 			}
 
 			if (lblDestination != null) {
@@ -174,6 +195,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				txtAptRingCode = null;
 			}
 
+			if (txtAthorization != null) {
+				txtAthorization.Dispose ();
+				txtAthorization = null;
+			}
+
 			if (txtDestination != null) {
 				txtDestination.Dispose ();
 				txtDestination = null;
@@ -202,16 +228,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			if (txtStatus != null) {
 				txtStatus.Dispose ();
 				txtStatus = null;
-			}
-
-			if (lblAuthorization != null) {
-				lblAuthorization.Dispose ();
-				lblAuthorization = null;
-			}
-
-			if (txtAthorization != null) {
-				txtAthorization.Dispose ();
-				txtAthorization = null;
 			}
 		}
 	}

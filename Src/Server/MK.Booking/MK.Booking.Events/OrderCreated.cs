@@ -17,7 +17,7 @@ namespace apcurium.MK.Booking.Events
 
         public Guid AccountId { get; set; }
 
-        public int IBSOrderId { get; set; }
+        public int? IBSOrderId { get; set; }
 
         public DateTime PickupDate { get; set; }
 
@@ -44,5 +44,11 @@ namespace apcurium.MK.Booking.Events
         public string ClientVersion { get; set; }
 
         public bool IsChargeAccountPaymentWithCardOnFile { get; set; }
+
+        public string CompanyKey { get; set; }
+
+        public string CompanyName { get; set; }
+
+        public string Market { get; set; }
     }
 }

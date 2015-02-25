@@ -1,8 +1,8 @@
 using System;
-using MonoTouch.UIKit;
+using UIKit;
 using Cirrious.MvvmCross.Binding.Touch.Views;
-using MonoTouch.Foundation;
-using System.Drawing;
+using Foundation;
+using CoreGraphics;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
@@ -109,7 +109,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
 			if (this.Accessory != UITableViewCellAccessory.None)
 			{
-				_arrowImage = new UIImageView(new RectangleF(0, 0, 8, 13)); 
+				_arrowImage = new UIImageView(new CGRect(0, 0, 8, 13)); 
 				_arrowImage.BackgroundColor = UIColor.Clear;
 				_arrowImage.ContentMode = UIViewContentMode.ScaleAspectFit;
 				_arrowImage.Image = UIImage.FromFile("right_arrow.png");

@@ -30,11 +30,12 @@ namespace apcurium.MK.Common.Entity
         public string Name { get; set; }
         public string ReferenceNumber { get; set; }
         public string TerminalId { get; set; }
-        public bool IsTaxiNearbyNotificationSent { get; set; }
         public DateTime? PairingTimeOut { get; set; }
+        public DateTime? UnpairingTimeOut { get; set; }
         public string PairingError { get; set; }
-
+        
         // network stuff
+        public string Market { get; set; }
         public string CompanyKey { get; set; }                  // not null if created on another ibs
         public string CompanyName { get; set; }                 // not null if created on another ibs
         public string NextDispatchCompanyName { get; set; }

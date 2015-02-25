@@ -235,7 +235,6 @@ These keywords will be used by the store to find your app. For example when a cu
   <data name="UniqueDeviceIdentificationNumber" xml:space="preserve">
     <value>Unique Device Identification Number (UDID)</value>
   </data>
-
   <data name="CoordinateStartTaxiHailNetwork" xml:space="preserve">
     <value>Start</value>
   </data>
@@ -315,5 +314,8 @@ the months ahead, and are always interested in what you have to say!</value>
   </data>
   <data name="ServiceUrlHelp" xml:space="preserve">
     <value>For xds site, the url must be formatted like this : http://drivelinq.dyndns-ip.com:6928/XDS_IASPI.DLL/soap/ . For cabmate, the url must be formatted like this : http://216.13.56.235:2555/IBSCab/IBSCab.dll/soap/.  The url must end with "/"</value>
+  </data>
+  <data name="Market" xml:space="preserve">
+    <value>Market</value>
   </data>
 </root>

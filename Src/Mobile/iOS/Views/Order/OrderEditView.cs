@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 using Cirrious.MvvmCross.Binding.BindingContext;
-using MonoTouch.UIKit;
+using UIKit;
 using TinyIoC;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using apcurium.MK.Common.Configuration;
@@ -104,7 +104,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
                 .To(vm => vm.PickupAddress.RingCode);
 
             set.BindSafe(txtChargeType)
-                .For("Text")
                 .To(vm => vm.ChargeTypeName);
 
 			set.BindSafe(txtChargeType)

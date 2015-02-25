@@ -1,54 +1,49 @@
 ﻿using System;
+using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Services;
 using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Enumeration;
+using Infrastructure.Messaging;
 using Infrastructure.Messaging.Handling;
 
 namespace apcurium.MK.Booking.EventHandlers.Integration
 {
     public class OrderPaymentManager :
         IIntegrationEventHandler,
-        IEventHandler<PayPalExpressCheckoutPaymentCompleted>,
-        IEventHandler<CreditCardPaymentCaptured>,
+        IEventHandler<CreditCardPaymentCaptured_V2>,
         IEventHandler<OrderCancelled>,
-        IEventHandler<OrderSwitchedToNextDispatchCompany>
+        IEventHandler<OrderSwitchedToNextDispatchCompany>,
+        IEventHandler<OrderStatusChanged>,
+        IEventHandler<OrderCancelledBecauseOfIbsError>
     {
         private readonly IOrderDao _dao;
         private readonly IIbsOrderService _ibs;
         private readonly IServerSettings _serverSettings;
-        private readonly IPaymentService _paymentService;
+        private readonly IPaymentService _paymentFacadeService;
         private readonly IOrderPaymentDao _paymentDao;
         private readonly ICreditCardDao _creditCardDao;
         private readonly IAccountDao _accountDao;
+        private readonly IOrderDao _orderDao;
+        private readonly ICommandBus _commandBus;
 
-        public OrderPaymentManager(IOrderDao dao, IOrderPaymentDao paymentDao, IAccountDao accountDao, 
-            ICreditCardDao creditCardDao, IIbsOrderService ibs, IServerSettings serverSettings, IPaymentService paymentService)
+        public OrderPaymentManager(IOrderDao dao, IOrderPaymentDao paymentDao, IAccountDao accountDao, IOrderDao orderDao, ICommandBus commandBus,
+            ICreditCardDao creditCardDao, IIbsOrderService ibs, IServerSettings serverSettings, IPaymentService paymentFacadeService)
         {
             _accountDao = accountDao;
+            _orderDao = orderDao;
+            _commandBus = commandBus;
             _dao = dao;
             _paymentDao = paymentDao;
             _creditCardDao = creditCardDao;
             _ibs = ibs;
             _serverSettings = serverSettings;
-            _paymentService = paymentService;
+            _paymentFacadeService = paymentFacadeService;
         }
 
-        public void Handle(PayPalExpressCheckoutPaymentCompleted @event)
-        {
-            // Send message to driver
-            SendPaymentConfirmationToDriver(@event.OrderId, @event.Amount, @event.Meter, @event.Tip, PaymentProvider.PayPal.ToString(), @event.PayPalPayerId);
-
-            // payment might not be enabled
-            if (_paymentService != null)
-            {
-                // void the preauthorization to prevent misuse fees
-                _paymentService.VoidPreAuthorization(@event.SourceId);
-            }
-        }
-
-        public void Handle(CreditCardPaymentCaptured @event)
+        public void Handle(CreditCardPaymentCaptured_V2 @event)
         {
             if (@event.IsNoShowFee)
             {
@@ -58,7 +53,20 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
 
             if (_serverSettings.ServerData.SendDetailedPaymentInfoToDriver)
             {
-                SendPaymentConfirmationToDriver(@event.OrderId, @event.Amount, @event.Meter, @event.Tip, @event.Provider.ToString(), @event.AuthorizationCode);
+                SendPaymentConfirmationToDriver(@event.OrderId, @event.Amount, @event.Meter + @event.Tax, @event.Tip, @event.Provider.ToString(), @event.AuthorizationCode);
+            }
+
+            if (@event.PromotionUsed.HasValue)
+            {
+                var redeemPromotion = new RedeemPromotion
+                {
+                    OrderId = @event.OrderId,
+                    PromoId = @event.PromotionUsed.Value,
+                    TotalAmountOfOrder = @event.Amount + @event.AmountSavedByPromotion
+                };
+                var envelope = (Envelope<ICommand>) redeemPromotion;
+
+                _commandBus.Send(envelope);
             }
         }
 
@@ -90,21 +98,40 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
 
         public void Handle(OrderCancelled @event)
         {
-            // payment might not be enabled
-            if (_paymentService != null)
-            {
-                // void the preauthorization to prevent misuse fees
-                _paymentService.VoidPreAuthorization(@event.SourceId);
-            }
+            // void the preauthorization to prevent misuse fees
+            _paymentFacadeService.VoidPreAuthorization(@event.SourceId);
         }
 
         public void Handle(OrderSwitchedToNextDispatchCompany @event)
         {
-            // payment might not be enabled
-            if (_paymentService != null)
+            // void the preauthorization to prevent misuse fees
+            _paymentFacadeService.VoidPreAuthorization(@event.SourceId);
+        }
+
+        public void Handle(OrderCancelledBecauseOfIbsError @event)
+        {
+            // void the preauthorization to prevent misuse fees
+            _paymentFacadeService.VoidPreAuthorization(@event.SourceId);
+        }
+
+        public void Handle(OrderStatusChanged @event)
+        {
+            if (@event.IsCompleted)
             {
-                // void the preauthorization to prevent misuse fees
-                _paymentService.VoidPreAuthorization(@event.SourceId);
+                var paymentSettings = _serverSettings.GetPaymentSettings();
+                var order = _orderDao.FindById(@event.SourceId);
+                var pairingInfo = _orderDao.FindOrderPairingById(@event.SourceId);
+
+                // If the user has decided not to pair (paying the ride in car instead),
+                // we have to void the amount that was preauthorized
+                if (paymentSettings.PaymentMode != PaymentMethod.RideLinqCmt
+                    && (order.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id
+                        || order.Settings.ChargeTypeId == ChargeTypes.PayPal.Id)
+                    && pairingInfo == null)
+                {
+                    // void the preauthorization to prevent misuse fees
+                    _paymentFacadeService.VoidPreAuthorization(@event.SourceId);
+                }
             }
         }
     }
