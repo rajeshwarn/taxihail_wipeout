@@ -166,6 +166,25 @@
             this.model.set('FromWebApp', true);
             this.model.saveLocal();
 
+            this.$('.errors').html('');        
+
+            var numberOfPassengers = this.model.get('settings')['passengers'];
+            var vehicleType = TaxiHail.vehicleTypes[0];
+            var vehicleTypeId =  this.model.get('settings')['vehicleTypeId'];           
+            if(vehicleTypeId)
+            {
+                vehicleType = $.grep(TaxiHail.vehicleTypes, function (e) { return e.referenceDataVehicleId == vehicleTypeId; })[0];
+            }
+
+            if (TaxiHail.parameters.showPassengerNumber
+                && vehicleType.maxNumberPassengers > 0
+                && numberOfPassengers > vehicleType.maxNumberPassengers)
+            {
+                this.$(':submit').button('reset');
+                this.$('.errors').html(TaxiHail.localize("CreateOrder_InvalidPassengersNumber"));
+                return;
+            }
+
             if (this.model.isPayingWithAccountCharge() && !this.model.get('market')) {
                 //account charge type payment                
                 TaxiHail.app.navigate('bookaccountcharge', { trigger: true});

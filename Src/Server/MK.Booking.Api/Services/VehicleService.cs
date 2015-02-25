@@ -125,7 +125,8 @@ namespace apcurium.MK.Booking.Api.Services
                 Name = request.Name,
                 LogoName = request.LogoName,
                 ReferenceDataVehicleId = request.ReferenceDataVehicleId,
-                CompanyId = AppConstants.CompanyId
+                CompanyId = AppConstants.CompanyId,
+                MaxNumberPassengers = request.MaxNumberPassengers
             };
 
             _commandBus.Send(command);
@@ -150,7 +151,8 @@ namespace apcurium.MK.Booking.Api.Services
                 Name = request.Name,
                 LogoName = request.LogoName,
                 ReferenceDataVehicleId = request.ReferenceDataVehicleId,
-                CompanyId = AppConstants.CompanyId
+                CompanyId = AppConstants.CompanyId,
+                MaxNumberPassengers = request.MaxNumberPassengers
             };
 
             _commandBus.Send(command);
