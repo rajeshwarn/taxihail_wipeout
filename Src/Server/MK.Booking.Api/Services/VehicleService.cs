@@ -11,8 +11,10 @@ using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.IBS;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common;
+using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Extensions;
 using AutoMapper;
+using CustomerPortal.Client;
 using HoneyBadger;
 using Infrastructure.Messaging;
 using ServiceStack.Common.Web;
@@ -29,18 +31,24 @@ namespace apcurium.MK.Booking.Api.Services
         private readonly ICommandBus _commandBus;
         private readonly ReferenceDataService _referenceDataService;
         private readonly HoneyBadgerServiceClient _honeyBadgerServiceClient;
+        private readonly ITaxiHailNetworkServiceClient _taxiHailNetworkServiceClient;
+        private readonly IServerSettings _serverSettings;
 
         public VehicleService(IIBSServiceProvider ibsServiceProvider,
             IVehicleTypeDao dao,
             ICommandBus commandBus,
             ReferenceDataService referenceDataService,
-            HoneyBadgerServiceClient honeyBadgerServiceClient)
+            HoneyBadgerServiceClient honeyBadgerServiceClient,
+            ITaxiHailNetworkServiceClient taxiHailNetworkServiceClient,
+            IServerSettings serverSettings)
         {
             _ibsServiceProvider = ibsServiceProvider;
             _dao = dao;
             _commandBus = commandBus;
             _referenceDataService = referenceDataService;
             _honeyBadgerServiceClient = honeyBadgerServiceClient;
+            _taxiHailNetworkServiceClient = taxiHailNetworkServiceClient;
+            _serverSettings = serverSettings;
         }
 
         public AvailableVehiclesResponse Post(AvailableVehicles request)
@@ -48,7 +56,7 @@ namespace apcurium.MK.Booking.Api.Services
             var vehicleType = _dao.GetAll().FirstOrDefault(v => v.ReferenceDataVehicleId == request.VehicleTypeId);
             string logoName = vehicleType != null ? vehicleType.LogoName : null;
 
-            var vehicles = new IbsVehiclePosition[0];
+            IbsVehiclePosition[] vehicles;
 
             if (!request.Market.HasValue())
             {
@@ -57,13 +65,30 @@ namespace apcurium.MK.Booking.Api.Services
             }
             else
             {
-                var vehicleResponse = _honeyBadgerServiceClient.GetAvailableVehicles(request.Market, request.Latitude, request.Longitude);
+                IList<int> roamingFleetIds = null;
+
+                try
+                {
+                    // Only get available vehicles for dispatchable companies in market
+                    var roamingCompanies = _taxiHailNetworkServiceClient.GetMarketFleets(_serverSettings.ServerData.TaxiHail.ApplicationKey, request.Market);
+                    if (roamingCompanies != null)
+                    {
+                        roamingFleetIds = roamingCompanies.Select(r => r.FleetId).ToArray();
+                    }
+                }
+                catch
+                {
+                    // Do nothing. If we fail to contact Customer Portal, we return an unfiltered list of available vehicles.
+                }
+
+                var vehicleResponse = _honeyBadgerServiceClient.GetAvailableVehicles(request.Market, request.Latitude, request.Longitude, null, roamingFleetIds);
                 vehicles = vehicleResponse.Select(v => new IbsVehiclePosition
                 {
                     Latitude = v.Latitude,
                     Longitude = v.Longitude,
                     PositionDate = v.Timestamp,
-                    VehicleNumber = v.Medallion
+                    VehicleNumber = v.Medallion,
+                    FleetId = v.FleetId
                 }).ToArray();
             }
 

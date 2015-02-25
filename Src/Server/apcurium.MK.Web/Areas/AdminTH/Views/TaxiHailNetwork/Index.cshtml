@@ -42,7 +42,7 @@
             @foreach (var company in Model["Local"])
             {
                 <li>
-                    <div class="company-preference-order-text"><span class="handle">::</span>@company.CompanyPreference.CompanyKey</div>
+                    <div class="company-preference-order-text"><span class="handle">::</span>@company.CompanyPreference.CompanyKey [FleetId: @company.FleetId]</div>
                     @Html.Hidden("idKey_" + company.CompanyPreference.CompanyKey, company.CompanyPreference.CompanyKey)
                     <div class="company-preference-order-checkbox">@Html.CheckBox("acceptKey_" + company.CompanyPreference.CompanyKey, company.CompanyPreference.CanAccept)</div>
                     <div class="company-preference-order-checkbox">
@@ -85,7 +85,7 @@
                 @foreach (var company in Model[market])
                 {
                     <li>
-                        <div class="company-preference-order-text">@company.CompanyPreference.CompanyKey</div>
+                        <div class="company-preference-order-text">@company.CompanyPreference.CompanyKey [FleetId: @company.FleetId]</div>
                         @Html.Hidden("idKey_" + company.CompanyPreference.CompanyKey, company.CompanyPreference.CompanyKey)
                         <div class="company-preference-order-checkbox">@Html.CheckBox("acceptKey_" + company.CompanyPreference.CompanyKey, company.CompanyPreference.CanAccept)</div>
                         <div class="company-preference-order-checkbox ">

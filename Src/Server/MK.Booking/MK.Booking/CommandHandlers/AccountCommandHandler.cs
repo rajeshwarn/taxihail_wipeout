@@ -43,7 +43,8 @@ namespace apcurium.MK.Booking.CommandHandlers
         ICommandHandler<UnlinkAccountFromIbs>,
         ICommandHandler<LinkPayPalAccount>,
         ICommandHandler<UnlinkPayPalAccount>,
-        ICommandHandler<UnlinkAllPayPalAccounts>
+        ICommandHandler<UnlinkAllPayPalAccounts>,
+        ICommandHandler<DeactivateCreditCard>
     {
         private readonly IPasswordService _passwordService;
         private readonly Func<BookingDbContext> _contextFactory;
@@ -298,6 +299,15 @@ namespace apcurium.MK.Booking.CommandHandlers
                 account.UnlinkPayPalAccount();
                 _repository.Save(account, command.Id.ToString());
             }
+        }
+
+        public void Handle(DeactivateCreditCard command)
+        {
+            var account = _repository.Find(command.AccountId);
+
+            account.DeactivateCreditCard();
+
+            _repository.Save(account, command.Id.ToString());
         }
     }
 }

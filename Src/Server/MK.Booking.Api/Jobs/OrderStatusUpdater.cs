@@ -211,6 +211,11 @@ namespace apcurium.MK.Booking.Api.Jobs
                 // Wait for OrderPaymentDetail to be created
                 Thread.Sleep(500);
             }
+            else if (result.IsDeclined)
+            {
+                // Deactivate credit card if it was declined
+                _commandBus.Send(new DeactivateCreditCard { AccountId = orderDetail.AccountId });
+            }
 
             return result;
         }
@@ -552,7 +557,7 @@ namespace apcurium.MK.Booking.Api.Jobs
 
                 if (paymentProviderServiceResponse.IsSuccessful)
                 {
-                    //payment completed
+                    // Payment completed
 
                     var fareObject = Fare.FromAmountInclTax(Convert.ToDouble(meterAmount), _serverSettings.ServerData.VATIsEnabled ? _serverSettings.ServerData.VATPercentage : 0);
 
@@ -574,6 +579,9 @@ namespace apcurium.MK.Booking.Api.Jobs
                 }
                 else
                 {
+                    // Void PreAuth because commit failed
+                    _paymentService.VoidPreAuthorization(orderId);
+
                     // Payment error
                     _commandBus.Send(new LogCreditCardError
                     {
@@ -581,8 +589,11 @@ namespace apcurium.MK.Booking.Api.Jobs
                         Reason = message
                     });
 
-                    // Void PreAuth because commit failed
-                    _paymentService.VoidPreAuthorization(orderId);
+                    if (paymentProviderServiceResponse.IsDeclined)
+                    {
+                        // Unlikely, but hey
+                        _commandBus.Send(new DeactivateCreditCard { AccountId = account.Id });
+                    }
                 }
 
                 return new CommitPreauthorizedPaymentResponse

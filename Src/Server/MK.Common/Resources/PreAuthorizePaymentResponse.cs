@@ -7,5 +7,7 @@ namespace apcurium.MK.Common.Resources
         public string TransactionId { get; set; }
 
         public string ReAuthOrderId { get; set; }
+
+        public bool IsDeclined { get; set; }
     }
 }

@@ -103,7 +103,7 @@ namespace apcurium.MK.Booking.EventHandlers
                 payment.IsCancelled = true;
                 payment.Error = @event.Reason;
 
-                context.SaveChanges();
+                context.Save(payment);
             }
         }
     }

@@ -509,13 +509,16 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 		public async Task<IList<ListItem>> GetPaymentsList (string market = null)
         {
 			var refData = await GetReferenceData();
+            var creditCard = await GetCreditCard();
 
             if (!CurrentAccount.IsPayPalAccountLinked)
 		    {
                 refData.PaymentsList.Remove(i => i.Id == ChargeTypes.PayPal.Id);
 		    }
 
-            if (!CurrentAccount.DefaultCreditCard.HasValue || CurrentAccount.IsPayPalAccountLinked)
+            if (creditCard == null
+                || CurrentAccount.IsPayPalAccountLinked
+                || creditCard.IsDeactivated)
 		    {
 		        refData.PaymentsList.Remove(i => i.Id == ChargeTypes.CardOnFile.Id);
 		    }

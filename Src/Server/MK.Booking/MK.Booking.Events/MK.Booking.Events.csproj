@@ -62,6 +62,7 @@
     <Compile Include="BookingSettingsUpdated.cs" />
     <Compile Include="CompanyCreated.cs" />
     <Compile Include="AllCreditCardsRemoved.cs" />
+    <Compile Include="CreditCardDeactivated.cs" />
     <Compile Include="CreditCardErrorThrown.cs" />
     <Compile Include="CreditCardPaymentCaptured.cs" />
     <Compile Include="CreditCardPaymentCaptured_V2.cs" />

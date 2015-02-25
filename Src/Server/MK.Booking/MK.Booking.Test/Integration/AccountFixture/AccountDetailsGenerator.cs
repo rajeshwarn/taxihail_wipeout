@@ -9,6 +9,7 @@ using apcurium.MK.Booking.EventHandlers;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.Security;
+using apcurium.MK.Common.Enumeration;
 using Infrastructure.Messaging;
 using Moq;
 using NUnit.Framework;
@@ -456,6 +457,20 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
                 Assert.NotNull(accountDetail);
                 Assert.AreEqual(null, accountDetail.IBSAccountId);
                 Assert.Null(accountIbsDetail);
+            }
+        }
+
+        [Test]
+        public void when_creditcard_deactivated_then_dto_updated()
+        {
+            Sut.Handle(new CreditCardDeactivated { SourceId = _accountId });
+
+            using (var context = new BookingDbContext(DbName))
+            {
+                var accountDetail = context.Query<AccountDetail>().FirstOrDefault(x => x.Id == _accountId);
+
+                Assert.NotNull(accountDetail);
+                Assert.AreEqual(ChargeTypes.PaymentInCar.Id, accountDetail.Settings.ChargeTypeId);
             }
         }
     }
