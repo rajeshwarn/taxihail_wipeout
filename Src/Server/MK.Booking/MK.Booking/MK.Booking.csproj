@@ -210,6 +210,7 @@
     <Compile Include="ReadModel\AccountChargeDetail.cs" />
     <Compile Include="ReadModel\AccountDetail.cs" />
     <Compile Include="ReadModel\AccountIbsDetail.cs" />
+    <Compile Include="ReadModel\OverduePaymentDetail.cs" />
     <Compile Include="ReadModel\PayPalAccountDetails.cs" />
     <Compile Include="ReadModel\OrderReportDetail.cs" />
     <Compile Include="ReadModel\PromotionProgressDetail.cs" />
@@ -233,6 +234,7 @@
     <Compile Include="ReadModel\Query\Contract\IConfigurationDao.cs" />
     <Compile Include="ReadModel\Query\Contract\IDeviceDao.cs" />
     <Compile Include="ReadModel\Query\Contract\IOrderPaymentDao.cs" />
+    <Compile Include="ReadModel\Query\Contract\IOverduePaymentDao.cs" />
     <Compile Include="ReadModel\Query\Contract\IReportDao.cs" />
     <Compile Include="ReadModel\Query\Contract\IPromotionDao.cs" />
     <Compile Include="ReadModel\Query\Contract\IVehicleTypeDao.cs" />
@@ -240,6 +242,7 @@
     <Compile Include="ReadModel\Query\DeviceDao.cs" />
     <Compile Include="ReadModel\Query\OrderPaymentDao.cs" />
     <Compile Include="ReadModel\Query\OrderStatusUpdateDao.cs" />
+    <Compile Include="ReadModel\Query\OverduePaymentDao.cs" />
     <Compile Include="ReadModel\Query\ReportDao.cs" />
     <Compile Include="ReadModel\Query\PromotionDao.cs" />
     <Compile Include="ReadModel\Query\RuleDao.cs" />
