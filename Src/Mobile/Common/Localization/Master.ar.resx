@@ -1677,4 +1677,19 @@
   <data name="NoPairingCreditCard" xml:space="preserve">
     <value>None</value>
   </data>
+  <data name="Overdue_TransactionId" xml:space="preserve">
+  	<value>Transaction Id</value>
+  </data>
+  <data name="Overdue_Date" xml:space="preserve">
+  	<value>Transaction date</value>
+  </data>
+  <data name="Overdue_Amount" xml:space="preserve">
+  	<value>Amount due</value>
+  </data>
+  <data name="Overdue_Retry" xml:space="preserve">
+  	<value>Retry</value>
+  </data>
+  <data name="Overdue_AddNewCard" xml:space="preserve">
+  	<value>Add a new card</value>
+  </data>
 </root>

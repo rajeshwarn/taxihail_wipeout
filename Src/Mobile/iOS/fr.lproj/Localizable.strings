@@ -578,3 +578,8 @@
 "Unpair"="Payer dans le taxi";
 "UnpairErrorMessage"="Désolé, le système a rencontré un problème lors de la réinitialisation";
 "UnpairPayInCar"="Payer dans le taxi";
+"Overdue_TransactionId"="Id de transaction";
+"Overdue_AddNewCard"="Ajouter une nouvelle carte";
+"Overdue_Date"="Date de transaction";
+"Overdue_Retry"="Réessayer";
+"Overdue_Amount"="montant dû";

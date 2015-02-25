@@ -571,3 +571,8 @@
 "Unpair"="Pagar en el vehículo";
 "UnpairErrorMessage"="Hubo un error desincronizando, por favor intente nuevamente";
 "UnpairPayInCar"="Pagar en el vehículo";
+"Overdue_TransactionId"="Transaction Id";
+"Overdue_AddNewCard"="Add a new card";
+"Overdue_Date"="Transaction date";
+"Overdue_Retry"="Retry";
+"Overdue_Amount"="Amount due";
