@@ -44,7 +44,7 @@ namespace apcurium.MK.Booking.CommandHandlers
         ICommandHandler<LinkPayPalAccount>,
         ICommandHandler<UnlinkPayPalAccount>,
         ICommandHandler<UnlinkAllPayPalAccounts>,
-        ICommandHandler<DeactivateCreditCard>
+        ICommandHandler<FlagDelinquentAccount>
     {
         private readonly IPasswordService _passwordService;
         private readonly Func<BookingDbContext> _contextFactory;
@@ -301,11 +301,12 @@ namespace apcurium.MK.Booking.CommandHandlers
             }
         }
 
-        public void Handle(DeactivateCreditCard command)
+        public void Handle(FlagDelinquentAccount command)
         {
             var account = _repository.Find(command.AccountId);
 
             account.DeactivateCreditCard();
+            account.LogOverduePayment(command.OrderId, command.OverdueAmount, command.TransactionId, command.TransactionDate);
 
             _repository.Save(account, command.Id.ToString());
         }

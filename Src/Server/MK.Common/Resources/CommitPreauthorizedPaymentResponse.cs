@@ -1,4 +1,6 @@
-﻿namespace apcurium.MK.Common.Resources
+﻿using System;
+
+namespace apcurium.MK.Common.Resources
 {
     public class CommitPreauthorizedPaymentResponse : BasePaymentResponse
     {
@@ -11,6 +13,8 @@
         /// !! Only used for reporting purpose for now
         /// </summary>
         public string TransactionId { get; set; }
+
+        public DateTime? TransactionDate { get; set; }
 
         public bool IsDeclined { get; set; }
     }

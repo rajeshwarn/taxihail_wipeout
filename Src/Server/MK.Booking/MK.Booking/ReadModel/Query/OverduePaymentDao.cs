@@ -27,7 +27,7 @@ namespace apcurium.MK.Booking.ReadModel.Query
         {
             using (var context = _contextFactory.Invoke())
             {
-                return context.Query<OverduePaymentDetail>().SingleOrDefault(c => c.Id == id);
+                return context.Query<OverduePaymentDetail>().SingleOrDefault(c => c.OrderId == id);
             }
         }
 

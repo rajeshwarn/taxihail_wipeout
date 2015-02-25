@@ -175,6 +175,7 @@ namespace apcurium.MK.Booking.Services.Impl
         {
             var message = string.Empty;
             var transactionId = string.Empty;
+            DateTime? transactionDate = null;
 
             try
             {
@@ -213,11 +214,8 @@ namespace apcurium.MK.Booking.Services.Impl
                     message = result.Message;
                     isSuccessful = result.IsSuccess();
                     isCardDeclined = IsCardDeclined(result.Transaction);
-                    
-                    if (isSuccessful)
-                    {
-                        transactionId = result.Target.Id;
-                    }
+                    transactionId = isSuccessful ? result.Target.Id : result.Transaction.Id;
+                    transactionDate = isSuccessful ? result.Target.CreatedAt : result.Transaction.CreatedAt;
                 }
                 else
                 {
@@ -248,7 +246,8 @@ namespace apcurium.MK.Booking.Services.Impl
                     Message = message,
                     TransactionId = transactionId,
                     ReAuthOrderId = isReAuth ? orderIdentifier : null,
-                    IsDeclined = isCardDeclined
+                    IsDeclined = isCardDeclined,
+                    TransactionDate = transactionDate
                 };
             }
             catch (Exception e)

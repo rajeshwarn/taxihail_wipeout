@@ -214,7 +214,14 @@ namespace apcurium.MK.Booking.Api.Jobs
             else if (result.IsDeclined)
             {
                 // Deactivate credit card if it was declined
-                _commandBus.Send(new DeactivateCreditCard { AccountId = orderDetail.AccountId });
+                _commandBus.Send(new FlagDelinquentAccount
+                {
+                    AccountId = orderDetail.AccountId,
+                    OrderId = orderId,
+                    OverdueAmount = amount,
+                    TransactionId = result.TransactionId,
+                    TransactionDate = result.TransactionDate
+                });
             }
 
             return result;
@@ -592,7 +599,14 @@ namespace apcurium.MK.Booking.Api.Jobs
                     if (paymentProviderServiceResponse.IsDeclined)
                     {
                         // Unlikely, but hey
-                        _commandBus.Send(new DeactivateCreditCard { AccountId = account.Id });
+                        _commandBus.Send(new FlagDelinquentAccount
+                        {
+                            AccountId = account.Id,
+                            OrderId = orderId,
+                            OverdueAmount = totalOrderAmount,
+                            TransactionId = paymentProviderServiceResponse.TransactionId,
+                            TransactionDate = paymentProviderServiceResponse.TransactionDate
+                        });
                     }
                 }
 

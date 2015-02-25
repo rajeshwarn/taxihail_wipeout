@@ -355,7 +355,8 @@ namespace apcurium.MK.Booking.Services.Impl
                     AuthorizationCode = authorizationCode,
                     Message = authResponse.ResponseMessage,
                     TransactionId = commitTransactionId,
-                    IsDeclined = isCardDeclined
+                    IsDeclined = isCardDeclined,
+                    TransactionDate = authResponse.AuthorizationDate
                 };
             }
             catch (Exception ex)

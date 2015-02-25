@@ -187,6 +187,7 @@
     <Compile Include="EventHandlers\Integration\OrderPaymentManager.cs" />
     <Compile Include="EventHandlers\Integration\PromotionTriggerGenerator.cs" />
     <Compile Include="EventHandlers\NotificationSettingsGenerator.cs" />
+    <Compile Include="EventHandlers\OverduePaymentDetailGenerator.cs" />
     <Compile Include="EventHandlers\ReportDetailGenerator.cs" />
     <Compile Include="EventHandlers\OrderUserGpsGenerator.cs" />
     <Compile Include="EventHandlers\PaymentSettingGenerator.cs" />

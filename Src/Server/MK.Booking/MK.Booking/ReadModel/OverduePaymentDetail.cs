@@ -6,13 +6,15 @@ namespace apcurium.MK.Booking.ReadModel
     public class OverduePaymentDetail
     {
         [Key]
-        public Guid Id { get; set; }
-
         public Guid OrderId { get; set; }
 
         public Guid AccountId { get; set; }
 
         public decimal OverdueAmount { get; set; }
+
+        public string TransactionId { get; set; }
+
+        public DateTime? TransactionDate { get; set; }
 
         public bool IsPaid { get; set; }
     }

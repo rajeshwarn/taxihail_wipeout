@@ -49,6 +49,7 @@ namespace apcurium.MK.Booking.Domain
             Handles<PayPalAccountLinked>(NoAction);
             Handles<PayPalAccountUnlinked>(NoAction);
             Handles<CreditCardDeactivated>(NoAction);
+            Handles<OverduePaymentLogged>(NoAction);
         }
 
         public Account(Guid id, IEnumerable<IVersionedEvent> history)
@@ -362,6 +363,17 @@ namespace apcurium.MK.Booking.Domain
         public void DeactivateCreditCard()
         {
             Update(new CreditCardDeactivated());
+        }
+
+        public void LogOverduePayment(Guid orderId, decimal amount, string transactionId, DateTime? transactionDate)
+        {
+            Update(new OverduePaymentLogged
+            {
+                OrderId = orderId,
+                Amount = amount,
+                TransactionId = transactionId,
+                TransactionDate = transactionDate
+            });
         }
     }
 }

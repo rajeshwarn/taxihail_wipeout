@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using System.Linq;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.ReadModel;
@@ -182,6 +183,7 @@ namespace apcurium.MK.Booking.Services.Impl
         {
             var message = string.Empty;
             var transactionId = string.Empty;
+            DateTime? transactionDate = null;
 
             try
             {
@@ -209,14 +211,10 @@ namespace apcurium.MK.Booking.Services.Impl
                     var preAuthRequest = new HttpsPostRequest(monerisSettings.Host, monerisSettings.StoreId, monerisSettings.ApiToken, preAuthorizeCommand);
                     var preAuthReceipt = preAuthRequest.GetReceipt();
 
-                    
                     isSuccessful = RequestSuccesful(preAuthReceipt, out message);
                     isCardDeclined = IsCardDeclined(preAuthReceipt);
-
-                    if (isSuccessful)
-                    {
-                        transactionId = preAuthReceipt.GetTxnNumber();
-                    }
+                    transactionId = preAuthReceipt.GetTxnNumber();
+                    transactionDate = GetTransactionDate(preAuthReceipt);
                 }
                 else
                 {
@@ -247,7 +245,8 @@ namespace apcurium.MK.Booking.Services.Impl
                     Message = message,
                     TransactionId = transactionId,
                     ReAuthOrderId = isReAuth ? orderIdentifier : null,
-                    IsDeclined = isCardDeclined
+                    IsDeclined = isCardDeclined,
+                    TransactionDate = transactionDate
                 };
             }
             catch (Exception e)
@@ -332,7 +331,8 @@ namespace apcurium.MK.Booking.Services.Impl
                     AuthorizationCode = authorizationCode,
                     Message = message,
                     TransactionId = commitTransactionId,
-                    IsDeclined = isCardDeclined
+                    IsDeclined = isCardDeclined,
+                    TransactionDate = GetTransactionDate(commitReceipt)
                 };
             }
             catch (Exception ex)
@@ -344,6 +344,17 @@ namespace apcurium.MK.Booking.Services.Impl
                     Message = ex.Message
                 };
             }
+        }
+
+        private DateTime? GetTransactionDate(Receipt transactionReceipt)
+        {
+            DateTime localTransactionDate;
+            var isValidDate = DateTime.TryParse(
+                string.Format("{0} {1}", transactionReceipt.GetTransDate(), transactionReceipt.GetTransTime()),
+                CultureInfo.InvariantCulture, DateTimeStyles.None,
+                out localTransactionDate);
+
+            return isValidDate ? localTransactionDate.ToUniversalTime() : default(DateTime?);
         }
 
         private bool RequestSuccesful(Receipt receipt, out string message)
