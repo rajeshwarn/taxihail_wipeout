@@ -5,6 +5,9 @@ using apcurium.MK.Booking.Mobile.ViewModels.Payment;
 using Foundation;
 using UIKit;
 using Cirrious.MvvmCross.Binding.BindingContext;
+using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
+using apcurium.MK.Booking.Mobile.Client.Style;
+using apcurium.MK.Booking.Mobile.Client.Localization;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
 {
@@ -21,33 +24,45 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
 
 			var localize = this.Services().Localize;
 
-			lblTransactionId.Text = localize["Overdue_TransactionId"];
-			lblDate.Text = localize["Overdue_Date"];
-			lblAmountDue.Text = localize["Overdue_Amount"];
-			btnRetry.SetTitle(localize["Overdue_Retry"], UIControlState.Normal);
-			btnAddNewCard.SetTitle(localize["Overdue_Amount"], UIControlState.Normal);
+			if (NavigationController != null)
+			{
+				NavigationController.NavigationBar.Hidden = false;
+				ChangeThemeOfBarStyle();
+			}
 
-			var bindingSet = this.CreateBindingSet<OverduePayementView, OverduePayementViewModel>();
 
-			bindingSet.Bind(TransactionId)
+			NavigationItem.Title = Localize.GetValue("Overdue_View");
+			NavigationItem.HidesBackButton = false;
+
+			lblTransactionId.Text = Localize.GetValue("Overdue_TransactionId");
+			lblDate.Text = Localize.GetValue("Overdue_Date");
+			lblAmountDue.Text = Localize.GetValue("Overdue_Amount");
+			btnRetry.SetTitle(Localize.GetValue("Overdue_Retry"), UIControlState.Normal);
+			btnAddNewCard.SetTitle(Localize.GetValue("Overdue_AddNewCard"), UIControlState.Normal);
+
+			FlatButtonStyle.Silver.ApplyTo(btnRetry);
+			FlatButtonStyle.Silver.ApplyTo(btnAddNewCard);
+
+			var set = this.CreateBindingSet<OverduePayementView, OverduePayementViewModel>();
+
+			set.Bind(TransactionId)
 				.To(vm => vm.TransactionNumber);
 
-			bindingSet.Bind(DateOfTransaction)
+			set.Bind(DateOfTransaction)
 				.To(vm => vm.DateOfTransaction);
 
-			bindingSet.Bind(AmountDue)
+			set.Bind(AmountDue)
 				.To(vm => vm.Amount);
 
-			bindingSet.Bind(btnRetry)
-				.For("TouchDown")
+			set.Bind(btnRetry)
+				.For(v => v.Command)
 				.To(vm => vm.Retry);
 
-			bindingSet.Bind(btnAddNewCard)
-				.For("TouchDown")
+			set.Bind(btnAddNewCard)
+				.For(v => v.Command)
 				.To(vm => vm.AddNewCard);
 
-			bindingSet.Apply();
-
+			set.Apply();
 		}
 	}
 }

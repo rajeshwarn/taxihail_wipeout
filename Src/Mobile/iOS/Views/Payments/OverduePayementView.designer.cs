@@ -16,10 +16,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
 		UIKit.UILabel AmountDue { get; set; }
 
 		[Outlet]
-		UIKit.UIButton btnAddNewCard { get; set; }
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnAddNewCard { get; set; }
 
 		[Outlet]
-		UIKit.UIButton btnRetry { get; set; }
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnRetry { get; set; }
 
 		[Outlet]
 		UIKit.UILabel DateOfTransaction { get; set; }
@@ -38,19 +38,19 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
 		
 		void ReleaseDesignerOutlets ()
 		{
-			if (AmountDue != null) {
-				AmountDue.Dispose ();
-				AmountDue = null;
+			if (lblTransactionId != null) {
+				lblTransactionId.Dispose ();
+				lblTransactionId = null;
 			}
 
-			if (btnAddNewCard != null) {
-				btnAddNewCard.Dispose ();
-				btnAddNewCard = null;
+			if (TransactionId != null) {
+				TransactionId.Dispose ();
+				TransactionId = null;
 			}
 
-			if (btnRetry != null) {
-				btnRetry.Dispose ();
-				btnRetry = null;
+			if (lblDate != null) {
+				lblDate.Dispose ();
+				lblDate = null;
 			}
 
 			if (DateOfTransaction != null) {
@@ -63,19 +63,19 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
 				lblAmountDue = null;
 			}
 
-			if (lblDate != null) {
-				lblDate.Dispose ();
-				lblDate = null;
+			if (AmountDue != null) {
+				AmountDue.Dispose ();
+				AmountDue = null;
 			}
 
-			if (lblTransactionId != null) {
-				lblTransactionId.Dispose ();
-				lblTransactionId = null;
+			if (btnRetry != null) {
+				btnRetry.Dispose ();
+				btnRetry = null;
 			}
 
-			if (TransactionId != null) {
-				TransactionId.Dispose ();
-				TransactionId = null;
+			if (btnAddNewCard != null) {
+				btnAddNewCard.Dispose ();
+				btnAddNewCard = null;
 			}
 		}
 	}

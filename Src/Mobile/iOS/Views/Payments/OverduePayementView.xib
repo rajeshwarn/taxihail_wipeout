@@ -6,15 +6,15 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="OverduePayementView">
             <connections>
-                <outlet property="AmountDue" destination="7Oc-RR-yxa" id="CEq-Ot-q3y"/>
-                <outlet property="DateOfTransaction" destination="o91-o0-rgs" id="cpZ-pC-ZL9"/>
-                <outlet property="TransactionId" destination="vOh-F1-i8X" id="pbg-Tg-q1s"/>
-                <outlet property="btnAddNewCard" destination="lTp-MB-rfG" id="vNi-Ne-3dO"/>
-                <outlet property="btnRetry" destination="k3L-Hg-fEU" id="zQq-OW-DnG"/>
-                <outlet property="lblAmountDue" destination="RDI-Py-cRU" id="ap9-l6-xj2"/>
-                <outlet property="lblDate" destination="3fb-DF-0mX" id="Xre-pw-6q0"/>
-                <outlet property="lblTransactionId" destination="ojW-w8-dIt" id="W3c-Qb-H1m"/>
-                <outlet property="view" destination="iN0-l3-epB" id="kCW-yf-GMq"/>
+                <outlet property="AmountDue" destination="7Oc-RR-yxa" id="hwJ-Pj-nYg"/>
+                <outlet property="DateOfTransaction" destination="o91-o0-rgs" id="xX5-M1-hcA"/>
+                <outlet property="TransactionId" destination="vOh-F1-i8X" id="Rik-R9-DPV"/>
+                <outlet property="btnAddNewCard" destination="lTp-MB-rfG" id="nZ3-5y-GI1"/>
+                <outlet property="btnRetry" destination="k3L-Hg-fEU" id="9EJ-8u-FpF"/>
+                <outlet property="lblAmountDue" destination="RDI-Py-cRU" id="qyY-wG-6LH"/>
+                <outlet property="lblDate" destination="3fb-DF-0mX" id="vgn-Dj-wfD"/>
+                <outlet property="lblTransactionId" destination="ojW-w8-dIt" id="65a-gI-xLe"/>
+                <outlet property="view" destination="iN0-l3-epB" id="oXA-Fy-8RB"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -22,50 +22,56 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <label autoresizesSubviews="NO" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Transaction Id" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ojW-w8-dIt" userLabel="lblTransactionNo">
-                    <rect key="frame" x="106" y="44" width="108" height="21"/>
+                <label autoresizesSubviews="NO" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" text="Transaction Id" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ojW-w8-dIt" userLabel="lblTransactionId">
+                    <rect key="frame" x="106" y="50" width="108" height="21"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vOh-F1-i8X" userLabel="TransactionNo">
-                    <rect key="frame" x="139" y="73" width="42" height="21"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vOh-F1-i8X" userLabel="TransactionId">
+                    <rect key="frame" x="139" y="91" width="42" height="21"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Transaction date" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3fb-DF-0mX" userLabel="lblDate">
-                    <rect key="frame" x="96" y="111" width="128" height="21"/>
+                    <rect key="frame" x="96" y="132" width="128" height="21"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="o91-o0-rgs" userLabel="Date">
-                    <rect key="frame" x="139" y="140" width="42" height="21"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="o91-o0-rgs" userLabel="DateOfTransaction">
+                    <rect key="frame" x="139" y="173" width="42" height="21"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Amount due" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RDI-Py-cRU" userLabel="lblAmountDue">
-                    <rect key="frame" x="113" y="178" width="94" height="21"/>
+                    <rect key="frame" x="113" y="214" width="94" height="21"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7Oc-RR-yxa" userLabel="AmountDue">
-                    <rect key="frame" x="139" y="207" width="42" height="20"/>
+                    <rect key="frame" x="139" y="255" width="42" height="20"/>
                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="k3L-Hg-fEU" userLabel="btnRetry">
-                    <rect key="frame" x="8" y="293" width="302" height="30"/>
+                <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="249" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="k3L-Hg-fEU" userLabel="btnRetry" customClass="FlatButton">
+                    <rect key="frame" x="8" y="313" width="302" height="41"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="41" id="JYA-pz-rBD"/>
+                    </constraints>
                     <state key="normal" title="Retry">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                 </button>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lTp-MB-rfG" userLabel="btnAddNewCard">
-                    <rect key="frame" x="8" y="364" width="302" height="31"/>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lTp-MB-rfG" userLabel="btnAddNewCard" customClass="FlatButton">
+                    <rect key="frame" x="8" y="395" width="302" height="41"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="41" id="o42-ke-Uvx"/>
+                    </constraints>
                     <state key="normal" title="AddNewCard">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
@@ -73,25 +79,24 @@
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstAttribute="centerX" secondItem="RDI-Py-cRU" secondAttribute="centerX" id="0zc-io-6Ww"/>
-                <constraint firstAttribute="trailing" secondItem="lTp-MB-rfG" secondAttribute="trailing" constant="10" id="96l-Jq-pKY"/>
-                <constraint firstAttribute="centerX" secondItem="ojW-w8-dIt" secondAttribute="centerX" id="Hnv-SS-6TZ"/>
-                <constraint firstAttribute="centerX" secondItem="7Oc-RR-yxa" secondAttribute="centerX" id="Jk0-q2-o3L"/>
-                <constraint firstItem="k3L-Hg-fEU" firstAttribute="top" secondItem="7Oc-RR-yxa" secondAttribute="bottom" constant="66" id="Q7k-77-GpA"/>
-                <constraint firstItem="lTp-MB-rfG" firstAttribute="top" secondItem="k3L-Hg-fEU" secondAttribute="bottom" constant="41" id="T0L-SG-R4J"/>
-                <constraint firstItem="7Oc-RR-yxa" firstAttribute="top" secondItem="RDI-Py-cRU" secondAttribute="bottom" constant="8" id="TWW-EZ-0PC"/>
-                <constraint firstItem="lTp-MB-rfG" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="8" id="bid-ms-x9N"/>
-                <constraint firstItem="RDI-Py-cRU" firstAttribute="top" secondItem="o91-o0-rgs" secondAttribute="bottom" constant="17" id="deC-xP-Qd8"/>
-                <constraint firstAttribute="centerX" secondItem="3fb-DF-0mX" secondAttribute="centerX" id="duR-SM-GGY"/>
-                <constraint firstItem="o91-o0-rgs" firstAttribute="top" secondItem="3fb-DF-0mX" secondAttribute="bottom" constant="8" id="hBi-QD-6UC"/>
-                <constraint firstItem="ojW-w8-dIt" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="44" id="hk8-ho-ASK"/>
-                <constraint firstItem="3fb-DF-0mX" firstAttribute="top" secondItem="vOh-F1-i8X" secondAttribute="bottom" constant="17" id="jMN-Ez-1Vr"/>
-                <constraint firstAttribute="centerX" secondItem="vOh-F1-i8X" secondAttribute="centerX" id="lnD-L1-bZG"/>
-                <constraint firstAttribute="trailing" secondItem="k3L-Hg-fEU" secondAttribute="trailing" constant="10" id="nTc-Ve-6pG"/>
-                <constraint firstItem="vOh-F1-i8X" firstAttribute="top" secondItem="ojW-w8-dIt" secondAttribute="bottom" constant="8" id="o6T-gU-0UI"/>
-                <constraint firstAttribute="bottom" secondItem="lTp-MB-rfG" secondAttribute="bottom" constant="173" id="sri-cR-tdx"/>
-                <constraint firstItem="k3L-Hg-fEU" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="8" id="teW-eq-a0b"/>
-                <constraint firstAttribute="centerX" secondItem="o91-o0-rgs" secondAttribute="centerX" id="ui4-V8-jh2"/>
+                <constraint firstItem="o91-o0-rgs" firstAttribute="top" secondItem="3fb-DF-0mX" secondAttribute="bottom" constant="20" id="CZb-us-Ukv"/>
+                <constraint firstItem="k3L-Hg-fEU" firstAttribute="top" secondItem="7Oc-RR-yxa" secondAttribute="bottom" constant="38" id="Ihr-73-PgO"/>
+                <constraint firstAttribute="centerX" secondItem="vOh-F1-i8X" secondAttribute="centerX" id="JnP-JQ-lhZ"/>
+                <constraint firstItem="vOh-F1-i8X" firstAttribute="top" secondItem="ojW-w8-dIt" secondAttribute="bottom" constant="20" id="MDR-L5-wPZ"/>
+                <constraint firstItem="k3L-Hg-fEU" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="8" id="Ott-m5-2P1"/>
+                <constraint firstAttribute="centerX" secondItem="7Oc-RR-yxa" secondAttribute="centerX" id="Pee-qf-CJ6"/>
+                <constraint firstItem="lTp-MB-rfG" firstAttribute="top" secondItem="k3L-Hg-fEU" secondAttribute="bottom" constant="41" id="UAU-48-v6e"/>
+                <constraint firstItem="RDI-Py-cRU" firstAttribute="top" secondItem="o91-o0-rgs" secondAttribute="bottom" constant="20" id="VH2-Vr-qDw"/>
+                <constraint firstAttribute="trailing" secondItem="lTp-MB-rfG" secondAttribute="trailing" constant="10" id="W6x-bY-rpN"/>
+                <constraint firstAttribute="centerX" secondItem="RDI-Py-cRU" secondAttribute="centerX" id="YDv-AY-01R"/>
+                <constraint firstItem="3fb-DF-0mX" firstAttribute="top" secondItem="vOh-F1-i8X" secondAttribute="bottom" constant="20" id="YFf-dQ-Mk5"/>
+                <constraint firstAttribute="centerX" secondItem="3fb-DF-0mX" secondAttribute="centerX" id="ZIy-XE-K44"/>
+                <constraint firstAttribute="centerX" secondItem="o91-o0-rgs" secondAttribute="centerX" id="eVg-QA-gXu"/>
+                <constraint firstItem="7Oc-RR-yxa" firstAttribute="top" secondItem="RDI-Py-cRU" secondAttribute="bottom" constant="20" id="px1-AT-4iY"/>
+                <constraint firstAttribute="centerX" secondItem="ojW-w8-dIt" secondAttribute="centerX" id="qbH-5e-fPf"/>
+                <constraint firstItem="lTp-MB-rfG" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="8" id="qn6-CH-vMK"/>
+                <constraint firstAttribute="trailing" secondItem="k3L-Hg-fEU" secondAttribute="trailing" constant="10" id="rmP-HQ-Nvy"/>
+                <constraint firstItem="ojW-w8-dIt" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="50" id="uLu-37-yl3"/>
             </constraints>
         </view>
     </objects>
