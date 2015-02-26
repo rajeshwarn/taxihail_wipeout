@@ -9,19 +9,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 {
 	public class OverduePaymentViewModel : PageViewModel
 	{
-		private IAccountService _accountService;
+		private IPaymentService _paymentService;
 
 		private OverduePayment _overduePayment;
 
-		public OverduePaymentViewModel(IAccountService accountService)
+		public OverduePaymentViewModel(IPaymentService accountService)
 		{
-			_accountService = accountService;
+			_paymentService = accountService;
 		}
 
 		public void Init(string overduePayement)
 		{
 			OverduePayment = JsonSerializer.DeserializeFromString<OverduePayment>(overduePayement);
-
 		}
 
 		public override void OnViewStarted(bool firstTime)
@@ -45,7 +44,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			}
 		}
 
-		private decimal AmountDue
+		public decimal AmountDue
 		{
 			get
 			{
@@ -59,9 +58,20 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 		{
 			get
 			{
-				return this.GetCommand(() => 
+				return this.GetCommand(async () => 
 				{ 
+					var overduePaymentResult = await _paymentService.SettleOverduePayment();
 					
+					if(overduePaymentResult.IsSuccessful)
+					{
+						ShowViewModelAndRemoveFromHistory<CreditCardAddViewModel>(null);
+					}
+					else
+					{
+						var title = "Error settling overdue payment.";
+						var message = "Your credit transaction was denied, please try again later or replace your credit card with a new one.";
+						await this.Services().Message.ShowMessage(title, message);
+					}
 				});
 			}
 		}
