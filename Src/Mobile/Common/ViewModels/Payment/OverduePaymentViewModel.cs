@@ -20,7 +20,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
 		public void Init(string overduePayement)
 		{
-			OverduePayment = JsonSerializer.SerializeToString<OverduePayment>(overduePayement);
+			OverduePayment = JsonSerializer.DeserializeFromString<OverduePayment>(overduePayement);
+
 		}
 
 		public override void OnViewStarted(bool firstTime)
