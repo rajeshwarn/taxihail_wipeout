@@ -1692,4 +1692,7 @@
   <data name="Overdue_AddNewCard" xml:space="preserve">
   	<value>Add a new card</value>
   </data>
+  <data name="Overdue_View" xml:space="preserve">
+  	<value>Overdue Payement</value>
+  </data>
 </root>

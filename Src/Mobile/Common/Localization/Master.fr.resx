@@ -1753,4 +1753,7 @@
   <data name="Overdue_AddNewCard" xml:space="preserve">
   	<value>Ajouter une nouvelle carte</value>
   </data>
+  <data name="Overdue_View" xml:space="preserve">
+  	<value>Compte en souffrance</value>
+  </data>
 </root>

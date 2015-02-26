@@ -583,3 +583,4 @@
 "Overdue_Date"="Date de transaction";
 "Overdue_Retry"="Réessayer";
 "Overdue_Amount"="montant dû";
+"Overdue_View"="Compte en souffrance";
