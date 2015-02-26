@@ -466,6 +466,11 @@ namespace apcurium.MK.Booking.Services.Impl
             }
         }
 
+        public SettleOverduePaymentResponse SettleOverduePayment(Guid orderId, string transactionId, decimal overdueAmount)
+        {
+            throw new NotImplementedException();
+        }
+
         public bool TestCredentials(PayPalClientCredentials payPalClientSettings, PayPalServerCredentials payPalServerSettings, bool isSandbox)
         {
             try

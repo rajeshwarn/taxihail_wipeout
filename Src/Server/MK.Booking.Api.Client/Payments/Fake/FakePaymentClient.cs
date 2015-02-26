@@ -28,5 +28,14 @@ namespace apcurium.MK.Booking.Api.Client.Payments.Fake
                 Message = "Success"
             });
         }
+
+        public Task<SettleOverduePaymentResponse> SettleOverduePayment()
+        {
+            return Task.FromResult(new SettleOverduePaymentResponse
+            {
+                IsSuccessful = true,
+                Message = "Success"
+            });
+        }
     }
 }

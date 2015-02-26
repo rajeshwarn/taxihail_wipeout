@@ -191,6 +191,11 @@ namespace apcurium.MK.Booking.Services.Impl
                 orderStatus.IBSOrderId.Value, ref message);
         }
 
+        public SettleOverduePaymentResponse SettleOverduePayment(Guid orderId, string transactionId, decimal overdueAmount)
+        {
+            throw new NotImplementedException();
+        }
+
         private void Void(string fleetToken, string deviceId, long transactionId, int driverId, int tripId, ref string message)
         {
             var reverseRequest = new ReverseRequest

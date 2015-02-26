@@ -45,5 +45,10 @@ namespace apcurium.MK.Booking.Api.Client.Payments.Braintree
                 CardToken = cardToken,
             });
         }
+
+        public Task<SettleOverduePaymentResponse> SettleOverduePayment()
+        {
+            return Client.PostAsync(new SettleOverduePaymentRequest());
+        }
     }
 }

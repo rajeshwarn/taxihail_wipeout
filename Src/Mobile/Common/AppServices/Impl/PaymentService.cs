@@ -94,6 +94,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			return await GetClient().ForgetTokenizedCard(cardToken);
         }
 
+        public async Task<SettleOverduePaymentResponse> SettleOverduePayment()
+        {
+            return await GetClient().SettleOverduePayment();
+        }
+
         public async Task<BasePaymentResponse> Unpair(Guid orderId)
         {
             return await new PairingServiceClient(_baseUrl, _sessionId, _packageInfo)
