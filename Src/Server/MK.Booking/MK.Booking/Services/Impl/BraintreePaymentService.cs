@@ -117,11 +117,6 @@ namespace apcurium.MK.Booking.Services.Impl
             Void(transactionId, ref message);
         }
 
-        public SettleOverduePaymentResponse SettleOverduePayment(Guid orderId, string transactionId, decimal overdueAmount)
-        {
-            throw new NotImplementedException();
-        }
-
         private void Void(string transactionId, ref string message)
         {
             //see paragraph oops here https://www.braintreepayments.com/docs/dotnet/transactions/submit_for_settlement

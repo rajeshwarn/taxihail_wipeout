@@ -6,7 +6,9 @@ using Infrastructure.Messaging.Handling;
 
 namespace apcurium.MK.Booking.EventHandlers
 {
-    public class OverduePaymentDetailGenerator : IEventHandler<OverduePaymentLogged>
+    public class OverduePaymentDetailGenerator
+        : IEventHandler<OverduePaymentLogged>,
+        IEventHandler<OverduePaymentSettled>
     {
         private readonly Func<BookingDbContext> _contextFactory;
 
@@ -40,6 +42,16 @@ namespace apcurium.MK.Booking.EventHandlers
                     overduePayment.TransactionDate = @event.TransactionDate;
                     context.Save(overduePayment);
                 }
+            }
+        }
+
+        public void Handle(OverduePaymentSettled @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var overduePayment = context.Find<OverduePaymentDetail>(@event.OrderId);
+                overduePayment.IsPaid = true;
+                context.Save(overduePayment);
             }
         }
     }

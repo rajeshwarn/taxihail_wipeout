@@ -23,7 +23,5 @@ namespace apcurium.MK.Booking.Services
         void VoidPreAuthorization(Guid orderId);
 
         void VoidTransaction(Guid orderId, string transactionId, ref string message);
-
-        SettleOverduePaymentResponse SettleOverduePayment(Guid orderId, string transactionId, decimal overdueAmount);
     }
 }

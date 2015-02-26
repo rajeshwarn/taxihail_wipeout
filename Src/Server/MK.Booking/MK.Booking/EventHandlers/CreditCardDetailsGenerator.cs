@@ -18,7 +18,8 @@ namespace apcurium.MK.Booking.EventHandlers
         IEventHandler<CreditCardAddedOrUpdated>,
         IEventHandler<CreditCardRemoved>,
         IEventHandler<AllCreditCardsRemoved>,
-        IEventHandler<CreditCardDeactivated>
+        IEventHandler<CreditCardDeactivated>,
+        IEventHandler<OverduePaymentSettled>
     {
         private readonly Func<BookingDbContext> _contextFactory;
 
@@ -73,6 +74,20 @@ namespace apcurium.MK.Booking.EventHandlers
                 if (creditCardDetails != null)
                 {
                     creditCardDetails.IsDeactivated = true;
+                    context.Save(creditCardDetails);
+                }
+            }
+        }
+
+        public void Handle(OverduePaymentSettled @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                // Re-activate credit card
+                var creditCardDetails = context.Query<CreditCardDetails>().FirstOrDefault(c => c.AccountId == @event.SourceId);
+                if (creditCardDetails != null)
+                {
+                    creditCardDetails.IsDeactivated = false;
                     context.Save(creditCardDetails);
                 }
             }

@@ -159,16 +159,6 @@ namespace apcurium.MK.Booking.Services
             }
         }
 
-        public SettleOverduePaymentResponse SettleOverduePayment(Guid orderId, string transactionId, decimal overdueAmount)
-        {
-            if (IsPayPal(orderId: orderId))
-            {
-                return _payPalServiceFactory.GetInstance().SettleOverduePayment(orderId, transactionId, overdueAmount);
-            }
-
-            return GetInstance().SettleOverduePayment(orderId, transactionId, overdueAmount);
-        }
-
         private IPaymentService GetInstance()
         {
             var serverSettings = _container.Resolve<IServerSettings>();

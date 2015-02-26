@@ -77,6 +77,7 @@
     <Compile Include="OrderTimedOut.cs" />
     <Compile Include="OrderUnpairedForPayment.cs" />
     <Compile Include="OverduePaymentLogged.cs" />
+    <Compile Include="OverduePaymentSettled.cs" />
     <Compile Include="PaymentModeChanged.cs" />
     <Compile Include="PaymentSettingUpdated.cs" />
     <Compile Include="DeviceUnregisteredForPushNotifications.cs" />

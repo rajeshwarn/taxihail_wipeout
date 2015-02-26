@@ -123,11 +123,6 @@ namespace apcurium.MK.Booking.Services.Impl
             Void(orderId, transactionId, ref message);
         }
 
-        public SettleOverduePaymentResponse SettleOverduePayment(Guid orderId, string transactionId, decimal overdueAmount)
-        {
-            throw new NotImplementedException();
-        }
-
         private void Void(Guid orderId, string transactionId, ref string message)
         {
             var monerisSettings = _serverSettings.GetPaymentSettings().MonerisPaymentSettings;

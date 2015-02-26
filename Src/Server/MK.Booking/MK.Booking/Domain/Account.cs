@@ -50,6 +50,7 @@ namespace apcurium.MK.Booking.Domain
             Handles<PayPalAccountUnlinked>(NoAction);
             Handles<CreditCardDeactivated>(NoAction);
             Handles<OverduePaymentLogged>(NoAction);
+            Handles<OverduePaymentSettled>(NoAction);
         }
 
         public Account(Guid id, IEnumerable<IVersionedEvent> history)
@@ -373,6 +374,14 @@ namespace apcurium.MK.Booking.Domain
                 Amount = amount,
                 TransactionId = transactionId,
                 TransactionDate = transactionDate
+            });
+        }
+
+        public void SettleOverduePayment(Guid orderId)
+        {
+            Update(new OverduePaymentSettled
+            {
+                OrderId = orderId
             });
         }
     }
