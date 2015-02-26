@@ -26,6 +26,7 @@
         android:layout_marginBottom="4dp"
         style="@style/BlackTextLabel" />
     <TextView
+        local:MvxBind="Text TransactionNumber"
         android:text="Text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
