@@ -5,11 +5,11 @@ using apcurium.MK.Booking.Mobile.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 {
-	public class OverduePayementViewModel : PageViewModel
+	public class OverduePaymentViewModel : PageViewModel
 	{
 		private IAccountService _accountService;
 
-		public OverduePayementViewModel(IAccountService accountService)
+		public OverduePaymentViewModel(IAccountService accountService)
 		{
 			_accountService = accountService;
 
