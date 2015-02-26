@@ -93,6 +93,7 @@
     <Compile Include="Resources\ErrorCode.cs" />
     <Compile Include="Resources\NetworkFleet.cs" />
     <Compile Include="Resources\Order.cs" />
+    <BundleResource Include="Resources\Payments\OverduePayment.cs" />
     <Compile Include="Resources\ReferenceData.cs" />
     <Compile Include="Requests\AccountOrderListRequest.cs" />
     <Compile Include="Requests\AddressHistoryRequest.cs" />

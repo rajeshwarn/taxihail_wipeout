@@ -717,6 +717,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             await UseServiceClientAsync<IAccountServiceClient>(client => client.UpdateUserTaxiHailNetworkSettings(request));
         }
 
+        public Task<OverduePayment> GetOverduePayment()
+        {
+            return UseServiceClientAsync<IAccountServiceClient, OverduePayment>(service => service.GetOverduePayment());
+        }
+
 		public async void LogApplicationStartUp()
 		{
 			try

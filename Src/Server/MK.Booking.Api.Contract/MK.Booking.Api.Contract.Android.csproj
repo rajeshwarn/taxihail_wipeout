@@ -101,6 +101,7 @@
     <Compile Include="Resources\NetworkFleet.cs" />
     <Compile Include="Resources\Order.cs" />
     <Compile Include="Resources\OrderRatings.cs" />
+    <Compile Include="Resources\Payments\OverduePayment.cs" />
     <Compile Include="Resources\Payments\PaymentSettingsResponse.cs" />
     <Compile Include="Resources\Payments\TokenizedCreditCardResponse.cs" />
     <Compile Include="Resources\ReferenceData.cs" />
