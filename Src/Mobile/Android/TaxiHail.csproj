@@ -606,6 +606,7 @@
     <Compile Include="Bootstrap\PhoneCallPluginBootstrap.cs" />
     <Compile Include="Bootstrap\WebBrowserPluginBootstrap.cs" />
     <AndroidResource Include="Resources\Layout\View_RemitPayment.axml" />
+    <Compile Include="Activities\Setting\RemitPaymentActivity.cs" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\View_Login.axml">

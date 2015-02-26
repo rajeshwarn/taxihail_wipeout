@@ -70,7 +70,7 @@
         android:layout_marginBottom="4dp" />
     <Button
         local:MvxBind="Click AddNewCard"
-        android:text="@string/@string/Overdue_AddNewCard"
+        android:text="@string/Overdue_AddNewCard"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 </LinearLayout>
