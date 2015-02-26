@@ -577,4 +577,10 @@
   <string name="Unpair">Pagar en el vehículo</string>
   <string name="UnpairErrorMessage">Hubo un error desincronizando, por favor intente nuevamente</string>
   <string name="UnpairPayInCar">Pagar en el vehículo</string>
+  <string name="Overdue_View">Overdue Payement</string>
+  <string name="Overdue_TransactionId">Transaction Id</string>
+  <string name="Overdue_AddNewCard">Add a new card</string>
+  <string name="Overdue_Date">Transaction date</string>
+  <string name="Overdue_Retry">Retry</string>
+  <string name="Overdue_Amount">Amount due</string>
 </resources>
