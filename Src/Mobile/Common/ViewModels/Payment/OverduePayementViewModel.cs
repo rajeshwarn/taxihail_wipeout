@@ -45,7 +45,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			{
 				return this.GetCommand(() => 
 				{ 
-					var s = Amount;
+					
 				});
 			}
 		}
@@ -56,7 +56,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			{
 				return this.GetCommand(() => 
 				{
-					var s = Amount;
+					ShowViewModel<CreditCardAddViewModel>(new { showInstructions = true });
 				});
 			}
 		}
