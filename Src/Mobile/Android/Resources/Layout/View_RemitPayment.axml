@@ -26,7 +26,7 @@
         android:layout_marginBottom="4dp"
         style="@style/BlackTextLabel" />
     <TextView
-        local:MvxBind="Text TransactionNumber"
+        local:MvxBind="Text OverduePayment.TransactionId"
         android:text="Text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -41,7 +41,7 @@
         android:layout_marginBottom="4dp"
         style="@style/BlackTextLabel" />
     <TextView
-        local:MvxBind="Text DateOfTransaction"
+        local:MvxBind="Text OverduePayment.TransactionDate"
         android:text="Text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -55,7 +55,7 @@
         android:gravity="center_horizontal"
         android:layout_marginBottom="4dp" />
     <TextView
-        local:MvxBind="Text Amount"
+        local:MvxBind="Text OverduePayment.OverdueAmount"
         android:text="Text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

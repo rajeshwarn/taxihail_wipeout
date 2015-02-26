@@ -11,6 +11,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 	{
 		private IAccountService _accountService;
 
+		private OverduePayment _overduePayment;
+
 		public OverduePaymentViewModel(IAccountService accountService)
 		{
 			_accountService = accountService;
@@ -18,7 +20,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
 		public void Init(string overduePayement)
 		{
-			var entity = JsonSerializer.SerializeToString<OverduePayment>(overduePayement);
+			OverduePayment = JsonSerializer.SerializeToString<OverduePayment>(overduePayement);
 		}
 
 		public override void OnViewStarted(bool firstTime)
@@ -26,23 +28,30 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			base.OnViewStarted(firstTime);
 
 		}
-			
-		public string TransactionNumber
+
+		public OverduePayment OverduePayment
 		{
-			get { return "AVX1212121"; }
-			set { }
+			get
+			{
+				return _overduePayment;
+			}
+			set
+			{
+				_overduePayment = value;
+
+				RaisePropertyChanged();
+				RaisePropertyChanged(() => AmountDue);
+			}
 		}
 
-		public DateTime DateOfTransaction
+		private decimal AmountDue
 		{
-			get;
-			set;
-		}
-
-		public double Amount
-		{
-			get { return 0.0;}
-			set { }
+			get
+			{
+				return _overduePayment != null
+					? _overduePayment.OverdueAmount
+					: 0;
+			}
 		}
 
 		public ICommand Retry
