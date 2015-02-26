@@ -2,6 +2,8 @@
 using apcurium.MK.Booking.Mobile.AppServices;
 using System.Windows.Input;
 using apcurium.MK.Booking.Mobile.Extensions;
+using ServiceStack.Text;
+using apcurium.MK.Booking.Api.Contract.Resources.Payments;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 {
@@ -12,7 +14,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 		public OverduePaymentViewModel(IAccountService accountService)
 		{
 			_accountService = accountService;
+		}
 
+		public void Init(string overduePayement)
+		{
+			var entity = JsonSerializer.SerializeToString<OverduePayment>(overduePayement);
 		}
 
 		public override void OnViewStarted(bool firstTime)
