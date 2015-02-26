@@ -9,8 +9,8 @@ using System.CodeDom.Compiler;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
 {
-	[Register ("OverduePayementView")]
-	partial class OverduePayementView
+	[Register ("OverduePaymentView")]
+	partial class OverduePaymentView
 	{
 		[Outlet]
 		UIKit.UILabel AmountDue { get; set; }

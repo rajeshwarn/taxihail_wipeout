@@ -11,10 +11,10 @@ using apcurium.MK.Booking.Mobile.Client.Localization;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
 {
-	public partial class OverduePayementView : BaseViewController<OverduePayementViewModel>
+	public partial class OverduePaymentView : BaseViewController<OverduePaymentViewModel>
 	{
-		public OverduePayementView()
-			: base("OverduePayementView", null)
+		public OverduePaymentView()
+			: base("OverduePaymentView", null)
 		{
 		}
 
@@ -43,16 +43,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
 			FlatButtonStyle.Silver.ApplyTo(btnRetry);
 			FlatButtonStyle.Silver.ApplyTo(btnAddNewCard);
 
-			var set = this.CreateBindingSet<OverduePayementView, OverduePayementViewModel>();
+			var set = this.CreateBindingSet<OverduePaymentView, OverduePaymentViewModel>();
 
 			set.Bind(TransactionId)
-				.To(vm => vm.TransactionNumber);
+				.To(vm => vm.OverduePayment.TransactionId);
 
 			set.Bind(DateOfTransaction)
-				.To(vm => vm.DateOfTransaction);
+				.To(vm => vm.OverduePayment.TransactionDate);
 
 			set.Bind(AmountDue)
-				.To(vm => vm.Amount);
+				.To(vm => vm.AmountDue);
 
 			set.Bind(btnRetry)
 				.For(v => v.Command)
