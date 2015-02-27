@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.AppServices;
@@ -454,7 +455,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
                 return;
             }
 
-            var success = false;
             using (this.Services().Message.ShowProgress())
             {
                 Data.Last4Digits = new string(Data.CardNumber.Reverse().Take(4).Reverse().ToArray());
@@ -464,29 +464,56 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
                     Data.CreditCardId = Guid.NewGuid();
                 }
 
-				success = await _accountService.AddOrUpdateCreditCard(Data, IsEditing);
+                var success = await _accountService.AddOrUpdateCreditCard(Data, IsEditing);
 
-				if (success)
-				{
-					UnlinkPayPalAccount(true);
+                if (success)
+                {
+                    UnlinkPayPalAccount(true);
 
-					this.Services().Analytics.LogEvent("AddCOF");
-					Data.CardNumber = null;
-					Data.CCV = null;
+                    this.Services().Analytics.LogEvent("AddCOF");
+                    Data.CardNumber = null;
+                    Data.CCV = null;
 
-					this.Services().Message.ShowMessage(
-						string.Empty,
-						this.Services().Localize["CreditCardAdded"],
-						() => ShowViewModelAndRemoveFromHistory<HomeViewModel>(new { locateUser = bool.TrueString }));
-				}
-				else
-				{
-					this.Services().Message.ShowMessage(this.Services().Localize["CreditCardErrorTitle"], this.Services().Localize["CreditCardErrorInvalid"]);
-				}
+                        
+
+                    await this.Services().Message.ShowMessage(string.Empty, this.Services().Localize["CreditCardAdded"]);
+
+                    await CheckAndSettleOverduePayment().HandleErrors();
+
+                    ShowViewModelAndClearHistory<HomeViewModel>(new { locateUser = bool.TrueString });
+
+                }
+                else
+                {
+                    await this.Services().Message.ShowMessage(this.Services().Localize["CreditCardErrorTitle"], this.Services().Localize["CreditCardErrorInvalid"]);
+                }
             }
 	    }
 
-        private bool IsValid(string cardNumber)
+	    private async Task CheckAndSettleOverduePayment()
+	    {
+	        var overduePayment = await _accountService.GetOverduePayment();
+
+	        if (overduePayment == null)
+	        {
+                //There is no overdue payment.
+	            return;
+	        }
+
+            var settleOverduePayment = await _paymentService.SettleOverduePayment();
+
+	        if (settleOverduePayment.IsSuccessful)
+	        {
+                var message = string.Format(this.Services().Localize["Overdue_Succeed_Message"], overduePayment.OverdueAmount);
+                await this.Services().Message.ShowMessage(this.Services().Localize["Overdue_Succeed_Title"], message);
+	        }
+	        else
+	        {
+                await this.Services().Message.ShowMessage(this.Services().Localize["Overdue_Failed_Title"], this.Services().Localize["Overdue_Failed_Message"]);
+	        }
+	    }
+
+	    private bool IsValid(string cardNumber)
         {
             var number = new byte[16]; // number to validate
             
