@@ -4,73 +4,89 @@
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/top_bar_color"
-        android:orientation="horizontal"
-        android:layout_marginBottom="12dp">
-        <TextView
-            android:text="@string/Overdue_View"
-            android:layout_gravity="center"
-            android:layout_width="fill_parent"
-            android:layout_height="@dimen/top_bar_title_height"
-            android:gravity="center"
-            style="@style/TopTitleText" />
-    </LinearLayout>
-    <TextView
-        android:text="@string/Overdue_TransactionId"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:layout_marginBottom="4dp"
-        style="@style/BlackTextLabel" />
-    <TextView
-        local:MvxBind="Text OverduePayment.TransactionId"
-        android:text="Text"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:layout_marginBottom="4dp"
-        style="@style/BlackTextLabel" />
-    <TextView
-        android:text="@string/Overdue_Date"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:layout_marginBottom="4dp"
-        style="@style/BlackTextLabel" />
-    <TextView
-        local:MvxBind="Text OverduePayment.TransactionDate"
-        android:text="Text"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:layout_marginBottom="4dp"
-        style="@style/BlackTextLabel" />
-    <TextView
-        android:text="@string/Overdue_Amount"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:layout_marginBottom="4dp" />
-    <TextView
-        local:MvxBind="Text OverduePayment.OverdueAmount"
-        android:text="Text"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:layout_marginBottom="4dp"
-        style="@style/BlackTextLabel" />
-    <Button
-        local:MvxBind="Click Retry"
-        android:text="@string/Overdue_Retry"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="4dp" />
-    <Button
-        local:MvxBind="Click AddNewCard"
-        android:text="@string/Overdue_AddNewCard"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="match_parent"
+        android:scrollbars="vertical">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/top_bar_color"
+                android:layout_marginBottom="50dip">
+                <TextView
+                    android:text="@string/Overdue_View"
+                    android:layout_gravity="center"
+                    android:layout_width="fill_parent"
+                    android:layout_height="@dimen/top_bar_title_height"
+                    android:gravity="center"
+                    style="@style/TopTitleText" />
+            </LinearLayout>
+            <TextView
+                android:text="@string/Overdue_TransactionId"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:layout_marginBottom="10dip"
+                style="@style/BlackTextLabel" />
+            <TextView
+                local:MvxBind="Text OverduePayment.TransactionId"
+                android:text="Text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:layout_marginBottom="20dip"
+                style="@style/BlackTextLabel" />
+            <TextView
+                android:text="@string/Overdue_Date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:layout_marginBottom="10dip"
+                style="@style/BlackTextLabel" />
+            <TextView
+                local:MvxBind="Text OverduePayment.TransactionDate"
+                android:text="Text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:layout_marginBottom="20dip"
+                style="@style/BlackTextLabel" />
+            <TextView
+                android:text="@string/Overdue_Amount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:layout_marginBottom="10dip"
+                style="@style/BlackTextLabel" />
+            <TextView
+                local:MvxBind="Text OverduePayment.OverdueAmount"
+                android:text="Text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:layout_marginBottom="20dip"
+                style="@style/BlackTextLabel" />
+            <Button
+                local:MvxBind="Click Retry"
+                android:text="@string/Overdue_Retry"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/HeightButton"
+                android:layout_marginLeft="15dip"
+                android:layout_marginRight="15dip"
+                android:layout_marginBottom="20dip"
+                style="@style/ButtonActionGrayStyle" />
+            <Button
+                local:MvxBind="Click AddNewCard"
+                android:text="@string/Overdue_AddNewCard"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/HeightButton"
+                android:layout_marginLeft="15dip"
+                android:layout_marginRight="15dip"
+                style="@style/ButtonActionGrayStyle" />
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>
