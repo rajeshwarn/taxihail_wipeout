@@ -53,19 +53,26 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			get
 			{
 				return this.GetCommand(async () => 
-				{ 
-					var overduePaymentResult = await _paymentService.SettleOverduePayment();
+				{
+                    var localize = this.Services().Localize;
 
-				    var localize = this.Services().Localize;
-					
-					if(overduePaymentResult.IsSuccessful)
-					{
-						ShowViewModelAndRemoveFromHistory<CreditCardAddViewModel>(null);
-					}
-					else
-					{
-                        await this.Services().Message.ShowMessage(localize["Overdue_Failed_Title"], localize["Overdue_Failed_Message"]);
-					}
+				    using (this.Services().Message.ShowProgress())
+				    {
+                        var overduePaymentResult = await _paymentService.SettleOverduePayment();
+
+                        if (overduePaymentResult.IsSuccessful)
+                        {
+                            var message = string.Format(this.Services().Localize["Overdue_Succeed_Message"], _overduePayment.OverdueAmount);
+
+                            await this.Services().Message.ShowMessage(localize["Overdue_Succeed_Title"], message);
+
+                            Close(this);
+                        }
+                        else
+                        {
+                            await this.Services().Message.ShowMessage(localize["Overdue_Failed_Title"], localize["Overdue_Failed_Message"]);
+                        }
+				    }
 				});
 			}
 		}
