@@ -44,10 +44,9 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
         {
             var dispatcher = TinyIoCContainer.Current.Resolve<IMvxViewDispatcher>();
 
-            dispatcher.RequestMainThreadAction(() => AlertDialogHelper.Show(Context.Activity, title, message));
-
             var tcs = new TaskCompletionSource<object>();
-            tcs.TrySetResult(null);
+
+            dispatcher.RequestMainThreadAction(() => AlertDialogHelper.Show(Context.Activity, title, message, () => tcs.TrySetResult(null)));
 
             return tcs.Task;
         }
