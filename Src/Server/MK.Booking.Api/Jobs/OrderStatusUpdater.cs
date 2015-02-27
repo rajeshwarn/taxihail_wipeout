@@ -598,7 +598,6 @@ namespace apcurium.MK.Booking.Api.Jobs
 
                     if (paymentProviderServiceResponse.IsDeclined)
                     {
-                        // Unlikely, but hey
                         _commandBus.Send(new FlagDelinquentAccount
                         {
                             AccountId = account.Id,

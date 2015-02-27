@@ -82,10 +82,10 @@ namespace apcurium.MK.Booking.Services
             // we pass the orderId just in case it might exist but most of the time it won't since preauth is done before order creation
             if (IsPayPal(account.Id, orderId))
             {
-                return _payPalServiceFactory.GetInstance().PreAuthorize(account.Id, orderId, account.Email, amountToPreAuthorize);
+                return _payPalServiceFactory.GetInstance().PreAuthorize(account.Id, orderId, account.Email, amountToPreAuthorize, isReAuth);
             }
 
-            return GetInstance().PreAuthorize(orderId, account, amountToPreAuthorize);
+            return GetInstance().PreAuthorize(orderId, account, amountToPreAuthorize, isReAuth);
         }
 
         public CommitPreauthorizedPaymentResponse CommitPayment(Guid orderId, AccountDetail account, decimal preauthAmount, decimal amount, decimal meterAmount, decimal tipAmount, string transactionId)

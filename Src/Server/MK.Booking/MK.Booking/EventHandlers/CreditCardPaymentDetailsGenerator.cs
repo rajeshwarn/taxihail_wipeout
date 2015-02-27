@@ -10,6 +10,7 @@ using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
 using Infrastructure.Messaging.Handling;
+using RestSharp.Extensions;
 
 #endregion
 
@@ -46,6 +47,14 @@ namespace apcurium.MK.Booking.EventHandlers
                 payment.Meter = @event.Meter;
                 payment.Tax = @event.Tax;
                 payment.Tip = @event.Tip;
+
+                // Update payment details after settling an overdue payment
+                if (@event.NewCardToken.HasValue())
+                {
+                    payment.CardToken = @event.NewCardToken;
+                }
+                payment.IsCancelled = false;
+                payment.Error = string.Empty;
 
                 var order = context.Find<OrderDetail>(payment.OrderId);
                 if (!order.Fare.HasValue || order.Fare == 0)

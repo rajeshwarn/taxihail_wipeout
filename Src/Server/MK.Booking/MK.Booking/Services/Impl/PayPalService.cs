@@ -277,6 +277,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 };
             }
         }
+
         private PreAuthorizePaymentResponse ReAuthorizeIfNecessary(Guid accountId, Guid orderId, decimal preAuthAmount, decimal amount)
         {
             if (amount <= preAuthAmount)

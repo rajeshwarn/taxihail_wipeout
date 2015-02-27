@@ -189,18 +189,8 @@ namespace apcurium.MK.Booking.Services.Impl
             {
                 bool isSuccessful;
                 bool isCardDeclined = false;
-                var orderIdentifier = isReAuth ? string.Format("{0}-1", orderId) : orderId.ToString();
                 var creditCard = _creditCardDao.FindByAccountId(account.Id).First();
-
-                if (creditCard.IsDeactivated)
-                {
-                    // If card was deactivated, do not accept further payment with this card
-                    return new PreAuthorizePaymentResponse
-                    {
-                        IsDeclined = true, 
-                        Message = "Credit card was deactivated"
-                    };
-                }
+                var orderIdentifier = isReAuth ? string.Format("{0}-{1}", orderId, GenerateShortUid()) : orderId.ToString();
 
                 if (amountToPreAuthorize > 0)
                 {
@@ -295,9 +285,10 @@ namespace apcurium.MK.Booking.Services.Impl
                     return new CommitPreauthorizedPaymentResponse
                     {
                         IsSuccessful = false,
+                        IsDeclined = true,
                         TransactionId = commitTransactionId,
-                        Message = string.Format("Moneris Re-Auth of amount {0} failed.", amount),
-                        IsDeclined = true
+                        TransactionDate = authResponse.TransactionDate,
+                        Message = string.Format("Moneris Re-Auth of amount {0} failed.", amount)
                     };
                 }
 
@@ -385,6 +376,13 @@ namespace apcurium.MK.Booking.Services.Impl
             }
 
             return MonerisResponseCodes.GetDeclinedCodes().Contains(responseCode);
+        }
+
+        private string GenerateShortUid()
+        {
+            return Convert.ToBase64String(Guid.NewGuid().ToByteArray())
+                .Replace("=", string.Empty)
+                .Replace("+", string.Empty);
         }
     }
 }

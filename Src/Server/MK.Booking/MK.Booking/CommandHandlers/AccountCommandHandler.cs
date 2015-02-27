@@ -316,7 +316,7 @@ namespace apcurium.MK.Booking.CommandHandlers
         {
             var account = _repository.Find(command.AccountId);
 
-            account.SettleOverduePayment(command.AccountId);
+            account.SettleOverduePayment(command.OrderId);
 
             _repository.Save(account, command.Id.ToString());
         }
