@@ -22,6 +22,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
 		{
 			base.ViewDidLoad();
 
+			View.BackgroundColor = UIColor.FromRGB (242, 242, 242);
+
 			var localize = this.Services().Localize;
 
 			if (NavigationController != null)
@@ -40,8 +42,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
 			btnRetry.SetTitle(Localize.GetValue("Overdue_Retry"), UIControlState.Normal);
 			btnAddNewCard.SetTitle(Localize.GetValue("Overdue_AddNewCard"), UIControlState.Normal);
 
-			FlatButtonStyle.Silver.ApplyTo(btnRetry);
-			FlatButtonStyle.Silver.ApplyTo(btnAddNewCard);
+			FlatButtonStyle.Silver.ApplyTo(btnRetry, btnAddNewCard);
 
 			var set = this.CreateBindingSet<OverduePaymentView, OverduePaymentViewModel>();
 
