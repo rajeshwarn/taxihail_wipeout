@@ -46,7 +46,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 		{
 			if (keyCode == Keycode.Back)
 			{
-				ViewModel.RateOrder.ExecuteIfPossible();
+				ViewModel.RateOrderAndNavigateToHome.ExecuteIfPossible();
 
 				return false;
 			}
