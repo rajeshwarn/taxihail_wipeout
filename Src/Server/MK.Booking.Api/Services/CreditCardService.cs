@@ -36,12 +36,6 @@ namespace apcurium.MK.Booking.Api.Services
 
         public object Post(CreditCardRequest request)
         {
-            var existingCreditCard = _dao.FindByToken(request.Token);
-            if (existingCreditCard != null && existingCreditCard.IsDeactivated)
-            {
-                throw new HttpError(HttpStatusCode.Forbidden, "Can't add a deactivated credit card");
-            }
-
             var session = this.GetSession();
             var command = new AddOrUpdateCreditCard {AccountId = new Guid(session.UserAuthId)};
             Mapper.Map(request, command);
