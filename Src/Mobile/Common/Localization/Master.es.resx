@@ -2220,4 +2220,10 @@
   <data name="Overdue_Failed_Title" xml:space="preserve">
     <value>Error settling overdue payment</value>
   </data>
+  <data name="Overdue_Succeed_Message" xml:space="preserve">
+    <value>Your overdue payment of {0} is payed.</value>
+  </data>
+  <data name="Overdue_Succeed_Title" xml:space="preserve">
+    <value>Overdue payment</value>
+  </data>
 </root>

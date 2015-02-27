@@ -1762,4 +1762,10 @@
   <data name="Overdue_Failed_Title" xml:space="preserve">
     <value>Erreur de paiement de compte en souffrance</value>
   </data>
+  <data name="Overdue_Succeed_Message" xml:space="preserve">
+    <value>Votre compte en souffrance de {0} a été payé.</value>
+  </data>
+  <data name="Overdue_Succeed_Title" xml:space="preserve">
+    <value>Compte en souffrance</value>
+  </data>
 </root>
