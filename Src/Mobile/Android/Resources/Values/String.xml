@@ -609,4 +609,6 @@
   <string name="Overdue_Date">Transaction date</string>
   <string name="Overdue_Retry">Retry</string>
   <string name="Overdue_Amount">Amount due</string>
+  <string name="Overdue_Failed_Message">Your credit transaction was denied, please try again later or replace your credit card with a new one.</string>
+  <string name="Overdue_Failed_Title">Error settling overdue payment</string>
 </resources>

@@ -1741,21 +1741,27 @@
     <value>None</value>
   </data>
   <data name="Overdue_TransactionId" xml:space="preserve">
-  	<value>Transaction Id</value>
+    <value>Transaction Id</value>
   </data>
   <data name="Overdue_Date" xml:space="preserve">
-  	<value>Transaction date</value>
+    <value>Transaction date</value>
   </data>
   <data name="Overdue_Amount" xml:space="preserve">
-  	<value>Amount due</value>
+    <value>Amount due</value>
   </data>
   <data name="Overdue_Retry" xml:space="preserve">
-  	<value>Retry</value>
+    <value>Retry</value>
   </data>
   <data name="Overdue_AddNewCard" xml:space="preserve">
-  	<value>Add a new card</value>
+    <value>Add a new card</value>
   </data>
   <data name="Overdue_View" xml:space="preserve">
-  	<value>Overdue Payement</value>
+    <value>Overdue Payement</value>
+  </data>
+  <data name="Overdue_Failed_Message" xml:space="preserve">
+    <value>Your credit transaction was denied, please try again later or replace your credit card with a new one.</value>
+  </data>
+  <data name="Overdue_Failed_Title" xml:space="preserve">
+    <value>Error settling overdue payment</value>
   </data>
 </root>

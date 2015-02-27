@@ -590,4 +590,6 @@
   <string name="Overdue_Date">Date de transaction</string>
   <string name="Overdue_Retry">Réessayer</string>
   <string name="Overdue_Amount">montant dû</string>
+  <string name="Overdue_Failed_Message">Votre transaction crédit a été refusée, veuillez essayer plus tard ou changer de carte de crédit.</string>
+  <string name="Overdue_Failed_Title">Erreur de paiement de compte en souffrance</string>
 </resources>

@@ -23,12 +23,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			OverduePayment = JsonSerializer.DeserializeFromString<OverduePayment>(overduePayement);
 		}
 
-		public override void OnViewStarted(bool firstTime)
-		{
-			base.OnViewStarted(firstTime);
-
-		}
-
 		public OverduePayment OverduePayment
 		{
 			get
@@ -61,6 +55,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 				return this.GetCommand(async () => 
 				{ 
 					var overduePaymentResult = await _paymentService.SettleOverduePayment();
+
+				    var localize = this.Services().Localize;
 					
 					if(overduePaymentResult.IsSuccessful)
 					{
@@ -68,9 +64,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 					}
 					else
 					{
-						var title = "Error settling overdue payment.";
-						var message = "Your credit transaction was denied, please try again later or replace your credit card with a new one.";
-						await this.Services().Message.ShowMessage(title, message);
+                        await this.Services().Message.ShowMessage(localize["Overdue_Failed_Title"], localize["Overdue_Failed_Message"]);
 					}
 				});
 			}
