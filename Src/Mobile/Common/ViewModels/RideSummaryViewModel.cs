@@ -146,7 +146,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 			
-	    public ICommand RateOrder
+	    public ICommand RateOrderAndNavigateToHome
 	    {
 	        get
 	        {
