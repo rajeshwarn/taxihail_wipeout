@@ -276,7 +276,7 @@ namespace apcurium.MK.Booking.Services.Impl
             return PreAuthorize(orderId, account, amount, true);
         }
 
-        public CommitPreauthorizedPaymentResponse CommitPayment(Guid orderId, AccountDetail account, decimal preauthAmount, decimal amount, decimal meterAmount, decimal tipAmount, string transactionId)
+        public CommitPreauthorizedPaymentResponse CommitPayment(Guid orderId, AccountDetail account, decimal preauthAmount, decimal amount, decimal meterAmount, decimal tipAmount, string transactionId, string reAuthOrderId = null)
         {
             var commitTransactionId = transactionId;
             string authorizationCode = null;
@@ -351,7 +351,8 @@ namespace apcurium.MK.Booking.Services.Impl
         {
             return Convert.ToBase64String(Guid.NewGuid().ToByteArray())
                 .Replace("=", string.Empty)
-                .Replace("+", string.Empty);
+                .Replace("+", string.Empty)
+                .Replace("/", string.Empty);
         }
 
         private static BraintreeGateway GetBraintreeGateway(BraintreeServerSettings settings)

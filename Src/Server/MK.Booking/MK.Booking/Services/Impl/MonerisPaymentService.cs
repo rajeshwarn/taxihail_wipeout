@@ -271,11 +271,12 @@ namespace apcurium.MK.Booking.Services.Impl
             return PreAuthorize(orderId, account, amount, true);
         }
 
-        public CommitPreauthorizedPaymentResponse CommitPayment(Guid orderId, AccountDetail account, decimal preauthAmount, decimal amount, decimal meterAmount, decimal tipAmount, string transactionId)
+        public CommitPreauthorizedPaymentResponse CommitPayment(Guid orderId, AccountDetail account, decimal preauthAmount, decimal amount, decimal meterAmount, decimal tipAmount, string transactionId, string reAuthOrderId = null)
         {
             string message;
             string authorizationCode = null;
             string commitTransactionId = transactionId;
+            
 
             try
             {
@@ -297,8 +298,25 @@ namespace apcurium.MK.Booking.Services.Impl
                     commitTransactionId = authResponse.TransactionId;
                 }
 
+                string orderIdentifier;
+                if (reAuthOrderId.HasValue())
+                {
+                    // Settling overdue payment
+                    orderIdentifier = reAuthOrderId;
+                }
+                else if (authResponse.ReAuthOrderId.HasValue())
+                {
+                    // Normal re-auth
+                    orderIdentifier = authResponse.ReAuthOrderId;
+                }
+                else
+                {
+                    // Normal flow
+                    orderIdentifier = orderId.ToString();
+                }
+
                 var monerisSettings = _serverSettings.GetPaymentSettings().MonerisPaymentSettings;
-                var completionCommand = new Completion(authResponse.ReAuthOrderId ?? orderId.ToString(), amount.ToString("F"), commitTransactionId,
+                var completionCommand = new Completion(orderIdentifier, amount.ToString("F"), commitTransactionId,
                     CryptType_SSLEnabledMerchant);
                 var commitRequest = new HttpsPostRequest(monerisSettings.Host, monerisSettings.StoreId,
                     monerisSettings.ApiToken, completionCommand);
@@ -356,7 +374,8 @@ namespace apcurium.MK.Booking.Services.Impl
                 return false;
             }
 
-            if (int.Parse(receipt.GetResponseCode()) >= MonerisResponseCodes.DECLINED)
+            var responseCode = int.Parse(receipt.GetResponseCode());
+            if (responseCode >= MonerisResponseCodes.DECLINED)
             {
                 message = receipt.GetMessage();
                 return false;
@@ -382,7 +401,8 @@ namespace apcurium.MK.Booking.Services.Impl
         {
             return Convert.ToBase64String(Guid.NewGuid().ToByteArray())
                 .Replace("=", string.Empty)
-                .Replace("+", string.Empty);
+                .Replace("+", string.Empty)
+                .Replace("/", string.Empty);
         }
     }
 }

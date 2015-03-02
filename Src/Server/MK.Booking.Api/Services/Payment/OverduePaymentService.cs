@@ -90,7 +90,8 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                     overduePayment.OverdueAmount,
                     overduePayment.OverdueAmount,
                     0,
-                    preAuthResponse.TransactionId);
+                    preAuthResponse.TransactionId,
+                    preAuthResponse.ReAuthOrderId);
 
                 if (commitResponse.IsSuccessful)
                 {
