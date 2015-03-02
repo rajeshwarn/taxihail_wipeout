@@ -1678,13 +1678,13 @@
     <value>None</value>
   </data>
   <data name="Overdue_TransactionId" xml:space="preserve">
-    <value>Transaction Id</value>
+    <value>Transaction Id:</value>
   </data>
   <data name="Overdue_Date" xml:space="preserve">
-    <value>Transaction date</value>
+    <value>Transaction date:</value>
   </data>
   <data name="Overdue_Amount" xml:space="preserve">
-    <value>Amount due</value>
+    <value>Amount due:</value>
   </data>
   <data name="Overdue_Retry" xml:space="preserve">
     <value>Retry</value>

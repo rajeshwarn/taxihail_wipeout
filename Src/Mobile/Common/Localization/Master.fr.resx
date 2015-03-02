@@ -1739,13 +1739,13 @@
     <value>Aucun</value>
   </data>
   <data name="Overdue_TransactionId" xml:space="preserve">
-    <value>Id de transaction</value>
+    <value>Id de transaction:</value>
   </data>
   <data name="Overdue_Date" xml:space="preserve">
-    <value>Date de transaction</value>
+    <value>Date de transaction:</value>
   </data>
   <data name="Overdue_Amount" xml:space="preserve">
-    <value>montant dû</value>
+    <value>Montant dû:</value>
   </data>
   <data name="Overdue_Retry" xml:space="preserve">
     <value>Réessayer</value>
