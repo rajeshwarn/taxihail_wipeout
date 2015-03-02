@@ -23,7 +23,7 @@ namespace apcurium.MK.Booking.Mobile.BindingConverter
 		private string Format(DateTime dateTime, string format)
         {
             return format.Equals("SDT")
-				? dateTime.ToShortDateString + " / " + dateTime.ToShortTimeString
+				? dateTime.ToShortDateString() + " / " + dateTime.ToShortTimeString()
                 : dateTime.ToString(format, CultureProvider.CultureInfo);
         }
     }
