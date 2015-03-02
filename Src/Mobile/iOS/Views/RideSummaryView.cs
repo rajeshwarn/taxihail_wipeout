@@ -85,7 +85,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
             NavigationItem.RightBarButtonItem = new UIBarButtonItem(Localize.GetValue("Done"), UIBarButtonItemStyle.Bordered, (o, e) => 
             {  
-					ViewModel.RateOrder.ExecuteIfPossible();
+					ViewModel.RateOrderAndNavigateToHome.ExecuteIfPossible();
             });
 
             set.Bind(_source)

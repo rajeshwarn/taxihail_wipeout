@@ -613,4 +613,6 @@
   <string name="Overdue_Failed_Title">Error settling overdue payment</string>
   <string name="Overdue_Succeed_Message">Your overdue payment of {0} is payed.</string>
   <string name="Overdue_Succeed_Title">Overdue payment</string>
+  <string name="InvalidPassengersNumberTitle">Invalid Number of Passengers</string>
+  <string name="InvalidPassengersNumber">Sorry, but unfortunately we do not have a big enough vehicle to accommodate the number of passengers. Please book more than one car to accommodate your party size.</string>
 </resources>

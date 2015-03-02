@@ -91,6 +91,19 @@ namespace apcurium.MK.Booking.IBS.Impl
             return items;
         }
 
+
+        public IList<TVehicleTypeItem> GetVehicles(ListItem company)
+        {
+            var items = new List<TVehicleTypeItem>();
+             UseService(service =>
+            {
+                var vehicules = service.GetVehicleTypes(UserNameApp, PasswordApp, company.Id.GetValueOrDefault());
+                items = vehicules.ToList();
+            });
+            return items;
+        }
+
+
         protected override string GetUrl()
         {
             return base.GetUrl() + "IStaticData";

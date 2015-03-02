@@ -245,7 +245,7 @@ namespace apcurium.MK.Web.Tests
             };
 
             var ex = Assert.Throws<WebServiceException>(async () => await sut.CreateOrder(order));
-            Assert.AreEqual("Vous devez sélectionner le Paiement In App ou PayPal pour utiliser une promotion.", ex.ErrorMessage);
+            Assert.AreEqual("Vous devez sélectionner le Paiement In App pour utiliser une promotion.", ex.ErrorMessage);
         }
     }
 

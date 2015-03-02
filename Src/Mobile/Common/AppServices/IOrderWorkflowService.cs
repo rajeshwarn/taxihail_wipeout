@@ -34,6 +34,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 
 		Task ValidatePickupTime();
 		Task ValidatePickupAndDestination();
+		Task ValidateNumberOfPassengers (int? numberOfPassengers);
 		Task<Tuple<Order, OrderStatusDetail>> ConfirmOrder();
 
 		Task SetVehicleType (int? vehicleTypeId);
