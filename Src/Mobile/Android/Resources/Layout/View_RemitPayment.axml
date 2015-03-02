@@ -70,7 +70,7 @@
                     android:gravity="end"
                     style="@style/BlackTextLabel" />
                 <TextView
-                    local:MvxBind="Text OverduePayment.TransactionDate"
+                    local:MvxBind="Text OverduePayment.TransactionDate, Converter=DateTimeFormat, ConverterParameter='SDT'"
                     android:text="Text"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -97,7 +97,7 @@
                     android:gravity="end"
                     style="@style/BlackTextLabel" />
                 <TextView
-                    local:MvxBind="Text OverduePayment.OverdueAmount"
+                    local:MvxBind="Text OverduePayment.OverdueAmount, Converter=CurrencyFormat"
                     android:text="Text"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
