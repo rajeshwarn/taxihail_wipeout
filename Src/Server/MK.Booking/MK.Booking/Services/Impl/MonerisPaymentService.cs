@@ -179,7 +179,7 @@ namespace apcurium.MK.Booking.Services.Impl
             }
         }
 
-        public PreAuthorizePaymentResponse PreAuthorize(Guid orderId, AccountDetail account, decimal amountToPreAuthorize, bool isReAuth = false)
+        public PreAuthorizePaymentResponse PreAuthorize(Guid orderId, AccountDetail account, decimal amountToPreAuthorize, bool isReAuth = false, bool isSettlingOverduePayment = false)
         {
             var message = string.Empty;
             var transactionId = string.Empty;
@@ -190,8 +190,14 @@ namespace apcurium.MK.Booking.Services.Impl
                 bool isSuccessful;
                 bool isCardDeclined = false;
                 var creditCard = _creditCardDao.FindByAccountId(account.Id).First();
-                var orderIdentifier = isReAuth ? string.Format("{0}-{1}", orderId, GenerateShortUid()) : orderId.ToString();
 
+                // We cannot re-use the same id has a previously failed payment
+                var shouldGenerateNewOrderId = isReAuth || isSettlingOverduePayment;
+
+                var orderIdentifier = shouldGenerateNewOrderId
+                    ? string.Format("{0}-{1}", orderId, GenerateShortUid())
+                    : orderId.ToString();
+                
                 if (amountToPreAuthorize > 0)
                 {
                     // PreAuthorize transaction
@@ -233,9 +239,9 @@ namespace apcurium.MK.Booking.Services.Impl
                     IsSuccessful = isSuccessful,
                     Message = message,
                     TransactionId = transactionId,
-                    ReAuthOrderId = isReAuth ? orderIdentifier : null,
+                    ReAuthOrderId = shouldGenerateNewOrderId ? orderIdentifier : null,
                     IsDeclined = isCardDeclined,
-                    TransactionDate = transactionDate
+                    TransactionDate = transactionDate,
                 };
             }
             catch (Exception e)
@@ -276,7 +282,6 @@ namespace apcurium.MK.Booking.Services.Impl
             string message;
             string authorizationCode = null;
             string commitTransactionId = transactionId;
-            
 
             try
             {
