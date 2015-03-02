@@ -27,6 +27,7 @@ namespace apcurium.MK.Booking.EventHandlers
                     context.Save(new OverduePaymentDetail
                     {
                         OrderId = @event.OrderId,
+                        IBSOrderId = @event.IBSOrderId,
                         AccountId = @event.SourceId,
                         OverdueAmount = @event.Amount,
                         TransactionId = @event.TransactionId,

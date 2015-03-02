@@ -54,7 +54,7 @@ namespace apcurium.MK.Booking.EventHandlers
                     payment.CardToken = @event.NewCardToken;
                 }
                 payment.IsCancelled = false;
-                payment.Error = string.Empty;
+                payment.Error = null;
 
                 var order = context.Find<OrderDetail>(payment.OrderId);
                 if (!order.Fare.HasValue || order.Fare == 0)

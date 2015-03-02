@@ -6,6 +6,8 @@ namespace apcurium.MK.Booking.Api.Contract.Resources.Payments
     {
         public Guid OrderId { get; set; }
 
+        public int? IBSOrderId { get; set; }
+
         public decimal OverdueAmount { get; set; }
 
         public string TransactionId { get; set; }

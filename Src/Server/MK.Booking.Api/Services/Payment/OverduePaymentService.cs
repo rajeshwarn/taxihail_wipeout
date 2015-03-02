@@ -77,7 +77,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             var payment = _orderPaymentDao.FindByOrderId(overduePayment.OrderId);
             var reAuth = payment != null;
 
-            var preAuthResponse = _paymentService.PreAuthorize(overduePayment.OrderId, accountDetail, overduePayment.OverdueAmount, reAuth);
+            var preAuthResponse = _paymentService.PreAuthorize(overduePayment.OrderId, accountDetail, overduePayment.OverdueAmount, reAuth, true);
             if (preAuthResponse.IsSuccessful)
             {
                 // Wait for payment to be created
@@ -90,7 +90,8 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                     overduePayment.OverdueAmount,
                     overduePayment.OverdueAmount,
                     0,
-                    preAuthResponse.TransactionId);
+                    preAuthResponse.TransactionId,
+                    preAuthResponse.ReAuthOrderId);
 
                 if (commitResponse.IsSuccessful)
                 {

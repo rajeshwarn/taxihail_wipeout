@@ -281,9 +281,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				return this.GetCommand(async () =>
 				{
 					CloseMenu();
-					var overduePayement = await _accountService.GetOverduePayment();
+					var overduePayment = await _accountService.GetOverduePayment();
 					
-					if(overduePayement == null)
+						if(overduePayment == null)
 					{
 						ShowViewModel<CreditCardAddViewModel>();
 					}
@@ -291,7 +291,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					{
 						ShowViewModel<OverduePaymentViewModel>(new 
 						{ 
-							overduePayement = overduePayement.ToJson() 
+							overduePayement = overduePayment.ToJson() 
 						});
 					}
 				});

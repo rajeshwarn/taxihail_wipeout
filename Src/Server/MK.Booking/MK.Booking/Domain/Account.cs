@@ -366,11 +366,12 @@ namespace apcurium.MK.Booking.Domain
             Update(new CreditCardDeactivated());
         }
 
-        public void LogOverduePayment(Guid orderId, decimal amount, string transactionId, DateTime? transactionDate)
+        public void LogOverduePayment(Guid orderId, int? ibsOrderId, decimal amount, string transactionId, DateTime? transactionDate)
         {
             Update(new OverduePaymentLogged
             {
                 OrderId = orderId,
+                IBSOrderId = ibsOrderId,
                 Amount = amount,
                 TransactionId = transactionId,
                 TransactionDate = transactionDate
