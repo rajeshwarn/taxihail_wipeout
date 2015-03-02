@@ -568,11 +568,11 @@
 "Unpair"="Pay in Car";
 "UnpairErrorMessage"="حدث خطأ أثناء الفصل، رجاء المحاولة في وقت لاحق.";
 "UnpairPayInCar"="Pay in Car";
-"Overdue_TransactionId"="Transaction Id";
+"Overdue_TransactionId"="Transaction Id:";
 "Overdue_AddNewCard"="Add a new card";
-"Overdue_Date"="Transaction date";
+"Overdue_Date"="Transaction date:";
 "Overdue_Retry"="Retry";
-"Overdue_Amount"="Amount due";
+"Overdue_Amount"="Amount due:";
 "Overdue_View"="Overdue Payement";
 "Overdue_Failed_Title"="Error settling overdue payment";
 "Overdue_Failed_Message"="Your credit transaction was denied, please try again later or replace your credit card with a new one.";
