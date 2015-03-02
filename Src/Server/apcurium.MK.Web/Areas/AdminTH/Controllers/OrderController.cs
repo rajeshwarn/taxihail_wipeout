@@ -28,25 +28,25 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
         }
 
         // GET: AdminTH/Order/{id}
-        public ActionResult ViewDebug(Guid id)
+        public ActionResult ViewDebug(int id)
         {
             var model = new OrderDebug();
-            var relevantIds = new List<Guid> {id};
 
+            var relevantIds = new List<Guid>();
             using (var context = _bookingContextFactory.Invoke())
             {
-                var orderDetail = context.Find<OrderDetail>(id);
-                model.OrderDetail = orderDetail;
-                if (orderDetail == null)
+                model.OrderDetail = context.Query<OrderDetail>().FirstOrDefault(x => x.IBSOrderId == id);
+                if (model.OrderDetail == null)
                 {
                     return View(model);
                 }
 
-                model.UserEmail = context.Find<AccountDetail>(orderDetail.AccountId).Email;
-                model.OrderStatusDetail = context.Find<OrderStatusDetail>(id);
-                model.OrderPairingDetail = context.Find<OrderPairingDetail>(id);
-                model.OrderPaymentDetail = context.Query<OrderPaymentDetail>().FirstOrDefault(x => x.OrderId == id);
+                model.UserEmail = context.Find<AccountDetail>(model.OrderDetail.AccountId).Email;
+                model.OrderStatusDetail = context.Find<OrderStatusDetail>(model.OrderDetail.Id);
+                model.OrderPairingDetail = context.Find<OrderPairingDetail>(model.OrderDetail.Id);
+                model.OrderPaymentDetail = context.Query<OrderPaymentDetail>().FirstOrDefault(x => x.OrderId == model.OrderDetail.Id);
 
+                relevantIds.Add(model.OrderDetail.Id);
                 if (model.OrderPaymentDetail != null)
                 {
                     relevantIds.Add(model.OrderPaymentDetail.PaymentId);
