@@ -25,10 +25,19 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
 		UIKit.UILabel DateOfTransaction { get; set; }
 
 		[Outlet]
+		UIKit.UILabel IbsOrder { get; set; }
+
+		[Outlet]
 		UIKit.UILabel lblAmountDue { get; set; }
 
 		[Outlet]
 		UIKit.UILabel lblDate { get; set; }
+
+		[Outlet]
+		UIKit.UILabel lblInstructions { get; set; }
+
+		[Outlet]
+		UIKit.UILabel lblOrderId { get; set; }
 
 		[Outlet]
 		UIKit.UILabel lblTransactionId { get; set; }
@@ -38,19 +47,34 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
 		
 		void ReleaseDesignerOutlets ()
 		{
-			if (lblTransactionId != null) {
-				lblTransactionId.Dispose ();
-				lblTransactionId = null;
+			if (AmountDue != null) {
+				AmountDue.Dispose ();
+				AmountDue = null;
 			}
 
-			if (TransactionId != null) {
-				TransactionId.Dispose ();
-				TransactionId = null;
+			if (btnAddNewCard != null) {
+				btnAddNewCard.Dispose ();
+				btnAddNewCard = null;
 			}
 
-			if (lblDate != null) {
-				lblDate.Dispose ();
-				lblDate = null;
+			if (btnRetry != null) {
+				btnRetry.Dispose ();
+				btnRetry = null;
+			}
+
+			if (lblOrderId != null) {
+				lblOrderId.Dispose ();
+				lblOrderId = null;
+			}
+
+			if (IbsOrder != null) {
+				IbsOrder.Dispose ();
+				IbsOrder = null;
+			}
+
+			if (lblInstructions != null) {
+				lblInstructions.Dispose ();
+				lblInstructions = null;
 			}
 
 			if (DateOfTransaction != null) {
@@ -63,19 +87,19 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
 				lblAmountDue = null;
 			}
 
-			if (AmountDue != null) {
-				AmountDue.Dispose ();
-				AmountDue = null;
+			if (lblDate != null) {
+				lblDate.Dispose ();
+				lblDate = null;
 			}
 
-			if (btnRetry != null) {
-				btnRetry.Dispose ();
-				btnRetry = null;
+			if (lblTransactionId != null) {
+				lblTransactionId.Dispose ();
+				lblTransactionId = null;
 			}
 
-			if (btnAddNewCard != null) {
-				btnAddNewCard.Dispose ();
-				btnAddNewCard = null;
+			if (TransactionId != null) {
+				TransactionId.Dispose ();
+				TransactionId = null;
 			}
 		}
 	}
