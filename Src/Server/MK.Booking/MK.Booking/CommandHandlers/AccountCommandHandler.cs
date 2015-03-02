@@ -307,7 +307,7 @@ namespace apcurium.MK.Booking.CommandHandlers
             var account = _repository.Find(command.AccountId);
 
             account.DeactivateCreditCard();
-            account.LogOverduePayment(command.OrderId, command.OverdueAmount, command.TransactionId, command.TransactionDate);
+            account.LogOverduePayment(command.OrderId, command.IBSOrderId, command.OverdueAmount, command.TransactionId, command.TransactionDate);
 
             _repository.Save(account, command.Id.ToString());
         }

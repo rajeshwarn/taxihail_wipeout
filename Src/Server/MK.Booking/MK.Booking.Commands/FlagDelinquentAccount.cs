@@ -16,6 +16,8 @@ namespace apcurium.MK.Booking.Commands
 
         public Guid OrderId { get; set; }
 
+        public int? IBSOrderId { get; set; }
+
         public decimal OverdueAmount { get; set; }
 
         public string TransactionId { get; set; }

@@ -218,6 +218,7 @@ namespace apcurium.MK.Booking.Api.Jobs
                 {
                     AccountId = orderDetail.AccountId,
                     OrderId = orderId,
+                    IBSOrderId = orderDetail.IBSOrderId,
                     OverdueAmount = amount,
                     TransactionId = result.TransactionId,
                     TransactionDate = result.TransactionDate
@@ -602,6 +603,7 @@ namespace apcurium.MK.Booking.Api.Jobs
                         {
                             AccountId = account.Id,
                             OrderId = orderId,
+                            IBSOrderId = orderDetail.IBSOrderId,
                             OverdueAmount = totalOrderAmount,
                             TransactionId = paymentProviderServiceResponse.TransactionId,
                             TransactionDate = paymentProviderServiceResponse.TransactionDate
