@@ -13,17 +13,17 @@ namespace apcurium.MK.Booking.Mobile.BindingConverter
         {
             var date = value as DateTime?;
             var format = (parameter as string) ?? "G";
-            
+
             return date.HasValue
-                ? Format(date.Value, format)
+				? Format(date.Value.ToLocalTime(), format)
                 : value;
         }
 
 
-        private string Format(DateTime dateTime, string format)
+		private string Format(DateTime dateTime, string format)
         {
             return format.Equals("SDT")
-                ? dateTime.ToShortDateString() + " / " + dateTime.ToShortTimeString()
+				? dateTime.ToShortDateString + " / " + dateTime.ToShortTimeString
                 : dateTime.ToString(format, CultureProvider.CultureInfo);
         }
     }

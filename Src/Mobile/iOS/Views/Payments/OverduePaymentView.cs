@@ -41,8 +41,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
 			lblAmountDue.Text = Localize.GetValue("Overdue_Amount");
 			btnRetry.SetTitle(Localize.GetValue("Overdue_Retry"), UIControlState.Normal);
 			btnAddNewCard.SetTitle(Localize.GetValue("Overdue_AddNewCard"), UIControlState.Normal);
+			lblOrderId.Text = Localize.GetValue("Overdue_IBSOrderId");
+			lblInstructions.Text = Localize.GetValue("Overdue_Instructions");
 
-			FlatButtonStyle.Silver.ApplyTo(btnRetry, btnAddNewCard);
+			FlatButtonStyle.Silver.ApplyTo(btnAddNewCard);
+			FlatButtonStyle.Red.ApplyTo(btnRetry);
 
 			var set = this.CreateBindingSet<OverduePaymentView, OverduePaymentViewModel>();
 
@@ -50,10 +53,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
 				.To(vm => vm.OverduePayment.TransactionId);
 
 			set.Bind(DateOfTransaction)
-				.To(vm => vm.OverduePayment.TransactionDate);
+				.To(vm => vm.OverduePayment.TransactionDate)
+				.WithConversion("DateTimeFormat", "SDT");
 
 			set.Bind(AmountDue)
-				.To(vm => vm.AmountDue);
+				.To(vm => vm.AmountDue)
+				.WithConversion("CurrencyFormat");
 
 			set.Bind(btnRetry)
 				.For(v => v.Command)
