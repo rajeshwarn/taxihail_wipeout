@@ -32,7 +32,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
 				ChangeThemeOfBarStyle();
 			}
 
-
 			NavigationItem.Title = Localize.GetValue("Overdue_View");
 			NavigationItem.HidesBackButton = false;
 
@@ -55,6 +54,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
 			set.Bind(DateOfTransaction)
 				.To(vm => vm.OverduePayment.TransactionDate)
 				.WithConversion("DateTimeFormat", "SDT");
+
+			set.Bind(IbsOrder)
+				.To(vm => vm.OverduePayment.IBSOrderId);
 
 			set.Bind(AmountDue)
 				.To(vm => vm.AmountDue)
