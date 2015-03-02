@@ -10,6 +10,7 @@ using apcurium.MK.Common.Entity;
 using apcurium.MK.Web.Areas.AdminTH.Models;
 using apcurium.MK.Web.Attributes;
 using Infrastructure.Sql.EventSourcing;
+using Newtonsoft.Json;
 using ServiceStack.CacheAccess;
 
 namespace apcurium.MK.Web.Areas.AdminTH.Controllers
@@ -27,7 +28,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
             _bookingContextFactory = bookingContextFactory;
         }
 
-        // GET: AdminTH/Order/{id}
+        // GET: AdminTH/Order/ViewDebug/5
         public ActionResult ViewDebug(int id)
         {
             var model = new OrderDebug();
@@ -38,13 +39,14 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                 model.OrderDetail = context.Query<OrderDetail>().FirstOrDefault(x => x.IBSOrderId == id);
                 if (model.OrderDetail == null)
                 {
-                    return View(model);
+                    return PartialView(model);
                 }
 
                 model.UserEmail = context.Find<AccountDetail>(model.OrderDetail.AccountId).Email;
                 model.OrderStatusDetail = context.Find<OrderStatusDetail>(model.OrderDetail.Id);
                 model.OrderPairingDetail = context.Find<OrderPairingDetail>(model.OrderDetail.Id);
                 model.OrderPaymentDetail = context.Query<OrderPaymentDetail>().FirstOrDefault(x => x.OrderId == model.OrderDetail.Id);
+                model.OverduePaymentDetail = context.Query<OverduePaymentDetail>().FirstOrDefault(x => x.OrderId == model.OrderDetail.Id);
 
                 relevantIds.Add(model.OrderDetail.Id);
                 if (model.OrderPaymentDetail != null)
@@ -59,11 +61,17 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                         .Where(x => relevantIds.Contains(x.AggregateId))
                         .OrderBy(x => x.EventDate)
                         .ThenBy(x => x.Version)
-                        .ToList();
-                model.RelatedEvents = events;
+                        .ToList()
+                        .Select(x => new
+                        {
+                            x.EventDate,
+                            x.EventType,
+                            Payload = JsonConvert.DeserializeObject(x.Payload)
+                        });
+                model.RelatedEvents = JsonConvert.SerializeObject(events);
             }
 
-            return View(model);
+            return PartialView(model);
         }
     }
 }
