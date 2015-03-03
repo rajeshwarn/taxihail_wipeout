@@ -1771,15 +1771,15 @@
     <value>Error settling overdue payment</value>
   </data>
   <data name="Overdue_Succeed_Message" xml:space="preserve">
-    <value>Your overdue payment of {0} is payed.</value>
+    <value>Your overdue payment of {0} has been settled and your credit card has been reactivated</value>
   </data>
   <data name="Overdue_Succeed_Title" xml:space="preserve">
     <value>Overdue payment</value>
   </data>
   <data name="Overdue_Instructions" xml:space="preserve">
-  	<value>Your credit card failed to pay the previous ride, you need to either retry to pay again or update your credit card information.</value>
+    <value>Your credit card failed to pay the previous ride, you need to either retry to pay again or update your credit card information.</value>
   </data>
   <data name="Overdue_IBSOrderId" xml:space="preserve">
-  	<value>Order Id:</value>
+    <value>Order Id:</value>
   </data>
 </root>
