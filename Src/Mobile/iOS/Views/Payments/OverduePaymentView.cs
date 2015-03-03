@@ -62,11 +62,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
 
 			set.Bind(btnRetry)
 				.For(v => v.Command)
-				.To(vm => vm.Retry);
+				.To(vm => vm.SettleOverduePayment);
 
 			set.Bind(btnAddNewCard)
 				.For(v => v.Command)
-				.To(vm => vm.AddNewCard);
+				.To(vm => vm.UpdateCreditCard);
 
 			set.Apply();
 		}
