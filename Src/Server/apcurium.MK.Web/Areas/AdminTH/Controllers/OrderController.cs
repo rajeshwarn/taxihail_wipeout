@@ -33,7 +33,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
         {
             var model = new OrderDebug();
 
-            var relevantIds = new List<Guid>();
+            var orderAndPaymentIds = new List<Guid>();
             using (var context = _bookingContextFactory.Invoke())
             {
                 model.OrderDetail = context.Query<OrderDetail>().FirstOrDefault(x => x.IBSOrderId == id);
@@ -48,20 +48,20 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                 model.OrderPaymentDetail = context.Query<OrderPaymentDetail>().FirstOrDefault(x => x.OrderId == model.OrderDetail.Id);
                 model.OverduePaymentDetail = context.Query<OverduePaymentDetail>().FirstOrDefault(x => x.OrderId == model.OrderDetail.Id);
 
-                relevantIds.Add(model.OrderDetail.Id);
+                orderAndPaymentIds.Add(model.OrderDetail.Id);
                 if (model.OrderPaymentDetail != null)
                 {
-                    relevantIds.Add(model.OrderPaymentDetail.PaymentId);
+                    orderAndPaymentIds.Add(model.OrderPaymentDetail.PaymentId);
                 }
             }
 
             using (var context = _eventsContextFactory.Invoke())
             {
                 var events = context.Set<Event>()
-                        .Where(x => relevantIds.Contains(x.AggregateId))
+                        .Where(x => orderAndPaymentIds.Contains(x.AggregateId))
                         .OrderBy(x => x.EventDate)
                         .ThenBy(x => x.Version)
-                        .ToList()
+                        .ToList() // Cast needed  because LinqToSql doesn't support JsonConvert
                         .Select(x => new
                         {
                             x.EventDate,
