@@ -519,7 +519,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
 	        if (settleOverduePayment.IsSuccessful)
 	        {
-                var message = string.Format(this.Services().Localize["Overdue_Succeed_Message"], overduePayment.OverdueAmount);
+                var message = string.Format(this.Services().Localize["Overdue_Succeed_Message"], _overduePayment.OverdueAmount);
                 await this.Services().Message.ShowMessage(this.Services().Localize["Overdue_Succeed_Title"], message);
 	        }
 	        else
