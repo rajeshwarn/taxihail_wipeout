@@ -18,9 +18,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			_paymentService = accountService;
 		}
 
-		public void Init(string overduePayement)
+		public void Init(string overduePayment)
 		{
-			OverduePayment = JsonSerializer.DeserializeFromString<OverduePayment>(overduePayement);
+			OverduePayment = JsonSerializer.DeserializeFromString<OverduePayment>(overduePayment);
 		}
 
 		public OverduePayment OverduePayment
@@ -83,7 +83,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			{
 				return this.GetCommand(() => 
 				{
-					ShowViewModel<CreditCardAddViewModel>(new { showInstructions = true });
+					var serializedOverduePayment = _overduePayment.ToJson();
+
+					ShowViewModel<CreditCardAddViewModel>(new 
+					{ 
+						showInstructions = true, 
+						overduePayment = serializedOverduePayment 
+					});
 				});
 			}
 		}
