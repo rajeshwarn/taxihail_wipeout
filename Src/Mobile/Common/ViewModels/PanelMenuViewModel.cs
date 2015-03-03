@@ -283,7 +283,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					CloseMenu();
 					var overduePayment = await _accountService.GetOverduePayment();
 					
-						if(overduePayment == null)
+					if(overduePayment == null)
 					{
 						ShowViewModel<CreditCardAddViewModel>();
 					}
@@ -291,7 +291,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					{
 						ShowViewModel<OverduePaymentViewModel>(new 
 						{ 
-							overduePayement = overduePayment.ToJson() 
+							overduePayment = overduePayment.ToJson() 
 						});
 					}
 				});
