@@ -18,7 +18,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/top_bar_color"
-                android:layout_marginBottom="50dip">
+                android:layout_marginBottom="20dip">
                 <TextView
                     android:text="@string/Overdue_View"
                     android:layout_gravity="center"
@@ -27,11 +27,21 @@
                     android:gravity="center"
                     style="@style/TopTitleText" />
             </LinearLayout>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dip"
+                android:layout_marginRight="20dip"
+                android:inputType="textMultiLine"
+                android:lines="3"
+                android:singleLine="false"
+                android:text="@string/Overdue_Instructions"
+                style="@style/BlackTextLabel" />
             <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:paddingTop="5dip"
+                android:paddingTop="15dip"
                 android:paddingBottom="5dip"
                 android:gravity="center_horizontal"
                 android:weightSum="100">
@@ -131,7 +141,7 @@
                 android:layout_height="@dimen/HeightButton"
                 android:layout_marginLeft="15dip"
                 android:layout_marginRight="15dip"
-                android:layout_marginTop="60dip"
+                android:layout_marginTop="50dip"
                 android:layout_marginBottom="10dip"
                 style="@style/ButtonActionGreenStyle" />
             <Button
