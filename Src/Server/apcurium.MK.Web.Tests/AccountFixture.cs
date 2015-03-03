@@ -481,7 +481,6 @@ namespace apcurium.MK.Web.Tests
                 NewPassword = "p@55w0rddddddddd"
             };
             Assert.Throws<WebServiceException>(async () => await sut.UpdatePassword(request));
-        }
-            
+        }            
     }
 }
