@@ -1769,7 +1769,7 @@
     <value>Compte en souffrance</value>
   </data>
   <data name="Overdue_Instructions" xml:space="preserve">
-    <value> La dernère tentative de payment a été refusée par votre compagnie de carte de crédit. Veuillez reessayer ou mettez à jours votre carte de crédit.</value>
+    <value> La dernère tentative de payment a été refusée par votre compagnie de carte de crédit. Veuillez reessayer ou mettez à jour votre carte de crédit.</value>
   </data>
   <data name="Overdue_IBSOrderId" xml:space="preserve">
     <value>Commande:</value>

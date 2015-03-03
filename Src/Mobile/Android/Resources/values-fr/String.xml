@@ -595,5 +595,5 @@
   <string name="Overdue_Succeed_Message">Votre compte en souffrance de {0} a été payé et votre carte de crédit a été réactivée</string>
   <string name="Overdue_Succeed_Title">Compte en souffrance</string>
   <string name="Overdue_IBSOrderId">Commande:</string>
-  <string name="Overdue_Instructions"> La dernère tentative de payment a été refusée par votre compagnie de carte de crédit. Veuillez reessayer ou mettez à jours votre carte de crédit.</string>
+  <string name="Overdue_Instructions"> La dernère tentative de payment a été refusée par votre compagnie de carte de crédit. Veuillez reessayer ou mettez à jour votre carte de crédit.</string>
 </resources>
