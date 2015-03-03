@@ -48,7 +48,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			}
 		}
 
-		public ICommand Retry
+		public ICommand SettleOverduePayment
 		{
 			get
 			{
@@ -77,7 +77,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			}
 		}
 
-		public ICommand AddNewCard
+		public ICommand UpdateCreditCard
 		{
 			get
 			{
