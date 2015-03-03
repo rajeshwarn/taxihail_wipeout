@@ -15,16 +15,15 @@ using Android.Content.PM;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Setting
 {
-	[Activity(Label = "RemitPaymentActivity",
+	[Activity(Label = "OverduePaymentActivity",
 		Theme = "@style/MainTheme",
 		ScreenOrientation = ScreenOrientation.Portrait)]			
-	public class RemitPaymentActivity : BaseBindingActivity<OverduePaymentViewModel>
+	public class OverduePaymentActivity : BaseBindingActivity<OverduePaymentViewModel>
 	{
 		protected override void OnCreate(Bundle bundle)
 		{
 			base.OnCreate(bundle);
-			SetContentView(Resource.Layout.View_RemitPayment);
-
+			SetContentView(Resource.Layout.View_OverduePayment);
 		}
 	}
 }

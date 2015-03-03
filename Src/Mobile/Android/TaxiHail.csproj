@@ -36,7 +36,7 @@
     <AndroidSigningKeyPass>mkt0001.</AndroidSigningKeyPass>
     <DebugSymbols>True</DebugSymbols>
     <EmbedAssembliesIntoApk>True</EmbedAssembliesIntoApk>
-    <AndroidLinkMode>None</AndroidLinkMode>    
+    <AndroidLinkMode>None</AndroidLinkMode>
     <AndroidSupportedAbis>armeabi-v7a;x86</AndroidSupportedAbis>
     <CustomCommands>
       <CustomCommands>
@@ -57,7 +57,7 @@
     <AndroidSigningKeyAlias>MKTaxiHail</AndroidSigningKeyAlias>
     <AndroidSigningKeyPass>mkt0001.</AndroidSigningKeyPass>
     <AndroidSupportedAbis>armeabi;armeabi-v7a;x86</AndroidSupportedAbis>
-	<AndroidLinkMode>SdkOnly</AndroidLinkMode>
+    <AndroidLinkMode>SdkOnly</AndroidLinkMode>
     <MonoDroidExtraArgs>
     </MonoDroidExtraArgs>
     <DebugType>full</DebugType>
@@ -607,8 +607,8 @@
     <AndroidResource Include="Resources\drawable-xhdpi\promo.png" />
     <Compile Include="Bootstrap\PhoneCallPluginBootstrap.cs" />
     <Compile Include="Bootstrap\WebBrowserPluginBootstrap.cs" />
-    <AndroidResource Include="Resources\Layout\View_RemitPayment.axml" />
-    <Compile Include="Activities\Setting\RemitPaymentActivity.cs" />
+    <AndroidResource Include="Resources\Layout\View_OverduePayment.axml" />
+    <Compile Include="Activities\Setting\OverduePaymentActivity.cs" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\View_Login.axml">
