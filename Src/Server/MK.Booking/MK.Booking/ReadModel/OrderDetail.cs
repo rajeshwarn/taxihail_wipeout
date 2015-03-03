@@ -54,6 +54,8 @@ namespace apcurium.MK.Booking.ReadModel
 
         public long TransactionId { get; set; }
 
+        public bool IsPrepaid { get; set; }
+
         public bool IsRated { get; set; }
 
         public double? EstimatedFare { get; set; }

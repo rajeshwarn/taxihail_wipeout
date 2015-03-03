@@ -66,7 +66,8 @@ namespace apcurium.MK.Booking.EventHandlers
                     DropOffAddress = @event.DropOffAddress,
                     CompanyName = @event.CompanyName,
                     CompanyKey = @event.CompanyKey,
-                    Market = @event.Market
+                    Market = @event.Market,
+                    IsPrepaid = @event.IsPrepaid
                 };
                 orderReport.Client = new OrderReportClient
                 {

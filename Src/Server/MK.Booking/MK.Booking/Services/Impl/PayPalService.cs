@@ -163,7 +163,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 return new InitializePayPalCheckoutResponse
                 {
                     IsSuccessful = false,
-                    Message = "You need an estimated fare to use PayPal"
+                    Message = "You need an estimated fare to use PayPal. Please select a destination address."
                 };
             }
 

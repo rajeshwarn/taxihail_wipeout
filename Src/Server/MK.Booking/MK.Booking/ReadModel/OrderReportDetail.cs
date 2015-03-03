@@ -56,6 +56,12 @@ namespace apcurium.MK.Booking.ReadModel
 
     public class OrderReportOrder
     {
+        public OrderReportOrder()
+        {
+            PickupAddress = new Address();
+            DropOffAddress = new Address();
+        }
+
         public int? IBSOrderId { get; set; }
 
         public string CompanyName { get; set; }
@@ -80,11 +86,7 @@ namespace apcurium.MK.Booking.ReadModel
 
         public bool HasTimedOut { get; set; }
 
-        public OrderReportOrder()
-        {
-            PickupAddress = new Address();
-            DropOffAddress = new Address();
-        }
+        public bool IsPrepaid { get; set; }
     }
 
     public class OrderReportOrderStatus

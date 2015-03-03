@@ -89,6 +89,7 @@ namespace apcurium.MK.Booking.Api.Services.Admin
                             orderReportEntry["Order.CompanyName"] = orderReport.Order.CompanyName;
                             orderReportEntry["Order.CompanyKey"] = orderReport.Order.CompanyKey;
                             orderReportEntry["Order.Market"] = orderReport.Order.Market;
+                            orderReportEntry["Order.IsPrepaid"] = orderReport.Order.IsPrepaid.ToString();
                             orderReportEntry["Order.IBSOrderId"] = orderReport.Order.IBSOrderId.ToString();
                             orderReportEntry["Order.ChargeType"] = orderReport.Order.ChargeType;
                             orderReportEntry["Charge Account with Card on File Payment"] = orderReport.Order.IsChargeAccountPaymentWithCardOnFile.ToString();

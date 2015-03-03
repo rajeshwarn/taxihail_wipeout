@@ -49,7 +49,7 @@ namespace apcurium.MK.Booking.Domain
 
         public Order(Guid id, Guid accountId, DateTime pickupDate, Address pickupAddress, Address dropOffAddress, BookingSettings settings,
             double? estimatedFare, string userAgent, string clientLanguageCode, double? userLatitude, double? userLongitude, string userNote, string clientVersion,
-            bool isChargeAccountPaymentWithCardOnFile, string companyKey, string companyName, string market)
+            bool isChargeAccountPaymentWithCardOnFile, string companyKey, string companyName, string market, bool isPrepaid)
             : this(id)
         {
             if ((settings == null) || pickupAddress == null || 
@@ -76,7 +76,8 @@ namespace apcurium.MK.Booking.Domain
                 IsChargeAccountPaymentWithCardOnFile = isChargeAccountPaymentWithCardOnFile,
                 CompanyKey = companyKey,
                 CompanyName = companyName,
-                Market = market
+                Market = market,
+                IsPrepaid = isPrepaid
             });
         }
 

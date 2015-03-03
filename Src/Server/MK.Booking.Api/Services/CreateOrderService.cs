@@ -127,11 +127,12 @@ namespace apcurium.MK.Booking.Api.Services
             }
 
             var redirectUrl = Request.AbsoluteUri
-                .Replace(Request.PathInfo, "")
-                .Replace(GetAppHost().Config.ServiceStackHandlerFactoryPath, "")
-                .Replace(Request.QueryString.ToString(), "")
-                .Replace("?", "")
+                .Replace(Request.PathInfo, string.Empty)
+                .Replace(GetAppHost().Config.ServiceStackHandlerFactoryPath, string.Empty)
+                .Replace(Request.QueryString.ToString(), string.Empty)
+                .Replace("?", string.Empty)
                 .Append(string.Format("#status/{0}", request.OrderId));
+
             return new HttpResult
             {
                 StatusCode = HttpStatusCode.Redirect,
@@ -159,7 +160,9 @@ namespace apcurium.MK.Booking.Api.Services
                 request.Market = null;
             }
 
-            var account = _accountDao.FindById(new Guid(this.GetSession().UserAuthId));
+            var isPrepaid = request.FromWebApp
+                && (request.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id
+                    || request.Settings.ChargeTypeId == ChargeTypes.PayPal.Id);
 
             BestAvailableCompany bestAvailableCompany;
 
@@ -180,6 +183,7 @@ namespace apcurium.MK.Booking.Api.Services
                             _resources.Get("CannotCreateOrder_NoCompanies", request.ClientLanguageCode));
             }
 
+            var account = _accountDao.FindById(new Guid(this.GetSession().UserAuthId));
             account.IBSAccountId = CreateIbsAccountIfNeeded(account, bestAvailableCompany.CompanyKey, request.Market);
             
             var isFutureBooking = request.PickupDate.HasValue;
@@ -283,7 +287,7 @@ namespace apcurium.MK.Booking.Api.Services
             var orderCommand = Mapper.Map<Commands.CreateOrder>(request);
             
             InitializePayPalCheckoutResponse paypalWebPaymentResponse = null;
-            if (request.FromWebApp
+            if (isPrepaid
                 && request.Settings.ChargeTypeId == ChargeTypes.PayPal.Id)
             {
                 paypalWebPaymentResponse = _payPalServiceFactory.GetInstance().InitializeWebPayment(orderCommand.OrderId, Request.AbsoluteUri, request.Estimate.Price, request.ClientLanguageCode);
@@ -300,8 +304,8 @@ namespace apcurium.MK.Booking.Api.Services
                     .Select(x => x.Display)
                     .FirstOrDefault();
 
-            chargeTypeKey = paypalWebPaymentResponse != null 
-                ? ChargeTypes.PrePaid.Display
+            chargeTypeKey = paypalWebPaymentResponse != null
+                ? "PrePaid"
                 : accountValidationResult.ChargeTypeKeyOverride 
                     ?? chargeTypeKey;
 
@@ -321,14 +325,16 @@ namespace apcurium.MK.Booking.Api.Services
                 .FirstOrDefault();
 
             orderCommand.AccountId = account.Id;
-            orderCommand.UserAgent = base.Request.UserAgent;
-            orderCommand.ClientVersion = base.Request.Headers.Get("ClientVersion");
+            orderCommand.UserAgent = Request.UserAgent;
+            orderCommand.ClientVersion = Request.Headers.Get("ClientVersion");
             orderCommand.IsChargeAccountPaymentWithCardOnFile = accountValidationResult.IsChargeAccountPaymentWithCardOnFile;
             orderCommand.CompanyKey = bestAvailableCompany.CompanyKey;
             orderCommand.CompanyName = bestAvailableCompany.CompanyName;
             orderCommand.Market = request.Market;
+            orderCommand.IsPrepaid = isPrepaid;
             orderCommand.Settings.ChargeType = chargeTypeIbs;
             orderCommand.Settings.VehicleType = vehicleType;
+
             _commandBus.Send(orderCommand);
 
             if (paypalWebPaymentResponse != null)
