@@ -1756,10 +1756,10 @@
     <value>Amount due:</value>
   </data>
   <data name="Overdue_Retry" xml:space="preserve">
-    <value>Pay again</value>
+    <value>Pay Now</value>
   </data>
   <data name="Overdue_AddNewCard" xml:space="preserve">
-    <value>Update your card</value>
+    <value>Update Credit Card</value>
   </data>
   <data name="Overdue_View" xml:space="preserve">
     <value>Overdue Payment</value>
@@ -1780,6 +1780,6 @@
     <value>Your credit card failed to pay the previous ride, you need to either retry to pay again or update your credit card information.</value>
   </data>
   <data name="Overdue_IBSOrderId" xml:space="preserve">
-    <value>Order Id:</value>
+    <value>Order:</value>
   </data>
 </root>

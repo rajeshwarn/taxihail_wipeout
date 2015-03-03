@@ -579,14 +579,14 @@
   <string name="UnpairPayInCar">Pagar en el vehículo</string>
   <string name="Overdue_View">Overdue Payement</string>
   <string name="Overdue_TransactionId">Transaction Id:</string>
-  <string name="Overdue_AddNewCard">Add a new card</string>
+  <string name="Overdue_AddNewCard">Update Credit Card</string>
   <string name="Overdue_Date">Transaction date:</string>
-  <string name="Overdue_Retry">Retry</string>
+  <string name="Overdue_Retry">Pay Now</string>
   <string name="Overdue_Amount">Amount due:</string>
   <string name="Overdue_Failed_Message">Your credit transaction was denied, please try again later or replace your credit card with a new one.</string>
   <string name="Overdue_Failed_Title">Error settling overdue payment</string>
   <string name="Overdue_Succeed_Message">Your overdue payment of {0} has been settled and your credit card has been reactivated</string>
   <string name="Overdue_Succeed_Title">Overdue payment</string>
-  <string name="Overdue_IBSOrderId">Order Id:</string>
+  <string name="Overdue_IBSOrderId">Order:</string>
   <string name="Overdue_Instructions">Your credit card failed to pay the previous ride, you need to either retry to pay again or update your credit card information.</string>
 </resources>
