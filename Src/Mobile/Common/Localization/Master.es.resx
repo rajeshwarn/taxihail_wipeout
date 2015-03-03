@@ -2211,7 +2211,7 @@
   <data name="Overdue_AddNewCard" xml:space="preserve">
     <value>Update Credit Card</value>
   </data>
-  <data name="Overdue_View" xml:space="preserve">
+  <data name="View_Overdue" xml:space="preserve">
     <value>Overdue Payement</value>
   </data>
   <data name="Overdue_Failed_Message" xml:space="preserve">

@@ -20,7 +20,7 @@
                 android:background="@color/top_bar_color"
                 android:layout_marginBottom="20dip">
                 <TextView
-                    android:text="@string/Overdue_View"
+                    android:text="@string/View_Overdue"
                     android:layout_gravity="center"
                     android:layout_width="fill_parent"
                     android:layout_height="@dimen/top_bar_title_height"

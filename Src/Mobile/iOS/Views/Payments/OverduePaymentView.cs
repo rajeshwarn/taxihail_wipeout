@@ -30,7 +30,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
 				ChangeThemeOfBarStyle();
 			}
 
-			NavigationItem.Title = Localize.GetValue("Overdue_View");
+            NavigationItem.Title = Localize.GetValue("View_Overdue");
 			NavigationItem.HidesBackButton = false;
 
 			lblTransactionId.Text = Localize.GetValue("Overdue_TransactionId");

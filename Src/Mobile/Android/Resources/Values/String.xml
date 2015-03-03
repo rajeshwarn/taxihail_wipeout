@@ -603,7 +603,6 @@
   <string name="Unpair">Pay in Car</string>
   <string name="UnpairErrorMessage">There was an error during unpairing, please try again later.</string>
   <string name="UnpairPayInCar">Pay in Car</string>
-  <string name="Overdue_View">Overdue Payment</string>
   <string name="Overdue_TransactionId">Transaction Id:</string>
   <string name="Overdue_AddNewCard">Update Credit Card</string>
   <string name="Overdue_Date">Transaction date:</string>
@@ -617,4 +616,5 @@
   <string name="InvalidPassengersNumber">Sorry, but unfortunately we do not have a big enough vehicle to accommodate the number of passengers. Please book more than one car to accommodate your party size.</string>
   <string name="Overdue_Instructions">Your credit card failed to pay the previous ride, you need to either retry to pay again or update your credit card information.</string>
   <string name="Overdue_IBSOrderId">Order:</string>
+  <string name="View_Overdue">Overdue Payment</string>
 </resources>

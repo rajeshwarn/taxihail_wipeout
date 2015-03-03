@@ -1753,7 +1753,7 @@
   <data name="Overdue_AddNewCard" xml:space="preserve">
     <value>Modifier la Carte de Crédit</value>
   </data>
-  <data name="Overdue_View" xml:space="preserve">
+  <data name="View_Overdue" xml:space="preserve">
     <value>Compte en souffrance</value>
   </data>
   <data name="Overdue_Failed_Message" xml:space="preserve">
