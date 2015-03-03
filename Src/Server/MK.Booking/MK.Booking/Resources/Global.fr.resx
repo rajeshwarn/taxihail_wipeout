@@ -579,4 +579,7 @@
   <data name="Email_Subject_CreditCardDeactivated" xml:space="preserve">
     <value>{{ ApplicationName }} - Votre carte de crédit a été désactivée</value>
   </data>
+  <data name="CannotCreateOrder_PrepaidPayPalNoEstimate" xml:space="preserve">
+    <value>Pour payer via PayPal, un estimé doit être fourni. Veuillez sélectionner une adresse de destination pour obtenir un estimé.</value>
+  </data>
 </root>

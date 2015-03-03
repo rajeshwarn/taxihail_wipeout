@@ -159,11 +159,10 @@ namespace apcurium.MK.Booking.Services.Impl
         {
             if (!estimatedFare.HasValue)
             {
-                // TODO: Localize
                 return new InitializePayPalCheckoutResponse
                 {
                     IsSuccessful = false,
-                    Message = "You need an estimated fare to use PayPal. Please select a destination address."
+                    Message = _resources.Get("CannotCreateOrder_PrepaidPayPalNoEstimate", clientLanguageCode)
                 };
             }
 

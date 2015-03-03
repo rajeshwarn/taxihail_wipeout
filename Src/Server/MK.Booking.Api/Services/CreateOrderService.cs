@@ -284,18 +284,10 @@ namespace apcurium.MK.Booking.Api.Services
             // Charge account validation
             var accountValidationResult = ValidateChargeAccount(request, account, isFutureBooking);
 
+            // Initialize PayPal if user is using PayPal web
+            var  paypalWebPaymentResponse = InitializePayPalCheckoutIfNecessary(isPrepaid, request);
+
             var orderCommand = Mapper.Map<Commands.CreateOrder>(request);
-            
-            InitializePayPalCheckoutResponse paypalWebPaymentResponse = null;
-            if (isPrepaid
-                && request.Settings.ChargeTypeId == ChargeTypes.PayPal.Id)
-            {
-                paypalWebPaymentResponse = _payPalServiceFactory.GetInstance().InitializeWebPayment(orderCommand.OrderId, Request.AbsoluteUri, request.Estimate.Price, request.ClientLanguageCode);
-                if (!paypalWebPaymentResponse.IsSuccessful)
-                {
-                    throw new HttpError(HttpStatusCode.BadRequest, ErrorCode.CreateOrder_RuleDisable.ToString(), paypalWebPaymentResponse.Message);
-                }
-            }
 
             var chargeTypeIbs = string.Empty;
             var chargeTypeEmail = string.Empty;
@@ -426,6 +418,24 @@ namespace apcurium.MK.Booking.Api.Services
                 ChargeTypeKeyOverride = chargeTypeOverride,
                 IsChargeAccountPaymentWithCardOnFile = isChargeAccountPaymentWithCardOnFile
             };
+        }
+
+        private InitializePayPalCheckoutResponse InitializePayPalCheckoutIfNecessary(bool isPrepaid, CreateOrder request)
+        {
+            if (isPrepaid
+                && request.Settings.ChargeTypeId == ChargeTypes.PayPal.Id)
+            {
+                var paypalWebPaymentResponse = _payPalServiceFactory.GetInstance().InitializeWebPayment(request.Id, Request.AbsoluteUri, request.Estimate.Price, request.ClientLanguageCode);
+
+                if (paypalWebPaymentResponse.IsSuccessful)
+                {
+                    return paypalWebPaymentResponse;
+                }
+
+                throw new HttpError(HttpStatusCode.BadRequest, ErrorCode.CreateOrder_RuleDisable.ToString(), paypalWebPaymentResponse.Message);
+            }
+
+            return null;
         }
 
         private async void CreateOrderOnIBSAndSendCommands(Guid orderId, AccountDetail account, CreateOrder request, ReferenceData referenceData, 

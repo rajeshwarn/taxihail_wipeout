@@ -573,4 +573,7 @@
   <data name="Email_Subject_CreditCardDeactivated" xml:space="preserve">
     <value>{{ ApplicationName }} - Your credit card has been deactivated</value>
   </data>
+  <data name="CannotCreateOrder_PrepaidPayPalNoEstimate" xml:space="preserve">
+    <value>You need an estimated fare to pay with PayPal. Please select a destination address to get one.</value>
+  </data>
 </root>
