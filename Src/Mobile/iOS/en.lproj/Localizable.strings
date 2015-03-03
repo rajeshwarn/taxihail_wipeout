@@ -591,3 +591,9 @@
 "PayPalLinkedInfo"="Account Linked";
 "PayPalLinked"="Your account is now enabled to pay with PayPal by default. You can still choose to pay in the vehicle by selecting \"Pay in Vehicle\" on the confirmation screen";
 "Error"="Error";
+"InvalidPassengersNumberTitle"="Invalid Number of Passengers";
+"InvalidPassengersNumber"="Sorry, but unfortunately we do not have a big enough vehicle to accommodate the number of passengers. Please book more than one car to accommodate your party size.";
+"NoPairingCreditCard"="None";
+"Unpair"="Pay in Car";
+"UnpairErrorMessage"="There was an error during unpairing, please try again later.";
+"UnpairPayInCar"="Pay in Car";

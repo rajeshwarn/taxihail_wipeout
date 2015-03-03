@@ -509,13 +509,16 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 		public async Task<IList<ListItem>> GetPaymentsList (string market = null)
         {
 			var refData = await GetReferenceData();
+            var creditCard = await GetCreditCard();
 
             if (!CurrentAccount.IsPayPalAccountLinked)
 		    {
                 refData.PaymentsList.Remove(i => i.Id == ChargeTypes.PayPal.Id);
 		    }
 
-            if (!CurrentAccount.DefaultCreditCard.HasValue || CurrentAccount.IsPayPalAccountLinked)
+            if (creditCard == null
+                || CurrentAccount.IsPayPalAccountLinked
+                || creditCard.IsDeactivated)
 		    {
 		        refData.PaymentsList.Remove(i => i.Id == ChargeTypes.CardOnFile.Id);
 		    }
@@ -566,13 +569,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 				ExpirationMonth = creditCard.ExpirationMonth,
 				ExpirationYear = creditCard.ExpirationYear
             };
-            
-			// Update cached account
-			var account = CurrentAccount;
-			account.DefaultCreditCard = creditCard.CreditCardId;
-			account.Settings.ChargeTypeId = ChargeTypes.CardOnFile.Id;
-			account.IsPayPalAccountLinked = false;
-			CurrentAccount = account;
+
+            UpdateCachedAccount(creditCard.CreditCardId, ChargeTypes.CardOnFile.Id, false);
 
 			await UseServiceClientAsync<IAccountServiceClient> (client => 
 				isUpdate 
@@ -584,41 +582,37 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			
 		public async Task RemoveCreditCard(bool replacedByPayPal = false)
 		{
-			// Update cached account
-			var account = CurrentAccount;
-			account.DefaultCreditCard = null;
-			account.Settings.ChargeTypeId = replacedByPayPal 
-				? ChargeTypes.PayPal.Id
-				: ChargeTypes.PaymentInCar.Id;
-			CurrentAccount = account;
+            var updatedChargeType = replacedByPayPal ? ChargeTypes.PayPal.Id : ChargeTypes.PaymentInCar.Id;
+
+            UpdateCachedAccount(null, updatedChargeType, CurrentAccount.IsPayPalAccountLinked);
 
 			await UseServiceClientAsync<IAccountServiceClient>(client => client.RemoveCreditCard());
 		}
 
 		public Task LinkPayPalAccount(string authCode)
 		{
-			// Update cached account
-			var account = CurrentAccount;
-			account.DefaultCreditCard = null;
-			account.Settings.ChargeTypeId = ChargeTypes.PayPal.Id;
-			account.IsPayPalAccountLinked = true;
-			CurrentAccount = account;
+            UpdateCachedAccount(null, ChargeTypes.PayPal.Id, true);
 
 			return UseServiceClientAsync<PayPalServiceClient>(service => service.LinkPayPalAccount(new LinkPayPalAccountRequest { AuthCode = authCode }));
 		}
 
 		public Task UnlinkPayPalAccount (bool replacedByCreditCard = false)
 		{
-			// Update cached account
-			var account = CurrentAccount;
-			account.Settings.ChargeTypeId = replacedByCreditCard 
-				? ChargeTypes.CardOnFile.Id
-				: ChargeTypes.PaymentInCar.Id;
-			account.IsPayPalAccountLinked = false;
-			CurrentAccount = account;
+		    var updatedChargeTypeId = replacedByCreditCard ? ChargeTypes.CardOnFile.Id : ChargeTypes.PaymentInCar.Id;
+
+            UpdateCachedAccount(CurrentAccount.DefaultCreditCard, updatedChargeTypeId, false);
 
 			return UseServiceClientAsync<PayPalServiceClient>(service => service.UnlinkPayPalAccount(new UnlinkPayPalAccountRequest()));
 		}
+
+        private void UpdateCachedAccount(Guid? defaultCreditCard, int? chargeTypeId, bool isPayPalAccountLinked)
+        {
+            var account = CurrentAccount;
+            account.DefaultCreditCard = defaultCreditCard;
+            account.Settings.ChargeTypeId = chargeTypeId;
+            account.IsPayPalAccountLinked = isPayPalAccountLinked;
+            CurrentAccount = account;
+        }
 
         public async Task<NotificationSettings> GetNotificationSettings(bool companyDefaultOnly = false, bool cleanCache = false)
         {

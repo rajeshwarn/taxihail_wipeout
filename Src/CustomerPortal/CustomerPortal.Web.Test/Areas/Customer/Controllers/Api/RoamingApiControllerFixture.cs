@@ -19,6 +19,7 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
         private TaxiHailNetworkSettings _tomTaxi;
         private TaxiHailNetworkSettings _pilouTaxi;
         private TaxiHailNetworkSettings _lastTaxi;
+        private TaxiHailNetworkSettings _bobTaxi;
 
         private Company _chrisTaxiCompany;
         private Company _chrisTaxiBisCompany;
@@ -26,6 +27,7 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
         private Company _tomTaxiCompany;
         private Company _pilouTaxiCompany;
         private Company _lastTaxiCompany;
+        private Company _bobTaxiCompany;
 
         [SetUp]
         public void Setup()
@@ -41,6 +43,7 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
                 IsInNetwork = true,
                 Market = "MTL",
                 FleetId = 424242,
+                WhiteListedFleetIds = "987564,321674,23134,88784,99999", // ChrisBis, Tom, Tony, Pilou, Last. Bob exclued
                 Region = new MapRegion
                 {
                     CoordinateStart = new MapCoordinate { Latitude = 45.514466, Longitude = -73.846313 }, // MTL Top left 
@@ -50,7 +53,7 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
                 {
                     new CompanyPreference{CompanyKey = "ChrisTaxiBis", CanAccept = true, CanDispatch = true, Order = 2},
                     new CompanyPreference{CompanyKey = "TomTaxi", CanAccept = true, CanDispatch = false, Order = 0},
-                    new CompanyPreference{CompanyKey = "PilouTaxi", CanAccept = true, CanDispatch = true, Order = 1},
+                    new CompanyPreference{CompanyKey = "PilouTaxi", CanAccept = true, CanDispatch = true, Order = 1}
                 }
             }; 
 
@@ -114,6 +117,7 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
                 IsInNetwork = true,
                 Market = "NYC",
                 FleetId = 88784,
+                WhiteListedFleetIds = "444444", // Random one to test BobTaxi exclusion
                 Region = new MapRegion
                 {
                     CoordinateStart = new MapCoordinate { Latitude = 45.514466, Longitude = -73.889451 },
@@ -124,6 +128,7 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
                     new CompanyPreference{CompanyKey = "ChrisTaxiBis",CanAccept = true,CanDispatch = true},
                     new CompanyPreference{CompanyKey = "ChrisTaxi",CanAccept = false,CanDispatch = true},
                     new CompanyPreference{CompanyKey = "TomTaxi",CanAccept = true,CanDispatch = true},
+                    new CompanyPreference{CompanyKey = "BobTaxi",CanAccept = true,CanDispatch = true},
                 }
             };
 
@@ -138,6 +143,26 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
                 {
                     CoordinateStart = new MapCoordinate { Latitude = 45.420595, Longitude = -75.708386 }, // Ottawa
                     CoordinateEnd = new MapCoordinate { Latitude = 45.411045, Longitude = -75.684568 }
+                }
+            };
+
+            _bobTaxi = new TaxiHailNetworkSettings
+            {
+                Id = "BobTaxi",
+                IsInNetwork = true,
+                Market = "NYC",
+                FleetId = 587564,
+                Region = new MapRegion
+                {
+                    CoordinateStart = new MapCoordinate { Latitude = 45.514466, Longitude = -73.846313 }, // MTL Top left 
+                    CoordinateEnd = new MapCoordinate { Latitude = 45.41129, Longitude = -73.51331 } // MTL BTM Right
+
+                },
+                Preferences = new List<CompanyPreference>
+                {
+                    new CompanyPreference{CompanyKey = "ChrisTaxi",CanAccept = true,CanDispatch = true},
+                    new CompanyPreference{CompanyKey = "TomTaxi",CanAccept = true,CanDispatch = true},
+                    new CompanyPreference{CompanyKey = "PilouTaxi",CanAccept = true,CanDispatch = true},
                 }
             };
 
@@ -213,6 +238,18 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
                     ServiceUrl = "http://google.com"
                 }
             };
+            _bobTaxiCompany = new Company
+            {
+                Id = "BobTaxi",
+                CompanyKey = "BobTaxi",
+                CompanyName = "BobTaxi",
+                IBS = new IBSSettings
+                {
+                    Password = "Bob",
+                    Username = "Alice",
+                    ServiceUrl = "http://altavista.com"
+                }
+            };
 
             NetworkRepository.DeleteAll();
             NetworkRepository.Add(_chrisTaxi);
@@ -221,6 +258,7 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
             NetworkRepository.Add(_tomTaxi);
             NetworkRepository.Add(_pilouTaxi);
             NetworkRepository.Add(_lastTaxi);
+            NetworkRepository.Add(_bobTaxi);
 
             CompanyRepository.DeleteAll();
             CompanyRepository.Add(_chrisTaxiCompany);
@@ -229,6 +267,7 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
             CompanyRepository.Add(_tomTaxiCompany);
             CompanyRepository.Add(_pilouTaxiCompany);
             CompanyRepository.Add(_lastTaxiCompany);
+            CompanyRepository.Add(_bobTaxiCompany);
         }
 
         public InMemoryRepository<TaxiHailNetworkSettings> NetworkRepository { get; set; }
@@ -251,13 +290,16 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
             Assert.Contains("SYD", fleetsPreferences.Keys);
 
             var chicagoFleets = fleetsPreferences["CHI"];
+            Assert.AreEqual(2, chicagoFleets.Count);
             Assert.AreEqual("TomTaxi", chicagoFleets[0].CompanyPreference.CompanyKey);
             Assert.AreEqual("TonyTaxi", chicagoFleets[1].CompanyPreference.CompanyKey);
 
             var newYorkFleets = fleetsPreferences["NYC"];
+            Assert.AreEqual(1, newYorkFleets.Count);
             Assert.AreEqual("PilouTaxi", newYorkFleets[0].CompanyPreference.CompanyKey);
 
             var sydneyFleets = fleetsPreferences["SYD"];
+            Assert.AreEqual(1, sydneyFleets.Count);
             Assert.AreEqual("LastTaxi", sydneyFleets[0].CompanyPreference.CompanyKey);
 
         }
@@ -298,6 +340,16 @@ namespace CustomerPortal.Web.Test.Areas.Customer.Controllers.Api
             Assert.AreEqual("http://altavista.com", secondFleet.IbsUrl);
             Assert.AreEqual("Alice", secondFleet.IbsUserName);
             Assert.AreEqual("Bob", secondFleet.IbsPassword);
+        }
+
+        [Test]
+        public void When_Getting_Fleets_From_a_Market_With_Excluded_Feet()
+        {
+            var response = Sut.GetMarketFleets("PilouTaxi", "NYC");
+            var json = response.Content.ReadAsStringAsync().Result;
+            var fleets = JsonConvert.DeserializeObject<List<NetworkFleetResponse>>(json);
+
+            Assert.AreEqual(0, fleets.Count);
         }
 
         [Test]

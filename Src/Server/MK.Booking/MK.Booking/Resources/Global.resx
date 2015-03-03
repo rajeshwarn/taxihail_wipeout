@@ -552,4 +552,25 @@
   <data name="PayPalWebPaymentDescription" xml:space="preserve">
     <value>Taxi ride of amount {0}</value>
   </data>
+  <data name="PushNotification_OrderPairingSuccessfulPayPalUnpair" xml:space="preserve">
+    <value>The ride #{0} will be paid at the end of the trip using your PayPal account. If you're in the wrong car, choose the Pay in Car option below to ensure you are not charged for the ride.</value>
+  </data>
+  <data name="PushNotification_OrderPairingSuccessfulUnpair" xml:space="preserve">
+    <value>The ride #{0} will be paid at the end of the trip using your credit card on file. If you're in the wrong car, choose the Pay in Car option below to ensure you are not charged for the ride. </value>
+  </data>
+  <data name="PushNotification_OrderUnpairingTimeOutWarning" xml:space="preserve">
+    <value>Reminder: If you're in the wrong car, choose the Pay in Car option below to ensure you are not charged for the ride.</value>
+  </data>
+  <data name="PayPal" xml:space="preserve">
+    <value>PayPal</value>
+  </data>
+  <data name="CannotCreateOrder_CreditCardDeactivated" xml:space="preserve">
+    <value>Your card of file was deactivated because the payment of your last ride was declined. To be able to use it again, go to the Payment screen to settle any overdue payment</value>
+  </data>
+  <data name="Email_Body_CreditCardDeactivatedLine" xml:space="preserve">
+    <value>Your &lt;b&gt;{{ CreditCardCompany }}&lt;/b&gt; credit card ending by &lt;b&gt;{{ Last4Digits }}&lt;/b&gt; has been deactivated because the payment of your last ride was declined. To be able to use it again, open {{ ApplicationName }} on your smart phone and go to the Payment screen to settle any overdue payment.</value>
+  </data>
+  <data name="Email_Subject_CreditCardDeactivated" xml:space="preserve">
+    <value>{{ ApplicationName }} - Your credit card has been deactivated</value>
+  </data>
 </root>

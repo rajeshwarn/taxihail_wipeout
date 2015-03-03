@@ -73,11 +73,12 @@ namespace apcurium.MK.Booking.Domain
             });
         }
 
-        public void ErrorThrown(string reason)
+        public void ErrorThrown(string reason, Guid accountId)
         {
             Update(new CreditCardErrorThrown
             {
-                Reason = reason
+                Reason = reason,
+                AccountId = accountId
             });
         }
 

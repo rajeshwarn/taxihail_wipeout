@@ -41,7 +41,8 @@ namespace apcurium.MK.Booking.Test.Integration.CompanyFixture
                 VehicleTypeId = Guid.NewGuid(),
                 LogoName = "taxi",
                 Name = "Taxi",
-                ReferenceDataVehicleId = 123
+                ReferenceDataVehicleId = 123,
+                MaxNumberPassengers = 2
             };
 
             Sut.Handle(@event);
@@ -55,6 +56,7 @@ namespace apcurium.MK.Booking.Test.Integration.CompanyFixture
                 Assert.AreEqual(@event.LogoName, dto.LogoName);
                 Assert.AreEqual(@event.Name, dto.Name);
                 Assert.AreEqual(@event.ReferenceDataVehicleId, dto.ReferenceDataVehicleId);
+                Assert.AreEqual(@event.MaxNumberPassengers, dto.MaxNumberPassengers);
             }
         }
     }

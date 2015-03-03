@@ -339,12 +339,10 @@
     <Compile Include="Services\INotificationService.cs" />
     <Compile Include="Services\Impl\NotificationService.cs" />
     <Compile Include="Services\IPairingService.cs" />
-    <Compile Include="Services\IPaymentAbstractionService.cs" />
     <Compile Include="Services\IPaymentService.cs" />
-    <Compile Include="Services\IPaymentServiceFactory.cs" />
     <Compile Include="Services\IPayPalServiceFactory.cs" />
-    <Compile Include="Services\PaymentAbstrationService.cs" />
-    <Compile Include="Services\PaymentServiceFactory.cs" />
+    <Compile Include="Services\MonerisResponseCodes.cs" />
+    <Compile Include="Services\PaymentService.cs" />
     <Compile Include="Services\PayPalServiceFactory.cs" />
     <Compile Include="SMS\Impl\TwilioService.cs" />
     <Compile Include="SMS\ISmsService.cs" />
@@ -360,6 +358,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Email\Templates\BookingConfirmation.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Email\Templates\CreditCardDeactivated.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Email\Templates\PasswordReset.html">

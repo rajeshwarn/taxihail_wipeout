@@ -34,6 +34,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 
 		Task ValidatePickupTime();
 		Task ValidatePickupAndDestination();
+		Task ValidateNumberOfPassengers (int? numberOfPassengers);
 		Task<Tuple<Order, OrderStatusDetail>> ConfirmOrder();
 
 		Task SetVehicleType (int? vehicleTypeId);
@@ -56,6 +57,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 		IObservable<string> GetAndObserveMarket();
 		IObservable<bool> GetAndObserveIsDestinationModeOpened();
 
+		Task<bool> IsFutureBooking();
+
 		Task<Tuple<Order, OrderStatusDetail>> GetLastActiveOrder();
 
         Guid? GetLastUnratedRide();
@@ -73,7 +76,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 		Task<OrderValidationResult> ValidateOrder();
 		void ConfirmValidationOrder ();
 
-		void Rebook(Order previous);
+        Task Rebook(Order previous);
 
 		Task<Address> GetCurrentAddress();
 

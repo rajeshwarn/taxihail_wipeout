@@ -573,4 +573,8 @@
   <string name="PayPalLinked">Your account is now enabled to pay with PayPal by default. You can still choose to pay in the vehicle by selecting \"Pay in Vehicle\" on the payment screen</string>
   <string name="PayPalLinkedInfo">Account Linked</string>
   <string name="Error">Error</string>
+  <string name="NoPairingCreditCard">None</string>
+  <string name="Unpair">Pagar en el vehículo</string>
+  <string name="UnpairErrorMessage">Hubo un error desincronizando, por favor intente nuevamente</string>
+  <string name="UnpairPayInCar">Pagar en el vehículo</string>
 </resources>

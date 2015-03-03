@@ -59,7 +59,8 @@ namespace apcurium.MK.Booking.Test.OrderFixture
                     ReceiptEmail = true,
                     PromotionUnlockedEmail = true,
                     VehicleAtPickupPush = true,
-                    PromotionUnlockedPush = true
+                    PromotionUnlockedPush = true,
+                    UnpairingReminderPush = true
                 });
             }
         }
@@ -87,7 +88,6 @@ namespace apcurium.MK.Booking.Test.OrderFixture
                 new StaticMap(),
                 null,
                 _geocodingMock.Object,
-                null,
                 null);
             notificationService.SetBaseUrl(new Uri("http://www.example.net"));
 

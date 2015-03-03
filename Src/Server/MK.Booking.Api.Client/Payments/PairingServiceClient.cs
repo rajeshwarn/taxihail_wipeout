@@ -16,16 +16,13 @@ namespace apcurium.MK.Booking.Api.Client.Payments
         {
         }
 
-        public async Task<PairingResponse> Pair(Guid orderId, string cardToken, int? autoTipPercentage)
+        public async Task<BasePaymentResponse> Unpair(Guid orderId)
         {
             try
             {
-                var response = await Client.PostAsync(new PairingForPaymentRequest
+                var response = await Client.PostAsync(new UnpairingForPaymentRequest
                 {
-                    OrderId = orderId,
-                    CardToken = cardToken,
-                    AutoTipPercentage = autoTipPercentage
-
+                    OrderId = orderId
                 });
                 return response;
             }
@@ -33,14 +30,6 @@ namespace apcurium.MK.Booking.Api.Client.Payments
             {
                 return new PairingResponse { IsSuccessful = false };
             }
-        }
-
-        public Task<BasePaymentResponse> Unpair(Guid orderId)
-        {
-            return Client.PostAsync(new UnpairingForPaymentRequest
-            {
-                OrderId = orderId
-            });
         }
     }
 }

@@ -59,6 +59,7 @@ namespace apcurium.MK.Booking.EventHandlers
                 {
                     IBSOrderId = @event.IBSOrderId,
                     ChargeType = @event.Settings.ChargeType,
+                    IsChargeAccountPaymentWithCardOnFile = @event.IsChargeAccountPaymentWithCardOnFile,
                     PickupDateTime = @event.PickupDate,
                     CreateDateTime = @event.CreatedDate,
                     PickupAddress = @event.PickupAddress,

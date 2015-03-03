@@ -34,12 +34,13 @@
     <AndroidSigningStorePass>mkt0001.</AndroidSigningStorePass>
     <AndroidSigningKeyAlias>MKTaxiHail</AndroidSigningKeyAlias>
     <AndroidSigningKeyPass>mkt0001.</AndroidSigningKeyPass>
-    <AndroidLinkMode>None</AndroidLinkMode>
     <DebugSymbols>True</DebugSymbols>
     <EmbedAssembliesIntoApk>True</EmbedAssembliesIntoApk>
+    <AndroidLinkMode>None</AndroidLinkMode>
+    <AndroidSupportedAbis>armeabi-v7a;x86</AndroidSupportedAbis>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <Optimize>True</Optimize>
+    <Optimize>false</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>CLIENT</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
@@ -50,15 +51,11 @@
     <AndroidSigningStorePass>mkt0001.</AndroidSigningStorePass>
     <AndroidSigningKeyAlias>MKTaxiHail</AndroidSigningKeyAlias>
     <AndroidSigningKeyPass>mkt0001.</AndroidSigningKeyPass>
-    <AndroidSupportedAbis>armeabi,armeabi-v7a</AndroidSupportedAbis>
-    <AndroidLinkSkip>
-    </AndroidLinkSkip>
-    <AndroidStoreUncompressedFileExtensions>
-    </AndroidStoreUncompressedFileExtensions>
-    <JavaOptions>
-    </JavaOptions>
+    <AndroidSupportedAbis>armeabi;armeabi-v7a;x86</AndroidSupportedAbis>
     <MonoDroidExtraArgs>
     </MonoDroidExtraArgs>
+    <DebugType>full</DebugType>
+    <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="mscorlib" />
@@ -316,8 +313,6 @@
     <AndroidResource Include="Resources\Drawable\button_action_gray_text_selector.xml" />
     <AndroidResource Include="Resources\Drawable\button_action_green_text_selector.xml" />
     <AndroidResource Include="Resources\Drawable\button_action_red_text_selector.xml" />
-    <AndroidResource Include="Resources\Layout\View_Payments_ConfirmPair.axml" />
-    <Compile Include="Activities\Book\ConfirmPairActivity.cs" />
     <AndroidResource Include="Resources\Layout\View_CreateAccount.axml">
       <SubType>Designer</SubType>
     </AndroidResource>

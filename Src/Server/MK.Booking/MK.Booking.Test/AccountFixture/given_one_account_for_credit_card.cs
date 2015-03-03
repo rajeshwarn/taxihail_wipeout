@@ -114,5 +114,15 @@ namespace apcurium.MK.Booking.Test.AccountFixture
             var @event = _sut.ThenHasSingle<AllCreditCardsRemoved>();
             Assert.AreEqual(_accountId, @event.SourceId);
         }
+
+        [Test]
+        public void when_credit_card_deactivated()
+        {
+            _sut.When(new DeactivateCreditCard { AccountId = _accountId });
+
+            var @event = _sut.ThenHasSingle<CreditCardDeactivated>();
+            Assert.AreEqual(_accountId, @event.SourceId);
+        }
+
     }
 }

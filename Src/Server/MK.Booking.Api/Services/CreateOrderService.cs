@@ -49,9 +49,10 @@ namespace apcurium.MK.Booking.Api.Services
         private readonly IEventSourcedRepository<Promotion> _promoRepository;
         private readonly HoneyBadgerServiceClient _honeyBadgerServiceClient;
         private readonly ITaxiHailNetworkServiceClient _taxiHailNetworkServiceClient;
-        private readonly IPaymentAbstractionService _paymentAbstractionService;
+        private readonly IPaymentService _paymentService;
         private readonly IPayPalServiceFactory _payPalServiceFactory;
         private readonly IAccountChargeDao _accountChargeDao;
+        private readonly ICreditCardDao _creditCardDao;
         private readonly ICommandBus _commandBus;
         private readonly IServerSettings _serverSettings;
         private readonly ReferenceDataService _referenceDataService;
@@ -68,15 +69,17 @@ namespace apcurium.MK.Booking.Api.Services
             IRuleCalculator ruleCalculator,
             IUpdateOrderStatusJob updateOrderStatusJob,
             IAccountChargeDao accountChargeDao,
+            ICreditCardDao creditCardDao,
             IOrderDao orderDao,
             IPromotionDao promotionDao,
             IEventSourcedRepository<Promotion> promoRepository,
             HoneyBadgerServiceClient honeyBadgerServiceClient,
             ITaxiHailNetworkServiceClient taxiHailNetworkServiceClient,
-            IPaymentAbstractionService paymentAbstractionService,
+            IPaymentService paymentService,
             IPayPalServiceFactory payPalServiceFactory)
         {
             _accountChargeDao = accountChargeDao;
+            _creditCardDao = creditCardDao;
             _commandBus = commandBus;
             _accountDao = accountDao;
             _referenceDataService = referenceDataService;
@@ -89,7 +92,7 @@ namespace apcurium.MK.Booking.Api.Services
             _promoRepository = promoRepository;
             _honeyBadgerServiceClient = honeyBadgerServiceClient;
             _taxiHailNetworkServiceClient = taxiHailNetworkServiceClient;
-            _paymentAbstractionService = paymentAbstractionService;
+            _paymentService = paymentService;
             _payPalServiceFactory = payPalServiceFactory;
 
             _resources = new Resources.Resources(_serverSettings);
@@ -158,7 +161,18 @@ namespace apcurium.MK.Booking.Api.Services
 
             var account = _accountDao.FindById(new Guid(this.GetSession().UserAuthId));
 
-            var bestAvailableCompany = FindBestAvailableCompany(request.Market, request.PickupAddress.Latitude, request.PickupAddress.Longitude);
+            BestAvailableCompany bestAvailableCompany;
+
+            if (request.OrderCompanyKey.HasValue() || request.OrderFleetId.HasValue)
+            {
+                // For API user, it's possible to manually specify which company to dispatch to
+                bestAvailableCompany = FindSpecificCompany(request.Market, request.OrderCompanyKey, request.OrderFleetId);
+            }
+            else
+            {
+                bestAvailableCompany = FindBestAvailableCompany(request.Market, request.PickupAddress.Latitude, request.PickupAddress.Longitude);
+            }
+
             if (request.Market.HasValue() && bestAvailableCompany.CompanyKey == null)
             {
                 // No companies available that are desserving this region for the company
@@ -377,7 +391,7 @@ namespace apcurium.MK.Booking.Api.Services
                             _resources.Get("CannotCreateOrderChargeAccountNotSupported", request.ClientLanguageCode));
                     }
 
-                    if (_paymentAbstractionService.IsPayPal(account.Id))
+                    if (_paymentService.IsPayPal(account.Id))
                     {
                         chargeTypeOverride = ChargeTypes.PayPal.Display;
                         request.Settings.ChargeTypeId = ChargeTypes.PayPal.Id;
@@ -652,6 +666,14 @@ namespace apcurium.MK.Booking.Api.Services
                     GetCreateOrderServiceErrorMessage(ErrorCode.CreateOrder_CardOnFileButNoCreditCard, clientLanguageCode));
             }
 
+            var creditCard = _creditCardDao.FindByAccountId(account.Id).First();
+            if (creditCard.IsDeactivated)
+            {
+                throw new HttpError(HttpStatusCode.BadRequest,
+                    ErrorCode.CreateOrder_CardOnFileDeactivated.ToString(),
+                    _resources.Get("CannotCreateOrder_CreditCardDeactivated", clientLanguageCode));
+            }
+
             PreAuthorizePaymentMethod(orderId, account, clientLanguageCode, isFutureBooking, appEstimate, false);
         }
 
@@ -674,12 +696,12 @@ namespace apcurium.MK.Booking.Api.Services
             {
                 return;
             }
-
+            
             // there's a minimum amount of $50 (warning indicating that on the admin ui)
             // if app returned an estimate, use it, otherwise use the setting (or 0), then use max between the value and 50
             var preAuthAmount = Math.Max(appEstimate ?? (_serverSettings.GetPaymentSettings().PreAuthAmount ?? 0), 50);
             
-            var preAuthResponse = _paymentAbstractionService.PreAuthorize(orderId, account, preAuthAmount);
+            var preAuthResponse = _paymentService.PreAuthorize(orderId, account, preAuthAmount);
 
             var errorMessage = isPayPal
                 ? _resources.Get("CannotCreateOrder_PayPalWasDeclined", clientLanguageCode)
@@ -753,7 +775,7 @@ namespace apcurium.MK.Booking.Api.Services
 
         private DateTime GetCurrentOffsetedTime(string companyKey, string market)
         {
-            //TODO : need to check ibs setup for shortesst time.
+            //TODO : need to check ibs setup for shortesst time
 
             var ibsServerTimeDifference = _ibsServiceProvider.GetSettingContainer(companyKey, market).TimeDifference;
             var offsetedTime = DateTime.Now.AddMinutes(2);
@@ -796,9 +818,19 @@ namespace apcurium.MK.Booking.Api.Services
             Debug.Assert(request.PickupDate != null, "request.PickupDate != null");
 
             // This needs to be null if not set or the payment in car payment type id of ibs
-            int? ibsChargeTypeId = _serverSettings.GetPaymentSettings().AutomaticPaymentPairing
-                ? _serverSettings.ServerData.IBS.PaymentTypeCardOnFileId
-                : _serverSettings.ServerData.IBS.PaymentTypePaymentInCarId;
+            int? ibsChargeTypeId;
+            if (request.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id)
+            {
+                ibsChargeTypeId = _serverSettings.ServerData.IBS.PaymentTypeCardOnFileId;
+            }
+            else if (request.Settings.ChargeTypeId == ChargeTypes.Account.Id)
+            {
+                ibsChargeTypeId = _serverSettings.ServerData.IBS.PaymentTypeChargeAccountId;
+            }
+            else
+            {
+                ibsChargeTypeId = _serverSettings.ServerData.IBS.PaymentTypePaymentInCarId;
+            }
 
             var result = _ibsServiceProvider.Booking(companyKey, request.Market).CreateOrder(
                 providerId,
@@ -996,6 +1028,46 @@ namespace apcurium.MK.Booking.Api.Services
                     CompanyKey = bestFleet != null ? bestFleet.CompanyKey : null,
                     CompanyName = bestFleet != null ? bestFleet.CompanyName : null
                 };
+            }
+
+            // Nothing found
+            return new BestAvailableCompany();
+        }
+
+        private BestAvailableCompany FindSpecificCompany(string market, string orderCompanyKey = null, int? orderFleetId = null)
+        {
+            if (!orderCompanyKey.HasValue() && !orderFleetId.HasValue)
+            {
+                throw new ArgumentNullException("You must at least provide a value for orderCompanyKey or orderFleetId");
+            }
+
+            var companyKey = _serverSettings.ServerData.TaxiHail.ApplicationKey;
+            var marketFleets = _taxiHailNetworkServiceClient.GetMarketFleets(companyKey, market).ToArray();
+
+            if (orderCompanyKey.HasValue())
+            {
+                var match = marketFleets.FirstOrDefault(f => f.CompanyKey == orderCompanyKey);
+                if (match != null)
+                {
+                    return new BestAvailableCompany
+                    {
+                        CompanyKey = match.CompanyKey,
+                        CompanyName = match.CompanyName
+                    };
+                }
+            }
+
+            if (orderFleetId.HasValue)
+            {
+                var match = marketFleets.FirstOrDefault(f => f.FleetId == orderFleetId.Value);
+                if (match != null)
+                {
+                    return new BestAvailableCompany
+                    {
+                        CompanyKey = match.CompanyKey,
+                        CompanyName = match.CompanyName
+                    };
+                }
             }
 
             // Nothing found

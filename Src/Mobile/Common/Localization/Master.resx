@@ -1353,8 +1353,8 @@
   <data name="CmtConfirmPayment" xml:space="preserve">
     <value>Confirm</value>
   </data>
-  <data name="CmtRideLinqUnpair" xml:space="preserve">
-    <value>Unpair</value>
+  <data name="UnpairPayInCar" xml:space="preserve">
+    <value>Pay in Car</value>
   </data>
   <data name="CmtRideLinqCancelChanges" xml:space="preserve">
     <value>Cancel</value>
@@ -1368,7 +1368,7 @@
   <data name="CmtRideLinqGenericErrorMessage" xml:space="preserve">
     <value>There was an error during pairing, verify your credit card information or try again later.</value>
   </data>
-  <data name="CmtRideLinqUnpairErrorMessage" xml:space="preserve">
+  <data name="UnpairErrorMessage" xml:space="preserve">
     <value>There was an error during unpairing, please try again later.</value>
   </data>
   <data name="CmtTipAmount" xml:space="preserve">
@@ -1736,5 +1736,14 @@
   </data>
   <data name="PayPalLinkedInfo" xml:space="preserve">
     <value>Account Linked</value>
+  </data>
+  <data name="NoPairingCreditCard" xml:space="preserve">
+    <value>None</value>
+  </data>
+ <data name="InvalidPassengersNumberTitle" xml:space="preserve">
+    <value>Invalid Number of Passengers</value>
+  </data>
+ <data name="InvalidPassengersNumber" xml:space="preserve">
+    <value>Sorry, but unfortunately we do not have a big enough vehicle to accommodate the number of passengers. Please book more than one car to accommodate your party size.</value>
   </data>
 </root>

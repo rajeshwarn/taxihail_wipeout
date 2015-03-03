@@ -1,12 +1,17 @@
 ﻿<!-- PAYMENT OPTION-->
 <h4 class="table-title">{{localize "Payment Mode"}}</h4>
 
-    <div class="control-group" id="automaticPairingDiv">
-        <label class="control-label settingsLabel">{{{localize "Automatic Pairing"}}}</label>
-        <select name="automaticPaymentPairing" class="settingsBox">
-            <option value="{{automaticPaymentPairing}}" selected="">{{localizeBool automaticPaymentPairing true="Yes" false="No"}}</option>
-            <option value="{{invertedBool automaticPaymentPairing}}">{{localizeBool automaticPaymentPairing true="No" false="Yes"}}</option>
+    <div class="control-group" id="isUnpairingDisabledDiv">
+        <label class="control-label settingsLabel">{{{localize "Disable Unpairing"}}}</label>
+        <select name="isUnpairingDisabled" class="settingsBox">
+            <option value="{{isUnpairingDisabled}}" selected="">{{localizeBool isUnpairingDisabled true="Yes" false="No"}}</option>
+            <option value="{{invertedBool isUnpairingDisabled}}">{{localizeBool isUnpairingDisabled true="No" false="Yes"}}</option>
         </select>
+    </div>
+
+    <div class="control-group" id="unpairingTimeOutDiv">
+        <label class="control-label settingsLabel">{{{localize "Unpair Time Limit (seconds)"}}}</label>
+        <input type="text" class="input-block-level settingsBox" name="unpairingTimeOut" value="{{unpairingTimeOut}}" />
     </div>
 
     <div class="control-group" id="preAuthAmountEnabledDiv">

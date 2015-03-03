@@ -109,5 +109,7 @@ namespace apcurium.MK.Booking.ReadModel
         public Dictionary<string, string> Rating { get; set; }
 
         public bool WasPaired { get; set; }
+
+        public bool IsChargeAccountPaymentWithCardOnFile { get; set; }
     }
 }

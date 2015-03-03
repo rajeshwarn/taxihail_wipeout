@@ -119,6 +119,24 @@ namespace apcurium.MK.Web.Areas.AdminTH.Models
 
         public bool CanModifyTriggerGoal { get; set; }
 
+        public bool IsExpired
+        {
+            get
+            {
+                var isExpired = false;
+
+                if (EndDate.HasValue && EndTime.HasValue)
+                {
+                    isExpired = EndDate.Value.Add(EndTime.Value.TimeOfDay) < DateTime.Now;
+                }
+                else if (EndDate.HasValue)
+                {
+                    isExpired = EndDate.Value.AddDays(1) < DateTime.Now;
+                }
+                return isExpired;
+            }
+        }
+
         private DateTime? SetTime(string timeStringValue, bool isEndTime)
         {
             if (!timeStringValue.HasValue())

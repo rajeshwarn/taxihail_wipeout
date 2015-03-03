@@ -90,6 +90,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
                     {
                         await _orderWorkflowService.ValidatePickupAndDestination();
                         await _orderWorkflowService.ValidatePickupTime();
+						await _orderWorkflowService.ValidateNumberOfPassengers(null);
                     }
                     catch (OrderValidationException e)
                     {
@@ -107,6 +108,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
                             case OrderValidationError.InvalidPickupDate:
                                 this.Services().Message.ShowMessage(this.Services().Localize["InvalidBookinInfoTitle"], this.Services().Localize["BookViewInvalidDate"]);
                                 return;
+							case OrderValidationError.InvalidPassengersNumber:
+								this.Services().Message.ShowMessage(this.Services().Localize["InvalidPassengersNumberTitle"], this.Services().Localize["InvalidPassengersNumber"]);
+								return;
                             default:
                                 Logger.LogError(e);
                                 return;
@@ -232,12 +236,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 									var result = await _orderWorkflowService.ConfirmOrder();
 
 									this.Services().Analytics.LogEvent("Book");
-									PresentationStateRequested.Raise(this, new HomeViewModelStateRequestedEventArgs(HomeViewModelState.Initial, true));
-									ShowViewModel<BookingStatusViewModel>(new
-									{
-										order = result.Item1.ToJson(),
-										orderStatus = result.Item2.ToJson()
-									});
+
+									await GotoBookingStatus(result);
 								}
 							}
 						}
@@ -247,13 +247,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 							{
 								var result = await _orderWorkflowService.ConfirmOrder();
 
-								PresentationStateRequested.Raise(this, new HomeViewModelStateRequestedEventArgs(HomeViewModelState.Initial, true));
-								ShowViewModel<BookingStatusViewModel>(new
-								{
-									order = result.Item1.ToJson(),
-									orderStatus = result.Item2.ToJson()
-								});
+								await GotoBookingStatus(result);
 							}
+							
 						}
                     }
                     catch (OrderCreationException e)
@@ -275,7 +271,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 										var orderInfos = await GetOrderInfos(pendingOrderId);
 
 										PresentationStateRequested.Raise(this, new HomeViewModelStateRequestedEventArgs(HomeViewModelState.Initial, true));
-										ShowViewModel<BookingStatusViewModel>(new {order = orderInfos.Item1, orderStatus = orderInfos.Item2});
+										ShowViewModelAndRemoveFromHistory<BookingStatusViewModel>(new {order = orderInfos.Item1, orderStatus = orderInfos.Item2});
 									},
                                         this.Services().Localize["Cancel"], () => {});
                                 }
@@ -307,6 +303,26 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 				});
             }
         }
+
+		private async Task GotoBookingStatus(Tuple<Order, OrderStatusDetail> result)
+		{
+			PresentationStateRequested.Raise(this, new HomeViewModelStateRequestedEventArgs(HomeViewModelState.Initial, true));
+			if (await _orderWorkflowService.IsFutureBooking())
+			{
+				ShowViewModel<BookingStatusViewModel>(new {
+					order = result.Item1.ToJson(),
+					orderStatus = result.Item2.ToJson()
+				});
+			}
+			else
+			{
+                ShowViewModelAndRemoveFromHistory<BookingStatusViewModel>(new
+                {
+					order = result.Item1.ToJson(),
+					orderStatus = result.Item2.ToJson()
+				});
+			}
+		}
 
         public ICommand BookLater
         {

@@ -17,6 +17,7 @@ namespace apcurium.MK.Booking.Services
         void SendChangeDispatchCompanyPush(Guid orderId);
         void SendPaymentCapturePush(Guid orderId, decimal amount);
         void SendTaxiNearbyPush(Guid orderId, string ibsStatus, double? newLatitude, double? newLongitude);
+        void SendUnpairingReminderPush(Guid orderId);
         void SendAutomaticPairingPush(Guid orderId, int? autoTipPercentage, bool success);
         void SendOrderCreationErrorPush(Guid orderId, string errorDescription);
 
@@ -31,5 +32,7 @@ namespace apcurium.MK.Booking.Services
             DateTime pickupDate, DateTime? dropOffDate, string clientEmailAddress, string clientLanguageCode, double amountSavedByPromotion, string promoCode, 
             bool bypassNotificationSetting = false);
         void SendPromotionUnlockedEmail(string name, string code, DateTime? expirationDate, string clientEmailAddress, string clientLanguageCode, bool bypassNotificationSettings = false);
+
+        void SendCreditCardDeactivatedEmail(string creditCardCompany, string last4Digits, string clientEmailAddress, string clientLanguageCode, bool bypassNotificationSetting = false);
     }
 }

@@ -70,6 +70,15 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Your card of file was deactivated because the payment of your last ride was declined. To be able to use it again, go to the Payment screen to settle any overdue payment.
+        /// </summary>
+        public static string CannotCreateOrder_CreditCardDeactivated {
+            get {
+                return ResourceManager.GetString("CannotCreateOrder_CreditCardDeactivated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The order cannot be created because your credit card failed the preauthorization check..
         /// </summary>
         public static string CannotCreateOrder_CreditCardWasDeclined {
@@ -399,6 +408,15 @@ namespace apcurium.MK.Booking.Resources {
         public static string Email_Body_ChargeType {
             get {
                 return ResourceManager.GetString("Email_Body_ChargeType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Your &lt;b&gt;{{ CreditCardCompany }}&lt;/b&gt; credit card ending by &lt;b&gt;{{ Last4Digits }}&lt;/b&gt; has been deactivated because the payment of your last ride was declined. To be able to use it again, open {{ ApplicationName }} on your smart phone and go to the Payment screen to settle any overdue payment..
+        /// </summary>
+        public static string Email_Body_CreditCardDeactivatedLine {
+            get {
+                return ResourceManager.GetString("Email_Body_CreditCardDeactivatedLine", resourceCulture);
             }
         }
         
@@ -817,6 +835,15 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {{ ApplicationName }} - Your credit card has been deactivated.
+        /// </summary>
+        public static string Email_Subject_CreditCardDeactivated {
+            get {
+                return ResourceManager.GetString("Email_Subject_CreditCardDeactivated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {{ ApplicationName }} - Your password has been reset.
         /// </summary>
         public static string Email_Subject_PasswordReset {
@@ -1096,6 +1123,15 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to PayPal.
+        /// </summary>
+        public static string PayPal {
+            get {
+                return ResourceManager.GetString("PayPal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Taxi ride of amount {0}.
         /// </summary>
         public static string PayPalWebPaymentDescription {
@@ -1146,6 +1182,33 @@ namespace apcurium.MK.Booking.Resources {
         public static string PushNotification_OrderPairingSuccessfulPayPal {
             get {
                 return ResourceManager.GetString("PushNotification_OrderPairingSuccessfulPayPal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The ride #{0} will be paid at the end of the trip using your PayPal account. If you&apos;re in the wrong car, choose the Pay in Car option below to ensure you are not charged for the ride..
+        /// </summary>
+        public static string PushNotification_OrderPairingSuccessfulPayPalUnpair {
+            get {
+                return ResourceManager.GetString("PushNotification_OrderPairingSuccessfulPayPalUnpair", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The ride #{0} will be paid at the end of the trip using your credit card on file. If you&apos;re in the wrong car, choose the Pay in Car option below to ensure you are not charged for the ride. .
+        /// </summary>
+        public static string PushNotification_OrderPairingSuccessfulUnpair {
+            get {
+                return ResourceManager.GetString("PushNotification_OrderPairingSuccessfulUnpair", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reminder: If you&apos;re in the wrong car, choose the Pay in Car option below to ensure you are not charged for the ride..
+        /// </summary>
+        public static string PushNotification_OrderUnpairingTimeOutWarning {
+            get {
+                return ResourceManager.GetString("PushNotification_OrderUnpairingTimeOutWarning", resourceCulture);
             }
         }
         

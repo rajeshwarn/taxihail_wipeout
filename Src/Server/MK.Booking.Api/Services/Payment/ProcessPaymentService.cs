@@ -5,6 +5,8 @@ using apcurium.MK.Booking.IBS;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Services;
 using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Configuration.Impl;
+using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Resources;
 using ServiceStack.ServiceInterface;
 
@@ -13,8 +15,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
     public class ProcessPaymentService : Service
     {
         private readonly IPayPalServiceFactory _payPalServiceFactory;
-        private readonly IPaymentServiceFactory _paymentServiceFactory;
-        private readonly IPaymentAbstractionService _paymentAbstractionService;
+        private readonly IPaymentService _paymentService;
         private readonly IAccountDao _accountDao;
         private readonly IIBSServiceProvider _ibsServiceProvider;
         private readonly IOrderDao _orderDao;
@@ -22,16 +23,14 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 
         public ProcessPaymentService(
             IPayPalServiceFactory payPalServiceFactory,
-            IPaymentServiceFactory paymentServiceFactory, 
-            IPaymentAbstractionService paymentAbstractionService,
+            IPaymentService paymentService,
             IAccountDao accountDao, 
             IOrderDao orderDao,
             IIBSServiceProvider ibsServiceProvider,
             IServerSettings serverSettings)
         {
             _payPalServiceFactory = payPalServiceFactory;
-            _paymentServiceFactory = paymentServiceFactory;
-            _paymentAbstractionService = paymentAbstractionService;
+            _paymentService = paymentService;
             _accountDao = accountDao;
             _orderDao = orderDao;
             _ibsServiceProvider = ibsServiceProvider;
@@ -54,35 +53,34 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 
         public DeleteTokenizedCreditcardResponse Delete(DeleteTokenizedCreditcardRequest request)
         {
-            return _paymentServiceFactory.GetInstance().DeleteTokenizedCreditcard(request.CardToken);
-        }
-
-        public PairingResponse Post(PairingForPaymentRequest request)
-        {
-            var order = _orderDao.FindById(request.OrderId);
-
-            var response = _paymentAbstractionService.Pair(request.OrderId, request.AutoTipPercentage);
-
-            if (response.IsSuccessful)
-            {
-                var ibsAccountId = _accountDao.GetIbsAccountId(order.AccountId, null);
-                if (!UpdateOrderPaymentType(ibsAccountId.Value, order.IBSOrderId.Value))
-                {
-                    response.IsSuccessful = false;
-                    _paymentAbstractionService.VoidPreAuthorization(request.OrderId);
-                }
-            }
-            return response;
-        }
-
-        private bool UpdateOrderPaymentType(int ibsAccountId, int ibsOrderId, string companyKey = null)
-        {
-            return _ibsServiceProvider.Booking(companyKey).UpdateOrderPaymentType(ibsAccountId, ibsOrderId, _serverSettings.ServerData.IBS.PaymentTypeCardOnFileId);
+            return _paymentService.DeleteTokenizedCreditcard(request.CardToken);
         }
 
         public BasePaymentResponse Post(UnpairingForPaymentRequest request)
         {
-            return _paymentAbstractionService.Unpair(request.OrderId);
+            var order = _orderDao.FindById(request.OrderId);
+            var ibsAccountId = _accountDao.GetIbsAccountId(order.AccountId, null);
+
+            if (UpdateIBSOrderPaymentType(ibsAccountId.Value, order.IBSOrderId.Value))
+            {
+                var response = _paymentService.Unpair(request.OrderId);
+                if (response.IsSuccessful)
+                {
+                    _paymentService.VoidPreAuthorization(request.OrderId);
+                }
+                else
+                {
+                    response.IsSuccessful = false;
+                }
+                return response;
+            }
+            return new BasePaymentResponse { IsSuccessful = false };
+        }
+
+        private bool UpdateIBSOrderPaymentType(int ibsAccountId, int ibsOrderId, string companyKey = null)
+        {
+            // Change payment type to Pay in Car            
+            return _ibsServiceProvider.Booking(companyKey).UpdateOrderPaymentType(ibsAccountId, ibsOrderId, _serverSettings.ServerData.IBS.PaymentTypePaymentInCarId);
         }
     }
 }

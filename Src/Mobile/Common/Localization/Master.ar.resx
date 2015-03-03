@@ -288,10 +288,10 @@
   <data name="CmtRideLinqSaveChanges" xml:space="preserve">
     <value>حفظ</value>
   </data>
-  <data name="CmtRideLinqUnpair" xml:space="preserve">
-    <value>فصل</value>
+  <data name="UnpairPayInCar" xml:space="preserve">
+    <value>Pay in Car</value>
   </data>
-  <data name="CmtRideLinqUnpairErrorMessage" xml:space="preserve">
+  <data name="UnpairErrorMessage" xml:space="preserve">
     <value>حدث خطأ أثناء الفصل، رجاء المحاولة في وقت لاحق.</value>
   </data>
   <data name="CmtTipAmount" xml:space="preserve">
@@ -1673,5 +1673,8 @@
   </data>
   <data name="PayPalLinkedInfo" xml:space="preserve">
     <value>Account Linked</value>
+  </data>
+  <data name="NoPairingCreditCard" xml:space="preserve">
+    <value>None</value>
   </data>
 </root>

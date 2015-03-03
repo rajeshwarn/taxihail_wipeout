@@ -56,7 +56,7 @@ namespace apcurium.MK.Booking.Api.Jobs
         private readonly IIbsOrderService _ibs;
         private readonly IPromotionDao _promotionDao;
         private readonly IEventSourcedRepository<Promotion> _promoRepository;
-        private readonly IPaymentAbstractionService _paymentAbstractionService;
+        private readonly IPaymentService _paymentService;
         private readonly ICreditCardDao _creditCardDao;
         private readonly ILogger _logger;
         private readonly Resources.Resources _resources;
@@ -76,7 +76,7 @@ namespace apcurium.MK.Booking.Api.Jobs
             IIbsOrderService ibs,
             IPromotionDao promotionDao,
             IEventSourcedRepository<Promotion> promoRepository,
-            IPaymentAbstractionService paymentAbstractionService,
+            IPaymentService paymentService,
             ICreditCardDao creditCardDao,
             ILogger logger)
         {
@@ -89,7 +89,7 @@ namespace apcurium.MK.Booking.Api.Jobs
             _ibs = ibs;
             _promotionDao = promotionDao;
             _promoRepository = promoRepository;
-            _paymentAbstractionService = paymentAbstractionService;
+            _paymentService = paymentService;
             _creditCardDao = creditCardDao;
             _logger = logger;
             _commandBus = commandBus;
@@ -100,6 +100,8 @@ namespace apcurium.MK.Booking.Api.Jobs
         public void Update(IBSOrderInformation orderFromIbs, OrderStatusDetail orderStatusDetail)
         {
             UpdateVehiclePositionAndSendNearbyNotificationIfNecessary(orderFromIbs, orderStatusDetail);
+
+            SendUnpairWarningNotificationIfNecessary(orderStatusDetail);
 
             if (orderFromIbs.IsWaitingToBeAssigned)
             {
@@ -202,12 +204,17 @@ namespace apcurium.MK.Booking.Api.Jobs
 
             var account = _accountDao.FindById(orderDetail.AccountId);
 
-            var result = _paymentAbstractionService.PreAuthorize(orderId, account, amount);
+            var result = _paymentService.PreAuthorize(orderId, account, amount);
 
             if (result.IsSuccessful)
             {
                 // Wait for OrderPaymentDetail to be created
                 Thread.Sleep(500);
+            }
+            else if (result.IsDeclined)
+            {
+                // Deactivate credit card if it was declined
+                _commandBus.Send(new DeactivateCreditCard { AccountId = orderDetail.AccountId });
             }
 
             return result;
@@ -274,6 +281,21 @@ namespace apcurium.MK.Booking.Api.Jobs
             }
         }
 
+        private void SendUnpairWarningNotificationIfNecessary(OrderStatusDetail orderStatus)
+        {
+            var paymentSettings = _serverSettings.GetPaymentSettings();
+            if (!paymentSettings.IsUnpairingDisabled && orderStatus.UnpairingTimeOut.HasValue)
+            {
+                var halfwayUnpairTimeout = orderStatus.UnpairingTimeOut.Value.AddSeconds(-0.5 * paymentSettings.UnpairingTimeOut);
+
+                if (DateTime.UtcNow >= halfwayUnpairTimeout)
+                {
+                    // Send unpair timeout reminder halfway through
+                    _notificationService.SendUnpairingReminderPush(orderStatus.OrderId);
+                }
+            }
+        }
+
         private void HandlePairingForRideLinqCmt(OrderPairingDetail pairingInfo, IBSOrderInformation ibsOrderInfo)
         {
             // in the case of RideLinq CMT, we only want to calculate the tip to fill information on our side
@@ -320,7 +342,7 @@ namespace apcurium.MK.Booking.Api.Jobs
                     && DateTime.UtcNow > orderStatusDetail.PairingTimeOut)
                 {
                     orderStatusDetail.Status = OrderStatus.Completed;
-                    _paymentAbstractionService.VoidPreAuthorization(orderStatusDetail.OrderId);
+                    _paymentService.VoidPreAuthorization(orderStatusDetail.OrderId);
 
                     orderStatusDetail.PairingError = "Timed out period reached while waiting for payment informations from IBS.";
                     Log.ErrorFormat("Order {1}: Pairing error: {0}", orderStatusDetail.PairingError, orderStatusDetail.OrderId);
@@ -458,14 +480,14 @@ namespace apcurium.MK.Booking.Api.Jobs
                 {
                     if (totalOrderAmount > 0)
                     {
-                        paymentProviderServiceResponse = _paymentAbstractionService.CommitPayment(orderId, paymentDetail.PreAuthorizedAmount, totalOrderAmount, meterAmount, tipAmount, paymentDetail.TransactionId);
+                        paymentProviderServiceResponse = _paymentService.CommitPayment(orderId, account, paymentDetail.PreAuthorizedAmount, totalOrderAmount, meterAmount, tipAmount, paymentDetail.TransactionId);
                         message = paymentProviderServiceResponse.Message;
                     }
                     else
                     {
                         // promotion made the ride free to the user
                         // void preauth if it exists
-                        _paymentAbstractionService.VoidPreAuthorization(orderId);
+                        _paymentService.VoidPreAuthorization(orderId);
 
                         paymentProviderServiceResponse.IsSuccessful = true;
                         paymentProviderServiceResponse.AuthorizationCode = "AUTH_PROMO_FREE";
@@ -477,7 +499,7 @@ namespace apcurium.MK.Booking.Api.Jobs
                     //send information to IBS
                     try
                     {
-                        var providerType = _paymentAbstractionService.ProviderType(orderDetail.Id);
+                        var providerType = _paymentService.ProviderType(orderDetail.Id);
 
                         string cardToken;
                         if (providerType == PaymentProvider.PayPal)
@@ -516,7 +538,7 @@ namespace apcurium.MK.Booking.Api.Jobs
                         {
                             if (paymentProviderServiceResponse.IsSuccessful)
                             {
-                                _paymentAbstractionService.VoidTransaction(orderId, paymentProviderServiceResponse.TransactionId, ref message);
+                                _paymentService.VoidTransaction(orderId, paymentProviderServiceResponse.TransactionId, ref message);
                             }
                         }
                         catch (Exception ex)
@@ -535,7 +557,7 @@ namespace apcurium.MK.Booking.Api.Jobs
 
                 if (paymentProviderServiceResponse.IsSuccessful)
                 {
-                    //payment completed
+                    // Payment completed
 
                     var fareObject = Fare.FromAmountInclTax(Convert.ToDouble(meterAmount), _serverSettings.ServerData.VATIsEnabled ? _serverSettings.ServerData.VATPercentage : 0);
 
@@ -543,7 +565,7 @@ namespace apcurium.MK.Booking.Api.Jobs
                     {
                         AccountId = account.Id,
                         PaymentId = paymentDetail.PaymentId,
-                        Provider = _paymentAbstractionService.ProviderType(orderDetail.Id),
+                        Provider = _paymentService.ProviderType(orderDetail.Id),
                         Amount = totalOrderAmount,
                         MeterAmount = Convert.ToDecimal(fareObject.AmountExclTax),
                         TipAmount = Convert.ToDecimal(tipAmount),
@@ -557,6 +579,9 @@ namespace apcurium.MK.Booking.Api.Jobs
                 }
                 else
                 {
+                    // Void PreAuth because commit failed
+                    _paymentService.VoidPreAuthorization(orderId);
+
                     // Payment error
                     _commandBus.Send(new LogCreditCardError
                     {
@@ -564,8 +589,11 @@ namespace apcurium.MK.Booking.Api.Jobs
                         Reason = message
                     });
 
-                    // Void PreAuth because commit failed
-                    _paymentAbstractionService.VoidPreAuthorization(orderId);
+                    if (paymentProviderServiceResponse.IsDeclined)
+                    {
+                        // Unlikely, but hey
+                        _commandBus.Send(new DeactivateCreditCard { AccountId = account.Id });
+                    }
                 }
 
                 return new CommitPreauthorizedPaymentResponse
@@ -605,7 +633,7 @@ namespace apcurium.MK.Booking.Api.Jobs
             }
 
             var paymentMode = _serverSettings.GetPaymentSettings().PaymentMode;
-            var isPayPal = _paymentAbstractionService.IsPayPal(null, orderStatusDetail.OrderId);
+            var isPayPal = _paymentService.IsPayPal(null, orderStatusDetail.OrderId);
             
             if (!isPayPal && paymentMode == PaymentMethod.RideLinqCmt)
             {
@@ -703,7 +731,7 @@ namespace apcurium.MK.Booking.Api.Jobs
             else if (ibsOrderInfo.IsLoaded)
             {
                 if (orderDetail != null 
-                    && _serverSettings.GetPaymentSettings().AutomaticPaymentPairing
+                    && _serverSettings.GetPaymentSettings().IsUnpairingDisabled
                     && (orderDetail.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id
                         || orderDetail.Settings.ChargeTypeId == ChargeTypes.PayPal.Id))
                 {

@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.IBS;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
@@ -20,24 +21,21 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
         private readonly IOrderDao _orderDao;
         private readonly ICreditCardDao _creditCardDao;
         private readonly IAccountDao _accountDao;
-        private readonly IIBSServiceProvider _ibsServiceProvider;
-        private readonly IPaymentAbstractionService _paymentAbstractionService;
+        private readonly IPaymentService _paymentFacadeService;
 
         public OrderPairingManager(INotificationService notificationService, 
             IServerSettings serverSettings,
             IOrderDao orderDao,
             ICreditCardDao creditCardDao,
             IAccountDao accountDao,
-            IIBSServiceProvider ibsServiceProvider,
-            IPaymentAbstractionService paymentAbstractionService)
+            IPaymentService paymentFacadeService)
         {
             _notificationService = notificationService;
             _serverSettings = serverSettings;
             _orderDao = orderDao;
             _creditCardDao = creditCardDao;
             _accountDao = accountDao;
-            _ibsServiceProvider = ibsServiceProvider;
-            _paymentAbstractionService = paymentAbstractionService;
+            _paymentFacadeService = paymentFacadeService;
         }
 
         public void Handle(OrderStatusChanged @event)
@@ -48,13 +46,15 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                 {
                     var order = _orderDao.FindById(@event.SourceId);
                     
-                    if (_serverSettings.GetPaymentSettings().AutomaticPaymentPairing
-                        && _serverSettings.GetPaymentSettings().PaymentMode != PaymentMethod.RideLinqCmt
-                        && (order.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id    // Only send notification if using CardOnFile
-                            || order.Settings.ChargeTypeId == ChargeTypes.PayPal.Id))   // or PayPal
+                    if (order.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id
+                        || order.Settings.ChargeTypeId == ChargeTypes.PayPal.Id)
                     {
                         var account = _accountDao.FindById(@event.Status.AccountId);
-                        var response = _paymentAbstractionService.Pair(@event.SourceId, account.DefaultTipPercent);
+                        var creditCard = _creditCardDao.FindByAccountId(account.Id).FirstOrDefault();
+                        var cardToken = creditCard != null ? creditCard.Token : null;
+
+                        var response = _paymentFacadeService.Pair(@event.SourceId, cardToken, account.DefaultTipPercent);
+
                         _notificationService.SendAutomaticPairingPush(@event.SourceId, account.DefaultTipPercent, response.IsSuccessful);
                     } 
                 }

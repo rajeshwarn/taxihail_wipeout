@@ -65,21 +65,10 @@ namespace apcurium.MK.Booking.Mobile
 
                     if (order != null && orderStatus != null)
                     {
-                        if (isPairingNotification)
-                        {
-                            ShowViewModel<ConfirmPairViewModel>(new
-                            {
-                                order = order.ToJson(),
-                                orderStatus = orderStatus.ToJson()
-                            }.ToStringDictionary());
-                        }
-                        else
-                        {
-                            ShowViewModel<BookingStatusViewModel>(new Dictionary<string, string> {
-						        {"order", order.ToJson()},
-                                {"orderStatus", orderStatus.ToJson()}
-                            });
-                        }
+                        ShowViewModel<BookingStatusViewModel>(new Dictionary<string, string> {
+						    {"order", order.ToJson()},
+                            {"orderStatus", orderStatus.ToJson()}
+                        });
                     }
 
                 }
@@ -97,7 +86,19 @@ namespace apcurium.MK.Booking.Mobile
                 // Log user session start
 				Mvx.Resolve<IAccountService>().LogApplicationStartUp();
 
-				ShowViewModel<HomeViewModel>(new { locateUser =  true });
+                var lastOrder = await Mvx.Resolve<IOrderWorkflowService>().GetLastActiveOrder();
+                if (lastOrder != null)
+                {
+                    ShowViewModel<BookingStatusViewModel>(new
+                    {
+                        order = lastOrder.Item1.ToJson(),
+                        orderStatus = lastOrder.Item2.ToJson()
+                    });
+                }
+                else
+                {
+                    ShowViewModel<HomeViewModel>(new { locateUser = true });
+                }
             }
 
 			Mvx.Resolve<ILogger>().LogMessage("Startup with server {0}", Mvx.Resolve<IAppSettings>().Data.ServiceUrl);

@@ -69,7 +69,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 btnCall.SetTitle(Localize.GetValue("StatusCallButton"), UIControlState.Normal);
                 btnCancel.SetTitle(Localize.GetValue("StatusCancelButton"), UIControlState.Normal);
                 btnNewRide.SetTitle(Localize.GetValue("StatusNewRideButton"), UIControlState.Normal);
-                btnUnpair.SetTitle(Localize.GetValue("CmtRideLinqUnpair"), UIControlState.Normal);
+                btnUnpair.SetTitle(Localize.GetValue("UnpairPayInCar"), UIControlState.Normal);
 
                 FlatButtonStyle.Silver.ApplyTo(btnCallDriver);
                 FlatButtonStyle.Silver.ApplyTo(btnCall);
@@ -285,7 +285,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         public override void ViewWillDisappear(bool animated)
         {
             base.ViewWillDisappear(animated);
-            if (IsMovingFromParentViewController)
+            if (IsMovingFromParentViewController && animated)
             {
                 // Back button pressed
                 ViewModel.PrepareNewOrder.ExecuteIfPossible(null);

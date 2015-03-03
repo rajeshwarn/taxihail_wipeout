@@ -42,7 +42,6 @@ namespace apcurium.MK.Booking.Services.Impl
         private readonly IStaticMap _staticMap;
         private readonly ISmsService _smsService;
         private readonly IGeocoding _geocoding;
-        private readonly ICreditCardDao _creditCardDao;
         private readonly ILogger _logger;
         private readonly Resources.Resources _resources;
 
@@ -60,7 +59,6 @@ namespace apcurium.MK.Booking.Services.Impl
             IStaticMap staticMap,
             ISmsService smsService,
             IGeocoding geocoding,
-            ICreditCardDao creditCardDao,
             ILogger logger)
         {
             _contextFactory = contextFactory;
@@ -74,7 +72,6 @@ namespace apcurium.MK.Booking.Services.Impl
             _staticMap = staticMap;
             _smsService = smsService;
             _geocoding = geocoding;
-            _creditCardDao = creditCardDao;
             _logger = logger;
 
             _resources = new Resources.Resources(serverSettings);
@@ -122,7 +119,7 @@ namespace apcurium.MK.Booking.Services.Impl
         public void SendPairingInquiryPush(OrderStatusDetail orderStatusDetail)
         {
             var order = _orderDao.FindById(orderStatusDetail.OrderId);
-            if (!_serverSettings.GetPaymentSettings().AutomaticPaymentPairing
+            if (!_serverSettings.GetPaymentSettings().IsUnpairingDisabled
                 && (order.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id        // Only send notification if using CoF
                     || order.Settings.ChargeTypeId == ChargeTypes.PayPal.Id)        // or PayPal
                 && ShouldSendNotification(order.AccountId, x => x.ConfirmPairingPush))
@@ -180,10 +177,13 @@ namespace apcurium.MK.Booking.Services.Impl
                     return;
                 }
 
-                var shouldSendPushNotification = newLatitude.HasValue &&
-                                                 newLongitude.HasValue &&
-                                                 ibsStatus == VehicleStatuses.Common.Assigned &&
-                                                 !orderStatus.IsTaxiNearbyNotificationSent;
+                var orderNotifications = context.Query<OrderNotificationDetail>().SingleOrDefault(x => x.Id == orderId);
+
+                var shouldSendPushNotification = 
+                    newLatitude.HasValue
+                    && newLongitude.HasValue
+                    && ibsStatus == VehicleStatuses.Common.Assigned
+                    && (orderNotifications == null || !orderNotifications.IsTaxiNearbyNotificationSent);
 
                 if (shouldSendPushNotification)
                 {
@@ -194,15 +194,62 @@ namespace apcurium.MK.Booking.Services.Impl
 
                     if (taxiPosition.DistanceTo(pickupPosition) <= TaxiDistanceThresholdForPushNotification)
                     {
-                        orderStatus.IsTaxiNearbyNotificationSent = true;
-                        context.Save(orderStatus);
-
+                        if (orderNotifications == null)
+                        {
+                            context.Save(new OrderNotificationDetail
+                            {
+                                Id = order.Id,
+                                IsTaxiNearbyNotificationSent = true
+                            });
+                        }
+                        else
+                        {
+                            orderNotifications.IsTaxiNearbyNotificationSent = true;
+                            context.Save(orderNotifications);
+                        }
+   
                         var alert = string.Format(_resources.Get("PushNotification_NearbyTaxi", order.ClientLanguageCode));
                         var data = new Dictionary<string, object> { { "orderId", order.Id } };
 
                         SendPushOrSms(order.AccountId, alert, data);
                     }
                 }
+            }
+        }
+
+        public void SendUnpairingReminderPush(Guid orderId)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var orderStatus = context.Query<OrderStatusDetail>().Single(x => x.OrderId == orderId);
+                var orderNotifications = context.Query<OrderNotificationDetail>().SingleOrDefault(x => x.Id == orderId);
+
+                if (!ShouldSendNotification(orderStatus.AccountId, x => x.UnpairingReminderPush)
+                    || (orderNotifications != null && orderNotifications.IsUnpairingReminderNotificationSent))
+                {
+                    return;
+                }
+
+                var order = context.Find<OrderDetail>(orderId);
+
+                if (orderNotifications == null)
+                {
+                    context.Save(new OrderNotificationDetail
+                    {
+                        Id = order.Id,
+                        IsUnpairingReminderNotificationSent = true
+                    });
+                }
+                else
+                {
+                    orderNotifications.IsUnpairingReminderNotificationSent = true;
+                    context.Save(orderNotifications);
+                }
+
+                var alert = string.Format(_resources.Get("PushNotification_OrderUnpairingTimeOutWarning", order.ClientLanguageCode));
+                var data = new Dictionary<string, object> { { "orderId", order.Id } };
+
+                SendPushOrSms(order.AccountId, alert, data);
             }
         }
 
@@ -213,20 +260,26 @@ namespace apcurium.MK.Booking.Services.Impl
                 var order = context.Find<OrderDetail>(orderId);
 
                 var isPayPal = order.Settings.ChargeTypeId == ChargeTypes.PayPal.Id;
+                var isAutomaticPairingEnabled = !_serverSettings.GetPaymentSettings().IsUnpairingDisabled;
+
                 string successMessage;
                 if (isPayPal)
                 {
                     successMessage = string.Format(
-                            _resources.Get("PushNotification_OrderPairingSuccessfulPayPal", order.ClientLanguageCode),
-                            order.IBSOrderId, autoTipPercentage);
+                        isAutomaticPairingEnabled
+                            ? _resources.Get("PushNotification_OrderPairingSuccessfulPayPalUnpair", order.ClientLanguageCode)
+                            : _resources.Get("PushNotification_OrderPairingSuccessfulPayPal", order.ClientLanguageCode),
+                        order.IBSOrderId,
+                        autoTipPercentage);
                 }
                 else
                 {
-                    var card = _creditCardDao.FindByAccountId(order.AccountId).First();
-                    var last4Digits = card.Last4Digits;
                     successMessage = string.Format(
-                            _resources.Get("PushNotification_OrderPairingSuccessful", order.ClientLanguageCode),
-                            order.IBSOrderId, last4Digits, autoTipPercentage);
+                        isAutomaticPairingEnabled
+                            ? _resources.Get("PushNotification_OrderPairingSuccessfulUnpair", order.ClientLanguageCode)
+                            : _resources.Get("PushNotification_OrderPairingSuccessful", order.ClientLanguageCode),
+                        order.IBSOrderId,
+                        autoTipPercentage);
                 }
                 
                 var alert = success
@@ -515,6 +568,35 @@ namespace apcurium.MK.Booking.Services.Impl
             SendEmail(clientEmailAddress, EmailConstant.Template.PromotionUnlocked, EmailConstant.Subject.PromotionUnlocked, templateData, clientLanguageCode);
         }
 
+        public void SendCreditCardDeactivatedEmail(string creditCardCompany, string last4Digits, string clientEmailAddress, string clientLanguageCode, bool bypassNotificationSetting = false)
+        {
+            if (!bypassNotificationSetting)
+            {
+                using (var context = _contextFactory.Invoke())
+                {
+                    var account = context.Query<AccountDetail>().SingleOrDefault(c => c.Email.ToLower() == clientEmailAddress.ToLower());
+                    if (account == null || !ShouldSendNotification(account.Id, x => x.PromotionUnlockedEmail))
+                    {
+                        return;
+                    }
+                }
+            }
+
+            string imageLogoUrl = GetRefreshableImageUrl(GetBaseUrls().LogoImg);
+
+            var templateData = new
+            {
+                ApplicationName = _serverSettings.ServerData.TaxiHail.ApplicationName,
+                AccentColor = _serverSettings.ServerData.TaxiHail.AccentColor,
+                EmailFontColor = _serverSettings.ServerData.TaxiHail.EmailFontColor,
+                CreditCardCompany = creditCardCompany,
+                Last4Digits = last4Digits,
+                LogoImg = imageLogoUrl
+            };
+
+            SendEmail(clientEmailAddress, EmailConstant.Template.CreditCardDeactivated, EmailConstant.Subject.CreditCardDeactivated, templateData, clientLanguageCode);
+        }
+
         private Address TryToGetExactDropOffAddress(Guid orderId, Address dropOffAddress, string clientLanguageCode)
         {
             var orderStatus = _orderDao.FindOrderStatusById(orderId);
@@ -709,6 +791,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 public const string AccountConfirmation = "Email_Subject_AccountConfirmation";
                 public const string BookingConfirmation = "Email_Subject_BookingConfirmation";
                 public const string PromotionUnlocked = "Email_Subject_PromotionUnlocked";
+                public const string CreditCardDeactivated = "Email_Subject_CreditCardDeactivated";
             }
 
             public static class Template
@@ -718,6 +801,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 public const string AccountConfirmation = "AccountConfirmation";
                 public const string BookingConfirmation = "BookingConfirmation";
                 public const string PromotionUnlocked = "PromotionUnlocked";
+                public const string CreditCardDeactivated = "CreditCardDeactivated";
             }
         }
 

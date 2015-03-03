@@ -9,6 +9,7 @@ using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
+using apcurium.MK.Booking.Services;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
@@ -21,23 +22,26 @@ using Infrastructure.Messaging.Handling;
 namespace apcurium.MK.Booking.EventHandlers.Integration
 {
     public class MailSender : IIntegrationEventHandler,
-        IEventHandler<CreditCardPaymentCaptured_V2>
+        IEventHandler<CreditCardPaymentCaptured_V2>,
+        IEventHandler<CreditCardDeactivated>
     {
         private readonly ICommandBus _commandBus;
         private readonly Func<BookingDbContext> _contextFactory;
         private readonly ICreditCardDao _creditCardDao;
         private readonly IPromotionDao _promotionDao;
+        private readonly INotificationService _notificationService;
 
         public MailSender(Func<BookingDbContext> contextFactory,
             ICommandBus commandBus,
             ICreditCardDao creditCardDao,
-            IPromotionDao promotionDao
-            )
+            IPromotionDao promotionDao,
+            INotificationService notificationService)
         {
             _contextFactory = contextFactory;
             _commandBus = commandBus;
             _creditCardDao = creditCardDao;
             _promotionDao = promotionDao;
+            _notificationService = notificationService;
         }
 
         public void Handle(CreditCardPaymentCaptured_V2 @event)
@@ -82,6 +86,17 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                         _commandBus.Send(command);
                     }
                 }
+            }
+        }
+
+        public void Handle(CreditCardDeactivated @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var account = context.Find<AccountDetail>(@event.SourceId);
+                var creditCard = _creditCardDao.FindByAccountId(@event.SourceId).First();
+
+                _notificationService.SendCreditCardDeactivatedEmail(creditCard.CreditCardCompany, creditCard.Last4Digits, account.Email, account.Language);
             }
         }
     }

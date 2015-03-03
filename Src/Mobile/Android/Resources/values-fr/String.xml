@@ -580,4 +580,8 @@
   <string name="PayPalLinked">Votre compte est maintenant configuré pour le paiement via PayPal par défaut. Vous pouvez quand même choisir de payer dans le véhicule en choisissant l\'option appropriée à l\'écran de confirmation.</string>
   <string name="PayPalLinkedInfo">Compte associé</string>
   <string name="Error">Erreur</string>
+  <string name="NoPairingCreditCard">Aucun</string>
+  <string name="Unpair">Payer dans le taxi</string>
+  <string name="UnpairErrorMessage">Désolé, le système a rencontré un problème lors de la réinitialisation</string>
+  <string name="UnpairPayInCar">Payer dans le taxi</string>
 </resources>

@@ -58,6 +58,7 @@
     <Compile Include="AddUserToPromotionWhiteList.cs" />
     <Compile Include="CancelOrderBecauseOfIbsError.cs" />
     <Compile Include="DeleteTemporaryOrderCreationInfo.cs" />
+    <Compile Include="DeactivateCreditCard.cs" />
     <Compile Include="ImportAccountCharge.cs" />
     <Compile Include="AddUpdateAccountCharge.cs" />
     <Compile Include="AddUpdateVehicleType.cs" />

@@ -218,7 +218,7 @@
                         android:layout_marginTop="8dp"
                         android:layout_marginBottom="8dp" />
                 </LinearLayout>
-            <!-- PayPal section -->
+                <!-- PayPal section -->
                 <LinearLayout
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
@@ -256,8 +256,8 @@
                         android:layout_height="@dimen/HeightButton"
                         android:singleLine="true"
                         android:lines="1"
-                        android:text="@string/UnlinkPayPal"
-                        local:MvxBind="Click UnlinkPayPalAccount; Visibility CanUnlinkPayPalAccount, Converter=Visibility"
+                        android:text="@string/UnlinkPayPal" 
+                        local:MvxBind="Visibility CanUnlinkPayPalAccount, Converter=Visibility"
                         android:layout_marginTop="8dp"
                         android:layout_marginBottom="8dp" />
                     <LinearLayout
