@@ -44,7 +44,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
 			lblInstructions.Text = Localize.GetValue("Overdue_Instructions");
 
 			FlatButtonStyle.Silver.ApplyTo(btnAddNewCard);
-			FlatButtonStyle.Red.ApplyTo(btnRetry);
+			FlatButtonStyle.Green.ApplyTo(btnRetry);
 
 			var set = this.CreateBindingSet<OverduePaymentView, OverduePaymentViewModel>();
 
