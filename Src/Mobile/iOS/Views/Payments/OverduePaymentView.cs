@@ -24,8 +24,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
 
 			View.BackgroundColor = UIColor.FromRGB (242, 242, 242);
 
-			var localize = this.Services().Localize;
-
 			if (NavigationController != null)
 			{
 				NavigationController.NavigationBar.Hidden = false;
