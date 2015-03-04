@@ -9,6 +9,7 @@ using ServiceStack.Text;
 using Params = System.Collections.Generic.Dictionary<string, string>;
 using apcurium.MK.Booking.Mobile.ViewModels.Payment;
 using System.Threading.Tasks;
+using apcurium.MK.Booking.Api.Contract.Resources.Payments;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -278,20 +279,24 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			{
 				return this.GetCommand(async () =>
 				{
-					CloseMenu();
-					var overduePayment = await _paymentService.GetOverduePayment();
-					
-					if(overduePayment == null)
-					{
-						ShowViewModel<CreditCardAddViewModel>();
-					}
-					else
-					{
-						ShowViewModel<OverduePaymentViewModel>(new 
-						{ 
-							overduePayment = overduePayment.ToJson() 
-						});
-					}
+                    using(this.Services().Message.ShowProgress())
+                    {
+                        // check if user has an overdue payment and redirect accordingly
+                        var overduePayment = await _paymentService.GetOverduePayment();
+
+                        CloseMenu();
+                        if (overduePayment != null)
+                        {
+                            ShowViewModel<OverduePaymentViewModel>(new 
+                            { 
+                                overduePayment = overduePayment.ToJson() 
+                            });
+                        }
+                        else
+                        {
+                            ShowViewModel<CreditCardAddViewModel>();
+                        }
+                    }
 				});
 			}
 		}
