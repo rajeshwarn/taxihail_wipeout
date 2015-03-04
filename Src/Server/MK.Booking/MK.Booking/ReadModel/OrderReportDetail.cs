@@ -138,6 +138,8 @@ namespace apcurium.MK.Booking.ReadModel
 
         public bool IsCancelled { get; set; }
 
+        public bool IsRefunded { get; set; }
+
         public string Error { get; set; }
     }
 

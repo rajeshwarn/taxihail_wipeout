@@ -132,6 +132,7 @@ namespace apcurium.MK.Booking.Api.Services.Admin
                             orderReportEntry["Payment.IsPaired"] = orderReport.Payment.IsPaired.ToString();
                             orderReportEntry["Payment.IsCompleted"] = orderReport.Payment.IsCompleted.ToString();
                             orderReportEntry["Payment.IsCancelled"] = orderReport.Payment.IsCancelled.ToString();
+                            orderReportEntry["Payment.IsRefunded"] = orderReport.Payment.IsRefunded.ToString();
                             orderReportEntry["Payment.Error"] = orderReport.Payment.Error;
 
                             orderReportEntry["Promotion.Code"] = orderReport.Promotion.Code;
