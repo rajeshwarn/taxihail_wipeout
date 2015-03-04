@@ -1,12 +1,6 @@
-﻿
-using System;
-using System.Drawing;
-using apcurium.MK.Booking.Mobile.ViewModels.Payment;
-using Foundation;
+﻿using apcurium.MK.Booking.Mobile.ViewModels.Payment;
 using UIKit;
 using Cirrious.MvvmCross.Binding.BindingContext;
-using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
-using apcurium.MK.Booking.Mobile.Client.Style;
 using apcurium.MK.Booking.Mobile.Client.Localization;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
@@ -18,20 +12,25 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
 		{
 		}
 
+        public override void ViewWillAppear(bool animated)
+        {
+            base.ViewWillAppear(animated);
+
+            if (NavigationController != null)
+            {
+                NavigationController.NavigationBar.Hidden = false;
+                ChangeThemeOfBarStyle();
+            }
+
+            NavigationItem.Title = Localize.GetValue("View_Overdue");
+            NavigationItem.HidesBackButton = false;
+        }
+
 		public override void ViewDidLoad()
 		{
 			base.ViewDidLoad();
 
 			View.BackgroundColor = UIColor.FromRGB (242, 242, 242);
-
-			if (NavigationController != null)
-			{
-				NavigationController.NavigationBar.Hidden = false;
-				ChangeThemeOfBarStyle();
-			}
-
-            NavigationItem.Title = Localize.GetValue("View_Overdue");
-			NavigationItem.HidesBackButton = false;
 
 			lblTransactionId.Text = Localize.GetValue("Overdue_TransactionId");
 			lblDate.Text = Localize.GetValue("Overdue_Date");

@@ -1757,7 +1757,7 @@
     <value>Compte en souffrance</value>
   </data>
   <data name="Overdue_Failed_Message" xml:space="preserve">
-    <value>Votre transaction crédit a été refusée, veuillez essayer plus tard ou changer de carte de crédit.</value>
+    <value>Votre transaction a été refusée, veuillez essayer plus tard ou changer de carte de crédit.</value>
   </data>
   <data name="Overdue_Failed_Title" xml:space="preserve">
     <value>Erreur de paiement de compte en souffrance</value>
@@ -1769,7 +1769,7 @@
     <value>Compte en souffrance</value>
   </data>
   <data name="Overdue_Instructions" xml:space="preserve">
-    <value> La dernère tentative de payment a été refusée par votre compagnie de carte de crédit. Veuillez reessayer ou mettez à jour votre carte de crédit.</value>
+    <value> La dernière tentative de paiement a été refusée par votre compagnie de carte de crédit. Veuillez réessayer ou mettre à jour votre carte de crédit.</value>
   </data>
   <data name="Overdue_IBSOrderId" xml:space="preserve">
     <value>Commande:</value>

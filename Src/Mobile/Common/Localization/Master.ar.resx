@@ -1693,10 +1693,10 @@
     <value>Update Credit Card</value>
   </data>
   <data name="View_Overdue" xml:space="preserve">
-    <value>Overdue Payement</value>
+    <value>Overdue Payment</value>
   </data>
   <data name="Overdue_Failed_Message" xml:space="preserve">
-    <value>Your credit transaction was denied, please try again later or replace your credit card with a new one.</value>
+    <value>Your transaction was denied, please try again later or replace your credit card with a new one.</value>
   </data>
   <data name="Overdue_Failed_Title" xml:space="preserve">
     <value>Error settling overdue payment</value>
