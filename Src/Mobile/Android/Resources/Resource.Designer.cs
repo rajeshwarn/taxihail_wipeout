@@ -5144,14 +5144,14 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f060123
 			public const int GooglePlayServicesNotAvailableMessage = 2131099939;
 			
-			// aapt resource value: 0x7f0602be
-			public const int GooglePlayServicesNotAvailableMessage1 = 2131100350;
+			// aapt resource value: 0x7f0602c0
+			public const int GooglePlayServicesNotAvailableMessage1 = 2131100352;
 			
 			// aapt resource value: 0x7f060084
 			public const int GooglePlayServicesNotAvailableTitle = 2131099780;
 			
-			// aapt resource value: 0x7f0602bf
-			public const int GooglePlayServicesNotAvailableTitle1 = 2131100351;
+			// aapt resource value: 0x7f0602c1
+			public const int GooglePlayServicesNotAvailableTitle1 = 2131100353;
 			
 			// aapt resource value: 0x7f060049
 			public const int Hello = 2131099721;
@@ -5248,6 +5248,12 @@ namespace apcurium.MK.Booking.Mobile.Client
 			
 			// aapt resource value: 0x7f06016c
 			public const int InvalidLoginMessageTitle = 2131100012;
+			
+			// aapt resource value: 0x7f0602bf
+			public const int InvalidPassengersNumber = 2131100351;
+			
+			// aapt resource value: 0x7f0602be
+			public const int InvalidPassengersNumberTitle = 2131100350;
 			
 			// aapt resource value: 0x7f0601b9
 			public const int InvalidPhoneErrorMessage = 2131100089;

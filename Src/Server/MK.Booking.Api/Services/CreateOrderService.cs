@@ -104,25 +104,48 @@ namespace apcurium.MK.Booking.Api.Services
 
             if (request.Cancel)
             {
-                //TODO: send a command like CancelOrderBecauseOfIbsError
+                _commandBus.Send(new CancelOrderBecauseOfError
+                {
+                    OrderId = request.OrderId,
+                    WasPrepaid = true,
+                    ErrorCode = "PayPal prepaid order cancelled"
+                });
             }
             else
             {
                 var temporaryInfo = _orderDao.GetTemporaryInfo(request.OrderId);
+
                 var response = _payPalServiceFactory.GetInstance().ExecuteWebPayment(request.PayerId, request.PaymentId);
                 if (response.IsSuccessful && temporaryInfo != null)
                 {
                     var orderInfo = JsonSerializer.DeserializeFromString<TemporaryOrderCreationInfo>(temporaryInfo.SerializedOrderCreationInfo);
+                    var fareObject = Fare.FromAmountInclTax(Convert.ToDouble(orderInfo.Request.Estimate.Price), _serverSettings.ServerData.VATIsEnabled ? _serverSettings.ServerData.VATPercentage : 0);
 
-                    _commandBus.Send(new DeleteTemporaryOrderCreationInfo { OrderId = request.OrderId });
+                    _commandBus.Send(new MarkPrepaidOrderHasSuccessful
+                    {
+                        OrderId = request.OrderId,
+                        Amount = Convert.ToDecimal(fareObject.AmountInclTax),
+                        Meter = Convert.ToDecimal(fareObject.AmountExclTax),
+                        Tax = Convert.ToDecimal(fareObject.TaxAmount),
+                        Tip = 0, // TODO: ?
+                        TransactionId = response.TransactionId,
+                        AuthorizationCode = response.AuthorizationCode,
+                        Provider = PaymentProvider.PayPal,
+                        Type = PaymentType.PayPal
+                    });
 
                     Task.Run(() => CreateOrderOnIBSAndSendCommands(orderInfo.OrderId, orderInfo.Account, orderInfo.Request, orderInfo.ReferenceData,
                         orderInfo.ChargeTypeIbs, orderInfo.ChargeTypeEmail, orderInfo.VehicleType, orderInfo.Prompts, orderInfo.PromptsLength,
-                        orderInfo.BestAvailableCompany, orderInfo.ApplyPromoCommand));
+                        orderInfo.BestAvailableCompany, orderInfo.ApplyPromoCommand, true));
                 }
                 else
                 {
-                    //TODO: send a command like CancelOrderBecauseOfIbsError
+                    _commandBus.Send(new CancelOrderBecauseOfError
+                    {
+                        OrderId = request.OrderId,
+                        WasPrepaid = true,
+                        ErrorDescription = response.Message
+                    });
                 }
             }
 
@@ -284,10 +307,11 @@ namespace apcurium.MK.Booking.Api.Services
             // Charge account validation
             var accountValidationResult = ValidateChargeAccount(request, account, isFutureBooking);
 
-            // Initialize PayPal if user is using PayPal web
-            var  paypalWebPaymentResponse = InitializePayPalCheckoutIfNecessary(isPrepaid, request);
-
             var orderCommand = Mapper.Map<Commands.CreateOrder>(request);
+
+            // Initialize PayPal if user is using PayPal web
+            var  paypalWebPaymentResponse = InitializePayPalCheckoutIfNecessary(isPrepaid, orderCommand.OrderId, request);
+
 
             var chargeTypeIbs = string.Empty;
             var chargeTypeEmail = string.Empty;
@@ -331,6 +355,8 @@ namespace apcurium.MK.Booking.Api.Services
 
             if (paypalWebPaymentResponse != null)
             {
+                // Order prepaid by PayPal
+
                 _commandBus.Send(new SaveTemporaryOrderCreationInfo
                 {
                     OrderId = orderCommand.OrderId,
@@ -349,23 +375,28 @@ namespace apcurium.MK.Booking.Api.Services
                         ApplyPromoCommand = applyPromoCommand
                     }.ToJson()
                 });
+
                 return paypalWebPaymentResponse;
             }
-
-            // Create order on IBS
-            Task.Run(() => 
-                CreateOrderOnIBSAndSendCommands(orderCommand.OrderId, account,
-                    request, referenceData, chargeTypeIbs, chargeTypeEmail, vehicleType,
-                    accountValidationResult.Prompts, accountValidationResult.PromptsLength,
-                    bestAvailableCompany, applyPromoCommand));
-            
-            return new OrderStatusDetail
+            else
             {
-                OrderId = orderCommand.OrderId,
-                Status = OrderStatus.Created,
-                IBSStatusId = string.Empty,
-                IBSStatusDescription = _resources.Get("CreateOrder_WaitingForIbs", orderCommand.ClientLanguageCode),
-            };
+                // Order paid at the end of the ride
+
+                // Create order on IBS
+                Task.Run(() =>
+                    CreateOrderOnIBSAndSendCommands(orderCommand.OrderId, account,
+                        request, referenceData, chargeTypeIbs, chargeTypeEmail, vehicleType,
+                        accountValidationResult.Prompts, accountValidationResult.PromptsLength,
+                        bestAvailableCompany, applyPromoCommand));
+
+                return new OrderStatusDetail
+                {
+                    OrderId = orderCommand.OrderId,
+                    Status = OrderStatus.Created,
+                    IBSStatusId = string.Empty,
+                    IBSStatusDescription = _resources.Get("CreateOrder_WaitingForIbs", orderCommand.ClientLanguageCode),
+                };
+            }
         }
 
         private ChargeAccountValidationResult ValidateChargeAccount(CreateOrder request, AccountDetail account, bool isFutureBooking)
@@ -420,12 +451,12 @@ namespace apcurium.MK.Booking.Api.Services
             };
         }
 
-        private InitializePayPalCheckoutResponse InitializePayPalCheckoutIfNecessary(bool isPrepaid, CreateOrder request)
+        private InitializePayPalCheckoutResponse InitializePayPalCheckoutIfNecessary(bool isPrepaid, Guid orderId, CreateOrder request)
         {
             if (isPrepaid
                 && request.Settings.ChargeTypeId == ChargeTypes.PayPal.Id)
             {
-                var paypalWebPaymentResponse = _payPalServiceFactory.GetInstance().InitializeWebPayment(request.Id, Request.AbsoluteUri, request.Estimate.Price, request.ClientLanguageCode);
+                var paypalWebPaymentResponse = _payPalServiceFactory.GetInstance().InitializeWebPayment(orderId, Request.AbsoluteUri, request.Estimate.Price, request.ClientLanguageCode);
 
                 if (paypalWebPaymentResponse.IsSuccessful)
                 {
@@ -440,7 +471,7 @@ namespace apcurium.MK.Booking.Api.Services
 
         private async void CreateOrderOnIBSAndSendCommands(Guid orderId, AccountDetail account, CreateOrder request, ReferenceData referenceData, 
             string chargeTypeIbs, string chargeTypeEmail, string vehicleType, string[] prompts, int?[] promptsLength, BestAvailableCompany bestAvailableCompany, 
-            ApplyPromotion applyPromoCommand)
+            ApplyPromotion applyPromoCommand, bool isPrepaid = false)
         {
             var ibsOrderId = CreateIbsOrder(account.IBSAccountId.Value, request, referenceData, chargeTypeIbs, prompts, promptsLength, bestAvailableCompany.CompanyKey);
 
@@ -453,12 +484,14 @@ namespace apcurium.MK.Booking.Api.Services
                 var code = !ibsOrderId.HasValue || (ibsOrderId.Value >= -1) ? "" : "_" + Math.Abs(ibsOrderId.Value);
                 var errorCode = ErrorCode.CreateOrder_CannotCreateInIbs + code;
 
-                var errorCommand = new CancelOrderBecauseOfIbsError
+                var errorCommand = new CancelOrderBecauseOfError
                 {
                     OrderId = orderId,
+                    WasPrepaid = isPrepaid,
                     ErrorCode = errorCode,
                     ErrorDescription = _resources.Get(errorCode, request.ClientLanguageCode)
                 };
+
                 _commandBus.Send(errorCommand);
             }
             else

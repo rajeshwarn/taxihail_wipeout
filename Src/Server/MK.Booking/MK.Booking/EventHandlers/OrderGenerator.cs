@@ -24,7 +24,8 @@ namespace apcurium.MK.Booking.EventHandlers
         IEventHandler<OrderSwitchedToNextDispatchCompany>,
         IEventHandler<DispatchCompanySwitchIgnored>,
         IEventHandler<IbsOrderInfoAddedToOrder>,
-        IEventHandler<OrderCancelledBecauseOfIbsError>
+        IEventHandler<OrderCancelledBecauseOfError>,
+        IEventHandler<PrepaidOrderPaymentInfoUpdated>
 
     {
         private readonly Func<BookingDbContext> _contextFactory;
@@ -63,7 +64,7 @@ namespace apcurium.MK.Booking.EventHandlers
             }
         }
 
-        public void Handle(OrderCancelledBecauseOfIbsError @event)
+        public void Handle(OrderCancelledBecauseOfError @event)
         {
             using (var context = _contextFactory.Invoke())
             {
@@ -422,6 +423,28 @@ namespace apcurium.MK.Booking.EventHandlers
                 orderStatus.IBSOrderId = @event.IBSOrderId;
                 
                 context.SaveChanges();
+            }
+        }
+
+        public void Handle(PrepaidOrderPaymentInfoUpdated @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var detail = new OrderPaymentDetail
+                {
+                    PaymentId = @event.SourceId,
+                    Amount = @event.Amount,
+                    Meter = @event.Meter,
+                    Tax = @event.Tax,
+                    Tip = @event.Tip,
+                    OrderId = @event.OrderId,
+                    TransactionId = @event.TransactionId,
+                    AuthorizationCode = @event.AuthorizationCode,
+                    Provider = PaymentProvider.PayPal,
+                    Type = PaymentType.PayPal,
+                    IsCompleted = true
+                };
+                context.Save(detail);
             }
         }
     }

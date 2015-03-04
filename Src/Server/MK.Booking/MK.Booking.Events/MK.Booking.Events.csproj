@@ -70,7 +70,7 @@
     <Compile Include="DispatchCompanySwitchIgnored.cs" />
     <Compile Include="IbsOrderInfoAddedToOrder.cs" />
     <Compile Include="NotificationSettingsAddedOrUpdated.cs" />
-    <Compile Include="OrderCancelledBecauseOfIbsError.cs" />
+    <Compile Include="OrderCancelledBecauseOfError.cs" />
     <Compile Include="OrderPreparedForNextDispatch.cs" />
     <Compile Include="OrderPairedForPayment.cs" />
     <Compile Include="OrderSwitchedToNextDispatchCompany.cs" />
@@ -86,6 +86,7 @@
     <Compile Include="PayPalExpressCheckoutPaymentInitiated.cs" />
     <Compile Include="PayPalPaymentCancellationFailed.cs" />
     <Compile Include="PayPalSettingsChanged.cs" />
+    <Compile Include="PrepaidOrderPaymentInfoUpdated.cs" />
     <Compile Include="PromotionActivated.cs" />
     <Compile Include="PrivacyPolicyUpdated.cs" />
     <Compile Include="PromotionCreated.cs" />

@@ -29,7 +29,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             IEventHandler<CreditCardPaymentCaptured_V2>,
             IEventHandler<OrderPreparedForNextDispatch>,
             IEventHandler<UserAddedToPromotionWhiteList>,
-            IEventHandler<OrderCancelledBecauseOfIbsError>
+            IEventHandler<OrderCancelledBecauseOfError>
     {
         private readonly INotificationService _notificationService;
         private readonly IServerSettings _serverSettings;
@@ -118,7 +118,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             }
         }
         
-        public void Handle(OrderCancelledBecauseOfIbsError @event)
+        public void Handle(OrderCancelledBecauseOfError @event)
         {
             try
             {

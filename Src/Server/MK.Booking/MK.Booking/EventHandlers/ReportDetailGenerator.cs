@@ -13,7 +13,7 @@ namespace apcurium.MK.Booking.EventHandlers
     public class ReportDetailGenerator : IEventHandler<OrderCreated>,
         IEventHandler<OrderStatusChanged>,
         IEventHandler<OrderCancelled>,
-        IEventHandler<OrderCancelledBecauseOfIbsError>,
+        IEventHandler<OrderCancelledBecauseOfError>,
         IEventHandler<OrderPairedForPayment>,
         IEventHandler<OrderUnpairedForPayment>,
         IEventHandler<OrderRated>,
@@ -259,7 +259,7 @@ namespace apcurium.MK.Booking.EventHandlers
             }
         }
 
-        public void Handle(OrderCancelledBecauseOfIbsError @event)
+        public void Handle(OrderCancelledBecauseOfError @event)
         {
             using (var context = _contextFactory.Invoke())
             {

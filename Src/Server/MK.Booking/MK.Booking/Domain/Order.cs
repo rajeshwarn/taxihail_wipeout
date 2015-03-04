@@ -7,6 +7,7 @@ using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Entity;
+using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using Infrastructure.EventSourcing;
 
@@ -38,7 +39,8 @@ namespace apcurium.MK.Booking.Domain
             Handles<OrderSwitchedToNextDispatchCompany>(OnOrderSwitchedToNextDispatchCompany);
             Handles<DispatchCompanySwitchIgnored>(OnNextDispatchCompanySwitchIgnored);
             Handles<IbsOrderInfoAddedToOrder>(NoAction);
-            Handles<OrderCancelledBecauseOfIbsError>(NoAction);
+            Handles<OrderCancelledBecauseOfError>(NoAction);
+            Handles <PrepaidOrderPaymentInfoUpdated>(NoAction);
         }
         
         public Order(Guid id, IEnumerable<IVersionedEvent> history)
@@ -113,18 +115,35 @@ namespace apcurium.MK.Booking.Domain
             });
         }
 
+        public void UpdatePrepaidOrderPaymentInfo(Guid orderId, decimal amount, decimal meter, decimal tax,
+                decimal tip, string authorizationCode, string transactionId, PaymentProvider provider, PaymentType type)
+        {
+            Update(new PrepaidOrderPaymentInfoUpdated
+            {
+                OrderId = orderId,
+                Amount = amount,
+                Meter = meter,
+                Tax = tax,
+                Tip = tip,
+                AuthorizationCode = authorizationCode,
+                TransactionId = transactionId,
+                Provider = provider,
+                Type = type
+            });
+        }
 
         public void Cancel()
         {
             Update(new OrderCancelled());
         }
 
-        public void CancelBecauseOfIbsError(string errorCode, string errorDescription)
+        public void CancelBecauseOfError(string errorCode, string errorDescription, bool wasPrepaid)
         {
-            Update(new OrderCancelledBecauseOfIbsError
+            Update(new OrderCancelledBecauseOfError
             {
                 ErrorCode = errorCode,
-                ErrorDescription = errorDescription
+                ErrorDescription = errorDescription,
+                WasPrepaid = wasPrepaid
             });
         }
 

@@ -88,6 +88,17 @@ namespace DatabaseInitializer.Services
                     }
                     context.SaveChanges();
 
+                    // rename OrderCancelledBecauseOfIbsError events
+                    foreach (var message in events.Where(x =>
+                                    x.EventType.Contains("OrderCancelledBecauseOfIbsError")))
+                    {
+                        message.Payload = message.Payload.Replace("OrderCancelledBecauseOfIbsError",
+                            "OrderCancelledBecauseOfError");
+                        message.EventType = message.EventType.Replace("OrderCancelledBecauseOfIbsError",
+                            "OrderCancelledBecauseOfError");
+                    }
+                    context.SaveChanges();
+
                     // rename CreditCardAdded or CreditCardUpdated to CreditCardAddedOrUpdated
                     foreach (var message in events.Where(x =>
                                     x.EventType.Equals("apcurium.MK.Booking.Events.CreditCardAdded") ||

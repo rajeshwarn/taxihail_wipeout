@@ -17,7 +17,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
         IEventHandler<OrderCancelled>,
         IEventHandler<OrderSwitchedToNextDispatchCompany>,
         IEventHandler<OrderStatusChanged>,
-        IEventHandler<OrderCancelledBecauseOfIbsError>
+        IEventHandler<OrderCancelledBecauseOfError>
     {
         private readonly IOrderDao _dao;
         private readonly IIbsOrderService _ibs;
@@ -98,8 +98,16 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
 
         public void Handle(OrderCancelled @event)
         {
-            // void the preauthorization to prevent misuse fees
-            _paymentFacadeService.VoidPreAuthorization(@event.SourceId);
+            var orderDetail = _orderDao.FindById(@event.SourceId);
+            if (orderDetail.IsPrepaid)
+            {
+                // TODO: Refund
+            }
+            else
+            {
+                // void the preauthorization to prevent misuse fees
+                _paymentFacadeService.VoidPreAuthorization(@event.SourceId);
+            }
         }
 
         public void Handle(OrderSwitchedToNextDispatchCompany @event)
@@ -108,10 +116,18 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             _paymentFacadeService.VoidPreAuthorization(@event.SourceId);
         }
 
-        public void Handle(OrderCancelledBecauseOfIbsError @event)
+        public void Handle(OrderCancelledBecauseOfError @event)
         {
-            // void the preauthorization to prevent misuse fees
-            _paymentFacadeService.VoidPreAuthorization(@event.SourceId);
+            var orderDetail = _orderDao.FindById(@event.SourceId);
+            if (orderDetail.IsPrepaid)
+            {
+                // TODO: Refund
+            }
+            else
+            {
+                // void the preauthorization to prevent misuse fees
+                _paymentFacadeService.VoidPreAuthorization(@event.SourceId);
+            }
         }
 
         public void Handle(OrderStatusChanged @event)

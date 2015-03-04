@@ -15,6 +15,7 @@ using Infrastructure.Messaging;
 using PayPal;
 using PayPal.Api;
 using RestSharp.Extensions;
+using ServiceStack.Common.Extensions;
 
 namespace apcurium.MK.Booking.Services.Impl
 {
@@ -283,8 +284,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 return new CommitPreauthorizedPaymentResponse
                 {
                     IsSuccessful = true,
-                    TransactionId = paymentId,
-                    AuthorizationCode = executedPayment.id 
+                    TransactionId = executedPayment.id
                 };
             }
             catch (Exception ex)
