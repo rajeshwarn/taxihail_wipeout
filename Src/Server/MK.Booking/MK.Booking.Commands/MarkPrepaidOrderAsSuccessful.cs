@@ -4,9 +4,9 @@ using Infrastructure.Messaging;
 
 namespace apcurium.MK.Booking.Commands
 {
-    public class MarkPrepaidOrderHasSuccessful : ICommand
+    public class MarkPrepaidOrderAsSuccessful : ICommand
     {
-        public MarkPrepaidOrderHasSuccessful()
+        public MarkPrepaidOrderAsSuccessful()
         {
             Id = Guid.NewGuid();
         }
@@ -24,8 +24,6 @@ namespace apcurium.MK.Booking.Commands
         public decimal Tip { get; set; }
 
         public string TransactionId { get; set; }
-
-        public string AuthorizationCode { get; set; }
 
         public PaymentProvider Provider { get; set; }
 

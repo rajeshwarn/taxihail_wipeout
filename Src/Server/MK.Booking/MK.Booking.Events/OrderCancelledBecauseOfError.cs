@@ -7,7 +7,5 @@ namespace apcurium.MK.Booking.Events
         public string ErrorCode { get; set; }
 
         public string ErrorDescription { get; set; }
-
-        public bool WasPrepaid { get; set; }
     }
 }

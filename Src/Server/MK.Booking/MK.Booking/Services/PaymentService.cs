@@ -98,6 +98,16 @@ namespace apcurium.MK.Booking.Services
             return GetInstance().CommitPayment(orderId, account, preauthAmount, amount, meterAmount, tipAmount, transactionId);
         }
 
+        public BasePaymentResponse RefundPayment(Guid orderId)
+        {
+            if (IsPayPal(orderId: orderId))
+            {
+                return _payPalServiceFactory.GetInstance().RefundWebPayment(orderId);
+            }
+
+            return GetInstance().RefundPayment(orderId);
+        }
+
         public DeleteTokenizedCreditcardResponse DeleteTokenizedCreditcard(string cardToken)
         {
             if (IsPayPal())

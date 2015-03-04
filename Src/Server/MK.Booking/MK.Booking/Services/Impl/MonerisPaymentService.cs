@@ -336,6 +336,11 @@ namespace apcurium.MK.Booking.Services.Impl
             }
         }
 
+        public BasePaymentResponse RefundPayment(Guid orderId)
+        {
+            throw new NotImplementedException();
+        }
+
         private bool RequestSuccesful(Receipt receipt, out string message)
         {
             message = string.Empty;

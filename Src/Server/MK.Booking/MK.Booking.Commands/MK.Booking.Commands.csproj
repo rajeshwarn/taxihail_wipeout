@@ -57,7 +57,7 @@
     <Compile Include="AddPopularAddress.cs" />
     <Compile Include="AddUserToPromotionWhiteList.cs" />
     <Compile Include="CancelOrderBecauseOfError.cs" />
-    <Compile Include="MarkPrepaidOrderHasSuccessful.cs" />
+    <Compile Include="MarkPrepaidOrderAsSuccessful.cs" />
     <Compile Include="DeactivateCreditCard.cs" />
     <Compile Include="ImportAccountCharge.cs" />
     <Compile Include="AddUpdateAccountCharge.cs" />

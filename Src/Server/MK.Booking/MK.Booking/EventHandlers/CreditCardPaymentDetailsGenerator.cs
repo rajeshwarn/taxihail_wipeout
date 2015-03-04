@@ -18,7 +18,8 @@ namespace apcurium.MK.Booking.EventHandlers
     public class CreditCardPaymentDetailsGenerator :
         IEventHandler<CreditCardPaymentInitiated>,
         IEventHandler<CreditCardPaymentCaptured_V2>,
-        IEventHandler<CreditCardErrorThrown>
+        IEventHandler<CreditCardErrorThrown>,
+        IEventHandler<PrepaidOrderPaymentInfoUpdated>
     {
         private readonly Func<BookingDbContext> _contextFactory;
         private readonly Resources.Resources _resources;
@@ -104,6 +105,27 @@ namespace apcurium.MK.Booking.EventHandlers
                 payment.Error = @event.Reason;
 
                 context.Save(payment);
+            }
+        }
+
+        public void Handle(PrepaidOrderPaymentInfoUpdated @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var detail = new OrderPaymentDetail
+                {
+                    PaymentId = @event.SourceId,
+                    Amount = @event.Amount,
+                    Meter = @event.Meter,
+                    Tax = @event.Tax,
+                    Tip = @event.Tip,
+                    OrderId = @event.OrderId,
+                    TransactionId = @event.TransactionId,
+                    Provider = PaymentProvider.PayPal,
+                    Type = PaymentType.PayPal,
+                    IsCompleted = true
+                };
+                context.Save(detail);
             }
         }
     }

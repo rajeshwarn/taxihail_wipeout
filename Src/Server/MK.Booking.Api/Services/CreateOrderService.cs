@@ -121,15 +121,14 @@ namespace apcurium.MK.Booking.Api.Services
                     var orderInfo = JsonSerializer.DeserializeFromString<TemporaryOrderCreationInfo>(temporaryInfo.SerializedOrderCreationInfo);
                     var fareObject = Fare.FromAmountInclTax(Convert.ToDouble(orderInfo.Request.Estimate.Price), _serverSettings.ServerData.VATIsEnabled ? _serverSettings.ServerData.VATPercentage : 0);
 
-                    _commandBus.Send(new MarkPrepaidOrderHasSuccessful
+                    _commandBus.Send(new MarkPrepaidOrderAsSuccessful
                     {
                         OrderId = request.OrderId,
                         Amount = Convert.ToDecimal(fareObject.AmountInclTax),
                         Meter = Convert.ToDecimal(fareObject.AmountExclTax),
                         Tax = Convert.ToDecimal(fareObject.TaxAmount),
-                        Tip = 0, // TODO: ?
+                        Tip = 0,
                         TransactionId = response.TransactionId,
-                        AuthorizationCode = response.AuthorizationCode,
                         Provider = PaymentProvider.PayPal,
                         Type = PaymentType.PayPal
                     });

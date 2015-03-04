@@ -116,7 +116,7 @@ namespace apcurium.MK.Booking.Domain
         }
 
         public void UpdatePrepaidOrderPaymentInfo(Guid orderId, decimal amount, decimal meter, decimal tax,
-                decimal tip, string authorizationCode, string transactionId, PaymentProvider provider, PaymentType type)
+                decimal tip, string transactionId, PaymentProvider provider, PaymentType type)
         {
             Update(new PrepaidOrderPaymentInfoUpdated
             {
@@ -125,7 +125,6 @@ namespace apcurium.MK.Booking.Domain
                 Meter = meter,
                 Tax = tax,
                 Tip = tip,
-                AuthorizationCode = authorizationCode,
                 TransactionId = transactionId,
                 Provider = provider,
                 Type = type
@@ -142,8 +141,7 @@ namespace apcurium.MK.Booking.Domain
             Update(new OrderCancelledBecauseOfError
             {
                 ErrorCode = errorCode,
-                ErrorDescription = errorDescription,
-                WasPrepaid = wasPrepaid
+                ErrorDescription = errorDescription
             });
         }
 

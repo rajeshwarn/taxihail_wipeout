@@ -331,6 +331,11 @@ namespace apcurium.MK.Booking.Services.Impl
             }
         }
 
+        public BasePaymentResponse RefundPayment(Guid orderId)
+        {
+            throw new NotImplementedException();
+        }
+
         private bool IsCardDeclined(Transaction transaction)
         {
             if (transaction == null || transaction.Status == null)

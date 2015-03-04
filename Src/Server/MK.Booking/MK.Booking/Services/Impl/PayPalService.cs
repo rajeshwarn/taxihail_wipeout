@@ -15,7 +15,6 @@ using Infrastructure.Messaging;
 using PayPal;
 using PayPal.Api;
 using RestSharp.Extensions;
-using ServiceStack.Common.Extensions;
 
 namespace apcurium.MK.Booking.Services.Impl
 {
@@ -300,6 +299,73 @@ namespace apcurium.MK.Booking.Services.Impl
                 _logger.LogMessage(string.Format("PayPal checkout for Payer {0} -PaymentId {1}- failed. {2}", payerId, paymentId, exceptionMessage));
 
                 return new CommitPreauthorizedPaymentResponse
+                {
+                    IsSuccessful = false,
+                    Message = exceptionMessage
+                };
+            }
+        }
+
+        public BasePaymentResponse RefundWebPayment(Guid orderId)
+        {
+            var paymentDetail = _paymentDao.FindByOrderId(orderId);
+            if (paymentDetail == null)
+            {
+                // No payment to refund
+                var message = string.Format("Cannot refund because no payment was found for order {0}.", orderId);
+                _logger.LogMessage(message);
+
+                return new BasePaymentResponse
+                {
+                    IsSuccessful = false,
+                    Message = message
+                };
+            }
+
+            try
+            {
+                var conversionRate = _serverSettings.ServerData.PayPalConversionRate;
+
+                _logger.LogMessage("PayPal Conversion Rate: {0}", conversionRate);
+
+                // Get captured payment
+                var payment = Payment.Get(GetAPIContext(GetAccessToken()), paymentDetail.TransactionId);
+
+                var amount = Math.Round(Convert.ToDecimal(payment.transactions[0].amount.total) * conversionRate, 2);
+                var currency = conversionRate != 1
+                    ? CurrencyCodes.Main.UnitedStatesDollar
+                    : _resources.GetCurrencyCode();
+
+                var refund = new Refund
+                {
+                    amount = new Amount
+                    {
+                        currency = currency,
+                        total = amount.ToString("N", CultureInfo.InvariantCulture)
+                    }
+                };
+
+                var sale = new Sale { id = payment.transactions[0].related_resources[0].sale.id };
+                sale.Refund(GetAPIContext(GetAccessToken()), refund);
+
+                return new BasePaymentResponse
+                {
+                    IsSuccessful = true
+                };
+            }
+            catch (Exception ex)
+            {
+                var exceptionMessage = ex.Message;
+
+                var paymentException = ex as PaymentsException;
+                if (paymentException != null && paymentException.Details != null)
+                {
+                    exceptionMessage = paymentException.Details.message;
+                }
+
+                _logger.LogMessage(string.Format("PayPal refund for transaction {0} failed. {1}", paymentDetail.TransactionId, exceptionMessage));
+                
+                return new BasePaymentResponse
                 {
                     IsSuccessful = false,
                     Message = exceptionMessage

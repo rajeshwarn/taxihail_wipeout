@@ -20,8 +20,6 @@ namespace apcurium.MK.Booking.Events
 
         public string TransactionId { get; set; }
 
-        public string AuthorizationCode { get; set; }
-
         public PaymentProvider Provider { get; set; }
 
         public PaymentType Type { get; set; }

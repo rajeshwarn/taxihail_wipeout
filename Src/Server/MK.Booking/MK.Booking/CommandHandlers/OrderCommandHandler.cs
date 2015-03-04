@@ -31,7 +31,7 @@ namespace apcurium.MK.Booking.CommandHandlers
         ICommandHandler<AddIbsOrderInfoToOrder>,
         ICommandHandler<CancelOrderBecauseOfError>,
         ICommandHandler<SaveTemporaryOrderCreationInfo>,
-        ICommandHandler<MarkPrepaidOrderHasSuccessful>
+        ICommandHandler<MarkPrepaidOrderAsSuccessful>
     {
         private readonly IEventSourcedRepository<Order> _repository;
         private readonly Func<BookingDbContext> _contextFactory;
@@ -158,7 +158,7 @@ namespace apcurium.MK.Booking.CommandHandlers
             }
         }
 
-        public void Handle(MarkPrepaidOrderHasSuccessful command)
+        public void Handle(MarkPrepaidOrderAsSuccessful command)
         {
             using (var context = _contextFactory.Invoke())
             {
@@ -169,7 +169,7 @@ namespace apcurium.MK.Booking.CommandHandlers
             var order = _repository.Find(command.OrderId);
 
             order.UpdatePrepaidOrderPaymentInfo(command.OrderId, command.Amount, command.Meter, command.Tax,
-                command.Tip, command.AuthorizationCode, command.TransactionId, command.Provider, command.Type);
+                command.Tip, command.TransactionId, command.Provider, command.Type);
 
             _repository.Save(order, command.Id.ToString());
         }
