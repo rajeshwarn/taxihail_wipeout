@@ -694,4 +694,7 @@
   <data name="CannotCreateOrder_PrepaidPayPalNoEstimate" xml:space="preserve">
     <value>You need an estimated fare to pay with PayPal. Please select a destination address to get one.</value>
   </data>
+  <data name="CannotCreateOrder_PrepaidPayPalPaymentCancelled" xml:space="preserve">
+    <value>PayPal payment was cancelled</value>
+  </data>
 </root>

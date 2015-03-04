@@ -102,25 +102,29 @@ namespace apcurium.MK.Booking.Api.Services
         {
             Log.Info("ExecuteWebPaymentAndProceedWithOrder request : " + request.ToJson());
 
-            if (request.Cancel)
+            var temporaryInfo = _orderDao.GetTemporaryInfo(request.OrderId);
+            var orderInfo = JsonSerializer.DeserializeFromString<TemporaryOrderCreationInfo>(temporaryInfo.SerializedOrderCreationInfo);
+
+            if (request.Cancel || orderInfo == null)
             {
+                var clientLanguageCode = orderInfo == null
+                    ? SupportedLanguages.en.ToString()
+                    : orderInfo.Request.ClientLanguageCode;
+
                 _commandBus.Send(new CancelOrderBecauseOfError
                 {
                     OrderId = request.OrderId,
                     WasPrepaid = true,
-                    ErrorCode = "PayPal prepaid order cancelled"
+                    ErrorDescription = _resources.Get("CannotCreateOrder_PrepaidPayPalPaymentCancelled", clientLanguageCode)
                 });
             }
             else
             {
-                var temporaryInfo = _orderDao.GetTemporaryInfo(request.OrderId);
-
                 // Execute PayPal payment
                 var response = _payPalServiceFactory.GetInstance().ExecuteWebPayment(request.PayerId, request.PaymentId);
 
-                if (response.IsSuccessful && temporaryInfo != null)
+                if (response.IsSuccessful)
                 {
-                    var orderInfo = JsonSerializer.DeserializeFromString<TemporaryOrderCreationInfo>(temporaryInfo.SerializedOrderCreationInfo);
                     var fareObject = Fare.FromAmountInclTax(Convert.ToDouble(orderInfo.Request.Estimate.Price),
                         _serverSettings.ServerData.VATIsEnabled
                             ? _serverSettings.ServerData.VATPercentage

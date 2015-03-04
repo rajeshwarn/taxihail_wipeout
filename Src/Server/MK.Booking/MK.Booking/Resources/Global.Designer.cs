@@ -124,6 +124,15 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to PayPal payment was cancelled.
+        /// </summary>
+        public static string CannotCreateOrder_PrepaidPayPalPaymentCancelled {
+            get {
+                return ResourceManager.GetString("CannotCreateOrder_PrepaidPayPalPaymentCancelled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to This promotion does not applies to future booking.
         /// </summary>
         public static string CannotCreateOrder_PromotionAppliesToCurrentBookingOnly {

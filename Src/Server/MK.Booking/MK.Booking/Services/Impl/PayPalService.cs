@@ -179,7 +179,7 @@ namespace apcurium.MK.Booking.Services.Impl
             var redirectUrl = baseUri + string.Format("/{0}/proceed", orderId);
             var redirUrls = new RedirectUrls
             {
-                cancel_url = redirectUrl + "&cancel=true",
+                cancel_url = redirectUrl + "?cancel=true",
                 return_url = redirectUrl
             };
 
