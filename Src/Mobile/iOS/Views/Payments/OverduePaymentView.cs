@@ -50,7 +50,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Payments
 
 			set.Bind(DateOfTransaction)
 				.To(vm => vm.OverduePayment.TransactionDate)
-				.WithConversion("DateTimeFormat", "SDT");
+				.WithConversion("StringFormat", "g");
 
 			set.Bind(IbsOrder)
 				.To(vm => vm.OverduePayment.IBSOrderId);

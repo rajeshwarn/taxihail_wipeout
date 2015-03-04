@@ -101,7 +101,7 @@
                     android:gravity="end"
                     style="@style/BlackTextLabel" />
                 <TextView
-                    local:MvxBind="Text OverduePayment.TransactionDate, Converter=DateTimeFormat, ConverterParameter='SDT'"
+                    local:MvxBind="Text OverduePayment.TransactionDate, Converter=StringFormat, ConverterParameter='g'"
                     android:text="Text"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"

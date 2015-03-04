@@ -134,7 +134,6 @@
     <Compile Include="BindingConverter\BoolInverter.cs" />
     <Compile Include="BindingConverter\CurrencyFormatConverter.cs" />
     <Compile Include="BindingConverter\NoValueToVisibilityConverter.cs" />
-    <Compile Include="BindingConverter\DateTimeFormatConverter.cs" />
     <Compile Include="CallBoxApp.cs" />
     <Compile Include="Data\Coordinate.cs" />
     <Compile Include="Data\CoordinatePrecision.cs" />
@@ -347,6 +346,7 @@
     <Compile Include="PresentationHints\ChangeZoomPresentationHint.cs" />
     <Compile Include="CancellableCommand.cs" />
     <Compile Include="ViewModels\Payment\OverduePaymentViewModel.cs" />
+    <Compile Include="BindingConverter\StringFormatConverter.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\CMTPayment\CMTPayment.Android.csproj">

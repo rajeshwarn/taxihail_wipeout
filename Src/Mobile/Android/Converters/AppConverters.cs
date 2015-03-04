@@ -23,7 +23,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Converters
 		public readonly MvxVisibilityValueConverter Visibility = new MvxVisibilityValueConverter();
         public readonly EnumToBoolConverter EnumToInvertedBool = new EnumToBoolConverter(true);
 
-        public readonly DateTimeFormatConverter DateTimeFormat = new DateTimeFormatConverter();
+        public readonly StringFormatConverter StringFormat = new StringFormatConverter();
         public readonly CurrencyFormatConverter CurrencyFormat = new CurrencyFormatConverter();
     }
 }

@@ -347,7 +347,7 @@
     <Compile Include="BindingConverter\NoValueToVisibilityConverter.cs" />
     <Compile Include="ViewModels\Payment\OverduePaymentViewModel.cs" />
     <Compile Include="BindingConverter\CurrencyFormatConverter.cs" />
-    <Compile Include="BindingConverter\DateTimeFormatConverter.cs" />
+    <Compile Include="BindingConverter\StringFormatConverter.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.iOS.csproj">

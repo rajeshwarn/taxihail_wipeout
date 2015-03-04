@@ -14,6 +14,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Converters
 		public readonly EnumToBoolConverter EnumToInvertedBool = new EnumToBoolConverter(true);
 
 		public readonly CurrencyFormatConverter CurrencyFormat = new CurrencyFormatConverter();
-		public readonly DateTimeFormatConverter DateTimeFormat = new DateTimeFormatConverter();
+        public readonly StringFormatConverter StringFormat = new StringFormatConverter();
 	}
 }
