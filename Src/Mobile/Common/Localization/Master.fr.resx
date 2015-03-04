@@ -1738,6 +1738,12 @@
   <data name="NoPairingCreditCard" xml:space="preserve">
     <value>Aucun</value>
   </data>
+  <data name="InvalidPassengersNumberTitle" xml:space="preserve">
+    <value>Nombre de passagers invalide</value>
+  </data>
+  <data name="InvalidPassengersNumber" xml:space="preserve">
+    <value>Malheureusement nous n'avons pas de véhicule assez gros pour accueillir le nombre de passagers.  Merci de commander plus d'un véhicule pour accommoder votre groupe.</value>
+  </data>
   <data name="Overdue_TransactionId" xml:space="preserve">
     <value>Id de transaction:</value>
   </data>
