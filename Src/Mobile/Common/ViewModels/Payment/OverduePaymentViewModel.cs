@@ -11,8 +11,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 	{
 		private IPaymentService _paymentService;
 
-		private OverduePayment _overduePayment;
-
 		public OverduePaymentViewModel(IPaymentService accountService)
 		{
 			_paymentService = accountService;
@@ -23,6 +21,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			OverduePayment = JsonSerializer.DeserializeFromString<OverduePayment>(overduePayment);
 		}
 
+		private OverduePayment _overduePayment;
 		public OverduePayment OverduePayment
 		{
 			get

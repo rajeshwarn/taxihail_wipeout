@@ -78,8 +78,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 
 	    Task UpdateUserTaxiHailNetworkSettings(UserTaxiHailNetworkSettings userTaxiHailNetworkSettings);
 
-	    Task<OverduePayment> GetOverduePayment();
-
 		void LogApplicationStartUp ();
     }
 }

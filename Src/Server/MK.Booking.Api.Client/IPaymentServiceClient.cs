@@ -11,6 +11,8 @@ namespace apcurium.MK.Booking.Api.Client
 
         Task<DeleteTokenizedCreditcardResponse> ForgetTokenizedCard(string cardToken);
 
+        Task<OverduePayment> GetOverduePayment();
+
         Task<SettleOverduePaymentResponse> SettleOverduePayment();
     }
 }

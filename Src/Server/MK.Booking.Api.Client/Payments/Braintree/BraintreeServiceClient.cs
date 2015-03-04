@@ -42,8 +42,14 @@ namespace apcurium.MK.Booking.Api.Client.Payments.Braintree
         {
             return Client.DeleteAsync(new DeleteTokenizedCreditcardRequest
             {
-                CardToken = cardToken,
+                CardToken = cardToken
             });
+        }
+
+        public Task<OverduePayment> GetOverduePayment()
+        {
+            var req = string.Format("/account/overduepayment");
+            return Client.GetAsync<OverduePayment>(req);
         }
 
         public Task<SettleOverduePaymentResponse> SettleOverduePayment()

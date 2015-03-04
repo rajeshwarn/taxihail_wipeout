@@ -5252,11 +5252,11 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f06016c
 			public const int InvalidLoginMessageTitle = 2131100012;
 			
-			// aapt resource value: 0x7f0602c8
-			public const int InvalidPassengersNumber = 2131100360;
+			// aapt resource value: 0x7f0602bf
+			public const int InvalidPassengersNumber = 2131100351;
 			
-			// aapt resource value: 0x7f0602c7
-			public const int InvalidPassengersNumberTitle = 2131100359;
+			// aapt resource value: 0x7f0602be
+			public const int InvalidPassengersNumberTitle = 2131100350;
 			
 			// aapt resource value: 0x7f0601b9
 			public const int InvalidPhoneErrorMessage = 2131100089;
@@ -5534,20 +5534,20 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f060156
 			public const int OrderNumber = 2131099990;
 			
-			// aapt resource value: 0x7f0602bf
-			public const int Overdue_AddNewCard = 2131100351;
-			
-			// aapt resource value: 0x7f0602c2
-			public const int Overdue_Amount = 2131100354;
-			
-			// aapt resource value: 0x7f0602c0
-			public const int Overdue_Date = 2131100352;
-			
-			// aapt resource value: 0x7f0602c3
-			public const int Overdue_Failed_Message = 2131100355;
+			// aapt resource value: 0x7f0602c1
+			public const int Overdue_AddNewCard = 2131100353;
 			
 			// aapt resource value: 0x7f0602c4
-			public const int Overdue_Failed_Title = 2131100356;
+			public const int Overdue_Amount = 2131100356;
+			
+			// aapt resource value: 0x7f0602c2
+			public const int Overdue_Date = 2131100354;
+			
+			// aapt resource value: 0x7f0602c5
+			public const int Overdue_Failed_Message = 2131100357;
+			
+			// aapt resource value: 0x7f0602c6
+			public const int Overdue_Failed_Title = 2131100358;
 			
 			// aapt resource value: 0x7f0602ca
 			public const int Overdue_IBSOrderId = 2131100362;
@@ -5555,17 +5555,17 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f0602c9
 			public const int Overdue_Instructions = 2131100361;
 			
-			// aapt resource value: 0x7f0602c1
-			public const int Overdue_Retry = 2131100353;
+			// aapt resource value: 0x7f0602c3
+			public const int Overdue_Retry = 2131100355;
 			
-			// aapt resource value: 0x7f0602c5
-			public const int Overdue_Succeed_Message = 2131100357;
+			// aapt resource value: 0x7f0602c7
+			public const int Overdue_Succeed_Message = 2131100359;
 			
-			// aapt resource value: 0x7f0602c6
-			public const int Overdue_Succeed_Title = 2131100358;
+			// aapt resource value: 0x7f0602c8
+			public const int Overdue_Succeed_Title = 2131100360;
 			
-			// aapt resource value: 0x7f0602be
-			public const int Overdue_TransactionId = 2131100350;
+			// aapt resource value: 0x7f0602c0
+			public const int Overdue_TransactionId = 2131100352;
 			
 			// aapt resource value: 0x7f0602ce
 			public const int Overdue_View = 2131100366;

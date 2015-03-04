@@ -1,5 +1,3 @@
-#region
-
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -12,21 +10,17 @@ using apcurium.MK.Booking.Api.Client.Extensions;
 using apcurium.MK.Booking.Api.Contract.Resources.Payments;
 using MK.Common.Configuration;
 
-#endregion
-
 namespace apcurium.MK.Booking.Api.Client.TaxiHail
 {
     public class AccountServiceClient : BaseServiceClient, IAccountServiceClient
     {
         private readonly IPaymentServiceClient _paymentService;
 
-        public AccountServiceClient(string url, string sessionId, IPackageInfo packageInfo,
-            IPaymentServiceClient tokenizationService = null)
+        public AccountServiceClient(string url, string sessionId, IPackageInfo packageInfo, IPaymentServiceClient tokenizationService = null)
             : base(url, sessionId, packageInfo)
         {
             _paymentService = tokenizationService;
         }
-
 
         public Task<Account> GetMyAccount()
         {
@@ -195,11 +189,5 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 		{
 			return Client.PostAsync<string> ("/account/logstartup", request);
 		}
-
-        public Task<OverduePayment> GetOverduePayment()
-        {
-            var req = string.Format("/account/overduepayment");
-            return Client.GetAsync<OverduePayment>(req);
-        }
     }
 }
