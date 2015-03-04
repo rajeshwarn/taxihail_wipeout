@@ -1740,10 +1740,10 @@
   <data name="NoPairingCreditCard" xml:space="preserve">
     <value>None</value>
   </data>
- <data name="InvalidPassengersNumberTitle" xml:space="preserve">
+  <data name="InvalidPassengersNumberTitle" xml:space="preserve">
     <value>Invalid Number of Passengers</value>
   </data>
- <data name="InvalidPassengersNumber" xml:space="preserve">
+  <data name="InvalidPassengersNumber" xml:space="preserve">
     <value>Sorry, but unfortunately we do not have a big enough vehicle to accommodate the number of passengers. Please book more than one car to accommodate your party size.</value>
   </data>
 </root>
