@@ -115,11 +115,16 @@ namespace apcurium.MK.Booking.Api.Services
             {
                 var temporaryInfo = _orderDao.GetTemporaryInfo(request.OrderId);
 
+                // Execute PayPal payment
                 var response = _payPalServiceFactory.GetInstance().ExecuteWebPayment(request.PayerId, request.PaymentId);
+
                 if (response.IsSuccessful && temporaryInfo != null)
                 {
                     var orderInfo = JsonSerializer.DeserializeFromString<TemporaryOrderCreationInfo>(temporaryInfo.SerializedOrderCreationInfo);
-                    var fareObject = Fare.FromAmountInclTax(Convert.ToDouble(orderInfo.Request.Estimate.Price), _serverSettings.ServerData.VATIsEnabled ? _serverSettings.ServerData.VATPercentage : 0);
+                    var fareObject = Fare.FromAmountInclTax(Convert.ToDouble(orderInfo.Request.Estimate.Price),
+                        _serverSettings.ServerData.VATIsEnabled
+                            ? _serverSettings.ServerData.VATPercentage
+                            : 0);
 
                     _commandBus.Send(new MarkPrepaidOrderAsSuccessful
                     {
@@ -133,6 +138,7 @@ namespace apcurium.MK.Booking.Api.Services
                         Type = PaymentType.PayPal
                     });
 
+                    // Create order on IBS
                     Task.Run(() => CreateOrderOnIBSAndSendCommands(orderInfo.OrderId, orderInfo.Account, orderInfo.Request, orderInfo.ReferenceData,
                         orderInfo.ChargeTypeIbs, orderInfo.ChargeTypeEmail, orderInfo.VehicleType, orderInfo.Prompts, orderInfo.PromptsLength,
                         orderInfo.BestAvailableCompany, orderInfo.ApplyPromoCommand, true));
@@ -148,6 +154,7 @@ namespace apcurium.MK.Booking.Api.Services
                 }
             }
 
+            // Build url used to redirect the web client to the booking status view
             var redirectUrl = Request.AbsoluteUri
                 .Replace(Request.PathInfo, string.Empty)
                 .Replace(GetAppHost().Config.ServiceStackHandlerFactoryPath, string.Empty)

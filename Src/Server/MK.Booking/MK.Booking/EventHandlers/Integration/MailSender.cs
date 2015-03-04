@@ -23,24 +23,28 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
 {
     public class MailSender : IIntegrationEventHandler,
         IEventHandler<CreditCardPaymentCaptured_V2>,
-        IEventHandler<CreditCardDeactivated>
+        IEventHandler<CreditCardDeactivated>,
+        IEventHandler<OrderStatusChanged>
     {
         private readonly ICommandBus _commandBus;
         private readonly Func<BookingDbContext> _contextFactory;
         private readonly ICreditCardDao _creditCardDao;
         private readonly IPromotionDao _promotionDao;
+        private readonly IOrderDao _orderDao;
         private readonly INotificationService _notificationService;
 
         public MailSender(Func<BookingDbContext> contextFactory,
             ICommandBus commandBus,
             ICreditCardDao creditCardDao,
             IPromotionDao promotionDao,
+            IOrderDao orderDao,
             INotificationService notificationService)
         {
             _contextFactory = contextFactory;
             _commandBus = commandBus;
             _creditCardDao = creditCardDao;
             _promotionDao = promotionDao;
+            _orderDao = orderDao;
             _notificationService = notificationService;
         }
 
@@ -53,6 +57,18 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             }
 
             SendReceipt(@event.OrderId, @event.Meter, @event.Tip, @event.Tax, @event.AmountSavedByPromotion);
+        }
+
+        public void Handle(OrderStatusChanged @event)
+        {
+            if (@event.IsCompleted)
+            {
+                var orderDetail = _orderDao.FindById(@event.SourceId);
+                if (orderDetail.IsPrepaid)
+                {
+                    SendReceipt(orderDetail.Id, Convert.ToDecimal(@event.Fare ?? 0), Convert.ToDecimal(@event.Tip ?? 0), Convert.ToDecimal(@event.Tax ?? 0));
+                }
+            }
         }
 
         private void SendReceipt(Guid orderId, decimal meter, decimal tip, decimal tax, decimal amountSavedByPromotion = 0m)

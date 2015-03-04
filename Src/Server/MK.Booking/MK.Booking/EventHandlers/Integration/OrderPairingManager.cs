@@ -17,21 +17,18 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
         IEventHandler<OrderStatusChanged>
     {
         private readonly INotificationService _notificationService;
-        private readonly IServerSettings _serverSettings;
         private readonly IOrderDao _orderDao;
         private readonly ICreditCardDao _creditCardDao;
         private readonly IAccountDao _accountDao;
         private readonly IPaymentService _paymentFacadeService;
 
         public OrderPairingManager(INotificationService notificationService, 
-            IServerSettings serverSettings,
             IOrderDao orderDao,
             ICreditCardDao creditCardDao,
             IAccountDao accountDao,
             IPaymentService paymentFacadeService)
         {
             _notificationService = notificationService;
-            _serverSettings = serverSettings;
             _orderDao = orderDao;
             _creditCardDao = creditCardDao;
             _accountDao = accountDao;

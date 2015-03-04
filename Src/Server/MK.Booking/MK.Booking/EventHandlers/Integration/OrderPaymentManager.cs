@@ -101,7 +101,14 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             var orderDetail = _orderDao.FindById(@event.SourceId);
             if (orderDetail.IsPrepaid)
             {
-                _paymentService.RefundPayment(@event.SourceId);
+                var response = _paymentService.RefundPayment(@event.SourceId);
+
+                _commandBus.Send(new UpdateRefundedOrder
+                {
+                    OrderId = @event.SourceId,
+                    IsSuccessful = response.IsSuccessful,
+                    Message = response.Message
+                });
             }
             else
             {
@@ -121,7 +128,14 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             var orderDetail = _orderDao.FindById(@event.SourceId);
             if (orderDetail.IsPrepaid)
             {
-                _paymentService.RefundPayment(@event.SourceId);
+                var response = _paymentService.RefundPayment(@event.SourceId);
+
+                _commandBus.Send(new UpdateRefundedOrder
+                {
+                    OrderId = @event.SourceId,
+                    IsSuccessful = response.IsSuccessful,
+                    Message = response.Message
+                });
             }
             else
             {

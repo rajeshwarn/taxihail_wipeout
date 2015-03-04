@@ -40,7 +40,8 @@ namespace apcurium.MK.Booking.Domain
             Handles<DispatchCompanySwitchIgnored>(OnNextDispatchCompanySwitchIgnored);
             Handles<IbsOrderInfoAddedToOrder>(NoAction);
             Handles<OrderCancelledBecauseOfError>(NoAction);
-            Handles <PrepaidOrderPaymentInfoUpdated>(NoAction);
+            Handles<PrepaidOrderPaymentInfoUpdated>(NoAction);
+            Handles<RefundedOrderUpdated>(NoAction);
         }
         
         public Order(Guid id, IEnumerable<IVersionedEvent> history)
@@ -235,6 +236,15 @@ namespace apcurium.MK.Booking.Domain
         public void IgnoreDispatchCompanySwitch()
         {
             Update(new DispatchCompanySwitchIgnored());
+        }
+
+        public void RefundedOrderUpdated(bool isSuccessful, string message)
+        {
+            Update(new RefundedOrderUpdated
+            {
+                IsSuccessful = isSuccessful,
+                Message = message
+            });
         }
 
         private void OnOrderStatusChanged(OrderStatusChanged @event)

@@ -19,7 +19,8 @@ namespace apcurium.MK.Booking.EventHandlers
         IEventHandler<CreditCardPaymentInitiated>,
         IEventHandler<CreditCardPaymentCaptured_V2>,
         IEventHandler<CreditCardErrorThrown>,
-        IEventHandler<PrepaidOrderPaymentInfoUpdated>
+        IEventHandler<PrepaidOrderPaymentInfoUpdated>,
+        IEventHandler<RefundedOrderUpdated>
     {
         private readonly Func<BookingDbContext> _contextFactory;
         private readonly Resources.Resources _resources;
@@ -112,7 +113,7 @@ namespace apcurium.MK.Booking.EventHandlers
         {
             using (var context = _contextFactory.Invoke())
             {
-                var detail = new OrderPaymentDetail
+                context.Save(new OrderPaymentDetail
                 {
                     PaymentId = @event.SourceId,
                     Amount = @event.Amount,
@@ -124,8 +125,24 @@ namespace apcurium.MK.Booking.EventHandlers
                     Provider = PaymentProvider.PayPal,
                     Type = PaymentType.PayPal,
                     IsCompleted = true
-                };
-                context.Save(detail);
+                });
+            }
+        }
+
+        public void Handle(RefundedOrderUpdated @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var payment = context.Set<OrderPaymentDetail>().FirstOrDefault(p => p.OrderId == @event.SourceId);
+                if (payment == null)
+                {
+                    throw new InvalidOperationException("Payment not found");
+                }
+
+                payment.IsRefunded = @event.IsSuccessful;
+                payment.Error = @event.Message;
+
+                context.Save(payment);
             }
         }
     }
