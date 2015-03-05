@@ -361,13 +361,9 @@ namespace apcurium.MK.Booking.Domain
             Update(new PayPalAccountUnlinked());
         }
 
-        public void DeactivateCreditCard()
+        public void FlagAsDelinquent(Guid orderId, int? ibsOrderId, decimal amount, string transactionId, DateTime? transactionDate)
         {
             Update(new CreditCardDeactivated());
-        }
-
-        public void LogOverduePayment(Guid orderId, int? ibsOrderId, decimal amount, string transactionId, DateTime? transactionDate)
-        {
             Update(new OverduePaymentLogged
             {
                 OrderId = orderId,

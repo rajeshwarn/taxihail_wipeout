@@ -438,9 +438,9 @@ namespace apcurium.MK.Booking.Services.Impl
             if (vatIsEnabled && tax == 0)
             {
                 //aexid hotfix compute tax amount from fare
-                var newFare = Fare.FromAmountInclTax(fare, _serverSettings.ServerData.VATPercentage);
-                tax = newFare.TaxAmount;
-                fare = newFare.AmountExclTax;
+                var newFare = FareHelper.GetFareFromAmountInclTax(fare, _serverSettings.ServerData.VATPercentage);
+                tax = Convert.ToDouble(newFare.TaxAmount);
+                fare = Convert.ToDouble(newFare.AmountExclTax);
             }
 
             var isCardOnFile = cardOnFileInfo != null;

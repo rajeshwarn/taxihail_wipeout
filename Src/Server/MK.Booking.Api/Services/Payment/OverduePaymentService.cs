@@ -49,10 +49,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             var session = this.GetSession();
             var accountId = new Guid(session.UserAuthId);
 
-            var overduePaymentHistory = _overduePaymentDao.FindByAccountId(accountId);
-
-            // Should only be one overdue payment by account at any time
-            return overduePaymentHistory.FirstOrDefault(p => !p.IsPaid);
+            return _overduePaymentDao.FindNotPaidByAccountId(accountId);
         }
 
         public object Post(SettleOverduePaymentRequest request)
@@ -60,9 +57,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             var session = this.GetSession();
             var accountId = new Guid(session.UserAuthId);
 
-            var overduePaymentHistory = _overduePaymentDao.FindByAccountId(accountId);
-            var overduePayment = overduePaymentHistory.FirstOrDefault(p => !p.IsPaid);
-
+            var overduePayment = _overduePaymentDao.FindNotPaidByAccountId(accountId);
             if (overduePayment == null)
             {
                 return new SettleOverduePaymentResponse
@@ -99,11 +94,12 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                     var paymentDetail = _orderPaymentDao.FindByOrderId(overduePayment.OrderId);
                     var promotion = _promotionDao.FindByOrderId(overduePayment.OrderId);
 
-                    var tipAmount = GetTipFromTotalAmount(overduePayment.OrderId, overduePayment.OverdueAmount);
+                    var pairingInfo = _orderDao.FindOrderPairingById(overduePayment.OrderId);
+                    var tipAmount = FareHelper.GetTipAmountFromTotalAmount(overduePayment.OverdueAmount, pairingInfo.AutoTipPercentage ?? _serverSettings.ServerData.DefaultTipPercentage);
                     var meterAmount = overduePayment.OverdueAmount - tipAmount;
 
-                    var fareObject = Fare.FromAmountInclTax(
-                        Convert.ToDouble(meterAmount), _serverSettings.ServerData.VATIsEnabled
+                    var fareObject = FareHelper.GetFareFromAmountInclTax(meterAmount, 
+                        _serverSettings.ServerData.VATIsEnabled
                             ? _serverSettings.ServerData.VATPercentage
                             : 0);
 
@@ -114,9 +110,9 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                         PaymentId = paymentDetail.PaymentId,
                         Provider = _paymentService.ProviderType(overduePayment.OrderId),
                         Amount = overduePayment.OverdueAmount,
-                        MeterAmount = Convert.ToDecimal(fareObject.AmountExclTax),
+                        MeterAmount = fareObject.AmountExclTax,
                         TipAmount = tipAmount,
-                        TaxAmount = Convert.ToDecimal(fareObject.TaxAmount),
+                        TaxAmount = fareObject.TaxAmount,
                         AuthorizationCode = commitResponse.AuthorizationCode,
                         TransactionId = commitResponse.TransactionId,
                         PromotionUsed = promotion != null ? promotion.PromoId : default(Guid?),
@@ -143,15 +139,6 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             {
                 IsSuccessful = false
             };
-        }
-
-        private decimal GetTipFromTotalAmount(Guid orderId, decimal overdueAmount)
-        {
-            var pairingInfo = _orderDao.FindOrderPairingById(orderId);
-            decimal tipPercentage = pairingInfo.AutoTipPercentage ?? _serverSettings.ServerData.DefaultTipPercentage;
-
-            var tip = tipPercentage / 100;
-            return Math.Round(overdueAmount * tip, 2);
         }
     }
 }

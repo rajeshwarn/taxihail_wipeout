@@ -309,7 +309,7 @@ namespace apcurium.MK.Booking.Api.Jobs
             // in the case of RideLinq CMT, we only want to calculate the tip to fill information on our side
             if (pairingInfo.AutoTipPercentage.HasValue)
             {
-                ibsOrderInfo.Tip = GetTipAmount(ibsOrderInfo.Fare, pairingInfo.AutoTipPercentage.Value);
+                ibsOrderInfo.Tip = FareHelper.CalculateTipAmount(ibsOrderInfo.Fare, pairingInfo.AutoTipPercentage.Value);
                 Log.DebugFormat("RideLinqCmt Pairing: Calculated a tip amount of {0}, based on an auto AutoTipPercentage percentage of {1}",
                     ibsOrderInfo.Tip, pairingInfo.AutoTipPercentage.Value);
             }
@@ -363,7 +363,7 @@ namespace apcurium.MK.Booking.Api.Jobs
             // Send payment for capture, once it's captured, we will set the status to Completed
             var meterAmount = ibsOrderInfo.Fare + ibsOrderInfo.Toll + ibsOrderInfo.VAT;
             double tipPercentage = pairingInfo.AutoTipPercentage ?? _serverSettings.ServerData.DefaultTipPercentage;
-            var tipAmount = GetTipAmount(meterAmount, tipPercentage);
+            var tipAmount = FareHelper.CalculateTipAmount(meterAmount, tipPercentage);
 
             Log.DebugFormat(
                     "Order {4}: Received total amount from IBS of {0}, calculated a tip of {1}% (tip amount: {2}), for a total of {3}",
@@ -567,7 +567,7 @@ namespace apcurium.MK.Booking.Api.Jobs
                 {
                     // Payment completed
 
-                    var fareObject = Fare.FromAmountInclTax(Convert.ToDouble(meterAmount), _serverSettings.ServerData.VATIsEnabled ? _serverSettings.ServerData.VATPercentage : 0);
+                    var fareObject = FareHelper.GetFareFromAmountInclTax(Convert.ToDouble(meterAmount), _serverSettings.ServerData.VATIsEnabled ? _serverSettings.ServerData.VATPercentage : 0);
 
                     _commandBus.Send(new CaptureCreditCardPayment
                     {
@@ -630,12 +630,6 @@ namespace apcurium.MK.Booking.Api.Jobs
                     Message = e.Message,
                 };
             }
-        }
-
-        private double GetTipAmount(double amount, double percentage)
-        {
-            var tip = percentage / 100;
-            return Math.Round(amount * tip, 2);
         }
 
         private void CheckForPairingAndHandleIfNecessary(OrderStatusDetail orderStatusDetail, IBSOrderInformation ibsOrderInfo)
