@@ -1780,4 +1780,7 @@
   <data name="Overdue_IBSOrderId" xml:space="preserve">
     <value>Commande:</value>
   </data>
+  <data name="Overdue_OutstandingPaymentExists" xml:space="preserve">
+    <value>La dernière tentative de paiement a été refusée par votre compagnie de carte de crédit. Vous devez payer cette facture en souffrance avant de pouvoir réutiliser votre carte.</value>
+  </data>
 </root>

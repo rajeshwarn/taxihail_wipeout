@@ -61,24 +61,39 @@ namespace apcurium.MK.Booking.Mobile.Client.Helpers
             {
                 dialog.SetMessage(message);
             }
-            dialog.Create();
-            dialog.Show();
+            owner.RunOnUiThread(() =>
+            {
+                dialog.Create();
+                dialog.Show();
+            });
         }
 
         public static void Show(Activity owner, string title, string message, string positiveButtonTitle,
             EventHandler<DialogClickEventArgs> positiveClickHandler, string negativeButtonTitle,
             EventHandler<DialogClickEventArgs> negativeClickHandler)
         {
-            var dialog = new AlertDialog.Builder(owner);
-            dialog.SetPositiveButton(positiveButtonTitle, positiveClickHandler);
-            dialog.SetNegativeButton(negativeButtonTitle, negativeClickHandler);
-            dialog.SetTitle(title);
+            Show(owner, title, message, positiveButtonTitle, positiveClickHandler, negativeButtonTitle, negativeClickHandler, () => { });
+        }
+
+        public static void Show(Activity owner, string title, string message, string positiveButtonTitle,
+            EventHandler<DialogClickEventArgs> positiveClickHandler, string negativeButtonTitle,
+            EventHandler<DialogClickEventArgs> negativeClickHandler, Action cancelAction)
+        {
+            var dialogBuilder = new AlertDialog.Builder(owner);
+            dialogBuilder.SetPositiveButton(positiveButtonTitle, positiveClickHandler);
+            dialogBuilder.SetNegativeButton(negativeButtonTitle, negativeClickHandler);
+            dialogBuilder.SetTitle(title);
             if (message.HasValue())
             {
-                dialog.SetMessage(message);
+                dialogBuilder.SetMessage(message);
             }
-            dialog.Create();
-            dialog.Show();
+            owner.RunOnUiThread(() =>
+            {
+                var dialog = dialogBuilder.Create();
+
+                dialog.CancelEvent += (sender, args) => cancelAction();
+                dialog.Show();
+            });
         }
 
         public static void Show(Activity owner, string title, string message, string positiveButtonTitle,
@@ -95,9 +110,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Helpers
             {
                 dialog.SetMessage(message);
             }
-            dialog.Create();
-
-            dialog.Show();
+            owner.RunOnUiThread(() =>
+            {
+                dialog.Create();
+                dialog.Show();
+            });
         }
 
         public static void Show(Activity owner, string title, string[] items,
@@ -111,8 +128,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Helpers
             var dialog = new AlertDialog.Builder(owner);
             var adapter = new ArrayAdapter<string>(owner, Android.Resource.Layout.SelectDialogItem, items);
             dialog.SetTitle(title);
-            dialog.SetAdapter(adapter, onItemSelected);
-            dialog.Show();
+            owner.RunOnUiThread(() =>
+            {
+                dialog.SetAdapter(adapter, onItemSelected);
+                dialog.Show();
+            });
+            
         }
     }
 }

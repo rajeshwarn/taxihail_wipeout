@@ -61,6 +61,17 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
                 positiveButtonTitle, (s,e) => positiveAction(),
                 negativeButtonTitle, (s,e) => negativeAction());
         }
+        public void ShowMessage(string title, string message, string positiveButtonTitle, Action positiveAction,
+            string negativeButtonTitle, Action negativeAction, Action cancelAction)
+        {
+            AlertDialogHelper.Show(
+                Context.Activity,
+                title,
+                message,
+                positiveButtonTitle, (s,e) => positiveAction(),
+                negativeButtonTitle, (s,e) => negativeAction(),
+                cancelAction);
+        }
 
         public Task ShowMessage(string title, string message, string positiveButtonTitle, Action positiveAction,
             string negativeButtonTitle, Action negativeAction, string neutralButtonTitle, Action neutralAction)
