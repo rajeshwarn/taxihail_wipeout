@@ -632,8 +632,7 @@ namespace apcurium.MK.Booking.Api.Jobs
                 return;
             }
 
-            var orderDetail = _orderDao.FindById(orderStatusDetail.OrderId);
-            if (orderDetail.IsPrepaid)
+            if (orderStatusDetail.IsPrepaid)
             {
                 Log.DebugFormat("Order {0}: No pairing to process as the order has been paid at the time of booking.", orderStatusDetail.OrderId);
                 return;

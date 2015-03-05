@@ -124,7 +124,7 @@ namespace apcurium.MK.Booking.Api.Services
                         };
 
                         _notificationService.SendReceiptEmail(Guid.NewGuid(), 12345, "9007", driverInfos, fareObject.AmountExclTax, toll, tip, fareObject.TaxAmount, fareObject.AmountExclTax + toll + tip + fareObject.TaxAmount - amountSavedByPromo,
-                            _cardOnFile, _pickupAddress, _dropOffAddress, DateTime.Now.AddMinutes(-15), DateTime.Now, request.EmailAddress, "en", amountSavedByPromo, "PROMO10", true);
+                            _payment, _pickupAddress, _dropOffAddress, DateTime.Now.AddMinutes(-15), DateTime.Now, request.EmailAddress, "en", amountSavedByPromo, "PROMO10", true);
                         break;
                     case NotificationService.EmailConstant.Template.PromotionUnlocked:
                         _notificationService.SendPromotionUnlockedEmail("10% Off your next ride", "PROMO123", DateTime.Now.AddMonths(1), request.EmailAddress, request.Language, true);
@@ -189,11 +189,11 @@ namespace apcurium.MK.Booking.Api.Services
             VehicleType = "Taxi"
         };
 
-        private readonly SendReceipt.CardOnFile _cardOnFile = new SendReceipt.CardOnFile((decimal) 41.75, "ad51d", "1155", "Visa")
+        private readonly SendReceipt.Payment _payment = new SendReceipt.Payment((decimal) 41.75, "ad51d", "1155", "Visa")
         {
             ExpirationMonth = "2",
             ExpirationYear = "14",
-            LastFour = "4111",
+            Last4Digits = "4111",
             NameOnCard = "Tony Apcurium"
         };
     }

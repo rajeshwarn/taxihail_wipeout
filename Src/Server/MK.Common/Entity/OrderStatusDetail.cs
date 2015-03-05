@@ -23,6 +23,7 @@ namespace apcurium.MK.Common.Entity
         public double? VehicleLongitude { get; set; }
         public bool FareAvailable { get; set; }
         public bool IsChargeAccountPaymentWithCardOnFile { get; set; }
+        public bool IsPrepaid { get; set; }
         public Guid OrderId { get; set; }
         public Guid AccountId { get; set; }
         public DateTime PickupDate { get; set; }

@@ -98,7 +98,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
 
         public void Handle(OrderCancelled @event)
         {
-            var orderDetail = _orderDao.FindById(@event.SourceId);
+            var orderDetail = _orderDao.FindOrderStatusById(@event.SourceId);
             if (orderDetail.IsPrepaid)
             {
                 var response = _paymentService.RefundPayment(@event.SourceId);
@@ -125,7 +125,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
 
         public void Handle(OrderCancelledBecauseOfError @event)
         {
-            var orderDetail = _orderDao.FindById(@event.SourceId);
+            var orderDetail = _orderDao.FindOrderStatusById(@event.SourceId);
             if (orderDetail.IsPrepaid)
             {
                 var response = _paymentService.RefundPayment(@event.SourceId);

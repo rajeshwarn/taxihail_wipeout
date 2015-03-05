@@ -108,8 +108,7 @@ namespace apcurium.MK.Booking.EventHandlers
                     ClientVersion = @event.ClientVersion,
                     CompanyKey = @event.CompanyKey,
                     CompanyName = @event.CompanyName,
-                    Market = @event.Market,
-                    IsPrepaid = @event.IsPrepaid
+                    Market = @event.Market
                 });
 
                 // Create an empty OrderStatusDetail row
@@ -130,6 +129,7 @@ namespace apcurium.MK.Booking.EventHandlers
                         PickupDate = @event.PickupDate,
                         Name = @event.Settings != null ? @event.Settings.Name : null,
                         IsChargeAccountPaymentWithCardOnFile = @event.IsChargeAccountPaymentWithCardOnFile,
+                        IsPrepaid = @event.IsPrepaid,
                         CompanyKey = @event.CompanyKey,
                         CompanyName = @event.CompanyName,
                         Market = @event.Market

@@ -415,7 +415,7 @@ namespace apcurium.MK.Booking.Services.Impl
         }
 
         public void SendReceiptEmail(Guid orderId, int ibsOrderId, string vehicleNumber, DriverInfos driverInfos, double fare, double toll, double tip,
-            double tax, double totalFare, SendReceipt.CardOnFile cardOnFileInfo, Address pickupAddress, Address dropOffAddress,
+            double tax, double totalFare, SendReceipt.Payment paymentInfo, Address pickupAddress, Address dropOffAddress,
             DateTime pickupDate, DateTime? dropOffDate, string clientEmailAddress, string clientLanguageCode, double amountSavedByPromotion, string promoCode, 
             bool bypassNotificationSetting = false)
         {
@@ -443,24 +443,24 @@ namespace apcurium.MK.Booking.Services.Impl
                 fare = newFare.AmountExclTax;
             }
 
-            var isCardOnFile = cardOnFileInfo != null;
-            var cardOnFileAmount = string.Empty;
-            var cardNumber = string.Empty;
-            var cardOnFileTransactionId = string.Empty;
-            var cardOnFileAuthorizationCode = string.Empty;
+            var hasPaymentInfo = paymentInfo != null;
+            var paymentAmount = string.Empty;
+            var paymentMethod = string.Empty;
+            var paymentTransactionId = string.Empty;
+            var paymentAuthorizationCode = string.Empty;
 
-            if (isCardOnFile)
+            if (hasPaymentInfo)
             {
-                cardOnFileAmount = _resources.FormatPrice(Convert.ToDouble(cardOnFileInfo.Amount));
-                cardNumber = cardOnFileInfo.Company;
-                cardOnFileAuthorizationCode = cardOnFileInfo.AuthorizationCode;
+                paymentAmount = _resources.FormatPrice(Convert.ToDouble(paymentInfo.Amount));
+                paymentMethod = paymentInfo.Company;
+                paymentAuthorizationCode = paymentInfo.AuthorizationCode;
 
-                if (!string.IsNullOrWhiteSpace(cardOnFileInfo.LastFour))
+                if (!string.IsNullOrWhiteSpace(paymentInfo.Last4Digits))
                 {
-                    cardNumber += " XXXX " + cardOnFileInfo.LastFour;
+                    paymentMethod += " XXXX " + paymentInfo.Last4Digits;
                 }
 
-                cardOnFileTransactionId = cardOnFileInfo.TransactionId;
+                paymentTransactionId = paymentInfo.TransactionId;
             }
 
             var addressToUseForDropOff = TryToGetExactDropOffAddress(orderId, dropOffAddress, clientLanguageCode);
@@ -511,11 +511,12 @@ namespace apcurium.MK.Booking.Services.Impl
                 Tax = _resources.FormatPrice(tax),
                 ShowTax = Math.Abs(tax) >= 0.01,
                 vatIsEnabled,
-                IsCardOnFile = isCardOnFile,
-                CardOnFileAmount = cardOnFileAmount,
-                CardNumber = cardNumber,
-                CardOnFileTransactionId = cardOnFileTransactionId,
-                CardOnFileAuthorizationCode = cardOnFileAuthorizationCode,
+                HasPaymentInfo = hasPaymentInfo,
+                PaymentAmount = paymentAmount,
+                PaymentMethod = paymentMethod,
+                PaymentTransactionId = paymentTransactionId,
+                PaymentAuthorizationCode = paymentAuthorizationCode,
+                ShowPaymentAuthorizationCode = paymentAuthorizationCode.HasValue(),
                 PickupAddress = pickupAddress.DisplayAddress,
                 DropOffAddress = hasDropOffAddress ? addressToUseForDropOff.DisplayAddress : "-",
                 StaticMapUri = staticMapUri,

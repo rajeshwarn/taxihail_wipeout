@@ -74,6 +74,8 @@ namespace apcurium.MK.Booking.ReadModel
 
         public bool IsChargeAccountPaymentWithCardOnFile { get; set; }
 
+        public bool IsPrepaid { get; set; }
+
         public DateTime? PickupDateTime { get; set; }
 
         public DateTime? CreateDateTime { get; set; }
@@ -85,8 +87,6 @@ namespace apcurium.MK.Booking.ReadModel
         public bool WasSwitchedToAnotherCompany { get; set; }
 
         public bool HasTimedOut { get; set; }
-
-        public bool IsPrepaid { get; set; }
     }
 
     public class OrderReportOrderStatus

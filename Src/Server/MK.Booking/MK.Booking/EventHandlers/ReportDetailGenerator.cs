@@ -62,14 +62,14 @@ namespace apcurium.MK.Booking.EventHandlers
                     IBSOrderId = @event.IBSOrderId,
                     ChargeType = @event.Settings.ChargeType,
                     IsChargeAccountPaymentWithCardOnFile = @event.IsChargeAccountPaymentWithCardOnFile,
+                    IsPrepaid = @event.IsPrepaid,
                     PickupDateTime = @event.PickupDate,
                     CreateDateTime = @event.CreatedDate,
                     PickupAddress = @event.PickupAddress,
                     DropOffAddress = @event.DropOffAddress,
                     CompanyName = @event.CompanyName,
                     CompanyKey = @event.CompanyKey,
-                    Market = @event.Market,
-                    IsPrepaid = @event.IsPrepaid
+                    Market = @event.Market
                 };
                 orderReport.Client = new OrderReportClient
                 {

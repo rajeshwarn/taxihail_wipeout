@@ -63,10 +63,9 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
         {
             if (@event.IsCompleted)
             {
-                var orderDetail = _orderDao.FindById(@event.SourceId);
-                if (orderDetail.IsPrepaid)
+                if (@event.Status.IsPrepaid)
                 {
-                    SendReceipt(orderDetail.Id, Convert.ToDecimal(@event.Fare ?? 0), Convert.ToDecimal(@event.Tip ?? 0), Convert.ToDecimal(@event.Tax ?? 0));
+                    SendReceipt(@event.SourceId, Convert.ToDecimal(@event.Fare ?? 0), Convert.ToDecimal(@event.Tip ?? 0), Convert.ToDecimal(@event.Tax ?? 0));
                 }
             }
         }
