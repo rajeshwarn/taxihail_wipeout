@@ -278,8 +278,10 @@ namespace DatabaseInitializer
                     });
                 }
                 
+                Console.WriteLine("Migration of Payment Settings ...");
+                MigratePaymentSettings(serverSettings, commandBus);
+
                 EnsurePrivacyPolicyExists(connectionString, commandBus, serverSettings);
-                
 
                 Console.WriteLine("Database Creation/Migration for version {0} finished", CurrentVersion);
             }
@@ -293,8 +295,6 @@ namespace DatabaseInitializer
             return 0;
 // ReSharper restore LocalizableElement
         }
-
-        
 
         public static void SetupMirroring(DatabaseInitializerParams param)
         {
@@ -851,6 +851,23 @@ namespace DatabaseInitializer
                     TariffId = Guid.NewGuid(),
                 });
             }
+        }
+
+        private static void MigratePaymentSettings(IServerSettings serverSettings, ICommandBus commandBus)
+        {
+            var paymentSettings = serverSettings.GetPaymentSettings();
+
+            if (paymentSettings.AutomaticPaymentPairing)
+            {
+                paymentSettings.IsUnpairingDisabled = true;
+                paymentSettings.AutomaticPaymentPairing = false;
+            }
+
+            commandBus.Send(new UpdatePaymentSettings
+            {
+                CompanyId = AppConstants.CompanyId,
+                ServerPaymentSettings = paymentSettings
+            });
         }
 
         private static void CreateDefaultVehicleTypes(UnityContainer container, ICommandBus commandBus)
