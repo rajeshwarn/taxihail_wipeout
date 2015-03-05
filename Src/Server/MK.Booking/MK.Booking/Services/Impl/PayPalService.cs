@@ -177,6 +177,9 @@ namespace apcurium.MK.Booking.Services.Impl
                 : _resources.GetCurrencyCode();
 
             var redirectUrl = baseUri + string.Format("/{0}/proceed", orderId);
+
+            _logger.LogMessage("PayPal Web redirect URL: {0}", redirectUrl);
+
             var redirUrls = new RedirectUrls
             {
                 cancel_url = redirectUrl + "?cancel=true",
@@ -246,6 +249,8 @@ namespace apcurium.MK.Booking.Services.Impl
                     }
                 }
 
+                _logger.LogMessage("Error when creating PayPal Web payment: no approval_urls found");
+
                 // No approval_url found
                 return new InitializePayPalCheckoutResponse
                 {
@@ -262,6 +267,8 @@ namespace apcurium.MK.Booking.Services.Impl
                 {
                     exceptionMessage = paymentException.Details.message;
                 }
+
+                _logger.LogMessage("Initialization of PayPal Web Store failed: {0}", exceptionMessage);
 
                 return new InitializePayPalCheckoutResponse
                 {
