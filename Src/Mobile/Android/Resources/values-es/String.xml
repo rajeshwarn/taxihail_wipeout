@@ -592,4 +592,5 @@
   <string name="Overdue_IBSOrderId">Order:</string>
   <string name="Overdue_Instructions">Your credit card failed to pay the previous ride, you need to either retry to pay again or update your credit card information.</string>
   <string name="View_Overdue">Overdue Payment</string>
+  <string name="Overdue_OutstandingPaymentExists">Your credit card failed to pay the previous ride. You will need to pay this outstanding amount for your card be reactivated.</string>
 </resources>

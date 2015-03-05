@@ -1719,4 +1719,7 @@
   <data name="Overdue_IBSOrderId" xml:space="preserve">
     <value>Order:</value>
   </data>
+  <data name="Overdue_OutstandingPaymentExists" xml:space="preserve">
+    <value>Your credit card failed to pay the previous ride. You will need to pay this outstanding amount for your card be reactivated.</value>
+  </data>
 </root>
