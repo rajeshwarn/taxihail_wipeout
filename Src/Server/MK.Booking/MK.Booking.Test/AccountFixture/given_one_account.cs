@@ -334,7 +334,7 @@ namespace apcurium.MK.Booking.Test.AccountFixture
             var orderId = Guid.NewGuid();
             var transactionDate = DateTime.UtcNow;
 
-            _sut.When(new FlagDelinquentAccount
+            _sut.When(new ReactToPaymentFailure
             {
                 AccountId = _accountId,
                 OrderId = orderId,

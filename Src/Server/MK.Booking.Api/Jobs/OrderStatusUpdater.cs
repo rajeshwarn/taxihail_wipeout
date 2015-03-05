@@ -214,7 +214,7 @@ namespace apcurium.MK.Booking.Api.Jobs
             else if (result.IsDeclined)
             {
                 // Deactivate credit card if it was declined
-                _commandBus.Send(new FlagDelinquentAccount
+                _commandBus.Send(new ReactToPaymentFailure
                 {
                     AccountId = orderDetail.AccountId,
                     OrderId = orderId,
@@ -599,7 +599,7 @@ namespace apcurium.MK.Booking.Api.Jobs
 
                     if (paymentProviderServiceResponse.IsDeclined)
                     {
-                        _commandBus.Send(new FlagDelinquentAccount
+                        _commandBus.Send(new ReactToPaymentFailure
                         {
                             AccountId = account.Id,
                             OrderId = orderId,

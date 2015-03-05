@@ -57,7 +57,7 @@
     <Compile Include="AddPopularAddress.cs" />
     <Compile Include="AddUserToPromotionWhiteList.cs" />
     <Compile Include="CancelOrderBecauseOfIbsError.cs" />
-    <Compile Include="FlagDelinquentAccount.cs" />
+    <Compile Include="ReactToPaymentFailure.cs" />
     <Compile Include="ImportAccountCharge.cs" />
     <Compile Include="AddUpdateAccountCharge.cs" />
     <Compile Include="AddUpdateVehicleType.cs" />

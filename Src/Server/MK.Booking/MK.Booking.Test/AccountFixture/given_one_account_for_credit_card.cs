@@ -120,7 +120,7 @@ namespace apcurium.MK.Booking.Test.AccountFixture
         {
             var orderId = Guid.NewGuid();
 
-            _sut.When(new FlagDelinquentAccount
+            _sut.When(new ReactToPaymentFailure
             {
                 AccountId = _accountId,
                 OrderId = orderId,

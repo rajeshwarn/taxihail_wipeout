@@ -44,7 +44,7 @@ namespace apcurium.MK.Booking.CommandHandlers
         ICommandHandler<LinkPayPalAccount>,
         ICommandHandler<UnlinkPayPalAccount>,
         ICommandHandler<UnlinkAllPayPalAccounts>,
-        ICommandHandler<FlagDelinquentAccount>,
+        ICommandHandler<ReactToPaymentFailure>,
         ICommandHandler<SettleOverduePayment>
     {
         private readonly IPasswordService _passwordService;
@@ -302,11 +302,11 @@ namespace apcurium.MK.Booking.CommandHandlers
             }
         }
 
-        public void Handle(FlagDelinquentAccount command)
+        public void Handle(ReactToPaymentFailure command)
         {
             var account = _repository.Find(command.AccountId);
 
-            account.FlagAsDelinquent(command.OrderId, command.IBSOrderId, command.OverdueAmount, command.TransactionId, command.TransactionDate);
+            account.ReactToPaymentFailure(command.OrderId, command.IBSOrderId, command.OverdueAmount, command.TransactionId, command.TransactionDate);
 
             _repository.Save(account, command.Id.ToString());
         }

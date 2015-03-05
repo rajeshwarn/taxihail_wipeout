@@ -3,9 +3,9 @@ using System;
 
 namespace apcurium.MK.Booking.Commands
 {
-    public class FlagDelinquentAccount : ICommand
+    public class ReactToPaymentFailure : ICommand
     {
-        public FlagDelinquentAccount()
+        public ReactToPaymentFailure()
         {
             Id = Guid.NewGuid();
         }
