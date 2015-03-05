@@ -578,3 +578,5 @@
 "Unpair"="Payer dans le taxi";
 "UnpairErrorMessage"="Désolé, le système a rencontré un problème lors de la réinitialisation";
 "UnpairPayInCar"="Payer dans le taxi";
+"InvalidPassengersNumberTitle"="Nombre de passagers invalide";
+"InvalidPassengersNumber"="Malheureusement nous n'avons pas de véhicule assez gros pour accueillir le nombre de passagers.  Merci de commander plus d'un véhicule pour accommoder votre groupe.";
