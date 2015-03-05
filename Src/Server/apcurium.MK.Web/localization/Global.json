@@ -29,7 +29,7 @@
 	"CreateOrder_SettingsRequired": "Settings required",
     "CreateOrder_NoProvider": "Bad Provider",
     "CreateOrder_InvalidProvider": "Invalid Provider",
-    "CreateOrder_InvalidPassengersNumber": "Sorry, but unfortunately we do not have a big enough vehicle to accommodate the number of passengers. Please book more than one car to accommodate your party size.",
+    "CreateOrder_InvalidPassengersNumber": "The vehicle type that you selected does not have enough seats to accommodate your number of passengers. Please change your selection or book more than one car to accommodate your party size.",
     "CreateOrder_VehicleType": "Vehicle Type Invalid",
     "CreateOrder_PendingOrder": "You cannot book this ride since an order is already pending. View the order status?",
     "OrderNotInIbs": "Unkown Order",
