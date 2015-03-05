@@ -77,7 +77,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
                         catch(Exception ex)
                         {
                             Logger.LogError(ex);
-                            await this.Services().Message.ShowMessage(localize["Overdue_Failed_Title"], localize["Overdue_Failed_Message"]);
+                            this.Services().Message.ShowMessage(localize["Overdue_Failed_Title"], localize["Overdue_Failed_Message"]);
                         }
 				    }
 				});
