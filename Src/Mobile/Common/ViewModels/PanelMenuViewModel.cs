@@ -277,26 +277,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			get 
 			{
-				return this.GetCommand(async () =>
+				return this.GetCommand(() =>
 				{
-                    using(this.Services().Message.ShowProgress())
-                    {
-                        // check if user has an overdue payment and redirect accordingly
-                        var overduePayment = await _paymentService.GetOverduePayment();
-
                         CloseMenu();
-                        if (overduePayment != null)
-                        {
-                            ShowViewModel<OverduePaymentViewModel>(new 
-                            { 
-                                overduePayment = overduePayment.ToJson() 
-                            });
-                        }
-                        else
-                        {
-                            ShowViewModel<CreditCardAddViewModel>();
-                        }
-                    }
+
+                        ShowViewModel<CreditCardAddViewModel>();
 				});
 			}
 		}

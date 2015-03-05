@@ -168,6 +168,37 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
                 RaisePropertyChanged(() => CanDeleteCreditCard);
                 RaisePropertyChanged(() => IsPayPalOnly);
 			}
+
+		    if (_overduePayment != null)
+		    {
+		        return;
+		    }
+
+		    try
+		    {
+		        var overduePayment = await _paymentService.GetOverduePayment();
+
+		        if (overduePayment == null)
+		        {
+                    return;
+		        }
+		        
+		        this.Services().Message.ShowMessage(
+                    this.Services().Localize["View_Overdue"],
+                    this.Services().Localize["Overdue_OutstandingPaymentExists"],
+                    this.Services().Localize["OkButtonText"],
+		            () => ShowViewModelAndRemoveFromHistory<OverduePaymentViewModel>(new
+		            {
+		                overduePayment = overduePayment.ToJson()
+		            }),
+                    this.Services().Localize["Cancel"],
+		            () => Close(this),
+                    () => Close(this));
+		    }
+		    catch (Exception ex)
+		    {
+		        Logger.LogError(ex);
+		    }
         }
 
 	    private bool _isPayPalAccountLinked;
