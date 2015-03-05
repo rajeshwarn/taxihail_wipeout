@@ -366,8 +366,8 @@ namespace apcurium.MK.Booking.EventHandlers
                 orderReport.Payment.MeterAmount = @event.Meter;
                 orderReport.Payment.TipAmount = @event.Tip;
                 orderReport.Payment.TransactionId = @event.TransactionId;
-                orderReport.Payment.Provider = PaymentProvider.PayPal;
-                orderReport.Payment.Type = PaymentType.PayPal;
+                orderReport.Payment.Provider = @event.Provider;
+                orderReport.Payment.Type = @event.Type;
                 orderReport.Payment.IsCompleted = true;
                 context.Save(orderReport);
             }

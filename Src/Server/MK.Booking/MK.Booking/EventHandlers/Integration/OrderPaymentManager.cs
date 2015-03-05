@@ -119,8 +119,16 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
 
         public void Handle(OrderSwitchedToNextDispatchCompany @event)
         {
-            // void the preauthorization to prevent misuse fees
-            _paymentService.VoidPreAuthorization(@event.SourceId);
+            var orderStatus = _orderDao.FindOrderStatusById(@event.SourceId);
+            if (orderStatus.IsPrepaid)
+            {
+                _paymentService.RefundPayment(@event.SourceId);
+            }
+            else
+            {
+                // void the preauthorization to prevent misuse fees
+                _paymentService.VoidPreAuthorization(@event.SourceId);
+            }
         }
 
         public void Handle(OrderCancelledBecauseOfError @event)
@@ -150,6 +158,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             {
                 var paymentSettings = _serverSettings.GetPaymentSettings();
                 var order = _orderDao.FindById(@event.SourceId);
+                var orderStatus = _orderDao.FindOrderStatusById(@event.SourceId);
                 var pairingInfo = _orderDao.FindOrderPairingById(@event.SourceId);
 
                 // If the user has decided not to pair (paying the ride in car instead),
@@ -157,7 +166,8 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                 if (paymentSettings.PaymentMode != PaymentMethod.RideLinqCmt
                     && (order.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id
                         || order.Settings.ChargeTypeId == ChargeTypes.PayPal.Id)
-                    && pairingInfo == null)
+                    && pairingInfo == null
+                    && !orderStatus.IsPrepaid)
                 {
                     // void the preauthorization to prevent misuse fees
                     _paymentService.VoidPreAuthorization(@event.SourceId);

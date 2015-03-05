@@ -129,11 +129,11 @@
                 };
 
                 if (model.canSendReceipt()) {
-                    options.cancelButton = "Done";
+                    options.cancelButton = this.localize('Done');
                     options.confirmButton = this.localize('Send Receipt');
                 } else {
                     options.cancelButton = null; // Hide Cancel button
-                    options.confirmButton = "Done";
+                    options.confirmButton = this.localize('Done');
                 }
 
                 TaxiHail.confirm(options)
