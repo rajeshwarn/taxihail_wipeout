@@ -15,6 +15,7 @@ using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
 using Microsoft.Practices.Unity;
 using NUnit.Framework;
+using ServiceStack.ServiceClient.Web;
 using UnityServiceLocator = apcurium.MK.Common.IoC.UnityServiceLocator;
 
 namespace apcurium.MK.Web.Tests
@@ -124,7 +125,15 @@ namespace apcurium.MK.Web.Tests
             };
 
             var orderServiceClient = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
-            await orderServiceClient.CreateOrder(order);
+            try
+            {
+                await orderServiceClient.CreateOrder(order);
+            }
+            catch (WebServiceException ex)
+            {
+                Console.WriteLine(ex.ErrorMessage);
+                throw;
+            }
 
             // wait for ibs order id to be populated
             await Task.Delay(10000);
@@ -251,7 +260,16 @@ namespace apcurium.MK.Web.Tests
             };
 
             var orderServiceClient = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
-            await orderServiceClient.CreateOrder(order);
+            try
+            {
+                await orderServiceClient.CreateOrder(order);
+            }
+            catch (WebServiceException ex)
+            {
+                Console.WriteLine(ex.ErrorMessage);
+                throw;
+            }
+            
 
             // wait for ibs order id to be populated
             await Task.Delay(10000);
