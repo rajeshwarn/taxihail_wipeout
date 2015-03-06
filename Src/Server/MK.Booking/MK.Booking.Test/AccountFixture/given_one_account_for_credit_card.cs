@@ -118,11 +118,19 @@ namespace apcurium.MK.Booking.Test.AccountFixture
         [Test]
         public void when_credit_card_deactivated()
         {
-            _sut.When(new DeactivateCreditCard { AccountId = _accountId });
+            var orderId = Guid.NewGuid();
+
+            _sut.When(new ReactToPaymentFailure
+            {
+                AccountId = _accountId,
+                OrderId = orderId,
+                OverdueAmount = 12.56m
+            });
 
             var @event = _sut.ThenHasSingle<CreditCardDeactivated>();
             Assert.AreEqual(_accountId, @event.SourceId);
-        }
 
+            // TODO: Delinquent
+        }
     }
 }

@@ -1,17 +1,8 @@
-﻿#region
-
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.IO;
 using System.Reflection;
-using System.Runtime.CompilerServices;
-using apcurium.MK.Booking.Resources;
-using apcurium.MK.Booking.Services.Impl;
 using apcurium.MK.Common.Configuration;
 using Nustache.i18n;
-using RestSharp.Extensions;
-
-#endregion
 
 namespace apcurium.MK.Booking.Email
 {

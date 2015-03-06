@@ -95,8 +95,10 @@
     <Compile Include="Requests\IbsChargeAccountRequest.cs" />
     <Compile Include="Requests\IgnoreDispatchCompanySwitchRequest.cs" />
     <Compile Include="Requests\NetworkFleetsRequest.cs" />
+    <Compile Include="Requests\Payment\OverduePaymentRequest.cs" />
     <Compile Include="Requests\Payment\PayPal\LinkPayPalAccountRequest.cs" />
     <Compile Include="Requests\Payment\PayPal\UnlinkPayPalAccountRequest.cs" />
+    <Compile Include="Requests\Payment\SettleOverduePaymentRequest.cs" />
     <Compile Include="Requests\SwitchOrderToNextDispatchCompanyRequest.cs" />
     <Compile Include="Requests\IbsFareRequest.cs" />
     <Compile Include="Requests\LogApplicationStartUpRequest.cs" />
@@ -185,6 +187,7 @@
     <Compile Include="Resources\OrderRatings.cs" />
     <Compile Include="Resources\OrderValidationResult.cs" />
     <Compile Include="Resources\PaymentSettings.cs" />
+    <Compile Include="Resources\Payments\OverduePayment.cs" />
     <Compile Include="Resources\Payments\ServerPaymentSettingsResponse.cs" />
     <Compile Include="Resources\Payments\PaymentSettingsResponse.cs" />
     <Compile Include="Resources\Payments\TokenizedCreditCardResponse.cs" />

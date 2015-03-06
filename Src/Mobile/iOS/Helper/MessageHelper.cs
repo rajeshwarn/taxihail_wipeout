@@ -67,27 +67,35 @@ namespace apcurium.MK.Booking.Mobile.Client.Helper
 
         public static void Show (string title, string message, string positiveActionTitle , Action positiveAction, string negativeActionTitle , Action negativeAction)
         {
-            UIApplication.SharedApplication.InvokeOnMainThread (delegate {                   
+            Show(title, message, positiveActionTitle, positiveAction, negativeActionTitle, negativeAction, () => { });
+        }
+
+        public static void Show(string title, string message, string positiveActionTitle, Action positiveAction, string negativeActionTitle, Action negativeAction, Action cancelAction)
+        {
+            UIApplication.SharedApplication.InvokeOnMainThread(delegate
+            {
                 LoadingOverlay.StopAnimatingLoading();
-                var av = new UIAlertView (title, message, null,  negativeActionTitle, positiveActionTitle);
-                av.Clicked += delegate(object sender, UIButtonEventArgs e) {
-                    if (e.ButtonIndex == 0 && negativeAction != null) 
+                var av = new UIAlertView(title, message, null, negativeActionTitle, positiveActionTitle);
+                av.Canceled += (sender, args) => cancelAction();
+                av.Clicked += delegate(object sender, UIButtonEventArgs e)
+                {
+                    if (e.ButtonIndex == 0 && negativeAction != null)
                     {
-                        negativeAction(); 
+                        negativeAction();
                     }
-                    else if (e.ButtonIndex == 1 && positiveAction!= null) 
+                    else if (e.ButtonIndex == 1 && positiveAction != null)
                     {
-                        positiveAction(); 
-                    }                  
-                    else 
+                        positiveAction();
+                    }
+                    else
                     {
-                        if (positiveAction != null) 
+                        if (positiveAction != null)
                         {
                             positiveAction();
                         }
                     }
                 };
-                av.Show ();                           
+                av.Show();
             });
         }
 

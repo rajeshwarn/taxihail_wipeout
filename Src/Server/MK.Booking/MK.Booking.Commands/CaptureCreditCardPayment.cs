@@ -39,6 +39,8 @@ namespace apcurium.MK.Booking.Commands
 
         public decimal AmountSavedByPromotion { get; set; }
 
+        public string NewCardToken { get; set; }
+
         public Guid Id { get; private set; }
     }
 }

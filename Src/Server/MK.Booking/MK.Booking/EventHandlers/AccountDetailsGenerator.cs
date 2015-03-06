@@ -30,11 +30,12 @@ namespace apcurium.MK.Booking.EventHandlers
         IEventHandler<CreditCardAddedOrUpdated>,
         IEventHandler<CreditCardRemoved>,
         IEventHandler<AllCreditCardsRemoved>,
+        IEventHandler<CreditCardDeactivated>,
         IEventHandler<AccountLinkedToIbs>,
         IEventHandler<AccountUnlinkedFromIbs>,
         IEventHandler<PayPalAccountLinked>,
         IEventHandler<PayPalAccountUnlinked>,
-        IEventHandler<CreditCardDeactivated>
+        IEventHandler<OverduePaymentSettled>
     {
         private readonly IServerSettings _serverSettings;
         private readonly Func<BookingDbContext> _contextFactory;
@@ -339,6 +340,20 @@ namespace apcurium.MK.Booking.EventHandlers
 
                 context.RemoveWhere<PayPalAccountDetails>(x => x.AccountId == @event.SourceId);
                 context.SaveChanges();
+            }
+        }
+
+        public void Handle(OverduePaymentSettled @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                if (_serverSettings.GetPaymentSettings().IsPayInTaxiEnabled)
+                {
+                    // Re-enable card on file as the default payment method
+                    var account = context.Find<AccountDetail>(@event.SourceId);
+                    account.Settings.ChargeTypeId = ChargeTypes.CardOnFile.Id;
+                    context.Save(account);
+                }
             }
         }
     }

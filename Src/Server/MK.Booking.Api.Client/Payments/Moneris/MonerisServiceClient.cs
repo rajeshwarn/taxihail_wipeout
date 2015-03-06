@@ -36,7 +36,18 @@ namespace apcurium.MK.Booking.Api.Client.Payments.Moneris
 			});
 		}
 
-        public static bool TestClient(MonerisPaymentSettings serverPaymentSettings, string number, DateTime date, ILogger logger)
+        public Task<OverduePayment> GetOverduePayment()
+        {
+            var req = string.Format("/account/overduepayment");
+            return Client.GetAsync<OverduePayment>(req);
+        }
+
+        public Task<SettleOverduePaymentResponse> SettleOverduePayment()
+        {
+            return Client.PostAsync(new SettleOverduePaymentRequest());
+        }
+
+	    public static bool TestClient(MonerisPaymentSettings serverPaymentSettings, string number, DateTime date, ILogger logger)
         {
             var monerisTokenizeClient = new MonerisTokenizeClient(serverPaymentSettings, logger);
             var result = monerisTokenizeClient.Tokenize(number, date.ToString("yyMM"));

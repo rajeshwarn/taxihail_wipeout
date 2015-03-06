@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.AppServices;
@@ -15,6 +16,8 @@ using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
 using ServiceStack.ServiceClient.Web;
+using apcurium.MK.Booking.Api.Contract.Resources.Payments;
+using ServiceStack.Text;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 {
@@ -23,6 +26,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 		private readonly ILocationService _locationService;
 		private readonly IPaymentService _paymentService;
 		private readonly IAccountService _accountService;
+
+		private OverduePayment _paymentToSettle;
 
 	    public CreditCardAddViewModel(
             ILocationService locationService,
@@ -54,10 +59,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
             public static DateTime ExpirationDate = DateTime.Today.AddMonths(3);
         }
 
-		public void Init(bool showInstructions, bool isMandatory = false)
+		public void Init(bool showInstructions = false, bool isMandatory = false, string paymentToSettle = null)
 		{
 			ShowInstructions = showInstructions;
 			IsMandatory = isMandatory;
+
+			if (paymentToSettle != null)
+			{
+				_paymentToSettle = JsonSerializer.DeserializeFromString<OverduePayment>(paymentToSettle);
+			}
 		}
 
 		public override void OnViewStarted(bool firstTime)
@@ -157,6 +167,37 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 				RaisePropertyChanged(() => CreditCardNumber);
                 RaisePropertyChanged(() => CanDeleteCreditCard);
                 RaisePropertyChanged(() => IsPayPalOnly);
+
+                if (_paymentToSettle != null)
+                {
+                    return;
+                }
+
+                try
+                {
+                    var overduePayment = await _paymentService.GetOverduePayment();
+
+                    if (overduePayment == null)
+                    {
+                        return;
+                    }
+
+                    this.Services().Message.ShowMessage(
+                        this.Services().Localize["View_Overdue"],
+                        this.Services().Localize["Overdue_OutstandingPaymentExists"],
+                        this.Services().Localize["OkButtonText"],
+                        () => ShowViewModelAndRemoveFromHistory<OverduePaymentViewModel>(new
+                        {
+                            overduePayment = overduePayment.ToJson()
+                        }),
+                        this.Services().Localize["Cancel"],
+                        () => Close(this),
+                        () => Close(this));
+                }
+                catch (Exception ex)
+                {
+                    Logger.LogError(ex);
+                }
 			}
         }
 
@@ -437,56 +478,86 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
         private async void SaveCreditCard()
 	    {
-            Data.CreditCardCompany = CreditCardTypeName;
-            if (Params.Get(Data.NameOnCard, Data.CardNumber,
-                                   Data.CreditCardCompany,
-                                   Data.ExpirationMonth,
-                                   Data.ExpirationYear,
-                                   Data.CCV).Any(x => x.IsNullOrEmpty()))
-            {
-                this.Services().Message.ShowMessage(this.Services().Localize["CreditCardErrorTitle"], this.Services().Localize["CreditCardRequiredFields"]);
-                return;
-            }
+			try
+			{
+				Data.CreditCardCompany = CreditCardTypeName;
 
-            if (!IsValid(Data.CardNumber))
-            {
-                this.Services().Message.ShowMessage(this.Services().Localize["CreditCardErrorTitle"], this.Services().Localize["CreditCardInvalidCrediCardNUmber"]);
-                return;
-            }
-
-            var success = false;
-            using (this.Services().Message.ShowProgress())
-            {
-                Data.Last4Digits = new string(Data.CardNumber.Reverse().Take(4).Reverse().ToArray());
-
-                if (!IsEditing)
-                {
-                    Data.CreditCardId = Guid.NewGuid();
-                }
-
-				success = await _accountService.AddOrUpdateCreditCard(Data, IsEditing);
-
-				if (success)
+				if (Params.Get(Data.NameOnCard, 
+					Data.CardNumber,
+					Data.CreditCardCompany,
+					Data.ExpirationMonth,
+					Data.ExpirationYear,
+					Data.CCV).Any(x => x.IsNullOrEmpty()))
 				{
-					UnlinkPayPalAccount(true);
-
-					this.Services().Analytics.LogEvent("AddCOF");
-					Data.CardNumber = null;
-					Data.CCV = null;
-
-					this.Services().Message.ShowMessage(
-						string.Empty,
-						this.Services().Localize["CreditCardAdded"],
-						() => ShowViewModelAndRemoveFromHistory<HomeViewModel>(new { locateUser = bool.TrueString }));
+					await this.Services().Message.ShowMessage(this.Services().Localize["CreditCardErrorTitle"], this.Services().Localize["CreditCardRequiredFields"]);
+					return;
 				}
-				else
+
+				if (!IsValid(Data.CardNumber))
 				{
-					this.Services().Message.ShowMessage(this.Services().Localize["CreditCardErrorTitle"], this.Services().Localize["CreditCardErrorInvalid"]);
+					await this.Services().Message.ShowMessage(this.Services().Localize["CreditCardErrorTitle"], this.Services().Localize["CreditCardInvalidCrediCardNUmber"]);
+					return;
 				}
-            }
+
+				using (this.Services().Message.ShowProgress())
+				{
+					Data.Last4Digits = new string(Data.CardNumber.Reverse().Take(4).Reverse().ToArray());
+
+					if (!IsEditing)
+					{
+						Data.CreditCardId = Guid.NewGuid();
+					}
+
+					var success = await _accountService.AddOrUpdateCreditCard(Data, IsEditing);
+
+					if (success)
+					{
+						UnlinkPayPalAccount(true);
+
+						this.Services().Analytics.LogEvent("AddCOF");
+						Data.CardNumber = null;
+						Data.CCV = null;
+
+                        if (_paymentToSettle != null)
+					    {
+                            await SettleOverduePayment();
+					    }
+					    else
+					    {
+                            await this.Services().Message.ShowMessage(string.Empty, this.Services().Localize["CreditCardAdded"]);
+					    }
+
+						ShowViewModelAndClearHistory<HomeViewModel>(new { locateUser = bool.TrueString });
+					}
+					else
+					{
+						await this.Services().Message.ShowMessage(this.Services().Localize["CreditCardErrorTitle"], this.Services().Localize["CreditCardErrorInvalid"]);
+					}
+				}
+			}
+			catch(Exception ex)
+			{
+				this.Logger.LogError(ex);
+			}
+            
 	    }
 
-        private bool IsValid(string cardNumber)
+	    private async Task SettleOverduePayment()
+	    {
+            var settleOverduePayment = await _paymentService.SettleOverduePayment();
+
+	        if (settleOverduePayment.IsSuccessful)
+	        {
+                var message = string.Format(this.Services().Localize["Overdue_Succeed_Message"], _paymentToSettle.OverdueAmount);
+                await this.Services().Message.ShowMessage(this.Services().Localize["Overdue_Succeed_Title"], message);
+	        }
+	        else
+	        {
+                await this.Services().Message.ShowMessage(this.Services().Localize["Overdue_Failed_Title"], this.Services().Localize["Overdue_Failed_Message"]);
+	        }
+	    }
+
+	    private bool IsValid(string cardNumber)
         {
             var number = new byte[16]; // number to validate
             

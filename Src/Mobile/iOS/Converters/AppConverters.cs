@@ -12,5 +12,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Converters
         public readonly PhoneNumberConverter PhoneNumber = new PhoneNumberConverter();
         public readonly EnumToBoolConverter EnumToBool = new EnumToBoolConverter();
 		public readonly EnumToBoolConverter EnumToInvertedBool = new EnumToBoolConverter(true);
+
+		public readonly CurrencyFormatConverter CurrencyFormat = new CurrencyFormatConverter();
+        public readonly StringFormatConverter StringFormat = new StringFormatConverter();
 	}
 }

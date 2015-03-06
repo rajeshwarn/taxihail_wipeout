@@ -247,7 +247,7 @@ namespace apcurium.MK.Booking.Services.Impl
             }
         }
 
-        public PreAuthorizePaymentResponse PreAuthorize(Guid orderId, AccountDetail account, decimal amountToPreAuthorize, bool isReAuth = false)
+        public PreAuthorizePaymentResponse PreAuthorize(Guid orderId, AccountDetail account, decimal amountToPreAuthorize, bool isReAuth = false, bool isSettlingOverduePayment = false)
         {
             var paymentId = Guid.NewGuid();
             var creditCard = _creditCardDao.FindByAccountId(account.Id).First();
@@ -270,7 +270,7 @@ namespace apcurium.MK.Booking.Services.Impl
             };
         }
 
-        public CommitPreauthorizedPaymentResponse CommitPayment(Guid orderId, AccountDetail account, decimal preauthAmount, decimal amount, decimal meterAmount, decimal tipAmount, string transactionId)
+        public CommitPreauthorizedPaymentResponse CommitPayment(Guid orderId, AccountDetail account, decimal preauthAmount, decimal amount, decimal meterAmount, decimal tipAmount, string transactionId, string reAuthOrderId = null)
         {
             // No need to use preauthAmount for CMT because we can't preauthorize
 
@@ -345,7 +345,8 @@ namespace apcurium.MK.Booking.Services.Impl
                     AuthorizationCode = authorizationCode,
                     Message = authResponse.ResponseMessage,
                     TransactionId = commitTransactionId,
-                    IsDeclined = isCardDeclined
+                    IsDeclined = isCardDeclined,
+                    TransactionDate = authResponse.AuthorizationDate
                 };
             }
             catch (Exception ex)

@@ -10,11 +10,11 @@ using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Enumeration.PayPal;
+using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common.Resources;
 using Infrastructure.Messaging;
 using PayPal;
 using PayPal.Api;
-using RestSharp.Extensions;
 
 namespace apcurium.MK.Booking.Services.Impl
 {
@@ -502,6 +502,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 };
             }
         }
+
         private PreAuthorizePaymentResponse ReAuthorizeIfNecessary(Guid accountId, Guid orderId, decimal preAuthAmount, decimal amount)
         {
             if (amount <= preAuthAmount)

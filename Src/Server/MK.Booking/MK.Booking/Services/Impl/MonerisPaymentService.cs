@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using System.Linq;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.ReadModel;
@@ -152,7 +153,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 var deleteRequest = new HttpsPostRequest(monerisSettings.Host, monerisSettings.StoreId, monerisSettings.ApiToken, deleteCommand);
                 var receipt = deleteRequest.GetReceipt();
 
-                var message = string.Empty;
+                string message;
                 var success = RequestSuccesful(receipt, out message);
 
                 return new DeleteTokenizedCreditcardResponse
@@ -178,18 +179,25 @@ namespace apcurium.MK.Booking.Services.Impl
             }
         }
 
-        public PreAuthorizePaymentResponse PreAuthorize(Guid orderId, AccountDetail account, decimal amountToPreAuthorize, bool isReAuth = false)
+        public PreAuthorizePaymentResponse PreAuthorize(Guid orderId, AccountDetail account, decimal amountToPreAuthorize, bool isReAuth = false, bool isSettlingOverduePayment = false)
         {
             var message = string.Empty;
             var transactionId = string.Empty;
+            DateTime? transactionDate = null;
 
             try
             {
                 bool isSuccessful;
                 bool isCardDeclined = false;
-                var orderIdentifier = isReAuth ? string.Format("{0}-1", orderId) : orderId.ToString();
                 var creditCard = _creditCardDao.FindByAccountId(account.Id).First();
 
+                // We cannot re-use the same id has a previously failed payment
+                var shouldGenerateNewOrderId = isReAuth || isSettlingOverduePayment;
+
+                var orderIdentifier = shouldGenerateNewOrderId
+                    ? string.Format("{0}-{1}", orderId, GenerateShortUid())
+                    : orderId.ToString();
+                
                 if (amountToPreAuthorize > 0)
                 {
                     // PreAuthorize transaction
@@ -198,15 +206,10 @@ namespace apcurium.MK.Booking.Services.Impl
                     var preAuthorizeCommand = new ResPreauthCC(creditCard.Token, orderIdentifier, amountToPreAuthorize.ToString("F"), CryptType_SSLEnabledMerchant);
                     var preAuthRequest = new HttpsPostRequest(monerisSettings.Host, monerisSettings.StoreId, monerisSettings.ApiToken, preAuthorizeCommand);
                     var preAuthReceipt = preAuthRequest.GetReceipt();
-
-                    
                     isSuccessful = RequestSuccesful(preAuthReceipt, out message);
                     isCardDeclined = IsCardDeclined(preAuthReceipt);
-
-                    if (isSuccessful)
-                    {
-                        transactionId = preAuthReceipt.GetTxnNumber();
-                    }
+                    transactionId = preAuthReceipt.GetTxnNumber();
+                    transactionDate = GetTransactionDate(preAuthReceipt);
                 }
                 else
                 {
@@ -236,8 +239,9 @@ namespace apcurium.MK.Booking.Services.Impl
                     IsSuccessful = isSuccessful,
                     Message = message,
                     TransactionId = transactionId,
-                    ReAuthOrderId = isReAuth ? orderIdentifier : null,
-                    IsDeclined = isCardDeclined
+                    ReAuthOrderId = shouldGenerateNewOrderId ? orderIdentifier : null,
+                    IsDeclined = isCardDeclined,
+                    TransactionDate = transactionDate,
                 };
             }
             catch (Exception e)
@@ -273,7 +277,7 @@ namespace apcurium.MK.Booking.Services.Impl
             return PreAuthorize(orderId, account, amount, true);
         }
 
-        public CommitPreauthorizedPaymentResponse CommitPayment(Guid orderId, AccountDetail account, decimal preauthAmount, decimal amount, decimal meterAmount, decimal tipAmount, string transactionId)
+        public CommitPreauthorizedPaymentResponse CommitPayment(Guid orderId, AccountDetail account, decimal preauthAmount, decimal amount, decimal meterAmount, decimal tipAmount, string transactionId, string reAuthOrderId = null)
         {
             string message;
             string authorizationCode = null;
@@ -287,9 +291,10 @@ namespace apcurium.MK.Booking.Services.Impl
                     return new CommitPreauthorizedPaymentResponse
                     {
                         IsSuccessful = false,
+                        IsDeclined = true,
                         TransactionId = commitTransactionId,
-                        Message = string.Format("Moneris Re-Auth of amount {0} failed.", amount),
-                        IsDeclined = true
+                        TransactionDate = authResponse.TransactionDate,
+                        Message = string.Format("Moneris Re-Auth of amount {0} failed.", amount)
                     };
                 }
 
@@ -298,8 +303,25 @@ namespace apcurium.MK.Booking.Services.Impl
                     commitTransactionId = authResponse.TransactionId;
                 }
 
+                string orderIdentifier;
+                if (reAuthOrderId.HasValue())
+                {
+                    // Settling overdue payment
+                    orderIdentifier = reAuthOrderId;
+                }
+                else if (authResponse.ReAuthOrderId.HasValue())
+                {
+                    // Normal re-auth
+                    orderIdentifier = authResponse.ReAuthOrderId;
+                }
+                else
+                {
+                    // Normal flow
+                    orderIdentifier = orderId.ToString();
+                }
+
                 var monerisSettings = _serverSettings.GetPaymentSettings().MonerisPaymentSettings;
-                var completionCommand = new Completion(authResponse.ReAuthOrderId ?? orderId.ToString(), amount.ToString("F"), commitTransactionId,
+                var completionCommand = new Completion(orderIdentifier, amount.ToString("F"), commitTransactionId,
                     CryptType_SSLEnabledMerchant);
                 var commitRequest = new HttpsPostRequest(monerisSettings.Host, monerisSettings.StoreId,
                     monerisSettings.ApiToken, completionCommand);
@@ -322,7 +344,8 @@ namespace apcurium.MK.Booking.Services.Impl
                     AuthorizationCode = authorizationCode,
                     Message = message,
                     TransactionId = commitTransactionId,
-                    IsDeclined = isCardDeclined
+                    IsDeclined = isCardDeclined,
+                    TransactionDate = GetTransactionDate(commitReceipt)
                 };
             }
             catch (Exception ex)
@@ -340,6 +363,17 @@ namespace apcurium.MK.Booking.Services.Impl
         {
             throw new NotImplementedException();
         }
+        
+        private DateTime? GetTransactionDate(Receipt transactionReceipt)
+        {
+            DateTime localTransactionDate;
+            var isValidDate = DateTime.TryParse(
+                string.Format("{0} {1}", transactionReceipt.GetTransDate(), transactionReceipt.GetTransTime()),
+                CultureInfo.InvariantCulture, DateTimeStyles.None,
+                out localTransactionDate);
+
+            return isValidDate ? localTransactionDate.ToUniversalTime() : default(DateTime?);
+        }
 
         private bool RequestSuccesful(Receipt receipt, out string message)
         {
@@ -350,7 +384,8 @@ namespace apcurium.MK.Booking.Services.Impl
                 return false;
             }
 
-            if (int.Parse(receipt.GetResponseCode()) >= MonerisResponseCodes.DECLINED)
+            var responseCode = int.Parse(receipt.GetResponseCode());
+            if (responseCode >= MonerisResponseCodes.DECLINED)
             {
                 message = receipt.GetMessage();
                 return false;
@@ -370,6 +405,14 @@ namespace apcurium.MK.Booking.Services.Impl
             }
 
             return MonerisResponseCodes.GetDeclinedCodes().Contains(responseCode);
+        }
+
+        private string GenerateShortUid()
+        {
+            return Convert.ToBase64String(Guid.NewGuid().ToByteArray())
+                .Replace("=", string.Empty)
+                .Replace("+", string.Empty)
+                .Replace("/", string.Empty);
         }
     }
 }
