@@ -127,10 +127,11 @@ namespace apcurium.MK.Booking.Test.AccountFixture
                 OverdueAmount = 12.56m
             });
 
-            var @event = _sut.ThenHasSingle<CreditCardDeactivated>();
-            Assert.AreEqual(_accountId, @event.SourceId);
+            var creditCardDeactivated = _sut.ThenHasOne<CreditCardDeactivated>();
+            Assert.AreEqual(_accountId, creditCardDeactivated.SourceId);
 
-            // TODO: Delinquent
+            var overduePaymentLogged = _sut.ThenHasOne<OverduePaymentLogged>();
+            Assert.AreEqual(_accountId, overduePaymentLogged.SourceId);
         }
     }
 }
