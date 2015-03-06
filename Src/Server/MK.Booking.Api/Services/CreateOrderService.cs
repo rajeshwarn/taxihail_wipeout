@@ -747,7 +747,6 @@ namespace apcurium.MK.Booking.Api.Services
                      _resources.Get("CannotCreateOrder_PayPalButNoPayPal", clientLanguageCode));
             }
 
-            Console.WriteLine("Preauth will start");
             PreAuthorizePaymentMethod(orderId, account, clientLanguageCode, isFutureBooking, appEstimate, true);
         }
 
@@ -761,9 +760,9 @@ namespace apcurium.MK.Booking.Api.Services
             // there's a minimum amount of $50 (warning indicating that on the admin ui)
             // if app returned an estimate, use it, otherwise use the setting (or 0), then use max between the value and 50
             var preAuthAmount = Math.Max(appEstimate ?? (_serverSettings.GetPaymentSettings().PreAuthAmount ?? 0), 50);
-            Console.WriteLine("preAuthAmount " + preAuthAmount);
+            
             var preAuthResponse = _paymentService.PreAuthorize(orderId, account, preAuthAmount);
-            Console.WriteLine("preAuthAmount " + preAuthResponse.ToJson());
+
             var errorMessage = isPayPal
                 ? _resources.Get("CannotCreateOrder_PayPalWasDeclined", clientLanguageCode)
                 : _resources.Get("CannotCreateOrder_CreditCardWasDeclined", clientLanguageCode);
