@@ -2200,6 +2200,6 @@
     <value>Invalid Number of Passengers</value>
   </data>
   <data name="InvalidPassengersNumber" xml:space="preserve">
-    <value>Sorry, but unfortunately we do not have a big enough vehicle to accommodate the number of passengers. Please book more than one car to accommodate your party size.</value>
+    <value>The vehicle type that you selected does not have enough seats to accommodate your number of passengers. Please change your selection or book more than one car to accommodate your party size.</value>
   </data>
 </root>

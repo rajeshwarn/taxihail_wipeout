@@ -571,5 +571,5 @@
   <string name="UnpairErrorMessage">حدث خطأ أثناء الفصل، رجاء المحاولة في وقت لاحق.</string>
   <string name="UnpairPayInCar">Pay in Car</string>
   <string name="InvalidPassengersNumberTitle">Invalid Number of Passengers</string>
-  <string name="InvalidPassengersNumber">Sorry, but unfortunately we do not have a big enough vehicle to accommodate the number of passengers. Please book more than one car to accommodate your party size.</string>
+  <string name="InvalidPassengersNumber">The vehicle type that you selected does not have enough seats to accommodate your number of passengers. Please change your selection or book more than one car to accommodate your party size.</string>
 </resources>
