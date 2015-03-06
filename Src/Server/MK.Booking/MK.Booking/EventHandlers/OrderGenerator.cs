@@ -24,7 +24,7 @@ namespace apcurium.MK.Booking.EventHandlers
         IEventHandler<OrderSwitchedToNextDispatchCompany>,
         IEventHandler<DispatchCompanySwitchIgnored>,
         IEventHandler<IbsOrderInfoAddedToOrder>,
-        IEventHandler<OrderCancelledBecauseOfIbsError>
+        IEventHandler<OrderCancelledBecauseOfError>
 
     {
         private readonly Func<BookingDbContext> _contextFactory;
@@ -63,7 +63,7 @@ namespace apcurium.MK.Booking.EventHandlers
             }
         }
 
-        public void Handle(OrderCancelledBecauseOfIbsError @event)
+        public void Handle(OrderCancelledBecauseOfError @event)
         {
             using (var context = _contextFactory.Invoke())
             {
@@ -129,6 +129,7 @@ namespace apcurium.MK.Booking.EventHandlers
                         PickupDate = @event.PickupDate,
                         Name = @event.Settings != null ? @event.Settings.Name : null,
                         IsChargeAccountPaymentWithCardOnFile = @event.IsChargeAccountPaymentWithCardOnFile,
+                        IsPrepaid = @event.IsPrepaid,
                         CompanyKey = @event.CompanyKey,
                         CompanyName = @event.CompanyName,
                         Market = @event.Market

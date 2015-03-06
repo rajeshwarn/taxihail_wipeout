@@ -46,7 +46,7 @@ namespace apcurium.MK.Booking.CommandBuilder
 
             if (orderPayment != null)
             {
-                command.CardOnFileInfo = new SendReceipt.CardOnFile(
+                command.PaymentInfo = new SendReceipt.Payment(
                     orderPayment.Amount,
                     orderPayment.TransactionId,
                     orderPayment.AuthorizationCode,
@@ -54,11 +54,11 @@ namespace apcurium.MK.Booking.CommandBuilder
 
                 if ((orderPayment.CardToken.HasValue()) && (creditCard != null))
                 {
-                    command.CardOnFileInfo.LastFour = creditCard.Last4Digits;
-                    command.CardOnFileInfo.Company = creditCard.CreditCardCompany;
-                    command.CardOnFileInfo.NameOnCard = creditCard.NameOnCard;
-                    command.CardOnFileInfo.ExpirationMonth = creditCard.ExpirationMonth;
-                    command.CardOnFileInfo.ExpirationYear = creditCard.ExpirationYear;
+                    command.PaymentInfo.Last4Digits = creditCard.Last4Digits;
+                    command.PaymentInfo.Company = creditCard.CreditCardCompany;
+                    command.PaymentInfo.NameOnCard = creditCard.NameOnCard;
+                    command.PaymentInfo.ExpirationMonth = creditCard.ExpirationMonth;
+                    command.PaymentInfo.ExpirationYear = creditCard.ExpirationYear;
                 }
             }
             return command;

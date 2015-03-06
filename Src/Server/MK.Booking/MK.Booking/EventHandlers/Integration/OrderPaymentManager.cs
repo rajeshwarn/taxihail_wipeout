@@ -17,12 +17,12 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
         IEventHandler<OrderCancelled>,
         IEventHandler<OrderSwitchedToNextDispatchCompany>,
         IEventHandler<OrderStatusChanged>,
-        IEventHandler<OrderCancelledBecauseOfIbsError>
+        IEventHandler<OrderCancelledBecauseOfError>
     {
         private readonly IOrderDao _dao;
         private readonly IIbsOrderService _ibs;
         private readonly IServerSettings _serverSettings;
-        private readonly IPaymentService _paymentFacadeService;
+        private readonly IPaymentService _paymentService;
         private readonly IOrderPaymentDao _paymentDao;
         private readonly ICreditCardDao _creditCardDao;
         private readonly IAccountDao _accountDao;
@@ -30,7 +30,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
         private readonly ICommandBus _commandBus;
 
         public OrderPaymentManager(IOrderDao dao, IOrderPaymentDao paymentDao, IAccountDao accountDao, IOrderDao orderDao, ICommandBus commandBus,
-            ICreditCardDao creditCardDao, IIbsOrderService ibs, IServerSettings serverSettings, IPaymentService paymentFacadeService)
+            ICreditCardDao creditCardDao, IIbsOrderService ibs, IServerSettings serverSettings, IPaymentService paymentService)
         {
             _accountDao = accountDao;
             _orderDao = orderDao;
@@ -40,7 +40,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             _creditCardDao = creditCardDao;
             _ibs = ibs;
             _serverSettings = serverSettings;
-            _paymentFacadeService = paymentFacadeService;
+            _paymentService = paymentService;
         }
 
         public void Handle(CreditCardPaymentCaptured_V2 @event)
@@ -98,20 +98,58 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
 
         public void Handle(OrderCancelled @event)
         {
-            // void the preauthorization to prevent misuse fees
-            _paymentFacadeService.VoidPreAuthorization(@event.SourceId);
+            var orderDetail = _orderDao.FindOrderStatusById(@event.SourceId);
+            if (orderDetail.IsPrepaid)
+            {
+                var response = _paymentService.RefundPayment(@event.SourceId);
+
+                _commandBus.Send(new UpdateRefundedOrder
+                {
+                    OrderId = @event.SourceId,
+                    IsSuccessful = response.IsSuccessful,
+                    Message = response.Message
+                });
+            }
+            else
+            {
+                // void the preauthorization to prevent misuse fees
+                _paymentService.VoidPreAuthorization(@event.SourceId);
+            }
         }
 
         public void Handle(OrderSwitchedToNextDispatchCompany @event)
         {
-            // void the preauthorization to prevent misuse fees
-            _paymentFacadeService.VoidPreAuthorization(@event.SourceId);
+            var orderStatus = _orderDao.FindOrderStatusById(@event.SourceId);
+            if (orderStatus.IsPrepaid)
+            {
+                _paymentService.RefundPayment(@event.SourceId);
+            }
+            else
+            {
+                // void the preauthorization to prevent misuse fees
+                _paymentService.VoidPreAuthorization(@event.SourceId);
+            }
         }
 
-        public void Handle(OrderCancelledBecauseOfIbsError @event)
+        public void Handle(OrderCancelledBecauseOfError @event)
         {
-            // void the preauthorization to prevent misuse fees
-            _paymentFacadeService.VoidPreAuthorization(@event.SourceId);
+            var orderDetail = _orderDao.FindOrderStatusById(@event.SourceId);
+            if (orderDetail.IsPrepaid)
+            {
+                var response = _paymentService.RefundPayment(@event.SourceId);
+
+                _commandBus.Send(new UpdateRefundedOrder
+                {
+                    OrderId = @event.SourceId,
+                    IsSuccessful = response.IsSuccessful,
+                    Message = response.Message
+                });
+            }
+            else
+            {
+                // void the preauthorization to prevent misuse fees
+                _paymentService.VoidPreAuthorization(@event.SourceId);
+            }
         }
 
         public void Handle(OrderStatusChanged @event)
@@ -120,6 +158,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             {
                 var paymentSettings = _serverSettings.GetPaymentSettings();
                 var order = _orderDao.FindById(@event.SourceId);
+                var orderStatus = _orderDao.FindOrderStatusById(@event.SourceId);
                 var pairingInfo = _orderDao.FindOrderPairingById(@event.SourceId);
 
                 // If the user has decided not to pair (paying the ride in car instead),
@@ -127,10 +166,11 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                 if (paymentSettings.PaymentMode != PaymentMethod.RideLinqCmt
                     && (order.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id
                         || order.Settings.ChargeTypeId == ChargeTypes.PayPal.Id)
-                    && pairingInfo == null)
+                    && pairingInfo == null
+                    && !orderStatus.IsPrepaid)
                 {
                     // void the preauthorization to prevent misuse fees
-                    _paymentFacadeService.VoidPreAuthorization(@event.SourceId);
+                    _paymentService.VoidPreAuthorization(@event.SourceId);
                 }
             }
         }

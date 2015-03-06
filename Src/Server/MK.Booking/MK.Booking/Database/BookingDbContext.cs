@@ -73,6 +73,7 @@ namespace apcurium.MK.Booking.Database
                 .WillCascadeOnDelete(true);
 
             modelBuilder.Entity<VehicleTypeDetail>().ToTable("VehicleTypeDetail", SchemaName);
+            modelBuilder.Entity<TemporaryOrderCreationInfoDetail>().ToTable("TemporaryOrderCreationInfoDetail", SchemaName);
         }
 
         public T Find<T>(Guid id) where T : class

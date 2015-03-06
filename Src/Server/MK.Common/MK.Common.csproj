@@ -165,6 +165,7 @@
     <Compile Include="Enumeration\PaymentProvider.cs" />
     <Compile Include="Enumeration\PaymentType.cs" />
     <Compile Include="Enumeration\PayPal\AuthorizationStates.cs" />
+    <Compile Include="Enumeration\PayPal\Intents.cs" />
     <Compile Include="Enumeration\PayPal\PaymentStates.cs" />
     <Compile Include="Enumeration\PromoDiscountType.cs" />
     <Compile Include="Enumeration\PromotionTriggerTypes.cs" />
@@ -208,6 +209,7 @@
     <Compile Include="Resources\BasePaymentResponse.cs" />
     <Compile Include="Resources\CommitPreauthorizedPaymentResponse.cs" />
     <Compile Include="Resources\DeleteTokenizedCreditcardResponse.cs" />
+    <Compile Include="Resources\InitializePayPalCheckoutResponse.cs" />
     <Compile Include="Resources\PairingResponse.cs" />
     <Compile Include="Resources\PreAuthorizePaymentResponse.cs" />
     <Compile Include="Resources\SettleOverduePaymentResponse.cs" />

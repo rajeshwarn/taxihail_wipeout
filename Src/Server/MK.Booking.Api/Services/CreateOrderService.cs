@@ -1,6 +1,7 @@
 ﻿#region
 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
@@ -49,6 +50,7 @@ namespace apcurium.MK.Booking.Api.Services
         private readonly HoneyBadgerServiceClient _honeyBadgerServiceClient;
         private readonly ITaxiHailNetworkServiceClient _taxiHailNetworkServiceClient;
         private readonly IPaymentService _paymentService;
+        private readonly IPayPalServiceFactory _payPalServiceFactory;
         private readonly IAccountChargeDao _accountChargeDao;
         private readonly ICreditCardDao _creditCardDao;
         private readonly ICommandBus _commandBus;
@@ -73,7 +75,8 @@ namespace apcurium.MK.Booking.Api.Services
             IEventSourcedRepository<Promotion> promoRepository,
             HoneyBadgerServiceClient honeyBadgerServiceClient,
             ITaxiHailNetworkServiceClient taxiHailNetworkServiceClient,
-            IPaymentService paymentService)
+            IPaymentService paymentService,
+            IPayPalServiceFactory payPalServiceFactory)
         {
             _accountChargeDao = accountChargeDao;
             _creditCardDao = creditCardDao;
@@ -90,8 +93,91 @@ namespace apcurium.MK.Booking.Api.Services
             _honeyBadgerServiceClient = honeyBadgerServiceClient;
             _taxiHailNetworkServiceClient = taxiHailNetworkServiceClient;
             _paymentService = paymentService;
+            _payPalServiceFactory = payPalServiceFactory;
 
             _resources = new Resources.Resources(_serverSettings);
+        }
+
+        public object Get(ExecuteWebPaymentAndProceedWithOrder request)
+        {
+            Log.Info("ExecuteWebPaymentAndProceedWithOrder request : " + request.ToJson());
+
+            var temporaryInfo = _orderDao.GetTemporaryInfo(request.OrderId);
+            var orderInfo = JsonSerializer.DeserializeFromString<TemporaryOrderCreationInfo>(temporaryInfo.SerializedOrderCreationInfo);
+
+            if (request.Cancel || orderInfo == null)
+            {
+                var clientLanguageCode = orderInfo == null
+                    ? SupportedLanguages.en.ToString()
+                    : orderInfo.Request.ClientLanguageCode;
+
+                _commandBus.Send(new CancelOrderBecauseOfError
+                {
+                    OrderId = request.OrderId,
+                    WasPrepaid = true,
+                    ErrorDescription = _resources.Get("CannotCreateOrder_PrepaidPayPalPaymentCancelled", clientLanguageCode)
+                });
+            }
+            else
+            {
+                // Execute PayPal payment
+                var response = _payPalServiceFactory.GetInstance().ExecuteWebPayment(request.PayerId, request.PaymentId);
+
+                if (response.IsSuccessful)
+                {
+                    var fareObject = FareHelper.GetFareFromAmountInclTax(Convert.ToDouble(orderInfo.Request.Estimate.Price),
+                        _serverSettings.ServerData.VATIsEnabled
+                            ? _serverSettings.ServerData.VATPercentage
+                            : 0);
+
+                    // TODO MKTAXI-2517: Use tip from profile
+                    var tipAmount = FareHelper.GetTipAmountFromTotalAmount(fareObject.AmountInclTax, _serverSettings.ServerData.DefaultTipPercentage);
+
+                    _commandBus.Send(new MarkPrepaidOrderAsSuccessful
+                    {
+                        OrderId = request.OrderId,
+                        Amount = fareObject.AmountInclTax,
+                        Meter = fareObject.AmountExclTax,
+                        Tax = fareObject.TaxAmount,
+                        Tip = tipAmount,
+                        TransactionId = response.TransactionId,
+                        Provider = PaymentProvider.PayPal,
+                        Type = PaymentType.PayPal
+                    });
+
+                    // Create order on IBS
+                    Task.Run(() => CreateOrderOnIBSAndSendCommands(orderInfo.OrderId, orderInfo.Account, orderInfo.Request, orderInfo.ReferenceData,
+                        orderInfo.ChargeTypeIbs, orderInfo.ChargeTypeEmail, orderInfo.VehicleType, orderInfo.Prompts, orderInfo.PromptsLength,
+                        orderInfo.BestAvailableCompany, orderInfo.ApplyPromoCommand, true));
+                }
+                else
+                {
+                    _commandBus.Send(new CancelOrderBecauseOfError
+                    {
+                        OrderId = request.OrderId,
+                        WasPrepaid = true,
+                        ErrorDescription = response.Message
+                    });
+                }
+            }
+
+            // Build url used to redirect the web client to the booking status view
+            var baseUrl = _serverSettings.ServerData.BaseUrl.HasValue()
+                            ? _serverSettings.ServerData.BaseUrl
+                            : Request.AbsoluteUri;
+
+            var redirectUrl = baseUrl
+                .Replace(Request.PathInfo, string.Empty)
+                .Replace(GetAppHost().Config.ServiceStackHandlerFactoryPath, string.Empty)
+                .Replace(Request.QueryString.ToString(), string.Empty)
+                .Replace("?", string.Empty)
+                .Append(string.Format("#status/{0}", request.OrderId));
+
+            return new HttpResult
+            {
+                StatusCode = HttpStatusCode.Redirect,
+                Headers = {{ HttpHeaders.Location, redirectUrl }}
+            };
         }
 
         public object Post(CreateOrder request)
@@ -114,7 +200,9 @@ namespace apcurium.MK.Booking.Api.Services
                 request.Market = null;
             }
 
-            var account = _accountDao.FindById(new Guid(this.GetSession().UserAuthId));
+            var isPrepaid = request.FromWebApp
+                && (request.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id
+                    || request.Settings.ChargeTypeId == ChargeTypes.PayPal.Id);
 
             BestAvailableCompany bestAvailableCompany;
 
@@ -135,6 +223,7 @@ namespace apcurium.MK.Booking.Api.Services
                             _resources.Get("CannotCreateOrder_NoCompanies", request.ClientLanguageCode));
             }
 
+            var account = _accountDao.FindById(new Guid(this.GetSession().UserAuthId));
             account.IBSAccountId = CreateIbsAccountIfNeeded(account, bestAvailableCompany.CompanyKey, request.Market);
             
             var isFutureBooking = request.PickupDate.HasValue;
@@ -228,12 +317,18 @@ namespace apcurium.MK.Booking.Api.Services
 
             // Promo code validation
             var applyPromoCommand = ValidateAndApplyPromotion(request.PromoCode, request.Settings.ChargeTypeId, account.Id, request.Id, pickupDate, isFutureBooking, request.ClientLanguageCode);
-            
+
             // Payment method validation
             ValidatePayment(request, account, isFutureBooking, request.Estimate.Price);
 
             // Charge account validation
             var accountValidationResult = ValidateChargeAccount(request, account, isFutureBooking);
+
+            var orderCommand = Mapper.Map<Commands.CreateOrder>(request);
+
+            // Initialize PayPal if user is using PayPal web
+            var  paypalWebPaymentResponse = InitializePayPalCheckoutIfNecessary(isPrepaid, orderCommand.OrderId, request);
+
 
             var chargeTypeIbs = string.Empty;
             var chargeTypeEmail = string.Empty;
@@ -242,7 +337,10 @@ namespace apcurium.MK.Booking.Api.Services
                     .Select(x => x.Display)
                     .FirstOrDefault();
 
-            chargeTypeKey = accountValidationResult.ChargeTypeKeyOverride ?? chargeTypeKey;
+            chargeTypeKey = paypalWebPaymentResponse != null
+                ? "PrePaid"
+                : accountValidationResult.ChargeTypeKeyOverride 
+                    ?? chargeTypeKey;
 
             if (chargeTypeKey != null)
             {
@@ -259,32 +357,63 @@ namespace apcurium.MK.Booking.Api.Services
                 .Select(x => x.Display)
                 .FirstOrDefault();
 
-            var orderCommand = Mapper.Map<Commands.CreateOrder>(request);
             orderCommand.AccountId = account.Id;
-            orderCommand.UserAgent = base.Request.UserAgent;
-            orderCommand.ClientVersion = base.Request.Headers.Get("ClientVersion");
+            orderCommand.UserAgent = Request.UserAgent;
+            orderCommand.ClientVersion = Request.Headers.Get("ClientVersion");
             orderCommand.IsChargeAccountPaymentWithCardOnFile = accountValidationResult.IsChargeAccountPaymentWithCardOnFile;
             orderCommand.CompanyKey = bestAvailableCompany.CompanyKey;
             orderCommand.CompanyName = bestAvailableCompany.CompanyName;
             orderCommand.Market = request.Market;
+            orderCommand.IsPrepaid = isPrepaid;
             orderCommand.Settings.ChargeType = chargeTypeIbs;
             orderCommand.Settings.VehicleType = vehicleType;
+
             _commandBus.Send(orderCommand);
 
-            // Create order on IBS
-            Task.Run(() => 
-                CreateOrderOnIBSAndSendCommands(orderCommand.OrderId, account,
-                    request, referenceData, chargeTypeIbs, chargeTypeEmail, vehicleType,
-                    accountValidationResult.Prompts, accountValidationResult.PromptsLength,
-                    bestAvailableCompany, applyPromoCommand));
-            
-            return new OrderStatusDetail
+            if (paypalWebPaymentResponse != null)
             {
-                OrderId = orderCommand.OrderId,
-                Status = OrderStatus.Created,
-                IBSStatusId = string.Empty,
-                IBSStatusDescription = _resources.Get("CreateOrder_WaitingForIbs", orderCommand.ClientLanguageCode),
-            };
+                // Order prepaid by PayPal
+
+                _commandBus.Send(new SaveTemporaryOrderCreationInfo
+                {
+                    OrderId = orderCommand.OrderId,
+                    SerializedOrderCreationInfo = new TemporaryOrderCreationInfo
+                    {
+                        OrderId = orderCommand.OrderId,
+                        Account = account,
+                        Request = request,
+                        ReferenceData = referenceData,
+                        ChargeTypeIbs = chargeTypeIbs,
+                        ChargeTypeEmail = chargeTypeEmail,
+                        VehicleType = vehicleType,
+                        Prompts = accountValidationResult.Prompts,
+                        PromptsLength = accountValidationResult.PromptsLength,
+                        BestAvailableCompany = bestAvailableCompany,
+                        ApplyPromoCommand = applyPromoCommand
+                    }.ToJson()
+                });
+
+                return paypalWebPaymentResponse;
+            }
+            else
+            {
+                // Order paid at the end of the ride
+
+                // Create order on IBS
+                Task.Run(() =>
+                    CreateOrderOnIBSAndSendCommands(orderCommand.OrderId, account,
+                        request, referenceData, chargeTypeIbs, chargeTypeEmail, vehicleType,
+                        accountValidationResult.Prompts, accountValidationResult.PromptsLength,
+                        bestAvailableCompany, applyPromoCommand));
+
+                return new OrderStatusDetail
+                {
+                    OrderId = orderCommand.OrderId,
+                    Status = OrderStatus.Created,
+                    IBSStatusId = string.Empty,
+                    IBSStatusDescription = _resources.Get("CreateOrder_WaitingForIbs", orderCommand.ClientLanguageCode),
+                };
+            }
         }
 
         private ChargeAccountValidationResult ValidateChargeAccount(CreateOrder request, AccountDetail account, bool isFutureBooking)
@@ -339,9 +468,27 @@ namespace apcurium.MK.Booking.Api.Services
             };
         }
 
+        private InitializePayPalCheckoutResponse InitializePayPalCheckoutIfNecessary(bool isPrepaid, Guid orderId, CreateOrder request)
+        {
+            if (isPrepaid
+                && request.Settings.ChargeTypeId == ChargeTypes.PayPal.Id)
+            {
+                var paypalWebPaymentResponse = _payPalServiceFactory.GetInstance().InitializeWebPayment(orderId, Request.AbsoluteUri, request.Estimate.Price, request.ClientLanguageCode);
+
+                if (paypalWebPaymentResponse.IsSuccessful)
+                {
+                    return paypalWebPaymentResponse;
+                }
+
+                throw new HttpError(HttpStatusCode.BadRequest, ErrorCode.CreateOrder_RuleDisable.ToString(), paypalWebPaymentResponse.Message);
+            }
+
+            return null;
+        }
+
         private async void CreateOrderOnIBSAndSendCommands(Guid orderId, AccountDetail account, CreateOrder request, ReferenceData referenceData, 
             string chargeTypeIbs, string chargeTypeEmail, string vehicleType, string[] prompts, int?[] promptsLength, BestAvailableCompany bestAvailableCompany, 
-            ApplyPromotion applyPromoCommand)
+            ApplyPromotion applyPromoCommand, bool isPrepaid = false)
         {
             var ibsOrderId = CreateIbsOrder(account.IBSAccountId.Value, request, referenceData, chargeTypeIbs, prompts, promptsLength, bestAvailableCompany.CompanyKey);
 
@@ -354,12 +501,14 @@ namespace apcurium.MK.Booking.Api.Services
                 var code = !ibsOrderId.HasValue || (ibsOrderId.Value >= -1) ? "" : "_" + Math.Abs(ibsOrderId.Value);
                 var errorCode = ErrorCode.CreateOrder_CannotCreateInIbs + code;
 
-                var errorCommand = new CancelOrderBecauseOfIbsError
+                var errorCommand = new CancelOrderBecauseOfError
                 {
                     OrderId = orderId,
+                    WasPrepaid = isPrepaid,
                     ErrorCode = errorCode,
                     ErrorDescription = _resources.Get(errorCode, request.ClientLanguageCode)
                 };
+
                 _commandBus.Send(errorCommand);
             }
             else
@@ -559,7 +708,8 @@ namespace apcurium.MK.Booking.Api.Services
             }
 
             // Payment mode is PayPal
-            if (request.Settings.ChargeTypeId.HasValue
+            if (!request.FromWebApp
+                && request.Settings.ChargeTypeId.HasValue
                 && request.Settings.ChargeTypeId.Value == ChargeTypes.PayPal.Id)
             {
                 ValidatePayPal(request.Id, account, request.ClientLanguageCode, isFutureBooking, appEstimateWithTip);
@@ -1065,6 +1215,21 @@ namespace apcurium.MK.Booking.Api.Services
             public string ChargeTypeKeyOverride { get; set; }
 
             public bool IsChargeAccountPaymentWithCardOnFile { get; set; }
+        }
+
+        private class TemporaryOrderCreationInfo
+        {
+            public Guid OrderId { get; set; } 
+            public AccountDetail Account { get; set; }
+            public CreateOrder Request { get; set; } 
+            public ReferenceData ReferenceData { get; set; }
+            public string ChargeTypeIbs { get; set; } 
+            public string ChargeTypeEmail { get; set; } 
+            public string VehicleType { get; set; } 
+            public string[] Prompts { get; set; } 
+            public int?[] PromptsLength { get; set; } 
+            public BestAvailableCompany BestAvailableCompany { get; set; }
+            public ApplyPromotion ApplyPromoCommand { get; set; }
         }
     }
 }

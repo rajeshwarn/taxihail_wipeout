@@ -277,6 +277,7 @@
     <Compile Include="ReadModel\TariffDetail.cs" />
     <Compile Include="ReadModel\OrderRatingDetails.cs" />
     <Compile Include="ReadModel\RatingScoreDetails.cs" />
+    <Compile Include="ReadModel\TemporaryOrderCreationInfo.cs" />
     <Compile Include="ReadModel\VehicleTypeDetail.cs" />
     <Compile Include="Resources\Aexid.fr.Designer.cs">
       <DependentUpon>Aexid.fr.resx</DependentUpon>

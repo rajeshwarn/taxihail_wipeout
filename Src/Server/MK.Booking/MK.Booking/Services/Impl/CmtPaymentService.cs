@@ -299,7 +299,7 @@ namespace apcurium.MK.Booking.Services.Impl
 
                 var deviceId = orderStatus.VehicleNumber;
                 var driverId = orderStatus.DriverInfos == null ? 0 : orderStatus.DriverInfos.DriverId.To<int>();
-                var employeeId = orderStatus.DriverInfos == null ? "" : orderStatus.DriverInfos.DriverId;
+                var employeeId = orderStatus.DriverInfos == null ? string.Empty : orderStatus.DriverInfos.DriverId;
                 var tripId = orderStatus.IBSOrderId.Value;
                 var fleetToken = _serverSettings.GetPaymentSettings().CmtPaymentSettings.FleetToken;
                 var customerReferenceNumber = orderStatus.ReferenceNumber.HasValue() ?
@@ -360,6 +360,11 @@ namespace apcurium.MK.Booking.Services.Impl
             }
         }
 
+        public BasePaymentResponse RefundPayment(Guid orderId)
+        {
+            throw new NotImplementedException();
+        }
+
         private CmtPairingResponse PairWithVehicleUsingRideLinq(OrderStatusDetail orderStatusDetail, Guid orderId, string cardToken, int? autoTipPercentage)
         {
             var accountDetail = _accountDao.FindById(orderStatusDetail.AccountId);
@@ -371,7 +376,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 AutoTipAmount = null,
                 AutoTipPercentage = autoTipPercentage,
                 AutoCompletePayment = true,
-                CallbackUrl = "",
+                CallbackUrl = string.Empty,
                 CustomerId = orderStatusDetail.IBSOrderId.ToString(),
                 CustomerName = accountDetail.Name,
                 DriverId = orderStatusDetail.DriverInfos.DriverId,

@@ -359,6 +359,11 @@ namespace apcurium.MK.Booking.Services.Impl
             }
         }
 
+        public BasePaymentResponse RefundPayment(Guid orderId)
+        {
+            throw new NotImplementedException();
+        }
+        
         private DateTime? GetTransactionDate(Receipt transactionReceipt)
         {
             DateTime localTransactionDate;

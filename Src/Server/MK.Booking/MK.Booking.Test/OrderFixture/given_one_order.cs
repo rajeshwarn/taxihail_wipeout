@@ -5,8 +5,10 @@ using System.Collections.Generic;
 using System.Linq;
 using apcurium.MK.Booking.CommandHandlers;
 using apcurium.MK.Booking.Commands;
+using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Domain;
 using apcurium.MK.Booking.Events;
+using apcurium.MK.Booking.Test.Integration;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Entity;
 using NUnit.Framework;
@@ -16,13 +18,13 @@ using NUnit.Framework;
 namespace apcurium.MK.Booking.Test.OrderFixture
 {
     [TestFixture]
-    public class given_one_order
+    public class given_one_order : given_a_read_model_database
     {
         [SetUp]
         public void Setup()
         {
             _sut = new EventSourcingTestHelper<Order>();
-            _sut.Setup(new OrderCommandHandler(_sut.Repository));
+            _sut.Setup(new OrderCommandHandler(_sut.Repository, () => new BookingDbContext(DbName)));
             _sut.Given(new AccountRegistered
             {
                 SourceId = _accountId,

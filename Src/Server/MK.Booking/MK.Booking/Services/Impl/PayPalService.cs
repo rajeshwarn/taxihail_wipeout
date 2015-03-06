@@ -155,6 +155,231 @@ namespace apcurium.MK.Booking.Services.Impl
             };
         }
 
+        public InitializePayPalCheckoutResponse InitializeWebPayment(Guid orderId, string baseUri, double? estimatedFare, string clientLanguageCode)
+        {
+            if (!estimatedFare.HasValue)
+            {
+                return new InitializePayPalCheckoutResponse
+                {
+                    IsSuccessful = false,
+                    Message = _resources.Get("CannotCreateOrder_PrepaidPayPalNoEstimate", clientLanguageCode)
+                };
+            }
+
+            var regionName = _serverSettings.ServerData.PayPalRegionInfoOverride;
+            var conversionRate = _serverSettings.ServerData.PayPalConversionRate;
+
+            _logger.LogMessage("PayPal Conversion Rate: {0}", conversionRate);
+            
+            var amount = Math.Round(Convert.ToDecimal(estimatedFare.Value) * conversionRate, 2);
+            var currency = conversionRate != 1
+                ? CurrencyCodes.Main.UnitedStatesDollar
+                : _resources.GetCurrencyCode();
+
+            var redirectUrl = baseUri + string.Format("/{0}/proceed", orderId);
+
+            _logger.LogMessage("PayPal Web redirect URL: {0}", redirectUrl);
+
+            var redirUrls = new RedirectUrls
+            {
+                cancel_url = redirectUrl + "?cancel=true",
+                return_url = redirectUrl
+            };
+
+            var transactionList = new List<Transaction>
+            {
+                new Transaction
+                {
+                    amount = new Amount
+                    {
+                        currency = currency,
+                        total = amount.ToString("N", CultureInfo.InvariantCulture)
+                    },	
+
+                    description = string.Format(
+                        _resources.Get("PayPalWebPaymentDescription", regionName.HasValue() 
+                            ? SupportedLanguages.en.ToString()
+                            : clientLanguageCode), amount),
+
+                    item_list = new ItemList
+                    {
+                        items = new List<Item>
+                        {
+                            new Item
+                            {
+                                name = string.Format(_resources.Get("PayPalWebItemDescription", regionName.HasValue() 
+                                    ? SupportedLanguages.en.ToString()
+                                    : clientLanguageCode)),
+                                currency = currency,
+                                price = amount.ToString("N", CultureInfo.InvariantCulture),
+                                quantity = "1"
+                            }
+                        }
+                    }
+                }
+            };
+
+            var payment = new Payment
+            {
+                intent = Intents.Sale,
+                payer = new Payer
+                {
+                    payment_method = "paypal"
+                },
+                transactions = transactionList,
+                redirect_urls = redirUrls
+            };
+
+            try
+            {
+                var createdPayment = payment.Create(GetAPIContext(GetAccessToken()));
+                var links = createdPayment.links.GetEnumerator();
+
+                while (links.MoveNext())
+                {
+                    var link = links.Current;
+                    if (link.rel.ToLower().Trim().Equals("approval_url"))
+                    {
+                        return new InitializePayPalCheckoutResponse
+                        {
+                            IsSuccessful = true,
+                            PaymentId = createdPayment.id,
+                            PayPalCheckoutUrl = link.href       // Links that give the user the option to redirect to PayPal to approve the payment
+                        };
+                    }
+                }
+
+                _logger.LogMessage("Error when creating PayPal Web payment: no approval_urls found");
+
+                // No approval_url found
+                return new InitializePayPalCheckoutResponse
+                {
+                    IsSuccessful = false,
+                    Message = "No approval_url found"
+                };
+            }
+            catch (Exception ex)
+            {
+                var exceptionMessage = ex.Message;
+
+                var paymentException = ex as PaymentsException;
+                if (paymentException != null && paymentException.Details != null)
+                {
+                    exceptionMessage = paymentException.Details.message;
+                }
+
+                _logger.LogMessage("Initialization of PayPal Web Store failed: {0}", exceptionMessage);
+
+                return new InitializePayPalCheckoutResponse
+                {
+                    IsSuccessful = false,
+                    Message = exceptionMessage
+                };
+            }
+        }
+
+        public CommitPreauthorizedPaymentResponse ExecuteWebPayment(string payerId, string paymentId)
+        {
+            var paymentExecution = new PaymentExecution { payer_id = payerId };
+            var payment = new Payment { id = paymentId };
+
+            try
+            {
+                var executedPayment = payment.Execute(GetAPIContext(GetAccessToken()), paymentExecution);
+
+                return new CommitPreauthorizedPaymentResponse
+                {
+                    IsSuccessful = true,
+                    TransactionId = executedPayment.id
+                };
+            }
+            catch (Exception ex)
+            {
+                var exceptionMessage = ex.Message;
+
+                var paymentException = ex as PaymentsException;
+                if (paymentException != null && paymentException.Details != null)
+                {
+                    exceptionMessage = paymentException.Details.message;
+                }
+
+                _logger.LogMessage(string.Format("PayPal checkout for Payer {0} -PaymentId {1}- failed. {2}", payerId, paymentId, exceptionMessage));
+
+                return new CommitPreauthorizedPaymentResponse
+                {
+                    IsSuccessful = false,
+                    Message = exceptionMessage
+                };
+            }
+        }
+
+        public BasePaymentResponse RefundWebPayment(Guid orderId)
+        {
+            var paymentDetail = _paymentDao.FindByOrderId(orderId);
+            if (paymentDetail == null)
+            {
+                // No payment to refund
+                var message = string.Format("Cannot refund because no payment was found for order {0}.", orderId);
+                _logger.LogMessage(message);
+
+                return new BasePaymentResponse
+                {
+                    IsSuccessful = false,
+                    Message = message
+                };
+            }
+
+            try
+            {
+                var conversionRate = _serverSettings.ServerData.PayPalConversionRate;
+
+                _logger.LogMessage("PayPal Conversion Rate: {0}", conversionRate);
+
+                // Get captured payment
+                var payment = Payment.Get(GetAPIContext(GetAccessToken()), paymentDetail.TransactionId);
+
+                var amount = Math.Round(Convert.ToDecimal(payment.transactions[0].amount.total) * conversionRate, 2);
+                var currency = conversionRate != 1
+                    ? CurrencyCodes.Main.UnitedStatesDollar
+                    : _resources.GetCurrencyCode();
+
+                var refund = new Refund
+                {
+                    amount = new Amount
+                    {
+                        currency = currency,
+                        total = amount.ToString("N", CultureInfo.InvariantCulture)
+                    }
+                };
+
+                var sale = new Sale { id = payment.transactions[0].related_resources[0].sale.id };
+                sale.Refund(GetAPIContext(GetAccessToken()), refund);
+
+                return new BasePaymentResponse
+                {
+                    IsSuccessful = true
+                };
+            }
+            catch (Exception ex)
+            {
+                var exceptionMessage = ex.Message;
+
+                var paymentException = ex as PaymentsException;
+                if (paymentException != null && paymentException.Details != null)
+                {
+                    exceptionMessage = paymentException.Details.message;
+                }
+
+                _logger.LogMessage(string.Format("PayPal refund for transaction {0} failed. {1}", paymentDetail.TransactionId, exceptionMessage));
+                
+                return new BasePaymentResponse
+                {
+                    IsSuccessful = false,
+                    Message = exceptionMessage
+                };
+            }
+        }
+
         public PreAuthorizePaymentResponse PreAuthorize(Guid accountId, Guid orderId, string email, decimal amountToPreAuthorize, bool isReAuth = false)
         {
             var message = string.Empty;
@@ -177,7 +402,7 @@ namespace apcurium.MK.Booking.Services.Impl
 
                     var futurePayment = new FuturePayment
                     {
-                        intent = "authorize",
+                        intent = Intents.Authorize,
                         payer = new Payer
                         {
                             payment_method = "paypal"
@@ -361,11 +586,14 @@ namespace apcurium.MK.Booking.Services.Impl
                     exceptionMessage = exception.Details.message;
                 }
 
+                var errorMessage = string.Format("PayPal commit of amount {0} failed. {1}", amount, exceptionMessage);
+                _logger.LogMessage(errorMessage);
+
                 return new CommitPreauthorizedPaymentResponse
                 {
                     IsSuccessful = false,
                     TransactionId = updatedTransactionId,
-                    Message = string.Format("PayPal commit of amount {0} failed. {1}", amount, exceptionMessage)
+                    Message = errorMessage
                 };
             }
         }

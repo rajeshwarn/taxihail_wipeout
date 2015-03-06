@@ -70,6 +70,13 @@
                 && settings.chargeTypeId == 2;
         },
 
+        isPayingWithPayPal: function () {
+            var settings = this.get('settings');
+            return settings.chargeTypeId != null
+                && settings.chargeTypeId != ''
+                && settings.chargeTypeId == 4;
+        },
+
         switchOrderToNextDispatchCompany: function () {
             return $.ajax({
                 type: 'POST',

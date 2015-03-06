@@ -63,7 +63,7 @@ namespace apcurium.MK.Booking.Api.Jobs
 
         private static readonly ILog Log = LogManager.GetLogger(typeof(OrderStatusUpdater));
 
-        private string _languageCode = "";
+        private string _languageCode = string.Empty;
 
         public OrderStatusUpdater(IServerSettings serverSettings, 
             ICommandBus commandBus, 
@@ -627,13 +627,19 @@ namespace apcurium.MK.Booking.Api.Jobs
                 {
                     IsSuccessful = false,
                     TransactionId = paymentProviderServiceResponse.TransactionId,
-                    Message = e.Message,
+                    Message = e.Message
                 };
             }
         }
 
         private void CheckForPairingAndHandleIfNecessary(OrderStatusDetail orderStatusDetail, IBSOrderInformation ibsOrderInfo)
         {
+            if (orderStatusDetail.IsPrepaid)
+            {
+                Log.DebugFormat("Order {0}: No pairing to process as the order has been paid at the time of booking.", orderStatusDetail.OrderId);
+                return;
+            }
+
             var pairingInfo = _orderDao.FindOrderPairingById(orderStatusDetail.OrderId);
             if (pairingInfo == null)
             {

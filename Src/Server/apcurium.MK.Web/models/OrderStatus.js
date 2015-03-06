@@ -28,7 +28,7 @@
         },
 
         canSendReceipt: function() {
-            return this.isCompleted() && !!this.get('fareAvailable');
+            return this.isCompleted() && !!this.get('fareAvailable') && this.get('isPrepaid') === false;
         },
 
         hasVehicle: function () {

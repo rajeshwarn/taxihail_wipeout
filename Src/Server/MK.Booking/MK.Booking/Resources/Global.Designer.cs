@@ -115,6 +115,24 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You need an estimated fare to pay with PayPal. Please select a destination address to get one..
+        /// </summary>
+        public static string CannotCreateOrder_PrepaidPayPalNoEstimate {
+            get {
+                return ResourceManager.GetString("CannotCreateOrder_PrepaidPayPalNoEstimate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to PayPal payment was cancelled.
+        /// </summary>
+        public static string CannotCreateOrder_PrepaidPayPalPaymentCancelled {
+            get {
+                return ResourceManager.GetString("CannotCreateOrder_PrepaidPayPalPaymentCancelled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to This promotion does not applies to future booking.
         /// </summary>
         public static string CannotCreateOrder_PromotionAppliesToCurrentBookingOnly {
@@ -1119,6 +1137,24 @@ namespace apcurium.MK.Booking.Resources {
         public static string PayPal {
             get {
                 return ResourceManager.GetString("PayPal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Taxi booking.
+        /// </summary>
+        public static string PayPalWebItemDescription {
+            get {
+                return ResourceManager.GetString("PayPalWebItemDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Taxi ride of amount {0}.
+        /// </summary>
+        public static string PayPalWebPaymentDescription {
+            get {
+                return ResourceManager.GetString("PayPalWebPaymentDescription", resourceCulture);
             }
         }
         

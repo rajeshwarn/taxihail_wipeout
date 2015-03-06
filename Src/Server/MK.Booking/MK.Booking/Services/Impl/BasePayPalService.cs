@@ -70,6 +70,11 @@ namespace apcurium.MK.Booking.Services.Impl
                 : BaseConstants.LiveMode;
         }
 
+        protected string GetAccessToken()
+        {
+            return new OAuthTokenCredential(GetClientId(), GetSecret(), GetConfig()).GetAccessToken();
+        }
+
         protected string GetAccessToken(Guid accountId)
         {
             var encodedRefreshToken = _accountDao.GetPayPalEncryptedRefreshToken(accountId);
