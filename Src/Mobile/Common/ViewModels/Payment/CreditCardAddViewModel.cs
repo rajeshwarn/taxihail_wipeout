@@ -27,7 +27,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 		private readonly IPaymentService _paymentService;
 		private readonly IAccountService _accountService;
 
-		private OverduePayment _overduePayment;
+		private OverduePayment _paymentToSettle;
 
 	    public CreditCardAddViewModel(
             ILocationService locationService,
@@ -59,14 +59,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
             public static DateTime ExpirationDate = DateTime.Today.AddMonths(3);
         }
 
-		public void Init(bool showInstructions, bool isMandatory = false, string overduePayment = null)
+		public void Init(bool showInstructions = false, bool isMandatory = false, string paymentToSettle = null)
 		{
 			ShowInstructions = showInstructions;
 			IsMandatory = isMandatory;
 
-			if (overduePayment != null)
+			if (paymentToSettle != null)
 			{
-				_overduePayment = JsonSerializer.DeserializeFromString<OverduePayment>(overduePayment);
+				_paymentToSettle = JsonSerializer.DeserializeFromString<OverduePayment>(paymentToSettle);
 			}
 		}
 
@@ -167,38 +167,38 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 				RaisePropertyChanged(() => CreditCardNumber);
                 RaisePropertyChanged(() => CanDeleteCreditCard);
                 RaisePropertyChanged(() => IsPayPalOnly);
-			}
 
-		    if (_overduePayment != null)
-		    {
-		        return;
-		    }
-
-		    try
-		    {
-		        var overduePayment = await _paymentService.GetOverduePayment();
-
-		        if (overduePayment == null)
-		        {
+                if (_paymentToSettle != null)
+                {
                     return;
-		        }
-		        
-		        this.Services().Message.ShowMessage(
-                    this.Services().Localize["View_Overdue"],
-                    this.Services().Localize["Overdue_OutstandingPaymentExists"],
-                    this.Services().Localize["OkButtonText"],
-		            () => ShowViewModelAndRemoveFromHistory<OverduePaymentViewModel>(new
-		            {
-		                overduePayment = overduePayment.ToJson()
-		            }),
-                    this.Services().Localize["Cancel"],
-		            () => Close(this),
-                    () => Close(this));
-		    }
-		    catch (Exception ex)
-		    {
-		        Logger.LogError(ex);
-		    }
+                }
+
+                try
+                {
+                    var overduePayment = await _paymentService.GetOverduePayment();
+
+                    if (overduePayment == null)
+                    {
+                        return;
+                    }
+
+                    this.Services().Message.ShowMessage(
+                        this.Services().Localize["View_Overdue"],
+                        this.Services().Localize["Overdue_OutstandingPaymentExists"],
+                        this.Services().Localize["OkButtonText"],
+                        () => ShowViewModelAndRemoveFromHistory<OverduePaymentViewModel>(new
+                        {
+                            overduePayment = overduePayment.ToJson()
+                        }),
+                        this.Services().Localize["Cancel"],
+                        () => Close(this),
+                        () => Close(this));
+                }
+                catch (Exception ex)
+                {
+                    Logger.LogError(ex);
+                }
+			}
         }
 
 	    private bool _isPayPalAccountLinked;
@@ -518,12 +518,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 						Data.CardNumber = null;
 						Data.CCV = null;
 
-						await this.Services().Message.ShowMessage(string.Empty, this.Services().Localize["CreditCardAdded"]);
-
-						await CheckAndSettleOverduePayment();
+                        if (_paymentToSettle != null)
+					    {
+                            await SettleOverduePayment();
+					    }
+					    else
+					    {
+                            await this.Services().Message.ShowMessage(string.Empty, this.Services().Localize["CreditCardAdded"]);
+					    }
 
 						ShowViewModelAndClearHistory<HomeViewModel>(new { locateUser = bool.TrueString });
-
 					}
 					else
 					{
@@ -538,19 +542,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
             
 	    }
 
-	    private async Task CheckAndSettleOverduePayment()
+	    private async Task SettleOverduePayment()
 	    {
-			if (_overduePayment == null)
-	        {
-                //There is no overdue payment.
-	            return;
-	        }
-
             var settleOverduePayment = await _paymentService.SettleOverduePayment();
 
 	        if (settleOverduePayment.IsSuccessful)
 	        {
-                var message = string.Format(this.Services().Localize["Overdue_Succeed_Message"], _overduePayment.OverdueAmount);
+                var message = string.Format(this.Services().Localize["Overdue_Succeed_Message"], _paymentToSettle.OverdueAmount);
                 await this.Services().Message.ShowMessage(this.Services().Localize["Overdue_Succeed_Title"], message);
 	        }
 	        else

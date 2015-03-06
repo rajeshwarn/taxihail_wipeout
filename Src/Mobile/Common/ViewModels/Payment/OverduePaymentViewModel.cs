@@ -94,8 +94,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
 					ShowViewModel<CreditCardAddViewModel>(new 
 					{ 
-						showInstructions = true, 
-						overduePayment = serializedOverduePayment 
+						paymentToSettle = serializedOverduePayment 
 					});
 				});
 			}

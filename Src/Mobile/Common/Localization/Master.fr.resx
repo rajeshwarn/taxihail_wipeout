@@ -1769,7 +1769,7 @@
     <value>Erreur de paiement de compte en souffrance</value>
   </data>
   <data name="Overdue_Succeed_Message" xml:space="preserve">
-    <value>Votre compte en souffrance de {0} a été payé et votre carte de crédit a été réactivée</value>
+    <value>Votre montant en souffrance de {0} a été payé et votre compte est de nouveau configuré pour le paiement via carte de crédit par défaut.</value>
   </data>
   <data name="Overdue_Succeed_Title" xml:space="preserve">
     <value>Compte en souffrance</value>
