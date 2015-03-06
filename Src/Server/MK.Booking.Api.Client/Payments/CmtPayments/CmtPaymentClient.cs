@@ -45,6 +45,17 @@ namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments
             return result;
         }
 
+        public Task<OverduePayment> GetOverduePayment()
+        {
+            var req = string.Format("/account/overduepayment");
+            return Client.GetAsync<OverduePayment>(req);
+        }
+
+        public Task<SettleOverduePaymentResponse> SettleOverduePayment()
+        {
+            return Client.PostAsync(new SettleOverduePaymentRequest());
+        }
+
         public Task<BasePaymentResponse> Unpair(Guid orderId)
         {
             return Client.PostAsync(new UnpairingForPaymentRequest

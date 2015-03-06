@@ -9,6 +9,7 @@ using ServiceStack.Text;
 using Params = System.Collections.Generic.Dictionary<string, string>;
 using apcurium.MK.Booking.Mobile.ViewModels.Payment;
 using System.Threading.Tasks;
+using apcurium.MK.Booking.Api.Contract.Resources.Payments;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -28,7 +29,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			IPaymentService paymentService)
         {
 		    _browserTask = browserTask;
-
 			_orderWorkflowService = orderWorkflowService;
 			_accountService = accountService;
 			_phoneService = phoneService;
@@ -38,8 +38,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		public async Task Start()
 		{
-            // N.B.: This setup is for iOS only! For Android see: SubView_MainMenu.xaml
-
 			// Load cached payment settings
 			var paymentSettings = await _paymentService.GetPaymentSettings();
 			IsPayInTaxiEnabled = paymentSettings.IsPayInTaxiEnabled || paymentSettings.PayPalClientSettings.IsEnabled;
@@ -58,6 +56,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             // Display a watermark indicating on which server the application is pointing
             SetServerWatermarkText();
 
+			// N.B.: This setup is for iOS only! For Android see: SubView_MainMenu.xaml
 			ItemMenuList.Add(new ItemMenuModel { Text = this.Services().Localize["PanelMenuViewLocationsText"], NavigationCommand = NavigateToMyLocations });
 			ItemMenuList.Add(new ItemMenuModel { Text = this.Services().Localize["PanelMenuViewOrderHistoryText"], NavigationCommand = NavigateToOrderHistory });
 			ItemMenuList.Add(new ItemMenuModel { Text = this.Services().Localize["PanelMenuViewUpdateProfileText"], NavigationCommand = NavigateToUpdateProfile });
@@ -280,8 +279,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			{
 				return this.GetCommand(() =>
 				{
-					CloseMenu();
-					ShowViewModel<CreditCardAddViewModel>();
+                        CloseMenu();
+
+                        ShowViewModel<CreditCardAddViewModel>();
 				});
 			}
 		}

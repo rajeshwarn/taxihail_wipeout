@@ -1744,4 +1744,43 @@
   <data name="InvalidPassengersNumber" xml:space="preserve">
     <value>Le type de vécicule sélectionné n'a pas suffisamment de places pour accueillir votre nombre de passagers. Veuillez modifier votre sélection ou commander plus d'un véhicule pour accommoder votre groupe.</value>
   </data>
+  <data name="Overdue_TransactionId" xml:space="preserve">
+    <value>Id de transaction:</value>
+  </data>
+  <data name="Overdue_Date" xml:space="preserve">
+    <value>Date de transaction:</value>
+  </data>
+  <data name="Overdue_Amount" xml:space="preserve">
+    <value>Montant dû:</value>
+  </data>
+  <data name="Overdue_Retry" xml:space="preserve">
+    <value>Payer Maintenant</value>
+  </data>
+  <data name="Overdue_AddNewCard" xml:space="preserve">
+    <value>Modifier la Carte de Crédit</value>
+  </data>
+  <data name="View_Overdue" xml:space="preserve">
+    <value>Compte en souffrance</value>
+  </data>
+  <data name="Overdue_Failed_Message" xml:space="preserve">
+    <value>Votre transaction a été refusée, veuillez essayer plus tard ou changer de carte de crédit.</value>
+  </data>
+  <data name="Overdue_Failed_Title" xml:space="preserve">
+    <value>Erreur de paiement de compte en souffrance</value>
+  </data>
+  <data name="Overdue_Succeed_Message" xml:space="preserve">
+    <value>Votre montant en souffrance de {0} a été payé et votre compte est de nouveau configuré pour le paiement via carte de crédit par défaut.</value>
+  </data>
+  <data name="Overdue_Succeed_Title" xml:space="preserve">
+    <value>Compte en souffrance</value>
+  </data>
+  <data name="Overdue_Instructions" xml:space="preserve">
+    <value> La dernière tentative de paiement a été refusée par votre compagnie de carte de crédit. Veuillez réessayer ou mettre à jour votre carte de crédit.</value>
+  </data>
+  <data name="Overdue_IBSOrderId" xml:space="preserve">
+    <value>Commande:</value>
+  </data>
+  <data name="Overdue_OutstandingPaymentExists" xml:space="preserve">
+    <value>La dernière tentative de paiement a été refusée par votre compagnie de carte de crédit. Vous devez payer cette facture en souffrance avant de pouvoir réutiliser votre carte.</value>
+  </data>
 </root>

@@ -306,6 +306,7 @@
     <Content Include="admin\views\ManagePopularAddressesView.js" />
     <Content Include="admin\views\TemplatedView.js" />
     <Content Include="ApiDoc.aspx" />
+    <Content Include="assets\css\json.human.css" />
     <Content Include="assets\img\app-stores-itunes.png" />
     <Content Include="assets\img\appstores-bg.png" />
     <Content Include="assets\img\appstores-play.png" />
@@ -426,6 +427,7 @@
     <Content Include="Areas\AdminTH\Views\PromoCode\UserStatistics.cshtml" />
     <Content Include="Areas\AdminTH\Views\CompanySettings\Index.cshtml" />
     <Content Include="Areas\Company\Views\TermsAndConditions\Index.cshtml" />
+    <Content Include="Areas\AdminTH\Views\Order\ViewDebug.cshtml" />
     <None Include="Scripts\jquery-1.8.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.8.2.js" />
     <Content Include="Scripts\jquery-1.8.2.min.js" />
@@ -442,6 +444,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Areas\AdminTH\Views\ImportChargeAccount\Index.cshtml" />
     <Content Include="localization\UTOG-en.json" />
+    <Content Include="Scripts\json.human.js" />
     <Content Include="Scripts\moment-with-locales.js" />
     <Content Include="Scripts\moment-with-locales.min.js" />
     <Content Include="Scripts\moment.js" />
@@ -635,11 +638,13 @@
     <Compile Include="App_Start\UnityMvcActivator.cs" />
     <Compile Include="Areas\AdminTH\AdminTHAreaRegistration.cs" />
     <Compile Include="Areas\AdminTH\Controllers\CompanySettingsController.cs" />
+    <Compile Include="Areas\AdminTH\Controllers\OrderController.cs" />
     <Compile Include="Areas\AdminTH\Controllers\PrivacyController.cs" />
     <Compile Include="Areas\AdminTH\Controllers\ImportChargeAccountController.cs" />
     <Compile Include="Areas\AdminTH\Controllers\PromoCodeController.cs" />
     <Compile Include="Areas\AdminTH\Controllers\TaxiHailNetworkController.cs" />
     <Compile Include="Areas\AdminTH\Models\CompanySettings.cs" />
+    <Compile Include="Areas\AdminTH\Models\OrderDebug.cs" />
     <Compile Include="Areas\AdminTH\Models\PromoCode.cs" />
     <Compile Include="Areas\AdminTH\Models\PromoStats.cs" />
     <Compile Include="Areas\BaseController.cs" />

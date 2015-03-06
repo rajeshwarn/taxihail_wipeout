@@ -44,10 +44,9 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
         {
             var dispatcher = TinyIoCContainer.Current.Resolve<IMvxViewDispatcher>();
 
-            dispatcher.RequestMainThreadAction(() => AlertDialogHelper.Show(Context.Activity, title, message));
-
             var tcs = new TaskCompletionSource<object>();
-            tcs.TrySetResult(null);
+
+            dispatcher.RequestMainThreadAction(() => AlertDialogHelper.Show(Context.Activity, title, message, () => tcs.TrySetResult(null)));
 
             return tcs.Task;
         }
@@ -61,6 +60,17 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
                 message,
                 positiveButtonTitle, (s,e) => positiveAction(),
                 negativeButtonTitle, (s,e) => negativeAction());
+        }
+        public void ShowMessage(string title, string message, string positiveButtonTitle, Action positiveAction,
+            string negativeButtonTitle, Action negativeAction, Action cancelAction)
+        {
+            AlertDialogHelper.Show(
+                Context.Activity,
+                title,
+                message,
+                positiveButtonTitle, (s,e) => positiveAction(),
+                negativeButtonTitle, (s,e) => negativeAction(),
+                cancelAction);
         }
 
         public Task ShowMessage(string title, string message, string positiveButtonTitle, Action positiveAction,

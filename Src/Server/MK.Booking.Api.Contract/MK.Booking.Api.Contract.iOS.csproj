@@ -83,6 +83,7 @@
     <Compile Include="Requests\Payment\DeleteTokenizedCreditcardRequest.cs" />
     <Compile Include="Requests\Payment\PayPal\LinkPayPalAccountRequest.cs" />
     <Compile Include="Requests\Payment\PayPal\UnlinkPayPalAccountRequest.cs" />
+    <Compile Include="Requests\Payment\SettleOverduePaymentRequest.cs" />
     <Compile Include="Requests\Payment\UnpairingForPaymentRequest.cs" />
     <Compile Include="Requests\SwitchOrderToNextDispatchCompanyRequest.cs" />
     <Compile Include="Requests\UserTaxiHailNetworkSettingsRequest.cs" />
@@ -93,6 +94,7 @@
     <Compile Include="Resources\ErrorCode.cs" />
     <Compile Include="Resources\NetworkFleet.cs" />
     <Compile Include="Resources\Order.cs" />
+    <Compile Include="Resources\Payments\OverduePayment.cs" />
     <Compile Include="Resources\ReferenceData.cs" />
     <Compile Include="Requests\AccountOrderListRequest.cs" />
     <Compile Include="Requests\AddressHistoryRequest.cs" />

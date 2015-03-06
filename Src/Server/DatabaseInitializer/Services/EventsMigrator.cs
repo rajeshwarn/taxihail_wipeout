@@ -210,7 +210,7 @@ namespace DatabaseInitializer.Services
 
         private CreditCardPaymentCaptured_V2 Convert(CreditCardPaymentCaptured oldEvent)
         {
-            var fareObject = Fare.FromAmountInclTax(System.Convert.ToDouble(oldEvent.Meter), _serverSettings.ServerData.VATIsEnabled ? _serverSettings.ServerData.VATPercentage : 0);
+            var fareObject = FareHelper.GetFareFromAmountInclTax(System.Convert.ToDouble(oldEvent.Meter), _serverSettings.ServerData.VATIsEnabled ? _serverSettings.ServerData.VATPercentage : 0);
 
             return new CreditCardPaymentCaptured_V2
             {

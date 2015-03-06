@@ -154,7 +154,9 @@
     <Compile Include="Diagnostic\BaseLogger.cs" />
     <Compile Include="Configuration\Attributes\RequiresTaxiHailPro.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Compile Include="Resources\SettleOverduePaymentResponse.cs" />
+  </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>

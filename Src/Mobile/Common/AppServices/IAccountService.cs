@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Booking.Api.Contract.Resources.Payments;
 using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
@@ -74,6 +75,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 	    Task UpdateNotificationSettings(NotificationSettings notificationSettings);
 
 	    Task<UserTaxiHailNetworkSettings> GetUserTaxiHailNetworkSettings(bool cleanCache = false);
+
 	    Task UpdateUserTaxiHailNetworkSettings(UserTaxiHailNetworkSettings userTaxiHailNetworkSettings);
 
 		void LogApplicationStartUp ();

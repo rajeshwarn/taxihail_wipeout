@@ -324,9 +324,9 @@ namespace apcurium.MK.Booking.IBS.Impl
                 ServiceProviderID = providerId.GetValueOrDefault(),
                 AccountID = accountId,                
                 Customer = passengerName,
-                Phone = CleanPhone( phone ),
-                Fare = fare.AmountExclTax,
-                VAT = fare.TaxAmount,
+                Phone = CleanPhone(phone),
+                Fare = Convert.ToDouble(fare.AmountExclTax),
+                VAT = Convert.ToDouble(fare.TaxAmount),
                 AccountNum = accountNumber          
             };
 

@@ -438,9 +438,9 @@ namespace apcurium.MK.Booking.Services.Impl
             if (vatIsEnabled && tax == 0)
             {
                 //aexid hotfix compute tax amount from fare
-                var newFare = Fare.FromAmountInclTax(fare, _serverSettings.ServerData.VATPercentage);
-                tax = newFare.TaxAmount;
-                fare = newFare.AmountExclTax;
+                var newFare = FareHelper.GetFareFromAmountInclTax(fare, _serverSettings.ServerData.VATPercentage);
+                tax = Convert.ToDouble(newFare.TaxAmount);
+                fare = Convert.ToDouble(newFare.AmountExclTax);
             }
 
             var isCardOnFile = cardOnFileInfo != null;
@@ -735,10 +735,12 @@ namespace apcurium.MK.Booking.Services.Impl
         {
             var companySettings = _configurationDao.GetNotificationSettings();
             var accountSettings = _configurationDao.GetNotificationSettings(accountId);
+            var companyNotificationSettingValue = GetValue(companySettings, propertySelector);
+
             if (accountSettings == null)
             {
                 // take company settings
-                return companySettings.Enabled && GetValue(companySettings, propertySelector);
+                return companySettings.Enabled && companyNotificationSettingValue == true;
             }
 
             // if the account or the company disabled all notifications, then everything will be false
@@ -746,15 +748,24 @@ namespace apcurium.MK.Booking.Services.Impl
 
             // we have to check if the company setting has a value
             // if it doesn't, then the company has disabled the setting and must be false for everyone
-            return enabled && GetValue(companySettings, propertySelector) && GetValue(accountSettings, propertySelector);
+            var accountNotificationSettingValue = GetValue(accountSettings, propertySelector);
+
+            return enabled
+                   && companyNotificationSettingValue == true
+                   && accountNotificationSettingValue == true;
         }
 
-        private bool GetValue(NotificationSettings settings, Expression<Func<NotificationSettings, bool?>> propertySelector)
+        private bool? GetValue(NotificationSettings settings, Expression<Func<NotificationSettings, bool?>> propertySelector)
         {
             var mexp = propertySelector.Body as MemberExpression;
             var propertyName = mexp.Member.Name;
 
-            return (bool)settings.GetType().GetProperty(propertyName).GetValue(settings, null);
+            var property = settings.GetType().GetProperty(propertyName);
+            if (property == null)
+            {
+                return false;
+            }
+            return (bool?)property.GetValue(settings, null);
         }
 
         private BaseUrls GetBaseUrls()

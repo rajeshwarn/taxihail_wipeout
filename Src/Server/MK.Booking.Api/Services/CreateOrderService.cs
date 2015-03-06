@@ -546,7 +546,7 @@ namespace apcurium.MK.Booking.Api.Services
             // If there's an estimate, add tip to that estimate
             if (appEstimate.HasValue)
             {
-                appEstimate = GetTipAmount(appEstimate.Value, tipPercent);
+                appEstimate = FareHelper.CalculateTipAmount(appEstimate.Value, tipPercent);
             }
 
             var appEstimateWithTip = appEstimate.HasValue ? Convert.ToDecimal(appEstimate.Value) : (decimal?)null;
@@ -564,12 +564,6 @@ namespace apcurium.MK.Booking.Api.Services
             {
                 ValidatePayPal(request.Id, account, request.ClientLanguageCode, isFutureBooking, appEstimateWithTip);
             }
-        }
-
-        private double GetTipAmount(double amount, double percentage)
-        {
-            var tip = percentage / 100;
-            return Math.Round(amount * tip, 2);
         }
 
         private void ValidateCreditCard(Guid orderId, AccountDetail account, string clientLanguageCode, bool isFutureBooking, decimal? appEstimate)
@@ -880,7 +874,7 @@ namespace apcurium.MK.Booking.Api.Services
                 return default(Fare);
             }
 
-            return Fare.FromAmountInclTax(estimate.Price.Value, 0);
+            return FareHelper.GetFareFromAmountInclTax(estimate.Price.Value, 0);
         }
 
         private Guid? GetPendingOrder()

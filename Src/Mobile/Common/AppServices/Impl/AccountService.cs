@@ -509,13 +509,13 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 		public async Task<IList<ListItem>> GetPaymentsList (string market = null)
         {
 			var refData = await GetReferenceData();
-            var creditCard = await GetCreditCard();
 
             if (!CurrentAccount.IsPayPalAccountLinked)
 		    {
                 refData.PaymentsList.Remove(i => i.Id == ChargeTypes.PayPal.Id);
 		    }
 
+		var creditCard = await GetCreditCard();
             if (creditCard == null
                 || CurrentAccount.IsPayPalAccountLinked
                 || creditCard.IsDeactivated)
@@ -716,7 +716,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
             await UseServiceClientAsync<IAccountServiceClient>(client => client.UpdateUserTaxiHailNetworkSettings(request));
         }
-
+			
 		public async void LogApplicationStartUp()
 		{
 			try

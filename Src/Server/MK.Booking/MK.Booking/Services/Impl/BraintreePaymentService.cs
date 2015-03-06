@@ -171,16 +171,17 @@ namespace apcurium.MK.Booking.Services.Impl
             }
         }
 
-        public PreAuthorizePaymentResponse PreAuthorize(Guid orderId, AccountDetail account, decimal amountToPreAuthorize, bool isReAuth = false)
+        public PreAuthorizePaymentResponse PreAuthorize(Guid orderId, AccountDetail account, decimal amountToPreAuthorize, bool isReAuth = false, bool isSettlingOverduePayment = false)
         {
             var message = string.Empty;
             var transactionId = string.Empty;
+            DateTime? transactionDate = null;
 
             try
             {
                 bool isSuccessful;
-                bool isCardDeclined = false;
-                var orderIdentifier = isReAuth ? string.Format("{0}-1", orderId) : orderId.ToString();
+                var isCardDeclined = false;
+                var orderIdentifier = isReAuth ? string.Format("{0}-{1}", orderId, GenerateShortUid()) : orderId.ToString();
                 var creditCard = _creditCardDao.FindByAccountId(account.Id).First();
 
                 if (amountToPreAuthorize > 0)
@@ -203,11 +204,8 @@ namespace apcurium.MK.Booking.Services.Impl
                     message = result.Message;
                     isSuccessful = result.IsSuccess();
                     isCardDeclined = IsCardDeclined(result.Transaction);
-                    
-                    if (isSuccessful)
-                    {
-                        transactionId = result.Target.Id;
-                    }
+                    transactionId = isSuccessful ? result.Target.Id : result.Transaction.Id;
+                    transactionDate = isSuccessful ? result.Target.CreatedAt : result.Transaction.CreatedAt;
                 }
                 else
                 {
@@ -238,7 +236,8 @@ namespace apcurium.MK.Booking.Services.Impl
                     Message = message,
                     TransactionId = transactionId,
                     ReAuthOrderId = isReAuth ? orderIdentifier : null,
-                    IsDeclined = isCardDeclined
+                    IsDeclined = isCardDeclined,
+                    TransactionDate = transactionDate
                 };
             }
             catch (Exception e)
@@ -274,7 +273,7 @@ namespace apcurium.MK.Booking.Services.Impl
             return PreAuthorize(orderId, account, amount, true);
         }
 
-        public CommitPreauthorizedPaymentResponse CommitPayment(Guid orderId, AccountDetail account, decimal preauthAmount, decimal amount, decimal meterAmount, decimal tipAmount, string transactionId)
+        public CommitPreauthorizedPaymentResponse CommitPayment(Guid orderId, AccountDetail account, decimal preauthAmount, decimal amount, decimal meterAmount, decimal tipAmount, string transactionId, string reAuthOrderId = null)
         {
             var commitTransactionId = transactionId;
             string authorizationCode = null;
@@ -286,10 +285,11 @@ namespace apcurium.MK.Booking.Services.Impl
                 {
                     return new CommitPreauthorizedPaymentResponse
                     {
-                        IsSuccessful = false,
+                        IsSuccessful = false, 
+                        IsDeclined = authResponse.IsDeclined,
                         TransactionId = commitTransactionId,
-                        Message = string.Format("Braintree Re-Auth of amount {0} failed.", amount),
-                        IsDeclined = authResponse.IsDeclined
+                        TransactionDate = authResponse.TransactionDate,
+                        Message = string.Format("Braintree Re-Auth of amount {0} failed.", amount)
                     };
                 }
 
@@ -305,6 +305,7 @@ namespace apcurium.MK.Booking.Services.Impl
                     && settlementResult.Target.ProcessorAuthorizationCode.HasValue();
 
                 var isCardDeclined = IsCardDeclined(settlementResult.Transaction);
+                var transactionDate = isSuccessful ? settlementResult.Target.UpdatedAt : settlementResult.Transaction.UpdatedAt;
 
                 if (isSuccessful)
                 {
@@ -317,7 +318,8 @@ namespace apcurium.MK.Booking.Services.Impl
                     AuthorizationCode = authorizationCode,
                     Message = settlementResult.Message,
                     TransactionId = commitTransactionId,
-                    IsDeclined = isCardDeclined
+                    IsDeclined = isCardDeclined,
+                    TransactionDate = transactionDate
                 };
             }
             catch (Exception ex)
@@ -340,6 +342,14 @@ namespace apcurium.MK.Booking.Services.Impl
 
             return transaction.Status == TransactionStatus.PROCESSOR_DECLINED
                 || transaction.Status == TransactionStatus.GATEWAY_REJECTED;
+        }
+
+        private string GenerateShortUid()
+        {
+            return Convert.ToBase64String(Guid.NewGuid().ToByteArray())
+                .Replace("=", string.Empty)
+                .Replace("+", string.Empty)
+                .Replace("/", string.Empty);
         }
 
         private static BraintreeGateway GetBraintreeGateway(BraintreeServerSettings settings)
