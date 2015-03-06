@@ -44,7 +44,8 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
             var companiesFromOtherMarkets = _networkRepository
                 .Where(n => n.IsInNetwork
                     && n.Id != homeCompanySettings.Id
-                    && n.Market != homeCompanySettings.Market);
+                    && n.Market != homeCompanySettings.Market)
+                    .ToArray();
 
             var preferences = new Dictionary<string, List<CompanyPreferenceResponse>>();
 
