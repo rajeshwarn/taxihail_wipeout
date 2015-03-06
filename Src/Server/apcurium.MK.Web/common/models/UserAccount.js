@@ -11,11 +11,13 @@
             }, function(){}, 'json');
         },
 
-        updateSettings: function() {
+        updateSettings: function () {
+            var settings = this.get('settings');
+
             return $.ajax({
                 type: 'PUT',
                 url: 'api/account/bookingsettings',
-                data: this.get('settings'),
+                data: settings,
                 dataType: 'json'
             });
         }

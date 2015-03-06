@@ -98,88 +98,6 @@ namespace apcurium.MK.Booking.Api.Services
             _resources = new Resources.Resources(_serverSettings);
         }
 
-        public object Get(ExecuteWebPaymentAndProceedWithOrder request)
-        {
-            Log.Info("ExecuteWebPaymentAndProceedWithOrder request : " + request.ToJson());
-
-            var temporaryInfo = _orderDao.GetTemporaryInfo(request.OrderId);
-            var orderInfo = JsonSerializer.DeserializeFromString<TemporaryOrderCreationInfo>(temporaryInfo.SerializedOrderCreationInfo);
-
-            if (request.Cancel || orderInfo == null)
-            {
-                var clientLanguageCode = orderInfo == null
-                    ? SupportedLanguages.en.ToString()
-                    : orderInfo.Request.ClientLanguageCode;
-
-                _commandBus.Send(new CancelOrderBecauseOfError
-                {
-                    OrderId = request.OrderId,
-                    WasPrepaid = true,
-                    ErrorDescription = _resources.Get("CannotCreateOrder_PrepaidPayPalPaymentCancelled", clientLanguageCode)
-                });
-            }
-            else
-            {
-                // Execute PayPal payment
-                var response = _payPalServiceFactory.GetInstance().ExecuteWebPayment(request.PayerId, request.PaymentId);
-
-                if (response.IsSuccessful)
-                {
-                    var fareObject = FareHelper.GetFareFromAmountInclTax(Convert.ToDouble(orderInfo.Request.Estimate.Price),
-                        _serverSettings.ServerData.VATIsEnabled
-                            ? _serverSettings.ServerData.VATPercentage
-                            : 0);
-
-                    // TODO MKTAXI-2517: Use tip from profile
-                    var tipAmount = FareHelper.GetTipAmountFromTotalAmount(fareObject.AmountInclTax, _serverSettings.ServerData.DefaultTipPercentage);
-
-                    _commandBus.Send(new MarkPrepaidOrderAsSuccessful
-                    {
-                        OrderId = request.OrderId,
-                        Amount = fareObject.AmountInclTax,
-                        Meter = fareObject.AmountExclTax,
-                        Tax = fareObject.TaxAmount,
-                        Tip = tipAmount,
-                        TransactionId = response.TransactionId,
-                        Provider = PaymentProvider.PayPal,
-                        Type = PaymentType.PayPal
-                    });
-
-                    // Create order on IBS
-                    Task.Run(() => CreateOrderOnIBSAndSendCommands(orderInfo.OrderId, orderInfo.Account, orderInfo.Request, orderInfo.ReferenceData,
-                        orderInfo.ChargeTypeIbs, orderInfo.ChargeTypeEmail, orderInfo.VehicleType, orderInfo.Prompts, orderInfo.PromptsLength,
-                        orderInfo.BestAvailableCompany, orderInfo.ApplyPromoCommand, true));
-                }
-                else
-                {
-                    _commandBus.Send(new CancelOrderBecauseOfError
-                    {
-                        OrderId = request.OrderId,
-                        WasPrepaid = true,
-                        ErrorDescription = response.Message
-                    });
-                }
-            }
-
-            // Build url used to redirect the web client to the booking status view
-            var baseUrl = _serverSettings.ServerData.BaseUrl.HasValue()
-                            ? _serverSettings.ServerData.BaseUrl
-                            : Request.AbsoluteUri;
-
-            var redirectUrl = baseUrl
-                .Replace(Request.PathInfo, string.Empty)
-                .Replace(GetAppHost().Config.ServiceStackHandlerFactoryPath, string.Empty)
-                .Replace(Request.QueryString.ToString(), string.Empty)
-                .Replace("?", string.Empty)
-                .Append(string.Format("#status/{0}", request.OrderId));
-
-            return new HttpResult
-            {
-                StatusCode = HttpStatusCode.Redirect,
-                Headers = {{ HttpHeaders.Location, redirectUrl }}
-            };
-        }
-
         public object Post(CreateOrder request)
         {
             Log.Info("Create order request : " + request.ToJson());
@@ -416,6 +334,201 @@ namespace apcurium.MK.Booking.Api.Services
             }
         }
 
+        public object Get(ExecuteWebPaymentAndProceedWithOrder request)
+        {
+            Log.Info("ExecuteWebPaymentAndProceedWithOrder request : " + request.ToJson());
+
+            var temporaryInfo = _orderDao.GetTemporaryInfo(request.OrderId);
+            var orderInfo = JsonSerializer.DeserializeFromString<TemporaryOrderCreationInfo>(temporaryInfo.SerializedOrderCreationInfo);
+
+            if (request.Cancel || orderInfo == null)
+            {
+                var clientLanguageCode = orderInfo == null
+                    ? SupportedLanguages.en.ToString()
+                    : orderInfo.Request.ClientLanguageCode;
+
+                _commandBus.Send(new CancelOrderBecauseOfError
+                {
+                    OrderId = request.OrderId,
+                    WasPrepaid = true,
+                    ErrorDescription = _resources.Get("CannotCreateOrder_PrepaidPayPalPaymentCancelled", clientLanguageCode)
+                });
+            }
+            else
+            {
+                // Execute PayPal payment
+                var response = _payPalServiceFactory.GetInstance().ExecuteWebPayment(request.PayerId, request.PaymentId);
+
+                if (response.IsSuccessful)
+                {
+                    var fareObject = FareHelper.GetFareFromAmountInclTax(Convert.ToDouble(orderInfo.Request.Estimate.Price),
+                        _serverSettings.ServerData.VATIsEnabled
+                            ? _serverSettings.ServerData.VATPercentage
+                            : 0);
+
+                    var tipPercentage = orderInfo.Account.DefaultTipPercent ?? _serverSettings.ServerData.DefaultTipPercentage;
+                    var tipAmount = FareHelper.GetTipAmountFromTotalAmount(fareObject.AmountInclTax, Convert.ToDecimal(tipPercentage));
+
+                    _commandBus.Send(new MarkPrepaidOrderAsSuccessful
+                    {
+                        OrderId = request.OrderId,
+                        Amount = fareObject.AmountInclTax,
+                        Meter = fareObject.AmountExclTax,
+                        Tax = fareObject.TaxAmount,
+                        Tip = tipAmount,
+                        TransactionId = response.TransactionId,
+                        Provider = PaymentProvider.PayPal,
+                        Type = PaymentType.PayPal
+                    });
+
+                    // Create order on IBS
+                    Task.Run(() => CreateOrderOnIBSAndSendCommands(orderInfo.OrderId, orderInfo.Account, orderInfo.Request, orderInfo.ReferenceData,
+                        orderInfo.ChargeTypeIbs, orderInfo.ChargeTypeEmail, orderInfo.VehicleType, orderInfo.Prompts, orderInfo.PromptsLength,
+                        orderInfo.BestAvailableCompany, orderInfo.ApplyPromoCommand, true));
+                }
+                else
+                {
+                    _commandBus.Send(new CancelOrderBecauseOfError
+                    {
+                        OrderId = request.OrderId,
+                        WasPrepaid = true,
+                        ErrorDescription = response.Message
+                    });
+                }
+            }
+
+            // Build url used to redirect the web client to the booking status view
+            var baseUrl = _serverSettings.ServerData.BaseUrl.HasValue()
+                            ? _serverSettings.ServerData.BaseUrl
+                            : Request.AbsoluteUri;
+
+            var redirectUrl = baseUrl
+                .Replace(Request.PathInfo, string.Empty)
+                .Replace(GetAppHost().Config.ServiceStackHandlerFactoryPath, string.Empty)
+                .Replace(Request.QueryString.ToString(), string.Empty)
+                .Replace("?", string.Empty)
+                .Append(string.Format("#status/{0}", request.OrderId));
+
+            return new HttpResult
+            {
+                StatusCode = HttpStatusCode.Redirect,
+                Headers = { { HttpHeaders.Location, redirectUrl } }
+            };
+        }
+
+        public object Post(SwitchOrderToNextDispatchCompanyRequest request)
+        {
+            Log.Info("Switching order to another IBS : " + request.ToJson());
+
+            var account = _accountDao.FindById(new Guid(this.GetSession().UserAuthId));
+            var order = _orderDao.FindById(request.OrderId);
+            var orderStatusDetail = _orderDao.FindOrderStatusById(request.OrderId);
+
+            if (orderStatusDetail.Status != OrderStatus.TimedOut)
+            {
+                // Only switch companies if order is timedout
+                return orderStatusDetail;
+            }
+
+            var newOrderRequest = new CreateOrder
+            {
+                PickupDate = GetCurrentOffsetedTime(request.NextDispatchCompanyKey, order.Market),
+                PickupAddress = order.PickupAddress,
+                DropOffAddress = order.DropOffAddress,
+                Market = order.Market,
+                Settings = new BookingSettings
+                {
+                    LargeBags = order.Settings.LargeBags,
+                    Name = order.Settings.Name,
+                    NumberOfTaxi = order.Settings.NumberOfTaxi,
+                    Passengers = order.Settings.Passengers,
+                    Phone = order.Settings.Phone,
+                    ProviderId = null,
+
+                    // Payment in app is not supported for now when we use another IBS
+                    ChargeType = ChargeTypes.PaymentInCar.Display,
+                    ChargeTypeId = ChargeTypes.PaymentInCar.Id,
+
+                    // Reset vehicle type
+                    VehicleType = null,
+                    VehicleTypeId = null
+                },
+                Note = order.UserNote,
+                Estimate = new CreateOrder.RideEstimate { Price = order.EstimatedFare }
+            };
+
+            var newReferenceData = (ReferenceData)_referenceDataService.Get(new ReferenceDataRequest { CompanyKey = request.NextDispatchCompanyKey, Market = order.Market });
+
+            // This must be localized with the priceformat to be localized in the language of the company
+            // because it is sent to the driver
+            var chargeTypeIbs = _resources.Get(ChargeTypes.PaymentInCar.Display, _serverSettings.ServerData.PriceFormat);
+
+            var networkErrorMessage = string.Format(_resources.Get("Network_CannotCreateOrder", order.ClientLanguageCode), request.NextDispatchCompanyName);
+
+            int ibsAccountId;
+            try
+            {
+                // Recreate order on next dispatch company IBS
+                ibsAccountId = CreateIbsAccountIfNeeded(account, request.NextDispatchCompanyKey);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(networkErrorMessage, ex);
+                throw new HttpError(HttpStatusCode.InternalServerError, networkErrorMessage);
+            }
+
+            ValidateProvider(newOrderRequest, newReferenceData);
+
+            var newIbsOrderId = CreateIbsOrder(ibsAccountId, newOrderRequest, newReferenceData, chargeTypeIbs, null, null, request.NextDispatchCompanyKey);
+            if (!newIbsOrderId.HasValue || newIbsOrderId <= 0)
+            {
+                var code = !newIbsOrderId.HasValue || (newIbsOrderId.Value >= -1) ? string.Empty : "_" + Math.Abs(newIbsOrderId.Value);
+                Log.Error(string.Format("{0}. IBS error code: {1}", networkErrorMessage, code));
+                throw new HttpError(HttpStatusCode.InternalServerError, networkErrorMessage);
+            }
+
+            // Cancel order on current company IBS
+            CancelIbsOrder(order, account.Id);
+
+            _commandBus.Send(new SwitchOrderToNextDispatchCompany
+            {
+                OrderId = request.OrderId,
+                IBSOrderId = newIbsOrderId.Value,
+                CompanyKey = request.NextDispatchCompanyKey,
+                CompanyName = request.NextDispatchCompanyName,
+                Market = order.Market
+            });
+
+            return new OrderStatusDetail
+            {
+                OrderId = request.OrderId,
+                Status = OrderStatus.Created,
+                CompanyKey = request.NextDispatchCompanyKey,
+                CompanyName = request.NextDispatchCompanyName,
+                NextDispatchCompanyKey = null,
+                NextDispatchCompanyName = null,
+                IBSOrderId = newIbsOrderId,
+                IBSStatusId = string.Empty,
+                IBSStatusDescription = string.Format(_resources.Get("OrderStatus_wosWAITINGRoaming", order.ClientLanguageCode), request.NextDispatchCompanyName),
+            };
+        }
+
+        public object Post(IgnoreDispatchCompanySwitchRequest request)
+        {
+            var order = _orderDao.FindById(request.OrderId);
+            if (order == null)
+            {
+                return new HttpResult(HttpStatusCode.NotFound);
+            }
+
+            _commandBus.Send(new IgnoreDispatchCompanySwitch
+            {
+                OrderId = request.OrderId
+            });
+
+            return new HttpResult(HttpStatusCode.OK);
+        }
+
         private ChargeAccountValidationResult ValidateChargeAccount(CreateOrder request, AccountDetail account, bool isFutureBooking)
         {
             string[] prompts = null;
@@ -550,118 +663,6 @@ namespace apcurium.MK.Booking.Api.Services
             }
         }
 
-        public object Post(SwitchOrderToNextDispatchCompanyRequest request)
-        {
-            Log.Info("Switching order to another IBS : " + request.ToJson());
-
-            var account = _accountDao.FindById(new Guid(this.GetSession().UserAuthId));
-            var order = _orderDao.FindById(request.OrderId);
-            var orderStatusDetail = _orderDao.FindOrderStatusById(request.OrderId);
-
-            if (orderStatusDetail.Status != OrderStatus.TimedOut)
-            {
-                // Only switch companies if order is timedout
-                return orderStatusDetail;
-            }
-
-            var newOrderRequest = new CreateOrder
-            {
-                PickupDate = GetCurrentOffsetedTime(request.NextDispatchCompanyKey, order.Market),
-                PickupAddress = order.PickupAddress,
-                DropOffAddress = order.DropOffAddress,
-                Market = order.Market,
-                Settings = new BookingSettings
-                {
-                    LargeBags = order.Settings.LargeBags,
-                    Name = order.Settings.Name,
-                    NumberOfTaxi = order.Settings.NumberOfTaxi,
-                    Passengers = order.Settings.Passengers,
-                    Phone = order.Settings.Phone,
-                    ProviderId = null,
-
-                    // Payment in app is not supported for now when we use another IBS
-                    ChargeType = ChargeTypes.PaymentInCar.Display,
-                    ChargeTypeId = ChargeTypes.PaymentInCar.Id,
-                    
-                    // Reset vehicle type
-                    VehicleType = null,
-                    VehicleTypeId = null
-                },
-                Note = order.UserNote,
-                Estimate = new CreateOrder.RideEstimate { Price = order.EstimatedFare }
-            };
-
-            var newReferenceData = (ReferenceData)_referenceDataService.Get(new ReferenceDataRequest { CompanyKey = request.NextDispatchCompanyKey, Market = order.Market });
-
-            // This must be localized with the priceformat to be localized in the language of the company
-            // because it is sent to the driver
-            var chargeTypeIbs = _resources.Get(ChargeTypes.PaymentInCar.Display, _serverSettings.ServerData.PriceFormat);
-
-            var networkErrorMessage = string.Format(_resources.Get("Network_CannotCreateOrder", order.ClientLanguageCode), request.NextDispatchCompanyName);
-
-            int ibsAccountId;
-            try
-            {
-                // Recreate order on next dispatch company IBS
-                ibsAccountId = CreateIbsAccountIfNeeded(account, request.NextDispatchCompanyKey);
-            }
-            catch (Exception ex)
-            {
-                Log.Error(networkErrorMessage, ex);
-                throw new HttpError(HttpStatusCode.InternalServerError, networkErrorMessage);
-            }
-
-            ValidateProvider(newOrderRequest, newReferenceData);
-
-            var newIbsOrderId = CreateIbsOrder(ibsAccountId, newOrderRequest, newReferenceData, chargeTypeIbs, null, null, request.NextDispatchCompanyKey);
-            if (!newIbsOrderId.HasValue || newIbsOrderId <= 0)
-            {
-                var code = !newIbsOrderId.HasValue || (newIbsOrderId.Value >= -1) ? string.Empty : "_" + Math.Abs(newIbsOrderId.Value);
-                Log.Error(string.Format("{0}. IBS error code: {1}", networkErrorMessage, code));
-                throw new HttpError(HttpStatusCode.InternalServerError, networkErrorMessage);
-            }
-
-            // Cancel order on current company IBS
-            CancelIbsOrder(order, account.Id);
-
-            _commandBus.Send(new SwitchOrderToNextDispatchCompany
-            {
-                OrderId = request.OrderId,
-                IBSOrderId = newIbsOrderId.Value,
-                CompanyKey = request.NextDispatchCompanyKey,
-                CompanyName = request.NextDispatchCompanyName,
-                Market = order.Market
-            });
-
-            return new OrderStatusDetail
-            {
-                OrderId = request.OrderId,
-                Status = OrderStatus.Created,
-                CompanyKey = request.NextDispatchCompanyKey,
-                CompanyName = request.NextDispatchCompanyName,
-                NextDispatchCompanyKey = null,
-                NextDispatchCompanyName = null,
-                IBSOrderId = newIbsOrderId,
-                IBSStatusId = string.Empty,
-                IBSStatusDescription = string.Format(_resources.Get("OrderStatus_wosWAITINGRoaming", order.ClientLanguageCode), request.NextDispatchCompanyName),
-            };
-        }
-
-        public object Post(IgnoreDispatchCompanySwitchRequest request)
-        {
-            var order = _orderDao.FindById(request.OrderId);
-            if (order == null)
-            {
-                return new HttpResult(HttpStatusCode.NotFound);
-            }
-
-            _commandBus.Send(new IgnoreDispatchCompanySwitch
-            {
-                OrderId = request.OrderId
-            });
-
-            return new HttpResult(HttpStatusCode.OK);
-        }
 
         private int CreateIbsAccountIfNeeded(AccountDetail account, string companyKey = null, string market = null)
         {

@@ -15,7 +15,6 @@
                     var re = new RegExp(regexp);
                     return this.optional(element) || re.test(value);
                 }
-                
             );
 
             this.render();
@@ -30,14 +29,27 @@
                 data.settings.accountNumber = "";
             }
 
+            var tipPercentages = [
+                { id: 0, display: "0%" },
+                { id: 5, display: "5%" },
+                { id: 10, display: "10%" },
+                { id: 15, display: "15%" },
+                { id: 18, display: "18%" },
+                { id: 20, display: "20%" },
+                { id: 25, display: "25%" }
+            ];
+
             _.extend(data, {
                 vehiclesList: TaxiHail.vehicleTypes,
                 paymentsList: TaxiHail.referenceData.paymentsList,
-                isChargeAccountPaymentEnabled: TaxiHail.parameters.isChargeAccountPaymentEnabled
+                isChargeAccountPaymentEnabled: TaxiHail.parameters.isChargeAccountPaymentEnabled,
+                tipPercentages: tipPercentages
             });
 
             this.$el.html(this.renderTemplate(data));
             
+            this.toggleTipSettingVisibility();
+
             this.validate({
                 rules: {
                     name: "required",
@@ -92,8 +104,35 @@
             var $input = $(e.currentTarget);
             var settings = this.model.get('settings');
 
-            settings[$input.attr("name")] = $input.val();
+            var name = $input.attr("name");
+            var value = $input.val();
+
+            if (name === "chargeTypeId") {
+                this.toggleTipSettingVisibility();
+            }
+
+            // Update local model values
+            if (name === "defaultTipPercent") {
+                this.model.set("defaultTipPercent", value);
+            }
+            settings[name] = value;
+            settings["defaultTipPercent"] = this.model.get("defaultTipPercent");
+
             this.$(':submit').removeClass('disabled');
+        },
+
+        toggleTipSettingVisibility : function() {
+            var inputChargeType = this.$("#inputChargeType");
+            var tipPercentageDiv = this.$("#tipPercentageDiv");
+
+            var chargeTypeId = inputChargeType.val();
+
+            // If not pay in car
+            if (chargeTypeId != 1) {
+                tipPercentageDiv.show();
+            } else {
+                tipPercentageDiv.hide();
+            }
         }
     });
 
