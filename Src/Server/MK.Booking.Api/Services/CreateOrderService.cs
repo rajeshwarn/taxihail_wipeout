@@ -367,7 +367,7 @@ namespace apcurium.MK.Booking.Api.Services
                             : 0);
 
                     var tipPercentage = orderInfo.Account.DefaultTipPercent ?? _serverSettings.ServerData.DefaultTipPercentage;
-                    var tipAmount = FareHelper.GetTipAmountFromTotalAmount(fareObject.AmountInclTax, Convert.ToDecimal(tipPercentage));
+                    var tipAmount = FareHelper.GetTipAmountFromTotalAmount(fareObject.AmountInclTax, tipPercentage);
 
                     _commandBus.Send(new MarkPrepaidOrderAsSuccessful
                     {
