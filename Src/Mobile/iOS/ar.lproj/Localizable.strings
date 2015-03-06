@@ -582,3 +582,4 @@
 "Overdue_Succeed_Title"="Overdue payment";
 "Overdue_IBSOrderId"="Order:";
 "Overdue_Instructions"="Your credit card failed to pay the previous ride, you need to either retry to pay again or update your credit card information.";
+"Overdue_OutstandingPaymentExists"="Your credit card failed to pay the previous ride. You will need to pay this outstanding amount for your card be reactivated.";

@@ -605,7 +605,8 @@
 "View_Overdue"="Overdue Payment";
 "Overdue_Failed_Title"="Error settling overdue payment";
 "Overdue_Failed_Message"="Your transaction was denied, please try again later or replace your credit card with a new one.";
-"Overdue_Succeed_Message"="Your overdue payment of {0} has been settled and your credit card has been reactivated";
+"Overdue_Succeed_Message"="Your overdue payment of {0} has been settled and your credit card has been reactivated.";
 "Overdue_Succeed_Title"="Overdue payment";
 "Overdue_Instructions"="Your credit card failed to pay the previous ride, you need to either retry to pay again or update your credit card information.";
 "Overdue_IBSOrderId"="Order:";
+"Overdue_OutstandingPaymentExists"="Your credit card failed to pay the previous ride. You will need to pay this outstanding amount for your card be reactivated.";
