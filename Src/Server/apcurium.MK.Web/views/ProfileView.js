@@ -39,17 +39,19 @@
                 { id: 25, display: "25%" }
             ];
 
+            var displayTipSelection = TaxiHail.parameters.isChargeAccountPaymentEnabled
+                || TaxiHail.parameters.isPayPalEnabled;
+
             _.extend(data, {
                 vehiclesList: TaxiHail.vehicleTypes,
                 paymentsList: TaxiHail.referenceData.paymentsList,
                 isChargeAccountPaymentEnabled: TaxiHail.parameters.isChargeAccountPaymentEnabled,
+                displayTipSelection: displayTipSelection,
                 tipPercentages: tipPercentages
             });
 
             this.$el.html(this.renderTemplate(data));
             
-            this.toggleTipSettingVisibility();
-
             this.validate({
                 rules: {
                     name: "required",
@@ -107,10 +109,6 @@
             var name = $input.attr("name");
             var value = $input.val();
 
-            if (name === "chargeTypeId") {
-                this.toggleTipSettingVisibility();
-            }
-
             // Update local model values
             if (name === "defaultTipPercent") {
                 this.model.set("defaultTipPercent", value);
@@ -119,20 +117,6 @@
             settings["defaultTipPercent"] = this.model.get("defaultTipPercent");
 
             this.$(':submit').removeClass('disabled');
-        },
-
-        toggleTipSettingVisibility : function() {
-            var inputChargeType = this.$("#inputChargeType");
-            var tipPercentageDiv = this.$("#tipPercentageDiv");
-
-            var chargeTypeId = inputChargeType.val();
-
-            // If not pay in car
-            if (chargeTypeId != 1) {
-                tipPercentageDiv.show();
-            } else {
-                tipPercentageDiv.hide();
-            }
         }
     });
 

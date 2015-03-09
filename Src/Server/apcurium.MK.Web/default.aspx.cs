@@ -49,6 +49,7 @@ namespace apcurium.MK.Web
         protected bool IsWebSignupVisible { get; private set; }
         protected double MaxFareEstimate { get; private set; }
         protected bool IsChargeAccountPaymentEnabled { get; private set; }
+        protected bool IsPayPalEnabled { get; private set; }
         protected string PayPalMerchantId { get; private set; }
         
         protected void Page_Load(object sender, EventArgs e)
@@ -83,6 +84,7 @@ namespace apcurium.MK.Web
             var paymentSettings = config.GetPaymentSettings();
 
             IsChargeAccountPaymentEnabled = paymentSettings.IsChargeAccountPaymentEnabled;
+            IsPayPalEnabled = paymentSettings.PayPalClientSettings.IsEnabled;
 
             PayPalMerchantId = paymentSettings.PayPalClientSettings.IsSandbox
                 ? paymentSettings.PayPalServerSettings.SandboxCredentials.MerchantId

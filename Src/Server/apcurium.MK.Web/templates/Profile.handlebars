@@ -68,6 +68,7 @@
     </div>
     {{/if}}
 
+    {{#if displayTipSelection}}
     <div id="tipPercentageDiv" class="control-group">
       <label class="control-label" for="inputTipPercentage">{{localize "Tip"}}</label>
         <div class="controls">
@@ -82,6 +83,7 @@
             </select>
         </div>
     </div>
+    {{/if}}
 
     <div class="control-group btn-right-alignment">
         <button type='submit' class='btn btn-primary span' data-loading-text="{{localize 'Loading'}}">{{localize "Saves changes"}}</button>
