@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="14C109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
         <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
@@ -125,13 +125,13 @@
                         <constraint firstItem="ojW-w8-dIt" firstAttribute="top" secondItem="QC6-Kw-5V5" secondAttribute="bottom" constant="8" id="KXG-Ue-XTE"/>
                         <constraint firstAttribute="trailing" secondItem="Fmj-7w-as9" secondAttribute="trailing" constant="8" id="KYa-mE-pu9"/>
                         <constraint firstItem="k3L-Hg-fEU" firstAttribute="top" secondItem="7Oc-RR-yxa" secondAttribute="bottom" constant="49" id="L4r-Kj-YeA"/>
-                        <constraint firstItem="Fmj-7w-as9" firstAttribute="leading" secondItem="1SN-EP-ZDo" secondAttribute="leading" constant="9" id="NO0-zN-eqe"/>
                         <constraint firstItem="o91-o0-rgs" firstAttribute="baseline" secondItem="3fb-DF-0mX" secondAttribute="baseline" id="VVB-kN-x37"/>
                         <constraint firstItem="RDI-Py-cRU" firstAttribute="top" secondItem="3fb-DF-0mX" secondAttribute="bottom" constant="8" id="WhL-4s-sK0"/>
                         <constraint firstItem="o91-o0-rgs" firstAttribute="leading" secondItem="3fb-DF-0mX" secondAttribute="trailing" constant="8" id="alL-2V-Mu8"/>
                         <constraint firstAttribute="centerX" secondItem="o91-o0-rgs" secondAttribute="leading" id="eDd-qG-6CH"/>
                         <constraint firstItem="k3L-Hg-fEU" firstAttribute="top" secondItem="RDI-Py-cRU" secondAttribute="bottom" constant="49" id="i2D-MT-FJD"/>
                         <constraint firstItem="lTp-MB-rfG" firstAttribute="top" secondItem="k3L-Hg-fEU" secondAttribute="bottom" constant="8" id="iE3-mh-2Ng"/>
+                        <constraint firstAttribute="centerX" secondItem="Fmj-7w-as9" secondAttribute="centerX" id="jKd-hk-nI7"/>
                         <constraint firstItem="vOh-F1-i8X" firstAttribute="leading" secondItem="ojW-w8-dIt" secondAttribute="trailing" constant="8" id="jlF-nZ-wqP"/>
                         <constraint firstAttribute="centerX" secondItem="lTp-MB-rfG" secondAttribute="centerX" id="o0d-cv-58q"/>
                         <constraint firstItem="vOh-F1-i8X" firstAttribute="baseline" secondItem="ojW-w8-dIt" secondAttribute="baseline" id="pvy-xz-cwl"/>
