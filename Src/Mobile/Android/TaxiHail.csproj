@@ -45,7 +45,7 @@
     </CustomCommands>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <Optimize>false</Optimize>
+    <Optimize>True</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>CLIENT</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
@@ -60,8 +60,6 @@
     <AndroidLinkMode>SdkOnly</AndroidLinkMode>
     <MonoDroidExtraArgs>
     </MonoDroidExtraArgs>
-    <DebugType>full</DebugType>
-    <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="mscorlib" />
