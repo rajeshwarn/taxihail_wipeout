@@ -105,6 +105,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 
                     _commandBus.Send(new CaptureCreditCardPayment
                     {
+                        IsSettlingOverduePayment = true,
                         NewCardToken = paymentDetail.CardToken,
                         AccountId = accountDetail.Id,
                         PaymentId = paymentDetail.PaymentId,

@@ -45,7 +45,7 @@ namespace apcurium.MK.Booking.Domain
             });
         }
 
-        public void Capture(PaymentProvider provider, decimal amount, decimal meterAmount, decimal tipAmount, decimal taxAmount, string authorizationCode, string transactionId, bool isNoShowFee, Guid? promotionUsed, decimal amountSavedByPromotion, string newCardToken, Guid accountId)
+        public void Capture(PaymentProvider provider, decimal amount, decimal meterAmount, decimal tipAmount, decimal taxAmount, string authorizationCode, string transactionId, bool isNoShowFee, Guid? promotionUsed, decimal amountSavedByPromotion, string newCardToken, Guid accountId, bool isSettlingOverduePayment)
         {
             if (_isCaptured)
             {
@@ -63,6 +63,7 @@ namespace apcurium.MK.Booking.Domain
                 Tax = taxAmount,
                 Provider = provider,
                 IsNoShowFee = isNoShowFee,
+                IsSettlingOverduePayment = isSettlingOverduePayment,
                 PromotionUsed = promotionUsed,
                 AmountSavedByPromotion = amountSavedByPromotion,
                 AccountId = accountId,

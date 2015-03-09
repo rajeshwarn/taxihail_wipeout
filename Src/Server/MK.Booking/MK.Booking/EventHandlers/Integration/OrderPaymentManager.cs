@@ -8,6 +8,7 @@ using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Enumeration;
 using Infrastructure.Messaging;
 using Infrastructure.Messaging.Handling;
+using ServiceStack.Common.Web;
 
 namespace apcurium.MK.Booking.EventHandlers.Integration
 {
@@ -51,7 +52,8 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                 return;
             }
 
-            if (_serverSettings.ServerData.SendDetailedPaymentInfoToDriver)
+            if (_serverSettings.ServerData.SendDetailedPaymentInfoToDriver
+                && !@event.IsSettlingOverduePayment) // Don't send notification to driver when user settles overdue payment
             {
                 SendPaymentConfirmationToDriver(@event.OrderId, @event.Amount, @event.Meter + @event.Tax, @event.Tip, @event.Provider.ToString(), @event.AuthorizationCode);
             }
