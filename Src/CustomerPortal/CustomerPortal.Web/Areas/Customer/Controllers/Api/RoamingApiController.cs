@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -79,10 +80,13 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
             var markets = new List<string>(preferences.Keys);
             foreach (var market in markets)
             {
-                preferences[market] = preferences[market]
-                    .OrderBy(p => p.CompanyPreference.Order == null)
-                    .ThenBy(p => p.CompanyPreference.Order)
-                    .ToList();
+                if (preferences.ContainsKey(market))
+                {
+                    preferences[market] = preferences[market]
+                        .OrderBy(p => p.CompanyPreference.Order == null)
+                        .ThenBy(p => p.CompanyPreference.Order)
+                        .ToList();
+                }
             }
 
             return new HttpResponseMessage(HttpStatusCode.OK)
