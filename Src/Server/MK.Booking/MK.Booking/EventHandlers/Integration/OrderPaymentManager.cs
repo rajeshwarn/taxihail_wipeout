@@ -8,7 +8,6 @@ using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Enumeration;
 using Infrastructure.Messaging;
 using Infrastructure.Messaging.Handling;
-using ServiceStack.Common.Web;
 
 namespace apcurium.MK.Booking.EventHandlers.Integration
 {
