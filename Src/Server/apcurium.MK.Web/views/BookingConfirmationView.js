@@ -81,7 +81,8 @@
             _.extend(data, {
                 vehiclesList: TaxiHail.vehicleTypes,
                 paymentsList: chargeTypes,
-                showPassengerNumber: TaxiHail.parameters.showPassengerNumber
+                showPassengerNumber: TaxiHail.parameters.showPassengerNumber,
+                showEstimate: this.showEstimate
             });
 
             this.$el.html(this.renderTemplate(data));
