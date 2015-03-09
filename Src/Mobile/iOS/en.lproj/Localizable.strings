@@ -592,7 +592,7 @@
 "PayPalLinked"="Your account is now enabled to pay with PayPal by default. You can still choose to pay in the vehicle by selecting \"Pay in Vehicle\" on the confirmation screen";
 "Error"="Error";
 "InvalidPassengersNumberTitle"="Invalid Number of Passengers";
-"InvalidPassengersNumber"="Sorry, but unfortunately we do not have a big enough vehicle to accommodate the number of passengers. Please book more than one car to accommodate your party size.";
+"InvalidPassengersNumber"="The vehicle type that you selected does not have enough seats to accommodate your number of passengers. Please change your selection or book more than one car to accommodate your party size.";
 "NoPairingCreditCard"="None";
 "Unpair"="Pay in Car";
 "UnpairErrorMessage"="There was an error during unpairing, please try again later.";
@@ -605,7 +605,7 @@
 "View_Overdue"="Overdue Payment";
 "Overdue_Failed_Title"="Error settling overdue payment";
 "Overdue_Failed_Message"="Your transaction was denied, please try again later or replace your credit card with a new one.";
-"Overdue_Succeed_Message"="Your overdue payment of {0} has been settled and your credit card has been reactivated.";
+"Overdue_Succeed_Message"="Your overdue payment of {0} has been settled and your account is now enabled to pay with your card on file by default.";
 "Overdue_Succeed_Title"="Overdue payment";
 "Overdue_Instructions"="Your credit card failed to pay the previous ride, you need to either retry to pay again or update your credit card information.";
 "Overdue_IBSOrderId"="Order:";
