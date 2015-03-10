@@ -115,11 +115,11 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to You need an estimated fare to pay with PayPal. Please select a destination address to get one..
+        ///   Looks up a localized string similar to You need an estimated fare to prepay your ride. Please select a destination address to get one..
         /// </summary>
-        public static string CannotCreateOrder_PrepaidPayPalNoEstimate {
+        public static string CannotCreateOrder_PrepaidNoEstimate {
             get {
-                return ResourceManager.GetString("CannotCreateOrder_PrepaidPayPalNoEstimate", resourceCulture);
+                return ResourceManager.GetString("CannotCreateOrder_PrepaidNoEstimate", resourceCulture);
             }
         }
         
@@ -250,7 +250,7 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This account is not supported by the web site..
+        ///   Looks up a localized string similar to This account is not supported in a different market..
         /// </summary>
         public static string CannotCreateOrderChargeAccountNotSupported {
             get {

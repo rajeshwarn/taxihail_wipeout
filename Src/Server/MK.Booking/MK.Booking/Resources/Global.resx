@@ -412,7 +412,7 @@
     <value>There was a problem while trying to book with {0}. Your order will remain active.</value>
   </data>
   <data name="CannotCreateOrderChargeAccountNotSupported" xml:space="preserve">
-    <value>This account is not supported by the web site.</value>
+    <value>This account is not supported in a different market.</value>
   </data>
   <data name="CannotCreateOrder_PromotionMustUseCardOnFile" xml:space="preserve">
     <value>You must select Card On File to use a promotion.</value>
@@ -573,8 +573,8 @@
   <data name="Email_Subject_CreditCardDeactivated" xml:space="preserve">
     <value>{{ ApplicationName }} - Your credit card has been deactivated</value>
   </data>
-  <data name="CannotCreateOrder_PrepaidPayPalNoEstimate" xml:space="preserve">
-    <value>You need an estimated fare to pay with PayPal. Please select a destination address to get one.</value>
+  <data name="CannotCreateOrder_PrepaidNoEstimate" xml:space="preserve">
+    <value>You need an estimated fare to prepay your ride. Please select a destination address to get one.</value>
   </data>
   <data name="CannotCreateOrder_PrepaidPayPalPaymentCancelled" xml:space="preserve">
     <value>PayPal payment was cancelled</value>

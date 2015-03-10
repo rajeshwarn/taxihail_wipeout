@@ -484,8 +484,8 @@
     <comment>WARNING: The client will NOT be charged at the end of the ride</comment>
   </data>
   <data name="CannotCreateOrderChargeAccountNotSupported" xml:space="preserve">
-    <value>This account is not supported by the web site.</value>
-    <comment>This account is not supported by the web site.</comment>
+    <value>This account is not supported in a different market.</value>
+    <comment>This account is not supported in a different market.</comment>
   </data>
   <data name="Email_Body_VehicleModel" xml:space="preserve">
     <value>Vehículo</value>
@@ -691,8 +691,8 @@
   <data name="Email_Subject_CreditCardDeactivated" xml:space="preserve">
     <value>{{ ApplicationName }} - Your credit card has been deactivated</value>
   </data>
-  <data name="CannotCreateOrder_PrepaidPayPalNoEstimate" xml:space="preserve">
-    <value>You need an estimated fare to pay with PayPal. Please select a destination address to get one.</value>
+  <data name="CannotCreateOrder_PrepaidNoEstimate" xml:space="preserve">
+    <value>You need an estimated fare to prepay your ride. Please select a destination address to get one.</value>
   </data>
   <data name="CannotCreateOrder_PrepaidPayPalPaymentCancelled" xml:space="preserve">
     <value>PayPal payment was cancelled</value>

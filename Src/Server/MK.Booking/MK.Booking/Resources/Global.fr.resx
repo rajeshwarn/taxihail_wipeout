@@ -412,7 +412,7 @@
     <value>Un problème est survenu en passant la commande avec {0}. Votre commande restera active.</value>
   </data>
   <data name="CannotCreateOrderChargeAccountNotSupported" xml:space="preserve">
-    <value>Ce compte n'est pas supporté par la page web</value>
+    <value>Ce compte n'est pas supporté dans un autre marché</value>
   </data>
   <data name="CannotCreateOrder_PromotionDoesNotExist" xml:space="preserve">
     <value>Il n'y a pas de promotion associée à ce code</value>
@@ -579,8 +579,8 @@
   <data name="Email_Subject_CreditCardDeactivated" xml:space="preserve">
     <value>{{ ApplicationName }} - Votre carte de crédit a été désactivée</value>
   </data>
-  <data name="CannotCreateOrder_PrepaidPayPalNoEstimate" xml:space="preserve">
-    <value>Pour payer via PayPal, un estimé doit être fourni. Veuillez sélectionner une adresse de destination pour obtenir un estimé.</value>
+  <data name="CannotCreateOrder_PrepaidNoEstimate" xml:space="preserve">
+    <value>Pour prépayer votre course, un estimé doit être fourni. Veuillez sélectionner une adresse de destination pour en obtenir un.</value>
   </data>
   <data name="CannotCreateOrder_PrepaidPayPalPaymentCancelled" xml:space="preserve">
     <value>Paiement PayPal annulé</value>
