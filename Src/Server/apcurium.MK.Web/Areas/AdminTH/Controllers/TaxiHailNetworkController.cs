@@ -20,7 +20,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
         private readonly IServerSettings _serverSettings;
         private readonly ITaxiHailNetworkServiceClient _taxiHailNetworkService;
         private readonly ConfigurationsService _configurationsService;
-        private readonly string _applicationKey;
+        
 
         // GET: AdminTH/TaxiHailNetwork
         public TaxiHailNetworkController(ICacheClient cache, IServerSettings serverSettings, ITaxiHailNetworkServiceClient taxiHailNetworkService, ConfigurationsService configurationsService) 
@@ -98,7 +98,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                 }
 
                 await _taxiHailNetworkService.SetNetworkCompanyPreferences(
-                        _applicationKey, 
+                        _serverSettings.ServerData.TaxiHail.ApplicationKey, 
                         preferences.OrderBy(thn => thn.Order.HasValue)
                                    .ThenBy(thn => thn.Order.GetValueOrDefault())
                         .ToArray());
