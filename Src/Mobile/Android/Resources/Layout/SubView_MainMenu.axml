@@ -129,18 +129,30 @@
                             android:paddingRight="8dip"
                             android:layout_width="fill_parent"
                             android:layout_height="1px" />
-                         <Button
-                            android:id="@+id/promotions"
-                            local:MvxBind="Click Panel.NavigateToPromotions; Visibility Panel.Settings.PromotionEnabled, Converter=Visibility"
-                            style="@style/SettingItemTitle"
-                            android:background="@drawable/setting_cell"
+                        <RelativeLayout
+                            local:MvxBind="Visibility Panel.Settings.PromotionEnabled, Converter=Visibility"
                             android:layout_width="fill_parent"
-                            android:layout_height="42dip"
-                            android:text="@string/PanelMenuViewPromotionsText"
-                            android:paddingRight="10dip"
-                            android:paddingLeft="10dip"
-                            android:gravity="center_vertical"
-                            android:textAlignment="viewStart" />
+                            android:layout_height="42dip">
+                            <Button
+                                android:id="@+id/promotions"
+                                local:MvxBind="Click Panel.NavigateToPromotions;"
+                                style="@style/SettingItemTitle"
+                                android:background="@drawable/setting_cell"
+                                android:layout_width="fill_parent"
+                                android:layout_height="fill_parent"
+                                android:paddingRight="10dip"
+                                android:paddingLeft="10dip"
+                                android:text="@string/PanelMenuViewPromotionsText"
+                                android:gravity="center_vertical"
+                                android:textAlignment="viewStart" />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:layout_alignParentRight="true"
+                                android:layout_marginRight="100dip"
+                                local:MvxBind="Text Panel.PromoCodeAlert" />
+                        </RelativeLayout>
                         <View
                             local:MvxBind="Visibility Panel.Settings.PromotionEnabled, Converter=Visibility"
                             android:background="@color/setting_menu_separator_color"
@@ -328,7 +340,7 @@
                     android:textAllCaps="true"
                     android:textStyle="bold"
                     android:textSize="18dp"
-                    android:gravity="left"/>
+                    android:gravity="left" />
                 <TextView
                     android:text="2.0.17"
                     local:MvxBind="Text Panel.Version"
