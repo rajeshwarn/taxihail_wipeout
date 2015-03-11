@@ -31,7 +31,7 @@
                 creditCard.fetch({
                     url: 'api/account/creditcards',
                     success: _.bind(function (model) {
-                        var creditCardInfo = null;
+                        var creditCardInfo = new TaxiHail.CreditCard();
                         if (model.length > 0) {
                             // Take only the first credit card since we no longer support multiple cards per account
                             creditCardInfo = model.models[0];

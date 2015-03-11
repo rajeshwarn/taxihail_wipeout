@@ -16,6 +16,7 @@
         <link rel="stylesheet" href='themes/<%: ApplicationKey %>/less/combined.less'/>
         <link rel="stylesheet" href='themes/<%: ApplicationKey %>/less/combined-responsive.less'/>
         <script src="assets/js/modernizr.min.js"></script>
+        <script src="https://js.braintreegateway.com/v2/braintree.js"></script>
     </head>
     <body>
         <div id="fb-root"></div>

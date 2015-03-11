@@ -29,7 +29,7 @@
                 { id: 12, display: this.localize("December") }
             ];
 
-            var isEditing = this.model != null;
+            var isEditing = this.model.last4Digits != null;
             var creditCard = {};
 
             if (isEditing) {
@@ -108,14 +108,19 @@
             this.$el.html(view.render().el);
         },
 
-        savechanges : function (form) {
-            this.model.updateCreditCard()
-                .done(_.bind(function () {
-                    this.renderConfirmationMessage();
-                }, this))
-                .fail(_.bind(function(){
-                    this.$(':submit').button('reset');
-                }, this));
+        savechanges: function (form) {
+            var cardToken = this.model.tokenize();
+            if (cardToken != null) {
+                var test = "sf";
+            }
+
+            //this.model.updateCreditCard()
+            //    .done(_.bind(function () {
+            //        this.renderConfirmationMessage();
+            //    }, this))
+            //    .fail(_.bind(function(){
+            //        this.$(':submit').button('reset');
+            //    }, this));
         },
 
         deleteCreditCard: function (e) {

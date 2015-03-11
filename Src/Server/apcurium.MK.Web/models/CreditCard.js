@@ -23,6 +23,17 @@
             });
         },
 
+        tokenize: function () {
+            var clientToken = gateway.ClientToken.generate();
+            braintree.setup(clientToken, "<integration>", options);
+
+            var client = new braintree.api.Client({ clientToken: clientToken });
+            client.tokenizeCard({ number: "4111111111111111", expirationDate: "10/20" }, function (err, nonce) {
+                // Send nonce to your server
+                return nonce;
+            });
+        },
+
         determineCompany: function(cardNumber) {
             //var visaPattern = new RegExp("/^4\d{3}-?\d{4}-?\d{4}-?\d");
             //var mastercardPattern = new RegExp("^5[1-5][0-9]{14}$");
