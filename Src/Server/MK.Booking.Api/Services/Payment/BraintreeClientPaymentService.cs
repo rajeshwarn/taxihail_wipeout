@@ -24,7 +24,11 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 
         public TokenizedCreditCardResponse Post(TokenizeCreditCardBraintreeRequest tokenizeRequest)
         {
-            return TokenizedCreditCard(BraintreeGateway, tokenizeRequest.EncryptedCreditCardNumber, tokenizeRequest.EncryptedExpirationDate, tokenizeRequest.EncryptedCvv);
+            return TokenizedCreditCard(BraintreeGateway,
+                tokenizeRequest.EncryptedCreditCardNumber,
+                tokenizeRequest.EncryptedExpirationDate,
+                tokenizeRequest.EncryptedCvv,
+                tokenizeRequest.PaymentMethodNonce);
         }
 
         public object Get(GenerateClientTokenBraintreeRequest request)
@@ -46,7 +50,12 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                 ).IsSuccessful;
         }
 
-        private static TokenizedCreditCardResponse TokenizedCreditCard(BraintreeGateway client, string encryptedCreditCardNumber, string encryptedExpirationDate, string encryptedCvv)
+        private static TokenizedCreditCardResponse TokenizedCreditCard(
+            BraintreeGateway client,
+            string encryptedCreditCardNumber,
+            string encryptedExpirationDate,
+            string encryptedCvv,
+            string paymentMethodNonce = null)
         {
             var request = new CustomerRequest
             {
@@ -54,7 +63,8 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                 {
                     Number = encryptedCreditCardNumber,
                     ExpirationDate = encryptedExpirationDate,
-                    CVV = encryptedCvv
+                    CVV = encryptedCvv,
+                    PaymentMethodNonce = paymentMethodNonce // Used for tokenization from javascript API
                 }
             };
 
@@ -69,7 +79,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                 CardType = cc.CardType.ToString(),
                 LastFour = cc.LastFour,
                 IsSuccessful = result.IsSuccess(),
-                Message = result.Message,
+                Message = result.Message
             };
         }
 

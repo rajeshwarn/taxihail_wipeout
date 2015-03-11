@@ -109,8 +109,8 @@
         },
 
         savechanges: function (form) {
-            var cardToken = this.model.tokenize();
-            if (cardToken != null) {
+            var tokenizedCard = this.model.tokenize("4111111111111111", "05", "2020", "135");
+            if (tokenizedCard != null) {
                 var test = "sf";
             }
 
