@@ -1267,7 +1267,8 @@ namespace apcurium.MK.Booking.Api.Services
                         TipAmount = tipAmount,
                         TaxAmount = fareObject.TaxAmount,
                         AuthorizationCode = commitResponse.AuthorizationCode,
-                        TransactionId = commitResponse.TransactionId
+                        TransactionId = commitResponse.TransactionId,
+                        IsForPrepaidOrder = true
                     });
                 }
 

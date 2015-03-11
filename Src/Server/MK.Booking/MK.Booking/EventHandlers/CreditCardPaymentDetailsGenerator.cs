@@ -45,14 +45,14 @@ namespace apcurium.MK.Booking.EventHandlers
                 payment.Meter = @event.Meter;
                 payment.Tax = @event.Tax;
                 payment.Tip = @event.Tip;
+                payment.IsCancelled = false;
+                payment.Error = null;
 
                 // Update payment details after settling an overdue payment
                 if (@event.NewCardToken.HasValue())
                 {
                     payment.CardToken = @event.NewCardToken;
                 }
-                payment.IsCancelled = false;
-                payment.Error = null;
 
                 var order = context.Find<OrderDetail>(payment.OrderId);
                 if (!order.Fare.HasValue || order.Fare == 0)
