@@ -21,18 +21,21 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private readonly IAccountService _accountService;
 		private readonly IPhoneService _phoneService;
 		private readonly IPaymentService _paymentService;
+		private readonly IPromotionService _promotionService;
 
 		public PanelMenuViewModel (IMvxWebBrowserTask browserTask, 
 			IOrderWorkflowService orderWorkflowService,
 			IAccountService accountService,
 			IPhoneService phoneService,
-			IPaymentService paymentService)
+			IPaymentService paymentService,
+			IPromotionService promotionService)
         {
 		    _browserTask = browserTask;
 			_orderWorkflowService = orderWorkflowService;
 			_accountService = accountService;
 			_phoneService = phoneService;
 			_paymentService = paymentService;
+			_promotionService = promotionService;
 			ItemMenuList = new ObservableCollection<ItemMenuModel>();
         }
 
@@ -385,6 +388,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			public ICommand NavigationCommand{ get; set;}
 
 			public bool Visibility { get; set;}
+
+			public int Alert { get; set; }
 		}
 
 		private void CloseMenu()
