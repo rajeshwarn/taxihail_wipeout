@@ -11,6 +11,7 @@ using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Api.Services;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Enumeration;
 using Microsoft.Practices.ServiceLocation;
 using ServiceStack.Text;
@@ -49,6 +50,7 @@ namespace apcurium.MK.Web
         protected bool IsWebSignupVisible { get; private set; }
         protected double MaxFareEstimate { get; private set; }
         protected bool IsChargeAccountPaymentEnabled { get; private set; }
+        protected bool IsUsingBraintree { get; private set; }
         protected bool IsPayPalEnabled { get; private set; }
         protected string PayPalMerchantId { get; private set; }
         
@@ -83,12 +85,14 @@ namespace apcurium.MK.Web
 
             var paymentSettings = config.GetPaymentSettings();
 
+            IsUsingBraintree = paymentSettings.PaymentMode == PaymentMethod.Braintree && paymentSettings.IsPayInTaxiEnabled;
             IsChargeAccountPaymentEnabled = paymentSettings.IsChargeAccountPaymentEnabled;
             IsPayPalEnabled = paymentSettings.PayPalClientSettings.IsEnabled;
 
             PayPalMerchantId = paymentSettings.PayPalClientSettings.IsSandbox
                 ? paymentSettings.PayPalServerSettings.SandboxCredentials.MerchantId
                 : paymentSettings.PayPalServerSettings.Credentials.MerchantId;
+
 
             ShowPassengerNumber = config.ServerData.ShowPassengerNumber;
 
