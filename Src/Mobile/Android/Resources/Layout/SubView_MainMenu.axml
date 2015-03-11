@@ -154,7 +154,7 @@
                                 android:background="@drawable/notification_background"
                                 android:textColor="@color/white"
                                 android:textSize="14dip"
-                                local:MvxBind="Text Panel.PromoCodeAlert" />
+                                local:MvxBind="Text Panel.PromoCodeAlert; Visibility Panel.PromoCodeAlert, Converter=HasValueToVisibilityConverter" />
                         </RelativeLayout>
                         <View
                             local:MvxBind="Visibility Panel.Settings.PromotionEnabled, Converter=Visibility"
