@@ -50,7 +50,7 @@ namespace apcurium.MK.Web
         protected bool IsWebSignupVisible { get; private set; }
         protected double MaxFareEstimate { get; private set; }
         protected bool IsChargeAccountPaymentEnabled { get; private set; }
-        protected bool IsUsingBraintree { get; private set; }
+        protected bool IsBraintreePrepaidEnabled { get; private set; }
         protected bool IsPayPalEnabled { get; private set; }
         protected string PayPalMerchantId { get; private set; }
         
@@ -85,14 +85,16 @@ namespace apcurium.MK.Web
 
             var paymentSettings = config.GetPaymentSettings();
 
-            IsUsingBraintree = paymentSettings.PaymentMode == PaymentMethod.Braintree && paymentSettings.IsPayInTaxiEnabled;
+            IsBraintreePrepaidEnabled = paymentSettings.PaymentMode == PaymentMethod.Braintree 
+                && paymentSettings.IsPayInTaxiEnabled
+                && paymentSettings.IsPrepaidEnabled;
+            IsPayPalEnabled = paymentSettings.PayPalClientSettings.IsEnabled
+                && paymentSettings.IsPrepaidEnabled;
             IsChargeAccountPaymentEnabled = paymentSettings.IsChargeAccountPaymentEnabled;
-            IsPayPalEnabled = paymentSettings.PayPalClientSettings.IsEnabled;
 
             PayPalMerchantId = paymentSettings.PayPalClientSettings.IsSandbox
                 ? paymentSettings.PayPalServerSettings.SandboxCredentials.MerchantId
                 : paymentSettings.PayPalServerSettings.Credentials.MerchantId;
-
 
             ShowPassengerNumber = config.ServerData.ShowPassengerNumber;
 
@@ -106,8 +108,7 @@ namespace apcurium.MK.Web
             var referenceDataService = ServiceLocator.Current.GetInstance<ReferenceDataService>();
             var referenceData = (ReferenceData) referenceDataService.Get(new ReferenceDataRequest());
 
-            // Remove unsupported payment methods by the web app
-            referenceData.PaymentsList = HidePaymentTypes(referenceData.PaymentsList, new[] { ChargeTypes.CardOnFile.Id });
+            referenceData.PaymentsList = HidePaymentTypes(referenceData.PaymentsList, IsBraintreePrepaidEnabled, IsPayPalEnabled);
 
             ReferenceData = referenceData.ToString();
 
@@ -124,8 +125,20 @@ namespace apcurium.MK.Web
                 : Uri.UnescapeDataString(pair.Split('=')[1]);
         }
 
-        private List<Common.Entity.ListItem> HidePaymentTypes(IEnumerable<Common.Entity.ListItem> paymentList, IEnumerable<int?> paymentTypesToHide)
+        private List<Common.Entity.ListItem> HidePaymentTypes(IEnumerable<Common.Entity.ListItem> paymentList, bool creditCardPrepaidEnabled, bool payPalPrepaidEnabled)
         {
+            var paymentTypesToHide = new List<int?>();
+
+            if (!creditCardPrepaidEnabled)
+            {
+                paymentTypesToHide.Add(ChargeTypes.CardOnFile.Id);
+            }
+
+            if (!payPalPrepaidEnabled)
+            {
+                paymentTypesToHide.Add(ChargeTypes.PayPal.Id);
+            }
+
             return paymentList.Where(paymentType => !paymentTypesToHide.Contains(paymentType.Id)).ToList();
         }
     }
