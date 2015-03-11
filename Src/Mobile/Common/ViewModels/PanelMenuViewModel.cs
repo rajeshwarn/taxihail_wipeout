@@ -1,5 +1,6 @@
 using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows.Input;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Extensions;
@@ -59,45 +60,62 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             // Display a watermark indicating on which server the application is pointing
             SetServerWatermarkText();
 
-		    var promoCodes = await _promotionService.GetActivePromotions();
+            // get the number of active promotions.
+#pragma warning disable 4014
+		    RefreshPromoCodeCount();
+#pragma warning restore 4014
 
-		    PromoCodeAlert = promoCodes.Length;
-            
-			// N.B.: This setup is for iOS only! For Android see: SubView_MainMenu.xaml
-			ItemMenuList.Add(new ItemMenuModel { Text = this.Services().Localize["PanelMenuViewLocationsText"], NavigationCommand = NavigateToMyLocations });
-			ItemMenuList.Add(new ItemMenuModel { Text = this.Services().Localize["PanelMenuViewOrderHistoryText"], NavigationCommand = NavigateToOrderHistory });
-			ItemMenuList.Add(new ItemMenuModel { Text = this.Services().Localize["PanelMenuViewUpdateProfileText"], NavigationCommand = NavigateToUpdateProfile });
+		    // N.B.: This setup is for iOS only! For Android see: SubView_MainMenu.xaml
+			ItemMenuList.Add(new ItemMenuModel { Id=0, Text = this.Services().Localize["PanelMenuViewLocationsText"], NavigationCommand = NavigateToMyLocations });
+            ItemMenuList.Add(new ItemMenuModel { Id = 1, Text = this.Services().Localize["PanelMenuViewOrderHistoryText"], NavigationCommand = NavigateToOrderHistory });
+            ItemMenuList.Add(new ItemMenuModel { Id = 2, Text = this.Services().Localize["PanelMenuViewUpdateProfileText"], NavigationCommand = NavigateToUpdateProfile });
 		    if (IsPayInTaxiEnabled)
 		    {
-                ItemMenuList.Add(new ItemMenuModel { Text = this.Services().Localize["PanelMenuViewPaymentInfoText"], NavigationCommand = NavigateToPaymentInformation });
+                ItemMenuList.Add(new ItemMenuModel { Id = 3, Text = this.Services().Localize["PanelMenuViewPaymentInfoText"], NavigationCommand = NavigateToPaymentInformation });
 		    }
 		    if (Settings.PromotionEnabled)
 		    {
-                ItemMenuList.Add(new ItemMenuModel { Text = this.Services().Localize["PanelMenuViewPromotionsText"], NavigationCommand = NavigateToPromotions, Alert = PromoCodeAlert });
+                ItemMenuList.Add(new ItemMenuModel { Id = 4, Text = this.Services().Localize["PanelMenuViewPromotionsText"], NavigationCommand = NavigateToPromotions, Alert = PromoCodeAlert });
 		    }
 		    if (IsNotificationsEnabled)
 		    {
-                ItemMenuList.Add(new ItemMenuModel { Text = this.Services().Localize["PanelMenuViewNotificationsText"], NavigationCommand = NavigateToNotificationsSettings });
+                ItemMenuList.Add(new ItemMenuModel { Id = 5, Text = this.Services().Localize["PanelMenuViewNotificationsText"], NavigationCommand = NavigateToNotificationsSettings });
 		    }			
             if (IsTaxiHailNetworkEnabled)
             {
-                ItemMenuList.Add(new ItemMenuModel { Text = this.Services().Localize["PanelMenuViewTaxiHailNetworkText"], NavigationCommand = NavigateToUserTaxiHailNetworkSettings });
+                ItemMenuList.Add(new ItemMenuModel { Id = 6, Text = this.Services().Localize["PanelMenuViewTaxiHailNetworkText"], NavigationCommand = NavigateToUserTaxiHailNetworkSettings });
             }
 		    if (Settings.TutorialEnabled)
 		    {
-                ItemMenuList.Add(new ItemMenuModel { Text = this.Services().Localize["PanelMenuViewTutorialText"], NavigationCommand = NavigateToTutorial });
+                ItemMenuList.Add(new ItemMenuModel { Id = 7, Text = this.Services().Localize["PanelMenuViewTutorialText"], NavigationCommand = NavigateToTutorial });
 		    }
 		    if (!Settings.HideCallDispatchButton)
 		    {
-                ItemMenuList.Add(new ItemMenuModel { Text = this.Services().Localize["PanelMenuViewCallDispatchText"], NavigationCommand = Call });
+                ItemMenuList.Add(new ItemMenuModel { Id = 8, Text = this.Services().Localize["PanelMenuViewCallDispatchText"], NavigationCommand = Call });
 		    }
-			ItemMenuList.Add(new ItemMenuModel { Text = this.Services().Localize["PanelMenuViewAboutUsText"], NavigationCommand = NavigateToAboutUs });
+            ItemMenuList.Add(new ItemMenuModel { Id = 9, Text = this.Services().Localize["PanelMenuViewAboutUsText"], NavigationCommand = NavigateToAboutUs });
 		    if (!Settings.HideReportProblem)
 		    {
-                ItemMenuList.Add(new ItemMenuModel { Text = this.Services().Localize["PanelMenuViewReportProblemText"], NavigationCommand = NavigateToReportProblem });
+                ItemMenuList.Add(new ItemMenuModel { Id = 10, Text = this.Services().Localize["PanelMenuViewReportProblemText"], NavigationCommand = NavigateToReportProblem });
 		    }
-			ItemMenuList.Add(new ItemMenuModel { Text = this.Services().Localize["PanelMenuViewSignOutText"], NavigationCommand = SignOut });
+            ItemMenuList.Add(new ItemMenuModel { Id = 11, Text = this.Services().Localize["PanelMenuViewSignOutText"], NavigationCommand = SignOut });
 		}
+
+	    private async Task RefreshPromoCodeCount()
+	    {
+	        var promoCodes = await _promotionService.GetActivePromotions();
+	        if (promoCodes.Any())
+	        {
+	            PromoCodeAlert = promoCodes.Length;
+
+	            var menuItem = ItemMenuList.FirstOrDefault(item => item.Id == 4);
+
+	            if (menuItem != null)
+	            {
+                    menuItem.Alert = PromoCodeAlert;
+	            }
+	        }
+	    }
 
 	    public ObservableCollection<ItemMenuModel> ItemMenuList { get; set; }
 
@@ -115,7 +133,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 	        }
 	    }
 
-	    public int PromoCodeAlert
+	    public int? PromoCodeAlert
 	    {
 	        get
 	        {
@@ -269,7 +287,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         }
 
         private string _version;
-	    private int _promoCodeAlert;
+	    private int? _promoCodeAlert;
 
 	    public string Version {
             get 
@@ -401,13 +419,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		public class ItemMenuModel
 		{
+            public int Id { get; set; }
+
 			public string Text { get; set;}
 
 			public ICommand NavigationCommand{ get; set;}
 
 			public bool Visibility { get; set;}
 
-			public int Alert { get; set; }
+			public int? Alert { get; set; }
 		}
 
 		private void CloseMenu()
