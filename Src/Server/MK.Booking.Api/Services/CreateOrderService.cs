@@ -972,20 +972,11 @@ namespace apcurium.MK.Booking.Api.Services
                 largeBagsString = "Large bags: " + largeBags;
             }
 
-            var promoCodeString = string.Empty;
-            if (promoCode.HasValue())
-            {
-                var promo = _promotionDao.FindByPromoCode(promoCode);
-                promoCodeString = promo.GetNoteToDriverFormattedString();
-            }
-
             if (!string.IsNullOrWhiteSpace(noteTemplate))
             {
                 noteTemplate = string.Format("{0}{1}{2}", 
                     chargeType,
-                    promoCodeString.HasValue()
-                        ? string.Format("{0}{1}{2}", Environment.NewLine, promoCodeString, Environment.NewLine)
-                        : Environment.NewLine,
+                    Environment.NewLine,
                     noteTemplate);
 
                 var transformedTemplate = noteTemplate
@@ -1005,9 +996,7 @@ namespace apcurium.MK.Booking.Api.Services
             var formattedNote = string.Format("{0}{0}{1}{2}{3}", 
                     Environment.NewLine, 
                     chargeType,
-                    promoCodeString.HasValue()
-                        ? string.Format("{0}{1}{2}", Environment.NewLine, promoCodeString, Environment.NewLine)
-                        : Environment.NewLine, 
+                    Environment.NewLine,
                     note);
 
             if (!string.IsNullOrWhiteSpace(buildingName))
