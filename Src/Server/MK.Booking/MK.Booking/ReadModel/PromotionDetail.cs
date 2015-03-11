@@ -69,5 +69,17 @@ namespace apcurium.MK.Booking.ReadModel
                 ? new DateTime(EndDate.Value.Year, EndDate.Value.Month, EndDate.Value.Day)
                 : new DateTime(EndDate.Value.Year, EndDate.Value.Month, EndDate.Value.Day, EndTime.Value.Hour, EndTime.Value.Minute, 0);
         }
+
+        public string GetNoteToDriverFormattedString()
+        {
+            var discountType = DiscountType == PromoDiscountType.Cash
+                ? "$"
+                : "%";
+
+            return string.Format("PROMO,{0},{1},{2}",
+                Code,
+                discountType,
+                DiscountValue);
+        }
     }
 }
