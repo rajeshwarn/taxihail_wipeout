@@ -696,7 +696,7 @@ namespace apcurium.MK.Booking.Api.Services
             // If there's an estimate, add tip to that estimate
             if (appEstimate.HasValue)
             {
-                appEstimate = FareHelper.CalculateTipAmount(appEstimate.Value, tipPercent);
+                appEstimate = appEstimate.Value + FareHelper.CalculateTipAmount(appEstimate.Value, tipPercent);
             }
 
             var appEstimateWithTip = appEstimate.HasValue ? Convert.ToDecimal(appEstimate.Value) : (decimal?)null;
