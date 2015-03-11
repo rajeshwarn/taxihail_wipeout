@@ -59,6 +59,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             // Display a watermark indicating on which server the application is pointing
             SetServerWatermarkText();
 
+		    var promoCodes = await _promotionService.GetActivePromotions();
+
+		    PromoCodeAlert = promoCodes.Length;
+            
 			// N.B.: This setup is for iOS only! For Android see: SubView_MainMenu.xaml
 			ItemMenuList.Add(new ItemMenuModel { Text = this.Services().Localize["PanelMenuViewLocationsText"], NavigationCommand = NavigateToMyLocations });
 			ItemMenuList.Add(new ItemMenuModel { Text = this.Services().Localize["PanelMenuViewOrderHistoryText"], NavigationCommand = NavigateToOrderHistory });
@@ -69,7 +73,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		    }
 		    if (Settings.PromotionEnabled)
 		    {
-		        ItemMenuList.Add(new ItemMenuModel { Text = this.Services().Localize["PanelMenuViewPromotionsText"], NavigationCommand = NavigateToPromotions });
+                ItemMenuList.Add(new ItemMenuModel { Text = this.Services().Localize["PanelMenuViewPromotionsText"], NavigationCommand = NavigateToPromotions, Alert = PromoCodeAlert });
 		    }
 		    if (IsNotificationsEnabled)
 		    {
@@ -111,6 +115,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 	        }
 	    }
 
+	    public int PromoCodeAlert
+	    {
+	        get
+	        {
+	            return _promoCodeAlert;
+	        }
+	        set
+	        {
+	            _promoCodeAlert = value;
+	            RaisePropertyChanged();
+	        }
+	    }
 
 	    private bool _isPayInTaxiEnabled;
         public bool IsPayInTaxiEnabled
@@ -253,7 +269,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         }
 
         private string _version;
-        public string Version {
+	    private int _promoCodeAlert;
+
+	    public string Version {
             get 
             {
 				if (string.IsNullOrEmpty(_version))
