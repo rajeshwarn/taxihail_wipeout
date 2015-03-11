@@ -816,5 +816,8 @@
     <AndroidResource Include="Resources\Layout\TogglableSettingsListItem.axml" />
     <AndroidResource Include="Resources\Layout\View_UserTaxiHailNetworkSettings.axml" />
     <AndroidResource Include="Resources\Layout\PromotionListItem.axml" />
+    <AndroidResource Include="Resources\Drawable\notification_background.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
   </ItemGroup>
 </Project>

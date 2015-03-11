@@ -151,6 +151,9 @@
                                 android:layout_centerVertical="true"
                                 android:layout_alignParentRight="true"
                                 android:layout_marginRight="100dip"
+                                android:background="@drawable/notification_background"
+                                android:textColor="@color/white"
+                                android:textSize="14dip"
                                 local:MvxBind="Text Panel.PromoCodeAlert" />
                         </RelativeLayout>
                         <View
