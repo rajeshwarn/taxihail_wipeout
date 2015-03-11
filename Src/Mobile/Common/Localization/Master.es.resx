@@ -2218,19 +2218,19 @@
     <value>Update Credit Card</value>
   </data>
   <data name="View_Overdue" xml:space="preserve">
-    <value>Overdue Payment</value>
+    <value>Payment Declined</value>
   </data>
   <data name="Overdue_Failed_Message" xml:space="preserve">
     <value>Your transaction was denied, please try again later or replace your credit card with a new one.</value>
   </data>
   <data name="Overdue_Failed_Title" xml:space="preserve">
-    <value>Error settling overdue payment</value>
+    <value>Error settling declined payment</value>
   </data>
   <data name="Overdue_Succeed_Message" xml:space="preserve">
-    <value>Your overdue payment of {0} has been settled and your account is now enabled to pay with your card on file by default.</value>
+    <value>Your declined payment of {0} has been settled and your account is now enabled to pay with your card on file by default.</value>
   </data>
   <data name="Overdue_Succeed_Title" xml:space="preserve">
-    <value>Overdue payment</value>
+    <value>Payment Declined</value>
   </data>
   <data name="Overdue_Instructions" xml:space="preserve">
     <value>Your credit card failed to pay the previous ride, you need to either retry to pay again or update your credit card information.</value>
