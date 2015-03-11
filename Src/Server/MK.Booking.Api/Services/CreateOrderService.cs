@@ -263,8 +263,7 @@ namespace apcurium.MK.Booking.Api.Services
                     .Select(x => x.Display)
                     .FirstOrDefault();
 
-            // TODO need to find  away to get chargetypeoverride from prepaid cc
-            chargeTypeKey = paypalWebPaymentResponse != null
+            chargeTypeKey = isPrepaid
                 ? "PrePaid"
                 : accountValidationResult.ChargeTypeKeyOverride 
                     ?? chargeTypeKey;
