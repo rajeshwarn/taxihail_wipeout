@@ -23,19 +23,38 @@
             });
         },
 
-        tokenize: function () {
-
+        tokenize: function (cardNumber, expMonth, expYear, cvv) {
             return $.ajax({
                 type: 'GET',
                 url: 'api/payments/braintree/generateclienttoken',
-                dataType: 'json',
                 success: _.bind(function (clientToken) {
-                    //braintree.setup(clientToken, "<integration>", options);
-                    //var client = new braintree.api.Client({ clientToken: clientToken });
-                    //client.tokenizeCard({ number: "4111111111111111", expirationDate: "10/20" }, function (err, nonce) {
-                    //    // Send nonce to your server
-                    //    return nonce;
-                    //});
+                    var client = new braintree.api.Client({ clientToken: clientToken });
+
+                    // Get nonce from SDK
+                    client.tokenizeCard(
+                        {
+                            number: cardNumber,
+                            expirationMonth: expMonth,
+                            expirationYear: expYear,
+                            cvv: cvv
+                        },
+
+                    function (err, nonce) {
+                        // Tokenizing card by sending the nonce to server 
+                        return $.ajax({
+                            type: 'POST',
+                            url: 'api/payments/braintree/tokenize',
+                            dataType: 'json',
+                            data: {
+                                paymentMethodNonce: nonce
+                            },
+                            success: _.bind(function (tokenizedCard) {
+                                return tokenizedCard;
+                            }, this)
+                        }).fail(_.bind(function (e) {
+                            this.$('.errors').text(e);
+                        }), this);
+                    });
                 }, this)
             }).fail(_.bind(function (e) {
                 this.$('.errors').text(e);
