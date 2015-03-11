@@ -31,10 +31,10 @@
             <div class="controls">
                 <div class="input-append date" id="StartDate" data-role='datepicker' data-date="">
                     @Html.TextBoxFor(x => x.StartDate, new { @class = "input-small" })
-                    @Html.ValidationMessageFor(x => x.StartDate)
                     <span class="add-on"><i class="icon-calendar"></i></span>
                 </div>
                 <button type="button" class="btn" id="eraseStartDate">x</button>
+                @Html.ValidationMessageFor(x => x.StartDate)
             </div>
         </div>
         <div class="control-group right-control-group" style="width: 50%">
@@ -42,10 +42,10 @@
             <div class="controls">
                 <div class="input-append date" id="EndDate" data-role='datepicker' data-date="">
                     @Html.TextBoxFor(x => x.EndDate, new { @class = "input-small" })
-                    @Html.ValidationMessageFor(x => x.EndDate)
                     <span class="add-on"><i class="icon-calendar"></i></span>
                 </div>
                 <button type="button" class="btn" id="eraseEndDate">x</button>
+                @Html.ValidationMessageFor(x => x.EndDate)
             </div>
         </div>
     </div>
@@ -92,10 +92,10 @@
             <div class="controls">
                 <div class="input-append bootstrap-timepicker-component">
                     @Html.TextBoxFor(x => x.StartTimeValue, new { @class = "input-small", data_role = "timepicker" })
-                    @Html.ValidationMessageFor(x => x.StartTimeValue)
                     <span class="add-on"><i class="icon-time"></i></span>
                 </div>
                 <button type="button" class="btn" id="eraseStartTime">x</button>
+                @Html.ValidationMessageFor(x => x.StartTimeValue)
             </div>
         </div>
         <div class="control-group right-control-group" style="width: 50%">
@@ -103,10 +103,10 @@
             <div class="controls">
                 <div class="input-append bootstrap-timepicker-component">
                     @Html.TextBoxFor(x => x.EndTimeValue, new { @class = "input-small", data_role = "timepicker" })
-                    @Html.ValidationMessageFor(x => x.EndTimeValue)
                     <span class="add-on"><i class="icon-time"></i></span>
                 </div>
                 <button type="button" class="btn" id="eraseEndTime">x</button>
+                @Html.ValidationMessageFor(x => x.EndTimeValue)
                 <span class="help-inline next-day-warning">The next day</span>
             </div>
         </div>
@@ -130,10 +130,10 @@
             <div class="controls">
                 <div class="input-append date" data-role='datepicker' id="PublishedStartDate" data-date="">
                     @Html.TextBoxFor(x => x.PublishedStartDate, new { @class = "input-small" })
-                    @Html.ValidationMessageFor(x => x.PublishedStartDate)
                     <span class="add-on"><i class="icon-calendar"></i></span>
                 </div>
                 <button type="button" class="btn" id="erasePublishedStartDate">x</button>
+                @Html.ValidationMessageFor(x => x.PublishedStartDate)
             </div>
         </div>
         <div class="control-group right-control-group" style="width: 50%">
@@ -141,10 +141,10 @@
             <div class="controls">
                 <div class="input-append date" data-role='datepicker' id="PublishedEndDate" data-date="">
                     @Html.TextBoxFor(x => x.PublishedEndDate, new { @class = "input-small" })
-                    @Html.ValidationMessageFor(x => x.PublishedEndDate)
                     <span class="add-on"><i class="icon-calendar"></i></span>
                 </div>
                 <button type="button" class="btn" id="erasePublishedEndDate">x</button>
+                @Html.ValidationMessageFor(x => x.PublishedEndDate)
             </div>
         </div>
     </div>
