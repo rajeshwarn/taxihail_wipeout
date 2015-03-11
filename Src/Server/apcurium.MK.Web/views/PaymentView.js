@@ -29,7 +29,7 @@
                 { id: 12, display: this.localize("December") }
             ];
 
-            var isEditing = this.model.last4Digits != null;
+            var isEditing = this.model.get('last4Digits') != null;
             var creditCard = {};
 
             if (isEditing) {

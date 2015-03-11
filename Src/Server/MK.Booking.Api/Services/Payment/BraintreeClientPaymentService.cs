@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Globalization;
 using System.Linq;
 using apcurium.MK.Booking.Api.Contract.Requests.Payment.Braintree;
 using apcurium.MK.Booking.Api.Contract.Resources.Payments;
@@ -8,6 +9,7 @@ using apcurium.MK.Common.Configuration.Impl;
 using Braintree;
 using BraintreeEncryption.Library;
 using ServiceStack.ServiceInterface;
+using Environment = Braintree.Environment;
 
 namespace apcurium.MK.Booking.Api.Services.Payment
 {
@@ -23,6 +25,11 @@ namespace apcurium.MK.Booking.Api.Services.Payment
         public TokenizedCreditCardResponse Post(TokenizeCreditCardBraintreeRequest tokenizeRequest)
         {
             return TokenizedCreditCard(BraintreeGateway, tokenizeRequest.EncryptedCreditCardNumber, tokenizeRequest.EncryptedExpirationDate, tokenizeRequest.EncryptedCvv);
+        }
+
+        public object Get(GenerateClientTokenBraintreeRequest request)
+        {
+            return BraintreeGateway.ClientToken.generate();
         }
 
         public static bool TestClient(BraintreeServerSettings settings, BraintreeClientSettings braintreeClientSettings)

@@ -28,6 +28,9 @@
             payment: function () {
                 var creditCard = new TaxiHail.CreditCardCollection();
 
+                var container = this.$("#user-account-container");
+                TaxiHail.showSpinner(container);
+
                 creditCard.fetch({
                     url: 'api/account/creditcards',
                     success: _.bind(function (model) {

@@ -24,14 +24,22 @@
         },
 
         tokenize: function () {
-            var clientToken = gateway.ClientToken.generate();
-            braintree.setup(clientToken, "<integration>", options);
 
-            var client = new braintree.api.Client({ clientToken: clientToken });
-            client.tokenizeCard({ number: "4111111111111111", expirationDate: "10/20" }, function (err, nonce) {
-                // Send nonce to your server
-                return nonce;
-            });
+            return $.ajax({
+                type: 'GET',
+                url: 'api/payments/braintree/generateclienttoken',
+                dataType: 'json',
+                success: _.bind(function (clientToken) {
+                    //braintree.setup(clientToken, "<integration>", options);
+                    //var client = new braintree.api.Client({ clientToken: clientToken });
+                    //client.tokenizeCard({ number: "4111111111111111", expirationDate: "10/20" }, function (err, nonce) {
+                    //    // Send nonce to your server
+                    //    return nonce;
+                    //});
+                }, this)
+            }).fail(_.bind(function (e) {
+                this.$('.errors').text(e);
+            }), this);
         },
 
         determineCompany: function(cardNumber) {
