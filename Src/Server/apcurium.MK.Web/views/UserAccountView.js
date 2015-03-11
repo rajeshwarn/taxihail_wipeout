@@ -7,7 +7,13 @@
         },
 
         render: function () {
-            this.$el.html(this.renderTemplate(this.model.toJSON()));
+            
+            var data = this.model.toJSON();
+            _.extend(data, {
+                isUsingBraintree: TaxiHail.parameters.isUsingBraintree
+            });
+
+            this.$el.html(this.renderTemplate(data));
             return this;
         },
         
@@ -17,6 +23,29 @@
                     model: this.model
                 }).render();
                 this.$("#user-account-container").html(this._tabView.el);
+            },
+
+            payment: function () {
+                var creditCard = new TaxiHail.CreditCardCollection();
+
+                creditCard.fetch({
+                    url: 'api/account/creditcards',
+                    success: _.bind(function (model) {
+                        var creditCardInfo = null;
+                        if (model.length > 0) {
+                            // Take only the first credit card since we no longer support multiple cards per account
+                            creditCardInfo = model.models[0];
+                        }
+
+                        this._tabView = new TaxiHail.PaymentView({
+                            model: creditCardInfo,
+                            parent: this
+                        });
+                        this._tabView.render();
+                        this.$("#user-account-container").html(this._tabView.el);
+                    }, this)
+                    
+                });
             },
 
             favorites: function(){
@@ -42,6 +71,7 @@
                     }, this)
                 });
             },
+
             history: function () {
                 var orders = new TaxiHail.OrderCollection();
                 orders.fetch({
@@ -56,10 +86,8 @@
                     }, this)
                     
                 });
-                
-                
-                
             },
+
             password: function () {
                 this._tabView = new TaxiHail.UpdatePasswordView({
                     model: this.model

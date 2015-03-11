@@ -199,7 +199,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             txtExpMonth.Configure(Localize.GetValue("CreditCardExpMonth"), () => ViewModel.ExpirationMonths.ToArray(), () => ViewModel.ExpirationMonth, x => ViewModel.ExpirationMonth = x.Id);
             txtExpYear.Configure(Localize.GetValue("CreditCardExpYear"), () => ViewModel.ExpirationYears.ToArray(), () => ViewModel.ExpirationYear, x => ViewModel.ExpirationYear = x.Id);
         }
-
+            
         private void ConfigurePayPalSection()
         {
             Mvx.Resolve<IPayPalConfigurationService>().InitializeService(_payPalSettings);
@@ -220,6 +220,22 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             if (!ViewModel.IsPayPalOnly)
             {
                 viewPayPal.AddSubview(Line.CreateHorizontal(8f, 0f, viewPayPal.Frame.Width - (2*8f), UIColor.Black, 1f));
+            }
+        }
+
+        public override void ViewDidLayoutSubviews()
+        {
+            base.ViewDidLayoutSubviews();
+
+            // ugly fix for iOS 7 bug with horizontal scrolling
+            // unlike iOS 8, the contentSize is a bit larger than the view, resulting in an undesired horizontal bounce
+            if (UIHelper.IsOS7)
+            {
+                var scrollView = (UIScrollView)View.Subviews[0];
+                if (scrollView.ContentSize.Width > UIScreen.MainScreen.Bounds.Width)
+                {
+                    scrollView.ContentSize = new CoreGraphics.CGSize(UIScreen.MainScreen.Bounds.Width, scrollView.ContentSize.Height);
+                }
             }
         }
 
