@@ -53,6 +53,7 @@ namespace apcurium.MK.Web
         protected bool IsBraintreePrepaidEnabled { get; private set; }
         protected bool IsPayPalEnabled { get; private set; }
         protected string PayPalMerchantId { get; private set; }
+        protected bool IsCreditCardMandatory { get; private set; }
         
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -70,6 +71,7 @@ namespace apcurium.MK.Web
             ShowCallDriver = config.ServerData.ShowCallDriver;
             DisableFutureBooking = config.ServerData.DisableFutureBooking;
             IsWebSignupVisible = !config.ServerData.IsWebSignupHidden;
+            IsCreditCardMandatory = config.ServerData.CreditCardIsMandatory;
 
             DirectionTarifMode = config.ServerData.Direction.TarifMode.ToString("G");
             DirectionNeedAValidTarif = config.ServerData.Direction.NeedAValidTarif;

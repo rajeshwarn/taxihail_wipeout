@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Globalization;
 using System.Linq;
+using System.Net;
+using System.Web;
 using apcurium.MK.Booking.Api.Contract.Requests.Payment.Braintree;
 using apcurium.MK.Booking.Api.Contract.Resources.Payments;
 using apcurium.MK.Common;
@@ -33,7 +35,14 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 
         public object Get(GenerateClientTokenBraintreeRequest request)
         {
-            return BraintreeGateway.ClientToken.generate();
+            try
+            {
+                return BraintreeGateway.ClientToken.generate();
+            }
+            catch (Exception ex)
+            {
+                throw new HttpException((int) HttpStatusCode.InternalServerError, ex.Message);
+            }
         }
 
         public static bool TestClient(BraintreeServerSettings settings, BraintreeClientSettings braintreeClientSettings)
@@ -69,15 +78,24 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             };
 
             var result = client.Customer.Create(request);
-
             var customer = result.Target;
 
-            var cc = customer.CreditCards.First();
+            if (!result.IsSuccess())
+            {
+                return new TokenizedCreditCardResponse
+                {
+                    IsSuccessful = false,
+                    Message = result.Message
+                };
+            }
+
+            var creditCard = customer.CreditCards.First();
+
             return new TokenizedCreditCardResponse
             {
-                CardOnFileToken = cc.Token,
-                CardType = cc.CardType.ToString(),
-                LastFour = cc.LastFour,
+                CardOnFileToken = creditCard.Token,
+                CardType = creditCard.CardType.ToString(),
+                LastFour = creditCard.LastFour,
                 IsSuccessful = result.IsSuccess(),
                 Message = result.Message
             };

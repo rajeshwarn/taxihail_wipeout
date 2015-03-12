@@ -29,7 +29,7 @@
                 { id: 12, display: this.localize("December") }
             ];
 
-            var isEditing = this.model.get('last4Digits') != null;
+            var isEditing = this.model != null && this.model.get('last4Digits') != null;
             var creditCard = {};
 
             if (isEditing) {
@@ -38,15 +38,17 @@
 
                 _.extend(creditCard, {
                     cardNumber: cardNumber,
-                    expMonths: expMonths,
-                    expYears: this.generateExpYears(),
-                    isEditing: true
+                    expirationMonths: expMonths,
+                    expirationYears: this.generateExpYears(),
+                    isEditing: true,
+                    isCreditCardMandatory: TaxiHail.parameters.isCreditCardMandatory
                 });
             } else {
                 _.extend(creditCard, {
-                    expMonths: expMonths,
-                    expYears: this.generateExpYears(),
-                    isEditing: false
+                    expirationMonths: expMonths,
+                    expirationYears: this.generateExpYears(),
+                    isEditing: false,
+                    isCreditCardMandatory: TaxiHail.parameters.isCreditCardMandatory
                 });
             }
 
@@ -55,6 +57,7 @@
             this.validate({
                 rules: {
                     cardName: "required",
+                    cvv: "required",
                     cardNumber : {
                         required: true,
                         creditcard: true
@@ -73,12 +76,10 @@
 
         onPropertyChanged : function (e) {
             var $input = $(e.currentTarget);
-            
 
             var name = $input.attr("name");
             var value = $input.val();
 
-            var settings = this.model.get(name);
             this.model.set(name, value);
 
             this.$(':submit').removeClass('disabled');
@@ -109,18 +110,40 @@
         },
 
         savechanges: function (form) {
-            var tokenizedCard = this.model.tokenize("4111111111111111", "05", "2020", "135");
-            if (tokenizedCard != null) {
-                var test = "sf";
+            var cardNumber = this.model.get('cardNumber');
+            var expMonth = this.model.get('expirationMonth');
+            var formattedExpMonth = expMonth;
+            if (formattedExpMonth < 10) {
+                formattedExpMonth = "0" + expMonth;
             }
 
-            //this.model.updateCreditCard()
-            //    .done(_.bind(function () {
-            //        this.renderConfirmationMessage();
-            //    }, this))
-            //    .fail(_.bind(function(){
-            //        this.$(':submit').button('reset');
-            //    }, this));
+            var expYear = this.model.get('expirationYear');
+            var cvv = this.model.get('cvv');
+
+            // Tokenize credit card
+            this.model.tokenize(cardNumber, formattedExpMonth, expYear, cvv)
+	            .done(_.bind(function (tokenizedCard) {
+
+                    // Set up request fields
+	                this.model.set("token", tokenizedCard.cardOnFileToken);
+                    this.model.set("last4Digits", tokenizedCard.lastFour);
+	                this.model.set("creditCardCompany", tokenizedCard.cardType);
+	                //this.model.set("expirationMonth", this.model.get('expirationMonth'));
+	                //this.model.set("expirationYear", this.model.get('expirationYear'));
+	                //this.model.set("nameOnCard", this.model.get('nameOnCard'));
+
+	                // Update card on file
+	                this.model.updateCreditCard()
+			            .done(_.bind(function () {
+			                this.renderConfirmationMessage();
+			            }, this))
+			            .fail(_.bind(function () {
+			                this.$(':submit').button('reset');
+			            }, this));
+	            }, this))
+	            .fail(_.bind(function () {
+	                this.$(':submit').button('reset');
+	            }, this));
         },
 
         deleteCreditCard: function (e) {
@@ -131,7 +154,7 @@
             }).on('ok', function() {
                 this.model.deleteCreditCard();
                 this.renderConfirmationMessage();
-                //TaxiHail.app.navigate('', { trigger: true });
+                this.model.attributes = {last4Digits: null};
             }, this);
         }
     });
