@@ -263,10 +263,7 @@ namespace apcurium.MK.Booking.Api.Services
                     .Select(x => x.Display)
                     .FirstOrDefault();
 
-            chargeTypeKey = isPrepaid
-                ? "Prepaid"
-                : accountValidationResult.ChargeTypeKeyOverride 
-                    ?? chargeTypeKey;
+            chargeTypeKey = accountValidationResult.ChargeTypeKeyOverride ?? chargeTypeKey;
 
             if (chargeTypeKey != null)
             {

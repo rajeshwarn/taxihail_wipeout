@@ -129,9 +129,6 @@
     <value>Cuenta de cargo</value>
     <comment>Charge Account</comment>
   </data>
-  <data name="Prepaid" xml:space="preserve">
-    <value>Prepaid</value>
-  </data>
   <data name="CurrencyPriceFormat" xml:space="preserve">
     <value>{0:c}</value>
     <comment>{0:c}</comment>
