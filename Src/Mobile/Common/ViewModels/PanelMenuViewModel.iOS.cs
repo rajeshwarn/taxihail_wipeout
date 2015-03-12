@@ -9,6 +9,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 	// N.B.: This partial class file is for iOS only!
 	public partial class PanelMenuViewModel
 	{
+		private const int PromotionItemMenuId = 4;
+
+
+
 		public ObservableCollection<ItemMenuModel> ItemMenuList { get; set; }
 
 		partial void PartialConstructor()
@@ -27,10 +31,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 			if (Settings.PromotionEnabled)
 			{
-				// Promotion option: ItemMenuId = 4
 				ItemMenuList.Add(new ItemMenuModel 
 					{ 
-						ItemMenuId = 4, 
+						ItemMenuId = PromotionItemMenuId, 
 						Text = this.Services().Localize["PanelMenuViewPromotionsText"], 
 						NavigationCommand = NavigateToPromotions, 
 						Alert = PromoCodeAlert.HasValue ? PromoCodeAlert.Value.ToString() : null
@@ -68,7 +71,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					ItemMenu = item,
 					Index = index
 				})
-				.FirstOrDefault(item => item.ItemMenu.ItemMenuId == 4);
+				.FirstOrDefault(item => item.ItemMenu.ItemMenuId == PromotionItemMenuId);
 
 			if(itemMenu != null)
 			{
