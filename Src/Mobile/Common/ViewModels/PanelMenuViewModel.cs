@@ -71,9 +71,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 	    private async Task RefreshPromoCodeCount()
 	    {
 	        var promoCodes = await _promotionService.GetActivePromotions();
-	        if (promoCodes.Any() || true)
+	        if (promoCodes.Any())
 	        {
-				PromoCodeAlert = 100;//promoCodes.Length;
+				PromoCodeAlert = promoCodes.Length;
 
 				RefreshMenuBadges();
 	        }
