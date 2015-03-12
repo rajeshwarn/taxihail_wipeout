@@ -1666,10 +1666,13 @@
   <data name="PanelMenuViewPromotionsText" xml:space="preserve">
     <value>Promotions</value>
   </data>
-  <data name="PromoRequiresToPayWithCOFPairingWarningMessage" xml:space="preserve">
+  <data name="UnpairWarningMessage" xml:space="preserve">
+    <value>Cette action ne peut être annulée</value>
+  </data>
+  <data name="UnpairWarningMessageWithPromo" xml:space="preserve">
     <value>Si vous décidez de payer dans le taxi, vous ne serez pas éligible à la promotion</value>
   </data>
-  <data name="PromoRequiresToPayWithCOFPairingWarningCancelButton" xml:space="preserve">
+  <data name="UnpairWarningCancelButton" xml:space="preserve">
     <value>Payer dans le taxi</value>
   </data>
   <data name="View_Promotions" xml:space="preserve">
