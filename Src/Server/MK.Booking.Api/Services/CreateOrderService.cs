@@ -264,7 +264,7 @@ namespace apcurium.MK.Booking.Api.Services
                     .FirstOrDefault();
 
             chargeTypeKey = isPrepaid
-                ? "PrePaid"
+                ? "Prepaid"
                 : accountValidationResult.ChargeTypeKeyOverride 
                     ?? chargeTypeKey;
 
@@ -327,7 +327,7 @@ namespace apcurium.MK.Booking.Api.Services
                 CreateOrderOnIBSAndSendCommands(orderCommand.OrderId, account,
                     request, referenceData, chargeTypeIbs, chargeTypeEmail, vehicleType,
                     accountValidationResult.Prompts, accountValidationResult.PromptsLength,
-                    bestAvailableCompany, applyPromoCommand));
+                    bestAvailableCompany, applyPromoCommand, isPrepaid));
 
             return new OrderStatusDetail
             {
@@ -905,7 +905,8 @@ namespace apcurium.MK.Booking.Api.Services
 
             // This needs to be null if not set or the payment in car payment type id of ibs
             int? ibsChargeTypeId;
-            if (request.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id)
+            if (request.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id
+                || request.Settings.ChargeTypeId == ChargeTypes.PayPal.Id)
             {
                 ibsChargeTypeId = _serverSettings.ServerData.IBS.PaymentTypeCardOnFileId;
             }
@@ -1260,11 +1261,17 @@ namespace apcurium.MK.Booking.Api.Services
                         IsForPrepaidOrder = true
                     });
                 }
+                else
+                {
+                    // Payment failed, void preauth
+                    _paymentService.VoidPreAuthorization(orderId);
 
-                // Payment failed, void preauth
-                _paymentService.VoidPreAuthorization(orderId);
-
-                throw new HttpError(HttpStatusCode.BadRequest, ErrorCode.CreateOrder_RuleDisable.ToString(), commitResponse.Message);
+                    throw new HttpError(HttpStatusCode.BadRequest, ErrorCode.CreateOrder_RuleDisable.ToString(), commitResponse.Message);
+                }
+            }
+            else
+            {
+                throw new HttpError(HttpStatusCode.BadRequest, ErrorCode.CreateOrder_RuleDisable.ToString(), preAuthResponse.Message);
             }
         }
 

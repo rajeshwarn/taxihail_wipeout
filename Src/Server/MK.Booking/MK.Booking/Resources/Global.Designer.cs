@@ -1159,6 +1159,15 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Prepaid.
+        /// </summary>
+        public static string Prepaid {
+            get {
+                return ResourceManager.GetString("Prepaid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Due to high demand, no cars are available right now. Do you want to book with {0} instead?.
         /// </summary>
         public static string PushNotification_ChangeNetworkCompany {

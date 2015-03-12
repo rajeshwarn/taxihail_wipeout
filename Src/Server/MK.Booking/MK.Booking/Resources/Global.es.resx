@@ -129,6 +129,9 @@
     <value>Cuenta de cargo</value>
     <comment>Charge Account</comment>
   </data>
+  <data name="Prepaid" xml:space="preserve">
+    <value>Prepaid</value>
+  </data>
   <data name="CurrencyPriceFormat" xml:space="preserve">
     <value>{0:c}</value>
     <comment>{0:c}</comment>
@@ -341,6 +344,9 @@
     <value>El TEA mostrado al cliente es {0} y {1} min</value>
     <comment>ETA displayed to client is {0} and {1} min</comment>
   </data>
+  <data name="PaymentBeingProcessedMessageToDriver" xml:space="preserve">
+    <value>Payment being processed by the app...</value>
+  </data>
   <data name="OrderStatus_CabDriverETA" xml:space="preserve">
     <value>TEA: {0}</value>
     <comment>ETA: {0}</comment>
@@ -433,6 +439,12 @@
     <value>El pago por aplicación ha fallado!</value>
     <comment>Payment by the app has Failed!</comment>
   </data>
+  <data name="PaymentItemDescription" xml:space="preserve">
+    <value>Order #{0} Original amount: {1}</value>
+  </data>
+  <data name="CannotCreateOrderInvalidVersion" xml:space="preserve">
+    <value>The order cannot be created using this version of the app. Please upgrade the app to book a ride.</value>
+  </data>
   <data name="PaymentInCar" xml:space="preserve">
     <value>Pago en vehículo</value>
     <comment>Payment in Car</comment>
@@ -442,6 +454,15 @@
   </data>
   <data name="CannotCreateOrder_PayPalWasDeclined" xml:space="preserve">
     <value>The order cannot be created because your PayPal account failed the preauthorization check.</value>
+  </data>
+  <data name="PushNotification_ChangeNetworkCompany" xml:space="preserve">
+    <value>Due to high demand, no cars are available right now. Do you want to book with {0} instead?</value>
+  </data>
+  <data name="OrderStatus_wosWAITINGRoaming" xml:space="preserve">
+    <value>Waiting for driver from {0} to be assigned</value>
+  </data>
+  <data name="Network_CannotCreateOrder" xml:space="preserve">
+    <value>There was a problem while trying to book with {0}. Your order will remain active.</value>
   </data>
   <data name="PushNotification_NearbyTaxi" xml:space="preserve">
     <value>Su taxi casi ha llegado a su ubicación</value>

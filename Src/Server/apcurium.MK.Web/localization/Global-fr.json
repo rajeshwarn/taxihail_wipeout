@@ -70,6 +70,7 @@
 	"Send Receipt" : "Envoyer la facture",
 	"Sending..." : "Envoi...",
 	"Cannot Send Receipt" : "Impossible d'envoyer la facture",
+    "CardOnFile": "Carte de crédit",
     "PaymentInCar": "Paiement à bord",
     "ChargeAccount": "Compte",
     "Account Not Found": "Le numéro de compte semble invalide",

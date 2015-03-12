@@ -70,6 +70,7 @@
 	"Send Receipt": "Enviar Recibo",
 	"Sending...": "Enviando...",
 	"Cannot Send Receipt": "No podemos enviar Recibo",
+	"CardOnFile": "Tarjeta en Archivo",
 	"PaymentInCar": "Pago en Taxi",
 	"ChargeAccount": "Cuenta de Pago",
 	"Account Not Found": "Número de cuenta de servicio inválido",
