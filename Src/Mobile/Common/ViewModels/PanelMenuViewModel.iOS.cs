@@ -18,18 +18,19 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		partial void InitMenuList()
 		{
-			ItemMenuList.Add(new ItemMenuModel { Id = 0, Text = this.Services().Localize["PanelMenuViewLocationsText"], NavigationCommand = NavigateToMyLocations });
-			ItemMenuList.Add(new ItemMenuModel { Id = 1, Text = this.Services().Localize["PanelMenuViewOrderHistoryText"], NavigationCommand = NavigateToOrderHistory });
-			ItemMenuList.Add(new ItemMenuModel { Id = 2, Text = this.Services().Localize["PanelMenuViewUpdateProfileText"], NavigationCommand = NavigateToUpdateProfile });
+			ItemMenuList.Add(new ItemMenuModel { ItemMenuId = 0, Text = this.Services().Localize["PanelMenuViewLocationsText"], NavigationCommand = NavigateToMyLocations });
+			ItemMenuList.Add(new ItemMenuModel { ItemMenuId = 1, Text = this.Services().Localize["PanelMenuViewOrderHistoryText"], NavigationCommand = NavigateToOrderHistory });
+			ItemMenuList.Add(new ItemMenuModel { ItemMenuId = 2, Text = this.Services().Localize["PanelMenuViewUpdateProfileText"], NavigationCommand = NavigateToUpdateProfile });
 			if (IsPayInTaxiEnabled)
 			{
-				ItemMenuList.Add(new ItemMenuModel { Id = 3, Text = this.Services().Localize["PanelMenuViewPaymentInfoText"], NavigationCommand = NavigateToPaymentInformation });
+				ItemMenuList.Add(new ItemMenuModel { ItemMenuId = 3, Text = this.Services().Localize["PanelMenuViewPaymentInfoText"], NavigationCommand = NavigateToPaymentInformation });
 			}
 			if (Settings.PromotionEnabled)
 			{
+				// Promotion option: ItemMenuId = 4
 				ItemMenuList.Add(new ItemMenuModel 
 					{ 
-						Id = 4, 
+						ItemMenuId = 4, 
 						Text = this.Services().Localize["PanelMenuViewPromotionsText"], 
 						NavigationCommand = NavigateToPromotions, 
 						Alert = PromoCodeAlert.HasValue ? PromoCodeAlert.Value.ToString() : null
@@ -37,26 +38,26 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 			if (IsNotificationsEnabled)
 			{
-				ItemMenuList.Add(new ItemMenuModel { Id = 5, Text = this.Services().Localize["PanelMenuViewNotificationsText"], NavigationCommand = NavigateToNotificationsSettings });
+				ItemMenuList.Add(new ItemMenuModel { ItemMenuId = 5, Text = this.Services().Localize["PanelMenuViewNotificationsText"], NavigationCommand = NavigateToNotificationsSettings });
 			}			
 			if (IsTaxiHailNetworkEnabled)
 			{
-				ItemMenuList.Add(new ItemMenuModel { Id = 6, Text = this.Services().Localize["PanelMenuViewTaxiHailNetworkText"], NavigationCommand = NavigateToUserTaxiHailNetworkSettings });
+				ItemMenuList.Add(new ItemMenuModel { ItemMenuId = 6, Text = this.Services().Localize["PanelMenuViewTaxiHailNetworkText"], NavigationCommand = NavigateToUserTaxiHailNetworkSettings });
 			}
 			if (Settings.TutorialEnabled)
 			{
-				ItemMenuList.Add(new ItemMenuModel { Id = 7, Text = this.Services().Localize["PanelMenuViewTutorialText"], NavigationCommand = NavigateToTutorial });
+				ItemMenuList.Add(new ItemMenuModel { ItemMenuId = 7, Text = this.Services().Localize["PanelMenuViewTutorialText"], NavigationCommand = NavigateToTutorial });
 			}
 			if (!Settings.HideCallDispatchButton)
 			{
-				ItemMenuList.Add(new ItemMenuModel { Id = 8, Text = this.Services().Localize["PanelMenuViewCallDispatchText"], NavigationCommand = Call });
+				ItemMenuList.Add(new ItemMenuModel { ItemMenuId = 8, Text = this.Services().Localize["PanelMenuViewCallDispatchText"], NavigationCommand = Call });
 			}
-			ItemMenuList.Add(new ItemMenuModel { Id = 9, Text = this.Services().Localize["PanelMenuViewAboutUsText"], NavigationCommand = NavigateToAboutUs });
+			ItemMenuList.Add(new ItemMenuModel { ItemMenuId = 9, Text = this.Services().Localize["PanelMenuViewAboutUsText"], NavigationCommand = NavigateToAboutUs });
 			if (!Settings.HideReportProblem)
 			{
-				ItemMenuList.Add(new ItemMenuModel { Id = 10, Text = this.Services().Localize["PanelMenuViewReportProblemText"], NavigationCommand = NavigateToReportProblem });
+				ItemMenuList.Add(new ItemMenuModel { ItemMenuId = 10, Text = this.Services().Localize["PanelMenuViewReportProblemText"], NavigationCommand = NavigateToReportProblem });
 			}
-			ItemMenuList.Add(new ItemMenuModel { Id = 11, Text = this.Services().Localize["PanelMenuViewSignOutText"], NavigationCommand = SignOut });
+			ItemMenuList.Add(new ItemMenuModel { ItemMenuId = 11, Text = this.Services().Localize["PanelMenuViewSignOutText"], NavigationCommand = SignOut });
 		}
 			
 		partial void RefreshMenuBadges()
@@ -67,7 +68,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					ItemMenu = item,
 					Index = index
 				})
-				.FirstOrDefault(item => item.ItemMenu.Id == 4);
+				.FirstOrDefault(item => item.ItemMenu.ItemMenuId == 4);
 
 			if(itemMenu != null)
 			{

@@ -97,6 +97,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 	        }
 	    }
 
+		private int? _promoCodeAlert;
 	    public int? PromoCodeAlert
 	    {
 	        get
@@ -251,7 +252,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         }
 
         private string _version;
-	    private int? _promoCodeAlert;
 
 	    public string Version {
             get 
@@ -383,7 +383,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		public class ItemMenuModel
 		{
-            public int Id { get; set; }
+            public int ItemMenuId { get; set; }
 
 			public string Text { get; set;}
 
