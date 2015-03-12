@@ -6,11 +6,7 @@
             this.market = options.market;
         },
         url: function () {
-            var queryString = '/vehicles/' + '?latitude=' + this.position.lat() + '&longitude=' + this.position.lng();
-            if (this.market) {
-                queryString += "&market=" + this.market;
-            }
-            queryString += "&format=json";
+            var queryString = '/vehicles/' + '?latitude=' + this.position.lat() + '&longitude=' + this.position.lng() + "&format=json";
 
             return TaxiHail.parameters.apiRoot + queryString;
         },

@@ -83,7 +83,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			try
 			{
 				return await UseServiceClientAsync<IVehicleClient, AvailableVehicle[]>(service => 
-					service.GetAvailableVehiclesAsync(address.Latitude, address.Longitude, vehicleTypeId, _market))
+					service.GetAvailableVehiclesAsync(address.Latitude, address.Longitude, vehicleTypeId))
 					.ConfigureAwait(false);
 			}
 			catch (Exception e)
