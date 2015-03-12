@@ -348,6 +348,7 @@
     <Compile Include="ViewModels\Payment\OverduePaymentViewModel.cs" />
     <Compile Include="BindingConverter\CurrencyFormatConverter.cs" />
     <Compile Include="BindingConverter\StringFormatConverter.cs" />
+    <Compile Include="ViewModels\PanelMenuViewModel.iOS.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Client\MK.Booking.Api.Client.iOS.csproj">

@@ -14,7 +14,7 @@ using apcurium.MK.Booking.Api.Contract.Resources.Payments;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
-	public class PanelMenuViewModel : BaseViewModel
+	public partial class PanelMenuViewModel : BaseViewModel
     {
 	    private readonly IMvxWebBrowserTask _browserTask;
 
@@ -37,7 +37,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_phoneService = phoneService;
 			_paymentService = paymentService;
 			_promotionService = promotionService;
-			ItemMenuList = new ObservableCollection<ItemMenuModel>();
+			PartialConstructor();
         }
 
 		public async Task Start()
@@ -64,60 +64,24 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 #pragma warning disable 4014
 		    RefreshPromoCodeCount();
 #pragma warning restore 4014
-
 		    // N.B.: This setup is for iOS only! For Android see: SubView_MainMenu.xaml
-			ItemMenuList.Add(new ItemMenuModel { Id=0, Text = this.Services().Localize["PanelMenuViewLocationsText"], NavigationCommand = NavigateToMyLocations });
-            ItemMenuList.Add(new ItemMenuModel { Id = 1, Text = this.Services().Localize["PanelMenuViewOrderHistoryText"], NavigationCommand = NavigateToOrderHistory });
-            ItemMenuList.Add(new ItemMenuModel { Id = 2, Text = this.Services().Localize["PanelMenuViewUpdateProfileText"], NavigationCommand = NavigateToUpdateProfile });
-		    if (IsPayInTaxiEnabled)
-		    {
-                ItemMenuList.Add(new ItemMenuModel { Id = 3, Text = this.Services().Localize["PanelMenuViewPaymentInfoText"], NavigationCommand = NavigateToPaymentInformation });
-		    }
-		    if (Settings.PromotionEnabled)
-		    {
-                ItemMenuList.Add(new ItemMenuModel { Id = 4, Text = this.Services().Localize["PanelMenuViewPromotionsText"], NavigationCommand = NavigateToPromotions, Alert = PromoCodeAlert });
-		    }
-		    if (IsNotificationsEnabled)
-		    {
-                ItemMenuList.Add(new ItemMenuModel { Id = 5, Text = this.Services().Localize["PanelMenuViewNotificationsText"], NavigationCommand = NavigateToNotificationsSettings });
-		    }			
-            if (IsTaxiHailNetworkEnabled)
-            {
-                ItemMenuList.Add(new ItemMenuModel { Id = 6, Text = this.Services().Localize["PanelMenuViewTaxiHailNetworkText"], NavigationCommand = NavigateToUserTaxiHailNetworkSettings });
-            }
-		    if (Settings.TutorialEnabled)
-		    {
-                ItemMenuList.Add(new ItemMenuModel { Id = 7, Text = this.Services().Localize["PanelMenuViewTutorialText"], NavigationCommand = NavigateToTutorial });
-		    }
-		    if (!Settings.HideCallDispatchButton)
-		    {
-                ItemMenuList.Add(new ItemMenuModel { Id = 8, Text = this.Services().Localize["PanelMenuViewCallDispatchText"], NavigationCommand = Call });
-		    }
-            ItemMenuList.Add(new ItemMenuModel { Id = 9, Text = this.Services().Localize["PanelMenuViewAboutUsText"], NavigationCommand = NavigateToAboutUs });
-		    if (!Settings.HideReportProblem)
-		    {
-                ItemMenuList.Add(new ItemMenuModel { Id = 10, Text = this.Services().Localize["PanelMenuViewReportProblemText"], NavigationCommand = NavigateToReportProblem });
-		    }
-            ItemMenuList.Add(new ItemMenuModel { Id = 11, Text = this.Services().Localize["PanelMenuViewSignOutText"], NavigationCommand = SignOut });
+			InitMenuList();
 		}
 
 	    private async Task RefreshPromoCodeCount()
 	    {
 	        var promoCodes = await _promotionService.GetActivePromotions();
-	        if (promoCodes.Any())
+	        if (promoCodes.Any() || true)
 	        {
-	            PromoCodeAlert = promoCodes.Length;
+				PromoCodeAlert = 100;//promoCodes.Length;
 
-	            var menuItem = ItemMenuList.FirstOrDefault(item => item.Id == 4);
-
-	            if (menuItem != null)
-	            {
-                    menuItem.Alert = PromoCodeAlert;
-	            }
+				RefreshMenuBadges();
 	        }
 	    }
 
-	    public ObservableCollection<ItemMenuModel> ItemMenuList { get; set; }
+		partial void InitMenuList();
+		partial void RefreshMenuBadges();
+		partial void PartialConstructor();
 
 	    private string _serverWatermarkText;
 	    public string ServerWatermarkText
@@ -427,7 +391,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 			public bool Visibility { get; set;}
 
-			public int? Alert { get; set; }
+			public string Alert { get; set; }
 		}
 
 		private void CloseMenu()
