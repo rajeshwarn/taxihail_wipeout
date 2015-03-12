@@ -154,9 +154,26 @@ namespace apcurium.MK.Booking.Api
     {
         protected override void Configure()
         {
-            CreateMap<IbsVehiclePosition, AvailableVehicle>()
-                .ForMember(p => p.VehicleNumber, opt => opt.ResolveUsing(x => x.VehicleNumber))
+            CreateMap<IbsVehiclePosition, AvailableVehicle>()                 
+                .ForMember(p => p.VehicleNumber, opt => opt.ResolveUsing(x => GetDecimalOnly(x.VehicleNumber )))
                 .ForMember(p => p.LogoName, opt => opt.Ignore());
         }
+
+        private object GetDecimalOnly(string text)
+        {
+            if ( !string.IsNullOrWhiteSpace(text) && text.Any(t=> Char.IsNumber(t) ) )
+            {
+                var r = new string( text.Where(t => char.IsNumber(t)).ToArray());
+                return r;
+            }
+            else
+            {
+                return 0;
+            }
+
+
+        }
+
+
     }
 }
