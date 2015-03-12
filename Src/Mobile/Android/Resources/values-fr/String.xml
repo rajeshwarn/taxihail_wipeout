@@ -600,4 +600,7 @@
   <string name="Overdue_Instructions"> La dernière tentative de paiement a été refusée par votre compagnie de carte de crédit. Veuillez réessayer ou mettre à jour votre carte de crédit.</string>
   <string name="View_Overdue">Compte en souffrance</string>
   <string name="Overdue_OutstandingPaymentExists">La dernière tentative de paiement a été refusée par votre compagnie de carte de crédit. Vous devez payer cette facture en souffrance avant de pouvoir réutiliser votre carte.</string>
+  <string name="UnpairWarningMessage">Cette action ne peut être annulée</string>
+  <string name="UnpairWarningCancelButton">Payer dans le taxi</string>
+  <string name="UnpairWarningMessageWithPromo">Si vous décidez de payer dans le taxi, vous ne serez pas éligible à la promotion</string>
 </resources>

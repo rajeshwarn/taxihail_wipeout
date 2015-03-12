@@ -593,3 +593,6 @@
 "Overdue_IBSOrderId"="Commande:";
 "Overdue_Instructions"=" La dernière tentative de paiement a été refusée par votre compagnie de carte de crédit. Veuillez réessayer ou mettre à jour votre carte de crédit.";
 "Overdue_OutstandingPaymentExists"="La dernière tentative de paiement a été refusée par votre compagnie de carte de crédit. Vous devez payer cette facture en souffrance avant de pouvoir réutiliser votre carte.";
+"UnpairWarningMessage"="Cette action ne peut être annulée";
+"UnpairWarningCancelButton"="Payer dans le taxi";
+"UnpairWarningMessageWithPromo"="Si vous décidez de payer dans le taxi, vous ne serez pas éligible à la promotion";
