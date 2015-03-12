@@ -3,7 +3,6 @@
         model: TaxiHail.AvailableVehicle,
         initialize: function (models, options) {
             this.position = options.position;
-            this.market = options.market;
         },
         url: function () {
             var queryString = '/vehicles/' + '?latitude=' + this.position.lat() + '&longitude=' + this.position.lng() + "&format=json";

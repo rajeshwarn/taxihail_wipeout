@@ -71,6 +71,7 @@
 
             var chargeTypes = TaxiHail.referenceData.paymentsList;
             if (this.model.get('market')) {
+                // PayInCar is the only charge type when in external market
                 for (var i = 0; i < chargeTypes.length; i++) {
                     if (chargeTypes[i].id === 1) {
                         chargeTypes = [chargeTypes[i]];
