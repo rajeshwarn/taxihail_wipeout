@@ -22,37 +22,37 @@ namespace apcurium.MK.Booking.IBS.Impl
             _taxiHailNetworkService = taxiHailNetworkService;
         }
 
-        public IAccountWebServiceClient Account(string companyKey, string market)
+        public IAccountWebServiceClient Account(string companyKey)
         {
-            return new AccountWebServiceClient(_serverSettings, GetSettingContainer(companyKey, market), _logger);
+            return new AccountWebServiceClient(_serverSettings, GetSettingContainer(companyKey), _logger);
         }
 
-        public IStaticDataWebServiceClient StaticData(string companyKey, string market)
+        public IStaticDataWebServiceClient StaticData(string companyKey)
         {
-            return new StaticDataWebServiceClient(GetSettingContainer(companyKey, market), _logger);
+            return new StaticDataWebServiceClient(GetSettingContainer(companyKey), _logger);
         }
 
-        public IBookingWebServiceClient Booking(string companyKey, string market)
+        public IBookingWebServiceClient Booking(string companyKey)
         {
-            return new BookingWebServiceClient(_serverSettings, GetSettingContainer(companyKey, market), _logger);
+            return new BookingWebServiceClient(_serverSettings, GetSettingContainer(companyKey), _logger);
         }
 
-        public IChargeAccountWebServiceClient ChargeAccount(string companyKey, string market)
+        public IChargeAccountWebServiceClient ChargeAccount(string companyKey)
         {
-            return new ChargeAccountWebServiceClient(_serverSettings, GetSettingContainer(companyKey, market), _logger);
+            return new ChargeAccountWebServiceClient(_serverSettings, GetSettingContainer(companyKey), _logger);
         }
 
-        public IBSSettingContainer GetSettingContainer(string companyKey, string market)
+        public IBSSettingContainer GetSettingContainer(string companyKey)
         {
             if (!companyKey.HasValue())
             {
-                // In home market
                 return _serverSettings.ServerData.IBS;
             }
 
-            // In local market but switched companies
-            if (!_ibsSettings.ContainsKey(companyKey) && !market.HasValue())
+            // Switched companies or external market
+            if (!_ibsSettings.ContainsKey(companyKey))
             {
+                // Get all fleets available to dispatch to company
                 var networkFleet = _taxiHailNetworkService.GetNetworkFleet(_serverSettings.ServerData.TaxiHail.ApplicationKey);
 
                 _ibsSettings.Clear();
@@ -66,29 +66,10 @@ namespace apcurium.MK.Booking.IBS.Impl
                         RestApiSecret = networkFleetResponse.RestApiSecret,
                         WebServicesUrl = networkFleetResponse.IbsUrl,
                         WebServicesPassword = networkFleetResponse.IbsPassword,
-                        WebServicesUserName = networkFleetResponse.IbsUserName
-                    };
-                    _ibsSettings.Add(networkFleetResponse.CompanyKey, settingContainer);
-                }
-            }
-
-            // In external market
-            if (!_ibsSettings.ContainsKey(companyKey) && market.HasValue())
-            {
-                var marketFleets = _taxiHailNetworkService.GetMarketFleets(null, market);
-
-                _ibsSettings.Clear();
-
-                foreach (var networkFleetResponse in marketFleets)
-                {
-                    var settingContainer = new IBSSettingContainer
-                    {
-                        WebServicesUrl = networkFleetResponse.IbsUrl,
-                        WebServicesPassword = networkFleetResponse.IbsPassword,
                         WebServicesUserName = networkFleetResponse.IbsUserName,
                         TimeDifference = networkFleetResponse.IbsTimeDifference
-                        
                     };
+
                     _ibsSettings.Add(networkFleetResponse.CompanyKey, settingContainer);
                 }
             }

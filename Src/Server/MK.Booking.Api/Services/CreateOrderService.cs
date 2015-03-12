@@ -171,13 +171,13 @@ namespace apcurium.MK.Booking.Api.Services
                     isFutureBooking,
                     pickupDate,
                     () =>
-                        _ibsServiceProvider.StaticData(bestAvailableCompany.CompanyKey, market)
+                        _ibsServiceProvider.StaticData(bestAvailableCompany.CompanyKey)
                             .GetZoneByCoordinate(
                                 request.Settings.ProviderId,
                                 request.PickupAddress.Latitude,
                                 request.PickupAddress.Longitude),
                     () => request.DropOffAddress != null
-                        ? _ibsServiceProvider.StaticData(bestAvailableCompany.CompanyKey, market)
+                        ? _ibsServiceProvider.StaticData(bestAvailableCompany.CompanyKey)
                             .GetZoneByCoordinate(
                                 request.Settings.ProviderId,
                                 request.DropOffAddress.Latitude,
@@ -212,7 +212,7 @@ namespace apcurium.MK.Booking.Api.Services
 
             if (market.HasValue())
             {
-                referenceData = (ReferenceData)_referenceDataService.Get(new ReferenceDataRequest { CompanyKey = bestAvailableCompany.CompanyKey, Market = market });
+                referenceData = (ReferenceData)_referenceDataService.Get(new ReferenceDataRequest { CompanyKey = bestAvailableCompany.CompanyKey });
             }
             else
             {
@@ -461,7 +461,7 @@ namespace apcurium.MK.Booking.Api.Services
                 Estimate = new CreateOrder.RideEstimate { Price = order.EstimatedFare }
             };
 
-            var newReferenceData = (ReferenceData)_referenceDataService.Get(new ReferenceDataRequest { CompanyKey = request.NextDispatchCompanyKey, Market = order.Market });
+            var newReferenceData = (ReferenceData)_referenceDataService.Get(new ReferenceDataRequest { CompanyKey = request.NextDispatchCompanyKey });
 
             // This must be localized with the priceformat to be localized in the language of the company
             // because it is sent to the driver
@@ -677,7 +677,7 @@ namespace apcurium.MK.Booking.Api.Services
             }
 
             // Account doesn't exist, create it
-            ibsAccountId = _ibsServiceProvider.Account(companyKey, market).CreateAccount(account.Id,
+            ibsAccountId = _ibsServiceProvider.Account(companyKey).CreateAccount(account.Id,
                 account.Email,
                 string.Empty,
                 account.Name,
@@ -842,7 +842,7 @@ namespace apcurium.MK.Booking.Api.Services
         {
             //TODO : need to check ibs setup for shortesst time
 
-            var ibsServerTimeDifference = _ibsServiceProvider.GetSettingContainer(companyKey, market).TimeDifference;
+            var ibsServerTimeDifference = _ibsServiceProvider.GetSettingContainer(companyKey).TimeDifference;
             var offsetedTime = DateTime.Now.AddMinutes(2);
             if (ibsServerTimeDifference != 0)
             {
@@ -897,7 +897,7 @@ namespace apcurium.MK.Booking.Api.Services
                 ibsChargeTypeId = _serverSettings.ServerData.IBS.PaymentTypePaymentInCarId;
             }
 
-            var result = _ibsServiceProvider.Booking(companyKey, market).CreateOrder(
+            var result = _ibsServiceProvider.Booking(companyKey).CreateOrder(
                 providerId,
                 ibsAccountId,
                 request.Settings.Name,
@@ -930,7 +930,8 @@ namespace apcurium.MK.Booking.Api.Services
                     // After 5 time, we are giving up. But we assume the order is completed.
                     Task.Factory.StartNew(() =>
                     {
-                        Func<bool> cancelOrder = () => _ibsServiceProvider.Booking(order.CompanyKey, order.Market).CancelOrder(order.IBSOrderId.Value, currentIbsAccountId.Value, order.Settings.Phone);
+                        Func<bool> cancelOrder = () => _ibsServiceProvider.Booking(order.CompanyKey)
+                            .CancelOrder(order.IBSOrderId.Value, currentIbsAccountId.Value, order.Settings.Phone);
                         cancelOrder.Retry(new TimeSpan(0, 0, 0, 10), 5);
                     });
                 }
