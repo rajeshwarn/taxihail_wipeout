@@ -571,6 +571,7 @@
     <Compile Include="Views\Payments\OverduePaymentView.designer.cs">
       <DependentUpon>OverduePaymentView.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\CustomBadgeView.cs" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>
