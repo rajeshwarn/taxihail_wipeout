@@ -2122,13 +2122,14 @@
     <value>Promotions</value>
     <comment>Promotions</comment>
   </data>
-  <data name="PromoRequiresToPayWithCOFPairingWarningMessage" xml:space="preserve">
-    <value>If you decide to pay in car, you will not be able to use the promotion</value>
-    <comment>If you decide to pay in car, you will not be able to use the promotion</comment>
+  <data name="UnpairWarningMessage" xml:space="preserve">
+    <value>This action cannot be undone</value>
   </data>
-  <data name="PromoRequiresToPayWithCOFPairingWarningCancelButton" xml:space="preserve">
+  <data name="UnpairWarningMessageWithPromo" xml:space="preserve">
+    <value>If you decide to pay in car, you will not be able to use the promotion</value>
+  </data>
+  <data name="UnpairWarningCancelButton" xml:space="preserve">
     <value>Pay in car</value>
-    <comment>Pay in car</comment>
   </data>
   <data name="View_Promotions" xml:space="preserve">
     <value>Promotions</value>

@@ -586,4 +586,7 @@
   <string name="Overdue_Instructions">Your credit card failed to pay the previous ride, you need to either retry to pay again or update your credit card information.</string>
   <string name="View_Overdue">Payment Declined</string>
   <string name="Overdue_OutstandingPaymentExists">Your credit card failed to pay the previous ride. You will need to pay this outstanding amount for your card be reactivated.</string>
+  <string name="UnpairWarningMessage">This action cannot be undone</string>
+  <string name="UnpairWarningCancelButton">Pay in car</string>
+  <string name="UnpairWarningMessageWithPromo">If you decide to pay in car, you will not be able to use the promotion</string>
 </resources>
