@@ -54,6 +54,6 @@
             android:layout_height="fill_parent"
             android:layout_marginBottom="5dip"
             local:MvxItemTemplate="@layout/promotionlistitem"
-            local:MvxBind="ItemsSource ActivePromotions; ItemClick SelectPromotion" />
+            local:MvxBind="ItemsSource ActivePromotions" />
     </LinearLayout>
 </RelativeLayout>
