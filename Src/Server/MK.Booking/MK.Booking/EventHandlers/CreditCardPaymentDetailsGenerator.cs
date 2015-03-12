@@ -68,9 +68,12 @@ namespace apcurium.MK.Booking.EventHandlers
                     order.Tax = Convert.ToDouble(@event.Tax);
                 }
 
-                var orderStatus = context.Find<OrderStatusDetail>(payment.OrderId);
-                orderStatus.IBSStatusId = VehicleStatuses.Common.Done;
-                orderStatus.IBSStatusDescription = _resources.Get("OrderStatus_wosDONE", order.ClientLanguageCode);
+                if (!@event.IsForPrepaidOrder)
+                {
+                    var orderStatus = context.Find<OrderStatusDetail>(payment.OrderId);
+                    orderStatus.IBSStatusId = VehicleStatuses.Common.Done;
+                    orderStatus.IBSStatusDescription = _resources.Get("OrderStatus_wosDONE", order.ClientLanguageCode);
+                }
 
                 context.SaveChanges();
             }
