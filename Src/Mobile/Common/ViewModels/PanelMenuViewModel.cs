@@ -61,9 +61,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             SetServerWatermarkText();
 
             // get the number of active promotions.
+            if (Settings.PromotionEnabled)
+            { 
 #pragma warning disable 4014
-		    RefreshPromoCodeCount();
+		        RefreshPromoCodeCount();
 #pragma warning restore 4014
+            }
 		    // N.B.: This setup is for iOS only! For Android see: SubView_MainMenu.xaml
 			InitMenuList();
 		}
