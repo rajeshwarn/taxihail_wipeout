@@ -19,6 +19,11 @@ namespace apcurium.MK.Common.Cryptography
 
         public static string GetHashString(string inputString)
         {
+            if (inputString == null)
+            {
+                return null;
+            }
+
             var sb = new StringBuilder();
             foreach (byte b in GetHash(inputString))
             {
@@ -30,6 +35,11 @@ namespace apcurium.MK.Common.Cryptography
 
         public static string GetHashString(byte[] inputBytes)
         {
+            if (inputBytes == null)
+            {
+                return null;
+            }
+
             var sb = new StringBuilder();
             foreach (byte b in GetHash(inputBytes))
             {

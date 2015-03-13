@@ -108,5 +108,23 @@ Src\Server\apcurium.MK.Web\themes\cinq-s\less\combined.less
 Src\Server\apcurium.MK.Web\themes\cinq-s\less\style.less
 Src\Server\apcurium.MK.Web\themes\cinq-s\less\variables.less
 Src/CustomerPortal/CustomerPortal.Web/logs/
+Src\Server\apcurium.MK.Web\themes\Apcurium\img\email_logo.png
+Src\Server\apcurium.MK.Web\themes\Apcurium\img\logo.png
+Src\Server\apcurium.MK.Web\themes\Apcurium\less\combined-responsive.less
+Src\Server\apcurium.MK.Web\themes\Apcurium\less\combined.less
+Src\Server\apcurium.MK.Web\themes\Apcurium\less\style.less
+Src\Server\apcurium.MK.Web\themes\Apcurium\less\variables.less
+Src\Server\apcurium.MK.Web\themes\Axertis\img\email_logo.png
+Src\Server\apcurium.MK.Web\themes\Axertis\img\logo.png
+Src\Server\apcurium.MK.Web\themes\Axertis\less\combined-responsive.less
+Src\Server\apcurium.MK.Web\themes\Axertis\less\combined.less
+Src\Server\apcurium.MK.Web\themes\Axertis\less\style.less
+Src\Server\apcurium.MK.Web\themes\Axertis\less\variables.less
+Src\Server\apcurium.MK.Web\themes\LAMP\img\email_logo.png
+Src\Server\apcurium.MK.Web\themes\LAMP\img\logo.png
+Src\Server\apcurium.MK.Web\themes\LAMP\less\combined-responsive.less
+Src\Server\apcurium.MK.Web\themes\LAMP\less\combined.less
+Src\Server\apcurium.MK.Web\themes\LAMP\less\style.less
+Src\Server\apcurium.MK.Web\themes\LAMP\less\variables.less
 syntax: regexp
 Deployment/Database/*
