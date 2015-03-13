@@ -146,8 +146,6 @@
                             android:layout_below="@id/settingsPayment" />
                         <Button
                             android:id="@+id/promotions"
-                            local:MvxBind="Click Panel.NavigateToPromotions;"
-                            style="@style/SettingItemTitle"
                             android:background="@drawable/setting_cell"
                             android:layout_width="fill_parent"
                             android:layout_height="42dip"
@@ -156,19 +154,18 @@
                             android:text="@string/PanelMenuViewPromotionsText"
                             android:gravity="center_vertical"
                             android:textAlignment="viewStart"
-                            android:layout_below="@id/separator5" />
+                            android:layout_below="@id/separator5"
+                            local:MvxBind="Click Panel.NavigateToPromotions;"
+                            style="@style/SettingItemTitle" />
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
+                            android:layout_alignParentLeft="true"
                             android:layout_alignBaseline="@id/promotions"
-                            android:layout_marginRight="100dip"
+                            android:layout_marginLeft="120dip"
                             android:layout_below="@id/separator5"
-                            android:gravity="center"
-                            android:background="@drawable/notification_background"
-                            android:textColor="@color/white"
-                            android:textSize="14dip"
-                            local:MvxBind="Text Panel.PromoCodeAlert; Visibility Panel.PromoCodeAlert, Converter=HasValueToVisibilityConverter" />
+                            local:MvxBind="Text Panel.PromoCodeAlert; Visibility Panel.PromoCodeAlert, Converter=HasValueToVisibilityConverter"
+                            style="@style/NotificationBadge" />
                         <View
                             android:id="@+id/separator6"
                             local:MvxBind="Visibility Panel.Settings.PromotionEnabled, Converter=Visibility"
