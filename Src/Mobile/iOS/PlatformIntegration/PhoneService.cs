@@ -110,12 +110,12 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
             }
         }
 
-        void AddEvent (string title, string addInfo, DateTime startDate, DateTime alertDate)
+        private void AddEvent (string title, string addInfo, DateTime startDate, DateTime alertDate)
         {
             var newEvent = EKEvent.FromStore (EventStore);
-            newEvent.AddAlarm (EKAlarm.FromDate (alertDate.DateTimeToNSDate()));
-            newEvent.StartDate = startDate.DateTimeToNSDate();
-            newEvent.EndDate = startDate.AddHours (1).DateTimeToNSDate();
+            newEvent.AddAlarm (EKAlarm.FromDate (alertDate.LocalDateTimeToNSDate()));
+            newEvent.StartDate = startDate.LocalDateTimeToNSDate();
+            newEvent.EndDate = startDate.AddHours (1).LocalDateTimeToNSDate();
             newEvent.Title = title;
             newEvent.Notes = addInfo;
             newEvent.Calendar = EventStore.DefaultCalendarForNewEvents;
