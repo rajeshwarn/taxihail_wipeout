@@ -231,25 +231,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 							}
 							else
 							{
-								using (this.Services().Message.ShowProgress())
-								{
-									var result = await _orderWorkflowService.ConfirmOrder();
-
-									this.Services().Analytics.LogEvent("Book");
-
-									await GotoBookingStatus(result);
-								}
+								await ConfirmOrderAndGoToBookingStatus();
 							}
 						}
 						else
 						{
-							using (this.Services().Message.ShowProgress())
-							{
-								var result = await _orderWorkflowService.ConfirmOrder();
-
-								await GotoBookingStatus(result);
-							}
-							
+							await ConfirmOrderAndGoToBookingStatus();
 						}
                     }
                     catch (OrderCreationException e)
@@ -304,10 +291,25 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
             }
         }
 
+		private async Task ConfirmOrderAndGoToBookingStatus()
+		{
+			using (this.Services().Message.ShowProgress())
+			{
+				var result = await _orderWorkflowService.ConfirmOrder();
+				this.Services().Analytics.LogEvent("Book");
+				await GotoBookingStatus(result);
+			}
+		}
+
+		private bool IsFutureBooking(Order order)
+		{
+			return order.CreatedDate != order.PickupDate;
+		}
+
 		private async Task GotoBookingStatus(Tuple<Order, OrderStatusDetail> result)
 		{
 			PresentationStateRequested.Raise(this, new HomeViewModelStateRequestedEventArgs(HomeViewModelState.Initial, true));
-			if (await _orderWorkflowService.IsFutureBooking())
+			if (IsFutureBooking(result.Item1))
 			{
 				ShowViewModel<BookingStatusViewModel>(new {
 					order = result.Item1.ToJson(),
