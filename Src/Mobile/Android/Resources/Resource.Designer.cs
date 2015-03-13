@@ -6798,23 +6798,23 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f0c00b9
 			public const int BlackTextLong = 2131493049;
 			
-			// aapt resource value: 0x7f0c00cb
-			public const int ButtonActionBlackStyle = 2131493067;
-			
-			// aapt resource value: 0x7f0c00ca
-			public const int ButtonActionGrayStyle = 2131493066;
-			
-			// aapt resource value: 0x7f0c00c8
-			public const int ButtonActionGreenStyle = 2131493064;
-			
 			// aapt resource value: 0x7f0c00cc
-			public const int ButtonActionLabelStyle = 2131493068;
+			public const int ButtonActionBlackStyle = 2131493068;
+			
+			// aapt resource value: 0x7f0c00cb
+			public const int ButtonActionGrayStyle = 2131493067;
 			
 			// aapt resource value: 0x7f0c00c9
-			public const int ButtonActionRedStyle = 2131493065;
+			public const int ButtonActionGreenStyle = 2131493065;
 			
-			// aapt resource value: 0x7f0c00c7
-			public const int ButtonMainStyle = 2131493063;
+			// aapt resource value: 0x7f0c00cd
+			public const int ButtonActionLabelStyle = 2131493069;
+			
+			// aapt resource value: 0x7f0c00ca
+			public const int ButtonActionRedStyle = 2131493066;
+			
+			// aapt resource value: 0x7f0c00c8
+			public const int ButtonMainStyle = 2131493064;
 			
 			// aapt resource value: 0x7f0c00a3
 			public const int ButtonText = 2131493027;
@@ -6887,6 +6887,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 			
 			// aapt resource value: 0x7f0c009c
 			public const int MultilineFormLabelText_Small = 2131493020;
+			
+			// aapt resource value: 0x7f0c00c3
+			public const int NotificationBadge = 2131493059;
 			
 			// aapt resource value: 0x7f0c00a5
 			public const int SearchButtonText = 2131493029;
@@ -7116,8 +7119,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f0c00b2
 			public const int TopTitleText = 2131493042;
 			
-			// aapt resource value: 0x7f0c00cd
-			public const int TutorialDialog = 2131493069;
+			// aapt resource value: 0x7f0c00ce
+			public const int TutorialDialog = 2131493070;
 			
 			// aapt resource value: 0x7f0c00ac
 			public const int ViewTitleStyle = 2131493036;
@@ -7380,17 +7383,17 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f0c0095
 			public const int com_facebook_loginview_silver_style = 2131493013;
 			
-			// aapt resource value: 0x7f0c00c6
-			public const int custom_ButtonStyle = 2131493062;
-			
-			// aapt resource value: 0x7f0c00c3
-			public const int custom_EditTextStyle = 2131493059;
+			// aapt resource value: 0x7f0c00c7
+			public const int custom_ButtonStyle = 2131493063;
 			
 			// aapt resource value: 0x7f0c00c4
-			public const int custom_FlatEditTextStyle = 2131493060;
+			public const int custom_EditTextStyle = 2131493060;
 			
 			// aapt resource value: 0x7f0c00c5
-			public const int custom_TextViewStyle = 2131493061;
+			public const int custom_FlatEditTextStyle = 2131493061;
+			
+			// aapt resource value: 0x7f0c00c6
+			public const int custom_TextViewStyle = 2131493062;
 			
 			static Style()
 			{
