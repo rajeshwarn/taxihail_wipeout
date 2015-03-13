@@ -25,7 +25,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
 			if (!string.IsNullOrEmpty(menuItem.Alert))
 			{
-				var badge = new CustomBadgeView(menuItem.Alert, 130, 10);
+				var badge = new CustomBadgeView(menuItem.Alert, 120, 10);
 
 				result.AddSubview(badge);
 			}
