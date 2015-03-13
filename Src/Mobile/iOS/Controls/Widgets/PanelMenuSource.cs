@@ -2,6 +2,7 @@ using Cirrious.MvvmCross.Binding.Touch.Views;
 using UIKit;
 using Foundation;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
+using apcurium.MK.Booking.Mobile.Client.Style;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
@@ -25,7 +26,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
 			if (!string.IsNullOrEmpty(menuItem.Alert))
 			{
-				var badge = new CustomBadgeView(menuItem.Alert, 120, 10);
+				var badge = new CustomBadgeView(menuItem.Alert, 120, 10)
+				{
+					TextColor = Theme.LabelTextColor,
+					BadgeColor = Theme.CompanyColor
+				};
 
 				result.AddSubview(badge);
 			}
