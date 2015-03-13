@@ -35,6 +35,28 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 				this.Observe(_orderWorkflowService.GetAndObserveIsDestinationModeOpened(),
 					isDestinationModeOpened => EstimateSelected = isDestinationModeOpened);
 			}
+
+            if (Settings.PromotionEnabled)
+            {
+                this.Observe(IsPromoCodeApply(), isPromoCodeActive => IsPromoCodeActive = isPromoCodeActive);
+            }
+        }
+
+
+        private IObservable<bool> IsPromoCodeApply()
+        {
+            return _orderWorkflowService.GetAndObservePromoCode()
+                .Select(promoCode => !string.IsNullOrEmpty(promoCode));
+        }
+
+        private bool _isPromoCodeActive;
+        public bool IsPromoCodeActive {
+            get { return _isPromoCodeActive; }
+            set
+            {
+                _isPromoCodeActive = value;
+                RaisePropertyChanged();
+            }
         }
 
         private bool _estimateSelected;
