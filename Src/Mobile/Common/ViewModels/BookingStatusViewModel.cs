@@ -182,9 +182,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			get
 			{
-				return (Order.CreatedDate != Order.PickupDate 
+				return // we know from the start it's a scheduled
+						(Order.CreatedDate != Order.PickupDate 													
 							&& !OrderStatusDetail.IBSStatusId.HasValue())
-						|| OrderStatusDetail.IBSStatusId.SoftEqual(VehicleStatuses.Common.Scheduled);
+						// it has the status scheduled
+						|| OrderStatusDetail.IBSStatusId.SoftEqual(VehicleStatuses.Common.Scheduled)
+						// it is cancelled or no show
+						|| (OrderStatusDetail.IBSStatusId.SoftEqual (VehicleStatuses.Common.Cancelled)
+							|| OrderStatusDetail.IBSStatusId.SoftEqual (VehicleStatuses.Common.NoShow)
+							|| OrderStatusDetail.IBSStatusId.SoftEqual (VehicleStatuses.Common.CancelledDone))
+						// there was an error with ibs order creation
+						|| (OrderStatusDetail.IBSStatusId.SoftEqual(VehicleStatuses.Unknown.None)
+							&& OrderStatusDetail.Status == OrderStatus.Canceled);
 			}
 		}
 

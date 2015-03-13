@@ -334,13 +334,13 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 					return null;
 				}
 
-				if (!_bookingService.IsStatusCompleted (status.IBSStatusId)) 
+				if (!_bookingService.IsStatusCompleted(status)) 
 				{
-					var order = await _accountService.GetHistoryOrderAsync (status.OrderId);
+					var order = await _accountService.GetHistoryOrderAsync(status.OrderId);
 
                     return Tuple.Create(order, status);
 				}
-                else if (_bookingService.IsStatusCompleted(status.IBSStatusId))
+                else
 				{
                     var order = await _accountService.GetHistoryOrderAsync(status.OrderId);
 					if (order.IsRated)
