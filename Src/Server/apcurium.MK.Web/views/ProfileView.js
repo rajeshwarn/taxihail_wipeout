@@ -92,16 +92,42 @@
             this.$el.html(view.render().el);
         },
         
-        savechanges : function (form) {
+        savechanges: function (form) {
+            var accountNumber = this.model.get('settings').accountNumber;
+            if (accountNumber) {
+
+                // Validate charge account number
+                this.model.getChargeAccount(accountNumber)
+                    .then(_.bind(function() {
+                        this.updateSettings();
+                    }, this))
+                    .fail(_.bind(function () {
+                            this.$(':submit').button('reset');
+
+                            var alert = new TaxiHail.AlertView({
+                                message: TaxiHail.localize("Account Not Found"),
+                                type: 'error'
+                            });
+                            alert.on('ok', alert.remove, alert);
+                            this.$('.errors').html(alert.render().el);
+                    }, this));
+            } else {
+                // No charge account number to validate
+                this.updateSettings();
+            }
+        },
+        
+        updateSettings: function() {
+            // Update settings
             this.model.updateSettings()
-                .done(_.bind(function () {
+                .done(_.bind(function() {
                     this.renderConfirmationMessage();
                 }, this))
-                .fail(_.bind(function(){
+                .fail(_.bind(function() {
                     this.$(':submit').button('reset');
                 }, this));
         },
-        
+
         onPropertyChanged : function (e) {
             var $input = $(e.currentTarget);
             var settings = this.model.get('settings');
