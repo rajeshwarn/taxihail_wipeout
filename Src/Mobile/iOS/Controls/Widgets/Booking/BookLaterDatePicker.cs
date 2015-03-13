@@ -45,8 +45,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Booking
             OrderButton.SetTitle(Localize.GetValue("Order"), UIControlState.Normal);
             FlatButtonStyle.Red.ApplyTo(CancelButton);
             FlatButtonStyle.Green.ApplyTo(OrderButton);
-
-            
         }
 
 		public override void LayoutSubviews ()
@@ -121,7 +119,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Booking
                 var date = DatePicker.Date;
                 if (date != null)
                 {
-                    return date.NSDateToDateTime().ToLocalTime();
+                    return date.NSDateToLocalDateTime();
                 }
                 return null;
             }
@@ -129,11 +127,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Booking
             {
                 if (value == null)
                 {
-                    DatePicker.SetDate(DateTime.UtcNow.DateTimeToNSDate(), true);
+                    DatePicker.SetDate(DateTime.Now.LocalDateTimeToNSDate(), false);
                 }
                 else 
                 {
-                    DatePicker.SetDate(value.Value.ToUniversalTime().DateTimeToNSDate(), true);
+                    DatePicker.SetDate(value.Value.LocalDateTimeToNSDate(), false);
                 }
             } 
         }
