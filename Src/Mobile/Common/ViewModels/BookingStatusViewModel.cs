@@ -12,9 +12,7 @@ using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.Messages;
 using apcurium.MK.Booking.Mobile.PresentationHints;
-using apcurium.MK.Booking.Mobile.ViewModels.Payment;
 using apcurium.MK.Common;
-using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
 using ServiceStack.Text;
@@ -180,6 +178,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			get { return string.IsNullOrWhiteSpace(OrderStatusDetail.DriverInfos.VehicleColor) || !IsDriverInfoAvailable; }
 		}
+		public bool CanGoBack
+		{
+			get
+			{
+				return (Order.CreatedDate != Order.PickupDate 
+							&& !OrderStatusDetail.IBSStatusId.HasValue())
+						|| OrderStatusDetail.IBSStatusId.SoftEqual(VehicleStatuses.Common.Scheduled);
+			}
+		}
 
 	    private string _statusInfoText;
 		public string StatusInfoText
@@ -200,6 +207,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
 				_order = value;
 				RaisePropertyChanged();
+				RaisePropertyChanged(() => CanGoBack);
 			}
 		}
 		
@@ -219,6 +227,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				RaisePropertyChanged (() => VehicleColorHidden);
 				RaisePropertyChanged (() => IsDriverInfoAvailable);
 				RaisePropertyChanged (() => IsCallTaxiVisible);
+				RaisePropertyChanged (() => CanGoBack);
 			}
 		}
 
@@ -347,10 +356,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				{
 					AddReminder(status);
 				}
-
-#if DEBUG
-                //status.IBSStatusId = VehicleStatuses.Common.Arrived;
-#endif
+					
 				var statusInfoText = status.IBSStatusDescription;
 
 				if(Settings.ShowEta 

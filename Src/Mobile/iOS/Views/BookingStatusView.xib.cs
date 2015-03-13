@@ -32,6 +32,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             NavigationItem.Title = Localize.GetValue("View_BookingStatus");
 
             ChangeThemeOfBarStyle();
+
+            NavigationItem.HidesBackButton = !ViewModel.CanGoBack;
         }
 
         public override void ViewDidLoad ()
@@ -81,7 +83,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
                 View.BringSubviewToFront (bottomBar);
 
-				ViewModel.PropertyChanged+= (sender, e) => {
+				ViewModel.PropertyChanged += (sender, e) => {
 					InvokeOnMainThread(()=>
 					{
 						UpdateTopSlidingStatus(e.PropertyName);
@@ -117,6 +119,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
                 lblConfirmation.TextColor = textColor;
                 lblStatus.TextColor = textColor;
+
+                ViewModel.PropertyChanged += (sender, e) => {
+                    InvokeOnMainThread(()=>
+                    {
+                        if (e.PropertyName == "Order"
+                            || e.PropertyName == "OrderStatusDetail") 
+                        {
+                            NavigationItem.HidesBackButton = !ViewModel.CanGoBack;
+                        }
+                    });
+                };
 
                 var set = this.CreateBindingSet<BookingStatusView, BookingStatusViewModel>();
 
