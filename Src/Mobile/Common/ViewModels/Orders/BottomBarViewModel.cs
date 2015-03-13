@@ -38,20 +38,22 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
             if (Settings.PromotionEnabled)
             {
-                this.Observe(IsPromoCodeApply(), isPromoCodeActive => IsPromoCodeActive = isPromoCodeActive);
+                this.Observe(ObserveIsPromoCodeApplied(), isPromoCodeApplied => IsPromoCodeActive = isPromoCodeApplied);
             }
         }
 
-
-        private IObservable<bool> IsPromoCodeApply()
+        private IObservable<bool> ObserveIsPromoCodeApplied()
         {
             return _orderWorkflowService.GetAndObservePromoCode()
-                .Select(promoCode => !string.IsNullOrEmpty(promoCode));
+				.Select(promoCode => !string.IsNullOrEmpty(promoCode));
         }
 
         private bool _isPromoCodeActive;
         public bool IsPromoCodeActive {
-            get { return _isPromoCodeActive; }
+            get 
+			{ 
+				return _isPromoCodeActive; 
+			}
             set
             {
                 _isPromoCodeActive = value;
