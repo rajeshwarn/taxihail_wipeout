@@ -161,9 +161,10 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentLeft="true"
-                            android:layout_alignBaseline="@id/promotions"
                             android:layout_marginLeft="120dip"
                             android:layout_below="@id/separator5"
+                            android:id="@+id/promoCodeBadge"
+                            android:layout_marginTop="9dip"
                             local:MvxBind="Text Panel.PromoCodeAlert; Visibility Panel.PromoCodeAlert, Converter=HasValueToVisibilityConverter"
                             style="@style/NotificationBadge" />
                         <View
