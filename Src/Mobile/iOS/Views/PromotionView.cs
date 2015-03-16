@@ -40,6 +40,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             tblPromotions.SeparatorStyle = UITableViewCellSeparatorStyle.None;
             tblPromotions.DelaysContentTouches = false;
 
+			lblInstruction.Text = Localize.GetValue("PromoMustUseCardOnFileWarningMessage");
             lblNoPromotions.Text = Localize.GetValue("PromotionViewNoPromotionLabel");
             lblNoPromotions.Hidden = true;
 
@@ -52,6 +53,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 .For("Visibility")
                 .To(vm => vm.ActivePromotions)
                 .WithConversion("Visibility");
+
+			set.Bind(lblInstruction)
+				.For("Visibility")
+				.To(vm => vm.ActivePromotions)
+				.WithConversion ("HasValueToVisibility");
 
             set.Bind(lblNoPromotions)
                 .For("Visibility")
