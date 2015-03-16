@@ -145,10 +145,10 @@ namespace apcurium.MK.Booking.Api.Services
             }
 
             var account = _accountDao.FindById(new Guid(this.GetSession().UserAuthId));
-            account.IBSAccountId = CreateIbsAccountIfNeeded(account, bestAvailableCompany.CompanyKey, market);
+            account.IBSAccountId = CreateIbsAccountIfNeeded(account, bestAvailableCompany.CompanyKey);
             
             var isFutureBooking = request.PickupDate.HasValue;
-            var pickupDate = request.PickupDate ?? GetCurrentOffsetedTime(bestAvailableCompany.CompanyKey, market);
+            var pickupDate = request.PickupDate ?? GetCurrentOffsetedTime(bestAvailableCompany.CompanyKey);
 
             // User can still create future order, but we allow only one active Book now order.
             if (!isFutureBooking)
@@ -437,7 +437,7 @@ namespace apcurium.MK.Booking.Api.Services
 
             var newOrderRequest = new CreateOrder
             {
-                PickupDate = GetCurrentOffsetedTime(request.NextDispatchCompanyKey, order.Market),
+                PickupDate = GetCurrentOffsetedTime(request.NextDispatchCompanyKey),
                 PickupAddress = order.PickupAddress,
                 DropOffAddress = order.DropOffAddress,
                 Settings = new BookingSettings
@@ -668,7 +668,7 @@ namespace apcurium.MK.Booking.Api.Services
         }
 
 
-        private int CreateIbsAccountIfNeeded(AccountDetail account, string companyKey = null, string market = null)
+        private int CreateIbsAccountIfNeeded(AccountDetail account, string companyKey = null)
         {
             var ibsAccountId = _accountDao.GetIbsAccountId(account.Id, companyKey);
             if (ibsAccountId.HasValue)
@@ -838,7 +838,7 @@ namespace apcurium.MK.Booking.Api.Services
             });
         }
 
-        private DateTime GetCurrentOffsetedTime(string companyKey, string market)
+        private DateTime GetCurrentOffsetedTime(string companyKey)
         {
             //TODO : need to check ibs setup for shortesst time
 
