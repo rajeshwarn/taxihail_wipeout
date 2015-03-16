@@ -49,16 +49,7 @@ namespace DeploymentServiceTools
                 catch (Exception)
                 {
                     logger("Revert Failed - Deleting all files");
-
-					var delete = ProcessEx.GetProcess("rm",string.Format("-r -f {0}", _sourceDirectory));
-					using (var exeProcess = Process.Start(delete))
-					{
-						var output = ProcessEx.GetOutput(exeProcess);
-						if (exeProcess.ExitCode > 0)
-						{
-							throw new Exception("Error during delete sourceFolder" + output);
-						}
-					}
+                    Delete();
 
                     logger("Full Clone");
                     hg.Clone(revisionNumber);
@@ -67,6 +58,22 @@ namespace DeploymentServiceTools
 
             logger("Hg Update to rev " + revisionNumber);
             hg.Update(revisionNumber);
+        }
+
+        private void Delete()
+        {
+            var delete = ProcessEx.IsMac() 
+                ? ProcessEx.GetProcess("rm", string.Format("-r -f {0}", _sourceDirectory)) 
+                : ProcessEx.GetProcess("rmdir", string.Format("/s /q {0}", _sourceDirectory));
+
+            using (var exeProcess = Process.Start(delete))
+            {
+                var output = ProcessEx.GetOutput(exeProcess);
+                if (exeProcess.ExitCode > 0)
+                {
+                    throw new Exception("Error during delete sourceFolder" + output);
+                }
+            }
         }
     }
 }

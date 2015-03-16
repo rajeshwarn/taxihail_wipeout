@@ -122,6 +122,7 @@ namespace apcurium.MK.Booking.Services.Impl
             //see paragraph oops here https://www.braintreepayments.com/docs/dotnet/transactions/submit_for_settlement
 
             var transaction = BraintreeGateway.Transaction.Find(transactionId);
+            var operationDone = string.Empty;
             Result<Transaction> cancellationResult = null;
             if (transaction.Status == TransactionStatus.AUTHORIZING
                 || transaction.Status == TransactionStatus.AUTHORIZED
@@ -129,12 +130,14 @@ namespace apcurium.MK.Booking.Services.Impl
             {
                 // can void
                 cancellationResult = BraintreeGateway.Transaction.Void(transactionId);
+                operationDone = "voided";
             }
             else if (transaction.Status == TransactionStatus.SETTLED
                 || transaction.Status == TransactionStatus.SETTLING)
             {
                 // will have to refund it
                 cancellationResult = BraintreeGateway.Transaction.Refund(transactionId);
+                operationDone = "refunded";
             }
 
             if (cancellationResult == null
@@ -146,7 +149,7 @@ namespace apcurium.MK.Booking.Services.Impl
                         transactionId, transaction.Status));
             }
 
-            message = message + " The transaction has been cancelled.";
+            message = string.Format("{0} The transaction has been {1}.", message, operationDone);
         }
 
         public DeleteTokenizedCreditcardResponse DeleteTokenizedCreditcard(string cardToken)
@@ -335,7 +338,40 @@ namespace apcurium.MK.Booking.Services.Impl
 
         public BasePaymentResponse RefundPayment(Guid orderId)
         {
-            throw new NotImplementedException();
+            var paymentDetail = _paymentDao.FindByOrderId(orderId);
+            if (paymentDetail == null)
+            {
+                // No payment to refund
+                var message = string.Format("Cannot refund because no payment was found for order {0}.", orderId);
+                _logger.LogMessage(message);
+
+                return new BasePaymentResponse
+                {
+                    IsSuccessful = false,
+                    Message = message
+                };
+            }
+
+            try
+            {
+                var message = string.Empty;
+                Void(paymentDetail.TransactionId, ref message);
+
+                return new BasePaymentResponse
+                {
+                    IsSuccessful = true
+                };
+            }
+            catch (Exception ex)
+            {
+                _logger.LogMessage(string.Format("Braintree refund for transaction {0} failed. {1}", paymentDetail.TransactionId, ex.Message));
+
+                return new BasePaymentResponse
+                {
+                    IsSuccessful = false,
+                    Message = ex.Message
+                };
+            }
         }
 
         private bool IsCardDeclined(Transaction transaction)

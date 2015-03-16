@@ -358,6 +358,15 @@
   <data name="OrderStatus_wosLOADEDAutoPairing" xml:space="preserve">
     <value>Fare will be paid using the selected payment method</value>
   </data>
+  <data name="CardOnFile" xml:space="preserve">
+    <value>Card on File</value>
+  </data>
+  <data name="ChargeAccount" xml:space="preserve">
+    <value>Charge Account</value>
+  </data>
+  <data name="PaymentInCar" xml:space="preserve">
+    <value>Payment in Car</value>
+  </data>
   <data name="CurrencyPriceFormat" xml:space="preserve">
     <value>{0}</value>
   </data>
@@ -370,11 +379,17 @@
   <data name="PaymentConfirmationToDriver4" xml:space="preserve">
     <value>Auth #{0}</value>
   </data>
+  <data name="EtaMessageToDriver" xml:space="preserve">
+    <value>ETA displayed to client is {0} and {1} min</value>
+  </data>
   <data name="PaymentBeingProcessedMessageToDriver" xml:space="preserve">
     <value>Payment being processed by the app...</value>
   </data>
-  <data name="EtaMessageToDriver" xml:space="preserve">
-    <value>ETA displayed to client is {0} and {1} min</value>
+  <data name="PaymentFailedToDriver" xml:space="preserve">
+    <value>Payment by the app has Failed!</value>
+  </data>
+  <data name="PaymentItemDescription" xml:space="preserve">
+    <value>Order #{0} Original amount: {1}</value>
   </data>
   <data name="CannotCreateOrderInvalidVersion" xml:space="preserve">
     <value>The order cannot be created using this version of the app. Please upgrade the app to book a ride.</value>
@@ -394,7 +409,10 @@
   <data name="Network_CannotCreateOrder" xml:space="preserve">
     <value>There was a problem while trying to book with {0}. Your order will remain active.</value>
   </data>
-  <data name="CannotCreateOrderChargeAccountNotSupported" xml:space="preserve">
+  <data name="CannotCreateOrderChargeAccountNotSupportedInRoaming" xml:space="preserve">
+    <value>This account is not supported in a different market.</value>
+  </data>
+  <data name="CannotCreateOrderChargeAccountNotSupportedOnWeb" xml:space="preserve">
     <value>This account is not supported by the web site.</value>
   </data>
   <data name="Email_Body_VehicleModel" xml:space="preserve">
@@ -402,6 +420,9 @@
   </data>
   <data name="Email_Body_YourDriver" xml:space="preserve">
     <value>Your Driver</value>
+  </data>
+  <data name="AccountConfirmationSmsBody" xml:space="preserve">
+    <value>Your verification code for {0} is {1}</value>
   </data>
   <data name="CannotCreateOrder_PromotionDoesNotExist" xml:space="preserve">
     <value>There is no promotion associated to this code</value>
@@ -422,7 +443,7 @@
     <value>Maximum number of uses has been reached for this promotion</value>
   </data>
   <data name="CannotCreateOrder_PromotionAppliesToCurrentBookingOnly" xml:space="preserve">
-    <value>This promotion applies to current booking only</value>
+    <value>This promotion does not applies to future booking</value>
   </data>
   <data name="CannotCreateOrder_PromotionAppliesToFutureBookingOnly" xml:space="preserve">
     <value>This promotion applies to future booking only</value>
@@ -500,6 +521,12 @@
   <data name="ServiceErrorCreateAccount_AccountAlreadyExist" xml:space="preserve">
     <value>هذا العنوان الإلكتروني مستخدم من قبل.</value>
   </data>
+  <data name="ServiceErrorCreateAccount_InvalidConfirmationToken" xml:space="preserve">
+    <value>The confirmation code is incorrect.</value>
+  </data>
+  <data name="ServiceErrorCreateOrder_CardOnFileButNoCreditCard" xml:space="preserve">
+    <value>No Credit Card On File.</value>
+  </data>
   <data name="ServiceErrorCreateOrder_InvalidProvider" xml:space="preserve">
     <value>لا يمكن إدخال الطلب، مقدم الخدمة غير متاح. رجاء الاتصال  {0} على  {1} للمزيد من المساعدة</value>
   </data>
@@ -563,10 +590,13 @@
   <data name="Email_Subject_CreditCardDeactivated" xml:space="preserve">
     <value>{{ ApplicationName }} - Your credit card has been deactivated</value>
   </data>
-  <data name="CannotCreateOrder_PrepaidPayPalNoEstimate" xml:space="preserve">
-    <value>You need an estimated fare to pay with PayPal. Please select a destination address to get one.</value>
+  <data name="CannotCreateOrder_PrepaidNoEstimate" xml:space="preserve">
+    <value>You need an estimated fare to prepay your ride. Please select a destination address to get one.</value>
   </data>
   <data name="CannotCreateOrder_PrepaidPayPalPaymentCancelled" xml:space="preserve">
     <value>PayPal payment was cancelled</value>
+  </data>
+  <data name="CannotCreateOrder_PrepaidButPrepaidNotEnabled" xml:space="preserve">
+    <value>Payment is not enabled on the website. Please select another charge type.</value>
   </data>
 </root>
