@@ -18,6 +18,7 @@ namespace apcurium.MK.Common.Configuration.Impl
             PreAuthAmount = 200;
             UnpairingTimeOut = 120;
             IsUnpairingDisabled = false;
+            IsPrepaidEnabled = false;
         }
 
         [Key]
@@ -35,5 +36,7 @@ namespace apcurium.MK.Common.Configuration.Impl
         public bool IsUnpairingDisabled { get; set; }
 
         public int UnpairingTimeOut { get; protected set; }
+
+        public bool IsPrepaidEnabled { get; set; }
     }
 }

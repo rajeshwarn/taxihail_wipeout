@@ -43,6 +43,8 @@ namespace apcurium.MK.Booking.Commands
 
         public string NewCardToken { get; set; }
 
+        public bool IsForPrepaidOrder { get; set; }
+
         public Guid Id { get; private set; }
     }
 }

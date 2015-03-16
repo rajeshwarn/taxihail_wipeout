@@ -59,6 +59,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Models
         public DateTime? StartDate { get; set; }
 
         [Display(Name = "End Date")]
+        [Required]
         public DateTime? EndDate { get; set; }
 
         public DateTime? StartTime { get; set; }

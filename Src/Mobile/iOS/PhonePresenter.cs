@@ -89,7 +89,6 @@ namespace apcurium.MK.Booking.Mobile.Client
             {
                 Mvx.Warning("Can't remove previous view, not enough UIViewControllers in the stack");
             }
-
         }
 
         private void TryChangeViewPresentation(ChangePresentationHint hint)
@@ -107,7 +106,6 @@ namespace apcurium.MK.Booking.Mobile.Client
             {
                 Mvx.Warning("Can't change presentation, view controller doesn't support IChangePresentation");
             }
-
         }
     }
 }

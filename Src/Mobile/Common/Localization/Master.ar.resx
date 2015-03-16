@@ -1605,10 +1605,13 @@
   <data name="PanelMenuViewPromotionsText" xml:space="preserve">
     <value>Promotions</value>
   </data>
-  <data name="PromoRequiresToPayWithCOFPairingWarningMessage" xml:space="preserve">
+  <data name="UnpairWarningMessage" xml:space="preserve">
+    <value>This action cannot be undone</value>
+  </data>
+  <data name="UnpairWarningMessageWithPromo" xml:space="preserve">
     <value>If you decide to pay in car, you will not be able to use the promotion</value>
   </data>
-  <data name="PromoRequiresToPayWithCOFPairingWarningCancelButton" xml:space="preserve">
+  <data name="UnpairWarningCancelButton" xml:space="preserve">
     <value>Pay in car</value>
   </data>
   <data name="View_Promotions" xml:space="preserve">
