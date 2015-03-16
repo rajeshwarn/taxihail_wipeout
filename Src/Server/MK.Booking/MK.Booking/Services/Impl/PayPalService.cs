@@ -162,7 +162,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 return new InitializePayPalCheckoutResponse
                 {
                     IsSuccessful = false,
-                    Message = _resources.Get("CannotCreateOrder_PrepaidPayPalNoEstimate", clientLanguageCode)
+                    Message = _resources.Get("CannotCreateOrder_PrepaidNoEstimate", clientLanguageCode)
                 };
             }
 

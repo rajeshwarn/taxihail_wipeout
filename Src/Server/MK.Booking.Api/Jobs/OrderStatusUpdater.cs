@@ -235,6 +235,12 @@ namespace apcurium.MK.Booking.Api.Jobs
                 return;
             }
 
+            // Order is prepaid, if the user prepaid and decided not to show up, the fee is his fare already charged
+            if (orderStatusDetail.IsPrepaid)
+            {
+                return;
+            }
+
             Log.DebugFormat("No show fee will be charged for order {0}.", ibsOrderInfo.IBSOrderId);
 
             var paymentSettings = _serverSettings.GetPaymentSettings();

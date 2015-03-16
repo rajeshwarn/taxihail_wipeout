@@ -58,5 +58,18 @@ namespace DeploymentServiceTools
                     "\n-----------------------------------Ran For: " + (DateTime.Now - startTime).TotalSeconds +
                     "s----------Code:" + exeProcess.ExitCode + "\n";
         }
+
+        public static bool IsMac()
+        {
+            switch (Environment.OSVersion.Platform)
+            {
+                case PlatformID.Unix:
+                case PlatformID.MacOSX:
+                    return true;
+
+                default:
+                    return false;
+            }
+        }
     }
 }

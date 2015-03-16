@@ -1,43 +1,19 @@
 ﻿<!-- PAYMENT OPTION-->
-<h4 class="table-title">{{localize "Payment Mode"}}</h4>
+<h4 class="table-title">{{localize "Payment Mode"}}</h4>  
 
-    <div class="control-group" id="isUnpairingDisabledDiv">
-        <label class="control-label settingsLabel">{{{localize "Disable Unpairing"}}}</label>
-        <select name="isUnpairingDisabled" class="settingsBox">
-            <option value="{{isUnpairingDisabled}}" selected="">{{localizeBool isUnpairingDisabled true="Yes" false="No"}}</option>
-            <option value="{{invertedBool isUnpairingDisabled}}">{{localizeBool isUnpairingDisabled true="No" false="Yes"}}</option>
-        </select>
-    </div>
+  <label class="control-label settingsLabel">{{{localize "Enable Prepaid / Web Payment"}}}</label>
+  <select name="isPrepaidEnabled" class="settingsBox">
+    <option value="{{isPrepaidEnabled}}" selected="">{{localizeBool isPrepaidEnabled true="Yes" false="No"}}</option>
+    <option value="{{invertedBool isPrepaidEnabled}}">{{localizeBool isPrepaidEnabled true="No" false="Yes"}}</option>
+  </select>
 
-    <div class="control-group" id="unpairingTimeOutDiv">
-        <label class="control-label settingsLabel">{{{localize "Unpair Time Limit (seconds)"}}}</label>
-        <input type="text" class="input-block-level settingsBox" name="unpairingTimeOut" value="{{unpairingTimeOut}}" />
-    </div>
-
-    <div class="control-group" id="preAuthAmountEnabledDiv">
-    <label class="control-label settingsLabel">{{{localize "Enable PreAuthorization "}}}</label>
-    <select name="isPreAuthEnabled" class="settingsBox">
-        <option value="{{isPreAuthEnabled}}" selected="">{{localizeBool isPreAuthEnabled true="Yes" false="No"}}</option>
-        <option value="{{invertedBool isPreAuthEnabled}}">{{localizeBool isPreAuthEnabled true="No" false="Yes"}}</option>
-    </select>
-    </div>
-
-    <div class="control-group" id="preAuthAmountDiv">
-        <label class="control-label settingsLabel">{{{localize "PreAuthorization Amount"}}}</label>
-        <input type="text" class="input-block-level settingsBox" name="preAuthAmount" value="{{preAuthAmount}}" />
-    </div>
-
-    <div class="control-group" id="noShowFeeDiv">
-        <label class="control-label settingsLabel">{{{localize "No Show Fee (Amount)"}}}</label>
-        <input type="text" class="input-block-level settingsBox" name="noShowFee" value="{{noShowFee}}" />
-    </div>
-<label class="control-label settingsLabel">{{{localize "Disable In Car Payment"}}}</label>
-<select name="isOutOfAppPaymentDisabled" class="settingsBox">
+  <label class="control-label settingsLabel">{{{localize "Disable In Car Payment"}}}</label>
+  <select name="isOutOfAppPaymentDisabled" class="settingsBox">
     <option value="{{isOutOfAppPaymentDisabled}}" selected="">{{localizeBool isOutOfAppPaymentDisabled true="Yes" false="No"}}</option>
     <option value="{{invertedBool isOutOfAppPaymentDisabled}}">{{localizeBool isOutOfAppPaymentDisabled true="No" false="Yes"}}</option>
-</select>
+  </select>
 
-<label class="control-label settingsLabel" >{{{localize "Charge Account Payment"}}}</label>
+  <label class="control-label settingsLabel" >{{{localize "Charge Account Payment"}}}</label>
   <select  name="isChargeAccountPaymentEnabled" class="settingsBox">
     <option value="{{isChargeAccountPaymentEnabled}}" selected="" >{{localizeBool isChargeAccountPaymentEnabled true="Yes" false="No"}}</option>
     <option value="{{invertedBool isChargeAccountPaymentEnabled}}">{{localizeBool isChargeAccountPaymentEnabled true="No" false="Yes"}}</option>
@@ -59,6 +35,37 @@
     <option value="Fake">{{localize "Demo Payment Service"}}</option>
   </select>
   <br />
+
+  <div id="isUnpairingDisabledDiv">
+    <label class="control-label settingsLabel">{{{localize "Disable Unpairing"}}}</label>
+    <select name="isUnpairingDisabled" class="settingsBox">
+        <option value="{{isUnpairingDisabled}}" selected="">{{localizeBool isUnpairingDisabled true="Yes" false="No"}}</option>
+        <option value="{{invertedBool isUnpairingDisabled}}">{{localizeBool isUnpairingDisabled true="No" false="Yes"}}</option>
+    </select>
+  </div>
+
+  <div id="unpairingTimeOutDiv">
+    <label class="control-label settingsLabel">{{{localize "Unpair Time Limit (seconds)"}}}</label>
+    <input type="text" class="input-block-level settingsBox" name="unpairingTimeOut" value="{{unpairingTimeOut}}" />
+  </div>
+
+  <div id="preAuthAmountEnabledDiv">
+    <label class="control-label settingsLabel">{{{localize "Enable PreAuthorization "}}}</label>
+    <select name="isPreAuthEnabled" class="settingsBox">
+        <option value="{{isPreAuthEnabled}}" selected="">{{localizeBool isPreAuthEnabled true="Yes" false="No"}}</option>
+        <option value="{{invertedBool isPreAuthEnabled}}">{{localizeBool isPreAuthEnabled true="No" false="Yes"}}</option>
+    </select>
+  </div>
+
+  <div id="preAuthAmountDiv">
+    <label class="control-label settingsLabel">{{{localize "PreAuthorization Amount"}}}</label>
+    <input type="text" class="input-block-level settingsBox" name="preAuthAmount" value="{{preAuthAmount}}" />
+  </div>
+
+  <div id="noShowFeeDiv">
+    <label class="control-label settingsLabel">{{{localize "No Show Fee (Amount)"}}}</label>
+    <input type="text" class="input-block-level settingsBox" name="noShowFee" value="{{noShowFee}}" />
+  </div>
 
 <!-- BRAINTREE SETTINGS-->
   <div class="control-group" id="braintreeSettingsDiv">
