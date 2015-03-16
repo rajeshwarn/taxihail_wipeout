@@ -106,7 +106,7 @@ namespace apcurium.MK.Booking.Api.Services
                 {
                     meterAmount = ibsOrder.Fare;
                     tollAmount = ibsOrder.Toll;
-                    tipAmount = GetTipAmount(ibsOrder.Fare.GetValueOrDefault(0), pairingInfo.AutoTipPercentage.Value);
+                    tipAmount = FareHelper.CalculateTipAmount(ibsOrder.Fare.GetValueOrDefault(0), pairingInfo.AutoTipPercentage.Value);
                     taxAmount = ibsOrder.VAT;
                 }
 
@@ -138,12 +138,6 @@ namespace apcurium.MK.Booking.Api.Services
                     creditCard));
 
             return new HttpResult(HttpStatusCode.OK, "OK");
-        }
-
-        private double GetTipAmount(double amount, double percentage)
-        {
-            var tip = percentage / 100;
-            return Math.Round(amount * tip, 2);
         }
 
         private Trip GetTripData(string pairingToken)

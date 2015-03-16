@@ -88,6 +88,17 @@ namespace DatabaseInitializer.Services
                     }
                     context.SaveChanges();
 
+                    // rename OrderCancelledBecauseOfIbsError events
+                    foreach (var message in events.Where(x =>
+                                    x.EventType.Contains("OrderCancelledBecauseOfIbsError")))
+                    {
+                        message.Payload = message.Payload.Replace("OrderCancelledBecauseOfIbsError",
+                            "OrderCancelledBecauseOfError");
+                        message.EventType = message.EventType.Replace("OrderCancelledBecauseOfIbsError",
+                            "OrderCancelledBecauseOfError");
+                    }
+                    context.SaveChanges();
+
                     // rename CreditCardAdded or CreditCardUpdated to CreditCardAddedOrUpdated
                     foreach (var message in events.Where(x =>
                                     x.EventType.Equals("apcurium.MK.Booking.Events.CreditCardAdded") ||
@@ -210,7 +221,7 @@ namespace DatabaseInitializer.Services
 
         private CreditCardPaymentCaptured_V2 Convert(CreditCardPaymentCaptured oldEvent)
         {
-            var fareObject = Fare.FromAmountInclTax(System.Convert.ToDouble(oldEvent.Meter), _serverSettings.ServerData.VATIsEnabled ? _serverSettings.ServerData.VATPercentage : 0);
+            var fareObject = FareHelper.GetFareFromAmountInclTax(System.Convert.ToDouble(oldEvent.Meter), _serverSettings.ServerData.VATIsEnabled ? _serverSettings.ServerData.VATPercentage : 0);
 
             return new CreditCardPaymentCaptured_V2
             {

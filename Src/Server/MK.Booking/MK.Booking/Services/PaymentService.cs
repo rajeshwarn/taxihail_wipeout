@@ -77,25 +77,35 @@ namespace apcurium.MK.Booking.Services
             return GetInstance().ProviderType(orderId);
         }
 
-        public PreAuthorizePaymentResponse PreAuthorize(Guid orderId, AccountDetail account, decimal amountToPreAuthorize, bool isReAuth = false)
+        public PreAuthorizePaymentResponse PreAuthorize(Guid orderId, AccountDetail account, decimal amountToPreAuthorize, bool isReAuth = false, bool isSettlingOverduePayment = false)
         {
             // we pass the orderId just in case it might exist but most of the time it won't since preauth is done before order creation
             if (IsPayPal(account.Id, orderId))
             {
-                return _payPalServiceFactory.GetInstance().PreAuthorize(account.Id, orderId, account.Email, amountToPreAuthorize);
+                return _payPalServiceFactory.GetInstance().PreAuthorize(account.Id, orderId, account.Email, amountToPreAuthorize, isReAuth);
             }
 
-            return GetInstance().PreAuthorize(orderId, account, amountToPreAuthorize);
+            return GetInstance().PreAuthorize(orderId, account, amountToPreAuthorize, isReAuth, isSettlingOverduePayment);
         }
 
-        public CommitPreauthorizedPaymentResponse CommitPayment(Guid orderId, AccountDetail account, decimal preauthAmount, decimal amount, decimal meterAmount, decimal tipAmount, string transactionId)
+        public CommitPreauthorizedPaymentResponse CommitPayment(Guid orderId, AccountDetail account, decimal preauthAmount, decimal amount, decimal meterAmount, decimal tipAmount, string transactionId, string reAuthOrderId = null)
         {
             if (IsPayPal(orderId: orderId))
             {
                 return _payPalServiceFactory.GetInstance().CommitPayment(orderId, preauthAmount, amount, meterAmount, tipAmount, transactionId);
             }
 
-            return GetInstance().CommitPayment(orderId, account, preauthAmount, amount, meterAmount, tipAmount, transactionId);
+            return GetInstance().CommitPayment(orderId, account, preauthAmount, amount, meterAmount, tipAmount, transactionId, reAuthOrderId);
+        }
+
+        public BasePaymentResponse RefundPayment(Guid orderId)
+        {
+            if (IsPayPal(orderId: orderId))
+            {
+                return _payPalServiceFactory.GetInstance().RefundWebPayment(orderId);
+            }
+
+            return GetInstance().RefundPayment(orderId);
         }
 
         public DeleteTokenizedCreditcardResponse DeleteTokenizedCreditcard(string cardToken)

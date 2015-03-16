@@ -81,7 +81,8 @@
             _.extend(data, {
                 vehiclesList: TaxiHail.vehicleTypes,
                 paymentsList: chargeTypes,
-                showPassengerNumber: TaxiHail.parameters.showPassengerNumber
+                showPassengerNumber: TaxiHail.parameters.showPassengerNumber,
+                showEstimate: this.showEstimate
             });
 
             this.$el.html(this.renderTemplate(data));
@@ -166,17 +167,40 @@
             this.model.set('FromWebApp', true);
             this.model.saveLocal();
 
+            this.$('.errors').html('');        
+
+            var numberOfPassengers = this.model.get('settings')['passengers'];
+            var vehicleType = TaxiHail.vehicleTypes[0];
+            var vehicleTypeId =  this.model.get('settings')['vehicleTypeId'];           
+            if(vehicleTypeId)
+            {
+                vehicleType = $.grep(TaxiHail.vehicleTypes, function (e) { return e.referenceDataVehicleId == vehicleTypeId; })[0];
+            }
+
+            if (TaxiHail.parameters.showPassengerNumber
+                && vehicleType.maxNumberPassengers > 0
+                && numberOfPassengers > vehicleType.maxNumberPassengers)
+            {
+                this.$(':submit').button('reset');
+                this.$('.errors').html(TaxiHail.localize("CreateOrder_InvalidPassengersNumber"));
+                return;
+            }
+
             if (this.model.isPayingWithAccountCharge() && !this.model.get('market')) {
                 //account charge type payment                
                 TaxiHail.app.navigate('bookaccountcharge', { trigger: true});
             }else{
                 this.model.save({}, {
-                    success : TaxiHail.postpone(function (model) {
-                        // Wait for order to be created before redirecting to status
-                            ga('send', 'event', 'button', 'click', 'book web', 0);
+                    success: TaxiHail.postpone(function (model) {
+                        // Wait for response before doing anything
+                        ga('send', 'event', 'button', 'click', 'book web', 0);
+                        if (this.model.isPayingWithPayPal()) {
+                            window.location.replace(model.get('payPalCheckoutUrl'));
+                        } else {
                             TaxiHail.app.navigate('status/' + model.id, { trigger: true, replace: true /* Prevent user from coming back to this screen */ });
+                        }
                     }, this),
-                        error: this.showErrors
+                    error: this.showErrors
                 });
             }
         },

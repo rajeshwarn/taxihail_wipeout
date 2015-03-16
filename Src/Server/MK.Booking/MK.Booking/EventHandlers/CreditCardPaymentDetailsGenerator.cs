@@ -1,6 +1,4 @@
-﻿#region
-
-using System;
+﻿using System;
 using System.Linq;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Events;
@@ -9,16 +7,17 @@ using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
+using apcurium.MK.Common.Extensions;
 using Infrastructure.Messaging.Handling;
-
-#endregion
 
 namespace apcurium.MK.Booking.EventHandlers
 {
     public class CreditCardPaymentDetailsGenerator :
         IEventHandler<CreditCardPaymentInitiated>,
         IEventHandler<CreditCardPaymentCaptured_V2>,
-        IEventHandler<CreditCardErrorThrown>
+        IEventHandler<CreditCardErrorThrown>,
+        IEventHandler<PrepaidOrderPaymentInfoUpdated>,
+        IEventHandler<RefundedOrderUpdated>
     {
         private readonly Func<BookingDbContext> _contextFactory;
         private readonly Resources.Resources _resources;
@@ -46,6 +45,14 @@ namespace apcurium.MK.Booking.EventHandlers
                 payment.Meter = @event.Meter;
                 payment.Tax = @event.Tax;
                 payment.Tip = @event.Tip;
+
+                // Update payment details after settling an overdue payment
+                if (@event.NewCardToken.HasValue())
+                {
+                    payment.CardToken = @event.NewCardToken;
+                }
+                payment.IsCancelled = false;
+                payment.Error = null;
 
                 var order = context.Find<OrderDetail>(payment.OrderId);
                 if (!order.Fare.HasValue || order.Fare == 0)
@@ -103,7 +110,44 @@ namespace apcurium.MK.Booking.EventHandlers
                 payment.IsCancelled = true;
                 payment.Error = @event.Reason;
 
-                context.SaveChanges();
+                context.Save(payment);
+            }
+        }
+
+        public void Handle(PrepaidOrderPaymentInfoUpdated @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                context.Save(new OrderPaymentDetail
+                {
+                    PaymentId = @event.SourceId,
+                    Amount = @event.Amount,
+                    Meter = @event.Meter,
+                    Tax = @event.Tax,
+                    Tip = @event.Tip,
+                    OrderId = @event.OrderId,
+                    TransactionId = @event.TransactionId,
+                    Provider = PaymentProvider.PayPal,
+                    Type = PaymentType.PayPal,
+                    IsCompleted = true
+                });
+            }
+        }
+
+        public void Handle(RefundedOrderUpdated @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var payment = context.Set<OrderPaymentDetail>().FirstOrDefault(p => p.OrderId == @event.SourceId);
+                if (payment == null)
+                {
+                    throw new InvalidOperationException("Payment not found");
+                }
+
+                payment.IsRefunded = @event.IsSuccessful;
+                payment.Error = @event.Message;
+
+                context.Save(payment);
             }
         }
     }

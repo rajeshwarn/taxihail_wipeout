@@ -59,7 +59,8 @@ namespace apcurium.MK.Booking.Test.OrderFixture
                     ReceiptEmail = true,
                     PromotionUnlockedEmail = true,
                     VehicleAtPickupPush = true,
-                    PromotionUnlockedPush = true
+                    PromotionUnlockedPush = true,
+                    UnpairingReminderPush = true
                 });
             }
         }
@@ -87,7 +88,6 @@ namespace apcurium.MK.Booking.Test.OrderFixture
                 new StaticMap(),
                 null,
                 _geocodingMock.Object,
-                null,
                 null);
             notificationService.SetBaseUrl(new Uri("http://www.example.net"));
 
@@ -131,9 +131,9 @@ namespace apcurium.MK.Booking.Test.OrderFixture
                 Toll = 3.68,
                 Tip = 5.25,
                 Tax = 2.21,
-                CardOnFileInfo = new SendReceipt.CardOnFile(22, 12354 + "qweqw", "1234", "Visa")
+                PaymentInfo = new SendReceipt.Payment(22, 12354 + "qweqw", "1234", "Visa")
                 {
-                    LastFour = "6578",
+                    Last4Digits = "6578",
                     NameOnCard = "Bob"
                 },
                 PickupAddress = new Address
@@ -161,7 +161,7 @@ namespace apcurium.MK.Booking.Test.OrderFixture
                 Toll = 3.68,
                 Tip = 5.25,
                 Tax = 2.21,
-                CardOnFileInfo = new SendReceipt.CardOnFile(22, 12354 + "qweqw", "1231", "PayPal"),
+                PaymentInfo = new SendReceipt.Payment(22, 12354 + "qweqw", "1231", "PayPal"),
                 PickupAddress = new Address
                 {
                     FullAddress = "5250, rue Ferrier, Montreal, H1P 4L4"

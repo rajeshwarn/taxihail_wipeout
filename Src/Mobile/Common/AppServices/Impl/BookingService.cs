@@ -55,12 +55,10 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			order.ClientLanguageCode = _localize.CurrentLanguage;
 			var orderDetail = await UseServiceClientAsync<OrderServiceClient, OrderStatusDetail>(service => service.CreateOrder(order));
 
-			if (orderDetail.IBSOrderId.HasValue
-				&& orderDetail.IBSOrderId > 0
-				&& !order.PickupDate.HasValue) // Check if this is a scheduled ride
+			if (!order.PickupDate.HasValue) // Check if this is a scheduled ride
 			{
                 UserCache.Set ("LastOrderId", orderDetail.OrderId.ToString ()); // Need to be cached as a string because of a jit error on device
-            }
+			}
 
 			Task.Run(() => _accountService.RefreshCache (true));
 

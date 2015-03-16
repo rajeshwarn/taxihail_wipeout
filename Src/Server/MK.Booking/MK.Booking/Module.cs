@@ -77,6 +77,7 @@ namespace apcurium.MK.Booking
             container.RegisterInstance<IAppStartUpLogDao>(new AppStartUpLogDao(() => container.Resolve<BookingDbContext>()));
             container.RegisterInstance<IPasswordService>(new PasswordService());
             container.RegisterInstance<IRuleCalculator>(new RuleCalculator(container.Resolve<IRuleDao>()));
+            container.RegisterInstance<IOverduePaymentDao>(new OverduePaymentDao(() => container.Resolve<BookingDbContext>()));
             
             RegisterMaps();
             RegisterCommandHandlers(container);
@@ -134,6 +135,7 @@ namespace apcurium.MK.Booking
             container.RegisterType<IEventHandler, UserTaxiHailNetworkSettingsGenerator>("TaxiHailNetworkSettingsGenerator");
             container.RegisterType<IEventHandler, PromotionDetailGenerator>("PromotionDetailGenerator");
             container.RegisterType<IEventHandler, PromotionTriggerGenerator>("PromotionTriggerGenerator");
+            container.RegisterType<IEventHandler, OverduePaymentDetailGenerator>("OverduePaymentDetailGenerator");
 
             // Integration event handlers
             container.RegisterType<IEventHandler, PushNotificationSender>("PushNotificationSender");

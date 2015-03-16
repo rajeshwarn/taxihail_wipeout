@@ -3,9 +3,9 @@ using Infrastructure.Messaging;
 
 namespace apcurium.MK.Booking.Commands
 {
-    public class CancelOrderBecauseOfIbsError : ICommand
+    public class CancelOrderBecauseOfError : ICommand
     {
-        public CancelOrderBecauseOfIbsError()
+        public CancelOrderBecauseOfError()
         {
             Id = Guid.NewGuid();
         }
@@ -15,6 +15,8 @@ namespace apcurium.MK.Booking.Commands
         public string ErrorCode { get; set; }
 
         public string ErrorDescription { get; set; }
+
+        public bool WasPrepaid { get; set; }
 
         public Guid Id { get; private set; }
     }

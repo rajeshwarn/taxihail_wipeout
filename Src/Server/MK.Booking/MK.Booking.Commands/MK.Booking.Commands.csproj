@@ -56,7 +56,10 @@
     <Compile Include="AddOrUpdateUserTaxiHailNetworkSettings.cs" />
     <Compile Include="AddPopularAddress.cs" />
     <Compile Include="AddUserToPromotionWhiteList.cs" />
-    <Compile Include="CancelOrderBecauseOfIbsError.cs" />
+    <Compile Include="CancelOrderBecauseOfError.cs" />
+    <Compile Include="UpdateRefundedOrder.cs" />
+    <Compile Include="ReactToPaymentFailure.cs" />
+    <Compile Include="MarkPrepaidOrderAsSuccessful.cs" />
     <Compile Include="ImportAccountCharge.cs" />
     <Compile Include="AddUpdateAccountCharge.cs" />
     <Compile Include="AddUpdateVehicleType.cs" />
@@ -83,7 +86,9 @@
     <Compile Include="PairForPayment.cs" />
     <Compile Include="RedeemPromotion.cs" />
     <Compile Include="RetriggerTermsAndConditions.cs" />
+    <Compile Include="SaveTemporaryOrderCreationInfo.cs" />
     <Compile Include="SendAccountConfirmationSMS.cs" />
+    <Compile Include="SettleOverduePayment.cs" />
     <Compile Include="SwitchOrderToNextDispatchCompany.cs" />
     <Compile Include="UnlinkAccountFromIbs.cs" />
     <Compile Include="UnlinkAllPayPalAccounts.cs" />

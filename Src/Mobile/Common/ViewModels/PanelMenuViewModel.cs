@@ -9,29 +9,26 @@ using ServiceStack.Text;
 using Params = System.Collections.Generic.Dictionary<string, string>;
 using apcurium.MK.Booking.Mobile.ViewModels.Payment;
 using System.Threading.Tasks;
+using apcurium.MK.Booking.Api.Contract.Resources.Payments;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
 	public class PanelMenuViewModel : BaseViewModel
     {
-		private readonly BaseViewModel _parent;
-		private readonly IMvxWebBrowserTask _browserTask;
+	    private readonly IMvxWebBrowserTask _browserTask;
 
 		private readonly IOrderWorkflowService _orderWorkflowService;
 		private readonly IAccountService _accountService;
 		private readonly IPhoneService _phoneService;
 		private readonly IPaymentService _paymentService;
 
-		public PanelMenuViewModel (BaseViewModel parent, 
-			IMvxWebBrowserTask browserTask, 
+		public PanelMenuViewModel (IMvxWebBrowserTask browserTask, 
 			IOrderWorkflowService orderWorkflowService,
 			IAccountService accountService,
 			IPhoneService phoneService,
 			IPaymentService paymentService)
         {
-            _parent = parent;
-			_browserTask = browserTask;
-
+		    _browserTask = browserTask;
 			_orderWorkflowService = orderWorkflowService;
 			_accountService = accountService;
 			_phoneService = phoneService;
@@ -41,8 +38,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		public async Task Start()
 		{
-            // N.B.: This setup is for iOS only! For Android see: SubView_MainMenu.xaml
-
 			// Load cached payment settings
 			var paymentSettings = await _paymentService.GetPaymentSettings();
 			IsPayInTaxiEnabled = paymentSettings.IsPayInTaxiEnabled || paymentSettings.PayPalClientSettings.IsEnabled;
@@ -51,7 +46,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		    var notificationSettings = await _accountService.GetNotificationSettings(true);
 
             // Load and cache user notification settings. DO NOT await.
+#pragma warning disable 4014
             _accountService.GetNotificationSettings();
+#pragma warning restore 4014
 
 		    IsNotificationsEnabled = notificationSettings.Enabled;
             IsTaxiHailNetworkEnabled = Settings.Network.Enabled;
@@ -59,6 +56,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             // Display a watermark indicating on which server the application is pointing
             SetServerWatermarkText();
 
+			// N.B.: This setup is for iOS only! For Android see: SubView_MainMenu.xaml
 			ItemMenuList.Add(new ItemMenuModel { Text = this.Services().Localize["PanelMenuViewLocationsText"], NavigationCommand = NavigateToMyLocations });
 			ItemMenuList.Add(new ItemMenuModel { Text = this.Services().Localize["PanelMenuViewOrderHistoryText"], NavigationCommand = NavigateToOrderHistory });
 			ItemMenuList.Add(new ItemMenuModel { Text = this.Services().Localize["PanelMenuViewUpdateProfileText"], NavigationCommand = NavigateToUpdateProfile });
@@ -222,9 +220,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					CloseMenu();
 					_orderWorkflowService.PrepareForNewOrder();
 					_accountService.SignOut();         
-					ShowViewModel<LoginViewModel> ();
-
-                    Close( _parent );
+					ShowViewModelAndClearHistory<LoginViewModel> ();
                 });
             }
         }
@@ -283,8 +279,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			{
 				return this.GetCommand(() =>
 				{
-					CloseMenu();
-					ShowViewModel<CreditCardAddViewModel>();
+                        CloseMenu();
+
+                        ShowViewModel<CreditCardAddViewModel>();
 				});
 			}
 		}

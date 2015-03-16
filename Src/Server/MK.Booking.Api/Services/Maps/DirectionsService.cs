@@ -11,6 +11,7 @@ using apcurium.MK.Booking.Maps;
 using apcurium.MK.Booking.Maps.Geo;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Diagnostic;
 using ServiceStack.Common.Extensions;
 using ServiceStack.ServiceInterface;
 
@@ -23,14 +24,16 @@ namespace apcurium.MK.Booking.Api.Services.Maps
         private readonly IDirections _client;
         private readonly IServerSettings _serverSettings;
         private readonly IOrderDao _orderDao;
-        private readonly IVehicleClient _vehicleClient;
+        private readonly VehicleService _vehicleService;
+        private readonly ILogger _logger;
 
-        public DirectionsService(IDirections client, IServerSettings serverSettings, IOrderDao orderDao, IVehicleClient vehicleClient)
+        public DirectionsService(IDirections client, IServerSettings serverSettings, IOrderDao orderDao, VehicleService vehicleService, ILogger logger)
         {
             _client = client;
             _serverSettings = serverSettings;
             _orderDao = orderDao;
-            _vehicleClient = vehicleClient;
+            _vehicleService = vehicleService;
+            _logger = logger;
         }
 
         public object Get(DirectionsRequest request)
@@ -51,28 +54,38 @@ namespace apcurium.MK.Booking.Api.Services.Maps
                 && request.OriginLat.HasValue
                 && request.OriginLng.HasValue)
             {
-                // Get available vehicles                
-                var availableVehiclesTask = _vehicleClient.GetAvailableVehiclesAsync(request.OriginLat.Value,
-                    request.OriginLng.Value, null, request.Market);
-                
-                var availableVehicles = availableVehiclesTask.Result;
-
-                // Get nearest available vehicle
-                var nearestAvailableVehicle = GetNearestAvailableVehicle(request.OriginLat.Value,
-                                                                         request.OriginLng.Value, 
-                                                                         availableVehicles);
-                
-                if (nearestAvailableVehicle != null)
+                try
                 {
-                    // Get eta
-                    var etaDirectionInfo = 
-                            _client.GetEta(nearestAvailableVehicle.Latitude,
-                                           nearestAvailableVehicle.Longitude,
-                                           request.OriginLat.Value,
-                                           request.OriginLng.Value);
+                    // Get available vehicles                
+                    var availableVehicles = _vehicleService.Post(new AvailableVehicles
+                    {
+                        Latitude = request.OriginLat.Value,
+                        Longitude = request.OriginLng.Value,
+                        VehicleTypeId = null,
+                        Market = request.Market
+                    }).ToArray();
 
-                    directionInfo.EtaFormattedDistance = etaDirectionInfo.FormattedDistance;
-                    directionInfo.EtaDuration = etaDirectionInfo.Duration;
+                    // Get nearest available vehicle
+                    var nearestAvailableVehicle = GetNearestAvailableVehicle(request.OriginLat.Value,
+                        request.OriginLng.Value,
+                        availableVehicles);
+
+                    if (nearestAvailableVehicle != null)
+                    {
+                        // Get eta
+                        var etaDirectionInfo =
+                            _client.GetEta(nearestAvailableVehicle.Latitude,
+                                nearestAvailableVehicle.Longitude,
+                                request.OriginLat.Value,
+                                request.OriginLng.Value);
+
+                        directionInfo.EtaFormattedDistance = etaDirectionInfo.FormattedDistance;
+                        directionInfo.EtaDuration = etaDirectionInfo.Duration;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogMessage("Direction Service: Error trying to get ETA: " + ex.Message, ex);
                 }
             }
 

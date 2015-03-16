@@ -136,5 +136,13 @@ namespace apcurium.MK.Booking.ReadModel.Query
                     .Select(x => new Position(x.Latitude, x.Longitude));
             }
         }
+
+        public TemporaryOrderCreationInfoDetail GetTemporaryInfo(Guid orderId)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                return context.Query<TemporaryOrderCreationInfoDetail>().SingleOrDefault(c => c.OrderId == orderId);
+            }
+        }
     }
 }

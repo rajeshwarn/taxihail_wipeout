@@ -30,10 +30,12 @@ namespace apcurium.MK.Booking.EventHandlers
         IEventHandler<CreditCardAddedOrUpdated>,
         IEventHandler<CreditCardRemoved>,
         IEventHandler<AllCreditCardsRemoved>,
+        IEventHandler<CreditCardDeactivated>,
         IEventHandler<AccountLinkedToIbs>,
         IEventHandler<AccountUnlinkedFromIbs>,
         IEventHandler<PayPalAccountLinked>,
-        IEventHandler<PayPalAccountUnlinked>
+        IEventHandler<PayPalAccountUnlinked>,
+        IEventHandler<OverduePaymentSettled>
     {
         private readonly IServerSettings _serverSettings;
         private readonly Func<BookingDbContext> _contextFactory;
@@ -249,6 +251,20 @@ namespace apcurium.MK.Booking.EventHandlers
             }
         }
 
+        public void Handle(CreditCardDeactivated @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                if (!_serverSettings.GetPaymentSettings().IsOutOfAppPaymentDisabled)
+                {
+                    // If pay in taxi is not disable, this becomes the default payment method
+                    var account = context.Find<AccountDetail>(@event.SourceId);
+                    account.Settings.ChargeTypeId = ChargeTypes.PaymentInCar.Id;
+                    context.Save(account);
+                }
+            }
+        }
+
         public void Handle(AccountLinkedToIbs @event)
         {
             using (var context = _contextFactory.Invoke())
@@ -324,6 +340,20 @@ namespace apcurium.MK.Booking.EventHandlers
 
                 context.RemoveWhere<PayPalAccountDetails>(x => x.AccountId == @event.SourceId);
                 context.SaveChanges();
+            }
+        }
+
+        public void Handle(OverduePaymentSettled @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                if (_serverSettings.GetPaymentSettings().IsPayInTaxiEnabled)
+                {
+                    // Re-enable card on file as the default payment method
+                    var account = context.Find<AccountDetail>(@event.SourceId);
+                    account.Settings.ChargeTypeId = ChargeTypes.CardOnFile.Id;
+                    context.Save(account);
+                }
             }
         }
     }

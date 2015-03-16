@@ -2,8 +2,6 @@
     <div class="span6">
         <div class="well">
             <h4>{{localize "Confirm Information"}}</h4>
-            
-            <div class="errors" style="margin-top: 10px;"></div>
             <form class="form-horizontal clearfix" id="updateBookingSettingsForm">
               
               <div class="control-group">
@@ -22,19 +20,24 @@
                   <label id="inputPickup" class='input-block-level'>{{pickupAddress.fullAddress}}</label>
                 </div>
               </div>
-              <div class="control-group">
-                <label class="control-label" for="inputDestination">{{localize "Destination"}}</label>
-                <div class="controls">
-                  <label id="inputDestination" data-dropoff class='input-block-level'>{{dropOffAddress.fullAddress}}</label>
+                <div class="control-group">
+                    <label class="control-label" for="inputDestination">{{localize "Destination"}}</label>
+                    <div class="controls">
+                        <label id="inputDestination" data-dropoff class='input-block-level'>{{dropOffAddress.fullAddress}}</label>
+                    </div>
                 </div>
-              </div>
-              <div class="control-group" data-popover data-placement="left">
-                <label class="control-label" for="inputEstimate">{{localize "Estimated Fare"}}</label>
-                <div class="controls">
-                  <label id="inputEstimate" class='input-block-level'><span class='fare'>{{estimateDisplay}}</span></label>
+
+                {{#if showEstimate}}
+                <div class="control-group" data-popover data-placement="left">
+                    <label class="control-label" for="inputEstimate">{{localize "Estimated Fare"}}</label>
+                    <div class="controls">
+                        <label id="inputEstimate" class='input-block-level'><span class='fare'>{{estimateDisplay}}</span></label>
+                    </div>
                 </div>
-              </div>
-              <br/>
+                {{/if}}
+
+
+                <br/>
                 <div class="control-group">
                     <label class="control-label" for="inputName">{{localize "Name"}}</label>
                     <div class="controls">
@@ -112,7 +115,7 @@
                   <a href='#' class='btn  span' data-action='cancel'>{{localize "Cancel"}}</a>
                 </div>
             </form>
-
+            <div class="errors" style="margin-top: 10px;"></div>
         </div>
     </div>
 </div>

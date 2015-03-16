@@ -1,12 +1,17 @@
 ﻿<!-- PAYMENT OPTION-->
 <h4 class="table-title">{{localize "Payment Mode"}}</h4>
 
-    <div class="control-group" id="automaticPairingDiv">
-        <label class="control-label settingsLabel">{{{localize "Automatic Pairing"}}}</label>
-        <select name="automaticPaymentPairing" class="settingsBox">
-            <option value="{{automaticPaymentPairing}}" selected="">{{localizeBool automaticPaymentPairing true="Yes" false="No"}}</option>
-            <option value="{{invertedBool automaticPaymentPairing}}">{{localizeBool automaticPaymentPairing true="No" false="Yes"}}</option>
+    <div class="control-group" id="isUnpairingDisabledDiv">
+        <label class="control-label settingsLabel">{{{localize "Disable Unpairing"}}}</label>
+        <select name="isUnpairingDisabled" class="settingsBox">
+            <option value="{{isUnpairingDisabled}}" selected="">{{localizeBool isUnpairingDisabled true="Yes" false="No"}}</option>
+            <option value="{{invertedBool isUnpairingDisabled}}">{{localizeBool isUnpairingDisabled true="No" false="Yes"}}</option>
         </select>
+    </div>
+
+    <div class="control-group" id="unpairingTimeOutDiv">
+        <label class="control-label settingsLabel">{{{localize "Unpair Time Limit (seconds)"}}}</label>
+        <input type="text" class="input-block-level settingsBox" name="unpairingTimeOut" value="{{unpairingTimeOut}}" />
     </div>
 
     <div class="control-group" id="preAuthAmountEnabledDiv">
@@ -195,6 +200,9 @@
 <label class="control-label settingsLabel">{{{localize "Secret"}}}</label>
 <input id="sandboxClientSecret" type="text" class="input-block-level settingsBox" name="payPalServerSettings.sandboxCredentials.secret" value="{{payPalServerSettings.sandboxCredentials.secret}}" />
 
+<label class="control-label settingsLabel">{{{localize "MerchantId"}}}</label>
+<input id="sandboxMerchantId" type="text" class="input-block-level settingsBox" name="payPalServerSettings.sandboxCredentials.merchantId" value="{{payPalServerSettings.sandboxCredentials.merchantId}}" />
+
 <div id="payPalSandboxSettingsMessageZone"></div>
 <button type='button' id="testPayPalSandboxSettingsButton" class='btn'>{{localize "Test"}}</button>
 
@@ -205,7 +213,10 @@
 <input id="prodClientId" type="text" class="input-block-level settingsBox" name="payPalClientSettings.credentials.clientId" value="{{payPalClientSettings.credentials.clientId}}" />
 
 <label class="control-label settingsLabel">{{{localize "Secret"}}}</label>
-<input id="prodClientSecret" type="text" class="input-block-level settingsBox" name="payPalServerSettings.credentials.secret" value="{{payPalServerSettings.credentials.secret}}" />
+<input id="prodClientSecret" type="text" class="input-block-level settingsBox" name="payPalServerSettings.credentials.secret" value="{{payPalServerSettings.credentials.secret}}"/>
+
+<label class="control-label settingsLabel">{{{localize "MerchantId"}}}</label>
+<input id="prodMerchantId" type="text" class="input-block-level settingsBox" name="payPalServerSettings.credentials.merchantId" value="{{payPalServerSettings.credentials.merchantId}}" />
 
 <div id="payPalProductionSettingsMessageZone"></div>
 <button type='button' id="payPalProductionSettingsButton" class='btn'>{{localize "Test"}}</button>

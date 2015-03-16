@@ -574,4 +574,23 @@
   <string name="PayPalLinkedInfo">Account Linked</string>
   <string name="Error">Error</string>
   <string name="NoPairingCreditCard">None</string>
+  <string name="Unpair">Pagar en el vehículo</string>
+  <string name="UnpairErrorMessage">Hubo un error desincronizando, por favor intente nuevamente</string>
+  <string name="UnpairPayInCar">Pagar en el vehículo</string>
+  <string name="InvalidPassengersNumberTitle">Invalid Number of Passengers</string>
+  <string name="InvalidPassengersNumber">The vehicle type that you selected does not have enough seats to accommodate your number of passengers. Please change your selection or book more than one car to accommodate your party size.</string>
+  <string name="Overdue_View">Overdue Payement</string>
+  <string name="Overdue_TransactionId">Transaction Id:</string>
+  <string name="Overdue_AddNewCard">Update Credit Card</string>
+  <string name="Overdue_Date">Transaction date:</string>
+  <string name="Overdue_Retry">Pay Now</string>
+  <string name="Overdue_Amount">Amount due:</string>
+  <string name="Overdue_Failed_Message">Your transaction was denied, please try again later or replace your credit card with a new one.</string>
+  <string name="Overdue_Failed_Title">Error settling declined payment</string>
+  <string name="Overdue_Succeed_Message">Your declined payment of {0} has been settled and your account is now enabled to pay with your card on file by default.</string>
+  <string name="Overdue_Succeed_Title">Payment Declined</string>
+  <string name="Overdue_IBSOrderId">Order:</string>
+  <string name="Overdue_Instructions">Your credit card failed to pay the previous ride, you need to either retry to pay again or update your credit card information.</string>
+  <string name="View_Overdue">Payment Declined</string>
+  <string name="Overdue_OutstandingPaymentExists">Your credit card failed to pay the previous ride. You will need to pay this outstanding amount for your card be reactivated.</string>
 </resources>

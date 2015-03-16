@@ -1,5 +1,3 @@
-#region
-
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -9,9 +7,8 @@ using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Booking.Api.Client.Extensions;
+using apcurium.MK.Booking.Api.Contract.Resources.Payments;
 using MK.Common.Configuration;
-
-#endregion
 
 namespace apcurium.MK.Booking.Api.Client.TaxiHail
 {
@@ -19,13 +16,11 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
     {
         private readonly IPaymentServiceClient _paymentService;
 
-        public AccountServiceClient(string url, string sessionId, IPackageInfo packageInfo,
-            IPaymentServiceClient tokenizationService = null)
+        public AccountServiceClient(string url, string sessionId, IPackageInfo packageInfo, IPaymentServiceClient tokenizationService = null)
             : base(url, sessionId, packageInfo)
         {
             _paymentService = tokenizationService;
         }
-
 
         public Task<Account> GetMyAccount()
         {

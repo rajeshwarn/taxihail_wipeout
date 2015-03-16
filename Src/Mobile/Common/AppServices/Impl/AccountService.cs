@@ -515,7 +515,10 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 refData.PaymentsList.Remove(i => i.Id == ChargeTypes.PayPal.Id);
 		    }
 
-            if (!CurrentAccount.DefaultCreditCard.HasValue || CurrentAccount.IsPayPalAccountLinked)
+		var creditCard = await GetCreditCard();
+            if (creditCard == null
+                || CurrentAccount.IsPayPalAccountLinked
+                || creditCard.IsDeactivated)
 		    {
 		        refData.PaymentsList.Remove(i => i.Id == ChargeTypes.CardOnFile.Id);
 		    }
@@ -713,7 +716,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
             await UseServiceClientAsync<IAccountServiceClient>(client => client.UpdateUserTaxiHailNetworkSettings(request));
         }
-
+			
 		public async void LogApplicationStartUp()
 		{
 			try

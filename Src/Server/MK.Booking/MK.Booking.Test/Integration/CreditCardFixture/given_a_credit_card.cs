@@ -67,8 +67,38 @@ namespace apcurium.MK.Booking.Test.Integration.CreditCardFixture
 
             using (var context = new BookingDbContext(DbName))
             {
-                var address = context.Find<CreditCardDetails>(_creditCardId);
-                Assert.IsNull(address);
+                var creditCard = context.Find<CreditCardDetails>(_creditCardId);
+                Assert.IsNull(creditCard);
+            }
+        }
+
+        [Test]
+        public void when_creditcard_is_deactivated()
+        {
+            Sut.Handle(new CreditCardDeactivated
+            {
+                SourceId = _accountId
+            });
+
+            using (var context = new BookingDbContext(DbName))
+            {
+                var creditCard = context.Find<CreditCardDetails>(_creditCardId);
+                Assert.AreEqual(true, creditCard.IsDeactivated);
+            }
+        }
+
+        [Test]
+        public void when_overdue_payment_settled()
+        {
+            Sut.Handle(new OverduePaymentSettled
+            {
+                SourceId = _accountId
+            });
+
+            using (var context = new BookingDbContext(DbName))
+            {
+                var creditCard = context.Find<CreditCardDetails>(_creditCardId);
+                Assert.AreEqual(false, creditCard.IsDeactivated);
             }
         }
     }

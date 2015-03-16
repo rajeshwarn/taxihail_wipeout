@@ -6,6 +6,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		DestinationAddressRequired,
 		PickupAddressRequired,
 		InvalidPickupDate,
+		InvalidPassengersNumber
     }
 }
 

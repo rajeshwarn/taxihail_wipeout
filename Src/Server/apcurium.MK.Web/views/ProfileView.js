@@ -15,7 +15,6 @@
                     var re = new RegExp(regexp);
                     return this.optional(element) || re.test(value);
                 }
-                
             );
 
             this.render();
@@ -30,10 +29,25 @@
                 data.settings.accountNumber = "";
             }
 
+            var tipPercentages = [
+                { id: 0, display: "0%" },
+                { id: 5, display: "5%" },
+                { id: 10, display: "10%" },
+                { id: 15, display: "15%" },
+                { id: 18, display: "18%" },
+                { id: 20, display: "20%" },
+                { id: 25, display: "25%" }
+            ];
+
+            var displayTipSelection = TaxiHail.parameters.isChargeAccountPaymentEnabled
+                || TaxiHail.parameters.isPayPalEnabled;
+
             _.extend(data, {
                 vehiclesList: TaxiHail.vehicleTypes,
                 paymentsList: TaxiHail.referenceData.paymentsList,
-                isChargeAccountPaymentEnabled: TaxiHail.parameters.isChargeAccountPaymentEnabled
+                isChargeAccountPaymentEnabled: TaxiHail.parameters.isChargeAccountPaymentEnabled,
+                displayTipSelection: displayTipSelection,
+                tipPercentages: tipPercentages
             });
 
             this.$el.html(this.renderTemplate(data));
@@ -92,7 +106,16 @@
             var $input = $(e.currentTarget);
             var settings = this.model.get('settings');
 
-            settings[$input.attr("name")] = $input.val();
+            var name = $input.attr("name");
+            var value = $input.val();
+
+            // Update local model values
+            if (name === "defaultTipPercent") {
+                this.model.set("defaultTipPercent", value);
+            }
+            settings[name] = value;
+            settings["defaultTipPercent"] = this.model.get("defaultTipPercent");
+
             this.$(':submit').removeClass('disabled');
         }
     });

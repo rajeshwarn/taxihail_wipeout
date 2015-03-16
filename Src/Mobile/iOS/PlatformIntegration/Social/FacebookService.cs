@@ -29,8 +29,6 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration.Social
                         allowLoginUI: false,
                         completion: (session, status, error) => {});
                 }                   
-
-                FBAppCall.HandleDidBecomeActive();
             }
             catch(Exception ex)
             {

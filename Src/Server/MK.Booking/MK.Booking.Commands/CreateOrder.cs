@@ -53,6 +53,8 @@ namespace apcurium.MK.Booking.Commands
         public string CompanyName { get; set; }
 
         public string Market { get; set; }
+
+        public bool IsPrepaid { get; set; }
         
         public class PaymentInformation
         {

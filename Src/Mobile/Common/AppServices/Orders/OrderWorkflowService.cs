@@ -159,6 +159,31 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			}
 		}
 
+		public async Task ValidateNumberOfPassengers(int? numberOfPassengers)
+		{
+			var vehicleTypeId = await _vehicleTypeSubject.Take(1).ToTask();
+			var vehicleTypes = await _accountService.GetVehiclesList();
+			var data = await _accountService.GetReferenceData();
+			var settings = await _bookingSettingsSubject.Take(1).ToTask();
+			var defaultVehicleType = data.VehiclesList.FirstOrDefault (x => x.IsDefault.HasValue && x.IsDefault.Value);
+
+			if (vehicleTypeId == null
+				&& defaultVehicleType != null)
+			{
+				vehicleTypeId = defaultVehicleType.Id;
+			}
+
+			var vehicleType = vehicleTypes.FirstOrDefault(v => v.ReferenceDataVehicleId == vehicleTypeId);
+			numberOfPassengers = numberOfPassengers ?? settings.Passengers;
+
+			if (vehicleType != null
+				&& vehicleType.MaxNumberPassengers > 0
+				&& numberOfPassengers > vehicleType.MaxNumberPassengers)
+			{
+				throw new OrderValidationException("Number of passengers is too large", OrderValidationError.InvalidPassengersNumber);
+			}
+		}
+
 		public async Task ValidatePickupAndDestination()
 		{
 			var pickupAddress = await _pickupAddressSubject.Take(1).ToTask();
@@ -204,15 +229,17 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			{
 				var orderStatus = await _bookingService.CreateOrder(order);
 
+			    var currentDate = DateTime.Now;
+
 				var orderCreated = new Order
 				{
-					CreatedDate = DateTime.Now, 
+                    CreatedDate = currentDate, 
 					DropOffAddress = order.DropOffAddress, 
 					IBSOrderId = orderStatus.IBSOrderId, 
 					Id = order.Id,
                     PickupAddress = order.PickupAddress,
-					Note = order.Note, 
-					PickupDate = order.PickupDate.HasValue ? order.PickupDate.Value : DateTime.Now,
+					Note = order.Note,
+                    PickupDate = order.PickupDate ?? currentDate,
 					Settings = order.Settings,
 					PromoCode = order.PromoCode
 				};
@@ -275,6 +302,17 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		        }
 		    }
 
+            // If no booking settings matches the available payment types, take PayInCar
+            // or the first one by default if PayInCar was deactivated
+            var paymentList = await _accountService.GetPaymentsList();
+            if (paymentList.None(x => x.Id == bookingSettings.ChargeTypeId))
+            {
+                var matchingPaymentType = paymentList.FirstOrDefault(p => p.Id == ChargeTypes.PaymentInCar.Id)
+                                          ?? paymentList.FirstOrDefault();
+
+                bookingSettings.ChargeTypeId = matchingPaymentType != null ? matchingPaymentType.Id : null;
+            }
+            
 			_bookingSettingsSubject.OnNext(bookingSettings);
 		}
 

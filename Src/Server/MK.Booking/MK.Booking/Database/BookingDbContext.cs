@@ -62,6 +62,8 @@ namespace apcurium.MK.Booking.Database
             modelBuilder.Entity<AppStartUpLogDetail>().ToTable("AppStartUpLogDetail", SchemaName);
             modelBuilder.Entity<PayPalAccountDetails>().ToTable("PayPalAccountDetails", SchemaName);
             modelBuilder.Entity<OrderReportDetail>().ToTable("OrderReportDetail", SchemaName);
+            modelBuilder.Entity<OrderNotificationDetail>().ToTable("OrderNotificationDetail", SchemaName);
+            modelBuilder.Entity<OverduePaymentDetail>().ToTable("OverduePaymentDetail", SchemaName);
 
             modelBuilder.Entity<AccountChargeQuestion>().ToTable("AccountChargeQuestion", SchemaName);
             modelBuilder.Entity<AccountChargeDetail>().ToTable("AccountChargeDetail", SchemaName)
@@ -71,6 +73,7 @@ namespace apcurium.MK.Booking.Database
                 .WillCascadeOnDelete(true);
 
             modelBuilder.Entity<VehicleTypeDetail>().ToTable("VehicleTypeDetail", SchemaName);
+            modelBuilder.Entity<TemporaryOrderCreationInfoDetail>().ToTable("TemporaryOrderCreationInfoDetail", SchemaName);
         }
 
         public T Find<T>(Guid id) where T : class

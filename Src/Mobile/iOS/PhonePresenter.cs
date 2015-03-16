@@ -23,11 +23,17 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         public override void Show(MvxViewModelRequest request)
         {
-			if(request.ParameterValues != null 
-				&& request.ParameterValues.ContainsKey("clearNavigationStack"))
+			if(request.ParameterValues != null
+                && request.ParameterValues.ContainsKey("clearHistoryExceptFirstElement"))
 			{
-				ClearNavigationStack();
+				ClearNavigationStackExceptFirstElement();
 				return;
+			}
+
+			if (request.ParameterValues != null
+			   && request.ParameterValues.ContainsKey("clearNavigationStack"))
+			{
+                ClearNavigationStack();
 			}
 
             base.Show(request);
@@ -50,7 +56,14 @@ namespace apcurium.MK.Booking.Mobile.Client
             }
         }
 
-		private void ClearNavigationStack()
+        private void ClearNavigationStack()
+        {
+            var navController = Mvx.Resolve<UINavigationController>();
+
+            navController.ViewControllers = new UIViewController[0];
+        }
+
+		private void ClearNavigationStackExceptFirstElement()
 		{
 			var navController = Mvx.Resolve<UINavigationController>();
 
@@ -76,7 +89,6 @@ namespace apcurium.MK.Booking.Mobile.Client
             {
                 Mvx.Warning("Can't remove previous view, not enough UIViewControllers in the stack");
             }
-
         }
 
         private void TryChangeViewPresentation(ChangePresentationHint hint)
@@ -94,7 +106,6 @@ namespace apcurium.MK.Booking.Mobile.Client
             {
                 Mvx.Warning("Can't change presentation, view controller doesn't support IChangePresentation");
             }
-
         }
     }
 }

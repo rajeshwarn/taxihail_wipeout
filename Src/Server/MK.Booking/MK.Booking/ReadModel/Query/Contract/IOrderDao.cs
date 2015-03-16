@@ -20,5 +20,6 @@ namespace apcurium.MK.Booking.ReadModel.Query.Contract
         OrderPairingDetail FindOrderPairingById(Guid orderId);
         void UpdateVehiclePosition(Guid orderId, double? newLatitude, double? newLongitude);
         IEnumerable<Position> GetVehiclePositions(Guid orderId);
+        TemporaryOrderCreationInfoDetail GetTemporaryInfo(Guid orderId);
     }
 }

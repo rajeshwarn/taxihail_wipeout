@@ -114,5 +114,24 @@ namespace apcurium.MK.Booking.Test.AccountFixture
             var @event = _sut.ThenHasSingle<AllCreditCardsRemoved>();
             Assert.AreEqual(_accountId, @event.SourceId);
         }
+
+        [Test]
+        public void when_credit_card_deactivated()
+        {
+            var orderId = Guid.NewGuid();
+
+            _sut.When(new ReactToPaymentFailure
+            {
+                AccountId = _accountId,
+                OrderId = orderId,
+                OverdueAmount = 12.56m
+            });
+
+            var creditCardDeactivated = _sut.ThenHasOne<CreditCardDeactivated>();
+            Assert.AreEqual(_accountId, creditCardDeactivated.SourceId);
+
+            var overduePaymentLogged = _sut.ThenHasOne<OverduePaymentLogged>();
+            Assert.AreEqual(_accountId, overduePaymentLogged.SourceId);
+        }
     }
 }

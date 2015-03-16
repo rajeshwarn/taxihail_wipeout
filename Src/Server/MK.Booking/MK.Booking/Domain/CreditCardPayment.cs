@@ -1,13 +1,9 @@
-﻿#region
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Common.Enumeration;
+using apcurium.MK.Common.Extensions;
 using Infrastructure.EventSourcing;
-using RestSharp.Extensions;
-
-#endregion
 
 namespace apcurium.MK.Booking.Domain
 {
@@ -49,7 +45,7 @@ namespace apcurium.MK.Booking.Domain
             });
         }
 
-        public void Capture(PaymentProvider provider, decimal amount, decimal meterAmount, decimal tipAmount, decimal taxAmount, string authorizationCode, string transactionId, bool isNoShowFee, Guid? promotionUsed, decimal amountSavedByPromotion, Guid accountId)
+        public void Capture(PaymentProvider provider, decimal amount, decimal meterAmount, decimal tipAmount, decimal taxAmount, string authorizationCode, string transactionId, bool isNoShowFee, Guid? promotionUsed, decimal amountSavedByPromotion, string newCardToken, Guid accountId, bool isSettlingOverduePayment)
         {
             if (_isCaptured)
             {
@@ -67,17 +63,20 @@ namespace apcurium.MK.Booking.Domain
                 Tax = taxAmount,
                 Provider = provider,
                 IsNoShowFee = isNoShowFee,
+                IsSettlingOverduePayment = isSettlingOverduePayment,
                 PromotionUsed = promotionUsed,
                 AmountSavedByPromotion = amountSavedByPromotion,
-                AccountId = accountId
+                AccountId = accountId,
+                NewCardToken = newCardToken
             });
         }
 
-        public void ErrorThrown(string reason)
+        public void ErrorThrown(string reason, Guid accountId)
         {
             Update(new CreditCardErrorThrown
             {
-                Reason = reason
+                Reason = reason,
+                AccountId = accountId
             });
         }
 

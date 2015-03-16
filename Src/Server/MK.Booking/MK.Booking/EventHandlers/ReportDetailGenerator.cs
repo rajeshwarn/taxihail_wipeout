@@ -13,7 +13,7 @@ namespace apcurium.MK.Booking.EventHandlers
     public class ReportDetailGenerator : IEventHandler<OrderCreated>,
         IEventHandler<OrderStatusChanged>,
         IEventHandler<OrderCancelled>,
-        IEventHandler<OrderCancelledBecauseOfIbsError>,
+        IEventHandler<OrderCancelledBecauseOfError>,
         IEventHandler<OrderPairedForPayment>,
         IEventHandler<OrderUnpairedForPayment>,
         IEventHandler<OrderRated>,
@@ -28,7 +28,9 @@ namespace apcurium.MK.Booking.EventHandlers
         IEventHandler<PromotionRedeemed>,
         IEventHandler<IbsOrderInfoAddedToOrder>,
         IEventHandler<OrderSwitchedToNextDispatchCompany>,
-        IEventHandler<OrderTimedOut>
+        IEventHandler<OrderTimedOut>,
+        IEventHandler<PrepaidOrderPaymentInfoUpdated>,
+        IEventHandler<RefundedOrderUpdated>
     {
         private readonly Func<BookingDbContext> _contextFactory;
 
@@ -60,6 +62,7 @@ namespace apcurium.MK.Booking.EventHandlers
                     IBSOrderId = @event.IBSOrderId,
                     ChargeType = @event.Settings.ChargeType,
                     IsChargeAccountPaymentWithCardOnFile = @event.IsChargeAccountPaymentWithCardOnFile,
+                    IsPrepaid = @event.IsPrepaid,
                     PickupDateTime = @event.PickupDate,
                     CreateDateTime = @event.CreatedDate,
                     PickupAddress = @event.PickupAddress,
@@ -258,7 +261,7 @@ namespace apcurium.MK.Booking.EventHandlers
             }
         }
 
-        public void Handle(OrderCancelledBecauseOfIbsError @event)
+        public void Handle(OrderCancelledBecauseOfError @event)
         {
             using (var context = _contextFactory.Invoke())
             {
@@ -349,6 +352,34 @@ namespace apcurium.MK.Booking.EventHandlers
             {
                 var orderReport = context.Find<OrderReportDetail>(@event.SourceId);
                 orderReport.Order.HasTimedOut = true;
+                context.Save(orderReport);
+            }
+        }
+
+        public void Handle(PrepaidOrderPaymentInfoUpdated @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var orderReport = context.Find<OrderReportDetail>(@event.OrderId);
+                orderReport.Payment.PaymentId = @event.SourceId;
+                orderReport.Payment.TotalAmountCharged = @event.Amount;
+                orderReport.Payment.MeterAmount = @event.Meter;
+                orderReport.Payment.TipAmount = @event.Tip;
+                orderReport.Payment.TransactionId = @event.TransactionId;
+                orderReport.Payment.Provider = @event.Provider;
+                orderReport.Payment.Type = @event.Type;
+                orderReport.Payment.IsCompleted = true;
+                context.Save(orderReport);
+            }
+        }
+
+        public void Handle(RefundedOrderUpdated @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var orderReport = context.Find<OrderReportDetail>(@event.SourceId);
+                orderReport.Payment.IsRefunded = @event.IsSuccessful;
+                orderReport.Payment.Error = @event.Message;
                 context.Save(orderReport);
             }
         }

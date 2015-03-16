@@ -45,23 +45,15 @@ namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments
             return result;
         }
 
-        public async Task<PairingResponse> Pair(Guid orderId, string cardToken, int? autoTipPercentage)
+        public Task<OverduePayment> GetOverduePayment()
         {
-            try
-            {
-                var response = await Client.PostAsync(new PairingForPaymentRequest
-                {
-                    OrderId = orderId,
-                    CardToken = cardToken,
-                    AutoTipPercentage = autoTipPercentage
+            var req = string.Format("/account/overduepayment");
+            return Client.GetAsync<OverduePayment>(req);
+        }
 
-                });
-                return response;
-            }
-            catch (ServiceStack.ServiceClient.Web.WebServiceException)
-            {                
-                return new PairingResponse { IsSuccessful = false };
-            }            
+        public Task<SettleOverduePaymentResponse> SettleOverduePayment()
+        {
+            return Client.PostAsync(new SettleOverduePaymentRequest());
         }
 
         public Task<BasePaymentResponse> Unpair(Guid orderId)

@@ -7,6 +7,7 @@ using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Entity;
+using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using Infrastructure.EventSourcing;
 
@@ -38,7 +39,9 @@ namespace apcurium.MK.Booking.Domain
             Handles<OrderSwitchedToNextDispatchCompany>(OnOrderSwitchedToNextDispatchCompany);
             Handles<DispatchCompanySwitchIgnored>(OnNextDispatchCompanySwitchIgnored);
             Handles<IbsOrderInfoAddedToOrder>(NoAction);
-            Handles<OrderCancelledBecauseOfIbsError>(NoAction);
+            Handles<OrderCancelledBecauseOfError>(NoAction);
+            Handles<PrepaidOrderPaymentInfoUpdated>(NoAction);
+            Handles<RefundedOrderUpdated>(NoAction);
         }
         
         public Order(Guid id, IEnumerable<IVersionedEvent> history)
@@ -49,7 +52,7 @@ namespace apcurium.MK.Booking.Domain
 
         public Order(Guid id, Guid accountId, DateTime pickupDate, Address pickupAddress, Address dropOffAddress, BookingSettings settings,
             double? estimatedFare, string userAgent, string clientLanguageCode, double? userLatitude, double? userLongitude, string userNote, string clientVersion,
-            bool isChargeAccountPaymentWithCardOnFile, string companyKey, string companyName, string market)
+            bool isChargeAccountPaymentWithCardOnFile, string companyKey, string companyName, string market, bool isPrepaid)
             : this(id)
         {
             if ((settings == null) || pickupAddress == null || 
@@ -76,7 +79,8 @@ namespace apcurium.MK.Booking.Domain
                 IsChargeAccountPaymentWithCardOnFile = isChargeAccountPaymentWithCardOnFile,
                 CompanyKey = companyKey,
                 CompanyName = companyName,
-                Market = market
+                Market = market,
+                IsPrepaid = isPrepaid
             });
         }
 
@@ -112,15 +116,30 @@ namespace apcurium.MK.Booking.Domain
             });
         }
 
+        public void UpdatePrepaidOrderPaymentInfo(Guid orderId, decimal amount, decimal meter, decimal tax,
+                decimal tip, string transactionId, PaymentProvider provider, PaymentType type)
+        {
+            Update(new PrepaidOrderPaymentInfoUpdated
+            {
+                OrderId = orderId,
+                Amount = amount,
+                Meter = meter,
+                Tax = tax,
+                Tip = tip,
+                TransactionId = transactionId,
+                Provider = provider,
+                Type = type
+            });
+        }
 
         public void Cancel()
         {
             Update(new OrderCancelled());
         }
 
-        public void CancelBecauseOfIbsError(string errorCode, string errorDescription)
+        public void CancelBecauseOfError(string errorCode, string errorDescription, bool wasPrepaid)
         {
-            Update(new OrderCancelledBecauseOfIbsError
+            Update(new OrderCancelledBecauseOfError
             {
                 ErrorCode = errorCode,
                 ErrorDescription = errorDescription
@@ -217,6 +236,15 @@ namespace apcurium.MK.Booking.Domain
         public void IgnoreDispatchCompanySwitch()
         {
             Update(new DispatchCompanySwitchIgnored());
+        }
+
+        public void RefundedOrderUpdated(bool isSuccessful, string message)
+        {
+            Update(new RefundedOrderUpdated
+            {
+                IsSuccessful = isSuccessful,
+                Message = message
+            });
         }
 
         private void OnOrderStatusChanged(OrderStatusChanged @event)

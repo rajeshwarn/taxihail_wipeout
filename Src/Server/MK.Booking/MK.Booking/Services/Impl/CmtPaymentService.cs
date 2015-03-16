@@ -247,7 +247,7 @@ namespace apcurium.MK.Booking.Services.Impl
             }
         }
 
-        public PreAuthorizePaymentResponse PreAuthorize(Guid orderId, AccountDetail account, decimal amountToPreAuthorize, bool isReAuth = false)
+        public PreAuthorizePaymentResponse PreAuthorize(Guid orderId, AccountDetail account, decimal amountToPreAuthorize, bool isReAuth = false, bool isSettlingOverduePayment = false)
         {
             var paymentId = Guid.NewGuid();
             var creditCard = _creditCardDao.FindByAccountId(account.Id).First();
@@ -270,7 +270,7 @@ namespace apcurium.MK.Booking.Services.Impl
             };
         }
 
-        public CommitPreauthorizedPaymentResponse CommitPayment(Guid orderId, AccountDetail account, decimal preauthAmount, decimal amount, decimal meterAmount, decimal tipAmount, string transactionId)
+        public CommitPreauthorizedPaymentResponse CommitPayment(Guid orderId, AccountDetail account, decimal preauthAmount, decimal amount, decimal meterAmount, decimal tipAmount, string transactionId, string reAuthOrderId = null)
         {
             // No need to use preauthAmount for CMT because we can't preauthorize
 
@@ -299,7 +299,7 @@ namespace apcurium.MK.Booking.Services.Impl
 
                 var deviceId = orderStatus.VehicleNumber;
                 var driverId = orderStatus.DriverInfos == null ? 0 : orderStatus.DriverInfos.DriverId.To<int>();
-                var employeeId = orderStatus.DriverInfos == null ? "" : orderStatus.DriverInfos.DriverId;
+                var employeeId = orderStatus.DriverInfos == null ? string.Empty : orderStatus.DriverInfos.DriverId;
                 var tripId = orderStatus.IBSOrderId.Value;
                 var fleetToken = _serverSettings.GetPaymentSettings().CmtPaymentSettings.FleetToken;
                 var customerReferenceNumber = orderStatus.ReferenceNumber.HasValue() ?
@@ -330,8 +330,9 @@ namespace apcurium.MK.Booking.Services.Impl
                 responseTask.Wait();
                 var authResponse = responseTask.Result;
 
-
                 var isSuccessful = authResponse.ResponseCode == 1;
+                var isCardDeclined = authResponse.ResponseCode == 607;
+
                 if (isSuccessful)
                 {
                     commitTransactionId = authResponse.TransactionId.ToString(CultureInfo.InvariantCulture);
@@ -343,7 +344,9 @@ namespace apcurium.MK.Booking.Services.Impl
                     IsSuccessful = isSuccessful,
                     AuthorizationCode = authorizationCode,
                     Message = authResponse.ResponseMessage,
-                    TransactionId = commitTransactionId
+                    TransactionId = commitTransactionId,
+                    IsDeclined = isCardDeclined,
+                    TransactionDate = authResponse.AuthorizationDate
                 };
             }
             catch (Exception ex)
@@ -357,6 +360,11 @@ namespace apcurium.MK.Booking.Services.Impl
             }
         }
 
+        public BasePaymentResponse RefundPayment(Guid orderId)
+        {
+            throw new NotImplementedException();
+        }
+
         private CmtPairingResponse PairWithVehicleUsingRideLinq(OrderStatusDetail orderStatusDetail, Guid orderId, string cardToken, int? autoTipPercentage)
         {
             var accountDetail = _accountDao.FindById(orderStatusDetail.AccountId);
@@ -368,7 +376,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 AutoTipAmount = null,
                 AutoTipPercentage = autoTipPercentage,
                 AutoCompletePayment = true,
-                CallbackUrl = "",
+                CallbackUrl = string.Empty,
                 CustomerId = orderStatusDetail.IBSOrderId.ToString(),
                 CustomerName = accountDetail.Name,
                 DriverId = orderStatusDetail.DriverInfos.DriverId,

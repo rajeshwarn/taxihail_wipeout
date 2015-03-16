@@ -13,6 +13,7 @@
         CreateOrder_NoFareEstimateAvailable,
         CreateOrder_PendingOrder,
         CreateOrder_CardOnFileButNoCreditCard,
+        CreateOrder_CardOnFileDeactivated,
         NearbyPlaces_LocationRequired,
         Search_Locations_NameRequired,
         UpdatePassword_NotSame,

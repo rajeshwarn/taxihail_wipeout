@@ -69,7 +69,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 btnCall.SetTitle(Localize.GetValue("StatusCallButton"), UIControlState.Normal);
                 btnCancel.SetTitle(Localize.GetValue("StatusCancelButton"), UIControlState.Normal);
                 btnNewRide.SetTitle(Localize.GetValue("StatusNewRideButton"), UIControlState.Normal);
-                btnUnpair.SetTitle(Localize.GetValue("CmtRideLinqUnpair"), UIControlState.Normal);
+                btnUnpair.SetTitle(Localize.GetValue("UnpairPayInCar"), UIControlState.Normal);
 
                 FlatButtonStyle.Silver.ApplyTo(btnCallDriver);
                 FlatButtonStyle.Silver.ApplyTo(btnCall);
@@ -285,7 +285,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         public override void ViewWillDisappear(bool animated)
         {
             base.ViewWillDisappear(animated);
-            if (IsMovingFromParentViewController)
+            if (IsMovingFromParentViewController && animated)
             {
                 // Back button pressed
                 ViewModel.PrepareNewOrder.ExecuteIfPossible(null);
@@ -294,15 +294,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
         void UpdateCallButtonSize (CGRect callFrame)
         {
-            if (!ViewModel.IsCancelButtonVisible)
+            if (ViewModel.IsCancelButtonVisible || ViewModel.IsUnpairButtonVisible)
             {
-                btnCall.SetX ((UIScreen.MainScreen.Bounds.Width - btnCancel.Frame.Width) / 2).SetWidth (btnCancel.Frame.Width);
-                btnCall.SetTitle(Localize.GetValue("StatusCallButton"), UIControlState.Normal);
-                FlatButtonStyle.Silver.ApplyTo(btnCall);
+                // keep it tight and tidy in the right corner
+                btnCall.SetFrame(callFrame);
             }
             else
             {
-                btnCall.SetFrame (callFrame);
+                // center it
+                btnCall.SetX ((UIScreen.MainScreen.Bounds.Width - btnCancel.Frame.Width) / 2).SetWidth (btnCancel.Frame.Width);
+                btnCall.SetTitle(Localize.GetValue("StatusCallButton"), UIControlState.Normal);
+                FlatButtonStyle.Silver.ApplyTo(btnCall);
             }
         }
             

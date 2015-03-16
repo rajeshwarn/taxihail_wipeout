@@ -56,6 +56,12 @@ namespace apcurium.MK.Booking.ReadModel
 
     public class OrderReportOrder
     {
+        public OrderReportOrder()
+        {
+            PickupAddress = new Address();
+            DropOffAddress = new Address();
+        }
+
         public int? IBSOrderId { get; set; }
 
         public string CompanyName { get; set; }
@@ -68,6 +74,8 @@ namespace apcurium.MK.Booking.ReadModel
 
         public bool IsChargeAccountPaymentWithCardOnFile { get; set; }
 
+        public bool IsPrepaid { get; set; }
+
         public DateTime? PickupDateTime { get; set; }
 
         public DateTime? CreateDateTime { get; set; }
@@ -79,12 +87,6 @@ namespace apcurium.MK.Booking.ReadModel
         public bool WasSwitchedToAnotherCompany { get; set; }
 
         public bool HasTimedOut { get; set; }
-
-        public OrderReportOrder()
-        {
-            PickupAddress = new Address();
-            DropOffAddress = new Address();
-        }
     }
 
     public class OrderReportOrderStatus
@@ -135,6 +137,8 @@ namespace apcurium.MK.Booking.ReadModel
         public bool IsCompleted { get; set; }
 
         public bool IsCancelled { get; set; }
+
+        public bool IsRefunded { get; set; }
 
         public string Error { get; set; }
     }

@@ -51,14 +51,21 @@ namespace apcurium.MK.Booking.Api.Services
                 result.CompaniesList = FilterReferenceData(result.CompaniesList, _serverSettings.ServerData.IBS.ExcludedProviderId);
             }
 
-            var isChargeAccountPaymentEnabled = _serverSettings.GetPaymentSettings().IsChargeAccountPaymentEnabled;
-            var isOutOfAppPaymentDisabled = _serverSettings.GetPaymentSettings().IsOutOfAppPaymentDisabled;
+            var paymentSettings = _serverSettings.GetPaymentSettings();
+
+            var isChargeAccountPaymentEnabled = paymentSettings.IsChargeAccountPaymentEnabled;
+            var isPayPalEnabled = paymentSettings.PayPalClientSettings.IsEnabled;
+            var isOutOfAppPaymentDisabled = paymentSettings.IsOutOfAppPaymentDisabled;
 
             IEnumerable<ListItem> filteredPaymentList = result.PaymentsList;
 
             if (!isChargeAccountPaymentEnabled)
             {
                 filteredPaymentList = filteredPaymentList.Where(x => x.Id != ChargeTypes.Account.Id);
+            }
+            if (!isPayPalEnabled)
+            {
+                filteredPaymentList = filteredPaymentList.Where(x => x.Id != ChargeTypes.PayPal.Id);
             }
             if (isOutOfAppPaymentDisabled)
             {

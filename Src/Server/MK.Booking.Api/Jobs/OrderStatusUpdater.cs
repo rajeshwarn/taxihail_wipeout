@@ -63,7 +63,7 @@ namespace apcurium.MK.Booking.Api.Jobs
 
         private static readonly ILog Log = LogManager.GetLogger(typeof(OrderStatusUpdater));
 
-        private string _languageCode = "";
+        private string _languageCode = string.Empty;
 
         public OrderStatusUpdater(IServerSettings serverSettings, 
             ICommandBus commandBus, 
@@ -100,6 +100,8 @@ namespace apcurium.MK.Booking.Api.Jobs
         public void Update(IBSOrderInformation orderFromIbs, OrderStatusDetail orderStatusDetail)
         {
             UpdateVehiclePositionAndSendNearbyNotificationIfNecessary(orderFromIbs, orderStatusDetail);
+
+            SendUnpairWarningNotificationIfNecessary(orderStatusDetail);
 
             if (orderFromIbs.IsWaitingToBeAssigned)
             {
@@ -209,6 +211,19 @@ namespace apcurium.MK.Booking.Api.Jobs
                 // Wait for OrderPaymentDetail to be created
                 Thread.Sleep(500);
             }
+            else if (result.IsDeclined)
+            {
+                // Deactivate credit card if it was declined
+                _commandBus.Send(new ReactToPaymentFailure
+                {
+                    AccountId = orderDetail.AccountId,
+                    OrderId = orderId,
+                    IBSOrderId = orderDetail.IBSOrderId,
+                    OverdueAmount = amount,
+                    TransactionId = result.TransactionId,
+                    TransactionDate = result.TransactionDate
+                });
+            }
 
             return result;
         }
@@ -274,12 +289,27 @@ namespace apcurium.MK.Booking.Api.Jobs
             }
         }
 
+        private void SendUnpairWarningNotificationIfNecessary(OrderStatusDetail orderStatus)
+        {
+            var paymentSettings = _serverSettings.GetPaymentSettings();
+            if (!paymentSettings.IsUnpairingDisabled && orderStatus.UnpairingTimeOut.HasValue)
+            {
+                var halfwayUnpairTimeout = orderStatus.UnpairingTimeOut.Value.AddSeconds(-0.5 * paymentSettings.UnpairingTimeOut);
+
+                if (DateTime.UtcNow >= halfwayUnpairTimeout)
+                {
+                    // Send unpair timeout reminder halfway through
+                    _notificationService.SendUnpairingReminderPush(orderStatus.OrderId);
+                }
+            }
+        }
+
         private void HandlePairingForRideLinqCmt(OrderPairingDetail pairingInfo, IBSOrderInformation ibsOrderInfo)
         {
             // in the case of RideLinq CMT, we only want to calculate the tip to fill information on our side
             if (pairingInfo.AutoTipPercentage.HasValue)
             {
-                ibsOrderInfo.Tip = GetTipAmount(ibsOrderInfo.Fare, pairingInfo.AutoTipPercentage.Value);
+                ibsOrderInfo.Tip = FareHelper.CalculateTipAmount(ibsOrderInfo.Fare, pairingInfo.AutoTipPercentage.Value);
                 Log.DebugFormat("RideLinqCmt Pairing: Calculated a tip amount of {0}, based on an auto AutoTipPercentage percentage of {1}",
                     ibsOrderInfo.Tip, pairingInfo.AutoTipPercentage.Value);
             }
@@ -333,7 +363,7 @@ namespace apcurium.MK.Booking.Api.Jobs
             // Send payment for capture, once it's captured, we will set the status to Completed
             var meterAmount = ibsOrderInfo.Fare + ibsOrderInfo.Toll + ibsOrderInfo.VAT;
             double tipPercentage = pairingInfo.AutoTipPercentage ?? _serverSettings.ServerData.DefaultTipPercentage;
-            var tipAmount = GetTipAmount(meterAmount, tipPercentage);
+            var tipAmount = FareHelper.CalculateTipAmount(meterAmount, tipPercentage);
 
             Log.DebugFormat(
                     "Order {4}: Received total amount from IBS of {0}, calculated a tip of {1}% (tip amount: {2}), for a total of {3}",
@@ -535,9 +565,9 @@ namespace apcurium.MK.Booking.Api.Jobs
 
                 if (paymentProviderServiceResponse.IsSuccessful)
                 {
-                    //payment completed
+                    // Payment completed
 
-                    var fareObject = Fare.FromAmountInclTax(Convert.ToDouble(meterAmount), _serverSettings.ServerData.VATIsEnabled ? _serverSettings.ServerData.VATPercentage : 0);
+                    var fareObject = FareHelper.GetFareFromAmountInclTax(Convert.ToDouble(meterAmount), _serverSettings.ServerData.VATIsEnabled ? _serverSettings.ServerData.VATPercentage : 0);
 
                     _commandBus.Send(new CaptureCreditCardPayment
                     {
@@ -557,6 +587,9 @@ namespace apcurium.MK.Booking.Api.Jobs
                 }
                 else
                 {
+                    // Void PreAuth because commit failed
+                    _paymentService.VoidPreAuthorization(orderId);
+
                     // Payment error
                     _commandBus.Send(new LogCreditCardError
                     {
@@ -564,8 +597,18 @@ namespace apcurium.MK.Booking.Api.Jobs
                         Reason = message
                     });
 
-                    // Void PreAuth because commit failed
-                    _paymentService.VoidPreAuthorization(orderId);
+                    if (paymentProviderServiceResponse.IsDeclined)
+                    {
+                        _commandBus.Send(new ReactToPaymentFailure
+                        {
+                            AccountId = account.Id,
+                            OrderId = orderId,
+                            IBSOrderId = orderDetail.IBSOrderId,
+                            OverdueAmount = totalOrderAmount,
+                            TransactionId = paymentProviderServiceResponse.TransactionId,
+                            TransactionDate = paymentProviderServiceResponse.TransactionDate
+                        });
+                    }
                 }
 
                 return new CommitPreauthorizedPaymentResponse
@@ -584,19 +627,19 @@ namespace apcurium.MK.Booking.Api.Jobs
                 {
                     IsSuccessful = false,
                     TransactionId = paymentProviderServiceResponse.TransactionId,
-                    Message = e.Message,
+                    Message = e.Message
                 };
             }
         }
 
-        private double GetTipAmount(double amount, double percentage)
-        {
-            var tip = percentage / 100;
-            return Math.Round(amount * tip, 2);
-        }
-
         private void CheckForPairingAndHandleIfNecessary(OrderStatusDetail orderStatusDetail, IBSOrderInformation ibsOrderInfo)
         {
+            if (orderStatusDetail.IsPrepaid)
+            {
+                Log.DebugFormat("Order {0}: No pairing to process as the order has been paid at the time of booking.", orderStatusDetail.OrderId);
+                return;
+            }
+
             var pairingInfo = _orderDao.FindOrderPairingById(orderStatusDetail.OrderId);
             if (pairingInfo == null)
             {
@@ -703,7 +746,7 @@ namespace apcurium.MK.Booking.Api.Jobs
             else if (ibsOrderInfo.IsLoaded)
             {
                 if (orderDetail != null 
-                    && _serverSettings.GetPaymentSettings().AutomaticPaymentPairing
+                    && _serverSettings.GetPaymentSettings().IsUnpairingDisabled
                     && (orderDetail.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id
                         || orderDetail.Settings.ChargeTypeId == ChargeTypes.PayPal.Id))
                 {

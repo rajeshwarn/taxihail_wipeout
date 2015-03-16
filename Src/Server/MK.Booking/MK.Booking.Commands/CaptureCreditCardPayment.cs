@@ -35,9 +35,13 @@ namespace apcurium.MK.Booking.Commands
 
         public bool IsNoShowFee { get; set; }
 
+        public bool IsSettlingOverduePayment { get; set; }
+
         public Guid? PromotionUsed { get; set; }
 
         public decimal AmountSavedByPromotion { get; set; }
+
+        public string NewCardToken { get; set; }
 
         public Guid Id { get; private set; }
     }

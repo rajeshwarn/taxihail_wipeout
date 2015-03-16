@@ -20,7 +20,6 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
         private readonly IServerSettings _serverSettings;
         private readonly ITaxiHailNetworkServiceClient _taxiHailNetworkService;
         private readonly ConfigurationsService _configurationsService;
-        
 
         // GET: AdminTH/TaxiHailNetwork
         public TaxiHailNetworkController(ICacheClient cache, IServerSettings serverSettings, ITaxiHailNetworkServiceClient taxiHailNetworkService, ConfigurationsService configurationsService) 
@@ -72,6 +71,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                 }
 
                 var preferences = new List<CompanyPreference>();
+
                 foreach (var market in companiesPreferences.Keys)
                 {
                     var marketCompaniesPreferences = companiesPreferences[market];

@@ -24,7 +24,9 @@ namespace apcurium.MK.Booking.CommandHandlers
         public void Handle(CaptureCreditCardPayment command)
         {
             var payment = _repository.Get(command.PaymentId);
-            payment.Capture(command.Provider, command.Amount, command.MeterAmount, command.TipAmount, command.TaxAmount, command.AuthorizationCode, command.TransactionId, command.IsNoShowFee, command.PromotionUsed, command.AmountSavedByPromotion, command.AccountId);
+            payment.Capture(command.Provider, command.Amount, command.MeterAmount, command.TipAmount,
+                command.TaxAmount, command.AuthorizationCode, command.TransactionId, command.IsNoShowFee,
+                command.PromotionUsed, command.AmountSavedByPromotion, command.NewCardToken, command.AccountId, command.IsSettlingOverduePayment);
             _repository.Save(payment, command.Id.ToString());
         }
 
@@ -37,7 +39,7 @@ namespace apcurium.MK.Booking.CommandHandlers
         public void Handle(LogCreditCardError command)
         {
             var payment = _repository.Get(command.PaymentId);
-            payment.ErrorThrown(command.Reason);
+            payment.ErrorThrown(command.Reason, command.AccountId);
             _repository.Save(payment, command.Id.ToString());
         }
     }

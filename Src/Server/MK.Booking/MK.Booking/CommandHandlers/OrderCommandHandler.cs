@@ -1,8 +1,13 @@
 ﻿#region
 
+using System;
+using System.Xml.Linq;
 using apcurium.MK.Booking.Commands;
+using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Domain;
+using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Common.Entity;
+using apcurium.MK.Common.Extensions;
 using AutoMapper;
 using Infrastructure.EventSourcing;
 using Infrastructure.Messaging.Handling;
@@ -24,13 +29,18 @@ namespace apcurium.MK.Booking.CommandHandlers
         ICommandHandler<SwitchOrderToNextDispatchCompany>,
         ICommandHandler<IgnoreDispatchCompanySwitch>,
         ICommandHandler<AddIbsOrderInfoToOrder>,
-        ICommandHandler<CancelOrderBecauseOfIbsError>
+        ICommandHandler<CancelOrderBecauseOfError>,
+        ICommandHandler<SaveTemporaryOrderCreationInfo>,
+        ICommandHandler<MarkPrepaidOrderAsSuccessful>,
+        ICommandHandler<UpdateRefundedOrder>
     {
         private readonly IEventSourcedRepository<Order> _repository;
+        private readonly Func<BookingDbContext> _contextFactory;
 
-        public OrderCommandHandler(IEventSourcedRepository<Order> repository)
+        public OrderCommandHandler(IEventSourcedRepository<Order> repository, Func<BookingDbContext> contextFactory)
         {
             _repository = repository;
+            _contextFactory = contextFactory;
         }
 
         public void Handle(CancelOrder command)
@@ -62,13 +72,14 @@ namespace apcurium.MK.Booking.CommandHandlers
                 command.PickupAddress, command.DropOffAddress, command.Settings, command.EstimatedFare,
                 command.UserAgent, command.ClientLanguageCode, command.UserLatitude, command.UserLongitude,
                 command.UserNote, command.ClientVersion, command.IsChargeAccountPaymentWithCardOnFile,
-                command.CompanyKey, command.CompanyName, command.Market);
+                command.CompanyKey, command.CompanyName, command.Market, command.IsPrepaid);
 
             if (command.Payment.PayWithCreditCard)
             {
                 var payment = Mapper.Map<PaymentInformation>(command.Payment);
                 order.SetPaymentInformation(payment);
             }
+
             _repository.Save(order, command.Id.ToString());
         }
 
@@ -129,10 +140,45 @@ namespace apcurium.MK.Booking.CommandHandlers
             _repository.Save(order, command.Id.ToString());
         }
 
-        public void Handle(CancelOrderBecauseOfIbsError command)
+        public void Handle(CancelOrderBecauseOfError command)
         {
             var order = _repository.Find(command.OrderId);
-            order.CancelBecauseOfIbsError(command.ErrorCode, command.ErrorDescription);
+            order.CancelBecauseOfError(command.ErrorCode, command.ErrorDescription, command.WasPrepaid);
+            _repository.Save(order, command.Id.ToString());
+        }
+
+        public void Handle(SaveTemporaryOrderCreationInfo command)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                context.Save(new TemporaryOrderCreationInfoDetail
+                {
+                    OrderId = command.OrderId,
+                    SerializedOrderCreationInfo = command.SerializedOrderCreationInfo
+                });
+            }
+        }
+
+        public void Handle(MarkPrepaidOrderAsSuccessful command)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                context.RemoveWhere<TemporaryOrderCreationInfoDetail>(x => x.OrderId == command.OrderId);
+                context.SaveChanges();
+            }
+
+            var order = _repository.Find(command.OrderId);
+
+            order.UpdatePrepaidOrderPaymentInfo(command.OrderId, command.Amount, command.Meter, command.Tax,
+                command.Tip, command.TransactionId, command.Provider, command.Type);
+
+            _repository.Save(order, command.Id.ToString());
+        }
+
+        public void Handle(UpdateRefundedOrder command)
+        {
+            var order = _repository.Get(command.OrderId);
+            order.RefundedOrderUpdated(command.IsSuccessful, command.Message);
             _repository.Save(order, command.Id.ToString());
         }
     }
