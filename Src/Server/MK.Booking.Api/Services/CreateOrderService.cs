@@ -244,13 +244,13 @@ namespace apcurium.MK.Booking.Api.Services
             var applyPromoCommand = ValidateAndApplyPromotion(request.PromoCode, request.Settings.ChargeTypeId, account.Id, orderCommand.OrderId, pickupDate, isFutureBooking, request.ClientLanguageCode);
 
             // Charge account validation
-            var accountValidationResult = ValidateChargeAccountIfNecessary(request, orderCommand.OrderId, account, isFutureBooking);
+            var accountValidationResult = ValidateChargeAccountIfNecessary(request, orderCommand.OrderId, account, isFutureBooking, isPrepaid);
 
             // if ChargeAccount uses payment with card on file, payment validation was already done
             if (!accountValidationResult.IsChargeAccountPaymentWithCardOnFile)
             {
                 // Payment method validation
-                ValidatePayment(request, orderCommand.OrderId, account, isFutureBooking, request.Estimate.Price);
+                ValidatePayment(request, orderCommand.OrderId, account, isFutureBooking, request.Estimate.Price, isPrepaid);
             }
             
             // Initialize PayPal if user is using PayPal web
@@ -530,7 +530,7 @@ namespace apcurium.MK.Booking.Api.Services
             return new HttpResult(HttpStatusCode.OK);
         }
 
-        private ChargeAccountValidationResult ValidateChargeAccountIfNecessary(CreateOrder request, Guid orderId, AccountDetail account, bool isFutureBooking)
+        private ChargeAccountValidationResult ValidateChargeAccountIfNecessary(CreateOrder request, Guid orderId, AccountDetail account, bool isFutureBooking, bool isPrepaid)
         {
             string[] prompts = null;
             int?[] promptsLength = null;
@@ -548,7 +548,14 @@ namespace apcurium.MK.Booking.Api.Services
                     {
                         // Card on file payment not supported when not in home market
                         throw new HttpError(HttpStatusCode.BadRequest, ErrorCode.CreateOrder_RuleDisable.ToString(),
-                            _resources.Get("CannotCreateOrderChargeAccountNotSupported", request.ClientLanguageCode));
+                            _resources.Get("CannotCreateOrderChargeAccountNotSupportedInRoaming", request.ClientLanguageCode));
+                    }
+
+                    if (isPrepaid)
+                    {
+                        // Charge account cannot support prepaid orders
+                        throw new HttpError(HttpStatusCode.BadRequest, ErrorCode.CreateOrder_RuleDisable.ToString(),
+                            _resources.Get("CannotCreateOrderChargeAccountNotSupportedOnWeb", request.ClientLanguageCode));
                     }
 
                     if (_paymentService.IsPayPal(account.Id))
@@ -562,7 +569,7 @@ namespace apcurium.MK.Booking.Api.Services
                         request.Settings.ChargeTypeId = ChargeTypes.CardOnFile.Id;
                     }
 
-                    ValidatePayment(request, orderId, account, isFutureBooking, request.Estimate.Price);
+                    ValidatePayment(request, orderId, account, isFutureBooking, request.Estimate.Price, false);
 
                     isChargeAccountPaymentWithCardOnFile = true;
                 }
@@ -690,7 +697,7 @@ namespace apcurium.MK.Booking.Api.Services
             return ibsAccountId.Value;
         }
 
-        private void ValidatePayment(CreateOrder request, Guid orderId, AccountDetail account, bool isFutureBooking, double? appEstimate)
+        private void ValidatePayment(CreateOrder request, Guid orderId, AccountDetail account, bool isFutureBooking, double? appEstimate, bool isPrepaid)
         {
             var tipPercent = account.DefaultTipPercent ?? _serverSettings.ServerData.DefaultTipPercentage;
 
@@ -702,9 +709,15 @@ namespace apcurium.MK.Booking.Api.Services
 
             var appEstimateWithTip = appEstimate.HasValue ? Convert.ToDecimal(appEstimate.Value) : (decimal?)null;
 
-            if (request.FromWebApp)
+            if (isPrepaid)
             {
-                // WebApp is prepaid
+                // Verify that prepaid is enabled on the server
+                if (!_serverSettings.GetPaymentSettings().IsPrepaidEnabled)
+                {
+                    throw new HttpError(HttpStatusCode.BadRequest,
+                        ErrorCode.CreateOrder_RuleDisable.ToString(),
+                         _resources.Get("CannotCreateOrder_PrepaidButPrepaidNotEnabled", request.ClientLanguageCode));
+                }
 
                 // PayPal is handled elsewhere since it has a different behavior
 

@@ -501,9 +501,12 @@
     <value>AVISO: No se deberá cobrar al cliente al final del servicio.</value>
     <comment>WARNING: The client will NOT be charged at the end of the ride</comment>
   </data>
-  <data name="CannotCreateOrderChargeAccountNotSupported" xml:space="preserve">
+  <data name="CannotCreateOrderChargeAccountNotSupportedInRoaming" xml:space="preserve">
     <value>This account is not supported in a different market.</value>
     <comment>This account is not supported in a different market.</comment>
+  </data>
+  <data name="CannotCreateOrderChargeAccountNotSupportedOnWeb" xml:space="preserve">
+    <value>This account is not supported by the web site.</value>
   </data>
   <data name="Email_Body_VehicleModel" xml:space="preserve">
     <value>Vehículo</value>
@@ -714,5 +717,8 @@
   </data>
   <data name="CannotCreateOrder_PrepaidPayPalPaymentCancelled" xml:space="preserve">
     <value>PayPal payment was cancelled</value>
+  </data>
+  <data name="CannotCreateOrder_PrepaidButPrepaidNotEnabled" xml:space="preserve">
+    <value>Payment is not enabled on the website. Please select another charge type.</value>
   </data>
 </root>

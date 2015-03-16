@@ -115,6 +115,15 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Payment is not enabled on the website. Please select another charge type..
+        /// </summary>
+        public static string CannotCreateOrder_PrepaidButPrepaidNotEnabled {
+            get {
+                return ResourceManager.GetString("CannotCreateOrder_PrepaidButPrepaidNotEnabled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to You need an estimated fare to prepay your ride. Please select a destination address to get one..
         /// </summary>
         public static string CannotCreateOrder_PrepaidNoEstimate {
@@ -252,9 +261,18 @@ namespace apcurium.MK.Booking.Resources {
         /// <summary>
         ///   Looks up a localized string similar to This account is not supported in a different market..
         /// </summary>
-        public static string CannotCreateOrderChargeAccountNotSupported {
+        public static string CannotCreateOrderChargeAccountNotSupportedInRoaming {
             get {
-                return ResourceManager.GetString("CannotCreateOrderChargeAccountNotSupported", resourceCulture);
+                return ResourceManager.GetString("CannotCreateOrderChargeAccountNotSupportedInRoaming", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This account is not supported by the web site..
+        /// </summary>
+        public static string CannotCreateOrderChargeAccountNotSupportedOnWeb {
+            get {
+                return ResourceManager.GetString("CannotCreateOrderChargeAccountNotSupportedOnWeb", resourceCulture);
             }
         }
         

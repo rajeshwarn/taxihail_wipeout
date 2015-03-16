@@ -411,8 +411,11 @@
   <data name="Network_CannotCreateOrder" xml:space="preserve">
     <value>Un problème est survenu en passant la commande avec {0}. Votre commande restera active.</value>
   </data>
-  <data name="CannotCreateOrderChargeAccountNotSupported" xml:space="preserve">
+  <data name="CannotCreateOrderChargeAccountNotSupportedInRoaming" xml:space="preserve">
     <value>Ce compte n'est pas supporté dans un autre marché</value>
+  </data>
+  <data name="CannotCreateOrderChargeAccountNotSupportedOnWeb" xml:space="preserve">
+    <value>Ce compte n'est pas supporté par la page web</value>
   </data>
   <data name="CannotCreateOrder_PromotionDoesNotExist" xml:space="preserve">
     <value>Il n'y a pas de promotion associée à ce code</value>
@@ -584,5 +587,8 @@
   </data>
   <data name="CannotCreateOrder_PrepaidPayPalPaymentCancelled" xml:space="preserve">
     <value>Paiement PayPal annulé</value>
+  </data>
+  <data name="CannotCreateOrder_PrepaidButPrepaidNotEnabled" xml:space="preserve">
+    <value>Le paiement n'est pas supporté par la page web. Veuillez sélectionner un autre type de paiement.</value>
   </data>
 </root>

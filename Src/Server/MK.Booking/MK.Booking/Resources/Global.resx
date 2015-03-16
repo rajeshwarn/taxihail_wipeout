@@ -411,8 +411,11 @@
   <data name="Network_CannotCreateOrder" xml:space="preserve">
     <value>There was a problem while trying to book with {0}. Your order will remain active.</value>
   </data>
-  <data name="CannotCreateOrderChargeAccountNotSupported" xml:space="preserve">
+  <data name="CannotCreateOrderChargeAccountNotSupportedInRoaming" xml:space="preserve">
     <value>This account is not supported in a different market.</value>
+  </data>
+  <data name="CannotCreateOrderChargeAccountNotSupportedOnWeb" xml:space="preserve">
+    <value>This account is not supported by the web site.</value>
   </data>
   <data name="CannotCreateOrder_PromotionMustUseCardOnFile" xml:space="preserve">
     <value>You must select Card On File to use a promotion.</value>
@@ -578,5 +581,8 @@
   </data>
   <data name="CannotCreateOrder_PrepaidPayPalPaymentCancelled" xml:space="preserve">
     <value>PayPal payment was cancelled</value>
+  </data>
+  <data name="CannotCreateOrder_PrepaidButPrepaidNotEnabled" xml:space="preserve">
+    <value>Payment is not enabled on the website. Please select another charge type.</value>
   </data>
 </root>
