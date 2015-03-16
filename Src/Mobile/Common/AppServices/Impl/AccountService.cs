@@ -276,10 +276,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             CurrentAccount = account;
         }
 
-		public void UpdateAccountNumber (string accountNumber)
+        public void UpdateAccountNumber(string accountNumber, string customerNumber)
 		{
 			var settings = CurrentAccount.Settings;
 			settings.AccountNumber = accountNumber;
+			settings.CustomerNumber = customerNumber;
 
 			// no need to await since we're change it locally
 			UpdateSettings (settings, CurrentAccount.DefaultTipPercent);

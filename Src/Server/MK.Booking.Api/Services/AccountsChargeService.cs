@@ -5,6 +5,7 @@ using System.Net;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Commands;
+using apcurium.MK.Booking.IBS;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Security;
 using apcurium.MK.Common;
@@ -21,10 +22,12 @@ namespace apcurium.MK.Booking.Api.Services
     {
         private readonly IAccountChargeDao _dao;
         private readonly ICommandBus _commandBus;
+        private readonly IIBSServiceProvider _ibsServiceProvider;
 
-        public AccountsChargeService(IAccountChargeDao dao, ICommandBus commandBus)
+        public AccountsChargeService(IAccountChargeDao dao, ICommandBus commandBus, IIBSServiceProvider ibsServiceProvider)
         {
             _commandBus = commandBus;
+            _ibsServiceProvider = ibsServiceProvider;
             _dao = dao;
         }
 
@@ -47,8 +50,16 @@ namespace apcurium.MK.Booking.Api.Services
             }
             else
             {
+                // Validate locally that the account exists
                 var account = _dao.FindByAccountNumber(request.Number);
                 if (account == null)
+                {
+                    throw new HttpError(HttpStatusCode.NotFound, "Account Not Found");
+                }
+
+                // Validate with IBS to make sure the account/customer is still active
+                var ibsChargeAccount = _ibsServiceProvider.ChargeAccount().GetIbsAccount(request.Number, request.CustomerNumber);
+                if (ibsChargeAccount == null || ibsChargeAccount.Message != "OK")
                 {
                     throw new HttpError(HttpStatusCode.NotFound, "Account Not Found");
                 }

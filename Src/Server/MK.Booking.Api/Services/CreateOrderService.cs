@@ -551,7 +551,7 @@ namespace apcurium.MK.Booking.Api.Services
                             _resources.Get("CannotCreateOrderChargeAccountNotSupportedInRoaming", request.ClientLanguageCode));
                     }
 
-                    if (isPrepaid)
+                    if (request.FromWebApp)
                     {
                         // Charge account cannot support prepaid orders
                         throw new HttpError(HttpStatusCode.BadRequest, ErrorCode.CreateOrder_RuleDisable.ToString(),
@@ -572,7 +572,7 @@ namespace apcurium.MK.Booking.Api.Services
                     isChargeAccountPaymentWithCardOnFile = true;
                 }
 
-                ValidateChargeAccountAnswers(request.Settings.AccountNumber, request.QuestionsAndAnswers, request.ClientLanguageCode);
+                ValidateChargeAccountAnswers(request.Settings.AccountNumber, request.Settings.CustomerNumber, request.QuestionsAndAnswers, request.ClientLanguageCode);
 
                 if (isChargeAccountPaymentWithCardOnFile)
                 {
@@ -838,7 +838,7 @@ namespace apcurium.MK.Booking.Api.Services
             }
         }
 
-        private void ValidateChargeAccountAnswers(string accountNumber, AccountChargeQuestion[] userQuestionsDetails, string clientLanguageCode)
+        private void ValidateChargeAccountAnswers(string accountNumber, string customerNumber, AccountChargeQuestion[] userQuestionsDetails, string clientLanguageCode)
         {
             var accountChargeDetail = _accountChargeDao.FindByAccountNumber(accountNumber);
             if (accountChargeDetail == null)
@@ -848,9 +848,11 @@ namespace apcurium.MK.Booking.Api.Services
                     GetCreateOrderServiceErrorMessage(ErrorCode.AccountCharge_InvalidAccountNumber, clientLanguageCode));
             }
 
+            //MKTAXI-2454 todo validate customer number alone or does the line below validate it anyway?
+
             var answers = userQuestionsDetails.Select(x => x.Answer);
 
-            var validation = _ibsServiceProvider.ChargeAccount().ValidateIbsChargeAccount(answers, accountNumber, "0");
+            var validation = _ibsServiceProvider.ChargeAccount().ValidateIbsChargeAccount(answers, accountNumber, customerNumber);
             if (!validation.Valid)
             {
                 if (validation.ValidResponse != null)

@@ -28,6 +28,10 @@
                 // We need to make sure that the account number, if empty, is saved as a string
                 data.settings.accountNumber = "";
             }
+            if (!data.settings.customerNumber) {
+                // We need to make sure that the customer number, if empty, is saved as a string
+                data.settings.customerNumber = "";
+            }
 
             var tipPercentages = [
                 { id: 0, display: "0%" },
@@ -94,10 +98,11 @@
         
         savechanges: function (form) {
             var accountNumber = this.model.get('settings').accountNumber;
-            if (accountNumber) {
+            var customerNumber = this.model.get('settings').customerNumber;
+            if (accountNumber) { // || customerNumber
 
                 // Validate charge account number
-                this.model.getChargeAccount(accountNumber)
+                this.model.getChargeAccount(accountNumber, customerNumber)
                     .then(_.bind(function() {
                         this.updateSettings();
                     }, this))

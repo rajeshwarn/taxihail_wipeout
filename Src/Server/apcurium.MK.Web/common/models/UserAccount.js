@@ -22,8 +22,8 @@
             });
         },
 
-        getChargeAccount: function (accountNumber) {
-            return $.get('api/admin/accountscharge/' + accountNumber + '/true', function () { }, 'json');;
+        getChargeAccount: function (accountNumber, customerNumber) {
+            return $.get('api/admin/accountscharge/' + accountNumber + '/' + customerNumber + '/true', function () { }, 'json');;
         }
     });
 

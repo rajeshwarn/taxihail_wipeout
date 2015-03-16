@@ -138,6 +138,9 @@
   <data name="AccountPaymentNumberRequiredMessage" xml:space="preserve">
     <value>Merci de saisir un numéro de compte valide</value>
   </data>
+  <data name="AccountPaymentCustomerNumberRequiredMessage" xml:space="preserve">
+    <value>Merci de saisir un numéro de client valide</value>
+  </data>
   <data name="AccountPaymentNumberRequiredTitle" xml:space="preserve">
     <value>Numéro de compte requis</value>
   </data>
@@ -1038,6 +1041,9 @@
   <data name="RideSettingsAccountNumber" xml:space="preserve">
     <value>Numéro de compte entreprise (optionnel)</value>
   </data>
+  <data name="RideSettingsCustomerNumber" xml:space="preserve">
+    <value>Numéro de client du compte (optionnel)</value>
+  </data>
   <data name="RideSettingsCannotLoadListMessage" xml:space="preserve">
     <value>Désolé, échec de la connexion, merci de réessayer ultérieurement</value>
   </data>
@@ -1621,7 +1627,7 @@
     <value>En attente de {0} ...</value>
   </data>
   <data name="UpdateBookingSettingsEmptyAccount" xml:space="preserve">
-    <value>Le numéro de compte de peut être vide lorsque le mode de paiement sélectionné est Compte</value>
+    <value>Le numéro de compte et de client ne peuvent être vides lorsque le mode de paiement sélectionné est Compte</value>
   </data>
   <data name="UpdateBookingSettingsInvalidAccount" xml:space="preserve">
     <value>Le numéro de compte saisi n'existe pas</value>

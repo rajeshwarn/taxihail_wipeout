@@ -5,6 +5,7 @@ using System.Net;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Commands;
+using apcurium.MK.Booking.IBS;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using AutoMapper;
 using Infrastructure.Messaging;
@@ -19,11 +20,13 @@ namespace apcurium.MK.Booking.Api.Services
     {
         private readonly IAccountChargeDao _accountChargeDao;
         private readonly ICommandBus _commandBus;
+        private readonly IIBSServiceProvider _ibsServiceProvider;
 
-        public BookingSettingsService(IAccountChargeDao accountChargeDao, ICommandBus commandBus)
+        public BookingSettingsService(IAccountChargeDao accountChargeDao, ICommandBus commandBus, IIBSServiceProvider ibsServiceProvider)
         {
             _accountChargeDao = accountChargeDao;
             _commandBus = commandBus;
+            _ibsServiceProvider = ibsServiceProvider;
         }
 
         public object Put(BookingSettingsRequest request)
@@ -31,8 +34,16 @@ namespace apcurium.MK.Booking.Api.Services
             // Validate account number
             if (!string.IsNullOrWhiteSpace(request.AccountNumber))
             {
-                var chargeAccount = _accountChargeDao.FindByAccountNumber(request.AccountNumber);
-                if (chargeAccount == null)
+                // Validate locally that the account exists
+                var account = _accountChargeDao.FindByAccountNumber(request.AccountNumber);
+                if (account == null)
+                {
+                    throw new HttpError(HttpStatusCode.Forbidden, ErrorCode.AccountCharge_InvalidAccountNumber.ToString());
+                }
+
+                // Validate with IBS to make sure the account/customer is still active
+                var ibsChargeAccount = _ibsServiceProvider.ChargeAccount().GetIbsAccount(request.AccountNumber, request.CustomerNumber);
+                if (ibsChargeAccount.Message != "OK")
                 {
                     throw new HttpError(HttpStatusCode.Forbidden, ErrorCode.AccountCharge_InvalidAccountNumber.ToString());
                 }

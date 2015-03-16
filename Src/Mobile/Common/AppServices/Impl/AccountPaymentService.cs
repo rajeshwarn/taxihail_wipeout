@@ -7,14 +7,14 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
 	public class AccountPaymentService : BaseService, IAccountPaymentService
 	{
-		public Task<AccountCharge> GetAccountCharge(string accountNumber)
+		public Task<AccountCharge> GetAccountCharge(string accountNumber, string customerNumber)
 		{
-			return UseServiceClientAsync<CompanyServiceClient, AccountCharge>(service => service.GetAccountCharge(accountNumber));
+            return UseServiceClientAsync<CompanyServiceClient, AccountCharge>(service => service.GetAccountCharge(accountNumber, customerNumber));
 		}
 
-		public async Task<AccountChargeQuestion[]> GetQuestions(string accountNumber)
+        public async Task<AccountChargeQuestion[]> GetQuestions(string accountNumber, string customerNumber)
 		{
-			var response = await GetAccountCharge (accountNumber);
+            var response = await GetAccountCharge(accountNumber, customerNumber);
 			return response.Questions;
 		}
 	}
