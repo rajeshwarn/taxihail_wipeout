@@ -28,7 +28,8 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
                     Market = market == string.Empty ? null : market
 				});
 
-			_logger.Maybe (() => _logger.LogMessage (string.Format ("Available vehicle found for lat {0}, long {1}, count = {2} on market {3}", latitude, longitude, response.Count, market)));
+            _logger.Maybe (() => _logger.LogMessage (string.Format ("Available vehicle found for lat {0}, long {1}, count = {2} on {3} market", 
+                latitude, longitude, response.Count, market.HasValue() ? market : "local")));
 
 			return response.ToArray();
 		}

@@ -11,6 +11,7 @@ using Cirrious.MvvmCross.Binding.BindingContext;
 using apcurium.MK.Booking.Mobile.Client.Controls.Widgets;
 using MapKit;
 using System.Windows.Input;
+using apcurium.MK.Booking.Mobile.Client.Style;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
@@ -27,6 +28,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         public override void ViewWillAppear (bool animated)
         {
             base.ViewWillAppear (animated);
+
+            if (!Theme.IsApplied)
+            {
+                // reset to default theme for the navigation bar
+                ChangeThemeOfNavigationBar();
+                Theme.IsApplied = true;
+            }
 
             NavigationController.NavigationBar.Hidden = false;
             NavigationItem.Title = Localize.GetValue("View_BookingStatus");

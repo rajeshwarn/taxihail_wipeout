@@ -1,11 +1,7 @@
 using System;
-using apcurium.MK.Common.Configuration;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using UIKit;
-using TinyIoC;
-using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.ViewModels;
-using apcurium.MK.Booking.Mobile.Client.Controls.Widgets;
 using apcurium.MK.Booking.Mobile.Client.Localization;
 using apcurium.MK.Booking.Mobile.Client.Style;
 
@@ -13,8 +9,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 {
 	public partial class LoginView : BaseViewController<LoginViewModel>
     {
-        private bool _themeApplied;
-
 		public LoginView () : base("LoginView", null)
         {
         }
@@ -23,16 +17,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		{
 			base.ViewWillAppear (animated);
 
-            if (!_themeApplied)
+            if (!Theme.IsApplied)
             {
                 // set the theme of the company for the navigation bar
                 ChangeThemeOfNavigationBar();
-                _themeApplied = true;
-                NavigationController.NavigationBar.BarStyle = Theme.ShouldHaveLightContent(this.View.BackgroundColor)
-                    ? UIBarStyle.Black
-                    : UIBarStyle.Default;
+                Theme.IsApplied = true;
             }
 
+            NavigationController.NavigationBar.BarStyle = Theme.ShouldHaveLightContent(this.View.BackgroundColor)
+                ? UIBarStyle.Black
+                : UIBarStyle.Default;
 			NavigationController.NavigationBar.Hidden = true;
 		}
 

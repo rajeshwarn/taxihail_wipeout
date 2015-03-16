@@ -337,6 +337,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					Logger.LogMessage ("Waiting for Ibs Order Creation (ibs order id)");
 					await Task.Delay(TimeSpan.FromSeconds(1));
 					status = await _bookingService.GetOrderStatusAsync(Order.Id);
+
+					if(status.IBSOrderId.HasValue)
+					{
+						Logger.LogMessage("Received Ibs Order Id: {0}", status.IBSOrderId.Value);
+					}
 				}
 
 				if(status.VehicleNumber != null)
