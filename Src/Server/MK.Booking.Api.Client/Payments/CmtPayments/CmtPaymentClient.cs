@@ -34,7 +34,7 @@ namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments
 
         public Task<TokenizedCreditCardResponse> Tokenize(string accountNumber, DateTime expiryDate, string cvv)
         {
-            return Tokenize(CmtPaymentServiceClient, accountNumber, expiryDate); 
+            return Tokenize(CmtPaymentServiceClient, accountNumber, expiryDate);
         }
 
         public async Task<DeleteTokenizedCreditcardResponse> ForgetTokenizedCard(string cardToken)
@@ -75,8 +75,7 @@ namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments
                     AccountNumber = accountNumber,
                     ExpiryDate = expiryDate.ToString("yyMM", CultureInfo.InvariantCulture)
 #if DEBUG
-                    ,
-                    ValidateAccountInformation = false
+                    ,ValidateAccountInformation = false
 #endif
                 });
 
