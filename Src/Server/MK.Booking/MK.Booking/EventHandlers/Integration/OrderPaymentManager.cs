@@ -54,7 +54,8 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             if (_serverSettings.ServerData.SendDetailedPaymentInfoToDriver
                 && !@event.IsSettlingOverduePayment) // Don't send notification to driver when user settles overdue payment
             {
-                SendPaymentConfirmationToDriver(@event.OrderId, @event.Amount, @event.Meter + @event.Tax, @event.Tip, @event.Provider.ToString(), @event.AuthorizationCode);
+                // To prevent driver confusion we will not send the discounted total amount for the fare.
+                SendPaymentConfirmationToDriver(@event.OrderId, @event.Amount + @event.AmountSavedByPromotion, @event.Meter + @event.Tax, @event.Tip, @event.Provider.ToString(), @event.AuthorizationCode);
             }
 
             if (@event.PromotionUsed.HasValue)
@@ -63,7 +64,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                 {
                     OrderId = @event.OrderId,
                     PromoId = @event.PromotionUsed.Value,
-                    TotalAmountOfOrder = @event.Amount + @event.AmountSavedByPromotion
+                    TotalAmountOfOrder = @event.Meter
                 };
                 var envelope = (Envelope<ICommand>) redeemPromotion;
 
