@@ -568,13 +568,16 @@ namespace apcurium.MK.Booking.Api.Services
                         chargeTypeOverride = ChargeTypes.CardOnFile.Display;
                         request.Settings.ChargeTypeId = ChargeTypes.CardOnFile.Id;
                     }
-
-                    ValidatePayment(request, orderId, account, isFutureBooking, request.Estimate.Price, false);
-
+                    
                     isChargeAccountPaymentWithCardOnFile = true;
                 }
 
                 ValidateChargeAccountAnswers(request.Settings.AccountNumber, request.QuestionsAndAnswers, request.ClientLanguageCode);
+
+                if (isChargeAccountPaymentWithCardOnFile)
+                {
+                    ValidatePayment(request, orderId, account, isFutureBooking, request.Estimate.Price, false);
+                }
 
                 prompts = request.QuestionsAndAnswers.Select(q => q.Answer).ToArray();
                 promptsLength = request.QuestionsAndAnswers.Select(q => q.MaxLength).ToArray();
