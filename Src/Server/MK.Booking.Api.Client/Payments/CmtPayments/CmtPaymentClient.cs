@@ -11,7 +11,6 @@ using apcurium.MK.Common.Resources;
 using CMTPayment;
 using CMTPayment.Extensions;
 using CMTPayment.Tokenize;
-using ServiceStack.ServiceClient.Web;
 
 namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments
 {
@@ -96,11 +95,6 @@ namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments
                     Message = e.Message
                 };
             }
-            // Fixes the issue when CMT returns a 401 http response that would cause the app to think the user's session has expired.
-            catch (WebServiceException e)
-            {
-                throw new Exception(e.Message, e);
-            }
         }
 
         private static TokenizedCreditCardResponse TokenizeSyncForSettingsTest(CmtPaymentServiceClient cmtPaymentServiceClient, string accountNumber, DateTime expiryDate)
@@ -125,12 +119,19 @@ namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments
                     LastFour = response.Result.LastFour,
                 };
             }
-            catch (WebException e)
+            catch (Exception e)
             {
+                var message = e.Message;
+                var exception = e as AggregateException;
+                if (exception != null)
+                {
+                    message = exception.InnerException.Message;
+                }
+
                 return new TokenizedCreditCardResponse
                 {
                     IsSuccessful = false,
-                    Message = e.Message
+                    Message = message
                 };
             }
         }
