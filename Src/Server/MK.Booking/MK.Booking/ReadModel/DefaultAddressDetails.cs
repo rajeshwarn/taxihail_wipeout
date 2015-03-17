@@ -22,6 +22,8 @@ namespace apcurium.MK.Booking.ReadModel
 
         public string BuildingName { get; set; }
 
+        public int AddressLocationType { get; set; }
+
         public double Longitude { get; set; }
 
         public double Latitude { get; set; }
