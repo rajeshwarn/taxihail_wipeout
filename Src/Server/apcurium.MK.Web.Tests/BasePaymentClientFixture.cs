@@ -102,7 +102,7 @@ namespace apcurium.MK.Web.Tests
                 DropOffAddress = TestAddresses.GetAddress2(),
                 Estimate = new CreateOrder.RideEstimate
                 {
-                    Price = 10,
+                    Price = 65,
                     Distance = 3
                 },
                 Settings = new BookingSettings
@@ -237,7 +237,7 @@ namespace apcurium.MK.Web.Tests
                 DropOffAddress = TestAddresses.GetAddress2(),
                 Estimate = new CreateOrder.RideEstimate
                 {
-                    Price = 10,
+                    Price = 65,
                     Distance = 3
                 },
                 Settings = new BookingSettings
