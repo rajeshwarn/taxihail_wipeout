@@ -154,12 +154,12 @@ namespace apcurium.MK.Booking.Api
     {
         protected override void Configure()
         {
-            CreateMap<IbsVehiclePosition, AvailableVehicle>()                 
-                .ForMember(p => p.VehicleNumber, opt => opt.ResolveUsing(x => GetDecimalOnly(x.VehicleNumber )))
+            CreateMap<IbsVehiclePosition, AvailableVehicle>()
+                .ForMember(p => p.VehicleNumber, opt => opt.ResolveUsing(x => GetNumberOnly(x.VehicleNumber)))
                 .ForMember(p => p.LogoName, opt => opt.Ignore());
         }
 
-        private object GetDecimalOnly(string text)
+        private object GetNumberOnly(string text)
         {
             if ( !string.IsNullOrWhiteSpace(text) && text.Any(t=> Char.IsNumber(t) ) )
             {
@@ -170,8 +170,6 @@ namespace apcurium.MK.Booking.Api
             {
                 return 0;
             }
-
-
         }
 
 

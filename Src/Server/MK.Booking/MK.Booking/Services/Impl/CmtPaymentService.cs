@@ -19,6 +19,9 @@ using CMTPayment.Pair;
 using CMTPayment.Reverse;
 using CMTPayment.Tokenize;
 using Infrastructure.Messaging;
+using Newtonsoft.Json;
+using ServiceStack.Common.Web;
+using ServiceStack.ServiceClient.Web;
 using ServiceStack.Text;
 
 namespace apcurium.MK.Booking.Services.Impl
@@ -202,11 +205,8 @@ namespace apcurium.MK.Booking.Services.Impl
                 TripId = tripId
             };
 
-            var responseReverseTask = _cmtPaymentServiceClient.PostAsync(reverseRequest);
-            responseReverseTask.Wait();
-            var reverseResponse = responseReverseTask.Result;
-            _logger.LogMessage("CMT reverse response : " + reverseResponse.ResponseMessage);
-
+            var reverseResponse = Reverse(reverseRequest);
+            
             if (reverseResponse.ResponseCode != 1)
             {
                 throw new Exception("Cannot cancel cmt transaction");
@@ -214,37 +214,20 @@ namespace apcurium.MK.Booking.Services.Impl
 
             message = message + " The transaction has been cancelled.";
         }
-
+        
         public DeleteTokenizedCreditcardResponse DeleteTokenizedCreditcard(string cardToken)
         {
-            try
+            var request = new TokenizeDeleteRequest
             {
-                var responseTask = _cmtPaymentServiceClient.DeleteAsync(new TokenizeDeleteRequest
-                {
-                    CardToken = cardToken
-                });
-                responseTask.Wait();
-                var response = responseTask.Result;
+                CardToken = cardToken
+            };
+            var response = DeleteCreditCard(request);
 
-                return new DeleteTokenizedCreditcardResponse
-                {
-                    IsSuccessful = response.ResponseCode == 1,
-                    Message = response.ResponseMessage
-                };
-            }
-            catch (AggregateException ex)
+            return new DeleteTokenizedCreditcardResponse
             {
-                ex.Handle(x =>
-                {
-                    _logger.LogError(x);
-                    return true;
-                });
-                return new DeleteTokenizedCreditcardResponse
-                {
-                    IsSuccessful = false,
-                    Message = ex.InnerExceptions.First().Message,
-                };
-            }
+                IsSuccessful = response.ResponseCode == 1,
+                Message = response.ResponseMessage
+            }; 
         }
 
         public PreAuthorizePaymentResponse PreAuthorize(Guid orderId, AccountDetail account, decimal amountToPreAuthorize, bool isReAuth = false, bool isSettlingOverduePayment = false)
@@ -326,9 +309,7 @@ namespace apcurium.MK.Booking.Services.Impl
                     Tolls = 0
                 };
 
-                var responseTask = _cmtPaymentServiceClient.PostAsync(authRequest);
-                responseTask.Wait();
-                var authResponse = responseTask.Result;
+                var authResponse = Authorize(authRequest);
 
                 var isSuccessful = authResponse.ResponseCode == 1;
                 var isCardDeclined = authResponse.ResponseCode == 607;
@@ -462,6 +443,101 @@ namespace apcurium.MK.Booking.Services.Impl
             {
                 return null;
             }
+        }
+
+        private AuthorizationResponse Authorize(AuthorizationRequest request)
+        {
+            AuthorizationResponse response;
+            try
+            {
+                var responseTask = _cmtPaymentServiceClient.PostAsync(request);
+                responseTask.Wait();
+                response = responseTask.Result;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex);
+
+                var aggregateException = ex as AggregateException;
+                if (aggregateException == null)
+                {
+                    throw ex;
+                }
+
+                var webServiceException = aggregateException.InnerException as WebServiceException;
+                if (webServiceException == null)
+                {
+                    throw ex;
+                }
+
+                response = JsonConvert.DeserializeObject<AuthorizationResponse>(webServiceException.ResponseBody);
+            }
+
+            return response;
+        }
+
+        private TokenizeDeleteResponse DeleteCreditCard(TokenizeDeleteRequest request)
+        {
+            TokenizeDeleteResponse response;
+            try
+            {
+                var responseTask = _cmtPaymentServiceClient.DeleteAsync(request);
+                responseTask.Wait();
+                response = responseTask.Result;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex);
+
+                var aggregateException = ex as AggregateException;
+                if (aggregateException == null)
+                {
+                    throw ex;
+                }
+
+                var webServiceException = aggregateException.InnerException as WebServiceException;
+                if (webServiceException == null)
+                {
+                    throw ex;
+                }
+
+                response = JsonConvert.DeserializeObject<TokenizeDeleteResponse>(webServiceException.ResponseBody);
+            }
+            
+            return response;
+        }
+
+        private ReverseResponse Reverse(ReverseRequest request)
+        {
+            ReverseResponse response;
+            try
+            {
+                var responseReverseTask = _cmtPaymentServiceClient.PostAsync(request);
+                responseReverseTask.Wait();
+                response = responseReverseTask.Result;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex);
+
+                var aggregateException = ex as AggregateException;
+                if (aggregateException == null)
+                {
+                    throw ex;
+                }
+
+                var webServiceException = aggregateException.InnerException as WebServiceException;
+                if (webServiceException == null)
+                {
+                    throw ex;
+                }
+
+                response = JsonConvert.DeserializeObject<ReverseResponse>(webServiceException.ResponseBody);
+            }
+            
+            _logger.LogMessage("CMT reverse response : " + response.ResponseMessage);
+
+            return response;
         }
     }
 }
