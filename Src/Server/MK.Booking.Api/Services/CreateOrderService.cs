@@ -244,7 +244,7 @@ namespace apcurium.MK.Booking.Api.Services
             var applyPromoCommand = ValidateAndApplyPromotion(request.PromoCode, request.Settings.ChargeTypeId, account.Id, orderCommand.OrderId, pickupDate, isFutureBooking, request.ClientLanguageCode);
 
             // Charge account validation
-            var accountValidationResult = ValidateChargeAccountIfNecessary(request, orderCommand.OrderId, account, isFutureBooking, isPrepaid);
+            var accountValidationResult = ValidateChargeAccountIfNecessary(request, orderCommand.OrderId, account, isFutureBooking);
 
             // if ChargeAccount uses payment with card on file, payment validation was already done
             if (!accountValidationResult.IsChargeAccountPaymentWithCardOnFile)
@@ -530,7 +530,7 @@ namespace apcurium.MK.Booking.Api.Services
             return new HttpResult(HttpStatusCode.OK);
         }
 
-        private ChargeAccountValidationResult ValidateChargeAccountIfNecessary(CreateOrder request, Guid orderId, AccountDetail account, bool isFutureBooking, bool isPrepaid)
+        private ChargeAccountValidationResult ValidateChargeAccountIfNecessary(CreateOrder request, Guid orderId, AccountDetail account, bool isFutureBooking)
         {
             string[] prompts = null;
             int?[] promptsLength = null;
@@ -551,7 +551,7 @@ namespace apcurium.MK.Booking.Api.Services
                             _resources.Get("CannotCreateOrderChargeAccountNotSupportedInRoaming", request.ClientLanguageCode));
                     }
 
-                    if (isPrepaid)
+                    if (request.FromWebApp)
                     {
                         // Charge account cannot support prepaid orders
                         throw new HttpError(HttpStatusCode.BadRequest, ErrorCode.CreateOrder_RuleDisable.ToString(),
