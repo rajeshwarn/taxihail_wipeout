@@ -466,12 +466,12 @@
 "View_UpdatedTermsAndConditions"="New Terms and Conditions";
 "PaymentErrorMessage"="Details: {0}";
 "Order"="Order";
-"RideSettingsAccountNumber"="Account Rider Number";
-"AccountPaymentNumberRequiredTitle"="Account Rider Number required";
+"RideSettingsAccountNumber"="Account Number";
+"AccountPaymentNumberRequiredTitle"="Account Number required";
 "Error_AccountPaymentTitle"="Error";
-"Error_AccountPaymentMessage"="Invalid account ride number";
+"Error_AccountPaymentMessage"="Invalid account or rider number";
 "View_InitializeOrderForAccountPayment"="Please answer these questions";
-"AccountPaymentNumberRequiredMessage"="Please enter a valid account ride number";
+"AccountPaymentNumberRequiredMessage"="Please enter a valid account number";
 "Error_AccountPaymentQuestionRequiredMessage"="You must answer every questions marked as required to continue.";
 "AccountPaymentQuestionsPlaceHolder"="{0} characters maximum";
 "AccountPaymentQuestionsRequired"="(required)";
@@ -548,8 +548,8 @@
 "TaxiHailNetworkTimeOutPopupAlways"="Always Accept";
 "NetworkTimeOutPopupAlways"="Always Accept";
 "UpdateBookingSettingsGenericError"="An error occured when updating the booking settings";
-"UpdateBookingSettingsEmptyAccount"="Account number cannot be empty when Charge Type is set to Charge Account";
-"UpdateBookingSettingsInvalidAccount"="The account number that was entered doesn't exist";
+"UpdateBookingSettingsEmptyAccount"="Account and rider numbers cannot be empty when Charge Type is set to Charge Account";
+"UpdateBookingSettingsInvalidAccount"="The account or rider number that was entered doesn't exist";
 "CreditCardBookingSettingsError"="An error occured when updating the booking settings. Please make sure that the account number in your profile is valid and try again.";
 "UpdateBookingSettingsInvalidCoF"="You must have a card on file to use this account";
 "PromoCodeLabel"="Promo code";
@@ -613,3 +613,6 @@
 "UnpairWarningMessage"="This action cannot be undone";
 "UnpairWarningCancelButton"="Pay in car";
 "UnpairWarningMessageWithPromo"="If you decide to pay in car, you will not be able to use the promotion";
+"RideSettingsCustomerNumber"="Account Rider Number";
+"AccountPaymentCustomerNumberRequiredMessage"="Please enter a valid rider number";
+"AccountPaymentCustomerNumberRequiredTitle"="Account Rider Number required";

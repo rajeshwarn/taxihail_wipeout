@@ -449,12 +449,12 @@
 "Error_AccountPaymentTitle"="خطأ";
 "UpdatedTermsAndConditionsAcceptButton"="موافق";
 "WarningLocationServiceDontShow"="لا تحذر";
-"AccountPaymentNumberRequiredMessage"="فضلا، ادخل رقم حساب صحيح";
+"AccountPaymentNumberRequiredMessage"="Please enter a valid account number";
 "RideSettingsAccountNumber"="رقم الحساب";
 "WarningLocationServiceTitle"="تحذير";
 "AccountPaymentNumberRequiredTitle"="مطلوب رقم الحساب";
 "WarningLocationService"="يرجى تشغيل خدمات الموقع ليظهر موقعك على الخريطة";
-"Error_AccountPaymentMessage"="رقم الحساب غير صحيح";
+"Error_AccountPaymentMessage"="Invalid account or rider number";
 "View_InitializeOrderForAccountPayment"="يرجى الإجابة على هذه الأسئلة";
 "PaymentErrorMessage"="تفاصيل";
 "dummyaaa"="xaaa";
@@ -521,7 +521,7 @@
 "NetworkContactingNextDispatchDescription"="Contacting {0} ...";
 "TaxiHailNetworkTimeOutPopupAlways"="Always Accept";
 "UpdateBookingSettingsGenericError"="An error occured when updating the booking settings";
-"UpdateBookingSettingsEmptyAccount"="Account number cannot be empty when Charge Type is set to Charge Account";
+"UpdateBookingSettingsEmptyAccount"="Account and rider numbers cannot be empty when Charge Type is set to Charge Account";
 "UpdateBookingSettingsInvalidAccount"="The account number that was entered doesn't exist";
 "CreditCardBookingSettingsError"="An error occured when updating the booking settings. Please make sure that the account number in your profile is valid and try again.";
 "UpdateBookingSettingsInvalidCoF"="You must have a card on file to use this account";
@@ -586,3 +586,6 @@
 "UnpairWarningMessage"="This action cannot be undone";
 "UnpairWarningCancelButton"="Pay in car";
 "UnpairWarningMessageWithPromo"="If you decide to pay in car, you will not be able to use the promotion";
+"AccountPaymentCustomerNumberRequiredMessage"="Please enter a valid rider number";
+"RideSettingsCustomerNumber"="Account Rider Number";
+"AccountPaymentCustomerNumberRequiredTitle"="Account Rider Number required";

@@ -141,6 +141,9 @@
   <data name="AccountPaymentCustomerNumberRequiredMessage" xml:space="preserve">
     <value>Merci de saisir un numéro de client valide</value>
   </data>
+  <data name="AccountPaymentCustomerNumberRequiredTitle" xml:space="preserve">
+    <value>Numéro de client du compte requis</value>
+  </data>
   <data name="AccountPaymentNumberRequiredTitle" xml:space="preserve">
     <value>Numéro de compte requis</value>
   </data>
@@ -556,7 +559,7 @@
     <value>Désolé, la réservation ne peut être complétée</value>
   </data>
   <data name="Error_AccountPaymentMessage" xml:space="preserve">
-    <value>Le numéro de compte semble invalide</value>
+    <value>Le numéro de compte ou de client semble invalide</value>
   </data>
   <data name="Error_AccountPaymentQuestionRequiredMessage" xml:space="preserve">
     <value>Vous devez saisir tous les champs pour continuer</value>

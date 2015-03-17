@@ -7,6 +7,7 @@ using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.IBS;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
+using apcurium.MK.Common.Extensions;
 using AutoMapper;
 using Infrastructure.Messaging;
 using ServiceStack.Common.Web;
@@ -34,6 +35,11 @@ namespace apcurium.MK.Booking.Api.Services
             // Validate account number
             if (!string.IsNullOrWhiteSpace(request.AccountNumber))
             {
+                if (!request.CustomerNumber.HasValue())
+                {
+                    throw new HttpError(HttpStatusCode.Forbidden, ErrorCode.AccountCharge_InvalidAccountNumber.ToString());
+                }
+
                 // Validate locally that the account exists
                 var account = _accountChargeDao.FindByAccountNumber(request.AccountNumber);
                 if (account == null)

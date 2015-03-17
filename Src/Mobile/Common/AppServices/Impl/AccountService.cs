@@ -264,7 +264,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 ChargeTypeId = settings.ChargeTypeId,
                 ProviderId = settings.ProviderId,
 				DefaultTipPercent = tipPercent,
-				AccountNumber = settings.AccountNumber
+				AccountNumber = settings.AccountNumber,
+                CustomerNumber = settings.CustomerNumber
             };
 
             await UseServiceClientAsync<IAccountServiceClient>(service => service.UpdateBookingSettings(bsr));

@@ -236,8 +236,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 									() => { return; });
 
                                 var customerNumber = await this.Services().Message.ShowPromptDialog(
-                                    this.Services().Localize["AccountPaymentNumberRequiredTitle"],
-                                    this.Services().Localize["AccountPaymentNumberRequiredMessage"],
+                                    this.Services().Localize["AccountPaymentCustomerNumberRequiredTitle"],
+                                    this.Services().Localize["AccountPaymentCustomerNumberRequiredMessage"],
                                     () => { return; });
 
                                 hasValidAccountNumber = await _orderWorkflowService.ValidateAccountNumberAndPrepareQuestions(accountNumber, customerNumber);

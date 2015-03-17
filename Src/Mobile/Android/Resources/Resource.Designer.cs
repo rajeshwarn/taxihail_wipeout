@@ -4580,6 +4580,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f0600ca
 			public const int AccountNotActivated = 2131099850;
 			
+			// aapt resource value: 0x7f0602d1
+			public const int AccountPaymentCustomerNumberRequiredMessage = 2131100369;
+			
 			// aapt resource value: 0x7f060242
 			public const int AccountPaymentNumberRequiredMessage = 2131100226;
 			
@@ -5150,14 +5153,14 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f060123
 			public const int GooglePlayServicesNotAvailableMessage = 2131099939;
 			
-			// aapt resource value: 0x7f0602d0
-			public const int GooglePlayServicesNotAvailableMessage1 = 2131100368;
+			// aapt resource value: 0x7f0602d2
+			public const int GooglePlayServicesNotAvailableMessage1 = 2131100370;
 			
 			// aapt resource value: 0x7f060084
 			public const int GooglePlayServicesNotAvailableTitle = 2131099780;
 			
-			// aapt resource value: 0x7f0602d1
-			public const int GooglePlayServicesNotAvailableTitle1 = 2131100369;
+			// aapt resource value: 0x7f0602d3
+			public const int GooglePlayServicesNotAvailableTitle1 = 2131100371;
 			
 			// aapt resource value: 0x7f060049
 			public const int Hello = 2131099721;
@@ -5573,8 +5576,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f0602c0
 			public const int Overdue_TransactionId = 2131100352;
 			
-			// aapt resource value: 0x7f0602d2
-			public const int Overdue_View = 2131100370;
+			// aapt resource value: 0x7f0602d4
+			public const int Overdue_View = 2131100372;
 			
 			// aapt resource value: 0x7f06006b
 			public const int PanelMenuViewAboutUsText = 2131099755;
@@ -5869,6 +5872,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 			
 			// aapt resource value: 0x7f0600d7
 			public const int RideSettingsCompany = 2131099863;
+			
+			// aapt resource value: 0x7f0602d0
+			public const int RideSettingsCustomerNumber = 2131100368;
 			
 			// aapt resource value: 0x7f0601b4
 			public const int RideSettingsName = 2131100084;
