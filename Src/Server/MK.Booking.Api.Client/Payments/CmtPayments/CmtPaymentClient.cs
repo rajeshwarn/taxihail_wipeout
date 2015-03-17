@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Globalization;
-using System.Net;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Contract.Requests.Payment;
 using apcurium.MK.Booking.Api.Contract.Resources.Payments;
@@ -87,12 +86,19 @@ namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments
                     LastFour = response.LastFour,
                 };
             }
-            catch (WebException e)
+            catch (Exception e)
             {
+                var message = e.Message;
+                var exception = e as AggregateException;
+                if (exception != null)
+                {
+                    message = exception.InnerException.Message;
+                }
+
                 return new TokenizedCreditCardResponse
                 {
                     IsSuccessful = false,
-                    Message = e.Message
+                    Message = message
                 };
             }
         }
