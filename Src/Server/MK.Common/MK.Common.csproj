@@ -137,6 +137,7 @@
     <Compile Include="Entity\AccountCharge.cs" />
     <Compile Include="Entity\AccountChargeQuestion.cs" />
     <Compile Include="Entity\Address.cs" />
+    <Compile Include="Entity\AddressLocationType.cs" />
     <Compile Include="Entity\BookingSettings.cs" />
     <Compile Include="Entity\DirectionSetting.cs" />
     <Compile Include="Entity\DriverInfos.cs" />

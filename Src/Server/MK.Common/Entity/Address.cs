@@ -14,6 +14,8 @@ namespace apcurium.MK.Common.Entity
 
         public string StreetNumber { get; set; }
 
+        public AddressLocationType AddressLocationType { get; set; }
+
         public string Street { get; set; }
 
         public string City { get; set; }
