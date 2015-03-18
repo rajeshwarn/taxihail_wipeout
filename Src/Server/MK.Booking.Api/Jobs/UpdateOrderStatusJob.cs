@@ -56,7 +56,7 @@ namespace apcurium.MK.Booking.Api.Jobs
             try
             {
                 var order = getOrderDetails.Retry(TimeSpan.FromMilliseconds(300), 7);
-                if (order != null)
+                if (order != null && order.IBSOrderId.HasValue)
                 {
                     var orderStatus = _orderDao.FindOrderStatusById(orderId);
                     var status = _ibsServiceProvider.Booking(orderStatus.CompanyKey).GetOrdersStatus( new [] { order.IBSOrderId.Value });
