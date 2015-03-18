@@ -18,6 +18,13 @@
             var html = this.renderTemplate(data);
             this.$el.html(html);
 
+
+            var isAirportButtonEnabled = TaxiHail.parameters.isAirportButtonEnabled;
+
+            if (!isAirportButtonEnabled) {
+                this.$("[name=addressLocationTypeDiv]").attr("hidden", "");
+            }
+
             this.$("[name=addressLocationType] option[value=" + data.addressLocationType + "]").attr("selected", "selected");
 
             this.validate({
