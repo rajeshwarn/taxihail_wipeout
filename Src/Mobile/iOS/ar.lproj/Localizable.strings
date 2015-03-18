@@ -586,3 +586,4 @@
 "UnpairWarningMessage"="This action cannot be undone";
 "UnpairWarningCancelButton"="Pay in car";
 "UnpairWarningMessageWithPromo"="If you decide to pay in car, you will not be able to use the promotion";
+"PromoDescriptionCode"="Use code {0} at the time of booking or press the button below";
