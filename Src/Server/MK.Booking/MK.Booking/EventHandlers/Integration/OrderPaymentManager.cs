@@ -168,7 +168,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                     && (order.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id
                         || order.Settings.ChargeTypeId == ChargeTypes.PayPal.Id)
                     && pairingInfo == null
-                    && !orderStatus.IsPrepaid)
+                    && !orderStatus.IsPrepaid) //prepaid order will never have a pairing info
                 {
                     // void the preauthorization to prevent misuse fees
                     _paymentService.VoidPreAuthorization(@event.SourceId);

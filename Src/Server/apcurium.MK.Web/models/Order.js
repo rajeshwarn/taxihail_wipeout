@@ -97,8 +97,8 @@
             });
         },
 
-        fetchQuestions: function (accountChargeNumber) {
-            return $.get('api/admin/accountscharge/' + accountChargeNumber + '/true', function () { }, 'json');
+        fetchQuestions: function (accountChargeNumber, customerNumber) {
+            return $.get('api/admin/accountscharge/' + accountChargeNumber + '/' + customerNumber + '/true', function () { }, 'json');
         }
     });
 }());

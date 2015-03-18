@@ -49,7 +49,10 @@ namespace apcurium.MK.Booking.Test.CreditCardPaymentFixture
                 TipAmount = 2,
                 TaxAmount = 2,
                 AccountId = accountId,
-                TransactionId = "123"
+                TransactionId = "123",
+                IsForPrepaidOrder = true,
+                IsSettlingOverduePayment = true,
+                NewCardToken = "fjff"
             });
 
             var @event = _sut.ThenHasSingle<CreditCardPaymentCaptured_V2>();
@@ -60,6 +63,9 @@ namespace apcurium.MK.Booking.Test.CreditCardPaymentFixture
             Assert.AreEqual(2, @event.Tax);
             Assert.AreEqual(_orderId, @event.OrderId);
             Assert.AreEqual(accountId, @event.AccountId);
+            Assert.AreEqual("fjff", @event.NewCardToken);
+            Assert.AreEqual(true, @event.IsSettlingOverduePayment);
+            Assert.AreEqual(true, @event.IsForPrepaidOrder);
         }
 
         [Test]

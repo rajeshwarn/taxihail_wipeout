@@ -158,7 +158,7 @@
   <string name="EmptyString"> </string>
   <string name="EntryCodeLabel">Código de entrada</string>
   <string name="ErrorCreatingOrderTitle">La reservación no puede ser completada</string>
-  <string name="Error_AccountPaymentMessage">Número de cuenta inválida</string>
+  <string name="Error_AccountPaymentMessage">Invalid account or rider number</string>
   <string name="Error_AccountPaymentQuestionRequiredMessage">Para poder continuar, debe responder todas las preguntas marcadas como requeridas.</string>
   <string name="Error_AccountPaymentTitle">Error</string>
   <string name="EstimatedFareNotAvailable">Costo estimado no disponible</string>
@@ -526,7 +526,7 @@
   <string name="NetworkContactingNextDispatchDescription">Contacting {0} ...</string>
   <string name="TaxiHailNetworkTimeOutPopupAlways">Always Accept</string>
   <string name="NetworkTimeOutPopupAlways">Always Accept</string>
-  <string name="UpdateBookingSettingsEmptyAccount">Account number cannot be empty when Charge Type is set to Charge Account</string>
+  <string name="UpdateBookingSettingsEmptyAccount">Account and rider numbers cannot be empty when Charge Type is set to Charge Account</string>
   <string name="UpdateBookingSettingsInvalidAccount">The account number that was entered doesn\'t exist</string>
   <string name="CreditCardBookingSettingsError">An error occured when updating the booking settings. Please make sure that the account number in your profile is valid and try again.</string>
   <string name="UpdateBookingSettingsGenericError">An error occured when updating the booking settings</string>
@@ -596,4 +596,8 @@
   <string name="UnpairWarningMessage">This action cannot be undone</string>
   <string name="UnpairWarningCancelButton">Pay in car</string>
   <string name="UnpairWarningMessageWithPromo">If you decide to pay in car, you will not be able to use the promotion</string>
+  <string name="AccountPaymentCustomerNumberRequiredMessage">Por favor introduzca un número de cliente válido.</string>
+  <string name="PromoDescriptionCode">Use code {0} at the time of booking or press the button below</string>
+  <string name="RideSettingsCustomerNumber">Número de cliente</string>
+  <string name="AccountPaymentCustomerNumberRequiredTitle">Account Rider Number required</string>
 </resources>

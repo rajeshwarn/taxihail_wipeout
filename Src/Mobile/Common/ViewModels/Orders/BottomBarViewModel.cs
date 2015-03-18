@@ -35,6 +35,30 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 				this.Observe(_orderWorkflowService.GetAndObserveIsDestinationModeOpened(),
 					isDestinationModeOpened => EstimateSelected = isDestinationModeOpened);
 			}
+
+            if (Settings.PromotionEnabled)
+            {
+                this.Observe(ObserveIsPromoCodeApplied(), isPromoCodeApplied => IsPromoCodeActive = isPromoCodeApplied);
+            }
+        }
+
+        private IObservable<bool> ObserveIsPromoCodeApplied()
+        {
+            return _orderWorkflowService.GetAndObservePromoCode()
+				.Select(promoCode => !string.IsNullOrEmpty(promoCode));
+        }
+
+        private bool _isPromoCodeActive;
+        public bool IsPromoCodeActive {
+            get 
+			{ 
+				return _isPromoCodeActive; 
+			}
+            set
+            {
+                _isPromoCodeActive = value;
+                RaisePropertyChanged();
+            }
         }
 
         private bool _estimateSelected;
@@ -211,7 +235,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 									this.Services().Localize["AccountPaymentNumberRequiredMessage"],
 									() => { return; });
 
-								hasValidAccountNumber = await _orderWorkflowService.ValidateAccountNumberAndPrepareQuestions(accountNumber);
+                                var customerNumber = await this.Services().Message.ShowPromptDialog(
+                                    this.Services().Localize["AccountPaymentCustomerNumberRequiredTitle"],
+                                    this.Services().Localize["AccountPaymentCustomerNumberRequiredMessage"],
+                                    () => { return; });
+
+                                hasValidAccountNumber = await _orderWorkflowService.ValidateAccountNumberAndPrepareQuestions(accountNumber, customerNumber);
 								if (!hasValidAccountNumber)
 								{
 									await this.Services().Message.ShowMessage(
@@ -220,7 +249,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 									return;
 								}
 
-								await _orderWorkflowService.SetAccountNumber(accountNumber);
+								await _orderWorkflowService.SetAccountNumber(accountNumber, customerNumber);
 							}
 
 							var questions = await _orderWorkflowService.GetAccountPaymentQuestions();
@@ -231,25 +260,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 							}
 							else
 							{
-								using (this.Services().Message.ShowProgress())
-								{
-									var result = await _orderWorkflowService.ConfirmOrder();
-
-									this.Services().Analytics.LogEvent("Book");
-
-									await GotoBookingStatus(result);
-								}
+								await ConfirmOrderAndGoToBookingStatus();
 							}
 						}
 						else
 						{
-							using (this.Services().Message.ShowProgress())
-							{
-								var result = await _orderWorkflowService.ConfirmOrder();
-
-								await GotoBookingStatus(result);
-							}
-							
+							await ConfirmOrderAndGoToBookingStatus();
 						}
                     }
                     catch (OrderCreationException e)
@@ -304,10 +320,25 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
             }
         }
 
+		private async Task ConfirmOrderAndGoToBookingStatus()
+		{
+			using (this.Services().Message.ShowProgress())
+			{
+				var result = await _orderWorkflowService.ConfirmOrder();
+				this.Services().Analytics.LogEvent("Book");
+				await GotoBookingStatus(result);
+			}
+		}
+
+		private bool IsFutureBooking(Order order)
+		{
+			return order.CreatedDate != order.PickupDate;
+		}
+
 		private async Task GotoBookingStatus(Tuple<Order, OrderStatusDetail> result)
 		{
 			PresentationStateRequested.Raise(this, new HomeViewModelStateRequestedEventArgs(HomeViewModelState.Initial, true));
-			if (await _orderWorkflowService.IsFutureBooking())
+			if (IsFutureBooking(result.Item1))
 			{
 				ShowViewModel<BookingStatusViewModel>(new {
 					order = result.Item1.ToJson(),

@@ -264,7 +264,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 ChargeTypeId = settings.ChargeTypeId,
                 ProviderId = settings.ProviderId,
 				DefaultTipPercent = tipPercent,
-				AccountNumber = settings.AccountNumber
+				AccountNumber = settings.AccountNumber,
+                CustomerNumber = settings.CustomerNumber
             };
 
             await UseServiceClientAsync<IAccountServiceClient>(service => service.UpdateBookingSettings(bsr));
@@ -276,10 +277,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             CurrentAccount = account;
         }
 
-		public void UpdateAccountNumber (string accountNumber)
+        public void UpdateAccountNumber(string accountNumber, string customerNumber)
 		{
 			var settings = CurrentAccount.Settings;
 			settings.AccountNumber = accountNumber;
+			settings.CustomerNumber = customerNumber;
 
 			// no need to await since we're change it locally
 			UpdateSettings (settings, CurrentAccount.DefaultTipPercent);
@@ -543,7 +545,12 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			var response = await UseServiceClientAsync<IPaymentService, TokenizedCreditCardResponse>(service => service.Tokenize(
 				creditCard.CardNumber, 
 				new DateTime(creditCard.ExpirationYear.ToInt(), creditCard.ExpirationMonth.ToInt(), 1),
-				creditCard.CCV));	
+				creditCard.CCV));
+
+		    if (!response.IsSuccessful)
+		    {
+		        throw new Exception(response.Message);
+		    }
 
 			creditCard.Token = response.CardOnFileToken;       
 		}

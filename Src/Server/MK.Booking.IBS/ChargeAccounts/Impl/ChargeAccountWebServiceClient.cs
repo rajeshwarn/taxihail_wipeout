@@ -16,7 +16,9 @@ namespace apcurium.MK.Booking.IBS.ChargeAccounts
         public ChargeAccount GetIbsAccount(string accountNumber, string customerNumber)
         {
             var account = Get<ChargeAccountResponse>("/account/corporate/{0}/{1}".FormatWith(accountNumber, customerNumber));
-            return account.Result;
+            return account == null 
+                ? null 
+                : account.Result;
         }
 
         public ChargeAccountValidation ValidateIbsChargeAccount(IEnumerable<string> prompts, string account_number, string customer_number)

@@ -6,10 +6,11 @@
 	"Vehicle Type": "Vehicle Type",
 	"Charge Type": "Charge Type",
 	"Cancel": "Cancel",
-	"Saves changes":"Saves changes",
+	"Saves changes":"Saves Changes",
 	"Loading" : "Loading",
 	"Changes were saved" : "Changes were saved",
 	"Edit Profile" : "Edit Profile",
 	"Email" : "Email",
+	"Account #": "Account #",
 	"Account Rider #": "Account Rider #"
 }

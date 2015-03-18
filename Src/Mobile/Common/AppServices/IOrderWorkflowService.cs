@@ -39,7 +39,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 
 		Task SetVehicleType (int? vehicleTypeId);
 		Task SetBookingSettings(BookingSettings bookingSettings);
-		Task SetAccountNumber (string accountNumber);
+		Task SetAccountNumber (string accountNumber, string customerNumber);
 		void SetNoteToDriver(string text);
 		void SetPromoCode(string code);
 
@@ -57,8 +57,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 		IObservable<string> GetAndObserveMarket();
 		IObservable<bool> GetAndObserveIsDestinationModeOpened();
 
-		Task<bool> IsFutureBooking();
-
 		Task<Tuple<Order, OrderStatusDetail>> GetLastActiveOrder();
 
         Guid? GetLastUnratedRide();
@@ -69,7 +67,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 	    bool ShouldPromptUserToRateLastRide();
 
 		Task<bool> ShouldGoToAccountNumberFlow();
-		Task<bool> ValidateAccountNumberAndPrepareQuestions(string accountNumber = null);
+		Task<bool> ValidateAccountNumberAndPrepareQuestions(string accountNumber = null, string customerNumber = null);
 		Task<AccountChargeQuestion[]> GetAccountPaymentQuestions();
         bool ValidateAndSaveAccountAnswers(AccountChargeQuestion[] questionsAndAnswers);
 

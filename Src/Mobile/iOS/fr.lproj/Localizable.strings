@@ -146,7 +146,7 @@
 "EmptyString"="";
 "EntryCodeLabel"="Saisissez un code";
 "ErrorCreatingOrderTitle"="Désolé, la réservation ne peut être complétée";
-"Error_AccountPaymentMessage"="Le numéro de compte semble invalide";
+"Error_AccountPaymentMessage"="Le numéro de compte ou de client semble invalide";
 "Error_AccountPaymentQuestionRequiredMessage"="Vous devez saisir tous les champs pour continuer";
 "Error_AccountPaymentTitle"="Erreur";
 "EstimatedFareNotAvailable"="Le prix ne peut être estimé pour le moment";
@@ -531,7 +531,7 @@
 "TaxiHailNetworkTimeOutPopupAlways"="Toujours accepter";
 "NetworkTimeOutPopupAlways"="Toujours Accepter";
 "UpdateBookingSettingsGenericError"="Une erreur est survenue lors de la mise à jour des informations du compte";
-"UpdateBookingSettingsEmptyAccount"="Le numéro de compte de peut être vide lorsque le mode de paiement sélectionné est Compte";
+"UpdateBookingSettingsEmptyAccount"="Le numéro de compte et de client ne peuvent être vides lorsque le mode de paiement sélectionné est Compte";
 "UpdateBookingSettingsInvalidAccount"="Le numéro de compte saisi n'existe pas";
 "CreditCardBookingSettingsError"="Une erreur est survenue lors de la mise à jour des informations du compte. Vérifiez que le numéro de compte associé au profil est valide et essayez de nouveau.";
 "UpdateBookingSettingsInvalidCoF"="Vous devez avoir une carte de crédit enregistrée pour utiliser ce compte";
@@ -596,3 +596,7 @@
 "UnpairWarningMessage"="Cette action ne peut être annulée";
 "UnpairWarningCancelButton"="Payer dans le taxi";
 "UnpairWarningMessageWithPromo"="Si vous décidez de payer dans le taxi, vous ne serez pas éligible à la promotion";
+"AccountPaymentCustomerNumberRequiredMessage"="Merci de saisir un numéro de client valide";
+"PromoDescriptionCode"="Utilisez le code {0} au moment de la commande ou appuyez sur le bouton ci-dessous.";
+"RideSettingsCustomerNumber"="Numéro de client du compte (optionnel)";
+"AccountPaymentCustomerNumberRequiredTitle"="Numéro de client du compte requis";

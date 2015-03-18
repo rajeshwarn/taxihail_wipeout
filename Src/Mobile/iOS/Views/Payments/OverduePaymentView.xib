@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6751" systemVersion="14C1510" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
         <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
     </dependencies>
     <objects>
@@ -29,11 +29,10 @@
                 <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1SN-EP-ZDo">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
                     <subviews>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Your credit card failed to pay the previous ride, you need to either retry to pay again or update your credit card information." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="42" translatesAutoresizingMaskIntoConstraints="NO" id="Fmj-7w-as9" userLabel="lblInstructions">
-                            <rect key="frame" x="9" y="10" width="303" height="102"/>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Your credit card failed to pay the previous ride, you need to either retry to pay again or update your credit card information." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="42" translatesAutoresizingMaskIntoConstraints="NO" id="Fmj-7w-as9" userLabel="lblInstructions">
+                            <rect key="frame" x="8" y="10" width="304" height="102"/>
                             <constraints>
-                                <constraint firstAttribute="width" constant="303" id="I7o-fu-bgF"/>
-                                <constraint firstAttribute="height" constant="102" id="OJM-TI-hrb"/>
+                                <constraint firstAttribute="height" constant="102" id="VEs-ur-Kfo"/>
                             </constraints>
                             <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="15"/>
                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -123,14 +122,16 @@
                         <constraint firstAttribute="centerX" secondItem="d4N-F0-Lwo" secondAttribute="leading" id="IwR-nk-Jez"/>
                         <constraint firstItem="RDI-Py-cRU" firstAttribute="baseline" secondItem="7Oc-RR-yxa" secondAttribute="baseline" id="Jzq-cT-Qhm"/>
                         <constraint firstItem="ojW-w8-dIt" firstAttribute="top" secondItem="QC6-Kw-5V5" secondAttribute="bottom" constant="8" id="KXG-Ue-XTE"/>
-                        <constraint firstAttribute="trailing" secondItem="Fmj-7w-as9" secondAttribute="trailing" constant="8" id="KYa-mE-pu9"/>
                         <constraint firstItem="k3L-Hg-fEU" firstAttribute="top" secondItem="7Oc-RR-yxa" secondAttribute="bottom" constant="49" id="L4r-Kj-YeA"/>
+                        <constraint firstAttribute="trailing" secondItem="Fmj-7w-as9" secondAttribute="trailing" constant="8" id="LDW-WH-0Qz"/>
+                        <constraint firstItem="Fmj-7w-as9" firstAttribute="top" relation="greaterThanOrEqual" secondItem="1SN-EP-ZDo" secondAttribute="top" constant="10" id="LzL-39-yZ1"/>
                         <constraint firstItem="o91-o0-rgs" firstAttribute="baseline" secondItem="3fb-DF-0mX" secondAttribute="baseline" id="VVB-kN-x37"/>
                         <constraint firstItem="RDI-Py-cRU" firstAttribute="top" secondItem="3fb-DF-0mX" secondAttribute="bottom" constant="8" id="WhL-4s-sK0"/>
                         <constraint firstItem="o91-o0-rgs" firstAttribute="leading" secondItem="3fb-DF-0mX" secondAttribute="trailing" constant="8" id="alL-2V-Mu8"/>
                         <constraint firstAttribute="centerX" secondItem="o91-o0-rgs" secondAttribute="leading" id="eDd-qG-6CH"/>
                         <constraint firstItem="k3L-Hg-fEU" firstAttribute="top" secondItem="RDI-Py-cRU" secondAttribute="bottom" constant="49" id="i2D-MT-FJD"/>
                         <constraint firstItem="lTp-MB-rfG" firstAttribute="top" secondItem="k3L-Hg-fEU" secondAttribute="bottom" constant="8" id="iE3-mh-2Ng"/>
+                        <constraint firstItem="Fmj-7w-as9" firstAttribute="leading" secondItem="1SN-EP-ZDo" secondAttribute="leading" constant="8" id="ibv-1F-JGJ"/>
                         <constraint firstAttribute="centerX" secondItem="Fmj-7w-as9" secondAttribute="centerX" id="jKd-hk-nI7"/>
                         <constraint firstItem="vOh-F1-i8X" firstAttribute="leading" secondItem="ojW-w8-dIt" secondAttribute="trailing" constant="8" id="jlF-nZ-wqP"/>
                         <constraint firstAttribute="centerX" secondItem="lTp-MB-rfG" secondAttribute="centerX" id="o0d-cv-58q"/>
@@ -151,6 +152,7 @@
                 <constraint firstItem="1SN-EP-ZDo" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="tqb-SC-1Ea"/>
             </constraints>
             <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
+            <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
             <point key="canvasLocation" x="273" y="350"/>
         </view>
     </objects>

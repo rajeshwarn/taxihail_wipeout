@@ -11,5 +11,7 @@ namespace apcurium.MK.Booking.Events
         public string NewCardToken { get; set; }
 
         public bool IsSettlingOverduePayment { get; set; }
+
+        public bool IsForPrepaidOrder { get; set; }
     }
 }

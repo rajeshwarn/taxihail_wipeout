@@ -13,6 +13,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 	partial class PromotionView
 	{
 		[Outlet]
+		UIKit.UILabel lblInstruction { get; set; }
+
+		[Outlet]
 		UIKit.UILabel lblNoPromotions { get; set; }
 
 		[Outlet]
@@ -20,14 +23,19 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		
 		void ReleaseDesignerOutlets ()
 		{
+			if (lblNoPromotions != null) {
+				lblNoPromotions.Dispose ();
+				lblNoPromotions = null;
+			}
+
 			if (tblPromotions != null) {
 				tblPromotions.Dispose ();
 				tblPromotions = null;
 			}
 
-			if (lblNoPromotions != null) {
-				lblNoPromotions.Dispose ();
-				lblNoPromotions = null;
+			if (lblInstruction != null) {
+				lblInstruction.Dispose ();
+				lblInstruction = null;
 			}
 		}
 	}

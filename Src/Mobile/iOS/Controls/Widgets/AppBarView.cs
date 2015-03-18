@@ -18,6 +18,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         private UIView _reviewButtons;
         private UIView _orderButtons;
         private UIView _editButtons;
+
+		// Keeping a reference to the _imagePromo object to ensure binding does not break.
+		private UIImageView _imagePromo;
+
         public static CGSize ButtonSize = new CGSize(60, 46);
 
         protected UIView Line { get; set; }
@@ -64,10 +68,18 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             FlatButtonStyle.Green.ApplyTo(btnBook);
             btnBook.SetTitle(Localize.GetValue("BookItButton"), UIControlState.Normal);
 
+			_imagePromo = new UIImageView(UIImage.FromFile("promo.png"))
+			{
+				TranslatesAutoresizingMaskIntoConstraints = false
+			};
+			_imagePromo.SetHeight(10f);
+			_imagePromo.SetWidth(10f);
+			btnBook.AddSubview(_imagePromo);
+
             var btnBookLater = new AppBarButton(Localize.GetValue("BookItLaterButton"), AppBarView.ButtonSize.Width, AppBarView.ButtonSize.Height, "later_icon.png", "later_icon_pressed.png");
             btnBookLater.TranslatesAutoresizingMaskIntoConstraints = false;
 
-            _orderButtons.AddSubviews(btnEstimate, btnBook, btnBookLater);
+			_orderButtons.AddSubviews(btnEstimate, btnBook, btnBookLater);
 
             // Constraints for Container
             _orderButtons.Superview.AddConstraints(new []
@@ -96,6 +108,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 NSLayoutConstraint.Create(btnBook, NSLayoutAttribute.Height, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1, 41f),
             });
 
+			// Constraints for Image Promo button
+			btnBook.AddConstraints(new []
+			{
+				NSLayoutConstraint.Create(_imagePromo, NSLayoutAttribute.Right, NSLayoutRelation.Equal, btnBook, NSLayoutAttribute.Right, 1, 0f),
+				NSLayoutConstraint.Create(_imagePromo, NSLayoutAttribute.Top, NSLayoutRelation.Equal, btnBook, NSLayoutAttribute.Top, 1, 0f),
+			});
+
             // Constraints for Book Later button
             _orderButtons.AddConstraints(new []
             {
@@ -110,9 +129,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             set.Bind(btnEstimate)
                 .For(v => v.Command)
                 .To(vm => vm.ChangeAddressSelectionMode);
+			
             set.Bind(btnEstimate)
                 .For(v => v.Selected)
                 .To(vm => vm.EstimateSelected);
+			
 			set.Bind(btnEstimate)
 				.For(v => v.Hidden)
 				.To(vm => vm.Settings.HideDestination);
@@ -121,9 +142,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 .For(v => v.Command)
                 .To(vm => vm.SetPickupDateAndReviewOrder);
 
+			set.Bind(_imagePromo)
+				.For(v => v.Hidden)
+				.To(vm => vm.IsPromoCodeActive)
+				.WithConversion("BoolInverter");
+
             set.Bind(btnBookLater)
                 .For(v => v.Command)
                 .To(vm => vm.BookLater);
+			
             set.Bind(btnBookLater)
                 .For(v => v.Hidden)
                 .To(vm => vm.Settings.DisableFutureBooking);

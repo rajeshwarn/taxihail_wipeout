@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="14B25" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="14C109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PromotionView">
             <connections>
+                <outlet property="lblInstruction" destination="Utw-Tv-s75" id="2d3-gZ-9zo"/>
                 <outlet property="lblNoPromotions" destination="8pr-uT-4sr" id="1z8-tm-s0Z"/>
                 <outlet property="tblPromotions" destination="was-2h-vhd" id="TwC-bF-Kvc"/>
                 <outlet property="view" destination="iN0-l3-epB" id="kCW-yf-GMq"/>
@@ -17,12 +18,18 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="was-2h-vhd">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
+                    <rect key="frame" x="0.0" y="49" width="320" height="504"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                 </tableView>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No promotions available" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8pr-uT-4sr">
-                    <rect key="frame" x="67" y="20" width="186" height="21"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="No promotions available" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8pr-uT-4sr">
+                    <rect key="frame" x="67" y="81" width="186" height="21"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Utw-Tv-s75">
+                    <rect key="frame" x="15" y="20" width="290" height="21"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                     <nil key="highlightedColor"/>
                 </label>
@@ -30,11 +37,15 @@
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="was-2h-vhd" secondAttribute="trailing" id="1vn-Pa-at0"/>
-                <constraint firstItem="was-2h-vhd" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="8BN-Sh-EU8"/>
-                <constraint firstAttribute="bottom" secondItem="was-2h-vhd" secondAttribute="bottom" id="8vp-AB-eoW"/>
-                <constraint firstItem="8pr-uT-4sr" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="20" id="L4S-2A-NZN"/>
+                <constraint firstItem="Utw-Tv-s75" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="15" id="55V-qB-RQZ"/>
+                <constraint firstItem="8pr-uT-4sr" firstAttribute="top" secondItem="Utw-Tv-s75" secondAttribute="bottom" constant="40" id="7xv-XW-l9O"/>
+                <constraint firstAttribute="bottom" secondItem="was-2h-vhd" secondAttribute="bottom" constant="-49" id="8vp-AB-eoW"/>
+                <constraint firstAttribute="trailing" secondItem="Utw-Tv-s75" secondAttribute="trailing" constant="15" id="Gfu-ub-A80"/>
+                <constraint firstItem="was-2h-vhd" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" priority="60" constant="49" id="Iav-y3-YuM"/>
                 <constraint firstItem="was-2h-vhd" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="hNE-3e-PiM"/>
-                <constraint firstAttribute="centerX" secondItem="8pr-uT-4sr" secondAttribute="centerX" id="mOD-ay-EK3"/>
+                <constraint firstItem="was-2h-vhd" firstAttribute="top" secondItem="Utw-Tv-s75" secondAttribute="bottom" priority="40" constant="8" id="txX-LY-Kmd"/>
+                <constraint firstItem="8pr-uT-4sr" firstAttribute="centerX" secondItem="Utw-Tv-s75" secondAttribute="centerX" id="vAF-C2-DAB"/>
+                <constraint firstItem="Utw-Tv-s75" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="20" id="zYz-pR-d3T"/>
             </constraints>
             <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
         </view>

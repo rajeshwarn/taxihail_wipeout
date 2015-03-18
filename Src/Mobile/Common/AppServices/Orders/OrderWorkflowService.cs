@@ -219,14 +219,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			}
 		}
 
-		public Task<bool> IsFutureBooking()
-		{
-			return _pickupDateSubject
-				.Select(date => date.HasValue)
-				.Take(1)
-				.ToTask();
-		}
-
 		public async Task<Tuple<Order, OrderStatusDetail>> ConfirmOrder()
 		{
 		    _isOrderRebooked = false;
@@ -613,22 +605,23 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
             return settings.ChargeTypeId == ChargeTypes.Account.Id;
 		}
 
-		public async Task<bool> ValidateAccountNumberAndPrepareQuestions(string accountNumber = null)
+        public async Task<bool> ValidateAccountNumberAndPrepareQuestions(string accountNumber = null, string customerNumber = null)
 		{
-			if (accountNumber == null)
+			if (accountNumber == null || customerNumber == null)
 			{
 				var settings = await _bookingSettingsSubject.Take(1).ToTask();
 				accountNumber = settings.AccountNumber;
+                customerNumber = settings.CustomerNumber;
 			}
 
-			if (!accountNumber.HasValue ())
+			if (!accountNumber.HasValue() && !customerNumber.HasValue())
 			{
 				return false;
 			}
 
 			try
 			{
-				var questions = await _accountPaymentService.GetQuestions (accountNumber);
+				var questions = await _accountPaymentService.GetQuestions (accountNumber, customerNumber);
 				_accountPaymentQuestions.OnNext (questions);
 
 				return true;
@@ -661,14 +654,13 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			return true;
 		}
 
-		public async Task SetAccountNumber(string accountNumber)
+		public async Task SetAccountNumber(string accountNumber, string customerNumber)
 		{
-			_accountService.UpdateAccountNumber (accountNumber);
-
-
-
+            _accountService.UpdateAccountNumber(accountNumber, customerNumber);
+            
 			var bookingSettings = await _bookingSettingsSubject.Take(1).ToTask();
 			bookingSettings.AccountNumber = accountNumber;
+            bookingSettings.CustomerNumber = customerNumber;
 
 			await SetBookingSettings (bookingSettings);
 		}
@@ -755,7 +747,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			order.DropOffAddress = await _destinationAddressSubject.Take(1).ToTask();
 			order.Settings = await _bookingSettingsSubject.Take(1).ToTask();
 			order.Note = await _noteToDriverSubject.Take(1).ToTask();
-			order.Market = await _marketSubject.Take(1).ToTask();
 			order.PromoCode = await _promoCodeSubject.Take(1).ToTask();
 			
 			var estimatedFare = await _estimatedFareDetailSubject.Take (1).ToTask();

@@ -169,6 +169,7 @@ namespace apcurium.MK.Booking.Domain
                 ProviderId = settings.ProviderId,
                 VehicleTypeId = settings.VehicleTypeId,
                 AccountNumber = settings.AccountNumber,
+                CustomerNumber = settings.CustomerNumber,
                 DefaultTipPercent = defaultTipPercent
             });
         }

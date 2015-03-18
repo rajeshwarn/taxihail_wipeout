@@ -41,8 +41,15 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             {
                 case VehicleStatuses.Common.Loaded:
                 {
+                    var orderStatus = _orderDao.FindOrderStatusById(@event.SourceId);
+                    if (orderStatus.IsPrepaid)
+                    {
+                        // No need to pair, order was already paid
+                        return;
+                    }
+
                     var order = _orderDao.FindById(@event.SourceId);
-                    
+
                     if (order.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id
                         || order.Settings.ChargeTypeId == ChargeTypes.PayPal.Id)
                     {

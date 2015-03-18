@@ -321,8 +321,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					status = await _bookingService.GetOrderStatusAsync(Order.Id);
 				}
 
-				Logger.LogMessage ("IBS Order Id: {0}", status.IBSOrderId);
-
 				if(status.VehicleNumber != null)
 				{
 					_vehicleNumber = status.VehicleNumber;
