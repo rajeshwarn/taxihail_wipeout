@@ -67,46 +67,85 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
 		public ObservableCollection<AddressViewModel> AllAddresses { get; set; }
 
-		public async void LoadAddresses()
-		{            
-            _ignoreTextChange = true;
-			ShowDefaultResults = true;
-			_currentAddress = await GetCurrentAddressOrUserPosition();
-			StartingText = _currentAddress != null 
-				? _currentAddress.GetFirstPortionOfAddress() 
-				: string.Empty;
+	    private async Task LoadAddressesUnspecified()
+	    {
+            ShowDefaultResults = true;
+            _currentAddress = await GetCurrentAddressOrUserPosition();
+            StartingText = _currentAddress != null
+                ? _currentAddress.GetFirstPortionOfAddress()
+                : string.Empty;
 
-			var favoritePlaces = _accountService.GetFavoriteAddresses();
-			var historyPlaces = _accountService.GetHistoryAddresses();
-			var neabyPlaces = Task.Run(() => _placesService.SearchPlaces(null, 
-				_currentAddress != null ? _currentAddress.Latitude : (double?)null, 
-				_currentAddress != null ? _currentAddress.Longitude : (double?)null, 
-				null, _currentLanguage));
+            var favoritePlaces = _accountService.GetFavoriteAddresses();
+            var historyPlaces = _accountService.GetHistoryAddresses();
+            var neabyPlaces = Task.Run(() => _placesService
+                .SearchPlaces(
+                    null,
+                    _currentAddress != null ? _currentAddress.Latitude : (double?)null,
+                    _currentAddress != null ? _currentAddress.Longitude : (double?)null,
+                    null,
+                    _currentLanguage
+                )
+            );
 
-			try
-			{
-				using(this.Services().Message.ShowProgressNonModal())
-				{
-					AllAddresses.Clear();
-
-					_defaultFavoriteAddresses = ConvertToAddressViewModel(await favoritePlaces, AddressType.Favorites);
-					AllAddresses.AddRange(_defaultFavoriteAddresses);
-
-					_defaultHistoryAddresses = ConvertToAddressViewModel(await historyPlaces, AddressType.History);
-					AllAddresses.AddRange(_defaultHistoryAddresses);
-
-					_defaultNearbyPlaces = ConvertToAddressViewModel(await neabyPlaces, AddressType.Places);
-					AllAddresses.AddRange(_defaultNearbyPlaces);
-				}
-			}
-			catch (Exception e)
-			{
-				Logger.LogError(e);
-			}
-            finally
+            using (this.Services().Message.ShowProgressNonModal())
             {
-                _ignoreTextChange = false;
+                AllAddresses.Clear();
+
+                _defaultFavoriteAddresses = ConvertToAddressViewModel(await favoritePlaces, AddressType.Favorites);
+                AllAddresses.AddRange(_defaultFavoriteAddresses);
+
+                _defaultHistoryAddresses = ConvertToAddressViewModel(await historyPlaces, AddressType.History);
+                AllAddresses.AddRange(_defaultHistoryAddresses);
+
+                _defaultNearbyPlaces = ConvertToAddressViewModel(await neabyPlaces, AddressType.Places);
+                AllAddresses.AddRange(_defaultNearbyPlaces);
             }
+	    }
+
+	    private void LoadFilteredAdress(AddressLocationType filter)
+	    {
+	        AllAddresses.Clear();
+
+	        var filteredPlaces = _placesService.GetFilteredPlacesList(filter);
+
+
+            if (filteredPlaces.Skip(1).Any())
+	        {
+                _defaultNearbyPlaces = ConvertToAddressViewModel(filteredPlaces, AddressType.Places);
+
+                AllAddresses.AddRange(_defaultNearbyPlaces);
+	        }
+	        else
+	        {
+                SelectAddress(filteredPlaces.FirstOrDefault());
+	        }
+	    }
+
+	    public async void LoadAddresses(AddressLocationType filter)
+		{
+            _ignoreTextChange = true;
+	        try
+	        {
+	            switch (filter)
+	            {
+	                case AddressLocationType.Unspeficied:
+	                    await LoadAddressesUnspecified();
+	                    break;
+	                case AddressLocationType.Airport:
+	                    LoadFilteredAdress(filter);
+	                    break;
+	                default:
+	                    throw new ArgumentOutOfRangeException("filter");
+	            }
+	        }
+	        catch (Exception e)
+	        {
+	            Logger.LogError(e);
+	        }
+	        finally
+	        {
+                _ignoreTextChange = false;
+	        }
 		}
 
 		private AddressViewModel[] ConvertToAddressViewModel(Address[] addresses, AddressType type)
@@ -178,27 +217,37 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		{
 			get
 			{
-				return this.GetCommand<AddressViewModel>(vm => 
+				return this.GetCommand<AddressViewModel>(vm =>
 				{
-                    this.Services().Message.ShowProgressNonModal(false);
-					var detailedAddress = UpdateAddressWithPlaceDetail(vm.Address);
-
-					if(_isInLocationDetail)
-					{
-						this.ReturnResult(detailedAddress);
-					}
-					else
-					{
-						((HomeViewModel)Parent).LocateMe.Cancel();
-						_orderWorkflowService.SetAddress(detailedAddress);
-                    	PresentationStateRequested.Raise(this, new HomeViewModelStateRequestedEventArgs(HomeViewModelState.Initial));
-						ChangePresentation(new ZoomToStreetLevelPresentationHint(detailedAddress.Latitude, detailedAddress.Longitude));
-					}
+				    this.Services().Message.ShowProgressNonModal(false);
+				    SelectAddress(vm.Address);
 				}); 
 			}
 		}
 
-		public ICommand Cancel
+	    private void SelectAddress(Address address)
+	    {
+	        if (address == null)
+	        {
+	            return;
+	        }
+
+            var detailedAddress = UpdateAddressWithPlaceDetail(address);
+
+	        if (_isInLocationDetail)
+	        {
+	            this.ReturnResult(detailedAddress);
+	        }
+	        else
+	        {
+	            ((HomeViewModel) Parent).LocateMe.Cancel();
+	            _orderWorkflowService.SetAddress(detailedAddress);
+	            PresentationStateRequested.Raise(this, new HomeViewModelStateRequestedEventArgs(HomeViewModelState.Initial));
+	            ChangePresentation(new ZoomToStreetLevelPresentationHint(detailedAddress.Latitude, detailedAddress.Longitude));
+	        }
+	    }
+
+	    public ICommand Cancel
 		{
 			get
 			{

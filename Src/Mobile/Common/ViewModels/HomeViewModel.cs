@@ -338,6 +338,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
+	    public ICommand AirportSearch
+	    {
+	        get
+	        {
+	            return this.GetCommand(() =>
+	            {
+                    this.ChangePresentation(new HomeViewModelPresentationHint(HomeViewModelState.AirportSearch));
+	            });
+	        }
+	    }
+
 		private async void SetMapCenterToUserLocation(bool initialZoom, CancellationToken cancellationToken = default(CancellationToken))
 		{
 			try

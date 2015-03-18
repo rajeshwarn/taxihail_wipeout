@@ -100,6 +100,24 @@
                             android:scaleType="center"
                             android:src="@drawable/location_icon" />
                     </LinearLayout>
+                <!-- Airport Button -->
+                    <LinearLayout
+                        android:clickable="true"
+                        local:MvxBind="Click AirportSearch"
+                        android:background="@drawable/drop_shadow_selector"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_marginBottom="100dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_gravity="right|bottom">
+                        <ImageView
+                            android:clickable="false"
+                            android:id="@+id/btnLocation"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:scaleType="center"
+                            android:src="@drawable/location_icon" />
+                    </LinearLayout>
                 <!-- Order Review -->
                     <apcurium.MK.Booking.Mobile.Client.Controls.Widgets.OrderReview
                         android:layout_width="fill_parent"

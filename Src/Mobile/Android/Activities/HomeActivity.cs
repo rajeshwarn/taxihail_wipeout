@@ -21,6 +21,7 @@ using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using System.Windows.Input;
+using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {
@@ -34,7 +35,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
     )]   
     public class HomeActivity : BaseBindingFragmentActivity<HomeViewModel>, IChangePresentation
     {
-        private Button _bigButton;        
+        private Button _bigButton;     
         private TouchableMap _touchMap;
         private LinearLayout _mapOverlay;
         private OrderReview _orderReview;
@@ -202,6 +203,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             SetContentView(Resource.Layout.View_Home);
 
             _bigButton = (Button) FindViewById(Resource.Id.BigButtonTransparent);
+            
             _orderOptions = (OrderOptions) FindViewById(Resource.Id.orderOptions);
             _orderReview = (OrderReview) FindViewById(Resource.Id.orderReview);
             _orderEdit = (OrderEdit) FindViewById(Resource.Id.orderEdit);
@@ -459,8 +461,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             else if (_presentationState == HomeViewModelState.AddressSearch)
             {
                 SetMapEnabled(false);
-                _searchAddress.Open();
-            } 
+                _searchAddress.Open(AddressLocationType.Unspeficied);
+            }
+            else if (_presentationState == HomeViewModelState.AirportSearch)
+            {
+                SetMapEnabled(false);
+                _searchAddress.Open(AddressLocationType.Airport);
+            }
             else if(_presentationState == HomeViewModelState.Initial)
             {
                 SetMapEnabled(true);
