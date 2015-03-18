@@ -49,7 +49,7 @@ namespace apcurium.MK.Booking.Api.Services
 
                 // Validate with IBS to make sure the account/customer is still active
                 var ibsChargeAccount = _ibsServiceProvider.ChargeAccount().GetIbsAccount(request.AccountNumber, request.CustomerNumber);
-                if (ibsChargeAccount.Message != "OK")
+                if (!ibsChargeAccount.IsValid())
                 {
                     throw new HttpError(HttpStatusCode.Forbidden, ErrorCode.AccountCharge_InvalidAccountNumber.ToString());
                 }

@@ -934,6 +934,8 @@ namespace apcurium.MK.Booking.Api.Services
                 ibsChargeTypeId = _serverSettings.ServerData.IBS.PaymentTypePaymentInCarId;
             }
 
+            var customerNumber = GetCustomerNumber(request.Settings.AccountNumber, request.Settings.CustomerNumber);
+
             var result = _ibsServiceProvider.Booking(companyKey, request.Market).CreateOrder(
                 providerId,
                 ibsAccountId,
@@ -947,16 +949,28 @@ namespace apcurium.MK.Booking.Api.Services
                 ibsPickupAddress,
                 ibsDropOffAddress,
                 request.Settings.AccountNumber,
-                request.Settings.AccountNumber.HasValue()
-                    ? null
-                    : request.Settings.CustomerNumber.HasValue()
-                        ? int.Parse(request.Settings.CustomerNumber)
-                        : (int?)null,
+                customerNumber,
                 prompts,
                 promptsLength,
                 fare);
 
             return result;
+        }
+
+        private int? GetCustomerNumber(string accountNumber, string customerNumber)
+        {
+            if (!accountNumber.HasValue() || !customerNumber.HasValue())
+            {
+                return null;
+            }
+
+            int result;
+            if (int.TryParse(customerNumber, out result))
+            {
+                return result;
+            }
+
+            return null;
         }
 
         private void CancelIbsOrder(OrderDetail order, Guid accountId)

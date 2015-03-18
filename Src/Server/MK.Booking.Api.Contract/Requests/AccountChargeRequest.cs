@@ -12,15 +12,15 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
     [AuthorizationRequired(ApplyTo.Post | ApplyTo.Put | ApplyTo.Delete, RoleName.Admin)]
 #endif
     [Route("/admin/accountscharge", "GET, POST,PUT")]
-    [Route("/admin/accountscharge/{Number}", "GET,DELETE")]
-    [Route("/admin/accountscharge/{Number}/{CustomerNumber}/{HideAnswers}", "GET")]
+    [Route("/admin/accountscharge/{AccountNumber}", "GET,DELETE")]
+    [Route("/admin/accountscharge/{AccountNumber}/{CustomerNumber}/{HideAnswers}", "GET")]
     public class AccountChargeRequest
     {
         public Guid Id { get; set; }
 
         public string Name { get; set; }
 
-        public string Number { get; set; }
+        public string AccountNumber { get; set; }
 
         public string CustomerNumber { get; set; }
 

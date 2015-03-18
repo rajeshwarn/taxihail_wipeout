@@ -97,7 +97,7 @@ namespace apcurium.MK.Web.Tests
             {
                 Id = Guid.NewGuid(),
                 Name = accountChargeName,
-                Number = accountChargeNumber,
+                AccountNumber = accountChargeNumber,
                 UseCardOnFileForPayment = true,
                 Questions = new[]
                 {
