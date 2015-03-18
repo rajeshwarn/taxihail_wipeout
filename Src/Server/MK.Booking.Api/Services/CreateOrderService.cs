@@ -947,7 +947,11 @@ namespace apcurium.MK.Booking.Api.Services
                 ibsPickupAddress,
                 ibsDropOffAddress,
                 request.Settings.AccountNumber,
-                string.IsNullOrWhiteSpace (request.Settings.AccountNumber ) ?(int?) null:0,
+                request.Settings.AccountNumber.HasValue()
+                    ? null
+                    : request.Settings.CustomerNumber.HasValue()
+                        ? int.Parse(request.Settings.CustomerNumber)
+                        : (int?)null,
                 prompts,
                 promptsLength,
                 fare);
