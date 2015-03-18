@@ -14,8 +14,11 @@
         },
 
         render: function () {
-            var html = this.renderTemplate(this.model.toJSON());
+            var data = this.model.toJSON();
+            var html = this.renderTemplate(data);
             this.$el.html(html);
+
+            this.$("[name=addressLocationType] option[value=" + data.addressLocationType + "]").attr("selected", "selected");
 
             this.validate({
                 rules: {

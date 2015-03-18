@@ -28,6 +28,8 @@ namespace apcurium.MK.Booking.ReadModel
 
         public string PlaceReference { get; set; }
 
+        public int AddressLocationType { get; set; }
+
         public string StreetNumber { get; set; }
 
         public string Street { get; set; }
