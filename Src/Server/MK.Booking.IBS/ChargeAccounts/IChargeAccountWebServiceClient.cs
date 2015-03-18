@@ -1,5 +1,4 @@
-﻿using apcurium.MK.Booking.IBS.ChargeAccounts.RequestResponse;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using apcurium.MK.Booking.IBS.ChargeAccounts.RequestResponse.Resources;
 
 namespace apcurium.MK.Booking.IBS.ChargeAccounts

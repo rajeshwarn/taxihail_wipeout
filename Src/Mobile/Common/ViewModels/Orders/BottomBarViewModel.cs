@@ -235,7 +235,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 									this.Services().Localize["AccountPaymentNumberRequiredMessage"],
 									() => { return; });
 
-								hasValidAccountNumber = await _orderWorkflowService.ValidateAccountNumberAndPrepareQuestions(accountNumber);
+                                var customerNumber = await this.Services().Message.ShowPromptDialog(
+                                    this.Services().Localize["AccountPaymentCustomerNumberRequiredTitle"],
+                                    this.Services().Localize["AccountPaymentCustomerNumberRequiredMessage"],
+                                    () => { return; });
+
+                                hasValidAccountNumber = await _orderWorkflowService.ValidateAccountNumberAndPrepareQuestions(accountNumber, customerNumber);
 								if (!hasValidAccountNumber)
 								{
 									await this.Services().Message.ShowMessage(
@@ -244,7 +249,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 									return;
 								}
 
-								await _orderWorkflowService.SetAccountNumber(accountNumber);
+								await _orderWorkflowService.SetAccountNumber(accountNumber, customerNumber);
 							}
 
 							var questions = await _orderWorkflowService.GetAccountPaymentQuestions();

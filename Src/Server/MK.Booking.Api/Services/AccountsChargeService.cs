@@ -5,6 +5,7 @@ using System.Net;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Commands;
+using apcurium.MK.Booking.IBS;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Security;
 using apcurium.MK.Common;
@@ -21,10 +22,12 @@ namespace apcurium.MK.Booking.Api.Services
     {
         private readonly IAccountChargeDao _dao;
         private readonly ICommandBus _commandBus;
+        private readonly IIBSServiceProvider _ibsServiceProvider;
 
-        public AccountsChargeService(IAccountChargeDao dao, ICommandBus commandBus)
+        public AccountsChargeService(IAccountChargeDao dao, ICommandBus commandBus, IIBSServiceProvider ibsServiceProvider)
         {
             _commandBus = commandBus;
+            _ibsServiceProvider = ibsServiceProvider;
             _dao = dao;
         }
 
@@ -32,7 +35,7 @@ namespace apcurium.MK.Booking.Api.Services
         {
             bool isAdmin = SessionAs<AuthUserSession>().HasPermission(RoleName.Admin);
 
-            if (!request.Number.HasValue())
+            if (!request.AccountNumber.HasValue())
             {
                 var allAccounts = _dao.GetAll();
 
@@ -47,8 +50,16 @@ namespace apcurium.MK.Booking.Api.Services
             }
             else
             {
-                var account = _dao.FindByAccountNumber(request.Number);
+                // Validate locally that the account exists
+                var account = _dao.FindByAccountNumber(request.AccountNumber);
                 if (account == null)
+                {
+                    throw new HttpError(HttpStatusCode.NotFound, "Account Not Found");
+                }
+
+                // Validate with IBS to make sure the account/customer is still active
+                var ibsChargeAccount = _ibsServiceProvider.ChargeAccount().GetIbsAccount(request.AccountNumber, request.CustomerNumber);
+                if (ibsChargeAccount == null || !ibsChargeAccount.IsValid())
                 {
                     throw new HttpError(HttpStatusCode.NotFound, "Account Not Found");
                 }
@@ -72,7 +83,7 @@ namespace apcurium.MK.Booking.Api.Services
 
         public object Post(AccountChargeRequest request)
         {
-            var existing = _dao.FindByAccountNumber(request.Number);
+            var existing = _dao.FindByAccountNumber(request.AccountNumber);
             if (existing != null)
             {
                 throw new HttpError(HttpStatusCode.Conflict, ErrorCode.AccountCharge_AccountAlreadyExisting.ToString());
@@ -84,7 +95,7 @@ namespace apcurium.MK.Booking.Api.Services
             {
                 AccountChargeId = Guid.NewGuid(),
                 Name = request.Name,
-                Number = request.Number,
+                Number = request.AccountNumber,
                 Questions = request.Questions,
                 UseCardOnFileForPayment = request.UseCardOnFileForPayment,
                 CompanyId = AppConstants.CompanyId
@@ -106,7 +117,7 @@ namespace apcurium.MK.Booking.Api.Services
 
         public object Put(AccountChargeRequest request)
         {
-            var existing = _dao.FindByAccountNumber(request.Number);
+            var existing = _dao.FindByAccountNumber(request.AccountNumber);
             if (existing != null
                 && existing.Id != request.Id)
             {
@@ -123,7 +134,7 @@ namespace apcurium.MK.Booking.Api.Services
             {
                 AccountChargeId = request.Id,
                 Name = request.Name,
-                Number = request.Number,
+                Number = request.AccountNumber,
                 UseCardOnFileForPayment = request.UseCardOnFileForPayment,
                 Questions = request.Questions,
                 CompanyId = AppConstants.CompanyId
@@ -139,7 +150,7 @@ namespace apcurium.MK.Booking.Api.Services
 
         public object Delete(AccountChargeRequest request)
         {
-            var existing = _dao.FindByAccountNumber(request.Number);
+            var existing = _dao.FindByAccountNumber(request.AccountNumber);
             if (existing == null)
             {
                 throw new HttpError(HttpStatusCode.NotFound, "Account Not Found");

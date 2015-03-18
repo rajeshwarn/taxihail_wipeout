@@ -39,7 +39,7 @@ namespace apcurium.MK.Web.Tests
             {
                 Id = Guid.NewGuid(),
                 Name = "VIP",
-                Number = "NUMBER" + new Random(DateTime.Now.Millisecond).Next(0, 5236985),
+                AccountNumber = "NUMBER" + new Random(DateTime.Now.Millisecond).Next(0, 5236985),
                 Questions = new[]
                 {
                     new AccountChargeQuestion
@@ -51,7 +51,7 @@ namespace apcurium.MK.Web.Tests
             };
             _sut.CreateAccountCharge(request);
 
-            var account = _sut.GetAccountCharge(request.Number);
+            var account = _sut.GetAccountCharge(request.AccountNumber);
 
             Assert.That(account, Is.Not.Null);
         }
@@ -63,7 +63,7 @@ namespace apcurium.MK.Web.Tests
             {
                 Id = Guid.NewGuid(),
                 Name = "VIP",
-                Number = "NUMBER" + new Random(DateTime.Now.Millisecond).Next(0, 5236985),
+                AccountNumber = "NUMBER" + new Random(DateTime.Now.Millisecond).Next(0, 5236985),
                 Questions = new[]
                 {
                     new AccountChargeQuestion
@@ -91,7 +91,7 @@ namespace apcurium.MK.Web.Tests
             {
                 Id = Guid.NewGuid(),
                 Name = "VIP",
-                Number = "NUMBER" + new Random(DateTime.Now.Millisecond).Next(0,5236985),
+                AccountNumber = "NUMBER" + new Random(DateTime.Now.Millisecond).Next(0,5236985),
                 Questions = new[]
                 {
                     new AccountChargeQuestion
@@ -103,14 +103,14 @@ namespace apcurium.MK.Web.Tests
             };
             _sut.CreateAccountCharge(request);
 
-            var account = _sut.GetAccountCharge(request.Number);
+            var account = _sut.GetAccountCharge(request.AccountNumber);
 
             request.Id = account.Id;
             request.Name = "VIP2";
 
             _sut.UpdateAccountCharge(request);
 
-            account = _sut.GetAccountCharge(request.Number);
+            account = _sut.GetAccountCharge(request.AccountNumber);
 
             Assert.AreEqual(account.Name, request.Name);
         }
@@ -121,7 +121,7 @@ namespace apcurium.MK.Web.Tests
             var request = new AccountChargeRequest
             {
                 Name = "VIP",
-                Number = "NUMBER" + new Random(DateTime.Now.Millisecond).Next(0, 5236985),
+                AccountNumber = "NUMBER" + new Random(DateTime.Now.Millisecond).Next(0, 5236985),
                 Questions = new[]
                 {
                     new AccountChargeQuestion
@@ -133,9 +133,9 @@ namespace apcurium.MK.Web.Tests
             };
             _sut.CreateAccountCharge(request);
             
-            _sut.DeleteAccountCharge(request.Number);
+            _sut.DeleteAccountCharge(request.AccountNumber);
 
-            Assert.Throws<WebServiceException>(() =>  _sut.GetAccountCharge(request.Number));
+            Assert.Throws<WebServiceException>(() =>  _sut.GetAccountCharge(request.AccountNumber));
         }
     }
 }

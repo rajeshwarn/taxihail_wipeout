@@ -576,7 +576,7 @@ namespace apcurium.MK.Booking.Api.Services
                     isChargeAccountPaymentWithCardOnFile = true;
                 }
 
-                ValidateChargeAccountAnswers(request.Settings.AccountNumber, request.QuestionsAndAnswers, request.ClientLanguageCode);
+                ValidateChargeAccountAnswers(request.Settings.AccountNumber, request.Settings.CustomerNumber, request.QuestionsAndAnswers, request.ClientLanguageCode);
 
                 if (isChargeAccountPaymentWithCardOnFile)
                 {
@@ -842,7 +842,7 @@ namespace apcurium.MK.Booking.Api.Services
             }
         }
 
-        private void ValidateChargeAccountAnswers(string accountNumber, AccountChargeQuestion[] userQuestionsDetails, string clientLanguageCode)
+        private void ValidateChargeAccountAnswers(string accountNumber, string customerNumber, AccountChargeQuestion[] userQuestionsDetails, string clientLanguageCode)
         {
             var accountChargeDetail = _accountChargeDao.FindByAccountNumber(accountNumber);
             if (accountChargeDetail == null)
@@ -854,7 +854,7 @@ namespace apcurium.MK.Booking.Api.Services
 
             var answers = userQuestionsDetails.Select(x => x.Answer);
 
-            var validation = _ibsServiceProvider.ChargeAccount().ValidateIbsChargeAccount(answers, accountNumber, "0");
+            var validation = _ibsServiceProvider.ChargeAccount().ValidateIbsChargeAccount(answers, accountNumber, customerNumber);
             if (!validation.Valid)
             {
                 if (validation.ValidResponse != null)
@@ -936,7 +936,9 @@ namespace apcurium.MK.Booking.Api.Services
                 ibsChargeTypeId = _serverSettings.ServerData.IBS.PaymentTypePaymentInCarId;
             }
 
-            var result = _ibsServiceProvider.Booking(companyKey).CreateOrder(
+            var customerNumber = GetCustomerNumber(request.Settings.AccountNumber, request.Settings.CustomerNumber);
+
+	        var result = _ibsServiceProvider.Booking(companyKey).CreateOrder(
                 providerId,
                 ibsAccountId,
                 request.Settings.Name,
@@ -949,12 +951,28 @@ namespace apcurium.MK.Booking.Api.Services
                 ibsPickupAddress,
                 ibsDropOffAddress,
                 request.Settings.AccountNumber,
-                string.IsNullOrWhiteSpace (request.Settings.AccountNumber ) ?(int?) null:0,
+                customerNumber,
                 prompts,
                 promptsLength,
                 fare);
 
             return result;
+        }
+
+        private int? GetCustomerNumber(string accountNumber, string customerNumber)
+        {
+            if (!accountNumber.HasValue() || !customerNumber.HasValue())
+            {
+                return null;
+            }
+
+            int result;
+            if (int.TryParse(customerNumber, out result))
+            {
+                return result;
+            }
+
+            return null;
         }
 
         private void CancelIbsOrder(OrderDetail order, Guid accountId)

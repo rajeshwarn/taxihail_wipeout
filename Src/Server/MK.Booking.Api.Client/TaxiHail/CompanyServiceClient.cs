@@ -78,7 +78,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             return tcs.Task;
         }
 			
-        public Task<AccountCharge> GetAccountCharge(string accountNumber)
+        public Task<AccountCharge> GetAccountCharge(string accountNumber, string customerNumber)
         {
             var tcs = new TaskCompletionSource<AccountCharge>();
             bool hideAnswers = false;
@@ -87,7 +87,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             hideAnswers = true;
             #endif
 
-            string request = string.Format("/admin/accountscharge/{0}/{1}", accountNumber, hideAnswers);
+            string request = string.Format("/admin/accountscharge/{0}/{1}/{2}", accountNumber, customerNumber, hideAnswers);
             Client.GetAsync<AccountCharge>(request,
                 tcs.SetResult,
                 (result, error) => tcs.SetException(ServiceClientBaseExtensions.FixWebServiceException(error)));

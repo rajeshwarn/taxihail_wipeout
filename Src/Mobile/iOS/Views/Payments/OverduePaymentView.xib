@@ -152,6 +152,7 @@
                 <constraint firstItem="1SN-EP-ZDo" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="tqb-SC-1Ea"/>
             </constraints>
             <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
+            <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
             <point key="canvasLocation" x="273" y="350"/>
         </view>
     </objects>

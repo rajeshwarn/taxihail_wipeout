@@ -232,7 +232,8 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
                     Passengers = 3,
                     ProviderId = 85,
                     VehicleTypeId = 69,
-                    AccountNumber = "1234"
+                    AccountNumber = "1234",
+                    CustomerNumber = "0"
                 });
 
                 using (var context = new BookingDbContext(DbName))
@@ -248,6 +249,7 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
                     Assert.AreEqual(85, dto.Settings.ProviderId);
                     Assert.AreEqual(69, dto.Settings.VehicleTypeId);
                     Assert.AreEqual("1234", dto.Settings.AccountNumber);
+                    Assert.AreEqual("0", dto.Settings.CustomerNumber);
                 }
             }
 
@@ -264,7 +266,8 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
                     Passengers = 3,
                     ProviderId = 13,
                     VehicleTypeId = 1,
-                    AccountNumber = "1234"
+                    AccountNumber = "1234",
+                    CustomerNumber = "0"
                 });
 
                 using (var context = new BookingDbContext(DbName))

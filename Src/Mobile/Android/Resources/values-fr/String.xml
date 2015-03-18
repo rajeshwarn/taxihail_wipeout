@@ -149,7 +149,7 @@
   <string name="EmptyString"></string>
   <string name="EntryCodeLabel">Saisissez un code</string>
   <string name="ErrorCreatingOrderTitle">Désolé, la réservation ne peut être complétée</string>
-  <string name="Error_AccountPaymentMessage">Le numéro de compte semble invalide</string>
+  <string name="Error_AccountPaymentMessage">Le numéro de compte ou de client semble invalide</string>
   <string name="Error_AccountPaymentQuestionRequiredMessage">Vous devez saisir tous les champs pour continuer</string>
   <string name="Error_AccountPaymentTitle">Erreur</string>
   <string name="EstimatedFareNotAvailable">Le prix ne peut être estimé pour le moment</string>
@@ -533,7 +533,7 @@
   <string name="NetworkContactingNextDispatchDescription">En attente de {0} ...</string>
   <string name="TaxiHailNetworkTimeOutPopupAlways">Toujours accepter</string>
   <string name="NetworkTimeOutPopupAlways">Toujours Accepter</string>
-  <string name="UpdateBookingSettingsEmptyAccount">Le numéro de compte de peut être vide lorsque le mode de paiement sélectionné est Compte</string>
+  <string name="UpdateBookingSettingsEmptyAccount">Le numéro de compte et de client ne peuvent être vides lorsque le mode de paiement sélectionné est Compte</string>
   <string name="UpdateBookingSettingsInvalidAccount">Le numéro de compte saisi n\'existe pas</string>
   <string name="CreditCardBookingSettingsError">Une erreur est survenue lors de la mise à jour des informations du compte. Vérifiez que le numéro de compte associé au profil est valide et essayez de nouveau.</string>
   <string name="UpdateBookingSettingsGenericError">Une erreur est survenue lors de la mise à jour des informations du compte</string>
@@ -603,5 +603,8 @@
   <string name="UnpairWarningMessage">Cette action ne peut être annulée</string>
   <string name="UnpairWarningCancelButton">Payer dans le taxi</string>
   <string name="UnpairWarningMessageWithPromo">Si vous décidez de payer dans le taxi, vous ne serez pas éligible à la promotion</string>
+  <string name="AccountPaymentCustomerNumberRequiredMessage">Merci de saisir un numéro de client valide</string>
   <string name="PromoDescriptionCode">Utilisez le code {0} au moment de la commande ou appuyez sur le bouton ci-dessous.</string>
+  <string name="RideSettingsCustomerNumber">Numéro de client du compte (optionnel)</string>
+  <string name="AccountPaymentCustomerNumberRequiredTitle">Numéro de client du compte requis</string>
 </resources>
