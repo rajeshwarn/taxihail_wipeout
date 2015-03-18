@@ -10,7 +10,6 @@ using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common.Resources;
 using Infrastructure.Messaging;
-using log4net;
 using Moneris;
 
 namespace apcurium.MK.Booking.Services.Impl
@@ -186,9 +185,6 @@ namespace apcurium.MK.Booking.Services.Impl
             var transactionId = string.Empty;
             DateTime? transactionDate = null;
 
-            LogManager.GetLogger(typeof (MonerisPaymentService))
-                .Info("Moneris Preauth with amount: " + amountToPreAuthorize);
-
             try
             {
                 bool isSuccessful;
@@ -211,7 +207,6 @@ namespace apcurium.MK.Booking.Services.Impl
                     var preAuthRequest = new HttpsPostRequest(monerisSettings.Host, monerisSettings.StoreId, monerisSettings.ApiToken, preAuthorizeCommand);
                     var preAuthReceipt = preAuthRequest.GetReceipt();
                     isSuccessful = RequestSuccesful(preAuthReceipt, out message);
-                    LogManager.GetLogger(typeof(MonerisPaymentService)).Info("Moneris Preauth success: " + isSuccessful + " message: " + message);
                     isCardDeclined = IsCardDeclined(preAuthReceipt);
                     transactionId = preAuthReceipt.GetTxnNumber();
                     transactionDate = GetTransactionDate(preAuthReceipt);
@@ -226,8 +221,6 @@ namespace apcurium.MK.Booking.Services.Impl
 
                 if (isSuccessful && !isReAuth)
                 {
-                    LogManager.GetLogger(typeof(MonerisPaymentService)).Info("Moneris Preauth success, sending InitiateCreditCardPayment command");
-
                     var paymentId = Guid.NewGuid();
                     _commandBus.Send(new InitiateCreditCardPayment
                     {
@@ -253,7 +246,6 @@ namespace apcurium.MK.Booking.Services.Impl
             }
             catch (Exception e)
             {
-                LogManager.GetLogger(typeof(MonerisPaymentService)).Info("Moneris Preauth exception", e);
                 _logger.LogMessage(string.Format("Error during preauthorization (validation of the card) for client {0}: {1} - {2}", account.Email, message, e));
                 _logger.LogError(e);
 
