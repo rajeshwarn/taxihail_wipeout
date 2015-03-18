@@ -72,6 +72,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				.For(v => v.Command)
 				.To(vm => vm.AirportSearch);
 
+            set.Bind(btnAirport)
+                .For(v => v.Hidden)
+                .To(vm => vm.IsAirportButtonEnabled)
+                .WithConversion("BoolInverter");
+
             set.Bind(btnLocateMe)
                 .For(v => v.Command)
                 .To(vm => vm.LocateMe);
