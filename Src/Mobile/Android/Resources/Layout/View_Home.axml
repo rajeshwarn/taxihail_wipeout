@@ -103,7 +103,7 @@
                 <!-- Airport Button -->
                     <LinearLayout
                         android:clickable="true"
-                        local:MvxBind="Click AirportSearch"
+                        local:MvxBind="Click AirportSearch; Visibility IsAirportButtonEnabled, Converter=Visibility"
                         android:background="@drawable/drop_shadow_selector"
                         android:layout_width="50dp"
                         android:layout_height="50dp"

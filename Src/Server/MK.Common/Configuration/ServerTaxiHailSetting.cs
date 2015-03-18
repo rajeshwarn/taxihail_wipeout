@@ -106,6 +106,7 @@ namespace MK.Common.Configuration
         public NetworkSettingContainer Network { get; protected set; }
         public bool IsWebSignupHidden { get; protected set; }
 
+        [SendToClient]
         [Display(Name = "Use Airport Button", Description = "Enables the use of the popular places address type and the airport button in the app.")]
         public bool IsAirportButtonEnabled { get; set; }
         public string PayPalRegionInfoOverride { get; protected set; }

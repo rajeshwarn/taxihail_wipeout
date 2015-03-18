@@ -211,6 +211,9 @@ namespace MK.Common.Configuration
         public string DefaultPhoneNumberDisplay { get; protected set; }
 
         [SendToClient]
+	    public bool IsAirportButtonEnabled { get; protected set; }
+
+        [SendToClient]
         [Display(Name = "Default Phone Number", Description="Phone number as dialed")]
         public string DefaultPhoneNumber { get; protected set; }
 

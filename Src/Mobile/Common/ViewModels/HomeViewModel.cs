@@ -91,7 +91,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			base.OnViewStarted(firstTime);
 
 			_locationService.Start();
-
+            
 			CheckActiveOrderAsync (firstTime);
 
             if (_orderWorkflowService.IsOrderRebooked())
@@ -337,6 +337,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				}));
 			}
 		}
+
+	    public bool IsAirportButtonEnabled
+	    {
+	        get { return Settings.IsAirportButtonEnabled; }
+	    }
 
 	    public ICommand AirportSearch
 	    {
