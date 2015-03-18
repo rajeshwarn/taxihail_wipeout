@@ -26,7 +26,8 @@
         AccountCharge_AccountAlreadyExisting,
         AccountCharge_InvalidAccountNumber,
         AccountCharge_InvalidAnswer,
-        RatingType_DuplicateName
+        RatingType_DuplicateName,
+        IBSAccountNotFound
  // ReSharper restore InconsistentNaming
     }
 }

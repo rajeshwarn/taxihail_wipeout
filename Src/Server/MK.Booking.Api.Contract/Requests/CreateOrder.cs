@@ -52,8 +52,6 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
 
         public string PromoCode { get; set; }
 
-        public string Market { get; set; }
-
         /// <summary>
         /// Optional: Manually specify the company where to dispatch the order.
         /// If both the OrderCompanyKey and OrderFleetId are set, OrderCompanyKey will have precedence over OrderFleetId.

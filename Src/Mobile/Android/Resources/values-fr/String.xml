@@ -604,6 +604,7 @@
   <string name="UnpairWarningCancelButton">Payer dans le taxi</string>
   <string name="UnpairWarningMessageWithPromo">Si vous décidez de payer dans le taxi, vous ne serez pas éligible à la promotion</string>
   <string name="AccountPaymentCustomerNumberRequiredMessage">Merci de saisir un numéro de client valide</string>
+  <string name="PromoDescriptionCode">Utilisez le code {0} au moment de la commande ou appuyez sur le bouton ci-dessous.</string>
   <string name="RideSettingsCustomerNumber">Numéro de client du compte (optionnel)</string>
   <string name="AccountPaymentCustomerNumberRequiredTitle">Numéro de client du compte requis</string>
 </resources>

@@ -56,10 +56,10 @@ namespace apcurium.MK.Booking.Api.Jobs
             try
             {
                 var order = getOrderDetails.Retry(TimeSpan.FromMilliseconds(300), 7);
-                if (order != null)
+                if (order != null && order.IBSOrderId.HasValue)
                 {
                     var orderStatus = _orderDao.FindOrderStatusById(orderId);
-                    var status = _ibsServiceProvider.Booking(orderStatus.CompanyKey, orderStatus.Market).GetOrdersStatus( new [] { order.IBSOrderId.Value });
+                    var status = _ibsServiceProvider.Booking(orderStatus.CompanyKey).GetOrdersStatus( new [] { order.IBSOrderId.Value });
                  
                     _orderStatusUpdater.Update(status.ElementAt(0), orderStatus);
                 }
@@ -129,7 +129,7 @@ namespace apcurium.MK.Booking.Api.Jobs
             for (var skip = 0; skip < ibsOrdersIds.Count; skip = skip + take)
             {
                 var nextGroup = ibsOrdersIds.Skip(skip).Take(take).ToList();
-                var orderStatuses = _ibsServiceProvider.Booking(companyKey, market).GetOrdersStatus(nextGroup);
+                var orderStatuses = _ibsServiceProvider.Booking(companyKey).GetOrdersStatus(nextGroup);
 
                 foreach (var ibsStatus in orderStatuses)
                 {

@@ -12,9 +12,10 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
     public class AvailableVehicles : IReturn<AvailableVehiclesResponse>
     {
         public double Latitude { get; set; }
+
         public double Longitude { get; set; }
+
         public int? VehicleTypeId { get; set; }
-        public string Market { get; set; }
     }
 
     public class AvailableVehiclesResponse : List<AvailableVehicle>

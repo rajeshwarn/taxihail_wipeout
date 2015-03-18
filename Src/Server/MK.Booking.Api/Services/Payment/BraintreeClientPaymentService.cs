@@ -66,39 +66,50 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             string encryptedCvv,
             string paymentMethodNonce = null)
         {
-            var request = new CustomerRequest
+            try
             {
-                CreditCard = new CreditCardRequest
+                var request = new CustomerRequest
                 {
-                    Number = encryptedCreditCardNumber,
-                    ExpirationDate = encryptedExpirationDate,
-                    CVV = encryptedCvv,
-                    PaymentMethodNonce = paymentMethodNonce // Used for tokenization from javascript API
+                    CreditCard = new CreditCardRequest
+                    {
+                        Number = encryptedCreditCardNumber,
+                        ExpirationDate = encryptedExpirationDate,
+                        CVV = encryptedCvv,
+                        PaymentMethodNonce = paymentMethodNonce // Used for tokenization from javascript API
+                    }
+                };
+
+                var result = client.Customer.Create(request);
+                var customer = result.Target;
+
+                if (!result.IsSuccess())
+                {
+                    return new TokenizedCreditCardResponse
+                    {
+                        IsSuccessful = false,
+                        Message = result.Message
+                    };
                 }
-            };
 
-            var result = client.Customer.Create(request);
-            var customer = result.Target;
+                var creditCard = customer.CreditCards.First();
 
-            if (!result.IsSuccess())
+                return new TokenizedCreditCardResponse
+                {
+                    CardOnFileToken = creditCard.Token,
+                    CardType = creditCard.CardType.ToString(),
+                    LastFour = creditCard.LastFour,
+                    IsSuccessful = result.IsSuccess(),
+                    Message = result.Message
+                };
+            }
+            catch (Exception e)
             {
                 return new TokenizedCreditCardResponse
                 {
                     IsSuccessful = false,
-                    Message = result.Message
+                    Message = e.Message
                 };
             }
-
-            var creditCard = customer.CreditCards.First();
-
-            return new TokenizedCreditCardResponse
-            {
-                CardOnFileToken = creditCard.Token,
-                CardType = creditCard.CardType.ToString(),
-                LastFour = creditCard.LastFour,
-                IsSuccessful = result.IsSuccess(),
-                Message = result.Message
-            };
         }
 
         private static BraintreeGateway GetBraintreeGateway(BraintreeServerSettings settings)

@@ -1795,4 +1795,7 @@
   <data name="Overdue_OutstandingPaymentExists" xml:space="preserve">
     <value>La dernière tentative de paiement a été refusée par votre compagnie de carte de crédit. Vous devez payer cette facture en souffrance avant de pouvoir réutiliser votre carte.</value>
   </data>
+  <data name="PromoDescriptionCode" xml:space="preserve">
+    <value>Utilisez le code {0} au moment de la commande ou appuyez sur le bouton ci-dessous.</value>
+  </data>
 </root>

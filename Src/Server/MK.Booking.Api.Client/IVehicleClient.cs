@@ -10,7 +10,8 @@ namespace apcurium.MK.Booking.Api.Client
 {
     public interface IVehicleClient
     {
-        Task<AvailableVehicle[]> GetAvailableVehiclesAsync(double latitude, double longitude, int? vehicleTypeId, string market);
+        Task<AvailableVehicle[]> GetAvailableVehiclesAsync(double latitude, double longitude, int? vehicleTypeId);
+
 		Task<VehicleType[]> GetVehicleTypes();
     }
 }

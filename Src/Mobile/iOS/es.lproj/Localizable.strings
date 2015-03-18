@@ -590,5 +590,6 @@
 "UnpairWarningCancelButton"="Pay in car";
 "UnpairWarningMessageWithPromo"="If you decide to pay in car, you will not be able to use the promotion";
 "AccountPaymentCustomerNumberRequiredMessage"="Por favor introduzca un número de cliente válido.";
+"PromoDescriptionCode"="Use code {0} at the time of booking or press the button below";
 "RideSettingsCustomerNumber"="Número de cliente";
 "AccountPaymentCustomerNumberRequiredTitle"="Account Rider Number required";
