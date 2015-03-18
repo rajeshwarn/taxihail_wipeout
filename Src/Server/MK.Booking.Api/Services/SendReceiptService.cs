@@ -64,9 +64,7 @@ namespace apcurium.MK.Booking.Api.Services
             }
 
             // If the order was created in another company, need to fetch the correct IBS account
-            var ibsAccountId = order.CompanyKey.HasValue()
-                ? _accountDao.GetIbsAccountId(account.Id, order.CompanyKey)
-                : account.IBSAccountId;
+            var ibsAccountId = _accountDao.GetIbsAccountId(account.Id, order.CompanyKey);
 
             if (!ibsAccountId.HasValue)
             {
