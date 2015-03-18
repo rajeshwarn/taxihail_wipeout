@@ -4,6 +4,7 @@ using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Booking;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using apcurium.MK.Booking.Mobile.PresentationHints;
+using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
@@ -67,6 +68,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 .For(v => v.Command)
                 .To(vm => vm.Panel.OpenOrCloseMenu);
 
+			set.Bind(btnAirport)
+				.For(v => v.Command)
+				.To(vm => vm.AirportSearch);
+
             set.Bind(btnLocateMe)
                 .For(v => v.Command)
                 .To(vm => vm.LocateMe);
@@ -112,71 +117,80 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
         void ChangeState(HomeViewModelPresentationHint hint)
         {
-            if (hint.State == HomeViewModelState.PickDate)
-            {
-                // Order Options: Visible
-                // Order Review: Hidden
-                // Order Edit: Hidden
-                // Date Picker: Visible
-                _datePicker.Show();
-            }
-            else if (hint.State == HomeViewModelState.Review)
-            {
-                // Order Options: Visible
-                // Order Review: Visible
-                // Order Edit: Hidden
-                // Date Picker: Hidden
-                UIView.Animate(
-                    0.6f, 
-                    () =>
-                    {
-                        orderEdit.SetNeedsDisplay();
-                        constraintOrderReviewTopSpace.Constant = 10;
-                        constraintOrderReviewBottomSpace.Constant = -65;
-                        constraintOrderOptionsTopSpace.Constant = 22;
-                        constraintOrderEditTrailingSpace.Constant = UIScreen.MainScreen.Bounds.Width;
+			if (hint.State == HomeViewModelState.PickDate)
+			{
+				// Order Options: Visible
+				// Order Review: Hidden
+				// Order Edit: Hidden
+				// Date Picker: Visible
+				_datePicker.Show();
+			}
+			else if (hint.State == HomeViewModelState.Review)
+			{
+				// Order Options: Visible
+				// Order Review: Visible
+				// Order Edit: Hidden
+				// Date Picker: Hidden
+				UIView.Animate(
+					0.6f, 
+					() =>
+					{
+						orderEdit.SetNeedsDisplay();
+						constraintOrderReviewTopSpace.Constant = 10;
+						constraintOrderReviewBottomSpace.Constant = -65;
+						constraintOrderOptionsTopSpace.Constant = 22;
+						constraintOrderEditTrailingSpace.Constant = UIScreen.MainScreen.Bounds.Width;
 
-                        homeView.LayoutIfNeeded();  
-                        _datePicker.Hide();                                            
-                    }, () =>
-                {
-                    RedrawSubViews();
-                });
-            }
-            else if (hint.State == HomeViewModelState.Edit)
-            {
-                // Order Options: Hidden
-                // Order Review: Hidden
-                // Order Edit: Visible
-                // Date Picker: Hidden
-                UIView.Animate(
-                    0.6f, 
-                    () =>
-                    {
-                        constraintOrderReviewTopSpace.Constant = UIScreen.MainScreen.Bounds.Height;
-                        constraintOrderReviewBottomSpace.Constant = constraintOrderReviewBottomSpace.Constant + UIScreen.MainScreen.Bounds.Height;
-                        constraintOrderOptionsTopSpace.Constant = -ctrlOrderOptions.Frame.Height - 23f;
-                        constraintOrderEditTrailingSpace.Constant = 8;
-                        homeView.LayoutIfNeeded();
-                        ctrlOrderReview.SetNeedsDisplay();
-                        ctrlOrderOptions.SetNeedsDisplay();
-                    }, () => orderEdit.SetNeedsDisplay());
-            }
-            else if (hint.State == HomeViewModelState.AddressSearch)
-            {
-                // Order Options: Hidden
-                UIView.Animate(
-                    0.6f, 
-                    () => {
-                        constraintOrderOptionsTopSpace.Constant = -ctrlOrderOptions.Frame.Height - 23f;
-                        homeView.LayoutIfNeeded();
-                    }, () =>
-                    {
-                        RedrawSubViews();
-                    });
+						homeView.LayoutIfNeeded();  
+						_datePicker.Hide();                                            
+					}, () =>
+					{
+						RedrawSubViews();
+					});
+			}
+			else if (hint.State == HomeViewModelState.Edit)
+			{
+				// Order Options: Hidden
+				// Order Review: Hidden
+				// Order Edit: Visible
+				// Date Picker: Hidden
+				UIView.Animate(
+					0.6f, 
+					() =>
+					{
+						constraintOrderReviewTopSpace.Constant = UIScreen.MainScreen.Bounds.Height;
+						constraintOrderReviewBottomSpace.Constant = constraintOrderReviewBottomSpace.Constant + UIScreen.MainScreen.Bounds.Height;
+						constraintOrderOptionsTopSpace.Constant = -ctrlOrderOptions.Frame.Height - 23f;
+						constraintOrderEditTrailingSpace.Constant = 8;
+						homeView.LayoutIfNeeded();
+						ctrlOrderReview.SetNeedsDisplay();
+						ctrlOrderOptions.SetNeedsDisplay();
+					}, () => orderEdit.SetNeedsDisplay());
+			}
+			else if (hint.State == HomeViewModelState.AddressSearch || hint.State == HomeViewModelState.AirportSearch)
+			{
+				// Order Options: Hidden
+				UIView.Animate(
+					0.6f, 
+					() =>
+					{
+						constraintOrderOptionsTopSpace.Constant = -ctrlOrderOptions.Frame.Height - 23f;
+						homeView.LayoutIfNeeded();
+					}, () =>
+					{
+						RedrawSubViews();
+					});
+				switch (hint.State)
+				{
+					case HomeViewModelState.AddressSearch:
+						ctrlAddressPicker.Open(AddressLocationType.Unspeficied);
+						break;
+					case HomeViewModelState.AirportSearch:
+						ctrlAddressPicker.Open(AddressLocationType.Airport);
+						break;
+				}
 
-                ctrlAddressPicker.Open();
-            }
+			}
             else if(hint.State == HomeViewModelState.Initial)
             {
                 // Order Options: Visible

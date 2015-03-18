@@ -16,6 +16,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.AppBarView bottomBar { get; set; }
 
 		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.OverlayButton btnAirport { get; set; }
+
+		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.OverlayButton btnLocateMe { get; set; }
 
 		[Outlet]
@@ -64,6 +67,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				bottomBar = null;
 			}
 
+			if (btnAirport != null) {
+				btnAirport.Dispose ();
+				btnAirport = null;
+			}
+
 			if (btnLocateMe != null) {
 				btnLocateMe.Dispose ();
 				btnLocateMe = null;
@@ -72,6 +80,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			if (btnMenu != null) {
 				btnMenu.Dispose ();
 				btnMenu = null;
+			}
+
+			if (constraintHomeLeadingSpace != null) {
+				constraintHomeLeadingSpace.Dispose ();
+				constraintHomeLeadingSpace = null;
 			}
 
 			if (constraintOrderEditTrailingSpace != null) {
@@ -92,11 +105,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			if (constraintOrderReviewTopSpace != null) {
 				constraintOrderReviewTopSpace.Dispose ();
 				constraintOrderReviewTopSpace = null;
-			}
-
-			if (constraintHomeLeadingSpace != null) {
-				constraintHomeLeadingSpace.Dispose ();
-				constraintHomeLeadingSpace = null;
 			}
 
 			if (ctrlAddressPicker != null) {
