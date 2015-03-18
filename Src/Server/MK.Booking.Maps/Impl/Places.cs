@@ -36,6 +36,14 @@ namespace apcurium.MK.Booking.Maps.Impl
             return result;
         }
 
+        public Address[] GetFilteredPlacesList(AddressLocationType locationType)
+        {
+            return _popularAddressProvider
+                .GetPopularAddresses()
+                .Where(address => address.AddressLocationType == locationType)
+                .ToArray();
+        }
+
 		public Address[] SearchPlaces(string name, double? latitude, double? longitude, int? radius, string currentLanguage)
         {
             int defaultRadius = _appSettings.Data.NearbyPlacesService.DefaultRadius;
