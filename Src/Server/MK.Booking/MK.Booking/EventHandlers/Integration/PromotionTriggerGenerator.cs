@@ -50,7 +50,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             {
                 _commandBus.Send(new AddUserToPromotionWhiteList
                 {
-                    AccountId = @event.SourceId,
+                    AccountIds = new[] { @event.SourceId },
                     PromoId = accountCreatedPromotion.Id
                 });
 
@@ -171,16 +171,10 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             {
                 _commandBus.Send(new AddUserToPromotionWhiteList
                 {
-                    AccountId = accountId,
+                    AccountIds = new[] { accountId },
                     PromoId = promotion.Id,
                     LastTriggeredAmount = promotionProgress
                 });
-
-                var account = _accountDao.FindById(accountId);
-                if (account != null)
-                {
-                    _notificationService.SendPromotionUnlockedEmail(promotion.Name, promotion.Code, promotion.GetEndDateTime(), account.Email, account.Language);
-                }
             }
         }
     }

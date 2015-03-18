@@ -111,7 +111,11 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             try
             {
                 var promotion = _promotionDao.FindById(@event.SourceId);
-                _notificationService.SendPromotionUnlockedPush(@event.AccountId, promotion);
+
+                foreach (var accountId in @event.AccountIds)
+                {
+                    _notificationService.SendPromotionUnlockedPush(accountId, promotion);
+                }
             }
             catch (Exception e)
             {
