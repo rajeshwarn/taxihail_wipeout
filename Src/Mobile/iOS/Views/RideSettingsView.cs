@@ -34,7 +34,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			if (!ViewModel.IsChargeAccountPaymentEnabled)
 			{
 				lblAccountNumber.RemoveFromSuperview();
+                lblCustomerNumber.RemoveFromSuperview();
 				txtAccountNumber.RemoveFromSuperview();
+                txtCustomerNumber.RemoveFromSuperview();
 			}
 
 			if (!ViewModel.ShouldDisplayTip)
@@ -49,6 +51,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             lblChargeType.Text = Localize.GetValue("RideSettingsChargeType");
 			lblPassword.Text = Localize.GetValue("RideSettingsPassword");
 			lblAccountNumber.Text = Localize.GetValue("RideSettingsAccountNumber");
+            lblCustomerNumber.Text = Localize.GetValue("RideSettingsCustomerNumber");
             lblTip.Text = Localize.GetValue("PaymentDetails.TipAmountLabel");
 
             txtPassword.Text = "\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022";
@@ -93,6 +96,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			set.Bind(txtAccountNumber)
 				.For(v => v.Text)
 				.To(vm => vm.AccountNumber);
+
+            set.Bind(txtCustomerNumber)
+                .For(v => v.Text)
+                .To(vm => vm.CustomerNumber);
 
 			set.Bind(txtPassword)
 				.For(v => v.NavigateCommand)

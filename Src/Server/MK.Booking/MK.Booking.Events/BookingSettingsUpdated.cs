@@ -16,6 +16,7 @@ namespace apcurium.MK.Booking.Events
         public int? ChargeTypeId { get; set; }
         public int NumberOfTaxi { get; set; }
         public string AccountNumber { get; set; }
+        public string CustomerNumber { get; set; }
         public int? DefaultTipPercent { get; set; }
     }
 }

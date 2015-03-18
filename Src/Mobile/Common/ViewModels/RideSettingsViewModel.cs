@@ -249,6 +249,22 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
+        public string CustomerNumber
+        {
+            get
+            {
+                return _bookingSettings.CustomerNumber;
+            }
+            set
+            {
+                if (value != _bookingSettings.CustomerNumber)
+                {
+                    _bookingSettings.CustomerNumber = value;
+                    RaisePropertyChanged();
+                }
+            }
+        }
+
 		public ICommand SetVehiculeType
         {
             get
@@ -311,7 +327,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					        try
 					        {
 								await _accountService.UpdateSettings(_bookingSettings, PaymentPreferences.Tip);
-								_orderWorkflowService.SetAccountNumber (_bookingSettings.AccountNumber);
+								_orderWorkflowService.SetAccountNumber (_bookingSettings.AccountNumber, _bookingSettings.CustomerNumber);
                                 Close(this);
 					        }
 					        catch (WebServiceException ex)
@@ -348,7 +364,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 this.Services().Message.ShowMessage(this.Services().Localize["UpdateBookingSettingsInvalidDataTitle"], this.Services().Localize["InvalidPhoneErrorMessage"]);
                 return false;
             }
-            if (ChargeTypeId == ChargeTypes.Account.Id && string.IsNullOrWhiteSpace(AccountNumber))
+            if (ChargeTypeId == ChargeTypes.Account.Id && string.IsNullOrWhiteSpace(AccountNumber) && string.IsNullOrWhiteSpace(CustomerNumber))
             {
                 this.Services().Message.ShowMessage(this.Services().Localize["UpdateBookingSettingsInvalidDataTitle"], this.Services().Localize["UpdateBookingSettingsEmptyAccount"]);
                 return false;
@@ -362,7 +378,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 try
                 {
                     // Validate if the charge account needs to have a card on file to be used
-                    var chargeAccount = await _accountPaymentService.GetAccountCharge(AccountNumber);
+                    var chargeAccount = await _accountPaymentService.GetAccountCharge(AccountNumber, CustomerNumber);
                     if (chargeAccount.UseCardOnFileForPayment && creditCard == default(Guid?))
                     {
                         this.Services().Message.ShowMessage(this.Services().Localize["UpdateBookingSettingsInvalidDataTitle"],

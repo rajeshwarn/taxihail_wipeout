@@ -5,7 +5,8 @@
         tagName: 'form',
         events: {
             'click [data-action=cancel]': 'cancel',
-            'change [name=settings.accountNumber]': 'loadPrompts'
+            'change [name=settings.accountNumber]': 'loadPrompts',
+            'change [name=settings.customerNumber]': 'loadPrompts'
         },
 
         initialize: function() {
@@ -17,20 +18,22 @@
             this.$el.html(html);
             var settings = this.model.get('settings');
             if (settings.accountNumber
-                && settings.accountNumber != '')
+                && settings.accountNumber != ''
+                && settings.customerNumber
+                && settings.customerNumber != '')
             {
-                this.refreshPrompts(settings.accountNumber);
+                this.refreshPrompts(settings.accountNumber, settings.customerNumber);
             }
             return this;
         },
-        refreshPrompts: function (accountNumber) {
+        refreshPrompts: function (accountNumber, customerNumber) {
             this.$('.errors').empty();
             this.$('#btBook').button('loading');
 
             var $ul = this.$('ul');
             $ul.first().empty();
 
-            this.model.fetchQuestions(accountNumber)
+            this.model.fetchQuestions(accountNumber, customerNumber)
                 .done(_.bind(function (data) {
 
                     this.$('#btBook').button('reset');
@@ -58,9 +61,11 @@
 
                         this.model.set('questionsAndAnswers', data.questions);
 
-                        if (accountNumber && accountNumber != '') {
+                        if (accountNumber && accountNumber != ''
+                            && customerNumber && customerNumber != '') {
                             var settings = this.model.get('settings');
                             settings.accountNumber = accountNumber;
+                            settings.customerNumber = customerNumber;
                             this.model.set('settings', settings);
                         }
 
@@ -85,9 +90,10 @@
         loadPrompts: function()
         {
             var accountNumber = $('#inputAccountNumber').val();
-            if(accountNumber)
+            var customerNumber = $('#inputCustomerNumber').val();
+            if(accountNumber && customerNumber)
             {
-                this.refreshPrompts(accountNumber);
+                this.refreshPrompts(accountNumber, customerNumber);
             }
         },
 
