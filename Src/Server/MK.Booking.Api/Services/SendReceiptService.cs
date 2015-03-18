@@ -63,12 +63,17 @@ namespace apcurium.MK.Booking.Api.Services
                 throw new HttpError(HttpStatusCode.Unauthorized, "Not your order");
             }
 
-            // If the order was created in another market, need to fetch the correct IBS account
-            var ibsAccountId = order.Market.HasValue()
-                ? _accountDao.GetIbsAccountId(account.Id, order.CompanyKey).Value
-                : account.IBSAccountId.Value;
+            // If the order was created in another company, need to fetch the correct IBS account
+            var ibsAccountId = order.CompanyKey.HasValue()
+                ? _accountDao.GetIbsAccountId(account.Id, order.CompanyKey)
+                : account.IBSAccountId;
 
-            var ibsOrder = _ibsServiceProvider.Booking(order.CompanyKey).GetOrderDetails(order.IBSOrderId.Value, ibsAccountId, order.Settings.Phone);
+            if (!ibsAccountId.HasValue)
+            {
+                throw new HttpError(HttpStatusCode.BadRequest, ErrorCode.IBSAccountNotFound.ToString());
+            }
+
+            var ibsOrder = _ibsServiceProvider.Booking(order.CompanyKey).GetOrderDetails(order.IBSOrderId.Value, ibsAccountId.Value, order.Settings.Phone);
 
             var orderPayment = _orderPaymentDao.FindByOrderId(order.Id);
             var pairingInfo = _orderDao.FindOrderPairingById(order.Id);
