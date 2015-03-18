@@ -42,7 +42,7 @@
             TaxiHail.orderService.clearCurrentOrder();
         },
 
-        cancel: function() {
+        cancel: function () {
             return $.post(this.url() + '/cancel', {
                 orderId: this.id
             }, function(){}, 'json');
