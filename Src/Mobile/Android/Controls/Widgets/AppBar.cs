@@ -27,6 +27,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 var cancelEdit = Content.FindViewById<Button>(Resource.Id.btnCancelEdit);
                 var save = Content.FindViewById<Button>(Resource.Id.btnSave);
 
+                var imagePromo = Content.FindViewById<ImageView>(Resource.Id.imagePromo);
+
 				var set = this.CreateBindingSet<AppBar, BottomBarViewModel>();
 
                 set.Bind(estimate)
@@ -36,6 +38,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 set.Bind(bookNow)
                     .For("Click")
                     .To(vm => vm.SetPickupDateAndReviewOrder);
+
+                set.Bind(imagePromo)
+                   .For(v => v.Visibility)
+                   .To(vm => vm.IsPromoCodeActive)
+                   .WithConversion("Visibility");
 
                 set.Bind(bookLater)
                     .For("Click")

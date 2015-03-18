@@ -5147,14 +5147,14 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f060123
 			public const int GooglePlayServicesNotAvailableMessage = 2131099939;
 			
-			// aapt resource value: 0x7f0602d1
-			public const int GooglePlayServicesNotAvailableMessage1 = 2131100369;
+			// aapt resource value: 0x7f0602cd
+			public const int GooglePlayServicesNotAvailableMessage1 = 2131100365;
 			
 			// aapt resource value: 0x7f060084
 			public const int GooglePlayServicesNotAvailableTitle = 2131099780;
 			
-			// aapt resource value: 0x7f0602d2
-			public const int GooglePlayServicesNotAvailableTitle1 = 2131100370;
+			// aapt resource value: 0x7f0602ce
+			public const int GooglePlayServicesNotAvailableTitle1 = 2131100366;
 			
 			// aapt resource value: 0x7f060049
 			public const int Hello = 2131099721;
@@ -5570,8 +5570,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f0602c0
 			public const int Overdue_TransactionId = 2131100352;
 			
-			// aapt resource value: 0x7f0602d3
-			public const int Overdue_View = 2131100371;
+			// aapt resource value: 0x7f0602cf
+			public const int Overdue_View = 2131100367;
 			
 			// aapt resource value: 0x7f06006b
 			public const int PanelMenuViewAboutUsText = 2131099755;
@@ -5749,9 +5749,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 			
 			// aapt resource value: 0x7f060291
 			public const int PromoCodeLabel = 2131100305;
-			
-			// aapt resource value: 0x7f0602d0
-			public const int PromoDescriptionCode = 2131100368;
 			
 			// aapt resource value: 0x7f0602a3
 			public const int PromoExpiringIn1DayMessage = 2131100323;
@@ -6205,15 +6202,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 			
 			// aapt resource value: 0x7f0602bd
 			public const int UnpairPayInCar = 2131100349;
-			
-			// aapt resource value: 0x7f0602ce
-			public const int UnpairWarningCancelButton = 2131100366;
-			
-			// aapt resource value: 0x7f0602cd
-			public const int UnpairWarningMessage = 2131100365;
-			
-			// aapt resource value: 0x7f0602cf
-			public const int UnpairWarningMessageWithPromo = 2131100367;
 			
 			// aapt resource value: 0x7f06028a
 			public const int UpdateBookingSettingsEmptyAccount = 2131100298;

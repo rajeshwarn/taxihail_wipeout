@@ -30,29 +30,28 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
         private readonly Func<BookingDbContext> _contextFactory;
         private readonly ICreditCardDao _creditCardDao;
         private readonly IPromotionDao _promotionDao;
-        private readonly IOrderDao _orderDao;
         private readonly INotificationService _notificationService;
 
         public MailSender(Func<BookingDbContext> contextFactory,
             ICommandBus commandBus,
             ICreditCardDao creditCardDao,
             IPromotionDao promotionDao,
-            IOrderDao orderDao,
             INotificationService notificationService)
         {
             _contextFactory = contextFactory;
             _commandBus = commandBus;
             _creditCardDao = creditCardDao;
             _promotionDao = promotionDao;
-            _orderDao = orderDao;
             _notificationService = notificationService;
         }
 
         public void Handle(CreditCardPaymentCaptured_V2 @event)
         {
-            if (@event.IsNoShowFee)
+            if (@event.IsNoShowFee
+                || @event.IsForPrepaidOrder)
             {
                 // Don't message user
+                // In the case of Prepaid order, he will be notified at the end of the ride
                 return;
             }
 
@@ -78,8 +77,8 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                 var orderStatus = context.Find<OrderStatusDetail>(orderId);
                 if (orderStatus != null)
                 {
-                    var orderPayment = context.Set<OrderPaymentDetail>().FirstOrDefault(p => p.OrderId == orderStatus.OrderId && p.IsCompleted );
-
+                    var orderPayment = context.Set<OrderPaymentDetail>().FirstOrDefault(p => p.OrderId == orderStatus.OrderId && p.IsCompleted);
+                    
                     var account = context.Find<AccountDetail>(orderStatus.AccountId);
 
                     CreditCardDetails card = null;
@@ -91,6 +90,14 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                     // payment was handled by app, send receipt
                     if (orderPayment != null)
                     {
+                        if (orderStatus.IsPrepaid)
+                        {
+                            // Order was prepaid, all the good amounts are in OrderPaymentDetail
+                            meter = orderPayment.Meter;
+                            tip = orderPayment.Tip;
+                            tax = orderPayment.Tax;
+                        }
+
                         var promoUsed = _promotionDao.FindByOrderId(orderId);
 
                         var command = SendReceiptCommandBuilder.GetSendReceiptCommand(order, account,
