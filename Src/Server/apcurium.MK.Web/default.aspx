@@ -74,6 +74,8 @@
             
             TaxiHail.parameters.isSignupVisible = <%: IsWebSignupVisible  ? "true" : "false"%>;
 
+            TaxiHail.parameters.isAirportButtonEnabled = <%: IsAirportButtonEnabled ? "true" : "false" %>;
+
             TaxiHail.referenceData = <%= ReferenceData %>;
             TaxiHail.vehicleTypes = <%= VehicleTypes %>;
         </script>

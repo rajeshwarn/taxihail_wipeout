@@ -56,6 +56,8 @@
             TaxiHail.parameters.apiRoot = "../api";
             TaxiHail.parameters.version = '<%: ApplicationVersion %>';
             TaxiHail.parameters.languages = <%= Languages %>;
+
+            TaxiHail.parameters.isAirportButtonEnabled = <%: IsAirportButtonEnabled ? "true" : "false" %>;
         </script>
 
         <%: Scripts.Render("~/admin/bundles/app") %>
