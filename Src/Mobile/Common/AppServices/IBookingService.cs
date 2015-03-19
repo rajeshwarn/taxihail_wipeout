@@ -14,7 +14,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
        
 		string GetFareEstimateDisplay(DirectionInfo direction);
 
-        bool IsStatusCompleted(string statusId);
+		bool IsStatusCompleted (OrderStatusDetail status);
 
         bool IsStatusTimedOut(string statusId);
 
