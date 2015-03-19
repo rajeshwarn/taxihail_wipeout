@@ -50,7 +50,7 @@ namespace apcurium.MK.Booking.Test.Integration.PromotionFixture
             CreditCardGenerator = new CreditCardPaymentDetailsGenerator(() => new BookingDbContext(DbName), new TestServerSettings());
 
             TriggerSut = new PromotionTriggerGenerator(() => new BookingDbContext(DbName), bus.Object,
-                new PromotionDao(() => new BookingDbContext(DbName), new SystemClock(), new TestServerSettings()), new OrderDao(() => new BookingDbContext(DbName)), new AccountDao(() => new BookingDbContext(DbName)), new NotificationService(() => new BookingDbContext(DbName), null, null, null, serverSettings, null, orderDaoMock.Object, accountDaoMock.Object, new StaticMap(), smsSenderMock.Object, null, null));
+                new PromotionDao(() => new BookingDbContext(DbName), new SystemClock(), new TestServerSettings(), null), new OrderDao(() => new BookingDbContext(DbName)), new AccountDao(() => new BookingDbContext(DbName)), new NotificationService(() => new BookingDbContext(DbName), null, null, null, serverSettings, null, orderDaoMock.Object, accountDaoMock.Object, new StaticMap(), smsSenderMock.Object, null, null));
         }
     }
 
