@@ -124,7 +124,7 @@
             </label>
         </div>
     </div>
-    <div class="clearfix">
+    <div class="clearfix" id="publishedDatesGroup">
         <div class="control-group left-control-group" style="width: 50%">
             @Html.LabelFor(x => x.PublishedStartDate, new { @class = "control-label" })
             <div class="controls">
@@ -161,18 +161,18 @@
             <label class="radio inline">@Html.RadioButtonFor(x => x.DiscountType, PromoDiscountType.Percentage) %</label>
         </div>
     </div>
-    <div class="clearfix">
+    <div class="clearfix" id="usageGroup">
         <div class="control-group left-control-group">
             @Html.LabelFor(x => x.MaxUsagePerUser, new { @class = "control-label" })
             <div class="controls">
-                @Html.TextBoxFor(x => x.MaxUsagePerUser, new { @class = "input-small" })
+                @Html.TextBoxFor(x => x.MaxUsagePerUser, new { @class = "input-small", @id="maxUsagePerUserTextBox" })
                 @Html.ValidationMessageFor(x => x.MaxUsagePerUser)
             </div>
         </div>
         <div class="control-group right-control-group">
             @Html.LabelFor(x => x.MaxUsage, new { @class = "control-label" })
             <div class="controls">
-                @Html.TextBoxFor(x => x.MaxUsage, new { @class = "input-small" })
+                @Html.TextBoxFor(x => x.MaxUsage, new { @class = "input-small", @id = "maxUsagePerSystemTextBox" })
                 @Html.ValidationMessageFor(x => x.MaxUsage)
             </div>
         </div>
@@ -261,11 +261,21 @@
         if (dropDownValue == "@Convert.ToInt32(PromotionTriggerTypes.RideCount)") {
             $('#amountSpentTriggerGroup').addClass('hidden');
             $('#rideCountTriggerGroup').removeClass('hidden');
-        }
-        else if (dropDownValue == "@Convert.ToInt32(PromotionTriggerTypes.AmountSpent)") {
+            $('#usageGroup').removeClass('hidden');
+            $('#publishedDatesGroup').removeClass('hidden');
+        } else if (dropDownValue == "@Convert.ToInt32(PromotionTriggerTypes.AmountSpent)") {
             $('#amountSpentTriggerGroup').removeClass('hidden');
             $('#rideCountTriggerGroup').addClass('hidden');
+            $('#usageGroup').removeClass('hidden');
+            $('#publishedDatesGroup').removeClass('hidden');
+        } else if (dropDownValue == "@Convert.ToInt32(PromotionTriggerTypes.CustomerSupport)") {
+            $('#rideCountTriggerGroup').addClass('hidden');
+            $('#amountSpentTriggerGroup').addClass('hidden');
+            $('#publishedDatesGroup').addClass('hidden');
+            $('#usageGroup').addClass('hidden');
         } else {
+            $('#usageGroup').removeClass('hidden');
+            $('#publishedDatesGroup').removeClass('hidden');
             $('#amountSpentTriggerGroup').addClass('hidden');
             $('#rideCountTriggerGroup').addClass('hidden');
         }

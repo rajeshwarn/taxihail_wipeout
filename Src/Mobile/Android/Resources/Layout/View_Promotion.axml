@@ -36,8 +36,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingTop="10dip"
-            android:paddingLeft="15dip"
-            android:paddingRight="15dip"
+            android:textSize="17dp"
+            android:gravity="center_horizontal"
+            android:layout_gravity="center_horizontal"
             android:textColor="@color/black"
             android:text="@string/PromoMustUseCardOnFileWarningMessage"
             local:MvxBind="Visibility ActivePromotions, Converter=HasValueToVisibilityConverter" />

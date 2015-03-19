@@ -56,6 +56,7 @@ namespace apcurium.MK.Booking.ReadModel.Query
 
             var activePublishedPromotions = GetAllCurrentlyActiveAndPublished();
 
+            // Add all published promotions
             foreach (var activePublishedPromotion in activePublishedPromotions)
             {
                 string errorMessage;

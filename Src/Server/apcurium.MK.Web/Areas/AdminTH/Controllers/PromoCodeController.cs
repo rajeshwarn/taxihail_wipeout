@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlTypes;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web.Mvc;
@@ -91,7 +92,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                 var promotionId = Guid.NewGuid();
                 promoCode.Id = promotionId;
 
-                _commandBus.Send(new CreatePromotion
+                var createPromotionCommand = new CreatePromotion
                 {
                     PromoId = promotionId,
                     Name = promoCode.Name,
@@ -105,13 +106,26 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                     AppliesToFutureBooking = promoCode.AppliesToFutureBooking,
                     DiscountValue = promoCode.DiscountValue,
                     DiscountType = promoCode.DiscountType,
-                    MaxUsagePerUser = promoCode.MaxUsagePerUser,
-                    MaxUsage = promoCode.MaxUsage,
                     Code = promoCode.Code,
-                    PublishedStartDate = promoCode.PublishedStartDate,
-                    PublishedEndDate = promoCode.PublishedEndDate,
                     TriggerSettings = promoCode.TriggerSettings
-                });
+                };
+
+                // User and system usage is unlimited for support promotion. The whitelist will determine if a user can use it.
+                if (promoCode.TriggerSettings.Type == PromotionTriggerTypes.CustomerSupport)
+                {
+                    // Customer support promotion are always published (but user will only see them when whitelisted)
+                    createPromotionCommand.PublishedStartDate = SqlDateTime.MinValue.Value;
+                    createPromotionCommand.PublishedEndDate = SqlDateTime.MaxValue.Value;
+                }
+                else
+                {
+                    createPromotionCommand.PublishedStartDate = promoCode.PublishedStartDate;
+                    createPromotionCommand.PublishedEndDate = promoCode.PublishedEndDate;
+                    createPromotionCommand.MaxUsage = promoCode.MaxUsage;
+                    createPromotionCommand.MaxUsagePerUser = promoCode.MaxUsagePerUser;
+                }
+
+                _commandBus.Send(createPromotionCommand);
 
                 TempData["Info"] = string.Format("Promotion \"{0}\" created", promoCode.Name);
 
@@ -259,7 +273,10 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
 
         public ActionResult Unlock()
         {
-            var promotions = _promotionDao.GetAll().Select(x => new PromoCode(x));
+            var promotions = _promotionDao.GetAll()
+                .Select(p => new PromoCode(p))
+                .Where(p => p.TriggerSettings.Type == PromotionTriggerTypes.CustomerSupport);
+
             return View(promotions);
         }
 
