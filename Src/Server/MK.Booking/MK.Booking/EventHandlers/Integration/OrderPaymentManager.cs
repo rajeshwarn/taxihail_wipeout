@@ -64,7 +64,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                 {
                     OrderId = @event.OrderId,
                     PromoId = @event.PromotionUsed.Value,
-                    TotalAmountOfOrder = @event.Meter
+                    TotalAmountOfOrder = @event.Meter + @event.Tax
                 };
                 var envelope = (Envelope<ICommand>) redeemPromotion;
 
