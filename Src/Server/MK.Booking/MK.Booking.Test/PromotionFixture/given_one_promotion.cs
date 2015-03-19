@@ -474,5 +474,23 @@ namespace apcurium.MK.Booking.Test.PromotionFixture
             }));
             Assert.AreEqual("CannotCreateOrder_PromotionNotAvailableAtThisTime", ex.Message);
         }
+
+        [Test]
+        public void when_manually_unlocking_promotion_for_multiple_users()
+        {
+            var accountId1 = Guid.NewGuid();
+            var accountId2 = Guid.NewGuid();
+
+            _sut.When(new AddUserToPromotionWhiteList
+            {
+                AccountIds = new[] { accountId1, accountId2 },
+                PromoId = _promoId
+            });
+
+            var @event = _sut.ThenHasSingle<UserAddedToPromotionWhiteList>();
+            Assert.AreEqual(2, @event.AccountIds.Count());
+            Assert.AreEqual(accountId1, @event.AccountIds.ElementAt(0));
+            Assert.AreEqual(accountId2, @event.AccountIds.ElementAt(1));
+        }
     }
 }

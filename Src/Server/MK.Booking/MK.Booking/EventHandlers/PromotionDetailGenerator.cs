@@ -143,14 +143,17 @@ namespace apcurium.MK.Booking.EventHandlers
         {
             using (var context = _contextFactory.Invoke())
             {
-                var promotionProgressDetail = context.Set<PromotionProgressDetail>().Find(@event.AccountId, @event.SourceId);
-                if (promotionProgressDetail == null)
+                foreach (var accountId in @event.AccountIds)
                 {
-                    promotionProgressDetail = new PromotionProgressDetail { AccountId = @event.AccountId, PromoId = @event.SourceId };
-                    context.Save(promotionProgressDetail);
-                }
+                    var promotionProgressDetail = context.Set<PromotionProgressDetail>().Find(accountId, @event.SourceId);
+                    if (promotionProgressDetail == null)
+                    {
+                        promotionProgressDetail = new PromotionProgressDetail { AccountId = accountId, PromoId = @event.SourceId };
+                        context.Save(promotionProgressDetail);
+                    }
 
-                promotionProgressDetail.LastTriggeredAmount = @event.LastTriggeredAmount;
+                    promotionProgressDetail.LastTriggeredAmount = @event.LastTriggeredAmount;
+                }
                 context.SaveChanges();
             }
         }
