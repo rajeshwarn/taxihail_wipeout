@@ -85,7 +85,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 ItemMenuList.Add(new ItemMenuModel { Text = this.Services().Localize["PanelMenuViewCallDispatchText"], NavigationCommand = Call });
 		    }
 			ItemMenuList.Add(new ItemMenuModel { Text = this.Services().Localize["PanelMenuViewAboutUsText"], NavigationCommand = NavigateToAboutUs });
-		    if (!Settings.HideReportProblem)
+		    if (DisplayReportProblem)
 		    {
                 ItemMenuList.Add(new ItemMenuModel { Text = this.Services().Localize["PanelMenuViewReportProblemText"], NavigationCommand = NavigateToReportProblem });
 		    }
@@ -157,6 +157,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     _isTaxiHailNetworkEnabled = value;
                     RaisePropertyChanged();
                 }
+            }
+        }
+
+        public bool DisplayReportProblem
+        {
+            get 
+            { 
+                return !Settings.HideReportProblem 
+                    && !string.IsNullOrEmpty(Settings.SupportEmail); 
             }
         }
 

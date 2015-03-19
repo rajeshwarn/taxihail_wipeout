@@ -101,6 +101,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             this.Services().ApplicationInfo.CheckVersionAsync();
         }
 
+	    public bool HasSupportEmail
+	    {
+            get { return !Settings.HideReportProblem && !string.IsNullOrEmpty(Settings.SupportEmail); }
+	    }
+
         private string _email;
         public string Email
         {
