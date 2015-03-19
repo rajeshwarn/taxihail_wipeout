@@ -49,7 +49,6 @@ namespace apcurium.MK.Booking.ReadModel.Query
         public IEnumerable<PromotionDetail> GetAllCurrentlyActiveAndPublished(PromotionTriggerTypes? triggerType = null)
         {
             return GetAllCurrentlyActive(triggerType)
-                .Select(p => p)
                 // at least one published date set, so it's public
                 .Where(promotionDetail => promotionDetail.PublishedStartDate.HasValue || promotionDetail.PublishedEndDate.HasValue)
                 .Select(promotionDetail =>
