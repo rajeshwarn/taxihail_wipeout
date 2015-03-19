@@ -12,9 +12,7 @@ using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.Messages;
 using apcurium.MK.Booking.Mobile.PresentationHints;
-using apcurium.MK.Booking.Mobile.ViewModels.Payment;
 using apcurium.MK.Common;
-using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
 using ServiceStack.Text;
@@ -180,6 +178,24 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			get { return string.IsNullOrWhiteSpace(OrderStatusDetail.DriverInfos.VehicleColor) || !IsDriverInfoAvailable; }
 		}
+		public bool CanGoBack
+		{
+			get
+			{
+				return // we know from the start it's a scheduled
+						(Order.CreatedDate != Order.PickupDate 													
+							&& !OrderStatusDetail.IBSStatusId.HasValue())
+						// it has the status scheduled
+						|| OrderStatusDetail.IBSStatusId.SoftEqual(VehicleStatuses.Common.Scheduled)
+						// it is cancelled or no show
+						|| (OrderStatusDetail.IBSStatusId.SoftEqual (VehicleStatuses.Common.Cancelled)
+							|| OrderStatusDetail.IBSStatusId.SoftEqual (VehicleStatuses.Common.NoShow)
+							|| OrderStatusDetail.IBSStatusId.SoftEqual (VehicleStatuses.Common.CancelledDone))
+						// there was an error with ibs order creation
+						|| (OrderStatusDetail.IBSStatusId.SoftEqual(VehicleStatuses.Unknown.None)
+							&& OrderStatusDetail.Status == OrderStatus.Canceled);
+			}
+		}
 
 	    private string _statusInfoText;
 		public string StatusInfoText
@@ -200,6 +216,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
 				_order = value;
 				RaisePropertyChanged();
+				RaisePropertyChanged(() => CanGoBack);
 			}
 		}
 		
@@ -219,6 +236,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				RaisePropertyChanged (() => VehicleColorHidden);
 				RaisePropertyChanged (() => IsDriverInfoAvailable);
 				RaisePropertyChanged (() => IsCallTaxiVisible);
+				RaisePropertyChanged (() => CanGoBack);
 			}
 		}
 
@@ -319,6 +337,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					Logger.LogMessage ("Waiting for Ibs Order Creation (ibs order id)");
 					await Task.Delay(TimeSpan.FromSeconds(1));
 					status = await _bookingService.GetOrderStatusAsync(Order.Id);
+
+					if(status.IBSOrderId.HasValue)
+					{
+						Logger.LogMessage("Received Ibs Order Id: {0}", status.IBSOrderId.Value);
+					}
 				}
 
 				if(status.VehicleNumber != null)
@@ -347,10 +370,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				{
 					AddReminder(status);
 				}
-
-#if DEBUG
-                //status.IBSStatusId = VehicleStatuses.Common.Arrived;
-#endif
+					
 				var statusInfoText = status.IBSStatusDescription;
 
 				if(Settings.ShowEta 

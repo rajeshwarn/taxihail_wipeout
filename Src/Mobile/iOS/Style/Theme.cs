@@ -7,6 +7,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Style
 {
 	public static class Theme
     {
+        public static bool IsApplied;
+
 		static ThemeValues _themeValues;
 		static Theme()
 		{

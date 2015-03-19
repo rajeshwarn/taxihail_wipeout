@@ -297,33 +297,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			{
 				var result = await _orderWorkflowService.ConfirmOrder();
 				this.Services().Analytics.LogEvent("Book");
-				await GotoBookingStatus(result);
+				GotoBookingStatus(result);
 			}
 		}
 
-		private bool IsFutureBooking(Order order)
-		{
-			return order.CreatedDate != order.PickupDate;
-		}
-
-		private async Task GotoBookingStatus(Tuple<Order, OrderStatusDetail> result)
+		private void GotoBookingStatus(Tuple<Order, OrderStatusDetail> result)
 		{
 			PresentationStateRequested.Raise(this, new HomeViewModelStateRequestedEventArgs(HomeViewModelState.Initial, true));
-			if (IsFutureBooking(result.Item1))
-			{
-				ShowViewModel<BookingStatusViewModel>(new {
-					order = result.Item1.ToJson(),
-					orderStatus = result.Item2.ToJson()
-				});
-			}
-			else
-			{
-                ShowViewModelAndRemoveFromHistory<BookingStatusViewModel>(new
-                {
-					order = result.Item1.ToJson(),
-					orderStatus = result.Item2.ToJson()
-				});
-			}
+
+			ShowViewModel<BookingStatusViewModel>(new {
+				order = result.Item1.ToJson(),
+				orderStatus = result.Item2.ToJson()
+			});
 		}
 
         public ICommand BookLater
