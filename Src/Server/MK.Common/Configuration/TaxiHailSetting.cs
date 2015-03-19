@@ -63,7 +63,11 @@ namespace MK.Common.Configuration
             ShowEstimateWarning = true;
             AccountActivationDisabled = true;
             ShowVehicleInformation = true;
+
+#if DEBUG
             SupportEmail = "taxihail@apcurium.com";
+#endif
+
             ShowPassengerName = true;
             ShowPassengerNumber = true;
             ShowPassengerPhone = true;
