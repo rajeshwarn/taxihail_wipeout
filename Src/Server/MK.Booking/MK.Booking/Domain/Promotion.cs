@@ -258,11 +258,11 @@ namespace apcurium.MK.Booking.Domain
             });
         }
 
-        public void AddUserToWhiteList(Guid accountId, double? lastTriggeredAmount)
+        public void AddUserToWhiteList(IEnumerable<Guid> accountIds, double? lastTriggeredAmount)
         {
             Update(new UserAddedToPromotionWhiteList
             {
-                AccountId = accountId,
+                AccountIds = accountIds,
                 LastTriggeredAmount = lastTriggeredAmount
             });
         }
@@ -280,6 +280,8 @@ namespace apcurium.MK.Booking.Domain
             _discountType = @event.DiscountType;
             _code = @event.Code;
             _triggerSettings = @event.TriggerSettings;
+
+            _active = true;
 
             SetInternalStartAndEndTimes(@event.StartTime, @event.EndTime);
         }
@@ -326,7 +328,10 @@ namespace apcurium.MK.Booking.Domain
 
         private void OnUserAddedToWhiteList(UserAddedToPromotionWhiteList @event)
         {
-            _usersWhiteList.Add(@event.AccountId);
+            foreach (var accountId in @event.AccountIds)
+            {
+                _usersWhiteList.Add(accountId);
+            }
         }
 
         /// <summary>

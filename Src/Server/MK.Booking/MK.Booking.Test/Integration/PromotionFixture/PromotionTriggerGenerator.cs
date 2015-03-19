@@ -156,7 +156,7 @@ namespace apcurium.MK.Booking.Test.Integration.PromotionFixture
 
             Thread.Sleep(500);
 
-            var commands = Commands.OfType<AddUserToPromotionWhiteList>().Where(c => c.AccountId == accountId).ToArray();
+            var commands = Commands.OfType<AddUserToPromotionWhiteList>().Where(c => c.AccountIds.Contains(accountId)).ToArray();
 
             Assert.AreEqual(1, commands.Count());
             Assert.AreEqual(null, commands[0].LastTriggeredAmount);
@@ -190,7 +190,7 @@ namespace apcurium.MK.Booking.Test.Integration.PromotionFixture
             OrderGenerator.Handle(newOrderStatus);
             TriggerSut.Handle(newOrderStatus);
 
-            var commands = Commands.OfType<AddUserToPromotionWhiteList>().Where(c => c.AccountId == accountId).ToArray();
+            var commands = Commands.OfType<AddUserToPromotionWhiteList>().Where(c => c.AccountIds.Contains(accountId)).ToArray();
 
             Assert.AreEqual(1, commands.Count());
             Assert.AreEqual(2, commands[0].LastTriggeredAmount);
@@ -250,7 +250,7 @@ namespace apcurium.MK.Booking.Test.Integration.PromotionFixture
             CreditCardGenerator.Handle(newPayment);
             TriggerSut.Handle(newPayment);
 
-            var commands = Commands.OfType<AddUserToPromotionWhiteList>().Where(c => c.AccountId == accountId).ToArray();
+            var commands = Commands.OfType<AddUserToPromotionWhiteList>().Where(c => c.AccountIds.Contains(accountId)).ToArray();
 
             Assert.AreEqual(1, commands.Count());
             Assert.AreEqual(30.62, commands[0].LastTriggeredAmount);
