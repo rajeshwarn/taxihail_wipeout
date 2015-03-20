@@ -350,6 +350,8 @@ namespace apcurium.MK.Booking.Services.Impl
             var cardOnFileTransactionId = string.Empty;
             var cardOnFileAuthorizationCode = string.Empty;
 
+            var showReceiptInformation = Math.Abs(fare) > double.Epsilon;
+
             if (isCardOnFile)
             {
                 cardOnFileAmount = _resources.FormatPrice(Convert.ToDouble(cardOnFileInfo.Amount));
@@ -413,6 +415,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 IsCardOnFile = isCardOnFile,
                 CardOnFileAmount = cardOnFileAmount,
                 CardNumber = cardNumber,
+                ShowReceiptInformation = showReceiptInformation,
                 CardOnFileTransactionId = cardOnFileTransactionId,
                 CardOnFileAuthorizationCode = cardOnFileAuthorizationCode,
                 PickupAddress = pickupAddress.DisplayAddress,
