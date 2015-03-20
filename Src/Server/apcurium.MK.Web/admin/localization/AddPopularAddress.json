@@ -20,5 +20,6 @@
     "State": "State",
     "Type": "Type",
     "Unspecified": "Unspecified",
-    "Airport": "Airport"
+    "Airport": "Airport",
+    "Train station": "Train station"
 }
