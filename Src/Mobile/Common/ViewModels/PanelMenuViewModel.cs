@@ -10,6 +10,7 @@ using Params = System.Collections.Generic.Dictionary<string, string>;
 using apcurium.MK.Booking.Mobile.ViewModels.Payment;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Contract.Resources.Payments;
+using apcurium.MK.Booking.Mobile.Framework.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -85,7 +86,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 ItemMenuList.Add(new ItemMenuModel { Text = this.Services().Localize["PanelMenuViewCallDispatchText"], NavigationCommand = Call });
 		    }
 			ItemMenuList.Add(new ItemMenuModel { Text = this.Services().Localize["PanelMenuViewAboutUsText"], NavigationCommand = NavigateToAboutUs });
-		    if (!Settings.HideReportProblem)
+		    if (DisplayReportProblem)
 		    {
                 ItemMenuList.Add(new ItemMenuModel { Text = this.Services().Localize["PanelMenuViewReportProblemText"], NavigationCommand = NavigateToReportProblem });
 		    }
@@ -157,6 +158,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     _isTaxiHailNetworkEnabled = value;
                     RaisePropertyChanged();
                 }
+            }
+        }
+
+        public bool DisplayReportProblem
+        {
+            get 
+            { 
+                return !Settings.HideReportProblem 
+                    && !Settings.SupportEmail.HasValue(); 
             }
         }
 
