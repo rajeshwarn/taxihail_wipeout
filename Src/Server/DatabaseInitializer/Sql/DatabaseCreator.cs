@@ -295,7 +295,7 @@ namespace DatabaseInitializer.Sql
                     "INSERT INTO [{0}].[Events].[Events] ([AggregateId] ,[AggregateType] ,[Version] ,[Payload] ,[CorrelationId], [EventType], [EventDate]) " +
                     "SELECT [AggregateId] ,[AggregateType] ,[Version] ,[Payload] ,[CorrelationId], [EventType], [EventDate] " +
                     "FROM [{1}].[Events].[Events] " +
-                    "WHERE [EventType] NOT LIKE '%OrderVehiclePositionChanged%' AND [EventDate] > '{2}'", newDatabase, oldDatabase, sqlDateTime.ToString("yyyy-MM-dd HH:mm:ss.fff")); // delete OrderVehiclePositionChanged events
+                    "WHERE [EventType] <> 'apcurium.MK.Booking.Events.OrderVehiclePositionChanged' AND [EventDate] > '{2}'", newDatabase, oldDatabase, sqlDateTime.ToString("yyyy-MM-dd HH:mm:ss.fff")); // delete OrderVehiclePositionChanged events
 
             var start = DateTime.Now;
             Console.WriteLine("Starting to copy events: (Timeout: 1800 seconds)");
