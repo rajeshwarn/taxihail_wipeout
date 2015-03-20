@@ -108,6 +108,8 @@
                     cancelButton: this.localize('modal.cancelOrder.cancelButton')
                 }).on('ok', function () {
                     this.model.cancel().done(function () {
+                        TaxiHail.orderService.clearCurrentOrder();
+
                         // Redirect to Home
                         TaxiHail.app.navigate('', { trigger: true });
                     });

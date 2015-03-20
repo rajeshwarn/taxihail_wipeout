@@ -38,8 +38,8 @@ namespace apcurium.MK.Web.Tests
             var request = new AccountChargeRequest
             {
                 Id = Guid.NewGuid(),
-                Name = "VIP",
-                AccountNumber = "NUMBER" + new Random(DateTime.Now.Millisecond).Next(0, 5236985),
+                Name = "1000",
+                AccountNumber = "1000",
                 Questions = new[]
                 {
                     new AccountChargeQuestion
@@ -90,8 +90,8 @@ namespace apcurium.MK.Web.Tests
             var request = new AccountChargeRequest
             {
                 Id = Guid.NewGuid(),
-                Name = "VIP",
-                AccountNumber = "NUMBER" + new Random(DateTime.Now.Millisecond).Next(0,5236985),
+                Name = "1000",
+                AccountNumber = "1000",
                 Questions = new[]
                 {
                     new AccountChargeQuestion
@@ -101,9 +101,12 @@ namespace apcurium.MK.Web.Tests
                     }
                 }
             };
-            _sut.CreateAccountCharge(request);
 
             var account = _sut.GetAccountCharge(request.AccountNumber);
+            if (account == null)
+            {
+                _sut.CreateAccountCharge(request);
+            }
 
             request.Id = account.Id;
             request.Name = "VIP2";
