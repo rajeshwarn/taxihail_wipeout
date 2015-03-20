@@ -126,16 +126,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
             _ignoreTextChange = true;
 	        try
 	        {
-	            switch (filter)
+
+	            if (filter == AddressLocationType.Unspeficied)
 	            {
-	                case AddressLocationType.Unspeficied:
-	                    await LoadAddressesUnspecified();
-	                    break;
-	                case AddressLocationType.Airport:
-	                    LoadFilteredAdress(filter);
-	                    break;
-	                default:
-	                    throw new ArgumentOutOfRangeException("filter");
+                    await LoadAddressesUnspecified();
+	            }
+	            else
+	            {
+                    LoadFilteredAdress(filter);
 	            }
 	        }
 	        catch (Exception e)

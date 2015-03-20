@@ -354,6 +354,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 	        }
 	    }
 
+	    public ICommand TrainStationSearch
+	    {
+	        get
+	        {
+	            return this.GetCommand(() =>
+	            {
+	                this.ChangePresentation(new HomeViewModelPresentationHint(HomeViewModelState.TrainStationSearch));
+	            });
+	        }
+	    }
+
 		private async void SetMapCenterToUserLocation(bool initialZoom, CancellationToken cancellationToken = default(CancellationToken))
 		{
 			try

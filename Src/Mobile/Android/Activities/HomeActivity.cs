@@ -468,6 +468,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                 SetMapEnabled(false);
                 _searchAddress.Open(AddressLocationType.Airport);
             }
+            else if (_presentationState == HomeViewModelState.TrainStationSearch)
+            {
+                SetMapEnabled(false);
+                _searchAddress.Open(AddressLocationType.Train);
+            }
             else if(_presentationState == HomeViewModelState.Initial)
             {
                 SetMapEnabled(true);

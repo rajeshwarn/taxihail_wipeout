@@ -23,9 +23,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		/// </summary>
 		AddressSearch,
         /// <summary>
-        /// Airport search (favorites, history, etc...)
+        /// Airport search
         /// </summary>
         AirportSearch,
+        /// <summary>
+        /// Train station search
+        /// </summary>
+        TrainStationSearch,
     }
 }
 
