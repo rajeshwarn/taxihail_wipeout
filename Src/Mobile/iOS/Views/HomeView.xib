@@ -71,7 +71,7 @@
                                 <constraint firstAttribute="width" constant="39" id="UWZ-S7-zk0"/>
                                 <constraint firstAttribute="height" constant="39" id="l3J-hA-y9X"/>
                             </constraints>
-                            <state key="normal" title="Button">
+                            <state key="normal" image="airport.png">
                                 <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
@@ -147,6 +147,9 @@
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
         </view>
     </objects>
+    <resources>
+        <image name="airport.png" width="28" height="28"/>
+    </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>
