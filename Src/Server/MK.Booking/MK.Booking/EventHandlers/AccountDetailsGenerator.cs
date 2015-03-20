@@ -183,6 +183,7 @@ namespace apcurium.MK.Booking.EventHandlers
                 settings.Passengers = @event.Passengers;
                 settings.Phone = @event.Phone;
                 settings.AccountNumber = @event.AccountNumber;
+                settings.CustomerNumber = @event.CustomerNumber;
 
                 account.DefaultTipPercent = @event.DefaultTipPercent;
 

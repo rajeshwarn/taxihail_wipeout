@@ -19,7 +19,5 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
         public DateTime? Date { get; set; }
 
         public int? VehicleTypeId { get; set; }
-
-        public string Market { get; set; }
     }
 }

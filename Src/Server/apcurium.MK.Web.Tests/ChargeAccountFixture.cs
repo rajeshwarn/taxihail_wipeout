@@ -1,10 +1,7 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Requests;
-using apcurium.MK.Common.Diagnostic;
-using apcurium.MK.Common.Extensions;
 using NUnit.Framework;
-using System.Collections.Generic;
 
 namespace apcurium.MK.Web.Tests
 {

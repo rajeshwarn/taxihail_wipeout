@@ -66,7 +66,8 @@ namespace apcurium.MK.Web.Tests
                             NumberOfTaxi = 1,
                             Name = "Joe Smith",
                             LargeBags = 1,
-                            AccountNumber = "123"
+                            AccountNumber = "123",
+                            CustomerNumber = "0"
                         },
                     ClientLanguageCode = SupportedLanguages.fr.ToString()
                 };
@@ -81,6 +82,7 @@ namespace apcurium.MK.Web.Tests
             Assert.AreEqual(6, orderDetails.Settings.Passengers);
             Assert.AreEqual(1, orderDetails.Settings.LargeBags);
             Assert.AreEqual("123", orderDetails.Settings.AccountNumber);
+            Assert.AreEqual("0", orderDetails.Settings.CustomerNumber);
         }
 
         [Test]
@@ -89,12 +91,13 @@ namespace apcurium.MK.Web.Tests
             var accountChargeSut = new AdministrationServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
             var accountChargeName = "NAME" + new Random(DateTime.Now.Millisecond).Next(0, 5236985);
             var accountChargeNumber = "NUMBER" + new Random(DateTime.Now.Millisecond).Next(0, 5236985);
+            var accountCustomerNumber = "CUSTOMER" + new Random(DateTime.Now.Millisecond).Next(0, 5236985);
 
             accountChargeSut.CreateAccountCharge(new AccountChargeRequest
             {
                 Id = Guid.NewGuid(),
                 Name = accountChargeName,
-                Number = accountChargeNumber,
+                AccountNumber = accountChargeNumber,
                 UseCardOnFileForPayment = true,
                 Questions = new[]
                 {
@@ -106,7 +109,7 @@ namespace apcurium.MK.Web.Tests
                 }
             });
 
-            var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
+            var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo { UserAgent = "FireFox" });
             var order = new CreateOrder
             {
                 Id = Guid.NewGuid(),
@@ -130,6 +133,7 @@ namespace apcurium.MK.Web.Tests
                     Name = "Joe Smith",
                     LargeBags = 1,
                     AccountNumber = accountChargeNumber,
+                    CustomerNumber = accountCustomerNumber
                 },
                 Payment = new PaymentSettings
                 {
@@ -238,7 +242,8 @@ namespace apcurium.MK.Web.Tests
                     NumberOfTaxi = 1,
                     Name = "Joe Smith",
                     LargeBags = 1,
-                    AccountNumber = "123"
+                    AccountNumber = "123",
+                    CustomerNumber = "0"
                 },
                 ClientLanguageCode = SupportedLanguages.fr.ToString(),
                 PromoCode = "123"

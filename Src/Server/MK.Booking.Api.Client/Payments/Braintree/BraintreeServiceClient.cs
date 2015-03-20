@@ -24,18 +24,36 @@ namespace apcurium.MK.Booking.Api.Client.Payments.Braintree
 
         public async Task<TokenizedCreditCardResponse> Tokenize(string creditCardNumber, DateTime expiryDate, string cvv)
         {
-            var braintree = new BraintreeEncrypter(ClientKey);
-            var encryptedNumber = braintree.Encrypt(creditCardNumber);
-            var encryptedExpirationDate = braintree.Encrypt(expiryDate.ToString("MM/yyyy", CultureInfo.InvariantCulture));
-            var encryptedCvv = braintree.Encrypt(cvv);
-
-			var result = await Client.PostAsync(new TokenizeCreditCardBraintreeRequest
+            try
             {
-                EncryptedCreditCardNumber = encryptedNumber,
-                EncryptedExpirationDate = encryptedExpirationDate,
-                EncryptedCvv = encryptedCvv,
-            });
-            return result;
+                var braintree = new BraintreeEncrypter(ClientKey);
+                var encryptedNumber = braintree.Encrypt(creditCardNumber);
+                var encryptedExpirationDate = braintree.Encrypt(expiryDate.ToString("MM/yyyy", CultureInfo.InvariantCulture));
+                var encryptedCvv = braintree.Encrypt(cvv);
+
+                var result = await Client.PostAsync(new TokenizeCreditCardBraintreeRequest
+                {
+                    EncryptedCreditCardNumber = encryptedNumber,
+                    EncryptedExpirationDate = encryptedExpirationDate,
+                    EncryptedCvv = encryptedCvv,
+                });
+                return result;
+            }
+            catch (Exception e)
+            {
+                var message = e.Message;
+                var exception = e as AggregateException;
+                if (exception != null)
+                {
+                    message = exception.InnerException.Message;
+                }
+
+                return new TokenizedCreditCardResponse
+                {
+                    IsSuccessful = false,
+                    Message = message
+                };
+            }
         }
 
         public Task<DeleteTokenizedCreditcardResponse> ForgetTokenizedCard(string cardToken)

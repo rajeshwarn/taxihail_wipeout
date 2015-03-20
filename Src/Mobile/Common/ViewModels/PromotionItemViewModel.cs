@@ -15,6 +15,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             ProgressDescription = GetProgressDescription(activePromotion);
             IsUnlocked = GetUnlockedStatus(activePromotion);
             ExpiringSoonWarning = GenerateExpiringSoonWarning(activePromotion.ExpirationDate);
+
+            AddPromoCodeToDescription(activePromotion.Code);
         }
 
 		public ICommand SelectPromotion
@@ -51,6 +53,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				}
 			}
 		}
+
+        private void AddPromoCodeToDescription(string code)
+        {
+            Description += string.Format("{0}{1}{2}{3}",
+                Description,
+                Environment.NewLine,
+                Environment.NewLine,
+                string.Format(this.Services().Localize["PromoDescriptionCode"], code.ToUpper()));
+        }
 
         private string GetProgressDescription(ActivePromotion promotion)
         {

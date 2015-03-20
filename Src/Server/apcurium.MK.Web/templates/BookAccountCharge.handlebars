@@ -4,9 +4,18 @@
             <div class="errors" style="margin-top: 10px;"></div>
             <form class="form-horizontal clearfix" id="accoutnChargePromptsForm">
                 <div class="control-group">
-                    <label class="control-label" for="inputAccountNumber">{{localize "Enter An Account Rider #"}}</label>
-                    <div class="controls">
-                        <input type="text"  id="inputAccountNumber" name="settings.accountNumber" value="{{settings.accountNumber}}" class='input-block-level'>                        
+                    <label class="control-label" for="inputAccountNumber">{{localize "Enter An Account and Rider #"}}</label>
+                    <div class="control-group">
+                        <label class="control-label" for="inputAccountNumber">{{localize "Account #"}}</label>
+                        <div class="controls">
+                            <input type="text" id="inputAccountNumber" name="settings.accountNumber" value="{{settings.accountNumber}}" class='input-block-level'>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="inputCustomerNumber">{{localize "Account Rider #"}}</label>
+                        <div class="controls">
+                            <input type="text" id="inputCustomerNumber" name="settings.customerNumber" value="{{settings.customerNumber}}" class='input-block-level'>
+                        </div>
                     </div>
                 </div>
                 <div class="control-group">

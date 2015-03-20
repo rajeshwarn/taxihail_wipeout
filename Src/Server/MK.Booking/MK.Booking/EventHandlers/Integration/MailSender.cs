@@ -24,24 +24,28 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
     public class MailSender : IIntegrationEventHandler,
         IEventHandler<CreditCardPaymentCaptured_V2>,
         IEventHandler<CreditCardDeactivated>,
-        IEventHandler<OrderStatusChanged>
+        IEventHandler<OrderStatusChanged>,
+        IEventHandler<UserAddedToPromotionWhiteList>
     {
         private readonly ICommandBus _commandBus;
         private readonly Func<BookingDbContext> _contextFactory;
         private readonly ICreditCardDao _creditCardDao;
         private readonly IPromotionDao _promotionDao;
+        private readonly IAccountDao _accountDao;
         private readonly INotificationService _notificationService;
 
         public MailSender(Func<BookingDbContext> contextFactory,
             ICommandBus commandBus,
             ICreditCardDao creditCardDao,
             IPromotionDao promotionDao,
+            IAccountDao accountDao,
             INotificationService notificationService)
         {
             _contextFactory = contextFactory;
             _commandBus = commandBus;
             _creditCardDao = creditCardDao;
             _promotionDao = promotionDao;
+            _accountDao = accountDao;
             _notificationService = notificationService;
         }
 
@@ -65,6 +69,31 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                 if (@event.Status.IsPrepaid)
                 {
                     SendReceipt(@event.SourceId, Convert.ToDecimal(@event.Fare ?? 0), Convert.ToDecimal(@event.Tip ?? 0), Convert.ToDecimal(@event.Tax ?? 0));
+                }
+            }
+        }
+
+        public void Handle(CreditCardDeactivated @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var account = context.Find<AccountDetail>(@event.SourceId);
+                var creditCard = _creditCardDao.FindByAccountId(@event.SourceId).First();
+
+                _notificationService.SendCreditCardDeactivatedEmail(creditCard.CreditCardCompany, creditCard.Last4Digits, account.Email, account.Language);
+            }
+        }
+
+        public void Handle(UserAddedToPromotionWhiteList @event)
+        {
+            foreach (var accountId in @event.AccountIds)
+            {
+                var account = _accountDao.FindById(accountId);
+                var promotion = _promotionDao.FindById(@event.SourceId);
+
+                if (account != null && promotion != null)
+                {
+                    _notificationService.SendPromotionUnlockedEmail(promotion.Name, promotion.Code, promotion.GetEndDateTime(), account.Email, account.Language);
                 }
             }
         }
@@ -108,17 +137,6 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                         _commandBus.Send(command);
                     }
                 }
-            }
-        }
-
-        public void Handle(CreditCardDeactivated @event)
-        {
-            using (var context = _contextFactory.Invoke())
-            {
-                var account = context.Find<AccountDetail>(@event.SourceId);
-                var creditCard = _creditCardDao.FindByAccountId(@event.SourceId).First();
-
-                _notificationService.SendCreditCardDeactivatedEmail(creditCard.CreditCardCompany, creditCard.Last4Digits, account.Email, account.Language);
             }
         }
     }

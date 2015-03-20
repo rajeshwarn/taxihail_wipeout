@@ -19,6 +19,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		UIKit.UILabel lblChargeType { get; set; }
 
 		[Outlet]
+		UIKit.UILabel lblCustomerNumber { get; set; }
+
+		[Outlet]
 		UIKit.UILabel lblName { get; set; }
 
 		[Outlet]
@@ -40,6 +43,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.ModalFlatTextField txtChargeType { get; set; }
 
 		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatTextField txtCustomerNumber { get; set; }
+
+		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatTextField txtName { get; set; }
 
 		[Outlet]
@@ -59,6 +65,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			if (lblAccountNumber != null) {
 				lblAccountNumber.Dispose ();
 				lblAccountNumber = null;
+			}
+
+			if (lblCustomerNumber != null) {
+				lblCustomerNumber.Dispose ();
+				lblCustomerNumber = null;
 			}
 
 			if (lblChargeType != null) {
@@ -94,6 +105,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			if (txtAccountNumber != null) {
 				txtAccountNumber.Dispose ();
 				txtAccountNumber = null;
+			}
+
+			if (txtCustomerNumber != null) {
+				txtCustomerNumber.Dispose ();
+				txtCustomerNumber = null;
 			}
 
 			if (txtChargeType != null) {

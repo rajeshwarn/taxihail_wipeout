@@ -106,12 +106,18 @@ namespace apcurium.MK.Booking.Api.Services
         {
             Log.Info("Create order request : " + request.ToJson());
 
-            if (!request.FromWebApp)
+            // TODO: Find a better way to do this...
+            var isFromWebApp = request.FromWebApp;
+
+            if (!isFromWebApp)
             {
                 ValidateAppVersion(request.ClientLanguageCode);
             }
 
-            if (request.Market.HasValue())
+            // Find market
+            var market = _taxiHailNetworkServiceClient.GetCompanyMarket(request.PickupAddress.Latitude, request.PickupAddress.Longitude);
+
+            if (market.HasValue())
             {
                 // Only pay in car charge type supported for orders outside home market
                 request.Settings.ChargeTypeId = ChargeTypes.PaymentInCar.Id;
@@ -119,10 +125,10 @@ namespace apcurium.MK.Booking.Api.Services
             else
             {
                 // Ensure that the market is not an empty string
-                request.Market = null;
+                market = null;
             }
 
-            var isPrepaid = request.FromWebApp
+            var isPrepaid = isFromWebApp
                 && (request.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id
                     || request.Settings.ChargeTypeId == ChargeTypes.PayPal.Id);
 
@@ -130,15 +136,15 @@ namespace apcurium.MK.Booking.Api.Services
 
             if (request.OrderCompanyKey.HasValue() || request.OrderFleetId.HasValue)
             {
-                // For API user, it's possible to manually specify which company to dispatch to
-                bestAvailableCompany = FindSpecificCompany(request.Market, request.OrderCompanyKey, request.OrderFleetId);
+                // For API user, it's possible to manually specify which company to dispatch to by using a fleet id
+                bestAvailableCompany = FindSpecificCompany(market, request.OrderCompanyKey, request.OrderFleetId);
             }
             else
             {
-                bestAvailableCompany = FindBestAvailableCompany(request.Market, request.PickupAddress.Latitude, request.PickupAddress.Longitude);
+                bestAvailableCompany = FindBestAvailableCompany(market, request.PickupAddress.Latitude, request.PickupAddress.Longitude);
             }
 
-            if (request.Market.HasValue() && bestAvailableCompany.CompanyKey == null)
+            if (market.HasValue() && bestAvailableCompany.CompanyKey == null)
             {
                 // No companies available that are desserving this region for the company
                 throw new HttpError(HttpStatusCode.BadRequest, ErrorCode.CreateOrder_RuleDisable.ToString(),
@@ -146,10 +152,10 @@ namespace apcurium.MK.Booking.Api.Services
             }
 
             var account = _accountDao.FindById(new Guid(this.GetSession().UserAuthId));
-            account.IBSAccountId = CreateIbsAccountIfNeeded(account, bestAvailableCompany.CompanyKey, request.Market);
+            account.IBSAccountId = CreateIbsAccountIfNeeded(account, bestAvailableCompany.CompanyKey);
             
             var isFutureBooking = request.PickupDate.HasValue;
-            var pickupDate = request.PickupDate ?? GetCurrentOffsetedTime(bestAvailableCompany.CompanyKey, request.Market);
+            var pickupDate = request.PickupDate ?? GetCurrentOffsetedTime(bestAvailableCompany.CompanyKey);
 
             // User can still create future order, but we allow only one active Book now order.
             if (!isFutureBooking)
@@ -159,26 +165,26 @@ namespace apcurium.MK.Booking.Api.Services
                 // We don't allow order creation if there's already an order scheduled
                 if (!_serverSettings.ServerData.AllowSimultaneousAppOrders
                     && pendingOrderId != null
-                    && !request.FromWebApp)
+                    && !isFromWebApp)
                 {
                     throw new HttpError(HttpStatusCode.BadRequest, ErrorCode.CreateOrder_PendingOrder.ToString(), pendingOrderId.ToString());
                 }
             }
 
             // We can only validate rules when in the local market
-            if (!request.Market.HasValue())
+            if (!market.HasValue())
             {
                 var rule = _ruleCalculator.GetActiveDisableFor(
                     isFutureBooking,
                     pickupDate,
                     () =>
-                        _ibsServiceProvider.StaticData(bestAvailableCompany.CompanyKey, request.Market)
+                        _ibsServiceProvider.StaticData(bestAvailableCompany.CompanyKey)
                             .GetZoneByCoordinate(
                                 request.Settings.ProviderId,
                                 request.PickupAddress.Latitude,
                                 request.PickupAddress.Longitude),
                     () => request.DropOffAddress != null
-                        ? _ibsServiceProvider.StaticData(bestAvailableCompany.CompanyKey, request.Market)
+                        ? _ibsServiceProvider.StaticData(bestAvailableCompany.CompanyKey)
                             .GetZoneByCoordinate(
                                 request.Settings.ProviderId,
                                 request.DropOffAddress.Latitude,
@@ -211,9 +217,9 @@ namespace apcurium.MK.Booking.Api.Services
 
             ReferenceData referenceData;
 
-            if (request.Market.HasValue())
+            if (market.HasValue())
             {
-                referenceData = (ReferenceData)_referenceDataService.Get(new ReferenceDataRequest { CompanyKey = bestAvailableCompany.CompanyKey, Market = request.Market });
+                referenceData = (ReferenceData)_referenceDataService.Get(new ReferenceDataRequest { CompanyKey = bestAvailableCompany.CompanyKey });
             }
             else
             {
@@ -235,7 +241,7 @@ namespace apcurium.MK.Booking.Api.Services
             }
 
             // IBS provider validation
-            ValidateProvider(request, referenceData);
+            ValidateProvider(request, referenceData, market.HasValue());
 
             // Map the command to obtain a OrderId (web doesn't prepopulate it in the request)
             var orderCommand = Mapper.Map<Commands.CreateOrder>(request);
@@ -244,7 +250,7 @@ namespace apcurium.MK.Booking.Api.Services
             var applyPromoCommand = ValidateAndApplyPromotion(request.PromoCode, request.Settings.ChargeTypeId, account.Id, orderCommand.OrderId, pickupDate, isFutureBooking, request.ClientLanguageCode);
 
             // Charge account validation
-            var accountValidationResult = ValidateChargeAccountIfNecessary(request, orderCommand.OrderId, account, isFutureBooking, isPrepaid);
+            var accountValidationResult = ValidateChargeAccountIfNecessary(request, orderCommand.OrderId, account, isFutureBooking, market, isFromWebApp);
 
             // if ChargeAccount uses payment with card on file, payment validation was already done
             if (!accountValidationResult.IsChargeAccountPaymentWithCardOnFile)
@@ -286,7 +292,7 @@ namespace apcurium.MK.Booking.Api.Services
             orderCommand.IsChargeAccountPaymentWithCardOnFile = accountValidationResult.IsChargeAccountPaymentWithCardOnFile;
             orderCommand.CompanyKey = bestAvailableCompany.CompanyKey;
             orderCommand.CompanyName = bestAvailableCompany.CompanyName;
-            orderCommand.Market = request.Market;
+            orderCommand.Market = market;
             orderCommand.IsPrepaid = isPrepaid;
             orderCommand.Settings.ChargeType = chargeTypeIbs;
             orderCommand.Settings.VehicleType = vehicleType;
@@ -324,7 +330,7 @@ namespace apcurium.MK.Booking.Api.Services
                 CreateOrderOnIBSAndSendCommands(orderCommand.OrderId, account,
                     request, referenceData, chargeTypeIbs, chargeTypeEmail, vehicleType,
                     accountValidationResult.Prompts, accountValidationResult.PromptsLength,
-                    bestAvailableCompany, applyPromoCommand, isPrepaid));
+                    bestAvailableCompany, applyPromoCommand, market, isPrepaid));
 
             return new OrderStatusDetail
             {
@@ -385,7 +391,7 @@ namespace apcurium.MK.Booking.Api.Services
                     // Create order on IBS
                     Task.Run(() => CreateOrderOnIBSAndSendCommands(orderInfo.OrderId, orderInfo.Account, orderInfo.Request, orderInfo.ReferenceData,
                         orderInfo.ChargeTypeIbs, orderInfo.ChargeTypeEmail, orderInfo.VehicleType, orderInfo.Prompts, orderInfo.PromptsLength,
-                        orderInfo.BestAvailableCompany, orderInfo.ApplyPromoCommand, true));
+                        orderInfo.BestAvailableCompany, orderInfo.ApplyPromoCommand, isPrepaid: true));
                 }
                 else
                 {
@@ -431,12 +437,13 @@ namespace apcurium.MK.Booking.Api.Services
                 return orderStatusDetail;
             }
 
+            var market = _taxiHailNetworkServiceClient.GetCompanyMarket(order.PickupAddress.Latitude, order.PickupAddress.Longitude);
+
             var newOrderRequest = new CreateOrder
             {
-                PickupDate = GetCurrentOffsetedTime(request.NextDispatchCompanyKey, order.Market),
+                PickupDate = GetCurrentOffsetedTime(request.NextDispatchCompanyKey),
                 PickupAddress = order.PickupAddress,
                 DropOffAddress = order.DropOffAddress,
-                Market = order.Market,
                 Settings = new BookingSettings
                 {
                     LargeBags = order.Settings.LargeBags,
@@ -458,7 +465,7 @@ namespace apcurium.MK.Booking.Api.Services
                 Estimate = new CreateOrder.RideEstimate { Price = order.EstimatedFare }
             };
 
-            var newReferenceData = (ReferenceData)_referenceDataService.Get(new ReferenceDataRequest { CompanyKey = request.NextDispatchCompanyKey, Market = order.Market });
+            var newReferenceData = (ReferenceData)_referenceDataService.Get(new ReferenceDataRequest { CompanyKey = request.NextDispatchCompanyKey });
 
             // This must be localized with the priceformat to be localized in the language of the company
             // because it is sent to the driver
@@ -478,9 +485,9 @@ namespace apcurium.MK.Booking.Api.Services
                 throw new HttpError(HttpStatusCode.InternalServerError, networkErrorMessage);
             }
 
-            ValidateProvider(newOrderRequest, newReferenceData);
+            ValidateProvider(newOrderRequest, newReferenceData, market.HasValue());
 
-            var newIbsOrderId = CreateIbsOrder(ibsAccountId, newOrderRequest, newReferenceData, chargeTypeIbs, null, null, request.NextDispatchCompanyKey);
+            var newIbsOrderId = CreateIbsOrder(ibsAccountId, newOrderRequest, newReferenceData, chargeTypeIbs, null, null, market, request.NextDispatchCompanyKey);
             if (!newIbsOrderId.HasValue || newIbsOrderId <= 0)
             {
                 var code = !newIbsOrderId.HasValue || (newIbsOrderId.Value >= -1) ? string.Empty : "_" + Math.Abs(newIbsOrderId.Value);
@@ -530,7 +537,7 @@ namespace apcurium.MK.Booking.Api.Services
             return new HttpResult(HttpStatusCode.OK);
         }
 
-        private ChargeAccountValidationResult ValidateChargeAccountIfNecessary(CreateOrder request, Guid orderId, AccountDetail account, bool isFutureBooking, bool isPrepaid)
+        private ChargeAccountValidationResult ValidateChargeAccountIfNecessary(CreateOrder request, Guid orderId, AccountDetail account, bool isFutureBooking, string market, bool isFromWebApp)
         {
             string[] prompts = null;
             int?[] promptsLength = null;
@@ -544,14 +551,14 @@ namespace apcurium.MK.Booking.Api.Services
 
                 if (accountChargeDetail.UseCardOnFileForPayment)
                 {
-                    if (request.Market.HasValue())
+                    if (market.HasValue())
                     {
                         // Card on file payment not supported when not in home market
                         throw new HttpError(HttpStatusCode.BadRequest, ErrorCode.CreateOrder_RuleDisable.ToString(),
                             _resources.Get("CannotCreateOrderChargeAccountNotSupportedInRoaming", request.ClientLanguageCode));
                     }
 
-                    if (isPrepaid)
+                    if (isFromWebApp)
                     {
                         // Charge account cannot support prepaid orders
                         throw new HttpError(HttpStatusCode.BadRequest, ErrorCode.CreateOrder_RuleDisable.ToString(),
@@ -572,7 +579,7 @@ namespace apcurium.MK.Booking.Api.Services
                     isChargeAccountPaymentWithCardOnFile = true;
                 }
 
-                ValidateChargeAccountAnswers(request.Settings.AccountNumber, request.QuestionsAndAnswers, request.ClientLanguageCode);
+                ValidateChargeAccountAnswers(request.Settings.AccountNumber, request.Settings.CustomerNumber, request.QuestionsAndAnswers, request.ClientLanguageCode);
 
                 if (isChargeAccountPaymentWithCardOnFile)
                 {
@@ -612,9 +619,9 @@ namespace apcurium.MK.Booking.Api.Services
 
         private async void CreateOrderOnIBSAndSendCommands(Guid orderId, AccountDetail account, CreateOrder request, ReferenceData referenceData, 
             string chargeTypeIbs, string chargeTypeEmail, string vehicleType, string[] prompts, int?[] promptsLength, BestAvailableCompany bestAvailableCompany, 
-            ApplyPromotion applyPromoCommand, bool isPrepaid = false)
+            ApplyPromotion applyPromoCommand, string market = null, bool isPrepaid = false)
         {
-            var ibsOrderId = CreateIbsOrder(account.IBSAccountId.Value, request, referenceData, chargeTypeIbs, prompts, promptsLength, bestAvailableCompany.CompanyKey);
+            var ibsOrderId = CreateIbsOrder(account.IBSAccountId.Value, request, referenceData, chargeTypeIbs, prompts, promptsLength, market, bestAvailableCompany.CompanyKey);
 
             // Wait for order creation to complete before sending other commands
             await Task.Delay(750);
@@ -660,13 +667,13 @@ namespace apcurium.MK.Booking.Api.Services
             UpdateStatusAsync(orderId);
         }
 
-        private void ValidateProvider(CreateOrder request, ReferenceData referenceData)
+        private void ValidateProvider(CreateOrder request, ReferenceData referenceData, bool isInExternalMarket)
         {
             // Provider is optional for home market
             // But if a provider is specified, it must match with one of the ReferenceData values
-            if (request.Settings.ProviderId.HasValue &&
-                !request.Market.HasValue() &&
-                referenceData.CompaniesList.None(c => c.Id == request.Settings.ProviderId.Value))
+            if (!isInExternalMarket
+                && request.Settings.ProviderId.HasValue
+                && referenceData.CompaniesList.None(c => c.Id == request.Settings.ProviderId.Value))
             {
                 throw new HttpError(HttpStatusCode.BadRequest,
                     ErrorCode.CreateOrder_InvalidProvider.ToString(), 
@@ -675,7 +682,7 @@ namespace apcurium.MK.Booking.Api.Services
         }
 
 
-        private int CreateIbsAccountIfNeeded(AccountDetail account, string companyKey = null, string market = null)
+        private int CreateIbsAccountIfNeeded(AccountDetail account, string companyKey = null)
         {
             var ibsAccountId = _accountDao.GetIbsAccountId(account.Id, companyKey);
             if (ibsAccountId.HasValue)
@@ -684,7 +691,7 @@ namespace apcurium.MK.Booking.Api.Services
             }
 
             // Account doesn't exist, create it
-            ibsAccountId = _ibsServiceProvider.Account(companyKey, market).CreateAccount(account.Id,
+            ibsAccountId = _ibsServiceProvider.Account(companyKey).CreateAccount(account.Id,
                 account.Email,
                 string.Empty,
                 account.Name,
@@ -838,7 +845,7 @@ namespace apcurium.MK.Booking.Api.Services
             }
         }
 
-        private void ValidateChargeAccountAnswers(string accountNumber, AccountChargeQuestion[] userQuestionsDetails, string clientLanguageCode)
+        private void ValidateChargeAccountAnswers(string accountNumber, string customerNumber, AccountChargeQuestion[] userQuestionsDetails, string clientLanguageCode)
         {
             var accountChargeDetail = _accountChargeDao.FindByAccountNumber(accountNumber);
             if (accountChargeDetail == null)
@@ -850,7 +857,7 @@ namespace apcurium.MK.Booking.Api.Services
 
             var answers = userQuestionsDetails.Select(x => x.Answer);
 
-            var validation = _ibsServiceProvider.ChargeAccount().ValidateIbsChargeAccount(answers, accountNumber, "0");
+            var validation = _ibsServiceProvider.ChargeAccount().ValidateIbsChargeAccount(answers, accountNumber, customerNumber);
             if (!validation.Valid)
             {
                 if (validation.ValidResponse != null)
@@ -872,11 +879,11 @@ namespace apcurium.MK.Booking.Api.Services
             });
         }
 
-        private DateTime GetCurrentOffsetedTime(string companyKey, string market)
+        private DateTime GetCurrentOffsetedTime(string companyKey)
         {
             //TODO : need to check ibs setup for shortesst time
 
-            var ibsServerTimeDifference = _ibsServiceProvider.GetSettingContainer(companyKey, market).TimeDifference;
+            var ibsServerTimeDifference = _ibsServiceProvider.GetSettingContainer(companyKey).TimeDifference;
             var offsetedTime = DateTime.Now.AddMinutes(2);
             if (ibsServerTimeDifference != 0)
             {
@@ -886,7 +893,7 @@ namespace apcurium.MK.Booking.Api.Services
             return offsetedTime;
         }
 
-        private int? CreateIbsOrder(int ibsAccountId, CreateOrder request, ReferenceData referenceData, string chargeType, string[] prompts, int?[] promptsLength, string companyKey = null)
+        private int? CreateIbsOrder(int ibsAccountId, CreateOrder request, ReferenceData referenceData, string chargeType, string[] prompts, int?[] promptsLength, string market, string companyKey = null)
         {
             if (_serverSettings.ServerData.IBS.FakeOrderStatusUpdate)
             {
@@ -897,7 +904,7 @@ namespace apcurium.MK.Booking.Api.Services
             var defaultCompany = referenceData.CompaniesList.FirstOrDefault(x => x.IsDefault.HasValue && x.IsDefault.Value)
                     ?? referenceData.CompaniesList.FirstOrDefault();
 
-            var providerId = request.Market.HasValue() && referenceData.CompaniesList.Any() && defaultCompany != null
+            var providerId = market.HasValue() && referenceData.CompaniesList.Any() && defaultCompany != null
                     ? defaultCompany.Id
                     : request.Settings.ProviderId;
 
@@ -932,7 +939,9 @@ namespace apcurium.MK.Booking.Api.Services
                 ibsChargeTypeId = _serverSettings.ServerData.IBS.PaymentTypePaymentInCarId;
             }
 
-            var result = _ibsServiceProvider.Booking(companyKey, request.Market).CreateOrder(
+            var customerNumber = GetCustomerNumber(request.Settings.AccountNumber, request.Settings.CustomerNumber);
+
+	        var result = _ibsServiceProvider.Booking(companyKey).CreateOrder(
                 providerId,
                 ibsAccountId,
                 request.Settings.Name,
@@ -945,12 +954,28 @@ namespace apcurium.MK.Booking.Api.Services
                 ibsPickupAddress,
                 ibsDropOffAddress,
                 request.Settings.AccountNumber,
-                string.IsNullOrWhiteSpace (request.Settings.AccountNumber ) ?(int?) null:0,
+                customerNumber,
                 prompts,
                 promptsLength,
                 fare);
 
             return result;
+        }
+
+        private int? GetCustomerNumber(string accountNumber, string customerNumber)
+        {
+            if (!accountNumber.HasValue() || !customerNumber.HasValue())
+            {
+                return null;
+            }
+
+            int result;
+            if (int.TryParse(customerNumber, out result))
+            {
+                return result;
+            }
+
+            return null;
         }
 
         private void CancelIbsOrder(OrderDetail order, Guid accountId)
@@ -965,7 +990,8 @@ namespace apcurium.MK.Booking.Api.Services
                     // After 5 time, we are giving up. But we assume the order is completed.
                     Task.Factory.StartNew(() =>
                     {
-                        Func<bool> cancelOrder = () => _ibsServiceProvider.Booking(order.CompanyKey, order.Market).CancelOrder(order.IBSOrderId.Value, currentIbsAccountId.Value, order.Settings.Phone);
+                        Func<bool> cancelOrder = () => _ibsServiceProvider.Booking(order.CompanyKey)
+                            .CancelOrder(order.IBSOrderId.Value, currentIbsAccountId.Value, order.Settings.Phone);
                         cancelOrder.Retry(new TimeSpan(0, 0, 0, 10), 5);
                     });
                 }

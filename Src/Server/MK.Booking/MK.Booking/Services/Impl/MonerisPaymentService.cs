@@ -150,7 +150,8 @@ namespace apcurium.MK.Booking.Services.Impl
             try
             {
                 var deleteCommand = new ResDelete(cardToken);
-                var deleteRequest = new HttpsPostRequest(monerisSettings.Host, monerisSettings.StoreId, monerisSettings.ApiToken, deleteCommand);
+                var deleteRequest = new HttpsPostRequest(monerisSettings.Host, monerisSettings.StoreId,
+                    monerisSettings.ApiToken, deleteCommand);
                 var receipt = deleteRequest.GetReceipt();
 
                 string message;
@@ -159,9 +160,9 @@ namespace apcurium.MK.Booking.Services.Impl
                 return new DeleteTokenizedCreditcardResponse
                 {
                     IsSuccessful = success,
-                    Message = success 
-                                ? "Success" 
-                                : message
+                    Message = success
+                        ? "Success"
+                        : message
                 };
             }
             catch (AggregateException ex)
@@ -174,7 +175,15 @@ namespace apcurium.MK.Booking.Services.Impl
                 return new DeleteTokenizedCreditcardResponse
                 {
                     IsSuccessful = false,
-                    Message = ex.InnerExceptions.First().Message,
+                    Message = ex.InnerExceptions.First().Message
+                };
+            }
+            catch (Exception ex)
+            {
+                return new DeleteTokenizedCreditcardResponse
+                {
+                    IsSuccessful = false,
+                    Message = ex.Message
                 };
             }
         }

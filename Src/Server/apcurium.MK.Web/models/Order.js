@@ -42,7 +42,7 @@
             TaxiHail.orderService.clearCurrentOrder();
         },
 
-        cancel: function() {
+        cancel: function () {
             return $.post(this.url() + '/cancel', {
                 orderId: this.id
             }, function(){}, 'json');
@@ -97,8 +97,8 @@
             });
         },
 
-        fetchQuestions: function (accountChargeNumber) {
-            return $.get('api/admin/accountscharge/' + accountChargeNumber + '/true', function () { }, 'json');
+        fetchQuestions: function (accountChargeNumber, customerNumber) {
+            return $.get('api/admin/accountscharge/' + accountChargeNumber + '/' + customerNumber + '/true', function () { }, 'json');
         }
     });
 }());

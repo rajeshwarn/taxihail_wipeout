@@ -685,6 +685,9 @@
     <value>Password</value>
   </data>
   <data name="RideSettingsAccountNumber" xml:space="preserve">
+    <value>Account Number</value>
+  </data>
+  <data name="RideSettingsCustomerNumber" xml:space="preserve">
     <value>Account Rider Number</value>
   </data>
   <data name="CreateAccountInvalidPassword" xml:space="preserve">
@@ -1429,13 +1432,19 @@
     <value>Error</value>
   </data>
   <data name="AccountPaymentNumberRequiredTitle" xml:space="preserve">
-    <value>Account Rider Number required</value>
+    <value>Account Number required</value>
   </data>
   <data name="AccountPaymentNumberRequiredMessage" xml:space="preserve">
-    <value>Please enter a valid account ride number</value>
+    <value>Please enter a valid account number</value>
+  </data>
+  <data name="AccountPaymentCustomerNumberRequiredTitle" xml:space="preserve">
+    <value>Account Rider Number required</value>
+  </data>
+  <data name="AccountPaymentCustomerNumberRequiredMessage" xml:space="preserve">
+    <value>Please enter a valid rider number</value>
   </data>
   <data name="Error_AccountPaymentMessage" xml:space="preserve">
-    <value>Invalid account ride number</value>
+    <value>Invalid account or rider number</value>
   </data>
   <data name="Error_AccountPaymentQuestionRequiredMessage" xml:space="preserve">
     <value>You must answer every questions marked as required to continue.</value>
@@ -1624,10 +1633,10 @@
     <value>Contacting {0} ...</value>
   </data>
   <data name="UpdateBookingSettingsEmptyAccount" xml:space="preserve">
-    <value>Account number cannot be empty when Charge Type is set to Charge Account</value>
+    <value>Account and rider numbers cannot be empty when Charge Type is set to Charge Account</value>
   </data>
   <data name="UpdateBookingSettingsInvalidAccount" xml:space="preserve">
-    <value>The account number that was entered doesn't exist</value>
+    <value>The account or rider number that was entered doesn't exist</value>
   </data>
   <data name="CreditCardBookingSettingsError" xml:space="preserve">
     <value>An error occured when updating the booking settings. Please make sure that the account number in your profile is valid and try again.</value>
@@ -1787,5 +1796,8 @@
   </data>
   <data name="Overdue_OutstandingPaymentExists" xml:space="preserve">
     <value>Your credit card failed to pay the previous ride. You will need to pay this outstanding amount for your card be reactivated.</value>
+  </data>
+  <data name="PromoDescriptionCode" xml:space="preserve">
+    <value>Use code {0} at the time of booking or press the button below</value>
   </data>
 </root>

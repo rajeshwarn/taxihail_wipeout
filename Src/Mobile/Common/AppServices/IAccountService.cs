@@ -15,7 +15,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
     {        
         Task UpdateSettings(BookingSettings settings, int? tipPercent);
         
-		void UpdateAccountNumber (string accountNumber);
+		void UpdateAccountNumber (string accountNumber, string customerNumber);
 
 		Task<Account> SignIn(string email, string password);
         

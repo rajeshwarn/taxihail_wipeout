@@ -329,15 +329,11 @@ namespace apcurium.MK.Booking.IBS.Impl
                 VAT = Convert.ToDouble(fare.TaxAmount),
                 AccountNum = accountNumber          
             };
-
-            order.AccountNum =  accountNumber;
             
-
             order.DispByAuto = _ibsSettings.AutoDispatch;
             order.Priority = _ibsSettings.OrderPriority 
                 ? 1 
                 : 0;
-
             
             order.PickupDate = new TWEBTimeStamp
             {
@@ -353,6 +349,8 @@ namespace apcurium.MK.Booking.IBS.Impl
                 Fractions = 0
             };
 
+            order.AccountNum = accountNumber;
+            
             if (accountNumber.HasValue() && customerNumber.HasValue)
             {
                 order.CustomerNum = customerNumber.Value;
@@ -361,8 +359,7 @@ namespace apcurium.MK.Booking.IBS.Impl
             {
                 order.CustomerNum = -1;
             }
-
-
+            
             order.ChargeTypeID = chargeTypeId ?? -1;
             var aptRing = Params.Get(pickup.Apartment, pickup.RingCode).Where(s => s.HasValue()).JoinBy(" / ");
 
@@ -384,6 +381,7 @@ namespace apcurium.MK.Booking.IBS.Impl
                     Latitude = dropoff.Latitude,
                     Postal = dropoff.ZipCode
                 };
+
             order.Passengers = nbPassengers;
             order.VehicleTypeID = vehicleTypeId ?? -1;
             order.Note = note;

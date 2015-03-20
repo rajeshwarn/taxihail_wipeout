@@ -6,13 +6,11 @@ using apcurium.MK.Booking.Api.Contract.Resources.Payments;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Services;
-using apcurium.MK.Booking.Services.Impl;
 using apcurium.MK.Common;
-using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
+using apcurium.MK.Common.Diagnostic;
 using Infrastructure.Messaging;
 using ServiceStack.ServiceInterface;
-using apcurium.MK.Common.Diagnostic;
 
 namespace apcurium.MK.Booking.Api.Services.Payment
 {

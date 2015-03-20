@@ -19,6 +19,7 @@ using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.SMS;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Cryptography;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
@@ -576,7 +577,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 using (var context = _contextFactory.Invoke())
                 {
                     var account = context.Query<AccountDetail>().SingleOrDefault(c => c.Email.ToLower() == clientEmailAddress.ToLower());
-                    if (account == null || !ShouldSendNotification(account.Id, x => x.PromotionUnlockedEmail))
+                    if (account == null)
                     {
                         return;
                     }
@@ -842,18 +843,10 @@ namespace apcurium.MK.Booking.Services.Impl
                     if (imageData != null)
                     {
                         // Hash it
-                        var md5Hasher = MD5.Create();
-                        var hashedImagedata = md5Hasher.ComputeHash(imageData);
-
-                        var sBuilder = new StringBuilder();
-
-                        foreach (byte b in hashedImagedata)
-                        {
-                            sBuilder.Append(b.ToString("x2"));
-                        }
+                        var hashedImagedata = CryptographyHelper.GetHashString(imageData);
 
                         // Append its hash to its URL
-                        return string.Format("{0}?refresh={1}", imageUrl, sBuilder);
+                        return string.Format("{0}?refresh={1}", imageUrl, hashedImagedata);
                     }
 
                     return imageUrl;

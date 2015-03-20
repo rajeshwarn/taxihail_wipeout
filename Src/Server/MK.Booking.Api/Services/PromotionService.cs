@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
@@ -22,7 +20,7 @@ namespace apcurium.MK.Booking.Api.Services
 
         public object Get(ActivePromotions request)
         {
-            return _promotionDao.GetAllCurrentlyActive()
+            return _promotionDao.GetAllCurrentlyActiveAndPublished()
                 .Select(promotionDetail =>
                 {
                     var activePromotion = new ActivePromotion
@@ -37,7 +35,8 @@ namespace apcurium.MK.Booking.Api.Services
                     AddProgressToPromotion(accountId, promotionDetail, activePromotion);
 
                     return activePromotion;
-                }).ToArray();
+                })
+                .ToArray();
         }
 
         private void AddProgressToPromotion(Guid accoundId, PromotionDetail promotionDetail, ActivePromotion activePromotion)

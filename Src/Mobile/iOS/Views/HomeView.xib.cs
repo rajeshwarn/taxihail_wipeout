@@ -5,24 +5,25 @@ using apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Booking;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using apcurium.MK.Booking.Mobile.PresentationHints;
 using apcurium.MK.Common.Entity;
+using apcurium.MK.Booking.Mobile.Client.Style;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
     public partial class HomeView : BaseViewController<HomeViewModel>, IChangePresentation
     {
-        private bool _defaultThemeApplied;
         private BookLaterDatePicker _datePicker;
 
         public override void ViewWillAppear (bool animated)
         {
             base.ViewWillAppear (animated);
 
-            if (!_defaultThemeApplied)
+            if (!Theme.IsApplied)
             {
                 // reset to default theme for the navigation bar
                 ChangeThemeOfNavigationBar();
-                _defaultThemeApplied = true;
+                Theme.IsApplied = true;
             }
+
             NavigationController.NavigationBar.BarStyle = UIBarStyle.Default;
             NavigationController.NavigationBar.Hidden = true;
 

@@ -129,7 +129,7 @@
                             android:paddingRight="8dip"
                             android:layout_width="fill_parent"
                             android:layout_height="1px" />
-                         <Button
+                        <Button
                             android:id="@+id/promotions"
                             local:MvxBind="Click Panel.NavigateToPromotions; Visibility Panel.Settings.PromotionEnabled, Converter=Visibility"
                             style="@style/SettingItemTitle"
@@ -244,7 +244,7 @@
                             android:layout_height="1px" />
                         <Button
                             android:id="@+id/settingsSupport"
-                            local:MvxBind="Click Panel.NavigateToReportProblem; Visibility Panel.Settings.HideReportProblem, Converter=InvertedVisibility"
+                            local:MvxBind="Click Panel.NavigateToReportProblem; Visibility Panel.DisplayReportProblem, Converter=Visibility"
                             style="@style/SettingItemTitle"
                             android:background="@drawable/setting_cell"
                             android:layout_width="fill_parent"
@@ -255,7 +255,7 @@
                             android:gravity="center_vertical"
                             android:textAlignment="viewStart" />
                         <View
-                            local:MvxBind="Visibility Panel.Settings.HideReportProblem, Converter=InvertedVisibility"
+                            local:MvxBind="Visibility Panel.DisplayReportProblem, Converter=Visibility"
                             android:background="@color/setting_menu_separator_color"
                             android:paddingLeft="8dip"
                             android:paddingRight="8dip"
@@ -328,7 +328,7 @@
                     android:textAllCaps="true"
                     android:textStyle="bold"
                     android:textSize="18dp"
-                    android:gravity="left"/>
+                    android:gravity="left" />
                 <TextView
                     android:text="2.0.17"
                     local:MvxBind="Text Panel.Version"

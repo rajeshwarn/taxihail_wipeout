@@ -21,5 +21,10 @@ namespace apcurium.MK.Booking.IBS.ChargeAccounts.RequestResponse.Resources
 
         [DataMember(Name = "account_number")]
         public String AccountNumber { get; set; }
+
+        public bool IsValid()
+        {
+            return Message == "OK";
+        }
     }
 }
