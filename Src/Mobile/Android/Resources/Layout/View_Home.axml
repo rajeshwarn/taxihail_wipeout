@@ -112,11 +112,11 @@
                         android:layout_gravity="right|bottom">
                         <ImageView
                             android:clickable="false"
-                            android:id="@+id/btnLocation"
+                            android:id="@+id/btnAirport"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:scaleType="center"
-                            android:src="@drawable/location_icon" />
+                            android:src="@drawable/airport" />
                     </LinearLayout>
                 <!-- Order Review -->
                     <apcurium.MK.Booking.Mobile.Client.Controls.Widgets.OrderReview
