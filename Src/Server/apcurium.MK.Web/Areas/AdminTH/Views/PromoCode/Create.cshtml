@@ -165,14 +165,14 @@
         <div class="control-group left-control-group">
             @Html.LabelFor(x => x.MaxUsagePerUser, new { @class = "control-label" })
             <div class="controls">
-                @Html.TextBoxFor(x => x.MaxUsagePerUser, new { @class = "input-small", @id="maxUsagePerUserTextBox" })
+                @Html.TextBoxFor(x => x.MaxUsagePerUser, new { @class = "input-small" })
                 @Html.ValidationMessageFor(x => x.MaxUsagePerUser)
             </div>
         </div>
         <div class="control-group right-control-group">
             @Html.LabelFor(x => x.MaxUsage, new { @class = "control-label" })
             <div class="controls">
-                @Html.TextBoxFor(x => x.MaxUsage, new { @class = "input-small", @id = "maxUsagePerSystemTextBox" })
+                @Html.TextBoxFor(x => x.MaxUsage, new { @class = "input-small" })
                 @Html.ValidationMessageFor(x => x.MaxUsage)
             </div>
         </div>

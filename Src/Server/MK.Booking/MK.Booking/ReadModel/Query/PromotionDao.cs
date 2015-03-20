@@ -176,7 +176,7 @@ namespace apcurium.MK.Booking.ReadModel.Query
         {
             var endDateTime = promo.GetEndDateTime();
 
-            if (endDateTime.HasValue && endDateTime.Value < now)
+            if (endDateTime.HasValue && endDateTime.Value <= now)
             {
                 return true;
             }
