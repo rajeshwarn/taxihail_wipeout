@@ -165,6 +165,7 @@
         book: function (form) {
             var lang = TaxiHail.getClientLanguage();
             this.model.set('ClientLanguageCode', lang);
+            this.model.set('FromWebApp', true);
             this.model.saveLocal();
 
             this.$('.errors').html('');        

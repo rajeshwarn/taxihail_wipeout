@@ -106,7 +106,8 @@ namespace apcurium.MK.Booking.Api.Services
         {
             Log.Info("Create order request : " + request.ToJson());
 
-            var isFromWebApp = Request.UserAgent.IsFromWebApp();
+            // TODO: Find a better way to do this...
+            var isFromWebApp = request.FromWebApp;
 
             if (!isFromWebApp)
             {

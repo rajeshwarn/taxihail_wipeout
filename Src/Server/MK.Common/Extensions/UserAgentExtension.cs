@@ -67,9 +67,7 @@ namespace apcurium.MK.Common.Extensions
 
         public static bool IsFromWebApp(this string userAgent)
         {
-            return !userAgent.Contains("Android")
-                   && !userAgent.Contains("iPhone")
-                   && !userAgent.Contains("iPad");
+            throw new NotImplementedException();
         }
 
         private static string GetOsVersion(string userAgent, string osName)

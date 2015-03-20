@@ -113,6 +113,7 @@ namespace apcurium.MK.Web.Tests
             var order = new CreateOrder
             {
                 Id = Guid.NewGuid(),
+                FromWebApp = true,
                 PickupAddress = TestAddresses.GetAddress1(),
                 PickupDate = DateTime.Now,
                 DropOffAddress = TestAddresses.GetAddress2(),
