@@ -109,7 +109,7 @@ namespace apcurium.MK.Web.Tests
                 }
             });
 
-            var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
+            var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo { UserAgent = "FireFox" });
             var order = new CreateOrder
             {
                 Id = Guid.NewGuid(),

@@ -128,6 +128,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				.For("TouchUpInside")
 				.To(vm => vm.Support);
 
+            set.Bind(btnSupport)
+                .For(v => v.Hidden)
+                .To(vm => vm.DisplayReportProblem)
+                .WithConversion("BoolInverter");
+
             set.Bind(btnSignUp)
                 .For("TouchUpInside")
                 .To(vm => vm.SignUp);

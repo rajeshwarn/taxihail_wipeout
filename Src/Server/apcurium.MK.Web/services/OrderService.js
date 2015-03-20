@@ -29,8 +29,6 @@
                 data: JSON.stringify(order) ,
                 contentType: 'application/json'
             });
-            
-           // return $.post('api/account/orders/validate',(), function () { }, 'application/json');
         }
     });
 

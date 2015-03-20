@@ -58,7 +58,7 @@ namespace apcurium.MK.Booking.Api.Services
                 }
 
                 // Validate with IBS to make sure the account/customer is still active
-                var ibsChargeAccount = _ibsServiceProvider.ChargeAccount().GetIbsAccount(request.AccountNumber, request.CustomerNumber);
+                var ibsChargeAccount = _ibsServiceProvider.ChargeAccount().GetIbsAccount(request.AccountNumber, request.CustomerNumber ?? "0");
                 if (ibsChargeAccount == null || !ibsChargeAccount.IsValid())
                 {
                     throw new HttpError(HttpStatusCode.NotFound, "Account Not Found");

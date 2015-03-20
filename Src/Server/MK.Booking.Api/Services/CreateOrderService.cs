@@ -106,7 +106,10 @@ namespace apcurium.MK.Booking.Api.Services
         {
             Log.Info("Create order request : " + request.ToJson());
 
-            if (!request.FromWebApp)
+            // TODO: Find a better way to do this...
+            var isFromWebApp = request.FromWebApp;
+
+            if (!isFromWebApp)
             {
                 ValidateAppVersion(request.ClientLanguageCode);
             }
@@ -125,7 +128,7 @@ namespace apcurium.MK.Booking.Api.Services
                 market = null;
             }
 
-            var isPrepaid = request.FromWebApp
+            var isPrepaid = isFromWebApp
                 && (request.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id
                     || request.Settings.ChargeTypeId == ChargeTypes.PayPal.Id);
 
@@ -162,7 +165,7 @@ namespace apcurium.MK.Booking.Api.Services
                 // We don't allow order creation if there's already an order scheduled
                 if (!_serverSettings.ServerData.AllowSimultaneousAppOrders
                     && pendingOrderId != null
-                    && !request.FromWebApp)
+                    && !isFromWebApp)
                 {
                     throw new HttpError(HttpStatusCode.BadRequest, ErrorCode.CreateOrder_PendingOrder.ToString(), pendingOrderId.ToString());
                 }
@@ -247,7 +250,7 @@ namespace apcurium.MK.Booking.Api.Services
             var applyPromoCommand = ValidateAndApplyPromotion(request.PromoCode, request.Settings.ChargeTypeId, account.Id, orderCommand.OrderId, pickupDate, isFutureBooking, request.ClientLanguageCode);
 
             // Charge account validation
-            var accountValidationResult = ValidateChargeAccountIfNecessary(request, orderCommand.OrderId, account, isFutureBooking, market);
+            var accountValidationResult = ValidateChargeAccountIfNecessary(request, orderCommand.OrderId, account, isFutureBooking, market, isFromWebApp);
 
             // if ChargeAccount uses payment with card on file, payment validation was already done
             if (!accountValidationResult.IsChargeAccountPaymentWithCardOnFile)
@@ -534,7 +537,7 @@ namespace apcurium.MK.Booking.Api.Services
             return new HttpResult(HttpStatusCode.OK);
         }
 
-        private ChargeAccountValidationResult ValidateChargeAccountIfNecessary(CreateOrder request, Guid orderId, AccountDetail account, bool isFutureBooking, string market)
+        private ChargeAccountValidationResult ValidateChargeAccountIfNecessary(CreateOrder request, Guid orderId, AccountDetail account, bool isFutureBooking, string market, bool isFromWebApp)
         {
             string[] prompts = null;
             int?[] promptsLength = null;
@@ -555,7 +558,7 @@ namespace apcurium.MK.Booking.Api.Services
                             _resources.Get("CannotCreateOrderChargeAccountNotSupportedInRoaming", request.ClientLanguageCode));
                     }
 
-                    if (request.FromWebApp)
+                    if (isFromWebApp)
                     {
                         // Charge account cannot support prepaid orders
                         throw new HttpError(HttpStatusCode.BadRequest, ErrorCode.CreateOrder_RuleDisable.ToString(),
