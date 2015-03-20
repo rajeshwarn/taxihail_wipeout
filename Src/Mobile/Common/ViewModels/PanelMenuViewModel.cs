@@ -10,6 +10,7 @@ using Params = System.Collections.Generic.Dictionary<string, string>;
 using apcurium.MK.Booking.Mobile.ViewModels.Payment;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Contract.Resources.Payments;
+using apcurium.MK.Booking.Mobile.Framework.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -165,7 +166,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             get 
             { 
                 return !Settings.HideReportProblem 
-                    && !string.IsNullOrEmpty(Settings.SupportEmail); 
+                    && !Settings.SupportEmail.HasValue(); 
             }
         }
 

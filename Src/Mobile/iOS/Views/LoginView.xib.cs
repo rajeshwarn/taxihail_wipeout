@@ -130,7 +130,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
             set.Bind(btnSupport)
                 .For(v => v.Hidden)
-                .To(vm => vm.HasSupportEmail)
+                .To(vm => vm.DisplayReportProblem)
                 .WithConversion("BoolInverter");
 
             set.Bind(btnSignUp)
