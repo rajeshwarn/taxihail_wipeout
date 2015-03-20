@@ -215,7 +215,11 @@ namespace MK.Common.Configuration
         public string DefaultPhoneNumberDisplay { get; protected set; }
 
         [SendToClient]
+        [Display(Name = "Enable airport filter button", Description = "Enables the use of the airport search filter button in the app.")]
 	    public bool IsAirportButtonEnabled { get; protected set; }
+        [SendToClient]
+        [Display(Name = "Enable train station filter button", Description = "Enables the use of the trains station search filter button in the app.")]
+        public bool IsTrainStationButtonEnabled { get; set; }
 
         [SendToClient]
         [Display(Name = "Default Phone Number", Description="Phone number as dialed")]

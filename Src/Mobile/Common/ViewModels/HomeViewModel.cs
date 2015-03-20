@@ -338,11 +338,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
-	    public bool IsAirportButtonEnabled
-	    {
-	        get { return Settings.IsAirportButtonEnabled; }
-	    }
-
 	    public ICommand AirportSearch
 	    {
 	        get
