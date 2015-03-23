@@ -56,8 +56,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         private void AddPromoCodeToDescription(string code)
         {
-            Description += string.Format("{0}{1}{2}{3}",
-                Description,
+            Description += string.Format("{0}{1}{2}",
                 Environment.NewLine,
                 Environment.NewLine,
                 string.Format(this.Services().Localize["PromoDescriptionCode"], code.ToUpper()));
