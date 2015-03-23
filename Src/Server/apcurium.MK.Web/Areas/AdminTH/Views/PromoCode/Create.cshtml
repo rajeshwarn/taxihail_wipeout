@@ -162,14 +162,14 @@
         </div>
     </div>
     <div class="clearfix">
-        <div class="control-group left-control-group">
+        <div class="control-group left-control-group" style="width: 50%">
             @Html.LabelFor(x => x.MaxUsagePerUser, new { @class = "control-label" })
             <div class="controls">
                 @Html.TextBoxFor(x => x.MaxUsagePerUser, new { @class = "input-small" })
                 @Html.ValidationMessageFor(x => x.MaxUsagePerUser)
             </div>
         </div>
-        <div class="control-group right-control-group">
+        <div class="control-group right-control-group" style="width: 50%">
             @Html.LabelFor(x => x.MaxUsage, new { @class = "control-label" })
             <div class="controls">
                 @Html.TextBoxFor(x => x.MaxUsage, new { @class = "input-small" })
@@ -185,22 +185,38 @@
         </div>
     </div>
     <div class="clearfix">
-        <div class="control-group left-control-group">
+        <div class="control-group left-control-group" style="width: 50%">
             @Html.LabelFor(x => x.TriggerSettings.Type, new { @class = "control-label" })
             <div class="controls">
-                @Html.EnumDropDownListFor(x => x.TriggerSettings.Type, new { @id = "triggerTypeDropDown" })
-            </div>    
+                @Html.EnumDropDownListFor(x => x.TriggerSettings.Type, new { @id = "triggerTypeDropDown", @class = "input-medium" })
+            </div>
         </div>
-        <div class="control-group right-control-group" id="rideCountTriggerGroup">
+        <div class="control-group right-control-group" id="rideCountTriggerGroup" style="width: 50%">
+            @Html.LabelFor(x => x.TriggerSettings.RideCount, new { @class = "control-label" })
             <div class="controls">
-                @Html.TextBoxFor(x => x.TriggerSettings.RideCount, new { @placeholder = "Number of Rides" })
+                @Html.TextBoxFor(x => x.TriggerSettings.RideCount, new {@placeholder = "Number of Rides", @class = "input-small"})
                 @Html.ValidationMessageFor(x => x.TriggerSettings.RideCount)
             </div>
         </div>
-        <div class="control-group right-control-group" id="amountSpentTriggerGroup">
+        <div class="control-group right-control-group" id="amountSpentTriggerGroup" style="width: 50%">
+            @Html.LabelFor(x => x.TriggerSettings.AmountSpent, new { @class = "control-label" })
             <div class="controls">
-                @Html.TextBoxFor(x => x.TriggerSettings.AmountSpent, new { @placeholder = "Amount Spent" })
+                @Html.TextBoxFor(x => x.TriggerSettings.AmountSpent, new {@placeholder = "Amount Spent", @class = "input-small"})
                 @Html.ValidationMessageFor(x => x.TriggerSettings.AmountSpent)
+            </div>
+        </div>
+
+        <div class="control-group right-control-group" id="applyToExistingTriggerGroup" style="width: 50%">
+            @Html.LabelFor(x => x.TriggerSettings.ApplyToExisting, new { @class = "control-label" })
+            <div class="controls">
+                @Html.DropDownListFor(x => x.TriggerSettings.ApplyToExisting,
+                    new SelectList(
+                        new[]
+                        {
+                            new { Value = bool.TrueString, Text = "Yes" },
+                            new { Value = bool.FalseString, Text = "No" }
+                        }, "Value", "Text",
+                        Model.TriggerSettings.ApplyToExisting), new { @class = "input-small" })
             </div>
         </div>
     </div>
@@ -260,14 +276,20 @@
 
         if (dropDownValue == "@Convert.ToInt32(PromotionTriggerTypes.RideCount)") {
             $('#amountSpentTriggerGroup').addClass('hidden');
+            $('#applyToExistingTriggerGroup').addClass('hidden');
             $('#rideCountTriggerGroup').removeClass('hidden');
-        }
-        else if (dropDownValue == "@Convert.ToInt32(PromotionTriggerTypes.AmountSpent)") {
+        } else if (dropDownValue == "@Convert.ToInt32(PromotionTriggerTypes.AmountSpent)") {
             $('#amountSpentTriggerGroup').removeClass('hidden');
+            $('#rideCountTriggerGroup').addClass('hidden');
+            $('#applyToExistingTriggerGroup').addClass('hidden');
+        } else if (dropDownValue == "@Convert.ToInt32(PromotionTriggerTypes.AccountCreated)") {
+            $('#applyToExistingTriggerGroup').removeClass('hidden');
+            $('#amountSpentTriggerGroup').addClass('hidden');
             $('#rideCountTriggerGroup').addClass('hidden');
         } else {
             $('#amountSpentTriggerGroup').addClass('hidden');
             $('#rideCountTriggerGroup').addClass('hidden');
+            $('#applyToExistingTriggerGroup').addClass('hidden');
         }
     }
 
@@ -281,16 +303,30 @@
 
         @if (Model.TriggerSettings.Type == PromotionTriggerTypes.RideCount)
         {
-            <text>$('#amountSpentTriggerGroup').addClass('hidden');</text>
+            <text>
+                $('#amountSpentTriggerGroup').addClass('hidden');
+                $('#applyToExistingTriggerGroup').addClass('hidden');
+            </text>
         }
         else if (Model.TriggerSettings.Type == PromotionTriggerTypes.AmountSpent)
         {
-            <text>$('#rideCountTriggerGroup').addClass('hidden');</text>
+            <text>
+                $('#rideCountTriggerGroup').addClass('hidden');
+                $('#applyToExistingTriggerGroup').addClass('hidden');
+            </text>
         }
-        else {
+        else if (Model.TriggerSettings.Type == PromotionTriggerTypes.AccountCreated)
+        {
             <text>
                 $('#rideCountTriggerGroup').addClass('hidden');
                 $('#amountSpentTriggerGroup').addClass('hidden');
+            </text>
+        }
+        else {
+            <text>
+            $('#rideCountTriggerGroup').addClass('hidden');
+            $('#amountSpentTriggerGroup').addClass('hidden');
+            $('#applyToExistingTriggerGroup').addClass('hidden');
             </text>
         }
 
@@ -301,7 +337,7 @@
         $('[data-role=datepicker]')
             .datepicker()
             .on("changeDate", function (e) {
-                 ondatepickerchange(e);
+                ondatepickerchange(e);
             });
 
         $('[data-role=timepicker]').timepicker({
@@ -310,7 +346,7 @@
         }).on('changeTime.timepicker', function (e) {
             ontimepickerchange(e);
         });
-        
+
         // Ensures that click in the date textbox fields also open the datepicker.
         $('[data-role=datepicker]>[class=input-small]').on("click", function (e) {
             $('#' + e.target.id).datepicker('show');

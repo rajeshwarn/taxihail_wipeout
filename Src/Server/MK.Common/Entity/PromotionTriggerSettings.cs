@@ -8,10 +8,13 @@ namespace apcurium.MK.Common.Entity
         [Display(Name = "Trigger")]
         public PromotionTriggerTypes Type { get; set; }
 
-        [Display(Name = "Ride Count")]
+        [Display(Name = "Number of Rides to unlock")]
         public int RideCount { get; set; }
 
-        [Display(Name = "Amount Spent")]
+        [Display(Name = "Amount to spend to unlock")]
         public int AmountSpent { get; set; }
+
+        [Display(Name = "Apply to Existing Accounts")]
+        public bool ApplyToExisting { get; set; }
     }
 }
