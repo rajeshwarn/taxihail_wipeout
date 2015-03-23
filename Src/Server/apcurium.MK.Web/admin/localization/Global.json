@@ -106,6 +106,8 @@
     "Network.PrimaryOrderTimeout": "Primary Order Timeout (seconds)",
     "Network.SecondaryOrderTimeout" : "Secondary Order Timeout (seconds)",
 
+    "sendReceiptForPayInCar":  "Send receipt for Pay in Car",
+
 	"/******* End settings Aliases *******/": "",
 
     "/******* Begin notification settings Aliases ******/": "",

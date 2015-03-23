@@ -26,6 +26,8 @@ namespace apcurium.MK.Web.admin
         protected string GeolocSearchRegion { get; private set; }
         protected string GeolocSearchBounds { get; private set; }
 
+        protected bool SendReceiptForPayInCar { get; set; }
+
         protected string Languages { get; private set; }
 
         protected void Page_Load(object sender, EventArgs e)
@@ -38,6 +40,8 @@ namespace apcurium.MK.Web.admin
             DefaultLatitude = config.ServerData.GeoLoc.DefaultLatitude.ToString();
             DefaultLongitude = config.ServerData.GeoLoc.DefaultLongitude.ToString();
             ApplicationVersion = Assembly.GetAssembly(typeof (_default)).GetName().Version.ToString();
+
+            SendReceiptForPayInCar = config.ServerData.SendReceiptForPayInCar;
 
             IsAuthenticated = base.UserSession.IsAuthenticated;
             IsSuperAdmin = UserSession.HasPermission(RoleName.SuperAdmin);

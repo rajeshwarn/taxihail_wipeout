@@ -49,6 +49,8 @@ namespace apcurium.MK.Web
         protected bool IsWebSignupVisible { get; private set; }
         protected double MaxFareEstimate { get; private set; }
         protected bool IsChargeAccountPaymentEnabled { get; private set; }
+
+        protected bool SendReceiptForPayInCar { get; private set; }
         
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -66,6 +68,7 @@ namespace apcurium.MK.Web
             ShowCallDriver = config.ServerData.ShowCallDriver;
             DisableFutureBooking = config.ServerData.DisableFutureBooking;
             IsWebSignupVisible = !config.ServerData.IsWebSignupHidden;
+            SendReceiptForPayInCar = config.ServerData.SendReceiptForPayInCar;
 
             DirectionTarifMode = config.ServerData.Direction.TarifMode.ToString("G");
             DirectionNeedAValidTarif = config.ServerData.Direction.NeedAValidTarif;

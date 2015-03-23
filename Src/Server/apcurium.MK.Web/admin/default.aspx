@@ -55,6 +55,7 @@
             TaxiHail.parameters.apiRoot = "../api";
             TaxiHail.parameters.version = '<%: ApplicationVersion %>';
             TaxiHail.parameters.languages = <%= Languages %>;
+            TaxiHail.parameters.sendReceiptForPayInCar = <%: SendReceiptForPayInCar ? "true" : "false" %>;
         </script>
 
         <%: Scripts.Render("~/admin/bundles/app") %>
