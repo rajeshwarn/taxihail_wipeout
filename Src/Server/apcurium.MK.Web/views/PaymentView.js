@@ -135,6 +135,7 @@
 	                // Update card on file
 	                this.model.updateCreditCard()
 			            .done(_.bind(function () {
+	                        TaxiHail.auth.account.set('defaultCreditCard', 'tempId');
 			                this.renderConfirmationMessage();
 			            }, this))
 			            .fail(_.bind(function () {
