@@ -174,11 +174,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Addresses
             set.Apply();
         }
 
-        public void Open(AddressLocationType filterAddresses)
-        {        
-            Visibility = ViewStates.Visible;
-            ViewModel.LoadAddresses(filterAddresses);
-			FocusOnTextField ();  
+        public async void Open(AddressLocationType filterAddresses)
+        {
+            await ViewModel.LoadAddresses(filterAddresses).HandleErrors();
+            if (ViewModel.CanShowPicker())
+            {
+                Visibility = ViewStates.Visible;
+                FocusOnTextField();
+            }
         } 
 
         public void Close()

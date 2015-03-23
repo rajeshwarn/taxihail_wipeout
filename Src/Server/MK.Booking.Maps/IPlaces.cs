@@ -1,5 +1,6 @@
 ﻿#region
 
+using System.Threading.Tasks;
 using apcurium.MK.Common.Entity;
 
 #endregion
@@ -11,6 +12,6 @@ namespace apcurium.MK.Booking.Maps
         Address GetPlaceDetail(string name, string placeId);
 		Address[] SearchPlaces(string name, double? latitude, double? longitude, int? radius, string currentLanguage);
 
-        Address[] GetFilteredPlacesList(AddressLocationType locationType);
+        Task<Address[]> GetFilteredPlacesList(AddressLocationType locationType);
     }
 }

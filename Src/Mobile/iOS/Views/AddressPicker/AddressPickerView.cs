@@ -14,6 +14,7 @@ using apcurium.MK.Booking.Mobile.Client.Localization;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
 using System.Windows.Input;
+using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views.AddressPicker
@@ -170,15 +171,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.AddressPicker
             UIView.Animate(0.3f, () => this.Alpha = 0, () => this.Hidden = true);
         }
 
-        public void Open(AddressLocationType addressLocationType)
+        public async void Open(AddressLocationType addressLocationType)
         {
-            this.Alpha = 0;
-            this.Hidden = false;
-            UIView.Animate(0.3f, () => this.Alpha = 1);
+			await ViewModel.LoadAddresses(addressLocationType).HandleErrors();
 
-			ViewModel.LoadAddresses(addressLocationType);
-			if (addressLocationType == AddressLocationType.Unspeficied)
+			if (ViewModel.CanShowPicker())
 			{
+                Alpha = 0;
+                Hidden = false;
+                Animate(0.3f, () => this.Alpha = 1);
 				FocusOnTextField();
 			}
         }        

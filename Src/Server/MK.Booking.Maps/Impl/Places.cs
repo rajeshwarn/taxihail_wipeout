@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Threading.Tasks;
 using apcurium.MK.Booking.Maps.Geo;
 using apcurium.MK.Booking.Maps.Impl.Mappers;
 using apcurium.MK.Common.Configuration;
@@ -36,17 +37,18 @@ namespace apcurium.MK.Booking.Maps.Impl
             return result;
         }
 
-        public Address[] GetFilteredPlacesList(AddressLocationType locationType)
+        public async Task<Address[]> GetFilteredPlacesList(AddressLocationType locationType)
         {
-            return _popularAddressProvider
-                .GetPopularAddresses()
+            var addresses = await _popularAddressProvider.GetPopularAddressesAsync();
+
+            return addresses
                 .Where(address => address.AddressLocationType == locationType)
                 .ToArray();
         }
 
 		public Address[] SearchPlaces(string name, double? latitude, double? longitude, int? radius, string currentLanguage)
         {
-            int defaultRadius = _appSettings.Data.NearbyPlacesService.DefaultRadius;
+            var defaultRadius = _appSettings.Data.NearbyPlacesService.DefaultRadius;
 
 			latitude = (!latitude.HasValue || latitude.Value == 0) ? _appSettings.Data.GeoLoc.DefaultLatitude : latitude;
 			longitude = (!longitude.HasValue || longitude.Value == 0) ? _appSettings.Data.GeoLoc.DefaultLongitude : longitude;
@@ -80,7 +82,7 @@ namespace apcurium.MK.Booking.Maps.Impl
             {
                 googlePlaces =
 					_client.GetNearbyPlaces(latitude, longitude, currentLanguage, false,
-                        radius.HasValue ? radius.Value : defaultRadius).Take(15);
+                        radius ?? defaultRadius).Take(15);
             }
             else
             {
@@ -88,7 +90,7 @@ namespace apcurium.MK.Booking.Maps.Impl
 
                 googlePlaces =
 					_client.SearchPlaces(latitude, longitude, name, currentLanguage, false,
-                        radius.HasValue ? radius.Value : defaultRadius, priceFormat.TwoLetterISORegionName.ToLower())
+                        radius ?? defaultRadius, priceFormat.TwoLetterISORegionName.ToLower())
                         .Take(15);
             }
 

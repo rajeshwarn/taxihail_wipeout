@@ -102,11 +102,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
             }
 	    }
 
-	    private void LoadFilteredAdress(AddressLocationType filter)
+	    private async Task LoadFilteredAdress(AddressLocationType filter)
 	    {
 	        AllAddresses.Clear();
 
-	        var filteredPlaces = _placesService.GetFilteredPlacesList(filter);
+	        var filteredPlaces = await _placesService.GetFilteredPlacesList(filter);
 
 
             if (filteredPlaces.Skip(1).Any())
@@ -121,7 +121,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 	        }
 	    }
 
-	    public async void LoadAddresses(AddressLocationType filter)
+	    public async Task LoadAddresses(AddressLocationType filter)
 		{
             _ignoreTextChange = true;
 	        try
@@ -133,7 +133,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 	            }
 	            else
 	            {
-                    LoadFilteredAdress(filter);
+                    await LoadFilteredAdress(filter);
 	            }
 	        }
 	        catch (Exception e)
@@ -145,6 +145,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
                 _ignoreTextChange = false;
 	        }
 		}
+
+	    public bool CanShowPicker()
+	    {
+	        return AllAddresses.Skip(1).Any();
+	    }
 
 		private AddressViewModel[] ConvertToAddressViewModel(Address[] addresses, AddressType type)
 		{
