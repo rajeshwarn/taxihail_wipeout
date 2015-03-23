@@ -46,11 +46,38 @@ namespace apcurium.MK.Booking.ReadModel.Query
             }
         }
 
+        public IEnumerable<PromotionDetail> GetAllCurrentlyActiveAndPublished(PromotionTriggerTypes? triggerType = null)
+        {
+            return GetAllCurrentlyActive(triggerType)
+                // at least one published date set, so it's public
+                .Where(promotionDetail => promotionDetail.PublishedStartDate.HasValue || promotionDetail.PublishedEndDate.HasValue)
+                .Select(promotionDetail =>
+                {
+                    if (!promotionDetail.PublishedStartDate.HasValue)
+                    {
+                        promotionDetail.PublishedStartDate = DateTime.MinValue;
+                    }
+
+                    if (!promotionDetail.PublishedEndDate.HasValue)
+                    {
+                        promotionDetail.PublishedEndDate = DateTime.MaxValue;
+                    }
+
+                    return promotionDetail;
+                })
+                .Where(promotionDetail =>
+                {
+                    var now = GetCurrentOffsetedTime();
+
+                    return promotionDetail.PublishedStartDate <= now
+                           && promotionDetail.PublishedEndDate > now;
+                });
+        }
+
         public IEnumerable<PromotionDetail> GetAllCurrentlyActive(PromotionTriggerTypes? triggerType = null)
         {
             using (var context = _contextFactory.Invoke())
             {
-                var result = new List<PromotionDetail>();
                 var activePromos = context.Query<PromotionDetail>().Where(x => x.Active);
 
                 if (triggerType.HasValue)
@@ -58,34 +85,15 @@ namespace apcurium.MK.Booking.ReadModel.Query
                     activePromos = activePromos.Where(x => x.TriggerSettings.Type == triggerType);
                 }
 
-                foreach (var promotionDetail in activePromos)
-                {
-                    var thisPromo = promotionDetail;
-                    if (thisPromo.PublishedStartDate.HasValue || thisPromo.PublishedEndDate.HasValue)
+                return activePromos
+                    .AsEnumerable()
+                    .Where(promotionDetail =>
                     {
-                        // at least one published date set, so it's public
-                        
-                        if (!thisPromo.PublishedStartDate.HasValue)
-                        {
-                            thisPromo.PublishedStartDate = DateTime.MinValue;
-                        }
-
-                        if (!thisPromo.PublishedEndDate.HasValue)
-                        {
-                            thisPromo.PublishedEndDate = DateTime.MaxValue;
-                        }
-
                         var now = GetCurrentOffsetedTime();
-                        if (thisPromo.PublishedStartDate <= now
-                            && thisPromo.PublishedEndDate > now
-                            && !IsExpired(thisPromo, now))
-                        {
-                            result.Add(promotionDetail);
-                        }
-                    }
-                }
 
-                return result;
+                        return !IsExpired(promotionDetail, now);
+                    })
+                    .ToArray(); 
             }
         }
 
@@ -131,6 +139,14 @@ namespace apcurium.MK.Booking.ReadModel.Query
             }
 
             return now;
+        }
+
+
+        private bool IsStarted(PromotionDetail promo, DateTime now)
+        {
+            var startDateTime = promo.GetStartDateTime().GetValueOrDefault(DateTime.MinValue);
+
+            return startDateTime <= now;
         }
 
         private bool IsExpired(PromotionDetail promo, DateTime now)

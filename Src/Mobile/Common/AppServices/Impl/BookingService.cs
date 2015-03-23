@@ -163,14 +163,16 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             return statusId != null && statusId.SoftEqual(VehicleStatuses.Common.Timeout);
         }
 
-        public bool IsStatusCompleted (string statusId)
+		public bool IsStatusCompleted (OrderStatusDetail status)
         {
-            return statusId.IsNullOrEmpty () ||
-                statusId.SoftEqual (VehicleStatuses.Common.Cancelled) ||
-                statusId.SoftEqual (VehicleStatuses.Common.Done) ||
-                statusId.SoftEqual (VehicleStatuses.Common.NoShow) ||
-				statusId.SoftEqual (VehicleStatuses.Common.CancelledDone) || 
-				statusId.SoftEqual (VehicleStatuses.Common.MeterOffNotPayed);
+			return status.IBSStatusId.IsNullOrEmpty () ||
+				status.IBSStatusId.SoftEqual (VehicleStatuses.Common.Cancelled) ||
+				status.IBSStatusId.SoftEqual (VehicleStatuses.Common.Done) ||
+				status.IBSStatusId.SoftEqual (VehicleStatuses.Common.NoShow) ||
+				status.IBSStatusId.SoftEqual (VehicleStatuses.Common.CancelledDone) || 
+				status.IBSStatusId.SoftEqual (VehicleStatuses.Common.MeterOffNotPayed) ||
+				(status.IBSStatusId.SoftEqual (VehicleStatuses.Unknown.None) 
+					&& status.Status == OrderStatus.Canceled);
         }
 
 		public bool IsOrderCancellable(string statusId)

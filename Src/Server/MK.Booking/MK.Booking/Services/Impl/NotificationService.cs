@@ -577,7 +577,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 using (var context = _contextFactory.Invoke())
                 {
                     var account = context.Query<AccountDetail>().SingleOrDefault(c => c.Email.ToLower() == clientEmailAddress.ToLower());
-                    if (account == null || !ShouldSendNotification(account.Id, x => x.PromotionUnlockedEmail))
+                    if (account == null)
                     {
                         return;
                     }

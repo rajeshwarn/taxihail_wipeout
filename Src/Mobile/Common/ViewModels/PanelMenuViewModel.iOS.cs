@@ -56,7 +56,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				ItemMenuList.Add(new ItemMenuModel { ItemMenuId = 8, Text = this.Services().Localize["PanelMenuViewCallDispatchText"], NavigationCommand = Call });
 			}
 			ItemMenuList.Add(new ItemMenuModel { ItemMenuId = 9, Text = this.Services().Localize["PanelMenuViewAboutUsText"], NavigationCommand = NavigateToAboutUs });
-			if (!Settings.HideReportProblem)
+            if (DisplayReportProblem)
 			{
 				ItemMenuList.Add(new ItemMenuModel { ItemMenuId = 10, Text = this.Services().Localize["PanelMenuViewReportProblemText"], NavigationCommand = NavigateToReportProblem });
 			}

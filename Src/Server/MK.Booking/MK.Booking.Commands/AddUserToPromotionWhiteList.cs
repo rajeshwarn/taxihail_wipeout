@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Infrastructure.Messaging;
 
 namespace apcurium.MK.Booking.Commands
@@ -10,7 +11,7 @@ namespace apcurium.MK.Booking.Commands
             Id = Guid.NewGuid();
         }
         
-        public Guid AccountId { get; set; }
+        public IEnumerable<Guid> AccountIds { get; set; } 
 
         public Guid PromoId { get; set; }
 

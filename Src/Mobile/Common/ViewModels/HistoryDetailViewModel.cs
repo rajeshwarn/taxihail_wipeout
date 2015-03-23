@@ -295,7 +295,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			var ratings = await _bookingService.GetOrderRatingAsync(OrderId);
 			HasRated = ratings.RatingScores.Any();
 
-			IsCompleted = _bookingService.IsStatusCompleted(Status.IBSStatusId);
+			IsCompleted = _bookingService.IsStatusCompleted(Status);
 			IsDone = _bookingService.IsStatusDone(Status.IBSStatusId);
             
 			CanCancel = _bookingService.IsOrderCancellable (Status.IBSStatusId);
