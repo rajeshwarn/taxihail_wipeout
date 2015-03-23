@@ -33,6 +33,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		private AddressViewModel[] _defaultFavoriteAddresses = new AddressViewModel[0];
 		private AddressViewModel[] _defaultNearbyPlaces = new AddressViewModel[0];
 
+		private AddressLocationType _currentActiveFilter;
+
 		public event EventHandler<HomeViewModelStateRequestedEventArgs> PresentationStateRequested;
 
 		public AddressPickerViewModel(IOrderWorkflowService orderWorkflowService,
@@ -104,21 +106,24 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
 	    private async Task LoadFilteredAdress(AddressLocationType filter)
 	    {
-	        AllAddresses.Clear();
+			using (this.Services().Message.ShowProgressNonModal())
+			{
+				AllAddresses.Clear();
 
-	        var filteredPlaces = await _placesService.GetFilteredPlacesList(filter);
+				var filteredPlaces = await _placesService.GetFilteredPlacesList(filter);
 
 
-            if (filteredPlaces.Skip(1).Any())
-	        {
-                _defaultNearbyPlaces = ConvertToAddressViewModel(filteredPlaces, AddressType.Places);
+				if (filteredPlaces.Skip(1).Any())
+				{
+					_defaultNearbyPlaces = ConvertToAddressViewModel(filteredPlaces, AddressType.Places);
 
-                AllAddresses.AddRange(_defaultNearbyPlaces);
-	        }
-	        else
-	        {
-                SelectAddress(filteredPlaces.FirstOrDefault());
-	        }
+					AllAddresses.AddRange(_defaultNearbyPlaces);
+				}
+				else
+				{
+					SelectAddress(filteredPlaces.FirstOrDefault());
+				}
+			}
 	    }
 
 	    public async Task LoadAddresses(AddressLocationType filter)
@@ -126,6 +131,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
             _ignoreTextChange = true;
 	        try
 	        {
+				_currentActiveFilter = filter;
 
 	            if (filter == AddressLocationType.Unspeficied)
 	            {
@@ -145,11 +151,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
                 _ignoreTextChange = false;
 	        }
 		}
-
-	    public bool CanShowPicker()
-	    {
-	        return AllAddresses.Skip(1).Any();
-	    }
 
 		private AddressViewModel[] ConvertToAddressViewModel(Address[] addresses, AddressType type)
 		{

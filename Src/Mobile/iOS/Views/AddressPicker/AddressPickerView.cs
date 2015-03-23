@@ -173,13 +173,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.AddressPicker
 
         public async void Open(AddressLocationType addressLocationType)
         {
+			Alpha = 0;
+			Hidden = false;
+			Animate(0.3f, () => Alpha = 1);
+
 			await ViewModel.LoadAddresses(addressLocationType).HandleErrors();
 
-			if (ViewModel.CanShowPicker())
+			if (addressLocationType == AddressLocationType.Unspeficied)
 			{
-                Alpha = 0;
-                Hidden = false;
-                Animate(0.3f, () => Alpha = 1);
 				FocusOnTextField();
 			}
         }        
