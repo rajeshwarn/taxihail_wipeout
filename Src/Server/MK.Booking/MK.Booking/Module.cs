@@ -28,6 +28,7 @@ using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
 using AutoMapper;
+using Infrastructure.EventSourcing;
 using Infrastructure.Messaging;
 using Infrastructure.Messaging.Handling;
 using Microsoft.Practices.Unity;
@@ -53,7 +54,7 @@ namespace apcurium.MK.Booking
             container.RegisterInstance<IPushNotificationService>(new PushNotificationService(container.Resolve<IServerSettings>(), container.Resolve<ILogger>()));
             container.RegisterInstance<IOrderDao>(new OrderDao(() => container.Resolve<BookingDbContext>()));
             container.RegisterInstance<IReportDao>(new ReportDao(() => container.Resolve<BookingDbContext>()));
-            container.RegisterInstance<IPromotionDao>(new PromotionDao(() => container.Resolve<BookingDbContext>(), container.Resolve<IClock>(), container.Resolve<IServerSettings>()));
+            container.RegisterInstance<IPromotionDao>(new PromotionDao(() => container.Resolve<BookingDbContext>(), container.Resolve<IClock>(), container.Resolve<IServerSettings>(), container.Resolve<IEventSourcedRepository<Promotion>>()));
             container.RegisterType<INotificationService, NotificationService>(new ContainerControlledLifetimeManager());
                     
             container.RegisterType<IPairingService>(new ContainerControlledLifetimeManager(),

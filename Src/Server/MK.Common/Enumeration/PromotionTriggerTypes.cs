@@ -14,6 +14,9 @@ namespace apcurium.MK.Common.Enumeration
         RideCount = 2,
 
         [Display(Name = "Amount Spent")]
-        AmountSpent = 3
+        AmountSpent = 3,
+
+        [Display(Name = "Customer Support")]
+        CustomerSupport = 4
     }
 }
