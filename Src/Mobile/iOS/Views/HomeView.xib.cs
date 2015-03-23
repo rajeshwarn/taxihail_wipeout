@@ -80,7 +80,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 			set.Bind(btnTrain)
 				.For(v => v.Command)
-				.To(vm => vm.AirportSearch);
+                .To(vm => vm.TrainStationSearch);
 
 			set.Bind(btnTrain)
 				.For(v => v.Hidden)

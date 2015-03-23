@@ -179,7 +179,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.AddressPicker
 			{
                 Alpha = 0;
                 Hidden = false;
-                Animate(0.3f, () => this.Alpha = 1);
+                Animate(0.3f, () => Alpha = 1);
 				FocusOnTextField();
 			}
         }        
