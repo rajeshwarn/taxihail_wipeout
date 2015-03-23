@@ -24,17 +24,5 @@ namespace apcurium.MK.Booking.ReadModel
         public string UserEmail { get; set; }
 
         public DateTime? DateRedeemed { get; set; }
-
-        public string GetNoteToDriverFormattedString()
-        {
-            var discountType = DiscountType == PromoDiscountType.Cash
-                ? "$"
-                : "%";
-
-            return string.Format("PROMO,{0},{1},{2}",
-                Code,
-                discountType,
-                DiscountValue);
-        }
     }
 }
