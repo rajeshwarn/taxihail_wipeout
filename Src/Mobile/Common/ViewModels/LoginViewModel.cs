@@ -103,7 +103,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public bool DisplayReportProblem
 	    {
-            get { return !Settings.HideReportProblem && !Settings.SupportEmail.HasValue(); }
+            get
+            {
+                return !Settings.HideReportProblem && Settings.SupportEmail.HasValue();
+            }
 	    }
 
         private string _email;
