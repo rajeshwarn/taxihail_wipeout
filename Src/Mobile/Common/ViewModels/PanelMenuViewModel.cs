@@ -171,7 +171,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             get 
             { 
                 return !Settings.HideReportProblem 
-                    && !Settings.SupportEmail.HasValue(); 
+                    && Settings.SupportEmail.HasValue(); 
             }
         }
 
