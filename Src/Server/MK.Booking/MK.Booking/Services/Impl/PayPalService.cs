@@ -186,6 +186,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 return_url = redirectUrl
             };
 
+            // Create transaction
             var transactionList = new List<Transaction>
             {
                 new Transaction
@@ -219,6 +220,19 @@ namespace apcurium.MK.Booking.Services.Impl
                 }
             };
 
+            // Create web experience profile
+            var profile = new WebProfile
+            {
+                name = Guid.NewGuid().ToString(),
+                flow_config = new FlowConfig
+                {
+                    landing_page_type  = _serverSettings.GetPaymentSettings().PayPalServerSettings.LandingPageType.ToString()
+                }
+            };
+
+            var webExperienceProfile = profile.Create(GetAPIContext(GetAccessToken()));
+
+            // Create payment
             var payment = new Payment
             {
                 intent = Intents.Sale,
@@ -227,7 +241,8 @@ namespace apcurium.MK.Booking.Services.Impl
                     payment_method = "paypal"
                 },
                 transactions = transactionList,
-                redirect_urls = redirUrls
+                redirect_urls = redirUrls,
+                experience_profile_id = webExperienceProfile.id
             };
 
             try
