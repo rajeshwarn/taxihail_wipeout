@@ -504,7 +504,6 @@ namespace apcurium.MK.Booking.Api.Jobs
                         _paymentService.VoidPreAuthorization(orderId);
 
                         paymentProviderServiceResponse.IsSuccessful = true;
-                        paymentProviderServiceResponse.AuthorizationCode = "AUTH_PROMO_FREE";
                     }
                 }
 
