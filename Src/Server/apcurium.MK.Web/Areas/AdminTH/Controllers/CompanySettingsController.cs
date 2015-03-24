@@ -81,17 +81,17 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
 
             foreach (var appSetting in appSettings)
             {
-                Type settingsType;
+                Type settingType;
                 string settingName;
 
                 if (model.SuperAdminSettings.ContainsKey(appSetting.Key))
                 {
-                    settingsType = model.SuperAdminSettings[appSetting.Key].PropertyType;
+                    settingType = model.SuperAdminSettings[appSetting.Key].PropertyType;
                     settingName = model.SuperAdminSettings[appSetting.Key].GetDisplayName();
                 }
                 else if (model.AdminSettings.ContainsKey(appSetting.Key))
                 {
-                    settingsType = model.AdminSettings[appSetting.Key].PropertyType;
+                    settingType = model.AdminSettings[appSetting.Key].PropertyType;
                     settingName = model.AdminSettings[appSetting.Key].GetDisplayName();
                 }
                 else
@@ -99,14 +99,23 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                     continue;
                 }
 
-                var typeConverter = TypeDescriptor.GetConverter(settingsType);
+                var typeConverter = TypeDescriptor.GetConverter(settingType);
                     
                 if (typeConverter.CanConvertFrom(typeof(string)))
                 {
                     try
                     {
+                        if (settingType == typeof (bool?))
+                        {
+                            if (appSetting.Value == "null")
+                            {
+                                // Null value is valid for type NullableBool
+                                continue;
+                            }
+                        }
+
                         // Try to convert the value to the setting type
-                        typeConverter.ConvertFrom(appSetting.Value);
+                        typeConverter.ConvertFromString(appSetting.Value);
                     }
                     catch (Exception)
                     {
