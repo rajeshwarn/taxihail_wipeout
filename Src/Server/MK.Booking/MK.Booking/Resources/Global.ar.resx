@@ -470,7 +470,7 @@
     <value>Congratulations! You are now eligible to use the "{{ PromotionName }}" promotion. Use code &lt;b&gt;{{ PromotionCode }}&lt;/b&gt; when booking your next ride to redeem it.</value>
   </data>
   <data name="Email_Body_PromotionUnlockedLine2" xml:space="preserve">
-    <value>Hurry up! This promotion is only valid until {{ ExpirationDate }} {{ ExpirationTime }}.</value>
+    <value>This promotion is only valid until {{ ExpirationDate }} {{ ExpirationTime }}.</value>
   </data>
   <data name="Email_Subject_PromotionUnlocked" xml:space="preserve">
     <value>{{ ApplicationName }} - New Promotion Available!</value>

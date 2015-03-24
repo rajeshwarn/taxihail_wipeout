@@ -673,7 +673,7 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Hurry up! This promotion is only valid until {{ ExpirationDate }} {{ ExpirationTime }}..
+        ///   Looks up a localized string similar to This promotion is only valid until {{ ExpirationDate }} {{ ExpirationTime }}..
         /// </summary>
         public static string Email_Body_PromotionUnlockedLine2 {
             get {
