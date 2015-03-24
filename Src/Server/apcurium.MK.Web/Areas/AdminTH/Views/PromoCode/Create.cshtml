@@ -193,15 +193,15 @@
         </div>
         <div class="control-group right-control-group" id="rideCountTriggerGroup" style="width: 50%">
             @Html.LabelFor(x => x.TriggerSettings.RideCount, new { @class = "control-label" })
-            <div class="controls">
-                @Html.TextBoxFor(x => x.TriggerSettings.RideCount, new {@placeholder = "Number of Rides", @class = "input-small"})
+            <div class="controls" style="margin-left: 20px;">
+                @Html.TextBoxFor(x => x.TriggerSettings.RideCount, new { @placeholder = "Number of Rides", @class = "input-small" })
                 @Html.ValidationMessageFor(x => x.TriggerSettings.RideCount)
             </div>
         </div>
         <div class="control-group right-control-group" id="amountSpentTriggerGroup" style="width: 50%">
             @Html.LabelFor(x => x.TriggerSettings.AmountSpent, new { @class = "control-label" })
-            <div class="controls">
-                @Html.TextBoxFor(x => x.TriggerSettings.AmountSpent, new {@placeholder = "Amount Spent", @class = "input-small"})
+            <div class="controls" style="margin-left: 20px;">
+                @Html.TextBoxFor(x => x.TriggerSettings.AmountSpent, new { @placeholder = "Amount Spent", @class = "input-small" })
                 @Html.ValidationMessageFor(x => x.TriggerSettings.AmountSpent)
             </div>
         </div>
