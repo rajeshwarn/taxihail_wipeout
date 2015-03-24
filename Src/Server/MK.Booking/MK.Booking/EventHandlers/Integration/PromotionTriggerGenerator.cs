@@ -17,28 +17,23 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
     public class PromotionTriggerGenerator : IIntegrationEventHandler,
         IEventHandler<OrderStatusChanged>,
         IEventHandler<AccountRegistered>,
-        IEventHandler<CreditCardPaymentCaptured_V2>
+        IEventHandler<CreditCardPaymentCaptured_V2>,
+        IEventHandler<PromotionCreated>
     {
         private readonly Func<BookingDbContext> _contextFactory;
         private readonly ICommandBus _commandBus;
         private readonly IPromotionDao _promotionDao;
-        private readonly IOrderDao _orderDao;
         private readonly IAccountDao _accountDao;
-        private readonly INotificationService _notificationService;
 
         public PromotionTriggerGenerator(Func<BookingDbContext> contextFactory,
             ICommandBus commandBus,
             IPromotionDao promotionDao,
-            IOrderDao orderDao,
-            IAccountDao accountDao,
-            INotificationService notificationService)
+            IAccountDao accountDao)
         {
             _contextFactory = contextFactory;
             _commandBus = commandBus;
             _promotionDao = promotionDao;
-            _orderDao = orderDao;
             _accountDao = accountDao;
-            _notificationService = notificationService;
         }
 
         public void Handle(AccountRegistered @event)
@@ -53,12 +48,25 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                     AccountIds = new[] { @event.SourceId },
                     PromoId = accountCreatedPromotion.Id
                 });
+            }
+        }
 
-                _notificationService.SendPromotionUnlockedEmail(accountCreatedPromotion.Name,
-                    accountCreatedPromotion.Code,
-                    accountCreatedPromotion.GetEndDateTime(),
-                    @event.Email,
-                    @event.Language);
+        public void Handle(PromotionCreated @event)
+        {
+            if (@event.TriggerSettings.Type == PromotionTriggerTypes.AccountCreated
+                && @event.TriggerSettings.ApplyToExisting)
+            {
+                // Get all accounts
+                var existingAccounts = _accountDao.GetAll();
+
+                // Get all account ids
+                var accoundIds = existingAccounts.Select(accountDetail => accountDetail.Id).ToArray();
+
+                _commandBus.Send(new AddUserToPromotionWhiteList
+                {
+                    AccountIds = accoundIds,
+                    PromoId = @event.SourceId
+                });
             }
         }
 

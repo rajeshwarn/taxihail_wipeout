@@ -13,6 +13,7 @@ using apcurium.MK.Booking.Services;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
+using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using Infrastructure.Messaging;
 using Infrastructure.Messaging.Handling;
@@ -86,14 +87,19 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
 
         public void Handle(UserAddedToPromotionWhiteList @event)
         {
+            var promotion = _promotionDao.FindById(@event.SourceId);
+            if (promotion == null)
+            {
+                return;
+            }
+
             foreach (var accountId in @event.AccountIds)
             {
                 var account = _accountDao.FindById(accountId);
-                var promotion = _promotionDao.FindById(@event.SourceId);
-
-                if (account != null && promotion != null)
+                if (account != null)
                 {
-                    _notificationService.SendPromotionUnlockedEmail(promotion.Name, promotion.Code, promotion.GetEndDateTime(), account.Email, account.Language);
+                    var accountLanguage = account.Language ?? SupportedLanguages.en.ToString();
+                    _notificationService.SendPromotionUnlockedEmail(promotion.Name, promotion.Code, promotion.GetEndDateTime(), account.Email, accountLanguage);
                 }
             }
         }

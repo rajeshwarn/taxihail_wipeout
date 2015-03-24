@@ -258,7 +258,7 @@ namespace apcurium.MK.Booking.Domain
             });
         }
 
-        public void AddUserToWhiteList(IEnumerable<Guid> accountIds, double? lastTriggeredAmount)
+        public void AddUserToWhiteList(Guid[] accountIds, double? lastTriggeredAmount)
         {
             Update(new UserAddedToPromotionWhiteList
             {
