@@ -155,7 +155,7 @@
                             android:gravity="center_vertical"
                             android:textAlignment="viewStart"
                             android:layout_below="@id/separator5"
-                            local:MvxBind="Click Panel.NavigateToPromotions;"
+                            local:MvxBind="Click Panel.NavigateToPromotions; Visibility Settings.PromotionEnabled, Converter=Visibility"
                             style="@style/SettingItemTitle" />
                         <TextView
                             android:layout_width="wrap_content"
