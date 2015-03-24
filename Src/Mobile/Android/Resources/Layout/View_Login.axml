@@ -131,5 +131,16 @@
             android:drawablePadding="-2dip"
             android:visibility="invisible"
             android:drawableLeft="@drawable/server_button_state" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/HeightButton"
+            android:layout_gravity="right"
+            android:layout_marginTop="10dip"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="3dp"
+            android:id="@+id/SuportButton"
+            android:text="@string/LoginSupport"
+            local:MvxBind="Visibility DisplayReportProblem, Converter=Visibility; Click Support"
+            style="@style/TitleTextBold" />
     </LinearLayout>
 </RelativeLayout>
