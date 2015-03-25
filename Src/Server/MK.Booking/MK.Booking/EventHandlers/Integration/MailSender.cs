@@ -58,7 +58,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             SendReceiptIfNecessary(@event.OrderId);
         }
         
-        private void SendReceiptIfNecessary(Guid orderId, bool sendOnlyIfNoPaymentSet = false)
+        private void SendReceiptIfNecessary(Guid orderId, bool isCreditCardOrPaypal = true)
         {
             using (var context = _contextFactory.Invoke())
             {
@@ -76,7 +76,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                         card = _creditCardDao.FindByToken(orderPayment.CardToken);
                     }
 
-                    if (orderPayment != null && !sendOnlyIfNoPaymentSet)
+                    if (orderPayment != null && isCreditCardOrPaypal)
                     {
                         var command = SendReceiptCommandBuilder.GetSendReceiptCommand(
                             order,
@@ -105,7 +105,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
         {
             if (@event.IsCompleted && _serverSettings.ServerData.SendReceiptForPayInCar)
             {
-                SendReceiptIfNecessary(@event.SourceId, true);
+                SendReceiptIfNecessary(@event.SourceId, false);
             }
         }
     }
