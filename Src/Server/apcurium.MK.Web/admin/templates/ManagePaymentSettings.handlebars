@@ -199,6 +199,12 @@
     <option value="{{invertedBool payPalClientSettings.isSandbox}}">{{localizeBool payPalClientSettings.isSandbox true="No" false="Yes"}}</option>
 </select>
 
+<label class="control-label settingsLabel">{{{localize "Web Landing Page"}}}</label>
+<select id="landingPageType" name="payPalServerSettings.landingPageType" class="settingsBox">
+    <option value="login">{{localize "Login"}}</option>
+    <option value="billing">{{localize "Billing"}}</option>
+</select>
+
 <h5>{{{localize "Sandbox Credentials"}}}</h5>
 
 <label class="control-label settingsLabel">{{{localize "ClientId"}}}</label>

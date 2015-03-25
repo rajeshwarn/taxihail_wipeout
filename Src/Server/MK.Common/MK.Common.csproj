@@ -167,6 +167,7 @@
     <Compile Include="Enumeration\PaymentType.cs" />
     <Compile Include="Enumeration\PayPal\AuthorizationStates.cs" />
     <Compile Include="Enumeration\PayPal\Intents.cs" />
+    <Compile Include="Enumeration\PayPal\LandingPageTypes.cs" />
     <Compile Include="Enumeration\PayPal\PaymentStates.cs" />
     <Compile Include="Enumeration\PromoDiscountType.cs" />
     <Compile Include="Enumeration\PromotionTriggerTypes.cs" />
