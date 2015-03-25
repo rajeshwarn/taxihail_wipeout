@@ -66,6 +66,7 @@ namespace apcurium.MK.Booking.Api.Services.Admin
                                 a.IsAdmin,
                                 a.IsConfirmed,
                                 a.DisabledByAdmin,
+                                a.PayBack,
                                 LastLaunch = (m == null ? null : m.DateOccured.ToLocalTime().ToString(CultureInfo.InvariantCulture)),
                                 Platform = (m == null ? null : m.Platform),
                                 PlatformDetails = (m == null ? null : m.PlatformDetails),
@@ -85,6 +86,7 @@ namespace apcurium.MK.Booking.Api.Services.Admin
                             orderReportEntry["Account.Email"] = orderReport.Account.Email.Trim();
                             orderReportEntry["Account.IBSAccountId"] = orderReport.Account.IBSAccountId.ToString();
                             orderReportEntry["Account.DefaultCardToken "] = orderReport.Account.DefaultCardToken.ToString();
+                            orderReportEntry["Account.PayBack "] = orderReport.Account.PayBack;
 
                             orderReportEntry["Order.CompanyName"] = orderReport.Order.CompanyName;
                             orderReportEntry["Order.CompanyKey"] = orderReport.Order.CompanyKey;

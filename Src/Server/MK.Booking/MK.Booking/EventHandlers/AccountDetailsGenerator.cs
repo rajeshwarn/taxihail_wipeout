@@ -104,7 +104,8 @@ namespace apcurium.MK.Booking.EventHandlers
                     Language = @event.Language,
                     CreationDate = @event.EventDate,
                     ConfirmationToken = @event.ConfirmationToken,
-                    IsConfirmed = @event.AccountActivationDisabled
+                    IsConfirmed = @event.AccountActivationDisabled,
+                    PayBack = @event.PayBack
                 };
 
                 if (@event.IsAdmin)

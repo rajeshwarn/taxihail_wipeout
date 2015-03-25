@@ -55,7 +55,8 @@ namespace apcurium.MK.Booking.EventHandlers
                     Phone = @event.Settings.Phone,
                     Email = account.Email,
                     DefaultCardToken = account.DefaultCreditCard,
-                    IBSAccountId = account.IBSAccountId
+                    IBSAccountId = account.IBSAccountId,
+                    PayBack = account.PayBack
                 };
                 orderReport.Order = new OrderReportOrder
                 {

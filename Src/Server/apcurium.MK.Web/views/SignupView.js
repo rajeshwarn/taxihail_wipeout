@@ -28,7 +28,19 @@
         },
 
         render: function () {
-            this.$el.html(this.renderTemplate());
+            var showPayBackField = false;
+            var isPayBackFieldRequired = false;
+            if (TaxiHail.parameters.isPayBackRegistrationFieldRequired != null) {
+                showPayBackField = true;
+                isPayBackFieldRequired = TaxiHail.parameters.isPayBackRegistrationFieldRequired == "true";
+            }
+
+            var data = {
+                showPayBackField: showPayBackField
+            }
+
+            this.$el.html(this.renderTemplate(data));
+
             var itemfb = TaxiHail.localStorage.getItem('fbinfos');
             var itemtw = TaxiHail.localStorage.getItem('twinfos');
             var infos;
@@ -48,6 +60,9 @@
                 confirmPassword: {
                     required: true,
                     equalTo: "#signup-password"
+                },
+                payback: {
+                    required: isPayBackFieldRequired
                 }
             };
 

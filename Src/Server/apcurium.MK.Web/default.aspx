@@ -73,9 +73,20 @@
             TaxiHail.parameters.apiRoot = "api";
             
             TaxiHail.parameters.isSignupVisible = <%: IsWebSignupVisible  ? "true" : "false"%>;
+            
+            <% if(IsPayBackRegistrationFieldRequired == true) { %>
+                TaxiHail.parameters.isPayBackRegistrationFieldRequired = "true";
+            <% }
+            else if(IsPayBackRegistrationFieldRequired == false) { %>
+                TaxiHail.parameters.isPayBackRegistrationFieldRequired = "false";
+            <% }
+            else{ %>
+                TaxiHail.parameters.isPayBackRegistrationFieldRequired = null;
+            <% } %>
 
             TaxiHail.referenceData = <%= ReferenceData %>;
             TaxiHail.vehicleTypes = <%= VehicleTypes %>;
+
         </script>
 
         <%: Scripts.Render("~/bundles/app") %>
