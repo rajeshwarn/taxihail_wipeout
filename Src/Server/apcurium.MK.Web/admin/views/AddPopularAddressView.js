@@ -64,8 +64,22 @@
                     this.collection.add(model);
                     TaxiHail.app.navigate('addresses/popular', {trigger: true});
 
-                }, this)
+                }, this),
+                error: this.showErrors
             });
+        },
+
+        showErrors: function (model, result) {
+            this.$(':submit').button('reset');
+
+            if (result.responseText) {
+                result = JSON.parse(result.responseText).responseStatus;
+            }
+
+            var $alert = $('<div class="alert alert-error" />');
+            $alert.append($('<div />').text(result.message));
+
+            this.$('.errors').html($alert);
         },
 
         destroyAddress: function (e) {
