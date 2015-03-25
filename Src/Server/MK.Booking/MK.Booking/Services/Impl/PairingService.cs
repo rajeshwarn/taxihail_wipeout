@@ -1,10 +1,8 @@
 using System;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.EventHandlers.Integration;
-using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common.Configuration;
-using apcurium.MK.Common.Enumeration;
 using Infrastructure.Messaging;
 
 namespace apcurium.MK.Booking.Services.Impl
@@ -14,15 +12,13 @@ namespace apcurium.MK.Booking.Services.Impl
         private readonly ICommandBus _commandBus;
         private readonly IIbsOrderService _ibs;
         private readonly IOrderDao _orderDao;
-        private readonly IPromotionDao _promotionDao;
         private readonly Resources.Resources _resources;
 
-        public PairingService(ICommandBus commandBus, IIbsOrderService ibs, IOrderDao orderDao, IPromotionDao promotionDao, IServerSettings serverSettings)
+        public PairingService(ICommandBus commandBus, IIbsOrderService ibs, IOrderDao orderDao, IServerSettings serverSettings)
         {
             _commandBus = commandBus;
             _ibs = ibs;
             _orderDao = orderDao;
-            _promotionDao = promotionDao;
 
             _resources = new Resources.Resources(serverSettings);
         }

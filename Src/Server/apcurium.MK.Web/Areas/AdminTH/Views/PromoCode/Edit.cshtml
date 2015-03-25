@@ -203,14 +203,16 @@
             </div>
         </div>
         <div class="control-group right-control-group" id="rideCountTriggerGroup" style="width: 45%">
+            @Html.LabelFor(x => x.TriggerSettings.RideCount, new { @class = "control-label" })
             <div class="controls" style="margin-left: 20px;">
-                @Html.TextBoxFor(x => x.TriggerSettings.RideCount, new {@placeholder = "Number of Rides"})
+                @Html.TextBoxFor(x => x.TriggerSettings.RideCount, new {@placeholder = "Number of Rides", @class = "input-small"})
                 @Html.ValidationMessageFor(x => x.TriggerSettings.RideCount)
             </div>
         </div>
         <div class="control-group right-control-group" id="amountSpentTriggerGroup" style="width: 45%">
+            @Html.LabelFor(x => x.TriggerSettings.AmountSpent, new { @class = "control-label" })
             <div class="controls" style="margin-left: 20px;">
-                @Html.TextBoxFor(x => x.TriggerSettings.AmountSpent, new {@placeholder = "Amount Spent"})
+                @Html.TextBoxFor(x => x.TriggerSettings.AmountSpent, new { @placeholder = "Amount Spent", @class = "input-small" })
                 @Html.ValidationMessageFor(x => x.TriggerSettings.AmountSpent)
             </div>
         </div>
@@ -283,22 +285,27 @@
 
         if (dropDownValue == "@Convert.ToInt32(PromotionTriggerTypes.RideCount)") {
             $('#amountSpentTriggerGroup').addClass('hidden');
+            $('#publishedDatesGroup').addClass('hidden');
             $('#rideCountTriggerGroup').removeClass('hidden');
             $('#usageGroup').removeClass('hidden');
-            $('#publishedDatesGroup').removeClass('hidden');
         } else if (dropDownValue == "@Convert.ToInt32(PromotionTriggerTypes.AmountSpent)") {
-            $('#amountSpentTriggerGroup').removeClass('hidden');
             $('#rideCountTriggerGroup').addClass('hidden');
+            $('#publishedDatesGroup').addClass('hidden');
+            $('#amountSpentTriggerGroup').removeClass('hidden');
             $('#usageGroup').removeClass('hidden');
-            $('#publishedDatesGroup').removeClass('hidden');
         } else if (dropDownValue == "@Convert.ToInt32(PromotionTriggerTypes.CustomerSupport)") {
             $('#rideCountTriggerGroup').addClass('hidden');
             $('#amountSpentTriggerGroup').addClass('hidden');
+            $('#publishedDatesGroup').addClass('hidden');
             $('#usageGroup').addClass('hidden');
+        } else if (dropDownValue == "@Convert.ToInt32(PromotionTriggerTypes.AccountCreated)") {
+            $('#usageGroup').removeClass('hidden');
+            $('#amountSpentTriggerGroup').addClass('hidden');
+            $('#rideCountTriggerGroup').addClass('hidden');
             $('#publishedDatesGroup').addClass('hidden');
         } else {
-            $('#usageGroup').removeClass('hidden');
             $('#publishedDatesGroup').removeClass('hidden');
+            $('#usageGroup').removeClass('hidden');
             $('#amountSpentTriggerGroup').addClass('hidden');
             $('#rideCountTriggerGroup').addClass('hidden');
         }
@@ -309,14 +316,25 @@
 
         @if (Model.TriggerSettings.Type == PromotionTriggerTypes.RideCount)
         {
-            <text>$('#amountSpentTriggerGroup').addClass('hidden');</text>
+            <text>
+            $('#amountSpentTriggerGroup').addClass('hidden');
+            $('#publishedDatesGroup').addClass('hidden');
+            </text>
         }
         else if (Model.TriggerSettings.Type == PromotionTriggerTypes.AmountSpent)
         {
-            <text>$('#rideCountTriggerGroup').addClass('hidden');</text>
-        }
-        else if (Model.TriggerSettings.Type == PromotionTriggerTypes.CustomerSupport)
-        {
+            <text>
+            $('#rideCountTriggerGroup').addClass('hidden');
+            $('#publishedDatesGroup').addClass('hidden');
+            </text>
+        } else if (Model.TriggerSettings.Type == PromotionTriggerTypes.AccountCreated) {
+            <text>
+            $('#rideCountTriggerGroup').addClass('hidden');
+            $('#amountSpentTriggerGroup').addClass('hidden');
+            $('#publishedDatesGroup').addClass('hidden');
+            </text>
+        } 
+        else if (Model.TriggerSettings.Type == PromotionTriggerTypes.CustomerSupport) {
             <text>
             $('#usageGroup').addClass('hidden');
             $('#publishedDatesGroup').addClass('hidden');
@@ -336,7 +354,7 @@
         });
 
         $('[data-role=datepicker]').datepicker()
-            .on('changeDate.datepicker', function(e) {
+            .on('changeDate.datepicker', function (e) {
                 ondatepickerchange(e);
             });
 

@@ -469,7 +469,7 @@
     <value>Félicitations! Vous êtes éligible à la promotion "{{ PromotionName }}". Utilisez le code &lt;b&gt;{{ PromotionCode }}&lt;/b&gt; lors de la confirmation d'une commande pour la réclamer.</value>
   </data>
   <data name="Email_Body_PromotionUnlockedLine2" xml:space="preserve">
-    <value>Faites-vite! Cette promotion expire le {{ ExpirationDate }} à {{ ExpirationTime }}.</value>
+    <value>Cette promotion expire le {{ ExpirationDate }} à {{ ExpirationTime }}.</value>
   </data>
   <data name="Email_Subject_PromotionUnlocked" xml:space="preserve">
     <value>{{ ApplicationName }} - Nouvelle promotion disponible!</value>

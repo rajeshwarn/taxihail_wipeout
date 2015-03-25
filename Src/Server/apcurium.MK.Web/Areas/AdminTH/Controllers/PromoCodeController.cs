@@ -110,17 +110,21 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                     TriggerSettings = promoCode.TriggerSettings
                 };
 
-                // User and system usage is unlimited for support promotion. The whitelist will determine if a user can use it.
-                if (promoCode.TriggerSettings.Type == PromotionTriggerTypes.CustomerSupport)
-                {
-                    // Customer support promotion are always published (but user will only see them when whitelisted)
-                    createPromotionCommand.PublishedStartDate = SqlDateTime.MinValue.Value;
-                    createPromotionCommand.PublishedEndDate = SqlDateTime.MaxValue.Value;
-                }
-                else
+                if (promoCode.TriggerSettings.Type == PromotionTriggerTypes.NoTrigger)
                 {
                     createPromotionCommand.PublishedStartDate = promoCode.PublishedStartDate;
                     createPromotionCommand.PublishedEndDate = promoCode.PublishedEndDate;
+                }
+                else
+                {
+                    // Trigger promotions are always published (but user will only see them when whitelisted)
+                    createPromotionCommand.PublishedStartDate = SqlDateTime.MinValue.Value;
+                    createPromotionCommand.PublishedEndDate = SqlDateTime.MaxValue.Value;
+                }
+
+                if (promoCode.TriggerSettings.Type != PromotionTriggerTypes.CustomerSupport)
+                {
+                    // User and system usage is unlimited for support promotion. The whitelist will determine if a user can use it.
                     createPromotionCommand.MaxUsage = promoCode.MaxUsage;
                     createPromotionCommand.MaxUsagePerUser = promoCode.MaxUsagePerUser;
                 }
@@ -292,19 +296,11 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                 Guid promotionId;
                 Guid.TryParse(appSettings["promotionIdToUnlock"], out promotionId);
 
-                var userAccoundIds = new List<Guid>();
-
-                foreach (var userEmail in userEmails)
-                {
-                    var accountDetail = _accountDao.FindByEmail(userEmail);
-                    if (accountDetail == null)
-                    {
-                        // Account not found
-                        continue;
-                    }
-
-                    userAccoundIds.Add(accountDetail.Id);
-                }
+                var userAccoundIds = 
+                    (from userEmail in userEmails 
+                     select _accountDao.FindByEmail(userEmail) into accountDetail
+                     where accountDetail != null 
+                     select accountDetail.Id).ToArray();
 
                 if (userAccoundIds.Any() && promotionId.HasValue())
                 {
