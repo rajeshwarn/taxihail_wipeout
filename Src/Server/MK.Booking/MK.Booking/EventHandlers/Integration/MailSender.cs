@@ -84,9 +84,9 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                             account,
                             orderStatus.VehicleNumber,
                             orderStatus.DriverInfos,
-                            orderPayment.SelectOrDefault(safe => Convert.ToDouble(safe.Meter), 0d),
+                            orderPayment.SelectOrDefault(safe => Convert.ToDouble(safe.Meter), order.Fare),
                             0,
-                            orderPayment.SelectOrDefault(safe => Convert.ToDouble(safe.Tip), 0d),
+                            orderPayment.SelectOrDefault(safe => Convert.ToDouble(safe.Tip), order.Tip),
                             0,
                             orderPayment,
                             card);
