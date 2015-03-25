@@ -50,15 +50,15 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                 return;
             }
 
-            SendReceipt(@event.OrderId);
+            SendReceiptIfNecessary(@event.OrderId);
         }
 
         public void Handle(PayPalExpressCheckoutPaymentCompleted @event)
         {
-            SendReceipt(@event.OrderId);
+            SendReceiptIfNecessary(@event.OrderId);
         }
         
-        private void SendReceipt(Guid orderId)
+        private void SendReceiptIfNecessary(Guid orderId, bool sendOnlyIfNoPaymentSet = false)
         {
             using (var context = _contextFactory.Invoke())
             {
@@ -76,43 +76,36 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                         card = _creditCardDao.FindByToken(orderPayment.CardToken);
                     }
 
-                    var command = orderPayment != null
-                        ? GetSendReceiptCommandForCreditCard(order, account, orderStatus, orderPayment, card)
-                        : GetSendReceiptCommandForPayInCar(order, account, orderStatus);
+                    if (orderPayment != null && !sendOnlyIfNoPaymentSet)
+                    {
+                        var command = SendReceiptCommandBuilder.GetSendReceiptCommand(
+                            order,
+                            account,
+                            orderStatus.VehicleNumber,
+                            orderStatus.DriverInfos,
+                            Convert.ToDouble(orderPayment.Meter),
+                            0,
+                            Convert.ToDouble(orderPayment.Tip),
+                            0,
+                            orderPayment,
+                            card);
 
-                    _commandBus.Send(command);
+                        _commandBus.Send(command);
+                    }
+                    else if(orderPayment == null)
+                    {
+                        _commandBus.Send(SendReceiptCommandBuilder.GetSendReceiptCommand(order, account, orderStatus.VehicleNumber, orderStatus.DriverInfos, 0, 0, 0, 0));
+                    }
+                    
                 }
             }
         }
 
-        private static SendReceipt GetSendReceiptCommandForPayInCar(OrderDetail order, AccountDetail account, OrderStatusDetail orderStatus)
-        {
-            return SendReceiptCommandBuilder.GetSendReceiptCommand(order, account, orderStatus.VehicleNumber, orderStatus.DriverInfos, 0, 0, 0, 0);
-        }
-
-        private static SendReceipt GetSendReceiptCommandForCreditCard(OrderDetail order, AccountDetail account, OrderStatusDetail orderStatus, OrderPaymentDetail orderPayment, CreditCardDetails card)
-        {
-            return SendReceiptCommandBuilder.GetSendReceiptCommand(
-                order, 
-                account,
-                orderStatus.VehicleNumber, 
-                orderStatus.DriverInfos,
-                Convert.ToDouble(orderPayment.Meter), 
-                0,
-                Convert.ToDouble(orderPayment.Tip), 
-                0, 
-                orderPayment,
-                card);
-        }
-
         public void Handle(OrderStatusChanged @event)
         {
-            if (@event.IsCompleted)
+            if (@event.IsCompleted && _serverSettings.ServerData.SendReceiptForPayInCar)
             {
-                if (_serverSettings.ServerData.SendReceiptForPayInCar)
-                {
-                    SendReceipt(@event.SourceId);
-                }
+                SendReceiptIfNecessary(@event.SourceId, true);
             }
         }
     }
