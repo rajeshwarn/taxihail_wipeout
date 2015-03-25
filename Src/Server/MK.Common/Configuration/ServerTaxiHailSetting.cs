@@ -107,7 +107,7 @@ namespace MK.Common.Configuration
         public string PayPalRegionInfoOverride { get; protected set; }
         public decimal PayPalConversionRate { get; protected set; }
 
-        [Display(Name = "Hides fare info in receipt")]
+        [Display(Name = "Hide fare info (For Pay in Car only)", Description = "Hide fare information in receipt when user choose to pay in car.")]
         public bool HideFareInfoInReceipt { get; protected set; }
 
         [CustomizableByCompany]

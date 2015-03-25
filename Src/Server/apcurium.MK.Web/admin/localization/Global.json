@@ -106,7 +106,7 @@
     "Network.PrimaryOrderTimeout": "Primary Order Timeout (seconds)",
     "Network.SecondaryOrderTimeout" : "Secondary Order Timeout (seconds)",
 
-    "sendReceiptForPayInCar":  "Send receipt for Pay in Car",
+    "HideFareInfoInReceipt":  "Hide fare info (For Pay in Car only)",
 
 	"/******* End settings Aliases *******/": "",
 
