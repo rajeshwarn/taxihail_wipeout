@@ -617,3 +617,5 @@
 "PromoDescriptionCode"="Use code {0} at the time of booking or press the button below";
 "AccountPaymentCustomerNumberRequiredMessage"="Please enter a valid rider number";
 "AccountPaymentCustomerNumberRequiredTitle"="Account Rider Number required";
+"CreateAccountPayBackPlaceHolder"="PayBack";
+"InvalidPayBackErrorMessage"="The PayBack field is required";

@@ -1798,4 +1798,10 @@
   <data name="PromoDescriptionCode" xml:space="preserve">
     <value>Utilisez le code {0} au moment de la commande ou appuyez sur le bouton ci-dessous.</value>
   </data>
+  <data name="CreateAccountPayBackPlaceHolder" xml:space="preserve">
+    <value>PayBack</value>
+  </data>
+  <data name="InvalidPayBackErrorMessage" xml:space="preserve">
+    <value>Le champs PayBack est requis</value>
+  </data>
 </root>

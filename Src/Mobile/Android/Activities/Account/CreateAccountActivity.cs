@@ -7,25 +7,28 @@ using Android.Util;
 using Android.Views;
 using Android.Widget;
 using apcurium.MK.Booking.Mobile.Client.Helpers;
-using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using CrossUI.Droid;
 using CrossUI.Droid.Dialog;
 using CrossUI.Droid.Dialog.Elements;
-using TinyIoC;
-using apcurium.MK.Booking.Mobile.Client.Dialog;
 using apcurium.MK.Booking.Mobile.Client.Controls.Dialog;
+using apcurium.MK.Common.Configuration;
+using Cirrious.CrossCore;
+using MK.Common.Configuration;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 {
     [Activity(Label = "Create Account", Theme = "@style/LoginTheme", ScreenOrientation = ScreenOrientation.Portrait)]
     public class CreateAccountActivity : BaseBindingActivity<CreateAccountViewModel>
     {
+        private TaxiHailSetting _appSettings;
 
 		protected override void OnViewModelSet()
 		{
 			base.OnViewModelSet ();
+
+            _appSettings = Mvx.Resolve<IAppSettings>().Data;
 
 			DroidResources.Initialize (typeof (Resource.Layout));
             SetContentView(Resource.Layout.View_CreateAccount);
@@ -62,7 +65,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 		{
             var signMenu = new DialogListView(this);
             signMenu.LayoutParameters = new ViewGroup.LayoutParams (ViewGroup.LayoutParams.FillParent,  ViewGroup.LayoutParams.WrapContent);
-			signMenu.LayoutParameters.Height = GetDipInPixels((ViewModel.HasSocialInfo ? 3 : 5) * CellHeightInDip);
+
+            var numberOfFields = ViewModel.HasSocialInfo ? 3 : 5;
+
+            if (_appSettings.IsPayBackRegistrationFieldRequired.HasValue)
+            {
+                numberOfFields++;
+            }
+
+            signMenu.LayoutParameters.Height = GetDipInPixels(numberOfFields * CellHeightInDip);
             signMenu.Root = InitializeRoot();			
             signMenu.SetScrollContainer (false);
 
@@ -108,11 +119,19 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 			var passwordConfirm = new TaxiHailEntryElement(null, this.Services().Localize["CreateAccountPasswordConfirmationPlaceHolder"], null, "DialogBottom") { Password = true };
 			passwordConfirm.Bind(bindings, vm => vm.ConfirmPassword);
 
+            var payback = new TaxiHailEntryElement(null, this.Services().Localize["CreateAccountPayBackPlaceHolder"], null, "DialogBottom");
+            payback.Bind(bindings, vm => vm.Data.PayBack);
+
 			section.Add (new Element[] { email, name, phone });
 
 			if (!ViewModel.HasSocialInfo) {
 				section.Add (new Element[] { password, passwordConfirm });
 			}
+
+            if (_appSettings.IsPayBackRegistrationFieldRequired.HasValue)
+		    {
+                section.Add(new Element[] { payback });
+		    }
 
             root.LayoutName = "fake_rounded";
 

@@ -625,4 +625,6 @@
   <string name="PromoDescriptionCode">Use code {0} at the time of booking or press the button below</string>
   <string name="AccountPaymentCustomerNumberRequiredMessage">Please enter a valid rider number</string>
   <string name="AccountPaymentCustomerNumberRequiredTitle">Account Rider Number required</string>
+  <string name="CreateAccountPayBackPlaceHolder">PayBack</string>
+  <string name="InvalidPayBackErrorMessage">The PayBack field is required</string>
 </resources>

@@ -600,3 +600,5 @@
 "PromoDescriptionCode"="Utilisez le code {0} au moment de la commande ou appuyez sur le bouton ci-dessous.";
 "RideSettingsCustomerNumber"="Numéro de client du compte (optionnel)";
 "AccountPaymentCustomerNumberRequiredTitle"="Numéro de client du compte requis";
+"CreateAccountPayBackPlaceHolder"="PayBack";
+"InvalidPayBackErrorMessage"="Le champs PayBack est requis";
