@@ -350,7 +350,7 @@ namespace apcurium.MK.Booking.Services.Impl
             var cardOnFileTransactionId = string.Empty;
             var cardOnFileAuthorizationCode = string.Empty;
 
-            var showReceiptInformation = Math.Abs(fare) > double.Epsilon;
+            var showReceiptInformation = isCardOnFile || !_serverSettings.ServerData.HideFareInfoInReceipt;
 
             if (isCardOnFile)
             {

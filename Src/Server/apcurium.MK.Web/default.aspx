@@ -68,7 +68,7 @@
             TaxiHail.parameters.isChargeAccountPaymentEnabled = <%: IsChargeAccountPaymentEnabled ? "true" : "false" %>;
             TaxiHail.parameters.apiRoot = "api";
 
-            TaxiHail.parameters.sendReceiptForPayInCar = <%: SendReceiptForPayInCar ? "true" : "false" %>;
+            TaxiHail.parameters.hideFareInfoInReceipt = <%: HideFareInfoInReceipt ? "true" : "false" %>;
             TaxiHail.parameters.isSignupVisible = <%: IsWebSignupVisible  ? "true" : "false"%>;
 
             TaxiHail.referenceData = <%= ReferenceData %>;

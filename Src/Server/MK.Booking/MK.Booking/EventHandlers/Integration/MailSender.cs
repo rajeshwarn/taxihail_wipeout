@@ -10,7 +10,6 @@ using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common;
-using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
 using Infrastructure.Messaging;
@@ -28,18 +27,15 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
         private readonly ICommandBus _commandBus;
         private readonly Func<BookingDbContext> _contextFactory;
         private readonly ICreditCardDao _creditCardDao;
-        private readonly IServerSettings _serverSettings;
 
         public MailSender(Func<BookingDbContext> contextFactory,
             ICommandBus commandBus,
-            ICreditCardDao creditCardDao,
-            IServerSettings serverSettings
+            ICreditCardDao creditCardDao
             )
         {
             _contextFactory = contextFactory;
             _commandBus = commandBus;
             _creditCardDao = creditCardDao;
-            _serverSettings = serverSettings;
         }
 
         public void Handle(CreditCardPaymentCaptured @event)
@@ -58,11 +54,18 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             SendReceiptIfNecessary(@event.OrderId);
         }
         
-        private void SendReceiptIfNecessary(Guid orderId, bool isCreditCardOrPaypal = true)
+        private void SendReceiptIfNecessary(Guid orderId, bool sendOnlyIfPayInCar = false)
         {
             using (var context = _contextFactory.Invoke())
             {
                 var order = context.Find<OrderDetail>(orderId);
+
+                // This is to prevent sending the receipt twice.
+                if (order.Settings.ChargeTypeId != 1 && sendOnlyIfPayInCar)
+                {
+                    return;
+                }
+
                 var orderStatus = context.Find<OrderStatusDetail>(orderId);
                 if (orderStatus != null)
                 {
@@ -76,26 +79,19 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                         card = _creditCardDao.FindByToken(orderPayment.CardToken);
                     }
 
-                    if (orderPayment != null && isCreditCardOrPaypal)
-                    {
-                        var command = SendReceiptCommandBuilder.GetSendReceiptCommand(
+                    var command = SendReceiptCommandBuilder.GetSendReceiptCommand(
                             order,
                             account,
                             orderStatus.VehicleNumber,
                             orderStatus.DriverInfos,
-                            Convert.ToDouble(orderPayment.Meter),
+                            orderPayment.SelectOrDefault(safe => Convert.ToDouble(safe.Meter), 0d),
                             0,
-                            Convert.ToDouble(orderPayment.Tip),
+                            orderPayment.SelectOrDefault(safe => Convert.ToDouble(safe.Tip), 0d),
                             0,
                             orderPayment,
                             card);
 
-                        _commandBus.Send(command);
-                    }
-                    else if(orderPayment == null)
-                    {
-                        _commandBus.Send(SendReceiptCommandBuilder.GetSendReceiptCommand(order, account, orderStatus.VehicleNumber, orderStatus.DriverInfos, 0, 0, 0, 0));
-                    }
+                    _commandBus.Send(command);
                     
                 }
             }
@@ -103,9 +99,9 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
 
         public void Handle(OrderStatusChanged @event)
         {
-            if (@event.IsCompleted && _serverSettings.ServerData.SendReceiptForPayInCar)
+            if (@event.IsCompleted)
             {
-                SendReceiptIfNecessary(@event.SourceId, false);
+                SendReceiptIfNecessary(@event.SourceId, sendOnlyIfPayInCar: true );
             }
         }
     }

@@ -107,8 +107,8 @@ namespace MK.Common.Configuration
         public string PayPalRegionInfoOverride { get; protected set; }
         public decimal PayPalConversionRate { get; protected set; }
 
-        [Display(Name = "Send receipt for pay in car", Description = "Send a receipt via email to the user even when the user uses pay in car.")]
-        public bool SendReceiptForPayInCar { get; protected set; }
+        [Display(Name = "Hides fare info in receipt")]
+        public bool HideFareInfoInReceipt { get; protected set; }
 
         [CustomizableByCompany]
         [Display(Name = "Minimum Required App Version", Description = "Minimum required app version to create an order.")]

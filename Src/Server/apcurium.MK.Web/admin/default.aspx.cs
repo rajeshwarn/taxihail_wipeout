@@ -41,7 +41,7 @@ namespace apcurium.MK.Web.admin
             DefaultLongitude = config.ServerData.GeoLoc.DefaultLongitude.ToString();
             ApplicationVersion = Assembly.GetAssembly(typeof (_default)).GetName().Version.ToString();
 
-            SendReceiptForPayInCar = config.ServerData.SendReceiptForPayInCar;
+            SendReceiptForPayInCar = config.ServerData.HideFareInfoInReceipt;
 
             IsAuthenticated = base.UserSession.IsAuthenticated;
             IsSuperAdmin = UserSession.HasPermission(RoleName.SuperAdmin);
