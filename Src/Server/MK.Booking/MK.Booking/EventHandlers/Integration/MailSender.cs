@@ -22,7 +22,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
         IEventHandler<CreditCardPaymentCaptured_V2>,
         IEventHandler<CreditCardDeactivated>,
         IEventHandler<OrderStatusChanged>,
-        IEventHandler<UserAddedToPromotionWhiteList>
+        IEventHandler<UserAddedToPromotionWhiteList_V2>
     {
         private readonly ICommandBus _commandBus;
         private readonly Func<BookingDbContext> _contextFactory;
@@ -81,7 +81,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             }
         }
 
-        public void Handle(UserAddedToPromotionWhiteList @event)
+        public void Handle(UserAddedToPromotionWhiteList_V2 @event)
         {
             var promotion = _promotionDao.FindById(@event.SourceId);
             if (promotion == null)

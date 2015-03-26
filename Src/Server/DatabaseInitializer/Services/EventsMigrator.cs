@@ -143,6 +143,16 @@ namespace DatabaseInitializer.Services
                         message.Payload = Serialize(newEvent);
                         message.EventType = message.EventType.Replace("CreditCardPaymentCaptured", "CreditCardPaymentCaptured_V2");
                     }
+
+                    // convert UserAddedToPromotionWhiteList to UserAddedToPromotionWhiteList_V2
+                    foreach (var message in events.Where(x => x.EventType.Equals("apcurium.MK.Booking.Events.UserAddedToPromotionWhiteList")))
+                    {
+                        var @event = Deserialize<UserAddedToPromotionWhiteList>(message.Payload);
+                        var newEvent = Convert(@event);
+                        message.Payload = Serialize(newEvent);
+                        message.EventType = message.EventType.Replace("UserAddedToPromotionWhiteList", "UserAddedToPromotionWhiteList_V2");
+                    }
+
                     context.SaveChanges();
 
                     // convert OrderFareUpdated to OrderStatusChanged
@@ -218,6 +228,18 @@ namespace DatabaseInitializer.Services
                 }
             }
         }
+
+        private UserAddedToPromotionWhiteList_V2 Convert(UserAddedToPromotionWhiteList oldEvent)
+        {
+            return new UserAddedToPromotionWhiteList_V2()
+            {
+                AccountIds = new[]{ Guid.Parse(oldEvent.AccountId) },
+                EventDate = oldEvent.EventDate,
+                SourceId = oldEvent.SourceId,
+                Version = oldEvent.Version
+            };
+        }
+
 
         private CreditCardPaymentCaptured_V2 Convert(CreditCardPaymentCaptured oldEvent)
         {
