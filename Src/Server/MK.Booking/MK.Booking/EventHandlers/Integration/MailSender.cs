@@ -11,6 +11,7 @@ using apcurium.MK.Booking.ReadModel.Query;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Entity;
+using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using Infrastructure.Messaging;
 using Infrastructure.Messaging.Handling;
@@ -46,24 +47,21 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                 return;
             }
 
-            SendReceiptIfNecessary(@event.OrderId);
+            SendReceipt(@event.OrderId);
         }
 
         public void Handle(PayPalExpressCheckoutPaymentCompleted @event)
         {
-            SendReceiptIfNecessary(@event.OrderId);
+            SendReceipt(@event.OrderId);
         }
         
-        private void SendReceiptIfNecessary(Guid orderId, bool sendOnlyIfPayInCar = false)
+        private void SendReceipt(Guid orderId, OrderDetail order = null, double? fare = null, double? tip = null)
         {
             using (var context = _contextFactory.Invoke())
             {
-                var order = context.Find<OrderDetail>(orderId);
-
-                // This is to prevent sending the receipt twice.
-                if (order.Settings.ChargeTypeId != 1 && sendOnlyIfPayInCar)
+                if (order == null)
                 {
-                    return;
+                    order = context.Find<OrderDetail>(orderId);
                 }
 
                 var orderStatus = context.Find<OrderStatusDetail>(orderId);
@@ -84,9 +82,9 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                             account,
                             orderStatus.VehicleNumber,
                             orderStatus.DriverInfos,
-                            orderPayment.SelectOrDefault(safe => Convert.ToDouble(safe.Meter), order.Fare),
+                            orderPayment.SelectOrDefault(safe => Convert.ToDouble(safe.Meter), fare),
                             0,
-                            orderPayment.SelectOrDefault(safe => Convert.ToDouble(safe.Tip), order.Tip),
+                            orderPayment.SelectOrDefault(safe => Convert.ToDouble(safe.Tip), tip),
                             0,
                             orderPayment,
                             card);
@@ -101,7 +99,18 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
         {
             if (@event.IsCompleted)
             {
-                SendReceiptIfNecessary(@event.SourceId, sendOnlyIfPayInCar: true );
+                OrderDetail order;
+                using (var context = _contextFactory.Invoke())
+                {
+                    order = context.Find<OrderDetail>(@event.SourceId);
+
+                    if (order.Settings.ChargeTypeId != ChargeTypes.PaymentInCar.Id)
+                    {
+                        return;
+                    }
+                }
+
+                SendReceipt(@event.SourceId, order, @event.Fare, @event.Tip);
             }
         }
     }
