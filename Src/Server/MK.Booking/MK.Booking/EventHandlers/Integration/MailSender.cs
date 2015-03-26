@@ -28,15 +28,17 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
         private readonly ICommandBus _commandBus;
         private readonly Func<BookingDbContext> _contextFactory;
         private readonly ICreditCardDao _creditCardDao;
+        private readonly IOrderDao _orderDao;
 
         public MailSender(Func<BookingDbContext> contextFactory,
             ICommandBus commandBus,
-            ICreditCardDao creditCardDao
-            )
+            ICreditCardDao creditCardDao,
+            IOrderDao orderDao)
         {
             _contextFactory = contextFactory;
             _commandBus = commandBus;
             _creditCardDao = creditCardDao;
+            _orderDao = orderDao;
         }
 
         public void Handle(CreditCardPaymentCaptured @event)
@@ -55,22 +57,18 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             SendReceipt(@event.OrderId);
         }
         
-        private void SendReceipt(Guid orderId, OrderDetail order = null, double? fare = null, double? tip = null)
+        private void SendReceipt(Guid orderId, double? fare = null, double? tip = null)
         {
             using (var context = _contextFactory.Invoke())
             {
-                if (order == null)
-                {
-                    order = context.Find<OrderDetail>(orderId);
-                }
+                var order = _orderDao.FindById(orderId);
+                var orderStatus = _orderDao.FindOrderStatusById(orderId);
 
-                var orderStatus = context.Find<OrderStatusDetail>(orderId);
                 if (orderStatus != null)
                 {
-                    var orderPayment = context.Set<OrderPaymentDetail>().FirstOrDefault(p => p.OrderId == orderStatus.OrderId && p.IsCompleted );
-
                     var account = context.Find<AccountDetail>(orderStatus.AccountId);
-
+                    var orderPayment = context.Set<OrderPaymentDetail>().FirstOrDefault(p => p.OrderId == orderStatus.OrderId && p.IsCompleted );
+                    
                     CreditCardDetails card = null;
                     if (orderPayment != null && orderPayment.CardToken.HasValue())
                     {
@@ -82,15 +80,14 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                             account,
                             orderStatus.VehicleNumber,
                             orderStatus.DriverInfos,
-                            orderPayment.SelectOrDefault(safe => Convert.ToDouble(safe.Meter), fare),
+                            orderPayment.SelectOrDefault(payment => Convert.ToDouble(payment.Meter), fare),
                             0,
-                            orderPayment.SelectOrDefault(safe => Convert.ToDouble(safe.Tip), tip),
+                            orderPayment.SelectOrDefault(payment => Convert.ToDouble(payment.Tip), tip),
                             0,
                             orderPayment,
                             card);
 
                     _commandBus.Send(command);
-                    
                 }
             }
         }
@@ -99,18 +96,12 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
         {
             if (@event.IsCompleted)
             {
-                OrderDetail order;
-                using (var context = _contextFactory.Invoke())
+                var order = _orderDao.FindById(@event.SourceId);
+
+                if (order.Settings.ChargeTypeId == ChargeTypes.PaymentInCar.Id)
                 {
-                    order = context.Find<OrderDetail>(@event.SourceId);
-
-                    if (order.Settings.ChargeTypeId != ChargeTypes.PaymentInCar.Id)
-                    {
-                        return;
-                    }
+                    SendReceipt(@event.SourceId, @event.Fare, @event.Tip);
                 }
-
-                SendReceipt(@event.SourceId, order, @event.Fare, @event.Tip);
             }
         }
     }
