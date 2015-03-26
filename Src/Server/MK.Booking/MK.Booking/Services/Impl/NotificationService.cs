@@ -352,7 +352,7 @@ namespace apcurium.MK.Booking.Services.Impl
             
             var hasFare = Math.Abs(fare) > double.Epsilon;
 
-            var showReceiptInformation = isCardOnFile || (!_serverSettings.ServerData.HideFareInfoInReceipt && hasFare);
+            var showFareAndPaymentDetails = isCardOnFile || (!_serverSettings.ServerData.HideFareInfoInReceipt && hasFare);
 
             if (isCardOnFile)
             {
@@ -417,7 +417,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 IsCardOnFile = isCardOnFile,
                 CardOnFileAmount = cardOnFileAmount,
                 CardNumber = cardNumber,
-                ShowReceiptInformation = showReceiptInformation,
+                ShowFareAndPaymentDetails = showFareAndPaymentDetails,
                 CardOnFileTransactionId = cardOnFileTransactionId,
                 CardOnFileAuthorizationCode = cardOnFileAuthorizationCode,
                 PickupAddress = pickupAddress.DisplayAddress,

@@ -377,11 +377,11 @@
                                                 <tr>
                                                     <td valign=top style="text-align: center">{{ localize "Email_Body_OrderNo" }}{{IBSOrderId}}</td>
                                                 </tr>
-                                                {{#ShowReceiptInformation}}
+                                                {{#ShowFareAndPaymentDetails}}
                                                 <tr>
                                                     <td class="receipt_price">{{ TotalFare }}</td>
                                                 </tr>
-                                                {{/ShowReceiptInformation}}
+                                                {{/ShowFareAndPaymentDetails}}
                                             </table>
                                         </td>
                                     </tr>
@@ -460,7 +460,7 @@
                                                         </tr>
                                                     </table>
                                                 </div>
-                                                {{#ShowReceiptInformation}}
+                                                {{#ShowFareAndPaymentDetails}}
                                                 <div class="receiptRightInfo" style="float: left !important;">
                                                     <table>
                                                         <tr>
@@ -526,7 +526,7 @@
                                                     </table>
                                                     {{/IsCardOnFile}}
                                                 </div>
-                                                {{/ShowReceiptInformation}}
+                                                {{/ShowFareAndPaymentDetails}}
                                             </div>
                                         </td>
                                     </tr>
