@@ -66,7 +66,7 @@ namespace apcurium.MK.Booking.Api.Services.Admin
                                 a.IsAdmin,
                                 a.IsConfirmed,
                                 a.DisabledByAdmin,
-                                a.PayBack,
+                                a.Settings.PayBack,
                                 LastLaunch = (m == null ? null : m.DateOccured.ToLocalTime().ToString(CultureInfo.InvariantCulture)),
                                 Platform = (m == null ? null : m.Platform),
                                 PlatformDetails = (m == null ? null : m.PlatformDetails),

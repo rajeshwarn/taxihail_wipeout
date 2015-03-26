@@ -104,8 +104,7 @@ namespace apcurium.MK.Booking.EventHandlers
                     Language = @event.Language,
                     CreationDate = @event.EventDate,
                     ConfirmationToken = @event.ConfirmationToken,
-                    IsConfirmed = @event.AccountActivationDisabled,
-                    PayBack = @event.PayBack
+                    IsConfirmed = @event.AccountActivationDisabled
                 };
 
                 if (@event.IsAdmin)
@@ -119,6 +118,7 @@ namespace apcurium.MK.Booking.EventHandlers
                     NumberOfTaxi = 1,
                     Passengers = _serverSettings.ServerData.DefaultBookingSettings.NbPassenger,
                     Phone = @event.Phone,
+                    PayBack = @event.PayBack
                 };
 
                 context.Save(account);
@@ -185,6 +185,7 @@ namespace apcurium.MK.Booking.EventHandlers
                 settings.Phone = @event.Phone;
                 settings.AccountNumber = @event.AccountNumber;
                 settings.CustomerNumber = @event.CustomerNumber;
+                settings.PayBack = @event.PayBack;
 
                 account.DefaultTipPercent = @event.DefaultTipPercent;
 

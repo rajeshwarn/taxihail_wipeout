@@ -2259,7 +2259,13 @@
   <data name="CreateAccountPayBackPlaceHolder" xml:space="preserve">
     <value>PayBack</value>
   </data>
-  <data name="InvalidPayBackErrorMessage" xml:space="preserve">
+  <data name="NoPayBackErrorMessage" xml:space="preserve">
     <value>The PayBack field is required</value>
+  </data>
+  <data name="InvalidPayBackErrorMessage" xml:space="preserve">
+    <value>The PayBack field must be all digits and must not exceed 10 characters in length</value>
+  </data>
+  <data name="RideSettingsPayBack" xml:space="preserve">
+    <value>PayBack</value>
   </data>
 </root>

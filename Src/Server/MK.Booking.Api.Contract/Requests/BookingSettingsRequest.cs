@@ -39,5 +39,7 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
         public string CustomerNumber { get; set; }
 
         public int? DefaultTipPercent { get; set; }
+
+        public string PayBack { get; set; }
     }
 }

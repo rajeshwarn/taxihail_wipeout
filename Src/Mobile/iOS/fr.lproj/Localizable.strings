@@ -601,4 +601,6 @@
 "RideSettingsCustomerNumber"="Numéro de client du compte (optionnel)";
 "AccountPaymentCustomerNumberRequiredTitle"="Numéro de client du compte requis";
 "CreateAccountPayBackPlaceHolder"="PayBack";
-"InvalidPayBackErrorMessage"="Le champs PayBack est requis";
+"InvalidPayBackErrorMessage"="Le champs PayBack ne doit contenir que des chiffres et ne doit pas dépasser 10 caractères";
+"NoPayBackErrorMessage"="Le champs PayBack est requis";
+"RideSettingsPayBack"="PayBack";

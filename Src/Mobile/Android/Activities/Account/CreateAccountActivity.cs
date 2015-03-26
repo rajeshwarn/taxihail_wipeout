@@ -119,7 +119,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 			var passwordConfirm = new TaxiHailEntryElement(null, this.Services().Localize["CreateAccountPasswordConfirmationPlaceHolder"], null, "DialogBottom") { Password = true };
 			passwordConfirm.Bind(bindings, vm => vm.ConfirmPassword);
 
-            var payback = new TaxiHailEntryElement(null, this.Services().Localize["CreateAccountPayBackPlaceHolder"], null, "DialogBottom");
+            var payback = new TaxiHailEntryElement(null, this.Services().Localize["CreateAccountPayBackPlaceHolder"], null, "DialogBottom") { Numeric = true };
             payback.Bind(bindings, vm => vm.Data.PayBack);
 
 			section.Add (new Element[] { email, name, phone });

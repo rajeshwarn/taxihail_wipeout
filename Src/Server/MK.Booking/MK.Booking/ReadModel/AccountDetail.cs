@@ -54,8 +54,6 @@ namespace apcurium.MK.Booking.ReadModel
 
         public DateTime CreationDate { get; set; }
 
-        public string PayBack { get; set; }
-
         public bool IsAdmin
         {
             get { return (Roles & (int) Security.Roles.Admin) == (int) Security.Roles.Admin; }
