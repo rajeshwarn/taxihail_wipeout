@@ -13,22 +13,17 @@ using CrossUI.Droid;
 using CrossUI.Droid.Dialog;
 using CrossUI.Droid.Dialog.Elements;
 using apcurium.MK.Booking.Mobile.Client.Controls.Dialog;
-using apcurium.MK.Common.Configuration;
-using Cirrious.CrossCore;
-using MK.Common.Configuration;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 {
     [Activity(Label = "Create Account", Theme = "@style/LoginTheme", ScreenOrientation = ScreenOrientation.Portrait)]
     public class CreateAccountActivity : BaseBindingActivity<CreateAccountViewModel>
     {
-        private TaxiHailSetting _appSettings;
+        private const int CellHeightInDip = 42;
 
-		protected override void OnViewModelSet()
+        protected override void OnViewModelSet()
 		{
 			base.OnViewModelSet ();
-
-            _appSettings = Mvx.Resolve<IAppSettings>().Data;
 
 			DroidResources.Initialize (typeof (Resource.Layout));
             SetContentView(Resource.Layout.View_CreateAccount);
@@ -68,7 +63,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 
             var numberOfFields = ViewModel.HasSocialInfo ? 3 : 5;
 
-            if (_appSettings.IsPayBackRegistrationFieldRequired.HasValue)
+            if (ViewModel.Settings.IsPayBackRegistrationFieldRequired.HasValue)
             {
                 numberOfFields++;
             }
@@ -80,8 +75,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
             registerContainer.AddView(signMenu, positionInContainer);
 		}
 
-        private int CellHeightInDip = 42;
-
         private int GetDipInPixels(int value)
         {
             DisplayMetrics dm = new DisplayMetrics();
@@ -89,8 +82,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
             return (int)TypedValue.ApplyDimension(ComplexUnitType.Dip, value, dm);
         }
 
-	
-			
 		RootElement InitializeRoot()
 		{
 			var root = new RootElement();
@@ -128,7 +119,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 				section.Add (new Element[] { password, passwordConfirm });
 			}
 
-            if (_appSettings.IsPayBackRegistrationFieldRequired.HasValue)
+            if (ViewModel.Settings.IsPayBackRegistrationFieldRequired.HasValue)
 		    {
                 section.Add(new Element[] { payback });
 		    }
