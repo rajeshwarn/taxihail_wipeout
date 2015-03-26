@@ -162,6 +162,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 					_promoCode = value;
 					_orderWorkflowService.SetPromoCode(value);
 					RaisePropertyChanged();
+                    RaisePropertyChanged(() => PromotionButtonText);
 				}
 			}
 		}
@@ -176,6 +177,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 				});
 			}
 		}
+
+	    public string PromotionButtonText
+	    {
+	        get
+	        {
+	            if (_promoCode.HasValue())
+	            {
+                    return string.Format("{0} {1}", this.Services().Localize["PromoCodeLabel"], PromoCode);
+	            }
+                return this.Services().Localize["PromotionButton"];
+	        }
+	    }
     }
 }
 

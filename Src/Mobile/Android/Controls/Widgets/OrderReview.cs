@@ -27,7 +27,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         private TextView _lblLargeBags;
         private EditTextEntry _editNote;
         private EditTextEntry _editPromoCode;
-        private ImageButton _btnPromo;
+        private Button _btnPromo;
         private LinearLayout _bottomPadding;
                 
         public OrderReview(Context context, IAttributeSet attrs) : base (LayoutHelper.GetLayoutForView(Resource.Layout.SubView_OrderReview, context), context, attrs)
@@ -45,7 +45,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 _lblRingCode = Content.FindViewById<TextView>(Resource.Id.lblRingCode);
                 _editNote = FindViewById<EditTextEntry>(Resource.Id.txtNotes);
                 _editPromoCode = FindViewById<EditTextEntry>(Resource.Id.txtPromoCode);
-                _btnPromo = FindViewById<ImageButton>(Resource.Id.btnPromo);
+                _btnPromo = FindViewById<Button>(Resource.Id.btnPromo);
 
                 _editNote.SetClickAnywhereToDismiss();
 

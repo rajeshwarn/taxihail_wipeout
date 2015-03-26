@@ -617,3 +617,5 @@
 "PromoDescriptionCode"="Use code {0} at the time of booking or press the button below";
 "AccountPaymentCustomerNumberRequiredMessage"="Please enter a valid rider number";
 "AccountPaymentCustomerNumberRequiredTitle"="Account Rider Number required";
+"PromoApply"="Apply";
+"PromotionButton"="Tap to Enter or View Promo Code";

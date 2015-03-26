@@ -600,4 +600,6 @@
   <string name="PromoDescriptionCode">Use code {0} at the time of booking or press the button below</string>
   <string name="RideSettingsCustomerNumber">Número de cliente</string>
   <string name="AccountPaymentCustomerNumberRequiredTitle">Account Rider Number required</string>
+  <string name="PromoApply">Apply</string>
+  <string name="PromotionButton">Tap to Enter or View Promo Code</string>
 </resources>
