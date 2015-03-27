@@ -627,4 +627,8 @@
   <string name="AccountPaymentCustomerNumberRequiredTitle">Account Rider Number required</string>
   <string name="PromoApply">Apply</string>
   <string name="PromotionButton">Tap to Enter or View Promo Code</string>
+  <string name="CreateAccountPayBackPlaceHolder">PayBack</string>
+  <string name="InvalidPayBackErrorMessage">The PayBack field must be all digits and must not exceed 10 characters in length</string>
+  <string name="NoPayBackErrorMessage">The PayBack field is required</string>
+  <string name="RideSettingsPayBack">PayBack</string>
 </resources>

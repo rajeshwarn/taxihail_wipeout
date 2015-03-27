@@ -28,6 +28,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		UIKit.UILabel lblPassword { get; set; }
 
 		[Outlet]
+		UIKit.UILabel lblPayBack { get; set; }
+
+		[Outlet]
 		UIKit.UILabel lblPhone { get; set; }
 
 		[Outlet]
@@ -52,6 +55,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.NavigateFlatTextField txtPassword { get; set; }
 
 		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatTextField txtPayBack { get; set; }
+
+		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatTextField txtPhone { get; set; }
 
 		[Outlet]
@@ -62,19 +68,29 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		
 		void ReleaseDesignerOutlets ()
 		{
+			if (lblPayBack != null) {
+				lblPayBack.Dispose ();
+				lblPayBack = null;
+			}
+
+			if (txtPayBack != null) {
+				txtPayBack.Dispose ();
+				txtPayBack = null;
+			}
+
 			if (lblAccountNumber != null) {
 				lblAccountNumber.Dispose ();
 				lblAccountNumber = null;
 			}
 
-			if (lblCustomerNumber != null) {
-				lblCustomerNumber.Dispose ();
-				lblCustomerNumber = null;
-			}
-
 			if (lblChargeType != null) {
 				lblChargeType.Dispose ();
 				lblChargeType = null;
+			}
+
+			if (lblCustomerNumber != null) {
+				lblCustomerNumber.Dispose ();
+				lblCustomerNumber = null;
 			}
 
 			if (lblName != null) {
@@ -107,14 +123,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				txtAccountNumber = null;
 			}
 
-			if (txtCustomerNumber != null) {
-				txtCustomerNumber.Dispose ();
-				txtCustomerNumber = null;
-			}
-
 			if (txtChargeType != null) {
 				txtChargeType.Dispose ();
 				txtChargeType = null;
+			}
+
+			if (txtCustomerNumber != null) {
+				txtCustomerNumber.Dispose ();
+				txtCustomerNumber = null;
 			}
 
 			if (txtName != null) {

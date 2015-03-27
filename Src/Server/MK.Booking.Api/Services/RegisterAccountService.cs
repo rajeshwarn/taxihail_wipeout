@@ -40,26 +40,41 @@ namespace apcurium.MK.Booking.Api.Services
 
             if (request.FacebookId.HasValue())
             {
+                // Facebook registration
                 if (_accountDao.FindByFacebookId(request.FacebookId) != null)
+                {
                     throw new HttpError(ErrorCode.CreateAccount_AccountAlreadyExist.ToString());
+                }
+                    
                 var command = new RegisterFacebookAccount();
+
                 Mapper.Map(request, command);
                 command.Id = Guid.NewGuid();
+
                 _commandBus.Send(command);
+
                 return new Account {Id = command.AccountId};
             }
             if (request.TwitterId.HasValue())
             {
+                // Twitter registration
                 if (_accountDao.FindByTwitterId(request.TwitterId) != null)
+                {
                     throw new HttpError(ErrorCode.CreateAccount_AccountAlreadyExist.ToString());
+                }
+                    
                 var command = new RegisterTwitterAccount();
+
                 Mapper.Map(request, command);
                 command.Id = Guid.NewGuid();
+
                 _commandBus.Send(command);
+
                 return new Account {Id = command.AccountId};
             }
             else
             {
+                // Normal registration
                 var accountActivationDisabled = _serverSettings.ServerData.AccountActivationDisabled;
                 var smsConfirmationEnabled = _serverSettings.ServerData.SMSConfirmationEnabled;
 

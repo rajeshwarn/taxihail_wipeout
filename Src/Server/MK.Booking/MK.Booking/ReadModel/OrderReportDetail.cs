@@ -51,6 +51,8 @@ namespace apcurium.MK.Booking.ReadModel
 
         public int? IBSAccountId { get; set; }
 
+        public string PayBack { get; set; }
+
         public Guid? DefaultCardToken { get; set; }
     }
 

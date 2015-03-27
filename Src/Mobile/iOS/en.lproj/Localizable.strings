@@ -619,3 +619,7 @@
 "AccountPaymentCustomerNumberRequiredTitle"="Account Rider Number required";
 "PromoApply"="Apply";
 "PromotionButton"="Tap to Enter or View Promo Code";
+"CreateAccountPayBackPlaceHolder"="PayBack";
+"InvalidPayBackErrorMessage"="The PayBack field must be all digits and must not exceed 10 characters in length";
+"NoPayBackErrorMessage"="The PayBack field is required";
+"RideSettingsPayBack"="PayBack";

@@ -14,12 +14,20 @@ namespace apcurium.MK.Booking.Commands
             Id = Guid.NewGuid();
         }
 
-        public Guid AccountId { get; set; }
-        public string TwitterId { get; set; }
-        public string Name { get; set; }
-        public string Email { get; set; }
-        public string Phone { get; set; }
-        public string Language { get; set; }
         public Guid Id { get; set; }
+
+        public Guid AccountId { get; set; }
+
+        public string TwitterId { get; set; }
+
+        public string Name { get; set; }
+
+        public string Email { get; set; }
+
+        public string Phone { get; set; }
+
+        public string Language { get; set; }
+
+        public string PayBack { get; set; }
     }
 }

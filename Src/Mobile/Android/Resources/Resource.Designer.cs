@@ -4946,6 +4946,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f060069
 			public const int CreateAccountPasswordPlaceHolder = 2131099753;
 			
+			// aapt resource value: 0x7f0602d6
+			public const int CreateAccountPayBackPlaceHolder = 2131100374;
+			
 			// aapt resource value: 0x7f0600e7
 			public const int CreateAccountPhonePlaceHolder = 2131099879;
 			
@@ -5207,14 +5210,14 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f060123
 			public const int GooglePlayServicesNotAvailableMessage = 2131099939;
 			
-			// aapt resource value: 0x7f0602d6
-			public const int GooglePlayServicesNotAvailableMessage1 = 2131100374;
+			// aapt resource value: 0x7f0602da
+			public const int GooglePlayServicesNotAvailableMessage1 = 2131100378;
 			
 			// aapt resource value: 0x7f060084
 			public const int GooglePlayServicesNotAvailableTitle = 2131099780;
 			
-			// aapt resource value: 0x7f0602d7
-			public const int GooglePlayServicesNotAvailableTitle1 = 2131100375;
+			// aapt resource value: 0x7f0602db
+			public const int GooglePlayServicesNotAvailableTitle1 = 2131100379;
 			
 			// aapt resource value: 0x7f060049
 			public const int Hello = 2131099721;
@@ -5317,6 +5320,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 			
 			// aapt resource value: 0x7f0602be
 			public const int InvalidPassengersNumberTitle = 2131100350;
+			
+			// aapt resource value: 0x7f0602d7
+			public const int InvalidPayBackErrorMessage = 2131100375;
 			
 			// aapt resource value: 0x7f0601b9
 			public const int InvalidPhoneErrorMessage = 2131100089;
@@ -5495,6 +5501,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f0602ba
 			public const int NoPairingCreditCard = 2131100346;
 			
+			// aapt resource value: 0x7f0602d8
+			public const int NoPayBackErrorMessage = 2131100376;
+			
 			// aapt resource value: 0x7f0600d8
 			public const int NoPhoneNumberMessage = 2131099864;
 			
@@ -5630,8 +5639,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f0602c0
 			public const int Overdue_TransactionId = 2131100352;
 			
-			// aapt resource value: 0x7f0602d8
-			public const int Overdue_View = 2131100376;
+			// aapt resource value: 0x7f0602dc
+			public const int Overdue_View = 2131100380;
 			
 			// aapt resource value: 0x7f06006b
 			public const int PanelMenuViewAboutUsText = 2131099755;
@@ -5947,6 +5956,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 			
 			// aapt resource value: 0x7f060127
 			public const int RideSettingsPassword = 2131099943;
+			
+			// aapt resource value: 0x7f0602d9
+			public const int RideSettingsPayBack = 2131100377;
 			
 			// aapt resource value: 0x7f0601de
 			public const int RideSettingsPhone = 2131100126;

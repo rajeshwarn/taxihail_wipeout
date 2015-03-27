@@ -54,6 +54,7 @@ namespace apcurium.MK.Web
         protected bool IsPayPalEnabled { get; private set; }
         protected string PayPalMerchantId { get; private set; }
         protected bool IsCreditCardMandatory { get; private set; }
+        protected bool? IsPayBackRegistrationFieldRequired { get; private set; }
         
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -84,6 +85,7 @@ namespace apcurium.MK.Web
             DestinationIsRequired = config.ServerData.DestinationIsRequired;
             MaxFareEstimate = config.ServerData.MaxFareEstimate;
             AccountActivationDisabled = config.ServerData.AccountActivationDisabled;
+            IsPayBackRegistrationFieldRequired = config.ServerData.IsPayBackRegistrationFieldRequired;
 
             var paymentSettings = config.GetPaymentSettings();
 
