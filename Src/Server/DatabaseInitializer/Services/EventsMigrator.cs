@@ -234,7 +234,7 @@ namespace DatabaseInitializer.Services
         {
             return new UserAddedToPromotionWhiteList_V2()
             {
-                AccountIds = new[]{ Guid.Parse(oldEvent.AccountId) },
+                AccountIds = new[] { oldEvent.AccountId },
                 EventDate = oldEvent.EventDate,
                 SourceId = oldEvent.SourceId,
                 Version = oldEvent.Version
