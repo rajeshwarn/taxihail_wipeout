@@ -136,13 +136,14 @@ namespace DatabaseInitializer.Services
                     context.SaveChanges();
 
                     // convert CreditCardPaymentCaptured to CreditCardPaymentCaptured_V2
-                    foreach (var message in events.Where(x => x.EventType.Equals("apcurium.MK.Booking.Events.CreditCardPaymentCaptured")).ToList())
+                    foreach (var message in events.Where(x => x.EventType.Equals("apcurium.MK.Booking.Events.CreditCardPaymentCaptured")))
                     {
                         var @event = Deserialize<CreditCardPaymentCaptured>(message.Payload);
                         var newEvent = Convert(@event);
                         message.Payload = Serialize(newEvent);
                         message.EventType = message.EventType.Replace("CreditCardPaymentCaptured", "CreditCardPaymentCaptured_V2");
                     }
+                    context.SaveChanges();
 
                     // convert UserAddedToPromotionWhiteList to UserAddedToPromotionWhiteList_V2
                     foreach (var message in events.Where(x => x.EventType.Equals("apcurium.MK.Booking.Events.UserAddedToPromotionWhiteList")))
