@@ -422,6 +422,10 @@ namespace MK.Common.Configuration
         [SendToClient]
         [Display(Name = "Promotion enabled", Description = "Enables promotion on the client and on the admin portal")]
         public bool PromotionEnabled { get; set; }
+
+        [SendToClient]
+        [Display(Name = "Registration PayBack", Description = "Defines if the PayBack field when creating a new account is required or not")]
+        public bool? IsPayBackRegistrationFieldRequired { get; set; }
     }
 }
 

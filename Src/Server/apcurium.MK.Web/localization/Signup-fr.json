@@ -5,5 +5,6 @@
 	"Password" : "Mot de passe",
 	"ConfirmPassword" : "Confirmation du mot de passee",
 	"CreateBt" : "Créer",
-	"SignupTitle" : "Inscription"
+    "SignupTitle": "Inscription",
+    "PayBack": "PayBack"
 }

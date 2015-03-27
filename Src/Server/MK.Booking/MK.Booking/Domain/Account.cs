@@ -60,7 +60,7 @@ namespace apcurium.MK.Booking.Domain
         }
 
         public Account(Guid id, string name, string phone, string email, byte[] password, 
-            string confirmationToken, string language, bool accountActivationDisabled, bool isAdmin = false)
+            string confirmationToken, string language, bool accountActivationDisabled, string payBack, bool isAdmin = false)
             : this(id)
         {
             if (Params.Get(name, phone, email, confirmationToken).Any(p => p.IsNullOrEmpty())
@@ -78,11 +78,12 @@ namespace apcurium.MK.Booking.Domain
                 ConfirmationToken = confirmationToken,
                 Language = language,
                 IsAdmin = isAdmin,
-                AccountActivationDisabled = accountActivationDisabled
+                AccountActivationDisabled = accountActivationDisabled,
+                PayBack = payBack
             });
         }
 
-        public Account(Guid id, string name, string phone, string email, string facebookId = null,
+        public Account(Guid id, string name, string phone, string email, string payBack, string facebookId = null,
             string twitterId = null, string language = null, bool isAdmin = false)
             : this(id)
         {
@@ -99,7 +100,8 @@ namespace apcurium.MK.Booking.Domain
                 TwitterId = twitterId,
                 FacebookId = facebookId,
                 Language = language,
-                IsAdmin = isAdmin
+                IsAdmin = isAdmin,
+                PayBack = payBack
             });
         }
 
@@ -170,7 +172,8 @@ namespace apcurium.MK.Booking.Domain
                 VehicleTypeId = settings.VehicleTypeId,
                 AccountNumber = settings.AccountNumber,
                 CustomerNumber = settings.CustomerNumber,
-                DefaultTipPercent = defaultTipPercent
+                DefaultTipPercent = defaultTipPercent,
+                PayBack = settings.PayBack
             });
         }
 

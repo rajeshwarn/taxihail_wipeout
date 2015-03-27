@@ -33,7 +33,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				FacebookId = facebookId,
 				TwitterId = twitterId,
 				Name = name,
-				Email = email,
+				Email = email
 			};
 			#if DEBUG
 			Data.Email = "toto2@titi.com";
@@ -100,13 +100,25 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 						return;
 					}
 					
-					if ( Data.Phone.Count(x => Char.IsDigit(x)) < 10 )
+					if (Data.Phone.Count(x => Char.IsDigit(x)) < 10)
 					{
                         this.Services().Message.ShowMessage(this.Services().Localize["CreateAccountInvalidDataTitle"], this.Services().Localize["InvalidPhoneErrorMessage"]);
 						return;
 					}
-					
-                    Data.Phone= new string(Data.Phone.ToArray().Where( c=> Char.IsDigit( c ) ).ToArray());
+
+				    if (Settings.IsPayBackRegistrationFieldRequired == true && !Data.PayBack.HasValue())
+				    {
+                        this.Services().Message.ShowMessage(this.Services().Localize["CreateAccountInvalidDataTitle"], this.Services().Localize["NoPayBackErrorMessage"]);
+                        return;
+				    }
+
+                    if (Data.PayBack.Length > 10 || !Data.PayBack.IsNumber())
+				    {
+                        this.Services().Message.ShowMessage(this.Services().Localize["CreateAccountInvalidDataTitle"], this.Services().Localize["InvalidPayBackErrorMessage"]);
+                        return;
+				    }
+
+                    Data.Phone = new string(Data.Phone.ToArray().Where(x => Char.IsDigit(x)).ToArray());
 
                     this.Services().Message.ShowProgress(true);
 
@@ -114,7 +126,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					{	
 						try
 						{
+                            // PayBack value is set to string empty if the field is left empty by the user
+						    Data.PayBack = Data.PayBack == string.Empty ? null : Data.PayBack;
+
 							await _registerService.RegisterAccount(Data);
+
                             if (!HasSocialInfo && !Settings.AccountActivationDisabled)
 							{
 								if(Settings.SMSConfirmationEnabled)
@@ -146,10 +162,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 								}
 								catch {}
 							}
-						   
-							
-
-						}catch(Exception e)
+						}
+                        catch(Exception e)
 						{
 							var error = e.Message;
 							if (error.Trim().IsNullOrEmpty())
