@@ -6,9 +6,11 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PromotionView">
             <connections>
+                <outlet property="btnApplyPromo" destination="31X-y0-CaF" id="GDr-gg-TVu"/>
                 <outlet property="lblInstruction" destination="Utw-Tv-s75" id="2d3-gZ-9zo"/>
                 <outlet property="lblNoPromotions" destination="8pr-uT-4sr" id="1z8-tm-s0Z"/>
                 <outlet property="tblPromotions" destination="was-2h-vhd" id="TwC-bF-Kvc"/>
+                <outlet property="txtPromoCode" destination="EfD-f9-lKd" id="bRa-gJ-zWC"/>
                 <outlet property="view" destination="iN0-l3-epB" id="kCW-yf-GMq"/>
             </connections>
         </placeholder>
@@ -18,32 +20,56 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="was-2h-vhd">
-                    <rect key="frame" x="0.0" y="49" width="320" height="504"/>
+                    <rect key="frame" x="0.0" y="110" width="320" height="504"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                 </tableView>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="No promotions available" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8pr-uT-4sr">
-                    <rect key="frame" x="67" y="81" width="186" height="21"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No promotions available" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8pr-uT-4sr">
+                    <rect key="frame" x="67" y="106" width="186" height="21"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Utw-Tv-s75">
-                    <rect key="frame" x="15" y="20" width="290" height="21"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Utw-Tv-s75">
+                    <rect key="frame" x="15" y="20" width="290" height="17"/>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                     <nil key="highlightedColor"/>
                 </label>
+                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="EfD-f9-lKd">
+                    <rect key="frame" x="15" y="45" width="226" height="30"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <textInputTraits key="textInputTraits"/>
+                </textField>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="31X-y0-CaF" customClass="FlatButton">
+                    <rect key="frame" x="249" y="45" width="56" height="30"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="30" id="1rQ-iV-82k"/>
+                        <constraint firstAttribute="width" constant="56" id="5tj-5C-Owd"/>
+                    </constraints>
+                    <state key="normal" title="Button">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                </button>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="was-2h-vhd" secondAttribute="trailing" id="1vn-Pa-at0"/>
                 <constraint firstItem="Utw-Tv-s75" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="15" id="55V-qB-RQZ"/>
-                <constraint firstItem="8pr-uT-4sr" firstAttribute="top" secondItem="Utw-Tv-s75" secondAttribute="bottom" constant="40" id="7xv-XW-l9O"/>
-                <constraint firstAttribute="bottom" secondItem="was-2h-vhd" secondAttribute="bottom" constant="-49" id="8vp-AB-eoW"/>
+                <constraint firstAttribute="bottom" secondItem="was-2h-vhd" secondAttribute="bottom" constant="-110" id="8vp-AB-eoW"/>
+                <constraint firstAttribute="centerX" secondItem="8pr-uT-4sr" secondAttribute="centerX" id="BGx-Wq-kJx"/>
+                <constraint firstItem="EfD-f9-lKd" firstAttribute="top" secondItem="Utw-Tv-s75" secondAttribute="bottom" priority="500" constant="8" id="CTE-V4-TVY"/>
+                <constraint firstItem="8pr-uT-4sr" firstAttribute="top" secondItem="EfD-f9-lKd" secondAttribute="bottom" constant="31" id="EvE-wm-8ib"/>
                 <constraint firstAttribute="trailing" secondItem="Utw-Tv-s75" secondAttribute="trailing" constant="15" id="Gfu-ub-A80"/>
-                <constraint firstItem="was-2h-vhd" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" priority="60" constant="49" id="Iav-y3-YuM"/>
+                <constraint firstAttribute="trailing" secondItem="31X-y0-CaF" secondAttribute="trailing" constant="15" id="Hm8-oz-Nx5"/>
+                <constraint firstItem="was-2h-vhd" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" priority="60" constant="110" id="Iav-y3-YuM"/>
+                <constraint firstItem="EfD-f9-lKd" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" priority="300" constant="15" id="aXk-qf-BSK"/>
+                <constraint firstItem="31X-y0-CaF" firstAttribute="leading" secondItem="EfD-f9-lKd" secondAttribute="trailing" constant="8" id="bY7-jP-4Ln"/>
                 <constraint firstItem="was-2h-vhd" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="hNE-3e-PiM"/>
-                <constraint firstItem="was-2h-vhd" firstAttribute="top" secondItem="Utw-Tv-s75" secondAttribute="bottom" priority="40" constant="8" id="txX-LY-Kmd"/>
+                <constraint firstItem="31X-y0-CaF" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" priority="300" constant="15" id="ing-9H-sSW"/>
+                <constraint firstItem="31X-y0-CaF" firstAttribute="top" secondItem="EfD-f9-lKd" secondAttribute="top" id="k91-aC-xmO"/>
+                <constraint firstItem="EfD-f9-lKd" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="15" id="nDv-lj-RDC"/>
+                <constraint firstItem="31X-y0-CaF" firstAttribute="top" secondItem="Utw-Tv-s75" secondAttribute="bottom" priority="500" constant="8" id="s73-52-F68"/>
+                <constraint firstItem="was-2h-vhd" firstAttribute="top" secondItem="Utw-Tv-s75" secondAttribute="bottom" priority="40" constant="69" id="txX-LY-Kmd"/>
                 <constraint firstItem="8pr-uT-4sr" firstAttribute="centerX" secondItem="Utw-Tv-s75" secondAttribute="centerX" id="vAF-C2-DAB"/>
                 <constraint firstItem="Utw-Tv-s75" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="20" id="zYz-pR-d3T"/>
             </constraints>

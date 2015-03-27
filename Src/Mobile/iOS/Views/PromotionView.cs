@@ -33,7 +33,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             base.ViewDidLoad();
 			
             View.BackgroundColor = UIColor.FromRGB (242, 242, 242);
-
+				
             tblPromotions.BackgroundView = new UIView { BackgroundColor = UIColor.Clear };
             tblPromotions.BackgroundColor = UIColor.Clear;
             tblPromotions.SeparatorColor = UIColor.Clear;
@@ -41,8 +41,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             tblPromotions.DelaysContentTouches = false;
 
 			lblInstruction.Text = Localize.GetValue("PromoMustUseCardOnFileWarningMessage");
+			lblInstruction.TextAlignment = UITextAlignment.Center;
+
             lblNoPromotions.Text = Localize.GetValue("PromotionViewNoPromotionLabel");
             lblNoPromotions.Hidden = true;
+
+			txtPromoCode.Placeholder = Localize.GetValue("PromoCodeLabel");
+			txtPromoCode.BackgroundColor = UIColor.FromRGB (229, 229, 229);
+
+			FlatButtonStyle.Silver.ApplyTo(btnApplyPromo);
+			btnApplyPromo.Font = UIFont.FromName(FontName.HelveticaNeueRegular, 28 / 2);
+			btnApplyPromo.SetTitle(Localize.GetValue("PromoApply"), UIControlState.Normal);
 
             var tableViewSource = new PromotionTableViewSource(tblPromotions);
             tblPromotions.Source = tableViewSource;
@@ -54,19 +63,22 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 .To(vm => vm.ActivePromotions)
                 .WithConversion("Visibility");
 
-			set.Bind(lblInstruction)
+			set.Bind(lblNoPromotions)
 				.For("Visibility")
 				.To(vm => vm.ActivePromotions)
-				.WithConversion ("HasValueToVisibility");
-
-            set.Bind(lblNoPromotions)
-                .For("Visibility")
-                .To(vm => vm.ActivePromotions)
-                .WithConversion("NoValueToVisibility");
+				.WithConversion("NoValueToVisibility");
 
             set.Bind(tableViewSource)
                 .For(v => v.ItemsSource)
                 .To(vm => vm.ActivePromotions);
+
+			set.Bind(txtPromoCode)
+				.For(v => v.Text)
+				.To(vm => vm.PromotionCode);
+
+			set.Bind(btnApplyPromo)
+				.For("TouchUpInside")
+				.To(vm => vm.ApplyPromotion);
 
             set.Apply ();
         }

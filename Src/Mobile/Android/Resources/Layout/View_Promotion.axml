@@ -40,8 +40,7 @@
             android:gravity="center_horizontal"
             android:layout_gravity="center_horizontal"
             android:textColor="@color/black"
-            android:text="@string/PromoMustUseCardOnFileWarningMessage"
-            local:MvxBind="Visibility ActivePromotions, Converter=HasValueToVisibilityConverter" />
+            android:text="@string/PromoMustUseCardOnFileWarningMessage" />
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
