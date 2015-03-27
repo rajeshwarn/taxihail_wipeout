@@ -1,4 +1,5 @@
 ﻿using apcurium.MK.Booking.Api.Client.TaxiHail;
+using apcurium.MK.Common.Cryptography;
 using NUnit.Framework;
 
 namespace apcurium.MK.Web.Tests
@@ -32,7 +33,7 @@ namespace apcurium.MK.Web.Tests
         public async void when_getting_the_company_market()
         {
             var market = await _sut.GetCompanyMarket(99.99, -99.99);
-            Assert.AreEqual(string.Empty, market);
+            Assert.AreEqual(CryptographyHelper.GetHashString(string.Empty), market);
         }
     }
 }
