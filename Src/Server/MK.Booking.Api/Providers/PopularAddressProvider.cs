@@ -1,5 +1,6 @@
 ﻿#region
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -29,7 +30,7 @@ namespace apcurium.MK.Booking.Api.Providers
 
         public Task<IEnumerable<Address>> GetPopularAddressesAsync()
         {
-            return Task.Run(() => _dao.GetAll().Select(Mapper.Map<Address>));
+            throw new NotSupportedException("This method is not supported for the web platform.");
         }
     }
 }

@@ -27,8 +27,6 @@ namespace apcurium.MK.Web.admin
         protected string GeolocSearchBounds { get; private set; }
         protected bool IsTaxiHailPro { get; private set; }
 
-        protected bool IsAirportButtonEnabled { get; private set; }
-
         protected string Languages { get; private set; }
 
         protected void Page_Load(object sender, EventArgs e)
@@ -44,8 +42,6 @@ namespace apcurium.MK.Web.admin
 
             IsAuthenticated = base.UserSession.IsAuthenticated;
             IsSuperAdmin = UserSession.HasPermission(RoleName.SuperAdmin);
-
-            IsAirportButtonEnabled = config.ServerData.IsAirportButtonEnabled;
 
             var languages = Enum.GetNames(typeof(SupportedLanguages)).ToList();
             Languages = JsonSerializer.SerializeToString(languages, languages.GetType());

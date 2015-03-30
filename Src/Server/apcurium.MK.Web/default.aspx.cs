@@ -55,8 +55,6 @@ namespace apcurium.MK.Web
         protected string PayPalMerchantId { get; private set; }
         protected bool IsCreditCardMandatory { get; private set; }
         protected bool? IsPayBackRegistrationFieldRequired { get; private set; }
-
-        protected bool IsAirportButtonEnabled { get; private set; }
         
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -75,8 +73,6 @@ namespace apcurium.MK.Web
             DisableFutureBooking = config.ServerData.DisableFutureBooking;
             IsWebSignupVisible = !config.ServerData.IsWebSignupHidden;
             IsCreditCardMandatory = config.ServerData.CreditCardIsMandatory;
-
-            IsAirportButtonEnabled = config.ServerData.IsAirportButtonEnabled;
 
             DirectionTarifMode = config.ServerData.Direction.TarifMode.ToString("G");
             DirectionNeedAValidTarif = config.ServerData.Direction.NeedAValidTarif;

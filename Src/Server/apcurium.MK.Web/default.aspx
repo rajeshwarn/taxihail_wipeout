@@ -84,8 +84,6 @@
                 TaxiHail.parameters.isPayBackRegistrationFieldRequired = null;
             <% } %>
 
-            TaxiHail.parameters.isAirportButtonEnabled = <%: IsAirportButtonEnabled ? "true" : "false" %>;
-
             TaxiHail.referenceData = <%= ReferenceData %>;
             TaxiHail.vehicleTypes = <%= VehicleTypes %>;
 

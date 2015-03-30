@@ -1,6 +1,6 @@
 ﻿namespace apcurium.MK.Common.Entity
 {
-    public enum AddressLocationType : int
+    public enum AddressLocationType
     {
         Unspeficied = 0, // Default
         Airport = 1,
