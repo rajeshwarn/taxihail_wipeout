@@ -740,6 +740,12 @@
     <AndroidResource Include="Resources\drawable-xhdpi\down_arrow.png" />
     <AndroidResource Include="Resources\Drawable\paypal_icon.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\paypal_icon.png" />
+    <AndroidResource Include="Resources\Drawable\airport.png" />
+    <AndroidResource Include="Resources\Drawable\train.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\airport.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\train.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\airport.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\train.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <Target Name="BeforeBuild">

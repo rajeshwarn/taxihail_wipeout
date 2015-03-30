@@ -41,12 +41,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 		}
 
         public override void Draw (CGRect rect)
-        {           
-			var context = UIGraphics.GetCurrentContext ();
-            var roundedRectanglePath = UIBezierPath.FromRoundedRect (rect, _radiusCorner);
+        {   
+			if (!Hidden)
+			{
+				var context = UIGraphics.GetCurrentContext ();
+				var roundedRectanglePath = UIBezierPath.FromRoundedRect (rect, _radiusCorner);
 
-			DrawBackground(context, rect, roundedRectanglePath);
-            DrawStroke();			
+				DrawBackground(context, rect, roundedRectanglePath);
+				DrawStroke();	
+			}
 
             SetNeedsDisplay();
         }

@@ -571,7 +571,13 @@
     <Compile Include="Views\Payments\OverduePaymentView.designer.cs">
       <DependentUpon>OverduePaymentView.cs</DependentUpon>
     </Compile>
+    <BundleResource Include="Resources\airport.png" />
     <Compile Include="Controls\CustomBadgeView.cs" />
+    <BundleResource Include="Resources\airport%402x.png" />
+    <BundleResource Include="Resources\airport%403x.png" />
+    <BundleResource Include="Resources\train.png" />
+    <BundleResource Include="Resources\train%402x.png" />
+    <BundleResource Include="Resources\train%403x.png" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

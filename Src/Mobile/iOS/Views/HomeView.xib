@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="14B25" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
     </dependencies>
@@ -7,8 +7,10 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="HomeView">
             <connections>
                 <outlet property="bottomBar" destination="cXg-Q6-nLg" id="wBh-UX-pyq"/>
+                <outlet property="btnAirport" destination="aEE-PN-YXj" id="gRf-H3-trA"/>
                 <outlet property="btnLocateMe" destination="Jqp-iu-ci1" id="Ea5-fR-6Yf"/>
                 <outlet property="btnMenu" destination="MeW-ns-SQv" id="7wz-qB-e5G"/>
+                <outlet property="btnTrain" destination="rTf-vs-kUc" id="csz-MU-0ht"/>
                 <outlet property="constraintHomeLeadingSpace" destination="Ofk-d3-Xjf" id="rC5-er-L3E"/>
                 <outlet property="constraintOrderEditTrailingSpace" destination="4Uw-iv-741" id="egd-2Y-fEP"/>
                 <outlet property="constraintOrderOptionsTopSpace" destination="FRw-GE-bhA" id="PCn-eX-HZW"/>
@@ -63,6 +65,30 @@
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                         </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aEE-PN-YXj" userLabel="Airport" customClass="OverlayButton">
+                            <rect key="frame" x="8" y="413" width="39" height="39"/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="39" id="UWZ-S7-zk0"/>
+                                <constraint firstAttribute="height" constant="39" id="l3J-hA-y9X"/>
+                            </constraints>
+                            <state key="normal" image="airport.png">
+                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rTf-vs-kUc" userLabel="Train" customClass="OverlayButton">
+                            <rect key="frame" x="8" y="366" width="39" height="39"/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="39" id="2CU-Uc-jej"/>
+                                <constraint firstAttribute="width" constant="39" id="KEo-gC-Ulg"/>
+                            </constraints>
+                            <state key="normal" image="train.png">
+                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                        </button>
                         <view contentMode="scaleToFill" placeholderIntrinsicWidth="infinite" placeholderIntrinsicHeight="44" translatesAutoresizingMaskIntoConstraints="NO" id="HaA-X5-eHm" customClass="OrderOptionsControl">
                             <rect key="frame" x="8" y="22" width="304" height="44"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
@@ -96,6 +122,7 @@
                         <constraint firstItem="Fsx-d8-MLA" firstAttribute="left" secondItem="73H-fC-yqb" secondAttribute="left" constant="500" id="4Uw-iv-741"/>
                         <constraint firstAttribute="trailing" secondItem="cXg-Q6-nLg" secondAttribute="trailing" id="8Ab-0L-enX"/>
                         <constraint firstItem="HaA-X5-eHm" firstAttribute="top" secondItem="73H-fC-yqb" secondAttribute="top" constant="22" id="FRw-GE-bhA"/>
+                        <constraint firstItem="MeW-ns-SQv" firstAttribute="top" secondItem="aEE-PN-YXj" secondAttribute="bottom" constant="8" id="GwO-hR-URR"/>
                         <constraint firstItem="lYS-4q-3Mj" firstAttribute="top" secondItem="HaA-X5-eHm" secondAttribute="bottom" constant="620" id="JSE-qi-pXl"/>
                         <constraint firstItem="HaA-X5-eHm" firstAttribute="left" secondItem="73H-fC-yqb" secondAttribute="left" constant="8" id="MI6-S6-jXH"/>
                         <constraint firstItem="DgF-jB-8zt" firstAttribute="top" secondItem="73H-fC-yqb" secondAttribute="top" id="Mlm-GQ-8rc"/>
@@ -109,11 +136,14 @@
                         <constraint firstItem="DgF-jB-8zt" firstAttribute="leading" secondItem="73H-fC-yqb" secondAttribute="leading" id="ZSI-kr-X81"/>
                         <constraint firstItem="lYS-4q-3Mj" firstAttribute="bottom" secondItem="cXg-Q6-nLg" secondAttribute="bottom" constant="418" id="aqP-8Y-Hn4"/>
                         <constraint firstItem="4OH-fP-dh3" firstAttribute="leading" secondItem="73H-fC-yqb" secondAttribute="leading" id="c5H-Dc-S6w"/>
+                        <constraint firstItem="rTf-vs-kUc" firstAttribute="leading" secondItem="73H-fC-yqb" secondAttribute="leading" constant="8" id="eOl-8B-fFp"/>
                         <constraint firstAttribute="trailing" secondItem="4OH-fP-dh3" secondAttribute="trailing" id="hGf-1c-Z4K"/>
+                        <constraint firstItem="aEE-PN-YXj" firstAttribute="leading" secondItem="73H-fC-yqb" secondAttribute="leading" constant="8" id="iwE-nr-qb8"/>
                         <constraint firstAttribute="right" secondItem="HaA-X5-eHm" secondAttribute="right" constant="8" id="mrh-2C-M5W"/>
                         <constraint firstItem="cXg-Q6-nLg" firstAttribute="top" secondItem="Jqp-iu-ci1" secondAttribute="bottom" constant="13" id="nTh-8y-wH1"/>
                         <constraint firstItem="cXg-Q6-nLg" firstAttribute="top" secondItem="MeW-ns-SQv" secondAttribute="bottom" constant="13" id="pen-rq-tIj"/>
                         <constraint firstItem="lYS-4q-3Mj" firstAttribute="width" secondItem="Fsx-d8-MLA" secondAttribute="width" id="ruT-fy-efp"/>
+                        <constraint firstItem="aEE-PN-YXj" firstAttribute="top" secondItem="rTf-vs-kUc" secondAttribute="bottom" constant="8" id="wm1-iL-Uco"/>
                         <constraint firstItem="4OH-fP-dh3" firstAttribute="top" secondItem="73H-fC-yqb" secondAttribute="top" id="zf0-E1-EOY"/>
                     </constraints>
                 </view>
@@ -132,6 +162,10 @@
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
         </view>
     </objects>
+    <resources>
+        <image name="airport.png" width="28" height="28"/>
+        <image name="train.png" width="28" height="28"/>
+    </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>

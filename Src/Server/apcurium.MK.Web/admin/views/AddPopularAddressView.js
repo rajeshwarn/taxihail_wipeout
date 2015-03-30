@@ -14,8 +14,11 @@
         },
 
         render: function () {
-            var html = this.renderTemplate(this.model.toJSON());
+            var data = this.model.toJSON();
+            var html = this.renderTemplate(data);
             this.$el.html(html);
+
+            this.$("[name=addressLocationType] option[value=" + data.addressLocationType + "]").attr("selected", "selected");
 
             this.validate({
                 rules: {
@@ -61,8 +64,22 @@
                     this.collection.add(model);
                     TaxiHail.app.navigate('addresses/popular', {trigger: true});
 
-                }, this)
+                }, this),
+                error: this.showErrors
             });
+        },
+
+        showErrors: function (model, result) {
+            this.$(':submit').button('reset');
+
+            if (result.responseText) {
+                result = JSON.parse(result.responseText).responseStatus;
+            }
+
+            var $alert = $('<div class="alert alert-error" />');
+            $alert.append($('<div />').text(result.message));
+
+            this.$('.errors').html($alert);
         },
 
         destroyAddress: function (e) {

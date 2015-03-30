@@ -17,5 +17,9 @@
 	"Street" : "Street",
 	"City" : "City",
 	"ZipCode" : "Zip Code",
-	"State" : "State"
+    "State": "State",
+    "Type": "Type",
+    "Unspecified": "Unspecified",
+    "Airport": "Airport",
+    "Train station": "Train station"
 }
