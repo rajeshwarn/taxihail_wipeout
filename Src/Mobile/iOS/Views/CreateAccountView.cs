@@ -121,8 +121,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				constraintTableViewHeight.Constant += entryElementHeight;
 
 				section.Add(new TaxiHailEntryElement (string.Empty, Localize.GetValue ("CreateAccountPayBackPlaceHolder"), 
-					ViewModel.Data.Name, 
-					false).Bind (bindings, vm => vm.Data.PayBack));
+					ViewModel.Data.Name,
+                    false) { KeyboardType = UIKeyboardType.NumberPad }
+                    .Bind(bindings, vm => vm.Data.PayBack));
 			}
 
 			var root = new RootElement(){ section };
