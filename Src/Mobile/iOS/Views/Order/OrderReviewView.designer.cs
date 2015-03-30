@@ -13,7 +13,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 	partial class OrderReviewView
 	{
 		[Outlet]
-		UIKit.UIButton btnPromo { get; set; }
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnViewPromo { get; set; }
 
 		[Outlet]
 		UIKit.NSLayoutConstraint constraintHeight { get; set; }
@@ -32,6 +32,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 
 		[Outlet]
 		UIKit.UIImageView iconPhone { get; set; }
+
+		[Outlet]
+		UIKit.UIImageView iconPromo { get; set; }
 
 		[Outlet]
 		UIKit.UIImageView iconRingCode { get; set; }
@@ -65,15 +68,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 
 		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatTextView txtNote { get; set; }
-
-		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatTextField txtPromoCode { get; set; }
 		
 		void ReleaseDesignerOutlets ()
 		{
-			if (btnPromo != null) {
-				btnPromo.Dispose ();
-				btnPromo = null;
+			if (iconPromo != null) {
+				iconPromo.Dispose ();
+				iconPromo = null;
+			}
+
+			if (btnViewPromo != null) {
+				btnViewPromo.Dispose ();
+				btnViewPromo = null;
 			}
 
 			if (constraintHeight != null) {
@@ -159,11 +164,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 			if (txtNote != null) {
 				txtNote.Dispose ();
 				txtNote = null;
-			}
-
-			if (txtPromoCode != null) {
-				txtPromoCode.Dispose ();
-				txtPromoCode = null;
 			}
 		}
 	}

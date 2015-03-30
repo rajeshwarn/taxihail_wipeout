@@ -1,12 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using Infrastructure.EventSourcing;
 
 namespace apcurium.MK.Booking.Events
 {
+    [Obsolete("Replaced by UserAddedToPromotionWhiteList_V2", false)]
     public class UserAddedToPromotionWhiteList : VersionedEvent
     {
-        public IEnumerable<Guid> AccountIds { get; set; }
+        [Obsolete("This field is obsolete. Use AccountIds from UserAddedToPromotionWhiteList_V2 instead")]
+        public Guid AccountId { get; set; }
 
         public double? LastTriggeredAmount { get; set; }
     }

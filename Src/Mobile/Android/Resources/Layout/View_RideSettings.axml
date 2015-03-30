@@ -161,6 +161,21 @@
                         android:layout_height="@dimen/HeightEditTextFlat"
                         android:layout_marginBottom="10dip"
                         local:MvxBind="Text PaymentPreferences.TipAmount; Data PaymentPreferences.Tips; SelectedItem PaymentPreferences.Tip" />
+                    <TextView
+                          android:layout_width="fill_parent"
+                          android:layout_height="wrap_content"
+                          android:paddingTop="5dip"
+                          android:paddingBottom="5dip"
+                          android:text="@string/RideSettingsPayBack"
+                          style="@style/BlackTextLabel" />
+                    <EditText
+                        android:layout_width="fill_parent"
+                        android:layout_marginBottom="10dip"
+                        android:layout_height="@dimen/HeightEditTextFlat"
+                        android:maxLines="1"
+                        android:inputType="number"
+                        android:singleLine="true"
+                        local:MvxBind="Text PayBack; Visibility IsPayBackFieldEnabled, Converter=Visibility" />
                     <Button
                         style="@style/ButtonActionGreenStyle"
                         android:layout_marginTop="8dip"

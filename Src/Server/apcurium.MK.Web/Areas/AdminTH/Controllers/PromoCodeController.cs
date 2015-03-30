@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlTypes;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web.Mvc;
@@ -91,7 +92,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                 var promotionId = Guid.NewGuid();
                 promoCode.Id = promotionId;
 
-                _commandBus.Send(new CreatePromotion
+                var createPromotionCommand = new CreatePromotion
                 {
                     PromoId = promotionId,
                     Name = promoCode.Name,
@@ -105,13 +106,30 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                     AppliesToFutureBooking = promoCode.AppliesToFutureBooking,
                     DiscountValue = promoCode.DiscountValue,
                     DiscountType = promoCode.DiscountType,
-                    MaxUsagePerUser = promoCode.MaxUsagePerUser,
-                    MaxUsage = promoCode.MaxUsage,
                     Code = promoCode.Code,
-                    PublishedStartDate = promoCode.PublishedStartDate,
-                    PublishedEndDate = promoCode.PublishedEndDate,
                     TriggerSettings = promoCode.TriggerSettings
-                });
+                };
+
+                if (promoCode.TriggerSettings.Type == PromotionTriggerTypes.NoTrigger)
+                {
+                    createPromotionCommand.PublishedStartDate = promoCode.PublishedStartDate;
+                    createPromotionCommand.PublishedEndDate = promoCode.PublishedEndDate;
+                }
+                else
+                {
+                    // Trigger promotions are always published (but user will only see them when whitelisted)
+                    createPromotionCommand.PublishedStartDate = SqlDateTime.MinValue.Value;
+                    createPromotionCommand.PublishedEndDate = SqlDateTime.MaxValue.Value;
+                }
+
+                if (promoCode.TriggerSettings.Type != PromotionTriggerTypes.CustomerSupport)
+                {
+                    // User and system usage is unlimited for support promotion. The whitelist will determine if a user can use it.
+                    createPromotionCommand.MaxUsage = promoCode.MaxUsage;
+                    createPromotionCommand.MaxUsagePerUser = promoCode.MaxUsagePerUser;
+                }
+
+                _commandBus.Send(createPromotionCommand);
 
                 TempData["Info"] = string.Format("Promotion \"{0}\" created", promoCode.Name);
 
@@ -259,7 +277,10 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
 
         public ActionResult Unlock()
         {
-            var promotions = _promotionDao.GetAll().Select(x => new PromoCode(x));
+            var promotions = _promotionDao.GetAll()
+                .Select(p => new PromoCode(p))
+                .Where(p => p.TriggerSettings.Type == PromotionTriggerTypes.CustomerSupport);
+
             return View(promotions);
         }
 
@@ -275,19 +296,11 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                 Guid promotionId;
                 Guid.TryParse(appSettings["promotionIdToUnlock"], out promotionId);
 
-                var userAccoundIds = new List<Guid>();
-
-                foreach (var userEmail in userEmails)
-                {
-                    var accountDetail = _accountDao.FindByEmail(userEmail);
-                    if (accountDetail == null)
-                    {
-                        // Account not found
-                        continue;
-                    }
-
-                    userAccoundIds.Add(accountDetail.Id);
-                }
+                var userAccoundIds = 
+                    (from userEmail in userEmails 
+                     select _accountDao.FindByEmail(userEmail) into accountDetail
+                     where accountDetail != null 
+                     select accountDetail.Id).ToArray();
 
                 if (userAccoundIds.Any() && promotionId.HasValue())
                 {

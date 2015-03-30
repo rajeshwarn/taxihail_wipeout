@@ -71,13 +71,24 @@
             TaxiHail.parameters.isPayPalEnabled = <%: IsPayPalEnabled ? "true" : "false" %>;
             TaxiHail.parameters.isCreditCardMandatory = <%: IsCreditCardMandatory ? "true" : "false" %>;
             TaxiHail.parameters.apiRoot = "api";
-            
+
             TaxiHail.parameters.isSignupVisible = <%: IsWebSignupVisible  ? "true" : "false"%>;
+            
+            <% if(IsPayBackRegistrationFieldRequired == true) { %>
+                TaxiHail.parameters.isPayBackRegistrationFieldRequired = "true";
+            <% }
+            else if(IsPayBackRegistrationFieldRequired == false) { %>
+                TaxiHail.parameters.isPayBackRegistrationFieldRequired = "false";
+            <% }
+            else{ %>
+                TaxiHail.parameters.isPayBackRegistrationFieldRequired = null;
+            <% } %>
 
             TaxiHail.parameters.isAirportButtonEnabled = <%: IsAirportButtonEnabled ? "true" : "false" %>;
 
             TaxiHail.referenceData = <%= ReferenceData %>;
             TaxiHail.vehicleTypes = <%= VehicleTypes %>;
+
         </script>
 
         <%: Scripts.Render("~/bundles/app") %>

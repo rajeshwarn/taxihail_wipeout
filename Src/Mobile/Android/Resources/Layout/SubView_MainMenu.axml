@@ -42,7 +42,7 @@
                 <ScrollView
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent">
-                    <LinearLayout
+                    <RelativeLayout
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
                         android:id="@+id/listContainer"
@@ -52,10 +52,13 @@
                         android:layout_marginTop="0dip"
                         android:layout_marginBottom="10dip">
                         <View
+                            android:id="@+id/separator1"
                             android:paddingLeft="8dip"
                             android:paddingRight="8dip"
                             android:layout_width="fill_parent"
-                            android:layout_height="5dip" />
+                            android:layout_height="5dip"
+                            android:layout_marginTop="0dip"
+                            android:layout_alignParentTop="true" />
                         <Button
                             android:id="@+id/settingsFavorites"
                             style="@style/SettingItemTitle"
@@ -67,13 +70,16 @@
                             android:paddingLeft="10dip"
                             android:gravity="start|center_vertical"
                             android:textAlignment="viewStart"
-                            local:MvxBind="Click Panel.NavigateToMyLocations" />
+                            local:MvxBind="Click Panel.NavigateToMyLocations"
+                            android:layout_below="@id/separator1" />
                         <View
+                            android:id="@+id/separator2"
                             android:background="@color/setting_menu_separator_color"
                             android:paddingLeft="8dip"
                             android:paddingRight="8dip"
                             android:layout_width="fill_parent"
-                            android:layout_height="1px" />
+                            android:layout_height="1px"
+                            android:layout_below="@id/settingsFavorites" />
                         <Button
                             android:id="@+id/settingsHistory"
                             style="@style/SettingItemTitle"
@@ -85,13 +91,16 @@
                             android:paddingLeft="10dip"
                             android:gravity="center_vertical"
                             android:textAlignment="viewStart"
-                            local:MvxBind="Click Panel.NavigateToOrderHistory" />
+                            local:MvxBind="Click Panel.NavigateToOrderHistory"
+                            android:layout_below="@id/separator2" />
                         <View
+                            android:id="@+id/separator3"
                             android:background="@color/setting_menu_separator_color"
                             android:paddingLeft="8dip"
                             android:paddingRight="8dip"
                             android:layout_width="fill_parent"
-                            android:layout_height="1px" />
+                            android:layout_height="1px"
+                            android:layout_below="@id/settingsHistory" />
                         <Button
                             android:id="@+id/settingsProfile"
                             local:MvxBind="Click Panel.NavigateToUpdateProfile"
@@ -103,15 +112,18 @@
                             android:paddingRight="10dip"
                             android:paddingLeft="10dip"
                             android:gravity="center_vertical"
-                            android:textAlignment="viewStart" />
+                            android:textAlignment="viewStart"
+                            android:layout_below="@id/separator3" />
                         <View
+                            android:id="@+id/separator4"
                             android:background="@color/setting_menu_separator_color"
                             android:paddingLeft="8dip"
                             android:paddingRight="8dip"
                             android:layout_width="fill_parent"
-                            android:layout_height="1px" />
+                            android:layout_height="1px"
+                            android:layout_below="@id/settingsProfile" />
                         <Button
-                            android:id="@+id/settingsProfile"
+                            android:id="@+id/settingsPayment"
                             local:MvxBind="Click Panel.NavigateToPaymentInformation; Visibility Panel.IsPayInTaxiEnabled, Converter=Visibility"
                             style="@style/SettingItemTitle"
                             android:background="@drawable/setting_cell"
@@ -121,33 +133,49 @@
                             android:paddingRight="10dip"
                             android:paddingLeft="10dip"
                             android:gravity="center_vertical"
-                            android:textAlignment="viewStart" />
+                            android:textAlignment="viewStart"
+                            android:layout_below="@id/separator4" />
                         <View
+                            android:id="@+id/separator5"
                             local:MvxBind="Visibility Panel.IsPayInTaxiEnabled, Converter=Visibility"
                             android:background="@color/setting_menu_separator_color"
                             android:paddingLeft="8dip"
                             android:paddingRight="8dip"
                             android:layout_width="fill_parent"
-                            android:layout_height="1px" />
+                            android:layout_height="1px"
+                            android:layout_below="@id/settingsPayment" />
                         <Button
                             android:id="@+id/promotions"
-                            local:MvxBind="Click Panel.NavigateToPromotions; Visibility Panel.Settings.PromotionEnabled, Converter=Visibility"
-                            style="@style/SettingItemTitle"
                             android:background="@drawable/setting_cell"
                             android:layout_width="fill_parent"
                             android:layout_height="42dip"
-                            android:text="@string/PanelMenuViewPromotionsText"
                             android:paddingRight="10dip"
                             android:paddingLeft="10dip"
+                            android:text="@string/PanelMenuViewPromotionsText"
                             android:gravity="center_vertical"
-                            android:textAlignment="viewStart" />
+                            android:textAlignment="viewStart"
+                            android:layout_below="@id/separator5"
+                            local:MvxBind="Click Panel.NavigateToPromotions; Visibility Settings.PromotionEnabled, Converter=Visibility"
+                            style="@style/SettingItemTitle" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:layout_marginLeft="120dip"
+                            android:layout_below="@id/separator5"
+                            android:id="@+id/promoCodeBadge"
+                            android:layout_marginTop="9dip"
+                            local:MvxBind="Text Panel.PromoCodeAlert; Visibility Panel.PromoCodeAlert, Converter=HasValueToVisibilityConverter"
+                            style="@style/NotificationBadge" />
                         <View
+                            android:id="@+id/separator6"
                             local:MvxBind="Visibility Panel.Settings.PromotionEnabled, Converter=Visibility"
                             android:background="@color/setting_menu_separator_color"
                             android:paddingLeft="8dip"
                             android:paddingRight="8dip"
                             android:layout_width="fill_parent"
-                            android:layout_height="1px" />
+                            android:layout_height="1px"
+                            android:layout_below="@id/promotions" />
                         <Button
                             android:id="@+id/notificationsSettings"
                             local:MvxBind="Click Panel.NavigateToNotificationsSettings; Visibility Panel.IsNotificationsEnabled, Converter=Visibility"
@@ -159,14 +187,17 @@
                             android:paddingRight="10dip"
                             android:paddingLeft="10dip"
                             android:gravity="center_vertical"
-                            android:textAlignment="viewStart" />
+                            android:textAlignment="viewStart"
+                            android:layout_below="@id/separator6" />
                         <View
+                            android:id="@+id/separator7"
                             local:MvxBind="Visibility Panel.IsNotificationsEnabled, Converter=Visibility"
                             android:background="@color/setting_menu_separator_color"
                             android:paddingLeft="8dip"
                             android:paddingRight="8dip"
                             android:layout_width="fill_parent"
-                            android:layout_height="1px" />
+                            android:layout_height="1px"
+                            android:layout_below="@id/notificationsSettings" />
                         <Button
                             android:id="@+id/userTaxiHailNetworkSettings"
                             local:MvxBind="Click Panel.NavigateToUserTaxiHailNetworkSettings; Visibility Panel.IsTaxiHailNetworkEnabled, Converter=Visibility"
@@ -178,14 +209,17 @@
                             android:paddingRight="10dip"
                             android:paddingLeft="10dip"
                             android:gravity="center_vertical"
-                            android:textAlignment="viewStart" />
+                            android:textAlignment="viewStart"
+                            android:layout_below="@id/separator7" />
                         <View
+                            android:id="@+id/separator8"
                             local:MvxBind="Visibility Panel.IsTaxiHailNetworkEnabled, Converter=Visibility"
                             android:background="@color/setting_menu_separator_color"
                             android:paddingLeft="8dip"
                             android:paddingRight="8dip"
                             android:layout_width="fill_parent"
-                            android:layout_height="1px" />
+                            android:layout_height="1px"
+                            android:layout_below="@id/userTaxiHailNetworkSettings" />
                         <Button
                             android:id="@+id/settingsTutorial"
                             local:MvxBind="Click Panel.NavigateToTutorial; Visibility Panel.Settings.TutorialEnabled, Converter=Visibility"
@@ -197,14 +231,17 @@
                             android:paddingRight="10dip"
                             android:paddingLeft="10dip"
                             android:gravity="center_vertical"
-                            android:textAlignment="viewStart" />
+                            android:textAlignment="viewStart"
+                            android:layout_below="@id/separator8" />
                         <View
+                            android:id="@+id/separator9"
                             local:MvxBind="Visibility Panel.Settings.TutorialEnabled, Converter=Visibility"
                             android:background="@color/setting_menu_separator_color"
                             android:paddingLeft="8dip"
                             android:paddingRight="8dip"
                             android:layout_width="fill_parent"
-                            android:layout_height="1px" />
+                            android:layout_height="1px"
+                            android:layout_below="@id/settingsTutorial" />
                         <Button
                             android:id="@+id/settingsCallCompany"
                             local:MvxBind="Click Panel.Call; Visibility Panel.Settings.HideCallDispatchButton, Converter=InvertedVisibility"
@@ -216,14 +253,17 @@
                             android:paddingRight="10dip"
                             android:paddingLeft="10dip"
                             android:gravity="center_vertical"
-                            android:textAlignment="viewStart" />
+                            android:textAlignment="viewStart"
+                            android:layout_below="@id/separator9" />
                         <View
+                            android:id="@+id/separator10"
                             local:MvxBind="Visibility Panel.Settings.Settings.HideCallDispatchButton, Converter=InvertedVisibility"
                             android:background="@color/setting_menu_separator_color"
                             android:paddingLeft="8dip"
                             android:paddingRight="8dip"
                             android:layout_width="fill_parent"
-                            android:layout_height="1px" />
+                            android:layout_height="1px"
+                            android:layout_below="@id/settingsCallCompany" />
                         <Button
                             android:id="@+id/settingsAbout"
                             local:MvxBind="Click Panel.NavigateToAboutUs"
@@ -235,13 +275,16 @@
                             android:paddingRight="10dip"
                             android:paddingLeft="10dip"
                             android:gravity="center_vertical"
-                            android:textAlignment="viewStart" />
+                            android:textAlignment="viewStart"
+                            android:layout_below="@id/separator10" />
                         <View
+                            android:id="@+id/separator11"
                             android:background="@color/setting_menu_separator_color"
                             android:paddingLeft="8dip"
                             android:paddingRight="8dip"
                             android:layout_width="fill_parent"
-                            android:layout_height="1px" />
+                            android:layout_height="1px"
+                            android:layout_below="@id/settingsAbout" />
                         <Button
                             android:id="@+id/settingsSupport"
                             local:MvxBind="Click Panel.NavigateToReportProblem; Visibility Panel.DisplayReportProblem, Converter=Visibility"
@@ -253,14 +296,17 @@
                             android:paddingRight="10dip"
                             android:paddingLeft="10dip"
                             android:gravity="center_vertical"
-                            android:textAlignment="viewStart" />
+                            android:textAlignment="viewStart"
+                            android:layout_below="@id/separator11" />
                         <View
+                            android:id="@+id/separator12"
                             local:MvxBind="Visibility Panel.DisplayReportProblem, Converter=Visibility"
                             android:background="@color/setting_menu_separator_color"
                             android:paddingLeft="8dip"
                             android:paddingRight="8dip"
                             android:layout_width="fill_parent"
-                            android:layout_height="1px" />
+                            android:layout_height="1px"
+                            android:layout_below="@id/settingsSupport" />
                         <Button
                             android:id="@+id/settingsLogout"
                             style="@style/SettingItemTitle"
@@ -271,8 +317,9 @@
                             android:paddingRight="10dip"
                             android:paddingLeft="10dip"
                             android:gravity="center_vertical"
-                            android:textAlignment="viewStart" />
-                    </LinearLayout>
+                            android:textAlignment="viewStart"
+                            android:layout_below="@id/separator12" />
+                    </RelativeLayout>
                 </ScrollView>
             </LinearLayout>
             <FrameLayout

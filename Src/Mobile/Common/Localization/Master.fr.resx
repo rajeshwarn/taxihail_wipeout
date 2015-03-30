@@ -1798,4 +1798,22 @@
   <data name="PromoDescriptionCode" xml:space="preserve">
     <value>Utilisez le code {0} au moment de la commande ou appuyez sur le bouton ci-dessous.</value>
   </data>
+  <data name="PromoApply" xml:space="preserve">
+    <value>Appliquer</value>
+  </data>
+  <data name="CreateAccountPayBackPlaceHolder" xml:space="preserve">
+    <value>PayBack</value>
+  </data>
+  <data name="PromotionButton" xml:space="preserve">
+    <value>Entrer ou voir promotions</value>
+  </data>
+  <data name="NoPayBackErrorMessage" xml:space="preserve">
+    <value>Le champs PayBack est requis</value>
+  </data>
+  <data name="InvalidPayBackErrorMessage" xml:space="preserve">
+    <value>Le champs PayBack ne doit contenir que des chiffres et ne doit pas dépasser 10 caractères</value>
+  </data>
+  <data name="RideSettingsPayBack" xml:space="preserve">
+    <value>PayBack</value>
+  </data>
 </root>

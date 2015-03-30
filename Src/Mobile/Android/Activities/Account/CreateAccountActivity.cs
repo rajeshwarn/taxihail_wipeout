@@ -7,14 +7,11 @@ using Android.Util;
 using Android.Views;
 using Android.Widget;
 using apcurium.MK.Booking.Mobile.Client.Helpers;
-using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using CrossUI.Droid;
 using CrossUI.Droid.Dialog;
 using CrossUI.Droid.Dialog.Elements;
-using TinyIoC;
-using apcurium.MK.Booking.Mobile.Client.Dialog;
 using apcurium.MK.Booking.Mobile.Client.Controls.Dialog;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
@@ -22,8 +19,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
     [Activity(Label = "Create Account", Theme = "@style/LoginTheme", ScreenOrientation = ScreenOrientation.Portrait)]
     public class CreateAccountActivity : BaseBindingActivity<CreateAccountViewModel>
     {
+        private const int CellHeightInDip = 42;
 
-		protected override void OnViewModelSet()
+        protected override void OnViewModelSet()
 		{
 			base.OnViewModelSet ();
 
@@ -62,14 +60,20 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 		{
             var signMenu = new DialogListView(this);
             signMenu.LayoutParameters = new ViewGroup.LayoutParams (ViewGroup.LayoutParams.FillParent,  ViewGroup.LayoutParams.WrapContent);
-			signMenu.LayoutParameters.Height = GetDipInPixels((ViewModel.HasSocialInfo ? 3 : 5) * CellHeightInDip);
+
+            var numberOfFields = ViewModel.HasSocialInfo ? 3 : 5;
+
+            if (ViewModel.Settings.IsPayBackRegistrationFieldRequired.HasValue)
+            {
+                numberOfFields++;
+            }
+
+            signMenu.LayoutParameters.Height = GetDipInPixels(numberOfFields * CellHeightInDip);
             signMenu.Root = InitializeRoot();			
             signMenu.SetScrollContainer (false);
 
             registerContainer.AddView(signMenu, positionInContainer);
 		}
-
-        private int CellHeightInDip = 42;
 
         private int GetDipInPixels(int value)
         {
@@ -78,8 +82,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
             return (int)TypedValue.ApplyDimension(ComplexUnitType.Dip, value, dm);
         }
 
-	
-			
 		RootElement InitializeRoot()
 		{
 			var root = new RootElement();
@@ -108,11 +110,19 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 			var passwordConfirm = new TaxiHailEntryElement(null, this.Services().Localize["CreateAccountPasswordConfirmationPlaceHolder"], null, "DialogBottom") { Password = true };
 			passwordConfirm.Bind(bindings, vm => vm.ConfirmPassword);
 
+            var payback = new TaxiHailEntryElement(null, this.Services().Localize["CreateAccountPayBackPlaceHolder"], null, "DialogBottom") { Numeric = true };
+            payback.Bind(bindings, vm => vm.Data.PayBack);
+
 			section.Add (new Element[] { email, name, phone });
 
 			if (!ViewModel.HasSocialInfo) {
 				section.Add (new Element[] { password, passwordConfirm });
 			}
+
+            if (ViewModel.Settings.IsPayBackRegistrationFieldRequired.HasValue)
+		    {
+                section.Add(new Element[] { payback });
+		    }
 
             root.LayoutName = "fake_rounded";
 

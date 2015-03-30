@@ -43,7 +43,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			IPhoneService phoneService,
 			ITermsAndConditionsService termsService,
 			IPaymentService paymentService, 
-            IMvxLifetime mvxLifetime) : base()
+            IMvxLifetime mvxLifetime,
+            IPromotionService promotionService) : base()
 		{
 			_locationService = locationService;
 			_orderWorkflowService = orderWorkflowService;
@@ -54,7 +55,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		    _mvxLifetime = mvxLifetime;
 			_accountService = accountService;
 
-			Panel = new PanelMenuViewModel(browserTask, orderWorkflowService, accountService, phoneService, paymentService);
+            Panel = new PanelMenuViewModel(browserTask, orderWorkflowService, accountService, phoneService, paymentService, promotionService);
 
 			Observe(_vehicleService.GetAndObserveAvailableVehiclesWhenVehicleTypeChanges(), vehicles => ZoomOnNearbyVehiclesIfPossible(vehicles));
             Observe(_orderWorkflowService.GetAndObserveMarket(), market => MarketChanged(market));

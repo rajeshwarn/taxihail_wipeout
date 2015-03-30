@@ -3,16 +3,13 @@
 using System;
 using System.Linq;
 using apcurium.MK.Booking.CommandBuilder;
-using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.ReadModel;
-using apcurium.MK.Booking.ReadModel.Query;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Services;
-using apcurium.MK.Common;
-using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
+using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using Infrastructure.Messaging;
 using Infrastructure.Messaging.Handling;
@@ -23,13 +20,14 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
 {
     public class MailSender : IIntegrationEventHandler,
         IEventHandler<CreditCardPaymentCaptured_V2>,
-        IEventHandler<CreditCardDeactivated>,
         IEventHandler<OrderStatusChanged>,
-        IEventHandler<UserAddedToPromotionWhiteList>
+        IEventHandler<CreditCardDeactivated>,
+        IEventHandler<UserAddedToPromotionWhiteList_V2>
     {
         private readonly ICommandBus _commandBus;
         private readonly Func<BookingDbContext> _contextFactory;
         private readonly ICreditCardDao _creditCardDao;
+        private readonly IOrderDao _orderDao;
         private readonly IPromotionDao _promotionDao;
         private readonly IAccountDao _accountDao;
         private readonly INotificationService _notificationService;
@@ -38,12 +36,14 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             ICommandBus commandBus,
             ICreditCardDao creditCardDao,
             IPromotionDao promotionDao,
+            IOrderDao orderDao,
             IAccountDao accountDao,
             INotificationService notificationService)
         {
             _contextFactory = contextFactory;
             _commandBus = commandBus;
             _creditCardDao = creditCardDao;
+            _orderDao = orderDao;
             _promotionDao = promotionDao;
             _accountDao = accountDao;
             _notificationService = notificationService;
@@ -70,6 +70,15 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                 {
                     SendReceipt(@event.SourceId, Convert.ToDecimal(@event.Fare ?? 0), Convert.ToDecimal(@event.Tip ?? 0), Convert.ToDecimal(@event.Tax ?? 0));
                 }
+                else
+                {
+                    var order = _orderDao.FindById(@event.SourceId);
+
+                    if (order.Settings.ChargeTypeId == ChargeTypes.PaymentInCar.Id)
+                    {
+                        SendReceipt(@event.SourceId, Convert.ToDecimal(@event.Fare), Convert.ToDecimal(@event.Tip), Convert.ToDecimal(@event.Tax));
+                    }
+                } 
             }
         }
 
@@ -84,16 +93,21 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             }
         }
 
-        public void Handle(UserAddedToPromotionWhiteList @event)
+        public void Handle(UserAddedToPromotionWhiteList_V2 @event)
         {
+            var promotion = _promotionDao.FindById(@event.SourceId);
+            if (promotion == null)
+            {
+                return;
+            }
+
             foreach (var accountId in @event.AccountIds)
             {
                 var account = _accountDao.FindById(accountId);
-                var promotion = _promotionDao.FindById(@event.SourceId);
-
-                if (account != null && promotion != null)
+                if (account != null)
                 {
-                    _notificationService.SendPromotionUnlockedEmail(promotion.Name, promotion.Code, promotion.GetEndDateTime(), account.Email, account.Language);
+                    var accountLanguage = account.Language ?? SupportedLanguages.en.ToString();
+                    _notificationService.SendPromotionUnlockedEmail(promotion.Name, promotion.Code, promotion.GetEndDateTime(), account.Email, accountLanguage);
                 }
             }
         }
@@ -102,40 +116,46 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
         {
             using (var context = _contextFactory.Invoke())
             {
-                var order = context.Find<OrderDetail>(orderId);
-                var orderStatus = context.Find<OrderStatusDetail>(orderId);
+                var order = _orderDao.FindById(orderId);
+                var orderStatus = _orderDao.FindOrderStatusById(orderId);
+
                 if (orderStatus != null)
                 {
-                    var orderPayment = context.Set<OrderPaymentDetail>().FirstOrDefault(p => p.OrderId == orderStatus.OrderId && p.IsCompleted);
-                    
                     var account = context.Find<AccountDetail>(orderStatus.AccountId);
-
+                    var orderPayment = context.Set<OrderPaymentDetail>().FirstOrDefault(p => p.OrderId == orderStatus.OrderId && p.IsCompleted );
+                    
                     CreditCardDetails card = null;
                     if (orderPayment != null && orderPayment.CardToken.HasValue())
                     {
                         card = _creditCardDao.FindByToken(orderPayment.CardToken);
                     }
-
+                    
                     // payment was handled by app, send receipt
-                    if (orderPayment != null)
+                    if (orderPayment != null && orderStatus.IsPrepaid)
                     {
-                        if (orderStatus.IsPrepaid)
-                        {
-                            // Order was prepaid, all the good amounts are in OrderPaymentDetail
-                            meter = orderPayment.Meter;
-                            tip = orderPayment.Tip;
-                            tax = orderPayment.Tax;
-                        }
-
-                        var promoUsed = _promotionDao.FindByOrderId(orderId);
-
-                        var command = SendReceiptCommandBuilder.GetSendReceiptCommand(order, account,
-                            orderStatus.VehicleNumber, orderStatus.DriverInfos,
-                            Convert.ToDouble(meter), 0, Convert.ToDouble(tip), Convert.ToDouble(tax), orderPayment,
-                            Convert.ToDouble(amountSavedByPromotion), promoUsed, card);
-                        
-                        _commandBus.Send(command);
+                        // Order was prepaid, all the good amounts are in OrderPaymentDetail
+                        meter = orderPayment.Meter;
+                        tip = orderPayment.Tip;
+                        tax = orderPayment.Tax;
                     }
+                        
+                    var promoUsed = _promotionDao.FindByOrderId(orderId);
+
+                    var command = SendReceiptCommandBuilder.GetSendReceiptCommand(
+                        order,
+                        account,
+                        orderStatus.VehicleNumber,
+                        orderStatus.DriverInfos,
+                        orderPayment.SelectOrDefault(payment => Convert.ToDouble(payment.Meter), Convert.ToDouble(meter)),
+                        0,
+                        orderPayment.SelectOrDefault(payment => Convert.ToDouble(payment.Tip), Convert.ToDouble(tip)),
+                        Convert.ToDouble(tax),
+                        orderPayment,
+                        Convert.ToDouble(amountSavedByPromotion),
+                        promoUsed,
+                        card);
+
+                    _commandBus.Send(command);
                 }
             }
         }

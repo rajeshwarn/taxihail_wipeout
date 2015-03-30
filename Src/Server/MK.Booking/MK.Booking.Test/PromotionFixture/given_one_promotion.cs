@@ -487,7 +487,7 @@ namespace apcurium.MK.Booking.Test.PromotionFixture
                 PromoId = _promoId
             });
 
-            var @event = _sut.ThenHasSingle<UserAddedToPromotionWhiteList>();
+            var @event = _sut.ThenHasSingle<UserAddedToPromotionWhiteList_V2>();
             Assert.AreEqual(2, @event.AccountIds.Count());
             Assert.AreEqual(accountId1, @event.AccountIds.ElementAt(0));
             Assert.AreEqual(accountId2, @event.AccountIds.ElementAt(1));

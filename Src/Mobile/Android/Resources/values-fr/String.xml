@@ -607,4 +607,10 @@
   <string name="PromoDescriptionCode">Utilisez le code {0} au moment de la commande ou appuyez sur le bouton ci-dessous.</string>
   <string name="RideSettingsCustomerNumber">Numéro de client du compte (optionnel)</string>
   <string name="AccountPaymentCustomerNumberRequiredTitle">Numéro de client du compte requis</string>
+  <string name="PromoApply">Appliquer</string>
+  <string name="PromotionButton">Entrer ou voir promotions</string>
+  <string name="CreateAccountPayBackPlaceHolder">PayBack</string>
+  <string name="InvalidPayBackErrorMessage">Le champs PayBack ne doit contenir que des chiffres et ne doit pas dépasser 10 caractères</string>
+  <string name="NoPayBackErrorMessage">Le champs PayBack est requis</string>
+  <string name="RideSettingsPayBack">PayBack</string>
 </resources>

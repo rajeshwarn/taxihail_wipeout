@@ -2256,4 +2256,22 @@
   <data name="PromoDescriptionCode" xml:space="preserve">
     <value>Use code {0} at the time of booking or press the button below</value>
   </data>
+  <data name="PromoApply" xml:space="preserve">
+    <value>Apply</value>
+  </data>
+  <data name="CreateAccountPayBackPlaceHolder" xml:space="preserve">
+    <value>PayBack</value>
+  </data>
+  <data name="PromotionButton" xml:space="preserve">
+    <value>Tap to Enter or View Promo Code</value>
+  </data>
+  <data name="NoPayBackErrorMessage" xml:space="preserve">
+    <value>The PayBack field is required</value>
+  </data>
+  <data name="InvalidPayBackErrorMessage" xml:space="preserve">
+    <value>The PayBack field must be all digits and must not exceed 10 characters in length</value>
+  </data>
+  <data name="RideSettingsPayBack" xml:space="preserve">
+    <value>PayBack</value>
+  </data>
 </root>

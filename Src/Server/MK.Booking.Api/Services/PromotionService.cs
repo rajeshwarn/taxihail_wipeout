@@ -20,7 +20,9 @@ namespace apcurium.MK.Booking.Api.Services
 
         public object Get(ActivePromotions request)
         {
-            return _promotionDao.GetAllCurrentlyActiveAndPublished()
+            var accountId = new Guid(this.GetSession().UserAuthId);
+
+            return _promotionDao.GetUnlockedPromotionsForUser(accountId)
                 .Select(promotionDetail =>
                 {
                     var activePromotion = new ActivePromotion
@@ -31,12 +33,10 @@ namespace apcurium.MK.Booking.Api.Services
                         ExpirationDate = promotionDetail.GetEndDateTime()
                     };
 
-                    var accountId = new Guid(this.GetSession().UserAuthId);
                     AddProgressToPromotion(accountId, promotionDetail, activePromotion);
 
                     return activePromotion;
-                })
-                .ToArray();
+                }).ToArray();
         }
 
         private void AddProgressToPromotion(Guid accoundId, PromotionDetail promotionDetail, ActivePromotion activePromotion)

@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using apcurium.MK.Booking.Database;
+using apcurium.MK.Booking.Domain;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Enumeration;
+using Infrastructure.EventSourcing;
 
 namespace apcurium.MK.Booking.ReadModel.Query
 {
@@ -14,12 +16,14 @@ namespace apcurium.MK.Booking.ReadModel.Query
         private readonly Func<BookingDbContext> _contextFactory;
         private readonly IClock _clock;
         private readonly IServerSettings _serverSettings;
+        private readonly IEventSourcedRepository<Promotion> _promoRepository;
 
-        public PromotionDao(Func<BookingDbContext> contextFactory, IClock clock, IServerSettings serverSettings)
+        public PromotionDao(Func<BookingDbContext> contextFactory, IClock clock, IServerSettings serverSettings, IEventSourcedRepository<Promotion> promoRepository)
         {
             _contextFactory = contextFactory;
             _clock = clock;
             _serverSettings = serverSettings;
+            _promoRepository = promoRepository;
         }
 
         public IEnumerable<PromotionDetail> GetAll()
@@ -46,10 +50,29 @@ namespace apcurium.MK.Booking.ReadModel.Query
             }
         }
 
+        public IEnumerable<PromotionDetail> GetUnlockedPromotionsForUser(Guid accountId)
+        {
+            var now = GetCurrentOffsetedTime();
+
+            var activePublishedPromotions = GetAllCurrentlyActiveAndPublished();
+
+            // Add all published promotions
+            foreach (var activePublishedPromotion in activePublishedPromotions)
+            {
+                string errorMessage;
+                var promoDomainObject = _promoRepository.Get(activePublishedPromotion.Id);
+
+                if (promoDomainObject.CanApply(accountId, now, false, out errorMessage))
+                {
+                    yield return activePublishedPromotion;
+                }
+            }
+        }
+
         public IEnumerable<PromotionDetail> GetAllCurrentlyActiveAndPublished(PromotionTriggerTypes? triggerType = null)
         {
             return GetAllCurrentlyActive(triggerType)
-                // at least one published date set, so it's public
+                // At least one published date set, so it's public
                 .Where(promotionDetail => promotionDetail.PublishedStartDate.HasValue || promotionDetail.PublishedEndDate.HasValue)
                 .Select(promotionDetail =>
                 {
@@ -91,7 +114,8 @@ namespace apcurium.MK.Booking.ReadModel.Query
                     {
                         var now = GetCurrentOffsetedTime();
 
-                        return !IsExpired(promotionDetail, now);
+                        return IsStarted(promotionDetail, now)
+                            && !IsExpired(promotionDetail, now);
                     })
                     .ToArray(); 
             }
@@ -140,7 +164,6 @@ namespace apcurium.MK.Booking.ReadModel.Query
 
             return now;
         }
-
 
         private bool IsStarted(PromotionDetail promo, DateTime now)
         {
