@@ -19,10 +19,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		UIKit.UILabel lblChargeType { get; set; }
 
 		[Outlet]
+		UIKit.UILabel lblCustomerNumber { get; set; }
+
+		[Outlet]
 		UIKit.UILabel lblName { get; set; }
 
 		[Outlet]
 		UIKit.UILabel lblPassword { get; set; }
+
+		[Outlet]
+		UIKit.UILabel lblPayBack { get; set; }
 
 		[Outlet]
 		UIKit.UILabel lblPhone { get; set; }
@@ -40,10 +46,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.ModalFlatTextField txtChargeType { get; set; }
 
 		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatTextField txtCustomerNumber { get; set; }
+
+		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatTextField txtName { get; set; }
 
 		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.NavigateFlatTextField txtPassword { get; set; }
+
+		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatTextField txtPayBack { get; set; }
 
 		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatTextField txtPhone { get; set; }
@@ -56,6 +68,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		
 		void ReleaseDesignerOutlets ()
 		{
+			if (lblPayBack != null) {
+				lblPayBack.Dispose ();
+				lblPayBack = null;
+			}
+
+			if (txtPayBack != null) {
+				txtPayBack.Dispose ();
+				txtPayBack = null;
+			}
+
 			if (lblAccountNumber != null) {
 				lblAccountNumber.Dispose ();
 				lblAccountNumber = null;
@@ -64,6 +86,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			if (lblChargeType != null) {
 				lblChargeType.Dispose ();
 				lblChargeType = null;
+			}
+
+			if (lblCustomerNumber != null) {
+				lblCustomerNumber.Dispose ();
+				lblCustomerNumber = null;
 			}
 
 			if (lblName != null) {
@@ -99,6 +126,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			if (txtChargeType != null) {
 				txtChargeType.Dispose ();
 				txtChargeType = null;
+			}
+
+			if (txtCustomerNumber != null) {
+				txtCustomerNumber.Dispose ();
+				txtCustomerNumber = null;
 			}
 
 			if (txtName != null) {

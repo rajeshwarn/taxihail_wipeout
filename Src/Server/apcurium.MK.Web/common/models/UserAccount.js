@@ -20,6 +20,10 @@
                 data: settings,
                 dataType: 'json'
             });
+        },
+
+        getChargeAccount: function (accountNumber, customerNumber) {
+            return $.get('api/admin/accountscharge/' + accountNumber + '/' + customerNumber + '/true', function () { }, 'json');;
         }
     });
 

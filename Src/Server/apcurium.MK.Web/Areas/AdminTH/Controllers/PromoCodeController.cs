@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlTypes;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Web.Mvc;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
@@ -8,10 +10,12 @@ using apcurium.MK.Booking.Security;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Enumeration;
+using apcurium.MK.Common.Extensions;
 using apcurium.MK.Web.Areas.AdminTH.Models;
 using apcurium.MK.Web.Attributes;
 using Infrastructure.Messaging;
 using ServiceStack.CacheAccess;
+using ServiceStack.ServiceModel.Extensions;
 
 namespace apcurium.MK.Web.Areas.AdminTH.Controllers
 {
@@ -19,13 +23,18 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
     public class PromoCodeController : ServiceStackController
     {
         private readonly IPromotionDao _promotionDao;
+        private readonly IAccountDao _accountDao;
         private readonly ICommandBus _commandBus;
         private readonly IServerSettings _serverSettings;
 
-        public PromoCodeController(ICacheClient cache, IServerSettings serverSettings, IPromotionDao promotionDao, ICommandBus commandBus) 
-            : base(cache, serverSettings)
+        public PromoCodeController(ICacheClient cache,
+            IServerSettings serverSettings,
+            IPromotionDao promotionDao,
+            IAccountDao accountDao,
+            ICommandBus commandBus) : base(cache, serverSettings)
         {
             _promotionDao = promotionDao;
+            _accountDao = accountDao;
             _commandBus = commandBus;
             _serverSettings = serverSettings;
         }
@@ -40,8 +49,16 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                                       "go to the Payment Settings section and configure a Payment method.";
             }
 
-            var promotions = _promotionDao.GetAll().Select(x => new PromoCode(x));
-            return View(promotions);
+            var updatedModel = TempData["Model"];
+            if (updatedModel != null)
+            {
+                return View(updatedModel);
+            }
+            else
+            {
+                var promotions = _promotionDao.GetAll().Select(x => new PromoCode(x));
+                return View(promotions);
+            }
         }
 
         // GET: AdminTH/PromoCode/Create
@@ -75,7 +92,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                 var promotionId = Guid.NewGuid();
                 promoCode.Id = promotionId;
 
-                _commandBus.Send(new CreatePromotion
+                var createPromotionCommand = new CreatePromotion
                 {
                     PromoId = promotionId,
                     Name = promoCode.Name,
@@ -89,13 +106,30 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                     AppliesToFutureBooking = promoCode.AppliesToFutureBooking,
                     DiscountValue = promoCode.DiscountValue,
                     DiscountType = promoCode.DiscountType,
-                    MaxUsagePerUser = promoCode.MaxUsagePerUser,
-                    MaxUsage = promoCode.MaxUsage,
                     Code = promoCode.Code,
-                    PublishedStartDate = promoCode.PublishedStartDate,
-                    PublishedEndDate = promoCode.PublishedEndDate,
                     TriggerSettings = promoCode.TriggerSettings
-                });
+                };
+
+                if (promoCode.TriggerSettings.Type == PromotionTriggerTypes.NoTrigger)
+                {
+                    createPromotionCommand.PublishedStartDate = promoCode.PublishedStartDate;
+                    createPromotionCommand.PublishedEndDate = promoCode.PublishedEndDate;
+                }
+                else
+                {
+                    // Trigger promotions are always published (but user will only see them when whitelisted)
+                    createPromotionCommand.PublishedStartDate = SqlDateTime.MinValue.Value;
+                    createPromotionCommand.PublishedEndDate = SqlDateTime.MaxValue.Value;
+                }
+
+                if (promoCode.TriggerSettings.Type != PromotionTriggerTypes.CustomerSupport)
+                {
+                    // User and system usage is unlimited for support promotion. The whitelist will determine if a user can use it.
+                    createPromotionCommand.MaxUsage = promoCode.MaxUsage;
+                    createPromotionCommand.MaxUsagePerUser = promoCode.MaxUsagePerUser;
+                }
+
+                _commandBus.Send(createPromotionCommand);
 
                 TempData["Info"] = string.Format("Promotion \"{0}\" created", promoCode.Name);
 
@@ -103,7 +137,9 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                 promotions.Add(promoCode);
                 var orderedPromotions = promotions.OrderBy(p => p.Name);
 
-                return View("Index", orderedPromotions);
+                TempData["Model"] = orderedPromotions;
+
+                return RedirectToAction("Index", orderedPromotions);
             }
             catch(Exception ex)
             {
@@ -159,12 +195,10 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                 if (!promoCode.CanModifyTriggerGoal)
                 {
                     var promotion = _promotionDao.FindById(promoCode.Id);
-                    if (promotion.TriggerSettings.Type != promoCode.TriggerSettings.Type
-                        || promotion.TriggerSettings.AmountSpent != promoCode.TriggerSettings.AmountSpent
-                        || promotion.TriggerSettings.RideCount != promoCode.TriggerSettings.RideCount)
-                    {
-                        throw new Exception("You cannot modify the trigger type or goal because a user already started progress on the promotion.");
-                    }
+
+                    promoCode.TriggerSettings.Type = promotion.TriggerSettings.Type;
+                    promoCode.TriggerSettings.AmountSpent = promotion.TriggerSettings.AmountSpent;
+                    promoCode.TriggerSettings.RideCount = promotion.TriggerSettings.RideCount;
                 }
 
                 _commandBus.Send(new UpdatePromotion
@@ -190,6 +224,7 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                 });
 
                 TempData["Info"] = string.Format("Promotion \"{0}\" updated", promoCode.Name);
+
                 return RedirectToAction("Index");
             }
             catch (Exception ex)
@@ -238,6 +273,53 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
         {
             var promotionUsages = _promotionDao.GetRedeemedPromotionUsages(id).ToArray();
             return View(promotionUsages.Any() ? new PromoStats(promotionUsages) : null);
+        }
+
+        public ActionResult Unlock()
+        {
+            var promotions = _promotionDao.GetAll()
+                .Select(p => new PromoCode(p))
+                .Where(p => p.TriggerSettings.Type == PromotionTriggerTypes.CustomerSupport);
+
+            return View(promotions);
+        }
+
+        [HttpPost]
+        public ActionResult Unlock(FormCollection form)
+        {
+            var appSettings = form.ToDictionary();
+            if (appSettings != null)
+            {
+                // Remove all whitespaces and split
+                var userEmails = Regex.Replace(appSettings["userEmails"], @"\s+", string.Empty).Split(',');
+
+                Guid promotionId;
+                Guid.TryParse(appSettings["promotionIdToUnlock"], out promotionId);
+
+                var userAccoundIds = 
+                    (from userEmail in userEmails 
+                     select _accountDao.FindByEmail(userEmail) into accountDetail
+                     where accountDetail != null 
+                     select accountDetail.Id).ToArray();
+
+                if (userAccoundIds.Any() && promotionId.HasValue())
+                {
+                    _commandBus.Send(new AddUserToPromotionWhiteList
+                    {
+                        PromoId = promotionId,
+                        AccountIds = userAccoundIds
+                    });
+
+                    var promotion = _promotionDao.FindById(promotionId);
+
+                    TempData["Info"] = string.Format("Promotion \"{0} ({1})\"\n was sent to users {2}",
+                        promotion.Name,
+                        promotion.Code,
+                        userEmails.Flatten(","));
+                }
+            }
+
+            return RedirectToAction("Unlock");
         }
     }
 }

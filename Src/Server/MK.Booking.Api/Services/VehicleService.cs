@@ -12,6 +12,7 @@ using apcurium.MK.Booking.IBS;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Extensions;
 using AutoMapper;
 using CustomerPortal.Client;
@@ -33,6 +34,7 @@ namespace apcurium.MK.Booking.Api.Services
         private readonly HoneyBadgerServiceClient _honeyBadgerServiceClient;
         private readonly ITaxiHailNetworkServiceClient _taxiHailNetworkServiceClient;
         private readonly IServerSettings _serverSettings;
+        private readonly ILogger _logger;
 
         public VehicleService(IIBSServiceProvider ibsServiceProvider,
             IVehicleTypeDao dao,
@@ -40,7 +42,8 @@ namespace apcurium.MK.Booking.Api.Services
             ReferenceDataService referenceDataService,
             HoneyBadgerServiceClient honeyBadgerServiceClient,
             ITaxiHailNetworkServiceClient taxiHailNetworkServiceClient,
-            IServerSettings serverSettings)
+            IServerSettings serverSettings,
+            ILogger logger)
         {
             _ibsServiceProvider = ibsServiceProvider;
             _dao = dao;
@@ -49,6 +52,7 @@ namespace apcurium.MK.Booking.Api.Services
             _honeyBadgerServiceClient = honeyBadgerServiceClient;
             _taxiHailNetworkServiceClient = taxiHailNetworkServiceClient;
             _serverSettings = serverSettings;
+            _logger = logger;
         }
 
         public AvailableVehiclesResponse Post(AvailableVehicles request)
@@ -57,8 +61,19 @@ namespace apcurium.MK.Booking.Api.Services
             string logoName = vehicleType != null ? vehicleType.LogoName : null;
 
             IbsVehiclePosition[] vehicles;
+            string market = null;
 
-            if (!request.Market.HasValue())
+            try
+            {
+                market = _taxiHailNetworkServiceClient.GetCompanyMarket(request.Latitude, request.Longitude);
+            }
+            catch
+            {
+                // Do nothing. If we fail to contact Customer Portal, we continue as if we are in a local market.
+                _logger.LogMessage("VehicleService: Error while trying to get company Market.");
+            }
+            
+            if (!market.HasValue())
             {
                 vehicles = _ibsServiceProvider.Booking()
                     .GetAvailableVehicles(request.Latitude, request.Longitude, request.VehicleTypeId);
@@ -70,7 +85,7 @@ namespace apcurium.MK.Booking.Api.Services
                 try
                 {
                     // Only get available vehicles for dispatchable companies in market
-                    var roamingCompanies = _taxiHailNetworkServiceClient.GetMarketFleets(_serverSettings.ServerData.TaxiHail.ApplicationKey, request.Market);
+                    var roamingCompanies = _taxiHailNetworkServiceClient.GetMarketFleets(_serverSettings.ServerData.TaxiHail.ApplicationKey, market);
                     if (roamingCompanies != null)
                     {
                         roamingFleetIds = roamingCompanies.Select(r => r.FleetId).ToArray();
@@ -79,9 +94,10 @@ namespace apcurium.MK.Booking.Api.Services
                 catch
                 {
                     // Do nothing. If we fail to contact Customer Portal, we return an unfiltered list of available vehicles.
+                    _logger.LogMessage("VehicleService: Error while trying to get Market fleets.");
                 }
 
-                var vehicleResponse = _honeyBadgerServiceClient.GetAvailableVehicles(request.Market, request.Latitude, request.Longitude, null, roamingFleetIds);
+                var vehicleResponse = _honeyBadgerServiceClient.GetAvailableVehicles(market, request.Latitude, request.Longitude, null, roamingFleetIds);
                 vehicles = vehicleResponse.Select(v => new IbsVehiclePosition
                 {
                     Latitude = v.Latitude,

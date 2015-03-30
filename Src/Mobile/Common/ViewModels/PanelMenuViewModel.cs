@@ -1,5 +1,6 @@
 using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows.Input;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Extensions;
@@ -10,10 +11,11 @@ using Params = System.Collections.Generic.Dictionary<string, string>;
 using apcurium.MK.Booking.Mobile.ViewModels.Payment;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Contract.Resources.Payments;
+using apcurium.MK.Booking.Mobile.Framework.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
-	public class PanelMenuViewModel : BaseViewModel
+	public partial class PanelMenuViewModel : BaseViewModel
     {
 	    private readonly IMvxWebBrowserTask _browserTask;
 
@@ -21,19 +23,22 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private readonly IAccountService _accountService;
 		private readonly IPhoneService _phoneService;
 		private readonly IPaymentService _paymentService;
+		private readonly IPromotionService _promotionService;
 
 		public PanelMenuViewModel (IMvxWebBrowserTask browserTask, 
 			IOrderWorkflowService orderWorkflowService,
 			IAccountService accountService,
 			IPhoneService phoneService,
-			IPaymentService paymentService)
+			IPaymentService paymentService,
+			IPromotionService promotionService)
         {
 		    _browserTask = browserTask;
 			_orderWorkflowService = orderWorkflowService;
 			_accountService = accountService;
 			_phoneService = phoneService;
 			_paymentService = paymentService;
-			ItemMenuList = new ObservableCollection<ItemMenuModel>();
+			_promotionService = promotionService;
+			PartialConstructor();
         }
 
 		public async Task Start()
@@ -56,43 +61,31 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             // Display a watermark indicating on which server the application is pointing
             SetServerWatermarkText();
 
-			// N.B.: This setup is for iOS only! For Android see: SubView_MainMenu.xaml
-			ItemMenuList.Add(new ItemMenuModel { Text = this.Services().Localize["PanelMenuViewLocationsText"], NavigationCommand = NavigateToMyLocations });
-			ItemMenuList.Add(new ItemMenuModel { Text = this.Services().Localize["PanelMenuViewOrderHistoryText"], NavigationCommand = NavigateToOrderHistory });
-			ItemMenuList.Add(new ItemMenuModel { Text = this.Services().Localize["PanelMenuViewUpdateProfileText"], NavigationCommand = NavigateToUpdateProfile });
-		    if (IsPayInTaxiEnabled)
-		    {
-                ItemMenuList.Add(new ItemMenuModel { Text = this.Services().Localize["PanelMenuViewPaymentInfoText"], NavigationCommand = NavigateToPaymentInformation });
-		    }
-		    if (Settings.PromotionEnabled)
-		    {
-		        ItemMenuList.Add(new ItemMenuModel { Text = this.Services().Localize["PanelMenuViewPromotionsText"], NavigationCommand = NavigateToPromotions });
-		    }
-		    if (IsNotificationsEnabled)
-		    {
-                ItemMenuList.Add(new ItemMenuModel { Text = this.Services().Localize["PanelMenuViewNotificationsText"], NavigationCommand = NavigateToNotificationsSettings });
-		    }			
-            if (IsTaxiHailNetworkEnabled)
-            {
-                ItemMenuList.Add(new ItemMenuModel { Text = this.Services().Localize["PanelMenuViewTaxiHailNetworkText"], NavigationCommand = NavigateToUserTaxiHailNetworkSettings });
+            // get the number of active promotions.
+            if (Settings.PromotionEnabled)
+            { 
+#pragma warning disable 4014
+		        RefreshPromoCodeCount();
+#pragma warning restore 4014
             }
-		    if (Settings.TutorialEnabled)
-		    {
-                ItemMenuList.Add(new ItemMenuModel { Text = this.Services().Localize["PanelMenuViewTutorialText"], NavigationCommand = NavigateToTutorial });
-		    }
-		    if (!Settings.HideCallDispatchButton)
-		    {
-                ItemMenuList.Add(new ItemMenuModel { Text = this.Services().Localize["PanelMenuViewCallDispatchText"], NavigationCommand = Call });
-		    }
-			ItemMenuList.Add(new ItemMenuModel { Text = this.Services().Localize["PanelMenuViewAboutUsText"], NavigationCommand = NavigateToAboutUs });
-		    if (!Settings.HideReportProblem)
-		    {
-                ItemMenuList.Add(new ItemMenuModel { Text = this.Services().Localize["PanelMenuViewReportProblemText"], NavigationCommand = NavigateToReportProblem });
-		    }
-			ItemMenuList.Add(new ItemMenuModel { Text = this.Services().Localize["PanelMenuViewSignOutText"], NavigationCommand = SignOut });
+		    // N.B.: This setup is for iOS only! For Android see: SubView_MainMenu.xaml
+			InitMenuList();
 		}
 
-	    public ObservableCollection<ItemMenuModel> ItemMenuList { get; set; }
+	    private async Task RefreshPromoCodeCount()
+	    {
+	        var promoCodes = await _promotionService.GetActivePromotions();
+	        if (promoCodes.Any())
+	        {
+				PromoCodeAlert = promoCodes.Length;
+
+				RefreshMenuBadges();
+	        }
+	    }
+
+		partial void InitMenuList();
+		partial void RefreshMenuBadges();
+		partial void PartialConstructor();
 
 	    private string _serverWatermarkText;
 	    public string ServerWatermarkText
@@ -108,6 +101,19 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 	        }
 	    }
 
+		private int? _promoCodeAlert;
+	    public int? PromoCodeAlert
+	    {
+	        get
+	        {
+	            return _promoCodeAlert;
+	        }
+	        set
+	        {
+	            _promoCodeAlert = value;
+	            RaisePropertyChanged();
+	        }
+	    }
 
 	    private bool _isPayInTaxiEnabled;
         public bool IsPayInTaxiEnabled
@@ -157,6 +163,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     _isTaxiHailNetworkEnabled = value;
                     RaisePropertyChanged();
                 }
+            }
+        }
+
+        public bool DisplayReportProblem
+        {
+            get 
+            { 
+                return !Settings.HideReportProblem 
+                    && Settings.SupportEmail.HasValue(); 
             }
         }
 
@@ -250,7 +265,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         }
 
         private string _version;
-        public string Version {
+
+	    public string Version {
             get 
             {
 				if (string.IsNullOrEmpty(_version))
@@ -380,11 +396,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		public class ItemMenuModel
 		{
+            public int ItemMenuId { get; set; }
+
 			public string Text { get; set;}
 
 			public ICommand NavigationCommand{ get; set;}
 
 			public bool Visibility { get; set;}
+
+			public string Alert { get; set; }
 		}
 
 		private void CloseMenu()

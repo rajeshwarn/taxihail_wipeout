@@ -15,7 +15,7 @@ namespace apcurium.MK.Booking.EventHandlers
         IEventHandler<PromotionDeactivated>,
         IEventHandler<PromotionApplied>,
         IEventHandler<PromotionRedeemed>,
-        IEventHandler<UserAddedToPromotionWhiteList>
+        IEventHandler<UserAddedToPromotionWhiteList_V2>
     {
         private readonly Func<BookingDbContext> _contextFactory;
 
@@ -139,18 +139,21 @@ namespace apcurium.MK.Booking.EventHandlers
             }
         }
 
-        public void Handle(UserAddedToPromotionWhiteList @event)
+        public void Handle(UserAddedToPromotionWhiteList_V2 @event)
         {
             using (var context = _contextFactory.Invoke())
             {
-                var promotionProgressDetail = context.Set<PromotionProgressDetail>().Find(@event.AccountId, @event.SourceId);
-                if (promotionProgressDetail == null)
+                foreach (var accountId in @event.AccountIds)
                 {
-                    promotionProgressDetail = new PromotionProgressDetail { AccountId = @event.AccountId, PromoId = @event.SourceId };
-                    context.Save(promotionProgressDetail);
-                }
+                    var promotionProgressDetail = context.Set<PromotionProgressDetail>().Find(accountId, @event.SourceId);
+                    if (promotionProgressDetail == null)
+                    {
+                        promotionProgressDetail = new PromotionProgressDetail { AccountId = accountId, PromoId = @event.SourceId };
+                        context.Save(promotionProgressDetail);
+                    }
 
-                promotionProgressDetail.LastTriggeredAmount = @event.LastTriggeredAmount;
+                    promotionProgressDetail.LastTriggeredAmount = @event.LastTriggeredAmount;
+                }
                 context.SaveChanges();
             }
         }

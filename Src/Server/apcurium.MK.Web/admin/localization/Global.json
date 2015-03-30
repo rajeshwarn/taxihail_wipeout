@@ -109,6 +109,8 @@
     "Network.SecondaryOrderTimeout": "Secondary Order Timeout (seconds)",
     "IsTaxiHailPro" : "IsTaxiHailPro (refresh to see)",
 
+    "HideFareInfoInReceipt":  "Hide fare info when Pay in Car",
+
 	"/******* End settings Aliases *******/": "",
 
     "/******* Begin notification settings Aliases ******/": "",

@@ -405,7 +405,7 @@ namespace apcurium.MK.Booking.Domain
                 EndTime = endTime,
                 ActiveFrom = activeFrom,
                 ActiveTo = activeTo,
-                Priority = priority,
+                Priority = priority
             });
         }
 
@@ -443,7 +443,9 @@ namespace apcurium.MK.Booking.Domain
                 return true;
             }
 
-            var paypalDisabledStatusChanged = PayPalClientSettings.IsEnabled != newPaymentSettings.PayPalClientSettings.IsEnabled;
+            var disabledStatusChanged = PayPalClientSettings.IsEnabled != newPaymentSettings.PayPalClientSettings.IsEnabled;
+
+            var webLandingPageChanged = PayPalServerSettings.LandingPageType != newPaymentSettings.PayPalServerSettings.LandingPageType;
 
             var environmentChanged = PayPalClientSettings.IsSandbox != newPaymentSettings.PayPalClientSettings.IsSandbox;
 
@@ -453,7 +455,7 @@ namespace apcurium.MK.Booking.Domain
             var prodSettingsChanged = PayPalClientSettings.Credentials.ClientId != newPaymentSettings.PayPalClientSettings.Credentials.ClientId
                    || PayPalServerSettings.Credentials.Secret != newPaymentSettings.PayPalServerSettings.Credentials.Secret;
 
-            return paypalDisabledStatusChanged || environmentChanged || sandboxSettingsChanged || prodSettingsChanged;
+            return disabledStatusChanged || webLandingPageChanged || environmentChanged || sandboxSettingsChanged || prodSettingsChanged;
         }
 
         public void ActivateRule(Guid ruleId)

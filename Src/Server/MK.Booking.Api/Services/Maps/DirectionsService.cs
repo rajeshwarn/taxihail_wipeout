@@ -61,8 +61,7 @@ namespace apcurium.MK.Booking.Api.Services.Maps
                     {
                         Latitude = request.OriginLat.Value,
                         Longitude = request.OriginLng.Value,
-                        VehicleTypeId = null,
-                        Market = request.Market
+                        VehicleTypeId = null
                     }).ToArray();
 
                     // Get nearest available vehicle

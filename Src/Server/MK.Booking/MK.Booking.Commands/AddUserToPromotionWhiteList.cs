@@ -10,7 +10,7 @@ namespace apcurium.MK.Booking.Commands
             Id = Guid.NewGuid();
         }
         
-        public Guid AccountId { get; set; }
+        public Guid[] AccountIds { get; set; } 
 
         public Guid PromoId { get; set; }
 

@@ -28,6 +28,10 @@
                 // We need to make sure that the account number, if empty, is saved as a string
                 data.settings.accountNumber = "";
             }
+            if (!data.settings.customerNumber) {
+                // We need to make sure that the customer number, if empty, is saved as a string
+                data.settings.customerNumber = "";
+            }
 
             var tipPercentages = [
                 { id: 0, display: "0%" },
@@ -42,9 +46,23 @@
             var displayTipSelection = TaxiHail.parameters.isChargeAccountPaymentEnabled
                 || TaxiHail.parameters.isPayPalEnabled;
 
+            var chargeTypes = TaxiHail.referenceData.paymentsList;
+
+            // Remove CoF option since there's no card in the user profile
+            if (TaxiHail.parameters.isBraintreePrepaidEnabled && !TaxiHail.auth.account.get('defaultCreditCard')) {
+                var chargeTypesClone = chargeTypes.slice();
+                for (var i = 0; i < chargeTypesClone.length; i++) {
+                    var chargeType = chargeTypesClone[i];
+                    if (chargeType.id == 3) {
+                        chargeTypesClone.splice(i, 1);
+                        chargeTypes = chargeTypesClone;
+                    }
+                }
+            }
+
             _.extend(data, {
                 vehiclesList: TaxiHail.vehicleTypes,
-                paymentsList: TaxiHail.referenceData.paymentsList,
+                paymentsList: chargeTypes,
                 isChargeAccountPaymentEnabled: TaxiHail.parameters.isChargeAccountPaymentEnabled,
                 displayTipSelection: displayTipSelection,
                 tipPercentages: tipPercentages
@@ -92,16 +110,43 @@
             this.$el.html(view.render().el);
         },
         
-        savechanges : function (form) {
+        savechanges: function (form) {
+            var accountNumber = this.model.get('settings').accountNumber;
+            var customerNumber = this.model.get('settings').customerNumber;
+            if (accountNumber) { // || customerNumber
+
+                // Validate charge account number
+                this.model.getChargeAccount(accountNumber, customerNumber)
+                    .then(_.bind(function() {
+                        this.updateSettings();
+                    }, this))
+                    .fail(_.bind(function () {
+                            this.$(':submit').button('reset');
+
+                            var alert = new TaxiHail.AlertView({
+                                message: TaxiHail.localize("Account Not Found"),
+                                type: 'error'
+                            });
+                            alert.on('ok', alert.remove, alert);
+                            this.$('.errors').html(alert.render().el);
+                    }, this));
+            } else {
+                // No charge account number to validate
+                this.updateSettings();
+            }
+        },
+        
+        updateSettings: function() {
+            // Update settings
             this.model.updateSettings()
-                .done(_.bind(function () {
+                .done(_.bind(function() {
                     this.renderConfirmationMessage();
                 }, this))
-                .fail(_.bind(function(){
+                .fail(_.bind(function() {
                     this.$(':submit').button('reset');
                 }, this));
         },
-        
+
         onPropertyChanged : function (e) {
             var $input = $(e.currentTarget);
             var settings = this.model.get('settings');

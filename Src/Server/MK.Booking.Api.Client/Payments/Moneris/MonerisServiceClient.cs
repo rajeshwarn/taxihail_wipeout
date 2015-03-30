@@ -94,7 +94,7 @@ namespace apcurium.MK.Booking.Api.Client.Payments.Moneris
 					};
 				}
 
-				return new TokenizedCreditCardResponse()
+				return new TokenizedCreditCardResponse
 				{
 					IsSuccessful = false,
 					Message = message
@@ -102,10 +102,17 @@ namespace apcurium.MK.Booking.Api.Client.Payments.Moneris
 			}
 			catch (Exception e)
 			{
+                var message = e.Message;
+                var exception = e as AggregateException;
+                if (exception != null)
+                {
+                    message = exception.InnerException.Message;
+                }
+
 				return new TokenizedCreditCardResponse
 				{
 					IsSuccessful = false,
-					Message = e.Message
+                    Message = message
 				};
 			}
 		}

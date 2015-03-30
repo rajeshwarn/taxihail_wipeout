@@ -411,7 +411,10 @@
   <data name="Network_CannotCreateOrder" xml:space="preserve">
     <value>Un problème est survenu en passant la commande avec {0}. Votre commande restera active.</value>
   </data>
-  <data name="CannotCreateOrderChargeAccountNotSupported" xml:space="preserve">
+  <data name="CannotCreateOrderChargeAccountNotSupportedInRoaming" xml:space="preserve">
+    <value>Ce compte n'est pas supporté dans un autre marché</value>
+  </data>
+  <data name="CannotCreateOrderChargeAccountNotSupportedOnWeb" xml:space="preserve">
     <value>Ce compte n'est pas supporté par la page web</value>
   </data>
   <data name="CannotCreateOrder_PromotionDoesNotExist" xml:space="preserve">
@@ -466,7 +469,7 @@
     <value>Félicitations! Vous êtes éligible à la promotion "{{ PromotionName }}". Utilisez le code &lt;b&gt;{{ PromotionCode }}&lt;/b&gt; lors de la confirmation d'une commande pour la réclamer.</value>
   </data>
   <data name="Email_Body_PromotionUnlockedLine2" xml:space="preserve">
-    <value>Faites-vite! Cette promotion expire le {{ ExpirationDate }} à {{ ExpirationTime }}.</value>
+    <value>Cette promotion expire le {{ ExpirationDate }} à {{ ExpirationTime }}.</value>
   </data>
   <data name="Email_Subject_PromotionUnlocked" xml:space="preserve">
     <value>{{ ApplicationName }} - Nouvelle promotion disponible!</value>
@@ -579,10 +582,13 @@
   <data name="Email_Subject_CreditCardDeactivated" xml:space="preserve">
     <value>{{ ApplicationName }} - Votre carte de crédit a été désactivée</value>
   </data>
-  <data name="CannotCreateOrder_PrepaidPayPalNoEstimate" xml:space="preserve">
-    <value>Pour payer via PayPal, un estimé doit être fourni. Veuillez sélectionner une adresse de destination pour obtenir un estimé.</value>
+  <data name="CannotCreateOrder_PrepaidNoEstimate" xml:space="preserve">
+    <value>Pour prépayer votre course, un estimé doit être fourni. Veuillez sélectionner une adresse de destination pour en obtenir un.</value>
   </data>
   <data name="CannotCreateOrder_PrepaidPayPalPaymentCancelled" xml:space="preserve">
     <value>Paiement PayPal annulé</value>
+  </data>
+  <data name="CannotCreateOrder_PrepaidButPrepaidNotEnabled" xml:space="preserve">
+    <value>Le paiement n'est pas supporté par la page web. Veuillez sélectionner un autre type de paiement.</value>
   </data>
 </root>

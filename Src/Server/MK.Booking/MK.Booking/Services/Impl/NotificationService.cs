@@ -19,6 +19,7 @@ using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.SMS;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Cryptography;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
@@ -449,6 +450,9 @@ namespace apcurium.MK.Booking.Services.Impl
             var paymentTransactionId = string.Empty;
             var paymentAuthorizationCode = string.Empty;
 
+            var hasFare = Math.Abs(fare) > double.Epsilon;
+            var showFareAndPaymentDetails = hasPaymentInfo || (!_serverSettings.ServerData.HideFareInfoInReceipt && hasFare);
+
             if (hasPaymentInfo)
             {
                 paymentAmount = _resources.FormatPrice(Convert.ToDouble(paymentInfo.Amount));
@@ -514,6 +518,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 HasPaymentInfo = hasPaymentInfo,
                 PaymentAmount = paymentAmount,
                 PaymentMethod = paymentMethod,
+                ShowFareAndPaymentDetails = showFareAndPaymentDetails,
                 PaymentTransactionId = paymentTransactionId,
                 PaymentAuthorizationCode = paymentAuthorizationCode,
                 ShowPaymentAuthorizationCode = paymentAuthorizationCode.HasValue(),
@@ -842,18 +847,10 @@ namespace apcurium.MK.Booking.Services.Impl
                     if (imageData != null)
                     {
                         // Hash it
-                        var md5Hasher = MD5.Create();
-                        var hashedImagedata = md5Hasher.ComputeHash(imageData);
-
-                        var sBuilder = new StringBuilder();
-
-                        foreach (byte b in hashedImagedata)
-                        {
-                            sBuilder.Append(b.ToString("x2"));
-                        }
+                        var hashedImagedata = CryptographyHelper.GetHashString(imageData);
 
                         // Append its hash to its URL
-                        return string.Format("{0}?refresh={1}", imageUrl, sBuilder);
+                        return string.Format("{0}?refresh={1}", imageUrl, hashedImagedata);
                     }
 
                     return imageUrl;

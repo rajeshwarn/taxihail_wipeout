@@ -42,7 +42,20 @@ namespace apcurium.MK.Booking.EventHandlers
                     }
 
                     var defaultSettingValue = taxiHailSettings.GetNestedPropertyValue(appSetting.Key);
-                    string defaultSettingStringValue = defaultSettingValue == null ? string.Empty : defaultSettingValue.ToString();
+                    string defaultSettingStringValue;
+
+                    if (defaultSettings[appSetting.Key].PropertyType == typeof(bool?))
+                    {
+                        // Support for nullabool
+                        defaultSettingStringValue = defaultSettingValue == null
+                            ? "null"
+                            : defaultSettingValue.ToString().ToLower();
+                    }
+                    else
+                    {
+                        defaultSettingStringValue = defaultSettingValue == null ? string.Empty : defaultSettingValue.ToString();
+                    }
+                    
                     if (defaultSettingStringValue.IsBool())
                     {
                         // Needed because ToString() returns False instead of false

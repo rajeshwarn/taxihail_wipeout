@@ -105,8 +105,12 @@ namespace MK.Common.Configuration
         public CustomerPortalSettingContainer CustomerPortal { get; protected set; }
         public NetworkSettingContainer Network { get; protected set; }
         public bool IsWebSignupHidden { get; protected set; }
+
         public string PayPalRegionInfoOverride { get; protected set; }
         public decimal PayPalConversionRate { get; protected set; }
+
+        [Display(Name = "Hide fare info when Pay in Car", Description = "Hide fare information in receipt when user choose to pay in car.")]
+        public bool HideFareInfoInReceipt { get; protected set; }
 
         [CustomizableByCompany]
         [Display(Name = "Minimum Required App Version", Description = "Minimum required app version to create an order.")]

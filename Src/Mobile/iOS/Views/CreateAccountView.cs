@@ -84,6 +84,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 		private void BuildTableView()
 		{
+			const int entryElementHeight = 40;
+
 			var bindings = this.CreateInlineBindingTarget<CreateAccountViewModel>();
 
 			var fullNameEntryElement = new TaxiHailEntryElement (string.Empty, Localize.GetValue ("CreateAccountFullNamePlaceHolder"), 
@@ -91,7 +93,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 									false, 
 									UITextAutocapitalizationType.Words).Bind (bindings, vm => vm.Data.Name);
 
-			var emailEntryElement = new TaxiHailEntryElement (string.Empty, Localize.GetValue ("CreateAccountEmailPlaceHolder"), ViewModel.Data.Email) {
+			var emailEntryElement = new TaxiHailEntryElement (string.Empty, Localize.GetValue ("CreateAccountEmailPlaceHolder"), ViewModel.Data.Email) 
+			{
 				KeyboardType = UIKeyboardType.EmailAddress
 			}.Bind (bindings, vm => vm.Data.Email);
 
@@ -103,13 +106,24 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			};
 
 			if (!ViewModel.HasSocialInfo) {
-				constraintTableViewHeight.Constant += 40*2;
+				constraintTableViewHeight.Constant += entryElementHeight * 2;
+
 				section.AddAll (new List<Element> { 
 					new TaxiHailEntryElement (string.Empty, Localize.GetValue ("CreateAccountPasswordPlaceHolder"), ViewModel.Data.Password, true)
 						.Bind(bindings, vm => vm.Data.Password), 
 					new TaxiHailEntryElement (string.Empty, Localize.GetValue ("CreateAccountPasswordConfirmationPlaceHolder"), ViewModel.ConfirmPassword, true)
 						.Bind(bindings, vm => vm.ConfirmPassword)
 				});
+			}
+
+			if (ViewModel.Settings.IsPayBackRegistrationFieldRequired.HasValue)
+			{
+				constraintTableViewHeight.Constant += entryElementHeight;
+
+				section.Add(new TaxiHailEntryElement (string.Empty, Localize.GetValue ("CreateAccountPayBackPlaceHolder"), 
+					ViewModel.Data.Name,
+                    false) { KeyboardType = UIKeyboardType.NumberPad }
+                    .Bind(bindings, vm => vm.Data.PayBack));
 			}
 
 			var root = new RootElement(){ section };

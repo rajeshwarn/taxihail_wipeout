@@ -1,6 +1,7 @@
 ﻿{
-	"Profile": "Profile",
-	"Favorites": "Favorites",
+    "Profile": "Profile",
+    "Payment": "Payment",
+    "Favorites": "Favorites",
 	"History": "History",
 	"Password": "Password"
 }

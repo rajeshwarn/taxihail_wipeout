@@ -41,7 +41,7 @@ namespace apcurium.MK.Booking.Api.Services
 
             if (result == null)
             {
-                result = GetReferenceData(request.CompanyKey, request.Market);
+                result = GetReferenceData(request.CompanyKey);
                 _cacheClient.Add(cacheKey, result);
             }
 
@@ -77,16 +77,16 @@ namespace apcurium.MK.Booking.Api.Services
             return result;
         }
 
-        private ReferenceData GetReferenceData(string companyKey, string market)
+        private ReferenceData GetReferenceData(string companyKey)
         {
-            var companies = _ibsServiceProvider.StaticData(companyKey, market).GetCompaniesList();
+            var companies = _ibsServiceProvider.StaticData(companyKey).GetCompaniesList();
             var payments = new List<ListItem>();
             var vehicles = new List<ListItem>();
 
             foreach (var company in companies)
             {
                 payments.AddRange(ChargeTypesClient.GetPaymentsList(company));
-                vehicles.AddRange(_ibsServiceProvider.StaticData(companyKey, market).GetVehiclesList(company));
+                vehicles.AddRange(_ibsServiceProvider.StaticData(companyKey).GetVehiclesList(company));
             }
 
             var equalityComparer = new ListItemEqualityComparer();

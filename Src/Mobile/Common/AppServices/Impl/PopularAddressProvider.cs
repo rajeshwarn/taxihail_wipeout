@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Entity;
@@ -22,15 +23,27 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         public IEnumerable<Address> GetPopularAddresses()
         {
             var cached = _cacheService.Get<Address[]>(PopularAddressesCacheKey);
-			if (cached != null)
+
+            if (cached != null)
             {
                 return cached;
-            }
+            } 
+            var result = GetPopularAddressesAsync().Result;
 
-			var result = UseServiceClientAsync<PopularAddressesServiceClient, IEnumerable<Address>>(service => service.GetPopularAddresses()).Result;
-            var popularAddresses = result as Address[] ?? result.ToArray();
-            _cacheService.Set(PopularAddressesCacheKey, popularAddresses.ToArray());
+            var popularAddresses = result.ToArray();
+
+            _cacheService.Set(PopularAddressesCacheKey, popularAddresses);
+
             return popularAddresses;
+        }
+
+        public async Task<IEnumerable<Address>> GetPopularAddressesAsync()
+        {
+            var result = await UseServiceClientAsync<PopularAddressesServiceClient, IEnumerable<Address>>(service => service.GetPopularAddresses());
+
+            return result != null
+                ? result.ToArray()
+                : new Address[0];
         }
     }
 }

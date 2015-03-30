@@ -12,6 +12,10 @@ namespace apcurium.MK.Booking.ReadModel.Query.Contract
 
         PromotionProgressDetail GetProgress(Guid accountId, Guid promoId);
 
+        IEnumerable<PromotionDetail> GetUnlockedPromotionsForUser(Guid accountId);
+
+        IEnumerable<PromotionDetail> GetAllCurrentlyActiveAndPublished(PromotionTriggerTypes? triggerType = null);
+
         IEnumerable<PromotionDetail> GetAllCurrentlyActive(PromotionTriggerTypes? triggerType = null);
 
         PromotionDetail FindById(Guid id);

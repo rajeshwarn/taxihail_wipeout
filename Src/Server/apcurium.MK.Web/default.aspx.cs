@@ -11,6 +11,7 @@ using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Api.Services;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Enumeration;
 using Microsoft.Practices.ServiceLocation;
 using ServiceStack.Text;
@@ -49,8 +50,11 @@ namespace apcurium.MK.Web
         protected bool IsWebSignupVisible { get; private set; }
         protected double MaxFareEstimate { get; private set; }
         protected bool IsChargeAccountPaymentEnabled { get; private set; }
+        protected bool IsBraintreePrepaidEnabled { get; private set; }
         protected bool IsPayPalEnabled { get; private set; }
         protected string PayPalMerchantId { get; private set; }
+        protected bool IsCreditCardMandatory { get; private set; }
+        protected bool? IsPayBackRegistrationFieldRequired { get; private set; }
         
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -68,6 +72,7 @@ namespace apcurium.MK.Web
             ShowCallDriver = config.ServerData.ShowCallDriver;
             DisableFutureBooking = config.ServerData.DisableFutureBooking;
             IsWebSignupVisible = !config.ServerData.IsWebSignupHidden;
+            IsCreditCardMandatory = config.ServerData.CreditCardIsMandatory;
 
             DirectionTarifMode = config.ServerData.Direction.TarifMode.ToString("G");
             DirectionNeedAValidTarif = config.ServerData.Direction.NeedAValidTarif;
@@ -80,11 +85,16 @@ namespace apcurium.MK.Web
             DestinationIsRequired = config.ServerData.DestinationIsRequired;
             MaxFareEstimate = config.ServerData.MaxFareEstimate;
             AccountActivationDisabled = config.ServerData.AccountActivationDisabled;
+            IsPayBackRegistrationFieldRequired = config.ServerData.IsPayBackRegistrationFieldRequired;
 
             var paymentSettings = config.GetPaymentSettings();
 
+            IsBraintreePrepaidEnabled = paymentSettings.PaymentMode == PaymentMethod.Braintree 
+                && paymentSettings.IsPayInTaxiEnabled
+                && paymentSettings.IsPrepaidEnabled;
+            IsPayPalEnabled = paymentSettings.PayPalClientSettings.IsEnabled
+                && paymentSettings.IsPrepaidEnabled;
             IsChargeAccountPaymentEnabled = paymentSettings.IsChargeAccountPaymentEnabled;
-            IsPayPalEnabled = paymentSettings.PayPalClientSettings.IsEnabled;
 
             PayPalMerchantId = paymentSettings.PayPalClientSettings.IsSandbox
                 ? paymentSettings.PayPalServerSettings.SandboxCredentials.MerchantId
@@ -102,8 +112,7 @@ namespace apcurium.MK.Web
             var referenceDataService = ServiceLocator.Current.GetInstance<ReferenceDataService>();
             var referenceData = (ReferenceData) referenceDataService.Get(new ReferenceDataRequest());
 
-            // Remove unsupported payment methods by the web app
-            referenceData.PaymentsList = HidePaymentTypes(referenceData.PaymentsList, new[] { ChargeTypes.CardOnFile.Id });
+            referenceData.PaymentsList = HidePaymentTypes(referenceData.PaymentsList, IsBraintreePrepaidEnabled, IsPayPalEnabled);
 
             ReferenceData = referenceData.ToString();
 
@@ -120,8 +129,20 @@ namespace apcurium.MK.Web
                 : Uri.UnescapeDataString(pair.Split('=')[1]);
         }
 
-        private List<Common.Entity.ListItem> HidePaymentTypes(IEnumerable<Common.Entity.ListItem> paymentList, IEnumerable<int?> paymentTypesToHide)
+        private List<Common.Entity.ListItem> HidePaymentTypes(IEnumerable<Common.Entity.ListItem> paymentList, bool creditCardPrepaidEnabled, bool payPalPrepaidEnabled)
         {
+            var paymentTypesToHide = new List<int?>();
+
+            if (!creditCardPrepaidEnabled)
+            {
+                paymentTypesToHide.Add(ChargeTypes.CardOnFile.Id);
+            }
+
+            if (!payPalPrepaidEnabled)
+            {
+                paymentTypesToHide.Add(ChargeTypes.PayPal.Id);
+            }
+
             return paymentList.Where(paymentType => !paymentTypesToHide.Contains(paymentType.Id)).ToList();
         }
     }

@@ -129,6 +129,7 @@
     <Compile Include="Configuration\TaxiHailSetting.cs" />
     <Compile Include="Configuration\UserTaxiHailNetworkSettings.cs" />
     <Compile Include="CreditCard.cs" />
+    <Compile Include="Cryptography\CryptographyHelper.cs" />
     <Compile Include="CurencyCodes.cs" />
     <Compile Include="Database\CustomDbConfiguration.cs" />
     <Compile Include="Diagnostic\ILogger.cs" />
@@ -137,6 +138,7 @@
     <Compile Include="Entity\AccountCharge.cs" />
     <Compile Include="Entity\AccountChargeQuestion.cs" />
     <Compile Include="Entity\Address.cs" />
+    <Compile Include="Entity\AddressLocationType.cs" />
     <Compile Include="Entity\BookingSettings.cs" />
     <Compile Include="Entity\DirectionSetting.cs" />
     <Compile Include="Entity\DriverInfos.cs" />
@@ -166,6 +168,7 @@
     <Compile Include="Enumeration\PaymentType.cs" />
     <Compile Include="Enumeration\PayPal\AuthorizationStates.cs" />
     <Compile Include="Enumeration\PayPal\Intents.cs" />
+    <Compile Include="Enumeration\PayPal\LandingPageTypes.cs" />
     <Compile Include="Enumeration\PayPal\PaymentStates.cs" />
     <Compile Include="Enumeration\PromoDiscountType.cs" />
     <Compile Include="Enumeration\PromotionTriggerTypes.cs" />

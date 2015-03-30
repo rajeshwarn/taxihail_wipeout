@@ -26,10 +26,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
             txtNote.Placeholder = Localize.GetValue("NotesToDriveLabel");
             txtNote.ShowCloseButtonOnKeyboard();
 
-            txtPromoCode.BackgroundColor = UIColor.FromRGB(242, 242, 242);
-            txtPromoCode.Placeholder = Localize.GetValue("PromoCodeLabel");
-            txtPromoCode.MoveClearButtonFromUnderRightImage = true;
-            DismissKeyboardOnReturn(txtPromoCode);
+			FlatButtonStyle.Silver.ApplyTo(btnViewPromo);
+			btnViewPromo.Font = UIFont.FromName(FontName.HelveticaNeueRegular, 28 / 2);
         }
 
         private void InitializeBinding()
@@ -73,16 +71,21 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
                 .To(vm => vm.Settings.LargeBags);
 
             set.Bind(txtNote)
-                .For(v => v.Text)
+				.For(v => v.Text)
                 .To(vm => vm.Note);
 
-            set.Bind(txtPromoCode)
-                .For(v => v.Text)
-                .To(vm => vm.PromoCode);
+			set.Bind(btnViewPromo)
+				.For("TouchUpInside")
+				.To(vm => vm.NavigateToPromotions);
 
-            set.Bind(btnPromo)
-                .For("TouchUpInside")
-                .To(vm => vm.NavigateToPromotions);
+			set.Bind (btnViewPromo)
+				.For ("Title")
+				.To (vm => vm.PromotionButtonText);
+
+			set.Bind(iconPromo)
+				.For(v => v.Hidden)
+				.To(vm => vm.PromoCode)
+				.WithConversion("HasValueToVisibility");
 
 			if (!this.Services().Settings.ShowPassengerName)
             {
@@ -121,8 +124,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
                 
             if (!this.Services().Settings.PromotionEnabled)
             {
-                txtPromoCode.RemoveFromSuperview();
-                btnPromo.RemoveFromSuperview();
+				btnViewPromo.RemoveFromSuperview();
+				iconPromo.RemoveFromSuperview();
             }
 
             set.Apply();

@@ -41,7 +41,7 @@ namespace apcurium.MK.Booking.Domain
             Handles<PromotionDeactivated>(OnPromotionDeactivated);
             Handles<PromotionApplied>(OnPromotionApplied);
             Handles<PromotionRedeemed>(NoAction);
-            Handles<UserAddedToPromotionWhiteList>(OnUserAddedToWhiteList);
+            Handles<UserAddedToPromotionWhiteList_V2>(OnUserAddedToWhiteList);
         }
 
         public Promotion(Guid id, IEnumerable<IVersionedEvent> history)
@@ -258,11 +258,11 @@ namespace apcurium.MK.Booking.Domain
             });
         }
 
-        public void AddUserToWhiteList(Guid accountId, double? lastTriggeredAmount)
+        public void AddUserToWhiteList(Guid[] accountIds, double? lastTriggeredAmount)
         {
-            Update(new UserAddedToPromotionWhiteList
+            Update(new UserAddedToPromotionWhiteList_V2
             {
-                AccountId = accountId,
+                AccountIds = accountIds,
                 LastTriggeredAmount = lastTriggeredAmount
             });
         }
@@ -280,6 +280,8 @@ namespace apcurium.MK.Booking.Domain
             _discountType = @event.DiscountType;
             _code = @event.Code;
             _triggerSettings = @event.TriggerSettings;
+
+            _active = true;
 
             SetInternalStartAndEndTimes(@event.StartTime, @event.EndTime);
         }
@@ -324,9 +326,12 @@ namespace apcurium.MK.Booking.Domain
             _usersWhiteList.Remove(@event.AccountId);
         }
 
-        private void OnUserAddedToWhiteList(UserAddedToPromotionWhiteList @event)
+        private void OnUserAddedToWhiteList(UserAddedToPromotionWhiteList_V2 @event)
         {
-            _usersWhiteList.Add(@event.AccountId);
+            foreach (var accountId in @event.AccountIds)
+            {
+                _usersWhiteList.Add(accountId);
+            }
         }
 
         /// <summary>

@@ -89,6 +89,19 @@
                             },
                             new { @class = "input-block-level", @style = "width:250px; margin-right:15px" })
                     }
+                    else if (settingType == typeof(bool?))
+                    {
+                        var nullaboolValue = (bool?)settingValue;
+                        @Html.DropDownList(
+                            setting.Key,
+                            new[]
+                            {
+                                new SelectListItem { Text = "Required", Value = "true", Selected = nullaboolValue == true },
+                                new SelectListItem { Text = "Optional", Value = "false", Selected = nullaboolValue == false },
+                                new SelectListItem { Text = "Off", Value = "null", Selected = nullaboolValue == null }
+                            },
+                            new { @class = "input-block-level", @style = "width:250px; margin-right:15px" })
+                    }
                     else if (settingType.BaseType == typeof(Enum))
                     {
                         var enumListItems = new List<SelectListItem>();

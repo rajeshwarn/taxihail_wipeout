@@ -153,6 +153,7 @@ namespace apcurium.MK.Web.Tests
             Assert.AreEqual(settings.VehicleTypeId, account.Settings.VehicleTypeId);
             Assert.AreEqual(settings.DefaultTipPercent, account.DefaultTipPercent);
             Assert.AreEqual(settings.AccountNumber, account.Settings.AccountNumber);
+            Assert.AreEqual(settings.CustomerNumber, account.Settings.CustomerNumber);
         }
 
         [Test]
@@ -168,7 +169,8 @@ namespace apcurium.MK.Web.Tests
                 ProviderId = 13,
                 VehicleTypeId = 1,
                 DefaultTipPercent = 15,
-                AccountNumber = "IDONOTEXIST"
+                AccountNumber = "IDONOTEXIST",
+                CustomerNumber = "0"
             };
 
             var sut = new AccountServiceClient(BaseUrl, SessionId, new DummyPackageInfo());

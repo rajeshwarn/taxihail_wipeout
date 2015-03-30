@@ -138,6 +138,12 @@
   <data name="AccountPaymentNumberRequiredMessage" xml:space="preserve">
     <value>Merci de saisir un numéro de compte valide</value>
   </data>
+  <data name="AccountPaymentCustomerNumberRequiredMessage" xml:space="preserve">
+    <value>Merci de saisir un numéro de client valide</value>
+  </data>
+  <data name="AccountPaymentCustomerNumberRequiredTitle" xml:space="preserve">
+    <value>Numéro de client du compte requis</value>
+  </data>
   <data name="AccountPaymentNumberRequiredTitle" xml:space="preserve">
     <value>Numéro de compte requis</value>
   </data>
@@ -553,7 +559,7 @@
     <value>Désolé, la réservation ne peut être complétée</value>
   </data>
   <data name="Error_AccountPaymentMessage" xml:space="preserve">
-    <value>Le numéro de compte semble invalide</value>
+    <value>Le numéro de compte ou de client semble invalide</value>
   </data>
   <data name="Error_AccountPaymentQuestionRequiredMessage" xml:space="preserve">
     <value>Vous devez saisir tous les champs pour continuer</value>
@@ -1037,6 +1043,9 @@
   </data>
   <data name="RideSettingsAccountNumber" xml:space="preserve">
     <value>Numéro de compte entreprise (optionnel)</value>
+  </data>
+  <data name="RideSettingsCustomerNumber" xml:space="preserve">
+    <value>Numéro de client du compte (optionnel)</value>
   </data>
   <data name="RideSettingsCannotLoadListMessage" xml:space="preserve">
     <value>Désolé, échec de la connexion, merci de réessayer ultérieurement</value>
@@ -1621,7 +1630,7 @@
     <value>En attente de {0} ...</value>
   </data>
   <data name="UpdateBookingSettingsEmptyAccount" xml:space="preserve">
-    <value>Le numéro de compte de peut être vide lorsque le mode de paiement sélectionné est Compte</value>
+    <value>Le numéro de compte et de client ne peuvent être vides lorsque le mode de paiement sélectionné est Compte</value>
   </data>
   <data name="UpdateBookingSettingsInvalidAccount" xml:space="preserve">
     <value>Le numéro de compte saisi n'existe pas</value>
@@ -1666,10 +1675,13 @@
   <data name="PanelMenuViewPromotionsText" xml:space="preserve">
     <value>Promotions</value>
   </data>
-  <data name="PromoRequiresToPayWithCOFPairingWarningMessage" xml:space="preserve">
+  <data name="UnpairWarningMessage" xml:space="preserve">
+    <value>Cette action ne peut être annulée</value>
+  </data>
+  <data name="UnpairWarningMessageWithPromo" xml:space="preserve">
     <value>Si vous décidez de payer dans le taxi, vous ne serez pas éligible à la promotion</value>
   </data>
-  <data name="PromoRequiresToPayWithCOFPairingWarningCancelButton" xml:space="preserve">
+  <data name="UnpairWarningCancelButton" xml:space="preserve">
     <value>Payer dans le taxi</value>
   </data>
   <data name="View_Promotions" xml:space="preserve">
@@ -1766,13 +1778,13 @@
     <value>Votre transaction a été refusée, veuillez essayer plus tard ou changer de carte de crédit.</value>
   </data>
   <data name="Overdue_Failed_Title" xml:space="preserve">
-    <value>Erreur de paiement de compte en souffrance</value>
+    <value>Erreur de paiement</value>
   </data>
   <data name="Overdue_Succeed_Message" xml:space="preserve">
     <value>Votre montant en souffrance de {0} a été payé et votre compte est de nouveau configuré pour le paiement via carte de crédit par défaut.</value>
   </data>
   <data name="Overdue_Succeed_Title" xml:space="preserve">
-    <value>Compte en souffrance</value>
+    <value>Compte Approuvé</value>
   </data>
   <data name="Overdue_Instructions" xml:space="preserve">
     <value> La dernière tentative de paiement a été refusée par votre compagnie de carte de crédit. Veuillez réessayer ou mettre à jour votre carte de crédit.</value>
@@ -1782,5 +1794,26 @@
   </data>
   <data name="Overdue_OutstandingPaymentExists" xml:space="preserve">
     <value>La dernière tentative de paiement a été refusée par votre compagnie de carte de crédit. Vous devez payer cette facture en souffrance avant de pouvoir réutiliser votre carte.</value>
+  </data>
+  <data name="PromoDescriptionCode" xml:space="preserve">
+    <value>Enter le code {0} ou appuyez sur le bouton ci-dessous.</value>
+  </data>
+  <data name="PromoApply" xml:space="preserve">
+    <value>Appliquer</value>
+  </data>
+  <data name="CreateAccountPayBackPlaceHolder" xml:space="preserve">
+    <value>PayBack</value>
+  </data>
+  <data name="PromotionButton" xml:space="preserve">
+    <value>Entrer ou voir promotions</value>
+  </data>
+  <data name="NoPayBackErrorMessage" xml:space="preserve">
+    <value>Le champs PayBack est requis</value>
+  </data>
+  <data name="InvalidPayBackErrorMessage" xml:space="preserve">
+    <value>Le champs PayBack ne doit contenir que des chiffres et ne doit pas dépasser 10 caractères</value>
+  </data>
+  <data name="RideSettingsPayBack" xml:space="preserve">
+    <value>PayBack</value>
   </data>
 </root>

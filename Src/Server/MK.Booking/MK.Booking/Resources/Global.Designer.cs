@@ -115,11 +115,20 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to You need an estimated fare to pay with PayPal. Please select a destination address to get one..
+        ///   Looks up a localized string similar to Payment is not enabled on the website. Please select another charge type..
         /// </summary>
-        public static string CannotCreateOrder_PrepaidPayPalNoEstimate {
+        public static string CannotCreateOrder_PrepaidButPrepaidNotEnabled {
             get {
-                return ResourceManager.GetString("CannotCreateOrder_PrepaidPayPalNoEstimate", resourceCulture);
+                return ResourceManager.GetString("CannotCreateOrder_PrepaidButPrepaidNotEnabled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You need an estimated fare to prepay your ride. Please select a destination address to get one..
+        /// </summary>
+        public static string CannotCreateOrder_PrepaidNoEstimate {
+            get {
+                return ResourceManager.GetString("CannotCreateOrder_PrepaidNoEstimate", resourceCulture);
             }
         }
         
@@ -250,11 +259,20 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to This account is not supported in a different market..
+        /// </summary>
+        public static string CannotCreateOrderChargeAccountNotSupportedInRoaming {
+            get {
+                return ResourceManager.GetString("CannotCreateOrderChargeAccountNotSupportedInRoaming", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to This account is not supported by the web site..
         /// </summary>
-        public static string CannotCreateOrderChargeAccountNotSupported {
+        public static string CannotCreateOrderChargeAccountNotSupportedOnWeb {
             get {
-                return ResourceManager.GetString("CannotCreateOrderChargeAccountNotSupported", resourceCulture);
+                return ResourceManager.GetString("CannotCreateOrderChargeAccountNotSupportedOnWeb", resourceCulture);
             }
         }
         
@@ -655,7 +673,7 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Hurry up! This promotion is only valid until {{ ExpirationDate }} {{ ExpirationTime }}..
+        ///   Looks up a localized string similar to This promotion is only valid until {{ ExpirationDate }} {{ ExpirationTime }}..
         /// </summary>
         public static string Email_Body_PromotionUnlockedLine2 {
             get {

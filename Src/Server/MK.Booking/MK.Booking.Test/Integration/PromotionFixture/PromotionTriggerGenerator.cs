@@ -50,7 +50,7 @@ namespace apcurium.MK.Booking.Test.Integration.PromotionFixture
             CreditCardGenerator = new CreditCardPaymentDetailsGenerator(() => new BookingDbContext(DbName), new TestServerSettings());
 
             TriggerSut = new PromotionTriggerGenerator(() => new BookingDbContext(DbName), bus.Object,
-                new PromotionDao(() => new BookingDbContext(DbName), new SystemClock(), new TestServerSettings()), new OrderDao(() => new BookingDbContext(DbName)), new AccountDao(() => new BookingDbContext(DbName)), new NotificationService(() => new BookingDbContext(DbName), null, null, null, serverSettings, null, orderDaoMock.Object, accountDaoMock.Object, new StaticMap(), smsSenderMock.Object, null, null));
+                new PromotionDao(() => new BookingDbContext(DbName), new SystemClock(), new TestServerSettings(), null), new AccountDao(() => new BookingDbContext(DbName)));
         }
     }
 
@@ -156,7 +156,7 @@ namespace apcurium.MK.Booking.Test.Integration.PromotionFixture
 
             Thread.Sleep(500);
 
-            var commands = Commands.OfType<AddUserToPromotionWhiteList>().Where(c => c.AccountId == accountId).ToArray();
+            var commands = Commands.OfType<AddUserToPromotionWhiteList>().Where(c => c.AccountIds.Contains(accountId)).ToArray();
 
             Assert.AreEqual(1, commands.Count());
             Assert.AreEqual(null, commands[0].LastTriggeredAmount);
@@ -190,7 +190,7 @@ namespace apcurium.MK.Booking.Test.Integration.PromotionFixture
             OrderGenerator.Handle(newOrderStatus);
             TriggerSut.Handle(newOrderStatus);
 
-            var commands = Commands.OfType<AddUserToPromotionWhiteList>().Where(c => c.AccountId == accountId).ToArray();
+            var commands = Commands.OfType<AddUserToPromotionWhiteList>().Where(c => c.AccountIds.Contains(accountId)).ToArray();
 
             Assert.AreEqual(1, commands.Count());
             Assert.AreEqual(2, commands[0].LastTriggeredAmount);
@@ -250,7 +250,7 @@ namespace apcurium.MK.Booking.Test.Integration.PromotionFixture
             CreditCardGenerator.Handle(newPayment);
             TriggerSut.Handle(newPayment);
 
-            var commands = Commands.OfType<AddUserToPromotionWhiteList>().Where(c => c.AccountId == accountId).ToArray();
+            var commands = Commands.OfType<AddUserToPromotionWhiteList>().Where(c => c.AccountIds.Contains(accountId)).ToArray();
 
             Assert.AreEqual(1, commands.Count());
             Assert.AreEqual(30.62, commands[0].LastTriggeredAmount);

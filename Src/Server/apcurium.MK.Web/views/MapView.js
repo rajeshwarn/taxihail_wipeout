@@ -12,7 +12,7 @@
         },
 
         refresh: function () {
-            this.availableVehicles = new TaxiHail.AvailableVehicleCollection([], { position: this._pickupPin.position, market: this.model.get('market') });
+            this.availableVehicles = new TaxiHail.AvailableVehicleCollection([], { position: this._pickupPin.position });
             var self = this;
             this.availableVehicles.fetch({
                 success: function (response) {

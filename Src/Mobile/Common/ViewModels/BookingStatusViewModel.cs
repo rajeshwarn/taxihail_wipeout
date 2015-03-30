@@ -669,9 +669,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			get
 			{
 				return this.GetCommand(async () =>
-					{
-						using(this.Services().Message.ShowProgress())
-						{
+				{
+					var message = Order.PromoCode.HasValue()
+						? this.Services().Localize["UnpairWarningMessageWithPromo"]
+						: this.Services().Localize["UnpairWarningMessage"];
+
+					this.Services().Message.ShowMessage(
+						this.Services().Localize["WarningTitle"], 
+						message, 
+						this.Services().Localize["UnpairWarningCancelButton"],
+						async () => {
 							var response = await _paymentService.Unpair(Order.Id);
 
 							if(response.IsSuccessful)
@@ -682,8 +689,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 							{
 								this.Services().Message.ShowMessage(this.Services().Localize["CmtRideLinqErrorTitle"], this.Services().Localize["UnpairErrorMessage"]);
 							}
-						}
-					});
+						},
+						this.Services().Localize["Cancel"], () => {});
+				});
 			}
 		}
 

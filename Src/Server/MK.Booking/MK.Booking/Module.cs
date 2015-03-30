@@ -28,6 +28,7 @@ using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
 using AutoMapper;
+using Infrastructure.EventSourcing;
 using Infrastructure.Messaging;
 using Infrastructure.Messaging.Handling;
 using Microsoft.Practices.Unity;
@@ -53,11 +54,11 @@ namespace apcurium.MK.Booking
             container.RegisterInstance<IPushNotificationService>(new PushNotificationService(container.Resolve<IServerSettings>(), container.Resolve<ILogger>()));
             container.RegisterInstance<IOrderDao>(new OrderDao(() => container.Resolve<BookingDbContext>()));
             container.RegisterInstance<IReportDao>(new ReportDao(() => container.Resolve<BookingDbContext>()));
-            container.RegisterInstance<IPromotionDao>(new PromotionDao(() => container.Resolve<BookingDbContext>(), container.Resolve<IClock>(), container.Resolve<IServerSettings>()));
+            container.RegisterInstance<IPromotionDao>(new PromotionDao(() => container.Resolve<BookingDbContext>(), container.Resolve<IClock>(), container.Resolve<IServerSettings>(), container.Resolve<IEventSourcedRepository<Promotion>>()));
             container.RegisterType<INotificationService, NotificationService>(new ContainerControlledLifetimeManager());
                     
             container.RegisterType<IPairingService>(new ContainerControlledLifetimeManager(),
-                new InjectionFactory(c => new PairingService(c.Resolve<ICommandBus>(), c.Resolve<IIbsOrderService>(), c.Resolve<IOrderDao>(), c.Resolve<IPromotionDao>(), c.Resolve<IServerSettings>())));
+                new InjectionFactory(c => new PairingService(c.Resolve<ICommandBus>(), c.Resolve<IIbsOrderService>(), c.Resolve<IOrderDao>(), c.Resolve<IServerSettings>())));
 
             container.RegisterInstance<IAddressDao>(new AddressDao(() => container.Resolve<BookingDbContext>()));
             container.RegisterInstance<IAccountDao>(new AccountDao(() => container.Resolve<BookingDbContext>()));        

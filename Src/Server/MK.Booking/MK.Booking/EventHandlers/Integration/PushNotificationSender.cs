@@ -28,7 +28,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             IEventHandler<OrderStatusChanged>,
             IEventHandler<CreditCardPaymentCaptured_V2>,
             IEventHandler<OrderPreparedForNextDispatch>,
-            IEventHandler<UserAddedToPromotionWhiteList>,
+            IEventHandler<UserAddedToPromotionWhiteList_V2>,
             IEventHandler<OrderCancelledBecauseOfError>
     {
         private readonly INotificationService _notificationService;
@@ -79,7 +79,8 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
         {
             try
             {
-                if (@event.IsNoShowFee)
+                if (@event.IsNoShowFee
+                    || @event.IsForPrepaidOrder)
                 {
                     // Don't message user for now
                     return;
@@ -105,12 +106,16 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             }
         }
 
-        public void Handle(UserAddedToPromotionWhiteList @event)
+        public void Handle(UserAddedToPromotionWhiteList_V2 @event)
         {
             try
             {
                 var promotion = _promotionDao.FindById(@event.SourceId);
-                _notificationService.SendPromotionUnlockedPush(@event.AccountId, promotion);
+
+                foreach (var accountId in @event.AccountIds)
+                {
+                    _notificationService.SendPromotionUnlockedPush(accountId, promotion);
+                }
             }
             catch (Exception e)
             {

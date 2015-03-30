@@ -34,7 +34,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			if (!ViewModel.IsChargeAccountPaymentEnabled)
 			{
 				lblAccountNumber.RemoveFromSuperview();
+                lblCustomerNumber.RemoveFromSuperview();
 				txtAccountNumber.RemoveFromSuperview();
+                txtCustomerNumber.RemoveFromSuperview();
 			}
 
 			if (!ViewModel.ShouldDisplayTip)
@@ -43,19 +45,28 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 txtTip.RemoveFromSuperview();
 			}
 
+			if (!ViewModel.IsPayBackFieldEnabled)
+			{
+				lblPayBack.RemoveFromSuperview();
+				txtPayBack.RemoveFromSuperview();
+			}
+
             lblName.Text = Localize.GetValue("RideSettingsName");
             lblPhone.Text = Localize.GetValue("RideSettingsPhone");
             lblVehicleType.Text = Localize.GetValue("RideSettingsVehiculeType");
             lblChargeType.Text = Localize.GetValue("RideSettingsChargeType");
 			lblPassword.Text = Localize.GetValue("RideSettingsPassword");
 			lblAccountNumber.Text = Localize.GetValue("RideSettingsAccountNumber");
+            lblCustomerNumber.Text = Localize.GetValue("RideSettingsCustomerNumber");
             lblTip.Text = Localize.GetValue("PaymentDetails.TipAmountLabel");
+			lblPayBack.Text = Localize.GetValue("RideSettingsPayBack");
 
             txtPassword.Text = "\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022";
 
             DismissKeyboardOnReturn(txtName);
 
             txtPhone.ShowCloseButtonOnKeyboard();
+			txtPayBack.ShowCloseButtonOnKeyboard();
 
             txtVehicleType.Configure(Localize.GetValue("RideSettingsVehiculeType"), () => ViewModel.Vehicles, () => ViewModel.VehicleTypeId, x => ViewModel.SetVehiculeType.ExecuteIfPossible(x.Id));
             txtChargeType.Configure(Localize.GetValue("RideSettingsChargeType"), () => ViewModel.Payments, () => ViewModel.ChargeTypeId, x => ViewModel.SetChargeType.ExecuteIfPossible(x.Id));
@@ -94,6 +105,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				.For(v => v.Text)
 				.To(vm => vm.AccountNumber);
 
+            set.Bind(txtCustomerNumber)
+                .For(v => v.Text)
+                .To(vm => vm.CustomerNumber);
+
 			set.Bind(txtPassword)
 				.For(v => v.NavigateCommand)
 				.To(vm => vm.NavigateToUpdatePassword);
@@ -101,6 +116,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             set.Bind(txtTip)
                 .For(v => v.Text)
                 .To(vm => vm.PaymentPreferences.TipAmount);
+
+			set.Bind(txtPayBack)
+				.For(v => v.Text)
+				.To(vm => vm.PayBack);
 
 			set.Apply ();       
         }

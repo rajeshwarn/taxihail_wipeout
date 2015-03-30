@@ -42,10 +42,10 @@
             <div class="controls">
                 <div class="input-append date" id="StartDate" data-role='datepicker' data-date="">
                     @Html.TextBoxFor(x => x.StartDate, new { @class = "input-small"})
-                    @Html.ValidationMessageFor(x => x.StartDate)
                     <span class="add-on"><i class="icon-calendar"></i></span>
                 </div>
                 <button type="button" class="btn" id="eraseStartDate">x</button>
+                @Html.ValidationMessageFor(x => x.StartDate)
             </div>
         </div>
         <div class="control-group right-control-group" style="width: 50%">
@@ -53,10 +53,10 @@
             <div class="controls">
                 <div class="input-append date" id="EndDate" data-role='datepicker' data-date="">
                     @Html.TextBoxFor(x => x.EndDate, new { @class = "input-small" })
-                    @Html.ValidationMessageFor(x => x.EndDate)
                     <span class="add-on"><i class="icon-calendar"></i></span>
                 </div>
                 <button type="button" class="btn" id="eraseEndDate">x</button>
+                @Html.ValidationMessageFor(x => x.EndDate)
             </div>
         </div>
     </div>
@@ -103,10 +103,10 @@
             <div class="controls">
                 <div class="input-append bootstrap-timepicker-component">
                     @Html.TextBoxFor(x => x.StartTimeValue, new { @class = "input-small", data_role = "timepicker" })
-                    @Html.ValidationMessageFor(x => x.StartTimeValue)
                     <span class="add-on"><i class="icon-time"></i></span>
                 </div>
                 <button type="button" class="btn" id="eraseStartTime">x</button>
+                @Html.ValidationMessageFor(x => x.StartTimeValue)
             </div>
         </div>
         <div class="control-group right-control-group" style="width: 50%">
@@ -114,10 +114,10 @@
             <div class="controls">
                 <div class="input-append bootstrap-timepicker-component">
                     @Html.TextBoxFor(x => x.EndTimeValue, new { @class = "input-small", data_role = "timepicker" })
-                    @Html.ValidationMessageFor(x => x.EndTimeValue)
                     <span class="add-on"><i class="icon-time"></i></span>
                 </div>
                 <button type="button" class="btn" id="eraseEndTime">x</button>
+                @Html.ValidationMessageFor(x => x.EndTimeValue)
                 <span class="help-inline next-day-warning">The next day</span>
             </div>
         </div>
@@ -135,16 +135,16 @@
             </label>
         </div>
     </div>
-    <div class="clearfix">
+    <div class="clearfix" id="publishedDatesGroup">
         <div class="control-group left-control-group" style="width: 50%">
             @Html.LabelFor(x => x.PublishedStartDate, new { @class = "control-label" })
             <div class="controls">
                 <div class="input-append date" id="PublishedStartDate" data-role='datepicker' data-date="">
                     @Html.TextBoxFor(x => x.PublishedStartDate, new { @class = "input-small" })
-                    @Html.ValidationMessageFor(x => x.PublishedStartDate)
                     <span class="add-on"><i class="icon-calendar"></i></span>
                 </div>
                 <button type="button" class="btn" id="erasePublishedStartDate">x</button>
+                @Html.ValidationMessageFor(x => x.PublishedStartDate)
             </div>
         </div>
         <div class="control-group right-control-group" style="width: 50%">
@@ -152,10 +152,10 @@
             <div class="controls">
                 <div class="input-append date" id="PublishedEndDate" data-role='datepicker' data-date="">
                     @Html.TextBoxFor(x => x.PublishedEndDate, new { @class = "input-small" })
-                    @Html.ValidationMessageFor(x => x.PublishedEndDate)
                     <span class="add-on"><i class="icon-calendar"></i></span>
                 </div>
                 <button type="button" class="btn" id="erasePublishedEndDate">x</button>
+                @Html.ValidationMessageFor(x => x.PublishedEndDate)
             </div>
         </div>
     </div>
@@ -172,7 +172,7 @@
             <label class="radio inline">@Html.RadioButtonFor(x => x.DiscountType, PromoDiscountType.Percentage) %</label>
         </div>
     </div>
-    <div class="clearfix">
+    <div class="clearfix" id="usageGroup">
         <div class="control-group left-control-group">
             @Html.LabelFor(x => x.MaxUsagePerUser, new { @class = "control-label" })
             <div class="controls">
@@ -203,14 +203,16 @@
             </div>
         </div>
         <div class="control-group right-control-group" id="rideCountTriggerGroup" style="width: 45%">
+            @Html.LabelFor(x => x.TriggerSettings.RideCount, new { @class = "control-label" })
             <div class="controls" style="margin-left: 20px;">
-                @Html.TextBoxFor(x => x.TriggerSettings.RideCount, new {@placeholder = "Number of Rides"})
+                @Html.TextBoxFor(x => x.TriggerSettings.RideCount, new {@placeholder = "Number of Rides", @class = "input-small"})
                 @Html.ValidationMessageFor(x => x.TriggerSettings.RideCount)
             </div>
         </div>
         <div class="control-group right-control-group" id="amountSpentTriggerGroup" style="width: 45%">
+            @Html.LabelFor(x => x.TriggerSettings.AmountSpent, new { @class = "control-label" })
             <div class="controls" style="margin-left: 20px;">
-                @Html.TextBoxFor(x => x.TriggerSettings.AmountSpent, new {@placeholder = "Amount Spent"})
+                @Html.TextBoxFor(x => x.TriggerSettings.AmountSpent, new { @placeholder = "Amount Spent", @class = "input-small" })
                 @Html.ValidationMessageFor(x => x.TriggerSettings.AmountSpent)
             </div>
         </div>
@@ -283,12 +285,27 @@
 
         if (dropDownValue == "@Convert.ToInt32(PromotionTriggerTypes.RideCount)") {
             $('#amountSpentTriggerGroup').addClass('hidden');
+            $('#publishedDatesGroup').addClass('hidden');
             $('#rideCountTriggerGroup').removeClass('hidden');
-        }
-        else if (dropDownValue == "@Convert.ToInt32(PromotionTriggerTypes.AmountSpent)") {
-            $('#amountSpentTriggerGroup').removeClass('hidden');
+            $('#usageGroup').removeClass('hidden');
+        } else if (dropDownValue == "@Convert.ToInt32(PromotionTriggerTypes.AmountSpent)") {
             $('#rideCountTriggerGroup').addClass('hidden');
+            $('#publishedDatesGroup').addClass('hidden');
+            $('#amountSpentTriggerGroup').removeClass('hidden');
+            $('#usageGroup').removeClass('hidden');
+        } else if (dropDownValue == "@Convert.ToInt32(PromotionTriggerTypes.CustomerSupport)") {
+            $('#rideCountTriggerGroup').addClass('hidden');
+            $('#amountSpentTriggerGroup').addClass('hidden');
+            $('#publishedDatesGroup').addClass('hidden');
+            $('#usageGroup').addClass('hidden');
+        } else if (dropDownValue == "@Convert.ToInt32(PromotionTriggerTypes.AccountCreated)") {
+            $('#usageGroup').removeClass('hidden');
+            $('#amountSpentTriggerGroup').addClass('hidden');
+            $('#rideCountTriggerGroup').addClass('hidden');
+            $('#publishedDatesGroup').addClass('hidden');
         } else {
+            $('#publishedDatesGroup').removeClass('hidden');
+            $('#usageGroup').removeClass('hidden');
             $('#amountSpentTriggerGroup').addClass('hidden');
             $('#rideCountTriggerGroup').addClass('hidden');
         }
@@ -299,17 +316,37 @@
 
         @if (Model.TriggerSettings.Type == PromotionTriggerTypes.RideCount)
         {
-            <text>$('#amountSpentTriggerGroup').addClass('hidden');</text>
+            <text>
+            $('#amountSpentTriggerGroup').addClass('hidden');
+            $('#publishedDatesGroup').addClass('hidden');
+            </text>
         }
         else if (Model.TriggerSettings.Type == PromotionTriggerTypes.AmountSpent)
         {
-            <text>$('#rideCountTriggerGroup').addClass('hidden');</text>
+            <text>
+            $('#rideCountTriggerGroup').addClass('hidden');
+            $('#publishedDatesGroup').addClass('hidden');
+            </text>
+        } else if (Model.TriggerSettings.Type == PromotionTriggerTypes.AccountCreated) {
+            <text>
+            $('#rideCountTriggerGroup').addClass('hidden');
+            $('#amountSpentTriggerGroup').addClass('hidden');
+            $('#publishedDatesGroup').addClass('hidden');
+            </text>
+        } 
+        else if (Model.TriggerSettings.Type == PromotionTriggerTypes.CustomerSupport) {
+            <text>
+            $('#usageGroup').addClass('hidden');
+            $('#publishedDatesGroup').addClass('hidden');
+            $('#rideCountTriggerGroup').addClass('hidden');
+            $('#amountSpentTriggerGroup').addClass('hidden');
+            </text>
         }
         else {
             <text>
-        $('#rideCountTriggerGroup').addClass('hidden');
-        $('#amountSpentTriggerGroup').addClass('hidden');
-        </text>
+            $('#rideCountTriggerGroup').addClass('hidden');
+            $('#amountSpentTriggerGroup').addClass('hidden');
+            </text>
         }
 
         $('#triggerTypeDropDown').change(function (e) {
@@ -317,7 +354,7 @@
         });
 
         $('[data-role=datepicker]').datepicker()
-            .on('changeDate.datepicker', function(e) {
+            .on('changeDate.datepicker', function (e) {
                 ondatepickerchange(e);
             });
 

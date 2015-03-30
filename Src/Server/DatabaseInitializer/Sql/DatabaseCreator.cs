@@ -298,8 +298,8 @@ namespace DatabaseInitializer.Sql
                     "WHERE [EventType] <> 'apcurium.MK.Booking.Events.OrderVehiclePositionChanged' AND [EventDate] > '{2}'", newDatabase, oldDatabase, sqlDateTime.ToString("yyyy-MM-dd HH:mm:ss.fff")); // delete OrderVehiclePositionChanged events
 
             var start = DateTime.Now;
-            Console.WriteLine("Starting to copy events: (Timeout: 1800 seconds)");
-            DatabaseHelper.ExecuteNonQuery(connString, queryForEvents, 1800);
+            Console.WriteLine("Starting to copy events: (Timeout: 3600 seconds)");
+            DatabaseHelper.ExecuteNonQuery(connString, queryForEvents, 3600);
             Console.WriteLine("Finished copying events (Duration: {0})", (DateTime.Now - start).TotalSeconds);
 
             // copy cache table except the static data

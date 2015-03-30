@@ -35,6 +35,30 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 				this.Observe(_orderWorkflowService.GetAndObserveIsDestinationModeOpened(),
 					isDestinationModeOpened => EstimateSelected = isDestinationModeOpened);
 			}
+
+            if (Settings.PromotionEnabled)
+            {
+                this.Observe(ObserveIsPromoCodeApplied(), isPromoCodeApplied => IsPromoCodeActive = isPromoCodeApplied);
+            }
+        }
+
+        private IObservable<bool> ObserveIsPromoCodeApplied()
+        {
+            return _orderWorkflowService.GetAndObservePromoCode()
+				.Select(promoCode => !string.IsNullOrEmpty(promoCode));
+        }
+
+        private bool _isPromoCodeActive;
+        public bool IsPromoCodeActive {
+            get 
+			{ 
+				return _isPromoCodeActive; 
+			}
+            set
+            {
+                _isPromoCodeActive = value;
+                RaisePropertyChanged();
+            }
         }
 
         private bool _estimateSelected;
@@ -211,7 +235,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 									this.Services().Localize["AccountPaymentNumberRequiredMessage"],
 									() => { return; });
 
-								hasValidAccountNumber = await _orderWorkflowService.ValidateAccountNumberAndPrepareQuestions(accountNumber);
+                                var customerNumber = await this.Services().Message.ShowPromptDialog(
+                                    this.Services().Localize["AccountPaymentCustomerNumberRequiredTitle"],
+                                    this.Services().Localize["AccountPaymentCustomerNumberRequiredMessage"],
+                                    () => { return; });
+
+                                hasValidAccountNumber = await _orderWorkflowService.ValidateAccountNumberAndPrepareQuestions(accountNumber, customerNumber);
 								if (!hasValidAccountNumber)
 								{
 									await this.Services().Message.ShowMessage(
@@ -220,7 +249,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 									return;
 								}
 
-								await _orderWorkflowService.SetAccountNumber(accountNumber);
+								await _orderWorkflowService.SetAccountNumber(accountNumber, customerNumber);
 							}
 
 							var questions = await _orderWorkflowService.GetAccountPaymentQuestions();

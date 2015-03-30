@@ -33,6 +33,42 @@
             android:background="@color/top_bar_separator_color"
             android:orientation="horizontal" />
         <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="10dip"
+            android:textSize="17dp"
+            android:gravity="center_horizontal"
+            android:layout_gravity="center_horizontal"
+            android:textColor="@color/black"
+            android:text="@string/PromoMustUseCardOnFileWarningMessage" />
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="30dip"
+            android:paddingRight="30dip"
+            android:layout_marginTop="12dip">
+            <apcurium.mk.booking.mobile.client.controls.widgets.EditTextEntry
+                android:id="@+id/txtPromoCode"
+                android:imeOptions="actionDone"
+                android:paddingRight="5dip"
+                android:hint="@string/PromoCodeLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/HeightEditTextFlat"
+                android:layout_weight="1"
+                android:background="#e5e5e5"
+                android:singleLine="true"
+                local:MvxBind="Text PromotionCode" />
+            <Button
+                style="@style/ButtonActionGreenStyle"
+                android:id="@+id/ApplyPromotionCodeButton"
+                android:paddingLeft="5dip"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/HeightButton"
+                android:layout_marginLeft="5dip"
+                android:text="@string/PromoApply"
+                local:MvxBind="Click ApplyPromotion" />
+        </LinearLayout>
+        <TextView
             android:text="@string/PromotionViewNoPromotionLabel"
             style="@style/TopTitleText"
             android:layout_gravity="center"
@@ -54,6 +90,6 @@
             android:layout_height="fill_parent"
             android:layout_marginBottom="5dip"
             local:MvxItemTemplate="@layout/promotionlistitem"
-            local:MvxBind="ItemsSource ActivePromotions; ItemClick SelectPromotion" />
+            local:MvxBind="ItemsSource ActivePromotions" />
     </LinearLayout>
 </RelativeLayout>

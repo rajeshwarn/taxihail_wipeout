@@ -45,14 +45,14 @@ namespace apcurium.MK.Booking.EventHandlers
                 payment.Meter = @event.Meter;
                 payment.Tax = @event.Tax;
                 payment.Tip = @event.Tip;
+                payment.IsCancelled = false;
+                payment.Error = null;
 
                 // Update payment details after settling an overdue payment
                 if (@event.NewCardToken.HasValue())
                 {
                     payment.CardToken = @event.NewCardToken;
                 }
-                payment.IsCancelled = false;
-                payment.Error = null;
 
                 var order = context.Find<OrderDetail>(payment.OrderId);
                 if (!order.Fare.HasValue || order.Fare == 0)
@@ -68,9 +68,12 @@ namespace apcurium.MK.Booking.EventHandlers
                     order.Tax = Convert.ToDouble(@event.Tax);
                 }
 
-                var orderStatus = context.Find<OrderStatusDetail>(payment.OrderId);
-                orderStatus.IBSStatusId = VehicleStatuses.Common.Done;
-                orderStatus.IBSStatusDescription = _resources.Get("OrderStatus_wosDONE", order.ClientLanguageCode);
+                if (!@event.IsForPrepaidOrder)
+                {
+                    var orderStatus = context.Find<OrderStatusDetail>(payment.OrderId);
+                    orderStatus.IBSStatusId = VehicleStatuses.Common.Done;
+                    orderStatus.IBSStatusDescription = _resources.Get("OrderStatus_wosDONE", order.ClientLanguageCode);
+                }
 
                 context.SaveChanges();
             }
