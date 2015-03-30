@@ -113,7 +113,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 				var filteredPlaces = await _placesService.GetFilteredPlacesList(filter);
 
 
-				if (filteredPlaces.Skip(1).Any())
+				if (filteredPlaces.Length > 1)
 				{
 					_defaultNearbyPlaces = ConvertToAddressViewModel(filteredPlaces, AddressType.Places);
 

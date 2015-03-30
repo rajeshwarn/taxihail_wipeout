@@ -177,9 +177,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Addresses
         public async void Open(AddressLocationType filterAddresses)
         {
             await ViewModel.LoadAddresses(filterAddresses).HandleErrors();
-			if (filterAddresses == AddressLocationType.Unspeficied 
-				|| ViewModel.AllAddresses.Skip(1).Any()
-			)
+			if (filterAddresses == AddressLocationType.Unspeficied || ViewModel.AllAddresses.Count > 1)
             {
                 Visibility = ViewStates.Visible;
                 FocusOnTextField();
