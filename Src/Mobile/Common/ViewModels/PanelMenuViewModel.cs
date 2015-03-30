@@ -64,22 +64,27 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             // get the number of active promotions.
             if (Settings.PromotionEnabled)
             { 
-#pragma warning disable 4014
 		        RefreshPromoCodeCount();
-#pragma warning restore 4014
             }
 		    // N.B.: This setup is for iOS only! For Android see: SubView_MainMenu.xaml
 			InitMenuList();
 		}
 
-	    private async Task RefreshPromoCodeCount()
+	    private async void RefreshPromoCodeCount()
 	    {
-	        var promoCodes = await _promotionService.GetActivePromotions();
-	        if (promoCodes.Any())
+	        try
 	        {
-				PromoCodeAlert = promoCodes.Length;
+                var promoCodes = await _promotionService.GetActivePromotions().HandleErrors();
 
-				RefreshMenuBadges();
+                PromoCodeAlert = promoCodes.Any()
+                    ? (int?)promoCodes.Length
+                    : null;
+
+                RefreshMenuBadges();
+	        }
+	        catch (Exception ex)
+	        {
+	            Logger.LogError(ex);
 	        }
 	    }
 
@@ -186,6 +191,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 if (value != _menuIsOpen) 
                 {
                     _menuIsOpen = value;
+
+                    if (_menuIsOpen)
+                    {
+                        RefreshPromoCodeCount();
+                    }
+
 					RaisePropertyChanged ();
                 }
             }
