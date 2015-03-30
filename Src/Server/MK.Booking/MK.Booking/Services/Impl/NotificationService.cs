@@ -450,6 +450,9 @@ namespace apcurium.MK.Booking.Services.Impl
             var paymentTransactionId = string.Empty;
             var paymentAuthorizationCode = string.Empty;
 
+            var hasFare = Math.Abs(fare) > double.Epsilon;
+            var showFareAndPaymentDetails = hasPaymentInfo || (!_serverSettings.ServerData.HideFareInfoInReceipt && hasFare);
+
             if (hasPaymentInfo)
             {
                 paymentAmount = _resources.FormatPrice(Convert.ToDouble(paymentInfo.Amount));
@@ -515,6 +518,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 HasPaymentInfo = hasPaymentInfo,
                 PaymentAmount = paymentAmount,
                 PaymentMethod = paymentMethod,
+                ShowFareAndPaymentDetails = showFareAndPaymentDetails,
                 PaymentTransactionId = paymentTransactionId,
                 PaymentAuthorizationCode = paymentAuthorizationCode,
                 ShowPaymentAuthorizationCode = paymentAuthorizationCode.HasValue(),
