@@ -1778,13 +1778,13 @@
     <value>Votre transaction a été refusée, veuillez essayer plus tard ou changer de carte de crédit.</value>
   </data>
   <data name="Overdue_Failed_Title" xml:space="preserve">
-    <value>Erreur de paiement de compte en souffrance</value>
+    <value>Erreur de paiement</value>
   </data>
   <data name="Overdue_Succeed_Message" xml:space="preserve">
     <value>Votre montant en souffrance de {0} a été payé et votre compte est de nouveau configuré pour le paiement via carte de crédit par défaut.</value>
   </data>
   <data name="Overdue_Succeed_Title" xml:space="preserve">
-    <value>Compte en souffrance</value>
+    <value>Compte Approuvé</value>
   </data>
   <data name="Overdue_Instructions" xml:space="preserve">
     <value> La dernière tentative de paiement a été refusée par votre compagnie de carte de crédit. Veuillez réessayer ou mettre à jour votre carte de crédit.</value>

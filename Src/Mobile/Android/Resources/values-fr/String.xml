@@ -593,9 +593,9 @@
   <string name="Overdue_Retry">Payer Maintenant</string>
   <string name="Overdue_Amount">Montant dû:</string>
   <string name="Overdue_Failed_Message">Votre transaction a été refusée, veuillez essayer plus tard ou changer de carte de crédit.</string>
-  <string name="Overdue_Failed_Title">Erreur de paiement de compte en souffrance</string>
+  <string name="Overdue_Failed_Title">Erreur de paiement</string>
   <string name="Overdue_Succeed_Message">Votre montant en souffrance de {0} a été payé et votre compte est de nouveau configuré pour le paiement via carte de crédit par défaut.</string>
-  <string name="Overdue_Succeed_Title">Compte en souffrance</string>
+  <string name="Overdue_Succeed_Title">Compte Approuvé</string>
   <string name="Overdue_IBSOrderId">Commande:</string>
   <string name="Overdue_Instructions"> La dernière tentative de paiement a été refusée par votre compagnie de carte de crédit. Veuillez réessayer ou mettre à jour votre carte de crédit.</string>
   <string name="View_Overdue">Compte en souffrance</string>

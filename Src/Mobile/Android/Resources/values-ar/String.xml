@@ -579,9 +579,9 @@
   <string name="Overdue_Retry">Pay Now</string>
   <string name="Overdue_Amount">Amount due:</string>
   <string name="Overdue_Failed_Message">Your transaction was denied, please try again later or replace your credit card with a new one.</string>
-  <string name="Overdue_Failed_Title">Error settling declined payment</string>
-  <string name="Overdue_Succeed_Message">Your declined payment of {0} has been settled and your account is now enabled to pay with your card on file by default.</string>
-  <string name="Overdue_Succeed_Title">Payment Declined</string>
+  <string name="Overdue_Failed_Title">Payment Failed</string>
+  <string name="Overdue_Succeed_Message">Your overdue payment of {0} has been settled and your account is now enabled to pay with your card on file by default.</string>
+  <string name="Overdue_Succeed_Title">Payment Succeeded</string>
   <string name="Overdue_IBSOrderId">Order:</string>
   <string name="Overdue_Instructions">Your credit card failed to pay the previous ride, you need to either retry to pay again or update your credit card information.</string>
   <string name="View_Overdue">Payment Declined</string>

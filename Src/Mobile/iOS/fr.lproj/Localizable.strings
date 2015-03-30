@@ -586,10 +586,10 @@
 "Overdue_Retry"="Payer Maintenant";
 "Overdue_Amount"="Montant dû:";
 "View_Overdue"="Compte en souffrance";
-"Overdue_Failed_Title"="Erreur de paiement de compte en souffrance";
+"Overdue_Failed_Title"="Erreur de paiement";
 "Overdue_Failed_Message"="Votre transaction a été refusée, veuillez essayer plus tard ou changer de carte de crédit.";
 "Overdue_Succeed_Message"="Votre montant en souffrance de {0} a été payé et votre compte est de nouveau configuré pour le paiement via carte de crédit par défaut.";
-"Overdue_Succeed_Title"="Compte en souffrance";
+"Overdue_Succeed_Title"="Compte Approuvé";
 "Overdue_IBSOrderId"="Commande:";
 "Overdue_Instructions"=" La dernière tentative de paiement a été refusée par votre compagnie de carte de crédit. Veuillez réessayer ou mettre à jour votre carte de crédit.";
 "Overdue_OutstandingPaymentExists"="La dernière tentative de paiement a été refusée par votre compagnie de carte de crédit. Vous devez payer cette facture en souffrance avant de pouvoir réutiliser votre carte.";
