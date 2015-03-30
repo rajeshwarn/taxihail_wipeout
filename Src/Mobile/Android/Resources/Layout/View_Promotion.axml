@@ -64,6 +64,7 @@
                 android:paddingLeft="5dip"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/HeightButton"
+                android:layout_marginLeft="5dip"
                 android:text="@string/PromoApply"
                 local:MvxBind="Click ApplyPromotion" />
         </LinearLayout>
