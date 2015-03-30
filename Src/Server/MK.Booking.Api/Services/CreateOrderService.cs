@@ -1,17 +1,20 @@
 ﻿#region
 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
+using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Api.Jobs;
 using apcurium.MK.Booking.Calculator;
 using apcurium.MK.Booking.Commands;
+using apcurium.MK.Booking.Domain;
 using apcurium.MK.Booking.IBS;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
@@ -21,7 +24,11 @@ using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
+using apcurium.MK.Common.Resources;
 using AutoMapper;
+using CustomerPortal.Client;
+using Infrastructure.EventSourcing;
+using HoneyBadger;
 using Infrastructure.Messaging;
 using log4net;
 using ServiceStack.Common.Web;
@@ -39,9 +46,15 @@ namespace apcurium.MK.Booking.Api.Services
 
         private readonly IAccountDao _accountDao;
         private readonly IOrderDao _orderDao;
+        private readonly IPromotionDao _promotionDao;
+        private readonly IEventSourcedRepository<Promotion> _promoRepository;
+        private readonly HoneyBadgerServiceClient _honeyBadgerServiceClient;
+        private readonly ITaxiHailNetworkServiceClient _taxiHailNetworkServiceClient;
         private readonly IPaymentService _paymentService;
-        private readonly ICreditCardDao _creditCardDao;
+        private readonly IPayPalServiceFactory _payPalServiceFactory;
+        private readonly IOrderPaymentDao _orderPaymentDao;
         private readonly IAccountChargeDao _accountChargeDao;
+        private readonly ICreditCardDao _creditCardDao;
         private readonly ICommandBus _commandBus;
         private readonly IServerSettings _serverSettings;
         private readonly ReferenceDataService _referenceDataService;
@@ -58,11 +71,18 @@ namespace apcurium.MK.Booking.Api.Services
             IRuleCalculator ruleCalculator,
             IUpdateOrderStatusJob updateOrderStatusJob,
             IAccountChargeDao accountChargeDao,
+            ICreditCardDao creditCardDao,
             IOrderDao orderDao,
+            IPromotionDao promotionDao,
+            IEventSourcedRepository<Promotion> promoRepository,
+            HoneyBadgerServiceClient honeyBadgerServiceClient,
+            ITaxiHailNetworkServiceClient taxiHailNetworkServiceClient,
             IPaymentService paymentService,
-            ICreditCardDao creditCardDao)
+            IPayPalServiceFactory payPalServiceFactory,
+            IOrderPaymentDao orderPaymentDao)
         {
             _accountChargeDao = accountChargeDao;
+            _creditCardDao = creditCardDao;
             _commandBus = commandBus;
             _accountDao = accountDao;
             _referenceDataService = referenceDataService;
@@ -71,8 +91,13 @@ namespace apcurium.MK.Booking.Api.Services
             _ruleCalculator = ruleCalculator;
             _updateOrderStatusJob = updateOrderStatusJob;
             _orderDao = orderDao;
+            _promotionDao = promotionDao;
+            _promoRepository = promoRepository;
+            _honeyBadgerServiceClient = honeyBadgerServiceClient;
+            _taxiHailNetworkServiceClient = taxiHailNetworkServiceClient;
             _paymentService = paymentService;
-            _creditCardDao = creditCardDao;
+            _payPalServiceFactory = payPalServiceFactory;
+            _orderPaymentDao = orderPaymentDao;
 
             _resources = new Resources.Resources(_serverSettings);
         }
@@ -81,93 +106,108 @@ namespace apcurium.MK.Booking.Api.Services
         {
             Log.Info("Create order request : " + request.ToJson());
 
-            if (!request.FromWebApp)
+            // TODO: Find a better way to do this...
+            var isFromWebApp = request.FromWebApp;
+
+            if (!isFromWebApp)
             {
                 ValidateAppVersion(request.ClientLanguageCode);
             }
 
-            var account = _accountDao.FindById(new Guid(this.GetSession().UserAuthId));
+            // Find market
+            var market = _taxiHailNetworkServiceClient.GetCompanyMarket(request.PickupAddress.Latitude, request.PickupAddress.Longitude);
 
-            account.IBSAccountId = CreateIbsAccountIfNeeded(account);
+            if (market.HasValue())
+            {
+                // Only pay in car charge type supported for orders outside home market
+                request.Settings.ChargeTypeId = ChargeTypes.PaymentInCar.Id;
+            }
+            else
+            {
+                // Ensure that the market is not an empty string
+                market = null;
+            }
+
+            var isPrepaid = isFromWebApp
+                && (request.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id
+                    || request.Settings.ChargeTypeId == ChargeTypes.PayPal.Id);
+
+            BestAvailableCompany bestAvailableCompany;
+
+            if (request.OrderCompanyKey.HasValue() || request.OrderFleetId.HasValue)
+            {
+                // For API user, it's possible to manually specify which company to dispatch to by using a fleet id
+                bestAvailableCompany = FindSpecificCompany(market, request.OrderCompanyKey, request.OrderFleetId);
+            }
+            else
+            {
+                bestAvailableCompany = FindBestAvailableCompany(market, request.PickupAddress.Latitude, request.PickupAddress.Longitude);
+            }
+
+            if (market.HasValue() && bestAvailableCompany.CompanyKey == null)
+            {
+                // No companies available that are desserving this region for the company
+                throw new HttpError(HttpStatusCode.BadRequest, ErrorCode.CreateOrder_RuleDisable.ToString(),
+                            _resources.Get("CannotCreateOrder_NoCompanies", request.ClientLanguageCode));
+            }
+
+            var account = _accountDao.FindById(new Guid(this.GetSession().UserAuthId));
+            account.IBSAccountId = CreateIbsAccountIfNeeded(account, bestAvailableCompany.CompanyKey);
+            
+            var isFutureBooking = request.PickupDate.HasValue;
+            var pickupDate = request.PickupDate ?? GetCurrentOffsetedTime(bestAvailableCompany.CompanyKey);
 
             // User can still create future order, but we allow only one active Book now order.
-            if (!request.PickupDate.HasValue)
+            if (!isFutureBooking)
             {
                 var pendingOrderId = GetPendingOrder();
 
                 // We don't allow order creation if there's already an order scheduled
                 if (!_serverSettings.ServerData.AllowSimultaneousAppOrders
                     && pendingOrderId != null
-                    && !request.FromWebApp)
+                    && !isFromWebApp)
                 {
-                    throw new HttpError(HttpStatusCode.Forbidden, ErrorCode.CreateOrder_PendingOrder.ToString(), pendingOrderId.ToString());
+                    throw new HttpError(HttpStatusCode.BadRequest, ErrorCode.CreateOrder_PendingOrder.ToString(), pendingOrderId.ToString());
                 }
             }
 
-            // Payment mode is card on file
-            if (request.Settings.ChargeTypeId.HasValue
-                && request.Settings.ChargeTypeId.Value == ChargeTypes.CardOnFile.Id)
+            // We can only validate rules when in the local market
+            if (!market.HasValue())
             {
-                ValidateCreditCard(request.Id, account, request.ClientLanguageCode);
-            }
+                var rule = _ruleCalculator.GetActiveDisableFor(
+                    isFutureBooking,
+                    pickupDate,
+                    () =>
+                        _ibsServiceProvider.StaticData(bestAvailableCompany.CompanyKey)
+                            .GetZoneByCoordinate(
+                                request.Settings.ProviderId,
+                                request.PickupAddress.Latitude,
+                                request.PickupAddress.Longitude),
+                    () => request.DropOffAddress != null
+                        ? _ibsServiceProvider.StaticData(bestAvailableCompany.CompanyKey)
+                            .GetZoneByCoordinate(
+                                request.Settings.ProviderId,
+                                request.DropOffAddress.Latitude,
+                                request.DropOffAddress.Longitude)
+                            : null);
 
-            bool isChargeAccountPaymentWithCardOnFile = false;
-            var chargeTypeKey = ChargeTypes.GetList()
-                    .Where(x => x.Id == request.Settings.ChargeTypeId)
-                    .Select(x => x.Display)
-                    .FirstOrDefault();
-
-
-            string[] prompts = null;
-            int?[] promptsLength = null;
-            // Payment mode is charge account
-            if (request.Settings.ChargeTypeId.HasValue
-                && request.Settings.ChargeTypeId.Value == ChargeTypes.Account.Id)
-            {
-                var accountChargeDetail = _accountChargeDao.FindByAccountNumber(request.Settings.AccountNumber);
-
-                if (accountChargeDetail.UseCardOnFileForPayment)
+                if (rule != null)
                 {
-                    if (request.FromWebApp)
-                    {
-                        // Card on file payment not supported by the web app
-                        throw new HttpError(HttpStatusCode.Forbidden, ErrorCode.CreateOrder_RuleDisable.ToString(),
-                            _resources.Get("CannotCreateOrderChargeAccountNotSupported", request.ClientLanguageCode));
-                    }
-
-                    ValidateCreditCard(request.Id, account, request.ClientLanguageCode);
-
-                    chargeTypeKey = ChargeTypes.CardOnFile.Display;
-                    request.Settings.ChargeTypeId = ChargeTypes.CardOnFile.Id;
-                    isChargeAccountPaymentWithCardOnFile = true;
+                    throw new HttpError(HttpStatusCode.BadRequest, ErrorCode.CreateOrder_RuleDisable.ToString(), rule.Message);
                 }
-
-                ValidateChargeAccountAnswers(request.Settings.AccountNumber, request.QuestionsAndAnswers);
-
-                prompts = request.QuestionsAndAnswers.Select(q => q.Answer).ToArray();
-                promptsLength = request.QuestionsAndAnswers.Select(q => q.MaxLength).ToArray();
             }
-
-            var rule = _ruleCalculator.GetActiveDisableFor(
-                request.PickupDate.HasValue,
-                request.PickupDate.HasValue
-                    ? request.PickupDate.Value
-                    : GetCurrentOffsetedTime(),
-                () => _ibsServiceProvider.StaticData().GetZoneByCoordinate(
-                        request.Settings.ProviderId,
-                        request.PickupAddress.Latitude,
-                        request.PickupAddress.Longitude),
-                () => request.DropOffAddress != null
-                    ? _ibsServiceProvider.StaticData().GetZoneByCoordinate(
-                            request.Settings.ProviderId,
-                            request.DropOffAddress.Latitude,
-                            request.DropOffAddress.Longitude)
-                    : null);
-
-            if (rule != null)
+            else
             {
-                var err = new HttpError(HttpStatusCode.Forbidden, ErrorCode.CreateOrder_RuleDisable.ToString(), rule.Message);
-                throw err;
+                // External market, query company site directly to validate their rules
+                var orderServiceClient = new RoamingValidationServiceClient(bestAvailableCompany.CompanyKey, _serverSettings.ServerData.Target);
+
+                Log.Info(string.Format("Validating rules for company in external market... Target: {0}, Server: {1}", _serverSettings.ServerData.Target, orderServiceClient.Url));
+
+                var validationResult = orderServiceClient.ValidateOrder(request, true);
+                if (validationResult.HasError)
+                {
+                    throw new HttpError(HttpStatusCode.BadRequest, ErrorCode.CreateOrder_RuleDisable.ToString(), validationResult.Message);
+                }
             }
 
             if (Params.Get(request.Settings.Name, request.Settings.Phone).Any(p => p.IsNullOrEmpty()))
@@ -175,11 +215,18 @@ namespace apcurium.MK.Booking.Api.Services
                 throw new HttpError(ErrorCode.CreateOrder_SettingsRequired.ToString());
             }
 
-            var referenceData = (ReferenceData)_referenceDataService.Get(new ReferenceDataRequest());
+            ReferenceData referenceData;
 
-            request.PickupDate = request.PickupDate.HasValue
-                ? request.PickupDate.Value
-                : GetCurrentOffsetedTime();
+            if (market.HasValue())
+            {
+                referenceData = (ReferenceData)_referenceDataService.Get(new ReferenceDataRequest { CompanyKey = bestAvailableCompany.CompanyKey });
+            }
+            else
+            {
+                referenceData = (ReferenceData)_referenceDataService.Get(new ReferenceDataRequest());
+            }
+
+            request.PickupDate = pickupDate;
 
             request.Settings.Passengers = request.Settings.Passengers <= 0
                 ? 1
@@ -188,11 +235,42 @@ namespace apcurium.MK.Booking.Api.Services
             if (_serverSettings.ServerData.Direction.NeedAValidTarif
                 && (!request.Estimate.Price.HasValue || request.Estimate.Price == 0))
             {
-                throw new HttpError(ErrorCode.CreateOrder_NoFareEstimateAvailable.ToString());
+                throw new HttpError(HttpStatusCode.BadRequest,
+                    ErrorCode.CreateOrder_NoFareEstimateAvailable.ToString(),
+                    GetCreateOrderServiceErrorMessage(ErrorCode.CreateOrder_NoFareEstimateAvailable, request.ClientLanguageCode));
             }
+
+            // IBS provider validation
+            ValidateProvider(request, referenceData, market.HasValue());
+
+            // Map the command to obtain a OrderId (web doesn't prepopulate it in the request)
+            var orderCommand = Mapper.Map<Commands.CreateOrder>(request);
+
+            // Promo code validation
+            var applyPromoCommand = ValidateAndApplyPromotion(request.PromoCode, request.Settings.ChargeTypeId, account.Id, orderCommand.OrderId, pickupDate, isFutureBooking, request.ClientLanguageCode);
+
+            // Charge account validation
+            var accountValidationResult = ValidateChargeAccountIfNecessary(request, orderCommand.OrderId, account, isFutureBooking, market, isFromWebApp);
+
+            // if ChargeAccount uses payment with card on file, payment validation was already done
+            if (!accountValidationResult.IsChargeAccountPaymentWithCardOnFile)
+            {
+                // Payment method validation
+                ValidatePayment(request, orderCommand.OrderId, account, isFutureBooking, request.Estimate.Price, isPrepaid);
+            }
+            
+            // Initialize PayPal if user is using PayPal web
+            var  paypalWebPaymentResponse = InitializePayPalCheckoutIfNecessary(isPrepaid, orderCommand.OrderId, request);
 
             var chargeTypeIbs = string.Empty;
             var chargeTypeEmail = string.Empty;
+            var chargeTypeKey = ChargeTypes.GetList()
+                    .Where(x => x.Id == request.Settings.ChargeTypeId)
+                    .Select(x => x.Display)
+                    .FirstOrDefault();
+
+            chargeTypeKey = accountValidationResult.ChargeTypeKeyOverride ?? chargeTypeKey;
+
             if (chargeTypeKey != null)
             {
                 // this must be localized with the priceformat to be localized in the language of the company
@@ -202,55 +280,146 @@ namespace apcurium.MK.Booking.Api.Services
                 chargeTypeEmail = _resources.Get(chargeTypeKey, request.ClientLanguageCode);
             }
 
-            var ibsOrderId = CreateIbsOrder(account.IBSAccountId.Value, request, referenceData, chargeTypeIbs, prompts, promptsLength);
-
-            if (!ibsOrderId.HasValue
-                || ibsOrderId <= 0)
-            {
-                var code = !ibsOrderId.HasValue || (ibsOrderId.Value >= -1) ? "" : "_" + Math.Abs(ibsOrderId.Value);
-                return new HttpError(ErrorCode.CreateOrder_CannotCreateInIbs + code);
-            }
-
-            //Temporary solution for Aexid, we call the save extr payment to send the account info.  if not successful, we cancel the order.
-            var result = TryToSendAccountInformation(request.Id, ibsOrderId.Value, request, account);
-            if (result.HasValue)
-            {
-                return new HttpError(ErrorCode.CreateOrder_CannotCreateInIbs + "_" + Math.Abs(result.Value));
-            }
-
-            var command = Mapper.Map<Commands.CreateOrder>(request);
-            var emailCommand = Mapper.Map<SendBookingConfirmationEmail>(request);
-
-            command.IBSOrderId = emailCommand.IBSOrderId = ibsOrderId.Value;
-            command.AccountId = account.Id;
-            command.UserAgent = base.Request.UserAgent;
-            command.ClientVersion = base.Request.Headers.Get("ClientVersion");
-            command.IsChargeAccountPaymentWithCardOnFile = isChargeAccountPaymentWithCardOnFile;
-            emailCommand.EmailAddress = account.Email;
-
             // Get Vehicle Type from reference data
-            var vehicleType =
-                referenceData.VehiclesList.Where(x => x.Id == request.Settings.VehicleTypeId)
-                    .Select(x => x.Display)
-                    .FirstOrDefault();
+            var vehicleType = referenceData.VehiclesList
+                .Where(x => x.Id == request.Settings.VehicleTypeId)
+                .Select(x => x.Display)
+                .FirstOrDefault();
 
-            command.Settings.ChargeType = chargeTypeIbs;
-            command.Settings.VehicleType = vehicleType;
-            emailCommand.Settings.ChargeType = chargeTypeEmail;
-            emailCommand.Settings.VehicleType = vehicleType;
+            orderCommand.AccountId = account.Id;
+            orderCommand.UserAgent = Request.UserAgent;
+            orderCommand.ClientVersion = Request.Headers.Get("ClientVersion");
+            orderCommand.IsChargeAccountPaymentWithCardOnFile = accountValidationResult.IsChargeAccountPaymentWithCardOnFile;
+            orderCommand.CompanyKey = bestAvailableCompany.CompanyKey;
+            orderCommand.CompanyName = bestAvailableCompany.CompanyName;
+            orderCommand.Market = market;
+            orderCommand.IsPrepaid = isPrepaid;
+            orderCommand.Settings.ChargeType = chargeTypeIbs;
+            orderCommand.Settings.VehicleType = vehicleType;
 
-            _commandBus.Send(command);
-            _commandBus.Send(emailCommand);
+            _commandBus.Send(orderCommand);
 
-            UpdateStatusAsync(command.OrderId);
+            if (paypalWebPaymentResponse != null)
+            {
+                // Order prepaid by PayPal
+
+                _commandBus.Send(new SaveTemporaryOrderCreationInfo
+                {
+                    OrderId = orderCommand.OrderId,
+                    SerializedOrderCreationInfo = new TemporaryOrderCreationInfo
+                    {
+                        OrderId = orderCommand.OrderId,
+                        Account = account,
+                        Request = request,
+                        ReferenceData = referenceData,
+                        ChargeTypeIbs = chargeTypeIbs,
+                        ChargeTypeEmail = chargeTypeEmail,
+                        VehicleType = vehicleType,
+                        Prompts = accountValidationResult.Prompts,
+                        PromptsLength = accountValidationResult.PromptsLength,
+                        BestAvailableCompany = bestAvailableCompany,
+                        ApplyPromoCommand = applyPromoCommand
+                    }.ToJson()
+                });
+
+                return paypalWebPaymentResponse;
+            }
+
+            // Create order on IBS
+            Task.Run(() =>
+                CreateOrderOnIBSAndSendCommands(orderCommand.OrderId, account,
+                    request, referenceData, chargeTypeIbs, chargeTypeEmail, vehicleType,
+                    accountValidationResult.Prompts, accountValidationResult.PromptsLength,
+                    bestAvailableCompany, applyPromoCommand, market, isPrepaid));
 
             return new OrderStatusDetail
             {
-                OrderId = command.OrderId,
+                OrderId = orderCommand.OrderId,
                 Status = OrderStatus.Created,
-                IBSOrderId = ibsOrderId,
-                IBSStatusId = "",
-                IBSStatusDescription = (string)_resources.Get("OrderStatus_wosWAITING", command.ClientLanguageCode),
+                IBSStatusId = string.Empty,
+                IBSStatusDescription = _resources.Get("CreateOrder_WaitingForIbs", orderCommand.ClientLanguageCode),
+            };
+        }
+
+        public object Get(ExecuteWebPaymentAndProceedWithOrder request)
+        {
+            Log.Info("ExecuteWebPaymentAndProceedWithOrder request : " + request.ToJson());
+
+            var temporaryInfo = _orderDao.GetTemporaryInfo(request.OrderId);
+            var orderInfo = JsonSerializer.DeserializeFromString<TemporaryOrderCreationInfo>(temporaryInfo.SerializedOrderCreationInfo);
+
+            if (request.Cancel || orderInfo == null)
+            {
+                var clientLanguageCode = orderInfo == null
+                    ? SupportedLanguages.en.ToString()
+                    : orderInfo.Request.ClientLanguageCode;
+
+                _commandBus.Send(new CancelOrderBecauseOfError
+                {
+                    OrderId = request.OrderId,
+                    WasPrepaid = true,
+                    ErrorDescription = _resources.Get("CannotCreateOrder_PrepaidPayPalPaymentCancelled", clientLanguageCode)
+                });
+            }
+            else
+            {
+                // Execute PayPal payment
+                var response = _payPalServiceFactory.GetInstance().ExecuteWebPayment(request.PayerId, request.PaymentId);
+
+                if (response.IsSuccessful)
+                {
+                    var fareObject = FareHelper.GetFareFromAmountInclTax(Convert.ToDouble(orderInfo.Request.Estimate.Price),
+                        _serverSettings.ServerData.VATIsEnabled
+                            ? _serverSettings.ServerData.VATPercentage
+                            : 0);
+
+                    var tipPercentage = orderInfo.Account.DefaultTipPercent ?? _serverSettings.ServerData.DefaultTipPercentage;
+                    var tipAmount = FareHelper.GetTipAmountFromTotalAmount(fareObject.AmountInclTax, tipPercentage);
+
+                    _commandBus.Send(new MarkPrepaidOrderAsSuccessful
+                    {
+                        OrderId = request.OrderId,
+                        Amount = fareObject.AmountInclTax,
+                        Meter = fareObject.AmountExclTax,
+                        Tax = fareObject.TaxAmount,
+                        Tip = tipAmount,
+                        TransactionId = response.TransactionId,
+                        Provider = PaymentProvider.PayPal,
+                        Type = PaymentType.PayPal
+                    });
+
+                    // Create order on IBS
+                    Task.Run(() => CreateOrderOnIBSAndSendCommands(orderInfo.OrderId, orderInfo.Account, orderInfo.Request, orderInfo.ReferenceData,
+                        orderInfo.ChargeTypeIbs, orderInfo.ChargeTypeEmail, orderInfo.VehicleType, orderInfo.Prompts, orderInfo.PromptsLength,
+                        orderInfo.BestAvailableCompany, orderInfo.ApplyPromoCommand, isPrepaid: true));
+                }
+                else
+                {
+                    _commandBus.Send(new CancelOrderBecauseOfError
+                    {
+                        OrderId = request.OrderId,
+                        WasPrepaid = true,
+                        ErrorDescription = response.Message
+                    });
+                }
+            }
+
+            // Build url used to redirect the web client to the booking status view
+            var baseUrl = _serverSettings.ServerData.BaseUrl.HasValue()
+                            ? _serverSettings.ServerData.BaseUrl
+                            : Request.AbsoluteUri;
+
+            var redirectUrl = baseUrl
+                .Replace(Request.PathInfo, string.Empty)
+                .Replace(GetAppHost().Config.ServiceStackHandlerFactoryPath, string.Empty)
+                .Replace(Request.QueryString.ToString(), string.Empty)
+                .Replace("?", string.Empty)
+                .Append(string.Format("#status/{0}", request.OrderId));
+
+            return new HttpResult
+            {
+                StatusCode = HttpStatusCode.Redirect,
+                Headers = { { HttpHeaders.Location, redirectUrl } }
             };
         }
 
@@ -268,9 +437,11 @@ namespace apcurium.MK.Booking.Api.Services
                 return orderStatusDetail;
             }
 
+            var market = _taxiHailNetworkServiceClient.GetCompanyMarket(order.PickupAddress.Latitude, order.PickupAddress.Longitude);
+
             var newOrderRequest = new CreateOrder
             {
-                PickupDate = GetCurrentOffsetedTime(),
+                PickupDate = GetCurrentOffsetedTime(request.NextDispatchCompanyKey),
                 PickupAddress = order.PickupAddress,
                 DropOffAddress = order.DropOffAddress,
                 Settings = new BookingSettings
@@ -285,7 +456,7 @@ namespace apcurium.MK.Booking.Api.Services
                     // Payment in app is not supported for now when we use another IBS
                     ChargeType = ChargeTypes.PaymentInCar.Display,
                     ChargeTypeId = ChargeTypes.PaymentInCar.Id,
-                    
+
                     // Reset vehicle type
                     VehicleType = null,
                     VehicleTypeId = null
@@ -314,7 +485,9 @@ namespace apcurium.MK.Booking.Api.Services
                 throw new HttpError(HttpStatusCode.InternalServerError, networkErrorMessage);
             }
 
-            var newIbsOrderId = CreateIbsOrder(ibsAccountId, newOrderRequest, newReferenceData, chargeTypeIbs, null, null, request.NextDispatchCompanyKey);
+            ValidateProvider(newOrderRequest, newReferenceData, market.HasValue());
+
+            var newIbsOrderId = CreateIbsOrder(ibsAccountId, newOrderRequest, newReferenceData, chargeTypeIbs, null, null, market, request.NextDispatchCompanyKey);
             if (!newIbsOrderId.HasValue || newIbsOrderId <= 0)
             {
                 var code = !newIbsOrderId.HasValue || (newIbsOrderId.Value >= -1) ? string.Empty : "_" + Math.Abs(newIbsOrderId.Value);
@@ -323,14 +496,15 @@ namespace apcurium.MK.Booking.Api.Services
             }
 
             // Cancel order on current company IBS
-            CancelIbsOrder(order, account.Id, account.IBSAccountId);
+            CancelIbsOrder(order, account.Id);
 
             _commandBus.Send(new SwitchOrderToNextDispatchCompany
             {
                 OrderId = request.OrderId,
                 IBSOrderId = newIbsOrderId.Value,
                 CompanyKey = request.NextDispatchCompanyKey,
-                CompanyName = request.NextDispatchCompanyName
+                CompanyName = request.NextDispatchCompanyName,
+                Market = order.Market
             });
 
             return new OrderStatusDetail
@@ -363,6 +537,151 @@ namespace apcurium.MK.Booking.Api.Services
             return new HttpResult(HttpStatusCode.OK);
         }
 
+        private ChargeAccountValidationResult ValidateChargeAccountIfNecessary(CreateOrder request, Guid orderId, AccountDetail account, bool isFutureBooking, string market, bool isFromWebApp)
+        {
+            string[] prompts = null;
+            int?[] promptsLength = null;
+            string chargeTypeOverride = null;
+            var isChargeAccountPaymentWithCardOnFile = false;
+
+            if (request.Settings.ChargeTypeId.HasValue
+                && request.Settings.ChargeTypeId.Value == ChargeTypes.Account.Id)
+            {
+                var accountChargeDetail = _accountChargeDao.FindByAccountNumber(request.Settings.AccountNumber);
+
+                if (accountChargeDetail.UseCardOnFileForPayment)
+                {
+                    if (market.HasValue())
+                    {
+                        // Card on file payment not supported when not in home market
+                        throw new HttpError(HttpStatusCode.BadRequest, ErrorCode.CreateOrder_RuleDisable.ToString(),
+                            _resources.Get("CannotCreateOrderChargeAccountNotSupportedInRoaming", request.ClientLanguageCode));
+                    }
+
+                    if (isFromWebApp)
+                    {
+                        // Charge account cannot support prepaid orders
+                        throw new HttpError(HttpStatusCode.BadRequest, ErrorCode.CreateOrder_RuleDisable.ToString(),
+                            _resources.Get("CannotCreateOrderChargeAccountNotSupportedOnWeb", request.ClientLanguageCode));
+                    }
+
+                    if (_paymentService.IsPayPal(account.Id))
+                    {
+                        chargeTypeOverride = ChargeTypes.PayPal.Display;
+                        request.Settings.ChargeTypeId = ChargeTypes.PayPal.Id;
+                    }
+                    else
+                    {
+                        chargeTypeOverride = ChargeTypes.CardOnFile.Display;
+                        request.Settings.ChargeTypeId = ChargeTypes.CardOnFile.Id;
+                    }
+                    
+                    isChargeAccountPaymentWithCardOnFile = true;
+                }
+
+                ValidateChargeAccountAnswers(request.Settings.AccountNumber, request.Settings.CustomerNumber, request.QuestionsAndAnswers, request.ClientLanguageCode);
+
+                if (isChargeAccountPaymentWithCardOnFile)
+                {
+                    ValidatePayment(request, orderId, account, isFutureBooking, request.Estimate.Price, false);
+                }
+
+                prompts = request.QuestionsAndAnswers.Select(q => q.Answer).ToArray();
+                promptsLength = request.QuestionsAndAnswers.Select(q => q.MaxLength).ToArray();
+            }
+
+            return new ChargeAccountValidationResult
+            {
+                Prompts = prompts,
+                PromptsLength = promptsLength,
+                ChargeTypeKeyOverride = chargeTypeOverride,
+                IsChargeAccountPaymentWithCardOnFile = isChargeAccountPaymentWithCardOnFile
+            };
+        }
+
+        private InitializePayPalCheckoutResponse InitializePayPalCheckoutIfNecessary(bool isPrepaid, Guid orderId, CreateOrder request)
+        {
+            if (isPrepaid
+                && request.Settings.ChargeTypeId == ChargeTypes.PayPal.Id)
+            {
+                var paypalWebPaymentResponse = _payPalServiceFactory.GetInstance().InitializeWebPayment(orderId, Request.AbsoluteUri, request.Estimate.Price, request.ClientLanguageCode);
+
+                if (paypalWebPaymentResponse.IsSuccessful)
+                {
+                    return paypalWebPaymentResponse;
+                }
+
+                throw new HttpError(HttpStatusCode.BadRequest, ErrorCode.CreateOrder_RuleDisable.ToString(), paypalWebPaymentResponse.Message);
+            }
+
+            return null;
+        }
+
+        private async void CreateOrderOnIBSAndSendCommands(Guid orderId, AccountDetail account, CreateOrder request, ReferenceData referenceData, 
+            string chargeTypeIbs, string chargeTypeEmail, string vehicleType, string[] prompts, int?[] promptsLength, BestAvailableCompany bestAvailableCompany, 
+            ApplyPromotion applyPromoCommand, string market = null, bool isPrepaid = false)
+        {
+            var ibsOrderId = CreateIbsOrder(account.IBSAccountId.Value, request, referenceData, chargeTypeIbs, prompts, promptsLength, market, bestAvailableCompany.CompanyKey);
+
+            // Wait for order creation to complete before sending other commands
+            await Task.Delay(750);
+
+            if (!ibsOrderId.HasValue
+                || ibsOrderId <= 0)
+            {
+                var code = !ibsOrderId.HasValue || (ibsOrderId.Value >= -1) ? "" : "_" + Math.Abs(ibsOrderId.Value);
+                var errorCode = ErrorCode.CreateOrder_CannotCreateInIbs + code;
+
+                var errorCommand = new CancelOrderBecauseOfError
+                {
+                    OrderId = orderId,
+                    WasPrepaid = isPrepaid,
+                    ErrorCode = errorCode,
+                    ErrorDescription = _resources.Get(errorCode, request.ClientLanguageCode)
+                };
+
+                _commandBus.Send(errorCommand);
+            }
+            else
+            {
+                var ibsCommand = new AddIbsOrderInfoToOrder
+                {
+                    OrderId = orderId,
+                    IBSOrderId = ibsOrderId.Value
+                };
+                _commandBus.Send(ibsCommand);
+
+                var emailCommand = Mapper.Map<SendBookingConfirmationEmail>(request);
+                emailCommand.IBSOrderId = ibsOrderId.Value;
+                emailCommand.EmailAddress = account.Email;
+                emailCommand.Settings.ChargeType = chargeTypeEmail;
+                emailCommand.Settings.VehicleType = vehicleType;
+                _commandBus.Send(emailCommand);
+
+                if (applyPromoCommand != null)
+                {
+                    _commandBus.Send(applyPromoCommand);
+                }
+            }
+            
+            UpdateStatusAsync(orderId);
+        }
+
+        private void ValidateProvider(CreateOrder request, ReferenceData referenceData, bool isInExternalMarket)
+        {
+            // Provider is optional for home market
+            // But if a provider is specified, it must match with one of the ReferenceData values
+            if (!isInExternalMarket
+                && request.Settings.ProviderId.HasValue
+                && referenceData.CompaniesList.None(c => c.Id == request.Settings.ProviderId.Value))
+            {
+                throw new HttpError(HttpStatusCode.BadRequest,
+                    ErrorCode.CreateOrder_InvalidProvider.ToString(), 
+                    GetCreateOrderServiceErrorMessage(ErrorCode.CreateOrder_InvalidProvider, request.ClientLanguageCode));
+            }
+        }
+
+
         private int CreateIbsAccountIfNeeded(AccountDetail account, string companyKey = null)
         {
             var ibsAccountId = _accountDao.GetIbsAccountId(account.Id, companyKey);
@@ -388,31 +707,115 @@ namespace apcurium.MK.Booking.Api.Services
             return ibsAccountId.Value;
         }
 
-        private void ValidateCreditCard(Guid orderId, AccountDetail account, string clientLanguageCode)
+        private void ValidatePayment(CreateOrder request, Guid orderId, AccountDetail account, bool isFutureBooking, double? appEstimate, bool isPrepaid)
         {
-            if (!_serverSettings.GetPaymentSettings().IsPreAuthEnabled)
+            var tipPercent = account.DefaultTipPercent ?? _serverSettings.ServerData.DefaultTipPercentage;
+
+            // If there's an estimate, add tip to that estimate
+            if (appEstimate.HasValue)
             {
-                return;
+                appEstimate = appEstimate.Value + FareHelper.CalculateTipAmount(appEstimate.Value, tipPercent);
             }
 
+            var appEstimateWithTip = appEstimate.HasValue ? Convert.ToDecimal(appEstimate.Value) : (decimal?)null;
+
+            if (isPrepaid)
+            {
+                // Verify that prepaid is enabled on the server
+                if (!_serverSettings.GetPaymentSettings().IsPrepaidEnabled)
+                {
+                    throw new HttpError(HttpStatusCode.BadRequest,
+                        ErrorCode.CreateOrder_RuleDisable.ToString(),
+                         _resources.Get("CannotCreateOrder_PrepaidButPrepaidNotEnabled", request.ClientLanguageCode));
+                }
+
+                // PayPal is handled elsewhere since it has a different behavior
+
+                // Payment mode is CardOnFile
+                if (request.Settings.ChargeTypeId.HasValue
+                    && request.Settings.ChargeTypeId.Value == ChargeTypes.CardOnFile.Id)
+                {
+                    if (!appEstimateWithTip.HasValue)
+                    {
+                        throw new HttpError(HttpStatusCode.BadRequest,
+                            ErrorCode.CreateOrder_RuleDisable.ToString(),
+                            _resources.Get("CannotCreateOrder_PrepaidNoEstimate", request.ClientLanguageCode));
+                    }
+                    CapturePaymentForPrepaidOrder(orderId, account, Convert.ToDecimal(appEstimateWithTip), tipPercent);
+                }
+            }
+            else
+            {
+                // Payment mode is CardOnFile
+                if (request.Settings.ChargeTypeId.HasValue
+                    && request.Settings.ChargeTypeId.Value == ChargeTypes.CardOnFile.Id)
+                {
+                    ValidateCreditCard(orderId, account, request.ClientLanguageCode, isFutureBooking, appEstimateWithTip);
+                }
+
+                // Payment mode is PayPal
+                if (request.Settings.ChargeTypeId.HasValue
+                    && request.Settings.ChargeTypeId.Value == ChargeTypes.PayPal.Id)
+                {
+                    ValidatePayPal(orderId, account, request.ClientLanguageCode, isFutureBooking, appEstimateWithTip);
+                }
+            }
+        }
+
+        private void ValidateCreditCard(Guid orderId, AccountDetail account, string clientLanguageCode, bool isFutureBooking, decimal? appEstimate)
+        {
             // check if the account has a credit card
             if (!account.DefaultCreditCard.HasValue)
             {
-                throw new HttpError(ErrorCode.CreateOrder_CardOnFileButNoCreditCard.ToString());
+                throw new HttpError(HttpStatusCode.BadRequest,
+                    ErrorCode.CreateOrder_CardOnFileButNoCreditCard.ToString(),
+                    GetCreateOrderServiceErrorMessage(ErrorCode.CreateOrder_CardOnFileButNoCreditCard, clientLanguageCode));
             }
 
-            // try to preauthorize a small amount on the card to verify the validity
-            var card = _creditCardDao.FindByAccountId(account.Id).First();
+            var creditCard = _creditCardDao.FindByAccountId(account.Id).First();
+            if (creditCard.IsDeactivated)
+            {
+                throw new HttpError(HttpStatusCode.BadRequest,
+                    ErrorCode.CreateOrder_CardOnFileDeactivated.ToString(),
+                    _resources.Get("CannotCreateOrder_CreditCardDeactivated", clientLanguageCode));
+            }
 
-            // there's a minimum amount of $50 (warning indicating that on the admin ui)
-            var preAuthAmount = Math.Max(_serverSettings.GetPaymentSettings().PreAuthAmount ?? 0, 50);
+            PreAuthorizePaymentMethod(orderId, account, clientLanguageCode, isFutureBooking, appEstimate, false);
+        }
 
-            var preAuthResponse = _paymentService.PreAuthorize(orderId, account.Email, card.Token, preAuthAmount);
+        private void ValidatePayPal(Guid orderId, AccountDetail account, string clientLanguageCode, bool isFutureBooking, decimal? appEstimate)
+        {
+            if (!_serverSettings.GetPaymentSettings().PayPalClientSettings.IsEnabled
+                    || !account.IsPayPalAccountLinked)
+            {
+                throw new HttpError(HttpStatusCode.BadRequest,
+                    ErrorCode.CreateOrder_RuleDisable.ToString(),
+                     _resources.Get("CannotCreateOrder_PayPalButNoPayPal", clientLanguageCode));
+            }
+
+            PreAuthorizePaymentMethod(orderId, account, clientLanguageCode, isFutureBooking, appEstimate, true);
+        }
+
+        private void PreAuthorizePaymentMethod(Guid orderId, AccountDetail account, string clientLanguageCode, bool isFutureBooking, decimal? appEstimate, bool isPayPal)
+        {
+            if (!_serverSettings.GetPaymentSettings().IsPreAuthEnabled || isFutureBooking)
+            {
+                return;
+            }
             
+            // there's a minimum amount of $50 (warning indicating that on the admin ui)
+            // if app returned an estimate, use it, otherwise use the setting (or 0), then use max between the value and 50
+            var preAuthAmount = Math.Max(appEstimate ?? (_serverSettings.GetPaymentSettings().PreAuthAmount ?? 0), 50);
+            
+            var preAuthResponse = _paymentService.PreAuthorize(orderId, account, preAuthAmount);
+
+            var errorMessage = isPayPal
+                ? _resources.Get("CannotCreateOrder_PayPalWasDeclined", clientLanguageCode)
+                : _resources.Get("CannotCreateOrder_CreditCardWasDeclined", clientLanguageCode);
+
             if (!preAuthResponse.IsSuccessful)
             {
-                throw new HttpError(HttpStatusCode.Forbidden, ErrorCode.CreateOrder_RuleDisable.ToString(),
-                    _resources.Get("CannotCreateOrder_CreditCardWasDeclined", clientLanguageCode));
+                throw new HttpError(HttpStatusCode.BadRequest, ErrorCode.CreateOrder_RuleDisable.ToString(), errorMessage);
             }
         }
         
@@ -436,61 +839,51 @@ namespace apcurium.MK.Booking.Api.Services
 
                 if (appVersionItem < minimumVersionItem)
                 {
-                    throw new HttpError(HttpStatusCode.Forbidden, ErrorCode.CreateOrder_RuleDisable.ToString(),
+                    throw new HttpError(HttpStatusCode.BadRequest, ErrorCode.CreateOrder_RuleDisable.ToString(),
                                         _resources.Get("CannotCreateOrderInvalidVersion", clientLanguage));
                 }
             }
         }
 
-        private void ValidateChargeAccountAnswers(string accountNumber, AccountChargeQuestion[] userQuestionsDetails)
+        private void ValidateChargeAccountAnswers(string accountNumber, string customerNumber, AccountChargeQuestion[] userQuestionsDetails, string clientLanguageCode)
         {
             var accountChargeDetail = _accountChargeDao.FindByAccountNumber(accountNumber);
             if (accountChargeDetail == null)
             {
-                throw new HttpError(HttpStatusCode.Forbidden, ErrorCode.AccountCharge_InvalidAccountNumber.ToString());
+                throw new HttpError(HttpStatusCode.BadRequest,
+                    ErrorCode.AccountCharge_InvalidAccountNumber.ToString(),
+                    GetCreateOrderServiceErrorMessage(ErrorCode.AccountCharge_InvalidAccountNumber, clientLanguageCode));
             }
 
             var answers = userQuestionsDetails.Select(x => x.Answer);
 
-            var validation = _ibsServiceProvider.ChargeAccount().ValidateIbsChargeAccount(answers, accountNumber, "0");
+            var validation = _ibsServiceProvider.ChargeAccount().ValidateIbsChargeAccount(answers, accountNumber, customerNumber);
             if (!validation.Valid)
             {
                 if (validation.ValidResponse != null)
                 {
                     int firstError = validation.ValidResponse.IndexOf(false);
-                    throw new HttpError(HttpStatusCode.Forbidden, ErrorCode.AccountCharge_InvalidAnswer.ToString(),
+                    throw new HttpError(HttpStatusCode.BadRequest, ErrorCode.AccountCharge_InvalidAnswer.ToString(),
                                             accountChargeDetail.Questions[firstError].ErrorMessage);
                 }
 
-                throw new HttpError(HttpStatusCode.Forbidden, ErrorCode.AccountCharge_InvalidAccountNumber.ToString(), validation.Message);
+                throw new HttpError(HttpStatusCode.BadRequest, ErrorCode.AccountCharge_InvalidAccountNumber.ToString(), validation.Message);
             }
         }
 
-        private int? TryToSendAccountInformation(Guid orderId, int ibsOrderId, CreateOrder request, AccountDetail account)
-        {
-            if (ChargeTypes.Account.Id == request.Settings.ChargeTypeId)
-            {
-                return  _ibsServiceProvider.Booking().SendAccountInformation(orderId, ibsOrderId, "Account", request.Settings.AccountNumber, account.IBSAccountId.Value, request.Settings.Name, request.Settings.Phone, account.Email);                
-            }
-
-            return null;
-        }
         private void UpdateStatusAsync(Guid orderId)
         {
             new TaskFactory().StartNew(() =>
             {
-                //We have to wait for the order to be completed.
-                Thread.Sleep(750);
-
                 _updateOrderStatusJob.CheckStatus(orderId);
             });
         }
 
-        private DateTime GetCurrentOffsetedTime()
+        private DateTime GetCurrentOffsetedTime(string companyKey)
         {
-            //TODO : need to check ibs setup for shortesst time.
+            //TODO : need to check ibs setup for shortesst time
 
-            var ibsServerTimeDifference = _serverSettings.ServerData.IBS.TimeDifference;
+            var ibsServerTimeDifference = _ibsServiceProvider.GetSettingContainer(companyKey).TimeDifference;
             var offsetedTime = DateTime.Now.AddMinutes(2);
             if (ibsServerTimeDifference != 0)
             {
@@ -500,42 +893,68 @@ namespace apcurium.MK.Booking.Api.Services
             return offsetedTime;
         }
 
-        private int? CreateIbsOrder(int ibsAccountId, CreateOrder request, ReferenceData referenceData, string chargeType, string[] prompts, int?[] promptsLength, string companyKey = null)
+        private int? CreateIbsOrder(int ibsAccountId, CreateOrder request, ReferenceData referenceData, string chargeType, string[] prompts, int?[] promptsLength, string market, string companyKey = null)
         {
-            // Provider is optional
-            // But if a provider is specified, it must match with one of the ReferenceData values
-            if (request.Settings.ProviderId.HasValue &&
-                referenceData.CompaniesList.None(c => c.Id == request.Settings.ProviderId.Value))
+            if (_serverSettings.ServerData.IBS.FakeOrderStatusUpdate)
             {
-                throw new HttpError(ErrorCode.CreateOrder_InvalidProvider.ToString());
+                // Fake IBS order id
+                return new Random(Guid.NewGuid().GetHashCode()).Next(90000, 90000000);
             }
+
+            var defaultCompany = referenceData.CompaniesList.FirstOrDefault(x => x.IsDefault.HasValue && x.IsDefault.Value)
+                    ?? referenceData.CompaniesList.FirstOrDefault();
+
+            var providerId = market.HasValue() && referenceData.CompaniesList.Any() && defaultCompany != null
+                    ? defaultCompany.Id
+                    : request.Settings.ProviderId;
 
             var ibsPickupAddress = Mapper.Map<IbsAddress>(request.PickupAddress);
             var ibsDropOffAddress = IsValid(request.DropOffAddress)
                 ? Mapper.Map<IbsAddress>(request.DropOffAddress)
                 : null;
 
-            var note = BuildNote(chargeType, request.Note, request.PickupAddress.BuildingName, request.Settings.LargeBags);
+            var promoCode =
+                request.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id     // promo only applied if payment with CoF/PayPal
+                    || request.Settings.ChargeTypeId == ChargeTypes.PayPal.Id
+                        ? request.PromoCode 
+                        : null; 
+            var note = BuildNote(chargeType, request.Note, request.PickupAddress.BuildingName, request.Settings.LargeBags, promoCode);
             var fare = GetFare(request.Estimate);
 
             Debug.Assert(request.PickupDate != null, "request.PickupDate != null");
 
-            var result = _ibsServiceProvider.Booking(companyKey).CreateOrder(
-                request.Settings.ProviderId,
+            // This needs to be null if not set or the payment in car payment type id of ibs
+            int? ibsChargeTypeId;
+            if (request.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id
+                || request.Settings.ChargeTypeId == ChargeTypes.PayPal.Id)
+            {
+                ibsChargeTypeId = _serverSettings.ServerData.IBS.PaymentTypeCardOnFileId;
+            }
+            else if (request.Settings.ChargeTypeId == ChargeTypes.Account.Id)
+            {
+                ibsChargeTypeId = _serverSettings.ServerData.IBS.PaymentTypeChargeAccountId;
+            }
+            else
+            {
+                ibsChargeTypeId = _serverSettings.ServerData.IBS.PaymentTypePaymentInCarId;
+            }
+
+            var customerNumber = GetCustomerNumber(request.Settings.AccountNumber, request.Settings.CustomerNumber);
+
+	        var result = _ibsServiceProvider.Booking(companyKey).CreateOrder(
+                providerId,
                 ibsAccountId,
                 request.Settings.Name,
                 request.Settings.Phone,
                 request.Settings.Passengers,
                 request.Settings.VehicleTypeId,
-                _serverSettings.ServerData.IBS.PaymentTypePaymentInCarId, // this needs to be null if not set or the payment in car payment type id of ibs
+                ibsChargeTypeId,                    
                 note,
                 request.PickupDate.Value,
                 ibsPickupAddress,
                 ibsDropOffAddress,
-                request.Settings.ChargeTypeId == ChargeTypes.Account.Id    // send the account number only if we book using charge account
-                    ? request.Settings.AccountNumber 
-                    : null,
-                null,
+                request.Settings.AccountNumber,
+                customerNumber,
                 prompts,
                 promptsLength,
                 fare);
@@ -543,10 +962,26 @@ namespace apcurium.MK.Booking.Api.Services
             return result;
         }
 
-        private void CancelIbsOrder(OrderDetail order, Guid accountId, int? ibsAccountId)
+        private int? GetCustomerNumber(string accountNumber, string customerNumber)
+        {
+            if (!accountNumber.HasValue() || !customerNumber.HasValue())
+            {
+                return null;
+            }
+
+            int result;
+            if (int.TryParse(customerNumber, out result))
+            {
+                return result;
+            }
+
+            return null;
+        }
+
+        private void CancelIbsOrder(OrderDetail order, Guid accountId)
         {
             // Cancel order on current company IBS
-            if (order.IBSOrderId.HasValue && ibsAccountId.HasValue)
+            if (order.IBSOrderId.HasValue)
             {
                 var currentIbsAccountId = _accountDao.GetIbsAccountId(accountId, order.CompanyKey);
                 if (currentIbsAccountId.HasValue)
@@ -555,7 +990,8 @@ namespace apcurium.MK.Booking.Api.Services
                     // After 5 time, we are giving up. But we assume the order is completed.
                     Task.Factory.StartNew(() =>
                     {
-                        Func<bool> cancelOrder = () => _ibsServiceProvider.Booking(order.CompanyKey).CancelOrder(order.IBSOrderId.Value, currentIbsAccountId.Value, order.Settings.Phone);
+                        Func<bool> cancelOrder = () => _ibsServiceProvider.Booking(order.CompanyKey)
+                            .CancelOrder(order.IBSOrderId.Value, currentIbsAccountId.Value, order.Settings.Phone);
                         cancelOrder.Retry(new TimeSpan(0, 0, 0, 10), 5);
                     });
                 }
@@ -571,7 +1007,7 @@ namespace apcurium.MK.Booking.Api.Services
 // ReSharper restore CompareOfFloatsByEqualityOperator
         }
 
-        private string BuildNote(string chargeType, string note, string buildingName, int largeBags)
+        private string BuildNote(string chargeType, string note, string buildingName, int largeBags, string promoCode)
         {
             // Building Name is not handled by IBS
             // Put Building Name in note, if specified
@@ -603,7 +1039,10 @@ namespace apcurium.MK.Booking.Api.Services
 
             if (!string.IsNullOrWhiteSpace(noteTemplate))
             {
-                noteTemplate = string.Format("{0}{1}{2}", chargeType, Environment.NewLine, noteTemplate);
+                noteTemplate = string.Format("{0}{1}{2}", 
+                    chargeType,
+                    Environment.NewLine,
+                    noteTemplate);
 
                 var transformedTemplate = noteTemplate
                     .Replace("\\r", "\r")
@@ -620,8 +1059,11 @@ namespace apcurium.MK.Booking.Api.Services
             // In versions prior to 1.4, there was no note template
             // So if the IBS.NoteTemplate setting does not exist, use the old way 
             var formattedNote = string.Format("{0}{0}{1}{2}{3}", 
-                                                Environment.NewLine, chargeType, 
-                                                Environment.NewLine, note);
+                    Environment.NewLine, 
+                    chargeType,
+                    Environment.NewLine,
+                    note);
+
             if (!string.IsNullOrWhiteSpace(buildingName))
             {
                 formattedNote += (Environment.NewLine + buildingName).Trim();
@@ -637,7 +1079,7 @@ namespace apcurium.MK.Booking.Api.Services
                 return default(Fare);
             }
 
-            return Fare.FromAmountInclTax(estimate.Price.Value, 0);
+            return FareHelper.GetFareFromAmountInclTax(estimate.Price.Value, 0);
         }
 
         private Guid? GetPendingOrder()
@@ -651,6 +1093,258 @@ namespace apcurium.MK.Booking.Api.Services
             }
 
             return null;
+        }
+
+        private BestAvailableCompany FindBestAvailableCompany(string market, double? latitude, double? longitude)
+        {
+            if (!market.HasValue() || !latitude.HasValue || !longitude.HasValue)
+            {
+                // Do nothing if in home market or if we don't have position
+                return new BestAvailableCompany();
+            }
+
+            int? bestFleetId = null;
+            const int searchExpendLimit = 10;
+            var searchRadius = 2000; // In meters
+
+            for (var i = 1; i < searchExpendLimit; i++)
+            {
+                var marketVehicles =
+                    _honeyBadgerServiceClient.GetAvailableVehicles(market, latitude.Value, longitude.Value, searchRadius, null, true)
+                                             .ToArray();
+
+                if (marketVehicles.Any())
+                {
+                    // Group vehicles by fleet
+                    var vehiclesGroupedByFleet = marketVehicles.GroupBy(v => v.FleetId).Select(g => g.ToArray()).ToArray();
+
+                    // Take fleet with most number of available vehicles
+                    bestFleetId = vehiclesGroupedByFleet.Aggregate(
+                        (fleet1, fleet2) => fleet1.Length > fleet2.Length ? fleet1 : fleet2).First().FleetId;
+                    break;
+                }
+
+                // Nothing found, extend search radius (total radius after 10 iterations: 3375m)
+                searchRadius += (i * 25);
+            }
+
+            if (bestFleetId.HasValue)
+            {
+                var companyKey = _serverSettings.ServerData.TaxiHail.ApplicationKey;
+                var marketFleets = _taxiHailNetworkServiceClient.GetMarketFleets(companyKey, market).ToArray();
+
+                // Fallback: If for some reason, we cannot find a match for the best fleet id in the fleets
+                // that were setup for the market, we take the first one
+                var bestFleet = marketFleets.FirstOrDefault(f => f.FleetId == bestFleetId.Value)
+                    ?? marketFleets.FirstOrDefault();
+
+                return new BestAvailableCompany
+                {
+                    CompanyKey = bestFleet != null ? bestFleet.CompanyKey : null,
+                    CompanyName = bestFleet != null ? bestFleet.CompanyName : null
+                };
+            }
+
+            // Nothing found
+            return new BestAvailableCompany();
+        }
+
+        private BestAvailableCompany FindSpecificCompany(string market, string orderCompanyKey = null, int? orderFleetId = null)
+        {
+            if (!orderCompanyKey.HasValue() && !orderFleetId.HasValue)
+            {
+                throw new ArgumentNullException("You must at least provide a value for orderCompanyKey or orderFleetId");
+            }
+
+            var companyKey = _serverSettings.ServerData.TaxiHail.ApplicationKey;
+            var marketFleets = _taxiHailNetworkServiceClient.GetMarketFleets(companyKey, market).ToArray();
+
+            if (orderCompanyKey.HasValue())
+            {
+                var match = marketFleets.FirstOrDefault(f => f.CompanyKey == orderCompanyKey);
+                if (match != null)
+                {
+                    return new BestAvailableCompany
+                    {
+                        CompanyKey = match.CompanyKey,
+                        CompanyName = match.CompanyName
+                    };
+                }
+            }
+
+            if (orderFleetId.HasValue)
+            {
+                var match = marketFleets.FirstOrDefault(f => f.FleetId == orderFleetId.Value);
+                if (match != null)
+                {
+                    return new BestAvailableCompany
+                    {
+                        CompanyKey = match.CompanyKey,
+                        CompanyName = match.CompanyName
+                    };
+                }
+            }
+
+            // Nothing found
+            return new BestAvailableCompany();
+        }
+
+        private ApplyPromotion ValidateAndApplyPromotion(string promoCode, int? chargeTypeId, Guid accountId, Guid orderId, DateTime pickupDate, bool isFutureBooking, string clientLanguageCode)
+        {
+            if (!promoCode.HasValue())
+            {
+                // No promo code entered
+                return null;
+            }
+
+            var usingPaymentInApp = chargeTypeId == ChargeTypes.CardOnFile.Id || chargeTypeId == ChargeTypes.PayPal.Id;
+            if (!usingPaymentInApp)
+            {
+                var payPalIsEnabled = _serverSettings.GetPaymentSettings().PayPalClientSettings.IsEnabled;
+                var cardOnFileIsEnabled = _serverSettings.GetPaymentSettings().IsPayInTaxiEnabled;
+
+                var promotionErrorResourceKey = "CannotCreateOrder_PromotionMustUseCardOnFile";
+                if (payPalIsEnabled && cardOnFileIsEnabled)
+                {
+                    promotionErrorResourceKey = "CannotCreateOrder_PromotionMustUseCardOnFileOrPayPal";
+                }
+                else if (payPalIsEnabled)
+                {
+                    promotionErrorResourceKey = "CannotCreateOrder_PromotionMustUsePayPal";
+                }
+                
+                // Should never happen since we will check client-side if there's a promocode and not paying with CoF/PayPal
+                throw new HttpError(HttpStatusCode.BadRequest, ErrorCode.CreateOrder_RuleDisable.ToString(),
+                    _resources.Get(promotionErrorResourceKey, clientLanguageCode));
+            }
+
+            var promo = _promotionDao.FindByPromoCode(promoCode);
+            if (promo == null)
+            {
+                throw new HttpError(HttpStatusCode.BadRequest, ErrorCode.CreateOrder_RuleDisable.ToString(),
+                    _resources.Get("CannotCreateOrder_PromotionDoesNotExist", clientLanguageCode));
+            }
+
+            var promoDomainObject = _promoRepository.Get(promo.Id);
+            string errorMessage;
+            if (!promoDomainObject.CanApply(accountId, pickupDate, isFutureBooking, out errorMessage))
+            {
+                throw new HttpError(HttpStatusCode.BadRequest, ErrorCode.CreateOrder_RuleDisable.ToString(),
+                    _resources.Get(errorMessage, clientLanguageCode));
+            }
+
+            return new ApplyPromotion
+            {
+                PromoId = promo.Id,
+                AccountId = accountId,
+                OrderId = orderId,
+                PickupDate = pickupDate,
+                IsFutureBooking = isFutureBooking
+            };
+        }
+
+        private string GetCreateOrderServiceErrorMessage(ErrorCode errorCode, string language)
+        {
+            var callMessage = string.Format(_resources.Get("ServiceError" + errorCode, language),
+                _serverSettings.ServerData.TaxiHail.ApplicationName,
+                _serverSettings.ServerData.DefaultPhoneNumberDisplay);
+
+            var noCallMessage = _resources.Get("ServiceError" + errorCode + "_NoCall", language);
+
+            return _serverSettings.ServerData.HideCallDispatchButton ? noCallMessage : callMessage;
+        }
+
+        private void CapturePaymentForPrepaidOrder(Guid orderId, AccountDetail account, decimal appEstimateWithTip, int tipPercentage)
+        {
+            // Note: No promotion on web
+            var tipAmount = FareHelper.GetTipAmountFromTotalAmount(appEstimateWithTip, tipPercentage);
+            var totalAmount = appEstimateWithTip;
+            var meterAmount = totalAmount - tipAmount;
+
+            var preAuthResponse = _paymentService.PreAuthorize(orderId, account, totalAmount);
+            if (preAuthResponse.IsSuccessful)
+            {
+                // Wait for payment to be created
+                Thread.Sleep(500);
+
+                var commitResponse = _paymentService.CommitPayment(
+                    orderId,
+                    account,
+                    totalAmount,
+                    totalAmount,
+                    meterAmount,
+                    tipAmount,
+                    preAuthResponse.TransactionId,
+                    preAuthResponse.ReAuthOrderId);
+
+                if (commitResponse.IsSuccessful)
+                {
+                    var paymentDetail = _orderPaymentDao.FindByOrderId(orderId);
+
+                    var fareObject = FareHelper.GetFareFromAmountInclTax(meterAmount,
+                        _serverSettings.ServerData.VATIsEnabled
+                            ? _serverSettings.ServerData.VATPercentage
+                            : 0);
+
+                    _commandBus.Send(new CaptureCreditCardPayment
+                    {
+                        AccountId = account.Id,
+                        PaymentId = paymentDetail.PaymentId,
+                        Provider = _paymentService.ProviderType(orderId),
+                        Amount = totalAmount,
+                        MeterAmount = fareObject.AmountExclTax,
+                        TipAmount = tipAmount,
+                        TaxAmount = fareObject.TaxAmount,
+                        AuthorizationCode = commitResponse.AuthorizationCode,
+                        TransactionId = commitResponse.TransactionId,
+                        IsForPrepaidOrder = true
+                    });
+                }
+                else
+                {
+                    // Payment failed, void preauth
+                    _paymentService.VoidPreAuthorization(orderId);
+
+                    throw new HttpError(HttpStatusCode.BadRequest, ErrorCode.CreateOrder_RuleDisable.ToString(), commitResponse.Message);
+                }
+            }
+            else
+            {
+                throw new HttpError(HttpStatusCode.BadRequest, ErrorCode.CreateOrder_RuleDisable.ToString(), preAuthResponse.Message);
+            }
+        }
+
+        private class BestAvailableCompany
+        {
+            public string CompanyKey { get; set; }
+
+            public string CompanyName { get; set; }
+        }
+
+        private class ChargeAccountValidationResult
+        {
+            public string[] Prompts { get; set; }
+
+            public int?[] PromptsLength { get; set; }
+
+            public string ChargeTypeKeyOverride { get; set; }
+
+            public bool IsChargeAccountPaymentWithCardOnFile { get; set; }
+        }
+
+        private class TemporaryOrderCreationInfo
+        {
+            public Guid OrderId { get; set; } 
+            public AccountDetail Account { get; set; }
+            public CreateOrder Request { get; set; } 
+            public ReferenceData ReferenceData { get; set; }
+            public string ChargeTypeIbs { get; set; } 
+            public string ChargeTypeEmail { get; set; } 
+            public string VehicleType { get; set; } 
+            public string[] Prompts { get; set; } 
+            public int?[] PromptsLength { get; set; } 
+            public BestAvailableCompany BestAvailableCompany { get; set; }
+            public ApplyPromotion ApplyPromoCommand { get; set; }
         }
     }
 }

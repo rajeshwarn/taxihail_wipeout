@@ -1,5 +1,5 @@
-using MonoTouch.UIKit;
-using System.Drawing;
+using UIKit;
+using CoreGraphics;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
@@ -17,7 +17,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             BackgroundColor = UIColor.Clear;
         }
 
-        public override void Draw(RectangleF rect)
+        public override void Draw(CGRect rect)
         {
             base.Draw(rect);
 
@@ -25,7 +25,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             var y = (this.Bounds.Height - _size) / 2;
 
             //// Oval Drawing
-            var ovalPath = UIBezierPath.FromOval(new RectangleF(x, y, _size, _size));
+            var ovalPath = UIBezierPath.FromOval(new CGRect(x, y, _size, _size));
             _color.SetFill();
             ovalPath.Fill();
             _color.SetStroke();

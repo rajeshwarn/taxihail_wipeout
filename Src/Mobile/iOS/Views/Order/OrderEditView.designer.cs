@@ -4,7 +4,7 @@
 // actions made in the UI designer. If it is removed, they will be lost.
 // Manual changes to this file may not be handled correctly.
 //
-using MonoTouch.Foundation;
+using Foundation;
 using System.CodeDom.Compiler;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views.Order
@@ -13,25 +13,25 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 	partial class OrderEditView
 	{
 		[Outlet]
-		MonoTouch.UIKit.UILabel lblApartment { get; set; }
+		UIKit.UILabel lblApartment { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel lblChargeType { get; set; }
+		UIKit.UILabel lblChargeType { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel lblEntryCode { get; set; }
+		UIKit.UILabel lblEntryCode { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel lblLargeBags { get; set; }
+		UIKit.UILabel lblLargeBags { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel lblName { get; set; }
+		UIKit.UILabel lblName { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel lblPassengers { get; set; }
+		UIKit.UILabel lblPassengers { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel lblPhone { get; set; }
+		UIKit.UILabel lblPhone { get; set; }
 
 		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatTextField txtApartment { get; set; }

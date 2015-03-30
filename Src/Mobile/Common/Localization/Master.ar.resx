@@ -136,10 +136,17 @@
     <value>لم يتم تفعيل حسابك. تم إرسال بريد الكتروني اخر للتنشيط</value>
   </data>
   <data name="AccountPaymentNumberRequiredMessage" xml:space="preserve">
-    <value>فضلا، ادخل رقم حساب صحيح</value>
+    <value>Please enter a valid account number</value>
+  </data>
+  <data name="AccountPaymentCustomerNumberRequiredMessage" xml:space="preserve">
+    <value>Please enter a valid rider number</value>
   </data>
   <data name="AccountPaymentNumberRequiredTitle" xml:space="preserve">
     <value>مطلوب رقم الحساب</value>
+  </data>
+  <data name="AccountPaymentCustomerNumberRequiredTitle" xml:space="preserve">
+    <value>Account Rider Number required</value>
+    <comment>Account Rider Number required</comment>
   </data>
   <data name="AddReminderMessage" xml:space="preserve">
     <value>هل ترغب في إضافة تنبيه على تقويمك حول هذا الموعد؟</value>
@@ -259,7 +266,7 @@
     <value>الغاء</value>
   </data>
   <data name="CmtCardNumber" xml:space="preserve">
-    <value>رقم البطاقة:</value>
+    <value>طريقة الدفع:</value>
   </data>
   <data name="CmtCarNumber" xml:space="preserve">
     <value>رقم السيارة:</value>
@@ -288,10 +295,10 @@
   <data name="CmtRideLinqSaveChanges" xml:space="preserve">
     <value>حفظ</value>
   </data>
-  <data name="CmtRideLinqUnpair" xml:space="preserve">
-    <value>فصل</value>
+  <data name="UnpairPayInCar" xml:space="preserve">
+    <value>Pay in Car</value>
   </data>
-  <data name="CmtRideLinqUnpairErrorMessage" xml:space="preserve">
+  <data name="UnpairErrorMessage" xml:space="preserve">
     <value>حدث خطأ أثناء الفصل، رجاء المحاولة في وقت لاحق.</value>
   </data>
   <data name="CmtTipAmount" xml:space="preserve">
@@ -314,12 +321,6 @@
   </data>
   <data name="ConfirmationOfPaymentSent" xml:space="preserve">
     <value>تم إرسال تأكيد السداد للسائق.</value>
-  </data>
-  <data name="ConfirmationPaymentAmountOver100" xml:space="preserve">
-    <value>سنقوم بخصم {0}. يرجى تأكيد القيمة.</value>
-  </data>
-  <data name="ConfirmationPaymentAmountOver100Title" xml:space="preserve">
-    <value>مطلوب التأكيد</value>
   </data>
   <data name="ConfirmCompanyLabel" xml:space="preserve">
     <value>الشركة:</value>
@@ -421,7 +422,7 @@
     <value>سنة الإنتهاء</value>
   </data>
   <data name="CreditCardInstructions" xml:space="preserve">
-    <value>لكي تستخدم هذا التطبيق، يجب أن تضيف رقم بطاقة إئتمانية لحسابك.</value>
+    <value>In order to use the application, you need to add a payment method to your account.</value>
   </data>
   <data name="CreditCardInvalidCrediCardNUmber" xml:space="preserve">
     <value>رقم البطاقة الائتمانية خاطئة</value>
@@ -541,7 +542,7 @@
     <value>لا يمكن إتمام الحجز</value>
   </data>
   <data name="Error_AccountPaymentMessage" xml:space="preserve">
-    <value>رقم الحساب غير صحيح</value>
+    <value>Invalid account or rider number</value>
   </data>
   <data name="Error_AccountPaymentQuestionRequiredMessage" xml:space="preserve">
     <value>يجب الإجابة على جميع الأسئلة للإستمرار</value>
@@ -611,6 +612,9 @@
   </data>
   <data name="HistoryDetailStatusLabel" xml:space="preserve">
     <value>الحالة:</value>
+  </data>
+  <data name="HistoryDetailPromoLabel" xml:space="preserve">
+    <value>Promo Code:</value>
   </data>
   <data name="HistoryInfo" xml:space="preserve">
     <value>عرض حجوزاتكم خلال الشهر الماضي</value>
@@ -738,6 +742,9 @@
   <data name="LocationServiceErrorMessage" xml:space="preserve">
     <value>خدمة تحديد الموقع غير مفعلة</value>
   </data>
+  <data name="Error" xml:space="preserve">
+    <value>خطأ</value>
+  </data>
   <data name="LocationServiceErrorTitle" xml:space="preserve">
     <value>خطأ</value>
   </data>
@@ -780,9 +787,6 @@
   <data name="NetworkErrorTitle" xml:space="preserve">
     <value>لا يوجد إتصال بالشبكة</value>
   </data>
-  <data name="NoAmountSelectedMessage" xml:space="preserve">
-    <value>رجاء أدخل القيمة</value>
-  </data>
   <data name="NoAptText" xml:space="preserve">
     <value>رقم الشقة</value>
   </data>
@@ -806,9 +810,6 @@
   </data>
   <data name="NoMailClient" xml:space="preserve">
     <value>لا يوجد برنامج لتلقي رسائل البريد الإلكتروني .</value>
-  </data>
-  <data name="NoOrderId" xml:space="preserve">
-    <value>الطلب غير جاهز</value>
   </data>
   <data name="NoPhoneNumberMessage" xml:space="preserve">
     <value>رقم هاتف هذا السائق خاطئ</value>
@@ -886,7 +887,7 @@
     <value>تحديث الحساب</value>
   </data>
   <data name="PanelMenuViewPaymentInfoText" xml:space="preserve">
-    <value>Card on File</value>
+    <value>Payment</value>
   </data>
   <data name="ParameterButton" xml:space="preserve">
     <value>المعايير</value>
@@ -921,12 +922,6 @@
   <data name="PaymentDetails.TipAmountLabel" xml:space="preserve">
     <value>قيمة الإكرامية</value>
   </data>
-  <data name="PaymentErrorMessage" xml:space="preserve">
-    <value>تفاصيل</value>
-  </data>
-  <data name="PaymentErrorTitle" xml:space="preserve">
-    <value>لا يمكن اتمام عملية الدفع</value>
-  </data>
   <data name="PaymentViewMeterAmountText" xml:space="preserve">
     <value>قيمة العداد</value>
   </data>
@@ -938,21 +933,6 @@
   </data>
   <data name="PayNow" xml:space="preserve">
     <value>ادفع الآن</value>
-  </data>
-  <data name="PayPalButton" xml:space="preserve">
-    <value>ادفع من خلال PayPal</value>
-  </data>
-  <data name="PayPalExpressCheckoutCancelMessage" xml:space="preserve">
-    <value>تم إلغاء الدفع من خلال الـ PayPal. لم يتم الخصم من حسابك.</value>
-  </data>
-  <data name="PayPalExpressCheckoutCancelTitle" xml:space="preserve">
-    <value>تم إلغاء عملية الدفع</value>
-  </data>
-  <data name="PayPalExpressCheckoutSuccessMessage" xml:space="preserve">
-    <value>تم الدفع بنجاح من PayPal. تم إرسال تأكيد للسائق.</value>
-  </data>
-  <data name="PayPalExpressCheckoutSuccessTitle" xml:space="preserve">
-    <value>تم الدفع بنجاح</value>
   </data>
   <data name="PickupDateDisplay" xml:space="preserve">
     <value>الحجز لـ {0:ddd, MMM d} at {0:h:mm tt}</value>
@@ -1041,6 +1021,9 @@
   <data name="RideSettingsAccountNumber" xml:space="preserve">
     <value>رقم الحساب</value>
   </data>
+  <data name="RideSettingsCustomerNumber" xml:space="preserve">
+    <value>Account Rider Number</value>
+  </data>
   <data name="RideSettingsCannotLoadListMessage" xml:space="preserve">
     <value>لا يمكن الاتصال بالسيرفر، حاول مجددا في وقت لاحق.</value>
   </data>
@@ -1112,72 +1095,6 @@
   </data>
   <data name="ServerInfo" xml:space="preserve">
     <value>({0} v{1})</value>
-  </data>
-  <data name="ServiceErrorCallTitle" xml:space="preserve">
-    <value>رسالة</value>
-  </data>
-  <data name="ServiceErrorCreateOrder_PendingOrder" xml:space="preserve">
-    <value>You cannot book this ride since an order is already pending. View the order status?</value>
-  </data>
-  <data name="ServiceErrorCreateAccount_AccountAlreadyExist" xml:space="preserve">
-    <value>هذا العنوان الإلكتروني مستخدم من قبل.</value>
-  </data>
-  <data name="ServiceErrorCreateOrder_CannotCreateInIbs" xml:space="preserve">
-    <value>لا يمكن إدخال الطلب. الرجاء المحاولة من جديد أو اتصل بنا.</value>
-  </data>
-  <data name="ServiceErrorCreateOrder_CannotCreateInIbs_1002" xml:space="preserve">
-    <value>عنوان الإلتقاء يقع خارج نطاق الخدمة المعتادة. رجاء الإتصال  {0} على  {1} للمزيد من المساعدة.</value>
-  </data>
-  <data name="ServiceErrorCreateOrder_CannotCreateInIbs_1002_NoCall" xml:space="preserve">
-    <value>عنوان الإلتقاء يقع خارج نطاق الخدمة المعتادة.</value>
-  </data>
-  <data name="ServiceErrorCreateOrder_CannotCreateInIbs_1452" xml:space="preserve">
-    <value>The specified Destination address lies outside the regular service area. Please contact {0} at {1} for further assistance.</value>
-  </data>
-  <data name="ServiceErrorCreateOrder_CannotCreateInIbs_1452_NoCall" xml:space="preserve">
-    <value>The specified Destination address lies outside the regular service area.</value>
-  </data>
-  <data name="ServiceErrorCreateOrder_CannotCreateInIbs_7000" xml:space="preserve">
-    <value>لا يمكن إدخال الطلب لأن حسابك غير فعال حاليا. رجاء الإتصال  {0} على  {1} للمزيد من المساعدة.</value>
-  </data>
-  <data name="ServiceErrorCreateOrder_CannotCreateInIbs_7000_NoCall" xml:space="preserve">
-    <value>لا يمكن إدخال الطلب لأن حسابك غير فعال حاليا.</value>
-  </data>
-  <data name="ServiceErrorCreateOrder_InvalidProvider" xml:space="preserve">
-    <value>لا يمكن إدخال الطلب، مقدم الخدمة غير متاح. رجاء الاتصال  {0} على  {1} للمزيد من المساعدة</value>
-  </data>
-  <data name="ServiceErrorCreateOrder_InvalidProvider_NoCall" xml:space="preserve">
-    <value>لا يمكن إدخال الطلب، مقدم الخدمة غير متاح.</value>
-  </data>
-  <data name="ServiceErrorCreateOrder_NoFareEstimateAvailable" xml:space="preserve">
-    <value>لا يمكن تقدير الأجرة لهذه الرحلة. رجاء الإتصال  {0} على  {1} للمزيد من المساعدة.</value>
-  </data>
-  <data name="ServiceErrorCreateOrder_NoFareEstimateAvailable_NoCall" xml:space="preserve">
-    <value>لا يمكن تقدير الأجرة لهذه الرحلة.</value>
-  </data>
-  <data name="ServiceErrorCreateOrder_NoProvider" xml:space="preserve">
-    <value>لا يمكن إدخال الطلب.لم نتمكن من تحديد مورد للخدمة. رجاء حاول من جديد أو اتصل بنا.</value>
-  </data>
-  <data name="ServiceErrorCreateOrder_VehiculeType" xml:space="preserve">
-    <value>لا يمكن إدخال الطلب. نوعية السيارة المطلوبة غير متوفرة. الرجاء إعادة المحاولة أوالإتصال بنا.</value>
-  </data>
-  <data name="ServiceErrorDefaultMessage" xml:space="preserve">
-    <value>حدث خطأ. يرجى إعادة المحاولة.</value>
-  </data>
-  <data name="ServiceErrorResetPassword_AccountNotFound" xml:space="preserve">
-    <value>لا يوجد حساب خاص بهذا العنوان الإلكتروني.</value>
-  </data>
-  <data name="ServiceErrorUnauthorized" xml:space="preserve">
-    <value>انتهى وقت اتصالك. رجاء تسجيل الدخول للإستمرار.</value>
-  </data>
-  <data name="ServiceErrorUpdatePassword_NotSame" xml:space="preserve">
-    <value>كلمة المرور الحالية غير صحيحة</value>
-  </data>
-  <data name="ServiceError_ErrorCreatingOrderMessage" xml:space="preserve">
-    <value>رجاء الإتصال  {0} على  {1} للمزيد من المساعدة.</value>
-  </data>
-  <data name="ServiceError_ErrorCreatingOrderMessage_NoCall" xml:space="preserve">
-    <value>لا يمكن إدخال الطلب.</value>
   </data>
   <data name="SettingsViewTitle" xml:space="preserve">
     <value>إعدادات</value>
@@ -1286,6 +1203,9 @@
   </data>
   <data name="TermsAndConditionsAcknowledgment" xml:space="preserve">
     <value>أقر بأني قد قرأت وفهمت الأحكام والشروط.</value>
+  </data>
+  <data name="TermsAndConditionsLabel" xml:space="preserve">
+    <value>الأحكام والشروط</value>
   </data>
   <data name="Time" xml:space="preserve">
     <value>الوقت</value>
@@ -1426,7 +1346,7 @@
     <value>افتح حسابك</value>
   </data>
   <data name="View_CreditCard" xml:space="preserve">
-    <value>بطاقة إئتمان</value>
+    <value>دفع</value>
   </data>
   <data name="View_CreditCardsList" xml:space="preserve">
     <value>بطاقات إئتمان</value>
@@ -1557,9 +1477,6 @@
   <data name="View_NotificationSettings" xml:space="preserve">
     <value>Notifications</value>
   </data>
-  <data name="ServiceErrorCreateOrder_CannotCreateInIbs_10000" xml:space="preserve">
-    <value>The charge account information is invalid. Please try again.</value>
-  </data>
   <data name="PanelMenuViewNotificationsText" xml:space="preserve">
     <value>Notifications</value>
   </data>
@@ -1568,15 +1485,6 @@
   </data>
   <data name="Notification_BookingConfirmationEmail" xml:space="preserve">
     <value>Booking Confirmation (Email)</value>
-  </data>
-  <data name="ServiceErrorCreateOrder_CannotCreateInIbs_10000_NoCall" xml:space="preserve">
-    <value>The charge account information is invalid. Please try again.</value>
-  </data>
-  <data name="ServiceErrorCreateOrder_CannotCreateInIbs_1300" xml:space="preserve">
-    <value>​We apologize but unfortunately we do not have any reservations available for that time period.</value>
-  </data>
-  <data name="ServiceErrorCreateOrder_CannotCreateInIbs_1300_NoCall" xml:space="preserve">
-    <value>​We apologize but unfortunately we do not have any reservations available for that time period.</value>
   </data>
   <data name="Notification_ConfirmPairingPush" xml:space="preserve">
     <value>Confirm Pairing</value>
@@ -1614,10 +1522,10 @@
   <data name="Notification_VehicleAtPickupPush" xml:space="preserve">
     <value>Vehicle at Pickup</value>
   </data>
-  <data name="Notification_Off" xml:space="preserve">
+  <data name="Toggle_Off" xml:space="preserve">
     <value>Off</value>
   </data>
-  <data name="Notification_On" xml:space="preserve">
+  <data name="Toggle_On" xml:space="preserve">
     <value>On</value>
   </data>
   <data name="PaymentInCar" xml:space="preserve">
@@ -1631,9 +1539,6 @@
   </data>
   <data name="Knowledgabledriver" xml:space="preserve">
     <value>Knowledgable driver</value>
-  </data>
-  <data name="ServiceErrorAccountCharge_InvalidAccountNumber" xml:space="preserve">
-    <value>Invalid account number</value>
   </data>
   <data name="Safety" xml:space="preserve">
     <value>Safety</value>
@@ -1666,7 +1571,7 @@
     <value>Contacting {0} ...</value>
   </data>
   <data name="UpdateBookingSettingsEmptyAccount" xml:space="preserve">
-    <value>Account number cannot be empty when Charge Type is set to Charge Account</value>
+    <value>Account and rider numbers cannot be empty when Charge Type is set to Charge Account</value>
   </data>
   <data name="UpdateBookingSettingsInvalidAccount" xml:space="preserve">
     <value>The account number that was entered doesn't exist</value>
@@ -1679,5 +1584,176 @@
   </data>
   <data name="UpdateBookingSettingsInvalidCoF" xml:space="preserve">
     <value>You must have a card on file to use this account</value>
+  </data>
+  <data name="MarketChangedMessage" xml:space="preserve">
+    <value>You are leaving your local service area. Should you decide to book, your order will be dispatched using a taxi company from this area.</value>
+  </data>
+  <data name="MarketChangedMessageTitle" xml:space="preserve">
+    <value>New service area detected</value>
+  </data>
+  <data name="PanelMenuViewTaxiHailNetworkText" xml:space="preserve">
+    <value>TaxiHail Network</value>
+  </data>
+  <data name="View_UserTaxiHailNetworkSettings" xml:space="preserve">
+    <value>TaxiHail Network</value>
+  </data>
+  <data name="UserTaxiHailNetwork_Enabled" xml:space="preserve">
+    <value>TaxiHail Network</value>
+  </data>
+  <data name="PromoCodeLabel" xml:space="preserve">
+    <value>Promo code</value>
+  </data>
+  <data name="PromoMustUseCardOnFileMessage" xml:space="preserve">
+    <value>In order to use a promo code, you need to pay with card on file</value>
+  </data>
+  <data name="PromoMustUseCardOnFileWarningMessage" xml:space="preserve">
+    <value>Please note that the discount will only be applied if the payment is made using the app</value>
+  </data>
+  <data name="WarningPromoCodeDontShow" xml:space="preserve">
+    <value>لا تحذر</value>
+  </data>
+  <data name="PanelMenuViewPromotionsText" xml:space="preserve">
+    <value>Promotions</value>
+  </data>
+  <data name="UnpairWarningMessage" xml:space="preserve">
+    <value>This action cannot be undone</value>
+  </data>
+  <data name="UnpairWarningMessageWithPromo" xml:space="preserve">
+    <value>If you decide to pay in car, you will not be able to use the promotion</value>
+  </data>
+  <data name="UnpairWarningCancelButton" xml:space="preserve">
+    <value>Pay in car</value>
+  </data>
+  <data name="View_Promotions" xml:space="preserve">
+    <value>Promotions</value>
+  </data>
+  <data name="PromoExpiringIn1DayMessage" xml:space="preserve">
+    <value>Expires in 1 day</value>
+  </data>
+  <data name="PromoExpiringSoonMessage" xml:space="preserve">
+    <value>Expires in {0} days</value>
+  </data>
+  <data name="PromoExpiringToday" xml:space="preserve">
+    <value>Expires today!</value>
+  </data>
+  <data name="PromoBookRide" xml:space="preserve">
+    <value>Use this promotion on next ride</value>
+  </data>
+  <data name="PromotionViewNoPromotionLabel" xml:space="preserve">
+    <value>No promotions available</value>
+  </data>
+  <data name="Processing" xml:space="preserve">
+    <value>Processing your order...</value>
+  </data>
+  <data name="Notification_PromotionUnlockedEmail" xml:space="preserve">
+    <value>Promotions unlocked (Email)</value>
+  </data>
+  <data name="Notification_PromotionUnlockedPush" xml:space="preserve">
+    <value>Promotions unlocked (Push)</value>
+  </data>
+  <data name="PromoProgress" xml:space="preserve">
+    <value>Progress :</value>
+  </data>
+  <data name="ErrorCreateOrder_PendingOrder" xml:space="preserve">
+    <value>You cannot book this ride since an order is already pending. View the order status?</value>
+  </data>
+  <data name="LinkPayPal" xml:space="preserve">
+    <value>Link PayPal</value>
+  </data>
+  <data name="UnlinkPayPal" xml:space="preserve">
+    <value>Unlink PayPal</value>
+  </data>
+  <data name="LinkPayPalCCWarning" xml:space="preserve">
+    <value>Linking your PayPal account will remove your card on file and PayPal will be set as the default payment method. Proceed?</value>
+  </data>
+  <data name="AddCoFPayPalWarning" xml:space="preserve">
+    <value>Adding a credit card will unlink your PayPal account and Card on File will be set as the default payment method. Proceed?</value>
+  </data>
+  <data name="PayPalErrorTitle" xml:space="preserve">
+    <value>PayPal Error</value>
+  </data>
+  <data name="PayPalLinkError" xml:space="preserve">
+    <value>Unable to link your PayPal account</value>
+  </data>
+  <data name="PayPalUnlinkError" xml:space="preserve">
+    <value>Unable to unlink your PayPal account</value>
+  </data>
+  <data name="LinkPayPalConfirmation" xml:space="preserve">
+    <value>Link</value>
+  </data>
+  <data name="PayPalLinked" xml:space="preserve">
+    <value>Your account is now enabled to pay with PayPal by default. You can still choose to pay in the vehicle by selecting \"Pay in Vehicle\" on the payment screen</value>
+  </data>
+  <data name="PayPalLinkedInfo" xml:space="preserve">
+    <value>Account Linked</value>
+  </data>
+  <data name="NoPairingCreditCard" xml:space="preserve">
+    <value>None</value>
+  </data>
+  <data name="InvalidPassengersNumberTitle" xml:space="preserve">
+    <value>Invalid Number of Passengers</value>
+  </data>
+  <data name="InvalidPassengersNumber" xml:space="preserve">
+    <value>The vehicle type that you selected does not have enough seats to accommodate your number of passengers. Please change your selection or book more than one car to accommodate your party size.</value>
+  </data>
+  <data name="Overdue_TransactionId" xml:space="preserve">
+    <value>Transaction Id:</value>
+  </data>
+  <data name="Overdue_Date" xml:space="preserve">
+    <value>Transaction date:</value>
+  </data>
+  <data name="Overdue_Amount" xml:space="preserve">
+    <value>Amount due:</value>
+  </data>
+  <data name="Overdue_Retry" xml:space="preserve">
+    <value>Pay Now</value>
+  </data>
+  <data name="Overdue_AddNewCard" xml:space="preserve">
+    <value>Update Credit Card</value>
+  </data>
+  <data name="View_Overdue" xml:space="preserve">
+    <value>Payment Declined</value>
+  </data>
+  <data name="Overdue_Failed_Message" xml:space="preserve">
+    <value>Your transaction was denied, please try again later or replace your credit card with a new one.</value>
+  </data>
+  <data name="Overdue_Failed_Title" xml:space="preserve">
+    <value>Error settling declined payment</value>
+  </data>
+  <data name="Overdue_Succeed_Message" xml:space="preserve">
+    <value>Your declined payment of {0} has been settled and your account is now enabled to pay with your card on file by default.</value>
+  </data>
+  <data name="Overdue_Succeed_Title" xml:space="preserve">
+    <value>Payment Declined</value>
+  </data>
+  <data name="Overdue_Instructions" xml:space="preserve">
+    <value>Your credit card failed to pay the previous ride, you need to either retry to pay again or update your credit card information.</value>
+  </data>
+  <data name="Overdue_IBSOrderId" xml:space="preserve">
+    <value>Order:</value>
+  </data>
+  <data name="Overdue_OutstandingPaymentExists" xml:space="preserve">
+    <value>Your credit card failed to pay the previous ride. You will need to pay this outstanding amount for your card be reactivated.</value>
+  </data>
+  <data name="PromoDescriptionCode" xml:space="preserve">
+    <value>Use code {0} at the time of booking or press the button below</value>
+  </data>
+  <data name="PromoApply" xml:space="preserve">
+    <value>Apply</value>
+  </data>
+  <data name="CreateAccountPayBackPlaceHolder" xml:space="preserve">
+    <value>PayBack</value>
+  </data>
+  <data name="PromotionButton" xml:space="preserve">
+    <value>Tap to Enter or View Promo Code</value>
+  </data>
+  <data name="NoPayBackErrorMessage" xml:space="preserve">
+    <value>The PayBack field is required</value>
+  </data>
+  <data name="InvalidPayBackErrorMessage" xml:space="preserve">
+    <value>The PayBack field must be all digits and must not exceed 10 characters in length</value>
+  </data>
+  <data name="RideSettingsPayBack" xml:space="preserve">
+    <value>PayBack</value>
   </data>
 </root>

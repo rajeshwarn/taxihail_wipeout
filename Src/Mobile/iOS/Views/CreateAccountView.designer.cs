@@ -4,7 +4,7 @@
 // actions made in the UI designer. If it is removed, they will be lost.
 // Manual changes to this file may not be handled correctly.
 //
-using MonoTouch.Foundation;
+using Foundation;
 using System.CodeDom.Compiler;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
@@ -19,19 +19,19 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnCreate { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UIButton btnViewTerms { get; set; }
+		UIKit.UIButton btnViewTerms { get; set; }
 
 		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatCheckBox checkBoxAcknowledged { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.NSLayoutConstraint constraintTableViewHeight { get; set; }
+		UIKit.NSLayoutConstraint constraintTableViewHeight { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel lblTitle { get; set; }
+		UIKit.UILabel lblTitle { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UIView tableView { get; set; }
+		UIKit.UIView tableView { get; set; }
 		
 		void ReleaseDesignerOutlets ()
 		{

@@ -8,13 +8,6 @@ namespace apcurium.MK.Booking.Api.Client.Payments.Fake
 {
     public class FakePaymentClient : IPaymentServiceClient
     {
-        private readonly Random _random;
-
-        public FakePaymentClient()
-        {
-            _random = new Random();
-        }
-
         public Task<TokenizedCreditCardResponse> Tokenize(string creditCardNumber, DateTime expiryDate, string cvv)
         {
             return Task.FromResult(new TokenizedCreditCardResponse
@@ -36,52 +29,18 @@ namespace apcurium.MK.Booking.Api.Client.Payments.Fake
             });
         }
 
-        public Task<PreAuthorizePaymentResponse> PreAuthorize(string cardToken, double amount, double meterAmount, double tipAmount, Guid orderId)
+        public Task<OverduePayment> GetOverduePayment()
         {
-            return Task.FromResult(new PreAuthorizePaymentResponse
-            {
-                TransactionId = 100000000 + _random.Next(999) + "",
-                IsSuccessful = true
-            });
+            return Task.FromResult((OverduePayment)null);
         }
 
-        public Task<CommitPreauthorizedPaymentResponse> CommitPreAuthorized(string transactionId)
+        public Task<SettleOverduePaymentResponse> SettleOverduePayment()
         {
-            return Task.FromResult(new CommitPreauthorizedPaymentResponse
+            return Task.FromResult(new SettleOverduePaymentResponse
             {
                 IsSuccessful = true,
                 Message = "Success"
             });
-        }
-
-        public Task<CommitPreauthorizedPaymentResponse> CommitPayment(string cardToken, double amount, double meterAmount, double tipAmount, Guid orderId)
-        {
-            return Task.FromResult(new CommitPreauthorizedPaymentResponse
-            {
-                IsSuccessful = true,
-                Message = "Success"
-            });
-        }
-
-        public Task<PairingResponse> Pair(Guid orderId, string cardToken, int? autoTipPercentage, double? autoTipAmount)
-        {
-            return Task.FromResult(new PairingResponse
-            {
-                IsSuccessful = true
-            });
-        }
-
-        public Task<BasePaymentResponse> Unpair(Guid orderId)
-        {
-            return Task.FromResult(new BasePaymentResponse
-            {
-                IsSuccessful = true
-            });
-        }
-
-        public Task ResendConfirmationToDriver(Guid orderId)
-        {
-            return Task.FromResult(true);
         }
     }
 }

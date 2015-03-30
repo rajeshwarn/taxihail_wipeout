@@ -79,7 +79,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 
             if (this.Services().Settings.CanChangeServiceUrl)
             {
-                FindViewById<Button>(Resource.Id.ServerButton).Click += delegate { PromptServer(); };
+                FindViewById<Button>(Resource.Id.ServerButton).Click += (sender, e) => PromptServer();
                 FindViewById<Button>(Resource.Id.ServerButton).Visibility = ViewStates.Visible;
                 DrawHelper.SupportLoginTextColor(FindViewById<Button>(Resource.Id.ServerButton));
             }

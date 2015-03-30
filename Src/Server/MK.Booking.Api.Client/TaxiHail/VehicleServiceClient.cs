@@ -11,7 +11,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 {
 	public class VehicleServiceClient: BaseServiceClient, IVehicleClient
     {
-		private readonly ILogger _logger;
+        private readonly ILogger _logger;
         public VehicleServiceClient(string url, string sessionId, IPackageInfo packageInfo, ILogger logger)
             : base(url, sessionId, packageInfo)
         {
@@ -27,7 +27,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 					VehicleTypeId = vehicleTypeId
 				});
 
-			_logger.Maybe(() => _logger.LogMessage (string.Format("Available vehicle found for lat {0}, long {1} count = {2}",latitude,longitude, response.Count )));
+			_logger.Maybe (() => _logger.LogMessage (string.Format ("Available vehicle found for lat {0}, long {1}, count = {2}", latitude, longitude, response.Count)));
 
 			return response.ToArray();
 		}

@@ -1,8 +1,13 @@
 ﻿#region
 
+using System;
+using System.Xml.Linq;
 using apcurium.MK.Booking.Commands;
+using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Domain;
+using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Common.Entity;
+using apcurium.MK.Common.Extensions;
 using AutoMapper;
 using Infrastructure.EventSourcing;
 using Infrastructure.Messaging.Handling;
@@ -22,13 +27,20 @@ namespace apcurium.MK.Booking.CommandHandlers
         ICommandHandler<NotifyOrderTimedOut>,
         ICommandHandler<PrepareOrderForNextDispatch>,
         ICommandHandler<SwitchOrderToNextDispatchCompany>,
-        ICommandHandler<IgnoreDispatchCompanySwitch>
+        ICommandHandler<IgnoreDispatchCompanySwitch>,
+        ICommandHandler<AddIbsOrderInfoToOrder>,
+        ICommandHandler<CancelOrderBecauseOfError>,
+        ICommandHandler<SaveTemporaryOrderCreationInfo>,
+        ICommandHandler<MarkPrepaidOrderAsSuccessful>,
+        ICommandHandler<UpdateRefundedOrder>
     {
         private readonly IEventSourcedRepository<Order> _repository;
+        private readonly Func<BookingDbContext> _contextFactory;
 
-        public OrderCommandHandler(IEventSourcedRepository<Order> repository)
+        public OrderCommandHandler(IEventSourcedRepository<Order> repository, Func<BookingDbContext> contextFactory)
         {
             _repository = repository;
+            _contextFactory = contextFactory;
         }
 
         public void Handle(CancelOrder command)
@@ -49,23 +61,25 @@ namespace apcurium.MK.Booking.CommandHandlers
         public void Handle(NotifyOrderTimedOut command)
         {
             var order = _repository.Find(command.OrderId);
-            order.NotifyOrderTimedOut();
+            order.NotifyOrderTimedOut(command.Market);
 
             _repository.Save(order, command.Id.ToString());
         }
 
         public void Handle(CreateOrder command)
         {
-            var order = new Order(command.OrderId, command.AccountId, command.IBSOrderId, command.PickupDate,
+            var order = new Order(command.OrderId, command.AccountId, command.PickupDate,
                 command.PickupAddress, command.DropOffAddress, command.Settings, command.EstimatedFare,
                 command.UserAgent, command.ClientLanguageCode, command.UserLatitude, command.UserLongitude,
-                command.UserNote, command.ClientVersion, command.IsChargeAccountPaymentWithCardOnFile);
+                command.UserNote, command.ClientVersion, command.IsChargeAccountPaymentWithCardOnFile,
+                command.CompanyKey, command.CompanyName, command.Market, command.IsPrepaid);
 
             if (command.Payment.PayWithCreditCard)
             {
                 var payment = Mapper.Map<PaymentInformation>(command.Payment);
                 order.SetPaymentInformation(payment);
             }
+
             _repository.Save(order, command.Id.ToString());
         }
 
@@ -108,7 +122,7 @@ namespace apcurium.MK.Booking.CommandHandlers
         public void Handle(SwitchOrderToNextDispatchCompany command)
         {
             var order = _repository.Find(command.OrderId);
-            order.SwitchOrderToNextDispatchCompany(command.IBSOrderId, command.CompanyKey, command.CompanyName);
+            order.SwitchOrderToNextDispatchCompany(command.IBSOrderId, command.CompanyKey, command.CompanyName, command.Market);
             _repository.Save(order, command.Id.ToString());
         }
 
@@ -116,6 +130,55 @@ namespace apcurium.MK.Booking.CommandHandlers
         {
             var order = _repository.Find(command.OrderId);
             order.IgnoreDispatchCompanySwitch();
+            _repository.Save(order, command.Id.ToString());
+        }
+
+        public void Handle(AddIbsOrderInfoToOrder command)
+        {
+            var order = _repository.Find(command.OrderId);
+            order.AddIbsOrderInfo(command.IBSOrderId);
+            _repository.Save(order, command.Id.ToString());
+        }
+
+        public void Handle(CancelOrderBecauseOfError command)
+        {
+            var order = _repository.Find(command.OrderId);
+            order.CancelBecauseOfError(command.ErrorCode, command.ErrorDescription, command.WasPrepaid);
+            _repository.Save(order, command.Id.ToString());
+        }
+
+        public void Handle(SaveTemporaryOrderCreationInfo command)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                context.Save(new TemporaryOrderCreationInfoDetail
+                {
+                    OrderId = command.OrderId,
+                    SerializedOrderCreationInfo = command.SerializedOrderCreationInfo
+                });
+            }
+        }
+
+        public void Handle(MarkPrepaidOrderAsSuccessful command)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                context.RemoveWhere<TemporaryOrderCreationInfoDetail>(x => x.OrderId == command.OrderId);
+                context.SaveChanges();
+            }
+
+            var order = _repository.Find(command.OrderId);
+
+            order.UpdatePrepaidOrderPaymentInfo(command.OrderId, command.Amount, command.Meter, command.Tax,
+                command.Tip, command.TransactionId, command.Provider, command.Type);
+
+            _repository.Save(order, command.Id.ToString());
+        }
+
+        public void Handle(UpdateRefundedOrder command)
+        {
+            var order = _repository.Get(command.OrderId);
+            order.RefundedOrderUpdated(command.IsSuccessful, command.Message);
             _repository.Save(order, command.Id.ToString());
         }
     }

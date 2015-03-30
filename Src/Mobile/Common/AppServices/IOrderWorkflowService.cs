@@ -9,7 +9,7 @@ using apcurium.MK.Common.Entity;
 namespace apcurium.MK.Booking.Mobile.AppServices
 {
 	public interface IOrderWorkflowService
-    {
+	{
 		Task PrepareForNewOrder();
 
 		void BeginCreateOrder ();
@@ -18,6 +18,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 
 		Task<bool> ValidateCardOnFile ();
 		Task<bool> ValidateCardExpiration ();
+		Task<bool> ValidatePromotionUseConditions();
 
 		Task SetAddress(Address address);
 		Task SetPickupAptAndRingCode(string apt, string ringCode);
@@ -29,15 +30,18 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 		Task SetPickupDate(DateTime? date);
 
 		Task ToggleBetweenPickupAndDestinationSelectionMode();
+		Task ToggleIsDestinationModeOpened(bool? forceValue = null);
 
 		Task ValidatePickupTime();
 		Task ValidatePickupAndDestination();
+		Task ValidateNumberOfPassengers (int? numberOfPassengers);
 		Task<Tuple<Order, OrderStatusDetail>> ConfirmOrder();
 
 		Task SetVehicleType (int? vehicleTypeId);
 		Task SetBookingSettings(BookingSettings bookingSettings);
-		Task SetAccountNumber (string accountNumber);
+		Task SetAccountNumber (string accountNumber, string customerNumber);
 		void SetNoteToDriver(string text);
+		void SetPromoCode(string code);
 
 		IObservable<Address> GetAndObservePickupAddress();
 		IObservable<Address> GetAndObserveDestinationAddress();
@@ -47,26 +51,30 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 		IObservable<DateTime?> GetAndObservePickupDate();
 		IObservable<string> GetAndObserveEstimatedFare();
 		IObservable<string> GetAndObserveNoteToDriver();
+		IObservable<string> GetAndObservePromoCode();
 		IObservable<bool> GetAndObserveLoadingAddress();
-		IObservable<bool> GetAndObserveOrderCanBeConfirmed ();
+		IObservable<bool> GetAndObserveOrderCanBeConfirmed();
+		IObservable<string> GetAndObserveMarket();
+		IObservable<bool> GetAndObserveIsDestinationModeOpened();
 
 		Task<Tuple<Order, OrderStatusDetail>> GetLastActiveOrder();
 
         Guid? GetLastUnratedRide();
 
 		Task<bool> ShouldWarnAboutEstimate();
+		Task<bool> ShouldWarnAboutPromoCode();
 
 	    bool ShouldPromptUserToRateLastRide();
 
 		Task<bool> ShouldGoToAccountNumberFlow();
-		Task<bool> ValidateAccountNumberAndPrepareQuestions(string accountNumber = null);
+		Task<bool> ValidateAccountNumberAndPrepareQuestions(string accountNumber = null, string customerNumber = null);
 		Task<AccountChargeQuestion[]> GetAccountPaymentQuestions();
         bool ValidateAndSaveAccountAnswers(AccountChargeQuestion[] questionsAndAnswers);
 
 		Task<OrderValidationResult> ValidateOrder();
 		void ConfirmValidationOrder ();
 
-		void Rebook(Order previous);
+        Task Rebook(Order previous);
 
 		Task<Address> GetCurrentAddress();
 

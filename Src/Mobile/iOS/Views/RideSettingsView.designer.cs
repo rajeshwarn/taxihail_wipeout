@@ -4,7 +4,7 @@
 // actions made in the UI designer. If it is removed, they will be lost.
 // Manual changes to this file may not be handled correctly.
 //
-using MonoTouch.Foundation;
+using Foundation;
 using System.CodeDom.Compiler;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
@@ -13,25 +13,31 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 	partial class RideSettingsView
 	{
 		[Outlet]
-		MonoTouch.UIKit.UILabel lblAccountNumber { get; set; }
+		UIKit.UILabel lblAccountNumber { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel lblChargeType { get; set; }
+		UIKit.UILabel lblChargeType { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel lblName { get; set; }
+		UIKit.UILabel lblCustomerNumber { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel lblPassword { get; set; }
+		UIKit.UILabel lblName { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel lblPhone { get; set; }
+		UIKit.UILabel lblPassword { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel lblTip { get; set; }
+		UIKit.UILabel lblPayBack { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel lblVehicleType { get; set; }
+		UIKit.UILabel lblPhone { get; set; }
+
+		[Outlet]
+		UIKit.UILabel lblTip { get; set; }
+
+		[Outlet]
+		UIKit.UILabel lblVehicleType { get; set; }
 
 		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatTextField txtAccountNumber { get; set; }
@@ -40,10 +46,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.ModalFlatTextField txtChargeType { get; set; }
 
 		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatTextField txtCustomerNumber { get; set; }
+
+		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatTextField txtName { get; set; }
 
 		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.NavigateFlatTextField txtPassword { get; set; }
+
+		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatTextField txtPayBack { get; set; }
 
 		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatTextField txtPhone { get; set; }
@@ -56,6 +68,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		
 		void ReleaseDesignerOutlets ()
 		{
+			if (lblPayBack != null) {
+				lblPayBack.Dispose ();
+				lblPayBack = null;
+			}
+
+			if (txtPayBack != null) {
+				txtPayBack.Dispose ();
+				txtPayBack = null;
+			}
+
 			if (lblAccountNumber != null) {
 				lblAccountNumber.Dispose ();
 				lblAccountNumber = null;
@@ -64,6 +86,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			if (lblChargeType != null) {
 				lblChargeType.Dispose ();
 				lblChargeType = null;
+			}
+
+			if (lblCustomerNumber != null) {
+				lblCustomerNumber.Dispose ();
+				lblCustomerNumber = null;
 			}
 
 			if (lblName != null) {
@@ -99,6 +126,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			if (txtChargeType != null) {
 				txtChargeType.Dispose ();
 				txtChargeType = null;
+			}
+
+			if (txtCustomerNumber != null) {
+				txtCustomerNumber.Dispose ();
+				txtCustomerNumber = null;
 			}
 
 			if (txtName != null) {

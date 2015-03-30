@@ -4,11 +4,12 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">iPhoneSimulator</Platform>
     <ProjectGuid>{698DA5A6-BEE2-4FD6-A2F7-8269289B1DA4}</ProjectGuid>
-    <ProjectTypeGuids>{6BC8ED88-2882-458C-8E55-DFD12B67127B};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <ProjectTypeGuids>{FEACFBD2-3405-455C-9665-78FE426C6842};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Exe</OutputType>
     <RootNamespace>apcurium.MK.Booking.Mobile.Client</RootNamespace>
-    <MtouchSdkVersion>7.1</MtouchSdkVersion>
+    <MtouchSdkVersion>8.1</MtouchSdkVersion>
     <AssemblyName>TaxiHail</AssemblyName>
+    <TargetFrameworkIdentifier>Xamarin.iOS</TargetFrameworkIdentifier>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhoneSimulator' ">
     <DebugSymbols>True</DebugSymbols>
@@ -24,8 +25,7 @@
     </MtouchI18n>
     <MtouchUseArmv7>false</MtouchUseArmv7>
     <MtouchProfiling>True</MtouchProfiling>
-    <AssemblyName>TaxiHail</AssemblyName>
-    <MtouchArch>i386</MtouchArch>
+    <MtouchArch>i386, x86_64</MtouchArch>
     <CustomCommands>
       <CustomCommands>
         <Command type="BeforeBuild" command="mono &quot;$(SolutionDir)/../LocalizationTool/output/LocalizationTool.exe&quot; -t=ios -m=&quot;$(SolutionDir)/Common/Localization/Master.resx&quot; -d=&quot;$(ProjectDir)/en.lproj/localizable.strings&quot; -s=&quot;$(SolutionDir)/Common/Settings/Settings.json&quot;" workingdir="$(SolutionDir)/../LocalizationTool" />
@@ -46,13 +46,12 @@
     </MtouchI18n>
     <MtouchUseArmv7>false</MtouchUseArmv7>
     <MtouchUseLlvm>True</MtouchUseLlvm>
-    <MtouchArch>i386</MtouchArch>
+    <MtouchArch>i386, x86_64</MtouchArch>
     <CustomCommands>
       <CustomCommands>
         <Command type="BeforeBuild" command="mono &quot;$(SolutionDir)/../LocalizationTool/output/LocalizationTool.exe&quot; -t=ios -m=&quot;$(SolutionDir)/Common/Localization/Master.resx&quot; -d=&quot;$(ProjectDir)/en.lproj/Localizable.strings&quot; -s=&quot;$(SolutionDir)/Common/Settings/Settings.json&quot;" workingdir="$(SolutionDir)/../LocalizationTool" />
       </CustomCommands>
     </CustomCommands>
-    <AssemblyName>TaxiHail</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhone' ">
     <DebugSymbols>True</DebugSymbols>
@@ -74,13 +73,13 @@
     </CrashReportingApiKey>
     <BuildIpa>True</BuildIpa>
     <MtouchExtraArgs>-v -v -v -v  -aot "nrgctx-trampolines=2500" -aot "nimt-trampolines=2500" -aot "ntrampolines=2500"</MtouchExtraArgs>
-    <MtouchArch>ARMv7</MtouchArch>
+    <MtouchArch>ARMv7, ARM64</MtouchArch>
     <CustomCommands>
       <CustomCommands>
         <Command type="BeforeBuild" command="mono &quot;$(SolutionDir)/../LocalizationTool/output/LocalizationTool.exe&quot; -t=ios -m=&quot;$(SolutionDir)/Common/Localization/Master.resx&quot; -d=&quot;$(ProjectDir)/en.lproj/localizable.strings&quot; -s=&quot;$(SolutionDir)/Common/Settings/Settings.json&quot;" workingdir="$(SolutionDir)/../LocalizationTool" />
       </CustomCommands>
     </CustomCommands>
-    <AssemblyName>TaxiHail</AssemblyName>
+    <MtouchProfiling>true</MtouchProfiling>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhone' ">
     <DebugType>none</DebugType>
@@ -98,10 +97,9 @@
     <BuildIpa>True</BuildIpa>
     <CrashReportingApiKey>
     </CrashReportingApiKey>
-    <AssemblyName>TaxiMobileApp</AssemblyName>
     <MtouchExtraArgs>-aot "nrgctx-trampolines=2500" -aot "nimt-trampolines=2500" -aot "ntrampolines=2500"</MtouchExtraArgs>
     <DefineConstants>MONOTOUCH;NET35;SILVERLIGHT;CLIENT;</DefineConstants>
-    <MtouchArch>ARMv7</MtouchArch>
+    <MtouchArch>ARMv7, ARM64</MtouchArch>
     <MtouchUseLlvm>True</MtouchUseLlvm>
     <CustomCommands>
       <CustomCommands>
@@ -121,11 +119,10 @@
     <CrashReportingApiKey>
     </CrashReportingApiKey>
     <MtouchUseArmv7>false</MtouchUseArmv7>
-    <MtouchArch>ARMv7</MtouchArch>
+    <MtouchArch>ARMv7, ARM64</MtouchArch>
     <IpaPackageName>
     </IpaPackageName>
     <CodesignKey>iPhone Distribution</CodesignKey>
-    <AssemblyName>TaxiMobileApp</AssemblyName>
     <ConsolePause>False</ConsolePause>
     <BuildIpa>True</BuildIpa>
     <MtouchUseLlvm>True</MtouchUseLlvm>
@@ -151,11 +148,10 @@
     <MtouchI18n>
     </MtouchI18n>
     <MtouchUseArmv7>false</MtouchUseArmv7>
-    <MtouchArch>ARMv7</MtouchArch>
+    <MtouchArch>ARMv7, ARM64</MtouchArch>
     <CodesignProvision>Automatic:AppStore</CodesignProvision>
     <CodesignKey>iPhone Distribution</CodesignKey>
     <ConsolePause>False</ConsolePause>
-    <AssemblyName>TaxiMobileApp</AssemblyName>
     <MtouchUseLlvm>True</MtouchUseLlvm>
     <BuildIpa>True</BuildIpa>
     <MtouchExtraArgs>-aot "nrgctx-trampolines=2500" -aot "nimt-trampolines=2500" -aot "ntrampolines=2500"</MtouchExtraArgs>
@@ -169,104 +165,95 @@
     <Reference Include="System" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
-    <Reference Include="monotouch" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel.Web" />
-    <Reference Include="ServiceStack.Text.MonoTouch">
-      <HintPath>..\Libraries\Monotouch\ServiceStack.Text.MonoTouch.dll</HintPath>
-    </Reference>
-    <Reference Include="ServiceStack.Interfaces.MonoTouch">
-      <HintPath>..\Libraries\Monotouch\ServiceStack.Interfaces.MonoTouch.dll</HintPath>
-    </Reference>
-    <Reference Include="ServiceStack.Common.MonoTouch">
-      <HintPath>..\Libraries\Monotouch\ServiceStack.Common.MonoTouch.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Reactive.Core">
-      <HintPath>..\Components\rxforxamarin-2.1\lib\ios\System.Reactive.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Reactive.Debugger">
-      <HintPath>..\Components\rxforxamarin-2.1\lib\ios\System.Reactive.Debugger.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Reactive.Experimental">
-      <HintPath>..\Components\rxforxamarin-2.1\lib\ios\System.Reactive.Experimental.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Reactive.Interfaces">
-      <HintPath>..\Components\rxforxamarin-2.1\lib\ios\System.Reactive.Interfaces.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Reactive.Linq">
-      <HintPath>..\Components\rxforxamarin-2.1\lib\ios\System.Reactive.Linq.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Reactive.PlatformServices">
-      <HintPath>..\Components\rxforxamarin-2.1\lib\ios\System.Reactive.PlatformServices.dll</HintPath>
-    </Reference>
-    <Reference Include="SocialNetworks.Services.MonoTouch">
-      <HintPath>..\Libraries\Monotouch\SocialNetworks.Services.MonoTouch.dll</HintPath>
-    </Reference>
-    <Reference Include="Cirrious.CrossCore.Touch">
-      <HintPath>..\packages\MvvmCross.HotTuna.CrossCore.3.0.14\lib\MonoTouch\Cirrious.CrossCore.Touch.dll</HintPath>
-    </Reference>
-    <Reference Include="Cirrious.MvvmCross.Binding.Touch">
-      <HintPath>..\packages\MvvmCross.HotTuna.CrossCore.3.0.14\lib\MonoTouch\Cirrious.MvvmCross.Binding.Touch.dll</HintPath>
-    </Reference>
-    <Reference Include="Cirrious.CrossCore">
-      <HintPath>..\packages\MvvmCross.HotTuna.CrossCore.3.0.14\lib\MonoTouch\Cirrious.CrossCore.dll</HintPath>
-    </Reference>
-    <Reference Include="Cirrious.MvvmCross.Binding">
-      <HintPath>..\packages\MvvmCross.HotTuna.CrossCore.3.0.14\lib\MonoTouch\Cirrious.MvvmCross.Binding.dll</HintPath>
-    </Reference>
-    <Reference Include="Cirrious.MvvmCross.Localization">
-      <HintPath>..\packages\MvvmCross.HotTuna.CrossCore.3.0.14\lib\MonoTouch\Cirrious.MvvmCross.Localization.dll</HintPath>
-    </Reference>
-    <Reference Include="Cirrious.MvvmCross.Touch">
-      <HintPath>..\packages\MvvmCross.HotTuna.MvvmCrossLibraries.3.0.14\lib\MonoTouch\Cirrious.MvvmCross.Touch.dll</HintPath>
-    </Reference>
-    <Reference Include="Cirrious.MvvmCross">
-      <HintPath>..\packages\MvvmCross.HotTuna.MvvmCrossLibraries.3.0.14\lib\MonoTouch\Cirrious.MvvmCross.dll</HintPath>
-    </Reference>
-    <Reference Include="CrossUI.Core">
-      <HintPath>..\packages\MvvmCross.HotTuna.Touch.Dialog.3.0.14\lib\MonoTouch\CrossUI.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="CrossUI.Touch">
-      <HintPath>..\packages\MvvmCross.HotTuna.Touch.Dialog.3.0.14\lib\MonoTouch\CrossUI.Touch.dll</HintPath>
-    </Reference>
-    <Reference Include="Cirrious.MvvmCross.Dialog.Touch">
-      <HintPath>..\packages\MvvmCross.HotTuna.Touch.Dialog.3.0.14\lib\MonoTouch\Cirrious.MvvmCross.Dialog.Touch.dll</HintPath>
-    </Reference>
-    <Reference Include="Cirrious.MvvmCross.Plugins.PhoneCall">
-      <HintPath>..\packages\MvvmCross.HotTuna.Plugin.PhoneCall.3.0.14\lib\MonoTouch\Cirrious.MvvmCross.Plugins.PhoneCall.dll</HintPath>
-    </Reference>
-    <Reference Include="Cirrious.MvvmCross.Plugins.PhoneCall.Touch">
-      <HintPath>..\packages\MvvmCross.HotTuna.Plugin.PhoneCall.3.0.14\lib\MonoTouch\Cirrious.MvvmCross.Plugins.PhoneCall.Touch.dll</HintPath>
-    </Reference>
-    <Reference Include="Cirrious.MvvmCross.Plugins.WebBrowser">
-      <HintPath>..\packages\MvvmCross.HotTuna.Plugin.WebBrowser.3.0.14\lib\MonoTouch\Cirrious.MvvmCross.Plugins.WebBrowser.dll</HintPath>
-    </Reference>
-    <Reference Include="Cirrious.MvvmCross.Plugins.WebBrowser.Touch">
-      <HintPath>..\packages\MvvmCross.HotTuna.Plugin.WebBrowser.3.0.14\lib\MonoTouch\Cirrious.MvvmCross.Plugins.WebBrowser.Touch.dll</HintPath>
-    </Reference>
-    <Reference Include="Calabash">
-      <HintPath>..\Libraries\Monotouch\Calabash.dll</HintPath>
+    <Reference Include="Xamarin.iOS" />
+    <Reference Include="GoogleAnalytics.iOS">
+      <HintPath>..\Components\googleanalytics-3.0.10.2\lib\ios-unified\GoogleAnalytics.iOS.dll</HintPath>
     </Reference>
     <Reference Include="MonoTouch.FacebookConnect">
-      <HintPath>..\Components\facebookios-3.14.1\lib\ios\MonoTouch.FacebookConnect.dll</HintPath>
+      <HintPath>..\Components\facebookios-3.22.0\lib\ios-unified\MonoTouch.FacebookConnect.dll</HintPath>
     </Reference>
-    <Reference Include="GoogleAnalytics.iOS">
-      <HintPath>..\Components\googleanalytics-3.0.3.4\lib\ios\GoogleAnalytics.iOS.dll</HintPath>
+    <Reference Include="System.Reactive.Core">
+      <HintPath>..\Components\rxforxamarin-2.2.1\lib\ios-unified\System.Reactive.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Interfaces">
+      <HintPath>..\Components\rxforxamarin-2.2.1\lib\ios-unified\System.Reactive.Interfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Linq">
+      <HintPath>..\Components\rxforxamarin-2.2.1\lib\ios-unified\System.Reactive.Linq.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.PlatformServices">
+      <HintPath>..\Components\rxforxamarin-2.2.1\lib\ios-unified\System.Reactive.PlatformServices.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Insights">
+      <HintPath>..\packages\Xamarin.Insights.1.8.3\lib\Xamarin.iOS10\Xamarin.Insights.dll</HintPath>
+    </Reference>
+    <Reference Include="PLCrashReporterUnifiedBinding">
+      <HintPath>..\packages\Xamarin.Insights.1.8.3\lib\Xamarin.iOS10\PLCrashReporterUnifiedBinding.dll</HintPath>
+    </Reference>
+    <Reference Include="Calabash">
+      <HintPath>..\Components\calabash-12.0\lib\ios-unified\Calabash.dll</HintPath>
+    </Reference>
+    <Reference Include="ServiceStack.Text.MonoTouch">
+      <HintPath>..\Libraries\Monotouch\ServiceStack.Text.MonoTouch.dll</HintPath>
     </Reference>
     <Reference Include="GoogleConversionTracking">
       <HintPath>..\Libraries\Monotouch\GoogleConversionTracking.dll</HintPath>
     </Reference>
-    <Reference Include="Xamarin.Insights">
-      <HintPath>..\packages\Xamarin.Insights.1.6.0\lib\MonoTouch10\Xamarin.Insights.dll</HintPath>
+    <Reference Include="Cirrious.CrossCore.Touch">
+      <HintPath>..\packages\MvvmCross.HotTuna.CrossCore.3.5.0\lib\Xamarin.iOS10\Cirrious.CrossCore.Touch.dll</HintPath>
     </Reference>
-    <Reference Include="PLCrashReporter">
-      <HintPath>..\packages\Xamarin.Insights.1.6.0\lib\MonoTouch10\PLCrashReporter.dll</HintPath>
+    <Reference Include="Cirrious.MvvmCross.Binding.Touch">
+      <HintPath>..\packages\MvvmCross.HotTuna.CrossCore.3.5.0\lib\Xamarin.iOS10\Cirrious.MvvmCross.Binding.Touch.dll</HintPath>
     </Reference>
-    <Reference Include="Card.IO.iOS">
-      <HintPath>..\Libraries\Monotouch\Card.IO.iOS.dll</HintPath>
+    <Reference Include="Cirrious.CrossCore">
+      <HintPath>..\packages\MvvmCross.HotTuna.CrossCore.3.5.0\lib\Xamarin.iOS10\Cirrious.CrossCore.dll</HintPath>
+    </Reference>
+    <Reference Include="Cirrious.MvvmCross.Binding">
+      <HintPath>..\packages\MvvmCross.HotTuna.CrossCore.3.5.0\lib\Xamarin.iOS10\Cirrious.MvvmCross.Binding.dll</HintPath>
+    </Reference>
+    <Reference Include="Cirrious.MvvmCross.Localization">
+      <HintPath>..\packages\MvvmCross.HotTuna.CrossCore.3.5.0\lib\Xamarin.iOS10\Cirrious.MvvmCross.Localization.dll</HintPath>
+    </Reference>
+    <Reference Include="Cirrious.MvvmCross.Touch">
+      <HintPath>..\packages\MvvmCross.HotTuna.MvvmCrossLibraries.3.5.0\lib\Xamarin.iOS10\Cirrious.MvvmCross.Touch.dll</HintPath>
+    </Reference>
+    <Reference Include="Cirrious.MvvmCross">
+      <HintPath>..\packages\MvvmCross.HotTuna.MvvmCrossLibraries.3.5.0\lib\Xamarin.iOS10\Cirrious.MvvmCross.dll</HintPath>
+    </Reference>
+    <Reference Include="Cirrious.MvvmCross.Plugins.PhoneCall">
+      <HintPath>..\packages\MvvmCross.HotTuna.Plugin.PhoneCall.3.5.0\lib\Xamarin.iOS10\Cirrious.MvvmCross.Plugins.PhoneCall.dll</HintPath>
+    </Reference>
+    <Reference Include="Cirrious.MvvmCross.Plugins.PhoneCall.Touch">
+      <HintPath>..\packages\MvvmCross.HotTuna.Plugin.PhoneCall.3.5.0\lib\Xamarin.iOS10\Cirrious.MvvmCross.Plugins.PhoneCall.Touch.dll</HintPath>
+    </Reference>
+    <Reference Include="Cirrious.MvvmCross.Plugins.Visibility">
+      <HintPath>..\packages\MvvmCross.HotTuna.Plugin.Visibility.3.5.0\lib\Xamarin.iOS10\Cirrious.MvvmCross.Plugins.Visibility.dll</HintPath>
+    </Reference>
+    <Reference Include="Cirrious.MvvmCross.Plugins.Visibility.Touch">
+      <HintPath>..\packages\MvvmCross.HotTuna.Plugin.Visibility.3.5.0\lib\Xamarin.iOS10\Cirrious.MvvmCross.Plugins.Visibility.Touch.dll</HintPath>
+    </Reference>
+    <Reference Include="Cirrious.MvvmCross.Plugins.WebBrowser">
+      <HintPath>..\packages\MvvmCross.HotTuna.Plugin.WebBrowser.3.5.0\lib\Xamarin.iOS10\Cirrious.MvvmCross.Plugins.WebBrowser.dll</HintPath>
+    </Reference>
+    <Reference Include="Cirrious.MvvmCross.Plugins.WebBrowser.Touch">
+      <HintPath>..\packages\MvvmCross.HotTuna.Plugin.WebBrowser.3.5.0\lib\Xamarin.iOS10\Cirrious.MvvmCross.Plugins.WebBrowser.Touch.dll</HintPath>
+    </Reference>
+    <Reference Include="CrossUI.Core">
+      <HintPath>..\packages\MvvmCross.HotTuna.Touch.Dialog.3.5.0\lib\Xamarin.iOS10\CrossUI.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="CrossUI.Touch">
+      <HintPath>..\packages\MvvmCross.HotTuna.Touch.Dialog.3.5.0\lib\Xamarin.iOS10\CrossUI.Touch.dll</HintPath>
+    </Reference>
+    <Reference Include="Cirrious.MvvmCross.Dialog.Touch">
+      <HintPath>..\packages\MvvmCross.HotTuna.Touch.Dialog.3.5.0\lib\Xamarin.iOS10\Cirrious.MvvmCross.Dialog.Touch.dll</HintPath>
+    </Reference>
+    <Reference Include="PaypalSdkTouch.Unified">
+      <HintPath>..\Libraries\Monotouch\PaypalSdkTouch.Unified.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -301,9 +288,9 @@
     <Compile Include="Extensions\LocationDataExtension.cs" />
     <Compile Include="Controls\StatusBar.cs" />
     <Compile Include="PlatformIntegration\PackageInfo.cs" />
+    <Compile Include="PlatformIntegration\PayPalConfigurationService.cs" />
     <Compile Include="Setup.cs" />
     <Compile Include="PhonePresenter.cs" />
-    <Compile Include="Animations\SlideViewAnimation.cs" />
     <Compile Include="PlatformIntegration\MessageService.cs" />
     <Compile Include="Views\PanelMenuView.cs">
       <DependentUpon>PanelMenuView.xib</DependentUpon>
@@ -374,10 +361,6 @@
     <Compile Include="Extensions\Helpers\UIHelper.cs" />
     <Compile Include="Extensions\UIViewPositioningExtensions.cs" />
     <Compile Include="Controls\Binding\CustomBindingsLoader.cs" />
-    <Compile Include="Views\Payments\PayPalView.cs" />
-    <Compile Include="Views\Payments\PayPalView.designer.cs">
-      <DependentUpon>PayPalView.cs</DependentUpon>
-    </Compile>
     <Compile Include="Controls\Binding\PaymentSelectorBinding.cs" />
     <Compile Include="PlatformIntegration\GoogleAnalyticsService.cs" />
     <Compile Include="Views\TermsAndConditionsView.cs" />
@@ -391,7 +374,6 @@
     <Compile Include="Controls\Widgets\FlatButton.cs" />
     <Compile Include="Extensions\MvvmCrossExtensions.cs" />
     <Compile Include="Controls\Widgets\FlatTextField.cs" />
-    <Compile Include="Bootstrap\PhoneCallPluginBootstrap.cs" />
     <Compile Include="Extensions\UITableViewExtensions.cs" />
     <Compile Include="Controls\Widgets\TwoLinesCell.cs" />
     <Compile Include="Controls\Widgets\CustomCellBackgroundView.cs" />
@@ -425,13 +407,7 @@
     <Compile Include="Views\BookRatingView.designer.cs">
       <DependentUpon>BookRatingView.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\Payments\PaymentView.cs" />
-    <Compile Include="Views\Payments\PaymentView.designer.cs" />
     <Compile Include="LinkerPleaseInclude.cs" />
-    <Compile Include="Views\Payments\ConfirmCarNumberView.cs" />
-    <Compile Include="Views\Payments\ConfirmCarNumberView.designer.cs">
-      <DependentUpon>ConfirmCarNumberView.cs</DependentUpon>
-    </Compile>
     <Compile Include="Controls\Widgets\PaymentSelector.cs" />
     <Compile Include="Views\BookingStatusView.xib.cs">
       <DependentUpon>BookingStatusView.xib</DependentUpon>
@@ -443,7 +419,6 @@
     <Compile Include="Controls\Binding\FlatCheckBoxBinding.cs" />
     <Compile Include="Controls\Widgets\FlatTextView.cs" />
     <Compile Include="Controls\Widgets\PanelMenuSource.cs" />
-    <Compile Include="Bootstrap\WebBrowserPluginBootstrap.cs" />
     <Compile Include="Views\HistoryListView.cs" />
     <Compile Include="Views\LocationListView.cs" />
     <Compile Include="Views\LocationListView.designer.cs">
@@ -527,8 +502,6 @@
     <Compile Include="MapUtitilties\MKMapViewHelper.cs" />
     <BundleResource Include="Resources\nearby_suv.png" />
     <BundleResource Include="Resources\nearby_suv%402x.png" />
-    <Compile Include="Views\Payments\ConfirmPairView.cs" />
-    <Compile Include="Views\Payments\ConfirmPairView.designer.cs" />
     <Compile Include="Views\NotificationSettingsView.cs" />
     <Compile Include="Views\NotificationSettingsView.designer.cs">
       <DependentUpon>NotificationSettingsView.cs</DependentUpon>
@@ -563,11 +536,43 @@
     <BundleResource Include="Resources\map_smallicon_background%402x.png" />
     <BundleResource Include="es.lproj\Localizable.strings" />
     <Compile Include="Views\SplashView.cs" />
+    <Compile Include="Views\UserTaxiHailNetworkSettingsView.cs" />
+    <Compile Include="Views\UserTaxiHailNetworkSettingsView.designer.cs">
+      <DependentUpon>UserTaxiHailNetworkSettingsView.cs</DependentUpon>
+    </Compile>
     <BundleResource Include="Resources\poweredBy4sq.png" />
     <BundleResource Include="Resources\poweredBy4sq%402x.png" />
     <Compile Include="PlatformIntegration\AppleDirectionProvider.cs" />
+    <BundleResource Include="Resources\promo.png" />
+    <BundleResource Include="Resources\promo%402x.png" />
+    <Compile Include="Views\PromotionView.cs" />
+    <Compile Include="Views\PromotionView.designer.cs">
+      <DependentUpon>PromotionView.cs</DependentUpon>
+    </Compile>
+    <BundleResource Include="Resources\down_arrow.png" />
+    <BundleResource Include="Resources\down_arrow%402x.png" />
+    <Compile Include="Views\PromotionCell.cs" />
+    <Compile Include="Views\PromotionCell.designer.cs">
+      <DependentUpon>PromotionCell.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Widgets\AmpTableViewSource.cs" />
+    <Content Include="fr.lproj\InfoPlist.strings" />
+    <Content Include="es.lproj\InfoPlist.strings" />
+    <Content Include="ar.lproj\InfoPlist.strings" />
+    <Compile Include="Controls\Widgets\EtaView.cs" />
+    <Compile Include="Helper\NSDateHelper.cs" />
+    <Compile Include="Bootstrap\PhoneCallPluginBootstrap.cs" />
+    <Compile Include="Bootstrap\VisibilityPluginBootstrap.cs" />
+    <Compile Include="Bootstrap\WebBrowserPluginBootstrap.cs" />
+    <BundleResource Include="Resources\paypal_icon.png" />
+    <BundleResource Include="Resources\paypal_icon%402x.png" />
+    <Compile Include="Extensions\NSErrorExtensions.cs" />
+    <Compile Include="Views\Payments\OverduePaymentView.cs" />
+    <Compile Include="Views\Payments\OverduePaymentView.designer.cs">
+      <DependentUpon>OverduePaymentView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\CustomBadgeView.cs" />
   </ItemGroup>
-  <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
   <ProjectExtensions>
     <MonoDevelop>
       <Properties>
@@ -577,7 +582,9 @@
       </Properties>
     </MonoDevelop>
   </ProjectExtensions>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Views\Payments\" />
+  </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="MainWindow.xib" />
     <InterfaceDefinition Include="Views\PanelMenuView.xib" />
@@ -590,14 +597,11 @@
     <InterfaceDefinition Include="Views\CreateAccountView.xib" />
     <InterfaceDefinition Include="Views\ResetPasswordView.xib" />
     <InterfaceDefinition Include="Views\CreditCardAddView.xib" />
-    <InterfaceDefinition Include="Views\Payments\PayPalView.xib" />
     <InterfaceDefinition Include="Views\TermsAndConditionsView.xib" />
     <InterfaceDefinition Include="Views\RideSummaryView.xib" />
     <InterfaceDefinition Include="Views\AboutUsView.xib" />
     <InterfaceDefinition Include="Views\BookRatingCell.xib" />
     <InterfaceDefinition Include="Views\BookRatingView.xib" />
-    <InterfaceDefinition Include="Views\Payments\PaymentView.xib" />
-    <InterfaceDefinition Include="Views\Payments\ConfirmCarNumberView.xib" />
     <InterfaceDefinition Include="Views\BookingStatusView.xib" />
     <InterfaceDefinition Include="Views\HistoryListView.xib" />
     <InterfaceDefinition Include="Views\LocationListView.xib" />
@@ -611,8 +615,11 @@
     <InterfaceDefinition Include="Views\AddressPickerContainerView.xib" />
     <InterfaceDefinition Include="Views\Order\InitializeOrderForAccountPaymentView.xib" />
     <InterfaceDefinition Include="Views\AccountConfirmationView.xib" />
-    <InterfaceDefinition Include="Views\Payments\ConfirmPairView.xib" />
     <InterfaceDefinition Include="Views\NotificationSettingsView.xib" />
+    <InterfaceDefinition Include="Views\UserTaxiHailNetworkSettingsView.xib" />
+    <InterfaceDefinition Include="Views\PromotionView.xib" />
+    <InterfaceDefinition Include="Views\PromotionCell.xib" />
+    <InterfaceDefinition Include="Views\Payments\OverduePaymentView.xib" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="en.lproj\Localizable.strings" />
@@ -623,10 +630,6 @@
     <ProjectReference Include="..\..\Server\MK.Common\MK.Common.iOS.csproj">
       <Project>{CF82F47F-A55D-45C6-B605-822458968E12}</Project>
       <Name>MK.Common.iOS</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Common\MK.Booking.Mobile.iOS.csproj">
-      <Project>{43282000-6BF8-4D70-B7DB-833BA44E34BB}</Project>
-      <Name>MK.Booking.Mobile.iOS</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Server\MK.Booking.Api.Contract\MK.Booking.Api.Contract.iOS.csproj">
       <Project>{0C54E2DC-0852-4EED-A882-60B68FE41C8D}</Project>
@@ -639,6 +642,10 @@
     <ProjectReference Include="..\..\Server\MK.Booking.MapDataProvider\MK.Booking.MapDataProvider.iOS.csproj">
       <Project>{50A4C580-4D47-48CF-80A8-79FDF81D9845}</Project>
       <Name>MK.Booking.MapDataProvider.iOS</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Common\MK.Booking.Mobile.iOS.csproj">
+      <Project>{43282000-6BF8-4D70-B7DB-833BA44E34BB}</Project>
+      <Name>MK.Booking.Mobile.iOS</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -744,13 +751,8 @@
     <BundleResource Include="Resources\visa_electron%402x.png" />
     <BundleResource Include="Resources\visa.png" />
     <BundleResource Include="Resources\visa%402x.png" />
-    <BundleResource Include="Default.png" />
-    <BundleResource Include="Default%402x.png" />
-    <BundleResource Include="Default-568h%402x.png" />
     <BundleResource Include="Resources\background.png" />
     <BundleResource Include="Resources\background%402x.png" />
-    <BundleResource Include="Resources\backPickupDestination.png" />
-    <BundleResource Include="Resources\backPickupDestination%402x.png" />
     <BundleResource Include="Resources\bookLaterIcon.png" />
     <BundleResource Include="Resources\bookLaterIcon%402x.png" />
     <BundleResource Include="Resources\closeButton.png" />
@@ -812,28 +814,54 @@
     <BundleResource Include="Resources\blackcar_no_badge_selected.png" />
     <BundleResource Include="Resources\blackcar_no_badge_selected%402x.png" />
   </ItemGroup>
-  <ItemGroup>
-    <XamarinComponentReference Include="rxforxamarin">
-      <Version>2.1</Version>
-      <Visible>False</Visible>
-    </XamarinComponentReference>
-    <XamarinComponentReference Include="facebookios">
-      <Version>3.14.1</Version>
-      <Visible>False</Visible>
-    </XamarinComponentReference>
-    <XamarinComponentReference Include="googleanalytics">
-      <Version>3.0.3.4</Version>
-      <Visible>False</Visible>
-    </XamarinComponentReference>
-  </ItemGroup>
   <ItemGroup />
   <ItemGroup />
   <ItemGroup>
     <EmbeddedResource Include="Style\Theme.xml">
       <LogicalName>Theme.xml</LogicalName>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Style\FlatButtonStyle.xml">
       <LogicalName>FlatButtonStyle.xml</LogicalName>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ImageAsset Include="Resources\Images.xcassets\LaunchImage.launchimage\Contents.json">
+      <InProject>false</InProject>
+    </ImageAsset>
+    <ImageAsset Include="Resources\Images.xcassets\LaunchImage.launchimage\Default.png">
+      <InProject>false</InProject>
+    </ImageAsset>
+    <ImageAsset Include="Resources\Images.xcassets\LaunchImage.launchimage\Default%402x.png">
+      <InProject>false</InProject>
+    </ImageAsset>
+    <ImageAsset Include="Resources\Images.xcassets\LaunchImage.launchimage\Default-568h%402x.png">
+      <InProject>false</InProject>
+    </ImageAsset>
+    <ImageAsset Include="Resources\Images.xcassets\LaunchImage.launchimage\Default-667h%402x.png">
+      <InProject>false</InProject>
+    </ImageAsset>
+    <ImageAsset Include="Resources\Images.xcassets\LaunchImage.launchimage\Default-736h%403x.png">
+      <InProject>false</InProject>
+    </ImageAsset>
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
+  <ItemGroup>
+    <XamarinComponentReference Include="googleanalytics">
+      <Version>3.0.10.2</Version>
+      <Visible>False</Visible>
+    </XamarinComponentReference>
+    <XamarinComponentReference Include="facebookios">
+      <Version>3.22.0</Version>
+      <Visible>False</Visible>
+    </XamarinComponentReference>
+    <XamarinComponentReference Include="rxforxamarin">
+      <Version>2.2.1</Version>
+      <Visible>False</Visible>
+    </XamarinComponentReference>
+    <XamarinComponentReference Include="calabash">
+      <Version>12.0</Version>
+      <Visible>False</Visible>
+    </XamarinComponentReference>
   </ItemGroup>
 </Project>

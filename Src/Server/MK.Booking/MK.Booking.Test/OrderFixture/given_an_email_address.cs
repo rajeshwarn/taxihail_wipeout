@@ -3,7 +3,6 @@ using System.Linq;
 using System.Net.Mail;
 using apcurium.MK.Booking.CommandHandlers;
 using apcurium.MK.Booking.Commands;
-using apcurium.MK.Booking.Common.Tests;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Domain;
 using apcurium.MK.Booking.Email;
@@ -29,6 +28,7 @@ namespace apcurium.MK.Booking.Test.OrderFixture
         private TestServerSettings _serverSettings;
         private Mock<IEmailSender> _emailSenderMock;
         private Mock<IOrderDao> _orderDaoMock;
+        private Mock<IAccountDao> _accountDaoMock;
         private Mock<IGeocoding> _geocodingMock;
         private EventSourcingTestHelper<Order> sut;
 
@@ -57,7 +57,10 @@ namespace apcurium.MK.Booking.Test.OrderFixture
                     PaymentConfirmationPush = true,
                     NearbyTaxiPush = true,
                     ReceiptEmail = true,
-                    VehicleAtPickupPush = true
+                    PromotionUnlockedEmail = true,
+                    VehicleAtPickupPush = true,
+                    PromotionUnlockedPush = true,
+                    UnpairingReminderPush = true
                 });
             }
         }
@@ -69,6 +72,7 @@ namespace apcurium.MK.Booking.Test.OrderFixture
 
             _emailSenderMock = new Mock<IEmailSender>();
             _orderDaoMock = new Mock<IOrderDao>();
+            _accountDaoMock = new Mock<IAccountDao>();
             _serverSettings = new TestServerSettings();
             _geocodingMock = new Mock<IGeocoding>();
             _serverSettings.SetSetting("TaxiHail.ApplicationName", ApplicationName);
@@ -80,6 +84,7 @@ namespace apcurium.MK.Booking.Test.OrderFixture
                 _serverSettings,
                 new ConfigurationDao(() => new ConfigurationDbContext(DbName)),
                 _orderDaoMock.Object,
+                _accountDaoMock.Object,
                 new StaticMap(),
                 null,
                 _geocodingMock.Object,
@@ -126,9 +131,9 @@ namespace apcurium.MK.Booking.Test.OrderFixture
                 Toll = 3.68,
                 Tip = 5.25,
                 Tax = 2.21,
-                CardOnFileInfo = new SendReceipt.CardOnFile(22, 12354 + "qweqw", "1234", "Visa")
+                PaymentInfo = new SendReceipt.Payment(22, 12354 + "qweqw", "1234", "Visa")
                 {
-                    LastFour = "6578",
+                    Last4Digits = "6578",
                     NameOnCard = "Bob"
                 },
                 PickupAddress = new Address
@@ -156,7 +161,7 @@ namespace apcurium.MK.Booking.Test.OrderFixture
                 Toll = 3.68,
                 Tip = 5.25,
                 Tax = 2.21,
-                CardOnFileInfo = new SendReceipt.CardOnFile(22, 12354 + "qweqw", "1231", "PayPal"),
+                PaymentInfo = new SendReceipt.Payment(22, 12354 + "qweqw", "1231", "PayPal"),
                 PickupAddress = new Address
                 {
                     FullAddress = "5250, rue Ferrier, Montreal, H1P 4L4"

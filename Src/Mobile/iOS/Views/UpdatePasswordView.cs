@@ -1,6 +1,6 @@
 using apcurium.MK.Booking.Mobile.Client.Localization;
 using apcurium.MK.Booking.Mobile.ViewModels;
-using MonoTouch.UIKit;
+using UIKit;
 using Cirrious.MvvmCross.Binding.BindingContext;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views

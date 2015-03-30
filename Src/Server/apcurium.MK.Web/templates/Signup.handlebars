@@ -31,8 +31,17 @@
                 <label class="control-label" for="signup-confirm-password">{{localize "ConfirmPassword"}}</label>
                 <div class="controls">
                     <input type="password" id="signup-confirm-password" name="confirmPassword" value="" data-error-style="inline" class='input-block-level'>
-                </div>    
+                </div>
             </div>
+            {{#if showPayBackField}}
+            <div id="signup-payback-div" class="control-group">
+                <label class="control-label" for="signup-payback">{{localize "PayBack"}}</label>
+                <div class="controls">
+                    <input type="text" id="signup-payback" name="payback" value="" data-error-style="inline" class='input-block-level'>
+                </div>
+            </div>
+            {{/if}}
+
             <div class="control-group">
                 <div class="controls">
                     <button type="submit" class="btn btn-primary pull-right span" data-loading-text="{{localize 'Loading'}}">{{localize "CreateBt"}}</button>

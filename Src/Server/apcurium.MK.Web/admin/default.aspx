@@ -37,8 +37,8 @@
 
         <!-- assets -->
         <script src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-        
+        <script src="../scripts/jquery-1.8.2.min.js"></script>
+        <%: Scripts.Render("~/bundles/jqueryval") %>
         <%: Scripts.Render("~/admin/bundles/assets") %>
         <script src="<%: BundleTable.Bundles.ResolveBundleUrl("~/admin/bundles/templates") %>"></script>
         <script src="taxi-hail-admin.js"></script>
@@ -49,6 +49,7 @@
             TaxiHail.parameters.defaultLongitude = <%: DefaultLongitude %>;
             TaxiHail.parameters.isLoggedIn = <%: IsAuthenticated ? "true" : "false" %>;
             TaxiHail.parameters.isSuperAdmin = <%: IsSuperAdmin ? "true" : "false" %>;
+            TaxiHail.parameters.isTaxiHailPro = <%: IsTaxiHailPro ? "true" : "false" %>;
             TaxiHail.parameters.geolocSearchFilter = '<%= GeolocSearchFilter %>';
             TaxiHail.parameters.geolocSearchRegion = '<%= GeolocSearchRegion %>';
             TaxiHail.parameters.geolocSearchBounds = '<%= GeolocSearchBounds %>';

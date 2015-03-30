@@ -56,9 +56,11 @@
     "Tariff_DuplicateName": "This tariff already exists",
 	"You cannot exclude all options from a list." : "You cannot exclude all options from a list.",
 	"confirmEmailSuccess" : "User has correctly been enabled." ,
-	"confirmEmailError" : "Error: Check that the email address exists in the system",
+	"confirmEmailError" : "Error: Email address does not exist in the system",
 	"disableEmailSuccess" : "User has correctly been disabled." ,
-	"disableEmailError" : "Error: Check that the email address exists in the system",
+    "disableEmailError": "Error: Email address does not exist in the system",
+    "unlinkAccountSuccess" : "User has correctly been unlinked from any IBS account." ,
+	"unlinkAccountError" : "Error: Email address does not exist in the system",
 	"sendPushNotificationSuccess" : "Message has correctly been sent." ,
 	"sendPushNotificationErrorNoDevice" : "Error: Couldn't send the message to the user, no device in user account",		
 	"sendPushNotificationErrorNoAccount" : "Error: Couldn't send the message, no account with this email address",		
@@ -104,7 +106,8 @@
 	"OrderStatus.ClientPollingInterval" : "Client Ride Status Polling (seconds)",
 	"OrderStatus.ServerPollingInterval" : "Server Ride Status Polling (seconds)",
     "Network.PrimaryOrderTimeout": "Primary Order Timeout (seconds)",
-    "Network.SecondaryOrderTimeout" : "Secondary Order Timeout (seconds)",
+    "Network.SecondaryOrderTimeout": "Secondary Order Timeout (seconds)",
+    "IsTaxiHailPro" : "IsTaxiHailPro (refresh to see)",
 
     "HideFareInfoInReceipt":  "Hide fare info (For Pay in Car only)",
 
@@ -115,13 +118,16 @@
     "NotificationSettingsWarning": "Notifications other than Email will be sent by Push or SMS depending on the setting \"SendPushAsSMS\"",
     "enabled":  "Enable Notifications",
     "bookingConfirmationEmail":  "Booking Confirmation (Email)",
-    "receiptEmail":  "Receipt (Email)",
+    "receiptEmail": "Receipt (Email)",
+    "promotionUnlockedEmail":  "Promotion Unlocked (Email)",
     "driverAssignedEmail":  "Driver Assigned (Email)",
     "driverAssignedPush":  "Driver Assigned",
     "confirmPairingPush":  "Confirm Pairing",
     "nearbyTaxiPush":  "Nearby Taxi",
     "vehicleAtPickupPush":  "Vehicle at Pickup",
-    "paymentConfirmationPush":  "Payment Confirmation",
+    "paymentConfirmationPush": "Payment Confirmation",
+    "promotionUnlockedPush": "Promotion Unlocked",
+    "unpairingReminderPush": "Unpairing Reminder",
 
     "/******* End notification settings Aliases ******/": ""
 }

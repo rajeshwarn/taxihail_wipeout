@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Net;
@@ -20,6 +19,7 @@ using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.SMS;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Cryptography;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
@@ -39,11 +39,12 @@ namespace apcurium.MK.Booking.Services.Impl
         private readonly IServerSettings _serverSettings;
         private readonly IConfigurationDao _configurationDao;
         private readonly IOrderDao _orderDao;
+        private readonly IAccountDao _accountDao;
         private readonly IStaticMap _staticMap;
         private readonly ISmsService _smsService;
         private readonly IGeocoding _geocoding;
         private readonly ILogger _logger;
-        private readonly Booking.Resources.Resources _resources;
+        private readonly Resources.Resources _resources;
 
         private BaseUrls _baseUrls;
 
@@ -55,6 +56,7 @@ namespace apcurium.MK.Booking.Services.Impl
             IServerSettings serverSettings,
             IConfigurationDao configurationDao,
             IOrderDao orderDao,
+            IAccountDao accountDao,
             IStaticMap staticMap,
             ISmsService smsService,
             IGeocoding geocoding,
@@ -67,12 +69,13 @@ namespace apcurium.MK.Booking.Services.Impl
             _serverSettings = serverSettings;
             _configurationDao = configurationDao;
             _orderDao = orderDao;
+            _accountDao = accountDao;
             _staticMap = staticMap;
             _smsService = smsService;
             _geocoding = geocoding;
             _logger = logger;
 
-            _resources = new Booking.Resources.Resources(serverSettings);
+            _resources = new Resources.Resources(serverSettings);
         }
 
         public void SetBaseUrl(Uri baseUrl)
@@ -80,6 +83,17 @@ namespace apcurium.MK.Booking.Services.Impl
             this._baseUrls = new BaseUrls(baseUrl, _serverSettings);
         }
 
+
+        public void SendPromotionUnlockedPush(Guid accountId, PromotionDetail promotionDetail)
+        {
+            var account = _accountDao.FindById(accountId);
+            if (ShouldSendNotification(accountId, x => x.DriverAssignedPush))
+            {
+                SendPushOrSms(accountId,
+                    string.Format(_resources.Get("PushNotification_PromotionUnlocked", account.Language), promotionDetail.Name, promotionDetail.Code),
+                    new Dictionary<string, object>());
+            }
+        }
 
         public void SendAssignedPush(OrderStatusDetail orderStatusDetail)
         {
@@ -106,10 +120,10 @@ namespace apcurium.MK.Booking.Services.Impl
         public void SendPairingInquiryPush(OrderStatusDetail orderStatusDetail)
         {
             var order = _orderDao.FindById(orderStatusDetail.OrderId);
-            if (_serverSettings.GetPaymentSettings().AutomaticPayment
-                    && !_serverSettings.GetPaymentSettings().AutomaticPaymentPairing
-                    && order.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id // Only send notification if using card on file
-                    && ShouldSendNotification(order.AccountId, x => x.ConfirmPairingPush))
+            if (!_serverSettings.GetPaymentSettings().IsUnpairingDisabled
+                && (order.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id        // Only send notification if using CoF
+                    || order.Settings.ChargeTypeId == ChargeTypes.PayPal.Id)        // or PayPal
+                && ShouldSendNotification(order.AccountId, x => x.ConfirmPairingPush))
             {
                 SendPushOrSms(order.AccountId,
                     _resources.Get("PushNotification_wosLOADED", order.ClientLanguageCode),
@@ -164,10 +178,13 @@ namespace apcurium.MK.Booking.Services.Impl
                     return;
                 }
 
-                var shouldSendPushNotification = newLatitude.HasValue &&
-                                                 newLongitude.HasValue &&
-                                                 ibsStatus == VehicleStatuses.Common.Assigned &&
-                                                 !orderStatus.IsTaxiNearbyNotificationSent;
+                var orderNotifications = context.Query<OrderNotificationDetail>().SingleOrDefault(x => x.Id == orderId);
+
+                var shouldSendPushNotification = 
+                    newLatitude.HasValue
+                    && newLongitude.HasValue
+                    && ibsStatus == VehicleStatuses.Common.Assigned
+                    && (orderNotifications == null || !orderNotifications.IsTaxiNearbyNotificationSent);
 
                 if (shouldSendPushNotification)
                 {
@@ -178,9 +195,20 @@ namespace apcurium.MK.Booking.Services.Impl
 
                     if (taxiPosition.DistanceTo(pickupPosition) <= TaxiDistanceThresholdForPushNotification)
                     {
-                        orderStatus.IsTaxiNearbyNotificationSent = true;
-                        context.Save(orderStatus);
-
+                        if (orderNotifications == null)
+                        {
+                            context.Save(new OrderNotificationDetail
+                            {
+                                Id = order.Id,
+                                IsTaxiNearbyNotificationSent = true
+                            });
+                        }
+                        else
+                        {
+                            orderNotifications.IsTaxiNearbyNotificationSent = true;
+                            context.Save(orderNotifications);
+                        }
+   
                         var alert = string.Format(_resources.Get("PushNotification_NearbyTaxi", order.ClientLanguageCode));
                         var data = new Dictionary<string, object> { { "orderId", order.Id } };
 
@@ -190,19 +218,90 @@ namespace apcurium.MK.Booking.Services.Impl
             }
         }
 
-        public void SendAutomaticPairingPush(Guid orderId, int? autoTipPercentage, string last4Digits, bool success)
+        public void SendUnpairingReminderPush(Guid orderId)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var orderStatus = context.Query<OrderStatusDetail>().Single(x => x.OrderId == orderId);
+                var orderNotifications = context.Query<OrderNotificationDetail>().SingleOrDefault(x => x.Id == orderId);
+
+                if (!ShouldSendNotification(orderStatus.AccountId, x => x.UnpairingReminderPush)
+                    || (orderNotifications != null && orderNotifications.IsUnpairingReminderNotificationSent))
+                {
+                    return;
+                }
+
+                var order = context.Find<OrderDetail>(orderId);
+
+                if (orderNotifications == null)
+                {
+                    context.Save(new OrderNotificationDetail
+                    {
+                        Id = order.Id,
+                        IsUnpairingReminderNotificationSent = true
+                    });
+                }
+                else
+                {
+                    orderNotifications.IsUnpairingReminderNotificationSent = true;
+                    context.Save(orderNotifications);
+                }
+
+                var alert = string.Format(_resources.Get("PushNotification_OrderUnpairingTimeOutWarning", order.ClientLanguageCode));
+                var data = new Dictionary<string, object> { { "orderId", order.Id } };
+
+                SendPushOrSms(order.AccountId, alert, data);
+            }
+        }
+
+        public void SendAutomaticPairingPush(Guid orderId, int? autoTipPercentage, bool success)
         {
             using (var context = _contextFactory.Invoke())
             {
                 var order = context.Find<OrderDetail>(orderId);
 
+                var isPayPal = order.Settings.ChargeTypeId == ChargeTypes.PayPal.Id;
+                var isAutomaticPairingEnabled = !_serverSettings.GetPaymentSettings().IsUnpairingDisabled;
+
+                string successMessage;
+                if (isPayPal)
+                {
+                    successMessage = string.Format(
+                        isAutomaticPairingEnabled
+                            ? _resources.Get("PushNotification_OrderPairingSuccessfulPayPalUnpair", order.ClientLanguageCode)
+                            : _resources.Get("PushNotification_OrderPairingSuccessfulPayPal", order.ClientLanguageCode),
+                        order.IBSOrderId,
+                        autoTipPercentage);
+                }
+                else
+                {
+                    successMessage = string.Format(
+                        isAutomaticPairingEnabled
+                            ? _resources.Get("PushNotification_OrderPairingSuccessfulUnpair", order.ClientLanguageCode)
+                            : _resources.Get("PushNotification_OrderPairingSuccessful", order.ClientLanguageCode),
+                        order.IBSOrderId,
+                        autoTipPercentage);
+                }
+                
                 var alert = success
-                    ? string.Format(_resources.Get("PushNotification_OrderPairingSuccessful", order.ClientLanguageCode), order.IBSOrderId, last4Digits, autoTipPercentage)
+                    ? successMessage
                     : string.Format(_resources.Get("PushNotification_OrderPairingFailed", order.ClientLanguageCode), order.IBSOrderId);
 
                 var data = new Dictionary<string, object> { { "orderId", orderId } };
 
                 SendPushOrSms(order.AccountId, alert, data);
+            }
+        }
+
+        public void SendOrderCreationErrorPush(Guid orderId, string errorDescription)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var order = context.Find<OrderDetail>(orderId);
+
+                var data = new Dictionary<string, object> { { "orderId", orderId } };
+
+                SendPushOrSms(order.AccountId, errorDescription, data);
             }
         }
 
@@ -224,20 +323,20 @@ namespace apcurium.MK.Booking.Services.Impl
 
         private string UrlCombine(string url1, string url2)
         {
-           if (url1.Length == 0)
-           {
-              return url2;
-           }
+            if (url1.Length == 0)
+            {
+                return url2;
+            }
 
-           if (url2.Length == 0)
-           {
-            return url1;
-           }
+            if (url2.Length == 0)
+            {
+                return url1;
+            }
 
-           url1 = url1.TrimEnd('/', '\\');
-           url2 = url2.TrimStart('/', '\\');
+            url1 = url1.TrimEnd('/', '\\');
+            url2 = url2.TrimStart('/', '\\');
 
-           return string.Format("{0}/{1}", url1, url2);
+            return string.Format("{0}/{1}", url1, url2);
         }
 
         public void SendAccountConfirmationSMS(string phoneNumber, string code, string clientLanguageCode)
@@ -297,7 +396,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 LogoImg = imageLogoUrl
             };
 
-            SendEmail(clientEmailAddress, EmailConstant.Template.BookingConfirmation, EmailConstant.Subject.BookingConfirmation, templateData, clientLanguageCode);
+            SendEmail(clientEmailAddress, EmailConstant.Template.BookingConfirmation, EmailConstant.Subject.BookingConfirmation, templateData, clientLanguageCode, _serverSettings.ServerData.Email.CC);
         }
 
         public void SendPasswordResetEmail(string password, string clientEmailAddress, string clientLanguageCode)
@@ -317,8 +416,9 @@ namespace apcurium.MK.Booking.Services.Impl
         }
 
         public void SendReceiptEmail(Guid orderId, int ibsOrderId, string vehicleNumber, DriverInfos driverInfos, double fare, double toll, double tip,
-            double tax, double totalFare, SendReceipt.CardOnFile cardOnFileInfo, Address pickupAddress, Address dropOffAddress,
-            DateTime pickupDate, DateTime? dropOffDate, string clientEmailAddress, string clientLanguageCode, bool bypassNotificationSetting = false)
+            double tax, double totalFare, SendReceipt.Payment paymentInfo, Address pickupAddress, Address dropOffAddress,
+            DateTime pickupDate, DateTime? dropOffDate, string clientEmailAddress, string clientLanguageCode, double amountSavedByPromotion, string promoCode, 
+            bool bypassNotificationSetting = false)
         {
             if (!bypassNotificationSetting)
             {
@@ -339,33 +439,32 @@ namespace apcurium.MK.Booking.Services.Impl
             if (vatIsEnabled && tax == 0)
             {
                 //aexid hotfix compute tax amount from fare
-                var newFare = Fare.FromAmountInclTax(fare, _serverSettings.ServerData.VATPercentage);
-                tax = newFare.TaxAmount;
-                fare = newFare.AmountExclTax;
+                var newFare = FareHelper.GetFareFromAmountInclTax(fare, _serverSettings.ServerData.VATPercentage);
+                tax = Convert.ToDouble(newFare.TaxAmount);
+                fare = Convert.ToDouble(newFare.AmountExclTax);
             }
 
-            var isCardOnFile = cardOnFileInfo != null;
-            var cardOnFileAmount = string.Empty;
-            var cardNumber = string.Empty;
-            var cardOnFileTransactionId = string.Empty;
-            var cardOnFileAuthorizationCode = string.Empty;
-            
+            var hasPaymentInfo = paymentInfo != null;
+            var paymentAmount = string.Empty;
+            var paymentMethod = string.Empty;
+            var paymentTransactionId = string.Empty;
+            var paymentAuthorizationCode = string.Empty;
+
             var hasFare = Math.Abs(fare) > double.Epsilon;
+            var showFareAndPaymentDetails = hasPaymentInfo || (!_serverSettings.ServerData.HideFareInfoInReceipt && hasFare);
 
-            var showFareAndPaymentDetails = isCardOnFile || (!_serverSettings.ServerData.HideFareInfoInReceipt && hasFare);
-
-            if (isCardOnFile)
+            if (hasPaymentInfo)
             {
-                cardOnFileAmount = _resources.FormatPrice(Convert.ToDouble(cardOnFileInfo.Amount));
-                cardNumber = cardOnFileInfo.Company;
-                cardOnFileAuthorizationCode = cardOnFileInfo.AuthorizationCode;
+                paymentAmount = _resources.FormatPrice(Convert.ToDouble(paymentInfo.Amount));
+                paymentMethod = paymentInfo.Company;
+                paymentAuthorizationCode = paymentInfo.AuthorizationCode;
 
-                if (!string.IsNullOrWhiteSpace(cardOnFileInfo.LastFour))
+                if (!string.IsNullOrWhiteSpace(paymentInfo.Last4Digits))
                 {
-                    cardNumber += " XXXX " + cardOnFileInfo.LastFour;
+                    paymentMethod += " XXXX " + paymentInfo.Last4Digits;
                 }
 
-                cardOnFileTransactionId = cardOnFileInfo.TransactionId;
+                paymentTransactionId = paymentInfo.TransactionId;
             }
 
             var addressToUseForDropOff = TryToGetExactDropOffAddress(orderId, dropOffAddress, clientLanguageCode);
@@ -409,29 +508,99 @@ namespace apcurium.MK.Booking.Services.Impl
                 ShowDropOffTime = !string.IsNullOrEmpty(dropOffTime),
                 Fare = _resources.FormatPrice(fare),
                 Toll = _resources.FormatPrice(toll),
+                SubTotal = _resources.FormatPrice(totalFare + amountSavedByPromotion - tip), // represents everything except tip and the promo discount
                 Tip = _resources.FormatPrice(tip),
                 TotalFare = _resources.FormatPrice(totalFare),
                 Note = _serverSettings.ServerData.Receipt.Note,
                 Tax = _resources.FormatPrice(tax),
+                ShowTax = Math.Abs(tax) >= 0.01,
                 vatIsEnabled,
-                IsCardOnFile = isCardOnFile,
-                CardOnFileAmount = cardOnFileAmount,
-                CardNumber = cardNumber,
+                HasPaymentInfo = hasPaymentInfo,
+                PaymentAmount = paymentAmount,
+                PaymentMethod = paymentMethod,
                 ShowFareAndPaymentDetails = showFareAndPaymentDetails,
-                CardOnFileTransactionId = cardOnFileTransactionId,
-                CardOnFileAuthorizationCode = cardOnFileAuthorizationCode,
+                PaymentTransactionId = paymentTransactionId,
+                PaymentAuthorizationCode = paymentAuthorizationCode,
+                ShowPaymentAuthorizationCode = paymentAuthorizationCode.HasValue(),
                 PickupAddress = pickupAddress.DisplayAddress,
                 DropOffAddress = hasDropOffAddress ? addressToUseForDropOff.DisplayAddress : "-",
-                SubTotal = _resources.FormatPrice(totalFare - tip), // represents everything except tip
                 StaticMapUri = staticMapUri,
                 ShowStaticMap = !string.IsNullOrEmpty(staticMapUri),
                 BaseUrlImg = baseUrls.BaseUrlAssetsImg,
                 RedDotImg = String.Concat(baseUrls.BaseUrlAssetsImg, "email_red_dot.png"),
                 GreenDotImg = String.Concat(baseUrls.BaseUrlAssetsImg, "email_green_dot.png"),
-                LogoImg = imageLogoUrl
+                LogoImg = imageLogoUrl,
+
+                PromotionWasUsed = Math.Abs(amountSavedByPromotion) >= 0.01,
+                promoCode,
+                AmountSavedByPromotion = _resources.FormatPrice(Convert.ToDouble(amountSavedByPromotion))
             };
 
             SendEmail(clientEmailAddress, EmailConstant.Template.Receipt, EmailConstant.Subject.Receipt, templateData, clientLanguageCode);
+        }
+
+        public void SendPromotionUnlockedEmail(string name, string code, DateTime? expirationDate, string clientEmailAddress,
+            string clientLanguageCode, bool bypassNotificationSetting = false)
+        {
+            if (!bypassNotificationSetting)
+            {
+                using (var context = _contextFactory.Invoke())
+                {
+                    var account = context.Query<AccountDetail>().SingleOrDefault(c => c.Email.ToLower() == clientEmailAddress.ToLower());
+                    if (account == null || !ShouldSendNotification(account.Id, x => x.PromotionUnlockedEmail))
+                    {
+                        return;
+                    }
+                }
+            }
+
+            string imageLogoUrl = GetRefreshableImageUrl(GetBaseUrls().LogoImg);
+            
+            var dateFormat = CultureInfo.GetCultureInfo(clientLanguageCode);
+
+            var templateData = new
+            {
+                ApplicationName = _serverSettings.ServerData.TaxiHail.ApplicationName,
+                AccentColor = _serverSettings.ServerData.TaxiHail.AccentColor,
+                EmailFontColor = _serverSettings.ServerData.TaxiHail.EmailFontColor,
+                PromotionName = name,
+                PromotionCode = code,
+                ExpirationDate = expirationDate.HasValue ? expirationDate.Value.ToString("D", dateFormat) : null,
+                ExpirationTime = expirationDate.HasValue ? expirationDate.Value.ToString("t", dateFormat /* Short time pattern */) : null,
+                HasExpirationDate = expirationDate.HasValue,
+                LogoImg = imageLogoUrl
+            };
+
+            SendEmail(clientEmailAddress, EmailConstant.Template.PromotionUnlocked, EmailConstant.Subject.PromotionUnlocked, templateData, clientLanguageCode);
+        }
+
+        public void SendCreditCardDeactivatedEmail(string creditCardCompany, string last4Digits, string clientEmailAddress, string clientLanguageCode, bool bypassNotificationSetting = false)
+        {
+            if (!bypassNotificationSetting)
+            {
+                using (var context = _contextFactory.Invoke())
+                {
+                    var account = context.Query<AccountDetail>().SingleOrDefault(c => c.Email.ToLower() == clientEmailAddress.ToLower());
+                    if (account == null)
+                    {
+                        return;
+                    }
+                }
+            }
+
+            string imageLogoUrl = GetRefreshableImageUrl(GetBaseUrls().LogoImg);
+
+            var templateData = new
+            {
+                ApplicationName = _serverSettings.ServerData.TaxiHail.ApplicationName,
+                AccentColor = _serverSettings.ServerData.TaxiHail.AccentColor,
+                EmailFontColor = _serverSettings.ServerData.TaxiHail.EmailFontColor,
+                CreditCardCompany = creditCardCompany,
+                Last4Digits = last4Digits,
+                LogoImg = imageLogoUrl
+            };
+
+            SendEmail(clientEmailAddress, EmailConstant.Template.CreditCardDeactivated, EmailConstant.Subject.CreditCardDeactivated, templateData, clientLanguageCode);
         }
 
         private Address TryToGetExactDropOffAddress(Guid orderId, Address dropOffAddress, string clientLanguageCode)
@@ -471,7 +640,7 @@ namespace apcurium.MK.Booking.Services.Impl
             return null;
         }
 
-        private void SendEmail(string to, string bodyTemplate, string subjectTemplate, object templateData, string languageCode, params KeyValuePair<string, string>[] embeddedIMages)
+        private void SendEmail(string to, string bodyTemplate, string subjectTemplate, object templateData, string languageCode, string ccEmailAddress = null, params KeyValuePair<string, string>[] embeddedIMages)
         {
             var messageSubject = _templateService.Render(_resources.Get(subjectTemplate, languageCode), templateData);
 
@@ -487,6 +656,11 @@ namespace apcurium.MK.Booking.Services.Impl
                 BodyEncoding = Encoding.UTF8, 
                 SubjectEncoding = Encoding.UTF8
             };
+
+            if (ccEmailAddress.HasValue())
+            {
+                mailMessage.CC.Add(ccEmailAddress);
+            }
 
             var renderedBody = _templateService.Render(template, templateData);
             var inlinedRenderedBody = _templateService.InlineCss(renderedBody);
@@ -567,10 +741,12 @@ namespace apcurium.MK.Booking.Services.Impl
         {
             var companySettings = _configurationDao.GetNotificationSettings();
             var accountSettings = _configurationDao.GetNotificationSettings(accountId);
+            var companyNotificationSettingValue = GetValue(companySettings, propertySelector);
+
             if (accountSettings == null)
             {
                 // take company settings
-                return companySettings.Enabled && GetValue(companySettings, propertySelector);
+                return companySettings.Enabled && companyNotificationSettingValue == true;
             }
 
             // if the account or the company disabled all notifications, then everything will be false
@@ -578,15 +754,24 @@ namespace apcurium.MK.Booking.Services.Impl
 
             // we have to check if the company setting has a value
             // if it doesn't, then the company has disabled the setting and must be false for everyone
-            return enabled && GetValue(companySettings, propertySelector) && GetValue(accountSettings, propertySelector);
+            var accountNotificationSettingValue = GetValue(accountSettings, propertySelector);
+
+            return enabled
+                   && companyNotificationSettingValue == true
+                   && accountNotificationSettingValue == true;
         }
 
-        private bool GetValue(NotificationSettings settings, Expression<Func<NotificationSettings, bool?>> propertySelector)
+        private bool? GetValue(NotificationSettings settings, Expression<Func<NotificationSettings, bool?>> propertySelector)
         {
             var mexp = propertySelector.Body as MemberExpression;
             var propertyName = mexp.Member.Name;
 
-            return (bool)settings.GetType().GetProperty(propertyName).GetValue(settings, null);
+            var property = settings.GetType().GetProperty(propertyName);
+            if (property == null)
+            {
+                return false;
+            }
+            return (bool?)property.GetValue(settings, null);
         }
 
         private BaseUrls GetBaseUrls()
@@ -622,6 +807,8 @@ namespace apcurium.MK.Booking.Services.Impl
                 public const string Receipt = "Email_Subject_Receipt";
                 public const string AccountConfirmation = "Email_Subject_AccountConfirmation";
                 public const string BookingConfirmation = "Email_Subject_BookingConfirmation";
+                public const string PromotionUnlocked = "Email_Subject_PromotionUnlocked";
+                public const string CreditCardDeactivated = "Email_Subject_CreditCardDeactivated";
             }
 
             public static class Template
@@ -630,6 +817,8 @@ namespace apcurium.MK.Booking.Services.Impl
                 public const string Receipt = "Receipt";
                 public const string AccountConfirmation = "AccountConfirmation";
                 public const string BookingConfirmation = "BookingConfirmation";
+                public const string PromotionUnlocked = "PromotionUnlocked";
+                public const string CreditCardDeactivated = "CreditCardDeactivated";
             }
         }
 
@@ -658,18 +847,10 @@ namespace apcurium.MK.Booking.Services.Impl
                     if (imageData != null)
                     {
                         // Hash it
-                        var md5Hasher = MD5.Create();
-                        var hashedImagedata = md5Hasher.ComputeHash(imageData);
-
-                        var sBuilder = new StringBuilder();
-
-                        foreach (byte b in hashedImagedata)
-                        {
-                            sBuilder.Append(b.ToString("x2"));
-                        }
+                        var hashedImagedata = CryptographyHelper.GetHashString(imageData);
 
                         // Append its hash to its URL
-                        return string.Format("{0}?refresh={1}", imageUrl, sBuilder);
+                        return string.Format("{0}?refresh={1}", imageUrl, hashedImagedata);
                     }
 
                     return imageUrl;

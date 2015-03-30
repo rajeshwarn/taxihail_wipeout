@@ -8,6 +8,7 @@ using apcurium.MK.Booking.Mobile.ViewModels.Payment;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
+using apcurium.MK.Common.Extensions;
 using ServiceStack.ServiceClient.Web;
 using ServiceStack.Text;
 
@@ -23,6 +24,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         private BookingSettings _bookingSettings;
 	    private ClientPaymentSettings _paymentSettings;
 
+        private bool _isInitialized;
+	    private string _market;
+
 		public RideSettingsViewModel(IAccountService accountService, 
 			IPaymentService paymentService,
             IAccountPaymentService accountPaymentService,
@@ -36,12 +40,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		public async void Init(string bookingSettings)
         {
-			using (this.Services ().Message.ShowProgress ())
+		    if (!_isInitialized)
+		    {
+		        _isInitialized = true;
+                Observe(_orderWorkflowService.GetAndObserveMarket(), market => _market = market);
+		    }
+
+		    using (this.Services ().Message.ShowProgress ())
 			{
 				_bookingSettings = bookingSettings.FromJson<BookingSettings>();
 			    _paymentSettings = await _paymentService.GetPaymentSettings();
 
-				var p = await _accountService.GetPaymentsList();
+                var p = await _accountService.GetPaymentsList(_market);
 				_payments = p == null ? new ListItem[0] : p.Select(x => new ListItem { Id = x.Id, Display = this.Services().Localize[x.Display] }).ToArray();
 				
                 RaisePropertyChanged(() => Payments );
@@ -49,11 +59,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				RaisePropertyChanged(() => ChargeTypeName );
 				RaisePropertyChanged(() => IsChargeTypesEnabled);
                 RaisePropertyChanged(() => IsChargeAccountPaymentEnabled);
+                RaisePropertyChanged(() => IsPayBackFieldEnabled);
 
 				// this should be called last since it calls the server, we don't want to slow down other controls
 				var v = await _accountService.GetVehiclesList();
-				_vehicules = v == null ? new ListItem[0] : v.Select(x => new ListItem { Id = x.ReferenceDataVehicleId, Display = x.Name }).ToArray();
-				RaisePropertyChanged(() => Vehicles );
+                _vehicles = v == null ? new ListItem[0] : v.Select(x => new ListItem { Id = x.ReferenceDataVehicleId, Display = x.Name }).ToArray();
+				RaisePropertyChanged(() => Vehicles);
 				RaisePropertyChanged(() => VehicleTypeId );
 				RaisePropertyChanged(() => VehicleTypeName );
 			}
@@ -70,7 +81,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 	    public bool IsChargeTypesEnabled
 	    {
 	        get
-            {
+	        {
                 return !_accountService.CurrentAccount.DefaultCreditCard.HasValue || !Settings.DisableChargeTypeWhenCardOnFile;
             }
 	    }
@@ -82,6 +93,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 return _paymentSettings.IsChargeAccountPaymentEnabled;
 	        }
 	    }
+
+        public bool IsPayBackFieldEnabled
+        {
+            get
+            {
+                return Settings.IsPayBackRegistrationFieldRequired.HasValue;
+            }
+        }
 
         private PaymentDetailsViewModel _paymentPreferences;
         public PaymentDetailsViewModel PaymentPreferences
@@ -97,12 +116,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        private ListItem[] _vehicules;
+        private ListItem[] _vehicles;
         public ListItem[] Vehicles
         {
             get
             {
-                return _vehicules;
+                return _vehicles;
             }
         }
 
@@ -240,6 +259,38 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
+        public string CustomerNumber
+        {
+            get
+            {
+                return _bookingSettings.CustomerNumber;
+            }
+            set
+            {
+                if (value != _bookingSettings.CustomerNumber)
+                {
+                    _bookingSettings.CustomerNumber = value;
+                    RaisePropertyChanged();
+                }
+            }
+        }
+
+        public string PayBack
+        {
+            get
+            {
+                return _bookingSettings.PayBack;
+            }
+            set
+            {
+                if (value != _bookingSettings.PayBack)
+                {
+                    _bookingSettings.PayBack = value;
+                    RaisePropertyChanged();
+                }
+            }
+        }
+
 		public ICommand SetVehiculeType
         {
             get
@@ -297,16 +348,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 {
 					using (this.Services ().Message.ShowProgress ())
 					{
-                        var creditCard = PaymentPreferences.SelectedCreditCardId == Guid.Empty
-                                ? default(Guid?)
-                                : PaymentPreferences.SelectedCreditCardId;
-
-                        if (await ValidateRideSettings(creditCard))
+                        if (await ValidateRideSettings())
 					    {
 					        try
 					        {
-								await _accountService.UpdateSettings(_bookingSettings, creditCard, PaymentPreferences.Tip);
-								_orderWorkflowService.SetAccountNumber (_bookingSettings.AccountNumber);
+								await _accountService.UpdateSettings(_bookingSettings, PaymentPreferences.Tip);
+								_orderWorkflowService.SetAccountNumber (_bookingSettings.AccountNumber, _bookingSettings.CustomerNumber);
                                 Close(this);
 					        }
 					        catch (WebServiceException ex)
@@ -331,29 +378,51 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        public async Task<bool> ValidateRideSettings(Guid? creditCard)
+        public async Task<bool> ValidateRideSettings()
         {
             if (string.IsNullOrEmpty(Name) || string.IsNullOrEmpty(Phone))
             {
                 this.Services().Message.ShowMessage(this.Services().Localize["UpdateBookingSettingsInvalidDataTitle"], this.Services().Localize["UpdateBookingSettingsEmptyField"]);
                 return false;
             }
+
             if (Phone.Count(Char.IsDigit) < 10)
             {
                 this.Services().Message.ShowMessage(this.Services().Localize["UpdateBookingSettingsInvalidDataTitle"], this.Services().Localize["InvalidPhoneErrorMessage"]);
                 return false;
             }
-            if (ChargeTypeId == ChargeTypes.Account.Id && string.IsNullOrWhiteSpace(AccountNumber))
+
+            if (ChargeTypeId == ChargeTypes.Account.Id && string.IsNullOrWhiteSpace(AccountNumber) && string.IsNullOrWhiteSpace(CustomerNumber))
             {
                 this.Services().Message.ShowMessage(this.Services().Localize["UpdateBookingSettingsInvalidDataTitle"], this.Services().Localize["UpdateBookingSettingsEmptyAccount"]);
                 return false;
             }
+
+            if (Settings.IsPayBackRegistrationFieldRequired == true && !PayBack.HasValue())
+            {
+                this.Services().Message.ShowMessage(this.Services().Localize["UpdateBookingSettingsInvalidDataTitle"], this.Services().Localize["NoPayBackErrorMessage"]);
+                return false;
+            }
+
+            if (PayBack.Length > 10 || !PayBack.IsNumber())
+            {
+                this.Services().Message.ShowMessage(this.Services().Localize["UpdateBookingSettingsInvalidDataTitle"], this.Services().Localize["InvalidPayBackErrorMessage"]);
+                return false;
+            }
+
+            // PayBack value is set to string empty if the field is left empty by the user
+            _bookingSettings.PayBack = _bookingSettings.PayBack == string.Empty ? null : _bookingSettings.PayBack;
+
             if (ChargeTypeId == ChargeTypes.Account.Id)
             {
+				var creditCard = PaymentPreferences.SelectedCreditCardId == Guid.Empty
+					? default(Guid?)
+					: PaymentPreferences.SelectedCreditCardId;
+
                 try
                 {
                     // Validate if the charge account needs to have a card on file to be used
-                    var chargeAccount = await _accountPaymentService.GetAccountCharge(AccountNumber);
+                    var chargeAccount = await _accountPaymentService.GetAccountCharge(AccountNumber, CustomerNumber);
                     if (chargeAccount.UseCardOnFileForPayment && creditCard == default(Guid?))
                     {
                         this.Services().Message.ShowMessage(this.Services().Localize["UpdateBookingSettingsInvalidDataTitle"],

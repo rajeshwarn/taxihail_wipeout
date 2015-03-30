@@ -10,7 +10,7 @@ namespace CustomerPortal.Web.Entities
         public Style()
         {
             MenuColor = "#f2f2f2";
-            EmailFontColor = "#000";
+            EmailFontColor = "#000000";
         }
 
         [Obsolete]

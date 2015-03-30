@@ -1,12 +1,13 @@
 using System;
-using System.Drawing;
+using CoreGraphics;
 using System.Windows.Input;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using Cirrious.MvvmCross.Binding.Touch.Views;
-using MonoTouch.UIKit;
+using UIKit;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
 using apcurium.MK.Booking.Mobile.Client.Localization;
+using apcurium.MK.Booking.Mobile.Client.Helper;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Booking
 {
@@ -44,8 +45,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Booking
             OrderButton.SetTitle(Localize.GetValue("Order"), UIControlState.Normal);
             FlatButtonStyle.Red.ApplyTo(CancelButton);
             FlatButtonStyle.Green.ApplyTo(OrderButton);
-
-            
         }
 
 		public override void LayoutSubviews ()
@@ -73,16 +72,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Booking
             set.Apply();
         }
 
-        float _bottom = 0;
-        public void UpdateView(float bottom, float width)
+        nfloat _bottom = 0;
+        public void UpdateView(nfloat bottom, nfloat width)
         {
             var buttonHorizontalPadding = 8f;
             var buttonVerticalPadding = 5f;
             var buttonWidth = 130f;
             _bottom = bottom;
 
-            CancelButton.Frame = new RectangleF(buttonHorizontalPadding, buttonVerticalPadding, buttonWidth, 36f);
-            OrderButton.Frame = new RectangleF(width - buttonWidth - buttonHorizontalPadding, buttonVerticalPadding, buttonWidth, 36f);
+            CancelButton.Frame = new CGRect(buttonHorizontalPadding, buttonVerticalPadding, buttonWidth, 36f);
+            OrderButton.Frame = new CGRect(width - buttonWidth - buttonHorizontalPadding, buttonVerticalPadding, buttonWidth, 36f);
 
             OrderButton.TouchUpInside += (sender, e) => {
                 Command.ExecuteIfPossible(Date);
@@ -117,10 +116,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Booking
         {
             get 
             {
-                var d = (DateTime?)DatePicker.Date;
-                if (d.HasValue)
+                var date = DatePicker.Date;
+                if (date != null)
                 {
-                    return d.Value.ToLocalTime();
+                    return date.NSDateToLocalDateTime();
                 }
                 return null;
             }
@@ -128,11 +127,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Booking
             {
                 if (value == null)
                 {
-                    DatePicker.SetDate(DateTime.UtcNow, true);
+                    DatePicker.SetDate(DateTime.Now.LocalDateTimeToNSDate(), false);
                 }
                 else 
                 {
-                    DatePicker.SetDate(value.Value.ToUniversalTime(), true);
+                    DatePicker.SetDate(value.Value.LocalDateTimeToNSDate(), false);
                 }
             } 
         }

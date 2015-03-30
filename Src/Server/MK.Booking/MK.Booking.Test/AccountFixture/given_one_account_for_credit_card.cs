@@ -3,7 +3,6 @@
 using System;
 using apcurium.MK.Booking.CommandHandlers;
 using apcurium.MK.Booking.Commands;
-using apcurium.MK.Booking.Common.Tests;
 using apcurium.MK.Booking.Domain;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.Security;
@@ -46,7 +45,7 @@ namespace apcurium.MK.Booking.Test.AccountFixture
             const string expirationYear = "2020";
             const string token = "jjwcnSLWm85";
 
-            _sut.When(new AddCreditCard
+            _sut.When(new AddOrUpdateCreditCard
             {
                 AccountId = _accountId,
                 CreditCardCompany = creditCardCompany,
@@ -59,7 +58,7 @@ namespace apcurium.MK.Booking.Test.AccountFixture
                 Id = Guid.NewGuid()
             });
 
-            var @event = _sut.ThenHasOne<CreditCardAdded>();
+            var @event = _sut.ThenHasOne<CreditCardAddedOrUpdated>();
             Assert.AreEqual(_accountId, @event.SourceId);
             Assert.AreEqual(creditCardCompany, @event.CreditCardCompany);
             Assert.AreEqual(nameOnCard, @event.NameOnCard);
@@ -68,10 +67,6 @@ namespace apcurium.MK.Booking.Test.AccountFixture
             Assert.AreEqual(expirationMonth, @event.ExpirationMonth);
             Assert.AreEqual(expirationYear, @event.ExpirationYear);
             Assert.AreEqual(token, @event.Token);
-
-            var secondEvent = _sut.ThenHasOne<PaymentProfileUpdated>();
-            Assert.AreEqual(_accountId, secondEvent.SourceId);
-            Assert.AreEqual(creditCardId, secondEvent.DefaultCreditCard);
         }
 
         [Test]
@@ -85,9 +80,9 @@ namespace apcurium.MK.Booking.Test.AccountFixture
             const string expirationYear = "2020";
             const string token = "jjwcnSLWm85";
 
-            _sut.Given(new CreditCardAdded {SourceId = _accountId, CreditCardId = creditCardId});
+            _sut.Given(new CreditCardAddedOrUpdated { SourceId = _accountId, CreditCardId = creditCardId });
 
-            _sut.When(new UpdateCreditCard
+            _sut.When(new AddOrUpdateCreditCard
             {
                 AccountId = _accountId,
                 CreditCardCompany = creditCardCompany,
@@ -100,7 +95,7 @@ namespace apcurium.MK.Booking.Test.AccountFixture
                 Id = Guid.NewGuid()
             });
 
-            var @event = _sut.ThenHasSingle<CreditCardUpdated>();
+            var @event = _sut.ThenHasSingle<CreditCardAddedOrUpdated>();
             Assert.AreEqual(_accountId, @event.SourceId);
             Assert.AreEqual(creditCardCompany, @event.CreditCardCompany);
             Assert.AreEqual(nameOnCard, @event.NameOnCard);
@@ -118,6 +113,25 @@ namespace apcurium.MK.Booking.Test.AccountFixture
 
             var @event = _sut.ThenHasSingle<AllCreditCardsRemoved>();
             Assert.AreEqual(_accountId, @event.SourceId);
+        }
+
+        [Test]
+        public void when_credit_card_deactivated()
+        {
+            var orderId = Guid.NewGuid();
+
+            _sut.When(new ReactToPaymentFailure
+            {
+                AccountId = _accountId,
+                OrderId = orderId,
+                OverdueAmount = 12.56m
+            });
+
+            var creditCardDeactivated = _sut.ThenHasOne<CreditCardDeactivated>();
+            Assert.AreEqual(_accountId, creditCardDeactivated.SourceId);
+
+            var overduePaymentLogged = _sut.ThenHasOne<OverduePaymentLogged>();
+            Assert.AreEqual(_accountId, overduePaymentLogged.SourceId);
         }
     }
 }

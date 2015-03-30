@@ -1,9 +1,9 @@
-﻿using System;
-using MonoTouch.CoreLocation;
-using MonoTouch.Foundation;
+using System;
+using CoreLocation;
+using Foundation;
 using apcurium.MK.Booking.Mobile.Client.MapUtitilties;
 
-namespace MonoTouch.MapKit
+namespace MapKit
 {
     public static class MKMapViewExtensions
     {
@@ -47,7 +47,7 @@ namespace MonoTouch.MapKit
             SetCenterCoordinate (mapView, mapView.CenterCoordinate, currentZoomLevel, true);
         }
 
-        public static void ChangeRegionSpanDependingOnPinchScale(this MKMapView mapView, MKCoordinateSpan originalSpan, float scale)
+        public static void ChangeRegionSpanDependingOnPinchScale(this MKMapView mapView, MKCoordinateSpan originalSpan, nfloat scale)
         {
             var centerPixelX = LongitudeToPixelSpaceX (mapView.Region.Center.Longitude);
             var centerPixelY = LatitudeToPixelSpaceY (mapView.Region.Center.Latitude);

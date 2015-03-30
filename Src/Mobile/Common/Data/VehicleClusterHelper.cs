@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using apcurium.MK.Booking.Api.Contract.Resources;
-using apcurium.MK.Booking.Mobile.ViewModels;
 using System.Drawing;
 using System;
 using apcurium.MK.Booking.Maps.Geo;

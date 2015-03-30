@@ -1,4 +1,5 @@
-﻿using apcurium.MK.Booking.Api.Client.TaxiHail;
+﻿using System.Runtime.Remoting.Messaging;
+using apcurium.MK.Booking.Api.Client.TaxiHail;
 using NUnit.Framework;
 
 namespace apcurium.MK.Web.Tests

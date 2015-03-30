@@ -224,8 +224,31 @@
                             android:id="@+id/lblRingCode" />
                     </LinearLayout>
                 </LinearLayout>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dip"
+                    android:layout_marginTop="12dip">
+                    <Button
+                      android:id="@+id/btnPromo"
+                      style="@style/ButtonActionGrayStyle"
+                      android:layout_width="fill_parent"
+                      android:layout_height="@dimen/HeightButton"
+                      android:textSize="19dip"
+                      local:MvxBind="Click ApplyPromotion; Text PromotionButtonText" />
+                    <ImageButton
+		                    android:id="@+id/btnPromo"
+		                    android:background="@null"
+		                    android:layout_width="wrap_content"
+		                    android:layout_height="wrap_content"
+		                    android:layout_alignParentLeft="true"
+		                    android:src="@drawable/promo"
+		                    android:layout_centerVertical="true"
+		                    android:padding="15dp"
+                        local:MvxBind="Visibility PromoCode, Converter=HasValueToVisibility" />
+                </RelativeLayout>
                 <apcurium.mk.booking.mobile.client.controls.widgets.EditTextEntry
-                    android:background="#eeeeee"
+                    android:background="#f2f2f2"
                     android:inputType="textMultiLine"
                     android:id="@+id/txtNotes"
                     android:hint="@string/NotesToDriveLabel"
@@ -235,7 +258,6 @@
                     android:layout_height="fill_parent"
                     android:layout_alignParentLeft="true"
                     android:gravity="start|top"
-                    android:layout_marginTop="16dip"
                     android:minHeight="44dip" />
                 <LinearLayout
                     android:id="@+id/HackBottomPadding"

@@ -5,16 +5,21 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 {
 	public class OrderCreationException: Exception, ISerializable
 	{
-		public OrderCreationException(string message, string messageNoCall)
+        public OrderCreationException(string message)
+            : base(message)
+        {
+        }
+
+		public OrderCreationException(string message, string parameter)
 			:base(message)
 		{
-			this.MessageNoCall = messageNoCall;
+            Parameter = parameter;
 		}
 
-		public OrderCreationException(string message, string messageNoCall, Exception inner)
+        public OrderCreationException(string message, string parameter, Exception inner)
 			:base(message, inner)
 		{
-			this.MessageNoCall = messageNoCall;
+            Parameter = parameter;
 		}
 
 		protected OrderCreationException(SerializationInfo info, StreamingContext context)
@@ -22,11 +27,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		{
 		}
 
-		public string MessageNoCall
-		{
-			get;
-			private set;
-		}
+        public string Parameter { get; private set; }
 	}
 }
 

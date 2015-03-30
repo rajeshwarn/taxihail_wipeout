@@ -219,6 +219,10 @@
   <data name="Email_Body_Tip" xml:space="preserve">
     <value>إكرامية</value>
   </data>
+  <data name="Email_Body_Promo" xml:space="preserve">
+    <value>Promo Code</value>
+    <comment>Promo Code</comment>
+  </data>
   <data name="Email_Body_Toll" xml:space="preserve">
     <value />
   </data>
@@ -339,6 +343,9 @@
   <data name="PushNotification_OrderPairingSuccessful" xml:space="preserve">
     <value>The ride #{0} will be paid automatically at the end of the trip using your credit card ending with {1} and using your default tip of {2}%</value>
   </data>
+  <data name="PushNotification_OrderPairingSuccessfulPayPal" xml:space="preserve">
+    <value>The ride #{0} will be paid automatically at the end of the trip using your linked PayPal account and using your default tip of {2}%</value>
+  </data>
   <data name="PushNotification_OrderPairingFailed" xml:space="preserve">
     <value>The ride #{0} could not be automatically paired</value>
   </data>
@@ -349,7 +356,16 @@
     <value>Route</value>
   </data>
   <data name="OrderStatus_wosLOADEDAutoPairing" xml:space="preserve">
-    <value>Fare will be paid using your default CC payment</value>
+    <value>Fare will be paid using the selected payment method</value>
+  </data>
+  <data name="CardOnFile" xml:space="preserve">
+    <value>Card on File</value>
+  </data>
+  <data name="ChargeAccount" xml:space="preserve">
+    <value>Charge Account</value>
+  </data>
+  <data name="PaymentInCar" xml:space="preserve">
+    <value>Payment in Car</value>
   </data>
   <data name="CurrencyPriceFormat" xml:space="preserve">
     <value>{0}</value>
@@ -363,17 +379,26 @@
   <data name="PaymentConfirmationToDriver4" xml:space="preserve">
     <value>Auth #{0}</value>
   </data>
+  <data name="EtaMessageToDriver" xml:space="preserve">
+    <value>ETA displayed to client is {0} and {1} min</value>
+  </data>
   <data name="PaymentBeingProcessedMessageToDriver" xml:space="preserve">
     <value>Payment being processed by the app...</value>
   </data>
-  <data name="EtaMessageToDriver" xml:space="preserve">
-    <value>ETA displayed to client is {0} and {1} min</value>
+  <data name="PaymentFailedToDriver" xml:space="preserve">
+    <value>Payment by the app has Failed!</value>
+  </data>
+  <data name="PaymentItemDescription" xml:space="preserve">
+    <value>Order #{0} Original amount: {1}</value>
   </data>
   <data name="CannotCreateOrderInvalidVersion" xml:space="preserve">
     <value>The order cannot be created using this version of the app. Please upgrade the app to book a ride.</value>
   </data>
   <data name="CannotCreateOrder_CreditCardWasDeclined" xml:space="preserve">
     <value>The order cannot be created because your credit card failed the preauthorization check.</value>
+  </data>
+  <data name="CannotCreateOrder_PayPalWasDeclined" xml:space="preserve">
+    <value>The order cannot be created because your PayPal account failed the preauthorization check.</value>
   </data>
   <data name="PushNotification_ChangeNetworkCompany" xml:space="preserve">
     <value>Due to high demand, no cars are available right now. Do you want to book with {0} instead?</value>
@@ -384,7 +409,10 @@
   <data name="Network_CannotCreateOrder" xml:space="preserve">
     <value>There was a problem while trying to book with {0}. Your order will remain active.</value>
   </data>
-  <data name="CannotCreateOrderChargeAccountNotSupported" xml:space="preserve">
+  <data name="CannotCreateOrderChargeAccountNotSupportedInRoaming" xml:space="preserve">
+    <value>This account is not supported in a different market.</value>
+  </data>
+  <data name="CannotCreateOrderChargeAccountNotSupportedOnWeb" xml:space="preserve">
     <value>This account is not supported by the web site.</value>
   </data>
   <data name="Email_Body_VehicleModel" xml:space="preserve">
@@ -392,5 +420,183 @@
   </data>
   <data name="Email_Body_YourDriver" xml:space="preserve">
     <value>Your Driver</value>
+  </data>
+  <data name="AccountConfirmationSmsBody" xml:space="preserve">
+    <value>Your verification code for {0} is {1}</value>
+  </data>
+  <data name="CannotCreateOrder_PromotionDoesNotExist" xml:space="preserve">
+    <value>There is no promotion associated to this code</value>
+  </data>
+  <data name="CannotCreateOrder_PromotionMustUseCardOnFile" xml:space="preserve">
+    <value>You must select Card On File to use a promotion.</value>
+  </data>
+  <data name="CannotCreateOrder_PromotionMustUseCardOnFileOrPayPal" xml:space="preserve">
+    <value>You must select Card On File or PayPal to use a promotion.</value>
+  </data>
+  <data name="CannotCreateOrder_PromotionMustUsePayPal" xml:space="preserve">
+    <value>You must select PayPal to use a promotion.</value>
+  </data>
+  <data name="CannotCreateOrder_PromotionIsNotActive" xml:space="preserve">
+    <value>This promotion is not active</value>
+  </data>
+  <data name="CannotCreateOrder_PromotionHasReachedMaxUsage" xml:space="preserve">
+    <value>Maximum number of uses has been reached for this promotion</value>
+  </data>
+  <data name="CannotCreateOrder_PromotionAppliesToCurrentBookingOnly" xml:space="preserve">
+    <value>This promotion does not applies to future booking</value>
+  </data>
+  <data name="CannotCreateOrder_PromotionAppliesToFutureBookingOnly" xml:space="preserve">
+    <value>This promotion applies to future booking only</value>
+  </data>
+  <data name="CannotCreateOrder_PromotionNotAvailableForThisDayOfTheWeek" xml:space="preserve">
+    <value>This promotion is not available for this day of the week</value>
+  </data>
+  <data name="CannotCreateOrder_PromotionNotStartedYet" xml:space="preserve">
+    <value>This promotion has not started yet</value>
+  </data>
+  <data name="CannotCreateOrder_PromotionHasExpired" xml:space="preserve">
+    <value>This promotion has expired</value>
+  </data>
+  <data name="CannotCreateOrder_PromotionNotAvailableAtThisTime" xml:space="preserve">
+    <value>This promotion is not available at this time</value>
+  </data>
+  <data name="CannotCreateOrder_NoCompanies" xml:space="preserve">
+    <value>There is no company serving this region</value>
+  </data>
+  <data name="CannotCreateOrder_PromotionUserNotAllowed" xml:space="preserve">
+    <value>You are not allowed to use this promotion</value>
+  </data>
+  <data name="Email_Body_PromotionUnlockedLine1" xml:space="preserve">
+    <value>Congratulations! You are now eligible to use the "{{ PromotionName }}" promotion. Use code &lt;b&gt;{{ PromotionCode }}&lt;/b&gt; when booking your next ride to redeem it.</value>
+  </data>
+  <data name="Email_Body_PromotionUnlockedLine2" xml:space="preserve">
+    <value>This promotion is only valid until {{ ExpirationDate }} {{ ExpirationTime }}.</value>
+  </data>
+  <data name="Email_Subject_PromotionUnlocked" xml:space="preserve">
+    <value>{{ ApplicationName }} - New Promotion Available!</value>
+  </data>
+  <data name="PushNotification_PromotionUnlocked" xml:space="preserve">
+    <value>Congratulations! You are now eligible to use the "{0}" promotion. Use code {1} when booking your next ride to redeem it.</value>
+  </data>
+  <data name="CreateOrder_CannotCreateInIbs" xml:space="preserve">
+    <value>لا يمكن إدخال الطلب. الرجاء المحاولة من جديد أو اتصل بنا.</value>
+    <comment>Order cannot be created. Please try again or call us.</comment>
+  </data>
+  <data name="CreateOrder_CannotCreateInIbs_1002" xml:space="preserve">
+    <value>عنوان الإلتقاء يقع خارج نطاق الخدمة المعتادة.</value>
+    <comment>Order cannot be created. The specified Pickup address lies outside the regular service area.</comment>
+  </data>
+  <data name="CreateOrder_CannotCreateInIbs_1452" xml:space="preserve">
+    <value>Order cannot be created. The specified Destination address lies outside the regular service area.</value>
+    <comment>Order cannot be created. The specified Destination address lies outside the regular service area.</comment>
+  </data>
+  <data name="CreateOrder_CannotCreateInIbs_3000" xml:space="preserve">
+    <value>تم إيقاف حسابك.</value>
+    <comment>Order cannot be created. Your account has been disabled.</comment>
+  </data>
+  <data name="CreateOrder_CannotCreateInIbs_7000" xml:space="preserve">
+    <value>لا يمكن إدخال الطلب لأن حسابك غير فعال حاليا.</value>
+    <comment>Order cannot be created. Your account is currently inactive.</comment>
+  </data>
+  <data name="CreateOrder_CannotCreateInIbs_10000" xml:space="preserve">
+    <value>Order cannot be created. The charge account information is invalid. Please try again.</value>
+    <comment>Order cannot be created. The charge account information is invalid. Please try again.</comment>
+  </data>
+  <data name="CreateOrder_CannotCreateInIbs_1300" xml:space="preserve">
+    <value>We apologize but unfortunately we do not have any reservations available for that time period.</value>
+    <comment>We apologize but unfortunately we do not have any reservations available for that time period.</comment>
+  </data>
+  <data name="CreateOrder_WaitingForIbs" xml:space="preserve">
+    <value>Processing your order...</value>
+  </data>
+  <data name="ServiceErrorAccountCharge_InvalidAccountNumber" xml:space="preserve">
+    <value>Invalid account number</value>
+  </data>
+  <data name="ServiceErrorCallTitle" xml:space="preserve">
+    <value>رسالة</value>
+  </data>
+  <data name="CannotCreateOrder_PayPalButNoPayPal" xml:space="preserve">
+    <value>No PayPal account linked</value>
+  </data>
+  <data name="ServiceErrorCreateAccount_AccountAlreadyExist" xml:space="preserve">
+    <value>هذا العنوان الإلكتروني مستخدم من قبل.</value>
+  </data>
+  <data name="ServiceErrorCreateAccount_InvalidConfirmationToken" xml:space="preserve">
+    <value>The confirmation code is incorrect.</value>
+  </data>
+  <data name="ServiceErrorCreateOrder_CardOnFileButNoCreditCard" xml:space="preserve">
+    <value>No Credit Card On File.</value>
+  </data>
+  <data name="ServiceErrorCreateOrder_InvalidProvider" xml:space="preserve">
+    <value>لا يمكن إدخال الطلب، مقدم الخدمة غير متاح. رجاء الاتصال  {0} على  {1} للمزيد من المساعدة</value>
+  </data>
+  <data name="ServiceErrorCreateOrder_InvalidProvider_NoCall" xml:space="preserve">
+    <value>لا يمكن إدخال الطلب، مقدم الخدمة غير متاح.</value>
+  </data>
+  <data name="ServiceErrorCreateOrder_NoFareEstimateAvailable" xml:space="preserve">
+    <value>لا يمكن تقدير الأجرة لهذه الرحلة. رجاء الإتصال  {0} على  {1} للمزيد من المساعدة.</value>
+  </data>
+  <data name="ServiceErrorCreateOrder_NoFareEstimateAvailable_NoCall" xml:space="preserve">
+    <value>لا يمكن تقدير الأجرة لهذه الرحلة.</value>
+  </data>
+  <data name="ServiceErrorCreateOrder_NoProvider" xml:space="preserve">
+    <value>لا يمكن إدخال الطلب.لم نتمكن من تحديد مورد للخدمة. رجاء حاول من جديد أو اتصل بنا.</value>
+  </data>
+  <data name="ServiceErrorCreateOrder_VehiculeType" xml:space="preserve">
+    <value>لا يمكن إدخال الطلب. نوعية السيارة المطلوبة غير متوفرة. الرجاء إعادة المحاولة أوالإتصال بنا.</value>
+  </data>
+  <data name="ServiceErrorDefaultMessage" xml:space="preserve">
+    <value>حدث خطأ. يرجى إعادة المحاولة.</value>
+  </data>
+  <data name="ServiceErrorResetPassword_AccountNotFound" xml:space="preserve">
+    <value>لا يوجد حساب خاص بهذا العنوان الإلكتروني.</value>
+  </data>
+  <data name="ServiceErrorUnauthorized" xml:space="preserve">
+    <value>انتهى وقت اتصالك. رجاء تسجيل الدخول للإستمرار.</value>
+  </data>
+  <data name="ServiceErrorUpdatePassword_NotSame" xml:space="preserve">
+    <value>كلمة المرور الحالية غير صحيحة</value>
+  </data>
+  <data name="ServiceError_ErrorCreatingOrderMessage" xml:space="preserve">
+    <value>رجاء الإتصال  {0} على  {1} للمزيد من المساعدة.</value>
+  </data>
+  <data name="ServiceError_ErrorCreatingOrderMessage_NoCall" xml:space="preserve">
+    <value>لا يمكن إدخال الطلب.</value>
+  </data>
+  <data name="PayPalWebItemDescription" xml:space="preserve">
+    <value>Taxi booking</value>
+  </data>
+  <data name="PayPalWebPaymentDescription" xml:space="preserve">
+    <value>Taxi ride of amount {0}</value>
+  </data>
+  <data name="PushNotification_OrderPairingSuccessfulPayPalUnpair" xml:space="preserve">
+    <value>The ride #{0} will be paid at the end of the trip using your PayPal account. If you're in the wrong car, choose the Pay in Car option below to ensure you are not charged for the ride.</value>
+  </data>
+  <data name="PushNotification_OrderPairingSuccessfulUnpair" xml:space="preserve">
+    <value>The ride #{0} will be paid at the end of the trip using your credit card on file. If you're in the wrong car, choose the Pay in Car option below to ensure you are not charged for the ride. </value>
+  </data>
+  <data name="PushNotification_OrderUnpairingTimeOutWarning" xml:space="preserve">
+    <value>Reminder: If you're in the wrong car, choose the Pay in Car option below to ensure you are not charged for the ride.</value>
+  </data>
+  <data name="PayPal" xml:space="preserve">
+    <value>PayPal</value>
+  </data>
+  <data name="CannotCreateOrder_CreditCardDeactivated" xml:space="preserve">
+    <value>Your card of file was deactivated because the payment of your last ride was declined. To be able to use it again, go to the Payment screen to settle any overdue payment</value>
+  </data>
+  <data name="Email_Body_CreditCardDeactivatedLine" xml:space="preserve">
+    <value>Your &lt;b&gt;{{ CreditCardCompany }}&lt;/b&gt; credit card ending by &lt;b&gt;{{ Last4Digits }}&lt;/b&gt; has been deactivated because the payment of your last ride was declined. To be able to use it again, open {{ ApplicationName }} on your smart phone and go to the Payment screen to settle any overdue payment.</value>
+  </data>
+  <data name="Email_Subject_CreditCardDeactivated" xml:space="preserve">
+    <value>{{ ApplicationName }} - Your credit card has been deactivated</value>
+  </data>
+  <data name="CannotCreateOrder_PrepaidNoEstimate" xml:space="preserve">
+    <value>You need an estimated fare to prepay your ride. Please select a destination address to get one.</value>
+  </data>
+  <data name="CannotCreateOrder_PrepaidPayPalPaymentCancelled" xml:space="preserve">
+    <value>PayPal payment was cancelled</value>
+  </data>
+  <data name="CannotCreateOrder_PrepaidButPrepaidNotEnabled" xml:space="preserve">
+    <value>Payment is not enabled on the website. Please select another charge type.</value>
   </data>
 </root>

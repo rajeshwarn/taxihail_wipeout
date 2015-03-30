@@ -126,9 +126,6 @@ namespace apcurium.MK.Web.Tests
         [Test]
         public async void UpdateBookingSettingsAccountTest()
         {
-            Guid? creditCardId = Guid.NewGuid();
-            int? defaultTipPercent = 15;
-
             var settings = new BookingSettingsRequest
             {
                 ChargeTypeId = 3,
@@ -138,8 +135,7 @@ namespace apcurium.MK.Web.Tests
                 Phone = "12345",
                 ProviderId = 13,
                 VehicleTypeId = 1,
-                DefaultCreditCard = creditCardId,
-                DefaultTipPercent = defaultTipPercent
+                DefaultTipPercent = 15
             };
 
             var sut = new AccountServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
@@ -155,17 +151,14 @@ namespace apcurium.MK.Web.Tests
             Assert.AreEqual(settings.Phone, account.Settings.Phone);
             Assert.AreEqual(settings.ProviderId, account.Settings.ProviderId);
             Assert.AreEqual(settings.VehicleTypeId, account.Settings.VehicleTypeId);
-            Assert.AreEqual(creditCardId, account.DefaultCreditCard);
-            Assert.AreEqual(defaultTipPercent, account.DefaultTipPercent);
+            Assert.AreEqual(settings.DefaultTipPercent, account.DefaultTipPercent);
             Assert.AreEqual(settings.AccountNumber, account.Settings.AccountNumber);
+            Assert.AreEqual(settings.CustomerNumber, account.Settings.CustomerNumber);
         }
 
         [Test]
         public void Update_Booking_Settings_With_Invalid_Charge_Account_Test_Then_Exception_Thrown()
         {
-            Guid? creditCardId = Guid.NewGuid();
-            int? defaultTipPercent = 15;
-
             var settings = new BookingSettingsRequest
             {
                 ChargeTypeId = 3,
@@ -175,9 +168,9 @@ namespace apcurium.MK.Web.Tests
                 Phone = "12345",
                 ProviderId = 13,
                 VehicleTypeId = 1,
-                DefaultCreditCard = creditCardId,
-                DefaultTipPercent = defaultTipPercent,
-                AccountNumber = "IDONOTEXIST"
+                DefaultTipPercent = 15,
+                AccountNumber = "IDONOTEXIST",
+                CustomerNumber = "0"
             };
 
             var sut = new AccountServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
@@ -490,7 +483,6 @@ namespace apcurium.MK.Web.Tests
                 NewPassword = "p@55w0rddddddddd"
             };
             Assert.Throws<WebServiceException>(async () => await sut.UpdatePassword(request));
-        }
-            
+        }            
     }
 }

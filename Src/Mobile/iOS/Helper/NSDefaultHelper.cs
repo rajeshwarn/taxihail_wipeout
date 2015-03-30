@@ -1,12 +1,11 @@
 using apcurium.MK.Booking.Mobile.Framework.Extensions;
-using MonoTouch.Foundation;
+using Foundation;
+using System;
 
 namespace apcurium.MK.Booking.Mobile.Client.Helper
 {
-// ReSharper disable once InconsistentNaming
 	public static class NSDefaultHelper
 	{
-
 		public static T GetSerializedObject<T> (this NSUserDefaults instance, string defaultName)
 		{
 			return SerializerHelper.DeserializeObject<T> (instance.StringForKey (defaultName));
@@ -14,9 +13,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Helper
 
 		public static void SetSerializedObject<T> (this NSUserDefaults instance, T data, string defaultName) where T : class
 		{
-			if (data != null) {
+			if (data != null) 
+            {
 				instance.SetString (data.Serialize(), defaultName);
-			} else {
+			} 
+            else 
+            {
 				instance.RemoveObject (defaultName);
 			}
 			instance.Synchronize ();
@@ -24,14 +26,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Helper
 
 		public static void SetStringOrClear (this NSUserDefaults instance, string data, string defaultName)
 		{
-			if (data.HasValue()) {
+			if (data.HasValue()) 
+            {
 				instance.SetString (data, defaultName);
-			} else {
+			} 
+            else 
+            {
 				instance.RemoveObject (defaultName);
 			}
 			instance.Synchronize ();
 		}
-		
 	}
 }
-

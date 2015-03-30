@@ -1,11 +1,11 @@
 ﻿(function () {
-    TaxiHail.MapView = Backbone.View.extend({
+        TaxiHail.MapView = Backbone.View.extend({
+            initialize: function() {
+                _.bindAll(this, "geolocdone", "geoloc");
+                this.streetZoomLevel = 17;
+                this.cityZoomLevel = 12;
+                var self = this;
 
-        initialize: function () {
-            _.bindAll(this, "geolocdone", "geoloc");
-            this.streetZoomLevel = 17;
-            this.cityZoomLevel = 12;
-            var self = this;
             this.interval = window.setInterval(function () {
                 self.refresh();
             }, 5000);
@@ -230,14 +230,7 @@
             }
         },
 
-
-        testic: function () {
-
-        },
-
         updateAvailableVehiclesPosition: function () {
-
-            // TODO: Used underscore lib to proceed in MapView, should use a view inside AvailableVehicleCollection if it's possible to avoid this dynamic/not managed marker approach (new marker etc)
 
             // Get vehicle backbone models as simple objects for underscore query purposes
             var _vehicles = _.map(this.availableVehicles.models, function (e) { return ({ vehicleNumber: e.vehicleNumber, latitude: e.latitude, longitude: e.longitude }) });

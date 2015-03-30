@@ -2,7 +2,9 @@
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Text.RegularExpressions;
 using System.Web.Http;
+using apcurium.MK.Common.Extensions;
 using CustomerPortal.Contract.Resources;
 using CustomerPortal.Contract.Response;
 using CustomerPortal.Web.Entities;
@@ -37,7 +39,7 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
             
             if (networkSettings == null || !networkSettings.IsInNetwork)
             {
-                return null;
+                return new HttpResponseMessage(HttpStatusCode.NoContent); 
             }
 
             var otherCompaniesInNetwork = _networkRepository.Where(n => n.IsInNetwork && n.Id != networkSettings.Id)
@@ -50,16 +52,22 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
 
             foreach (var nearbyCompany in overlappingCompanies)
             {
+                if (!IsFleetIdWhitelisted(nearbyCompany.FleetId, networkSettings.WhiteListedFleetIds))
+                {
+                    // Local company is not allowed by the home company
+                    continue;
+                }
 
                 var companyPreference = networkSettings.Preferences.FirstOrDefault(p => p.CompanyKey == nearbyCompany.Id) 
                 			?? new CompanyPreference{ CompanyKey = nearbyCompany.Id };
 
-                var nearbyCompanyAllowUsToDispatch = nearbyCompany.Preferences.Any(x => x.CompanyKey == companyId && x.CanAccept);
+                var doesNearbyCompanyAllowUsToDispatch = nearbyCompany.Preferences.Any(x => x.CompanyKey == companyId && x.CanAccept);
 
                 preferences.Add(new CompanyPreferenceResponse
                 {
                     CompanyPreference = companyPreference,
-                    CanDispatchTo = nearbyCompanyAllowUsToDispatch
+                    CanDispatchTo = doesNearbyCompanyAllowUsToDispatch,
+                    FleetId = nearbyCompany.FleetId
                 });
             }
 
@@ -77,10 +85,9 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
         public HttpResponseMessage Post(string companyId, CompanyPreference[] preferences)
         {
             var networkSetting = _networkRepository.FirstOrDefault(x => x.Id == companyId);
-
             if (networkSetting == null)
             {
-                return new HttpResponseMessage(HttpStatusCode.Forbidden); 
+                return new HttpResponseMessage(HttpStatusCode.NoContent); 
             }
             
             foreach (var companyPreference in preferences.Where(p => !p.CanAccept))
@@ -125,7 +132,7 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
 
             if (currentCompanyNetworkSettings == null || !currentCompanyNetworkSettings.IsInNetwork)
             {
-                return null;
+                return new HttpResponseMessage(HttpStatusCode.NoContent);
             }
 
             var networkFleetResult = new List<NetworkFleetResponse>();
@@ -138,13 +145,31 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
                 var company = _companyRepository.FirstOrDefault(c => c.CompanyKey == companyPreferences.CompanyKey);
                 if (company != null)
                 {
+                    var networkSettings = network.FirstOrDefault(n => n.Id == company.CompanyKey);
+                    var isWhitelisted = networkSettings != null
+                        && IsFleetIdWhitelisted(networkSettings.FleetId, currentCompanyNetworkSettings.WhiteListedFleetIds);
+
+                    if (!isWhitelisted)
+                    {
+                        // Local company is not allowed by the home company
+                        continue;
+                    }
+
+                    var ibsTimeDifferenceString = company.CompanySettings.FirstOrDefault(s => s.Key == "IBS.TimeDifference");
+                    long ibsTimeDifference = 0;
+                    if (ibsTimeDifferenceString != null)
+                    {
+                        long.TryParse(ibsTimeDifferenceString.Value, out ibsTimeDifference);
+                    }
+
                     var fleet = new NetworkFleetResponse
                     {
                         CompanyKey = company.CompanyKey,
                         CompanyName = company.CompanyName,
                         IbsPassword = company.IBS.Password,
                         IbsUserName = company.IBS.Username,
-                        IbsUrl = company.IBS.ServiceUrl
+                        IbsUrl = company.IBS.ServiceUrl,
+                        IbsTimeDifference = ibsTimeDifference
                     };
 
                     if (coordinate != null)
@@ -167,6 +192,20 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
             {
                 Content = new StringContent(JsonConvert.SerializeObject(networkFleetResult))
             };
+        }
+
+        private bool IsFleetIdWhitelisted(int fleetId, string witeListedFleetIds)
+        {
+            if (!witeListedFleetIds.HasValue())
+            {
+                return true;
+            }
+
+            // Remove all whitespaces and split
+            var whiteListedFleetIds = Regex.Replace(witeListedFleetIds, @"\s+", string.Empty).Split(',');
+
+            // Whitelisted if list is empty or if the id is in the list
+            return !whiteListedFleetIds.Any() || whiteListedFleetIds.Contains(fleetId.ToString());
         }
     }
 }

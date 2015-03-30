@@ -4,7 +4,7 @@
 // actions made in the UI designer. If it is removed, they will be lost.
 // Manual changes to this file may not be handled correctly.
 //
-using MonoTouch.Foundation;
+using Foundation;
 using System.CodeDom.Compiler;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
@@ -16,25 +16,37 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnDeleteCard { get; set; }
 
 		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnLinkPayPal { get; set; }
+
+		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnSaveCard { get; set; }
+
+		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnScanCard { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel lblCardNumber { get; set; }
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnUnlinkPayPal { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel lblCvv { get; set; }
+		UIKit.UILabel lblCardNumber { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel lblExpMonth { get; set; }
+		UIKit.UILabel lblCvv { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel lblExpYear { get; set; }
+		UIKit.UILabel lblExpMonth { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel lblInstructions { get; set; }
+		UIKit.UILabel lblExpYear { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel lblNameOnCard { get; set; }
+		UIKit.UILabel lblInstructions { get; set; }
+
+		[Outlet]
+		UIKit.UILabel lblNameOnCard { get; set; }
+
+		[Outlet]
+		UIKit.UILabel lblPayPalLinkedInfo { get; set; }
 
 		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatTextField txtCardNumber { get; set; }
@@ -50,12 +62,46 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatTextField txtNameOnCard { get; set; }
+
+		[Outlet]
+		UIKit.UIView viewCreditCard { get; set; }
+
+		[Outlet]
+		UIKit.UIView viewPayPal { get; set; }
+
+		[Outlet]
+		UIKit.UIView viewPayPalIsLinkedInfo { get; set; }
 		
 		void ReleaseDesignerOutlets ()
 		{
+			if (lblPayPalLinkedInfo != null) {
+				lblPayPalLinkedInfo.Dispose ();
+				lblPayPalLinkedInfo = null;
+			}
+
+			if (btnDeleteCard != null) {
+				btnDeleteCard.Dispose ();
+				btnDeleteCard = null;
+			}
+
+			if (btnLinkPayPal != null) {
+				btnLinkPayPal.Dispose ();
+				btnLinkPayPal = null;
+			}
+
+			if (btnSaveCard != null) {
+				btnSaveCard.Dispose ();
+				btnSaveCard = null;
+			}
+
 			if (btnScanCard != null) {
 				btnScanCard.Dispose ();
 				btnScanCard = null;
+			}
+
+			if (btnUnlinkPayPal != null) {
+				btnUnlinkPayPal.Dispose ();
+				btnUnlinkPayPal = null;
 			}
 
 			if (lblCardNumber != null) {
@@ -113,9 +159,19 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				txtNameOnCard = null;
 			}
 
-			if (btnDeleteCard != null) {
-				btnDeleteCard.Dispose ();
-				btnDeleteCard = null;
+			if (viewCreditCard != null) {
+				viewCreditCard.Dispose ();
+				viewCreditCard = null;
+			}
+
+			if (viewPayPal != null) {
+				viewPayPal.Dispose ();
+				viewPayPal = null;
+			}
+
+			if (viewPayPalIsLinkedInfo != null) {
+				viewPayPalIsLinkedInfo.Dispose ();
+				viewPayPalIsLinkedInfo = null;
 			}
 		}
 	}

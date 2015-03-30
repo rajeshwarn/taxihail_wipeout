@@ -1,5 +1,4 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.Net.Mail;
 using apcurium.MK.Common.Configuration.Attributes;
 using apcurium.MK.Common.Entity;
@@ -36,11 +35,13 @@ namespace apcurium.MK.Common.Configuration
     public class GCMSettingContainer
     {
         [SendToClient]
-        [Display(Name = "SenderId", Description = "Google Push Notification API Id")]
+        [Display(Name = "GCM SenderId", Description = "Google Push Notification API Id")]
         public string SenderId { get; protected internal set; }
 
+        [Display(Name = "GCM APIKey", Description = "GCM APIKey")]
         public string APIKey { get; protected internal set; }
 
+        [Display(Name = "GCM PackageName", Description = "GCM PackageName")]
         public string PackageName { get; protected internal set; }
     }
 
@@ -70,7 +71,7 @@ namespace apcurium.MK.Common.Configuration
     public class MapSettingContainer
     {
         [SendToClient]
-        [Display(Name = "Place Types", Description = "Give a list of Google Maps places types to filter search")]
+        [Display(Name = "Places Api Key", Description = "Google Places Api Key")]
         public string PlacesApiKey { get; protected internal set; }
     }
 
@@ -96,12 +97,15 @@ namespace apcurium.MK.Common.Configuration
     public class AvailableVehiclesSettingContainer
     {
         [SendToClient, CustomizableByCompany]
+        [Display(Name = "Enable Available Vehicles", Description = "Available Vehicles feature is enabled")]
         public bool Enabled { get; protected internal set; }
 
         [CustomizableByCompany]
+        [Display(Name = "Max Available Vehicles Count", Description = "Maximum number of available vehicles to be shown")]
         public int Count { get; protected internal set; }
 
         [CustomizableByCompany]
+        [Display(Name = "Available Vehicles Radius", Description = "Only available vehicle inside the radius will be taken into account")]
         public int Radius { get; protected internal set; }
     }
 
@@ -112,24 +116,42 @@ namespace apcurium.MK.Common.Configuration
             Credentials = new CredentialsContainer();
         }
 
+        [Display(Name = "SMTP Host", Description = "SMTP Host")]
         public string Host { get; protected internal set; }
+
+        [Display(Name = "SMTP Port", Description = "SMTP Port")]
         public int Port { get; protected internal set; }
+
+        [Display(Name = "SMTP UseDefaultCredentials", Description = "SMTP UseDefaultCredentials")]
         public bool UseDefaultCredentials { get; protected internal set; }
+
+        [Display(Name = "SMTP EnableSSl", Description = "SMTP EnableSSl")]
         public bool EnableSsl { get; protected internal set; }
+
+        [Display(Name = "SMTP DeliveryMethod", Description = "SMTP DeliveryMethod")]
         public SmtpDeliveryMethod DeliveryMethod { get; protected internal set; }
+
         public CredentialsContainer Credentials { get; protected internal set; }
     }
 
     public class CredentialsContainer
     {
+        [Display(Name = "SMTP Username", Description = "SMTP Username")]
         public string Username { get; protected internal set; }
+
+        [Display(Name = "SMTP Password", Description = "SMTP Password")]
         public string Password { get; protected internal set; }
     }
 
     public class APNSSettingContainer
     {
+        [Display(Name = "APNS CertificatePassword", Description = "APNS CertificatePassword")]
         public string CertificatePassword { get; protected internal set; }
+
+        [Display(Name = "APNS DevelopmentCertificatePath", Description = "APNS DevelopmentCertificatePath")]
         public string DevelopmentCertificatePath { get; protected internal set; }
+
+        [Display(Name = "APNS ProductionCertificatePath", Description = "APNS ProductionCertificatePath")]
         public string ProductionCertificatePath { get; protected internal set; }
     }
 
@@ -159,50 +181,69 @@ namespace apcurium.MK.Common.Configuration
 
     public class IBSSettingContainer
     {
+        [Display(Name = "IBS AutoDispatch", Description = "IBS AutoDispatch")]
         public bool AutoDispatch { get; protected internal set; }
 
+        [Display(Name = "IBS DefaultAccountPassword", Description = "IBS DefaultAccountPassword")]
         public string DefaultAccountPassword { get; protected internal set; }
 
+        [Display(Name = "IBS TimeDifference", Description = "IBS TimeDifference")]
         [CustomizableByCompany]
-        public long TimeDifference { get; protected internal set; }
+        public long TimeDifference { get; set; }
 
+        [Display(Name = "IBS FakeOrderStatusUpdate", Description = "IBS FakeOrderStatusUpdate")]
         public bool FakeOrderStatusUpdate { get; protected internal set; }
 
         [CustomizableByCompany]
+        [Display(Name = "Driver Note Template", Description = "Driver Note Template")]
         public string NoteTemplate { get; protected internal set; }
 
+        [Display(Name = "IBS OrderPriority", Description = "IBS OrderPriority")]
         public bool OrderPriority { get; protected internal set; }
 
+        [Display(Name = "IBS ExcludedProviderId", Description = "IBS ExcludedProviderId")]
         public string ExcludedProviderId { get; protected internal set; }
 
+        [Display(Name = "IBS ExcludedVehicleTypeId", Description = "IBS ExcludedVehicleTypeId")]
         public string ExcludedVehicleTypeId { get; protected internal set; }
 
+        [Display(Name = "IBS ZoneByCompanyEnabled", Description = "IBS ZoneByCompanyEnabled")]
         public bool ZoneByCompanyEnabled { get; protected internal set; }
 
+        [Display(Name = "IBS ValidateDestinationZone", Description = "IBS ValidateDestinationZone")]
         public bool ValidateDestinationZone { get; protected internal set; }
 
+        [Display(Name = "IBS ValidatePickupZone", Description = "IBS ValidatePickupZone")]
         public bool ValidatePickupZone { get; protected internal set; }
 
+        [Display(Name = "IBS DestinationZoneToExclude", Description = "IBS DestinationZoneToExclude")]
         public string DestinationZoneToExclude { get; protected internal set; }
 
+        [Display(Name = "IBS PickupZoneToExclude", Description = "IBS PickupZoneToExclude")]
         public string PickupZoneToExclude { get; protected internal set; }
         
         [RequiredAtStartup]
+        [Display(Name = "IBS RestApiUrl", Description = "IBS RestApiUrl")]
         public string RestApiUrl { get; set; }
 
         [RequiredAtStartup]
+        [Display(Name = "IBS RestApiUser", Description = "IBS RestApiUser")]
         public string RestApiUser { get; set; }
 
         [RequiredAtStartup]
+        [Display(Name = "IBS RestApiSecret", Description = "IBS RestApiSecret")]
         public string RestApiSecret { get; set; }        
         
         [RequiredAtStartup]
+        [Display(Name = "IBS WebServicesUrl", Description = "IBS WebServicesUrl")]
         public string WebServicesUrl { get; set; }
 
         [RequiredAtStartup]
+        [Display(Name = "IBS WebServicesUserName", Description = "IBS WebServicesUserName")]
         public string WebServicesUserName { get; set; }
 
         [RequiredAtStartup]
+        [Display(Name = "IBS WebServicesPassword", Description = "IBS WebServicesPassword")]
         public string WebServicesPassword { get;  set; }
 
         [CustomizableByCompany]
@@ -210,43 +251,59 @@ namespace apcurium.MK.Common.Configuration
 
         [CustomizableByCompany]
         public int? PaymentTypePaymentInCarId { get; set; }
+
+        [CustomizableByCompany]
+        public int? PaymentTypeChargeAccountId { get; set; }
     }
 
     public class EmailSettingContainer
     {
+        [Display(Name = "No Reply Email", Description = "No Reply Email")]
         public string NoReply { get; protected internal set; }
+
+        [CustomizableByCompany]
+        [Display(Name = "CC Email Address", Description = "Email address to put in CC when sending an email to a user (booking confirmation only for now)")]
+        public string CC { get; protected internal set; }
     }
 
     public class ReceiptSettingContainer
     {
         [CustomizableByCompany]
+        [Display(Name = "Receipt Note", Description = "Receipt Note")]
         public string Note { get; protected internal set; }
     }
 
-    public class CustomerPortalSettingContainer 
+    public class CustomerPortalSettingContainer
     {
+        [Display(Name = "Customer Portal Url", Description = "Customer Portal Url")]
         public string Url { get; protected internal set; }
 
+        [Display(Name = "Customer Portal UserName", Description = "Customer UserName")]
         public string UserName { get; protected internal set; }
 
+        [Display(Name = "Customer Portal Password", Description = "Customer Portal Password")]
         public string Password { get; protected internal set; }
     }
 
     public class InsightsSettingContainer
     {
+        [Display(Name = "Insights API Key", Description = "Insights API Key")]
         public string APIKey { get; protected internal set; }
 
+        [Display(Name = "Insights Unknown User Identifier", Description = "Insights Unknown User Identifier")]
         public string UnknownUserIdentifier { get; protected internal set; }
     }
 
     public class NetworkSettingContainer
     {
-        [CustomizableByCompany]
+        [CustomizableByCompany, RequiresTaxiHailPro]
         public double PrimaryOrderTimeout { get; protected internal set; }
 
-        [CustomizableByCompany]
+        [CustomizableByCompany, RequiresTaxiHailPro]
         public double SecondaryOrderTimeout { get; protected internal set; }
 
+        [SendToClient]
+        [Display(Name = "Enable Network", Description = "Is TaxiHailNetwork Enabled")]
         public bool Enabled { get;  set; }
     }
 }

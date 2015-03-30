@@ -7,7 +7,7 @@
         <div class="control-group">
             <label class="control-label">{{localize 'Name'}}</label>
             <div class="controls">
-                <input type="text" id="inputVehicleName" name="name" value="{{name}}" class='input-block-level'>
+                <input type="text" id="inputVehicleName" name="name" value="{{name}}" class='input-block-level' maxlength="50">
             </div>
         </div>
         
@@ -40,6 +40,14 @@
                 {{/ifCond}}
                 {{/each}}
             </select>
+        </div>
+
+        <div class="control-group">
+            <label class="control-label">{{localize 'Max # Passengers'}}</label>
+            <div class="controls">
+                <input type="text" id="inputVehicleCapacity" name="maxNumberPassengers" value="{{maxNumberPassengers}}" class='input-block-level' maxlength="50">
+                <label class="control-label">{{localize '(0 = no limit)'}}</label>
+            </div>            
         </div>
         
         <div class="control-group btn-right-alignment" >

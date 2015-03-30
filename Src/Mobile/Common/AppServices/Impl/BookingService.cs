@@ -55,12 +55,10 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			order.ClientLanguageCode = _localize.CurrentLanguage;
 			var orderDetail = await UseServiceClientAsync<OrderServiceClient, OrderStatusDetail>(service => service.CreateOrder(order));
 
-			if (orderDetail.IBSOrderId.HasValue
-				&& orderDetail.IBSOrderId > 0
-				&& !order.PickupDate.HasValue) // Check if this is a scheduled ride
+			if (!order.PickupDate.HasValue) // Check if this is a scheduled ride
 			{
                 UserCache.Set ("LastOrderId", orderDetail.OrderId.ToString ()); // Need to be cached as a string because of a jit error on device
-            }
+			}
 
 			Task.Run(() => _accountService.RefreshCache (true));
 
@@ -165,14 +163,16 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             return statusId != null && statusId.SoftEqual(VehicleStatuses.Common.Timeout);
         }
 
-        public bool IsStatusCompleted (string statusId)
+		public bool IsStatusCompleted (OrderStatusDetail status)
         {
-            return statusId.IsNullOrEmpty () ||
-                statusId.SoftEqual (VehicleStatuses.Common.Cancelled) ||
-                statusId.SoftEqual (VehicleStatuses.Common.Done) ||
-                statusId.SoftEqual (VehicleStatuses.Common.NoShow) ||
-				statusId.SoftEqual (VehicleStatuses.Common.CancelledDone) || 
-				statusId.SoftEqual (VehicleStatuses.Common.MeterOffNotPayed);
+			return status.IBSStatusId.IsNullOrEmpty () ||
+				status.IBSStatusId.SoftEqual (VehicleStatuses.Common.Cancelled) ||
+				status.IBSStatusId.SoftEqual (VehicleStatuses.Common.Done) ||
+				status.IBSStatusId.SoftEqual (VehicleStatuses.Common.NoShow) ||
+				status.IBSStatusId.SoftEqual (VehicleStatuses.Common.CancelledDone) || 
+				status.IBSStatusId.SoftEqual (VehicleStatuses.Common.MeterOffNotPayed) ||
+				(status.IBSStatusId.SoftEqual (VehicleStatuses.Unknown.None) 
+					&& status.Status == OrderStatus.Canceled);
         }
 
 		public bool IsOrderCancellable(string statusId)

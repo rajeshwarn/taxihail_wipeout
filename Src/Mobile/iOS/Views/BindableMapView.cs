@@ -1,7 +1,7 @@
 using System;
-using MonoTouch.MapKit;
+using MapKit;
 using Cirrious.MvvmCross.Binding.Touch.Views;
-using System.Drawing;
+using CoreGraphics;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using Cirrious.MvvmCross.Binding.Attributes;
 
@@ -22,7 +22,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             this.CreateBindingContext();
         }
 
-        public BindableMapView(RectangleF frame)
+        public BindableMapView(CGRect frame)
             : base(frame)
         {
             this.CreateBindingContext();

@@ -50,6 +50,14 @@ namespace MK.Booking.IBS.Test.ChargeAccountsFixture
         }
 
         [Test]
+        public void when_getting_account_info_with_invalid_customer_number()
+        {
+            // There should be an account number on the result
+            var account = Sut.GetIbsAccount(AccountNumber, "654564");
+            Assert.AreEqual("account not found", account.Message);
+        }
+
+        [Test]
         public void when_validating_questions()
         {
             // Call should success

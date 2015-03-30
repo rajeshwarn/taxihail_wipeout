@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using ServiceStack.ServiceClient.Web;
@@ -64,6 +66,11 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             };
 
             return client;
+        }
+
+        protected static string BuildQueryString(IEnumerable<KeyValuePair<string, string>> @params)
+        {
+            return "?" + string.Join("&", @params.Select(x => string.Join("=", x.Key, x.Value)));
         }
     }
 }

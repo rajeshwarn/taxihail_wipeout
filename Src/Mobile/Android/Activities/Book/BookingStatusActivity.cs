@@ -8,6 +8,8 @@ using apcurium.MK.Booking.Mobile.Client.Diagnostic;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using Android.Widget;
 using System.Windows.Input;
+using Android.Views;
+using apcurium.MK.Common;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {
@@ -37,6 +39,25 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 			base.OnViewModelSet ();
             SetContentView(Resource.Layout.View_BookingStatus);
             _touchMap = FindViewById<TouchMap>(Resource.Id.mapStatus);
+        }
+
+        public override bool OnKeyDown(Keycode keyCode, KeyEvent e)
+        {
+            if (!base.OnKeyDown(keyCode, e))
+            {
+                return false;
+            }
+
+            if (keyCode == Keycode.Back)
+            {
+                if (!ViewModel.CanGoBack)
+                {
+                    MoveTaskToBack(true);
+                    return false;
+                }
+            }
+
+            return base.OnKeyDown(keyCode, e);
         }
 
         protected override void OnResume()
@@ -72,11 +93,5 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
             _touchMap.OnLowMemory();
         }
-
-		public override void OnBackPressed ()
-		{
-			base.OnBackPressed ();
-            ViewModel.PrepareNewOrder.ExecuteIfPossible();
-		}
     }
 }

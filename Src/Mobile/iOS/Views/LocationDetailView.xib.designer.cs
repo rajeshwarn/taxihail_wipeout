@@ -4,7 +4,7 @@
 // actions made in the UI designer. If it is removed, they will be lost.
 // Manual changes to this file may not be handled correctly.
 //
-using MonoTouch.Foundation;
+using Foundation;
 using System.CodeDom.Compiler;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
@@ -19,16 +19,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnRebook { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel lblAddress { get; set; }
+		UIKit.UILabel lblAddress { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel lblApartment { get; set; }
+		UIKit.UILabel lblApartment { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel lblName { get; set; }
+		UIKit.UILabel lblName { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UILabel lblRingCode { get; set; }
+		UIKit.UILabel lblRingCode { get; set; }
 
 		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.NavigateFlatTextField txtAddress { get; set; }

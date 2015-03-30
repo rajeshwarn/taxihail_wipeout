@@ -15,7 +15,7 @@ using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Booking.Mobile.Client.Converters;
 using apcurium.MK.Booking.Mobile.Client.Binding;
 using Cirrious.MvvmCross.Binding.Bindings.Target.Construction;
-using MonoTouch.UIKit;
+using UIKit;
 using apcurium.MK.Booking.Mobile.Client.Controls.Binding;
 using apcurium.MK.Booking.Mobile.AppServices.Social;
 using apcurium.MK.Booking.Mobile.AppServices.Social.OAuth;
@@ -78,6 +78,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 			container.Register<IPushNotificationService> (new PushNotificationService (container.Resolve<ICacheService> ()));
 
             container.Register<IAppSettings> (new AppSettingsService (container.Resolve<ICacheService> (), container.Resolve<ILogger> ()));
+
+            container.Register<IPayPalConfigurationService, PayPalConfigurationService>();
 
             ConfigureInsights ();
 

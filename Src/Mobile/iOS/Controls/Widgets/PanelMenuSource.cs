@@ -1,7 +1,8 @@
 using Cirrious.MvvmCross.Binding.Touch.Views;
-using MonoTouch.UIKit;
-using MonoTouch.Foundation;
+using UIKit;
+using Foundation;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
+using apcurium.MK.Booking.Mobile.Client.Style;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
@@ -21,6 +22,18 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         {
             var result = tableView.DequeueReusableCell (this.CellIdentifier) as PanelMenuCell ??
                          new PanelMenuCell(_cellId, _cellBindingText);
+			var menuItem = item as apcurium.MK.Booking.Mobile.ViewModels.PanelMenuViewModel.ItemMenuModel;
+
+			if (!string.IsNullOrEmpty(menuItem.Alert))
+			{
+				var badge = new CustomBadgeView(menuItem.Alert, 120, 10)
+				{
+					TextColor = Theme.LabelTextColor,
+					BadgeColor = Theme.CompanyColor
+				};
+
+				result.AddSubview(badge);
+			}
 
             result.HideBottomBar = tableView.IsLastCell(indexPath);
             result.RemoveDelay();

@@ -1,16 +1,8 @@
-﻿#region
-
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.IO;
 using System.Reflection;
-using System.Runtime.CompilerServices;
-using apcurium.MK.Booking.Resources;
-using apcurium.MK.Booking.Services.Impl;
 using apcurium.MK.Common.Configuration;
 using Nustache.i18n;
-
-#endregion
 
 namespace apcurium.MK.Booking.Email
 {
@@ -53,15 +45,15 @@ namespace apcurium.MK.Booking.Email
             return null;
         }
 
+        public string InlineCss(string body)
+        {
+            return PreMailer.Net.PreMailer.MoveCssInline(body, true, ignoreElements: "#ignore").Html;
+        }
+
         public string Render(string template, object data)
         {
             if (template == null) throw new ArgumentNullException("template");
             return Nustache.Core.Render.StringToString(template, data);
-        }
-
-        public string InlineCss(string body)
-        {
-            return PreMailer.Net.PreMailer.MoveCssInline(body, true, ignoreElements: "#ignore").Html;
         }
 
         public string ImagePath(string imageName)

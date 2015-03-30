@@ -1,4 +1,4 @@
-using MonoTouch.UIKit;
+using UIKit;
 using System;
 
 namespace apcurium.MK.Booking.Mobile.Client.Extensions.Helpers
@@ -7,34 +7,43 @@ namespace apcurium.MK.Booking.Mobile.Client.Extensions.Helpers
     {
         public static bool IsRetinaDisplay { get { return UIScreen.MainScreen.Scale > 1.0; } }
 
-		public static float OnePixel
+		public static nfloat OnePixel
 		{
-			get{
-				return IsRetinaDisplay ? .5f : 1f;
+			get
+            {
+                return 1f / UIScreen.MainScreen.Scale;
 			}
 		}
 
-        public static bool Is4InchDisplay
+        public static bool Is35InchDisplay
         {
-            get { return UIScreen.MainScreen.Bounds.Height > 500; }
+            get { return UIScreen.MainScreen.Bounds.Height < 500; }
+        }
+
+        public static bool IsOS7
+        {
+            get{
+                return Convert.ToInt32(UIDevice.CurrentDevice.SystemVersion.Split('.')[0]) == 7;
+            }
         }
 
 		public static bool IsOS7orHigher
 		{
 			get{
-				var first = UIDevice.CurrentDevice.SystemVersion.Split('.')[0];
-				return Convert.ToInt32(first) >= 7;
+                return Convert.ToInt32(UIDevice.CurrentDevice.SystemVersion.Split('.')[0]) >= 7;
 			}
 		}
 
-        public static float GetConvertedPixel(float pixel)
+        public static bool IsOS8orHigher
         {
-            if (IsRetinaDisplay)
-            {
-                return pixel / 2f;
+            get{
+                return Convert.ToInt32(UIDevice.CurrentDevice.SystemVersion.Split('.')[0]) >= 8;
             }
+        }
 
-            return pixel;
+        public static nfloat GetConvertedPixel(nfloat pixel)
+        {
+            return pixel / UIScreen.MainScreen.Scale;
         }
     }
 }

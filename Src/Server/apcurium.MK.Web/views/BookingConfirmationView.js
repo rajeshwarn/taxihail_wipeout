@@ -16,18 +16,10 @@
             var pickupZipCode = pickup.zipCode != null ? pickup.zipCode : '';
             var dropOffZipCode = (dest != null && dest.zipCode != null) ? dest.zipCode : '';
 
-            
-
-            
             this.showEstimate = TaxiHail.parameters.isEstimateEnabled && pickup && dest;
             this.showEstimateWarning = TaxiHail.parameters.isEstimateWarningEnabled;
             
-            var accountNumber = '';
-            
-            if (this.model.isPayingWithAccountCharge()) {
-                accountNumber = this.model.get('accountNumber');
-                accountNumber = accountNumber != null ? accountNumber : '';
-            }
+            var accountNumber = this.model.get('accountNumber');
 
             if (this.showEstimate) {
                 TaxiHail.directionInfo.getInfo(pickup.latitude,
@@ -77,10 +69,33 @@
 
             var data = this.model.toJSON();
 
+            var chargeTypes = TaxiHail.referenceData.paymentsList;
+            if (this.model.get('market')) {
+                // PayInCar is the only charge type when in external market
+                for (var i = 0; i < chargeTypes.length; i++) {
+                    if (chargeTypes[i].id === 1) {
+                        chargeTypes = [chargeTypes[i]];
+                    }
+                }
+            }
+
+            // Remove CoF option since there's no card in the user profile
+            if (TaxiHail.parameters.isBraintreePrepaidEnabled && !TaxiHail.auth.account.get('defaultCreditCard')) {
+                var chargeTypesClone = chargeTypes.slice();
+                for (var i = 0; i < chargeTypesClone.length; i++) {
+                    var chargeType = chargeTypesClone[i];
+                    if (chargeType.id == 3) {
+                        chargeTypesClone.splice(i, 1);
+                        chargeTypes = chargeTypesClone;
+                    }
+                }
+            }
+
             _.extend(data, {
                 vehiclesList: TaxiHail.vehicleTypes,
-                paymentsList: TaxiHail.referenceData.paymentsList,
-                showPassengerNumber: TaxiHail.parameters.showPassengerNumber
+                paymentsList: chargeTypes,
+                showPassengerNumber: TaxiHail.parameters.showPassengerNumber,
+                showEstimate: this.showEstimate
             });
 
             this.$el.html(this.renderTemplate(data));
@@ -138,6 +153,7 @@
         },
         
         renderResults: function (result) {
+            this.model.set({ 'estimate': result });
             if (result.callForPrice) {
                 this.model.set('estimateDisplay', TaxiHail.localize("CallForPrice"));
             } else
@@ -164,17 +180,40 @@
             this.model.set('FromWebApp', true);
             this.model.saveLocal();
 
-            if (this.model.isPayingWithAccountCharge()) {
+            this.$('.errors').html('');        
+
+            var numberOfPassengers = this.model.get('settings')['passengers'];
+            var vehicleType = TaxiHail.vehicleTypes[0];
+            var vehicleTypeId =  this.model.get('settings')['vehicleTypeId'];           
+            if(vehicleTypeId)
+            {
+                vehicleType = $.grep(TaxiHail.vehicleTypes, function (e) { return e.referenceDataVehicleId == vehicleTypeId; })[0];
+            }
+
+            if (TaxiHail.parameters.showPassengerNumber
+                && vehicleType.maxNumberPassengers > 0
+                && numberOfPassengers > vehicleType.maxNumberPassengers)
+            {
+                this.$(':submit').button('reset');
+                this.$('.errors').html(TaxiHail.localize("CreateOrder_InvalidPassengersNumber"));
+                return;
+            }
+
+            if (this.model.isPayingWithAccountCharge() && !this.model.get('market')) {
                 //account charge type payment                
                 TaxiHail.app.navigate('bookaccountcharge', { trigger: true});
             }else{
                 this.model.save({}, {
-                    success : TaxiHail.postpone(function (model) {
-                        // Wait for order to be created before redirecting to status
-                            ga('send', 'event', 'button', 'click', 'book web', 0);
+                    success: TaxiHail.postpone(function (model) {
+                        // Wait for response before doing anything
+                        ga('send', 'event', 'button', 'click', 'book web', 0);
+                        if (this.model.isPayingWithPayPal()) {
+                            window.location.replace(model.get('payPalCheckoutUrl'));
+                        } else {
                             TaxiHail.app.navigate('status/' + model.id, { trigger: true, replace: true /* Prevent user from coming back to this screen */ });
+                        }
                     }, this),
-                        error: this.showErrors
+                    error: this.showErrors
                 });
             }
         },
@@ -193,11 +232,11 @@
             }
 
             var $alert = $('<div class="alert alert-error" />');
-            if (result.errorCode == "CreateOrder_RuleDisable") {
-                $alert.append($('<div />').text(result.message));
+            if (result.errorCode == "CreateOrder_PendingOrder") {
+                $alert.append($('<div />').text(this.localize(result.errorCode)));
             }
-            else if (result.statusText) {
-                $alert.append($('<div />').text(this.localize(result.statusText)));
+            else if (result.errorCode) {
+                $alert.append($('<div />').text(result.message));
             }
             _.each(result.errors, function (error) {
                 $alert.append($('<div />').text(this.localize(error.statusText)));

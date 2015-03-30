@@ -81,7 +81,7 @@ namespace apcurium.MK.Common
 
         public string[] MonerisVisaNumbers =
         {
-            "4242424242424242"
+            "4502285070000007"
         };
 
         public TestCreditCards(TestCreditCardSetting settings)

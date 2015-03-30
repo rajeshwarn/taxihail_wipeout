@@ -108,6 +108,8 @@
                     cancelButton: this.localize('modal.cancelOrder.cancelButton')
                 }).on('ok', function () {
                     this.model.cancel().done(function () {
+                        TaxiHail.orderService.clearCurrentOrder();
+
                         // Redirect to Home
                         TaxiHail.app.navigate('', { trigger: true });
                     });
@@ -128,11 +130,12 @@
                     autoHide: false
                 };
 
-                if(model.canSendReceipt()) {
+                if (model.canSendReceipt()) {
+                    options.cancelButton = this.localize('Done');
                     options.confirmButton = this.localize('Send Receipt');
                 } else {
                     options.cancelButton = null; // Hide Cancel button
-                    options.confirmButton = "OK";
+                    options.confirmButton = this.localize('Done');
                 }
 
                 TaxiHail.confirm(options)

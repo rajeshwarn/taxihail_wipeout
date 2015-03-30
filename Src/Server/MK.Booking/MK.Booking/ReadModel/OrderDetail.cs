@@ -64,6 +64,8 @@ namespace apcurium.MK.Booking.ReadModel
 
         public string CompanyName { get; set; }
 
+        public string Market { get; set; }
+
         public string UserAgent { get; set; }
 
         public string ClientLanguageCode { get; set; }

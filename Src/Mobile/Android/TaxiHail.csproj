@@ -13,7 +13,6 @@
     <AndroidApplication>true</AndroidApplication>
     <AndroidResgenFile>Resources\Resource.Designer.cs</AndroidResgenFile>
     <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
-    <AndroidManifest>Properties\AndroidManifest.xml</AndroidManifest>
     <DeployExternal>False</DeployExternal>
     <AndroidSupportedAbis>armeabi-v7a</AndroidSupportedAbis>
     <MandroidI18n />
@@ -21,6 +20,7 @@
     <JavaMaximumHeapSize>1G</JavaMaximumHeapSize>
     <AndroidUseLatestPlatformSdk>False</AndroidUseLatestPlatformSdk>
     <AndroidUseSharedRuntime>false</AndroidUseSharedRuntime>
+    <AndroidManifest>Properties\AndroidManifest.xml</AndroidManifest>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugType>full</DebugType>
@@ -34,9 +34,15 @@
     <AndroidSigningStorePass>mkt0001.</AndroidSigningStorePass>
     <AndroidSigningKeyAlias>MKTaxiHail</AndroidSigningKeyAlias>
     <AndroidSigningKeyPass>mkt0001.</AndroidSigningKeyPass>
-    <AndroidLinkMode>None</AndroidLinkMode>
     <DebugSymbols>True</DebugSymbols>
     <EmbedAssembliesIntoApk>True</EmbedAssembliesIntoApk>
+    <AndroidLinkMode>None</AndroidLinkMode>
+    <AndroidSupportedAbis>armeabi-v7a;x86</AndroidSupportedAbis>
+    <CustomCommands>
+      <CustomCommands>
+        <Command type="BeforeBuild" command="mono &quot;$(SolutionDir)/../LocalizationTool/output/LocalizationTool.exe&quot; -t=android -m=&quot;$(SolutionDir)/Common/Localization/Master.resx&quot; -d=&quot;$(ProjectDir)/Resources/Values/String.xml&quot; -s=&quot;$(SolutionDir)/Common/Settings/Settings.json&quot;" workingdir="$(SolutionDir)/../LocalizationTool" />
+      </CustomCommands>
+    </CustomCommands>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <Optimize>True</Optimize>
@@ -50,38 +56,11 @@
     <AndroidSigningStorePass>mkt0001.</AndroidSigningStorePass>
     <AndroidSigningKeyAlias>MKTaxiHail</AndroidSigningKeyAlias>
     <AndroidSigningKeyPass>mkt0001.</AndroidSigningKeyPass>
-    <AndroidSupportedAbis>armeabi,armeabi-v7a</AndroidSupportedAbis>
-    <AndroidLinkSkip>
-    </AndroidLinkSkip>
-    <AndroidStoreUncompressedFileExtensions>
-    </AndroidStoreUncompressedFileExtensions>
-    <JavaOptions>
-    </JavaOptions>
+    <AndroidSupportedAbis>armeabi;armeabi-v7a;x86</AndroidSupportedAbis>
     <MonoDroidExtraArgs>
     </MonoDroidExtraArgs>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Cirrious.CrossCore">
-      <HintPath>..\packages\MvvmCross.HotTuna.CrossCore.3.0.14\lib\MonoAndroid\Cirrious.CrossCore.dll</HintPath>
-    </Reference>
-    <Reference Include="Cirrious.CrossCore.Droid">
-      <HintPath>..\packages\MvvmCross.HotTuna.CrossCore.3.0.14\lib\MonoAndroid\Cirrious.CrossCore.Droid.dll</HintPath>
-    </Reference>
-    <Reference Include="Cirrious.MvvmCross">
-      <HintPath>..\packages\MvvmCross.HotTuna.MvvmCrossLibraries.3.0.14\lib\MonoAndroid\Cirrious.MvvmCross.dll</HintPath>
-    </Reference>
-    <Reference Include="Cirrious.MvvmCross.Binding">
-      <HintPath>..\packages\MvvmCross.HotTuna.CrossCore.3.0.14\lib\MonoAndroid\Cirrious.MvvmCross.Binding.dll</HintPath>
-    </Reference>
-    <Reference Include="Cirrious.MvvmCross.Binding.Droid">
-      <HintPath>..\packages\MvvmCross.HotTuna.CrossCore.3.0.14\lib\MonoAndroid\Cirrious.MvvmCross.Binding.Droid.dll</HintPath>
-    </Reference>
-    <Reference Include="Cirrious.MvvmCross.Droid">
-      <HintPath>..\packages\MvvmCross.HotTuna.MvvmCrossLibraries.3.0.14\lib\MonoAndroid\Cirrious.MvvmCross.Droid.dll</HintPath>
-    </Reference>
-    <Reference Include="Cirrious.MvvmCross.Localization">
-      <HintPath>..\packages\MvvmCross.HotTuna.CrossCore.3.0.14\lib\MonoAndroid\Cirrious.MvvmCross.Localization.dll</HintPath>
-    </Reference>
     <Reference Include="mscorlib" />
     <Reference Include="ServiceStack.Common">
       <HintPath>..\Libraries\Monodroid\ServiceStack.Common.dll</HintPath>
@@ -101,74 +80,11 @@
     <Reference Include="GoogleAnalytics.MonoDroid">
       <HintPath>..\Libraries\Monodroid\GoogleAnalytics.MonoDroid.dll</HintPath>
     </Reference>
-    <Reference Include="System.Reactive.Core">
-      <HintPath>..\Components\rxforxamarin-2.1\lib\android\System.Reactive.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Reactive.Debugger">
-      <HintPath>..\Components\rxforxamarin-2.1\lib\android\System.Reactive.Debugger.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Reactive.Experimental">
-      <HintPath>..\Components\rxforxamarin-2.1\lib\android\System.Reactive.Experimental.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Reactive.Interfaces">
-      <HintPath>..\Components\rxforxamarin-2.1\lib\android\System.Reactive.Interfaces.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Reactive.Linq">
-      <HintPath>..\Components\rxforxamarin-2.1\lib\android\System.Reactive.Linq.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Reactive.PlatformServices">
-      <HintPath>..\Components\rxforxamarin-2.1\lib\android\System.Reactive.PlatformServices.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Reactive.Providers">
-      <HintPath>..\Components\rxforxamarin-2.1\lib\android\System.Reactive.Providers.dll</HintPath>
-    </Reference>
     <Reference Include="PushSharp.Client.MonoForAndroid">
       <HintPath>..\Libraries\Monodroid\PushSharp.Client.MonoForAndroid.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.Facebook">
       <HintPath>..\Libraries\Monodroid\Xamarin.Facebook.dll</HintPath>
-    </Reference>
-    <Reference Include="Cirrious.MvvmCross.Plugins.Visibility">
-      <HintPath>..\packages\MvvmCross.HotTuna.Plugin.Visibility.3.0.14\lib\MonoAndroid\Cirrious.MvvmCross.Plugins.Visibility.dll</HintPath>
-    </Reference>
-    <Reference Include="Cirrious.MvvmCross.Plugins.Visibility.Droid">
-      <HintPath>..\packages\MvvmCross.HotTuna.Plugin.Visibility.3.0.14\lib\MonoAndroid\Cirrious.MvvmCross.Plugins.Visibility.Droid.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Net">
-      <HintPath>..\packages\MvvmCross.PortableSupport.3.0.14\lib\MonoAndroid\System.Net.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Windows">
-      <HintPath>..\packages\MvvmCross.PortableSupport.3.0.14\lib\MonoAndroid\System.Windows.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Xml.Serialization">
-      <HintPath>..\packages\MvvmCross.PortableSupport.3.0.14\lib\MonoAndroid\System.Xml.Serialization.dll</HintPath>
-    </Reference>
-    <Reference Include="Cirrious.MvvmCross.Plugins.PhoneCall">
-      <HintPath>..\packages\MvvmCross.HotTuna.Plugin.PhoneCall.3.0.14\lib\MonoAndroid\Cirrious.MvvmCross.Plugins.PhoneCall.dll</HintPath>
-    </Reference>
-    <Reference Include="CrossUI.Core">
-      <HintPath>..\packages\MvvmCross.HotTuna.Droid.Dialog.3.0.14\lib\MonoAndroid\CrossUI.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="CrossUI.Droid">
-      <HintPath>..\packages\MvvmCross.HotTuna.Droid.Dialog.3.0.14\lib\MonoAndroid\CrossUI.Droid.dll</HintPath>
-    </Reference>
-    <Reference Include="Cirrious.MvvmCross.Dialog.Droid">
-      <HintPath>..\packages\MvvmCross.HotTuna.Droid.Dialog.3.0.14\lib\MonoAndroid\Cirrious.MvvmCross.Dialog.Droid.dll</HintPath>
-    </Reference>
-    <Reference Include="Cirrious.MvvmCross.Plugins.PhoneCall.Droid">
-      <HintPath>..\packages\MvvmCross.HotTuna.Plugin.PhoneCall.3.0.14\lib\MonoAndroid\Cirrious.MvvmCross.Plugins.PhoneCall.Droid.dll</HintPath>
-    </Reference>
-    <Reference Include="Cirrious.MvvmCross.Plugins.WebBrowser">
-      <HintPath>..\packages\MvvmCross.HotTuna.Plugin.WebBrowser.3.0.14\lib\MonoAndroid\Cirrious.MvvmCross.Plugins.WebBrowser.dll</HintPath>
-    </Reference>
-    <Reference Include="Cirrious.MvvmCross.Plugins.WebBrowser.Droid">
-      <HintPath>..\packages\MvvmCross.HotTuna.Plugin.WebBrowser.3.0.14\lib\MonoAndroid\Cirrious.MvvmCross.Plugins.WebBrowser.Droid.dll</HintPath>
-    </Reference>
-    <Reference Include="CardIO">
-      <HintPath>..\Libraries\Monodroid\CardIO.dll</HintPath>
-    </Reference>
-    <Reference Include="Xamarin.Insights">
-      <HintPath>..\packages\Xamarin.Insights.1.6.0\lib\MonoAndroid10\Xamarin.Insights.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.Android.Support.v13">
       <HintPath>..\packages\Xamarin.Android.Support.v13.20.0.0.4\lib\MonoAndroid32\Xamarin.Android.Support.v13.dll</HintPath>
@@ -185,14 +101,82 @@
     <Reference Include="GooglePlayServicesLib">
       <HintPath>..\packages\Xamarin.GooglePlayServices.19.0.0.1\lib\MonoAndroid23\GooglePlayServicesLib.dll</HintPath>
     </Reference>
+    <Reference Include="Xamarin.Insights">
+      <HintPath>..\packages\Xamarin.Insights.1.8.3\lib\MonoAndroid10\Xamarin.Insights.dll</HintPath>
+    </Reference>
+    <Reference Include="Cirrious.CrossCore.Droid">
+      <HintPath>..\packages\MvvmCross.HotTuna.CrossCore.3.5.0\lib\MonoAndroid\Cirrious.CrossCore.Droid.dll</HintPath>
+    </Reference>
+    <Reference Include="Cirrious.MvvmCross.Binding.Droid">
+      <HintPath>..\packages\MvvmCross.HotTuna.CrossCore.3.5.0\lib\MonoAndroid\Cirrious.MvvmCross.Binding.Droid.dll</HintPath>
+    </Reference>
+    <Reference Include="Cirrious.CrossCore">
+      <HintPath>..\packages\MvvmCross.HotTuna.CrossCore.3.5.0\lib\MonoAndroid\Cirrious.CrossCore.dll</HintPath>
+    </Reference>
+    <Reference Include="Cirrious.MvvmCross.Binding">
+      <HintPath>..\packages\MvvmCross.HotTuna.CrossCore.3.5.0\lib\MonoAndroid\Cirrious.MvvmCross.Binding.dll</HintPath>
+    </Reference>
+    <Reference Include="Cirrious.MvvmCross.Localization">
+      <HintPath>..\packages\MvvmCross.HotTuna.CrossCore.3.5.0\lib\MonoAndroid\Cirrious.MvvmCross.Localization.dll</HintPath>
+    </Reference>
+    <Reference Include="Cirrious.MvvmCross.Droid">
+      <HintPath>..\packages\MvvmCross.HotTuna.MvvmCrossLibraries.3.5.0\lib\MonoAndroid\Cirrious.MvvmCross.Droid.dll</HintPath>
+    </Reference>
+    <Reference Include="Cirrious.MvvmCross">
+      <HintPath>..\packages\MvvmCross.HotTuna.MvvmCrossLibraries.3.5.0\lib\MonoAndroid\Cirrious.MvvmCross.dll</HintPath>
+    </Reference>
+    <Reference Include="CrossUI.Core">
+      <HintPath>..\packages\MvvmCross.HotTuna.Droid.Dialog.3.5.0\lib\MonoAndroid\CrossUI.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="CrossUI.Droid">
+      <HintPath>..\packages\MvvmCross.HotTuna.Droid.Dialog.3.5.0\lib\MonoAndroid\CrossUI.Droid.dll</HintPath>
+    </Reference>
+    <Reference Include="Cirrious.MvvmCross.Dialog.Droid">
+      <HintPath>..\packages\MvvmCross.HotTuna.Droid.Dialog.3.5.0\lib\MonoAndroid\Cirrious.MvvmCross.Dialog.Droid.dll</HintPath>
+    </Reference>
+    <Reference Include="Cirrious.MvvmCross.Plugins.PhoneCall">
+      <HintPath>..\packages\MvvmCross.HotTuna.Plugin.PhoneCall.3.5.0\lib\MonoAndroid\Cirrious.MvvmCross.Plugins.PhoneCall.dll</HintPath>
+    </Reference>
+    <Reference Include="Cirrious.MvvmCross.Plugins.PhoneCall.Droid">
+      <HintPath>..\packages\MvvmCross.HotTuna.Plugin.PhoneCall.3.5.0\lib\MonoAndroid\Cirrious.MvvmCross.Plugins.PhoneCall.Droid.dll</HintPath>
+    </Reference>
+    <Reference Include="Cirrious.MvvmCross.Plugins.Visibility">
+      <HintPath>..\packages\MvvmCross.HotTuna.Plugin.Visibility.3.5.0\lib\MonoAndroid\Cirrious.MvvmCross.Plugins.Visibility.dll</HintPath>
+    </Reference>
+    <Reference Include="Cirrious.MvvmCross.Plugins.Visibility.Droid">
+      <HintPath>..\packages\MvvmCross.HotTuna.Plugin.Visibility.3.5.0\lib\MonoAndroid\Cirrious.MvvmCross.Plugins.Visibility.Droid.dll</HintPath>
+    </Reference>
+    <Reference Include="Cirrious.MvvmCross.Plugins.WebBrowser">
+      <HintPath>..\packages\MvvmCross.HotTuna.Plugin.WebBrowser.3.5.0\lib\MonoAndroid\Cirrious.MvvmCross.Plugins.WebBrowser.dll</HintPath>
+    </Reference>
+    <Reference Include="Cirrious.MvvmCross.Plugins.WebBrowser.Droid">
+      <HintPath>..\packages\MvvmCross.HotTuna.Plugin.WebBrowser.3.5.0\lib\MonoAndroid\Cirrious.MvvmCross.Plugins.WebBrowser.Droid.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Core">
+      <HintPath>..\Components\rxforxamarin-2.2.1\lib\android\System.Reactive.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Interfaces">
+      <HintPath>..\Components\rxforxamarin-2.2.1\lib\android\System.Reactive.Interfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Linq">
+      <HintPath>..\Components\rxforxamarin-2.2.1\lib\android\System.Reactive.Linq.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.PlatformServices">
+      <HintPath>..\Components\rxforxamarin-2.2.1\lib\android\System.Reactive.PlatformServices.dll</HintPath>
+    </Reference>
+    <Reference Include="PaypalSdkDroid">
+      <HintPath>..\Libraries\Monodroid\PaypalSdkDroid.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Activities\BaseActivity.cs" />
     <Compile Include="Activities\Book\DateTimePickerActivity.cs" />
     <Compile Include="Activities\Book\LocationListener.cs" />
     <Compile Include="Activities\Book\LocationService.cs" />
+    <Compile Include="Activities\Book\PromotionActivity.cs" />
     <Compile Include="Activities\Setting\AboutActivity.cs" />
     <Compile Include="Activities\Setting\NotificationSettingsActivity.cs" />
+    <Compile Include="Activities\Setting\UserTaxiHailNetworkSettingsActivity.cs" />
     <Compile Include="Activities\TutorialActivity.cs" />
     <Compile Include="Adapters\GroupedLocationListAdapter.cs" />
     <Compile Include="Adapters\LocationListAdapter.cs" />
@@ -207,11 +191,13 @@
     <Compile Include="Helpers\DrawHelper.cs" />
     <Compile Include="Activities\History\HistoryDetailActivity.cs" />
     <Compile Include="Activities\Account\LoginActivity.cs" />
+    <Compile Include="LinkerPleaseInclude.cs" />
     <Compile Include="ListViewStructure\ListItemData.cs" />
     <Compile Include="Messages\ActivityCompleted.cs" />
     <Compile Include="Activities\Account\PasswordRecoveryActivity.cs" />
     <Compile Include="PlatformIntegration\MessageService.cs" />
     <Compile Include="PlatformIntegration\PackageInfo.cs" />
+    <Compile Include="PlatformIntegration\PayPalConfigurationService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Activities\SplashActivity.cs" />
     <AndroidResource Include="Resources\Layout\RatingListItem.axml">
@@ -259,16 +245,11 @@
     <AndroidResource Include="Resources\Drawable\transparentAllStates.xml" />
     <Compile Include="Binding\CellItemBinding.cs" />
     <AndroidResource Include="Resources\Drawable\visa_electron.png" />
-    <Compile Include="Activities\Book\BookPaymentActivity.cs" />
     <AndroidResource Include="Resources\Layout\View_Payments_CreditCardAdd.axml" />
-    <AndroidResource Include="Resources\Layout\View_Payments_BookPayment.axml" />
     <Compile Include="Binding\CustomBindings.cs" />
     <Compile Include="Binding\TextViewBinding.cs" />
     <Compile Include="Extensions\ViewExtensions.cs" />
     <Compile Include="Extensions\LayoutParametersExtensions.cs" />
-    <Compile Include="Activities\Book\BookPayPalActivity.cs">
-      <DependentUpon>BookPaymentActivity.cs</DependentUpon>
-    </Compile>
     <Compile Include="Extensions\EditTextExtensions.cs" />
     <Compile Include="Extensions\LocationTimeConverter.cs" />
     <Compile Include="Activities\Book\RideSummaryActivity.cs" />
@@ -308,7 +289,6 @@
     <AndroidResource Include="Resources\Drawable\dialog_center.xml" />
     <AndroidResource Include="Resources\Drawable\button_main_pressed.xml" />
     <Compile Include="Controls\Widgets\EditTextEntry.cs" />
-    <Compile Include="Bootstrap\PhoneCallPluginBootstrap.cs" />
     <Compile Include="Bootstrap\VisibilityPluginBootstrap.cs" />
     <AndroidResource Include="Resources\Drawable\setting_cell.xml" />
     <AndroidResource Include="Resources\Drawable\button_main_text_selector.xml" />
@@ -336,12 +316,6 @@
     <AndroidResource Include="Resources\Drawable\button_action_gray_text_selector.xml" />
     <AndroidResource Include="Resources\Drawable\button_action_green_text_selector.xml" />
     <AndroidResource Include="Resources\Drawable\button_action_red_text_selector.xml" />
-    <AndroidResource Include="Resources\Layout\View_Payments_ConfirmPair.axml" />
-    <Compile Include="Activities\Book\ConfirmPairActivity.cs" />
-    <Compile Include="Activities\Book\ConfirmCarNumberActivity.cs" />
-    <AndroidResource Include="Resources\Layout\View_Payments_ConfirmCarNumber.axml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
     <AndroidResource Include="Resources\Layout\View_CreateAccount.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
@@ -391,7 +365,6 @@
     <AndroidResource Include="Resources\drawable-xhdpi\th_logo.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\twitter_icon.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\visa.png" />
-    <Compile Include="Bootstrap\WebBrowserPluginBootstrap.cs" />
     <AndroidResource Include="Resources\Drawable\checked_custom.png" />
     <AndroidResource Include="Resources\Drawable\unchecked_custom.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\checked_custom.png" />
@@ -447,7 +420,9 @@
     <Compile Include="Activities\BaseBindingFragmentActivity.cs" />
     <Compile Include="Controls\Widgets\OrderReview.cs" />
     <AndroidResource Include="Resources\Layout\SubView_OrderOptions.axml" />
-    <AndroidResource Include="Resources\Layout\SubView_MainMenu.axml" />
+    <AndroidResource Include="Resources\Layout\SubView_MainMenu.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
     <AndroidResource Include="Resources\Drawable\cluster_taxi.png" />
     <AndroidResource Include="Resources\Drawable\nearby_taxi.png" />
     <AndroidResource Include="Resources\Drawable\taxi_icon.png" />
@@ -476,7 +451,9 @@
     <Compile Include="Controls\Widgets\VehicleTypeAndEstimateControl.cs" />
     <Compile Include="Helpers\DrawableHelper.cs" />
     <Compile Include="Controls\Widgets\OrderEdit.cs" />
-    <AndroidResource Include="Resources\Layout\SubView_OrderEdit.axml" />
+    <AndroidResource Include="Resources\Layout\SubView_OrderEdit.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
     <Compile Include="Extensions\MvvmCrossExtensions.cs" />
     <AndroidResource Include="Resources\Drawable\account.png" />
     <AndroidResource Include="Resources\Drawable\apartment.png" />
@@ -622,6 +599,18 @@
     <AndroidResource Include="Resources\drawable-xhdpi\map_smallicon_background.png" />
     <AndroidResource Include="Resources\Drawable\map_bigicon_background.png" />
     <AndroidResource Include="Resources\Drawable\map_smallicon_background.png" />
+    <AndroidResource Include="Resources\Layout\View_Promotion.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\Drawable\promo.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\promo.png" />
+    <Compile Include="Bootstrap\PhoneCallPluginBootstrap.cs" />
+    <Compile Include="Bootstrap\WebBrowserPluginBootstrap.cs" />
+    <AndroidResource Include="Resources\Layout\View_OverduePayment.axml" />
+    <Compile Include="Activities\Setting\OverduePaymentActivity.cs" />
+    <AndroidResource Include="Resources\Drawable\notification_background.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\View_Login.axml">
@@ -652,7 +641,7 @@
       <SubType>AndroidResource</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\Layout\View_LocationList.axml">
-      <SubType>AndroidResource</SubType>
+      <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\Values\Color.xml" />
     <AndroidResource Include="Resources\Layout\SpinnerText.axml" />
@@ -731,7 +720,9 @@
     <AndroidResource Include="Resources\Drawable\backPickupDestination.png" />
     <AndroidResource Include="Resources\Drawable\button_main_rounded.xml" />
     <AndroidResource Include="Resources\Drawable\button_main_selector.xml" />
-    <AndroidResource Include="Resources\Drawable\edit_text_flat.xml" />
+    <AndroidResource Include="Resources\Drawable\edit_text_flat.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
     <AndroidResource Include="Resources\values-fr\String.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
@@ -745,6 +736,10 @@
     <AndroidResource Include="Resources\drawable-xhdpi\cluster_suv.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\cluster_taxi.png" />
     <AndroidResource Include="Resources\values-es\String.xml" />
+    <AndroidResource Include="Resources\Drawable\down_arrow.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\down_arrow.png" />
+    <AndroidResource Include="Resources\Drawable\paypal_icon.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\paypal_icon.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <Target Name="BeforeBuild">
@@ -797,12 +792,12 @@
     <AndroidJavaLibrary Include="libGoogleAnalyticsV2.jar" />
   </ItemGroup>
   <ItemGroup>
-    <XamarinComponentReference Include="rxforxamarin">
-      <Version>2.1</Version>
-      <Visible>False</Visible>
-    </XamarinComponentReference>
     <XamarinComponentReference Include="googleplayservices">
       <Version>19.0.0.2</Version>
+      <Visible>False</Visible>
+    </XamarinComponentReference>
+    <XamarinComponentReference Include="rxforxamarin">
+      <Version>2.2.1</Version>
       <Visible>False</Visible>
     </XamarinComponentReference>
   </ItemGroup>
@@ -819,12 +814,13 @@
     <None Include="Calabash\features\support\env.rb" />
     <None Include="Calabash\features\support\hooks.rb" />
     <None Include="Calabash\features\step_definitions\my_first_steps.rb" />
-    <None Include="Properties\AndroidManifest.xml" />
     <AndroidResource Include="Resources\Layout\View_NotificationSettings.axml">
-      <SubType>AndroidResource</SubType>
+      <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\Layout\NotificationSettingListItem.axml">
-      <SubType>AndroidResource</SubType>
+    <AndroidResource Include="Resources\Layout\TogglableSettingsListItem.axml" />
+    <AndroidResource Include="Resources\Layout\View_UserTaxiHailNetworkSettings.axml" />
+    <AndroidResource Include="Resources\Layout\PromotionListItem.axml">
+      <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>
 </Project>

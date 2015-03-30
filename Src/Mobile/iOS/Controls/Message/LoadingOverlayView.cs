@@ -1,9 +1,9 @@
-﻿using MonoTouch.UIKit;
-using System.Drawing;
+using UIKit;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
 using apcurium.MK.Booking.Mobile.Client.Helper;
 using apcurium.MK.Booking.Mobile.Client.Style;
-using MonoTouch.CoreGraphics;
+using CoreGraphics;
+using System;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
 {
@@ -12,8 +12,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
         private UIView _dialogView;
         private UIImageView _imageView;
         private CircularProgressView _progressView;
-        private static float _dialogWidth = UIScreen.MainScreen.Bounds.Width;
-        private static float _dialogHeight = 95;
+        private static nfloat _dialogWidth = UIScreen.MainScreen.Bounds.Width;
+        private static nfloat _dialogHeight = 95;
         private static bool _isLoading;
         private UIWindow _modalWindow;
 
@@ -25,17 +25,17 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
             _dialogView = new UIView();
             _dialogView.BackgroundColor = UIColor.White;
 
-            _imageView = new UIImageView (ImageHelper.ApplyThemeColorToImage("taxi_progress.png", true, new SizeF(52, 20), UIColor.FromRGBA (0, 122, 255, 255), new Point (25, 10)));
+            _imageView = new UIImageView (ImageHelper.ApplyThemeColorToImage("taxi_progress.png", true, new CGSize(52, 20), UIColor.FromRGBA (0, 122, 255, 255), new CGPoint (25, 10)));
                 
             _imageView.SizeToFit();
             _imageView.Hidden = true;
 
-            _progressView = new CircularProgressView(new RectangleF(0, 0, 67, 67),  Theme.CompanyColor);
+            _progressView = new CircularProgressView(new CGRect(0, 0, 67, 67),  Theme.CompanyColor);
             _progressView.OnCompleted = () => Hide();
             _progressView.LineWidth = 1.5f;
             _progressView.Hidden = true;
 
-            _dialogView.Frame  = new RectangleF(0, UIScreen.MainScreen.Bounds.Height / 2, UIScreen.MainScreen.Bounds.Width, 0);
+            _dialogView.Frame  = new CGRect(0, UIScreen.MainScreen.Bounds.Height / 2, UIScreen.MainScreen.Bounds.Width, 0);
 
             _progressView.SetHorizontalCenter(UIScreen.MainScreen.Bounds.Width / 2);
             _progressView.SetVerticalCenter(UIScreen.MainScreen.Bounds.Height / 2);
@@ -54,7 +54,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Message
                 0.2, 0, options, 
                 () =>
             {
-                _dialogView.Frame = new RectangleF(0, (UIScreen.MainScreen.Bounds.Height - _dialogHeight) / 2, _dialogWidth, _dialogHeight);
+                _dialogView.Frame = new CGRect(0, (UIScreen.MainScreen.Bounds.Height - _dialogHeight) / 2, _dialogWidth, _dialogHeight);
             },
                 () => 
             {

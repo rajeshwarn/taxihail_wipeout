@@ -3,7 +3,6 @@
 using System;
 using apcurium.MK.Booking.CommandHandlers;
 using apcurium.MK.Booking.Commands;
-using apcurium.MK.Booking.Common.Tests;
 using apcurium.MK.Booking.Domain;
 using apcurium.MK.Booking.Events;
 using NUnit.Framework;
@@ -31,7 +30,7 @@ namespace apcurium.MK.Booking.Test.CreditCardPaymentFixture
                 TransactionId = "the transaction",
                 Amount = 12.34m
             });
-            _sut.Given(new CreditCardPaymentCaptured {SourceId = _paymentId});
+            _sut.Given(new CreditCardPaymentCaptured_V2 { SourceId = _paymentId });
         }
 
         private EventSourcingTestHelper<CreditCardPayment> _sut;

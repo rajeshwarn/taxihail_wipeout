@@ -4,7 +4,7 @@ using Cirrious.CrossCore;
 using Cirrious.CrossCore.Platform;
 using Cirrious.MvvmCross.Binding;
 using Cirrious.MvvmCross.Binding.Bindings.Target;
-using MonoTouch.UIKit;
+using UIKit;
 
 namespace apcurium.MK.Booking.Mobile.Client.Binding
 {

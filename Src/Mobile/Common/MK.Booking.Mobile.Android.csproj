@@ -50,73 +50,80 @@
     <Reference Include="System.Web.Services" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Xml" />
-    <Reference Include="System.Reactive.Core">
-      <HintPath>..\Components\rxforxamarin-2.1\lib\android\System.Reactive.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Reactive.Debugger">
-      <HintPath>..\Components\rxforxamarin-2.1\lib\android\System.Reactive.Debugger.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Reactive.Experimental">
-      <HintPath>..\Components\rxforxamarin-2.1\lib\android\System.Reactive.Experimental.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Reactive.Interfaces">
-      <HintPath>..\Components\rxforxamarin-2.1\lib\android\System.Reactive.Interfaces.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Reactive.Linq">
-      <HintPath>..\Components\rxforxamarin-2.1\lib\android\System.Reactive.Linq.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Reactive.PlatformServices">
-      <HintPath>..\Components\rxforxamarin-2.1\lib\android\System.Reactive.PlatformServices.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Reactive.Providers">
-      <HintPath>..\Components\rxforxamarin-2.1\lib\android\System.Reactive.Providers.dll</HintPath>
-    </Reference>
     <Reference Include="Xamarin.Facebook">
       <HintPath>..\Libraries\Monodroid\Xamarin.Facebook.dll</HintPath>
     </Reference>
     <Reference Include="Mono.Android" />
     <Reference Include="System.Json" />
-    <Reference Include="Cirrious.CrossCore">
-      <HintPath>..\packages\MvvmCross.HotTuna.CrossCore.3.0.14\lib\MonoAndroid\Cirrious.CrossCore.dll</HintPath>
-    </Reference>
-    <Reference Include="Cirrious.MvvmCross.Plugins.PhoneCall.Droid">
-      <HintPath>..\packages\MvvmCross.HotTuna.Plugin.PhoneCall.3.0.14\lib\MonoAndroid\Cirrious.MvvmCross.Plugins.PhoneCall.Droid.dll</HintPath>
-    </Reference>
-    <Reference Include="Cirrious.MvvmCross.Plugins.PhoneCall">
-      <HintPath>..\packages\MvvmCross.HotTuna.Plugin.PhoneCall.3.0.14\lib\MonoAndroid\Cirrious.MvvmCross.Plugins.PhoneCall.dll</HintPath>
-    </Reference>
-    <Reference Include="Cirrious.MvvmCross.Plugins.Visibility.Droid">
-      <HintPath>..\packages\MvvmCross.HotTuna.Plugin.Visibility.3.0.14\lib\MonoAndroid\Cirrious.MvvmCross.Plugins.Visibility.Droid.dll</HintPath>
-    </Reference>
-    <Reference Include="Cirrious.MvvmCross.Plugins.Visibility">
-      <HintPath>..\packages\MvvmCross.HotTuna.Plugin.Visibility.3.0.14\lib\MonoAndroid\Cirrious.MvvmCross.Plugins.Visibility.dll</HintPath>
-    </Reference>
-    <Reference Include="Cirrious.MvvmCross.Droid">
-      <HintPath>..\packages\MvvmCross.HotTuna.MvvmCrossLibraries.3.0.14\lib\MonoAndroid\Cirrious.MvvmCross.Droid.dll</HintPath>
-    </Reference>
-    <Reference Include="Cirrious.MvvmCross">
-      <HintPath>..\packages\MvvmCross.HotTuna.MvvmCrossLibraries.3.0.14\lib\MonoAndroid\Cirrious.MvvmCross.dll</HintPath>
-    </Reference>
-    <Reference Include="CrossUI.Core">
-      <HintPath>..\packages\MvvmCross.HotTuna.Droid.Dialog.3.0.14\lib\MonoAndroid\CrossUI.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="CrossUI.Droid">
-      <HintPath>..\packages\MvvmCross.HotTuna.Droid.Dialog.3.0.14\lib\MonoAndroid\CrossUI.Droid.dll</HintPath>
-    </Reference>
-    <Reference Include="Cirrious.MvvmCross.Dialog.Droid">
-      <HintPath>..\packages\MvvmCross.HotTuna.Droid.Dialog.3.0.14\lib\MonoAndroid\Cirrious.MvvmCross.Dialog.Droid.dll</HintPath>
-    </Reference>
-    <Reference Include="Cirrious.MvvmCross.Plugins.WebBrowser.Droid">
-      <HintPath>..\packages\MvvmCross.HotTuna.Plugin.WebBrowser.3.0.14\lib\MonoAndroid\Cirrious.MvvmCross.Plugins.WebBrowser.Droid.dll</HintPath>
-    </Reference>
-    <Reference Include="Cirrious.MvvmCross.Plugins.WebBrowser">
-      <HintPath>..\packages\MvvmCross.HotTuna.Plugin.WebBrowser.3.0.14\lib\MonoAndroid\Cirrious.MvvmCross.Plugins.WebBrowser.dll</HintPath>
-    </Reference>
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Windows" />
+    <Reference Include="Cirrious.CrossCore.Droid">
+      <HintPath>..\packages\MvvmCross.HotTuna.CrossCore.3.5.0\lib\MonoAndroid\Cirrious.CrossCore.Droid.dll</HintPath>
+    </Reference>
+    <Reference Include="Cirrious.MvvmCross.Binding.Droid">
+      <HintPath>..\packages\MvvmCross.HotTuna.CrossCore.3.5.0\lib\MonoAndroid\Cirrious.MvvmCross.Binding.Droid.dll</HintPath>
+    </Reference>
+    <Reference Include="Cirrious.CrossCore">
+      <HintPath>..\packages\MvvmCross.HotTuna.CrossCore.3.5.0\lib\MonoAndroid\Cirrious.CrossCore.dll</HintPath>
+    </Reference>
+    <Reference Include="Cirrious.MvvmCross.Binding">
+      <HintPath>..\packages\MvvmCross.HotTuna.CrossCore.3.5.0\lib\MonoAndroid\Cirrious.MvvmCross.Binding.dll</HintPath>
+    </Reference>
+    <Reference Include="Cirrious.MvvmCross.Localization">
+      <HintPath>..\packages\MvvmCross.HotTuna.CrossCore.3.5.0\lib\MonoAndroid\Cirrious.MvvmCross.Localization.dll</HintPath>
+    </Reference>
+    <Reference Include="Cirrious.MvvmCross.Droid">
+      <HintPath>..\packages\MvvmCross.HotTuna.MvvmCrossLibraries.3.5.0\lib\MonoAndroid\Cirrious.MvvmCross.Droid.dll</HintPath>
+    </Reference>
+    <Reference Include="Cirrious.MvvmCross">
+      <HintPath>..\packages\MvvmCross.HotTuna.MvvmCrossLibraries.3.5.0\lib\MonoAndroid\Cirrious.MvvmCross.dll</HintPath>
+    </Reference>
+    <Reference Include="CrossUI.Core">
+      <HintPath>..\packages\MvvmCross.HotTuna.Droid.Dialog.3.5.0\lib\MonoAndroid\CrossUI.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="CrossUI.Droid">
+      <HintPath>..\packages\MvvmCross.HotTuna.Droid.Dialog.3.5.0\lib\MonoAndroid\CrossUI.Droid.dll</HintPath>
+    </Reference>
+    <Reference Include="Cirrious.MvvmCross.Dialog.Droid">
+      <HintPath>..\packages\MvvmCross.HotTuna.Droid.Dialog.3.5.0\lib\MonoAndroid\Cirrious.MvvmCross.Dialog.Droid.dll</HintPath>
+    </Reference>
+    <Reference Include="Cirrious.MvvmCross.Plugins.PhoneCall">
+      <HintPath>..\packages\MvvmCross.HotTuna.Plugin.PhoneCall.3.5.0\lib\MonoAndroid\Cirrious.MvvmCross.Plugins.PhoneCall.dll</HintPath>
+    </Reference>
+    <Reference Include="Cirrious.MvvmCross.Plugins.PhoneCall.Droid">
+      <HintPath>..\packages\MvvmCross.HotTuna.Plugin.PhoneCall.3.5.0\lib\MonoAndroid\Cirrious.MvvmCross.Plugins.PhoneCall.Droid.dll</HintPath>
+    </Reference>
+    <Reference Include="Cirrious.MvvmCross.Plugins.Visibility">
+      <HintPath>..\packages\MvvmCross.HotTuna.Plugin.Visibility.3.5.0\lib\MonoAndroid\Cirrious.MvvmCross.Plugins.Visibility.dll</HintPath>
+    </Reference>
+    <Reference Include="Cirrious.MvvmCross.Plugins.Visibility.Droid">
+      <HintPath>..\packages\MvvmCross.HotTuna.Plugin.Visibility.3.5.0\lib\MonoAndroid\Cirrious.MvvmCross.Plugins.Visibility.Droid.dll</HintPath>
+    </Reference>
+    <Reference Include="Cirrious.MvvmCross.Plugins.WebBrowser">
+      <HintPath>..\packages\MvvmCross.HotTuna.Plugin.WebBrowser.3.5.0\lib\MonoAndroid\Cirrious.MvvmCross.Plugins.WebBrowser.dll</HintPath>
+    </Reference>
+    <Reference Include="Cirrious.MvvmCross.Plugins.WebBrowser.Droid">
+      <HintPath>..\packages\MvvmCross.HotTuna.Plugin.WebBrowser.3.5.0\lib\MonoAndroid\Cirrious.MvvmCross.Plugins.WebBrowser.Droid.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Core">
+      <HintPath>..\Components\rxforxamarin-2.2.1\lib\android\System.Reactive.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Interfaces">
+      <HintPath>..\Components\rxforxamarin-2.2.1\lib\android\System.Reactive.Interfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Linq">
+      <HintPath>..\Components\rxforxamarin-2.2.1\lib\android\System.Reactive.Linq.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.PlatformServices">
+      <HintPath>..\Components\rxforxamarin-2.2.1\lib\android\System.Reactive.PlatformServices.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppServices\IGeolocService.cs" />
+    <Compile Include="AppServices\Impl\NetworkRoamingService.cs" />
+    <Compile Include="AppServices\Impl\PromotionService.cs" />
+    <Compile Include="AppServices\INetworkRoamingService.cs" />
+    <Compile Include="AppServices\IPromotionService.cs" />
     <Compile Include="AsyncCommand.cs" />
     <Compile Include="AppServices\Impl\BaseService.cs" />
     <Compile Include="AppServices\Impl\GeolocService.cs" />
@@ -125,6 +132,8 @@
     <Compile Include="AppServices\Impl\TutorialService.cs" />
     <Compile Include="AppServices\ITutorialService.cs" />
     <Compile Include="BindingConverter\BoolInverter.cs" />
+    <Compile Include="BindingConverter\CurrencyFormatConverter.cs" />
+    <Compile Include="BindingConverter\NoValueToVisibilityConverter.cs" />
     <Compile Include="CallBoxApp.cs" />
     <Compile Include="Data\Coordinate.cs" />
     <Compile Include="Data\CoordinatePrecision.cs" />
@@ -173,6 +182,7 @@
     <Compile Include="Framework\Params.cs" />
     <Compile Include="Infrastructure\ILocalization.cs" />
     <Compile Include="Infrastructure\IMessageService.cs" />
+    <Compile Include="Infrastructure\IPayPalConfigurationService.cs" />
     <Compile Include="Infrastructure\IPhoneService.cs" />
     <Compile Include="Localization\Taxiworld.Designer.cs">
       <DependentUpon>Taxiworld.resx</DependentUpon>
@@ -222,11 +232,13 @@
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\CoordinateViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
-    <Compile Include="ViewModels\Payment\ConfirmPairViewModel.cs" />
-    <Compile Include="ViewModels\Payment\PairingState.cs" />
     <Compile Include="ViewModels\NotificationSettingsViewModel.cs" />
+    <Compile Include="ViewModels\PromotionItemViewModel.cs" />
+    <Compile Include="ViewModels\SelectableItemViewModel.cs" />
+    <Compile Include="ViewModels\PromotionViewModel.cs" />
     <Compile Include="ViewModels\SectionAddressViewModel.cs" />
     <Compile Include="ViewModels\TutorialViewModel.cs" />
+    <Compile Include="ViewModels\UserTaxiHailNetworkSettingsViewModel.cs" />
     <Compile Include="ViewModels\ZoomLevel.cs" />
     <Compile Include="Messages\StatusCloseRequested.cs" />
     <Compile Include="BindingConverter\EmptyToResourceConverter.cs" />
@@ -248,15 +260,10 @@
     <Compile Include="Extensions\UseServiceClientExtensions.cs" />
     <Compile Include="Infrastructure\IPushNotificationService.cs" />
     <Compile Include="Extensions\ObservableExtensions.cs" />
-    <Compile Include="ViewModels\Payment\ConfirmCarNumberViewModel.cs" />
     <Compile Include="ViewModels\Payment\CreditCardAddViewModel.cs" />
-    <Compile Include="ViewModels\Payment\PaymentViewModel.cs" />
     <Compile Include="CultureProvider.cs" />
-    <Compile Include="ViewModels\Payment\PayPalViewModel.cs" />
     <Compile Include="BindingConverter\NoValueToTrueConverter.cs" />
     <Compile Include="BindingConverter\HasValueToVisibilityConverter.cs" />
-    <Compile Include="AppServices\IPayPalExpressCheckoutService.cs" />
-    <Compile Include="AppServices\Impl\PayPalExpressCheckoutService.cs" />
     <Compile Include="ViewModels\RideSummaryViewModel.cs" />
     <Compile Include="AppServices\Impl\PaymentService.cs" />
     <Compile Include="AppServices\IPaymentService.cs" />
@@ -338,6 +345,8 @@
     <Compile Include="AppServices\Impl\RegisterWorkflowService.cs" />
     <Compile Include="PresentationHints\ChangeZoomPresentationHint.cs" />
     <Compile Include="CancellableCommand.cs" />
+    <Compile Include="ViewModels\Payment\OverduePaymentViewModel.cs" />
+    <Compile Include="BindingConverter\StringFormatConverter.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Server\CMTPayment\CMTPayment.Android.csproj">
@@ -413,11 +422,11 @@
   </PropertyGroup>
   <ItemGroup />
   <ItemGroup />
+  <ItemGroup />
   <ItemGroup>
     <XamarinComponentReference Include="rxforxamarin">
-      <Version>2.1</Version>
+      <Version>2.2.1</Version>
       <Visible>False</Visible>
     </XamarinComponentReference>
   </ItemGroup>
-  <ItemGroup />
 </Project>

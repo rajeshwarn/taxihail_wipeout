@@ -22,7 +22,8 @@
                 type: 'POST',
                 url: this.urlRoot + "/test/payPal/sandbox",
                 data: JSON.stringify({
-                    credentials: settings.payPalServerSettings.sandboxCredentials
+                    serverCredentials: settings.payPalServerSettings.sandboxCredentials,
+                    clientCredentials: settings.payPalClientSettings.sandboxCredentials
                 }),
                 contentType: 'application/json'
             });
@@ -34,7 +35,8 @@
                 type: 'POST',
                 url: this.urlRoot + "/test/payPal/production",
                 data: JSON.stringify({
-                    credentials: settings.payPalServerSettings.credentials
+                    serverCredentials: settings.payPalServerSettings.credentials,
+                    clientCredentials: settings.payPalClientSettings.credentials
                 }),
                 contentType: 'application/json'
             });

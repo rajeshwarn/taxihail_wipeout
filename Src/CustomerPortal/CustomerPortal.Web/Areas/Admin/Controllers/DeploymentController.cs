@@ -1,6 +1,7 @@
 ﻿#region
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using CustomerPortal.Web.Areas.Admin.Models;
@@ -9,6 +10,7 @@ using CustomerPortal.Web.BitBucket;
 using CustomerPortal.Web.Entities;
 using MongoRepository;
 using Environment = CustomerPortal.Web.Entities.Environment;
+using apcurium.MK.Common.Extensions;
 
 #endregion
 
@@ -129,6 +131,13 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
                     Text = r.Tag
                 });
 
+            var environments = new MongoRepository<Environment>();
+            model.Environment = environments.ToArray().Where(e => e.Role == EnvironmentRole.BuildMobile).OrderBy(e => e.Name).Select(e => new SelectListItem
+                {
+                    Value = e.Id,
+                    Text = e.Name
+                });
+
             return View(model);
         }
 
@@ -141,7 +150,7 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
                 var job = new AddDeploymentJobModel { Android = true, CallBox = false, CompanyId = model.CompanyKey, CreateType = (int) DeploymentJobType.DeployClient , Database = false, IosAdhoc = true, IosAppStore = true, RevisionId = model.RevisionId , ServerUrlOptions = model.ServerUrlOptions  };                
                 
                 var environments = new MongoRepository<Environment>();
-                job.ServerId = environments.Single(e => e.Name == "MobileBuildServer").Id;                
+                job.ServerId = model.ServerId;                
                 AddDeploymentJob(job);                
             }
 
@@ -155,7 +164,7 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
 
                 var job = new AddDeploymentJobModel { Android = false, CallBox = false, CompanyId = model.CompanyKey , CreateType = (int)DeploymentJobType.DeployServer, Database = true, IosAdhoc = false, IosAppStore = false, RevisionId = model.RevisionId, ServerUrlOptions = model.ServerUrlOptions };
                 var environments = new MongoRepository<Environment>();
-                job.ServerId = model.ServerUrlOptions == ServerUrlOptions.Production ? environments.Single(e =>  e.Name == (useNewDeploymentService ? "ProductionV2" : "Production")).Id : environments.Single(e => e.Name == "Staging").Id;
+                job.ServerId = model.ServerUrlOptions == ServerUrlOptions.Production ? environments.Single(e =>  e.Name == "ProductionV2").Id : environments.Single(e => e.Name == "Staging").Id;
                 AddDeploymentJob(job);                
             }
 
@@ -190,11 +199,27 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public ActionResult DeployServer(AddDeploymentJobModel model)
+        public ActionResult DeployServer(AddDeploymentJobModel model, FormCollection form)
         {
+            foreach (var key in form.AllKeys)
+            {
+                if (key.StartsWith("checkbox_"))
+                {
+                    // FormCollection will have "true,false" value for checked checkbox
+                    var isCompanySelected = form[key].Contains("true");
+
+                    if (isCompanySelected)
+                    {
+                        var companyId = key.Replace("checkbox_", string.Empty);
+                        model.SelectedCompaniesId.Add(companyId);
+                    }
+                }
+            }
+
             AddDeploymentJob(model);
             return RedirectToAction("Index");
         }
+
         [NoCache]
         public ActionResult DeployClient(string companyId = null, string serverId = null, string revisionId = null, bool serverUrlIsProduction = false, bool serverUrlIsStaging = false, bool android =false, bool callbox = false, bool iosAdhoc = false, bool iosAppStore = false)
         {
@@ -255,6 +280,16 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
 
             companyList.Add(new SelectListItem {Value = _allCompaniesKey, Text = "** All companies ** - USE CAREFULLY"});
             model.ModelForView.Company = companyList;
+
+            var companyDetailsList = companies.OrderBy(c => c.CompanyName).Select(c => new CompanyDetailsModel
+            {
+                CompanyKey = c.CompanyKey,
+                CompanyDisplayName = c.CompanyName + " (" + c.CompanyKey + ")",
+                LastKnownProductionVersion = c.LastKnownProductionVersion,
+                LastKnownStagingVersion = c.LastKnownStagingVersion
+            }).ToList();
+
+            model.ModelForView.CompanyDetails = companyDetailsList;
 
             var environments = new MongoRepository<Environment>();
 
@@ -389,6 +424,14 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
             {
                 var company = companies.Single(c => c.CompanyKey == "TaxiHailDemo");
                 addACompanyAction(company);
+            }
+            else if (model.SelectedCompaniesId.Any())
+            {
+                foreach (var companyId in model.SelectedCompaniesId)
+                {
+                    var company = companies.Single(c => c.CompanyKey == companyId);
+                    addACompanyAction(company);
+                }
             }
             else
             {

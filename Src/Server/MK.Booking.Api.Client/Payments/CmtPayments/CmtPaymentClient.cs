@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Globalization;
-using System.Net;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Contract.Requests.Payment;
 using apcurium.MK.Booking.Api.Contract.Resources.Payments;
@@ -45,42 +44,15 @@ namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments
             return result;
         }
 
-        public Task<CommitPreauthorizedPaymentResponse> CommitPayment(string cardToken, double amount,
-            double meterAmount, double tipAmount, Guid orderId)
+        public Task<OverduePayment> GetOverduePayment()
         {
-            return Client.PostAsync(new CommitPaymentRequest
-            {
-                Amount = Convert.ToDecimal(amount),
-                MeterAmount = Convert.ToDecimal(meterAmount),
-                TipAmount = Convert.ToDecimal(tipAmount),
-                CardToken = cardToken,
-                OrderId = orderId
-            });
+            var req = string.Format("/account/overduepayment");
+            return Client.GetAsync<OverduePayment>(req);
         }
 
-        public Task ResendConfirmationToDriver(Guid orderId)
+        public Task<SettleOverduePaymentResponse> SettleOverduePayment()
         {
-            return Client.PostAsync<string>("/payment/ResendConfirmationRequest", new ResendPaymentConfirmationRequest { OrderId = orderId });
-        }
-
-        public async Task<PairingResponse> Pair(Guid orderId, string cardToken, int? autoTipPercentage, double? autoTipAmount)
-        {
-            try
-            {
-                var response = await Client.PostAsync(new PairingForPaymentRequest
-                {
-                    OrderId = orderId,
-                    CardToken = cardToken,
-                    AutoTipAmount = autoTipAmount,
-                    AutoTipPercentage = autoTipPercentage
-
-                });
-                return response;
-            }
-            catch (ServiceStack.ServiceClient.Web.WebServiceException)
-            {                
-                return new PairingResponse { IsSuccessful = false };
-            }            
+            return Client.PostAsync(new SettleOverduePaymentRequest());
         }
 
         public Task<BasePaymentResponse> Unpair(Guid orderId)
@@ -114,12 +86,19 @@ namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments
                     LastFour = response.LastFour,
                 };
             }
-            catch (WebException e)
+            catch (Exception e)
             {
+                var message = e.Message;
+                var exception = e as AggregateException;
+                if (exception != null)
+                {
+                    message = exception.InnerException.Message;
+                }
+
                 return new TokenizedCreditCardResponse
                 {
                     IsSuccessful = false,
-                    Message = e.Message
+                    Message = message
                 };
             }
         }
@@ -146,12 +125,19 @@ namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments
                     LastFour = response.Result.LastFour,
                 };
             }
-            catch (WebException e)
+            catch (Exception e)
             {
+                var message = e.Message;
+                var exception = e as AggregateException;
+                if (exception != null)
+                {
+                    message = exception.InnerException.Message;
+                }
+
                 return new TokenizedCreditCardResponse
                 {
                     IsSuccessful = false,
-                    Message = e.Message
+                    Message = message
                 };
             }
         }

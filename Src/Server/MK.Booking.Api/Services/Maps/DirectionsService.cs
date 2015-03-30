@@ -11,6 +11,7 @@ using apcurium.MK.Booking.Maps;
 using apcurium.MK.Booking.Maps.Geo;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Diagnostic;
 using ServiceStack.Common.Extensions;
 using ServiceStack.ServiceInterface;
 
@@ -22,15 +23,17 @@ namespace apcurium.MK.Booking.Api.Services.Maps
     {
         private readonly IDirections _client;
         private readonly IServerSettings _serverSettings;
-        private readonly IIBSServiceProvider _ibsServiceProvider;
         private readonly IOrderDao _orderDao;
+        private readonly VehicleService _vehicleService;
+        private readonly ILogger _logger;
 
-        public DirectionsService(IDirections client, IServerSettings serverSettings, IIBSServiceProvider ibsServiceProvider, IOrderDao orderDao)
+        public DirectionsService(IDirections client, IServerSettings serverSettings, IOrderDao orderDao, VehicleService vehicleService, ILogger logger)
         {
             _client = client;
             _serverSettings = serverSettings;
-            _ibsServiceProvider = ibsServiceProvider;
             _orderDao = orderDao;
+            _vehicleService = vehicleService;
+            _logger = logger;
         }
 
         public object Get(DirectionsRequest request)
@@ -51,25 +54,37 @@ namespace apcurium.MK.Booking.Api.Services.Maps
                 && request.OriginLat.HasValue
                 && request.OriginLng.HasValue)
             {
-                // Get available vehicles
-                var availableVehicles = _ibsServiceProvider.Booking().GetAvailableVehicles(request.OriginLat.Value, request.OriginLng.Value, null);
-
-                // Get nearest available vehicle
-                var nearestAvailableVehicle = GetNearestAvailableVehicle(request.OriginLat.Value,
-                                                                         request.OriginLng.Value, 
-                                                                         availableVehicles);
-                
-                if (nearestAvailableVehicle != null)
+                try
                 {
-                    // Get eta
-                    var etaDirectionInfo = 
-                            _client.GetEta(nearestAvailableVehicle.Latitude,
-                                           nearestAvailableVehicle.Longitude,
-                                           request.OriginLat.Value,
-                                           request.OriginLng.Value);
+                    // Get available vehicles                
+                    var availableVehicles = _vehicleService.Post(new AvailableVehicles
+                    {
+                        Latitude = request.OriginLat.Value,
+                        Longitude = request.OriginLng.Value,
+                        VehicleTypeId = null
+                    }).ToArray();
 
-                    directionInfo.EtaFormattedDistance = etaDirectionInfo.FormattedDistance;
-                    directionInfo.EtaDuration = etaDirectionInfo.Duration;
+                    // Get nearest available vehicle
+                    var nearestAvailableVehicle = GetNearestAvailableVehicle(request.OriginLat.Value,
+                        request.OriginLng.Value,
+                        availableVehicles);
+
+                    if (nearestAvailableVehicle != null)
+                    {
+                        // Get eta
+                        var etaDirectionInfo =
+                            _client.GetEta(nearestAvailableVehicle.Latitude,
+                                nearestAvailableVehicle.Longitude,
+                                request.OriginLat.Value,
+                                request.OriginLng.Value);
+
+                        directionInfo.EtaFormattedDistance = etaDirectionInfo.FormattedDistance;
+                        directionInfo.EtaDuration = etaDirectionInfo.Duration;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogMessage("Direction Service: Error trying to get ETA: " + ex.Message, ex);
                 }
             }
 
@@ -82,14 +97,14 @@ namespace apcurium.MK.Booking.Api.Services.Maps
             return _client.GetEta(request.VehicleLat, request.VehicleLng, order.PickupAddress.Latitude, order.PickupAddress.Longitude);
         }
 
-        private IbsVehiclePosition GetNearestAvailableVehicle(double originLat, double originLng, IbsVehiclePosition[] avaiableVehicles)
+        private AvailableVehicle GetNearestAvailableVehicle(double originLat, double originLng, AvailableVehicle[] availableVehicles)
         {
-            if (avaiableVehicles == null || !avaiableVehicles.Any())
+            if (availableVehicles == null || !availableVehicles.Any())
             {
                 return null;
             }
 
-            return avaiableVehicles
+            return availableVehicles
                 .OrderBy(car => Position.CalculateDistance(car.Latitude, car.Longitude, originLat, originLng))
                 .ToArray().First();
         }

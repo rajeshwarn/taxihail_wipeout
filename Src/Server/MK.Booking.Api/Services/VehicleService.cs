@@ -1,6 +1,7 @@
 ﻿#region
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using apcurium.MK.Booking.Api.Contract.Requests;
@@ -10,7 +11,12 @@ using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.IBS;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common;
+using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Diagnostic;
+using apcurium.MK.Common.Extensions;
 using AutoMapper;
+using CustomerPortal.Client;
+using HoneyBadger;
 using Infrastructure.Messaging;
 using ServiceStack.Common.Web;
 using ServiceStack.ServiceInterface;
@@ -25,27 +31,90 @@ namespace apcurium.MK.Booking.Api.Services
         private readonly IVehicleTypeDao _dao;
         private readonly ICommandBus _commandBus;
         private readonly ReferenceDataService _referenceDataService;
+        private readonly HoneyBadgerServiceClient _honeyBadgerServiceClient;
+        private readonly ITaxiHailNetworkServiceClient _taxiHailNetworkServiceClient;
+        private readonly IServerSettings _serverSettings;
+        private readonly ILogger _logger;
 
-        public VehicleService(IIBSServiceProvider ibsServiceProvider, IVehicleTypeDao dao, ICommandBus commandBus, ReferenceDataService referenceDataService)
+        public VehicleService(IIBSServiceProvider ibsServiceProvider,
+            IVehicleTypeDao dao,
+            ICommandBus commandBus,
+            ReferenceDataService referenceDataService,
+            HoneyBadgerServiceClient honeyBadgerServiceClient,
+            ITaxiHailNetworkServiceClient taxiHailNetworkServiceClient,
+            IServerSettings serverSettings,
+            ILogger logger)
         {
             _ibsServiceProvider = ibsServiceProvider;
             _dao = dao;
             _commandBus = commandBus;
             _referenceDataService = referenceDataService;
+            _honeyBadgerServiceClient = honeyBadgerServiceClient;
+            _taxiHailNetworkServiceClient = taxiHailNetworkServiceClient;
+            _serverSettings = serverSettings;
+            _logger = logger;
         }
 
         public AvailableVehiclesResponse Post(AvailableVehicles request)
         {
-            var vehicles = _ibsServiceProvider.Booking().GetAvailableVehicles(request.Latitude, request.Longitude, request.VehicleTypeId);
             var vehicleType = _dao.GetAll().FirstOrDefault(v => v.ReferenceDataVehicleId == request.VehicleTypeId);
             string logoName = vehicleType != null ? vehicleType.LogoName : null;
 
+            IbsVehiclePosition[] vehicles;
+            string market = null;
+
+            try
+            {
+                market = _taxiHailNetworkServiceClient.GetCompanyMarket(request.Latitude, request.Longitude);
+            }
+            catch
+            {
+                // Do nothing. If we fail to contact Customer Portal, we continue as if we are in a local market.
+                _logger.LogMessage("VehicleService: Error while trying to get company Market.");
+            }
+            
+            if (!market.HasValue())
+            {
+                vehicles = _ibsServiceProvider.Booking()
+                    .GetAvailableVehicles(request.Latitude, request.Longitude, request.VehicleTypeId);
+            }
+            else
+            {
+                IList<int> roamingFleetIds = null;
+
+                try
+                {
+                    // Only get available vehicles for dispatchable companies in market
+                    var roamingCompanies = _taxiHailNetworkServiceClient.GetMarketFleets(_serverSettings.ServerData.TaxiHail.ApplicationKey, market);
+                    if (roamingCompanies != null)
+                    {
+                        roamingFleetIds = roamingCompanies.Select(r => r.FleetId).ToArray();
+                    }
+                }
+                catch
+                {
+                    // Do nothing. If we fail to contact Customer Portal, we return an unfiltered list of available vehicles.
+                    _logger.LogMessage("VehicleService: Error while trying to get Market fleets.");
+                }
+
+                var vehicleResponse = _honeyBadgerServiceClient.GetAvailableVehicles(market, request.Latitude, request.Longitude, null, roamingFleetIds);
+                vehicles = vehicleResponse.Select(v => new IbsVehiclePosition
+                {
+                    Latitude = v.Latitude,
+                    Longitude = v.Longitude,
+                    PositionDate = v.Timestamp,
+                    VehicleNumber = v.Medallion,
+                    FleetId = v.FleetId
+                }).ToArray();
+            }
+
             var availableVehicles = vehicles.Select(Mapper.Map<AvailableVehicle>).ToArray();
+                
             foreach (var vehicle in availableVehicles)
             {
                 vehicle.LogoName = logoName;
             }
-            return new AvailableVehiclesResponse(availableVehicles);
+            return new AvailableVehiclesResponse(availableVehicles);   
         }
 
         public object Get(VehicleTypeRequest request)
@@ -72,7 +141,8 @@ namespace apcurium.MK.Booking.Api.Services
                 Name = request.Name,
                 LogoName = request.LogoName,
                 ReferenceDataVehicleId = request.ReferenceDataVehicleId,
-                CompanyId = AppConstants.CompanyId
+                CompanyId = AppConstants.CompanyId,
+                MaxNumberPassengers = request.MaxNumberPassengers
             };
 
             _commandBus.Send(command);
@@ -97,7 +167,8 @@ namespace apcurium.MK.Booking.Api.Services
                 Name = request.Name,
                 LogoName = request.LogoName,
                 ReferenceDataVehicleId = request.ReferenceDataVehicleId,
-                CompanyId = AppConstants.CompanyId
+                CompanyId = AppConstants.CompanyId,
+                MaxNumberPassengers = request.MaxNumberPassengers
             };
 
             _commandBus.Send(command);

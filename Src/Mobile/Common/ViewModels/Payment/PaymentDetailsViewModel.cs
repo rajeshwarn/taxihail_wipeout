@@ -9,6 +9,7 @@ using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Common.Entity;
+using ServiceStack.Common.Utils;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 {
@@ -106,6 +107,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 				return SelectedCreditCard != null;
             }
         }
+
+	    public bool IsPayPalAccountLinked
+	    {
+	        get { return _accountService.CurrentAccount.IsPayPalAccountLinked; }
+	    }
 
 		private int _tip;
         public int Tip 

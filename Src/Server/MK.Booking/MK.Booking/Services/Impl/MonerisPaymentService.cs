@@ -1,8 +1,8 @@
 using System;
+using System.Globalization;
 using System.Linq;
-using System.Threading;
 using apcurium.MK.Booking.Commands;
-using apcurium.MK.Booking.EventHandlers.Integration;
+using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
@@ -17,37 +17,40 @@ namespace apcurium.MK.Booking.Services.Impl
     public class MonerisPaymentService : IPaymentService
     {
         private readonly ICommandBus _commandBus;
-        private readonly IOrderDao _orderDao;
         private readonly ILogger _logger;
         private readonly IServerSettings _serverSettings;
         private readonly IPairingService _pairingService;
-        private readonly IIbsOrderService _ibs;
-        private readonly IAccountDao _accountDao;
         private readonly IOrderPaymentDao _paymentDao;
+        private readonly ICreditCardDao _creditCardDao;
 
         private readonly string CryptType_SSLEnabledMerchant = "7";
 
         public MonerisPaymentService(ICommandBus commandBus,
-            IOrderDao orderDao,
             ILogger logger,
-            IIbsOrderService ibs,
-            IAccountDao accountDao,
             IOrderPaymentDao paymentDao,
             IServerSettings serverSettings, 
-            IPairingService pairingService)
+            IPairingService pairingService,
+            ICreditCardDao creditCardDao)
         {
             _commandBus = commandBus;
-            _orderDao = orderDao;
             _logger = logger;
-            
-            _ibs = ibs;
-            _accountDao = accountDao;
             _paymentDao = paymentDao;
             _serverSettings = serverSettings;
             _pairingService = pairingService;
+            _creditCardDao = creditCardDao;
         }
 
-        public PairingResponse Pair(Guid orderId, string cardToken, int? autoTipPercentage, double? autoTipAmount)
+        public PaymentProvider ProviderType(Guid? orderId = null)
+        {
+            return PaymentProvider.Moneris;
+        }
+
+        public bool IsPayPal(Guid? accountId = null, Guid? orderId = null)
+        {
+            return false;
+        }
+
+        public PairingResponse Pair(Guid orderId, string cardToken, int? autoTipPercentage)
         {
             try
             {
@@ -87,15 +90,10 @@ namespace apcurium.MK.Booking.Services.Impl
             try
             {
                 // we must do a completion with $0 (see eSELECTplus_DotNet_IG.pdf, Process Flow for PreAuth / Capture Transactions)
-                var paymentDetail = _paymentDao.FindNonPayPalByOrderId(orderId);
+                var paymentDetail = _paymentDao.FindByOrderId(orderId);
                 if (paymentDetail == null)
                 {
-                    if (_serverSettings.GetPaymentSettings().IsPreAuthEnabled)
-                    {
-                        throw new Exception(string.Format("Payment for order {0} not found", orderId));
-                    }
-
-                    // PreAuth disabled, no Void to do
+                    // nothing to void
                     return;
                 }
                 
@@ -120,11 +118,16 @@ namespace apcurium.MK.Booking.Services.Impl
             }
         }
 
-        private void Void(Guid orderId, string commitTransactionId, ref string message)
+        public void VoidTransaction(Guid orderId, string transactionId, ref string message)
+        {
+            Void(orderId, transactionId, ref message);
+        }
+
+        private void Void(Guid orderId, string transactionId, ref string message)
         {
             var monerisSettings = _serverSettings.GetPaymentSettings().MonerisPaymentSettings;
 
-            var correctionCommand = new PurchaseCorrection(orderId.ToString(), commitTransactionId, CryptType_SSLEnabledMerchant);
+            var correctionCommand = new PurchaseCorrection(orderId.ToString(), transactionId, CryptType_SSLEnabledMerchant);
             var correctionRequest = new HttpsPostRequest(monerisSettings.Host, monerisSettings.StoreId, monerisSettings.ApiToken, correctionCommand);
             var correctionReceipt = correctionRequest.GetReceipt();
 
@@ -147,18 +150,19 @@ namespace apcurium.MK.Booking.Services.Impl
             try
             {
                 var deleteCommand = new ResDelete(cardToken);
-                var deleteRequest = new HttpsPostRequest(monerisSettings.Host, monerisSettings.StoreId, monerisSettings.ApiToken, deleteCommand);
+                var deleteRequest = new HttpsPostRequest(monerisSettings.Host, monerisSettings.StoreId,
+                    monerisSettings.ApiToken, deleteCommand);
                 var receipt = deleteRequest.GetReceipt();
 
-                var message = string.Empty;
+                string message;
                 var success = RequestSuccesful(receipt, out message);
 
                 return new DeleteTokenizedCreditcardResponse
                 {
                     IsSuccessful = success,
-                    Message = success 
-                                ? "Success" 
-                                : message
+                    Message = success
+                        ? "Success"
+                        : message
                 };
             }
             catch (AggregateException ex)
@@ -171,39 +175,69 @@ namespace apcurium.MK.Booking.Services.Impl
                 return new DeleteTokenizedCreditcardResponse
                 {
                     IsSuccessful = false,
-                    Message = ex.InnerExceptions.First().Message,
+                    Message = ex.InnerExceptions.First().Message
+                };
+            }
+            catch (Exception ex)
+            {
+                return new DeleteTokenizedCreditcardResponse
+                {
+                    IsSuccessful = false,
+                    Message = ex.Message
                 };
             }
         }
 
-        public PreAuthorizePaymentResponse PreAuthorize(Guid orderId, string email, string cardToken, decimal amountToPreAuthorize)
+        public PreAuthorizePaymentResponse PreAuthorize(Guid orderId, AccountDetail account, decimal amountToPreAuthorize, bool isReAuth = false, bool isSettlingOverduePayment = false)
         {
             var message = string.Empty;
+            var transactionId = string.Empty;
+            DateTime? transactionDate = null;
 
             try
             {
-                var monerisSettings = _serverSettings.GetPaymentSettings().MonerisPaymentSettings;
+                bool isSuccessful;
+                bool isCardDeclined = false;
+                var creditCard = _creditCardDao.FindByAccountId(account.Id).First();
 
-                // PreAuthorize transaction
-                var preAuthorizeCommand = new ResPreauthCC(cardToken, orderId.ToString(), amountToPreAuthorize.ToString("F"), CryptType_SSLEnabledMerchant);
-                var preAuthRequest = new HttpsPostRequest(monerisSettings.Host, monerisSettings.StoreId, monerisSettings.ApiToken, preAuthorizeCommand);
-                var preAuthReceipt = preAuthRequest.GetReceipt();
+                // We cannot re-use the same id has a previously failed payment
+                var shouldGenerateNewOrderId = isReAuth || isSettlingOverduePayment;
 
-                var transactionId = preAuthReceipt.GetTxnNumber();
-                var isSuccessful = RequestSuccesful(preAuthReceipt, out message);
+                var orderIdentifier = shouldGenerateNewOrderId
+                    ? string.Format("{0}-{1}", orderId, GenerateShortUid())
+                    : orderId.ToString();
+                
+                if (amountToPreAuthorize > 0)
+                {
+                    // PreAuthorize transaction
+                    var monerisSettings = _serverSettings.GetPaymentSettings().MonerisPaymentSettings;
 
-                if (isSuccessful)
+                    var preAuthorizeCommand = new ResPreauthCC(creditCard.Token, orderIdentifier, amountToPreAuthorize.ToString("F"), CryptType_SSLEnabledMerchant);
+                    var preAuthRequest = new HttpsPostRequest(monerisSettings.Host, monerisSettings.StoreId, monerisSettings.ApiToken, preAuthorizeCommand);
+                    var preAuthReceipt = preAuthRequest.GetReceipt();
+                    isSuccessful = RequestSuccesful(preAuthReceipt, out message);
+                    isCardDeclined = IsCardDeclined(preAuthReceipt);
+                    transactionId = preAuthReceipt.GetTxnNumber();
+                    transactionDate = GetTransactionDate(preAuthReceipt);
+                }
+                else
+                {
+                    // if we're preauthorizing $0, we skip the preauth with payment provider
+                    // but we still send the InitiateCreditCardPayment command
+                    // this should never happen in the case of a real preauth (hence the minimum of $50)
+                    isSuccessful = true;
+                }
+
+                if (isSuccessful && !isReAuth)
                 {
                     var paymentId = Guid.NewGuid();
                     _commandBus.Send(new InitiateCreditCardPayment
                     {
                         PaymentId = paymentId,
-                        Amount = 0,
-                        Meter = 0,
-                        Tip = 0,
+                        Amount = amountToPreAuthorize,
                         TransactionId = transactionId,
                         OrderId = orderId,
-                        CardToken = cardToken,
+                        CardToken = creditCard.Token,
                         Provider = PaymentProvider.Moneris,
                         IsNoShowFee = false
                     });
@@ -213,12 +247,15 @@ namespace apcurium.MK.Booking.Services.Impl
                 {
                     IsSuccessful = isSuccessful,
                     Message = message,
-                    TransactionId = transactionId
+                    TransactionId = transactionId,
+                    ReAuthOrderId = shouldGenerateNewOrderId ? orderIdentifier : null,
+                    IsDeclined = isCardDeclined,
+                    TransactionDate = transactionDate,
                 };
             }
             catch (Exception e)
             {
-                _logger.LogMessage(string.Format("Error during preauthorization (validation of the card) for client {0}: {1} - {2}", email, message, e));
+                _logger.LogMessage(string.Format("Error during preauthorization (validation of the card) for client {0}: {1} - {2}", account.Email, message, e));
                 _logger.LogError(e);
 
                 return new PreAuthorizePaymentResponse
@@ -229,133 +266,122 @@ namespace apcurium.MK.Booking.Services.Impl
             }
         }
 
-        public CommitPreauthorizedPaymentResponse CommitPayment(decimal amount, decimal meterAmount, decimal tipAmount, string cardToken, Guid orderId, bool isNoShowFee)
+        private PreAuthorizePaymentResponse ReAuthorizeIfNecessary(Guid orderId, AccountDetail account, decimal preAuthAmount, decimal amount)
         {
-            var orderDetail = _orderDao.FindById(orderId);
-            if (orderDetail == null)
+            if (amount <= preAuthAmount)
             {
-                throw new Exception("Order not found");
-            }
-            if (orderDetail.IBSOrderId == null)
-            {
-                throw new Exception("Order has no IBSOrderId");
+                return new PreAuthorizePaymentResponse
+                {
+                    IsSuccessful = true
+                };
             }
 
-            var account = _accountDao.FindById(orderDetail.AccountId);
+            _logger.LogMessage(string.Format("Re-Authorizing order {0} because it exceeded the original pre-auth amount ", orderId));
+            _logger.LogMessage(string.Format("Voiding original Pre-Auth of {0}", preAuthAmount));
+            
+            VoidPreAuthorization(orderId);
 
-            var paymentDetail = _paymentDao.FindNonPayPalByOrderId(orderId);
-            if (paymentDetail == null)
-            {
-                throw new Exception("Payment not found");
-            }
+            _logger.LogMessage(string.Format("Re-Authorizing order for amount of {0}", amount));
+
+            return PreAuthorize(orderId, account, amount, true);
+        }
+
+        public CommitPreauthorizedPaymentResponse CommitPayment(Guid orderId, AccountDetail account, decimal preauthAmount, decimal amount, decimal meterAmount, decimal tipAmount, string transactionId, string reAuthOrderId = null)
+        {
+            string message;
+            string authorizationCode = null;
+            string commitTransactionId = transactionId;
 
             try
             {
-                string message = "Order already paid or payment currently processing";
-                bool isSuccessful = false;
-                string authorizationCode = null;
-                Receipt commitReceipt = null;
-
-                var monerisSettings = _serverSettings.GetPaymentSettings().MonerisPaymentSettings;
-                
-                // commit transaction
-                if (!paymentDetail.IsCompleted)
+                var authResponse = ReAuthorizeIfNecessary(orderId, account, preauthAmount, amount);
+                if (!authResponse.IsSuccessful)
                 {
-                    var completionCommand = new Completion(orderId.ToString(), amount.ToString("F"), paymentDetail.TransactionId, CryptType_SSLEnabledMerchant);
-                    var commitRequest = new HttpsPostRequest(monerisSettings.Host, monerisSettings.StoreId, monerisSettings.ApiToken, completionCommand);
-                    commitReceipt = commitRequest.GetReceipt();
-
-                    isSuccessful = RequestSuccesful(commitReceipt, out message);
+                    return new CommitPreauthorizedPaymentResponse
+                    {
+                        IsSuccessful = false,
+                        IsDeclined = true,
+                        TransactionId = commitTransactionId,
+                        TransactionDate = authResponse.TransactionDate,
+                        Message = string.Format("Moneris Re-Auth of amount {0} failed.", amount)
+                    };
                 }
 
-                if (isSuccessful && !isNoShowFee)
+                if (authResponse.TransactionId.HasValue())
                 {
-                    authorizationCode = commitReceipt.GetAuthCode();
-                    var commitTransactionId = commitReceipt.GetTxnNumber();
-
-                    //send information to IBS
-                    try
-                    {
-                        _ibs.ConfirmExternalPayment(orderDetail.Id,
-                                                    orderDetail.IBSOrderId.Value,
-                                                    Convert.ToDecimal(amount),
-                                                    Convert.ToDecimal(tipAmount),
-                                                    Convert.ToDecimal(meterAmount),
-                                                    PaymentType.CreditCard.ToString(),
-                                                    PaymentProvider.Moneris.ToString(),
-                                                    paymentDetail.TransactionId,
-                                                    authorizationCode,
-                                                    cardToken,
-                                                    account.IBSAccountId.Value,
-                                                    orderDetail.Settings.Name,
-                                                    orderDetail.Settings.Phone,
-                                                    account.Email,
-                                                    orderDetail.UserAgent.GetOperatingSystem(),
-                                                    orderDetail.UserAgent);
-                    }
-                    catch (Exception e)
-                    {
-                        _logger.LogError(e);
-                        message = e.Message;
-                        isSuccessful = false;
-
-                        //cancel moneris transaction
-                        try
-                        {
-                            Void(orderId, commitTransactionId, ref message);
-                        }
-                        catch (Exception ex)
-                        {
-                            _logger.LogMessage("Can't cancel Moneris transaction");
-                            _logger.LogError(ex);
-                            message = message + ex.Message;
-                        }
-                    }
+                    commitTransactionId = authResponse.TransactionId;
                 }
 
-                if (isSuccessful)
+                string orderIdentifier;
+                if (reAuthOrderId.HasValue())
                 {
-                    //payment completed
-                    _commandBus.Send(new CaptureCreditCardPayment
-                    {
-                        PaymentId = paymentDetail.PaymentId,
-                        AuthorizationCode = authorizationCode,
-                        Provider = PaymentProvider.Moneris,
-                        Amount = amount,
-                        MeterAmount = meterAmount,
-                        TipAmount = tipAmount,
-                        IsNoShowFee = isNoShowFee
-                    });
+                    // Settling overdue payment
+                    orderIdentifier = reAuthOrderId;
+                }
+                else if (authResponse.ReAuthOrderId.HasValue())
+                {
+                    // Normal re-auth
+                    orderIdentifier = authResponse.ReAuthOrderId;
                 }
                 else
                 {
-                    //payment error
-                    _commandBus.Send(new LogCreditCardError
-                    {
-                        PaymentId = paymentDetail.PaymentId,
-                        Reason = message
-                    });
+                    // Normal flow
+                    orderIdentifier = orderId.ToString();
                 }
 
+                var monerisSettings = _serverSettings.GetPaymentSettings().MonerisPaymentSettings;
+                var completionCommand = new Completion(orderIdentifier, amount.ToString("F"), commitTransactionId,
+                    CryptType_SSLEnabledMerchant);
+                var commitRequest = new HttpsPostRequest(monerisSettings.Host, monerisSettings.StoreId,
+                    monerisSettings.ApiToken, completionCommand);
+                var commitReceipt = commitRequest.GetReceipt();
+
+                var isSuccessful = RequestSuccesful(commitReceipt, out message);
+                var isCardDeclined = IsCardDeclined(commitReceipt);
+
+                if (isSuccessful)
+                {
+                    authorizationCode = commitReceipt.GetAuthCode();
+                    commitTransactionId = commitReceipt.GetTxnNumber();
+                }
+
+                // we must return the latest transaction id in case of a successful commit 
+                // since this is the one we need to void if there's a problem while contacting driver
                 return new CommitPreauthorizedPaymentResponse
                 {
-                    AuthorizationCode = authorizationCode,
-                    TransactionId = paymentDetail.TransactionId,
                     IsSuccessful = isSuccessful,
-                    Message = isSuccessful ? "Success" : message
+                    AuthorizationCode = authorizationCode,
+                    Message = message,
+                    TransactionId = commitTransactionId,
+                    IsDeclined = isCardDeclined,
+                    TransactionDate = GetTransactionDate(commitReceipt)
                 };
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                _logger.LogMessage("Error during payment " + e);
-                _logger.LogError(e);
                 return new CommitPreauthorizedPaymentResponse
                 {
                     IsSuccessful = false,
-                    TransactionId = paymentDetail.TransactionId,
-                    Message = e.Message,
+                    TransactionId = commitTransactionId,
+                    Message = ex.Message
                 };
             }
+        }
+
+        public BasePaymentResponse RefundPayment(Guid orderId)
+        {
+            throw new NotImplementedException();
+        }
+        
+        private DateTime? GetTransactionDate(Receipt transactionReceipt)
+        {
+            DateTime localTransactionDate;
+            var isValidDate = DateTime.TryParse(
+                string.Format("{0} {1}", transactionReceipt.GetTransDate(), transactionReceipt.GetTransTime()),
+                CultureInfo.InvariantCulture, DateTimeStyles.None,
+                out localTransactionDate);
+
+            return isValidDate ? localTransactionDate.ToUniversalTime() : default(DateTime?);
         }
 
         private bool RequestSuccesful(Receipt receipt, out string message)
@@ -367,13 +393,35 @@ namespace apcurium.MK.Booking.Services.Impl
                 return false;
             }
 
-            if (int.Parse(receipt.GetResponseCode()) >= 50)
+            var responseCode = int.Parse(receipt.GetResponseCode());
+            if (responseCode >= MonerisResponseCodes.DECLINED)
             {
                 message = receipt.GetMessage();
                 return false;
             }
 
             return true;
+        }
+
+        private bool IsCardDeclined(Receipt receipt)
+        {
+            int responseCode;
+            var isNumber = int.TryParse(receipt.GetResponseCode(), out responseCode);
+            if (!isNumber)
+            {
+                // GetResponseCode will return "null" string when transaction is a success...
+                return false;
+            }
+
+            return MonerisResponseCodes.GetDeclinedCodes().Contains(responseCode);
+        }
+
+        private string GenerateShortUid()
+        {
+            return Convert.ToBase64String(Guid.NewGuid().ToByteArray())
+                .Replace("=", string.Empty)
+                .Replace("+", string.Empty)
+                .Replace("/", string.Empty);
         }
     }
 }

@@ -12,11 +12,18 @@ namespace apcurium.MK.Booking.Mobile.Client.Converters
         public readonly HasValueToVisibilityConverter HasValueToVisibilityConverter =
             new HasValueToVisibilityConverter();
 
+        public readonly NoValueToVisibilityConverter NoValueToVisibilityConverter =
+            new NoValueToVisibilityConverter();
+
 		public readonly MvxInvertedVisibilityValueConverter InvertedVisibility = new MvxInvertedVisibilityValueConverter();
 
 		public readonly OrderStatusToImageNameConverter OrderStatusToImageNameConverter =
 			new OrderStatusToImageNameConverter();
 
 		public readonly MvxVisibilityValueConverter Visibility = new MvxVisibilityValueConverter();
+        public readonly EnumToBoolConverter EnumToInvertedBool = new EnumToBoolConverter(true);
+
+        public readonly StringFormatConverter StringFormat = new StringFormatConverter();
+        public readonly CurrencyFormatConverter CurrencyFormat = new CurrencyFormatConverter();
     }
 }

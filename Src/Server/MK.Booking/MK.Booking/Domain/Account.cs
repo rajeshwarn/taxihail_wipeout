@@ -3,8 +3,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Common;
+using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
@@ -19,8 +21,6 @@ namespace apcurium.MK.Booking.Domain
     {
         private readonly IList<Guid> _favoriteAddresses = new List<Guid>();
         private string _confirmationToken;
-        private int _creditCardCount;
-        private int? _defaultTipPercent;
 
         protected Account(Guid id) : base(id)
         {
@@ -36,15 +36,21 @@ namespace apcurium.MK.Booking.Domain
             Handles<AccountPasswordUpdated>(NoAction);
             Handles<AddressRemovedFromHistory>(NoAction);
             Handles<RoleAddedToUserAccount>(NoAction);
-            Handles<CreditCardAdded>(OnCreditCardAdded);
-            Handles<CreditCardUpdated>(OnCreditCardUpdated);
-            Handles<CreditCardRemoved>(OnCreditCardRemoved);
-            Handles<AllCreditCardsRemoved>(OnAllCreditCardsRemoved);
-            Handles<PaymentProfileUpdated>(OnPaymentProfileUpdated);
+            Handles<CreditCardAddedOrUpdated>(NoAction);
+            Handles<CreditCardRemoved>(NoAction);
+            Handles<AllCreditCardsRemoved>(NoAction);
+            Handles<PaymentProfileUpdated>(NoAction);
             Handles<DeviceRegisteredForPushNotifications>(NoAction);
             Handles<DeviceUnregisteredForPushNotifications>(NoAction);
             Handles<NotificationSettingsAddedOrUpdated>(NoAction);
+            Handles<UserTaxiHailNetworkSettingsAddedOrUpdated>(NoAction);
             Handles<AccountLinkedToIbs>(NoAction);
+            Handles<AccountUnlinkedFromIbs>(NoAction);
+            Handles<PayPalAccountLinked>(NoAction);
+            Handles<PayPalAccountUnlinked>(NoAction);
+            Handles<CreditCardDeactivated>(NoAction);
+            Handles<OverduePaymentLogged>(NoAction);
+            Handles<OverduePaymentSettled>(NoAction);
         }
 
         public Account(Guid id, IEnumerable<IVersionedEvent> history)
@@ -54,7 +60,7 @@ namespace apcurium.MK.Booking.Domain
         }
 
         public Account(Guid id, string name, string phone, string email, byte[] password, 
-            string confirmationToken, string language, bool accountActivationDisabled, bool isAdmin = false)
+            string confirmationToken, string language, bool accountActivationDisabled, string payBack, bool isAdmin = false)
             : this(id)
         {
             if (Params.Get(name, phone, email, confirmationToken).Any(p => p.IsNullOrEmpty())
@@ -72,11 +78,12 @@ namespace apcurium.MK.Booking.Domain
                 ConfirmationToken = confirmationToken,
                 Language = language,
                 IsAdmin = isAdmin,
-                AccountActivationDisabled = accountActivationDisabled
+                AccountActivationDisabled = accountActivationDisabled,
+                PayBack = payBack
             });
         }
 
-        public Account(Guid id, string name, string phone, string email, string facebookId = null,
+        public Account(Guid id, string name, string phone, string email, string payBack, string facebookId = null,
             string twitterId = null, string language = null, bool isAdmin = false)
             : this(id)
         {
@@ -93,7 +100,8 @@ namespace apcurium.MK.Booking.Domain
                 TwitterId = twitterId,
                 FacebookId = facebookId,
                 Language = language,
-                IsAdmin = isAdmin
+                IsAdmin = isAdmin,
+                PayBack = payBack
             });
         }
 
@@ -150,7 +158,7 @@ namespace apcurium.MK.Booking.Domain
             });
         }
 
-        public void UpdateBookingSettings(BookingSettings settings)
+        public void UpdateBookingSettings(BookingSettings settings, int? defaultTipPercent)
         {
             Update(new BookingSettingsUpdated
             {
@@ -162,7 +170,10 @@ namespace apcurium.MK.Booking.Domain
                 Phone = settings.Phone,
                 ProviderId = settings.ProviderId,
                 VehicleTypeId = settings.VehicleTypeId,
-                AccountNumber = settings.AccountNumber
+                AccountNumber = settings.AccountNumber,
+                CustomerNumber = settings.CustomerNumber,
+                DefaultTipPercent = defaultTipPercent,
+                PayBack = settings.PayBack
             });
         }
 
@@ -204,10 +215,10 @@ namespace apcurium.MK.Booking.Domain
             Update(new AddressRemovedFromHistory {AddressId = addressId});
         }
 
-        public void AddCreditCard(string creditCardCompany, Guid creditCardId, string nameOnCard, 
+        public void AddOrUpdateCreditCard(string creditCardCompany, Guid creditCardId, string nameOnCard, 
             string last4Digits, string expirationMonth, string expirationYear, string token)
         {
-            Update(new CreditCardAdded
+            Update(new CreditCardAddedOrUpdated
             {
                 CreditCardCompany = creditCardCompany,
                 CreditCardId = creditCardId,
@@ -216,59 +227,12 @@ namespace apcurium.MK.Booking.Domain
                 ExpirationMonth = expirationMonth,
                 ExpirationYear = expirationYear,
                 Token = token
-            });
-
-            // Automatically set first credit card as default
-            if (_creditCardCount == 1)
-            {
-                Update(new PaymentProfileUpdated
-                {
-                    DefaultCreditCard = creditCardId,
-                    DefaultTipPercent = _defaultTipPercent
-                });
-            }
-        }
-
-        public void UpdateCreditCard(string creditCardCompany, Guid creditCardId, string nameOnCard,
-            string last4Digits, string expirationMonth, string expirationYear, string token)
-        {
-            Update(new CreditCardUpdated
-            {
-                CreditCardCompany = creditCardCompany,
-                CreditCardId = creditCardId,
-                NameOnCard = nameOnCard,
-                Last4Digits = last4Digits,
-                ExpirationMonth = expirationMonth,
-                ExpirationYear = expirationYear,
-                Token = token
-            });
-        }
-
-        public void RemoveCreditCard(Guid creditCardId)
-        {
-            Update(new CreditCardRemoved
-            {
-                CreditCardId = creditCardId
             });
         }
 
         public void RemoveAllCreditCards()
         {
             Update(new AllCreditCardsRemoved());
-        }
-
-        private void OnAllCreditCardsRemoved(AllCreditCardsRemoved obj)
-        {
-            _creditCardCount = 0;
-        }
-
-        public void UpdatePaymentProfile(Guid? defaultCreditCard, int? defaultTipPercent)
-        {
-            Update(new PaymentProfileUpdated
-            {
-                DefaultCreditCard = defaultCreditCard,
-                DefaultTipPercent = defaultTipPercent
-            });
         }
 
         public void AddRole(string rolename)
@@ -329,30 +293,6 @@ namespace apcurium.MK.Booking.Domain
             }
         }
 
-        private void OnCreditCardAdded(CreditCardAdded obj)
-        {
-            _creditCardCount++;
-        }
-
-        private void OnCreditCardUpdated(CreditCardUpdated obj)
-        {
-
-        }
-
-        private void OnCreditCardRemoved(CreditCardRemoved obj)
-        {
-            _creditCardCount = Math.Max(0, _creditCardCount - 1);
-        }
-
-        private void OnPaymentProfileUpdated(PaymentProfileUpdated @event)
-        {
-            _defaultTipPercent = @event.DefaultTipPercent;
-        }
-
-        private void NoAction<T>(T @event) where T : VersionedEvent
-        {
-        }
-
         private static void ValidateFavoriteAddress(string friendlyName, string fullAddress, double latitude,
             double longitude)
         {
@@ -392,12 +332,57 @@ namespace apcurium.MK.Booking.Domain
             });
         }
 
+        public void AddOrUpdateTaxiHailNetworkSettings(bool isEnabled, string[] disabledFleets)
+        {
+            Update(new UserTaxiHailNetworkSettingsAddedOrUpdated
+            {
+                IsEnabled = isEnabled,
+                DisabledFleets = disabledFleets
+            });
+        }
+
         public void LinkToIbs(string companyKey, int ibsAccountId)
         {
             Update(new AccountLinkedToIbs
             {
                 CompanyKey = companyKey,
                 IbsAccountId = ibsAccountId
+            });
+        }
+
+        public void UnlinkFromIbs()
+        {
+            Update(new AccountUnlinkedFromIbs());
+        }
+
+        public void LinkPayPalAccount(string encryptedRefreshToken)
+        {
+            Update(new PayPalAccountLinked{ EncryptedRefreshToken = encryptedRefreshToken });
+        }
+
+        public void UnlinkPayPalAccount()
+        {
+            Update(new PayPalAccountUnlinked());
+        }
+
+        public void ReactToPaymentFailure(Guid orderId, int? ibsOrderId, decimal amount, string transactionId, DateTime? transactionDate)
+        {
+            Update(new CreditCardDeactivated());
+            Update(new OverduePaymentLogged
+            {
+                OrderId = orderId,
+                IBSOrderId = ibsOrderId,
+                Amount = amount,
+                TransactionId = transactionId,
+                TransactionDate = transactionDate
+            });
+        }
+
+        public void SettleOverduePayment(Guid orderId)
+        {
+            Update(new OverduePaymentSettled
+            {
+                OrderId = orderId
             });
         }
     }

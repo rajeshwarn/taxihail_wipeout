@@ -1,3 +1,4 @@
+using System;
 using Android.App;
 using Android.Content;
 using apcurium.MK.Booking.Mobile.PresentationHints;
@@ -14,11 +15,15 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         public override void Show(Cirrious.MvvmCross.ViewModels.MvxViewModelRequest request)
         {
-            bool removeFromHistory = request.ParameterValues != null
+            var removeFromHistory = request.ParameterValues != null
                                      && request.ParameterValues.ContainsKey("removeFromHistory");
 
-            Intent intent = this.CreateIntentForRequest (request);
-            this.Show (intent, removeFromHistory);
+            var clearHistory = request.ParameterValues != null
+                                     && request.ParameterValues.ContainsKey("clearNavigationStack");
+
+            var intent = this.CreateIntentForRequest (request);
+
+            this.Show(intent, removeFromHistory, clearHistory);
         }
 
         public override void ChangePresentation(Cirrious.MvvmCross.ViewModels.MvxPresentationHint hint)
@@ -33,14 +38,20 @@ namespace apcurium.MK.Booking.Mobile.Client
             }
         }
 
-        private void Show (Intent intent, bool removeFromHistory)
+        private void Show (Intent intent, bool removeFromHistory, bool clearHistory)
         {
-            Activity activity = this.Activity;
+            var activity = this.Activity;
             if (activity == null)
             {
                 MvxTrace.Warning ("Cannot Resolve current top activity", new object[0]);
                 return;
             }
+
+            if (clearHistory)
+            {
+                intent.AddFlags(ActivityFlags.NewTask | ActivityFlags.ClearTask);
+            }
+
             activity.StartActivity (intent);
             if (removeFromHistory)
             {

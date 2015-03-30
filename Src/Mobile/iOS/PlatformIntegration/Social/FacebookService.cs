@@ -1,6 +1,6 @@
 using System;
 using apcurium.MK.Booking.Mobile.AppServices.Social;
-using MonoTouch.Foundation;
+using Foundation;
 using System.Threading.Tasks;
 using MonoTouch.FacebookConnect;
 using apcurium.MK.Common.Configuration;
@@ -41,7 +41,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration.Social
 		{
             try
             {
-                FBSettings.PublishInstall (_appId);
+                FBAppEvents.ActivateApp ();
             }
             catch(Exception ex)
             {

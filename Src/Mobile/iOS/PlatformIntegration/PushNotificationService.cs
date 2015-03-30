@@ -3,10 +3,11 @@ using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Mobile.AppServices.Impl;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Enumeration;
-using MonoTouch.Foundation;
-using MonoTouch.UIKit;
+using Foundation;
+using UIKit;
 using apcurium.MK.Booking.Mobile.Client.Helper;
 using TinyIoC;
+using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
 
 namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 {
@@ -21,20 +22,33 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 
 		public void RegisterDeviceForPushNotifications (bool force = false)
         {
-            if (force) {
+            if (force) 
+            {
                 NSUserDefaults.StandardUserDefaults.SetString (string.Empty, "PushDeviceToken");
             }
 
-			CheckIfUserHasDiablePushNotification ();
+            CheckIfUserHasDisabledPushNotification ();
 
-            UIApplication.SharedApplication.RegisterForRemoteNotificationTypes(UIRemoteNotificationType.Alert
-                                                                               | UIRemoteNotificationType.Badge
-                                                                               | UIRemoteNotificationType.Sound);
+            if (UIHelper.IsOS8orHigher)
+            {
+                var settings = UIUserNotificationSettings.GetSettingsForTypes (
+                    UIUserNotificationType.Alert |
+                    UIUserNotificationType.Badge |
+                    UIUserNotificationType.Sound, null);
 
-
+                UIApplication.SharedApplication.RegisterUserNotificationSettings (settings);
+                UIApplication.SharedApplication.RegisterForRemoteNotifications ();
+            }
+            else
+            {
+                UIApplication.SharedApplication.RegisterForRemoteNotificationTypes(
+                    UIRemoteNotificationType.Alert | 
+                    UIRemoteNotificationType.Badge | 
+                    UIRemoteNotificationType.Sound);
+            }
         }
 
-		void CheckIfUserHasDiablePushNotification ()
+		private void CheckIfUserHasDisabledPushNotification ()
 		{
 			//check only after the first run (because on the first one we have not yet ask for push notification permission)
 			const string pushFirstStart = "pushFirstStart";
@@ -44,7 +58,8 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 			{
 				_cacheService.Set (pushFirstStart, new object ());
 
-			} else if(IsPushDisabled())
+			} 
+            else if(IsPushDisabled())
 			{
 				var localize = TinyIoCContainer.Current.Resolve<ILocalization>();
 
@@ -62,36 +77,41 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 			}
 		}
 
-		bool IsPushDisabled ()
+		private bool IsPushDisabled ()
 		{
-			var enabledTypes = UIApplication.SharedApplication.EnabledRemoteNotificationTypes;
+            if (UIHelper.IsOS8orHigher)
+            {
+                return !UIApplication.SharedApplication.IsRegisteredForRemoteNotifications;
+            }
+            else
+            {
+                var enabledTypes = UIApplication.SharedApplication.EnabledRemoteNotificationTypes;
 
-			if (((enabledTypes & UIRemoteNotificationType.Alert) != UIRemoteNotificationType.Alert)) {
-				return true;
-			}
-			return false;
-		}
+                if (((enabledTypes & UIRemoteNotificationType.Alert) != UIRemoteNotificationType.Alert)) 
+                {
+                    return true;
+                }
+                return false;
+            }
+        }
 
         public void SaveDeviceToken(string deviceToken)
         {
             var oldDeviceToken = NSUserDefaults.StandardUserDefaults.StringForKey("PushDeviceToken");
-            
-            //There's probably a better way to do this
-            var newDeviceToken = deviceToken.Replace("<", "").Replace(">", "").Replace(" ", "");
-            
+
             if (string.IsNullOrEmpty(oldDeviceToken))
             {
-                UseServiceClientAsync<PushNotificationRegistrationServiceClient>(service => service.Register(newDeviceToken, PushNotificationServicePlatform.Apple));
+                UseServiceClientAsync<PushNotificationRegistrationServiceClient>(service => service.Register(deviceToken, PushNotificationServicePlatform.Apple));
             }
-            else if(!oldDeviceToken.Equals(newDeviceToken))
+            else if(!oldDeviceToken.Equals(deviceToken))
             {
-                UseServiceClientAsync<PushNotificationRegistrationServiceClient>(service => service.Replace(oldDeviceToken, newDeviceToken, PushNotificationServicePlatform.Apple));
+                UseServiceClientAsync<PushNotificationRegistrationServiceClient>(service => service.Replace(oldDeviceToken, deviceToken, PushNotificationServicePlatform.Apple));
             }
                         
             //Save device token now
-            NSUserDefaults.StandardUserDefaults.SetString(newDeviceToken, "PushDeviceToken");
+            NSUserDefaults.StandardUserDefaults.SetString(deviceToken, "PushDeviceToken");
             
-            Console.WriteLine("Device Token: " + newDeviceToken);
+            Console.WriteLine("Device Token: " + deviceToken);
         }
     }
 }

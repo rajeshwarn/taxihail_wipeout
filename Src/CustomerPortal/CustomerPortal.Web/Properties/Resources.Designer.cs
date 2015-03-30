@@ -317,6 +317,15 @@ namespace CustomerPortal.Web.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Fleets Whitelist.
+        /// </summary>
+        public static string FleetIdWhiteListLabel {
+            get {
+                return ResourceManager.GetString("FleetIdWhiteListLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Google Play Credentials.
         /// </summary>
         public static string GooglePlayCredentials {
@@ -368,6 +377,15 @@ namespace CustomerPortal.Web.Properties {
         public static string KeywordsHelp {
             get {
                 return ResourceManager.GetString("KeywordsHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Market.
+        /// </summary>
+        public static string Market {
+            get {
+                return ResourceManager.GetString("Market", resourceCulture);
             }
         }
         

@@ -1,15 +1,22 @@
 ﻿#region
 
 using System;
+using System.Data.SqlTypes;
+using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Configuration;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
+using System.Threading;
 using apcurium.MK.Booking.Database;
+using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Common.Caching;
 using apcurium.MK.Common.Configuration.Impl;
+using apcurium.MK.Common.Extensions;
 using Infrastructure.Sql.EventSourcing;
 using Infrastructure.Sql.MessageLog;
+using log4net;
 using Microsoft.Win32;
 
 #endregion
@@ -18,13 +25,17 @@ namespace DatabaseInitializer.Sql
 {
     public class DatabaseCreator
     {
-        public void DropDatabase(string connStringMaster, string database)
+        ILog _logger = LogManager.GetLogger("DatabaseInitializer");
+        
+        public void DropDatabase(string connStringMaster, string database, bool setoffline = true)
         {
             var exists = "IF  EXISTS (SELECT name FROM sys.databases WHERE name = N'" + database + "') ";
 
-            DatabaseHelper.ExecuteNonQuery(connStringMaster,
-                exists + "ALTER DATABASE [" + database + "] SET OFFLINE WITH ROLLBACK IMMEDIATE");
-
+            if (setoffline)
+            {
+                DatabaseHelper.ExecuteNonQuery(connStringMaster,
+                    exists + "ALTER DATABASE [" + database + "] SET OFFLINE WITH ROLLBACK IMMEDIATE");
+            }
             DatabaseHelper.ExecuteNonQuery(connStringMaster, exists + "DROP DATABASE [" + database + "]");
         }
 
@@ -55,14 +66,12 @@ namespace DatabaseInitializer.Sql
         public  void CompleteMirroring(string connStringMaster, string companyName, string partner, string witness)
         {
             DatabaseHelper.ExecuteNonQuery(connStringMaster, string.Format(@"ALTER DATABASE {0} SET PARTNER='{1}'", companyName, partner));
-            DatabaseHelper.ExecuteNonQuery(connStringMaster, string.Format(@"ALTER DATABASE {0} SET WITNESS='{1}'", companyName,witness));
-          
+            if (witness.HasValue())
+            {
+                DatabaseHelper.ExecuteNonQuery(connStringMaster,
+                    string.Format(@"ALTER DATABASE {0} SET WITNESS='{1}'", companyName, witness));
+            }
         }
-
-        
-        
-                    
-
 
         public void BackupDatabase(string connStringMaster, string backupFolder, string databaseName)
         {
@@ -125,7 +134,20 @@ namespace DatabaseInitializer.Sql
             return newName;
         }
 
-        public void CreateDatabase(string connectionString, string databaseName, string instanceName)
+        public void RenameDatabase(string connectionString, string oldName, string newName)
+        {
+            var exists = "IF  EXISTS (SELECT name FROM sys.databases WHERE name = N'" + oldName + "') ";
+
+            DatabaseHelper.ExecuteNonQuery(connectionString,
+                exists + "ALTER DATABASE [" + oldName + "] SET OFFLINE WITH ROLLBACK IMMEDIATE");
+
+            DatabaseHelper.ExecuteNonQuery(connectionString, exists + "ALTER DATABASE [" + oldName + "] SET ONLINE");
+
+            DatabaseHelper.ExecuteNonQuery(connectionString,
+                exists + "ALTER DATABASE [" + oldName + "] MODIFY NAME = [" + newName + "]");
+        }
+
+        public void CreateDatabase(string connectionString, string databaseName, string sqlDirectory)
         {
             var exists = "IF  EXISTS (SELECT name FROM sys.databases WHERE name = N'" + databaseName + "') ";
 
@@ -137,13 +159,25 @@ namespace DatabaseInitializer.Sql
             DatabaseHelper.ExecuteNonQuery(connectionString, exists + "DROP DATABASE [" + databaseName + "]");
 
 
+            var dataPath = Path.Combine(sqlDirectory, "DATA");
+            if (!Directory.Exists(dataPath))
+            {
+                Directory.CreateDirectory(dataPath);
+            }
+           
+            var logPath = Path.Combine(sqlDirectory, "Log");
+            if (!Directory.Exists(logPath))
+            {
+                Directory.CreateDirectory(logPath);
+            }
+
             DatabaseHelper.ExecuteNonQuery(connectionString, string.Format("CREATE DATABASE [" + databaseName + "] " +
                                                                            "ON " +
                                                                            "( NAME = {3}_{2}, FILENAME = '{0}\\{3}_{2}.mdf' ) " +
                                                                            "LOG ON " +
                                                                            "( NAME = {3}_{2}_log, FILENAME = '{1}\\{3}_{2}.ldf' ) ",
-                GetDataPath(instanceName),
-                GetLogPath(instanceName),
+                dataPath,
+                logPath,
                 DateTime.Now.ToString("dd_MM_yyyy_HH_mm_ss"),
                 databaseName));
         }
@@ -239,16 +273,29 @@ namespace DatabaseInitializer.Sql
                                                  "DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON)", newDatabase);
 
             DatabaseHelper.ExecuteNonQuery(connString, createIndexForOrderVehiclePosition);
+
+            var createIndexForPromoIdUsage = string.Format("IF NOT EXISTS(SELECT * FROM sys.indexes WHERE name = 'PromoIdIdx' AND object_id = OBJECT_ID('[{0}].[Booking].[PromotionUsageDetail]')) " +
+                                                 "CREATE NONCLUSTERED INDEX [PromoIdIdx] ON [{0}].[Booking].[PromotionUsageDetail] " +
+                                                 "([PromoId] ASC) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, " +
+                                                 "DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON)", newDatabase);
+
+            DatabaseHelper.ExecuteNonQuery(connString, createIndexForPromoIdUsage);
         }
 
-        public void CopyEventsAndCacheTables(string connString, string oldDatabase, string newDatabase)
+        public DateTime? CopyEventsAndCacheTables(string connString, string oldDatabase, string newDatabase)
         {
+            //get the last events from the new database
+            var maxDateTime = DatabaseHelper.ExecuteScalarQuery<DateTime?>(connString, string.Format("Select max([EventDate]) from [{0}].[Events].[Events]", newDatabase));
+
+
+            var sqlDateTime = (DateTime)(maxDateTime ?? SqlDateTime.MinValue);
+                
             var queryForEvents =
                 string.Format(
-                    "INSERT INTO [{0}].[Events].[Events]([AggregateId] ,[AggregateType] ,[Version] ,[Payload] ,[CorrelationId], [EventType], [EventDate]) " +
+                    "INSERT INTO [{0}].[Events].[Events] ([AggregateId] ,[AggregateType] ,[Version] ,[Payload] ,[CorrelationId], [EventType], [EventDate]) " +
                     "SELECT [AggregateId] ,[AggregateType] ,[Version] ,[Payload] ,[CorrelationId], [EventType], [EventDate] " +
                     "FROM [{1}].[Events].[Events] " +
-                    "WHERE [EventType] <> 'apcurium.MK.Booking.Events.OrderVehiclePositionChanged'", newDatabase, oldDatabase); // delete OrderVehiclePositionChanged events
+                    "WHERE [EventType] NOT LIKE '%OrderVehiclePositionChanged%' AND [EventDate] > '{2}'", newDatabase, oldDatabase, sqlDateTime.ToString("yyyy-MM-dd HH:mm:ss.fff")); // delete OrderVehiclePositionChanged events
 
             var start = DateTime.Now;
             Console.WriteLine("Starting to copy events: (Timeout: 3600 seconds)");
@@ -260,7 +307,10 @@ namespace DatabaseInitializer.Sql
                                               "SELECT [Key],[Value],[ExpiresAt] " +
                                               "FROM [{1}].[Cache].[Items] WHERE [Key] <> 'IBS.StaticData'", newDatabase, oldDatabase);
 
+            DatabaseHelper.ExecuteNonQuery(connString, string.Format("TRUNCATE Table [{0}].[Cache].[Items]", newDatabase));
             DatabaseHelper.ExecuteNonQuery(connString, queryForCache);
+
+            return maxDateTime;
         }
 
         public void CopyAppStartUpLogTable(string connString, string oldDatabase, string newDatabase)
@@ -273,36 +323,13 @@ namespace DatabaseInitializer.Sql
 
             try
             {
+                DatabaseHelper.ExecuteNonQuery(connString, string.Format("TRUNCATE Table [{0}].[Booking].[AppStartUpLogDetail]", newDatabase));
                 DatabaseHelper.ExecuteNonQuery(connString, query);
             }
             catch (Exception)
             {
                 // Ignore possible exceptions. Most probable case is trying to copy from source DB without this table
             }
-        }
-
-        private string GetLogPath(string instanceName)
-        {
-            return string.Format("{0}\\{1}", GetSqlRootPath(instanceName), "Log");
-        }
-
-        private string GetDataPath(string instanceName)
-        {
-            return string.Format("{0}\\{1}", GetSqlRootPath(instanceName), "Data");
-        }
-
-        private string GetSqlRootPath(string instanceName)
-        {
-            var key = Registry.LocalMachine;
-            var subkey =
-                key.OpenSubKey(string.Format("SOFTWARE\\Microsoft\\Microsoft SQL Server\\{0}\\Setup", instanceName));
-            if (subkey == null)
-            {
-                throw new Exception(
-                    "Can't retrieve the Data directory, did you specify the right instance name paremeter ?");
-            }
-            var value = subkey.GetValue("SQLDataRoot", string.Empty);
-            return value.ToString();
         }
 
         public void CreateSchemas(ConnectionStringSettings connectionString)
@@ -336,16 +363,10 @@ namespace DatabaseInitializer.Sql
                 }
             }
             // ReSharper disable once EmptyGeneralCatchClause
-            catch
+            catch(Exception e)
             {
-                //TODO trouver un moyen plus sexy
+                _logger.Error("Error during Database Create Schema", e);
             }
         }
-
-
-
-
-
-        
     }
 }

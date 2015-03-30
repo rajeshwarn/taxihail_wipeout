@@ -31,11 +31,13 @@
       </dict>
     </array>
     <key>CFBundleVersion</key>
-    <string>2.0.14</string>
+    <string>2.2.1</string>
     <key>CFBundleShortVersionString</key>
-    <string>2.0.14</string>
+    <string>2.2.1</string>
     <key>MinimumOSVersion</key>
     <string>6.0</string>
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>Your location will be shown on the map and is used to provide nearby search results.</string>
     <key>NSMainNibFile</key>
     <string>MainWindow</string>
     <key>UIAppFonts</key>
@@ -57,5 +59,7 @@
     </array>
     <key>UIStatusBarHidden</key>
     <true />
+    <key>XSLaunchImageAssets</key>
+    <string>Resources/Images.xcassets/LaunchImage.launchimage</string>
   </dict>
 </plist>

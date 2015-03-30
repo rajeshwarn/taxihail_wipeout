@@ -2,29 +2,28 @@ using System;
 using System.Globalization;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Client;
+using apcurium.MK.Booking.Api.Client.Payments;
 using apcurium.MK.Booking.Api.Client.Payments.Braintree;
 using apcurium.MK.Booking.Api.Client.Payments.CmtPayments;
 using apcurium.MK.Booking.Api.Client.Payments.Fake;
+using apcurium.MK.Booking.Api.Client.Payments.Moneris;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Resources.Payments;
 using apcurium.MK.Booking.Mobile.Infrastructure;
-using apcurium.MK.Booking.Api.Client.Payments.Moneris;
+using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Diagnostic;
-
-
+using apcurium.MK.Common.Resources;
 #if IOS
 using ServiceStack.ServiceClient.Web;
 using ServiceStack.Common.ServiceClient.Web;
 #endif
-using apcurium.MK.Common.Configuration.Impl;
-using apcurium.MK.Common.Resources;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
     public class PaymentService : BaseService, IPaymentService
     {
 		private readonly ConfigurationClientService _serviceClient;
-		private readonly ICacheService _cache;
+        private readonly ICacheService _cache;
 		private readonly IPackageInfo _packageInfo;
         private readonly ILogger _logger; 
         private readonly string _baseUrl;
@@ -36,7 +35,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         private const string PayedCacheSuffix = "_Payed";
 		private const string OnErrorMessage = "Payment Method not found or unknown";
 
-		public PaymentService(string url, string sessionId, ConfigurationClientService serviceClient, ICacheService cache, IPackageInfo packageInfo, ILogger logger)
+		public PaymentService(string url, string sessionId,
+            ConfigurationClientService serviceClient,
+            ICacheService cache,
+            IPackageInfo packageInfo,
+            ILogger logger)
         {
 			_logger = logger;
 			_packageInfo = packageInfo;
@@ -80,11 +83,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         {
             _cache.Set(orderId + PayedCacheSuffix, amount.ToString(CultureInfo.InvariantCulture));
         }
-        
-        public async Task ResendConfirmationToDriver(Guid orderId)
-        {
-			await GetClient().ResendConfirmationToDriver(orderId);
-        }
 
         public async Task<TokenizedCreditCardResponse> Tokenize(string creditCardNumber, DateTime expiryDate, string cvv)
         {
@@ -96,19 +94,20 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			return await GetClient().ForgetTokenizedCard(cardToken);
         }
 
-        public async Task<CommitPreauthorizedPaymentResponse> CommitPayment(string cardToken, double amount, double meterAmount, double tipAmount, Guid orderId)
-        {
-			return await GetClient().CommitPayment(cardToken, amount, meterAmount, tipAmount, orderId);
-        }
+		public async Task<OverduePayment> GetOverduePayment()
+		{
+			return await GetClient().GetOverduePayment();
+		}
 
-        public async Task<PairingResponse> Pair(Guid orderId, string cardToken, int? autoTipPercentage, double? autoTipAmount)
+        public async Task<SettleOverduePaymentResponse> SettleOverduePayment()
         {
-			return await GetClient().Pair(orderId, cardToken, autoTipPercentage, autoTipAmount);
+            return await GetClient().SettleOverduePayment();
         }
 
         public async Task<BasePaymentResponse> Unpair(Guid orderId)
         {
-			return await GetClient().Unpair(orderId);
+            return await new PairingServiceClient(_baseUrl, _sessionId, _packageInfo)
+                .Unpair(orderId);
         }
 
 		private IPaymentServiceClient GetClient()

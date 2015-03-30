@@ -8,11 +8,13 @@ using apcurium.MK.Booking.Maps.Impl.Mappers;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
+using apcurium.MK.Common.Geography;
 using apcurium.MK.Common.Provider;
 using apcurium.MK.Booking.MapDataProvider;
 using apcurium.MK.Booking.MapDataProvider.Resources;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Booking.MapDataProvider.Google.Resources;
+using MK.Common.Configuration;
 using apcurium.MK.Booking.MapDataProvider.Extensions;
 
 #endregion
@@ -85,17 +87,24 @@ namespace apcurium.MK.Booking.Maps.Impl
 
 		private GeoAddress[] SearchUsingName(string name, bool useFilter, string currentLanguage)
         {
+		    if (name == null)
+		    {
+		        return null;
+		    }
+
+		    GeoAddress[] results;
             var filter = _appSettings.Data.GeoLoc.SearchFilter;
-            if (name != null)
-            {
-                if ((filter.HasValue()) && (useFilter))
-                {
-                    var filteredName = string.Format(filter, name.Split(' ').JoinBy("+"));
-					return _mapApi.GeocodeAddress(filteredName, currentLanguage);
-                }
-				return _mapApi.GeocodeAddress(name.Split(' ').JoinBy("+"), currentLanguage);
-            }
-            return null;
+
+		    if (filter.HasValue() && useFilter)
+		    {
+		        var filteredName = string.Format(filter, name.Split(' ').JoinBy("+"));
+		        results = _mapApi.GeocodeAddress(filteredName, currentLanguage);
+
+		        return FilterGeoCodingResults(results);
+		    }
+		    results = _mapApi.GeocodeAddress(name.Split(' ').JoinBy("+"), currentLanguage);
+
+		    return FilterGeoCodingResults(results);
         }
 
         private Address[] SearchPopularAddresses(string name)
@@ -124,6 +133,60 @@ namespace apcurium.MK.Booking.Maps.Impl
             var inRange = addressesInRange as Address[] ?? addressesInRange.ToArray();
             inRange.ForEach(a => a.AddressType = "popular");
             return inRange.ToArray();
+        }
+
+        private GeoAddress[] FilterGeoCodingResults(GeoAddress[] resultsToFilter)
+        {
+            if (!ShouldFilterResults())
+            {
+                return resultsToFilter;
+            }
+
+            // Make sure that the geocoding results are part of the region covered by the app
+            return resultsToFilter.Where(result =>
+                GeographyHelper.RegionContainsCoordinate(
+                    _appSettings.Data.UpperRightLatitude.Value,  // x1
+                    _appSettings.Data.UpperRightLongitude.Value, // y1
+                    _appSettings.Data.LowerLeftLatitude.Value,   // x2
+                    _appSettings.Data.LowerLeftLongitude.Value,  // y2
+                    result.Latitude, result.Longitude))
+                .ToArray();
+        }
+
+        private bool ShouldFilterResults()
+        {
+            var settingsHaveValues = _appSettings.Data.LowerLeftLatitude.HasValue
+                                  && _appSettings.Data.LowerLeftLongitude.HasValue
+                                  && _appSettings.Data.UpperRightLatitude.HasValue
+                                  && _appSettings.Data.UpperRightLongitude.HasValue;
+
+            if (!settingsHaveValues)
+            {
+                return false;
+            }
+
+            var lowerLeft = new Address
+            {
+                Latitude = _appSettings.Data.LowerLeftLatitude.Value,
+                Longitude = _appSettings.Data.LowerLeftLongitude.Value
+            };
+            var upperRight = new Address
+            {
+                Latitude = _appSettings.Data.UpperRightLatitude.Value,
+                Longitude = _appSettings.Data.UpperRightLongitude.Value
+            };
+
+            return HasValidCoordinate(lowerLeft) && HasValidCoordinate(upperRight);
+        }
+
+        private bool HasValidCoordinate(Address instance)
+        {
+            return instance.Longitude != 0 
+                && instance.Latitude != 0 
+                && instance.Latitude >= -90 
+                && instance.Latitude <= 90 
+                && instance.Longitude >= -180 
+                && instance.Longitude <= 180;
         }
     }
 }

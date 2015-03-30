@@ -14,8 +14,8 @@ namespace apcurium.MK.Booking.CommandBuilder
     public static class SendReceiptCommandBuilder
     {
         public static SendReceipt GetSendReceiptCommand(OrderDetail order, AccountDetail account, string vehicleNumber, DriverInfos driverInfos,
-            double? fare, double? toll, double? tip, double? tax, OrderPaymentDetail orderPayment = null,
-            CreditCardDetails creditCard = null, Uri baseUrl = null)
+            double? fare, double? toll, double? tip, double? tax, OrderPaymentDetail orderPayment = null, double? amountSavedByPromotion = null,
+            PromotionUsageDetail promotionUsed = null, CreditCardDetails creditCard = null)
         {
             var command = new SendReceipt
             {
@@ -34,12 +34,19 @@ namespace apcurium.MK.Booking.CommandBuilder
                 PickupAddress = order.PickupAddress,
                 DropOffAddress = order.DropOffAddress,
                 ClientLanguageCode = order.ClientLanguageCode,
-                BaseUrl = baseUrl
             };
-            
+
+            if (promotionUsed != null)
+            {
+                command.AmountSavedByPromotion = amountSavedByPromotion.GetValueOrDefault();
+                command.PromoCode = promotionUsed.Code;
+                command.PromoDiscountType = promotionUsed.DiscountType;
+                command.PromoDiscountValue = promotionUsed.DiscountValue;
+            }
+
             if (orderPayment != null)
             {
-                command.CardOnFileInfo = new SendReceipt.CardOnFile(
+                command.PaymentInfo = new SendReceipt.Payment(
                     orderPayment.Amount,
                     orderPayment.TransactionId,
                     orderPayment.AuthorizationCode,
@@ -47,11 +54,11 @@ namespace apcurium.MK.Booking.CommandBuilder
 
                 if ((orderPayment.CardToken.HasValue()) && (creditCard != null))
                 {
-                    command.CardOnFileInfo.LastFour = creditCard.Last4Digits;
-                    command.CardOnFileInfo.Company = creditCard.CreditCardCompany;
-                    command.CardOnFileInfo.NameOnCard = creditCard.NameOnCard;
-                    command.CardOnFileInfo.ExpirationMonth = creditCard.ExpirationMonth;
-                    command.CardOnFileInfo.ExpirationYear = creditCard.ExpirationYear;
+                    command.PaymentInfo.Last4Digits = creditCard.Last4Digits;
+                    command.PaymentInfo.Company = creditCard.CreditCardCompany;
+                    command.PaymentInfo.NameOnCard = creditCard.NameOnCard;
+                    command.PaymentInfo.ExpirationMonth = creditCard.ExpirationMonth;
+                    command.PaymentInfo.ExpirationYear = creditCard.ExpirationYear;
                 }
             }
             return command;

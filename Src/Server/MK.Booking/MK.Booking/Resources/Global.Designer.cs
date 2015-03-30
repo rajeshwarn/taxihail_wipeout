@@ -70,6 +70,15 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Your card of file was deactivated because the payment of your last ride was declined. To be able to use it again, go to the Payment screen to settle any overdue payment.
+        /// </summary>
+        public static string CannotCreateOrder_CreditCardDeactivated {
+            get {
+                return ResourceManager.GetString("CannotCreateOrder_CreditCardDeactivated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The order cannot be created because your credit card failed the preauthorization check..
         /// </summary>
         public static string CannotCreateOrder_CreditCardWasDeclined {
@@ -79,11 +88,191 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to There is no company serving this region.
+        /// </summary>
+        public static string CannotCreateOrder_NoCompanies {
+            get {
+                return ResourceManager.GetString("CannotCreateOrder_NoCompanies", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No PayPal account linked.
+        /// </summary>
+        public static string CannotCreateOrder_PayPalButNoPayPal {
+            get {
+                return ResourceManager.GetString("CannotCreateOrder_PayPalButNoPayPal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The order cannot be created because your PayPal account failed the preauthorization check..
+        /// </summary>
+        public static string CannotCreateOrder_PayPalWasDeclined {
+            get {
+                return ResourceManager.GetString("CannotCreateOrder_PayPalWasDeclined", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Payment is not enabled on the website. Please select another charge type..
+        /// </summary>
+        public static string CannotCreateOrder_PrepaidButPrepaidNotEnabled {
+            get {
+                return ResourceManager.GetString("CannotCreateOrder_PrepaidButPrepaidNotEnabled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You need an estimated fare to prepay your ride. Please select a destination address to get one..
+        /// </summary>
+        public static string CannotCreateOrder_PrepaidNoEstimate {
+            get {
+                return ResourceManager.GetString("CannotCreateOrder_PrepaidNoEstimate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to PayPal payment was cancelled.
+        /// </summary>
+        public static string CannotCreateOrder_PrepaidPayPalPaymentCancelled {
+            get {
+                return ResourceManager.GetString("CannotCreateOrder_PrepaidPayPalPaymentCancelled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This promotion does not applies to future booking.
+        /// </summary>
+        public static string CannotCreateOrder_PromotionAppliesToCurrentBookingOnly {
+            get {
+                return ResourceManager.GetString("CannotCreateOrder_PromotionAppliesToCurrentBookingOnly", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This promotion applies to future booking only.
+        /// </summary>
+        public static string CannotCreateOrder_PromotionAppliesToFutureBookingOnly {
+            get {
+                return ResourceManager.GetString("CannotCreateOrder_PromotionAppliesToFutureBookingOnly", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to There is no promotion associated to this code.
+        /// </summary>
+        public static string CannotCreateOrder_PromotionDoesNotExist {
+            get {
+                return ResourceManager.GetString("CannotCreateOrder_PromotionDoesNotExist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This promotion has expired.
+        /// </summary>
+        public static string CannotCreateOrder_PromotionHasExpired {
+            get {
+                return ResourceManager.GetString("CannotCreateOrder_PromotionHasExpired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Maximum number of uses has been reached for this promotion.
+        /// </summary>
+        public static string CannotCreateOrder_PromotionHasReachedMaxUsage {
+            get {
+                return ResourceManager.GetString("CannotCreateOrder_PromotionHasReachedMaxUsage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This promotion is not active.
+        /// </summary>
+        public static string CannotCreateOrder_PromotionIsNotActive {
+            get {
+                return ResourceManager.GetString("CannotCreateOrder_PromotionIsNotActive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You must select Card On File to use a promotion..
+        /// </summary>
+        public static string CannotCreateOrder_PromotionMustUseCardOnFile {
+            get {
+                return ResourceManager.GetString("CannotCreateOrder_PromotionMustUseCardOnFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You must select Card On File or PayPal to use a promotion..
+        /// </summary>
+        public static string CannotCreateOrder_PromotionMustUseCardOnFileOrPayPal {
+            get {
+                return ResourceManager.GetString("CannotCreateOrder_PromotionMustUseCardOnFileOrPayPal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You must select PayPal to use a promotion..
+        /// </summary>
+        public static string CannotCreateOrder_PromotionMustUsePayPal {
+            get {
+                return ResourceManager.GetString("CannotCreateOrder_PromotionMustUsePayPal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This promotion is not available at this time.
+        /// </summary>
+        public static string CannotCreateOrder_PromotionNotAvailableAtThisTime {
+            get {
+                return ResourceManager.GetString("CannotCreateOrder_PromotionNotAvailableAtThisTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This promotion is not available for this day of the week.
+        /// </summary>
+        public static string CannotCreateOrder_PromotionNotAvailableForThisDayOfTheWeek {
+            get {
+                return ResourceManager.GetString("CannotCreateOrder_PromotionNotAvailableForThisDayOfTheWeek", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This promotion has not started yet.
+        /// </summary>
+        public static string CannotCreateOrder_PromotionNotStartedYet {
+            get {
+                return ResourceManager.GetString("CannotCreateOrder_PromotionNotStartedYet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You are not allowed to use this promotion.
+        /// </summary>
+        public static string CannotCreateOrder_PromotionUserNotAllowed {
+            get {
+                return ResourceManager.GetString("CannotCreateOrder_PromotionUserNotAllowed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This account is not supported in a different market..
+        /// </summary>
+        public static string CannotCreateOrderChargeAccountNotSupportedInRoaming {
+            get {
+                return ResourceManager.GetString("CannotCreateOrderChargeAccountNotSupportedInRoaming", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to This account is not supported by the web site..
         /// </summary>
-        public static string CannotCreateOrderChargeAccountNotSupported {
+        public static string CannotCreateOrderChargeAccountNotSupportedOnWeb {
             get {
-                return ResourceManager.GetString("CannotCreateOrderChargeAccountNotSupported", resourceCulture);
+                return ResourceManager.GetString("CannotCreateOrderChargeAccountNotSupportedOnWeb", resourceCulture);
             }
         }
         
@@ -111,6 +300,78 @@ namespace apcurium.MK.Booking.Resources {
         public static string ChargeAccount {
             get {
                 return ResourceManager.GetString("ChargeAccount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Order cannot be created. Please try again or call us..
+        /// </summary>
+        public static string CreateOrder_CannotCreateInIbs {
+            get {
+                return ResourceManager.GetString("CreateOrder_CannotCreateInIbs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Order cannot be created. The charge account information is invalid. Please try again..
+        /// </summary>
+        public static string CreateOrder_CannotCreateInIbs_10000 {
+            get {
+                return ResourceManager.GetString("CreateOrder_CannotCreateInIbs_10000", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Order cannot be created. The specified Pickup address lies outside the regular service area..
+        /// </summary>
+        public static string CreateOrder_CannotCreateInIbs_1002 {
+            get {
+                return ResourceManager.GetString("CreateOrder_CannotCreateInIbs_1002", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to We apologize but unfortunately we do not have any reservations available for that time period..
+        /// </summary>
+        public static string CreateOrder_CannotCreateInIbs_1300 {
+            get {
+                return ResourceManager.GetString("CreateOrder_CannotCreateInIbs_1300", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Order cannot be created. The specified Destination address lies outside the regular service area..
+        /// </summary>
+        public static string CreateOrder_CannotCreateInIbs_1452 {
+            get {
+                return ResourceManager.GetString("CreateOrder_CannotCreateInIbs_1452", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Order cannot be created. Your account has been disabled..
+        /// </summary>
+        public static string CreateOrder_CannotCreateInIbs_3000 {
+            get {
+                return ResourceManager.GetString("CreateOrder_CannotCreateInIbs_3000", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Order cannot be created. Your account is currently inactive..
+        /// </summary>
+        public static string CreateOrder_CannotCreateInIbs_7000 {
+            get {
+                return ResourceManager.GetString("CreateOrder_CannotCreateInIbs_7000", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Processing your order....
+        /// </summary>
+        public static string CreateOrder_WaitingForIbs {
+            get {
+                return ResourceManager.GetString("CreateOrder_WaitingForIbs", resourceCulture);
             }
         }
         
@@ -183,6 +444,15 @@ namespace apcurium.MK.Booking.Resources {
         public static string Email_Body_ChargeType {
             get {
                 return ResourceManager.GetString("Email_Body_ChargeType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Your &lt;b&gt;{{ CreditCardCompany }}&lt;/b&gt; credit card ending by &lt;b&gt;{{ Last4Digits }}&lt;/b&gt; has been deactivated because the payment of your last ride was declined. To be able to use it again, open {{ ApplicationName }} on your smart phone and go to the Payment screen to settle any overdue payment..
+        /// </summary>
+        public static string Email_Body_CreditCardDeactivatedLine {
+            get {
+                return ResourceManager.GetString("Email_Body_CreditCardDeactivatedLine", resourceCulture);
             }
         }
         
@@ -385,6 +655,33 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Promo Code.
+        /// </summary>
+        public static string Email_Body_Promo {
+            get {
+                return ResourceManager.GetString("Email_Body_Promo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Congratulations! You are now eligible to use the &quot;{{ PromotionName }}&quot; promotion. Use code &lt;b&gt;{{ PromotionCode }}&lt;/b&gt; when booking your next ride to redeem it..
+        /// </summary>
+        public static string Email_Body_PromotionUnlockedLine1 {
+            get {
+                return ResourceManager.GetString("Email_Body_PromotionUnlockedLine1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This promotion is only valid until {{ ExpirationDate }} {{ ExpirationTime }}..
+        /// </summary>
+        public static string Email_Body_PromotionUnlockedLine2 {
+            get {
+                return ResourceManager.GetString("Email_Body_PromotionUnlockedLine2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Receipt.
         /// </summary>
         public static string Email_Body_Receipt {
@@ -574,11 +871,29 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {{ ApplicationName }} - Your credit card has been deactivated.
+        /// </summary>
+        public static string Email_Subject_CreditCardDeactivated {
+            get {
+                return ResourceManager.GetString("Email_Subject_CreditCardDeactivated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {{ ApplicationName }} - Your password has been reset.
         /// </summary>
         public static string Email_Subject_PasswordReset {
             get {
                 return ResourceManager.GetString("Email_Subject_PasswordReset", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {{ ApplicationName }} - New Promotion Available!.
+        /// </summary>
+        public static string Email_Subject_PromotionUnlocked {
+            get {
+                return ResourceManager.GetString("Email_Subject_PromotionUnlocked", resourceCulture);
             }
         }
         
@@ -691,7 +1006,7 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Fare will be paid using the credit card on file.
+        ///   Looks up a localized string similar to Fare will be paid using the selected payment method.
         /// </summary>
         public static string OrderStatus_wosLOADEDAutoPairing {
             get {
@@ -835,6 +1150,33 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to PayPal.
+        /// </summary>
+        public static string PayPal {
+            get {
+                return ResourceManager.GetString("PayPal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Taxi booking.
+        /// </summary>
+        public static string PayPalWebItemDescription {
+            get {
+                return ResourceManager.GetString("PayPalWebItemDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Taxi ride of amount {0}.
+        /// </summary>
+        public static string PayPalWebPaymentDescription {
+            get {
+                return ResourceManager.GetString("PayPalWebPaymentDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Due to high demand, no cars are available right now. Do you want to book with {0} instead?.
         /// </summary>
         public static string PushNotification_ChangeNetworkCompany {
@@ -871,11 +1213,56 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The ride #{0} will be paid automatically at the end of the trip using your linked PayPal account and using your default tip of {2}%.
+        /// </summary>
+        public static string PushNotification_OrderPairingSuccessfulPayPal {
+            get {
+                return ResourceManager.GetString("PushNotification_OrderPairingSuccessfulPayPal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The ride #{0} will be paid at the end of the trip using your PayPal account. If you&apos;re in the wrong car, choose the Pay in Car option below to ensure you are not charged for the ride..
+        /// </summary>
+        public static string PushNotification_OrderPairingSuccessfulPayPalUnpair {
+            get {
+                return ResourceManager.GetString("PushNotification_OrderPairingSuccessfulPayPalUnpair", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The ride #{0} will be paid at the end of the trip using your credit card on file. If you&apos;re in the wrong car, choose the Pay in Car option below to ensure you are not charged for the ride. .
+        /// </summary>
+        public static string PushNotification_OrderPairingSuccessfulUnpair {
+            get {
+                return ResourceManager.GetString("PushNotification_OrderPairingSuccessfulUnpair", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reminder: If you&apos;re in the wrong car, choose the Pay in Car option below to ensure you are not charged for the ride..
+        /// </summary>
+        public static string PushNotification_OrderUnpairingTimeOutWarning {
+            get {
+                return ResourceManager.GetString("PushNotification_OrderUnpairingTimeOutWarning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Your credit card was successfully charged a total of {0}. This amount includes both fare and tip..
         /// </summary>
         public static string PushNotification_PaymentReceived {
             get {
                 return ResourceManager.GetString("PushNotification_PaymentReceived", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Congratulations! You are now eligible to use the &quot;{0}&quot; promotion. Use code {1} when booking your next ride to redeem it..
+        /// </summary>
+        public static string PushNotification_PromotionUnlocked {
+            get {
+                return ResourceManager.GetString("PushNotification_PromotionUnlocked", resourceCulture);
             }
         }
         
@@ -912,6 +1299,159 @@ namespace apcurium.MK.Booking.Resources {
         public static string PushNotification_wosTIMEOUT {
             get {
                 return ResourceManager.GetString("PushNotification_wosTIMEOUT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please contact {0} at {1} for further assistance..
+        /// </summary>
+        public static string ServiceError_ErrorCreatingOrderMessage {
+            get {
+                return ResourceManager.GetString("ServiceError_ErrorCreatingOrderMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The order cannot be created..
+        /// </summary>
+        public static string ServiceError_ErrorCreatingOrderMessage_NoCall {
+            get {
+                return ResourceManager.GetString("ServiceError_ErrorCreatingOrderMessage_NoCall", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid account number.
+        /// </summary>
+        public static string ServiceErrorAccountCharge_InvalidAccountNumber {
+            get {
+                return ResourceManager.GetString("ServiceErrorAccountCharge_InvalidAccountNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Message.
+        /// </summary>
+        public static string ServiceErrorCallTitle {
+            get {
+                return ResourceManager.GetString("ServiceErrorCallTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This email is already in use..
+        /// </summary>
+        public static string ServiceErrorCreateAccount_AccountAlreadyExist {
+            get {
+                return ResourceManager.GetString("ServiceErrorCreateAccount_AccountAlreadyExist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The confirmation code is incorrect..
+        /// </summary>
+        public static string ServiceErrorCreateAccount_InvalidConfirmationToken {
+            get {
+                return ResourceManager.GetString("ServiceErrorCreateAccount_InvalidConfirmationToken", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No Credit Card On File..
+        /// </summary>
+        public static string ServiceErrorCreateOrder_CardOnFileButNoCreditCard {
+            get {
+                return ResourceManager.GetString("ServiceErrorCreateOrder_CardOnFileButNoCreditCard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Order cannot be created, invalid provider. Please contact {0} at {1} for further assistance..
+        /// </summary>
+        public static string ServiceErrorCreateOrder_InvalidProvider {
+            get {
+                return ResourceManager.GetString("ServiceErrorCreateOrder_InvalidProvider", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Order cannot be created, invalid provider..
+        /// </summary>
+        public static string ServiceErrorCreateOrder_InvalidProvider_NoCall {
+            get {
+                return ResourceManager.GetString("ServiceErrorCreateOrder_InvalidProvider_NoCall", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No fare estimate available for the ride. Please contact {0} at {1} for further assistance..
+        /// </summary>
+        public static string ServiceErrorCreateOrder_NoFareEstimateAvailable {
+            get {
+                return ResourceManager.GetString("ServiceErrorCreateOrder_NoFareEstimateAvailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No fare estimate available for the ride..
+        /// </summary>
+        public static string ServiceErrorCreateOrder_NoFareEstimateAvailable_NoCall {
+            get {
+                return ResourceManager.GetString("ServiceErrorCreateOrder_NoFareEstimateAvailable_NoCall", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Order cannot be created, no provider specified. Please try again or call us..
+        /// </summary>
+        public static string ServiceErrorCreateOrder_NoProvider {
+            get {
+                return ResourceManager.GetString("ServiceErrorCreateOrder_NoProvider", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Order cannot be created, invalid vehicle type. Please try again or call us..
+        /// </summary>
+        public static string ServiceErrorCreateOrder_VehiculeType {
+            get {
+                return ResourceManager.GetString("ServiceErrorCreateOrder_VehiculeType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to An error occurred. Please try again..
+        /// </summary>
+        public static string ServiceErrorDefaultMessage {
+            get {
+                return ResourceManager.GetString("ServiceErrorDefaultMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No account with this email has been found..
+        /// </summary>
+        public static string ServiceErrorResetPassword_AccountNotFound {
+            get {
+                return ResourceManager.GetString("ServiceErrorResetPassword_AccountNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Your session has expired, please login to continue..
+        /// </summary>
+        public static string ServiceErrorUnauthorized {
+            get {
+                return ResourceManager.GetString("ServiceErrorUnauthorized", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The current password is not valid..
+        /// </summary>
+        public static string ServiceErrorUpdatePassword_NotSame {
+            get {
+                return ResourceManager.GetString("ServiceErrorUpdatePassword_NotSame", resourceCulture);
             }
         }
         

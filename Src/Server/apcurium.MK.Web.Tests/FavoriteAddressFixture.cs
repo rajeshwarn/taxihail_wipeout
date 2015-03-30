@@ -144,7 +144,7 @@ namespace apcurium.MK.Web.Tests
         {
             var sut = new AccountServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
 
-            Assert.Throws<WebServiceException>(async () => await sut.UpdateFavoriteAddress(new SaveAddress
+            var ex = Assert.Throws<AggregateException>(() => sut.UpdateFavoriteAddress(new SaveAddress
                 {
                     Id = _knownAddressId,
                     Address = new Address
@@ -156,7 +156,10 @@ namespace apcurium.MK.Web.Tests
                         Latitude = double.NaN,
                         Longitude = double.NaN
                     }
-                }));
+                }).Wait());
+
+            Assert.That(ex.InnerException != null);
+            Assert.AreEqual("InclusiveBetween", ex.InnerException.Message);
         }
     }
 }

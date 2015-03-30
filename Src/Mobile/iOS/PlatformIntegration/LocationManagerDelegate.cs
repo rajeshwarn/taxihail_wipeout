@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Cirrious.CrossCore.Touch;
 using MK.Common.iOS.Patterns;
-using MonoTouch.CoreLocation;
+using CoreLocation;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using TinyIoC;
 using apcurium.MK.Common.Diagnostic;

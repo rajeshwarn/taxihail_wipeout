@@ -16,29 +16,23 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
         IIntegrationEventHandler,
         IEventHandler<OrderStatusChanged>
     {
-        private readonly IPaymentService _paymentService;
         private readonly INotificationService _notificationService;
-        private readonly IServerSettings _serverSettings;
         private readonly IOrderDao _orderDao;
         private readonly ICreditCardDao _creditCardDao;
         private readonly IAccountDao _accountDao;
-        private readonly IIBSServiceProvider _ibsServiceProvider;
+        private readonly IPaymentService _paymentFacadeService;
 
-        public OrderPairingManager(IPaymentService paymentService, 
-            INotificationService notificationService, 
-            IServerSettings serverSettings,
+        public OrderPairingManager(INotificationService notificationService, 
             IOrderDao orderDao,
             ICreditCardDao creditCardDao,
             IAccountDao accountDao,
-            IIBSServiceProvider ibsServiceProvider)
+            IPaymentService paymentFacadeService)
         {
-            _paymentService = paymentService;
             _notificationService = notificationService;
-            _serverSettings = serverSettings;
             _orderDao = orderDao;
             _creditCardDao = creditCardDao;
             _accountDao = accountDao;
-            _ibsServiceProvider = ibsServiceProvider;
+            _paymentFacadeService = paymentFacadeService;
         }
 
         public void Handle(OrderStatusChanged @event)
@@ -47,38 +41,29 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             {
                 case VehicleStatuses.Common.Loaded:
                 {
-                    var order = _orderDao.FindById(@event.SourceId);
-                    var creditCardAssociatedToAccount = _creditCardDao.FindByAccountId(@event.Status.AccountId).FirstOrDefault();
+                    var orderStatus = _orderDao.FindOrderStatusById(@event.SourceId);
+                    if (orderStatus.IsPrepaid)
+                    {
+                        // No need to pair, order was already paid
+                        return;
+                    }
 
-                    if (_serverSettings.GetPaymentSettings().AutomaticPayment
-                        && _serverSettings.GetPaymentSettings().AutomaticPaymentPairing
-                        && _serverSettings.GetPaymentSettings().PaymentMode != PaymentMethod.RideLinqCmt
-                        && order.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id
-                        && creditCardAssociatedToAccount != null)        // Only send notification if using card on file
+                    var order = _orderDao.FindById(@event.SourceId);
+
+                    if (order.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id
+                        || order.Settings.ChargeTypeId == ChargeTypes.PayPal.Id)
                     {
                         var account = _accountDao.FindById(@event.Status.AccountId);
+                        var creditCard = _creditCardDao.FindByAccountId(account.Id).FirstOrDefault();
+                        var cardToken = creditCard != null ? creditCard.Token : null;
 
-                        var response = _paymentService.Pair(@event.SourceId, creditCardAssociatedToAccount.Token, account.DefaultTipPercent, null);
-                        if (response.IsSuccessful)
-                        {
-                            var ibsAccountId = _accountDao.GetIbsAccountId(order.AccountId, null);
-                            if (!UpdateOrderPaymentType(ibsAccountId.Value, order.IBSOrderId.Value))
-                            {
-                                response.IsSuccessful = false;
-                                _paymentService.VoidPreAuthorization(@event.SourceId);
-                            }
-                        }
+                        var response = _paymentFacadeService.Pair(@event.SourceId, cardToken, account.DefaultTipPercent);
 
-                        _notificationService.SendAutomaticPairingPush(@event.SourceId, account.DefaultTipPercent, creditCardAssociatedToAccount.Last4Digits, response.IsSuccessful);
+                        _notificationService.SendAutomaticPairingPush(@event.SourceId, account.DefaultTipPercent, response.IsSuccessful);
                     } 
                 }
                 break;
             }
-        }
-
-        private bool UpdateOrderPaymentType(int ibsAccountId, int ibsOrderId, string companyKey = null)
-        {
-            return _ibsServiceProvider.Booking(companyKey).UpdateOrderPaymentType(ibsAccountId, ibsOrderId, _serverSettings.ServerData.IBS.PaymentTypeCardOnFileId);
         }
     }
 }
