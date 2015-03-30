@@ -451,7 +451,9 @@
     <Compile Include="Controls\Widgets\VehicleTypeAndEstimateControl.cs" />
     <Compile Include="Helpers\DrawableHelper.cs" />
     <Compile Include="Controls\Widgets\OrderEdit.cs" />
-    <AndroidResource Include="Resources\Layout\SubView_OrderEdit.axml" />
+    <AndroidResource Include="Resources\Layout\SubView_OrderEdit.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
     <Compile Include="Extensions\MvvmCrossExtensions.cs" />
     <AndroidResource Include="Resources\Drawable\account.png" />
     <AndroidResource Include="Resources\Drawable\apartment.png" />
@@ -817,6 +819,8 @@
     </AndroidResource>
     <AndroidResource Include="Resources\Layout\TogglableSettingsListItem.axml" />
     <AndroidResource Include="Resources\Layout\View_UserTaxiHailNetworkSettings.axml" />
-    <AndroidResource Include="Resources\Layout\PromotionListItem.axml" />
+    <AndroidResource Include="Resources\Layout\PromotionListItem.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
   </ItemGroup>
 </Project>

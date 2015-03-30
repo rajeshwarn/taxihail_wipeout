@@ -229,23 +229,23 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dip"
                     android:layout_marginTop="12dip">
-                    <apcurium.mk.booking.mobile.client.controls.widgets.EditTextEntry
-                        android:id="@+id/txtPromoCode"
-                        android:imeOptions="actionDone"
-                        android:hint="@string/PromoCodeLabel"
-                        android:layout_width="fill_parent"
-                        android:layout_height="@dimen/HeightEditTextFlat"
-                        android:background="#f2f2f2"
-                        android:singleLine="true" />
+                    <Button
+                      android:id="@+id/btnPromo"
+                      style="@style/ButtonActionGrayStyle"
+                      android:layout_width="fill_parent"
+                      android:layout_height="@dimen/HeightButton"
+                      android:textSize="19dip"
+                      local:MvxBind="Click ApplyPromotion; Text PromotionButtonText" />
                     <ImageButton
-                        android:id="@+id/btnPromo"
-                        android:background="@null"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:src="@drawable/promo"
-                        android:layout_centerVertical="true"
-                        android:padding="15dp" />
+		                    android:id="@+id/btnPromo"
+		                    android:background="@null"
+		                    android:layout_width="wrap_content"
+		                    android:layout_height="wrap_content"
+		                    android:layout_alignParentLeft="true"
+		                    android:src="@drawable/promo"
+		                    android:layout_centerVertical="true"
+		                    android:padding="15dp"
+                        local:MvxBind="Visibility PromoCode, Converter=HasValueToVisibility" />
                 </RelativeLayout>
                 <apcurium.mk.booking.mobile.client.controls.widgets.EditTextEntry
                     android:background="#f2f2f2"

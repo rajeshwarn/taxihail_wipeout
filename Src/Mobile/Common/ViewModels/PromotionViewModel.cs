@@ -1,4 +1,3 @@
-using System.Linq;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using apcurium.MK.Booking.Api.Contract.Resources;
@@ -26,9 +25,35 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             LoadActivePromotions();
         }
 
+        private string _promotionCode;
+        public string PromotionCode
+        {
+            get { return _promotionCode; }
+            set
+            {
+                if (_promotionCode != value)
+                {
+                    _promotionCode = value;
+                    RaisePropertyChanged();
+                }
+            }
+        }
+
         public ObservableCollection<PromotionItemViewModel> ActivePromotions { get; set; }
 
         public ICommand ApplyPromotion
+        {
+            get
+            {
+                return this.GetCommand(() =>
+                {
+                    _orderWorkflowService.SetPromoCode(PromotionCode);
+                    Close(this);
+                });
+            }
+        }
+
+        public ICommand SelectPromotion
         {
             get
             {
@@ -50,7 +75,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
                 foreach (var activePromotion in activePromotions)
                 {
-                    ActivePromotions.Add(new PromotionItemViewModel(activePromotion, ApplyPromotion));
+                    ActivePromotions.Add(new PromotionItemViewModel(activePromotion, SelectPromotion));
                 }
 
                 RaisePropertyChanged(() => ActivePromotions);
