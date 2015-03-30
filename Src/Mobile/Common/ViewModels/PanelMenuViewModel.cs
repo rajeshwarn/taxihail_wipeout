@@ -75,12 +75,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 	    private async Task RefreshPromoCodeCount()
 	    {
 	        var promoCodes = await _promotionService.GetActivePromotions();
-	        if (promoCodes.Any())
-	        {
-				PromoCodeAlert = promoCodes.Length;
 
-				RefreshMenuBadges();
-	        }
+            PromoCodeAlert = promoCodes.Length;
+            RefreshMenuBadges();
 	    }
 
 		partial void InitMenuList();
@@ -186,6 +183,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 if (value != _menuIsOpen) 
                 {
                     _menuIsOpen = value;
+
+                    if (value)
+                    {
+#pragma warning disable 4014
+                        // We don't need to wait for this to finish.
+                        RefreshPromoCodeCount();
+#pragma warning restore 4014
+                    }
+
 					RaisePropertyChanged ();
                 }
             }
