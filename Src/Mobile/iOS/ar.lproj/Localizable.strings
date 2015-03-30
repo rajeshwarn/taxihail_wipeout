@@ -587,7 +587,7 @@
 "UnpairWarningCancelButton"="Pay in car";
 "UnpairWarningMessageWithPromo"="If you decide to pay in car, you will not be able to use the promotion";
 "AccountPaymentCustomerNumberRequiredMessage"="Please enter a valid rider number";
-"PromoDescriptionCode"="Use code {0} at the time of booking or press the button below";
+"PromoDescriptionCode"="Enter code {0} at the time of booking or press the button below";
 "RideSettingsCustomerNumber"="Account Rider Number";
 "AccountPaymentCustomerNumberRequiredTitle"="Account Rider Number required";
 "PromoApply"="Apply";
