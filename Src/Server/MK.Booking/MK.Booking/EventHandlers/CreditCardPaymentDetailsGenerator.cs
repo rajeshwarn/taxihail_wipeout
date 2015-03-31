@@ -142,16 +142,13 @@ namespace apcurium.MK.Booking.EventHandlers
             using (var context = _contextFactory.Invoke())
             {
                 var payment = context.Set<OrderPaymentDetail>().FirstOrDefault(p => p.OrderId == @event.SourceId);
-                if (payment == null)
+                if (payment != null)
                 {
-                    // No payment
-                    return;
+                    payment.IsRefunded = @event.IsSuccessful;
+                    payment.Error = @event.Message;
+
+                    context.Save(payment);
                 }
-
-                payment.IsRefunded = @event.IsSuccessful;
-                payment.Error = @event.Message;
-
-                context.Save(payment);
             }
         }
     }

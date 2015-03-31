@@ -185,20 +185,20 @@
         </div>
     </div>
     <div class="clearfix">
-        <div class="control-group left-control-group" style="width: 50%">
+        <div class="control-group left-control-group" style="width: 55%">
             @Html.LabelFor(x => x.TriggerSettings.Type, new { @class = "control-label" })
             <div class="controls">
-                @Html.EnumDropDownListFor(x => x.TriggerSettings.Type, new { @id = "triggerTypeDropDown", @class = "input-medium" })
+                @Html.EnumDropDownListFor(x => x.TriggerSettings.Type, new { @id = "triggerTypeDropDown" })
             </div>
         </div>
-        <div class="control-group right-control-group" id="rideCountTriggerGroup" style="width: 50%">
+        <div class="control-group right-control-group" id="rideCountTriggerGroup" style="width: 45%">
             @Html.LabelFor(x => x.TriggerSettings.RideCount, new { @class = "control-label" })
             <div class="controls" style="margin-left: 20px;">
                 @Html.TextBoxFor(x => x.TriggerSettings.RideCount, new { @placeholder = "Number of Rides", @class = "input-small" })
                 @Html.ValidationMessageFor(x => x.TriggerSettings.RideCount)
             </div>
         </div>
-        <div class="control-group right-control-group" id="amountSpentTriggerGroup" style="width: 50%">
+        <div class="control-group right-control-group" id="amountSpentTriggerGroup" style="width: 45%">
             @Html.LabelFor(x => x.TriggerSettings.AmountSpent, new { @class = "control-label" })
             <div class="controls" style="margin-left: 20px;">
                 @Html.TextBoxFor(x => x.TriggerSettings.AmountSpent, new { @placeholder = "Amount Spent", @class = "input-small" })
@@ -206,7 +206,7 @@
             </div>
         </div>
 
-        <div class="control-group right-control-group" id="applyToExistingTriggerGroup" style="width: 50%">
+        <div class="control-group right-control-group" id="applyToExistingTriggerGroup" style="width: 45%">
             @Html.LabelFor(x => x.TriggerSettings.ApplyToExisting, new { @class = "control-label" })
             <div class="controls">
                 @Html.DropDownListFor(x => x.TriggerSettings.ApplyToExisting,
