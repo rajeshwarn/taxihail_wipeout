@@ -279,7 +279,8 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
         {
             var promotions = _promotionDao.GetAll()
                 .Select(p => new PromoCode(p))
-                .Where(p => p.TriggerSettings.Type == PromotionTriggerTypes.CustomerSupport);
+                .Where(p => p.Active
+                    && p.TriggerSettings.Type == PromotionTriggerTypes.CustomerSupport);
 
             return View(promotions);
         }
