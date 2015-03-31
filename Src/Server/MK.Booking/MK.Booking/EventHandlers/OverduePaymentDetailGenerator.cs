@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data.SqlTypes;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.ReadModel;
@@ -24,6 +25,16 @@ namespace apcurium.MK.Booking.EventHandlers
                 var overduePayment = context.Find<OverduePaymentDetail>(@event.OrderId);
                 if (overduePayment == null)
                 {
+                    DateTime? transactionDate = null;
+
+                    // Make sure transaction date is a valid SQL date time
+                    if (@event.TransactionDate.HasValue
+                        && @event.TransactionDate.Value > SqlDateTime.MinValue
+                        && @event.TransactionDate.Value < SqlDateTime.MaxValue)
+                    {
+                        transactionDate = @event.TransactionDate.Value;
+                    }
+
                     context.Save(new OverduePaymentDetail
                     {
                         OrderId = @event.OrderId,
@@ -31,7 +42,7 @@ namespace apcurium.MK.Booking.EventHandlers
                         AccountId = @event.SourceId,
                         OverdueAmount = @event.Amount,
                         TransactionId = @event.TransactionId,
-                        TransactionDate = @event.TransactionDate
+                        TransactionDate = transactionDate
                     });
                 }
             }

@@ -105,12 +105,15 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             {
                 var response = _paymentService.RefundPayment(@event.SourceId);
 
-                _commandBus.Send(new UpdateRefundedOrder
+                if (response.IsSuccessful)
                 {
-                    OrderId = @event.SourceId,
-                    IsSuccessful = response.IsSuccessful,
-                    Message = response.Message
-                });
+                    _commandBus.Send(new UpdateRefundedOrder
+                    {
+                        OrderId = @event.SourceId,
+                        IsSuccessful = response.IsSuccessful,
+                        Message = response.Message
+                    });
+                }
             }
             else
             {
@@ -140,12 +143,15 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             {
                 var response = _paymentService.RefundPayment(@event.SourceId);
 
-                _commandBus.Send(new UpdateRefundedOrder
+                if (response.IsSuccessful)
                 {
-                    OrderId = @event.SourceId,
-                    IsSuccessful = response.IsSuccessful,
-                    Message = response.Message
-                });
+                    _commandBus.Send(new UpdateRefundedOrder
+                    {
+                        OrderId = @event.SourceId,
+                        IsSuccessful = response.IsSuccessful,
+                        Message = response.Message
+                    });
+                }
             }
             else
             {

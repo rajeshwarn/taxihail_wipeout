@@ -144,7 +144,8 @@ namespace apcurium.MK.Booking.EventHandlers
                 var payment = context.Set<OrderPaymentDetail>().FirstOrDefault(p => p.OrderId == @event.SourceId);
                 if (payment == null)
                 {
-                    throw new InvalidOperationException("Payment not found");
+                    // No payment
+                    return;
                 }
 
                 payment.IsRefunded = @event.IsSuccessful;
