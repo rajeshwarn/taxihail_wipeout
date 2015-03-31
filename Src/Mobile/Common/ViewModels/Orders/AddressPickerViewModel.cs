@@ -112,14 +112,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
 				var filteredPlaces = await _placesService.GetFilteredPlacesList(filter);
 
-
-				if (filteredPlaces.Length > 1)
-				{
-					_defaultNearbyPlaces = ConvertToAddressViewModel(filteredPlaces, AddressType.Places);
-
-					AllAddresses.AddRange(_defaultNearbyPlaces);
-				}
-				else if (!filteredPlaces.Any())
+				if (!filteredPlaces.Any())
 				{
 					var localize = this.Services().Localize;
 					this.Services().Message.ShowMessage(
@@ -127,9 +120,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 						localize["FilteredAddresses_Error_Message"],
 						() => Cancel.ExecuteIfPossible());
 				}
+				else if (filteredPlaces.Length == 1)
+				{ 
+					SelectAddress(filteredPlaces.FirstOrDefault());
+				}
 				else
 				{
-					SelectAddress(filteredPlaces.FirstOrDefault());
+					_defaultNearbyPlaces = ConvertToAddressViewModel(filteredPlaces, AddressType.Places);
+
+					AllAddresses.AddRange(_defaultNearbyPlaces);
 				}
 			}
 	    }
