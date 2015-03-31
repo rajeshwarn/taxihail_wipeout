@@ -9,7 +9,7 @@ namespace apcurium.MK.Booking.Maps.Geo
         private const double ORDER_WHEN_NAME_PRESENT = -.01d;
         private const double DEFAULT_ORDER = 0d;
 
-        public static double GetOrderByRelevance(Address adrs, string name, double? latitude, double? longitude)
+        public static double GetRelevance(Address adrs, string name, double? latitude, double? longitude)
         {
             var nameToUse = (name ?? string.Empty).ToLowerInvariant();
 
