@@ -86,7 +86,8 @@ namespace apcurium.MK.Booking.Api.Services
                 string availableVehiclesMarket;
                 IList<int> availableVehiclesFleetIds = null;
 
-                if (!market.HasValue())
+                if (!market.HasValue()
+                    && _serverSettings.ServerData.AvailableVehiclesMode == AvailableVehiclesModes.HoneyBadger)
                 {
                     // LOCAL market Honey Badger
                     availableVehiclesMarket = _serverSettings.ServerData.AvailableVehiclesMarket;
