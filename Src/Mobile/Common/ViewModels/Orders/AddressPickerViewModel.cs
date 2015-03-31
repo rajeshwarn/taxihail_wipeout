@@ -119,6 +119,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
 					AllAddresses.AddRange(_defaultNearbyPlaces);
 				}
+				else if (!filteredPlaces.Any())
+				{
+					var localize = this.Services().Localize;
+					this.Services().Message.ShowMessage(
+						localize["FilteredAddresses_Error_Title"],
+						localize["FilteredAddresses_Error_Message"],
+						() => Cancel.ExecuteIfPossible());
+				}
 				else
 				{
 					SelectAddress(filteredPlaces.FirstOrDefault());
