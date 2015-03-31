@@ -90,7 +90,7 @@ namespace apcurium.MK.Booking.Maps.Impl
             return addressesGeocode
                 .Take(20)
                 .Concat(addressesPlaces.Take(20))
-                .OrderBy(p => AddressSortingHelper.GetPositionByRelevance(p, name, latitude, longitude))
+                .OrderBy(p => AddressSortingHelper.GetOrderByRelevance(p, name, latitude, longitude))
                 .ToArray(); //todo Take 20!? api's consern
         }
     }

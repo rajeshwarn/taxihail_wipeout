@@ -6,7 +6,10 @@ namespace apcurium.MK.Booking.Maps.Geo
 {
     public static class AddressSortingHelper
     {
-        public static double GetPositionByRelevance(Address adrs, string name, double? latitude, double? longitude)
+        private const double ORDER_WHEN_NAME_PRESENT = -.01d;
+        private const double DEFAULT_ORDER = 0d;
+
+        public static double GetOrderByRelevance(Address adrs, string name, double? latitude, double? longitude)
         {
             var nameToUse = (name ?? string.Empty).ToLowerInvariant();
 
@@ -16,7 +19,7 @@ namespace apcurium.MK.Booking.Maps.Geo
 
             if (isNamePresentInAddress)
             {
-                return -.01d;
+                return ORDER_WHEN_NAME_PRESENT;
             }
 
             if (latitude.HasValue && longitude.HasValue)
@@ -24,7 +27,7 @@ namespace apcurium.MK.Booking.Maps.Geo
                 return Position.CalculateDistance(adrs.Latitude, adrs.Longitude, latitude.Value, longitude.Value);
             }
 
-            return 0d;
+            return DEFAULT_ORDER;
         }
     }
 }
