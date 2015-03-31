@@ -12,7 +12,6 @@ using apcurium.MK.Booking.MapDataProvider;
 using apcurium.MK.Booking.MapDataProvider.Resources;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Booking.MapDataProvider.Google.Resources;
-using MK.Common.Comparer;
 
 #endregion
 
@@ -63,7 +62,7 @@ namespace apcurium.MK.Booking.Maps.Impl
 
             var geoCodingService = new Geocoding(_geocoder, _appSettings, _popularAddressProvider, _logger);
 
-			var allResults = geoCodingService.Search(name, currentLanguage, geoResult).Distinct(new AddressEqualityComparer());
+            var allResults = geoCodingService.Search(name, currentLanguage, geoResult);
 
 // ReSharper disable CompareOfFloatsByEqualityOperator
             if (latitude.HasValue && longitude.HasValue && (latitude.Value != 0 || longitude.Value != 0))
