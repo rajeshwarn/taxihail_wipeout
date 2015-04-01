@@ -84,5 +84,7 @@
 	"AssignedEta" : "Votre véhicule est à {1} {2} et {0}",
     "NetworkFleetDispatchErrorTitle": "Erreur",
     "NetworkContactingNextDispatchDescription": "En attente de {0} ...",
-    "RefineAddress": "Affinez l'adresse en entrant un numéro de rue"
+    "RefineAddress": "Affinez l'adresse en entrant un numéro de rue",
+    "TokenizeInvalidCardInfos": "Les informations de la carte sont invalides",
+    "TokenizeGenericError": "Une erreur est survenue. Veuillez essayer de nouveau."
 }
