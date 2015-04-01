@@ -98,8 +98,7 @@ namespace apcurium.MK.Booking.Maps.Impl
             {
                 var places =
                     popularAddresses.Concat(googlePlaces.Select(ConvertToAddress))
-                        .OrderBy(
-                            p => Position.CalculateDistance(p.Latitude, p.Longitude, latitude.Value, longitude.Value))
+                        .OrderBy(p => AddressSortingHelper.GetRelevance(p, name, latitude, longitude))
                         .ToArray();
                 return places;
             }
