@@ -310,6 +310,8 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
 
                 if (userAccoundIds.Any() && promotionId.HasValue())
                 {
+                    ViewBag.Error = null;
+
                     _commandBus.Send(new AddUserToPromotionWhiteList
                     {
                         PromoId = promotionId,
