@@ -109,6 +109,16 @@
             this.$el.html(view.render().el);
         },
 
+        renderErrorMessage: function() {
+            var alert = new TaxiHail.AlertView({
+                message: TaxiHail.localize("TokenizeGenericError"),
+                type: 'error'
+            });
+
+            alert.on('ok', alert.remove, alert);
+            this.$('.errors').html(alert.render().el);
+        },
+
         savechanges: function (form) {
             var cardNumber = this.model.get('cardNumber');
             var expMonth = this.model.get('expirationMonth');
@@ -124,26 +134,37 @@
             this.model.tokenize(cardNumber, formattedExpMonth, expYear, cvv)
 	            .done(_.bind(function (tokenizedCard) {
 
-                    // Set up request fields
-	                this.model.set("token", tokenizedCard.cardOnFileToken);
-                    this.model.set("last4Digits", tokenizedCard.lastFour);
-	                this.model.set("creditCardCompany", tokenizedCard.cardType);
-	                //this.model.set("expirationMonth", this.model.get('expirationMonth'));
-	                //this.model.set("expirationYear", this.model.get('expirationYear'));
-	                //this.model.set("nameOnCard", this.model.get('nameOnCard'));
+	                if (tokenizedCard.isSuccessful) {
+	                    // Set up request fields
+	                    this.model.set("token", tokenizedCard.cardOnFileToken);
+	                    this.model.set("last4Digits", tokenizedCard.lastFour);
+	                    this.model.set("creditCardCompany", tokenizedCard.cardType);
 
-	                // Update card on file
-	                this.model.updateCreditCard()
-			            .done(_.bind(function () {
-	                        TaxiHail.auth.account.set('defaultCreditCard', 'tempId');
-			                this.renderConfirmationMessage();
-			            }, this))
-			            .fail(_.bind(function () {
-			                this.$(':submit').button('reset');
-			            }, this));
+	                    // Update card on file
+	                    this.model.updateCreditCard()
+                            .done(_.bind(function () {
+                                TaxiHail.auth.account.set('defaultCreditCard', 'tempId');
+                                this.renderConfirmationMessage();
+                            }, this))
+                            .fail(_.bind(function () {
+                                this.$(':submit').button('reset');
+	                            this.renderErrorMessage();
+	                    }, this));
+	                } else {
+	                    this.$(':submit').button('reset');
+
+	                    var alert = new TaxiHail.AlertView({
+	                        message: TaxiHail.localize("TokenizeInvalidCardInfos"),
+	                        type: 'error'
+	                    });
+
+	                    alert.on('ok', alert.remove, alert);
+	                    this.$('.errors').html(alert.render().el);
+	                }
 	            }, this))
 	            .fail(_.bind(function () {
 	                this.$(':submit').button('reset');
+	                this.renderErrorMessage();
 	            }, this));
         },
 

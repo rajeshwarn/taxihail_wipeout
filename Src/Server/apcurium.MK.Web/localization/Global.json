@@ -85,5 +85,7 @@
     "AssignedEta": "Your taxi is {0} and {1} {2} away",
     "NetworkFleetDispatchErrorTitle": "Error",
     "NetworkContactingNextDispatchDescription": "Contacting {0} ...",
-    "RefineAddress": "Refine the address by entering a street number"
+    "RefineAddress": "Refine the address by entering a street number",
+    "TokenizeInvalidCardInfos": "The card informations are invalid",
+    "TokenizeGenericError": "An unexpected error occured. Please try again."
 }
