@@ -1756,4 +1756,10 @@
   <data name="RideSettingsPayBack" xml:space="preserve">
     <value>PayBack</value>
   </data>
+    <data name="FilteredAddresses_Error_Title" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="FilteredAddresses_Error_Message" xml:space="preserve">
+    <value>There is currently no entries for this filter.</value>
+  </data>
 </root>

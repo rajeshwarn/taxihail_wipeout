@@ -596,3 +596,5 @@
 "InvalidPayBackErrorMessage"="The PayBack field must be all digits and must not exceed 10 characters in length";
 "NoPayBackErrorMessage"="The PayBack field is required";
 "RideSettingsPayBack"="PayBack";
+"FilteredAddresses_Error_Message"="There is currently no entries for this filter.";
+"FilteredAddresses_Error_Title"="Error";
