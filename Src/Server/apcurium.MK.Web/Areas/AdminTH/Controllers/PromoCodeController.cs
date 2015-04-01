@@ -327,12 +327,10 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                 {
                     var message = promotionId.HasValue()
                         ? string.Empty
-                        : "You must select a promotion to send to the customer. \r\n";
-
-                    var hasAccountIds = userAccoundIds.Any();
+                        : "You must select a promotion to send to the customer." + Environment.NewLine;
 
                     message = userAccoundIds.Any()
-                        ? message.Replace("\r\n", string.Empty)
+                        ? message.Replace(Environment.NewLine, string.Empty)
                         : message + "You must enter one or more valid customer email.";
 
                     ViewBag.Error = message;
