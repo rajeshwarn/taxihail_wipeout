@@ -14,8 +14,8 @@ namespace apcurium.MK.Booking.Maps.Geo
             var nameToUse = (name ?? string.Empty).ToLowerInvariant();
 
             var isNamePresentInAddress =
-                adrs.FriendlyName.SelectOrDefault(friendlyName => friendlyName.ToLowerInvariant().Contains(nameToUse)) ||
-                adrs.FullAddress.SelectOrDefault(fullAddress => fullAddress.ToLowerInvariant().Contains(nameToUse));
+                adrs.FriendlyName.SelectOrDefault(friendlyName => friendlyName.ToLowerInvariant().Contains(nameToUse))
+                || adrs.FullAddress.SelectOrDefault(fullAddress => fullAddress.ToLowerInvariant().Contains(nameToUse));
 
             if (isNamePresentInAddress)
             {
