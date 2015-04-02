@@ -17,7 +17,7 @@ namespace apcurium.MK.Booking.Commands
         public Guid Id { get; set; }
         public Guid AccountId { get; set; }
         public string RideLinQId { get; set; }
-        public DateTime? StartTime { get; set; }
+        public DateTime StartTime { get; set; }
         public string ClientLanguageCode { get; set; }
         public string UserAgent { get; set; }
         public string ClientVersion { get; set; }
