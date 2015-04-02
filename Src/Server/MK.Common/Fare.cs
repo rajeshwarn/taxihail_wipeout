@@ -31,7 +31,7 @@ namespace apcurium.MK.Common
             };
         }
 
-        public static decimal GetTipAmountFromTotalAmount(decimal totalAmount, int tipPercentage)
+        public static decimal GetTipAmountFromTotalIncludingTip(decimal totalAmount, int tipPercentage)
         {
             var tip = Convert.ToDecimal(tipPercentage) / 100;
             var amountWithoutTip = Math.Round(totalAmount/(1 + tip), 2);

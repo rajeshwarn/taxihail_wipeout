@@ -55,6 +55,7 @@ namespace apcurium.MK.Web
         protected string PayPalMerchantId { get; private set; }
         protected bool IsCreditCardMandatory { get; private set; }
         protected bool? IsPayBackRegistrationFieldRequired { get; private set; }
+        protected int DefaultTipPercentage { get; private set; }
         
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -76,6 +77,8 @@ namespace apcurium.MK.Web
 
             DirectionTarifMode = config.ServerData.Direction.TarifMode.ToString("G");
             DirectionNeedAValidTarif = config.ServerData.Direction.NeedAValidTarif;
+
+            DefaultTipPercentage = config.ServerData.DefaultTipPercentage;
 
             ApplicationVersion = Assembly.GetAssembly(typeof (_default)).GetName().Version.ToString();
 

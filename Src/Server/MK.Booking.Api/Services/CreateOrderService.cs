@@ -260,7 +260,7 @@ namespace apcurium.MK.Booking.Api.Services
             }
             
             // Initialize PayPal if user is using PayPal web
-            var  paypalWebPaymentResponse = InitializePayPalCheckoutIfNecessary(isPrepaid, orderCommand.OrderId, request);
+            var  paypalWebPaymentResponse = InitializePayPalCheckoutIfNecessary(account.Id, isPrepaid, orderCommand.OrderId, request);
 
             var chargeTypeIbs = string.Empty;
             var chargeTypeEmail = string.Empty;
@@ -374,12 +374,12 @@ namespace apcurium.MK.Booking.Api.Services
                             : 0);
 
                     var tipPercentage = orderInfo.Account.DefaultTipPercent ?? _serverSettings.ServerData.DefaultTipPercentage;
-                    var tipAmount = FareHelper.GetTipAmountFromTotalAmount(fareObject.AmountInclTax, tipPercentage);
+                    var tipAmount = FareHelper.CalculateTipAmount(fareObject.AmountInclTax, tipPercentage);
 
                     _commandBus.Send(new MarkPrepaidOrderAsSuccessful
                     {
                         OrderId = request.OrderId,
-                        Amount = fareObject.AmountInclTax,
+                        Amount = fareObject.AmountInclTax + tipAmount,
                         Meter = fareObject.AmountExclTax,
                         Tax = fareObject.TaxAmount,
                         Tip = tipAmount,
@@ -599,12 +599,12 @@ namespace apcurium.MK.Booking.Api.Services
             };
         }
 
-        private InitializePayPalCheckoutResponse InitializePayPalCheckoutIfNecessary(bool isPrepaid, Guid orderId, CreateOrder request)
+        private InitializePayPalCheckoutResponse InitializePayPalCheckoutIfNecessary(Guid accountId, bool isPrepaid, Guid orderId, CreateOrder request)
         {
             if (isPrepaid
                 && request.Settings.ChargeTypeId == ChargeTypes.PayPal.Id)
             {
-                var paypalWebPaymentResponse = _payPalServiceFactory.GetInstance().InitializeWebPayment(orderId, Request.AbsoluteUri, request.Estimate.Price, request.ClientLanguageCode);
+                var paypalWebPaymentResponse = _payPalServiceFactory.GetInstance().InitializeWebPayment(accountId, orderId, Request.AbsoluteUri, request.Estimate.Price, request.ClientLanguageCode);
 
                 if (paypalWebPaymentResponse.IsSuccessful)
                 {
@@ -1257,11 +1257,11 @@ namespace apcurium.MK.Booking.Api.Services
         private void CapturePaymentForPrepaidOrder(Guid orderId, AccountDetail account, decimal appEstimateWithTip, int tipPercentage)
         {
             // Note: No promotion on web
-            var tipAmount = FareHelper.GetTipAmountFromTotalAmount(appEstimateWithTip, tipPercentage);
+            var tipAmount = FareHelper.GetTipAmountFromTotalIncludingTip(appEstimateWithTip, tipPercentage);
             var totalAmount = appEstimateWithTip;
             var meterAmount = totalAmount - tipAmount;
 
-            var preAuthResponse = _paymentService.PreAuthorize(orderId, account, totalAmount);
+            var preAuthResponse = _paymentService.PreAuthorize(orderId, account, totalAmount, isForPrepaid: true);
             if (preAuthResponse.IsSuccessful)
             {
                 // Wait for payment to be created
@@ -1275,7 +1275,8 @@ namespace apcurium.MK.Booking.Api.Services
                     meterAmount,
                     tipAmount,
                     preAuthResponse.TransactionId,
-                    preAuthResponse.ReAuthOrderId);
+                    preAuthResponse.ReAuthOrderId,
+                    isForPrepaid: true);
 
                 if (commitResponse.IsSuccessful)
                 {
@@ -1303,7 +1304,7 @@ namespace apcurium.MK.Booking.Api.Services
                 else
                 {
                     // Payment failed, void preauth
-                    _paymentService.VoidPreAuthorization(orderId);
+                    _paymentService.VoidPreAuthorization(orderId, true);
 
                     throw new HttpError(HttpStatusCode.BadRequest, ErrorCode.CreateOrder_RuleDisable.ToString(), commitResponse.Message);
                 }

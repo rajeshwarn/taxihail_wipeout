@@ -5,12 +5,14 @@
 
         save: function (settings) {
 
+            var serializedData = JSON.stringify({
+                serverPaymentSettings: settings
+            });
+
             return $.ajax({
                 type: 'POST',
                 url: this.urlRoot,
-                data: JSON.stringify({
-                    serverPaymentSettings: settings
-                }),
+                data: serializedData,
                 contentType: 'application/json'
             });
         },

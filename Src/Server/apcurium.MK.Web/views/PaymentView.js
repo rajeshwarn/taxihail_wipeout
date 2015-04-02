@@ -29,6 +29,8 @@
                 { id: 12, display: this.localize("December") }
             ];
 
+            this.model.set('expirationMonth', 1);
+
             var isEditing = this.model != null && this.model.get('last4Digits') != null;
             var creditCard = {};
 
@@ -95,6 +97,8 @@
                 var expYear = currentYear + i;
                 expYears[i] = { id: expYear, display: expYear }
             }
+
+            this.model.set('expirationYear', expYears[0].id);
 
             return expYears;
         },
