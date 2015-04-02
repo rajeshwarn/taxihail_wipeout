@@ -8,9 +8,9 @@ using Infrastructure.Messaging;
 
 namespace apcurium.MK.Booking.Commands
 {
-    public class UpdateManualRideLinqTripInfo : ICommand
+    public class UpdateTripInfoInOrderForManualRideLinq : ICommand
     {
-        public UpdateManualRideLinqTripInfo()
+        public UpdateTripInfoInOrderForManualRideLinq()
         {
             Id = Guid.NewGuid();
         }
