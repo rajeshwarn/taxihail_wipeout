@@ -57,7 +57,7 @@
     <Compile Include="AddPopularAddress.cs" />
     <Compile Include="AddUserToPromotionWhiteList.cs" />
     <Compile Include="CancelOrderBecauseOfError.cs" />
-    <Compile Include="ManualRideLinqOrderPaired.cs" />
+    <Compile Include="ManualRideLinqOrderPairing.cs" />
     <Compile Include="ManualRideLinqUnpair.cs" />
     <Compile Include="UpdateManualRideLinqTripInfo.cs" />
     <Compile Include="UpdateRefundedOrder.cs" />
