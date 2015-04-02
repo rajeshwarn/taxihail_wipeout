@@ -50,6 +50,27 @@ namespace apcurium.MK.Booking.Domain
             LoadFrom(history);
         }
 
+        /// <summary>
+        /// Constructor for RideLinq
+        /// </summary>
+        public Order(Guid id, Guid accountId, DateTime startTime, string rideLinqId ,string userAgent, 
+            string clientLanguageCode, string clientVersion, string companyKey, string companyName, string market) 
+            : this(id)
+        {
+            Update(new ManualRideLinqPaired
+            {
+                AccountId = accountId,
+                StartTime = startTime,
+                UserAgent = userAgent,
+                ClientLanguageCode = clientLanguageCode,
+                ClientVersion = clientVersion,
+                CompanyKey = companyKey,
+                CompanyName = companyName,
+                Market = market,
+                RideLinQId = rideLinqId
+            });
+        }
+
         public Order(Guid id, Guid accountId, DateTime pickupDate, Address pickupAddress, Address dropOffAddress, BookingSettings settings,
             double? estimatedFare, string userAgent, string clientLanguageCode, double? userLatitude, double? userLongitude, string userNote, string clientVersion,
             bool isChargeAccountPaymentWithCardOnFile, string companyKey, string companyName, string market, bool isPrepaid)

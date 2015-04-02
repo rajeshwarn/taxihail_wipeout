@@ -5,6 +5,7 @@ using System.Xml.Linq;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Domain;
+using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
@@ -32,7 +33,10 @@ namespace apcurium.MK.Booking.CommandHandlers
         ICommandHandler<CancelOrderBecauseOfError>,
         ICommandHandler<SaveTemporaryOrderCreationInfo>,
         ICommandHandler<MarkPrepaidOrderAsSuccessful>,
-        ICommandHandler<UpdateRefundedOrder>
+        ICommandHandler<UpdateRefundedOrder>,
+        ICommandHandler<CreateOrderForManualRideLinqPair>,
+        ICommandHandler<UnpairOrderForManualRideLinq>,
+        ICommandHandler<UpdateTripInfoInOrderForManualRideLinq>
     {
         private readonly IEventSourcedRepository<Order> _repository;
         private readonly Func<BookingDbContext> _contextFactory;
@@ -180,6 +184,25 @@ namespace apcurium.MK.Booking.CommandHandlers
             var order = _repository.Get(command.OrderId);
             order.RefundedOrderUpdated(command.IsSuccessful, command.Message);
             _repository.Save(order, command.Id.ToString());
+        }
+
+        public void Handle(CreateOrderForManualRideLinqPair command)
+        {
+            var order = new Order(command.Id, command.AccountId, command.StartTime, command.RideLinQId,
+                command.UserAgent, command.ClientLanguageCode, command.ClientVersion,
+                command.CompanyKey, command.CompanyName, command.Market);
+
+            _repository.Save(order, command.Id.ToString());
+        }
+
+        public void Handle(UnpairOrderForManualRideLinq command)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Handle(UpdateTripInfoInOrderForManualRideLinq command)
+        {
+            throw new NotImplementedException();
         }
     }
 }
