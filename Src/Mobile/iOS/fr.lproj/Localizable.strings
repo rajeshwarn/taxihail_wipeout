@@ -606,3 +606,5 @@
 "InvalidPayBackErrorMessage"="Le champs PayBack ne doit contenir que des chiffres et ne doit pas dépasser 10 caractères";
 "NoPayBackErrorMessage"="Le champs PayBack est requis";
 "RideSettingsPayBack"="PayBack";
+"FilteredAddresses_Error_Message"="There is currently no entries for this filter.";
+"FilteredAddresses_Error_Title"="Error";

@@ -50,6 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Direction.cs" />
+    <Compile Include="Geo\AddressSortingHelper.cs" />
     <Compile Include="Geo\Position.cs" />
     <Compile Include="IAddresses.cs" />
     <Compile Include="IDirections.cs" />

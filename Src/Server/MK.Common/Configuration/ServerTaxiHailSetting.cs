@@ -129,6 +129,15 @@ namespace MK.Common.Configuration
         [Display(Name = "TaxiHail Pro", Description = "Company has access to TaxiHail Pro features")]
         public bool IsTaxiHailPro { get; protected set; }
 
+        [Display(Name = "Available Vehicles Mode", Description = "Available Vehicles provider")]
+        public AvailableVehiclesModes AvailableVehiclesMode { get; protected set; }
+
+        [Display(Name = "Available Vehicles Market", Description = "Market used to find vehicles when Available Vehicles Mode is set to 'HoneyBadger'")]
+        public string AvailableVehiclesMarket { get; protected set; }
+
+        [Display(Name = "Available Vehicles Fleet ID", Description = "Fleet ID used to find vehicles when Available Vehicles Mode is set to 'HoneyBadger'")]
+        public int? AvailableVehiclesFleetId { get; protected set; }
+
         [Hidden]
         [Display(Name = "SettingsAvailableToAdmin", Description = "Comma delimited list of settings that are available to admins")]
         public string SettingsAvailableToAdmin { get; private set; }

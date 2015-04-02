@@ -155,7 +155,7 @@ namespace apcurium.MK.Booking.Services.Impl
             };
         }
 
-        public InitializePayPalCheckoutResponse InitializeWebPayment(Guid orderId, string baseUri, double? estimatedFare, string clientLanguageCode)
+        public InitializePayPalCheckoutResponse InitializeWebPayment(Guid accountId, Guid orderId, string baseUri, double? estimatedFare, string clientLanguageCode)
         {
             if (!estimatedFare.HasValue)
             {
@@ -170,11 +170,26 @@ namespace apcurium.MK.Booking.Services.Impl
             var conversionRate = _serverSettings.ServerData.PayPalConversionRate;
 
             _logger.LogMessage("PayPal Conversion Rate: {0}", conversionRate);
-            
-            var amount = Math.Round(Convert.ToDecimal(estimatedFare.Value) * conversionRate, 2);
+
+            // Fare amount
+            var fareAmount = Math.Round(Convert.ToDecimal(estimatedFare.Value) * conversionRate, 2);
             var currency = conversionRate != 1
                 ? CurrencyCodes.Main.UnitedStatesDollar
                 : _resources.GetCurrencyCode();
+
+            // Need the fare object because tip amount should be calculated on the fare excluding taxes
+            var fareObject = FareHelper.GetFareFromAmountInclTax(Convert.ToDouble(fareAmount),
+                        _serverSettings.ServerData.VATIsEnabled
+                            ? _serverSettings.ServerData.VATPercentage
+                            : 0);
+
+            // Tip amount (on fare amount excl. taxes)
+            var defaultTipPercentage = _accountDao.FindById(accountId).DefaultTipPercent;
+            var tipPercentage = defaultTipPercentage ?? _serverSettings.ServerData.DefaultTipPercentage;
+            var tipAmount = FareHelper.CalculateTipAmount(fareObject.AmountInclTax, tipPercentage);
+
+            // Fare amount with tip
+            var totalAmount = fareAmount + tipAmount;
 
             var redirectUrl = baseUri + string.Format("/{0}/proceed", orderId);
 
@@ -194,13 +209,13 @@ namespace apcurium.MK.Booking.Services.Impl
                     amount = new Amount
                     {
                         currency = currency,
-                        total = amount.ToString("N", CultureInfo.InvariantCulture)
+                        total = totalAmount.ToString("N", CultureInfo.InvariantCulture)
                     },	
 
                     description = string.Format(
                         _resources.Get("PayPalWebPaymentDescription", regionName.HasValue() 
                             ? SupportedLanguages.en.ToString()
-                            : clientLanguageCode), amount),
+                            : clientLanguageCode), totalAmount),
 
                     item_list = new ItemList
                     {
@@ -208,11 +223,20 @@ namespace apcurium.MK.Booking.Services.Impl
                         {
                             new Item
                             {
-                                name = string.Format(_resources.Get("PayPalWebItemDescription", regionName.HasValue() 
-                                    ? SupportedLanguages.en.ToString()
-                                    : clientLanguageCode)),
+                                name = _resources.Get("PayPalWebFareItemDescription", regionName.HasValue() 
+                                        ? SupportedLanguages.en.ToString()
+                                        : clientLanguageCode),
                                 currency = currency,
-                                price = amount.ToString("N", CultureInfo.InvariantCulture),
+                                price = fareAmount.ToString("N", CultureInfo.InvariantCulture),
+                                quantity = "1"
+                            },
+                            new Item
+                            {
+                                name = string.Format(_resources.Get("PayPalWebTipItemDescription", regionName.HasValue()
+                                        ? SupportedLanguages.en.ToString()
+                                        : clientLanguageCode), tipPercentage),
+                                currency = currency,
+                                price = tipAmount.ToString("N", CultureInfo.InvariantCulture),
                                 quantity = "1"
                             }
                         }
@@ -230,23 +254,23 @@ namespace apcurium.MK.Booking.Services.Impl
                 }
             };
 
-            var webExperienceProfile = profile.Create(GetAPIContext(GetAccessToken()));
-
-            // Create payment
-            var payment = new Payment
-            {
-                intent = Intents.Sale,
-                payer = new Payer
-                {
-                    payment_method = "paypal"
-                },
-                transactions = transactionList,
-                redirect_urls = redirUrls,
-                experience_profile_id = webExperienceProfile.id
-            };
-
             try
             {
+                var webExperienceProfile = profile.Create(GetAPIContext(GetAccessToken()));
+
+                // Create payment
+                var payment = new Payment
+                {
+                    intent = Intents.Sale,
+                    payer = new Payer
+                    {
+                        payment_method = "paypal"
+                    },
+                    transactions = transactionList,
+                    redirect_urls = redirUrls,
+                    experience_profile_id = webExperienceProfile.id
+                };
+
                 var createdPayment = payment.Create(GetAPIContext(GetAccessToken()));
                 var links = createdPayment.links.GetEnumerator();
 

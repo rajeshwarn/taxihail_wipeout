@@ -30,7 +30,10 @@
             </div>
         </div>
     </div>
-
+if (@ViewBag.Error != null)
+{
+    <div class="alert alert-error" style="margin-top: 10px;white-space: pre">@ViewBag.Error</div>
+}
     <div class="control-group">
         <button type="submit" class="btn btn-primary span">Send Promotion</button>
     </div>

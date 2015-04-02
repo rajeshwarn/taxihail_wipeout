@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Net;
 using apcurium.MK.Booking.Api.Contract.Requests;
@@ -13,6 +14,7 @@ using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
+using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using AutoMapper;
 using CustomerPortal.Client;
@@ -73,31 +75,56 @@ namespace apcurium.MK.Booking.Api.Services
                 _logger.LogMessage("VehicleService: Error while trying to get company Market.");
             }
             
-            if (!market.HasValue())
+            if (!market.HasValue()
+                && _serverSettings.ServerData.AvailableVehiclesMode == AvailableVehiclesModes.IBS)
             {
-                vehicles = _ibsServiceProvider.Booking()
-                    .GetAvailableVehicles(request.Latitude, request.Longitude, request.VehicleTypeId);
+                // LOCAL market IBS
+                vehicles = _ibsServiceProvider.Booking().GetAvailableVehicles(request.Latitude, request.Longitude, request.VehicleTypeId);
             }
             else
             {
-                IList<int> roamingFleetIds = null;
+                string availableVehiclesMarket;
+                IList<int> availableVehiclesFleetIds = null;
 
-                try
+                if (!market.HasValue()
+                    && _serverSettings.ServerData.AvailableVehiclesMode == AvailableVehiclesModes.HoneyBadger)
                 {
-                    // Only get available vehicles for dispatchable companies in market
-                    var roamingCompanies = _taxiHailNetworkServiceClient.GetMarketFleets(_serverSettings.ServerData.TaxiHail.ApplicationKey, market);
-                    if (roamingCompanies != null)
+                    // LOCAL market Honey Badger
+                    availableVehiclesMarket = _serverSettings.ServerData.AvailableVehiclesMarket;
+
+                    if (_serverSettings.ServerData.AvailableVehiclesFleetId.HasValue)
                     {
-                        roamingFleetIds = roamingCompanies.Select(r => r.FleetId).ToArray();
+                        availableVehiclesFleetIds = new[] { _serverSettings.ServerData.AvailableVehiclesFleetId.Value };
                     }
                 }
-                catch
+                else
                 {
-                    // Do nothing. If we fail to contact Customer Portal, we return an unfiltered list of available vehicles.
-                    _logger.LogMessage("VehicleService: Error while trying to get Market fleets.");
+                    // EXTERNAL market Honey Badger
+                    availableVehiclesMarket = market;
+
+                    try
+                    {
+                        // Only get available vehicles for dispatchable companies in market
+                        var roamingCompanies = _taxiHailNetworkServiceClient.GetMarketFleets(_serverSettings.ServerData.TaxiHail.ApplicationKey, market);
+                        if (roamingCompanies != null)
+                        {
+                            availableVehiclesFleetIds = roamingCompanies.Select(r => r.FleetId).ToArray();
+                        }
+                    }
+                    catch
+                    {
+                        // Do nothing. If we fail to contact Customer Portal, we return an unfiltered list of available vehicles.
+                        _logger.LogMessage("VehicleService: Error while trying to get Market fleets.");
+                    }
                 }
 
-                var vehicleResponse = _honeyBadgerServiceClient.GetAvailableVehicles(market, request.Latitude, request.Longitude, null, roamingFleetIds);
+                var vehicleResponse = _honeyBadgerServiceClient.GetAvailableVehicles(
+                    availableVehiclesMarket,
+                    request.Latitude,
+                    request.Longitude,
+                    null,
+                    availableVehiclesFleetIds);
+
                 vehicles = vehicleResponse.Select(v => new IbsVehiclePosition
                 {
                     Latitude = v.Latitude,

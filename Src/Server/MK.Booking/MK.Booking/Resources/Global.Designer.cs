@@ -1161,9 +1161,9 @@ namespace apcurium.MK.Booking.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Taxi booking.
         /// </summary>
-        public static string PayPalWebItemDescription {
+        public static string PayPalWebFareItemDescription {
             get {
-                return ResourceManager.GetString("PayPalWebItemDescription", resourceCulture);
+                return ResourceManager.GetString("PayPalWebFareItemDescription", resourceCulture);
             }
         }
         
@@ -1173,6 +1173,15 @@ namespace apcurium.MK.Booking.Resources {
         public static string PayPalWebPaymentDescription {
             get {
                 return ResourceManager.GetString("PayPalWebPaymentDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tip ({0}%).
+        /// </summary>
+        public static string PayPalWebTipItemDescription {
+            get {
+                return ResourceManager.GetString("PayPalWebTipItemDescription", resourceCulture);
             }
         }
         

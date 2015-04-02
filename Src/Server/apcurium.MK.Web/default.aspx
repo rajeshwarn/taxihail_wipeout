@@ -71,6 +71,7 @@
             TaxiHail.parameters.isPayPalEnabled = <%: IsPayPalEnabled ? "true" : "false" %>;
             TaxiHail.parameters.isCreditCardMandatory = <%: IsCreditCardMandatory ? "true" : "false" %>;
             TaxiHail.parameters.apiRoot = "api";
+            TaxiHail.parameters.defaultTipPercentage = '<%= DefaultTipPercentage %>';
 
             TaxiHail.parameters.isSignupVisible = <%: IsWebSignupVisible  ? "true" : "false"%>;
             

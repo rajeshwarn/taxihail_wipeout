@@ -66,7 +66,7 @@ namespace apcurium.MK.Booking.Services.Impl
             return PaymentProvider.Cmt;
         }
 
-        public bool IsPayPal(Guid? accountId = null, Guid? orderId = null)
+        public bool IsPayPal(Guid? accountId = null, Guid? orderId = null, bool isForPrepaid = false)
         {
             return false;
         }
@@ -172,7 +172,7 @@ namespace apcurium.MK.Booking.Services.Impl
             }
         }
 
-        public void VoidPreAuthorization(Guid orderId)
+        public void VoidPreAuthorization(Guid orderId, bool isForPrepaid = false)
         {
             // nothing to do for CMT since there's no notion of preauth
         }
@@ -230,7 +230,7 @@ namespace apcurium.MK.Booking.Services.Impl
             }; 
         }
 
-        public PreAuthorizePaymentResponse PreAuthorize(Guid orderId, AccountDetail account, decimal amountToPreAuthorize, bool isReAuth = false, bool isSettlingOverduePayment = false)
+        public PreAuthorizePaymentResponse PreAuthorize(Guid orderId, AccountDetail account, decimal amountToPreAuthorize, bool isReAuth = false, bool isSettlingOverduePayment = false, bool isForPrepaid = false)
         {
             var paymentId = Guid.NewGuid();
             var creditCard = _creditCardDao.FindByAccountId(account.Id).First();
@@ -253,7 +253,7 @@ namespace apcurium.MK.Booking.Services.Impl
             };
         }
 
-        public CommitPreauthorizedPaymentResponse CommitPayment(Guid orderId, AccountDetail account, decimal preauthAmount, decimal amount, decimal meterAmount, decimal tipAmount, string transactionId, string reAuthOrderId = null)
+        public CommitPreauthorizedPaymentResponse CommitPayment(Guid orderId, AccountDetail account, decimal preauthAmount, decimal amount, decimal meterAmount, decimal tipAmount, string transactionId, string reAuthOrderId = null, bool isForPrepaid = false)
         {
             // No need to use preauthAmount for CMT because we can't preauthorize
 

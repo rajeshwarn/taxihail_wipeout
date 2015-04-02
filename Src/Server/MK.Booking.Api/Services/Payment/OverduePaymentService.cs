@@ -94,7 +94,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                     var promotion = _promotionDao.FindByOrderId(overduePayment.OrderId);
 
                     var pairingInfo = _orderDao.FindOrderPairingById(overduePayment.OrderId);
-                    var tipAmount = FareHelper.GetTipAmountFromTotalAmount(overduePayment.OverdueAmount, pairingInfo.AutoTipPercentage ?? _serverSettings.ServerData.DefaultTipPercentage);
+                    var tipAmount = FareHelper.GetTipAmountFromTotalIncludingTip(overduePayment.OverdueAmount, pairingInfo.AutoTipPercentage ?? _serverSettings.ServerData.DefaultTipPercentage);
                     var meterAmount = overduePayment.OverdueAmount - tipAmount;
 
                     var fareObject = FareHelper.GetFareFromAmountInclTax(meterAmount, 

@@ -43,8 +43,13 @@
                 { id: 25, display: "25%" }
             ];
 
+            if (!data.settings.defaultTipPercent) {
+                this.model.set('defaultTipPercent', TaxiHail.parameters.defaultTipPercentage);
+            }
+
             var displayTipSelection = TaxiHail.parameters.isChargeAccountPaymentEnabled
-                || TaxiHail.parameters.isPayPalEnabled;
+                || TaxiHail.parameters.isPayPalEnabled
+                || TaxiHail.parameters.isBraintreePrepaidEnabled;
 
             var chargeTypes = TaxiHail.referenceData.paymentsList;
 
