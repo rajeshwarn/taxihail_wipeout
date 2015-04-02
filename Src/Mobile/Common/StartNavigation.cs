@@ -10,6 +10,7 @@ using Cirrious.MvvmCross.ViewModels;
 using ServiceStack.Text;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.AppServices.Social;
+using Android.Util;
 
 namespace apcurium.MK.Booking.Mobile
 {
@@ -28,14 +29,14 @@ namespace apcurium.MK.Booking.Mobile
             await appSettings.Load();
 
             if (appSettings.Data.FacebookEnabled)
-			{
+            {
                 facebookService.Init();
-			}
+            }
 
-            if (appSettings.Data.FacebookPublishEnabled) 
-			{
+            if (appSettings.Data.FacebookPublishEnabled)
+            {
                 facebookService.PublishInstall();
-			}
+            }
 
 			Mvx.Resolve<IAnalyticsService>().ReportConversion();
 
