@@ -197,12 +197,16 @@ namespace apcurium.MK.Booking.CommandHandlers
 
         public void Handle(UnpairOrderForManualRideLinq command)
         {
-            throw new NotImplementedException();
+            var order = _repository.Get(command.OrderId);
+            order.UnpairRideLinq();
+            _repository.Save(order, command.Id.ToString());
         }
 
         public void Handle(UpdateTripInfoInOrderForManualRideLinq command)
         {
-            throw new NotImplementedException();
+            var order = _repository.Get(command.OrderId);
+            order.UpdateTripInfo(command.Distance, command.Faire, command.Tax, command.Tip, command.Toll, command.Extra, command.DriverInfo);
+            _repository.Save(order, command.Id.ToString());
         }
     }
 }

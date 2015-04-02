@@ -42,8 +42,12 @@ namespace apcurium.MK.Booking.Domain
             Handles<OrderCancelledBecauseOfError>(NoAction);
             Handles<PrepaidOrderPaymentInfoUpdated>(NoAction);
             Handles<RefundedOrderUpdated>(NoAction);
+            Handles<ManualRideLinqPaired>(NoAction);
+            Handles<ManualRideLinqUnpaired>(NoAction);
+            Handles<UpdatedManualRidelinqTripInfo>(NoAction);
         }
-        
+
+
         public Order(Guid id, IEnumerable<IVersionedEvent> history)
             : this(id)
         {
@@ -110,6 +114,22 @@ namespace apcurium.MK.Booking.Domain
             Update(new IbsOrderInfoAddedToOrder
             {
                 IBSOrderId = ibsOrderId
+            });
+        }
+
+        public void UpdateTripInfo(double? distance, double? faire, double? tax, double? tip, double? toll, double? extra, DriverInfos driverInfos, DateTime? endTime)
+        {
+            Update(new UpdatedManualRidelinqTripInfo
+            {
+                OrderId = Id,
+                Distance = distance, 
+                DriverInfo = driverInfos,
+                Faire = faire,
+                Tax = tax,
+                Tip = tip,
+                Toll = toll,
+                Extra = extra,
+                EndTime = endTime
             });
         }
 
@@ -232,6 +252,11 @@ namespace apcurium.MK.Booking.Domain
         public void Unpair()
         {
             Update(new OrderUnpairedForPayment());
+        }
+
+        public void UnpairRideLinq()
+        {
+            Update(new ManualRideLinqUnpaired());
         }
 
         public void PrepareForNextDispatch(string dispatchCompanyName, string dispatchCompanyKey)

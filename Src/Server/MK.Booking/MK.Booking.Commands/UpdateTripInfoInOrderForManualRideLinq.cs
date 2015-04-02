@@ -24,5 +24,6 @@ namespace apcurium.MK.Booking.Commands
         public double? Toll { get; set; }
         public double? Extra { get; set; }
         public DriverInfos DriverInfo { get; set; }
+        public DateTime? EndTime { get; set; }
     }
 }

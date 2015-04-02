@@ -16,6 +16,5 @@ namespace apcurium.MK.Booking.Commands
 
         public Guid Id { get; set; }
         public Guid OrderId { get; set; }
-        public string RideLinqId { get; set; }
     }
 }

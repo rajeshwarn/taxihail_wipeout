@@ -13,5 +13,8 @@ namespace apcurium.MK.Common.Entity
         public string RideLinqId { get; set; }
         public DateTime StartTime { get; set; }
         public DateTime? EndTime { get; set; }
+        public bool IsCancelled { get; set; }
+
+        public double Distance { get; set; }
     }
 }

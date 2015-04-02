@@ -25,7 +25,9 @@ namespace apcurium.MK.Booking.EventHandlers
         IEventHandler<DispatchCompanySwitchIgnored>,
         IEventHandler<IbsOrderInfoAddedToOrder>,
         IEventHandler<OrderCancelledBecauseOfError>,
-        IEventHandler<ManualRideLinqPaired>
+        IEventHandler<ManualRideLinqPaired>,
+        IEventHandler<ManualRideLinqUnpaired>,
+        IEventHandler<UpdatedManualRidelinqTripInfo>
 
     {
         private readonly Func<BookingDbContext> _contextFactory;
@@ -485,6 +487,72 @@ namespace apcurium.MK.Booking.EventHandlers
                     });
                 }
 
+            }
+        }
+
+        public void Handle(ManualRideLinqUnpaired @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var order = context.Find<OrderDetail>(@event.SourceId);
+                if (order != null)
+                {
+                    order.Status = (int)OrderStatus.Canceled;
+                    context.Save(order);
+                }
+
+                var orderStatusDetails = context.Find<OrderStatusDetail>(@event.SourceId);
+                if (orderStatusDetails != null)
+                {
+                    orderStatusDetails.Status = OrderStatus.Canceled;
+                    context.Save(orderStatusDetails);
+                }
+
+                var rideLinqDetails = context.Find<ManualRideLinqDetails>(@event.SourceId);
+                if (rideLinqDetails != null)
+                {
+                    rideLinqDetails.IsCancelled = true;
+                    context.Save(rideLinqDetails);
+                }
+            }
+        }
+
+        public void Handle(UpdatedManualRidelinqTripInfo @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var order = context.Find<OrderDetail>(@event.SourceId);
+                if (order != null)
+                {
+                    if (@event.EndTime.HasValue)
+                    {
+                        order.Status = (int)OrderStatus.Completed;
+                        order.DropOffDate = @event.EndTime;
+                    }
+                    order.Fare = @event.Faire;
+                    order.Tax = @event.Tax;
+                    order.Toll = @event.Toll;
+                    order.Tip = @event.Tip;
+                    context.Save(order);
+                }
+
+                var orderStatusDetails = context.Find<OrderStatusDetail>(@event.SourceId);
+                if (orderStatusDetails != null)
+                {
+                    if (@event.EndTime.HasValue)
+                    {
+                        orderStatusDetails.Status = OrderStatus.Completed;
+                    }
+                    orderStatusDetails.DriverInfos = @event.DriverInfo;
+                    context.Save(orderStatusDetails);
+                }
+
+                var rideLinqDetails = context.Find<ManualRideLinqDetails>(@event.SourceId);
+                if (rideLinqDetails != null)
+                {
+                    rideLinqDetails.Distance = @event.Distance??0;
+                    context.Save(rideLinqDetails);
+                }
             }
         }
     }
