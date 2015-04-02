@@ -555,7 +555,7 @@
   <data name="ServiceError_ErrorCreatingOrderMessage_NoCall" xml:space="preserve">
     <value>Votre demande n'a pas pu être prise en compte</value>
   </data>
-  <data name="PayPalWebItemDescription" xml:space="preserve">
+  <data name="PayPalWebFareItemDescription" xml:space="preserve">
     <value>Payment d'une course</value>
   </data>
   <data name="PayPalWebPaymentDescription" xml:space="preserve">
@@ -590,5 +590,8 @@
   </data>
   <data name="CannotCreateOrder_PrepaidButPrepaidNotEnabled" xml:space="preserve">
     <value>Le paiement n'est pas supporté par la page web. Veuillez sélectionner un autre type de paiement.</value>
+  </data>
+  <data name="PayPalWebTipItemDescription" xml:space="preserve">
+    <value>Pourboire ({0}%)</value>
   </data>
 </root>

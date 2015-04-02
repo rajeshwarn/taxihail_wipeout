@@ -148,8 +148,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
             if (!this.Services().Settings.PromotionEnabled)
             {
-                FindViewById<EditText>(Resource.Id.txtPromoCode).Visibility = ViewStates.Gone;
-                FindViewById<ImageButton>(Resource.Id.btnPromo).Visibility = ViewStates.Gone;
+                _btnPromo.Visibility = ViewStates.Gone;
             }
 
             set.Apply();
