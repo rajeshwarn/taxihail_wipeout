@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Booking.Mobile.ViewModels.Payment;
@@ -83,26 +84,17 @@ namespace apcurium.MK.Booking.Mobile
             }
             else
             {
-				// Make sure to reload notification/payment settings even if the user has killed the app
-                await accountService.GetNotificationSettings(true, true);
-				await Mvx.Resolve<IPaymentService>().GetPaymentSettings(true);
+                Task.Run(() =>
+                {
+                    // Make sure to reload notification/payment settings even if the user has killed the app
+                    accountService.GetNotificationSettings(true, true);
+                    Mvx.Resolve<IPaymentService>().GetPaymentSettings(true);
+                });
 
                 // Log user session start
                 accountService.LogApplicationStartUp();
 
-                var lastOrder = await Mvx.Resolve<IOrderWorkflowService>().GetLastActiveOrder();
-                if (lastOrder != null)
-                {
-                    ShowViewModel<BookingStatusViewModel>(new
-                    {
-                        order = lastOrder.Item1.ToJson(),
-                        orderStatus = lastOrder.Item2.ToJson()
-                    });
-                }
-                else
-                {
-                    ShowViewModel<HomeViewModel>(new { locateUser = true });
-                }
+                ShowViewModel<HomeViewModel>(new { locateUser = true });
             }
 
             Mvx.Resolve<ILogger>().LogMessage("Startup with server {0}", appSettings.Data.ServiceUrl);

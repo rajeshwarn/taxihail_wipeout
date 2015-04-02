@@ -102,8 +102,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 			if (firstTime)
 			{
-                // Don't await side panel creation
-				Panel.Start();
+                // Side panel creation should not block the UI
+				Task.Run(() => Panel.Start());
+
 				CheckTermsAsync();
 
 				this.Services().ApplicationInfo.CheckVersionAsync();
