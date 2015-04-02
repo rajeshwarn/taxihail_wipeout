@@ -142,6 +142,7 @@
     <Compile Include="Entity\BookingSettings.cs" />
     <Compile Include="Entity\DirectionSetting.cs" />
     <Compile Include="Entity\DriverInfos.cs" />
+    <Compile Include="Entity\ManualRideLinqDetails.cs" />
     <Compile Include="Entity\OrderNotificationDetail.cs" />
     <Compile Include="Entity\OrderPairingDetail.cs" />
     <Compile Include="Entity\OrderRatings.cs" />

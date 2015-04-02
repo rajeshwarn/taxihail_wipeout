@@ -24,7 +24,8 @@ namespace apcurium.MK.Booking.EventHandlers
         IEventHandler<OrderSwitchedToNextDispatchCompany>,
         IEventHandler<DispatchCompanySwitchIgnored>,
         IEventHandler<IbsOrderInfoAddedToOrder>,
-        IEventHandler<OrderCancelledBecauseOfError>
+        IEventHandler<OrderCancelledBecauseOfError>,
+        IEventHandler<ManualRideLinqPaired>
 
     {
         private readonly Func<BookingDbContext> _contextFactory;
@@ -84,6 +85,8 @@ namespace apcurium.MK.Booking.EventHandlers
                 }
             }
         }
+
+
 
         public void Handle(OrderCreated @event)
         {
@@ -422,6 +425,66 @@ namespace apcurium.MK.Booking.EventHandlers
                 orderStatus.IBSOrderId = @event.IBSOrderId;
                 
                 context.SaveChanges();
+            }
+        }
+
+        public void Handle(ManualRideLinqPaired @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                context.Save(new OrderDetail
+                {
+                    AccountId = @event.AccountId,
+                    Id = @event.SourceId,
+                    PickupDate = @event.StartTime,
+                    CreatedDate = @event.StartTime,
+                    Status = (int)OrderStatus.Created,
+                    IsRated = false,
+                    UserAgent = @event.UserAgent,
+                    ClientLanguageCode = @event.ClientLanguageCode,
+                    ClientVersion = @event.ClientVersion,
+                    CompanyKey = @event.CompanyKey,
+                    CompanyName = @event.CompanyName,
+                    Market = @event.Market
+                });
+
+                // Create an empty OrderStatusDetail row
+                var details = context.Find<OrderStatusDetail>(@event.SourceId);
+                if (details != null)
+                {
+                    _logger.LogMessage("Order Status already existing for Order : " + @event.SourceId);
+                }
+                else
+                {
+                    context.Save(new OrderStatusDetail
+                    {
+                        OrderId = @event.SourceId,
+                        AccountId = @event.AccountId,
+                        Status = OrderStatus.Created,
+                        IBSStatusDescription = _resources.Get("CreateOrder_WaitingForIbs", @event.ClientLanguageCode),
+                        PickupDate = @event.StartTime,
+                        CompanyKey = @event.CompanyKey,
+                        CompanyName = @event.CompanyName,
+                        Market = @event.Market
+                    });
+                }
+
+                var rideLinqDetails = context.Find<ManualRideLinqDetails>(@event.SourceId);
+                if (rideLinqDetails != null)
+                {
+                    _logger.LogMessage("RideLinqDetails already existing for Order : " + @event.SourceId);
+                }
+                else
+                {
+                    context.Save(new ManualRideLinqDetails
+                    {
+                        OrderId = @event.SourceId,
+                        AccountId = @event.AccountId,
+                        RideLinqId = @event.RideLinqId,
+                        StartTime = @event.StartTime
+                    });
+                }
+
             }
         }
     }

@@ -67,7 +67,7 @@ namespace apcurium.MK.Booking.Domain
                 CompanyKey = companyKey,
                 CompanyName = companyName,
                 Market = market,
-                RideLinQId = rideLinqId
+                RideLinqId = rideLinqId
             });
         }
 
