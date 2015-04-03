@@ -67,7 +67,6 @@ namespace MK.Common.Configuration
 #if DEBUG
             SupportEmail = "taxihail@apcurium.com";
 #endif
-
             ShowPassengerName = true;
             ShowPassengerNumber = true;
             ShowPassengerPhone = true;

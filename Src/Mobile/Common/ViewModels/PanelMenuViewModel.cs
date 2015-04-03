@@ -43,29 +43,33 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		public async Task Start()
 		{
-			// Load cached payment settings
-			var paymentSettings = await _paymentService.GetPaymentSettings();
-			IsPayInTaxiEnabled = paymentSettings.IsPayInTaxiEnabled || paymentSettings.PayPalClientSettings.IsEnabled;
+			InitDefaultIOSMenuList();
 
-			// Load cached settings
-		    var notificationSettings = await _accountService.GetNotificationSettings(true);
+			// Side panel creation should not block the UI
+			Task.Run (async() => 
+				{
+					// Load cached payment settings
+					var paymentSettings = await _paymentService.GetPaymentSettings();
+					IsPayInTaxiEnabled = paymentSettings.IsPayInTaxiEnabled || paymentSettings.PayPalClientSettings.IsEnabled;
 
-            // Load and cache user notification settings. DO NOT await.
-#pragma warning disable 4014
-            _accountService.GetNotificationSettings();
-#pragma warning restore 4014
+					// Load cached settings
+					var notificationSettings = await _accountService.GetNotificationSettings(true);
 
-		    IsNotificationsEnabled = notificationSettings.Enabled;
-            IsTaxiHailNetworkEnabled = Settings.Network.Enabled;
+					// Load and cache user notification settings. DO NOT await.
+					_accountService.GetNotificationSettings();
 
-            // Display a watermark indicating on which server the application is pointing
-            SetServerWatermarkText();
+					IsNotificationsEnabled = notificationSettings.Enabled;
+					IsTaxiHailNetworkEnabled = Settings.Network.Enabled;
 
-            // get the number of active promotions.
-            RefreshPromoCodeCountIfNecessary();
+					// Display a watermark indicating on which server the application is pointing
+					SetServerWatermarkText();
 
-		    // N.B.: This setup is for iOS only! For Android see: SubView_MainMenu.xaml
-			InitMenuList();
+					// get the number of active promotions.
+					RefreshPromoCodeCountIfNecessary();
+
+					// N.B.: This setup is for iOS only! For Android see: SubView_MainMenu.xaml
+					InitIOSMenuList();
+				});
 		}
 
 	    private async void RefreshPromoCodeCountIfNecessary()
@@ -93,7 +97,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 	        }
 	    }
 
-		partial void InitMenuList();
+		partial void InitDefaultIOSMenuList();
+		partial void InitIOSMenuList();
 		partial void RefreshMenuBadges();
 		partial void PartialConstructor();
 

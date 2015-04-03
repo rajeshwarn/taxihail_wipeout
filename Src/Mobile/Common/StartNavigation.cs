@@ -11,7 +11,6 @@ using Cirrious.MvvmCross.ViewModels;
 using ServiceStack.Text;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Mobile.AppServices.Social;
-using Android.Util;
 
 namespace apcurium.MK.Booking.Mobile
 {
