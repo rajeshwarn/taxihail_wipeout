@@ -38,6 +38,7 @@ namespace apcurium.MK.Booking.Services.Impl
         private readonly IOrderPaymentDao _paymentDao;
         private readonly CmtPaymentServiceClient _cmtPaymentServiceClient;
         private readonly CmtMobileServiceClient _cmtMobileServiceClient;
+        private readonly CmtTripInfoServiceClient _cmtTripInfoServiceClient;
 
         public CmtPaymentService(ICommandBus commandBus, 
             IOrderDao orderDao,
@@ -59,6 +60,7 @@ namespace apcurium.MK.Booking.Services.Impl
 
             _cmtPaymentServiceClient = new CmtPaymentServiceClient(serverSettings.GetPaymentSettings().CmtPaymentSettings, null, null, logger);
             _cmtMobileServiceClient = new CmtMobileServiceClient(serverSettings.GetPaymentSettings().CmtPaymentSettings, null, null);
+            _cmtTripInfoServiceClient = new CmtTripInfoServiceClient(_cmtMobileServiceClient, logger);
         }
 
         public PaymentProvider ProviderType(Guid? orderId = null)
@@ -376,20 +378,7 @@ namespace apcurium.MK.Booking.Services.Impl
             _logger.LogMessage("Pairing response : " + response.ToJson());
 
             // wait for trip to be updated
-            var watch = new Stopwatch();
-            watch.Start();
-            var trip = GetTrip(response.PairingToken);
-            while (trip == null)
-            {
-                Thread.Sleep(2000);
-                trip = GetTrip(response.PairingToken);
-
-                if (watch.Elapsed.TotalSeconds >= response.TimeoutSeconds)
-                {
-                    _logger.LogMessage("Timeout Exception, Could not be paired with vehicle.");
-                    throw new TimeoutException("Could not be paired with vehicle");
-                }
-            }
+            _cmtTripInfoServiceClient.WaitForRideLinqPaired(response.PairingToken, response.TimeoutSeconds);
 
             return response;
         }
@@ -403,46 +392,7 @@ namespace apcurium.MK.Booking.Services.Impl
             });
 
             // wait for trip to be updated
-            var watch = new Stopwatch();
-            watch.Start();
-            var trip = GetTrip(orderPairingDetail.PairingToken);
-            while (trip != null)
-            {
-                Thread.Sleep(2000);
-                trip = GetTrip(orderPairingDetail.PairingToken);
-
-                if (watch.Elapsed.TotalSeconds >= response.TimeoutSeconds)
-                {
-                    throw new TimeoutException("Could not be unpaired of vehicle");
-                }
-            }
-        }
-
-        private Trip GetTrip(string pairingToken)
-        {
-            try
-            {
-                var trip = _cmtMobileServiceClient.Get(new TripRequest { Token = pairingToken });
-                if (trip != null)
-                {
-                    //ugly fix for deserilization problem in datetime on the device for IOS
-                    if (trip.StartTime.HasValue)
-                    {
-                        trip.StartTime = DateTime.SpecifyKind(trip.StartTime.Value, DateTimeKind.Local);
-                    }
-
-                    if (trip.EndTime.HasValue)
-                    {
-                        trip.EndTime = DateTime.SpecifyKind(trip.EndTime.Value, DateTimeKind.Local);
-                    }
-                }
-
-                return trip;
-            }
-            catch (Exception)
-            {
-                return null;
-            }
+            _cmtTripInfoServiceClient.WaitForRideLinqUnpaired(orderPairingDetail.PairingToken, response.TimeoutSeconds);
         }
 
         private AuthorizationResponse Authorize(AuthorizationRequest request)
