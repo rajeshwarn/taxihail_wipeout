@@ -44,5 +44,19 @@ namespace apcurium.MK.Booking.Api.Services
 
             return resource;
         }
+
+        public ManualRideLinq ToResource(ManualRideLinqDetails manualRideLinqData)
+        {
+            return new ManualRideLinq
+            {
+                AccountId = manualRideLinqData.AccountId,
+                Distance = manualRideLinqData.Distance,
+                EndTime = manualRideLinqData.EndTime,
+                IsCancelled = manualRideLinqData.IsCancelled,
+                OrderId = manualRideLinqData.OrderId, 
+                RideLinqId = manualRideLinqData.RideLinqId,
+                StartTime = manualRideLinqData.StartTime
+            };
+        }
     }
 }

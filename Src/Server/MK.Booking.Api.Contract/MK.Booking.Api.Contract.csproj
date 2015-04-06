@@ -183,6 +183,7 @@
     <Compile Include="Resources\IbsChargeAccountValidation.cs" />
     <Compile Include="Resources\IbsChargeAccount.cs" />
     <Compile Include="Resources\IbsFare.cs" />
+    <Compile Include="Resources\ManualRideLinq.cs" />
     <Compile Include="Resources\NetworkFleet.cs" />
     <Compile Include="Resources\Order.cs" />
     <Compile Include="Resources\OrderRatings.cs" />

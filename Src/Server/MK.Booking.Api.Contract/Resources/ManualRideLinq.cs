@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace apcurium.MK.Common.Entity
+namespace apcurium.MK.Booking.Api.Contract.Resources
 {
-    public class ManualRideLinqDetails
+    public class ManualRideLinq : BaseDto
     {
         public Guid OrderId { get; set; }
         public Guid AccountId { get; set; }

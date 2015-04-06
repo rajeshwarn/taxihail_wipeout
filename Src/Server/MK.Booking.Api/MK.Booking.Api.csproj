@@ -129,6 +129,7 @@
     <Compile Include="Jobs\IUpdateOrderStatusJob.cs" />
     <Compile Include="Jobs\OrderStatusUpdater.cs" />
     <Compile Include="Jobs\UpdateOrderStatusJob.cs" />
+    <Compile Include="Services\ManualRidelinqOrderService.cs" />
     <Compile Include="Services\Payment\OverduePaymentService.cs" />
     <Compile Include="Payment\IBSOrderService.cs" />
     <Compile Include="Providers\TariffProvider.cs" />
