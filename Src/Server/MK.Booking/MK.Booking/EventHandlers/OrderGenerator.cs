@@ -447,7 +447,8 @@ namespace apcurium.MK.Booking.EventHandlers
                     ClientVersion = @event.ClientVersion,
                     CompanyKey = @event.CompanyKey,
                     CompanyName = @event.CompanyName,
-                    Market = @event.Market
+                    Market = @event.Market,
+                    IsManualRideLinq = true
                 });
 
                 // Create an empty OrderStatusDetail row

@@ -39,7 +39,8 @@ namespace apcurium.MK.Booking.Api.Services
                 Toll = order.Toll,
                 Status = (OrderStatus) order.Status,
                 IsRated = order.IsRated,
-                TransactionId = order.TransactionId
+                TransactionId = order.TransactionId,
+                IsManualRideLinq = order.IsManualRideLinq
             };
 
             return resource;

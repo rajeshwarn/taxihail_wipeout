@@ -1,27 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
-using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
 using Infrastructure.EventSourcing;
 using Infrastructure.Messaging;
+using ServiceStack.Common.Web;
 using ServiceStack.ServiceInterface;
 
 namespace apcurium.MK.Booking.Api.Services
 {
     public class ManualRidelinqOrderService : Service
     {
-        private IOrderDao _orderDao;
-        private ILogger _logger;
+        private readonly IOrderDao _orderDao;
         private readonly ICommandBus _commandBus;
 
-        public ManualRidelinqOrderService(ILogger logger, ICommandBus commandBus, IOrderDao orderDao)
+        public ManualRidelinqOrderService(ICommandBus commandBus, IOrderDao orderDao)
         {
-            _logger = logger;
             _commandBus = commandBus;
             _orderDao = orderDao;
         }
@@ -45,6 +44,7 @@ namespace apcurium.MK.Booking.Api.Services
                 Status = OrderStatus.Created,
                 IBSStatusId = string.Empty,
                 IBSStatusDescription = string.Empty,
+                IsManualRideLinq = true
             };
         }
 
@@ -59,7 +59,7 @@ namespace apcurium.MK.Booking.Api.Services
         {
             _commandBus.Send(new UnpairOrderForManualRideLinq {OrderId = orderId});
 
-            return "ok";
+            return new HttpResult(HttpStatusCode.OK); ;
         }
     }
 }

@@ -43,6 +43,8 @@ namespace apcurium.MK.Common.Entity
         public string NextDispatchCompanyKey { get; set; }
         public bool IgnoreDispatchCompanySwitch { get; set; }
         public DateTime? NetworkPairingTimeout { get; set; }
+
+        public bool? IsManualRideLinq { get; set; }
         
         public override string ToString()
         {
