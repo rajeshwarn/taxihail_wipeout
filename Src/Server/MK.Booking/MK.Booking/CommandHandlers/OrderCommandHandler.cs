@@ -205,7 +205,7 @@ namespace apcurium.MK.Booking.CommandHandlers
         public void Handle(UpdateTripInfoInOrderForManualRideLinq command)
         {
             var order = _repository.Get(command.OrderId);
-            order.UpdateTripInfo(command.Distance, command.Faire, command.Tax, command.Tip, command.Toll, command.Extra, command.DriverInfo);
+            order.UpdateTripInfo(command.Distance, command.Fare, command.Tax, command.Tip, command.Toll, command.Extra, command.DriverInfo, command.EndTime);
             _repository.Save(order, command.Id.ToString());
         }
     }

@@ -529,7 +529,7 @@ namespace apcurium.MK.Booking.EventHandlers
                         order.Status = (int)OrderStatus.Completed;
                         order.DropOffDate = @event.EndTime;
                     }
-                    order.Fare = @event.Faire;
+                    order.Fare = @event.Fare;
                     order.Tax = @event.Tax;
                     order.Toll = @event.Toll;
                     order.Tip = @event.Tip;

@@ -121,10 +121,9 @@ namespace apcurium.MK.Booking.Domain
         {
             Update(new UpdatedManualRidelinqTripInfo
             {
-                OrderId = Id,
                 Distance = distance, 
                 DriverInfo = driverInfos,
-                Faire = faire,
+                Fare = faire,
                 Tax = tax,
                 Tip = tip,
                 Toll = toll,
