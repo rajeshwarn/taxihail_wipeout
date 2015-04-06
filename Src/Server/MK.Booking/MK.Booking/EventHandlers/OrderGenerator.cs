@@ -483,8 +483,10 @@ namespace apcurium.MK.Booking.EventHandlers
                     {
                         OrderId = @event.SourceId,
                         AccountId = @event.AccountId,
-                        RideLinqId = @event.RideLinqId,
-                        StartTime = @event.StartTime
+                        PairingCode = @event.PairingCode,
+                        StartTime = @event.StartTime,
+                        StartingLongitude = @event.Longitude,
+                        StartingLatitude = @event.Latitude
                     });
                 }
 
@@ -527,8 +529,12 @@ namespace apcurium.MK.Booking.EventHandlers
                 {
                     if (@event.EndTime.HasValue)
                     {
-                        order.Status = (int)OrderStatus.Completed;
+                        order.Status = (int) OrderStatus.Completed;
                         order.DropOffDate = @event.EndTime;
+                    }
+                    else
+                    {
+                        order.Status = (int) OrderStatus.Pending;
                     }
                     order.Fare = @event.Fare;
                     order.Tax = @event.Tax;
@@ -544,6 +550,10 @@ namespace apcurium.MK.Booking.EventHandlers
                     {
                         orderStatusDetails.Status = OrderStatus.Completed;
                     }
+                    else
+                    {
+                        orderStatusDetails.Status = OrderStatus.Pending;
+                    }
                     orderStatusDetails.DriverInfos = @event.DriverInfo;
                     context.Save(orderStatusDetails);
                 }
@@ -552,6 +562,7 @@ namespace apcurium.MK.Booking.EventHandlers
                 if (rideLinqDetails != null)
                 {
                     rideLinqDetails.Distance = @event.Distance??0;
+                    rideLinqDetails.PairingToken = @event.PairingToken;
                     context.Save(rideLinqDetails);
                 }
             }

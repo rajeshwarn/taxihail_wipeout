@@ -58,6 +58,7 @@ namespace apcurium.MK.Booking.Api.Jobs
         private readonly IEventSourcedRepository<Promotion> _promoRepository;
         private readonly IPaymentService _paymentService;
         private readonly ICreditCardDao _creditCardDao;
+        private readonly IManualRideLinqService _manualRideLinqService;
         private readonly ILogger _logger;
         private readonly Resources.Resources _resources;
 
@@ -78,7 +79,7 @@ namespace apcurium.MK.Booking.Api.Jobs
             IEventSourcedRepository<Promotion> promoRepository,
             IPaymentService paymentService,
             ICreditCardDao creditCardDao,
-            ILogger logger)
+            ILogger logger, IManualRideLinqService manualRideLinqService)
         {
             _orderDao = orderDao;
             _notificationService = notificationService;
@@ -92,6 +93,7 @@ namespace apcurium.MK.Booking.Api.Jobs
             _paymentService = paymentService;
             _creditCardDao = creditCardDao;
             _logger = logger;
+            _manualRideLinqService = manualRideLinqService;
             _commandBus = commandBus;
             _paymentDao = paymentDao;
             _resources = new Resources.Resources(serverSettings);
@@ -99,6 +101,12 @@ namespace apcurium.MK.Booking.Api.Jobs
 
         public void Update(IBSOrderInformation orderFromIbs, OrderStatusDetail orderStatusDetail)
         {
+            if (orderStatusDetail.IsManualRideLinq ?? false)
+            {
+                HandleManualRidelinqFlow(orderStatusDetail);
+                return;
+            }
+
             UpdateVehiclePositionAndSendNearbyNotificationIfNecessary(orderFromIbs, orderStatusDetail);
 
             SendUnpairWarningNotificationIfNecessary(orderStatusDetail);
@@ -125,6 +133,44 @@ namespace apcurium.MK.Booking.Api.Jobs
                 Tip = orderFromIbs.Tip,
                 Tax = orderFromIbs.VAT,
             });
+        }
+
+        private void HandleManualRidelinqFlow(OrderStatusDetail orderstatusDetail)
+        {
+            if (orderstatusDetail.Status == OrderStatus.Created)
+            {
+                var tripInfo = _manualRideLinqService.PairRideLinqTrip(orderstatusDetail);
+
+                _commandBus.Send(new UpdateTripInfoInOrderForManualRideLinq
+                {
+                    Distance = tripInfo.Distance,
+                    EndTime = tripInfo.EndTime,
+                    Extra = tripInfo.Extra,
+                    Fare = tripInfo.Fare,
+                    Tax = tripInfo.Tax,
+                    Tip = tripInfo.Tip,
+                    Toll = null,
+                    OrderId = orderstatusDetail.OrderId,
+                    PairingToken = tripInfo.PairingToken
+                });
+            }
+            else if(orderstatusDetail.Status == OrderStatus.Pending)
+            {
+                var tripInfo = _manualRideLinqService.GetTripInfo(orderstatusDetail.OrderId);
+
+                _commandBus.Send(new UpdateTripInfoInOrderForManualRideLinq
+                {
+                    Distance = tripInfo.Distance,
+                    EndTime = tripInfo.EndTime,
+                    Extra = tripInfo.Extra,
+                    Fare = tripInfo.Fare,
+                    Tax = tripInfo.Tax,
+                    Tip = tripInfo.Tip,
+                    Toll = null,
+                    OrderId = orderstatusDetail.OrderId,
+                    PairingToken = tripInfo.PairingToken
+                });
+            }
         }
 
         private void PopulateFromIbsOrder(OrderStatusDetail orderStatusDetail, IBSOrderInformation ibsOrderInfo)

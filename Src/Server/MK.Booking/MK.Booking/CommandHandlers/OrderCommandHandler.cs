@@ -188,9 +188,9 @@ namespace apcurium.MK.Booking.CommandHandlers
 
         public void Handle(CreateOrderForManualRideLinqPair command)
         {
-            var order = new Order(command.Id, command.AccountId, command.StartTime, command.RideLinQId,
+            var order = new Order(command.Id, command.AccountId, command.StartTime, command.PairingCode,
                 command.UserAgent, command.ClientLanguageCode, command.ClientVersion,
-                command.CompanyKey, command.CompanyName, command.Market);
+                command.CompanyKey, command.CompanyName, command.Market, command.Longitude, command.Latitude);
 
             _repository.Save(order, command.Id.ToString());
         }
@@ -205,7 +205,8 @@ namespace apcurium.MK.Booking.CommandHandlers
         public void Handle(UpdateTripInfoInOrderForManualRideLinq command)
         {
             var order = _repository.Get(command.OrderId);
-            order.UpdateTripInfo(command.Distance, command.Fare, command.Tax, command.Tip, command.Toll, command.Extra, command.DriverInfo, command.EndTime);
+            order.UpdateTripInfo(command.Distance, command.Fare, command.Tax, command.Tip, command.Toll, 
+                command.Extra, command.DriverInfo, command.EndTime, command.PairingToken);
             _repository.Save(order, command.Id.ToString());
         }
     }

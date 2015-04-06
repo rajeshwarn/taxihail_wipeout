@@ -14,5 +14,7 @@ namespace apcurium.MK.Booking.Events
         public double? Extra { get; set; }
         public DriverInfos DriverInfo { get; set; }
         public DateTime? EndTime { get; set; }
+        public string PairingToken { get; set; }
+
     }
 }

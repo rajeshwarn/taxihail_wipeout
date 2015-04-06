@@ -39,7 +39,7 @@ namespace apcurium.MK.Booking.Test.OrderFixture
                 ClientLanguageCode = "fr",
                 UserAgent = "TestUserAgent",
                 ClientVersion = "1.0.0",
-                RideLinQId = "0000000",
+                PairingCode = "0000000",
                 StartTime = pickupDate
             };
 

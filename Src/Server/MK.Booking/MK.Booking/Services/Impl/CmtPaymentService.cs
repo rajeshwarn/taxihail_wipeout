@@ -378,7 +378,7 @@ namespace apcurium.MK.Booking.Services.Impl
             _logger.LogMessage("Pairing response : " + response.ToJson());
 
             // wait for trip to be updated
-            _cmtTripInfoServiceClient.WaitForRideLinqPaired(response.PairingToken, response.TimeoutSeconds);
+            _cmtTripInfoServiceClient.WaitForTripInfo(response.PairingToken, response.TimeoutSeconds);
 
             return response;
         }

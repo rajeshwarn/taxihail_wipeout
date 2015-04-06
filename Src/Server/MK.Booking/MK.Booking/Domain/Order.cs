@@ -57,8 +57,9 @@ namespace apcurium.MK.Booking.Domain
         /// <summary>
         /// Constructor for RideLinq
         /// </summary>
-        public Order(Guid id, Guid accountId, DateTime startTime, string rideLinqId ,string userAgent, 
-            string clientLanguageCode, string clientVersion, string companyKey, string companyName, string market) 
+        public Order(Guid id, Guid accountId, DateTime startTime, string pairingCode ,string userAgent, 
+            string clientLanguageCode, string clientVersion, string companyKey, string companyName, string market,
+            double longitude, double latitude) 
             : this(id)
         {
             Update(new ManualRideLinqPaired
@@ -71,7 +72,9 @@ namespace apcurium.MK.Booking.Domain
                 CompanyKey = companyKey,
                 CompanyName = companyName,
                 Market = market,
-                RideLinqId = rideLinqId
+                PairingCode = pairingCode,
+                Longitude = longitude,
+                Latitude = latitude
             });
         }
 
@@ -117,7 +120,8 @@ namespace apcurium.MK.Booking.Domain
             });
         }
 
-        public void UpdateTripInfo(double? distance, double? faire, double? tax, double? tip, double? toll, double? extra, DriverInfos driverInfos, DateTime? endTime)
+        public void UpdateTripInfo(double? distance, double? faire, double? tax, double? tip, double? toll,
+            double? extra, DriverInfos driverInfos, DateTime? endTime, string pairingToken)
         {
             Update(new UpdatedManualRidelinqTripInfo
             {
@@ -128,7 +132,8 @@ namespace apcurium.MK.Booking.Domain
                 Tip = tip,
                 Toll = toll,
                 Extra = extra,
-                EndTime = endTime
+                EndTime = endTime,
+                PairingToken = pairingToken
             });
         }
 

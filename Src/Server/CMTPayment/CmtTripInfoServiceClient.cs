@@ -49,7 +49,7 @@ namespace CMTPayment
             }
         }
 
-        public void WaitForRideLinqPaired(string pairingToken, long timeoutSeconds)
+        public Trip WaitForTripInfo(string pairingToken, long timeoutSeconds)
         {
             // wait for trip to be updated
             var watch = new Stopwatch();
@@ -66,6 +66,8 @@ namespace CMTPayment
                     throw new TimeoutException("Could not be paired with vehicle");
                 }
             }
+
+            return trip;
         }
 
         public void WaitForRideLinqUnpaired(string pairingToken, long timeoutSeconds)

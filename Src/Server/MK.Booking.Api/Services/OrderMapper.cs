@@ -55,7 +55,7 @@ namespace apcurium.MK.Booking.Api.Services
                 EndTime = manualRideLinqData.EndTime,
                 IsCancelled = manualRideLinqData.IsCancelled,
                 OrderId = manualRideLinqData.OrderId, 
-                RideLinqId = manualRideLinqData.RideLinqId,
+                RideLinqId = manualRideLinqData.PairingCode,
                 StartTime = manualRideLinqData.StartTime
             };
         }

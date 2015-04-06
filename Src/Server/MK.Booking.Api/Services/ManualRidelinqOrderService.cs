@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using apcurium.MK.Booking.Api.Contract.Requests.Payment;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common.Entity;
@@ -25,7 +26,7 @@ namespace apcurium.MK.Booking.Api.Services
             _orderDao = orderDao;
         }
 
-        public object Post(string ridelinqId)
+        public object Post(ManualRideLinqPairingRequest rideLinqRequest)
         {
             var accountId = new Guid(this.GetSession().UserAuthId);
 
@@ -33,7 +34,11 @@ namespace apcurium.MK.Booking.Api.Services
             {
                 AccountId = accountId,
                 UserAgent = Request.UserAgent,
-                ClientVersion = Request.Headers.Get("ClientVersion")
+                ClientVersion = Request.Headers.Get("ClientVersion"),
+                PairingCode = rideLinqRequest.PairingCode,
+                Longitude = rideLinqRequest.Longitude,
+                Latitude = rideLinqRequest.Latitude,
+                ClientLanguageCode = rideLinqRequest.ClientLanguageCode
             };
 
             _commandBus.Send(command);
