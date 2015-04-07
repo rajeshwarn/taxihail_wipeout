@@ -1,14 +1,12 @@
-﻿using ServiceStack.ServiceHost;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using apcurium.MK.Booking.Api.Contract.Resources;
+﻿using apcurium.MK.Common.Entity;
+using ServiceStack.ServiceHost;
+using ServiceStack.ServiceInterface;
 
 namespace apcurium.MK.Booking.Api.Contract.Requests.Payment
 {
-    public class ManualRideLinqPairingRequest : IReturn<Order>
+    [Authenticate]
+    [Route("/account/ridelinq", "POST")]
+    public class ManualRideLinqPairingRequest : IReturn<OrderManualRideLinqDetail>
     {
         public string PairingCode { get; set; }
         public double Longitude { get; set; }
