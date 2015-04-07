@@ -244,7 +244,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
-		private OrderOptionsViewModel _orderOptions;
+	    private OrderOptionsViewModel _orderOptions;
 		public OrderOptionsViewModel OrderOptions
 		{ 
 			get { return _orderOptions; }
@@ -350,6 +350,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 	        }
 	    }
 
+	    public ICommand ManualPairingRideLinq
+	    {
+	        get
+	        {
+	            return this.GetCommand(() =>
+	            {
+	                ShowViewModel<ManualPairingForRideLinqViewModel>();
+	            });
+	        }
+	    }
+
 	    public ICommand TrainStationSearch
 	    {
 	        get
@@ -449,8 +460,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		}
 
 		private bool _subscribedToLifetimeChanged;
+	    private ManualPairingForRideLinqViewModel _manualPairingForRideLinqViewModel;
 
-		public void SubscribeLifetimeChangedIfNecessary()
+	    public void SubscribeLifetimeChangedIfNecessary()
 		{
 			if (!_subscribedToLifetimeChanged)
 			{

@@ -6,7 +6,7 @@ using ServiceStack.Text;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
-    public class ManualRideLinqStatusViewModel : BaseViewModel
+    public class ManualRideLinqStatusViewModel : PageViewModel
     {
         private readonly IBookingService _bookingService;
         private OrderManualRideLinqDetail _orderManualRideLinqDetail;

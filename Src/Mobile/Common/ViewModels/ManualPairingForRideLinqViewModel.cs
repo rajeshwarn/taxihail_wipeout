@@ -5,7 +5,7 @@ using ServiceStack.Text;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
-    public class ManualPairingForRideLinqViewModel: BaseViewModel
+    public class ManualPairingForRideLinqViewModel: PageViewModel
     {
         private readonly IBookingService _bookingService;
         private string _pairingCode;
