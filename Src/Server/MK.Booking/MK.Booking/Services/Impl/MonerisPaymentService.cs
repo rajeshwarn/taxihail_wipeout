@@ -45,7 +45,7 @@ namespace apcurium.MK.Booking.Services.Impl
             return PaymentProvider.Moneris;
         }
 
-        public bool IsPayPal(Guid? accountId = null, Guid? orderId = null)
+        public bool IsPayPal(Guid? accountId = null, Guid? orderId = null, bool isForPrepaid = false)
         {
             return false;
         }
@@ -84,7 +84,7 @@ namespace apcurium.MK.Booking.Services.Impl
             };
         }
 
-        public void VoidPreAuthorization(Guid orderId)
+        public void VoidPreAuthorization(Guid orderId, bool isForPrepaid = false)
         {
             var message = string.Empty;
             try
@@ -188,7 +188,7 @@ namespace apcurium.MK.Booking.Services.Impl
             }
         }
 
-        public PreAuthorizePaymentResponse PreAuthorize(Guid orderId, AccountDetail account, decimal amountToPreAuthorize, bool isReAuth = false, bool isSettlingOverduePayment = false)
+        public PreAuthorizePaymentResponse PreAuthorize(Guid orderId, AccountDetail account, decimal amountToPreAuthorize, bool isReAuth = false, bool isSettlingOverduePayment = false, bool isForPrepaid = false)
         {
             var message = string.Empty;
             var transactionId = string.Empty;
@@ -286,7 +286,7 @@ namespace apcurium.MK.Booking.Services.Impl
             return PreAuthorize(orderId, account, amount, true);
         }
 
-        public CommitPreauthorizedPaymentResponse CommitPayment(Guid orderId, AccountDetail account, decimal preauthAmount, decimal amount, decimal meterAmount, decimal tipAmount, string transactionId, string reAuthOrderId = null)
+        public CommitPreauthorizedPaymentResponse CommitPayment(Guid orderId, AccountDetail account, decimal preauthAmount, decimal amount, decimal meterAmount, decimal tipAmount, string transactionId, string reAuthOrderId = null, bool isForPrepaid = false)
         {
             string message;
             string authorizationCode = null;
