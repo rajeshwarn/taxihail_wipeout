@@ -493,7 +493,7 @@ namespace apcurium.MK.Booking.EventHandlers
                         FareAtAlternateRate = @event.FareAtAlternateRate,
                         Total = @event.Total,
                         Toll = @event.Toll,
-                        Tax = @event.Tax;
+                        Tax = @event.Tax,
                         Tip = @event.Tip,
                         Surcharge = @event.Surcharge,
                         RateAtTripStart = @event.RateAtTripStart,

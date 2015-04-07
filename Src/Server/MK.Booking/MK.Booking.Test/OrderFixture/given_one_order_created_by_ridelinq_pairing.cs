@@ -50,20 +50,10 @@ namespace apcurium.MK.Booking.Test.OrderFixture
         [Test]
         public void when_ridelinq_update_trip_info()
         {
-            var driverInfo = new DriverInfos
-            {
-                DriverId = "123456",
-                FirstName = "Tony",
-                LastName = "Apcurium",
-                MobilePhone = "5142225555",
-                VehicleColor = "red",
-            };
-
             _sut.When(new UpdateTripInfoInOrderForManualRideLinq
             {
                 OrderId = _orderId,
                 Distance = 25d,
-                DriverInfo = driverInfo,
                 Fare = 15f,
                 Tax = 3f,
                 Toll = 1f,
@@ -76,7 +66,6 @@ namespace apcurium.MK.Booking.Test.OrderFixture
             Assert.AreEqual(15f, @event.Fare);
             Assert.AreEqual(3f, @event.Tax );
             Assert.AreEqual(1.5f, @event.Tip);
-            Assert.AreEqual(driverInfo, @event.DriverInfo);
             Assert.AreEqual(25d, @event.Distance);
             Assert.AreEqual(1f, @event.Toll);
             Assert.AreEqual(.5f, @event.Extra);
@@ -100,20 +89,10 @@ namespace apcurium.MK.Booking.Test.OrderFixture
         {
             var endTime = DateTime.Now;
 
-            var driverInfo = new DriverInfos
-            {
-                DriverId = "123456",
-                FirstName = "Tony",
-                LastName = "Apcurium",
-                MobilePhone = "5142225555",
-                VehicleColor = "red",
-            };
-
             _sut.When(new UpdateTripInfoInOrderForManualRideLinq
             {
                 OrderId = _orderId,
                 Distance = 25d,
-                DriverInfo = driverInfo,
                 Fare = 15f,
                 Tax = 3f,
                 Tip = 1.5f,
@@ -128,7 +107,6 @@ namespace apcurium.MK.Booking.Test.OrderFixture
             Assert.AreEqual(15f, @event.Fare);
             Assert.AreEqual(3f, @event.Tax);
             Assert.AreEqual(1.5f, @event.Tip);
-            Assert.AreEqual(driverInfo, @event.DriverInfo);
             Assert.AreEqual(25d, @event.Distance);
             Assert.AreEqual(endTime, @event.EndTime);
         }
