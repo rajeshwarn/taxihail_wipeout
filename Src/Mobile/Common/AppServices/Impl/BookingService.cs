@@ -15,6 +15,7 @@ using Cirrious.CrossCore;
 using Cirrious.MvvmCross.Plugins.PhoneCall;
 using OrderRatings = apcurium.MK.Common.Entity.OrderRatings;
 using System.Globalization;
+using apcurium.MK.Booking.Api.Contract.Requests.Payment;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
@@ -25,15 +26,17 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 		readonly IAppSettings _appSettings;
 		readonly IMvxPhoneCallTask _phoneCallTask;
 		readonly IGeolocService _geolocService;
+        private ILocationService _locationService;
 
 		public BookingService(IAccountService accountService,
 			ILocalization localize,
 			IAppSettings appSettings,
 			IMvxPhoneCallTask phoneCallTask,
-			IGeolocService geolocService)
+			IGeolocService geolocService, ILocationService locationService)
 		{
 			_geolocService = geolocService;
-			_phoneCallTask = phoneCallTask;
+		    _locationService = locationService;
+		    _phoneCallTask = phoneCallTask;
 			_appSettings = appSettings;
 			_localize = localize;
 			_accountService = accountService;
@@ -325,6 +328,31 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             ClearLastUnratedOrder();
             var request = new OrderRatingsRequest{ Note = orderRatings.Note, OrderId = orderRatings.OrderId, RatingScores = orderRatings.RatingScores };
 			return UseServiceClientAsync<OrderServiceClient> (service => service.RateOrder (request));
+        }
+
+        public Task<OrderManualRideLinqDetail> ManualRideLinqPair(string pairingCode)
+        {
+            var position = _locationService.BestPosition;
+
+            var request = new ManualRideLinqPairingRequest()
+            {
+                ClientLanguageCode = _localize.CurrentLanguage,
+                Longitude = position.Longitude,
+                Latitude = position.Latitude,
+                PairingCode = pairingCode
+            };
+
+            return UseServiceClientAsync<ManualPairingForRideLinqServiceClient, OrderManualRideLinqDetail>(service => service.Pair(request));
+        }
+
+        public Task ManualRideLinqUnpair(Guid orderId)
+        {
+            return UseServiceClientAsync<ManualPairingForRideLinqServiceClient>(service => service.Unpair(orderId));
+        }
+
+        public Task<OrderManualRideLinqDetail> ManualRideGetTripInfo(Guid orderId)
+        {
+            return UseServiceClientAsync<ManualPairingForRideLinqServiceClient, OrderManualRideLinqDetail>(service => service.GetUpdatedTrip(orderId));
         }
     }
 }

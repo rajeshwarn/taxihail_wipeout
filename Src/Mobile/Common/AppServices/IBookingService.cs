@@ -61,6 +61,10 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 		Task<OrderRatings> GetOrderRatingAsync(Guid orderId);
 
 	    Task SendRatingReview(OrderRatings orderRatings);
-    }
+
+        Task<OrderManualRideLinqDetail> ManualRideLinqPair(string pairingCode);
+        Task ManualRideLinqUnpair(Guid orderId);
+        Task<OrderManualRideLinqDetail> ManualRideGetTripInfo(Guid orderId);
+	}
 }
 
