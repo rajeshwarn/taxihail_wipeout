@@ -11,6 +11,7 @@ using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
+using apcurium.MK.Common.Resources;
 using CMTPayment;
 using CMTPayment.Pair;
 using Infrastructure.EventSourcing;
@@ -18,6 +19,7 @@ using Infrastructure.Messaging;
 using ServiceStack.Common.Web;
 using ServiceStack.Html;
 using ServiceStack.ServiceInterface;
+using ManualRideLinqPairingRequest = CMTPayment.Pair.ManualRideLinqPairingRequest;
 
 namespace apcurium.MK.Booking.Api.Services
 {
@@ -41,13 +43,13 @@ namespace apcurium.MK.Booking.Api.Services
             _cmtTripInfoServiceHelper = new CmtTripInfoServiceHelper(_cmtMobileServiceClient, logger);
         }
 
-        public object Post(ManualRideLinqPairingRequest request)
+        public object Post(Contract.Requests.Payment.ManualRideLinqPairingRequest request)
         {
             var accountId = new Guid(this.GetSession().UserAuthId);
             var account = _accountDao.FindById(accountId);
 
             // send pairing request                                
-            var pairingRequest = new ManualRidelinqPairingRequest
+            var pairingRequest = new ManualRideLinqPairingRequest
             {
                 AutoTipPercentage = account.DefaultTipPercent ?? _serverSettings.ServerData.DefaultTipPercentage,
                 CallbackUrl = string.Empty,
@@ -120,40 +122,52 @@ namespace apcurium.MK.Booking.Api.Services
 
         public object Get(Guid orderId)
         {
-            var item = _orderDao.GetManualRideLinqById(orderId);
+            var order = _orderDao.GetManualRideLinqById(orderId);
 
             return new OrderManualRideLinqDetail
             {
-                AccountId = item.AccountId,
-                Distance = item.Distance,
-                EndTime = item.EndTime,
-                IsCancelled = item.IsCancelled,
-                OrderId = item.OrderId,
-                PairingCode = item.PairingCode,
-                PairingToken = item.PairingToken,
-                PairingDate = item.PairingDate,
-                Extra = item.Extra,
-                Fare = item.Fare,
-                Tax = item.Tax,
-                Tip = item.Tip,
-                Toll = item.Toll,
-                Surcharge = item.Surcharge,
-                Total = item.Total,
-                FareAtAlternateRate = item.FareAtAlternateRate,
-                Medallion = item.Medallion,
-                RateAtTripStart = item.RateAtTripStart,
-                RateAtTripEnd = item.RateAtTripEnd,
-                RateChangeTime = item.RateChangeTime,
+                AccountId = order.AccountId,
+                Distance = order.Distance,
+                EndTime = order.EndTime,
+                IsCancelled = order.IsCancelled,
+                OrderId = order.OrderId,
+                PairingCode = order.PairingCode,
+                PairingToken = order.PairingToken,
+                PairingDate = order.PairingDate,
+                Extra = order.Extra,
+                Fare = order.Fare,
+                Tax = order.Tax,
+                Tip = order.Tip,
+                Toll = order.Toll,
+                Surcharge = order.Surcharge,
+                Total = order.Total,
+                FareAtAlternateRate = order.FareAtAlternateRate,
+                Medallion = order.Medallion,
+                RateAtTripStart = order.RateAtTripStart,
+                RateAtTripEnd = order.RateAtTripEnd,
+                RateChangeTime = order.RateChangeTime,
             };
         }
 
         public object Delete(Guid orderId)
         {
-            //TODO: Unpairing logic
+            var order = _orderDao.GetManualRideLinqById(orderId);
+
+            var response = _cmtMobileServiceClient.Delete(new ManualRideLinqUnpairingRequest
+            {
+                PairingToken = order.PairingToken
+            });
+
+            // wait for trip to be updated
+            _cmtTripInfoServiceHelper.WaitForRideLinqUnpaired(order.PairingToken, response.TimeoutSeconds);
 
             _commandBus.Send(new UnpairOrderForManualRideLinq {OrderId = orderId});
 
-            return new HttpResult(HttpStatusCode.OK);
+            return new BasePaymentResponse
+            {
+                IsSuccessful = true,
+                Message = "Ok"
+            };
         }
     }
 }

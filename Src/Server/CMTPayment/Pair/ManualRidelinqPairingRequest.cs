@@ -8,7 +8,7 @@ using ServiceStack.ServiceHost;
 namespace CMTPayment.Pair
 {
     [Route("v1/pairing")]
-    public class ManualRidelinqPairingRequest : IReturn<CmtPairingResponse>
+    public class ManualRideLinqPairingRequest : IReturn<CmtPairingResponse>
     {
         public string PairingCode { get; set; }
         public string CustomerId { get; set; }
