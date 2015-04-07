@@ -70,9 +70,6 @@ namespace apcurium.MK.Booking.Mobile.Client
 
             window.RootViewController = new SplashView();
 
-            var paymentService = TinyIoCContainer.Current.Resolve<IPaymentService>();
-            paymentService.ClearPaymentSettingsFromCache();
-
 			var startup = Mvx.Resolve<IMvxAppStart>();
 			startup.Start(@params);
 

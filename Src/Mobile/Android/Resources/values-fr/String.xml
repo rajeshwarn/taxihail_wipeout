@@ -613,4 +613,6 @@
   <string name="InvalidPayBackErrorMessage">Le champs PayBack ne doit contenir que des chiffres et ne doit pas dépasser 10 caractères</string>
   <string name="NoPayBackErrorMessage">Le champs PayBack est requis</string>
   <string name="RideSettingsPayBack">PayBack</string>
+  <string name="FilteredAddresses_Error_Message">There is currently no entries for this filter.</string>
+  <string name="FilteredAddresses_Error_Title">Error</string>
 </resources>

@@ -25,6 +25,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private readonly IPaymentService _paymentService;
 		private readonly IPromotionService _promotionService;
 
+		private bool _isCreatingMenu;
+
 		public PanelMenuViewModel (IMvxWebBrowserTask browserTask, 
 			IOrderWorkflowService orderWorkflowService,
 			IAccountService accountService,
@@ -43,10 +45,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		public async Task Start()
 		{
-			InitDefaultIOSMenuList();
+			_isCreatingMenu = true;
+
+			// Initialize list with default values
+			InitIOSMenuList();
 
 			// Side panel creation should not block the UI
-			Task.Run (async() => 
+			await Task.Run (async() => 
 				{
 					// Load cached payment settings
 					var paymentSettings = await _paymentService.GetPaymentSettings();
@@ -64,42 +69,21 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					// Display a watermark indicating on which server the application is pointing
 					SetServerWatermarkText();
 
-					// get the number of active promotions.
+					// Get the number of active promotions.
 					RefreshPromoCodeCountIfNecessary();
 
 					// N.B.: This setup is for iOS only! For Android see: SubView_MainMenu.xaml
 					InitIOSMenuList();
+
+					_isCreatingMenu = false;
 				});
+
+			RefreshIOSMenu();
 		}
-
-	    private async void RefreshPromoCodeCountIfNecessary()
-	    {
-	        try
-	        {
-	            if (Settings.PromotionEnabled)
-	            {
-                    var promoCodes = await _promotionService.GetActivePromotions().HandleErrors();
-
-                    PromoCodeAlert = promoCodes.Any()
-                        ? (int?)promoCodes.Length
-                        : null;
-	            }
-	            else
-	            {
-	                PromoCodeAlert = null;
-	            }
-
-                RefreshMenuBadges();
-	        }
-	        catch (Exception ex)
-	        {
-	            Logger.LogError(ex);
-	        }
-	    }
-
-		partial void InitDefaultIOSMenuList();
+			
 		partial void InitIOSMenuList();
-		partial void RefreshMenuBadges();
+		partial void RefreshIOSMenu();
+		partial void RefreshIOSMenuBadges();
 		partial void PartialConstructor();
 
 	    private string _serverWatermarkText;
@@ -121,7 +105,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 	    {
 	        get
 	        {
-	            return _promoCodeAlert;
+				return Settings.PromotionEnabled ? _promoCodeAlert : null;
 	        }
 	        set
 	        {
@@ -202,7 +186,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 {
                     _menuIsOpen = value;
 
-                    if (_menuIsOpen)
+					if (_menuIsOpen && !_isCreatingMenu)
                     {
                         RefreshPromoCodeCountIfNecessary();
                     }
@@ -432,6 +416,27 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			IsClosePanelFromMenuItem = true;
 			MenuIsOpen = false;
+		}
+
+		private async void RefreshPromoCodeCountIfNecessary()
+		{
+			try
+			{
+				if (Settings.PromotionEnabled)
+				{
+					var promoCodes = await _promotionService.GetActivePromotions();
+
+					PromoCodeAlert = promoCodes.Any()
+						? (int?)promoCodes.Length
+						: null;
+
+					RefreshIOSMenuBadges();
+				}
+			}
+			catch (Exception ex)
+			{
+				Logger.LogError(ex);
+			}
 		}
 
 	    private void SetServerWatermarkText()
