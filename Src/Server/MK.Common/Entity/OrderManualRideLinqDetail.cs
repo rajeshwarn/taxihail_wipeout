@@ -1,32 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Infrastructure.Messaging;
 
-namespace apcurium.MK.Booking.Commands
+namespace apcurium.MK.Common.Entity
 {
-    public class CreateOrderForManualRideLinqPair : ICommand
+    public class OrderManualRideLinqDetail
     {
-        public CreateOrderForManualRideLinqPair()
-        {
-            Id = Guid.NewGuid();
-        }
-
-        public Guid Id { get; set; }
-
+        [Key]
+        public int Id { get; set; }
         public Guid OrderId { get; set; }
         public Guid AccountId { get; set; }
+        // This is the code displayed on the taxi rig for the user to type
         public string PairingCode { get; set; }
+        // This is the token to use to Get or Delete info.
         public string PairingToken { get; set; }
         public DateTime PairingDate { get; set; }
-        public string ClientLanguageCode { get; set; }
-        public string UserAgent { get; set; }
-        public string ClientVersion { get; set; }
-        public string CompanyKey { get; set; }
-        public string CompanyName { get; set; }
-        public string Market { get; set; }
+        public DateTime? EndTime { get; set; }
+        public bool IsCancelled { get; set; }
         public double? Distance { get; set; }
         public double? Total { get; set; }
         public double? Fare { get; set; }
@@ -39,7 +32,6 @@ namespace apcurium.MK.Booking.Commands
         public double? RateAtTripStart { get; set; }
         public double? RateAtTripEnd { get; set; }
         public string RateChangeTime { get; set; }
-        public DateTime? EndTime { get; set; }
         public string Medallion { get; set; }
     }
 }

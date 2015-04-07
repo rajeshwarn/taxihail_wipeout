@@ -1,22 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Infrastructure.Messaging;
+using Infrastructure.EventSourcing;
 
-namespace apcurium.MK.Booking.Commands
+namespace apcurium.MK.Booking.Events
 {
-    public class CreateOrderForManualRideLinqPair : ICommand
+    public class OrderManuallyPairedForRideLinq : VersionedEvent
     {
-        public CreateOrderForManualRideLinqPair()
-        {
-            Id = Guid.NewGuid();
-        }
-
-        public Guid Id { get; set; }
-
-        public Guid OrderId { get; set; }
         public Guid AccountId { get; set; }
         public string PairingCode { get; set; }
         public string PairingToken { get; set; }
@@ -39,7 +27,6 @@ namespace apcurium.MK.Booking.Commands
         public double? RateAtTripStart { get; set; }
         public double? RateAtTripEnd { get; set; }
         public string RateChangeTime { get; set; }
-        public DateTime? EndTime { get; set; }
         public string Medallion { get; set; }
     }
 }

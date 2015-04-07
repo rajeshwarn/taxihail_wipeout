@@ -145,11 +145,11 @@ namespace apcurium.MK.Booking.ReadModel.Query
             }
         }
 
-        public ManualRideLinqDetails GetManualRideLinqById(Guid orderId)
+        public OrderManualRideLinqDetail GetManualRideLinqById(Guid orderId)
         {
             using (var context = _contextFactory.Invoke())
             {
-                return context.Query<ManualRideLinqDetails>().SingleOrDefault(c => c.OrderId == orderId);
+                return context.Query<OrderManualRideLinqDetail>().SingleOrDefault(c => c.OrderId == orderId);
             }
         }
     }

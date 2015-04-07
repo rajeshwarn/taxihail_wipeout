@@ -124,15 +124,26 @@ namespace apcurium.MK.Booking.Api.Jobs
 
         private void BatchUpdateStatus(string companyKey, string market, IEnumerable<OrderStatusDetail> orders)
         {
-            var ibsOrdersIds = orders.Select(statusDetail => statusDetail.IBSOrderId != null ? statusDetail.IBSOrderId.Value : 0).ToList();
+            var manualRideLinqOrders = orders.Where(o => o.IsManualRideLinq).ToArray();
+            foreach (var orderStatusDetail in manualRideLinqOrders)
+            {
+                _orderStatusUpdater.HandleManualRidelinqFlow(orderStatusDetail);
+            }
+
+            var ibsOrdersIds = orders
+                .Where(order => !order.IsManualRideLinq)
+                .Select(statusDetail => statusDetail.IBSOrderId != null ? statusDetail.IBSOrderId.Value : 0)
+                .ToList();
+
             const int take = 10;
             for (var skip = 0; skip < ibsOrdersIds.Count; skip = skip + take)
             {
                 var nextGroup = ibsOrdersIds.Skip(skip).Take(take).ToList();
                 var orderStatuses = _ibsServiceProvider.Booking(companyKey).GetOrdersStatus(nextGroup);
-
+                
                 foreach (var ibsStatus in orderStatuses)
                 {
+                 
                     var order = orders.FirstOrDefault(o => o.IBSOrderId == ibsStatus.IBSOrderId);
                     if (order == null)
                     {

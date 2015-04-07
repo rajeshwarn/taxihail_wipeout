@@ -65,7 +65,7 @@
     <Compile Include="BaseServiceClient.cs" />
     <Compile Include="CmtMobileServiceClient.cs" />
     <Compile Include="CmtPaymentServiceClient.cs" />
-    <Compile Include="CmtTripInfoServiceClient.cs" />
+    <Compile Include="CmtTripInfoServiceHelper.cs" />
     <Compile Include="Extensions\ServiceClientBaseExtensions.cs" />
     <Compile Include="LevelThreeData.cs" />
     <Compile Include="OAuthAuthorizer.cs" />

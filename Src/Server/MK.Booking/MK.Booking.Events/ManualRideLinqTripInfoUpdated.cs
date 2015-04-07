@@ -1,20 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using apcurium.MK.Common.Entity;
+using Infrastructure.EventSourcing;
 
-namespace apcurium.MK.Booking.Api.Contract.Resources
+namespace apcurium.MK.Booking.Events
 {
-    public class ManualRideLinq : BaseDto
+    public class ManualRideLinqTripInfoUpdated : VersionedEvent
     {
-        public Guid OrderId { get; set; }
-        public Guid AccountId { get; set; }
-        public string PairingCode { get; set; }
-        public DateTime StartTime { get; set; }
-        public DateTime? EndTime { get; set; }
-        public bool IsCancelled { get; set; }
-        public double Distance { get; set; }
+        public double? Distance { get; set; }
         public double? Total { get; set; }
         public double? Fare { get; set; }
         public double? FareAtAlternateRate { get; set; }
@@ -26,6 +18,9 @@ namespace apcurium.MK.Booking.Api.Contract.Resources
         public double? RateAtTripStart { get; set; }
         public double? RateAtTripEnd { get; set; }
         public string RateChangeTime { get; set; }
+        public DateTime? EndTime { get; set; }
+        public string PairingToken { get; set; }
         public string Medallion { get; set; }
+
     }
 }

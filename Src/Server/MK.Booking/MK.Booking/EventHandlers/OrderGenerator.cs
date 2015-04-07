@@ -25,9 +25,9 @@ namespace apcurium.MK.Booking.EventHandlers
         IEventHandler<DispatchCompanySwitchIgnored>,
         IEventHandler<IbsOrderInfoAddedToOrder>,
         IEventHandler<OrderCancelledBecauseOfError>,
-        IEventHandler<ManualRideLinqPaired>,
-        IEventHandler<ManualRideLinqUnpaired>,
-        IEventHandler<UpdatedManualRidelinqTripInfo>
+        IEventHandler<OrderManuallyPairedForRideLinq>,
+        IEventHandler<OrderUnpairedFromManualRideLinq>,
+        IEventHandler<ManualRideLinqTripInfoUpdated>
 
     {
         private readonly Func<BookingDbContext> _contextFactory;
@@ -430,7 +430,7 @@ namespace apcurium.MK.Booking.EventHandlers
             }
         }
 
-        public void Handle(ManualRideLinqPaired @event)
+        public void Handle(OrderManuallyPairedForRideLinq @event)
         {
             using (var context = _contextFactory.Invoke())
             {
@@ -438,8 +438,8 @@ namespace apcurium.MK.Booking.EventHandlers
                 {
                     AccountId = @event.AccountId,
                     Id = @event.SourceId,
-                    PickupDate = @event.StartTime,
-                    CreatedDate = @event.StartTime,
+                    PickupDate = @event.PairingDate,
+                    CreatedDate = @event.PairingDate,
                     Status = (int)OrderStatus.Created,
                     IsRated = false,
                     UserAgent = @event.UserAgent,
@@ -465,35 +465,48 @@ namespace apcurium.MK.Booking.EventHandlers
                         AccountId = @event.AccountId,
                         Status = OrderStatus.Created,
                         IBSStatusDescription = _resources.Get("CreateOrder_WaitingForIbs", @event.ClientLanguageCode),
-                        PickupDate = @event.StartTime,
+                        PickupDate = @event.PairingDate,
                         CompanyKey = @event.CompanyKey,
                         CompanyName = @event.CompanyName,
-                        Market = @event.Market
+                        Market = @event.Market,
+                        IsManualRideLinq = true
                     });
                 }
 
-                var rideLinqDetails = context.Find<ManualRideLinqDetails>(@event.SourceId);
+                var rideLinqDetails = context.Find<OrderManualRideLinqDetail>(@event.SourceId);
                 if (rideLinqDetails != null)
                 {
                     _logger.LogMessage("RideLinqDetails already existing for Order : " + @event.SourceId);
                 }
                 else
                 {
-                    context.Save(new ManualRideLinqDetails
+                    context.Save(new OrderManualRideLinqDetail
                     {
                         OrderId = @event.SourceId,
                         AccountId = @event.AccountId,
                         PairingCode = @event.PairingCode,
-                        StartTime = @event.StartTime,
-                        StartingLongitude = @event.Longitude,
-                        StartingLatitude = @event.Latitude
+                        PairingToken = @event.PairingToken,
+                        PairingDate = @event.PairingDate,
+                        Distance = @event.Distance,
+                        Extra = @event.Extra,
+                        Fare = @event.Fare,
+                        FareAtAlternateRate = @event.FareAtAlternateRate,
+                        Total = @event.Total,
+                        Toll = @event.Toll,
+                        Tax = @event.Tax;
+                        Tip = @event.Tip,
+                        Surcharge = @event.Surcharge,
+                        RateAtTripStart = @event.RateAtTripStart,
+                        RateAtTripEnd = @event.RateAtTripEnd,
+                        RateChangeTime = @event.RateChangeTime,
+                        Medallion = @event.Medallion
                     });
                 }
 
             }
         }
 
-        public void Handle(ManualRideLinqUnpaired @event)
+        public void Handle(OrderUnpairedFromManualRideLinq @event)
         {
             using (var context = _contextFactory.Invoke())
             {
@@ -511,7 +524,7 @@ namespace apcurium.MK.Booking.EventHandlers
                     context.Save(orderStatusDetails);
                 }
 
-                var rideLinqDetails = context.Find<ManualRideLinqDetails>(@event.SourceId);
+                var rideLinqDetails = context.Find<OrderManualRideLinqDetail>(@event.SourceId);
                 if (rideLinqDetails != null)
                 {
                     rideLinqDetails.IsCancelled = true;
@@ -520,7 +533,7 @@ namespace apcurium.MK.Booking.EventHandlers
             }
         }
 
-        public void Handle(UpdatedManualRidelinqTripInfo @event)
+        public void Handle(ManualRideLinqTripInfoUpdated @event)
         {
             using (var context = _contextFactory.Invoke())
             {
@@ -531,10 +544,6 @@ namespace apcurium.MK.Booking.EventHandlers
                     {
                         order.Status = (int) OrderStatus.Completed;
                         order.DropOffDate = @event.EndTime;
-                    }
-                    else
-                    {
-                        order.Status = (int) OrderStatus.Pending;
                     }
                     order.Fare = @event.Fare;
                     order.Tax = @event.Tax;
@@ -550,19 +559,26 @@ namespace apcurium.MK.Booking.EventHandlers
                     {
                         orderStatusDetails.Status = OrderStatus.Completed;
                     }
-                    else
-                    {
-                        orderStatusDetails.Status = OrderStatus.Pending;
-                    }
-                    orderStatusDetails.DriverInfos = @event.DriverInfo;
                     context.Save(orderStatusDetails);
                 }
 
-                var rideLinqDetails = context.Find<ManualRideLinqDetails>(@event.SourceId);
+                var rideLinqDetails = context.Find<OrderManualRideLinqDetail>(@event.SourceId);
                 if (rideLinqDetails != null)
                 {
-                    rideLinqDetails.Distance = @event.Distance??0;
+                    rideLinqDetails.Distance = @event.Distance;
                     rideLinqDetails.PairingToken = @event.PairingToken;
+                    rideLinqDetails.EndTime = @event.EndTime;
+                    rideLinqDetails.Extra = @event.Extra;
+                    rideLinqDetails.Fare = @event.Fare;
+                    rideLinqDetails.FareAtAlternateRate = @event.FareAtAlternateRate;
+                    rideLinqDetails.Total = @event.Total;
+                    rideLinqDetails.Toll = @event.Toll;
+                    rideLinqDetails.Tip = @event.Tip;
+                    rideLinqDetails.Tax = @event.Tax;
+                    rideLinqDetails.Surcharge = @event.Surcharge;
+                    rideLinqDetails.RateAtTripStart = @event.RateAtTripStart;
+                    rideLinqDetails.RateAtTripEnd = @event.RateAtTripEnd;
+                    rideLinqDetails.RateChangeTime = @event.RateChangeTime;
                     context.Save(rideLinqDetails);
                 }
             }

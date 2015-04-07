@@ -188,9 +188,11 @@ namespace apcurium.MK.Booking.CommandHandlers
 
         public void Handle(CreateOrderForManualRideLinqPair command)
         {
-            var order = new Order(command.Id, command.AccountId, command.StartTime, command.PairingCode,
-                command.UserAgent, command.ClientLanguageCode, command.ClientVersion,
-                command.CompanyKey, command.CompanyName, command.Market, command.Longitude, command.Latitude);
+            var order = new Order(command.OrderId, command.AccountId, command.PairingDate, command.PairingCode,
+                command.PairingToken, command.UserAgent, command.ClientLanguageCode, command.ClientVersion,
+                command.CompanyKey, command.CompanyName, command.Market, command.Distance, command.Total,
+                command.Fare, command.FareAtAlternateRate, command.Tax, command.Tip, command.Toll, command.Extra, 
+                command.Surcharge, command.RateAtTripStart, command.RateAtTripEnd, command.RateChangeTime, command.Medallion);
 
             _repository.Save(order, command.Id.ToString());
         }
@@ -198,15 +200,16 @@ namespace apcurium.MK.Booking.CommandHandlers
         public void Handle(UnpairOrderForManualRideLinq command)
         {
             var order = _repository.Get(command.OrderId);
-            order.UnpairRideLinq();
+            order.UnpairFromRideLinq();
             _repository.Save(order, command.Id.ToString());
         }
 
         public void Handle(UpdateTripInfoInOrderForManualRideLinq command)
         {
             var order = _repository.Get(command.OrderId);
-            order.UpdateTripInfo(command.Distance, command.Fare, command.Tax, command.Tip, command.Toll, 
-                command.Extra, command.DriverInfo, command.EndTime, command.PairingToken);
+            order.UpdateRideLinqTripInfo(command.Distance,command.Total, command.Fare, command.FareAtAlternateRate, command.Tax,
+                command.Tip, command.Toll, command.Extra,command.Surcharge,command.RateAtTripStart, command.RateAtTripEnd, 
+                command.RateChangeTime ,command.EndTime, command.PairingToken, command.Medallion);
             _repository.Save(order, command.Id.ToString());
         }
     }

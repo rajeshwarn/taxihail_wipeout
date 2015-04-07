@@ -10,12 +10,12 @@ using CMTPayment.Pair;
 
 namespace CMTPayment
 {
-    public class CmtTripInfoServiceClient
+    public class CmtTripInfoServiceHelper
     {
         private readonly CmtMobileServiceClient _cmtMobileServiceClient;
         private readonly ILogger _logger;
 
-        public CmtTripInfoServiceClient(CmtMobileServiceClient cmtMobileServiceClient, ILogger logger)
+        public CmtTripInfoServiceHelper(CmtMobileServiceClient cmtMobileServiceClient, ILogger logger)
         {
             _cmtMobileServiceClient = cmtMobileServiceClient;
             _logger = logger;

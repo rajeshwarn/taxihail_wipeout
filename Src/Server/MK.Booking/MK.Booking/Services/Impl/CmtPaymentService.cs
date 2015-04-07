@@ -38,7 +38,7 @@ namespace apcurium.MK.Booking.Services.Impl
         private readonly IOrderPaymentDao _paymentDao;
         private readonly CmtPaymentServiceClient _cmtPaymentServiceClient;
         private readonly CmtMobileServiceClient _cmtMobileServiceClient;
-        private readonly CmtTripInfoServiceClient _cmtTripInfoServiceClient;
+        private readonly CmtTripInfoServiceHelper _cmtTripInfoServiceHelper;
 
         public CmtPaymentService(ICommandBus commandBus, 
             IOrderDao orderDao,
@@ -60,7 +60,7 @@ namespace apcurium.MK.Booking.Services.Impl
 
             _cmtPaymentServiceClient = new CmtPaymentServiceClient(serverSettings.GetPaymentSettings().CmtPaymentSettings, null, null, logger);
             _cmtMobileServiceClient = new CmtMobileServiceClient(serverSettings.GetPaymentSettings().CmtPaymentSettings, null, null);
-            _cmtTripInfoServiceClient = new CmtTripInfoServiceClient(_cmtMobileServiceClient, logger);
+            _cmtTripInfoServiceHelper = new CmtTripInfoServiceHelper(_cmtMobileServiceClient, logger);
         }
 
         public PaymentProvider ProviderType(Guid? orderId = null)
@@ -378,7 +378,7 @@ namespace apcurium.MK.Booking.Services.Impl
             _logger.LogMessage("Pairing response : " + response.ToJson());
 
             // wait for trip to be updated
-            _cmtTripInfoServiceClient.WaitForTripInfo(response.PairingToken, response.TimeoutSeconds);
+            _cmtTripInfoServiceHelper.WaitForTripInfo(response.PairingToken, response.TimeoutSeconds);
 
             return response;
         }
@@ -392,7 +392,7 @@ namespace apcurium.MK.Booking.Services.Impl
             });
 
             // wait for trip to be updated
-            _cmtTripInfoServiceClient.WaitForRideLinqUnpaired(orderPairingDetail.PairingToken, response.TimeoutSeconds);
+            _cmtTripInfoServiceHelper.WaitForRideLinqUnpaired(orderPairingDetail.PairingToken, response.TimeoutSeconds);
         }
 
         private AuthorizationResponse Authorize(AuthorizationRequest request)

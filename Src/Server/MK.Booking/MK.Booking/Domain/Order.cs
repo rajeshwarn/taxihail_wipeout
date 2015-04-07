@@ -42,9 +42,9 @@ namespace apcurium.MK.Booking.Domain
             Handles<OrderCancelledBecauseOfError>(NoAction);
             Handles<PrepaidOrderPaymentInfoUpdated>(NoAction);
             Handles<RefundedOrderUpdated>(NoAction);
-            Handles<ManualRideLinqPaired>(NoAction);
-            Handles<ManualRideLinqUnpaired>(NoAction);
-            Handles<UpdatedManualRidelinqTripInfo>(NoAction);
+            Handles<OrderManuallyPairedForRideLinq>(NoAction);
+            Handles<OrderUnpairedFromManualRideLinq>(NoAction);
+            Handles<ManualRideLinqTripInfoUpdated>(NoAction);
         }
 
 
@@ -57,15 +57,16 @@ namespace apcurium.MK.Booking.Domain
         /// <summary>
         /// Constructor for RideLinq
         /// </summary>
-        public Order(Guid id, Guid accountId, DateTime startTime, string pairingCode ,string userAgent, 
-            string clientLanguageCode, string clientVersion, string companyKey, string companyName, string market,
-            double longitude, double latitude) 
+        public Order(Guid id, Guid accountId, DateTime pairingDate, string pairingCode, string pairingToken, string userAgent,
+            string clientLanguageCode, string clientVersion, string companyKey, string companyName, string market, double? distance,
+            double? total, double? fare, double? faireAtAlternateRate, double? tax, double? tip, double? toll,
+            double? extra, double? surcharge, double? rateAtTripStart, double? rateAtTripEnd, string rateChangeTime, string medallion) 
             : this(id)
         {
-            Update(new ManualRideLinqPaired
+            Update(new OrderManuallyPairedForRideLinq
             {
                 AccountId = accountId,
-                StartTime = startTime,
+                PairingDate = pairingDate,
                 UserAgent = userAgent,
                 ClientLanguageCode = clientLanguageCode,
                 ClientVersion = clientVersion,
@@ -73,8 +74,20 @@ namespace apcurium.MK.Booking.Domain
                 CompanyName = companyName,
                 Market = market,
                 PairingCode = pairingCode,
-                Longitude = longitude,
-                Latitude = latitude
+                PairingToken = pairingToken,
+                Total = total,
+                Fare = fare,
+                FareAtAlternateRate = faireAtAlternateRate,
+                Tax = tax,
+                Tip = tip,
+                Toll = toll,
+                Surcharge = surcharge,
+                Extra = extra,
+                RateAtTripStart = rateAtTripStart,
+                RateAtTripEnd = rateAtTripEnd,
+                RateChangeTime = rateChangeTime,
+                Distance = distance,
+                Medallion = medallion
             });
         }
 
@@ -120,20 +133,27 @@ namespace apcurium.MK.Booking.Domain
             });
         }
 
-        public void UpdateTripInfo(double? distance, double? faire, double? tax, double? tip, double? toll,
-            double? extra, DriverInfos driverInfos, DateTime? endTime, string pairingToken)
+        public void UpdateRideLinqTripInfo(double? distance,double? total, double? fare,double? faireAtAlternateRate, double? tax, double? tip, double? toll,
+            double? extra, double? surcharge, double? rateAtTripStart, double? rateAtTripEnd, string rateChangeTime, 
+            DateTime? endTime, string pairingToken, string medallion)
         {
-            Update(new UpdatedManualRidelinqTripInfo
+            Update(new ManualRideLinqTripInfoUpdated
             {
                 Distance = distance, 
-                DriverInfo = driverInfos,
-                Fare = faire,
+                Total = total,
+                Fare = fare,
+                FareAtAlternateRate = faireAtAlternateRate,
                 Tax = tax,
                 Tip = tip,
                 Toll = toll,
                 Extra = extra,
+                Surcharge = surcharge,
+                RateAtTripStart = rateAtTripStart,
+                RateAtTripEnd = rateAtTripEnd,
+                RateChangeTime = rateChangeTime,
                 EndTime = endTime,
-                PairingToken = pairingToken
+                PairingToken = pairingToken,
+                Medallion = medallion
             });
         }
 
@@ -258,9 +278,9 @@ namespace apcurium.MK.Booking.Domain
             Update(new OrderUnpairedForPayment());
         }
 
-        public void UnpairRideLinq()
+        public void UnpairFromRideLinq()
         {
-            Update(new ManualRideLinqUnpaired());
+            Update(new OrderUnpairedFromManualRideLinq());
         }
 
         public void PrepareForNextDispatch(string dispatchCompanyName, string dispatchCompanyKey)

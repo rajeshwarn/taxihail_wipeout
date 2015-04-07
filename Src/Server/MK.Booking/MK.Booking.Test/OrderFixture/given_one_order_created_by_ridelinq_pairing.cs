@@ -40,7 +40,7 @@ namespace apcurium.MK.Booking.Test.OrderFixture
                 AccountId = _accountId,
                 PickupDate = DateTime.Now,
             });
-            _sut.Given(new ManualRideLinqPaired()
+            _sut.Given(new OrderManuallyPairedForRideLinq()
             {
                 AccountId = _accountId,
                 SourceId = _orderId
@@ -71,7 +71,7 @@ namespace apcurium.MK.Booking.Test.OrderFixture
                 Tip= 1.5f,
             });
 
-            var @event = _sut.ThenHasOne<UpdatedManualRidelinqTripInfo>();
+            var @event = _sut.ThenHasOne<ManualRideLinqTripInfoUpdated>();
 
             Assert.AreEqual(15f, @event.Fare);
             Assert.AreEqual(3f, @event.Tax );
@@ -91,7 +91,7 @@ namespace apcurium.MK.Booking.Test.OrderFixture
                 OrderId = _orderId
             });
 
-            var @event = _sut.ThenHasOne<ManualRideLinqUnpaired>();
+            var @event = _sut.ThenHasOne<OrderUnpairedFromManualRideLinq>();
             Assert.AreEqual(_orderId, @event.SourceId);
         }
 
@@ -123,7 +123,7 @@ namespace apcurium.MK.Booking.Test.OrderFixture
             });
 
 
-            var @event = _sut.ThenHasOne<UpdatedManualRidelinqTripInfo>();
+            var @event = _sut.ThenHasOne<ManualRideLinqTripInfoUpdated>();
             Assert.AreEqual(_orderId, @event.SourceId);
             Assert.AreEqual(15f, @event.Fare);
             Assert.AreEqual(3f, @event.Tax);

@@ -34,6 +34,7 @@ using apcurium.MK.Common.Resources;
 using Infrastructure.EventSourcing;
 using Infrastructure.Messaging;
 using System;
+using CMTPayment;
 using log4net;
 using ServiceStack.Common.Web;
 
@@ -58,7 +59,7 @@ namespace apcurium.MK.Booking.Api.Jobs
         private readonly IEventSourcedRepository<Promotion> _promoRepository;
         private readonly IPaymentService _paymentService;
         private readonly ICreditCardDao _creditCardDao;
-        private readonly IManualRideLinqService _manualRideLinqService;
+        private readonly CmtTripInfoServiceHelper _cmtTripInfoServiceHelper;
         private readonly ILogger _logger;
         private readonly Resources.Resources _resources;
 
@@ -79,7 +80,7 @@ namespace apcurium.MK.Booking.Api.Jobs
             IEventSourcedRepository<Promotion> promoRepository,
             IPaymentService paymentService,
             ICreditCardDao creditCardDao,
-            ILogger logger, IManualRideLinqService manualRideLinqService)
+            ILogger logger)
         {
             _orderDao = orderDao;
             _notificationService = notificationService;
@@ -93,20 +94,16 @@ namespace apcurium.MK.Booking.Api.Jobs
             _paymentService = paymentService;
             _creditCardDao = creditCardDao;
             _logger = logger;
-            _manualRideLinqService = manualRideLinqService;
             _commandBus = commandBus;
             _paymentDao = paymentDao;
             _resources = new Resources.Resources(serverSettings);
+
+            var cmtMobileServiceClient = new CmtMobileServiceClient(_serverSettings.GetPaymentSettings().CmtPaymentSettings, null, null);
+            _cmtTripInfoServiceHelper = new CmtTripInfoServiceHelper(cmtMobileServiceClient, logger);
         }
 
         public void Update(IBSOrderInformation orderFromIbs, OrderStatusDetail orderStatusDetail)
         {
-            if (orderStatusDetail.IsManualRideLinq ?? false)
-            {
-                HandleManualRidelinqFlow(orderStatusDetail);
-                return;
-            }
-
             UpdateVehiclePositionAndSendNearbyNotificationIfNecessary(orderFromIbs, orderStatusDetail);
 
             SendUnpairWarningNotificationIfNecessary(orderStatusDetail);
@@ -135,42 +132,30 @@ namespace apcurium.MK.Booking.Api.Jobs
             });
         }
 
-        private void HandleManualRidelinqFlow(OrderStatusDetail orderstatusDetail)
+        public void HandleManualRidelinqFlow(OrderStatusDetail orderstatusDetail)
         {
-            if (orderstatusDetail.Status == OrderStatus.Created)
-            {
-                var tripInfo = _manualRideLinqService.PairRideLinqTrip(orderstatusDetail);
+            var rideLinqDetails = _orderDao.GetManualRideLinqById(orderstatusDetail.OrderId);
+            var tripInfo = _cmtTripInfoServiceHelper.GetTripInfo(rideLinqDetails.PairingToken);
 
-                _commandBus.Send(new UpdateTripInfoInOrderForManualRideLinq
-                {
-                    Distance = tripInfo.Distance,
-                    EndTime = tripInfo.EndTime,
-                    Extra = tripInfo.Extra,
-                    Fare = tripInfo.Fare,
-                    Tax = tripInfo.Tax,
-                    Tip = tripInfo.Tip,
-                    Toll = null,
-                    OrderId = orderstatusDetail.OrderId,
-                    PairingToken = tripInfo.PairingToken
-                });
-            }
-            else if(orderstatusDetail.Status == OrderStatus.Pending)
+            _commandBus.Send(new UpdateTripInfoInOrderForManualRideLinq
             {
-                var tripInfo = _manualRideLinqService.GetTripInfo(orderstatusDetail.OrderId);
-
-                _commandBus.Send(new UpdateTripInfoInOrderForManualRideLinq
-                {
-                    Distance = tripInfo.Distance,
-                    EndTime = tripInfo.EndTime,
-                    Extra = tripInfo.Extra,
-                    Fare = tripInfo.Fare,
-                    Tax = tripInfo.Tax,
-                    Tip = tripInfo.Tip,
-                    Toll = null,
-                    OrderId = orderstatusDetail.OrderId,
-                    PairingToken = tripInfo.PairingToken
-                });
-            }
+                Distance = tripInfo.Distance,
+                EndTime = tripInfo.EndTime,
+                Extra = Math.Round(((double) tripInfo.Extra / 100), 2),
+                Fare = Math.Round(((double)tripInfo.Fare / 100), 2),
+                Tax = Math.Round(((double)tripInfo.Tax / 100), 2),
+                Tip = Math.Round(((double)tripInfo.Tip / 100), 2),
+                Toll = tripInfo.TollHistory.Sum(toll => Math.Round(((double)toll.TollAmount / 100), 2)),
+                Surcharge = Math.Round(((double)tripInfo.Surcharge / 100), 2),
+                Total = Math.Round(((double)tripInfo.Total / 100), 2),
+                FareAtAlternateRate = Math.Round(((double)tripInfo.FareAtAlternateRate / 100), 2),
+                Medallion = tripInfo.Medallion,
+                RateAtTripStart = Math.Round(((double)tripInfo.RateAtTripStart / 100), 2),
+                RateAtTripEnd = Math.Round(((double)tripInfo.RateAtTripEnd / 100), 2),
+                RateChangeTime = tripInfo.RateChangeTime,
+                OrderId = orderstatusDetail.OrderId,
+                PairingToken = tripInfo.PairingToken
+            });
         }
 
         private void PopulateFromIbsOrder(OrderStatusDetail orderStatusDetail, IBSOrderInformation ibsOrderInfo)

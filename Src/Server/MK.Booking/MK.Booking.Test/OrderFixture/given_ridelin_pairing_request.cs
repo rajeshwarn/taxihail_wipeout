@@ -45,10 +45,10 @@ namespace apcurium.MK.Booking.Test.OrderFixture
 
             _sut.When(rideLinqPairing);
             
-            var rideLinqPaired = _sut.ThenHasSingle<ManualRideLinqPaired>();
+            var rideLinqPaired = _sut.ThenHasSingle<OrderManuallyPairedForRideLinq>();
 
             Assert.AreEqual(_accountId, rideLinqPaired.AccountId);
-            Assert.AreEqual(pickupDate, rideLinqPaired.StartTime);
+            Assert.AreEqual(pickupDate, rideLinqPaired.PairingDate);
         }
     }
 }
