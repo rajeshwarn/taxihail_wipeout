@@ -1,28 +1,17 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Windows.Input;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Common.Entity;
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using ServiceStack.ServiceModel.Serialization;
 using ServiceStack.Text;
 
-namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
+namespace apcurium.MK.Booking.Mobile.ViewModels
 {
-    public class ManualRideLinqDetailsViewModel : BaseViewModel
+    public class ManualRideLinqStatusViewModel : BaseViewModel
     {
         private readonly IBookingService _bookingService;
         private OrderManualRideLinqDetail _orderManualRideLinqDetail;
 
-        public ManualRideLinqDetailsViewModel(IBookingService bookingService)
+        public ManualRideLinqStatusViewModel(IBookingService bookingService)
         {
             _bookingService = bookingService;
         }

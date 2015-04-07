@@ -1,19 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Windows.Input;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Extensions;
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
 using ServiceStack.Text;
 
-namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
+namespace apcurium.MK.Booking.Mobile.ViewModels
 {
     public class ManualPairingForRideLinqViewModel: BaseViewModel
     {
@@ -46,7 +36,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
                     {
                         var orderManualRideLinqDetail = await _bookingService.ManualRideLinqPair(PairingCode);
 
-                        ShowViewModelAndRemoveFromHistory<ManualRideLinqDetailsViewModel>(new
+                        ShowViewModelAndRemoveFromHistory<ManualRideLinqStatusViewModel>(new
                         {
                             orderManualRideLinqDetail = orderManualRideLinqDetail.SerializeToString()
                         });
