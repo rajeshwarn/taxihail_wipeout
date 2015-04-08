@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
-using System.Threading;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
@@ -20,7 +18,6 @@ using CMTPayment.Reverse;
 using CMTPayment.Tokenize;
 using Infrastructure.Messaging;
 using Newtonsoft.Json;
-using ServiceStack.Common.Web;
 using ServiceStack.ServiceClient.Web;
 using ServiceStack.Text;
 
@@ -79,6 +76,8 @@ namespace apcurium.MK.Booking.Services.Impl
             {
                 if (_serverSettings.GetPaymentSettings().PaymentMode == PaymentMethod.RideLinqCmt)
                 {
+                    // CMT RideLinq flow
+
                     var orderStatusDetail = _orderDao.FindOrderStatusById(orderId);
                     if (orderStatusDetail == null)
                     {
@@ -115,14 +114,17 @@ namespace apcurium.MK.Booking.Services.Impl
                         DriverId = response.DriverId
                     };
                 }
-
-                _pairingService.Pair(orderId, cardToken, autoTipPercentage);
-
-                return new PairingResponse
+                else
                 {
-                    IsSuccessful = true,
-                    Message = "Success"
-                };
+                    // Normal CMT flow
+                    _pairingService.Pair(orderId, cardToken, autoTipPercentage);
+
+                    return new PairingResponse
+                    {
+                        IsSuccessful = true,
+                        Message = "Success"
+                    };
+                }
             }
             catch (Exception e)
             {
@@ -350,6 +352,9 @@ namespace apcurium.MK.Booking.Services.Impl
 
         private CmtPairingResponse PairWithVehicleUsingRideLinq(OrderStatusDetail orderStatusDetail, Guid orderId, string cardToken, int? autoTipPercentage)
         {
+            try
+            {
+
             var accountDetail = _accountDao.FindById(orderStatusDetail.AccountId);
 
             // send pairing request                                
@@ -381,6 +386,25 @@ namespace apcurium.MK.Booking.Services.Impl
             _cmtTripInfoServiceHelper.WaitForTripInfo(response.PairingToken, response.TimeoutSeconds);
 
             return response;
+            }
+            catch (Exception ex)
+            {
+                var aggregateException = ex as AggregateException;
+                if (aggregateException == null)
+                {
+                    throw ex;
+                }
+
+                var webServiceException = aggregateException.InnerException as WebServiceException;
+                if (webServiceException == null)
+                {
+                    throw ex;
+                }
+
+                var response = JsonConvert.DeserializeObject<AuthorizationResponse>(webServiceException.ResponseBody);
+
+                return null;
+            }
         }
 
         private void UnpairFromVehicleUsingRideLinq(OrderPairingDetail orderPairingDetail)
