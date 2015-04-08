@@ -1833,4 +1833,25 @@
   <data name="ManualPairingForRideLinQ_Instructions" xml:space="preserve">
     <value>Enter the 7-digit code displayed on the taxi touchscreen to auto-play and get an e-receipt at the end of your ride.</value>
   </data>
+  <data name="ManualRideLinqStatus_PairingCode" xml:space="preserve">
+    <value>Pairing Code:</value>
+  </data>
+  <data name="ManualRideLinqStatus_Medallion" xml:space="preserve">
+    <value>Medallion:</value>
+  </data>
+  <data name="ManualRideLinqStatus_Distance" xml:space="preserve">
+    <value>Distance:</value>
+  </data>
+  <data name="ManualRideLinqStatus_Total" xml:space="preserve">
+    <value>Total cost:</value>
+  </data>
+  <data name="ManualRideLinqStatus_Fare" xml:space="preserve">
+    <value>Fare meter:</value>
+  </data>
+  <data name="ManualRideLinqStatus_Tax" xml:space="preserve">
+    <value>Tax amount:</value>
+  </data>
+  <data name="ManualRideLinqStatus_Tip" xml:space="preserve">
+    <value>Tip amount:</value>
+  </data>
 </root>

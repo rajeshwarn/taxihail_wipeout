@@ -628,3 +628,10 @@
 "HomeView_ManualPairing"="Check In";
 "ManualPairingForRideLinQ_Pair"="check in";
 "ManualPairingForRideLinQ_Instructions"="Enter the 7-digit code displayed on the taxi touchscreen to auto-play and get an e-receipt at the end of your ride.";
+"ManualRideLinqStatus_PairingCode"="Pairing Code:";
+"ManualRideLinqStatus_Medallion"="Medallion:";
+"ManualRideLinqStatus_Distance"="Distance:";
+"ManualRideLinqStatus_Total"="Total cost:";
+"ManualRideLinqStatus_Fare"="Fare meter:";
+"ManualRideLinqStatus_Tax"="Tax amount:";
+"ManualRideLinqStatus_Tip"="Tip amount:";

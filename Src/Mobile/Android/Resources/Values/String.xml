@@ -636,4 +636,11 @@
   <string name="HomeView_ManualPairing">Check In</string>
   <string name="ManualPairingForRideLinQ_Pair">check in</string>
   <string name="ManualPairingForRideLinQ_Instructions">Enter the 7-digit code displayed on the taxi touchscreen to auto-play and get an e-receipt at the end of your ride.</string>
+  <string name="ManualRideLinqStatus_PairingCode">Pairing Code:</string>
+  <string name="ManualRideLinqStatus_Medallion">Medallion:</string>
+  <string name="ManualRideLinqStatus_Distance">Distance:</string>
+  <string name="ManualRideLinqStatus_Total">Total cost:</string>
+  <string name="ManualRideLinqStatus_Fare">Fare meter:</string>
+  <string name="ManualRideLinqStatus_Tax">Tax amount:</string>
+  <string name="ManualRideLinqStatus_Tip">Tip amount:</string>
 </resources>
