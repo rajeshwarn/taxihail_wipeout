@@ -635,3 +635,5 @@
 "ManualRideLinqStatus_Fare"="Fare meter:";
 "ManualRideLinqStatus_Tax"="Tax amount:";
 "ManualRideLinqStatus_Tip"="Tip amount:";
+"View_RideLinqStatus"="Status";
+"View_RideLinqPair"="check in";

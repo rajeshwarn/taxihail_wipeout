@@ -1824,6 +1824,12 @@
   <data name="FilteredAddresses_Error_Message" xml:space="preserve">
     <value>There is currently no entries for this filter.</value>
   </data>
+  <data name="View_RideLinqStatus" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="View_RideLinqPair" xml:space="preserve">
+    <value>check in</value>
+  </data>
   <data name="HomeView_ManualPairing" xml:space="preserve">
     <value>Check In</value>
   </data>

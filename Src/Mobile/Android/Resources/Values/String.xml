@@ -643,4 +643,6 @@
   <string name="ManualRideLinqStatus_Fare">Fare meter:</string>
   <string name="ManualRideLinqStatus_Tax">Tax amount:</string>
   <string name="ManualRideLinqStatus_Tip">Tip amount:</string>
+  <string name="View_RideLinqStatus">Status</string>
+  <string name="View_RideLinqPair">check in</string>
 </resources>
