@@ -1,6 +1,8 @@
 using System.Windows.Input;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Extensions;
+using apcurium.MK.Booking.Mobile.PresentationHints;
+using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using apcurium.MK.Common.Entity;
 using ServiceStack.Text;
 
@@ -35,7 +37,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                return this.GetCommand(() => _bookingService.ManualRideLinqUnpair(_orderManualRideLinqDetail.OrderId));
+                return this.GetCommand(async () =>
+                {
+                    await _bookingService.ManualRideLinqUnpair(_orderManualRideLinqDetail.OrderId);
+
+                    ShowViewModelAndRemoveFromHistory<HomeViewModel>(new HomeViewModelPresentationHint(HomeViewModelState.Initial));
+                });
             }
         }
     }

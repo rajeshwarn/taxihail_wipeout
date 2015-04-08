@@ -13,13 +13,9 @@ using Android.Widget;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities
 {
-    [Activity(Label = "Manual Pairing for RideLinQ",
-          Theme = "@style/MainTheme",
-          ScreenOrientation = ScreenOrientation.Portrait,
-          ClearTaskOnLaunch = true,
-          WindowSoftInputMode = SoftInput.AdjustPan,
-          FinishOnTaskLaunch = true,
-          LaunchMode = LaunchMode.SingleTask
+    [Activity(Theme = "@style/MainTheme",
+        Label = "ManualPairingForRideLinqActivity",
+        ScreenOrientation = ScreenOrientation.Portrait
       )]  
     public class ManualPairingForRideLinqActivity : BaseBindingActivity<ManualPairingForRideLinqViewModel>
     {
