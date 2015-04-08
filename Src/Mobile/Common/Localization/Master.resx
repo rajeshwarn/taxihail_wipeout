@@ -1824,4 +1824,13 @@
   <data name="FilteredAddresses_Error_Message" xml:space="preserve">
     <value>There is currently no entries for this filter.</value>
   </data>
+  <data name="HomeView_ManualPairing" xml:space="preserve">
+    <value>Check In</value>
+  </data>
+  <data name="ManualPairingForRideLinQ_Pair" xml:space="preserve">
+    <value>check in</value>
+  </data>
+  <data name="ManualPairingForRideLinQ_Instructions" xml:space="preserve">
+    <value>Enter the 7-digit code displayed on the taxi touchscreen to auto-play and get an e-receipt at the end of your ride.</value>
+  </data>
 </root>

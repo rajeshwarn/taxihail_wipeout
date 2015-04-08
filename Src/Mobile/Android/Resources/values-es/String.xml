@@ -606,4 +606,6 @@
   <string name="InvalidPayBackErrorMessage">The PayBack field must be all digits and must not exceed 10 characters in length</string>
   <string name="NoPayBackErrorMessage">The PayBack field is required</string>
   <string name="RideSettingsPayBack">PayBack</string>
+  <string name="FilteredAddresses_Error_Title">Error</string>
+  <string name="FilteredAddresses_Error_Message">There is currently no entries for this filter.</string>
 </resources>
