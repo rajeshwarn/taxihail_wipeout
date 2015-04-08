@@ -86,8 +86,8 @@ namespace apcurium.MK.Booking.Mobile
                 Task.Run(() =>
                 {
                     // Make sure to refresh notification/payment settings even if the user has killed the app
-                    accountService.GetNotificationSettings(true, false);
-                    Mvx.Resolve<IPaymentService>().GetPaymentSettings();
+                    accountService.GetNotificationSettings(true, true);
+                    Mvx.Resolve<IPaymentService>().GetPaymentSettings(true);
                 });
 
                 // Log user session start
