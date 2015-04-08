@@ -141,10 +141,10 @@
                         android:id="@+id/btnRideLinq"
                         style="@style/ButtonActionGreenStyle"
                         local:MvxBind="Click ManualPairingRideLinq"
-                        android:layout_width="match_parent"
+                        android:layout_width="100dip"
                         android:layout_height="44dip"
                         android:layout_marginBottom="5dp"
-                        android:text="Ride Linq"
+                        android:text="@string/HomeView_ManualPairing"
                         android:layout_gravity="bottom|center_horizontal" />
                 <!-- Order Review -->
                     <apcurium.MK.Booking.Mobile.Client.Controls.Widgets.OrderReview

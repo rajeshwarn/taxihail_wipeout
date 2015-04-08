@@ -4,18 +4,29 @@
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:layout_marginTop="15dp"
-    android:layout_marginLeft="6dp"
-    android:layout_marginRight="6dp"
-    android:layout_marginBottom="15dp">
-    <EditText
-        android:inputType="number"
+    android:paddingLeft="20dip"
+    android:paddingRight="20dip">
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="30dip"
+        android:text="@string/ManualPairingForRideLinQ_Instructions" />
+    <EditText
+        android:id="@+id/PairingCode1"
+        android:inputType="number"
+        android:layout_width="160dip"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="100dip"
+        android:hint="_______"
+        android:maxLength="7"
+        android:textSize="35sp"
         local:MvxBind="Text PairingCode" />
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Pair"
-        local:MvxBind="Click PairWithRideLinq" />
+        android:layout_marginTop="20dip"
+        android:text="@string/ManualPairingForRideLinQ_Pair"
+        local:MvxBind="Click PairWithRideLinq"
+        android:capitalize="characters" />
 </LinearLayout>
