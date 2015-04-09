@@ -120,7 +120,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
 				Data = new CreditCardInfos ();
 
-				var creditCard = await _accountService.GetCreditCard();
+				CreditCardDetails creditCard = null;
+
+                try
+                {
+                    creditCard = await _accountService.GetCreditCard();
+                }
+                catch (Exception ex)
+                {
+                    Logger.LogMessage(ex.Message, ex.ToString());
+                    this.Services().Message.ShowMessage(this.Services().Localize["Error"], this.Services().Localize["PaymentLoadError"]);
+                }
+
 				if (creditCard == null)
 				{
 					Data.NameOnCard = _accountService.CurrentAccount.Name;

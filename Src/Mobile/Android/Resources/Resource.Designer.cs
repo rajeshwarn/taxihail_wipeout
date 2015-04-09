@@ -5228,14 +5228,14 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f060123
 			public const int GooglePlayServicesNotAvailableMessage = 2131099939;
 			
-			// aapt resource value: 0x7f0602dc
-			public const int GooglePlayServicesNotAvailableMessage1 = 2131100380;
+			// aapt resource value: 0x7f0602e0
+			public const int GooglePlayServicesNotAvailableMessage1 = 2131100384;
 			
 			// aapt resource value: 0x7f060084
 			public const int GooglePlayServicesNotAvailableTitle = 2131099780;
 			
-			// aapt resource value: 0x7f0602dd
-			public const int GooglePlayServicesNotAvailableTitle1 = 2131100381;
+			// aapt resource value: 0x7f0602e1
+			public const int GooglePlayServicesNotAvailableTitle1 = 2131100385;
 			
 			// aapt resource value: 0x7f060049
 			public const int Hello = 2131099721;
@@ -5278,6 +5278,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 			
 			// aapt resource value: 0x7f0600b7
 			public const int HistoryInfo = 2131099831;
+			
+			// aapt resource value: 0x7f0602dc
+			public const int HistoryLoadError = 2131100380;
 			
 			// aapt resource value: 0x7f0600be
 			public const int HistoryViewNoHistoryLabel = 2131099838;
@@ -5657,8 +5660,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f0602c0
 			public const int Overdue_TransactionId = 2131100352;
 			
-			// aapt resource value: 0x7f0602de
-			public const int Overdue_View = 2131100382;
+			// aapt resource value: 0x7f0602e2
+			public const int Overdue_View = 2131100386;
 			
 			// aapt resource value: 0x7f06006b
 			public const int PanelMenuViewAboutUsText = 2131099755;
@@ -5777,6 +5780,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f060275
 			public const int PaymentInCar = 2131100277;
 			
+			// aapt resource value: 0x7f0602df
+			public const int PaymentLoadError = 2131100383;
+			
 			// aapt resource value: 0x7f0600a2
 			public const int PaymentView = 2131099810;
 			
@@ -5873,6 +5879,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f0602d5
 			public const int PromotionButton = 2131100373;
 			
+			// aapt resource value: 0x7f0602dd
+			public const int PromotionLoadError = 2131100381;
+			
 			// aapt resource value: 0x7f0602a6
 			public const int PromotionViewNoPromotionLabel = 2131100326;
 			
@@ -5965,6 +5974,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 			
 			// aapt resource value: 0x7f0602d0
 			public const int RideSettingsCustomerNumber = 2131100368;
+			
+			// aapt resource value: 0x7f0602de
+			public const int RideSettingsLoadError = 2131100382;
 			
 			// aapt resource value: 0x7f0601b4
 			public const int RideSettingsName = 2131100084;

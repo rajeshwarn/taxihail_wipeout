@@ -608,3 +608,7 @@
 "RideSettingsPayBack"="PayBack";
 "FilteredAddresses_Error_Message"="There is currently no entries for this filter.";
 "FilteredAddresses_Error_Title"="Error";
+"HistoryLoadError"="Impossible de charger l'historique. Veuillez réessayer plus tard.";
+"PromotionLoadError"="Impossible de charger les promotions disponibles. Veuillez réessayer plus tard.";
+"RideSettingsLoadError"="Impossible de charger les paramètres du compte. Veuillez réessayer plus tard.";
+"PaymentLoadError"="Impossible de charger les informations de paiement. Veuillez réessayer plus tard.";

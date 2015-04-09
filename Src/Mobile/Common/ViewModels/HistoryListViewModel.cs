@@ -101,8 +101,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			    catch (Exception ex)
 			    {
                     Logger.LogMessage(ex.Message, ex.ToString());
-
-                    //this.Services().Message.ShowMessage(this.Services().Localize["Error"], this.Services().Localize["HistoryLoadError"]);
+                    this.Services().Message.ShowMessage(this.Services().Localize["Error"], this.Services().Localize["HistoryLoadError"]);
 			    }
 
 				if (orders.Any())
