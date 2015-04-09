@@ -27,3 +27,12 @@
     {{/if}}
   </ul>
 </div>
+{{#if isSocialMediaVisible}}
+<div class="social-media pull-right">
+    {{#if SocialMediaFacebookURL }}<a href="{{SocialMediaFacebookURL}}" class="facebook-icon iconURL"></a>{{/if}}
+    {{#if SocialMediaTwitterURL }}<a href="{{SocialMediaTwitterURL}}" class="twitter-icon iconURL"></a>{{/if}}
+    {{#if SocialMediaGoogleURL }}<a href="{{SocialMediaGoogleURL}}" class="google-icon iconURL"></a>{{/if}}
+    {{#if SocialMediaPinterestURL }}<a href="{{SocialMediaPinterestURL}}" class="pinterest-icon iconURL"></a>{{/if}}<br />
+    <div class="phonenumber">{{DefaultPhoneNumber}}</div>
+</div>
+{{/if}}
