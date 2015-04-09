@@ -4,7 +4,6 @@ using System.Windows.Input;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Common.Entity;
-using Android.Database;
 using ServiceStack.Text;
 using System.Reactive;
 using System.Reactive.Linq;
@@ -67,14 +66,26 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     {
                         using (this.Services().Message.ShowProgress())
                         {
-                            var orderManualRideLinqDetail = await _bookingService.ManualRideLinqPair(PairingCode);
+                            //var orderManualRideLinqDetail = await _bookingService.ManualRideLinqPair(PairingCode);
 
-                            ShowViewModelAndRemoveFromHistory<ManualRideLinqStatusViewModel>(new
+							var orderManualRideLinqDetail = new OrderManualRideLinqDetail
+								{
+									PairingCode = "1234567",
+									Medallion = "mkt1",
+									PairingDate = DateTime.Now,
+									Distance = 55,
+									Fare = 35,
+									Tax = 9,
+									Tip = 5,
+									Total = (35+9+5)
+								};
+
+                            ShowViewModelAndClearHistory<ManualRideLinqStatusViewModel>(new
                             {
                                 orderManualRideLinqDetail = orderManualRideLinqDetail.SerializeToString()
                             });
                         }
-                    }, () => PairingCode.Length == 7 );
+                    });
             }
         }
     }

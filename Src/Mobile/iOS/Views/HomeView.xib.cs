@@ -59,6 +59,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             panelMenu.ViewToAnimate = homeView;
             panelMenu.PanelOffsetConstraint = constraintHomeLeadingSpace;
 
+			FlatButtonStyle.Green.ApplyTo(btnRideLinqCheckIn);
+
+			btnRideLinqCheckIn.SetTitle(this.Services().Localize["HomeView_ManualPairing"].ToUpper(), UIControlState.Normal);
+
             var set = this.CreateBindingSet<HomeView, HomeViewModel>();
 
             set.Bind(panelMenu)
@@ -90,6 +94,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             set.Bind(btnLocateMe)
                 .For(v => v.Command)
                 .To(vm => vm.LocateMe);
+
+			set.Bind(btnRideLinqCheckIn)
+				.For(v => v.Command)
+				.To(vm => vm.ManualPairingRideLinq);
 
             set.Bind(mapView)
                 .For(v => v.DataContext)

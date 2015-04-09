@@ -6,10 +6,12 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="HomeView">
             <connections>
+                <outlet property="RideLinqSection" destination="3Lq-30-29T" id="UT8-Dz-Y4w"/>
                 <outlet property="bottomBar" destination="cXg-Q6-nLg" id="wBh-UX-pyq"/>
                 <outlet property="btnAirport" destination="aEE-PN-YXj" id="gRf-H3-trA"/>
                 <outlet property="btnLocateMe" destination="Jqp-iu-ci1" id="Ea5-fR-6Yf"/>
                 <outlet property="btnMenu" destination="MeW-ns-SQv" id="7wz-qB-e5G"/>
+                <outlet property="btnRideLinqCheckIn" destination="wMc-OE-t7x" id="bFb-C1-GSc"/>
                 <outlet property="btnTrain" destination="rTf-vs-kUc" id="csz-MU-0ht"/>
                 <outlet property="constraintHomeLeadingSpace" destination="Ofk-d3-Xjf" id="rC5-er-L3E"/>
                 <outlet property="constraintOrderEditTrailingSpace" destination="4Uw-iv-741" id="egd-2Y-fEP"/>
@@ -107,6 +109,24 @@
                             <rect key="frame" x="500" y="22" width="304" height="483"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         </view>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3Lq-30-29T" userLabel="RideLinq">
+                            <rect key="frame" x="80" y="460" width="160" height="39"/>
+                            <subviews>
+                                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wMc-OE-t7x" customClass="FlatButton">
+                                    <rect key="frame" x="44" y="3" width="72" height="30"/>
+                                    <state key="normal" title="CHECK IN">
+                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                    </state>
+                                </button>
+                            </subviews>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstAttribute="centerX" secondItem="wMc-OE-t7x" secondAttribute="centerX" id="KCg-x5-KkN"/>
+                                <constraint firstAttribute="height" constant="39" id="UrL-8f-ebQ"/>
+                                <constraint firstAttribute="width" constant="160" id="sAn-kR-1ui"/>
+                                <constraint firstAttribute="centerY" secondItem="wMc-OE-t7x" secondAttribute="centerY" constant="1.5" id="vd5-Mb-F65"/>
+                            </constraints>
+                        </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4OH-fP-dh3" customClass="AddressPickerView">
                             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -122,7 +142,9 @@
                         <constraint firstItem="Fsx-d8-MLA" firstAttribute="left" secondItem="73H-fC-yqb" secondAttribute="left" constant="500" id="4Uw-iv-741"/>
                         <constraint firstAttribute="trailing" secondItem="cXg-Q6-nLg" secondAttribute="trailing" id="8Ab-0L-enX"/>
                         <constraint firstItem="HaA-X5-eHm" firstAttribute="top" secondItem="73H-fC-yqb" secondAttribute="top" constant="22" id="FRw-GE-bhA"/>
+                        <constraint firstItem="cXg-Q6-nLg" firstAttribute="top" secondItem="3Lq-30-29T" secondAttribute="bottom" constant="13" id="GRG-m9-S2h"/>
                         <constraint firstItem="MeW-ns-SQv" firstAttribute="top" secondItem="aEE-PN-YXj" secondAttribute="bottom" constant="8" id="GwO-hR-URR"/>
+                        <constraint firstItem="3Lq-30-29T" firstAttribute="leading" secondItem="MeW-ns-SQv" secondAttribute="trailing" constant="33" id="HoN-jy-bHF"/>
                         <constraint firstItem="lYS-4q-3Mj" firstAttribute="top" secondItem="HaA-X5-eHm" secondAttribute="bottom" constant="620" id="JSE-qi-pXl"/>
                         <constraint firstItem="HaA-X5-eHm" firstAttribute="left" secondItem="73H-fC-yqb" secondAttribute="left" constant="8" id="MI6-S6-jXH"/>
                         <constraint firstItem="DgF-jB-8zt" firstAttribute="top" secondItem="73H-fC-yqb" secondAttribute="top" id="Mlm-GQ-8rc"/>
@@ -137,6 +159,7 @@
                         <constraint firstItem="lYS-4q-3Mj" firstAttribute="bottom" secondItem="cXg-Q6-nLg" secondAttribute="bottom" constant="418" id="aqP-8Y-Hn4"/>
                         <constraint firstItem="4OH-fP-dh3" firstAttribute="leading" secondItem="73H-fC-yqb" secondAttribute="leading" id="c5H-Dc-S6w"/>
                         <constraint firstItem="rTf-vs-kUc" firstAttribute="leading" secondItem="73H-fC-yqb" secondAttribute="leading" constant="8" id="eOl-8B-fFp"/>
+                        <constraint firstItem="Jqp-iu-ci1" firstAttribute="leading" secondItem="3Lq-30-29T" secondAttribute="trailing" constant="33" id="g6H-IC-pVp"/>
                         <constraint firstAttribute="trailing" secondItem="4OH-fP-dh3" secondAttribute="trailing" id="hGf-1c-Z4K"/>
                         <constraint firstItem="aEE-PN-YXj" firstAttribute="leading" secondItem="73H-fC-yqb" secondAttribute="leading" constant="8" id="iwE-nr-qb8"/>
                         <constraint firstAttribute="right" secondItem="HaA-X5-eHm" secondAttribute="right" constant="8" id="mrh-2C-M5W"/>
