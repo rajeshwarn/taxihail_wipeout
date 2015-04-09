@@ -1860,4 +1860,7 @@
   <data name="ManualRideLinqStatus_Tip" xml:space="preserve">
     <value>Tip amount:</value>
   </data>
+  <data name="ManualRideLinqStatus_Unpair" xml:space="preserve">
+    <value>Unpair</value>
+  </data>
 </root>

@@ -637,3 +637,4 @@
 "ManualRideLinqStatus_Tip"="Tip amount:";
 "View_RideLinqStatus"="Status";
 "View_RideLinqPair"="check in";
+"ManualRideLinqStatus_Unpair"="Unpair";

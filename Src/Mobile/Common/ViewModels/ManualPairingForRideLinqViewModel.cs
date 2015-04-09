@@ -1,8 +1,13 @@
+using System;
+using System.ComponentModel;
 using System.Windows.Input;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Common.Entity;
 using ServiceStack.Text;
+using System.Reactive;
+using System.Reactive.Linq;
+using Observable = System.Reactive.Linq.Observable;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -10,6 +15,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
     {
         private readonly IBookingService _bookingService;
         private string _pairingCode;
+        private string _pairingCodeLeft;
+        private string _pairingCodeRight;
 
         public ManualPairingForRideLinqViewModel(IBookingService bookingService)
         {
@@ -27,24 +34,47 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
+        public string PairingCodeLeft
+        {
+            get { return _pairingCodeLeft; }
+            set
+            {
+                _pairingCodeLeft = value;
+
+                PairingCode = PairingCodeLeft + PairingCodeRight;
+                RaisePropertyChanged();
+            }
+        }
+
+        public string PairingCodeRight
+        {
+            get { return _pairingCodeRight; }
+            set
+            {
+                _pairingCodeRight = value;
+                PairingCode = PairingCodeLeft + PairingCodeRight;
+
+                RaisePropertyChanged();
+            }
+        }
+
         public ICommand PairWithRideLinq
         {
             get
             {
                 return this.GetCommand(async () =>
-                {
-                    using (this.Services().Message.ShowProgress())
                     {
-                        var orderManualRideLinqDetail = await _bookingService.ManualRideLinqPair(PairingCode);
-
-                        ShowViewModelAndRemoveFromHistory<ManualRideLinqStatusViewModel>(new
+                        using (this.Services().Message.ShowProgress())
                         {
-                            orderManualRideLinqDetail = orderManualRideLinqDetail.SerializeToString()
-                        });
-                    }
-                });
+                            var orderManualRideLinqDetail = await _bookingService.ManualRideLinqPair(PairingCode);
+
+                            ShowViewModelAndClearHistory<ManualRideLinqStatusViewModel>(new
+                            {
+                                orderManualRideLinqDetail = orderManualRideLinqDetail.SerializeToString()
+                            });
+                        }
+                    });
             }
         }
-
     }
 }

@@ -20,6 +20,8 @@
 #endif
         }
 
+        public bool IsManualRidelinqCheckInEnabled { get; set; }
+
         public bool IsSandbox { get; set; }
 
         public string BaseUrl { get; set; }

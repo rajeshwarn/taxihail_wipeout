@@ -645,4 +645,5 @@
   <string name="ManualRideLinqStatus_Tip">Tip amount:</string>
   <string name="View_RideLinqStatus">Status</string>
   <string name="View_RideLinqPair">check in</string>
+  <string name="ManualRideLinqStatus_Unpair">Unpair</string>
 </resources>
