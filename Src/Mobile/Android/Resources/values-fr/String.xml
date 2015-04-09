@@ -613,4 +613,10 @@
   <string name="InvalidPayBackErrorMessage">Le champs PayBack ne doit contenir que des chiffres et ne doit pas dépasser 10 caractères</string>
   <string name="NoPayBackErrorMessage">Le champs PayBack est requis</string>
   <string name="RideSettingsPayBack">PayBack</string>
+  <string name="FilteredAddresses_Error_Message">There is currently no entries for this filter.</string>
+  <string name="FilteredAddresses_Error_Title">Error</string>
+  <string name="HistoryLoadError">Impossible de charger l\'historique. Veuillez réessayer plus tard.</string>
+  <string name="PromotionLoadError">Impossible de charger les promotions disponibles. Veuillez réessayer plus tard.</string>
+  <string name="RideSettingsLoadError">Impossible de charger les paramètres du compte. Veuillez réessayer plus tard.</string>
+  <string name="PaymentLoadError">Impossible de charger les informations de paiement. Veuillez réessayer plus tard.</string>
 </resources>

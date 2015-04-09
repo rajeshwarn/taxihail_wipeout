@@ -157,13 +157,17 @@ namespace apcurium.MK.Booking.Mobile
 
 		private void TryFacebookInitAndPublish()
 		{
-			if (Mvx.Resolve<IAppSettings>().Data.FacebookEnabled)
+		    var appSettings = Mvx.Resolve<IAppSettings>();
+		    var facebookService = Mvx.Resolve<IFacebookService>();
+
+            if (appSettings.Data.FacebookEnabled)
 			{
-				Mvx.Resolve<IFacebookService> ().Init ();
+                facebookService.Init();
 			}
-			if (Mvx.Resolve<IAppSettings>().Data.FacebookPublishEnabled) 
+
+            if (appSettings.Data.FacebookPublishEnabled) 
 			{
-				Mvx.Resolve<IFacebookService>().PublishInstall();
+                facebookService.PublishInstall();
 			}
 		}
         

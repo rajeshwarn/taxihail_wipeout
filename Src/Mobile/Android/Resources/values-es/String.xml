@@ -606,4 +606,10 @@
   <string name="InvalidPayBackErrorMessage">The PayBack field must be all digits and must not exceed 10 characters in length</string>
   <string name="NoPayBackErrorMessage">The PayBack field is required</string>
   <string name="RideSettingsPayBack">PayBack</string>
+  <string name="FilteredAddresses_Error_Message">There is currently no entries for this filter.</string>
+  <string name="FilteredAddresses_Error_Title">Error</string>
+  <string name="HistoryLoadError">Unable to load the history. Please try again later.</string>
+  <string name="PromotionLoadError">Unable to load the available promotions. Please try again later.</string>
+  <string name="RideSettingsLoadError">Unable to load the account settings. Please try again later.</string>
+  <string name="PaymentLoadError">Unable to load the payment details. Please try again later.</string>
 </resources>

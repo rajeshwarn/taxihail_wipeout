@@ -35,7 +35,17 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 				return;
 			}
 
-			var response = await GetTerms();
+			TermsAndConditions response = null;
+
+		    try
+		    {
+                response = await GetTerms();
+		    }
+		    catch (Exception)
+		    {
+		        // Do nothing
+		    }
+
 			if (response == null) 
 			{
 				return;

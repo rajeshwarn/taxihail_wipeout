@@ -85,9 +85,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			using (this.Services ().Message.ShowProgress ())
 			{
 			    IsPayPalAccountLinked = _accountService.CurrentAccount.IsPayPalAccountLinked;
-                _paymentSettings = await _paymentService.GetPaymentSettings();
 
-				CreditCardCompanies = new List<ListItem>
+			    try
+			    {
+			        _paymentSettings = await _paymentService.GetPaymentSettings();
+			    }
+			    catch
+			    {
+			        // Do nothing
+			    }
+
+			    CreditCardCompanies = new List<ListItem>
 				{
 					new ListItem {Display = Visa, Id = 0},
 					new ListItem {Display = MasterCard, Id = 1},
@@ -120,7 +128,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
 				Data = new CreditCardInfos ();
 
-				var creditCard = await _accountService.GetCreditCard();
+				CreditCardDetails creditCard = null;
+
+                try
+                {
+                    creditCard = await _accountService.GetCreditCard();
+                }
+                catch (Exception ex)
+                {
+                    Logger.LogMessage(ex.Message, ex.ToString());
+                    this.Services().Message.ShowMessage(this.Services().Localize["Error"], this.Services().Localize["PaymentLoadError"]);
+                }
+
 				if (creditCard == null)
 				{
 					Data.NameOnCard = _accountService.CurrentAccount.Name;
@@ -352,7 +371,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
         public bool CanLinkPayPalAccount
         {
-            get { return !IsPayPalAccountLinked && _paymentSettings.PayPalClientSettings.IsEnabled; }
+            get
+            {
+                return !IsPayPalAccountLinked
+                    && _paymentSettings != null
+                    && _paymentSettings.PayPalClientSettings.IsEnabled;
+            }
         }
 
 	    public bool CanUnlinkPayPalAccount
@@ -367,7 +391,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
 	    public bool IsPayPalOnly
 	    {
-            get { return _paymentSettings.PayPalClientSettings.IsEnabled && !_paymentSettings.IsPayInTaxiEnabled; }
+	        get
+	        {
+	            return _paymentSettings != null
+                    && _paymentSettings.PayPalClientSettings.IsEnabled
+                    && !_paymentSettings.IsPayInTaxiEnabled;
+	        }
 	    }
 
 		public string CreditCardSaveButtonDisplay

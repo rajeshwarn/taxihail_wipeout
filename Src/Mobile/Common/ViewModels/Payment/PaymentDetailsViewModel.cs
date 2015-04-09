@@ -16,13 +16,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 	public class PaymentDetailsViewModel : BaseViewModel
 	{
 		private readonly IAccountService _accountService;
+        private int _defaultTipPercentage;
 
 		public PaymentDetailsViewModel(IAccountService accountService)
 		{
 			_accountService = accountService;
 		}
-
-		private int _defaultTipPercentage;
 
 		public async Task Start(PaymentInformation paymentDetails = null)
 		{
@@ -44,7 +43,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 				paymentDetails = new PaymentInformation();
 			}
 
-			SelectedCreditCard = await _accountService.GetCreditCard();
+		    try
+		    {
+                SelectedCreditCard = await _accountService.GetCreditCard();
+		    }
+		    catch (Exception ex)
+		    {
+                Logger.LogMessage(ex.Message, ex.ToString());
+                this.Services().Message.ShowMessage(this.Services().Localize["Error"], this.Services().Localize["PaymentLoadError"]);
+		    }
+			
 			if (SelectedCreditCard != null)
 			{
 				paymentDetails.CreditCardId = SelectedCreditCard.CreditCardId;
