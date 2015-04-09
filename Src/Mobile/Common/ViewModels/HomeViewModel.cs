@@ -17,6 +17,7 @@ using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Maps.Geo;
 using System.Threading;
 using System.Threading.Tasks;
+using apcurium.MK.Common.Configuration.Impl;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -30,6 +31,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private readonly ITermsAndConditionsService _termsService;
 	    private readonly IMvxLifetime _mvxLifetime;
 		private readonly IAccountService _accountService;
+
+	    private IPaymentService _paymentService;
 
 		private HomeViewModelState _currentState = HomeViewModelState.Initial;
 
@@ -106,12 +109,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				Panel.Start();
 				CheckTermsAsync();
 
+                GetPaymentSettingsAsync();
+
 				this.Services().ApplicationInfo.CheckVersionAsync();
 
 				_tutorialService.DisplayTutorialToNewUser();
 				_pushNotificationService.RegisterDeviceForPushNotifications(force: true);
 			}
-				
+			
 			if (_locateUser)
 			{
 				AutomaticLocateMeAtPickup.Execute (null);
@@ -126,6 +131,21 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 			_vehicleService.Start();
 		}
+
+	    private async void GetPaymentSettingsAsync()
+	    {
+	        try
+	        {
+	            var settings = await _paymentService.GetPaymentSettings();
+
+	            IsManualRideLinqEnabled = settings.PaymentMode == PaymentMethod.RideLinqCmt &&
+	                                      settings.CmtPaymentSettings.IsManualRidelinqCheckInEnabled;
+	        }
+	        catch (Exception ex)
+	        {
+	            this.Logger.LogError(ex);
+	        }
+	    }
 
 		public async void CheckActiveOrderAsync(bool firstTime)
 		{
@@ -230,6 +250,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_locationService.Stop();
 			_vehicleService.Stop();
 		}
+
+	    public bool IsManualRideLinqEnabled
+	    {
+	        get { return _isManualRideLinqEnabled; }
+	        set
+	        {
+	            _isManualRideLinqEnabled = value;
+	            RaisePropertyChanged();
+	        }
+	    }
 
 	    public PanelMenuViewModel Panel { get; set; }
 
@@ -461,6 +491,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		private bool _subscribedToLifetimeChanged;
 	    private ManualPairingForRideLinqViewModel _manualPairingForRideLinqViewModel;
+	    private bool _isManualRideLinqEnabled;
 
 	    public void SubscribeLifetimeChangedIfNecessary()
 		{

@@ -136,11 +136,11 @@
                             android:scaleType="center"
                             android:src="@drawable/train" />
                     </LinearLayout>
-                <!-- RideLinq button (temporary) -->
+                <!-- RideLinq button -->
                     <Button
                         android:id="@+id/btnRideLinq"
                         style="@style/ButtonActionGreenStyle"
-                        local:MvxBind="Click ManualPairingRideLinq"
+                        local:MvxBind="Click ManualPairingRideLinq; Visibility IsManualRideLinqEnabled, Converter=Visibility"
                         android:layout_width="wrap_content"
                         android:layout_height="44dip"
                         android:layout_marginBottom="5dp"
