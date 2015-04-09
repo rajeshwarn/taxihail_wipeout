@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -91,7 +92,19 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			using (this.Services().Message.ShowProgress())
 			{
-				var orders = await _accountService.GetHistoryOrders();
+			    IList<Order> orders = new Order[0];
+
+			    try
+			    {
+                    orders = await _accountService.GetHistoryOrders();
+			    }
+			    catch (Exception ex)
+			    {
+                    Logger.LogMessage(ex.Message, ex.ToString());
+
+                    //this.Services().Message.ShowMessage(this.Services().Localize["Error"], this.Services().Localize["HistoryLoadError"]);
+			    }
+
 				if (orders.Any())
 				{
 					var firstId = orders.First().Id;
