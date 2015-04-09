@@ -84,7 +84,6 @@
     <h5  >{{{localize "Server Settings"}}}</h5>
     
     <label class="control-label settingsLabel" >{{{localize "Use Sandbox"}}}</label>
-    
     <select  name="braintreeServerSettings.isSandbox" class="settingsBox">
       <option value="{{braintreeServerSettings.isSandbox}}" selected >{{localizeBool braintreeServerSettings.isSandbox true="Yes" false="No"}}</option>
       <option value="{{invertedBool braintreeServerSettings.isSandbox}}">{{localizeBool braintreeServerSettings.isSandbox true="No" false="Yes"}}</option>
@@ -110,6 +109,15 @@
     <br />
     <h4 class="table-title">{{localize "CMT Settings"}}</h4>
 
+    <div id="cmtRideLinqDiv" class="control-group">
+        <label class="control-label settingsLabel">{{{localize "Enable manual Ride Linq check in"}}}</label>
+
+        <select name="cmtPaymentSettings.isManualRidelinqCheckInEnabled" class="settingsBox">
+            <option value="{{cmtPaymentSettings.isManualRidelinqCheckInEnabled}}" selected="">{{localizeBool cmtPaymentSettings.isManualRidelinqCheckInEnabled true="Yes" false="No"}}</option>
+            <option value="{{invertedBool cmtPaymentSettings.isManualRidelinqCheckInEnabled}}">{{localizeBool cmtPaymentSettings.isManualRidelinqCheckInEnabled true="No" false="Yes"}}</option>
+        </select>
+    </div>
+
     <label class="control-label settingsLabel" >{{{localize "Use Sandbox"}}}</label>
 
     <select  name="cmtPaymentSettings.isSandbox" class="settingsBox">
@@ -117,6 +125,8 @@
       <option value="{{invertedBool cmtPaymentSettings.isSandbox}}">{{localizeBool cmtPaymentSettings.isSandbox true="No" false="Yes"}}</option>
     </select>
     
+
+
     <label class="control-label settingsLabel" >{{{localize "Server Payment Url"}}}</label>
     <input type="text" class="input-block-level settingsBox" name="cmtPaymentSettings.baseUrl" value="{{cmtPaymentSettings.baseUrl}}" />
 
