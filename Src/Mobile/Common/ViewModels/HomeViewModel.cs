@@ -47,7 +47,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			ITermsAndConditionsService termsService,
 			IPaymentService paymentService, 
             IMvxLifetime mvxLifetime,
-            IPromotionService promotionService) : base()
+            IPromotionService promotionService,
+            IPaymentService paymentService1) : base()
 		{
 			_locationService = locationService;
 			_orderWorkflowService = orderWorkflowService;
@@ -56,7 +57,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_vehicleService = vehicleService;
 			_termsService = termsService;
 		    _mvxLifetime = mvxLifetime;
-			_accountService = accountService;
+		    _paymentService = paymentService1;
+		    _accountService = accountService;
 
             Panel = new PanelMenuViewModel(browserTask, orderWorkflowService, accountService, phoneService, paymentService, promotionService);
 

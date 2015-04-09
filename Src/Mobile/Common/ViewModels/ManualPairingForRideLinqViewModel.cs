@@ -66,19 +66,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     {
                         using (this.Services().Message.ShowProgress())
                         {
-                            //var orderManualRideLinqDetail = await _bookingService.ManualRideLinqPair(PairingCode);
-
-							var orderManualRideLinqDetail = new OrderManualRideLinqDetail
-								{
-									PairingCode = "1234567",
-									Medallion = "mkt1",
-									PairingDate = DateTime.Now,
-									Distance = 55,
-									Fare = 35,
-									Tax = 9,
-									Tip = 5,
-									Total = (35+9+5)
-								};
+                            var orderManualRideLinqDetail = await _bookingService.ManualRideLinqPair(PairingCode);
 
                             ShowViewModelAndClearHistory<ManualRideLinqStatusViewModel>(new
                             {
