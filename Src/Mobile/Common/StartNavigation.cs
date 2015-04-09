@@ -58,9 +58,9 @@ namespace apcurium.MK.Booking.Mobile
                 bool.TryParse(@params["isPairingNotification"], out isPairingNotification);
 
 				// Make sure to reload notification/payment/network settings even if the user has killed the app
-                await accountService.GetNotificationSettings(true, true);
+                await accountService.GetNotificationSettings(true);
                 await accountService.GetUserTaxiHailNetworkSettings(true);
-				await Mvx.Resolve<IPaymentService>().GetPaymentSettings(true);
+				await Mvx.Resolve<IPaymentService>().GetPaymentSettings();
                 
                 try
                 {
@@ -74,7 +74,6 @@ namespace apcurium.MK.Booking.Mobile
                             {"orderStatus", orderStatus.ToJson()}
                         });
                     }
-
                 }
                 catch(Exception)
                 {
@@ -86,8 +85,8 @@ namespace apcurium.MK.Booking.Mobile
                 Task.Run(() =>
                 {
                     // Make sure to refresh notification/payment settings even if the user has killed the app
-                    accountService.GetNotificationSettings(true, true);
-                    Mvx.Resolve<IPaymentService>().GetPaymentSettings(true);
+                    accountService.GetNotificationSettings(true);
+                    Mvx.Resolve<IPaymentService>().GetPaymentSettings();
                 });
 
                 // Log user session start
