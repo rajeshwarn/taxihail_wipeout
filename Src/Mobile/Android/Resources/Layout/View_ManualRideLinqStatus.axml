@@ -143,7 +143,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="25dip"
-        android:text="Unpair"
+        android:text="@string/ManualRideLinqStatus_Unpair"
         style="@style/ButtonActionRedStyle"
         local:MvxBind="Click UnpairFromRideLinq" />
 </LinearLayout>

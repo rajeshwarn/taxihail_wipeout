@@ -4,6 +4,7 @@ using Foundation;
 using UIKit;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using Cirrious.MvvmCross.Binding.BindingContext;
+using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
@@ -45,27 +46,42 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 			bindingSet.Apply();
 
+			PairingCode1.ShouldChangeCharacters = CheckMaxLength3;
 
-			PairingCode1.MaxLength = 3;
-
-			PairingCode2.MaxLength = 4;
+			PairingCode2.ShouldChangeCharacters = CheckMaxLength4;
 
 			PairingCode1.EditingChanged += (object sender, EventArgs e) => 
+			{
+				if(PairingCode1.Text.Length == 3)
 				{
-					if(PairingCode1.Text.Length == 3)
-					{
-						PairingCode2.BecomeFirstResponder();
-					}
-				};
+					PairingCode2.BecomeFirstResponder();
+				}
+			};
 
 			PairingCode2.EditingChanged += (object sender, EventArgs e) => 
+			{
+				if(PairingCode2.Text.Length == 0)
 				{
-					if(PairingCode2.Text.Length == 0)
-					{
-						PairingCode1.BecomeFirstResponder();
-					}
-				};
+					PairingCode1.BecomeFirstResponder();
+				}
+			};
 					
+		}
+
+		private bool CheckMaxLength3 (UITextField textField, NSRange range, string replacementString)
+		{
+			nint textLength = textField.Text.HasValue() ? textField.Text.Length : 0;
+			nint replaceLength = replacementString.HasValue () ? replacementString.Length : 0;
+			nint newLength = textLength + replaceLength - range.Length;
+			return newLength <= 3;
+		}
+
+		private bool CheckMaxLength4 (UITextField textField, NSRange range, string replacementString)
+		{
+			nint textLength = textField.Text.HasValue () ? textField.Text.Length : 0;
+			nint replaceLength = replacementString.HasValue () ? replacementString.Length : 0;
+			nint newLength = textLength + replaceLength - range.Length;
+			return newLength <= 4;
 		}
 	}
 }

@@ -19,10 +19,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		UIKit.UILabel lblInstructions { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatTextField PairingCode1 { get; set; }
+		UIKit.UITextField PairingCode1 { get; set; }
 
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatTextField PairingCode2 { get; set; }
+		UIKit.UITextField PairingCode2 { get; set; }
 		
 		void ReleaseDesignerOutlets ()
 		{

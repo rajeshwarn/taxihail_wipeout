@@ -6,8 +6,8 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ManualPairingForRideLinqView">
             <connections>
-                <outlet property="PairingCode1" destination="ffJ-rx-jiE" id="W4j-5d-IPe"/>
-                <outlet property="PairingCode2" destination="Cf3-Se-yw5" id="u7s-oD-VQN"/>
+                <outlet property="PairingCode1" destination="ffJ-rx-jiE" id="LDo-tg-Rjx"/>
+                <outlet property="PairingCode2" destination="Cf3-Se-yw5" id="euE-hU-UJf"/>
                 <outlet property="btnPair" destination="0Ok-qV-hDh" id="tf8-pz-nu3"/>
                 <outlet property="lblInstructions" destination="BVP-xw-EI2" id="Gvc-Zt-zhJ"/>
                 <outlet property="view" destination="iN0-l3-epB" id="kCW-yf-GMq"/>
@@ -18,7 +18,7 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="_ _ _" minimumFontSize="35" translatesAutoresizingMaskIntoConstraints="NO" id="ffJ-rx-jiE" customClass="FlatTextField">
+                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="_ _ _" minimumFontSize="35" translatesAutoresizingMaskIntoConstraints="NO" id="ffJ-rx-jiE">
                     <rect key="frame" x="55" y="170" width="90" height="40"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="40" id="8bJ-Br-p1V"/>
@@ -48,12 +48,12 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0Ok-qV-hDh" customClass="FlatButton">
-                    <rect key="frame" x="118" y="230" width="85" height="34"/>
+                    <rect key="frame" x="10" y="230" width="300" height="34"/>
                     <state key="normal" title="CHECK IN">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                 </button>
-                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="_ _ _ _" minimumFontSize="35" translatesAutoresizingMaskIntoConstraints="NO" id="Cf3-Se-yw5" customClass="FlatTextField">
+                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="_ _ _ _" minimumFontSize="35" translatesAutoresizingMaskIntoConstraints="NO" id="Cf3-Se-yw5">
                     <rect key="frame" x="175" y="170" width="120" height="40"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="120" id="G4n-0S-DeD"/>
@@ -68,10 +68,11 @@
             <constraints>
                 <constraint firstItem="ffJ-rx-jiE" firstAttribute="top" secondItem="BVP-xw-EI2" secondAttribute="bottom" constant="40" id="6VH-ta-Tks"/>
                 <constraint firstAttribute="trailing" secondItem="BVP-xw-EI2" secondAttribute="trailing" constant="22" id="9eA-zi-rOs"/>
+                <constraint firstItem="0Ok-qV-hDh" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="10" id="Qw7-0o-K4c"/>
                 <constraint firstItem="BVP-xw-EI2" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="23" id="ShX-DZ-pDw"/>
                 <constraint firstItem="0Ok-qV-hDh" firstAttribute="top" secondItem="bxc-dp-OfE" secondAttribute="bottom" constant="20" id="UsR-3Q-f1R"/>
                 <constraint firstItem="bxc-dp-OfE" firstAttribute="top" secondItem="BVP-xw-EI2" secondAttribute="bottom" constant="38" id="ZT3-8Q-kxI"/>
-                <constraint firstAttribute="centerX" secondItem="0Ok-qV-hDh" secondAttribute="centerX" id="cFU-co-OKF"/>
+                <constraint firstAttribute="trailing" secondItem="0Ok-qV-hDh" secondAttribute="trailing" constant="10" id="f2M-DQ-cOF"/>
                 <constraint firstItem="Cf3-Se-yw5" firstAttribute="leading" secondItem="bxc-dp-OfE" secondAttribute="trailing" constant="8" id="l9n-yp-uEc"/>
                 <constraint firstItem="BVP-xw-EI2" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="50" id="mgj-5c-1zG"/>
                 <constraint firstAttribute="centerX" secondItem="bxc-dp-OfE" secondAttribute="centerX" id="rLP-g1-41y"/>
