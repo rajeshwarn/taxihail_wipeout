@@ -646,4 +646,8 @@
   <string name="View_RideLinqStatus">Status</string>
   <string name="View_RideLinqPair">check in</string>
   <string name="ManualRideLinqStatus_Unpair">Unpair</string>
+  <string name="ManualPairingForRideLinQ_Error_Title">Error</string>
+  <string name="ManualPairingForRideLinQ_Error_Message">An error occurred during check in.</string>
+  <string name="ManualPairingForRideLinQ_InvalidCode_Title">Invalid code</string>
+  <string name="ManualPairingForRideLinQ_InvalidCode_Message">The pairing code is invalid.</string>
 </resources>

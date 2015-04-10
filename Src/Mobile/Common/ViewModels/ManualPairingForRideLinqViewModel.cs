@@ -7,6 +7,7 @@ using apcurium.MK.Common.Entity;
 using ServiceStack.Text;
 using System.Reactive;
 using System.Reactive.Linq;
+using apcurium.MK.Booking.Mobile.Framework.Extensions;
 using ServiceStack.ServiceClient.Web;
 using Observable = System.Reactive.Linq.Observable;
 
@@ -23,26 +24,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             _bookingService = bookingService;
         }
-
-
-        public string PairingCode
-        {
-            get { return _pairingCode; }
-            set
-            {
-                _pairingCode = value;
-                RaisePropertyChanged();
-            }
-        }
-
         public string PairingCodeLeft
         {
             get { return _pairingCodeLeft; }
             set
             {
                 _pairingCodeLeft = value;
-
-                PairingCode = PairingCodeLeft + PairingCodeRight;
                 RaisePropertyChanged();
             }
         }
@@ -53,8 +40,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             set
             {
                 _pairingCodeRight = value;
-                PairingCode = PairingCodeLeft + PairingCodeRight;
-
                 RaisePropertyChanged();
             }
         }
@@ -64,29 +49,36 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             get
             {
                 return this.GetCommand(async () =>
+                {
+                    if (!PairingCodeLeft.HasValue() || !PairingCodeRight.HasValue())
                     {
-                        try
-                        {
-                            using (this.Services().Message.ShowProgress())
-                            {
-                                var orderManualRideLinqDetail = await _bookingService.ManualRideLinqPair(PairingCode);
+                        return;
+                    }
 
-                                ShowViewModelAndClearHistory<ManualRideLinqStatusViewModel>(new
-                                {
-                                    orderManualRideLinqDetail = orderManualRideLinqDetail.SerializeToString()
-                                });
-                            }
-                        }
-                        catch (WebServiceException)
+                    var localize = this.Services().Localize;
+
+                    try
+                    {
+                        using (this.Services().Message.ShowProgress())
                         {
-                            this.Services().Message.ShowMessage("Error", "An error occurred while pairing.").HandleErrors();
+                            var orderManualRideLinqDetail = await _bookingService.ManualRideLinqPair(string.Concat(PairingCodeLeft,PairingCodeRight));
+
+                            ShowViewModelAndClearHistory<ManualRideLinqStatusViewModel>(new
+                            {
+                                orderManualRideLinqDetail = orderManualRideLinqDetail.SerializeToString()
+                            });
                         }
-                        catch (Exception)
-                        {
-                            this.Services().Message.ShowMessage("Invalid Code", "The pairing code is invalid.").HandleErrors();
-                        }
+                    }
+                    catch (WebServiceException)
+                    {
+                        this.Services().Message.ShowMessage(localize["ManualPairingForRideLinQ_Error_Title"], localize["ManualPairingForRideLinQ_Error_Message"]).HandleErrors();
+                    }
+                    catch (Exception)
+                    {
+                        this.Services().Message.ShowMessage(localize["ManualPairingForRideLinQ_InvalidCode_Title"], localize["ManualPairingForRideLinQ_InvalidCode_Message"]).HandleErrors();
+                    }
                         
-                    });
+                });
             }
         }
     }

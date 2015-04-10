@@ -1863,4 +1863,16 @@
   <data name="ManualRideLinqStatus_Unpair" xml:space="preserve">
     <value>Unpair</value>
   </data>
+  <data name="ManualPairingForRideLinQ_Error_Title" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="ManualPairingForRideLinQ_Error_Message" xml:space="preserve">
+    <value>An error occurred during check in.</value>
+  </data>
+  <data name="ManualPairingForRideLinQ_InvalidCode_Title" xml:space="preserve">
+    <value>Invalid code</value>
+  </data>
+  <data name="ManualPairingForRideLinQ_InvalidCode_Message" xml:space="preserve">
+    <value>The pairing code is invalid.</value>
+  </data>
 </root>
