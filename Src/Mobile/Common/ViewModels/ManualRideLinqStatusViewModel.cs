@@ -44,15 +44,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					ex => this.Logger.LogError(ex)
 				)
 				.DisposeWith (Subscriptions);
-
-
-			Observable.Timer(TimeSpan.FromSeconds(_refreshPeriod*2))
-				.Subscribe(
-					_ => ToRideSummary(OrderManualRideLinqDetail),
-					ex => this.Logger.LogError(ex)
-				)
-				.DisposeWith (Subscriptions);
-
 		}
 
 		private async Task<OrderManualRideLinqDetail> RefreshDetails(CancellationToken token)

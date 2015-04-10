@@ -31,6 +31,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			lblFareLabel.Text = localize["ManualRideLinqStatus_Fare"];
 			lblTaxLabel.Text = localize["ManualRideLinqStatus_Tax"];
 			lblTipLabel.Text = localize["ManualRideLinqStatus_Tip"];
+			lblDriverId.Text = localize["ManualRideLinqStatus_Driver"];
 
 			NavigationItem.RightBarButtonItem = new UIBarButtonItem()
 				{
@@ -41,6 +42,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 			bindingSet.Bind(lblPairingCodeText)
 				.To(vm => vm.OrderManualRideLinqDetail.PairingCode);
+
+			bindingSet.Bind(lblDriverIdText)
+				.To(vm => vm.OrderManualRideLinqDetail.DriverId);
 
 			bindingSet.Bind(lblMedallionText)
 				.To(vm => vm.OrderManualRideLinqDetail.Medallion);

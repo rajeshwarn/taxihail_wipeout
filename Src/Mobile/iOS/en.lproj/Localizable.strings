@@ -641,7 +641,7 @@
 "ManualRideLinqStatus_Tip"="Tip amount:";
 "View_RideLinqStatus"="Status";
 "View_RideLinqPair"="Check In";
-"ManualRideLinqStatus_Unpair"="Unpair";
+"ManualRideLinqStatus_Unpair"="UNPAIR";
 "ManualPairingForRideLinQ_Error_Title"="Error";
 "ManualPairingForRideLinQ_Error_Message"="An error occurred during check in.";
 "ManualPairingForRideLinQ_InvalidCode_Title"="Invalid code";

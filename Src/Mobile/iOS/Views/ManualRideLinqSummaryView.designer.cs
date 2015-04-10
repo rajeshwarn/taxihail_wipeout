@@ -19,6 +19,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		UIKit.UILabel lblDistanceText { get; set; }
 
 		[Outlet]
+		UIKit.UILabel lblDriverId { get; set; }
+
+		[Outlet]
+		UIKit.UILabel lblDriverIdText { get; set; }
+
+		[Outlet]
 		UIKit.UILabel lblFareLabel { get; set; }
 
 		[Outlet]
@@ -56,6 +62,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		
 		void ReleaseDesignerOutlets ()
 		{
+			if (lblDriverId != null) {
+				lblDriverId.Dispose ();
+				lblDriverId = null;
+			}
+
+			if (lblDriverIdText != null) {
+				lblDriverIdText.Dispose ();
+				lblDriverIdText = null;
+			}
+
 			if (lblDistanceLabel != null) {
 				lblDistanceLabel.Dispose ();
 				lblDistanceLabel = null;

@@ -61,20 +61,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     {
                         using (this.Services().Message.ShowProgress())
                         {
-                            //var orderManualRideLinqDetail = await _bookingService.ManualRideLinqPair(string.Concat(PairingCodeLeft,PairingCodeRight));
-
-                            var orderManualRideLinqDetail = new OrderManualRideLinqDetail()
-                            {
-                                PairingCode = "1234567",
-                                Distance = 12f,
-                                Fare = 13f,
-                                Medallion = "mk123",
-                                AccountId = Guid.NewGuid(),
-                                Tax = 9f,
-                                Tip = 7f,
-                                Toll = 8f,
-                                Total = 12f
-                            };
+                            var orderManualRideLinqDetail = await _bookingService.ManualRideLinqPair(string.Concat(PairingCodeLeft,PairingCodeRight));
 
                             ShowViewModelAndClearHistory<ManualRideLinqStatusViewModel>(new
                             {
