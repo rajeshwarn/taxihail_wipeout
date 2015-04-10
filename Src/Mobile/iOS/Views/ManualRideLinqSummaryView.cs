@@ -8,10 +8,10 @@ using Cirrious.MvvmCross.Binding.BindingContext;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
-	public partial class ManualRideLinqSatusView : BaseViewController<ManualRideLinqStatusViewModel>
+	public partial class ManualRideLinqSummaryView : BaseViewController<ManualRideLinqStatusViewModel>
 	{
-		public ManualRideLinqSatusView()
-			: base("ManualRideLinqSatusView", null)
+		public ManualRideLinqSummaryView()
+			: base("ManualRideLinqSummaryView", null)
 		{
 		}
 
@@ -35,7 +35,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 			FlatButtonStyle.Red.ApplyTo(btnUnpair);
 
-			var bindingSet = this.CreateBindingSet<ManualRideLinqSatusView, ManualRideLinqStatusViewModel>();
+			var bindingSet = this.CreateBindingSet<ManualRideLinqSummaryView, ManualRideLinqStatusViewModel>();
 
 			bindingSet.Bind(lblPairingCodeText)
 				.To(vm => vm.OrderManualRideLinqDetail.PairingCode);

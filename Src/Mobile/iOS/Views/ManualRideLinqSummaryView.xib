@@ -5,7 +5,7 @@
         <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ManualRideLinqSatusView">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ManualRideLinqSummaryView">
             <connections>
                 <outlet property="btnUnpair" destination="nyd-Qj-04P" id="jE0-zy-M3F"/>
                 <outlet property="lblDistanceLabel" destination="Iqf-U9-ncS" id="i7Z-S8-m3l"/>

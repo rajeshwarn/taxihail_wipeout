@@ -9,8 +9,8 @@ using System.CodeDom.Compiler;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
-	[Register ("ManualRideLinqSatusView")]
-	partial class ManualRideLinqSatusView
+	[Register ("ManualRideLinqSummaryView")]
+	partial class ManualRideLinqSummaryView
 	{
 		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnUnpair { get; set; }
