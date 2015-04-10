@@ -629,6 +629,10 @@
 "ManualPairingForRideLinQ_Pair"="Check In";
 "ManualPairingForRideLinQ_Instructions"="Enter the 7-digit code displayed on the taxi touchscreen to auto-play and get an e-receipt at the end of your ride.";
 "ManualRideLinqStatus_PairingCode"="Pairing Code:";
+"HistoryLoadError"="Unable to load the history. Please try again later.";
+"PromotionLoadError"="Unable to load the available promotions. Please try again later.";
+"RideSettingsLoadError"="Unable to load the account settings. Please try again later.";
+"PaymentLoadError"="Unable to load the payment details. Please try again later.";
 "ManualRideLinqStatus_Medallion"="Medallion:";
 "ManualRideLinqStatus_Distance"="Distance:";
 "ManualRideLinqStatus_Total"="Total cost:";

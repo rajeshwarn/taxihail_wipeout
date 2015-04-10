@@ -37,6 +37,9 @@ namespace apcurium.MK.Booking.Database
             modelBuilder.Entity<OrderPairingDetail>()
                 .HasKey(x => x.OrderId)
                 .ToTable("OrderPairingDetail", SchemaName);
+            modelBuilder.Entity<OrderManualRideLinqDetail>()
+                .HasKey(x => x.OrderId)
+                .ToTable("OrderManualRideLinqDetail", SchemaName);
 
             modelBuilder.Entity<OrderVehiclePositionDetail>().ToTable("OrderVehiclePositionDetail", SchemaName);
             modelBuilder.Entity<PromotionDetail>().ToTable("PromotionDetail", SchemaName);
@@ -64,7 +67,6 @@ namespace apcurium.MK.Booking.Database
             modelBuilder.Entity<OrderReportDetail>().ToTable("OrderReportDetail", SchemaName);
             modelBuilder.Entity<OrderNotificationDetail>().ToTable("OrderNotificationDetail", SchemaName);
             modelBuilder.Entity<OverduePaymentDetail>().ToTable("OverduePaymentDetail", SchemaName);
-            modelBuilder.Entity<OrderManualRideLinqDetail>().ToTable("OrderManualRideLinqDetail", SchemaName);
 
             modelBuilder.Entity<AccountChargeQuestion>().ToTable("AccountChargeQuestion", SchemaName);
             modelBuilder.Entity<AccountChargeDetail>().ToTable("AccountChargeDetail", SchemaName)

@@ -1,3 +1,6 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using apcurium.MK.Booking.Api.Contract.Resources;
@@ -71,14 +74,22 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 ActivePromotions.Clear();
 
-                var activePromotions = await _promotionService.GetActivePromotions();
-
-                foreach (var activePromotion in activePromotions)
+                try
                 {
-                    ActivePromotions.Add(new PromotionItemViewModel(activePromotion, SelectPromotion));
-                }
+                    var activePromotions = await _promotionService.GetActivePromotions();
 
-                RaisePropertyChanged(() => ActivePromotions);
+                    foreach (var activePromotion in activePromotions)
+                    {
+                        ActivePromotions.Add(new PromotionItemViewModel(activePromotion, SelectPromotion));
+                    }
+
+                    RaisePropertyChanged(() => ActivePromotions);
+                }
+                catch (Exception ex)
+                {
+                    Logger.LogMessage(ex.Message, ex.ToString());
+                    this.Services().Message.ShowMessage(this.Services().Localize["Error"], this.Services().Localize["PromotionLoadError"]);
+                }
             }
         }
     }

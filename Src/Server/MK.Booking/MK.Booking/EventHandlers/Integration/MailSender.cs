@@ -1,6 +1,7 @@
 ﻿#region
 
 using System;
+using System.ComponentModel;
 using System.Linq;
 using apcurium.MK.Booking.CommandBuilder;
 using apcurium.MK.Booking.Database;
@@ -8,9 +9,12 @@ using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Services;
+using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
+using CMTPayment;
 using Infrastructure.Messaging;
 using Infrastructure.Messaging.Handling;
 
@@ -22,7 +26,8 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
         IEventHandler<CreditCardPaymentCaptured_V2>,
         IEventHandler<OrderStatusChanged>,
         IEventHandler<CreditCardDeactivated>,
-        IEventHandler<UserAddedToPromotionWhiteList_V2>
+        IEventHandler<UserAddedToPromotionWhiteList_V2>,
+        IEventHandler<ManualRideLinqTripInfoUpdated>
     {
         private readonly ICommandBus _commandBus;
         private readonly Func<BookingDbContext> _contextFactory;
@@ -32,13 +37,17 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
         private readonly IAccountDao _accountDao;
         private readonly INotificationService _notificationService;
 
+        private readonly CmtTripInfoServiceHelper _cmtTripInfoServiceHelper;
+
         public MailSender(Func<BookingDbContext> contextFactory,
             ICommandBus commandBus,
             ICreditCardDao creditCardDao,
             IPromotionDao promotionDao,
             IOrderDao orderDao,
             IAccountDao accountDao,
-            INotificationService notificationService)
+            INotificationService notificationService,
+            IServerSettings serverSettings,
+            ILogger logger)
         {
             _contextFactory = contextFactory;
             _commandBus = commandBus;
@@ -47,6 +56,46 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             _promotionDao = promotionDao;
             _accountDao = accountDao;
             _notificationService = notificationService;
+
+            var cmtMobileServiceClient = new CmtMobileServiceClient(serverSettings.GetPaymentSettings().CmtPaymentSettings, null, null);
+            _cmtTripInfoServiceHelper = new CmtTripInfoServiceHelper(cmtMobileServiceClient, logger);
+        }
+
+        public void Handle(OrderStatusChanged @event)
+        {
+            if (@event.IsCompleted)
+            {
+                if (@event.Status.IsPrepaid)
+                {
+                    // Send receipt for PrePaid
+                    SendReceipt(@event.SourceId, Convert.ToDecimal(@event.Fare ?? 0), Convert.ToDecimal(@event.Tip ?? 0), Convert.ToDecimal(@event.Tax ?? 0));
+                }
+                else
+                {
+                    var order = _orderDao.FindById(@event.SourceId);
+                    var pairingInfo = _orderDao.FindOrderPairingById(@event.SourceId);
+
+                    if (order.Settings.ChargeTypeId == ChargeTypes.PaymentInCar.Id)
+                    {
+                        // Send receipt for Pay in Car
+                        SendReceipt(@event.SourceId, Convert.ToDecimal(@event.Fare), Convert.ToDecimal(@event.Tip), Convert.ToDecimal(@event.Tax));
+                    }
+                    else if (pairingInfo != null && pairingInfo.DriverId.HasValue() && pairingInfo.Medallion.HasValue() && pairingInfo.PairingToken.HasValue())
+                    {
+                        // Send receipt for CMTRideLinq
+                        var tripInfo = _cmtTripInfoServiceHelper.GetTripInfo(pairingInfo.PairingToken);
+                        if (tripInfo != null && tripInfo.EndTime.HasValue)
+                        {
+                            var meterAmount = Math.Round(((double)tripInfo.Fare / 100), 2);
+                            var tollAmount = Math.Round(((double)tripInfo.Extra / 2), 2);
+                            var tipAmount = Math.Round(((double)tripInfo.Tip / 100), 2);
+                            var taxAmount = Math.Round(((double)tripInfo.Tax / 100), 2);
+
+                            SendReceipt(@event.SourceId, Convert.ToDecimal(meterAmount), Convert.ToDecimal(tipAmount), Convert.ToDecimal(taxAmount), toll: Convert.ToDecimal(tollAmount));
+                        }
+                    }
+                } 
+            }
         }
 
         public void Handle(CreditCardPaymentCaptured_V2 @event)
@@ -62,23 +111,22 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             SendReceipt(@event.OrderId, @event.Meter, @event.Tip, @event.Tax, @event.AmountSavedByPromotion);
         }
 
-        public void Handle(OrderStatusChanged @event)
+        public void Handle(ManualRideLinqTripInfoUpdated @event)
         {
-            if (@event.IsCompleted)
+            var order = _orderDao.FindById(@event.SourceId);
+            if (order != null)
             {
-                if (@event.Status.IsPrepaid)
+                if (@event.EndTime.HasValue)
                 {
-                    SendReceipt(@event.SourceId, Convert.ToDecimal(@event.Fare ?? 0), Convert.ToDecimal(@event.Tip ?? 0), Convert.ToDecimal(@event.Tax ?? 0));
-                }
-                else
-                {
-                    var order = _orderDao.FindById(@event.SourceId);
+                    // ManualRideLinq order is done, send receipt
 
-                    if (order.Settings.ChargeTypeId == ChargeTypes.PaymentInCar.Id)
-                    {
-                        SendReceipt(@event.SourceId, Convert.ToDecimal(@event.Fare), Convert.ToDecimal(@event.Tip), Convert.ToDecimal(@event.Tax));
-                    }
-                } 
+                    order.Fare = @event.Fare;
+                    order.Tip = @event.Tip;
+                    order.Tax = @event.Tax;
+                    order.Toll = @event.Toll;
+   
+                    SendReceipt(@event.SourceId, Convert.ToDecimal(@event.Fare), Convert.ToDecimal(@event.Tip), Convert.ToDecimal(@event.Tax), toll: Convert.ToDecimal(@event.Toll));
+                }
             }
         }
 
@@ -112,7 +160,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             }
         }
 
-        private void SendReceipt(Guid orderId, decimal meter, decimal tip, decimal tax, decimal amountSavedByPromotion = 0m)
+        private void SendReceipt(Guid orderId, decimal meter, decimal tip, decimal tax, decimal amountSavedByPromotion = 0m, decimal toll = 0)
         {
             using (var context = _contextFactory.Invoke())
             {
@@ -130,8 +178,8 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                         card = _creditCardDao.FindByToken(orderPayment.CardToken);
                     }
                     
-                    // payment was handled by app, send receipt
-                    if (orderPayment != null && orderStatus.IsPrepaid)
+                    // Payment was handled by app, send receipt
+                    if (orderStatus.IsPrepaid && orderPayment != null)
                     {
                         // Order was prepaid, all the good amounts are in OrderPaymentDetail
                         meter = orderPayment.Meter;
@@ -147,7 +195,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                         orderStatus.VehicleNumber,
                         orderStatus.DriverInfos,
                         orderPayment.SelectOrDefault(payment => Convert.ToDouble(payment.Meter), Convert.ToDouble(meter)),
-                        0,
+                        Convert.ToDouble(toll),
                         orderPayment.SelectOrDefault(payment => Convert.ToDouble(payment.Tip), Convert.ToDouble(tip)),
                         Convert.ToDouble(tax),
                         orderPayment,

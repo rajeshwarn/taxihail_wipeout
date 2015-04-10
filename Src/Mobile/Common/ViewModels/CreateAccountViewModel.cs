@@ -112,7 +112,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                         return;
 				    }
 
-                    if (Data.PayBack.Length > 10 || !Data.PayBack.IsNumber())
+                    if (Data.PayBack.HasValue() && (Data.PayBack.Length > 10 || !Data.PayBack.IsNumber()))
 				    {
                         this.Services().Message.ShowMessage(this.Services().Localize["CreateAccountInvalidDataTitle"], this.Services().Localize["InvalidPayBackErrorMessage"]);
                         return;

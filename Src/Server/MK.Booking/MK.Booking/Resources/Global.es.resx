@@ -724,4 +724,7 @@
   <data name="PayPalWebTipItemDescription" xml:space="preserve">
     <value>Tip ({0}%)</value>
   </data>
+  <data name="ManualRideLinq_NoCardOnFile" xml:space="preserve">
+    <value>You need to have a card on file to pair with RideLinQ</value>
+  </data>
 </root>

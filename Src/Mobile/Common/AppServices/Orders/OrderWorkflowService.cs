@@ -481,7 +481,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			var selectionMode = await _addressSelectionModeSubject.Take (1).ToTask ();
 			if (selectionMode == AddressSelectionMode.PickupSelection) {
 				_pickupAddressSubject.OnNext (address);
-				SetMarket (new Position () { Latitude = address.Latitude, Longitude = address.Longitude });
+				Task.Run(() => SetMarket (new Position { Latitude = address.Latitude, Longitude = address.Longitude }));
 			} else {
 				_destinationAddressSubject.OnNext (address);
 			}
@@ -793,7 +793,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 	        _isOrderRebooked = false;
 	    }
 
-	    private async void SetMarket(Position currentPosition)
+	    private async Task SetMarket(Position currentPosition)
 	    {
 			var distanceFromLastMarketRequest = Maps.Geo.Position.CalculateDistance(
                 currentPosition.Latitude, currentPosition.Longitude,

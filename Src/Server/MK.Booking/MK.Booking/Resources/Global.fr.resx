@@ -594,4 +594,7 @@
   <data name="PayPalWebTipItemDescription" xml:space="preserve">
     <value>Pourboire ({0}%)</value>
   </data>
+  <data name="ManualRideLinq_NoCardOnFile" xml:space="preserve">
+    <value>Vous devez avoir une carte associée à votre compte pour utiliser RideLinQ</value>
+  </data>
 </root>

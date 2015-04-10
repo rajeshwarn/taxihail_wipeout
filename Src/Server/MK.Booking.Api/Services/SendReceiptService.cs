@@ -9,11 +9,12 @@ using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Extensions;
 using CMTPayment;
-using CMTPayment.Pair;
 using Infrastructure.Messaging;
 using ServiceStack.Common.Web;
 using ServiceStack.ServiceInterface;
 using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Diagnostic;
+using CMTPayment.Pair;
 
 namespace apcurium.MK.Booking.Api.Services
 {
@@ -27,6 +28,7 @@ namespace apcurium.MK.Booking.Api.Services
         private readonly IOrderDao _orderDao;
         private readonly IOrderPaymentDao _orderPaymentDao;
         private readonly IServerSettings _serverSettings;
+        private readonly ILogger _logger;
 
         public SendReceiptService(
             ICommandBus commandBus,
@@ -36,9 +38,11 @@ namespace apcurium.MK.Booking.Api.Services
             ICreditCardDao creditCardDao,
             IAccountDao accountDao,
             IPromotionDao promotionDao,
-            IServerSettings serverSettings)
+            IServerSettings serverSettings,
+            ILogger logger)
         {
             _serverSettings = serverSettings;
+            _logger = logger;
             _ibsServiceProvider = ibsServiceProvider;
             _orderDao = orderDao;
             _orderPaymentDao = orderPaymentDao;
@@ -100,15 +104,15 @@ namespace apcurium.MK.Booking.Api.Services
             }
             else if (pairingInfo != null && pairingInfo.AutoTipPercentage.HasValue)
             {
-                var tripData = GetTripData(pairingInfo.PairingToken);
-                if (tripData != null && tripData.EndTime.HasValue)
+                var tripInfo = GetTripInfo(pairingInfo.PairingToken);
+                if (tripInfo != null && tripInfo.EndTime.HasValue)
                 {
                     // this is for CMT RideLinq only, no VAT
 
-                    meterAmount = Math.Round(((double) tripData.Fare/100), 2);
-                    tollAmount = Math.Round(((double) tripData.Extra/2), 2);
-                    tipAmount = Math.Round(((double) tripData.Tip/100), 2);
-                    taxAmount = Math.Round(((double) tripData.Tax/100), 2);
+                    meterAmount = Math.Round(((double)tripInfo.Fare / 100), 2);
+                    tollAmount = Math.Round(((double)tripInfo.Extra / 2), 2);
+                    tipAmount = Math.Round(((double)tripInfo.Tip / 100), 2);
+                    taxAmount = Math.Round(((double)tripInfo.Tax / 100), 2);
                 }
                 else
                 {
@@ -148,19 +152,12 @@ namespace apcurium.MK.Booking.Api.Services
             return new HttpResult(HttpStatusCode.OK, "OK");
         }
 
-        private Trip GetTripData(string pairingToken)
+        private Trip GetTripInfo(string pairingToken)
         {
-            try
-            {
-                var cmtClient = new CmtMobileServiceClient(_serverSettings.GetPaymentSettings().CmtPaymentSettings, null, null);
-                var trip = cmtClient.Get(new TripRequest { Token = pairingToken });
+            var cmtMobileServiceClient = new CmtMobileServiceClient(_serverSettings.GetPaymentSettings().CmtPaymentSettings, null, null);
+            var cmtTripInfoServiceHelper = new CmtTripInfoServiceHelper(cmtMobileServiceClient, _logger);
 
-                return trip;
-            }
-            catch (Exception)
-            {
-                return null;
-            }
+            return cmtTripInfoServiceHelper.GetTripInfo(pairingToken);
         }
     }
 }
