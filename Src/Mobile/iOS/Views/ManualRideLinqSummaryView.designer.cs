@@ -13,9 +13,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 	partial class ManualRideLinqSummaryView
 	{
 		[Outlet]
-		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnUnpair { get; set; }
-
-		[Outlet]
 		UIKit.UILabel lblDistanceLabel { get; set; }
 
 		[Outlet]
@@ -62,11 +59,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			if (lblDistanceLabel != null) {
 				lblDistanceLabel.Dispose ();
 				lblDistanceLabel = null;
-			}
-
-			if (btnUnpair != null) {
-				btnUnpair.Dispose ();
-				btnUnpair = null;
 			}
 
 			if (lblDistanceText != null) {

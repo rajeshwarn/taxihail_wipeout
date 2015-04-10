@@ -99,15 +99,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				.For(v => v.Command)
 				.To(vm => vm.ManualPairingRideLinq);
 
-            set.Bind(RideLinqSection)
-                .For(v => v.Hidden)
-                .To(vm => vm.IsManualRideLinqEnabled)
-                .WithConversion("BoolInverter");
-
-            set.Bind(btnRideLinqCheckIn)
-                .For(v => v.Hidden)
-                .To(vm => vm.IsManualRideLinqEnabled)
-                .WithConversion("BoolInverter");
+//            set.Bind(RideLinqSection)
+//                .For(v => v.Hidden)
+//                .To(vm => vm.IsManualRideLinqEnabled)
+//                .WithConversion("BoolInverter");
+//
+//            set.Bind(btnRideLinqCheckIn)
+//                .For(v => v.Hidden)
+//                .To(vm => vm.IsManualRideLinqEnabled)
+//                .WithConversion("BoolInverter");
 
             set.Bind(mapView)
                 .For(v => v.DataContext)

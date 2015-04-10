@@ -18,6 +18,8 @@ namespace apcurium.MK.Common.Entity
 
         public DateTime? EndTime { get; set; }
 
+		public string DriverId { get; set; }
+
         public bool IsCancelled { get; set; }
 
         public double? Distance { get; set; }

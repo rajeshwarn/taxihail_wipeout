@@ -8,7 +8,7 @@ using Cirrious.MvvmCross.Binding.BindingContext;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
-	public partial class ManualRideLinqSummaryView : BaseViewController<ManualRideLinqStatusViewModel>
+	public partial class ManualRideLinqSummaryView : BaseViewController<ManualRideLinqSummaryViewModel>
 	{
 		public ManualRideLinqSummaryView()
 			: base("ManualRideLinqSummaryView", null)
@@ -23,7 +23,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 			NavigationController.NavigationBar.Hidden = false;
 
-			NavigationItem.Title = localize["View_RideLinqStatus"];
+			NavigationItem.Title = localize["View_RideLinqSummary"];
 			lblPairingCodeLabel.Text = localize["ManualRideLinqStatus_PairingCode"];
 			lblMedallionLabel.Text = localize["ManualRideLinqStatus_Medallion"];
 			lblDistanceLabel.Text = localize["ManualRideLinqStatus_Distance"];
@@ -31,11 +31,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			lblFareLabel.Text = localize["ManualRideLinqStatus_Fare"];
 			lblTaxLabel.Text = localize["ManualRideLinqStatus_Tax"];
 			lblTipLabel.Text = localize["ManualRideLinqStatus_Tip"];
-			btnUnpair.SetTitle(localize["ManualRideLinqStatus_Unpair"], UIControlState.Normal);
 
-			FlatButtonStyle.Red.ApplyTo(btnUnpair);
+			NavigationItem.RightBarButtonItem = new UIBarButtonItem()
+				{
+					Title = localize["ManualRideLinqSummary_Done"]
+				};
 
-			var bindingSet = this.CreateBindingSet<ManualRideLinqSummaryView, ManualRideLinqStatusViewModel>();
+			var bindingSet = this.CreateBindingSet<ManualRideLinqSummaryView, ManualRideLinqSummaryViewModel>();
 
 			bindingSet.Bind(lblPairingCodeText)
 				.To(vm => vm.OrderManualRideLinqDetail.PairingCode);
@@ -55,12 +57,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			bindingSet.Bind(lblTipText)
 				.To(vm => vm.OrderManualRideLinqDetail.Tip);
 
-			bindingSet.Bind(btnUnpair)
-				.For(v => v.Command)
-				.To(vm => vm.UnpairFromRideLinq);
-
 			bindingSet.Bind(lblTotalText)
 				.To(vm => vm.OrderManualRideLinqDetail.Total);
+
+			bindingSet.Bind(NavigationItem.RightBarButtonItem)
+				.To(vm => vm.GoToHome);
 			
 			bindingSet.Apply();
 		}
