@@ -18,66 +18,82 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="_ _ _" minimumFontSize="35" translatesAutoresizingMaskIntoConstraints="NO" id="ffJ-rx-jiE">
-                    <rect key="frame" x="55" y="170" width="90" height="40"/>
+                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" keyboardDismissMode="onDrag" translatesAutoresizingMaskIntoConstraints="NO" id="Xgm-lE-qM8">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BVP-xw-EI2">
+                            <rect key="frame" x="10" y="25" width="299" height="60"/>
+                            <attributedString key="attributedText">
+                                <fragment content="Enter the 7-digit code displayed on the taxi touchscreen to auto-play and get an e-receipt at the end of your ride.">
+                                    <attributes>
+                                        <color key="NSColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                        <font key="NSFont" size="17" name="HelveticaNeue"/>
+                                        <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
+                                    </attributes>
+                                </fragment>
+                            </attributedString>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="_ _ _" minimumFontSize="35" translatesAutoresizingMaskIntoConstraints="NO" id="ffJ-rx-jiE">
+                            <rect key="frame" x="62" y="128" width="90" height="40"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="40" id="8bJ-Br-p1V"/>
+                                <constraint firstAttribute="width" constant="90" id="PBb-Kc-UjI"/>
+                            </constraints>
+                            <nil key="textColor"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="35"/>
+                            <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
+                        </textField>
+                        <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0Ok-qV-hDh" customClass="FlatButton">
+                            <rect key="frame" x="10" y="210" width="299" height="41"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="41" id="KSb-xE-VKN"/>
+                            </constraints>
+                            <state key="normal" title="CHECK IN">
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                        </button>
+                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="_ _ _ _" minimumFontSize="35" translatesAutoresizingMaskIntoConstraints="NO" id="Cf3-Se-yw5">
+                            <rect key="frame" x="178" y="128" width="120" height="40"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="120" id="G4n-0S-DeD"/>
+                                <constraint firstAttribute="height" constant="40" id="x5b-et-hlw"/>
+                            </constraints>
+                            <nil key="textColor"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="35"/>
+                            <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
+                        </textField>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bxc-dp-OfE">
+                            <rect key="frame" x="158" y="126" width="14" height="42"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="35"/>
+                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
                     <constraints>
-                        <constraint firstAttribute="height" constant="40" id="8bJ-Br-p1V"/>
-                        <constraint firstAttribute="width" constant="90" id="PBb-Kc-UjI"/>
+                        <constraint firstAttribute="centerX" secondItem="BVP-xw-EI2" secondAttribute="centerX" id="2gc-LE-zbO"/>
+                        <constraint firstItem="bxc-dp-OfE" firstAttribute="top" secondItem="BVP-xw-EI2" secondAttribute="bottom" constant="41" id="3v5-nk-mDo"/>
+                        <constraint firstAttribute="trailing" secondItem="Cf3-Se-yw5" secondAttribute="trailing" constant="21" id="5ec-T1-JQP"/>
+                        <constraint firstItem="BVP-xw-EI2" firstAttribute="top" secondItem="Xgm-lE-qM8" secondAttribute="top" constant="25" id="6zg-s2-wFd"/>
+                        <constraint firstItem="Cf3-Se-yw5" firstAttribute="top" secondItem="BVP-xw-EI2" secondAttribute="bottom" constant="43" id="7pW-yX-WcH"/>
+                        <constraint firstAttribute="trailing" secondItem="BVP-xw-EI2" secondAttribute="trailing" constant="10" id="IFJ-Km-7aL"/>
+                        <constraint firstItem="ffJ-rx-jiE" firstAttribute="top" secondItem="BVP-xw-EI2" secondAttribute="bottom" constant="43" id="UDW-K9-ePV"/>
+                        <constraint firstItem="0Ok-qV-hDh" firstAttribute="top" secondItem="bxc-dp-OfE" secondAttribute="bottom" constant="42" id="bFE-iR-B6i"/>
+                        <constraint firstAttribute="trailing" secondItem="0Ok-qV-hDh" secondAttribute="trailing" constant="10" id="iF6-tJ-dO5"/>
+                        <constraint firstItem="0Ok-qV-hDh" firstAttribute="leading" secondItem="Xgm-lE-qM8" secondAttribute="leading" constant="10" id="nPj-ls-D0K"/>
+                        <constraint firstItem="Cf3-Se-yw5" firstAttribute="leading" secondItem="bxc-dp-OfE" secondAttribute="trailing" constant="6" id="nar-3A-mJv"/>
+                        <constraint firstItem="bxc-dp-OfE" firstAttribute="leading" secondItem="ffJ-rx-jiE" secondAttribute="trailing" constant="6" id="ohC-GB-CvN"/>
+                        <constraint firstItem="BVP-xw-EI2" firstAttribute="leading" secondItem="Xgm-lE-qM8" secondAttribute="leading" constant="10" id="yZk-HR-xZ1"/>
+                        <constraint firstAttribute="bottom" secondItem="0Ok-qV-hDh" secondAttribute="bottom" constant="297" id="zPE-QD-sSs"/>
                     </constraints>
-                    <nil key="textColor"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="35"/>
-                    <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
-                </textField>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bxc-dp-OfE">
-                    <rect key="frame" x="153" y="168" width="14" height="42"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="35"/>
-                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                    <nil key="highlightedColor"/>
-                </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BVP-xw-EI2">
-                    <rect key="frame" x="23" y="50" width="275" height="80"/>
-                    <attributedString key="attributedText">
-                        <fragment content="Enter the 7-digit code displayed on the taxi touchscreen to auto-play and get an e-receipt at the end of your ride.">
-                            <attributes>
-                                <color key="NSColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                <font key="NSFont" size="17" name="HelveticaNeue"/>
-                                <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
-                            </attributes>
-                        </fragment>
-                    </attributedString>
-                    <nil key="highlightedColor"/>
-                </label>
-                <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0Ok-qV-hDh" customClass="FlatButton">
-                    <rect key="frame" x="10" y="230" width="300" height="34"/>
-                    <state key="normal" title="CHECK IN">
-                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                    </state>
-                </button>
-                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="_ _ _ _" minimumFontSize="35" translatesAutoresizingMaskIntoConstraints="NO" id="Cf3-Se-yw5">
-                    <rect key="frame" x="175" y="170" width="120" height="40"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="120" id="G4n-0S-DeD"/>
-                        <constraint firstAttribute="height" constant="40" id="x5b-et-hlw"/>
-                    </constraints>
-                    <nil key="textColor"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="35"/>
-                    <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
-                </textField>
+                </scrollView>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstItem="ffJ-rx-jiE" firstAttribute="top" secondItem="BVP-xw-EI2" secondAttribute="bottom" constant="40" id="6VH-ta-Tks"/>
-                <constraint firstAttribute="trailing" secondItem="BVP-xw-EI2" secondAttribute="trailing" constant="22" id="9eA-zi-rOs"/>
-                <constraint firstItem="0Ok-qV-hDh" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="10" id="Qw7-0o-K4c"/>
-                <constraint firstItem="BVP-xw-EI2" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="23" id="ShX-DZ-pDw"/>
-                <constraint firstItem="0Ok-qV-hDh" firstAttribute="top" secondItem="bxc-dp-OfE" secondAttribute="bottom" constant="20" id="UsR-3Q-f1R"/>
-                <constraint firstItem="bxc-dp-OfE" firstAttribute="top" secondItem="BVP-xw-EI2" secondAttribute="bottom" constant="38" id="ZT3-8Q-kxI"/>
-                <constraint firstAttribute="trailing" secondItem="0Ok-qV-hDh" secondAttribute="trailing" constant="10" id="f2M-DQ-cOF"/>
-                <constraint firstItem="Cf3-Se-yw5" firstAttribute="leading" secondItem="bxc-dp-OfE" secondAttribute="trailing" constant="8" id="l9n-yp-uEc"/>
-                <constraint firstItem="BVP-xw-EI2" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="50" id="mgj-5c-1zG"/>
-                <constraint firstAttribute="centerX" secondItem="bxc-dp-OfE" secondAttribute="centerX" id="rLP-g1-41y"/>
-                <constraint firstItem="bxc-dp-OfE" firstAttribute="leading" secondItem="ffJ-rx-jiE" secondAttribute="trailing" constant="8" id="wbH-2L-jVA"/>
-                <constraint firstItem="Cf3-Se-yw5" firstAttribute="top" secondItem="BVP-xw-EI2" secondAttribute="bottom" constant="40" id="xF5-Dh-kS9"/>
+                <constraint firstItem="Xgm-lE-qM8" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="7n6-mW-5lg"/>
+                <constraint firstItem="Xgm-lE-qM8" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="Nji-Sr-i1Y"/>
+                <constraint firstAttribute="bottom" secondItem="Xgm-lE-qM8" secondAttribute="bottom" id="Xh8-X0-QFt"/>
+                <constraint firstAttribute="trailing" secondItem="Xgm-lE-qM8" secondAttribute="trailing" id="xk7-NM-avk"/>
             </constraints>
             <point key="canvasLocation" x="148" y="165"/>
         </view>

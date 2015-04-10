@@ -66,7 +66,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                         {
                             var pickupAddress = await _orderWorkflowService.GetCurrentAddress();
                             var pairingCode = string.Concat(PairingCodeLeft, PairingCodeRight);
-
                             var orderManualRideLinqDetail = await _bookingService.ManualRideLinqPair(pairingCode, pickupAddress);
 
                             ShowViewModelAndClearHistory<ManualRideLinqStatusViewModel>(new

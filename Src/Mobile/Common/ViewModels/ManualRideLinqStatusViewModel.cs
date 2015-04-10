@@ -37,9 +37,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 			Observable.Timer(TimeSpan.FromSeconds(4), TimeSpan.FromSeconds(_refreshPeriod))
 				.SelectMany((_, ct) => RefreshDetails(ct))
+				.Where(orderDetails => orderDetails.EndTime.HasValue)
 				.ObserveOn(SynchronizationContext.Current)
 				.Subscribe(
-					status => OrderManualRideLinqDetail = status,
+					ToRideSummary,
 					ex => this.Logger.LogError(ex)
 				)
 				.DisposeWith (Subscriptions);
@@ -60,6 +61,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 RaisePropertyChanged();
             }
         }
+
+		private void ToRideSummary(OrderManualRideLinqDetail orderManualRideLinqDetail)
+		{
+			var orderSummary = orderManualRideLinqDetail.ToJson();
+
+			ShowViewModelAndRemoveFromHistory<ManualRideLinqSummaryViewModel>(new {orderManualRideLinqDetail = orderSummary});
+		}
 
         public ICommand UnpairFromRideLinq
         {
