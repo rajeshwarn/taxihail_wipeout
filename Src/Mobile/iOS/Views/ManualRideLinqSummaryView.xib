@@ -5,9 +5,8 @@
         <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ManualRideLinqSatusView">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ManualRideLinqSummaryView">
             <connections>
-                <outlet property="btnUnpair" destination="nyd-Qj-04P" id="jE0-zy-M3F"/>
                 <outlet property="lblDistanceLabel" destination="Iqf-U9-ncS" id="i7Z-S8-m3l"/>
                 <outlet property="lblDistanceText" destination="d20-Z7-Zke" id="8Ld-Zs-mhn"/>
                 <outlet property="lblFareLabel" destination="qku-6X-AuO" id="W1k-jx-Im2"/>
@@ -114,15 +113,6 @@
                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nyd-Qj-04P" customClass="FlatButton">
-                    <rect key="frame" x="10" y="524" width="300" height="34"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="34" id="mGM-pg-zjk"/>
-                    </constraints>
-                    <state key="normal" title="Button">
-                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                    </state>
-                </button>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
@@ -142,12 +132,10 @@
                 <constraint firstItem="d20-Z7-Zke" firstAttribute="top" secondItem="JqO-DW-yA4" secondAttribute="bottom" constant="8" id="UTj-9w-fnz"/>
                 <constraint firstItem="JqO-DW-yA4" firstAttribute="top" secondItem="BUL-oD-sYY" secondAttribute="bottom" constant="8" id="ZKJ-jV-Fiw"/>
                 <constraint firstItem="Iqf-U9-ncS" firstAttribute="top" secondItem="VYw-qa-NhL" secondAttribute="bottom" constant="8" id="ZLf-Xd-chj"/>
-                <constraint firstItem="nyd-Qj-04P" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="10" id="amd-Gf-wA8"/>
                 <constraint firstItem="VYw-qa-NhL" firstAttribute="top" secondItem="IOT-lj-Hdc" secondAttribute="bottom" constant="8" id="bBq-rP-ICZ"/>
                 <constraint firstItem="JqO-DW-yA4" firstAttribute="leading" secondItem="VYw-qa-NhL" secondAttribute="trailing" constant="6" id="e0k-j9-wmb"/>
                 <constraint firstItem="d20-Z7-Zke" firstAttribute="leading" secondItem="Iqf-U9-ncS" secondAttribute="trailing" constant="6" id="e5O-0Z-Jns"/>
                 <constraint firstItem="2XJ-U8-iYq" firstAttribute="top" secondItem="kd5-8Q-mpV" secondAttribute="bottom" constant="8" id="eAu-Cp-pjR"/>
-                <constraint firstAttribute="trailing" secondItem="nyd-Qj-04P" secondAttribute="trailing" constant="10" id="heZ-UO-Hu1"/>
                 <constraint firstItem="qku-6X-AuO" firstAttribute="top" secondItem="Iqf-U9-ncS" secondAttribute="bottom" constant="8" id="hng-eG-9qP"/>
                 <constraint firstItem="kd5-8Q-mpV" firstAttribute="top" secondItem="d20-Z7-Zke" secondAttribute="bottom" constant="8" id="i7W-a3-eLq"/>
                 <constraint firstItem="BUL-oD-sYY" firstAttribute="leading" secondItem="IOT-lj-Hdc" secondAttribute="trailing" constant="6" id="jsJ-HZ-Kug"/>
@@ -155,7 +143,6 @@
                 <constraint firstAttribute="centerX" secondItem="kd5-8Q-mpV" secondAttribute="leading" constant="-3" id="pgZ-Mv-FzX"/>
                 <constraint firstItem="WB6-W2-8XU" firstAttribute="top" secondItem="CSx-Y5-ZET" secondAttribute="bottom" constant="8" id="uW2-cB-sgV"/>
                 <constraint firstItem="kd5-8Q-mpV" firstAttribute="leading" secondItem="qku-6X-AuO" secondAttribute="trailing" constant="6" id="vYt-iv-2wi"/>
-                <constraint firstAttribute="bottom" secondItem="nyd-Qj-04P" secondAttribute="bottom" constant="10" id="yEw-pI-b5W"/>
                 <constraint firstAttribute="centerX" secondItem="CSx-Y5-ZET" secondAttribute="leading" constant="-3" id="zmo-sz-6MJ"/>
             </constraints>
         </view>

@@ -582,9 +582,13 @@
     <Compile Include="Views\ManualPairingForRideLinqView.designer.cs">
       <DependentUpon>ManualPairingForRideLinqView.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\ManualRideLinqSatusView.cs" />
-    <Compile Include="Views\ManualRideLinqSatusView.designer.cs">
-      <DependentUpon>ManualRideLinqSatusView.cs</DependentUpon>
+    <Compile Include="Views\ManualRideLinqSummaryView.cs" />
+    <Compile Include="Views\ManualRideLinqSummaryView.designer.cs">
+      <DependentUpon>ManualRideLinqSummaryView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ManualRideLinqStatusView.cs" />
+    <Compile Include="Views\ManualRideLinqStatusView.designer.cs">
+      <DependentUpon>ManualRideLinqStatusView.cs</DependentUpon>
     </Compile>
   </ItemGroup>
   <ProjectExtensions>
@@ -635,7 +639,8 @@
     <InterfaceDefinition Include="Views\PromotionCell.xib" />
     <InterfaceDefinition Include="Views\Payments\OverduePaymentView.xib" />
     <InterfaceDefinition Include="Views\ManualPairingForRideLinqView.xib" />
-    <InterfaceDefinition Include="Views\ManualRideLinqSatusView.xib" />
+    <InterfaceDefinition Include="Views\ManualRideLinqSummaryView.xib" />
+    <InterfaceDefinition Include="Views\ManualRideLinqStatusView.xib" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="en.lproj\Localizable.strings" />
