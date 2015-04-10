@@ -57,10 +57,10 @@ namespace apcurium.MK.Booking.Domain
         /// <summary>
         /// Constructor for RideLinq
         /// </summary>
-        public Order(Guid id, Guid accountId, DateTime pairingDate, string pairingCode, string pairingToken, string userAgent,
-            string clientLanguageCode, string clientVersion, double? distance,
+        public Order(Guid id, Guid accountId, DateTime pairingDate, string pairingCode, string pairingToken, Address pickupAddress,
+            string userAgent, string clientLanguageCode, string clientVersion, double? distance,
             double? total, double? fare, double? faireAtAlternateRate, double? tax, double? tip, double? toll,
-            double? extra, double? surcharge, double? rateAtTripStart, double? rateAtTripEnd, string rateChangeTime, string medallion) 
+            double? extra, double? surcharge, double? rateAtTripStart, double? rateAtTripEnd, string rateChangeTime, string medallion, int tripId, int driverId) 
             : this(id)
         {
             Update(new OrderManuallyPairedForRideLinq
@@ -72,6 +72,7 @@ namespace apcurium.MK.Booking.Domain
                 ClientVersion = clientVersion,
                 PairingCode = pairingCode,
                 PairingToken = pairingToken,
+                PickupAddress = pickupAddress,
                 Total = total,
                 Fare = fare,
                 FareAtAlternateRate = faireAtAlternateRate,
@@ -84,7 +85,9 @@ namespace apcurium.MK.Booking.Domain
                 RateAtTripEnd = rateAtTripEnd,
                 RateChangeTime = rateChangeTime,
                 Distance = distance,
-                Medallion = medallion
+                Medallion = medallion,
+                TripId = tripId,
+                DriverId = driverId
             });
         }
 
@@ -132,7 +135,7 @@ namespace apcurium.MK.Booking.Domain
 
         public void UpdateRideLinqTripInfo(double? distance,double? total, double? fare,double? faireAtAlternateRate, double? tax, double? tip, double? toll,
             double? extra, double? surcharge, double? rateAtTripStart, double? rateAtTripEnd, string rateChangeTime, 
-            DateTime? endTime, string pairingToken, string medallion)
+            DateTime? endTime, string pairingToken, string medallion, int tripId, int driverId)
         {
             Update(new ManualRideLinqTripInfoUpdated
             {
@@ -150,7 +153,9 @@ namespace apcurium.MK.Booking.Domain
                 RateChangeTime = rateChangeTime,
                 EndTime = endTime,
                 PairingToken = pairingToken,
-                Medallion = medallion
+                Medallion = medallion,
+                TripId = tripId,
+                DriverId = driverId
             });
         }
 

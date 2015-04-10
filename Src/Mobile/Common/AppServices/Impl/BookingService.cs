@@ -27,16 +27,14 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 		readonly IAppSettings _appSettings;
 		readonly IMvxPhoneCallTask _phoneCallTask;
 		readonly IGeolocService _geolocService;
-        private ILocationService _locationService;
 
 		public BookingService(IAccountService accountService,
 			ILocalization localize,
 			IAppSettings appSettings,
 			IMvxPhoneCallTask phoneCallTask,
-			IGeolocService geolocService, ILocationService locationService)
+			IGeolocService geolocService)
 		{
 			_geolocService = geolocService;
-		    _locationService = locationService;
 		    _phoneCallTask = phoneCallTask;
 			_appSettings = appSettings;
 			_localize = localize;
@@ -331,20 +329,13 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			return UseServiceClientAsync<OrderServiceClient> (service => service.RateOrder (request));
         }
 
-        public async Task<OrderManualRideLinqDetail> ManualRideLinqPair(string pairingCode)
+        public async Task<OrderManualRideLinqDetail> ManualRideLinqPair(string pairingCode, Address pickupAddress)
         {
-            _locationService.Start();
-
-            var position = await _locationService.GetUserPosition();
-
-            _locationService.Stop();
-
-            var request = new ManualRideLinqPairingRequest()
+            var request = new ManualRideLinqPairingRequest
             {
+                PairingCode = pairingCode,
+                PickupAddress = pickupAddress,
                 ClientLanguageCode = _localize.CurrentLanguage,
-                Longitude = position.Longitude,
-                Latitude = position.Latitude,
-                PairingCode = pairingCode
             };
 
             var response = await UseServiceClientAsync<ManualPairingForRideLinqServiceClient, ManualRideLinqResponse>(service => service.Pair(request));

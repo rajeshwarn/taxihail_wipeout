@@ -16,13 +16,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
     public class ManualPairingForRideLinqViewModel: PageViewModel
     {
         private readonly IBookingService _bookingService;
+        private readonly IOrderWorkflowService _orderWorkflowService;
         private string _pairingCodeLeft;
         private string _pairingCodeRight;
 
-        public ManualPairingForRideLinqViewModel(IBookingService bookingService)
+        public ManualPairingForRideLinqViewModel(IBookingService bookingService, IOrderWorkflowService orderWorkflowService)
         {
             _bookingService = bookingService;
+            _orderWorkflowService = orderWorkflowService;
         }
+
         public string PairingCodeLeft
         {
             get { return _pairingCodeLeft; }
@@ -61,20 +64,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     {
                         using (this.Services().Message.ShowProgress())
                         {
-                            //var orderManualRideLinqDetail = await _bookingService.ManualRideLinqPair(string.Concat(PairingCodeLeft,PairingCodeRight));
+                            var pickupAddress = await _orderWorkflowService.GetCurrentAddress();
+                            var pairingCode = string.Concat(PairingCodeLeft, PairingCodeRight);
 
-                            var orderManualRideLinqDetail = new OrderManualRideLinqDetail()
-                            {
-                                PairingCode = "1234567",
-                                Distance = 12f,
-                                Fare = 13f,
-                                Medallion = "mk123",
-                                AccountId = Guid.NewGuid(),
-                                Tax = 9f,
-                                Tip = 7f,
-                                Toll = 8f,
-                                Total = 12f
-                            };
+                            var orderManualRideLinqDetail = await _bookingService.ManualRideLinqPair(pairingCode, pickupAddress);
 
                             ShowViewModelAndClearHistory<ManualRideLinqStatusViewModel>(new
                             {

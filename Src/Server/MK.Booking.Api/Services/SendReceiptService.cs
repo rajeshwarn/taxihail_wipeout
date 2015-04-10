@@ -15,6 +15,7 @@ using ServiceStack.ServiceInterface;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
 using CMTPayment.Pair;
+using ServiceStack.Common.Utils;
 
 namespace apcurium.MK.Booking.Api.Services
 {
@@ -88,6 +89,8 @@ namespace apcurium.MK.Booking.Api.Services
             PromotionUsageDetail promotionUsed = null;
             ReadModel.CreditCardDetails creditCard = null;
 
+            var ibsOrderId = orderStatus.IBSOrderId;
+
             if (orderPayment != null && orderPayment.IsCompleted)
             {
                 meterAmount = Convert.ToDouble(orderPayment.Meter);
@@ -113,6 +116,8 @@ namespace apcurium.MK.Booking.Api.Services
                     tollAmount = Math.Round(((double)tripInfo.Extra / 2), 2);
                     tipAmount = Math.Round(((double)tripInfo.Tip / 100), 2);
                     taxAmount = Math.Round(((double)tripInfo.Tax / 100), 2);
+
+                    ibsOrderId = tripInfo.TripId;
                 }
                 else
                 {
@@ -137,7 +142,7 @@ namespace apcurium.MK.Booking.Api.Services
                 orderPayment = null;
             }
 
-            _commandBus.Send(SendReceiptCommandBuilder.GetSendReceiptCommand(order, account, ibsOrder.VehicleNumber, orderStatus.DriverInfos,
+            _commandBus.Send(SendReceiptCommandBuilder.GetSendReceiptCommand(order, account, ibsOrderId, ibsOrder.VehicleNumber, orderStatus.DriverInfos,
                     meterAmount,
                     tollAmount,
                     tipAmount,

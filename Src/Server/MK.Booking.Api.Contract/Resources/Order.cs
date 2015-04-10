@@ -41,6 +41,6 @@ namespace apcurium.MK.Booking.Api.Contract.Resources
 
         public string PromoCode { get; set; }
 
-        public bool? IsManualRideLinq { get; set; }
+        public bool IsManualRideLinq { get; set; }
     }
 }

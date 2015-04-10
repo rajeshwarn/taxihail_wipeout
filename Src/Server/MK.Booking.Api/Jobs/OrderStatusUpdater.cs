@@ -138,26 +138,30 @@ namespace apcurium.MK.Booking.Api.Jobs
             if (rideLinqDetails != null)
             {
                 var tripInfo = _cmtTripInfoServiceHelper.GetTripInfo(rideLinqDetails.PairingToken);
-
-                _commandBus.Send(new UpdateTripInfoInOrderForManualRideLinq
+                if (tripInfo != null)
                 {
-                    Distance = tripInfo.Distance,
-                    EndTime = tripInfo.EndTime,
-                    Extra = Math.Round(((double)tripInfo.Extra / 100), 2),
-                    Fare = Math.Round(((double)tripInfo.Fare / 100), 2),
-                    Tax = Math.Round(((double)tripInfo.Tax / 100), 2),
-                    Tip = Math.Round(((double)tripInfo.Tip / 100), 2),
-                    Toll = tripInfo.TollHistory.Sum(toll => Math.Round(((double)toll.TollAmount / 100), 2)),
-                    Surcharge = Math.Round(((double)tripInfo.Surcharge / 100), 2),
-                    Total = Math.Round(((double)tripInfo.Total / 100), 2),
-                    FareAtAlternateRate = Math.Round(((double)tripInfo.FareAtAlternateRate / 100), 2),
-                    Medallion = tripInfo.Medallion,
-                    RateAtTripStart = Math.Round(((double)tripInfo.RateAtTripStart / 100), 2),
-                    RateAtTripEnd = Math.Round(((double)tripInfo.RateAtTripEnd / 100), 2),
-                    RateChangeTime = tripInfo.RateChangeTime,
-                    OrderId = orderstatusDetail.OrderId,
-                    PairingToken = tripInfo.PairingToken
-                });
+                    _commandBus.Send(new UpdateTripInfoInOrderForManualRideLinq
+                    {
+                        Distance = tripInfo.Distance,
+                        EndTime = tripInfo.EndTime,
+                        Extra = Math.Round(((double)tripInfo.Extra / 100), 2),
+                        Fare = Math.Round(((double)tripInfo.Fare / 100), 2),
+                        Tax = Math.Round(((double)tripInfo.Tax / 100), 2),
+                        Tip = Math.Round(((double)tripInfo.Tip / 100), 2),
+                        Toll = tripInfo.TollHistory.Sum(toll => Math.Round(((double)toll.TollAmount / 100), 2)),
+                        Surcharge = Math.Round(((double)tripInfo.Surcharge / 100), 2),
+                        Total = Math.Round(((double)tripInfo.Total / 100), 2),
+                        FareAtAlternateRate = Math.Round(((double)tripInfo.FareAtAlternateRate / 100), 2),
+                        Medallion = tripInfo.Medallion,
+                        RateAtTripStart = Math.Round(((double)tripInfo.RateAtTripStart / 100), 2),
+                        RateAtTripEnd = Math.Round(((double)tripInfo.RateAtTripEnd / 100), 2),
+                        RateChangeTime = tripInfo.RateChangeTime,
+                        OrderId = orderstatusDetail.OrderId,
+                        PairingToken = tripInfo.PairingToken,
+                        TripId = tripInfo.TripId,
+                        DriverId = tripInfo.DriverId
+                    });
+                }
             }
         }
 

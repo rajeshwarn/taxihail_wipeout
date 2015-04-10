@@ -445,6 +445,7 @@ namespace apcurium.MK.Booking.Services.Impl
             }
 
             var hasPaymentInfo = paymentInfo != null;
+            var hasDriverInfo = driverInfos != null;
             var paymentAmount = string.Empty;
             var paymentMethod = string.Empty;
             var paymentTransactionId = string.Empty;
@@ -497,6 +498,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 AccentColor = _serverSettings.ServerData.TaxiHail.AccentColor,
                 EmailFontColor = _serverSettings.ServerData.TaxiHail.EmailFontColor,
                 ibsOrderId,
+                HasDriverInfo = hasDriverInfo,
                 VehicleNumber = vehicleNumber,
                 DriverInfos = driverInfos,
                 PickupDate = pickupDate.ToString("D", dateFormat),

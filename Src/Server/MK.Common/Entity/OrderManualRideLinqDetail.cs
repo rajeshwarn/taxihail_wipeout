@@ -45,5 +45,9 @@ namespace apcurium.MK.Common.Entity
         public string RateChangeTime { get; set; }
 
         public string Medallion { get; set; }
+
+        public int TripId { get; set; }
+
+        public int DriverId { get; set; }
     }
 }

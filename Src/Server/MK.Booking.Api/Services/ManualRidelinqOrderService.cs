@@ -73,8 +73,8 @@ namespace apcurium.MK.Booking.Api.Services
                     AutoTipPercentage = account.DefaultTipPercent ?? _serverSettings.ServerData.DefaultTipPercentage,
                     CustomerId = accountId.ToString(),
                     CustomerName = account.Name,
-                    Latitude = request.Latitude,
-                    Longitude = request.Longitude,
+                    Latitude = request.PickupAddress.Latitude,
+                    Longitude = request.PickupAddress.Longitude,
                     PairingCode = request.PairingCode,
                     AutoCompletePayment = true,
                     CardOnFileId = creditCard.Token
@@ -91,6 +91,7 @@ namespace apcurium.MK.Booking.Api.Services
                     UserAgent = Request.UserAgent,
                     ClientVersion = Request.Headers.Get("ClientVersion"),
                     PairingCode = request.PairingCode,
+                    PickupAddress = request.PickupAddress,
                     PairingToken = response.PairingToken,
                     PairingDate = DateTime.Now,
                     ClientLanguageCode = request.ClientLanguageCode,
@@ -108,6 +109,8 @@ namespace apcurium.MK.Booking.Api.Services
                     RateAtTripStart = Math.Round(((double)trip.RateAtTripStart / 100), 2),
                     RateAtTripEnd = Math.Round(((double)trip.RateAtTripEnd / 100), 2),
                     RateChangeTime = trip.RateChangeTime,
+                    TripId = trip.TripId,
+                    DriverId = trip.DriverId
                 };
 
                 _commandBus.Send(command);
@@ -179,6 +182,8 @@ namespace apcurium.MK.Booking.Api.Services
                 RateAtTripStart = order.RateAtTripStart,
                 RateAtTripEnd = order.RateAtTripEnd,
                 RateChangeTime = order.RateChangeTime,
+                TripId = order.TripId,
+                DriverId = order.DriverId
             };
         }
 

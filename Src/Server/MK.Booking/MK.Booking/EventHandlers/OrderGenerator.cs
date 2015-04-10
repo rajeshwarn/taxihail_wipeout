@@ -440,6 +440,7 @@ namespace apcurium.MK.Booking.EventHandlers
                     Id = @event.SourceId,
                     PickupDate = @event.PairingDate,
                     CreatedDate = @event.PairingDate,
+                    PickupAddress = @event.PickupAddress,
                     Status = (int)OrderStatus.Created,
                     IsRated = false,
                     UserAgent = @event.UserAgent,
@@ -493,10 +494,11 @@ namespace apcurium.MK.Booking.EventHandlers
                         RateAtTripStart = @event.RateAtTripStart,
                         RateAtTripEnd = @event.RateAtTripEnd,
                         RateChangeTime = @event.RateChangeTime,
-                        Medallion = @event.Medallion
+                        Medallion = @event.Medallion,
+                        TripId = @event.TripId,
+                        DriverId = @event.DriverId
                     });
                 }
-
             }
         }
 

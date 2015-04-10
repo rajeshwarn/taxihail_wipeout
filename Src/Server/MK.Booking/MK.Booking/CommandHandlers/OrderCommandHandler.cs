@@ -188,10 +188,10 @@ namespace apcurium.MK.Booking.CommandHandlers
 
         public void Handle(CreateOrderForManualRideLinqPair command)
         {
-            var order = new Order(command.OrderId, command.AccountId, command.PairingDate, command.PairingCode,
-                command.PairingToken, command.UserAgent, command.ClientLanguageCode, command.ClientVersion, command.Distance, command.Total,
+            var order = new Order(command.OrderId, command.AccountId, command.PairingDate, command.PairingCode, command.PairingToken,
+                command.PickupAddress, command.UserAgent, command.ClientLanguageCode, command.ClientVersion, command.Distance, command.Total,
                 command.Fare, command.FareAtAlternateRate, command.Tax, command.Tip, command.Toll, command.Extra, 
-                command.Surcharge, command.RateAtTripStart, command.RateAtTripEnd, command.RateChangeTime, command.Medallion);
+                command.Surcharge, command.RateAtTripStart, command.RateAtTripEnd, command.RateChangeTime, command.Medallion, command.TripId, command.DriverId);
 
             _repository.Save(order, command.Id.ToString());
         }
@@ -208,7 +208,8 @@ namespace apcurium.MK.Booking.CommandHandlers
             var order = _repository.Get(command.OrderId);
             order.UpdateRideLinqTripInfo(command.Distance,command.Total, command.Fare, command.FareAtAlternateRate, command.Tax,
                 command.Tip, command.Toll, command.Extra,command.Surcharge,command.RateAtTripStart, command.RateAtTripEnd, 
-                command.RateChangeTime ,command.EndTime, command.PairingToken, command.Medallion);
+                command.RateChangeTime ,command.EndTime, command.PairingToken, command.Medallion, command.TripId, command.DriverId);
+
             _repository.Save(order, command.Id.ToString());
         }
     }

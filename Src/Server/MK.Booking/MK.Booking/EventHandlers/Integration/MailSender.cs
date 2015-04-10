@@ -188,10 +188,18 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                     }
                         
                     var promoUsed = _promotionDao.FindByOrderId(orderId);
+                    var ibsOrderId = order.IBSOrderId;
+
+                    if (order.IsManualRideLinq)
+                    {
+                        var manualRideLinqDetail = context.Find<OrderManualRideLinqDetail>(orderStatus.OrderId);
+                        ibsOrderId = manualRideLinqDetail.TripId;
+                    }
 
                     var command = SendReceiptCommandBuilder.GetSendReceiptCommand(
                         order,
                         account,
+                        ibsOrderId,
                         orderStatus.VehicleNumber,
                         orderStatus.DriverInfos,
                         orderPayment.SelectOrDefault(payment => Convert.ToDouble(payment.Meter), Convert.ToDouble(meter)),
