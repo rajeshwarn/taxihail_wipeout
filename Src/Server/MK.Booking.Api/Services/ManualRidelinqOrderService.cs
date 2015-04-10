@@ -19,6 +19,7 @@ using Infrastructure.EventSourcing;
 using Infrastructure.Messaging;
 using ServiceStack.Common.Web;
 using ServiceStack.Html;
+using ServiceStack.ServiceClient.Web;
 using ServiceStack.ServiceInterface;
 using CmtManualRideLinqPairingRequest = CMTPayment.Pair.ManualRideLinqPairingRequest;
 using ManualRideLinqPairingRequest = apcurium.MK.Booking.Api.Contract.Requests.Payment.ManualRideLinqPairingRequest;
@@ -48,76 +49,102 @@ namespace apcurium.MK.Booking.Api.Services
 
         public object Post(ManualRideLinqPairingRequest request)
         {
-            var accountId = new Guid(this.GetSession().UserAuthId);
-            var account = _accountDao.FindById(accountId);
-
-            // send pairing request                                
-            var pairingRequest = new CmtManualRideLinqPairingRequest
+            try
             {
-                AutoTipPercentage = account.DefaultTipPercent ?? _serverSettings.ServerData.DefaultTipPercentage,
-                CallbackUrl = string.Empty,
-                CustomerId = accountId.ToString(),
-                CustomerName = account.Name,
-                Latitude = request.Latitude,
-                Longitude = request.Longitude,
-                PairingCode = request.PairingCode,
-                AutoCompletePayment = true
-            };
+                var accountId = new Guid(this.GetSession().UserAuthId);
+                var account = _accountDao.FindById(accountId);
 
-            var response = _cmtMobileServiceClient.Post(pairingRequest);
+                // send pairing request                                
+                var pairingRequest = new CmtManualRideLinqPairingRequest
+                {
+                    AutoTipPercentage = account.DefaultTipPercent ?? _serverSettings.ServerData.DefaultTipPercentage,
+                    CustomerId = accountId.ToString(),
+                    CustomerName = account.Name,
+                    Latitude = request.Latitude,
+                    Longitude = request.Longitude,
+                    PairingCode = request.PairingCode,
+                    AutoCompletePayment = true
+                };
 
-            var trip = _cmtTripInfoServiceHelper.WaitForTripInfo(response.PairingToken, response.TimeoutSeconds);
+                var response = _cmtMobileServiceClient.Post(pairingRequest);
 
-            var command = new CreateOrderForManualRideLinqPair
+                var trip = _cmtTripInfoServiceHelper.WaitForTripInfo(response.PairingToken, response.TimeoutSeconds);
+
+                var command = new CreateOrderForManualRideLinqPair
+                {
+                    OrderId = Guid.NewGuid(),
+                    AccountId = accountId,
+                    UserAgent = Request.UserAgent,
+                    ClientVersion = Request.Headers.Get("ClientVersion"),
+                    PairingCode = request.PairingCode,
+                    PairingToken = response.PairingToken,
+                    PairingDate = DateTime.Now,
+                    ClientLanguageCode = request.ClientLanguageCode,
+                    Distance = trip.Distance,
+                    EndTime = trip.EndTime,
+                    Extra = Math.Round(((double)trip.Extra / 100), 2),
+                    Fare = Math.Round(((double)trip.Fare / 100), 2),
+                    Tax = Math.Round(((double)trip.Tax / 100), 2),
+                    Tip = Math.Round(((double)trip.Tip / 100), 2),
+                    Toll = trip.TollHistory.Sum(toll => Math.Round(((double)toll.TollAmount / 100), 2)),
+                    Surcharge = Math.Round(((double)trip.Surcharge / 100), 2),
+                    Total = Math.Round(((double)trip.Total / 100), 2),
+                    FareAtAlternateRate = Math.Round(((double)trip.FareAtAlternateRate / 100), 2),
+                    Medallion = trip.Medallion,
+                    RateAtTripStart = Math.Round(((double)trip.RateAtTripStart / 100), 2),
+                    RateAtTripEnd = Math.Round(((double)trip.RateAtTripEnd / 100), 2),
+                    RateChangeTime = trip.RateChangeTime,
+                };
+
+                _commandBus.Send(command);
+
+                var data = new OrderManualRideLinqDetail
+                {
+                    OrderId = command.OrderId,
+                    Distance = trip.Distance,
+                    EndTime = trip.EndTime,
+                    Extra = command.Extra,
+                    Fare = command.Fare,
+                    Tax = command.Tax,
+                    Tip = command.Tip,
+                    Toll = command.Toll,
+                    Surcharge = command.Surcharge,
+                    Total = command.Total,
+                    FareAtAlternateRate = command.FareAtAlternateRate,
+                    Medallion = trip.Medallion,
+                    RateAtTripStart = command.RateAtTripStart,
+                    RateAtTripEnd = command.RateAtTripEnd,
+                    RateChangeTime = trip.RateChangeTime,
+                    AccountId = accountId,
+                    PairingDate = command.PairingDate,
+                    PairingCode = pairingRequest.PairingCode,
+                    PairingToken = trip.PairingToken,
+                };
+
+
+                return new ManualRideLinqResponse()
+                {
+                    Data = data,
+                    IsSuccessful = true,
+                    Message = "Ok"
+                };
+            }
+            catch (WebServiceException ex)
             {
-                OrderId = Guid.NewGuid(),
-                AccountId = accountId,
-                UserAgent = Request.UserAgent,
-                ClientVersion = Request.Headers.Get("ClientVersion"),
-                PairingCode = request.PairingCode,
-                PairingToken = response.PairingToken,
-                PairingDate = DateTime.Now,
-                ClientLanguageCode = request.ClientLanguageCode,
-                Distance = trip.Distance,
-                EndTime = trip.EndTime,
-                Extra = Math.Round(((double) trip.Extra/100), 2),
-                Fare = Math.Round(((double) trip.Fare/100), 2),
-                Tax = Math.Round(((double) trip.Tax/100), 2),
-                Tip = Math.Round(((double) trip.Tip/100), 2),
-                Toll = trip.TollHistory.Sum(toll => Math.Round(((double) toll.TollAmount/100), 2)),
-                Surcharge = Math.Round(((double) trip.Surcharge/100), 2),
-                Total = Math.Round(((double) trip.Total/100), 2),
-                FareAtAlternateRate = Math.Round(((double) trip.FareAtAlternateRate/100), 2),
-                Medallion = trip.Medallion,
-                RateAtTripStart =Math.Round(((double) trip.RateAtTripStart/100), 2),
-                RateAtTripEnd = Math.Round(((double) trip.RateAtTripEnd/100), 2),
-                RateChangeTime = trip.RateChangeTime,
-            };
+                if (ex.StatusCode == 400)
+                {
+                    return new ManualRideLinqResponse()
+                    {
+                        IsSuccessful = false,
+                        Message = ex.ErrorMessage,
+                        ErrorCode = ex.ErrorCode
+                    };
+                }
 
-            _commandBus.Send(command);
-
-            return new OrderManualRideLinqDetail
-            {
-                OrderId = command.OrderId,
-                Distance = trip.Distance,
-                EndTime = trip.EndTime,
-                Extra = command.Extra,
-                Fare = command.Fare,
-                Tax = command.Tax,
-                Tip = command.Tip,
-                Toll = command.Toll,
-                Surcharge = command.Surcharge,
-                Total = command.Total,
-                FareAtAlternateRate = command.FareAtAlternateRate,
-                Medallion = trip.Medallion,
-                RateAtTripStart = command.RateAtTripStart,
-                RateAtTripEnd = command.RateAtTripEnd,
-                RateChangeTime = trip.RateChangeTime,
-                AccountId = accountId,
-                PairingDate = command.PairingDate,
-                PairingCode = pairingRequest.PairingCode,
-                PairingToken = trip.PairingToken,
-            };
+                throw;
+            }
+                
+            
         }
 
 

@@ -7,6 +7,7 @@ using apcurium.MK.Common.Entity;
 using ServiceStack.Text;
 using System.Reactive;
 using System.Reactive.Linq;
+using ServiceStack.ServiceClient.Web;
 using Observable = System.Reactive.Linq.Observable;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
@@ -64,15 +65,27 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 return this.GetCommand(async () =>
                     {
-                        using (this.Services().Message.ShowProgress())
+                        try
                         {
-                            var orderManualRideLinqDetail = await _bookingService.ManualRideLinqPair(PairingCode);
-
-                            ShowViewModelAndClearHistory<ManualRideLinqStatusViewModel>(new
+                            using (this.Services().Message.ShowProgress())
                             {
-                                orderManualRideLinqDetail = orderManualRideLinqDetail.SerializeToString()
-                            });
+                                var orderManualRideLinqDetail = await _bookingService.ManualRideLinqPair(PairingCode);
+
+                                ShowViewModelAndClearHistory<ManualRideLinqStatusViewModel>(new
+                                {
+                                    orderManualRideLinqDetail = orderManualRideLinqDetail.SerializeToString()
+                                });
+                            }
                         }
+                        catch (WebServiceException)
+                        {
+                            this.Services().Message.ShowMessage("Error", "An error occurred while pairing.").HandleErrors();
+                        }
+                        catch (Exception)
+                        {
+                            this.Services().Message.ShowMessage("Invalid Code", "The pairing code is invalid.").HandleErrors();
+                        }
+                        
                     });
             }
         }

@@ -124,6 +124,7 @@
     <Compile Include="Resources\BasePaymentResponse.cs" />
     <Compile Include="Resources\CommitPreauthorizedPaymentResponse.cs" />
     <Compile Include="Resources\DeleteTokenizedCreditcardResponse.cs" />
+    <Compile Include="Resources\ManualRideLinqResponse.cs" />
     <Compile Include="Resources\PairingResponse.cs" />
     <Compile Include="Resources\PreAuthorizePaymentResponse.cs" />
     <Compile Include="Resources\SettleOverduePaymentResponse.cs" />

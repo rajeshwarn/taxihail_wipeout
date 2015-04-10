@@ -18,10 +18,10 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
         }
 
 
-        public Task<OrderManualRideLinqDetail> Pair(ManualRideLinqPairingRequest manualRideLinqPairingRequest)
+        public Task<ManualRideLinqResponse> Pair(ManualRideLinqPairingRequest manualRideLinqPairingRequest)
         {
             var req = string.Format("/account/ridelinq");
-            return Client.PostAsync<OrderManualRideLinqDetail>(req, manualRideLinqPairingRequest);
+            return Client.PostAsync<ManualRideLinqResponse>(req, manualRideLinqPairingRequest);
         }
 
         public Task<BasePaymentResponse> Unpair(Guid orderId)
