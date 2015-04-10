@@ -16,7 +16,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
     public class ManualPairingForRideLinqViewModel: PageViewModel
     {
         private readonly IBookingService _bookingService;
-        private string _pairingCode;
         private string _pairingCodeLeft;
         private string _pairingCodeRight;
 
@@ -50,12 +49,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 return this.GetCommand(async () =>
                 {
+                    var localize = this.Services().Localize;
+
                     if (!PairingCodeLeft.HasValue() || !PairingCodeRight.HasValue())
                     {
+                        await this.Services().Message.ShowMessage(localize["ManualPairingForRideLinQ_InvalidCode_Title"], localize["ManualPairingForRideLinQ_InvalidCode_Message"]);
                         return;
                     }
-
-                    var localize = this.Services().Localize;
 
                     try
                     {

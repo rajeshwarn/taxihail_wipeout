@@ -24,9 +24,6 @@ namespace apcurium.MK.Booking.Commands
         public string ClientLanguageCode { get; set; }
         public string UserAgent { get; set; }
         public string ClientVersion { get; set; }
-        public string CompanyKey { get; set; }
-        public string CompanyName { get; set; }
-        public string Market { get; set; }
         public double? Distance { get; set; }
         public double? Total { get; set; }
         public double? Fare { get; set; }

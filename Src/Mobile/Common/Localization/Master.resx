@@ -1828,13 +1828,13 @@
     <value>Status</value>
   </data>
   <data name="View_RideLinqPair" xml:space="preserve">
-    <value>check in</value>
+    <value>CHECK IN</value>
   </data>
   <data name="HomeView_ManualPairing" xml:space="preserve">
     <value>Check In</value>
   </data>
   <data name="ManualPairingForRideLinQ_Pair" xml:space="preserve">
-    <value>check in</value>
+    <value>Check In</value>
   </data>
   <data name="ManualPairingForRideLinQ_Instructions" xml:space="preserve">
     <value>Enter the 7-digit code displayed on the taxi touchscreen to auto-play and get an e-receipt at the end of your ride.</value>

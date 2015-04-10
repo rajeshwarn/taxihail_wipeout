@@ -189,8 +189,7 @@ namespace apcurium.MK.Booking.CommandHandlers
         public void Handle(CreateOrderForManualRideLinqPair command)
         {
             var order = new Order(command.OrderId, command.AccountId, command.PairingDate, command.PairingCode,
-                command.PairingToken, command.UserAgent, command.ClientLanguageCode, command.ClientVersion,
-                command.CompanyKey, command.CompanyName, command.Market, command.Distance, command.Total,
+                command.PairingToken, command.UserAgent, command.ClientLanguageCode, command.ClientVersion, command.Distance, command.Total,
                 command.Fare, command.FareAtAlternateRate, command.Tax, command.Tip, command.Toll, command.Extra, 
                 command.Surcharge, command.RateAtTripStart, command.RateAtTripEnd, command.RateChangeTime, command.Medallion);
 

@@ -445,9 +445,6 @@ namespace apcurium.MK.Booking.EventHandlers
                     UserAgent = @event.UserAgent,
                     ClientLanguageCode = @event.ClientLanguageCode,
                     ClientVersion = @event.ClientVersion,
-                    CompanyKey = @event.CompanyKey,
-                    CompanyName = @event.CompanyName,
-                    Market = @event.Market,
                     IsManualRideLinq = true
                 });
 
@@ -466,9 +463,6 @@ namespace apcurium.MK.Booking.EventHandlers
                         Status = OrderStatus.Created,
                         IBSStatusDescription = _resources.Get("CreateOrder_WaitingForIbs", @event.ClientLanguageCode),
                         PickupDate = @event.PairingDate,
-                        CompanyKey = @event.CompanyKey,
-                        CompanyName = @event.CompanyName,
-                        Market = @event.Market,
                         IsManualRideLinq = true
                     });
                 }

@@ -634,7 +634,7 @@
   <string name="FilteredAddresses_Error_Message">There is currently no entries for this filter.</string>
   <string name="FilteredAddresses_Error_Title">Error</string>
   <string name="HomeView_ManualPairing">Check In</string>
-  <string name="ManualPairingForRideLinQ_Pair">check in</string>
+  <string name="ManualPairingForRideLinQ_Pair">Check In</string>
   <string name="ManualPairingForRideLinQ_Instructions">Enter the 7-digit code displayed on the taxi touchscreen to auto-play and get an e-receipt at the end of your ride.</string>
   <string name="ManualRideLinqStatus_PairingCode">Pairing Code:</string>
   <string name="ManualRideLinqStatus_Medallion">Medallion:</string>
@@ -644,7 +644,7 @@
   <string name="ManualRideLinqStatus_Tax">Tax amount:</string>
   <string name="ManualRideLinqStatus_Tip">Tip amount:</string>
   <string name="View_RideLinqStatus">Status</string>
-  <string name="View_RideLinqPair">check in</string>
+  <string name="View_RideLinqPair">CHECK IN</string>
   <string name="ManualRideLinqStatus_Unpair">Unpair</string>
   <string name="ManualPairingForRideLinQ_Error_Title">Error</string>
   <string name="ManualPairingForRideLinQ_Error_Message">An error occurred during check in.</string>

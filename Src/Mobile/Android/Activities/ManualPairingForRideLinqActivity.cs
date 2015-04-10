@@ -12,6 +12,7 @@ using Android.OS;
 using Android.Runtime;
 using Android.Text.Util;
 using Android.Views;
+using Android.Views.InputMethods;
 using Android.Widget;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities
@@ -32,6 +33,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
             var pairingCodeTextField2 = FindViewById<EditText>(Resource.Id.PairingCode2);
 
             PairingCodeBehavior.ApplyTo(pairingCodeTextField1, pairingCodeTextField2);
+
+            var im = (InputMethodManager)GetSystemService(InputMethodService);
+            if (im != null)
+            {
+                im.ToggleSoftInput(ShowFlags.Forced, HideSoftInputFlags.None);
+            }
         }
 
     }

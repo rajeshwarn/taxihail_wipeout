@@ -626,7 +626,7 @@
 "FilteredAddresses_Error_Message"="There is currently no entries for this filter.";
 "FilteredAddresses_Error_Title"="Error";
 "HomeView_ManualPairing"="Check In";
-"ManualPairingForRideLinQ_Pair"="check in";
+"ManualPairingForRideLinQ_Pair"="Check In";
 "ManualPairingForRideLinQ_Instructions"="Enter the 7-digit code displayed on the taxi touchscreen to auto-play and get an e-receipt at the end of your ride.";
 "ManualRideLinqStatus_PairingCode"="Pairing Code:";
 "ManualRideLinqStatus_Medallion"="Medallion:";
@@ -636,7 +636,7 @@
 "ManualRideLinqStatus_Tax"="Tax amount:";
 "ManualRideLinqStatus_Tip"="Tip amount:";
 "View_RideLinqStatus"="Status";
-"View_RideLinqPair"="check in";
+"View_RideLinqPair"="CHECK IN";
 "ManualRideLinqStatus_Unpair"="Unpair";
 "ManualPairingForRideLinQ_Error_Title"="Error";
 "ManualPairingForRideLinQ_Error_Message"="An error occurred during check in.";

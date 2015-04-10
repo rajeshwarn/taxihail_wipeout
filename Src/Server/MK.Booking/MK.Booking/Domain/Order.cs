@@ -58,7 +58,7 @@ namespace apcurium.MK.Booking.Domain
         /// Constructor for RideLinq
         /// </summary>
         public Order(Guid id, Guid accountId, DateTime pairingDate, string pairingCode, string pairingToken, string userAgent,
-            string clientLanguageCode, string clientVersion, string companyKey, string companyName, string market, double? distance,
+            string clientLanguageCode, string clientVersion, double? distance,
             double? total, double? fare, double? faireAtAlternateRate, double? tax, double? tip, double? toll,
             double? extra, double? surcharge, double? rateAtTripStart, double? rateAtTripEnd, string rateChangeTime, string medallion) 
             : this(id)
@@ -70,9 +70,6 @@ namespace apcurium.MK.Booking.Domain
                 UserAgent = userAgent,
                 ClientLanguageCode = clientLanguageCode,
                 ClientVersion = clientVersion,
-                CompanyKey = companyKey,
-                CompanyName = companyName,
-                Market = market,
                 PairingCode = pairingCode,
                 PairingToken = pairingToken,
                 Total = total,
