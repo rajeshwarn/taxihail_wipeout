@@ -637,6 +637,10 @@
   <string name="ManualPairingForRideLinQ_Pair">check in</string>
   <string name="ManualPairingForRideLinQ_Instructions">Enter the 7-digit code displayed on the taxi touchscreen to auto-play and get an e-receipt at the end of your ride.</string>
   <string name="ManualRideLinqStatus_PairingCode">Pairing Code:</string>
+  <string name="HistoryLoadError">Unable to load the history. Please try again later.</string>
+  <string name="PromotionLoadError">Unable to load the available promotions. Please try again later.</string>
+  <string name="RideSettingsLoadError">Unable to load the account settings. Please try again later.</string>
+  <string name="PaymentLoadError">Unable to load the payment details. Please try again later.</string>
   <string name="ManualRideLinqStatus_Medallion">Medallion:</string>
   <string name="ManualRideLinqStatus_Distance">Distance:</string>
   <string name="ManualRideLinqStatus_Total">Total cost:</string>

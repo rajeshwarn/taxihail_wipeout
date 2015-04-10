@@ -78,6 +78,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 
             AddSubview(Line.CreateVertical(menuContainer.Frame.Width, Frame.Height, UIColor.FromRGB(190, 190, 190)));
 
+			imgLogoApcurium.AddGestureRecognizer (new UITapGestureRecognizer (() => ToApcuriumWebsite.ExecuteIfPossible()));
+			imgLogoMobileKnowledge.AddGestureRecognizer (new UITapGestureRecognizer (() => ToMobileKnowledgeWebsite.ExecuteIfPossible()));
+
+			menuListView.AlwaysBounceVertical = false;
+
 			var set = this.CreateBindingSet<PanelMenuView, PanelMenuViewModel>();
 
 			set.Bind(_source)
@@ -104,20 +109,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 .For(v => v.ToMobileKnowledgeWebsite)
                 .To(vm => vm.ToMobileKnowledgeWebsite);
 
+			set.Bind (imgLogoApcurium)
+				.For (v => v.Hidden)
+				.To (vm => vm.Settings.HideMkApcuriumLogos);
+
+			set.Bind (imgLogoMobileKnowledge)
+				.For (v => v.Hidden)
+				.To (vm => vm.Settings.HideMkApcuriumLogos);
+			
 			set.Apply ();
-
-			if (ViewModel.Settings.HideMkApcuriumLogos)
-			{
-				imgLogoApcurium.Hidden = true;
-				imgLogoMobileKnowledge.Hidden = true;
-			}
-            else
-            {
-				imgLogoApcurium.AddGestureRecognizer (new UITapGestureRecognizer (() => ToApcuriumWebsite.ExecuteIfPossible()));
-                imgLogoMobileKnowledge.AddGestureRecognizer (new UITapGestureRecognizer (() => ToMobileKnowledgeWebsite.ExecuteIfPossible()));
-			}
-
-			menuListView.AlwaysBounceVertical = false;
         }
 
         private void AnimateMenu ()
@@ -151,5 +151,3 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         }
     }
 }
-
-
