@@ -137,7 +137,6 @@
     <Compile Include="Resources\BasePaymentResponse.cs" />
     <Compile Include="Resources\CommitPreauthorizedPaymentResponse.cs" />
     <Compile Include="Resources\DeleteTokenizedCreditcardResponse.cs" />
-    <BundleResource Include="Resources\ManualRideLinqResponse.cs" />
     <Compile Include="Resources\PairingResponse.cs" />
     <Compile Include="Resources\PreAuthorizePaymentResponse.cs" />
     <Compile Include="VehicleStatuses.cs" />
@@ -156,6 +155,7 @@
     <Compile Include="Diagnostic\BaseLogger.cs" />
     <Compile Include="Configuration\Attributes\RequiresTaxiHailPro.cs" />
     <Compile Include="Entity\AddressLocationType.cs" />
+    <Compile Include="Resources\ManualRideLinqResponse.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Resources\SettleOverduePaymentResponse.cs" />

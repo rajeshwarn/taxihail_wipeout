@@ -5468,8 +5468,20 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f060031
 			public const int MY_LOCATION_ALT_TEXT = 2131099697;
 			
+			// aapt resource value: 0x7f0602ea
+			public const int ManualPairingForRideLinQ_Error_Message = 2131100394;
+			
+			// aapt resource value: 0x7f0602e9
+			public const int ManualPairingForRideLinQ_Error_Title = 2131100393;
+			
 			// aapt resource value: 0x7f0602de
 			public const int ManualPairingForRideLinQ_Instructions = 2131100382;
+			
+			// aapt resource value: 0x7f0602ec
+			public const int ManualPairingForRideLinQ_InvalidCode_Message = 2131100396;
+			
+			// aapt resource value: 0x7f0602eb
+			public const int ManualPairingForRideLinQ_InvalidCode_Title = 2131100395;
 			
 			// aapt resource value: 0x7f0602dd
 			public const int ManualPairingForRideLinQ_Pair = 2131100381;
