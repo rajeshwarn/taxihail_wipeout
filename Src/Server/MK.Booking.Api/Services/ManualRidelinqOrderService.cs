@@ -31,20 +31,25 @@ namespace apcurium.MK.Booking.Api.Services
     {
         private readonly IOrderDao _orderDao;
         private readonly IAccountDao _accountDao;
+        private readonly ICreditCardDao _creditCardDao;
         private readonly ICommandBus _commandBus;
         private readonly IServerSettings _serverSettings;
         private readonly CmtMobileServiceClient _cmtMobileServiceClient;
         private readonly CmtTripInfoServiceHelper _cmtTripInfoServiceHelper;
+        private readonly Resources.Resources _resources;
 
-        public ManualRidelinqOrderService(ICommandBus commandBus, IOrderDao orderDao, IAccountDao accountDao, IServerSettings serverSettings, ILogger logger)
+        public ManualRidelinqOrderService(ICommandBus commandBus, IOrderDao orderDao, IAccountDao accountDao, ICreditCardDao creditCardDao, IServerSettings serverSettings, ILogger logger)
         {
             _commandBus = commandBus;
             _orderDao = orderDao;
             _accountDao = accountDao;
+            _creditCardDao = creditCardDao;
             _serverSettings = serverSettings;
 
             _cmtMobileServiceClient = new CmtMobileServiceClient(_serverSettings.GetPaymentSettings().CmtPaymentSettings, null, null);
             _cmtTripInfoServiceHelper = new CmtTripInfoServiceHelper(_cmtMobileServiceClient, logger);
+
+            _resources = new Resources.Resources(_serverSettings);
         }
 
         public object Post(ManualRideLinqPairingRequest request)
@@ -54,7 +59,15 @@ namespace apcurium.MK.Booking.Api.Services
                 var accountId = new Guid(this.GetSession().UserAuthId);
                 var account = _accountDao.FindById(accountId);
 
-                // send pairing request                                
+                var creditCard = _creditCardDao.FindByAccountId(account.Id).FirstOrDefault();
+                if (creditCard == null)
+                {
+                    throw new HttpError(HttpStatusCode.BadRequest,
+                        ErrorCode.ManualRideLinq_NoCardOnFile.ToString(),
+                        _resources.Get("ManualRideLinq_NoCardOnFile", account.Language));
+                }
+
+                // Send pairing request to CMT API
                 var pairingRequest = new CmtManualRideLinqPairingRequest
                 {
                     AutoTipPercentage = account.DefaultTipPercent ?? _serverSettings.ServerData.DefaultTipPercentage,
@@ -63,7 +76,8 @@ namespace apcurium.MK.Booking.Api.Services
                     Latitude = request.Latitude,
                     Longitude = request.Longitude,
                     PairingCode = request.PairingCode,
-                    AutoCompletePayment = true
+                    AutoCompletePayment = true,
+                    CardOnFileId = creditCard.Token
                 };
 
                 var response = _cmtMobileServiceClient.Post(pairingRequest);
@@ -121,8 +135,7 @@ namespace apcurium.MK.Booking.Api.Services
                     PairingToken = trip.PairingToken,
                 };
 
-
-                return new ManualRideLinqResponse()
+                return new ManualRideLinqResponse
                 {
                     Data = data,
                     IsSuccessful = true,
@@ -131,24 +144,14 @@ namespace apcurium.MK.Booking.Api.Services
             }
             catch (WebServiceException ex)
             {
-                if (ex.StatusCode == 400)
+                return new ManualRideLinqResponse
                 {
-                    return new ManualRideLinqResponse()
-                    {
-                        IsSuccessful = false,
-                        Message = ex.ErrorMessage,
-                        ErrorCode = ex.ErrorCode
-                    };
-                }
-
-                throw;
+                    IsSuccessful = false,
+                    Message = ex.ErrorMessage,
+                    ErrorCode = ex.ErrorCode
+                };
             }
-                
-            
         }
-
-
-
 
         public object Get(ManualRideLinqRequest request)
         {

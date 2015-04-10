@@ -916,6 +916,15 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You need to have a card on file to pair with RideLinQ.
+        /// </summary>
+        public static string ManualRideLinq_NoCardOnFile {
+            get {
+                return ResourceManager.GetString("ManualRideLinq_NoCardOnFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to There was a problem while trying to book with {0}. Your order will remain active..
         /// </summary>
         public static string Network_CannotCreateOrder {

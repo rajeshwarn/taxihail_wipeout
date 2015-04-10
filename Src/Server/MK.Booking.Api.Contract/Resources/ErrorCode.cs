@@ -27,7 +27,8 @@
         AccountCharge_InvalidAccountNumber,
         AccountCharge_InvalidAnswer,
         RatingType_DuplicateName,
-        IBSAccountNotFound
+        IBSAccountNotFound,
+        ManualRideLinq_NoCardOnFile
  // ReSharper restore InconsistentNaming
     }
 }
