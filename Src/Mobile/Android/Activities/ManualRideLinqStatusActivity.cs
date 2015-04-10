@@ -9,6 +9,7 @@ using Android.Content.PM;
 using Android.OS;
 using Android.Runtime;
 using Android.Views;
+using Android.Views.InputMethods;
 using Android.Widget;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities
@@ -24,6 +25,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
             base.OnViewModelSet();
 
             SetContentView(Resource.Layout.View_ManualRideLinqStatus);
+
+            var im = (InputMethodManager)GetSystemService(InputMethodService);
+            if (im != null)
+            {
+                im.ToggleSoftInput(ShowFlags.Forced, HideSoftInputFlags.None);
+            }
         }
 
     }

@@ -3,9 +3,7 @@
     xmlns:local="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:minWidth="25px"
-    android:minHeight="25px">
+    android:layout_height="fill_parent">
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -21,70 +19,90 @@
     </LinearLayout>
     <LinearLayout
         android:orientation="horizontal"
-        android:minWidth="25px"
-        android:minHeight="25px"
         android:layout_width="match_parent"
         android:gravity="center_horizontal"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dip"
+        android:weightSum="100">
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            style="@style/BlackTextLabel"
+            android:layout_weight="50"
+            android:gravity="right"
             android:text="@string/ManualRideLinqStatus_PairingCode" />
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dip"
+            style="@style/DetailText"
+            android:layout_weight="50"
             local:MvxBind="Text OrderManualRideLinqDetail.PairingCode" />
     </LinearLayout>
     <LinearLayout
         android:orientation="horizontal"
-        android:minWidth="25px"
-        android:minHeight="25px"
         android:layout_width="match_parent"
         android:gravity="center_horizontal"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dip"
+        android:weightSum="100">
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            style="@style/BlackTextLabel"
+            android:gravity="right"
+            android:layout_weight="50"
             android:text="@string/ManualRideLinqStatus_Medallion" />
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dip"
+            style="@style/DetailText"
+            android:layout_weight="50"
             local:MvxBind="Text OrderManualRideLinqDetail.Medallion" />
     </LinearLayout>
     <LinearLayout
         android:orientation="horizontal"
-        android:minWidth="25px"
-        android:minHeight="25px"
         android:layout_width="match_parent"
         android:gravity="center_horizontal"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dip"
+        android:weightSum="100">
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            style="@style/BlackTextLabel"
+            android:layout_weight="50"
+            android:gravity="right"
             android:text="@string/ManualRideLinqStatus_Distance" />
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dip"
+            style="@style/DetailText"
+            android:layout_weight="50"
             local:MvxBind="Text OrderManualRideLinqDetail.Distance" />
     </LinearLayout>
     <LinearLayout
         android:orientation="horizontal"
-        android:minWidth="25px"
-        android:minHeight="25px"
         android:layout_width="match_parent"
         android:gravity="center_horizontal"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dip"
+        android:weightSum="100">
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            style="@style/BlackTextLabel"
+            android:gravity="right"
+            android:layout_weight="50"
             android:text="@string/ManualRideLinqStatus_Fare" />
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dip"
+            style="@style/DetailText"
+            android:layout_weight="50"
             local:MvxBind="Text OrderManualRideLinqDetail.Fare" />
     </LinearLayout>
     <LinearLayout
@@ -93,56 +111,75 @@
         android:minHeight="25px"
         android:layout_width="match_parent"
         android:gravity="center_horizontal"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dip"
+        android:weightSum="100">
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            style="@style/BlackTextLabel"
+            android:gravity="right"
+            android:layout_weight="50"
             android:text="@string/ManualRideLinqStatus_Tax" />
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dip"
+            style="@style/DetailText"
+            android:layout_weight="50"
             local:MvxBind="Text OrderManualRideLinqDetail.Tax" />
     </LinearLayout>
     <LinearLayout
         android:orientation="horizontal"
-        android:minWidth="25px"
-        android:minHeight="25px"
         android:layout_width="match_parent"
         android:gravity="center_horizontal"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dip"
+        android:weightSum="100">
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            style="@style/BlackTextLabel"
+            android:gravity="right"
+            android:layout_weight="50"
             android:text="@string/ManualRideLinqStatus_Tip" />
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dip"
+            android:layout_weight="50"
+            style="@style/DetailText"
             local:MvxBind="Text OrderManualRideLinqDetail.Tip" />
     </LinearLayout>
     <LinearLayout
         android:orientation="horizontal"
-        android:minWidth="25px"
-        android:minHeight="25px"
         android:layout_width="match_parent"
         android:gravity="center_horizontal"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dip"
+        android:weightSum="100">
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="50"
+            android:gravity="right"
+            style="@style/BlackTextLabel"
             android:text="@string/ManualRideLinqStatus_Total" />
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dip"
+            android:layout_weight="50"
+            style="@style/DetailText"
             local:MvxBind="Text OrderManualRideLinqDetail.Total" />
     </LinearLayout>
     <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/HeightButton"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="25dip"
+        android:layout_marginLeft="20dip"
+        android:layout_marginRight="20dip"
         android:text="@string/ManualRideLinqStatus_Unpair"
         style="@style/ButtonActionRedStyle"
         local:MvxBind="Click UnpairFromRideLinq" />
