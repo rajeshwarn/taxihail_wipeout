@@ -137,15 +137,20 @@
                             android:src="@drawable/train" />
                     </LinearLayout>
                 <!-- RideLinq button -->
-                    <Button
-                        android:id="@+id/btnRideLinq"
-                        style="@style/ButtonActionGreenStyle"
-                        local:MvxBind="Click ManualPairingRideLinq; Visibility IsManualRideLinqEnabled, Converter=Visibility"
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="44dip"
-                        android:layout_marginBottom="5dp"
-                        android:text="@string/HomeView_ManualPairing"
-                        android:layout_gravity="bottom|center_horizontal" />
+                        android:background="@color/white"
+                        android:layout_marginBottom="40dp"
+                        android:layout_gravity="bottom|center_horizontal">
+                        <Button
+                            android:id="@+id/btnRideLinq"
+                            style="@style/ButtonActionGreenStyle"
+                            local:MvxBind="Click ManualPairingRideLinq; Visibility IsManualRideLinqEnabled, Converter=Visibility"
+                            android:layout_width="wrap_content"
+                            android:layout_height="44dip"
+                            android:text="@string/HomeView_ManualPairing" />
+                    </LinearLayout>
                 <!-- Order Review -->
                     <apcurium.MK.Booking.Mobile.Client.Controls.Widgets.OrderReview
                         android:layout_width="fill_parent"

@@ -16,6 +16,7 @@ using Cirrious.MvvmCross.Plugins.PhoneCall;
 using OrderRatings = apcurium.MK.Common.Entity.OrderRatings;
 using System.Globalization;
 using apcurium.MK.Booking.Api.Contract.Requests.Payment;
+using apcurium.MK.Common.Resources;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
@@ -330,9 +331,13 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			return UseServiceClientAsync<OrderServiceClient> (service => service.RateOrder (request));
         }
 
-        public Task<OrderManualRideLinqDetail> ManualRideLinqPair(string pairingCode)
+        public async Task<OrderManualRideLinqDetail> ManualRideLinqPair(string pairingCode)
         {
-            var position = _locationService.BestPosition;
+            _locationService.Start();
+
+            var position = await _locationService.GetUserPosition();
+
+            _locationService.Stop();
 
             var request = new ManualRideLinqPairingRequest()
             {
@@ -342,7 +347,14 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 PairingCode = pairingCode
             };
 
-            return UseServiceClientAsync<ManualPairingForRideLinqServiceClient, OrderManualRideLinqDetail>(service => service.Pair(request));
+            var response = await UseServiceClientAsync<ManualPairingForRideLinqServiceClient, ManualRideLinqResponse>(service => service.Pair(request));
+
+            if (response.IsSuccessful)
+            {
+                return response.Data;
+            }
+
+            throw new Exception(response.ErrorCode);
         }
 
         public Task ManualRideLinqUnpair(Guid orderId)

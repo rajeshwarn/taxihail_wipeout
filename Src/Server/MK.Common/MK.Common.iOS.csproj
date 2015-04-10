@@ -137,6 +137,7 @@
     <Compile Include="Resources\BasePaymentResponse.cs" />
     <Compile Include="Resources\CommitPreauthorizedPaymentResponse.cs" />
     <Compile Include="Resources\DeleteTokenizedCreditcardResponse.cs" />
+    <BundleResource Include="Resources\ManualRideLinqResponse.cs" />
     <Compile Include="Resources\PairingResponse.cs" />
     <Compile Include="Resources\PreAuthorizePaymentResponse.cs" />
     <Compile Include="VehicleStatuses.cs" />
