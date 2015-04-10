@@ -5243,14 +5243,14 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f060123
 			public const int GooglePlayServicesNotAvailableMessage = 2131099939;
 			
-			// aapt resource value: 0x7f0602ed
-			public const int GooglePlayServicesNotAvailableMessage1 = 2131100397;
+			// aapt resource value: 0x7f0602f1
+			public const int GooglePlayServicesNotAvailableMessage1 = 2131100401;
 			
 			// aapt resource value: 0x7f060084
 			public const int GooglePlayServicesNotAvailableTitle = 2131099780;
 			
-			// aapt resource value: 0x7f0602ee
-			public const int GooglePlayServicesNotAvailableTitle1 = 2131100398;
+			// aapt resource value: 0x7f0602f2
+			public const int GooglePlayServicesNotAvailableTitle1 = 2131100402;
 			
 			// aapt resource value: 0x7f060049
 			public const int Hello = 2131099721;
@@ -5468,8 +5468,20 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f060031
 			public const int MY_LOCATION_ALT_TEXT = 2131099697;
 			
+			// aapt resource value: 0x7f0602ee
+			public const int ManualPairingForRideLinQ_Error_Message = 2131100398;
+			
+			// aapt resource value: 0x7f0602ed
+			public const int ManualPairingForRideLinQ_Error_Title = 2131100397;
+			
 			// aapt resource value: 0x7f0602de
 			public const int ManualPairingForRideLinQ_Instructions = 2131100382;
+			
+			// aapt resource value: 0x7f0602f0
+			public const int ManualPairingForRideLinQ_InvalidCode_Message = 2131100400;
+			
+			// aapt resource value: 0x7f0602ef
+			public const int ManualPairingForRideLinQ_InvalidCode_Title = 2131100399;
 			
 			// aapt resource value: 0x7f0602dd
 			public const int ManualPairingForRideLinQ_Pair = 2131100381;
@@ -5708,8 +5720,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f0602c0
 			public const int Overdue_TransactionId = 2131100352;
 			
-			// aapt resource value: 0x7f0602ef
-			public const int Overdue_View = 2131100399;
+			// aapt resource value: 0x7f0602f3
+			public const int Overdue_View = 2131100403;
 			
 			// aapt resource value: 0x7f06006b
 			public const int PanelMenuViewAboutUsText = 2131099755;
