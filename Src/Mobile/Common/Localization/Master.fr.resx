@@ -1834,4 +1834,55 @@
   <data name="PaymentLoadError" xml:space="preserve">
     <value>Impossible de charger les informations de paiement. Veuillez réessayer plus tard.</value>
   </data>
+  <data name="ManualPairingForRideLinQ_Error_Message" xml:space="preserve">
+    <value>Une erreur est survenue lors de l'enregistrement</value>
+  </data>
+  <data name="ManualPairingForRideLinQ_Error_Title" xml:space="preserve">
+    <value>Erreur</value>
+  </data>
+  <data name="ManualPairingForRideLinQ_Instructions" xml:space="preserve">
+    <value>Entrez le code à 7 chiffres qui se trouve sur l'écran du taxi pour payer automatiquement et recevoir un reçu à la fin de votre course.</value>
+  </data>
+  <data name="ManualPairingForRideLinQ_InvalidCode_Message" xml:space="preserve">
+    <value>Le code d'association est invalide</value>
+  </data>
+  <data name="ManualPairingForRideLinQ_InvalidCode_Title" xml:space="preserve">
+    <value>Code invalide</value>
+  </data>
+  <data name="ManualPairingForRideLinQ_Pair" xml:space="preserve">
+    <value>CHECK IN</value>
+  </data>
+  <data name="ManualRideLinqStatus_Distance" xml:space="preserve">
+    <value>Distance:</value>
+  </data>
+  <data name="ManualRideLinqStatus_Driver" xml:space="preserve">
+    <value>Chauffeur #:</value>
+  </data>
+  <data name="ManualRideLinqStatus_Fare" xml:space="preserve">
+    <value>Tarif:</value>
+  </data>
+  <data name="ManualRideLinqStatus_Medallion" xml:space="preserve">
+    <value>Véhicule #:</value>
+  </data>
+  <data name="ManualRideLinqStatus_PairingCode" xml:space="preserve">
+    <value>Code d'association:</value>
+  </data>
+  <data name="ManualRideLinqStatus_Tax" xml:space="preserve">
+    <value>Taxes:</value>
+  </data>
+  <data name="ManualRideLinqStatus_Tip" xml:space="preserve">
+    <value>Pourboire:</value>
+  </data>
+  <data name="ManualRideLinqStatus_Total" xml:space="preserve">
+    <value>Coût Total:</value>
+  </data>
+  <data name="ManualRideLinqStatus_Unpair" xml:space="preserve">
+    <value>Dissocier</value>
+  </data>
+  <data name="ManualRideLinqSummary_Done" xml:space="preserve">
+    <value>Ok</value>
+  </data>
+  <data name="ManualUnPairingForRideLinQ_Error_Message" xml:space="preserve">
+    <value>Une erreur est survenue lors de la dissociation. Veuillez essayer de nouveau.</value>
+  </data>
 </root>

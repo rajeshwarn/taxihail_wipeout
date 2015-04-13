@@ -649,3 +649,4 @@
 "View_RideLinqSummary"="Status";
 "ManualRideLinqStatus_Driver"="Driver id:";
 "ManualRideLinqSummary_Done"="Done";
+"ManualUnPairingForRideLinQ_Error_Message"="An error occured when trying to unpair. Please try again.";

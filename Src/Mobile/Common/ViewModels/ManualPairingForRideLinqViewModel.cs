@@ -1,15 +1,10 @@
 using System;
-using System.ComponentModel;
 using System.Windows.Input;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Extensions;
-using apcurium.MK.Common.Entity;
 using ServiceStack.Text;
-using System.Reactive;
-using System.Reactive.Linq;
 using apcurium.MK.Booking.Mobile.Framework.Extensions;
 using ServiceStack.ServiceClient.Web;
-using Observable = System.Reactive.Linq.Observable;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -31,8 +26,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             get { return _pairingCodeLeft; }
             set
             {
-                _pairingCodeLeft = value;
-                RaisePropertyChanged();
+                if (_pairingCodeLeft != value)
+                {
+                    _pairingCodeLeft = value;
+                    RaisePropertyChanged();
+                }
             }
         }
 
@@ -41,8 +39,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             get { return _pairingCodeRight; }
             set
             {
-                _pairingCodeRight = value;
-                RaisePropertyChanged();
+                if (_pairingCodeRight != value)
+                {
+                    _pairingCodeRight = value;
+                    RaisePropertyChanged();
+                }
             }
         }
 
@@ -84,8 +85,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     catch (Exception)
                     {
                         this.Services().Message.ShowMessage(localize["ManualPairingForRideLinQ_InvalidCode_Title"], localize["ManualPairingForRideLinQ_InvalidCode_Message"]).HandleErrors();
-                    }
-                        
+                    } 
                 });
             }
         }

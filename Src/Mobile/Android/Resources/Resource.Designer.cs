@@ -5246,14 +5246,14 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f060123
 			public const int GooglePlayServicesNotAvailableMessage = 2131099939;
 			
-			// aapt resource value: 0x7f0602f4
-			public const int GooglePlayServicesNotAvailableMessage1 = 2131100404;
+			// aapt resource value: 0x7f0602f5
+			public const int GooglePlayServicesNotAvailableMessage1 = 2131100405;
 			
 			// aapt resource value: 0x7f060084
 			public const int GooglePlayServicesNotAvailableTitle = 2131099780;
 			
-			// aapt resource value: 0x7f0602f5
-			public const int GooglePlayServicesNotAvailableTitle1 = 2131100405;
+			// aapt resource value: 0x7f0602f6
+			public const int GooglePlayServicesNotAvailableTitle1 = 2131100406;
 			
 			// aapt resource value: 0x7f060049
 			public const int Hello = 2131099721;
@@ -5519,6 +5519,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f0602f3
 			public const int ManualRideLinqSummary_Done = 2131100403;
 			
+			// aapt resource value: 0x7f0602f4
+			public const int ManualUnPairingForRideLinQ_Error_Message = 2131100404;
+			
 			// aapt resource value: 0x7f060207
 			public const int March = 2131100167;
 			
@@ -5729,8 +5732,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f0602c0
 			public const int Overdue_TransactionId = 2131100352;
 			
-			// aapt resource value: 0x7f0602f6
-			public const int Overdue_View = 2131100406;
+			// aapt resource value: 0x7f0602f7
+			public const int Overdue_View = 2131100407;
 			
 			// aapt resource value: 0x7f06006b
 			public const int PanelMenuViewAboutUsText = 2131099755;

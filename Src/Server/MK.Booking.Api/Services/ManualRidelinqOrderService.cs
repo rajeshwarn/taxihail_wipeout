@@ -155,13 +155,21 @@ namespace apcurium.MK.Booking.Api.Services
                     ErrorCode = ex.ErrorCode
                 };
             }
+            catch (Exception ex)
+            {
+                return new ManualRideLinqResponse
+                {
+                    IsSuccessful = false,
+                    Message = ex.Message
+                };
+            }
         }
 
         public object Get(ManualRideLinqRequest request)
         {
             var order = _orderDao.GetManualRideLinqById(request.OrderId);
 
-            return new ManualRideLinqResponse()
+            return new ManualRideLinqResponse
             {
                 Data = order,
                 IsSuccessful = true
@@ -171,22 +179,29 @@ namespace apcurium.MK.Booking.Api.Services
         public object Delete(ManualRideLinqRequest request)
         {
             var order = _orderDao.GetManualRideLinqById(request.OrderId);
-
-            var response = _cmtMobileServiceClient.Delete(new CmtManualRideLinqUnpairingRequest
+            if (order == null)
             {
-                PairingToken = order.PairingToken
-            });
+                return new HttpResult(HttpStatusCode.NotFound);
+            }
 
-            // wait for trip to be updated
-            _cmtTripInfoServiceHelper.WaitForRideLinqUnpaired(order.PairingToken, response.TimeoutSeconds);
-
-            _commandBus.Send(new UnpairOrderForManualRideLinq { OrderId = request.OrderId });
-
-            return new BasePaymentResponse
+            try
             {
-                IsSuccessful = true,
-                Message = "Ok"
-            };
+                var response = _cmtMobileServiceClient.Delete(new CmtManualRideLinqUnpairingRequest
+                {
+                    PairingToken = order.PairingToken
+                });
+
+                // Wait for trip to be updated
+                _cmtTripInfoServiceHelper.WaitForRideLinqUnpaired(order.PairingToken, response.TimeoutSeconds);
+
+                _commandBus.Send(new UnpairOrderForManualRideLinq { OrderId = request.OrderId });
+            }
+            catch (Exception ex)
+            {
+                throw new HttpError(HttpStatusCode.InternalServerError, ex.Message);
+            }
+
+            return new HttpResult(HttpStatusCode.OK);
         }
     }
 }

@@ -1896,4 +1896,7 @@
   <data name="ManualRideLinqSummary_Done" xml:space="preserve">
     <value>Done</value>
   </data>
+  <data name="ManualUnPairingForRideLinQ_Error_Message" xml:space="preserve">
+    <value>An error occured when trying to unpair. Please try again.</value>
+  </data>
 </root>
