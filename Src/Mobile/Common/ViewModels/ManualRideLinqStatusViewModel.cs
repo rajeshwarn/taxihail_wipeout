@@ -19,7 +19,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         private OrderManualRideLinqDetail _orderManualRideLinqDetail;
 
 		// In seconds
-		private int _refreshPeriod = 5;
+		private readonly int _refreshPeriod = 5;
 
         public ManualRideLinqStatusViewModel(IBookingService bookingService)
         {
@@ -37,8 +37,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 			Observable.Timer(TimeSpan.FromSeconds(4), TimeSpan.FromSeconds(_refreshPeriod))
 				.SelectMany((_, ct) => RefreshDetails(ct))
+                .ObserveOn(SynchronizationContext.Current)
+                .Do(orderDetails =>  OrderManualRideLinqDetail = orderDetails)
 				.Where(orderDetails => orderDetails.EndTime.HasValue)
-				.ObserveOn(SynchronizationContext.Current)
 				.Subscribe(
 					ToRideSummary,
 					ex => this.Logger.LogError(ex)

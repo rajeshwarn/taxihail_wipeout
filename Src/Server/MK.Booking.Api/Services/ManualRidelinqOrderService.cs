@@ -136,6 +136,7 @@ namespace apcurium.MK.Booking.Api.Services
                     PairingDate = command.PairingDate,
                     PairingCode = pairingRequest.PairingCode,
                     PairingToken = trip.PairingToken,
+                    DriverId = trip.DriverId
                 };
 
                 return new ManualRideLinqResponse
@@ -160,30 +161,10 @@ namespace apcurium.MK.Booking.Api.Services
         {
             var order = _orderDao.GetManualRideLinqById(request.OrderId);
 
-            return new OrderManualRideLinqDetail
+            return new ManualRideLinqResponse()
             {
-                AccountId = order.AccountId,
-                Distance = order.Distance,
-                EndTime = order.EndTime,
-                IsCancelled = order.IsCancelled,
-                OrderId = order.OrderId,
-                PairingCode = order.PairingCode,
-                PairingToken = order.PairingToken,
-                PairingDate = order.PairingDate,
-                Extra = order.Extra,
-                Fare = order.Fare,
-                Tax = order.Tax,
-                Tip = order.Tip,
-                Toll = order.Toll,
-                Surcharge = order.Surcharge,
-                Total = order.Total,
-                FareAtAlternateRate = order.FareAtAlternateRate,
-                Medallion = order.Medallion,
-                RateAtTripStart = order.RateAtTripStart,
-                RateAtTripEnd = order.RateAtTripEnd,
-                RateChangeTime = order.RateChangeTime,
-                TripId = order.TripId,
-                DriverId = order.DriverId
+                Data = order,
+                IsSuccessful = true
             };
         }
 
