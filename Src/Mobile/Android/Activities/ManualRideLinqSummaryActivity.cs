@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows.Input;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using Android.App;
 using Android.Content;
@@ -27,5 +28,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
             SetContentView(Resource.Layout.View_ManualRideLinqSummary);
         }
 
+        public override void OnBackPressed()
+        {
+            ViewModel.GoToHome.ExecuteIfPossible();
+        }
     }
 }

@@ -622,3 +622,5 @@
 "ManualRideLinqStatus_Unpair"="UNPAIR";
 "ManualRideLinqSummary_Done"="Done";
 "ManualUnPairingForRideLinQ_Error_Message"="An error occured when trying to unpair. Please try again.";
+"HomeView_ManualPairing"="Check In";
+"View_RideLinqPair"="Check In";

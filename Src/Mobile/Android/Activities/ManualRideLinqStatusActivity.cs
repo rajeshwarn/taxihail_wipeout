@@ -27,7 +27,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
             SetContentView(Resource.Layout.View_ManualRideLinqStatus);
 
             var im = (InputMethodManager)GetSystemService(InputMethodService);
-            if (im != null)
+
+            if (im != null && im.IsAcceptingText)
             {
                 im.ToggleSoftInput(ShowFlags.Forced, HideSoftInputFlags.None);
             }

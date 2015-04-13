@@ -636,4 +636,6 @@
   <string name="ManualRideLinqStatus_Unpair">Dissocier</string>
   <string name="ManualRideLinqSummary_Done">Ok</string>
   <string name="ManualUnPairingForRideLinQ_Error_Message">Une erreur est survenue lors de la dissociation. Veuillez essayer de nouveau.</string>
+  <string name="HomeView_ManualPairing">Check In</string>
+  <string name="View_RideLinqPair">Check In</string>
 </resources>
