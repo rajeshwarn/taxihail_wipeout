@@ -34,10 +34,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			var bindingSet = this.CreateBindingSet<ManualRideLinqStatusView, ManualRideLinqStatusViewModel>();
 
 			bindingSet.Bind(lblDriverIdText)
-				.To(vm => vm.OrderManualRideLinqDetail.DriverId);
+				.To(vm => vm.DriverId);
 
 			bindingSet.Bind(lblPairingCodeText)
-				.To(vm => vm.OrderManualRideLinqDetail.PairingCode);
+				.To(vm => vm.PairingCode);
 
 			bindingSet.Bind(btnUnpair)
 				.For(v => v.Command)

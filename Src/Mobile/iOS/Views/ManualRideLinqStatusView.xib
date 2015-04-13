@@ -9,6 +9,7 @@
             <connections>
                 <outlet property="btnUnpair" destination="3Ts-zN-ahv" id="cSl-Cb-A8W"/>
                 <outlet property="lblDriverId" destination="lYH-KK-iQs" id="eoY-Kw-gbw"/>
+                <outlet property="lblDriverIdText" destination="raj-hF-F7Y" id="GWU-G3-EJN"/>
                 <outlet property="lblPairingCode" destination="Rz7-tH-zX9" id="Xea-OM-bjC"/>
                 <outlet property="lblPairingCodeText" destination="Jvn-Jk-kwM" id="VpM-jQ-vYe"/>
                 <outlet property="view" destination="iN0-l3-epB" id="kCW-yf-GMq"/>

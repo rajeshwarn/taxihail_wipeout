@@ -35,6 +35,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		
 		void ReleaseDesignerOutlets ()
 		{
+			if (btnUnpair != null) {
+				btnUnpair.Dispose ();
+				btnUnpair = null;
+			}
+
 			if (lblDriverId != null) {
 				lblDriverId.Dispose ();
 				lblDriverId = null;
@@ -63,11 +68,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			if (lblVehiculeText != null) {
 				lblVehiculeText.Dispose ();
 				lblVehiculeText = null;
-			}
-
-			if (btnUnpair != null) {
-				btnUnpair.Dispose ();
-				btnUnpair = null;
 			}
 		}
 	}

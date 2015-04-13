@@ -27,8 +27,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public void Init(string orderManualRideLinqDetail)
         {
-            OrderManualRideLinqDetail = JsonSerializer.DeserializeFromString<OrderManualRideLinqDetail>(orderManualRideLinqDetail);
-        }
+			var orderManualRideLinq = JsonSerializer.DeserializeFromString<OrderManualRideLinqDetail>(orderManualRideLinqDetail);
+        	
+			DriverId = orderManualRideLinq.DriverId.ToString();
+			PairingCode = orderManualRideLinq.PairingCode;
+			OrderId = orderManualRideLinq.OrderId;
+		}
 
 		public override void Start()
 		{
@@ -45,22 +49,42 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		private async Task<OrderManualRideLinqDetail> RefreshDetails(CancellationToken token)
 		{
-            return await _bookingService.ManualRideGetTripInfo(OrderManualRideLinqDetail.OrderId);
+            return await _bookingService.ManualRideGetTripInfo(OrderId);
 		}
 
+		private Guid OrderId
+		{
+			get;
+			set;
+		}
 
-        public OrderManualRideLinqDetail OrderManualRideLinqDetail
-        {
-            get { return _orderManualRideLinqDetail; }
-            set
-            {
-                if (_orderManualRideLinqDetail != value)
-                {
-                    _orderManualRideLinqDetail = value;
-                    RaisePropertyChanged();
-                }
-            }
-        }
+		private string _pairingCode;
+		public string PairingCode
+		{
+			get
+			{
+				return _pairingCode;
+			}
+			set
+			{
+				_pairingCode = value;
+				RaisePropertyChanged();
+			}
+		}
+
+		private string _driverId;
+		public string DriverId
+		{
+			get
+			{
+				return _driverId;
+			}
+			set
+			{
+				_driverId = value;
+				RaisePropertyChanged();
+			}
+		}
 
 		private void ToRideSummary(OrderManualRideLinqDetail orderManualRideLinqDetail)
 		{

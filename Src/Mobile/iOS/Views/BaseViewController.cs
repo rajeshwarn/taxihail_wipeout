@@ -85,14 +85,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             }                
         }
 
-		public override void ViewDidUnload()
+		public override void ViewDidDisappear(bool animated)
 		{
-			base.ViewDidUnload();
+			base.ViewDidDisappear(animated);
 
 			if (ViewModel != null)
 			{
 				ViewModel.OnViewUnloaded();
 			}
+
 		}
 				
         public override void ViewDidLoad ()

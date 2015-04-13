@@ -37,7 +37,7 @@
             android:layout_marginLeft="5dip"
             style="@style/DetailText"
             android:layout_weight="50"
-            local:MvxBind="Text OrderManualRideLinqDetail.DriverId" />
+            local:MvxBind="Text DriverId" />
     </LinearLayout>
     <LinearLayout
         android:orientation="horizontal"
@@ -59,7 +59,7 @@
             android:layout_marginLeft="5dip"
             style="@style/DetailText"
             android:layout_weight="50"
-            local:MvxBind="Text OrderManualRideLinqDetail.PairingCode" />
+            local:MvxBind="Text PairingCode" />
     </LinearLayout>
     <Button
         android:layout_width="match_parent"

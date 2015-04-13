@@ -49,6 +49,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		UIKit.UILabel lblTaxText { get; set; }
 
 		[Outlet]
+		UIKit.UILabel lblThanks { get; set; }
+
+		[Outlet]
 		UIKit.UILabel lblTipLabel { get; set; }
 
 		[Outlet]
@@ -62,6 +65,21 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		
 		void ReleaseDesignerOutlets ()
 		{
+			if (lblDistanceLabel != null) {
+				lblDistanceLabel.Dispose ();
+				lblDistanceLabel = null;
+			}
+
+			if (lblThanks != null) {
+				lblThanks.Dispose ();
+				lblThanks = null;
+			}
+
+			if (lblDistanceText != null) {
+				lblDistanceText.Dispose ();
+				lblDistanceText = null;
+			}
+
 			if (lblDriverId != null) {
 				lblDriverId.Dispose ();
 				lblDriverId = null;
@@ -70,16 +88,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			if (lblDriverIdText != null) {
 				lblDriverIdText.Dispose ();
 				lblDriverIdText = null;
-			}
-
-			if (lblDistanceLabel != null) {
-				lblDistanceLabel.Dispose ();
-				lblDistanceLabel = null;
-			}
-
-			if (lblDistanceText != null) {
-				lblDistanceText.Dispose ();
-				lblDistanceText = null;
 			}
 
 			if (lblFareLabel != null) {

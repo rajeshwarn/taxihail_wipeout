@@ -23,7 +23,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 			NavigationController.NavigationBar.Hidden = false;
 
-			NavigationItem.Title = localize["View_RideLinqSummary"];
+			NavigationItem.Title = localize["RideSummaryTitleText"];
 			lblPairingCodeLabel.Text = localize["ManualRideLinqStatus_PairingCode"];
 			lblDistanceLabel.Text = localize["ManualRideLinqStatus_Distance"];
 			lblTotalLabel.Text = localize["ManualRideLinqStatus_Total"];
@@ -31,6 +31,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			lblTaxLabel.Text = localize["ManualRideLinqStatus_Tax"];
 			lblTipLabel.Text = localize["ManualRideLinqStatus_Tip"];
 			lblDriverId.Text = localize["ManualRideLinqStatus_Driver"];
+
+			lblThanks.Text = String.Format(localize["RideSummarySubTitleText"], this.Services().Settings.TaxiHail.ApplicationName);
 
 			NavigationItem.RightBarButtonItem = new UIBarButtonItem()
 				{
