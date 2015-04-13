@@ -1828,7 +1828,7 @@
     <value>Status</value>
   </data>
   <data name="View_RideLinqSummary" xml:space="preserve">
-    <value>Status</value>
+    <value>Order summary</value>
   </data>
   <data name="HistoryLoadError" xml:space="preserve">
     <value>Unable to load the history. Please try again later.</value>

@@ -37,6 +37,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			Observable.Timer(TimeSpan.FromSeconds(4), TimeSpan.FromSeconds(RefreshInterval))
                 .SelectMany((_, cancellationToken) => RefreshDetails(cancellationToken))
 				.Where(orderDetails => orderDetails.EndTime.HasValue)
+				//TODO: Find out why OnViewUnloaded is not called and remove the Take(1) when that is fixed.
+				.Take(1) //Workaround because OnViewUnloaded is not called.
 				.Subscribe(
 					ToRideSummary,
 					ex => Logger.LogError(ex))

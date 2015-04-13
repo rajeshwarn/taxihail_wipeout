@@ -110,10 +110,10 @@
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3Lq-30-29T" userLabel="RideLinq">
-                            <rect key="frame" x="110" y="460" width="100" height="39"/>
+                            <rect key="frame" x="100" y="457" width="120" height="42"/>
                             <subviews>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wMc-OE-t7x" customClass="FlatButton">
-                                    <rect key="frame" x="0.0" y="0.0" width="100" height="39"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="120" height="42"/>
                                     <state key="normal" title="CHECK IN">
                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                     </state>
@@ -122,15 +122,15 @@
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <constraints>
                                 <constraint firstItem="wMc-OE-t7x" firstAttribute="leading" secondItem="3Lq-30-29T" secondAttribute="leading" id="4cL-dW-EvE"/>
-                                <constraint firstAttribute="height" constant="39" id="UrL-8f-ebQ"/>
+                                <constraint firstAttribute="height" constant="42" id="UrL-8f-ebQ"/>
                                 <constraint firstItem="wMc-OE-t7x" firstAttribute="top" secondItem="3Lq-30-29T" secondAttribute="top" id="ZhS-0K-i6z"/>
                                 <constraint firstAttribute="trailing" secondItem="wMc-OE-t7x" secondAttribute="trailing" id="diC-Le-Gtd"/>
                                 <constraint firstAttribute="bottom" secondItem="wMc-OE-t7x" secondAttribute="bottom" id="r0g-I4-xvf"/>
-                                <constraint firstAttribute="width" constant="100" id="sAn-kR-1ui"/>
+                                <constraint firstAttribute="width" constant="120" id="sAn-kR-1ui"/>
                             </constraints>
                         </view>
-                        <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4OH-fP-dh3" customClass="AddressPickerView">
-                            <rect key="frame" x="0.0" y="1" width="320" height="568"/>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4OH-fP-dh3" customClass="AddressPickerView">
+                            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         </view>
                     </subviews>

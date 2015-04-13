@@ -646,7 +646,7 @@
 "ManualPairingForRideLinQ_Error_Message"="An error occurred during check in.";
 "ManualPairingForRideLinQ_InvalidCode_Title"="Invalid code";
 "ManualPairingForRideLinQ_InvalidCode_Message"="The pairing code is invalid.";
-"View_RideLinqSummary"="Status";
+"View_RideLinqSummary"="Order summary";
 "ManualRideLinqStatus_Driver"="Driver id:";
 "ManualRideLinqSummary_Done"="Done";
 "ManualUnPairingForRideLinQ_Error_Message"="An error occured when trying to unpair. Please try again.";

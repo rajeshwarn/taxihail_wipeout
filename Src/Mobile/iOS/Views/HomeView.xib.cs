@@ -61,7 +61,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 			FlatButtonStyle.Green.ApplyTo(btnRideLinqCheckIn);
 
-			btnRideLinqCheckIn.SetTitle(this.Services().Localize["HomeView_ManualPairing"].ToUpper(), UIControlState.Normal);
+			btnRideLinqCheckIn.SetTitle(this.Services().Localize["HomeView_ManualPairing"], UIControlState.Normal);
 
             var set = this.CreateBindingSet<HomeView, HomeViewModel>();
 
