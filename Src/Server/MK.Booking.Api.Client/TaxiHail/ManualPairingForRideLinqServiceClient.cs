@@ -1,7 +1,6 @@
 using System;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Client.Extensions;
-using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Requests.Payment;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Entity;
@@ -17,17 +16,16 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             
         }
 
-
 		public Task<ManualRideLinqResponse> Pair(ManualRideLinqPairingRequest manualRideLinqPairingRequest)
         {
             var req = string.Format("/account/ridelinq");
             return Client.PostAsync<ManualRideLinqResponse>(req, manualRideLinqPairingRequest);
         }
 
-        public Task<BasePaymentResponse> Unpair(Guid orderId)
+        public Task Unpair(Guid orderId)
         {
             var req = string.Format("/account/ridelinq/{0}", orderId);
-            return Client.DeleteAsync<BasePaymentResponse>(req);
+            return Client.DeleteAsync<string>(req);
         }
 
         public Task<ManualRideLinqResponse> GetUpdatedTrip(Guid orderId)

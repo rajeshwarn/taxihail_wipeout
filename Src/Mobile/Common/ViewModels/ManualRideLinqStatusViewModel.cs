@@ -9,7 +9,6 @@ using System.Reactive.Linq;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Reactive;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -19,7 +18,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         private OrderManualRideLinqDetail _orderManualRideLinqDetail;
 
 		// In seconds
-		private readonly int _refreshPeriod = 5;
+        private const int RefreshInterval = 5;
 
         public ManualRideLinqStatusViewModel(IBookingService bookingService)
         {
@@ -35,13 +34,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			base.Start();
 
-			Observable.Timer(TimeSpan.FromSeconds(4), TimeSpan.FromSeconds(_refreshPeriod))
-                .SelectMany((_, ct) => RefreshDetails(ct))
+			Observable.Timer(TimeSpan.FromSeconds(4), TimeSpan.FromSeconds(RefreshInterval))
+                .SelectMany((_, cancellationToken) => RefreshDetails(cancellationToken))
 				.Where(orderDetails => orderDetails.EndTime.HasValue)
 				.Subscribe(
 					ToRideSummary,
-					ex => this.Logger.LogError(ex)
-				)
+					ex => Logger.LogError(ex))
 				.DisposeWith (Subscriptions);
 		}
 
@@ -56,18 +54,21 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             get { return _orderManualRideLinqDetail; }
             set
             {
-                _orderManualRideLinqDetail = value; 
-                RaisePropertyChanged();
+                if (_orderManualRideLinqDetail != value)
+                {
+                    _orderManualRideLinqDetail = value;
+                    RaisePropertyChanged();
+                }
             }
         }
 
 		private void ToRideSummary(OrderManualRideLinqDetail orderManualRideLinqDetail)
 		{
+            _bookingService.ClearLastOrder();
+
 			var orderSummary = orderManualRideLinqDetail.ToJson();
 
 			ShowViewModelAndRemoveFromHistory<ManualRideLinqSummaryViewModel>(new {orderManualRideLinqDetail = orderSummary});
-
-            _bookingService.ClearLastOrder();
 		}
 
         public ICommand UnpairFromRideLinq
@@ -76,11 +77,20 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 return this.GetCommand(async () =>
                 {
-                    await _bookingService.ManualRideLinqUnpair(_orderManualRideLinqDetail.OrderId);
+                    try
+                    {
+                        await _bookingService.ManualRideLinqUnpair(_orderManualRideLinqDetail.OrderId);
 
-                    _bookingService.ClearLastOrder();
+                        _bookingService.ClearLastOrder();
 
-                    ShowViewModelAndRemoveFromHistory<HomeViewModel>(new HomeViewModelPresentationHint(HomeViewModelState.Initial));
+                        ShowViewModelAndRemoveFromHistory<HomeViewModel>(new HomeViewModelPresentationHint(HomeViewModelState.Initial));
+                    }
+                    catch (Exception)
+                    {
+                        this.Services().Message.ShowMessage(
+                                        this.Services().Localize["ManualPairingForRideLinQ_Error_Title"],
+                                        this.Services().Localize["ManualUnPairingForRideLinQ_Error_Message"]);
+                    }
                 });
             }
         }

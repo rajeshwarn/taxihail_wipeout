@@ -69,4 +69,3 @@ namespace apcurium.MK.Booking.Mobile.AppServices
         Task<OrderManualRideLinqDetail> ManualRideGetTripInfo(Guid orderId);
 	}
 }
-
