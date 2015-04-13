@@ -629,3 +629,5 @@
 "ManualRideLinqStatus_Unpair"="Dissocier";
 "ManualRideLinqSummary_Done"="Ok";
 "ManualUnPairingForRideLinQ_Error_Message"="Une erreur est survenue lors de la dissociation. Veuillez essayer de nouveau.";
+"HomeView_ManualPairing"="Check In";
+"View_RideLinqPair"="Check In";

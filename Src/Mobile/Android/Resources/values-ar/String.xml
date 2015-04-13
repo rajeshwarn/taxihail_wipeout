@@ -622,4 +622,6 @@
   <string name="ManualRideLinqStatus_Total">Total cost:</string>
   <string name="ManualRideLinqStatus_Unpair">UNPAIR</string>
   <string name="ManualRideLinqSummary_Done">Done</string>
+  <string name="HomeView_ManualPairing">Check In</string>
+  <string name="View_RideLinqPair">Check In</string>
 </resources>

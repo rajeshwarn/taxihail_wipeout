@@ -2310,6 +2310,12 @@
   <data name="ManualPairingForRideLinQ_Pair" xml:space="preserve">
     <value>CHECK IN</value>
   </data>
+  <data name="HomeView_ManualPairing" xml:space="preserve">
+    <value>Check In</value>
+  </data>
+  <data name="View_RideLinqPair" xml:space="preserve">
+    <value>Check In</value>
+  </data>
   <data name="ManualRideLinqStatus_Distance" xml:space="preserve">
     <value>Distance:</value>
   </data>

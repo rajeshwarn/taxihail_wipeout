@@ -619,3 +619,5 @@
 "ManualRideLinqStatus_Total"="Total cost:";
 "ManualRideLinqStatus_Unpair"="UNPAIR";
 "ManualRideLinqSummary_Done"="Done";
+"HomeView_ManualPairing"="Check In";
+"View_RideLinqPair"="Check In";

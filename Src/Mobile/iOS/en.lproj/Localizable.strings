@@ -625,7 +625,7 @@
 "RideSettingsPayBack"="PayBack";
 "FilteredAddresses_Error_Message"="There is currently no entries for this filter.";
 "FilteredAddresses_Error_Title"="Error";
-"HomeView_ManualPairing"="CHECK IN";
+"HomeView_ManualPairing"="Check In";
 "ManualPairingForRideLinQ_Pair"="CHECK IN";
 "ManualPairingForRideLinQ_Instructions"="Enter the 7-digit code displayed on the taxi touchscreen to auto-play and get an e-receipt at the end of your ride.";
 "ManualRideLinqStatus_PairingCode"="Pairing Code:";
