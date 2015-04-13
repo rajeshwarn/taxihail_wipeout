@@ -27,7 +27,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 			lblDriverId.Text = localize["ManualRideLinqStatus_Driver"];
 			lblPairingCode.Text = localize["ManualRideLinqStatus_PairingCode"];
-			lblVehicule.Text = localize["ManualRideLinqStatus_Medallion"];
 			btnUnpair.SetTitle(localize["ManualRideLinqStatus_Unpair"], UIControlState.Normal);
 
 			FlatButtonStyle.Red.ApplyTo(btnUnpair);
@@ -39,9 +38,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 			bindingSet.Bind(lblPairingCodeText)
 				.To(vm => vm.OrderManualRideLinqDetail.PairingCode);
-
-			bindingSet.Bind(lblVehiculeText)
-				.To(vm => vm.OrderManualRideLinqDetail.Medallion);
 
 			bindingSet.Bind(btnUnpair)
 				.For(v => v.Command)
