@@ -84,6 +84,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 _firstStart = false;
             }                
         }
+
+		public override void ViewDidUnload()
+		{
+			base.ViewDidUnload();
+
+			if (ViewModel != null)
+			{
+				ViewModel.OnViewUnloaded();
+			}
+		}
 				
         public override void ViewDidLoad ()
         {
