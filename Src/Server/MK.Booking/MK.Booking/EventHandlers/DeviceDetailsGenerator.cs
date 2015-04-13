@@ -47,22 +47,7 @@ namespace apcurium.MK.Booking.EventHandlers
                 }
 
                 context.SaveChanges();
-                ////// Unassign this device to all other accounts it might have been registered to before
-                ////context.RemoveWhere<DeviceDetail>(x => x.DeviceToken == @event.DeviceToken && x.AccountId != @event.SourceId);
-                ////context.SaveChanges();
-
-                //var device = context.Set<DeviceDetail>().Find(@event.SourceId, @event.DeviceToken);
-                //if (device == null)
-                //{
-                //    device = new DeviceDetail
-                //    {
-                //        AccountId = @event.SourceId,
-                //        DeviceToken = @event.DeviceToken,
-                //        Platform = @event.Platform
-                //    };
-
-                //    context.Save(device);
-                //}
+               
             }
         }
 

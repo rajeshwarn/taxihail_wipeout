@@ -36,7 +36,7 @@ namespace DeploymentServiceTools
 
         public string SqlServerDirectory
         {
-            get { return string.Format("C:\\Data\\sql\\Data\\", SqlInstanceName); }
+            get { return string.Format("C:\\Program Files\\Microsoft SQL Server\\{0}\\MSSQL\\", SqlInstanceName); }
         }
 
         

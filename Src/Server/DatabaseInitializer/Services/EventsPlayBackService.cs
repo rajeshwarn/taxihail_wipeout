@@ -37,13 +37,7 @@ namespace DatabaseInitializer.Services
             }
         }
 
-        public class CallStats
-        {
-            public long Count { get; set; }
-            public long TotalTime { get; set; }
-
-            public long LastTime { get; set; }
-        }
+    
 
         public void ReplayAllEvents(DateTime? after = null)
         {
@@ -51,14 +45,15 @@ namespace DatabaseInitializer.Services
             var hasMore = true;
             const int pageSize = 100000;
             after = after ?? DateTime.MinValue;
-
-            var stats = new Dictionary<string, CallStats>();
-
+            
             Console.WriteLine("Replaying event since {0}", after);
+            
+            int eCount = 0;
 
             while(hasMore)
             {
                 List<Event> events;
+                
 
                 Console.WriteLine("Getting next events...");
                 using (var context = _contextFactory.Invoke())
@@ -86,16 +81,10 @@ namespace DatabaseInitializer.Services
                 Console.WriteLine("Number of events played: " + (hasMore ? skip : (skip + events.Count)));
                 skip += pageSize;
 
-
-
-                var sw = Stopwatch.StartNew();
-                long start = 0;
-                long end = sw.ElapsedMilliseconds;
-
-
+                
                 if (events.Any())
                 {
-                    int eCount = 0;
+                    
                     foreach (var @event in events)
                     {
                         try
@@ -107,31 +96,12 @@ namespace DatabaseInitializer.Services
                                 CorrelationId = @event.CorrelationId
                             });
 
-                            start = end;
-                            end = sw.ElapsedMilliseconds;
-                            
-
-                            if ( !stats.ContainsKey(ev.GetType().FullName ))
-                            {
-                                stats.Add(ev.GetType().FullName, new CallStats());
-                            }
-                            stats[ev.GetType().FullName].Count++;
-                            stats[ev.GetType().FullName].TotalTime += end - start;
-                            stats[ev.GetType().FullName].LastTime = end - start;
-
-                            
-
                             eCount++;
 
                             if ( eCount % 5000 == 0)
                             {
-                                PrintStats(stats);
-                            }
-                            
-                            start = end;
-                            end = sw.ElapsedMilliseconds;
-
-                            //Console.Write("Playing event : " + eCount);
+                                Console.Write("{0} events played" , eCount);
+                            }                            
                         }
                         catch
                         {
@@ -147,16 +117,6 @@ namespace DatabaseInitializer.Services
                 
             }
             
-        }
-
-        private void PrintStats(Dictionary<string, CallStats> stats)
-        {
-            Console.WriteLine("*****Printing stats*****");
-            foreach (var key in stats.Keys)
-            {
-                Console.WriteLine(string.Format("For event {0}, average excecution {1}ms, last call : {2}ms, total count : {3} ", key, stats[key].TotalTime / stats[key].Count, stats[key].LastTime, stats[key].Count));
-            }
-            Console.WriteLine("************************");
         }
 
         private IVersionedEvent Deserialize(Event @event)
