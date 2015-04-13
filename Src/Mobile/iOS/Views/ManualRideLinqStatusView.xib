@@ -11,8 +11,6 @@
                 <outlet property="lblDriverId" destination="lYH-KK-iQs" id="eoY-Kw-gbw"/>
                 <outlet property="lblPairingCode" destination="Rz7-tH-zX9" id="Xea-OM-bjC"/>
                 <outlet property="lblPairingCodeText" destination="Jvn-Jk-kwM" id="VpM-jQ-vYe"/>
-                <outlet property="lblVehicule" destination="2ba-U5-9P3" id="gL2-uw-f9m"/>
-                <outlet property="lblVehiculeText" destination="Xk9-V0-fcA" id="2GG-Dg-UGd"/>
                 <outlet property="view" destination="iN0-l3-epB" id="kCW-yf-GMq"/>
             </connections>
         </placeholder>
@@ -39,18 +37,6 @@
                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2ba-U5-9P3" userLabel="lblVehicule">
-                    <rect key="frame" x="115" y="122" width="42" height="21"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                    <nil key="highlightedColor"/>
-                </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xk9-V0-fcA" userLabel="lblVehiculeText">
-                    <rect key="frame" x="163" y="122" width="42" height="21"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                    <nil key="highlightedColor"/>
-                </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rz7-tH-zX9" userLabel="lblPairingCode">
                     <rect key="frame" x="115" y="81" width="42" height="21"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -69,15 +55,11 @@
                 <constraint firstAttribute="trailing" secondItem="3Ts-zN-ahv" secondAttribute="trailing" constant="10" id="676-bu-QSm"/>
                 <constraint firstAttribute="centerX" secondItem="Jvn-Jk-kwM" secondAttribute="leading" constant="-3" id="836-kk-thB"/>
                 <constraint firstAttribute="bottom" secondItem="3Ts-zN-ahv" secondAttribute="bottom" constant="10" id="CjA-94-mrg"/>
-                <constraint firstItem="Xk9-V0-fcA" firstAttribute="top" secondItem="Jvn-Jk-kwM" secondAttribute="bottom" constant="20" id="DMt-7i-eJ8"/>
-                <constraint firstItem="2ba-U5-9P3" firstAttribute="top" secondItem="Rz7-tH-zX9" secondAttribute="bottom" constant="20" id="Hhl-xj-NiK"/>
                 <constraint firstAttribute="centerX" secondItem="lYH-KK-iQs" secondAttribute="trailing" constant="3" id="TIW-7e-vnj"/>
                 <constraint firstAttribute="centerX" secondItem="Rz7-tH-zX9" secondAttribute="trailing" constant="3" id="adT-ee-Al4"/>
                 <constraint firstAttribute="centerX" secondItem="raj-hF-F7Y" secondAttribute="leading" constant="-3" id="bPc-xu-WRT"/>
-                <constraint firstAttribute="centerX" secondItem="Xk9-V0-fcA" secondAttribute="leading" constant="-3" id="dPX-iR-wc0"/>
                 <constraint firstItem="Jvn-Jk-kwM" firstAttribute="top" secondItem="raj-hF-F7Y" secondAttribute="bottom" constant="20" id="gOD-BF-JKj"/>
                 <constraint firstItem="3Ts-zN-ahv" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="10" id="hHR-TP-ouF"/>
-                <constraint firstAttribute="centerX" secondItem="2ba-U5-9P3" secondAttribute="trailing" constant="3" id="j2w-Gu-sPc"/>
                 <constraint firstItem="lYH-KK-iQs" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="40" id="oQ2-8d-YQQ"/>
                 <constraint firstItem="raj-hF-F7Y" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="40" id="oYl-jM-1hu"/>
                 <constraint firstItem="Rz7-tH-zX9" firstAttribute="top" secondItem="lYH-KK-iQs" secondAttribute="bottom" constant="20" id="pXi-Ea-RdE"/>

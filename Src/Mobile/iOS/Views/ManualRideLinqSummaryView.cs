@@ -25,7 +25,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 			NavigationItem.Title = localize["View_RideLinqSummary"];
 			lblPairingCodeLabel.Text = localize["ManualRideLinqStatus_PairingCode"];
-			lblMedallionLabel.Text = localize["ManualRideLinqStatus_Medallion"];
 			lblDistanceLabel.Text = localize["ManualRideLinqStatus_Distance"];
 			lblTotalLabel.Text = localize["ManualRideLinqStatus_Total"];
 			lblFareLabel.Text = localize["ManualRideLinqStatus_Fare"];
@@ -45,9 +44,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 			bindingSet.Bind(lblDriverIdText)
 				.To(vm => vm.OrderManualRideLinqDetail.DriverId);
-
-			bindingSet.Bind(lblMedallionText)
-				.To(vm => vm.OrderManualRideLinqDetail.Medallion);
 
 			bindingSet.Bind(lblDistanceText)
 				.To(vm => vm.OrderManualRideLinqDetail.Distance);
