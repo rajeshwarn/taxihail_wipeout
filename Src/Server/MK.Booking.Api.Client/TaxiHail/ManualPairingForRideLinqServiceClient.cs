@@ -30,10 +30,10 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             return Client.DeleteAsync<BasePaymentResponse>(req);
         }
 
-        public Task<OrderManualRideLinqDetail> GetUpdatedTrip(Guid orderId)
+        public Task<ManualRideLinqResponse> GetUpdatedTrip(Guid orderId)
         {
             var req = string.Format("/account/ridelinq/{0}", orderId);
-            return Client.GetAsync<OrderManualRideLinqDetail>(req);
+            return Client.GetAsync<ManualRideLinqResponse>(req);
         }
 
     }

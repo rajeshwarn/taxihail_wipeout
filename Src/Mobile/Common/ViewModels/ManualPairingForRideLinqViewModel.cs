@@ -77,7 +77,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                             });
                         }
                     }
-                    catch (WebServiceException ex)
+                    catch (WebServiceException)
                     {
                         this.Services().Message.ShowMessage(localize["ManualPairingForRideLinQ_Error_Title"], localize["ManualPairingForRideLinQ_Error_Message"]).HandleErrors();
                     }

@@ -342,6 +342,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
             if (response.IsSuccessful)
             {
+                UserCache.Set("LastOrderId", response.Data.OrderId.ToString());
+
                 return response.Data;
             }
 
@@ -353,9 +355,16 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             return UseServiceClientAsync<ManualPairingForRideLinqServiceClient>(service => service.Unpair(orderId));
         }
 
-        public Task<OrderManualRideLinqDetail> ManualRideGetTripInfo(Guid orderId)
+        public async Task<OrderManualRideLinqDetail> ManualRideGetTripInfo(Guid orderId)
         {
-            return UseServiceClientAsync<ManualPairingForRideLinqServiceClient, OrderManualRideLinqDetail>(service => service.GetUpdatedTrip(orderId));
+            var response = await UseServiceClientAsync<ManualPairingForRideLinqServiceClient, ManualRideLinqResponse>(service => service.GetUpdatedTrip(orderId));
+
+            if (response.IsSuccessful)
+            {
+                return response.Data;
+            }
+
+            throw new Exception(response.Message);
         }
     }
 }

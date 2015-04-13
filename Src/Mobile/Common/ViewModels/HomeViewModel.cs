@@ -18,6 +18,7 @@ using apcurium.MK.Booking.Maps.Geo;
 using System.Threading;
 using System.Threading.Tasks;
 using apcurium.MK.Common.Configuration.Impl;
+using Cirrious.CrossCore.Core;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -31,6 +32,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private readonly ITermsAndConditionsService _termsService;
 	    private readonly IMvxLifetime _mvxLifetime;
 		private readonly IAccountService _accountService;
+	    private IBookingService _bookingService;
 
 	    private IPaymentService _paymentService;
 
@@ -48,7 +50,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			IPaymentService paymentService, 
             IMvxLifetime mvxLifetime,
             IPromotionService promotionService,
-            IPaymentService paymentService1) : base()
+            IPaymentService paymentService1, IBookingService bookingService) : base()
 		{
 			_locationService = locationService;
 			_orderWorkflowService = orderWorkflowService;
@@ -58,6 +60,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_termsService = termsService;
 		    _mvxLifetime = mvxLifetime;
 		    _paymentService = paymentService1;
+		    _bookingService = bookingService;
 		    _accountService = accountService;
 
             Panel = new PanelMenuViewModel(browserTask, orderWorkflowService, accountService, phoneService, paymentService, promotionService);
@@ -154,11 +157,25 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			var lastOrder = await _orderWorkflowService.GetLastActiveOrder ();
 			if(lastOrder != null)
 			{
-				ShowViewModelAndRemoveFromHistory<BookingStatusViewModel> (new
-				{
-					order = lastOrder.Item1.ToJson (),
-					orderStatus = lastOrder.Item2.ToJson ()
-				});
+			    if (lastOrder.Item1.IsManualRideLinq)
+			    {
+                    var orderManualRideLinqDetail = _bookingService.ManualRideGetTripInfo(lastOrder.Item1.Id);
+
+                    ShowViewModelAndRemoveFromHistory<ManualRideLinqStatusViewModel>(new
+                    {
+                        orderManualRideLinqDetail
+                    });
+			    }
+			    else
+			    {
+                    ShowViewModelAndRemoveFromHistory<BookingStatusViewModel>(new
+                    {
+                        order = lastOrder.Item1.ToJson(),
+                        orderStatus = lastOrder.Item2.ToJson()
+                    });
+			    }
+
+				
 			}
 			else if (firstTime)
 			{

@@ -36,9 +36,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			base.Start();
 
 			Observable.Timer(TimeSpan.FromSeconds(4), TimeSpan.FromSeconds(_refreshPeriod))
-				.SelectMany((_, ct) => RefreshDetails(ct))
-                .ObserveOn(SynchronizationContext.Current)
-                .Do(orderDetails =>  OrderManualRideLinqDetail = orderDetails)
+                .SelectMany((_, ct) => RefreshDetails(ct))
 				.Where(orderDetails => orderDetails.EndTime.HasValue)
 				.Subscribe(
 					ToRideSummary,
@@ -49,7 +47,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		private async Task<OrderManualRideLinqDetail> RefreshDetails(CancellationToken token)
 		{
-			return await _bookingService.ManualRideGetTripInfo(OrderManualRideLinqDetail.OrderId);
+            return await _bookingService.ManualRideGetTripInfo(OrderManualRideLinqDetail.OrderId);
 		}
 
 
@@ -68,6 +66,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			var orderSummary = orderManualRideLinqDetail.ToJson();
 
 			ShowViewModelAndRemoveFromHistory<ManualRideLinqSummaryViewModel>(new {orderManualRideLinqDetail = orderSummary});
+
+            _bookingService.ClearLastOrder();
 		}
 
         public ICommand UnpairFromRideLinq
@@ -77,6 +77,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 return this.GetCommand(async () =>
                 {
                     await _bookingService.ManualRideLinqUnpair(_orderManualRideLinqDetail.OrderId);
+
+                    _bookingService.ClearLastOrder();
 
                     ShowViewModelAndRemoveFromHistory<HomeViewModel>(new HomeViewModelPresentationHint(HomeViewModelState.Initial));
                 });
