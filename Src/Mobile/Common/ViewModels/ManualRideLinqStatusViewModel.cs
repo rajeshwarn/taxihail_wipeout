@@ -75,15 +75,26 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                return this.GetCommand(async () =>
+                return this.GetCommand(() =>
                 {
                     try
                     {
-                        await _bookingService.ManualRideLinqUnpair(_orderManualRideLinqDetail.OrderId);
+                        this.Services().Message.ShowMessage(
+                            this.Services().Localize["WarningTitle"],
+                            this.Services().Localize["UnpairWarningMessage"],
+                            this.Services().Localize["UnpairWarningCancelButton"],
+                            async () =>
+                            {
+                                using (this.Services().Message.ShowProgress())
+                                {
+                                    await _bookingService.ManualRideLinqUnpair(_orderManualRideLinqDetail.OrderId);
 
-                        _bookingService.ClearLastOrder();
+                                    _bookingService.ClearLastOrder();
 
-                        ShowViewModelAndRemoveFromHistory<HomeViewModel>(new HomeViewModelPresentationHint(HomeViewModelState.Initial));
+                                    ShowViewModelAndRemoveFromHistory<HomeViewModel>(new HomeViewModelPresentationHint(HomeViewModelState.Initial));
+                                }
+                            },
+                            this.Services().Localize["Cancel"], () => { });
                     }
                     catch (Exception)
                     {
