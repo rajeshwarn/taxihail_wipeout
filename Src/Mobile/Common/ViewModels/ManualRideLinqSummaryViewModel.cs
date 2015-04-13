@@ -11,12 +11,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 {
 	public class ManualRideLinqSummaryViewModel : PageViewModel
 	{
-		private readonly IBookingService _bookingService;
 		private OrderManualRideLinqDetail _orderManualRideLinqDetail;
 
-		public ManualRideLinqSummaryViewModel(IBookingService bookingService)
+		public ManualRideLinqSummaryViewModel()
 		{
-			_bookingService = bookingService;
 		}
 
 		public void Init(string orderManualRideLinqDetail)
@@ -42,7 +40,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			get
 			{
-				return this.GetCommand(async () =>
+				return this.GetCommand(() =>
 				{
 					ShowViewModelAndRemoveFromHistory<HomeViewModel>(new HomeViewModelPresentationHint(HomeViewModelState.Initial));
 				});
