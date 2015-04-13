@@ -163,7 +163,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
                     ShowViewModelAndRemoveFromHistory<ManualRideLinqStatusViewModel>(new
                     {
-                        orderManualRideLinqDetail
+                        orderManualRideLinqDetail = orderManualRideLinqDetail.ToJson()
                     });
 			    }
 			    else
