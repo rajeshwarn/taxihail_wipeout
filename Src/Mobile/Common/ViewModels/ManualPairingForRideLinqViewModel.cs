@@ -64,7 +64,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     {
                         using (this.Services().Message.ShowProgress())
                         {
+                            // For the RideLinQ "street pick" feature, we need to use the user and not the pin position
 							await _orderWorkflowService.SetAddressToUserLocation();
+
                             var pickupAddress = await _orderWorkflowService.GetCurrentAddress();
                             var pairingCode = string.Concat(PairingCodeLeft, PairingCodeRight);
                             var orderManualRideLinqDetail = await _bookingService.ManualRideLinqPair(pairingCode, pickupAddress);

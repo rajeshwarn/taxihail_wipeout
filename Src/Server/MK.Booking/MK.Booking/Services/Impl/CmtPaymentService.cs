@@ -89,7 +89,7 @@ namespace apcurium.MK.Booking.Services.Impl
                         throw new Exception("Order has no IBSOrderId");
                     }
 
-                    var response = PairWithVehicleUsingRideLinq(orderStatusDetail, orderId, cardToken, autoTipPercentage);
+                    var response = PairWithVehicleUsingRideLinq(orderStatusDetail, cardToken, autoTipPercentage);
 
                     // send a command to save the pairing state for this order
                     _commandBus.Send(new PairForPayment
@@ -350,7 +350,7 @@ namespace apcurium.MK.Booking.Services.Impl
             throw new NotImplementedException();
         }
 
-        private CmtPairingResponse PairWithVehicleUsingRideLinq(OrderStatusDetail orderStatusDetail, Guid orderId, string cardToken, int? autoTipPercentage)
+        private CmtPairingResponse PairWithVehicleUsingRideLinq(OrderStatusDetail orderStatusDetail, string cardToken, int? autoTipPercentage)
         {
             try
             {
@@ -361,7 +361,6 @@ namespace apcurium.MK.Booking.Services.Impl
             var cmtPaymentSettings = _serverSettings.GetPaymentSettings().CmtPaymentSettings;
             var pairingRequest = new PairingRequest
             {
-                AutoTipAmount = null,
                 AutoTipPercentage = autoTipPercentage,
                 AutoCompletePayment = true,
                 CallbackUrl = string.Empty,
