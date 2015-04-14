@@ -143,9 +143,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 	        {
 	            var settings = await _paymentService.GetPaymentSettings();
 
-	            IsManualRideLinqEnabled = settings.PaymentMode == PaymentMethod.RideLinqCmt &&
-	                                      settings.CmtPaymentSettings.IsManualRidelinqCheckInEnabled &&
-                                          !_lastMarket.HasValue();
+	            IsManualRideLinqEnabled = settings.PaymentMode == PaymentMethod.RideLinqCmt
+                                           && settings.CmtPaymentSettings.IsManualRidelinqCheckInEnabled
+                                           && !_lastMarket.HasValue();
 	        }
 	        catch (Exception ex)
 	        {

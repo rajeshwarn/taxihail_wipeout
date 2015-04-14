@@ -5,8 +5,9 @@ using ServiceStack.ServiceInterface;
 namespace apcurium.MK.Booking.Api.Contract.Requests.Payment
 {
     [Authenticate]
-    [Route("/account/ridelinq/{OrderId}", "GET, DELETE")]
-   public class ManualRideLinqRequest
+    [Route("/account/manualridelinq/{OrderId}/status", "GET")]
+    [Route("/account/manualridelinq/{OrderId}/unpair", "DELETE")]
+    public class ManualRideLinqRequest
     {
         public Guid OrderId { get; set; }
     }

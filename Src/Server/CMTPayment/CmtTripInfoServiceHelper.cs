@@ -40,6 +40,7 @@ namespace CMTPayment
             }
             catch (Exception ex)
             {
+                _logger.LogMessage(string.Format("An error occured while trying to get the CMT trip info for Pairing Token: {0}", pairingToken));
                 _logger.LogError(ex);
 
                 return null;
