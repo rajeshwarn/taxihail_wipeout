@@ -33,9 +33,10 @@ namespace apcurium.MK.Booking.Services.Impl
         private readonly ICreditCardDao _creditCardDao;
         private readonly ILogger _logger;
         private readonly IOrderPaymentDao _paymentDao;
-        private readonly CmtPaymentServiceClient _cmtPaymentServiceClient;
-        private readonly CmtMobileServiceClient _cmtMobileServiceClient;
-        private readonly CmtTripInfoServiceHelper _cmtTripInfoServiceHelper;
+
+        private CmtPaymentServiceClient _cmtPaymentServiceClient;
+        private CmtMobileServiceClient _cmtMobileServiceClient;
+        private CmtTripInfoServiceHelper _cmtTripInfoServiceHelper;
 
         public CmtPaymentService(ICommandBus commandBus, 
             IOrderDao orderDao,
@@ -53,11 +54,25 @@ namespace apcurium.MK.Booking.Services.Impl
             _paymentDao = paymentDao;
             _serverSettings = serverSettings;
             _pairingService = pairingService;
-            _creditCardDao = creditCardDao;
+            _creditCardDao = creditCardDao;           
+        }
 
-            _cmtPaymentServiceClient = new CmtPaymentServiceClient(serverSettings.GetPaymentSettings().CmtPaymentSettings, null, null, logger);
-            _cmtMobileServiceClient = new CmtMobileServiceClient(serverSettings.GetPaymentSettings().CmtPaymentSettings, null, null);
-            _cmtTripInfoServiceHelper = new CmtTripInfoServiceHelper(_cmtMobileServiceClient, logger);
+        private void InitiateServiceClientIfNecessary()
+        {
+            if (_cmtPaymentServiceClient == null)
+            {
+                _cmtPaymentServiceClient = new CmtPaymentServiceClient(_serverSettings.GetPaymentSettings().CmtPaymentSettings, null, null, _logger);
+            }
+
+            if (_cmtMobileServiceClient == null)
+            {
+                _cmtMobileServiceClient = new CmtMobileServiceClient(_serverSettings.GetPaymentSettings().CmtPaymentSettings, null, null);
+            }
+
+            if (_cmtTripInfoServiceHelper == null)
+            {
+                _cmtTripInfoServiceHelper = new CmtTripInfoServiceHelper(_cmtMobileServiceClient, _logger);
+            }
         }
 
         public PaymentProvider ProviderType(Guid? orderId = null)
@@ -352,39 +367,41 @@ namespace apcurium.MK.Booking.Services.Impl
 
         private CmtPairingResponse PairWithVehicleUsingRideLinq(OrderStatusDetail orderStatusDetail, string cardToken, int? autoTipPercentage)
         {
+            InitiateServiceClientIfNecessary();
+
             try
             {
 
-            var accountDetail = _accountDao.FindById(orderStatusDetail.AccountId);
+                var accountDetail = _accountDao.FindById(orderStatusDetail.AccountId);
 
-            // send pairing request                                
-            var cmtPaymentSettings = _serverSettings.GetPaymentSettings().CmtPaymentSettings;
-            var pairingRequest = new PairingRequest
-            {
-                AutoTipPercentage = autoTipPercentage,
-                AutoCompletePayment = true,
-                CallbackUrl = string.Empty,
-                CustomerId = orderStatusDetail.IBSOrderId.ToString(),
-                CustomerName = accountDetail.Name,
-                DriverId = orderStatusDetail.DriverInfos.DriverId,
-                Latitude = orderStatusDetail.VehicleLatitude.GetValueOrDefault(),
-                Longitude = orderStatusDetail.VehicleLongitude.GetValueOrDefault(),
-                Medallion = orderStatusDetail.VehicleNumber,
-                CardOnFileId = cardToken,
-                Market = cmtPaymentSettings.Market
-            };
+                // send pairing request                                
+                var cmtPaymentSettings = _serverSettings.GetPaymentSettings().CmtPaymentSettings;
+                var pairingRequest = new PairingRequest
+                {
+                    AutoTipPercentage = autoTipPercentage,
+                    AutoCompletePayment = true,
+                    CallbackUrl = string.Empty,
+                    CustomerId = orderStatusDetail.IBSOrderId.ToString(),
+                    CustomerName = accountDetail.Name,
+                    DriverId = orderStatusDetail.DriverInfos.DriverId,
+                    Latitude = orderStatusDetail.VehicleLatitude.GetValueOrDefault(),
+                    Longitude = orderStatusDetail.VehicleLongitude.GetValueOrDefault(),
+                    Medallion = orderStatusDetail.VehicleNumber,
+                    CardOnFileId = cardToken,
+                    Market = cmtPaymentSettings.Market
+                };
 
-            _logger.LogMessage("Pairing request : " + pairingRequest.ToJson());
-            _logger.LogMessage("PaymentSettings request : " + cmtPaymentSettings.ToJson());
+                _logger.LogMessage("Pairing request : " + pairingRequest.ToJson());
+                _logger.LogMessage("PaymentSettings request : " + cmtPaymentSettings.ToJson());
 
-            var response = _cmtMobileServiceClient.Post(pairingRequest);
+                var response = _cmtMobileServiceClient.Post(pairingRequest);
 
-            _logger.LogMessage("Pairing response : " + response.ToJson());
+                _logger.LogMessage("Pairing response : " + response.ToJson());
 
-            // wait for trip to be updated
-            _cmtTripInfoServiceHelper.WaitForTripInfo(response.PairingToken, response.TimeoutSeconds);
+                // wait for trip to be updated
+                _cmtTripInfoServiceHelper.WaitForTripInfo(response.PairingToken, response.TimeoutSeconds);
 
-            return response;
+                return response;
             }
             catch (Exception ex)
             {
@@ -408,6 +425,8 @@ namespace apcurium.MK.Booking.Services.Impl
 
         private void UnpairFromVehicleUsingRideLinq(OrderPairingDetail orderPairingDetail)
         {
+            InitiateServiceClientIfNecessary();
+
             // send unpairing request
             var response = _cmtMobileServiceClient.Delete(new UnpairingRequest
             {
@@ -420,6 +439,8 @@ namespace apcurium.MK.Booking.Services.Impl
 
         private AuthorizationResponse Authorize(AuthorizationRequest request)
         {
+            InitiateServiceClientIfNecessary();
+
             AuthorizationResponse response;
             try
             {
@@ -451,7 +472,10 @@ namespace apcurium.MK.Booking.Services.Impl
 
         private TokenizeDeleteResponse DeleteCreditCard(TokenizeDeleteRequest request)
         {
+            InitiateServiceClientIfNecessary();
+
             TokenizeDeleteResponse response;
+
             try
             {
                 var responseTask = _cmtPaymentServiceClient.DeleteAsync(request);
@@ -482,7 +506,10 @@ namespace apcurium.MK.Booking.Services.Impl
 
         private ReverseResponse Reverse(ReverseRequest request)
         {
+            InitiateServiceClientIfNecessary();
+
             ReverseResponse response;
+
             try
             {
                 var responseReverseTask = _cmtPaymentServiceClient.PostAsync(request);

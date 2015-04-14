@@ -17,7 +17,6 @@ namespace CMTPayment
             _logger = logger;
         }
 
-
         public Trip GetTripInfo(string pairingToken)
         {
             try

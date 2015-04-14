@@ -60,15 +60,14 @@
             style="@style/DetailText"
             android:layout_weight="50"
             local:MvxBind="Text PairingCode" />
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/HeightButton"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="20dip"
+            android:layout_marginRight="20dip"
+            android:text="@string/ManualRideLinqStatus_Unpair"
+            style="@style/ButtonActionRedStyle"
+            local:MvxBind="Click UnpairFromRideLinq" />
     </LinearLayout>
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/HeightButton"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="200dip"
-        android:layout_marginLeft="20dip"
-        android:layout_marginRight="20dip"
-        android:text="@string/ManualRideLinqStatus_Unpair"
-        style="@style/ButtonActionRedStyle"
-        local:MvxBind="Click UnpairFromRideLinq" />
 </LinearLayout>

@@ -1,8 +1,4 @@
-﻿
-using System;
-
-using Foundation;
-using UIKit;
+﻿using UIKit;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using Cirrious.MvvmCross.Binding.BindingContext;
 
@@ -48,19 +44,19 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				.To(vm => vm.OrderManualRideLinqDetail.DriverId);
 
 			bindingSet.Bind(lblDistanceText)
-				.To(vm => vm.OrderManualRideLinqDetail.Distance);
+				.To(vm => vm.FormattedDistance);
 
 			bindingSet.Bind(lblFareText)
-				.To(vm => vm.OrderManualRideLinqDetail.Fare);
+				.To(vm => vm.FormattedFare);
 
 			bindingSet.Bind(lblTaxText)
-				.To(vm => vm.OrderManualRideLinqDetail.Tax);
+                .To(vm => vm.FormattedTax);
 
 			bindingSet.Bind(lblTipText)
-				.To(vm => vm.OrderManualRideLinqDetail.Tip);
+				.To(vm => vm.FormattedTip);
 
 			bindingSet.Bind(lblTotalText)
-				.To(vm => vm.OrderManualRideLinqDetail.Total);
+				.To(vm => vm.FormattedTotal);
 
 			bindingSet.Bind(NavigationItem.RightBarButtonItem)
 				.To(vm => vm.GoToHome);

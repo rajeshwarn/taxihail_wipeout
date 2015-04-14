@@ -111,7 +111,7 @@
               android:layout_marginLeft="5dip"
               style="@style/DetailText"
               android:layout_weight="50"
-              local:MvxBind="Text OrderManualRideLinqDetail.Distance" />
+              local:MvxBind="Text FormattedDistance" />
         </LinearLayout>
         <LinearLayout
             android:orientation="horizontal"
@@ -133,7 +133,7 @@
               android:layout_marginLeft="5dip"
               style="@style/DetailText"
               android:layout_weight="50"
-              local:MvxBind="Text OrderManualRideLinqDetail.Fare" />
+              local:MvxBind="Text FormattedFare" />
         </LinearLayout>
         <LinearLayout
             android:orientation="horizontal"
@@ -157,7 +157,7 @@
               android:layout_marginLeft="5dip"
               style="@style/DetailText"
               android:layout_weight="50"
-              local:MvxBind="Text OrderManualRideLinqDetail.Tax" />
+              local:MvxBind="Text FormattedTax" />
         </LinearLayout>
         <LinearLayout
             android:orientation="horizontal"
@@ -179,7 +179,7 @@
               android:layout_marginLeft="5dip"
               android:layout_weight="50"
               style="@style/DetailText"
-              local:MvxBind="Text OrderManualRideLinqDetail.Tip" />
+              local:MvxBind="Text FormattedTip" />
         </LinearLayout>
         <LinearLayout
             android:orientation="horizontal"
@@ -201,7 +201,7 @@
               android:layout_marginLeft="5dip"
               android:layout_weight="50"
               style="@style/DetailText"
-              local:MvxBind="Text OrderManualRideLinqDetail.Total" />
+              local:MvxBind="Text FormattedTotal" />
         </LinearLayout>
       </LinearLayout>
     </ScrollView>
