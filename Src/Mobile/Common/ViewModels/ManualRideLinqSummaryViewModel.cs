@@ -40,7 +40,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 	    public string FormattedDistance
 	    {
-	        get { return string.Format("{0}{1}", _orderManualRideLinqDetail.Distance ?? 0, Settings.DistanceFormat); }
+	        get { return string.Format("{0} {1}", _orderManualRideLinqDetail.Distance ?? 0, Settings.DistanceFormat); }
 	    }
 
 	    public string FormattedFare
