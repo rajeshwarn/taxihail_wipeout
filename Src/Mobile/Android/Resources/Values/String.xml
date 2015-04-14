@@ -635,7 +635,7 @@
   <string name="FilteredAddresses_Error_Title">Error</string>
   <string name="HomeView_ManualPairing">Check In</string>
   <string name="ManualPairingForRideLinQ_Pair">CHECK IN</string>
-  <string name="ManualPairingForRideLinQ_Instructions">Enter the 7-digit code displayed on the taxi touchscreen to auto-play and get an e-receipt at the end of your ride.</string>
+  <string name="ManualPairingForRideLinQ_Instructions">Enter the 7-digit code displayed on the taxi touchscreen to auto-pay and get an e-receipt at the end of your ride.</string>
   <string name="ManualRideLinqStatus_PairingCode">Pairing Code:</string>
   <string name="HistoryLoadError">Unable to load the history. Please try again later.</string>
   <string name="PromotionLoadError">Unable to load the available promotions. Please try again later.</string>
@@ -649,7 +649,7 @@
   <string name="ManualRideLinqStatus_Tip">Tip amount:</string>
   <string name="View_RideLinqStatus">Status</string>
   <string name="View_RideLinqPair">Check In</string>
-  <string name="ManualRideLinqStatus_Unpair">UNPAIR</string>
+  <string name="ManualRideLinqStatus_Unpair">Unpair</string>
   <string name="ManualPairingForRideLinQ_Error_Title">Error</string>
   <string name="ManualPairingForRideLinQ_Error_Message">An error occurred during check in.</string>
   <string name="ManualPairingForRideLinQ_InvalidCode_Title">Invalid code</string>
