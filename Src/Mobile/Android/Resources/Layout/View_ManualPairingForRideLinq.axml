@@ -35,11 +35,11 @@
         <EditText
             android:id="@+id/PairingCode1"
             android:inputType="number"
-            android:layout_width="80dip"
+            android:layout_width="90dip"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:maxLength="3"
-            android:hint="___"
+            android:hint="_ _ _"
             android:textSize="35sp"
             local:MvxBind="Text PairingCodeLeft"
             android:numeric="integer" />
@@ -54,11 +54,11 @@
         <EditText
             android:id="@+id/PairingCode2"
             android:inputType="number"
-            android:layout_width="100dip"
+            android:layout_width="110dip"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:maxLength="4"
-            android:hint="____"
+            android:hint="_ _ _ _"
             android:textSize="35sp"
             local:MvxBind="Text PairingCodeRight"
             android:numeric="integer" />
