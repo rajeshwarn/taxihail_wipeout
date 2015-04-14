@@ -510,7 +510,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		}
 
 		private bool _subscribedToLifetimeChanged;
-	    private ManualPairingForRideLinqViewModel _manualPairingForRideLinqViewModel;
 	    private bool _isManualRideLinqEnabled;
 
 	    public void SubscribeLifetimeChangedIfNecessary()
