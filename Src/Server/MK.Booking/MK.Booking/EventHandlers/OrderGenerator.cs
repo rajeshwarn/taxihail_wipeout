@@ -94,27 +94,59 @@ namespace apcurium.MK.Booking.EventHandlers
         {
             using (var context = _contextFactory.Invoke())
             {
-                context.Save(new OrderDetail
+                // Prevents NullReferenceException caused with web prepayed while running database initializer.
+                if (@event.IsPrepaid)
                 {
-                    IBSOrderId = @event.IBSOrderId,
-                    AccountId = @event.AccountId,
-                    PickupAddress = @event.PickupAddress,
-                    Id = @event.SourceId,
-                    PickupDate = @event.PickupDate,
-                    CreatedDate = @event.CreatedDate,
-                    DropOffAddress = @event.DropOffAddress,
-                    Settings = @event.Settings,
-                    Status = (int) OrderStatus.Created,
-                    IsRated = false,
-                    EstimatedFare = @event.EstimatedFare,
-                    UserAgent = @event.UserAgent,
-                    UserNote = @event.UserNote,
-                    ClientLanguageCode = @event.ClientLanguageCode,
-                    ClientVersion = @event.ClientVersion,
-                    CompanyKey = @event.CompanyKey,
-                    CompanyName = @event.CompanyName,
-                    Market = @event.Market
-                });
+                    var order = context.Find<OrderDetail>(@event.SourceId);
+
+                    if (order != null)
+                    {
+                        order.IBSOrderId = @event.IBSOrderId;
+                        order.AccountId = @event.AccountId;
+                        order.PickupAddress = @event.PickupAddress;
+                        order.PickupDate = @event.PickupDate;
+                        order.CreatedDate = @event.CreatedDate;
+                        order.DropOffAddress = @event.DropOffAddress;
+                        order.Settings = @event.Settings;
+                        order.Status = (int) OrderStatus.Created;
+                        order.IsRated = false;
+                        order.EstimatedFare = @event.EstimatedFare;
+                        order.UserAgent = @event.UserAgent;
+                        order.UserNote = @event.UserNote;
+                        order.ClientLanguageCode = @event.ClientLanguageCode;
+                        order.ClientVersion = @event.ClientVersion;
+                        order.CompanyKey = @event.CompanyKey;
+                        order.CompanyName = @event.CompanyName;
+                        order.Market = @event.Market;
+
+                        context.SaveChanges();
+                    }
+                    else
+                    {
+                        context.Save(new OrderDetail
+                        {
+                            IBSOrderId = @event.IBSOrderId,
+                            AccountId = @event.AccountId,
+                            PickupAddress = @event.PickupAddress,
+                            Id = @event.SourceId,
+                            PickupDate = @event.PickupDate,
+                            CreatedDate = @event.CreatedDate,
+                            DropOffAddress = @event.DropOffAddress,
+                            Settings = @event.Settings,
+                            Status = (int)OrderStatus.Created,
+                            IsRated = false,
+                            EstimatedFare = @event.EstimatedFare,
+                            UserAgent = @event.UserAgent,
+                            UserNote = @event.UserNote,
+                            ClientLanguageCode = @event.ClientLanguageCode,
+                            ClientVersion = @event.ClientVersion,
+                            CompanyKey = @event.CompanyKey,
+                            CompanyName = @event.CompanyName,
+                            Market = @event.Market
+                        });
+                    }
+                }
+                
 
                 // Create an empty OrderStatusDetail row
                 var details = context.Find<OrderStatusDetail>(@event.SourceId);
