@@ -349,7 +349,7 @@ namespace apcurium.MK.Booking.Services.Impl
 
         private CmtPairingResponse PairWithVehicleUsingRideLinq(OrderStatusDetail orderStatusDetail, string cardToken, int? autoTipPercentage)
         {
-            InitiateServiceClientIfNecessary();
+            InitializeServiceClient();
 
             try
             {
@@ -407,7 +407,7 @@ namespace apcurium.MK.Booking.Services.Impl
 
         private void UnpairFromVehicleUsingRideLinq(OrderPairingDetail orderPairingDetail)
         {
-            InitiateServiceClientIfNecessary();
+            InitializeServiceClient();
 
             // send unpairing request
             var response = _cmtMobileServiceClient.Delete(new UnpairingRequest
@@ -421,7 +421,7 @@ namespace apcurium.MK.Booking.Services.Impl
 
         private AuthorizationResponse Authorize(AuthorizationRequest request)
         {
-            InitiateServiceClientIfNecessary();
+            InitializeServiceClient();
 
             AuthorizationResponse response;
             try
@@ -454,7 +454,7 @@ namespace apcurium.MK.Booking.Services.Impl
 
         private TokenizeDeleteResponse DeleteCreditCard(TokenizeDeleteRequest request)
         {
-            InitiateServiceClientIfNecessary();
+            InitializeServiceClient();
 
             TokenizeDeleteResponse response;
 
@@ -488,7 +488,7 @@ namespace apcurium.MK.Booking.Services.Impl
 
         private ReverseResponse Reverse(ReverseRequest request)
         {
-            InitiateServiceClientIfNecessary();
+            InitializeServiceClient();
 
             ReverseResponse response;
 
@@ -522,7 +522,7 @@ namespace apcurium.MK.Booking.Services.Impl
             return response;
         }
 
-        private void InitiateServiceClientIfNecessary()
+        private void InitializeServiceClient()
         {
             _cmtPaymentServiceClient = new CmtPaymentServiceClient(_serverSettings.GetPaymentSettings().CmtPaymentSettings, null, null, _logger);
             _cmtMobileServiceClient = new CmtMobileServiceClient(_serverSettings.GetPaymentSettings().CmtPaymentSettings, null, null);
