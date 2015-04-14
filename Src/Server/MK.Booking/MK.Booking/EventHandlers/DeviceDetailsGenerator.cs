@@ -30,22 +30,24 @@ namespace apcurium.MK.Booking.EventHandlers
         {
             using (var context = _contextFactory.Invoke())
             {
-                // Unassign this device to all other accounts it might have been registered to before
-                context.RemoveWhere<DeviceDetail>(x => x.DeviceToken == @event.DeviceToken && x.AccountId != @event.SourceId);
-                context.SaveChanges();
+                var devices = context.Set<DeviceDetail>().Where(d => d.DeviceToken == @event.DeviceToken);
 
-                var device = context.Set<DeviceDetail>().Find(@event.SourceId, @event.DeviceToken);
-                if (device == null)
+                context.Set<DeviceDetail>().RemoveRange(devices.Where(d=>d.AccountId != @event.SourceId));
+
+                if ( devices.None(d=>d.AccountId == @event.SourceId ) )
                 {
-                    device = new DeviceDetail
+                    var device = new DeviceDetail
                     {
                         AccountId = @event.SourceId,
                         DeviceToken = @event.DeviceToken,
                         Platform = @event.Platform
                     };
-
-                    context.Save(device);
+                    context.Set<DeviceDetail>().Add(device);
+                    
                 }
+
+                context.SaveChanges();
+               
             }
         }
 
