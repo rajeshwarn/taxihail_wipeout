@@ -1,17 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
 using apcurium.MK.Booking.Mobile.Client.Controls.Behavior;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using Android.App;
-using Android.Content;
 using Android.Content.PM;
-using Android.OS;
-using Android.Runtime;
-using Android.Text.Util;
-using Android.Views;
 using Android.Views.InputMethods;
 using Android.Widget;
 
@@ -41,5 +31,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
             }
         }
 
+        protected override void OnStop()
+        {
+            base.OnStop();
+
+            var im = (InputMethodManager)GetSystemService(InputMethodService);
+
+            if (im != null && im.IsAcceptingText)
+            {
+                im.ToggleSoftInput(ShowFlags.Forced, HideSoftInputFlags.None);
+            }
+        }
     }
 }
