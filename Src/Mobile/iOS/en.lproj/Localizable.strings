@@ -627,7 +627,7 @@
 "FilteredAddresses_Error_Title"="Error";
 "HomeView_ManualPairing"="Check In";
 "ManualPairingForRideLinQ_Pair"="CHECK IN";
-"ManualPairingForRideLinQ_Instructions"="Enter the 7-digit code displayed on the taxi touchscreen to auto-play and get an e-receipt at the end of your ride.";
+"ManualPairingForRideLinQ_Instructions"="Enter the 7-digit code displayed on the taxi touchscreen to auto-pay and get an e-receipt at the end of your ride.";
 "ManualRideLinqStatus_PairingCode"="Pairing Code:";
 "HistoryLoadError"="Unable to load the history. Please try again later.";
 "PromotionLoadError"="Unable to load the available promotions. Please try again later.";
@@ -641,7 +641,7 @@
 "ManualRideLinqStatus_Tip"="Tip amount:";
 "View_RideLinqStatus"="Status";
 "View_RideLinqPair"="Check In";
-"ManualRideLinqStatus_Unpair"="UNPAIR";
+"ManualRideLinqStatus_Unpair"="Unpair";
 "ManualPairingForRideLinQ_Error_Title"="Error";
 "ManualPairingForRideLinQ_Error_Message"="An error occurred during check in.";
 "ManualPairingForRideLinQ_InvalidCode_Title"="Invalid code";

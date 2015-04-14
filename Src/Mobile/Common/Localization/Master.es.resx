@@ -2299,7 +2299,7 @@
     <value>Error</value>
   </data>
   <data name="ManualPairingForRideLinQ_Instructions" xml:space="preserve">
-    <value>Enter the 7-digit code displayed on the taxi touchscreen to auto-play and get an e-receipt at the end of your ride.</value>
+    <value>Enter the 7-digit code displayed on the taxi touchscreen to auto-pay and get an e-receipt at the end of your ride.</value>
   </data>
   <data name="ManualPairingForRideLinQ_InvalidCode_Message" xml:space="preserve">
     <value>The pairing code is invalid.</value>
@@ -2341,7 +2341,7 @@
     <value>Total cost:</value>
   </data>
   <data name="ManualRideLinqStatus_Unpair" xml:space="preserve">
-    <value>UNPAIR</value>
+    <value>Unpair</value>
   </data>
   <data name="ManualRideLinqSummary_Done" xml:space="preserve">
     <value>Done</value>

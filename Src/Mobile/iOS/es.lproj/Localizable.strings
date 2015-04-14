@@ -607,7 +607,7 @@
 "PaymentLoadError"="Unable to load the payment details. Please try again later.";
 "ManualPairingForRideLinQ_Error_Message"="An error occurred during check in.";
 "ManualPairingForRideLinQ_Error_Title"="Error";
-"ManualPairingForRideLinQ_Instructions"="Enter the 7-digit code displayed on the taxi touchscreen to auto-play and get an e-receipt at the end of your ride.";
+"ManualPairingForRideLinQ_Instructions"="Enter the 7-digit code displayed on the taxi touchscreen to auto-pay and get an e-receipt at the end of your ride.";
 "ManualPairingForRideLinQ_InvalidCode_Message"="The pairing code is invalid.";
 "ManualPairingForRideLinQ_InvalidCode_Title"="Invalid code";
 "ManualPairingForRideLinQ_Pair"="CHECK IN";
@@ -619,7 +619,7 @@
 "ManualRideLinqStatus_Tax"="Tax amount:";
 "ManualRideLinqStatus_Tip"="Tip amount:";
 "ManualRideLinqStatus_Total"="Total cost:";
-"ManualRideLinqStatus_Unpair"="UNPAIR";
+"ManualRideLinqStatus_Unpair"="Unpair";
 "ManualRideLinqSummary_Done"="Done";
 "ManualUnPairingForRideLinQ_Error_Message"="An error occured when trying to unpair. Please try again.";
 "HomeView_ManualPairing"="Check In";
