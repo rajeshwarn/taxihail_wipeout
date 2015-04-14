@@ -5,6 +5,7 @@ using System.Xml.Linq;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Domain;
+using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
@@ -32,7 +33,10 @@ namespace apcurium.MK.Booking.CommandHandlers
         ICommandHandler<CancelOrderBecauseOfError>,
         ICommandHandler<SaveTemporaryOrderCreationInfo>,
         ICommandHandler<MarkPrepaidOrderAsSuccessful>,
-        ICommandHandler<UpdateRefundedOrder>
+        ICommandHandler<UpdateRefundedOrder>,
+        ICommandHandler<CreateOrderForManualRideLinqPair>,
+        ICommandHandler<UnpairOrderForManualRideLinq>,
+        ICommandHandler<UpdateTripInfoInOrderForManualRideLinq>
     {
         private readonly IEventSourcedRepository<Order> _repository;
         private readonly Func<BookingDbContext> _contextFactory;
@@ -179,6 +183,33 @@ namespace apcurium.MK.Booking.CommandHandlers
         {
             var order = _repository.Get(command.OrderId);
             order.RefundedOrderUpdated(command.IsSuccessful, command.Message);
+            _repository.Save(order, command.Id.ToString());
+        }
+
+        public void Handle(CreateOrderForManualRideLinqPair command)
+        {
+            var order = new Order(command.OrderId, command.AccountId, command.PairingDate, command.PairingCode, command.PairingToken,
+                command.PickupAddress, command.UserAgent, command.ClientLanguageCode, command.ClientVersion, command.Distance, command.Total,
+                command.Fare, command.FareAtAlternateRate, command.Tax, command.Tip, command.Toll, command.Extra, 
+                command.Surcharge, command.RateAtTripStart, command.RateAtTripEnd, command.RateChangeTime, command.Medallion, command.TripId, command.DriverId);
+
+            _repository.Save(order, command.Id.ToString());
+        }
+
+        public void Handle(UnpairOrderForManualRideLinq command)
+        {
+            var order = _repository.Get(command.OrderId);
+            order.UnpairFromRideLinq();
+            _repository.Save(order, command.Id.ToString());
+        }
+
+        public void Handle(UpdateTripInfoInOrderForManualRideLinq command)
+        {
+            var order = _repository.Get(command.OrderId);
+            order.UpdateRideLinqTripInfo(command.Distance,command.Total, command.Fare, command.FareAtAlternateRate, command.Tax,
+                command.Tip, command.Toll, command.Extra,command.Surcharge,command.RateAtTripStart, command.RateAtTripEnd, 
+                command.RateChangeTime ,command.EndTime, command.PairingToken, command.Medallion, command.TripId, command.DriverId);
+
             _repository.Save(order, command.Id.ToString());
         }
     }

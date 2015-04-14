@@ -25,7 +25,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 		readonly IAppSettings _settings;
 
 	    private bool _isStarted;
-	    private string _market;
 
 		public VehicleService(IOrderWorkflowService orderWorkflowService,
 			IDirections directions,
@@ -62,8 +61,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 				.Select (x => new { x.address, vehicle =  GetNearestVehicle(x.address, x.vehicles) })
 				.DistinctUntilChanged(x => x.vehicle == null ? double.MaxValue : Position.CalculateDistance (x.vehicle.Latitude, x.vehicle.Longitude, x.address.Latitude, x.address.Longitude))
 				.SelectMany(x => CheckForEta(x.address, x.vehicle));
-            
-            orderWorkflowService.GetAndObserveMarket().Subscribe(market => _market = market);
 		}
 
 		public void Start()

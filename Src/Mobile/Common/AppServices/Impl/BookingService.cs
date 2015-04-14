@@ -15,6 +15,8 @@ using Cirrious.CrossCore;
 using Cirrious.MvvmCross.Plugins.PhoneCall;
 using OrderRatings = apcurium.MK.Common.Entity.OrderRatings;
 using System.Globalization;
+using apcurium.MK.Booking.Api.Contract.Requests.Payment;
+using apcurium.MK.Common.Resources;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
@@ -33,7 +35,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			IGeolocService geolocService)
 		{
 			_geolocService = geolocService;
-			_phoneCallTask = phoneCallTask;
+		    _phoneCallTask = phoneCallTask;
 			_appSettings = appSettings;
 			_localize = localize;
 			_accountService = accountService;
@@ -165,7 +167,13 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
 		public bool IsStatusCompleted (OrderStatusDetail status)
         {
-			return status.IBSStatusId.IsNullOrEmpty () ||
+		    if (status.IsManualRideLinq)
+		    {
+		        return status.Status == OrderStatus.Completed ||
+                    status.Status == OrderStatus.Canceled;
+		    }
+		    
+            return status.IBSStatusId.IsNullOrEmpty() ||
 				status.IBSStatusId.SoftEqual (VehicleStatuses.Common.Cancelled) ||
 				status.IBSStatusId.SoftEqual (VehicleStatuses.Common.Done) ||
 				status.IBSStatusId.SoftEqual (VehicleStatuses.Common.NoShow) ||
@@ -326,6 +334,43 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             var request = new OrderRatingsRequest{ Note = orderRatings.Note, OrderId = orderRatings.OrderId, RatingScores = orderRatings.RatingScores };
 			return UseServiceClientAsync<OrderServiceClient> (service => service.RateOrder (request));
         }
+
+        public async Task<OrderManualRideLinqDetail> PairWithManualRideLinq(string pairingCode, Address pickupAddress)
+        {
+            var request = new ManualRideLinqPairingRequest
+            {
+                PairingCode = pairingCode,
+                PickupAddress = pickupAddress,
+                ClientLanguageCode = _localize.CurrentLanguage,
+            };
+
+            var response = await UseServiceClientAsync<ManualPairingForRideLinqServiceClient, ManualRideLinqResponse>(service => service.Pair(request));
+
+            if (response.IsSuccessful)
+            {
+                UserCache.Set("LastOrderId", response.Data.OrderId.ToString());
+
+                return response.Data;
+            }
+
+            throw new Exception(response.ErrorCode);
+        }
+
+        public Task UnpairFromManualRideLinq(Guid orderId)
+        {
+            return UseServiceClientAsync<ManualPairingForRideLinqServiceClient>(service => service.Unpair(orderId));
+        }
+
+        public async Task<OrderManualRideLinqDetail> GetTripInfoFromManualRideLinq(Guid orderId)
+        {
+            var response = await UseServiceClientAsync<ManualPairingForRideLinqServiceClient, ManualRideLinqResponse>(service => service.GetUpdatedTrip(orderId));
+
+            if (response.IsSuccessful)
+            {
+                return response.Data;
+            }
+
+            throw new Exception(response.Message);
+        }
     }
 }
-

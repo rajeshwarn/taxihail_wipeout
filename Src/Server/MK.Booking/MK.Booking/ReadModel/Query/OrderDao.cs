@@ -144,5 +144,13 @@ namespace apcurium.MK.Booking.ReadModel.Query
                 return context.Query<TemporaryOrderCreationInfoDetail>().SingleOrDefault(c => c.OrderId == orderId);
             }
         }
+
+        public OrderManualRideLinqDetail GetManualRideLinqById(Guid orderId)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                return context.Query<OrderManualRideLinqDetail>().SingleOrDefault(c => c.OrderId == orderId);
+            }
+        }
     }
 }

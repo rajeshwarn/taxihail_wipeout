@@ -25,6 +25,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private readonly IPaymentService _paymentService;
 		private readonly IPromotionService _promotionService;
 
+		private bool _isCreatingMenu;
+
 		public PanelMenuViewModel (IMvxWebBrowserTask browserTask, 
 			IOrderWorkflowService orderWorkflowService,
 			IAccountService accountService,
@@ -43,58 +45,45 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		public async Task Start()
 		{
-			// Load cached payment settings
-			var paymentSettings = await _paymentService.GetPaymentSettings();
-			IsPayInTaxiEnabled = paymentSettings.IsPayInTaxiEnabled || paymentSettings.PayPalClientSettings.IsEnabled;
+			_isCreatingMenu = true;
 
-			// Load cached settings
-		    var notificationSettings = await _accountService.GetNotificationSettings(true);
+			// Initialize list with default values
+			InitIOSMenuList();
 
-            // Load and cache user notification settings. DO NOT await.
-#pragma warning disable 4014
-            _accountService.GetNotificationSettings();
-#pragma warning restore 4014
+			// Side panel creation should not block the UI
+			await Task.Run (async() => 
+				{
+					// Load cached payment settings
+					var paymentSettings = await _paymentService.GetPaymentSettings();
+					IsPayInTaxiEnabled = paymentSettings.IsPayInTaxiEnabled || paymentSettings.PayPalClientSettings.IsEnabled;
 
-		    IsNotificationsEnabled = notificationSettings.Enabled;
-            IsTaxiHailNetworkEnabled = Settings.Network.Enabled;
+					// Load cached settings
+					var notificationSettings = await _accountService.GetNotificationSettings(true);
 
-            // Display a watermark indicating on which server the application is pointing
-            SetServerWatermarkText();
+					// Load and cache user notification settings. DO NOT await.
+					_accountService.GetNotificationSettings();
 
-            // get the number of active promotions.
-            RefreshPromoCodeCountIfNecessary();
+					IsNotificationsEnabled = notificationSettings.Enabled;
+					IsTaxiHailNetworkEnabled = Settings.Network.Enabled;
 
-		    // N.B.: This setup is for iOS only! For Android see: SubView_MainMenu.xaml
-			InitMenuList();
+					// Display a watermark indicating on which server the application is pointing
+					SetServerWatermarkText();
+
+					// Get the number of active promotions.
+					RefreshPromoCodeCountIfNecessary();
+
+					// N.B.: This setup is for iOS only! For Android see: SubView_MainMenu.xaml
+					InitIOSMenuList();
+
+					_isCreatingMenu = false;
+				});
+
+			RefreshIOSMenu();
 		}
-
-	    private async void RefreshPromoCodeCountIfNecessary()
-	    {
-	        try
-	        {
-	            if (Settings.PromotionEnabled)
-	            {
-                    var promoCodes = await _promotionService.GetActivePromotions().HandleErrors();
-
-                    PromoCodeAlert = promoCodes.Any()
-                        ? (int?)promoCodes.Length
-                        : null;
-	            }
-	            else
-	            {
-	                PromoCodeAlert = null;
-	            }
-
-                RefreshMenuBadges();
-	        }
-	        catch (Exception ex)
-	        {
-	            Logger.LogError(ex);
-	        }
-	    }
-
-		partial void InitMenuList();
-		partial void RefreshMenuBadges();
+			
+		partial void InitIOSMenuList();
+		partial void RefreshIOSMenu();
+		partial void RefreshIOSMenuBadges();
 		partial void PartialConstructor();
 
 	    private string _serverWatermarkText;
@@ -116,7 +105,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 	    {
 	        get
 	        {
-	            return _promoCodeAlert;
+				return Settings.PromotionEnabled ? _promoCodeAlert : null;
 	        }
 	        set
 	        {
@@ -197,7 +186,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 {
                     _menuIsOpen = value;
 
-                    if (_menuIsOpen)
+					if (_menuIsOpen && !_isCreatingMenu)
                     {
                         RefreshPromoCodeCountIfNecessary();
                     }
@@ -427,6 +416,27 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			IsClosePanelFromMenuItem = true;
 			MenuIsOpen = false;
+		}
+
+		private async void RefreshPromoCodeCountIfNecessary()
+		{
+			try
+			{
+				if (Settings.PromotionEnabled)
+				{
+					var promoCodes = await _promotionService.GetActivePromotions();
+
+					PromoCodeAlert = promoCodes.Any()
+						? (int?)promoCodes.Length
+						: null;
+
+					RefreshIOSMenuBadges();
+				}
+			}
+			catch (Exception ex)
+			{
+				Logger.LogError(ex);
+			}
 		}
 
 	    private void SetServerWatermarkText()

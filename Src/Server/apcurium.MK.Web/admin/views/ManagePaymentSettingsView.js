@@ -256,6 +256,7 @@
             var btDiv = this.$("#braintreeSettingsDiv");
             var cmtDiv = this.$("#cmtSettingsDiv");
             var monerisDiv = this.$("#monerisSettingsDiv");
+            var cmtRideLinqDiv = this.$("#cmtRideLinqDiv");
 
             var isPayPalEnabled = this.$("[id=isPayPalEnabled]").val() == 'true';
             var preAuthAmountEnabledDiv = this.$("#preAuthAmountEnabledDiv");
@@ -285,6 +286,11 @@
             {
                 btDiv.hide();
                 cmtDiv.show();
+                if (newPaymentMode == "RideLinqCmt") {
+                    cmtRideLinqDiv.show();
+                } else {
+                    cmtRideLinqDiv.hide();
+                }
                 monerisDiv.hide();
             }
             else if (newPaymentMode == "Braintree")

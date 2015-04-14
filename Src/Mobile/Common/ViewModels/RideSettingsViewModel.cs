@@ -48,25 +48,33 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		    using (this.Services ().Message.ShowProgress ())
 			{
-				_bookingSettings = bookingSettings.FromJson<BookingSettings>();
-			    _paymentSettings = await _paymentService.GetPaymentSettings();
+			    try
+			    {
+                    _bookingSettings = bookingSettings.FromJson<BookingSettings>();
+                    _paymentSettings = await _paymentService.GetPaymentSettings();
 
-                var p = await _accountService.GetPaymentsList(_market);
-				_payments = p == null ? new ListItem[0] : p.Select(x => new ListItem { Id = x.Id, Display = this.Services().Localize[x.Display] }).ToArray();
-				
-                RaisePropertyChanged(() => Payments );
-				RaisePropertyChanged(() => ChargeTypeId );
-				RaisePropertyChanged(() => ChargeTypeName );
-				RaisePropertyChanged(() => IsChargeTypesEnabled);
-                RaisePropertyChanged(() => IsChargeAccountPaymentEnabled);
-                RaisePropertyChanged(() => IsPayBackFieldEnabled);
+                    var p = await _accountService.GetPaymentsList(_market);
+                    _payments = p == null ? new ListItem[0] : p.Select(x => new ListItem { Id = x.Id, Display = this.Services().Localize[x.Display] }).ToArray();
 
-				// this should be called last since it calls the server, we don't want to slow down other controls
-				var v = await _accountService.GetVehiclesList();
-                _vehicles = v == null ? new ListItem[0] : v.Select(x => new ListItem { Id = x.ReferenceDataVehicleId, Display = x.Name }).ToArray();
-				RaisePropertyChanged(() => Vehicles);
-				RaisePropertyChanged(() => VehicleTypeId );
-				RaisePropertyChanged(() => VehicleTypeName );
+                    RaisePropertyChanged(() => Payments);
+                    RaisePropertyChanged(() => ChargeTypeId);
+                    RaisePropertyChanged(() => ChargeTypeName);
+                    RaisePropertyChanged(() => IsChargeTypesEnabled);
+                    RaisePropertyChanged(() => IsChargeAccountPaymentEnabled);
+                    RaisePropertyChanged(() => IsPayBackFieldEnabled);
+
+                    // this should be called last since it calls the server, we don't want to slow down other controls
+                    var v = await _accountService.GetVehiclesList();
+                    _vehicles = v == null ? new ListItem[0] : v.Select(x => new ListItem { Id = x.ReferenceDataVehicleId, Display = x.Name }).ToArray();
+                    RaisePropertyChanged(() => Vehicles);
+                    RaisePropertyChanged(() => VehicleTypeId);
+                    RaisePropertyChanged(() => VehicleTypeName);
+			    }
+			    catch (Exception ex)
+			    {
+                    Logger.LogMessage(ex.Message, ex.ToString());
+                    this.Services().Message.ShowMessage(this.Services().Localize["Error"], this.Services().Localize["RideSettingsLoadError"]);
+			    }
 			}
 		}
 

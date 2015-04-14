@@ -69,6 +69,7 @@
     <Compile Include="TaxiHail\BaseServiceClient.cs" />
     <Compile Include="TaxiHail\CompanyServiceClient.cs" />
     <Compile Include="TaxiHail\ConfigurationClientService.cs" />
+    <Compile Include="TaxiHail\ManualPairingForRideLinqServiceClient.cs" />
     <Compile Include="TaxiHail\NearbyPlacesClient.cs" />
     <Compile Include="TaxiHail\NetworkRoamingServiceClient.cs" />
     <Compile Include="TaxiHail\OrderServiceClient.cs" />

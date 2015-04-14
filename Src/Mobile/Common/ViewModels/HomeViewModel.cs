@@ -17,6 +17,8 @@ using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Maps.Geo;
 using System.Threading;
 using System.Threading.Tasks;
+using apcurium.MK.Common.Configuration.Impl;
+using Cirrious.CrossCore.Core;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -30,6 +32,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private readonly ITermsAndConditionsService _termsService;
 	    private readonly IMvxLifetime _mvxLifetime;
 		private readonly IAccountService _accountService;
+	    private readonly IBookingService _bookingService;
+	    private readonly IPaymentService _paymentService;
 
 		private HomeViewModelState _currentState = HomeViewModelState.Initial;
 
@@ -44,7 +48,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			ITermsAndConditionsService termsService,
 			IPaymentService paymentService, 
             IMvxLifetime mvxLifetime,
-            IPromotionService promotionService) : base()
+            IPromotionService promotionService,
+            IPaymentService paymentService1, 
+            IBookingService bookingService) : base()
 		{
 			_locationService = locationService;
 			_orderWorkflowService = orderWorkflowService;
@@ -53,7 +59,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_vehicleService = vehicleService;
 			_termsService = termsService;
 		    _mvxLifetime = mvxLifetime;
-			_accountService = accountService;
+		    _paymentService = paymentService1;
+		    _bookingService = bookingService;
+		    _accountService = accountService;
 
             Panel = new PanelMenuViewModel(browserTask, orderWorkflowService, accountService, phoneService, paymentService, promotionService);
 
@@ -102,16 +110,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 			if (firstTime)
 			{
-                // Don't await side panel creation
 				Panel.Start();
+
 				CheckTermsAsync();
+
+                CheckManualRideLinqEnabledAsync();
 
 				this.Services().ApplicationInfo.CheckVersionAsync();
 
 				_tutorialService.DisplayTutorialToNewUser();
 				_pushNotificationService.RegisterDeviceForPushNotifications(force: true);
 			}
-				
+			
 			if (_locateUser)
 			{
 				AutomaticLocateMeAtPickup.Execute (null);
@@ -127,16 +137,46 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_vehicleService.Start();
 		}
 
+	    private async void CheckManualRideLinqEnabledAsync()
+	    {
+	        try
+	        {
+	            var settings = await _paymentService.GetPaymentSettings();
+
+	            IsManualRideLinqEnabled = settings.PaymentMode == PaymentMethod.RideLinqCmt
+                                           && settings.CmtPaymentSettings.IsManualRidelinqCheckInEnabled
+                                           && !_lastMarket.HasValue();
+	        }
+	        catch (Exception ex)
+	        {
+	            this.Logger.LogError(ex);
+	        }
+	    }
+
 		public async void CheckActiveOrderAsync(bool firstTime)
 		{
 			var lastOrder = await _orderWorkflowService.GetLastActiveOrder ();
 			if(lastOrder != null)
 			{
-				ShowViewModelAndRemoveFromHistory<BookingStatusViewModel> (new
-				{
-					order = lastOrder.Item1.ToJson (),
-					orderStatus = lastOrder.Item2.ToJson ()
-				});
+			    if (lastOrder.Item1.IsManualRideLinq)
+			    {
+                    var orderManualRideLinqDetail = await _bookingService.GetTripInfoFromManualRideLinq(lastOrder.Item1.Id);
+
+                    ShowViewModelAndRemoveFromHistory<ManualRideLinqStatusViewModel>(new
+                    {
+                        orderManualRideLinqDetail = orderManualRideLinqDetail.ToJson()
+                    });
+			    }
+			    else
+			    {
+                    ShowViewModelAndRemoveFromHistory<BookingStatusViewModel>(new
+                    {
+                        order = lastOrder.Item1.ToJson(),
+                        orderStatus = lastOrder.Item2.ToJson()
+                    });
+			    }
+
+				
 			}
 			else if (firstTime)
 			{
@@ -231,6 +271,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_vehicleService.Stop();
 		}
 
+	    public bool IsManualRideLinqEnabled
+	    {
+	        get { return _isManualRideLinqEnabled; }
+	        set
+	        {
+	            _isManualRideLinqEnabled = value;
+	            RaisePropertyChanged();
+	        }
+	    }
+
 	    public PanelMenuViewModel Panel { get; set; }
 
 		private MapViewModel _map;
@@ -244,7 +294,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
-		private OrderOptionsViewModel _orderOptions;
+	    private OrderOptionsViewModel _orderOptions;
 		public OrderOptionsViewModel OrderOptions
 		{ 
 			get { return _orderOptions; }
@@ -350,6 +400,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 	        }
 	    }
 
+	    public ICommand ManualPairingRideLinq
+	    {
+	        get
+	        {
+	            return this.GetCommand(() =>
+	            {
+	                ShowViewModel<ManualPairingForRideLinqViewModel>();
+	            });
+	        }
+	    }
+
 	    public ICommand TrainStationSearch
 	    {
 	        get
@@ -449,8 +510,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		}
 
 		private bool _subscribedToLifetimeChanged;
+	    private bool _isManualRideLinqEnabled;
 
-		public void SubscribeLifetimeChangedIfNecessary()
+	    public void SubscribeLifetimeChangedIfNecessary()
 		{
 			if (!_subscribedToLifetimeChanged)
 			{
@@ -493,6 +555,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     this.Services().Localize["MarketChangedMessage"]);
             }
             _lastMarket = market;
+
+            CheckManualRideLinqEnabledAsync();
         }
     }
 }

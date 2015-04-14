@@ -33,6 +33,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 		private static ClientPaymentSettings _cachedSettings;
         
         private const string PayedCacheSuffix = "_Payed";
+		private const string PaymentSettingsCacheKey = "PaymentSettings";
 		private const string OnErrorMessage = "Payment Method not found or unknown";
 
 		public PaymentService(string url, string sessionId,
@@ -51,12 +52,30 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
 		public async Task<ClientPaymentSettings> GetPaymentSettings(bool cleanCache = false)
 		{
+			_cachedSettings = _cache.Get<ClientPaymentSettings>(PaymentSettingsCacheKey);
+
 			if (_cachedSettings == null || cleanCache)
 			{
-                _cachedSettings = await _serviceClient.GetPaymentSettings().ConfigureAwait(false);
-                _client = GetClient(_cachedSettings);
+				await RefreshPaymentSettings();
+
+				_client = GetClient (_cachedSettings);
+
+				return _cachedSettings;
+			} 
+			else 
+			{
+				// Update cache...
+				Task.Run(() => RefreshPaymentSettings());
+
+				// ... and return current settings
+				return _cachedSettings;
 			}
-			return _cachedSettings;
+		}
+
+		private async Task RefreshPaymentSettings()
+		{
+			_cachedSettings = await _serviceClient.GetPaymentSettings ().ConfigureAwait (false);
+			_cache.Set(PaymentSettingsCacheKey, _cachedSettings);
 		}
 
 		public void ClearPaymentSettingsFromCache()
@@ -65,6 +84,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			// since we can't them at the same time as the standard settings because we could be not authenticated
 			_cachedSettings = null;
 		    _client = null;
+			_cache.Clear(PaymentSettingsCacheKey);
 		}
 
         public double? GetPaymentFromCache(Guid orderId)

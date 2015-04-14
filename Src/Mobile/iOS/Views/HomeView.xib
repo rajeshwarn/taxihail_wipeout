@@ -6,10 +6,12 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="HomeView">
             <connections>
+                <outlet property="RideLinqSection" destination="3Lq-30-29T" id="UT8-Dz-Y4w"/>
                 <outlet property="bottomBar" destination="cXg-Q6-nLg" id="wBh-UX-pyq"/>
                 <outlet property="btnAirport" destination="aEE-PN-YXj" id="gRf-H3-trA"/>
                 <outlet property="btnLocateMe" destination="Jqp-iu-ci1" id="Ea5-fR-6Yf"/>
                 <outlet property="btnMenu" destination="MeW-ns-SQv" id="7wz-qB-e5G"/>
+                <outlet property="btnRideLinqCheckIn" destination="wMc-OE-t7x" id="bFb-C1-GSc"/>
                 <outlet property="btnTrain" destination="rTf-vs-kUc" id="csz-MU-0ht"/>
                 <outlet property="constraintHomeLeadingSpace" destination="Ofk-d3-Xjf" id="rC5-er-L3E"/>
                 <outlet property="constraintOrderEditTrailingSpace" destination="4Uw-iv-741" id="egd-2Y-fEP"/>
@@ -107,6 +109,25 @@
                             <rect key="frame" x="500" y="22" width="304" height="483"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         </view>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3Lq-30-29T" userLabel="RideLinq">
+                            <rect key="frame" x="100" y="457" width="120" height="42"/>
+                            <subviews>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wMc-OE-t7x" customClass="FlatButton">
+                                    <rect key="frame" x="0.0" y="0.0" width="120" height="42"/>
+                                    <state key="normal" title="CHECK IN">
+                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                    </state>
+                                </button>
+                            </subviews>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstItem="wMc-OE-t7x" firstAttribute="leading" secondItem="3Lq-30-29T" secondAttribute="leading" id="4cL-dW-EvE"/>
+                                <constraint firstAttribute="height" constant="42" id="UrL-8f-ebQ"/>
+                                <constraint firstItem="wMc-OE-t7x" firstAttribute="top" secondItem="3Lq-30-29T" secondAttribute="top" id="ZhS-0K-i6z"/>
+                                <constraint firstAttribute="trailing" secondItem="wMc-OE-t7x" secondAttribute="trailing" id="diC-Le-Gtd"/>
+                                <constraint firstAttribute="bottom" secondItem="wMc-OE-t7x" secondAttribute="bottom" id="r0g-I4-xvf"/>
+                            </constraints>
+                        </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4OH-fP-dh3" customClass="AddressPickerView">
                             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -121,17 +142,21 @@
                         <constraint firstAttribute="trailing" secondItem="DgF-jB-8zt" secondAttribute="trailing" id="1zx-5z-Qo2"/>
                         <constraint firstItem="Fsx-d8-MLA" firstAttribute="left" secondItem="73H-fC-yqb" secondAttribute="left" constant="500" id="4Uw-iv-741"/>
                         <constraint firstAttribute="trailing" secondItem="cXg-Q6-nLg" secondAttribute="trailing" id="8Ab-0L-enX"/>
+                        <constraint firstAttribute="centerX" secondItem="3Lq-30-29T" secondAttribute="centerX" id="8bz-gM-yNg"/>
                         <constraint firstItem="HaA-X5-eHm" firstAttribute="top" secondItem="73H-fC-yqb" secondAttribute="top" constant="22" id="FRw-GE-bhA"/>
+                        <constraint firstItem="cXg-Q6-nLg" firstAttribute="top" secondItem="3Lq-30-29T" secondAttribute="bottom" constant="13" id="GRG-m9-S2h"/>
                         <constraint firstItem="MeW-ns-SQv" firstAttribute="top" secondItem="aEE-PN-YXj" secondAttribute="bottom" constant="8" id="GwO-hR-URR"/>
                         <constraint firstItem="lYS-4q-3Mj" firstAttribute="top" secondItem="HaA-X5-eHm" secondAttribute="bottom" constant="620" id="JSE-qi-pXl"/>
                         <constraint firstItem="HaA-X5-eHm" firstAttribute="left" secondItem="73H-fC-yqb" secondAttribute="left" constant="8" id="MI6-S6-jXH"/>
                         <constraint firstItem="DgF-jB-8zt" firstAttribute="top" secondItem="73H-fC-yqb" secondAttribute="top" id="Mlm-GQ-8rc"/>
+                        <constraint firstItem="3Lq-30-29T" firstAttribute="leading" secondItem="73H-fC-yqb" secondAttribute="leading" constant="100" id="Ni3-Je-hWc"/>
                         <constraint firstAttribute="centerX" secondItem="HaA-X5-eHm" secondAttribute="centerX" id="Pnu-1F-Vfo"/>
                         <constraint firstItem="MeW-ns-SQv" firstAttribute="left" secondItem="73H-fC-yqb" secondAttribute="left" constant="8" id="Q0C-IM-4L9"/>
                         <constraint firstAttribute="right" secondItem="lYS-4q-3Mj" secondAttribute="right" constant="8" id="Syf-T8-VwL"/>
                         <constraint firstAttribute="bottom" secondItem="cXg-Q6-nLg" secondAttribute="bottom" id="VBK-AW-R7l"/>
                         <constraint firstItem="cXg-Q6-nLg" firstAttribute="top" secondItem="Fsx-d8-MLA" secondAttribute="bottom" constant="7" id="Vjz-XR-Ktl"/>
                         <constraint firstItem="Fsx-d8-MLA" firstAttribute="top" secondItem="73H-fC-yqb" secondAttribute="top" constant="22" id="XF0-qe-pxP"/>
+                        <constraint firstAttribute="trailing" secondItem="3Lq-30-29T" secondAttribute="trailing" constant="100" id="YLZ-ZI-4G7"/>
                         <constraint firstItem="lYS-4q-3Mj" firstAttribute="left" secondItem="73H-fC-yqb" secondAttribute="left" constant="8" id="Z3E-95-Tkk"/>
                         <constraint firstItem="DgF-jB-8zt" firstAttribute="leading" secondItem="73H-fC-yqb" secondAttribute="leading" id="ZSI-kr-X81"/>
                         <constraint firstItem="lYS-4q-3Mj" firstAttribute="bottom" secondItem="cXg-Q6-nLg" secondAttribute="bottom" constant="418" id="aqP-8Y-Hn4"/>

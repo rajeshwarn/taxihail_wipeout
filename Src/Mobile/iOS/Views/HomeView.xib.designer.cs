@@ -25,6 +25,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.OverlayButton btnMenu { get; set; }
 
 		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnRideLinqCheckIn { get; set; }
+
+		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.OverlayButton btnTrain { get; set; }
 
 		[Outlet]
@@ -62,6 +65,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Views.PanelMenuView panelMenu { get; set; }
+
+		[Outlet]
+		UIKit.UIView RideLinqSection { get; set; }
 		
 		void ReleaseDesignerOutlets ()
 		{
@@ -75,11 +81,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				btnAirport = null;
 			}
 
-			if (btnTrain != null) {
-				btnTrain.Dispose ();
-				btnTrain = null;
-			}
-
 			if (btnLocateMe != null) {
 				btnLocateMe.Dispose ();
 				btnLocateMe = null;
@@ -88,6 +89,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			if (btnMenu != null) {
 				btnMenu.Dispose ();
 				btnMenu = null;
+			}
+
+			if (btnRideLinqCheckIn != null) {
+				btnRideLinqCheckIn.Dispose ();
+				btnRideLinqCheckIn = null;
+			}
+
+			if (btnTrain != null) {
+				btnTrain.Dispose ();
+				btnTrain = null;
 			}
 
 			if (constraintHomeLeadingSpace != null) {
@@ -148,6 +159,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			if (panelMenu != null) {
 				panelMenu.Dispose ();
 				panelMenu = null;
+			}
+
+			if (RideLinqSection != null) {
+				RideLinqSection.Dispose ();
+				RideLinqSection = null;
 			}
 		}
 	}

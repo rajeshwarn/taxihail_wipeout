@@ -13,7 +13,7 @@ namespace apcurium.MK.Booking.CommandBuilder
 {
     public static class SendReceiptCommandBuilder
     {
-        public static SendReceipt GetSendReceiptCommand(OrderDetail order, AccountDetail account, string vehicleNumber, DriverInfos driverInfos,
+        public static SendReceipt GetSendReceiptCommand(OrderDetail order, AccountDetail account, int? orderId, string vehicleNumber, DriverInfos driverInfos,
             double? fare, double? toll, double? tip, double? tax, OrderPaymentDetail orderPayment = null, double? amountSavedByPromotion = null,
             PromotionUsageDetail promotionUsed = null, CreditCardDetails creditCard = null)
         {
@@ -22,7 +22,7 @@ namespace apcurium.MK.Booking.CommandBuilder
                 Id = Guid.NewGuid(),
                 OrderId = order.Id,
                 EmailAddress = account.Email,
-                IBSOrderId = order.IBSOrderId ?? 0,
+                IBSOrderId = orderId ?? 0,
                 PickupDate = order.PickupDate,
                 DropOffDate = order.DropOffDate,
                 VehicleNumber = vehicleNumber,

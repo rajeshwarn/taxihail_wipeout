@@ -141,6 +141,8 @@
     <Compile Include="OrderFixture\given_a_read_model_database_for_receipt_email_map.cs" />
     <Compile Include="OrderFixture\given_no_order.cs" />
     <Compile Include="OrderFixture\given_one_order.cs" />
+    <Compile Include="OrderFixture\given_one_order_created_by_ridelinq_pairing.cs" />
+    <Compile Include="OrderFixture\given_ridelin_pairing_request.cs" />
     <Compile Include="PromotionFixture\given_no_promotion.cs" />
     <Compile Include="PromotionFixture\given_one_promotion.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

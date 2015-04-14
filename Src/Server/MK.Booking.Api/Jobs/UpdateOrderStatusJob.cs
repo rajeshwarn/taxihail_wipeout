@@ -98,13 +98,13 @@ namespace apcurium.MK.Booking.Api.Jobs
                             ? string.Empty
                             : string.Format(" for company {0}", orderGroup.Key.CompanyKey));
                         Log.DebugFormat("Starting BatchUpdateStatus with {0} orders of status {1}", ordersForCompany.Count(o => o.Status == OrderStatus.WaitingForPayment), "WaitingForPayment");
-                        BatchUpdateStatus(orderGroup.Key.CompanyKey, orderGroup.Key.Market, ordersForCompany.Where(o => o.Status == OrderStatus.WaitingForPayment));
+                        BatchUpdateStatus(orderGroup.Key.CompanyKey, ordersForCompany.Where(o => o.Status == OrderStatus.WaitingForPayment));
                         Log.DebugFormat("Starting BatchUpdateStatus with {0} orders of status {1}", ordersForCompany.Count(o => o.Status == OrderStatus.Pending), "Pending");
-                        BatchUpdateStatus(orderGroup.Key.CompanyKey, orderGroup.Key.Market, ordersForCompany.Where(o => o.Status == OrderStatus.Pending));
+                        BatchUpdateStatus(orderGroup.Key.CompanyKey, ordersForCompany.Where(o => o.Status == OrderStatus.Pending));
                         Log.DebugFormat("Starting BatchUpdateStatus with {0} orders of status {1}", ordersForCompany.Count(o => o.Status == OrderStatus.TimedOut), "TimedOut");
-                        BatchUpdateStatus(orderGroup.Key.CompanyKey, orderGroup.Key.Market, ordersForCompany.Where(o => o.Status == OrderStatus.TimedOut));
+                        BatchUpdateStatus(orderGroup.Key.CompanyKey, ordersForCompany.Where(o => o.Status == OrderStatus.TimedOut));
                         Log.DebugFormat("Starting BatchUpdateStatus with {0} orders of status {1}", ordersForCompany.Count(o => o.Status == OrderStatus.Created), "Created");
-                        BatchUpdateStatus(orderGroup.Key.CompanyKey, orderGroup.Key.Market, ordersForCompany.Where(o => o.Status == OrderStatus.Created));
+                        BatchUpdateStatus(orderGroup.Key.CompanyKey, ordersForCompany.Where(o => o.Status == OrderStatus.Created));
                     }
                     
                     hasOrdersWaitingForPayment = orders.Any(o => o.Status == OrderStatus.WaitingForPayment);
@@ -122,18 +122,32 @@ namespace apcurium.MK.Booking.Api.Jobs
             return hasOrdersWaitingForPayment;
         }
 
-        private void BatchUpdateStatus(string companyKey, string market, IEnumerable<OrderStatusDetail> orders)
+        private void BatchUpdateStatus(string companyKey, IEnumerable<OrderStatusDetail> orders)
         {
-            var ibsOrdersIds = orders.Select(statusDetail => statusDetail.IBSOrderId != null ? statusDetail.IBSOrderId.Value : 0).ToList();
+            // Enumerate orders to avoid multiple enumerations of IEnumerable
+            var orderStatusDetails = orders as OrderStatusDetail[] ?? orders.ToArray();
+
+            var manualRideLinqOrders = orderStatusDetails.Where(o => o.IsManualRideLinq);
+            foreach (var orderStatusDetail in manualRideLinqOrders)
+            {
+                _orderStatusUpdater.HandleManualRidelinqFlow(orderStatusDetail);
+            }
+
+            var ibsOrdersIds = orderStatusDetails
+                .Where(order => !order.IsManualRideLinq)
+                .Select(statusDetail => statusDetail.IBSOrderId ?? 0)
+                .ToList();
+
             const int take = 10;
             for (var skip = 0; skip < ibsOrdersIds.Count; skip = skip + take)
             {
                 var nextGroup = ibsOrdersIds.Skip(skip).Take(take).ToList();
                 var orderStatuses = _ibsServiceProvider.Booking(companyKey).GetOrdersStatus(nextGroup);
-
+                
                 foreach (var ibsStatus in orderStatuses)
                 {
-                    var order = orders.FirstOrDefault(o => o.IBSOrderId == ibsStatus.IBSOrderId);
+                 
+                    var order = orderStatusDetails.FirstOrDefault(o => o.IBSOrderId == ibsStatus.IBSOrderId);
                     if (order == null)
                     {
                         continue;
