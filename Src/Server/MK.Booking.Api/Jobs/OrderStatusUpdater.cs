@@ -34,6 +34,7 @@ using apcurium.MK.Common.Resources;
 using Infrastructure.EventSourcing;
 using Infrastructure.Messaging;
 using System;
+using CMTPayment;
 using log4net;
 using ServiceStack.Common.Web;
 
@@ -60,6 +61,8 @@ namespace apcurium.MK.Booking.Api.Jobs
         private readonly ICreditCardDao _creditCardDao;
         private readonly ILogger _logger;
         private readonly Resources.Resources _resources;
+
+        private CmtTripInfoServiceHelper _cmtTripInfoServiceHelper;
 
         private static readonly ILog Log = LogManager.GetLogger(typeof(OrderStatusUpdater));
 
@@ -125,6 +128,41 @@ namespace apcurium.MK.Booking.Api.Jobs
                 Tip = orderFromIbs.Tip,
                 Tax = orderFromIbs.VAT,
             });
+        }
+
+        public void HandleManualRidelinqFlow(OrderStatusDetail orderstatusDetail)
+        {
+            var rideLinqDetails = _orderDao.GetManualRideLinqById(orderstatusDetail.OrderId);
+            if (rideLinqDetails != null)
+            {
+                InitializeCmtServiceClient();
+
+                var tripInfo = _cmtTripInfoServiceHelper.GetTripInfo(rideLinqDetails.PairingToken);
+                if (tripInfo != null)
+                {
+                    _commandBus.Send(new UpdateTripInfoInOrderForManualRideLinq
+                    {
+                        Distance = tripInfo.Distance,
+                        EndTime = tripInfo.EndTime,
+                        Extra = Math.Round(((double)tripInfo.Extra / 100), 2),
+                        Fare = Math.Round(((double)tripInfo.Fare / 100), 2),
+                        Tax = Math.Round(((double)tripInfo.Tax / 100), 2),
+                        Tip = Math.Round(((double)tripInfo.Tip / 100), 2),
+                        Toll = tripInfo.TollHistory.Sum(toll => Math.Round(((double)toll.TollAmount / 100), 2)),
+                        Surcharge = Math.Round(((double)tripInfo.Surcharge / 100), 2),
+                        Total = Math.Round(((double)tripInfo.Total / 100), 2),
+                        FareAtAlternateRate = Math.Round(((double)tripInfo.FareAtAlternateRate / 100), 2),
+                        Medallion = tripInfo.Medallion,
+                        RateAtTripStart = Math.Round(((double)tripInfo.RateAtTripStart / 100), 2),
+                        RateAtTripEnd = Math.Round(((double)tripInfo.RateAtTripEnd / 100), 2),
+                        RateChangeTime = tripInfo.RateChangeTime,
+                        OrderId = orderstatusDetail.OrderId,
+                        PairingToken = tripInfo.PairingToken,
+                        TripId = tripInfo.TripId,
+                        DriverId = tripInfo.DriverId
+                    });
+                }
+            }
         }
 
         private void PopulateFromIbsOrder(OrderStatusDetail orderStatusDetail, IBSOrderInformation ibsOrderInfo)
@@ -785,6 +823,12 @@ namespace apcurium.MK.Booking.Api.Jobs
         private void SendMinimalPaymentProcessedMessageToDriver(string vehicleNumber, double amount, double meter, double tip)
         {
             _ibsOrderService.SendPaymentNotification(amount, meter, tip, null, vehicleNumber);
+        }
+
+        private void InitializeCmtServiceClient()
+        {
+            var cmtMobileServiceClient = new CmtMobileServiceClient(_serverSettings.GetPaymentSettings().CmtPaymentSettings, null, null);
+            _cmtTripInfoServiceHelper = new CmtTripInfoServiceHelper(cmtMobileServiceClient, _logger);
         }
     }
 }

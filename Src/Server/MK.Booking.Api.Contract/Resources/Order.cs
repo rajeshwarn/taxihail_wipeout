@@ -40,5 +40,7 @@ namespace apcurium.MK.Booking.Api.Contract.Resources
         public OrderStatus Status { get; set; }
 
         public string PromoCode { get; set; }
+
+        public bool IsManualRideLinq { get; set; }
     }
 }

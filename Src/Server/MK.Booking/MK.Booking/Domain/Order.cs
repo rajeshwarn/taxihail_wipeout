@@ -42,12 +42,53 @@ namespace apcurium.MK.Booking.Domain
             Handles<OrderCancelledBecauseOfError>(NoAction);
             Handles<PrepaidOrderPaymentInfoUpdated>(NoAction);
             Handles<RefundedOrderUpdated>(NoAction);
+            Handles<OrderManuallyPairedForRideLinq>(NoAction);
+            Handles<OrderUnpairedFromManualRideLinq>(NoAction);
+            Handles<ManualRideLinqTripInfoUpdated>(NoAction);
         }
-        
+
+
         public Order(Guid id, IEnumerable<IVersionedEvent> history)
             : this(id)
         {
             LoadFrom(history);
+        }
+
+        /// <summary>
+        /// Constructor for RideLinq
+        /// </summary>
+        public Order(Guid id, Guid accountId, DateTime pairingDate, string pairingCode, string pairingToken, Address pickupAddress,
+            string userAgent, string clientLanguageCode, string clientVersion, double? distance,
+            double? total, double? fare, double? faireAtAlternateRate, double? tax, double? tip, double? toll,
+            double? extra, double? surcharge, double? rateAtTripStart, double? rateAtTripEnd, string rateChangeTime, string medallion, int tripId, int driverId) 
+            : this(id)
+        {
+            Update(new OrderManuallyPairedForRideLinq
+            {
+                AccountId = accountId,
+                PairingDate = pairingDate,
+                UserAgent = userAgent,
+                ClientLanguageCode = clientLanguageCode,
+                ClientVersion = clientVersion,
+                PairingCode = pairingCode,
+                PairingToken = pairingToken,
+                PickupAddress = pickupAddress,
+                Total = total,
+                Fare = fare,
+                FareAtAlternateRate = faireAtAlternateRate,
+                Tax = tax,
+                Tip = tip,
+                Toll = toll,
+                Surcharge = surcharge,
+                Extra = extra,
+                RateAtTripStart = rateAtTripStart,
+                RateAtTripEnd = rateAtTripEnd,
+                RateChangeTime = rateChangeTime,
+                Distance = distance,
+                Medallion = medallion,
+                TripId = tripId,
+                DriverId = driverId
+            });
         }
 
         public Order(Guid id, Guid accountId, DateTime pickupDate, Address pickupAddress, Address dropOffAddress, BookingSettings settings,
@@ -89,6 +130,32 @@ namespace apcurium.MK.Booking.Domain
             Update(new IbsOrderInfoAddedToOrder
             {
                 IBSOrderId = ibsOrderId
+            });
+        }
+
+        public void UpdateRideLinqTripInfo(double? distance,double? total, double? fare,double? faireAtAlternateRate, double? tax, double? tip, double? toll,
+            double? extra, double? surcharge, double? rateAtTripStart, double? rateAtTripEnd, string rateChangeTime, 
+            DateTime? endTime, string pairingToken, string medallion, int tripId, int driverId)
+        {
+            Update(new ManualRideLinqTripInfoUpdated
+            {
+                Distance = distance, 
+                Total = total,
+                Fare = fare,
+                FareAtAlternateRate = faireAtAlternateRate,
+                Tax = tax,
+                Tip = tip,
+                Toll = toll,
+                Extra = extra,
+                Surcharge = surcharge,
+                RateAtTripStart = rateAtTripStart,
+                RateAtTripEnd = rateAtTripEnd,
+                RateChangeTime = rateChangeTime,
+                EndTime = endTime,
+                PairingToken = pairingToken,
+                Medallion = medallion,
+                TripId = tripId,
+                DriverId = driverId
             });
         }
 
@@ -211,6 +278,11 @@ namespace apcurium.MK.Booking.Domain
         public void Unpair()
         {
             Update(new OrderUnpairedForPayment());
+        }
+
+        public void UnpairFromRideLinq()
+        {
+            Update(new OrderUnpairedFromManualRideLinq());
         }
 
         public void PrepareForNextDispatch(string dispatchCompanyName, string dispatchCompanyKey)

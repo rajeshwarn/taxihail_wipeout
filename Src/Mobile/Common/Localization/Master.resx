@@ -1824,16 +1824,79 @@
   <data name="FilteredAddresses_Error_Message" xml:space="preserve">
     <value>There is currently no entries for this filter.</value>
   </data>
+  <data name="View_RideLinqStatus" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="View_RideLinqSummary" xml:space="preserve">
+    <value>Order summary</value>
+  </data>
   <data name="HistoryLoadError" xml:space="preserve">
     <value>Unable to load the history. Please try again later.</value>
+  </data>
+  <data name="View_RideLinqPair" xml:space="preserve">
+    <value>Check In</value>
   </data>
   <data name="PromotionLoadError" xml:space="preserve">
     <value>Unable to load the available promotions. Please try again later.</value>
   </data>
+  <data name="HomeView_ManualPairing" xml:space="preserve">
+    <value>Check In</value>
+  </data>
   <data name="RideSettingsLoadError" xml:space="preserve">
     <value>Unable to load the account settings. Please try again later.</value>
   </data>
+  <data name="ManualPairingForRideLinQ_Pair" xml:space="preserve">
+    <value>CHECK IN</value>
+  </data>
   <data name="PaymentLoadError" xml:space="preserve">
     <value>Unable to load the payment details. Please try again later.</value>
+  </data>
+  <data name="ManualPairingForRideLinQ_Instructions" xml:space="preserve">
+    <value>Enter the 7-digit code displayed on the taxi touchscreen to auto-pay and get an e-receipt at the end of your ride.</value>
+  </data>
+  <data name="ManualRideLinqStatus_PairingCode" xml:space="preserve">
+    <value>Pairing Code:</value>
+  </data>
+  <data name="ManualRideLinqStatus_Medallion" xml:space="preserve">
+    <value>Vehicule number:</value>
+  </data>
+  <data name="ManualRideLinqStatus_Distance" xml:space="preserve">
+    <value>Distance:</value>
+  </data>
+  <data name="ManualRideLinqStatus_Total" xml:space="preserve">
+    <value>Total cost:</value>
+  </data>
+  <data name="ManualRideLinqStatus_Fare" xml:space="preserve">
+    <value>Fare meter:</value>
+  </data>
+  <data name="ManualRideLinqStatus_Tax" xml:space="preserve">
+    <value>Tax amount:</value>
+  </data>
+  <data name="ManualRideLinqStatus_Tip" xml:space="preserve">
+    <value>Tip amount:</value>
+  </data>
+  <data name="ManualRideLinqStatus_Unpair" xml:space="preserve">
+    <value>Unpair</value>
+  </data>
+  <data name="ManualPairingForRideLinQ_Error_Title" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="ManualPairingForRideLinQ_Error_Message" xml:space="preserve">
+    <value>An error occurred during check in.</value>
+  </data>
+  <data name="ManualPairingForRideLinQ_InvalidCode_Title" xml:space="preserve">
+    <value>Invalid code</value>
+  </data>
+  <data name="ManualPairingForRideLinQ_InvalidCode_Message" xml:space="preserve">
+    <value>The pairing code is invalid.</value>
+  </data>
+  <data name="ManualRideLinqStatus_Driver" xml:space="preserve">
+    <value>Driver id:</value>
+  </data>
+  <data name="ManualRideLinqSummary_Done" xml:space="preserve">
+    <value>Done</value>
+  </data>
+  <data name="ManualUnPairingForRideLinQ_Error_Message" xml:space="preserve">
+    <value>An error occured when trying to unpair. Please try again.</value>
   </data>
 </root>

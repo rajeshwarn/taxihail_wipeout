@@ -71,5 +71,7 @@ namespace apcurium.MK.Booking.ReadModel
         public string ClientLanguageCode { get; set; }
 
         public string ClientVersion { get; set; }
+
+        public bool IsManualRideLinq { get; set; }
     }
 }
