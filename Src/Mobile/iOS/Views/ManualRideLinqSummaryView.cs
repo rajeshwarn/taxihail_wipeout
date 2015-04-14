@@ -12,13 +12,18 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		{
 		}
 
-		public override void ViewDidLoad()
+	    public override void ViewWillAppear(bool animated)
+	    {
+	        base.ViewWillAppear(animated);
+
+            NavigationController.NavigationBar.Hidden = false;
+	    }
+
+	    public override void ViewDidLoad()
 		{
 			base.ViewDidLoad();
 
 			var localize = this.Services().Localize;
-
-			NavigationController.NavigationBar.Hidden = false;
 
 			NavigationItem.Title = localize["RideSummaryTitleText"];
 			lblPairingCodeLabel.Text = localize["ManualRideLinqStatus_PairingCode"];
