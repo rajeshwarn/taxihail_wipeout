@@ -1,6 +1,7 @@
 ﻿using UIKit;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using Cirrious.MvvmCross.Binding.BindingContext;
+using System;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
