@@ -35,7 +35,7 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="_ _ _" minimumFontSize="35" translatesAutoresizingMaskIntoConstraints="NO" id="ffJ-rx-jiE">
-                            <rect key="frame" x="48" y="128" width="90" height="40"/>
+                            <rect key="frame" x="57" y="128" width="90" height="40"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="40" id="8bJ-Br-p1V"/>
                                 <constraint firstAttribute="width" constant="90" id="PBb-Kc-UjI"/>
@@ -45,7 +45,7 @@
                             <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
                         </textField>
                         <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="_ _ _ _" minimumFontSize="35" translatesAutoresizingMaskIntoConstraints="NO" id="Cf3-Se-yw5">
-                            <rect key="frame" x="164" y="128" width="120" height="40"/>
+                            <rect key="frame" x="173" y="128" width="120" height="40"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="120" id="G4n-0S-DeD"/>
                                 <constraint firstAttribute="height" constant="40" id="x5b-et-hlw"/>
@@ -55,7 +55,7 @@
                             <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
                         </textField>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bxc-dp-OfE">
-                            <rect key="frame" x="144" y="126" width="14" height="42"/>
+                            <rect key="frame" x="153" y="126" width="14" height="42"/>
                             <fontDescription key="fontDescription" type="system" pointSize="35"/>
                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                             <nil key="highlightedColor"/>
@@ -73,11 +73,11 @@
                     <constraints>
                         <constraint firstAttribute="centerX" secondItem="BVP-xw-EI2" secondAttribute="centerX" id="2gc-LE-zbO"/>
                         <constraint firstItem="bxc-dp-OfE" firstAttribute="top" secondItem="BVP-xw-EI2" secondAttribute="bottom" constant="41" id="3v5-nk-mDo"/>
-                        <constraint firstAttribute="trailing" secondItem="Cf3-Se-yw5" secondAttribute="trailing" constant="35" id="5ec-T1-JQP"/>
                         <constraint firstItem="BVP-xw-EI2" firstAttribute="top" secondItem="Xgm-lE-qM8" secondAttribute="top" constant="25" id="6zg-s2-wFd"/>
                         <constraint firstAttribute="bottom" secondItem="0Ok-qV-hDh" secondAttribute="bottom" constant="331" id="7kg-mK-SmX"/>
                         <constraint firstItem="Cf3-Se-yw5" firstAttribute="top" secondItem="BVP-xw-EI2" secondAttribute="bottom" constant="43" id="7pW-yX-WcH"/>
                         <constraint firstAttribute="trailing" secondItem="BVP-xw-EI2" secondAttribute="trailing" constant="10" id="IFJ-Km-7aL"/>
+                        <constraint firstAttribute="centerX" secondItem="bxc-dp-OfE" secondAttribute="centerX" id="KE5-Qd-jXe"/>
                         <constraint firstItem="ffJ-rx-jiE" firstAttribute="top" secondItem="BVP-xw-EI2" secondAttribute="bottom" constant="43" id="UDW-K9-ePV"/>
                         <constraint firstItem="0Ok-qV-hDh" firstAttribute="top" secondItem="bxc-dp-OfE" secondAttribute="bottom" constant="28" id="Y1q-6a-FER"/>
                         <constraint firstAttribute="trailing" secondItem="0Ok-qV-hDh" secondAttribute="trailing" constant="10" id="iF6-tJ-dO5"/>
