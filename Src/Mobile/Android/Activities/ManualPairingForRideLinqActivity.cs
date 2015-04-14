@@ -31,16 +31,5 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
             }
         }
 
-        protected override void OnStop()
-        {
-            base.OnStop();
-
-            var im = (InputMethodManager)GetSystemService(InputMethodService);
-
-            if (im != null && im.IsAcceptingText)
-            {
-                im.ToggleSoftInput(ShowFlags.Forced, HideSoftInputFlags.None);
-            }
-        }
     }
 }
