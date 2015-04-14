@@ -36,8 +36,10 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
         private readonly IPromotionDao _promotionDao;
         private readonly IAccountDao _accountDao;
         private readonly INotificationService _notificationService;
+        private readonly IServerSettings _serverSettings;
+        private readonly ILogger _logger;
 
-        private readonly CmtTripInfoServiceHelper _cmtTripInfoServiceHelper;
+        private CmtTripInfoServiceHelper _cmtTripInfoServiceHelper;
 
         public MailSender(Func<BookingDbContext> contextFactory,
             ICommandBus commandBus,
@@ -56,9 +58,8 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             _promotionDao = promotionDao;
             _accountDao = accountDao;
             _notificationService = notificationService;
-
-            var cmtMobileServiceClient = new CmtMobileServiceClient(serverSettings.GetPaymentSettings().CmtPaymentSettings, null, null);
-            _cmtTripInfoServiceHelper = new CmtTripInfoServiceHelper(cmtMobileServiceClient, logger);
+            _serverSettings = serverSettings;
+            _logger = logger;
         }
 
         public void Handle(OrderStatusChanged @event)
@@ -83,6 +84,8 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                     else if (pairingInfo != null && pairingInfo.DriverId.HasValue() && pairingInfo.Medallion.HasValue() && pairingInfo.PairingToken.HasValue())
                     {
                         // Send receipt for CMTRideLinq
+                        InitializeCmtServiceClient();
+
                         var tripInfo = _cmtTripInfoServiceHelper.GetTripInfo(pairingInfo.PairingToken);
                         if (tripInfo != null && tripInfo.EndTime.HasValue)
                         {
@@ -214,6 +217,12 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                     _commandBus.Send(command);
                 }
             }
+        }
+
+        private void InitializeCmtServiceClient()
+        {
+            var cmtMobileServiceClient = new CmtMobileServiceClient(_serverSettings.GetPaymentSettings().CmtPaymentSettings, null, null);
+            _cmtTripInfoServiceHelper = new CmtTripInfoServiceHelper(cmtMobileServiceClient, _logger);
         }
     }
 }

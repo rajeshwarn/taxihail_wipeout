@@ -59,9 +59,10 @@ namespace apcurium.MK.Booking.Api.Jobs
         private readonly IEventSourcedRepository<Promotion> _promoRepository;
         private readonly IPaymentService _paymentService;
         private readonly ICreditCardDao _creditCardDao;
-        private readonly CmtTripInfoServiceHelper _cmtTripInfoServiceHelper;
         private readonly ILogger _logger;
         private readonly Resources.Resources _resources;
+
+        private CmtTripInfoServiceHelper _cmtTripInfoServiceHelper;
 
         private static readonly ILog Log = LogManager.GetLogger(typeof(OrderStatusUpdater));
 
@@ -97,9 +98,6 @@ namespace apcurium.MK.Booking.Api.Jobs
             _commandBus = commandBus;
             _paymentDao = paymentDao;
             _resources = new Resources.Resources(serverSettings);
-
-            var cmtMobileServiceClient = new CmtMobileServiceClient(_serverSettings.GetPaymentSettings().CmtPaymentSettings, null, null);
-            _cmtTripInfoServiceHelper = new CmtTripInfoServiceHelper(cmtMobileServiceClient, logger);
         }
 
         public void Update(IBSOrderInformation orderFromIbs, OrderStatusDetail orderStatusDetail)
@@ -137,6 +135,8 @@ namespace apcurium.MK.Booking.Api.Jobs
             var rideLinqDetails = _orderDao.GetManualRideLinqById(orderstatusDetail.OrderId);
             if (rideLinqDetails != null)
             {
+                InitializeCmtServiceClient();
+
                 var tripInfo = _cmtTripInfoServiceHelper.GetTripInfo(rideLinqDetails.PairingToken);
                 if (tripInfo != null)
                 {
@@ -823,6 +823,12 @@ namespace apcurium.MK.Booking.Api.Jobs
         private void SendMinimalPaymentProcessedMessageToDriver(string vehicleNumber, double amount, double meter, double tip)
         {
             _ibsOrderService.SendPaymentNotification(amount, meter, tip, null, vehicleNumber);
+        }
+
+        private void InitializeCmtServiceClient()
+        {
+            var cmtMobileServiceClient = new CmtMobileServiceClient(_serverSettings.GetPaymentSettings().CmtPaymentSettings, null, null);
+            _cmtTripInfoServiceHelper = new CmtTripInfoServiceHelper(cmtMobileServiceClient, _logger);
         }
     }
 }
