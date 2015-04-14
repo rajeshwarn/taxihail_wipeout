@@ -56,6 +56,12 @@ namespace apcurium.MK.Web
         protected bool IsCreditCardMandatory { get; private set; }
         protected bool? IsPayBackRegistrationFieldRequired { get; private set; }
         protected int DefaultTipPercentage { get; private set; }
+
+        protected bool IsWebSocialMediaVisible { get; private set; }
+        protected string SocialMediaFacebookURL { get; private set; }
+        protected string SocialMediaTwitterURL { get; private set; }
+        protected string SocialMediaGoogleURL { get; private set; }
+        protected string SocialMediaPinterestURL { get; private set; }
         
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -74,6 +80,13 @@ namespace apcurium.MK.Web
             DisableFutureBooking = config.ServerData.DisableFutureBooking;
             IsWebSignupVisible = !config.ServerData.IsWebSignupHidden;
             IsCreditCardMandatory = config.ServerData.CreditCardIsMandatory;
+
+            IsWebSocialMediaVisible = config.ServerData.IsWebSocialMediaVisible;
+            SocialMediaFacebookURL = config.ServerData.SocialMediaFacebookURL;
+            SocialMediaTwitterURL = config.ServerData.SocialMediaTwitterURL;
+            SocialMediaGoogleURL = config.ServerData.SocialMediaGoogleURL;
+            SocialMediaPinterestURL = config.ServerData.SocialMediaPinterestURL;
+
 
             DirectionTarifMode = config.ServerData.Direction.TarifMode.ToString("G");
             DirectionNeedAValidTarif = config.ServerData.Direction.NeedAValidTarif;

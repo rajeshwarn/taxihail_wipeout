@@ -405,16 +405,22 @@ namespace apcurium.MK.Booking.Api.Services
             }
 
             // Build url used to redirect the web client to the booking status view
-            var baseUrl = _serverSettings.ServerData.BaseUrl.HasValue()
-                            ? _serverSettings.ServerData.BaseUrl
-                            : Request.AbsoluteUri;
+            string baseUrl;
 
-            var redirectUrl = baseUrl
-                .Replace(Request.PathInfo, string.Empty)
-                .Replace(GetAppHost().Config.ServiceStackHandlerFactoryPath, string.Empty)
-                .Replace(Request.QueryString.ToString(), string.Empty)
-                .Replace("?", string.Empty)
-                .Append(string.Format("#status/{0}", request.OrderId));
+            if (_serverSettings.ServerData.BaseUrl.HasValue())
+            {
+                baseUrl = _serverSettings.ServerData.BaseUrl;
+            }
+            else
+            {
+                baseUrl = Request.AbsoluteUri
+                    .Replace(Request.PathInfo, string.Empty)
+                    .Replace(GetAppHost().Config.ServiceStackHandlerFactoryPath, string.Empty)
+                    .Replace(Request.QueryString.ToString(), string.Empty)
+                    .Replace("?", string.Empty);
+            }    
+
+            var redirectUrl = string.Format("{0}#status/{1}", baseUrl, request.OrderId);
 
             return new HttpResult
             {

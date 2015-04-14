@@ -15,6 +15,12 @@
 
             var data = _.extend(this.model.toJSON(), {
                 isSignupVisible: TaxiHail.parameters.isSignupVisible,
+                isSocialMediaVisible: TaxiHail.parameters.isSocialMediaVisible,
+                DefaultPhoneNumber: TaxiHail.parameters.defaultPhoneNumber,
+                SocialMediaFacebookURL: TaxiHail.parameters.SocialMediaFacebookURL,
+                SocialMediaGoogleURL: TaxiHail.parameters.SocialMediaGoogleURL,
+                SocialMediaPinterestURL: TaxiHail.parameters.SocialMediaPinterestURL,
+                SocialMediaTwitterURL: TaxiHail.parameters.SocialMediaTwitterURL,
                 isLoggedIn: TaxiHail.auth.isLoggedIn(),
                 name: this.model.has('settings') ? this.model.get('settings').name : this.model.get('name')
             });

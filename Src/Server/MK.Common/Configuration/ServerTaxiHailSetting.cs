@@ -145,5 +145,20 @@ namespace MK.Common.Configuration
         [Hidden]
         [Display(Name = "Target", Description = "Deployment target server")]
         public DeploymentTargets Target { get; set; }
+
+        [Display(Name = "Social Media Website Links Toggle", Description = "Displays the Social Media links for the website")]
+        public bool IsWebSocialMediaVisible { get; protected set; }
+        [CustomizableByCompany]
+        [Display(Name = "Social Media Website Facebook URL", Description = "Adds the link to the Facebook address")]
+        public string SocialMediaFacebookURL { get; protected set; }
+        [CustomizableByCompany]
+        [Display(Name = "Social Media Website Twitter URL", Description = "Adds the link to the Twitter address")]
+        public string SocialMediaTwitterURL { get; protected set; }
+        [CustomizableByCompany]
+        [Display(Name = "Social Media Website Google+ URL", Description = "Adds the link to the Google+ address")]
+        public string SocialMediaGoogleURL { get; protected set; }
+        [CustomizableByCompany]
+        [Display(Name = "Social Media Website Pinterest URL", Description = "Adds the link to the Facebook address")]
+        public string SocialMediaPinterestURL { get; protected set; }
     }
 }
