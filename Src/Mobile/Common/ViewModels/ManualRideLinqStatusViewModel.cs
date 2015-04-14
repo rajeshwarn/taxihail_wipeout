@@ -48,7 +48,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		private async Task<OrderManualRideLinqDetail> RefreshDetails(CancellationToken token)
 		{
-            return await _bookingService.ManualRideGetTripInfo(OrderId);
+            return await _bookingService.GetTripInfoFromManualRideLinq(OrderId);
 		}
 
 		private Guid OrderId
@@ -117,7 +117,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                         {
                             using (this.Services().Message.ShowProgress())
                             {
-                                await _bookingService.ManualRideLinqUnpair(OrderId);
+                                await _bookingService.UnpairFromManualRideLinq(OrderId);
 
                                 _bookingService.ClearLastOrder();
 

@@ -159,7 +159,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			{
 			    if (lastOrder.Item1.IsManualRideLinq)
 			    {
-                    var orderManualRideLinqDetail = await _bookingService.ManualRideGetTripInfo(lastOrder.Item1.Id);
+                    var orderManualRideLinqDetail = await _bookingService.GetTripInfoFromManualRideLinq(lastOrder.Item1.Id);
 
                     ShowViewModelAndRemoveFromHistory<ManualRideLinqStatusViewModel>(new
                     {
