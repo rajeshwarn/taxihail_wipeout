@@ -17,7 +17,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         private readonly IBookingService _bookingService;
 
 		// In seconds
-        private const int RefreshInterval = 5;
+        private int _refreshInterval = 5;
 
         public ManualRideLinqStatusViewModel(IBookingService bookingService)
         {
@@ -37,7 +37,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			base.Start();
 
-			Observable.Timer(TimeSpan.FromSeconds(4), TimeSpan.FromSeconds(RefreshInterval))
+            _refreshInterval = Settings.OrderStatus.ClientPollingInterval;
+
+			Observable.Timer(TimeSpan.FromSeconds(4), TimeSpan.FromSeconds(_refreshInterval))
                 .SelectMany((_, cancellationToken) => RefreshDetails(cancellationToken))
 				.Where(orderDetails => orderDetails.EndTime.HasValue)
 				.Subscribe(
