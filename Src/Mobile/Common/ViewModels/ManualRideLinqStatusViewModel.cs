@@ -15,7 +15,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
     public class ManualRideLinqStatusViewModel : PageViewModel
     {
         private readonly IBookingService _bookingService;
-        private OrderManualRideLinqDetail _orderManualRideLinqDetail;
 
 		// In seconds
         private const int RefreshInterval = 5;
@@ -111,12 +110,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                             {
                                 using (this.Services().Message.ShowProgress())
                                 {
-                                    await _bookingService.ManualRideLinqUnpair(_orderManualRideLinqDetail.OrderId);
+                                    await _bookingService.ManualRideLinqUnpair(OrderId);
 
                                     _bookingService.ClearLastOrder();
 
                                     ShowViewModelAndRemoveFromHistory<HomeViewModel>(new HomeViewModelPresentationHint(HomeViewModelState.Initial));
                                 }
+                                
                             },
                             this.Services().Localize["Cancel"], () => { });
                     }
