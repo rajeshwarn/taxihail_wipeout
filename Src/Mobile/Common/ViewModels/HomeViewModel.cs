@@ -32,9 +32,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private readonly ITermsAndConditionsService _termsService;
 	    private readonly IMvxLifetime _mvxLifetime;
 		private readonly IAccountService _accountService;
-	    private IBookingService _bookingService;
-
-	    private IPaymentService _paymentService;
+	    private readonly IBookingService _bookingService;
+	    private readonly IPaymentService _paymentService;
 
 		private HomeViewModelState _currentState = HomeViewModelState.Initial;
 
@@ -50,7 +49,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			IPaymentService paymentService, 
             IMvxLifetime mvxLifetime,
             IPromotionService promotionService,
-            IPaymentService paymentService1, IBookingService bookingService) : base()
+            IPaymentService paymentService1, 
+            IBookingService bookingService) : base()
 		{
 			_locationService = locationService;
 			_orderWorkflowService = orderWorkflowService;
@@ -114,7 +114,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 				CheckTermsAsync();
 
-                GetPaymentSettingsAsync();
+                CheckManualRideLinqEnabledAsync();
 
 				this.Services().ApplicationInfo.CheckVersionAsync();
 
@@ -137,14 +137,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_vehicleService.Start();
 		}
 
-	    private async void GetPaymentSettingsAsync()
+	    private async void CheckManualRideLinqEnabledAsync()
 	    {
 	        try
 	        {
 	            var settings = await _paymentService.GetPaymentSettings();
 
 	            IsManualRideLinqEnabled = settings.PaymentMode == PaymentMethod.RideLinqCmt &&
-	                                      settings.CmtPaymentSettings.IsManualRidelinqCheckInEnabled;
+	                                      settings.CmtPaymentSettings.IsManualRidelinqCheckInEnabled &&
+                                          !_lastMarket.HasValue();
 	        }
 	        catch (Exception ex)
 	        {
@@ -159,7 +160,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			{
 			    if (lastOrder.Item1.IsManualRideLinq)
 			    {
-                    var orderManualRideLinqDetail = await _bookingService.ManualRideGetTripInfo(lastOrder.Item1.Id);
+                    var orderManualRideLinqDetail = await _bookingService.GetTripInfoFromManualRideLinq(lastOrder.Item1.Id);
 
                     ShowViewModelAndRemoveFromHistory<ManualRideLinqStatusViewModel>(new
                     {
@@ -509,7 +510,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		}
 
 		private bool _subscribedToLifetimeChanged;
-	    private ManualPairingForRideLinqViewModel _manualPairingForRideLinqViewModel;
 	    private bool _isManualRideLinqEnabled;
 
 	    public void SubscribeLifetimeChangedIfNecessary()
@@ -555,6 +555,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     this.Services().Localize["MarketChangedMessage"]);
             }
             _lastMarket = market;
+
+            CheckManualRideLinqEnabledAsync();
         }
     }
 }

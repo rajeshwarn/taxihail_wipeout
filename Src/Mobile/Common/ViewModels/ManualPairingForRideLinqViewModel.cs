@@ -70,7 +70,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
                             var pickupAddress = await _orderWorkflowService.GetCurrentAddress();
                             var pairingCode = string.Concat(PairingCodeLeft, PairingCodeRight);
-                            var orderManualRideLinqDetail = await _bookingService.ManualRideLinqPair(pairingCode, pickupAddress);
+                            var orderManualRideLinqDetail = await _bookingService.PairWithManualRideLinq(pairingCode, pickupAddress);
 
                             ShowViewModelAndClearHistory<ManualRideLinqStatusViewModel>(new
                             {
@@ -78,12 +78,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                             });
                         }
                     }
-                    catch (WebServiceException)
+                    catch (WebServiceException ex)
                     {
+                        Logger.LogError(ex);
+
                         this.Services().Message.ShowMessage(localize["ManualPairingForRideLinQ_Error_Title"], localize["ManualPairingForRideLinQ_Error_Message"]).HandleErrors();
                     }
-                    catch (Exception)
+                    catch (Exception ex)
                     {
+                        Logger.LogError(ex);
                         this.Services().Message.ShowMessage(localize["ManualPairingForRideLinQ_InvalidCode_Title"], localize["ManualPairingForRideLinQ_InvalidCode_Message"]).HandleErrors();
                     } 
                 });

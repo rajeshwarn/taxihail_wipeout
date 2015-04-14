@@ -335,7 +335,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			return UseServiceClientAsync<OrderServiceClient> (service => service.RateOrder (request));
         }
 
-        public async Task<OrderManualRideLinqDetail> ManualRideLinqPair(string pairingCode, Address pickupAddress)
+        public async Task<OrderManualRideLinqDetail> PairWithManualRideLinq(string pairingCode, Address pickupAddress)
         {
             var request = new ManualRideLinqPairingRequest
             {
@@ -356,12 +356,12 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             throw new Exception(response.ErrorCode);
         }
 
-        public Task ManualRideLinqUnpair(Guid orderId)
+        public Task UnpairFromManualRideLinq(Guid orderId)
         {
             return UseServiceClientAsync<ManualPairingForRideLinqServiceClient>(service => service.Unpair(orderId));
         }
 
-        public async Task<OrderManualRideLinqDetail> ManualRideGetTripInfo(Guid orderId)
+        public async Task<OrderManualRideLinqDetail> GetTripInfoFromManualRideLinq(Guid orderId)
         {
             var response = await UseServiceClientAsync<ManualPairingForRideLinqServiceClient, ManualRideLinqResponse>(service => service.GetUpdatedTrip(orderId));
 

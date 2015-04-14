@@ -38,8 +38,10 @@ namespace CMTPayment
 
                 return trip;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                _logger.LogError(ex);
+
                 return null;
             }
         }

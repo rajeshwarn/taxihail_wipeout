@@ -1,5 +1,4 @@
 ﻿using System;
-
 using Foundation;
 using UIKit;
 using apcurium.MK.Booking.Mobile.ViewModels;
@@ -15,7 +14,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		{
 		}
 
-		public override void ViewDidLoad()
+
+	    public override void ViewWillAppear(bool animated)
+	    {
+	        base.ViewWillAppear(animated);
+
+            NavigationController.NavigationBar.Hidden = false;
+	    }
+
+	    public override void ViewDidLoad()
 		{
 			base.ViewDidLoad();
 
@@ -23,7 +30,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 			var localize = this.Services().Localize;
 
-			NavigationController.NavigationBar.Hidden = false;
 			NavigationItem.Title = localize["View_RideLinqPair"];
 
 			lblInstructions.Text = localize["ManualPairingForRideLinQ_Instructions"];
@@ -46,11 +52,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 			bindingSet.Apply();
 
-			PairingCode1.ShouldChangeCharacters = CheckMaxLength3;
+            PairingCode1.ShouldChangeCharacters = (field, range, s) => CheckMaxLength(field, range, s, 3);
 
-			PairingCode2.ShouldChangeCharacters = CheckMaxLength4;
+            PairingCode2.ShouldChangeCharacters = (field, range, s) => CheckMaxLength(field, range, s, 4);
 
-			PairingCode1.EditingChanged += (object sender, EventArgs e) => 
+			PairingCode1.EditingChanged += (sender, e) => 
 			{
 				if(PairingCode1.Text.Length == 3)
 				{
@@ -58,7 +64,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				}
 			};
 
-			PairingCode2.EditingChanged += (object sender, EventArgs e) => 
+			PairingCode2.EditingChanged += (sender, e) => 
 			{
 				if(PairingCode2.Text.Length == 0)
 				{
@@ -68,20 +74,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 					
 		}
 
-		private bool CheckMaxLength3 (UITextField textField, NSRange range, string replacementString)
+		private bool CheckMaxLength (UITextField textField, NSRange range, string replacementString, nint maxLenght)
 		{
-			nint textLength = textField.Text.HasValue() ? textField.Text.Length : 0;
-			nint replaceLength = replacementString.HasValue () ? replacementString.Length : 0;
-			nint newLength = textLength + replaceLength - range.Length;
-			return newLength <= 3;
-		}
-
-		private bool CheckMaxLength4 (UITextField textField, NSRange range, string replacementString)
-		{
-			nint textLength = textField.Text.HasValue () ? textField.Text.Length : 0;
-			nint replaceLength = replacementString.HasValue () ? replacementString.Length : 0;
-			nint newLength = textLength + replaceLength - range.Length;
-			return newLength <= 4;
+			var textLength = textField.Text.HasValue() ? textField.Text.Length : 0;
+			var replaceLength = replacementString.HasValue () ? replacementString.Length : 0;
+			var newLength = textLength + replaceLength - range.Length;
+            return newLength <= maxLenght;
 		}
 	}
 }
