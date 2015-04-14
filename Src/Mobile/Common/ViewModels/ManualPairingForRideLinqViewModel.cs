@@ -78,12 +78,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                             });
                         }
                     }
-                    catch (WebServiceException)
+                    catch (WebServiceException ex)
                     {
+                        Logger.LogError(ex);
+
                         this.Services().Message.ShowMessage(localize["ManualPairingForRideLinQ_Error_Title"], localize["ManualPairingForRideLinQ_Error_Message"]).HandleErrors();
                     }
-                    catch (Exception)
+                    catch (Exception ex)
                     {
+                        Logger.LogError(ex);
                         this.Services().Message.ShowMessage(localize["ManualPairingForRideLinQ_InvalidCode_Title"], localize["ManualPairingForRideLinQ_InvalidCode_Message"]).HandleErrors();
                     } 
                 });
