@@ -54,25 +54,7 @@ namespace apcurium.MK.Booking.Services.Impl
             _paymentDao = paymentDao;
             _serverSettings = serverSettings;
             _pairingService = pairingService;
-            _creditCardDao = creditCardDao;           
-        }
-
-        private void InitiateServiceClientIfNecessary()
-        {
-            if (_cmtPaymentServiceClient == null)
-            {
-                _cmtPaymentServiceClient = new CmtPaymentServiceClient(_serverSettings.GetPaymentSettings().CmtPaymentSettings, null, null, _logger);
-            }
-
-            if (_cmtMobileServiceClient == null)
-            {
-                _cmtMobileServiceClient = new CmtMobileServiceClient(_serverSettings.GetPaymentSettings().CmtPaymentSettings, null, null);
-            }
-
-            if (_cmtTripInfoServiceHelper == null)
-            {
-                _cmtTripInfoServiceHelper = new CmtTripInfoServiceHelper(_cmtMobileServiceClient, _logger);
-            }
+            _creditCardDao = creditCardDao;
         }
 
         public PaymentProvider ProviderType(Guid? orderId = null)
@@ -193,7 +175,7 @@ namespace apcurium.MK.Booking.Services.Impl
 
         public void VoidPreAuthorization(Guid orderId, bool isForPrepaid = false)
         {
-            // nothing to do for CMT since there's no notion of preauth
+            // Nothing to do for CMT since there's no notion of preauth
         }
 
         public void VoidTransaction(Guid orderId, string transactionId, ref string message)
@@ -538,6 +520,13 @@ namespace apcurium.MK.Booking.Services.Impl
             _logger.LogMessage("CMT reverse response : " + response.ResponseMessage);
 
             return response;
+        }
+
+        private void InitiateServiceClientIfNecessary()
+        {
+            _cmtPaymentServiceClient = new CmtPaymentServiceClient(_serverSettings.GetPaymentSettings().CmtPaymentSettings, null, null, _logger);
+            _cmtMobileServiceClient = new CmtMobileServiceClient(_serverSettings.GetPaymentSettings().CmtPaymentSettings, null, null);
+            _cmtTripInfoServiceHelper = new CmtTripInfoServiceHelper(_cmtMobileServiceClient, _logger);
         }
     }
 }
