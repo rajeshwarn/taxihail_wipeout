@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
-using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Requests.Payment;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Commands;
@@ -14,11 +10,8 @@ using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Resources;
 using CMTPayment;
-using CMTPayment.Pair;
-using Infrastructure.EventSourcing;
 using Infrastructure.Messaging;
 using ServiceStack.Common.Web;
-using ServiceStack.Html;
 using ServiceStack.ServiceClient.Web;
 using ServiceStack.ServiceInterface;
 using CmtManualRideLinqPairingRequest = CMTPayment.Pair.ManualRideLinqPairingRequest;
@@ -34,17 +27,25 @@ namespace apcurium.MK.Booking.Api.Services
         private readonly ICreditCardDao _creditCardDao;
         private readonly ICommandBus _commandBus;
         private readonly IServerSettings _serverSettings;
+        private readonly ILogger _logger;
         private readonly CmtMobileServiceClient _cmtMobileServiceClient;
         private readonly CmtTripInfoServiceHelper _cmtTripInfoServiceHelper;
         private readonly Resources.Resources _resources;
 
-        public ManualRidelinqOrderService(ICommandBus commandBus, IOrderDao orderDao, IAccountDao accountDao, ICreditCardDao creditCardDao, IServerSettings serverSettings, ILogger logger)
+        public ManualRidelinqOrderService(
+            ICommandBus commandBus,
+            IOrderDao orderDao,
+            IAccountDao accountDao,
+            ICreditCardDao creditCardDao,
+            IServerSettings serverSettings,
+            ILogger logger)
         {
             _commandBus = commandBus;
             _orderDao = orderDao;
             _accountDao = accountDao;
             _creditCardDao = creditCardDao;
             _serverSettings = serverSettings;
+            _logger = logger;
 
             _cmtMobileServiceClient = new CmtMobileServiceClient(_serverSettings.GetPaymentSettings().CmtPaymentSettings, null, null);
             _cmtTripInfoServiceHelper = new CmtTripInfoServiceHelper(_cmtMobileServiceClient, logger);
@@ -148,6 +149,9 @@ namespace apcurium.MK.Booking.Api.Services
             }
             catch (WebServiceException ex)
             {
+                _logger.LogMessage(string.Format("An WebServiceException occured while trying to manually pair with CMT with pairing code: {0}", request.PairingCode));
+                _logger.LogError(ex);
+
                 return new ManualRideLinqResponse
                 {
                     IsSuccessful = false,
@@ -157,6 +161,9 @@ namespace apcurium.MK.Booking.Api.Services
             }
             catch (Exception ex)
             {
+                _logger.LogMessage(string.Format("An error occured while trying to manually pair with CMT with pairing code: {0}", request.PairingCode));
+                _logger.LogError(ex);
+
                 return new ManualRideLinqResponse
                 {
                     IsSuccessful = false,
@@ -198,6 +205,9 @@ namespace apcurium.MK.Booking.Api.Services
             }
             catch (Exception ex)
             {
+                _logger.LogMessage(string.Format("An error occured while trying to manually unpair with CMT for OrderId: {0} with pairing token: {1}", request.OrderId, order.PairingToken));
+                _logger.LogError(ex);
+
                 throw new HttpError(HttpStatusCode.InternalServerError, ex.Message);
             }
 
