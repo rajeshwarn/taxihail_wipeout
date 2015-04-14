@@ -74,6 +74,14 @@
             TaxiHail.parameters.defaultTipPercentage = '<%= DefaultTipPercentage %>';
 
             TaxiHail.parameters.isSignupVisible = <%: IsWebSignupVisible  ? "true" : "false"%>;
+            TaxiHail.parameters.isSocialMediaVisible = <%: IsWebSocialMediaVisible  ? "true" : "false"%>;
+            TaxiHail.parameters.SocialMediaFacebookURL = "<%: SocialMediaFacebookURL %>";
+            TaxiHail.parameters.SocialMediaGoogleURL = "<%: SocialMediaGoogleURL %>";
+            TaxiHail.parameters.SocialMediaPinterestURL = "<%: SocialMediaPinterestURL %>";
+            TaxiHail.parameters.SocialMediaTwitterURL = "<%: SocialMediaTwitterURL %>";
+            
+
+            TaxiHail.parameters.isSignupVisible = <%: IsWebSignupVisible  ? "true" : "false"%>;
             
             <% if(IsPayBackRegistrationFieldRequired == true) { %>
                 TaxiHail.parameters.isPayBackRegistrationFieldRequired = "true";
