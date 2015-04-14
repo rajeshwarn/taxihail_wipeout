@@ -98,27 +98,32 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                return this.GetCommand(() =>
+                return this.GetCommand(async () =>
                 {
                     try
                     {
+
+                        var shouldUnpair = new TaskCompletionSource<bool>();
+
                         this.Services().Message.ShowMessage(
                             this.Services().Localize["WarningTitle"],
                             this.Services().Localize["UnpairWarningMessage"],
                             this.Services().Localize["UnpairWarningCancelButton"],
-                            async () =>
+                            () => shouldUnpair.SetResult(true),
+                            this.Services().Localize["Cancel"], 
+                            () => shouldUnpair.SetResult(false));
+
+                        if (await shouldUnpair.Task)
+                        {
+                            using (this.Services().Message.ShowProgress())
                             {
-                                using (this.Services().Message.ShowProgress())
-                                {
-                                    await _bookingService.ManualRideLinqUnpair(OrderId);
+                                await _bookingService.ManualRideLinqUnpair(OrderId);
 
-                                    _bookingService.ClearLastOrder();
+                                _bookingService.ClearLastOrder();
 
-                                    ShowViewModelAndRemoveFromHistory<HomeViewModel>(new HomeViewModelPresentationHint(HomeViewModelState.Initial));
-                                }
-                                
-                            },
-                            this.Services().Localize["Cancel"], () => { });
+                                ShowViewModelAndRemoveFromHistory<HomeViewModel>(new HomeViewModelPresentationHint(HomeViewModelState.Initial));
+                            } 
+                        }
                     }
                     catch (Exception)
                     {
