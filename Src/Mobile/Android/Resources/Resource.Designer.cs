@@ -5246,14 +5246,14 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f060123
 			public const int GooglePlayServicesNotAvailableMessage = 2131099939;
 			
-			// aapt resource value: 0x7f0602f5
-			public const int GooglePlayServicesNotAvailableMessage1 = 2131100405;
+			// aapt resource value: 0x7f0602f8
+			public const int GooglePlayServicesNotAvailableMessage1 = 2131100408;
 			
 			// aapt resource value: 0x7f060084
 			public const int GooglePlayServicesNotAvailableTitle = 2131099780;
 			
-			// aapt resource value: 0x7f0602f6
-			public const int GooglePlayServicesNotAvailableTitle1 = 2131100406;
+			// aapt resource value: 0x7f0602f9
+			public const int GooglePlayServicesNotAvailableTitle1 = 2131100409;
 			
 			// aapt resource value: 0x7f060049
 			public const int Hello = 2131099721;
@@ -5732,8 +5732,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f0602c0
 			public const int Overdue_TransactionId = 2131100352;
 			
-			// aapt resource value: 0x7f0602f7
-			public const int Overdue_View = 2131100407;
+			// aapt resource value: 0x7f0602fa
+			public const int Overdue_View = 2131100410;
 			
 			// aapt resource value: 0x7f06006b
 			public const int PanelMenuViewAboutUsText = 2131099755;
@@ -6208,6 +6208,15 @@ namespace apcurium.MK.Booking.Mobile.Client
 			
 			// aapt resource value: 0x7f0601c6
 			public const int StatusConfirmCancelRide = 2131100102;
+			
+			// aapt resource value: 0x7f0602f5
+			public const int StatusConfirmCancelRideAndWarnForBookingFee = 2131100405;
+			
+			// aapt resource value: 0x7f0602f6
+			public const int StatusConfirmCancelRideAndWarnForCancellationFee = 2131100406;
+			
+			// aapt resource value: 0x7f0602f7
+			public const int StatusConfirmCancelRideAndWarnForCancellationFees = 2131100407;
 			
 			// aapt resource value: 0x7f0601eb
 			public const int StatusConfirmCancelRideError = 2131100139;

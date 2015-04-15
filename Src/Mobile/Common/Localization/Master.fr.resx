@@ -1891,4 +1891,7 @@
   <data name="ManualUnPairingForRideLinQ_Error_Message" xml:space="preserve">
     <value>Une erreur est survenue lors de la dissociation. Veuillez essayer de nouveau.</value>
   </data>
+  <data name="StatusConfirmCancelRideAndWarnForCancellationFees" xml:space="preserve">
+    <value>Êtes-vous certain de vouloir annuler? Un véhicule est en route pour venir vous chercher. {0} se réserve le droit de facturer à ses clients des frais d'annulation si ces derniers abusent du service.</value>
+  </data>
 </root>

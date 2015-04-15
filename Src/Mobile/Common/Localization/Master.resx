@@ -1899,4 +1899,7 @@
   <data name="ManualUnPairingForRideLinQ_Error_Message" xml:space="preserve">
     <value>An error occured when trying to unpair. Please try again.</value>
   </data>
+  <data name="StatusConfirmCancelRideAndWarnForCancellationFees" xml:space="preserve">
+    <value>Are you sure you want to cancel? A vehicle is on its way to pick you up. {0} reserves the right to charge customers a cancellation fee if we feel the user is abusing the service.</value>
+  </data>
 </root>

@@ -56,6 +56,7 @@ namespace apcurium.MK.Web
         protected bool IsCreditCardMandatory { get; private set; }
         protected bool? IsPayBackRegistrationFieldRequired { get; private set; }
         protected int DefaultTipPercentage { get; private set; }
+        protected bool WarnForFeesOnCancel { get; private set; }
 
         protected bool IsWebSocialMediaVisible { get; private set; }
         protected string SocialMediaFacebookURL { get; private set; }
@@ -102,6 +103,7 @@ namespace apcurium.MK.Web
             MaxFareEstimate = config.ServerData.MaxFareEstimate;
             AccountActivationDisabled = config.ServerData.AccountActivationDisabled;
             IsPayBackRegistrationFieldRequired = config.ServerData.IsPayBackRegistrationFieldRequired;
+            WarnForFeesOnCancel = config.ServerData.WarnForFeesOnCancel;
 
             var paymentSettings = config.GetPaymentSettings();
 

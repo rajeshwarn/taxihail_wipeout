@@ -1831,4 +1831,7 @@
   <data name="ManualRideLinqSummary_Done" xml:space="preserve">
     <value>Done</value>
   </data>
+  <data name="StatusConfirmCancelRideAndWarnForCancellationFees" xml:space="preserve">
+    <value>Are you sure you want to cancel? A vehicle is on its way to pick you up. {0} reserves the right to charge customers a cancellation fee if we feel the user is abusing the service.</value>
+  </data>
 </root>
