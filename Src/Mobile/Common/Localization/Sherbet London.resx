@@ -98,11 +98,20 @@
 	<resheader name="writer">
 		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
 	</resheader>
+  <data name="EstimatePrice" xml:space="preserve">
+    <value>Cost</value>
+  </data>
   <data name="EstimatePriceFormat" xml:space="preserve">
-    <value>Fare : {0} ({1})</value>
+    <value>Cost: {0}</value>
+  </data>
+  <data name="EstimatePriceOver100" xml:space="preserve">
+    <value>Cost: {0}</value>
   </data>
   <data name="EstimatedFareNotAvailable" xml:space="preserve">
-    <value>No fare is available for the ride. Please specify a valid pickup and destination.</value>
+    <value>Fare not available</value>
+  </data>
+  <data name="EstimateDistance" xml:space="preserve">
+    <value />
   </data>
   <data name="NoFareText" xml:space="preserve">
     <value>Choose a destination to get a price.</value>
