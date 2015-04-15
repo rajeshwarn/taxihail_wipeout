@@ -391,6 +391,7 @@
     <None Include="Localization\Norshore.resx" />
     <None Include="Localization\FlashCab.resx" />
     <None Include="Localization\Taxi303.resx" />
+    <None Include="Localization\Sherbet London.resx" />
     <EmbeddedResource Include="Localization\TaxiHail Pro.fr.resx" />
     <EmbeddedResource Include="Localization\TaxiHail Pro.resx" />
     <EmbeddedResource Include="Localization\Taxiworld.resx">
