@@ -94,7 +94,7 @@ namespace apcurium.MK.Booking.EventHandlers
         {
             using (var context = _contextFactory.Invoke())
             {
-                context.Save(new OrderDetail
+                var orderDetail = new OrderDetail
                 {
                     IBSOrderId = @event.IBSOrderId,
                     AccountId = @event.AccountId,
@@ -104,7 +104,7 @@ namespace apcurium.MK.Booking.EventHandlers
                     CreatedDate = @event.CreatedDate,
                     DropOffAddress = @event.DropOffAddress,
                     Settings = @event.Settings,
-                    Status = (int) OrderStatus.Created,
+                    Status = (int)OrderStatus.Created,
                     IsRated = false,
                     EstimatedFare = @event.EstimatedFare,
                     UserAgent = @event.UserAgent,
@@ -114,7 +114,49 @@ namespace apcurium.MK.Booking.EventHandlers
                     CompanyKey = @event.CompanyKey,
                     CompanyName = @event.CompanyName,
                     Market = @event.Market
-                });
+                };
+
+                if (@event.IsPrepaid)
+                {
+                    // NB: There could be a race condition for CC prepaid orders because the payment is done before creating the order
+                    // so we make sure that the order is created properly
+                    var order = context.Find<OrderDetail>(@event.SourceId);
+
+                    // CreditCardPaymentCaptured was triggered before OrderCreated, so a basic order object was created
+                    // in the CreditCardPaymentDetailsGenerator. Here, we update its values
+                    if (order != null)
+                    {
+                        order.IBSOrderId = @event.IBSOrderId;
+                        order.AccountId = @event.AccountId;
+                        order.PickupAddress = @event.PickupAddress;
+                        order.PickupDate = @event.PickupDate;
+                        order.CreatedDate = @event.CreatedDate;
+                        order.DropOffAddress = @event.DropOffAddress;
+                        order.Settings = @event.Settings;
+                        order.Status = (int)OrderStatus.Created;
+                        order.IsRated = false;
+                        order.EstimatedFare = @event.EstimatedFare;
+                        order.UserAgent = @event.UserAgent;
+                        order.UserNote = @event.UserNote;
+                        order.ClientLanguageCode = @event.ClientLanguageCode;
+                        order.ClientVersion = @event.ClientVersion;
+                        order.CompanyKey = @event.CompanyKey;
+                        order.CompanyName = @event.CompanyName;
+                        order.Market = @event.Market;
+
+                        context.SaveChanges();
+                    }
+                    else
+                    {
+                        // OrderCreated was triggered before CreditCardPaymentCaptured so order doesn't exist yet: create it
+                        context.Save(orderDetail);
+                    }
+                }
+                else
+                {
+                    // Normal flow
+                    context.Save(orderDetail);
+                }
 
                 // Create an empty OrderStatusDetail row
                 var details = context.Find<OrderStatusDetail>(@event.SourceId);

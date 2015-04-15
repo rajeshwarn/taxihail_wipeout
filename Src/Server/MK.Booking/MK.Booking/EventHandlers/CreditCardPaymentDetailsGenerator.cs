@@ -55,6 +55,22 @@ namespace apcurium.MK.Booking.EventHandlers
                 }
 
                 var order = context.Find<OrderDetail>(payment.OrderId);
+
+                // Prevents NullReferenceException caused with web prepayed while running database initializer.
+                if (order == null && @event.IsForPrepaidOrder)
+                {
+                    order = new OrderDetail()
+                    {
+                        Id = payment.OrderId,
+                        //Following values will be set to the correct date and time when that event is played.
+                        PickupDate = @event.EventDate,
+                        CreatedDate = @event.EventDate
+                    };
+
+                    context.Set<OrderDetail>().Add(order);
+                }
+
+
                 if (!order.Fare.HasValue || order.Fare == 0)
                 {
                     order.Fare = Convert.ToDouble(@event.Meter);
