@@ -43,7 +43,7 @@
                 { id: 25, display: "25%" }
             ];
 
-            if (!data.settings.defaultTipPercent) {
+            if (!data.defaultTipPercent) {
                 this.model.set('defaultTipPercent', TaxiHail.parameters.defaultTipPercentage);
             }
 
