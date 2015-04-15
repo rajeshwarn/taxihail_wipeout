@@ -95,6 +95,7 @@ namespace apcurium.MK.Booking.EventHandlers
             using (var context = _contextFactory.Invoke())
             {
                 // Prevents NullReferenceException caused with web prepayed while running database initializer.
+                var orderExists = false;
                 if (@event.IsPrepaid)
                 {
                     var order = context.Find<OrderDetail>(@event.SourceId);
@@ -120,33 +121,36 @@ namespace apcurium.MK.Booking.EventHandlers
                         order.Market = @event.Market;
 
                         context.SaveChanges();
+
+                        orderExists = true;
                     }
-                    else
-                    {
-                        context.Save(new OrderDetail
-                        {
-                            IBSOrderId = @event.IBSOrderId,
-                            AccountId = @event.AccountId,
-                            PickupAddress = @event.PickupAddress,
-                            Id = @event.SourceId,
-                            PickupDate = @event.PickupDate,
-                            CreatedDate = @event.CreatedDate,
-                            DropOffAddress = @event.DropOffAddress,
-                            Settings = @event.Settings,
-                            Status = (int)OrderStatus.Created,
-                            IsRated = false,
-                            EstimatedFare = @event.EstimatedFare,
-                            UserAgent = @event.UserAgent,
-                            UserNote = @event.UserNote,
-                            ClientLanguageCode = @event.ClientLanguageCode,
-                            ClientVersion = @event.ClientVersion,
-                            CompanyKey = @event.CompanyKey,
-                            CompanyName = @event.CompanyName,
-                            Market = @event.Market
-                        });
-                    }
+                   
                 }
-                
+
+                if (!orderExists)
+                {
+                    context.Save(new OrderDetail
+                    {
+                        IBSOrderId = @event.IBSOrderId,
+                        AccountId = @event.AccountId,
+                        PickupAddress = @event.PickupAddress,
+                        Id = @event.SourceId,
+                        PickupDate = @event.PickupDate,
+                        CreatedDate = @event.CreatedDate,
+                        DropOffAddress = @event.DropOffAddress,
+                        Settings = @event.Settings,
+                        Status = (int)OrderStatus.Created,
+                        IsRated = false,
+                        EstimatedFare = @event.EstimatedFare,
+                        UserAgent = @event.UserAgent,
+                        UserNote = @event.UserNote,
+                        ClientLanguageCode = @event.ClientLanguageCode,
+                        ClientVersion = @event.ClientVersion,
+                        CompanyKey = @event.CompanyKey,
+                        CompanyName = @event.CompanyName,
+                        Market = @event.Market
+                    });
+                }
 
                 // Create an empty OrderStatusDetail row
                 var details = context.Find<OrderStatusDetail>(@event.SourceId);
