@@ -94,12 +94,36 @@ namespace apcurium.MK.Booking.EventHandlers
         {
             using (var context = _contextFactory.Invoke())
             {
-                // Prevents NullReferenceException caused with web prepayed while running database initializer.
-                var orderExists = false;
+                var orderDetail = new OrderDetail
+                {
+                    IBSOrderId = @event.IBSOrderId,
+                    AccountId = @event.AccountId,
+                    PickupAddress = @event.PickupAddress,
+                    Id = @event.SourceId,
+                    PickupDate = @event.PickupDate,
+                    CreatedDate = @event.CreatedDate,
+                    DropOffAddress = @event.DropOffAddress,
+                    Settings = @event.Settings,
+                    Status = (int)OrderStatus.Created,
+                    IsRated = false,
+                    EstimatedFare = @event.EstimatedFare,
+                    UserAgent = @event.UserAgent,
+                    UserNote = @event.UserNote,
+                    ClientLanguageCode = @event.ClientLanguageCode,
+                    ClientVersion = @event.ClientVersion,
+                    CompanyKey = @event.CompanyKey,
+                    CompanyName = @event.CompanyName,
+                    Market = @event.Market
+                };
+
                 if (@event.IsPrepaid)
                 {
+                    // NB: There could be a race condition for CC prepaid orders because the payment is done before creating the order
+                    // so we make sure that the order is created properly
                     var order = context.Find<OrderDetail>(@event.SourceId);
 
+                    // CreditCardPaymentCaptured was triggered before OrderCreated, so a basic order object was created
+                    // in the CreditCardPaymentDetailsGenerator. Here, we update its values
                     if (order != null)
                     {
                         order.IBSOrderId = @event.IBSOrderId;
@@ -109,7 +133,7 @@ namespace apcurium.MK.Booking.EventHandlers
                         order.CreatedDate = @event.CreatedDate;
                         order.DropOffAddress = @event.DropOffAddress;
                         order.Settings = @event.Settings;
-                        order.Status = (int) OrderStatus.Created;
+                        order.Status = (int)OrderStatus.Created;
                         order.IsRated = false;
                         order.EstimatedFare = @event.EstimatedFare;
                         order.UserAgent = @event.UserAgent;
@@ -121,35 +145,17 @@ namespace apcurium.MK.Booking.EventHandlers
                         order.Market = @event.Market;
 
                         context.SaveChanges();
-
-                        orderExists = true;
                     }
-                   
-                }
-
-                if (!orderExists)
-                {
-                    context.Save(new OrderDetail
+                    else
                     {
-                        IBSOrderId = @event.IBSOrderId,
-                        AccountId = @event.AccountId,
-                        PickupAddress = @event.PickupAddress,
-                        Id = @event.SourceId,
-                        PickupDate = @event.PickupDate,
-                        CreatedDate = @event.CreatedDate,
-                        DropOffAddress = @event.DropOffAddress,
-                        Settings = @event.Settings,
-                        Status = (int)OrderStatus.Created,
-                        IsRated = false,
-                        EstimatedFare = @event.EstimatedFare,
-                        UserAgent = @event.UserAgent,
-                        UserNote = @event.UserNote,
-                        ClientLanguageCode = @event.ClientLanguageCode,
-                        ClientVersion = @event.ClientVersion,
-                        CompanyKey = @event.CompanyKey,
-                        CompanyName = @event.CompanyName,
-                        Market = @event.Market
-                    });
+                        // OrderCreated was triggered before CreditCardPaymentCaptured so order doesn't exist yet: create it
+                        context.Save(orderDetail);
+                    }
+                }
+                else
+                {
+                    // Normal flow
+                    context.Save(orderDetail);
                 }
 
                 // Create an empty OrderStatusDetail row
