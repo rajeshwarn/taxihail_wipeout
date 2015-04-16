@@ -93,7 +93,7 @@ namespace MK.Common.Configuration
 
 		    MaxFareEstimate = 100;
 
-		    AvailableVehicleRefreshRate = 5000;
+		    AvailableVehicleRefreshRate = 5;
 
 		    TwitterAccessTokenUrl = "https://api.twitter.com/oauth/access_token";
             TwitterAuthorizeUrl = "https://api.twitter.com/oauth/authorize";
@@ -167,7 +167,7 @@ namespace MK.Common.Configuration
         public bool AccountActivationDisabled { get; protected set; }
 
         [SendToClient, CustomizableByCompany]
-        [Display(Name = "Available vehicule refresh rate", Description = "Modify the refresh delay (in milliseconds) of the available vehicules on the map.")]
+        [Display(Name = "Available vehicule refresh rate", Description = "Modify the refresh delay (in seconds) of the available vehicules on the map.")]
 	    public int AvailableVehicleRefreshRate { get; set; }
 
         [SendToClient, CustomizableByCompany]
