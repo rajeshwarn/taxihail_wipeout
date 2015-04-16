@@ -202,17 +202,23 @@
               <input type="text" name="zoneList"  value="{{zoneList}}" placeholder="{{localize "zoneListPlaceholder"}}"></input>
           </div>
       </div>
-      <div class="control-group">
+    <div class="control-group">
         <label class="control-label">{{localize 'Priority'}}</label>
         <div class="controls">
-          {{#if editMode}}
-          <input type="text" name="priority"  value="{{priority}}"></input>
-          {{/if}}
-          {{#unless editMode}}
-          <input type="text" name="priority"  value="{{highestPriority}}"></input>
-          {{/unless}}
+            {{#if editMode}}
+            <input type="text" name="priority" value="{{priority}}"></input>
+            {{/if}}
+            {{#unless editMode}}
+            <input type="text" name="priority" value="{{highestPriority}}"></input>
+            {{/unless}}
         </div>
-      </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">{{localize 'Market'}}</label>
+        <div class="controls">
+            <input type="text" name="market" value="{{market}}" />
+        </div>
+    </div>
       <input type='hidden' id='isActive' name='isActive' value='{{isActive}}' />
         <button type='button' data-action='saveEnable' class='btn btn-primary'>{{localize "Save and enable"}}</button>
       <button type='button' data-action='saveDisable' class='btn btn-primary'>{{localize "Save and disable"}}</button>
