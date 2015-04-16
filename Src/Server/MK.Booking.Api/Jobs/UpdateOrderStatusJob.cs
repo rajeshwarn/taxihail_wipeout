@@ -187,14 +187,17 @@ namespace apcurium.MK.Booking.Api.Jobs
 
         private IEnumerable<VehicleResponse> GetVehicleStatusesFromHoneyBadgerIfNecessary(IBSOrderInformation[] orderStatuses, string market)
         {
+
             if (_serverSettings.ServerData.AvailableVehiclesMode == AvailableVehiclesModes.HoneyBadger
-                && _serverSettings.ServerData.AvailableVehiclesMarket.HasValue()
-                && !market.HasValue()) // Only in local market
+                && _serverSettings.ServerData.AvailableVehiclesMarket.HasValue())
             {
                 var vehicleMedallions = orderStatuses.Select(x => x.VehicleNumber);
+                var vehicleMarket = !market.HasValue()
+                    ? _serverSettings.ServerData.AvailableVehiclesMarket // Local market
+                    : market;                                            // External market
 
                 // Get vehicle statuses/position from HoneyBadger
-                var honeyBadgerVehicleStatuses = _honeyBadgerServiceClient.GetVehicleStatus(_serverSettings.ServerData.AvailableVehiclesMarket, vehicleMedallions);
+                var honeyBadgerVehicleStatuses = _honeyBadgerServiceClient.GetVehicleStatus(vehicleMarket, vehicleMedallions);
 
                 return honeyBadgerVehicleStatuses;
             }
