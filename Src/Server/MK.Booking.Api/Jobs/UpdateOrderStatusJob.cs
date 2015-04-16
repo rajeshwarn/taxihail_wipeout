@@ -110,13 +110,13 @@ namespace apcurium.MK.Booking.Api.Jobs
                             ? string.Empty
                             : string.Format(" for company {0}", orderGroup.Key.CompanyKey));
                         Log.DebugFormat("Starting BatchUpdateStatus with {0} orders of status {1}", ordersForCompany.Count(o => o.Status == OrderStatus.WaitingForPayment), "WaitingForPayment");
-                        BatchUpdateStatus(orderGroup.Key.CompanyKey, ordersForCompany.Where(o => o.Status == OrderStatus.WaitingForPayment));
+                        BatchUpdateStatus(orderGroup.Key.CompanyKey, orderGroup.Key.Market, ordersForCompany.Where(o => o.Status == OrderStatus.WaitingForPayment));
                         Log.DebugFormat("Starting BatchUpdateStatus with {0} orders of status {1}", ordersForCompany.Count(o => o.Status == OrderStatus.Pending), "Pending");
-                        BatchUpdateStatus(orderGroup.Key.CompanyKey, ordersForCompany.Where(o => o.Status == OrderStatus.Pending));
+                        BatchUpdateStatus(orderGroup.Key.CompanyKey, orderGroup.Key.Market, ordersForCompany.Where(o => o.Status == OrderStatus.Pending));
                         Log.DebugFormat("Starting BatchUpdateStatus with {0} orders of status {1}", ordersForCompany.Count(o => o.Status == OrderStatus.TimedOut), "TimedOut");
-                        BatchUpdateStatus(orderGroup.Key.CompanyKey, ordersForCompany.Where(o => o.Status == OrderStatus.TimedOut));
+                        BatchUpdateStatus(orderGroup.Key.CompanyKey, orderGroup.Key.Market, ordersForCompany.Where(o => o.Status == OrderStatus.TimedOut));
                         Log.DebugFormat("Starting BatchUpdateStatus with {0} orders of status {1}", ordersForCompany.Count(o => o.Status == OrderStatus.Created), "Created");
-                        BatchUpdateStatus(orderGroup.Key.CompanyKey, ordersForCompany.Where(o => o.Status == OrderStatus.Created));
+                        BatchUpdateStatus(orderGroup.Key.CompanyKey, orderGroup.Key.Market, ordersForCompany.Where(o => o.Status == OrderStatus.Created));
                     }
                     
                     hasOrdersWaitingForPayment = orders.Any(o => o.Status == OrderStatus.WaitingForPayment);
@@ -134,7 +134,7 @@ namespace apcurium.MK.Booking.Api.Jobs
             return hasOrdersWaitingForPayment;
         }
 
-        private void BatchUpdateStatus(string companyKey, IEnumerable<OrderStatusDetail> orders)
+        private void BatchUpdateStatus(string companyKey, string market, IEnumerable<OrderStatusDetail> orders)
         {
             // Enumerate orders to avoid multiple enumerations of IEnumerable
             var orderStatusDetails = orders as OrderStatusDetail[] ?? orders.ToArray();
@@ -157,7 +157,7 @@ namespace apcurium.MK.Booking.Api.Jobs
                 var orderStatuses = _ibsServiceProvider.Booking(companyKey).GetOrdersStatus(nextGroup).ToArray();
 
                 // If HoneyBadger for local market is enabled, we need to fetch the vehicle position from HoneyBadger instead of using the position data from IBS
-                var honeyBadgerVehicleStatuses = GetVehicleStatusesFromHoneyBadgerIfNecessary(orderStatuses);
+                var honeyBadgerVehicleStatuses = GetVehicleStatusesFromHoneyBadgerIfNecessary(orderStatuses, market);
 
                 foreach (var ibsStatus in orderStatuses)
                 {
@@ -179,26 +179,22 @@ namespace apcurium.MK.Booking.Api.Jobs
                     }
 
                     Log.DebugFormat("Starting OrderStatusUpdater for order {0} (IbsOrderId: {1})", order.OrderId, order.IBSOrderId);
+
                     _orderStatusUpdater.Update(ibsStatus, order);
                 }
             }
         }
 
-        private IEnumerable<VehicleResponse> GetVehicleStatusesFromHoneyBadgerIfNecessary(IBSOrderInformation[] orderStatuses)
+        private IEnumerable<VehicleResponse> GetVehicleStatusesFromHoneyBadgerIfNecessary(IBSOrderInformation[] orderStatuses, string market)
         {
-
             if (_serverSettings.ServerData.AvailableVehiclesMode == AvailableVehiclesModes.HoneyBadger
-                && _serverSettings.ServerData.AvailableVehiclesMarket.HasValue())
+                && _serverSettings.ServerData.AvailableVehiclesMarket.HasValue()
+                && !market.HasValue()) // Only in local market
             {
                 var vehicleMedallions = orderStatuses.Select(x => x.VehicleNumber);
 
                 // Get vehicle statuses/position from HoneyBadger
-                var honeyBadgerVehicleStatuses =
-                    _honeyBadgerServiceClient.GetVehicleStatus(_serverSettings.ServerData.AvailableVehiclesMarket,
-                        vehicleMedallions,
-                        _serverSettings.ServerData.AvailableVehiclesFleetId.HasValue
-                        ? new[] { _serverSettings.ServerData.AvailableVehiclesFleetId.Value }
-                        : null);
+                var honeyBadgerVehicleStatuses = _honeyBadgerServiceClient.GetVehicleStatus(_serverSettings.ServerData.AvailableVehiclesMarket, vehicleMedallions);
 
                 return honeyBadgerVehicleStatuses;
             }
