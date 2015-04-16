@@ -75,7 +75,8 @@ namespace apcurium.MK.Booking.EventHandlers
                     AppliesToDropoff = @event.AppliesToDropoff,
                     IsActive = @event.IsActive,
                     Category = (int) @event.Category,
-                    Type = (int) @event.Type
+                    Type = (int) @event.Type,
+                    Market = @event.Market
                 });
             }
         }
@@ -139,6 +140,7 @@ namespace apcurium.MK.Booking.EventHandlers
                 rule.AppliesToPickup = @event.AppliesToPickup;
                 rule.AppliesToDropoff = @event.AppliesToDropoff;
                 rule.IsActive = @event.IsActive;
+                rule.Market = @event.Market;
                 context.SaveChanges();
             }
         }

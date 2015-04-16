@@ -35,5 +35,6 @@ namespace apcurium.MK.Booking.Commands
         public RuleType Type { get; set; }
         public bool IsActive { get; set; }
         public Guid Id { get; set; }
+        public string Market { get; set; }
     }
 }

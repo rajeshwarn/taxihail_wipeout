@@ -26,5 +26,6 @@ namespace apcurium.MK.Booking.Events
         public DateTime? ActiveTo { get; set; }
         public int Priority { get; set; }
         public bool IsActive { get; set; }
+        public string Market { get; set; }
     }
 }
