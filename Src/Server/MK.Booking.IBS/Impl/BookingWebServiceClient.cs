@@ -47,6 +47,7 @@ namespace apcurium.MK.Booking.IBS.Impl
                 var vehicleTypeFilter = vehicleTypeId.HasValue
                                         ? new[] { new TVehicleTypeItem { ID = vehicleTypeId.Value } }
                                         : new TVehicleTypeItem[0];
+
                 UseService(service =>
                 {
                     result = service
@@ -56,7 +57,10 @@ namespace apcurium.MK.Booking.IBS.Impl
                 });
             }
 
-            return result.GroupBy(r=>r.VehicleNumber).Select(g => g.First()).ToArray();
+            return result
+                // Must check for null entries because when asking for 10 vehicles, ibs returns an array of 10 entries, even if there is less vehicles avaiable
+                .Where(r => r != null)
+                .GroupBy(r =>r .VehicleNumber).Select(g => g.First()).ToArray();
         }
 
         public IbsOrderStatus GetOrderStatus(int orderId, int accountId, string contactPhone)
