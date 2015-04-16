@@ -72,7 +72,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
 			_isStarted = true;
 
-			_timerSubject.OnNext(Observable.Timer(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds (5)));
+			_timerSubject.OnNext(Observable.Timer(TimeSpan.FromSeconds(1), TimeSpan.FromMilliseconds(_settings.Data.AvailableVehicleRefreshRate)));
 		}
 
 		private async Task<AvailableVehicle[]> CheckForAvailableVehicles(Address address, int? vehicleTypeId)
