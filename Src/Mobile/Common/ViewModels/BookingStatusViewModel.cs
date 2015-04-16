@@ -623,9 +623,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                         return;
                     }
 
+                    var confirmationMessage = Settings.WarnForFeesOnCancel
+                        && (VehicleStatuses.CanCancelOrderStatus.Contains(OrderStatusDetail.IBSStatusId))
+                        ? string.Format(
+                            this.Services().Localize["StatusConfirmCancelRideAndWarnForCancellationFees"],
+                            Settings.TaxiHail.ApplicationName)
+                        : this.Services().Localize["StatusConfirmCancelRide"];
+
                     this.Services().Message.ShowMessage(
-                        "", 
-                        this.Services().Localize["StatusConfirmCancelRide"],
+                        string.Empty,
+                        confirmationMessage,
                         this.Services().Localize["YesButton"], 
 						async () =>
                         {

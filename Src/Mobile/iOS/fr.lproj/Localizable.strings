@@ -631,3 +631,6 @@
 "ManualUnPairingForRideLinQ_Error_Message"="Une erreur est survenue lors de la dissociation. Veuillez essayer de nouveau.";
 "HomeView_ManualPairing"="Check In";
 "View_RideLinqPair"="Check In";
+"StatusConfirmCancelRideAndWarnForBookingFee"="Êtes-vous certain de vouloirs annuler? Un véhicule est en route pour venir vous chercher. {0} se réserve le droit de facturer à ses clients des frais d'annulation si ces derniers abusent du service.";
+"StatusConfirmCancelRideAndWarnForCancellationFee"="Êtes-vous certain de vouloirs annuler? Un véhicule est en route pour venir vous chercher. {0} se réserve le droit de facturer à ses clients des frais d'annulation si ces derniers abusent du service.";
+"StatusConfirmCancelRideAndWarnForCancellationFees"="Êtes-vous certain de vouloir annuler? Un véhicule est en route pour venir vous chercher. {0} se réserve le droit de facturer à ses clients des frais d'annulation si ces derniers abusent du service.";
