@@ -16,6 +16,9 @@ using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Common.Configuration;
 using System.Reactive.Linq;
 using System.Diagnostics;
+using apcurium.MK.Common.Enumeration;
+using HoneyBadger;
+using HoneyBadger.Responses;
 using ServiceStack.Common;
 
 #endregion
@@ -28,17 +31,26 @@ namespace apcurium.MK.Booking.Api.Jobs
         private readonly IIBSServiceProvider _ibsServiceProvider;
         private readonly IOrderStatusUpdateDao _orderStatusUpdateDao;
         private readonly OrderStatusUpdater _orderStatusUpdater;
+        private readonly HoneyBadgerServiceClient _honeyBadgerServiceClient;
+        private readonly IServerSettings _serverSettings;
 
         private static readonly ILog Log = LogManager.GetLogger(typeof(UpdateOrderStatusJob));
 
         private const int NumberOfConcurrentServers = 2;
 
-        public UpdateOrderStatusJob(IOrderDao orderDao, IIBSServiceProvider ibsServiceProvider, IOrderStatusUpdateDao orderStatusUpdateDao, OrderStatusUpdater orderStatusUpdater)
+        public UpdateOrderStatusJob(IOrderDao orderDao,
+            IIBSServiceProvider ibsServiceProvider,
+            IOrderStatusUpdateDao orderStatusUpdateDao,
+            OrderStatusUpdater orderStatusUpdater,
+            HoneyBadgerServiceClient honeyBadgerServiceClient,
+            IServerSettings serverSettings)
         {
             _orderStatusUpdateDao = orderStatusUpdateDao;
             _orderDao = orderDao;
             _ibsServiceProvider = ibsServiceProvider;
             _orderStatusUpdater = orderStatusUpdater;
+            _honeyBadgerServiceClient = honeyBadgerServiceClient;
+            _serverSettings = serverSettings;
         }
 
         public void CheckStatus(Guid orderId)
@@ -142,11 +154,24 @@ namespace apcurium.MK.Booking.Api.Jobs
             for (var skip = 0; skip < ibsOrdersIds.Count; skip = skip + take)
             {
                 var nextGroup = ibsOrdersIds.Skip(skip).Take(take).ToList();
-                var orderStatuses = _ibsServiceProvider.Booking(companyKey).GetOrdersStatus(nextGroup);
-                
+                var orderStatuses = _ibsServiceProvider.Booking(companyKey).GetOrdersStatus(nextGroup).ToArray();
+
+                // If HoneyBadger for local market is enabled, we need to fetch the vehicle position from HoneyBadger instead of using the position data from IBS
+                var honeyBadgerVehicleStatuses = GetVehicleStatusesFromHoneyBadgerIfNecessary(orderStatuses);
+
                 foreach (var ibsStatus in orderStatuses)
                 {
-                 
+                    if (honeyBadgerVehicleStatuses != null)
+                    {
+                        // Update vehicle position with matching data available data from HoneyBadger
+                        var honeyBadgerVehicleStatus = honeyBadgerVehicleStatuses.FirstOrDefault(v => v.Medallion == ibsStatus.VehicleNumber);
+                        if (honeyBadgerVehicleStatus != null)
+                        {
+                            ibsStatus.VehicleLatitude = honeyBadgerVehicleStatus.Latitude;
+                            ibsStatus.VehicleLongitude = honeyBadgerVehicleStatus.Longitude;
+                        }
+                    }
+
                     var order = orderStatusDetails.FirstOrDefault(o => o.IBSOrderId == ibsStatus.IBSOrderId);
                     if (order == null)
                     {
@@ -157,6 +182,28 @@ namespace apcurium.MK.Booking.Api.Jobs
                     _orderStatusUpdater.Update(ibsStatus, order);
                 }
             }
+        }
+
+        private IEnumerable<VehicleResponse> GetVehicleStatusesFromHoneyBadgerIfNecessary(IBSOrderInformation[] orderStatuses)
+        {
+
+            if (_serverSettings.ServerData.AvailableVehiclesMode == AvailableVehiclesModes.HoneyBadger
+                && _serverSettings.ServerData.AvailableVehiclesMarket.HasValue())
+            {
+                var vehicleMedallions = orderStatuses.Select(x => x.VehicleNumber);
+
+                // Get vehicle statuses/position from HoneyBadger
+                var honeyBadgerVehicleStatuses =
+                    _honeyBadgerServiceClient.GetVehicleStatus(_serverSettings.ServerData.AvailableVehiclesMarket,
+                        vehicleMedallions,
+                        _serverSettings.ServerData.AvailableVehiclesFleetId.HasValue
+                        ? new[] { _serverSettings.ServerData.AvailableVehiclesFleetId.Value }
+                        : null);
+
+                return honeyBadgerVehicleStatuses;
+            }
+
+            return null;
         }
     }
 }
