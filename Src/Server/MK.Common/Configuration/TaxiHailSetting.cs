@@ -426,7 +426,7 @@ namespace MK.Common.Configuration
         public bool DisableAutomaticZoomOnLocation { get; set; }
 
         [SendToClient, CustomizableByCompany]
-        [Display(Name = "Warn for Fees on Cancel", Description = "Before cancelling can order, the user will be warned that he could be charged cancellation fees.")]
+        [Display(Name = "Warn for Fees on Cancel", Description = "Before cancelling an order, the user will be warned that he could be charged cancellation fees.")]
         public bool WarnForFeesOnCancel { get; set; }
 
         [SendToClient]
