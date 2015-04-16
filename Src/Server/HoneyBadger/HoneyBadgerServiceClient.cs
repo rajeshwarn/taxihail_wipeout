@@ -84,50 +84,5 @@ namespace HoneyBadger
 
             return new List<VehicleResponse>();
         }
-
-        public IEnumerable<VehicleResponse> GetVehicleStatus(string market, IEnumerable<string> vehicleIds, IEnumerable<int> fleetIds = null)
-        {
-            var @params = new List<KeyValuePair<string, string>>
-                {
-                    new KeyValuePair<string, string>("includeEntities", "true"),
-                    new KeyValuePair<string, string>("market", market)
-                };
-
-            if (fleetIds != null)
-            {
-                foreach (var fleetId in fleetIds)
-                {
-                    @params.Add(new KeyValuePair<string, string>("fleet", fleetId.ToString()));
-                }
-            }
-
-            if (vehicleIds != null)
-            {
-                foreach (var vehicleId in vehicleIds)
-                {
-                    @params.Add(new KeyValuePair<string, string>("medallion", vehicleId));
-                }
-            }
-
-            var queryString = BuildQueryString(@params);
-
-            var response = Client.Get("availability" + queryString)
-                                 .Deserialize<HoneyBadgerResponse>()
-                                 .Result;
-
-            if (response.Entities != null)
-            {
-                return response.Entities.Select(e => new VehicleResponse
-                {
-                    Timestamp = e.TimeStamp,
-                    Latitude = e.Latitude,
-                    Longitude = e.Longitude,
-                    Medallion = e.Medallion,
-                    FleetId = e.FleetId
-                });
-            }
-
-            return new List<VehicleResponse>();
-        }
     }
 }
