@@ -1,4 +1,3 @@
-using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Attributes;
