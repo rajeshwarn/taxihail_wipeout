@@ -256,10 +256,15 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 		
         public async Task UpdateSettings (BookingSettings settings, int? tipPercent)
         {
+            //This is to make sure we only save the phone number
+            var phoneNumberChars = settings.Phone
+                .Where(char.IsDigit)
+                .ToArray();
+
             var bsr = new BookingSettingsRequest
             {
                 Name = settings.Name,
-                Phone = settings.Phone,
+                Phone = new string(phoneNumberChars),
                 VehicleTypeId = settings.VehicleTypeId,
                 ChargeTypeId = settings.ChargeTypeId,
                 ProviderId = settings.ProviderId,

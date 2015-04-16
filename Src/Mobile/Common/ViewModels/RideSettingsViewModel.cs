@@ -360,9 +360,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					    {
 					        try
 					        {
-								await _accountService.UpdateSettings(_bookingSettings, PaymentPreferences.Tip);
-								_orderWorkflowService.SetAccountNumber (_bookingSettings.AccountNumber, _bookingSettings.CustomerNumber);
-                                Close(this);
+					            await _accountService.UpdateSettings(_bookingSettings, PaymentPreferences.Tip);
+					            _orderWorkflowService.SetAccountNumber(_bookingSettings.AccountNumber, _bookingSettings.CustomerNumber);
+					            Close(this);
 					        }
 					        catch (WebServiceException ex)
 					        {
@@ -390,31 +390,31 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             if (string.IsNullOrEmpty(Name) || string.IsNullOrEmpty(Phone))
             {
-                this.Services().Message.ShowMessage(this.Services().Localize["UpdateBookingSettingsInvalidDataTitle"], this.Services().Localize["UpdateBookingSettingsEmptyField"]);
+                await this.Services().Message.ShowMessage(this.Services().Localize["UpdateBookingSettingsInvalidDataTitle"], this.Services().Localize["UpdateBookingSettingsEmptyField"]);
                 return false;
             }
 
-            if (Phone.Count(Char.IsDigit) < 10)
+            if (Phone.Count(Char.IsDigit) < 16)
             {
-                this.Services().Message.ShowMessage(this.Services().Localize["UpdateBookingSettingsInvalidDataTitle"], this.Services().Localize["InvalidPhoneErrorMessage"]);
+                await this.Services().Message.ShowMessage(this.Services().Localize["UpdateBookingSettingsInvalidDataTitle"], this.Services().Localize["InvalidPhoneErrorMessage"]);
                 return false;
             }
 
             if (ChargeTypeId == ChargeTypes.Account.Id && string.IsNullOrWhiteSpace(AccountNumber) && string.IsNullOrWhiteSpace(CustomerNumber))
             {
-                this.Services().Message.ShowMessage(this.Services().Localize["UpdateBookingSettingsInvalidDataTitle"], this.Services().Localize["UpdateBookingSettingsEmptyAccount"]);
+                await this.Services().Message.ShowMessage(this.Services().Localize["UpdateBookingSettingsInvalidDataTitle"], this.Services().Localize["UpdateBookingSettingsEmptyAccount"]);
                 return false;
             }
 
             if (Settings.IsPayBackRegistrationFieldRequired == true && !PayBack.HasValue())
             {
-                this.Services().Message.ShowMessage(this.Services().Localize["UpdateBookingSettingsInvalidDataTitle"], this.Services().Localize["NoPayBackErrorMessage"]);
+                await this.Services().Message.ShowMessage(this.Services().Localize["UpdateBookingSettingsInvalidDataTitle"], this.Services().Localize["NoPayBackErrorMessage"]);
                 return false;
             }
 
             if (PayBack.Length > 10 || !PayBack.IsNumber())
             {
-                this.Services().Message.ShowMessage(this.Services().Localize["UpdateBookingSettingsInvalidDataTitle"], this.Services().Localize["InvalidPayBackErrorMessage"]);
+                await this.Services().Message.ShowMessage(this.Services().Localize["UpdateBookingSettingsInvalidDataTitle"], this.Services().Localize["InvalidPayBackErrorMessage"]);
                 return false;
             }
 
@@ -433,7 +433,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     var chargeAccount = await _accountPaymentService.GetAccountCharge(AccountNumber, CustomerNumber);
                     if (chargeAccount.UseCardOnFileForPayment && creditCard == default(Guid?))
                     {
-                        this.Services().Message.ShowMessage(this.Services().Localize["UpdateBookingSettingsInvalidDataTitle"],
+                        await this.Services().Message.ShowMessage(this.Services().Localize["UpdateBookingSettingsInvalidDataTitle"],
                             this.Services().Localize["UpdateBookingSettingsInvalidCoF"]);
                         return false;
                     }
@@ -441,7 +441,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 catch
                 {
                     this.Services().Message.ShowMessage(this.Services().Localize["UpdateBookingSettingsInvalidDataTitle"],
-                        this.Services().Localize["UpdateBookingSettingsInvalidAccount"]);
+                        this.Services().Localize["UpdateBookingSettingsInvalidAccount"]).HandleErrors();
                     return false;
                 }
             }
