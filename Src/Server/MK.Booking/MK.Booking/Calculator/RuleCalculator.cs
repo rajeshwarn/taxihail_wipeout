@@ -22,9 +22,11 @@ namespace apcurium.MK.Booking.Calculator
         }
 
 
-        public RuleDetail GetActiveWarningFor(bool isFutureBooking, DateTime pickupDate, Func<string> pickupZoneGetterFunc, Func<string> dropOffZoneGetterFunc)
+        public RuleDetail GetActiveWarningFor(bool isFutureBooking, DateTime pickupDate, Func<string> pickupZoneGetterFunc, Func<string> dropOffZoneGetterFunc, string market)
         {
-            var rules = _ruleDao.GetActiveWarningRule(isFutureBooking).ToArray();
+            var rules = _ruleDao.GetActiveWarningRule(isFutureBooking)
+                .Where(rule => string.Equals(rule.Market, market))
+                .ToArray();
 
             if (rules.Any())
             {
@@ -34,9 +36,11 @@ namespace apcurium.MK.Booking.Calculator
             return GetMatching(rules, pickupDate);
         }
 
-        public RuleDetail GetActiveDisableFor(bool isFutureBooking, DateTime pickupDate, Func<string> pickupZoneGetterFunc, Func<string> dropOffZoneGetterFunc)
+        public RuleDetail GetActiveDisableFor(bool isFutureBooking, DateTime pickupDate, Func<string> pickupZoneGetterFunc, Func<string> dropOffZoneGetterFunc, string market)
         {
-            var rules = _ruleDao.GetActiveDisableRule(isFutureBooking).ToArray();
+            var rules = _ruleDao.GetActiveDisableRule(isFutureBooking)
+                .Where(rule => string.Equals(rule.Market, market))
+                .ToArray();
 
             if (rules.Any())
             {

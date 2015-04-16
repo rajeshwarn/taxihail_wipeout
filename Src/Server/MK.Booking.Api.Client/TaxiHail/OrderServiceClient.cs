@@ -111,16 +111,16 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             return Client.GetAsync<OrderRatings>(req);
         }
 
-		public Task<OrderValidationResult> ValidateOrder(CreateOrder order, string testZone = null, bool forError =false)
+		public Task<OrderValidationResult> ValidateOrder(CreateOrder order, string testZone = null, bool forError =false, string market = null)
 		{
             if (testZone.HasValue())
             {
-                var req = string.Format("/account/orders/validate/" + forError + "/" + testZone);
+                var req = string.Format("/account/orders/validate/{0}/{1}/{2}", market, forError, testZone);
                 return Client.PostAsync<OrderValidationResult>(req, order);
             }
             else
             {
-				var req = string.Format("/account/orders/validate/" + forError);
+                var req = string.Format("/account/orders/validate/{0}/{1}", market, forError);
                 return Client.PostAsync<OrderValidationResult>(req, order);
             }
         }

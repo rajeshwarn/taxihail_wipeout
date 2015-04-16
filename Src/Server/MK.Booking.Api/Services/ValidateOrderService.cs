@@ -16,6 +16,9 @@ namespace apcurium.MK.Booking.Api.Services
 {
     public class ValidateOrderService : Service
     {
+        private const string UNDEFINED = "undefined";
+
+
         private static readonly ILog Log = LogManager.GetLogger(typeof (ValidateOrderService));
 
         private readonly IServerSettings _serverSettings;
@@ -45,11 +48,16 @@ namespace apcurium.MK.Booking.Api.Services
                             request.DropOffAddress.Latitude, request.DropOffAddress.Longitude)
                         : null;
 
+            var market = string.Equals(UNDEFINED, request.Market)
+                ? null
+                : request.Market;
+
+
             if (request.ForError)
             {
                 var rule = _ruleCalculator.GetActiveDisableFor(request.PickupDate.HasValue,
-                                        request.PickupDate.HasValue ? request.PickupDate.Value : GetCurrentOffsetedTime(),
-                                        getPickupZone, getDropoffZone);
+                                        request.PickupDate ?? GetCurrentOffsetedTime(),
+                                        getPickupZone, getDropoffZone, market);
 
                 var hasError = rule != null;
                 var message = rule != null ? rule.Message : null;
@@ -65,8 +73,8 @@ namespace apcurium.MK.Booking.Api.Services
             else
             {
                 var rule = _ruleCalculator.GetActiveWarningFor(request.PickupDate.HasValue,
-                                        request.PickupDate.HasValue ? request.PickupDate.Value : GetCurrentOffsetedTime(), 
-                                        getPickupZone, getDropoffZone);
+                                        request.PickupDate ?? GetCurrentOffsetedTime(), 
+                                        getPickupZone, getDropoffZone, request.Market);
 
                 return new OrderValidationResult
                 {
