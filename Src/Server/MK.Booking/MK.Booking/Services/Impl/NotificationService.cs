@@ -445,7 +445,7 @@ namespace apcurium.MK.Booking.Services.Impl
             }
 
             var hasPaymentInfo = paymentInfo != null;
-            var hasDriverInfo = driverInfos.FullName.HasValue() || driverInfos.VehicleMake != null || driverInfos.VehicleModel != null;
+            var hasDriverInfo = driverInfos != null && (driverInfos.FullName.HasValue() || driverInfos.VehicleMake != null || driverInfos.VehicleModel != null);
             var paymentAmount = string.Empty;
             var paymentMethod = string.Empty;
             var paymentTransactionId = string.Empty;

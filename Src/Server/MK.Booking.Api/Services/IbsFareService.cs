@@ -28,35 +28,57 @@ namespace apcurium.MK.Booking.Api.Services
 
         public DirectionInfo Get(IbsFareRequest request)
         {
-            // TODO: Adapt distance format
             var tripDurationInMinutes = (request.TripDurationInSeconds.HasValue ? (int?)TimeSpan.FromSeconds(request.TripDurationInSeconds.Value).TotalMinutes : null);
-            var fare = _ibsServiceProvider.Booking().GetFareEstimate(request.PickupLatitude, request.PickupLongitude, request.DropoffLatitude, request.DropoffLongitude, 
-                request.PickupZipCode, request.DropoffZipCode, request.AccountNumber, request.CustomerNumber, tripDurationInMinutes, 
-                _serverSettings.ServerData.DefaultBookingSettings.ProviderId, request.VehicleType);
-            return fare.FareEstimate != null
-                ? new DirectionInfo
-                    {
-                        Distance = (int) (fare.Distance*1000),
-                        Price = fare.FareEstimate,
-                        FormattedDistance = FormatDistance((int) (fare.Distance*1000)),
-                        FormattedPrice = _resources.FormatPrice( fare.FareEstimate)
-                    }            
-                : new DirectionInfo();
+
+            var fare = _ibsServiceProvider.Booking().GetFareEstimate(
+                request.PickupLatitude,
+                request.PickupLongitude,
+                request.DropoffLatitude,
+                request.DropoffLongitude, 
+                request.PickupZipCode, 
+                request.DropoffZipCode,
+                request.AccountNumber,
+                request.CustomerNumber,
+                tripDurationInMinutes, 
+                _serverSettings.ServerData.DefaultBookingSettings.ProviderId,
+                request.VehicleType);
+
+            if (fare.FareEstimate != null)
+            {
+                double distance = fare.Distance ?? 0;
+
+                if (_serverSettings.ServerData.DistanceFormat == DistanceFormat.Km)
+                {
+                    // If IBS is not set in miles, it returns a distance in meters, so we have to convert it
+                    distance = distance * 1000;
+                }
+
+                return new DirectionInfo
+                {
+                    Distance = distance,
+                    Price = fare.FareEstimate,
+                    FormattedDistance = FormatDistance(distance),
+                    FormattedPrice = _resources.FormatPrice(fare.FareEstimate)
+                };
+            }
+
+            return new DirectionInfo();
         }
 
-        private string FormatDistance(int? distance)
+        private string FormatDistance(double? distance)
         {
             if (distance.HasValue)
             {
                 if (_serverSettings.ServerData.DistanceFormat == DistanceFormat.Km)
                 {
-                    var distanceInKm = Math.Round((double) distance.Value/1000, 1);
+                    var distanceInKm = Math.Round(distance.Value, 1);
                     return string.Format("{0:n1} km", distanceInKm);
                 }
-                var distanceInMiles = Math.Round((double) distance.Value/1000/1.609344, 1);
-                return string.Format("{0:n1} miles", distanceInMiles);
+
+                return string.Format("{0:n1} miles", distance.Value);
             }
-            return "";
+
+            return string.Empty;
         }
     }
 }
