@@ -8,7 +8,7 @@
 
             this.interval = window.setInterval(function () {
                 self.refresh();
-            }, 5000);
+            }, TaxiHail.parameters.AvailableVehicleRefreshRate);
         },
 
         refresh: function () {
