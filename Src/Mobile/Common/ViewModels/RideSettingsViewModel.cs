@@ -393,8 +393,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 await this.Services().Message.ShowMessage(this.Services().Localize["UpdateBookingSettingsInvalidDataTitle"], this.Services().Localize["UpdateBookingSettingsEmptyField"]);
                 return false;
             }
-
-            if (Phone.Count(Char.IsDigit) < 16)
+            var phoneDigitCount = Phone.Count(char.IsDigit);
+            if (phoneDigitCount > 15 || phoneDigitCount < 10)
             {
                 await this.Services().Message.ShowMessage(this.Services().Localize["UpdateBookingSettingsInvalidDataTitle"], this.Services().Localize["InvalidPhoneErrorMessage"]);
                 return false;
