@@ -16,23 +16,36 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
     public class NetworkVehiclesApiController
     {
         private readonly IRepository<NetworkVehicle> _networkVehiclesRepository;
+        private readonly IRepository<TaxiHailNetworkSettings> _taxiHailNetworkRepository;
         private readonly IRepository<Company> _companyRepository;
 
         public NetworkVehiclesApiController()
-            : this(new MongoRepository<NetworkVehicle>(), new MongoRepository<Company>())
+            : this(new MongoRepository<NetworkVehicle>(),
+            new MongoRepository<Company>(),
+            new MongoRepository<TaxiHailNetworkSettings>())
         {
         }
 
-        public NetworkVehiclesApiController(IRepository<NetworkVehicle> networkVehiclesRepository, IRepository<Company> companyRepository)
+        public NetworkVehiclesApiController(
+            IRepository<NetworkVehicle> networkVehiclesRepository,
+            IRepository<Company> companyRepository,
+            IRepository<TaxiHailNetworkSettings> taxiHailNetworkRepository)
         {
             _networkVehiclesRepository = networkVehiclesRepository;
             _companyRepository = companyRepository;
+            _taxiHailNetworkRepository = taxiHailNetworkRepository;
         }
 
-        [Route("api/customer/marketVehicleTypes")]
-        public HttpResponseMessage GetMarketVehicleTypes(string market)
+        [Route("api/customer/{companyId}/marketVehicleTypes")]
+        public HttpResponseMessage GetMarketVehicleTypes(string companyId)
         {
-            var networkVehicles = _networkVehiclesRepository.Where(v => v.Market == market);
+            var taxiHailNetworkSettings = _taxiHailNetworkRepository.FirstOrDefault(n => n.Id == companyId);
+            if (taxiHailNetworkSettings == null)
+            {
+                return new HttpResponseMessage(HttpStatusCode.NoContent);
+            }
+
+            var networkVehicles = _networkVehiclesRepository.Where(v => v.Market == taxiHailNetworkSettings.Market);
             if (!networkVehicles.Any())
             {
                 return new HttpResponseMessage(HttpStatusCode.NoContent);
@@ -53,14 +66,21 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
         }
 
         [Route("api/customer/{companyId}/associatedMarketVehicleTypes")]
-        public HttpResponseMessage GetAssociatedMarketVehicleTypes(string companyId, string market)
+        public HttpResponseMessage GetAssociatedMarketVehicleTypes(string companyId)
         {
-            var company = _companyRepository.GetById(companyId);
-            var networkVehicles = _networkVehiclesRepository.Where(v => v.Market == market);
+            var taxiHailNetworkSettings = _taxiHailNetworkRepository.FirstOrDefault(n => n.Id == companyId);
+            if (taxiHailNetworkSettings == null)
+            {
+                return new HttpResponseMessage(HttpStatusCode.NoContent);
+            }
+
+            var networkVehicles = _networkVehiclesRepository.Where(v => v.Market == taxiHailNetworkSettings.Market);
             if (!networkVehicles.Any())
             {
                 return new HttpResponseMessage(HttpStatusCode.NoContent); 
             }
+
+            var company = _companyRepository.GetById(companyId);
 
             // Select the matching network vehicles for every company vehicles
             var networkVehicleMatches = company.Vehicles.Select(
@@ -83,7 +103,7 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
         }
 
         [Route("api/customer/{companyId}/companyVehicles")]
-        public HttpResponseMessage Post(string companyId, string market, CompanyVehicleType companyVehicleType)
+        public HttpResponseMessage Post(string companyId, CompanyVehicleType companyVehicleType)
         {
             var company = _companyRepository.GetById(companyId);
             var companyVehicle = company.Vehicles.FirstOrDefault(v => v.Id == companyVehicleType.Id.ToString());
