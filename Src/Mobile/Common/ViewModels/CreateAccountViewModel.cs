@@ -83,38 +83,38 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				{
 					if (!IsEmail(Data.Email))
 					{
-                        this.Services().Message.ShowMessage(this.Services().Localize["ResetPasswordInvalidDataTitle"], this.Services().Localize["ResetPasswordInvalidDataMessage"]);
+                        await this.Services().Message.ShowMessage(this.Services().Localize["ResetPasswordInvalidDataTitle"], this.Services().Localize["ResetPasswordInvalidDataMessage"]);
 						return;
 					}
 					
 					var hasPassword = Data.Password.HasValue() && ConfirmPassword.HasValue();
                     if (Data.Email.IsNullOrEmpty() || Data.Name.IsNullOrEmpty() || Data.Phone.IsNullOrEmpty() || (!hasPassword && !HasSocialInfo))
 					{
-                        this.Services().Message.ShowMessage(this.Services().Localize["CreateAccountInvalidDataTitle"], this.Services().Localize["CreateAccountEmptyField"]);
+                        await this.Services().Message.ShowMessage(this.Services().Localize["CreateAccountInvalidDataTitle"], this.Services().Localize["CreateAccountEmptyField"]);
 						return;
 					}
 					
 					if (!HasSocialInfo && ((Data.Password != ConfirmPassword) || (Data.Password.Length < 6 || Data.Password.Length > 10)))
 					{
-                        this.Services().Message.ShowMessage(this.Services().Localize["CreateAccountInvalidDataTitle"], this.Services().Localize["CreateAccountInvalidPassword"]);
+                        await this.Services().Message.ShowMessage(this.Services().Localize["CreateAccountInvalidDataTitle"], this.Services().Localize["CreateAccountInvalidPassword"]);
 						return;
 					}
-					
-					if (Data.Phone.Count(x => Char.IsDigit(x)) < 10)
+				    var phoneNumberLenght = Data.Phone.Count(char.IsDigit);
+                    if (phoneNumberLenght < 10 || phoneNumberLenght > 15)
 					{
-                        this.Services().Message.ShowMessage(this.Services().Localize["CreateAccountInvalidDataTitle"], this.Services().Localize["InvalidPhoneErrorMessage"]);
+                        await this.Services().Message.ShowMessage(this.Services().Localize["CreateAccountInvalidDataTitle"], this.Services().Localize["InvalidPhoneErrorMessage"]);
 						return;
 					}
 
 				    if (Settings.IsPayBackRegistrationFieldRequired == true && !Data.PayBack.HasValue())
 				    {
-                        this.Services().Message.ShowMessage(this.Services().Localize["CreateAccountInvalidDataTitle"], this.Services().Localize["NoPayBackErrorMessage"]);
+                        await this.Services().Message.ShowMessage(this.Services().Localize["CreateAccountInvalidDataTitle"], this.Services().Localize["NoPayBackErrorMessage"]);
                         return;
 				    }
 
                     if (Data.PayBack.HasValue() && (Data.PayBack.Length > 10 || !Data.PayBack.IsNumber()))
 				    {
-                        this.Services().Message.ShowMessage(this.Services().Localize["CreateAccountInvalidDataTitle"], this.Services().Localize["InvalidPayBackErrorMessage"]);
+                        await this.Services().Message.ShowMessage(this.Services().Localize["CreateAccountInvalidDataTitle"], this.Services().Localize["InvalidPayBackErrorMessage"]);
                         return;
 				    }
 
