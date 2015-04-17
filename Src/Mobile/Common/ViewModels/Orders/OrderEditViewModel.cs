@@ -96,6 +96,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			{
 				return this.GetCommand(async () =>
 				{
+                    var phoneDigitCount = BookingSettings.Phone.Count(char.IsDigit);
+                    if (phoneDigitCount > 15 || phoneDigitCount < 10)
+                    {
+                        await this.Services().Message.ShowMessage(this.Services().Localize["UpdateBookingSettingsInvalidDataTitle"], this.Services().Localize["InvalidPhoneErrorMessage"]);
+                        return;
+                    }
+
 					try
 					{
 						await _orderWorkflowService.ValidateNumberOfPassengers(BookingSettings.Passengers);
