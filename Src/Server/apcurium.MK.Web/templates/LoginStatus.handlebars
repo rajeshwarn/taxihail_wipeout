@@ -2,37 +2,57 @@
 
 </a>
 <div class="login-status pull-right">
-  <ul>
-    {{#if isLoggedIn}}
-      <li>
-        <a href="#useraccount">{{name}}</a>
-      </li>
+    <ul>
+        {{#if isLoggedIn}}
+        <li>
+            <a href="#useraccount">{{name}}</a>
+        </li>
         {{#if isAdmin}}
         <li>
-          <a href="admin/">{{localize "Admin"}}</a>
+            <a href="admin/">{{localize "Admin"}}</a>
         </li>
         {{/if}}
-      <li>
-        <a href="#" data-action="logout">{{localize "Log Out"}}</a>
-      </li>
-    {{else}}
-      <li>
-        <a href="#login" >{{localize "Log In"}}</a>
-      </li>
-    {{#if isSignupVisible}}
-    <li>
-          <a href="#signup" >{{localize "Sign Up"}}</a>
+        <li>
+            <a href="#" data-action="logout">{{localize "Log Out"}}</a>
         </li>
-      {{/if}}
-    {{/if}}
-  </ul>
+        {{else}}
+        <li>
+            <a href="#login">{{localize "Log In"}}</a>
+        </li>
+        {{#if isSignupVisible}}
+        <li>
+            <a href="#signup">{{localize "Sign Up"}}</a>
+        </li>
+        {{/if}}
+        {{/if}}
+    </ul>
 </div>
+
+<div class="web-payment pull-right">
+    {{#if isPayPalEnabled}}
+        <!-- PayPal Logo -->
+        <table border="0" cellpadding="10" cellspacing="0" align="center">
+            <tr>
+                <td align="center"></td>
+            </tr>
+            <tr>
+                <td align="center">
+                    <a href="https://www.paypal.com/ca/webapps/mpp/paypal-popup" title="How PayPal Works" onclick="javascript:window.open('https://www.paypal.com/ca/webapps/mpp/paypal-popup', 'WIPaypal', 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=1060, height=700'); return false;">
+                        <img src="https://www.paypalobjects.com/webstatic/en_CA/mktg/logo-image/pp_cc_mark_37x23.jpg" border="0" alt="PayPal Logo">
+                    </a>
+                </td>
+            </tr>
+        </table>
+        <!-- PayPal Logo -->
+    {{/if}}
+</div>
+
 {{#if isSocialMediaVisible}}
 <div class="social-media pull-right">
     {{#if SocialMediaFacebookURL }}<a href="{{SocialMediaFacebookURL}}" class="facebook-icon iconURL"></a>{{/if}}
     {{#if SocialMediaTwitterURL }}<a href="{{SocialMediaTwitterURL}}" class="twitter-icon iconURL"></a>{{/if}}
     {{#if SocialMediaGoogleURL }}<a href="{{SocialMediaGoogleURL}}" class="google-icon iconURL"></a>{{/if}}
-    {{#if SocialMediaPinterestURL }}<a href="{{SocialMediaPinterestURL}}" class="pinterest-icon iconURL"></a>{{/if}}<br />
+    {{#if SocialMediaPinterestURL }}<a href="{{SocialMediaPinterestURL}}" class="pinterest-icon iconURL"></a>{{/if}}<br/>
     <div class="phonenumber">{{DefaultPhoneNumber}}</div>
 </div>
 {{/if}}
