@@ -7,9 +7,11 @@ namespace CustomerPortal.Web.Entities.Network
     {
         public string Id { get; set; }
 
+        [Required]
         [Display(Name = "Name")]
         public string Name { get; set; }
 
+        [Required]
         [Display(Name = "Logo")]
         public string LogoName { get; set; }
 

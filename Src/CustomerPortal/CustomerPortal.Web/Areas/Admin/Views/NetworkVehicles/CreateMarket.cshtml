@@ -2,12 +2,18 @@
 
 <h2>New Market</h2>
 
+@if (@ViewBag.Error != null)
+{
+    <div class="alert alert-error" style="margin-top: 10px;">@ViewBag.Error</div>
+}
+
 @using (Html.BeginForm("CreateMarket", "NetworkVehicles", FormMethod.Post))
 {
     <div class="control-group">
         @Html.LabelFor(x => x.Market, new {@class = "control-label"})
         <div class="controls">
-            @Html.TextBoxFor(x => x.Market, new {@class = "input-block-level"})
+            @Html.TextBoxFor(x => x.Market, new { @class = "input-block-level", @style = "width: 40%" })
+            @Html.ValidationMessageFor(x => x.Market)
         </div>
     </div>
 

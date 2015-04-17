@@ -1,18 +1,11 @@
 ﻿#region
 
 using System;
-using System.Configuration;
 using System.Linq;
 using System.Web.Mvc;
-using System.Web.Security;
 using CustomerPortal.Web.Areas.Admin.Models;
-using CustomerPortal.Web.Entities;
 using CustomerPortal.Web.Entities.Network;
-using CustomerPortal.Web.Security;
-using ExtendedMongoMembership;
-using MongoDB.Bson;
 using MongoRepository;
-using WebMatrix.WebData;
 
 #endregion
 
@@ -47,7 +40,7 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
             // Find all vehicle type for this market
             var networkVehicles = Repository.Where(v => v.Market == marketModel.Market);
 
-            return View(networkVehicles);
+            return View(new NetworkVehiclesModel{ Market = marketModel.Market, Vehicles = networkVehicles });
         }
 
         public ActionResult CreateMarket()
@@ -58,13 +51,20 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
         [HttpPost]
         public ActionResult CreateMarket(MarketModel marketModel)
         {
+            var networkVehicles = Repository.Where(v => v.Market == marketModel.Market);
+            if (networkVehicles.Any())
+            {
+                ViewBag.Error = "A market with that name already exists.";
+
+                // If there are alreayd vehicles in the market, that means that it already exists
+                return View(new MarketModel());
+            }
+
             return RedirectToAction("CreateVehicle", marketModel);
         }
 
         public ActionResult DeleteMarket(MarketModel marketModel)
         {
-            // TODO: Delete Confirmation
-
             try
             {
                 Repository.Delete(v => v.Market == marketModel.Market);
@@ -86,7 +86,17 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
         public ActionResult CreateVehicle(NetworkVehicle networkVehicle)
         {
             networkVehicle.Id = Guid.NewGuid().ToString();
-            Repository.Add(networkVehicle);
+
+            try
+            {
+                Repository.Add(networkVehicle);
+            }
+            catch (Exception)
+            {
+                ViewBag.Error = "An error occured. Unable to create the vehicle.";
+
+                return View(networkVehicle);
+            }
 
             return RedirectToAction("VehicleIndex", new MarketModel { Market = networkVehicle.Market });
         }
@@ -101,22 +111,15 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
         [HttpPost]
         public ActionResult EditVehicle(NetworkVehicle networkVehicle)
         {
-            // TODO: check if can just use updatedVehicle
-
             try
             {
-                //var vehicleToEdit = Repository.GetById(networkVehicle.Id);
-                //vehicleToEdit.Name = networkVehicle.Name;
-                //vehicleToEdit.Market = networkVehicle.Market;
-                //vehicleToEdit.LogoName = networkVehicle.LogoName;
-                //vehicleToEdit.MaxNumberPassengers = networkVehicle.MaxNumberPassengers;
-
-                Repository.Update(/*vehicleToEdit*/networkVehicle);
+                Repository.Update(networkVehicle);
             }
             catch (Exception)
             {
                 ViewBag.Error = "An error occured. Unable to update the vehicle type.";
-                return RedirectToAction(networkVehicle.Id);
+
+                return View(networkVehicle);
             }
 
             return RedirectToAction("VehicleIndex", new MarketModel { Market = networkVehicle.Market });
