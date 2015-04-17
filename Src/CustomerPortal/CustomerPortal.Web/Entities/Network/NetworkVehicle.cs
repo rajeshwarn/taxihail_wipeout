@@ -1,5 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
-using MongoRepository;
+﻿using MongoRepository;
+using System.ComponentModel.DataAnnotations;
 
 namespace CustomerPortal.Web.Entities.Network
 {
@@ -10,16 +10,12 @@ namespace CustomerPortal.Web.Entities.Network
         [Display(Name = "Name")]
         public string Name { get; set; }
 
-        [Display(Name = "Market")]
-        public string Market { get; set; }
-
         [Display(Name = "Logo")]
         public string LogoName { get; set; }
 
         [Display(Name = "Max # Passengers")]
         public int MaxNumberPassengers { get; set; }
 
-        [Display(Name = "Network Vehicle Id")]
-        public int NetworkVehicleId { get; set; }
+        public string Market { get; set; }
     }
 }

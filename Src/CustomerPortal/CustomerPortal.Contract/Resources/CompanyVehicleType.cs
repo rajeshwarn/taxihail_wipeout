@@ -14,6 +14,6 @@ namespace CustomerPortal.Contract.Resources
 
         public int ReferenceDataVehicleId { get; set; }
 
-        public int NetworkVehicleId { get; set; }
+        public Guid NetworkVehicleId { get; set; }
     }
 }

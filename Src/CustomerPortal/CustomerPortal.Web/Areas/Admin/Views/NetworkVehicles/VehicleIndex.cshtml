@@ -1,17 +1,29 @@
-﻿@{
-    Layout = null;
-}
+﻿@model IEnumerable<CustomerPortal.Web.Entities.Network.NetworkVehicle>
 
-<!DOCTYPE html>
-
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title></title>
-</head>
-<body>
-    <div>
-    
+<h2>Network Vehicles</h2>
+<div class='row'>
+    <div class='span12'>
+        <p>
+            <a class="btn" href='@Url.Action("CreateVehicle")'>Create Vehicle Type</a>
+        </p>
     </div>
-</body>
-</html>
+    <div class="span12">
+        <table class="table table-striped">
+            <tr>
+                <th>Vehicle Types</th>
+            </tr>
+            @foreach (var vehicleType in Model)
+            {
+                <tr>
+                    <td>
+                        <a href="@Url.Action("EditVehicle", new { id = vehicleType.Id })">@vehicleType.Name</a>
+
+                    </td>
+                    <td>
+                        <a class="btn btn-danger" href='@Url.Action("DeleteVehicle", new { id = vehicleType.Id })'>Delete</a>
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+</div>

@@ -14,6 +14,6 @@ namespace CustomerPortal.Web.Entities
 
         public int ReferenceDataVehicleId { get; set; }
 
-        public int NetworkVehicleId { get; set; }
+        public string NetworkVehicleId { get; set; }
     }
 }

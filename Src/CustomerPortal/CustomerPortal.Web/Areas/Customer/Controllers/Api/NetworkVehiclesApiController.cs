@@ -29,8 +29,31 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
             _companyRepository = companyRepository;
         }
 
-        [Route("api/customer/{companyId}/networkVehicles")]
-        public HttpResponseMessage Get(string companyId, string market)
+        [Route("api/customer/marketVehicleTypes")]
+        public HttpResponseMessage GetMarketVehicleTypes(string market)
+        {
+            var networkVehicles = _networkVehiclesRepository.Where(v => v.Market == market);
+            if (!networkVehicles.Any())
+            {
+                return new HttpResponseMessage(HttpStatusCode.NoContent);
+            }
+
+            var response = networkVehicles.Select(v => new NetworkVehicleResponse
+            {
+                Id = Guid.Parse(v.Id),
+                Name = v.Name,
+                LogoName = v.LogoName,
+                MaxNumberPassengers = v.MaxNumberPassengers
+            });
+
+            return new HttpResponseMessage(HttpStatusCode.OK)
+            {
+                Content = new StringContent(JsonConvert.SerializeObject(response))
+            };
+        }
+
+        [Route("api/customer/{companyId}/associatedMarketVehicleTypes")]
+        public HttpResponseMessage GetAssociatedMarketVehicleTypes(string companyId, string market)
         {
             var company = _companyRepository.GetById(companyId);
             var networkVehicles = _networkVehiclesRepository.Where(v => v.Market == market);
@@ -42,7 +65,7 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
             // Select the matching network vehicles for every company vehicles
             var networkVehicleMatches = company.Vehicles.Select(
                 companyVehicle => networkVehicles
-                    .Where(networkVehicle => networkVehicle.NetworkVehicleId == companyVehicle.NetworkVehicleId)
+                    .Where(networkVehicle => networkVehicle.Id == companyVehicle.NetworkVehicleId)
                     .Select(networkVehicle => new NetworkVehicleResponse
                     {
                         Id = Guid.Parse(networkVehicle.Id),
@@ -71,7 +94,7 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
                 companyVehicle.Name = companyVehicle.Name;
                 companyVehicle.LogoName = companyVehicleType.LogoName;
                 companyVehicle.ReferenceDataVehicleId = companyVehicleType.ReferenceDataVehicleId;
-                companyVehicle.NetworkVehicleId = companyVehicleType.NetworkVehicleId;
+                companyVehicle.NetworkVehicleId = companyVehicleType.NetworkVehicleId.ToString();
                 companyVehicle.MaxNumberPassengers = companyVehicleType.MaxNumberPassengers;
             }
             else
@@ -83,7 +106,7 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
                     Name = companyVehicleType.Name,
                     LogoName = companyVehicleType.LogoName,
                     ReferenceDataVehicleId = companyVehicleType.ReferenceDataVehicleId,
-                    NetworkVehicleId = companyVehicleType.NetworkVehicleId,
+                    NetworkVehicleId = companyVehicleType.NetworkVehicleId.ToString(),
                     MaxNumberPassengers = companyVehicleType.MaxNumberPassengers
                 });
             }

@@ -1,4 +1,4 @@
-﻿@model IEnumerable<string>
+﻿@model IEnumerable<CustomerPortal.Web.Areas.Admin.Models.MarketModel>
 
 <h2>Network Vehicles</h2>
 <div class='row'>
@@ -10,17 +10,17 @@
     <div class="span12">
         <table class="table table-striped">
             <tr>
-                <th>Market</th>
+                <th>Markets</th>
             </tr>
             @foreach (var market in Model)
             {
                 <tr>
                     <td>
-                        <a class="btn" href="@Url.Action("VehicleIndex", market)">@market</a>
+                        <a href="@Url.Action("VehicleIndex", market)">@market.Market</a>
 
                     </td>
                     <td>
-                        <a class="btn" href='@Url.Action("DeleteMarket", market)'>Delete</a>
+                        <a class="btn btn-danger" href='@Url.Action("DeleteMarket", market)'>Delete</a>
                     </td>
                 </tr>
             }

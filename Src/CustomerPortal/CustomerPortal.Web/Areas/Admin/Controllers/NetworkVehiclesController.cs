@@ -35,16 +35,19 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
         public ActionResult Index()
         {
             // Get all unique market
-            var uniqueMarkets = Repository.Select(x => x.Market).Distinct().ToArray();
+            var uniqueMarkets = Repository.Select(x => x.Market)
+                .Distinct()
+                .ToArray();
 
-            return View(uniqueMarkets);
+            return View(uniqueMarkets.Select(market => new MarketModel { Market = market }));
         }
 
-        public ActionResult VehicleIndex(string market)
+        public ActionResult VehicleIndex(MarketModel marketModel)
         {
             // Find all vehicle type for this market
+            var networkVehicles = Repository.Where(v => v.Market == marketModel.Market);
 
-            return View();
+            return View(networkVehicles);
         }
 
         public ActionResult CreateMarket()
@@ -58,13 +61,13 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
             return RedirectToAction("CreateVehicle", marketModel);
         }
 
-        public ActionResult DeleteMarket(string market)
+        public ActionResult DeleteMarket(MarketModel marketModel)
         {
             // TODO: Delete Confirmation
 
             try
             {
-                Repository.Delete(v => v.Market == market);
+                Repository.Delete(v => v.Market == marketModel.Market);
             }
             catch (Exception)
             {
@@ -74,63 +77,69 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
             return RedirectToAction("Index");
         }
 
-        public ActionResult CreateVehicle(MarketModel market)
+        public ActionResult CreateVehicle(MarketModel marketModel)
         {
-            return View(new NetworkVehicle{ Market = market.Market });
+            return View(new NetworkVehicle { Market = marketModel.Market });
         }
 
         [HttpPost]
-        public ActionResult CreateVehicle(NetworkVehicle vehicle)
+        public ActionResult CreateVehicle(NetworkVehicle networkVehicle)
         {
-            vehicle.Id = Guid.NewGuid().ToString();
-            Repository.Add(vehicle);
+            networkVehicle.Id = Guid.NewGuid().ToString();
+            Repository.Add(networkVehicle);
 
-            return RedirectToAction("CreateVehicle", vehicle.Market);
+            return RedirectToAction("VehicleIndex", new MarketModel { Market = networkVehicle.Market });
         }
 
-        public ActionResult EditVehicle(string vehicleId)
+        public ActionResult EditVehicle(string id)
         {
-            var networkVehicle = Repository.GetById(vehicleId);
+            var networkVehicle = Repository.GetById(id);
 
             return View(networkVehicle);
         }
 
         [HttpPost]
-        public ActionResult EditVehicle(NetworkVehicle updatedVehicle)
+        public ActionResult EditVehicle(NetworkVehicle networkVehicle)
         {
             // TODO: check if can just use updatedVehicle
 
             try
             {
-                var vehicleToEdit = Repository.GetById(updatedVehicle.Id);
-                vehicleToEdit.Name = updatedVehicle.Name;
-                vehicleToEdit.Market = updatedVehicle.Market;
-                vehicleToEdit.LogoName = updatedVehicle.LogoName;
-                vehicleToEdit.MaxNumberPassengers = updatedVehicle.MaxNumberPassengers;
+                //var vehicleToEdit = Repository.GetById(networkVehicle.Id);
+                //vehicleToEdit.Name = networkVehicle.Name;
+                //vehicleToEdit.Market = networkVehicle.Market;
+                //vehicleToEdit.LogoName = networkVehicle.LogoName;
+                //vehicleToEdit.MaxNumberPassengers = networkVehicle.MaxNumberPassengers;
 
-                Repository.Update(vehicleToEdit);
+                Repository.Update(/*vehicleToEdit*/networkVehicle);
             }
             catch (Exception)
             {
                 ViewBag.Error = "An error occured. Unable to update the vehicle type.";
-                return RedirectToAction(updatedVehicle.Id);
+                return RedirectToAction(networkVehicle.Id);
             }
 
-            return RedirectToAction("VehicleIndex");
+            return RedirectToAction("VehicleIndex", new MarketModel { Market = networkVehicle.Market });
         }
 
-        public ActionResult DeleteVehicle(Guid vehicleId)
+        public ActionResult DeleteVehicle(string id)
         {
+            var vehicleToDelete = Repository.GetById(id);
+            if (vehicleToDelete == null)
+            {
+                throw new Exception(string.Format("Vehicle with Id {0} doesn't exist", id));
+            }
+
             try
             {
-                Repository.Delete(v => v.Id == vehicleId.ToString());
+                Repository.Delete(vehicleToDelete);
             }
             catch (Exception)
             {
                 ViewBag.Error = "An error occured. Unable to delete the vehicle.";
             }
-            
-            return RedirectToAction("VehicleIndex");
+
+            return RedirectToAction("VehicleIndex", new MarketModel { Market = vehicleToDelete.Market });
         }
     }
 }
