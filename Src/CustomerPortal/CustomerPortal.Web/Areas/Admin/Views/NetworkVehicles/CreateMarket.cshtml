@@ -1,0 +1,18 @@
+﻿@model CustomerPortal.Web.Areas.Admin.Models.MarketModel
+
+<h2>Create Market</h2>
+
+@using (Html.BeginForm("CreateMarket", "NetworkVehicles", FormMethod.Post))
+{
+    <div class="control-group">
+        @Html.LabelFor(x => x.Market, new {@class = "control-label"})
+        <div class="controls">
+            @Html.TextBoxFor(x => x.Market, new {@class = "input-block-level"})
+        </div>
+    </div>
+
+    <div class="control-group btn-right-alignment">
+        <button type="submit" class="btn btn-primary span">Create</button>
+        @Html.ActionLink("Cancel", "Index", null, new { @class = "btn span" })
+    </div>
+}
