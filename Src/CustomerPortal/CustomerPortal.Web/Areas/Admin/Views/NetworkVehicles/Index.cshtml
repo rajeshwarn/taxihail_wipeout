@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<CustomerPortal.Web.Areas.Admin.Models.MarketModel>
 
-<h2>Network Vehicles</h2>
+<h2>Network Markets</h2>
 <div class='row'>
     <div class='span12'>
         <p>
@@ -8,10 +8,8 @@
         </p>
     </div>
     <div class="span12">
+        <h5>Market</h5>
         <table class="table table-striped">
-            <tr>
-                <th>Markets</th>
-            </tr>
             @foreach (var market in Model)
             {
                 <tr>
@@ -20,7 +18,11 @@
 
                     </td>
                     <td>
-                        <a class="btn btn-danger" href='@Url.Action("DeleteMarket", market)'>Delete</a>
+                        @Html.ActionLink(
+                            "Delete",
+                            "DeleteMarket",
+                            market,
+                            new {@class = "btn span btn-danger", @onclick = "return confirm('Are you sure you wish to delete this market and all of its associated vehicle types?');"})
                     </td>
                 </tr>
             }

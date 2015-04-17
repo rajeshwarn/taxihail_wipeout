@@ -207,6 +207,7 @@
     <Compile Include="Areas\Admin\Models\ChecklistModel.cs" />
     <Compile Include="Areas\Admin\Models\ColorModel.cs" />
     <Compile Include="Areas\Admin\Models\MarketModel.cs" />
+    <Compile Include="Areas\Admin\Models\NetworkVehiclesModel.cs" />
     <Compile Include="Areas\Admin\Models\RequestResponse\CreateNewVersionRequest.cs" />
     <Compile Include="Areas\Admin\Models\CreateUser.cs" />
     <Compile Include="Areas\Admin\Models\DeployCustomerModel.cs" />
@@ -335,6 +336,7 @@
     <Content Include="assets\bootstrap\js\bootstrap-typeahead.js" />
     <Content Include="assets\bootstrap\js\bootstrap-tooltip-custom.js" />
     <Content Include="assets\css\tipsy.css" />
+    <Content Include="assets\css\vehicles.css" />
     <Content Include="assets\jquery-fileupload\css\jquery.fileupload-ui.css" />
     <Content Include="assets\jquery-fileupload\js\app.js" />
     <Content Include="assets\jquery-fileupload\js\cors\jquery.postmessage-transport.js" />
@@ -453,11 +455,14 @@
     <Content Include="HtmlPage1.html" />
     <Content Include="Images\android.png" />
     <Content Include="Images\apple.png" />
+    <Content Include="Images\blackcar_badge.png" />
     <Content Include="Images\check.png" />
     <Content Include="Images\copy.png" />
     <Content Include="Images\delete.png" />
     <Content Include="Images\download.jpg" />
     <Content Include="Images\settings.jpg" />
+    <Content Include="Images\suv_badge.png" />
+    <Content Include="Images\taxi_badge.png" />
     <Content Include="Images\THNetwork.png" />
     <Content Include="Images\warn.jpg" />
     <Content Include="log4net.xml" />
@@ -497,11 +502,9 @@
     <Content Include="Grid.mvc.readme" />
     <Content Include="Areas\Admin\Views\Checklist\Index.cshtml" />
     <Content Include="Areas\Admin\Views\NetworkVehicles\Index.cshtml" />
-    <Content Include="Areas\Admin\Views\NetworkVehicles\DeleteMarket.cshtml" />
     <Content Include="Areas\Admin\Views\NetworkVehicles\CreateMarket.cshtml" />
     <Content Include="Areas\Admin\Views\NetworkVehicles\CreateVehicle.cshtml" />
     <Content Include="Areas\Admin\Views\NetworkVehicles\EditVehicle.cshtml" />
-    <Content Include="Areas\Admin\Views\NetworkVehicles\DeleteVehicle.cshtml" />
     <Content Include="Areas\Admin\Views\NetworkVehicles\VehicleIndex.cshtml" />
     <None Include="Properties\PublishProfiles\local.pubxml" />
     <None Include="Properties\PublishProfiles\Production.pubxml" />
