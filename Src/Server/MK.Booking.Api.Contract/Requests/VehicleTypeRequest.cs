@@ -22,7 +22,7 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
 
         public int ReferenceDataVehicleId { get; set; }
 
-        public Guid NetworkVehicleTypeId { get; set; }
+        public int? ReferenceNetworkVehicleTypeId { get; set; }
 
         public int MaxNumberPassengers { get; set; }
     }

@@ -148,9 +148,7 @@ namespace apcurium.MK.Booking.Api.Services
         {
             if (request.Id == Guid.Empty)
             {
-                var response = _dao.GetAll();
-
-                return response;
+                return _dao.GetAll();
             }
 
             var vehicleType = _dao.FindById(request.Id);
@@ -172,7 +170,7 @@ namespace apcurium.MK.Booking.Api.Services
                 ReferenceDataVehicleId = request.ReferenceDataVehicleId,
                 CompanyId = AppConstants.CompanyId,
                 MaxNumberPassengers = request.MaxNumberPassengers,
-                NetworkVehicleTypeId = request.NetworkVehicleTypeId
+                ReferenceNetworkVehicleTypeId = request.ReferenceNetworkVehicleTypeId
             };
 
             _commandBus.Send(command);
@@ -199,7 +197,7 @@ namespace apcurium.MK.Booking.Api.Services
                 ReferenceDataVehicleId = request.ReferenceDataVehicleId,
                 CompanyId = AppConstants.CompanyId,
                 MaxNumberPassengers = request.MaxNumberPassengers,
-                NetworkVehicleTypeId = request.NetworkVehicleTypeId
+                ReferenceNetworkVehicleTypeId = request.ReferenceNetworkVehicleTypeId
             };
 
             _commandBus.Send(command);
