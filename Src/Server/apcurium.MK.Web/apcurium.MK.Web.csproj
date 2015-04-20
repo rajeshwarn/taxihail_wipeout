@@ -253,7 +253,7 @@
     <Content Include="admin\controllers\TariffsController.js" />
     <Content Include="admin\jquery.min.js" />
     <Content Include="admin\models\EmailTemplates.js" />
-    <Content Include="admin\models\NetworkVehiculeTypes.js" />
+    <Content Include="admin\models\NetworkVehicleTypes.js" />
     <Content Include="admin\models\NotificationSettings.js" />
     <Content Include="admin\models\RideRatings.js" />
     <Content Include="admin\models\UnassignedReferenceDataVehicles.js" />
