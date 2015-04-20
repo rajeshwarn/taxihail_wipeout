@@ -31,5 +31,20 @@ namespace apcurium.MK.Booking.Api.Services
                 CompanyName = f.CompanyName
             });
         }
+
+        public object Get(MarketVehicleTypesRequest request)
+        {
+            var market = _taxiHailNetworkServiceClient.GetCompanyMarket(request.Latitude, request.Longitude);
+            var marketVehicleTypes = _taxiHailNetworkServiceClient.GetMarketVehicleTypes(market);
+
+            return marketVehicleTypes.Select(v => new VehicleType
+            {
+                Id = v.Id,
+                Name = v.Name,
+                LogoName =  v.LogoName,
+                ReferenceDataVehicleId = v.ReferenceDataVehicleId,
+                MaxNumberPassengers = v.MaxNumberPassengers
+            });
+        }
     }
 }

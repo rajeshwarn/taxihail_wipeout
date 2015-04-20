@@ -87,6 +87,9 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
         {
             networkVehicle.Id = Guid.NewGuid().ToString();
 
+            var numberOfVehicles = Convert.ToInt32(Repository.Count());
+            networkVehicle.NetworkVehicleId = numberOfVehicles + 1;
+
             try
             {
                 Repository.Add(networkVehicle);

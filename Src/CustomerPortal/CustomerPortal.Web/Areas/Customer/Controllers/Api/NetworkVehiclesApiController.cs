@@ -36,16 +36,31 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
             _taxiHailNetworkRepository = taxiHailNetworkRepository;
         }
 
-        [Route("api/customer/{companyId}/marketVehicleTypes")]
-        public HttpResponseMessage GetMarketVehicleTypes(string companyId)
+        // Used when getting from web admin section and from web server to return list of network vehicles to client
+
+        [Route("api/customer/marketVehicleTypes")]
+        public HttpResponseMessage GetMarketVehicleTypes(string companyId = null, string market = null)
         {
-            var taxiHailNetworkSettings = _taxiHailNetworkRepository.FirstOrDefault(n => n.Id == companyId);
-            if (taxiHailNetworkSettings == null)
+            if (companyId == null && market == null)
             {
-                return new HttpResponseMessage(HttpStatusCode.NoContent);
+                throw new HttpException((int)HttpStatusCode.BadRequest, "You must specify at least either the Market or the CompanyId.");
             }
 
-            var networkVehicles = _networkVehiclesRepository.Where(v => v.Market == taxiHailNetworkSettings.Market);
+            var vehiclesMarket = market;
+
+            if (companyId != null)
+            {
+                // Use market from specified company
+                var taxiHailNetworkSettings = _taxiHailNetworkRepository.FirstOrDefault(n => n.Id == companyId);
+                if (taxiHailNetworkSettings == null)
+                {
+                    return new HttpResponseMessage(HttpStatusCode.NoContent);
+                }
+
+                vehiclesMarket = taxiHailNetworkSettings.Market;
+            }
+
+            var networkVehicles = _networkVehiclesRepository.Where(v => v.Market == vehiclesMarket);
             if (!networkVehicles.Any())
             {
                 return new HttpResponseMessage(HttpStatusCode.NoContent);
@@ -56,6 +71,7 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
                 Id = Guid.Parse(v.Id),
                 Name = v.Name,
                 LogoName = v.LogoName,
+                ReferenceDataVehicleId = v.NetworkVehicleId,
                 MaxNumberPassengers = v.MaxNumberPassengers
             });
 
@@ -64,6 +80,8 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
                 Content = new StringContent(JsonConvert.SerializeObject(response))
             };
         }
+
+        // Used from server in Create order after market company has been decided
 
         [Route("api/customer/{companyId}/associatedMarketVehicleTypes")]
         public HttpResponseMessage GetAssociatedMarketVehicleTypes(string companyId)
@@ -85,7 +103,7 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
             // Select the matching network vehicles for every company vehicles
             var networkVehicleMatches = company.Vehicles.Select(
                 companyVehicle => networkVehicles
-                    .Where(networkVehicle => networkVehicle.Id == companyVehicle.NetworkVehicleId)
+                    .Where(networkVehicle => networkVehicle.NetworkVehicleId == companyVehicle.NetworkVehicleId)
                     .Select(networkVehicle => new NetworkVehicleResponse
                     {
                         Id = Guid.Parse(networkVehicle.Id),
@@ -102,6 +120,8 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
             };
         }
 
+        // Used when updating from web admin section
+
         [Route("api/customer/{companyId}/companyVehicles")]
         public HttpResponseMessage Post(string companyId, CompanyVehicleType companyVehicleType)
         {
@@ -114,7 +134,7 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
                 companyVehicle.Name = companyVehicle.Name;
                 companyVehicle.LogoName = companyVehicleType.LogoName;
                 companyVehicle.ReferenceDataVehicleId = companyVehicleType.ReferenceDataVehicleId;
-                companyVehicle.NetworkVehicleId = companyVehicleType.NetworkVehicleId.ToString();
+                companyVehicle.NetworkVehicleId = companyVehicleType.NetworkVehicleId;
                 companyVehicle.MaxNumberPassengers = companyVehicleType.MaxNumberPassengers;
             }
             else
@@ -126,7 +146,7 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
                     Name = companyVehicleType.Name,
                     LogoName = companyVehicleType.LogoName,
                     ReferenceDataVehicleId = companyVehicleType.ReferenceDataVehicleId,
-                    NetworkVehicleId = companyVehicleType.NetworkVehicleId.ToString(),
+                    NetworkVehicleId = companyVehicleType.NetworkVehicleId,
                     MaxNumberPassengers = companyVehicleType.MaxNumberPassengers
                 });
             }
