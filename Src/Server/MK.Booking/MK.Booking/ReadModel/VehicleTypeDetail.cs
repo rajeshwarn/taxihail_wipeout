@@ -17,5 +17,7 @@ namespace apcurium.MK.Booking.ReadModel
         public DateTime CreatedDate { get; set; }
 
         public int MaxNumberPassengers { get; set; }
+
+        public Guid NetworkVehicleTypeId { get; set; }
     }
 }

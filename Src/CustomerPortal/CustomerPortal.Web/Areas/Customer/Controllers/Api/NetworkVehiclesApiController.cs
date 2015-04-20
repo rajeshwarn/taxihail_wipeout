@@ -13,7 +13,7 @@ using Newtonsoft.Json;
 
 namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
 {
-    public class NetworkVehiclesApiController
+    public class NetworkVehiclesApiController : ApiController
     {
         private readonly IRepository<NetworkVehicle> _networkVehiclesRepository;
         private readonly IRepository<TaxiHailNetworkSettings> _taxiHailNetworkRepository;

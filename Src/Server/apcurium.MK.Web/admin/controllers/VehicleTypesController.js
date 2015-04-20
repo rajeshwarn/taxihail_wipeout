@@ -24,19 +24,22 @@
             }
             var availableVehicles = new TaxiHail.UnassignedReferenceDataVehicles();
 
-            var networkVehiculeTypes = new TaxiHail.NetworkVehiculeTypes();
+            var networkVehicleTypes = new TaxiHail.NetworkVehicleTypes();
 
             var view = new TaxiHail.AddVehicleTypeView({
                 model: new Model(),
                 collection: this.vehicleTypes,
                 availableVehicles: availableVehicles,
-                networkVehiculeTypes: networkVehiculeTypes
+                networkVehicleTypes: networkVehicleTypes
             }).on('cancel', function() {
                 TaxiHail.app.navigate('vehicleTypes', { trigger: true });
             }, this);
 
             availableVehicles.on('reset', view.render, view);
             availableVehicles.fetch();
+
+            networkVehicleTypes.on('reset', view.render, view);
+            networkVehicleTypes.fetch();
 
             return view;
         },
@@ -46,13 +49,13 @@
 
             var availableVehicles = new TaxiHail.UnassignedReferenceDataVehicles();
 
-            var networkVehiculeTypes = new TaxiHail.NetworkVehiculeTypes();
+            var networkVehicleTypes = new TaxiHail.NetworkVehicleTypes();
 
             var view = new TaxiHail.AddVehicleTypeView({
                 model: model,
                 collection: this.vehicleTypes,
                 availableVehicles: availableVehicles,
-                networkVehiculeTypes: networkVehiculeTypes
+                networkVehicleTypes: networkVehicleTypes
             })
             .on('cancel', function() {
                 TaxiHail.app.navigate('vehicleTypes', { trigger: true });
@@ -60,6 +63,9 @@
 
             availableVehicles.on('reset', view.render, view);
             availableVehicles.fetch({ data: { vehicleBeingEdited: model.get('referenceDataVehicleId') } });
+
+            networkVehicleTypes.on('reset', view.render, view);
+            networkVehicleTypes.fetch();
 
             return view;
         }

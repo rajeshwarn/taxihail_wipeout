@@ -16,6 +16,7 @@ namespace apcurium.MK.Booking.Commands
         public string LogoName { get; set; }
         public int ReferenceDataVehicleId { get; set; }
         public Guid CompanyId { get; set; }
+        public Guid NetworkVehicleTypeId { get; set; }
         public int MaxNumberPassengers { get; set; }
     }
 }

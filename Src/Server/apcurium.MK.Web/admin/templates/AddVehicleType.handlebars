@@ -44,12 +44,12 @@
 
         <div class="control-group">
             <label class="control-label">{{localize 'Network vehicule type'}}</label>
-            <select name="networkVehiculeType">
-                {{#each networkVehiculeTypes}}
-                {{#ifCond this.id ../networkVehiculeId}}
-                    <option value="{{id}}" selected>{{Name}}</option>
+            <select name="networkVehicleTypeId">
+                {{#each networkVehicleTypes}}
+                {{#ifCond this.Id ../networkVehicleTypeId}}
+                    <option value="{{Id}}" selected>{{Name}}</option>
                 {{else}}
-                    <option value="{{id}}">{{Name}}</option>
+                    <option value="{{Id}}">{{Name}}</option>
                 {{/ifCond}}
                 {{/each}}
             </select>

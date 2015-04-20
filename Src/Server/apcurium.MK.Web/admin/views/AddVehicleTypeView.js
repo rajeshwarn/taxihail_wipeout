@@ -17,6 +17,7 @@
 
             var data = _.extend(this.model.toJSON(), {
                 availableVehicles: this.options.availableVehicles.toJSON(),
+                networkVehicleTypes: this.options.networkVehicleTypes.toJSON(),
                 isNew: this.model.isNew()
             });
             var html = this.renderTemplate(data);
@@ -48,9 +49,9 @@
         save: function (form) {
             var vehicleType = this.serializeForm(form);
             var vehicleType = _.extend(this.model.toJSON(), vehicleType);
+            
             this.model.save(vehicleType, {
                 success: _.bind(function(model){
-
                     this.collection.add(model);
                     TaxiHail.app.navigate('vehicleTypes', { trigger: true });
 
