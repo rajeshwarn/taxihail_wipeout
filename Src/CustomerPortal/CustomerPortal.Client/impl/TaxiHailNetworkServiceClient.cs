@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using CustomerPortal.Contract.Resources;
 using CustomerPortal.Contract.Response;
 using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Extensions;
 using CustomerPortal.Client.Http.Extensions;
 
 namespace CustomerPortal.Client.Impl
@@ -79,15 +80,42 @@ namespace CustomerPortal.Client.Impl
             var companyKey = companyId ?? _serverSettings.ServerData.TaxiHail.ApplicationKey;
 
             return Client.Get(string.Format("customer/{0}/roaming/marketfleets?market={1}", companyKey, market))
-                               .Deserialize<IEnumerable<NetworkFleetResponse>>()
-                               .Result;
+                         .Deserialize<IEnumerable<NetworkFleetResponse>>()
+                         .Result;
         }
 
         public NetworkFleetResponse GetMarketFleet(string market, int fleetId)
         {
             return Client.Get(string.Format("customer/roaming/marketfleet?market={0}&fleetId={1}", market, fleetId))
-                               .Deserialize<NetworkFleetResponse>()
-                               .Result;
+                         .Deserialize<NetworkFleetResponse>()
+                         .Result;
+        }
+
+        public IEnumerable<NetworkVehicleResponse> GetMarketVehicleTypes(string companyId = null, string market = null)
+        {
+            var queryString = string.Empty;
+
+            if (market.HasValue())
+            {
+                var @params = new Dictionary<string, string>
+                {
+                    { "companyId", companyId },
+                    { "market", market }
+                };
+
+                queryString = BuildQueryString(@params);
+            }
+
+            return Client.Get("customer/marketVehicleTypes" + queryString)
+                         .Deserialize<IEnumerable<NetworkVehicleResponse>>()
+                         .Result;
+        }
+
+        public IEnumerable<NetworkVehicleResponse> GetAssociatedMarketVehicleTypes(string companyId)
+        {
+            return Client.Get(string.Format("customer/{0}/associatedMarketVehicleTypes", companyId))
+                         .Deserialize<IEnumerable<NetworkVehicleResponse>>()
+                         .Result;
         }
     }
 }
