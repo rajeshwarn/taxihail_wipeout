@@ -42,5 +42,24 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
 			return tcs.Task;
         }
+
+        public Task<List<VehicleType>> GetExternalMarketVehicleTypes(double latitude, double longitude)
+        {
+            var tcs = new TaskCompletionSource<List<VehicleType>>();
+
+            try
+            {
+                var result =
+                    UseServiceClientAsync<NetworkRoamingServiceClient, List<VehicleType>>(
+                        service => service.GetExternalMarketVehicleTypes(latitude, longitude)).Result;
+                tcs.TrySetResult(result);
+            }
+            catch
+            {
+                tcs.TrySetResult(new List<VehicleType>());
+            }
+
+            return tcs.Task;
+        }
     }
 }

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Net;
@@ -34,6 +35,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		readonly ICacheService _cacheService;
 		readonly IAccountPaymentService _accountPaymentService;
 	    private readonly INetworkRoamingService _networkRoamingService;
+	    private readonly IVehicleService _vehicleService;
 
 	    readonly ISubject<Address> _pickupAddressSubject = new BehaviorSubject<Address>(new Address());
 		readonly ISubject<Address> _destinationAddressSubject = new BehaviorSubject<Address>(new Address());
@@ -50,11 +52,13 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
 		readonly ISubject<bool> _orderCanBeConfirmed = new BehaviorSubject<bool>(false);
 		readonly ISubject<string> _marketSubject = new BehaviorSubject<string>(string.Empty);
+        //readonly ISubject<List<VehicleType>> _networkVehiclesSubject = new BehaviorSubject<List<VehicleType>>( new List<VehicleType>());
 		readonly ISubject<bool> _isDestinationModeOpenedSubject = new BehaviorSubject<bool>(false);
 
         private bool _isOrderRebooked;
 
 	    private Position _lastMarketPosition = new Position();
+	    private string _lastMarketValue;
 
         private const int LastMarketDistanceThreshold = 1000; // In meters
 
@@ -66,7 +70,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			IBookingService bookingService,
 			ICacheService cacheService,
 			IAccountPaymentService accountPaymentService,
-            INetworkRoamingService networkRoamingService)
+            INetworkRoamingService networkRoamingService,
+            IVehicleService vehicleService)
 		{
 			_cacheService = cacheService;
 			_appSettings = configurationManager;
@@ -85,6 +90,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			_bookingService = bookingService;
 			_accountPaymentService = accountPaymentService;
 		    _networkRoamingService = networkRoamingService;
+		    _vehicleService = vehicleService;
 
 		    _estimatedFareDisplaySubject = new BehaviorSubject<string>(_localize[_appSettings.Data.DestinationIsRequired ? "NoFareTextIfDestinationIsRequired" : "NoFareText"]);
 		}
@@ -273,8 +279,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
 		public async Task SetVehicleType(int? vehicleTypeId)
 		{
-		    var market = await _marketSubject.Take(1).ToTask();
-            if (_appSettings.Data.VehicleTypeSelectionEnabled && !market.HasValue())
+            if (_appSettings.Data.VehicleTypeSelectionEnabled)
             {
 				_vehicleTypeSubject.OnNext (vehicleTypeId);
 			}
@@ -438,6 +443,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		{
 			return _marketSubject;
 		}
+
+	    public IObservable<List<VehicleType>> GetAndObserveMarketVehicleTypes()
+	    {
+	        return _networkVehiclesSubject;
+	    }
 		
 		private async Task<Address> SearchAddressForCoordinate(Position p)
 		{
@@ -478,11 +488,15 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
 		private async Task SetAddressToCurrentSelection(Address address, CancellationToken token = default(CancellationToken))
 		{
-			var selectionMode = await _addressSelectionModeSubject.Take (1).ToTask ();
-			if (selectionMode == AddressSelectionMode.PickupSelection) {
+			var selectionMode = await _addressSelectionModeSubject.Take (1).ToTask();
+			if (selectionMode == AddressSelectionMode.PickupSelection)
+            {
 				_pickupAddressSubject.OnNext (address);
-				Task.Run(() => SetMarket (new Position { Latitude = address.Latitude, Longitude = address.Longitude }));
-			} else {
+
+				Task.Run(() => SetMarket(new Position { Latitude = address.Latitude, Longitude = address.Longitude }));
+			} 
+            else 
+            {
 				_destinationAddressSubject.OnNext (address);
 			}
 
@@ -795,17 +809,44 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
 	    private async Task SetMarket(Position currentPosition)
 	    {
-			var distanceFromLastMarketRequest = Maps.Geo.Position.CalculateDistance(
-                currentPosition.Latitude, currentPosition.Longitude,
-                _lastMarketPosition.Latitude, _lastMarketPosition.Longitude);
-
-            if (distanceFromLastMarketRequest > LastMarketDistanceThreshold)
+            if (ShouldUpdateMarket(currentPosition))
 	        {
 	            var market = await _networkRoamingService.GetCompanyMarket(currentPosition.Latitude, currentPosition.Longitude);
-                
+
                 _lastMarketPosition = currentPosition;
+
                 _marketSubject.OnNext(market);
+
+                // If we changed market
+	            if (market != _lastMarketValue)
+	            {
+                    if (market.HasValue())
+                    {
+                        // Set vehicles list with data from external market
+                        SetMarketVehicleTypes(currentPosition);
+                    }
+                    else
+                    {
+                        // Load and cache local vehicle types
+                        SetLocalVehicleTypes();
+                    }
+	            }
+
+                _lastMarketValue = market;
 	        }
+	    }
+
+	    private async Task SetMarketVehicleTypes(Position currentPosition)
+	    {
+                var networkVehicles = await _networkRoamingService.GetExternalMarketVehicleTypes(currentPosition.Latitude, currentPosition.Longitude);
+                _accountService.SetMarketVehiclesList(networkVehicles);
+                _networkVehiclesSubject.OnNext(networkVehicles);
+	    }
+
+	    private async Task SetLocalVehicleTypes()
+	    {
+            await _accountService.ResetLocalVehiclesList();
+            _networkVehiclesSubject.OnNext(new List<VehicleType>());
 	    }
 
 		public async Task ToggleIsDestinationModeOpened(bool? forceValue = null)
@@ -818,6 +859,15 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		{
 			return _isDestinationModeOpenedSubject;
 		}
+
+        private bool ShouldUpdateMarket(Position currentPosition)
+	    {
+            var distanceFromLastMarketRequest = Maps.Geo.Position.CalculateDistance(
+                currentPosition.Latitude, currentPosition.Longitude,
+                _lastMarketPosition.Latitude, _lastMarketPosition.Longitude);
+
+            return distanceFromLastMarketRequest > LastMarketDistanceThreshold;
+	    }
     }
 }
 

@@ -31,7 +31,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             return Client.GetAsync<List<NetworkFleet>>("/network/networkfleets");
         }
 
-        public Task<IEnumerable<VehicleType>> GetExternalMarketVehicleTypes(double latitude, double longitude)
+        public Task<List<VehicleType>> GetExternalMarketVehicleTypes(double latitude, double longitude)
         {
             var @params = new Dictionary<string, string>
                 {
@@ -41,7 +41,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 
             var queryString = BuildQueryString(@params);
 
-            return Client.GetAsync<IEnumerable<VehicleType>>("/roaming/externalMarketVehicleTypes" + queryString);
+            return Client.GetAsync<List<VehicleType>>("/roaming/externalMarketVehicleTypes" + queryString);
         }
     }
 }

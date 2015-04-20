@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Contract.Resources;
@@ -55,6 +56,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 		IObservable<bool> GetAndObserveLoadingAddress();
 		IObservable<bool> GetAndObserveOrderCanBeConfirmed();
 		IObservable<string> GetAndObserveMarket();
+        IObservable<List<VehicleType>> GetAndObserveMarketVehicleTypes();
 		IObservable<bool> GetAndObserveIsDestinationModeOpened();
 
 		Task<Tuple<Order, OrderStatusDetail>> GetLastActiveOrder();

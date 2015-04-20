@@ -20,7 +20,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		private readonly IVehicleService _vehicleService;
         public event EventHandler<HomeViewModelStateRequestedEventArgs> PresentationStateRequested;
 
-	    private string _market;
+	    //private string _market;
 		private bool _isInitialized;
 
 		public OrderOptionsViewModel(IOrderWorkflowService orderWorkflowService, IAccountService accountService, IVehicleService vehicleService)
@@ -48,7 +48,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 				Observe (_orderWorkflowService.GetAndObserveEstimatedFare (), fare => EstimatedFare = fare);
 				Observe (_orderWorkflowService.GetAndObserveLoadingAddress (), loading => IsLoadingAddress = loading);
 				Observe (_orderWorkflowService.GetAndObserveVehicleType (), vehicleType => VehicleTypeId = vehicleType);
-				Observe (_orderWorkflowService.GetAndObserveMarket (), market => MarketChanged (market));
+				//Observe (_orderWorkflowService.GetAndObserveMarket (), market => MarketChanged (market));
+                Observe(_orderWorkflowService.GetAndObserveMarketVehicleTypes(), marketVehicleTypes => VehicleTypesChanged(marketVehicleTypes));
 				Observe (_vehicleService.GetAndObserveEta (), eta => Eta = eta);
 			}
 
@@ -69,9 +70,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
             }
 	    }
 
-	    private void MarketChanged(string market)
+        //private void MarketChanged(string market)
+        //{
+        //    // TODO: delete
+        //    _market = market;
+        //    RaisePropertyChanged(() => ShowVehicleSelection);
+        //}
+
+	    private void VehicleTypesChanged(List<VehicleType> marketVehicleTypes)
 	    {
-	        _market = market;
+	        VehicleTypes = marketVehicleTypes;
             RaisePropertyChanged(() => ShowVehicleSelection);
 	    }
 
@@ -282,7 +290,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
 		public bool ShowVehicleSelection
 		{
-			get { return (VehicleTypes.Count() > 1) && Settings.VehicleTypeSelectionEnabled && !_market.HasValue(); }
+			get { return (VehicleTypes.Count() > 1) && Settings.VehicleTypeSelectionEnabled; /* && !_market.HasValue();*/ }
 		}
 			
         public ICommand SetAddress

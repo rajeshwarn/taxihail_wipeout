@@ -55,12 +55,12 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			ILocationService locationService)
 		{
 			_locationService = locationService;
-			_localize = localize;
+            _localize = localize;
 		    _twitterService = twitterService;
 			_facebookService = facebookService;
 			_appSettings = appSettings;
 		}
-	
+
         public async Task<ReferenceData> GetReferenceData()
         {
             var cached = UserCache.Get<ReferenceData>(RefDataCacheKey);
@@ -493,7 +493,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             });
         }
 
-		public async Task<IList<VehicleType>> GetVehiclesList ()
+		public async Task<IList<VehicleType>> GetVehiclesList()
 		{
 		    var cacheService = Mvx.Resolve<ICacheService>();
 
@@ -503,10 +503,36 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 return cached;
             }
 
-			var vehiclesList = await UseServiceClientAsync<IVehicleClient, VehicleType[]>(service => service.GetVehicleTypes());
+            var vehiclesList = await UseServiceClientAsync<IVehicleClient, VehicleType[]>(service => service.GetVehicleTypes());
             cacheService.Set(VehicleTypesDataCacheKey, vehiclesList);
 
-		    return vehiclesList;
+            return vehiclesList;
+        }
+
+        public async Task ResetLocalVehiclesList()
+        {
+            try
+            {
+                var vehiclesList = await UseServiceClientAsync<IVehicleClient, VehicleType[]>(service => service.GetVehicleTypes());
+                var cacheService = Mvx.Resolve<ICacheService>();
+                cacheService.Set(VehicleTypesDataCacheKey, vehiclesList);
+
+            }
+            catch (Exception ex)
+            {
+                string msg = ex.ToString();
+                throw;
+            }
+            
+        }
+
+        public void SetMarketVehiclesList(List<VehicleType> marketVehicleTypes)
+        {
+            if (marketVehicleTypes.Any())
+            {
+                var cacheService = Mvx.Resolve<ICacheService>();
+                cacheService.Set(VehicleTypesDataCacheKey, marketVehicleTypes);
+            }
         }
 
 		public async Task<IList<ListItem>> GetPaymentsList (string market = null)
