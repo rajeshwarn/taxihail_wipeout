@@ -57,7 +57,7 @@ namespace apcurium.MK.Web
         protected bool? IsPayBackRegistrationFieldRequired { get; private set; }
         protected int DefaultTipPercentage { get; private set; }
         protected bool WarnForFeesOnCancel { get; private set; }
-
+        public bool IsNetworkEnabled { get; set; }
         protected bool IsWebSocialMediaVisible { get; private set; }
         protected string SocialMediaFacebookURL { get; private set; }
         protected string SocialMediaTwitterURL { get; private set; }
@@ -87,7 +87,7 @@ namespace apcurium.MK.Web
             SocialMediaTwitterURL = config.ServerData.SocialMediaTwitterURL;
             SocialMediaGoogleURL = config.ServerData.SocialMediaGoogleURL;
             SocialMediaPinterestURL = config.ServerData.SocialMediaPinterestURL;
-
+            IsNetworkEnabled = config.ServerData.Network.Enabled;
 
             DirectionTarifMode = config.ServerData.Direction.TarifMode.ToString("G");
             DirectionNeedAValidTarif = config.ServerData.Direction.NeedAValidTarif;

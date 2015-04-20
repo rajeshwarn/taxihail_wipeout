@@ -80,7 +80,7 @@
             TaxiHail.parameters.SocialMediaGoogleURL = "<%: SocialMediaGoogleURL %>";
             TaxiHail.parameters.SocialMediaPinterestURL = "<%: SocialMediaPinterestURL %>";
             TaxiHail.parameters.SocialMediaTwitterURL = "<%: SocialMediaTwitterURL %>";
-            
+            TaxiHail.parameters.IsNetworkEnabled = "<%: IsNetworkEnabled %>"
 
             TaxiHail.parameters.isSignupVisible = <%: IsWebSignupVisible  ? "true" : "false"%>;
             
