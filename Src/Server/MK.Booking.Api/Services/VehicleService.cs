@@ -210,6 +210,14 @@ namespace apcurium.MK.Booking.Api.Services
 
             _commandBus.Send(command);
 
+            _taxiHailNetworkServiceClient.UpdateMarketVehicleType(
+                _serverSettings.ServerData.TaxiHail.ApplicationKey,
+                command.VehicleTypeId,
+                command.LogoName, command.MaxNumberPassengers,
+                command.Name,
+                command.ReferenceDataVehicleId,
+                command.ReferenceNetworkVehicleTypeId);
+
             return new
             {
                 Id = command.VehicleTypeId
@@ -231,6 +239,8 @@ namespace apcurium.MK.Booking.Api.Services
             };
 
             _commandBus.Send(command);
+
+            _taxiHailNetworkServiceClient.DeleteMarketVehicleMapping(_serverSettings.ServerData.TaxiHail.ApplicationKey, request.Id);
 
             return new HttpResult(HttpStatusCode.OK, "OK");
         }
