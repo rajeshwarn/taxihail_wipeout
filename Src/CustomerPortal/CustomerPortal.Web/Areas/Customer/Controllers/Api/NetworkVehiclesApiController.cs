@@ -53,7 +53,10 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
                 var taxiHailNetworkSettings = _taxiHailNetworkRepository.FirstOrDefault(n => n.Id == companyId);
                 if (taxiHailNetworkSettings == null)
                 {
-                    return new HttpResponseMessage(HttpStatusCode.NoContent);
+                    return new HttpResponseMessage(HttpStatusCode.OK)
+                    {
+                        Content = new StringContent(JsonConvert.SerializeObject(new NetworkVehicleResponse[0]))
+                    };
                 }
 
                 vehiclesMarket = taxiHailNetworkSettings.Market;
@@ -62,7 +65,10 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
             var networkVehicles = _networkVehiclesRepository.Where(v => v.Market == vehiclesMarket);
             if (!networkVehicles.Any())
             {
-                return new HttpResponseMessage(HttpStatusCode.NoContent);
+                return new HttpResponseMessage(HttpStatusCode.OK)
+                {
+                    Content = new StringContent(JsonConvert.SerializeObject(new NetworkVehicleResponse[0]))
+                };
             }
 
             var response = networkVehicles.Select(v => new NetworkVehicleResponse
@@ -86,13 +92,19 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
             var taxiHailNetworkSettings = _taxiHailNetworkRepository.FirstOrDefault(n => n.Id == companyId);
             if (taxiHailNetworkSettings == null)
             {
-                return new HttpResponseMessage(HttpStatusCode.NoContent);
+                return new HttpResponseMessage(HttpStatusCode.OK)
+                {
+                    Content = new StringContent(JsonConvert.SerializeObject(new NetworkVehicleResponse[0]))
+                };
             }
 
             var networkVehicles = _networkVehiclesRepository.Where(v => v.Market == taxiHailNetworkSettings.Market);
             if (!networkVehicles.Any())
             {
-                return new HttpResponseMessage(HttpStatusCode.NoContent);
+                return new HttpResponseMessage(HttpStatusCode.OK)
+                {
+                    Content = new StringContent(JsonConvert.SerializeObject(new NetworkVehicleResponse[0]))
+                };
             }
 
             var company = _companyRepository.GetById(companyId);
