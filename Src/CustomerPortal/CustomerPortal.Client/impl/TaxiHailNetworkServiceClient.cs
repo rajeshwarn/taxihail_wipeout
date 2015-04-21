@@ -98,16 +98,13 @@ namespace CustomerPortal.Client.Impl
         {
             var queryString = string.Empty;
 
-            if (market.HasValue())
-            {
-                var @params = new Dictionary<string, string>
+           var @params = new Dictionary<string, string>
                 {
                     { "companyId", companyId },
                     { "market", market }
                 };
 
-                queryString = BuildQueryString(@params);
-            }
+           queryString = BuildQueryString(@params);
 
             return Client.Get("customer/marketVehicleTypes" + queryString)
                          .Deserialize<IEnumerable<NetworkVehicleResponse>>()
