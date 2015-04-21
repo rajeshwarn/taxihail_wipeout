@@ -7,6 +7,8 @@ namespace CustomerPortal.Web.Entities.Network
     {
         public string Id { get; set; }
 
+        public int NetworkVehicleId { get; set; }
+
         [Required]
         [Display(Name = "Name")]
         public string Name { get; set; }

@@ -4,6 +4,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web;
 using System.Web.Http;
+using apcurium.MK.Common.Extensions;
 using CustomerPortal.Contract.Resources;
 using CustomerPortal.Contract.Response;
 using CustomerPortal.Web.Entities;
@@ -13,7 +14,7 @@ using Newtonsoft.Json;
 
 namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
 {
-    public class NetworkVehiclesApiController
+    public class NetworkVehiclesApiController : ApiController
     {
         private readonly IRepository<NetworkVehicle> _networkVehiclesRepository;
         private readonly IRepository<TaxiHailNetworkSettings> _taxiHailNetworkRepository;
@@ -21,8 +22,8 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
 
         public NetworkVehiclesApiController()
             : this(new MongoRepository<NetworkVehicle>(),
-            new MongoRepository<Company>(),
-            new MongoRepository<TaxiHailNetworkSettings>())
+                   new MongoRepository<Company>(),
+                   new MongoRepository<TaxiHailNetworkSettings>())
         {
         }
 
@@ -36,16 +37,29 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
             _taxiHailNetworkRepository = taxiHailNetworkRepository;
         }
 
-        [Route("api/customer/{companyId}/marketVehicleTypes")]
-        public HttpResponseMessage GetMarketVehicleTypes(string companyId)
+        [Route("api/customer/marketVehicleTypes")]
+        public HttpResponseMessage GetMarketVehicleTypes(string companyId = null, string market = null)
         {
-            var taxiHailNetworkSettings = _taxiHailNetworkRepository.FirstOrDefault(n => n.Id == companyId);
-            if (taxiHailNetworkSettings == null)
+            if (companyId == null && market == null)
             {
-                return new HttpResponseMessage(HttpStatusCode.NoContent);
+                throw new HttpException((int)HttpStatusCode.BadRequest, "You must specify at least either the Market or the CompanyId.");
             }
 
-            var networkVehicles = _networkVehiclesRepository.Where(v => v.Market == taxiHailNetworkSettings.Market);
+            var vehiclesMarket = market;
+
+            if (companyId != null)
+            {
+                // Use market from specified company
+                var taxiHailNetworkSettings = _taxiHailNetworkRepository.FirstOrDefault(n => n.Id == companyId);
+                if (taxiHailNetworkSettings == null)
+                {
+                    return new HttpResponseMessage(HttpStatusCode.NoContent);
+                }
+
+                vehiclesMarket = taxiHailNetworkSettings.Market;
+            }
+
+            var networkVehicles = _networkVehiclesRepository.Where(v => v.Market == vehiclesMarket);
             if (!networkVehicles.Any())
             {
                 return new HttpResponseMessage(HttpStatusCode.NoContent);
@@ -56,6 +70,7 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
                 Id = Guid.Parse(v.Id),
                 Name = v.Name,
                 LogoName = v.LogoName,
+                ReferenceDataVehicleId = v.NetworkVehicleId,
                 MaxNumberPassengers = v.MaxNumberPassengers
             });
 
@@ -66,7 +81,7 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
         }
 
         [Route("api/customer/{companyId}/associatedMarketVehicleTypes")]
-        public HttpResponseMessage GetAssociatedMarketVehicleTypes(string companyId)
+        public HttpResponseMessage GetAssociatedMarketVehicleTypes(string companyId, int networkVehicleId)
         {
             var taxiHailNetworkSettings = _taxiHailNetworkRepository.FirstOrDefault(n => n.Id == companyId);
             if (taxiHailNetworkSettings == null)
@@ -77,33 +92,31 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
             var networkVehicles = _networkVehiclesRepository.Where(v => v.Market == taxiHailNetworkSettings.Market);
             if (!networkVehicles.Any())
             {
-                return new HttpResponseMessage(HttpStatusCode.NoContent); 
+                return new HttpResponseMessage(HttpStatusCode.NoContent);
             }
 
             var company = _companyRepository.GetById(companyId);
 
-            // Select the matching network vehicles for every company vehicles
-            var networkVehicleMatches = company.Vehicles.Select(
-                companyVehicle => networkVehicles
-                    .Where(networkVehicle => networkVehicle.Id == companyVehicle.NetworkVehicleId)
-                    .Select(networkVehicle => new NetworkVehicleResponse
-                    {
-                        Id = Guid.Parse(networkVehicle.Id),
-                        Name = networkVehicle.Name,
-                        LogoName = networkVehicle.LogoName,
-                        ReferenceDataVehicleId = companyVehicle.ReferenceDataVehicleId,
-                        MaxNumberPassengers = networkVehicle.MaxNumberPassengers
-                    }))
-                    .ToList();
-
+            // Select the matching cmpany vehicle
+            var companyVehicleMatch = company.Vehicles
+                .FirstOrDefault(companyVehicle => companyVehicle.NetworkVehicleId == networkVehicleId)
+                .SelectOrDefault(companyVehicle => new NetworkVehicleResponse
+                {
+                    Id = Guid.Parse(companyVehicle.Id),
+                    Name = companyVehicle.Name,
+                    LogoName = companyVehicle.LogoName,
+                    ReferenceDataVehicleId = companyVehicle.ReferenceDataVehicleId,
+                    MaxNumberPassengers = companyVehicle.MaxNumberPassengers
+                });
+            
             return new HttpResponseMessage(HttpStatusCode.OK)
             {
-                Content = new StringContent(JsonConvert.SerializeObject(networkVehicleMatches))
+                Content = new StringContent(JsonConvert.SerializeObject(companyVehicleMatch))
             };
         }
 
         [Route("api/customer/{companyId}/companyVehicles")]
-        public HttpResponseMessage Post(string companyId, CompanyVehicleType companyVehicleType)
+        public HttpResponseMessage UpsertCompanyVehicleType(string companyId, CompanyVehicleType companyVehicleType)
         {
             var company = _companyRepository.GetById(companyId);
             var companyVehicle = company.Vehicles.FirstOrDefault(v => v.Id == companyVehicleType.Id.ToString());
@@ -114,7 +127,7 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
                 companyVehicle.Name = companyVehicle.Name;
                 companyVehicle.LogoName = companyVehicleType.LogoName;
                 companyVehicle.ReferenceDataVehicleId = companyVehicleType.ReferenceDataVehicleId;
-                companyVehicle.NetworkVehicleId = companyVehicleType.NetworkVehicleId.ToString();
+                companyVehicle.NetworkVehicleId = companyVehicleType.NetworkVehicleId;
                 companyVehicle.MaxNumberPassengers = companyVehicleType.MaxNumberPassengers;
             }
             else
@@ -126,10 +139,29 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
                     Name = companyVehicleType.Name,
                     LogoName = companyVehicleType.LogoName,
                     ReferenceDataVehicleId = companyVehicleType.ReferenceDataVehicleId,
-                    NetworkVehicleId = companyVehicleType.NetworkVehicleId.ToString(),
+                    NetworkVehicleId = companyVehicleType.NetworkVehicleId,
                     MaxNumberPassengers = companyVehicleType.MaxNumberPassengers
                 });
             }
+
+            try
+            {
+                // Save changes
+                _companyRepository.Update(company);
+
+                return new HttpResponseMessage(HttpStatusCode.OK);
+            }
+            catch (Exception ex)
+            {
+                throw new HttpException((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
+
+        [Route("api/customer/{companyId}/companyVehicles")]
+        public HttpResponseMessage DeleteCompanyVehicleType(string companyId, Guid vehicleTypeId)
+        {
+            var company = _companyRepository.GetById(companyId);
+            company.Vehicles.Remove(v => v.Id == vehicleTypeId.ToString());
 
             try
             {
