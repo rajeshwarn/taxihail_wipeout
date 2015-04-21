@@ -48,10 +48,10 @@
             <select name="referenceNetworkVehicleTypeId">
                 <option value="">{{localize 'None'}}</option>
                 {{#each networkVehicleTypes}}
-                {{#ifCond this.ReferenceDataVehicleId ../referenceNetworkVehicleTypeId}}
-                    <option value="{{ReferenceDataVehicleId}}" selected>{{Name}}</option>
+                {{#ifCond this.id ../referenceNetworkVehicleTypeId}}
+                    <option value="{{id}}" selected>{{name}}</option>
                 {{else}}
-                    <option value="{{ReferenceDataVehicleId}}">{{Name}}</option>
+                    <option value="{{id}}">{{name}}</option>
                 {{/ifCond}}
                 {{/each}}
             </select>

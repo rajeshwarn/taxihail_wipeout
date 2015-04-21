@@ -235,6 +235,32 @@ namespace apcurium.MK.Booking.Api.Services
             return new HttpResult(HttpStatusCode.OK, "OK");
         }
 
+        public object Get(UnassignedNetworkVehicleTypeRequest request)
+        {
+            var networkVehicleType = _taxiHailNetworkServiceClient.GetMarketVehicleTypes(_serverSettings.ServerData.TaxiHail.ApplicationKey);
+            var allAssigned = _dao.GetAll()
+                .Select(x => x.ReferenceNetworkVehicleTypeId)
+                .Where(x => x.HasValue)
+                .Select(x => x.Value)
+                .ToArray();
+
+            if (request.VehicleBeingEdited.HasValue)
+            {
+                allAssigned = allAssigned
+                    .Where(x => x != request.VehicleBeingEdited.Value)
+                    .ToArray();
+            }
+
+            return networkVehicleType
+                .Where(x => !allAssigned.Any(id => id == x.ReferenceDataVehicleId))
+                .Select(x => new
+                {
+                    Id = x.ReferenceDataVehicleId,
+                    Name = x.Name
+                })
+                .ToArray();
+        }
+
         public object Get(UnassignedReferenceDataVehiclesRequest request)
         {
             var referenceData = (ReferenceData)_referenceDataService.Get(new ReferenceDataRequest());
