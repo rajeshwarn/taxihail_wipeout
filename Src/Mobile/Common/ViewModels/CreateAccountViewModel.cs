@@ -99,8 +99,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                         await this.Services().Message.ShowMessage(this.Services().Localize["CreateAccountInvalidDataTitle"], this.Services().Localize["CreateAccountInvalidPassword"]);
 						return;
 					}
-				    var phoneNumberLenght = Data.Phone.Count(char.IsDigit);
-                    if (phoneNumberLenght < 10 || phoneNumberLenght > 15)
+
+                    if (!Regex.IsMatch(Data.Phone, "/^(?([0-9]{3}))?[-. ]?([0-9]{3})[-. ]?([0-9]{4})([0-9]?[0-9]?[0-9]?[0-9]?[0-9]?)$/"))
 					{
                         await this.Services().Message.ShowMessage(this.Services().Localize["CreateAccountInvalidDataTitle"], this.Services().Localize["InvalidPhoneErrorMessage"]);
 						return;
