@@ -118,24 +118,14 @@ namespace CustomerPortal.Client.Impl
                          .Result;
         }
 
-        public void UpdateMarketVehicleType(string companyId,Guid id, string logoName, int maxNumberPassagers,string name ,int referenceId, int? networkReferenceId)
+        public Task UpdateMarketVehicleType(string companyId, CompanyVehicleType vehicleType)
         {
-            Client.Post(string.Format("customer/{0}/companyVehicles", companyId), new CompanyVehicleType
-            {
-                Id = id,
-                LogoName = logoName,
-                MaxNumberPassengers = maxNumberPassagers,
-                Name = name,
-                NetworkVehicleId = networkReferenceId,
-                ReferenceDataVehicleId = referenceId
-            })
-            .Wait(TimeSpan.FromSeconds(30));
+            return Client.Post(string.Format("customer/{0}/companyVehicles", companyId), vehicleType);
         }
 
-        public void DeleteMarketVehicleMapping(string companyId, Guid id)
+        public Task DeleteMarketVehicleMapping(string companyId, Guid id)
         {
-            Client.DeleteAsync(string.Format("customer/{0}/companyVehicles?vehicleTypeId={1}", companyId, id))
-             .Wait(TimeSpan.FromSeconds(30)); 
+            return Client.DeleteAsync(string.Format("customer/{0}/companyVehicles?vehicleTypeId={1}", companyId, id));
         }
     }
 }
