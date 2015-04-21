@@ -6,6 +6,7 @@ using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.Framework.Extensions;
+using MK.Common.iOS.Helpers;
 using ServiceStack.Text;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
@@ -100,7 +101,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 						return;
 					}
 
-                    if (!Regex.IsMatch(Data.Phone, "/^(?([0-9]{3}))?[-. ]?([0-9]{3})[-. ]?([0-9]{4})([0-9]?[0-9]?[0-9]?[0-9]?[0-9]?)$/"))
+                    if (!PhoneHelper.IsValidPhoneNumber(Data.Phone))
 					{
                         await this.Services().Message.ShowMessage(this.Services().Localize["CreateAccountInvalidDataTitle"], this.Services().Localize["InvalidPhoneErrorMessage"]);
 						return;
@@ -118,7 +119,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                         return;
 				    }
 
-                    Data.Phone = new string(Data.Phone.ToArray().Where(x => Char.IsDigit(x)).ToArray());
+                    Data.Phone = PhoneHelper.GetDigitsFromPhoneNumber(Data.Phone);
 
                     this.Services().Message.ShowProgress(true);
 

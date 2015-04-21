@@ -3,15 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Reactive.Threading.Tasks;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using apcurium.MK.Booking.Mobile.AppServices;
-using apcurium.MK.Booking.Mobile.Extensions;
-using apcurium.MK.Common.Entity;
-using apcurium.MK.Booking.Mobile.ViewModels.Payment;
-using apcurium.MK.Common.Extensions;
 using apcurium.MK.Booking.Mobile.AppServices.Orders;
+using apcurium.MK.Booking.Mobile.Extensions;
+using apcurium.MK.Booking.Mobile.ViewModels.Payment;
+using apcurium.MK.Common.Entity;
+using MK.Common.iOS.Helpers;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 {
@@ -98,12 +97,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 				return this.GetCommand(async () =>
 				{
                     
-                    if (!Regex.IsMatch(BookingSettings.Phone,"/^(?([0-9]{3}))?[-. ]?([0-9]{3})[-. ]?([0-9]{4})([0-9]?[0-9]?[0-9]?[0-9]?[0-9]?)$/"))
+                    if (!PhoneHelper.IsValidPhoneNumber(BookingSettings.Phone))
                     {
                         await this.Services().Message.ShowMessage(this.Services().Localize["UpdateBookingSettingsInvalidDataTitle"], this.Services().Localize["InvalidPhoneErrorMessage"]);
                         return;
                     }
 
+				    BookingSettings.Phone = PhoneHelper.GetDigitsFromPhoneNumber(BookingSettings.Phone);
 					try
 					{
 						await _orderWorkflowService.ValidateNumberOfPassengers(BookingSettings.Passengers);
@@ -121,7 +121,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 					await _orderWorkflowService.SetPickupAptAndRingCode(PickupAddress.Apartment, PickupAddress.RingCode);
 					
 
-					if ((BookingSettings.ChargeTypeId == apcurium.MK.Common.Enumeration.ChargeTypes.CardOnFile.Id)  &&
+					if ((BookingSettings.ChargeTypeId == Common.Enumeration.ChargeTypes.CardOnFile.Id)  &&
 						(!_accountService.CurrentAccount.DefaultCreditCard.HasValue))
 					{
 						this.Services ().Message.ShowMessage (this.Services ().Localize ["ErrorCreatingOrderTitle"], 

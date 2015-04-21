@@ -1,6 +1,5 @@
 using System;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using apcurium.MK.Booking.Mobile.AppServices;
@@ -10,6 +9,7 @@ using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
+using MK.Common.iOS.Helpers;
 using ServiceStack.ServiceClient.Web;
 using ServiceStack.Text;
 
@@ -395,7 +395,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 return false;
             }
 
-            if (!Regex.IsMatch(Phone, "/^(?([0-9]{3}))?[-. ]?([0-9]{3})[-. ]?([0-9]{4})([0-9]?[0-9]?[0-9]?[0-9]?[0-9]?)$/"))
+            if (!PhoneHelper.IsValidPhoneNumber(Phone))
             {
                 await this.Services().Message.ShowMessage(this.Services().Localize["UpdateBookingSettingsInvalidDataTitle"], this.Services().Localize["InvalidPhoneErrorMessage"]);
                 return false;
@@ -421,6 +421,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
             // PayBack value is set to string empty if the field is left empty by the user
             _bookingSettings.PayBack = _bookingSettings.PayBack == string.Empty ? null : _bookingSettings.PayBack;
+
+            Phone = PhoneHelper.GetDigitsFromPhoneNumber(Phone);
 
             if (ChargeTypeId == ChargeTypes.Account.Id)
             {
