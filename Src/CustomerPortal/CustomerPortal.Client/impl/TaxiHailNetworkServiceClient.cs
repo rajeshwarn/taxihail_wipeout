@@ -131,5 +131,11 @@ namespace CustomerPortal.Client.Impl
             })
             .Wait(TimeSpan.FromSeconds(30));
         }
+
+        public void DeleteMarketVehicleMapping(string companyId, Guid id)
+        {
+            Client.DeleteAsync(string.Format("customer/{0}/companyVehicles?vehicleTypeId={1}", companyId, id))
+             .Wait(TimeSpan.FromSeconds(30)); 
+        }
     }
 }

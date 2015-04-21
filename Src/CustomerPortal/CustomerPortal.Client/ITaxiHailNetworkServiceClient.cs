@@ -29,5 +29,7 @@ namespace CustomerPortal.Client
         NetworkVehicleResponse GetAssociatedMarketVehicleType(string companyId, int networkVehicleId);
 
         void UpdateMarketVehicleType(string companyId, Guid id, string logoName, int maxNumberPassagers, string name, int referenceId, int? networkReferenceId);
+
+        void DeleteMarketVehicleMapping(string companyId, Guid id);
     }
 }
