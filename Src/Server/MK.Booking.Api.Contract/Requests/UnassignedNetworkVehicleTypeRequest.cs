@@ -5,9 +5,9 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
 {
     [NoCache]
     [Route("/admin/vehicletypes/unassignednetworkvehicletype", "GET")]
-    [Route("/admin/vehicletypes/unassignednetworkvehicletype/{VehicleIdBeingEdited}", "GET")]
+    [Route("/admin/vehicletypes/unassignednetworkvehicletype/{NetworkVehicleId}", "GET")]
     public class UnassignedNetworkVehicleTypeRequest
     {
-        public int? VehicleIdBeingEdited { get; set; }
+        public int? NetworkVehicleId { get; set; }
     }
 }

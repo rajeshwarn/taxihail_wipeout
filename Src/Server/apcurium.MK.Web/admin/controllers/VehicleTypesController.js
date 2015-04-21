@@ -65,7 +65,7 @@
             availableVehicles.fetch({ data: { vehicleBeingEdited: model.get('referenceDataVehicleId') } });
 
             networkVehicleTypes.on('reset', view.render, view);
-            networkVehicleTypes.fetch({ data: { vehicleBeingEdited: model.get('referenceNetworkVehicleTypeId') } });
+            networkVehicleTypes.fetch({ data: { networkVehicleId: model.get('referenceNetworkVehicleTypeId') } });
 
             return view;
         }

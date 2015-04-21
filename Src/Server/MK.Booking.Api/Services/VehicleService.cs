@@ -264,28 +264,39 @@ namespace apcurium.MK.Booking.Api.Services
 
         public object Get(UnassignedNetworkVehicleTypeRequest request)
         {
-            var networkVehicleType = _taxiHailNetworkServiceClient.GetMarketVehicleTypes(_serverSettings.ServerData.TaxiHail.ApplicationKey);
-            var allAssigned = _dao.GetAll()
-                .Select(x => x.ReferenceNetworkVehicleTypeId)
-                .Where(x => x.HasValue)
-                .Select(x => x.Value)
-                .ToArray();
-
-            if (request.VehicleIdBeingEdited.HasValue)
+            try
             {
-                allAssigned = allAssigned
-                    .Where(x => x != request.VehicleIdBeingEdited.Value)
+                // We fetch the currently assigned networkVehicleTypeIds.
+                var allAssigned = _dao.GetAll()
+                    .Select(x => x.ReferenceNetworkVehicleTypeId)
+                    .Where(x => x.HasValue)
+                    .Select(x => x.Value)
+                    .ToArray();
+
+                //We remove from consideration the current vehicle type id.
+                if (request.NetworkVehicleId.HasValue)
+                {
+                    allAssigned = allAssigned.Where(x => x != request.NetworkVehicleId.Value).ToArray();
+                }
+
+                var networkVehicleType = _taxiHailNetworkServiceClient.GetMarketVehicleTypes(_serverSettings.ServerData.TaxiHail.ApplicationKey);
+
+                //We filter out every market vehicle type that are currently in use.
+                return networkVehicleType
+                    .Where(x => !allAssigned.Any(id => id == x.ReferenceDataVehicleId))
+                    .Select(x => new
+                    {
+                        Id = x.ReferenceDataVehicleId,
+                        Name = x.Name
+                    })
                     .ToArray();
             }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex);
 
-            return networkVehicleType
-                .Where(x => !allAssigned.Any(id => id == x.ReferenceDataVehicleId))
-                .Select(x => new
-                {
-                    Id = x.ReferenceDataVehicleId,
-                    Name = x.Name
-                })
-                .ToArray();
+                return new object[0];
+            }   
         }
 
         public object Get(UnassignedReferenceDataVehiclesRequest request)
