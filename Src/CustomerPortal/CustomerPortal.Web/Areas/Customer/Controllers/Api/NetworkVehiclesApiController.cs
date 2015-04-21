@@ -116,7 +116,7 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
         }
 
         [Route("api/customer/{companyId}/companyVehicles")]
-        public HttpResponseMessage Post(string companyId, CompanyVehicleType companyVehicleType)
+        public HttpResponseMessage UpsertCompanyVehicleType(string companyId, CompanyVehicleType companyVehicleType)
         {
             var company = _companyRepository.GetById(companyId);
             var companyVehicle = company.Vehicles.FirstOrDefault(v => v.Id == companyVehicleType.Id.ToString());
@@ -143,6 +143,25 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
                     MaxNumberPassengers = companyVehicleType.MaxNumberPassengers
                 });
             }
+
+            try
+            {
+                // Save changes
+                _companyRepository.Update(company);
+
+                return new HttpResponseMessage(HttpStatusCode.OK);
+            }
+            catch (Exception ex)
+            {
+                throw new HttpException((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
+
+        [Route("api/customer/{companyId}/companyVehicles")]
+        public HttpResponseMessage Delete(string companyId, Guid vehicleTypeId)
+        {
+            var company = _companyRepository.GetById(companyId);
+            company.Vehicles.Remove(v => v.Id == vehicleTypeId.ToString());
 
             try
             {
