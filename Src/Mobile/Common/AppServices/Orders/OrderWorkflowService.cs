@@ -835,15 +835,26 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
 	    private async Task SetMarketVehicleTypes(Position currentPosition)
 	    {
-                var networkVehicles = await _networkRoamingService.GetExternalMarketVehicleTypes(currentPosition.Latitude, currentPosition.Longitude);
-                _accountService.SetMarketVehiclesList(networkVehicles);
-                _networkVehiclesSubject.OnNext(networkVehicles);
+            var networkVehicles = await _networkRoamingService.GetExternalMarketVehicleTypes(currentPosition.Latitude, currentPosition.Longitude);
+            _accountService.SetMarketVehiclesList(networkVehicles);
+            _networkVehiclesSubject.OnNext(networkVehicles);
+
+	        if (networkVehicles.Any())
+	        {
+                SetVehicleType(networkVehicles.First().ReferenceDataVehicleId);
+	        }
 	    }
 
 	    private async Task SetLocalVehicleTypes()
 	    {
             await _accountService.ResetLocalVehiclesList();
             _networkVehiclesSubject.OnNext(new List<VehicleType>());
+
+            var localVehicles = await _accountService.GetVehiclesList();
+            if (localVehicles.Any())
+            {
+                SetVehicleType(localVehicles.First().ReferenceDataVehicleId);
+            }
 	    }
 
 		public async Task ToggleIsDestinationModeOpened(bool? forceValue = null)

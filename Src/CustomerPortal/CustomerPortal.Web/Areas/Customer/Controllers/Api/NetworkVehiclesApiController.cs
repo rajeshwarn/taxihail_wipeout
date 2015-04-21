@@ -97,7 +97,7 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
 
             var company = _companyRepository.GetById(companyId);
 
-            // Select the matching cmpany vehicle
+            // Select the matching company vehicle
             var companyVehicleMatch = company.Vehicles
                 .FirstOrDefault(companyVehicle => companyVehicle.NetworkVehicleId == networkVehicleId)
                 .SelectOrDefault(companyVehicle => new NetworkVehicleResponse
