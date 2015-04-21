@@ -217,7 +217,16 @@
 
                         if (data !== "") {
                             if (this.model.get('lastMarket') !== this.model.get('market') && this.model.get('market') !== "") {
+
+                                // Load external market vehicle types
+                                this.setExternalMarketVehicleTypes(position.latitude, position.longitude);
+
                                 this.confirmMarketChange();
+                            }
+                        } else {
+                            if (this.model.get('lastMarket') !== "") {
+                                // Reload home market vehicle types
+                                this.setLocalMarketVehicleTypes();
                             }
                         }
 
@@ -231,6 +240,26 @@
                 this.model.unset('market', { silent: true });
                 this.model.set('market', currentMarket);
             }
+        },
+
+        setLocalMarketVehicleTypes: function () {
+            $.ajax({
+                type: 'GET',
+                url: 'api/admin/vehicletypes',
+                dataType: 'json'
+            }).done(_.bind(function (localVehicles) {
+                TaxiHail.vehicleTypes = localVehicles;
+            }, this));
+        },
+
+        setExternalMarketVehicleTypes: function (latitude, longitude) {
+            $.ajax({
+                type: 'GET',
+                url: 'api/roaming/externalMarketVehicleTypes?latitude=' + latitude + "&longitude=" + longitude,
+                dataType: 'json'
+                }).done(_.bind(function (networkVehicles) {
+                    TaxiHail.vehicleTypes = networkVehicles;
+            }, this));
         },
 
         confirmMarketChange: function () {

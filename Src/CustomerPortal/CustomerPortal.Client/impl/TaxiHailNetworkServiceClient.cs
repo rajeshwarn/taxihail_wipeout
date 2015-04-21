@@ -96,6 +96,11 @@ namespace CustomerPortal.Client.Impl
 
         public IEnumerable<NetworkVehicleResponse> GetMarketVehicleTypes(string companyId = null, string market = null)
         {
+            if (companyId == null && market == null)
+            {
+                throw new ArgumentNullException("You must specify at least either the Market or the CompanyId.");
+            } 
+
             var queryString = string.Empty;
 
            var @params = new Dictionary<string, string>
