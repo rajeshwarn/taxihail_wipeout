@@ -63,6 +63,8 @@ namespace apcurium.MK.Web
         protected string SocialMediaTwitterURL { get; private set; }
         protected string SocialMediaGoogleURL { get; private set; }
         protected string SocialMediaPinterestURL { get; private set; }
+
+        protected int AvailableVehicleRefreshRate { get; private set; }
         
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -88,6 +90,7 @@ namespace apcurium.MK.Web
             SocialMediaGoogleURL = config.ServerData.SocialMediaGoogleURL;
             SocialMediaPinterestURL = config.ServerData.SocialMediaPinterestURL;
 
+            AvailableVehicleRefreshRate = config.ServerData.AvailableVehicleRefreshRate;
 
             DirectionTarifMode = config.ServerData.Direction.TarifMode.ToString("G");
             DirectionNeedAValidTarif = config.ServerData.Direction.NeedAValidTarif;
