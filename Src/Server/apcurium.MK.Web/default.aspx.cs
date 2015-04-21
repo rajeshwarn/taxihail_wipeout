@@ -57,7 +57,6 @@ namespace apcurium.MK.Web
         protected bool? IsPayBackRegistrationFieldRequired { get; private set; }
         protected int DefaultTipPercentage { get; private set; }
         protected bool WarnForFeesOnCancel { get; private set; }
-
         protected bool IsWebSocialMediaVisible { get; private set; }
         protected string SocialMediaFacebookURL { get; private set; }
         protected string SocialMediaTwitterURL { get; private set; }

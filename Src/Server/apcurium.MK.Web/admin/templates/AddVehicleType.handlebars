@@ -42,6 +42,22 @@
             </select>
         </div>
 
+        {{#ifCond isNetworkEnabled 'true'}}
+        <div class="control-group">
+            <label class="control-label">{{localize 'Network vehicule type'}}</label>
+            <select name="referenceNetworkVehicleTypeId">
+                <option value="">{{localize 'None'}}</option>
+                {{#each networkVehicleTypes}}
+                {{#ifCond this.id ../referenceNetworkVehicleTypeId}}
+                    <option value="{{id}}" selected>{{name}}</option>
+                {{else}}
+                    <option value="{{id}}">{{name}}</option>
+                {{/ifCond}}
+                {{/each}}
+            </select>
+        </div>
+        {{/ifCond}}
+
         <div class="control-group">
             <label class="control-label">{{localize 'Max # Passengers'}}</label>
             <div class="controls">
@@ -49,7 +65,7 @@
                 <label class="control-label">{{localize '(0 = no limit)'}}</label>
             </div>            
         </div>
-        
+
         <div class="control-group btn-right-alignment" >
           <button type='submit' class='btn btn-primary span' data-loading-text="{{localize 'Loading'}}">{{localize "Save"}}</button>
           <a href='#' class='btn  span' data-action='cancel'>{{localize "Cancel"}}</a>

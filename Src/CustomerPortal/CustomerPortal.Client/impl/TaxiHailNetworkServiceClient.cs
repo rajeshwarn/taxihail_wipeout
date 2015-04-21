@@ -1,5 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using CustomerPortal.Contract.Resources;
 using CustomerPortal.Contract.Response;
@@ -95,16 +98,13 @@ namespace CustomerPortal.Client.Impl
         {
             var queryString = string.Empty;
 
-            if (market.HasValue())
-            {
-                var @params = new Dictionary<string, string>
+           var @params = new Dictionary<string, string>
                 {
                     { "companyId", companyId },
                     { "market", market }
                 };
 
-                queryString = BuildQueryString(@params);
-            }
+           queryString = BuildQueryString(@params);
 
             return Client.Get("customer/marketVehicleTypes" + queryString)
                          .Deserialize<IEnumerable<NetworkVehicleResponse>>()
@@ -116,6 +116,26 @@ namespace CustomerPortal.Client.Impl
             return Client.Get(string.Format("customer/{0}/associatedMarketVehicleTypes?networkVehicleId={1}", companyId, networkVehicleId))
                          .Deserialize<NetworkVehicleResponse>()
                          .Result;
+        }
+
+        public void UpdateMarketVehicleType(string companyId,Guid id, string logoName, int maxNumberPassagers,string name ,int referenceId, int? networkReferenceId)
+        {
+            Client.Post(string.Format("customer/{0}/companyVehicles", companyId), new CompanyVehicleType
+            {
+                Id = id,
+                LogoName = logoName,
+                MaxNumberPassengers = maxNumberPassagers,
+                Name = name,
+                NetworkVehicleId = networkReferenceId,
+                ReferenceDataVehicleId = referenceId
+            })
+            .Wait(TimeSpan.FromSeconds(30));
+        }
+
+        public void DeleteMarketVehicleMapping(string companyId, Guid id)
+        {
+            Client.DeleteAsync(string.Format("customer/{0}/companyVehicles?vehicleTypeId={1}", companyId, id))
+             .Wait(TimeSpan.FromSeconds(30)); 
         }
     }
 }

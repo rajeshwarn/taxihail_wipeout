@@ -169,8 +169,17 @@ namespace apcurium.MK.Booking.Api.Services
                 LogoName = request.LogoName,
                 ReferenceDataVehicleId = request.ReferenceDataVehicleId,
                 CompanyId = AppConstants.CompanyId,
-                MaxNumberPassengers = request.MaxNumberPassengers
+                MaxNumberPassengers = request.MaxNumberPassengers,
+                ReferenceNetworkVehicleTypeId = request.ReferenceNetworkVehicleTypeId
             };
+
+            _taxiHailNetworkServiceClient.UpdateMarketVehicleType(
+                _serverSettings.ServerData.TaxiHail.ApplicationKey,
+                command.VehicleTypeId, 
+                command.LogoName,command.MaxNumberPassengers,
+                command.Name, 
+                command.ReferenceDataVehicleId,
+                command.ReferenceNetworkVehicleTypeId);
 
             _commandBus.Send(command);
 
@@ -195,10 +204,19 @@ namespace apcurium.MK.Booking.Api.Services
                 LogoName = request.LogoName,
                 ReferenceDataVehicleId = request.ReferenceDataVehicleId,
                 CompanyId = AppConstants.CompanyId,
-                MaxNumberPassengers = request.MaxNumberPassengers
+                MaxNumberPassengers = request.MaxNumberPassengers,
+                ReferenceNetworkVehicleTypeId = request.ReferenceNetworkVehicleTypeId
             };
 
             _commandBus.Send(command);
+
+            _taxiHailNetworkServiceClient.UpdateMarketVehicleType(
+                _serverSettings.ServerData.TaxiHail.ApplicationKey,
+                command.VehicleTypeId,
+                command.LogoName, command.MaxNumberPassengers,
+                command.Name,
+                command.ReferenceDataVehicleId,
+                command.ReferenceNetworkVehicleTypeId);
 
             return new
             {
@@ -222,7 +240,35 @@ namespace apcurium.MK.Booking.Api.Services
 
             _commandBus.Send(command);
 
+            _taxiHailNetworkServiceClient.DeleteMarketVehicleMapping(_serverSettings.ServerData.TaxiHail.ApplicationKey, request.Id);
+
             return new HttpResult(HttpStatusCode.OK, "OK");
+        }
+
+        public object Get(UnassignedNetworkVehicleTypeRequest request)
+        {
+            var networkVehicleType = _taxiHailNetworkServiceClient.GetMarketVehicleTypes(_serverSettings.ServerData.TaxiHail.ApplicationKey);
+            var allAssigned = _dao.GetAll()
+                .Select(x => x.ReferenceNetworkVehicleTypeId)
+                .Where(x => x.HasValue)
+                .Select(x => x.Value)
+                .ToArray();
+
+            if (request.VehicleBeingEdited.HasValue)
+            {
+                allAssigned = allAssigned
+                    .Where(x => x != request.VehicleBeingEdited.Value)
+                    .ToArray();
+            }
+
+            return networkVehicleType
+                .Where(x => !allAssigned.Any(id => id == x.ReferenceDataVehicleId))
+                .Select(x => new
+                {
+                    Id = x.ReferenceDataVehicleId,
+                    Name = x.Name
+                })
+                .ToArray();
         }
 
         public object Get(UnassignedReferenceDataVehiclesRequest request)
