@@ -22,8 +22,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 		readonly IObservable<Direction> _etaObservable;
 		readonly ISubject<IObservable<long>> _timerSubject = new BehaviorSubject<IObservable<long>>(Observable.Never<long>());
 
-        readonly ISubject<List<VehicleType>> _networkVehiclesSubject = new BehaviorSubject<List<VehicleType>>(new List<VehicleType>());
-
 		readonly IDirections _directions;
 		readonly IAppSettings _settings;
 

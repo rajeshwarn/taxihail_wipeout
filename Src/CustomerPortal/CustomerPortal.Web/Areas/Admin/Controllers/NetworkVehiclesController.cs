@@ -87,8 +87,13 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
         {
             networkVehicle.Id = Guid.NewGuid().ToString();
 
-            var numberOfVehicles = Convert.ToInt32(Repository.Count());
-            networkVehicle.NetworkVehicleId = numberOfVehicles + 1;
+            // Generate the next sequential vehicle network id
+            var lastNetworkVehicleId = Repository
+                .OrderBy(x => x.NetworkVehicleId)
+                .Last()
+                .NetworkVehicleId;
+
+            networkVehicle.NetworkVehicleId = lastNetworkVehicleId + 1;
 
             try
             {

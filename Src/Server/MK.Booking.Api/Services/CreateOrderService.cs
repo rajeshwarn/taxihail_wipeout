@@ -144,7 +144,7 @@ namespace apcurium.MK.Booking.Api.Services
             {
                 bestAvailableCompany = FindBestAvailableCompany(market, request.PickupAddress.Latitude, request.PickupAddress.Longitude);
             }
-
+            //bestAvailableCompany = new BestAvailableCompany {CompanyKey = "Axertis", CompanyName = "Axertis"};
             if (market.HasValue() && bestAvailableCompany.CompanyKey == null)
             {
                 // No companies available that are desserving this region for the company
@@ -152,7 +152,7 @@ namespace apcurium.MK.Booking.Api.Services
                             _resources.Get("CannotCreateOrder_NoCompanies", request.ClientLanguageCode));
             }
 
-            UpdateVehicleTypeFromMarketData(request.Settings, /*bestAvailableCompany.CompanyKey*/"Axertis");
+            UpdateVehicleTypeFromMarketData(request.Settings, bestAvailableCompany.CompanyKey);
 
             var account = _accountDao.FindById(new Guid(this.GetSession().UserAuthId));
             account.IBSAccountId = CreateIbsAccountIfNeeded(account, bestAvailableCompany.CompanyKey);

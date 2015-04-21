@@ -35,7 +35,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		readonly ICacheService _cacheService;
 		readonly IAccountPaymentService _accountPaymentService;
 	    private readonly INetworkRoamingService _networkRoamingService;
-	    private readonly IVehicleService _vehicleService;
 
 	    readonly ISubject<Address> _pickupAddressSubject = new BehaviorSubject<Address>(new Address());
 		readonly ISubject<Address> _destinationAddressSubject = new BehaviorSubject<Address>(new Address());
@@ -52,7 +51,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
 		readonly ISubject<bool> _orderCanBeConfirmed = new BehaviorSubject<bool>(false);
 		readonly ISubject<string> _marketSubject = new BehaviorSubject<string>(string.Empty);
-        //readonly ISubject<List<VehicleType>> _networkVehiclesSubject = new BehaviorSubject<List<VehicleType>>( new List<VehicleType>());
+        readonly ISubject<List<VehicleType>> _networkVehiclesSubject = new BehaviorSubject<List<VehicleType>>(new List<VehicleType>());
 		readonly ISubject<bool> _isDestinationModeOpenedSubject = new BehaviorSubject<bool>(false);
 
         private bool _isOrderRebooked;
@@ -70,8 +69,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			IBookingService bookingService,
 			ICacheService cacheService,
 			IAccountPaymentService accountPaymentService,
-            INetworkRoamingService networkRoamingService,
-            IVehicleService vehicleService)
+            INetworkRoamingService networkRoamingService)
 		{
 			_cacheService = cacheService;
 			_appSettings = configurationManager;
@@ -90,7 +88,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			_bookingService = bookingService;
 			_accountPaymentService = accountPaymentService;
 		    _networkRoamingService = networkRoamingService;
-		    _vehicleService = vehicleService;
 
 		    _estimatedFareDisplaySubject = new BehaviorSubject<string>(_localize[_appSettings.Data.DestinationIsRequired ? "NoFareTextIfDestinationIsRequired" : "NoFareText"]);
 		}
