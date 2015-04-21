@@ -17,6 +17,7 @@ using apcurium.MK.Common.Extensions;
 using AutoMapper;
 using CustomerPortal.Client;
 using CustomerPortal.Contract.Resources;
+using CustomerPortal.Contract.Response;
 using HoneyBadger;
 using Infrastructure.Messaging;
 using ServiceStack.Common.Web;
@@ -280,6 +281,11 @@ namespace apcurium.MK.Booking.Api.Services
                 }
 
                 var networkVehicleType = _taxiHailNetworkServiceClient.GetMarketVehicleTypes(_serverSettings.ServerData.TaxiHail.ApplicationKey);
+
+                if (networkVehicleType == null)
+                {
+                    return new object[0];
+                }
 
                 //We filter out every market vehicle type that are currently in use.
                 return networkVehicleType
