@@ -20,7 +20,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		private readonly IVehicleService _vehicleService;
         public event EventHandler<HomeViewModelStateRequestedEventArgs> PresentationStateRequested;
 
-	    //private string _market;
 		private bool _isInitialized;
 
 		public OrderOptionsViewModel(IOrderWorkflowService orderWorkflowService, IAccountService accountService, IVehicleService vehicleService)
@@ -88,18 +87,24 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
             }
 	    }
 
-	    async Task SetDefaultVehicleType ()
+	    async Task SetDefaultVehicleType()
 		{
 			var data = await _accountService.GetReferenceData ();
 			var defaultVehicleType = data.VehiclesList.FirstOrDefault (x => x.IsDefault.Value);
-			var defaultId = defaultVehicleType != null ? defaultVehicleType.Id.Value : 0;
-			VehicleTypes = new List<VehicleType> {
-				new VehicleType {
+			var defaultId = defaultVehicleType != null
+                ? defaultVehicleType.Id.Value
+                : 0;
+
+			VehicleTypes = new List<VehicleType>
+            {
+				new VehicleType
+                {
 					LogoName = "taxi",
 					Name = "TAXI",
 					ReferenceDataVehicleId = defaultId
 				}
 			};
+
 			VehicleTypeId = defaultId;
 		}
 
@@ -137,13 +142,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			
 		public VehicleType SelectedVehicleType
 		{
-			get { 
+			get
+            { 
 				VehicleType type = null;
-				if (VehicleTypeId.HasValue) {
+				if (VehicleTypeId.HasValue)
+                {
 					type = VehicleTypes.FirstOrDefault (x => x.ReferenceDataVehicleId == VehicleTypeId); 
 				}
 
-				if (type == null) {
+				if (type == null)
+                {
 					type = VehicleTypes.FirstOrDefault (); 
 				}
 				return type;

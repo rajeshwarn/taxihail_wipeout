@@ -511,19 +511,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
         public async Task ResetLocalVehiclesList()
         {
-            try
-            {
-                var vehiclesList = await UseServiceClientAsync<IVehicleClient, VehicleType[]>(service => service.GetVehicleTypes());
-                var cacheService = Mvx.Resolve<ICacheService>();
-                cacheService.Set(VehicleTypesDataCacheKey, vehiclesList);
-
-            }
-            catch (Exception ex)
-            {
-                string msg = ex.ToString();
-                throw;
-            }
-            
+            var vehiclesList = await UseServiceClientAsync<IVehicleClient, VehicleType[]>(service => service.GetVehicleTypes());
+            var cacheService = Mvx.Resolve<ICacheService>();
+            cacheService.Set(VehicleTypesDataCacheKey, vehiclesList);
         }
 
         public void SetMarketVehiclesList(List<VehicleType> marketVehicleTypes)

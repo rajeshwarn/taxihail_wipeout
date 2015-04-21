@@ -158,7 +158,7 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
         }
 
         [Route("api/customer/{companyId}/companyVehicles")]
-        public HttpResponseMessage Delete(string companyId, Guid vehicleTypeId)
+        public HttpResponseMessage DeleteCompanyVehicleType(string companyId, Guid vehicleTypeId)
         {
             var company = _companyRepository.GetById(companyId);
             company.Vehicles.Remove(v => v.Id == vehicleTypeId.ToString());
