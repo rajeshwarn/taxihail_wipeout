@@ -51,9 +51,6 @@
 
             var networkVehicleTypes = new TaxiHail.NetworkVehicleTypes();
 
-            
-            networkVehicleTypes.fetch({ data: { vehicleBeingEdited: model.get('referenceNetworkVehicleTypeId') } });
-
             var view = new TaxiHail.AddVehicleTypeView({
                 model: model,
                 collection: this.vehicleTypes,
@@ -68,6 +65,7 @@
             availableVehicles.fetch({ data: { vehicleBeingEdited: model.get('referenceDataVehicleId') } });
 
             networkVehicleTypes.on('reset', view.render, view);
+            networkVehicleTypes.fetch({ data: { vehicleBeingEdited: model.get('referenceNetworkVehicleTypeId') } });
 
             return view;
         }
