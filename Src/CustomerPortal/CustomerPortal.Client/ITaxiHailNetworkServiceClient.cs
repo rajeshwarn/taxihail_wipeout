@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Threading.Tasks;
 using CustomerPortal.Contract.Resources;
 using CustomerPortal.Contract.Response;
@@ -28,8 +29,8 @@ namespace CustomerPortal.Client
 
         NetworkVehicleResponse GetAssociatedMarketVehicleType(string companyId, int networkVehicleId);
 
-        void UpdateMarketVehicleType(string companyId, Guid id, string logoName, int maxNumberPassagers, string name, int referenceId, int? networkReferenceId);
+        Task UpdateMarketVehicleType(string companyId, CompanyVehicleType vehicleType);
 
-        void DeleteMarketVehicleMapping(string companyId, Guid id);
+        Task DeleteMarketVehicleMapping(string companyId, Guid id);
     }
 }

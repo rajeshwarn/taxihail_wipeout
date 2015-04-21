@@ -1,18 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using apcurium.MK.Booking.Api.Contract.Http;
+﻿using apcurium.MK.Booking.Api.Contract.Http;
 using ServiceStack.ServiceHost;
 
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
     [NoCache]
     [Route("/admin/vehicletypes/unassignednetworkvehicletype", "GET")]
-    [Route("/admin/vehicletypes/unassignednetworkvehicletype/{VehicleBeingEdited}", "GET")]
+    [Route("/admin/vehicletypes/unassignednetworkvehicletype/{NetworkVehicleId}", "GET")]
     public class UnassignedNetworkVehicleTypeRequest
     {
-        public int? VehicleBeingEdited { get; set; }
+        public int? NetworkVehicleId { get; set; }
     }
 }

@@ -28,7 +28,6 @@ namespace apcurium.MK.Web.admin
         protected bool IsTaxiHailPro { get; private set; }
         protected bool IsNetworkEnabled { get; private set; }
         protected string Languages { get; private set; }
-        protected string CustomerPortalUrl { get; private set; }
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -36,8 +35,6 @@ namespace apcurium.MK.Web.admin
 
             ApplicationKey = config.ServerData.TaxiHail.ApplicationKey;
             ApplicationName = config.ServerData.TaxiHail.ApplicationName;
-
-            CustomerPortalUrl = config.ServerData.CustomerPortal.Url;
 
             DefaultLatitude = config.ServerData.GeoLoc.DefaultLatitude.ToString();
             DefaultLongitude = config.ServerData.GeoLoc.DefaultLongitude.ToString();

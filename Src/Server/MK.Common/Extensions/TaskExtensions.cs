@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
+using apcurium.MK.Common.Diagnostic;
+using Microsoft.Practices.ServiceLocation;
 
 namespace apcurium.MK.Booking.Mobile.Framework.Extensions
 {
