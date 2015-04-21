@@ -1200,19 +1200,28 @@ namespace apcurium.MK.Booking.Api.Services
 
         private void UpdateVehicleTypeFromMarketData(BookingSettings bookingSettings, string marketCompanyId)
         {
-            // Get the vehicle types defined for the market of the company
-            var networkVehicleTypes = _taxiHailNetworkServiceClient.GetAssociatedMarketVehicleTypes(marketCompanyId);
-
-            // Get the network vehicle object matching the network id selected by the user
-            var matchingNetworkVehicle = networkVehicleTypes.FirstOrDefault(
-                networkVehicle => networkVehicle.ReferenceDataVehicleId == bookingSettings.VehicleTypeId);
-
-            if (matchingNetworkVehicle != null)
+            if (!bookingSettings.VehicleTypeId.HasValue)
             {
-                // Update the vehicle type info using the vehicle id from the IBS of that company
-                bookingSettings.VehicleType = matchingNetworkVehicle.Name;
-                bookingSettings.VehicleTypeId = matchingNetworkVehicle.ReferenceDataVehicleId;
-            }  
+                // Nothing to do
+                return;
+            }
+
+            try
+            {
+                // Get the vehicle type defined for the market of the company
+                var matchingMarketVehicle = _taxiHailNetworkServiceClient.GetAssociatedMarketVehicleType(marketCompanyId, bookingSettings.VehicleTypeId.Value);
+                if (matchingMarketVehicle != null)
+                {
+                    // Update the vehicle type info using the vehicle id from the IBS of that company
+                    bookingSettings.VehicleType = matchingMarketVehicle.Name;
+                    bookingSettings.VehicleTypeId = matchingMarketVehicle.ReferenceDataVehicleId;
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Info(string.Format("An error occured when trying to get GetAssociatedMarketVehicleType for company {0}", marketCompanyId));
+                Log.Error(ex);
+            }
         }
 
         private ApplyPromotion ValidateAndApplyPromotion(string promoCode, int? chargeTypeId, Guid accountId, Guid orderId, DateTime pickupDate, bool isFutureBooking, string clientLanguageCode)

@@ -4,6 +4,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web;
 using System.Web.Http;
+using apcurium.MK.Common.Extensions;
 using CustomerPortal.Contract.Resources;
 using CustomerPortal.Contract.Response;
 using CustomerPortal.Web.Entities;
@@ -80,7 +81,7 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
         }
 
         [Route("api/customer/{companyId}/associatedMarketVehicleTypes")]
-        public HttpResponseMessage GetAssociatedMarketVehicleTypes(string companyId)
+        public HttpResponseMessage GetAssociatedMarketVehicleTypes(string companyId, int networkVehicleId)
         {
             var taxiHailNetworkSettings = _taxiHailNetworkRepository.FirstOrDefault(n => n.Id == companyId);
             if (taxiHailNetworkSettings == null)
@@ -91,30 +92,26 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
             var networkVehicles = _networkVehiclesRepository.Where(v => v.Market == taxiHailNetworkSettings.Market);
             if (!networkVehicles.Any())
             {
-                return new HttpResponseMessage(HttpStatusCode.NoContent); 
+                return new HttpResponseMessage(HttpStatusCode.NoContent);
             }
 
             var company = _companyRepository.GetById(companyId);
 
-            // Select the matching network vehicles for every company vehicles
-            var networkVehicleMatches = company.Vehicles
-                .Where(companyVehicle => companyVehicle.NetworkVehicleId.HasValue)
-                .Select(
-                    companyVehicle => networkVehicles
-                        .Where(networkVehicle => networkVehicle.NetworkVehicleId == companyVehicle.NetworkVehicleId.Value)
-                        .Select(networkVehicle => new NetworkVehicleResponse
-                        {
-                            Id = Guid.Parse(networkVehicle.Id),
-                            Name = networkVehicle.Name,
-                            LogoName = networkVehicle.LogoName,
-                            ReferenceDataVehicleId = companyVehicle.ReferenceDataVehicleId,
-                            MaxNumberPassengers = networkVehicle.MaxNumberPassengers
-                        }))
-                        .ToList();
-
+            // Select the matching cmpany vehicle
+            var companyVehicleMatch = company.Vehicles
+                .FirstOrDefault(companyVehicle => companyVehicle.NetworkVehicleId == networkVehicleId)
+                .SelectOrDefault(companyVehicle => new NetworkVehicleResponse
+                {
+                    Id = Guid.Parse(companyVehicle.Id),
+                    Name = companyVehicle.Name,
+                    LogoName = companyVehicle.LogoName,
+                    ReferenceDataVehicleId = companyVehicle.ReferenceDataVehicleId,
+                    MaxNumberPassengers = companyVehicle.MaxNumberPassengers
+                });
+            
             return new HttpResponseMessage(HttpStatusCode.OK)
             {
-                Content = new StringContent(JsonConvert.SerializeObject(networkVehicleMatches))
+                Content = new StringContent(JsonConvert.SerializeObject(companyVehicleMatch))
             };
         }
 

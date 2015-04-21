@@ -25,6 +25,6 @@ namespace CustomerPortal.Client
 
         IEnumerable<NetworkVehicleResponse> GetMarketVehicleTypes(string companyId = null, string market = null);
 
-        IEnumerable<NetworkVehicleResponse> GetAssociatedMarketVehicleTypes(string companyId);
+        NetworkVehicleResponse GetAssociatedMarketVehicleType(string companyId, int networkVehicleId);
     }
 }
