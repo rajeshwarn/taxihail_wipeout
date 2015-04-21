@@ -35,7 +35,7 @@ namespace apcurium.MK.Booking.Api.Services
         public object Get(MarketVehicleTypesRequest request)
         {
             var market = _taxiHailNetworkServiceClient.GetCompanyMarket(request.Latitude, request.Longitude);
-            var marketVehicleTypes = _taxiHailNetworkServiceClient.GetMarketVehicleTypes(market);
+            var marketVehicleTypes = _taxiHailNetworkServiceClient.GetMarketVehicleTypes(market: market);
 
             return marketVehicleTypes.Select(v => new VehicleType
             {

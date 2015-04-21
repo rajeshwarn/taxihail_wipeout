@@ -9,5 +9,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
         Task<string> GetCompanyMarket(double latitude, double longitude);
 
         Task<List<NetworkFleet>> GetNetworkFleets();
+
+        Task<List<VehicleType>> GetExternalMarketVehicleTypes(double latitude, double longitude);
     }
 }

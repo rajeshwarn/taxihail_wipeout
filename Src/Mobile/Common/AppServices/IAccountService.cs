@@ -32,8 +32,12 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 	    void ClearVehicleTypesCache();
         
         Account CurrentAccount { get; }
-        
-		Task<IList<VehicleType>> GetVehiclesList();
+
+        Task<IList<VehicleType>> GetVehiclesList();
+
+	    void SetMarketVehiclesList(List<VehicleType> marketVehicleTypes);
+
+        Task ResetLocalVehiclesList();
 
         Task<IList<ListItem>> GetPaymentsList(string market = null);
         
@@ -56,6 +60,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 		Task DeleteHistoryAddress(Guid addressId);
         
 		Task<IList<Order>> GetHistoryOrders();
+
 		OrderStatusDetail[] GetActiveOrdersStatus();
         
 		Task<Order> GetHistoryOrderAsync(Guid id);

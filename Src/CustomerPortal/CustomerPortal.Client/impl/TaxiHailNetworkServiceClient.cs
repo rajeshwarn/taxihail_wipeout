@@ -111,10 +111,10 @@ namespace CustomerPortal.Client.Impl
                          .Result;
         }
 
-        public IEnumerable<NetworkVehicleResponse> GetAssociatedMarketVehicleTypes(string companyId)
+        public NetworkVehicleResponse GetAssociatedMarketVehicleType(string companyId, int networkVehicleId)
         {
-            return Client.Get(string.Format("customer/{0}/associatedMarketVehicleTypes", companyId))
-                         .Deserialize<IEnumerable<NetworkVehicleResponse>>()
+            return Client.Get(string.Format("customer/{0}/associatedMarketVehicleTypes?networkVehicleId={1}", companyId, networkVehicleId))
+                         .Deserialize<NetworkVehicleResponse>()
                          .Result;
         }
 
