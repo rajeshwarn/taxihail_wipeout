@@ -119,8 +119,8 @@
                 rules: {
                     'settings.name': "required",
                     'settings.phone': {
-                        tenOrMoreDigits: true,
-                        minlength: 10
+                        required: true,
+                        regex: /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})([0-9]?[0-9]?[0-9]?[0-9]?[0-9]?)$/
                     },
                     'settings.passengers': {
                         required: true,
@@ -136,7 +136,7 @@
                     },
                     'settings.phone': {
                         required: TaxiHail.localize('error.PhoneRequired'),
-                        tenOrMoreDigits: TaxiHail.localize('error.PhoneBadFormat')
+                        regex: TaxiHail.localize('error.PhoneBadFormat')
                     },
                     'settings.passengers': {
                         required: TaxiHail.localize('error.PassengersRequired'),
