@@ -135,7 +135,7 @@ namespace apcurium.MK.Booking.Api.Services
                 }).ToArray();
             }
 
-            var availableVehicles = Enumerable.ToArray(vehicles.Select(Mapper.Map<AvailableVehicle>));
+            var availableVehicles = vehicles.Select(Mapper.Map<AvailableVehicle>).ToArray();
                 
             foreach (var vehicle in availableVehicles)
             {
@@ -281,11 +281,6 @@ namespace apcurium.MK.Booking.Api.Services
                 }
 
                 var networkVehicleType = _taxiHailNetworkServiceClient.GetMarketVehicleTypes(_serverSettings.ServerData.TaxiHail.ApplicationKey);
-
-                if (networkVehicleType == null)
-                {
-                    return new object[0];
-                }
 
                 //We filter out every market vehicle type that are currently in use.
                 return networkVehicleType
