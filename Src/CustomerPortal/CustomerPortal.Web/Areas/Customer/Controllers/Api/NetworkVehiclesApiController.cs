@@ -21,8 +21,8 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
 
         public NetworkVehiclesApiController()
             : this(new MongoRepository<NetworkVehicle>(),
-            new MongoRepository<Company>(),
-            new MongoRepository<TaxiHailNetworkSettings>())
+                   new MongoRepository<Company>(),
+                   new MongoRepository<TaxiHailNetworkSettings>())
         {
         }
 
@@ -35,8 +35,6 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
             _companyRepository = companyRepository;
             _taxiHailNetworkRepository = taxiHailNetworkRepository;
         }
-
-        // Used when getting from web admin section and from web server to return list of network vehicles to client
 
         [Route("api/customer/marketVehicleTypes")]
         public HttpResponseMessage GetMarketVehicleTypes(string companyId = null, string market = null)
@@ -81,8 +79,6 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
             };
         }
 
-        // Used from server in Create order after market company has been decided
-
         [Route("api/customer/{companyId}/associatedMarketVehicleTypes")]
         public HttpResponseMessage GetAssociatedMarketVehicleTypes(string companyId)
         {
@@ -101,26 +97,26 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
             var company = _companyRepository.GetById(companyId);
 
             // Select the matching network vehicles for every company vehicles
-            var networkVehicleMatches = company.Vehicles.Select(
-                companyVehicle => networkVehicles
-                    .Where(networkVehicle => networkVehicle.NetworkVehicleId == companyVehicle.NetworkVehicleId)
-                    .Select(networkVehicle => new NetworkVehicleResponse
-                    {
-                        Id = Guid.Parse(networkVehicle.Id),
-                        Name = networkVehicle.Name,
-                        LogoName = networkVehicle.LogoName,
-                        ReferenceDataVehicleId = companyVehicle.ReferenceDataVehicleId,
-                        MaxNumberPassengers = networkVehicle.MaxNumberPassengers
-                    }))
-                    .ToList();
+            var networkVehicleMatches = company.Vehicles
+                .Where(companyVehicle => companyVehicle.NetworkVehicleId.HasValue)
+                .Select(
+                    companyVehicle => networkVehicles
+                        .Where(networkVehicle => networkVehicle.NetworkVehicleId == companyVehicle.NetworkVehicleId.Value)
+                        .Select(networkVehicle => new NetworkVehicleResponse
+                        {
+                            Id = Guid.Parse(networkVehicle.Id),
+                            Name = networkVehicle.Name,
+                            LogoName = networkVehicle.LogoName,
+                            ReferenceDataVehicleId = companyVehicle.ReferenceDataVehicleId,
+                            MaxNumberPassengers = networkVehicle.MaxNumberPassengers
+                        }))
+                        .ToList();
 
             return new HttpResponseMessage(HttpStatusCode.OK)
             {
                 Content = new StringContent(JsonConvert.SerializeObject(networkVehicleMatches))
             };
         }
-
-        // Used when updating from web admin section
 
         [Route("api/customer/{companyId}/companyVehicles")]
         public HttpResponseMessage Post(string companyId, CompanyVehicleType companyVehicleType)
