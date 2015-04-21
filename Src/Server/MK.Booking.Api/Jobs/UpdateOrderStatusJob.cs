@@ -157,11 +157,11 @@ namespace apcurium.MK.Booking.Api.Jobs
                 var orderStatuses = _ibsServiceProvider.Booking(companyKey).GetOrdersStatus(nextGroup).ToArray();
 
                 // If HoneyBadger for local market is enabled, we need to fetch the vehicle position from HoneyBadger instead of using the position data from IBS
-                var honeyBadgerVehicleStatuses = GetVehicleStatusesFromHoneyBadgerIfNecessary(orderStatuses, market);
+                var honeyBadgerVehicleStatuses = GetVehicleStatusesFromHoneyBadgerIfNecessary(orderStatuses, market).ToArray();
 
                 foreach (var ibsStatus in orderStatuses)
                 {
-                    if (honeyBadgerVehicleStatuses != null)
+                    if (honeyBadgerVehicleStatuses.Any())
                     {
                         // Update vehicle position with matching data available data from HoneyBadger
                         var honeyBadgerVehicleStatus = honeyBadgerVehicleStatuses.FirstOrDefault(v => v.Medallion == ibsStatus.VehicleNumber);
@@ -197,12 +197,10 @@ namespace apcurium.MK.Booking.Api.Jobs
                     : market;                                            // External market
 
                 // Get vehicle statuses/position from HoneyBadger
-                var honeyBadgerVehicleStatuses = _honeyBadgerServiceClient.GetVehicleStatus(vehicleMarket, vehicleMedallions);
-
-                return honeyBadgerVehicleStatuses;
+                return _honeyBadgerServiceClient.GetVehicleStatus(vehicleMarket, vehicleMedallions);
             }
 
-            return null;
+            return new VehicleResponse[0];
         }
     }
 }

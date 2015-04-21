@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Geography;
@@ -93,6 +94,11 @@ namespace HoneyBadger
         /// <returns>The vehicle statuses.</returns>
         public IEnumerable<VehicleResponse> GetVehicleStatus(string market, IEnumerable<string> vehicleIds, IEnumerable<int> fleetIds = null)
         {
+            if (vehicleIds == null)
+            {
+                throw new ArgumentNullException("vehicleIds");
+            }
+
             var @params = new List<KeyValuePair<string, string>>
 		    {
 			    new KeyValuePair<string, string>("includeEntities", "true"),
