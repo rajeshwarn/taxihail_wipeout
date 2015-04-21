@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using CustomerPortal.Contract.Resources;
 using CustomerPortal.Contract.Response;
@@ -26,5 +27,7 @@ namespace CustomerPortal.Client
         IEnumerable<NetworkVehicleResponse> GetMarketVehicleTypes(string companyId = null, string market = null);
 
         IEnumerable<NetworkVehicleResponse> GetAssociatedMarketVehicleTypes(string companyId);
+
+        void UpdateMarketVehicleType(string companyId, Guid id, string logoName, int maxNumberPassagers, string name, int referenceId, int? networkReferenceId);
     }
 }

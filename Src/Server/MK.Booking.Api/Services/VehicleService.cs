@@ -173,6 +173,14 @@ namespace apcurium.MK.Booking.Api.Services
                 ReferenceNetworkVehicleTypeId = request.ReferenceNetworkVehicleTypeId
             };
 
+            _taxiHailNetworkServiceClient.UpdateMarketVehicleType(
+                _serverSettings.ServerData.TaxiHail.ApplicationKey,
+                command.VehicleTypeId, 
+                command.LogoName,command.MaxNumberPassengers,
+                command.Name, 
+                command.ReferenceDataVehicleId,
+                command.ReferenceNetworkVehicleTypeId);
+
             _commandBus.Send(command);
 
             return new

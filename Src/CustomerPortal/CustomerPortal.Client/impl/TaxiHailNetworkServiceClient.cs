@@ -1,5 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using CustomerPortal.Contract.Resources;
 using CustomerPortal.Contract.Response;
@@ -116,6 +119,20 @@ namespace CustomerPortal.Client.Impl
             return Client.Get(string.Format("customer/{0}/associatedMarketVehicleTypes", companyId))
                          .Deserialize<IEnumerable<NetworkVehicleResponse>>()
                          .Result;
+        }
+
+        public void UpdateMarketVehicleType(string companyId,Guid id, string logoName, int maxNumberPassagers,string name ,int referenceId, int? networkReferenceId)
+        {
+            Client.Post(string.Format("customer/{0}/companyVehicles", companyId), new CompanyVehicleType
+            {
+                Id = id,
+                LogoName = logoName,
+                MaxNumberPassengers = maxNumberPassagers,
+                Name = name,
+                NetworkVehicleId = networkReferenceId,
+                ReferenceDataVehicleId = referenceId
+            })
+            .Wait(TimeSpan.FromSeconds(30));
         }
     }
 }
