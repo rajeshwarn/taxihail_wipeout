@@ -38,7 +38,7 @@ namespace apcurium.MK.Booking.Api.Services
         {
             var isChargeAccountEnabled = _serverSettings.GetPaymentSettings().IsChargeAccountPaymentEnabled;
 
-            // Validate account number if charge account is enabled and ChargeType mode is set to Charge Account
+            // Validate account number if charge account is enabled and account number is set.
             if (isChargeAccountEnabled && !string.IsNullOrWhiteSpace(request.AccountNumber))
             {
                 if (!request.CustomerNumber.HasValue())
