@@ -310,7 +310,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
 		public bool ShowVehicleSelection
 		{
-			get { return (VehicleTypes.Count() > 1) && Settings.VehicleTypeSelectionEnabled; /* && !_market.HasValue();*/ }
+			get { return (VehicleTypes.Count() > 1) && Settings.VehicleTypeSelectionEnabled; }
 		}
 			
         public ICommand SetAddress

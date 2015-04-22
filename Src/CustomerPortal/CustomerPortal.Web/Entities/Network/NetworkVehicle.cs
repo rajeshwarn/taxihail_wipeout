@@ -17,7 +17,7 @@ namespace CustomerPortal.Web.Entities.Network
         [Display(Name = "Logo")]
         public string LogoName { get; set; }
 
-        [Display(Name = "Max # Passengers")]
+        [Display(Name = "Max # Passengers (0 = no limit)")]
         public int MaxNumberPassengers { get; set; }
 
         public string Market { get; set; }
