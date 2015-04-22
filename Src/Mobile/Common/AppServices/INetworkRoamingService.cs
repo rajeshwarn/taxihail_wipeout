@@ -6,8 +6,10 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 {
     public interface INetworkRoamingService
     {
-        Task<string> GetCompanyMarket(double latitude, double longitude);
+        Task<string> GetHashedCompanyMarket(double latitude, double longitude);
 
         Task<List<NetworkFleet>> GetNetworkFleets();
+
+        Task<List<VehicleType>> GetExternalMarketVehicleTypes(double latitude, double longitude);
     }
 }

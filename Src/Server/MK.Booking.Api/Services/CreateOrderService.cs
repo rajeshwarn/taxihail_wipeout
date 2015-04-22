@@ -27,6 +27,7 @@ using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common.Resources;
 using AutoMapper;
 using CustomerPortal.Client;
+using CustomerPortal.Contract.Response;
 using Infrastructure.EventSourcing;
 using HoneyBadger;
 using Infrastructure.Messaging;
@@ -150,6 +151,8 @@ namespace apcurium.MK.Booking.Api.Services
                 throw new HttpError(HttpStatusCode.BadRequest, ErrorCode.CreateOrder_RuleDisable.ToString(),
                             _resources.Get("CannotCreateOrder_NoCompanies", request.ClientLanguageCode));
             }
+
+            UpdateVehicleTypeFromMarketData(request.Settings, bestAvailableCompany.CompanyKey);
 
             var account = _accountDao.FindById(new Guid(this.GetSession().UserAuthId));
             account.IBSAccountId = CreateIbsAccountIfNeeded(account, bestAvailableCompany.CompanyKey);
@@ -1193,6 +1196,32 @@ namespace apcurium.MK.Booking.Api.Services
 
             // Nothing found
             return new BestAvailableCompany();
+        }
+
+        private void UpdateVehicleTypeFromMarketData(BookingSettings bookingSettings, string marketCompanyId)
+        {
+            if (!bookingSettings.VehicleTypeId.HasValue)
+            {
+                // Nothing to do
+                return;
+            }
+
+            try
+            {
+                // Get the vehicle type defined for the market of the company
+                var matchingMarketVehicle = _taxiHailNetworkServiceClient.GetAssociatedMarketVehicleType(marketCompanyId, bookingSettings.VehicleTypeId.Value);
+                if (matchingMarketVehicle != null)
+                {
+                    // Update the vehicle type info using the vehicle id from the IBS of that company
+                    bookingSettings.VehicleType = matchingMarketVehicle.Name;
+                    bookingSettings.VehicleTypeId = matchingMarketVehicle.ReferenceDataVehicleId;
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Info(string.Format("An error occurred when trying to get GetAssociatedMarketVehicleType for company {0}", marketCompanyId));
+                Log.Error(ex);
+            }
         }
 
         private ApplyPromotion ValidateAndApplyPromotion(string promoCode, int? chargeTypeId, Guid accountId, Guid orderId, DateTime pickupDate, bool isFutureBooking, string clientLanguageCode)

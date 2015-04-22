@@ -697,7 +697,7 @@
     <value>Erreur de connection</value>
   </data>
   <data name="InvalidPhoneErrorMessage" xml:space="preserve">
-    <value>Le numéro de téléphone ne semble pas valide. Merci de saisir de nouveau 10 chiffres.</value>
+    <value>Le numéro de téléphone ne semble pas valide. Merci de saisir de nouveau entre 10 et 15 chiffres.</value>
   </data>
   <data name="InvalidPickupAddress" xml:space="preserve">
     <value>Merci d'entrer une adresse de départ valide</value>
@@ -1890,5 +1890,8 @@
   </data>
   <data name="ManualUnPairingForRideLinQ_Error_Message" xml:space="preserve">
     <value>Une erreur est survenue lors de la dissociation. Veuillez essayer de nouveau.</value>
+  </data>
+  <data name="StatusConfirmCancelRideAndWarnForCancellationFees" xml:space="preserve">
+    <value>Êtes-vous certain de vouloir annuler? Un véhicule est en route pour venir vous chercher. {0} se réserve le droit de facturer à ses clients des frais d'annulation si ces derniers abusent du service.</value>
   </data>
 </root>

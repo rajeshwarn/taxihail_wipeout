@@ -624,3 +624,6 @@
 "ManualUnPairingForRideLinQ_Error_Message"="An error occured when trying to unpair. Please try again.";
 "HomeView_ManualPairing"="Check In";
 "View_RideLinqPair"="Check In";
+"StatusConfirmCancelRideAndWarnForBookingFee"="Are you sure you want to cancel? A vehicle is on its way to pick you up. {0} reserves the right to charge customers a cancellation fee if we feel the user is abusing the service.";
+"StatusConfirmCancelRideAndWarnForCancellationFee"="Are you sure you want to cancel? A vehicle is on its way to pick you up. {0} reserves the right to charge customers a cancellation fee if we feel the user is abusing the service.";
+"StatusConfirmCancelRideAndWarnForCancellationFees"="Are you sure you want to cancel? A vehicle is on its way to pick you up. {0} reserves the right to charge customers a cancellation fee if we feel the user is abusing the service.";

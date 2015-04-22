@@ -53,7 +53,9 @@
             TaxiHail.parameters.geolocSearchFilter = '<%= GeolocSearchFilter %>';
             TaxiHail.parameters.geolocSearchRegion = '<%= GeolocSearchRegion %>';
             TaxiHail.parameters.geolocSearchBounds = '<%= GeolocSearchBounds %>';
+            TaxiHail.parameters.isNetworkEnabled = "<%: IsNetworkEnabled ? "true" : "false" %>";
             TaxiHail.parameters.apiRoot = "../api";
+            TaxiHail.parameters.applicationKey = '<%= ApplicationKey %>';
             TaxiHail.parameters.version = '<%: ApplicationVersion %>';
             TaxiHail.parameters.languages = <%= Languages %>;
         </script>

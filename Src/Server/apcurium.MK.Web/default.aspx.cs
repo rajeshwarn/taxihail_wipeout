@@ -56,12 +56,14 @@ namespace apcurium.MK.Web
         protected bool IsCreditCardMandatory { get; private set; }
         protected bool? IsPayBackRegistrationFieldRequired { get; private set; }
         protected int DefaultTipPercentage { get; private set; }
-
+        protected bool WarnForFeesOnCancel { get; private set; }
         protected bool IsWebSocialMediaVisible { get; private set; }
         protected string SocialMediaFacebookURL { get; private set; }
         protected string SocialMediaTwitterURL { get; private set; }
         protected string SocialMediaGoogleURL { get; private set; }
         protected string SocialMediaPinterestURL { get; private set; }
+
+        protected int AvailableVehicleRefreshRate { get; private set; }
         
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -87,6 +89,7 @@ namespace apcurium.MK.Web
             SocialMediaGoogleURL = config.ServerData.SocialMediaGoogleURL;
             SocialMediaPinterestURL = config.ServerData.SocialMediaPinterestURL;
 
+            AvailableVehicleRefreshRate = config.ServerData.AvailableVehicleRefreshRate;
 
             DirectionTarifMode = config.ServerData.Direction.TarifMode.ToString("G");
             DirectionNeedAValidTarif = config.ServerData.Direction.NeedAValidTarif;
@@ -102,6 +105,7 @@ namespace apcurium.MK.Web
             MaxFareEstimate = config.ServerData.MaxFareEstimate;
             AccountActivationDisabled = config.ServerData.AccountActivationDisabled;
             IsPayBackRegistrationFieldRequired = config.ServerData.IsPayBackRegistrationFieldRequired;
+            WarnForFeesOnCancel = config.ServerData.WarnForFeesOnCancel;
 
             var paymentSettings = config.GetPaymentSettings();
 

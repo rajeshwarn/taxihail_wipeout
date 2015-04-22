@@ -6,11 +6,11 @@ using System.Reactive.Threading.Tasks;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using apcurium.MK.Booking.Mobile.AppServices;
-using apcurium.MK.Booking.Mobile.Extensions;
-using apcurium.MK.Common.Entity;
-using apcurium.MK.Booking.Mobile.ViewModels.Payment;
-using apcurium.MK.Common.Extensions;
 using apcurium.MK.Booking.Mobile.AppServices.Orders;
+using apcurium.MK.Booking.Mobile.Extensions;
+using apcurium.MK.Booking.Mobile.ViewModels.Payment;
+using apcurium.MK.Common.Entity;
+using MK.Common.iOS.Helpers;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 {
@@ -40,13 +40,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
                 Observe(_orderWorkflowService.GetAndObserveBookingSettings(), bookingSettings => BookingSettings = bookingSettings.Copy());
                 Observe(_orderWorkflowService.GetAndObservePickupAddress(), address => PickupAddress = address.Copy());
-		        Observe(_orderWorkflowService.GetAndObserveMarket(), market => MarketUpdated(market));
+		        Observe(_orderWorkflowService.GetAndObserveHashedMarket(), hashedMarket => MarketUpdated(hashedMarket));
 		    }
 		}
 
-	    private async Task MarketUpdated(string market)
+	    private async Task MarketUpdated(string hashedMarket)
 	    {
-            ChargeTypes = (await _accountService.GetPaymentsList(market)).Select(x => new ListItem { Id = x.Id, Display = this.Services().Localize[x.Display] }).ToArray();
+            ChargeTypes = (await _accountService.GetPaymentsList(hashedMarket))
+                .Select(x => new ListItem
+                {
+                    Id = x.Id,
+                    Display = this.Services().Localize[x.Display]
+                }).ToArray();
 	    }
 
 	    public bool IsChargeTypesEnabled
@@ -96,6 +101,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			{
 				return this.GetCommand(async () =>
 				{
+                    
+                    if (!PhoneHelper.IsValidPhoneNumber(BookingSettings.Phone))
+                    {
+                        await this.Services().Message.ShowMessage(this.Services().Localize["UpdateBookingSettingsInvalidDataTitle"], this.Services().Localize["InvalidPhoneErrorMessage"]);
+                        return;
+                    }
+
+				    BookingSettings.Phone = PhoneHelper.GetDigitsFromPhoneNumber(BookingSettings.Phone);
 					try
 					{
 						await _orderWorkflowService.ValidateNumberOfPassengers(BookingSettings.Passengers);
@@ -113,7 +126,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 					await _orderWorkflowService.SetPickupAptAndRingCode(PickupAddress.Apartment, PickupAddress.RingCode);
 					
 
-					if ((BookingSettings.ChargeTypeId == apcurium.MK.Common.Enumeration.ChargeTypes.CardOnFile.Id)  &&
+					if ((BookingSettings.ChargeTypeId == Common.Enumeration.ChargeTypes.CardOnFile.Id)  &&
 						(!_accountService.CurrentAccount.DefaultCreditCard.HasValue))
 					{
 						this.Services ().Message.ShowMessage (this.Services ().Localize ["ErrorCreatingOrderTitle"], 

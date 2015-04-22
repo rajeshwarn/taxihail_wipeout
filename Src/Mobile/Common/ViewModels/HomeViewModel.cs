@@ -66,10 +66,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             Panel = new PanelMenuViewModel(browserTask, orderWorkflowService, accountService, phoneService, paymentService, promotionService);
 
 			Observe(_vehicleService.GetAndObserveAvailableVehiclesWhenVehicleTypeChanges(), vehicles => ZoomOnNearbyVehiclesIfPossible(vehicles));
-            Observe(_orderWorkflowService.GetAndObserveMarket(), market => MarketChanged(market));
+            Observe(_orderWorkflowService.GetAndObserveHashedMarket(), hashedMarket => MarketChanged(hashedMarket));
 		}
 
-	    private string _lastMarket = string.Empty;
+	    private string _lastHashedMarket = string.Empty;
 		private bool _isShowingTermsAndConditions;
 		private bool _locateUser;
 		private ZoomToStreetLevelPresentationHint _defaultHintZoomLevel;
@@ -145,7 +145,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 	            IsManualRideLinqEnabled = settings.PaymentMode == PaymentMethod.RideLinqCmt
                                            && settings.CmtPaymentSettings.IsManualRidelinqCheckInEnabled
-                                           && !_lastMarket.HasValue();
+                                           && !_lastHashedMarket.HasValue();
 	        }
 	        catch (Exception ex)
 	        {
@@ -546,15 +546,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        private void MarketChanged(string market)
+        private void MarketChanged(string hashedMarket)
         {
             // Market changed and not home market
-            if (_lastMarket != market && market != string.Empty)
+            if (_lastHashedMarket != hashedMarket && hashedMarket.HasValue())
             {
                 this.Services().Message.ShowMessage(this.Services().Localize["MarketChangedMessageTitle"],
                     this.Services().Localize["MarketChangedMessage"]);
             }
-            _lastMarket = market;
+            _lastHashedMarket = hashedMarket;
 
             CheckManualRideLinqEnabledAsync();
         }

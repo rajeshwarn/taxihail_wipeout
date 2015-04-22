@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
+using System.Globalization;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Api.Client.Extensions;
-using System;
 
 namespace apcurium.MK.Booking.Api.Client.TaxiHail
 {
@@ -14,12 +14,12 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
         {
         }
 
-        public Task<string> GetCompanyMarket(double latitude, double longitude)
+        public Task<string> GetHashedCompanyMarket(double latitude, double longitude)
         {
             var @params = new Dictionary<string, string>
                 {
-                    {"latitude", latitude.ToString() },
-                    {"longitude", longitude.ToString() }
+                    {"latitude", latitude.ToString(CultureInfo.InvariantCulture) },
+                    {"longitude", longitude.ToString(CultureInfo.InvariantCulture) }
                 };
 
             var queryString = BuildQueryString(@params);
@@ -30,6 +30,19 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
         public Task<List<NetworkFleet>> GetNetworkFleets()
         {
             return Client.GetAsync<List<NetworkFleet>>("/network/networkfleets");
+        }
+
+        public Task<List<VehicleType>> GetExternalMarketVehicleTypes(double latitude, double longitude)
+        {
+            var @params = new Dictionary<string, string>
+                {
+                    {"latitude", latitude.ToString(CultureInfo.InvariantCulture) },
+                    {"longitude", longitude.ToString(CultureInfo.InvariantCulture) }
+                };
+
+            var queryString = BuildQueryString(@params);
+
+            return Client.GetAsync<List<VehicleType>>("/roaming/externalMarketVehicleTypes" + queryString);
         }
     }
 }

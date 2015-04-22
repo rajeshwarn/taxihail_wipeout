@@ -16,6 +16,9 @@ using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Common.Configuration;
 using System.Reactive.Linq;
 using System.Diagnostics;
+using apcurium.MK.Common.Enumeration;
+using HoneyBadger;
+using HoneyBadger.Responses;
 using ServiceStack.Common;
 
 #endregion
@@ -28,17 +31,26 @@ namespace apcurium.MK.Booking.Api.Jobs
         private readonly IIBSServiceProvider _ibsServiceProvider;
         private readonly IOrderStatusUpdateDao _orderStatusUpdateDao;
         private readonly OrderStatusUpdater _orderStatusUpdater;
+        private readonly HoneyBadgerServiceClient _honeyBadgerServiceClient;
+        private readonly IServerSettings _serverSettings;
 
         private static readonly ILog Log = LogManager.GetLogger(typeof(UpdateOrderStatusJob));
 
         private const int NumberOfConcurrentServers = 2;
 
-        public UpdateOrderStatusJob(IOrderDao orderDao, IIBSServiceProvider ibsServiceProvider, IOrderStatusUpdateDao orderStatusUpdateDao, OrderStatusUpdater orderStatusUpdater)
+        public UpdateOrderStatusJob(IOrderDao orderDao,
+            IIBSServiceProvider ibsServiceProvider,
+            IOrderStatusUpdateDao orderStatusUpdateDao,
+            OrderStatusUpdater orderStatusUpdater,
+            HoneyBadgerServiceClient honeyBadgerServiceClient,
+            IServerSettings serverSettings)
         {
             _orderStatusUpdateDao = orderStatusUpdateDao;
             _orderDao = orderDao;
             _ibsServiceProvider = ibsServiceProvider;
             _orderStatusUpdater = orderStatusUpdater;
+            _honeyBadgerServiceClient = honeyBadgerServiceClient;
+            _serverSettings = serverSettings;
         }
 
         public void CheckStatus(Guid orderId)
@@ -98,13 +110,13 @@ namespace apcurium.MK.Booking.Api.Jobs
                             ? string.Empty
                             : string.Format(" for company {0}", orderGroup.Key.CompanyKey));
                         Log.DebugFormat("Starting BatchUpdateStatus with {0} orders of status {1}", ordersForCompany.Count(o => o.Status == OrderStatus.WaitingForPayment), "WaitingForPayment");
-                        BatchUpdateStatus(orderGroup.Key.CompanyKey, ordersForCompany.Where(o => o.Status == OrderStatus.WaitingForPayment));
+                        BatchUpdateStatus(orderGroup.Key.CompanyKey, orderGroup.Key.Market, ordersForCompany.Where(o => o.Status == OrderStatus.WaitingForPayment));
                         Log.DebugFormat("Starting BatchUpdateStatus with {0} orders of status {1}", ordersForCompany.Count(o => o.Status == OrderStatus.Pending), "Pending");
-                        BatchUpdateStatus(orderGroup.Key.CompanyKey, ordersForCompany.Where(o => o.Status == OrderStatus.Pending));
+                        BatchUpdateStatus(orderGroup.Key.CompanyKey, orderGroup.Key.Market, ordersForCompany.Where(o => o.Status == OrderStatus.Pending));
                         Log.DebugFormat("Starting BatchUpdateStatus with {0} orders of status {1}", ordersForCompany.Count(o => o.Status == OrderStatus.TimedOut), "TimedOut");
-                        BatchUpdateStatus(orderGroup.Key.CompanyKey, ordersForCompany.Where(o => o.Status == OrderStatus.TimedOut));
+                        BatchUpdateStatus(orderGroup.Key.CompanyKey, orderGroup.Key.Market, ordersForCompany.Where(o => o.Status == OrderStatus.TimedOut));
                         Log.DebugFormat("Starting BatchUpdateStatus with {0} orders of status {1}", ordersForCompany.Count(o => o.Status == OrderStatus.Created), "Created");
-                        BatchUpdateStatus(orderGroup.Key.CompanyKey, ordersForCompany.Where(o => o.Status == OrderStatus.Created));
+                        BatchUpdateStatus(orderGroup.Key.CompanyKey, orderGroup.Key.Market, ordersForCompany.Where(o => o.Status == OrderStatus.Created));
                     }
                     
                     hasOrdersWaitingForPayment = orders.Any(o => o.Status == OrderStatus.WaitingForPayment);
@@ -122,7 +134,7 @@ namespace apcurium.MK.Booking.Api.Jobs
             return hasOrdersWaitingForPayment;
         }
 
-        private void BatchUpdateStatus(string companyKey, IEnumerable<OrderStatusDetail> orders)
+        private void BatchUpdateStatus(string companyKey, string market, IEnumerable<OrderStatusDetail> orders)
         {
             // Enumerate orders to avoid multiple enumerations of IEnumerable
             var orderStatusDetails = orders as OrderStatusDetail[] ?? orders.ToArray();
@@ -142,11 +154,24 @@ namespace apcurium.MK.Booking.Api.Jobs
             for (var skip = 0; skip < ibsOrdersIds.Count; skip = skip + take)
             {
                 var nextGroup = ibsOrdersIds.Skip(skip).Take(take).ToList();
-                var orderStatuses = _ibsServiceProvider.Booking(companyKey).GetOrdersStatus(nextGroup);
-                
+                var orderStatuses = _ibsServiceProvider.Booking(companyKey).GetOrdersStatus(nextGroup).ToArray();
+
+                // If HoneyBadger for local market is enabled, we need to fetch the vehicle position from HoneyBadger instead of using the position data from IBS
+                var honeyBadgerVehicleStatuses = GetVehicleStatusesFromHoneyBadgerIfNecessary(orderStatuses, market).ToArray();
+
                 foreach (var ibsStatus in orderStatuses)
                 {
-                 
+                    if (honeyBadgerVehicleStatuses.Any())
+                    {
+                        // Update vehicle position with matching data available data from HoneyBadger
+                        var honeyBadgerVehicleStatus = honeyBadgerVehicleStatuses.FirstOrDefault(v => v.Medallion == ibsStatus.VehicleNumber);
+                        if (honeyBadgerVehicleStatus != null)
+                        {
+                            ibsStatus.VehicleLatitude = honeyBadgerVehicleStatus.Latitude;
+                            ibsStatus.VehicleLongitude = honeyBadgerVehicleStatus.Longitude;
+                        }
+                    }
+
                     var order = orderStatusDetails.FirstOrDefault(o => o.IBSOrderId == ibsStatus.IBSOrderId);
                     if (order == null)
                     {
@@ -154,9 +179,28 @@ namespace apcurium.MK.Booking.Api.Jobs
                     }
 
                     Log.DebugFormat("Starting OrderStatusUpdater for order {0} (IbsOrderId: {1})", order.OrderId, order.IBSOrderId);
+
                     _orderStatusUpdater.Update(ibsStatus, order);
                 }
             }
+        }
+
+        private IEnumerable<VehicleResponse> GetVehicleStatusesFromHoneyBadgerIfNecessary(IBSOrderInformation[] orderStatuses, string market)
+        {
+
+            if (_serverSettings.ServerData.AvailableVehiclesMode == AvailableVehiclesModes.HoneyBadger
+                && _serverSettings.ServerData.AvailableVehiclesMarket.HasValue())
+            {
+                var vehicleMedallions = orderStatuses.Select(x => x.VehicleNumber);
+                var vehicleMarket = !market.HasValue()
+                    ? _serverSettings.ServerData.AvailableVehiclesMarket // Local market
+                    : market;                                            // External market
+
+                // Get vehicle statuses/position from HoneyBadger
+                return _honeyBadgerServiceClient.GetVehicleStatus(vehicleMarket, vehicleMedallions);
+            }
+
+            return new VehicleResponse[0];
         }
     }
 }

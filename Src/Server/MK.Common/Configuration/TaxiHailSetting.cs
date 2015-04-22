@@ -93,6 +93,8 @@ namespace MK.Common.Configuration
 
 		    MaxFareEstimate = 100;
 
+		    AvailableVehicleRefreshRate = 5;
+
 		    TwitterAccessTokenUrl = "https://api.twitter.com/oauth/access_token";
             TwitterAuthorizeUrl = "https://api.twitter.com/oauth/authorize";
             TwitterCallback = "http://www.taxihail.com/oauth";
@@ -163,6 +165,10 @@ namespace MK.Common.Configuration
         [SendToClient, CustomizableByCompany]
         [Display(Name = "Account Activation Disabled", Description="Disable the confirmation requirement")]
         public bool AccountActivationDisabled { get; protected set; }
+
+        [SendToClient, CustomizableByCompany]
+        [Display(Name = "Available vehicule refresh rate", Description = "Modify the refresh delay (in seconds) of the available vehicules on the map.")]
+	    public int AvailableVehicleRefreshRate { get; set; }
 
         [SendToClient, CustomizableByCompany]
 		[Display(Name = "Account Activation By SMS", Description="Enable the activation by SMS")]
@@ -424,6 +430,10 @@ namespace MK.Common.Configuration
 
         [SendToClient, CustomizableByCompany]
         public bool DisableAutomaticZoomOnLocation { get; set; }
+
+        [SendToClient, CustomizableByCompany]
+        [Display(Name = "Warn for Fees on Cancel", Description = "Before cancelling an order, the user will be warned that he could be charged cancellation fees.")]
+        public bool WarnForFeesOnCancel { get; set; }
 
         [SendToClient]
         [Display(Name = "Promotion enabled", Description = "Enables promotion on the client and on the admin portal")]
