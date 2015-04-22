@@ -82,7 +82,6 @@
             TaxiHail.parameters.SocialMediaTwitterURL = "<%: SocialMediaTwitterURL %>";
 
             TaxiHail.parameters.availableVehicleRefreshRate = "<%: AvailableVehicleRefreshRate %>";
-
             TaxiHail.parameters.isSignupVisible = <%: IsWebSignupVisible  ? "true" : "false"%>;
             
             <% if(IsPayBackRegistrationFieldRequired == true) { %>

@@ -20,7 +20,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		private readonly IVehicleService _vehicleService;
         public event EventHandler<HomeViewModelStateRequestedEventArgs> PresentationStateRequested;
 
-	    private string _market;
+        private string _hashedMarket;
 		private bool _isInitialized;
 
 		public OrderOptionsViewModel(IOrderWorkflowService orderWorkflowService, IAccountService accountService, IVehicleService vehicleService)
@@ -48,7 +48,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 				Observe (_orderWorkflowService.GetAndObserveEstimatedFare (), fare => EstimatedFare = fare);
 				Observe (_orderWorkflowService.GetAndObserveLoadingAddress (), loading => IsLoadingAddress = loading);
 				Observe (_orderWorkflowService.GetAndObserveVehicleType (), vehicleType => VehicleTypeId = vehicleType);
-				Observe (_orderWorkflowService.GetAndObserveMarket (), market => MarketChanged (market));
+                Observe(_orderWorkflowService.GetAndObserveHashedMarket(), hashedMarket => MarketChanged(hashedMarket));
+                Observe(_orderWorkflowService.GetAndObserveMarketVehicleTypes(), marketVehicleTypes => VehicleTypesChanged(marketVehicleTypes));
 				Observe (_vehicleService.GetAndObserveEta (), eta => Eta = eta);
 			}
 
@@ -56,6 +57,30 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		}
 
 	    public async Task Start()
+	    {
+	        await SetLocalMarketVehicleTypes();
+	    }
+
+	    private void MarketChanged(string hashedMarket)
+	    {
+	        _hashedMarket = hashedMarket;
+	    }
+
+	    private async Task VehicleTypesChanged(List<VehicleType> marketVehicleTypes)
+	    {
+	        if (_hashedMarket.HasValue())
+	        {
+                VehicleTypes = marketVehicleTypes;
+	        }
+	        else
+	        {
+	            await SetLocalMarketVehicleTypes();
+	        }
+	        
+            RaisePropertyChanged(() => ShowVehicleSelection);
+	    }
+
+	    private async Task SetLocalMarketVehicleTypes()
 	    {
             var list = await _accountService.GetVehiclesList();
 
@@ -69,24 +94,24 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
             }
 	    }
 
-	    private void MarketChanged(string market)
-	    {
-	        _market = market;
-            RaisePropertyChanged(() => ShowVehicleSelection);
-	    }
-
-	    async Task SetDefaultVehicleType ()
+	    async Task SetDefaultVehicleType()
 		{
 			var data = await _accountService.GetReferenceData ();
 			var defaultVehicleType = data.VehiclesList.FirstOrDefault (x => x.IsDefault.Value);
-			var defaultId = defaultVehicleType != null ? defaultVehicleType.Id.Value : 0;
-			VehicleTypes = new List<VehicleType> {
-				new VehicleType {
+			var defaultId = defaultVehicleType != null
+                ? defaultVehicleType.Id.Value
+                : 0;
+
+			VehicleTypes = new List<VehicleType>
+            {
+				new VehicleType
+                {
 					LogoName = "taxi",
 					Name = "TAXI",
 					ReferenceDataVehicleId = defaultId
 				}
 			};
+
 			VehicleTypeId = defaultId;
 		}
 
@@ -124,13 +149,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			
 		public VehicleType SelectedVehicleType
 		{
-			get { 
+			get
+            { 
 				VehicleType type = null;
-				if (VehicleTypeId.HasValue) {
+				if (VehicleTypeId.HasValue)
+                {
 					type = VehicleTypes.FirstOrDefault (x => x.ReferenceDataVehicleId == VehicleTypeId); 
 				}
 
-				if (type == null) {
+				if (type == null)
+                {
 					type = VehicleTypes.FirstOrDefault (); 
 				}
 				return type;
@@ -282,7 +310,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
 		public bool ShowVehicleSelection
 		{
-			get { return (VehicleTypes.Count() > 1) && Settings.VehicleTypeSelectionEnabled && !_market.HasValue(); }
+			get { return (VehicleTypes.Count() > 1) && Settings.VehicleTypeSelectionEnabled; }
 		}
 			
         public ICommand SetAddress

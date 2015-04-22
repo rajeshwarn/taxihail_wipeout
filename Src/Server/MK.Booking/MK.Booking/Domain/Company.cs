@@ -516,7 +516,7 @@ namespace apcurium.MK.Booking.Domain
             });
         }
 
-        public void AddUpdateVehicleType(Guid vehicleTypeId, string name, string logoName, int referenceDataVehicleId, int maxNumberPassengers)
+        public void AddUpdateVehicleType(Guid vehicleTypeId, string name, string logoName, int referenceDataVehicleId, int maxNumberPassengers, int? networkVehicleTypeId)
         {
             Update(new VehicleTypeAddedUpdated
             {
@@ -524,7 +524,8 @@ namespace apcurium.MK.Booking.Domain
                 LogoName = logoName,
                 VehicleTypeId = vehicleTypeId,
                 ReferenceDataVehicleId = referenceDataVehicleId,
-                MaxNumberPassengers = maxNumberPassengers
+                MaxNumberPassengers = maxNumberPassengers,
+                ReferenceNetworkVehicleTypeId = networkVehicleTypeId
             });
         }
 

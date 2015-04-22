@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Threading.Tasks;
 using CustomerPortal.Contract.Resources;
@@ -79,15 +80,50 @@ namespace CustomerPortal.Client.Impl
             var companyKey = companyId ?? _serverSettings.ServerData.TaxiHail.ApplicationKey;
 
             return Client.Get(string.Format("customer/{0}/roaming/marketfleets?market={1}", companyKey, market))
-                               .Deserialize<IEnumerable<NetworkFleetResponse>>()
-                               .Result;
+                         .Deserialize<IEnumerable<NetworkFleetResponse>>()
+                         .Result;
         }
 
         public NetworkFleetResponse GetMarketFleet(string market, int fleetId)
         {
             return Client.Get(string.Format("customer/roaming/marketfleet?market={0}&fleetId={1}", market, fleetId))
-                               .Deserialize<NetworkFleetResponse>()
-                               .Result;
+                         .Deserialize<NetworkFleetResponse>()
+                         .Result;
+        }
+
+        public IEnumerable<NetworkVehicleResponse> GetMarketVehicleTypes(string companyId = null, string market = null)
+        {
+            if (companyId == null && market == null)
+            {
+                throw new ArgumentNullException("You must specify at least either the Market or the CompanyId.");
+            } 
+
+           var @params = new Dictionary<string, string>
+                {
+                    { "companyId", companyId },
+                    { "market", market }
+                };
+
+            return Client.Get("customer/marketVehicleTypes" + BuildQueryString(@params))
+                         .Deserialize<IEnumerable<NetworkVehicleResponse>>()
+                         .Result;
+        }
+
+        public NetworkVehicleResponse GetAssociatedMarketVehicleType(string companyId, int networkVehicleId)
+        {
+            return Client.Get(string.Format("customer/{0}/associatedMarketVehicleTypes?networkVehicleId={1}", companyId, networkVehicleId))
+                         .Deserialize<NetworkVehicleResponse>()
+                         .Result;
+        }
+
+        public Task UpdateMarketVehicleType(string companyId, CompanyVehicleType vehicleType)
+        {
+            return Client.Post(string.Format("customer/{0}/companyVehicles", companyId), vehicleType);
+        }
+
+        public Task DeleteMarketVehicleMapping(string companyId, Guid id)
+        {
+            return Client.DeleteAsync(string.Format("customer/{0}/companyVehicles?vehicleTypeId={1}", companyId, id));
         }
     }
 }

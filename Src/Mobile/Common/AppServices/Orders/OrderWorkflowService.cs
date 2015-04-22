@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Net;
@@ -49,12 +50,14 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		readonly ISubject<AccountChargeQuestion[]> _accountPaymentQuestions = new BehaviorSubject<AccountChargeQuestion[]> (null);
 
 		readonly ISubject<bool> _orderCanBeConfirmed = new BehaviorSubject<bool>(false);
-		readonly ISubject<string> _marketSubject = new BehaviorSubject<string>(string.Empty);
+		readonly ISubject<string> _hashedMarketSubject = new BehaviorSubject<string>(string.Empty);
+        readonly ISubject<List<VehicleType>> _networkVehiclesSubject = new BehaviorSubject<List<VehicleType>>(new List<VehicleType>());
 		readonly ISubject<bool> _isDestinationModeOpenedSubject = new BehaviorSubject<bool>(false);
 
         private bool _isOrderRebooked;
 
 	    private Position _lastMarketPosition = new Position();
+	    private string _lastHashedMarketValue;
 
         private const int LastMarketDistanceThreshold = 1000; // In meters
 
@@ -273,8 +276,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
 		public async Task SetVehicleType(int? vehicleTypeId)
 		{
-		    var market = await _marketSubject.Take(1).ToTask();
-            if (_appSettings.Data.VehicleTypeSelectionEnabled && !market.HasValue())
+            if (_appSettings.Data.VehicleTypeSelectionEnabled)
             {
 				_vehicleTypeSubject.OnNext (vehicleTypeId);
 			}
@@ -295,8 +297,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
             // if there's a market and payment preference of the user is set to CardOnFile, change it to PaymentInCar
 		    if (bookingSettings.ChargeTypeId == ChargeTypes.CardOnFile.Id)
 		    {
-                var market = await _marketSubject.Take(1).ToTask();
-		        if (market.HasValue())
+                var hashedMarket = await _hashedMarketSubject.Take(1).ToTask();
+		        if (hashedMarket.HasValue())
 		        {
 		            bookingSettings.ChargeTypeId = ChargeTypes.PaymentInCar.Id;
 		        }
@@ -434,10 +436,15 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			return _loadingAddressSubject;
 		}
 
-		public IObservable<string> GetAndObserveMarket()
+		public IObservable<string> GetAndObserveHashedMarket()
 		{
-			return _marketSubject;
+			return _hashedMarketSubject;
 		}
+
+	    public IObservable<List<VehicleType>> GetAndObserveMarketVehicleTypes()
+	    {
+	        return _networkVehiclesSubject;
+	    }
 		
 		private async Task<Address> SearchAddressForCoordinate(Position p)
 		{
@@ -478,11 +485,15 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
 		private async Task SetAddressToCurrentSelection(Address address, CancellationToken token = default(CancellationToken))
 		{
-			var selectionMode = await _addressSelectionModeSubject.Take (1).ToTask ();
-			if (selectionMode == AddressSelectionMode.PickupSelection) {
+			var selectionMode = await _addressSelectionModeSubject.Take (1).ToTask();
+			if (selectionMode == AddressSelectionMode.PickupSelection)
+            {
 				_pickupAddressSubject.OnNext (address);
-				Task.Run(() => SetMarket (new Position { Latitude = address.Latitude, Longitude = address.Longitude }));
-			} else {
+
+				Task.Run(() => SetMarket(new Position { Latitude = address.Latitude, Longitude = address.Longitude }));
+			} 
+            else 
+            {
 				_destinationAddressSubject.OnNext (address);
 			}
 
@@ -793,17 +804,63 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
 	    private async Task SetMarket(Position currentPosition)
 	    {
-			var distanceFromLastMarketRequest = Maps.Geo.Position.CalculateDistance(
-                currentPosition.Latitude, currentPosition.Longitude,
-                _lastMarketPosition.Latitude, _lastMarketPosition.Longitude);
-
-            if (distanceFromLastMarketRequest > LastMarketDistanceThreshold)
+            if (ShouldUpdateMarket(currentPosition))
 	        {
-	            var market = await _networkRoamingService.GetCompanyMarket(currentPosition.Latitude, currentPosition.Longitude);
-                
+	            var hashedMarket = await _networkRoamingService.GetHashedCompanyMarket(currentPosition.Latitude, currentPosition.Longitude);
+
                 _lastMarketPosition = currentPosition;
-                _marketSubject.OnNext(market);
+
+                _hashedMarketSubject.OnNext(hashedMarket);
+
+                // If we changed market
+	            if (hashedMarket != _lastHashedMarketValue)
+	            {
+                    if (hashedMarket.HasValue())
+                    {
+                        // Set vehicles list with data from external market
+                        SetMarketVehicleTypes(currentPosition);
+                    }
+                    else
+                    {
+                        // Load and cache local vehicle types
+                        SetLocalVehicleTypes();
+                    }
+	            }
+
+                _lastHashedMarketValue = hashedMarket;
 	        }
+	    }
+
+	    private async Task SetMarketVehicleTypes(Position currentPosition)
+	    {
+            var networkVehicles = await _networkRoamingService.GetExternalMarketVehicleTypes(currentPosition.Latitude, currentPosition.Longitude);
+            _accountService.SetMarketVehiclesList(networkVehicles);
+            _networkVehiclesSubject.OnNext(networkVehicles);
+
+	        int? selectedVehicleId = null;
+
+	        if (networkVehicles.Any())
+	        {
+	            selectedVehicleId = networkVehicles.First().ReferenceDataVehicleId;
+	        }
+
+            SetVehicleType(selectedVehicleId);
+	    }
+
+	    private async Task SetLocalVehicleTypes()
+	    {
+            await _accountService.ResetLocalVehiclesList();
+            _networkVehiclesSubject.OnNext(new List<VehicleType>());
+
+	        int? selectedVehicleId = null;
+
+            var localVehicles = await _accountService.GetVehiclesList();
+            if (localVehicles.Any())
+            {
+                selectedVehicleId = localVehicles.First().ReferenceDataVehicleId;
+            }
+
+	        SetVehicleType(selectedVehicleId);
 	    }
 
 		public async Task ToggleIsDestinationModeOpened(bool? forceValue = null)
@@ -816,6 +873,15 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		{
 			return _isDestinationModeOpenedSubject;
 		}
+
+        private bool ShouldUpdateMarket(Position currentPosition)
+	    {
+            var distanceFromLastMarketRequest = Maps.Geo.Position.CalculateDistance(
+                currentPosition.Latitude, currentPosition.Longitude,
+                _lastMarketPosition.Latitude, _lastMarketPosition.Longitude);
+
+            return distanceFromLastMarketRequest > LastMarketDistanceThreshold;
+	    }
     }
 }
 

@@ -64,5 +64,25 @@ namespace apcurium.MK.Web.Tests
         {
             throw new NotImplementedException();
         }
+
+        public IEnumerable<NetworkVehicleResponse> GetMarketVehicleTypes(string companyId = null, string market = null)
+        {
+            throw new NotImplementedException();
+        }
+
+        public NetworkVehicleResponse GetAssociatedMarketVehicleType(string companyId, int networkVehicleId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task UpdateMarketVehicleType(string companyId, CompanyVehicleType vehicleType)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task DeleteMarketVehicleMapping(string companyId, Guid id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

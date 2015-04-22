@@ -2,6 +2,7 @@
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Common.Cryptography;
+using apcurium.MK.Common.Extensions;
 using CustomerPortal.Client;
 using ServiceStack.ServiceInterface;
 
@@ -29,6 +30,27 @@ namespace apcurium.MK.Booking.Api.Services
             {
                 CompanyKey = f.CompanyKey,
                 CompanyName = f.CompanyName
+            });
+        }
+
+        public object Get(MarketVehicleTypesRequest request)
+        {
+            var market = _taxiHailNetworkServiceClient.GetCompanyMarket(request.Latitude, request.Longitude);
+            if (!market.HasValue())
+            {
+                // In home market, no network vehicles
+                return new VehicleType[0];
+            }
+
+            var marketVehicleTypes = _taxiHailNetworkServiceClient.GetMarketVehicleTypes(market: market);
+
+            return marketVehicleTypes.Select(v => new VehicleType
+            {
+                Id = v.Id,
+                Name = v.Name,
+                LogoName =  v.LogoName,
+                ReferenceDataVehicleId = v.ReferenceDataVehicleId,
+                MaxNumberPassengers = v.MaxNumberPassengers
             });
         }
     }

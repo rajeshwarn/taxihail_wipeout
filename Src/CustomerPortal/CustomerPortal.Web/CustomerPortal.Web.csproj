@@ -183,6 +183,7 @@
     <Compile Include="Areas\Admin\Controllers\API\AppleDevCenterController.cs" />
     <Compile Include="Areas\Admin\Controllers\API\VersionController.cs" />
     <Compile Include="Areas\Admin\Controllers\ChecklistController.cs" />
+    <Compile Include="Areas\Admin\Controllers\NetworkVehiclesBaseController.cs" />
     <Compile Include="Areas\Admin\Controllers\PaymentController.cs" />
     <Compile Include="Areas\Admin\Controllers\StoreCredentialController.cs" />
     <Compile Include="Areas\Admin\Controllers\CompanyControllerBase.cs" />
@@ -197,6 +198,7 @@
     <Compile Include="Areas\Admin\Controllers\SettingsController.cs" />
     <Compile Include="Areas\Admin\Controllers\TaxiHailNetworkSettingsController.cs" />
     <Compile Include="Areas\Admin\Controllers\TaxiHailNetworkSettingsControllerBase.cs" />
+    <Compile Include="Areas\Admin\Controllers\NetworkVehiclesController.cs" />
     <Compile Include="Areas\Admin\Controllers\VersionController.cs" />
     <Compile Include="Areas\Admin\Models\AddDeploymentJobModel.cs" />
     <Compile Include="Areas\Admin\Models\AppleSearchByBundle.cs" />
@@ -204,6 +206,8 @@
     <Compile Include="Areas\Admin\Models\ChangeRevisionStatus.cs" />
     <Compile Include="Areas\Admin\Models\ChecklistModel.cs" />
     <Compile Include="Areas\Admin\Models\ColorModel.cs" />
+    <Compile Include="Areas\Admin\Models\MarketModel.cs" />
+    <Compile Include="Areas\Admin\Models\NetworkVehiclesModel.cs" />
     <Compile Include="Areas\Admin\Models\RequestResponse\CreateNewVersionRequest.cs" />
     <Compile Include="Areas\Admin\Models\CreateUser.cs" />
     <Compile Include="Areas\Admin\Models\DeployCustomerModel.cs" />
@@ -220,6 +224,7 @@
     <Compile Include="Areas\Admin\Models\RequestResponse\TestAppleDevCenterLoginRequest.cs" />
     <Compile Include="Areas\Admin\Models\VersionEmailViewModel.cs" />
     <Compile Include="Areas\Customer\Controllers\Api\NetworkApiController.cs" />
+    <Compile Include="Areas\Customer\Controllers\Api\NetworkVehiclesApiController.cs" />
     <Compile Include="Areas\Customer\Controllers\Api\RoamingApiController.cs" />
     <Compile Include="Areas\Customer\Models\RequestResponse\CompanyPreferencesRequest.cs" />
     <Compile Include="Attributes\NoCacheAttribute.cs" />
@@ -243,8 +248,10 @@
     <Compile Include="Entities\CompanySetting.cs" />
     <Compile Include="Entities\DeploymentJob.cs" />
     <Compile Include="Entities\JobStatusDetails.cs" />
+    <Compile Include="Entities\CompanyVehicle.cs" />
     <Compile Include="Entities\Network\MapRegion.cs" />
     <Compile Include="Entities\Network\TaxiHailNetworkSettings.cs" />
+    <Compile Include="Entities\Network\NetworkVehicle.cs" />
     <Compile Include="Entities\Payment.cs" />
     <Compile Include="Entities\Questionnaire.cs" />
     <Compile Include="Entities\AppStatus.cs" />
@@ -329,6 +336,7 @@
     <Content Include="assets\bootstrap\js\bootstrap-typeahead.js" />
     <Content Include="assets\bootstrap\js\bootstrap-tooltip-custom.js" />
     <Content Include="assets\css\tipsy.css" />
+    <Content Include="assets\css\vehicles.css" />
     <Content Include="assets\jquery-fileupload\css\jquery.fileupload-ui.css" />
     <Content Include="assets\jquery-fileupload\js\app.js" />
     <Content Include="assets\jquery-fileupload\js\cors\jquery.postmessage-transport.js" />
@@ -447,11 +455,14 @@
     <Content Include="HtmlPage1.html" />
     <Content Include="Images\android.png" />
     <Content Include="Images\apple.png" />
+    <Content Include="Images\blackcar_badge.png" />
     <Content Include="Images\check.png" />
     <Content Include="Images\copy.png" />
     <Content Include="Images\delete.png" />
     <Content Include="Images\download.jpg" />
     <Content Include="Images\settings.jpg" />
+    <Content Include="Images\suv_badge.png" />
+    <Content Include="Images\taxi_badge.png" />
     <Content Include="Images\THNetwork.png" />
     <Content Include="Images\warn.jpg" />
     <Content Include="log4net.xml" />
@@ -490,6 +501,11 @@
     <Content Include="Areas\Admin\Views\TaxiHailNetworkSettings\Index.cshtml" />
     <Content Include="Grid.mvc.readme" />
     <Content Include="Areas\Admin\Views\Checklist\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\NetworkVehicles\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\NetworkVehicles\CreateMarket.cshtml" />
+    <Content Include="Areas\Admin\Views\NetworkVehicles\CreateVehicle.cshtml" />
+    <Content Include="Areas\Admin\Views\NetworkVehicles\EditVehicle.cshtml" />
+    <Content Include="Areas\Admin\Views\NetworkVehicles\VehicleIndex.cshtml" />
     <None Include="Properties\PublishProfiles\local.pubxml" />
     <None Include="Properties\PublishProfiles\Production.pubxml" />
     <None Include="Scripts\jquery-1.8.2.intellisense.js" />

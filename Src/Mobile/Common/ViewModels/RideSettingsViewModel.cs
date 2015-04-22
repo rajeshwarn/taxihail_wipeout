@@ -26,7 +26,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 	    private ClientPaymentSettings _paymentSettings;
 
         private bool _isInitialized;
-	    private string _market;
+	    private string _hashedMarket;
 
 		public RideSettingsViewModel(IAccountService accountService, 
 			IPaymentService paymentService,
@@ -44,7 +44,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		    if (!_isInitialized)
 		    {
 		        _isInitialized = true;
-                Observe(_orderWorkflowService.GetAndObserveMarket(), market => _market = market);
+                Observe(_orderWorkflowService.GetAndObserveHashedMarket(), hashedMarket => _hashedMarket = hashedMarket);
 		    }
 
 		    using (this.Services ().Message.ShowProgress ())
@@ -54,7 +54,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     _bookingSettings = bookingSettings.FromJson<BookingSettings>();
                     _paymentSettings = await _paymentService.GetPaymentSettings();
 
-                    var p = await _accountService.GetPaymentsList(_market);
+                    var p = await _accountService.GetPaymentsList(_hashedMarket);
                     _payments = p == null ? new ListItem[0] : p.Select(x => new ListItem { Id = x.Id, Display = this.Services().Localize[x.Display] }).ToArray();
 
                     RaisePropertyChanged(() => Payments);

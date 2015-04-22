@@ -38,6 +38,7 @@ namespace CustomerPortal.Web
             var lessBundle = new Bundle("~/bundles/bootstrap/less").Include(
                 "~/assets/less/portal.less",
                 "~/assets/css/tipsy.css",
+                "~/assets/css/vehicles.css",
                 "~/assets/jquery-fileupload/css/jquery.fileupload-ui.css");
 
 

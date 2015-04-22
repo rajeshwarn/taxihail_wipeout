@@ -193,6 +193,7 @@
     <Compile Include="Extensions\StreamExtensions.cs" />
     <Compile Include="Extensions\StringBuilderExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
+    <Compile Include="Extensions\TaskExtensions.Web.cs" />
     <Compile Include="Extensions\UserAgentExtension.cs" />
     <Compile Include="Fare.cs" />
     <Compile Include="Geography\GeographyHelper.cs" />
