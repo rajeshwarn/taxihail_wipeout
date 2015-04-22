@@ -7,6 +7,8 @@ using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.IBS;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
+using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using AutoMapper;
 using Infrastructure.Messaging;
@@ -22,18 +24,22 @@ namespace apcurium.MK.Booking.Api.Services
         private readonly IAccountChargeDao _accountChargeDao;
         private readonly ICommandBus _commandBus;
         private readonly IIBSServiceProvider _ibsServiceProvider;
+        private readonly IServerSettings _serverSettings;
 
-        public BookingSettingsService(IAccountChargeDao accountChargeDao, ICommandBus commandBus, IIBSServiceProvider ibsServiceProvider)
+        public BookingSettingsService(IAccountChargeDao accountChargeDao, ICommandBus commandBus, IIBSServiceProvider ibsServiceProvider, IServerSettings serverSettings)
         {
             _accountChargeDao = accountChargeDao;
             _commandBus = commandBus;
             _ibsServiceProvider = ibsServiceProvider;
+            _serverSettings = serverSettings;
         }
 
         public object Put(BookingSettingsRequest request)
         {
-            // Validate account number
-            if (!string.IsNullOrWhiteSpace(request.AccountNumber))
+            var isChargeAccountEnabled = _serverSettings.GetPaymentSettings().IsChargeAccountPaymentEnabled;
+
+            // Validate account number if charge account is enabled and ChargeType mode is set to Charge Account
+            if (isChargeAccountEnabled && !string.IsNullOrWhiteSpace(request.AccountNumber))
             {
                 if (!request.CustomerNumber.HasValue())
                 {

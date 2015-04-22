@@ -118,7 +118,8 @@
         savechanges: function (form) {
             var accountNumber = this.model.get('settings').accountNumber;
             var customerNumber = this.model.get('settings').customerNumber;
-            if (accountNumber) { // || customerNumber
+            var chargeAccountEnabled = this.model.isChargeAccountPaymentEnabled;
+            if (chargeAccountEnabled && accountNumber) {
 
                 // Validate charge account number
                 this.model.getChargeAccount(accountNumber, customerNumber)
