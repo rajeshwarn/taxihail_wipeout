@@ -175,7 +175,8 @@ namespace apcurium.MK.Booking.Api.Services
 
             if (_serverSettings.ServerData.Network.Enabled)
             {
-                _taxiHailNetworkServiceClient.UpdateMarketVehicleType(_serverSettings.ServerData.TaxiHail.ApplicationKey, new CompanyVehicleType
+                _taxiHailNetworkServiceClient.UpdateMarketVehicleType(_serverSettings.ServerData.TaxiHail.ApplicationKey,
+                    new CompanyVehicleType
                     {
                         Id = command.VehicleTypeId,
                         LogoName = command.LogoName,
@@ -288,7 +289,8 @@ namespace apcurium.MK.Booking.Api.Services
                     .Select(x => new
                     {
                         Id = x.ReferenceDataVehicleId,
-                        Name = x.Name
+                        Name = x.Name,
+                        MaxNumberPassengers = x.MaxNumberPassengers
                     })
                     .ToArray();
             }

@@ -52,11 +52,12 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
         public ActionResult CreateMarket(MarketModel marketModel)
         {
             var networkVehicles = Repository.Where(v => v.Market == marketModel.Market);
+
+            // If there already are vehicles in the market, that means that it already exists
             if (networkVehicles.Any())
             {
                 ViewBag.Error = "A market with that name already exists.";
 
-                // If there are alreayd vehicles in the market, that means that it already exists
                 return View(new MarketModel());
             }
 

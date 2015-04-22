@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Net.Http;
 using System.Threading.Tasks;
 using CustomerPortal.Contract.Resources;
 using CustomerPortal.Contract.Response;
 using apcurium.MK.Common.Configuration;
-using apcurium.MK.Common.Extensions;
 using CustomerPortal.Client.Http.Extensions;
 
 namespace CustomerPortal.Client.Impl
@@ -101,17 +98,13 @@ namespace CustomerPortal.Client.Impl
                 throw new ArgumentNullException("You must specify at least either the Market or the CompanyId.");
             } 
 
-            var queryString = string.Empty;
-
            var @params = new Dictionary<string, string>
                 {
                     { "companyId", companyId },
                     { "market", market }
                 };
 
-           queryString = BuildQueryString(@params);
-
-            return Client.Get("customer/marketVehicleTypes" + queryString)
+            return Client.Get("customer/marketVehicleTypes" + BuildQueryString(@params))
                          .Deserialize<IEnumerable<NetworkVehicleResponse>>()
                          .Result;
         }
