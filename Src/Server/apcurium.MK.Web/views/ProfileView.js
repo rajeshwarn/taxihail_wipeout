@@ -119,7 +119,7 @@
             var accountNumber = this.model.get('settings').accountNumber;
             var customerNumber = this.model.get('settings').customerNumber;
             var chargeAccountEnabled = this.model.isChargeAccountPaymentEnabled;
-            if (chargeAccountEnabled && accountNumber) { // || customerNumber
+            if (chargeAccountEnabled && accountNumber) {
 
                 // Validate charge account number
                 this.model.getChargeAccount(accountNumber, customerNumber)
