@@ -11,10 +11,11 @@
             'change [id=sandboxClientSecret]': 'onPayPalSettingsChanged',
             'change [id=prodClientId]': 'onPayPalSettingsChanged',
             'change [id=prodClientSecret]': 'onPayPalSettingsChanged',
-
+            'change [name=isChargeAccountPaymentEnabled]': 'onChargeAccountSettingsChanged',
             'change [name=paymentMode]': 'onPaymentModeChanged',
             'change [name=acceptChange]': 'onAcceptPaymentModeChange',
             'change [name=acceptPayPalChange]': 'onAcceptPayPalSettingsChange',
+            'change [name=acceptChangeChargeAccount]': 'onAcceptChargeAccountSettingsChanged',
             'click #testPayPalSandboxSettingsButton': 'testPayPalSandboxSettingsButtonClick',
             'click #payPalProductionSettingsButton': 'payPalProductionSettingsButtonClick',
             'click #brainTreeSettingsButton': 'brainTreeSettingsButtonClick',
@@ -27,6 +28,7 @@
         warningDiv: {},
         payPalWarningDiv: {},
         updatedModel: {},
+        chargeAccountDiv: {},
 
         render: function () {
 
@@ -41,9 +43,12 @@
             this.warningDiv = this.$("#warning");
             this.payPalWarningDiv = this.$("#payPalWarning");
             this.saveButton = this.$("#saveButton");
+
+            this.chargeAccountDiv = this.$("#warningChargeAccount");
             
             this.onPaymentModeChanged();
             this.onPayPalSettingsChanged();
+            this.onChargeAccountSettingsChanged();
 
             this.validate({
                 rules: {
@@ -127,7 +132,8 @@
 
             this.$("#warning").hide();
             this.$("#payPalWarning").hide();
-            
+            this.$('#warningChargeAccount').hide();
+
             if (data.paymentMode == "None" && data.isPayInTaxiEnabled == "true") {
                 this.alert("Please select a payment method or disable Card on File Payment");
 
@@ -176,6 +182,35 @@
                     this.saveButton.removeAttr('disabled');
                 }
             }
+        },
+
+        onAcceptChargeAccountSettingsChanged: function () {
+            var chargeAccountWarning = this.$("[name = acceptChangeChargeAccount]");
+
+            if (chargeAccountWarning.is(":visible")) {
+                if (chargeAccountWarning.prop("checked") && chargeAccountWarning.prop("checked")) {
+                    this.saveButton.removeAttr('disabled');
+                }
+            } else {
+                if (chargeAccountWarning.prop("checked")) {
+                    this.saveButton.removeAttr('disabled');
+                }
+            }
+        },
+
+        onChargeAccountSettingsChanged: function() {
+            var isChargeAccountPaymentEnabled = this.updatedModel.isChargeAccountPaymentEnabled;
+
+            var newIsChargeAccountPaymentEnabled = this.$("[name = isChargeAccountPaymentEnabled]").val() == 'true';
+
+            if (!newIsChargeAccountPaymentEnabled && newIsChargeAccountPaymentEnabled != isChargeAccountPaymentEnabled) {
+                this.$("[name=acceptChangeChargeAccount]").removeAttr("checked");
+                this.saveButton.attr('disabled', 'disabled');
+                this.chargeAccountDiv.show();
+            } else {
+                this.chargeAccountDiv.hide();
+            }
+            
         },
 
         onAcceptPayPalSettingsChange: function () {

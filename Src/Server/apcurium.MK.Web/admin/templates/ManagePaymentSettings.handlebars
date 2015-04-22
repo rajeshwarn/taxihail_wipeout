@@ -14,12 +14,18 @@
   </select>
 
   <label class="control-label settingsLabel" >{{{localize "Charge Account Payment"}}}</label>
-  <select  name="isChargeAccountPaymentEnabled" class="settingsBox">
+  <select name="isChargeAccountPaymentEnabled" class="settingsBox">
     <option value="{{isChargeAccountPaymentEnabled}}" selected="" >{{localizeBool isChargeAccountPaymentEnabled true="Yes" false="No"}}</option>
     <option value="{{invertedBool isChargeAccountPaymentEnabled}}">{{localizeBool isChargeAccountPaymentEnabled true="No" false="Yes"}}</option>
   </select>
 
-  <label class="control-label settingsLabel" >{{{localize "Card on File Payment"}}}</label>
+<div>
+    <div id="warningChargeAccount" class="alert">
+        <input type="checkbox" name="acceptChangeChargeAccount"> {{localize "I understand that disabling Charge Account will clear the charge account settings of ALL the users."}}</input>
+    </div>
+</div>
+
+<label class="control-label settingsLabel" >{{{localize "Card on File Payment"}}}</label>
   <select  name="isPayInTaxiEnabled" class="settingsBox">
     <option value="{{isPayInTaxiEnabled}}" selected="" >{{localizeBool isPayInTaxiEnabled true="Yes" false="No"}}</option>
     <option value="{{invertedBool isPayInTaxiEnabled}}">{{localizeBool isPayInTaxiEnabled true="No" false="Yes"}}</option>
