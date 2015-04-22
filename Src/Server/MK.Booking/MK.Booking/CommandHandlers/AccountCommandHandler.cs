@@ -1,6 +1,7 @@
 ﻿#region
 
 using System;
+using System.Linq;
 using System.Reflection;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Database;
@@ -45,7 +46,8 @@ namespace apcurium.MK.Booking.CommandHandlers
         ICommandHandler<UnlinkPayPalAccount>,
         ICommandHandler<UnlinkAllPayPalAccounts>,
         ICommandHandler<ReactToPaymentFailure>,
-        ICommandHandler<SettleOverduePayment>
+        ICommandHandler<SettleOverduePayment>,
+        ICommandHandler<ClearChargeAccountUserSettings>
     {
         private readonly IPasswordService _passwordService;
         private readonly Func<BookingDbContext> _contextFactory;
@@ -298,6 +300,18 @@ namespace apcurium.MK.Booking.CommandHandlers
             {
                 var account = _repository.Find(accountId);
                 account.UnlinkPayPalAccount();
+                _repository.Save(account, command.Id.ToString());
+            }
+        }
+
+        public void Handle(ClearChargeAccountUserSettings command)
+        {
+            // We setup a delayed fetch to the repository for every accounts.
+            var accounts = command.AccountIds.Select(_repository.Find);
+
+            foreach (var account in accounts)
+            {
+                account.ClearChargeAccountSettings();
                 _repository.Save(account, command.Id.ToString());
             }
         }

@@ -48,6 +48,8 @@ namespace apcurium.MK.Booking.Domain
 
         protected PayPalServerSettings PayPalServerSettings { get; set; }
 
+        protected bool IsChargeAccountEnabled { get; set; }
+
         private void RegisterHandlers()
         {
             Handles<DefaultFavoriteAddressAdded>(NoAction);
@@ -62,6 +64,7 @@ namespace apcurium.MK.Booking.Domain
             Handles<AppSettingsAddedOrUpdated>(NoAction);
             Handles<PaymentModeChanged>(NoAction);
             Handles<PayPalSettingsChanged>(NoAction);
+            Handles<ChargeAccountChanged>(NoAction);
             Handles<PaymentSettingUpdated>(OnPaymentSettingUpdated);
 
             Handles<TariffCreated>(OnRateCreated);
@@ -99,6 +102,8 @@ namespace apcurium.MK.Booking.Domain
             PaymentMode = obj.ServerPaymentSettings.PaymentMode;
             PayPalClientSettings = obj.ServerPaymentSettings.PayPalClientSettings;
             PayPalServerSettings = obj.ServerPaymentSettings.PayPalServerSettings;
+
+            IsChargeAccountEnabled = obj.ServerPaymentSettings.IsChargeAccountPaymentEnabled;
         }
 
         public void AddDefaultFavoriteAddress(Address address)
@@ -430,10 +435,20 @@ namespace apcurium.MK.Booking.Domain
                 Update(new PayPalSettingsChanged());
             }
 
+            if (HaveChargeAccountEnableChanged(command.ServerPaymentSettings) && !command.ServerPaymentSettings.IsChargeAccountPaymentEnabled)
+            {
+                Update(new ChargeAccountChanged());
+            }
+
             Update(new PaymentSettingUpdated
             {
                 ServerPaymentSettings = command.ServerPaymentSettings
             });
+        }
+
+        private bool HaveChargeAccountEnableChanged(ServerPaymentSettings newPaymentSettings)
+        {
+            return newPaymentSettings.IsChargeAccountPaymentEnabled != IsChargeAccountEnabled;
         }
 
         private bool HavePayPalSettingsChanged(ServerPaymentSettings newPaymentSettings)
