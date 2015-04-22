@@ -1219,7 +1219,7 @@ namespace apcurium.MK.Booking.Api.Services
             }
             catch (Exception ex)
             {
-                Log.Info(string.Format("An error occured when trying to get GetAssociatedMarketVehicleType for company {0}", marketCompanyId));
+                Log.Info(string.Format("An error occurred when trying to get GetAssociatedMarketVehicleType for company {0}", marketCompanyId));
                 Log.Error(ex);
             }
         }

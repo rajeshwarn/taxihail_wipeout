@@ -14,7 +14,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
         {
         }
 
-        public Task<string> GetCompanyMarket(double latitude, double longitude)
+        public Task<string> GetHashedCompanyMarket(double latitude, double longitude)
         {
             var @params = new Dictionary<string, string>
                 {

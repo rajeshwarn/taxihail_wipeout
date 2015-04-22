@@ -50,14 +50,14 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		readonly ISubject<AccountChargeQuestion[]> _accountPaymentQuestions = new BehaviorSubject<AccountChargeQuestion[]> (null);
 
 		readonly ISubject<bool> _orderCanBeConfirmed = new BehaviorSubject<bool>(false);
-		readonly ISubject<string> _marketSubject = new BehaviorSubject<string>(string.Empty);
+		readonly ISubject<string> _hashedMarketSubject = new BehaviorSubject<string>(string.Empty);
         readonly ISubject<List<VehicleType>> _networkVehiclesSubject = new BehaviorSubject<List<VehicleType>>(new List<VehicleType>());
 		readonly ISubject<bool> _isDestinationModeOpenedSubject = new BehaviorSubject<bool>(false);
 
         private bool _isOrderRebooked;
 
 	    private Position _lastMarketPosition = new Position();
-	    private string _lastMarketValue;
+	    private string _lastHashedMarketValue;
 
         private const int LastMarketDistanceThreshold = 1000; // In meters
 
@@ -297,8 +297,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
             // if there's a market and payment preference of the user is set to CardOnFile, change it to PaymentInCar
 		    if (bookingSettings.ChargeTypeId == ChargeTypes.CardOnFile.Id)
 		    {
-                var market = await _marketSubject.Take(1).ToTask();
-		        if (market.HasValue())
+                var hashedMarket = await _hashedMarketSubject.Take(1).ToTask();
+		        if (hashedMarket.HasValue())
 		        {
 		            bookingSettings.ChargeTypeId = ChargeTypes.PaymentInCar.Id;
 		        }
@@ -436,9 +436,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			return _loadingAddressSubject;
 		}
 
-		public IObservable<string> GetAndObserveMarket()
+		public IObservable<string> GetAndObserveHashedMarket()
 		{
-			return _marketSubject;
+			return _hashedMarketSubject;
 		}
 
 	    public IObservable<List<VehicleType>> GetAndObserveMarketVehicleTypes()
@@ -808,16 +808,16 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 	    {
             if (ShouldUpdateMarket(currentPosition))
 	        {
-	            var market = await _networkRoamingService.GetCompanyMarket(currentPosition.Latitude, currentPosition.Longitude);
+	            var hashedMarket = await _networkRoamingService.GetHashedCompanyMarket(currentPosition.Latitude, currentPosition.Longitude);
 
                 _lastMarketPosition = currentPosition;
 
-                _marketSubject.OnNext(market);
+                _hashedMarketSubject.OnNext(hashedMarket);
 
                 // If we changed market
-	            if (market != _lastMarketValue)
+	            if (hashedMarket != _lastHashedMarketValue)
 	            {
-                    if (market.HasValue())
+                    if (hashedMarket.HasValue())
                     {
                         // Set vehicles list with data from external market
                         SetMarketVehicleTypes(currentPosition);
@@ -829,7 +829,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
                     }
 	            }
 
-                _lastMarketValue = market;
+                _lastHashedMarketValue = hashedMarket;
 	        }
 	    }
 
@@ -839,10 +839,14 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
             _accountService.SetMarketVehiclesList(networkVehicles);
             _networkVehiclesSubject.OnNext(networkVehicles);
 
+	        int? selectedVehicleId = null;
+
 	        if (networkVehicles.Any())
 	        {
-                SetVehicleType(networkVehicles.First().ReferenceDataVehicleId);
+	            selectedVehicleId = networkVehicles.First().ReferenceDataVehicleId;
 	        }
+
+            SetVehicleType(selectedVehicleId);
 	    }
 
 	    private async Task SetLocalVehicleTypes()
@@ -850,11 +854,15 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
             await _accountService.ResetLocalVehiclesList();
             _networkVehiclesSubject.OnNext(new List<VehicleType>());
 
+	        int? selectedVehicleId = null;
+
             var localVehicles = await _accountService.GetVehiclesList();
             if (localVehicles.Any())
             {
-                SetVehicleType(localVehicles.First().ReferenceDataVehicleId);
+                selectedVehicleId = localVehicles.First().ReferenceDataVehicleId;
             }
+
+	        SetVehicleType(selectedVehicleId);
 	    }
 
 		public async Task ToggleIsDestinationModeOpened(bool? forceValue = null)

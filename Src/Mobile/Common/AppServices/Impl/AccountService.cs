@@ -525,7 +525,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             }
         }
 
-		public async Task<IList<ListItem>> GetPaymentsList (string market = null)
+		public async Task<IList<ListItem>> GetPaymentsList (string hashedMarket = null)
         {
 			var refData = await GetReferenceData();
 
@@ -542,7 +542,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 		        refData.PaymentsList.Remove(i => i.Id == ChargeTypes.CardOnFile.Id);
 		    }
 
-		    if (market.HasValue())
+		    if (hashedMarket.HasValue())
 		    {
                 refData.PaymentsList.Remove(i => i.Id != ChargeTypes.PaymentInCar.Id);
 		    }

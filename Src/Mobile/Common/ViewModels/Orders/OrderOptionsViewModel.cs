@@ -20,7 +20,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		private readonly IVehicleService _vehicleService;
         public event EventHandler<HomeViewModelStateRequestedEventArgs> PresentationStateRequested;
 
-        private string _market;
+        private string _hashedMarket;
 		private bool _isInitialized;
 
 		public OrderOptionsViewModel(IOrderWorkflowService orderWorkflowService, IAccountService accountService, IVehicleService vehicleService)
@@ -48,7 +48,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 				Observe (_orderWorkflowService.GetAndObserveEstimatedFare (), fare => EstimatedFare = fare);
 				Observe (_orderWorkflowService.GetAndObserveLoadingAddress (), loading => IsLoadingAddress = loading);
 				Observe (_orderWorkflowService.GetAndObserveVehicleType (), vehicleType => VehicleTypeId = vehicleType);
-                Observe(_orderWorkflowService.GetAndObserveMarket(), market => MarketChanged(market));
+                Observe(_orderWorkflowService.GetAndObserveHashedMarket(), hashedMarket => MarketChanged(hashedMarket));
                 Observe(_orderWorkflowService.GetAndObserveMarketVehicleTypes(), marketVehicleTypes => VehicleTypesChanged(marketVehicleTypes));
 				Observe (_vehicleService.GetAndObserveEta (), eta => Eta = eta);
 			}
@@ -61,14 +61,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 	        await SetLocalMarketVehicleTypes();
 	    }
 
-	    private void MarketChanged(string market)
+	    private void MarketChanged(string hashedMarket)
 	    {
-	        _market = market;
+	        _hashedMarket = hashedMarket;
 	    }
 
 	    private async Task VehicleTypesChanged(List<VehicleType> marketVehicleTypes)
 	    {
-	        if (_market.HasValue())
+	        if (_hashedMarket.HasValue())
 	        {
                 VehicleTypes = marketVehicleTypes;
 	        }

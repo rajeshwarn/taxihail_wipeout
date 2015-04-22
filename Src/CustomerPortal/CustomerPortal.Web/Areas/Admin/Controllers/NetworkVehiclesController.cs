@@ -89,12 +89,16 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
             networkVehicle.Id = Guid.NewGuid().ToString();
 
             // Generate the next sequential vehicle network id
-            var lastNetworkVehicleId = Repository
-                .OrderBy(x => x.NetworkVehicleId)
-                .Last()
-                .NetworkVehicleId;
+            var nextNetworkVehicleId = 0;
+            if (Repository.Any())
+            {
+                nextNetworkVehicleId = Repository
+                    .OrderBy(x => x.NetworkVehicleId)
+                    .Last()
+                    .NetworkVehicleId + 1;
+            }
 
-            networkVehicle.NetworkVehicleId = lastNetworkVehicleId + 1;
+            networkVehicle.NetworkVehicleId = nextNetworkVehicleId;
 
             try
             {
