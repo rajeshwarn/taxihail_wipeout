@@ -51,7 +51,7 @@
                 },
                 name: "required",
                 phone: {
-                    tenOrMoreDigits: true,
+                    regex: /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})([0-9]?[0-9]?[0-9]?[0-9]?[0-9]?)$/,
                     required: true
                 },
                 password: {
@@ -92,7 +92,7 @@
                     },
                     name: "required",
                     phone: {
-                        tenOrMoreDigits: true,
+                        regex: /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})([0-9]?[0-9]?[0-9]?[0-9]?[0-9]?)$/,
                         required: true
                     }                    
                 };
@@ -110,7 +110,7 @@
                     },
                     phone: {
                         required: TaxiHail.localize('error.PhoneRequired'),
-                        tenOrMoreDigits: TaxiHail.localize('error.PhoneBadFormat')
+                        regex: TaxiHail.localize('error.PhoneBadFormat')
                     },
                     password: {
                         required: TaxiHail.localize('Password required')

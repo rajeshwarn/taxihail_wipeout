@@ -755,9 +755,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 				order.Estimate = new CreateOrder.RideEstimate
 				{ 
 					Price = estimatedFare.Price, 
-					Distance = estimatedFare.Distance.HasValue 
-						? estimatedFare.Distance.Value 
-						: 0
+					Distance = estimatedFare.Distance ?? 0
 				};
 			}
 

@@ -69,7 +69,7 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
             /// </summary>
             public double? Price { get; set; }
 
-            public int Distance { get; set; }
+            public double Distance { get; set; }
         }
 
         public bool FromWebApp { get; set; }

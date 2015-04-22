@@ -110,10 +110,16 @@
                         <input type="text" id="inputNotes" name="note" placeholder="Notes" class='input-block-level'>
                     </div>
                 </div>
-                <div class="control-group btn-right-alignment">
-                  <button type='submit' class='btn btn-primary  span' data-loading-text="{{localize 'Loading'}}">{{localize "Book Now!"}}</button>
-                  <a href='#' class='btn  span' data-action='cancel'>{{localize "Cancel"}}</a>
-                </div>
+               <div class="control-group btn-right-alignment">
+                   <button type='submit' class='btn btn-primary  span' data-loading-text="{{localize 'Loading'}}">
+                       {{#if pickupDate}}
+                            {{localize "Confirm"}}
+                       {{else}}
+                            {{localize "Book Now!"}}
+                       {{/if}}
+                   </button>
+                   <a href='#' class='btn  span' data-action='cancel'>{{localize "Cancel"}}</a>
+               </div>
             </form>
             <div class="errors" style="margin-top: 10px;"></div>
         </div>

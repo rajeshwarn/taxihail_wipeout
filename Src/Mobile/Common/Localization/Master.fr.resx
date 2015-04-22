@@ -697,7 +697,7 @@
     <value>Erreur de connection</value>
   </data>
   <data name="InvalidPhoneErrorMessage" xml:space="preserve">
-    <value>Le numéro de téléphone ne semble pas valide. Merci de saisir de nouveau 10 chiffres.</value>
+    <value>Le numéro de téléphone ne semble pas valide. Merci de saisir de nouveau entre 10 et 15 chiffres.</value>
   </data>
   <data name="InvalidPickupAddress" xml:space="preserve">
     <value>Merci d'entrer une adresse de départ valide</value>
