@@ -51,7 +51,6 @@ namespace apcurium.MK.Booking.Domain
             Handles<CreditCardDeactivated>(NoAction);
             Handles<OverduePaymentLogged>(NoAction);
             Handles<OverduePaymentSettled>(NoAction);
-            Handles<ChargeAccountSettingsCleared>(NoAction);
         }
 
         public Account(Guid id, IEnumerable<IVersionedEvent> history)
@@ -359,11 +358,6 @@ namespace apcurium.MK.Booking.Domain
         public void LinkPayPalAccount(string encryptedRefreshToken)
         {
             Update(new PayPalAccountLinked{ EncryptedRefreshToken = encryptedRefreshToken });
-        }
-
-        public void ClearChargeAccountSettings()
-        {
-            Update(new ChargeAccountSettingsCleared());
         }
 
         public void UnlinkPayPalAccount()

@@ -16,8 +16,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
     public class PaymentSettingsUpdater :
         IIntegrationEventHandler,
         IEventHandler<PaymentModeChanged>,
-        IEventHandler<PayPalSettingsChanged>,
-        IEventHandler<ChargeAccountChanged>
+        IEventHandler<PayPalSettingsChanged>
     {
         private readonly IAccountDao _accountDao;
         private readonly ICommandBus _commandBus;
@@ -41,19 +40,6 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             _commandBus.Send(new UnlinkAllPayPalAccounts
             {
                 AccountIds = _accountDao.GetAll().Select(a => a.Id).ToArray()
-            });
-        }
-
-        public void Handle(ChargeAccountChanged @event)
-        {
-            var accountIds = _accountDao.GetAll()
-                .Where(a => a.Settings.CustomerNumber.HasValue() || a.Settings.AccountNumber.HasValue())
-                .Select(a => a.Id)
-                .ToArray();
-
-            _commandBus.Send(new ClearChargeAccountUserSettings
-            {
-                AccountIds = accountIds
             });
         }
     }

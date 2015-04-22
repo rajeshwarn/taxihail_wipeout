@@ -36,7 +36,7 @@ namespace apcurium.MK.Booking.EventHandlers
         IEventHandler<PayPalAccountLinked>,
         IEventHandler<PayPalAccountUnlinked>,
         IEventHandler<OverduePaymentSettled>,
-        IEventHandler<ChargeAccountSettingsCleared>
+        IEventHandler<ChargeAccountChanged>
     {
         private readonly IServerSettings _serverSettings;
         private readonly Func<BookingDbContext> _contextFactory;
@@ -347,15 +347,27 @@ namespace apcurium.MK.Booking.EventHandlers
             }
         }
 
-        public void Handle(ChargeAccountSettingsCleared @event)
+        public void Handle(ChargeAccountChanged @event)
         {
             using (var context = _contextFactory.Invoke())
             {
-                var account = context.Find<AccountDetail>(@event.SourceId);
-                account.Settings.CustomerNumber = null;
-                account.Settings.AccountNumber = null;
-                context.Save(account);
+                var accounts = context.Set<AccountDetail>()
+                    .Where(AccountHasChargeAccount);
+
+                foreach (var account in accounts)
+                {
+                    account.Settings.CustomerNumber = null;
+                    account.Settings.AccountNumber = null;
+                }
+                
+                context.SaveChanges();
             }
+        }
+
+        private bool AccountHasChargeAccount(AccountDetail accountDetail)
+        {
+            return accountDetail.Settings.AccountNumber.HasValue() ||
+                   accountDetail.Settings.CustomerNumber.HasValue();
         }
 
         public void Handle(OverduePaymentSettled @event)
