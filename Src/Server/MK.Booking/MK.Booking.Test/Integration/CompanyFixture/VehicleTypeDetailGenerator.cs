@@ -42,6 +42,7 @@ namespace apcurium.MK.Booking.Test.Integration.CompanyFixture
                 LogoName = "taxi",
                 Name = "Taxi",
                 ReferenceDataVehicleId = 123,
+                ReferenceNetworkVehicleTypeId = 4,
                 MaxNumberPassengers = 2
             };
 
@@ -56,6 +57,7 @@ namespace apcurium.MK.Booking.Test.Integration.CompanyFixture
                 Assert.AreEqual(@event.LogoName, dto.LogoName);
                 Assert.AreEqual(@event.Name, dto.Name);
                 Assert.AreEqual(@event.ReferenceDataVehicleId, dto.ReferenceDataVehicleId);
+                Assert.AreEqual(@event.ReferenceNetworkVehicleTypeId, dto.ReferenceNetworkVehicleTypeId);
                 Assert.AreEqual(@event.MaxNumberPassengers, dto.MaxNumberPassengers);
             }
         }
@@ -73,7 +75,8 @@ namespace apcurium.MK.Booking.Test.Integration.CompanyFixture
                 VehicleTypeId = _vehicleTypeId,
                 LogoName = "taxi",
                 Name = "Taxi",
-                ReferenceDataVehicleId = 123
+                ReferenceDataVehicleId = 123,
+                ReferenceNetworkVehicleTypeId = 5
             });
         }
 
@@ -89,7 +92,8 @@ namespace apcurium.MK.Booking.Test.Integration.CompanyFixture
                 VehicleTypeId = _vehicleTypeId,
                 LogoName = "taxi2",
                 Name = "Taxi2",
-                ReferenceDataVehicleId = 111
+                ReferenceDataVehicleId = 111,
+                ReferenceNetworkVehicleTypeId = 9
             };
 
             Sut.Handle(@event);
@@ -103,6 +107,7 @@ namespace apcurium.MK.Booking.Test.Integration.CompanyFixture
                 Assert.AreEqual(@event.LogoName, dto.LogoName);
                 Assert.AreEqual(@event.Name, dto.Name);
                 Assert.AreEqual(@event.ReferenceDataVehicleId, dto.ReferenceDataVehicleId);
+                Assert.AreEqual(@event.ReferenceNetworkVehicleTypeId, dto.ReferenceNetworkVehicleTypeId);
             }
         }
 
