@@ -435,7 +435,7 @@ namespace apcurium.MK.Booking.Domain
                 Update(new PayPalSettingsChanged());
             }
 
-            if (HaveChargeAccountEnableChanged(command.ServerPaymentSettings) && !command.ServerPaymentSettings.IsChargeAccountPaymentEnabled)
+            if (ChargeAccountPaymentEnabledChanged(command.ServerPaymentSettings) && !command.ServerPaymentSettings.IsChargeAccountPaymentEnabled)
             {
                 Update(new ChargeAccountPaymentDisabled());
             }
@@ -446,7 +446,7 @@ namespace apcurium.MK.Booking.Domain
             });
         }
 
-        private bool HaveChargeAccountEnableChanged(ServerPaymentSettings newPaymentSettings)
+        private bool ChargeAccountPaymentEnabledChanged(ServerPaymentSettings newPaymentSettings)
         {
             return newPaymentSettings.IsChargeAccountPaymentEnabled != IsChargeAccountEnabled;
         }
