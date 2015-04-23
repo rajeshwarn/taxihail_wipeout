@@ -40,6 +40,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
             {
                 this.Observe(ObserveIsPromoCodeApplied(), isPromoCodeApplied => IsPromoCodeActive = isPromoCodeApplied);
             }
+
+            Observe(_orderWorkflowService.GetAndObserveOrderValidationResult(), orderValidationResult => OrderValidated(orderValidationResult));
         }
 
         private IObservable<bool> ObserveIsPromoCodeApplied()
@@ -76,6 +78,25 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
                     RaisePropertyChanged();
                 }
             }
+        }
+
+        private bool _isFutureBookingDisabled;
+        public bool IsFutureBookingDisabled
+        {
+            get { return _isFutureBookingDisabled; }
+            set
+            {
+                if (_isFutureBookingDisabled != value)
+                {
+                    _isFutureBookingDisabled = value;
+                    RaisePropertyChanged();
+                }
+            }
+        }
+
+        private void OrderValidated(OrderValidationResult validationResult)
+        {
+            IsFutureBookingDisabled = Settings.DisableFutureBooking || validationResult.DisableFutureBooking;
         }
 
         public ICommand ChangeAddressSelectionMode

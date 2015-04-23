@@ -7,5 +7,7 @@
         public string Message { get; set; }
 
 		public bool HasError { get; set; }
+
+        public bool DisableFutureBooking { get; set; }
     }
 }

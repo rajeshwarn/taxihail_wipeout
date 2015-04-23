@@ -288,9 +288,7 @@
             this.$('.buttons .btn').addClass('disabled');
             this.$('.buttons .btn').attr('disabled', 'disabled');
 
-            var validateForError = this.model.get('market') === "";
-
-            this.model.validateOrder(validateForError)
+            this.model.validateOrder(true)
                     .done(_.bind(function (result) {
 
                         if (result.responseText) {
@@ -317,6 +315,12 @@
 
                                 this.$('.buttons .btn').removeClass('disabled');
                                 this.$('.buttons .btn').removeAttr('disabled');
+                            }
+
+                            if (TaxiHail.parameters.disableFutureBooking || result.disableFutureBooking) {
+                                this.$('#bookLaterButton').addClass('hidden');
+                            } else {
+                                this.$('#bookLaterButton').removeClass('hidden');
                             }
                            
                             if (TaxiHail.parameters.isEstimateEnabled) {

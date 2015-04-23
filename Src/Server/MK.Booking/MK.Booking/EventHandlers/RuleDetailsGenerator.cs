@@ -76,7 +76,8 @@ namespace apcurium.MK.Booking.EventHandlers
                     IsActive = @event.IsActive,
                     Category = (int) @event.Category,
                     Type = (int) @event.Type,
-                    Market = @event.Market
+                    Market = @event.Market,
+                    DisableFutureBookingOnError = @event.DisableFutureBookingOnError
                 });
             }
         }
@@ -141,6 +142,8 @@ namespace apcurium.MK.Booking.EventHandlers
                 rule.AppliesToDropoff = @event.AppliesToDropoff;
                 rule.IsActive = @event.IsActive;
                 rule.Market = @event.Market;
+                rule.DisableFutureBookingOnError = @event.DisableFutureBookingOnError;
+
                 context.SaveChanges();
             }
         }

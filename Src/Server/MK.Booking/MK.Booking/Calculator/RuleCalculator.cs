@@ -31,14 +31,24 @@ namespace apcurium.MK.Booking.Calculator
             if (market.HasValue() && _serverSettings.ServerData.ValidateAdminRulesForExternalMarket)
             {
                 // External market with admin defined rules validation
+                // Get all present and future rules
                 rules = _ruleDao.GetActiveWarningRule(isFutureBooking)
                     .Where(rule => rule.Market == market)
                     .ToArray();
+
+                if (!isFutureBooking)
+                {
+                    // Must check if future booking is disabled for external market
+                    rules = _ruleDao.GetActiveDisableRule(true)
+                        .Where(rule => rule.Market == market)
+                        .ToArray();
+                }
             }
             else if (!market.HasValue())
             {
                 // Home market rules validation
                 rules = _ruleDao.GetActiveWarningRule(isFutureBooking)
+                    .Where(rule => !rule.Market.HasValue())
                     .ToArray();
             }
 
@@ -60,11 +70,21 @@ namespace apcurium.MK.Booking.Calculator
                 rules = _ruleDao.GetActiveDisableRule(isFutureBooking)
                     .Where(rule => rule.Market == market)
                     .ToArray();
+
+                // Get future booking rules anyway in external market
+                if (!isFutureBooking)
+                {
+                    // Must check if future booking is disabled for external market
+                    rules = _ruleDao.GetActiveDisableRule(true)
+                        .Where(rule => rule.Market == market)
+                        .ToArray();
+                }
             }
             else if (!market.HasValue())
             {
                 // Home market rules validation
                 rules = _ruleDao.GetActiveDisableRule(isFutureBooking)
+                    .Where(rule => !rule.Market.HasValue())
                     .ToArray();
             }
 

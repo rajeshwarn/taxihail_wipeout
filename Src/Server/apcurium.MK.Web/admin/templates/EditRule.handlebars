@@ -147,9 +147,6 @@
         <div class="control-group">
             <label class="control-label">{{localize 'Applies to'}}</label>
             <div class="controls">
-
-         
-
                 <label class="checkbox">
                     <input type="checkbox" id="appliesToCurrentBooking" name='appliesToCurrentBooking' value="{{appliesToCurrentBooking}}" {{currentBookingChecked}} >
                         {{localize "Current booking"}}
@@ -158,6 +155,13 @@
                 <label class="checkbox">
                     <input type="checkbox" id="appliesToFutureBooking" name='appliesToFutureBooking' value="{{appliesToFutureBooking}}" {{futureBookingChecked}}> {{localize "Future booking"}}</input>
                 </label>
+                {{#if isDefault}}
+                <div style="padding-left:20px">
+                    <label class="checkbox">
+                        <input type="checkbox" id="disableFutureBookingOnError" name='disableFutureBookingOnError' value="{{disableFutureBookingOnError}}" {{disableFutureBookingOnErrorChecked}}> {{localize "Disable Future Booking on Error"}}</input>
+                    </label>
+                </div>
+                {{/if}}
             </div>
         </div>
         

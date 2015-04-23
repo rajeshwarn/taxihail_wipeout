@@ -68,15 +68,27 @@ namespace apcurium.MK.Booking.Api.Services
                                         request.PickupDate ?? GetCurrentOffsetedTime(),
                                         getPickupZone, getDropoffZone, market);
 
-                var hasError = rule != null;
-                var message = rule != null ? rule.Message : null;
+                string message = null;
+                var hasError = false;
+                var disableFutureBooking = false;
+
+                if (rule != null && rule.AppliesToFutureBooking && rule.DisableFutureBookingOnError)
+                {
+                    disableFutureBooking = true;
+                }
+                else
+                {
+                    hasError = rule != null;
+                    message = rule != null ? rule.Message : null;
+                }
 
                 Log.Debug(string.Format("Has Error : {0}, Message: {1}", hasError, message));
 
                 return new OrderValidationResult
                 {
                     HasError = hasError,
-                    Message = message
+                    Message = message,
+                    DisableFutureBooking = disableFutureBooking
                 };
             }
             else
@@ -85,10 +97,13 @@ namespace apcurium.MK.Booking.Api.Services
                                         request.PickupDate ?? GetCurrentOffsetedTime(),
                                         getPickupZone, getDropoffZone, market);
 
+                var disableFutureBooking = rule != null && rule.AppliesToFutureBooking && rule.DisableFutureBookingOnError;
+
                 return new OrderValidationResult
                 {
                     HasWarning = rule != null,
-                    Message = rule != null ? rule.Message : null
+                    Message = rule != null ? rule.Message : null,
+                    DisableFutureBooking = disableFutureBooking
                 };
             }
         }

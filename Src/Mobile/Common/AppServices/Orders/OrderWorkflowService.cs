@@ -8,6 +8,7 @@ using System.Reactive.Subjects;
 using System.Reactive.Threading.Tasks;
 using System.Threading;
 using System.Threading.Tasks;
+using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.AppServices.Impl;
@@ -43,6 +44,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		readonly ISubject<int?> _vehicleTypeSubject;
         readonly ISubject<BookingSettings> _bookingSettingsSubject;
 		readonly ISubject<string> _estimatedFareDisplaySubject;
+        readonly ISubject<OrderValidationResult> _orderValidationResultSubject = new BehaviorSubject<OrderValidationResult>(new OrderValidationResult());
 		readonly ISubject<DirectionInfo> _estimatedFareDetailSubject = new BehaviorSubject<DirectionInfo>( new DirectionInfo() );
 		readonly ISubject<string> _noteToDriverSubject = new BehaviorSubject<string>(string.Empty);
 		readonly ISubject<string> _promoCodeSubject = new BehaviorSubject<string>(string.Empty);
@@ -411,6 +413,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			return _estimatedFareDisplaySubject;
 		}
 
+        public IObservable<OrderValidationResult> GetAndObserveOrderValidationResult()
+        {
+            return _orderValidationResultSubject;
+        }
+
 		public IObservable<string> GetAndObserveNoteToDriver()
 		{
 			return _noteToDriverSubject;
@@ -519,6 +526,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			_estimatedFareDisplaySubject.OnNext(_localize["EstimateFareCalculating"]);
 
 			var direction = await GetFareEstimate ();
+
 			var estimatedFareString = _bookingService.GetFareEstimateDisplay(direction);
 
 			if (newCancelToken.IsCancellationRequested) {
@@ -533,16 +541,22 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		private async Task<DirectionInfo> GetFareEstimate()
 		{
 			// Create order for fare estimate
-			var order = new CreateOrder();
-			order.Id = Guid.NewGuid();
-			order.PickupDate = await _pickupDateSubject.Take(1).ToTask();
-			order.PickupAddress = await _pickupAddressSubject.Take(1).ToTask();
-			order.DropOffAddress = await _destinationAddressSubject.Take(1).ToTask();
-			order.Settings = await _bookingSettingsSubject.Take(1).ToTask();
+		    var order = new CreateOrder
+		    {
+		        Id = Guid.NewGuid(),
+		        PickupDate = await _pickupDateSubject.Take(1).ToTask(),
+		        PickupAddress = await _pickupAddressSubject.Take(1).ToTask(),
+		        DropOffAddress = await _destinationAddressSubject.Take(1).ToTask(),
+		        Settings = await _bookingSettingsSubject.Take(1).ToTask()
+		    };
 
-			return await _bookingService.GetFareEstimate(order);
+		    var estimate = await _bookingService.GetFareEstimate(order);
+		    var validationResult = await ValidateOrder(order);
+
+		    estimate.ValidationResult = validationResult;
+
+		    return estimate;
 		}
-
 
 		public async Task PrepareForNewOrder()
 		{
@@ -681,10 +695,12 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			return await _accountPaymentQuestions.Take (1).ToTask ();
 		}
 
-		public async Task<OrderValidationResult> ValidateOrder()
+		public async Task<OrderValidationResult> ValidateOrder(CreateOrder order = null)
 		{
-			var orderToValidate = await GetOrder();
+			var orderToValidate = order ?? await GetOrder();
 			var validationResult = await _bookingService.ValidateOrder(orderToValidate);
+            _orderValidationResultSubject.OnNext(validationResult);
+
 			return validationResult;
 		}
 

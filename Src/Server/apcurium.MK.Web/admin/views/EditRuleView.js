@@ -4,6 +4,8 @@
     var View = TaxiHail.EditRuleView = TaxiHail.TemplatedView.extend({
         events: {
             'change [data-role=timepicker]': 'ontimepickerchange',
+            'click #appliesToFutureBooking': 'onAppliesToFutureBookingClick',
+            'click #disableFutureBookingOnError': 'onDisableFutureBookingOnErrorClick',
             'click [data-action=saveEnable]': 'onSaveEnableClick',
             'click [data-action=saveDisable]': 'onSaveDisableClick',
             'click [data-action=eraseStartTime]': 'onEraseStartTimeClick',
@@ -19,6 +21,7 @@
             data.highestPriority = _.max(_.pluck(this.collection.toJSON(), 'priority')) +1;
             data.currentBookingChecked = data.appliesToCurrentBooking == true ? 'checked' : '';
             data.futureBookingChecked = data.appliesToFutureBooking == true ? 'checked' : '';
+            data.disableFutureBookingOnErrorChecked = data.disableFutureBookingOnError == true ? 'checked' : '';
 
             data.appliesToPickupChecked = data.appliesToPickup == true ? 'checked' : '';
             data.appliesToDropoffChecked = data.appliesToDropoff == true ? 'checked' : '';
@@ -118,6 +121,18 @@
             $('form[name="editRuleForm"]').submit();
         },
 
+        onAppliesToFutureBookingClick: function (e) {
+            // Uncheck disable future booking option if future booking is unchecked
+            if (!$('input[name="appliesToFutureBooking"]').attr('checked')) {
+                $('input[name="disableFutureBookingOnError"]').removeAttr('checked');
+            }
+        },
+
+        onDisableFutureBookingOnErrorClick: function (e) {
+            // Check future booking option if disable future booking is checked
+            $('input[name="appliesToFutureBooking"]').attr('checked', true);
+        },
+
         save: function(form) {
                 var serialized = this.serializeForm(form),
                 startDate = new Date(),
@@ -127,6 +142,7 @@
                 serialized.category = +this.model.get('category');
                 serialized.appliesToCurrentBooking = $("#appliesToCurrentBooking").attr('checked') ? true : false;
                 serialized.appliesToFutureBooking = $("#appliesToFutureBooking").attr('checked') ? true : false;
+                serialized.disableFutureBookingOnError = $("#disableFutureBookingOnError").attr('checked') ? true : false;
 
                 serialized.appliesToPickup = $("#appliesToPickup").attr('checked') ? true : false;
                 serialized.appliesToDropoff = $("#appliesToDropoff").attr('checked') ? true : false;

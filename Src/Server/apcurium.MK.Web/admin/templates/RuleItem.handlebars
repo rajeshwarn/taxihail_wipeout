@@ -1,24 +1,20 @@
+<td>{{name}}</td>
+{{#if isLocalMarket}}
+    <td>{{localize "Local"}}</td>
+{{else}}
+    <td>{{market}}</td>
+{{/if}}
 
-
-    <td>{{name}}</td>
-   <!-- {{#if recurring}}
-    <td>{{daysOfTheWeek}}</td>
-    {{else}}
-    <td>{{numericDate startTime}}&nbsp;-&nbsp;{{numericDate endTime}}</td>
-    {{/if}}
-    <td>{{niceTime startTime}}&nbsp;-&nbsp;{{niceTime endTime}}</td>-->
 <td>{{message}}</td>
-	<!--<td>{{localize applies}}</td>
-	<td>{{priority}}</td>
-	<td>{{zoneList}}</td> -->
-    <td>
-		<a type='button' data-action='enable' class='btn btn-mini' href='#rules/edit/{{id}}'>
-            {{isActiveText}}
-        </a>
-        <a type='button' class='btn btn-mini' href='#rules/edit/{{id}}'>
-            <i class="icon-edit icon-white"></i>
-        </a>
-        <button type='button' class='btn btn-mini btn-danger' data-action='delete'>
-            <i class="icon-trash icon-white"></i>
-        </button>
-    </td>
+
+<td>
+	<a type='button' data-action='enable' class='btn btn-mini' href='#rules/edit/{{id}}'>
+        {{isActiveText}}
+    </a>
+    <a type='button' class='btn btn-mini' href='#rules/edit/{{id}}'>
+        <i class="icon-edit icon-white"></i>
+    </a>
+    <button type='button' class='btn btn-mini btn-danger' data-action='delete'>
+        <i class="icon-trash icon-white"></i>
+    </button>
+</td>
