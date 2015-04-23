@@ -11,8 +11,8 @@ using ServiceStack.ServiceInterface;
 namespace apcurium.MK.Booking.Api.Contract.Requests
 {
     [Route("/account/orders/validate", "POST")]
-    [Route("/account/orders/validate/{Market}/{ForError}", "POST")]
-    [Route("/account/orders/validate/{Market}/{ForError}/{TestZone}", "POST")]
+    [Route("/account/orders/validate/{ForError}", "POST")]
+    [Route("/account/orders/validate/{ForError}/{TestZone}", "POST")]
     public class ValidateOrderRequest : BaseDto
     {
         public ValidateOrderRequest()
@@ -41,7 +41,5 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
         public BookingSettings Settings { get; set; }
 
         public PaymentSettings Payment { get; set; }
-
-        public string Market { get; set; }
     }
 }

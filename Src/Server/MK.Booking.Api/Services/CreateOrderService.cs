@@ -174,24 +174,23 @@ namespace apcurium.MK.Booking.Api.Services
                 }
             }
 
-            
             var rule = _ruleCalculator.GetActiveDisableFor(
-                    isFutureBooking,
-                    pickupDate,
-                    () =>
-                        _ibsServiceProvider.StaticData(bestAvailableCompany.CompanyKey)
-                            .GetZoneByCoordinate(
-                                request.Settings.ProviderId,
-                                request.PickupAddress.Latitude,
-                                request.PickupAddress.Longitude),
-                    () => request.DropOffAddress != null
-                        ? _ibsServiceProvider.StaticData(bestAvailableCompany.CompanyKey)
-                            .GetZoneByCoordinate(
-                                request.Settings.ProviderId,
-                                request.DropOffAddress.Latitude,
-                                request.DropOffAddress.Longitude)
-                            : null,
-                    market);
+                isFutureBooking,
+                pickupDate,
+                () =>
+                    _ibsServiceProvider.StaticData(bestAvailableCompany.CompanyKey)
+                        .GetZoneByCoordinate(
+                            request.Settings.ProviderId,
+                            request.PickupAddress.Latitude,
+                            request.PickupAddress.Longitude),
+                () => request.DropOffAddress != null
+                    ? _ibsServiceProvider.StaticData(bestAvailableCompany.CompanyKey)
+                        .GetZoneByCoordinate(
+                            request.Settings.ProviderId,
+                            request.DropOffAddress.Latitude,
+                            request.DropOffAddress.Longitude)
+                        : null,
+                market);
 
             if (rule != null)
             {

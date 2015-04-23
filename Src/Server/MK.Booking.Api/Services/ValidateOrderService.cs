@@ -7,6 +7,7 @@ using apcurium.MK.Booking.Calculator;
 using apcurium.MK.Booking.IBS;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Extensions;
+using CustomerPortal.Client.Impl;
 using log4net;
 using ServiceStack.ServiceInterface;
 
@@ -16,23 +17,23 @@ namespace apcurium.MK.Booking.Api.Services
 {
     public class ValidateOrderService : Service
     {
-        private const string UNDEFINED = "undefined";
-
-
         private static readonly ILog Log = LogManager.GetLogger(typeof (ValidateOrderService));
 
         private readonly IServerSettings _serverSettings;
         private readonly IRuleCalculator _ruleCalculator;
+        private readonly TaxiHailNetworkServiceClient _taxiHailNetworkServiceClient;
         private readonly IIBSServiceProvider _ibsServiceProvider;
 
         public ValidateOrderService(
             IServerSettings serverSettings,
             IIBSServiceProvider ibsServiceProvider,
-            IRuleCalculator ruleCalculator)
+            IRuleCalculator ruleCalculator,
+            TaxiHailNetworkServiceClient taxiHailNetworkServiceClient)
         {
             _serverSettings = serverSettings;
             _ibsServiceProvider = ibsServiceProvider;
             _ruleCalculator = ruleCalculator;
+            _taxiHailNetworkServiceClient = taxiHailNetworkServiceClient;
         }
 
         public object Post(ValidateOrderRequest request)
@@ -48,10 +49,18 @@ namespace apcurium.MK.Booking.Api.Services
                             request.DropOffAddress.Latitude, request.DropOffAddress.Longitude)
                         : null;
 
-            var market = string.Equals(UNDEFINED, request.Market)
-                ? null
-                : request.Market;
+            string market = null;
 
+            try
+            {
+                // Find market
+                market = _taxiHailNetworkServiceClient.GetCompanyMarket(request.PickupAddress.Latitude, request.PickupAddress.Longitude);
+            }
+            catch (Exception ex)
+            {
+                Log.Info("Unable to fetch market");
+                Log.Error(ex);
+            }
 
             if (request.ForError)
             {
@@ -73,8 +82,8 @@ namespace apcurium.MK.Booking.Api.Services
             else
             {
                 var rule = _ruleCalculator.GetActiveWarningFor(request.PickupDate.HasValue,
-                                        request.PickupDate ?? GetCurrentOffsetedTime(), 
-                                        getPickupZone, getDropoffZone, request.Market);
+                                        request.PickupDate ?? GetCurrentOffsetedTime(),
+                                        getPickupZone, getDropoffZone, market);
 
                 return new OrderValidationResult
                 {

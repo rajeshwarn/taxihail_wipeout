@@ -15,6 +15,7 @@
 	"Start Date" : "Start Date (optional)",
 	"End Date" : "End Date (optional)",
 	"Zone List": "Zone List",
-    "zoneListPlaceholder": "Must be comma separated",
-    "Market" :  "Market"
+    "ZoneListPlaceholder": "Must be comma separated",
+    "Market": "Market",
+    "MarketPlaceholder" : "Leave empty for local market"
 }

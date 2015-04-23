@@ -21,10 +21,10 @@
             TaxiHail.localStorage.removeItem(currentOrderKey);
         },
 
-        validate: function (order, forError, market) {
+        validate: function (order, forError) {
             return $.ajax({
                 type: 'POST',
-                url: TaxiHail.parameters.apiRoot + "/account/orders/validate/" + market + "/" + forError,
+                url: TaxiHail.parameters.apiRoot + "/account/orders/validate/" + forError,
                 data: JSON.stringify(order) ,
                 contentType: 'application/json'
             });

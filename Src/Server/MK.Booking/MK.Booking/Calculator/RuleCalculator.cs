@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
+using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
 
@@ -15,18 +16,31 @@ namespace apcurium.MK.Booking.Calculator
     public class RuleCalculator : IRuleCalculator
     {
         private readonly IRuleDao _ruleDao;
+        private readonly IServerSettings _serverSettings;
 
-        public RuleCalculator(IRuleDao ruleDao)
+        public RuleCalculator(IRuleDao ruleDao, IServerSettings serverSettings)
         {
             _ruleDao = ruleDao;
+            _serverSettings = serverSettings;
         }
-
 
         public RuleDetail GetActiveWarningFor(bool isFutureBooking, DateTime pickupDate, Func<string> pickupZoneGetterFunc, Func<string> dropOffZoneGetterFunc, string market)
         {
-            var rules = _ruleDao.GetActiveWarningRule(isFutureBooking)
-                .Where(rule => string.Equals(rule.Market, market))
-                .ToArray();
+            var rules = new RuleDetail[0];
+
+            if (market.HasValue() && _serverSettings.ServerData.ValidateAdminRulesForExternalMarket)
+            {
+                // External market with admin defined rules validation
+                rules = _ruleDao.GetActiveWarningRule(isFutureBooking)
+                    .Where(rule => rule.Market == market)
+                    .ToArray();
+            }
+            else if (!market.HasValue())
+            {
+                // Home market rules validation
+                rules = _ruleDao.GetActiveWarningRule(isFutureBooking)
+                    .ToArray();
+            }
 
             if (rules.Any())
             {
@@ -38,9 +52,21 @@ namespace apcurium.MK.Booking.Calculator
 
         public RuleDetail GetActiveDisableFor(bool isFutureBooking, DateTime pickupDate, Func<string> pickupZoneGetterFunc, Func<string> dropOffZoneGetterFunc, string market)
         {
-            var rules = _ruleDao.GetActiveDisableRule(isFutureBooking)
-                .Where(rule => string.Equals(rule.Market, market))
-                .ToArray();
+            var rules = new RuleDetail[0];
+
+            if (market.HasValue() && _serverSettings.ServerData.ValidateAdminRulesForExternalMarket)
+            {
+                // External market with admin defined rules validation
+                rules = _ruleDao.GetActiveDisableRule(isFutureBooking)
+                    .Where(rule => rule.Market == market)
+                    .ToArray();
+            }
+            else if (!market.HasValue())
+            {
+                // Home market rules validation
+                rules = _ruleDao.GetActiveDisableRule(isFutureBooking)
+                    .ToArray();
+            }
 
             if (rules.Any())
             {
@@ -78,8 +104,7 @@ namespace apcurium.MK.Booking.Calculator
                                              && rule.ZoneList.ToLower().Split(',').Contains(dropOffZone.ToLower().Trim()))
                                  select rule;
 
-            var result = rulesWithoutZone.Concat(rulesForPickup).Concat(rulesForDropOff).Concat(rulesZoneRequired).ToArray();
-            return result;
+            return rulesWithoutZone.Concat(rulesForPickup).Concat(rulesForDropOff).Concat(rulesZoneRequired).ToArray();
         }
 
         private bool IsTrimmedNullOrEmpty(string value)

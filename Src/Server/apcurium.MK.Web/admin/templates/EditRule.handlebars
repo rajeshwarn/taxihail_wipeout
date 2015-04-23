@@ -8,8 +8,6 @@
     </h4>
     <div class="errors" style="margin-top: 10px;"></div>
     <form class="form-horizontal clearfix" name="editRuleForm" >
-      <!--<input type='hidden' name='type' value='{{type}}' />
-        <input type='hidden' name='type' value='{{category}}' /-->
         <div class="control-group">
             <label class="control-label">{{localize 'Name'}}</label>
             <div class="controls">
@@ -199,7 +197,7 @@
       <div class="control-group">
         <label class="control-label">{{localize 'Zone List'}}</label>
           <div class="controls">
-              <input type="text" name="zoneList"  value="{{zoneList}}" placeholder="{{localize "zoneListPlaceholder"}}"></input>
+              <input type="text" name="zoneList"  value="{{zoneList}}" placeholder="{{localize "ZoneListPlaceholder"}}"></input>
           </div>
       </div>
     <div class="control-group">
@@ -216,7 +214,7 @@
     <div class="control-group">
         <label class="control-label">{{localize 'Market'}}</label>
         <div class="controls">
-            <input type="text" name="market" value="{{market}}" />
+            <input type="text" name="market" value="{{market}}" placeholder="{{localize "MarketPlaceholder"}}"/>
         </div>
     </div>
       <input type='hidden' id='isActive' name='isActive' value='{{isActive}}' />

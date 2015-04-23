@@ -1,13 +1,11 @@
 using System;
-using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Input;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.Framework.Extensions;
-using MK.Common.iOS.Helpers;
-using ServiceStack.Text;
+using apcurium.MK.Common.PhoneHelper;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {

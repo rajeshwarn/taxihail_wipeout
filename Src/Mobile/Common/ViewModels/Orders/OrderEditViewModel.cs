@@ -10,7 +10,7 @@ using apcurium.MK.Booking.Mobile.AppServices.Orders;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.ViewModels.Payment;
 using apcurium.MK.Common.Entity;
-using MK.Common.iOS.Helpers;
+using apcurium.MK.Common.PhoneHelper;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 {
@@ -101,7 +101,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			{
 				return this.GetCommand(async () =>
 				{
-                    
                     if (!PhoneHelper.IsValidPhoneNumber(BookingSettings.Phone))
                     {
                         await this.Services().Message.ShowMessage(this.Services().Localize["UpdateBookingSettingsInvalidDataTitle"], this.Services().Localize["InvalidPhoneErrorMessage"]);
