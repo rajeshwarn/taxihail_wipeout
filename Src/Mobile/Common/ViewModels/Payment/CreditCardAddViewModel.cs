@@ -476,10 +476,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
             try
             {
 				await _accountService.LinkPayPalAccount(authCode);
-                
-                await DeleteCreditCard(true);
 
                 IsPayPalAccountLinked = true;
+
+                await DeleteCreditCard(true);
 
                 this.Services().Message.ShowMessage(
                     string.Empty,
@@ -494,6 +494,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
                 this.Services().Message.ShowMessage(
                     this.Services().Localize["PayPalErrorTitle"],
                     this.Services().Localize["PayPalLinkError"]);
+
+                UnlinkPayPalAccount(true);
             }
         }
 
