@@ -10,7 +10,7 @@ using apcurium.MK.Booking.Mobile.AppServices.Orders;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.ViewModels.Payment;
 using apcurium.MK.Common.Entity;
-using MK.Common.iOS.Helpers;
+using apcurium.MK.Common.Helpers;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 {
