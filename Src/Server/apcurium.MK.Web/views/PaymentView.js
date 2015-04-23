@@ -123,6 +123,16 @@
             this.$('.errors').html(alert.render().el);
         },
 
+        renderDeleteCreditCardErrorMessage: function () {
+            var alert = new TaxiHail.AlertView({
+                message: TaxiHail.localize("error.CreditCardNotDeleted"),
+                type: 'error'
+            });
+
+            alert.on('ok', alert.remove, alert);
+            this.$('.errors').html(alert.render().el);
+        },
+
         savechanges: function (form) {
             var cardNumber = this.model.get('cardNumber');
             var expMonth = this.model.get('expirationMonth');
@@ -178,9 +188,15 @@
                 title: this.localize('Delete'),
                 message: this.localize('modal.payment.deleteCreditCard')
             }).on('ok', function() {
-                this.model.deleteCreditCard();
-                this.renderConfirmationMessage();
-                this.model.attributes = {last4Digits: null};
+                this.model.deleteCreditCard()
+                    .done(_.bind(function() {
+                        this.renderConfirmationMessage();
+                        this.model.attributes = { last4Digits: null };
+                    }))
+                    .fail(_.bind(function () {
+                        this.renderDeleteCreditCardErrorMessage();
+                    }, this));
+                
             }, this);
         }
     });
