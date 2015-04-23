@@ -192,7 +192,7 @@
                     .done(_.bind(function() {
                         this.renderConfirmationMessage();
                         this.model.attributes = { last4Digits: null };
-                    }))
+                    }, this))
                     .fail(_.bind(function () {
                         this.renderDeleteCreditCardErrorMessage();
                     }, this));
