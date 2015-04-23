@@ -478,6 +478,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 				await _accountService.LinkPayPalAccount(authCode);
                 
                 await DeleteCreditCard(true);
+
+                IsPayPalAccountLinked = true;
+
+                this.Services().Message.ShowMessage(
+                    string.Empty,
+                    this.Services().Localize["PayPalLinked"],
+                    () => ShowViewModelAndRemoveFromHistory<HomeViewModel>(new { locateUser = bool.TrueString }));
+
             }
             catch (Exception ex)
             {
@@ -487,13 +495,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
                     this.Services().Localize["PayPalErrorTitle"],
                     this.Services().Localize["PayPalLinkError"]);
             }
-
-            IsPayPalAccountLinked = true;
-
-			this.Services().Message.ShowMessage(
-				string.Empty,
-				this.Services().Localize["PayPalLinked"],
-				() => ShowViewModelAndRemoveFromHistory<HomeViewModel>(new { locateUser = bool.TrueString }));
         }
 
 		public void UnlinkPayPalAccount(bool replacedByCreditCard = false)
