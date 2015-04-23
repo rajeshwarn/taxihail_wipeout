@@ -36,7 +36,7 @@ namespace apcurium.MK.Booking.EventHandlers
         IEventHandler<PayPalAccountLinked>,
         IEventHandler<PayPalAccountUnlinked>,
         IEventHandler<OverduePaymentSettled>,
-        IEventHandler<ChargeAccountChanged>
+        IEventHandler<ChargeAccountPaymentDisabled>
     {
         private readonly IServerSettings _serverSettings;
         private readonly Func<BookingDbContext> _contextFactory;
@@ -347,7 +347,7 @@ namespace apcurium.MK.Booking.EventHandlers
             }
         }
 
-        public void Handle(ChargeAccountChanged @event)
+        public void Handle(ChargeAccountPaymentDisabled @event)
         {
             using (var context = _contextFactory.Invoke())
             {

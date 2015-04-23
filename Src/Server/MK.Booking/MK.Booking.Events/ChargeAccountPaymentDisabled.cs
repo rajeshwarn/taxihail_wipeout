@@ -7,7 +7,7 @@ using Infrastructure.EventSourcing;
 
 namespace apcurium.MK.Booking.Events
 {
-    public class ChargeAccountChanged : VersionedEvent
+    public class ChargeAccountPaymentDisabled : VersionedEvent
     {
     }
 }

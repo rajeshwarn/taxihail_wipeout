@@ -64,7 +64,7 @@ namespace apcurium.MK.Booking.Domain
             Handles<AppSettingsAddedOrUpdated>(NoAction);
             Handles<PaymentModeChanged>(NoAction);
             Handles<PayPalSettingsChanged>(NoAction);
-            Handles<ChargeAccountChanged>(NoAction);
+            Handles<ChargeAccountPaymentDisabled>(NoAction);
             Handles<PaymentSettingUpdated>(OnPaymentSettingUpdated);
 
             Handles<TariffCreated>(OnRateCreated);
@@ -437,7 +437,7 @@ namespace apcurium.MK.Booking.Domain
 
             if (HaveChargeAccountEnableChanged(command.ServerPaymentSettings) && !command.ServerPaymentSettings.IsChargeAccountPaymentEnabled)
             {
-                Update(new ChargeAccountChanged());
+                Update(new ChargeAccountPaymentDisabled());
             }
 
             Update(new PaymentSettingUpdated
