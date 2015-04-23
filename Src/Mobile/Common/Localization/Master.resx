@@ -1125,6 +1125,9 @@
   <data name="CreditCardRemoveErrorMessage" xml:space="preserve">
     <value>You need to have at least one credit card in your account. If you want to remove a card, you will need to add another one before.</value>
   </data>
+  <data name="CreditCardRemoveErrorScheduledOrderMessage" xml:space="preserve">
+    <value>You cannot delete your credit card when an order is scheduled or in progress.</value>
+  </data>
   <data name="CreditCardName" xml:space="preserve">
     <value>Name as it appears on card</value>
   </data>

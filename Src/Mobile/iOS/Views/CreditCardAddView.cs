@@ -4,6 +4,7 @@ using UIKit;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using Card.IO;
 using System;
+using System.Threading.Tasks;
 using Foundation;
 using Cirrious.CrossCore;
 using apcurium.MK.Booking.Mobile.AppServices;
@@ -321,9 +322,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
         private class PayPalDelegate : PayPalFuturePaymentDelegate
         {
-            private Action<string> _futurePaymentAuthorized;
+            private readonly Func<string, Task> _futurePaymentAuthorized;
 
-            public PayPalDelegate (Action<string> futurePaymentAuthorized)
+            public PayPalDelegate (Func<string, Task> futurePaymentAuthorized)
             {
                 _futurePaymentAuthorized = futurePaymentAuthorized;
             }
@@ -334,7 +335,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 futurePaymentViewController.DismissViewController(true, null);
             }
 
-            public override void DidAuthorizeFuturePayment(PayPalFuturePaymentViewController futurePaymentViewController, NSDictionary futurePaymentAuthorization)
+            public override async void DidAuthorizeFuturePayment(PayPalFuturePaymentViewController futurePaymentViewController, NSDictionary futurePaymentAuthorization)
             {
                 // The user has successfully logged into PayPal, and has consented to future payments.
                 // Your code must now send the authorization response to your server.
@@ -351,7 +352,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                     var authResponse = JsonSerializer.DeserializeFromString<FuturePaymentAuthorization>(contentJSONData.ToString());
                     if (authResponse != null)
                     {
-                        _futurePaymentAuthorized(authResponse.Response.Code);
+                        await _futurePaymentAuthorized(authResponse.Response.Code);
                     }
 
                     // Be sure to dismiss the PayPalLoginViewController.
