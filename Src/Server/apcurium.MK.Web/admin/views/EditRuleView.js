@@ -34,6 +34,7 @@
             data.isWarning = +this.model.get('category') === TaxiHail.Rule.category.warningRule;
             data.isDisable = +this.model.get('category') === TaxiHail.Rule.category.disableRule;
             data.editMode = !this.model.isNew();
+            data.isNetworkEnabled = TaxiHail.parameters.isNetworkEnabled == true || TaxiHail.parameters.isNetworkEnabled == "true";
 
             // Determine if the checkbox for each days should be checked
             // Will produce un object like this

@@ -1,8 +1,11 @@
 <td>{{name}}</td>
+
+{{#if isNetworkEnabled}}
 {{#if isLocalMarket}}
     <td>{{localize "Local"}}</td>
 {{else}}
     <td>{{market}}</td>
+{{/if}}
 {{/if}}
 
 <td>{{message}}</td>

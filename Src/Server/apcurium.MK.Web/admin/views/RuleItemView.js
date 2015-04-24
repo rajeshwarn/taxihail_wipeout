@@ -46,6 +46,7 @@
             data.daysOfTheWeek = selectedDays.join(' - ');
             data.recurring = +this.model.get('type') === TaxiHail.Tariff.type.recurring;
             data.isDefault = +this.model.get('type') === TaxiHail.Tariff.type['default'];
+            data.isNetworkEnabled = TaxiHail.parameters.isNetworkEnabled == "true" || TaxiHail.parameters.isNetworkEnabled == true;
 
             if (!this.model.get('market')) {
                 data.isLocalMarket = true;
