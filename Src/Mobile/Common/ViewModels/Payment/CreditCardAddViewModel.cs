@@ -463,7 +463,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 	        
 	    }
 
-        public async Task LinkPayPalAccount(string authCode)
+        public async void LinkPayPalAccount(string authCode)
         {
             try
             {
