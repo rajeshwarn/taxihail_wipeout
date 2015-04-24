@@ -943,7 +943,7 @@
     <comment>Login error</comment>
   </data>
   <data name="InvalidPhoneErrorMessage" xml:space="preserve">
-    <value>El número de celular es invalido, debe contener 10 caracteres</value>
+    <value>The mobile number is invalid. It must contain between 10 and 15 numbers.</value>
     <comment>The mobile number is invalid. It must contain 10 numbers.</comment>
   </data>
   <data name="InvalidPickupAddress" xml:space="preserve">
