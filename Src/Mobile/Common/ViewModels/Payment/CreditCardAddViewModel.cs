@@ -451,18 +451,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 	                    {
 	                        await DeleteCreditCard();
 	                    }
-	                    catch (WebServiceException ex)
+                        catch (Exception ex)
 	                    {
-	                        if (ex.StatusCode == (int) HttpStatusCode.InternalServerError)
-	                        {
-	                            this.Services().Message.ShowMessage(
-	                                localize["CreditCardRemoveErrorTitle"],
-	                                localize["CreditCardRemoveErrorScheduledOrderMessage"]);
-	                        }
-	                        else
-	                        {
-	                            throw;
-	                        }	                        
+                            Logger.LogError(ex);
+                            this.Services().Message.ShowMessage(localize["CreditCardRemoveErrorTitle"], localize["CreditCardRemoveErrorScheduledOrderMessage"]);                        
 	                    }
 	                    
 	                }
@@ -478,14 +470,25 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 				await _accountService.LinkPayPalAccount(authCode);
 
                 IsPayPalAccountLinked = true;
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex);
 
+                this.Services().Message.ShowMessage(
+                    this.Services().Localize["PayPalErrorTitle"],
+                    this.Services().Localize["PayPalLinkError"]);
+                return;
+            }
+
+            try
+            {
                 await DeleteCreditCard(true);
 
                 this.Services().Message.ShowMessage(
                     string.Empty,
                     this.Services().Localize["PayPalLinked"],
                     () => ShowViewModelAndRemoveFromHistory<HomeViewModel>(new { locateUser = bool.TrueString }));
-
             }
             catch (Exception ex)
             {
@@ -495,8 +498,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
                     this.Services().Localize["PayPalErrorTitle"],
                     this.Services().Localize["PayPalLinkError"]);
 
-                UnlinkPayPalAccount(true);
+                UnlinkPayPalAccount(false);
             }
+
+                
         }
 
 		public void UnlinkPayPalAccount(bool replacedByCreditCard = false)
