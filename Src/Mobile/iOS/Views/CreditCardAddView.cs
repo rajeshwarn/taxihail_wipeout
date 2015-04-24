@@ -4,6 +4,7 @@ using UIKit;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using Card.IO;
 using System;
+using System.Threading.Tasks;
 using Foundation;
 using Cirrious.CrossCore;
 using apcurium.MK.Booking.Mobile.AppServices;
@@ -321,7 +322,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
         private class PayPalDelegate : PayPalFuturePaymentDelegate
         {
-            private Action<string> _futurePaymentAuthorized;
+            private readonly Action<string> _futurePaymentAuthorized;
 
             public PayPalDelegate (Action<string> futurePaymentAuthorized)
             {

@@ -189,7 +189,7 @@
 "InvalidLocalContactTitle"="Informations erronées";
 "InvalidLoginMessage"="L'email et/ou le mot de passe semblent invalides";
 "InvalidLoginMessageTitle"="Erreur de connection";
-"InvalidPhoneErrorMessage"="Le numéro de téléphone ne semble pas valide. Merci de saisir de nouveau 10 chiffres.";
+"InvalidPhoneErrorMessage"="Le numéro de téléphone ne semble pas valide. Merci de saisir de nouveau entre 10 et 15 chiffres.";
 "InvalidPickupAddress"="Merci d'entrer une adresse de départ valide";
 "January"="Janvier (01)";
 "July"="Juillet (07)";

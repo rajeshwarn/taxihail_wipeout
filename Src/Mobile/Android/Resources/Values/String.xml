@@ -341,7 +341,7 @@
   <string name="CreateAccountErrorMessage">The account cannot be created.</string>
   <string name="SignIn">Sign In</string>
   <string name="HistoryDetailBuildingNameNotSpecified">Not specified</string>
-  <string name="InvalidPhoneErrorMessage">The mobile number is invalid. It must contain 10 numbers.</string>
+  <string name="InvalidPhoneErrorMessage">The mobile number is invalid. It must contain between 10 and 15 numbers.</string>
   <string name="PanelMenuViewUpdateProfileText">Update Account</string>
   <string name="Tuto07Bottom">Status updates are provided when the vehicles arrives at the pickup address, when you enter the vehicle, and at the end of the ride.</string>
   <string name="BookViewInvalidDate">The pickup date and pickup time are invalid.</string>
@@ -659,4 +659,5 @@
   <string name="ManualRideLinqSummary_Done">Done</string>
   <string name="ManualUnPairingForRideLinQ_Error_Message">An error occured when trying to unpair. Please try again.</string>
   <string name="StatusConfirmCancelRideAndWarnForCancellationFees">Are you sure you want to cancel? A vehicle is on its way to pick you up. {0} reserves the right to charge customers a cancellation fee if we feel the user is abusing the service.</string>
+  <string name="CreditCardRemoveErrorScheduledOrderMessage">You cannot delete your credit card when an order is scheduled or in progress.</string>
 </resources>

@@ -943,7 +943,7 @@
     <comment>Login error</comment>
   </data>
   <data name="InvalidPhoneErrorMessage" xml:space="preserve">
-    <value>El número de celular es invalido, debe contener 10 caracteres</value>
+    <value>The mobile number is invalid. It must contain between 10 and 15 numbers.</value>
     <comment>The mobile number is invalid. It must contain 10 numbers.</comment>
   </data>
   <data name="InvalidPickupAddress" xml:space="preserve">
@@ -2351,5 +2351,8 @@
   </data>
   <data name="StatusConfirmCancelRideAndWarnForCancellationFees" xml:space="preserve">
     <value>Are you sure you want to cancel? A vehicle is on its way to pick you up. {0} reserves the right to charge customers a cancellation fee if we feel the user is abusing the service.</value>
+  </data>
+  <data name="CreditCardRemoveErrorScheduledOrderMessage" xml:space="preserve">
+    <value>You cannot delete your credit card when an order is scheduled or in progress.</value>
   </data>
 </root>
