@@ -413,7 +413,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 return false;
             }
 
-            if (PayBack.Length > 10 || !PayBack.IsNumber())
+            if (PayBack.HasValue() && (PayBack.Length > 10 || !PayBack.IsNumber()))
             {
                 await this.Services().Message.ShowMessage(this.Services().Localize["UpdateBookingSettingsInvalidDataTitle"], this.Services().Localize["InvalidPayBackErrorMessage"]);
                 return false;

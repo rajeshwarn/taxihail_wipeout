@@ -857,7 +857,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
             var localVehicles = await _accountService.GetVehiclesList();
             if (localVehicles.Any())
             {
-                selectedVehicleId = localVehicles.First().ReferenceDataVehicleId;
+                // Try to match with account vehicle type preference if no match, we use the first vehicle
+                var matchingVehicle = localVehicles.FirstOrDefault(v => v.ReferenceDataVehicleId == _accountService.CurrentAccount.Settings.VehicleTypeId);
+                selectedVehicleId = matchingVehicle != null
+                    ? matchingVehicle.ReferenceDataVehicleId
+                    : localVehicles.First().ReferenceDataVehicleId;
             }
 
 	        SetVehicleType(selectedVehicleId);
