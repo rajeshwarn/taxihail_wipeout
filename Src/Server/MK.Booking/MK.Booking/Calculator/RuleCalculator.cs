@@ -35,14 +35,6 @@ namespace apcurium.MK.Booking.Calculator
                 rules = _ruleDao.GetActiveWarningRule(isFutureBooking)
                     .Where(rule => rule.Market == market)
                     .ToArray();
-
-                if (!isFutureBooking)
-                {
-                    // Must check if future booking is disabled for external market
-                    rules = _ruleDao.GetActiveDisableRule(true)
-                        .Where(rule => rule.Market == market)
-                        .ToArray();
-                }
             }
             else if (!market.HasValue())
             {
@@ -70,15 +62,6 @@ namespace apcurium.MK.Booking.Calculator
                 rules = _ruleDao.GetActiveDisableRule(isFutureBooking)
                     .Where(rule => rule.Market == market)
                     .ToArray();
-
-                // Get future booking rules anyway in external market
-                if (!isFutureBooking)
-                {
-                    // Must check if future booking is disabled for external market
-                    rules = _ruleDao.GetActiveDisableRule(true)
-                        .Where(rule => rule.Market == market)
-                        .ToArray();
-                }
             }
             else if (!market.HasValue())
             {
@@ -94,6 +77,18 @@ namespace apcurium.MK.Booking.Calculator
             }
 
             return GetMatching(rules, pickupDate);
+        }
+
+        public RuleDetail GetDisableFutureBookingRule(string market)
+        {
+            if (_serverSettings.ServerData.ValidateAdminRulesForExternalMarket)
+            {
+                return _ruleDao.GetActiveDisableRule(true)
+                    .Where(rule => rule.Market == market && rule.DisableFutureBookingOnError)
+                    .ToArray()
+                    .FirstOrDefault();
+            }
+            return null;
         }
 
         private RuleDetail[] FilterRulesByZone(RuleDetail[] rules, string pickupZone, string dropOffZone)

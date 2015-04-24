@@ -295,6 +295,12 @@
                             result = JSON.parse(result.responseText).responseStatus;
                         }
 
+                        if (TaxiHail.parameters.disableFutureBooking || result.disableFutureBooking) {
+                            this.$('#bookLaterButton').addClass('hidden');
+                        } else {
+                            this.$('#bookLaterButton').removeClass('hidden');
+                        }
+
                         // Don't display validation errors if no destination address is specified when destination required is on
                         var destinationRequiredAndNoDropOff = TaxiHail.parameters.isDestinationRequired && !this.model.isValidAddress('dropOffAddress');
 
@@ -316,12 +322,6 @@
                                 this.$('.buttons .btn').removeClass('disabled');
                                 this.$('.buttons .btn').removeAttr('disabled');
                             }
-
-                            if (TaxiHail.parameters.disableFutureBooking || result.disableFutureBooking) {
-                                this.$('#bookLaterButton').addClass('hidden');
-                            } else {
-                                this.$('#bookLaterButton').removeClass('hidden');
-                            }
                            
                             if (TaxiHail.parameters.isEstimateEnabled) {
                                 this.actualizeEstimate();
@@ -336,7 +336,7 @@
             var dest = this.model.get('dropOffAddress');
 
             var pickupZipCode = pickup.zipCode != null ? pickup.zipCode : '';
-            var account = TaxiHail.auth.account; //.attributes.settings.vehicleTypeId
+            var account = TaxiHail.auth.account;
             var vtype = ( account.id == null ) ? -1 : account.get('settings')['vehicleTypeId'];
 
             var dropOffZipCode = dest != null ?
