@@ -183,16 +183,11 @@
             this.$('.errors').html('');        
 
             var numberOfPassengers = this.model.get('settings')['passengers'];
-            var vehicleType;
+            var vehicleType = TaxiHail.vehicleTypes[0];
             var vehicleTypeId =  this.model.get('settings')['vehicleTypeId'];           
             if(vehicleTypeId)
             {
-                // Try to match vehicle type to the prefered type in user profile
                 vehicleType = $.grep(TaxiHail.vehicleTypes, function (e) { return e.referenceDataVehicleId == vehicleTypeId; })[0];
-                if (!vehicleType) {
-                    // If no match is found, use the first vehicle type
-                    vehicleType = TaxiHail.vehicleTypes[0];
-                }
             }
 
             if (TaxiHail.parameters.showPassengerNumber
