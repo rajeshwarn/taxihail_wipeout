@@ -91,6 +91,22 @@
                 }
             }
 
+            // Validates that the paymentsList contains the currently set chargeTypeId (in booking settings). If not, use the first item in the list.
+            var chargeTypeIdFound = false;
+            var currentlySelectedSettingChargeTypeId = this.model.get('settings')['chargeTypeId'];
+            for (var i = 0; i < chargeTypes.length; i++) {
+                if (chargeTypes[i].id == currentlySelectedSettingChargeTypeId) {
+                    chargeTypeIdFound = true;
+                }
+            }
+
+            if (!chargeTypeIdFound) {
+                var chargeTypeId = chargeTypes[0].id;
+
+                this.model.get('settings')['chargeTypeId'] = chargeTypeId;
+                data.settings.chargeTypeId = chargeTypeId;
+            }
+
             _.extend(data, {
                 vehiclesList: TaxiHail.vehicleTypes,
                 paymentsList: chargeTypes,
