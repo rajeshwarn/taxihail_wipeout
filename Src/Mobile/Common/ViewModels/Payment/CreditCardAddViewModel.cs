@@ -456,11 +456,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
                             Logger.LogError(ex);
                             this.Services().Message.ShowMessage(localize["CreditCardRemoveErrorTitle"], localize["CreditCardRemoveErrorScheduledOrderMessage"]);                        
 	                    }
-	                    
 	                }
 	            });
-	        } 
-	        
+	        }
 	    }
 
         public async void LinkPayPalAccount(string authCode)
@@ -498,10 +496,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
                     this.Services().Localize["PayPalErrorTitle"],
                     this.Services().Localize["PayPalLinkError"]);
 
-                UnlinkPayPalAccount(false);
+                UnlinkPayPalAccount();
             }
-
-                
         }
 
 		public void UnlinkPayPalAccount(bool replacedByCreditCard = false)
@@ -605,7 +601,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			{
 				this.Logger.LogError(ex);
 			}
-            
 	    }
 
 	    private async Task SettleOverduePayment()
@@ -714,5 +709,3 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 		}
     }
 }
-
-
