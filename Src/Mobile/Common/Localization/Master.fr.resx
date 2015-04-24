@@ -1894,4 +1894,7 @@
   <data name="StatusConfirmCancelRideAndWarnForCancellationFees" xml:space="preserve">
     <value>Êtes-vous certain de vouloir annuler? Un véhicule est en route pour venir vous chercher. {0} se réserve le droit de facturer à ses clients des frais d'annulation si ces derniers abusent du service.</value>
   </data>
+  <data name="CreditCardRemoveErrorScheduledOrderMessage" xml:space="preserve">
+    <value>You cannot delete your credit card when an order is scheduled or in progress.</value>
+  </data>
 </root>
