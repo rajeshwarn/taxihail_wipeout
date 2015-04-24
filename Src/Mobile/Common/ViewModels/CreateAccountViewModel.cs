@@ -5,7 +5,7 @@ using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.Framework.Extensions;
-using apcurium.MK.Common.PhoneHelper;
+using apcurium.MK.Common.Helpers;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
