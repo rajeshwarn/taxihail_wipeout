@@ -1,7 +1,7 @@
 using System.Linq;
 using System.Text.RegularExpressions;
 
-namespace MK.Common.iOS.Helpers
+namespace apcurium.MK.Common.Helpers
 {
     public static class PhoneHelper
     {
