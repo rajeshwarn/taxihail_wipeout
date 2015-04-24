@@ -91,6 +91,22 @@
                 }
             }
 
+            // Validates that the paymentsList contains the currently set chargeTypeId (in booking settings). If not, use the first item in the list.
+            var chargeTypeIdFound = false;
+            var currentlySelectedSettingChargeTypeId = this.model.get('settings')['chargeTypeId'];
+            for (var i = 0; i < chargeTypes.length; i++) {
+                if (chargeTypes[i].id == currentlySelectedSettingChargeTypeId) {
+                    chargeTypeIdFound = true;
+                }
+            }
+
+            if (!chargeTypeIdFound) {
+                var chargeTypeId = chargeTypes[0].id;
+
+                this.model.get('settings')['chargeTypeId'] = chargeTypeId;
+                data.settings.chargeTypeId = chargeTypeId;
+            }
+
             _.extend(data, {
                 vehiclesList: TaxiHail.vehicleTypes,
                 paymentsList: chargeTypes,
@@ -183,17 +199,21 @@
             this.$('.errors').html('');        
 
             var numberOfPassengers = this.model.get('settings')['passengers'];
-            var vehicleType = TaxiHail.vehicleTypes[0];
-            var vehicleTypeId =  this.model.get('settings')['vehicleTypeId'];           
-            if(vehicleTypeId)
-            {
+            var vehicleType;
+            var vehicleTypeId = this.model.get('settings')['vehicleTypeId'];
+            if (vehicleTypeId) {
+                // Try to match vehicle type to the prefered type in user profile
                 vehicleType = $.grep(TaxiHail.vehicleTypes, function (e) { return e.referenceDataVehicleId == vehicleTypeId; })[0];
+                if (!vehicleType) {
+                    // If no match is found, use the first vehicle type
+                    vehicleType = TaxiHail.vehicleTypes[0];
+                    this.model.get('settings')['vehicleTypeId'] = vehicleType.referenceDataVehicleId;
+                }
             }
 
             if (TaxiHail.parameters.showPassengerNumber
                 && vehicleType.maxNumberPassengers > 0
-                && numberOfPassengers > vehicleType.maxNumberPassengers)
-            {
+                && numberOfPassengers > vehicleType.maxNumberPassengers) {
                 this.$(':submit').button('reset');
                 this.$('.errors').html(TaxiHail.localize("CreateOrder_InvalidPassengersNumber"));
                 return;

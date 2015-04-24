@@ -86,25 +86,19 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
             };
         }
 
-        [Route("api/customer/{companyId}/associatedMarketVehicleTypes")]
+        [Route("api/customer/{companyId}/associatedMarketVehicleType")]
         public HttpResponseMessage GetAssociatedMarketVehicleTypes(string companyId, int networkVehicleId)
         {
             var taxiHailNetworkSettings = _taxiHailNetworkRepository.FirstOrDefault(n => n.Id == companyId);
             if (taxiHailNetworkSettings == null)
             {
-                return new HttpResponseMessage(HttpStatusCode.OK)
-                {
-                    Content = new StringContent(JsonConvert.SerializeObject(new NetworkVehicleResponse[0]))
-                };
+                return new HttpResponseMessage(HttpStatusCode.NoContent);
             }
 
             var networkVehicles = _networkVehiclesRepository.Where(v => v.Market == taxiHailNetworkSettings.Market);
             if (!networkVehicles.Any())
             {
-                return new HttpResponseMessage(HttpStatusCode.OK)
-                {
-                    Content = new StringContent(JsonConvert.SerializeObject(new NetworkVehicleResponse[0]))
-                };
+                return new HttpResponseMessage(HttpStatusCode.NoContent);
             }
 
             var company = _companyRepository.GetById(companyId);

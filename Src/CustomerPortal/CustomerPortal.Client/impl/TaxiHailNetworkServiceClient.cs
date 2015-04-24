@@ -111,7 +111,7 @@ namespace CustomerPortal.Client.Impl
 
         public NetworkVehicleResponse GetAssociatedMarketVehicleType(string companyId, int networkVehicleId)
         {
-            return Client.Get(string.Format("customer/{0}/associatedMarketVehicleTypes?networkVehicleId={1}", companyId, networkVehicleId))
+            return Client.Get(string.Format("customer/{0}/associatedMarketVehicleType?networkVehicleId={1}", companyId, networkVehicleId))
                          .Deserialize<NetworkVehicleResponse>()
                          .Result;
         }

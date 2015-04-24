@@ -1216,6 +1216,14 @@ namespace apcurium.MK.Booking.Api.Services
                     bookingSettings.VehicleType = matchingMarketVehicle.Name;
                     bookingSettings.VehicleTypeId = matchingMarketVehicle.ReferenceDataVehicleId;
                 }
+                else
+                {
+                    // No match found
+                    bookingSettings.VehicleType = null;
+                    bookingSettings.VehicleTypeId = null;
+
+                    Log.Info(string.Format("No match found for GetAssociatedMarketVehicleType for company {0}. Maybe no vehicles were linked via the admin panel?", marketCompanyId));
+                }
             }
             catch (Exception ex)
             {
