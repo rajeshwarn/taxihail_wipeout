@@ -352,7 +352,7 @@ namespace apcurium.MK.Booking.EventHandlers
             using (var context = _contextFactory.Invoke())
             {
                 var accounts = context.Set<AccountDetail>()
-                    .Where(AccountHasChargeAccount);
+                    .Where(HasChargeAccount);
 
                 foreach (var account in accounts)
                 {
@@ -364,7 +364,7 @@ namespace apcurium.MK.Booking.EventHandlers
             }
         }
 
-        private bool AccountHasChargeAccount(AccountDetail accountDetail)
+        private bool HasChargeAccount(AccountDetail accountDetail)
         {
             return accountDetail.Settings.AccountNumber.HasValue() ||
                    accountDetail.Settings.CustomerNumber.HasValue();
