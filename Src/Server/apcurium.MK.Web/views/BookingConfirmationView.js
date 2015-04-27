@@ -201,7 +201,7 @@
             var numberOfPassengers = this.model.get('settings')['passengers'];
             var vehicleType;
             var vehicleTypeId = this.model.get('settings')['vehicleTypeId'];
-            if (vehicleTypeId) {
+            if (typeof vehicleTypeId !== 'undefined') {
                 // Try to match vehicle type to the prefered type in user profile
                 vehicleType = $.grep(TaxiHail.vehicleTypes, function (e) { return e.referenceDataVehicleId == vehicleTypeId; })[0];
                 if (!vehicleType) {
