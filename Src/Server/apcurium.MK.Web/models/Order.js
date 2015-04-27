@@ -65,9 +65,14 @@
 
         isPayingWithAccountCharge: function () {
             var settings = this.get('settings');
-            return settings.chargeTypeId != null
-                && settings.chargeTypeId != ''
-                && settings.chargeTypeId == 2;
+
+            return isChargeAccount(settings.chargeTypeId);
+        },
+
+        isChargeAccount: function(chargeType) {
+            return chargeType != null
+                && chargeType != ''
+                && chargeType == 2;
         },
 
         isPayingWithPayPal: function () {
