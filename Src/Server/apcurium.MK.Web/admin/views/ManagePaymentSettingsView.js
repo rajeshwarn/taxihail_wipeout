@@ -141,7 +141,10 @@
                 return;
             }
 
-            if (data.isPayInTaxiEnabled != "true" && data.isChargeAccountPaymentEnabled != "true" && data.isOutOfAppPaymentDisabled == "true") {
+            if (data.isPayInTaxiEnabled != "true"
+                && data.isChargeAccountPaymentEnabled != "true"
+                && data.isOutOfAppPaymentDisabled == "true"
+                && data.payPalClientSettings.isEnabled != "true") {
                 this.alert("Please select a payment method or enable In Car Payment");
 
                 this.$(':submit').button('reset');
