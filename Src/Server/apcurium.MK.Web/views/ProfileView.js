@@ -138,7 +138,7 @@
         savechanges: function (form) {
             var accountNumber = this.model.get('settings').accountNumber;
             var customerNumber = this.model.get('settings').customerNumber;
-            var chargeAccountEnabled = this.model.isChargeAccountPaymentEnabled;
+            var chargeAccountEnabled = TaxiHail.parameters.isChargeAccountPaymentEnabled;
             if (chargeAccountEnabled && accountNumber) {
 
                 // Validate charge account number
@@ -168,8 +168,15 @@
                 .done(_.bind(function() {
                     this.renderConfirmationMessage();
                 }, this))
-                .fail(_.bind(function() {
+                .fail(_.bind(function () {
                     this.$(':submit').button('reset');
+
+                    var alert = new TaxiHail.AlertView({
+                        message: TaxiHail.localize("error.accountUpdate"),
+                        type: 'error'
+                    });
+                    alert.on('ok', alert.remove, alert);
+                    this.$('.errors').html(alert.render().el);
                 }, this));
         },
 
