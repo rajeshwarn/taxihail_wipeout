@@ -6,17 +6,21 @@ namespace apcurium.Tools.Localization.Android
     {
         public static void CreateResourceFileIfNecessary(string language)
         {
+            var resourcesBasePath = Path.GetFullPath(Path.Combine("..", "Mobile", "Android", "Resources"));
+            var taxiHailProjectPath = Path.GetFullPath(Path.Combine("..", "Mobile", "Android", "TaxiHail.csproj"));
+            var englishFolderAndFileName = Path.Combine("values", "String.xml");
+            var folderAndFileName = Path.Combine(string.Format("values-{0}", language), "String.xml");
+
             if (string.IsNullOrEmpty(language))
             {
                 // English will always already be created
+
+                var englishLanguageFileName = Path.Combine(resourcesBasePath, englishFolderAndFileName);
+                ClearFile(englishLanguageFileName);
                 return;
             }
 
-            string resourcesBasePath = Path.GetFullPath(Path.Combine("..", "Mobile", "Android", "Resources"));
-            string taxiHailProjectPath = Path.GetFullPath(Path.Combine("..", "Mobile", "Android", "TaxiHail.csproj"));
-
-            string folderAndFileName = Path.Combine(string.Format("values-{0}", language), "String.xml");
-            string languageFileName = Path.Combine(resourcesBasePath, folderAndFileName);
+            var languageFileName = Path.Combine(resourcesBasePath, folderAndFileName);
 
             if (!File.Exists(languageFileName))
             {
@@ -36,6 +40,25 @@ namespace apcurium.Tools.Localization.Android
                 // Add resource file to VS project
                 var resourceFile = Path.Combine("Resources", folderAndFileName);
                 CsProjHelper.IncludeFile(taxiHailProjectPath, resourceFile, "AndroidResource");
+            }
+            else
+            {
+                ClearFile(languageFileName);
+            }
+        }
+
+        private static void ClearFile(string fileName)
+        {
+            // Clear file
+            File.WriteAllText(fileName, string.Empty);
+
+            using (var streamWriter = new StreamWriter(fileName))
+            {
+
+                streamWriter.WriteLine("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
+                streamWriter.WriteLine("<resources>");
+                streamWriter.WriteLine("</resources>");
+                streamWriter.Close();
             }
         }
     }
