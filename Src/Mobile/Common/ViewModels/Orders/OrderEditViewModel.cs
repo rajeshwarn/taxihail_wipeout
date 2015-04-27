@@ -101,7 +101,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			{
 				return this.GetCommand(async () =>
 				{
-                    
                     if (!PhoneHelper.IsValidPhoneNumber(BookingSettings.Phone))
                     {
                         await this.Services().Message.ShowMessage(this.Services().Localize["UpdateBookingSettingsInvalidDataTitle"], this.Services().Localize["InvalidPhoneErrorMessage"]);

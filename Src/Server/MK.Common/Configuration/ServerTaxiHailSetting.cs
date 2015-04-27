@@ -91,7 +91,6 @@ namespace MK.Common.Configuration
             };
 
             PayPalConversionRate = 1;
-
             SendDetailedPaymentInfoToDriver = true;
         }
 
@@ -104,9 +103,11 @@ namespace MK.Common.Configuration
         public ReceiptSettingContainer Receipt { get; protected set; }
         public CustomerPortalSettingContainer CustomerPortal { get; protected set; }
         public NetworkSettingContainer Network { get; protected set; }
+
         public bool IsWebSignupHidden { get; protected set; }
 
         public string PayPalRegionInfoOverride { get; protected set; }
+
         public decimal PayPalConversionRate { get; protected set; }
 
         [Display(Name = "Hide fare info when Pay in Car", Description = "Hide fare information in receipt when user choose to pay in car.")]
@@ -139,7 +140,7 @@ namespace MK.Common.Configuration
         public int? AvailableVehiclesFleetId { get; protected set; }
 
         [Hidden]
-        [Display(Name = "SettingsAvailableToAdmin", Description = "Comma delimited list of settings that are available to admins")]
+        [Display(Name = "Settings Available to Admin", Description = "Comma delimited list of settings that are available to admins")]
         public string SettingsAvailableToAdmin { get; private set; }
 
         [Hidden]
@@ -148,17 +149,25 @@ namespace MK.Common.Configuration
 
         [Display(Name = "Social Media Website Links Toggle", Description = "Displays the Social Media links for the website")]
         public bool IsWebSocialMediaVisible { get; protected set; }
+
         [CustomizableByCompany]
         [Display(Name = "Social Media Website Facebook URL", Description = "Adds the link to the Facebook address")]
         public string SocialMediaFacebookURL { get; protected set; }
+
         [CustomizableByCompany]
         [Display(Name = "Social Media Website Twitter URL", Description = "Adds the link to the Twitter address")]
         public string SocialMediaTwitterURL { get; protected set; }
+
         [CustomizableByCompany]
         [Display(Name = "Social Media Website Google+ URL", Description = "Adds the link to the Google+ address")]
         public string SocialMediaGoogleURL { get; protected set; }
+
         [CustomizableByCompany]
         [Display(Name = "Social Media Website Pinterest URL", Description = "Adds the link to the Facebook address")]
         public string SocialMediaPinterestURL { get; protected set; }
+
+        [CustomizableByCompany]
+        [Display(Name = "Validate Admin Rules in Other Markets", Description = "Use the market booking rules defined by this company to validate orders in other markets")]
+        public bool ValidateAdminRulesForExternalMarket { get; protected set; }
     }
 }

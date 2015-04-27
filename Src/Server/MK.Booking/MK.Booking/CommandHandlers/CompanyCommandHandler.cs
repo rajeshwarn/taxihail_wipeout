@@ -93,8 +93,10 @@ namespace apcurium.MK.Booking.CommandHandlers
                 command.StartTime,
                 command.EndTime,
                 command.ActiveFrom,
-                command.ActiveTo
-                );
+                command.ActiveTo,
+                command.Market,
+                command.DisableFutureBookingOnError);
+
             _repository.Save(company, command.Id.ToString());
         }
 
@@ -211,7 +213,9 @@ namespace apcurium.MK.Booking.CommandHandlers
                 command.ActiveFrom,
                 command.ActiveTo,
                 command.Priority,
-                command.IsActive);
+                command.IsActive,
+                command.Market,
+                command.DisableFutureBookingOnError);
 
             _repository.Save(company, command.Id.ToString());
         }

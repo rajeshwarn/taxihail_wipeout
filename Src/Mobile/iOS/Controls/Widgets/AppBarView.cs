@@ -153,7 +153,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			
             set.Bind(btnBookLater)
                 .For(v => v.Hidden)
-                .To(vm => vm.Settings.DisableFutureBooking);
+                .To(vm => vm.IsFutureBookingDisabled);
 
             set.Apply();
         }

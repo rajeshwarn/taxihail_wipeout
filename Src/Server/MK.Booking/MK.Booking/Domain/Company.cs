@@ -345,7 +345,7 @@ namespace apcurium.MK.Booking.Domain
         public void CreateRule(Guid ruleId, string name, string message, string zoneList,bool zoneRequired, RuleType type,
             RuleCategory category, bool appliedToCurrentBooking, bool appliesToFutureBooking,bool appliesToPickup, bool appliesToDropoff, int priority,
             bool isActive, DayOfTheWeek daysOfTheWeek, DateTime? startTime, DateTime? endTime, DateTime? activeFrom,
-            DateTime? activeTo)
+            DateTime? activeTo, string market, bool disableFutureBookingOnError)
         {
             if ((type == RuleType.Default) && message.IsNullOrEmpty())
             {
@@ -385,13 +385,15 @@ namespace apcurium.MK.Booking.Domain
                 EndTime = endTime,
                 ActiveFrom = activeFrom,
                 ActiveTo = activeTo,
-                Priority = /*type == RuleType.Default ? 0 :*/ priority,
+                Priority = priority,
+                Market = market,
+                DisableFutureBookingOnError = disableFutureBookingOnError
             });
         }
 
         public void UpdateRule(Guid ruleId, string name, string message, string zoneList, bool zoneRequired, bool appliedToCurrentBooking,
             bool appliesToFutureBooking, bool appliesToPickup, bool appliesToDropoff, DayOfTheWeek daysOfTheWeek, DateTime? startTime, DateTime? endTime,
-            DateTime? activeFrom, DateTime? activeTo, int priority, bool isActive)
+            DateTime? activeFrom, DateTime? activeTo, int priority, bool isActive, string market, bool disableFutureBookingOnError)
         {
             Update(new RuleUpdated
             {
@@ -410,7 +412,9 @@ namespace apcurium.MK.Booking.Domain
                 EndTime = endTime,
                 ActiveFrom = activeFrom,
                 ActiveTo = activeTo,
-                Priority = priority
+                Priority = priority,
+                Market = market,
+                DisableFutureBookingOnError = disableFutureBookingOnError
             });
         }
 

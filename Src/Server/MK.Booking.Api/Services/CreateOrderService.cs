@@ -174,32 +174,31 @@ namespace apcurium.MK.Booking.Api.Services
                 }
             }
 
-            // We can only validate rules when in the local market
-            if (!market.HasValue())
-            {
-                var rule = _ruleCalculator.GetActiveDisableFor(
-                    isFutureBooking,
-                    pickupDate,
-                    () =>
-                        _ibsServiceProvider.StaticData(bestAvailableCompany.CompanyKey)
-                            .GetZoneByCoordinate(
-                                request.Settings.ProviderId,
-                                request.PickupAddress.Latitude,
-                                request.PickupAddress.Longitude),
-                    () => request.DropOffAddress != null
-                        ? _ibsServiceProvider.StaticData(bestAvailableCompany.CompanyKey)
-                            .GetZoneByCoordinate(
-                                request.Settings.ProviderId,
-                                request.DropOffAddress.Latitude,
-                                request.DropOffAddress.Longitude)
-                            : null);
+            var rule = _ruleCalculator.GetActiveDisableFor(
+                isFutureBooking,
+                pickupDate,
+                () =>
+                    _ibsServiceProvider.StaticData(bestAvailableCompany.CompanyKey)
+                        .GetZoneByCoordinate(
+                            request.Settings.ProviderId,
+                            request.PickupAddress.Latitude,
+                            request.PickupAddress.Longitude),
+                () => request.DropOffAddress != null
+                    ? _ibsServiceProvider.StaticData(bestAvailableCompany.CompanyKey)
+                        .GetZoneByCoordinate(
+                            request.Settings.ProviderId,
+                            request.DropOffAddress.Latitude,
+                            request.DropOffAddress.Longitude)
+                        : null,
+                market);
 
-                if (rule != null)
-                {
-                    throw new HttpError(HttpStatusCode.BadRequest, ErrorCode.CreateOrder_RuleDisable.ToString(), rule.Message);
-                }
+            if (rule != null)
+            {
+                throw new HttpError(HttpStatusCode.BadRequest, ErrorCode.CreateOrder_RuleDisable.ToString(), rule.Message);
             }
-            else
+
+            // We need to validate the rules of the roaming market.
+            if(market.HasValue())
             {
                 // External market, query company site directly to validate their rules
                 var orderServiceClient = new RoamingValidationServiceClient(bestAvailableCompany.CompanyKey, _serverSettings.ServerData.Target);
