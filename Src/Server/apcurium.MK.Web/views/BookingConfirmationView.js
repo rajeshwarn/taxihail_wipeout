@@ -97,6 +97,7 @@
             for (var i = 0; i < chargeTypes.length; i++) {
                 if (chargeTypes[i].id == currentlySelectedSettingChargeTypeId) {
                     chargeTypeIdFound = true;
+                    break;
                 }
             }
 
