@@ -32,6 +32,10 @@
                 // We need to make sure that the customer number, if empty, is saved as a string
                 data.settings.customerNumber = "";
             }
+            if (!data.settings.payBack) {
+                // We need to make sure that the PayBack number, if empty, is saved as a string
+                data.settings.payBack = "";
+            }
 
             var tipPercentages = [
                 { id: 0, display: "0%" },
