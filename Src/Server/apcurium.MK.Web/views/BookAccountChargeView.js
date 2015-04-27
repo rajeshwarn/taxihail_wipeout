@@ -35,7 +35,7 @@
                 .done(_.bind(function (data) {
 
                     this.$('#btBook').button('reset');
-                    this.$('#title').show();
+                    this.$('#title').hide();
 
                     var $ul = this.$('ul');
 
@@ -45,6 +45,8 @@
                             memo.push(new TaxiHail.QuestionItemView({
                                 model: model
                             }).render().el);
+
+                            this.$('#title').show();
                         }
                         return memo;
                     }, []);
@@ -163,6 +165,9 @@
             }
             else if (result.errorCode == "AccountCharge_InvalidAnswer") {
                 $alert.append($('<div />').text(result.message));
+            }
+            else if (result.errorCode == "AccountCharge_InvalidAccountNumber") {
+                $alert.append($('<div />').text(this.localize(result.message)));
             }
             else if (result.statusText) {
                 $alert.append($('<div />').text(this.localize(result.statusText)));

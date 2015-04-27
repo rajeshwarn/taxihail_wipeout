@@ -196,12 +196,21 @@
             if (result.errorCode == "CreateOrder_RuleDisable") {
                 $alert.append($('<div />').text(result.message));
             }
+            else if (result.errorCode == "AccountCharge_InvalidAccountNumber") {
+                $alert.append($('<div />').text(this.localize(result.message)));
+            }
             else if (result.statusText) {
                 $alert.append($('<div />').text(this.localize(result.statusText)));
             }
-            _.each(result.errors, function (error) {
-                $alert.append($('<div />').text(this.localize(error.statusText)));
-            }, this);
+
+            if (result.errors.length > 0) {
+                _.each(result.errors, function (error) {
+                    $alert.append($('<div />').text(this.localize(error.statusText)));
+                }, this);
+            } else {
+                $alert.append($('<div />').text(this.localize(result.message)));
+            }
+            
             this.$('.errors').html($alert);
         },
         
