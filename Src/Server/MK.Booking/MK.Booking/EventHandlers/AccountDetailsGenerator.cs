@@ -35,7 +35,8 @@ namespace apcurium.MK.Booking.EventHandlers
         IEventHandler<AccountUnlinkedFromIbs>,
         IEventHandler<PayPalAccountLinked>,
         IEventHandler<PayPalAccountUnlinked>,
-        IEventHandler<OverduePaymentSettled>
+        IEventHandler<OverduePaymentSettled>,
+        IEventHandler<ChargeAccountPaymentDisabled>
     {
         private readonly IServerSettings _serverSettings;
         private readonly Func<BookingDbContext> _contextFactory;
@@ -344,6 +345,29 @@ namespace apcurium.MK.Booking.EventHandlers
                 context.RemoveWhere<PayPalAccountDetails>(x => x.AccountId == @event.SourceId);
                 context.SaveChanges();
             }
+        }
+
+        public void Handle(ChargeAccountPaymentDisabled @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var accounts = context.Set<AccountDetail>()
+                    .Where(HasChargeAccount);
+
+                foreach (var account in accounts)
+                {
+                    account.Settings.CustomerNumber = null;
+                    account.Settings.AccountNumber = null;
+                }
+                
+                context.SaveChanges();
+            }
+        }
+
+        private bool HasChargeAccount(AccountDetail accountDetail)
+        {
+            return accountDetail.Settings.AccountNumber.HasValue() ||
+                   accountDetail.Settings.CustomerNumber.HasValue();
         }
 
         public void Handle(OverduePaymentSettled @event)

@@ -32,6 +32,10 @@
                 // We need to make sure that the customer number, if empty, is saved as a string
                 data.settings.customerNumber = "";
             }
+            if (!data.settings.payBack) {
+                // We need to make sure that the PayBack number, if empty, is saved as a string
+                data.settings.payBack = "";
+            }
 
             var tipPercentages = [
                 { id: 0, display: "0%" },
@@ -50,6 +54,13 @@
             var displayTipSelection = TaxiHail.parameters.isChargeAccountPaymentEnabled
                 || TaxiHail.parameters.isPayPalEnabled
                 || TaxiHail.parameters.isBraintreePrepaidEnabled;
+
+            var showPayBackField = false;
+            var isPayBackFieldRequired = false;
+            if (TaxiHail.parameters.isPayBackRegistrationFieldRequired != null) {
+                showPayBackField = true;
+                isPayBackFieldRequired = TaxiHail.parameters.isPayBackRegistrationFieldRequired == "true";
+            }
 
             var chargeTypes = TaxiHail.referenceData.paymentsList;
 
@@ -70,7 +81,8 @@
                 paymentsList: chargeTypes,
                 isChargeAccountPaymentEnabled: TaxiHail.parameters.isChargeAccountPaymentEnabled,
                 displayTipSelection: displayTipSelection,
-                tipPercentages: tipPercentages
+                tipPercentages: tipPercentages,
+                showPayBackField: showPayBackField
             });
 
             this.$el.html(this.renderTemplate(data));
@@ -85,6 +97,10 @@
                     passengers: {
                         required: true,
                         number : true
+                    },
+                    payBack: {
+                        required: isPayBackFieldRequired,
+                        regex: /^\d{0,10}$/  // Up to 10 digits
                     }
                 },
                 messages: {
@@ -98,6 +114,10 @@
                     passengers: {
                         required: TaxiHail.localize('error.PassengersRequired'),
                         number: TaxiHail.localize('error.NotANumber')
+                    },
+                    payBack: {
+                        required: TaxiHail.localize('error.PayBackRequired'),
+                        regex: TaxiHail.localize('error.PayBackBadFormat')
                     }
                 },
                 submitHandler: this.savechanges

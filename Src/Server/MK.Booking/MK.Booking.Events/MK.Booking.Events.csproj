@@ -60,6 +60,7 @@
     <Compile Include="AdminRightGranted.cs" />
     <Compile Include="AppSettingsUpdated.cs" />
     <Compile Include="BookingSettingsUpdated.cs" />
+    <Compile Include="ChargeAccountPaymentDisabled.cs" />
     <Compile Include="CompanyCreated.cs" />
     <Compile Include="AllCreditCardsRemoved.cs" />
     <Compile Include="CreditCardDeactivated.cs" />

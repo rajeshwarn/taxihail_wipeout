@@ -92,6 +92,15 @@
     </div>
     {{/if}}
 
+    {{#if showPayBackField}}
+    <div id="payback-div" class="control-group">
+        <label class="control-label" for="inputPayBack">{{localize "PayBack"}}</label>
+        <div class="controls">
+            <input type="text" id="inputPayBack" name="payBack" value="{{settings.payBack}}" data-error-style="inline" class='input-block-level'>
+        </div>
+    </div>
+    {{/if}}
+
     <div class="control-group btn-right-alignment">
         <button type='submit' class='btn btn-primary span' data-loading-text="{{localize 'Loading'}}">{{localize "Saves changes"}}</button>
       <a href='#' class='btn span' data-action='startOver'>{{localize "Cancel"}}</a>

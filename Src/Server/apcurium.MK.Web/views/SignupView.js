@@ -62,7 +62,8 @@
                     equalTo: "#signup-password"
                 },
                 payback: {
-                    required: isPayBackFieldRequired
+                    required: isPayBackFieldRequired,
+                    regex: /^\d{0,10}$/ // Up to 10 digits
                 }
             };
 
@@ -118,6 +119,10 @@
                     confirmPassword: {
                         required: TaxiHail.localize('Password required'),
                         equalTo: TaxiHail.localize('Password are not the same')
+                    },
+                    payback: {
+                        required: TaxiHail.localize('error.PayBackRequired'),
+                        regex: TaxiHail.localize('error.PayBackBadFormat')
                     }
                 },
                 submitHandler: this.onsubmit
