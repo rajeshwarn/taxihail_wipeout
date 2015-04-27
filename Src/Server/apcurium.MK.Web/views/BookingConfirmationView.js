@@ -101,7 +101,18 @@
             }
 
             if (!chargeTypeIdFound) {
-                var chargeTypeId = chargeTypes[0].id;
+                var chargeTypeId = 0;
+
+                for (var i = 0; i < chargeTypes.length; i++) {
+                    // We will ignore the Charge Account type.
+                    if (!this.model.isChargeAccount(chargeTypes[i].id)) {
+                        chargeTypeId = chargeTypes[i].id;
+                    }
+                }
+
+                if (chargeTypeId == 0) {
+                    chargeTypeId = chargeTypes[0].id;
+                }
 
                 this.model.get('settings')['chargeTypeId'] = chargeTypeId;
                 data.settings.chargeTypeId = chargeTypeId;
