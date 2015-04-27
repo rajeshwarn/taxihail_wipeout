@@ -51,6 +51,13 @@
                 || TaxiHail.parameters.isPayPalEnabled
                 || TaxiHail.parameters.isBraintreePrepaidEnabled;
 
+            var showPayBackField = false;
+            var isPayBackFieldRequired = false;
+            if (TaxiHail.parameters.isPayBackRegistrationFieldRequired != null) {
+                showPayBackField = true;
+                isPayBackFieldRequired = TaxiHail.parameters.isPayBackRegistrationFieldRequired == "true";
+            }
+
             var chargeTypes = TaxiHail.referenceData.paymentsList;
 
             // Remove CoF option since there's no card in the user profile
@@ -70,7 +77,8 @@
                 paymentsList: chargeTypes,
                 isChargeAccountPaymentEnabled: TaxiHail.parameters.isChargeAccountPaymentEnabled,
                 displayTipSelection: displayTipSelection,
-                tipPercentages: tipPercentages
+                tipPercentages: tipPercentages,
+                showPayBackField: showPayBackField
             });
 
             this.$el.html(this.renderTemplate(data));
@@ -85,6 +93,10 @@
                     passengers: {
                         required: true,
                         number : true
+                    },
+                    payBack: {
+                        required: isPayBackFieldRequired,
+                        regex: /^\d{0,10}$/  // Up to 10 digits
                     }
                 },
                 messages: {
@@ -98,6 +110,10 @@
                     passengers: {
                         required: TaxiHail.localize('error.PassengersRequired'),
                         number: TaxiHail.localize('error.NotANumber')
+                    },
+                    payBack: {
+                        required: TaxiHail.localize('error.PayBackRequired'),
+                        regex: TaxiHail.localize('error.PayBackBadFormat')
                     }
                 },
                 submitHandler: this.savechanges
