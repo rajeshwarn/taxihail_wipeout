@@ -47,12 +47,6 @@ namespace apcurium.MK.Booking.Api.Services
             {
                 double distance = fare.Distance ?? 0;
 
-                if (_serverSettings.ServerData.DistanceFormat == DistanceFormat.Km)
-                {
-                    // If IBS is not set in miles, it returns a distance in meters, so we have to convert it
-                    distance = distance * 1000;
-                }
-
                 return new DirectionInfo
                 {
                     Distance = distance,
