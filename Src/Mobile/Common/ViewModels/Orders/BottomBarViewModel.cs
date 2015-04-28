@@ -1,18 +1,18 @@
 using System;
+using System.Reactive.Linq;
+using System.Reactive.Threading.Tasks;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.AppServices.Orders;
 using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.Extensions;
+using apcurium.MK.Booking.Mobile.ViewModels.Payment;
+using apcurium.MK.Common.Configuration.Impl;
+using apcurium.MK.Common.Entity;
 using Cirrious.MvvmCross.Plugins.PhoneCall;
 using ServiceStack.Text;
-using System.Reactive.Threading.Tasks;
-using System.Reactive.Linq;
-using apcurium.MK.Booking.Api.Contract.Resources;
-using apcurium.MK.Common.Entity;
-using apcurium.MK.Booking.Mobile.ViewModels.Payment;
-using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 {
@@ -21,27 +21,47 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
         private readonly IOrderWorkflowService _orderWorkflowService;
         private readonly IMvxPhoneCallTask _phone;
         private readonly IAccountService _accountService;
+        private readonly IPaymentService _paymentService;
 
         public event EventHandler<HomeViewModelStateRequestedEventArgs> PresentationStateRequested;
 
-        public BottomBarViewModel(IOrderWorkflowService orderWorkflowService, IMvxPhoneCallTask phone, IAccountService accountService)
+        public BottomBarViewModel(IOrderWorkflowService orderWorkflowService, IMvxPhoneCallTask phone, IAccountService accountService, IPaymentService paymentService)
         {
             _phone = phone;
             _orderWorkflowService = orderWorkflowService;
             _accountService = accountService;
+            _paymentService = paymentService;
 
-			if (Settings.DestinationIsRequired)
+            if (Settings.DestinationIsRequired)
 			{
-				this.Observe(_orderWorkflowService.GetAndObserveIsDestinationModeOpened(),
+				Observe(_orderWorkflowService.GetAndObserveIsDestinationModeOpened(),
 					isDestinationModeOpened => EstimateSelected = isDestinationModeOpened);
 			}
 
             if (Settings.PromotionEnabled)
             {
-                this.Observe(ObserveIsPromoCodeApplied(), isPromoCodeApplied => IsPromoCodeActive = isPromoCodeApplied);
+                Observe(ObserveIsPromoCodeApplied(), isPromoCodeApplied => IsPromoCodeActive = isPromoCodeApplied);
             }
 
-            Observe(_orderWorkflowService.GetAndObserveOrderValidationResult(), orderValidationResult => OrderValidated(orderValidationResult));
+            
+
+            Observe(_orderWorkflowService.GetAndObserveOrderValidationResult(), OrderValidated);
+        }
+
+        public async void CheckManualRideLinqEnabledAsync(bool hasLastMarket)
+        {
+            try
+            {
+                var settings = await _paymentService.GetPaymentSettings();
+
+                IsManualRidelinqEnabled = settings.PaymentMode == PaymentMethod.RideLinqCmt
+                                           && settings.CmtPaymentSettings.IsManualRidelinqCheckInEnabled
+                                           && !hasLastMarket;
+            }
+            catch (Exception ex)
+            {
+                this.Logger.LogError(ex);
+            }
         }
 
         private IObservable<bool> ObserveIsPromoCodeApplied()
@@ -77,6 +97,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
                     _estimateSelected = value;
                     RaisePropertyChanged();
                 }
+            }
+        }
+
+        public bool IsManualRidelinqEnabled
+        {
+            get { return _isManualRidelinqEnabled; }
+            set
+            {
+                _isManualRidelinqEnabled = value;
+                RaisePropertyChanged();
             }
         }
 
@@ -443,6 +473,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
         }
 
         private ICommand _cancelEdit;
+        private bool _isManualRidelinqEnabled;
+
         public ICommand CancelEdit
         {
             get { return _cancelEdit; }
@@ -453,6 +485,36 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
                     _cancelEdit = value;
                     RaisePropertyChanged();
                 }
+            }
+        }
+
+        public ICommand BookATaxi
+        {
+            get
+            {
+                return this.GetCommand(() =>
+                {
+                    if (Settings.DisableFutureBooking)
+                    {
+                        //Go directly to order details review.
+                        SetPickupDateAndReviewOrder.ExecuteIfPossible();
+                    }
+                    else
+                    {
+                        PresentationStateRequested.Raise(this, new HomeViewModelStateRequestedEventArgs(HomeViewModelState.BookATaxi));
+                    }
+                });
+            }
+        }
+
+        public ICommand ManualPairingRideLinq
+        {
+            get
+            {
+                return this.GetCommand(() =>
+                {
+                    ShowViewModel<ManualPairingForRideLinqViewModel>();
+                });
             }
         }
 
