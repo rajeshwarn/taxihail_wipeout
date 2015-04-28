@@ -180,7 +180,7 @@
             </LinearLayout>
         <!-- Manual Pairing button -->
             <Button
-                style="@style/ButtonActionGreenStyle"
+                style="@style/ButtonActionBlueStyle"
                 android:layout_width="0dp"
                 android:layout_height="44dip"
                 android:layout_marginBottom="5dp"
@@ -199,7 +199,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="44dip"
                     android:layout_marginBottom="5dp"
-                    android:text="@string/BookItButton" />
+                    android:text="@string/HomeView_BookTaxi"
+                    local:MvxBind="Click BookATaxi" />
                 <ImageView
                     android:id="@+id/imagePromo"
                     android:layout_width="wrap_content"

@@ -156,6 +156,11 @@
       <item name="android:textColor">@drawable/button_action_green_text_selector</item>      
     </style>
 
+  <style name="ButtonActionBlueStyle" parent="@style/custom_ButtonStyle">
+    <item name="android:background">@drawable/button_action_blue_selector</item>
+    <item name="android:textColor">@drawable/button_action_blue_text_selector</item>
+  </style>
+
     <style name="ButtonActionRedStyle" parent="@style/custom_ButtonStyle">
       <item name="android:background">@drawable/button_action_red_selector</item>
       <item name="android:textColor">@drawable/button_action_red_text_selector</item>      
