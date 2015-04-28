@@ -29,6 +29,7 @@
             android:layout_marginRight="20dip"
             android:text="@string/BookATaxi_Message" />
         <Button
+            android:id="@+id/btnBookNow"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dip"
@@ -37,6 +38,7 @@
             android:text="@string/Now"
             style="@style/ButtonActionGreenStyle" />
         <Button
+            android:id="@+id/btnBookLater"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dip"
@@ -45,6 +47,7 @@
             android:text="@string/BookItLaterButton"
             style="@style/ButtonActionGreenStyle" />
         <Button
+            android:id="@+id/btnCancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
