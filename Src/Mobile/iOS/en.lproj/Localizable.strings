@@ -595,3 +595,4 @@
 "ManualRideLinqSummary_Done"="Done";
 "ManualUnPairingForRideLinQ_Error_Message"="An error occured when trying to unpair. Please try again.";
 "StatusConfirmCancelRideAndWarnForCancellationFees"="Are you sure you want to cancel? A vehicle is on its way to pick you up. {0} reserves the right to charge customers a cancellation fee if we feel the user is abusing the service.";
+"BookATaxi_Message"="When would you like to book?";

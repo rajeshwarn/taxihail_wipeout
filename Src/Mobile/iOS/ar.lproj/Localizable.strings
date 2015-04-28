@@ -572,3 +572,4 @@
 "StatusConfirmCancelRideAndWarnForCancellationFees"="Are you sure you want to cancel? A vehicle is on its way to pick you up. {0} reserves the right to charge customers a cancellation fee if we feel the user is abusing the service.";
 "CreditCardRemoveErrorScheduledOrderMessage"="You cannot delete your credit card when an order is scheduled or in progress.";
 "HomeView_BookTaxi"="Book Taxi";
+"BookATaxi_Message"="When would you like to book?";

@@ -1900,4 +1900,7 @@
   <data name="HomeView_BookTaxi" xml:space="preserve">
     <value>Commander Taxi</value>
   </data>
+  <data name="BookATaxi_Message" xml:space="preserve">
+    <value>Quand voulez-vous commender votre taxi?</value>
+  </data>
 </root>

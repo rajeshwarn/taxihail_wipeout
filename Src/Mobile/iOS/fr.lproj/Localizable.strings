@@ -592,3 +592,4 @@
 "StatusConfirmCancelRideAndWarnForCancellationFees"="Êtes-vous certain de vouloir annuler? Un véhicule est en route pour venir vous chercher. {0} se réserve le droit de facturer à ses clients des frais d'annulation si ces derniers abusent du service.";
 "CreditCardRemoveErrorScheduledOrderMessage"="Vous ne pouvez pas effacer une carte de crédit s'il y a une commande en cours.";
 "HomeView_BookTaxi"="Commander Taxi";
+"BookATaxi_Message"="Quand voulez-vous commender votre taxi?";

@@ -594,4 +594,5 @@
   <string name="StatusConfirmCancelRideAndWarnForCancellationFees">Êtes-vous certain de vouloir annuler? Un véhicule est en route pour venir vous chercher. {0} se réserve le droit de facturer à ses clients des frais d\'annulation si ces derniers abusent du service.</string>
   <string name="CreditCardRemoveErrorScheduledOrderMessage">Vous ne pouvez pas effacer une carte de crédit s\'il y a une commande en cours.</string>
   <string name="HomeView_BookTaxi">Commander Taxi</string>
+  <string name="BookATaxi_Message">Quand voulez-vous commender votre taxi?</string>
 </resources>
