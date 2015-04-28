@@ -1843,7 +1843,10 @@
     <value>Unable to load the available promotions. Please try again later.</value>
   </data>
   <data name="HomeView_ManualPairing" xml:space="preserve">
-    <value>Check In</value>
+    <value>In A Taxi</value>
+  </data>
+  <data name="HomeView_BookTaxi" xml:space="preserve">
+    <value>Book Taxi</value>
   </data>
   <data name="RideSettingsLoadError" xml:space="preserve">
     <value>Unable to load the account settings. Please try again later.</value>

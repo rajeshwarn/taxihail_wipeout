@@ -578,7 +578,7 @@
   <string name="ManualPairingForRideLinQ_InvalidCode_Message">Le code d\'association est invalide</string>
   <string name="ManualPairingForRideLinQ_InvalidCode_Title">Code invalide</string>
   <string name="ManualPairingForRideLinQ_Pair">CHECK IN</string>
-  <string name="HomeView_ManualPairing">Check In</string>
+  <string name="HomeView_ManualPairing">Dans un Taxi</string>
   <string name="View_RideLinqPair">Check In</string>
   <string name="ManualRideLinqStatus_Distance">Distance:</string>
   <string name="ManualRideLinqStatus_Driver">Chauffeur #:</string>
@@ -593,4 +593,5 @@
   <string name="ManualUnPairingForRideLinQ_Error_Message">Une erreur est survenue lors de la dissociation. Veuillez essayer de nouveau.</string>
   <string name="StatusConfirmCancelRideAndWarnForCancellationFees">Êtes-vous certain de vouloir annuler? Un véhicule est en route pour venir vous chercher. {0} se réserve le droit de facturer à ses clients des frais d\'annulation si ces derniers abusent du service.</string>
   <string name="CreditCardRemoveErrorScheduledOrderMessage">Vous ne pouvez pas effacer une carte de crédit s\'il y a une commande en cours.</string>
+  <string name="HomeView_BookTaxi">Commander Taxi</string>
 </resources>

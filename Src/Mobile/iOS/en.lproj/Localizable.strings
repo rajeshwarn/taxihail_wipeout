@@ -573,7 +573,8 @@
 "HistoryLoadError"="Unable to load the history. Please try again later.";
 "View_RideLinqPair"="Check In";
 "PromotionLoadError"="Unable to load the available promotions. Please try again later.";
-"HomeView_ManualPairing"="Check In";
+"HomeView_ManualPairing"="In A Taxi";
+"HomeView_BookTaxi"="Book Taxi";
 "RideSettingsLoadError"="Unable to load the account settings. Please try again later.";
 "ManualPairingForRideLinQ_Pair"="CHECK IN";
 "PaymentLoadError"="Unable to load the payment details. Please try again later.";

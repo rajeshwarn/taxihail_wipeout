@@ -2311,7 +2311,7 @@
     <value>CHECK IN</value>
   </data>
   <data name="HomeView_ManualPairing" xml:space="preserve">
-    <value>Check In</value>
+    <value>In A Taxi</value>
   </data>
   <data name="View_RideLinqPair" xml:space="preserve">
     <value>Check In</value>
@@ -2354,5 +2354,8 @@
   </data>
   <data name="CreditCardRemoveErrorScheduledOrderMessage" xml:space="preserve">
     <value>You cannot delete your credit card when an order is scheduled or in progress.</value>
+  </data>
+  <data name="HomeView_BookTaxi" xml:space="preserve">
+    <value>Book Taxi</value>
   </data>
 </root>

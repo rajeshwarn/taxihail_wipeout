@@ -568,7 +568,7 @@
   <string name="ManualPairingForRideLinQ_InvalidCode_Message">The pairing code is invalid.</string>
   <string name="ManualPairingForRideLinQ_InvalidCode_Title">Invalid code</string>
   <string name="ManualPairingForRideLinQ_Pair">CHECK IN</string>
-  <string name="HomeView_ManualPairing">Check In</string>
+  <string name="HomeView_ManualPairing">In A Taxi</string>
   <string name="View_RideLinqPair">Check In</string>
   <string name="ManualRideLinqStatus_Distance">Distance:</string>
   <string name="ManualRideLinqStatus_Driver">Driver id:</string>
@@ -583,4 +583,5 @@
   <string name="ManualUnPairingForRideLinQ_Error_Message">An error occured when trying to unpair. Please try again.</string>
   <string name="StatusConfirmCancelRideAndWarnForCancellationFees">Are you sure you want to cancel? A vehicle is on its way to pick you up. {0} reserves the right to charge customers a cancellation fee if we feel the user is abusing the service.</string>
   <string name="CreditCardRemoveErrorScheduledOrderMessage">You cannot delete your credit card when an order is scheduled or in progress.</string>
+  <string name="HomeView_BookTaxi">Book Taxi</string>
 </resources>

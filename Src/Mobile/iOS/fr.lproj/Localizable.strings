@@ -576,7 +576,7 @@
 "ManualPairingForRideLinQ_InvalidCode_Message"="Le code d'association est invalide";
 "ManualPairingForRideLinQ_InvalidCode_Title"="Code invalide";
 "ManualPairingForRideLinQ_Pair"="CHECK IN";
-"HomeView_ManualPairing"="Check In";
+"HomeView_ManualPairing"="Dans un Taxi";
 "View_RideLinqPair"="Check In";
 "ManualRideLinqStatus_Distance"="Distance:";
 "ManualRideLinqStatus_Driver"="Chauffeur #:";
@@ -591,3 +591,4 @@
 "ManualUnPairingForRideLinQ_Error_Message"="Une erreur est survenue lors de la dissociation. Veuillez essayer de nouveau.";
 "StatusConfirmCancelRideAndWarnForCancellationFees"="Êtes-vous certain de vouloir annuler? Un véhicule est en route pour venir vous chercher. {0} se réserve le droit de facturer à ses clients des frais d'annulation si ces derniers abusent du service.";
 "CreditCardRemoveErrorScheduledOrderMessage"="Vous ne pouvez pas effacer une carte de crédit s'il y a une commande en cours.";
+"HomeView_BookTaxi"="Commander Taxi";
