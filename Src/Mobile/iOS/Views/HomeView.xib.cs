@@ -95,10 +95,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 .For(v => v.Command)
                 .To(vm => vm.LocateMe);
 
-			set.Bind(btnRideLinqCheckIn)
-				.For(v => v.Command)
-				.To(vm => vm.ManualPairingRideLinq);
-
             set.Bind(RideLinqSection)
                 .For(v => v.Hidden)
                 .To(vm => vm.IsManualRideLinqEnabled)
