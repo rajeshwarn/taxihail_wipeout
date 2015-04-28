@@ -108,6 +108,7 @@
                     // We will ignore the Charge Account type.
                     if (!this.model.isChargeAccount(chargeTypes[i].id)) {
                         chargeTypeId = chargeTypes[i].id;
+                        break;
                     }
                 }
 
