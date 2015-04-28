@@ -25,15 +25,15 @@
         <div class="controls">
             <label class="radio">
                 @Html.RadioButtonFor(x => x.LogoName, "taxi", new {@class = "radio", @type = "radio", @checked = "checked"})
-                <img src="../../../../Images/taxi_badge.png"/>
+                <img src="~/Images/taxi_badge.png" />
             </label>
             <label class="radio">
                 @Html.RadioButtonFor(x => x.LogoName, "suv", new {@class = "radio", @type = "radio"})
-                <img src="../../../../Images/suv_badge.png"/>
+                <img src="~/Images/suv_badge.png" />
             </label>
             <label class="radio">
                 @Html.RadioButtonFor(x => x.LogoName, "blackcar", new {@class = "radio", @type = "radio"})
-                <img src="../../../../Images/blackcar_badge.png"/>
+                <img src="~/Images/blackcar_badge.png" />
             </label>
         </div>
         @Html.ValidationMessageFor(x => x.LogoName)
