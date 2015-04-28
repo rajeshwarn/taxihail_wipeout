@@ -111,12 +111,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                 {
                     try
                     {
-                        Button child = (Button)_listContainer.GetChildAt(i);
+                        var child = (Button) _listContainer.GetChildAt(i);
                         child.SetTypeface(Typeface.Create("sans-serif-light", TypefaceStyle.Normal), TypefaceStyle.Normal);
                     }
                     catch
                     {
-                    
+                        
                     }
                 }
             }
@@ -338,8 +338,24 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
             if (requestCode == (int)ActivityEnum.DateTimePicked && resultCode == Result.Ok)
             {             
-                DateTime dt = new DateTime(data.GetLongExtra("DateTimeResult", DateTime.Now.Ticks));
+                var dt = new DateTime(data.GetLongExtra("DateTimeResult", DateTime.Now.Ticks));
                 ViewModel.BottomBar.SetPickupDateAndReviewOrder.ExecuteIfPossible(dt);
+            }
+            else if (requestCode == (int) ActivityEnum.BookATaxi && resultCode == Result.Ok)
+            {
+                var result = (BookATaxiEnum)data.GetIntExtra("BookATaxiResult", (int)BookATaxiEnum.BookCancelled);
+                switch (result)
+                {
+                    case BookATaxiEnum.BookNow:
+                        ViewModel.BottomBar.SetPickupDateAndReviewOrder.ExecuteIfPossible();
+                        break;
+                    case BookATaxiEnum.BookLater:
+                        ViewModel.BottomBar.BookLater.ExecuteIfPossible();
+                        break;
+                    default:
+                        ViewModel.BottomBar.CancelBookLater.ExecuteIfPossible();
+                        break;
+                }
             }
             else
             {
@@ -396,6 +412,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
                 var intent = new Intent(this, typeof(DateTimePickerActivity));
                 StartActivityForResult(intent, (int)ActivityEnum.DateTimePicked);
+            }
+            else if (_presentationState == HomeViewModelState.BookATaxi)
+            {
+                SetMapEnabled(false);
+
+                ((LinearLayout.MarginLayoutParams)_orderOptions.LayoutParameters).TopMargin = 0;
+
+                var intent = new Intent(this, typeof (BookATaxiDialogActivity));
+                StartActivityForResult(intent, (int)ActivityEnum.BookATaxi);
             }
             else if (_presentationState == HomeViewModelState.Review)
             {
