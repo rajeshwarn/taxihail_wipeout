@@ -14,59 +14,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         public AppBar(Context context, IAttributeSet attrs) :
             base(Resource.Layout.SubView_AppBar, context, attrs)
         {
-            this.DelayBind(() => {
-
-                var estimate = Content.FindViewById(Resource.Id.btnEstimateLayout);
-                var bookNow = Content.FindViewById<Button>(Resource.Id.btnBookNow);
-                var bookLater = Content.FindViewById(Resource.Id.btnBookLaterLayout);
-
-                var cancelReview = Content.FindViewById<Button>(Resource.Id.btnCancelReview);
-                var confirm = Content.FindViewById<Button>(Resource.Id.btnConfirm);
-                var edit = Content.FindViewById<Button>(Resource.Id.btnEdit);
-
-                var cancelEdit = Content.FindViewById<Button>(Resource.Id.btnCancelEdit);
-                var save = Content.FindViewById<Button>(Resource.Id.btnSave);
-
-                var imagePromo = Content.FindViewById<ImageView>(Resource.Id.imagePromo);
-
-				var set = this.CreateBindingSet<AppBar, BottomBarViewModel>();
-
-                set.Bind(estimate)
-                    .For("Click")
-                    .To(vm => vm.ChangeAddressSelectionMode);
-
-                set.Bind(bookNow)
-                    .For("Click")
-                    .To(vm => vm.SetPickupDateAndReviewOrder);
-
-                set.Bind(imagePromo)
-                   .For(v => v.Visibility)
-                   .To(vm => vm.IsPromoCodeActive)
-                   .WithConversion("Visibility");
-
-                set.Bind(bookLater)
-                    .For("Click")
-                    .To(vm => vm.BookLater);
-
-                set.Bind(cancelReview)
-                    .For("Click")
-                    .To(vm => vm.CancelReview);
-                set.Bind(confirm)
-                    .For("Click")
-                    .To(vm => vm.ConfirmOrder);
-                set.Bind(edit)
-                    .For("Click")
-                    .To(vm => vm.Edit);
-
-                set.Bind(cancelEdit)
-                    .For("Click")
-                    .To(vm => vm.CancelEdit);
-                set.Bind(save)
-                    .For("Click")
-                    .To(vm => vm.Save);
-
-                set.Apply();
-            });
         }
 
         private void ChangeState(HomeViewModelPresentationHint hint)
