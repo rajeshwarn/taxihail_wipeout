@@ -97,6 +97,7 @@
             for (var i = 0; i < chargeTypes.length; i++) {
                 if (chargeTypes[i].id == currentlySelectedSettingChargeTypeId) {
                     chargeTypeIdFound = true;
+                    break;
                 }
             }
 
@@ -107,6 +108,7 @@
                     // We will ignore the Charge Account type.
                     if (!this.model.isChargeAccount(chargeTypes[i].id)) {
                         chargeTypeId = chargeTypes[i].id;
+                        break;
                     }
                 }
 
