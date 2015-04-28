@@ -9,7 +9,6 @@ namespace apcurium.Tools.Localization.Android
             var resourcesBasePath = Path.GetFullPath(Path.Combine("..", "Mobile", "Android", "Resources"));
             var taxiHailProjectPath = Path.GetFullPath(Path.Combine("..", "Mobile", "Android", "TaxiHail.csproj"));
             var englishFolderAndFileName = Path.Combine("values", "String.xml");
-            var folderAndFileName = Path.Combine(string.Format("values-{0}", language), "String.xml");
 
             if (string.IsNullOrEmpty(language))
             {
@@ -20,6 +19,7 @@ namespace apcurium.Tools.Localization.Android
                 return;
             }
 
+            var folderAndFileName = Path.Combine(string.Format("values-{0}", language), "String.xml");
             var languageFileName = Path.Combine(resourcesBasePath, folderAndFileName);
 
             if (!File.Exists(languageFileName))
@@ -54,7 +54,6 @@ namespace apcurium.Tools.Localization.Android
 
             using (var streamWriter = new StreamWriter(fileName))
             {
-
                 streamWriter.WriteLine("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
                 streamWriter.WriteLine("<resources>");
                 streamWriter.WriteLine("</resources>");
