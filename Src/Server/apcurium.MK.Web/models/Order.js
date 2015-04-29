@@ -66,7 +66,7 @@
         isPayingWithAccountCharge: function () {
             var settings = this.get('settings');
 
-            return isChargeAccount(settings.chargeTypeId);
+            return this.isChargeAccount(settings.chargeTypeId);
         },
 
         isChargeAccount: function(chargeType) {
