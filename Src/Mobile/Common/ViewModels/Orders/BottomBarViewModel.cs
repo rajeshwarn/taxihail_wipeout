@@ -461,6 +461,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
             }
         }
 
+		public ICommand CancelBookATaxi
+		{
+			get
+			{
+				return this.GetCommand(() =>
+				{
+					PresentationStateRequested.Raise(this, new HomeViewModelStateRequestedEventArgs(HomeViewModelState.Initial));
+				});
+			}
+		}
+
         public ICommand CancelBookLater
         {
             get

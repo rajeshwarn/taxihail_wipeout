@@ -37,15 +37,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 			Initialize();
 
 			this.DelayBind (() => {
+				lblDescription.Text = Localize.GetValue("BookATaxi_Message");
+				btnNow.SetTitle(Localize.GetValue("Now"), UIControlState.Normal);
+				btnLater.SetTitle(Localize.GetValue("BookItLaterButton"), UIControlState.Normal);
+				btnCancel.SetTitle(Localize.GetValue("Cancel"),UIControlState.Normal);
 				InitializeBinding();
 			});
-		}
 
-		public override void LayoutSubviews()
-		{
-			base.LayoutSubviews();
 
-			//constraintHeight.Constant = this.Frame.Height;
 		}
 
 		private void InitializeBinding()
@@ -59,6 +58,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 			set.Bind(btnLater)
 				.For("TouchUpInside")
 				.To(vm => vm.BookLater);
+
+			set.Bind(btnCancel)
+				.For("TouchUpInside")
+				.To(vm => vm.CancelBookATaxi);
 
 			set.Apply();
 		}
