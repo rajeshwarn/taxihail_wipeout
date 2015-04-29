@@ -7,7 +7,7 @@ namespace apcurium.MK.Common.Helpers
     {
         public static bool IsValidPhoneNumber(string phoneNumber)
         {
-            return Regex.IsMatch(phoneNumber, "^(?([0-9]{3}))?[-. ]?([0-9]{3})[-. ]?([0-9]{4})([0-9]?[0-9]?[0-9]?[0-9]?[0-9]?)$");
+            return Regex.IsMatch(phoneNumber, @"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})([0-9]?)([0-9]?)([0-9]?)([0-9]?)([0-9]?)$");
         }
 
         public static string GetDigitsFromPhoneNumber(string phoneNumber)
