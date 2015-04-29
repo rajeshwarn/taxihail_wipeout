@@ -183,7 +183,8 @@
                 style="@style/ButtonActionBlueStyle"
                 android:layout_width="0dp"
                 android:layout_height="44dip"
-                android:layout_marginBottom="5dp"
+                android:layout_gravity="bottom"
+                android:layout_marginBottom="3dip"
                 local:MvxBind="Click ManualPairingRideLinq"
                 android:text="@string/HomeView_ManualPairing"
                 android:layout_weight="1.5" />
@@ -191,14 +192,14 @@
             <FrameLayout
                 android:orientation="horizontal"
                 android:layout_width="0dp"
-                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dip"
+                android:layout_marginLeft="10dip"
                 android:layout_height="55dip"
                 android:layout_weight="1.5">
                 <Button
                     style="@style/ButtonActionGreenStyle"
                     android:layout_width="match_parent"
                     android:layout_height="44dip"
-                    android:layout_marginBottom="5dp"
                     android:text="@string/HomeView_BookTaxi"
                     local:MvxBind="Click BookATaxi" />
                 <ImageView
