@@ -6756,6 +6756,9 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f0700b9
 			public const int BlackTextLong = 2131165369;
 			
+			// aapt resource value: 0x7f0700d0
+			public const int BookATaxiDialog = 2131165392;
+			
 			// aapt resource value: 0x7f0700cd
 			public const int ButtonActionBlackStyle = 2131165389;
 			

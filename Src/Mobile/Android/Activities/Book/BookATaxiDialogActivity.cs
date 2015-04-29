@@ -7,7 +7,7 @@ using Android.Widget;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {
-    [Activity(Label = "@string/HomeView_BookTaxi", Theme = "@android:style/Theme.Dialog")]
+    [Activity(Label = "@string/HomeView_BookTaxi", Theme = "@style/BookATaxiDialog")]
     public class BookATaxiDialogActivity : Activity
     {
         protected override void OnCreate(Bundle bundle)

@@ -1,57 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:minWidth="25px"
-    android:minHeight="25px"
-    android:background="@color/transparent">
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:alpha=".75"
-        android:background="@color/black" />
-    <LinearLayout
-        android:orientation="vertical"
-        android:minWidth="25px"
-        android:minHeight="25px"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="10dip"
+    android:layout_marginRight="10dip"
+    android:fitsSystemWindows="true"
+    android:background="@color/white">
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dip"
-        android:layout_marginRight="10dip"
-        android:layout_marginTop="120dip"
-        android:background="@color/white">
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dip"
-            android:layout_marginLeft="20dip"
-            android:layout_marginRight="20dip"
-            android:text="@string/BookATaxi_Message" />
-        <Button
-            android:id="@+id/btnBookNow"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dip"
-            android:layout_marginLeft="30dip"
-            android:layout_marginRight="30dip"
-            android:text="@string/Now"
-            style="@style/ButtonActionGreenStyle" />
-        <Button
-            android:id="@+id/btnBookLater"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dip"
-            android:layout_marginLeft="30dip"
-            android:layout_marginRight="30dip"
-            android:text="@string/BookItLaterButton"
-            style="@style/ButtonActionGreenStyle" />
-        <Button
-            android:id="@+id/btnCancel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="10dip"
-            android:text="Cancel" />
-    </LinearLayout>
-</RelativeLayout>
+        android:layout_marginTop="10dip"
+        android:layout_marginLeft="20dip"
+        android:layout_marginRight="20dip"
+        android:text="@string/BookATaxi_Message" />
+    <Button
+        android:id="@+id/btnBookNow"
+        android:layout_width="180dip"
+        android:layout_height="40dip"
+        android:layout_marginTop="10dip"
+        android:layout_marginLeft="30dip"
+        android:layout_marginRight="30dip"
+        android:text="@string/Now"
+        style="@style/ButtonActionGreenStyle" />
+    <Button
+        android:id="@+id/btnBookLater"
+        android:layout_width="180dip"
+        android:layout_height="40dip"
+        android:layout_marginTop="10dip"
+        android:layout_marginLeft="30dip"
+        android:layout_marginRight="30dip"
+        android:text="@string/BookItLaterButton"
+        style="@style/ButtonActionGreenStyle" />
+    <Button
+        android:id="@+id/btnCancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="10dip"
+        android:text="Cancel" />
+</LinearLayout>
