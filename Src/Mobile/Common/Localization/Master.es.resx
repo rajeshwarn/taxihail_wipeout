@@ -538,7 +538,7 @@
     <comment>Mrs</comment>
   </data>
   <data name="CreateAccount_AccountAlreadyExist" xml:space="preserve">
-    <value>La cuenta no puede ser creada, este correo ya está en uso</value>
+    <value>Este correo ya está en uso</value>
     <comment>The account cannot be created, this email is already in use.</comment>
   </data>
   <data name="CreditCard" xml:space="preserve">

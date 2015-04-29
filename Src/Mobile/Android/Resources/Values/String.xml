@@ -281,7 +281,7 @@
   <string name="AppNeedUpdateMessage">A new version of the application is available, please update the app to continue.</string>
   <string name="BookingService_MobileBookingNote">Booked mobile device.</string>
   <string name="BookingService_MobileBookingNoteBuildingName">Building name {0}.</string>
-  <string name="CreateAccount_AccountAlreadyExist">The account cannot be created, this email is already in use.</string>
+  <string name="CreateAccount_AccountAlreadyExist">This email is already in use.</string>
   <string name="UpdatePasswordCurrentPasswordLabel">Current Password</string>
   <string name="UpdatePasswordNewPasswordLabel">New Password</string>
   <string name="UpdatePasswordConfirmationLabel">Confirm New Password</string>

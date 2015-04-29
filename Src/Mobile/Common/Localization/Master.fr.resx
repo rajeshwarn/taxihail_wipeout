@@ -415,7 +415,7 @@
     <value>Mme</value>
   </data>
   <data name="CreateAccount_AccountAlreadyExist" xml:space="preserve">
-    <value>Le compte ne peut malheureusement pas être créé, email déjà utilisé!</value>
+    <value>Email déjà utilisé!</value>
   </data>
   <data name="CreditCard" xml:space="preserve">
     <value>Carte de paiement</value>

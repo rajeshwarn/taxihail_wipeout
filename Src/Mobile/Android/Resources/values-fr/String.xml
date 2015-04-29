@@ -99,7 +99,7 @@
   <string name="CreateAccountTitleArray">MrMme</string>
   <string name="CreateAccountTitleMr">Mr</string>
   <string name="CreateAccountTitleMrs">Mme</string>
-  <string name="CreateAccount_AccountAlreadyExist">Le compte ne peut malheureusement pas être créé, email déjà utilisé!</string>
+  <string name="CreateAccount_AccountAlreadyExist">Email déjà utilisé!</string>
   <string name="CreditCard">Carte de paiement</string>
   <string name="CreditCardCCV">Code sécurité</string>
   <string name="CreditCardErrorTitle">Cette carte ne peut être sauvegardée</string>

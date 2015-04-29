@@ -279,7 +279,7 @@
 "AppNeedUpdateMessage"="A new version of the application is available, please update the app to continue.";
 "BookingService_MobileBookingNote"="Booked mobile device.";
 "BookingService_MobileBookingNoteBuildingName"="Building name {0}.";
-"CreateAccount_AccountAlreadyExist"="The account cannot be created, this email is already in use.";
+"CreateAccount_AccountAlreadyExist"="This email is already in use.";
 "UpdatePasswordCurrentPasswordLabel"="Current Password";
 "UpdatePasswordNewPasswordLabel"="New Password";
 "UpdatePasswordConfirmationLabel"="Confirm New Password";

@@ -105,7 +105,7 @@
   <string name="CreateAccountTitleArray">SrSra</string>
   <string name="CreateAccountTitleMr">Sra.</string>
   <string name="CreateAccountTitleMrs">Srta.</string>
-  <string name="CreateAccount_AccountAlreadyExist">La cuenta no puede ser creada, este correo ya está en uso</string>
+  <string name="CreateAccount_AccountAlreadyExist">Este correo ya está en uso</string>
   <string name="CreditCard">Tarjeta de crédito</string>
   <string name="CreditCardAdded">Su cuenta ha sido activada para pagar por defecto con tarjeta de crédito. Usted puede también pagar en el vehículo seleccionando \"Pagar en vehículo\" en la pantalla de pago</string>
   <string name="CreditCardCCV">CVV</string>

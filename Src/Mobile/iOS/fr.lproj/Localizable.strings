@@ -97,7 +97,7 @@
 "CreateAccountTitleArray"="MrMme";
 "CreateAccountTitleMr"="Mr";
 "CreateAccountTitleMrs"="Mme";
-"CreateAccount_AccountAlreadyExist"="Le compte ne peut malheureusement pas être créé, email déjà utilisé!";
+"CreateAccount_AccountAlreadyExist"="Email déjà utilisé!";
 "CreditCard"="Carte de paiement";
 "CreditCardCCV"="Code sécurité";
 "CreditCardErrorTitle"="Cette carte ne peut être sauvegardée";

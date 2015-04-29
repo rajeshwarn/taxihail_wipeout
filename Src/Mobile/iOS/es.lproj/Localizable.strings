@@ -103,7 +103,7 @@
 "CreateAccountTitleArray"="SrSra";
 "CreateAccountTitleMr"="Sra.";
 "CreateAccountTitleMrs"="Srta.";
-"CreateAccount_AccountAlreadyExist"="La cuenta no puede ser creada, este correo ya está en uso";
+"CreateAccount_AccountAlreadyExist"="Este correo ya está en uso";
 "CreditCard"="Tarjeta de crédito";
 "CreditCardAdded"="Su cuenta ha sido activada para pagar por defecto con tarjeta de crédito. Usted puede también pagar en el vehículo seleccionando \"Pagar en vehículo\" en la pantalla de pago";
 "CreditCardCCV"="CVV";
