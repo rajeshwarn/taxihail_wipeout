@@ -167,7 +167,7 @@ namespace MK.Common.Configuration
         public bool AccountActivationDisabled { get; protected set; }
 
         [SendToClient, CustomizableByCompany]
-        [Display(Name = "Available Vehicule Refresh Rate", Description = "Modify the refresh delay (in seconds) of the available vehicules on the map.")]
+        [Display(Name = "Available Vehicle Refresh Rate", Description = "Modify the refresh delay (in seconds) of the available vehicles on the map.")]
 	    public int AvailableVehicleRefreshRate { get; set; }
 
         [SendToClient, CustomizableByCompany]
@@ -315,7 +315,7 @@ namespace MK.Common.Configuration
 		public bool ShowCallDriver { get; protected set; }
 
         [SendToClient, CustomizableByCompany]
-        [Display(Name = "Show Vehicule Information", Description="Show vehicule informatino when available")]
+        [Display(Name = "Show Vehicle Information", Description="Show vehicle informatino when available")]
 		public bool ShowVehicleInformation { get; protected set; }
 
         [SendToClient, CustomizableByCompany]
