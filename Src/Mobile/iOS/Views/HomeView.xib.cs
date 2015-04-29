@@ -133,6 +133,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 .For(v => v.DataContext)
                 .To(vm => vm.BottomBar);
 
+			set.Bind(ctrlOrderBookingOptions)
+				.For(v => v.DataContext)
+				.To(vm => vm.BottomBar);
+
             set.Apply();
         }
 
@@ -164,11 +168,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 					0.6f, 
 					() =>
 					{
-						orderEdit.SetNeedsDisplay();
-						constraintOrderReviewTopSpace.Constant = 10;
-						constraintOrderReviewBottomSpace.Constant = -65;
-						constraintOrderOptionsTopSpace.Constant = 22;
-						constraintOrderEditTrailingSpace.Constant = UIScreen.MainScreen.Bounds.Width;
+						ctrlOrderBookingOptions.SetNeedsDisplay();
+						constraintOrderBookinOptionsTopSpace.Constant = 0;
+
+						//orderEdit.SetNeedsDisplay();
+						//constraintOrderReviewTopSpace.Constant = 10;
+						//constraintOrderReviewBottomSpace.Constant = -65;
+						//constraintOrderOptionsTopSpace.Constant = 22;
+						//constraintOrderEditTrailingSpace.Constant = UIScreen.MainScreen.Bounds.Width;
 
 						homeView.LayoutIfNeeded();  
 						_datePicker.Hide();                                            
