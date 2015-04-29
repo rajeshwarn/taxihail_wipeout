@@ -38,7 +38,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="10dip"
-        android:text="Cancel"
-        android:background="@color/transparent"
-        style="@style/ButtonActionRedStyle" />
+        android:layout_marginBottom="10dip"
+        android:text="@string/Cancel"
+        style="@style/ButtonActionCancelStyle" />
 </LinearLayout>

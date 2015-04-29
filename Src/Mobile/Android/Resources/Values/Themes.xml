@@ -181,6 +181,11 @@
       <item name="android:textColor">@drawable/button_action_label_text_selector</item>      
     </style>
 
+  <style name="ButtonActionCancelStyle" parent="@style/custom_ButtonStyle">
+    <item name="android:background">@color/transparent</item>
+    <item name="android:textColor">@drawable/button_action_red_text_2_selector</item>
+  </style>
+
     <!-- Tutorial Theme -->
 
     <style name="TutorialDialog" parent="android:style/Theme.Dialog">
