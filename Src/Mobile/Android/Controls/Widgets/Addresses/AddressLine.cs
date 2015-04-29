@@ -37,14 +37,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Addresses
 
         void Initialize()
         {
-            _nameTextView.Text = _address.Address.FriendlyName;
-            _addressTextView.Text = _address.Address.FullAddress;
+			_nameTextView.Text = _address.DisplayLine1;
+			_addressTextView.Text = _address.DisplayLine2;
 
-            if (string.IsNullOrWhiteSpace(_address.Address.FriendlyName))
-            {
-                _nameTextView.Visibility = ViewStates.Gone;
-            }
-
+           
             var imageSrc = AddressTypeToDrawableConverter.GetDrawable(_address.Type);
             _imageView.SetImageResource(imageSrc);
 
