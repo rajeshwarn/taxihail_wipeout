@@ -44,8 +44,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 				btnCancel.SetTitle(Localize.GetValue("Cancel"),UIControlState.Normal);
 				InitializeBinding();
 			});
-
-
 		}
 
 		private void InitializeBinding()
