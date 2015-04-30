@@ -26,7 +26,7 @@
   <string name="UpdatePasswordNewPasswordLabel">كلمة المرور الجديدة</string>
   <string name="DestinationNotSpecifiedText">الوجهة غير محددة</string>
   <string name="PickupMapTitle">موقع الإلتقاء</string>
-  <string name="HomeView_ManualPairing">Check In</string>
+  <string name="HomeView_ManualPairing">In A Taxi</string>
   <string name="View_NotificationSettings">Notifications</string>
   <string name="ErrorCreatingOrderTitle">لا يمكن إتمام الحجز</string>
   <string name="DateTimePickerPickTitle">تاريخ و وقت الإلتقاء</string>
@@ -91,6 +91,7 @@
   <string name="CreditCardCCV">CVV</string>
   <string name="Processing">Processing your order...</string>
   <string name="ApplicationName">TaxiHail</string>
+  <string name="InvalidChargeTypeTitle">Invalid Charge Type</string>
   <string name="AccountDisabled">تم إيقاف حسابك، الرجاء الإتصال ب {0} على {1} لتفعيل حسابك</string>
   <string name="HistoryDetailAuthorizationLabel">التصريح:</string>
   <string name="View_UpdatePassword">تحديث كلمة المرور</string>
@@ -293,6 +294,7 @@
   <string name="HistoryViewTitle">التاريخ</string>
   <string name="CardOnFile">Card on File</string>
   <string name="Continue">استمرار</string>
+  <string name="InvalidChargeType">You must select a charge type to be able to book a ride</string>
   <string name="TermsAndConditionsLabel">الأحكام والشروط</string>
   <string name="BookingService_MobileBookingNoteBuildingName">اسم المبنى {0}.</string>
   <string name="StatusConfirmCancelRideErrorTitle">لا يمكن الإلغاء</string>
@@ -340,6 +342,7 @@
   <string name="CreateAccountInvalidPassword">كلمة المرور غير صحيحة. كلمة المرور يجب أن تكون متطابقة و تكون بين 6 إلى 10 أحرف</string>
   <string name="HistoryDetailRequestedLabel">وقت المشوار:</string>
   <string name="DriverInfoMake">الصنع:</string>
+  <string name="BookATaxi_Message">When would you like to book?</string>
   <string name="View_BookSettingMenu">إعدادات</string>
   <string name="Eta">The nearest taxi is {0} and {1} {2} away</string>
   <string name="View_Payments_CmtRideLinqConfirmPairTitle">تأكيد بيانات الدفع:</string>
@@ -390,6 +393,7 @@
   <string name="HistoryDetailBuildingNameLabel">إسم المبنى:</string>
   <string name="EtaDurationUnit">min</string>
   <string name="LocationHistoryTitle">مشاوير سابقة</string>
+  <string name="HomeView_BookTaxi">Book Taxi</string>
   <string name="Create">فتح حساب</string>
   <string name="BackButton">الرجوع</string>
   <string name="AddReminderMessage">هل ترغب في إضافة تنبيه على تقويمك حول هذا الموعد؟</string>
@@ -566,8 +570,6 @@
   <string name="HistoryDetailBuildingNameNotSpecified">غير محدد</string>
   <string name="TabBook">احجز</string>
   <string name="CreditCardRemoveErrorScheduledOrderMessage">You cannot delete your credit card when an order is scheduled or in progress.</string>
-  <string name="InvalidChargeType">You must select a charge type to be able to book a ride</string>
-  <string name="InvalidChargeTypeTitle">Invalid Charge Type</string>
   <string name="TaxiMapTitle">سيارة الأجرة الخاصه بك</string>
   <string name="InvalidLoginMessage">البريد الإلكتروني و/أو كلمة المرور غير صحيحة.</string>
   <string name="NoMailClient">لا يوجد برنامج لتلقي رسائل البريد الإلكتروني .</string>

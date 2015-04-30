@@ -1853,7 +1853,7 @@
     <value>CHECK IN</value>
   </data>
   <data name="HomeView_ManualPairing" xml:space="preserve">
-    <value>Check In</value>
+    <value>Dans un Taxi</value>
   </data>
   <data name="View_RideLinqPair" xml:space="preserve">
     <value>Check In</value>
@@ -1897,8 +1897,14 @@
   <data name="CreditCardRemoveErrorScheduledOrderMessage" xml:space="preserve">
     <value>Vous ne pouvez pas effacer une carte de crédit s'il y a une commande en cours.</value>
   </data>
+  <data name="HomeView_BookTaxi" xml:space="preserve">
+    <value>Commander Taxi</value>
+  </data>
   <data name="InvalidChargeType" xml:space="preserve">
     <value>Vous devez sélectionner un type de paiement avant de pouvoir confirmer votre commande</value>
+  </data>
+  <data name="BookATaxi_Message" xml:space="preserve">
+    <value>Quand voulez-vous commander votre taxi?</value>
   </data>
   <data name="InvalidChargeTypeTitle" xml:space="preserve">
     <value>Type de paiement invalide</value>

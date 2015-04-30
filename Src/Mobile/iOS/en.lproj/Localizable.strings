@@ -25,7 +25,7 @@
 "UpdatePasswordNewPasswordLabel"="New Password";
 "DestinationNotSpecifiedText"="Destination not specified";
 "PickupMapTitle"="Pickup location";
-"HomeView_ManualPairing"="Check In";
+"HomeView_ManualPairing"="In A Taxi";
 "View_NotificationSettings"="Notifications";
 "ErrorCreatingOrderTitle"="Booking cannot be completed";
 "DateTimePickerPickTitle"="Pickup date and time";
@@ -91,6 +91,7 @@
 "CreditCardCCV"="CVV";
 "ApplicationName"="TaxiHail";
 "UserTaxiHailNetwork_Enabled"="TaxiHail Network";
+"InvalidChargeTypeTitle"="Invalid Charge Type";
 "AccountDisabled"="Your account has been disabled, please contact {0} at {1} to activate your account.";
 "CreditCardExpYear"="Exp. Year";
 "HistoryDetailAuthorizationLabel"="Authorization:";
@@ -297,6 +298,7 @@
 "HistoryViewTitle"="History";
 "CardOnFile"="Card on File";
 "Continue"="Continue";
+"InvalidChargeType"="You must select a charge type to be able to book a ride";
 "TermsAndConditionsLabel"="Terms and Conditions";
 "BookingService_MobileBookingNoteBuildingName"="Building name {0}.";
 "StatusConfirmCancelRideErrorTitle"="Cannot cancel";
@@ -345,6 +347,7 @@
 "CreateAccountInvalidPassword"="The password is invalid.  The password and confirmation must be the same.  The password must also be between 6 and 10 characters.";
 "HistoryDetailRequestedLabel"="Requested:";
 "DriverInfoMake"="Make:";
+"BookATaxi_Message"="When would you like to book?";
 "PanelMenuViewPromotionsText"="Promotions";
 "Eta"="The nearest taxi is {0} and {1} {2} away";
 "View_Payments_CmtRideLinqConfirmPairTitle"="Confirm Payment Information";
@@ -398,6 +401,7 @@
 "ManualPairingForRideLinQ_Instructions"="Enter the 7-digit code displayed on the taxi touchscreen to auto-pay and get an e-receipt at the end of your ride.";
 "HistoryDetailBuildingNameLabel"="Building Name:";
 "EtaDurationUnit"="min";
+"HomeView_BookTaxi"="Book Taxi";
 "Create"="Create";
 "BackButton"="Back";
 "ConfirmPhoneLabel"="Mobile:";
@@ -594,5 +598,3 @@
 "ManualRideLinqStatus_Driver"="Driver id:";
 "InvalidAddressTextEdit"="Cannot validate adddress";
 "HistoryDetailPickupDateLabel"="Pickup Date:";
-"InvalidChargeType"="You must select a charge type to be able to book a ride";
-"InvalidChargeTypeTitle"="Invalid Charge Type";

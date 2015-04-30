@@ -199,6 +199,7 @@
     <Compile Include="ListViewStructure\ListItemData.cs" />
     <Compile Include="Messages\ActivityCompleted.cs" />
     <Compile Include="Activities\Account\PasswordRecoveryActivity.cs" />
+    <Compile Include="Models\BookATaxiDialogResult.cs" />
     <Compile Include="PlatformIntegration\MessageService.cs" />
     <Compile Include="PlatformIntegration\PackageInfo.cs" />
     <Compile Include="PlatformIntegration\PayPalConfigurationService.cs" />
@@ -617,6 +618,11 @@
     <AndroidResource Include="Resources\Drawable\notification_background.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
+    <Compile Include="Activities\Book\OrderBookingOptionsDialogActivity.cs" />
+    <AndroidResource Include="Resources\Drawable\button_action_cancel_selector.xml" />
+    <AndroidResource Include="Resources\Layout\View_OrderBookingOptionsDialog.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\View_Login.axml">
@@ -754,6 +760,8 @@
     <AndroidResource Include="Resources\drawable-xhdpi\train.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\airport.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\train.png" />
+    <AndroidResource Include="Resources\Drawable\button_action_blue_selector.xml" />
+    <AndroidResource Include="Resources\Drawable\button_action_blue_text_selector.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <Target Name="BeforeBuild">

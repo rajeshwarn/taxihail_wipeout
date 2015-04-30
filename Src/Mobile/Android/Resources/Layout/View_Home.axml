@@ -136,22 +136,6 @@
                             android:scaleType="center"
                             android:src="@drawable/train" />
                     </LinearLayout>
-                <!-- RideLinq button -->
-                    <LinearLayout
-                        android:layout_width="140dip"
-                        android:layout_height="44dip"
-                        android:background="@color/white"
-                        android:layout_marginBottom="40dp"
-                        local:MvxBind="Visibility IsManualRideLinqEnabled, Converter=Visibility"
-                        android:layout_gravity="bottom|center_horizontal">
-                        <Button
-                            android:id="@+id/btnRideLinq"
-                            style="@style/ButtonActionGreenStyle"
-                            local:MvxBind="Click ManualPairingRideLinq;"
-                            android:layout_width="match_parent"
-                            android:layout_height="44dip"
-                            android:text="@string/HomeView_ManualPairing" />
-                    </LinearLayout>
                 <!-- Order Review -->
                     <apcurium.MK.Booking.Mobile.Client.Controls.Widgets.OrderReview
                         android:layout_width="fill_parent"
