@@ -1904,7 +1904,7 @@
     <value>Vous devez sélectionner un type de paiement avant de pouvoir confirmer votre commande</value>
   </data>
   <data name="BookATaxi_Message" xml:space="preserve">
-    <value>Quand voulez-vous commender votre taxi?</value>
+    <value>Quand voulez-vous commander votre taxi?</value>
   </data>
   <data name="InvalidChargeTypeTitle" xml:space="preserve">
     <value>Type de paiement invalide</value>

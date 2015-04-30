@@ -354,7 +354,7 @@
   <string name="CreateAccountInvalidPassword">Le mot de passe est invalide. Le mot de passe et sa confirmation doivent être identique. Le mot de passe doit faire entre 6 et 10 caractères.</string>
   <string name="HistoryDetailRequestedLabel">Commandé le:</string>
   <string name="DriverInfoMake">Marque:</string>
-  <string name="BookATaxi_Message">Quand voulez-vous commender votre taxi?</string>
+  <string name="BookATaxi_Message">Quand voulez-vous commander votre taxi?</string>
   <string name="View_BookSettingMenu">Paramètres</string>
   <string name="Eta">Le véhicule le plus proche est à {1} {2} et {0}</string>
   <string name="View_Payments_CmtRideLinqConfirmPairTitle">Confirmer les informations relatives au paiement</string>
