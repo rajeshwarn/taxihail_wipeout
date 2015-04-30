@@ -143,7 +143,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				// Order Edit: Hidden
 				// Date Picker: Visible
 
-				CloseBootATaxiDialog();
+				CloseBookATaxiDialog();
 
 				_datePicker.Show();
 			}
@@ -153,8 +153,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				// Order Review: Visible
 				// Order Edit: Hidden
 				// Date Picker: Hidden
-				CloseBootATaxiDialog();
-				
+				CloseBookATaxiDialog();
+
 				UIView.Animate(
 					0.6f, 
 					() =>
@@ -172,12 +172,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			}
 			else if (hint.State == HomeViewModelState.BookATaxi)
 			{
-
 				constraintOrderBookinOptionsTopSpace.Constant = 0;
+				homeView.LayoutIfNeeded();
 
-				homeView.LayoutIfNeeded(); 
-
-				RedrawSubViews();
+				UIView.Animate (
+					0.2f, 
+					() => {
+						ctrlOrderBookingOptions.Alpha = 1;
+						homeView.LayoutIfNeeded(); 
+					},
+					RedrawSubViews);
 			}
 			else if (hint.State == HomeViewModelState.Edit)
 			{
@@ -205,7 +209,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				// Order Edit: Hidden
 				// Date Picker: Hidden
 
-				CloseBootATaxiDialog();
+				CloseBookATaxiDialog();
 
 				UIView.Animate(
 					0.6f, 
@@ -254,15 +258,22 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			}
         }
 
-		private void CloseBootATaxiDialog()
+		private void CloseBookATaxiDialog()
 		{
-			constraintOrderBookinOptionsTopSpace.Constant = UIScreen.MainScreen.Bounds.Height;
-
-			homeView.LayoutIfNeeded();
+			UIView.Animate (
+				0.2f, 
+				() => {
+					ctrlOrderBookingOptions.Alpha = 0;
+					homeView.LayoutIfNeeded ();
+				},
+				() =>
+				{
+					constraintOrderBookinOptionsTopSpace.Constant = UIScreen.MainScreen.Bounds.Height;
+					RedrawSubViews();
+				});
 		}
 
-
-        private void RedrawSubViews()
+		private void RedrawSubViews()
         {
             //redraw the shadows of the controls
             ctrlOrderReview.SetNeedsDisplay();
@@ -272,4 +283,3 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         }
     }
 }
-
