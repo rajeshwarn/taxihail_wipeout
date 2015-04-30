@@ -137,7 +137,6 @@
         <item name="android:background">@drawable/button_selector</item>
         <item name="android:focusable">true</item>
         <item name="android:clickable">true</item>
-        <item name="android:singleLine">true</item>
         <item name="android:layout_gravity">clip_vertical</item>
     </style>
 
