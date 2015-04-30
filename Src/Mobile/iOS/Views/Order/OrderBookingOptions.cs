@@ -19,7 +19,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 
 		private void Initialize()
 		{
-			BackgroundColor = UIColor.FromRGBA(68, 68, 68, 50);
+			// Need to set Alpha to 0 to get the view transparent
+			BackgroundColor = UIColor.FromRGBA(0, 0, 0, 0);
 
 			FlatButtonStyle.Green.ApplyTo(btnNow);
 			FlatButtonStyle.Green.ApplyTo(btnLater);
