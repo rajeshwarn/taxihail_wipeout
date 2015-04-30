@@ -33,6 +33,7 @@
     "CreateOrder_NoProvider": "Aucun fournisseur",
     "CreateOrder_InvalidProvider": "Fournisseur invalide",
     "CreateOrder_VehicleType": "Type de véhicule invalide",
+    "CreateOrder_InvalidChargeType": "Type de paiement invalide",
     "CreateOrder_PendingOrder": "La commande ne peut être créée car une autre commande est déjà en cours. Voir le statut de la commande?",
     "OrderNotInIbs": "Commande inconnue",
     "NearbyPlaces_LocationRequired": "Adresse requise",
