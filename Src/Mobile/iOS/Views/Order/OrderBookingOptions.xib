@@ -18,7 +18,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0gi-bO-F2S">
-                    <rect key="frame" x="10" y="84" width="300" height="250"/>
+                    <rect key="frame" x="10" y="159" width="300" height="250"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tou-Fr-F2q">
                             <rect key="frame" x="15" y="8" width="270" height="21"/>
@@ -77,7 +77,7 @@
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="0gi-bO-F2S" secondAttribute="trailing" constant="10" id="9XB-97-AnN"/>
                 <constraint firstItem="0gi-bO-F2S" firstAttribute="leading" secondItem="1" secondAttribute="leading" constant="10" id="OqT-l3-eAy"/>
-                <constraint firstAttribute="centerY" secondItem="0gi-bO-F2S" secondAttribute="centerY" constant="75" id="Q4M-5U-zhx"/>
+                <constraint firstAttribute="centerY" secondItem="0gi-bO-F2S" secondAttribute="centerY" id="Q4M-5U-zhx"/>
             </constraints>
             <point key="canvasLocation" x="306" y="429"/>
         </view>
