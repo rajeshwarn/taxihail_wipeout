@@ -25,7 +25,7 @@
 "UpdatePasswordNewPasswordLabel"="Nouveau mot de passe";
 "DestinationNotSpecifiedText"="Adresse de destination manquante";
 "PickupMapTitle"="Lieu de départ";
-"HomeView_ManualPairing"="Check In";
+"HomeView_ManualPairing"="Dans un Taxi";
 "View_NotificationSettings"="Notifications";
 "ErrorCreatingOrderTitle"="Désolé, la réservation ne peut être complétée";
 "DateTimePickerPickTitle"="Date et heure de départ";
@@ -91,6 +91,7 @@
 "CreditCardCCV"="Code sécurité";
 "Processing"="Traitement de votre commande...";
 "ApplicationName"="TaxiHail";
+"InvalidChargeTypeTitle"="Type de paiement invalide";
 "AccountDisabled"="Votre compte a été désactivé, merci de contacter le {0} au {1} pour le réactiver";
 "HistoryDetailAuthorizationLabel"="Autorisation:";
 "View_UpdatePassword"="Mettre a jour votre mot de passe";
@@ -302,6 +303,7 @@
 "EstimatingFare"="Calcul du prix en cours…";
 "HistoryViewTitle"="Réservations";
 "Continue"="Continuer";
+"InvalidChargeType"="Vous devez sélectionner un type de paiement avant de pouvoir confirmer votre commande";
 "TermsAndConditionsLabel"="Conditions générales d'utilisation";
 "BookingService_MobileBookingNoteBuildingName"="Bâtiment n° {0}";
 "StatusConfirmCancelRideErrorTitle"="Impossible d'annuler";
@@ -350,6 +352,7 @@
 "CreateAccountInvalidPassword"="Le mot de passe est invalide. Le mot de passe et sa confirmation doivent être identique. Le mot de passe doit faire entre 6 et 10 caractères.";
 "HistoryDetailRequestedLabel"="Commandé le:";
 "DriverInfoMake"="Marque:";
+"BookATaxi_Message"="Quand voulez-vous commender votre taxi?";
 "View_BookSettingMenu"="Paramètres";
 "Eta"="Le véhicule le plus proche est à {1} {2} et {0}";
 "View_Payments_CmtRideLinqConfirmPairTitle"="Confirmer les informations relatives au paiement";
@@ -400,6 +403,7 @@
 "HistoryDetailBuildingNameLabel"="Nom du bâtiment:";
 "EtaDurationUnit"="minute";
 "LocationHistoryTitle"="Historique des positions";
+"HomeView_BookTaxi"="Commander Taxi";
 "Create"="Créer";
 "BackButton"="Retour";
 "AddReminderMessage"="Souhaitez-vous qu'un rendez-vous soit créé dans votre calendrier pour ce trajet?";
@@ -584,8 +588,6 @@
 "HistoryDetailBuildingNameNotSpecified"="Non spécifié";
 "TabBook"="Réserver maintenant!";
 "CreditCardRemoveErrorScheduledOrderMessage"="Vous ne pouvez pas effacer une carte de crédit s'il y a une commande en cours.";
-"InvalidChargeType"="Vous devez sélectionner un type de paiement avant de pouvoir confirmer votre commande";
-"InvalidChargeTypeTitle"="Type de paiement invalide";
 "TaxiMapTitle"="Votre véhicule";
 "InvalidLoginMessage"="L'email et/ou le mot de passe semblent invalides";
 "NoMailClient"="Il n'y a pas d'adresse email client enregistrée";

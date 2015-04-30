@@ -24,7 +24,7 @@
 "UpdatePasswordNewPasswordLabel"="Nueva contraseña";
 "DestinationNotSpecifiedText"="Destino no especificado";
 "HistoryDetailDestinationLabel"="Destino:";
-"HomeView_ManualPairing"="Check In";
+"HomeView_ManualPairing"="In A Taxi";
 "View_NotificationSettings"="Notificaciones";
 "ErrorCreatingOrderTitle"="La reservación no puede ser completada";
 "DateTimePickerPickTitle"="Fecha y hora del servicio";
@@ -90,6 +90,7 @@
 "Processing"="Procesando su pedido...";
 "ApplicationName"="TaxiHail";
 "StatusInvalid"="Estado no disponible";
+"InvalidChargeTypeTitle"="Invalid Charge Type";
 "AccountDisabled"="Su cuenta ha sido deshabilitada, por favor contacte a {0} al {1} para re-activar su cuenta";
 "HistoryDetailAuthorizationLabel"="Autorización";
 "View_UpdatePassword"="Actualizar contraseña";
@@ -299,6 +300,7 @@
 "EstimatingFare"="Estimando costo de su servicio";
 "HistoryViewTitle"="Historia";
 "Continue"="Continuar";
+"InvalidChargeType"="You must select a charge type to be able to book a ride";
 "TermsAndConditionsLabel"="Términos y condiciones";
 "PaymentDetails.InvalidDataTitle"="Información de pago inválida";
 "StatusConfirmCancelRideErrorTitle"="No de puede cancelar";
@@ -344,6 +346,7 @@
 "CreateAccountInvalidPassword"="La contraseña es inválida. La contraseña y la confirmación deben ser identicas. La contraseña debe ser de 6 a 10 caracteres.";
 "HistoryDetailRequestedLabel"="Solicitud:";
 "DriverInfoMake"="Marca:";
+"BookATaxi_Message"="When would you like to book?";
 "View_BookSettingMenu"="Ajustes";
 "View_Payments_CmtRideLinqConfirmPairTitle"="Confirmar información de pago";
 "CreateAccountInvalidDataTitle"="Información de cuenta inválida";
@@ -393,6 +396,7 @@
 "HistoryDetailBuildingNameLabel"="Nombre de edificio:";
 "EtaDurationUnit"="min";
 "LocationHistoryTitle"="Historial de lugares";
+"HomeView_BookTaxi"="Book Taxi";
 "Create"="Crear";
 "BackButton"="Atrás";
 "AddReminderMessage"="Le gustaria agregar un recordatorio en su calendario para esta reservación?";
@@ -574,8 +578,6 @@
 "HistoryDetailBuildingNameNotSpecified"="No Especificado";
 "TabBook"="De Alta";
 "CreditCardRemoveErrorScheduledOrderMessage"="You cannot delete your credit card when an order is scheduled or in progress.";
-"InvalidChargeType"="You must select a charge type to be able to book a ride";
-"InvalidChargeTypeTitle"="Invalid Charge Type";
 "TaxiMapTitle"="Su Taxi";
 "InvalidLoginMessage"="Email y/o contraseña incorrecta";
 "NoMailClient"="No hay clientes de correo instalados";

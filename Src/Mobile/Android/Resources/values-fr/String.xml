@@ -27,7 +27,7 @@
   <string name="UpdatePasswordNewPasswordLabel">Nouveau mot de passe</string>
   <string name="DestinationNotSpecifiedText">Adresse de destination manquante</string>
   <string name="PickupMapTitle">Lieu de départ</string>
-  <string name="HomeView_ManualPairing">Check In</string>
+  <string name="HomeView_ManualPairing">Dans un Taxi</string>
   <string name="View_NotificationSettings">Notifications</string>
   <string name="ErrorCreatingOrderTitle">Désolé, la réservation ne peut être complétée</string>
   <string name="DateTimePickerPickTitle">Date et heure de départ</string>
@@ -93,6 +93,7 @@
   <string name="CreditCardCCV">Code sécurité</string>
   <string name="Processing">Traitement de votre commande...</string>
   <string name="ApplicationName">TaxiHail</string>
+  <string name="InvalidChargeTypeTitle">Type de paiement invalide</string>
   <string name="AccountDisabled">Votre compte a été désactivé, merci de contacter le {0} au {1} pour le réactiver</string>
   <string name="HistoryDetailAuthorizationLabel">Autorisation:</string>
   <string name="View_UpdatePassword">Mettre a jour votre mot de passe</string>
@@ -304,6 +305,7 @@
   <string name="EstimatingFare">Calcul du prix en cours…</string>
   <string name="HistoryViewTitle">Réservations</string>
   <string name="Continue">Continuer</string>
+  <string name="InvalidChargeType">Vous devez sélectionner un type de paiement avant de pouvoir confirmer votre commande</string>
   <string name="TermsAndConditionsLabel">Conditions générales d\'utilisation</string>
   <string name="BookingService_MobileBookingNoteBuildingName">Bâtiment n° {0}</string>
   <string name="StatusConfirmCancelRideErrorTitle">Impossible d\'annuler</string>
@@ -352,6 +354,7 @@
   <string name="CreateAccountInvalidPassword">Le mot de passe est invalide. Le mot de passe et sa confirmation doivent être identique. Le mot de passe doit faire entre 6 et 10 caractères.</string>
   <string name="HistoryDetailRequestedLabel">Commandé le:</string>
   <string name="DriverInfoMake">Marque:</string>
+  <string name="BookATaxi_Message">Quand voulez-vous commender votre taxi?</string>
   <string name="View_BookSettingMenu">Paramètres</string>
   <string name="Eta">Le véhicule le plus proche est à {1} {2} et {0}</string>
   <string name="View_Payments_CmtRideLinqConfirmPairTitle">Confirmer les informations relatives au paiement</string>
@@ -402,6 +405,7 @@
   <string name="HistoryDetailBuildingNameLabel">Nom du bâtiment:</string>
   <string name="EtaDurationUnit">minute</string>
   <string name="LocationHistoryTitle">Historique des positions</string>
+  <string name="HomeView_BookTaxi">Commander Taxi</string>
   <string name="Create">Créer</string>
   <string name="BackButton">Retour</string>
   <string name="AddReminderMessage">Souhaitez-vous qu\'un rendez-vous soit créé dans votre calendrier pour ce trajet?</string>
@@ -586,8 +590,6 @@
   <string name="HistoryDetailBuildingNameNotSpecified">Non spécifié</string>
   <string name="TabBook">Réserver maintenant!</string>
   <string name="CreditCardRemoveErrorScheduledOrderMessage">Vous ne pouvez pas effacer une carte de crédit s\'il y a une commande en cours.</string>
-  <string name="InvalidChargeType">Vous devez sélectionner un type de paiement avant de pouvoir confirmer votre commande</string>
-  <string name="InvalidChargeTypeTitle">Type de paiement invalide</string>
   <string name="TaxiMapTitle">Votre véhicule</string>
   <string name="InvalidLoginMessage">L\'email et/ou le mot de passe semblent invalides</string>
   <string name="NoMailClient">Il n\'y a pas d\'adresse email client enregistrée</string>
