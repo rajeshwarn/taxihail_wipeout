@@ -63,7 +63,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
 			var btnEstimate = GenerateEstimateButton();
 
-			var btnBook = GenerateBookButton();
+			var btnBook = GenerateBookButton("HomeView_BookTaxi");
 			_imagePromoForManual = GeneratePromoImage();
 			btnBook.AddSubview(_imagePromoForManual);
 
@@ -144,14 +144,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			};
 		}
 
-		private FlatButton GenerateBookButton()
+		private FlatButton GenerateBookButton(string titleResource)
 		{
 			var btnBook = new FlatButton()
 			{
 				TranslatesAutoresizingMaskIntoConstraints = false
 			};
 			FlatButtonStyle.Green.ApplyTo(btnBook);
-			btnBook.SetTitle(Localize.GetValue("BookItButton"), UIControlState.Normal);
+			btnBook.SetTitle(Localize.GetValue(titleResource), UIControlState.Normal);
 
 			return btnBook;
 		}
@@ -209,7 +209,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
 			var btnEstimate = GenerateEstimateButton();
 
-			var btnBook = GenerateBookButton();
+			var btnBook = GenerateBookButton("BookItButton");
 
 			_imagePromo = GeneratePromoImage();
 			btnBook.AddSubview(_imagePromo);
