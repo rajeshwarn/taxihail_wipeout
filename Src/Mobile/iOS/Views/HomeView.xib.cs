@@ -172,16 +172,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			}
 			else if (hint.State == HomeViewModelState.BookATaxi)
 			{
-				UIView.Animate(
-					0f,
-					() =>
-					{
-						ctrlOrderBookingOptions.SetNeedsDisplay();
-						constraintOrderBookinOptionsTopSpace.Constant = 0;
 
-						homeView.LayoutIfNeeded(); 
-					},
-					RedrawSubViews);
+				constraintOrderBookinOptionsTopSpace.Constant = 0;
+
+				homeView.LayoutIfNeeded(); 
+
+				RedrawSubViews();
 			}
 			else if (hint.State == HomeViewModelState.Edit)
 			{
@@ -208,7 +204,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				// Order Review: Hidden
 				// Order Edit: Hidden
 				// Date Picker: Hidden
-
 
 				CloseBootATaxiDialog();
 
@@ -261,15 +256,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 		private void CloseBootATaxiDialog()
 		{
-			UIView.Animate(
-				0f, 
-				() =>
-				{    
-					constraintOrderBookinOptionsTopSpace.Constant = UIScreen.MainScreen.Bounds.Height;
+			constraintOrderBookinOptionsTopSpace.Constant = UIScreen.MainScreen.Bounds.Height;
 
-					homeView.LayoutIfNeeded();
-				},
-				RedrawSubViews);
+			homeView.LayoutIfNeeded();
 		}
 
 
@@ -279,6 +268,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             ctrlOrderReview.SetNeedsDisplay();
             orderEdit.SetNeedsDisplay();
             ctrlOrderOptions.SetNeedsDisplay();
+			ctrlOrderBookingOptions.SetNeedsDisplay();
         }
     }
 }
