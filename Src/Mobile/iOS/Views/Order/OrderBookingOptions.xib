@@ -18,7 +18,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0gi-bO-F2S">
-                    <rect key="frame" x="10" y="159" width="300" height="250"/>
+                    <rect key="frame" x="10" y="176" width="300" height="216"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tou-Fr-F2q">
                             <rect key="frame" x="15" y="8" width="270" height="21"/>
@@ -60,7 +60,7 @@
                         <constraint firstItem="tou-Fr-F2q" firstAttribute="top" secondItem="0gi-bO-F2S" secondAttribute="top" constant="8" id="1Dc-vh-ozM"/>
                         <constraint firstItem="a9B-tJ-XdB" firstAttribute="top" secondItem="tou-Fr-F2q" secondAttribute="bottom" constant="20" id="3cn-xd-Ggb"/>
                         <constraint firstItem="0p6-Yx-b9G" firstAttribute="top" secondItem="0hM-GX-gt0" secondAttribute="bottom" constant="12" id="7pQ-un-spv"/>
-                        <constraint firstAttribute="height" constant="250" id="DdL-qD-Wqu"/>
+                        <constraint firstAttribute="bottom" secondItem="0p6-Yx-b9G" secondAttribute="bottom" constant="20" id="D2a-Qg-d6r"/>
                         <constraint firstItem="0hM-GX-gt0" firstAttribute="top" secondItem="a9B-tJ-XdB" secondAttribute="bottom" constant="12" id="EbB-jo-Ldl"/>
                         <constraint firstItem="0p6-Yx-b9G" firstAttribute="leading" secondItem="0gi-bO-F2S" secondAttribute="leading" constant="20" id="MeQ-sB-KBq"/>
                         <constraint firstAttribute="trailing" secondItem="0hM-GX-gt0" secondAttribute="trailing" constant="20" id="ONi-o9-Zty"/>

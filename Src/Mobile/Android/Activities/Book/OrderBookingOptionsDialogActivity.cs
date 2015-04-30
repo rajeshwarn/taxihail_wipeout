@@ -8,30 +8,30 @@ using Android.Widget;
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {
     [Activity(Label = "@string/HomeView_BookTaxi", Theme = "@style/BookATaxiDialog")]
-    public class BookATaxiDialogActivity : Activity
+    public class OrderBookingOptionsDialogActivity : Activity
     {
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
 
-            SetContentView(Resource.Layout.View_BookATaxiDialog);
+			SetContentView(Resource.Layout.View_OrderBookingOptionsDialog);
 
             var btnBookNow = FindViewById<Button>(Resource.Id.btnBookNow);
             var btnBookLater = FindViewById<Button>(Resource.Id.btnBookLater);
             var btnCancel = FindViewById<Button>(Resource.Id.btnCancel);
 
             btnBookNow.Click += BtnBookNow_Click;
-            btnBookLater.Click += BtnBookLaterOnClick;
-            btnCancel.Click += BtnCancelOnClick;
+            btnBookLater.Click += BtnBookLater_Click;
+            btnCancel.Click += BtnCancel_Click;
         }
 
-        private void BtnCancelOnClick(object sender, EventArgs eventArgs)
+        private void BtnCancel_Click(object sender, EventArgs eventArgs)
         {
             SetResult(Result.Canceled, new Intent());
             Finish();
         }
 
-        private void BtnBookLaterOnClick(object sender, EventArgs eventArgs)
+        private void BtnBookLater_Click(object sender, EventArgs eventArgs)
         {
             SendResult(BookATaxiEnum.BookLater);
         }

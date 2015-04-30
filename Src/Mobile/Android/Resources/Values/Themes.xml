@@ -182,7 +182,7 @@
 
   <style name="ButtonActionCancelStyle" parent="@style/custom_ButtonStyle">
     <item name="android:background">@color/transparent</item>
-    <item name="android:textColor">@drawable/button_action_red_text_2_selector</item>
+    <item name="android:textColor">@drawable/button_action_cancel_selector</item>
   </style>
 
     <!-- Tutorial Theme -->

@@ -61,7 +61,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 
 			set.Bind(btnCancel)
 				.For("TouchUpInside")
-				.To(vm => vm.CancelBookATaxi);
+				.To(vm => vm.ResetToInitialState);
 
 			set.Apply();
 		}

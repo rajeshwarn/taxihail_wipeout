@@ -353,13 +353,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                         ViewModel.BottomBar.BookLater.ExecuteIfPossible();
                         break;
                     default:
-                        ViewModel.BottomBar.CancelBookLater.ExecuteIfPossible();
+                        ViewModel.BottomBar.ResetToInitialState.ExecuteIfPossible();
                         break;
                 }
             }
             else
             {
-                ViewModel.BottomBar.CancelBookLater.ExecuteIfPossible(null);
+                ViewModel.BottomBar.ResetToInitialState.ExecuteIfPossible(null);
             }
         }
 
@@ -419,7 +419,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
                 ((LinearLayout.MarginLayoutParams)_orderOptions.LayoutParameters).TopMargin = 0;
 
-                var intent = new Intent(this, typeof (BookATaxiDialogActivity));
+                var intent = new Intent(this, typeof (OrderBookingOptionsDialogActivity));
                 StartActivityForResult(intent, (int)ActivityEnum.BookATaxi);
             }
             else if (_presentationState == HomeViewModelState.Review)

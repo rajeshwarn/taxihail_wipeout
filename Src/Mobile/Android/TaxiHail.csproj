@@ -170,7 +170,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Activities\BaseActivity.cs" />
-    <Compile Include="Activities\Book\BookATaxiDialogActivity.cs" />
     <Compile Include="Activities\Book\DateTimePickerActivity.cs" />
     <Compile Include="Activities\Book\LocationListener.cs" />
     <Compile Include="Activities\Book\LocationService.cs" />
@@ -619,6 +618,11 @@
     <AndroidResource Include="Resources\Drawable\notification_background.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
+    <Compile Include="Activities\Book\OrderBookingOptionsDialogActivity.cs" />
+    <AndroidResource Include="Resources\Drawable\button_action_cancel_selector.xml" />
+    <AndroidResource Include="Resources\Layout\View_OrderBookingOptionsDialog.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\View_Login.axml">
@@ -758,7 +762,6 @@
     <AndroidResource Include="Resources\drawable-xxhdpi\train.png" />
     <AndroidResource Include="Resources\Drawable\button_action_blue_selector.xml" />
     <AndroidResource Include="Resources\Drawable\button_action_blue_text_selector.xml" />
-    <AndroidResource Include="Resources\Drawable\button_action_red_text_2_selector.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <Target Name="BeforeBuild">
@@ -848,9 +851,6 @@
       <SubType>AndroidResource</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\Layout\View_ManualRideLinqStatus.axml">
-      <SubType>AndroidResource</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\Layout\View_BookATaxiDialog.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
   </ItemGroup>
