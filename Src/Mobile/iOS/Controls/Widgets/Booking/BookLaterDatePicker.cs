@@ -67,7 +67,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Booking
 
             set.Bind(CancelButton)
                 .For("TouchUpInside")
-                .To(vm => vm.CancelBookLater);
+				.To(vm => vm.ResetToInitialState);
                 
             set.Apply();
         }

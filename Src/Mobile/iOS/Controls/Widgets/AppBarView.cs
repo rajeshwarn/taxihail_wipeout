@@ -85,8 +85,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			// Constraints for Manual button
 			AddConstraints(new []
 			{
-				NSLayoutConstraint.Create(btnManual, NSLayoutAttribute.Leading, NSLayoutRelation.Equal, btnEstimate, NSLayoutAttribute.Trailing, 1, 20f),
-				NSLayoutConstraint.Create(btnBook, NSLayoutAttribute.Leading, NSLayoutRelation.Equal, btnManual, NSLayoutAttribute.Trailing, 1, 20f),
+				NSLayoutConstraint.Create(btnManual, NSLayoutAttribute.Leading, NSLayoutRelation.Equal, btnEstimate, NSLayoutAttribute.Trailing, 1, 10f),
+				NSLayoutConstraint.Create(btnBook, NSLayoutAttribute.Leading, NSLayoutRelation.Equal, btnManual, NSLayoutAttribute.Trailing, 1, 10f),
 				NSLayoutConstraint.Create(btnManual, NSLayoutAttribute.CenterY, NSLayoutRelation.Equal, _manualPairingButtons, NSLayoutAttribute.CenterY, 1, 0f),
 				NSLayoutConstraint.Create(btnManual, NSLayoutAttribute.Height, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1, 41f),
 				NSLayoutConstraint.Create(btnManual, NSLayoutAttribute.Width, NSLayoutRelation.Equal, btnBook, NSLayoutAttribute.Width, 1, 0f),
