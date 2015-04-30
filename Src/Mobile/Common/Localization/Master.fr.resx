@@ -415,7 +415,7 @@
     <value>Mme</value>
   </data>
   <data name="CreateAccount_AccountAlreadyExist" xml:space="preserve">
-    <value>Le compte ne peut malheureusement pas être créé, email déjà utilisé!</value>
+    <value>Email déjà utilisé!</value>
   </data>
   <data name="CreditCard" xml:space="preserve">
     <value>Carte de paiement</value>
@@ -1900,7 +1900,13 @@
   <data name="HomeView_BookTaxi" xml:space="preserve">
     <value>Commander Taxi</value>
   </data>
+  <data name="InvalidChargeType" xml:space="preserve">
+    <value>Vous devez sélectionner un type de paiement avant de pouvoir confirmer votre commande</value>
+  </data>
   <data name="BookATaxi_Message" xml:space="preserve">
     <value>Quand voulez-vous commender votre taxi?</value>
+  </data>
+  <data name="InvalidChargeTypeTitle" xml:space="preserve">
+    <value>Type de paiement invalide</value>
   </data>
 </root>

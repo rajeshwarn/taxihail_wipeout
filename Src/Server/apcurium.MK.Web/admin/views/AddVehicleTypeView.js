@@ -97,7 +97,12 @@
                 }
             }
 
-            if (selectedNetworkVehicle && vehicleType.maxNumberPassengers > selectedNetworkVehicle.maxNumberPassengers) {
+            if (selectedNetworkVehicle && selectedNetworkVehicle.maxNumberPassengers == 0 && vehicleType.maxNumberPassengers != 0) {
+                // Only a 'no limit' vehicle can be matched with another 'no limit' vehicle
+                return false;
+            }
+
+            if (selectedNetworkVehicle && vehicleType.maxNumberPassengers < selectedNetworkVehicle.maxNumberPassengers) {
                 return false;
             }
 

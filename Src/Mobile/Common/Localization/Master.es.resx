@@ -538,7 +538,7 @@
     <comment>Mrs</comment>
   </data>
   <data name="CreateAccount_AccountAlreadyExist" xml:space="preserve">
-    <value>La cuenta no puede ser creada, este correo ya está en uso</value>
+    <value>Este correo ya está en uso</value>
     <comment>The account cannot be created, this email is already in use.</comment>
   </data>
   <data name="CreditCard" xml:space="preserve">
@@ -2358,7 +2358,13 @@
   <data name="HomeView_BookTaxi" xml:space="preserve">
     <value>Book Taxi</value>
   </data>
+  <data name="InvalidChargeType" xml:space="preserve">
+    <value>You must select a charge type to be able to book a ride</value>
+  </data>
   <data name="BookATaxi_Message" xml:space="preserve">
     <value>When would you like to book?</value>
+  </data>
+  <data name="InvalidChargeTypeTitle" xml:space="preserve">
+    <value>Invalid Charge Type</value>
   </data>
 </root>

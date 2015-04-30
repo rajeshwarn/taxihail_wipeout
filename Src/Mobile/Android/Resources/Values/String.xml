@@ -27,7 +27,7 @@
   <string name="UpdatePasswordNewPasswordLabel">New Password</string>
   <string name="DestinationNotSpecifiedText">Destination not specified</string>
   <string name="PickupMapTitle">Pickup location</string>
-  <string name="HomeView_ManualPairing">In A Taxi</string>
+  <string name="HomeView_ManualPairing">Check In</string>
   <string name="View_NotificationSettings">Notifications</string>
   <string name="ErrorCreatingOrderTitle">Booking cannot be completed</string>
   <string name="DateTimePickerPickTitle">Pickup date and time</string>
@@ -347,7 +347,6 @@
   <string name="CreateAccountInvalidPassword">The password is invalid.  The password and confirmation must be the same.  The password must also be between 6 and 10 characters.</string>
   <string name="HistoryDetailRequestedLabel">Requested:</string>
   <string name="DriverInfoMake">Make:</string>
-  <string name="BookATaxi_Message">When would you like to book?</string>
   <string name="PanelMenuViewPromotionsText">Promotions</string>
   <string name="Eta">The nearest taxi is {0} and {1} {2} away</string>
   <string name="View_Payments_CmtRideLinqConfirmPairTitle">Confirm Payment Information</string>
@@ -384,7 +383,7 @@
   <string name="NetworkErrorTitle">No network connection</string>
   <string name="CreateAccountTitleMr">Mr</string>
   <string name="HistoryViewNoHistoryLabel">No booking history</string>
-  <string name="CreateAccount_AccountAlreadyExist">The account cannot be created, this email is already in use.</string>
+  <string name="CreateAccount_AccountAlreadyExist">This email is already in use.</string>
   <string name="ChangePasswordConfirmmation">You password has been updated, please sign in.</string>
   <string name="RingCodeTextPlaceholder">Entry code</string>
   <string name="EstimatePriceFormat">Estimated Fare : {0} ({1})</string>
@@ -401,7 +400,6 @@
   <string name="ManualPairingForRideLinQ_Instructions">Enter the 7-digit code displayed on the taxi touchscreen to auto-pay and get an e-receipt at the end of your ride.</string>
   <string name="HistoryDetailBuildingNameLabel">Building Name:</string>
   <string name="EtaDurationUnit">min</string>
-  <string name="HomeView_BookTaxi">Book Taxi</string>
   <string name="Create">Create</string>
   <string name="BackButton">Back</string>
   <string name="ConfirmPhoneLabel">Mobile:</string>
@@ -598,4 +596,6 @@
   <string name="ManualRideLinqStatus_Driver">Driver id:</string>
   <string name="InvalidAddressTextEdit">Cannot validate adddress</string>
   <string name="HistoryDetailPickupDateLabel">Pickup Date:</string>
+  <string name="InvalidChargeType">You must select a charge type to be able to book a ride</string>
+  <string name="InvalidChargeTypeTitle">Invalid Charge Type</string>
 </resources>

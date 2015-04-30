@@ -169,9 +169,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 							{
 								error = this.Services().Localize["CreateAccountErrorNotSpecified"];
 							}
-							if (this.Services().Localize["ServiceError" + error] != "ServiceError" + error)
+							if (this.Services().Localize[error] != error)
 							{
-								this.Services().Message.ShowMessage(this.Services().Localize["CreateAccountErrorTitle"], this.Services().Localize["CreateAccountErrorMessage"] + " " + this.Services().Localize["ServiceError" + error]);
+								this.Services().Message.ShowMessage(this.Services().Localize["CreateAccountErrorTitle"], this.Services().Localize["CreateAccountErrorMessage"] + " " + this.Services().Localize[error]);
 							}
 							else
 							{

@@ -24,7 +24,7 @@
 "UpdatePasswordNewPasswordLabel"="Nueva contraseña";
 "DestinationNotSpecifiedText"="Destino no especificado";
 "HistoryDetailDestinationLabel"="Destino:";
-"HomeView_ManualPairing"="In A Taxi";
+"HomeView_ManualPairing"="Check In";
 "View_NotificationSettings"="Notificaciones";
 "ErrorCreatingOrderTitle"="La reservación no puede ser completada";
 "DateTimePickerPickTitle"="Fecha y hora del servicio";
@@ -344,7 +344,6 @@
 "CreateAccountInvalidPassword"="La contraseña es inválida. La contraseña y la confirmación deben ser identicas. La contraseña debe ser de 6 a 10 caracteres.";
 "HistoryDetailRequestedLabel"="Solicitud:";
 "DriverInfoMake"="Marca:";
-"BookATaxi_Message"="When would you like to book?";
 "View_BookSettingMenu"="Ajustes";
 "View_Payments_CmtRideLinqConfirmPairTitle"="Confirmar información de pago";
 "CreateAccountInvalidDataTitle"="Información de cuenta inválida";
@@ -378,7 +377,7 @@
 "NetworkErrorTitle"="No hay conección de red";
 "CreateAccountTitleMr"="Sra.";
 "HistoryViewNoHistoryLabel"="No hay historial de reservaciones";
-"CreateAccount_AccountAlreadyExist"="La cuenta no puede ser creada, este correo ya está en uso";
+"CreateAccount_AccountAlreadyExist"="Este correo ya está en uso";
 "ChangePasswordConfirmmation"="Su contraseña ha sido actualizada, por favor inicie sesión";
 "EstimatePriceFormat"="Estimado: {0} ({1})";
 "NetworkContactingNextDispatchDescription"="Contacting {0} ...";
@@ -394,7 +393,6 @@
 "HistoryDetailBuildingNameLabel"="Nombre de edificio:";
 "EtaDurationUnit"="min";
 "LocationHistoryTitle"="Historial de lugares";
-"HomeView_BookTaxi"="Book Taxi";
 "Create"="Crear";
 "BackButton"="Atrás";
 "AddReminderMessage"="Le gustaria agregar un recordatorio en su calendario para esta reservación?";
@@ -576,6 +574,8 @@
 "HistoryDetailBuildingNameNotSpecified"="No Especificado";
 "TabBook"="De Alta";
 "CreditCardRemoveErrorScheduledOrderMessage"="You cannot delete your credit card when an order is scheduled or in progress.";
+"InvalidChargeType"="You must select a charge type to be able to book a ride";
+"InvalidChargeTypeTitle"="Invalid Charge Type";
 "TaxiMapTitle"="Su Taxi";
 "InvalidLoginMessage"="Email y/o contraseña incorrecta";
 "NoMailClient"="No hay clientes de correo instalados";

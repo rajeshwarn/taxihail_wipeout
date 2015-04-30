@@ -214,6 +214,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
                 {
                     try
                     {
+                        var chargeTypeValidated = await _orderWorkflowService.ValidateChargeType();
+                        if (!chargeTypeValidated)
+                        {
+                            this.Services().Message.ShowMessage(
+                                this.Services().Localize["InvalidChargeTypeTitle"],
+                                this.Services().Localize["InvalidChargeType"]);
+
+                            return;
+                        }
+
                         var canBeConfirmed = await _orderWorkflowService.GetAndObserveOrderCanBeConfirmed().Take(1).ToTask();
                         if (!canBeConfirmed)
                         {

@@ -26,7 +26,7 @@
   <string name="UpdatePasswordNewPasswordLabel">Nueva contraseña</string>
   <string name="DestinationNotSpecifiedText">Destino no especificado</string>
   <string name="HistoryDetailDestinationLabel">Destino:</string>
-  <string name="HomeView_ManualPairing">In A Taxi</string>
+  <string name="HomeView_ManualPairing">Check In</string>
   <string name="View_NotificationSettings">Notificaciones</string>
   <string name="ErrorCreatingOrderTitle">La reservación no puede ser completada</string>
   <string name="DateTimePickerPickTitle">Fecha y hora del servicio</string>
@@ -346,7 +346,6 @@
   <string name="CreateAccountInvalidPassword">La contraseña es inválida. La contraseña y la confirmación deben ser identicas. La contraseña debe ser de 6 a 10 caracteres.</string>
   <string name="HistoryDetailRequestedLabel">Solicitud:</string>
   <string name="DriverInfoMake">Marca:</string>
-  <string name="BookATaxi_Message">When would you like to book?</string>
   <string name="View_BookSettingMenu">Ajustes</string>
   <string name="View_Payments_CmtRideLinqConfirmPairTitle">Confirmar información de pago</string>
   <string name="CreateAccountInvalidDataTitle">Información de cuenta inválida</string>
@@ -380,7 +379,7 @@
   <string name="NetworkErrorTitle">No hay conección de red</string>
   <string name="CreateAccountTitleMr">Sra.</string>
   <string name="HistoryViewNoHistoryLabel">No hay historial de reservaciones</string>
-  <string name="CreateAccount_AccountAlreadyExist">La cuenta no puede ser creada, este correo ya está en uso</string>
+  <string name="CreateAccount_AccountAlreadyExist">Este correo ya está en uso</string>
   <string name="ChangePasswordConfirmmation">Su contraseña ha sido actualizada, por favor inicie sesión</string>
   <string name="EstimatePriceFormat">Estimado: {0} ({1})</string>
   <string name="NetworkContactingNextDispatchDescription">Contacting {0} ...</string>
@@ -396,7 +395,6 @@
   <string name="HistoryDetailBuildingNameLabel">Nombre de edificio:</string>
   <string name="EtaDurationUnit">min</string>
   <string name="LocationHistoryTitle">Historial de lugares</string>
-  <string name="HomeView_BookTaxi">Book Taxi</string>
   <string name="Create">Crear</string>
   <string name="BackButton">Atrás</string>
   <string name="AddReminderMessage">Le gustaria agregar un recordatorio en su calendario para esta reservación?</string>
@@ -578,6 +576,8 @@
   <string name="HistoryDetailBuildingNameNotSpecified">No Especificado</string>
   <string name="TabBook">De Alta</string>
   <string name="CreditCardRemoveErrorScheduledOrderMessage">You cannot delete your credit card when an order is scheduled or in progress.</string>
+  <string name="InvalidChargeType">You must select a charge type to be able to book a ride</string>
+  <string name="InvalidChargeTypeTitle">Invalid Charge Type</string>
   <string name="TaxiMapTitle">Su Taxi</string>
   <string name="InvalidLoginMessage">Email y/o contraseña incorrecta</string>
   <string name="NoMailClient">No hay clientes de correo instalados</string>

@@ -961,7 +961,7 @@
     <value>Building name {0}.</value>
   </data>
   <data name="CreateAccount_AccountAlreadyExist" xml:space="preserve">
-    <value>The account cannot be created, this email is already in use.</value>
+    <value>This email is already in use.</value>
   </data>
   <data name="UpdatePasswordCurrentPasswordLabel" xml:space="preserve">
     <value>Current Password</value>
@@ -1910,5 +1910,11 @@
   </data>
   <data name="BookATaxi_Message" xml:space="preserve">
     <value>When would you like to book?</value>
+  </data>
+  <data name="InvalidChargeType" xml:space="preserve">
+    <value>You must select a charge type to be able to book a ride</value>
+  </data>
+  <data name="InvalidChargeTypeTitle" xml:space="preserve">
+    <value>Invalid Charge Type</value>
   </data>
 </root>

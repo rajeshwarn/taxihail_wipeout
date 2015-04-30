@@ -44,6 +44,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 
 		Task ValidateNumberOfPassengers (int? numberOfPassengers);
 
+	    Task<bool> ValidateChargeType();
+
 		Task<Tuple<Order, OrderStatusDetail>> ConfirmOrder();
 
 		Task SetVehicleType (int? vehicleTypeId);

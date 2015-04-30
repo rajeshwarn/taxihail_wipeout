@@ -1843,4 +1843,10 @@
   <data name="BookATaxi_Message" xml:space="preserve">
     <value>When would you like to book?</value>
   </data>
+  <data name="InvalidChargeType" xml:space="preserve">
+    <value>You must select a charge type to be able to book a ride</value>
+  </data>
+  <data name="InvalidChargeTypeTitle" xml:space="preserve">
+    <value>Invalid Charge Type</value>
+  </data>
 </root>

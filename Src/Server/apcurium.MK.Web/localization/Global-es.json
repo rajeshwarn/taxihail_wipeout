@@ -33,6 +33,7 @@
 	"CreateOrder_NoProvider": "Mal Proveedor",
 	"CreateOrder_InvalidProvider": "Proveedor inválido",
     "CreateOrder_VehicleType": "Tipo de Vehículo inválido",
+    "CreateOrder_InvalidChargeType": "Invalid Charge Type",
     "CreateOrder_PendingOrder": "No puede reservar este servicio, ya que hay una reservación pendiente. ¿Desea ver esta reservación?",
 	"OrderNotInIbs": "Reservación desconocida",
 	"NearbyPlaces_LocationRequired": "Ubicación requerida",

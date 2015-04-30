@@ -24,7 +24,7 @@
 "UpdatePasswordNewPasswordLabel"="كلمة المرور الجديدة";
 "DestinationNotSpecifiedText"="الوجهة غير محددة";
 "PickupMapTitle"="موقع الإلتقاء";
-"HomeView_ManualPairing"="In A Taxi";
+"HomeView_ManualPairing"="Check In";
 "View_NotificationSettings"="Notifications";
 "ErrorCreatingOrderTitle"="لا يمكن إتمام الحجز";
 "DateTimePickerPickTitle"="تاريخ و وقت الإلتقاء";
@@ -338,7 +338,6 @@
 "CreateAccountInvalidPassword"="كلمة المرور غير صحيحة. كلمة المرور يجب أن تكون متطابقة و تكون بين 6 إلى 10 أحرف";
 "HistoryDetailRequestedLabel"="وقت المشوار:";
 "DriverInfoMake"="الصنع:";
-"BookATaxi_Message"="When would you like to book?";
 "View_BookSettingMenu"="إعدادات";
 "Eta"="The nearest taxi is {0} and {1} {2} away";
 "View_Payments_CmtRideLinqConfirmPairTitle"="تأكيد بيانات الدفع:";
@@ -389,7 +388,6 @@
 "HistoryDetailBuildingNameLabel"="إسم المبنى:";
 "EtaDurationUnit"="min";
 "LocationHistoryTitle"="مشاوير سابقة";
-"HomeView_BookTaxi"="Book Taxi";
 "Create"="فتح حساب";
 "BackButton"="الرجوع";
 "AddReminderMessage"="هل ترغب في إضافة تنبيه على تقويمك حول هذا الموعد؟";
@@ -566,6 +564,8 @@
 "HistoryDetailBuildingNameNotSpecified"="غير محدد";
 "TabBook"="احجز";
 "CreditCardRemoveErrorScheduledOrderMessage"="You cannot delete your credit card when an order is scheduled or in progress.";
+"InvalidChargeType"="You must select a charge type to be able to book a ride";
+"InvalidChargeTypeTitle"="Invalid Charge Type";
 "TaxiMapTitle"="سيارة الأجرة الخاصه بك";
 "InvalidLoginMessage"="البريد الإلكتروني و/أو كلمة المرور غير صحيحة.";
 "NoMailClient"="لا يوجد برنامج لتلقي رسائل البريد الإلكتروني .";
