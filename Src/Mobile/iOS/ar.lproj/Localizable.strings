@@ -564,6 +564,8 @@
 "HistoryDetailBuildingNameNotSpecified"="غير محدد";
 "TabBook"="احجز";
 "CreditCardRemoveErrorScheduledOrderMessage"="You cannot delete your credit card when an order is scheduled or in progress.";
+"InvalidChargeType"="You must select a charge type to be able to book a ride";
+"InvalidChargeTypeTitle"="Invalid Charge Type";
 "TaxiMapTitle"="سيارة الأجرة الخاصه بك";
 "InvalidLoginMessage"="البريد الإلكتروني و/أو كلمة المرور غير صحيحة.";
 "NoMailClient"="لا يوجد برنامج لتلقي رسائل البريد الإلكتروني .";

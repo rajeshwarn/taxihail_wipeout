@@ -584,6 +584,8 @@
 "HistoryDetailBuildingNameNotSpecified"="Non spécifié";
 "TabBook"="Réserver maintenant!";
 "CreditCardRemoveErrorScheduledOrderMessage"="Vous ne pouvez pas effacer une carte de crédit s'il y a une commande en cours.";
+"InvalidChargeType"="Vous devez sélectionner un type de paiement avant de pouvoir confirmer votre commande";
+"InvalidChargeTypeTitle"="Type de paiement invalide";
 "TaxiMapTitle"="Votre véhicule";
 "InvalidLoginMessage"="L'email et/ou le mot de passe semblent invalides";
 "NoMailClient"="Il n'y a pas d'adresse email client enregistrée";

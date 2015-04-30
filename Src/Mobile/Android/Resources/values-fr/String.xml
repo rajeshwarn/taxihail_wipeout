@@ -586,6 +586,8 @@
   <string name="HistoryDetailBuildingNameNotSpecified">Non spécifié</string>
   <string name="TabBook">Réserver maintenant!</string>
   <string name="CreditCardRemoveErrorScheduledOrderMessage">Vous ne pouvez pas effacer une carte de crédit s\'il y a une commande en cours.</string>
+  <string name="InvalidChargeType">Vous devez sélectionner un type de paiement avant de pouvoir confirmer votre commande</string>
+  <string name="InvalidChargeTypeTitle">Type de paiement invalide</string>
   <string name="TaxiMapTitle">Votre véhicule</string>
   <string name="InvalidLoginMessage">L\'email et/ou le mot de passe semblent invalides</string>
   <string name="NoMailClient">Il n\'y a pas d\'adresse email client enregistrée</string>

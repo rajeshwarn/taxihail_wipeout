@@ -594,3 +594,5 @@
 "ManualRideLinqStatus_Driver"="Driver id:";
 "InvalidAddressTextEdit"="Cannot validate adddress";
 "HistoryDetailPickupDateLabel"="Pickup Date:";
+"InvalidChargeType"="You must select a charge type to be able to book a ride";
+"InvalidChargeTypeTitle"="Invalid Charge Type";

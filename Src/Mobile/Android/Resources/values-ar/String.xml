@@ -566,6 +566,8 @@
   <string name="HistoryDetailBuildingNameNotSpecified">غير محدد</string>
   <string name="TabBook">احجز</string>
   <string name="CreditCardRemoveErrorScheduledOrderMessage">You cannot delete your credit card when an order is scheduled or in progress.</string>
+  <string name="InvalidChargeType">You must select a charge type to be able to book a ride</string>
+  <string name="InvalidChargeTypeTitle">Invalid Charge Type</string>
   <string name="TaxiMapTitle">سيارة الأجرة الخاصه بك</string>
   <string name="InvalidLoginMessage">البريد الإلكتروني و/أو كلمة المرور غير صحيحة.</string>
   <string name="NoMailClient">لا يوجد برنامج لتلقي رسائل البريد الإلكتروني .</string>

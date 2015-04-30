@@ -1897,4 +1897,10 @@
   <data name="CreditCardRemoveErrorScheduledOrderMessage" xml:space="preserve">
     <value>Vous ne pouvez pas effacer une carte de crédit s'il y a une commande en cours.</value>
   </data>
+  <data name="InvalidChargeType" xml:space="preserve">
+    <value>Vous devez sélectionner un type de paiement avant de pouvoir confirmer votre commande</value>
+  </data>
+  <data name="InvalidChargeTypeTitle" xml:space="preserve">
+    <value>Type de paiement invalide</value>
+  </data>
 </root>

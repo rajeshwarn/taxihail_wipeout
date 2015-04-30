@@ -596,4 +596,6 @@
   <string name="ManualRideLinqStatus_Driver">Driver id:</string>
   <string name="InvalidAddressTextEdit">Cannot validate adddress</string>
   <string name="HistoryDetailPickupDateLabel">Pickup Date:</string>
+  <string name="InvalidChargeType">You must select a charge type to be able to book a ride</string>
+  <string name="InvalidChargeTypeTitle">Invalid Charge Type</string>
 </resources>

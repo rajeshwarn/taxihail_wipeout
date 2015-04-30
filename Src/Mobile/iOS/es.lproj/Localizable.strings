@@ -574,6 +574,8 @@
 "HistoryDetailBuildingNameNotSpecified"="No Especificado";
 "TabBook"="De Alta";
 "CreditCardRemoveErrorScheduledOrderMessage"="You cannot delete your credit card when an order is scheduled or in progress.";
+"InvalidChargeType"="You must select a charge type to be able to book a ride";
+"InvalidChargeTypeTitle"="Invalid Charge Type";
 "TaxiMapTitle"="Su Taxi";
 "InvalidLoginMessage"="Email y/o contraseña incorrecta";
 "NoMailClient"="No hay clientes de correo instalados";

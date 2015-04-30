@@ -1905,4 +1905,10 @@
   <data name="StatusConfirmCancelRideAndWarnForCancellationFees" xml:space="preserve">
     <value>Are you sure you want to cancel? A vehicle is on its way to pick you up. {0} reserves the right to charge customers a cancellation fee if we feel the user is abusing the service.</value>
   </data>
+  <data name="InvalidChargeType" xml:space="preserve">
+    <value>You must select a charge type to be able to book a ride</value>
+  </data>
+  <data name="InvalidChargeTypeTitle" xml:space="preserve">
+    <value>Invalid Charge Type</value>
+  </data>
 </root>

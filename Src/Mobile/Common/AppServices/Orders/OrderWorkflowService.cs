@@ -189,6 +189,16 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			}
 		}
 
+	    public async Task<bool> ValidateChargeType()
+	    {
+            var chargeTypes = await _accountService.GetPaymentsList();
+	        if (!chargeTypes.Any())
+	        {
+	            return false;
+	        }
+	        return true;
+	    }
+
 		public async Task ValidatePickupAndDestination()
 		{
 			var pickupAddress = await _pickupAddressSubject.Take(1).ToTask();
