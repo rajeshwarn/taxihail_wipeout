@@ -124,7 +124,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 				.To(vm => vm.IsManualRidelinqEnabled)
 				.WithConversion("BoolInverter");
 
-			set.Bind(_imagePromo)
+			set.Bind(_imagePromoForManual)
 				.For(v => v.Hidden)
 				.To(vm => vm.IsPromoCodeActive)
 				.WithConversion("BoolInverter");
