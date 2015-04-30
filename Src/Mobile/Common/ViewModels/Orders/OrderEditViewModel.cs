@@ -40,13 +40,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
                 Observe(_orderWorkflowService.GetAndObserveBookingSettings(), bookingSettings => BookingSettings = bookingSettings.Copy());
                 Observe(_orderWorkflowService.GetAndObservePickupAddress(), address => PickupAddress = address.Copy());
-		        Observe(_orderWorkflowService.GetAndObserveMarket(), market => MarketUpdated(market));
+		        Observe(_orderWorkflowService.GetAndObserveHashedMarket(), hashedMarket => MarketUpdated(hashedMarket));
 		    }
 		}
 
-	    private async Task MarketUpdated(string market)
+	    private async Task MarketUpdated(string hashedMarket)
 	    {
-            ChargeTypes = (await _accountService.GetPaymentsList(market)).Select(x => new ListItem { Id = x.Id, Display = this.Services().Localize[x.Display] }).ToArray();
+            ChargeTypes = (await _accountService.GetPaymentsList(hashedMarket))
+                .Select(x => new ListItem
+                {
+                    Id = x.Id,
+                    Display = this.Services().Localize[x.Display]
+                }).ToArray();
 	    }
 
 	    public bool IsChargeTypesEnabled
@@ -96,7 +101,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			{
 				return this.GetCommand(async () =>
 				{
-                    
                     if (!PhoneHelper.IsValidPhoneNumber(BookingSettings.Phone))
                     {
                         await this.Services().Message.ShowMessage(this.Services().Localize["UpdateBookingSettingsInvalidDataTitle"], this.Services().Localize["InvalidPhoneErrorMessage"]);

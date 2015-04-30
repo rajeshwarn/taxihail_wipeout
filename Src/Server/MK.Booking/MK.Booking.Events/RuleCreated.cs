@@ -28,5 +28,8 @@ namespace apcurium.MK.Booking.Events
         public RuleCategory Category { get; set; }
         public RuleType Type { get; set; }
         public bool IsActive { get; set; }
+        public string Market { get; set; }
+
+        public bool DisableFutureBookingOnError { get; set; }
     }
 }

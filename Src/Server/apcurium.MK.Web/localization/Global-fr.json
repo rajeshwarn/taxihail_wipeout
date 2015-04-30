@@ -15,8 +15,9 @@
 	"error.NotEmailFormat" : "Le email est invalide",
 	"error.NotANumber" : "<!-- This should be a number. -->",
     "error.friendlyNameRequired": "Surnom est requis.",  
-    "error.fullAddressRequired": "Adresse est requise.",	
-	"error.accountNotSupported" : "Ce compte n'est pas supporté par le site web",
+    "error.fullAddressRequired": "Adresse est requise.",
+    "error.accountNotSupported": "Ce compte n'est pas supporté par le site web",
+    "error.accountUpdate": "Un erreur est survenue en mettant à jour votre profil",
 	"signup.confirmation" : "Vous allez recevoir un email de confirmation. Merci de cliquer sur le lien pour valider votre inscription.",	
 	"signup.confirmationWithoutActivation" : "Votre compte a été créé, merci",	
 	"search.no-result": "Taper une adresse ou le nom du lieu d'intéret",
@@ -32,6 +33,7 @@
     "CreateOrder_NoProvider": "Aucun fournisseur",
     "CreateOrder_InvalidProvider": "Fournisseur invalide",
     "CreateOrder_VehicleType": "Type de véhicule invalide",
+    "CreateOrder_InvalidChargeType": "Type de paiement invalide",
     "CreateOrder_PendingOrder": "La commande ne peut être créée car une autre commande est déjà en cours. Voir le statut de la commande?",
     "OrderNotInIbs": "Commande inconnue",
     "NearbyPlaces_LocationRequired": "Adresse requise",
@@ -49,7 +51,8 @@
     "modal.cancel.message" : "Etes-vous sur de vouloir l'annuler ?",
     "modal.removeFavorite.message" : "Etes-vous sur de vouloir la supprimer ?",
     "modal.removeOrder.message" : "Etes-vous sur de vouloir la supprimer ?",
-    "modal.cancelOrder.message" : "Etes-vous sur de vouloir l'annuler ?",
+    "modal.cancelOrder.message": "Etes-vous sur de vouloir l'annuler ?",
+    "modal.cancelOrder.message.warnForFees" : "Êtes-vous certain de vouloir annuler? Un véhicule est en route pour venir vous chercher. {0} se réserve le droit de facturer à ses clients des frais d'annulation si ces derniers abusent du service.",
     "modal.cancelOrder.confirmButton" : "Annuler demande",
 	"modal.cancelOrder.cancelButton" : "Annuler",
     "modal.default.confirmButton" : "Confirmer",
@@ -88,5 +91,6 @@
     "NetworkContactingNextDispatchDescription": "En attente de {0} ...",
     "RefineAddress": "Affinez l'adresse en entrant un numéro de rue",
     "TokenizeInvalidCardInfos": "Les informations de la carte sont invalides",
-    "TokenizeGenericError": "Une erreur est survenue. Veuillez essayer de nouveau."
+    "TokenizeGenericError": "Une erreur est survenue. Veuillez essayer de nouveau.",
+    "error.CreditCardNotDeleted": "Il est impossible de supprimer la carte de crédit s'il y a une commande en cours."
 }

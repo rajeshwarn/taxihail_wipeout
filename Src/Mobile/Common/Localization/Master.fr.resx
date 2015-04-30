@@ -415,7 +415,7 @@
     <value>Mme</value>
   </data>
   <data name="CreateAccount_AccountAlreadyExist" xml:space="preserve">
-    <value>Le compte ne peut malheureusement pas être créé, email déjà utilisé!</value>
+    <value>Email déjà utilisé!</value>
   </data>
   <data name="CreditCard" xml:space="preserve">
     <value>Carte de paiement</value>
@@ -1853,7 +1853,7 @@
     <value>CHECK IN</value>
   </data>
   <data name="HomeView_ManualPairing" xml:space="preserve">
-    <value>Check In</value>
+    <value>Dans un Taxi</value>
   </data>
   <data name="View_RideLinqPair" xml:space="preserve">
     <value>Check In</value>
@@ -1890,5 +1890,23 @@
   </data>
   <data name="ManualUnPairingForRideLinQ_Error_Message" xml:space="preserve">
     <value>Une erreur est survenue lors de la dissociation. Veuillez essayer de nouveau.</value>
+  </data>
+  <data name="StatusConfirmCancelRideAndWarnForCancellationFees" xml:space="preserve">
+    <value>Êtes-vous certain de vouloir annuler? Un véhicule est en route pour venir vous chercher. {0} se réserve le droit de facturer à ses clients des frais d'annulation si ces derniers abusent du service.</value>
+  </data>
+  <data name="CreditCardRemoveErrorScheduledOrderMessage" xml:space="preserve">
+    <value>Vous ne pouvez pas effacer une carte de crédit s'il y a une commande en cours.</value>
+  </data>
+  <data name="HomeView_BookTaxi" xml:space="preserve">
+    <value>Commander Taxi</value>
+  </data>
+  <data name="InvalidChargeType" xml:space="preserve">
+    <value>Vous devez sélectionner un type de paiement avant de pouvoir confirmer votre commande</value>
+  </data>
+  <data name="BookATaxi_Message" xml:space="preserve">
+    <value>Quand voulez-vous commander votre taxi?</value>
+  </data>
+  <data name="InvalidChargeTypeTitle" xml:space="preserve">
+    <value>Type de paiement invalide</value>
   </data>
 </root>

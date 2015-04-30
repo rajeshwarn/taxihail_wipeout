@@ -39,7 +39,7 @@ namespace CustomerPortal.Web.Areas.Customer.Controllers.Api
             
             if (networkSettings == null || !networkSettings.IsInNetwork)
             {
-                return new HttpResponseMessage(HttpStatusCode.NoContent); 
+                return new HttpResponseMessage(HttpStatusCode.NoContent);
             }
 
             var otherCompaniesInNetwork = _networkRepository.Where(n => n.IsInNetwork && n.Id != networkSettings.Id)

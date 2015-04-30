@@ -26,5 +26,6 @@ namespace apcurium.MK.Common.Entity
         public RuleCategory Category { get; set; }
         public RuleType Type { get; set; }
         public bool IsActive { get; set; }
+        public string Market { get; set; }
     }
 }

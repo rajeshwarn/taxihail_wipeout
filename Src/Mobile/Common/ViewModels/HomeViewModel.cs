@@ -1,5 +1,12 @@
+using System;
+using System.Linq;
+using System.Reactive.Linq;
+using System.Reactive.Threading.Tasks;
+using System.Threading;
 using System.Windows.Input;
+using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.AppServices;
+using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.Framework.Extensions;
 using apcurium.MK.Booking.Mobile.Infrastructure;
@@ -8,17 +15,6 @@ using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using Cirrious.MvvmCross.Platform;
 using Cirrious.MvvmCross.Plugins.WebBrowser;
 using ServiceStack.Text;
-using System.Linq;
-using System.Reactive.Linq;
-using System;
-using System.Reactive.Threading.Tasks;
-using apcurium.MK.Booking.Mobile.Data;
-using apcurium.MK.Booking.Api.Contract.Resources;
-using apcurium.MK.Booking.Maps.Geo;
-using System.Threading;
-using System.Threading.Tasks;
-using apcurium.MK.Common.Configuration.Impl;
-using Cirrious.CrossCore.Core;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -65,11 +61,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
             Panel = new PanelMenuViewModel(browserTask, orderWorkflowService, accountService, phoneService, paymentService, promotionService);
 
-			Observe(_vehicleService.GetAndObserveAvailableVehiclesWhenVehicleTypeChanges(), vehicles => ZoomOnNearbyVehiclesIfPossible(vehicles));
-            Observe(_orderWorkflowService.GetAndObserveMarket(), market => MarketChanged(market));
+            Observe(_vehicleService.GetAndObserveAvailableVehiclesWhenVehicleTypeChanges(), ZoomOnNearbyVehiclesIfPossible);
+            Observe(_orderWorkflowService.GetAndObserveHashedMarket(), MarketChanged);
 		}
 
-	    private string _lastMarket = string.Empty;
+	    private string _lastHashedMarket = string.Empty;
 		private bool _isShowingTermsAndConditions;
 		private bool _locateUser;
 		private ZoomToStreetLevelPresentationHint _defaultHintZoomLevel;
@@ -114,7 +110,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 				CheckTermsAsync();
 
-                CheckManualRideLinqEnabledAsync();
+                BottomBar.CheckManualRideLinqEnabledAsync(_lastHashedMarket.HasValue());
 
 				this.Services().ApplicationInfo.CheckVersionAsync();
 
@@ -136,22 +132,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 			_vehicleService.Start();
 		}
-
-	    private async void CheckManualRideLinqEnabledAsync()
-	    {
-	        try
-	        {
-	            var settings = await _paymentService.GetPaymentSettings();
-
-	            IsManualRideLinqEnabled = settings.PaymentMode == PaymentMethod.RideLinqCmt
-                                           && settings.CmtPaymentSettings.IsManualRidelinqCheckInEnabled
-                                           && !_lastMarket.HasValue();
-	        }
-	        catch (Exception ex)
-	        {
-	            this.Logger.LogError(ex);
-	        }
-	    }
 
 		public async void CheckActiveOrderAsync(bool firstTime)
 		{
@@ -400,17 +380,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 	        }
 	    }
 
-	    public ICommand ManualPairingRideLinq
-	    {
-	        get
-	        {
-	            return this.GetCommand(() =>
-	            {
-	                ShowViewModel<ManualPairingForRideLinqViewModel>();
-	            });
-	        }
-	    }
-
 	    public ICommand TrainStationSearch
 	    {
 	        get
@@ -546,17 +515,21 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        private void MarketChanged(string market)
+        private void MarketChanged(string hashedMarket)
         {
             // Market changed and not home market
-            if (_lastMarket != market && market != string.Empty)
+            if (_lastHashedMarket != hashedMarket && hashedMarket.HasValue())
             {
                 this.Services().Message.ShowMessage(this.Services().Localize["MarketChangedMessageTitle"],
                     this.Services().Localize["MarketChangedMessage"]);
             }
-            _lastMarket = market;
+            _lastHashedMarket = hashedMarket;
 
-            CheckManualRideLinqEnabledAsync();
+            if (BottomBar != null)
+            {
+                BottomBar.CheckManualRideLinqEnabledAsync(_lastHashedMarket.HasValue());
+            }
+            
         }
     }
 }

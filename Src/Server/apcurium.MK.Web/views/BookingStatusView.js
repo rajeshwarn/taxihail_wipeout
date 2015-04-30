@@ -102,9 +102,15 @@
         cancel: function(e) {
             e.preventDefault();
             if (canCancel == true) {
+
+                var confirmationMessage = this.localize('modal.cancelOrder.message');
+                if (this.model.getStatus().warnForCancellationFees()) {
+                    confirmationMessage = this.localize('modal.cancelOrder.message.warnForFees').format(TaxiHail.parameters.applicationName);
+                }
+
                 TaxiHail.confirm({
                     title: this.localize('Cancel Order'),
-                    message: this.localize('modal.cancelOrder.message'),
+                    message: confirmationMessage,
                     cancelButton: this.localize('modal.cancelOrder.cancelButton')
                 }).on('ok', function () {
                     this.model.cancel().done(function () {

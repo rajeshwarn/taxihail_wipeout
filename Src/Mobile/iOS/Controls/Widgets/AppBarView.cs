@@ -18,9 +18,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         private UIView _reviewButtons;
         private UIView _orderButtons;
         private UIView _editButtons;
+		private UIView _manualPairingButtons;
 
 		// Keeping a reference to the _imagePromo object to ensure binding does not break.
 		private UIImageView _imagePromo;
+		private UIImageView _imagePromoForManual;
 
         public static CGSize ButtonSize = new CGSize(60, 46);
 
@@ -50,7 +52,152 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             CreateButtonsForConfirmation();
             AddButtonsForBooking();
             CreateButtonsForEdit();
+			CreateButtonsForManualRideLinqFlow();
         }
+
+		private void CreateButtonsForManualRideLinqFlow()
+		{
+			_manualPairingButtons = new UIView();
+			_manualPairingButtons.TranslatesAutoresizingMaskIntoConstraints = false;
+			Add(_manualPairingButtons);
+
+			var btnEstimate = GenerateEstimateButton();
+
+			var btnBook = GenerateBookButton("HomeView_BookTaxi");
+			_imagePromoForManual = GeneratePromoImage();
+			btnBook.AddSubview(_imagePromoForManual);
+
+			var btnManual = new FlatButton()
+			{
+				TranslatesAutoresizingMaskIntoConstraints = false
+			};
+			FlatButtonStyle.Blue.ApplyTo(btnManual);
+			btnManual.SetTitle(Localize.GetValue("HomeView_ManualPairing"), UIControlState.Normal);
+
+			_manualPairingButtons.AddSubviews(btnEstimate, btnManual, btnBook);
+
+			_manualPairingButtons.AddConstraints(GenerateEstimateButtonConstraints(btnEstimate, _manualPairingButtons));
+
+			btnBook.AddConstraints(GenerateImagePromoConstraints(_imagePromoForManual, btnBook));
+
+			_manualPairingButtons.Superview.AddConstraints(GenerateConstraintsForContainer(_manualPairingButtons));
+
+			// Constraints for Manual button
+			AddConstraints(new []
+			{
+				NSLayoutConstraint.Create(btnManual, NSLayoutAttribute.Leading, NSLayoutRelation.Equal, btnEstimate, NSLayoutAttribute.Trailing, 1, 10f),
+				NSLayoutConstraint.Create(btnBook, NSLayoutAttribute.Leading, NSLayoutRelation.Equal, btnManual, NSLayoutAttribute.Trailing, 1, 10f),
+				NSLayoutConstraint.Create(btnManual, NSLayoutAttribute.CenterY, NSLayoutRelation.Equal, _manualPairingButtons, NSLayoutAttribute.CenterY, 1, 0f),
+				NSLayoutConstraint.Create(btnManual, NSLayoutAttribute.Height, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1, 41f),
+				NSLayoutConstraint.Create(btnManual, NSLayoutAttribute.Width, NSLayoutRelation.Equal, btnBook, NSLayoutAttribute.Width, 1, 0f),
+			});
+
+
+			// Constraints for Book Now button
+			AddConstraints(new []
+			{
+				NSLayoutConstraint.Create(btnBook, NSLayoutAttribute.Trailing, NSLayoutRelation.Equal, _manualPairingButtons, NSLayoutAttribute.Trailing, 1, -10f),
+				NSLayoutConstraint.Create(btnBook, NSLayoutAttribute.CenterY, NSLayoutRelation.Equal, _manualPairingButtons, NSLayoutAttribute.CenterY, 1, 0f),
+				NSLayoutConstraint.Create(btnBook, NSLayoutAttribute.Height, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1, 41f),
+			});
+
+			var set = this.CreateBindingSet<AppBarView, BottomBarViewModel>();
+
+			set.Bind(btnEstimate)
+				.For(v => v.Command)
+				.To(vm => vm.ChangeAddressSelectionMode);
+
+			set.Bind(btnEstimate)
+				.For(v => v.Selected)
+				.To(vm => vm.EstimateSelected);
+
+			set.Bind(btnEstimate)
+				.For(v => v.Hidden)
+				.To(vm => vm.Settings.HideDestination);
+
+			set.Bind(btnBook)
+				.For(v => v.Command)
+				.To(vm => vm.BookATaxi);
+
+			set.Bind(_manualPairingButtons)
+				.For(v => v.Hidden)
+				.To(vm => vm.IsManualRidelinqEnabled)
+				.WithConversion("BoolInverter");
+
+			set.Bind(_imagePromoForManual)
+				.For(v => v.Hidden)
+				.To(vm => vm.IsPromoCodeActive)
+				.WithConversion("BoolInverter");
+
+			set.Bind(btnManual)
+				.For(v => v.Command)
+				.To(vm => vm.ManualPairingRideLinq);
+
+			set.Apply();
+		}
+
+		private AppBarButton GenerateEstimateButton()
+		{
+			return new AppBarButton(Localize.GetValue("Destination"), AppBarView.ButtonSize.Width, AppBarView.ButtonSize.Height, "destination_small_icon.png", "destination_small_icon_pressed.png")
+			{
+				TranslatesAutoresizingMaskIntoConstraints = false
+			};
+		}
+
+		private FlatButton GenerateBookButton(string titleResource)
+		{
+			var btnBook = new FlatButton()
+			{
+				TranslatesAutoresizingMaskIntoConstraints = false
+			};
+			FlatButtonStyle.Green.ApplyTo(btnBook);
+			btnBook.SetTitle(Localize.GetValue(titleResource), UIControlState.Normal);
+
+			return btnBook;
+		}
+
+		private UIImageView GeneratePromoImage()
+		{
+			var imagePromo =new UIImageView(UIImage.FromFile("promo.png"))
+			{
+				TranslatesAutoresizingMaskIntoConstraints = false
+			};
+			imagePromo.SetHeight(10f);
+			imagePromo.SetWidth(10f);
+
+			return imagePromo;
+		}
+
+		private NSLayoutConstraint[] GenerateEstimateButtonConstraints(UIView btnEstimate, UIView container)
+		{
+			return new []
+			{
+				NSLayoutConstraint.Create(btnEstimate, NSLayoutAttribute.Leading, NSLayoutRelation.Equal, container, NSLayoutAttribute.Leading, 1, 8f),
+				NSLayoutConstraint.Create(btnEstimate, NSLayoutAttribute.Width, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1, AppBarView.ButtonSize.Width),
+				NSLayoutConstraint.Create(btnEstimate, NSLayoutAttribute.Height, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1, AppBarView.ButtonSize.Height),
+				NSLayoutConstraint.Create(btnEstimate, NSLayoutAttribute.CenterY, NSLayoutRelation.Equal, container, NSLayoutAttribute.CenterY, 1, -4f),
+			};
+		}
+
+		private NSLayoutConstraint[] GenerateImagePromoConstraints(UIView imagePromo, UIView container)
+		{
+			return new []
+			{
+				NSLayoutConstraint.Create(imagePromo, NSLayoutAttribute.Right, NSLayoutRelation.Equal, container, NSLayoutAttribute.Right, 1, 0f),
+				NSLayoutConstraint.Create(imagePromo, NSLayoutAttribute.Top, NSLayoutRelation.Equal, container, NSLayoutAttribute.Top, 1, 0f),
+			};
+		}
+
+		private NSLayoutConstraint[] GenerateConstraintsForContainer(UIView container)
+		{
+			return new []
+			{
+				NSLayoutConstraint.Create(container, NSLayoutAttribute.Leading, NSLayoutRelation.Equal, container.Superview, NSLayoutAttribute.Leading, 1, 0f),
+				NSLayoutConstraint.Create(container, NSLayoutAttribute.Top, NSLayoutRelation.Equal, container.Superview, NSLayoutAttribute.Top, 1, 0f),
+				NSLayoutConstraint.Create(container, NSLayoutAttribute.Width, NSLayoutRelation.Equal, container.Superview, NSLayoutAttribute.Width, 1, 0f),
+				NSLayoutConstraint.Create(container, NSLayoutAttribute.Height, NSLayoutRelation.Equal, container.Superview, NSLayoutAttribute.Height, 1, 0f),
+			};
+		}
 
         private void AddButtonsForBooking()
         {
@@ -60,20 +207,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             _orderButtons.TranslatesAutoresizingMaskIntoConstraints = false;
             Add(_orderButtons);
 
-			var btnEstimate = new AppBarButton(Localize.GetValue("Destination"), AppBarView.ButtonSize.Width, AppBarView.ButtonSize.Height, "destination_small_icon.png", "destination_small_icon_pressed.png");
-            btnEstimate.TranslatesAutoresizingMaskIntoConstraints = false;
+			var btnEstimate = GenerateEstimateButton();
 
-            var btnBook = new FlatButton();
-            btnBook.TranslatesAutoresizingMaskIntoConstraints = false;
-            FlatButtonStyle.Green.ApplyTo(btnBook);
-            btnBook.SetTitle(Localize.GetValue("BookItButton"), UIControlState.Normal);
+			var btnBook = GenerateBookButton("BookItButton");
 
-			_imagePromo = new UIImageView(UIImage.FromFile("promo.png"))
-			{
-				TranslatesAutoresizingMaskIntoConstraints = false
-			};
-			_imagePromo.SetHeight(10f);
-			_imagePromo.SetWidth(10f);
+			_imagePromo = GeneratePromoImage();
 			btnBook.AddSubview(_imagePromo);
 
             var btnBookLater = new AppBarButton(Localize.GetValue("BookItLaterButton"), AppBarView.ButtonSize.Width, AppBarView.ButtonSize.Height, "later_icon.png", "later_icon_pressed.png");
@@ -82,22 +220,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			_orderButtons.AddSubviews(btnEstimate, btnBook, btnBookLater);
 
             // Constraints for Container
-            _orderButtons.Superview.AddConstraints(new []
-            {
-                NSLayoutConstraint.Create(_orderButtons, NSLayoutAttribute.Leading, NSLayoutRelation.Equal, _orderButtons.Superview, NSLayoutAttribute.Leading, 1, 0f),
-                NSLayoutConstraint.Create(_orderButtons, NSLayoutAttribute.Top, NSLayoutRelation.Equal, _orderButtons.Superview, NSLayoutAttribute.Top, 1, 0f),
-                NSLayoutConstraint.Create(_orderButtons, NSLayoutAttribute.Width, NSLayoutRelation.Equal, _orderButtons.Superview, NSLayoutAttribute.Width, 1, 0f),
-                NSLayoutConstraint.Create(_orderButtons, NSLayoutAttribute.Height, NSLayoutRelation.Equal, _orderButtons.Superview, NSLayoutAttribute.Height, 1, 0f),
-            });
+			_orderButtons.Superview.AddConstraints(GenerateConstraintsForContainer(_orderButtons));
 
             // Constraints for Estimate button
-            _orderButtons.AddConstraints(new []
-            {
-                NSLayoutConstraint.Create(btnEstimate, NSLayoutAttribute.Leading, NSLayoutRelation.Equal, _orderButtons, NSLayoutAttribute.Leading, 1, 8f),
-                NSLayoutConstraint.Create(btnEstimate, NSLayoutAttribute.Width, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1, AppBarView.ButtonSize.Width),
-                NSLayoutConstraint.Create(btnEstimate, NSLayoutAttribute.Height, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1, AppBarView.ButtonSize.Height),
-                NSLayoutConstraint.Create(btnEstimate, NSLayoutAttribute.CenterY, NSLayoutRelation.Equal, _orderButtons, NSLayoutAttribute.CenterY, 1, -4f),
-            });
+			_orderButtons.AddConstraints(GenerateEstimateButtonConstraints(btnEstimate, _orderButtons));
 
             // Constraints for Book Now button
             AddConstraints(new []
@@ -109,11 +235,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             });
 
 			// Constraints for Image Promo button
-			btnBook.AddConstraints(new []
-			{
-				NSLayoutConstraint.Create(_imagePromo, NSLayoutAttribute.Right, NSLayoutRelation.Equal, btnBook, NSLayoutAttribute.Right, 1, 0f),
-				NSLayoutConstraint.Create(_imagePromo, NSLayoutAttribute.Top, NSLayoutRelation.Equal, btnBook, NSLayoutAttribute.Top, 1, 0f),
-			});
+			btnBook.AddConstraints(GenerateImagePromoConstraints(_imagePromo, btnBook));
 
             // Constraints for Book Later button
             _orderButtons.AddConstraints(new []
@@ -153,7 +275,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			
             set.Bind(btnBookLater)
                 .For(v => v.Hidden)
-                .To(vm => vm.Settings.DisableFutureBooking);
+                .To(vm => vm.IsFutureBookingDisabled);
+
+			set.Bind(_orderButtons)
+				.For(v => v.Hidden)
+				.To(vm => vm.IsManualRidelinqEnabled);
 
             set.Apply();
         }
@@ -304,9 +430,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 // This state does not affect this control
                 return;
             }
-            _orderButtons.Hidden = hint.State != HomeViewModelState.Initial;
+
+			var viewModel = (BottomBarViewModel)DataContext;
+
+			_orderButtons.Hidden = !(hint.State == HomeViewModelState.Initial && !viewModel.IsManualRidelinqEnabled);
             _reviewButtons.Hidden = hint.State != HomeViewModelState.Review;
             _editButtons.Hidden = hint.State != HomeViewModelState.Edit;
+			_manualPairingButtons.Hidden = !(hint.State == HomeViewModelState.Initial && viewModel.IsManualRidelinqEnabled);
         }
 
         void IChangePresentation.ChangePresentation(ChangePresentationHint hint)

@@ -21,6 +21,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         readonly IObservable<AvailableVehicle[]> _availableVehiclesWhenTypeChangesObservable;
 		readonly IObservable<Direction> _etaObservable;
 		readonly ISubject<IObservable<long>> _timerSubject = new BehaviorSubject<IObservable<long>>(Observable.Never<long>());
+
 		readonly IDirections _directions;
 		readonly IAppSettings _settings;
 
@@ -72,7 +73,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
 			_isStarted = true;
 
-			_timerSubject.OnNext(Observable.Timer(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds (5)));
+		    var refreshRate = _settings.Data.AvailableVehicleRefreshRate > 0
+		        ? _settings.Data.AvailableVehicleRefreshRate
+		        : 1;
+
+            _timerSubject.OnNext(Observable.Timer(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(refreshRate)));
 		}
 
 		private async Task<AvailableVehicle[]> CheckForAvailableVehicles(Address address, int? vehicleTypeId)

@@ -961,7 +961,7 @@
     <value>Building name {0}.</value>
   </data>
   <data name="CreateAccount_AccountAlreadyExist" xml:space="preserve">
-    <value>The account cannot be created, this email is already in use.</value>
+    <value>This email is already in use.</value>
   </data>
   <data name="UpdatePasswordCurrentPasswordLabel" xml:space="preserve">
     <value>Current Password</value>
@@ -1124,6 +1124,9 @@
   </data>
   <data name="CreditCardRemoveErrorMessage" xml:space="preserve">
     <value>You need to have at least one credit card in your account. If you want to remove a card, you will need to add another one before.</value>
+  </data>
+  <data name="CreditCardRemoveErrorScheduledOrderMessage" xml:space="preserve">
+    <value>You cannot delete your credit card when an order is scheduled or in progress.</value>
   </data>
   <data name="CreditCardName" xml:space="preserve">
     <value>Name as it appears on card</value>
@@ -1840,7 +1843,10 @@
     <value>Unable to load the available promotions. Please try again later.</value>
   </data>
   <data name="HomeView_ManualPairing" xml:space="preserve">
-    <value>Check In</value>
+    <value>In A Taxi</value>
+  </data>
+  <data name="HomeView_BookTaxi" xml:space="preserve">
+    <value>Book Taxi</value>
   </data>
   <data name="RideSettingsLoadError" xml:space="preserve">
     <value>Unable to load the account settings. Please try again later.</value>
@@ -1898,5 +1904,17 @@
   </data>
   <data name="ManualUnPairingForRideLinQ_Error_Message" xml:space="preserve">
     <value>An error occured when trying to unpair. Please try again.</value>
+  </data>
+  <data name="StatusConfirmCancelRideAndWarnForCancellationFees" xml:space="preserve">
+    <value>Are you sure you want to cancel? A vehicle is on its way to pick you up. {0} reserves the right to charge customers a cancellation fee if we feel the user is abusing the service.</value>
+  </data>
+  <data name="BookATaxi_Message" xml:space="preserve">
+    <value>When would you like to book?</value>
+  </data>
+  <data name="InvalidChargeType" xml:space="preserve">
+    <value>You must select a charge type to be able to book a ride</value>
+  </data>
+  <data name="InvalidChargeTypeTitle" xml:space="preserve">
+    <value>Invalid Charge Type</value>
   </data>
 </root>

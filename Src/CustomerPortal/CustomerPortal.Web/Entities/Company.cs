@@ -24,6 +24,7 @@ namespace CustomerPortal.Web.Entities
             Application = new Questionnaire();
             Store = new StoreSettings();
             Network = new TaxiHailNetworkSettings();
+            Vehicles = new List<CompanyVehicle>();
 
             AppleAppStoreCredentials = new AppleStoreCredentials();
             GooglePlayCredentials = new AndroidStoreCredentials();
@@ -35,9 +36,14 @@ namespace CustomerPortal.Web.Entities
             Errors = new Dictionary<string, string>();
         }
 
+        public string Id { get; set; }
+
         public Style Style { get; set; }
+
         public Payment Payment { get; set; }
+
         public string CompanyKey { get; set; }
+
         public AppStatus Status { get; set; }
 
         [Required]
@@ -65,30 +71,31 @@ namespace CustomerPortal.Web.Entities
         public Dictionary<DateTime, string> LayoutRejected { get; set; }
 
         public IBSSettings IBS { get; set; }
+
         public Questionnaire Application { get; set; }
+
         public StoreSettings Store { get; set; }
 
         [Display(Name = "TaxiHailNetworkSettings", ResourceType = typeof(Resources))]
         public TaxiHailNetworkSettings Network { get; set; }
 
-        [Display(Name = "AppleAppStoreCredentials", Description = "AppleAppStoreCredentialsHelp",
-            ResourceType = typeof (Resources))]
+        public List<CompanyVehicle> Vehicles { get; set; }
+
+        [Display(Name = "AppleAppStoreCredentials", Description = "AppleAppStoreCredentialsHelp", ResourceType = typeof (Resources))]
         public AppleStoreCredentials AppleAppStoreCredentials { get; set; }
 
-        [Display(Name = "GooglePlayCredentials", Description = "GooglePlayCredentialsHelp",
-            ResourceType = typeof (Resources))]
+        [Display(Name = "GooglePlayCredentials", Description = "GooglePlayCredentialsHelp", ResourceType = typeof (Resources))]
         public AndroidStoreCredentials GooglePlayCredentials { get; set; }
 
         public List<Version> Versions { get; set; }
-        public List<CompanySetting> CompanySettings { get; set; }
-        public string LastKnownProductionVersion { get; set; }
 
+        public List<CompanySetting> CompanySettings { get; set; }
+
+        public string LastKnownProductionVersion { get; set; }
 
         public string LastKnownStagingVersion { get; set; }
 
-
         public Dictionary<string, string> Errors { get; set; }
-        public string Id { get; set; }
 
         public Version FindVersion(string number)
         {
@@ -105,10 +112,9 @@ namespace CustomerPortal.Web.Entities
             return ((IBS != null) && IBS.LastSucessfullTestDateTime.HasValue && (Errors.Count == 0));
         }
 
-       
         public string ValidationError()
         {
-            string result = "";
+            string result = string.Empty;
             if ((IBS == null) || !IBS.LastSucessfullTestDateTime.HasValue)
             {
                 result = @"IBS Server was never tested<br/>";
@@ -124,11 +130,6 @@ namespace CustomerPortal.Web.Entities
             return result;
         }
 
-
-        
-      
-
-
         public bool IsStoreValid()
         {
             return Errors.Keys.Count(k => k.Contains("iOSError")) == 0;
@@ -136,7 +137,7 @@ namespace CustomerPortal.Web.Entities
 
         public string StoreValidationError()
         {
-            string result = "";
+            string result = string.Empty;
 
             var iosErrors = Errors.Where(x => x.Key.Contains("iOSError")).ToDictionary(x => x.Key, x => x.Value);
             if (iosErrors.Any())

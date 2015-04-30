@@ -11,8 +11,10 @@
 
         render: function() {
 
-            this.$el.html(this.renderTemplate());
-            //this.collection = this.collection.where({ category: TaxiHail.Rule.category.warningRule });
+            this.$el.html(this.renderTemplate({
+                isNetworkEnabled: TaxiHail.parameters.isNetworkEnabled == true
+                    || TaxiHail.parameters.isNetworkEnabled == "true"
+            }));
             this.collection.each(this.renderItem, this);
 
             return this;

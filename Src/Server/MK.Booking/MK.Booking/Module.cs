@@ -77,7 +77,7 @@ namespace apcurium.MK.Booking
             container.RegisterInstance<IVehicleTypeDao>(new VehicleTypeDao(() => container.Resolve<BookingDbContext>()));
             container.RegisterInstance<IAppStartUpLogDao>(new AppStartUpLogDao(() => container.Resolve<BookingDbContext>()));
             container.RegisterInstance<IPasswordService>(new PasswordService());
-            container.RegisterInstance<IRuleCalculator>(new RuleCalculator(container.Resolve<IRuleDao>()));
+            container.RegisterInstance<IRuleCalculator>(new RuleCalculator(container.Resolve<IRuleDao>(), container.Resolve<IServerSettings>()));
             container.RegisterInstance<IOverduePaymentDao>(new OverduePaymentDao(() => container.Resolve<BookingDbContext>()));
             
             RegisterMaps();

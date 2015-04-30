@@ -60,6 +60,7 @@ namespace apcurium.MK.Booking.Mobile.Client
         public static readonly FlatButtonStyle Green = new GreenButtonStyle();
         public static readonly FlatButtonStyle Red = new RedButtonStyle();
         public static readonly FlatButtonStyle Silver = new SilverButtonStyle();
+		public static readonly FlatButtonStyle Blue = new BlueButtonStyle();
 
 		private class DefaultButtonStyle: FlatButtonStyle
 		{
@@ -185,6 +186,31 @@ namespace apcurium.MK.Booking.Mobile.Client
                 return "Silver";
             }
         }
+
+		private class BlueButtonStyle: FlatButtonStyle
+		{
+			public override void ApplyTo (FlatButton button)
+			{
+				base.ApplyTo (button);
+
+				if(button == null) return;
+
+				button.SetFillColor(GetColor(x => x.ColorBackgroundNormal, UIColor.Clear), UIControlState.Normal);
+				button.SetFillColor(GetColor(x => x.ColorBackgroundSelected, UIColor.Blue), UIControlState.Selected);
+				button.SetFillColor(GetColor(x => x.ColorBackgroundSelected, UIColor.Blue), UIControlState.Highlighted);
+
+				button.SetTitleColor(GetColor(x => x.ColorTextNormal, UIColor.Blue), UIControlState.Normal);
+				button.SetTitleColor(GetColor(x => x.ColorTextSelected, UIColor.White), UIControlState.Selected);
+				button.SetTitleColor(GetColor(x => x.ColorTextSelected, UIColor.White), UIControlState.Highlighted);
+
+				button.SetStrokeColor(GetColor(x => x.ColorBorder, UIColor.Blue));
+			}
+
+			protected override string GetStyleName ()
+			{
+				return "Blue";
+			}
+		}
 
         private class ClearButtonStyle: FlatButtonStyle
         {

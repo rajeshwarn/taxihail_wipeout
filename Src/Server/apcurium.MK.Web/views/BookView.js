@@ -217,7 +217,16 @@
 
                         if (data !== "") {
                             if (this.model.get('lastMarket') !== this.model.get('market') && this.model.get('market') !== "") {
+
+                                // Load external market vehicle types
+                                this.setExternalMarketVehicleTypes(position.latitude, position.longitude);
+
                                 this.confirmMarketChange();
+                            }
+                        } else {
+                            if (this.model.get('lastMarket') !== "") {
+                                // Reload home market vehicle types
+                                this.setLocalMarketVehicleTypes();
                             }
                         }
 
@@ -231,6 +240,26 @@
                 this.model.unset('market', { silent: true });
                 this.model.set('market', currentMarket);
             }
+        },
+
+        setLocalMarketVehicleTypes: function () {
+            $.ajax({
+                type: 'GET',
+                url: 'api/admin/vehicletypes',
+                dataType: 'json'
+            }).done(_.bind(function (localVehicles) {
+                TaxiHail.vehicleTypes = localVehicles;
+            }, this));
+        },
+
+        setExternalMarketVehicleTypes: function (latitude, longitude) {
+            $.ajax({
+                type: 'GET',
+                url: 'api/roaming/externalMarketVehicleTypes?latitude=' + latitude + "&longitude=" + longitude,
+                dataType: 'json'
+                }).done(_.bind(function (networkVehicles) {
+                    TaxiHail.vehicleTypes = networkVehicles;
+            }, this));
         },
 
         confirmMarketChange: function () {
@@ -259,13 +288,17 @@
             this.$('.buttons .btn').addClass('disabled');
             this.$('.buttons .btn').attr('disabled', 'disabled');
 
-            var validateForError = this.model.get('market') === "";
-
-            this.model.validateOrder(validateForError)
+            this.model.validateOrder(true)
                     .done(_.bind(function (result) {
 
                         if (result.responseText) {
                             result = JSON.parse(result.responseText).responseStatus;
+                        }
+
+                        if (TaxiHail.parameters.disableFutureBooking || result.disableFutureBooking) {
+                            this.$('#bookLaterButton').addClass('hidden');
+                        } else {
+                            this.$('#bookLaterButton').removeClass('hidden');
                         }
 
                         // Don't display validation errors if no destination address is specified when destination required is on
@@ -303,7 +336,7 @@
             var dest = this.model.get('dropOffAddress');
 
             var pickupZipCode = pickup.zipCode != null ? pickup.zipCode : '';
-            var account = TaxiHail.auth.account; //.attributes.settings.vehicleTypeId
+            var account = TaxiHail.auth.account;
             var vtype = ( account.id == null ) ? -1 : account.get('settings')['vehicleTypeId'];
 
             var dropOffZipCode = dest != null ?

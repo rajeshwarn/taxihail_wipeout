@@ -75,6 +75,10 @@
                 for (var i = 0; i < chargeTypes.length; i++) {
                     if (chargeTypes[i].id === 1) {
                         chargeTypes = [chargeTypes[i]];
+                        break;
+                    } else {
+                        // PayInCar charge type not found
+                        chargeTypes = [];
                     }
                 }
             }
@@ -102,7 +106,7 @@
             }
 
             if (!chargeTypeIdFound) {
-                var chargeTypeId = 0;
+                var chargeTypeId = -1;
 
                 for (var i = 0; i < chargeTypes.length; i++) {
                     // We will ignore the Charge Account type.
@@ -112,7 +116,7 @@
                     }
                 }
 
-                if (chargeTypeId == 0) {
+                if (chargeTypeId == -1 && chargeTypes.length > 0) {
                     chargeTypeId = chargeTypes[0].id;
                 }
 
@@ -212,19 +216,35 @@
             this.$('.errors').html('');        
 
             var numberOfPassengers = this.model.get('settings')['passengers'];
-            var vehicleType = TaxiHail.vehicleTypes[0];
-            var vehicleTypeId =  this.model.get('settings')['vehicleTypeId'];           
-            if(vehicleTypeId)
-            {
+            var vehicleType;
+            var vehicleTypeId = this.model.get('settings')['vehicleTypeId'];
+            if (typeof vehicleTypeId !== 'undefined') {
+                // Try to match vehicle type to the prefered type in user profile
                 vehicleType = $.grep(TaxiHail.vehicleTypes, function (e) { return e.referenceDataVehicleId == vehicleTypeId; })[0];
+                if (!vehicleType) {
+                    // If no match is found, use the first vehicle type
+                    vehicleType = TaxiHail.vehicleTypes[0];
+                    this.model.get('settings')['vehicleTypeId'] = vehicleType.referenceDataVehicleId;
+                }
             }
 
             if (TaxiHail.parameters.showPassengerNumber
                 && vehicleType.maxNumberPassengers > 0
-                && numberOfPassengers > vehicleType.maxNumberPassengers)
-            {
+                && numberOfPassengers > vehicleType.maxNumberPassengers) {
                 this.$(':submit').button('reset');
-                this.$('.errors').html(TaxiHail.localize("CreateOrder_InvalidPassengersNumber"));
+
+                var $alert = $('<div class="alert alert-error" />');
+                $alert.append($('<div />').text(TaxiHail.localize("CreateOrder_InvalidPassengersNumber")));
+                this.$('.errors').html($alert);
+                return;
+            }
+
+            if (this.model.get('settings')["chargeTypeId"] < 0) {
+                this.$(':submit').button('reset');
+
+                var $alert = $('<div class="alert alert-error" />');
+                $alert.append($('<div />').text(TaxiHail.localize("CreateOrder_InvalidChargeType")));
+                this.$('.errors').html($alert);
                 return;
             }
 
