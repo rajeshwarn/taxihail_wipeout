@@ -5,6 +5,8 @@ namespace CMTPayment.Pair
     [Route("v1/init/pairing/external/cof")]
     public class PairingRequest : IReturn<CmtPairingResponse>
     {
+        public string PairingCode { get; set; }
+
         public string Medallion { get; set; }
 
         public string DriverId { get; set; }

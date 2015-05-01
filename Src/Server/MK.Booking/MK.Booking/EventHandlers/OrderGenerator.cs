@@ -303,6 +303,7 @@ namespace apcurium.MK.Booking.EventHandlers
                         details.IBSStatusDescription = @event.Status.IBSStatusDescription;
                         details.PairingTimeOut = @event.Status.PairingTimeOut;
                         details.PairingError = @event.Status.PairingError;
+                        details.RideLinqPairingCode = @event.Status.RideLinqPairingCode;
                     }
                     else
                     {

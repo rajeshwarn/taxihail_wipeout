@@ -368,10 +368,18 @@ namespace apcurium.MK.Booking.Services.Impl
                     DriverId = orderStatusDetail.DriverInfos.DriverId,
                     Latitude = orderStatusDetail.VehicleLatitude.GetValueOrDefault(),
                     Longitude = orderStatusDetail.VehicleLongitude.GetValueOrDefault(),
-                    Medallion = orderStatusDetail.VehicleNumber,
                     CardOnFileId = cardToken,
                     Market = cmtPaymentSettings.Market
                 };
+
+                if (orderStatusDetail.RideLinqPairingCode.HasValue())
+                {
+                    pairingRequest.PairingCode = orderStatusDetail.RideLinqPairingCode;
+                }
+                else
+                {
+                    pairingRequest.Medallion = orderStatusDetail.VehicleNumber;
+                }
 
                 _logger.LogMessage("Pairing request : " + pairingRequest.ToJson());
                 _logger.LogMessage("PaymentSettings request : " + cmtPaymentSettings.ToJson());
