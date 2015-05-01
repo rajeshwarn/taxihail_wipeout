@@ -76,6 +76,7 @@
     <Compile Include="OrderCancelledBecauseOfError.cs" />
     <Compile Include="OrderPreparedForNextDispatch.cs" />
     <Compile Include="OrderPairedForPayment.cs" />
+    <Compile Include="PromotionUnApplied.cs" />
     <Compile Include="RefundedOrderUpdated.cs" />
     <Compile Include="OrderSwitchedToNextDispatchCompany.cs" />
     <Compile Include="OrderTimedOut.cs" />
