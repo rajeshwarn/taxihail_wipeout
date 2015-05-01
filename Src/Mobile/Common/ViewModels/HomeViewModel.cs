@@ -532,7 +532,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 BottomBar.CheckManualRideLinqEnabledAsync(_lastHashedMarket.HasValue());
             }
-            
         }
     }
 }
