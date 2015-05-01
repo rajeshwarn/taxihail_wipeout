@@ -13,11 +13,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
     {
         private readonly IOrderWorkflowService _orderWorkflowService;
         private readonly IPromotionService _promotionService;
+		private readonly IAccountService _accountService;
 
-        public PromotionViewModel(IOrderWorkflowService orderWorkflowService, IPromotionService promotionService)
+        public PromotionViewModel(IOrderWorkflowService orderWorkflowService, IPromotionService promotionService, IAccountService accountService)
         {
             _orderWorkflowService = orderWorkflowService;
             _promotionService = promotionService;
+			_accountService = accountService;
 
             ActivePromotions = new ObservableCollection<PromotionItemViewModel>();
         }
@@ -26,6 +28,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             base.OnViewLoaded();
             LoadActivePromotions();
+			CheckCoFAvaialble();
         }
 
         private string _promotionCode;
@@ -56,6 +59,30 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
+		private bool _isCoFAvailable;
+		public bool IsCoFAvailable {
+			get 
+			{
+				return _isCoFAvailable;
+			}
+			set 
+			{
+				_isCoFAvailable = value;
+				RaisePropertyChanged();
+			}
+		}
+		
+		public ICommand ToPayment
+		{
+			get
+			{
+				return this.GetCommand(() => 
+				{
+					ShowViewModel<CreditCardAddViewModel>(new { isFromPromotions = true });
+				})
+			}
+		}
+
         public ICommand SelectPromotion
         {
             get
@@ -67,6 +94,21 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 });
             }
         }
+
+		private async void CheckCoFAvaialble()
+		{
+			try
+			{
+				//TODO: Find a better way to check for in app pay detection 
+				var cof = await _accountService.GetCreditCard();
+
+				IsCoFAvailable = cof != null;
+			}
+			catch(Exception ex) 
+			{
+				Logger.LogError(ex);
+			}
+		}
 
         private async void LoadActivePromotions()
         {
