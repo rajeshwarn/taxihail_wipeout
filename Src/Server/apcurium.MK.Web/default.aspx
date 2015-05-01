@@ -73,6 +73,7 @@
             TaxiHail.parameters.apiRoot = "api";
             TaxiHail.parameters.defaultTipPercentage = '<%= DefaultTipPercentage %>';
             TaxiHail.parameters.warnForFeesOnCancel = <%: WarnForFeesOnCancel ? "true" : "false" %>;
+            TaxiHail.parameters.displayMarketChangeWarning = <%: DisplayMarketChangeWarning ? "true" : "false" %>;
 
             TaxiHail.parameters.isSignupVisible = <%: IsWebSignupVisible  ? "true" : "false"%>;
             TaxiHail.parameters.isSocialMediaVisible = <%: IsWebSocialMediaVisible  ? "true" : "false"%>;

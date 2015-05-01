@@ -57,7 +57,8 @@ namespace MK.Common.Configuration
 			ShowEstimate = true;
 		    Network = new NetworkSettingContainer
 		    {
-                Enabled = false
+                Enabled = false,
+                DisplayMarketChangeWarning = true
 		    };
 
             ShowEstimateWarning = true;

@@ -221,7 +221,9 @@
                                 // Load external market vehicle types
                                 this.setExternalMarketVehicleTypes(position.latitude, position.longitude);
 
-                                this.confirmMarketChange();
+                                if (TaxiHail.parameters.displayMarketChangeWarning == "true") {
+                                    this.confirmMarketChange();
+                                }
                             }
                         } else {
                             if (this.model.get('lastMarket') !== "") {
