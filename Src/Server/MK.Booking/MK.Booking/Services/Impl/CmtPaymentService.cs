@@ -353,7 +353,6 @@ namespace apcurium.MK.Booking.Services.Impl
 
             try
             {
-
                 var accountDetail = _accountDao.FindById(orderStatusDetail.AccountId);
 
                 // send pairing request                                

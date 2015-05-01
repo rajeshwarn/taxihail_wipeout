@@ -115,7 +115,7 @@ namespace apcurium.MK.Booking.Api.Jobs
             {
                 return;
             }
-
+ 
             PopulateFromIbsOrder(orderStatusDetail, orderFromIbs);
 
             CheckForPairingAndHandleIfNecessary(orderStatusDetail, orderFromIbs);
@@ -181,6 +181,7 @@ namespace apcurium.MK.Booking.Api.Jobs
             orderStatusDetail.TerminalId =                      ibsOrderInfo.TerminalId.GetValue(orderStatusDetail.TerminalId);
             orderStatusDetail.ReferenceNumber =                 ibsOrderInfo.ReferenceNumber.GetValue(orderStatusDetail.ReferenceNumber);
             orderStatusDetail.Eta =                             ibsOrderInfo.Eta ?? orderStatusDetail.Eta;
+            orderStatusDetail.RideLinqPairingCode =             ibsOrderInfo.PairingCode.GetValue(orderStatusDetail.RideLinqPairingCode);
             
             UpdateStatusIfNecessary(orderStatusDetail, ibsOrderInfo);
 
