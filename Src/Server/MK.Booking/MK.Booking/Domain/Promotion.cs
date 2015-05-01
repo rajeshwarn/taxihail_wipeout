@@ -40,6 +40,7 @@ namespace apcurium.MK.Booking.Domain
             Handles<PromotionActivated>(OnPromotionActivated);
             Handles<PromotionDeactivated>(OnPromotionDeactivated);
             Handles<PromotionApplied>(OnPromotionApplied);
+            Handles<PromotionUnApplied>(OnPromotionUnApplied);
             Handles<PromotionRedeemed>(NoAction);
             Handles<UserAddedToPromotionWhiteList_V2>(OnUserAddedToWhiteList);
         }
@@ -225,6 +226,15 @@ namespace apcurium.MK.Booking.Domain
             });
         }
 
+        public void UnApply(Guid orderId, Guid accountId)
+        {
+            Update(new PromotionUnApplied
+            {
+                AccountId = accountId,
+                OrderId = orderId
+            });
+        }
+
         public decimal GetAmountSaved(decimal totalAmountOfOrder)
         {
             if (_discountType == PromoDiscountType.Cash)
@@ -324,6 +334,19 @@ namespace apcurium.MK.Booking.Domain
             _orderIds.Add(@event.OrderId);
 
             _usersWhiteList.Remove(@event.AccountId);
+        }
+
+        private void OnPromotionUnApplied(PromotionUnApplied @event)
+        {
+            _usages = _usages - 1;
+
+            int usagesForThisUser;
+            _usagesPerUser.TryGetValue(@event.AccountId, out usagesForThisUser);
+            _usagesPerUser[@event.AccountId] = usagesForThisUser - 1;
+
+            _orderIds.Remove(@event.OrderId);
+
+            _usersWhiteList.Add(@event.AccountId);
         }
 
         private void OnUserAddedToWhiteList(UserAddedToPromotionWhiteList_V2 @event)

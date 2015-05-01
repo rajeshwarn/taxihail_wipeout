@@ -14,6 +14,7 @@ namespace apcurium.MK.Booking.EventHandlers
         IEventHandler<PromotionActivated>,
         IEventHandler<PromotionDeactivated>,
         IEventHandler<PromotionApplied>,
+        IEventHandler<PromotionUnApplied>,
         IEventHandler<PromotionRedeemed>,
         IEventHandler<UserAddedToPromotionWhiteList_V2>
     {
@@ -123,6 +124,22 @@ namespace apcurium.MK.Booking.EventHandlers
                     DiscountType = @event.DiscountType,
                     DiscountValue = @event.DiscountValue
                 });
+            }
+        }
+
+        public void Handle(PromotionUnApplied @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                
+
+                var promotionUsageDetail = context.Find<PromotionUsageDetail>(@event.OrderId);
+                if (promotionUsageDetail != null)
+                {
+                    var account = context.Find<AccountDetail>(@event.AccountId);
+
+                    // TODO
+                }
             }
         }
 
