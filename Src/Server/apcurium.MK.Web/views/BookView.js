@@ -221,7 +221,7 @@
                                 // Load external market vehicle types
                                 this.setExternalMarketVehicleTypes(position.latitude, position.longitude);
 
-                                if (TaxiHail.parameters.displayMarketChangeWarning == "true") {
+                                if (!TaxiHail.parameters.hideMarketChangeWarning) {
                                     this.confirmMarketChange();
                                 }
                             }

@@ -302,7 +302,9 @@ namespace apcurium.MK.Common.Configuration
         [CustomizableByCompany, RequiresTaxiHailPro]
         public double SecondaryOrderTimeout { get; protected internal set; }
 
-        public bool DisplayMarketChangeWarning { get; protected internal set; }
+        [CustomizableByCompany, RequiresTaxiHailPro, SendToClient]
+        [Display(Name = "Hide Market Change Warning", Description = "Hide the warning that is displayed when entering a new market")]
+        public bool HideMarketChangeWarning { get; protected internal set; }
 
         [SendToClient]
         [Display(Name = "Enable Network", Description = "Is TaxiHailNetwork Enabled")]
