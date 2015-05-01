@@ -18,22 +18,27 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
         IEventHandler<OrderStatusChanged>,
         IEventHandler<AccountRegistered>,
         IEventHandler<CreditCardPaymentCaptured_V2>,
-        IEventHandler<PromotionCreated>
+        IEventHandler<PromotionCreated>,
+        IEventHandler<OrderCancelled>,
+        IEventHandler<OrderCancelledBecauseOfError>
     {
         private readonly Func<BookingDbContext> _contextFactory;
         private readonly ICommandBus _commandBus;
         private readonly IPromotionDao _promotionDao;
         private readonly IAccountDao _accountDao;
+        private readonly IOrderDao _orderDao;
 
         public PromotionTriggerGenerator(Func<BookingDbContext> contextFactory,
             ICommandBus commandBus,
             IPromotionDao promotionDao,
-            IAccountDao accountDao)
+            IAccountDao accountDao,
+            IOrderDao orderDao)
         {
             _contextFactory = contextFactory;
             _commandBus = commandBus;
             _promotionDao = promotionDao;
             _accountDao = accountDao;
+            _orderDao = orderDao;
         }
 
         public void Handle(AccountRegistered @event)
@@ -184,6 +189,29 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                     LastTriggeredAmount = promotionProgress
                 });
             }
+        }
+
+        public void Handle(OrderCancelled @event)
+        {
+            SendUnApplyPromotionCommand(@event.SourceId);
+        }
+
+        public void Handle(OrderCancelledBecauseOfError @event)
+        {
+            SendUnApplyPromotionCommand(@event.SourceId);
+        }
+
+        private void SendUnApplyPromotionCommand(Guid orderId)
+        {
+            var orderDetail = _orderDao.FindById(orderId);
+            var promotionDetail = _promotionDao.FindByOrderId(orderId);
+
+            _commandBus.Send(new UnApplyPromotion
+            {
+                PromoId = promotionDetail.PromoId,
+                AccountId = orderDetail.AccountId,
+                OrderId = orderId
+            });
         }
     }
 }

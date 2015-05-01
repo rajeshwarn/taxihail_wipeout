@@ -12,6 +12,8 @@ namespace apcurium.MK.Booking.Commands
 
         public Guid Id { get; private set; }
 
+        public Guid PromoId { get; set; }
+
         public Guid OrderId { get; set; }
 
         public Guid AccountId { get; set; }

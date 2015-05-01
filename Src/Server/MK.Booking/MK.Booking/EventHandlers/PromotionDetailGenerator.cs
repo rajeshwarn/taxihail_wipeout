@@ -131,14 +131,11 @@ namespace apcurium.MK.Booking.EventHandlers
         {
             using (var context = _contextFactory.Invoke())
             {
-                
-
                 var promotionUsageDetail = context.Find<PromotionUsageDetail>(@event.OrderId);
                 if (promotionUsageDetail != null)
                 {
-                    var account = context.Find<AccountDetail>(@event.AccountId);
-
-                    // TODO
+                    context.Set<PromotionUsageDetail>().Remove(promotionUsageDetail);
+                    context.Save(promotionUsageDetail);
                 }
             }
         }

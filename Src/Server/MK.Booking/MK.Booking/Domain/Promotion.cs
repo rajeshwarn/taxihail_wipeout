@@ -228,6 +228,11 @@ namespace apcurium.MK.Booking.Domain
 
         public void UnApply(Guid orderId, Guid accountId)
         {
+            if (!_orderIds.Contains(orderId))
+            {
+                throw new InvalidOperationException("Promotion must be applied to an order in order to be un-applied");
+            }
+
             Update(new PromotionUnApplied
             {
                 AccountId = accountId,

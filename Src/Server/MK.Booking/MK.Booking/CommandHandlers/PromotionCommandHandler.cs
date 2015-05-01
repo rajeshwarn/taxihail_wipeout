@@ -11,6 +11,7 @@ namespace apcurium.MK.Booking.CommandHandlers
         ICommandHandler<ActivatePromotion>,
         ICommandHandler<DeactivatePromotion>,
         ICommandHandler<ApplyPromotion>,
+        ICommandHandler<UnApplyPromotion>,
         ICommandHandler<RedeemPromotion>,
         ICommandHandler<AddUserToPromotionWhiteList>
     {
@@ -69,6 +70,15 @@ namespace apcurium.MK.Booking.CommandHandlers
             _repository.Save(promotion, command.Id.ToString());
         }
 
+        public void Handle(UnApplyPromotion command)
+        {
+            var promotion = _repository.Get(command.PromoId);
+
+            promotion.UnApply(command.OrderId, command.AccountId);
+
+            _repository.Save(promotion, command.Id.ToString());
+        }
+
         public void Handle(RedeemPromotion command)
         {
             var promotion = _repository.Get(command.PromoId);
@@ -86,6 +96,5 @@ namespace apcurium.MK.Booking.CommandHandlers
 
             _repository.Save(promotion, command.Id.ToString());
         }
-       
     }
 }
