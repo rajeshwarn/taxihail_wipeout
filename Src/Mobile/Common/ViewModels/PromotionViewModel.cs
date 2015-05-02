@@ -6,6 +6,7 @@ using System.Windows.Input;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Extensions;
+using apcurium.MK.Booking.Mobile.ViewModels.Payment;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -76,10 +77,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			get
 			{
-				return this.GetCommand(() => 
-				{
-					ShowViewModel<CreditCardAddViewModel>(new { isFromPromotions = true });
-				})
+			    return this.GetCommand(() =>
+			    {
+			        ShowViewModel<CreditCardAddViewModel>(new {isFromPromotions = true});
+			    });
 			}
 		}
 
