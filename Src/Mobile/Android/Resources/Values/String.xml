@@ -171,7 +171,7 @@
   <string name="September">Sep (09)</string>
   <string name="SaveAddressEmptyFieldTitle">Friendly name required</string>
   <string name="Politeness">Politeness</string>
-  <string name="UnpairWarningMessage">This action cannot be undone</string>
+  <string name="UnpairWarningMessage">Are you sure you don’t want to pay with your credit card on file?</string>
   <string name="CreditCardErrorInvalid">Cannot validate the credit card</string>
   <string name="PickupViewDestinationLabel">Destination &gt;&gt;</string>
   <string name="PanelMenuViewCallDispatchText">Call</string>

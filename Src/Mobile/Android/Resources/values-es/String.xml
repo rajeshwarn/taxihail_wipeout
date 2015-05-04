@@ -173,7 +173,7 @@
   <string name="HistoryLoadError">Unable to load the history. Please try again later.</string>
   <string name="September">Sep (09)</string>
   <string name="RingCodeTextPlaceholder">Código de entrada</string>
-  <string name="UnpairWarningMessage">This action cannot be undone</string>
+  <string name="UnpairWarningMessage">Are you sure you don’t want to pay with your credit card on file?</string>
   <string name="ConfirmPassengersLabel">Pasajeros:</string>
   <string name="CreditCardErrorInvalid">No podemos validar su tarjeta de crédito</string>
   <string name="PanelMenuViewCallDispatchText">Llamar</string>

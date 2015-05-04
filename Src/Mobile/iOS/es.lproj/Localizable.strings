@@ -171,7 +171,7 @@
 "HistoryLoadError"="Unable to load the history. Please try again later.";
 "September"="Sep (09)";
 "RingCodeTextPlaceholder"="Código de entrada";
-"UnpairWarningMessage"="This action cannot be undone";
+"UnpairWarningMessage"="Are you sure you don’t want to pay with your credit card on file?";
 "ConfirmPassengersLabel"="Pasajeros:";
 "CreditCardErrorInvalid"="No podemos validar su tarjeta de crédito";
 "PanelMenuViewCallDispatchText"="Llamar";
