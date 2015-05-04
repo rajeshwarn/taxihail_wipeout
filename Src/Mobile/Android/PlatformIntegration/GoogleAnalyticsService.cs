@@ -41,8 +41,10 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 
                 var appName = settings.Data.TaxiHail.ApplicationName.Replace(' ', '_');
                 var version = packageInfo.Version;
-                Trackers.ForEach(x => x.SetAppName(appName));
-                Trackers.ForEach(x => x.SetAppVersion(version));
+                Trackers.ForEach(x => {
+                    x.SetAppName(appName);
+                    x.SetAppVersion(version);
+                });
             }
             catch (Exception ex)
             {

@@ -41,8 +41,10 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 
             var appName = settings.Data.TaxiHail.ApplicationName.Replace(' ', '_');
             var version = packageInfo.Version;
-            Trackers.ForEach(x => x.Set(GAIConstants.AppName, appName));
-            Trackers.ForEach(x => x.Set(GAIConstants.AppVersion, version));
+            Trackers.ForEach(x => {
+                x.Set(GAIConstants.AppName, appName);
+                x.Set(GAIConstants.AppVersion, version);
+            });
 		}
 
 		public void LogViewModel (string viewModelName)
@@ -64,14 +66,10 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 
 		public void LogNavigation(string source, string destination)
 		{
-
 		}
 
 		public void LogException(string className, string methodName, Exception e, bool isFatal = false)
 		{   
-//            var exception = GAIDictionaryBuilder.CreateException (e.Message, new NSNumber (isFatal));
-//            exception.Set(GAIConstants.ex
-//            Trackers.ForEach(x => x.Send(exception.Build()));
 		}
 
         public void ReportConversion()
