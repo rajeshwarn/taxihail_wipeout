@@ -126,5 +126,13 @@ Src\Server\apcurium.MK.Web\themes\LAMP\less\combined-responsive.less
 Src\Server\apcurium.MK.Web\themes\LAMP\less\combined.less
 Src\Server\apcurium.MK.Web\themes\LAMP\less\style.less
 Src\Server\apcurium.MK.Web\themes\LAMP\less\variables.less
+Src/Mobile/Android/Resources/Values/String.xml
+Src/Mobile/Android/Resources/values-ar/String.xml
+Src/Mobile/Android/Resources/values-es/String.xml
+Src/Mobile/Android/Resources/values-fr/String.xml
+Src/Mobile/iOS/ar.lproj/Localizable.strings
+Src/Mobile/iOS/en.lproj/Localizable.strings
+Src/Mobile/iOS/es.lproj/Localizable.strings
+Src/Mobile/iOS/fr.lproj/Localizable.strings
 syntax: regexp
 Deployment/Database/*
