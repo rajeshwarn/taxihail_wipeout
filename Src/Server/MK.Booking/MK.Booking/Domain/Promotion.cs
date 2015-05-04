@@ -1,8 +1,11 @@
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Common;
+using apcurium.MK.Common.Collections;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
@@ -28,9 +31,10 @@ namespace apcurium.MK.Booking.Domain
         private decimal _discountValue;
         private PromoDiscountType _discountType;
 
-        private readonly List<Guid> _usersWhiteList = new List<Guid>();
-        private readonly Dictionary<Guid, int> _usagesPerUser = new Dictionary<Guid, int>();
-        private readonly List<Guid> _orderIds = new List<Guid>(); 
+        private readonly SynchronizedList<Guid> _orderIds = new SynchronizedList<Guid>();
+        private readonly SynchronizedList<Guid> _usersWhiteList = new SynchronizedList<Guid>();
+        private readonly ConcurrentDictionary<Guid, int> _usagesPerUser = new ConcurrentDictionary<Guid, int>();
+        
         private int _usages;
         
         public Promotion(Guid id) : base(id)
@@ -330,11 +334,11 @@ namespace apcurium.MK.Booking.Domain
 
         private void OnPromotionApplied(PromotionApplied @event)
         {
-            _usages = _usages + 1;
+            Interlocked.Increment(ref _usages);
 
             int usagesForThisUser;
             _usagesPerUser.TryGetValue(@event.AccountId, out usagesForThisUser);
-            _usagesPerUser[@event.AccountId] = usagesForThisUser + 1;
+            _usagesPerUser[@event.AccountId] = Interlocked.Increment(ref usagesForThisUser);
 
             _orderIds.Add(@event.OrderId);
 
@@ -343,11 +347,11 @@ namespace apcurium.MK.Booking.Domain
 
         private void OnPromotionUnApplied(PromotionUnApplied @event)
         {
-            _usages = _usages - 1;
+            Interlocked.Decrement(ref _usages);
 
             int usagesForThisUser;
             _usagesPerUser.TryGetValue(@event.AccountId, out usagesForThisUser);
-            _usagesPerUser[@event.AccountId] = usagesForThisUser - 1;
+            _usagesPerUser[@event.AccountId] = Interlocked.Decrement(ref usagesForThisUser);
 
             _orderIds.Remove(@event.OrderId);
 
