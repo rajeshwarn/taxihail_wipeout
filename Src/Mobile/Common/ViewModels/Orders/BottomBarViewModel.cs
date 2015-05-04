@@ -120,8 +120,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
                 {
                     _isFutureBookingDisabled = value;
                     RaisePropertyChanged();
+                    RaisePropertyChanged(() => IsLaterBookingVisible);
                 }
             }
+        }
+
+        public bool IsLaterBookingVisible
+        {
+            get { return !IsFutureBookingDisabled && !Settings.IsMergedBookTaxiButtonEnabled; }
         }
 
         private void OrderValidated(OrderValidationResult validationResult)
@@ -497,6 +503,37 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
                 }
             }
         }
+
+        public string BookButtonText
+        {
+            get
+            {
+                return Settings.IsMergedBookTaxiButtonEnabled
+                    ? this.Services().Localize["HomeView_BookTaxi"]
+                    : this.Services().Localize["BookItButton"];
+            }
+        }
+
+        public ICommand Book
+        {
+            get
+            {
+                return this.GetCommand(() =>
+                {
+                    if (Settings.IsMergedBookTaxiButtonEnabled && !IsFutureBookingDisabled)
+                    {
+                        //We need to show the Book A Taxi popup.
+                        PresentationStateRequested.Raise(this, new HomeViewModelStateRequestedEventArgs(HomeViewModelState.BookATaxi));
+                    }
+                    else
+                    {
+                        //Normal classic flow
+                        SetPickupDateAndReviewOrder.ExecuteIfPossible();
+                    }
+                });
+            }
+        }
+            
 
         public ICommand BookATaxi
         {
