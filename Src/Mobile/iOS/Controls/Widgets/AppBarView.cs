@@ -63,7 +63,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
 			var btnEstimate = GenerateEstimateButton();
 
-			var btnBook = GenerateBookButton("HomeView_BookTaxi");
+			var btnBook = GenerateBookButton();
+            btnBook.SetTitle(Localize.GetValue("HomeView_BookTaxi"), UIControlState.Normal);
 			_imagePromoForManual = GeneratePromoImage();
 			btnBook.AddSubview(_imagePromoForManual);
 
@@ -144,14 +145,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			};
 		}
 
-		private FlatButton GenerateBookButton(string titleResource)
+		private FlatButton GenerateBookButton()
 		{
 			var btnBook = new FlatButton()
 			{
 				TranslatesAutoresizingMaskIntoConstraints = false
 			};
 			FlatButtonStyle.Green.ApplyTo(btnBook);
-			btnBook.SetTitle(Localize.GetValue(titleResource), UIControlState.Normal);
+			
 
 			return btnBook;
 		}
@@ -209,7 +210,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
 			var btnEstimate = GenerateEstimateButton();
 
-			var btnBook = GenerateBookButton("BookItButton");
+			var btnBook = GenerateBookButton();
+
+            var viewModel = (BottomBarViewModel) DataContext;
+            btnBook.SetTitle(viewModel.BookButtonText, UIControlState.Normal);
 
 			_imagePromo = GeneratePromoImage();
 			btnBook.AddSubview(_imagePromo);
@@ -262,7 +266,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
             set.Bind(btnBook)
                 .For(v => v.Command)
-                .To(vm => vm.SetPickupDateAndReviewOrder);
+                .To(vm => vm.Book);
 
 			set.Bind(_imagePromo)
 				.For(v => v.Hidden)
@@ -275,7 +279,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			
             set.Bind(btnBookLater)
                 .For(v => v.Hidden)
-                .To(vm => vm.IsFutureBookingDisabled);
+                .To(vm => vm.IsLaterBookingVisible);
 
 			set.Bind(_orderButtons)
 				.For(v => v.Hidden)
