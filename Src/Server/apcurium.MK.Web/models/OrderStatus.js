@@ -32,8 +32,9 @@
         },
 
         warnForCancellationFees: function () {
-            return this.get('ibsStatusId') === 'wosASSIGNED'
-                || this.get('ibsStatusId') === 'wosARRIVED';
+            return TaxiHail.parameters.warnForFeesOnCancel
+                && (this.get('ibsStatusId') === 'wosASSIGNED'
+                    || this.get('ibsStatusId') === 'wosARRIVED');
         },
 
         canSendReceipt: function() {
