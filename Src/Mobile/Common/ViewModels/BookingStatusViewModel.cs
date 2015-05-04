@@ -699,7 +699,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 								this.Services().Message.ShowMessage(this.Services().Localize["CmtRideLinqErrorTitle"], this.Services().Localize["UnpairErrorMessage"]);
 							}
 						},
-						this.Services().Localize["Cancel"], () => {});
+						this.Services().Localize["NoButton"], () => { });
 				});
 			}
 		}

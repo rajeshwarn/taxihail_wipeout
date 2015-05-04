@@ -1682,7 +1682,7 @@
     <value>Si vous décidez de payer dans le taxi, vous ne serez pas éligible à la promotion</value>
   </data>
   <data name="UnpairWarningCancelButton" xml:space="preserve">
-    <value>Payer dans le taxi</value>
+    <value>Oui</value>
   </data>
   <data name="View_Promotions" xml:space="preserve">
     <value>Promotions</value>
