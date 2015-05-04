@@ -518,18 +518,20 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         private void MarketChanged(string hashedMarket)
         {
             // Market changed and not home market
-            if (_lastHashedMarket != hashedMarket && hashedMarket.HasValue())
+            if (_lastHashedMarket != hashedMarket
+                && hashedMarket.HasValue()
+                && !Settings.Network.HideMarketChangeWarning)
             {
                 this.Services().Message.ShowMessage(this.Services().Localize["MarketChangedMessageTitle"],
                     this.Services().Localize["MarketChangedMessage"]);
             }
+
             _lastHashedMarket = hashedMarket;
 
             if (BottomBar != null)
             {
                 BottomBar.CheckManualRideLinqEnabledAsync(_lastHashedMarket.HasValue());
             }
-            
         }
     }
 }

@@ -312,7 +312,7 @@
   <string name="NoButton">No</string>
   <string name="PayInCar">Pay Cash/Credit Card in Car</string>
   <string name="CreditCardRequiredFields">All the fields are required</string>
-  <string name="PromoBookRide">Use this promotion on next ride</string>
+  <string name="PromoBookRide">Use this promo code</string>
   <string name="DeleteCreditCardTitle">Delete credit card</string>
   <string name="SettingViewNotSignedIn">Your are currently not signed in. You must be signed in to use this app.</string>
   <string name="AcceptButton">Accept</string>

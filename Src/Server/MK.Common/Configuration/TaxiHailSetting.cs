@@ -419,6 +419,10 @@ namespace MK.Common.Configuration
         [Display(Name = "Google AdWords Conversion Tracking Label", Description = "Conversion Label used for Google Conversion Tracking")]
         public string GoogleAdWordsConversionLabel { get; protected set; }
 
+        [SendToClient]
+        [Display(Name = "Google Analytics Tracking ID", Description = "Company's Tracking ID used for Google Analytics")]
+        public string GoogleAnalyticsTrackingId { get; protected set; }
+
         [SendToClient, CustomizableByCompany]
         public bool CallDriverUsingProxy { get; protected set; }
 
