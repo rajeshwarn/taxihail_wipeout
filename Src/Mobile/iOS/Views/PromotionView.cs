@@ -53,6 +53,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			btnApplyPromo.Font = UIFont.FromName(FontName.HelveticaNeueRegular, 28 / 2);
 			btnApplyPromo.SetTitle(Localize.GetValue("PromoApply"), UIControlState.Normal);
 
+			FlatButtonStyle.Silver.ApplyTo(btnAddPayment);
+			btnAddPayment.SetTitle(Localize.GetValue("AddPaymentMethod"), UIControlState.Normal);
+
             var tableViewSource = new PromotionTableViewSource(tblPromotions);
             tblPromotions.Source = tableViewSource;
 
@@ -62,6 +65,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 .For("Visibility")
                 .To(vm => vm.ActivePromotions)
                 .WithConversion("Visibility");
+
+			set.Bind(btnAddPayment)
+				.For("TouchUpInside")
+				.To(vm => vm.ToPayment);
+
+			set.Bind(btnAddPayment)
+				.For(v => v.HiddenWithConstraints)
+				.To(vm => vm.IsCoFAvailable);
 
 			set.Bind(lblNoPromotions)
 				.For("Visibility")
