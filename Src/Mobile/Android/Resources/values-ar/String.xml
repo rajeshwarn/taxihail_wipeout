@@ -550,7 +550,7 @@
   <string name="PromoApply">Apply</string>
   <string name="Tuto03Top">يمكنك أيضا إختيار نقطة الإلتقاء بالضغط على عنوان الإلتقاء.</string>
   <string name="ConfirmRideInformationTitle">بيانات المشوار</string>
-  <string name="PromoBookRide">Use this promotion on next ride</string>
+  <string name="PromoBookRide">Use this promo code</string>
   <string name="StatusActionBookButton">احجز سيارة أجرة اخرى</string>
   <string name="BuildingName">إسم المبنى / ملاحظات</string>
   <string name="LocationDetailRingCodeLabel">رمز الدخول</string>

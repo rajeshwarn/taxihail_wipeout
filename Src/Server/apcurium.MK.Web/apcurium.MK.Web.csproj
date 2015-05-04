@@ -436,6 +436,7 @@
     <Content Include="localization\Payment-es.json" />
     <Content Include="Areas\AdminTH\Views\PromoCode\Unlock.cshtml" />
     <Content Include="localization\Sherbet-en.json" />
+    <Content Include="localization\BlackCabNow-en.json" />
     <None Include="Scripts\jquery-1.8.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.8.2.js" />
     <Content Include="Scripts\jquery-1.8.2.min.js" />

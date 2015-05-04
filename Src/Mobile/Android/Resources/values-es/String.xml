@@ -425,7 +425,7 @@
   <string name="mobileKnowledgeUrl">http://www.mobile-knowledge.com/</string>
   <string name="InvalidLocalContactTitle">Contacto inválido</string>
   <string name="RideSettingsPayBack">PayBack</string>
-  <string name="PromoBookRide">Use this promotion on next ride</string>
+  <string name="PromoBookRide">Use this promo code</string>
   <string name="DateTimePickerPickDate">Seleccione la fecha del servicio:</string>
   <string name="Overdue_AddNewCard">Update Credit Card</string>
   <string name="BookDropoffLocationEmptyPlaceholder">Toque para seleccionar lugar de destino</string>

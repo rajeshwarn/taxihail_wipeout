@@ -569,7 +569,7 @@
   <string name="PromoApply">Appliquer</string>
   <string name="Tuto03Top">Vous pouvez également nous communiquer votre position en saisissant directement une adresse</string>
   <string name="ConfirmRideInformationTitle">Information sur le trajet</string>
-  <string name="PromoBookRide">Utiliser sur la prochaine commande</string>
+  <string name="PromoBookRide">Utiliser ce code promotionnel</string>
   <string name="StatusActionBookButton">Réserver un nouveau véhicule</string>
   <string name="BuildingName">Nom du bâtiment / commentaires</string>
   <string name="LocationDetailRingCodeLabel">Saisissez un code</string>

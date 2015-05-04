@@ -180,7 +180,8 @@
 
                 var alwaysAccept = $.cookie('THNetwork_always_accept');
 
-                if (alwaysAccept && alwaysAccept === 'true') {
+                if ((alwaysAccept && alwaysAccept === 'true')
+                    || TaxiHail.parameters.autoConfirmFleetChange) {
                     this.switchDispatchCompany(this.model);
                 } else {
                     TaxiHail.confirm({
