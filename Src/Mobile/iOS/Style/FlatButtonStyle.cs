@@ -96,19 +96,22 @@ namespace apcurium.MK.Booking.Mobile.Client
 
                 if(button == null) return;
 
-                var colorToUse = Theme.IsLightContent 
+                var textColor = Theme.IsLightContent 
                     ? Theme.CompanyColor
                     : Theme.LabelTextColor;
+                var fillColor = Theme.IsLightContent 
+                    ? Theme.LabelTextColor
+                    : Theme.CompanyColor;
 
-                button.SetFillColor(GetColor(x => x.ColorBackgroundNormal, UIColor.Clear), UIControlState.Normal);
-                button.SetFillColor(GetColor(x => x.ColorBackgroundSelected, UIColor.Clear), UIControlState.Selected);
-                button.SetFillColor(GetColor(x => x.ColorBackgroundSelected, UIColor.Clear), UIControlState.Highlighted);
+                button.SetFillColor(GetColor(x => x.ColorBackgroundNormal, fillColor), UIControlState.Normal);
+                button.SetFillColor(GetColor(x => x.ColorBackgroundSelected, fillColor), UIControlState.Selected);
+                button.SetFillColor(GetColor(x => x.ColorBackgroundSelected, fillColor), UIControlState.Highlighted);
 
-                button.SetTitleColor(GetColor(x => x.ColorTextNormal, colorToUse), UIControlState.Normal);
-                button.SetTitleColor(GetColor(x => x.ColorTextSelected, colorToUse.ColorWithAlpha(0.5f)), UIControlState.Selected);
-                button.SetTitleColor(GetColor(x => x.ColorTextSelected, colorToUse.ColorWithAlpha(0.5f)), UIControlState.Highlighted);
+                button.SetTitleColor(GetColor(x => x.ColorTextNormal, textColor), UIControlState.Normal);
+                button.SetTitleColor(GetColor(x => x.ColorTextSelected, textColor.ColorWithAlpha(0.5f)), UIControlState.Selected);
+                button.SetTitleColor(GetColor(x => x.ColorTextSelected, textColor.ColorWithAlpha(0.5f)), UIControlState.Highlighted);
 
-                button.SetStrokeColor(GetColor(x => x.ColorBorder, colorToUse));
+                button.SetStrokeColor(GetColor(x => x.ColorBorder, textColor));
             }
 
             protected override string GetStyleName ()
