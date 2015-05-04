@@ -2,16 +2,13 @@
 using UIKit;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
-using apcurium.MK.Booking.Mobile.Client.Controls.Binding;
-using TinyIoC;
-using apcurium.MK.Common.Configuration;
 using apcurium.MK.Booking.Mobile.Client.Localization;
-using apcurium.MK.Booking.Mobile.Client.Extensions;
 using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
+using Cirrious.MvvmCross.Binding.Touch.Views;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 {
-	public partial class OrderBookingOptions : BaseBindableChildView<BottomBarViewModel>
+    public partial class OrderBookingOptions : MvxView
 	{
 		public OrderBookingOptions(IntPtr handle) : base(handle)
 		{
@@ -19,8 +16,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
 
 		private void Initialize()
 		{
-			// Need to set Alpha to 0 to get the view transparent
-			BackgroundColor = UIColor.FromRGBA(0, 0, 0, 0);
+            BackgroundColor = UIColor.Clear;
+
+            Subviews[0].BackgroundColor = UIColor.Black.ColorWithAlpha(0.5f);
 
 			FlatButtonStyle.Green.ApplyTo(btnNow);
 			FlatButtonStyle.Green.ApplyTo(btnLater);
