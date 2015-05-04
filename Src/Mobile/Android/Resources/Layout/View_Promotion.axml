@@ -41,15 +41,17 @@
             android:layout_gravity="center_horizontal"
             android:textColor="@color/black"
             android:text="@string/PromoMustUseCardOnFileWarningMessage" />
-		<Button style="@style/ButtonActionGrayStyle"
-				android:layout_width="wrap_content"
-                android:layout_height="@dimen/HeightButton"
-				android:text="Add payment method"
-				android:paddingLeft="30dip"
-				android:paddingRight="30dip"
-				android:layout_marginTop="5dip"
-				android:layout_marginBottom="5dip"
-				local:MvxBind="Click ToPayment; Visibility IsCoFAvailable, Converter=InvertedVisibility" />
+        <Button
+            style="@style/ButtonActionGrayStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/HeightButton"
+            android:text="@string/AddPaymentMethod"
+            android:layout_gravity="center_horizontal"
+            android:paddingLeft="30dip"
+            android:paddingRight="30dip"
+            android:layout_marginTop="5dip"
+            android:layout_marginBottom="5dip"
+            local:MvxBind="Click ToPayment; Visibility IsCoFAvailable, Converter=InvertedVisibility" />
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
