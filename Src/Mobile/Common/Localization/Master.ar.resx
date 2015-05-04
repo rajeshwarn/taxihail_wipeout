@@ -1849,4 +1849,7 @@
   <data name="InvalidChargeTypeTitle" xml:space="preserve">
     <value>Invalid Charge Type</value>
   </data>
+  <data name="AddPaymentMethod" xml:space="preserve">
+    <value>Add payment method</value>
+  </data>
 </root>
