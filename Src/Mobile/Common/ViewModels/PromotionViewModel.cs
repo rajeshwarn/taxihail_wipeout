@@ -27,7 +27,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             base.OnViewLoaded();
             LoadActivePromotions();
-			CheckCoFAvaialble();
+			
+        }
+
+        public override void OnViewStarted(bool firstTime)
+        {
+            base.OnViewStarted(firstTime);
+
+            IsCoFAvailable = _accountService.CurrentAccount.HasValidPaymentInformation;
         }
 
         private string _promotionCode;
@@ -93,21 +100,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 });
             }
         }
-
-		private async void CheckCoFAvaialble()
-		{
-			try
-			{
-				//TODO: Find a better way to check for in app pay detection 
-				var cof = await _accountService.GetCreditCard();
-
-				IsCoFAvailable = cof != null;
-			}
-			catch(Exception ex) 
-			{
-				Logger.LogError(ex);
-			}
-		}
 
         private async void LoadActivePromotions()
         {
