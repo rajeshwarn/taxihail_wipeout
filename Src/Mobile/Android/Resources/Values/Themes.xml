@@ -34,9 +34,6 @@
     <color name="button_gray_border_color">#707070</color>
     <color name="button_black_border_color">#000000</color>  
 
-    <color name="button_company_border_color">#000000</color>
-    <color name="button_company_background_color">#FFD141</color>
-
     <color name="button_action_text_color">#ffffff</color>
     <color name="button_action_pressed_text_color">#ffffff</color>
 
