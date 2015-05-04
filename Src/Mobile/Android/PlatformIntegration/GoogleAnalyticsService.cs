@@ -5,16 +5,20 @@ using apcurium.MK.Common.Diagnostic;
 using Com.Google.Analytics.Tracking.Android;
 using Java.Lang;
 using Exception = System.Exception;
+using System.Collections.Generic;
+using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 {
     // V2
     public class GoogleAnalyticsService : IAnalyticsService
     {
-        private Tracker Tracker { get; set; }
+        private List<Tracker> Trackers { get; set; }
 
         public GoogleAnalyticsService(Context c, IPackageInfo packageInfo, IAppSettings settings, ILogger logger)
         {
+            Trackers = new List<Tracker>();
+
             try
             {
                 GAServiceManager.Instance.SetDispatchPeriod(20);
@@ -26,9 +30,19 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
                 instance.SetDebug(true);
                 #endif
 
-                Tracker = instance.GetTracker("UA-44714416-1");
-                Tracker.SetAppName(settings.Data.TaxiHail.ApplicationName.Replace(' ', '_'));
-                Tracker.SetAppVersion(packageInfo.Version);
+                // MK's tracking id
+                Trackers.Add(instance.GetTracker("UA-44714416-1"));
+
+                if (settings.Data.GoogleAnalyticsTrackingId.HasValue())
+                {
+                    // Company's own tracking id
+                    Trackers.Add(instance.GetTracker(settings.Data.GoogleAnalyticsTrackingId));
+                }
+
+                var appName = settings.Data.TaxiHail.ApplicationName.Replace(' ', '_');
+                var version = packageInfo.Version;
+                Trackers.ForEach(x => x.SetAppName(appName));
+                Trackers.ForEach(x => x.SetAppVersion(version));
             }
             catch (Exception ex)
             {
@@ -38,28 +52,29 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 
         public void LogViewModel(string name)
         {
-            Tracker.SendView(name);
+            Trackers.ForEach(x => x.SendView(name));
         }
 
         public void LogNavigation(string source, string destination)
         {
-            Tracker.TrackEvent("Interaction", "NavigationRequested", source + " to " + destination, new Long(0));
+            Trackers.ForEach(x => x.TrackEvent("Interaction", "NavigationRequested", source + " to " + destination, new Long(0)));
         }
 
         public void LogCommand(string commandName, string parameter)
         {
-            Tracker.SendEvent("Interaction", "Command Issued", commandName + "(" + parameter + ")", new Long(0));
+            Trackers.ForEach(x => x.SendEvent("Interaction", "Command Issued", commandName + "(" + parameter + ")", new Long(0)));
         }
 
 		public void LogEvent(string @event)
 		{
-			Tracker.SendEvent("Interaction", "Event", @event, new Long(0));
+            Trackers.ForEach(x => x.SendEvent("Interaction", "Event", @event, new Long(0)));
 		}
 
         public void LogException(string className, string methodName, Exception e, bool isFatal = false)
         {
-            Tracker.TrackException(className + ":" + methodName + ": " + e.Message, isFatal);
+            Trackers.ForEach(x => x.TrackException(className + ":" + methodName + ": " + e.Message, isFatal));
         }
+
         public void ReportConversion()
         {
             // nothing to do, android does it for us

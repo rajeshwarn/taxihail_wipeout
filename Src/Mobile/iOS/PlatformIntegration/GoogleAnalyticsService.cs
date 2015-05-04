@@ -6,6 +6,7 @@ using apcurium.MK.Common.Extensions;
 using GoogleConversionTracking.Unified;
 using apcurium.MK.Booking.Mobile.Client.Diagnostics;
 using Foundation;
+using System.Collections.Generic;
 
 namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 {
@@ -13,11 +14,13 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
     public class GoogleAnalyticsService: IAnalyticsService
 	{
         private IAppSettings _settings;
-		private IGAITracker Tracker { get; set; }
+		private List<IGAITracker> Trackers { get; set; }
 
 		public GoogleAnalyticsService (IAppSettings settings, IPackageInfo packageInfo)
 		{
             _settings = settings;
+
+            Trackers = new List<IGAITracker>();
 
 			GAI.SharedInstance.TrackUncaughtExceptions = true;
 			GAI.SharedInstance.DispatchInterval = 20;
@@ -27,22 +30,32 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
             GAI.SharedInstance.DryRun = true;
             #endif
 
-            Tracker = GAI.SharedInstance.GetTracker ("UA-44714416-1");
-			Tracker.Set(GAIConstants.AppName, settings.Data.TaxiHail.ApplicationName.Replace(' ' , '_'));
-			Tracker.Set(GAIConstants.AppVersion, packageInfo.Version);
+            // MK's tracking id
+            Trackers.Add(GAI.SharedInstance.GetTracker ("UA-44714416-1"));
+
+            if (_settings.Data.GoogleAnalyticsTrackingId.HasValue())
+            {
+                // Company's own tracking id
+                Trackers.Add(GAI.SharedInstance.GetTracker (_settings.Data.GoogleAnalyticsTrackingId));
+            }
+
+            var appName = settings.Data.TaxiHail.ApplicationName.Replace(' ', '_');
+            var version = packageInfo.Version;
+            Trackers.ForEach(x => x.Set(GAIConstants.AppName, appName));
+            Trackers.ForEach(x => x.Set(GAIConstants.AppVersion, version));
 		}
 
 		public void LogViewModel (string viewModelName)
         {
             var appView = GAIDictionaryBuilder.CreateScreenView ();
 			appView.Set (viewModelName, GAIConstants.ScreenName);
-			Tracker.Send(appView.Build());
+            Trackers.ForEach(x => x.Send(appView.Build()));
 		}
 
 		public void LogEvent(string @event)
 		{
 			var eventGA = GAIDictionaryBuilder.CreateEvent ("Interaction", "Event", @event, 0);
-			Tracker.Send (eventGA.Build());
+            Trackers.ForEach(x => x.Send (eventGA.Build()));
 		}
 
 		public void LogCommand(string commandName, string parameter)
@@ -58,7 +71,7 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 		{   
 //            var exception = GAIDictionaryBuilder.CreateException (e.Message, new NSNumber (isFatal));
 //            exception.Set(GAIConstants.ex
-//            Tracker.Send(exception.Build());
+//            Trackers.ForEach(x => x.Send(exception.Build()));
 		}
 
         public void ReportConversion()
