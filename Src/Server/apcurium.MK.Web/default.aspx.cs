@@ -62,6 +62,8 @@ namespace apcurium.MK.Web
         protected string SocialMediaTwitterURL { get; private set; }
         protected string SocialMediaGoogleURL { get; private set; }
         protected string SocialMediaPinterestURL { get; private set; }
+        protected bool HideMarketChangeWarning { get; private set; }
+        protected bool AutoConfirmFleetChange { get; private set; }
 
         protected int AvailableVehicleRefreshRate { get; private set; }
         
@@ -106,6 +108,8 @@ namespace apcurium.MK.Web
             AccountActivationDisabled = config.ServerData.AccountActivationDisabled;
             IsPayBackRegistrationFieldRequired = config.ServerData.IsPayBackRegistrationFieldRequired;
             WarnForFeesOnCancel = config.ServerData.WarnForFeesOnCancel;
+            HideMarketChangeWarning = config.ServerData.Network.HideMarketChangeWarning;
+            AutoConfirmFleetChange = config.ServerData.Network.AutoConfirmFleetChange;
 
             var paymentSettings = config.GetPaymentSettings();
 

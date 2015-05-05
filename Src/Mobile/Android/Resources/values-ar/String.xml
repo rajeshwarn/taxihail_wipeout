@@ -525,6 +525,7 @@
   <string name="PayPalLinkedInfo">Account Linked</string>
   <string name="NoPairingCreditCard">None</string>
   <string name="InvalidPassengersNumberTitle">Invalid Number of Passengers</string>
+  <string name="PromoBookRide">Use this promo code</string>
   <string name="InvalidPassengersNumber">The vehicle type that you selected does not have enough seats to accommodate your number of passengers. Please change your selection or book more than one car to accommodate your party size.</string>
   <string name="Overdue_TransactionId">Transaction Id:</string>
   <string name="Overdue_Date">Transaction date:</string>

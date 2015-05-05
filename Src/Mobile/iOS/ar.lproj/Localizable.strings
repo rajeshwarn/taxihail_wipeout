@@ -523,6 +523,7 @@
 "PayPalLinkedInfo"="Account Linked";
 "NoPairingCreditCard"="None";
 "InvalidPassengersNumberTitle"="Invalid Number of Passengers";
+"PromoBookRide"="Use this promo code";
 "InvalidPassengersNumber"="The vehicle type that you selected does not have enough seats to accommodate your number of passengers. Please change your selection or book more than one car to accommodate your party size.";
 "Overdue_TransactionId"="Transaction Id:";
 "Overdue_Date"="Transaction date:";

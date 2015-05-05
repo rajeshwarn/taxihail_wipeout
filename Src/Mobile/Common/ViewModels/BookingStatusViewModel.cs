@@ -421,7 +421,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 bool alwayAcceptSwitch;
                 bool.TryParse(this.Services().Cache.Get<string>("TaxiHailNetworkTimeOutAlwayAccept"), out alwayAcceptSwitch);
 
-                if (status.NextDispatchCompanyKey != null && alwayAcceptSwitch)
+                if (status.NextDispatchCompanyKey != null
+                    && (alwayAcceptSwitch || Settings.Network.AutoConfirmFleetChange))
                 {
                     // Switch without user input
                     SwitchCompany(status);
