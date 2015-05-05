@@ -484,6 +484,15 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Driver #.
+        /// </summary>
+        public static string Email_Body_DriverId {
+            get {
+                return ResourceManager.GetString("Email_Body_DriverId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Email confirmation required.
         /// </summary>
         public static string Email_Body_EmailConfirmationRequired {

@@ -456,6 +456,12 @@
                                                                         <td class="driver_list_title">{{ localize "Email_Body_VehicleNumber" }}</td>
                                                                         <td class="list_value">{{ VehicleNumber }}</td>
                                                                     </tr>
+                                                                    {{#HasDriverId}}
+                                                                    <tr>
+                                                                        <td class="driver_list_title">{{ localize "Email_Body_DriverId" }}</td>
+                                                                        <td class="list_value">{{ DriverInfos.DriverId }}</td>
+                                                                    </tr>
+                                                                    {{/HasDriverId}}
                                                                 </table>
                                                             </td>
                                                         </tr>

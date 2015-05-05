@@ -499,6 +499,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 EmailFontColor = _serverSettings.ServerData.TaxiHail.EmailFontColor,
                 ibsOrderId,
                 HasDriverInfo = hasDriverInfo,
+                HasDriverId = hasDriverInfo && !string.IsNullOrWhiteSpace( driverInfos.DriverId) ,
                 VehicleNumber = vehicleNumber,
                 DriverInfos = driverInfos,
                 PickupDate = pickupDate.ToString("D", dateFormat),
