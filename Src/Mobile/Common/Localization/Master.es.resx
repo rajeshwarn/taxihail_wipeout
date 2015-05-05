@@ -2134,7 +2134,7 @@
     <comment>Promotions</comment>
   </data>
   <data name="UnpairWarningMessage" xml:space="preserve">
-    <value>This action cannot be undone</value>
+    <value>Are you sure you don’t want to pay with your credit card on file?</value>
   </data>
   <data name="UnpairWarningMessageWithPromo" xml:space="preserve">
     <value>If you decide to pay in car, you will not be able to use the promotion</value>

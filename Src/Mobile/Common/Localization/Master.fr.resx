@@ -1676,7 +1676,7 @@
     <value>Promotions</value>
   </data>
   <data name="UnpairWarningMessage" xml:space="preserve">
-    <value>Cette action ne peut être annulée</value>
+    <value>Êtes-vous sûr de ne pas vouloir payer avec votre carte de crédit?</value>
   </data>
   <data name="UnpairWarningMessageWithPromo" xml:space="preserve">
     <value>Si vous décidez de payer dans le taxi, vous ne serez pas éligible à la promotion</value>

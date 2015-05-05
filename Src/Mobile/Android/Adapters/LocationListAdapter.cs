@@ -25,8 +25,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Adapters
 
             return base.GetBindableView(convertView, new
             {
-                DisplayLine1 = item.Address.FriendlyName,
-                DisplayLine2 = item.Address.FullAddress,
+					DisplayLine1 = item.DisplayLine1,
+					DisplayLine2 = item.DisplayLine2,
                 item.IsFirst,
                 item.IsLast,
                 item.ShowRightArrow,
