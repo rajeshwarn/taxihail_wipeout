@@ -597,4 +597,7 @@
   <data name="ManualRideLinq_NoCardOnFile" xml:space="preserve">
     <value>Vous devez avoir une carte associée à votre compte pour utiliser RideLinQ</value>
   </data>
+  <data name="Email_Body_Extra" xml:space="preserve">
+    <value>Extra</value>
+  </data>
 </root>

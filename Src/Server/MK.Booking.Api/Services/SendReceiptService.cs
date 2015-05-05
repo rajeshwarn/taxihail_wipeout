@@ -113,7 +113,7 @@ namespace apcurium.MK.Booking.Api.Services
                     // this is for CMT RideLinq only, no VAT
 
                     meterAmount = Math.Round(((double)tripInfo.Fare / 100), 2);
-                    tollAmount = Math.Round(((double)tripInfo.Extra / 2), 2);
+                    tollAmount = Math.Round(((double)tripInfo.Extra / 100), 2);
                     tipAmount = Math.Round(((double)tripInfo.Tip / 100), 2);
                     taxAmount = Math.Round(((double)tripInfo.Tax / 100), 2);
 

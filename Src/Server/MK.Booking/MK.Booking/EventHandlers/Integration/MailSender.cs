@@ -90,7 +90,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                         if (tripInfo != null && tripInfo.EndTime.HasValue)
                         {
                             var meterAmount = Math.Round(((double)tripInfo.Fare / 100), 2);
-                            var tollAmount = Math.Round(((double)tripInfo.Extra / 2), 2);
+                            var tollAmount = Math.Round(((double)tripInfo.Extra / 100), 2);
                             var tipAmount = Math.Round(((double)tripInfo.Tip / 100), 2);
                             var taxAmount = Math.Round(((double)tripInfo.Tax / 100), 2);
 
