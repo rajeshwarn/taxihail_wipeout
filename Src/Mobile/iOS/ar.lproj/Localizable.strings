@@ -160,6 +160,7 @@
 "AppNeedUpdateTitle"="هناك تحديثات متاحة";
 "StatusEta"="{0} and {1} {2} away";
 "CreditCardExpYear"="سنة الإنتهاء";
+"CreditCardExpiredUpdateNow"="Update now";
 "PanelMenuViewAboutUsText"="نبذة عنا";
 "HistoryLoadError"="Unable to load the history. Please try again later.";
 "September"="سبتمبر (09)";
@@ -326,6 +327,7 @@
 "PaymentDetails.Optional"="اختياري";
 "PromoProgress"="Progress :";
 "LanguageCode"="ar";
+"CreditCardExpiredTitle"="Card expired";
 "Tuto08Bottom"="نأمل أن تجد الراحة و السهولة عند استخدام هذا التطبيق .";
 "RideSettingsChargeType"="طريقة الدفع";
 "UpdateBookingSettingsInvalidDataTitle"="إعدادات بيانات الحجز خاطئة.";
@@ -493,6 +495,7 @@
 "ManualRideLinqSummary_Done"="Done";
 "PaymentDetails.TipAmountLabel"="قيمة الإكرامية";
 "LoadingMessage"="جار التحميل...";
+"CardExpiredNonMandatoryMessage"="Your credit card has expired. Your account is now configured to pay in car. If you wish to continue using your card on file, you can click on Update.";
 "PaymentDetails.CreditCardLabel"="بطاقات";
 "Tuto08Top"="يمكنك مراجعة تاريخ طلباتك في أي وقت، وأيضا إعادة حجز رحلة سابقة مجددا بلمسة زر.";
 "UnpairWarningMessageWithPromo"="If you decide to pay in car, you will not be able to use the promotion";

@@ -93,7 +93,7 @@
 "InvalidChargeTypeTitle"="Invalid Charge Type";
 "AccountDisabled"="Su cuenta ha sido deshabilitada, por favor contacte a {0} al {1} para re-activar su cuenta";
 "HistoryDetailAuthorizationLabel"="Autorización";
-"View_UpdatePassword"="Actualizar contraseña";
+"CreditCardExpiredTitle"="Card expired";
 "Cancel"="Cancelar";
 "CreateAccountLanguageFrench"="Francés";
 "View_History"="Historia";
@@ -166,6 +166,7 @@
 "AppNeedUpdateTitle"="Actualización disponible";
 "StatusEta"="y es {0} y está a {1} {2} de distancia";
 "CreditCardExpYear"="Mes de expiración";
+"CreditCardExpiredUpdateNow"="Update now";
 "LinkPayPalCCWarning"="Linking your PayPal account will remove your card on file and PayPal will be set as the default payment method. Proceed?";
 "PanelMenuViewAboutUsText"="Acerca de nosotros";
 "HistoryLoadError"="Unable to load the history. Please try again later.";
@@ -408,6 +409,7 @@
 "ViewRatingBtn"="Ver evaluaciones";
 "ChargeTypeCreditCardFile"="Tarjeta de crédito guardada";
 "InvalidPhoneErrorMessage"="The mobile number is invalid. It must contain between 10 and 15 numbers.";
+"CardExpiredMessage"="Your credit card is expired. Add a new card to your account or update card informations to continue.";
 "LocationAddFavoriteTitle"="Agregar lugar";
 "NbPassenger"="({0} pasajero)";
 "HistoryViewSendReceiptButton"="Enviar comprobante";
@@ -463,6 +465,7 @@
 "CreateAccountTitleMrs"="Srta.";
 "RideSummaryTitleText"="Muchas Gracias";
 "app_id"="134284363380764";
+"View_UpdatePassword"="Actualizar contraseña";
 "CmtCarNumber"="Número de Taxi:";
 "PassengerNameLabel"="Nombre";
 "WarningPushServiceMessage"="Notamos que no tiene las “Notificaciones automáticas” encendidas. Queremos informarle que si las enciende podría obtener mensajes de estado de sus servicios sin tener que abrir la aplicación! Prometemos no le mandaremos información innecesaria";
@@ -500,6 +503,7 @@
 "PaymentViewTotalText"="Total";
 "PaymentDetails.TipAmountLabel"="Propina";
 "LoadingMessage"="Cargando....";
+"CardExpiredNonMandatoryMessage"="Your credit card has expired. Your account is now configured to pay in car. If you wish to continue using your card on file, you can click on Update.";
 "PaymentDetails.CreditCardLabel"="Tarjetas";
 "Tuto08Top"="Puede revisar su historial de reservaciones en cualquier momento, e incluso reservar el mismo viaje con solo tocar un botón";
 "UnpairWarningMessageWithPromo"="If you decide to pay in car, you will not be able to use the promotion";

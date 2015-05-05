@@ -561,6 +561,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 					return;
 				}
 
+				if(!HasValidDate(Data.ExpirationMonth, Data.ExpirationYear))
+				{
+					await this.Services().Message.ShowMessage(this.Services().Localize["CreditCardErrorTitle"], this.Services().Localize["CreditCardErrorInvalid"]);
+					return;
+				}
+
 				using (this.Services().Message.ShowProgress())
 				{
 					Data.Last4Digits = new string(Data.CardNumber.Reverse().Take(4).Reverse().ToArray());
@@ -652,6 +658,20 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
             }
             return (sum % 10 == 0);
         }
+
+		private bool HasValidDate(string month, string year)
+		{
+			var expYear = int.Parse (year);
+			var expMonth = int.Parse (month);
+			var expirationDate = new DateTime (expYear, expMonth, DateTime.DaysInMonth (expYear, expMonth));
+
+			if (expirationDate < DateTime.Now) 
+			{
+				return false;
+			}
+
+			return true;
+		}
 
 		private void DetermineCompany(string cardNumber)
 		{

@@ -59,7 +59,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
             get
             {
 				// this is in cache and set correctly when we add/update/delete credit card
-				return !_accountService.CurrentAccount.DefaultCreditCard.HasValue || !Settings.DisableChargeTypeWhenCardOnFile;
+				return _accountService.CurrentAccount.DefaultCreditCard != null || !Settings.DisableChargeTypeWhenCardOnFile;
             }
         }
 
@@ -126,7 +126,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 					
 
 					if ((BookingSettings.ChargeTypeId == Common.Enumeration.ChargeTypes.CardOnFile.Id)  &&
-						(!_accountService.CurrentAccount.DefaultCreditCard.HasValue))
+						(_accountService.CurrentAccount.DefaultCreditCard != null))
 					{
 						this.Services ().Message.ShowMessage (this.Services ().Localize ["ErrorCreatingOrderTitle"], 
 							this.Services ().Localize ["NoCardOnFileMessage"],

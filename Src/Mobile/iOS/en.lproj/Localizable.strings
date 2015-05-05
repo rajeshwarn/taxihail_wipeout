@@ -95,7 +95,7 @@
 "AccountDisabled"="Your account has been disabled, please contact {0} at {1} to activate your account.";
 "CreditCardExpYear"="Exp. Year";
 "HistoryDetailAuthorizationLabel"="Authorization:";
-"ManualPairingForRideLinQ_InvalidCode_Message"="The pairing code is invalid.";
+"CreditCardExpiredTitle"="Card expired";
 "Cancel"="Cancel";
 "CreateAccountLanguageFrench"="French";
 "Tuto07Bottom"="Status updates are provided when the vehicles arrives at the pickup address, when you enter the vehicle, and at the end of the ride.";
@@ -162,6 +162,7 @@
 "AppNeedUpdateTitle"="Update available";
 "StatusEta"="and is {0} and {1} {2} away";
 "LocationHistoryTitle"="Locations history";
+"CreditCardExpiredUpdateNow"="Update now";
 "PanelMenuViewAboutUsText"="About Us";
 "HistoryLoadError"="Unable to load the history. Please try again later.";
 "PaymentDetails.InvalidDataTitle"="Invalid payment information";
@@ -367,6 +368,7 @@
 "View_AboutUs"="About Us";
 "WarningLocationService"="Please turn on location services to have your location show up in the map.";
 "LoginViewPasswordPlaceHolder"="Password";
+"ManualPairingForRideLinQ_InvalidCode_Message"="The pairing code is invalid.";
 "BookDestinationLabel"="Enter your destination";
 "AddCoFPayPalWarning"="Adding a credit card will unlink your PayPal account and Card on File will be set as the default payment method. Proceed?";
 "Error_AccountPaymentQuestionRequiredMessage"="You must answer every questions marked as required to continue.";
@@ -515,6 +517,7 @@
 "Tuto08Bottom"="We hope you find this application both convenient and intuitive.";
 "ManualRideLinqSummary_Done"="Done";
 "PaymentDetails.TipAmountLabel"="Tip Amount";
+"CardExpiredNonMandatoryMessage"="Your credit card has expired. Your account is now configured to pay in car. If you wish to continue using your card on file, you can click on Update.";
 "Version"="v{0}";
 "Tuto08Top"="You can review your order history at any time, and even rebook a previous trip with the push of a button";
 "UnpairWarningMessageWithPromo"="If you decide to pay in car, you will not be able to use the promotion";

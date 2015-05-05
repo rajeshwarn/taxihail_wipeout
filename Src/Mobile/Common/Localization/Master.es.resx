@@ -1113,6 +1113,18 @@
     <value>Usted seleccionó pagar con la tarjeta de crédito en su archivo, pero no tiene tarjeta registrada por defecto. Agregue una tarjeta a su cuenta o cambie el método de pago para continuar.</value>
     <comment>You chose to pay with a card on file, but you have no default card.  Add a card to your account or change your payment method to continue.</comment>
   </data>
+  <data name="CardExpiredMessage" xml:space="preserve">
+    <value>Your credit card is expired. Add a new card to your account or update card informations to continue.</value>
+  </data>
+  <data name="CreditCardExpiredTitle" xml:space="preserve">
+    <value>Card expired</value>
+  </data>
+  <data name="CardExpiredNonMandatoryMessage" xml:space="preserve">
+    <value>Your credit card has expired. Your account is now configured to pay in car. If you wish to continue using your card on file, you can click on Update.</value>
+  </data>
+  <data name="CreditCardExpiredUpdateNow" xml:space="preserve">
+    <value>Update now</value>
+  </data>
   <data name="NoConnectionMessage" xml:space="preserve">
     <value>El servidor no puede ser contactado, puede estar caído o usted puede haber perdido la conexión a intenet</value>
     <comment>The server cannot be contacted, it might be down temporarily or you may have lost your connection to the Internet.</comment>

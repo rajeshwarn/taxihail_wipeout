@@ -1,9 +1,17 @@
 ﻿using System;
 using apcurium.MK.Common.Entity;
-using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.Api.Contract.Resources
 {
+    /// <summary>
+    /// Used only for migration between older versions
+    /// It helps to determine if the current account in cache is old and needs to be updated from server
+    /// </summary>
+    public class DeprecatedAccount 
+    {
+        public Guid? DefaultCreditCard { get; set; }
+    }
+
     public class Account : BaseDto
     {
         public Guid Id { get; set; }
@@ -28,7 +36,7 @@ namespace apcurium.MK.Booking.Api.Contract.Resources
 
         public bool IsSuperAdmin { get; set; }
 
-        public Guid? DefaultCreditCard { get; set; }
+        public CreditCardDetails DefaultCreditCard { get; set; }
 
         public int? DefaultTipPercent { get; set; }
 
@@ -38,7 +46,7 @@ namespace apcurium.MK.Booking.Api.Contract.Resources
         {
             get
             {
-                return DefaultCreditCard.HasValue || IsPayPalAccountLinked;
+                return IsPayPalAccountLinked || DefaultCreditCard != null;
             }
         }
     }
