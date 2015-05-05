@@ -704,7 +704,10 @@
     <value>PayPal</value>
   </data>
   <data name="CannotCreateOrder_CreditCardDeactivated" xml:space="preserve">
-    <value>Your card of file was deactivated because the payment of your last ride was declined. To be able to use it again, go to the Payment screen to settle any overdue payment</value>
+    <value>Your card on file was deactivated because the payment of your last ride was declined. To be able to use it again, go to the Payment screen to settle any overdue payment</value>
+  </data>
+  <data name="CannotCreateOrder_CreditCardExpired" xml:space="preserve">
+    <value>Your card on file has expired. Please update your payment information to continue using it.</value>
   </data>
   <data name="Email_Body_CreditCardDeactivatedLine" xml:space="preserve">
     <value>Your &lt;b&gt;{{ CreditCardCompany }}&lt;/b&gt; credit card ending by &lt;b&gt;{{ Last4Digits }}&lt;/b&gt; has been deactivated because the payment of your last ride was declined. To be able to use it again, open {{ ApplicationName }} on your smart phone and go to the Payment screen to settle any overdue payment.</value>

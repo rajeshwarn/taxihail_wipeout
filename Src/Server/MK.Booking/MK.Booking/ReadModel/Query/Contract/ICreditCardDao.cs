@@ -11,5 +11,6 @@ namespace apcurium.MK.Booking.ReadModel.Query.Contract
     {
         IList<CreditCardDetails> FindByAccountId(Guid accountId);
         CreditCardDetails FindByToken(string cardToken);
+        CreditCardDetails FindById(Guid cardId);
     }
 }

@@ -92,5 +92,6 @@
     "RefineAddress": "Affinez l'adresse en entrant un numéro de rue",
     "TokenizeInvalidCardInfos": "Les informations de la carte sont invalides",
     "TokenizeGenericError": "Une erreur est survenue. Veuillez essayer de nouveau.",
-    "error.CreditCardNotDeleted": "Il est impossible de supprimer la carte de crédit s'il y a une commande en cours."
+    "error.CreditCardNotDeleted": "Il est impossible de supprimer la carte de crédit s'il y a une commande en cours.",
+    "ExpiredCreditCardError":  "La date d'expiration n'est pas valide."
 }

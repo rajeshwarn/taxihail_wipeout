@@ -28,9 +28,7 @@
                 { id: 11, display: this.localize("November") },
                 { id: 12, display: this.localize("December") }
             ];
-
-            this.model.set('expirationMonth', 1);
-
+            
             var isEditing = this.model != null && this.model.get('last4Digits') != null;
             var creditCard = {};
 
@@ -48,10 +46,12 @@
             } else {
                 _.extend(creditCard, {
                     expirationMonths: expMonths,
-                    expirationYears: this.generateExpYears(),
+                    expirationYears: this.generateExpYears(true),
                     isEditing: false,
                     isCreditCardMandatory: TaxiHail.parameters.isCreditCardMandatory
                 });
+
+                this.model.set('expirationMonth', 1);
             }
 
             this.$el.html(this.renderTemplate(creditCard));
@@ -87,7 +87,7 @@
             this.$(':submit').removeClass('disabled');
         },
 
-        generateExpYears: function () {
+        generateExpYears: function (setYear) {
 
             // Generate expiration years for the next 15 years
             var expYears = new Array(16);
@@ -98,7 +98,9 @@
                 expYears[i] = { id: expYear, display: expYear }
             }
 
-            this.model.set('expirationYear', expYears[0].id);
+            if (setYear) {
+                this.model.set('expirationYear', expYears[0].id);
+            }
 
             return expYears;
         },
@@ -113,9 +115,14 @@
             this.$el.html(view.render().el);
         },
 
-        renderErrorMessage: function() {
+        renderErrorMessage: function (message) {
+            var errorMessage = message;
+            if (!errorMessage) {
+                errorMessage = TaxiHail.localize("TokenizeGenericError");
+            }
+
             var alert = new TaxiHail.AlertView({
-                message: TaxiHail.localize("TokenizeGenericError"),
+                message: errorMessage,
                 type: 'error'
             });
 
@@ -143,6 +150,17 @@
 
             var expYear = this.model.get('expirationYear');
             var cvv = this.model.get('cvv');
+
+            var now = new Date();
+            var exp = new Date(expYear, expMonth - 1);
+            exp.setMonth(exp.getMonth() + 1);           // add a month
+            exp.setDate(exp.getDate() - 1);             //remove one day
+
+            if (exp < now) {
+                this.$(':submit').button('reset');
+                this.renderErrorMessage(TaxiHail.localize("ExpiredCreditCardError"));
+                return;
+            }
 
             // Tokenize credit card
             this.model.tokenize(cardNumber, formattedExpMonth, expYear, cvv)

@@ -2,6 +2,7 @@
 
 using System;
 using System.ComponentModel.DataAnnotations;
+using apcurium.MK.Common.Extensions;
 
 #endregion
 
@@ -27,5 +28,24 @@ namespace apcurium.MK.Booking.ReadModel
         public string ExpirationYear { get; set; }
 
         public bool IsDeactivated { get; set; }
+
+        public bool IsExpired()
+        {
+            if (!ExpirationMonth.HasValue() || !ExpirationYear.HasValue())
+            {
+                return false; // Prevent expiration verification from failing
+            }
+
+            var expYear = int.Parse(ExpirationYear);
+            var expMonth = int.Parse(ExpirationMonth);
+            var expirationDate = new DateTime(expYear, expMonth, DateTime.DaysInMonth(expYear, expMonth));
+
+            if (expirationDate < DateTime.Now)
+            {
+                return true;
+            }
+
+            return false;
+        }
     }
 }
