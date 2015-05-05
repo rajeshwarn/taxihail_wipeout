@@ -365,7 +365,7 @@
   <string name="SupportEmail">techsupport@apcurium.com</string>
   <string name="View_RideSummary">Résumé du trajet</string>
   <string name="HistoryInfo">Synthèse des trajets effectués le mois dernier</string>
-  <string name="UnpairWarningCancelButton">Oui</string>
+  <string name="UnpairWarningCancelButton">Payer dans le taxi</string>
   <string name="StatusCallButton">Appeler</string>
   <string name="View_AccountConfirmation_Label_Code">Code</string>
   <string name="WarningEstimateDontShow">Ne pas signaler</string>

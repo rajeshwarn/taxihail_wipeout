@@ -363,7 +363,7 @@
 "SupportEmail"="techsupport@apcurium.com";
 "View_RideSummary"="Résumé du trajet";
 "HistoryInfo"="Synthèse des trajets effectués le mois dernier";
-"UnpairWarningCancelButton"="Oui";
+"UnpairWarningCancelButton"="Payer dans le taxi";
 "StatusCallButton"="Appeler";
 "View_AccountConfirmation_Label_Code"="Code";
 "WarningEstimateDontShow"="Ne pas signaler";

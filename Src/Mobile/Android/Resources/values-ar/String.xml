@@ -353,7 +353,7 @@
   <string name="SupportEmail">techsupport@apcurium.com</string>
   <string name="View_RideSummary">ملخص الرحلة</string>
   <string name="HistoryInfo">عرض حجوزاتكم خلال الشهر الماضي</string>
-  <string name="UnpairWarningCancelButton">Yes</string>
+  <string name="UnpairWarningCancelButton">Pay in car</string>
   <string name="StatusCallButton">اتصل</string>
   <string name="View_AccountConfirmation_Label_Code">Code</string>
   <string name="WarningEstimateDontShow">لا تحذر</string>

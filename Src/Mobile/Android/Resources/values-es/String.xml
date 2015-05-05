@@ -358,7 +358,7 @@
   <string name="SupportEmail">techsupport@apcurium.com</string>
   <string name="View_RideSummary">Resumen del servicio</string>
   <string name="HistoryInfo">Mostrando los viajes del último mes</string>
-  <string name="UnpairWarningCancelButton">Yes</string>
+  <string name="UnpairWarningCancelButton">Pay in car</string>
   <string name="StatusCallButton">Llamar</string>
   <string name="View_AccountConfirmation_Label_Code">Código</string>
   <string name="WarningEstimateDontShow">No avisar</string>
