@@ -193,20 +193,20 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
 
         public void Handle(OrderCancelled @event)
         {
-            SendUnApplyPromotionCommand(@event.SourceId);
+            SendUnapplyPromotionCommand(@event.SourceId);
         }
 
         public void Handle(OrderCancelledBecauseOfError @event)
         {
-            SendUnApplyPromotionCommand(@event.SourceId);
+            SendUnapplyPromotionCommand(@event.SourceId);
         }
 
-        private void SendUnApplyPromotionCommand(Guid orderId)
+        private void SendUnapplyPromotionCommand(Guid orderId)
         {
             var orderDetail = _orderDao.FindById(orderId);
             var promotionDetail = _promotionDao.FindByOrderId(orderId);
 
-            _commandBus.Send(new UnApplyPromotion
+            _commandBus.Send(new UnapplyPromotion
             {
                 PromoId = promotionDetail.PromoId,
                 AccountId = orderDetail.AccountId,

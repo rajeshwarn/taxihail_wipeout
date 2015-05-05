@@ -14,7 +14,7 @@ namespace apcurium.MK.Booking.EventHandlers
         IEventHandler<PromotionActivated>,
         IEventHandler<PromotionDeactivated>,
         IEventHandler<PromotionApplied>,
-        IEventHandler<PromotionUnApplied>,
+        IEventHandler<PromotionUnapplied>,
         IEventHandler<PromotionRedeemed>,
         IEventHandler<UserAddedToPromotionWhiteList_V2>
     {
@@ -127,7 +127,7 @@ namespace apcurium.MK.Booking.EventHandlers
             }
         }
 
-        public void Handle(PromotionUnApplied @event)
+        public void Handle(PromotionUnapplied @event)
         {
             using (var context = _contextFactory.Invoke())
             {

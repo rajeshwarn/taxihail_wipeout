@@ -44,7 +44,7 @@ namespace apcurium.MK.Booking.Domain
             Handles<PromotionActivated>(OnPromotionActivated);
             Handles<PromotionDeactivated>(OnPromotionDeactivated);
             Handles<PromotionApplied>(OnPromotionApplied);
-            Handles<PromotionUnApplied>(OnPromotionUnApplied);
+            Handles<PromotionUnapplied>(OnPromotionUnapplied);
             Handles<PromotionRedeemed>(NoAction);
             Handles<UserAddedToPromotionWhiteList_V2>(OnUserAddedToWhiteList);
         }
@@ -230,14 +230,14 @@ namespace apcurium.MK.Booking.Domain
             });
         }
 
-        public void UnApply(Guid orderId, Guid accountId)
+        public void Unapply(Guid orderId, Guid accountId)
         {
             if (!_orderIds.Contains(orderId))
             {
                 throw new InvalidOperationException("Promotion must be applied to an order in order to be un-applied");
             }
 
-            Update(new PromotionUnApplied
+            Update(new PromotionUnapplied
             {
                 AccountId = accountId,
                 OrderId = orderId
@@ -345,7 +345,7 @@ namespace apcurium.MK.Booking.Domain
             _usersWhiteList.Remove(@event.AccountId);
         }
 
-        private void OnPromotionUnApplied(PromotionUnApplied @event)
+        private void OnPromotionUnapplied(PromotionUnapplied @event)
         {
             Interlocked.Decrement(ref _usages);
 
