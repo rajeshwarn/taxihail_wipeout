@@ -198,6 +198,10 @@ namespace apcurium.MK.Common.Configuration
         [Display(Name = "Driver Note Template", Description = "Driver Note Template")]
         public string NoteTemplate { get; protected internal set; }
 
+        [CustomizableByCompany]
+        [Display(Name = "Hide Charge Type In User Note", Description = "Controls if the charge type is sent to driver as part of the user noteB.")]
+        public bool HideChargeTypeInUserNote { get; protected internal set; }
+
         [Display(Name = "IBS OrderPriority", Description = "IBS OrderPriority")]
         public bool OrderPriority { get; protected internal set; }
 

@@ -509,7 +509,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 DropOffTime = dropOffTime,
                 ShowDropOffTime = !string.IsNullOrEmpty(dropOffTime),
                 Fare = _resources.FormatPrice(fare),
-                Toll = _resources.FormatPrice(toll),
+                Toll = _resources.FormatPrice(toll),                
                 SubTotal = _resources.FormatPrice(totalFare + amountSavedByPromotion - tip), // represents everything except tip and the promo discount
                 Tip = _resources.FormatPrice(tip),
                 TotalFare = _resources.FormatPrice(totalFare),
