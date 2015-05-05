@@ -169,7 +169,7 @@
 "September"="Sep (09)";
 "SaveAddressEmptyFieldTitle"="Friendly name required";
 "Politeness"="Politeness";
-"UnpairWarningMessage"="This action cannot be undone";
+"UnpairWarningMessage"="Are you sure you don’t want to pay with your credit card on file?";
 "CreditCardErrorInvalid"="Cannot validate the credit card";
 "PickupViewDestinationLabel"="Destination &gt;&gt;";
 "PanelMenuViewCallDispatchText"="Call";
