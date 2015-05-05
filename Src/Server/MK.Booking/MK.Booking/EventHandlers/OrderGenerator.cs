@@ -88,8 +88,6 @@ namespace apcurium.MK.Booking.EventHandlers
             }
         }
 
-
-
         public void Handle(OrderCreated @event)
         {
             using (var context = _contextFactory.Invoke())
