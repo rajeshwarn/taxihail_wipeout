@@ -36,7 +36,6 @@
     <AndroidSigningKeyPass>mkt0001.</AndroidSigningKeyPass>
     <DebugSymbols>True</DebugSymbols>
     <EmbedAssembliesIntoApk>True</EmbedAssembliesIntoApk>
-    <AndroidLinkMode>None</AndroidLinkMode>
     <AndroidSupportedAbis>armeabi-v7a;x86</AndroidSupportedAbis>
     <CustomCommands>
       <CustomCommands>
@@ -59,6 +58,7 @@
     <AndroidSupportedAbis>armeabi;armeabi-v7a;x86</AndroidSupportedAbis>
     <MonoDroidExtraArgs>
     </MonoDroidExtraArgs>
+    <DebugType>full</DebugType>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="mscorlib" />
