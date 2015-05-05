@@ -19,8 +19,12 @@ using ClipboardManager = Android.Text.ClipboardManager;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Account
 {
-	[Activity(Label = "Login", Theme = "@style/LoginTheme",
+	[Activity(Label = "Login",
+        Theme = "@style/LoginTheme",
         ScreenOrientation = ScreenOrientation.Portrait)]
+    [IntentFilter(new[] { Intent.ActionView },
+        DataScheme = "taxihail",
+        Categories = new[] { Intent.CategoryDefault, Intent.CategoryBrowsable })]
 	public class LoginActivity : BaseBindingActivity<LoginViewModel>
     {
 		private readonly FacebookService _facebookService;
