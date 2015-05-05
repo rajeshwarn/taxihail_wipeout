@@ -69,6 +69,7 @@
                 this.$('#callDispatchButton').addClass('hidden');
             }
             var status = this.model.getStatus();
+
             if (!status.isActive()) {
                 this.$('[data-action=cancel]').addClass('disabled');
                 canCancel = false;
@@ -179,7 +180,8 @@
 
                 var alwaysAccept = $.cookie('THNetwork_always_accept');
 
-                if (alwaysAccept && alwaysAccept === 'true') {
+                if ((alwaysAccept && alwaysAccept === 'true')
+                    || TaxiHail.parameters.autoConfirmFleetChange) {
                     this.switchDispatchCompany(this.model);
                 } else {
                     TaxiHail.confirm({

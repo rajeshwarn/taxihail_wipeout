@@ -164,7 +164,7 @@
 "HistoryLoadError"="Unable to load the history. Please try again later.";
 "September"="سبتمبر (09)";
 "RingCodeTextPlaceholder"="رمز الدخول";
-"UnpairWarningMessage"="This action cannot be undone";
+"UnpairWarningMessage"="Are you sure you don’t want to pay with your credit card on file?";
 "CreditCardErrorInvalid"="Cannot validate the credit card";
 "PanelMenuViewCallDispatchText"="اتصل";
 "Tuto07Top"="ستتمكن من رؤية رقم الحجز علی شاشة الحالة. عند إتمام تخصيص السيارة، سيمكنك متابعة مسارها نحو موقعك الحالي.";
@@ -549,7 +549,7 @@
 "PromoApply"="Apply";
 "Tuto03Top"="يمكنك أيضا إختيار نقطة الإلتقاء بالضغط على عنوان الإلتقاء.";
 "ConfirmRideInformationTitle"="بيانات المشوار";
-"PromoBookRide"="Use this promotion on next ride";
+"PromoBookRide"="Use this promo code";
 "StatusActionBookButton"="احجز سيارة أجرة اخرى";
 "BuildingName"="إسم المبنى / ملاحظات";
 "LocationDetailRingCodeLabel"="رمز الدخول";

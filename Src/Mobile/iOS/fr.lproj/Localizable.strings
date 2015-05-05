@@ -170,7 +170,7 @@
 "ManualPairingForRideLinQ_InvalidCode_Title"="Code invalide";
 "September"="Septembre (09)";
 "RingCodeTextPlaceholder"="Saisissez un code";
-"UnpairWarningMessage"="Cette action ne peut être annulée";
+"UnpairWarningMessage"="Êtes-vous sûr de ne pas vouloir payer avec votre carte de crédit?";
 "CreditCardErrorInvalid"="La carte ne semble pas être valide";
 "PanelMenuViewCallDispatchText"="Appeler";
 "Tuto07Top"="Sur l'écran de statut, vous verrez un numéro de réservation qui confirme votre commande. Une fois qu'un véhicule sera assigné, vous pouvez suivre sa position jusqu'à ce qu'il arrive à vous.";
@@ -568,7 +568,7 @@
 "PromoApply"="Appliquer";
 "Tuto03Top"="Vous pouvez également nous communiquer votre position en saisissant directement une adresse";
 "ConfirmRideInformationTitle"="Information sur le trajet";
-"PromoBookRide"="Utiliser sur la prochaine commande";
+"PromoBookRide"="Utiliser ce code promotionnel";
 "StatusActionBookButton"="Réserver un nouveau véhicule";
 "BuildingName"="Nom du bâtiment / commentaires";
 "LocationDetailRingCodeLabel"="Saisissez un code";

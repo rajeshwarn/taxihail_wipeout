@@ -2,8 +2,31 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <title>{{ ApplicationName }} - {{ localize "Email_Body_EmailConfirmationSuccessful" }}</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <script>
+    window.onload = function() {
+
+        if (navigator.userAgent.match(/iPad/i) || (navigator.userAgent.match(/iPhone/i))) {
+            window.location = 'taxihail://';
+
+            // Application not installed, navigate to website
+            setTimeout(function () {
+                window.location = "{{ RootUrl }}";
+            }, 10000);
+        }
+        else if (navigator.userAgent.match(/Android/i)) {
+            // No automatic redirect possible with android, must be a link
+            document.getElementById('redirectLink').href = "intent://#Intent;scheme=taxihail;package={{ PackageName }};end";
+        } else {
+            // If from desktop, navigate to web site
+            setTimeout(function () {
+                window.location = "{{ RootUrl }}";
+            }, 10000);
+        }
+    }
+    </script>
+
+<title>{{ ApplicationName }} - {{ localize "Email_Body_EmailConfirmationSuccessful" }}</title>
 
     <style type="text/css">
         /* -------------------------------------
@@ -413,7 +436,8 @@
                                                             <div>
                                                                 <p>{{ localize "Email_Body_AccountConfirmationSuccessfulLine1" }}</p>
                                                                 <p>{{ localize "Email_Body_AccountConfirmationSuccessfulLine2" }}</p>
-                                                                <br />
+                                                                <br/>
+                                                                <p>{{localize "Email_Body_AccountConfirmationRedirectLine1" }} <a id="redirectLink" href="{{RootUrl}}">{{ localize "Email_Body_AccountConfirmationRedirectLine2" }}</a></p>
                                                             </div>
                                                         </td>
                                                     </tr>

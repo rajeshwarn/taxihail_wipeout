@@ -171,7 +171,7 @@
 "HistoryLoadError"="Unable to load the history. Please try again later.";
 "September"="Sep (09)";
 "RingCodeTextPlaceholder"="Código de entrada";
-"UnpairWarningMessage"="This action cannot be undone";
+"UnpairWarningMessage"="Are you sure you don’t want to pay with your credit card on file?";
 "ConfirmPassengersLabel"="Pasajeros:";
 "CreditCardErrorInvalid"="No podemos validar su tarjeta de crédito";
 "PanelMenuViewCallDispatchText"="Llamar";
@@ -423,7 +423,7 @@
 "mobileKnowledgeUrl"="http://www.mobile-knowledge.com/";
 "InvalidLocalContactTitle"="Contacto inválido";
 "RideSettingsPayBack"="PayBack";
-"PromoBookRide"="Use this promotion on next ride";
+"PromoBookRide"="Use this promo code";
 "DateTimePickerPickDate"="Seleccione la fecha del servicio:";
 "Overdue_AddNewCard"="Update Credit Card";
 "BookDropoffLocationEmptyPlaceholder"="Toque para seleccionar lugar de destino";

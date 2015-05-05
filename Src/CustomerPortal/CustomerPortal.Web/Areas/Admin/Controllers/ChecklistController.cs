@@ -33,7 +33,10 @@ namespace CustomerPortal.Web.Areas.Admin.Controllers
                 IBS = c.IsValid().ToString(),
                 UDID = (c.Store.UniqueDeviceIdentificationNumber.Count() > 0).ToString(),
                 PONumber = (c.Payment.PONumber == null ? "Null": c.Payment.PONumber),
-                Status = c.Status.ToString()
+                Status = c.Status.ToString(),
+                Assets = (new AssetsManager(c.Id).GetAll().Count() != 0).ToString(),
+                Webthemes = (new WebThemeFilesManager(c.Id).GetAll().Count() != 0).ToString(),
+                Graphics = (new GraphicsManager(c.Id).GetAll().Count() != 0).ToString()
             }).ToArray();
 
             
