@@ -362,7 +362,7 @@ namespace apcurium.MK.Booking.Services.Impl
                     AutoTipPercentage = autoTipPercentage,
                     AutoCompletePayment = true,
                     CallbackUrl = string.Empty,
-                    CustomerId = orderStatusDetail.IBSOrderId.ToString() + "#" + orderStatusDetail.AccountId.ToString(),
+                    CustomerId = orderStatusDetail.AccountId.ToString(),
                     CustomerName = accountDetail.Name,
                     DriverId = orderStatusDetail.DriverInfos.DriverId,
                     Latitude = orderStatusDetail.VehicleLatitude.GetValueOrDefault(),
