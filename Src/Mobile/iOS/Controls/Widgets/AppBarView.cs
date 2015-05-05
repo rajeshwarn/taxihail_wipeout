@@ -212,9 +212,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
 			var btnBook = GenerateBookButton();
 
-            var viewModel = (BottomBarViewModel) DataContext;
-            btnBook.SetTitle(viewModel.BookButtonText, UIControlState.Normal);
-
 			_imagePromo = GeneratePromoImage();
 			btnBook.AddSubview(_imagePromo);
 
@@ -267,6 +264,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             set.Bind(btnBook)
                 .For(v => v.Command)
                 .To(vm => vm.Book);
+
+			set.Bind(btnBook)
+				.For("Title")
+				.To(vm => vm.BookButtonText);
 
 			set.Bind(_imagePromo)
 				.For(v => v.Hidden)
