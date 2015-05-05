@@ -72,13 +72,18 @@ namespace apcurium.MK.Booking.Api.Services
                 var message = rule != null ? rule.Message : null;
                 var disableFutureBooking = _ruleCalculator.GetDisableFutureBookingRule(market) != null;
 
+                var isCurrentAndFutureBookingSelected = rule != null 
+                    && rule.AppliesToCurrentBooking 
+                    && rule.AppliesToFutureBooking;
+
                 Log.Debug(string.Format("Has Error : {0}, Message: {1}", hasError, message));
 
                 return new OrderValidationResult
                 {
                     HasError = hasError,
                     Message = message,
-                    DisableFutureBooking = disableFutureBooking
+                    DisableFutureBooking = disableFutureBooking,
+                    IsCurrentAndFutureBookingSelected = isCurrentAndFutureBookingSelected
                 };
             }
             else
@@ -91,11 +96,16 @@ namespace apcurium.MK.Booking.Api.Services
                 var message = rule != null ? rule.Message : null;
                 var disableFutureBooking = _ruleCalculator.GetDisableFutureBookingRule(market) != null;
 
+                var isCurrentAndFutureBookingSelected = rule != null
+                    && rule.AppliesToCurrentBooking
+                    && rule.AppliesToFutureBooking;
+
                 return new OrderValidationResult
                 {
                     HasWarning = hasWarning,
                     Message = message,
-                    DisableFutureBooking = disableFutureBooking
+                    DisableFutureBooking = disableFutureBooking,
+                    IsCurrentAndFutureBookingSelected = isCurrentAndFutureBookingSelected
                 };
             }
         }

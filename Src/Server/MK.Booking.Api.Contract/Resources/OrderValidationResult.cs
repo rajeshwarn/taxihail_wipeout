@@ -9,5 +9,7 @@
 		public bool HasError { get; set; }
 
         public bool DisableFutureBooking { get; set; }
+
+        public bool IsCurrentAndFutureBookingSelected { get; set; }
     }
 }
