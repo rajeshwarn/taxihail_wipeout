@@ -166,7 +166,7 @@
   <string name="HistoryLoadError">Unable to load the history. Please try again later.</string>
   <string name="September">سبتمبر (09)</string>
   <string name="RingCodeTextPlaceholder">رمز الدخول</string>
-  <string name="UnpairWarningMessage">This action cannot be undone</string>
+  <string name="UnpairWarningMessage">Are you sure you don’t want to pay with your credit card on file?</string>
   <string name="CreditCardErrorInvalid">Cannot validate the credit card</string>
   <string name="PanelMenuViewCallDispatchText">اتصل</string>
   <string name="Tuto07Top">ستتمكن من رؤية رقم الحجز علی شاشة الحالة. عند إتمام تخصيص السيارة، سيمكنك متابعة مسارها نحو موقعك الحالي.</string>
@@ -353,7 +353,7 @@
   <string name="SupportEmail">techsupport@apcurium.com</string>
   <string name="View_RideSummary">ملخص الرحلة</string>
   <string name="HistoryInfo">عرض حجوزاتكم خلال الشهر الماضي</string>
-  <string name="UnpairWarningCancelButton">Pay in car</string>
+  <string name="UnpairWarningCancelButton">Yes</string>
   <string name="StatusCallButton">اتصل</string>
   <string name="View_AccountConfirmation_Label_Code">Code</string>
   <string name="WarningEstimateDontShow">لا تحذر</string>

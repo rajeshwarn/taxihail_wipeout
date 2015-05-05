@@ -170,7 +170,7 @@
 "ManualPairingForRideLinQ_InvalidCode_Title"="Code invalide";
 "September"="Septembre (09)";
 "RingCodeTextPlaceholder"="Saisissez un code";
-"UnpairWarningMessage"="Cette action ne peut être annulée";
+"UnpairWarningMessage"="Êtes-vous sûr de ne pas vouloir payer avec votre carte de crédit?";
 "CreditCardErrorInvalid"="La carte ne semble pas être valide";
 "PanelMenuViewCallDispatchText"="Appeler";
 "Tuto07Top"="Sur l'écran de statut, vous verrez un numéro de réservation qui confirme votre commande. Une fois qu'un véhicule sera assigné, vous pouvez suivre sa position jusqu'à ce qu'il arrive à vous.";
@@ -363,7 +363,7 @@
 "SupportEmail"="techsupport@apcurium.com";
 "View_RideSummary"="Résumé du trajet";
 "HistoryInfo"="Synthèse des trajets effectués le mois dernier";
-"UnpairWarningCancelButton"="Payer dans le taxi";
+"UnpairWarningCancelButton"="Oui";
 "StatusCallButton"="Appeler";
 "View_AccountConfirmation_Label_Code"="Code";
 "WarningEstimateDontShow"="Ne pas signaler";

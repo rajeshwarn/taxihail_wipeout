@@ -169,7 +169,7 @@
 "September"="Sep (09)";
 "SaveAddressEmptyFieldTitle"="Friendly name required";
 "Politeness"="Politeness";
-"UnpairWarningMessage"="This action cannot be undone";
+"UnpairWarningMessage"="Are you sure you don’t want to pay with your credit card on file?";
 "CreditCardErrorInvalid"="Cannot validate the credit card";
 "PickupViewDestinationLabel"="Destination &gt;&gt;";
 "PanelMenuViewCallDispatchText"="Call";
@@ -359,7 +359,7 @@
 "SupportEmail"="techsupport@apcurium.com";
 "View_RideSummary"="Ride Summary";
 "HistoryInfo"="Displaying trips from the last month";
-"UnpairWarningCancelButton"="Pay in car";
+"UnpairWarningCancelButton"="Yes";
 "StatusCallButton"="Call";
 "View_AccountConfirmation_Label_Code"="Code";
 "WarningEstimateDontShow"="Don't warn";

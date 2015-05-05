@@ -172,7 +172,7 @@
   <string name="ManualPairingForRideLinQ_InvalidCode_Title">Code invalide</string>
   <string name="September">Septembre (09)</string>
   <string name="RingCodeTextPlaceholder">Saisissez un code</string>
-  <string name="UnpairWarningMessage">Cette action ne peut être annulée</string>
+  <string name="UnpairWarningMessage">Êtes-vous sûr de ne pas vouloir payer avec votre carte de crédit?</string>
   <string name="CreditCardErrorInvalid">La carte ne semble pas être valide</string>
   <string name="PanelMenuViewCallDispatchText">Appeler</string>
   <string name="Tuto07Top">Sur l\'écran de statut, vous verrez un numéro de réservation qui confirme votre commande. Une fois qu\'un véhicule sera assigné, vous pouvez suivre sa position jusqu\'à ce qu\'il arrive à vous.</string>
@@ -365,7 +365,7 @@
   <string name="SupportEmail">techsupport@apcurium.com</string>
   <string name="View_RideSummary">Résumé du trajet</string>
   <string name="HistoryInfo">Synthèse des trajets effectués le mois dernier</string>
-  <string name="UnpairWarningCancelButton">Payer dans le taxi</string>
+  <string name="UnpairWarningCancelButton">Oui</string>
   <string name="StatusCallButton">Appeler</string>
   <string name="View_AccountConfirmation_Label_Code">Code</string>
   <string name="WarningEstimateDontShow">Ne pas signaler</string>

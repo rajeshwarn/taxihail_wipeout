@@ -173,7 +173,7 @@
   <string name="HistoryLoadError">Unable to load the history. Please try again later.</string>
   <string name="September">Sep (09)</string>
   <string name="RingCodeTextPlaceholder">Código de entrada</string>
-  <string name="UnpairWarningMessage">This action cannot be undone</string>
+  <string name="UnpairWarningMessage">Are you sure you don’t want to pay with your credit card on file?</string>
   <string name="ConfirmPassengersLabel">Pasajeros:</string>
   <string name="CreditCardErrorInvalid">No podemos validar su tarjeta de crédito</string>
   <string name="PanelMenuViewCallDispatchText">Llamar</string>
@@ -358,7 +358,7 @@
   <string name="SupportEmail">techsupport@apcurium.com</string>
   <string name="View_RideSummary">Resumen del servicio</string>
   <string name="HistoryInfo">Mostrando los viajes del último mes</string>
-  <string name="UnpairWarningCancelButton">Pay in car</string>
+  <string name="UnpairWarningCancelButton">Yes</string>
   <string name="StatusCallButton">Llamar</string>
   <string name="View_AccountConfirmation_Label_Code">Código</string>
   <string name="WarningEstimateDontShow">No avisar</string>
