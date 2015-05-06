@@ -33,7 +33,6 @@
     <color name="button_red_border_color">#ff0000</color>
     <color name="button_gray_border_color">#707070</color>
     <color name="button_black_border_color">#000000</color>  
-      
 
     <color name="button_action_text_color">#ffffff</color>
     <color name="button_action_pressed_text_color">#ffffff</color>
@@ -180,10 +179,10 @@
       <item name="android:textColor">@drawable/button_action_label_text_selector</item>      
     </style>
 
-  <style name="ButtonActionCancelStyle" parent="@style/custom_ButtonStyle">
-    <item name="android:background">@color/transparent</item>
-    <item name="android:textColor">@drawable/button_action_cancel_selector</item>
-  </style>
+    <style name="ButtonActionCompanyStyle" parent="@style/custom_ButtonStyle">
+      <item name="android:background">@drawable/button_action_company_selector</item>
+      <item name="android:textColor">@drawable/button_action_company_text_selector</item>      
+    </style>
 
     <!-- Tutorial Theme -->
 
