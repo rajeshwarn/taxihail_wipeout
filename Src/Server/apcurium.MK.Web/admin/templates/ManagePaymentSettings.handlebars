@@ -41,13 +41,6 @@
     <option value="Fake">{{localize "Demo Payment Service"}}</option>
   </select>
   <br />
-  <div id="isAlwaysDisplayCoFOptionDiv">
-      <label class="control-label settingsLabel">{{{localize "Always display Card on File on Web"}}}</label>
-      <select name="isAlwaysDisplayCoFOption" class="settingsBox">
-          <option value="{{isAlwaysDisplayCoFOption}}" selected="">{{localizeBool isAlwaysDisplayCoFOption true="Yes" false="No"}}</option>
-          <option value="{{isAlwaysDisplayCoFOption}}">{{localizeBool isAlwaysDisplayCoFOption true="No" false="Yes"}}</option>
-      </select>
-  </div>
 
   <div id="isUnpairingDisabledDiv">
     <label class="control-label settingsLabel">{{{localize "Disable Unpairing"}}}</label>
@@ -102,6 +95,11 @@
       <option value="{{invertedBool braintreeServerSettings.isSandbox}}">{{localizeBool braintreeServerSettings.isSandbox true="No" false="Yes"}}</option>
     </select>
 
+      <label class="control-label settingsLabel">{{{localize "Always display Card on File on Web"}}}</label>
+      <select name="braintreeServerSettings.isAlwaysDisplayCoFOption" class="settingsBox">
+          <option value="{{braintreeServerSettings.isAlwaysDisplayCoFOption}}" selected >{{localizeBool braintreeServerSettings.isAlwaysDisplayCoFOption true="Yes" false="No"}}</option>
+          <option value="{{invertedBool braintreeServerSettings.isAlwaysDisplayCoFOption}}">{{localizeBool braintreeServerSettings.isAlwaysDisplayCoFOption true="No" false="Yes"}}</option>
+      </select>
 
     <label class="control-label settingsLabel" >{{{localize "Merchant Id"}}}</label>
     <input type="text" class="input-block-level settingsBox" name="braintreeServerSettings.merchantId" value="{{braintreeServerSettings.merchantId}}" />

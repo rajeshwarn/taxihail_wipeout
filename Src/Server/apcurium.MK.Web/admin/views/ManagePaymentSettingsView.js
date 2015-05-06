@@ -276,7 +276,6 @@
             var isUnpairingDisabledDiv = this.$("#isUnpairingDisabledDiv");
             var unpairingTimeOutDiv = this.$("#unpairingTimeOutDiv");
             var noShowFeeDiv = this.$("#noShowFeeDiv");
-            var isAlwaysDisplayCoFOptionDiv = this.$("#isAlwaysDisplayCoFOptionDiv");
 
             var currentPaymentMode = this.updatedModel.paymentMode;
 
@@ -327,14 +326,12 @@
                 noShowFeeDiv.hide();
                 isUnpairingDisabledDiv.hide();
                 unpairingTimeOutDiv.hide();
-                isAlwaysDisplayCoFOptionDiv.hide();
             } else {
                 preAuthAmountEnabledDiv.show();
                 preAuthAmountDiv.show();
                 isUnpairingDisabledDiv.show();
                 unpairingTimeOutDiv.show();
                 noShowFeeDiv.show();
-                isAlwaysDisplayCoFOptionDiv.show();
             }
         }
     });
