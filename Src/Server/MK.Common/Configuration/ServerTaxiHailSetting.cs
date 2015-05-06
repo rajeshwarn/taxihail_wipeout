@@ -169,5 +169,9 @@ namespace MK.Common.Configuration
         [CustomizableByCompany]
         [Display(Name = "Validate Admin Rules in Other Markets", Description = "Use the market booking rules defined by this company to validate orders in other markets")]
         public bool ValidateAdminRulesForExternalMarket { get; protected set; }
+
+        [CustomizableByCompany]
+        [Display(Name = "Use Pairing Code When RideLinq Payment", Description = "Use Pairing Code When Using RideLinq Cmt Payment")]
+        public bool UsePairingCodeWhenUsingRideLinqCmtPayment { get; protected set; }        
     }
 }

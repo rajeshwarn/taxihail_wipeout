@@ -21,18 +21,22 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
         private readonly ICreditCardDao _creditCardDao;
         private readonly IAccountDao _accountDao;
         private readonly IPaymentService _paymentFacadeService;
+        private readonly IServerSettings _serverSettings;
 
         public OrderPairingManager(INotificationService notificationService, 
             IOrderDao orderDao,
             ICreditCardDao creditCardDao,
             IAccountDao accountDao,
-            IPaymentService paymentFacadeService)
+            IPaymentService paymentFacadeService,
+            IServerSettings serverSettings
+            )
         {
             _notificationService = notificationService;
             _orderDao = orderDao;
             _creditCardDao = creditCardDao;
             _accountDao = accountDao;
             _paymentFacadeService = paymentFacadeService;
+            _serverSettings = serverSettings;
         }
 
         public void Handle(OrderStatusChanged @event)
@@ -50,9 +54,18 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
 
                     var order = _orderDao.FindById(@event.SourceId);
 
+                    
+
                     if (order.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id
                         || order.Settings.ChargeTypeId == ChargeTypes.PayPal.Id)
                     {
+                        if ( ( _serverSettings.GetPaymentSettings().PaymentMode == PaymentMethod.RideLinqCmt ) &&
+                              _serverSettings.ServerData.UsePairingCodeWhenUsingRideLinqCmtPayment &&
+                              string.IsNullOrWhiteSpace( orderStatus.RideLinqPairingCode ))
+                        {
+                            return;
+                        }
+
                         var account = _accountDao.FindById(@event.Status.AccountId);
                         var creditCard = _creditCardDao.FindByAccountId(account.Id).FirstOrDefault();
                         var cardToken = creditCard != null ? creditCard.Token : null;
