@@ -730,4 +730,10 @@
   <data name="ManualRideLinq_NoCardOnFile" xml:space="preserve">
     <value>You need to have a card on file to pair with RideLinQ</value>
   </data>
+  <data name="Email_Body_AccountConfirmationRedirectLine1" xml:space="preserve">
+    <value>If your browser does not automatically redirect you after 10 seconds,</value>
+  </data>
+  <data name="Email_Body_AccountConfirmationRedirectLine2" xml:space="preserve">
+    <value>click here.</value>
+  </data>
 </root>
