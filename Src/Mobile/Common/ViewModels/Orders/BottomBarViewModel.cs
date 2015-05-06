@@ -43,8 +43,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
                 Observe(ObserveIsPromoCodeApplied(), isPromoCodeApplied => IsPromoCodeActive = isPromoCodeApplied);
             }
 
-            
-
             Observe(_orderWorkflowService.GetAndObserveOrderValidationResult(), OrderValidated);
         }
 
