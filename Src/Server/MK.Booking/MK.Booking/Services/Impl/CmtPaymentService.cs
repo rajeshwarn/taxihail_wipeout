@@ -307,7 +307,8 @@ namespace apcurium.MK.Booking.Services.Impl
                     Extras = 0,
                     Surcharge = 0,
                     Tax = 0,
-                    Tolls = 0
+                    Tolls = 0,
+//                    Cvv2 = null
                 };
 
                 var authResponse = Authorize(authRequest);

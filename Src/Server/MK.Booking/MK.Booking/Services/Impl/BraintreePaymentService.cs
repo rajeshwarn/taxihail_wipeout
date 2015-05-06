@@ -198,7 +198,11 @@ namespace apcurium.MK.Booking.Services.Impl
                         Options = new TransactionOptionsRequest
                         {
                             SubmitForSettlement = false
-                        }
+                        },
+//                        CreditCard = new TransactionCreditCardRequest
+//                        {
+//                            CVV = "123"
+//                        }
                     };
 
                     //sale
