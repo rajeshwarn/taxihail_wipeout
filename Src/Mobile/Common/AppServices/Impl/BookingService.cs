@@ -185,11 +185,10 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
 		public bool IsOrderCancellable(string statusId)
 		{
-			return statusId.IsNullOrEmpty () ||
-				statusId == VehicleStatuses.Common.Assigned ||
-				statusId == VehicleStatuses.Common.Waiting ||
-				statusId == VehicleStatuses.Common.Arrived ||
-				statusId == VehicleStatuses.Common.Scheduled;
+			return statusId == VehicleStatuses.Common.Assigned
+                || statusId == VehicleStatuses.Common.Waiting
+                || statusId == VehicleStatuses.Common.Arrived
+                || statusId == VehicleStatuses.Common.Scheduled;
 		}
 
         public bool IsCallboxStatusActive(string statusId)

@@ -37,7 +37,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			textField.VerticalAlignment = UIControlContentVerticalAlignment.Center;
 
 			this.AutocorrectionType = UITextAutocorrectionType.No;
-
+            textField.AdjustsFontSizeToFitWidth = true;
 
 			if (_isPassword) 
             {
