@@ -67,7 +67,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 			StatusInfoText = string.Format(this.Services().Localize["Processing"]);
             
-
             CenterMap ();			
         }
 
