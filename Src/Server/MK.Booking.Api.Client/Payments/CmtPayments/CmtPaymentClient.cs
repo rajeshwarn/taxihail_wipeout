@@ -32,7 +32,7 @@ namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments
 
         public Task<TokenizedCreditCardResponse> Tokenize(string accountNumber, DateTime expiryDate, string cvv)
         {
-            return Tokenize(CmtPaymentServiceClient, accountNumber, expiryDate);
+            return Tokenize(CmtPaymentServiceClient, accountNumber, expiryDate, cvv);
         }
 
         public async Task<DeleteTokenizedCreditcardResponse> ForgetTokenizedCard(string cardToken)
@@ -46,8 +46,7 @@ namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments
 
         public Task<OverduePayment> GetOverduePayment()
         {
-            var req = string.Format("/account/overduepayment");
-            return Client.GetAsync<OverduePayment>(req);
+            return Client.GetAsync<OverduePayment>("/account/overduepayment");
         }
 
         public Task<SettleOverduePaymentResponse> SettleOverduePayment()
@@ -64,17 +63,18 @@ namespace apcurium.MK.Booking.Api.Client.Payments.CmtPayments
         }
 
         private static async Task<TokenizedCreditCardResponse> Tokenize(CmtPaymentServiceClient cmtPaymentServiceClient,
-            string accountNumber, DateTime expiryDate)
+            string accountNumber, DateTime expiryDate, string cvv)
         {
             try
             {
                 var response = await cmtPaymentServiceClient.PostAsync(new TokenizeRequest
                 {
                     AccountNumber = accountNumber,
-                    ExpiryDate = expiryDate.ToString("yyMM", CultureInfo.InvariantCulture)
+                    ExpiryDate = expiryDate.ToString("yyMM", CultureInfo.InvariantCulture),
 #if DEBUG
-                    ,ValidateAccountInformation = false
+                    ValidateAccountInformation = false,
 #endif
+                    Cvv = cvv
                 });
 
                 return new TokenizedCreditCardResponse

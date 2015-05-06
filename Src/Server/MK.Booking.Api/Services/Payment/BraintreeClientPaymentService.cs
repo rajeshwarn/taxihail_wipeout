@@ -75,7 +75,11 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                         Number = encryptedCreditCardNumber,
                         ExpirationDate = encryptedExpirationDate,
                         CVV = encryptedCvv,
-                        PaymentMethodNonce = paymentMethodNonce // Used for tokenization from javascript API
+                        PaymentMethodNonce = paymentMethodNonce, // Used for tokenization from javascript API
+                        Options = new CreditCardOptionsRequest
+                        {
+                            VerifyCard = true
+                        }
                     }
                 };
 
