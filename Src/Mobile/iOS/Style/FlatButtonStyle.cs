@@ -54,7 +54,8 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         protected abstract string GetStyleName();
 
-		public static readonly FlatButtonStyle Default = new DefaultButtonStyle ();
+		public static readonly FlatButtonStyle Default = new DefaultButtonStyle (); // sign in button
+        public static readonly FlatButtonStyle CompanyColor = new CompanyColorButtonStyle(); // using company colors on not company color background
         public static readonly FlatButtonStyle Main = new MainButtonStyle(); //ok button
         public static readonly FlatButtonStyle Clear = new ClearButtonStyle();
         public static readonly FlatButtonStyle Green = new GreenButtonStyle();
@@ -86,6 +87,31 @@ namespace apcurium.MK.Booking.Mobile.Client
                 return "Default";
             }
 		}
+
+        private class CompanyColorButtonStyle: FlatButtonStyle
+        {
+            public override void ApplyTo (FlatButton button)
+            {
+                base.ApplyTo (button);
+
+                if(button == null) return;
+
+                button.SetFillColor(GetColor(x => x.ColorBackgroundNormal, Theme.CompanyColor), UIControlState.Normal);
+                button.SetFillColor(GetColor(x => x.ColorBackgroundSelected, Theme.CompanyColor), UIControlState.Selected);
+                button.SetFillColor(GetColor(x => x.ColorBackgroundSelected, Theme.CompanyColor), UIControlState.Highlighted);
+
+                button.SetTitleColor(GetColor(x => x.ColorTextNormal, Theme.LabelTextColor), UIControlState.Normal);
+                button.SetTitleColor(GetColor(x => x.ColorTextSelected, Theme.LabelTextColor.ColorWithAlpha(0.5f)), UIControlState.Selected);
+                button.SetTitleColor(GetColor(x => x.ColorTextSelected, Theme.LabelTextColor.ColorWithAlpha(0.5f)), UIControlState.Highlighted);
+
+                button.SetStrokeColor(GetColor(x => x.ColorBorder, Theme.LabelTextColor));
+            }
+
+            protected override string GetStyleName ()
+            {
+                return "CompanyColor";
+            }
+        }
 
         private class MainButtonStyle: FlatButtonStyle
         {

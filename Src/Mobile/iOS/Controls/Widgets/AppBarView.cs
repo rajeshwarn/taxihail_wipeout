@@ -430,9 +430,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
         private void ChangeState(HomeViewModelPresentationHint hint)
         {   
-            if (hint.State == HomeViewModelState.PickDate)
+            if (hint.State == HomeViewModelState.PickDate
+                || hint.State == HomeViewModelState.BookATaxi)
             {
-                // This state does not affect this control
+                // These states don't affect this control
                 return;
             }
 
