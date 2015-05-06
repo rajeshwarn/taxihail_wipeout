@@ -57,7 +57,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			Order = JsonSerializer.DeserializeFromString<Order> (order);
 			OrderStatusDetail = JsonSerializer.DeserializeFromString<OrderStatusDetail> (orderStatus);
             DisplayOrderNumber();
-			IsCancelButtonVisible = true;			
+			IsCancelButtonVisible = false;			
 			_waitingToNavigateAfterTimeOut = false;
 		}
 	
@@ -66,7 +66,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			base.OnViewLoaded ();
 
 			StatusInfoText = string.Format(this.Services().Localize["Processing"]);
-
+            
             CenterMap ();			
         }
 

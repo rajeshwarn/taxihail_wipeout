@@ -30,8 +30,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
-		
-		
 		public ICommand CloseCommand
 		{
 			get
@@ -39,8 +37,5 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				return this.GetCommand(() => Close(this));
 			}
 		}
-
     }
-
 }
-
