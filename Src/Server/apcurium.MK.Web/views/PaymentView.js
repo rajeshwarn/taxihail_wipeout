@@ -158,7 +158,23 @@
 	                    this.model.updateCreditCard()
                             .done(_.bind(function () {
                                 TaxiHail.auth.account.set('defaultCreditCard', 'tempId');
-                                this.renderConfirmationMessage();
+
+	                            var currentNode = $(location).attr('hash');
+
+	                            if (currentNode == '#confirmationbook/payment') {
+                                    var currentOrder = TaxiHail.orderService.getCurrentOrder();
+                                    currentOrder.save({}, {
+                                        success: TaxiHail.postpone(function (model) {
+                                            // Wait for response before doing anything
+                                            ga('send', 'event', 'button', 'click', 'book web', 0);
+
+                                            TaxiHail.app.navigate('status/' + model.id, { trigger: true, replace: true /* Prevent user from coming back to this screen */ });
+                                        }, this),
+                                        error: this.showErrors
+                                    });
+                                } else {
+                                    this.renderConfirmationMessage();
+                                }
                             }, this))
                             .fail(_.bind(function () {
                                 this.$(':submit').button('reset');

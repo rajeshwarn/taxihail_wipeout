@@ -84,7 +84,7 @@
             }
 
             // Remove CoF option since there's no card in the user profile
-            if (TaxiHail.parameters.isBraintreePrepaidEnabled && !TaxiHail.auth.account.get('defaultCreditCard')) {
+            if (TaxiHail.parameters.isBraintreePrepaidEnabled && !TaxiHail.auth.account.get('defaultCreditCard') && !TaxiHail.parameters.isAlwaysDisplayCoFOption) {
                 var chargeTypesClone = chargeTypes.slice();
                 for (var i = 0; i < chargeTypesClone.length; i++) {
                     var chargeType = chargeTypesClone[i];
@@ -248,9 +248,14 @@
                 return;
             }
 
+            var isPayingWithCoF = this.model.isPayingWithCoF();
+            var hasCreditCardSet = TaxiHail.auth.account.get('defaultCreditCard') != null;
+
             if (this.model.isPayingWithAccountCharge() && !this.model.get('market')) {
                 //account charge type payment                
-                TaxiHail.app.navigate('bookaccountcharge', { trigger: true});
+                TaxiHail.app.navigate('bookaccountcharge', { trigger: true });
+            } else if (isPayingWithCoF && !hasCreditCardSet && TaxiHail.parameters.isAlwaysDisplayCoFOption) {
+                TaxiHail.app.navigate('confirmationbook/payment', { trigger: true });
             }else{
                 this.model.save({}, {
                     success: TaxiHail.postpone(function (model) {
