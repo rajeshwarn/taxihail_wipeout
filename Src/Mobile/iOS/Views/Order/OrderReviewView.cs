@@ -26,7 +26,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
             txtNote.Placeholder = Localize.GetValue("NotesToDriveLabel");
             txtNote.ShowCloseButtonOnKeyboard();
 
-			FlatButtonStyle.Silver.ApplyTo(btnViewPromo);
+            FlatButtonStyle.CompanyColor.ApplyTo(btnViewPromo);
 			btnViewPromo.Font = UIFont.FromName(FontName.HelveticaNeueRegular, 28 / 2);
         }
 
