@@ -206,6 +206,12 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             var orderDetail = _orderDao.FindById(orderId);
             var promotionDetail = _promotionDao.FindByOrderId(orderId);
 
+            // There was no promotion applied to this order.
+            if (promotionDetail == null)
+            {
+                return;
+            }
+
             _commandBus.Send(new UnapplyPromotion
             {
                 PromoId = promotionDetail.PromoId,
