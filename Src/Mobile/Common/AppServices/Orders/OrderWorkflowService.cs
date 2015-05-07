@@ -364,7 +364,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 					}
 					else
 					{
-						_bookingService.SetLastUnratedOrderId (status.OrderId);
+					    if (!order.IsManualRideLinq)
+					    {
+                            // Rating only for "normal" rides
+                            _bookingService.SetLastUnratedOrderId(status.OrderId);
+					    }
 					}
 				}
 			}
@@ -562,9 +566,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		    };
 
 		    var estimate = await _bookingService.GetFareEstimate(order);
-		    var validationResult = await ValidateOrder(order);
 
-		    estimate.ValidationResult = validationResult;
+			_orderValidationResultSubject.OnNext(estimate.ValidationResult);
 
 		    return estimate;
 		}
