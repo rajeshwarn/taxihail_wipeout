@@ -158,7 +158,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
                     if (_orderValidationResult.HasError
                         && _orderValidationResult.AppliesToCurrentBooking)
                     {
-                        this.Services().Message.ShowMessage(this.Services().Localize["InvalidBookinInfoTitle"], _orderValidationResult.Message);
+                        this.Services().Message.ShowMessage(this.Services().Localize["CurrentBookingDisabledTitle"], _orderValidationResult.Message);
                         return;
                     }
 
