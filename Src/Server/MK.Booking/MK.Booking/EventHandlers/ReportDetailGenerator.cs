@@ -393,8 +393,7 @@ namespace apcurium.MK.Booking.EventHandlers
         {
             using (var context = _contextFactory.Invoke())
             {
-                var existingReport = context.Find<OrderReportDetail>(@event.SourceId);
-                var orderReport = existingReport ?? new OrderReportDetail { Id = @event.SourceId };
+                var orderReport = new OrderReportDetail { Id = @event.SourceId };
 
                 var account = context.Find<AccountDetail>(@event.AccountId);
 
