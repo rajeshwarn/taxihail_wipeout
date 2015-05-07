@@ -521,7 +521,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
             {
                 return this.GetCommand(() =>
                 {
-                    if (!_accountService.CurrentAccount.DefaultCreditCard.HasValue)
+                    if (_accountService.CurrentAccount.DefaultCreditCard == null)
                     {
                         this.Services().Message.ShowMessage(
                             this.Services().Localize["ErrorCreatingOrderTitle"],
