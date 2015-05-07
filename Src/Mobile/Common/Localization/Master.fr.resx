@@ -1918,6 +1918,9 @@
   <data name="InvalidChargeTypeTitle" xml:space="preserve">
     <value>Type de paiement invalide</value>
   </data>
+  <data name="AddPaymentMethod" xml:space="preserve">
+    <value>Ajouter une méthode de paiement</value>
+  </data>
   <data name="CurrentBookingDisabledTitle" xml:space="preserve">
     <value>Réservation Immédiate Non Disponible</value>
   </data>

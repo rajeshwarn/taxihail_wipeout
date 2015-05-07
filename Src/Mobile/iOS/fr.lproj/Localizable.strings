@@ -165,7 +165,6 @@
 "AppNeedUpdateTitle"="Nouvelle version disponible";
 "StatusEta"="est à {0} et arrive dans {1} {2}";
 "CreditCardExpYear"="Date d'expiration (année)";
-"CreditCardExpiredUpdateNow"="Mettre à jour";
 "PanelMenuViewAboutUsText"="À Propos";
 "HistoryLoadError"="Impossible de charger l'historique. Veuillez réessayer plus tard.";
 "ManualPairingForRideLinQ_InvalidCode_Title"="Code invalide";
@@ -339,7 +338,6 @@
 "PaymentDetails.Optional"="(Facultatif)";
 "PromoProgress"="Progression :";
 "LanguageCode"="fr";
-"CreditCardExpiredTitle"="carte expirée";
 "Tuto08Bottom"="Nous espérons que la simplicité et l'efficacité de notre application vous aura convaincue.";
 "RideSettingsChargeType"="Type de facturation";
 "UpdateBookingSettingsInvalidDataTitle"="Détails de la réservation incorrects";
@@ -510,7 +508,7 @@
 "ManualRideLinqSummary_Done"="Ok";
 "PaymentDetails.TipAmountLabel"="Montant du pourboire";
 "LoadingMessage"="Chargement…";
-"CardExpiredNonMandatoryMessage"="Votre carte a expiré. Votre compte est maintenant configuré pour le paiement à bord. Si vous désirez continuer d'utiliser la carte de crédit, vous devrez la mettre à jour.";
+"AddPaymentMethod"="Ajouter une méthode de paiement";
 "PaymentDetails.CreditCardLabel"="Cartes de paiement";
 "Tuto08Top"="Vous avez la possibilité de revoir l'historique de vos trajets et donc de renouveler une commande en sélectionnant le trajet souhaité.";
 "UnpairWarningMessageWithPromo"="Si vous décidez de payer dans le taxi, vous ne serez pas éligible à la promotion";
