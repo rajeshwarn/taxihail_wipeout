@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.ReadModel;
+using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using Infrastructure.Messaging.Handling;
@@ -427,7 +428,10 @@ namespace apcurium.MK.Booking.EventHandlers
                     IsPaired = true
                 };
 
-                orderReport.OrderStatus = new OrderReportOrderStatus();
+                orderReport.OrderStatus = new OrderReportOrderStatus()
+                {
+                    Status = OrderStatus.Created
+                };
 
                 context.Save(orderReport);
             }
@@ -440,6 +444,7 @@ namespace apcurium.MK.Booking.EventHandlers
                 var orderReport = context.Find<OrderReportDetail>(@event.SourceId);
                 orderReport.Payment.IsPaired = false;
                 orderReport.OrderStatus.OrderIsCancelled = true;
+                orderReport.OrderStatus.Status = OrderStatus.Canceled;
                 context.Save(orderReport);
             }
         }
@@ -456,9 +461,13 @@ namespace apcurium.MK.Booking.EventHandlers
                 orderReport.Payment.TotalAmountCharged = @event.Total.HasValue
                     ? (decimal?)Math.Round(@event.Total.Value, 2)
                     : null;
-
-
-                orderReport.OrderStatus.OrderIsCompleted = @event.EndTime.HasValue;
+                
+                if (@event.EndTime.HasValue)
+                {
+                    orderReport.OrderStatus.OrderIsCompleted = @event.EndTime.HasValue;
+                    orderReport.OrderStatus.Status = OrderStatus.Completed;
+                }
+                
             }
         }
     }
