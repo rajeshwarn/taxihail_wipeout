@@ -98,6 +98,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
             }
         }
 
+        private bool _isManualRidelinqEnabled;
         public bool IsManualRidelinqEnabled
         {
             get { return _isManualRidelinqEnabled; }
@@ -484,7 +485,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
         }
 
         private ICommand _cancelEdit;
-        private bool _isManualRidelinqEnabled;
 
         public ICommand CancelEdit
         {
