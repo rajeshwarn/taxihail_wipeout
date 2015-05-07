@@ -126,7 +126,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
         {
             IsFutureBookingDisabled = Settings.DisableFutureBooking 
                 || validationResult.DisableFutureBooking 
-                || Settings.IsMergedBookTaxiButtonEnabled;
+                || Settings.UseSingleButtonForNowAndLaterBooking;
         }
 
         public ICommand ChangeAddressSelectionMode
@@ -502,7 +502,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
         {
             get
             {
-                return Settings.IsMergedBookTaxiButtonEnabled
+                return Settings.UseSingleButtonForNowAndLaterBooking
                     ? this.Services().Localize["HomeView_BookTaxi"]
                     : this.Services().Localize["BookItButton"];
             }
@@ -514,7 +514,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
             {
                 return this.GetCommand(() =>
                 {
-                    if (Settings.IsMergedBookTaxiButtonEnabled && !Settings.DisableFutureBooking)
+                    if (Settings.UseSingleButtonForNowAndLaterBooking && !Settings.DisableFutureBooking)
                     {
                         //We need to show the Book A Taxi popup.
                         PresentationStateRequested.Raise(this, new HomeViewModelStateRequestedEventArgs(HomeViewModelState.BookATaxi));
