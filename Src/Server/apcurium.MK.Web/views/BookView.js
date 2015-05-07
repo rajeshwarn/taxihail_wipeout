@@ -308,8 +308,26 @@
 
                         if (result.hasError && !destinationRequiredAndNoDropOff)
                         {
-                            this.$('.buttons .btn').addClass('disabled');
-                            this.$('.buttons .btn').attr('disabled', 'disabled');
+                            if (result.appliesToCurrentBooking) {
+                                this.$('#bookNowButton').addClass('disabled');
+                                this.$('#bookNowButton').attr('disabled', 'disabled');
+                            }
+                            
+                            if (result.appliesToFutureBooking) {
+                                this.$('#bookLaterButton').addClass('disabled');
+                                this.$('#bookLaterButton').attr('disabled', 'disabled');
+                            }
+
+                            if (!result.appliesToCurrentBooking) {
+                                this.$('#bookNowButton').removeClass('disabled');
+                                this.$('#bookNowButton').removeAttr('disabled', 'disabled');
+                            }
+
+                            if (!result.appliesToFutureBooking) {
+                                this.$('#bookLaterButton').removeClass('disabled');
+                                this.$('#bookLaterButton').removeAttr('disabled', 'disabled');
+                            }
+
                             this.showErrors(result);
                             $estimate
                                 .addClass('hidden')
