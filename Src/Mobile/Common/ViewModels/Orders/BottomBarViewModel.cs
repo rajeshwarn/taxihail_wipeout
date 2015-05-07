@@ -118,19 +118,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
                 {
                     _isFutureBookingDisabled = value;
                     RaisePropertyChanged();
-                    RaisePropertyChanged(() => IsLaterBookingVisible);
                 }
             }
         }
 
-        public bool IsLaterBookingVisible
-        {
-            get { return !IsFutureBookingDisabled && !Settings.IsMergedBookTaxiButtonEnabled; }
-        }
-
         private void OrderValidated(OrderValidationResult validationResult)
         {
-            IsFutureBookingDisabled = Settings.DisableFutureBooking || validationResult.DisableFutureBooking;
+            IsFutureBookingDisabled = Settings.DisableFutureBooking 
+                || validationResult.DisableFutureBooking 
+                || Settings.IsMergedBookTaxiButtonEnabled;
         }
 
         public ICommand ChangeAddressSelectionMode
@@ -518,7 +514,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
             {
                 return this.GetCommand(() =>
                 {
-                    if (Settings.IsMergedBookTaxiButtonEnabled && !IsFutureBookingDisabled)
+                    if (Settings.IsMergedBookTaxiButtonEnabled && !Settings.DisableFutureBooking)
                     {
                         //We need to show the Book A Taxi popup.
                         PresentationStateRequested.Raise(this, new HomeViewModelStateRequestedEventArgs(HomeViewModelState.BookATaxi));

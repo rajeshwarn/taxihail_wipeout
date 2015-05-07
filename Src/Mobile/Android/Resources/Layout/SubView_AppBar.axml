@@ -106,7 +106,7 @@
                     android:minWidth="55dip"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    local:MvxBind="Visibility IsLaterBookingVisible, Converter=Visibility; Click BookLater"
+                    local:MvxBind="Visibility IsFutureBookingDisabled, Converter=InvertedVisibility; Click BookLater"
                     android:layout_gravity="end|center">
                     <ImageView
                         android:id="@+id/btnBookLater"
