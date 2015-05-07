@@ -86,13 +86,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         public override void ViewDidUnload()
         {
             base.ViewDidUnload();
-
             if (ViewModel != null)
             {
                 ViewModel.OnViewUnloaded();
             }
         }
-	
+
         public override void ViewDidLoad ()
         {
             base.ViewDidLoad ();
@@ -123,13 +122,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             {
                 return;
             }
-                
+
             foreach (var textField in textFields) 
             {
                 textField.ReturnKeyType = UIReturnKeyType.Done;
                 textField.ShouldReturn = ShouldReturn;
             }
         }
+
         private bool ShouldReturn (UITextField textField)
         {
             return textField.ResignFirstResponder();
@@ -179,13 +179,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             {
                 return;
             }
-              
+
             var scrollView = activeView.FindSuperviewOfType(View, typeof(UIScrollView)) as UIScrollView;
             if (scrollView == null)
             {
                 return;
             }
-                
+
             // find the topmost scrollview (fix problem with RootElement)
             var nextSuperView = scrollView;
             while(nextSuperView != null)
@@ -226,13 +226,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             {
                 return;
             }
-                
+
             var scrollView = activeView.FindSuperviewOfType (View, typeof(UIScrollView)) as UIScrollView;
             if (scrollView == null)
             {
                 return;
             }
-                
+
             // find the topmost scrollview (fix problem with RootElement)
             var nextSuperView = scrollView;
             while(nextSuperView != null)
@@ -370,4 +370,4 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         }
     }
 }
-   
+

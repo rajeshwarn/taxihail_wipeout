@@ -37,7 +37,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		    _accountPaymentService = accountPaymentService;
 		    _accountService = accountService;
 
-                Observe(_orderWorkflowService.GetAndObserveHashedMarket(), hashedMarket => _hashedMarket = hashedMarket);
+            Observe(_orderWorkflowService.GetAndObserveHashedMarket(), hashedMarket => _hashedMarket = hashedMarket);
 		}
 
 		public async void Init(string bookingSettings)

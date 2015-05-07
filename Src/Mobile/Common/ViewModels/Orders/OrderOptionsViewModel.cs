@@ -30,17 +30,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
 			Observe (_orderWorkflowService.GetAndObserveIsDestinationModeOpened (),
 				isDestinationModeOpened => {
-				IsDestinationModeOpened = isDestinationModeOpened;
-				OnDestinationModeOpened ();
-			});
+					IsDestinationModeOpened = isDestinationModeOpened;
+					OnDestinationModeOpened ();
+				});
 			Observe (_orderWorkflowService.GetAndObservePickupAddress (), address => PickupAddress = address);
 			Observe (_orderWorkflowService.GetAndObserveDestinationAddress (), address => DestinationAddress = address);
 			Observe (_orderWorkflowService.GetAndObserveAddressSelectionMode (), selectionMode => AddressSelectionMode = selectionMode);
 			Observe (_orderWorkflowService.GetAndObserveEstimatedFare (), fare => EstimatedFare = fare);
 			Observe (_orderWorkflowService.GetAndObserveLoadingAddress (), loading => IsLoadingAddress = loading);
 			Observe (_orderWorkflowService.GetAndObserveVehicleType (), vehicleType => VehicleTypeId = vehicleType);
-                Observe(_orderWorkflowService.GetAndObserveHashedMarket(), hashedMarket => MarketChanged(hashedMarket));
-                Observe(_orderWorkflowService.GetAndObserveMarketVehicleTypes(), marketVehicleTypes => VehicleTypesChanged(marketVehicleTypes));
+            Observe (_orderWorkflowService.GetAndObserveHashedMarket(), hashedMarket => MarketChanged(hashedMarket));
+            Observe (_orderWorkflowService.GetAndObserveMarketVehicleTypes(), marketVehicleTypes => VehicleTypesChanged(marketVehicleTypes));
 			Observe (_vehicleService.GetAndObserveEta (), eta => Eta = eta);
 		}
 

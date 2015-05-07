@@ -68,8 +68,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			BottomBar = AddChild<BottomBarViewModel>();
 			AddressPicker = AddChild<AddressPickerViewModel>();
 
-			Observe(_vehicleService.GetAndObserveAvailableVehiclesWhenVehicleTypeChanges(), vehicles => ZoomOnNearbyVehiclesIfPossible(vehicles));
-            Observe(_orderWorkflowService.GetAndObserveMarket(), market => MarketChanged(market));
+			Observe(_vehicleService.GetAndObserveAvailableVehiclesWhenVehicleTypeChanges(), ZoomOnNearbyVehiclesIfPossible);
+			Observe(_orderWorkflowService.GetAndObserveHashedMarket(), MarketChanged);
 		}
 
 	    private string _lastHashedMarket = string.Empty;

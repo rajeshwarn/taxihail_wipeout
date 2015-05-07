@@ -14,8 +14,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		private readonly IOrderWorkflowService _orderWorkflowService;
 		private readonly IAccountService _accountService;
         
-		public OrderReviewViewModel(IOrderWorkflowService orderWorkflowService,
-			IAccountService accountService)
+		public OrderReviewViewModel(IOrderWorkflowService orderWorkflowService,	IAccountService accountService)
 		{
 			_orderWorkflowService = orderWorkflowService;
 			_accountService = accountService;
