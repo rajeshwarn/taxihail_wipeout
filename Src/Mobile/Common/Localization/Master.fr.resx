@@ -1489,7 +1489,7 @@
     <value>Votre carte a expiré. Ajoutez une nouvelle carte ou mettez à jour la carte sélectionnée pour continuer.</value>
   </data>
   <data name="CreditCardExpiredTitle" xml:space="preserve">
-    <value>carte expirée</value>
+    <value>Carte Expirée</value>
   </data>
   <data name="CardExpiredNonMandatoryMessage" xml:space="preserve">
     <value>Votre carte a expiré. Votre compte est maintenant configuré pour le paiement à bord. Si vous désirez continuer d'utiliser la carte de crédit, vous devrez la mettre à jour.</value>

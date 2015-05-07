@@ -264,18 +264,19 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					if (!paymentSettings.IsPayInTaxiEnabled)
 					{
 						// we just remove the card and don't mention it to the user since he can't add one anyway
+						return;
 					}
 
 					var title = this.Services().Localize["CreditCardExpiredTitle"];
 				
 					if (paymentSettings.IsOutOfAppPaymentDisabled)
 					{
-						// pay in car is disabled, user has only one choice and will not be able to leave the AddCreditCardViewModel without entering a valid card"
+						// pay in car is disabled, user has only one choice and will not be able to leave the AddCreditCardViewModel without entering a valid card
 						this.Services().Message.ShowMessage(title, 
 							this.Services().Localize["CardExpiredMessage"], 
 							() => {
 							_isShowingCreditCardExpiredPrompt = false;
-							ShowViewModelAndClearHistory<CreditCardAddViewModel>(new { showInstructions = true, isMandatory = this.Services().Settings.CreditCardIsMandatory });
+							ShowViewModelAndClearHistory<CreditCardAddViewModel>(new { isMandatory = this.Services().Settings.CreditCardIsMandatory });
 						});
 					}
 					else

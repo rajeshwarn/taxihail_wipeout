@@ -91,7 +91,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 	    {
 	        get
 	        {
-                return _accountService.CurrentAccount.DefaultCreditCard != null || !Settings.DisableChargeTypeWhenCardOnFile;
+                return _accountService.CurrentAccount.DefaultCreditCard == null || !Settings.DisableChargeTypeWhenCardOnFile;
             }
 	    }
 

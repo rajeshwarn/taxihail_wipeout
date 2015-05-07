@@ -32,7 +32,7 @@ namespace apcurium.MK.Booking.Api.Contract.Resources
 
             var expYear = int.Parse (ExpirationYear);
             var expMonth = int.Parse (ExpirationMonth);
-            var expirationDate = new DateTime (expYear, expMonth, DateTime.DaysInMonth (expYear, expMonth));
+            var expirationDate = new DateTime (expYear, expMonth, DateTime.DaysInMonth (expYear, expMonth), 23, 59, 59);
 
             if (expirationDate < DateTime.Now) 
             {

@@ -718,8 +718,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		public async Task<bool> ValidateCardOnFile()
 		{
 			var orderToValidate = await GetOrder ();	
-			if ((orderToValidate.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id)  &&
-				(_accountService.CurrentAccount.DefaultCreditCard != null))
+			if (orderToValidate.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id 
+				&& _accountService.CurrentAccount.DefaultCreditCard == null)
 			{
 				return false;
 			}

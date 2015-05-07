@@ -661,16 +661,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
 		private bool HasValidDate(string month, string year)
 		{
-			var expYear = int.Parse (year);
-			var expMonth = int.Parse (month);
-			var expirationDate = new DateTime (expYear, expMonth, DateTime.DaysInMonth (expYear, expMonth));
-
-			if (expirationDate < DateTime.Now) 
+			var creditCard = new CreditCardDetails 
 			{
-				return false;
-			}
+				ExpirationMonth = month,
+				ExpirationYear = year
+			};
 
-			return true;
+			return !creditCard.IsExpired;
 		}
 
 		private void DetermineCompany(string cardNumber)
