@@ -105,6 +105,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
             {
                 _isManualRidelinqEnabled = value;
                 RaisePropertyChanged();
+                RaisePropertyChanged(() => BookButtonText);
             }
         }
 
@@ -502,7 +503,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
         {
             get
             {
-                return Settings.UseSingleButtonForNowAndLaterBooking
+                return Settings.UseSingleButtonForNowAndLaterBooking || IsManualRidelinqEnabled
                     ? this.Services().Localize["HomeView_BookTaxi"]
                     : this.Services().Localize["BookItButton"];
             }
