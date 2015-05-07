@@ -531,7 +531,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
             {
                 return this.GetCommand(() =>
                 {
-                    ShowViewModel<ManualPairingForRideLinqViewModel>();
+                    if (!_accountService.CurrentAccount.DefaultCreditCard.HasValue)
+                    {
+                        this.Services().Message.ShowMessage(
+                            this.Services().Localize["ErrorCreatingOrderTitle"],
+                            this.Services().Localize["ManualRideLinqNoCardOnFile"]);
+                    }
+                    else
+                    {
+                        ShowViewModel<ManualPairingForRideLinqViewModel>();
+                    }                    
                 });
             }
         }

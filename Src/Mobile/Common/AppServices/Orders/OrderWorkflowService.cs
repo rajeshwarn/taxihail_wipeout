@@ -364,7 +364,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 					}
 					else
 					{
-						_bookingService.SetLastUnratedOrderId (status.OrderId);
+					    if (!order.IsManualRideLinq)
+					    {
+                            // Rating only for "normal" rides
+                            _bookingService.SetLastUnratedOrderId(status.OrderId);
+					    }
 					}
 				}
 			}
