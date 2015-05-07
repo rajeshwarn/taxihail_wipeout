@@ -13,6 +13,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 	partial class HomeView
 	{
 		[Outlet]
+		UIKit.NSLayoutConstraint _constraintOrderBookinOptionsTopSpace { get; set; }
+
+		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.AppBarView bottomBar { get; set; }
 
 		[Outlet]
@@ -31,6 +34,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		UIKit.NSLayoutConstraint constraintHomeLeadingSpace { get; set; }
 
 		[Outlet]
+		UIKit.NSLayoutConstraint constraintOrderBookinOptionsTopSpace { get; set; }
+
+		[Outlet]
 		UIKit.NSLayoutConstraint constraintOrderEditTrailingSpace { get; set; }
 
 		[Outlet]
@@ -44,6 +50,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Views.AddressPicker.AddressPickerView ctrlAddressPicker { get; set; }
+
+		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.Views.Order.OrderBookingOptions ctrlOrderBookingOptions { get; set; }
 
 		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.OrderOptionsControl ctrlOrderOptions { get; set; }
@@ -65,6 +74,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		
 		void ReleaseDesignerOutlets ()
 		{
+			if (_constraintOrderBookinOptionsTopSpace != null) {
+				_constraintOrderBookinOptionsTopSpace.Dispose ();
+				_constraintOrderBookinOptionsTopSpace = null;
+			}
+
 			if (bottomBar != null) {
 				bottomBar.Dispose ();
 				bottomBar = null;
@@ -73,11 +87,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			if (btnAirport != null) {
 				btnAirport.Dispose ();
 				btnAirport = null;
-			}
-
-			if (btnTrain != null) {
-				btnTrain.Dispose ();
-				btnTrain = null;
 			}
 
 			if (btnLocateMe != null) {
@@ -90,9 +99,19 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				btnMenu = null;
 			}
 
+			if (btnTrain != null) {
+				btnTrain.Dispose ();
+				btnTrain = null;
+			}
+
 			if (constraintHomeLeadingSpace != null) {
 				constraintHomeLeadingSpace.Dispose ();
 				constraintHomeLeadingSpace = null;
+			}
+
+			if (constraintOrderBookinOptionsTopSpace != null) {
+				constraintOrderBookinOptionsTopSpace.Dispose ();
+				constraintOrderBookinOptionsTopSpace = null;
 			}
 
 			if (constraintOrderEditTrailingSpace != null) {
@@ -118,6 +137,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			if (ctrlAddressPicker != null) {
 				ctrlAddressPicker.Dispose ();
 				ctrlAddressPicker = null;
+			}
+
+			if (ctrlOrderBookingOptions != null) {
+				ctrlOrderBookingOptions.Dispose ();
+				ctrlOrderBookingOptions = null;
 			}
 
 			if (ctrlOrderOptions != null) {

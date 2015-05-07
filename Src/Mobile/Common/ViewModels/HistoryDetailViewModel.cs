@@ -11,6 +11,7 @@ using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
 using ServiceStack.Text;
 using System.Threading.Tasks;
+using apcurium.MK.Common;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -406,9 +407,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
+                var confirmationMessage = Settings.WarnForFeesOnCancel
+                    && (VehicleStatuses.CanCancelOrderStatus.Contains(Status.IBSStatusId))
+                        ? string.Format(
+                            this.Services().Localize["StatusConfirmCancelRideAndWarnForCancellationFees"],
+                            Settings.TaxiHail.ApplicationName)
+                        : this.Services().Localize["StatusConfirmCancelRide"]; 
+
                 return this.GetCommand(() => this.Services().Message.ShowMessage(
-					string.Empty, 
-					this.Services().Localize["StatusConfirmCancelRide"], 
+					string.Empty,
+                    confirmationMessage, 
                     this.Services().Localize["YesButton"], 
 					async () =>
 	                	{

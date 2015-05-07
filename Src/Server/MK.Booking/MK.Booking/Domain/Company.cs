@@ -48,6 +48,8 @@ namespace apcurium.MK.Booking.Domain
 
         protected PayPalServerSettings PayPalServerSettings { get; set; }
 
+        protected bool IsChargeAccountEnabled { get; set; }
+
         private void RegisterHandlers()
         {
             Handles<DefaultFavoriteAddressAdded>(NoAction);
@@ -62,6 +64,7 @@ namespace apcurium.MK.Booking.Domain
             Handles<AppSettingsAddedOrUpdated>(NoAction);
             Handles<PaymentModeChanged>(NoAction);
             Handles<PayPalSettingsChanged>(NoAction);
+            Handles<ChargeAccountPaymentDisabled>(NoAction);
             Handles<PaymentSettingUpdated>(OnPaymentSettingUpdated);
 
             Handles<TariffCreated>(OnRateCreated);
@@ -99,6 +102,8 @@ namespace apcurium.MK.Booking.Domain
             PaymentMode = obj.ServerPaymentSettings.PaymentMode;
             PayPalClientSettings = obj.ServerPaymentSettings.PayPalClientSettings;
             PayPalServerSettings = obj.ServerPaymentSettings.PayPalServerSettings;
+
+            IsChargeAccountEnabled = obj.ServerPaymentSettings.IsChargeAccountPaymentEnabled;
         }
 
         public void AddDefaultFavoriteAddress(Address address)
@@ -340,7 +345,7 @@ namespace apcurium.MK.Booking.Domain
         public void CreateRule(Guid ruleId, string name, string message, string zoneList,bool zoneRequired, RuleType type,
             RuleCategory category, bool appliedToCurrentBooking, bool appliesToFutureBooking,bool appliesToPickup, bool appliesToDropoff, int priority,
             bool isActive, DayOfTheWeek daysOfTheWeek, DateTime? startTime, DateTime? endTime, DateTime? activeFrom,
-            DateTime? activeTo)
+            DateTime? activeTo, string market, bool disableFutureBookingOnError)
         {
             if ((type == RuleType.Default) && message.IsNullOrEmpty())
             {
@@ -380,13 +385,15 @@ namespace apcurium.MK.Booking.Domain
                 EndTime = endTime,
                 ActiveFrom = activeFrom,
                 ActiveTo = activeTo,
-                Priority = /*type == RuleType.Default ? 0 :*/ priority,
+                Priority = priority,
+                Market = market,
+                DisableFutureBookingOnError = disableFutureBookingOnError
             });
         }
 
         public void UpdateRule(Guid ruleId, string name, string message, string zoneList, bool zoneRequired, bool appliedToCurrentBooking,
             bool appliesToFutureBooking, bool appliesToPickup, bool appliesToDropoff, DayOfTheWeek daysOfTheWeek, DateTime? startTime, DateTime? endTime,
-            DateTime? activeFrom, DateTime? activeTo, int priority, bool isActive)
+            DateTime? activeFrom, DateTime? activeTo, int priority, bool isActive, string market, bool disableFutureBookingOnError)
         {
             Update(new RuleUpdated
             {
@@ -405,7 +412,9 @@ namespace apcurium.MK.Booking.Domain
                 EndTime = endTime,
                 ActiveFrom = activeFrom,
                 ActiveTo = activeTo,
-                Priority = priority
+                Priority = priority,
+                Market = market,
+                DisableFutureBookingOnError = disableFutureBookingOnError
             });
         }
 
@@ -430,10 +439,21 @@ namespace apcurium.MK.Booking.Domain
                 Update(new PayPalSettingsChanged());
             }
 
+            if (ChargeAccountPaymentEnabledChanged(command.ServerPaymentSettings) && 
+                !command.ServerPaymentSettings.IsChargeAccountPaymentEnabled)
+            {
+                Update(new ChargeAccountPaymentDisabled());
+            }
+
             Update(new PaymentSettingUpdated
             {
                 ServerPaymentSettings = command.ServerPaymentSettings
             });
+        }
+
+        private bool ChargeAccountPaymentEnabledChanged(ServerPaymentSettings newPaymentSettings)
+        {
+            return newPaymentSettings.IsChargeAccountPaymentEnabled != IsChargeAccountEnabled;
         }
 
         private bool HavePayPalSettingsChanged(ServerPaymentSettings newPaymentSettings)
@@ -516,7 +536,7 @@ namespace apcurium.MK.Booking.Domain
             });
         }
 
-        public void AddUpdateVehicleType(Guid vehicleTypeId, string name, string logoName, int referenceDataVehicleId, int maxNumberPassengers)
+        public void AddUpdateVehicleType(Guid vehicleTypeId, string name, string logoName, int referenceDataVehicleId, int maxNumberPassengers, int? networkVehicleTypeId)
         {
             Update(new VehicleTypeAddedUpdated
             {
@@ -524,7 +544,8 @@ namespace apcurium.MK.Booking.Domain
                 LogoName = logoName,
                 VehicleTypeId = vehicleTypeId,
                 ReferenceDataVehicleId = referenceDataVehicleId,
-                MaxNumberPassengers = maxNumberPassengers
+                MaxNumberPassengers = maxNumberPassengers,
+                ReferenceNetworkVehicleTypeId = networkVehicleTypeId
             });
         }
 

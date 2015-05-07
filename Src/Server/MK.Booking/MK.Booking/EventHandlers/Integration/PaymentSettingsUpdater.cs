@@ -3,7 +3,6 @@
 using System.Linq;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Events;
-using apcurium.MK.Booking.ReadModel.Query;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using Infrastructure.Messaging;
 using Infrastructure.Messaging.Handling;

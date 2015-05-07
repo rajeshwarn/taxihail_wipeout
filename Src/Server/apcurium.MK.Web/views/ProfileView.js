@@ -32,6 +32,10 @@
                 // We need to make sure that the customer number, if empty, is saved as a string
                 data.settings.customerNumber = "";
             }
+            if (!data.settings.payBack) {
+                // We need to make sure that the PayBack number, if empty, is saved as a string
+                data.settings.payBack = "";
+            }
 
             var tipPercentages = [
                 { id: 0, display: "0%" },
@@ -43,13 +47,20 @@
                 { id: 25, display: "25%" }
             ];
 
-            if (!data.settings.defaultTipPercent) {
+            if (!data.defaultTipPercent) {
                 this.model.set('defaultTipPercent', TaxiHail.parameters.defaultTipPercentage);
             }
 
             var displayTipSelection = TaxiHail.parameters.isChargeAccountPaymentEnabled
                 || TaxiHail.parameters.isPayPalEnabled
                 || TaxiHail.parameters.isBraintreePrepaidEnabled;
+
+            var showPayBackField = false;
+            var isPayBackFieldRequired = false;
+            if (TaxiHail.parameters.isPayBackRegistrationFieldRequired != null) {
+                showPayBackField = true;
+                isPayBackFieldRequired = TaxiHail.parameters.isPayBackRegistrationFieldRequired == "true";
+            }
 
             var chargeTypes = TaxiHail.referenceData.paymentsList;
 
@@ -70,7 +81,8 @@
                 paymentsList: chargeTypes,
                 isChargeAccountPaymentEnabled: TaxiHail.parameters.isChargeAccountPaymentEnabled,
                 displayTipSelection: displayTipSelection,
-                tipPercentages: tipPercentages
+                tipPercentages: tipPercentages,
+                showPayBackField: showPayBackField
             });
 
             this.$el.html(this.renderTemplate(data));
@@ -80,11 +92,15 @@
                     name: "required",
                     phone: {
                         required : true,
-                        regex: /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/
+                        regex: /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})([0-9]?[0-9]?[0-9]?[0-9]?[0-9]?)$/
                     },
                     passengers: {
                         required: true,
                         number : true
+                    },
+                    payBack: {
+                        required: isPayBackFieldRequired,
+                        regex: /^\d{0,10}$/  // Up to 10 digits
                     }
                 },
                 messages: {
@@ -98,6 +114,10 @@
                     passengers: {
                         required: TaxiHail.localize('error.PassengersRequired'),
                         number: TaxiHail.localize('error.NotANumber')
+                    },
+                    payBack: {
+                        required: TaxiHail.localize('error.PayBackRequired'),
+                        regex: TaxiHail.localize('error.PayBackBadFormat')
                     }
                 },
                 submitHandler: this.savechanges
@@ -118,7 +138,8 @@
         savechanges: function (form) {
             var accountNumber = this.model.get('settings').accountNumber;
             var customerNumber = this.model.get('settings').customerNumber;
-            if (accountNumber) { // || customerNumber
+            var chargeAccountEnabled = TaxiHail.parameters.isChargeAccountPaymentEnabled;
+            if (chargeAccountEnabled && accountNumber) {
 
                 // Validate charge account number
                 this.model.getChargeAccount(accountNumber, customerNumber)
@@ -147,8 +168,15 @@
                 .done(_.bind(function() {
                     this.renderConfirmationMessage();
                 }, this))
-                .fail(_.bind(function() {
+                .fail(_.bind(function () {
                     this.$(':submit').button('reset');
+
+                    var alert = new TaxiHail.AlertView({
+                        message: TaxiHail.localize("error.accountUpdate"),
+                        type: 'error'
+                    });
+                    alert.on('ok', alert.remove, alert);
+                    this.$('.errors').html(alert.render().el);
                 }, this));
         },
 

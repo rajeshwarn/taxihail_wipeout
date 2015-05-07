@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Net;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -85,9 +86,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			using (this.Services ().Message.ShowProgress ())
 			{
 			    IsPayPalAccountLinked = _accountService.CurrentAccount.IsPayPalAccountLinked;
-                _paymentSettings = await _paymentService.GetPaymentSettings();
 
-				CreditCardCompanies = new List<ListItem>
+			    try
+			    {
+			        _paymentSettings = await _paymentService.GetPaymentSettings();
+			    }
+			    catch
+			    {
+			        // Do nothing
+			    }
+
+			    CreditCardCompanies = new List<ListItem>
 				{
 					new ListItem {Display = Visa, Id = 0},
 					new ListItem {Display = MasterCard, Id = 1},
@@ -120,7 +129,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
 				Data = new CreditCardInfos ();
 
-				var creditCard = await _accountService.GetCreditCard();
+				CreditCardDetails creditCard = null;
+
+                try
+                {
+                    creditCard = await _accountService.GetCreditCard();
+                }
+                catch (Exception ex)
+                {
+                    Logger.LogMessage(ex.Message, ex.ToString());
+                    this.Services().Message.ShowMessage(this.Services().Localize["Error"], this.Services().Localize["PaymentLoadError"]);
+                }
+
 				if (creditCard == null)
 				{
 					Data.NameOnCard = _accountService.CurrentAccount.Name;
@@ -352,7 +372,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
         public bool CanLinkPayPalAccount
         {
-            get { return !IsPayPalAccountLinked && _paymentSettings.PayPalClientSettings.IsEnabled; }
+            get
+            {
+                return !IsPayPalAccountLinked
+                    && _paymentSettings != null
+                    && _paymentSettings.PayPalClientSettings.IsEnabled;
+            }
         }
 
 	    public bool CanUnlinkPayPalAccount
@@ -367,7 +392,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 
 	    public bool IsPayPalOnly
 	    {
-            get { return _paymentSettings.PayPalClientSettings.IsEnabled && !_paymentSettings.IsPayInTaxiEnabled; }
+	        get
+	        {
+	            return _paymentSettings != null
+                    && _paymentSettings.PayPalClientSettings.IsEnabled
+                    && !_paymentSettings.IsPayInTaxiEnabled;
+	        }
 	    }
 
 		public string CreditCardSaveButtonDisplay
@@ -403,23 +433,41 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 	    {
 	        get
 	        {
-	            return this.GetCommand(() => 
+	            return this.GetCommand(async () =>
+	            {
+                    var tcs = new TaskCompletionSource<bool>();
+
+	                var localize = this.Services().Localize;
+
                     this.Services().Message.ShowMessage(
-	                    this.Services().Localize["DeleteCreditCardTitle"],
-	                    this.Services().Localize["DeleteCreditCard"],
-	                    this.Services().Localize["Delete"], () => DeleteCreditCard(),
-	                    this.Services().Localize["Cancel"], () => { }));
-	        } 
-	        
+	                    localize["DeleteCreditCardTitle"],
+                        localize["DeleteCreditCard"],
+                        localize["Delete"], () => tcs.SetResult(true),
+                        localize["Cancel"], () => tcs.SetResult(false));
+
+	                if (await tcs.Task)
+	                {
+	                    try
+	                    {
+	                        await DeleteCreditCard();
+	                    }
+                        catch (Exception ex)
+	                    {
+                            Logger.LogError(ex);
+                            this.Services().Message.ShowMessage(localize["CreditCardRemoveErrorTitle"], localize["CreditCardRemoveErrorScheduledOrderMessage"]);                        
+	                    }
+	                }
+	            });
+	        }
 	    }
 
-        public void LinkPayPalAccount(string authCode)
+        public async void LinkPayPalAccount(string authCode)
         {
             try
             {
-				_accountService.LinkPayPalAccount(authCode);
-                
-                DeleteCreditCard(true);
+				await _accountService.LinkPayPalAccount(authCode);
+
+                IsPayPalAccountLinked = true;
             }
             catch (Exception ex)
             {
@@ -428,14 +476,28 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
                 this.Services().Message.ShowMessage(
                     this.Services().Localize["PayPalErrorTitle"],
                     this.Services().Localize["PayPalLinkError"]);
+                return;
             }
 
-            IsPayPalAccountLinked = true;
+            try
+            {
+                await DeleteCreditCard(true);
 
-			this.Services().Message.ShowMessage(
-				string.Empty,
-				this.Services().Localize["PayPalLinked"],
-				() => ShowViewModelAndRemoveFromHistory<HomeViewModel>(new { locateUser = bool.TrueString }));
+                this.Services().Message.ShowMessage(
+                    string.Empty,
+                    this.Services().Localize["PayPalLinked"],
+                    () => ShowViewModelAndRemoveFromHistory<HomeViewModel>(new { locateUser = bool.TrueString }));
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex);
+
+                this.Services().Message.ShowMessage(
+                    this.Services().Localize["PayPalErrorTitle"],
+                    this.Services().Localize["PayPalLinkError"]);
+
+                UnlinkPayPalAccount();
+            }
         }
 
 		public void UnlinkPayPalAccount(bool replacedByCreditCard = false)
@@ -461,14 +523,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			IsPayPalAccountLinked = false;
         }
 
-		private void DeleteCreditCard(bool replacedByPayPal = false)
+		private async Task DeleteCreditCard(bool replacedByPayPal = false)
 	    {
 	        if (!IsEditing)
 	        {
 	            return;
 	        }
 
-			_accountService.RemoveCreditCard(replacedByPayPal);
+			await _accountService.RemoveCreditCard(replacedByPayPal);
             
 			if (!replacedByPayPal)
 			{
@@ -539,7 +601,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			{
 				this.Logger.LogError(ex);
 			}
-            
 	    }
 
 	    private async Task SettleOverduePayment()
@@ -648,5 +709,3 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 		}
     }
 }
-
-

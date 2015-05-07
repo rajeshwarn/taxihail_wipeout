@@ -69,6 +69,7 @@
                 this.$('#callDispatchButton').addClass('hidden');
             }
             var status = this.model.getStatus();
+
             if (!status.isActive()) {
                 this.$('[data-action=cancel]').addClass('disabled');
                 canCancel = false;
@@ -102,9 +103,15 @@
         cancel: function(e) {
             e.preventDefault();
             if (canCancel == true) {
+
+                var confirmationMessage = this.localize('modal.cancelOrder.message');
+                if (this.model.getStatus().warnForCancellationFees()) {
+                    confirmationMessage = this.localize('modal.cancelOrder.message.warnForFees').format(TaxiHail.parameters.applicationName);
+                }
+
                 TaxiHail.confirm({
                     title: this.localize('Cancel Order'),
-                    message: this.localize('modal.cancelOrder.message'),
+                    message: confirmationMessage,
                     cancelButton: this.localize('modal.cancelOrder.cancelButton')
                 }).on('ok', function () {
                     this.model.cancel().done(function () {
@@ -173,7 +180,8 @@
 
                 var alwaysAccept = $.cookie('THNetwork_always_accept');
 
-                if (alwaysAccept && alwaysAccept === 'true') {
+                if ((alwaysAccept && alwaysAccept === 'true')
+                    || TaxiHail.parameters.autoConfirmFleetChange) {
                     this.switchDispatchCompany(this.model);
                 } else {
                     TaxiHail.confirm({

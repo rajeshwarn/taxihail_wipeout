@@ -21,11 +21,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         readonly IObservable<AvailableVehicle[]> _availableVehiclesWhenTypeChangesObservable;
 		readonly IObservable<Direction> _etaObservable;
 		readonly ISubject<IObservable<long>> _timerSubject = new BehaviorSubject<IObservable<long>>(Observable.Never<long>());
+
 		readonly IDirections _directions;
 		readonly IAppSettings _settings;
 
 	    private bool _isStarted;
-	    private string _market;
 
 		public VehicleService(IOrderWorkflowService orderWorkflowService,
 			IDirections directions,
@@ -62,8 +62,6 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 				.Select (x => new { x.address, vehicle =  GetNearestVehicle(x.address, x.vehicles) })
 				.DistinctUntilChanged(x => x.vehicle == null ? double.MaxValue : Position.CalculateDistance (x.vehicle.Latitude, x.vehicle.Longitude, x.address.Latitude, x.address.Longitude))
 				.SelectMany(x => CheckForEta(x.address, x.vehicle));
-            
-            orderWorkflowService.GetAndObserveMarket().Subscribe(market => _market = market);
 		}
 
 		public void Start()
@@ -75,7 +73,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
 			_isStarted = true;
 
-			_timerSubject.OnNext(Observable.Timer(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds (5)));
+		    var refreshRate = _settings.Data.AvailableVehicleRefreshRate > 0
+		        ? _settings.Data.AvailableVehicleRefreshRate
+		        : 1;
+
+            _timerSubject.OnNext(Observable.Timer(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(refreshRate)));
 		}
 
 		private async Task<AvailableVehicle[]> CheckForAvailableVehicles(Address address, int? vehicleTypeId)

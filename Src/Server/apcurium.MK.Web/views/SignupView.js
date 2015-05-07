@@ -51,7 +51,7 @@
                 },
                 name: "required",
                 phone: {
-                    tenOrMoreDigits: true,
+                    regex: /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})([0-9]?[0-9]?[0-9]?[0-9]?[0-9]?)$/,
                     required: true
                 },
                 password: {
@@ -62,7 +62,8 @@
                     equalTo: "#signup-password"
                 },
                 payback: {
-                    required: isPayBackFieldRequired
+                    required: isPayBackFieldRequired,
+                    regex: /^\d{0,10}$/ // Up to 10 digits
                 }
             };
 
@@ -92,7 +93,7 @@
                     },
                     name: "required",
                     phone: {
-                        tenOrMoreDigits: true,
+                        regex: /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})([0-9]?[0-9]?[0-9]?[0-9]?[0-9]?)$/,
                         required: true
                     }                    
                 };
@@ -110,7 +111,7 @@
                     },
                     phone: {
                         required: TaxiHail.localize('error.PhoneRequired'),
-                        tenOrMoreDigits: TaxiHail.localize('error.PhoneBadFormat')
+                        regex: TaxiHail.localize('error.PhoneBadFormat')
                     },
                     password: {
                         required: TaxiHail.localize('Password required')
@@ -118,6 +119,10 @@
                     confirmPassword: {
                         required: TaxiHail.localize('Password required'),
                         equalTo: TaxiHail.localize('Password are not the same')
+                    },
+                    payback: {
+                        required: TaxiHail.localize('error.PayBackRequired'),
+                        regex: TaxiHail.localize('error.PayBackBadFormat')
                     }
                 },
                 submitHandler: this.onsubmit

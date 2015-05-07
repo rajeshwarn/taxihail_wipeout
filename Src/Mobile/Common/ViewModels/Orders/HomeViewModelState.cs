@@ -29,7 +29,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
         /// <summary>
         /// Train station search
         /// </summary>
-        TrainStationSearch
+        TrainStationSearch,
+        /// <summary>
+        /// Book a taxi dialog.
+        /// </summary>
+        BookATaxi,
     }
 }
 

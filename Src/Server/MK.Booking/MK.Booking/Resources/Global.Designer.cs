@@ -394,6 +394,24 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to If your browser does not automatically redirect you after 10 seconds,.
+        /// </summary>
+        public static string Email_Body_AccountConfirmationRedirectLine1 {
+            get {
+                return ResourceManager.GetString("Email_Body_AccountConfirmationRedirectLine1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to click here..
+        /// </summary>
+        public static string Email_Body_AccountConfirmationRedirectLine2 {
+            get {
+                return ResourceManager.GetString("Email_Body_AccountConfirmationRedirectLine2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Your email address has been confirmed successfully..
         /// </summary>
         public static string Email_Body_AccountConfirmationSuccessfulLine1 {
@@ -912,6 +930,15 @@ namespace apcurium.MK.Booking.Resources {
         public static string EtaMessageToDriver {
             get {
                 return ResourceManager.GetString("EtaMessageToDriver", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You need to have a card on file to pair with RideLinQ.
+        /// </summary>
+        public static string ManualRideLinq_NoCardOnFile {
+            get {
+                return ResourceManager.GetString("ManualRideLinq_NoCardOnFile", resourceCulture);
             }
         }
         

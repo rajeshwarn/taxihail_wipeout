@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.Infrastructure;
@@ -21,8 +23,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 		Task<bool> ValidatePromotionUseConditions();
 
 		Task SetAddress(Address address);
+
 		Task SetPickupAptAndRingCode(string apt, string ringCode);
+
 		Task<Address> SetAddressToUserLocation(CancellationToken cancellationToken = default(CancellationToken));
+
 		Task ClearDestinationAddress();
 
         Task SetAddressToCoordinate(Position coordinate, CancellationToken cancellationToken);
@@ -30,48 +35,78 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 		Task SetPickupDate(DateTime? date);
 
 		Task ToggleBetweenPickupAndDestinationSelectionMode();
+
 		Task ToggleIsDestinationModeOpened(bool? forceValue = null);
 
 		Task ValidatePickupTime();
+
 		Task ValidatePickupAndDestination();
+
 		Task ValidateNumberOfPassengers (int? numberOfPassengers);
+
+	    Task<bool> ValidateChargeType();
+
 		Task<Tuple<Order, OrderStatusDetail>> ConfirmOrder();
 
 		Task SetVehicleType (int? vehicleTypeId);
+
 		Task SetBookingSettings(BookingSettings bookingSettings);
+
 		Task SetAccountNumber (string accountNumber, string customerNumber);
+
 		void SetNoteToDriver(string text);
+
 		void SetPromoCode(string code);
 
 		IObservable<Address> GetAndObservePickupAddress();
+
 		IObservable<Address> GetAndObserveDestinationAddress();
+
 		IObservable<AddressSelectionMode> GetAndObserveAddressSelectionMode();
+
 		IObservable<int?> GetAndObserveVehicleType();
+
 		IObservable<BookingSettings> GetAndObserveBookingSettings();
+
 		IObservable<DateTime?> GetAndObservePickupDate();
+
 		IObservable<string> GetAndObserveEstimatedFare();
+
 		IObservable<string> GetAndObserveNoteToDriver();
+
 		IObservable<string> GetAndObservePromoCode();
+
 		IObservable<bool> GetAndObserveLoadingAddress();
+
 		IObservable<bool> GetAndObserveOrderCanBeConfirmed();
-		IObservable<string> GetAndObserveMarket();
+
+		IObservable<string> GetAndObserveHashedMarket();
+
+        IObservable<List<VehicleType>> GetAndObserveMarketVehicleTypes();
+
 		IObservable<bool> GetAndObserveIsDestinationModeOpened();
+
+	    IObservable<OrderValidationResult> GetAndObserveOrderValidationResult();
 
 		Task<Tuple<Order, OrderStatusDetail>> GetLastActiveOrder();
 
         Guid? GetLastUnratedRide();
 
 		Task<bool> ShouldWarnAboutEstimate();
+
 		Task<bool> ShouldWarnAboutPromoCode();
 
 	    bool ShouldPromptUserToRateLastRide();
 
 		Task<bool> ShouldGoToAccountNumberFlow();
+
 		Task<bool> ValidateAccountNumberAndPrepareQuestions(string accountNumber = null, string customerNumber = null);
 		Task<AccountChargeQuestion[]> GetAccountPaymentQuestions();
+
         bool ValidateAndSaveAccountAnswers(AccountChargeQuestion[] questionsAndAnswers);
 
-		Task<OrderValidationResult> ValidateOrder();
+		Task<OrderValidationResult> ValidateOrder(CreateOrder order = null);
+
 		void ConfirmValidationOrder ();
 
         Task Rebook(Order previous);

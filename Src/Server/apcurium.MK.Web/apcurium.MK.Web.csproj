@@ -253,6 +253,7 @@
     <Content Include="admin\controllers\TariffsController.js" />
     <Content Include="admin\jquery.min.js" />
     <Content Include="admin\models\EmailTemplates.js" />
+    <Content Include="admin\models\NetworkVehicleTypes.js" />
     <Content Include="admin\models\NotificationSettings.js" />
     <Content Include="admin\models\RideRatings.js" />
     <Content Include="admin\models\UnassignedReferenceDataVehicles.js" />
@@ -434,6 +435,8 @@
     <Content Include="localization\Payment-fr.json" />
     <Content Include="localization\Payment-es.json" />
     <Content Include="Areas\AdminTH\Views\PromoCode\Unlock.cshtml" />
+    <Content Include="localization\Sherbet-en.json" />
+    <Content Include="localization\BlackCabNow-en.json" />
     <None Include="Scripts\jquery-1.8.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.8.2.js" />
     <Content Include="Scripts\jquery-1.8.2.min.js" />

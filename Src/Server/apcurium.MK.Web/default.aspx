@@ -72,7 +72,18 @@
             TaxiHail.parameters.isCreditCardMandatory = <%: IsCreditCardMandatory ? "true" : "false" %>;
             TaxiHail.parameters.apiRoot = "api";
             TaxiHail.parameters.defaultTipPercentage = '<%= DefaultTipPercentage %>';
+            TaxiHail.parameters.warnForFeesOnCancel = <%: WarnForFeesOnCancel ? "true" : "false" %>;
+            TaxiHail.parameters.hideMarketChangeWarning = <%: HideMarketChangeWarning ? "true" : "false" %>;
+            TaxiHail.parameters.autoConfirmFleetChange = <%: AutoConfirmFleetChange ? "true" : "false" %>;
 
+            TaxiHail.parameters.isSignupVisible = <%: IsWebSignupVisible  ? "true" : "false"%>;
+            TaxiHail.parameters.isSocialMediaVisible = <%: IsWebSocialMediaVisible  ? "true" : "false"%>;
+            TaxiHail.parameters.SocialMediaFacebookURL = "<%: SocialMediaFacebookURL %>";
+            TaxiHail.parameters.SocialMediaGoogleURL = "<%: SocialMediaGoogleURL %>";
+            TaxiHail.parameters.SocialMediaPinterestURL = "<%: SocialMediaPinterestURL %>";
+            TaxiHail.parameters.SocialMediaTwitterURL = "<%: SocialMediaTwitterURL %>";
+
+            TaxiHail.parameters.availableVehicleRefreshRate = "<%: AvailableVehicleRefreshRate %>";
             TaxiHail.parameters.isSignupVisible = <%: IsWebSignupVisible  ? "true" : "false"%>;
             
             <% if(IsPayBackRegistrationFieldRequired == true) { %>

@@ -10,12 +10,13 @@
         <thead>
             <tr>
                 <th width="100">{{localize "Name"}}</th>
-             <!--   <th>{{localize "Days / Start - End Date"}}</th>
-                <th>{{localize "Time"}}</th> -->
+
+                {{#if isNetworkEnabled}}
+                <th width="50">{{localize "Market"}}</th>
+                {{/if}}
+
                 <th width="300">{{localize "Message"}}</th>
-              <!-- <th width="100">{{localize "Applies To"}}</th>
-              <th width="50">{{localize "Priority"}}</th>
-              <th width="200">{{localize "Zone"}}</th> -->
+
               <th width="130">&nbsp;</th>
             </tr>
         </thead>
@@ -35,14 +36,14 @@
   <table class="table table-striped">
     <thead>
       <tr>
-        <th width="100">{{localize "Name"}}</th>
-        <!--  <th>{{localize "Days / Start - End Date"}}</th>
-        <th>{{localize "Time"}}</th> -->
-        <th width="300">{{localize "Message"}}</th>
-        <!-- <th width="100">{{localize "Applies To"}}</th>
-        <th width="50">{{localize "Priority"}}</th>
-        <th width="200">{{localize "Zone"}}</th> -->
-        <th width="130">&nbsp;</th>
+          <th width="100">{{localize "Name"}}</th>
+
+          {{#if isNetworkEnabled}}
+          <th width="50">{{localize "Market"}}</th>
+          {{/if}}
+
+          <th width="300">{{localize "Message"}}</th>
+          <th width="130">&nbsp;</th>
       </tr>
     </thead>
     <tbody name="warningItem"></tbody>

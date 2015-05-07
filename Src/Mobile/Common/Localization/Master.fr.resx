@@ -415,7 +415,7 @@
     <value>Mme</value>
   </data>
   <data name="CreateAccount_AccountAlreadyExist" xml:space="preserve">
-    <value>Le compte ne peut malheureusement pas être créé, email déjà utilisé!</value>
+    <value>Email déjà utilisé!</value>
   </data>
   <data name="CreditCard" xml:space="preserve">
     <value>Carte de paiement</value>
@@ -697,7 +697,7 @@
     <value>Erreur de connection</value>
   </data>
   <data name="InvalidPhoneErrorMessage" xml:space="preserve">
-    <value>Le numéro de téléphone ne semble pas valide. Merci de saisir de nouveau 10 chiffres.</value>
+    <value>Le numéro de téléphone ne semble pas valide. Merci de saisir de nouveau entre 10 et 15 chiffres.</value>
   </data>
   <data name="InvalidPickupAddress" xml:space="preserve">
     <value>Merci d'entrer une adresse de départ valide</value>
@@ -1676,7 +1676,7 @@
     <value>Promotions</value>
   </data>
   <data name="UnpairWarningMessage" xml:space="preserve">
-    <value>Cette action ne peut être annulée</value>
+    <value>Êtes-vous sûr de ne pas vouloir payer avec votre carte de crédit?</value>
   </data>
   <data name="UnpairWarningMessageWithPromo" xml:space="preserve">
     <value>Si vous décidez de payer dans le taxi, vous ne serez pas éligible à la promotion</value>
@@ -1697,7 +1697,7 @@
     <value>Expire aujourd'hui!</value>
   </data>
   <data name="PromoBookRide" xml:space="preserve">
-    <value>Utiliser sur la prochaine commande</value>
+    <value>Utiliser le code promo</value>
   </data>
   <data name="PromotionViewNoPromotionLabel" xml:space="preserve">
     <value>Aucune promotion disponible</value>
@@ -1816,10 +1816,97 @@
   <data name="RideSettingsPayBack" xml:space="preserve">
     <value>PayBack</value>
   </data>
-    <data name="FilteredAddresses_Error_Title" xml:space="preserve">
+  <data name="FilteredAddresses_Error_Title" xml:space="preserve">
     <value>Error</value>
   </data>
   <data name="FilteredAddresses_Error_Message" xml:space="preserve">
     <value>There is currently no entries for this filter.</value>
+  </data>
+  <data name="HistoryLoadError" xml:space="preserve">
+    <value>Impossible de charger l'historique. Veuillez réessayer plus tard.</value>
+  </data>
+  <data name="PromotionLoadError" xml:space="preserve">
+    <value>Impossible de charger les promotions disponibles. Veuillez réessayer plus tard.</value>
+  </data>
+  <data name="RideSettingsLoadError" xml:space="preserve">
+    <value>Impossible de charger les paramètres du compte. Veuillez réessayer plus tard.</value>
+  </data>
+  <data name="PaymentLoadError" xml:space="preserve">
+    <value>Impossible de charger les informations de paiement. Veuillez réessayer plus tard.</value>
+  </data>
+  <data name="ManualPairingForRideLinQ_Error_Message" xml:space="preserve">
+    <value>Une erreur est survenue lors de l'enregistrement</value>
+  </data>
+  <data name="ManualPairingForRideLinQ_Error_Title" xml:space="preserve">
+    <value>Erreur</value>
+  </data>
+  <data name="ManualPairingForRideLinQ_Instructions" xml:space="preserve">
+    <value>Entrez le code à 7 chiffres qui se trouve sur l'écran du taxi pour payer automatiquement et recevoir un reçu à la fin de votre course.</value>
+  </data>
+  <data name="ManualPairingForRideLinQ_InvalidCode_Message" xml:space="preserve">
+    <value>Le code d'association est invalide</value>
+  </data>
+  <data name="ManualPairingForRideLinQ_InvalidCode_Title" xml:space="preserve">
+    <value>Code invalide</value>
+  </data>
+  <data name="ManualPairingForRideLinQ_Pair" xml:space="preserve">
+    <value>CHECK IN</value>
+  </data>
+  <data name="HomeView_ManualPairing" xml:space="preserve">
+    <value>Dans un Taxi</value>
+  </data>
+  <data name="View_RideLinqPair" xml:space="preserve">
+    <value>Check In</value>
+  </data>
+  <data name="ManualRideLinqStatus_Distance" xml:space="preserve">
+    <value>Distance:</value>
+  </data>
+  <data name="ManualRideLinqStatus_Driver" xml:space="preserve">
+    <value>Chauffeur #:</value>
+  </data>
+  <data name="ManualRideLinqStatus_Fare" xml:space="preserve">
+    <value>Tarif:</value>
+  </data>
+  <data name="ManualRideLinqStatus_Medallion" xml:space="preserve">
+    <value>Véhicule #:</value>
+  </data>
+  <data name="ManualRideLinqStatus_PairingCode" xml:space="preserve">
+    <value>Code d'association:</value>
+  </data>
+  <data name="ManualRideLinqStatus_Tax" xml:space="preserve">
+    <value>Taxes:</value>
+  </data>
+  <data name="ManualRideLinqStatus_Tip" xml:space="preserve">
+    <value>Pourboire:</value>
+  </data>
+  <data name="ManualRideLinqStatus_Total" xml:space="preserve">
+    <value>Coût Total:</value>
+  </data>
+  <data name="ManualRideLinqStatus_Unpair" xml:space="preserve">
+    <value>Dissocier</value>
+  </data>
+  <data name="ManualRideLinqSummary_Done" xml:space="preserve">
+    <value>Ok</value>
+  </data>
+  <data name="ManualUnPairingForRideLinQ_Error_Message" xml:space="preserve">
+    <value>Une erreur est survenue lors de la dissociation. Veuillez essayer de nouveau.</value>
+  </data>
+  <data name="StatusConfirmCancelRideAndWarnForCancellationFees" xml:space="preserve">
+    <value>Êtes-vous certain de vouloir annuler? Un véhicule est en route pour venir vous chercher. {0} se réserve le droit de facturer à ses clients des frais d'annulation si ces derniers abusent du service.</value>
+  </data>
+  <data name="CreditCardRemoveErrorScheduledOrderMessage" xml:space="preserve">
+    <value>Vous ne pouvez pas effacer une carte de crédit s'il y a une commande en cours.</value>
+  </data>
+  <data name="HomeView_BookTaxi" xml:space="preserve">
+    <value>Commander Taxi</value>
+  </data>
+  <data name="InvalidChargeType" xml:space="preserve">
+    <value>Vous devez sélectionner un type de paiement avant de pouvoir confirmer votre commande</value>
+  </data>
+  <data name="BookATaxi_Message" xml:space="preserve">
+    <value>Quand voulez-vous commander votre taxi?</value>
+  </data>
+  <data name="InvalidChargeTypeTitle" xml:space="preserve">
+    <value>Type de paiement invalide</value>
   </data>
 </root>

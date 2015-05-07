@@ -67,7 +67,6 @@ namespace MK.Common.Configuration
 #if DEBUG
             SupportEmail = "taxihail@apcurium.com";
 #endif
-
             ShowPassengerName = true;
             ShowPassengerNumber = true;
             ShowPassengerPhone = true;
@@ -93,6 +92,8 @@ namespace MK.Common.Configuration
             AllowSimultaneousAppOrders = false;
 
 		    MaxFareEstimate = 100;
+
+		    AvailableVehicleRefreshRate = 5;
 
 		    TwitterAccessTokenUrl = "https://api.twitter.com/oauth/access_token";
             TwitterAuthorizeUrl = "https://api.twitter.com/oauth/authorize";
@@ -164,6 +165,10 @@ namespace MK.Common.Configuration
         [SendToClient, CustomizableByCompany]
         [Display(Name = "Account Activation Disabled", Description="Disable the confirmation requirement")]
         public bool AccountActivationDisabled { get; protected set; }
+
+        [SendToClient, CustomizableByCompany]
+        [Display(Name = "Available Vehicle Refresh Rate", Description = "Modify the refresh delay (in seconds) of the available vehicles on the map.")]
+	    public int AvailableVehicleRefreshRate { get; set; }
 
         [SendToClient, CustomizableByCompany]
 		[Display(Name = "Account Activation By SMS", Description="Enable the activation by SMS")]
@@ -310,7 +315,7 @@ namespace MK.Common.Configuration
 		public bool ShowCallDriver { get; protected set; }
 
         [SendToClient, CustomizableByCompany]
-        [Display(Name = "Show Vehicule Information", Description="Show vehicule informatino when available")]
+        [Display(Name = "Show Vehicle Information", Description="Show vehicle informatino when available")]
 		public bool ShowVehicleInformation { get; protected set; }
 
         [SendToClient, CustomizableByCompany]
@@ -414,6 +419,10 @@ namespace MK.Common.Configuration
         [Display(Name = "Google AdWords Conversion Tracking Label", Description = "Conversion Label used for Google Conversion Tracking")]
         public string GoogleAdWordsConversionLabel { get; protected set; }
 
+        [SendToClient]
+        [Display(Name = "Google Analytics Tracking ID", Description = "Company's Tracking ID used for Google Analytics")]
+        public string GoogleAnalyticsTrackingId { get; protected set; }
+
         [SendToClient, CustomizableByCompany]
         public bool CallDriverUsingProxy { get; protected set; }
 
@@ -425,6 +434,10 @@ namespace MK.Common.Configuration
 
         [SendToClient, CustomizableByCompany]
         public bool DisableAutomaticZoomOnLocation { get; set; }
+
+        [SendToClient, CustomizableByCompany]
+        [Display(Name = "Warn for Fees on Cancel", Description = "Before cancelling an order, the user will be warned that he could be charged cancellation fees.")]
+        public bool WarnForFeesOnCancel { get; set; }
 
         [SendToClient]
         [Display(Name = "Promotion enabled", Description = "Enables promotion on the client and on the admin portal")]

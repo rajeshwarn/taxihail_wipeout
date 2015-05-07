@@ -57,7 +57,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			Order = JsonSerializer.DeserializeFromString<Order> (order);
 			OrderStatusDetail = JsonSerializer.DeserializeFromString<OrderStatusDetail> (orderStatus);
             DisplayOrderNumber();
-			IsCancelButtonVisible = true;			
+			IsCancelButtonVisible = false;			
 			_waitingToNavigateAfterTimeOut = false;
 		}
 	
@@ -66,7 +66,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			base.OnViewLoaded ();
 
 			StatusInfoText = string.Format(this.Services().Localize["Processing"]);
-
+            
             CenterMap ();			
         }
 
@@ -421,7 +421,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 bool alwayAcceptSwitch;
                 bool.TryParse(this.Services().Cache.Get<string>("TaxiHailNetworkTimeOutAlwayAccept"), out alwayAcceptSwitch);
 
-                if (status.NextDispatchCompanyKey != null && alwayAcceptSwitch)
+                if (status.NextDispatchCompanyKey != null
+                    && (alwayAcceptSwitch || Settings.Network.AutoConfirmFleetChange))
                 {
                     // Switch without user input
                     SwitchCompany(status);
@@ -623,9 +624,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                         return;
                     }
 
+                    var confirmationMessage = Settings.WarnForFeesOnCancel
+                        && (VehicleStatuses.CanCancelOrderStatus.Contains(OrderStatusDetail.IBSStatusId))
+                        ? string.Format(
+                            this.Services().Localize["StatusConfirmCancelRideAndWarnForCancellationFees"],
+                            Settings.TaxiHail.ApplicationName)
+                        : this.Services().Localize["StatusConfirmCancelRide"];
+
                     this.Services().Message.ShowMessage(
-                        "", 
-                        this.Services().Localize["StatusConfirmCancelRide"],
+                        string.Empty,
+                        confirmationMessage,
                         this.Services().Localize["YesButton"], 
 						async () =>
                         {

@@ -169,6 +169,7 @@ namespace apcurium.MK.Web
                 "~/admin/models/AccountCharge.js",
                 "~/admin/models/VehicleType.js",
                 "~/admin/models/UnassignedReferenceDataVehicles.js",
+                "~/admin/models/NetworkVehicleTypes.js",
                 "~/admin/models/RideRatings.js",
                 /* Collections */
                 "~/common/collections/AddressCollection.js",

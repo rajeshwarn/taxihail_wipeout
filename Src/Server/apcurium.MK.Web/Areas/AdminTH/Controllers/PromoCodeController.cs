@@ -277,14 +277,19 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
 
         public ActionResult Unlock()
         {
-            var promotions = _promotionDao.GetAll()
-                .Select(p => new PromoCode(p))
-                .Where(p => p.Active
-                    && p.TriggerSettings.Type == PromotionTriggerTypes.CustomerSupport);
+            var promotions = GetCustomerSupportPromoCodes();
 
             return View(promotions);
         }
 
+        private IEnumerable<PromoCode> GetCustomerSupportPromoCodes()
+        {
+            return _promotionDao.GetAll()
+                .Select(p => new PromoCode(p))
+                .Where(p => p.Active
+                    && p.TriggerSettings.Type == PromotionTriggerTypes.CustomerSupport);
+        }
+        
         [HttpPost]
         public ActionResult Unlock(FormCollection form)
         {
@@ -305,6 +310,8 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
 
                 if (userAccoundIds.Any() && promotionId.HasValue())
                 {
+                    ViewBag.Error = null;
+
                     _commandBus.Send(new AddUserToPromotionWhiteList
                     {
                         PromoId = promotionId,
@@ -317,6 +324,22 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                         promotion.Name,
                         promotion.Code,
                         userEmails.Flatten(","));
+                }
+                else
+                {
+                    var message = promotionId.HasValue()
+                        ? string.Empty
+                        : "You must select a promotion to send to the customer." + Environment.NewLine;
+
+                    message = userAccoundIds.Any()
+                        ? message.Replace(Environment.NewLine, string.Empty)
+                        : message + "You must enter one or more valid customer email.";
+
+                    ViewBag.Error = message;
+
+                    var promotions = GetCustomerSupportPromoCodes();
+
+                    return View(promotions);
                 }
             }
 

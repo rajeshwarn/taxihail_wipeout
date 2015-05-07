@@ -58,7 +58,11 @@ namespace apcurium.MK.Booking.IBS.Impl
                 });
             }
 
-            return result.GroupBy(r=>r.VehicleNumber).Select(g => g.First()).ToArray();
+            return result
+                .Where(r => r != null)
+                .GroupBy(r => r .VehicleNumber)
+                .Select(g => g.First())
+                .ToArray();
         }
 
         public IbsOrderStatus GetOrderStatus(int orderId, int accountId, string contactPhone)

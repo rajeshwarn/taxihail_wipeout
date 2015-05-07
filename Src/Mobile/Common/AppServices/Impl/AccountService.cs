@@ -55,12 +55,12 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			ILocationService locationService)
 		{
 			_locationService = locationService;
-			_localize = localize;
+            _localize = localize;
 		    _twitterService = twitterService;
 			_facebookService = facebookService;
 			_appSettings = appSettings;
 		}
-	
+
         public async Task<ReferenceData> GetReferenceData()
         {
             var cached = UserCache.Get<ReferenceData>(RefDataCacheKey);
@@ -256,10 +256,15 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 		
         public async Task UpdateSettings (BookingSettings settings, int? tipPercent)
         {
+            //This is to make sure we only save the phone number
+            var phoneNumberChars = settings.Phone
+                .Where(char.IsDigit)
+                .ToArray();
+
             var bsr = new BookingSettingsRequest
             {
                 Name = settings.Name,
-                Phone = settings.Phone,
+                Phone = new string(phoneNumberChars),
                 VehicleTypeId = settings.VehicleTypeId,
                 ChargeTypeId = settings.ChargeTypeId,
                 ProviderId = settings.ProviderId,
@@ -493,7 +498,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             });
         }
 
-		public async Task<IList<VehicleType>> GetVehiclesList ()
+		public async Task<IList<VehicleType>> GetVehiclesList()
 		{
 		    var cacheService = Mvx.Resolve<ICacheService>();
 
@@ -503,13 +508,29 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 return cached;
             }
 
-			var vehiclesList = await UseServiceClientAsync<IVehicleClient, VehicleType[]>(service => service.GetVehicleTypes());
+            var vehiclesList = await UseServiceClientAsync<IVehicleClient, VehicleType[]>(service => service.GetVehicleTypes());
             cacheService.Set(VehicleTypesDataCacheKey, vehiclesList);
 
-		    return vehiclesList;
+            return vehiclesList;
         }
 
-		public async Task<IList<ListItem>> GetPaymentsList (string market = null)
+        public async Task ResetLocalVehiclesList()
+        {
+            var vehiclesList = await UseServiceClientAsync<IVehicleClient, VehicleType[]>(service => service.GetVehicleTypes());
+            var cacheService = Mvx.Resolve<ICacheService>();
+            cacheService.Set(VehicleTypesDataCacheKey, vehiclesList);
+        }
+
+        public void SetMarketVehiclesList(List<VehicleType> marketVehicleTypes)
+        {
+            if (marketVehicleTypes.Any())
+            {
+                var cacheService = Mvx.Resolve<ICacheService>();
+                cacheService.Set(VehicleTypesDataCacheKey, marketVehicleTypes);
+            }
+        }
+
+		public async Task<IList<ListItem>> GetPaymentsList (string hashedMarket = null)
         {
 			var refData = await GetReferenceData();
 
@@ -526,7 +547,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 		        refData.PaymentsList.Remove(i => i.Id == ChargeTypes.CardOnFile.Id);
 		    }
 
-		    if (market.HasValue())
+		    if (hashedMarket.HasValue())
 		    {
                 refData.PaymentsList.Remove(i => i.Id != ChargeTypes.PaymentInCar.Id);
 		    }

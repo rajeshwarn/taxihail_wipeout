@@ -17,6 +17,8 @@
 
             var data = _.extend(this.model.toJSON(), {
                 availableVehicles: this.options.availableVehicles.toJSON(),
+                networkVehicleTypes: this.options.networkVehicleTypes.toJSON(),
+                isNetworkEnabled: TaxiHail.parameters.isNetworkEnabled,
                 isNew: this.model.isNew()
             });
             var html = this.renderTemplate(data);
@@ -48,9 +50,23 @@
         save: function (form) {
             var vehicleType = this.serializeForm(form);
             var vehicleType = _.extend(this.model.toJSON(), vehicleType);
+
+            var isValid = this.validateNetworkVehiclePassengerNumbers(vehicleType);
+            if (!isValid) {
+                this.$(':submit').button('reset');
+
+                var alert = new TaxiHail.AlertView({
+                    message: TaxiHail.localize(TaxiHail.localize('error.invalidNetworkPassengerNumber')),
+                    type: 'error'
+                });
+                alert.on('ok', alert.remove, alert);
+                this.$('.errors').html(alert.render().el);
+
+                return;
+            }
+
             this.model.save(vehicleType, {
                 success: _.bind(function(model){
-
                     this.collection.add(model);
                     TaxiHail.app.navigate('vehicleTypes', { trigger: true });
 
@@ -68,6 +84,31 @@
             });
         },
         
+        validateNetworkVehiclePassengerNumbers: function(vehicleType) {
+            var networkVehicles = this.options.networkVehicleTypes.toJSON();
+            var selectedNetworkVehicle = null;
+
+            for (var i = 0; i < networkVehicles.length; i++) {
+                var networkVehicle = networkVehicles[i];
+
+                if (vehicleType.referenceNetworkVehicleTypeId == networkVehicle.id) {
+                    selectedNetworkVehicle = networkVehicle;
+                    break;
+                }
+            }
+
+            if (selectedNetworkVehicle && selectedNetworkVehicle.maxNumberPassengers == 0 && vehicleType.maxNumberPassengers != 0) {
+                // Only a 'no limit' vehicle can be matched with another 'no limit' vehicle
+                return false;
+            }
+
+            if (selectedNetworkVehicle && vehicleType.maxNumberPassengers < selectedNetworkVehicle.maxNumberPassengers) {
+                return false;
+            }
+
+            return true;
+        },
+
         destroyVehicleType: function (e) {
             e.preventDefault();
             TaxiHail.confirm({

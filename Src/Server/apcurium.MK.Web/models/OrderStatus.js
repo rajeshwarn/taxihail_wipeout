@@ -16,6 +16,11 @@
 
         isActive: function() {
             var status = this.get('ibsStatusId');
+
+            if (typeof status == 'undefined' || status == null) {
+                return false;
+            }
+
             return _.indexOf(['wosCANCELLED', 'wosCANCELLED_DONE', 'wosDONE', 'wosLOADED', 'wosTIMEOUT'], status) == -1;
         },
 
@@ -23,8 +28,18 @@
             return this.get('ibsStatusId') === 'wosDONE';
         },
 
+        isWaitingToBeAssigned: function() {
+            return this.get('ibsStatusId') === 'wosWAITING';
+        },
+
         showEta: function() {
             return this.get('ibsStatusId') === 'wosASSIGNED' && this.hasVehicle() && TaxiHail.parameters.isEtaEnabled;
+        },
+
+        warnForCancellationFees: function () {
+            return TaxiHail.parameters.warnForFeesOnCancel
+                && (this.get('ibsStatusId') === 'wosASSIGNED'
+                    || this.get('ibsStatusId') === 'wosARRIVED');
         },
 
         canSendReceipt: function() {

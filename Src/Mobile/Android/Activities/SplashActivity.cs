@@ -40,9 +40,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
 
         protected override void TriggerFirstNavigate()
         {
-            var paymentService = TinyIoCContainer.Current.Resolve<IPaymentService>();
-            paymentService.ClearPaymentSettingsFromCache();
-
             // Overriden in order to pass params
             var starter = Mvx.Resolve<IMvxAppStart>();
             starter.Start(_params);           

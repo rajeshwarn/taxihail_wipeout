@@ -30,5 +30,14 @@ namespace CustomerPortal.Web.Areas.Admin.Models
         [Display(Name = "Status")]
         public string Status { get; set; }
 
+        [Display(Name = "Assets")]
+        public string Assets { get; set; }
+
+        [Display(Name = "Webthemes")]
+        public string Webthemes { get; set; }
+
+        [Display(Name = "Graphics")]
+        public string Graphics { get; set; }
+
     }
 }

@@ -24,7 +24,10 @@ namespace apcurium.MK.Booking.EventHandlers
         IEventHandler<OrderSwitchedToNextDispatchCompany>,
         IEventHandler<DispatchCompanySwitchIgnored>,
         IEventHandler<IbsOrderInfoAddedToOrder>,
-        IEventHandler<OrderCancelledBecauseOfError>
+        IEventHandler<OrderCancelledBecauseOfError>,
+        IEventHandler<OrderManuallyPairedForRideLinq>,
+        IEventHandler<OrderUnpairedFromManualRideLinq>,
+        IEventHandler<ManualRideLinqTripInfoUpdated>
 
     {
         private readonly Func<BookingDbContext> _contextFactory;
@@ -89,7 +92,7 @@ namespace apcurium.MK.Booking.EventHandlers
         {
             using (var context = _contextFactory.Invoke())
             {
-                context.Save(new OrderDetail
+                var orderDetail = new OrderDetail
                 {
                     IBSOrderId = @event.IBSOrderId,
                     AccountId = @event.AccountId,
@@ -99,7 +102,7 @@ namespace apcurium.MK.Booking.EventHandlers
                     CreatedDate = @event.CreatedDate,
                     DropOffAddress = @event.DropOffAddress,
                     Settings = @event.Settings,
-                    Status = (int) OrderStatus.Created,
+                    Status = (int)OrderStatus.Created,
                     IsRated = false,
                     EstimatedFare = @event.EstimatedFare,
                     UserAgent = @event.UserAgent,
@@ -109,7 +112,49 @@ namespace apcurium.MK.Booking.EventHandlers
                     CompanyKey = @event.CompanyKey,
                     CompanyName = @event.CompanyName,
                     Market = @event.Market
-                });
+                };
+
+                if (@event.IsPrepaid)
+                {
+                    // NB: There could be a race condition for CC prepaid orders because the payment is done before creating the order
+                    // so we make sure that the order is created properly
+                    var order = context.Find<OrderDetail>(@event.SourceId);
+
+                    // CreditCardPaymentCaptured was triggered before OrderCreated, so a basic order object was created
+                    // in the CreditCardPaymentDetailsGenerator. Here, we update its values
+                    if (order != null)
+                    {
+                        order.IBSOrderId = @event.IBSOrderId;
+                        order.AccountId = @event.AccountId;
+                        order.PickupAddress = @event.PickupAddress;
+                        order.PickupDate = @event.PickupDate;
+                        order.CreatedDate = @event.CreatedDate;
+                        order.DropOffAddress = @event.DropOffAddress;
+                        order.Settings = @event.Settings;
+                        order.Status = (int)OrderStatus.Created;
+                        order.IsRated = false;
+                        order.EstimatedFare = @event.EstimatedFare;
+                        order.UserAgent = @event.UserAgent;
+                        order.UserNote = @event.UserNote;
+                        order.ClientLanguageCode = @event.ClientLanguageCode;
+                        order.ClientVersion = @event.ClientVersion;
+                        order.CompanyKey = @event.CompanyKey;
+                        order.CompanyName = @event.CompanyName;
+                        order.Market = @event.Market;
+
+                        context.SaveChanges();
+                    }
+                    else
+                    {
+                        // OrderCreated was triggered before CreditCardPaymentCaptured so order doesn't exist yet: create it
+                        context.Save(orderDetail);
+                    }
+                }
+                else
+                {
+                    // Normal flow
+                    context.Save(orderDetail);
+                }
 
                 // Create an empty OrderStatusDetail row
                 var details = context.Find<OrderStatusDetail>(@event.SourceId);
@@ -422,6 +467,156 @@ namespace apcurium.MK.Booking.EventHandlers
                 orderStatus.IBSOrderId = @event.IBSOrderId;
                 
                 context.SaveChanges();
+            }
+        }
+
+        public void Handle(OrderManuallyPairedForRideLinq @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                context.Save(new OrderDetail
+                {
+                    AccountId = @event.AccountId,
+                    Id = @event.SourceId,
+                    PickupDate = @event.PairingDate,
+                    CreatedDate = @event.PairingDate,
+                    PickupAddress = @event.PickupAddress,
+                    Status = (int)OrderStatus.Created,
+                    IsRated = false,
+                    UserAgent = @event.UserAgent,
+                    ClientLanguageCode = @event.ClientLanguageCode,
+                    ClientVersion = @event.ClientVersion,
+                    IsManualRideLinq = true
+                });
+
+                // Create an empty OrderStatusDetail row
+                var details = context.Find<OrderStatusDetail>(@event.SourceId);
+                if (details != null)
+                {
+                    _logger.LogMessage("Order Status already existing for Order : " + @event.SourceId);
+                }
+                else
+                {
+                    context.Save(new OrderStatusDetail
+                    {
+                        OrderId = @event.SourceId,
+                        AccountId = @event.AccountId,
+                        Status = OrderStatus.Created,
+                        IBSStatusDescription = _resources.Get("CreateOrder_WaitingForIbs", @event.ClientLanguageCode),
+                        PickupDate = @event.PairingDate,
+                        IsManualRideLinq = true
+                    });
+                }
+
+                var rideLinqDetails = context.Find<OrderManualRideLinqDetail>(@event.SourceId);
+                if (rideLinqDetails != null)
+                {
+                    _logger.LogMessage("RideLinqDetails already existing for Order : " + @event.SourceId);
+                }
+                else
+                {
+                    context.Save(new OrderManualRideLinqDetail
+                    {
+                        OrderId = @event.SourceId,
+                        AccountId = @event.AccountId,
+                        PairingCode = @event.PairingCode,
+                        PairingToken = @event.PairingToken,
+                        PairingDate = @event.PairingDate,
+                        Distance = @event.Distance,
+                        Extra = @event.Extra,
+                        Fare = @event.Fare,
+                        FareAtAlternateRate = @event.FareAtAlternateRate,
+                        Total = @event.Total,
+                        Toll = @event.Toll,
+                        Tax = @event.Tax,
+                        Tip = @event.Tip,
+                        Surcharge = @event.Surcharge,
+                        RateAtTripStart = @event.RateAtTripStart,
+                        RateAtTripEnd = @event.RateAtTripEnd,
+                        RateChangeTime = @event.RateChangeTime,
+                        Medallion = @event.Medallion,
+                        TripId = @event.TripId,
+                        DriverId = @event.DriverId
+                    });
+                }
+            }
+        }
+
+        public void Handle(OrderUnpairedFromManualRideLinq @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var order = context.Find<OrderDetail>(@event.SourceId);
+                if (order != null)
+                {
+                    order.Status = (int)OrderStatus.Canceled;
+                    context.Save(order);
+                }
+
+                var orderStatusDetails = context.Find<OrderStatusDetail>(@event.SourceId);
+                if (orderStatusDetails != null)
+                {
+                    orderStatusDetails.Status = OrderStatus.Canceled;
+                    context.Save(orderStatusDetails);
+                }
+
+                var rideLinqDetails = context.Find<OrderManualRideLinqDetail>(@event.SourceId);
+                if (rideLinqDetails != null)
+                {
+                    rideLinqDetails.IsCancelled = true;
+                    context.Save(rideLinqDetails);
+                }
+            }
+        }
+
+        public void Handle(ManualRideLinqTripInfoUpdated @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var order = context.Find<OrderDetail>(@event.SourceId);
+                if (order != null)
+                {
+                    if (@event.EndTime.HasValue)
+                    {
+                        order.Status = (int) OrderStatus.Completed;
+                        order.DropOffDate = @event.EndTime;
+                    }
+                    order.Fare = @event.Fare;
+                    order.Tax = @event.Tax;
+                    order.Toll = @event.Toll;
+                    order.Tip = @event.Tip;
+                    context.Save(order);
+                }
+
+                var orderStatusDetails = context.Find<OrderStatusDetail>(@event.SourceId);
+                if (orderStatusDetails != null)
+                {
+                    if (@event.EndTime.HasValue)
+                    {
+                        orderStatusDetails.Status = OrderStatus.Completed;
+                    }
+                    context.Save(orderStatusDetails);
+                }
+
+                var rideLinqDetails = context.Find<OrderManualRideLinqDetail>(@event.SourceId);
+                if (rideLinqDetails != null)
+                {
+                    rideLinqDetails.Distance = @event.Distance;
+                    rideLinqDetails.PairingToken = @event.PairingToken;
+                    rideLinqDetails.EndTime = @event.EndTime;
+                    rideLinqDetails.Extra = @event.Extra;
+                    rideLinqDetails.Fare = @event.Fare;
+                    rideLinqDetails.FareAtAlternateRate = @event.FareAtAlternateRate;
+                    rideLinqDetails.Total = @event.Total;
+                    rideLinqDetails.Toll = @event.Toll;
+                    rideLinqDetails.Tip = @event.Tip;
+                    rideLinqDetails.Tax = @event.Tax;
+                    rideLinqDetails.Surcharge = @event.Surcharge;
+                    rideLinqDetails.RateAtTripStart = @event.RateAtTripStart;
+                    rideLinqDetails.RateAtTripEnd = @event.RateAtTripEnd;
+                    rideLinqDetails.RateChangeTime = @event.RateChangeTime;
+                    context.Save(rideLinqDetails);
+                }
             }
         }
     }

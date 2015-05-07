@@ -1,5 +1,12 @@
+using System;
+using System.Linq;
+using System.Reactive.Linq;
+using System.Reactive.Threading.Tasks;
+using System.Threading;
 using System.Windows.Input;
+using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.AppServices;
+using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.Framework.Extensions;
 using apcurium.MK.Booking.Mobile.Infrastructure;
@@ -8,15 +15,6 @@ using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using Cirrious.MvvmCross.Platform;
 using Cirrious.MvvmCross.Plugins.WebBrowser;
 using ServiceStack.Text;
-using System.Linq;
-using System.Reactive.Linq;
-using System;
-using System.Reactive.Threading.Tasks;
-using apcurium.MK.Booking.Mobile.Data;
-using apcurium.MK.Booking.Api.Contract.Resources;
-using apcurium.MK.Booking.Maps.Geo;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -30,6 +28,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		private readonly ITermsAndConditionsService _termsService;
 	    private readonly IMvxLifetime _mvxLifetime;
 		private readonly IAccountService _accountService;
+	    private readonly IBookingService _bookingService;
+	    private readonly IPaymentService _paymentService;
 
 		private HomeViewModelState _currentState = HomeViewModelState.Initial;
 
@@ -44,7 +44,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			ITermsAndConditionsService termsService,
 			IPaymentService paymentService, 
             IMvxLifetime mvxLifetime,
-            IPromotionService promotionService) : base()
+            IPromotionService promotionService,
+            IPaymentService paymentService1, 
+            IBookingService bookingService) : base()
 		{
 			_locationService = locationService;
 			_orderWorkflowService = orderWorkflowService;
@@ -53,7 +55,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_vehicleService = vehicleService;
 			_termsService = termsService;
 		    _mvxLifetime = mvxLifetime;
-			_accountService = accountService;
+		    _paymentService = paymentService1;
+		    _bookingService = bookingService;
+		    _accountService = accountService;
 
             Panel = new PanelMenuViewModel(browserTask, orderWorkflowService, accountService, phoneService, paymentService, promotionService);
 
@@ -68,7 +72,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             Observe(_orderWorkflowService.GetAndObserveMarket(), market => MarketChanged(market));
 		}
 
-	    private string _lastMarket = string.Empty;
+	    private string _lastHashedMarket = string.Empty;
 		private bool _isShowingTermsAndConditions;
 		private bool _locateUser;
 		private ZoomToStreetLevelPresentationHint _defaultHintZoomLevel;
@@ -102,16 +106,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 			if (firstTime)
 			{
-                // Don't await side panel creation
 				Panel.Start();
+
 				CheckTermsAsync();
+
+                BottomBar.CheckManualRideLinqEnabledAsync(_lastHashedMarket.HasValue());
 
 				this.Services().ApplicationInfo.CheckVersionAsync();
 
 				_tutorialService.DisplayTutorialToNewUser();
 				_pushNotificationService.RegisterDeviceForPushNotifications(force: true);
 			}
-				
+			
 			if (_locateUser)
 			{
 				AutomaticLocateMeAtPickup.Execute (null);
@@ -132,11 +138,25 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			var lastOrder = await _orderWorkflowService.GetLastActiveOrder ();
 			if(lastOrder != null)
 			{
-				ShowViewModelAndRemoveFromHistory<BookingStatusViewModel> (new
-				{
-					order = lastOrder.Item1.ToJson (),
-					orderStatus = lastOrder.Item2.ToJson ()
-				});
+			    if (lastOrder.Item1.IsManualRideLinq)
+			    {
+                    var orderManualRideLinqDetail = await _bookingService.GetTripInfoFromManualRideLinq(lastOrder.Item1.Id);
+
+                    ShowViewModelAndRemoveFromHistory<ManualRideLinqStatusViewModel>(new
+                    {
+                        orderManualRideLinqDetail = orderManualRideLinqDetail.ToJson()
+                    });
+			    }
+			    else
+			    {
+                    ShowViewModelAndRemoveFromHistory<BookingStatusViewModel>(new
+                    {
+                        order = lastOrder.Item1.ToJson(),
+                        orderStatus = lastOrder.Item2.ToJson()
+                    });
+			    }
+
+				
 			}
 			else if (firstTime)
 			{
@@ -231,6 +251,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_vehicleService.Stop();
 		}
 
+	    public bool IsManualRideLinqEnabled
+	    {
+	        get { return _isManualRideLinqEnabled; }
+	        set
+	        {
+	            _isManualRideLinqEnabled = value;
+	            RaisePropertyChanged();
+	        }
+	    }
+
 	    public PanelMenuViewModel Panel { get; set; }
 
 		private MapViewModel _map;
@@ -244,7 +274,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
-		private OrderOptionsViewModel _orderOptions;
+	    private OrderOptionsViewModel _orderOptions;
 		public OrderOptionsViewModel OrderOptions
 		{ 
 			get { return _orderOptions; }
@@ -435,8 +465,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		}
 
 		private bool _subscribedToLifetimeChanged;
+	    private bool _isManualRideLinqEnabled;
 
-		public void SubscribeLifetimeChangedIfNecessary()
+	    public void SubscribeLifetimeChangedIfNecessary()
 		{
 			if (!_subscribedToLifetimeChanged)
 			{
@@ -470,15 +501,23 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        private void MarketChanged(string market)
+        private void MarketChanged(string hashedMarket)
         {
             // Market changed and not home market
-            if (_lastMarket != market && market != string.Empty)
+            if (_lastHashedMarket != hashedMarket
+                && hashedMarket.HasValue()
+                && !Settings.Network.HideMarketChangeWarning)
             {
                 this.Services().Message.ShowMessage(this.Services().Localize["MarketChangedMessageTitle"],
                     this.Services().Localize["MarketChangedMessage"]);
             }
-            _lastMarket = market;
+
+            _lastHashedMarket = hashedMarket;
+
+            if (BottomBar != null)
+            {
+                BottomBar.CheckManualRideLinqEnabledAsync(_lastHashedMarket.HasValue());
+            }
         }
     }
 }

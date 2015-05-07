@@ -16,6 +16,9 @@ using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Common.Configuration;
 using System.Reactive.Linq;
 using System.Diagnostics;
+using apcurium.MK.Common.Enumeration;
+using HoneyBadger;
+using HoneyBadger.Responses;
 using ServiceStack.Common;
 
 #endregion
@@ -28,17 +31,26 @@ namespace apcurium.MK.Booking.Api.Jobs
         private readonly IIBSServiceProvider _ibsServiceProvider;
         private readonly IOrderStatusUpdateDao _orderStatusUpdateDao;
         private readonly OrderStatusUpdater _orderStatusUpdater;
+        private readonly HoneyBadgerServiceClient _honeyBadgerServiceClient;
+        private readonly IServerSettings _serverSettings;
 
         private static readonly ILog Log = LogManager.GetLogger(typeof(UpdateOrderStatusJob));
 
         private const int NumberOfConcurrentServers = 2;
 
-        public UpdateOrderStatusJob(IOrderDao orderDao, IIBSServiceProvider ibsServiceProvider, IOrderStatusUpdateDao orderStatusUpdateDao, OrderStatusUpdater orderStatusUpdater)
+        public UpdateOrderStatusJob(IOrderDao orderDao,
+            IIBSServiceProvider ibsServiceProvider,
+            IOrderStatusUpdateDao orderStatusUpdateDao,
+            OrderStatusUpdater orderStatusUpdater,
+            HoneyBadgerServiceClient honeyBadgerServiceClient,
+            IServerSettings serverSettings)
         {
             _orderStatusUpdateDao = orderStatusUpdateDao;
             _orderDao = orderDao;
             _ibsServiceProvider = ibsServiceProvider;
             _orderStatusUpdater = orderStatusUpdater;
+            _honeyBadgerServiceClient = honeyBadgerServiceClient;
+            _serverSettings = serverSettings;
         }
 
         public void CheckStatus(Guid orderId)
@@ -124,25 +136,71 @@ namespace apcurium.MK.Booking.Api.Jobs
 
         private void BatchUpdateStatus(string companyKey, string market, IEnumerable<OrderStatusDetail> orders)
         {
-            var ibsOrdersIds = orders.Select(statusDetail => statusDetail.IBSOrderId != null ? statusDetail.IBSOrderId.Value : 0).ToList();
+            // Enumerate orders to avoid multiple enumerations of IEnumerable
+            var orderStatusDetails = orders as OrderStatusDetail[] ?? orders.ToArray();
+
+            var manualRideLinqOrders = orderStatusDetails.Where(o => o.IsManualRideLinq);
+            foreach (var orderStatusDetail in manualRideLinqOrders)
+            {
+                _orderStatusUpdater.HandleManualRidelinqFlow(orderStatusDetail);
+            }
+
+            var ibsOrdersIds = orderStatusDetails
+                .Where(order => !order.IsManualRideLinq)
+                .Select(statusDetail => statusDetail.IBSOrderId ?? 0)
+                .ToList();
+
             const int take = 10;
             for (var skip = 0; skip < ibsOrdersIds.Count; skip = skip + take)
             {
                 var nextGroup = ibsOrdersIds.Skip(skip).Take(take).ToList();
-                var orderStatuses = _ibsServiceProvider.Booking(companyKey).GetOrdersStatus(nextGroup);
+                var orderStatuses = _ibsServiceProvider.Booking(companyKey).GetOrdersStatus(nextGroup).ToArray();
+
+                // If HoneyBadger for local market is enabled, we need to fetch the vehicle position from HoneyBadger instead of using the position data from IBS
+                var honeyBadgerVehicleStatuses = GetVehicleStatusesFromHoneyBadgerIfNecessary(orderStatuses, market).ToArray();
 
                 foreach (var ibsStatus in orderStatuses)
                 {
-                    var order = orders.FirstOrDefault(o => o.IBSOrderId == ibsStatus.IBSOrderId);
+                    if (honeyBadgerVehicleStatuses.Any())
+                    {
+                        // Update vehicle position with matching data available data from HoneyBadger
+                        var honeyBadgerVehicleStatus = honeyBadgerVehicleStatuses.FirstOrDefault(v => v.Medallion == ibsStatus.VehicleNumber);
+                        if (honeyBadgerVehicleStatus != null)
+                        {
+                            ibsStatus.VehicleLatitude = honeyBadgerVehicleStatus.Latitude;
+                            ibsStatus.VehicleLongitude = honeyBadgerVehicleStatus.Longitude;
+                        }
+                    }
+
+                    var order = orderStatusDetails.FirstOrDefault(o => o.IBSOrderId == ibsStatus.IBSOrderId);
                     if (order == null)
                     {
                         continue;
                     }
 
                     Log.DebugFormat("Starting OrderStatusUpdater for order {0} (IbsOrderId: {1})", order.OrderId, order.IBSOrderId);
+
                     _orderStatusUpdater.Update(ibsStatus, order);
                 }
             }
+        }
+
+        private IEnumerable<VehicleResponse> GetVehicleStatusesFromHoneyBadgerIfNecessary(IBSOrderInformation[] orderStatuses, string market)
+        {
+
+            if (_serverSettings.ServerData.AvailableVehiclesMode == AvailableVehiclesModes.HoneyBadger
+                && _serverSettings.ServerData.AvailableVehiclesMarket.HasValue())
+            {
+                var vehicleMedallions = orderStatuses.Select(x => x.VehicleNumber);
+                var vehicleMarket = !market.HasValue()
+                    ? _serverSettings.ServerData.AvailableVehiclesMarket // Local market
+                    : market;                                            // External market
+
+                // Get vehicle statuses/position from HoneyBadger
+                return _honeyBadgerServiceClient.GetVehicleStatus(vehicleMarket, vehicleMedallions);
+            }
+
+            return new VehicleResponse[0];
         }
     }
 }

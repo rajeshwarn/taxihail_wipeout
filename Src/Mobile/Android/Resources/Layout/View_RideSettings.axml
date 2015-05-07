@@ -162,12 +162,13 @@
                         android:layout_marginBottom="10dip"
                         local:MvxBind="Text PaymentPreferences.TipAmount; Data PaymentPreferences.Tips; SelectedItem PaymentPreferences.Tip" />
                     <TextView
-                          android:layout_width="fill_parent"
-                          android:layout_height="wrap_content"
-                          android:paddingTop="5dip"
-                          android:paddingBottom="5dip"
-                          android:text="@string/RideSettingsPayBack"
-                          style="@style/BlackTextLabel" />
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="5dip"
+                        android:paddingBottom="5dip"
+                        android:text="@string/RideSettingsPayBack"
+                        style="@style/BlackTextLabel"
+                        local:MvxBind="Visibility IsPayBackFieldEnabled, Converter=Visibility" />
                     <EditText
                         android:layout_width="fill_parent"
                         android:layout_marginBottom="10dip"

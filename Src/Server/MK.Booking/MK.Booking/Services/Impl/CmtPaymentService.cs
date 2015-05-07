@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
-using System.Threading;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
@@ -20,7 +18,6 @@ using CMTPayment.Reverse;
 using CMTPayment.Tokenize;
 using Infrastructure.Messaging;
 using Newtonsoft.Json;
-using ServiceStack.Common.Web;
 using ServiceStack.ServiceClient.Web;
 using ServiceStack.Text;
 
@@ -36,8 +33,10 @@ namespace apcurium.MK.Booking.Services.Impl
         private readonly ICreditCardDao _creditCardDao;
         private readonly ILogger _logger;
         private readonly IOrderPaymentDao _paymentDao;
-        private readonly CmtPaymentServiceClient _cmtPaymentServiceClient;
-        private readonly CmtMobileServiceClient _cmtMobileServiceClient;
+
+        private CmtPaymentServiceClient _cmtPaymentServiceClient;
+        private CmtMobileServiceClient _cmtMobileServiceClient;
+        private CmtTripInfoServiceHelper _cmtTripInfoServiceHelper;
 
         public CmtPaymentService(ICommandBus commandBus, 
             IOrderDao orderDao,
@@ -56,9 +55,6 @@ namespace apcurium.MK.Booking.Services.Impl
             _serverSettings = serverSettings;
             _pairingService = pairingService;
             _creditCardDao = creditCardDao;
-
-            _cmtPaymentServiceClient = new CmtPaymentServiceClient(serverSettings.GetPaymentSettings().CmtPaymentSettings, null, null, logger);
-            _cmtMobileServiceClient = new CmtMobileServiceClient(serverSettings.GetPaymentSettings().CmtPaymentSettings, null, null);
         }
 
         public PaymentProvider ProviderType(Guid? orderId = null)
@@ -77,6 +73,8 @@ namespace apcurium.MK.Booking.Services.Impl
             {
                 if (_serverSettings.GetPaymentSettings().PaymentMode == PaymentMethod.RideLinqCmt)
                 {
+                    // CMT RideLinq flow
+
                     var orderStatusDetail = _orderDao.FindOrderStatusById(orderId);
                     if (orderStatusDetail == null)
                     {
@@ -88,7 +86,7 @@ namespace apcurium.MK.Booking.Services.Impl
                         throw new Exception("Order has no IBSOrderId");
                     }
 
-                    var response = PairWithVehicleUsingRideLinq(orderStatusDetail, orderId, cardToken, autoTipPercentage);
+                    var response = PairWithVehicleUsingRideLinq(orderStatusDetail, cardToken, autoTipPercentage);
 
                     // send a command to save the pairing state for this order
                     _commandBus.Send(new PairForPayment
@@ -113,14 +111,17 @@ namespace apcurium.MK.Booking.Services.Impl
                         DriverId = response.DriverId
                     };
                 }
-
-                _pairingService.Pair(orderId, cardToken, autoTipPercentage);
-
-                return new PairingResponse
+                else
                 {
-                    IsSuccessful = true,
-                    Message = "Success"
-                };
+                    // Normal CMT flow
+                    _pairingService.Pair(orderId, cardToken, autoTipPercentage);
+
+                    return new PairingResponse
+                    {
+                        IsSuccessful = true,
+                        Message = "Success"
+                    };
+                }
             }
             catch (Exception e)
             {
@@ -174,7 +175,7 @@ namespace apcurium.MK.Booking.Services.Impl
 
         public void VoidPreAuthorization(Guid orderId, bool isForPrepaid = false)
         {
-            // nothing to do for CMT since there's no notion of preauth
+            // Nothing to do for CMT since there's no notion of preauth
         }
 
         public void VoidTransaction(Guid orderId, string transactionId, ref string message)
@@ -346,56 +347,68 @@ namespace apcurium.MK.Booking.Services.Impl
             throw new NotImplementedException();
         }
 
-        private CmtPairingResponse PairWithVehicleUsingRideLinq(OrderStatusDetail orderStatusDetail, Guid orderId, string cardToken, int? autoTipPercentage)
+        private CmtPairingResponse PairWithVehicleUsingRideLinq(OrderStatusDetail orderStatusDetail, string cardToken, int? autoTipPercentage)
         {
-            var accountDetail = _accountDao.FindById(orderStatusDetail.AccountId);
+            InitializeServiceClient();
 
-            // send pairing request                                
-            var cmtPaymentSettings = _serverSettings.GetPaymentSettings().CmtPaymentSettings;
-            var pairingRequest = new PairingRequest
+            try
             {
-                AutoTipAmount = null,
-                AutoTipPercentage = autoTipPercentage,
-                AutoCompletePayment = true,
-                CallbackUrl = string.Empty,
-                CustomerId = orderStatusDetail.IBSOrderId.ToString(),
-                CustomerName = accountDetail.Name,
-                DriverId = orderStatusDetail.DriverInfos.DriverId,
-                Latitude = orderStatusDetail.VehicleLatitude.GetValueOrDefault(),
-                Longitude = orderStatusDetail.VehicleLongitude.GetValueOrDefault(),
-                Medallion = orderStatusDetail.VehicleNumber,
-                CardOnFileId = cardToken,
-                Market = cmtPaymentSettings.Market
-            };
 
-            _logger.LogMessage("Pairing request : " + pairingRequest.ToJson());
-            _logger.LogMessage("PaymentSettings request : " + cmtPaymentSettings.ToJson());
+                var accountDetail = _accountDao.FindById(orderStatusDetail.AccountId);
 
-            var response = _cmtMobileServiceClient.Post(pairingRequest);
-
-            _logger.LogMessage("Pairing response : " + response.ToJson());
-
-            // wait for trip to be updated
-            var watch = new Stopwatch();
-            watch.Start();
-            var trip = GetTrip(response.PairingToken);
-            while (trip == null)
-            {
-                Thread.Sleep(2000);
-                trip = GetTrip(response.PairingToken);
-
-                if (watch.Elapsed.TotalSeconds >= response.TimeoutSeconds)
+                // send pairing request                                
+                var cmtPaymentSettings = _serverSettings.GetPaymentSettings().CmtPaymentSettings;
+                var pairingRequest = new PairingRequest
                 {
-                    _logger.LogMessage("Timeout Exception, Could not be paired with vehicle.");
-                    throw new TimeoutException("Could not be paired with vehicle");
-                }
-            }
+                    AutoTipPercentage = autoTipPercentage,
+                    AutoCompletePayment = true,
+                    CallbackUrl = string.Empty,
+                    CustomerId = orderStatusDetail.IBSOrderId.ToString(),
+                    CustomerName = accountDetail.Name,
+                    DriverId = orderStatusDetail.DriverInfos.DriverId,
+                    Latitude = orderStatusDetail.VehicleLatitude.GetValueOrDefault(),
+                    Longitude = orderStatusDetail.VehicleLongitude.GetValueOrDefault(),
+                    Medallion = orderStatusDetail.VehicleNumber,
+                    CardOnFileId = cardToken,
+                    Market = cmtPaymentSettings.Market
+                };
 
-            return response;
+                _logger.LogMessage("Pairing request : " + pairingRequest.ToJson());
+                _logger.LogMessage("PaymentSettings request : " + cmtPaymentSettings.ToJson());
+
+                var response = _cmtMobileServiceClient.Post(pairingRequest);
+
+                _logger.LogMessage("Pairing response : " + response.ToJson());
+
+                // wait for trip to be updated
+                _cmtTripInfoServiceHelper.WaitForTripInfo(response.PairingToken, response.TimeoutSeconds);
+
+                return response;
+            }
+            catch (Exception ex)
+            {
+                var aggregateException = ex as AggregateException;
+                if (aggregateException == null)
+                {
+                    throw ex;
+                }
+
+                var webServiceException = aggregateException.InnerException as WebServiceException;
+                if (webServiceException == null)
+                {
+                    throw ex;
+                }
+
+                var response = JsonConvert.DeserializeObject<AuthorizationResponse>(webServiceException.ResponseBody);
+
+                return null;
+            }
         }
 
         private void UnpairFromVehicleUsingRideLinq(OrderPairingDetail orderPairingDetail)
         {
+            InitializeServiceClient();
+
             // send unpairing request
             var response = _cmtMobileServiceClient.Delete(new UnpairingRequest
             {
@@ -403,50 +416,13 @@ namespace apcurium.MK.Booking.Services.Impl
             });
 
             // wait for trip to be updated
-            var watch = new Stopwatch();
-            watch.Start();
-            var trip = GetTrip(orderPairingDetail.PairingToken);
-            while (trip != null)
-            {
-                Thread.Sleep(2000);
-                trip = GetTrip(orderPairingDetail.PairingToken);
-
-                if (watch.Elapsed.TotalSeconds >= response.TimeoutSeconds)
-                {
-                    throw new TimeoutException("Could not be unpaired of vehicle");
-                }
-            }
-        }
-
-        private Trip GetTrip(string pairingToken)
-        {
-            try
-            {
-                var trip = _cmtMobileServiceClient.Get(new TripRequest { Token = pairingToken });
-                if (trip != null)
-                {
-                    //ugly fix for deserilization problem in datetime on the device for IOS
-                    if (trip.StartTime.HasValue)
-                    {
-                        trip.StartTime = DateTime.SpecifyKind(trip.StartTime.Value, DateTimeKind.Local);
-                    }
-
-                    if (trip.EndTime.HasValue)
-                    {
-                        trip.EndTime = DateTime.SpecifyKind(trip.EndTime.Value, DateTimeKind.Local);
-                    }
-                }
-
-                return trip;
-            }
-            catch (Exception)
-            {
-                return null;
-            }
+            _cmtTripInfoServiceHelper.WaitForRideLinqUnpaired(orderPairingDetail.PairingToken, response.TimeoutSeconds);
         }
 
         private AuthorizationResponse Authorize(AuthorizationRequest request)
         {
+            InitializeServiceClient();
+
             AuthorizationResponse response;
             try
             {
@@ -478,7 +454,10 @@ namespace apcurium.MK.Booking.Services.Impl
 
         private TokenizeDeleteResponse DeleteCreditCard(TokenizeDeleteRequest request)
         {
+            InitializeServiceClient();
+
             TokenizeDeleteResponse response;
+
             try
             {
                 var responseTask = _cmtPaymentServiceClient.DeleteAsync(request);
@@ -509,7 +488,10 @@ namespace apcurium.MK.Booking.Services.Impl
 
         private ReverseResponse Reverse(ReverseRequest request)
         {
+            InitializeServiceClient();
+
             ReverseResponse response;
+
             try
             {
                 var responseReverseTask = _cmtPaymentServiceClient.PostAsync(request);
@@ -538,6 +520,13 @@ namespace apcurium.MK.Booking.Services.Impl
             _logger.LogMessage("CMT reverse response : " + response.ResponseMessage);
 
             return response;
+        }
+
+        private void InitializeServiceClient()
+        {
+            _cmtPaymentServiceClient = new CmtPaymentServiceClient(_serverSettings.GetPaymentSettings().CmtPaymentSettings, null, null, _logger);
+            _cmtMobileServiceClient = new CmtMobileServiceClient(_serverSettings.GetPaymentSettings().CmtPaymentSettings, null, null);
+            _cmtTripInfoServiceHelper = new CmtTripInfoServiceHelper(_cmtMobileServiceClient, _logger);
         }
     }
 }

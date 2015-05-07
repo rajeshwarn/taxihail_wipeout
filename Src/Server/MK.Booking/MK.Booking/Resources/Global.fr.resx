@@ -594,4 +594,13 @@
   <data name="PayPalWebTipItemDescription" xml:space="preserve">
     <value>Pourboire ({0}%)</value>
   </data>
+  <data name="ManualRideLinq_NoCardOnFile" xml:space="preserve">
+    <value>Vous devez avoir une carte associée à votre compte pour utiliser RideLinQ</value>
+  </data>
+  <data name="Email_Body_AccountConfirmationRedirectLine1" xml:space="preserve">
+    <value>Si votre navigateur ne vous redirige pas automatiquement après 10 secondes,</value>
+  </data>
+  <data name="Email_Body_AccountConfirmationRedirectLine2" xml:space="preserve">
+    <value>cliquez ici.</value>
+  </data>
 </root>

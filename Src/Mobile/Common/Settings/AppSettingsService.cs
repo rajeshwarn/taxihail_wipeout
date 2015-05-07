@@ -41,10 +41,18 @@ namespace apcurium.MK.Booking.Mobile.Settings
 			var data = _cacheService.Get<TaxiHailSetting>(SettingsCacheKey);
 			if (data != null)
 			{
+                // Use cached settings until settings are done loading
 				Data = data;
-			}
 
-			await RefreshSettingsFromServer();
+                // Update settings asynchronously
+                Task.Run(() => { RefreshSettingsFromServer(); });
+			    
+			}
+            else
+            {
+                // No settings in cache, need to load them synchronously 
+                await RefreshSettingsFromServer();
+            }
 		}
 
 		public async Task ChangeServerUrl(string serverUrl)

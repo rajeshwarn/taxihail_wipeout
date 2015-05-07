@@ -60,6 +60,7 @@
     <Compile Include="AdminRightGranted.cs" />
     <Compile Include="AppSettingsUpdated.cs" />
     <Compile Include="BookingSettingsUpdated.cs" />
+    <Compile Include="ChargeAccountPaymentDisabled.cs" />
     <Compile Include="CompanyCreated.cs" />
     <Compile Include="AllCreditCardsRemoved.cs" />
     <Compile Include="CreditCardDeactivated.cs" />
@@ -69,10 +70,13 @@
     <Compile Include="CreditCardPaymentInitiated.cs" />
     <Compile Include="DispatchCompanySwitchIgnored.cs" />
     <Compile Include="IbsOrderInfoAddedToOrder.cs" />
+    <Compile Include="OrderManuallyPairedForRideLinq.cs" />
+    <Compile Include="OrderUnpairedFromManualRideLinq.cs" />
     <Compile Include="NotificationSettingsAddedOrUpdated.cs" />
     <Compile Include="OrderCancelledBecauseOfError.cs" />
     <Compile Include="OrderPreparedForNextDispatch.cs" />
     <Compile Include="OrderPairedForPayment.cs" />
+    <Compile Include="PromotionUnapplied.cs" />
     <Compile Include="RefundedOrderUpdated.cs" />
     <Compile Include="OrderSwitchedToNextDispatchCompany.cs" />
     <Compile Include="OrderTimedOut.cs" />
@@ -130,6 +134,7 @@
     <Compile Include="RatingTypeAdded.cs" />
     <Compile Include="RatingTypeHidded.cs" />
     <Compile Include="RatingTypeUpdated.cs" />
+    <Compile Include="ManualRideLinqTripInfoUpdated.cs" />
     <Compile Include="UserAddedToPromotionWhiteList.cs" />
     <Compile Include="UserAddedToPromotionWhiteList_V2.cs" />
     <Compile Include="UserTaxiHailNetworkSettingsAddedOrUpdated.cs" />
