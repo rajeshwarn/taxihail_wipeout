@@ -70,8 +70,8 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                         var creditCard = _creditCardDao.FindByAccountId(account.Id).FirstOrDefault();
                         var cardToken = creditCard != null ? creditCard.Token : null;
 
-                        var response = _paymentFacadeService.Pair(@event.SourceId, cardToken, account.DefaultTipPercent);
-
+                        var response = _paymentFacadeService.Pair(@event.SourceId, cardToken, account.DefaultTipPercent.HasValue ? account.DefaultTipPercent.Value : _serverSettings.ServerData.DefaultTipPercentage);
+                        
                         _notificationService.SendAutomaticPairingPush(@event.SourceId, account.DefaultTipPercent, response.IsSuccessful);
                     } 
                 }

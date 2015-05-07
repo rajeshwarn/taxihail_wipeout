@@ -50,7 +50,7 @@ namespace apcurium.MK.Booking.Services.Impl
             return false;
         }
 
-        public PairingResponse Pair(Guid orderId, string cardToken, int? autoTipPercentage)
+        public PairingResponse Pair(Guid orderId, string cardToken, int autoTipPercentage)
         {
             try
             {
