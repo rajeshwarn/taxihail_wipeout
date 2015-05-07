@@ -32,13 +32,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
 			if (Settings.DestinationIsRequired)
 			{
-				this.Observe(_orderWorkflowService.GetAndObserveIsDestinationModeOpened(),
+				Observe(_orderWorkflowService.GetAndObserveIsDestinationModeOpened(),
 					isDestinationModeOpened => EstimateSelected = isDestinationModeOpened);
 			}
 
             if (Settings.PromotionEnabled)
             {
-                this.Observe(ObserveIsPromoCodeApplied(), isPromoCodeApplied => IsPromoCodeActive = isPromoCodeApplied);
+                Observe(ObserveIsPromoCodeApplied(), isPromoCodeApplied => IsPromoCodeActive = isPromoCodeApplied);
             }
         }
 

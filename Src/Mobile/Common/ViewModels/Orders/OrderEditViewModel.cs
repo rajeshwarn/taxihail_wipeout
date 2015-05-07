@@ -18,30 +18,24 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 	{
 		private readonly IOrderWorkflowService _orderWorkflowService;
 		private readonly IAccountService _accountService;
-	    private bool _isInitialized;
 
         public event EventHandler<HomeViewModelStateRequestedEventArgs> PresentationStateRequested;
 
-		public OrderEditViewModel(IOrderWorkflowService orderWorkflowService,
-			IAccountService accountService)
+		public OrderEditViewModel(IOrderWorkflowService orderWorkflowService, IAccountService accountService)
 		{
 			_orderWorkflowService = orderWorkflowService;
 			_accountService = accountService;
+
+			Observe(_orderWorkflowService.GetAndObserveBookingSettings(), bookingSettings => BookingSettings = bookingSettings.Copy());
+			Observe(_orderWorkflowService.GetAndObservePickupAddress(), address => PickupAddress = address.Copy());
+			Observe(_orderWorkflowService.GetAndObserveMarket(), market => MarketUpdated(market));
 		}
 
 		public async Task Init()
 		{
-		    if (!_isInitialized)
-		    {
-		        _isInitialized = true;
-                Vehicles = (await _accountService.GetVehiclesList()).Select(x => new ListItem { Id = x.ReferenceDataVehicleId, Display = x.Name }).ToArray();
-                ChargeTypes = (await _accountService.GetPaymentsList()).Select(x => new ListItem { Id = x.Id, Display = this.Services().Localize[x.Display] }).ToArray();
-                RaisePropertyChanged(() => IsChargeTypesEnabled);
-
-                Observe(_orderWorkflowService.GetAndObserveBookingSettings(), bookingSettings => BookingSettings = bookingSettings.Copy());
-                Observe(_orderWorkflowService.GetAndObservePickupAddress(), address => PickupAddress = address.Copy());
-		        Observe(_orderWorkflowService.GetAndObserveMarket(), market => MarketUpdated(market));
-		    }
+			Vehicles = (await _accountService.GetVehiclesList()).Select(x => new ListItem { Id = x.ReferenceDataVehicleId, Display = x.Name }).ToArray();
+			ChargeTypes = (await _accountService.GetPaymentsList()).Select(x => new ListItem { Id = x.Id, Display = this.Services().Localize[x.Display] }).ToArray();
+			RaisePropertyChanged(() => IsChargeTypesEnabled);
 		}
 
 	    private async Task MarketUpdated(string market)

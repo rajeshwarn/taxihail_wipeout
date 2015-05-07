@@ -24,7 +24,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         private BookingSettings _bookingSettings;
 	    private ClientPaymentSettings _paymentSettings;
 
-        private bool _isInitialized;
 	    private string _market;
 
 		public RideSettingsViewModel(IAccountService accountService, 
@@ -36,16 +35,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_paymentService = paymentService;
 		    _accountPaymentService = accountPaymentService;
 		    _accountService = accountService;
+
+			Observe(_orderWorkflowService.GetAndObserveMarket(), market => _market = market);
 		}
 
 		public async void Init(string bookingSettings)
         {
-		    if (!_isInitialized)
-		    {
-		        _isInitialized = true;
-                Observe(_orderWorkflowService.GetAndObserveMarket(), market => _market = market);
-		    }
-
 		    using (this.Services ().Message.ShowProgress ())
 			{
 				_bookingSettings = bookingSettings.FromJson<BookingSettings>();
