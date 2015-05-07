@@ -23,6 +23,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
         private readonly IAccountService _accountService;
         private readonly IPaymentService _paymentService;
 
+        private OrderValidationResult _orderValidationResult;
+
         public event EventHandler<HomeViewModelStateRequestedEventArgs> PresentationStateRequested;
 
         public BottomBarViewModel(IOrderWorkflowService orderWorkflowService, IMvxPhoneCallTask phone, IAccountService accountService, IPaymentService paymentService)
@@ -122,9 +124,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
             }
         }
 
-        private void OrderValidated(OrderValidationResult validationResult)
+        private void OrderValidated(OrderValidationResult orderValidationResult)
         {
-            IsFutureBookingDisabled = Settings.DisableFutureBooking || validationResult.DisableFutureBooking;
+            _orderValidationResult = orderValidationResult;
+            IsFutureBookingDisabled = Settings.DisableFutureBooking || orderValidationResult.DisableFutureBooking;
         }
 
         public ICommand ChangeAddressSelectionMode
@@ -152,6 +155,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
             {
                 return this.GetCommand<DateTime?>(async date =>
                 {
+                    if (_orderValidationResult.HasError
+                        && _orderValidationResult.AppliesToCurrentBooking)
+                    {
+                        this.Services().Message.ShowMessage(this.Services().Localize["CurrentBookingDisabledTitle"], _orderValidationResult.Message);
+                        return;
+                    }
+
 					// since it can take some time, recalculate estimate for date only if 
 					// last calculated estimate was not for now
 					if(date != null)
@@ -521,7 +531,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
             {
                 return this.GetCommand(() =>
                 {
-                    ShowViewModel<ManualPairingForRideLinqViewModel>();
+                    if (!_accountService.CurrentAccount.DefaultCreditCard.HasValue)
+                    {
+                        this.Services().Message.ShowMessage(
+                            this.Services().Localize["ErrorCreatingOrderTitle"],
+                            this.Services().Localize["ManualRideLinqNoCardOnFile"]);
+                    }
+                    else
+                    {
+                        ShowViewModel<ManualPairingForRideLinqViewModel>();
+                    }                    
                 });
             }
         }
