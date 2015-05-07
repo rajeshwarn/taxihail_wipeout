@@ -65,7 +65,7 @@ namespace apcurium.MK.Web
         protected bool HideMarketChangeWarning { get; private set; }
         protected bool AutoConfirmFleetChange { get; private set; }
 
-        protected bool IsAlwaysDisplayCoFOption { get; private set; }
+        protected bool AlwaysDisplayCoFOption { get; private set; }
 
         protected int AvailableVehicleRefreshRate { get; private set; }
         
@@ -115,7 +115,7 @@ namespace apcurium.MK.Web
 
             var paymentSettings = config.GetPaymentSettings();
 
-            IsAlwaysDisplayCoFOption = paymentSettings.BraintreeServerSettings.IsAlwaysDisplayCoFOption;
+            AlwaysDisplayCoFOption = paymentSettings.BraintreeServerSettings.AlwaysDisplayCoFOption;
 
             IsBraintreePrepaidEnabled = paymentSettings.PaymentMode == PaymentMethod.Braintree 
                 && paymentSettings.IsPayInTaxiEnabled

@@ -96,9 +96,9 @@
     </select>
 
       <label class="control-label settingsLabel">{{{localize "Always display Card on File on Web"}}}</label>
-      <select name="braintreeServerSettings.isAlwaysDisplayCoFOption" class="settingsBox">
-          <option value="{{braintreeServerSettings.isAlwaysDisplayCoFOption}}" selected >{{localizeBool braintreeServerSettings.isAlwaysDisplayCoFOption true="Yes" false="No"}}</option>
-          <option value="{{invertedBool braintreeServerSettings.isAlwaysDisplayCoFOption}}">{{localizeBool braintreeServerSettings.isAlwaysDisplayCoFOption true="No" false="Yes"}}</option>
+      <select name="braintreeServerSettings.alwaysDisplayCoFOption" class="settingsBox">
+          <option value="{{braintreeServerSettings.alwaysDisplayCoFOption}}" s selected>{{localizeBool braintreeServerSettings.alwaysDisplayCoFOption true="Yes" false="No"}}</option>
+          <option value="{{invertedBool braintreeServerSettings.alwaysDisplayCoFOption}}">{{localizeBool braintreeServerSettings.alwaysDisplayCoFOption true="No" false="Yes"}}</option>
       </select>
 
     <label class="control-label settingsLabel" >{{{localize "Merchant Id"}}}</label>

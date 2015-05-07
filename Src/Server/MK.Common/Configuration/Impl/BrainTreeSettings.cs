@@ -23,6 +23,6 @@
         public string PrivateKey { get; set; }
 
 
-        public bool IsAlwaysDisplayCoFOption { get; set; }
+        public bool AlwaysDisplayCoFOption { get; set; }
     }
 }
