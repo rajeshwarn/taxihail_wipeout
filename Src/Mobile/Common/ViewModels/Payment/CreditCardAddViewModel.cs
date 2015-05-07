@@ -681,7 +681,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 				ExpirationYear = year
 			};
 
-			return !creditCard.IsExpired;
+			return !creditCard.IsExpired();
 		}
 
 		private void DetermineCompany(string cardNumber)
