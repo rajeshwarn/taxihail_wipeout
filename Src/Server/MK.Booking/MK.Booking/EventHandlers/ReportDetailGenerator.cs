@@ -464,10 +464,12 @@ namespace apcurium.MK.Booking.EventHandlers
                 
                 if (@event.EndTime.HasValue)
                 {
-                    orderReport.OrderStatus.OrderIsCompleted = @event.EndTime.HasValue;
+                    orderReport.OrderStatus.OrderIsCompleted = true;
                     orderReport.OrderStatus.Status = OrderStatus.Completed;
                 }
-                
+
+
+                context.Save(orderReport);
             }
         }
     }
