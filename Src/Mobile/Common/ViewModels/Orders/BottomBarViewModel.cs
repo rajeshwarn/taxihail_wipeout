@@ -98,6 +98,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
             }
         }
 
+        private bool _isManualRidelinqEnabled;
         public bool IsManualRidelinqEnabled
         {
             get { return _isManualRidelinqEnabled; }
@@ -105,6 +106,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
             {
                 _isManualRidelinqEnabled = value;
                 RaisePropertyChanged();
+                RaisePropertyChanged(() => BookButtonText);
             }
         }
 
@@ -124,7 +126,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
         private void OrderValidated(OrderValidationResult validationResult)
         {
-            IsFutureBookingDisabled = Settings.DisableFutureBooking || validationResult.DisableFutureBooking;
+            IsFutureBookingDisabled = Settings.DisableFutureBooking 
+                || validationResult.DisableFutureBooking 
+                || Settings.UseSingleButtonForNowAndLaterBooking;
         }
 
         public ICommand ChangeAddressSelectionMode
@@ -481,7 +485,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
         }
 
         private ICommand _cancelEdit;
-        private bool _isManualRidelinqEnabled;
 
         public ICommand CancelEdit
         {
@@ -495,6 +498,37 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
                 }
             }
         }
+
+        public string BookButtonText
+        {
+            get
+            {
+                return Settings.UseSingleButtonForNowAndLaterBooking || IsManualRidelinqEnabled
+                    ? this.Services().Localize["HomeView_BookTaxi"]
+                    : this.Services().Localize["BookItButton"];
+            }
+        }
+
+        public ICommand Book
+        {
+            get
+            {
+                return this.GetCommand(() =>
+                {
+                    if (Settings.UseSingleButtonForNowAndLaterBooking && !Settings.DisableFutureBooking)
+                    {
+                        //We need to show the Book A Taxi popup.
+                        PresentationStateRequested.Raise(this, new HomeViewModelStateRequestedEventArgs(HomeViewModelState.BookATaxi));
+                    }
+                    else
+                    {
+                        //Normal classic flow
+                        SetPickupDateAndReviewOrder.ExecuteIfPossible();
+                    }
+                });
+            }
+        }
+            
 
         public ICommand BookATaxi
         {
