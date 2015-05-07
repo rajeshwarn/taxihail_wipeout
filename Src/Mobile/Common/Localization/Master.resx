@@ -1917,6 +1917,9 @@
   <data name="InvalidChargeTypeTitle" xml:space="preserve">
     <value>Invalid Charge Type</value>
   </data>
+  <data name="CurrentBookingDisabledTitle" xml:space="preserve">
+    <value>Current Booking Disabled</value>
+  </data>
   <data name="ManualRideLinqNoCardOnFile" xml:space="preserve">
     <value>You need to have a card on file to pair with RideLinQ</value>
   </data>
