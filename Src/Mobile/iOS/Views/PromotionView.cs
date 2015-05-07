@@ -72,7 +72,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 			set.Bind(btnAddPayment)
 				.For(v => v.HiddenWithConstraints)
-				.To(vm => vm.IsCoFAvailable);
+				.To(vm => vm.HasValidPaymentInformation);
 
 			set.Bind(lblNoPromotions)
 				.For("Visibility")

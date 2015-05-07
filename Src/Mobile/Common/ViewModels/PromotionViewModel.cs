@@ -34,7 +34,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             base.OnViewStarted(firstTime);
 
-            IsCoFAvailable = _accountService.CurrentAccount.HasValidPaymentInformation;
+            HasValidPaymentInformation = _accountService.CurrentAccount.HasValidPaymentInformation;
         }
 
         private string _promotionCode;
@@ -65,15 +65,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-		private bool _isCoFAvailable;
-		public bool IsCoFAvailable {
+		private bool _hasValidPaymentInformation;
+		public bool HasValidPaymentInformation {
 			get 
 			{
-				return _isCoFAvailable;
+				return _hasValidPaymentInformation;
 			}
 			set 
 			{
-				_isCoFAvailable = value;
+				_hasValidPaymentInformation = value;
 				RaisePropertyChanged();
 			}
 		}

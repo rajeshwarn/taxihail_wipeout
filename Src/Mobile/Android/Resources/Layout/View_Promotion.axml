@@ -53,7 +53,7 @@
             android:layout_marginRight="15dip"
             android:layout_marginTop="5dip"
             android:layout_marginBottom="5dip"
-            local:MvxBind="Click ToPayment; Visibility IsCoFAvailable, Converter=InvertedVisibility" />
+            local:MvxBind="Click ToPayment; Visibility HasValidPaymentInformation, Converter=InvertedVisibility" />
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
