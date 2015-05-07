@@ -152,7 +152,7 @@
             var cvv = this.model.get('cvv');
 
             var now = new Date();
-            var exp = new Date(expYear, expMonth - 1);
+            var exp = new Date(expYear, expMonth - 1, 1, 23, 59, 59);
             exp.setMonth(exp.getMonth() + 1);           // add a month
             exp.setDate(exp.getDate() - 1);             //remove one day
 

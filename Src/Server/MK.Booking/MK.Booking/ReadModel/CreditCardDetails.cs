@@ -31,16 +31,16 @@ namespace apcurium.MK.Booking.ReadModel
 
         public bool IsExpired()
         {
-            if (!ExpirationMonth.HasValue() || !ExpirationYear.HasValue())
+            if (!ExpirationMonth.HasValue() || !ExpirationYear.HasValue()) 
             {
                 return false; // Prevent expiration verification from failing
             }
 
-            var expYear = int.Parse(ExpirationYear);
-            var expMonth = int.Parse(ExpirationMonth);
-            var expirationDate = new DateTime(expYear, expMonth, DateTime.DaysInMonth(expYear, expMonth));
+            var expYear = int.Parse (ExpirationYear);
+            var expMonth = int.Parse (ExpirationMonth);
+            var expirationDate = new DateTime (expYear, expMonth, DateTime.DaysInMonth (expYear, expMonth), 23, 59, 59);
 
-            if (expirationDate < DateTime.Now)
+            if (expirationDate < DateTime.Now) 
             {
                 return true;
             }
