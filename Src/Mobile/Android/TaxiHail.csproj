@@ -619,10 +619,11 @@
       <SubType>Designer</SubType>
     </AndroidResource>
     <Compile Include="Activities\Book\OrderBookingOptionsDialogActivity.cs" />
-    <AndroidResource Include="Resources\Drawable\button_action_cancel_selector.xml" />
     <AndroidResource Include="Resources\Layout\View_OrderBookingOptionsDialog.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
+    <AndroidResource Include="Resources\Drawable\button_action_company_selector.xml" />
+    <AndroidResource Include="Resources\Drawable\button_action_company_text_selector.xml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\Layout\View_Login.axml">
