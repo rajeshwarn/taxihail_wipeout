@@ -749,6 +749,7 @@ namespace apcurium.MK.Booking.Api.Services
                             ErrorCode.CreateOrder_RuleDisable.ToString(),
                             _resources.Get("CannotCreateOrder_PrepaidNoEstimate", request.ClientLanguageCode));
                     }
+                    ValidateCreditCard(account, request.ClientLanguageCode);
                     CapturePaymentForPrepaidOrder(orderId, account, Convert.ToDecimal(appEstimateWithTip), tipPercent);
                 }
             }
@@ -758,7 +759,8 @@ namespace apcurium.MK.Booking.Api.Services
                 if (request.Settings.ChargeTypeId.HasValue
                     && request.Settings.ChargeTypeId.Value == ChargeTypes.CardOnFile.Id)
                 {
-                    ValidateCreditCard(orderId, account, request.ClientLanguageCode, isFutureBooking, appEstimateWithTip);
+                    ValidateCreditCard(account, request.ClientLanguageCode);
+                    PreAuthorizePaymentMethod(orderId, account, request.ClientLanguageCode, isFutureBooking, appEstimateWithTip, false);
                 }
 
                 // Payment mode is PayPal
@@ -770,7 +772,7 @@ namespace apcurium.MK.Booking.Api.Services
             }
         }
 
-        private void ValidateCreditCard(Guid orderId, AccountDetail account, string clientLanguageCode, bool isFutureBooking, decimal? appEstimate)
+        private void ValidateCreditCard(AccountDetail account, string clientLanguageCode)
         {
             // check if the account has a credit card
             if (!account.DefaultCreditCard.HasValue)
@@ -781,14 +783,18 @@ namespace apcurium.MK.Booking.Api.Services
             }
 
             var creditCard = _creditCardDao.FindByAccountId(account.Id).First();
+            if (creditCard.IsExpired())
+            {
+                throw new HttpError(HttpStatusCode.BadRequest,
+                    ErrorCode.CreateOrder_RuleDisable.ToString(),
+                     _resources.Get("CannotCreateOrder_CreditCardExpired", clientLanguageCode));
+            }
             if (creditCard.IsDeactivated)
             {
                 throw new HttpError(HttpStatusCode.BadRequest,
                     ErrorCode.CreateOrder_CardOnFileDeactivated.ToString(),
                     _resources.Get("CannotCreateOrder_CreditCardDeactivated", clientLanguageCode));
             }
-
-            PreAuthorizePaymentMethod(orderId, account, clientLanguageCode, isFutureBooking, appEstimate, false);
         }
 
         private void ValidatePayPal(Guid orderId, AccountDetail account, string clientLanguageCode, bool isFutureBooking, decimal? appEstimate)

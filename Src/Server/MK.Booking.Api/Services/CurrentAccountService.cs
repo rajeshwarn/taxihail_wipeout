@@ -1,38 +1,70 @@
-﻿#region
-
-using System;
+﻿using System;
+using System.Linq;
 using apcurium.MK.Booking.Api.Contract.Requests;
+using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
+using apcurium.MK.Booking.Security;
 using apcurium.MK.Common.Configuration;
-using AutoMapper;
-using Infrastructure.Messaging;
 using ServiceStack.ServiceInterface;
-
-#endregion
 
 namespace apcurium.MK.Booking.Api.Services
 {
     public class CurrentAccountService : Service
     {
-        public CurrentAccountService(IAccountDao dao, IServerSettings serverSettings)
+        private readonly IAccountDao _accountDao;
+        private readonly ICreditCardDao _creditCardDao;
+        private readonly IServerSettings _serverSettings;
+
+        public CurrentAccountService(IAccountDao accountDao, ICreditCardDao creditCardDao, IServerSettings serverSettings)
         {
-            Dao = dao;
-            ServerSettings = serverSettings;
+            _creditCardDao = creditCardDao;
+            _accountDao = accountDao;
+            _serverSettings = serverSettings;
         }
 
-        protected IAccountDao Dao { get; set; }
-        protected IServerSettings ServerSettings { get; set; }
-        
         public object Get(CurrentAccount request)
         {
             var session = this.GetSession();
-            var account = Dao.FindById(new Guid(session.UserAuthId));
+            var account = _accountDao.FindById(new Guid(session.UserAuthId));
 
-            var currentAccount = Mapper.Map<CurrentAccountResponse>(account);
+            var creditCard = account.DefaultCreditCard.HasValue
+                ? _creditCardDao.FindById(account.DefaultCreditCard.Value)
+                : null;
+            var creditCardResource = creditCard != null
+                ? new CreditCardDetails
+                    {
+                        CreditCardId = creditCard.CreditCardId,
+                        AccountId = creditCard.AccountId,
+                        NameOnCard = creditCard.NameOnCard,
+                        Token = creditCard.Token,
+                        Last4Digits = creditCard.Last4Digits,
+                        CreditCardCompany = creditCard.CreditCardCompany,
+                        ExpirationMonth = creditCard.ExpirationMonth,
+                        ExpirationYear = creditCard.ExpirationYear,
+                        IsDeactivated = creditCard.IsDeactivated
+                    }
+                : null;
 
-            currentAccount.Settings.ChargeTypeId = account.Settings.ChargeTypeId ?? ServerSettings.ServerData.DefaultBookingSettings.ChargeTypeId;
-            currentAccount.Settings.VehicleTypeId = account.Settings.VehicleTypeId ?? ServerSettings.ServerData.DefaultBookingSettings.VehicleTypeId;
-            currentAccount.Settings.ProviderId = account.Settings.ProviderId ?? ServerSettings.ServerData.DefaultBookingSettings.ProviderId;
+            var currentAccount = new CurrentAccountResponse
+            {
+                Id = account.Id,
+                Email = account.Email,
+                Name = account.Name,
+                IbsAccountid = account.IBSAccountId ?? 0,
+                FacebookId = account.FacebookId,
+                TwitterId = account.TwitterId,
+                Settings = account.Settings,
+                Language = account.Language,
+                IsAdmin = account.IsAdmin,
+                IsSuperAdmin = account.RoleNames.Contains(RoleName.SuperAdmin),
+                DefaultCreditCard = creditCardResource,
+                DefaultTipPercent = account.DefaultTipPercent,
+                IsPayPalAccountLinked = account.IsPayPalAccountLinked
+            };
+
+            currentAccount.Settings.ChargeTypeId = account.Settings.ChargeTypeId ?? _serverSettings.ServerData.DefaultBookingSettings.ChargeTypeId;
+            currentAccount.Settings.VehicleTypeId = account.Settings.VehicleTypeId ?? _serverSettings.ServerData.DefaultBookingSettings.VehicleTypeId;
+            currentAccount.Settings.ProviderId = account.Settings.ProviderId ?? _serverSettings.ServerData.DefaultBookingSettings.ProviderId;
 
             return currentAccount;
         }

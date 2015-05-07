@@ -48,7 +48,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
             Observe(_orderWorkflowService.GetAndObserveOrderValidationResult(), OrderValidated);
         }
 
-        public async void CheckManualRideLinqEnabledAsync(bool hasLastMarket)
+        public async void CheckManualRideLinqEnabledAsync(bool isInMarket)
         {
             try
             {
@@ -56,7 +56,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
                 IsManualRidelinqEnabled = settings.PaymentMode == PaymentMethod.RideLinqCmt
                                            && settings.CmtPaymentSettings.IsManualRidelinqCheckInEnabled
-                                           && !hasLastMarket;
+										   && !isInMarket;
             }
             catch (Exception ex)
             {
@@ -531,7 +531,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
             {
                 return this.GetCommand(() =>
                 {
-                    if (!_accountService.CurrentAccount.DefaultCreditCard.HasValue)
+                    if (_accountService.CurrentAccount.DefaultCreditCard == null)
                     {
                         this.Services().Message.ShowMessage(
                             this.Services().Localize["ErrorCreatingOrderTitle"],

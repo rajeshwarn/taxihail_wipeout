@@ -206,12 +206,15 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             var orderDetail = _orderDao.FindById(orderId);
             var promotionDetail = _promotionDao.FindByOrderId(orderId);
 
-            _commandBus.Send(new UnapplyPromotion
+            if (promotionDetail != null)
             {
-                PromoId = promotionDetail.PromoId,
-                AccountId = orderDetail.AccountId,
-                OrderId = orderId
-            });
+                _commandBus.Send(new UnapplyPromotion
+                {
+                    PromoId = promotionDetail.PromoId,
+                    AccountId = orderDetail.AccountId,
+                    OrderId = orderId
+                });
+            }
         }
     }
 }
