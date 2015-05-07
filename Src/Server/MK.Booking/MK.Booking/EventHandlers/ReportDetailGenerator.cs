@@ -30,7 +30,10 @@ namespace apcurium.MK.Booking.EventHandlers
         IEventHandler<OrderSwitchedToNextDispatchCompany>,
         IEventHandler<OrderTimedOut>,
         IEventHandler<PrepaidOrderPaymentInfoUpdated>,
-        IEventHandler<RefundedOrderUpdated>
+        IEventHandler<RefundedOrderUpdated>,
+        IEventHandler<OrderManuallyPairedForRideLinq>,
+        IEventHandler<OrderUnpairedFromManualRideLinq>,
+        IEventHandler<ManualRideLinqTripInfoUpdated>
     {
         private readonly Func<BookingDbContext> _contextFactory;
 
@@ -382,6 +385,80 @@ namespace apcurium.MK.Booking.EventHandlers
                 orderReport.Payment.IsRefunded = @event.IsSuccessful;
                 orderReport.Payment.Error = @event.Message;
                 context.Save(orderReport);
+            }
+        }
+
+        public void Handle(OrderManuallyPairedForRideLinq @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var existingReport = context.Find<OrderReportDetail>(@event.SourceId);
+                var orderReport = existingReport ?? new OrderReportDetail { Id = @event.SourceId };
+
+                var account = context.Find<AccountDetail>(@event.AccountId);
+
+                orderReport.Account = new OrderReportAccount
+                {
+                    AccountId = @event.AccountId,
+                    Name = account.Name,
+                    Phone = account.Settings.Phone,
+                    Email = account.Email,
+                    DefaultCardToken = account.DefaultCreditCard,
+                    PayBack = account.Settings.PayBack
+                };
+
+                orderReport.Order = new OrderReportOrder
+                {
+                    ChargeType = ChargeTypes.CardOnFile.Id.ToString(),
+                    PickupDateTime = @event.PairingDate,
+                    CreateDateTime = @event.PairingDate,
+                    PickupAddress = @event.PickupAddress,
+                };
+                orderReport.Client = new OrderReportClient
+                {
+                    OperatingSystem = @event.UserAgent.GetOperatingSystem(),
+                    UserAgent = @event.UserAgent,
+                    Version = @event.ClientVersion
+                };
+                
+                orderReport.Payment = new OrderReportPayment()
+                {
+                    PairingToken = @event.PairingToken,
+                    IsPaired = true
+                };
+
+                orderReport.OrderStatus = new OrderReportOrderStatus();
+
+                context.Save(orderReport);
+            }
+        }
+
+        public void Handle(OrderUnpairedFromManualRideLinq @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var orderReport = context.Find<OrderReportDetail>(@event.SourceId);
+                orderReport.Payment.IsPaired = false;
+                orderReport.OrderStatus.OrderIsCancelled = true;
+                context.Save(orderReport);
+            }
+        }
+
+        public void Handle(ManualRideLinqTripInfoUpdated @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var orderReport = context.Find<OrderReportDetail>(@event.SourceId);
+
+                orderReport.Payment.MdtFare = @event.Fare;
+                orderReport.Payment.MdtTip = @event.Tip;
+                orderReport.Payment.MdtToll = @event.Toll;
+                orderReport.Payment.TotalAmountCharged = @event.Total.HasValue
+                    ? (decimal?)Math.Round(@event.Total.Value, 2)
+                    : null;
+
+
+                orderReport.OrderStatus.OrderIsCompleted = @event.EndTime.HasValue;
             }
         }
     }

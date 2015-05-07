@@ -104,6 +104,8 @@ namespace apcurium.MK.Booking.ReadModel
     {
         public Guid? PaymentId { get; set; }
 
+        public string PairingToken { get; set; }
+
         public decimal? MeterAmount { get; set; }
 
         public decimal? TipAmount { get; set; }
