@@ -25,7 +25,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         private BookingSettings _bookingSettings;
 	    private ClientPaymentSettings _paymentSettings;
 
-        private bool _isInitialized;
 	    private string _hashedMarket;
 
 		public RideSettingsViewModel(IAccountService accountService, 
@@ -37,16 +36,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_paymentService = paymentService;
 		    _accountPaymentService = accountPaymentService;
 		    _accountService = accountService;
+
+            Observe(_orderWorkflowService.GetAndObserveHashedMarket(), hashedMarket => _hashedMarket = hashedMarket);
 		}
 
 		public async void Init(string bookingSettings)
         {
-		    if (!_isInitialized)
-		    {
-		        _isInitialized = true;
-                Observe(_orderWorkflowService.GetAndObserveHashedMarket(), hashedMarket => _hashedMarket = hashedMarket);
-		    }
-
 		    using (this.Services ().Message.ShowProgress ())
 			{
 			    try

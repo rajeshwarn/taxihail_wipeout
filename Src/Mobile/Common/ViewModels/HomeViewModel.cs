@@ -61,8 +61,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
             Panel = new PanelMenuViewModel(browserTask, orderWorkflowService, accountService, phoneService, paymentService, promotionService);
 
-            Observe(_vehicleService.GetAndObserveAvailableVehiclesWhenVehicleTypeChanges(), ZoomOnNearbyVehiclesIfPossible);
-            Observe(_orderWorkflowService.GetAndObserveHashedMarket(), MarketChanged);
+			Map = AddChild<MapViewModel>();
+			OrderOptions = AddChild<OrderOptionsViewModel>();
+			OrderReview = AddChild<OrderReviewViewModel>();
+			OrderEdit = AddChild<OrderEditViewModel>();
+			BottomBar = AddChild<BottomBarViewModel>();
+			AddressPicker = AddChild<AddressPickerViewModel>();
+
+			Observe(_vehicleService.GetAndObserveAvailableVehiclesWhenVehicleTypeChanges(), ZoomOnNearbyVehiclesIfPossible);
+			Observe(_orderWorkflowService.GetAndObserveHashedMarket(), MarketChanged);
 		}
 
 	    private string _lastHashedMarket = string.Empty;
@@ -80,14 +87,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		public override void OnViewLoaded ()
 		{
 			base.OnViewLoaded ();
-					            
-			Map = AddChild<MapViewModel>();
-			OrderOptions = AddChild<OrderOptionsViewModel>();
-			OrderReview = AddChild<OrderReviewViewModel>(true);
-			OrderEdit = AddChild<OrderEditViewModel>(true);
-			BottomBar = AddChild<BottomBarViewModel>();
-			AddressPicker = AddChild<AddressPickerViewModel>();
-
+				
 			BottomBar.Save = OrderEdit.Save;
 			BottomBar.CancelEdit = OrderEdit.Cancel;
 		}
@@ -487,9 +487,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
-		protected override TViewModel AddChild<TViewModel>(bool lazyLoad = false)
+		protected override TViewModel AddChild<TViewModel>()
 		{
-            var child = base.AddChild<TViewModel>(lazyLoad);
+            var child = base.AddChild<TViewModel>();
 			var rps = child as IRequestPresentationState<HomeViewModelStateRequestedEventArgs>;
 			if (rps != null)
 			{
@@ -504,20 +504,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_currentState = e.State;
 
 			this.ChangePresentation(new HomeViewModelPresentationHint(e.State, e.IsNewOrder));
-		    if (e.State == HomeViewModelState.Review)
-		    {
-		        if (OrderReview.IsDeferredLoaded)
-		        {
-                    OrderReview.Init();
-		        }  
-		    }
-            else if (e.State == HomeViewModelState.Edit)
-            {
-                if (OrderEdit.IsDeferredLoaded)
-                {
-                    OrderEdit.Init();
-                } 
-            }
 
             if (e.State == HomeViewModelState.Initial)
             {
