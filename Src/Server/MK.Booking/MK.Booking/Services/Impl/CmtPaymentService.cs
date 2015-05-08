@@ -360,7 +360,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 var cmtPaymentSettings = _serverSettings.GetPaymentSettings().CmtPaymentSettings;
                 var pairingRequest = new PairingRequest
                 {
-                    AutoTipPercentage = autoTipPercentage,
+                    AutoTipPercentage = autoTipPercentage ?? _serverSettings.ServerData.DefaultTipPercentage,
                     AutoCompletePayment = true,
                     CallbackUrl = string.Empty,
                     CustomerId = orderStatusDetail.IBSOrderId.ToString(),
