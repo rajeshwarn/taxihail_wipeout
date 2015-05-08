@@ -760,7 +760,7 @@ namespace apcurium.MK.Booking.Api.Services
                     && request.Settings.ChargeTypeId.Value == ChargeTypes.CardOnFile.Id)
                 {
                     ValidateCreditCard(account, request.ClientLanguageCode);
-                    PreAuthorizePaymentMethod(orderId, account, request.ClientLanguageCode, isFutureBooking, appEstimateWithTip, false);
+                    PreAuthorizePaymentMethod(orderId, account, request.ClientLanguageCode, isFutureBooking, appEstimateWithTip, false, request.Cvv);
                 }
 
                 // Payment mode is PayPal
@@ -810,10 +810,12 @@ namespace apcurium.MK.Booking.Api.Services
             PreAuthorizePaymentMethod(orderId, account, clientLanguageCode, isFutureBooking, appEstimate, true);
         }
 
-        private void PreAuthorizePaymentMethod(Guid orderId, AccountDetail account, string clientLanguageCode, bool isFutureBooking, decimal? appEstimate, bool isPayPal)
+        private void PreAuthorizePaymentMethod(Guid orderId, AccountDetail account, string clientLanguageCode, bool isFutureBooking, decimal? appEstimate, bool isPayPal, string cvv = null)
         {
             if (!_serverSettings.GetPaymentSettings().IsPreAuthEnabled || isFutureBooking)
             {
+                // preauth will be done later, save the info temporarily
+                _commandBus.Send(new SaveTemporaryOrderPaymentInfo { OrderId = orderId, Cvv = cvv });
                 return;
             }
             
