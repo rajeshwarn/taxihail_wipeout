@@ -457,6 +457,9 @@
   <string name="PendingOrderCancel">Annuler</string>
   <string name="NoCardOnFileMessage">Vous avez choisi de payer via l’application mais vous n’avez pas renseigné de carte de crédit. Enregistrez votre carte de crédit ou choisissez un autre mode de paiement pour continuer.</string>
   <string name="CardExpiredMessage">Votre carte a expiré. Ajoutez une nouvelle carte ou mettez à jour la carte sélectionnée pour continuer.</string>
+  <string name="CreditCardExpiredTitle">Carte Expirée</string>
+  <string name="CardExpiredNonMandatoryMessage">Votre carte a expiré. Votre compte est maintenant configuré pour le paiement à bord. Si vous désirez continuer d\'utiliser la carte de crédit, vous devrez la mettre à jour.</string>
+  <string name="CreditCardExpiredUpdateNow">Mettre à jour</string>
   <string name="View_NotificationSettings">Notifications</string>
   <string name="Eta">Le véhicule le plus proche est à {1} {2} et {0}</string>
   <string name="PanelMenuViewNotificationsText">Notifications</string>
@@ -519,14 +522,14 @@
   <string name="PromoMustUseCardOnFileWarningMessage">Veuillez noter que le rabais ne sera appliqué que si le paiement est effectué en utilisant l\'application</string>
   <string name="WarningPromoCodeDontShow">Ne pas signaler</string>
   <string name="PanelMenuViewPromotionsText">Promotions</string>
-  <string name="UnpairWarningMessage">Cette action ne peut être annulée</string>
+  <string name="UnpairWarningMessage">Êtes-vous sûr de ne pas vouloir payer avec votre carte de crédit?</string>
   <string name="UnpairWarningMessageWithPromo">Si vous décidez de payer dans le taxi, vous ne serez pas éligible à la promotion</string>
   <string name="UnpairWarningCancelButton">Payer dans le taxi</string>
   <string name="View_Promotions">Promotions</string>
   <string name="PromoExpiringIn1DayMessage">Expire dans 1 jour</string>
   <string name="PromoExpiringSoonMessage">Expire dans {0} jours</string>
   <string name="PromoExpiringToday">Expire aujourd\'hui!</string>
-  <string name="PromoBookRide">Utiliser sur la prochaine commande</string>
+  <string name="PromoBookRide">Utiliser le code promo</string>
   <string name="PromotionViewNoPromotionLabel">Aucune promotion disponible</string>
   <string name="Processing">Traitement de votre commande...</string>
   <string name="Notification_PromotionUnlockedEmail">Promotions déverrouillées (Email)</string>
@@ -598,4 +601,7 @@
   <string name="BookATaxi_Message">Quand voulez-vous commander votre taxi?</string>
   <string name="InvalidChargeTypeTitle">Type de paiement invalide</string>
   <string name="AddPaymentMethod">Ajouter une méthode de paiement</string>
+  <string name="CurrentBookingDisabledTitle">Réservation Immédiate Non Disponible</string>
+  <string name="ManualRideLinqNoCardOnFile">Vous devez avoir une carte associée à votre compte pour utiliser RideLinQ</string>
+  <string name="ManualRideLinqCreditCardDisabled">Vous avez un paiement en souffrance pour un course précédente et vous ne pouvez pas utiliser RideLinQ jusqu\'a ce que ce montant soit payé.</string>
 </resources>
