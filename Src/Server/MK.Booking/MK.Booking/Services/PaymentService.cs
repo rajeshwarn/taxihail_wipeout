@@ -23,7 +23,11 @@ namespace apcurium.MK.Booking.Services
         private readonly IUnityContainer _container;
 
         public PaymentService(IPayPalServiceFactory payPalServiceFactory, 
-            IAccountDao accountDao, IOrderDao orderDao, ICreditCardDao creditCardDao, IServerSettings serverSettings, IUnityContainer container)
+            IAccountDao accountDao, 
+            IOrderDao orderDao, 
+            ICreditCardDao creditCardDao, 
+            IServerSettings serverSettings, 
+            IUnityContainer container)
         {
             _payPalServiceFactory = payPalServiceFactory;
             _accountDao = accountDao;
@@ -82,7 +86,7 @@ namespace apcurium.MK.Booking.Services
             return GetInstance().ProviderType(orderId);
         }
 
-        public PreAuthorizePaymentResponse PreAuthorize(Guid orderId, AccountDetail account, decimal amountToPreAuthorize, bool isReAuth = false, bool isSettlingOverduePayment = false, bool isForPrepaid = false)
+        public PreAuthorizePaymentResponse PreAuthorize(Guid orderId, AccountDetail account, decimal amountToPreAuthorize, bool isReAuth = false, bool isSettlingOverduePayment = false, bool isForPrepaid = false, string cvv = null)
         {
             // we pass the orderId just in case it might exist but most of the time it won't since preauth is done before order creation
             if (IsPayPal(account.Id, orderId, isForPrepaid))
@@ -90,7 +94,13 @@ namespace apcurium.MK.Booking.Services
                 return _payPalServiceFactory.GetInstance().PreAuthorize(account.Id, orderId, account.Email, amountToPreAuthorize, isReAuth);
             }
 
-            return GetInstance().PreAuthorize(orderId, account, amountToPreAuthorize, isReAuth, isSettlingOverduePayment);
+            // if we call preauth more than once, the cvv will be null but since preauth already passed once, it's safe to assume it's ok
+            var response = GetInstance().PreAuthorize(orderId, account, amountToPreAuthorize, isReAuth, isSettlingOverduePayment, false, cvv);
+
+            // delete the cvv stored in database once preauth is done, doesn't fail if it doesn't exist
+            _orderDao.DeleteTemporaryPaymentInfo(orderId);
+
+            return response;
         }
 
         public CommitPreauthorizedPaymentResponse CommitPayment(Guid orderId, AccountDetail account, decimal preauthAmount, decimal amount, decimal meterAmount, decimal tipAmount, string transactionId, string reAuthOrderId = null, bool isForPrepaid = false)

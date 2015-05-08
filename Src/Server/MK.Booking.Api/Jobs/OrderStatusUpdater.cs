@@ -242,8 +242,7 @@ namespace apcurium.MK.Booking.Api.Jobs
 
             var account = _accountDao.FindById(orderDetail.AccountId);
 
-            var result = _paymentService.PreAuthorize(orderId, account, amount);
-
+            var result = _paymentService.PreAuthorize(orderId, account, amount, false, false, false, cvv);
             if (result.IsSuccessful)
             {
                 // Wait for OrderPaymentDetail to be created
@@ -262,7 +261,7 @@ namespace apcurium.MK.Booking.Api.Jobs
                     TransactionDate = result.TransactionDate
                 });
             }
-
+            
             return result;
         }
 

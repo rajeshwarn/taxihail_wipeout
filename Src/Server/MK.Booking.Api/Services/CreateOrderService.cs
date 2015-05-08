@@ -814,8 +814,8 @@ namespace apcurium.MK.Booking.Api.Services
             // there's a minimum amount of $50 (warning indicating that on the admin ui)
             // if app returned an estimate, use it, otherwise use the setting (or 0), then use max between the value and 50
             var preAuthAmount = Math.Max(appEstimate ?? (_serverSettings.GetPaymentSettings().PreAuthAmount ?? 0), 50);
-            
-            var preAuthResponse = _paymentService.PreAuthorize(orderId, account, preAuthAmount);
+
+            var preAuthResponse = _paymentService.PreAuthorize(orderId, account, preAuthAmount, false, false, false, cvv);
 
             var errorMessage = isPayPal
                 ? _resources.Get("CannotCreateOrder_PayPalWasDeclined", clientLanguageCode)
@@ -1302,6 +1302,8 @@ namespace apcurium.MK.Booking.Api.Services
             var tipAmount = FareHelper.GetTipAmountFromTotalIncludingTip(appEstimateWithTip, tipPercentage);
             var totalAmount = appEstimateWithTip;
             var meterAmount = totalAmount - tipAmount;
+
+            // TODO pass the cvv here 
 
             var preAuthResponse = _paymentService.PreAuthorize(orderId, account, totalAmount, isForPrepaid: true);
             if (preAuthResponse.IsSuccessful)

@@ -20,6 +20,7 @@ namespace apcurium.MK.Booking.Services.Impl
         private readonly ICommandBus _commandBus;
         private readonly ILogger _logger;
         private readonly IOrderPaymentDao _paymentDao;
+        private readonly IServerSettings _serverSettings;
         private readonly IPairingService _pairingService;
         private readonly ICreditCardDao _creditCardDao;
 
@@ -35,6 +36,7 @@ namespace apcurium.MK.Booking.Services.Impl
             _commandBus = commandBus;
             _logger = logger;
             _paymentDao = paymentDao;
+            _serverSettings = serverSettings;
             _pairingService = pairingService;
             _creditCardDao = creditCardDao;
 
@@ -173,8 +175,8 @@ namespace apcurium.MK.Booking.Services.Impl
                 };
             }
         }
-
-        public PreAuthorizePaymentResponse PreAuthorize(Guid orderId, AccountDetail account, decimal amountToPreAuthorize, bool isReAuth = false, bool isSettlingOverduePayment = false, bool isForPrepaid = false)
+        
+        public PreAuthorizePaymentResponse PreAuthorize(Guid orderId, AccountDetail account, decimal amountToPreAuthorize, bool isReAuth = false, bool isSettlingOverduePayment = false, bool isForPrepaid = false, string cvv = null)
         {
             var message = string.Empty;
             var transactionId = string.Empty;
@@ -198,12 +200,10 @@ namespace apcurium.MK.Booking.Services.Impl
                         Options = new TransactionOptionsRequest
                         {
                             SubmitForSettlement = false
-                        },
-//                        CreditCard = new TransactionCreditCardRequest
-//                        {
-//                            CVV = "123"
-//                        }
+                        }
                     };
+
+                    AddCvvInfo(transactionRequest, cvv);
 
                     //sale
                     var result = BraintreeGateway.Transaction.Sale(transactionRequest);
@@ -375,6 +375,24 @@ namespace apcurium.MK.Booking.Services.Impl
                     IsSuccessful = false,
                     Message = ex.Message
                 };
+            }
+        }
+
+        private void AddCvvInfo(TransactionRequest transactionRequest, string cvv)
+        {
+            if (_serverSettings.GetPaymentSettings().AskForCVVAtBooking)
+            {
+                if (!cvv.HasValue())
+                {
+                    _logger.LogMessage("AskForCVVAtBooking setting is enabled but no cvv found for this order, could be from a reauth");
+                }
+                else
+                {
+                    transactionRequest.CreditCard = new TransactionCreditCardRequest
+                    {
+                        CVV = cvv
+                    };
+                }
             }
         }
 
