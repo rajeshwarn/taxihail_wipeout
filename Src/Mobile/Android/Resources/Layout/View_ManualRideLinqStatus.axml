@@ -43,11 +43,13 @@
             <TextView
                 android:layout_weight="0.5"
                 android:layout_height="wrap_content"
+                android:layout_width="0dp"
                 style="@style/BlackTextLabel"
                 android:gravity="end"
                 android:text="@string/ManualRideLinqStatus_Driver" />
             <TextView
                 android:layout_weight="0.5"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dip"
                 style="@style/DetailText"
@@ -63,12 +65,14 @@
             android:layout_height="wrap_content">
             <TextView
                 android:layout_weight="0.5"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 style="@style/BlackTextLabel"
                 android:gravity="end"
                 android:text="@string/ManualRideLinqStatus_PairingCode" />
             <TextView
                 android:layout_weight="0.5"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dip"
                 style="@style/DetailText"
