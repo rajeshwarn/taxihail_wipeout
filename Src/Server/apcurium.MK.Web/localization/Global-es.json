@@ -35,6 +35,7 @@
     "CreateOrder_VehicleType": "Tipo de Vehículo inválido",
     "CreateOrder_InvalidChargeType": "Invalid Charge Type",
     "CreateOrder_PendingOrder": "No puede reservar este servicio, ya que hay una reservación pendiente. ¿Desea ver esta reservación?",
+    "CreateOrder_PrepaidNoEstimate":  "You need an estimated fare to prepay your ride. Please select a destination address to get one",
 	"OrderNotInIbs": "Reservación desconocida",
 	"NearbyPlaces_LocationRequired": "Ubicación requerida",
 	"Search_Locations_NameRequired": "Nombre requedido",

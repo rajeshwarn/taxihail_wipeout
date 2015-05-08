@@ -248,15 +248,27 @@
                 return;
             }
 
-            var isPayingWithCoF = this.model.isPayingWithCoF();
             var hasCreditCardSet = TaxiHail.auth.account.get('defaultCreditCard') != null;
 
             if (this.model.isPayingWithAccountCharge() && !this.model.get('market')) {
                 //account charge type payment                
                 TaxiHail.app.navigate('bookaccountcharge', { trigger: true });
-            } else if (isPayingWithCoF && !hasCreditCardSet && TaxiHail.parameters.alwaysDisplayCoFOption) {
-                TaxiHail.app.navigate('confirmationbook/payment', { trigger: true });
-            }else{
+
+            } else if (this.model.isPayingWithCoF()
+                && !hasCreditCardSet
+                && TaxiHail.parameters.alwaysDisplayCoFOption && !this.model.get('market')) {
+
+                if (!this.model.has('dropOffAddress')) {
+                    this.$(':submit').button('reset');
+
+                    var $alert = $('<div class="alert alert-error" />');
+                    $alert.append($('<div />').text(TaxiHail.localize("CreateOrder_PrepaidNoEstimate")));
+                    this.$('.errors').html($alert);
+                } else {
+                    TaxiHail.app.navigate('confirmationbook/payment', { trigger: true });
+                }
+                
+            } else {
                 this.model.save({}, {
                     success: TaxiHail.postpone(function (model) {
                         // Wait for response before doing anything

@@ -21,8 +21,5 @@
         public string PublicKey { get; set; }
 
         public string PrivateKey { get; set; }
-
-
-        public bool AlwaysDisplayCoFOption { get; set; }
     }
 }

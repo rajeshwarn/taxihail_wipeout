@@ -115,7 +115,7 @@ namespace apcurium.MK.Web
 
             var paymentSettings = config.GetPaymentSettings();
 
-            AlwaysDisplayCoFOption = paymentSettings.BraintreeServerSettings.AlwaysDisplayCoFOption;
+            AlwaysDisplayCoFOption = paymentSettings.AlwaysDisplayCoFOption;
 
             IsBraintreePrepaidEnabled = paymentSettings.PaymentMode == PaymentMethod.Braintree 
                 && paymentSettings.IsPayInTaxiEnabled

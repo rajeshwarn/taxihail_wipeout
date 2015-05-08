@@ -73,6 +73,12 @@
     <input type="text" class="input-block-level settingsBox" name="noShowFee" value="{{noShowFee}}" />
   </div>
 
+    <label class="control-label settingsLabel">{{{localize "Always display Card on File on Web"}}}</label>
+    <select name="alwaysDisplayCoFOption" class="settingsBox">
+        <option value="{{alwaysDisplayCoFOption}}" s selected>{{localizeBool alwaysDisplayCoFOption true="Yes" false="No"}}</option>
+        <option value="{{invertedBool alwaysDisplayCoFOption}}">{{localizeBool alwaysDisplayCoFOption true="No" false="Yes"}}</option>
+    </select>
+
 <!-- BRAINTREE SETTINGS-->
   <div class="control-group" id="braintreeSettingsDiv">
     <br />
@@ -94,12 +100,6 @@
       <option value="{{braintreeServerSettings.isSandbox}}" selected >{{localizeBool braintreeServerSettings.isSandbox true="Yes" false="No"}}</option>
       <option value="{{invertedBool braintreeServerSettings.isSandbox}}">{{localizeBool braintreeServerSettings.isSandbox true="No" false="Yes"}}</option>
     </select>
-
-      <label class="control-label settingsLabel">{{{localize "Always display Card on File on Web"}}}</label>
-      <select name="braintreeServerSettings.alwaysDisplayCoFOption" class="settingsBox">
-          <option value="{{braintreeServerSettings.alwaysDisplayCoFOption}}" s selected>{{localizeBool braintreeServerSettings.alwaysDisplayCoFOption true="Yes" false="No"}}</option>
-          <option value="{{invertedBool braintreeServerSettings.alwaysDisplayCoFOption}}">{{localizeBool braintreeServerSettings.alwaysDisplayCoFOption true="No" false="Yes"}}</option>
-      </select>
 
     <label class="control-label settingsLabel" >{{{localize "Merchant Id"}}}</label>
     <input type="text" class="input-block-level settingsBox" name="braintreeServerSettings.merchantId" value="{{braintreeServerSettings.merchantId}}" />
