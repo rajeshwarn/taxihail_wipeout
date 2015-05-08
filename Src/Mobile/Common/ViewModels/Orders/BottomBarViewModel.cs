@@ -531,11 +531,20 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
             {
                 return this.GetCommand(() =>
                 {
-                    if (_accountService.CurrentAccount.DefaultCreditCard == null)
+
+                    var localize = this.Services().Localize;
+
+                    if (_accountService.CurrentAccount.DefaultCreditCard == null || _accountService.CurrentAccount.IsPayPalAccountLinked)
                     {
                         this.Services().Message.ShowMessage(
-                            this.Services().Localize["ErrorCreatingOrderTitle"],
-                            this.Services().Localize["ManualRideLinqNoCardOnFile"]);
+                            localize["ErrorCreatingOrderTitle"],
+                            localize["ManualRideLinqNoCardOnFile"]);
+                    }
+                    else if (_accountService.CurrentAccount.HasValidPaymentInformation)
+                    {
+                        this.Services().Message.ShowMessage(
+                            localize["ErrorCreatingOrderTitle"],
+                            localize[""]);
                     }
                     else
                     {
