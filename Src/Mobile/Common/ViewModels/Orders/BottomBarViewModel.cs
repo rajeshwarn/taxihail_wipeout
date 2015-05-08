@@ -544,7 +544,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
                     {
                         this.Services().Message.ShowMessage(
                             localize["ErrorCreatingOrderTitle"],
-                            localize[""]);
+                            localize["ManualRideLinqCreditCardDisabled"]);
                     }
                     else
                     {
