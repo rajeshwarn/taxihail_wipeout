@@ -18,30 +18,24 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 	{
 		private readonly IOrderWorkflowService _orderWorkflowService;
 		private readonly IAccountService _accountService;
-	    private bool _isInitialized;
 
         public event EventHandler<HomeViewModelStateRequestedEventArgs> PresentationStateRequested;
 
-		public OrderEditViewModel(IOrderWorkflowService orderWorkflowService,
-			IAccountService accountService)
+		public OrderEditViewModel(IOrderWorkflowService orderWorkflowService, IAccountService accountService)
 		{
 			_orderWorkflowService = orderWorkflowService;
 			_accountService = accountService;
+
+			Observe(_orderWorkflowService.GetAndObserveBookingSettings(), bookingSettings => BookingSettings = bookingSettings.Copy());
+			Observe(_orderWorkflowService.GetAndObservePickupAddress(), address => PickupAddress = address.Copy());
+			Observe(_orderWorkflowService.GetAndObserveHashedMarket(), hashedMarket => MarketUpdated(hashedMarket));
 		}
 
 		public async Task Init()
 		{
-		    if (!_isInitialized)
-		    {
-		        _isInitialized = true;
-                Vehicles = (await _accountService.GetVehiclesList()).Select(x => new ListItem { Id = x.ReferenceDataVehicleId, Display = x.Name }).ToArray();
-                ChargeTypes = (await _accountService.GetPaymentsList()).Select(x => new ListItem { Id = x.Id, Display = this.Services().Localize[x.Display] }).ToArray();
-                RaisePropertyChanged(() => IsChargeTypesEnabled);
-
-                Observe(_orderWorkflowService.GetAndObserveBookingSettings(), bookingSettings => BookingSettings = bookingSettings.Copy());
-                Observe(_orderWorkflowService.GetAndObservePickupAddress(), address => PickupAddress = address.Copy());
-		        Observe(_orderWorkflowService.GetAndObserveHashedMarket(), hashedMarket => MarketUpdated(hashedMarket));
-		    }
+			Vehicles = (await _accountService.GetVehiclesList()).Select(x => new ListItem { Id = x.ReferenceDataVehicleId, Display = x.Name }).ToArray();
+			ChargeTypes = (await _accountService.GetPaymentsList()).Select(x => new ListItem { Id = x.Id, Display = this.Services().Localize[x.Display] }).ToArray();
+			RaisePropertyChanged(() => IsChargeTypesEnabled);
 		}
 
 	    private async Task MarketUpdated(string hashedMarket)
@@ -59,7 +53,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
             get
             {
 				// this is in cache and set correctly when we add/update/delete credit card
-				return !_accountService.CurrentAccount.DefaultCreditCard.HasValue || !Settings.DisableChargeTypeWhenCardOnFile;
+				return _accountService.CurrentAccount.DefaultCreditCard == null || !Settings.DisableChargeTypeWhenCardOnFile;
             }
         }
 
@@ -121,12 +115,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 								return;
 						}
 					}
+
 					await _orderWorkflowService.SetBookingSettings(BookingSettings);
 					await _orderWorkflowService.SetPickupAptAndRingCode(PickupAddress.Apartment, PickupAddress.RingCode);
-					
 
-					if ((BookingSettings.ChargeTypeId == Common.Enumeration.ChargeTypes.CardOnFile.Id)  &&
-						(!_accountService.CurrentAccount.DefaultCreditCard.HasValue))
+					if (BookingSettings.ChargeTypeId == Common.Enumeration.ChargeTypes.CardOnFile.Id 
+						&& _accountService.CurrentAccount.DefaultCreditCard == null)
 					{
 						this.Services ().Message.ShowMessage (this.Services ().Localize ["ErrorCreatingOrderTitle"], 
 							this.Services ().Localize ["NoCardOnFileMessage"],

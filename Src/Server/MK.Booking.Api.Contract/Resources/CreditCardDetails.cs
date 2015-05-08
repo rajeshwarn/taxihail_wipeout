@@ -1,8 +1,5 @@
-﻿#region
-
-using System;
-
-#endregion
+﻿using System;
+using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.Api.Contract.Resources
 {
@@ -25,5 +22,24 @@ namespace apcurium.MK.Booking.Api.Contract.Resources
         public string ExpirationYear { get; set; }
 
         public bool IsDeactivated { get; set; }
+
+        public bool IsExpired()
+        {
+            if (!ExpirationMonth.HasValue() || !ExpirationYear.HasValue()) 
+            {
+                return false; // Prevent expiration verification from failing
+            }
+
+            var expYear = int.Parse (ExpirationYear);
+            var expMonth = int.Parse (ExpirationMonth);
+            var expirationDate = new DateTime (expYear, expMonth, DateTime.DaysInMonth (expYear, expMonth), 23, 59, 59);
+
+            if (expirationDate < DateTime.Now) 
+            {
+                return true;
+            }
+
+            return false;
+        }
     }
 }

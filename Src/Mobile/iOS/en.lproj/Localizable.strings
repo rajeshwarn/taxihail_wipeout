@@ -515,6 +515,7 @@
 "Tuto08Bottom"="We hope you find this application both convenient and intuitive.";
 "ManualRideLinqSummary_Done"="Done";
 "PaymentDetails.TipAmountLabel"="Tip Amount";
+"AddPaymentMethod"="Add payment method";
 "Version"="v{0}";
 "Tuto08Top"="You can review your order history at any time, and even rebook a previous trip with the push of a button";
 "UnpairWarningMessageWithPromo"="If you decide to pay in car, you will not be able to use the promotion";

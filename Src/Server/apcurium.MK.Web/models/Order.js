@@ -82,6 +82,13 @@
                 && settings.chargeTypeId == 4;
         },
 
+        isPayingWithCoF: function () {
+            var settings = this.get('settings');
+            return settings.chargeTypeId != null
+                && settings.chargeTypeId != ''
+                && settings.chargeTypeId == 3;
+        },
+
         switchOrderToNextDispatchCompany: function () {
             return $.ajax({
                 type: 'POST',

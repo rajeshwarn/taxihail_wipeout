@@ -1488,6 +1488,15 @@
   <data name="CardExpiredMessage" xml:space="preserve">
     <value>Votre carte a expiré. Ajoutez une nouvelle carte ou mettez à jour la carte sélectionnée pour continuer.</value>
   </data>
+  <data name="CreditCardExpiredTitle" xml:space="preserve">
+    <value>Carte Expirée</value>
+  </data>
+  <data name="CardExpiredNonMandatoryMessage" xml:space="preserve">
+    <value>Votre carte a expiré. Votre compte est maintenant configuré pour le paiement à bord. Si vous désirez continuer d'utiliser la carte de crédit, vous devrez la mettre à jour.</value>
+  </data>
+  <data name="CreditCardExpiredUpdateNow" xml:space="preserve">
+    <value>Mettre à jour</value>
+  </data>
   <data name="View_NotificationSettings" xml:space="preserve">
     <value>Notifications</value>
   </data>
@@ -1697,7 +1706,7 @@
     <value>Expire aujourd'hui!</value>
   </data>
   <data name="PromoBookRide" xml:space="preserve">
-    <value>Utiliser ce code promotionnel</value>
+    <value>Utiliser le code promo</value>
   </data>
   <data name="PromotionViewNoPromotionLabel" xml:space="preserve">
     <value>Aucune promotion disponible</value>
@@ -1908,5 +1917,14 @@
   </data>
   <data name="InvalidChargeTypeTitle" xml:space="preserve">
     <value>Type de paiement invalide</value>
+  </data>
+  <data name="AddPaymentMethod" xml:space="preserve">
+    <value>Ajouter une méthode de paiement</value>
+  </data>
+  <data name="CurrentBookingDisabledTitle" xml:space="preserve">
+    <value>Réservation Immédiate Non Disponible</value>
+  </data>
+  <data name="ManualRideLinqNoCardOnFile" xml:space="preserve">
+    <value>Vous devez avoir une carte associée à votre compte pour utiliser RideLinQ</value>
   </data>
 </root>

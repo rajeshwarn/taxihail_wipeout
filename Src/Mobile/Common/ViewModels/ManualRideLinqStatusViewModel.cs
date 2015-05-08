@@ -42,9 +42,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			Observable.Timer(TimeSpan.FromSeconds(4), TimeSpan.FromSeconds(_refreshInterval))
                 .SelectMany((_, cancellationToken) => RefreshDetails(cancellationToken))
 				.Where(orderDetails => orderDetails.EndTime.HasValue)
+				.Take(1) // trigger only once
 				.Subscribe(
 					ToRideSummary,
-					ex => Logger.LogError(ex))
+					Logger.LogError)
 				.DisposeWith (Subscriptions);
 		}
 
@@ -53,11 +54,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             return await _bookingService.GetTripInfoFromManualRideLinq(OrderId);
 		}
 
-		private Guid OrderId
-		{
-			get;
-			set;
-		}
+		private Guid OrderId { get; set; }
 
 		private string _pairingCode;
 		public string PairingCode

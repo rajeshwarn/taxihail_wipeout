@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Geography;
 using apcurium.MK.Common.Http.Extensions;
 using HoneyBadger.Enums;
@@ -12,10 +13,12 @@ namespace HoneyBadger
     public class HoneyBadgerServiceClient : BaseServiceClient
     {
         private readonly IServerSettings _serverSettings;
+        private readonly ILogger _logger;
 
-        public HoneyBadgerServiceClient(IServerSettings serverSettings)
+        public HoneyBadgerServiceClient(IServerSettings serverSettings, ILogger logger)
         {
             _serverSettings = serverSettings;
+            _logger = logger;
         }
 
         /// <summary>
@@ -65,11 +68,21 @@ namespace HoneyBadger
 
             var queryString = BuildQueryString(@params);
 
-            var response = Client.Get("availability" + queryString)
+            HoneyBadgerResponse response = null;
+
+            try
+            {
+                response = Client.Get("availability" + queryString)
                                  .Deserialize<HoneyBadgerResponse>()
                                  .Result;
-
-            if (response.Entities != null)
+            }
+            catch (Exception ex)
+            {
+                _logger.LogMessage("An error occured when trying to contact HoneyBadger");
+                _logger.LogError(ex);
+            }
+             
+            if (response != null && response.Entities != null)
             {
                 var entities = !returnAll ? response.Entities.Take(numberOfVehicles) : response.Entities;
                 return entities.Select(e => new VehicleResponse
@@ -121,11 +134,21 @@ namespace HoneyBadger
 
             var queryString = BuildQueryString(@params);
 
-            var response = Client.Get("availability" + queryString)
+            HoneyBadgerResponse response = null;
+
+            try
+            {
+                response = Client.Get("availability" + queryString)
                                  .Deserialize<HoneyBadgerResponse>()
                                  .Result;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogMessage("An error occured when trying to contact HoneyBadger");
+                _logger.LogError(ex);
+            }
 
-            if (response.Entities != null)
+            if (response != null && response.Entities != null)
             {
                 return response.Entities.Select(e => new VehicleResponse
                 {

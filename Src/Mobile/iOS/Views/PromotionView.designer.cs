@@ -13,6 +13,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 	partial class PromotionView
 	{
 		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnAddPayment { get; set; }
+
+		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnApplyPromo { get; set; }
 
 		[Outlet]
@@ -29,14 +32,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		
 		void ReleaseDesignerOutlets ()
 		{
-			if (txtPromoCode != null) {
-				txtPromoCode.Dispose ();
-				txtPromoCode = null;
-			}
-
 			if (btnApplyPromo != null) {
 				btnApplyPromo.Dispose ();
 				btnApplyPromo = null;
+			}
+
+			if (btnAddPayment != null) {
+				btnAddPayment.Dispose ();
+				btnAddPayment = null;
 			}
 
 			if (lblInstruction != null) {
@@ -52,6 +55,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			if (tblPromotions != null) {
 				tblPromotions.Dispose ();
 				tblPromotions = null;
+			}
+
+			if (txtPromoCode != null) {
+				txtPromoCode.Dispose ();
+				txtPromoCode = null;
 			}
 		}
 	}

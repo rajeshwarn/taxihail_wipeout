@@ -35,6 +35,7 @@
     "CreateOrder_VehicleType": "Type de véhicule invalide",
     "CreateOrder_InvalidChargeType": "Type de paiement invalide",
     "CreateOrder_PendingOrder": "La commande ne peut être créée car une autre commande est déjà en cours. Voir le statut de la commande?",
+    "CreateOrder_PrepaidNoEstimate": "Pour prépayer votre course, un estimé doit être fourni. Veuillez sélectionner une adresse de destination pour en obtenir un.",
     "OrderNotInIbs": "Commande inconnue",
     "NearbyPlaces_LocationRequired": "Adresse requise",
     "Search_Locations_NameRequired": "Nom requis",
@@ -92,5 +93,6 @@
     "RefineAddress": "Affinez l'adresse en entrant un numéro de rue",
     "TokenizeInvalidCardInfos": "Les informations de la carte sont invalides",
     "TokenizeGenericError": "Une erreur est survenue. Veuillez essayer de nouveau.",
-    "error.CreditCardNotDeleted": "Il est impossible de supprimer la carte de crédit s'il y a une commande en cours."
+    "error.CreditCardNotDeleted": "Il est impossible de supprimer la carte de crédit s'il y a une commande en cours.",
+    "ExpiredCreditCardError":  "La date d'expiration n'est pas valide."
 }
