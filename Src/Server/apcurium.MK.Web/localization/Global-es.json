@@ -93,5 +93,6 @@
     "RefineAddress": "Refine the address by entering a street number",
     "TokenizeInvalidCardInfos": "The card informations are invalid",
     "TokenizeGenericError": "An unexpected error occured. Please try again.",
-    "error.CreditCardNotDeleted": "Can't delete credit card when an order is in progress."
+    "error.CreditCardNotDeleted": "Can't delete credit card when an order is in progress.",
+    "ExpiredCreditCardError":  "The expiration date is not valid."
 }

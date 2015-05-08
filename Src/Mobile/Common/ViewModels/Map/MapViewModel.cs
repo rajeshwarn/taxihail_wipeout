@@ -25,11 +25,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_orderWorkflowService = orderWorkflowService;
 			_vehicleService = vehicleService;
 
-			this.Observe(_orderWorkflowService.GetAndObserveIsDestinationModeOpened(), isDestinationModeOpened => IsDestinationModeOpened = isDestinationModeOpened);
-            this.Observe(_orderWorkflowService.GetAndObserveAddressSelectionMode(), addressSelectionMode => AddressSelectionMode = addressSelectionMode);
-            this.Observe(_orderWorkflowService.GetAndObservePickupAddress(), address => PickupAddress = address);
-			this.Observe(_orderWorkflowService.GetAndObserveDestinationAddress(), address => DestinationAddress = address);
-			this.Observe(_vehicleService.GetAndObserveAvailableVehicles(), availableVehicles => AvailableVehicles = availableVehicles);
+			Observe(_orderWorkflowService.GetAndObserveIsDestinationModeOpened(), isDestinationModeOpened => IsDestinationModeOpened = isDestinationModeOpened);
+            Observe(_orderWorkflowService.GetAndObserveAddressSelectionMode(), addressSelectionMode => AddressSelectionMode = addressSelectionMode);
+            Observe(_orderWorkflowService.GetAndObservePickupAddress(), address => PickupAddress = address);
+			Observe(_orderWorkflowService.GetAndObserveDestinationAddress(), address => DestinationAddress = address);
+			Observe(_vehicleService.GetAndObserveAvailableVehicles(), availableVehicles => AvailableVehicles = availableVehicles);
         }
 
         public static int ZoomStreetLevel = 14;

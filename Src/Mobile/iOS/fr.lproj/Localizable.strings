@@ -508,6 +508,7 @@
 "ManualRideLinqSummary_Done"="Ok";
 "PaymentDetails.TipAmountLabel"="Montant du pourboire";
 "LoadingMessage"="Chargement…";
+"AddPaymentMethod"="Ajouter une méthode de paiement";
 "PaymentDetails.CreditCardLabel"="Cartes de paiement";
 "Tuto08Top"="Vous avez la possibilité de revoir l'historique de vos trajets et donc de renouveler une commande en sélectionnant le trajet souhaité.";
 "UnpairWarningMessageWithPromo"="Si vous décidez de payer dans le taxi, vous ne serez pas éligible à la promotion";

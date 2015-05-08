@@ -1,11 +1,10 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Extensions;
+using apcurium.MK.Booking.Mobile.ViewModels.Payment;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -13,11 +12,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
     {
         private readonly IOrderWorkflowService _orderWorkflowService;
         private readonly IPromotionService _promotionService;
+		private readonly IAccountService _accountService;
 
-        public PromotionViewModel(IOrderWorkflowService orderWorkflowService, IPromotionService promotionService)
+        public PromotionViewModel(IOrderWorkflowService orderWorkflowService, IPromotionService promotionService, IAccountService accountService)
         {
             _orderWorkflowService = orderWorkflowService;
             _promotionService = promotionService;
+			_accountService = accountService;
 
             ActivePromotions = new ObservableCollection<PromotionItemViewModel>();
         }
@@ -26,6 +27,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             base.OnViewLoaded();
             LoadActivePromotions();
+			
+        }
+
+        public override void OnViewStarted(bool firstTime)
+        {
+            base.OnViewStarted(firstTime);
+
+            HasValidPaymentInformation = _accountService.CurrentAccount.HasValidPaymentInformation;
         }
 
         private string _promotionCode;
@@ -55,6 +64,30 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 });
             }
         }
+
+		private bool _hasValidPaymentInformation;
+		public bool HasValidPaymentInformation {
+			get 
+			{
+				return _hasValidPaymentInformation;
+			}
+			set 
+			{
+				_hasValidPaymentInformation = value;
+				RaisePropertyChanged();
+			}
+		}
+		
+		public ICommand ToPayment
+		{
+			get
+			{
+			    return this.GetCommand(() =>
+			    {
+			        ShowViewModel<CreditCardAddViewModel>(new {isFromPromotions = true});
+			    });
+			}
+		}
 
         public ICommand SelectPromotion
         {

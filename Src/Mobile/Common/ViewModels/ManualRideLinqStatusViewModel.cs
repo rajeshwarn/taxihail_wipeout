@@ -54,11 +54,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             return await _bookingService.GetTripInfoFromManualRideLinq(OrderId);
 		}
 
-		private Guid OrderId
-		{
-			get;
-			set;
-		}
+		private Guid OrderId { get; set; }
 
 		private string _pairingCode;
 		public string PairingCode

@@ -34,5 +34,13 @@ namespace apcurium.MK.Booking.ReadModel.Query
                 return context.Query<CreditCardDetails>().FirstOrDefault(c => c.Token == cardToken);
             }
         }
+
+        public CreditCardDetails FindById(Guid cardId)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                return context.Query<CreditCardDetails>().FirstOrDefault(c => c.CreditCardId == cardId);
+            }
+        }
     }
 }

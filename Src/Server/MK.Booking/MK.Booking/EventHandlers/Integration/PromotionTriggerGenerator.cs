@@ -212,12 +212,13 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                 return;
             }
 
-            _commandBus.Send(new UnapplyPromotion
-            {
-                PromoId = promotionDetail.PromoId,
-                AccountId = orderDetail.AccountId,
-                OrderId = orderId
-            });
+                _commandBus.Send(new UnapplyPromotion
+                {
+                    PromoId = promotionDetail.PromoId,
+                    AccountId = orderDetail.AccountId,
+                    OrderId = orderId
+                });
+            }
         }
     }
 }
