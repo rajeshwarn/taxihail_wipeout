@@ -50,7 +50,8 @@ namespace apcurium.MK.Web.Tests
             var serverSettings = UnityServiceLocator.Instance.Resolve<IServerSettings>();
             var pairingService = UnityServiceLocator.Instance.Resolve<IPairingService>();
             var creditCardDao = UnityServiceLocator.Instance.Resolve<ICreditCardDao>();
-            return new MonerisPaymentService(commandBus, logger, orderPaymentDao, serverSettings, pairingService, creditCardDao);
+            var orderDao = UnityServiceLocator.Instance.Resolve<IOrderDao>();
+            return new MonerisPaymentService(commandBus, logger, orderPaymentDao, serverSettings, pairingService, creditCardDao, orderDao);
         }
     }
 }

@@ -185,7 +185,7 @@ namespace apcurium.MK.Booking.Services
                 case PaymentMethod.Cmt:
                     return new CmtPaymentService(_container.Resolve<ICommandBus>(), _container.Resolve<IOrderDao>(), _container.Resolve<ILogger>(), _container.Resolve<IAccountDao>(), _container.Resolve<IOrderPaymentDao>(), serverSettings, _container.Resolve<IPairingService>(), _container.Resolve<ICreditCardDao>());
                 case PaymentMethod.Moneris:
-                    return new MonerisPaymentService(_container.Resolve<ICommandBus>(), _container.Resolve<ILogger>(), _container.Resolve<IOrderPaymentDao>(), serverSettings, _container.Resolve<IPairingService>(), _container.Resolve<ICreditCardDao>());
+                    return new MonerisPaymentService(_container.Resolve<ICommandBus>(), _container.Resolve<ILogger>(), _container.Resolve<IOrderPaymentDao>(), serverSettings, _container.Resolve<IPairingService>(), _container.Resolve<ICreditCardDao>(), _container.Resolve<IOrderDao>());
                 default:
                     return null;
             }
