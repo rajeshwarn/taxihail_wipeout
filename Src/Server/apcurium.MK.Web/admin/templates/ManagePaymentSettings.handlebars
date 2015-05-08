@@ -73,11 +73,17 @@
     <input type="text" class="input-block-level settingsBox" name="noShowFee" value="{{noShowFee}}" />
   </div>
 
+    <label class="control-label settingsLabel">{{{localize "Always Display Card on File on Web"}}}</label>
+    <select name="alwaysDisplayCoFOption" class="settingsBox">
+        <option value="{{alwaysDisplayCoFOption}}" s selected>{{localizeBool alwaysDisplayCoFOption true="Yes" false="No"}}</option>
+        <option value="{{invertedBool alwaysDisplayCoFOption}}">{{localizeBool alwaysDisplayCoFOption true="No" false="Yes"}}</option>
+    </select>
+
 <!-- BRAINTREE SETTINGS-->
   <div class="control-group" id="braintreeSettingsDiv">
     <br />
     <h4 class="table-title">{{localize "Braintree Settings"}}</h4>
-    
+
     <h5  >{{{localize "Client Settings"}}}</h5>
 
     <label class="control-label settingsLabel" >{{{localize "Client Key"}}}</label>
@@ -86,16 +92,15 @@
     <br />
     <br />
 
-    
+
     <h5  >{{{localize "Server Settings"}}}</h5>
-    
+
     <label class="control-label settingsLabel" >{{{localize "Use Sandbox"}}}</label>
     <select  name="braintreeServerSettings.isSandbox" class="settingsBox">
       <option value="{{braintreeServerSettings.isSandbox}}" selected >{{localizeBool braintreeServerSettings.isSandbox true="Yes" false="No"}}</option>
       <option value="{{invertedBool braintreeServerSettings.isSandbox}}">{{localizeBool braintreeServerSettings.isSandbox true="No" false="Yes"}}</option>
     </select>
-    
-    
+
     <label class="control-label settingsLabel" >{{{localize "Merchant Id"}}}</label>
     <input type="text" class="input-block-level settingsBox" name="braintreeServerSettings.merchantId" value="{{braintreeServerSettings.merchantId}}" />
 
@@ -106,7 +111,7 @@
     <input type="text" class="input-block-level settingsBox" name="braintreeServerSettings.publicKey" value="{{braintreeServerSettings.publicKey}}" />
 
     <div id="brainTreeSettingsMessageZone"></div>
-    <button type='button' id="brainTreeSettingsButton" class='btn' >{{localize "Test"}}</button>  
+    <button type='button' id="brainTreeSettingsButton" class='btn' >{{localize "Test"}}</button>
 
   </div>
 
@@ -130,7 +135,7 @@
       <option value="{{cmtPaymentSettings.isSandbox}}" selected="" >{{localizeBool cmtPaymentSettings.isSandbox true="Yes" false="No"}}</option>
       <option value="{{invertedBool cmtPaymentSettings.isSandbox}}">{{localizeBool cmtPaymentSettings.isSandbox true="No" false="Yes"}}</option>
     </select>
-    
+
 
 
     <label class="control-label settingsLabel" >{{{localize "Server Payment Url"}}}</label>
@@ -158,7 +163,7 @@
     <input type="text" class="input-block-level settingsBox" name="cmtPaymentSettings.market" value="{{cmtPaymentSettings.market}}" />
 
     <div id="cmtSettingsMessageZone"></div>
-    <button type='button' id="cmtSettingsButton" class='btn' >{{localize "Test"}}</button>    
+    <button type='button' id="cmtSettingsButton" class='btn' >{{localize "Test"}}</button>
 
   </div>
 

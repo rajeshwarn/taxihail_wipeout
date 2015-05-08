@@ -35,6 +35,7 @@
     "CreateOrder_VehicleType": "Type de véhicule invalide",
     "CreateOrder_InvalidChargeType": "Type de paiement invalide",
     "CreateOrder_PendingOrder": "La commande ne peut être créée car une autre commande est déjà en cours. Voir le statut de la commande?",
+    "CreateOrder_PrepaidNoEstimate": "Pour prépayer votre course, un estimé doit être fourni. Veuillez sélectionner une adresse de destination pour en obtenir un.",
     "OrderNotInIbs": "Commande inconnue",
     "NearbyPlaces_LocationRequired": "Adresse requise",
     "Search_Locations_NameRequired": "Nom requis",

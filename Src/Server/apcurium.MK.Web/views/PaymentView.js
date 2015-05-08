@@ -4,7 +4,8 @@
 
         events: {
             'change :input': 'onPropertyChanged',
-            'click [data-action=destroy]': 'deleteCreditCard'
+            'click [data-action=destroy]': 'deleteCreditCard',
+            'click [data-action=cancel]': 'cancel'
         },
 
         initialize: function () {
@@ -176,7 +177,21 @@
 	                    this.model.updateCreditCard()
                             .done(_.bind(function () {
                                 TaxiHail.auth.account.set('defaultCreditCard', 'tempId');
-                                this.renderConfirmationMessage();
+
+                                if (this.isOnBookingFlow()) {
+                                    var currentOrder = TaxiHail.orderService.getCurrentOrder();
+                                    currentOrder.save({}, {
+                                        success: TaxiHail.postpone(function (model) {
+                                            // Wait for response before doing anything
+                                            ga('send', 'event', 'button', 'click', 'book web', 0);
+
+                                            TaxiHail.app.navigate('status/' + model.id, { trigger: true, replace: true /* Prevent user from coming back to this screen */ });
+                                        }, this),
+                                        error: this.showErrors
+                                    });
+                                } else {
+                                    this.renderConfirmationMessage();
+                                }
                             }, this))
                             .fail(_.bind(function () {
                                 this.$(':submit').button('reset');
@@ -198,6 +213,20 @@
 	                this.$(':submit').button('reset');
 	                this.renderErrorMessage();
 	            }, this));
+        },
+
+
+        isOnBookingFlow: function () {
+             var currentNode = $(location).attr('hash');
+
+            return currentNode == '#confirmationbook/payment';
+        },
+
+        cancel: function(e) {
+            if (this.isOnBookingFlow()) {
+                TaxiHail.app.navigate('confirmationbook', { trigger: true });
+                e.preventDefault();
+            }
         },
 
         deleteCreditCard: function (e) {
