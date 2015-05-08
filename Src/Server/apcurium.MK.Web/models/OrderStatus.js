@@ -16,6 +16,11 @@
 
         isActive: function() {
             var status = this.get('ibsStatusId');
+
+            if (typeof status == 'undefined' || status == null) {
+                return false;
+            }
+
             return _.indexOf(['wosCANCELLED', 'wosCANCELLED_DONE', 'wosDONE', 'wosLOADED', 'wosTIMEOUT'], status) == -1;
         },
 

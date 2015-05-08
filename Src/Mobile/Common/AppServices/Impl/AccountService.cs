@@ -238,8 +238,22 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 		{
             get 
 			{
-                var account = UserCache.Get<Account> ("LoggedUser");
-                return account;
+				try
+				{
+					var oldDeprecatedAccount = UserCache.Get<DeprecatedAccount>("LoggedUser");
+					if(oldDeprecatedAccount.DefaultCreditCard.HasValue)
+					{
+						// there's an old account cached, force logout to set the new account object in cache
+						return null;
+					}
+
+					var account = UserCache.Get<Account> ("LoggedUser");
+					return account;
+				}
+				catch
+				{
+					return null;
+				}
             }
             private set 
 			{
@@ -250,7 +264,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 				else 
 				{
                     UserCache.Clear ("LoggedUser");
-                }                
+                }
             }
         }
 		
@@ -539,7 +553,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 refData.PaymentsList.Remove(i => i.Id == ChargeTypes.PayPal.Id);
 		    }
 
-		var creditCard = await GetCreditCard();
+			var creditCard = await GetCreditCard();
             if (creditCard == null
                 || CurrentAccount.IsPayPalAccountLinked
                 || creditCard.IsDeactivated)
@@ -559,7 +573,12 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         {
 			// the server can return multiple credit cards if the user added more cards with a previous version, we get the first one only.
             var result = await UseServiceClientAsync<IAccountServiceClient, IEnumerable<CreditCardDetails>>(service => service.GetCreditCards());
-			return result.FirstOrDefault();
+			var creditCard = result.FirstOrDefault();
+
+			// refresh credit card in cache
+			CurrentAccount.DefaultCreditCard = creditCard;
+
+			return creditCard;
         }
 
 		private async Task TokenizeCard(CreditCardInfos creditCard)
@@ -599,12 +618,24 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 				ExpirationYear = creditCard.ExpirationYear
             };
 
-            UpdateCachedAccount(creditCard.CreditCardId, ChargeTypes.CardOnFile.Id, false);
-
 			await UseServiceClientAsync<IAccountServiceClient> (client => 
 				isUpdate 
 					? client.AddCreditCard (request)
 					: client.UpdateCreditCard(request));  
+
+			var creditCardDetails = new CreditCardDetails
+			{
+				AccountId = CurrentAccount.Id,
+				CreditCardId = request.CreditCardId,
+				CreditCardCompany = request.CreditCardCompany,
+				NameOnCard = request.NameOnCard,
+				Token = request.Token,
+				Last4Digits = request.Last4Digits,
+				ExpirationMonth = request.ExpirationMonth,
+				ExpirationYear = request.ExpirationYear,
+				IsDeactivated = false
+			};
+			UpdateCachedAccount(creditCardDetails, ChargeTypes.CardOnFile.Id, false);
 
 			return true;
         }
@@ -634,7 +665,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			return UseServiceClientAsync<PayPalServiceClient>(service => service.UnlinkPayPalAccount(new UnlinkPayPalAccountRequest()));
 		}
 
-        private void UpdateCachedAccount(Guid? defaultCreditCard, int? chargeTypeId, bool isPayPalAccountLinked)
+		private void UpdateCachedAccount(CreditCardDetails defaultCreditCard, int? chargeTypeId, bool isPayPalAccountLinked)
         {
             var account = CurrentAccount;
             account.DefaultCreditCard = defaultCreditCard;

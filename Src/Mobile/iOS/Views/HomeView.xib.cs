@@ -277,6 +277,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
         {
             //redraw the shadows of the controls
             ctrlOrderReview.SetNeedsDisplay();
+            ctrlOrderReview.SetNeedsLayout();
             orderEdit.SetNeedsDisplay();
             ctrlOrderOptions.SetNeedsDisplay();
 			ctrlOrderBookingOptions.SetNeedsDisplay();

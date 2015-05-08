@@ -77,13 +77,15 @@ namespace apcurium.MK.Booking.Api.Services
                 // Determine the root path to the app 
                 var root = ApplicationPathResolver.GetApplicationPath(RequestContext);
 
-                var template = _templateService.Find("AccountConfirmationSuccess",account.Language);
+                var template = _templateService.Find("AccountConfirmationSuccess", account.Language);
                 var templateData = new
                 {
-                    ApplicationName = _serverSettings.ServerData.TaxiHail.ApplicationName,
                     RootUrl = root,
+                    PackageName = _serverSettings.ServerData.GCM.PackageName,
+                    ApplicationName = _serverSettings.ServerData.TaxiHail.ApplicationName,
                     AccentColor = _serverSettings.ServerData.TaxiHail.AccentColor
                 };
+
                 var body = _templateService.Render(template, templateData);
                 return new HttpResult(body, ContentType.Html);
             }

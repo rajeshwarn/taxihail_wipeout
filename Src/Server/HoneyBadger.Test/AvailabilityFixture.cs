@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using NUnit.Framework;
 using apcurium.MK.Booking.Test;
+using apcurium.MK.Common.Diagnostic;
 
 namespace HoneyBadger.Test
 {
@@ -10,7 +11,7 @@ namespace HoneyBadger.Test
         [SetUp]
         public void Setup()
         {
-            _sut = new HoneyBadgerServiceClient(new TestServerSettings());
+            _sut = new HoneyBadgerServiceClient(new TestServerSettings(), new Logger());
         }
 
         private HoneyBadgerServiceClient _sut;

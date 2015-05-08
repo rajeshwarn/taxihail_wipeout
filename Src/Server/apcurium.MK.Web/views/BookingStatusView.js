@@ -69,6 +69,7 @@
                 this.$('#callDispatchButton').addClass('hidden');
             }
             var status = this.model.getStatus();
+
             if (!status.isActive()) {
                 this.$('[data-action=cancel]').addClass('disabled');
                 canCancel = false;

@@ -500,6 +500,7 @@
 "PaymentViewTotalText"="Total";
 "PaymentDetails.TipAmountLabel"="Propina";
 "LoadingMessage"="Cargando....";
+"AddPaymentMethod"="Add payment method";
 "PaymentDetails.CreditCardLabel"="Tarjetas";
 "Tuto08Top"="Puede revisar su historial de reservaciones en cualquier momento, e incluso reservar el mismo viaje con solo tocar un botón";
 "UnpairWarningMessageWithPromo"="If you decide to pay in car, you will not be able to use the promotion";

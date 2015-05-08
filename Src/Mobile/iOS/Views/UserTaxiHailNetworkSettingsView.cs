@@ -66,8 +66,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             if (UIHelper.IsOS7)
             {
                 // hardcoded values since there's only one width for iOS7 devices
-                constraintLeftLabel.Constant = 15;
-                constraintRightSwitch.Constant = -17;
+                constraintLeftLabel.Constant = -15;
+                constraintRightSwitch.Constant = 17;
             }
 
 			var set = this.CreateBindingSet<UserTaxiHailNetworkSettingsView, UserTaxiHailNetworkSettingsViewModel> ();

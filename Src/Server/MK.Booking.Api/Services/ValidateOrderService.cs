@@ -78,6 +78,8 @@ namespace apcurium.MK.Booking.Api.Services
                 {
                     HasError = hasError,
                     Message = message,
+                    AppliesToCurrentBooking = rule != null && rule.AppliesToCurrentBooking,
+                    AppliesToFutureBooking = rule != null && rule.AppliesToFutureBooking,
                     DisableFutureBooking = disableFutureBooking
                 };
             }
@@ -95,6 +97,8 @@ namespace apcurium.MK.Booking.Api.Services
                 {
                     HasWarning = hasWarning,
                     Message = message,
+                    AppliesToCurrentBooking = rule != null && rule.AppliesToCurrentBooking,
+                    AppliesToFutureBooking = rule != null && rule.AppliesToFutureBooking,
                     DisableFutureBooking = disableFutureBooking
                 };
             }

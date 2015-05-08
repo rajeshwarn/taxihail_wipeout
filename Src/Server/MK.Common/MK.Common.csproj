@@ -101,6 +101,7 @@
     <Compile Include="Caching\CachingDbContext.cs" />
     <Compile Include="Caching\EFCacheClient.cs" />
     <Compile Include="ChargeTypesClient.cs" />
+    <Compile Include="Collections\SynchronizedList.cs" />
     <Compile Include="Configuration\Attributes\CustomizableByCompanyAttribute.cs" />
     <Compile Include="Configuration\Attributes\HiddenAttribute.cs" />
     <Compile Include="Configuration\Attributes\RequiredAtStartup.cs" />

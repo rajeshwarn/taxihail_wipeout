@@ -108,6 +108,11 @@
 
         },
 
+        showOnlyActiveTab: function() {
+            this.$('.active').siblings().addClass('hidden');
+            this.$('.active').addClass('hidden');
+        },
+
         reloadActiveTab: function (e) {
             if (e) {
                 e.preventDefault();

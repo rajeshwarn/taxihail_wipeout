@@ -12,14 +12,21 @@ using Cirrious.MvvmCross.ViewModels;
 using MK.Common.Configuration;
 using TinyIoC;
 using TinyMessenger;
+using System.Reactive.Subjects;
+using System.Linq;
+using System.Reactive.Linq;
+using System.Threading;
+using System.Collections.Concurrent;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
     public class BaseViewModel: MvxViewModel, IDisposable
     {
-        protected readonly CompositeDisposable Subscriptions = new CompositeDisposable();
+		private readonly IList<Tuple<BaseViewModel, bool>> _childViewModels = new List<Tuple<BaseViewModel, bool>>();
+		private readonly IList<Func<IDisposable>> _disposableFactories = new List<Func<IDisposable>>();
+		private readonly CompositeDisposable _factorySubsciptions = new CompositeDisposable();
 
-        public bool IsDeferredLoaded { get; private set; }
+		protected readonly CompositeDisposable Subscriptions = new CompositeDisposable();
 
 		public BaseViewModel Parent { get; set; }
 
@@ -27,12 +34,76 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			base.RaisePropertyChanged(whichProperty);
 		}
-		
+
+		public virtual void OnViewStarted(bool firstTime)
+		{
+			foreach (var cvm in _childViewModels.Where(x => x.Item2))
+			{
+				cvm.Item1.OnViewStarted(firstTime);
+			}
+			foreach (var factory in _disposableFactories)
+			{
+				_factorySubsciptions.Add(factory.Invoke());
+			}
+		}
+
+		public virtual void OnViewStopped()
+		{
+			foreach (var cvm in _childViewModels.Where(x => x.Item2))
+			{
+				cvm.Item1.OnViewStopped();
+			}
+			_factorySubsciptions.Clear();
+		}
+
         protected void Observe<T>(IObservable<T> observable, Action<T> onNext)
         {
-            observable
-                .Subscribe(x => InvokeOnMainThread(() => onNext(x)))
-                .DisposeWith(Subscriptions);
+			// Buffer to hold the last value produce while VM is stopped
+			var buffer = new FixedSizedQueue<T>(1);
+
+			// subject used to record values produced while VM is stopped
+			var recordingSubject = new Subject<T>();
+
+			var offline = recordingSubject.Publish();
+			offline.Subscribe(x => buffer.Enqueue(x));
+			var offlineSubscription = offline.Connect();
+
+			// Start recording now 
+			observable.Subscribe(recordingSubject);
+			// subject used to record values produced while VM is started
+			var liveSubject = new Subject<T>();
+			observable.Subscribe(liveSubject);
+
+			var connection = Observable.Create<T>(o =>
+			{
+				// Stop recording offline values;
+				offlineSubscription.Dispose();
+
+				// Produce an observable sequence starting with the last value
+				var subscription = liveSubject
+					.StartWith(buffer.ToArray())
+					.Subscribe(o);
+
+				buffer.Clear();
+
+				// This will reconnect to this offline observable when subscription is disposed
+				var goOffline = Disposable.Create(() => {
+					offlineSubscription = offline.Connect();
+				});
+
+				return new CompositeDisposable(new IDisposable[] {
+					subscription,
+					goOffline
+				});
+
+
+			}).Publish();
+
+			connection
+				.ObserveOn(SynchronizationContext.Current)
+				.Subscribe(x => onNext(x));
+
+			_disposableFactories.Add(() => connection.Connect());
         }
 
 		public void Dispose()
@@ -115,26 +186,38 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			base.ShowViewModel<HomeViewModel>(dictionary);
 		}
 
-		protected TViewModel AddChild<TViewModel>(Func<TViewModel> builder, bool lazyLoad = false)
-            where TViewModel: BaseViewModel
+		protected TViewModel AddChild<TViewModel>(Func<TViewModel> builder) where TViewModel: BaseViewModel
 		{
 		    var viewModel = builder.Invoke();
 			viewModel.Parent = this;
-            viewModel.IsDeferredLoaded = lazyLoad;
-
-		    if (!lazyLoad)
-		    {
-                viewModel.CallBundleMethods("Init", new MvxBundle());
-		    }
-
 			viewModel.DisposeWith(Subscriptions);
+
+			// from amp, always set to true here
+			var forwardParentLifecycleEvents = true; 
+			_childViewModels.Add(Tuple.Create<BaseViewModel, bool>(viewModel, forwardParentLifecycleEvents));
+
 			return viewModel;
 		}
 
-		protected virtual TViewModel AddChild<TViewModel>(bool lazyLoad = false)
-            where TViewModel: BaseViewModel
+		protected virtual TViewModel AddChild<TViewModel>() where TViewModel: BaseViewModel
 		{
-			return AddChild(Mvx.IocConstruct<TViewModel>, lazyLoad);
+			return AddChild(Mvx.IocConstruct<TViewModel>);
+		}
+
+		public override void Start()
+		{
+			base.Start();
+			foreach (var child in _childViewModels)
+			{
+				try
+				{
+					child.Item1.Start();
+				}
+				catch(Exception e)
+				{
+					Logger.LogError(e);
+				}
+			}
 		}
 
 		protected override void InitFromBundle(IMvxBundle parameters)
@@ -144,15 +227,71 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			{
 				this.MessageId = parameters.Data["messageId"];
 			}
+
+			foreach (var child in _childViewModels)
+			{
+				try
+				{
+					child.Item1.CallBundleMethods("Init", parameters);
+				}
+				catch(Exception e)
+				{
+					Logger.LogError(e);
+				}
+			}
 		}
 
-		public string MessageId
-		{
-			get;
-			private set;
-		}
-
-	
+		public string MessageId { get; private set; }
     }
+
+	public class FixedSizedQueue<T>: IEnumerable<T>
+	{
+		ConcurrentQueue<T> _innerQueue = new ConcurrentQueue<T>();
+
+		public FixedSizedQueue(int limit)
+		{
+			Limit = limit;
+		}
+
+		public int Limit { get; private set; }
+
+		public void Enqueue(T obj)
+		{
+			_innerQueue.Enqueue(obj);
+			lock (this)
+			{
+				T overflow;
+				while (_innerQueue.Count > Limit && _innerQueue.TryDequeue(out overflow)) ;
+			}
+		}
+
+		public bool TryDequeue(out T result)
+		{
+			return _innerQueue.TryDequeue(out result);
+		}
+
+		public bool TryPeek(out T result)
+		{
+			return _innerQueue.TryPeek(out result);
+		}
+
+		public void Clear()
+		{
+			_innerQueue = new ConcurrentQueue<T>();
+		}
+
+		public int Count{ get { return _innerQueue.Count; } }
+		public bool IsEmpty { get { return _innerQueue.IsEmpty; } }
+
+		public IEnumerator<T> GetEnumerator()
+		{
+			return _innerQueue.GetEnumerator();
+		}
+
+		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+		{
+			return _innerQueue.GetEnumerator();
+		}
+	}
 }
 
