@@ -1474,6 +1474,15 @@
   <data name="CardExpiredMessage" xml:space="preserve">
     <value>Your credit card is expired. Add a new card to your account or update card informations to continue.</value>
   </data>
+  <data name="CreditCardExpiredTitle" xml:space="preserve">
+    <value>Card expired</value>
+  </data>
+  <data name="CardExpiredNonMandatoryMessage" xml:space="preserve">
+    <value>Your credit card has expired. Your account is now configured to pay in car. If you wish to continue using your card on file, you can click on Update.</value>
+  </data>
+  <data name="CreditCardExpiredUpdateNow" xml:space="preserve">
+    <value>Update now</value>
+  </data>
   <data name="View_NotificationSettings" xml:space="preserve">
     <value>Notifications</value>
   </data>
@@ -1848,5 +1857,14 @@
   </data>
   <data name="InvalidChargeTypeTitle" xml:space="preserve">
     <value>Invalid Charge Type</value>
+  </data>
+  <data name="AddPaymentMethod" xml:space="preserve">
+    <value>Add payment method</value>
+  </data>
+  <data name="CurrentBookingDisabledTitle" xml:space="preserve">
+    <value>Current Booking Disabled</value>
+  </data>
+  <data name="ManualRideLinqNoCardOnFile" xml:space="preserve">
+    <value>You need to have a card on file to pair with RideLinQ</value>
   </data>
 </root>

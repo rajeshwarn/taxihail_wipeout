@@ -84,7 +84,7 @@
             }
 
             // Remove CoF option since there's no card in the user profile
-            if (TaxiHail.parameters.isBraintreePrepaidEnabled && !TaxiHail.auth.account.get('defaultCreditCard')) {
+            if (TaxiHail.parameters.isBraintreePrepaidEnabled && !TaxiHail.auth.account.get('defaultCreditCard') && !TaxiHail.parameters.alwaysDisplayCoFOption) {
                 var chargeTypesClone = chargeTypes.slice();
                 for (var i = 0; i < chargeTypesClone.length; i++) {
                     var chargeType = chargeTypesClone[i];
@@ -248,10 +248,27 @@
                 return;
             }
 
+            var hasCreditCardSet = TaxiHail.auth.account.get('defaultCreditCard') != null;
+
             if (this.model.isPayingWithAccountCharge() && !this.model.get('market')) {
                 //account charge type payment                
-                TaxiHail.app.navigate('bookaccountcharge', { trigger: true});
-            }else{
+                TaxiHail.app.navigate('bookaccountcharge', { trigger: true });
+
+            } else if (this.model.isPayingWithCoF()
+                && !hasCreditCardSet
+                && TaxiHail.parameters.alwaysDisplayCoFOption && !this.model.get('market')) {
+
+                if (!this.model.has('dropOffAddress')) {
+                    this.$(':submit').button('reset');
+
+                    var $alert = $('<div class="alert alert-error" />');
+                    $alert.append($('<div />').text(TaxiHail.localize("CreateOrder_PrepaidNoEstimate")));
+                    this.$('.errors').html($alert);
+                } else {
+                    TaxiHail.app.navigate('confirmationbook/payment', { trigger: true });
+                }
+                
+            } else {
                 this.model.save({}, {
                     success: TaxiHail.postpone(function (model) {
                         // Wait for response before doing anything

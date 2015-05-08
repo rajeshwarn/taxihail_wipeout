@@ -493,6 +493,7 @@
 "ManualRideLinqSummary_Done"="Done";
 "PaymentDetails.TipAmountLabel"="قيمة الإكرامية";
 "LoadingMessage"="جار التحميل...";
+"AddPaymentMethod"="Add payment method";
 "PaymentDetails.CreditCardLabel"="بطاقات";
 "Tuto08Top"="يمكنك مراجعة تاريخ طلباتك في أي وقت، وأيضا إعادة حجز رحلة سابقة مجددا بلمسة زر.";
 "UnpairWarningMessageWithPromo"="If you decide to pay in car, you will not be able to use the promotion";

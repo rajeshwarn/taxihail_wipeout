@@ -115,10 +115,6 @@ namespace apcurium.MK.Booking.Api
 
             Mapper.CreateMap<DefaultFavoriteAddress, UpdateDefaultFavoriteAddress>();
 
-            Mapper.CreateMap<AccountDetail, CurrentAccountResponse>()
-                .ForMember(x => x.IsSuperAdmin, opt => opt.ResolveUsing(x => x.RoleNames.Contains(RoleName.SuperAdmin)));
-
-
             Mapper.CreateMap<Tariff, CreateTariff>()
                 .ForMember(p => p.TariffId, opt => opt.ResolveUsing(x => x.Id == Guid.Empty ? Guid.NewGuid() : x.Id))
                 .ForMember(p => p.CompanyId, opt => opt.UseValue(AppConstants.CompanyId));
