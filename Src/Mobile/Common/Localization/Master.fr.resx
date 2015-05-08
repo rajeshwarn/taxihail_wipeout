@@ -1928,6 +1928,6 @@
     <value>Vous devez avoir une carte associée à votre compte pour utiliser RideLinQ</value>
   </data>
   <data name="ManualRideLinqCreditCardDisabled" xml:space="preserve">
-    <value>Vous avez un paiement en souffrance pour un course précédente et vous ne pouvez pas utiliser RideLinQ jusqu'a ce que ce montant soit payé.</value>
+    <value>Vous avez un paiement en souffrance pour un course précédente et vous ne pouvez donc pas utiliser RideLinQ jusqu'à ce que ce montant soit payé.</value>
   </data>
 </root>

@@ -601,4 +601,4 @@
 "AddPaymentMethod"="Ajouter une méthode de paiement";
 "CurrentBookingDisabledTitle"="Réservation Immédiate Non Disponible";
 "ManualRideLinqNoCardOnFile"="Vous devez avoir une carte associée à votre compte pour utiliser RideLinQ";
-"ManualRideLinqCreditCardDisabled"="Vous avez un paiement en souffrance pour un course précédente et vous ne pouvez pas utiliser RideLinQ jusqu'a ce que ce montant soit payé.";
+"ManualRideLinqCreditCardDisabled"="Vous avez un paiement en souffrance pour un course précédente et vous ne pouvez donc pas utiliser RideLinQ jusqu'à ce que ce montant soit payé.";
