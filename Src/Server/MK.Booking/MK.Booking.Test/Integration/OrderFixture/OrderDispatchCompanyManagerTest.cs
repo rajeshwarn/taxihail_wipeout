@@ -44,7 +44,7 @@ namespace apcurium.MK.Booking.Test.Integration.OrderFixture
                 () => new BookingDbContext(DbName),
                 new IBSServiceProvider(new TestServerSettings(), new Logger(), new TaxiHailNetworkServiceClient(new TestServerSettings())),
                 new TaxiHailNetworkServiceClient(new TestServerSettings()),
-                new HoneyBadgerServiceClient(new TestServerSettings()),
+                new HoneyBadgerServiceClient(new TestServerSettings(), new Logger()),
                 new ConfigurationDao(() => new ConfigurationDbContext(DbName)));
 
             var ordetailsGenerator = new OrderGenerator(() => new BookingDbContext(DbName), new Logger(), new TestServerSettings());
