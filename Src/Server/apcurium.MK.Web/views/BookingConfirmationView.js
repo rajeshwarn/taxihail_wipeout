@@ -256,7 +256,8 @@
 
             } else if (this.model.isPayingWithCoF()
                 && !hasCreditCardSet
-                && TaxiHail.parameters.alwaysDisplayCoFOption && !this.model.get('market')) {
+                && TaxiHail.parameters.alwaysDisplayCoFOption
+                && !this.model.get('market')) {
 
                 if (!this.model.has('dropOffAddress')) {
                     this.$(':submit').button('reset');
