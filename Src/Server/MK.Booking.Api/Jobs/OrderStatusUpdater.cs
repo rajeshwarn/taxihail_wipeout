@@ -242,7 +242,7 @@ namespace apcurium.MK.Booking.Api.Jobs
 
             var account = _accountDao.FindById(orderDetail.AccountId);
 
-            var result = _paymentService.PreAuthorize(orderId, account, amount, false, false, false, cvv);
+            var result = _paymentService.PreAuthorize(orderId, account, amount, cvv: cvv);
             if (result.IsSuccessful)
             {
                 // Wait for OrderPaymentDetail to be created
