@@ -44,6 +44,7 @@
 "InvalidAddressMessage"="العنوان الذي أدخلته غير صحيح. يرجى التأكد من المعلومات";
 "CreateAccountErrorTitle"="خطأ";
 "ViewAll"="عرض الكل";
+"CvvRequiredTitle"="CVV Required";
 "May"="مايو (05)";
 "LocalContactCannotBeResolverTitle"="الإسم غير صحيح";
 "CmtRideLinqCancelChanges"="إلغاء";
@@ -160,11 +161,13 @@
 "AppNeedUpdateTitle"="هناك تحديثات متاحة";
 "StatusEta"="{0} and {1} {2} away";
 "CreditCardExpYear"="سنة الإنتهاء";
+"CreditCardExpiredUpdateNow"="Update now";
 "PanelMenuViewAboutUsText"="نبذة عنا";
 "HistoryLoadError"="Unable to load the history. Please try again later.";
 "September"="سبتمبر (09)";
 "RingCodeTextPlaceholder"="رمز الدخول";
 "UnpairWarningMessage"="Are you sure you don’t want to pay with your credit card on file?";
+"Error_InvalidCvvMessage"="Sorry, the CVV provided did not match";
 "CreditCardErrorInvalid"="Cannot validate the credit card";
 "PanelMenuViewCallDispatchText"="اتصل";
 "Tuto07Top"="ستتمكن من رؤية رقم الحجز علی شاشة الحالة. عند إتمام تخصيص السيارة، سيمكنك متابعة مسارها نحو موقعك الحالي.";
@@ -311,6 +314,7 @@
 "Notification_BookingConfirmationEmail"="Booking Confirmation (Email)";
 "SignIn"="تسجيل الدخول";
 "ManualPairingForRideLinQ_Instructions"="Enter the 7-digit code displayed on the taxi touchscreen to auto-pay and get an e-receipt at the end of your ride.";
+"CvvRequiredMessage"="Please enter the CVV associated with your card on file to continue";
 "DateTimePickerPickInvalidDateMessage"="يجب أن يكون تاريخ الإلتقاء في المستقبل";
 "AddressSearchingText"="جار البحث";
 "StatusConfirmCancelRideAndWarnForCancellationFees"="Are you sure you want to cancel? A vehicle is on its way to pick you up. {0} reserves the right to charge customers a cancellation fee if we feel the user is abusing the service.";
@@ -326,6 +330,7 @@
 "PaymentDetails.Optional"="اختياري";
 "PromoProgress"="Progress :";
 "LanguageCode"="ar";
+"CreditCardExpiredTitle"="Card expired";
 "Tuto08Bottom"="نأمل أن تجد الراحة و السهولة عند استخدام هذا التطبيق .";
 "RideSettingsChargeType"="طريقة الدفع";
 "UpdateBookingSettingsInvalidDataTitle"="إعدادات بيانات الحجز خاطئة.";
@@ -346,6 +351,7 @@
 "View_Payments_CmtRideLinqConfirmPairTitle"="تأكيد بيانات الدفع:";
 "CreateAccountInvalidDataTitle"="معلومات الحساب غير صحيحة";
 "Collapse"="تصغير";
+"Error_InvalidCvvTitle"="Invalid CVV";
 "CmtTransactionSuccessMessage"="تم إرسال التاكيد للسائق (رقم الترخيص: {0})";
 "SendEmail"="ارسل رسالة إلكترونية...";
 "SupportEmail"="techsupport@apcurium.com";
@@ -407,6 +413,7 @@
 "LocationAddFavoriteTitle"="إضافة موقع جدید";
 "PickupTimeTextPlaceholder"="الوقت: الآن";
 "HistoryViewSendReceiptButton"="إرسال إيصال";
+"ManualRideLinqNoCardOnFile"="You need to have a card on file to pair with RideLinQ";
 "Tuto06Top"="تتيح لك شاشة التأكيد مراجعة بيانات مشوارك وتغيير خياراتك لهذه الرحلة تحديدا.";
 "Tuto04Bottom"="بذلك سيتم تزويدك بسعر تقريبي للرحلة.";
 "Error_AccountPaymentQuestionRequiredMessage"="يجب الإجابة على جميع الأسئلة للإستمرار";
@@ -449,6 +456,7 @@
 "TechSupportEmailTitle"="دعم تطبيق الهاتف الجوال";
 "YesButton"="نعم";
 "PanelMenuViewTaxiHailNetworkText"="TaxiHail Network";
+"AddPaymentMethod"="Add payment method";
 "ManualRideLinqStatus_Tax"="Tax amount:";
 "BookPickupLabel"="اكد موقع الإلتقاء المختار";
 "VehicleNumberInfo"="رجاء تأكيد رقم سيارتك مع السائق";
@@ -493,7 +501,7 @@
 "ManualRideLinqSummary_Done"="Done";
 "PaymentDetails.TipAmountLabel"="قيمة الإكرامية";
 "LoadingMessage"="جار التحميل...";
-"AddPaymentMethod"="Add payment method";
+"CardExpiredNonMandatoryMessage"="Your credit card has expired. Your account is now configured to pay in car. If you wish to continue using your card on file, you can click on Update.";
 "PaymentDetails.CreditCardLabel"="بطاقات";
 "Tuto08Top"="يمكنك مراجعة تاريخ طلباتك في أي وقت، وأيضا إعادة حجز رحلة سابقة مجددا بلمسة زر.";
 "UnpairWarningMessageWithPromo"="If you decide to pay in car, you will not be able to use the promotion";
@@ -513,6 +521,7 @@
 "FavoritesButton"="المفضلة";
 "NotesToDriveLabel"="ملاحظات للسائق (اسم العمل، مدخل محدد، ...)";
 "CmtRideLinqSaveChanges"="حفظ";
+"CurrentBookingDisabledTitle"="Current Booking Disabled";
 "PaymentViewMeterAmountText"="قيمة العداد";
 "PanelMenuViewTutorialText"="شاهد فيديو تعليمي";
 "ChangeServer"="تغيير الشبكة";

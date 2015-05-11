@@ -46,6 +46,7 @@
 "InvalidAddressMessage"="Désolé, l'adresse saisie semble invalide. Merci de saisir de nouveau";
 "CreateAccountErrorTitle"="Erreur";
 "ViewAll"="Voir";
+"CvvRequiredTitle"="CVV Requis";
 "May"="Mai (05)";
 "LocalContactCannotBeResolverTitle"="Informations erronées";
 "CmtRideLinqCancelChanges"="Annuler";
@@ -165,12 +166,14 @@
 "AppNeedUpdateTitle"="Nouvelle version disponible";
 "StatusEta"="est à {0} et arrive dans {1} {2}";
 "CreditCardExpYear"="Date d'expiration (année)";
+"CreditCardExpiredUpdateNow"="Mettre à jour";
 "PanelMenuViewAboutUsText"="À Propos";
 "HistoryLoadError"="Impossible de charger l'historique. Veuillez réessayer plus tard.";
 "ManualPairingForRideLinQ_InvalidCode_Title"="Code invalide";
 "September"="Septembre (09)";
 "RingCodeTextPlaceholder"="Saisissez un code";
 "UnpairWarningMessage"="Êtes-vous sûr de ne pas vouloir payer avec votre carte de crédit?";
+"Error_InvalidCvvMessage"="Désolé, le code de vérification fourni n'est pas valide";
 "CreditCardErrorInvalid"="La carte ne semble pas être valide";
 "PanelMenuViewCallDispatchText"="Appeler";
 "Tuto07Top"="Sur l'écran de statut, vous verrez un numéro de réservation qui confirme votre commande. Une fois qu'un véhicule sera assigné, vous pouvez suivre sa position jusqu'à ce qu'il arrive à vous.";
@@ -323,6 +326,7 @@
 "Notification_BookingConfirmationEmail"="Confirmation Commande (Email)";
 "SignIn"="Connexion";
 "ManualPairingForRideLinQ_Instructions"="Entrez le code à 7 chiffres qui se trouve sur l'écran du taxi pour payer automatiquement et recevoir un reçu à la fin de votre course.";
+"CvvRequiredMessage"="Veuillez entrer le code de vérification associé à votre carte de crédit pour continuer";
 "DateTimePickerPickInvalidDateMessage"="La date de départ ne peut pas être antérieure à la date de commande";
 "AddressSearchingText"="Recherche…";
 "StatusConfirmCancelRideAndWarnForCancellationFees"="Êtes-vous certain de vouloir annuler? Un véhicule est en route pour venir vous chercher. {0} se réserve le droit de facturer à ses clients des frais d'annulation si ces derniers abusent du service.";
@@ -338,6 +342,7 @@
 "PaymentDetails.Optional"="(Facultatif)";
 "PromoProgress"="Progression :";
 "LanguageCode"="fr";
+"CreditCardExpiredTitle"="Carte Expirée";
 "Tuto08Bottom"="Nous espérons que la simplicité et l'efficacité de notre application vous aura convaincue.";
 "RideSettingsChargeType"="Type de facturation";
 "UpdateBookingSettingsInvalidDataTitle"="Détails de la réservation incorrects";
@@ -358,6 +363,7 @@
 "View_Payments_CmtRideLinqConfirmPairTitle"="Confirmer les informations relatives au paiement";
 "CreateAccountInvalidDataTitle"="Données invalides";
 "Collapse"="Cacher";
+"Error_InvalidCvvTitle"="CVV Invalide";
 "CmtTransactionSuccessMessage"="Confirmation envoyée au chauffeur (code: {0})";
 "SendEmail"="Envoyer un email…";
 "SupportEmail"="techsupport@apcurium.com";
@@ -419,6 +425,7 @@
 "LocationAddFavoriteTitle"="Ajouter une nouvelle adresse";
 "PickupTimeTextPlaceholder"="Heure: maintenant";
 "HistoryViewSendReceiptButton"="Je souhaite recevoir une facture";
+"ManualRideLinqNoCardOnFile"="Vous devez avoir une carte associée à votre compte pour utiliser RideLinQ";
 "Tuto06Top"="L'écran de confirmation vous permet de vérifier que les détails de votre trajet sont corrects. En cas d'erreur, merci d'effectuer les modifications";
 "Tuto04Bottom"="En faisant cela vous aurez une estimation du coût de votre trajet.";
 "Error_AccountPaymentQuestionRequiredMessage"="Vous devez saisir tous les champs pour continuer";
@@ -461,6 +468,7 @@
 "TechSupportEmailTitle"="Support application mobile";
 "YesButton"="Oui";
 "PanelMenuViewTaxiHailNetworkText"="Réseau TaxiHail";
+"AddPaymentMethod"="Ajouter une méthode de paiement";
 "ManualRideLinqStatus_Tax"="Taxes:";
 "BookPickupLabel"="Confirmer votre adresse de départ";
 "VehicleNumberInfo"="Merci de valider l'immatriculation du véhicule avec le chauffeur";
@@ -508,7 +516,7 @@
 "ManualRideLinqSummary_Done"="Ok";
 "PaymentDetails.TipAmountLabel"="Montant du pourboire";
 "LoadingMessage"="Chargement…";
-"AddPaymentMethod"="Ajouter une méthode de paiement";
+"CardExpiredNonMandatoryMessage"="Votre carte a expiré. Votre compte est maintenant configuré pour le paiement à bord. Si vous désirez continuer d'utiliser la carte de crédit, vous devrez la mettre à jour.";
 "PaymentDetails.CreditCardLabel"="Cartes de paiement";
 "Tuto08Top"="Vous avez la possibilité de revoir l'historique de vos trajets et donc de renouveler une commande en sélectionnant le trajet souhaité.";
 "UnpairWarningMessageWithPromo"="Si vous décidez de payer dans le taxi, vous ne serez pas éligible à la promotion";
@@ -529,6 +537,7 @@
 "FavoritesButton"="Favoris";
 "NotesToDriveLabel"="Commentaires à destination du chauffeur";
 "CmtRideLinqSaveChanges"="Enregistrer";
+"CurrentBookingDisabledTitle"="Réservation Immédiate Non Disponible";
 "PaymentViewMeterAmountText"="Montant";
 "PanelMenuViewTutorialText"="Aide";
 "ChangeServer"="Changer de serveur";

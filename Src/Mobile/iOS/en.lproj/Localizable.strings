@@ -46,6 +46,7 @@
 "InvalidAddressMessage"="The address you provided is invalid. Please verify this information";
 "CreateAccountErrorTitle"="Error";
 "ViewAll"="View All";
+"CvvRequiredTitle"="CVV Required";
 "May"="May (05)";
 "LocalContactCannotBeResolverTitle"="Invalid Contact";
 "CmtRideLinqCancelChanges"="Cancel";
@@ -95,7 +96,7 @@
 "AccountDisabled"="Your account has been disabled, please contact {0} at {1} to activate your account.";
 "CreditCardExpYear"="Exp. Year";
 "HistoryDetailAuthorizationLabel"="Authorization:";
-"ManualPairingForRideLinQ_InvalidCode_Message"="The pairing code is invalid.";
+"CreditCardExpiredTitle"="Card expired";
 "Cancel"="Cancel";
 "CreateAccountLanguageFrench"="French";
 "Tuto07Bottom"="Status updates are provided when the vehicles arrives at the pickup address, when you enter the vehicle, and at the end of the ride.";
@@ -124,6 +125,7 @@
 "GoogleMapKey"="AIzaSyCtazVDlL4prQA5f2OnlWTw4u2X581dkzo";
 "View_BookSettingMenu"="Settings";
 "StatusInvalid"="Status not available";
+"Error_InvalidCvvTitle"="Invalid CVV";
 "StreetNumberLabel"="Refine your address";
 "View_Payments_CmtRideLinqChangePaymentTitle"="Change Payment Info";
 "InvalidLoginMessageTitle"="Login error";
@@ -162,6 +164,7 @@
 "AppNeedUpdateTitle"="Update available";
 "StatusEta"="and is {0} and {1} {2} away";
 "LocationHistoryTitle"="Locations history";
+"CreditCardExpiredUpdateNow"="Update now";
 "PanelMenuViewAboutUsText"="About Us";
 "HistoryLoadError"="Unable to load the history. Please try again later.";
 "PaymentDetails.InvalidDataTitle"="Invalid payment information";
@@ -170,6 +173,7 @@
 "SaveAddressEmptyFieldTitle"="Friendly name required";
 "Politeness"="Politeness";
 "UnpairWarningMessage"="Are you sure you don’t want to pay with your credit card on file?";
+"Error_InvalidCvvMessage"="Sorry, the CVV provided did not match";
 "CreditCardErrorInvalid"="Cannot validate the credit card";
 "PickupViewDestinationLabel"="Destination &gt;&gt;";
 "PanelMenuViewCallDispatchText"="Call";
@@ -319,6 +323,7 @@
 "View_UpdatePassword"="Update Password";
 "InvalidPayBackErrorMessage"="The PayBack field must be all digits and must not exceed 10 characters in length";
 "PaymentDetails.CreditCardLabel"="Cards";
+"CvvRequiredMessage"="Please enter the CVV associated with your card on file to continue";
 "DateTimePickerPickInvalidDateMessage"="The pickup date must be in the future.";
 "AddressSearchingText"="Searching...";
 "StatusConfirmCancelRideAndWarnForCancellationFees"="Are you sure you want to cancel? A vehicle is on its way to pick you up. {0} reserves the right to charge customers a cancellation fee if we feel the user is abusing the service.";
@@ -367,6 +372,7 @@
 "View_AboutUs"="About Us";
 "WarningLocationService"="Please turn on location services to have your location show up in the map.";
 "LoginViewPasswordPlaceHolder"="Password";
+"ManualPairingForRideLinQ_InvalidCode_Message"="The pairing code is invalid.";
 "BookDestinationLabel"="Enter your destination";
 "AddCoFPayPalWarning"="Adding a credit card will unlink your PayPal account and Card on File will be set as the default payment method. Proceed?";
 "Error_AccountPaymentQuestionRequiredMessage"="You must answer every questions marked as required to continue.";
@@ -416,6 +422,7 @@
 "LocationAddFavoriteTitle"="Add location";
 "PickupTimeTextPlaceholder"="Time: Now";
 "OrderNumber"="Order #";
+"ManualRideLinqNoCardOnFile"="You need to have a card on file to pair with RideLinQ";
 "Tuto06Top"="The confirmation screen allows you to verify your trip details and to change any of your preferences for this specific ride.";
 "Tuto04Bottom"="Doing so will provide an estimate for the cost for the trip.";
 "PaymentViewTotalText"="Total";
@@ -462,6 +469,7 @@
 "PanelMenuViewTaxiHailNetworkText"="TaxiHail Network";
 "YesButton"="Yes";
 "CreateAccountEmptyField"="The data is invalid, all the fields are required.";
+"AddPaymentMethod"="Add payment method";
 "ManualRideLinqStatus_Tax"="Tax amount:";
 "BookPickupLabel"="Confirm your pickup location";
 "VehicleNumberInfo"="Please confirm your car number with the driver";
@@ -515,7 +523,7 @@
 "Tuto08Bottom"="We hope you find this application both convenient and intuitive.";
 "ManualRideLinqSummary_Done"="Done";
 "PaymentDetails.TipAmountLabel"="Tip Amount";
-"AddPaymentMethod"="Add payment method";
+"CardExpiredNonMandatoryMessage"="Your credit card has expired. Your account is now configured to pay in car. If you wish to continue using your card on file, you can click on Update.";
 "Version"="v{0}";
 "Tuto08Top"="You can review your order history at any time, and even rebook a previous trip with the push of a button";
 "UnpairWarningMessageWithPromo"="If you decide to pay in car, you will not be able to use the promotion";
@@ -537,6 +545,7 @@
 "FavoritesButton"="Favorites";
 "NotesToDriveLabel"="Notes to driver (Name of business, specific entrance, ...)";
 "CmtRideLinqSaveChanges"="Save";
+"CurrentBookingDisabledTitle"="Current Booking Disabled";
 "PaymentViewMeterAmountText"="Meter Amount";
 "PanelMenuViewTutorialText"="View Tutorial";
 "ChangeServer"="Change server";

@@ -454,7 +454,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 	                {
 	                    try
 	                    {
-	                        await DeleteCreditCard();
+							using (this.Services().Message.ShowProgress())
+							{
+								await DeleteCreditCard();
+							}
 	                    }
                         catch (Exception ex)
 	                    {

@@ -64,6 +64,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			} 
 			else 
 			{
+				// set client with cached settings for now
+				_client = GetClient (_cachedSettings);
+
 				// Update cache...
 				Task.Run(() => RefreshPaymentSettings());
 
@@ -76,6 +79,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 		{
 			_cachedSettings = await _serviceClient.GetPaymentSettings ().ConfigureAwait (false);
 			_cache.Set(PaymentSettingsCacheKey, _cachedSettings);
+			_client = GetClient (_cachedSettings);
 		}
 
 		public void ClearPaymentSettingsFromCache()
