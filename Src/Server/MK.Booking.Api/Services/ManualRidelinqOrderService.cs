@@ -69,6 +69,13 @@ namespace apcurium.MK.Booking.Api.Services
                         _resources.Get("ManualRideLinq_NoCardOnFile", account.Language));
                 }
 
+                if (creditCard.IsDeactivated)
+                {
+                    throw new HttpError(HttpStatusCode.BadRequest,
+                        ErrorCode.ManualRideLinq_CardOnFileDeactivated.ToString(),
+                        _resources.Get("ManualRideLinq_CreditCardDisabled", account.Language));
+                }
+
                 // Send pairing request to CMT API
                 var pairingRequest = new CmtManualRideLinqPairingRequest
                 {

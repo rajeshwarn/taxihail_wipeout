@@ -24,12 +24,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
 
             PairingCodeBehavior.ApplyTo(pairingCodeTextField1, pairingCodeTextField2);
 
-            var im = (InputMethodManager)GetSystemService(InputMethodService);
-            if (im != null)
+            var inputManager = (InputMethodManager)GetSystemService(InputMethodService);
+            if (inputManager != null)
             {
-                im.ToggleSoftInput(ShowFlags.Forced, HideSoftInputFlags.None);
+                inputManager.ToggleSoftInput(ShowFlags.Implicit, HideSoftInputFlags.None);
             }
         }
-
     }
 }

@@ -469,6 +469,9 @@
   <string name="StatusEta">and is {0} and {1} {2} away</string>
   <string name="NoCardOnFileMessage">You chose to pay with a card on file, but you have no default card.  Add a card to your account or change your payment method to continue.</string>
   <string name="CardExpiredMessage">Your credit card is expired. Add a new card to your account or update card informations to continue.</string>
+  <string name="CreditCardExpiredTitle">Card expired</string>
+  <string name="CardExpiredNonMandatoryMessage">Your credit card has expired. Your account is now configured to pay in car. If you wish to continue using your card on file, you can click on Update.</string>
+  <string name="CreditCardExpiredUpdateNow">Update now</string>
   <string name="AddACardButton">Add Card</string>
   <string name="View_NotificationSettings">Notifications</string>
   <string name="EtaNotAvailable">No vehicle available</string>
@@ -521,14 +524,14 @@
   <string name="PromoMustUseCardOnFileWarningMessage">Please note that the discount will only be applied if the payment is made using the app</string>
   <string name="WarningPromoCodeDontShow">Don\'t warn</string>
   <string name="PanelMenuViewPromotionsText">Promotions</string>
-  <string name="UnpairWarningMessage">This action cannot be undone</string>
+  <string name="UnpairWarningMessage">Are you sure you don’t want to pay with your credit card on file?</string>
   <string name="UnpairWarningMessageWithPromo">If you decide to pay in car, you will not be able to use the promotion</string>
   <string name="UnpairWarningCancelButton">Pay in car</string>
   <string name="View_Promotions">Promotions</string>
   <string name="PromoExpiringSoonMessage">Expires in {0} days</string>
   <string name="PromoExpiringIn1DayMessage">Expires in 1 day</string>
   <string name="PromoExpiringToday">Expires today!</string>
-  <string name="PromoBookRide">Use this promotion on next ride</string>
+  <string name="PromoBookRide">Use this promo code</string>
   <string name="PromotionViewNoPromotionLabel">No promotions available</string>
   <string name="Processing">Processing your order...</string>
   <string name="Notification_PromotionUnlockedEmail">Promotions unlocked (Email)</string>
@@ -601,4 +604,7 @@
   <string name="InvalidChargeType">You must select a charge type to be able to book a ride</string>
   <string name="InvalidChargeTypeTitle">Invalid Charge Type</string>
   <string name="AddPaymentMethod">Add payment method</string>
+  <string name="CurrentBookingDisabledTitle">Current Booking Disabled</string>
+  <string name="ManualRideLinqNoCardOnFile">You need to have a card on file to pair with RideLinQ</string>
+  <string name="ManualRideLinqCreditCardDisabled">Your current card on file has an overdue payment for a previous ride. This overdue payment is preventing you from pairing with RideLinQ</string>
 </resources>

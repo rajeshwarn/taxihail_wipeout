@@ -65,6 +65,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     {
                         using (this.Services().Message.ShowProgress())
                         {
+                            var isCreditCardDeactivated = await _orderWorkflowService.ValidateIsCardDeactivated();
+                            if (isCreditCardDeactivated)
+                            {
+                                 this.Services().Message.ShowMessage(
+                                    localize["ErrorCreatingOrderTitle"],
+                                    localize["ManualRideLinqCreditCardDisabled"]);
+                                 return;
+                            }
+
                             // For the RideLinQ "street pick" feature, we need to use the user and not the pin position
                             await _orderWorkflowService.SetAddressToUserLocation();
 
@@ -81,7 +90,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     catch (WebServiceException ex)
                     {
                         Logger.LogError(ex);
-
                         this.Services().Message.ShowMessage(localize["ManualPairingForRideLinQ_Error_Title"], localize["ManualPairingForRideLinQ_Error_Message"]).HandleErrors();
                     }
                     catch (Exception ex)
