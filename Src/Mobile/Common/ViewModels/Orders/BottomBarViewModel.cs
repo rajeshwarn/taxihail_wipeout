@@ -13,6 +13,7 @@ using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Entity;
 using Cirrious.MvvmCross.Plugins.PhoneCall;
 using ServiceStack.Text;
+using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 {
@@ -297,6 +298,24 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 						}
 
 						_orderWorkflowService.BeginCreateOrder();
+
+						if (await _orderWorkflowService.ShouldPromptForCvv())
+						{
+							var cvv = await this.Services().Message.ShowPromptDialog(
+								this.Services().Localize["CvvRequiredTitle"],
+								this.Services().Localize["CvvRequiredMessage"],
+								() => { return; });
+
+							// validate that it's a numeric value with 3 or 4 digits
+							var cvvSetCorrectly = await _orderWorkflowService.ValidateAndSetCvv(cvv);
+							if(!cvvSetCorrectly)
+							{
+								await this.Services().Message.ShowMessage(
+									this.Services().Localize["Error_InvalidCvvTitle"],
+									this.Services().Localize["Error_InvalidCvvMessage"]);
+								return;
+							}
+						}
 
 						if (await _orderWorkflowService.ShouldGoToAccountNumberFlow())
 						{
