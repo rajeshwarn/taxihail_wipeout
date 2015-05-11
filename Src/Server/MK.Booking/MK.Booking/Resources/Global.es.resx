@@ -736,4 +736,7 @@
   <data name="Email_Body_AccountConfirmationRedirectLine2" xml:space="preserve">
     <value>click here.</value>
   </data>
+  <data name="ManualRideLinq_CreditCardDisabled" xml:space="preserve">
+    <value>Your current card on file has an overdue payment for a previous ride. This overdue payment is preventing you from pairing with RideLinQ</value>
+  </data>
 </root>

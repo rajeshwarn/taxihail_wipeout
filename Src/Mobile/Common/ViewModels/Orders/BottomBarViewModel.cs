@@ -565,16 +565,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
             {
                 return this.GetCommand(() =>
                 {
+                    var localize = this.Services().Localize;
+
                     if (_accountService.CurrentAccount.DefaultCreditCard == null)
                     {
                         this.Services().Message.ShowMessage(
-                            this.Services().Localize["ErrorCreatingOrderTitle"],
-                            this.Services().Localize["ManualRideLinqNoCardOnFile"]);
+                            localize["ErrorCreatingOrderTitle"],
+                            localize["ManualRideLinqNoCardOnFile"]);
+                        return;
                     }
-                    else
-                    {
-                        ShowViewModel<ManualPairingForRideLinqViewModel>();
-                    }                    
+
+                    ShowViewModel<ManualPairingForRideLinqViewModel>();
                 });
             }
         }
