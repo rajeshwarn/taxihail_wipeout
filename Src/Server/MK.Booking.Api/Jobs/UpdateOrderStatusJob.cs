@@ -143,7 +143,7 @@ namespace apcurium.MK.Booking.Api.Jobs
 
             foreach (var orderStatusDetail in manualRideLinqOrders)
             {
-                Log.DebugFormat("Starting OrderStatusUpdater for order {0} (Paired via Manual RideLinQ code).", orderStatusDetail.OrderId);
+                Log.InfoFormat("Starting OrderStatusUpdater for order {0} (Paired via Manual RideLinQ code).", orderStatusDetail.OrderId);
                 _orderStatusUpdater.HandleManualRidelinqFlow(orderStatusDetail);
             }
 
