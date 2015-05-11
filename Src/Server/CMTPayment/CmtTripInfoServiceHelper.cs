@@ -47,7 +47,7 @@ namespace CMTPayment
             }
             catch (WebServiceException ex)
             {
-                _logger.LogMessage("An WebService error with error code {0} and status code {1)  occured while trying to get the CMT trip info for Pairing Token: {2}", ex.ErrorCode??"Unknown" ,ex.StatusCode, pairingToken);
+                _logger.LogMessage("An WebService error with error code {0} and status code {1}  occured while trying to get the CMT trip info for Pairing Token: {2}", ex.ErrorCode??"Unknown" ,ex.StatusCode, pairingToken);
                 if (ex.ResponseBody != null)
                 {
                     _logger.LogMessage("Error Response: {0}", ex.ResponseBody);
