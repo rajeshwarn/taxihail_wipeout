@@ -64,8 +64,14 @@ namespace apcurium.MK.Web
                     {
                         var serverProcessId = GetServerProcessId();
                         Trace.WriteLine("serverProcessId : " + serverProcessId);
-                        var statusJobService = UnityContainerExtensions.Resolve<IUpdateOrderStatusJob>(UnityServiceLocator.Instance);
+                        var statusJobService =
+                            UnityContainerExtensions.Resolve<IUpdateOrderStatusJob>(UnityServiceLocator.Instance);
+                        Log.Info("StatusJobService Starting");
                         hasOrdersWaitingForPayment = statusJobService.CheckStatus(serverProcessId, pollingValue);
+                    }
+                    catch (Exception ex)
+                    {
+                        Log.Error(ex);
                     }
                     finally
                     {
