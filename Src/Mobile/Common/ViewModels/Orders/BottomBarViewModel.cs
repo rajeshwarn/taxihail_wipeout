@@ -538,15 +538,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
                         this.Services().Message.ShowMessage(
                             localize["ErrorCreatingOrderTitle"],
                             localize["ManualRideLinqNoCardOnFile"]);
-
-                        return;
-                    }
-
-                    if (_accountService.CurrentAccount.DefaultCreditCard.IsDeactivated)
-                    {
-                        this.Services().Message.ShowMessage(
-                            localize["ErrorCreatingOrderTitle"],
-                            localize["ManualRideLinqCreditCardDisabled"]);
                         return;
                     }
 

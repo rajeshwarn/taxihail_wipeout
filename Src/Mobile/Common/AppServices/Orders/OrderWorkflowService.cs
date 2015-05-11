@@ -732,12 +732,13 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
 		public async Task<bool> ValidateCardExpiration()
 		{
-			var orderToValidate = await GetOrder ();	
+			var orderToValidate = await GetOrder();	
 			if (orderToValidate.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id)
 			{
-				var creditCard = await _accountService.GetCreditCard ();
+				var creditCard = await _accountService.GetCreditCard();
 
-				if (creditCard == null) {
+				if (creditCard == null)
+                {
 					return false;
 				}
 
@@ -746,6 +747,13 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
 			return true;
 		}
+
+        public async Task<bool> ValidateIsCardDeactivated()
+        {
+            var creditCard = await _accountService.GetCreditCard();
+
+            return creditCard == null || creditCard.IsDeactivated;
+        }
 
 		public async Task<bool> ValidatePromotionUseConditions()
 		{
