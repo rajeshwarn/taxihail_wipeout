@@ -67,6 +67,10 @@ namespace apcurium.MK.Web
                         var statusJobService = UnityContainerExtensions.Resolve<IUpdateOrderStatusJob>(UnityServiceLocator.Instance);
                         hasOrdersWaitingForPayment = statusJobService.CheckStatus(serverProcessId, pollingValue);
                     }
+                    catch (Exception ex)
+                    {
+                        Log.Error(ex);
+                    }
                     finally
                     {
                         PollIbs(hasOrdersWaitingForPayment ? WaitingForPaymentPollingValue : _defaultPollingValue);
