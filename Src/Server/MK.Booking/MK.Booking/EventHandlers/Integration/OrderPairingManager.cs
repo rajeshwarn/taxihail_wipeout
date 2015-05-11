@@ -9,6 +9,7 @@ using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Enumeration;
 using Infrastructure.Messaging.Handling;
+using apcurium.MK.Common.Diagnostic;
 
 namespace apcurium.MK.Booking.EventHandlers.Integration
 {
@@ -20,6 +21,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
         private readonly IOrderDao _orderDao;
         private readonly ICreditCardDao _creditCardDao;
         private readonly IAccountDao _accountDao;
+        private readonly ILogger _logger;
         private readonly IPaymentService _paymentFacadeService;
         private readonly IServerSettings _serverSettings;
 
@@ -28,8 +30,8 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             ICreditCardDao creditCardDao,
             IAccountDao accountDao,
             IPaymentService paymentFacadeService,
-            IServerSettings serverSettings
-            )
+            IServerSettings serverSettings,
+            ILogger logger)
         {
             _notificationService = notificationService;
             _orderDao = orderDao;
@@ -37,15 +39,21 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             _accountDao = accountDao;
             _paymentFacadeService = paymentFacadeService;
             _serverSettings = serverSettings;
+            _logger = logger;
         }
 
         public void Handle(OrderStatusChanged @event)
         {
+
+            _logger.LogMessage("OrderPairingManager Handle : " + @event.Status.IBSStatusId);
+            
             switch (@event.Status.IBSStatusId)
-            {
+            {            
                 case VehicleStatuses.Common.Loaded:
                 {
                     var orderStatus = _orderDao.FindOrderStatusById(@event.SourceId);
+
+                    _logger.LogMessage("OrderPairingManager RideLinqPairingCode : " + orderStatus.RideLinqPairingCode ?? "No code");
                     if (orderStatus.IsPrepaid)
                     {
                         // No need to pair, order was already paid
