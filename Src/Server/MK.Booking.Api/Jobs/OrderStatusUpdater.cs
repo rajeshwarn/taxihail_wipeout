@@ -133,35 +133,48 @@ namespace apcurium.MK.Booking.Api.Jobs
         public void HandleManualRidelinqFlow(OrderStatusDetail orderstatusDetail)
         {
             var rideLinqDetails = _orderDao.GetManualRideLinqById(orderstatusDetail.OrderId);
-            if (rideLinqDetails != null)
+            if (rideLinqDetails == null)
             {
-                InitializeCmtServiceClient();
+                Log.WarnFormat("No manual RideLinQ details found for order {0}", orderstatusDetail.OrderId);
+                return;
+            }
+            Log.DebugFormat("Initializing CmdClient for order {0} (RideLinq Pairing Code: {1})", orderstatusDetail.OrderId, rideLinqDetails.PairingToken);
 
-                var tripInfo = _cmtTripInfoServiceHelper.GetTripInfo(rideLinqDetails.PairingToken);
-                if (tripInfo != null)
+            InitializeCmtServiceClient();
+
+            var tripInfo = _cmtTripInfoServiceHelper.GetTripInfo(rideLinqDetails.PairingToken);
+            if (tripInfo != null)
+            {
+                
+                Log.DebugFormat("Sending Trip update command for trip {0} (order {1}; pairing token {2})", tripInfo.TripId, orderstatusDetail.OrderId, rideLinqDetails.PairingToken);
+
+                Log.DebugFormat("Trip end time is {0}.", tripInfo.EndTime.HasValue ? tripInfo.EndTime.Value.ToString(CultureInfo.CurrentCulture) : "Not set yet");
+
+                _commandBus.Send(new UpdateTripInfoInOrderForManualRideLinq
                 {
-                    _commandBus.Send(new UpdateTripInfoInOrderForManualRideLinq
-                    {
-                        Distance = tripInfo.Distance,
-                        EndTime = tripInfo.EndTime,
-                        Extra = Math.Round(((double)tripInfo.Extra / 100), 2),
-                        Fare = Math.Round(((double)tripInfo.Fare / 100), 2),
-                        Tax = Math.Round(((double)tripInfo.Tax / 100), 2),
-                        Tip = Math.Round(((double)tripInfo.Tip / 100), 2),
-                        Toll = tripInfo.TollHistory.Sum(toll => Math.Round(((double)toll.TollAmount / 100), 2)),
-                        Surcharge = Math.Round(((double)tripInfo.Surcharge / 100), 2),
-                        Total = Math.Round(((double)tripInfo.Total / 100), 2),
-                        FareAtAlternateRate = Math.Round(((double)tripInfo.FareAtAlternateRate / 100), 2),
-                        Medallion = tripInfo.Medallion,
-                        RateAtTripStart = Math.Round(((double)tripInfo.RateAtTripStart / 100), 2),
-                        RateAtTripEnd = Math.Round(((double)tripInfo.RateAtTripEnd / 100), 2),
-                        RateChangeTime = tripInfo.RateChangeTime,
-                        OrderId = orderstatusDetail.OrderId,
-                        PairingToken = tripInfo.PairingToken,
-                        TripId = tripInfo.TripId,
-                        DriverId = tripInfo.DriverId
-                    });
-                }
+                    Distance = tripInfo.Distance,
+                    EndTime = tripInfo.EndTime,
+                    Extra = Math.Round(((double)tripInfo.Extra / 100), 2),
+                    Fare = Math.Round(((double)tripInfo.Fare / 100), 2),
+                    Tax = Math.Round(((double)tripInfo.Tax / 100), 2),
+                    Tip = Math.Round(((double)tripInfo.Tip / 100), 2),
+                    Toll = tripInfo.TollHistory.Sum(toll => Math.Round(((double)toll.TollAmount / 100), 2)),
+                    Surcharge = Math.Round(((double)tripInfo.Surcharge / 100), 2),
+                    Total = Math.Round(((double)tripInfo.Total / 100), 2),
+                    FareAtAlternateRate = Math.Round(((double)tripInfo.FareAtAlternateRate / 100), 2),
+                    Medallion = tripInfo.Medallion,
+                    RateAtTripStart = Math.Round(((double)tripInfo.RateAtTripStart / 100), 2),
+                    RateAtTripEnd = Math.Round(((double)tripInfo.RateAtTripEnd / 100), 2),
+                    RateChangeTime = tripInfo.RateChangeTime,
+                    OrderId = orderstatusDetail.OrderId,
+                    PairingToken = tripInfo.PairingToken,
+                    TripId = tripInfo.TripId,
+                    DriverId = tripInfo.DriverId
+                });
+            }
+            else
+            {
+                Log.WarnFormat("No Trip information found for order {0} (pairing token {1})", orderstatusDetail.OrderId, rideLinqDetails.PairingToken);
             }
         }
 

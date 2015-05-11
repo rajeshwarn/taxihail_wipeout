@@ -22,18 +22,20 @@ namespace CMTPayment
             try
             {
                 var trip = _cmtMobileServiceClient.Get(new TripRequest { Token = pairingToken });
-                if (trip != null)
+                if (trip == null)
                 {
-                    //ugly fix for deserilization problem in datetime on the device for IOS
-                    if (trip.StartTime.HasValue)
-                    {
-                        trip.StartTime = DateTime.SpecifyKind(trip.StartTime.Value, DateTimeKind.Local);
-                    }
+                    _logger.LogMessage("No Trip info found for pairing token {0}", pairingToken);
+                    return null;
+                }
+                //ugly fix for deserilization problem in datetime on the device for IOS
+                if (trip.StartTime.HasValue)
+                {
+                    trip.StartTime = DateTime.SpecifyKind(trip.StartTime.Value, DateTimeKind.Local);
+                }
 
-                    if (trip.EndTime.HasValue)
-                    {
-                        trip.EndTime = DateTime.SpecifyKind(trip.EndTime.Value, DateTimeKind.Local);
-                    }
+                if (trip.EndTime.HasValue)
+                {
+                    trip.EndTime = DateTime.SpecifyKind(trip.EndTime.Value, DateTimeKind.Local);
                 }
 
                 return trip;

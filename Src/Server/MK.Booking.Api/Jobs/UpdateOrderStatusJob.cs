@@ -140,8 +140,10 @@ namespace apcurium.MK.Booking.Api.Jobs
             var orderStatusDetails = orders as OrderStatusDetail[] ?? orders.ToArray();
 
             var manualRideLinqOrders = orderStatusDetails.Where(o => o.IsManualRideLinq);
+
             foreach (var orderStatusDetail in manualRideLinqOrders)
             {
+                Log.DebugFormat("Starting OrderStatusUpdater for order {0} (Paired via Manual RideLinQ code).", orderStatusDetail.OrderId);
                 _orderStatusUpdater.HandleManualRidelinqFlow(orderStatusDetail);
             }
 
