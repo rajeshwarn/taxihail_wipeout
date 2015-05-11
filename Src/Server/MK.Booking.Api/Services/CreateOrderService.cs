@@ -835,7 +835,7 @@ namespace apcurium.MK.Booking.Api.Services
             // if app returned an estimate, use it, otherwise use the setting (or 0), then use max between the value and 50
             var preAuthAmount = Math.Max(appEstimate ?? (_serverSettings.GetPaymentSettings().PreAuthAmount ?? 0), 50);
 
-            var preAuthResponse = _paymentService.PreAuthorize(orderId, account, preAuthAmount, false, false, false, cvv);
+            var preAuthResponse = _paymentService.PreAuthorize(orderId, account, preAuthAmount, cvv: cvv);
 
             var errorMessage = isPayPal
                 ? _resources.Get("CannotCreateOrder_PayPalWasDeclined", clientLanguageCode)
