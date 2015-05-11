@@ -86,7 +86,7 @@ namespace apcurium.MK.Booking.Api.Services
 
                 var response = _cmtMobileServiceClient.Post(pairingRequest);
 
-                _logger.LogMessage("Pairing result: {0}", Response.ToJson());
+                _logger.LogMessage("Pairing result: {0}", response.ToJson());
 
                 var trip = _cmtTripInfoServiceHelper.WaitForTripInfo(response.PairingToken, response.TimeoutSeconds);
 
