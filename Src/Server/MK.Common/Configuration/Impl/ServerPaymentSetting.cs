@@ -20,7 +20,6 @@ namespace apcurium.MK.Common.Configuration.Impl
             IsUnpairingDisabled = false;
             IsPrepaidEnabled = false;
             AlwaysDisplayCoFOption = false;
-            AskForCVVAtBooking = false;
         }
 
         [Key]
@@ -40,8 +39,6 @@ namespace apcurium.MK.Common.Configuration.Impl
         public int UnpairingTimeOut { get; protected set; }
 
         public bool IsPrepaidEnabled { get; set; }
-
-        public bool AskForCVVAtBooking { get; set; }
         
         public bool AlwaysDisplayCoFOption { get; set; }
     }
