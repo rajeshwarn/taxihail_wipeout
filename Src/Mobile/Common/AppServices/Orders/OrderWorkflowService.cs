@@ -930,7 +930,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 				return false;
 			}
 
-			var success = cvv.IsDigit
+			var success = cvv.IsDigit()
 				&& cvv.Length >= 3
 				&& cvv.Length <= 4;
 

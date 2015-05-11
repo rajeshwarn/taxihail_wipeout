@@ -307,7 +307,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 								() => { return; });
 
 							// validate that it's a numeric value with 3 or 4 digits
-							var cvvSetCorrectly = await _orderWorkflowService.ValidateAndSetCvv(cvv);
+							var cvvSetCorrectly = _orderWorkflowService.ValidateAndSetCvv(cvv);
 							if(!cvvSetCorrectly)
 							{
 								await this.Services().Message.ShowMessage(
