@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Threading;
 using apcurium.MK.Common.Diagnostic;
 using CMTPayment.Pair;
+using ServiceStack.Text;
 
 namespace CMTPayment
 {
@@ -38,12 +39,15 @@ namespace CMTPayment
                     trip.EndTime = DateTime.SpecifyKind(trip.EndTime.Value, DateTimeKind.Local);
                 }
 
+                _logger.LogMessage("Following trip info found from pairing token {0} \n\r {1}", pairingToken, trip.ToJson());
+
                 return trip;
             }
             catch (Exception ex)
             {
                 _logger.LogMessage(string.Format("An error occured while trying to get the CMT trip info for Pairing Token: {0}", pairingToken));
                 _logger.LogError(ex);
+                _logger.LogStack();
 
                 return null;
             }
