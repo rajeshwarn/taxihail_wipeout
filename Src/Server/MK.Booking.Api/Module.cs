@@ -49,7 +49,7 @@ namespace apcurium.MK.Booking.Api
                     var serverSettings = c.Resolve<IServerSettings>();
                     if (serverSettings.ServerData.IBS.FakeOrderStatusUpdate)
                     {
-                        return new UpdateOrderStatusJobStub();
+                        return new UpdateOrderStatusJobStub(c.Resolve<IOrderDao>(), c.Resolve<IOrderStatusUpdateDao>(), c.Resolve<OrderStatusUpdater>() );
                     }
                     
                     return new UpdateOrderStatusJob(c.Resolve<IOrderDao>(), c.Resolve<IIBSServiceProvider>(), c.Resolve<IOrderStatusUpdateDao>(), c.Resolve<OrderStatusUpdater>(), c.Resolve<HoneyBadgerServiceClient>(), c.Resolve<IServerSettings>());

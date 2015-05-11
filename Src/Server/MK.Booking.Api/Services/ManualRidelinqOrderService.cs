@@ -14,6 +14,7 @@ using Infrastructure.Messaging;
 using ServiceStack.Common.Web;
 using ServiceStack.ServiceClient.Web;
 using ServiceStack.ServiceInterface;
+using ServiceStack.Text;
 using CmtManualRideLinqPairingRequest = CMTPayment.Pair.ManualRideLinqPairingRequest;
 using ManualRideLinqPairingRequest = apcurium.MK.Booking.Api.Contract.Requests.Payment.ManualRideLinqPairingRequest;
 using CmtManualRideLinqUnpairingRequest = CMTPayment.Pair.ManualRideLinqUnpairingRequest;
@@ -88,7 +89,11 @@ namespace apcurium.MK.Booking.Api.Services
                     CardOnFileId = creditCard.Token
                 };
 
+                _logger.LogMessage("Pairing for manual RideLinq with Pairing Code {0}", request.PairingCode);
+
                 var response = _cmtMobileServiceClient.Post(pairingRequest);
+
+                _logger.LogMessage("Pairing result: {0}", response.ToJson());
 
                 var trip = _cmtTripInfoServiceHelper.WaitForTripInfo(response.PairingToken, response.TimeoutSeconds);
 
