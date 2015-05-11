@@ -139,9 +139,7 @@ namespace apcurium.MK.Booking.Api.Jobs
             // Enumerate orders to avoid multiple enumerations of IEnumerable
             var orderStatusDetails = orders as OrderStatusDetail[] ?? orders.ToArray();
 
-            var manualRideLinqOrders = orderStatusDetails.Where(o => o.IsManualRideLinq).ToArray();
-
-            Log.DebugFormat("Found {0} manual ridelinq orders from {1} total orders", manualRideLinqOrders.Length, orderStatusDetails.Length);
+            var manualRideLinqOrders = orderStatusDetails.Where(o => o.IsManualRideLinq);
 
             foreach (var orderStatusDetail in manualRideLinqOrders)
             {
