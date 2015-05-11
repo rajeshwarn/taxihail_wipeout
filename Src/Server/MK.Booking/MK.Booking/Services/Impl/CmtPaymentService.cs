@@ -290,6 +290,9 @@ namespace apcurium.MK.Booking.Services.Impl
                                                     orderStatus.ReferenceNumber :
                                                     orderDetail.IBSOrderId.ToString();
 
+                var tempPaymentInfo = _orderDao.GetTemporaryPaymentInfo(orderId);
+                var cvv = tempPaymentInfo != null ? tempPaymentInfo.Cvv : null;
+
                 var authRequest = new AuthorizationRequest
                 {
                     FleetToken = fleetToken,
@@ -308,8 +311,11 @@ namespace apcurium.MK.Booking.Services.Impl
                     Surcharge = 0,
                     Tax = 0,
                     Tolls = 0,
-//                    Cvv2 = null
+                    Cvv2 = cvv
                 };
+
+                // remove temp payment info
+                _orderDao.DeleteTemporaryPaymentInfo(orderId);
 
                 var authResponse = Authorize(authRequest);
 

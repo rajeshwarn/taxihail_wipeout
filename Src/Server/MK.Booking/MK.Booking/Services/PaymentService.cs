@@ -97,9 +97,16 @@ namespace apcurium.MK.Booking.Services
             // if we call preauth more than once, the cvv will be null but since preauth already passed once, it's safe to assume it's ok
             var response = GetInstance().PreAuthorize(orderId, account, amountToPreAuthorize, isReAuth, isSettlingOverduePayment, false, cvv);
 
-            // delete the cvv stored in database once preauth is done, doesn't fail if it doesn't exist
-            _orderDao.DeleteTemporaryPaymentInfo(orderId);
-
+            // TODO when CMT has preauth enabled, remove this ugly code and delete temp info for everyone
+            // we can't delete here for CMT because we need the cvv info in the CommitPayment method
+            var serverSettings = _container.Resolve<IServerSettings>();
+            if (serverSettings.GetPaymentSettings().PaymentMode != PaymentMethod.Cmt &&
+                serverSettings.GetPaymentSettings().PaymentMode != PaymentMethod.RideLinqCmt)
+            {
+                // delete the cvv stored in database once preauth is done, doesn't fail if it doesn't exist
+                _orderDao.DeleteTemporaryPaymentInfo(orderId);
+            }
+            
             return response;
         }
 

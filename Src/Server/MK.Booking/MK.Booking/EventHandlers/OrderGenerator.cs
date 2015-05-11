@@ -28,7 +28,6 @@ namespace apcurium.MK.Booking.EventHandlers
         IEventHandler<OrderManuallyPairedForRideLinq>,
         IEventHandler<OrderUnpairedFromManualRideLinq>,
         IEventHandler<ManualRideLinqTripInfoUpdated>
-
     {
         private readonly Func<BookingDbContext> _contextFactory;
         private readonly ILogger _logger;
@@ -63,6 +62,8 @@ namespace apcurium.MK.Booking.EventHandlers
                     details.IBSStatusDescription = _resources.Get("OrderStatus_wosCANCELLED", order != null ? order.ClientLanguageCode : "en");
                     context.Save(details);
                 }
+
+                RemoveTemporaryPaymentInfo(context, @event.SourceId);
             }
         }
 
@@ -85,6 +86,8 @@ namespace apcurium.MK.Booking.EventHandlers
                     details.IBSStatusDescription = @event.ErrorDescription;
                     context.Save(details);
                 }
+
+                RemoveTemporaryPaymentInfo(context, @event.SourceId);
             }
         }
 
@@ -334,6 +337,7 @@ namespace apcurium.MK.Booking.EventHandlers
                     if (@event.IsCompleted)
                     {
                         order.DropOffDate = @event.EventDate;
+                        RemoveTemporaryPaymentInfo(context, @event.SourceId);
                     }
 
                     order.Fare = @event.Fare;
@@ -367,6 +371,8 @@ namespace apcurium.MK.Booking.EventHandlers
                 orderDetail.Settings.ChargeTypeId = ChargeTypes.PaymentInCar.Id;
                 orderDetail.Settings.ChargeType = ChargeTypes.PaymentInCar.Display;
                 context.Save(orderDetail);
+
+                RemoveTemporaryPaymentInfo(context, @event.SourceId);
             }
         }
 
@@ -421,6 +427,8 @@ namespace apcurium.MK.Booking.EventHandlers
                 details.NetworkPairingTimeout = GetNetworkPairingTimeoutIfNecessary(details, @event.EventDate);
 
                 context.SaveChanges();
+
+                RemoveTemporaryPaymentInfo(context, @event.SourceId);
             }
         }
 
@@ -618,6 +626,13 @@ namespace apcurium.MK.Booking.EventHandlers
                     context.Save(rideLinqDetails);
                 }
             }
+        }
+
+        // TODO remove this once CMT has real preauth
+        private void RemoveTemporaryPaymentInfo(BookingDbContext context, Guid orderId)
+        {
+            context.RemoveWhere<TemporaryOrderPaymentInfoDetail>(c => c.OrderId == orderId);
+            context.SaveChanges();
         }
     }
 }
