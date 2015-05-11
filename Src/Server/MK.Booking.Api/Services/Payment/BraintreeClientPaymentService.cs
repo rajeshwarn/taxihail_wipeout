@@ -86,7 +86,10 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                 var result = client.Customer.Create(request);
                 var customer = result.Target;
 
-                if (!result.IsSuccess())
+                var creditCardCvvSuccess = CheckCvvResponseCodeForSuccess(customer);
+                
+
+                if (!result.IsSuccess() || !creditCardCvvSuccess)
                 {
                     return new TokenizedCreditCardResponse
                     {
@@ -113,6 +116,20 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                     IsSuccessful = false,
                     Message = e.Message
                 };
+            }
+        }
+
+        private static bool CheckCvvResponseCodeForSuccess(Customer customer)
+        {
+            try
+            {
+                // "M" = matches, "N" = does not match, "U" = not verified, "S" = bank doesn't participate, "I" = not provided
+                return customer.CreditCards[0].Verification.CvvResponseCode != "N";
+            }
+            catch (Exception)
+            {
+                // an error occured
+                return false;
             }
         }
 

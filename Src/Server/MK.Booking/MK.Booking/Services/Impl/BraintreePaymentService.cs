@@ -388,6 +388,8 @@ namespace apcurium.MK.Booking.Services.Impl
                 }
                 else
                 {
+                    // we pass the cvv to Braintree, but if no cvv rules are configured on the 
+                    // Braintree Gateway of the client, the cvv will not cause a preauth failure
                     transactionRequest.CreditCard = new TransactionCreditCardRequest
                     {
                         CVV = cvv
