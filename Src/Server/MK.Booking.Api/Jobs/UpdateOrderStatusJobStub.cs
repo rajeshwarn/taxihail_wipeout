@@ -36,9 +36,9 @@ namespace apcurium.MK.Booking.Api.Jobs
 
             var lastUpdate = _orderStatusUpdateDao.GetLastUpdate();
 
-            if ((lastUpdate != null) && (lastUpdate.UpdaterUniqueId != uniqueId) &&
-                (!(DateTime.UtcNow.Subtract(lastUpdate.LastUpdateDate).TotalSeconds >
-                   NumberOfConcurrentServers*pollingValue)))
+            if (lastUpdate != null
+                && lastUpdate.UpdaterUniqueId != uniqueId
+                && !(DateTime.UtcNow.Subtract(lastUpdate.LastUpdateDate).TotalSeconds > NumberOfConcurrentServers * pollingValue))
             {
                 return false;
             }

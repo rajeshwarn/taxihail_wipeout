@@ -29,7 +29,8 @@ namespace CMTPayment
                     _logger.LogMessage("No Trip info found for pairing token {0}", pairingToken);
                     return null;
                 }
-                //ugly fix for deserilization problem in datetime on the device for IOS
+
+                // Ugly fix for deserilization problem in datetime on the device for IOS
                 if (trip.StartTime.HasValue)
                 {
                     trip.StartTime = DateTime.SpecifyKind(trip.StartTime.Value, DateTimeKind.Local);
@@ -40,18 +41,22 @@ namespace CMTPayment
                     trip.EndTime = DateTime.SpecifyKind(trip.EndTime.Value, DateTimeKind.Local);
                 }
 
-                _logger.LogMessage("Following trip info found from pairing token {0} \n\r {1}", pairingToken,
-                    trip.ToJson());
+                _logger.LogMessage("Following trip info found from pairing token {0} \n\r {1}", pairingToken, trip.ToJson());
 
                 return trip;
             }
             catch (WebServiceException ex)
             {
-                _logger.LogMessage("An WebService error with error code {0} and status code {1}  occured while trying to get the CMT trip info for Pairing Token: {2}", ex.ErrorCode??"Unknown" ,ex.StatusCode, pairingToken);
+                _logger.LogMessage("An WebService error with error code {0} and status code {1}  occured while trying to get the CMT trip info for Pairing Token: {2}",
+                    ex.ErrorCode ?? "Unknown",
+                    ex.StatusCode,
+                    pairingToken);
+                
                 if (ex.ResponseBody != null)
                 {
                     _logger.LogMessage("Error Response: {0}", ex.ResponseBody);
                 }
+
                 _logger.LogError(ex);
                 _logger.LogStack();
 
@@ -73,6 +78,7 @@ namespace CMTPayment
             var watch = new Stopwatch();
             watch.Start();
             var trip = GetTripInfo(pairingToken);
+
             while (trip == null)
             {
                 Thread.Sleep(2000);
@@ -93,6 +99,7 @@ namespace CMTPayment
             var watch = new Stopwatch();
             watch.Start();
             var trip = GetTripInfo(pairingToken);
+
             while (trip != null)
             {
                 Thread.Sleep(2000);
