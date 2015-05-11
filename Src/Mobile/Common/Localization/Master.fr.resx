@@ -1939,4 +1939,7 @@
   <data name="Error_InvalidCvvMessage" xml:space="preserve">
   	<value>Le code de vérification doit être un nombre possédant entre 3 et 4 chiffres</value>
   </data>
+  <data name="ManualRideLinqCreditCardDisabled" xml:space="preserve">
+    <value>Vous avez un paiement en souffrance pour un course précédente et vous ne pouvez donc pas utiliser RideLinQ jusqu'à ce que ce montant soit payé.</value>
+  </data>
 </root>

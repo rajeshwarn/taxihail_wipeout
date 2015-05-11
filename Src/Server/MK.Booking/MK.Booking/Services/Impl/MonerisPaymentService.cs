@@ -1,6 +1,8 @@
 using System;
+using System.Collections;
 using System.Globalization;
 using System.Linq;
+using System.Text;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
@@ -22,6 +24,7 @@ namespace apcurium.MK.Booking.Services.Impl
         private readonly IPairingService _pairingService;
         private readonly IOrderPaymentDao _paymentDao;
         private readonly ICreditCardDao _creditCardDao;
+        private readonly IOrderDao _orderDao;
 
         private readonly string CryptType_SSLEnabledMerchant = "7";
 
@@ -30,7 +33,8 @@ namespace apcurium.MK.Booking.Services.Impl
             IOrderPaymentDao paymentDao,
             IServerSettings serverSettings, 
             IPairingService pairingService,
-            ICreditCardDao creditCardDao)
+            ICreditCardDao creditCardDao,
+            IOrderDao orderDao)
         {
             _commandBus = commandBus;
             _logger = logger;
@@ -38,6 +42,7 @@ namespace apcurium.MK.Booking.Services.Impl
             _serverSettings = serverSettings;
             _pairingService = pairingService;
             _creditCardDao = creditCardDao;
+            _orderDao = orderDao;
         }
 
         public PaymentProvider ProviderType(Guid? orderId = null)
@@ -333,6 +338,16 @@ namespace apcurium.MK.Booking.Services.Impl
 
                 var monerisSettings = _serverSettings.GetPaymentSettings().MonerisPaymentSettings;
                 var completionCommand = new Completion(orderIdentifier, amount.ToString("F"), commitTransactionId, CryptType_SSLEnabledMerchant);
+
+                var orderStatus = _orderDao.FindOrderStatusById(orderId);
+                if (orderStatus != null
+                    && orderStatus.DriverInfos != null
+                    && orderStatus.DriverInfos.DriverId.HasValue())
+                {
+                    //add driver id to "memo" field
+                    completionCommand.SetDynamicDescriptor(orderStatus.DriverInfos.DriverId); 
+                }
+                
                 var commitRequest = new HttpsPostRequest(monerisSettings.Host, monerisSettings.StoreId, monerisSettings.ApiToken, completionCommand);
                 var commitReceipt = commitRequest.GetReceipt();
 
@@ -441,6 +456,52 @@ namespace apcurium.MK.Booking.Services.Impl
                 .Replace("=", string.Empty)
                 .Replace("+", string.Empty)
                 .Replace("/", string.Empty);
+        }
+    }
+
+    /// <summary>
+    /// Completion class from 2.5.5
+    /// </summary>
+    public class Completion : Transaction
+    {
+        private static string[] xmlTags = new string[4]
+        {
+          "order_id",
+          "comp_amount",
+          "txn_number",
+          "crypt_type"
+        };
+        private Hashtable keyHashes = new Hashtable();
+
+        public Completion(Hashtable completion)
+            : base(completion, Completion.xmlTags)
+        {
+        }
+
+        public Completion(string order_id, string comp_amount, string txn_number, string crypt_type)
+            : base(Completion.xmlTags)
+        {
+            this.transactionParams.Add((object)"order_id", (object)order_id);
+            this.transactionParams.Add((object)"comp_amount", (object)comp_amount);
+            this.transactionParams.Add((object)"txn_number", (object)txn_number);
+            this.transactionParams.Add((object)"crypt_type", (object)crypt_type);
+        }
+
+        public void SetDynamicDescriptor(string dynamic_descriptor)
+        {
+            this.keyHashes.Add((object)"dynamic_descriptor", (object)dynamic_descriptor);
+        }
+
+        public override string toXML()
+        {
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.Append("<completion>");
+            stringBuilder.Append(base.toXML());
+            IDictionaryEnumerator enumerator = this.keyHashes.GetEnumerator();
+            while (enumerator.MoveNext())
+                stringBuilder.Append("<" + enumerator.Key.ToString() + ">" + enumerator.Value.ToString() + "</" + enumerator.Key.ToString() + ">");
+            stringBuilder.Append("</completion>");
+            return stringBuilder.ToString();
         }
     }
 }

@@ -1947,4 +1947,7 @@
   <data name="Error_InvalidCvvMessage" xml:space="preserve">
   	<value>The CVV must be a number between 3 and 4 digits</value>
   </data>
+  <data name="ManualRideLinqCreditCardDisabled" xml:space="preserve">
+    <value>Your current card on file has an overdue payment for a previous ride. This overdue payment is preventing you from pairing with RideLinQ</value>
+  </data>
 </root>

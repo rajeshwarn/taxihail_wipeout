@@ -20,6 +20,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 
 		Task<bool> ValidateCardOnFile ();
 		Task<bool> ValidateCardExpiration ();
+	    Task<bool> ValidateIsCardDeactivated();
 		Task<bool> ValidatePromotionUseConditions();
 
 		Task SetAddress(Address address);
