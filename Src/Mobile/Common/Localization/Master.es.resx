@@ -2388,4 +2388,7 @@
   <data name="ManualRideLinqNoCardOnFile" xml:space="preserve">
     <value>You need to have a card on file to pair with RideLinQ</value>
   </data>
+  <data name="ManualRideLinqCreditCardDisabled" xml:space="preserve">
+    <value>Your current card on file has an overdue payment for a previous ride. This overdue payment is preventing you from pairing with RideLinQ</value>
+  </data>
 </root>
