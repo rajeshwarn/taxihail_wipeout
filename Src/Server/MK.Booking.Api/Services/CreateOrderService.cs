@@ -1323,7 +1323,7 @@ namespace apcurium.MK.Booking.Api.Services
             var totalAmount = appEstimateWithTip;
             var meterAmount = totalAmount - tipAmount;
 
-            var preAuthResponse = _paymentService.PreAuthorize(orderId, account, totalAmount, true, false, false, cvv);
+            var preAuthResponse = _paymentService.PreAuthorize(orderId, account, totalAmount, isForPrepaid: true, cvv: cvv);
             if (preAuthResponse.IsSuccessful)
             {
                 // Wait for payment to be created

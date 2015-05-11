@@ -254,9 +254,9 @@
                 //account charge type payment                
                 TaxiHail.app.navigate('bookaccountcharge', { trigger: true });
 
-            } else if (this.model.isPayingWithCoF()
+            } else if (TaxiHail.parameters.alwaysDisplayCoFOption
                 && !hasCreditCardSet
-                && TaxiHail.parameters.alwaysDisplayCoFOption
+                && this.model.isPayingWithCoF()
                 && !this.model.get('market')) {
 
                 if (!this.model.has('dropOffAddress')) {
@@ -269,7 +269,15 @@
                     TaxiHail.app.navigate('confirmationbook/payment', { trigger: true });
                 }
                 
-            } else {
+            }
+            else if (TaxiHail.parameters.askForCVVAtBooking
+                && hasCreditCardSet
+                && this.model.isPayingWithCoF()
+                && !this.model.get('market')) {
+                // navigate to CVV screen
+                TaxiHail.app.navigate('confirmcvv', { trigger: true });
+            }
+            else {
                 this.model.save({}, {
                     success: TaxiHail.postpone(function (model) {
                         // Wait for response before doing anything

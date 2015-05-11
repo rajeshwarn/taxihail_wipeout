@@ -1945,6 +1945,6 @@
   	<value>Invalid CVV</value>
   </data>
   <data name="Error_InvalidCvvMessage" xml:space="preserve">
-  	<value>Sorry, the CVV provided did not match</value>
+  	<value>The CVV must be a number between 3 and 4 digits</value>
   </data>
 </root>

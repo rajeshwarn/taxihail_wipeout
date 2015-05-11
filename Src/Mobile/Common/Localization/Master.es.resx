@@ -2389,15 +2389,15 @@
     <value>You need to have a card on file to pair with RideLinQ</value>
   </data>
   <data name="CvvRequiredTitle" xml:space="preserve">
-  	<value>CVV Required</value>
+    <value>CVV Required</value>
   </data>
   <data name="CvvRequiredMessage" xml:space="preserve">
-  	<value>Please enter the CVV associated with your card on file to continue</value>
+    <value>Please enter the CVV associated with your card on file to continue</value>
   </data>
   <data name="Error_InvalidCvvTitle" xml:space="preserve">
-  	<value>Invalid CVV</value>
+    <value>Invalid CVV</value>
   </data>
   <data name="Error_InvalidCvvMessage" xml:space="preserve">
-  	<value>Sorry, the CVV provided did not match</value>
+    <value>The CVV must be a number between 3 and 4 digits</value>
   </data>
 </root>

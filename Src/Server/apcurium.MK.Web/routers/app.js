@@ -42,6 +42,7 @@
             "useraccount/:tab": "useraccount",
             "resetpassword": "resetpassword",
             "bookaccountcharge": "bookaccountcharge",
+            "confirmcvv": "confirmcvv"
         },
 
         initialize: function (options) {
@@ -196,10 +197,14 @@
                    
         },
 
-        bookaccountcharge:function()
-        {
+        bookaccountcharge:function() {
             var currentOrder = TaxiHail.orderService.getCurrentOrder();
             renderView(TaxiHail.BookAccountChargeView, currentOrder);
+        },
+
+        confirmcvv: function () {
+            var currentOrder = TaxiHail.orderService.getCurrentOrder();
+            renderView(TaxiHail.ConfirmCVVView, currentOrder);
         },
         
         status: function (id) {

@@ -89,6 +89,7 @@ namespace apcurium.MK.Web
                 "~/views/FavoriteDetailsView.js",
                 "~/views/AddFavoriteView.js",
                 "~/views/BookAccountChargeView.js",
+                "~/views/ConfirmCVVView.js",
                 "~/views/QuestionItemView.js",
                 "~/views/FavoritesView.js",
                 "~/views/PaymentView.js",
