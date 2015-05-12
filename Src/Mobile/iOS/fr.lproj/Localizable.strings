@@ -601,4 +601,8 @@
 "AddPaymentMethod"="Ajouter une méthode de paiement";
 "CurrentBookingDisabledTitle"="Réservation Immédiate Non Disponible";
 "ManualRideLinqNoCardOnFile"="Vous devez avoir une carte associée à votre compte pour utiliser RideLinQ";
+"CvvRequiredTitle"="CVV Requis";
+"CvvRequiredMessage"="Veuillez entrer le code de vérification associé à votre carte de crédit pour continuer";
+"Error_InvalidCvvTitle"="CVV Invalide";
+"Error_InvalidCvvMessage"="Le code de vérification doit être un nombre possédant entre 3 et 4 chiffres";
 "ManualRideLinqCreditCardDisabled"="Vous avez un paiement en souffrance pour un course précédente et vous ne pouvez donc pas utiliser RideLinQ jusqu'à ce que ce montant soit payé.";

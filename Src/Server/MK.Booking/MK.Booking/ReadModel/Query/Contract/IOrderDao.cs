@@ -21,6 +21,8 @@ namespace apcurium.MK.Booking.ReadModel.Query.Contract
         void UpdateVehiclePosition(Guid orderId, double? newLatitude, double? newLongitude);
         IEnumerable<Position> GetVehiclePositions(Guid orderId);
         TemporaryOrderCreationInfoDetail GetTemporaryInfo(Guid orderId);
+        TemporaryOrderPaymentInfoDetail GetTemporaryPaymentInfo(Guid orderId);
+        void DeleteTemporaryPaymentInfo(Guid orderId);
         OrderManualRideLinqDetail GetManualRideLinqById(Guid orderId);
     }
 }

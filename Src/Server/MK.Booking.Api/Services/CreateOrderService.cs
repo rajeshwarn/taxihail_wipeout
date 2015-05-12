@@ -749,8 +749,8 @@ namespace apcurium.MK.Booking.Api.Services
                             ErrorCode.CreateOrder_RuleDisable.ToString(),
                             _resources.Get("CannotCreateOrder_PrepaidNoEstimate", request.ClientLanguageCode));
                     }
-                    ValidateCreditCard(account, request.ClientLanguageCode);
-                    CapturePaymentForPrepaidOrder(orderId, account, Convert.ToDecimal(appEstimateWithTip), tipPercent);
+                    ValidateCreditCard(account, request.ClientLanguageCode, request.Cvv);
+                    CapturePaymentForPrepaidOrder(orderId, account, Convert.ToDecimal(appEstimateWithTip), tipPercent, request.Cvv);
                 }
             }
             else
@@ -759,8 +759,8 @@ namespace apcurium.MK.Booking.Api.Services
                 if (request.Settings.ChargeTypeId.HasValue
                     && request.Settings.ChargeTypeId.Value == ChargeTypes.CardOnFile.Id)
                 {
-                    ValidateCreditCard(account, request.ClientLanguageCode);
-                    PreAuthorizePaymentMethod(orderId, account, request.ClientLanguageCode, isFutureBooking, appEstimateWithTip, false);
+                    ValidateCreditCard(account, request.ClientLanguageCode, request.Cvv);
+                    PreAuthorizePaymentMethod(orderId, account, request.ClientLanguageCode, isFutureBooking, appEstimateWithTip, false, request.Cvv);
                 }
 
                 // Payment mode is PayPal
@@ -772,7 +772,7 @@ namespace apcurium.MK.Booking.Api.Services
             }
         }
 
-        private void ValidateCreditCard(AccountDetail account, string clientLanguageCode)
+        private void ValidateCreditCard(AccountDetail account, string clientLanguageCode, string cvv)
         {
             // check if the account has a credit card
             if (!account.DefaultCreditCard.HasValue)
@@ -795,6 +795,14 @@ namespace apcurium.MK.Booking.Api.Services
                     ErrorCode.CreateOrder_CardOnFileDeactivated.ToString(),
                     _resources.Get("CannotCreateOrder_CreditCardDeactivated", clientLanguageCode));
             }
+
+            if (_serverSettings.GetPaymentSettings().AskForCVVAtBooking
+                && !cvv.HasValue())
+            {
+                throw new HttpError(HttpStatusCode.BadRequest,
+                    ErrorCode.CreateOrder_RuleDisable.ToString(),
+                     _resources.Get("CannotCreateOrder_CreditCardCvvRequired", clientLanguageCode));
+            }
         }
 
         private void ValidatePayPal(Guid orderId, AccountDetail account, string clientLanguageCode, bool isFutureBooking, decimal? appEstimate)
@@ -810,18 +818,24 @@ namespace apcurium.MK.Booking.Api.Services
             PreAuthorizePaymentMethod(orderId, account, clientLanguageCode, isFutureBooking, appEstimate, true);
         }
 
-        private void PreAuthorizePaymentMethod(Guid orderId, AccountDetail account, string clientLanguageCode, bool isFutureBooking, decimal? appEstimate, bool isPayPal)
+        private void PreAuthorizePaymentMethod(Guid orderId, AccountDetail account, string clientLanguageCode, bool isFutureBooking, decimal? appEstimate, bool isPayPal, string cvv = null)
         {
             if (!_serverSettings.GetPaymentSettings().IsPreAuthEnabled || isFutureBooking)
             {
+                // preauth will be done later, save the info temporarily
+                if (_serverSettings.GetPaymentSettings().AskForCVVAtBooking)
+                {
+                    _commandBus.Send(new SaveTemporaryOrderPaymentInfo { OrderId = orderId, Cvv = cvv });
+                }
+                
                 return;
             }
             
             // there's a minimum amount of $50 (warning indicating that on the admin ui)
             // if app returned an estimate, use it, otherwise use the setting (or 0), then use max between the value and 50
             var preAuthAmount = Math.Max(appEstimate ?? (_serverSettings.GetPaymentSettings().PreAuthAmount ?? 0), 50);
-            
-            var preAuthResponse = _paymentService.PreAuthorize(orderId, account, preAuthAmount);
+
+            var preAuthResponse = _paymentService.PreAuthorize(orderId, account, preAuthAmount, cvv: cvv);
 
             var errorMessage = isPayPal
                 ? _resources.Get("CannotCreateOrder_PayPalWasDeclined", clientLanguageCode)
@@ -1302,14 +1316,14 @@ namespace apcurium.MK.Booking.Api.Services
             return _serverSettings.ServerData.HideCallDispatchButton ? noCallMessage : callMessage;
         }
 
-        private void CapturePaymentForPrepaidOrder(Guid orderId, AccountDetail account, decimal appEstimateWithTip, int tipPercentage)
+        private void CapturePaymentForPrepaidOrder(Guid orderId, AccountDetail account, decimal appEstimateWithTip, int tipPercentage, string cvv)
         {
             // Note: No promotion on web
             var tipAmount = FareHelper.GetTipAmountFromTotalIncludingTip(appEstimateWithTip, tipPercentage);
             var totalAmount = appEstimateWithTip;
             var meterAmount = totalAmount - tipAmount;
 
-            var preAuthResponse = _paymentService.PreAuthorize(orderId, account, totalAmount, isForPrepaid: true);
+            var preAuthResponse = _paymentService.PreAuthorize(orderId, account, totalAmount, isForPrepaid: true, cvv: cvv);
             if (preAuthResponse.IsSuccessful)
             {
                 // Wait for payment to be created

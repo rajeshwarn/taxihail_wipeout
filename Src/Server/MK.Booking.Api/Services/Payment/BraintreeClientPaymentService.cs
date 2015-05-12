@@ -75,14 +75,21 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                         Number = encryptedCreditCardNumber,
                         ExpirationDate = encryptedExpirationDate,
                         CVV = encryptedCvv,
-                        PaymentMethodNonce = paymentMethodNonce // Used for tokenization from javascript API
+                        PaymentMethodNonce = paymentMethodNonce, // Used for tokenization from javascript API
+                        Options = new CreditCardOptionsRequest
+                        {
+                            VerifyCard = true
+                        }
                     }
                 };
 
                 var result = client.Customer.Create(request);
                 var customer = result.Target;
 
-                if (!result.IsSuccess())
+                var creditCardCvvSuccess = CheckCvvResponseCodeForSuccess(customer);
+                
+
+                if (!result.IsSuccess() || !creditCardCvvSuccess)
                 {
                     return new TokenizedCreditCardResponse
                     {
@@ -109,6 +116,20 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                     IsSuccessful = false,
                     Message = e.Message
                 };
+            }
+        }
+
+        private static bool CheckCvvResponseCodeForSuccess(Customer customer)
+        {
+            try
+            {
+                // "M" = matches, "N" = does not match, "U" = not verified, "S" = bank doesn't participate, "I" = not provided
+                return customer.CreditCards[0].Verification.CvvResponseCode != "N";
+            }
+            catch (Exception)
+            {
+                // an error occured
+                return false;
             }
         }
 

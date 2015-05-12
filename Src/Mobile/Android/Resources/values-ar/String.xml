@@ -584,4 +584,8 @@
   <string name="ManualRideLinqStatus_Driver">Driver id:</string>
   <string name="InvalidAddressTextEdit">لا يمكن التعرف على العنوان</string>
   <string name="HistoryDetailPickupDateLabel">تاریخ المشوار:</string>
+  <string name="CvvRequiredTitle">CVV Required</string>
+  <string name="CvvRequiredMessage">Please enter the CVV associated with your card on file to continue</string>
+  <string name="Error_InvalidCvvTitle">Invalid CVV</string>
+  <string name="Error_InvalidCvvMessage">The CVV must be a number between 3 and 4 digits</string>
 </resources>

@@ -193,7 +193,7 @@ namespace apcurium.MK.Booking.Services.Impl
             }
         }
 
-        public PreAuthorizePaymentResponse PreAuthorize(Guid orderId, AccountDetail account, decimal amountToPreAuthorize, bool isReAuth = false, bool isSettlingOverduePayment = false, bool isForPrepaid = false)
+        public PreAuthorizePaymentResponse PreAuthorize(Guid orderId, AccountDetail account, decimal amountToPreAuthorize, bool isReAuth = false, bool isSettlingOverduePayment = false, bool isForPrepaid = false, string cvv = null)
         {
             var message = string.Empty;
             var transactionId = string.Empty;
@@ -218,6 +218,8 @@ namespace apcurium.MK.Booking.Services.Impl
                     var monerisSettings = _serverSettings.GetPaymentSettings().MonerisPaymentSettings;
 
                     var preAuthorizeCommand = new ResPreauthCC(creditCard.Token, orderIdentifier, amountToPreAuthorize.ToString("F"), CryptType_SSLEnabledMerchant);
+                    AddCvvInfo(preAuthorizeCommand, cvv);
+                    
                     var preAuthRequest = new HttpsPostRequest(monerisSettings.Host, monerisSettings.StoreId, monerisSettings.ApiToken, preAuthorizeCommand);
                     var preAuthReceipt = preAuthRequest.GetReceipt();
                     isSuccessful = RequestSuccesful(preAuthReceipt, out message);
@@ -335,7 +337,6 @@ namespace apcurium.MK.Booking.Services.Impl
                 }
 
                 var monerisSettings = _serverSettings.GetPaymentSettings().MonerisPaymentSettings;
-
                 var completionCommand = new Completion(orderIdentifier, amount.ToString("F"), commitTransactionId, CryptType_SSLEnabledMerchant);
 
                 var orderStatus = _orderDao.FindOrderStatusById(orderId);
@@ -386,7 +387,26 @@ namespace apcurium.MK.Booking.Services.Impl
         {
             throw new NotImplementedException();
         }
-        
+
+        private void AddCvvInfo(ResPreauthCC preAuthorizeCommand, string cvv)
+        {
+            if (_serverSettings.GetPaymentSettings().AskForCVVAtBooking)
+            {
+                if (!cvv.HasValue())
+                {
+                    _logger.LogMessage("AskForCVVAtBooking setting is enabled but no cvv found for this order, could be from a reauth");
+                }
+                else
+                {
+                    // Only supported for Visa/MasterCard/Amex
+                    var cvdCheck = new CvdInfo();
+                    cvdCheck.SetCvdIndicator("1");
+                    cvdCheck.SetCvdValue(cvv);
+                    preAuthorizeCommand.SetCvdInfo(cvdCheck);
+                }
+            }
+        }
+
         private DateTime? GetTransactionDate(Receipt transactionReceipt)
         {
             DateTime localTransactionDate;
