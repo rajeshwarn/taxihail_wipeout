@@ -23,6 +23,7 @@ namespace apcurium.MK.Booking.IBS
         public double Fare { get; set; }
         public double Tip { get; set; }
         public double VAT { get; set; }
+        public double Surcharge { get; set; }
         public string VehicleNumber { get; set; }
         /*DriversInfos*/
         public string VehicleType;
@@ -50,7 +51,7 @@ namespace apcurium.MK.Booking.IBS
 
         }
 
-        public IBSOrderInformation(TOrderStatus_2 orderInfoFromIBS)
+        public IBSOrderInformation(TOrderStatus_3 orderInfoFromIBS)
         {
             Status = orderInfoFromIBS.OrderStatus.ToString();
 
@@ -77,6 +78,8 @@ namespace apcurium.MK.Booking.IBS
             Tip = orderInfoFromIBS.Tips;
             Toll = orderInfoFromIBS.Tolls;
             VAT = orderInfoFromIBS.VAT;
+            // TODO
+            //Surcharge = orderInfoFromIBS.Surcharge;
 
             Eta = orderInfoFromIBS.ETATime.ToDateTime();
         }

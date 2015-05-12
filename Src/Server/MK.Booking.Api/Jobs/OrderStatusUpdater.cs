@@ -127,6 +127,7 @@ namespace apcurium.MK.Booking.Api.Jobs
                 Toll = orderFromIbs.Toll,
                 Tip = orderFromIbs.Tip,
                 Tax = orderFromIbs.VAT,
+                Surchage = orderFromIbs.Surcharge
             });
         }
 

@@ -15,11 +15,18 @@ namespace apcurium.MK.Booking.Commands
             Id = Guid.NewGuid();
         }
 
-        public OrderStatusDetail Status { get; set; }
-        public double? Fare { get; set; }
-        public double? Toll { get; set; }
-        public double? Tip { get; set; }
-        public double? Tax { get; set; }
         public Guid Id { get; private set; }
+
+        public OrderStatusDetail Status { get; set; }
+
+        public double? Fare { get; set; }
+
+        public double? Toll { get; set; }
+
+        public double? Tip { get; set; }
+
+        public double? Tax { get; set; }
+
+        public double? Surcharge { get; set; }
     }
 }
