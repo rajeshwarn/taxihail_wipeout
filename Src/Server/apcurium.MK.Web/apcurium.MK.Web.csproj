@@ -419,6 +419,7 @@
     <Content Include="localization\OrderHistory.json" />
     <Content Include="log4net.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="models\CompanySettings.js" />
     <Content Include="Areas\AdminTH\Views\PromoCode\Index.cshtml" />

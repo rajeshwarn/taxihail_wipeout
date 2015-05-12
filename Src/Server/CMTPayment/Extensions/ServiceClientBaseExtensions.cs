@@ -9,7 +9,8 @@ using ServiceStack.Text;
 namespace CMTPayment.Extensions
 {
 	public static class ServiceClientBaseExtensions
-    {
+    {        
+
         public static Task<TResponse> GetAsync<TResponse>(this ServiceClientBase client, string relativeOrAbsoluteUrl)
         {
             var tcs = new TaskCompletionSource<TResponse>();
@@ -76,11 +77,12 @@ namespace CMTPayment.Extensions
             return stringBuilder.ToString();
         }
 #else
+
 		public static Task<TResponse> PostAsync<TResponse>(this ServiceClientBase client, IReturn<TResponse> request)
 		{
-		var tcs = new TaskCompletionSource<TResponse>();
+			var tcs = new TaskCompletionSource<TResponse>();
 
-		client.PostAsync(request,
+			client.PostAsync<TResponse>(request,
 		tcs.SetResult,
 		(result, error) => tcs.SetException(FixWebServiceException(error)));
 
@@ -96,7 +98,7 @@ namespace CMTPayment.Extensions
 			client.PostAsync<TResponse>(relativeOrAbsoluteUrl,
 				request,
 				tcs.SetResult,
-                (result, error) => tcs.SetException(FixWebServiceException(error)));
+				(result, error) => tcs.SetException(FixWebServiceException(error)));
 
 			return tcs.Task;
 		}
