@@ -1,3 +1,4 @@
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.Net.Mail;
 using apcurium.MK.Common.Configuration;
@@ -169,5 +170,9 @@ namespace MK.Common.Configuration
         [CustomizableByCompany]
         [Display(Name = "Validate Admin Rules in Other Markets", Description = "Use the market booking rules defined by this company to validate orders in other markets")]
         public bool ValidateAdminRulesForExternalMarket { get; protected set; }
+
+        [CustomizableByCompany]
+        [Display(Name = "Company's time zone", Description = "Used to properly show dates in the correct time zone")]
+        public string CompanyTimeZone { get; protected set; }
     }
 }

@@ -231,7 +231,7 @@ namespace apcurium.MK.Booking.Domain
             }
         }
 
-        public void ChangeStatus(OrderStatusDetail status, double? fare, double? tip, double? toll, double? tax)
+        public void ChangeStatus(OrderStatusDetail status, double? fare, double? tip, double? toll, double? tax, DateTime? dropOffDate)
         {
             if (status == null) throw new InvalidOperationException();
 
@@ -244,7 +244,8 @@ namespace apcurium.MK.Booking.Domain
                     Tip = tip,
                     Toll = toll,
                     Tax = tax,
-                    IsCompleted = status.Status == OrderStatus.Completed
+                    IsCompleted = status.Status == OrderStatus.Completed,
+                    DropOffDate = dropOffDate
                 });
             }
         }

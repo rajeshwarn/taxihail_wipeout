@@ -1,5 +1,6 @@
 ﻿#region
 
+using System;
 using apcurium.MK.Common.Entity;
 using Infrastructure.EventSourcing;
 
@@ -14,6 +15,7 @@ namespace apcurium.MK.Booking.Events
         public double? Toll { get; set; }
         public double? Tip { get; set; }
         public double? Tax { get; set; }
+        public DateTime? DropOffDate { get; set; }
         public bool IsCompleted { get; set; }
     }
 }

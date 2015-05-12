@@ -120,14 +120,38 @@ namespace apcurium.MK.Booking.Api.Jobs
 
             CheckForPairingAndHandleIfNecessary(orderStatusDetail, orderFromIbs);
 
-            _commandBus.Send(new ChangeOrderStatus
+            var changeOrderStatus = new ChangeOrderStatus
             {
                 Status = orderStatusDetail,
                 Fare = orderFromIbs.Fare,
                 Toll = orderFromIbs.Toll,
                 Tip = orderFromIbs.Tip,
-                Tax = orderFromIbs.VAT,
-            });
+                Tax = orderFromIbs.VAT
+            };
+
+            if (orderStatusDetail.Status == OrderStatus.Completed)
+            {
+                changeOrderStatus.DropOffDate = GetDropOffDateInCompanyTimeZone(orderStatusDetail);
+            }
+
+            _commandBus.Send(changeOrderStatus);
+        }
+
+        private DateTime? GetDropOffDateInCompanyTimeZone(OrderStatusDetail orderStatusDetail)
+        {
+            // what to do when no setting?? i guess return null to have eventhandler check company setting
+            var timeZoneId = orderStatusDetail.Market.HasValue()
+                ? null // call customer portal to get it
+                : _serverSettings.ServerData.CompanyTimeZone;
+
+            var now = DateTime.UtcNow;
+            if (timeZoneId == null)
+            {
+                // return a utc date
+                return now;
+            }
+
+            return now + TimeZoneInfo.FindSystemTimeZoneById(timeZoneId).GetUtcOffset(now);
         }
 
         public void HandleManualRidelinqFlow(OrderStatusDetail orderstatusDetail)
