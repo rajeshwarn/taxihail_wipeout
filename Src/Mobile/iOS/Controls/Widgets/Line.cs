@@ -1,52 +1,55 @@
-using MonoTouch.UIKit;
+using UIKit;
 using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
-using System.Drawing;
+using CoreGraphics;
+using System;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
 	public class Line : UIView 
 	{
-        public static Line CreateHorizontal(float width, UIColor color)
+        public static Line CreateHorizontal(nfloat width, UIColor color)
         {
             return CreateHorizontal(width, color, 1f);
         }
 
-        public static Line CreateHorizontal(float width, UIColor color, float thickness)
+        public static Line CreateHorizontal(nfloat width, UIColor color, nfloat thickness)
         {
             return CreateHorizontal(0, 0, width, color, thickness);
         }
 
-        public static Line CreateHorizontal(float x, float y, float width, UIColor color, float thickness)
+        public static Line CreateHorizontal(nfloat x, nfloat y, nfloat width, UIColor color, nfloat thickness)
         {
             var convertedThickness = UIHelper.GetConvertedPixel(thickness);
 
-            return new Line(new RectangleF(x, y - convertedThickness, width, convertedThickness))
+            return new Line(new CGRect(x, y, width, convertedThickness))
             {
-                BackgroundColor = color
+                BackgroundColor = color,
+                AutoresizingMask = UIViewAutoresizing.FlexibleWidth
             };
         }
 
-        public static Line CreateVertical(float height, UIColor color)
+        public static Line CreateVertical(nfloat height, UIColor color)
         {
             return CreateVertical(0, 0, height, color, 1f);
         }
 
-        public static Line CreateVertical(float x, float height, UIColor color)
+        public static Line CreateVertical(nfloat x, nfloat height, UIColor color)
         {
             return CreateVertical(x, 0, height, color, 1f);
         }
 
-        public static Line CreateVertical(float x, float y, float height, UIColor color, float thickness)
+        public static Line CreateVertical(nfloat x, nfloat y, nfloat height, UIColor color, nfloat thickness)
         {
             var convertedThickness = UIHelper.GetConvertedPixel(thickness);
 
-            return new Line(new RectangleF(x - convertedThickness, y, convertedThickness, height))
+            return new Line(new CGRect(x - convertedThickness, y, convertedThickness, height))
             {
-                BackgroundColor = color
+                BackgroundColor = color,
+                AutoresizingMask = UIViewAutoresizing.FlexibleHeight
             };
         }
 
-        private Line(RectangleF rect) : base(rect)
+        private Line(CGRect rect) : base(rect)
 		{
 		}
 	}

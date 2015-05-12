@@ -3,16 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using apcurium.MK.Booking.Mobile.Client.Helper;
 using apcurium.MK.Booking.Mobile.Infrastructure;
-using MonoTouch.UIKit;
+using UIKit;
 using System.Reactive.Disposables;
 using System.Threading.Tasks;
 using Cirrious.MvvmCross.Touch.Views.Presenters;
 using Cirrious.MvvmCross.ViewModels;
 using apcurium.MK.Booking.Mobile.Client.Controls.Message;
+using apcurium.MK.Booking.Mobile.Client.Localization;
 
 namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 {
-	public class MessageService : IMessageService
+    public class MessageService : IMessageService
 	{
 		public const string ActionServiceMessage = "Mk_Taxi.ACTION_SERVICE_MESSAGE";
 		public const string ActionExtraMessage = "Mk_Taxi.ActionExtraMessage";
@@ -26,43 +27,45 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 
 		public Task ShowMessage(string title, string message)
 		{
-			return MessageHelper.Show( title, message );
+			return MessageHelper.Show(title, message);
 		}
 
-		public void ShowMessage(string title, string message, Action additionalAction )
+		public void ShowMessage(string title, string message, Action additionalAction)
 		{
-            MessageHelper.Show( title, message, "OK", additionalAction );
+            MessageHelper.Show(title, message, Localize.GetValue("OkButtonText"), additionalAction);
 		}
-
 
         public void ShowMessage(string title, string message, string positiveButtonTitle, Action positiveAction, string negativeButtonTitle, Action negativeAction)
         {
-
-            MessageHelper.Show( title, message,  positiveButtonTitle, positiveAction, negativeButtonTitle, negativeAction  );
+            MessageHelper.Show(title, message, positiveButtonTitle, positiveAction, negativeButtonTitle, negativeAction);
         }
 
-        public void ShowMessage(string title, string message, string positiveButtonTitle, Action positiveAction, string negativeButtonTitle, Action negativeAction, string neutralButtonTitle, Action neutralAction)
+        public void ShowMessage(string title, string message, string positiveButtonTitle, Action positiveAction, string negativeButtonTitle, Action negativeAction, Action cancelAction)
         {
-            MessageHelper.Show(title,message,positiveButtonTitle,positiveAction,negativeButtonTitle, negativeAction, neutralButtonTitle, neutralAction);
+            MessageHelper.Show(title, message, positiveButtonTitle, positiveAction, negativeButtonTitle, negativeAction, cancelAction);
+        }
+
+        public Task ShowMessage(string title, string message, string positiveButtonTitle, Action positiveAction, string negativeButtonTitle, Action negativeAction, string neutralButtonTitle, Action neutralAction)
+        {
+            return MessageHelper.Show(title, message, positiveButtonTitle, positiveAction, negativeButtonTitle, negativeAction, neutralButtonTitle, neutralAction);
         }
 
         public void ShowMessage(string title, string message, List<KeyValuePair<string,Action>> additionalButton)
         {
-            MessageHelper.Show( title, message,additionalButton);
+            MessageHelper.Show(title, message, additionalButton);
         }
+
 		public void ShowProgress(bool show)
 		{
             if(show)
             {
-                UIApplication.SharedApplication.InvokeOnMainThread ( () =>
-                {               
+                UIApplication.SharedApplication.InvokeOnMainThread (() => {               
                     LoadingOverlay.StartAnimatingLoading();
                 });
             }
             else
             {
-                UIApplication.SharedApplication.InvokeOnMainThread ( () =>
-                {
+                UIApplication.SharedApplication.InvokeOnMainThread (() => {
                     LoadingOverlay.StopAnimatingLoading();
                 });
             }
@@ -72,15 +75,13 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
         {
             if(show)
             {
-                UIApplication.SharedApplication.InvokeOnMainThread ( () =>
-                {     
+                UIApplication.SharedApplication.InvokeOnMainThread (() => {     
                     LoadingBar.Show();
                 });
             }
             else
             {
-                UIApplication.SharedApplication.InvokeOnMainThread ( () =>
-                {
+                UIApplication.SharedApplication.InvokeOnMainThread (() => {
                     LoadingBar.Hide();
                 });
             }
@@ -116,15 +117,13 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
                     onItemSelected(enumerable[e.ButtonIndex]);
                     av.Dispose();
                     };
-                av.Show (  );
-            });
-                        
+                av.Show ();
+            });     
         }		
 
 		public Task<string> ShowPromptDialog(string title, string message, Action cancelAction)
         {
 			return MessageHelper.Prompt (title, message, cancelAction);
         }
-
 	}
 }

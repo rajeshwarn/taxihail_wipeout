@@ -1,5 +1,6 @@
 using System;
 using apcurium.MK.Booking.EventHandlers.Integration;
+using apcurium.MK.Booking.Services;
 
 namespace apcurium.MK.Web.Tests
 {

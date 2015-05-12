@@ -4,6 +4,8 @@ using System.Threading.Tasks;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Common.Entity;
+using System.Windows.Input;
+using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 {
@@ -11,27 +13,19 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
     {
 		private readonly IOrderWorkflowService _orderWorkflowService;
 		private readonly IAccountService _accountService;
-        private bool _isInitialized;
         
-		public OrderReviewViewModel(IOrderWorkflowService orderWorkflowService,
-			IAccountService accountService)
+		public OrderReviewViewModel(IOrderWorkflowService orderWorkflowService,	IAccountService accountService)
 		{
 			_orderWorkflowService = orderWorkflowService;
 			_accountService = accountService;
+
+			Observe(_orderWorkflowService.GetAndObserveBookingSettings(), settings => SettingsUpdated(settings));
+			Observe(_orderWorkflowService.GetAndObservePickupAddress(), address => Address = address);
+			Observe(_orderWorkflowService.GetAndObservePickupDate(), DateUpdated);
+			Observe(_orderWorkflowService.GetAndObserveNoteToDriver(), note => Note = note);
+			Observe(_orderWorkflowService.GetAndObservePromoCode(), code => PromoCode = code);
 		}
-
-        public void Init()
-        {
-            if (!_isInitialized)
-            {
-                _isInitialized = true;
-                this.Observe(_orderWorkflowService.GetAndObserveBookingSettings(), settings => SettingsUpdated(settings));
-                this.Observe(_orderWorkflowService.GetAndObservePickupAddress(), address => Address = address);
-                this.Observe(_orderWorkflowService.GetAndObservePickupDate(), DateUpdated);
-                this.Observe(_orderWorkflowService.GetAndObserveNoteToDriver(), note => Note = note);
-            }
-        }
-
+			
 	    private async Task SettingsUpdated(BookingSettings settings)
 		{
 			Settings = settings;
@@ -109,7 +103,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		private string _vehiculeType;
 		public string VehiculeType
 		{
-			get{ return _vehiculeType; }
+			get 
+			{ 
+				return _vehiculeType.HasValue()
+					? _vehiculeType
+					: this.Services().Localize["NotAvailable"]; 
+			}
 			set
 			{
 				_vehiculeType = value;
@@ -142,6 +141,45 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 				}
 			}
 		}
+
+		private string _promoCode;
+		public string PromoCode
+		{
+			get { return _promoCode; }
+			set
+			{
+				if (_promoCode != value)
+				{
+					_promoCode = value;
+					_orderWorkflowService.SetPromoCode(value);
+					RaisePropertyChanged();
+                    RaisePropertyChanged(() => PromotionButtonText);
+				}
+			}
+		}
+
+		public ICommand NavigateToPromotions
+		{
+			get 
+			{
+				return this.GetCommand(() =>
+				{
+					ShowViewModel<PromotionViewModel>();
+				});
+			}
+		}
+
+	    public string PromotionButtonText
+	    {
+	        get
+	        {
+	            if (_promoCode.HasValue())
+	            {
+                    return string.Format("{0} {1}", this.Services().Localize["PromoCodeLabel"], PromoCode);
+	            }
+                return this.Services().Localize["PromotionButton"];
+	        }
+	    }
     }
 }
 

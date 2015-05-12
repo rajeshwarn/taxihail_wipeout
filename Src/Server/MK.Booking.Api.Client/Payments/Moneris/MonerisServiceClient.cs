@@ -36,52 +36,18 @@ namespace apcurium.MK.Booking.Api.Client.Payments.Moneris
 			});
 		}
 
-		public Task<CommitPreauthorizedPaymentResponse> CommitPayment (string cardToken, double amount, double meterAmount, double tipAmount, Guid orderId)
-		{
-			return Client.PostAsync(new CommitPaymentRequest
-			{
-				Amount = Convert.ToDecimal(amount),
-				MeterAmount = Convert.ToDecimal(meterAmount),
-				TipAmount = Convert.ToDecimal(tipAmount),
-				CardToken = cardToken,
-				OrderId = orderId
-			});
-		}
+        public Task<OverduePayment> GetOverduePayment()
+        {
+            var req = string.Format("/account/overduepayment");
+            return Client.GetAsync<OverduePayment>(req);
+        }
 
-		public async Task<PairingResponse> Pair (Guid orderId, string cardToken, int? autoTipPercentage, double? autoTipAmount)
-		{
-            try
-            {
-                var response = await Client.PostAsync(new PairingForPaymentRequest
-                {
-                    OrderId = orderId,
-                    CardToken = cardToken,
-                    AutoTipAmount = autoTipAmount,
-                    AutoTipPercentage = autoTipPercentage
+        public Task<SettleOverduePaymentResponse> SettleOverduePayment()
+        {
+            return Client.PostAsync(new SettleOverduePaymentRequest());
+        }
 
-                });
-                return response;
-            }
-            catch (ServiceStack.ServiceClient.Web.WebServiceException)
-            {
-                return new PairingResponse { IsSuccessful = false };
-            }       
-		}
-
-		public Task<BasePaymentResponse> Unpair (Guid orderId)
-		{
-            return Client.PostAsync(new UnpairingForPaymentRequest
-            {
-                OrderId = orderId
-            });
-		}
-
-		public Task ResendConfirmationToDriver (Guid orderId)
-		{
-			return Client.PostAsync<string>("/payment/ResendConfirmationRequest", new ResendPaymentConfirmationRequest {OrderId = orderId});
-		}
-
-        public static bool TestClient(MonerisPaymentSettings serverPaymentSettings, string number, DateTime date, ILogger logger)
+	    public static bool TestClient(MonerisPaymentSettings serverPaymentSettings, string number, DateTime date, ILogger logger)
         {
             var monerisTokenizeClient = new MonerisTokenizeClient(serverPaymentSettings, logger);
             var result = monerisTokenizeClient.Tokenize(number, date.ToString("yyMM"));
@@ -128,7 +94,7 @@ namespace apcurium.MK.Booking.Api.Client.Payments.Moneris
 					};
 				}
 
-				return new TokenizedCreditCardResponse()
+				return new TokenizedCreditCardResponse
 				{
 					IsSuccessful = false,
 					Message = message
@@ -136,10 +102,17 @@ namespace apcurium.MK.Booking.Api.Client.Payments.Moneris
 			}
 			catch (Exception e)
 			{
+                var message = e.Message;
+                var exception = e as AggregateException;
+                if (exception != null)
+                {
+                    message = exception.InnerException.Message;
+                }
+
 				return new TokenizedCreditCardResponse
 				{
 					IsSuccessful = false,
-					Message = e.Message
+                    Message = message
 				};
 			}
 		}

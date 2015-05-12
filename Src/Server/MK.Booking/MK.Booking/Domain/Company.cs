@@ -8,6 +8,7 @@ using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Common;
+using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
@@ -43,6 +44,12 @@ namespace apcurium.MK.Booking.Domain
 
         protected PaymentMethod PaymentMode { get; set; }
 
+        protected PayPalClientSettings PayPalClientSettings { get; set; }
+
+        protected PayPalServerSettings PayPalServerSettings { get; set; }
+
+        protected bool IsChargeAccountEnabled { get; set; }
+
         private void RegisterHandlers()
         {
             Handles<DefaultFavoriteAddressAdded>(NoAction);
@@ -56,6 +63,8 @@ namespace apcurium.MK.Booking.Domain
             Handles<CompanyCreated>(NoAction);
             Handles<AppSettingsAddedOrUpdated>(NoAction);
             Handles<PaymentModeChanged>(NoAction);
+            Handles<PayPalSettingsChanged>(NoAction);
+            Handles<ChargeAccountPaymentDisabled>(NoAction);
             Handles<PaymentSettingUpdated>(OnPaymentSettingUpdated);
 
             Handles<TariffCreated>(OnRateCreated);
@@ -78,6 +87,7 @@ namespace apcurium.MK.Booking.Domain
 
             Handles<AccountChargeAddedUpdated>(NoAction);
             Handles<AccountChargeDeleted>(NoAction);
+            Handles<AccountChargeImported>(NoAction);
 
             Handles<VehicleTypeAddedUpdated>(NoAction);
             Handles<VehicleTypeDeleted>(NoAction);
@@ -90,6 +100,10 @@ namespace apcurium.MK.Booking.Domain
         private void OnPaymentSettingUpdated(PaymentSettingUpdated obj)
         {
             PaymentMode = obj.ServerPaymentSettings.PaymentMode;
+            PayPalClientSettings = obj.ServerPaymentSettings.PayPalClientSettings;
+            PayPalServerSettings = obj.ServerPaymentSettings.PayPalServerSettings;
+
+            IsChargeAccountEnabled = obj.ServerPaymentSettings.IsChargeAccountPaymentEnabled;
         }
 
         public void AddDefaultFavoriteAddress(Address address)
@@ -331,7 +345,7 @@ namespace apcurium.MK.Booking.Domain
         public void CreateRule(Guid ruleId, string name, string message, string zoneList,bool zoneRequired, RuleType type,
             RuleCategory category, bool appliedToCurrentBooking, bool appliesToFutureBooking,bool appliesToPickup, bool appliesToDropoff, int priority,
             bool isActive, DayOfTheWeek daysOfTheWeek, DateTime? startTime, DateTime? endTime, DateTime? activeFrom,
-            DateTime? activeTo)
+            DateTime? activeTo, string market, bool disableFutureBookingOnError)
         {
             if ((type == RuleType.Default) && message.IsNullOrEmpty())
             {
@@ -371,13 +385,15 @@ namespace apcurium.MK.Booking.Domain
                 EndTime = endTime,
                 ActiveFrom = activeFrom,
                 ActiveTo = activeTo,
-                Priority = /*type == RuleType.Default ? 0 :*/ priority,
+                Priority = priority,
+                Market = market,
+                DisableFutureBookingOnError = disableFutureBookingOnError
             });
         }
 
         public void UpdateRule(Guid ruleId, string name, string message, string zoneList, bool zoneRequired, bool appliedToCurrentBooking,
             bool appliesToFutureBooking, bool appliesToPickup, bool appliesToDropoff, DayOfTheWeek daysOfTheWeek, DateTime? startTime, DateTime? endTime,
-            DateTime? activeFrom, DateTime? activeTo, int priority, bool isActive)
+            DateTime? activeFrom, DateTime? activeTo, int priority, bool isActive, string market, bool disableFutureBookingOnError)
         {
             Update(new RuleUpdated
             {
@@ -397,6 +413,8 @@ namespace apcurium.MK.Booking.Domain
                 ActiveFrom = activeFrom,
                 ActiveTo = activeTo,
                 Priority = priority,
+                Market = market,
+                DisableFutureBookingOnError = disableFutureBookingOnError
             });
         }
 
@@ -416,10 +434,48 @@ namespace apcurium.MK.Booking.Domain
                 Update(new PaymentModeChanged());
             }
 
+            if (HavePayPalSettingsChanged(command.ServerPaymentSettings))
+            {
+                Update(new PayPalSettingsChanged());
+            }
+
+            if (ChargeAccountPaymentEnabledChanged(command.ServerPaymentSettings) && 
+                !command.ServerPaymentSettings.IsChargeAccountPaymentEnabled)
+            {
+                Update(new ChargeAccountPaymentDisabled());
+            }
+
             Update(new PaymentSettingUpdated
             {
                 ServerPaymentSettings = command.ServerPaymentSettings
             });
+        }
+
+        private bool ChargeAccountPaymentEnabledChanged(ServerPaymentSettings newPaymentSettings)
+        {
+            return newPaymentSettings.IsChargeAccountPaymentEnabled != IsChargeAccountEnabled;
+        }
+
+        private bool HavePayPalSettingsChanged(ServerPaymentSettings newPaymentSettings)
+        {
+            if (PayPalClientSettings == null || PayPalServerSettings == null)
+            {
+                return true;
+            }
+
+            var disabledStatusChanged = PayPalClientSettings.IsEnabled != newPaymentSettings.PayPalClientSettings.IsEnabled;
+
+            var webLandingPageChanged = PayPalServerSettings.LandingPageType != newPaymentSettings.PayPalServerSettings.LandingPageType;
+
+            var environmentChanged = PayPalClientSettings.IsSandbox != newPaymentSettings.PayPalClientSettings.IsSandbox;
+
+            var sandboxSettingsChanged = PayPalClientSettings.SandboxCredentials.ClientId != newPaymentSettings.PayPalClientSettings.SandboxCredentials.ClientId
+                || PayPalServerSettings.SandboxCredentials.Secret != newPaymentSettings.PayPalServerSettings.SandboxCredentials.Secret;
+
+            var prodSettingsChanged = PayPalClientSettings.Credentials.ClientId != newPaymentSettings.PayPalClientSettings.Credentials.ClientId
+                   || PayPalServerSettings.Credentials.Secret != newPaymentSettings.PayPalServerSettings.Credentials.Secret;
+
+            return disabledStatusChanged || webLandingPageChanged || environmentChanged || sandboxSettingsChanged || prodSettingsChanged;
         }
 
         public void ActivateRule(Guid ruleId)
@@ -464,6 +520,14 @@ namespace apcurium.MK.Booking.Domain
             });
         }
 
+        public void ImportAccountCharge(AccountCharge[] accounts)
+        {
+            Update(new AccountChargeImported()
+            {
+                AccountCharges = accounts
+            });
+        }
+
         public void DeleteAccountCharge(Guid accountChargeId)
         {
             Update(new AccountChargeDeleted
@@ -472,14 +536,16 @@ namespace apcurium.MK.Booking.Domain
             });
         }
 
-        public void AddUpdateVehicleType(Guid vehicleTypeId, string name, string logoName, int referenceDataVehicleId)
+        public void AddUpdateVehicleType(Guid vehicleTypeId, string name, string logoName, int referenceDataVehicleId, int maxNumberPassengers, int? networkVehicleTypeId)
         {
             Update(new VehicleTypeAddedUpdated
             {
                 Name = name,
                 LogoName = logoName,
                 VehicleTypeId = vehicleTypeId,
-                ReferenceDataVehicleId = referenceDataVehicleId
+                ReferenceDataVehicleId = referenceDataVehicleId,
+                MaxNumberPassengers = maxNumberPassengers,
+                ReferenceNetworkVehicleTypeId = networkVehicleTypeId
             });
         }
 
@@ -523,12 +589,12 @@ namespace apcurium.MK.Booking.Domain
                 throw new InvalidOperationException("Missing required fields");
             }
 
-            if (latitude < -90 || latitude > 90)
+            if (double.IsNaN(latitude) || latitude < -90 || latitude > 90)
             {
                 throw new ArgumentOutOfRangeException("latitude", "Invalid latitude");
             }
 
-            if (longitude < -180 || latitude > 180)
+            if (double.IsNaN(longitude) || longitude < -180 || longitude > 180)
             {
                 throw new ArgumentOutOfRangeException("longitude", "Invalid longitude");
             }

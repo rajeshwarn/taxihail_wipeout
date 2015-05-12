@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Client;
+using apcurium.MK.Booking.Api.Client.Payments.PayPal;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Security;
 
@@ -59,18 +60,21 @@ namespace apcurium.MK.Booking.Mobile
 			_container.Register((c, p) => new OrderServiceClient(c.Resolve<IAppSettings>().Data.ServiceUrl, GetSessionId(), c.Resolve<IPackageInfo>()));
 
             _container.Register((c, p) => new CompanyServiceClient(c.Resolve<IAppSettings>().Data.ServiceUrl, GetSessionId(), c.Resolve<IPackageInfo>(), c.Resolve<ICacheService>()));
+            _container.Register((c, p) => new ManualPairingForRideLinqServiceClient(c.Resolve<IAppSettings>().Data.ServiceUrl, GetSessionId(), c.Resolve<IPackageInfo>()));
 
 			_container.Register<IAuthServiceClient>((c, p) => new AuthServiceClient(c.Resolve<IAppSettings>().Data.ServiceUrl, GetSessionId(), c.Resolve<IPackageInfo>()));
             
 			_container.Register((c, p) => new ApplicationInfoServiceClient(c.Resolve<IAppSettings>().Data.ServiceUrl, GetSessionId(), c.Resolve<IPackageInfo>()));
 
-			_container.Register<ConfigurationClientService>((c, p) => {
-				return new ConfigurationClientService(c.Resolve<IAppSettings>().Data.ServiceUrl, GetSessionId(), c.Resolve<IPackageInfo>());
-			});
+			_container.Register((c, p) => new ConfigurationClientService(c.Resolve<IAppSettings>().Data.ServiceUrl, GetSessionId(), c.Resolve<IPackageInfo>(), c.Resolve<ILogger>()));
+
+            _container.Register((c, p) => new NetworkRoamingServiceClient(c.Resolve<IAppSettings>().Data.ServiceUrl, GetSessionId(), c.Resolve<IPackageInfo>()));
 
 			_container.Register<IAccountService, AccountService>();
 			_container.Register<IBookingService, BookingService>();
+            _container.Register<INetworkRoamingService, NetworkRoamingService>();
 			_container.Register<IOrderWorkflowService, OrderWorkflowService>();
+            _container.Register<IPromotionService, PromotionService>();
 			_container.Register<IVehicleService, VehicleService>();
 			_container.Register<ITutorialService, TutorialService>();
 			_container.Register<ITermsAndConditionsService, TermsAndConditionsService>();
@@ -90,7 +94,6 @@ namespace apcurium.MK.Booking.Mobile
 			_container.Register<ITariffProvider, TariffProvider>();
 
             // ***** PayPal *****
-			_container.Register<IPayPalExpressCheckoutService, PayPalExpressCheckoutService> ();
 			_container.Register ((c, p) => new PayPalServiceClient(c.Resolve<IAppSettings>().Data.ServiceUrl, GetSessionId(), c.Resolve<IPackageInfo>()));
 
 			_container.Register<IPaymentService>((c, p) =>
@@ -155,13 +158,17 @@ namespace apcurium.MK.Booking.Mobile
 
 		private void TryFacebookInitAndPublish()
 		{
-			if (Mvx.Resolve<IAppSettings>().Data.FacebookEnabled)
+		    var appSettings = Mvx.Resolve<IAppSettings>();
+		    var facebookService = Mvx.Resolve<IFacebookService>();
+
+            if (appSettings.Data.FacebookEnabled)
 			{
-				Mvx.Resolve<IFacebookService> ().Init ();
+                facebookService.Init();
 			}
-			if (Mvx.Resolve<IAppSettings>().Data.FacebookPublishEnabled) 
+
+            if (appSettings.Data.FacebookPublishEnabled) 
 			{
-				Mvx.Resolve<IFacebookService>().PublishInstall();
+                facebookService.PublishInstall();
 			}
 		}
         

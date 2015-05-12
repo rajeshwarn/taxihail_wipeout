@@ -5,9 +5,10 @@ using System.Collections.Generic;
 using System.Linq;
 using apcurium.MK.Booking.CommandHandlers;
 using apcurium.MK.Booking.Commands;
-using apcurium.MK.Booking.Common.Tests;
+using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Domain;
 using apcurium.MK.Booking.Events;
+using apcurium.MK.Booking.Test.Integration;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Entity;
 using NUnit.Framework;
@@ -17,13 +18,13 @@ using NUnit.Framework;
 namespace apcurium.MK.Booking.Test.OrderFixture
 {
     [TestFixture]
-    public class given_one_order
+    public class given_one_order : given_a_read_model_database
     {
         [SetUp]
         public void Setup()
         {
             _sut = new EventSourcingTestHelper<Order>();
-            _sut.Setup(new OrderCommandHandler(_sut.Repository));
+            _sut.Setup(new OrderCommandHandler(_sut.Repository, () => new BookingDbContext(DbName)));
             _sut.Given(new AccountRegistered
             {
                 SourceId = _accountId,
@@ -50,6 +51,16 @@ namespace apcurium.MK.Booking.Test.OrderFixture
         private EventSourcingTestHelper<Order> _sut;
         private readonly Guid _orderId = Guid.NewGuid();
         private readonly Guid _accountId = Guid.NewGuid();
+
+        [Test]
+        public void when_adding_ibs_order_info_to_order()
+        {
+            _sut.When(new AddIbsOrderInfoToOrder { OrderId = _orderId, IBSOrderId = 99});
+
+            var @event = _sut.ThenHasSingle<IbsOrderInfoAddedToOrder>();
+            Assert.AreEqual(_orderId, @event.SourceId);
+            Assert.AreEqual(99, @event.IBSOrderId);
+        }
 
         [Test]
         public void when_cancelling_successfully()

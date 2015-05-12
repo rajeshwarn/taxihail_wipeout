@@ -4,14 +4,13 @@ using Cirrious.CrossCore;
 using Cirrious.MvvmCross.Touch.Platform;
 using Cirrious.MvvmCross.ViewModels;
 using MonoTouch.FacebookConnect;
-using MonoTouch.Foundation;
-using MonoTouch.ObjCRuntime;
-using MonoTouch.UIKit;
+using Foundation;
+using ObjCRuntime;
+using UIKit;
 using ServiceStack.Text;
 using TinyIoC;
 using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.Infrastructure;
-using apcurium.MK.Booking.Mobile.Settings;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Entity;
@@ -21,12 +20,7 @@ using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
 using apcurium.MK.Booking.Mobile.Client.Helper;
 using apcurium.MK.Booking.Mobile.Client.PlatformIntegration;
 using apcurium.MK.Booking.Mobile.AppServices;
-using apcurium.MK.Booking.MapDataProvider.Resources;
 using apcurium.MK.Booking.MapDataProvider.Google.Resources;
-using apcurium.MK.Booking.Mobile.AppServices.Social;
-using apcurium.MK.Booking.Mobile.Client.PlatformIntegration.Social;
-using GoogleConversionTracking;
-using apcurium.MK.Common.Extensions;
 using apcurium.MK.Booking.Mobile.Client.Views;
 
 namespace apcurium.MK.Booking.Mobile.Client
@@ -75,9 +69,6 @@ namespace apcurium.MK.Booking.Mobile.Client
             setup.Initialize();
 
             window.RootViewController = new SplashView();
-
-            var paymentService = TinyIoCContainer.Current.Resolve<IPaymentService>();
-            paymentService.ClearPaymentSettingsFromCache();
 
 			var startup = Mvx.Resolve<IMvxAppStart>();
 			startup.Start(@params);
@@ -162,8 +153,7 @@ namespace apcurium.MK.Booking.Mobile.Client
 
         public override void RegisteredForRemoteNotifications (UIApplication application, NSData deviceToken)
         {
-            var strFormat = new NSString("%@");
-            var dt = new NSString(Messaging.IntPtr_objc_msgSend_IntPtr_IntPtr(new Class("NSString").Handle, new Selector("stringWithFormat:").Handle, strFormat.Handle, deviceToken.Handle));
+            var dt = deviceToken.ToString().Replace("<","").Replace(">","").Replace(" ","");
 			TinyIoCContainer.Current.Resolve<IPushNotificationService>().SaveDeviceToken(dt);
         }
         

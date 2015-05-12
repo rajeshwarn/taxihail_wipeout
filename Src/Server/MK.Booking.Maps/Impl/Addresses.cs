@@ -62,16 +62,14 @@ namespace apcurium.MK.Booking.Maps.Impl
 
             var geoCodingService = new Geocoding(_geocoder, _appSettings, _popularAddressProvider, _logger);
 
-			var allResults = geoCodingService.Search(name, currentLanguage, geoResult);
+            var allResults = geoCodingService.Search(name, currentLanguage, geoResult);
 
 // ReSharper disable CompareOfFloatsByEqualityOperator
             if (latitude.HasValue && longitude.HasValue && (latitude.Value != 0 || longitude.Value != 0))
 // ReSharper restore CompareOfFloatsByEqualityOperator
             {
                 addressesGeocode = allResults
-                    .OrderBy(
-                        adrs =>
-                            Position.CalculateDistance(adrs.Latitude, adrs.Longitude, latitude.Value, longitude.Value));
+                    .OrderBy(adrs => Position.CalculateDistance(adrs.Latitude, adrs.Longitude, latitude.Value, longitude.Value));
             }
             else
             {
@@ -88,10 +86,12 @@ namespace apcurium.MK.Booking.Maps.Impl
             }
 
 //TODO not sure what this code is doing
-            return addressesPlaces
-                    .Take(20)
-                    .Concat(addressesGeocode.Take(20))
-                    .ToArray(); //todo Take 20!? api's consern
+
+            return addressesGeocode
+                .Take(20)
+                .Concat(addressesPlaces.Take(20))
+                .OrderBy(p => AddressSortingHelper.GetRelevance(p, name, latitude, longitude))
+                .ToArray(); //todo Take 20!? api's consern
         }
     }
 }

@@ -1,19 +1,23 @@
 ﻿using System;
+using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Services;
 using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Enumeration;
+using Infrastructure.Messaging;
 using Infrastructure.Messaging.Handling;
 
 namespace apcurium.MK.Booking.EventHandlers.Integration
 {
     public class OrderPaymentManager :
         IIntegrationEventHandler,
-        IEventHandler<PayPalExpressCheckoutPaymentCompleted>,
-        IEventHandler<CreditCardPaymentCaptured>,
+        IEventHandler<CreditCardPaymentCaptured_V2>,
         IEventHandler<OrderCancelled>,
-        IEventHandler<OrderSwitchedToNextDispatchCompany>
+        IEventHandler<OrderSwitchedToNextDispatchCompany>,
+        IEventHandler<OrderStatusChanged>,
+        IEventHandler<OrderCancelledBecauseOfError>
     {
         private readonly IOrderDao _dao;
         private readonly IIbsOrderService _ibs;
@@ -22,11 +26,15 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
         private readonly IOrderPaymentDao _paymentDao;
         private readonly ICreditCardDao _creditCardDao;
         private readonly IAccountDao _accountDao;
+        private readonly IOrderDao _orderDao;
+        private readonly ICommandBus _commandBus;
 
-        public OrderPaymentManager(IOrderDao dao, IOrderPaymentDao paymentDao, IAccountDao accountDao, 
+        public OrderPaymentManager(IOrderDao dao, IOrderPaymentDao paymentDao, IAccountDao accountDao, IOrderDao orderDao, ICommandBus commandBus,
             ICreditCardDao creditCardDao, IIbsOrderService ibs, IServerSettings serverSettings, IPaymentService paymentService)
         {
             _accountDao = accountDao;
+            _orderDao = orderDao;
+            _commandBus = commandBus;
             _dao = dao;
             _paymentDao = paymentDao;
             _creditCardDao = creditCardDao;
@@ -35,20 +43,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             _paymentService = paymentService;
         }
 
-        public void Handle(PayPalExpressCheckoutPaymentCompleted @event)
-        {
-            // Send message to driver
-            SendPaymentConfirmationToDriver(@event.OrderId, @event.Amount, @event.Meter, @event.Tip, PaymentProvider.PayPal.ToString(), @event.PayPalPayerId);
-
-            // payment might not be enabled
-            if (_paymentService != null)
-            {
-                // void the preauthorization to prevent misuse fees
-                _paymentService.VoidPreAuthorization(@event.SourceId);
-            }
-        }
-
-        public void Handle(CreditCardPaymentCaptured @event)
+        public void Handle(CreditCardPaymentCaptured_V2 @event)
         {
             if (@event.IsNoShowFee)
             {
@@ -56,9 +51,24 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                 return;
             }
 
-            if (_serverSettings.ServerData.SendDetailedPaymentInfoToDriver)
+            if (_serverSettings.ServerData.SendDetailedPaymentInfoToDriver
+                && !@event.IsSettlingOverduePayment) // Don't send notification to driver when user settles overdue payment
             {
-                SendPaymentConfirmationToDriver(@event.OrderId, @event.Amount, @event.Meter, @event.Tip, @event.Provider.ToString(), @event.AuthorizationCode);
+                // To prevent driver confusion we will not send the discounted total amount for the fare.
+                SendPaymentConfirmationToDriver(@event.OrderId, @event.Amount + @event.AmountSavedByPromotion, @event.Meter + @event.Tax, @event.Tip, @event.Provider.ToString(), @event.AuthorizationCode);
+            }
+
+            if (@event.PromotionUsed.HasValue)
+            {
+                var redeemPromotion = new RedeemPromotion
+                {
+                    OrderId = @event.OrderId,
+                    PromoId = @event.PromotionUsed.Value,
+                    TotalAmountOfOrder = @event.Meter + @event.Tax
+                };
+                var envelope = (Envelope<ICommand>) redeemPromotion;
+
+                _commandBus.Send(envelope);
             }
         }
 
@@ -90,8 +100,22 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
 
         public void Handle(OrderCancelled @event)
         {
-            // payment might not be enabled
-            if (_paymentService != null)
+            var orderDetail = _orderDao.FindOrderStatusById(@event.SourceId);
+            if (orderDetail.IsPrepaid)
+            {
+                var response = _paymentService.RefundPayment(@event.SourceId);
+
+                if (response.IsSuccessful)
+                {
+                    _commandBus.Send(new UpdateRefundedOrder
+                    {
+                        OrderId = @event.SourceId,
+                        IsSuccessful = response.IsSuccessful,
+                        Message = response.Message
+                    });
+                }
+            }
+            else
             {
                 // void the preauthorization to prevent misuse fees
                 _paymentService.VoidPreAuthorization(@event.SourceId);
@@ -100,11 +124,62 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
 
         public void Handle(OrderSwitchedToNextDispatchCompany @event)
         {
-            // payment might not be enabled
-            if (_paymentService != null)
+            var orderStatus = _orderDao.FindOrderStatusById(@event.SourceId);
+            if (orderStatus.IsPrepaid)
+            {
+                _paymentService.RefundPayment(@event.SourceId);
+            }
+            else
             {
                 // void the preauthorization to prevent misuse fees
                 _paymentService.VoidPreAuthorization(@event.SourceId);
+            }
+        }
+
+        public void Handle(OrderCancelledBecauseOfError @event)
+        {
+            var orderDetail = _orderDao.FindOrderStatusById(@event.SourceId);
+            if (orderDetail.IsPrepaid)
+            {
+                var response = _paymentService.RefundPayment(@event.SourceId);
+
+                if (response.IsSuccessful)
+                {
+                    _commandBus.Send(new UpdateRefundedOrder
+                    {
+                        OrderId = @event.SourceId,
+                        IsSuccessful = response.IsSuccessful,
+                        Message = response.Message
+                    });
+                }
+            }
+            else
+            {
+                // void the preauthorization to prevent misuse fees
+                _paymentService.VoidPreAuthorization(@event.SourceId);
+            }
+        }
+
+        public void Handle(OrderStatusChanged @event)
+        {
+            if (@event.IsCompleted)
+            {
+                var paymentSettings = _serverSettings.GetPaymentSettings();
+                var order = _orderDao.FindById(@event.SourceId);
+                var orderStatus = _orderDao.FindOrderStatusById(@event.SourceId);
+                var pairingInfo = _orderDao.FindOrderPairingById(@event.SourceId);
+
+                // If the user has decided not to pair (paying the ride in car instead),
+                // we have to void the amount that was preauthorized
+                if (paymentSettings.PaymentMode != PaymentMethod.RideLinqCmt
+                    && (order.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id
+                        || order.Settings.ChargeTypeId == ChargeTypes.PayPal.Id)
+                    && pairingInfo == null
+                    && !orderStatus.IsPrepaid) //prepaid order will never have a pairing info
+                {
+                    // void the preauthorization to prevent misuse fees
+                    _paymentService.VoidPreAuthorization(@event.SourceId);
+                }
             }
         }
     }

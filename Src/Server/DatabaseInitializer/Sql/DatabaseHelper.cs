@@ -55,11 +55,11 @@ namespace DatabaseInitializer.Sql
         }
 
 
-        public static void ExecuteNonQuery(string connectionString, string cmdText)
+        public static void ExecuteNonQuery(string connectionString, string cmdText, int commandTimeout = 600)
         {
             using (var connection = new SqlConnection(connectionString))
             {
-                var sqlCommandCreate = new SqlCommand(cmdText) {Connection = connection, CommandTimeout = 600};
+                var sqlCommandCreate = new SqlCommand(cmdText) { Connection = connection, CommandTimeout = commandTimeout };
 
                 connection.Open();
                 sqlCommandCreate.ExecuteNonQuery();
@@ -77,6 +77,11 @@ namespace DatabaseInitializer.Sql
                 connection.Open();
                 result = sqlCommandCreate.ExecuteScalar();
                 connection.Close();
+            }
+
+            if (result is DBNull)
+            {
+                return default(T);
             }
             return (T) result;
         }

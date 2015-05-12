@@ -12,7 +12,7 @@ namespace apcurium.MK.Booking.Services.Impl
         private readonly ICommandBus _commandBus;
         private readonly IIbsOrderService _ibs;
         private readonly IOrderDao _orderDao;
-        private readonly Booking.Resources.Resources _resources;
+        private readonly Resources.Resources _resources;
 
         public PairingService(ICommandBus commandBus, IIbsOrderService ibs, IOrderDao orderDao, IServerSettings serverSettings)
         {
@@ -20,7 +20,7 @@ namespace apcurium.MK.Booking.Services.Impl
             _ibs = ibs;
             _orderDao = orderDao;
 
-            _resources = new Booking.Resources.Resources(serverSettings);
+            _resources = new Resources.Resources(serverSettings);
         }
 
         public void Pair(Guid orderId, string cardToken, int? autoTipPercentage)
@@ -39,7 +39,8 @@ namespace apcurium.MK.Booking.Services.Impl
             var orderPairingDetail = _orderDao.FindOrderPairingById(orderId);
             if (orderPairingDetail != null)
             {
-                throw new Exception("Order already paired");
+                // Do not throw an exception as the client would interpret this as an "error"
+                return;
             }
                 
             // send a message to driver, if it fails we abort the pairing

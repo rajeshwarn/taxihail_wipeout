@@ -48,7 +48,7 @@ namespace CMTPayment.Extensions
                 }, 
                 (response, exception) =>
                 {
-                    Log.Debug("CMT Response Body : " + response + Environment.NewLine + Environment.NewLine + 
+                    Log.Debug("CMT Response Body : " + response + Environment.NewLine + Environment.NewLine +
                               "Request : " + client.BaseUri + request.ToUrl(HttpMethods.Post, client.Format) + Environment.NewLine +
                               request.ToJson() + Environment.NewLine + Environment.NewLine +
                               "Exception : " + LogException(exception));
@@ -59,23 +59,23 @@ namespace CMTPayment.Extensions
 			return tcs.Task;
 		}
 
-	    private static string LogException(Exception ex)
-	    {
-	        var stringBuilder = new StringBuilder();
-	        stringBuilder.AppendLine(ex.Message);
+        private static string LogException(Exception ex)
+        {
+            var stringBuilder = new StringBuilder();
+            stringBuilder.AppendLine(ex.Message);
             stringBuilder.AppendLine(ex.StackTrace);
 
-	        var inner = ex.InnerException;
-	        while (inner != null)
-	        {
+            var inner = ex.InnerException;
+            while (inner != null)
+            {
                 stringBuilder.AppendLine();
                 stringBuilder.AppendLine(inner.Message);
                 stringBuilder.AppendLine(inner.StackTrace);
-	            inner = inner.InnerException;
-	        }
+                inner = inner.InnerException;
+            }
 
-	        return stringBuilder.ToString();
-	    }
+            return stringBuilder.ToString();
+        }
 #else
 
 		public static Task<TResponse> PostAsync<TResponse>(this ServiceClientBase client, IReturn<TResponse> request)
@@ -83,11 +83,12 @@ namespace CMTPayment.Extensions
 			var tcs = new TaskCompletionSource<TResponse>();
 
 			client.PostAsync<TResponse>(request,
-				tcs.SetResult,
-                (result, error) => tcs.SetException(FixWebServiceException(error)));
+		tcs.SetResult,
+		(result, error) => tcs.SetException(FixWebServiceException(error)));
 
-			return tcs.Task;
+		return tcs.Task;
 		}
+
 #endif
 
 		public static Task<TResponse> PostAsync<TResponse>(this ServiceClientBase client, string relativeOrAbsoluteUrl, object request)

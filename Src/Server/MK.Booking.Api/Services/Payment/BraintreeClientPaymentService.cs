@@ -1,5 +1,8 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Globalization;
 using System.Linq;
+using System.Net;
+using System.Web;
 using apcurium.MK.Booking.Api.Contract.Requests.Payment.Braintree;
 using apcurium.MK.Booking.Api.Contract.Resources.Payments;
 using apcurium.MK.Common;
@@ -8,6 +11,7 @@ using apcurium.MK.Common.Configuration.Impl;
 using Braintree;
 using BraintreeEncryption.Library;
 using ServiceStack.ServiceInterface;
+using Environment = Braintree.Environment;
 
 namespace apcurium.MK.Booking.Api.Services.Payment
 {
@@ -22,7 +26,23 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 
         public TokenizedCreditCardResponse Post(TokenizeCreditCardBraintreeRequest tokenizeRequest)
         {
-            return TokenizedCreditCard(BraintreeGateway, tokenizeRequest.EncryptedCreditCardNumber, tokenizeRequest.EncryptedExpirationDate, tokenizeRequest.EncryptedCvv);
+            return TokenizedCreditCard(BraintreeGateway,
+                tokenizeRequest.EncryptedCreditCardNumber,
+                tokenizeRequest.EncryptedExpirationDate,
+                tokenizeRequest.EncryptedCvv,
+                tokenizeRequest.PaymentMethodNonce);
+        }
+
+        public object Get(GenerateClientTokenBraintreeRequest request)
+        {
+            try
+            {
+                return BraintreeGateway.ClientToken.generate();
+            }
+            catch (Exception ex)
+            {
+                throw new HttpException((int) HttpStatusCode.InternalServerError, ex.Message);
+            }
         }
 
         public static bool TestClient(BraintreeServerSettings settings, BraintreeClientSettings braintreeClientSettings)
@@ -39,31 +59,57 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                 ).IsSuccessful;
         }
 
-        private static TokenizedCreditCardResponse TokenizedCreditCard(BraintreeGateway client, string encryptedCreditCardNumber, string encryptedExpirationDate, string encryptedCvv)
+        private static TokenizedCreditCardResponse TokenizedCreditCard(
+            BraintreeGateway client,
+            string encryptedCreditCardNumber,
+            string encryptedExpirationDate,
+            string encryptedCvv,
+            string paymentMethodNonce = null)
         {
-            var request = new CustomerRequest
+            try
             {
-                CreditCard = new CreditCardRequest
+                var request = new CustomerRequest
                 {
-                    Number = encryptedCreditCardNumber,
-                    ExpirationDate = encryptedExpirationDate,
-                    CVV = encryptedCvv
+                    CreditCard = new CreditCardRequest
+                    {
+                        Number = encryptedCreditCardNumber,
+                        ExpirationDate = encryptedExpirationDate,
+                        CVV = encryptedCvv,
+                        PaymentMethodNonce = paymentMethodNonce // Used for tokenization from javascript API
+                    }
+                };
+
+                var result = client.Customer.Create(request);
+                var customer = result.Target;
+
+                if (!result.IsSuccess())
+                {
+                    return new TokenizedCreditCardResponse
+                    {
+                        IsSuccessful = false,
+                        Message = result.Message
+                    };
                 }
-            };
 
-            var result = client.Customer.Create(request);
+                var creditCard = customer.CreditCards.First();
 
-            var customer = result.Target;
-
-            var cc = customer.CreditCards.First();
-            return new TokenizedCreditCardResponse
+                return new TokenizedCreditCardResponse
+                {
+                    CardOnFileToken = creditCard.Token,
+                    CardType = creditCard.CardType.ToString(),
+                    LastFour = creditCard.LastFour,
+                    IsSuccessful = result.IsSuccess(),
+                    Message = result.Message
+                };
+            }
+            catch (Exception e)
             {
-                CardOnFileToken = cc.Token,
-                CardType = cc.CardType.ToString(),
-                LastFour = cc.LastFour,
-                IsSuccessful = result.IsSuccess(),
-                Message = result.Message,
-            };
+                return new TokenizedCreditCardResponse
+                {
+                    IsSuccessful = false,
+                    Message = e.Message
+                };
+            }
         }
 
         private static BraintreeGateway GetBraintreeGateway(BraintreeServerSettings settings)

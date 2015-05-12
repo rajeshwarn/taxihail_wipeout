@@ -12,47 +12,67 @@ using ServiceStack.ServiceInterface;
 
 #endregion
 
-namespace apcurium.MK.Booking.Api.Services
+namespace apcurium.MK.Booking.Api.Services 
 {
     public class IbsFareService : Service
     {
         private readonly IIBSServiceProvider _ibsServiceProvider;
         private readonly IServerSettings _serverSettings;
-
+        private readonly Resources.Resources _resources;
         public IbsFareService(IIBSServiceProvider ibsServiceProvider, IServerSettings serverSettings)
         {
             _ibsServiceProvider = ibsServiceProvider;
             _serverSettings = serverSettings;
+            _resources = new Resources.Resources(serverSettings);
         }
 
         public DirectionInfo Get(IbsFareRequest request)
         {
-            // TODO: Adapt distance format
-            var fare = _ibsServiceProvider.Booking().GetFareEstimate(request.PickupLatitude, request.PickupLongitude,
-                request.DropoffLatitude, request.DropoffLongitude);
-            return fare.FareEstimate != null
-                ? new DirectionInfo
+            var tripDurationInMinutes = (request.TripDurationInSeconds.HasValue ? (int?)TimeSpan.FromSeconds(request.TripDurationInSeconds.Value).TotalMinutes : null);
+
+            var fare = _ibsServiceProvider.Booking().GetFareEstimate(
+                request.PickupLatitude,
+                request.PickupLongitude,
+                request.DropoffLatitude,
+                request.DropoffLongitude, 
+                request.PickupZipCode, 
+                request.DropoffZipCode,
+                request.AccountNumber,
+                request.CustomerNumber,
+                tripDurationInMinutes, 
+                _serverSettings.ServerData.DefaultBookingSettings.ProviderId,
+                request.VehicleType);
+
+            if (fare.FareEstimate != null)
+            {
+                double distance = fare.Distance ?? 0;
+
+                return new DirectionInfo
                 {
-                    Distance = (int) (fare.Distance*1000),
+                    Distance = distance,
                     Price = fare.FareEstimate,
-                    FormattedDistance = FormatDistance((int) (fare.Distance*1000)),                    
-                }
-                : new DirectionInfo();
+                    FormattedDistance = FormatDistance(distance),
+                    FormattedPrice = _resources.FormatPrice(fare.FareEstimate)
+                };
+            }
+
+            return new DirectionInfo();
         }
 
-        private string FormatDistance(int? distance)
+        private string FormatDistance(double? distance)
         {
             if (distance.HasValue)
             {
                 if (_serverSettings.ServerData.DistanceFormat == DistanceFormat.Km)
                 {
-                    var distanceInKm = Math.Round((double) distance.Value/1000, 1);
+                    var distanceInKm = Math.Round(distance.Value, 1);
                     return string.Format("{0:n1} km", distanceInKm);
                 }
-                var distanceInMiles = Math.Round((double) distance.Value/1000/1.609344, 1);
-                return string.Format("{0:n1} miles", distanceInMiles);
+
+                return string.Format("{0:n1} miles", distance.Value);
             }
-            return "";
+
+            return string.Empty;
         }
     }
 }

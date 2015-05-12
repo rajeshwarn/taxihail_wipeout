@@ -22,15 +22,12 @@
         },
 
         validate: function (order, forError) {
-            
             return $.ajax({
                 type: 'POST',
                 url: TaxiHail.parameters.apiRoot + "/account/orders/validate/" + forError,
                 data: JSON.stringify(order) ,
                 contentType: 'application/json'
             });
-            
-           // return $.post('api/account/orders/validate',(), function () { }, 'application/json');
         }
     });
 

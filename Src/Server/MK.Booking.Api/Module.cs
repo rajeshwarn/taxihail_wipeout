@@ -9,14 +9,17 @@ using apcurium.MK.Booking.Api.Providers;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.EventHandlers.Integration;
 using apcurium.MK.Booking.IBS;
+using apcurium.MK.Booking.IBS.ChargeAccounts.RequestResponse.Resources;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Security;
+using apcurium.MK.Booking.Services;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Provider;
 using AutoMapper;
+using HoneyBadger;
 using Microsoft.Practices.Unity;
 using CreateOrder = apcurium.MK.Booking.Api.Contract.Requests.CreateOrder;
 using RegisterAccount = apcurium.MK.Booking.Api.Contract.Requests.RegisterAccount;
@@ -34,7 +37,7 @@ namespace apcurium.MK.Booking.Api
                 new PopularAddressProvider(container.Resolve<IPopularAddressDao>()));
             container.RegisterInstance<ITariffProvider>(new TariffProvider(container.Resolve<ITariffDao>()));
 
-            container.RegisterType<ExpressCheckoutServiceFactory, ExpressCheckoutServiceFactory>();
+            container.RegisterType<PayPalServiceFactory, PayPalServiceFactory>();
             container.RegisterType<IIbsOrderService, IbsOrderService>();
 
             container.RegisterType<OrderStatusUpdater, OrderStatusUpdater>();
@@ -46,10 +49,10 @@ namespace apcurium.MK.Booking.Api
                     var serverSettings = c.Resolve<IServerSettings>();
                     if (serverSettings.ServerData.IBS.FakeOrderStatusUpdate)
                     {
-                        return new UpdateOrderStatusJobStub();
+                        return new UpdateOrderStatusJobStub(c.Resolve<IOrderDao>(), c.Resolve<IOrderStatusUpdateDao>(), c.Resolve<OrderStatusUpdater>() );
                     }
                     
-                    return new UpdateOrderStatusJob(c.Resolve<IOrderDao>(), c.Resolve<IIBSServiceProvider>(), c.Resolve<IOrderStatusUpdateDao>(), c.Resolve<OrderStatusUpdater>());
+                    return new UpdateOrderStatusJob(c.Resolve<IOrderDao>(), c.Resolve<IIBSServiceProvider>(), c.Resolve<IOrderStatusUpdateDao>(), c.Resolve<OrderStatusUpdater>(), c.Resolve<HoneyBadgerServiceClient>(), c.Resolve<IServerSettings>());
                 }));
 
             container.RegisterType<OrderStatusHelper>(
@@ -88,6 +91,10 @@ namespace apcurium.MK.Booking.Api
             Mapper.CreateMap<OrderStatusDetail, OrderStatusRequestResponse>();
             Mapper.CreateMap<OrderPairingDetail, OrderPairingResponse>();
 
+            Mapper.CreateMap<apcurium.MK.Booking.IBS.ChargeAccounts.RequestResponse.Resources.Prompt, apcurium.MK.Booking.Api.Contract.Resources.Prompt>();
+            Mapper.CreateMap<ChargeAccount, IbsChargeAccount>();
+            Mapper.CreateMap<ChargeAccountValidation, IbsChargeAccountValidation>();
+
             Mapper.CreateMap<RegisterAccount, Commands.RegisterAccount>()
                 .ForMember(p => p.AccountId,
                     options => options.ResolveUsing(x => x.AccountId == Guid.Empty ? Guid.NewGuid() : x.AccountId));
@@ -107,10 +114,6 @@ namespace apcurium.MK.Booking.Api
             Mapper.CreateMap<DefaultFavoriteAddress, AddDefaultFavoriteAddress>();
 
             Mapper.CreateMap<DefaultFavoriteAddress, UpdateDefaultFavoriteAddress>();
-
-            Mapper.CreateMap<AccountDetail, CurrentAccountResponse>()
-                .ForMember(x => x.IsSuperAdmin, opt => opt.ResolveUsing(x => x.RoleNames.Contains(RoleName.SuperAdmin)));
-
 
             Mapper.CreateMap<Tariff, CreateTariff>()
                 .ForMember(p => p.TariffId, opt => opt.ResolveUsing(x => x.Id == Guid.Empty ? Guid.NewGuid() : x.Id))
@@ -135,11 +138,9 @@ namespace apcurium.MK.Booking.Api
             Mapper.CreateMap<RuleDeactivateRequest, DeactivateRule>()
                 .ForMember(p => p.CompanyId, opt => opt.UseValue(AppConstants.CompanyId));
 
-            Mapper.CreateMap<CreditCardRequest, AddCreditCard>()
+            Mapper.CreateMap<CreditCardRequest, AddOrUpdateCreditCard>()
                 .ForMember(x => x.CreditCardId,
                     opt => opt.ResolveUsing(x => x.CreditCardId == Guid.Empty ? Guid.NewGuid() : x.CreditCardId));
-
-            Mapper.CreateMap<CreditCardRequest, UpdateCreditCard>();
 
             Mapper.CreateMap<PopularAddress, AddPopularAddress>();
             Mapper.CreateMap<PopularAddress, UpdatePopularAddress>();
@@ -151,8 +152,23 @@ namespace apcurium.MK.Booking.Api
         protected override void Configure()
         {
             CreateMap<IbsVehiclePosition, AvailableVehicle>()
-                .ForMember(p => p.VehicleNumber, opt => opt.ResolveUsing(x => x.VehicleNumber))
+                .ForMember(p => p.VehicleNumber, opt => opt.ResolveUsing(x => GetNumberOnly(x.VehicleNumber)))
                 .ForMember(p => p.LogoName, opt => opt.Ignore());
         }
+
+        private object GetNumberOnly(string text)
+        {
+            if ( !string.IsNullOrWhiteSpace(text) && text.Any(t=> Char.IsNumber(t) ) )
+            {
+                var r = new string( text.Where(t => char.IsNumber(t)).ToArray());
+                return r;
+            }
+            else
+            {
+                return 0;
+            }
+        }
+
+
     }
 }

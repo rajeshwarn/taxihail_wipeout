@@ -152,5 +152,62 @@ namespace CustomerPortal.Web.Android
                 throw new Exception("Keytool not found, please install JRE 6.");
             }
         }
+
+        public void GenerateApiKey(string companyId, string companyPath)
+        {
+            var keytoolPath = FindKeytoolPath();
+
+            var company = repository.GetById(companyId);
+            var signingKeyAlias = company.CompanySettings.FirstOrDefault(x => x.Key == "AndroidSigningKeyAlias") != null
+                    ? company.CompanySettings.First(x => x.Key == "AndroidSigningKeyAlias").Value
+                    : null;
+            var signingKeyStorePass = company.CompanySettings.FirstOrDefault(x => x.Key == "AndroidSigningKeyPassStorePass") != null
+                    ? company.CompanySettings.First(x => x.Key == "AndroidSigningKeyPassStorePass").Value
+                    : null;
+
+            if (signingKeyAlias == null || signingKeyStorePass == null)
+            {
+                throw new Exception("Settings \"AndroidSigningKeyAlias\" and \"AndroidSigningKeyPassStorePass\" are required to generate Android Keystore");
+            }
+
+            var keystoreFile = Path.Combine(companyPath, "public.keystore");
+
+            if (!File.Exists(keystoreFile))
+            {
+                throw new Exception("No Keystore File for this Company, Can't Generate the Fingerprint");
+            }
+
+            //genete md5/sha1 fingerprint for google map key
+            var commandFingerprints = String.Format(@"-v -list -alias {0} -keystore ""{1}"" -storepass {2} -keypass {2}",
+                                       signingKeyAlias,
+                                       keystoreFile,
+                                       signingKeyStorePass);
+
+            var generateFingerprints = new ProcessStartInfo
+            {
+                FileName = keytoolPath,
+                Arguments = commandFingerprints,
+                UseShellExecute = false,
+                RedirectStandardOutput = true
+            };
+
+            using (var exeProcess = Process.Start(generateFingerprints))
+            {
+                exeProcess.WaitForExit();
+                var result = exeProcess.StandardOutput.ReadToEnd();
+                if (exeProcess.ExitCode > 0)
+                {
+                    throw new Exception("Error during google map key generation");
+                }
+
+                var md5 = result.Substring(result.IndexOf("MD5:") + 6, 47).Trim();
+                var sha1 = result.Substring(result.IndexOf("SHA1:") + 6, 59).Trim();
+
+                company.GooglePlayCredentials.KeystoreMD5Signature = md5;
+                company.GooglePlayCredentials.KeystoreSHA1Signature = sha1;
+            }
+
+            repository.Update(company);
+        }
     }
 }

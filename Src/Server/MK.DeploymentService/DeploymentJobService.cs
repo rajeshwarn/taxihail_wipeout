@@ -280,24 +280,25 @@ namespace MK.DeploymentService
                 iisManager.CommitChanges();
                 Thread.Sleep(2000);
             }
-            if (appPool.State == ObjectState.Started) appPool.Stop();
 
             if (_job.Database)
             {
                 Log("Deploying Database");
-                DeployDataBase(packagesDirectory, companyName);
+                DeployDataBase(packagesDirectory, companyName, appPoolName);
             }
-
-
+            
             Log("Deploying Server");
             DeployServer(_job.Company.Id, companyName, appPoolName, packagesDirectory, iisManager);
 
             Log("Done Deploying Server");
 
-            appPool.Start();
+            if (appPool.State == ObjectState.Stopped)
+            {
+                appPool.Start();
+            }
         }
 
-        private void DeployDataBase(string packagesDirectory, string companyName)
+        private void DeployDataBase(string packagesDirectory, string companyName, string appPoolName)
         {
             Log("Deploying DB");
             var jsonSettings = new JObject();
@@ -305,12 +306,18 @@ namespace MK.DeploymentService
             {
                 if ((setting.Key != "IBS.WebServicesUrl") &&
                     (setting.Key != "IBS.WebServicesUserName") &&
-                    (setting.Key != "IBS.WebServicesPassword"))
+                    (setting.Key != "IBS.WebServicesPassword") &&
+                    (setting.Key != "IBS.RestApiUrl") &&
+                    (setting.Key != "IBS.RestApiUser") &&
+                    (setting.Key != "IBS.RestApiSecret"))
                 {
                     jsonSettings.Add(setting.Key, JToken.FromObject(setting.Value ?? ""));
                 }
             }
 
+            jsonSettings.Add("IBS.RestApiUrl", JToken.FromObject(_job.Company.IBS.RestApiUrl ?? ""));
+            jsonSettings.Add("IBS.RestApiUser", JToken.FromObject(_job.Company.IBS.RestApiUser ?? ""));
+            jsonSettings.Add("IBS.RestApiSecret", JToken.FromObject(_job.Company.IBS.RestApiSecret ?? ""));
 
             jsonSettings.Add("IBS.WebServicesUrl", JToken.FromObject(_job.Company.IBS.ServiceUrl ?? ""));
             jsonSettings.Add("IBS.WebServicesUserName", JToken.FromObject(_job.Company.IBS.Username ?? ""));
@@ -335,7 +342,8 @@ namespace MK.DeploymentService
                 MirroringMirrorPartner = Settings.Default.MirroringMirrorPartner,
                 MirroringWitness = Settings.Default.MirroringWitness,
                 MirroringPrincipalPartner = Settings.Default.MirroringPrincipalPartner,
-                MirrorMasterConnectionString = Settings.Default.MirrorMasterConnectionString
+                MirrorMasterConnectionString = Settings.Default.MirrorMasterConnectionString,
+                AppPoolName = appPoolName
             };
 
             var paramFile = Guid.NewGuid().ToString().Replace("-", "") + ".params";
@@ -344,8 +352,8 @@ namespace MK.DeploymentService
             
             var deployDb =
                 ProcessEx.GetProcess(
-                    Path.Combine(packagesDirectory, "DatabaseInitializer\\") + "DatabaseInitializer.exe", 
-                    "f:"+paramFile, null, true);
+                    Path.Combine(packagesDirectory, "DatabaseInitializer\\") + "DatabaseInitializer.exe",
+                    "f:" + paramFile, Path.Combine(packagesDirectory, "DatabaseInitializer\\"), true);
 
 
             using (var exeProcess = Process.Start(deployDb))

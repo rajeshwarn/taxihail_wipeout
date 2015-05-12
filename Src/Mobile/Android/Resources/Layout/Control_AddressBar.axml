@@ -3,7 +3,7 @@
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
-    <apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Addresses.AddressTextBox
+    <apcurium.mk.Booking.mobile.client.controls.widgets.addresses.AddressTextBox
         android:orientation="horizontal"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -16,7 +16,7 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:id="@+id/DestinationSection">
-        <apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Addresses.AddressTextBox
+        <apcurium.mk.Booking.mobile.client.controls.widgets.addresses.AddressTextBox
             android:orientation="horizontal"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"

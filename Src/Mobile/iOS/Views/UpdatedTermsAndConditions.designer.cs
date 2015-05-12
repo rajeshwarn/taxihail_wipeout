@@ -4,7 +4,7 @@
 // actions made in the UI designer. If it is removed, they will be lost.
 // Manual changes to this file may not be handled correctly.
 //
-using MonoTouch.Foundation;
+using Foundation;
 using System.CodeDom.Compiler;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
@@ -16,7 +16,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnAccept { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UITextView txtTermsAndConditions { get; set; }
+		UIKit.UITextView txtTermsAndConditions { get; set; }
 		
 		void ReleaseDesignerOutlets ()
 		{

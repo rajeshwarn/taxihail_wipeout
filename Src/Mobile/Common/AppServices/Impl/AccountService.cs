@@ -8,8 +8,10 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Client;
+using apcurium.MK.Booking.Api.Client.Payments.PayPal;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Requests;
+using apcurium.MK.Booking.Api.Contract.Requests.Payment.PayPal;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Api.Contract.Resources.Payments;
 using apcurium.MK.Booking.Api.Contract.Security;
@@ -26,8 +28,6 @@ using MK.Common.Configuration;
 using ServiceStack.Common;
 using ServiceStack.ServiceClient.Web;
 using Position = apcurium.MK.Booking.Maps.Geo.Position;
-using System.Reactive.Linq;
-using System.Reactive.Threading.Tasks;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
@@ -38,6 +38,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         private const string RefDataCacheKey = "Account.ReferenceData";
         private const string CompanyNotificationSettingsCacheKey = "Account.CompanyNotificationSettings";
         private const string UserNotificationSettingsCacheKey = "Account.UserNotificationSettings";
+        private const string UserTaxiHailNetworkSettingsCacheKey = "Account.UserTaxiHailNetworkSetting";
         private const string AuthenticationDataCacheKey = "AuthenticationData";
         private const string VehicleTypesDataCacheKey = "VehicleTypesData";
 
@@ -54,12 +55,12 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			ILocationService locationService)
 		{
 			_locationService = locationService;
-			_localize = localize;
+            _localize = localize;
 		    _twitterService = twitterService;
 			_facebookService = facebookService;
 			_appSettings = appSettings;
 		}
-	
+
         public async Task<ReferenceData> GetReferenceData()
         {
             var cached = UserCache.Get<ReferenceData>(RefDataCacheKey);
@@ -237,8 +238,22 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 		{
             get 
 			{
-                var account = UserCache.Get<Account> ("LoggedUser");
-                return account;
+				try
+				{
+					var oldDeprecatedAccount = UserCache.Get<DeprecatedAccount>("LoggedUser");
+					if(oldDeprecatedAccount.DefaultCreditCard.HasValue)
+					{
+						// there's an old account cached, force logout to set the new account object in cache
+						return null;
+					}
+
+					var account = UserCache.Get<Account> ("LoggedUser");
+					return account;
+				}
+				catch
+				{
+					return null;
+				}
             }
             private set 
 			{
@@ -249,43 +264,47 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 				else 
 				{
                     UserCache.Clear ("LoggedUser");
-                }                
+                }
             }
         }
 		
-        public async Task UpdateSettings (BookingSettings settings, Guid? creditCardId, int? tipPercent)
+        public async Task UpdateSettings (BookingSettings settings, int? tipPercent)
         {
+            //This is to make sure we only save the phone number
+            var phoneNumberChars = settings.Phone
+                .Where(char.IsDigit)
+                .ToArray();
+
             var bsr = new BookingSettingsRequest
             {
                 Name = settings.Name,
-                Phone = settings.Phone,
+                Phone = new string(phoneNumberChars),
                 VehicleTypeId = settings.VehicleTypeId,
                 ChargeTypeId = settings.ChargeTypeId,
                 ProviderId = settings.ProviderId,
-                DefaultCreditCard = creditCardId,
 				DefaultTipPercent = tipPercent,
-				AccountNumber = settings.AccountNumber
+				AccountNumber = settings.AccountNumber,
+                CustomerNumber = settings.CustomerNumber,
+                PayBack = settings.PayBack
             };
 
             await UseServiceClientAsync<IAccountServiceClient>(service => service.UpdateBookingSettings(bsr));
 
+			// Update cached account
             var account = CurrentAccount;
             account.Settings = settings;
-            account.DefaultCreditCard = creditCardId;
             account.DefaultTipPercent = tipPercent;
-
-            //Set to update the cache
             CurrentAccount = account;
-
         }
 
-		public void UpdateAccountNumber (string accountNumber)
+        public void UpdateAccountNumber(string accountNumber, string customerNumber)
 		{
 			var settings = CurrentAccount.Settings;
 			settings.AccountNumber = accountNumber;
+			settings.CustomerNumber = customerNumber;
 
 			// no need to await since we're change it locally
-			UpdateSettings (settings, CurrentAccount.DefaultCreditCard, CurrentAccount.DefaultTipPercent);
+			UpdateSettings (settings, CurrentAccount.DefaultTipPercent);
 		}
 
         public Task<string> UpdatePassword (Guid accountId, string currentPassword, string newPassword)
@@ -493,7 +512,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             });
         }
 
-		public async Task<IList<VehicleType>> GetVehiclesList ()
+		public async Task<IList<VehicleType>> GetVehiclesList()
 		{
 		    var cacheService = Mvx.Resolve<ICacheService>();
 
@@ -503,19 +522,48 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 return cached;
             }
 
-			var vehiclesList = await UseServiceClientAsync<IVehicleClient, VehicleType[]>(service => service.GetVehicleTypes());
+            var vehiclesList = await UseServiceClientAsync<IVehicleClient, VehicleType[]>(service => service.GetVehicleTypes());
             cacheService.Set(VehicleTypesDataCacheKey, vehiclesList);
 
-		    return vehiclesList;
+            return vehiclesList;
         }
 
-		public async Task<IList<ListItem>> GetPaymentsList ()
+        public async Task ResetLocalVehiclesList()
+        {
+            var vehiclesList = await UseServiceClientAsync<IVehicleClient, VehicleType[]>(service => service.GetVehicleTypes());
+            var cacheService = Mvx.Resolve<ICacheService>();
+            cacheService.Set(VehicleTypesDataCacheKey, vehiclesList);
+        }
+
+        public void SetMarketVehiclesList(List<VehicleType> marketVehicleTypes)
+        {
+            if (marketVehicleTypes.Any())
+            {
+                var cacheService = Mvx.Resolve<ICacheService>();
+                cacheService.Set(VehicleTypesDataCacheKey, marketVehicleTypes);
+            }
+        }
+
+		public async Task<IList<ListItem>> GetPaymentsList (string hashedMarket = null)
         {
 			var refData = await GetReferenceData();
 
-			if (!CurrentAccount.DefaultCreditCard.HasValue)
+            if (!CurrentAccount.IsPayPalAccountLinked)
+		    {
+                refData.PaymentsList.Remove(i => i.Id == ChargeTypes.PayPal.Id);
+		    }
+
+			var creditCard = await GetCreditCard();
+            if (creditCard == null
+                || CurrentAccount.IsPayPalAccountLinked
+                || creditCard.IsDeactivated)
 		    {
 		        refData.PaymentsList.Remove(i => i.Id == ChargeTypes.CardOnFile.Id);
+		    }
+
+		    if (hashedMarket.HasValue())
+		    {
+                refData.PaymentsList.Remove(i => i.Id != ChargeTypes.PaymentInCar.Id);
 		    }
 
             return refData.PaymentsList;
@@ -525,7 +573,12 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         {
 			// the server can return multiple credit cards if the user added more cards with a previous version, we get the first one only.
             var result = await UseServiceClientAsync<IAccountServiceClient, IEnumerable<CreditCardDetails>>(service => service.GetCreditCards());
-			return result.FirstOrDefault();
+			var creditCard = result.FirstOrDefault();
+
+			// refresh credit card in cache
+			CurrentAccount.DefaultCreditCard = creditCard;
+
+			return creditCard;
         }
 
 		private async Task TokenizeCard(CreditCardInfos creditCard)
@@ -533,12 +586,17 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			var response = await UseServiceClientAsync<IPaymentService, TokenizedCreditCardResponse>(service => service.Tokenize(
 				creditCard.CardNumber, 
 				new DateTime(creditCard.ExpirationYear.ToInt(), creditCard.ExpirationMonth.ToInt(), 1),
-				creditCard.CCV));	
+				creditCard.CCV));
+
+		    if (!response.IsSuccessful)
+		    {
+		        throw new Exception(response.Message);
+		    }
 
 			creditCard.Token = response.CardOnFileToken;       
 		}
 
-		public async Task<bool> AddCreditCard (CreditCardInfos creditCard)
+		public async Task<bool> AddOrUpdateCreditCard (CreditCardInfos creditCard, bool isUpdate = false)
         {
 			try
 			{
@@ -559,43 +617,62 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 				ExpirationMonth = creditCard.ExpirationMonth,
 				ExpirationYear = creditCard.ExpirationYear
             };
-            
-			await UseServiceClientAsync<IAccountServiceClient> (client => client.AddCreditCard (request));  
+
+			await UseServiceClientAsync<IAccountServiceClient> (client => 
+				isUpdate 
+					? client.AddCreditCard (request)
+					: client.UpdateCreditCard(request));  
+
+			var creditCardDetails = new CreditCardDetails
+			{
+				AccountId = CurrentAccount.Id,
+				CreditCardId = request.CreditCardId,
+				CreditCardCompany = request.CreditCardCompany,
+				NameOnCard = request.NameOnCard,
+				Token = request.Token,
+				Last4Digits = request.Last4Digits,
+				ExpirationMonth = request.ExpirationMonth,
+				ExpirationYear = request.ExpirationYear,
+				IsDeactivated = false
+			};
+			UpdateCachedAccount(creditCardDetails, ChargeTypes.CardOnFile.Id, false);
 
 			return true;
         }
-
-		public async Task<bool> UpdateCreditCard(CreditCardInfos creditCard)
+			
+		public async Task RemoveCreditCard(bool replacedByPayPal = false)
 		{
-			try
-			{
-				await TokenizeCard (creditCard);
-			}
-			catch
-			{
-				return false;
-			}
+            var updatedChargeType = replacedByPayPal ? ChargeTypes.PayPal.Id : ChargeTypes.PaymentInCar.Id;
 
-			var request = new CreditCardRequest
-			{
-				CreditCardCompany = creditCard.CreditCardCompany,
-				CreditCardId = creditCard.CreditCardId,
-				NameOnCard = creditCard.NameOnCard,
-				Last4Digits = creditCard.Last4Digits,
-				Token = creditCard.Token,
-				ExpirationMonth = creditCard.ExpirationMonth,
-				ExpirationYear = creditCard.ExpirationYear
-			};
+            UpdateCachedAccount(null, updatedChargeType, CurrentAccount.IsPayPalAccountLinked);
 
-			await UseServiceClientAsync<IAccountServiceClient> (client => client.UpdateCreditCard (request));  
-
-			return true;
-		}
-
-		public async Task RemoveCreditCard()
-		{
 			await UseServiceClientAsync<IAccountServiceClient>(client => client.RemoveCreditCard());
 		}
+
+		public Task LinkPayPalAccount(string authCode)
+		{
+            UpdateCachedAccount(null, ChargeTypes.PayPal.Id, true);
+
+			return UseServiceClientAsync<PayPalServiceClient>(service => service.LinkPayPalAccount(new LinkPayPalAccountRequest { AuthCode = authCode }));
+		}
+
+		public Task UnlinkPayPalAccount (bool replacedByCreditCard = false)
+		{
+		    var updatedChargeTypeId = replacedByCreditCard ? ChargeTypes.CardOnFile.Id : ChargeTypes.PaymentInCar.Id;
+
+            UpdateCachedAccount(CurrentAccount.DefaultCreditCard, updatedChargeTypeId, false);
+
+			return UseServiceClientAsync<PayPalServiceClient>(service => service.UnlinkPayPalAccount(new UnlinkPayPalAccountRequest()));
+		}
+
+		private void UpdateCachedAccount(CreditCardDetails defaultCreditCard, int? chargeTypeId, bool isPayPalAccountLinked)
+        {
+            var account = CurrentAccount;
+            account.DefaultCreditCard = defaultCreditCard;
+            account.Settings.ChargeTypeId = chargeTypeId;
+            account.IsPayPalAccountLinked = isPayPalAccountLinked;
+            CurrentAccount = account;
+        }
 
         public async Task<NotificationSettings> GetNotificationSettings(bool companyDefaultOnly = false, bool cleanCache = false)
         {
@@ -642,6 +719,12 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                     ReceiptEmail = companySettings.ReceiptEmail.HasValue && userSettings.ReceiptEmail.HasValue
                         ? userSettings.ReceiptEmail 
                         : companySettings.ReceiptEmail,
+					PromotionUnlockedEmail = companySettings.PromotionUnlockedEmail.HasValue && userSettings.PromotionUnlockedEmail.HasValue
+						? userSettings.PromotionUnlockedEmail
+						: companySettings.PromotionUnlockedEmail,
+					PromotionUnlockedPush = companySettings.PromotionUnlockedPush.HasValue && userSettings.PromotionUnlockedPush.HasValue
+						? userSettings.PromotionUnlockedPush
+						: companySettings.PromotionUnlockedPush,
                     VehicleAtPickupPush = companySettings.VehicleAtPickupPush.HasValue && userSettings.VehicleAtPickupPush.HasValue
                         ? userSettings.VehicleAtPickupPush 
                         : companySettings.VehicleAtPickupPush
@@ -665,6 +748,35 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             await UseServiceClientAsync<IAccountServiceClient>(client => client.UpdateNotificationSettings(request));
         }
 
+        public async Task<UserTaxiHailNetworkSettings> GetUserTaxiHailNetworkSettings(bool cleanCache = false)
+        {
+            var cachedSetting = UserCache.Get<UserTaxiHailNetworkSettings>(UserTaxiHailNetworkSettingsCacheKey);
+
+            if (cachedSetting != null && !cleanCache)
+            {
+                return cachedSetting;
+            }
+
+            var settings = await UseServiceClientAsync<IAccountServiceClient, UserTaxiHailNetworkSettings>(client => client.GetUserTaxiHailNetworkSettings(CurrentAccount.Id));
+            UserCache.Set(UserTaxiHailNetworkSettingsCacheKey, settings);
+
+            return settings;
+        }
+
+        public async Task UpdateUserTaxiHailNetworkSettings(UserTaxiHailNetworkSettings userTaxiHailNetworkSettings)
+        {
+            // Update cached user settings
+            UserCache.Set(UserTaxiHailNetworkSettingsCacheKey, userTaxiHailNetworkSettings);
+
+            var request = new UserTaxiHailNetworkSettingsRequest
+            {
+                AccountId = CurrentAccount.Id,
+                UserTaxiHailNetworkSettings = userTaxiHailNetworkSettings
+            };
+
+            await UseServiceClientAsync<IAccountServiceClient>(client => client.UpdateUserTaxiHailNetworkSettings(request));
+        }
+			
 		public async void LogApplicationStartUp()
 		{
 			try

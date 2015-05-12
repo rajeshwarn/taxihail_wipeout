@@ -14,7 +14,11 @@ namespace apcurium.MK.Common.Configuration.Impl
             Id = AppConstants.CompanyId;
             BraintreeServerSettings = new BraintreeServerSettings();
             PayPalServerSettings = new PayPalServerSettings();
+            IsPreAuthEnabled = true;
             PreAuthAmount = 200;
+            UnpairingTimeOut = 120;
+            IsUnpairingDisabled = false;
+            IsPrepaidEnabled = false;
         }
 
         [Key]
@@ -25,6 +29,16 @@ namespace apcurium.MK.Common.Configuration.Impl
 
         public decimal? NoShowFee { get; set; }
 
+        public bool IsPreAuthEnabled { get; set; }
+
         public decimal? PreAuthAmount { get; set; }
+
+        public bool IsUnpairingDisabled { get; set; }
+
+        public int UnpairingTimeOut { get; protected set; }
+
+        public bool IsPrepaidEnabled { get; set; }
+
+        public bool AlwaysDisplayCoFOption { get; set; }
     }
 }

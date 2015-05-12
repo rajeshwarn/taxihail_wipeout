@@ -1,6 +1,4 @@
-﻿#region
-
-using System;
+﻿using System;
 using System.Linq;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Events;
@@ -9,16 +7,17 @@ using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
+using apcurium.MK.Common.Extensions;
 using Infrastructure.Messaging.Handling;
-
-#endregion
 
 namespace apcurium.MK.Booking.EventHandlers
 {
     public class CreditCardPaymentDetailsGenerator :
         IEventHandler<CreditCardPaymentInitiated>,
-        IEventHandler<CreditCardPaymentCaptured>,
-        IEventHandler<CreditCardErrorThrown>
+        IEventHandler<CreditCardPaymentCaptured_V2>,
+        IEventHandler<CreditCardErrorThrown>,
+        IEventHandler<PrepaidOrderPaymentInfoUpdated>,
+        IEventHandler<RefundedOrderUpdated>
     {
         private readonly Func<BookingDbContext> _contextFactory;
         private readonly Resources.Resources _resources;
@@ -29,7 +28,7 @@ namespace apcurium.MK.Booking.EventHandlers
             _resources = new Resources.Resources(serverSettings);
         }
 
-        public void Handle(CreditCardPaymentCaptured @event)
+        public void Handle(CreditCardPaymentCaptured_V2 @event)
         {
             using (var context = _contextFactory.Invoke())
             {
@@ -38,14 +37,40 @@ namespace apcurium.MK.Booking.EventHandlers
                 {
                     throw new InvalidOperationException("Payment not found");
                 }
-                    
+
+                payment.TransactionId = @event.TransactionId;
                 payment.AuthorizationCode = @event.AuthorizationCode;
                 payment.IsCompleted = true;
                 payment.Amount = @event.Amount;
                 payment.Meter = @event.Meter;
+                payment.Tax = @event.Tax;
                 payment.Tip = @event.Tip;
+                payment.IsCancelled = false;
+                payment.Error = null;
+
+                // Update payment details after settling an overdue payment
+                if (@event.NewCardToken.HasValue())
+                {
+                    payment.CardToken = @event.NewCardToken;
+                }
 
                 var order = context.Find<OrderDetail>(payment.OrderId);
+
+                // Prevents NullReferenceException caused with web prepayed while running database initializer.
+                if (order == null && @event.IsForPrepaidOrder)
+                {
+                    order = new OrderDetail()
+                    {
+                        Id = payment.OrderId,
+                        //Following values will be set to the correct date and time when that event is played.
+                        PickupDate = @event.EventDate,
+                        CreatedDate = @event.EventDate
+                    };
+
+                    context.Set<OrderDetail>().Add(order);
+                }
+
+
                 if (!order.Fare.HasValue || order.Fare == 0)
                 {
                     order.Fare = Convert.ToDouble(@event.Meter);
@@ -54,10 +79,17 @@ namespace apcurium.MK.Booking.EventHandlers
                 {
                     order.Tip = Convert.ToDouble(@event.Tip);
                 }
+                if (!order.Tax.HasValue || order.Tax == 0)
+                {
+                    order.Tax = Convert.ToDouble(@event.Tax);
+                }
 
-                var orderStatus = context.Find<OrderStatusDetail>(payment.OrderId);
-                orderStatus.IBSStatusId = VehicleStatuses.Common.Done;
-                orderStatus.IBSStatusDescription = _resources.Get("OrderStatus_wosDONE", order.ClientLanguageCode);
+                if (!@event.IsForPrepaidOrder)
+                {
+                    var orderStatus = context.Find<OrderStatusDetail>(payment.OrderId);
+                    orderStatus.IBSStatusId = VehicleStatuses.Common.Done;
+                    orderStatus.IBSStatusDescription = _resources.Get("OrderStatus_wosDONE", order.ClientLanguageCode);
+                }
 
                 context.SaveChanges();
             }
@@ -70,15 +102,16 @@ namespace apcurium.MK.Booking.EventHandlers
                 context.Save(new OrderPaymentDetail
                 {
                     PaymentId = @event.SourceId,
-                    Amount = @event.Amount,
-                    Meter = @event.Meter,
-                    Tip = @event.Tip,
+                    PreAuthorizedAmount = @event.Amount,
+                    FirstPreAuthTransactionId = @event.TransactionId,
                     TransactionId = @event.TransactionId,
                     OrderId = @event.OrderId,
                     CardToken = @event.CardToken,
                     IsCompleted = false,
                     Provider = @event.Provider,
-                    Type = PaymentType.CreditCard,
+                    Type = @event.Provider == PaymentProvider.PayPal
+                        ? PaymentType.PayPal
+                        : PaymentType.CreditCard
                 });
             }
         }
@@ -96,7 +129,42 @@ namespace apcurium.MK.Booking.EventHandlers
                 payment.IsCancelled = true;
                 payment.Error = @event.Reason;
 
-                context.SaveChanges();
+                context.Save(payment);
+            }
+        }
+
+        public void Handle(PrepaidOrderPaymentInfoUpdated @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                context.Save(new OrderPaymentDetail
+                {
+                    PaymentId = @event.SourceId,
+                    Amount = @event.Amount,
+                    Meter = @event.Meter,
+                    Tax = @event.Tax,
+                    Tip = @event.Tip,
+                    OrderId = @event.OrderId,
+                    TransactionId = @event.TransactionId,
+                    Provider = PaymentProvider.PayPal,
+                    Type = PaymentType.PayPal,
+                    IsCompleted = true
+                });
+            }
+        }
+
+        public void Handle(RefundedOrderUpdated @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var payment = context.Set<OrderPaymentDetail>().FirstOrDefault(p => p.OrderId == @event.SourceId);
+                if (payment != null)
+                {
+                    payment.IsRefunded = @event.IsSuccessful;
+                    payment.Error = @event.Message;
+
+                    context.Save(payment);
+                }
             }
         }
     }

@@ -7,6 +7,7 @@ using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Entity;
+using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using Infrastructure.EventSourcing;
 
@@ -37,20 +38,65 @@ namespace apcurium.MK.Booking.Domain
             Handles<OrderPreparedForNextDispatch>(NoAction);
             Handles<OrderSwitchedToNextDispatchCompany>(OnOrderSwitchedToNextDispatchCompany);
             Handles<DispatchCompanySwitchIgnored>(OnNextDispatchCompanySwitchIgnored);
+            Handles<IbsOrderInfoAddedToOrder>(NoAction);
+            Handles<OrderCancelledBecauseOfError>(NoAction);
+            Handles<PrepaidOrderPaymentInfoUpdated>(NoAction);
+            Handles<RefundedOrderUpdated>(NoAction);
+            Handles<OrderManuallyPairedForRideLinq>(NoAction);
+            Handles<OrderUnpairedFromManualRideLinq>(NoAction);
+            Handles<ManualRideLinqTripInfoUpdated>(NoAction);
         }
-        
+
+
         public Order(Guid id, IEnumerable<IVersionedEvent> history)
             : this(id)
         {
             LoadFrom(history);
         }
 
-        public Order(Guid id, Guid accountId, int ibsOrderId, DateTime pickupDate, Address pickupAddress, Address dropOffAddress, BookingSettings settings,
-            double? estimatedFare, string userAgent, string clientLanguageCode, double? userLatitude, double? userLongitude, string userNote, string clientVersion,
-            bool isChargeAccountPaymentWithCardOnFile)
+        /// <summary>
+        /// Constructor for RideLinq
+        /// </summary>
+        public Order(Guid id, Guid accountId, DateTime pairingDate, string pairingCode, string pairingToken, Address pickupAddress,
+            string userAgent, string clientLanguageCode, string clientVersion, double? distance,
+            double? total, double? fare, double? faireAtAlternateRate, double? tax, double? tip, double? toll,
+            double? extra, double? surcharge, double? rateAtTripStart, double? rateAtTripEnd, string rateChangeTime, string medallion, int tripId, int driverId) 
             : this(id)
         {
-            if ((settings == null) || pickupAddress == null || ibsOrderId <= 0 ||
+            Update(new OrderManuallyPairedForRideLinq
+            {
+                AccountId = accountId,
+                PairingDate = pairingDate,
+                UserAgent = userAgent,
+                ClientLanguageCode = clientLanguageCode,
+                ClientVersion = clientVersion,
+                PairingCode = pairingCode,
+                PairingToken = pairingToken,
+                PickupAddress = pickupAddress,
+                Total = total,
+                Fare = fare,
+                FareAtAlternateRate = faireAtAlternateRate,
+                Tax = tax,
+                Tip = tip,
+                Toll = toll,
+                Surcharge = surcharge,
+                Extra = extra,
+                RateAtTripStart = rateAtTripStart,
+                RateAtTripEnd = rateAtTripEnd,
+                RateChangeTime = rateChangeTime,
+                Distance = distance,
+                Medallion = medallion,
+                TripId = tripId,
+                DriverId = driverId
+            });
+        }
+
+        public Order(Guid id, Guid accountId, DateTime pickupDate, Address pickupAddress, Address dropOffAddress, BookingSettings settings,
+            double? estimatedFare, string userAgent, string clientLanguageCode, double? userLatitude, double? userLongitude, string userNote, string clientVersion,
+            bool isChargeAccountPaymentWithCardOnFile, string companyKey, string companyName, string market, bool isPrepaid)
+            : this(id)
+        {
+            if ((settings == null) || pickupAddress == null || 
                 (Params.Get(pickupAddress.FullAddress, settings.Name, settings.Phone).Any(p => p.IsNullOrEmpty())))
             {
                 throw new InvalidOperationException("Missing required fields");
@@ -58,7 +104,6 @@ namespace apcurium.MK.Booking.Domain
 
             Update(new OrderCreated
             {
-                IBSOrderId = ibsOrderId,
                 AccountId = accountId,
                 PickupDate = pickupDate,
                 PickupAddress = pickupAddress,
@@ -72,7 +117,45 @@ namespace apcurium.MK.Booking.Domain
                 UserLongitude = userLongitude,
                 UserNote = userNote,
                 ClientVersion = clientVersion,
-                IsChargeAccountPaymentWithCardOnFile = isChargeAccountPaymentWithCardOnFile
+                IsChargeAccountPaymentWithCardOnFile = isChargeAccountPaymentWithCardOnFile,
+                CompanyKey = companyKey,
+                CompanyName = companyName,
+                Market = market,
+                IsPrepaid = isPrepaid
+            });
+        }
+
+        public void AddIbsOrderInfo(int ibsOrderId)
+        {
+            Update(new IbsOrderInfoAddedToOrder
+            {
+                IBSOrderId = ibsOrderId
+            });
+        }
+
+        public void UpdateRideLinqTripInfo(double? distance,double? total, double? fare,double? faireAtAlternateRate, double? tax, double? tip, double? toll,
+            double? extra, double? surcharge, double? rateAtTripStart, double? rateAtTripEnd, string rateChangeTime, 
+            DateTime? endTime, string pairingToken, string medallion, int tripId, int driverId)
+        {
+            Update(new ManualRideLinqTripInfoUpdated
+            {
+                Distance = distance, 
+                Total = total,
+                Fare = fare,
+                FareAtAlternateRate = faireAtAlternateRate,
+                Tax = tax,
+                Tip = tip,
+                Toll = toll,
+                Extra = extra,
+                Surcharge = surcharge,
+                RateAtTripStart = rateAtTripStart,
+                RateAtTripEnd = rateAtTripEnd,
+                RateChangeTime = rateChangeTime,
+                EndTime = endTime,
+                PairingToken = pairingToken,
+                Medallion = medallion,
+                TripId = tripId,
+                DriverId = driverId
             });
         }
 
@@ -100,10 +183,34 @@ namespace apcurium.MK.Booking.Domain
             });
         }
 
+        public void UpdatePrepaidOrderPaymentInfo(Guid orderId, decimal amount, decimal meter, decimal tax,
+                decimal tip, string transactionId, PaymentProvider provider, PaymentType type)
+        {
+            Update(new PrepaidOrderPaymentInfoUpdated
+            {
+                OrderId = orderId,
+                Amount = amount,
+                Meter = meter,
+                Tax = tax,
+                Tip = tip,
+                TransactionId = transactionId,
+                Provider = provider,
+                Type = type
+            });
+        }
 
         public void Cancel()
         {
             Update(new OrderCancelled());
+        }
+
+        public void CancelBecauseOfError(string errorCode, string errorDescription, bool wasPrepaid)
+        {
+            Update(new OrderCancelledBecauseOfError
+            {
+                ErrorCode = errorCode,
+                ErrorDescription = errorDescription
+            });
         }
 
         public void RemoveFromHistory()
@@ -142,11 +249,14 @@ namespace apcurium.MK.Booking.Domain
             }
         }
 
-        public void NotifyOrderTimedOut()
+        public void NotifyOrderTimedOut(string market)
         {
             if (!_isTimedOut)
             {
-                Update(new OrderTimedOut());  
+                Update(new OrderTimedOut
+                {
+                    Market = market
+                });  
             }
         }
 
@@ -170,6 +280,11 @@ namespace apcurium.MK.Booking.Domain
             Update(new OrderUnpairedForPayment());
         }
 
+        public void UnpairFromRideLinq()
+        {
+            Update(new OrderUnpairedFromManualRideLinq());
+        }
+
         public void PrepareForNextDispatch(string dispatchCompanyName, string dispatchCompanyKey)
         {
             Update(new OrderPreparedForNextDispatch
@@ -179,19 +294,29 @@ namespace apcurium.MK.Booking.Domain
             });
         }
 
-        public void SwitchOrderToNextDispatchCompany(int ibsOrderId, string companyKey, string companyName)
+        public void SwitchOrderToNextDispatchCompany(int ibsOrderId, string companyKey, string companyName, string market)
         {
             Update(new OrderSwitchedToNextDispatchCompany
             {
                 IBSOrderId = ibsOrderId,
                 CompanyKey = companyKey,
-                CompanyName = companyName
+                CompanyName = companyName,
+                Market = market
             });
         }
 
         public void IgnoreDispatchCompanySwitch()
         {
             Update(new DispatchCompanySwitchIgnored());
+        }
+
+        public void RefundedOrderUpdated(bool isSuccessful, string message)
+        {
+            Update(new RefundedOrderUpdated
+            {
+                IsSuccessful = isSuccessful,
+                Message = message
+            });
         }
 
         private void OnOrderStatusChanged(OrderStatusChanged @event)

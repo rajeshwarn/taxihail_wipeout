@@ -36,6 +36,7 @@ namespace apcurium.MK.Booking.CommandHandlers
         ICommandHandler<UpdateTermsAndConditions>,
         ICommandHandler<RetriggerTermsAndConditions>,
         ICommandHandler<AddUpdateAccountCharge>,
+        ICommandHandler<ImportAccountCharge>,
         ICommandHandler<DeleteAccountCharge>,
         ICommandHandler<AddUpdateVehicleType>,
         ICommandHandler<DeleteVehicleType>,
@@ -92,8 +93,10 @@ namespace apcurium.MK.Booking.CommandHandlers
                 command.StartTime,
                 command.EndTime,
                 command.ActiveFrom,
-                command.ActiveTo
-                );
+                command.ActiveTo,
+                command.Market,
+                command.DisableFutureBookingOnError);
+
             _repository.Save(company, command.Id.ToString());
         }
 
@@ -210,7 +213,9 @@ namespace apcurium.MK.Booking.CommandHandlers
                 command.ActiveFrom,
                 command.ActiveTo,
                 command.Priority,
-                command.IsActive);
+                command.IsActive,
+                command.Market,
+                command.DisableFutureBookingOnError);
 
             _repository.Save(company, command.Id.ToString());
         }
@@ -303,6 +308,15 @@ namespace apcurium.MK.Booking.CommandHandlers
             _repository.Save(company, command.Id.ToString());
         }
 
+        public void Handle(ImportAccountCharge command)
+        {
+            var company = _repository.Get(command.CompanyId);
+
+            company.ImportAccountCharge(command.AccountCharges);
+
+            _repository.Save(company, command.Id.ToString());
+        }
+
         public void Handle(DeleteAccountCharge command)
         {
             var company = _repository.Get(command.CompanyId);
@@ -316,7 +330,7 @@ namespace apcurium.MK.Booking.CommandHandlers
         {
             var company = _repository.Get(command.CompanyId);
 
-            company.AddUpdateVehicleType(command.VehicleTypeId, command.Name, command.LogoName, command.ReferenceDataVehicleId);
+            company.AddUpdateVehicleType(command.VehicleTypeId, command.Name, command.LogoName, command.ReferenceDataVehicleId, command.MaxNumberPassengers, command.ReferenceNetworkVehicleTypeId);
 
             _repository.Save(company, command.Id.ToString());
         }

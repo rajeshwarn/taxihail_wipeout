@@ -36,8 +36,12 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Braintree-2.27.0">
-      <HintPath>..\packages\Braintree.2.27.0\lib\Braintree-2.27.0.dll</HintPath>
+    <Reference Include="Braintree-2.40.0">
+      <HintPath>..\packages\Braintree.2.40.0\lib\Braintree-2.40.0.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.6.0.6\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="ServiceStack, Version=3.9.71.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -84,6 +88,7 @@
   <ItemGroup>
     <Compile Include="Extensions\ServiceClientBaseExtensions.cs" />
     <Compile Include="IIbsFareClient.cs" />
+    <Compile Include="IPairingServiceClient.cs" />
     <Compile Include="Payments\Braintree\BraintreeServiceClient.cs" />
     <Compile Include="Payments\Fake\FakePaymentClient.cs" />
     <Compile Include="Payments\CmtPayments\CmtPaymentClient.cs" />
@@ -91,6 +96,8 @@
     <Compile Include="IVehicleClient.cs" />
     <Compile Include="Payments\Moneris\MonerisServiceClient.cs" />
     <Compile Include="Payments\Moneris\MonerisTokenizeClient.cs" />
+    <Compile Include="Payments\PairingServiceClient.cs" />
+    <Compile Include="Payments\PayPal\PayPalServiceClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TaxiHail\AccountServiceClient.cs" />
     <Compile Include="TaxiHail\AdministrationServiceClient.cs" />
@@ -100,11 +107,10 @@
     <Compile Include="TaxiHail\CompanyServiceClient.cs" />
     <Compile Include="TaxiHail\ConfigurationClientService.cs" />
     <Compile Include="TaxiHail\IbsFareServiceClient.cs" />
-    <Compile Include="TaxiHail\PayPalServiceClient.cs" />
+    <Compile Include="TaxiHail\NetworkRoamingServiceClient.cs" />
     <Compile Include="TaxiHail\PushNotificationAdministrationServiceClient.cs" />
+    <Compile Include="TaxiHail\RoamingValidationServiceClient.cs" />
     <Compile Include="TaxiHail\RulesServiceClient.cs" />
-    <Compile Include="TaxiHail\DirectionsServiceClient.cs" />
-    <Compile Include="TaxiHail\GeocodingServiceClient.cs" />
     <Compile Include="IAuthServiceClient.cs" />
     <Compile Include="IAccountServiceClient.cs" />
     <Compile Include="TaxiHail\NearbyPlacesClient.cs" />
@@ -125,6 +131,10 @@
     <ProjectReference Include="..\CMTPayment\CMTPayment.csproj">
       <Project>{5fd750a2-ee19-4a80-9b38-32adbf03765a}</Project>
       <Name>CMTPayment</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HoneyBadger\HoneyBadger.csproj">
+      <Project>{1c2f9d8b-7b65-4d2e-a099-d0040907d59c}</Project>
+      <Name>HoneyBadger</Name>
     </ProjectReference>
     <ProjectReference Include="..\MK.Booking.Api.Contract\MK.Booking.Api.Contract.csproj">
       <Project>{1DD86EC1-75F9-4A57-A8D6-18248048F571}</Project>

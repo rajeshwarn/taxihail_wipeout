@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Extensions;
+using System.Globalization;
 
 namespace apcurium.MK.Common.Configuration.Helpers
 {
@@ -23,7 +24,9 @@ namespace apcurium.MK.Common.Configuration.Helpers
 
 						if (propertyType == null)
 						{
+#if DEBUG
 							Console.WriteLine("Warning - can't set value for property {0}, value was {1} - property not found", propertyName, overriddenSetting.Value);
+#endif
 							continue;
 						}
 
@@ -33,7 +36,7 @@ namespace apcurium.MK.Common.Configuration.Helpers
 
 						if (targetType.IsEnum)
 						{
-							var propertyVal = Enum.Parse(targetType, overriddenSetting.Value);
+							var propertyVal = Enum.Parse(targetType, overriddenSetting.Value, true);
 							SetValue(propertyName, objectToInitialize, propertyVal);
 						}
 						else if (IsNullableType(propertyType.PropertyType) && string.IsNullOrEmpty(overriddenSetting.Value))
@@ -44,20 +47,24 @@ namespace apcurium.MK.Common.Configuration.Helpers
 						{
                             if (targetType == typeof(bool) && string.IsNullOrEmpty(overriddenSetting.Value))
 						    {
+#if DEBUG
                                 Console.WriteLine("Warning - can't set value for property {0}, value was {1}", overriddenSetting.Key, overriddenSetting.Value);
+#endif
 						    }
                             else
                             {
-                                var propertyVal = Convert.ChangeType(overriddenSetting.Value, targetType);
+                                var propertyVal = Convert.ChangeType(overriddenSetting.Value, targetType, CultureInfo.InvariantCulture);
                                 SetValue(propertyName, objectToInitialize, propertyVal);
                             }
 						}
 					}
 					catch (Exception e)
 					{
+#if DEBUG
                         Console.WriteLine("Warning - can't set value for property {0}, value was {1}", propertyName, overriddenSetting.Value);
                         logger.Maybe(() => logger.LogMessage("Warning - can't set value for property {0}, value was {1}", propertyName, overriddenSetting.Value));
-						logger.Maybe(() => logger.LogError(e));
+#endif
+                        logger.Maybe(() => logger.LogError(e));
 					}
 				}
             }

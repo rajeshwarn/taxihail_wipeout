@@ -1,17 +1,17 @@
 using System;
-using MonoTouch.UIKit;
+using UIKit;
 using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
-using System.Drawing;
-using MonoTouch.CoreGraphics;
+using CoreGraphics;
+using CoreGraphics;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
 	public class RoundedCornerView : UIView
 	{
 		private UIRectCorner _roundedCorners = UIRectCorner.AllCorners;
-		private float _strokeLineWidth = UIHelper.OnePixel;
+		private nfloat _strokeLineWidth = UIHelper.OnePixel;
 		private UIColor _strokeLineColor = UIColor.FromRGB(155, 155, 155) ;
-		private float _cornerRadius = 3;
+		private nfloat _cornerRadius = 3;
 		public bool FirstRowOfTwoRowsTable = false;
 		private UIColor _backgroundColor;
 
@@ -61,14 +61,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			}
 		}
 
-		public override void Draw(RectangleF rect)
+		public override void Draw(CGRect rect)
 		{
 			base.Draw(rect);
 
 			var context = UIGraphics.GetCurrentContext ();
 			if (Corners != 0)
 			{
-				var roundedRectanglePath = UIBezierPath.FromRoundedRect (rect, _roundedCorners, new SizeF (_cornerRadius, _cornerRadius));
+				var roundedRectanglePath = UIBezierPath.FromRoundedRect (rect, _roundedCorners, new CGSize (_cornerRadius, _cornerRadius));
 				DrawBackground (rect, context, _backgroundColor.CGColor, roundedRectanglePath);
 				DrawStroke(context, roundedRectanglePath);
 			}
@@ -80,7 +80,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 		}
 
 
-		void DrawBackground (RectangleF rect, CGContext context, CGColor color, UIBezierPath roundedRectanglePath)
+		void DrawBackground (CGRect rect, CGContext context, CGColor color, UIBezierPath roundedRectanglePath)
 		{
 			context.SaveState ();
 			context.BeginTransparencyLayer (null);
@@ -88,43 +88,43 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			{
 				roundedRectanglePath.AddClip ();
 			}
-			context.SetFillColorWithColor(color);
+			context.SetFillColor(color);
 			context.FillRect(rect);
 			context.EndTransparencyLayer ();
 			context.RestoreState ();
 		}
 
-		void DrawStrokePartial(CGContext context, RectangleF rect)
+		void DrawStrokePartial(CGContext context, CGRect rect)
 		{
 			context.SaveState ();
 
 			var bezierPath = new UIBezierPath();
 
-			bezierPath.MoveTo(new PointF(0, 0));
+			bezierPath.MoveTo(new CGPoint(0, 0));
 
 			if((Borders & Border.Left) == Border.Left)
 			{
-				bezierPath.AddLineTo(new PointF(0,rect.Height));
+				bezierPath.AddLineTo(new CGPoint(0,rect.Height));
 			}
-			bezierPath.MoveTo(new PointF(0, rect.Height));
+			bezierPath.MoveTo(new CGPoint(0, rect.Height));
 
 			if((Borders & Border.Bottom) == Border.Bottom)
 			{
-				bezierPath.AddLineTo(new PointF(rect.Width,rect.Height));
+				bezierPath.AddLineTo(new CGPoint(rect.Width,rect.Height));
 			}
-			bezierPath.MoveTo(new PointF(rect.Width,rect.Height));
+			bezierPath.MoveTo(new CGPoint(rect.Width,rect.Height));
 
 			if((Borders & Border.Right) == Border.Right)
 			{
-				bezierPath.AddLineTo(new PointF(rect.Width,0));
+				bezierPath.AddLineTo(new CGPoint(rect.Width,0));
 			}
-			bezierPath.MoveTo(new PointF(rect.Width,0));
+			bezierPath.MoveTo(new CGPoint(rect.Width,0));
 
 			if((Borders & Border.Top) == Border.Top)
 			{
-				bezierPath.AddLineTo(new PointF(0,0));
+				bezierPath.AddLineTo(new CGPoint(0,0));
 			}
-			bezierPath.MoveTo(new PointF(0,0));
+			bezierPath.MoveTo(new CGPoint(0,0));
 
 
 			bezierPath.LineWidth = _strokeLineWidth;

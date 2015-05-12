@@ -2,8 +2,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -12,11 +10,10 @@ using apcurium.MK.Common.Configuration.Helpers;
 using apcurium.MK.Common.Configuration.Impl;
 using MK.Common.Configuration;
 using Newtonsoft.Json.Linq;
-using ServiceStack.Text;
 
 #endregion
 
-namespace apcurium.MK.Booking.Common.Tests
+namespace apcurium.MK.Booking.Test
 {
     public class TestServerSettings : IServerSettings, IAppSettings
     {
@@ -67,7 +64,8 @@ namespace apcurium.MK.Booking.Common.Tests
 
         public ServerPaymentSettings GetPaymentSettings()
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
+            return new ServerPaymentSettings();
         }
 
         public void Reload()

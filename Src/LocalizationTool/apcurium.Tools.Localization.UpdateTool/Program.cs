@@ -52,8 +52,7 @@ namespace apcurium.Tools.Localization.UpdateTool
                     var resourceManager = new ResourceManager();
                     var handler = default(ResourceFileHandlerBase);                    
                     
-                    resourceManager.AddSource(new ResxResourceFileHandler(AddLanguageToPathResx(source, lang )));
-
+                    resourceManager.AddSource(new ResxResourceFileHandler(AddLanguageToPathResx(source, lang)));
 
                     if (settings != null && File.Exists(settings))
                     {
@@ -68,16 +67,14 @@ namespace apcurium.Tools.Localization.UpdateTool
                         }
                     }
 
-                    // Create files for both platforms
-                    AndroidLanguageFileManager.CreateResourceFileIfNecessary(lang);
-                    iOSLanguageFileManager.CreateResourceFileIfNecessary(lang);
-
                     switch (target)
                     {
                         case "android":
+                            AndroidLanguageFileManager.CreateResourceFileIfNecessary(lang);
                             resourceManager.AddDestination(handler = new AndroidResourceFileHandler(destination, lang));
                             break;
                         case "ios":
+                            iOSLanguageFileManager.CreateResourceFileIfNecessary(lang);
                             resourceManager.AddDestination(handler = new iOSResourceFileHandler(destination, lang ));
                             break;
                         default:
@@ -89,7 +86,6 @@ namespace apcurium.Tools.Localization.UpdateTool
 
                     var l = string.IsNullOrWhiteSpace(lang) ? "en" : lang;
                     Console.WriteLine("Localization for :  " + l + " was successful");
-
                 }
 
                 Console.WriteLine("Localization tool ran successfully.");
@@ -98,19 +94,17 @@ namespace apcurium.Tools.Localization.UpdateTool
             {
                 Console.Write("error: ");
                 Console.WriteLine(exception.ToString());
+				throw;
             }
         }
 
         private static string AddLanguageToPathResx(string source, string lang)
         {
-            if (  ( string.IsNullOrWhiteSpace(lang )) || (!source.ToLower().EndsWith(".resx")))
+            if ((string.IsNullOrWhiteSpace(lang)) || (!source.ToLower().EndsWith(".resx")))
             {
                 return source;
             }
 
-
-
-            
             var firstPart = source.Substring(0, source.Length - 5);
             
             return firstPart + "." + lang + ".resx";

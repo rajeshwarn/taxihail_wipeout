@@ -5,7 +5,8 @@
         tagName: 'form',
         events: {
             'click [data-action=cancel]': 'cancel',
-            'change [name=settings.accountNumber]': 'loadPrompts'
+            'change [name=settings.accountNumber]': 'loadPrompts',
+            'change [name=settings.customerNumber]': 'loadPrompts'
         },
 
         initialize: function() {
@@ -17,50 +18,59 @@
             this.$el.html(html);
             var settings = this.model.get('settings');
             if (settings.accountNumber
-                && settings.accountNumber != '')
+                && settings.accountNumber != ''
+                && settings.customerNumber
+                && settings.customerNumber != '')
             {
-                this.refreshPrompts(settings.accountNumber);
+                this.refreshPrompts(settings.accountNumber, settings.customerNumber);
             }
             return this;
         },
-        refreshPrompts: function(accountNumber)
-        {
+        refreshPrompts: function (accountNumber, customerNumber) {
             this.$('.errors').empty();
             this.$('#btBook').button('loading');
 
             var $ul = this.$('ul');
             $ul.first().empty();
 
-            this.model.fetchQuestions(accountNumber)
+            this.model.fetchQuestions(accountNumber, customerNumber)
                 .done(_.bind(function (data) {
 
                     this.$('#btBook').button('reset');
-                    this.$('#title').show();
-
                     var $ul = this.$('ul');
 
-                    var items = data.questions.reduce(function (memo, model) {
-                        if (model.question
-                            && model.question != '') {
-                            memo.push(new TaxiHail.QuestionItemView({
-                                model: model
-                            }).render().el);
+                    if (data.useCardOnFileForPayment) {
+                        var $alert = $('<div class="alert alert-error" />');
+                        $alert.append($('<div />').text(this.localize('error.accountNotSupported')));
+                        this.$('.errors').html($alert);
+                        this.$('#btBook').addClass('disabled');
+
+                    } else {
+                        this.$('#title').show();
+                        var items = data.questions.reduce(function (memo, model) {
+                            if (model.question
+                                && model.question != '') {
+                                memo.push(new TaxiHail.QuestionItemView({
+                                    model: model
+                                }).render().el);
+                            }
+                            return memo;
+                        }, []);
+
+                        $ul.first().append(items);
+
+                        this.model.set('questionsAndAnswers', data.questions);
+
+                        if (accountNumber && accountNumber != ''
+                            && customerNumber && customerNumber != '') {
+                            var settings = this.model.get('settings');
+                            settings.accountNumber = accountNumber;
+                            settings.customerNumber = customerNumber;
+                            this.model.set('settings', settings);
                         }
-                        return memo;
-                    }, []);
 
-                    $ul.first().append(items);
-
-                    this.model.set('questionsAndAnswers', data.questions);
-
-                    if (accountNumber && accountNumber != '') {
-                        var settings = this.model.get('settings');
-                        settings.accountNumber = accountNumber;
-                        this.model.set('settings', settings);
+                        this.refreshValidationRules(data.questions);
                     }
-
-                    this.refreshValidationRules(data.questions);
-
                 }, this))
                 .fail(_.bind(function (response) {
 
@@ -76,14 +86,17 @@
 
                 }, this));
         },
+
         loadPrompts: function()
         {
             var accountNumber = $('#inputAccountNumber').val();
-            if(accountNumber)
+            var customerNumber = $('#inputCustomerNumber').val();
+            if(accountNumber && customerNumber)
             {
-                this.refreshPrompts(accountNumber);
+                this.refreshPrompts(accountNumber, customerNumber);
             }
         },
+
         refreshValidationRules: function (questions) {
 
             var questionRules = new Object();
@@ -94,7 +107,7 @@
                 var question = questions[i];
                 if (question.isEnabled &&
                     (question.isRequired || question.maxLength > 0)) {
-                    var name = 'answer' + i;
+                    var name = 'answer' + (i);
 
                     var rule = new Object();
                     var message = new Object();

@@ -30,10 +30,11 @@ namespace apcurium.MK.Booking.Test.OrderFixture
                 EmailSenderMock.Object,
                 ConfigurationManager,
                 new ConfigurationDao(() => new ConfigurationDbContext(DbName)),
-                new OrderDao(() => new BookingDbContext(DbName)), 
+                new OrderDao(() => new BookingDbContext(DbName)),
+                new AccountDao(() => new BookingDbContext(DbName)), 
                 new StaticMap(),
                 null,
-                new Geocoding(new GoogleApiClient(ConfigurationManager, new Logger()), ConfigurationManager, null, new Logger()), 
+                new Geocoding(new GoogleApiClient(ConfigurationManager, new Logger()), ConfigurationManager, null, new Logger()),
                 null);
             notificationService.SetBaseUrl(new Uri("http://www.example.net"));
 

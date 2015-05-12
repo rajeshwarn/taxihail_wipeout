@@ -5,12 +5,14 @@
 
         save: function (settings) {
 
+            var serializedData = JSON.stringify({
+                serverPaymentSettings: settings
+            });
+
             return $.ajax({
                 type: 'POST',
                 url: this.urlRoot,
-                data: JSON.stringify({
-                    serverPaymentSettings: settings
-                }),
+                data: serializedData,
                 contentType: 'application/json'
             });
         },
@@ -22,7 +24,8 @@
                 type: 'POST',
                 url: this.urlRoot + "/test/payPal/sandbox",
                 data: JSON.stringify({
-                    credentials: settings.payPalServerSettings.sandboxCredentials
+                    serverCredentials: settings.payPalServerSettings.sandboxCredentials,
+                    clientCredentials: settings.payPalClientSettings.sandboxCredentials
                 }),
                 contentType: 'application/json'
             });
@@ -34,7 +37,8 @@
                 type: 'POST',
                 url: this.urlRoot + "/test/payPal/production",
                 data: JSON.stringify({
-                    credentials: settings.payPalServerSettings.credentials
+                    serverCredentials: settings.payPalServerSettings.credentials,
+                    clientCredentials: settings.payPalClientSettings.credentials
                 }),
                 contentType: 'application/json'
             });

@@ -1,5 +1,5 @@
 using System;
-using MonoTouch.UIKit;
+using UIKit;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using apcurium.MK.Booking.Mobile.Client.Controls.Binding;
@@ -25,6 +25,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
             txtNote.Font = UIFont.FromName(FontName.HelveticaNeueLight, 18f);
             txtNote.Placeholder = Localize.GetValue("NotesToDriveLabel");
             txtNote.ShowCloseButtonOnKeyboard();
+
+            FlatButtonStyle.CompanyColor.ApplyTo(btnViewPromo);
+			btnViewPromo.Font = UIFont.FromName(FontName.HelveticaNeueRegular, 28 / 2);
         }
 
         private void InitializeBinding()
@@ -68,8 +71,21 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
                 .To(vm => vm.Settings.LargeBags);
 
             set.Bind(txtNote)
-                .For(v => v.Text)
+				.For(v => v.Text)
                 .To(vm => vm.Note);
+
+			set.Bind(btnViewPromo)
+				.For("TouchUpInside")
+				.To(vm => vm.NavigateToPromotions);
+
+			set.Bind (btnViewPromo)
+				.For ("Title")
+				.To (vm => vm.PromotionButtonText);
+
+			set.Bind(iconPromo)
+				.For(v => v.Hidden)
+				.To(vm => vm.PromoCode)
+				.WithConversion("HasValueToVisibility");
 
 			if (!this.Services().Settings.ShowPassengerName)
             {
@@ -105,6 +121,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
                 lblPhone.RemoveFromSuperview();
                 iconPhone.RemoveFromSuperview();
             }
+                
+            if (!this.Services().Settings.PromotionEnabled)
+            {
+				btnViewPromo.RemoveFromSuperview();
+				iconPromo.RemoveFromSuperview();
+            }
 
             set.Apply();
         }
@@ -122,6 +144,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
             this.DelayBind (() => {
                 InitializeBinding();
             });
+        }
+
+        public override void LayoutSubviews()
+        {
+            base.LayoutSubviews();
+
+            constraintHeight.Constant = this.Frame.Height;
         }
     }
 }

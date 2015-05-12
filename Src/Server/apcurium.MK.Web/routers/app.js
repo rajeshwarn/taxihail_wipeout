@@ -29,6 +29,7 @@
             "": "book",   // #
             "later": "later",
             "confirmationbook": "confirmationbook",
+            "confirmationbook/payment": "paymentfromconfirmationbooking",
             "login/:url": "login", // #login
             "login": "login",
             "signup": "signup", // #signup
@@ -141,11 +142,16 @@
         
         book: function () {
 
-            
             var model = new TaxiHail.Order();
 
             TaxiHail.geolocation.initialize();
-            
+
+            TaxiHail.auth.account.fetch({
+                success: function (accountModel) {
+                    var accountNumber = accountModel.get('settings').accountNumber;
+                    model.set('accountNumber', accountNumber);
+                }
+            });
 
             TaxiHail.geolocation.getCurrentAddress()
             //    // By default, set pickup address to current user location
@@ -153,6 +159,7 @@
                 
                     model.set('pickupAddress', address);
                 }));
+
             
             mapView.setModel(model, true);
             renderView(TaxiHail.BookView, model);
@@ -172,10 +179,11 @@
             var currentOrder = TaxiHail.orderService.getCurrentOrder();
             if (currentOrder) {
                 TaxiHail.auth.account.fetch({
-                    success: function(model) {
+                    success: function (model) {
                         currentOrder.set('settings', model.get('settings'));
                         mapView.setModel(currentOrder);
                         renderView(TaxiHail.BookingConfirmationView, currentOrder);
+
                     },
                     error: _.bind(function(model) {
                         this.navigate('login/confirmationbook', {trigger: true});
@@ -235,8 +243,13 @@
             renderView(new TaxiHail.GetTheAppView());
         },
         
-        useraccount: function (tabName) {
+        paymentfromconfirmationbooking: function () {
+            this.useraccount('payment', true);
+        },
+
+        useraccount: function (tabName, showOnlyActiveTab) {
             tabName = tabName || 'profile';
+            showOnlyActiveTab = showOnlyActiveTab || false;
             TaxiHail.auth.account.fetch({
                 success: function (model) {
 
@@ -245,6 +258,10 @@
                         renderView(TaxiHail.UserAccountView, account);
                     }
                     currentView.selectTab(tabName);
+
+                    if (showOnlyActiveTab) {
+                        currentView.showOnlyActiveTab();
+                    }
 
                 },
                 error: _.bind(function (model) {

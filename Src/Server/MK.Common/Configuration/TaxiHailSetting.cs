@@ -54,11 +54,19 @@ namespace MK.Common.Configuration
                 APIKey = "a34cb0ffa9cae700769950f66237125e8ba4ed0d", // to be replaced when we have an official TaxiHail account
                 UnknownUserIdentifier = "unknown@user.com"
             };
+			ShowEstimate = true;
+		    Network = new NetworkSettingContainer
+		    {
+                Enabled = false
+		    };
 
             ShowEstimateWarning = true;
             AccountActivationDisabled = true;
             ShowVehicleInformation = true;
+
+#if DEBUG
             SupportEmail = "taxihail@apcurium.com";
+#endif
             ShowPassengerName = true;
             ShowPassengerNumber = true;
             ShowPassengerPhone = true;
@@ -85,6 +93,8 @@ namespace MK.Common.Configuration
 
 		    MaxFareEstimate = 100;
 
+		    AvailableVehicleRefreshRate = 5;
+
 		    TwitterAccessTokenUrl = "https://api.twitter.com/oauth/access_token";
             TwitterAuthorizeUrl = "https://api.twitter.com/oauth/authorize";
             TwitterCallback = "http://www.taxihail.com/oauth";
@@ -102,6 +112,7 @@ namespace MK.Common.Configuration
         public GeoLocSettingContainer GeoLoc { get; protected set; }
         public AvailableVehiclesSettingContainer AvailableVehicles { get; protected set; }
         public InsightsSettingContainer Insights { get; protected set; }
+        public NetworkSettingContainer Network { get; protected set; }
 
         [RequiredAtStartup]
 		[Display(Name = "Can Change Service Url", Description="Display a button on the login page to change the API server url")]
@@ -156,14 +167,18 @@ namespace MK.Common.Configuration
         public bool AccountActivationDisabled { get; protected set; }
 
         [SendToClient, CustomizableByCompany]
+        [Display(Name = "Available Vehicle Refresh Rate", Description = "Modify the refresh delay (in seconds) of the available vehicles on the map.")]
+	    public int AvailableVehicleRefreshRate { get; set; }
+
+        [SendToClient, CustomizableByCompany]
 		[Display(Name = "Account Activation By SMS", Description="Enable the activation by SMS")]
         public bool SMSConfirmationEnabled { get; protected set; }
 
-        [SendToClient, CustomizableByCompany]
+        [SendToClient, CustomizableByCompany, RequiresTaxiHailPro]
         [Display(Name = "Disable Charge type when card on file", Description = "When active, locks the user on Card on File payment type if a credit card is registered")]
         public bool DisableChargeTypeWhenCardOnFile { get; protected set; }
 
-        [SendToClient, CustomizableByCompany]
+        [SendToClient, CustomizableByCompany, RequiresTaxiHailPro]
         [Display(Name = "Enable vehicle type selection", Description = "Hide the vehicle type selection box")]
         public bool VehicleTypeSelectionEnabled { get; protected set; }
 
@@ -185,7 +200,7 @@ namespace MK.Common.Configuration
         public bool ShowTermsAndConditions { get; protected set; }
 
         [SendToClient]
-		[Display(Name = "Hide Mobile Knownledge and Apcurium logos", Description="In the menu")]
+		[Display(Name = "Hide Apcurium & MK logos", Description="In the menu")]
 		public bool HideMkApcuriumLogos { get; protected set; }
 
         [SendToClient, CustomizableByCompany]
@@ -201,8 +216,15 @@ namespace MK.Common.Configuration
         public bool HideReportProblem { get; protected set; }
 
         [SendToClient]
-        [Display(Name = "Default Phone Number", Description="Phone number as displayed to the user (1.800.XXX.XXXX)")]
+        [Display(Name = "Default Phone Number (Display)", Description="Phone number as displayed to the user (1.800.XXX.XXXX)")]
         public string DefaultPhoneNumberDisplay { get; protected set; }
+
+		[SendToClient, CustomizableByCompany]
+        [Display(Name = "Enable airport filter button", Description = "Enables the use of the airport search filter button in the app.")]
+	    public bool IsAirportButtonEnabled { get; protected set; }
+		[SendToClient, CustomizableByCompany]
+        [Display(Name = "Enable train station filter button", Description = "Enables the use of the trains station search filter button in the app.")]
+        public bool IsTrainStationButtonEnabled { get; set; }
 
         [SendToClient]
         [Display(Name = "Default Phone Number", Description="Phone number as dialed")]
@@ -240,13 +262,9 @@ namespace MK.Common.Configuration
         [Display(Name = "Show Estimate", Description="Show an estimate")]
         public bool ShowEstimate { get; protected set; }
 
-        [SendToClient, CustomizableByCompany]
+        [SendToClient, CustomizableByCompany, RequiresTaxiHailPro]
 		[Display(Name = "Show Eta", Description="Show eta")]
 		public bool ShowEta { get; protected set; }
-
-        [SendToClient]
-		[Display(Name = "Google Map Key", Description="Google API Key for business, required for directions aka eta feature")]
-        public string GoogleMapKey { get; protected set; }
 
         [SendToClient, CustomizableByCompany]
         [Display(Name = "Eta Padding Ratio", Description = "Eta duration padding ratio (multiply duration in seconds by...)")]
@@ -289,7 +307,7 @@ namespace MK.Common.Configuration
 		public bool RatingRequired { get; protected set; }
 
         [SendToClient]
-        [Display(Name = "User needs to rate before booking again", Description = "")]
+        [Display(Name = "Can Skip Required Rating", Description = "User needs to rate before booking again")]
         public bool CanSkipRatingRequired { get; protected set; }
 
         [SendToClient, CustomizableByCompany]
@@ -297,18 +315,18 @@ namespace MK.Common.Configuration
 		public bool ShowCallDriver { get; protected set; }
 
         [SendToClient, CustomizableByCompany]
-        [Display(Name = "Show Vehicule Information", Description="Show vehicule informatino when available")]
+        [Display(Name = "Show Vehicle Information", Description="Show vehicle informatino when available")]
 		public bool ShowVehicleInformation { get; protected set; }
 
         [SendToClient, CustomizableByCompany]
         [Display(Name = "Hide Call Dispatch Button", Description="Hide button to call dispatch in panel menu, status screens")]
         public bool HideCallDispatchButton { get; protected set; }
 
-        [SendToClient, CustomizableByCompany]
-        [Display(Name = "Credit Card Is Mandatory", Description="If true, the user needs to have a card on file")]
+        [SendToClient, CustomizableByCompany, RequiresTaxiHailPro]
+        [Display(Name = "Payment Method Mandatory", Description="If true, the user needs to have a payment method associated to his account (ie: Card on File or Paypal)")]
         public bool CreditCardIsMandatory { get; protected set; }
 
-        [SendToClient, CustomizableByCompany]
+        [SendToClient, CustomizableByCompany, RequiresTaxiHailPro]
 		[Display(Name = "Default Percentage Tip", Description="default value for the tip percentage ex: 15")]
 		public int DefaultTipPercentage { get; protected set; }
 
@@ -396,19 +414,38 @@ namespace MK.Common.Configuration
         [SendToClient]
         [Display(Name = "Google AdWords Conversion Tracking ID", Description = "Conversion ID used for Google Conversion Tracking")]
         public string GoogleAdWordsConversionId { get; protected set; }
+
         [SendToClient]
         [Display(Name = "Google AdWords Conversion Tracking Label", Description = "Conversion Label used for Google Conversion Tracking")]
         public string GoogleAdWordsConversionLabel { get; protected set; }
 
+        [SendToClient]
+        [Display(Name = "Google Analytics Tracking ID", Description = "Company's Tracking ID used for Google Analytics")]
+        public string GoogleAnalyticsTrackingId { get; protected set; }
+
         [SendToClient, CustomizableByCompany]
         public bool CallDriverUsingProxy { get; protected set; }
+
         [SendToClient, CustomizableByCompany]
         public string CallDriverUsingProxyUrl { get; protected set; }
 
 	    [SendToClient, CustomizableByCompany]
         public int InitialZoomLevel { get; set; }
+
         [SendToClient, CustomizableByCompany]
         public bool DisableAutomaticZoomOnLocation { get; set; }
+
+        [SendToClient, CustomizableByCompany]
+        [Display(Name = "Warn for Fees on Cancel", Description = "Before cancelling an order, the user will be warned that he could be charged cancellation fees.")]
+        public bool WarnForFeesOnCancel { get; set; }
+
+        [SendToClient]
+        [Display(Name = "Promotion enabled", Description = "Enables promotion on the client and on the admin portal")]
+        public bool PromotionEnabled { get; set; }
+
+        [SendToClient]
+        [Display(Name = "Registration PayBack", Description = "Defines if the PayBack field when creating a new account is required or not")]
+        public bool? IsPayBackRegistrationFieldRequired { get; set; }
     }
 }
 

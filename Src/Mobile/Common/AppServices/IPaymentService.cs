@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace apcurium.MK.Booking.Mobile.AppServices
 {
-    public interface IPaymentService :IPaymentServiceClient
+    public interface IPaymentService : IPaymentServiceClient, IPairingServiceClient
     {        
         double? GetPaymentFromCache(Guid orderId);
         

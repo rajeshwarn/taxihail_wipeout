@@ -87,8 +87,8 @@ namespace apcurium.MK.Booking.ConfigTool
 	                
 
                     /** Google Maps */
-				    new ConfigXML(this){  Destination=@"Mobile\Common\Localization\Master.resx", NodeSelector=@"//root/data[@name=""GoogleMapKey""]" , SetterEle= ( app, ele )=> ele.InnerText = Config.GoogleMapKey  },   
-                    new ConfigXML(this){  Destination=@"Mobile\Android\Properties\AndroidManifest.xml", NodeSelector=@"//manifest/permission[contains(@android:name,""permission.MAPS_RECEIVE"")]", Attribute="android:name" , SetterAtt = ( app, att )=> att.Value = Config.Package + ".permission.MAPS_RECEIVE" },
+			new ConfigXML(this){  Destination=@"Mobile\Common\Localization\Master.resx", NodeSelector=@"//root/data[@name=""GoogleMapKey""]" , SetterEle= ( app, ele )=> ele.InnerText = Config.GoogleMapKey  },   
+			new ConfigXML(this){  Destination=@"Mobile\Android\Properties\AndroidManifest.xml", NodeSelector=@"//manifest/permission[contains(@android:name,""permission.MAPS_RECEIVE"")]", Attribute="android:name" , SetterAtt = ( app, att )=> att.Value = Config.Package + ".permission.MAPS_RECEIVE" },
 	                new ConfigXML(this){  Destination=@"Mobile\Android\Properties\AndroidManifest.xml", NodeSelector=@"//manifest/uses-permission[contains(@android:name,""permission.MAPS_RECEIVE"")]", Attribute="android:name", SetterAtt = ( app, att )=> 
 					{
                         att.Value = androidPackage + ".permission.MAPS_RECEIVE";
@@ -97,6 +97,7 @@ namespace apcurium.MK.Booking.ConfigTool
 				    new ConfigXML(this){  Destination=@"Mobile\Common\Localization\Master.resx", NodeSelector=@"//root/data[@name=""ApplicationName""]" , SetterEle= ( app, ele )=> ele.InnerText = Config.ApplicationName  },               
                     new ConfigXML(this){  Destination=@"Mobile\Common\Localization\Master.ar.resx", NodeSelector=@"//root/data[@name=""ApplicationName""]" , SetterEle= ( app, ele )=> ele.InnerText = Config.ApplicationName  },   
                     new ConfigXML(this){  Destination=@"Mobile\Common\Localization\Master.fr.resx", NodeSelector=@"//root/data[@name=""ApplicationName""]" , SetterEle= ( app, ele )=> ele.InnerText = Config.ApplicationName  },   
+					new ConfigXML(this){  Destination=@"Mobile\Common\Localization\Master.es.resx", NodeSelector=@"//root/data[@name=""ApplicationName""]" , SetterEle= ( app, ele )=> ele.InnerText = Config.ApplicationName  },   
 
 					new ConfigXML(this){  Destination=@"Mobile\Android\TaxiHail.csproj", NodeSelector=@"//a:Project/a:PropertyGroup[contains(@Condition, ""'Debug|AnyCPU'"")]/a:AndroidSigningKeyAlias" , SetterEle= ( app, ele )=> ele.InnerText = Config.AndroidSigningKeyAlias },               
 					new ConfigXML(this){  Destination=@"Mobile\Android\TaxiHail.csproj", NodeSelector=@"//a:Project/a:PropertyGroup[contains(@Condition, ""'Release|AnyCPU'"")]/a:AndroidSigningKeyAlias" , SetterEle= ( app, ele )=> ele.InnerText = Config.AndroidSigningKeyAlias },               
@@ -108,10 +109,23 @@ namespace apcurium.MK.Booking.ConfigTool
 					new ConfigXML(this){  Destination=@"Mobile\Android\TaxiHail.csproj", NodeSelector=@"//a:Project/a:PropertyGroup[contains(@Condition, ""'Debug|AnyCPU'"")]/a:AndroidSigningStorePass" , SetterEle= ( app, ele )=> ele.InnerText = Config.AndroidSigningKeyPassStorePass},               
 					new ConfigXML(this){  Destination=@"Mobile\Android\TaxiHail.csproj", NodeSelector=@"//a:Project/a:PropertyGroup[contains(@Condition, ""'Release|AnyCPU'"")]/a:AndroidSigningStorePass" , SetterEle= ( app, ele )=> ele.InnerText = Config.AndroidSigningKeyPassStorePass },               
 
-
-                    new ConfigFile(this){ Source="Default.png", Destination=@"Mobile\iOS\Default.png" },
-                    new ConfigFile(this){ Source="Default@2x.png", Destination=@"Mobile\iOS\Default@2x.png" },
-                    new ConfigFile(this){ Source="Default-568h@2x.png", Destination=@"Mobile\iOS\Default-568h@2x.png" },                  
+                    new ConfigFile(this){ Source="Default.png", Destination=@"Mobile\iOS\Resources\Images.xcassets\LaunchImage.launchimage\Default.png" },
+                    new ConfigFile(this){ Source="Default@2x.png", Destination=@"Mobile\iOS\Resources\Images.xcassets\LaunchImage.launchimage\Default@2x.png" },
+                    new ConfigFile(this){ Source="Default-568h@2x.png", Destination=@"Mobile\iOS\Resources\Images.xcassets\LaunchImage.launchimage\Default-568h@2x.png" },
+                    new ConfigImageResizeIfNotExist(this)
+                    { 
+                        Source="Default-667h@2x.png", 
+                        Destination=@"Mobile\iOS\Resources\Images.xcassets\LaunchImage.launchimage\Default-667h@2x.png",
+                        DefaultSource="Default-568h@2x.png",
+                        OutputSize=new SizeF(750, 1334)
+                    },
+                    new ConfigImageResizeIfNotExist(this)
+                    { 
+                        Source="Default-736h@3x.png", 
+                        Destination=@"Mobile\iOS\Resources\Images.xcassets\LaunchImage.launchimage\Default-736h@3x.png",
+                        DefaultSource="Default-568h@2x.png",
+                        OutputSize=new SizeF(1242, 2208)
+                    },
 
                     new ConfigFile(this){ Source="app.png", Destination=@"Mobile\iOS\app.png" },
                     new ConfigFile(this){ Source="app@2x.png", Destination=@"Mobile\iOS\app@2x.png" },
@@ -253,12 +267,8 @@ namespace apcurium.MK.Booking.ConfigTool
 			/***Optional files ****/
 
             var allResources = GetFilesFromAssetsDirectory("png");
-
-            
-
-			foreach (var g in allResources.Where(r=> r.ToLower()!="icon.png" && r.ToLower()!="icon@2x.png" ) ) // The where clause need to be improved. 
+			foreach (var g in allResources)
             {
-
 				_configs.Add (new ConfigFile (this) {
 					Source = g+"@2x.png",
 					Destination = @"Mobile\Android\Resources\drawable-xhdpi\"+g+".png"

@@ -1,12 +1,11 @@
 using System;
-using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Input;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.Framework.Extensions;
-using ServiceStack.Text;
+using apcurium.MK.Common.Helpers;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -33,7 +32,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				FacebookId = facebookId,
 				TwitterId = twitterId,
 				Name = name,
-				Email = email,
+				Email = email
 			};
 			#if DEBUG
 			Data.Email = "toto2@titi.com";
@@ -83,30 +82,42 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				{
 					if (!IsEmail(Data.Email))
 					{
-                        this.Services().Message.ShowMessage(this.Services().Localize["ResetPasswordInvalidDataTitle"], this.Services().Localize["ResetPasswordInvalidDataMessage"]);
+                        await this.Services().Message.ShowMessage(this.Services().Localize["ResetPasswordInvalidDataTitle"], this.Services().Localize["ResetPasswordInvalidDataMessage"]);
 						return;
 					}
 					
 					var hasPassword = Data.Password.HasValue() && ConfirmPassword.HasValue();
                     if (Data.Email.IsNullOrEmpty() || Data.Name.IsNullOrEmpty() || Data.Phone.IsNullOrEmpty() || (!hasPassword && !HasSocialInfo))
 					{
-                        this.Services().Message.ShowMessage(this.Services().Localize["CreateAccountInvalidDataTitle"], this.Services().Localize["CreateAccountEmptyField"]);
+                        await this.Services().Message.ShowMessage(this.Services().Localize["CreateAccountInvalidDataTitle"], this.Services().Localize["CreateAccountEmptyField"]);
 						return;
 					}
 					
 					if (!HasSocialInfo && ((Data.Password != ConfirmPassword) || (Data.Password.Length < 6 || Data.Password.Length > 10)))
 					{
-                        this.Services().Message.ShowMessage(this.Services().Localize["CreateAccountInvalidDataTitle"], this.Services().Localize["CreateAccountInvalidPassword"]);
+                        await this.Services().Message.ShowMessage(this.Services().Localize["CreateAccountInvalidDataTitle"], this.Services().Localize["CreateAccountInvalidPassword"]);
 						return;
 					}
-					
-					if ( Data.Phone.Count(x => Char.IsDigit(x)) < 10 )
+
+                    if (!PhoneHelper.IsValidPhoneNumber(Data.Phone))
 					{
-                        this.Services().Message.ShowMessage(this.Services().Localize["CreateAccountInvalidDataTitle"], this.Services().Localize["InvalidPhoneErrorMessage"]);
+                        await this.Services().Message.ShowMessage(this.Services().Localize["CreateAccountInvalidDataTitle"], this.Services().Localize["InvalidPhoneErrorMessage"]);
 						return;
 					}
-					
-                    Data.Phone= new string(Data.Phone.ToArray().Where( c=> Char.IsDigit( c ) ).ToArray());
+
+				    if (Settings.IsPayBackRegistrationFieldRequired == true && !Data.PayBack.HasValue())
+				    {
+                        await this.Services().Message.ShowMessage(this.Services().Localize["CreateAccountInvalidDataTitle"], this.Services().Localize["NoPayBackErrorMessage"]);
+                        return;
+				    }
+
+                    if (Data.PayBack.HasValue() && (Data.PayBack.Length > 10 || !Data.PayBack.IsNumber()))
+				    {
+                        await this.Services().Message.ShowMessage(this.Services().Localize["CreateAccountInvalidDataTitle"], this.Services().Localize["InvalidPayBackErrorMessage"]);
+                        return;
+				    }
+
+                    Data.Phone = PhoneHelper.GetDigitsFromPhoneNumber(Data.Phone);
 
                     this.Services().Message.ShowProgress(true);
 
@@ -114,7 +125,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					{	
 						try
 						{
+                            // PayBack value is set to string empty if the field is left empty by the user
+						    Data.PayBack = Data.PayBack == string.Empty ? null : Data.PayBack;
+
 							await _registerService.RegisterAccount(Data);
+
                             if (!HasSocialInfo && !Settings.AccountActivationDisabled)
 							{
 								if(Settings.SMSConfirmationEnabled)
@@ -146,19 +161,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 								}
 								catch {}
 							}
-						   
-							
-
-						}catch(Exception e)
+						}
+                        catch(Exception e)
 						{
 							var error = e.Message;
 							if (error.Trim().IsNullOrEmpty())
 							{
 								error = this.Services().Localize["CreateAccountErrorNotSpecified"];
 							}
-							if (this.Services().Localize["ServiceError" + error] != "ServiceError" + error)
+							if (this.Services().Localize[error] != error)
 							{
-								this.Services().Message.ShowMessage(this.Services().Localize["CreateAccountErrorTitle"], this.Services().Localize["CreateAccountErrorMessage"] + " " + this.Services().Localize["ServiceError" + error]);
+								this.Services().Message.ShowMessage(this.Services().Localize["CreateAccountErrorTitle"], this.Services().Localize["CreateAccountErrorMessage"] + " " + this.Services().Localize[error]);
 							}
 							else
 							{

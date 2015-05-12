@@ -24,21 +24,23 @@ namespace apcurium.MK.Booking.CommandHandlers
         public void Handle(CaptureCreditCardPayment command)
         {
             var payment = _repository.Get(command.PaymentId);
-            payment.Capture(command.Provider, command.Amount, command.MeterAmount, command.TipAmount, command.AuthorizationCode, command.IsNoShowFee);
+            payment.Capture(command.Provider, command.Amount, command.MeterAmount, command.TipAmount,
+                command.TaxAmount, command.AuthorizationCode, command.TransactionId, command.IsNoShowFee,
+                command.PromotionUsed, command.AmountSavedByPromotion, command.NewCardToken, command.AccountId,
+                command.IsSettlingOverduePayment, command.IsForPrepaidOrder);
             _repository.Save(payment, command.Id.ToString());
         }
 
         public void Handle(InitiateCreditCardPayment command)
         {
-            var payment = new CreditCardPayment(command.PaymentId, command.OrderId, command.TransactionId,
-                command.Amount, command.Meter, command.Tip, command.CardToken, command.Provider);
+            var payment = new CreditCardPayment(command.PaymentId, command.OrderId, command.TransactionId, command.Amount, command.Meter, command.Tip, command.CardToken, command.Provider);
             _repository.Save(payment, command.Id.ToString());
         }
 
         public void Handle(LogCreditCardError command)
         {
             var payment = _repository.Get(command.PaymentId);
-            payment.ErrorThrown(command.Reason);
+            payment.ErrorThrown(command.Reason, command.AccountId);
             _repository.Save(payment, command.Id.ToString());
         }
     }

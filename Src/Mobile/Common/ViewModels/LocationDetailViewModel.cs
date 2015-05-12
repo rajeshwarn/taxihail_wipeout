@@ -181,15 +181,23 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
             get
             {
-                return this.GetCommand(() =>
+                return this.GetCommand(async () =>
 				{
-					var order = new Order {PickupAddress = _address};
-					var account = _accountService.CurrentAccount;
-					order.Settings = account.Settings;
-					_orderWorkflowService.Rebook(order);
-					ShowViewModel<HomeViewModel>(new { 
-							locateUser =  false, 
-							defaultHintZoomLevel = new ZoomToStreetLevelPresentationHint(order.PickupAddress.Latitude, order.PickupAddress.Longitude).ToJson()});
+				    using (this.Services().Message.ShowProgress())
+				    {
+				        var order = new Order {PickupAddress = _address};
+				        var account = _accountService.CurrentAccount;
+				        order.Settings = account.Settings;
+				        await _orderWorkflowService.Rebook(order);
+
+				        ShowViewModel<HomeViewModel>(new
+				        {
+				            locateUser = false,
+				            defaultHintZoomLevel =
+				                new ZoomToStreetLevelPresentationHint(order.PickupAddress.Latitude, order.PickupAddress.Longitude)
+				                    .ToJson()
+				        });
+				    }
 				});
 			}
 		}

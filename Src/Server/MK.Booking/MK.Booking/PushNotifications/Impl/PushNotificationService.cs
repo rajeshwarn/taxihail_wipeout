@@ -85,16 +85,12 @@ namespace apcurium.MK.Booking.PushNotifications.Impl
             var payload = new Dictionary<string, object>(data);
             payload["alert"] = alert;
 
-            //_push.QueueNotification(new GcmNotification()
-            //    .ForDeviceRegistrationId(registrationId)
-            //    .WithCollapseKey("NONE")
-            //    .WithJson(JsonConvert.SerializeObject(payload)));
 
             _push.QueueNotification(new GcmNotification() { DelayWhileIdle = false }
-          .ForDeviceRegistrationId(registrationId)
-          .WithCollapseKey(Guid.NewGuid().ToString())
-          .WithDelayWhileIdle(false)
-          .WithJson(JsonConvert.SerializeObject(payload)));
+	          .ForDeviceRegistrationId(registrationId)
+        	  .WithCollapseKey(Guid.NewGuid().ToString())
+	          .WithDelayWhileIdle(false)
+	          .WithJson(JsonConvert.SerializeObject(payload)));
 
         }
 

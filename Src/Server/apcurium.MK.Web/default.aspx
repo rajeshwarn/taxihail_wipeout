@@ -16,6 +16,7 @@
         <link rel="stylesheet" href='themes/<%: ApplicationKey %>/less/combined.less'/>
         <link rel="stylesheet" href='themes/<%: ApplicationKey %>/less/combined-responsive.less'/>
         <script src="assets/js/modernizr.min.js"></script>
+        <script src="https://js.braintreegateway.com/v2/braintree.js"></script>
     </head>
     <body>
         <div id="fb-root"></div>
@@ -54,6 +55,7 @@
             TaxiHail.parameters.geolocSearchRegion = '<%= GeolocSearchRegion %>';
             TaxiHail.parameters.geolocSearchBounds = '<%= GeolocSearchBounds %>';
             TaxiHail.parameters.hideDispatchButton = <%: HideDispatchButton ? "true" : "false" %>;
+            TaxiHail.parameters.showCallDriver = <%: ShowCallDriver ? "true" : "false" %>;
             TaxiHail.parameters.accountActivationDisabled = <%: AccountActivationDisabled ? "true" : "false" %>;
             TaxiHail.parameters.isEstimateEnabled = <%: EstimateEnabled ? "true" : "false" %>;
             TaxiHail.parameters.isEtaEnabled = <%: EtaEnabled ? "true" : "false" %>;
@@ -65,12 +67,39 @@
             TaxiHail.parameters.directionTarifMode = "<%: DirectionTarifMode %>";
             TaxiHail.parameters.directionNeedAValidTarif = <%: DirectionNeedAValidTarif ? "true" : "false" %>;
             TaxiHail.parameters.isChargeAccountPaymentEnabled = <%: IsChargeAccountPaymentEnabled ? "true" : "false" %>;
+            TaxiHail.parameters.isBraintreePrepaidEnabled = <%: IsBraintreePrepaidEnabled ? "true" : "false" %>;
+            TaxiHail.parameters.isPayPalEnabled = <%: IsPayPalEnabled ? "true" : "false" %>;
+            TaxiHail.parameters.isCreditCardMandatory = <%: IsCreditCardMandatory ? "true" : "false" %>;
             TaxiHail.parameters.apiRoot = "api";
-            
+            TaxiHail.parameters.defaultTipPercentage = '<%= DefaultTipPercentage %>';
+            TaxiHail.parameters.warnForFeesOnCancel = <%: WarnForFeesOnCancel ? "true" : "false" %>;
+            TaxiHail.parameters.hideMarketChangeWarning = <%: HideMarketChangeWarning ? "true" : "false" %>;
+            TaxiHail.parameters.autoConfirmFleetChange = <%: AutoConfirmFleetChange ? "true" : "false" %>;
+            TaxiHail.parameters.alwaysDisplayCoFOption = <%: AlwaysDisplayCoFOption ? "true" : "false" %>;
+
             TaxiHail.parameters.isSignupVisible = <%: IsWebSignupVisible  ? "true" : "false"%>;
+            TaxiHail.parameters.isSocialMediaVisible = <%: IsWebSocialMediaVisible  ? "true" : "false"%>;
+            TaxiHail.parameters.SocialMediaFacebookURL = "<%: SocialMediaFacebookURL %>";
+            TaxiHail.parameters.SocialMediaGoogleURL = "<%: SocialMediaGoogleURL %>";
+            TaxiHail.parameters.SocialMediaPinterestURL = "<%: SocialMediaPinterestURL %>";
+            TaxiHail.parameters.SocialMediaTwitterURL = "<%: SocialMediaTwitterURL %>";
+
+            TaxiHail.parameters.availableVehicleRefreshRate = "<%: AvailableVehicleRefreshRate %>";
+            TaxiHail.parameters.isSignupVisible = <%: IsWebSignupVisible  ? "true" : "false"%>;
+            
+            <% if(IsPayBackRegistrationFieldRequired == true) { %>
+                TaxiHail.parameters.isPayBackRegistrationFieldRequired = "true";
+            <% }
+            else if(IsPayBackRegistrationFieldRequired == false) { %>
+                TaxiHail.parameters.isPayBackRegistrationFieldRequired = "false";
+            <% }
+            else{ %>
+                TaxiHail.parameters.isPayBackRegistrationFieldRequired = null;
+            <% } %>
 
             TaxiHail.referenceData = <%= ReferenceData %>;
             TaxiHail.vehicleTypes = <%= VehicleTypes %>;
+
         </script>
 
         <%: Scripts.Render("~/bundles/app") %>

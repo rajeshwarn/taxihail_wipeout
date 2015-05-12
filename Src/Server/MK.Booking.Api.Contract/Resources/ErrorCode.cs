@@ -13,6 +13,7 @@
         CreateOrder_NoFareEstimateAvailable,
         CreateOrder_PendingOrder,
         CreateOrder_CardOnFileButNoCreditCard,
+        CreateOrder_CardOnFileDeactivated,
         NearbyPlaces_LocationRequired,
         Search_Locations_NameRequired,
         UpdatePassword_NotSame,
@@ -25,7 +26,10 @@
         AccountCharge_AccountAlreadyExisting,
         AccountCharge_InvalidAccountNumber,
         AccountCharge_InvalidAnswer,
-        RatingType_DuplicateName
+        RatingType_DuplicateName,
+        IBSAccountNotFound,
+        ManualRideLinq_NoCardOnFile,
+        ManualRideLinq_CardOnFileDeactivated
  // ReSharper restore InconsistentNaming
     }
 }

@@ -15,8 +15,13 @@ namespace apcurium.MK.Web
         {
             // Use the development version of Modernizr to develop with and learn from. Then, when you're
             // ready for production, use the build tool at http://modernizr.com to pick only the tests you need.
+            bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
+                        "~/Scripts/jquery.unobtrusive*",
+                        "~/Scripts/jquery.validate*",
+                        "~/assets/js/additional-methods.js"));
+
             bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
-                        "~/Scripts/modernizr-*"));
+                        "~/assets/js/modernizr.min.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/assets").Include(
                 "~/assets/js/localstorage-polyfill.js",
@@ -46,6 +51,7 @@ namespace apcurium.MK.Web
                 "~/common/models/Address.js",
                 "~/common/models/UserAccount.js",
                 "~/models/Order.js",
+                "~/models/CreditCard.js",
                 "~/models/OrderStatus.js",
                 "~/models/Settings.js",
                 "~/models/CompanySettings.js",
@@ -55,6 +61,7 @@ namespace apcurium.MK.Web
                 "~/common/collections/AddressCollection.js",
                 "~/common/collections/AvailableVehicleCollection.js",
                 "~/collections/OrderCollection.js",
+                "~/collections/CreditCardCollection.js",
                 "~/common/views/TemplatedView.js",
                 "~/common/views/LoginStatusView.js",
                 "~/common/views/AlertView.js",
@@ -84,6 +91,7 @@ namespace apcurium.MK.Web
                 "~/views/BookAccountChargeView.js",
                 "~/views/QuestionItemView.js",
                 "~/views/FavoritesView.js",
+                "~/views/PaymentView.js",
                 "~/services/OrderService.js",
                 "~/services/DirectionInfoService.js",
                 "~/common/services/AuthService.js",
@@ -126,8 +134,6 @@ namespace apcurium.MK.Web
                 "~/assets/js/handlebars-1.0.rc.1.js",
                 "~/assets/js/jquery.hotkeys.js",
                 "~/assets/js/jquery.edit-in-place.js",
-                "~/assets/js/jquery.validate.js",
-                "~/assets/js/additional-methods.js",
                 "~/assets/js/jquery.cookie.js",
                 "~/assets/js/underscore.js",
                 "~/assets/js/backbone.js",
@@ -141,7 +147,9 @@ namespace apcurium.MK.Web
                 "~/assets/bootstrap/js/bootstrap-popover.js",
                 "~/assets/bootstrap-datepicker/js/bootstrap-datepicker.js",
                 "~/assets/bootstrap-timepicker/js/bootstrap-timepicker.js",
-                "~/assets/js/spin.js"));
+                "~/assets/js/spin.js",
+                "~/assets/js/jquery.sortable.min.js",
+                "~/Scripts/moment.js"));
 
             bundles.Add(new ScriptBundle("~/admin/bundles/app").Include(
                 "~/common/utils.js",
@@ -161,8 +169,8 @@ namespace apcurium.MK.Web
                 "~/admin/models/AccountCharge.js",
                 "~/admin/models/VehicleType.js",
                 "~/admin/models/UnassignedReferenceDataVehicles.js",
+                "~/admin/models/NetworkVehicleTypes.js",
                 "~/admin/models/RideRatings.js",
-                "~/admin/models/PrivacyPolicy.js",
                 /* Collections */
                 "~/common/collections/AddressCollection.js",
                 "~/common/collections/AvailableVehicleCollection.js",
@@ -188,7 +196,6 @@ namespace apcurium.MK.Web
                 "~/admin/controllers/AccountsChargeController.js",
                 "~/admin/controllers/VehicleTypesController.js",
                 "~/admin/controllers/RideRatingsController.js",
-                "~/admin/controllers/PrivacyPolicyController.js",
                 /* Views */
                 "~/admin/views/AddPopularAddressView.js",
                 "~/common/views/AlertView.js",
@@ -209,7 +216,6 @@ namespace apcurium.MK.Web
                 "~/admin/views/ManageTariffsView.js",
                 "~/admin/views/ManageRulesView.js",
                 "~/admin/views/ManagePopularAddressesView.js",
-                "~/admin/views/ManageCompanySettingsView.js",
                 "~/admin/views/ManageNotificationSettingsView.js",
                 "~/admin/views/ManagePaymentSettingsView.js",
                 "~/admin/views/SettingsItemView.js",
@@ -227,7 +233,6 @@ namespace apcurium.MK.Web
                 "~/admin/views/AddVehicleTypeView.js",
                 "~/admin/views/ManageVehicleTypesView.js",
                 "~/admin/views/VehicleTypeItemView.js",
-                "~/admin/views/UpdatePrivacyPolicyView.js",
                 /* Services */
                 "~/common/services/AuthService.js",
                 "~/common/services/GeocodingService.js",

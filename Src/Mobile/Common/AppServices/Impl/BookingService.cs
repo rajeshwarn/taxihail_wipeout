@@ -15,6 +15,8 @@ using Cirrious.CrossCore;
 using Cirrious.MvvmCross.Plugins.PhoneCall;
 using OrderRatings = apcurium.MK.Common.Entity.OrderRatings;
 using System.Globalization;
+using apcurium.MK.Booking.Api.Contract.Requests.Payment;
+using apcurium.MK.Common.Resources;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 {
@@ -33,7 +35,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			IGeolocService geolocService)
 		{
 			_geolocService = geolocService;
-			_phoneCallTask = phoneCallTask;
+		    _phoneCallTask = phoneCallTask;
 			_appSettings = appSettings;
 			_localize = localize;
 			_accountService = accountService;
@@ -55,12 +57,10 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			order.ClientLanguageCode = _localize.CurrentLanguage;
 			var orderDetail = await UseServiceClientAsync<OrderServiceClient, OrderStatusDetail>(service => service.CreateOrder(order));
 
-			if (orderDetail.IBSOrderId.HasValue
-				&& orderDetail.IBSOrderId > 0
-				&& !order.PickupDate.HasValue) // Check if this is a scheduled ride
+			if (!order.PickupDate.HasValue) // Check if this is a scheduled ride
 			{
                 UserCache.Set ("LastOrderId", orderDetail.OrderId.ToString ()); // Need to be cached as a string because of a jit error on device
-            }
+			}
 
 			Task.Run(() => _accountService.RefreshCache (true));
 
@@ -165,23 +165,30 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             return statusId != null && statusId.SoftEqual(VehicleStatuses.Common.Timeout);
         }
 
-        public bool IsStatusCompleted (string statusId)
+		public bool IsStatusCompleted (OrderStatusDetail status)
         {
-            return statusId.IsNullOrEmpty () ||
-                statusId.SoftEqual (VehicleStatuses.Common.Cancelled) ||
-                statusId.SoftEqual (VehicleStatuses.Common.Done) ||
-                statusId.SoftEqual (VehicleStatuses.Common.NoShow) ||
-				statusId.SoftEqual (VehicleStatuses.Common.CancelledDone) || 
-				statusId.SoftEqual (VehicleStatuses.Common.MeterOffNotPayed);
+		    if (status.IsManualRideLinq)
+		    {
+		        return status.Status == OrderStatus.Completed ||
+                    status.Status == OrderStatus.Canceled;
+		    }
+		    
+            return status.IBSStatusId.IsNullOrEmpty() ||
+				status.IBSStatusId.SoftEqual (VehicleStatuses.Common.Cancelled) ||
+				status.IBSStatusId.SoftEqual (VehicleStatuses.Common.Done) ||
+				status.IBSStatusId.SoftEqual (VehicleStatuses.Common.NoShow) ||
+				status.IBSStatusId.SoftEqual (VehicleStatuses.Common.CancelledDone) || 
+				status.IBSStatusId.SoftEqual (VehicleStatuses.Common.MeterOffNotPayed) ||
+				(status.IBSStatusId.SoftEqual (VehicleStatuses.Unknown.None) 
+					&& status.Status == OrderStatus.Canceled);
         }
 
 		public bool IsOrderCancellable(string statusId)
 		{
-			return statusId.IsNullOrEmpty () ||
-				statusId == VehicleStatuses.Common.Assigned ||
-				statusId == VehicleStatuses.Common.Waiting ||
-				statusId == VehicleStatuses.Common.Arrived ||
-				statusId == VehicleStatuses.Common.Scheduled;
+			return statusId == VehicleStatuses.Common.Assigned
+                || statusId == VehicleStatuses.Common.Waiting
+                || statusId == VehicleStatuses.Common.Arrived
+                || statusId == VehicleStatuses.Common.Scheduled;
 		}
 
         public bool IsCallboxStatusActive(string statusId)
@@ -208,26 +215,43 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
         {
             var tarifMode = _appSettings.Data.Direction.TarifMode;
 			var validationResult = await UseServiceClientAsync<OrderServiceClient, OrderValidationResult>(service => service.ValidateOrder(order, null, true));
+						
 			if (order.PickupAddress.HasValidCoordinate() 
 				&& order.DropOffAddress.HasValidCoordinate())
 			{
 				DirectionInfo directionInfo = null;
-				if (tarifMode != TarifMode.AppTarif) 
-				{
-					directionInfo = await UseServiceClientAsync<IIbsFareClient, DirectionInfo> (service => service.GetDirectionInfoFromIbs (order.PickupAddress.Latitude, order.PickupAddress.Longitude, order.DropOffAddress.Latitude, order.DropOffAddress.Longitude));                                                            
-				}
+			    if (tarifMode != TarifMode.AppTarif)
+			    {
+			        int? duration = null;
 
-                if (tarifMode == TarifMode.AppTarif || (tarifMode == TarifMode.Both && directionInfo.Price == 0d))
+			        duration =
+			            (await
+			                _geolocService.GetDirectionInfo(order.PickupAddress.Latitude, order.PickupAddress.Longitude,
+			                    order.DropOffAddress.Latitude, order.DropOffAddress.Longitude, order.Settings.VehicleTypeId,
+			                    order.PickupDate)).TripDurationInSeconds;
+
+			        directionInfo =
+			            await
+			                UseServiceClientAsync<IIbsFareClient, DirectionInfo>(
+			                    service =>
+			                        service.GetDirectionInfoFromIbs(order.PickupAddress.Latitude, order.PickupAddress.Longitude,
+			                            order.DropOffAddress.Latitude, order.DropOffAddress.Longitude,
+										order.PickupAddress.ZipCode, order.DropOffAddress.ZipCode,
+								order.Settings.AccountNumber, duration, order.Settings.VehicleTypeId));
+			    }
+
+			    if (tarifMode == TarifMode.AppTarif || (tarifMode == TarifMode.Both && directionInfo != null && directionInfo.Price == 0d))
                 {
 					directionInfo = await _geolocService.GetDirectionInfo(order.PickupAddress.Latitude, order.PickupAddress.Longitude, order.DropOffAddress.Latitude, order.DropOffAddress.Longitude, order.Settings.VehicleTypeId, order.PickupDate);                    
                 }            
 
 				directionInfo = directionInfo ?? new DirectionInfo();
 				directionInfo.ValidationResult = validationResult;
+
 				return directionInfo;
             }
 
-            return new DirectionInfo();
+			return new DirectionInfo() { ValidationResult = validationResult };
         }
 
 		public string GetFareEstimateDisplay (DirectionInfo direction)
@@ -311,6 +335,43 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             var request = new OrderRatingsRequest{ Note = orderRatings.Note, OrderId = orderRatings.OrderId, RatingScores = orderRatings.RatingScores };
 			return UseServiceClientAsync<OrderServiceClient> (service => service.RateOrder (request));
         }
+
+        public async Task<OrderManualRideLinqDetail> PairWithManualRideLinq(string pairingCode, Address pickupAddress)
+        {
+            var request = new ManualRideLinqPairingRequest
+            {
+                PairingCode = pairingCode,
+                PickupAddress = pickupAddress,
+                ClientLanguageCode = _localize.CurrentLanguage,
+            };
+
+            var response = await UseServiceClientAsync<ManualPairingForRideLinqServiceClient, ManualRideLinqResponse>(service => service.Pair(request));
+
+            if (response.IsSuccessful)
+            {
+                UserCache.Set("LastOrderId", response.Data.OrderId.ToString());
+
+                return response.Data;
+            }
+
+            throw new Exception(response.ErrorCode);
+        }
+
+        public Task UnpairFromManualRideLinq(Guid orderId)
+        {
+            return UseServiceClientAsync<ManualPairingForRideLinqServiceClient>(service => service.Unpair(orderId));
+        }
+
+        public async Task<OrderManualRideLinqDetail> GetTripInfoFromManualRideLinq(Guid orderId)
+        {
+            var response = await UseServiceClientAsync<ManualPairingForRideLinqServiceClient, ManualRideLinqResponse>(service => service.GetUpdatedTrip(orderId));
+
+            if (response.IsSuccessful)
+            {
+                return response.Data;
+            }
+
+            throw new Exception(response.Message);
+        }
     }
 }
-

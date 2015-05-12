@@ -25,7 +25,8 @@ namespace apcurium.MK.Web.admin
         protected string GeolocSearchFilter { get; private set; }
         protected string GeolocSearchRegion { get; private set; }
         protected string GeolocSearchBounds { get; private set; }
-
+        protected bool IsTaxiHailPro { get; private set; }
+        protected bool IsNetworkEnabled { get; private set; }
         protected string Languages { get; private set; }
 
         protected void Page_Load(object sender, EventArgs e)
@@ -42,6 +43,8 @@ namespace apcurium.MK.Web.admin
             IsAuthenticated = base.UserSession.IsAuthenticated;
             IsSuperAdmin = UserSession.HasPermission(RoleName.SuperAdmin);
 
+            IsNetworkEnabled = config.ServerData.Network.Enabled;
+
             var languages = Enum.GetNames(typeof(SupportedLanguages)).ToList();
             Languages = JsonSerializer.SerializeToString(languages, languages.GetType());
 
@@ -56,6 +59,8 @@ namespace apcurium.MK.Web.admin
             {
                 Response.Redirect("~");
             }
+
+            IsTaxiHailPro = config.ServerData.IsTaxiHailPro;
         }
 
         protected string FindParam(string[] filters, string param)

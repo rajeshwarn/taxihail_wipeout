@@ -3,13 +3,13 @@
 using System;
 using apcurium.MK.Booking.CommandHandlers;
 using apcurium.MK.Booking.Commands;
-using apcurium.MK.Booking.Common.Tests;
 using apcurium.MK.Booking.Domain;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.Security;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
 using NUnit.Framework;
+using ServiceStack.Common.Extensions;
 
 #endregion
 
@@ -314,6 +314,60 @@ namespace apcurium.MK.Booking.Test.AccountFixture
             Assert.AreEqual(_accountId, @event.SourceId);
             Assert.AreEqual(123, @event.IbsAccountId);
             Assert.AreEqual("test", @event.CompanyKey);
+        }
+
+        [Test]
+        public void when_unlinking_account_from_ibs()
+        {
+            _sut.Given(new AccountLinkedToIbs { SourceId = _accountId, IbsAccountId = 123 });
+            _sut.Given(new AccountLinkedToIbs { SourceId = _accountId, IbsAccountId = 123, CompanyKey = "test" });
+            _sut.When(new UnlinkAccountFromIbs { AccountId = _accountId });
+
+            var @event = _sut.ThenHasSingle<AccountUnlinkedFromIbs>();
+
+            Assert.AreEqual(_accountId, @event.SourceId);
+        }
+
+        [Test]
+        public void when_logging_overdue_payment()
+        {
+            var orderId = Guid.NewGuid();
+            var transactionDate = DateTime.UtcNow;
+
+            _sut.When(new ReactToPaymentFailure
+            {
+                AccountId = _accountId,
+                OrderId = orderId,
+                IBSOrderId = 5544,
+                OverdueAmount = 42.25m,
+                TransactionDate = transactionDate,
+                TransactionId = "1337"
+            });
+
+            var @event1 = (OverduePaymentLogged)_sut.ThenHas<OverduePaymentLogged>().First();
+            var @event2 = (CreditCardDeactivated)_sut.ThenHas<CreditCardDeactivated>().First();
+
+            Assert.AreEqual(_accountId, @event1.SourceId);
+            Assert.AreEqual(orderId, @event1.OrderId);
+            Assert.AreEqual(5544, @event1.IBSOrderId);
+            Assert.AreEqual(42.25m, @event1.Amount);
+            Assert.AreEqual("1337", @event1.TransactionId);
+            Assert.AreEqual(transactionDate, @event1.TransactionDate);
+
+            Assert.AreEqual(_accountId, @event2.SourceId);
+        }
+
+        [Test]
+        public void when_settling_overdue_payment()
+        {
+            var orderId = Guid.NewGuid();
+
+            _sut.When(new SettleOverduePayment { AccountId = _accountId, OrderId = orderId });
+
+            var @event = _sut.ThenHasSingle<OverduePaymentSettled>();
+
+            Assert.AreEqual(_accountId, @event.SourceId);
+            Assert.AreEqual(orderId, @event.OrderId);
         }
     }
 }

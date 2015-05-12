@@ -8,6 +8,7 @@
         events: {
             'click [data-action=clear]': 'clear',
             'click [data-action=locate]': 'locate',
+            'click [data-action=refine]': 'refine',
             'click [data-action=toggletarget]': 'toggletarget',
             'focus [name=address]': 'onfocus'
         },
@@ -31,14 +32,24 @@
             var toggleClass = this.$("[data-action=toggletarget]").attr('class');
 
             var data = _.extend(this.model.toJSON(), {
-                options: _.pick(this.options, 'locate', 'clear', 'pin')
+                options: _.pick(this.options, 'locate', 'clear', 'pin', 'refine')
             });
 
             this.$el.html(this.renderTemplate(data));
+
+            var refineBtn = this.$el.find('[data-action=refine]');
+            var streetNumber = this.model.get('streetNumber');
+            if (!streetNumber) {
+                refineBtn.addClass('disabled');
+                refineBtn.attr('disabled', 'disabled');
+            } else {
+                refineBtn.removeClass('disabled');
+                refineBtn.removeAttr('disabled');
+            }
+
             this.$("[data-action=toggletarget]").addClass(toggleClass);
 
             this.$('[name=address]').on('keyup', _.debounce(this.onkeyup, 500));
-
 
             this._selector = new TaxiHail.AddressSelectionView({
                 model: this.model
@@ -128,6 +139,25 @@
         clear: function() {
             this.model.clear();
             this.close();
+        },
+
+        refine: function() {
+            var originalStreetNumber = this.model.get('streetNumber');
+            var fullAddress = this.model.get('fullAddress');
+            if (!originalStreetNumber || !fullAddress) {
+                // don't show the prompt if there's no address
+                return;
+            }
+
+            var promptTitle = TaxiHail.localize('RefineAddress');
+            var newStreetNumber = prompt(promptTitle, originalStreetNumber);
+            if (!newStreetNumber) {
+                // don't replace if the user cancelled or entered string.empty
+                return;
+            }
+
+            this.model.set('streetNumber', newStreetNumber);
+            this.model.set('fullAddress', fullAddress.replace(originalStreetNumber, newStreetNumber));
         },
 
         onfocus: function(e) {

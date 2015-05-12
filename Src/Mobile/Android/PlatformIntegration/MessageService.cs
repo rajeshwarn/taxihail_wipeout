@@ -44,10 +44,9 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
         {
             var dispatcher = TinyIoCContainer.Current.Resolve<IMvxViewDispatcher>();
 
-            dispatcher.RequestMainThreadAction(() => AlertDialogHelper.Show(Context.Activity, title, message));
-
             var tcs = new TaskCompletionSource<object>();
-            tcs.TrySetResult(null);
+
+            dispatcher.RequestMainThreadAction(() => AlertDialogHelper.Show(Context.Activity, title, message, () => tcs.TrySetResult(null)));
 
             return tcs.Task;
         }
@@ -62,9 +61,8 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
                 positiveButtonTitle, (s,e) => positiveAction(),
                 negativeButtonTitle, (s,e) => negativeAction());
         }
-
         public void ShowMessage(string title, string message, string positiveButtonTitle, Action positiveAction,
-            string negativeButtonTitle, Action negativeAction, string neutralButtonTitle, Action neutralAction)
+            string negativeButtonTitle, Action negativeAction, Action cancelAction)
         {
             AlertDialogHelper.Show(
                 Context.Activity,
@@ -72,7 +70,23 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
                 message,
                 positiveButtonTitle, (s,e) => positiveAction(),
                 negativeButtonTitle, (s,e) => negativeAction(),
-                neutralButtonTitle, (s,e) => neutralAction());
+                cancelAction);
+        }
+
+        public Task ShowMessage(string title, string message, string positiveButtonTitle, Action positiveAction,
+            string negativeButtonTitle, Action negativeAction, string neutralButtonTitle, Action neutralAction)
+        {
+            var tcs = new TaskCompletionSource<object>();
+
+            AlertDialogHelper.Show(
+                Context.Activity,
+                title,
+                message,
+                positiveButtonTitle, (s,e) => { positiveAction(); tcs.TrySetResult(null); },
+                negativeButtonTitle, (s,e) => { negativeAction(); tcs.TrySetResult(null); },
+                neutralButtonTitle, (s,e) => { neutralAction(); tcs.TrySetResult(null); });
+
+            return tcs.Task;
         }
 
         public void ShowMessage(string title, string message, List<KeyValuePair<string, Action>> additionalButton)
@@ -95,7 +109,6 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
             {
                 LoadingOverlay.StopAnimatingLoading();
             }
-
         }
 
         public void ShowProgressNonModal(bool show)
@@ -122,7 +135,6 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
                         LayoutParameters = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.FillParent, RelativeLayout.LayoutParams.WrapContent),
                         Indeterminate = true,
                         Tag = "Progress"
-
                     };
                             
                     ((RelativeLayout.LayoutParams)b.LayoutParameters).TopMargin = 78.ToPixels();
@@ -154,14 +166,12 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
         {
             TinyIoCContainer.Current.Resolve<IMvxViewDispatcher>().RequestMainThreadAction(() =>
             {
-                Toast toast = Toast.MakeText(Context.Activity, message,
-                    duration == ToastDuration.Short ? ToastLength.Short : ToastLength.Long);
+                var toast = Toast.MakeText(Context.Activity, message, duration == ToastDuration.Short ? ToastLength.Short : ToastLength.Long);
                 toast.Show();
             });
         }
 
-        public void ShowDialog<T>(string title, IEnumerable<T> items, Func<T, string> displayNameSelector,
-            Action<T> onResult)
+        public void ShowDialog<T>(string title, IEnumerable<T> items, Func<T, string> displayNameSelector, Action<T> onResult)
         {
             var messenger = TinyIoCContainer.Current.Resolve<ITinyMessengerHub>();
             var list = items.ToArray();
@@ -176,7 +186,6 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
 
             string[] displayList = list.Select(displayNameSelector).ToArray();
 
-
             var ownerId = Guid.NewGuid().ToString();
             var i = new Intent(Context.Activity, typeof (SelectItemDialogActivity));
             i.AddFlags(ActivityFlags.NewTask | ActivityFlags.ReorderToFront);
@@ -184,16 +193,15 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
             i.PutExtra("Items", displayList);
             i.PutExtra("OwnerId", ownerId);
             TinyMessageSubscriptionToken token = null;
-// ReSharper disable once RedundantAssignment
             token = messenger.Subscribe<SubNavigationResultMessage<int>>(msg =>
-            {
-                // ReSharper disable AccessToModifiedClosure
-                messenger.Unsubscribe<ActivityCompleted>(token);
-                if (token != null) token.Dispose();
-                // ReSharper restore AccessToModifiedClosure
-
-                onResult(list[msg.Result]);
-            },
+                {
+                    messenger.Unsubscribe<ActivityCompleted>(token);
+                    if (token != null) 
+                    {
+                        token.Dispose();
+                    }
+                    onResult(list[msg.Result]);
+                },
                 msg => msg.MessageId == ownerId);
             Context.Activity.StartActivity(i);
         }

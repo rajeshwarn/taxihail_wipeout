@@ -3,6 +3,7 @@ using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Extensions;
 using CustomerPortal.Client;
+using apcurium.MK.Booking.IBS.ChargeAccounts;
 
 namespace apcurium.MK.Booking.IBS.Impl
 {
@@ -13,7 +14,8 @@ namespace apcurium.MK.Booking.IBS.Impl
         private readonly ITaxiHailNetworkServiceClient _taxiHailNetworkService;
         private readonly Dictionary<string, IBSSettingContainer> _ibsSettings = new Dictionary<string, IBSSettingContainer>();
 
-        public IBSServiceProvider(IServerSettings serverSettings, ILogger logger, ITaxiHailNetworkServiceClient taxiHailNetworkService)
+        public IBSServiceProvider(IServerSettings serverSettings, ILogger logger,
+            ITaxiHailNetworkServiceClient taxiHailNetworkService)
         {
             _serverSettings = serverSettings;
             _logger = logger;
@@ -35,15 +37,22 @@ namespace apcurium.MK.Booking.IBS.Impl
             return new BookingWebServiceClient(_serverSettings, GetSettingContainer(companyKey), _logger);
         }
 
-        private IBSSettingContainer GetSettingContainer(string companyKey)
+        public IChargeAccountWebServiceClient ChargeAccount(string companyKey)
+        {
+            return new ChargeAccountWebServiceClient(_serverSettings, GetSettingContainer(companyKey), _logger);
+        }
+
+        public IBSSettingContainer GetSettingContainer(string companyKey)
         {
             if (!companyKey.HasValue())
             {
                 return _serverSettings.ServerData.IBS;
             }
 
+            // Switched companies or external market
             if (!_ibsSettings.ContainsKey(companyKey))
             {
+                // Get all fleets available to dispatch to company
                 var networkFleet = _taxiHailNetworkService.GetNetworkFleet(_serverSettings.ServerData.TaxiHail.ApplicationKey);
 
                 _ibsSettings.Clear();
@@ -52,15 +61,20 @@ namespace apcurium.MK.Booking.IBS.Impl
                 {
                     var settingContainer = new IBSSettingContainer
                     {
+                        RestApiUrl = networkFleetResponse.RestApiUrl,
+                        RestApiUser = networkFleetResponse.RestApiUser,
+                        RestApiSecret = networkFleetResponse.RestApiSecret,
                         WebServicesUrl = networkFleetResponse.IbsUrl,
                         WebServicesPassword = networkFleetResponse.IbsPassword,
-                        WebServicesUserName = networkFleetResponse.IbsUserName
+                        WebServicesUserName = networkFleetResponse.IbsUserName,
+                        TimeDifference = networkFleetResponse.IbsTimeDifference
                     };
-                    _ibsSettings.Add(networkFleetResponse.CompanyKey,settingContainer);
+
+                    _ibsSettings.Add(networkFleetResponse.CompanyKey, settingContainer);
                 }
             }
 
-            return _ibsSettings[companyKey];
+            return _ibsSettings[companyKey]; 
         }
     }
 }

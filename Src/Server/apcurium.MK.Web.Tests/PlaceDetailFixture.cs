@@ -27,12 +27,13 @@ namespace apcurium.MK.Web.Tests
         }
 
         [Test]
+        [Ignore("Use only for debugging purpose")]
         public async void when_place_then_detail()
         {
             try
             {
                 var refService = new SearchLocationsServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
-                var addresses = await refService.Search("yul", 45.5227967351675, -73.6242310144007);
+                var addresses = await refService.Search("yul", 45.4982111, -73.6565887);
                 
                 if (!addresses.Any())
                 {

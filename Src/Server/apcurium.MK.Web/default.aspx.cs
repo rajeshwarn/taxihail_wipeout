@@ -11,6 +11,7 @@ using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Api.Services;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Enumeration;
 using Microsoft.Practices.ServiceLocation;
 using ServiceStack.Text;
@@ -31,6 +32,7 @@ namespace apcurium.MK.Web
         protected string FacebookAppId { get; private set; }
         protected bool FacebookEnabled { get; private set; }
         protected bool HideDispatchButton { get; private set; }
+        protected bool ShowCallDriver { get; private set; }
         protected string GeolocSearchFilter { get; private set; }
         protected string GeolocSearchRegion { get; private set; }
         protected string GeolocSearchBounds { get; private set; }
@@ -48,6 +50,24 @@ namespace apcurium.MK.Web
         protected bool IsWebSignupVisible { get; private set; }
         protected double MaxFareEstimate { get; private set; }
         protected bool IsChargeAccountPaymentEnabled { get; private set; }
+        protected bool IsBraintreePrepaidEnabled { get; private set; }
+        protected bool IsPayPalEnabled { get; private set; }
+        protected string PayPalMerchantId { get; private set; }
+        protected bool IsCreditCardMandatory { get; private set; }
+        protected bool? IsPayBackRegistrationFieldRequired { get; private set; }
+        protected int DefaultTipPercentage { get; private set; }
+        protected bool WarnForFeesOnCancel { get; private set; }
+        protected bool IsWebSocialMediaVisible { get; private set; }
+        protected string SocialMediaFacebookURL { get; private set; }
+        protected string SocialMediaTwitterURL { get; private set; }
+        protected string SocialMediaGoogleURL { get; private set; }
+        protected string SocialMediaPinterestURL { get; private set; }
+        protected bool HideMarketChangeWarning { get; private set; }
+        protected bool AutoConfirmFleetChange { get; private set; }
+
+        protected bool AlwaysDisplayCoFOption { get; private set; }
+
+        protected int AvailableVehicleRefreshRate { get; private set; }
         
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -62,11 +82,23 @@ namespace apcurium.MK.Web
             FacebookAppId = config.ServerData.FacebookAppId;
             FacebookEnabled = config.ServerData.FacebookEnabled;
             HideDispatchButton = config.ServerData.HideCallDispatchButton;
+            ShowCallDriver = config.ServerData.ShowCallDriver;
             DisableFutureBooking = config.ServerData.DisableFutureBooking;
             IsWebSignupVisible = !config.ServerData.IsWebSignupHidden;
+            IsCreditCardMandatory = config.ServerData.CreditCardIsMandatory;
+
+            IsWebSocialMediaVisible = config.ServerData.IsWebSocialMediaVisible;
+            SocialMediaFacebookURL = config.ServerData.SocialMediaFacebookURL;
+            SocialMediaTwitterURL = config.ServerData.SocialMediaTwitterURL;
+            SocialMediaGoogleURL = config.ServerData.SocialMediaGoogleURL;
+            SocialMediaPinterestURL = config.ServerData.SocialMediaPinterestURL;
+
+            AvailableVehicleRefreshRate = config.ServerData.AvailableVehicleRefreshRate;
 
             DirectionTarifMode = config.ServerData.Direction.TarifMode.ToString("G");
             DirectionNeedAValidTarif = config.ServerData.Direction.NeedAValidTarif;
+
+            DefaultTipPercentage = config.ServerData.DefaultTipPercentage;
 
             ApplicationVersion = Assembly.GetAssembly(typeof (_default)).GetName().Version.ToString();
 
@@ -76,7 +108,25 @@ namespace apcurium.MK.Web
             DestinationIsRequired = config.ServerData.DestinationIsRequired;
             MaxFareEstimate = config.ServerData.MaxFareEstimate;
             AccountActivationDisabled = config.ServerData.AccountActivationDisabled;
-            IsChargeAccountPaymentEnabled = config.GetPaymentSettings().IsChargeAccountPaymentEnabled;
+            IsPayBackRegistrationFieldRequired = config.ServerData.IsPayBackRegistrationFieldRequired;
+            WarnForFeesOnCancel = config.ServerData.WarnForFeesOnCancel;
+            HideMarketChangeWarning = config.ServerData.Network.HideMarketChangeWarning;
+            AutoConfirmFleetChange = config.ServerData.Network.AutoConfirmFleetChange;
+
+            var paymentSettings = config.GetPaymentSettings();
+
+            AlwaysDisplayCoFOption = paymentSettings.AlwaysDisplayCoFOption;
+
+            IsBraintreePrepaidEnabled = paymentSettings.PaymentMode == PaymentMethod.Braintree 
+                && paymentSettings.IsPayInTaxiEnabled
+                && paymentSettings.IsPrepaidEnabled;
+            IsPayPalEnabled = paymentSettings.PayPalClientSettings.IsEnabled
+                && paymentSettings.IsPrepaidEnabled;
+            IsChargeAccountPaymentEnabled = paymentSettings.IsChargeAccountPaymentEnabled;
+
+            PayPalMerchantId = paymentSettings.PayPalClientSettings.IsSandbox
+                ? paymentSettings.PayPalServerSettings.SandboxCredentials.MerchantId
+                : paymentSettings.PayPalServerSettings.Credentials.MerchantId;
 
             ShowPassengerNumber = config.ServerData.ShowPassengerNumber;
 
@@ -90,8 +140,7 @@ namespace apcurium.MK.Web
             var referenceDataService = ServiceLocator.Current.GetInstance<ReferenceDataService>();
             var referenceData = (ReferenceData) referenceDataService.Get(new ReferenceDataRequest());
 
-            // remove the card on file charge type since it's not possible to use card on file with the web app
-            referenceData.PaymentsList = HidePaymentType(referenceData.PaymentsList, ChargeTypes.CardOnFile.Id);
+            referenceData.PaymentsList = HidePaymentTypes(referenceData.PaymentsList, IsBraintreePrepaidEnabled, IsPayPalEnabled);
 
             ReferenceData = referenceData.ToString();
 
@@ -108,9 +157,21 @@ namespace apcurium.MK.Web
                 : Uri.UnescapeDataString(pair.Split('=')[1]);
         }
 
-        private List<Common.Entity.ListItem> HidePaymentType(IEnumerable<Common.Entity.ListItem> paymentList, int? paymentTypeToHide)
+        private List<Common.Entity.ListItem> HidePaymentTypes(IEnumerable<Common.Entity.ListItem> paymentList, bool creditCardPrepaidEnabled, bool payPalPrepaidEnabled)
         {
-            return paymentList.Where(i => i.Id != paymentTypeToHide).ToList();
+            var paymentTypesToHide = new List<int?>();
+
+            if (!creditCardPrepaidEnabled)
+            {
+                paymentTypesToHide.Add(ChargeTypes.CardOnFile.Id);
+            }
+
+            if (!payPalPrepaidEnabled)
+            {
+                paymentTypesToHide.Add(ChargeTypes.PayPal.Id);
+            }
+
+            return paymentList.Where(paymentType => !paymentTypesToHide.Contains(paymentType.Id)).ToList();
         }
     }
 }

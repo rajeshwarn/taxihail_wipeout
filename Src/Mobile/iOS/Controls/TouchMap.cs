@@ -8,12 +8,12 @@ using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
-using MonoTouch.CoreLocation;
-using MonoTouch.Foundation;
-using MonoTouch.MapKit;
+using CoreLocation;
+using Foundation;
+using MapKit;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
+using CoreGraphics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -35,7 +35,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
 		private bool _useThemeColorForPickupAndDestinationMapIcons;
 		private bool _showAssignedVehicleNumberOnPin;
 
-        protected TouchMap(RectangleF rect) : base(rect)
+        protected TouchMap(CGRect rect) : base(rect)
         {
             Initialize();
         }
@@ -424,7 +424,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
             {
                 for (var colIndex = 0; colIndex < numberOfColumns; colIndex++)
                 {
-                    var rect = new RectangleF (Bounds.X + colIndex * clusterWidth, Bounds.Y + rowIndex * clusterHeight, clusterWidth, clusterHeight);
+                    var rect = new CGRect (Bounds.X + colIndex * clusterWidth, Bounds.Y + rowIndex * clusterHeight, clusterWidth, clusterHeight);
 
                     var vehiclesInRect = list.Where (v => rect.Contains (ConvertCoordinate (new CLLocationCoordinate2D (v.Latitude, v.Longitude), this))).ToArray ();
                     if (vehiclesInRect.Length > cellThreshold)

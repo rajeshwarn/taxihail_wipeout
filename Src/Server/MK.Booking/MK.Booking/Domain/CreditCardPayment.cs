@@ -1,12 +1,9 @@
-﻿#region
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Common.Enumeration;
+using apcurium.MK.Common.Extensions;
 using Infrastructure.EventSourcing;
-
-#endregion
 
 namespace apcurium.MK.Booking.Domain
 {
@@ -20,7 +17,7 @@ namespace apcurium.MK.Booking.Domain
             : base(id)
         {
             Handles<CreditCardPaymentInitiated>(OnCreditCardPaymentInitiated);
-            Handles<CreditCardPaymentCaptured>(OnCreditCardPaymentCaptured);
+            Handles<CreditCardPaymentCaptured_V2>(OnCreditCardPaymentCaptured);
             Handles<CreditCardErrorThrown>(OnCreditCardPaymentCancellationFailed);
         }
 
@@ -30,7 +27,7 @@ namespace apcurium.MK.Booking.Domain
             LoadFrom(history);
         }
 
-        public CreditCardPayment(Guid id, Guid orderId, string transactionId, decimal amount, decimal meter, decimal tip,
+        public CreditCardPayment(Guid id, Guid orderId, string transactionId, decimal amount, decimal meter, decimal tip, 
             string cardToken, PaymentProvider provider)
             : this(id)
         {
@@ -48,31 +45,39 @@ namespace apcurium.MK.Booking.Domain
             });
         }
 
-        public void Capture(PaymentProvider provider, decimal amount, decimal meterAmount, decimal tipAmount, string authorizationCode, bool isNoShowFee)
+        public void Capture(PaymentProvider provider, decimal amount, decimal meterAmount, decimal tipAmount, decimal taxAmount, string authorizationCode, string transactionId, bool isNoShowFee, Guid? promotionUsed, decimal amountSavedByPromotion, string newCardToken, Guid accountId, bool isSettlingOverduePayment, bool isForPrepaidOrder)
         {
             if (_isCaptured)
             {
                 throw new InvalidOperationException("Payment is already captured");
             }
 
-            Update(new CreditCardPaymentCaptured
+            Update(new CreditCardPaymentCaptured_V2
             {
                 OrderId = _orderId,
-                TransactionId = _transactionId,
+                TransactionId = transactionId.HasValue() ? transactionId : _transactionId,
                 AuthorizationCode = authorizationCode,
                 Amount = amount,
                 Meter = meterAmount,
                 Tip = tipAmount,
+                Tax = taxAmount,
                 Provider = provider,
-                IsNoShowFee = isNoShowFee
+                IsNoShowFee = isNoShowFee,
+                IsSettlingOverduePayment = isSettlingOverduePayment,
+                PromotionUsed = promotionUsed,
+                AmountSavedByPromotion = amountSavedByPromotion,
+                AccountId = accountId,
+                NewCardToken = newCardToken,
+                IsForPrepaidOrder = isForPrepaidOrder
             });
         }
 
-        public void ErrorThrown(string reason)
+        public void ErrorThrown(string reason, Guid accountId)
         {
             Update(new CreditCardErrorThrown
             {
-                Reason = reason
+                Reason = reason,
+                AccountId = accountId
             });
         }
 
@@ -82,9 +87,14 @@ namespace apcurium.MK.Booking.Domain
             _transactionId = obj.TransactionId;
         }
 
-        private void OnCreditCardPaymentCaptured(CreditCardPaymentCaptured obj)
+        private void OnCreditCardPaymentCaptured(CreditCardPaymentCaptured_V2 obj)
         {
             _isCaptured = true;
+
+            if (obj.TransactionId.HasValue())
+            {
+                _transactionId = obj.TransactionId;
+            }
         }
 
         private void OnCreditCardPaymentCancellationFailed(CreditCardErrorThrown obj)

@@ -31,6 +31,8 @@ namespace apcurium.MK.Booking.EventHandlers
                 vehicleTypeDetail.Name = @event.Name;
                 vehicleTypeDetail.LogoName = @event.LogoName;
                 vehicleTypeDetail.ReferenceDataVehicleId = @event.ReferenceDataVehicleId;
+                vehicleTypeDetail.MaxNumberPassengers = @event.MaxNumberPassengers;
+                vehicleTypeDetail.ReferenceNetworkVehicleTypeId = @event.ReferenceNetworkVehicleTypeId;
 
                 context.Save(vehicleTypeDetail);
             }

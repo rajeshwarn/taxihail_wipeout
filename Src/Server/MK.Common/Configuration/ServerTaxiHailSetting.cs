@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Net.Mail;
 using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Configuration.Attributes;
 using apcurium.MK.Common.Enumeration;
 
 namespace MK.Common.Configuration
@@ -58,6 +59,9 @@ namespace MK.Common.Configuration
                 OrderPriority = true,
                 TimeDifference = 0,
                 ValidatePickupZone = true,
+                RestApiUrl = @"http://cabmatedemo.drivelinq.com:8889/", // TODO: Set proper values
+                RestApiUser = @"EUGENE",
+                RestApiSecret = @"T!?_asF",
                 WebServicesPassword = "test",
                 WebServicesUserName = "taxi"
             };
@@ -87,7 +91,6 @@ namespace MK.Common.Configuration
             };
 
             PayPalConversionRate = 1;
-
             SendDetailedPaymentInfoToDriver = true;
         }
 
@@ -100,18 +103,71 @@ namespace MK.Common.Configuration
         public ReceiptSettingContainer Receipt { get; protected set; }
         public CustomerPortalSettingContainer CustomerPortal { get; protected set; }
         public NetworkSettingContainer Network { get; protected set; }
+
         public bool IsWebSignupHidden { get; protected set; }
+
         public string PayPalRegionInfoOverride { get; protected set; }
+
         public decimal PayPalConversionRate { get; protected set; }
+
+        [Display(Name = "Hide fare info when Pay in Car", Description = "Hide fare information in receipt when user choose to pay in car.")]
+        public bool HideFareInfoInReceipt { get; protected set; }
 
         [CustomizableByCompany]
         [Display(Name = "Minimum Required App Version", Description = "Minimum required app version to create an order.")]
         public string MinimumRequiredAppVersion { get; private set; }
 
-        [CustomizableByCompany]
+        [CustomizableByCompany, RequiresTaxiHailPro]
         [Display(Name = "Send Payment Detail To Driver", Description = "Inform the driver of auto payment success or failure")]
         public bool SendDetailedPaymentInfoToDriver { get; private set; }
 
+        [Display(Name = "Disable Newer Version Popup", Description = "Disables the popup on the application telling the user that a new version is available")]
+        public bool DisableNewerVersionPopup { get; private set; }
+
+	    [Display(Name = "Base Url Override", Description = "Overrides the base url of the application (ex: In account confirmation email)")]
         public string BaseUrl { get; private set; }
+
+        [Display(Name = "TaxiHail Pro", Description = "Company has access to TaxiHail Pro features")]
+        public bool IsTaxiHailPro { get; protected set; }
+
+        [Display(Name = "Available Vehicles Mode", Description = "Available Vehicles provider")]
+        public AvailableVehiclesModes AvailableVehiclesMode { get; protected set; }
+
+        [Display(Name = "Available Vehicles Market", Description = "Market used to find vehicles when Available Vehicles Mode is set to 'HoneyBadger'")]
+        public string AvailableVehiclesMarket { get; protected set; }
+
+        [Display(Name = "Available Vehicles Fleet ID", Description = "Fleet ID used to find vehicles when Available Vehicles Mode is set to 'HoneyBadger'")]
+        public int? AvailableVehiclesFleetId { get; protected set; }
+
+        [Hidden]
+        [Display(Name = "Settings Available to Admin", Description = "Comma delimited list of settings that are available to admins")]
+        public string SettingsAvailableToAdmin { get; private set; }
+
+        [Hidden]
+        [Display(Name = "Target", Description = "Deployment target server")]
+        public DeploymentTargets Target { get; set; }
+
+        [Display(Name = "Social Media Website Links Toggle", Description = "Displays the Social Media links for the website")]
+        public bool IsWebSocialMediaVisible { get; protected set; }
+
+        [CustomizableByCompany]
+        [Display(Name = "Social Media Website Facebook URL", Description = "Adds the link to the Facebook address")]
+        public string SocialMediaFacebookURL { get; protected set; }
+
+        [CustomizableByCompany]
+        [Display(Name = "Social Media Website Twitter URL", Description = "Adds the link to the Twitter address")]
+        public string SocialMediaTwitterURL { get; protected set; }
+
+        [CustomizableByCompany]
+        [Display(Name = "Social Media Website Google+ URL", Description = "Adds the link to the Google+ address")]
+        public string SocialMediaGoogleURL { get; protected set; }
+
+        [CustomizableByCompany]
+        [Display(Name = "Social Media Website Pinterest URL", Description = "Adds the link to the Facebook address")]
+        public string SocialMediaPinterestURL { get; protected set; }
+
+        [CustomizableByCompany]
+        [Display(Name = "Validate Admin Rules in Other Markets", Description = "Use the market booking rules defined by this company to validate orders in other markets")]
+        public bool ValidateAdminRulesForExternalMarket { get; protected set; }
     }
 }

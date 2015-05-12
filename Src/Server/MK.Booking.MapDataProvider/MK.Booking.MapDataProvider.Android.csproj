@@ -41,11 +41,11 @@
     <Reference Include="ServiceStack.Common">
       <HintPath>..\..\Mobile\Libraries\Monodroid\ServiceStack.Common.dll</HintPath>
     </Reference>
-    <Reference Include="ServiceStack.Interfaces">
-      <HintPath>..\..\Mobile\Libraries\Monodroid\ServiceStack.Interfaces.dll</HintPath>
-    </Reference>
     <Reference Include="ServiceStack.Text">
       <HintPath>..\..\Mobile\Libraries\Monodroid\ServiceStack.Text.dll</HintPath>
+    </Reference>
+    <Reference Include="ServiceStack.Interfaces">
+      <HintPath>..\..\Mobile\Libraries\Monodroid\ServiceStack.Interfaces.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -86,6 +86,9 @@
     <Compile Include="Resources\GeoPlace.cs" />
     <Compile Include="TomTom\TomTomProvider.cs" />
     <Compile Include="TomTom\Resources\RoutingResponse.cs" />
+    <Compile Include="Extensions\ServiceClientBaseExtension.cs" />
+    <Compile Include="Google\Resources\GoogleResult.cs" />
+    <Compile Include="Extensions\ResourcesExtensions.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
@@ -102,4 +105,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
 </Project>

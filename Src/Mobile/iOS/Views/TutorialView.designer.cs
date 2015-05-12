@@ -5,7 +5,7 @@
 // Manual changes to this file may not be handled correctly.
 //
 
-using MonoTouch.Foundation;
+using Foundation;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
@@ -13,16 +13,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 	partial class TutorialView
 	{
 		[Outlet]
-		MonoTouch.UIKit.UIView contentView { get; set; }
+		UIKit.UIView contentView { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UIPageControl pageControl { get; set; }
+		UIKit.UIPageControl pageControl { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UIButton btnClose { get; set; }
+		UIKit.UIButton btnClose { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UIScrollView scrollview { get; set; }
+		UIKit.UIScrollView scrollview { get; set; }
 		
 		void ReleaseDesignerOutlets ()
 		{

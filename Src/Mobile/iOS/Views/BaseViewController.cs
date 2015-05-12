@@ -1,77 +1,76 @@
 using System;
-using System.Drawing;
+using CoreGraphics;
 using Cirrious.MvvmCross.Touch.Views;
-using MonoTouch.Foundation;
-using MonoTouch.UIKit;
+using Foundation;
+using UIKit;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Booking.Mobile.Client.Localization;
 using apcurium.MK.Booking.Mobile.Client.Style;
 using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
 using apcurium.MK.Booking.Mobile.Client.Helper;
+using apcurium.MK.Booking.Mobile.Client.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
 {
-	public abstract class BaseViewController<TViewModel> : MvxViewController, IHaveViewModel
+    public abstract class BaseViewController<TViewModel> : MvxViewController, IHaveViewModel
         where TViewModel : PageViewModel
     {
         NSObject _keyboardObserverWillShow;
         NSObject _keyboardObserverWillHide;
 
-		NSObject _applicationActivated;
-		NSObject _applicationInBackground;
+        NSObject _applicationActivated;
+        NSObject _applicationInBackground;
 
         private bool _firstStart = true;
-		protected const float BottomPadding = 20f;
+        protected const float BottomPadding = 20f;
 
         public BaseViewController ()
         {
-			Initialize ();
+            Initialize ();
         }
-        
-		public BaseViewController(IntPtr handle) 
-			: base(handle)
+
+        public BaseViewController(IntPtr handle) 
+            : base(handle)
         {
-			Initialize ();
+            Initialize ();
         }
-        
-		protected BaseViewController(string nibName, NSBundle bundle) 
+
+        protected BaseViewController(string nibName, NSBundle bundle) 
             : base(nibName, bundle)
         {
-			Initialize ();
+            Initialize ();
         }
 
-		private void Initialize()
-		{
-			// Preserve iOS6 Behavior for compatibility reasons
-			if (this.RespondsToSelector(new MonoTouch.ObjCRuntime.Selector("automaticallyAdjustsScrollViewInsets")))
-			{
-				AutomaticallyAdjustsScrollViewInsets = false;
-			}
-
-			// To have the views under the nav bar and not under it
-			if (this.RespondsToSelector(new MonoTouch.ObjCRuntime.Selector("edgesForExtendedLayout")))
-			{
-				this.EdgesForExtendedLayout = UIRectEdge.Bottom;
-			}
-		}
-
-		public new TViewModel ViewModel
-		{
-			get
-			{
-				return (TViewModel)DataContext;
-			}
-		}
-
-        public override void ViewWillAppear (bool animated)
+        private void Initialize()
         {
-            base.ViewWillAppear (animated);
+            // Preserve iOS6 Behavior for compatibility reasons
+            if (this.RespondsToSelector(new ObjCRuntime.Selector("automaticallyAdjustsScrollViewInsets")))
+            {
+                AutomaticallyAdjustsScrollViewInsets = false;
+            }
+
+            // To have the views under the nav bar and not under it
+            if (this.RespondsToSelector(new ObjCRuntime.Selector("edgesForExtendedLayout")))
+            {
+                this.EdgesForExtendedLayout = UIRectEdge.Bottom;
+            }
+        }
+
+        public new TViewModel ViewModel
+        {
+            get
+            {
+                return (TViewModel)DataContext;
+            }
         }
 
         public override void ViewWillDisappear (bool animated)
         {
             base.ViewWillDisappear (animated);
-            if(ViewModel!= null) ViewModel.OnViewStopped();
+            if (ViewModel != null)
+            {
+                ViewModel.OnViewStopped();
+            }
         }
 
         public override void ViewDidAppear(bool animated)
@@ -83,7 +82,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 _firstStart = false;
             }                
         }
-				
+
+        public override void ViewDidUnload()
+        {
+            base.ViewDidUnload();
+            if (ViewModel != null)
+            {
+                ViewModel.OnViewUnloaded();
+            }
+        }
+
         public override void ViewDidLoad ()
         {
             base.ViewDidLoad ();
@@ -91,7 +99,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             // Setup keyboard event handlers
             RegisterForKeyboardNotifications ();
 
-			RegisterForApplicationNotifications ();
+            RegisterForApplicationNotifications ();
 
             NavigationItem.BackBarButtonItem = new UIBarButtonItem(Localize.GetValue("BackButton"), UIBarButtonItemStyle.Bordered, null, null);
 
@@ -102,21 +110,26 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 NavigationController.InteractivePopGestureRecognizer.Enabled = false;
             }
 
-			if (ViewModel != null)
-			{
-				ViewModel.OnViewLoaded();
-			}  
+            if (ViewModel != null)
+            {
+                ViewModel.OnViewLoaded();
+            }  
         }        
 
         protected void DismissKeyboardOnReturn (params UITextField[] textFields)
         {
             if (textFields == null)
+            {
                 return;
-            foreach (var textField in textFields) {
+            }
+
+            foreach (var textField in textFields) 
+            {
                 textField.ReturnKeyType = UIReturnKeyType.Done;
                 textField.ShouldReturn = ShouldReturn;
             }
         }
+
         private bool ShouldReturn (UITextField textField)
         {
             return textField.ResignFirstResponder();
@@ -124,98 +137,109 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
         protected virtual void RegisterForKeyboardNotifications ()
         {
-			_keyboardObserverWillShow = NSNotificationCenter.DefaultCenter.AddObserver (UIKeyboard.DidShowNotification, KeyboardWillShowNotification);
+            _keyboardObserverWillShow = NSNotificationCenter.DefaultCenter.AddObserver (UIKeyboard.DidShowNotification, KeyboardWillShowNotification);
             _keyboardObserverWillHide = NSNotificationCenter.DefaultCenter.AddObserver (UIKeyboard.WillHideNotification, KeyboardWillHideNotification);
         }
-        
+
         protected virtual void UnregisterKeyboardNotifications()
         {
-			NSNotificationCenter.DefaultCenter.RemoveObserver(_keyboardObserverWillShow);
+            NSNotificationCenter.DefaultCenter.RemoveObserver(_keyboardObserverWillShow);
             NSNotificationCenter.DefaultCenter.RemoveObserver(_keyboardObserverWillHide);
         }
 
-		protected virtual void RegisterForApplicationNotifications()
-		{
-			_applicationActivated = NSNotificationCenter.DefaultCenter.AddObserver (UIApplication.WillEnterForegroundNotification, OnActivated);
-			_applicationInBackground = NSNotificationCenter.DefaultCenter.AddObserver (UIApplication.DidEnterBackgroundNotification, DidEnterBackground);
-		}
+        protected virtual void RegisterForApplicationNotifications()
+        {
+            _applicationActivated = NSNotificationCenter.DefaultCenter.AddObserver (UIApplication.WillEnterForegroundNotification, OnActivated);
+            _applicationInBackground = NSNotificationCenter.DefaultCenter.AddObserver (UIApplication.DidEnterBackgroundNotification, DidEnterBackground);
+        }
 
-		protected virtual void UnregisterForApplicationNotifications()
-		{
-			NSNotificationCenter.DefaultCenter.RemoveObserver(_applicationActivated);
-			NSNotificationCenter.DefaultCenter.RemoveObserver(_applicationInBackground);
-		}
-        
+        protected virtual void UnregisterForApplicationNotifications()
+        {
+            NSNotificationCenter.DefaultCenter.RemoveObserver(_applicationActivated);
+            NSNotificationCenter.DefaultCenter.RemoveObserver(_applicationInBackground);
+        }
+
         protected virtual UIView KeyboardGetActiveView()
         {
             return View.FindFirstResponder();
         }
-        
-		protected virtual void OnActivated(NSNotification notification)
-		{
-		}
 
-		protected virtual void DidEnterBackground(NSNotification notification)
-		{
-		}
+        protected virtual void OnActivated(NSNotification notification)
+        {
+        }
+
+        protected virtual void DidEnterBackground(NSNotification notification)
+        {
+        }
 
         protected virtual void KeyboardWillShowNotification (NSNotification notification)
         {
             var activeView = KeyboardGetActiveView();
             if (activeView == null)
+            {
                 return;
-            
-			var scrollView = activeView.FindSuperviewOfType(View, typeof(UIScrollView)) as UIScrollView;
+            }
+
+            var scrollView = activeView.FindSuperviewOfType(View, typeof(UIScrollView)) as UIScrollView;
             if (scrollView == null)
+            {
                 return;
-            
-			// find the topmost scrollview (fix problem with RootElement)
-			var nextSuperView = scrollView;
-			while(nextSuperView != null)
-			{
-				scrollView = nextSuperView;
-				nextSuperView = scrollView.FindSuperviewOfType(this.View, typeof(UIScrollView)) as UIScrollView;
-			}
+            }
 
-			var keyboardBounds = ((NSValue)notification.UserInfo.ValueForKey(UIKeyboard.FrameEndUserInfoKey)).RectangleFValue;
+            // find the topmost scrollview (fix problem with RootElement)
+            var nextSuperView = scrollView;
+            while(nextSuperView != null)
+            {
+                scrollView = nextSuperView;
+                nextSuperView = scrollView.FindSuperviewOfType(this.View, typeof(UIScrollView)) as UIScrollView;
+            }
 
-			var contentInsets = new UIEdgeInsets(0.0f, 0.0f, keyboardBounds.Size.Height + this.View.Frame.Y, 0.0f);
-			scrollView.ContentInset = contentInsets;
-			scrollView.ScrollIndicatorInsets = contentInsets;
+            var keyboardBounds = ((NSValue)notification.UserInfo.ValueForKey(UIKeyboard.FrameEndUserInfoKey)).RectangleFValue;
 
-			// If activeField is hidden by keyboard, scroll it so it's visible
-			var viewRectAboveKeyboard = new RectangleF(this.View.Frame.Location, new SizeF(this.View.Frame.Width, this.View.Frame.Size.Height - keyboardBounds.Size.Height));
+            var contentInsets = new UIEdgeInsets(0.0f, 0.0f, keyboardBounds.Size.Height + this.View.Frame.Y, 0.0f);
+            scrollView.ContentInset = contentInsets;
+            scrollView.ScrollIndicatorInsets = contentInsets;
 
-			var activeFieldAbsoluteFrame = activeView.Superview.ConvertRectToView(activeView.Frame, this.View);
-			// activeFieldAbsoluteFrame is relative to this.View so does not include any scrollView.ContentOffset
-			activeFieldAbsoluteFrame.Y = activeFieldAbsoluteFrame.Y + this.View.Frame.Y;
+            // If activeField is hidden by keyboard, scroll it so it's visible
+            var viewRectAboveKeyboard = new CGRect(this.View.Frame.Location, new CGSize(this.View.Frame.Width, this.View.Frame.Size.Height - keyboardBounds.Size.Height));
 
-			// Check if the activeField will be partially or entirely covered by the keyboard
-			if (!viewRectAboveKeyboard.Contains(activeFieldAbsoluteFrame))
-			{
-				// Scroll to the activeField Y position + activeField.Height + current scrollView.ContentOffset.Y - the keyboard Height
-				var scrollPoint = new PointF(0.0f, activeFieldAbsoluteFrame.Location.Y + activeFieldAbsoluteFrame.Height + scrollView.ContentOffset.Y - viewRectAboveKeyboard.Height);
-				scrollView.SetContentOffset(scrollPoint, true);
-			}
+            var activeFieldAbsoluteFrame = activeView.Superview.ConvertRectToView(activeView.Frame, this.View);
+            // activeFieldAbsoluteFrame is relative to this.View so does not include any scrollView.ContentOffset
+            activeFieldAbsoluteFrame.Y = activeFieldAbsoluteFrame.Y + this.View.Frame.Y;
+
+            //change width of control before checking because we only check vertically
+            activeFieldAbsoluteFrame.Width = 10f;
+
+            // Check if the activeField will be partially or entirely covered by the keyboard
+            if (!viewRectAboveKeyboard.Contains(activeFieldAbsoluteFrame))
+            {
+                // Scroll to the activeField Y position + activeField.Height + current scrollView.ContentOffset.Y - the keyboard Height
+                var scrollPoint = new CGPoint(0.0f, activeFieldAbsoluteFrame.Location.Y + activeFieldAbsoluteFrame.Height + scrollView.ContentOffset.Y - viewRectAboveKeyboard.Height);
+                scrollView.SetContentOffset(scrollPoint, true);
+            }
         }
-        
+
         protected virtual void KeyboardWillHideNotification (NSNotification notification)
         {
             var activeView = KeyboardGetActiveView();
             if (activeView == null)
+            {
                 return;
-            
+            }
+
             var scrollView = activeView.FindSuperviewOfType (View, typeof(UIScrollView)) as UIScrollView;
             if (scrollView == null)
+            {
                 return;
-            
-			// find the topmost scrollview (fix problem with RootElement)
-			var nextSuperView = scrollView;
-			while(nextSuperView != null)
-			{
-				scrollView = nextSuperView;
-				nextSuperView = scrollView.FindSuperviewOfType(this.View, typeof(UIScrollView)) as UIScrollView;
-			}
+            }
+
+            // find the topmost scrollview (fix problem with RootElement)
+            var nextSuperView = scrollView;
+            while(nextSuperView != null)
+            {
+                scrollView = nextSuperView;
+                nextSuperView = scrollView.FindSuperviewOfType(this.View, typeof(UIScrollView)) as UIScrollView;
+            }
 
             // Reset the content inset of the scrollView and animate using the current keyboard animation duration
             var animationDuration = UIKeyboard.AnimationDurationFromNotification(notification);
@@ -226,16 +250,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             });
         }
 
-		protected void ChangeThemeOfBarStyle()
-		{
-			// change color of status bar
-			if (UIHelper.IsOS7orHigher)
-			{
-				NavigationController.NavigationBar.BarStyle = Theme.IsLightContent
-					? UIBarStyle.Black
-					: UIBarStyle.Default;
-			}
-		}
+        protected void ChangeThemeOfBarStyle()
+        {
+            // change color of status bar
+            if (UIHelper.IsOS7orHigher)
+            {
+                NavigationController.NavigationBar.BarStyle = Theme.IsLightContent
+                    ? UIBarStyle.Black
+                    : UIBarStyle.Default;
+            }
+        }
 
         protected void ChangeThemeOfNavigationBar()
         {
@@ -246,7 +270,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             var navBarColor = Theme.CompanyColor;
 
             // change color of navigation bar
-			if (UIHelper.IsOS7orHigher) 
+            if (UIHelper.IsOS7orHigher) 
             {
                 NavigationController.NavigationBar.Translucent = false;
                 UINavigationBar.Appearance.BarTintColor = navBarColor;
@@ -272,10 +296,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             }
 
             // change color of status bar
-			ChangeThemeOfBarStyle ();
+            ChangeThemeOfBarStyle ();
 
             // set title color
-            var titleTextAttributes = new UITextAttributes()
+            var titleTextAttributes = new UITextAttributes
             {
                 Font = titleFont,
                 TextColor = textColor,
@@ -283,16 +307,29 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 TextShadowOffset = new UIOffset(0, 0)
             };
             UINavigationBar.Appearance.SetTitleTextAttributes (titleTextAttributes); // for the first time the view is created
-            NavigationController.NavigationBar.SetTitleTextAttributes (titleTextAttributes); // when we return to a view, ensures the color has changed
+
+            var titleTextAttributesForNavBar = new UIStringAttributes
+            {
+                Font = titleFont,
+                Shadow = new NSShadow
+                {
+                    ShadowColor = UIColor.Clear,
+                    ShadowOffset = new CGSize()
+                },
+                ForegroundColor = textColor
+            };
+            NavigationController.NavigationBar.TitleTextAttributes = titleTextAttributesForNavBar; // when we return to a view, ensures the color has changed
 
             // set back/left/right button color
-            var buttonTextColor = new UITextAttributes () {
+            var buttonTextColor = new UITextAttributes 
+            {
                 Font = navBarButtonFont,
                 TextColor = textColor,
                 TextShadowColor = UIColor.Clear,
                 TextShadowOffset = new UIOffset(0,0)
             };
-            var selectedButtonTextColor = new UITextAttributes () {
+            var selectedButtonTextColor = new UITextAttributes
+            {
                 Font = navBarButtonFont,
                 TextColor = textColor.ColorWithAlpha(0.5f),
                 TextShadowColor = UIColor.Clear,

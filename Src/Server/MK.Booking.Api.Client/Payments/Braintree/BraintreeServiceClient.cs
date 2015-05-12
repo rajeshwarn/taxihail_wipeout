@@ -24,72 +24,55 @@ namespace apcurium.MK.Booking.Api.Client.Payments.Braintree
 
         public async Task<TokenizedCreditCardResponse> Tokenize(string creditCardNumber, DateTime expiryDate, string cvv)
         {
-            var braintree = new BraintreeEncrypter(ClientKey);
-            var encryptedNumber = braintree.Encrypt(creditCardNumber);
-            var encryptedExpirationDate = braintree.Encrypt(expiryDate.ToString("MM/yyyy", CultureInfo.InvariantCulture));
-            var encryptedCvv = braintree.Encrypt(cvv);
-
-			var result = await Client.PostAsync(new TokenizeCreditCardBraintreeRequest
+            try
             {
-                EncryptedCreditCardNumber = encryptedNumber,
-                EncryptedExpirationDate = encryptedExpirationDate,
-                EncryptedCvv = encryptedCvv,
-            });
-            return result;
+                var braintree = new BraintreeEncrypter(ClientKey);
+                var encryptedNumber = braintree.Encrypt(creditCardNumber);
+                var encryptedExpirationDate = braintree.Encrypt(expiryDate.ToString("MM/yyyy", CultureInfo.InvariantCulture));
+                var encryptedCvv = braintree.Encrypt(cvv);
+
+                var result = await Client.PostAsync(new TokenizeCreditCardBraintreeRequest
+                {
+                    EncryptedCreditCardNumber = encryptedNumber,
+                    EncryptedExpirationDate = encryptedExpirationDate,
+                    EncryptedCvv = encryptedCvv,
+                });
+                return result;
+            }
+            catch (Exception e)
+            {
+                var message = e.Message;
+                var exception = e as AggregateException;
+                if (exception != null)
+                {
+                    message = exception.InnerException.Message;
+                }
+
+                return new TokenizedCreditCardResponse
+                {
+                    IsSuccessful = false,
+                    Message = message
+                };
+            }
         }
 
         public Task<DeleteTokenizedCreditcardResponse> ForgetTokenizedCard(string cardToken)
         {
             return Client.DeleteAsync(new DeleteTokenizedCreditcardRequest
             {
-                CardToken = cardToken,
-            });
-        }
-        
-        public Task<CommitPreauthorizedPaymentResponse> CommitPayment(string cardToken, double amount,
-            double meterAmount, double tipAmount, Guid orderId)
-        {
-			return Client.PostAsync(new CommitPaymentRequest
-            {
-                Amount = (decimal) amount,
-                MeterAmount = (decimal) meterAmount,
-                TipAmount = (decimal) tipAmount,
-                CardToken = cardToken,
-                OrderId = orderId
+                CardToken = cardToken
             });
         }
 
-        public async Task<PairingResponse> Pair(Guid orderId, string cardToken, int? autoTipPercentage, double? autoTipAmount)
+        public Task<OverduePayment> GetOverduePayment()
         {
-            try
-            {
-                var response = await Client.PostAsync(new PairingForPaymentRequest
-                {
-                    OrderId = orderId,
-                    CardToken = cardToken,
-                    AutoTipAmount = autoTipAmount,
-                    AutoTipPercentage = autoTipPercentage
-
-                });
-                return response;
-            }
-            catch (ServiceStack.ServiceClient.Web.WebServiceException)
-            {
-                return new PairingResponse { IsSuccessful = false };
-            }   
+            var req = string.Format("/account/overduepayment");
+            return Client.GetAsync<OverduePayment>(req);
         }
 
-        public Task<BasePaymentResponse> Unpair(Guid orderId)
+        public Task<SettleOverduePaymentResponse> SettleOverduePayment()
         {
-            return Client.PostAsync(new UnpairingForPaymentRequest
-            {
-                OrderId = orderId
-            });
-        }
-
-        public Task ResendConfirmationToDriver(Guid orderId)
-        {
-            return Client.PostAsync<string>("/payment/ResendConfirmationRequest", new ResendPaymentConfirmationRequest {OrderId = orderId});
+            return Client.PostAsync(new SettleOverduePaymentRequest());
         }
     }
 }

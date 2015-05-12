@@ -48,9 +48,9 @@
     <Reference Include="Moq">
       <HintPath>..\packages\Moq.4.0.10827\lib\NET40\Moq.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Newtonsoft.Json.5.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.6.0.6\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="nunit.framework">
       <HintPath>..\packages\NUnit.2.6.2\lib\nunit.framework.dll</HintPath>
@@ -114,6 +114,7 @@
     <Compile Include="Areas\Admin\Controllers\API\VersionControllerFixture.cs" />
     <Compile Include="Areas\Admin\Controllers\VersionControllerFixture.cs" />
     <Compile Include="Areas\Customer\Controllers\Api\NetworkApiControllerFixture.cs" />
+    <Compile Include="Areas\Customer\Controllers\Api\RoamingApiControllerFixture.cs" />
     <Compile Include="Areas\Customer\Controllers\GraphicsControllerFixture\GraphicsControllerFixture.cs" />
     <Compile Include="Areas\Admin\Controllers\IBSControllerFixture\IBSControllerFixture.cs" />
     <Compile Include="Areas\Admin\Controllers\LayoutControllerFixture\LayoutControllerFixture.cs" />

@@ -437,6 +437,17 @@
         , update: function() {
             this.updateElement();
             this.updateWidget();
+
+            this.$element.trigger({
+                'type': 'changeTime.timepicker',
+                'time': {
+                    'value': this.getTime(),
+                    'hours': this.hour,
+                    'minutes': this.minute,
+                    'seconds': this.second,
+                    'meridian': this.meridian
+                }
+            });
         }
 
         , blurElement: function() {

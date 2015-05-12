@@ -35,11 +35,10 @@ namespace apcurium.MK.Booking.Mobile.Client
 {
 	public class Setup : MvxAndroidDialogSetup
     {
-        readonly TinyIoCContainer _container;
+        
 
 		public Setup(Context applicationContext) : base(applicationContext)
         {
-            _container = TinyIoCContainer.Current;
         }
 
 		protected override IMvxApplication CreateApp()
@@ -59,35 +58,39 @@ namespace apcurium.MK.Booking.Mobile.Client
         {
 			base.InitializeLastChance();
 
-            _container.Register<IPackageInfo>(new PackageInfo(ApplicationContext));
-            _container.Register<ILogger, LoggerImpl>();
-            _container.Register<IMessageService, MessageService>();
-            _container.Register<IAnalyticsService>((c, x) => new GoogleAnalyticsService(Application.Context, c.Resolve<IPackageInfo>(), c.Resolve<IAppSettings>(), c.Resolve<ILogger>()));
+		    var container = TinyIoCContainer.Current;
 
-            _container.Register<ILocationService, LocationService>();
+            container.Register<IPackageInfo>(new PackageInfo(ApplicationContext));
+            container.Register<ILogger>(new LoggerImpl());
+            container.Register<IMessageService, MessageService>();
+            container.Register<IAnalyticsService>((c, x) => new GoogleAnalyticsService(Application.Context, c.Resolve<IPackageInfo>(), c.Resolve<IAppSettings>(), c.Resolve<ILogger>()));
 
-			_container.Register<ILocalization>(new Localize(ApplicationContext,_container.Resolve<ILogger>()));
-            _container.Register<ICacheService>(new CacheService());
-            _container.Register<ICacheService>(new CacheService("MK.Booking.Application.Cache"), "UserAppCache");
-            _container.Register<IPhoneService>(new PhoneService(ApplicationContext));
-            _container.Register<IPushNotificationService>((c, p) => new PushNotificationService(ApplicationContext, c.Resolve<IAppSettings>()));
+            container.Register<ILocationService, LocationService>();
 
-            _container.Register<IAppSettings>(new AppSettingsService (_container.Resolve<ICacheService> (), _container.Resolve<ILogger> ()));
+            container.Register<ILocalization>(new Localize(ApplicationContext, container.Resolve<ILogger>()));
+            container.Register<ICacheService>(new CacheService());
+            container.Register<ICacheService>(new CacheService("MK.Booking.Application.Cache"), "UserAppCache");
+            container.Register<IPhoneService>(new PhoneService(ApplicationContext));
+            container.Register<IPushNotificationService>((c, p) => new PushNotificationService(ApplicationContext, c.Resolve<IAppSettings>()));
+
+            container.Register<IAppSettings>(new AppSettingsService(container.Resolve<ICacheService>(), container.Resolve<ILogger>()));
+
+		    container.Register<IPayPalConfigurationService, PayPalConfigurationService>();
 
             ConfigureInsights ();
 
-            _container.Register<IGeocoder>( (c,p)=> new GoogleApiClient(c.Resolve<IAppSettings>(), c.Resolve<ILogger>(), new AndroidGeocoder(c.Resolve<IAppSettings>(), c.Resolve<ILogger>(), c.Resolve<IMvxAndroidGlobals>())) );
-			_container.Register<IPlaceDataProvider, FoursquareProvider>();
+            container.Register<IGeocoder>((c,p) => new GoogleApiClient(c.Resolve<IAppSettings>(), c.Resolve<ILogger>(), new AndroidGeocoder(c.Resolve<IAppSettings>(), c.Resolve<ILogger>(), c.Resolve<IMvxAndroidGlobals>())));
+			container.Register<IPlaceDataProvider, FoursquareProvider>();
 			
-            _container.Register<IDirectionDataProvider> ((c, p) =>
+            container.Register<IDirectionDataProvider> ((c, p) =>
             {
                 switch (c.Resolve<IAppSettings>().Data.DirectionDataProvider)
                 {
-                case MapProvider.TomTom:
-                    return new TomTomProvider(c.Resolve<IAppSettings>(), c.Resolve<ILogger>());
-                case MapProvider.Google:
-                default:
-                    return new GoogleApiClient(c.Resolve<IAppSettings>(), c.Resolve<ILogger>(), new AndroidGeocoder(c.Resolve<IAppSettings>(), c.Resolve<ILogger>(), c.Resolve<IMvxAndroidGlobals>()));
+	                case MapProvider.TomTom:
+	                    return new TomTomProvider(c.Resolve<IAppSettings>(), c.Resolve<ILogger>());
+	                case MapProvider.Google:
+	                default:
+	                    return new GoogleApiClient(c.Resolve<IAppSettings>(), c.Resolve<ILogger>(), new AndroidGeocoder(c.Resolve<IAppSettings>(), c.Resolve<ILogger>(), c.Resolve<IMvxAndroidGlobals>()));
                 }
             });
 
@@ -113,9 +116,10 @@ namespace apcurium.MK.Booking.Mobile.Client
 
 		private void InitializeSocialNetwork()
 		{
-			_container.Register<IFacebookService,FacebookService> ();
+            var container = TinyIoCContainer.Current;
+			container.Register<IFacebookService,FacebookService> ();
 
-            _container.Register<ITwitterService>((c,p) => 
+            container.Register<ITwitterService>((c,p) => 
             {
                 var settings = c.Resolve<IAppSettings>();
                 var oauthConfig = new OAuthConfig
@@ -144,23 +148,22 @@ namespace apcurium.MK.Booking.Mobile.Client
         private void ConfigureInsights ()
         {
             #if !DEBUG
-            if(PlatformHelper.APILevel >= 15)
-            {
-                var settings = TinyIoCContainer.Current.Resolve<IAppSettings>().Data;
-                var packageInfo = TinyIoCContainer.Current.Resolve<IPackageInfo>();
+            
+            var settings = TinyIoCContainer.Current.Resolve<IAppSettings>().Data;
+            var packageInfo = TinyIoCContainer.Current.Resolve<IPackageInfo>();
 
-                Xamarin.Insights.Initialize(settings.Insights.APIKey, ApplicationContext);
-                Xamarin.Insights.DisableCollection = false;
-                Xamarin.Insights.DisableDataTransmission = false;
-                Xamarin.Insights.DisableExceptionCatching = false;
+            Xamarin.Insights.Initialize(settings.Insights.APIKey, ApplicationContext);
+            Xamarin.Insights.DisableCollection = false;
+            Xamarin.Insights.DisableDataTransmission = false;
+            Xamarin.Insights.DisableExceptionCatching = false;
 
-                // identify with an unknown user in case an exception occurs before the user can log in
-                Xamarin.Insights.Identify(settings.Insights.UnknownUserIdentifier, new Dictionary<string, string>
-                    {
-                        { "ApplicationVersion", packageInfo.Version },
-                        { "Company", settings.TaxiHail.ApplicationName },
-                    });
-            }
+            // identify with an unknown user in case an exception occurs before the user can log in
+            Xamarin.Insights.Identify(settings.Insights.UnknownUserIdentifier, new Dictionary<string, string>
+                {
+                    { "ApplicationVersion", packageInfo.Version },
+                    { "Company", settings.TaxiHail.ApplicationName },
+                });
+            
             #endif
         }
     }

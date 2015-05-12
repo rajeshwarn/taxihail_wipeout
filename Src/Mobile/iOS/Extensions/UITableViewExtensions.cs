@@ -1,5 +1,5 @@
-using MonoTouch.UIKit;
-using MonoTouch.Foundation;
+using UIKit;
+using Foundation;
 
 namespace apcurium.MK.Booking.Mobile.Client.Extensions
 {

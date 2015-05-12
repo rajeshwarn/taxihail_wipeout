@@ -14,6 +14,8 @@ namespace apcurium.MK.Common.Entity
 
         public string StreetNumber { get; set; }
 
+        public AddressLocationType AddressLocationType { get; set; }
+
         public string Street { get; set; }
 
         public string City { get; set; }
@@ -50,7 +52,8 @@ namespace apcurium.MK.Common.Entity
 
         private string ConcatAddressComponents(bool useBuildingName = false)
         {
-            var components = new[] { StreetNumber, Street, City, State, ZipCode }.Where(x => !string.IsNullOrWhiteSpace(x)).ToArray();
+            var components =
+                new[] {StreetNumber, Street, City, State, ZipCode}.Where(x => !string.IsNullOrWhiteSpace(x)).ToArray();
             if ((components.Length > 1) && (StreetNumber.HasValue()) && (Street.HasValue()))
             {
                 // StreetNumber Street, City, State ZipCode
@@ -72,7 +75,7 @@ namespace apcurium.MK.Common.Entity
 
         public string GetFirstPortionOfAddress()
         {
-            if ( (DisplayAddress.HasValue()) && ( DisplayAddress.Contains( "," ) ) )
+            if ((DisplayAddress.HasValue()) && (DisplayAddress.Contains(",")))
             {
                 return DisplayAddress.Split(',').First();
             }
@@ -82,7 +85,11 @@ namespace apcurium.MK.Common.Entity
 
         public void ChangeStreetNumber(string newStreetNumber)
         {
-            FullAddress = FullAddress.Replace(StreetNumber, newStreetNumber);
+            if (StreetNumber.HasValue())
+            {
+                FullAddress = FullAddress.Replace(StreetNumber, newStreetNumber);
+            }
+
             StreetNumber = newStreetNumber;
         }
 
@@ -91,7 +98,7 @@ namespace apcurium.MK.Common.Entity
         /// </summary>
         public Address Copy()
         {
-            return (Address)this.MemberwiseClone();
+            return (Address) this.MemberwiseClone();
         }
 
         /// <summary>

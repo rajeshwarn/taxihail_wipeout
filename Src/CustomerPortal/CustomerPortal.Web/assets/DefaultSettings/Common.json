@@ -64,8 +64,7 @@
    "Client.HideNoPreference" : "false",
    "Client.RatingEnabled" : "false",
    "Client.TutorialEnabled" : "true",  
-   "Client.ShowTermsAndConditions" : "false",
-   "Client.SupportEmail" : "taxihail@apcurium.com",      
+   "Client.ShowTermsAndConditions" : "false",    
    "Client.SendReceiptAvailable" : "true",   
    "Client.DisableFutureBooking" : "false",   
    "Client.HideDestination" : "false",   
@@ -81,7 +80,7 @@
    "CanChangeServiceUrl" : "false",
    "ErrorLog" : "",
    "ErrorLogEnabled" : "false",
-   "GoogleMapKey" : "",
+   "GoogleMapKey" : "AIzaSyCtazVDlL4prQA5f2OnlWTw4u2X581dkzo",
    "StreetNumberScreenEnabled" : "true",
    "TutorialEnabled" : "true",
    

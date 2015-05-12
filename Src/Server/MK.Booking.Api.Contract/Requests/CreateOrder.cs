@@ -45,8 +45,22 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
         public double? UserLatitude { get; set; }
 
         public double? UserLongitude { get; set; }
+        
+		public AccountChargeQuestion[] QuestionsAndAnswers { get; set; }
 
-        public bool FromWebApp { get; set; }
+        public string PromoCode { get; set; }
+
+        /// <summary>
+        /// Optional: Manually specify the company where to dispatch the order.
+        /// If both the OrderCompanyKey and OrderFleetId are set, OrderCompanyKey will have precedence over OrderFleetId.
+        /// </summary>
+        public string OrderCompanyKey { get; set; }
+
+        /// <summary>
+        /// Optional: Manually specify the company where to dispatch the order.
+        /// If both the OrderCompanyKey and OrderFleetId are set, OrderCompanyKey will have precedence over OrderFleetId.
+        /// </summary>
+        public int? OrderFleetId { get; set; }
 
         public class RideEstimate
         {
@@ -55,9 +69,9 @@ namespace apcurium.MK.Booking.Api.Contract.Requests
             /// </summary>
             public double? Price { get; set; }
 
-            public int Distance { get; set; }
+            public double Distance { get; set; }
         }
 
-		public AccountChargeQuestion[] QuestionsAndAnswers { get; set; }
+        public bool FromWebApp { get; set; }
     }
 }

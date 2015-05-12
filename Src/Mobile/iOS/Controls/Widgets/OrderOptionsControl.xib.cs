@@ -1,11 +1,13 @@
 using System;
 using Cirrious.MvvmCross.Binding.BindingContext;
-using MonoTouch.UIKit;
+using UIKit;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using apcurium.MK.Booking.Mobile.Client.Controls.Binding;
 using System.Linq;
 using apcurium.MK.Booking.Mobile.PresentationHints;
 using System.Windows.Input;
+using apcurium.MK.Booking.Mobile.Data;
+using apcurium.MK.Booking.Mobile.Client.Style;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
@@ -19,17 +21,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
         private void Initialize()
         {
-            _heightConstraint = NSLayoutConstraint.Create(this, NSLayoutAttribute.Height, 
-                NSLayoutRelation.Equal, 
-                null, 
-                NSLayoutAttribute.NoAttribute, 
-                1.0f, 44.0f);
-
-            this.AddConstraint(_heightConstraint);
+            _heightConstraint = NSLayoutConstraint.Create(this, NSLayoutAttribute.Height, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1.0f, 44.0f);
+            AddConstraint(_heightConstraint);
 
             BackgroundColor = UIColor.Clear;
             viewPickup.BackgroundColor = UIColor.Clear;
             viewDestination.BackgroundColor = UIColor.Clear;
+            viewVehicleType.BackgroundColor = UIColor.Clear;
+            viewEta.BackgroundColor = Theme.CompanyColor;
 
             viewPickup.IsDestination = false;
             viewDestination.IsDestination = true;
@@ -51,9 +50,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
             var set = this.CreateBindingSet<OrderOptionsControl, OrderOptionsViewModel>();
 
-            set.Bind(viewPickup)
-                .For(v => v.IsReadOnly)
-                .To(vm => vm.ShowDestination);
+			set.Bind(viewPickup)
+				.For(v => v.IsSelected)
+				.To(vm => vm.AddressSelectionMode)
+				.WithConversion("EnumToBool", AddressSelectionMode.PickupSelection);
             set.Bind(viewPickup)
                 .For(v => v.IsLoadingAddress)
                 .To(vm => vm.IsLoadingAddress);
@@ -64,6 +64,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 .For(v => v.Hidden)
                 .To(vm => vm.ShowDestination)
                 .WithConversion("BoolInverter");
+			set.Bind(viewDestination)
+				.For(v => v.IsSelected)
+				.To(vm => vm.AddressSelectionMode)
+				.WithConversion("EnumToBool", AddressSelectionMode.DropoffSelection);
             set.Bind(viewDestination)
                 .For(v => v.IsLoadingAddress)
                 .To(vm => vm.IsLoadingAddress);
@@ -81,9 +85,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 .For(v => v.ShowEstimate)
 				.To(vm => vm.ShowEstimate);
 			set.Bind(viewVehicleType)
-				.For(v => v.ShowEta)
-                .To(vm => vm.ShowEta);
-			set.Bind(viewVehicleType)
 				.For(v => v.ShowVehicleSelection)
 				.To(vm => vm.ShowVehicleSelection);
             set.Bind (viewVehicleType)
@@ -96,13 +97,24 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 				.For (v => v.Eta)
 				.To (vm => vm.FormattedEta);
 
+            set.Bind(viewEta)
+                .For(v => v.Hidden)
+                .To(vm => vm.ShowEta)
+                .WithConversion("BoolInverter");
+            set.Bind (viewEta)
+                .For (v => v.SelectedVehicle)
+                .To (vm => vm.SelectedVehicleType);
+            set.Bind (viewEta)
+                .For (v => v.Eta)
+                .To (vm => vm.FormattedEta);
+
 			set.Bind (viewPickup)
                 .For ("AddressClicked")
-				.To (vm => vm.ShowSearchAddress);
+				.To (vm => vm.ShowPickUpSearchAddress);
 
             set.Bind(viewDestination)
                 .For("AddressClicked")
-                .To(vm => vm.ShowSearchAddress);
+                .To(vm => vm.ShowDestinationSearchAddress);
 
             set.Apply();
         }
@@ -124,7 +136,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
         public void Resize()
         {
-            _heightConstraint.Constant = Subviews[0].Subviews.Where(x => !x.Hidden).Sum(x => x.Frame.Height);
+            _heightConstraint.Constant = (nfloat)Subviews[0].Subviews.Where(x => !x.Hidden).Sum(x => x.Frame.Height);
             SetNeedsDisplay();
         }
 
@@ -132,19 +144,25 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         {
             switch (hint.State)
             {
-                case HomeViewModelState.Review:
-                    viewPickup.IsReadOnly = true;
-                    viewDestination.IsReadOnly = true;
+				case HomeViewModelState.Review:
+                    viewPickup.IsSelected = false;
+					viewPickup.UserInputDisabled = true;
+                    viewDestination.IsSelected = false;
+					viewDestination.UserInputDisabled = true;
                     viewVehicleType.IsReadOnly = true;
                     break;
                 case HomeViewModelState.PickDate:
-                    viewPickup.IsReadOnly = true;
-                    viewDestination.IsReadOnly = true;
+                    viewPickup.IsSelected = false;
+					viewPickup.UserInputDisabled = true;
+                    viewDestination.IsSelected = false;
+					viewDestination.UserInputDisabled = true;
                     viewVehicleType.IsReadOnly = true;
                     break;
                 case HomeViewModelState.Initial:
-                    viewPickup.IsReadOnly = ViewModel.ShowDestination;
-                    viewDestination.IsReadOnly = false;
+					viewPickup.IsSelected = ViewModel.AddressSelectionMode == AddressSelectionMode.PickupSelection;
+                    viewPickup.UserInputDisabled = false;
+                    viewDestination.IsSelected = ViewModel.AddressSelectionMode == AddressSelectionMode.DropoffSelection;
+					viewDestination.UserInputDisabled = false;
                     viewVehicleType.IsReadOnly = false;
                     break;
             }

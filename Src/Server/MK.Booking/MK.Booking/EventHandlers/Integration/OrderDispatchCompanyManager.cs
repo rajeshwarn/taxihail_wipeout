@@ -6,12 +6,14 @@ using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.IBS;
 using apcurium.MK.Booking.ReadModel;
-using apcurium.MK.Common.Configuration.Impl;
+using apcurium.MK.Booking.ReadModel.Query.Contract;
+using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
 using CustomerPortal.Client;
 using CustomerPortal.Contract.Resources;
 using CustomerPortal.Contract.Response;
+using HoneyBadger;
 using Infrastructure.Messaging;
 using Infrastructure.Messaging.Handling;
 
@@ -24,17 +26,23 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
         private readonly Func<BookingDbContext> _contextFactory;
         private readonly IIBSServiceProvider _ibsServiceProvider;
         private readonly ITaxiHailNetworkServiceClient _taxiHailNetworkServiceClient;
+        private readonly HoneyBadgerServiceClient _honeyBadgerServiceClient;
+        private readonly IConfigurationDao _configurationDao;
 
         public OrderDispatchCompanyManager(
             ICommandBus commandBus,
             Func<BookingDbContext> contextFactory,
             IIBSServiceProvider ibsServiceProvider,
-            ITaxiHailNetworkServiceClient taxiHailNetworkServiceClient)
+            ITaxiHailNetworkServiceClient taxiHailNetworkServiceClient,
+            HoneyBadgerServiceClient honeyBadgerServiceClient,
+            IConfigurationDao configurationDao)
         {
             _contextFactory = contextFactory;
             _ibsServiceProvider = ibsServiceProvider;
             _commandBus = commandBus;
             _taxiHailNetworkServiceClient = taxiHailNetworkServiceClient;
+            _honeyBadgerServiceClient = honeyBadgerServiceClient;
+            _configurationDao = configurationDao;
         }
 
         public async void Handle(OrderTimedOut @event)
@@ -58,11 +66,32 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                     Latitude = order.PickupAddress.Latitude,
                     Longitude = order.PickupAddress.Longitude
                 };
+                
+                NetworkFleetResponse nextDispatchCompany = null;
 
-                // Get network fleet from customer portal
-                var networkFleet = await _taxiHailNetworkServiceClient.GetNetworkFleetAsync(details.CompanyKey, pickUpPosition.Latitude, pickUpPosition.Longitude);
+                if (@event.Market.HasValue())
+                {
+                    // External market
+                    var marketFleet = GetMarketFleets(@event.Market, details.CompanyKey, pickUpPosition.Latitude, pickUpPosition.Longitude);
+                    nextDispatchCompany = FindNextDispatchCompany(details.CompanyKey, pickUpPosition, marketFleet, @event.Market);
+                }
+                else
+                {
+                    // Local market
+                    var taxiHailNetworkSettings = _configurationDao.GetUserTaxiHailNetworkSettings(details.AccountId)
+                        ?? new UserTaxiHailNetworkSettings { IsEnabled = true, DisabledFleets = new string[]{} };
 
-                var nextDispatchCompany = FindNextDispatchCompany(details.CompanyKey, pickUpPosition, networkFleet);
+                    if (taxiHailNetworkSettings.IsEnabled)
+                    {
+                        var networkFleet = await _taxiHailNetworkServiceClient.GetNetworkFleetAsync(details.CompanyKey, pickUpPosition.Latitude, pickUpPosition.Longitude);
+
+                        // Remove fleets that were disabled by the user
+                        var userNetworkFleet = FilterNetworkFleet(taxiHailNetworkSettings.DisabledFleets, networkFleet);
+
+                        nextDispatchCompany = FindNextDispatchCompany(details.CompanyKey, pickUpPosition, userNetworkFleet);
+                    }
+                }
+
                 if (nextDispatchCompany != null)
                 {
                     _commandBus.Send(new PrepareOrderForNextDispatch
@@ -75,21 +104,26 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             }
         }
 
-        private NetworkFleetResponse FindNextDispatchCompany(string currentCompanyKey, MapCoordinate userPosition, IList<NetworkFleetResponse> networkFleet)
+        private IList<NetworkFleetResponse> FilterNetworkFleet(IEnumerable<string> disabledfleets, IEnumerable<NetworkFleetResponse> networkFleet)
+        {
+            return networkFleet.Where(x => !disabledfleets.Contains(x.CompanyKey)).ToList();
+        }
+
+        private NetworkFleetResponse FindNextDispatchCompany(string currentCompanyKey, MapCoordinate pickupPosition, IList<NetworkFleetResponse> networkFleet, string market = null)
         {
             if (networkFleet == null || !networkFleet.Any())
             {
                 return null;
             }
 
-            NetworkFleetResponse nextDispatchCompany = currentCompanyKey.IsNullOrEmpty()
+            var nextDispatchCompany = currentCompanyKey.IsNullOrEmpty()
                 ? networkFleet.First()
-                : FindNextAvailableCompanyInIbsZone(currentCompanyKey, userPosition, networkFleet);
+                : FindNextAvailableCompanyInIbsZone(currentCompanyKey, pickupPosition, networkFleet, market);
 
-            return nextDispatchCompany;
+            return nextDispatchCompany; 
         }
 
-        private NetworkFleetResponse FindNextAvailableCompanyInIbsZone(string currentCompanyKey, MapCoordinate userPosition, IList<NetworkFleetResponse> networkFleet)
+        private NetworkFleetResponse FindNextAvailableCompanyInIbsZone(string currentCompanyKey, MapCoordinate pickupPosition, IList<NetworkFleetResponse> networkFleet, string market = null)
         {
             // Find the list index of the current company
             var currentDispatchCompany = networkFleet.First(f => f.CompanyKey == currentCompanyKey);
@@ -105,12 +139,54 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
 
             // Check if company is in IBS zone
             var ibsZone = _ibsServiceProvider.StaticData(nextDispatchCompany.CompanyKey)
-                .GetZoneByCoordinate(null, userPosition.Latitude, userPosition.Longitude);
+                .GetZoneByCoordinate(null, pickupPosition.Latitude, pickupPosition.Longitude);
 
             // If company is not IBS zone, check the next one until we have browsed the whole fleet
             return string.IsNullOrWhiteSpace(ibsZone)
-                ? FindNextAvailableCompanyInIbsZone(nextDispatchCompany.CompanyKey, userPosition, networkFleet)
+                ? FindNextAvailableCompanyInIbsZone(nextDispatchCompany.CompanyKey, pickupPosition, networkFleet)
                 : nextDispatchCompany;
+        }
+
+        private List<NetworkFleetResponse> GetMarketFleets(string market, string currentCompanyKey, double pickupLatitude, double pickupLongitude)
+        {
+            const int searchExpendLimit = 10;
+            var searchRadius = 2000; // In meters
+
+            for (var i = 1; i < searchExpendLimit; i++)
+            {
+                var marketVehicles =
+                    _honeyBadgerServiceClient.GetAvailableVehicles(market, pickupLatitude, pickupLongitude, searchRadius, null, true)
+                                             .ToArray();
+
+                if (marketVehicles.Any())
+                {
+                    // Group and order fleet from max vehicle count to min
+                    var orderedFleets = marketVehicles.GroupBy(v => v.FleetId)
+                        .OrderBy(v => v.Count())
+                        .Select(g => g.First());
+
+                    // Fetch all NetworkFleet objects for this market
+                    var allMarketFleets = _taxiHailNetworkServiceClient.GetMarketFleets(null, market).ToArray();
+
+                    // All NetworkFleet objects for this market except the current one
+                    var marketFleets = allMarketFleets.Where(f => f.CompanyKey != currentCompanyKey);
+                    var currentFleet = allMarketFleets.First(f => f.CompanyKey == currentCompanyKey);
+
+                    // Return only those from the ordered fleet
+                    var nonNullOrdered = orderedFleets
+                        .Select(v => marketFleets.FirstOrDefault(f => f.FleetId == v.FleetId))
+                        .Where(f => f != null)
+                        .ToList();
+
+                    nonNullOrdered.Insert(0, currentFleet);
+                    return nonNullOrdered;
+                }
+
+                // Nothing found, extend search radius (total radius after 10 iterations: 3375m)
+                searchRadius += (i * 25);
+            }
+
+            return new List<NetworkFleetResponse>();
         }
     }
 }

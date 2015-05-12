@@ -42,25 +42,16 @@
     <Reference Include="System.Xml" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Reactive.Core">
-      <HintPath>..\..\Mobile\Components\rxforxamarin-2.1\lib\android\System.Reactive.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Reactive.Debugger">
-      <HintPath>..\..\Mobile\Components\rxforxamarin-2.1\lib\android\System.Reactive.Debugger.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Reactive.Experimental">
-      <HintPath>..\..\Mobile\Components\rxforxamarin-2.1\lib\android\System.Reactive.Experimental.dll</HintPath>
+      <HintPath>..\..\Mobile\Components\rxforxamarin-2.2.1\lib\android\System.Reactive.Core.dll</HintPath>
     </Reference>
     <Reference Include="System.Reactive.Interfaces">
-      <HintPath>..\..\Mobile\Components\rxforxamarin-2.1\lib\android\System.Reactive.Interfaces.dll</HintPath>
+      <HintPath>..\..\Mobile\Components\rxforxamarin-2.2.1\lib\android\System.Reactive.Interfaces.dll</HintPath>
     </Reference>
     <Reference Include="System.Reactive.Linq">
-      <HintPath>..\..\Mobile\Components\rxforxamarin-2.1\lib\android\System.Reactive.Linq.dll</HintPath>
+      <HintPath>..\..\Mobile\Components\rxforxamarin-2.2.1\lib\android\System.Reactive.Linq.dll</HintPath>
     </Reference>
     <Reference Include="System.Reactive.PlatformServices">
-      <HintPath>..\..\Mobile\Components\rxforxamarin-2.1\lib\android\System.Reactive.PlatformServices.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Reactive.Providers">
-      <HintPath>..\..\Mobile\Components\rxforxamarin-2.1\lib\android\System.Reactive.Providers.dll</HintPath>
+      <HintPath>..\..\Mobile\Components\rxforxamarin-2.2.1\lib\android\System.Reactive.PlatformServices.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -73,15 +64,19 @@
     <Compile Include="Configuration\Impl\CmtPaymentSettings.cs" />
     <Compile Include="Configuration\Impl\MonerisPaymentSettings.cs" />
     <Compile Include="Configuration\Impl\PaymentMethod.cs" />
+    <Compile Include="Configuration\Impl\PayPalClientCredentials.cs" />
     <Compile Include="Configuration\Impl\PayPalClientSettings.cs" />
     <Compile Include="Configuration\NotificationSettings.cs" />
     <Compile Include="Configuration\SettingContainers.cs" />
+    <Compile Include="Configuration\UserTaxiHailNetworkSettings.cs" />
     <Compile Include="CurencyCodes.cs" />
     <Compile Include="Diagnostic\ILogger.cs" />
+    <Compile Include="Entity\AddressLocationType.cs" />
     <Compile Include="Entity\DirectionSetting.cs" />
     <Compile Include="Entity\Address.cs" />
     <Compile Include="Entity\DayOfTheWeek.cs" />
     <Compile Include="Entity\ListItem.cs" />
+    <Compile Include="Entity\OrderManualRideLinqDetail.cs" />
     <Compile Include="Entity\OrderPairingDetail.cs" />
     <Compile Include="Entity\OrderRatings.cs" />
     <Compile Include="Entity\RatingScore.cs" />
@@ -109,6 +104,8 @@
     <Compile Include="Extensions\StreamExtensions.cs" />
     <Compile Include="Extensions\StringBuilderExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
+    <Compile Include="Geography\GeographyHelper.cs" />
+    <Compile Include="Helpers\PhoneHelper.cs" />
     <Compile Include="ICacheService.cs" />
     <Compile Include="IPackageInfo.cs" />
     <Compile Include="Params.cs">
@@ -128,8 +125,10 @@
     <Compile Include="Resources\BasePaymentResponse.cs" />
     <Compile Include="Resources\CommitPreauthorizedPaymentResponse.cs" />
     <Compile Include="Resources\DeleteTokenizedCreditcardResponse.cs" />
+    <Compile Include="Resources\ManualRideLinqResponse.cs" />
     <Compile Include="Resources\PairingResponse.cs" />
     <Compile Include="Resources\PreAuthorizePaymentResponse.cs" />
+    <Compile Include="Resources\SettleOverduePaymentResponse.cs" />
     <Compile Include="VehicleStatuses.cs" />
     <Compile Include="Enumeration\AppSettingsType.cs" />
     <Compile Include="Enumeration\AuthenticationErrorCode.cs" />
@@ -139,6 +138,7 @@
     <Compile Include="Extensions\ActionExtension.cs" />
     <Compile Include="Entity\AccountChargeQuestion.cs" />
     <Compile Include="Diagnostic\BaseLogger.cs" />
+    <Compile Include="Configuration\Attributes\RequiresTaxiHailPro.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
@@ -150,8 +150,11 @@
   </Target>
   -->
   <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
     <XamarinComponentReference Include="rxforxamarin">
-      <Version>2.1</Version>
+      <Version>2.2.1</Version>
       <Visible>False</Visible>
     </XamarinComponentReference>
   </ItemGroup>

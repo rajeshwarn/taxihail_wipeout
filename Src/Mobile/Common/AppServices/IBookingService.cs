@@ -14,7 +14,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices
        
 		string GetFareEstimateDisplay(DirectionInfo direction);
 
-        bool IsStatusCompleted(string statusId);
+		bool IsStatusCompleted (OrderStatusDetail status);
 
         bool IsStatusTimedOut(string statusId);
 
@@ -61,6 +61,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices
 		Task<OrderRatings> GetOrderRatingAsync(Guid orderId);
 
 	    Task SendRatingReview(OrderRatings orderRatings);
-    }
-}
 
+        Task<OrderManualRideLinqDetail> PairWithManualRideLinq(string pairingCode, Address pickupAddress);
+
+        Task UnpairFromManualRideLinq(Guid orderId);
+
+        Task<OrderManualRideLinqDetail> GetTripInfoFromManualRideLinq(Guid orderId);
+	}
+}

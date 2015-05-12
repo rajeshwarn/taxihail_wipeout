@@ -5,11 +5,9 @@
         public CmtPaymentSettings()
         {
 #if DEBUG
-            // TODO Change these values when we have them
-
             FleetToken = "270d2767ec30c1c2";
-            ConsumerKey = "AH7j9KweF235hP";
-            ConsumerSecretKey = "K09JucBn23dDrehZa";
+            ConsumerKey = "vmAoqWEY3zIvUCM4";
+            ConsumerSecretKey = "DUWzh0jAldPc7C5I";
             SandboxMobileBaseUrl = "https://mobile-sandbox.cmtapi.com/";
             SandboxBaseUrl = "https://payment-sandbox.cmtapi.com/";
             MobileBaseUrl = "https://mobile.cmtapi.com/";
@@ -19,6 +17,8 @@
             Market = "PHL";
 #endif
         }
+
+        public bool IsManualRidelinqCheckInEnabled { get; set; }
 
         public bool IsSandbox { get; set; }
 

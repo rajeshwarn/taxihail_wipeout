@@ -1,8 +1,8 @@
 using System;
-using MonoTouch.Foundation;
-using MonoTouch.UIKit;
-using System.Drawing;
-using MonoTouch.CoreGraphics;
+using Foundation;
+using UIKit;
+using CoreGraphics;
+using CoreGraphics;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
@@ -40,23 +40,26 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			this.SetNeedsDisplay();
 		}
 
-        public override void Draw (RectangleF rect)
-        {           
-			var context = UIGraphics.GetCurrentContext ();
-            var roundedRectanglePath = UIBezierPath.FromRoundedRect (rect, _radiusCorner);
+        public override void Draw (CGRect rect)
+        {   
+			if (!Hidden)
+			{
+				var context = UIGraphics.GetCurrentContext ();
+				var roundedRectanglePath = UIBezierPath.FromRoundedRect (rect, _radiusCorner);
 
-			DrawBackground(context, rect, roundedRectanglePath);
-            DrawStroke();			
+				DrawBackground(context, rect, roundedRectanglePath);
+				DrawStroke();	
+			}
 
             SetNeedsDisplay();
         }
 
-        void DrawBackground (CGContext context, RectangleF rect, UIBezierPath roundedRectanglePath)
+        void DrawBackground (CGContext context, CGRect rect, UIBezierPath roundedRectanglePath)
         {
             context.SaveState ();
             context.BeginTransparencyLayer (null);
             roundedRectanglePath.AddClip ();
-            context.SetFillColorWithColor(_fillColor.CGColor);
+            context.SetFillColor(_fillColor.CGColor);
             context.FillRect(rect);
             context.EndTransparencyLayer ();
             context.RestoreState ();
@@ -76,7 +79,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 _shadowView.Layer.ShadowColor = UIColor.FromRGBA(0, 0, 0, 127).CGColor;
                 _shadowView.Layer.ShadowOpacity = 1.0f;
                 _shadowView.Layer.ShadowRadius = _radiusCorner+1;
-                _shadowView.Layer.ShadowOffset = new SizeF(0.3f, 0.3f);
+                _shadowView.Layer.ShadowOffset = new CGSize(0.3f, 0.3f);
                 _shadowView.Layer.ShouldRasterize = true;        
 
                 this.Superview.InsertSubviewBelow(_shadowView, this);

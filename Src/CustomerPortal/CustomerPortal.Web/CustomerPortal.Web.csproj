@@ -15,7 +15,7 @@
     <AssemblyName>CustomerPortal.Web</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
-    <UseIISExpress>false</UseIISExpress>
+    <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
@@ -56,10 +56,17 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\ExtMongoMembership.1.6.7-beta\lib\ExtendedMongoMembership.dll</HintPath>
     </Reference>
+    <Reference Include="GridMvc">
+      <HintPath>..\packages\Grid.Mvc.3.0.0\lib\net40\GridMvc.dll</HintPath>
+    </Reference>
     <Reference Include="log4net">
       <HintPath>..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Web.Administration, Version=7.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.Web.Administration.7.0.0.0\lib\net20\Microsoft.Web.Administration.dll</HintPath>
+    </Reference>
     <Reference Include="MongoDB.Bson">
       <HintPath>..\packages\mongocsharpdriver.1.8.1\lib\net35\MongoDB.Bson.dll</HintPath>
     </Reference>
@@ -69,9 +76,9 @@
     <Reference Include="MongoRepository">
       <HintPath>..\packages\MongoRepository.1.5.1\lib\MongoRepository.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Newtonsoft.Json.5.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.6.0.6\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="PList">
       <HintPath>..\packages\plist.net.1.0\lib\Net35\PList.dll</HintPath>
@@ -175,6 +182,8 @@
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Areas\Admin\Controllers\API\AppleDevCenterController.cs" />
     <Compile Include="Areas\Admin\Controllers\API\VersionController.cs" />
+    <Compile Include="Areas\Admin\Controllers\ChecklistController.cs" />
+    <Compile Include="Areas\Admin\Controllers\NetworkVehiclesBaseController.cs" />
     <Compile Include="Areas\Admin\Controllers\PaymentController.cs" />
     <Compile Include="Areas\Admin\Controllers\StoreCredentialController.cs" />
     <Compile Include="Areas\Admin\Controllers\CompanyControllerBase.cs" />
@@ -189,12 +198,16 @@
     <Compile Include="Areas\Admin\Controllers\SettingsController.cs" />
     <Compile Include="Areas\Admin\Controllers\TaxiHailNetworkSettingsController.cs" />
     <Compile Include="Areas\Admin\Controllers\TaxiHailNetworkSettingsControllerBase.cs" />
+    <Compile Include="Areas\Admin\Controllers\NetworkVehiclesController.cs" />
     <Compile Include="Areas\Admin\Controllers\VersionController.cs" />
     <Compile Include="Areas\Admin\Models\AddDeploymentJobModel.cs" />
     <Compile Include="Areas\Admin\Models\AppleSearchByBundle.cs" />
     <Compile Include="Areas\Admin\Models\ApplicationInfo.cs" />
     <Compile Include="Areas\Admin\Models\ChangeRevisionStatus.cs" />
+    <Compile Include="Areas\Admin\Models\ChecklistModel.cs" />
     <Compile Include="Areas\Admin\Models\ColorModel.cs" />
+    <Compile Include="Areas\Admin\Models\MarketModel.cs" />
+    <Compile Include="Areas\Admin\Models\NetworkVehiclesModel.cs" />
     <Compile Include="Areas\Admin\Models\RequestResponse\CreateNewVersionRequest.cs" />
     <Compile Include="Areas\Admin\Models\CreateUser.cs" />
     <Compile Include="Areas\Admin\Models\DeployCustomerModel.cs" />
@@ -211,6 +224,8 @@
     <Compile Include="Areas\Admin\Models\RequestResponse\TestAppleDevCenterLoginRequest.cs" />
     <Compile Include="Areas\Admin\Models\VersionEmailViewModel.cs" />
     <Compile Include="Areas\Customer\Controllers\Api\NetworkApiController.cs" />
+    <Compile Include="Areas\Customer\Controllers\Api\NetworkVehiclesApiController.cs" />
+    <Compile Include="Areas\Customer\Controllers\Api\RoamingApiController.cs" />
     <Compile Include="Areas\Customer\Models\RequestResponse\CompanyPreferencesRequest.cs" />
     <Compile Include="Attributes\NoCacheAttribute.cs" />
     <Compile Include="BitBucket\VersionUpdater.cs" />
@@ -233,8 +248,10 @@
     <Compile Include="Entities\CompanySetting.cs" />
     <Compile Include="Entities\DeploymentJob.cs" />
     <Compile Include="Entities\JobStatusDetails.cs" />
+    <Compile Include="Entities\CompanyVehicle.cs" />
     <Compile Include="Entities\Network\MapRegion.cs" />
     <Compile Include="Entities\Network\TaxiHailNetworkSettings.cs" />
+    <Compile Include="Entities\Network\NetworkVehicle.cs" />
     <Compile Include="Entities\Payment.cs" />
     <Compile Include="Entities\Questionnaire.cs" />
     <Compile Include="Entities\AppStatus.cs" />
@@ -319,6 +336,7 @@
     <Content Include="assets\bootstrap\js\bootstrap-typeahead.js" />
     <Content Include="assets\bootstrap\js\bootstrap-tooltip-custom.js" />
     <Content Include="assets\css\tipsy.css" />
+    <Content Include="assets\css\vehicles.css" />
     <Content Include="assets\jquery-fileupload\css\jquery.fileupload-ui.css" />
     <Content Include="assets\jquery-fileupload\js\app.js" />
     <Content Include="assets\jquery-fileupload\js\cors\jquery.postmessage-transport.js" />
@@ -342,6 +360,7 @@
     <Content Include="assets\js\jquery.highlight-curly-brackets.js" />
     <Content Include="Content\512x512.png" />
     <Content Include="Content\57x57.png" />
+    <Content Include="Content\Gridmvc.css" />
     <Content Include="Content\load.gif" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
@@ -436,14 +455,21 @@
     <Content Include="HtmlPage1.html" />
     <Content Include="Images\android.png" />
     <Content Include="Images\apple.png" />
+    <Content Include="Images\blackcar_badge.png" />
     <Content Include="Images\check.png" />
     <Content Include="Images\copy.png" />
     <Content Include="Images\delete.png" />
     <Content Include="Images\download.jpg" />
     <Content Include="Images\settings.jpg" />
+    <Content Include="Images\suv_badge.png" />
+    <Content Include="Images\taxi_badge.png" />
     <Content Include="Images\THNetwork.png" />
     <Content Include="Images\warn.jpg" />
     <Content Include="log4net.xml" />
+    <Content Include="Scripts\gridmvc.js" />
+    <Content Include="Scripts\gridmvc.lang.ru.js" />
+    <Content Include="Scripts\gridmvc.min.js" />
+    <Content Include="Scripts\jquery.cookie.js" />
     <Content Include="Views\Shared\_SettingsLayout.cshtml" />
     <Content Include="Areas\Admin\SettingsDataSrc\Common.json" />
     <Content Include="Areas\Admin\SettingsDataSrc\MKWebDev.json" />
@@ -473,6 +499,13 @@
     <Content Include="Areas\Admin\Views\Deployment\DeployCustomer.cshtml" />
     <Content Include="Areas\Admin\Views\Settings\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\TaxiHailNetworkSettings\Index.cshtml" />
+    <Content Include="Grid.mvc.readme" />
+    <Content Include="Areas\Admin\Views\Checklist\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\NetworkVehicles\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\NetworkVehicles\CreateMarket.cshtml" />
+    <Content Include="Areas\Admin\Views\NetworkVehicles\CreateVehicle.cshtml" />
+    <Content Include="Areas\Admin\Views\NetworkVehicles\EditVehicle.cshtml" />
+    <Content Include="Areas\Admin\Views\NetworkVehicles\VehicleIndex.cshtml" />
     <None Include="Properties\PublishProfiles\local.pubxml" />
     <None Include="Properties\PublishProfiles\Production.pubxml" />
     <None Include="Scripts\jquery-1.8.2.intellisense.js" />
@@ -514,6 +547,8 @@
     <Content Include="Views\Shared\SettingsPartial.cshtml" />
     <Content Include="Views\Shared\_CustomerLayout.cshtml" />
     <Content Include="Views\Shared\_DeployRevisionPartial.cshtml" />
+    <Content Include="Views\Shared\_GridPager.cshtml" />
+    <Content Include="Views\Shared\_Grid.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -543,7 +578,7 @@
       <Name>Cupertino</Name>
     </ProjectReference>
     <ProjectReference Include="..\CustomerPortal.Client\CustomerPortal.Client.csproj">
-      <Project>{15824AAE-2D25-414E-B9FF-618DE088C9E7}</Project>
+      <Project>{15824aae-2d25-414e-b9ff-618de088c9e7}</Project>
       <Name>CustomerPortal.Client</Name>
     </ProjectReference>
     <ProjectReference Include="..\CustomerPortal.Contract\CustomerPortal.Contract.csproj">
@@ -569,7 +604,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>2287</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost/CustomerPortal.Web</IISUrl>
+          <IISUrl>http://localhost:2287/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

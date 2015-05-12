@@ -4,7 +4,7 @@
 // actions made in the UI designer. If it is removed, they will be lost.
 // Manual changes to this file may not be handled correctly.
 //
-using MonoTouch.Foundation;
+using Foundation;
 using System.CodeDom.Compiler;
 
 namespace apcurium.MK.Booking.Mobile.Client.Views
@@ -13,7 +13,13 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 	partial class HomeView
 	{
 		[Outlet]
+		UIKit.NSLayoutConstraint _constraintOrderBookinOptionsTopSpace { get; set; }
+
+		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.AppBarView bottomBar { get; set; }
+
+		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.OverlayButton btnAirport { get; set; }
 
 		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.OverlayButton btnLocateMe { get; set; }
@@ -22,19 +28,31 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.OverlayButton btnMenu { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.NSLayoutConstraint constraintOrderEditTrailingSpace { get; set; }
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.OverlayButton btnTrain { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.NSLayoutConstraint constraintOrderOptionsTopSpace { get; set; }
+		UIKit.NSLayoutConstraint constraintHomeLeadingSpace { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.NSLayoutConstraint constraintOrderReviewBottomSpace { get; set; }
+		UIKit.NSLayoutConstraint constraintOrderBookinOptionsTopSpace { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.NSLayoutConstraint constraintOrderReviewTopSpace { get; set; }
+		UIKit.NSLayoutConstraint constraintOrderEditTrailingSpace { get; set; }
+
+		[Outlet]
+		UIKit.NSLayoutConstraint constraintOrderOptionsTopSpace { get; set; }
+
+		[Outlet]
+		UIKit.NSLayoutConstraint constraintOrderReviewBottomSpace { get; set; }
+
+		[Outlet]
+		UIKit.NSLayoutConstraint constraintOrderReviewTopSpace { get; set; }
 
 		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Views.AddressPicker.AddressPickerView ctrlAddressPicker { get; set; }
+
+		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.Views.Order.OrderBookingOptions ctrlOrderBookingOptions { get; set; }
 
 		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.OrderOptionsControl ctrlOrderOptions { get; set; }
@@ -43,24 +61,32 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		apcurium.MK.Booking.Mobile.Client.Views.Order.OrderReviewView ctrlOrderReview { get; set; }
 
 		[Outlet]
-		MonoTouch.UIKit.UIView homeView { get; set; }
+		UIKit.UIView homeView { get; set; }
 
 		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Views.OrderMapView mapView { get; set; }
 
 		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Views.Order.OrderEditView orderEdit { get; set; }
+
+		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.Views.PanelMenuView panelMenu { get; set; }
 		
 		void ReleaseDesignerOutlets ()
 		{
-			if (ctrlAddressPicker != null) {
-				ctrlAddressPicker.Dispose ();
-				ctrlAddressPicker = null;
+			if (_constraintOrderBookinOptionsTopSpace != null) {
+				_constraintOrderBookinOptionsTopSpace.Dispose ();
+				_constraintOrderBookinOptionsTopSpace = null;
 			}
 
 			if (bottomBar != null) {
 				bottomBar.Dispose ();
 				bottomBar = null;
+			}
+
+			if (btnAirport != null) {
+				btnAirport.Dispose ();
+				btnAirport = null;
 			}
 
 			if (btnLocateMe != null) {
@@ -71,6 +97,21 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			if (btnMenu != null) {
 				btnMenu.Dispose ();
 				btnMenu = null;
+			}
+
+			if (btnTrain != null) {
+				btnTrain.Dispose ();
+				btnTrain = null;
+			}
+
+			if (constraintHomeLeadingSpace != null) {
+				constraintHomeLeadingSpace.Dispose ();
+				constraintHomeLeadingSpace = null;
+			}
+
+			if (constraintOrderBookinOptionsTopSpace != null) {
+				constraintOrderBookinOptionsTopSpace.Dispose ();
+				constraintOrderBookinOptionsTopSpace = null;
 			}
 
 			if (constraintOrderEditTrailingSpace != null) {
@@ -91,6 +132,16 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			if (constraintOrderReviewTopSpace != null) {
 				constraintOrderReviewTopSpace.Dispose ();
 				constraintOrderReviewTopSpace = null;
+			}
+
+			if (ctrlAddressPicker != null) {
+				ctrlAddressPicker.Dispose ();
+				ctrlAddressPicker = null;
+			}
+
+			if (ctrlOrderBookingOptions != null) {
+				ctrlOrderBookingOptions.Dispose ();
+				ctrlOrderBookingOptions = null;
 			}
 
 			if (ctrlOrderOptions != null) {
@@ -116,6 +167,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			if (orderEdit != null) {
 				orderEdit.Dispose ();
 				orderEdit = null;
+			}
+
+			if (panelMenu != null) {
+				panelMenu.Dispose ();
+				panelMenu = null;
 			}
 		}
 	}

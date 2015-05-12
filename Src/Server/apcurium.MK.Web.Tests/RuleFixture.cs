@@ -522,7 +522,7 @@ namespace apcurium.MK.Web.Tests
             {
                 r.Category = RuleCategory.WarningRule;
                 r.Type = RuleType.Default;
-                r.ZoneList = "1";
+                r.ZoneList = "1,2";
                 r.Priority = 2;
                 r.AppliesToPickup = false;
                 r.AppliesToDropoff = true;
@@ -656,6 +656,59 @@ namespace apcurium.MK.Web.Tests
                             Name = "Joe Smith"
                         },
                 };
+
+            var validation = await sut.ValidateOrder(order);
+
+            Assert.IsTrue(validation.HasWarning);
+            Assert.AreEqual(mess, validation.Message);
+        }
+
+        [Test]
+        public async void TestRecurrencyRuleIsApplied_with_start_and_end_time_on_different_day()
+        {
+            var ruleId = Guid.NewGuid();
+            var activeFromDateRef = DateTime.Now;
+            var name = "ReccurencyRuleTest" + Guid.NewGuid();
+            var mess = "ReccurencyRuleTestMessage";
+            var dayOfTheWeek = 1 << (int)DateTime.Now.DayOfWeek;
+            var rules = new RulesServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
+            rules.CreateRule(new Rule
+            {
+                Id = ruleId,
+                Name = name,
+                Type = RuleType.Recurring,
+                Category = RuleCategory.WarningRule,
+                AppliesToCurrentBooking = true,
+                AppliesToFutureBooking = true,
+                ActiveFrom = activeFromDateRef.AddHours(-1),
+                ActiveTo = activeFromDateRef.AddHours(1),
+                DaysOfTheWeek = (DayOfTheWeek)dayOfTheWeek,
+                StartTime = activeFromDateRef.AddHours(-1),
+                EndTime = activeFromDateRef.AddHours(22),
+                Priority = 23,
+                IsActive = true,
+                Message = "ReccurencyRuleTestMessage",
+                ZoneList = " "
+            });
+
+            var sut = new OrderServiceClient(BaseUrl, SessionId, new DummyPackageInfo());
+            var order = new CreateOrder
+            {
+                Id = Guid.NewGuid(),
+                PickupAddress = TestAddresses.GetAddress1(),
+                PickupDate = DateTime.Now,
+                DropOffAddress = TestAddresses.GetAddress2(),
+                Settings = new BookingSettings
+                {
+                    ChargeTypeId = 99,
+                    VehicleTypeId = 1,
+                    ProviderId = 13,
+                    Phone = "514-555-12129",
+                    Passengers = 6,
+                    NumberOfTaxi = 1,
+                    Name = "Joe Smith"
+                },
+            };
 
             var validation = await sut.ValidateOrder(order);
 

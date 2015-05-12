@@ -1,17 +1,12 @@
 using System;
-using MonoTouch.Foundation;
-using MonoTouch.UIKit;
+using Foundation;
+using UIKit;
 using apcurium.MK.Booking.Mobile.Client.Style;
 using System.Linq;
 using apcurium.MK.Common.Extensions;
-using System.Drawing;
-using apcurium.MK.Booking.Mobile.Client.Helper;
+using CoreGraphics;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
 using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
-using MonoTouch.CoreGraphics;
-using apcurium.MK.Booking.Mobile.Client.Localization;
-using TinyIoC;
-using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using System.Collections.Generic;
 
@@ -20,27 +15,32 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
     [Register("VehicleTypeAndEstimateView")]
     public class VehicleTypeAndEstimateView : UIView
     {
+        private const float VehicleLeftBadgeWidth = 56f;
+        private const float LabelPadding = 5f;
+        private const float VehicleSelectionPadding = 16f;
+        private const float EstimatedFareLabelTopValueWithEta = 2f;
+        private const float EstimatedFareLabelTopValueWithoutEta = 0f;
+
         private UIView HorizontalDividerTop { get; set; }
         private VehicleTypeView EstimateSelectedVehicleType { get; set; }
-		private VehicleTypeView EtaBadge { get; set; }
         private UILabel EstimatedFareLabel { get; set; }
-		private UILabel EtaLabel { get; set; }
-        private UIView VehicleSelection { get; set; }
-		private UIView EtaContainer { get; set; }
-
-		private const float VehicleSelectionHeight = 52.0f;
-		private const float EtaContainerHeight = 23.0f;
-		private const float VehicleLeftBadgeWidth = 56.0f;
-		private const float LabelPadding = 5f;
+        private UIView VehicleSelectionContainer { get; set; }
+        private UIView EstimateContainer { get; set; }
+        private UILabel EtaLabel { get; set; }
 
         public Action<VehicleType> VehicleSelected { get; set; }
 
-		private NSLayoutConstraint _heightConstraint;
+		private NSLayoutConstraint _constraintEstimateVehicleWidth;
+        private NSLayoutConstraint _constraintEstimatedFareLabelHeight;
+        private NSLayoutConstraint _constraintEstimatedFareLabelTop;
+        private NSLayoutConstraint _estimatedFareLabelHeightValueWithEta;
+        private NSLayoutConstraint _estimatedFareLabelHeightValueWithoutEta;
 
         public VehicleTypeAndEstimateView(IntPtr h) : base(h)
         {
             Initialize();
         }
+
         public VehicleTypeAndEstimateView ()
         {
             Initialize();
@@ -48,64 +48,108 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
         private void Initialize()
         {
-			_heightConstraint = NSLayoutConstraint.Create(this, NSLayoutAttribute.Height, 
-				NSLayoutRelation.Equal, 
-				null, 
-				NSLayoutAttribute.NoAttribute, 
-				1.0f, VehicleSelectionHeight);
+            HorizontalDividerTop = Line.CreateHorizontal(Frame.Width, Theme.LabelTextColor);
 
-			this.AddConstraint(_heightConstraint);
+            VehicleSelectionContainer = new UIView ();
+            VehicleSelectionContainer.TranslatesAutoresizingMaskIntoConstraints = false;
 
-			HorizontalDividerTop = new UIView(new RectangleF(0, 0, Frame.Width, UIHelper.OnePixel)) 
+            EstimateContainer = new UIView ();
+            EstimateContainer.TranslatesAutoresizingMaskIntoConstraints = false;
+
+            AddSubviews(HorizontalDividerTop, VehicleSelectionContainer, EstimateContainer);
+
+            // Constraints for VehicleSelectionContainer
+            AddConstraints(new [] 
             { 
-                BackgroundColor = Theme.LabelTextColor 
-            };
+                NSLayoutConstraint.Create(VehicleSelectionContainer, NSLayoutAttribute.Left, NSLayoutRelation.Equal, VehicleSelectionContainer.Superview, NSLayoutAttribute.Left, 1f, 0f),
+                NSLayoutConstraint.Create(VehicleSelectionContainer, NSLayoutAttribute.Right, NSLayoutRelation.Equal, VehicleSelectionContainer.Superview, NSLayoutAttribute.Right, 1f, 0f),
+                NSLayoutConstraint.Create(VehicleSelectionContainer, NSLayoutAttribute.Top, NSLayoutRelation.Equal, VehicleSelectionContainer.Superview, NSLayoutAttribute.Top, 1f, 0f),
+                NSLayoutConstraint.Create(VehicleSelectionContainer, NSLayoutAttribute.Bottom, NSLayoutRelation.Equal, VehicleSelectionContainer.Superview, NSLayoutAttribute.Bottom, 1f, 0f)
+            });
 
-            EstimateSelectedVehicleType = new VehicleTypeView(new RectangleF(0f, 0f, 50f, this.Frame.Height));
+            // Constraints for EstimateContainer
+            AddConstraints(new [] 
+            { 
+                NSLayoutConstraint.Create(EstimateContainer, NSLayoutAttribute.Left, NSLayoutRelation.Equal, EstimateContainer.Superview, NSLayoutAttribute.Left, 1f, 0f),
+                NSLayoutConstraint.Create(EstimateContainer, NSLayoutAttribute.Right, NSLayoutRelation.Equal, EstimateContainer.Superview, NSLayoutAttribute.Right, 1f, 0f),
+                NSLayoutConstraint.Create(EstimateContainer, NSLayoutAttribute.Top, NSLayoutRelation.Equal, EstimateContainer.Superview, NSLayoutAttribute.Top, 1f, 0f),
+                NSLayoutConstraint.Create(EstimateContainer, NSLayoutAttribute.Bottom, NSLayoutRelation.Equal, EstimateContainer.Superview, NSLayoutAttribute.Bottom, 1f, 0f)
+            });
 
-            VehicleSelection = new UIView (this.Bounds);
+            InitializeEstimateContainer();
+        }
+
+        private void InitializeEstimateContainer()
+        {
+            EstimateSelectedVehicleType = new VehicleTypeView(new CGRect(0f, 0f, 50f, this.Frame.Height));
+            EstimateSelectedVehicleType.TranslatesAutoresizingMaskIntoConstraints = false;
 
             EstimatedFareLabel = new UILabel
             {
-				AdjustsFontSizeToFitWidth = true,
+                AdjustsFontSizeToFitWidth = true,
                 BackgroundColor = UIColor.Clear,
                 Lines = 1,
-				Font = UIFont.FromName(FontName.HelveticaNeueLight, 32 / 2),
+                Font = UIFont.FromName(FontName.HelveticaNeueLight, 32 / 2),
                 TextAlignment = NaturalLanguageHelper.GetTextAlignment(),
                 TextColor = Theme.LabelTextColor,
                 ShadowColor = UIColor.Clear
             };
+            EstimatedFareLabel.TranslatesAutoresizingMaskIntoConstraints = false;
 
-			EstimatedFareLabel.SetWidth(Frame.Width - VehicleLeftBadgeWidth - LabelPadding);
-			EstimatedFareLabel.SetHeight(Frame.Height / 2);
-			EstimatedFareLabel.SetHorizontalCenter((Frame.Width / 2) + (VehicleLeftBadgeWidth / 2) - LabelPadding);
-			EstimatedFareLabel.SetVerticalCenter(16f);
-
-			EtaLabel = new UILabel
-			{
+            EtaLabel = new UILabel
+            {
                 AdjustsFontSizeToFitWidth = true,
-				BackgroundColor = UIColor.Clear,
-				Lines = 1,
+                BackgroundColor = UIColor.Clear,
+                Lines = 1,
                 Font = UIFont.FromName(FontName.HelveticaNeueLight, 24 / 2),
                 TextAlignment = NaturalLanguageHelper.GetTextAlignment(),
-				TextColor = Theme.LabelTextColor,
-				ShadowColor = UIColor.Clear,
-			};
+                TextColor = Theme.LabelTextColor,
+                ShadowColor = UIColor.Clear,
+            };
+            EtaLabel.TranslatesAutoresizingMaskIntoConstraints = false;
 
-			EtaLabel.SetWidth(Frame.Width - VehicleLeftBadgeWidth - LabelPadding);
-            EtaLabel.SetHeight(EtaContainerHeight);
-			EtaLabel.SetHorizontalCenter((Frame.Width / 2) + (VehicleLeftBadgeWidth / 2) - LabelPadding);
+            EstimateContainer.AddSubviews(EstimateSelectedVehicleType, EstimatedFareLabel, EtaLabel);
 
-			EtaContainer = new UIView (
-				new RectangleF (0f, this.Frame.Height - EtaContainerHeight, 
-					this.Frame.Width, EtaContainerHeight));
+            // initialize constraint values
+            _estimatedFareLabelHeightValueWithEta = NSLayoutConstraint.Create(EstimatedFareLabel, NSLayoutAttribute.Height, NSLayoutRelation.Equal, EstimatedFareLabel.Superview, NSLayoutAttribute.Height, 0.5f, 0f);
+            _estimatedFareLabelHeightValueWithoutEta = NSLayoutConstraint.Create(EstimatedFareLabel, NSLayoutAttribute.Height, NSLayoutRelation.Equal, EstimatedFareLabel.Superview, NSLayoutAttribute.Height, 1f, 0f);
+            _constraintEstimatedFareLabelTop = NSLayoutConstraint.Create(EstimatedFareLabel, NSLayoutAttribute.Top, NSLayoutRelation.Equal, EstimatedFareLabel.Superview, NSLayoutAttribute.Top, 1f, EstimatedFareLabelTopValueWithoutEta);
 
+            // Constraints for EstimateSelectedVehicleType
+            _constraintEstimateVehicleWidth = NSLayoutConstraint.Create(EstimateSelectedVehicleType, NSLayoutAttribute.Width, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1f, 40f);
+            EstimateContainer.AddConstraints(new [] 
+            { 
+                _constraintEstimateVehicleWidth,
+                NSLayoutConstraint.Create(EstimateSelectedVehicleType, NSLayoutAttribute.Height, NSLayoutRelation.Equal, EstimateSelectedVehicleType.Superview, NSLayoutAttribute.Height, 1f, 0f),
+                NSLayoutConstraint.Create(EstimateSelectedVehicleType, NSLayoutAttribute.Top, NSLayoutRelation.Equal, EstimateSelectedVehicleType.Superview, NSLayoutAttribute.Top, 1f, 0f),
+                NSLayoutConstraint.Create(EstimateSelectedVehicleType, NSLayoutAttribute.Left, NSLayoutRelation.Equal, EstimateSelectedVehicleType.Superview, NSLayoutAttribute.Left, 1f, 0f)
+            });
 
-			EtaContainer.BackgroundColor = Theme.CompanyColor;
-			VehicleSelection.Add (EtaContainer);
-			EtaContainer.Add (EtaBadge = new VehicleTypeView (new RectangleF (0, 0, 0, 0)));
-			AddSubviews(HorizontalDividerTop, EstimateSelectedVehicleType, EstimatedFareLabel, VehicleSelection);
+            // Constraints for EstimatedFareLabel
+            _constraintEstimatedFareLabelHeight = _estimatedFareLabelHeightValueWithoutEta;
+            EstimateContainer.AddConstraints(new [] 
+            { 
+                NSLayoutConstraint.Create(EstimatedFareLabel, NSLayoutAttribute.Left, NSLayoutRelation.Equal, EstimateSelectedVehicleType, NSLayoutAttribute.Right, 1f, LabelPadding),
+                NSLayoutConstraint.Create(EstimatedFareLabel, NSLayoutAttribute.Right, NSLayoutRelation.Equal, EstimatedFareLabel.Superview, NSLayoutAttribute.Right, 1f, -LabelPadding),
+                _constraintEstimatedFareLabelHeight,
+                _constraintEstimatedFareLabelTop
+            });
 
+            // Constraints for EstimatedFareLabel
+            EstimateContainer.AddConstraints(new [] 
+            { 
+                NSLayoutConstraint.Create(EtaLabel, NSLayoutAttribute.Left, NSLayoutRelation.Equal, EstimateSelectedVehicleType, NSLayoutAttribute.Right, 1f, LabelPadding),
+                NSLayoutConstraint.Create(EtaLabel, NSLayoutAttribute.Right, NSLayoutRelation.Equal, EstimatedFareLabel.Superview, NSLayoutAttribute.Right, 1f, -LabelPadding),
+                NSLayoutConstraint.Create(EtaLabel, NSLayoutAttribute.Height, NSLayoutRelation.Equal, EstimatedFareLabel.Superview, NSLayoutAttribute.Height, 0.5f, 0f),
+                NSLayoutConstraint.Create(EtaLabel, NSLayoutAttribute.Bottom, NSLayoutRelation.Equal, EstimatedFareLabel.Superview, NSLayoutAttribute.Bottom, 1f, -2f)
+            });
+        }
+
+        public override void LayoutSubviews()
+        {
+            base.LayoutSubviews();
+
+            this.SetRoundedCorners(UIRectCorner.BottomLeft | UIRectCorner.BottomRight, ShowEstimate ? 3f : 0f);
         }
 
         public bool IsReadOnly { get; set; }
@@ -123,20 +167,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 }
             }
         }
-
-		private bool _showEta;
-		public bool ShowEta
-		{
-			get { return _showEta; }
-			set
-			{
-				if (_showEta != value)
-				{
-					_showEta = value;
-					Redraw();
-				}
-			}
-		}
 
 		private bool _showVehicleSelection;
 		public bool ShowVehicleSelection
@@ -206,118 +236,87 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
         private void Redraw()
         {
-			bool showEta = !Eta.IsNullOrEmpty () && ShowEta;
-			showEtaView (showEta);
-
 			if (ShowEstimate)
             {
 				BackgroundColor = Theme.CompanyColor;
                 HorizontalDividerTop.BackgroundColor = Theme.LabelTextColor;
-                EstimateSelectedVehicleType.Hidden = false;
-                EstimatedFareLabel.Hidden = false;
-				VehicleSelection.Hidden = true;
+                EstimateContainer.Hidden = false;
+				VehicleSelectionContainer.Hidden = true;
+
+                if (Eta.HasValue())
+                {
+                    EstimateContainer.RemoveConstraint(_constraintEstimatedFareLabelHeight);
+                    _constraintEstimatedFareLabelHeight = _estimatedFareLabelHeightValueWithEta;
+                    EstimateContainer.AddConstraint(_constraintEstimatedFareLabelHeight);
+                    _constraintEstimatedFareLabelTop.Constant = EstimatedFareLabelTopValueWithEta;
+                }
+                else
+                {
+                    EstimateContainer.RemoveConstraint(_constraintEstimatedFareLabelHeight);
+                    _constraintEstimatedFareLabelHeight = _estimatedFareLabelHeightValueWithoutEta;
+                    EstimateContainer.AddConstraint(_constraintEstimatedFareLabelHeight);
+                    _constraintEstimatedFareLabelTop.Constant = EstimatedFareLabelTopValueWithoutEta;
+                }
             }
             else
             {
 				BackgroundColor = UIColor.Clear;
                 HorizontalDividerTop.BackgroundColor = UIColor.FromRGB(177, 177, 177);
-                EstimateSelectedVehicleType.Hidden = true;
-                EstimatedFareLabel.Hidden = true;
-                VehicleSelection.Hidden = false;
-                VehicleSelection.Subviews.ForEach (x => x.RemoveFromSuperview ());
+                EstimateContainer.Hidden = true;
+                VehicleSelectionContainer.Hidden = false;
 
-                if (Vehicles.None ())
+                VehicleSelectionContainer.Subviews.ForEach(x => x.RemoveFromSuperview());
+
+                if (Vehicles.None())
+                {
                     return;
+                }
 
-                var leftPadding = 16f;
-                var width = (this.Frame.Width - leftPadding * 2) / Vehicles.Count ();
                 var i = 0;
-
-				VehicleType etaBadge = null;
-
-
-				foreach (var vehicle in Vehicles) {
-					var vehicleView = new VehicleTypeView (
-						                   new RectangleF (leftPadding + i * width, 0f, width, this.Frame.Height), 
-						                   vehicle, 
-						                   SelectedVehicle != null ? vehicle.Id == SelectedVehicle.Id : false);
-
-					if (etaBadge == null) {
-						if (SelectedVehicle != null) {
-							etaBadge = SelectedVehicle;
-						} else {
-							etaBadge = vehicle;
-						}
-					}
-
+				foreach (var vehicle in Vehicles) 
+                {
+                    var vehicleView = new VehicleTypeView(new CGRect(), vehicle, SelectedVehicle != null ? vehicle.Id == SelectedVehicle.Id : false);
+                    vehicleView.TranslatesAutoresizingMaskIntoConstraints = false;
 					vehicleView.TouchUpInside += (sender, e) => { 
 						if (!IsReadOnly && VehicleSelected != null) {
 							VehicleSelected (vehicle);
 						}
 					};
 
-					VehicleSelection.Add (vehicleView);
+					VehicleSelectionContainer.Add (vehicleView);
+
+                    VehicleSelectionContainer.AddConstraints(new [] 
+                    { 
+                        NSLayoutConstraint.Create(vehicleView, NSLayoutAttribute.Top, NSLayoutRelation.Equal, vehicleView.Superview, NSLayoutAttribute.Top, 1f, 0f),
+                        NSLayoutConstraint.Create(vehicleView, NSLayoutAttribute.Height, NSLayoutRelation.Equal, vehicleView.Superview, NSLayoutAttribute.Height, 1f, 0f)
+                    });
+
+                    if (i == 0)
+                    {
+                        // first vehicle
+                        VehicleSelectionContainer.AddConstraint(NSLayoutConstraint.Create(vehicleView, NSLayoutAttribute.Left, NSLayoutRelation.Equal, vehicleView.Superview, NSLayoutAttribute.Left, 1f, VehicleSelectionPadding));
+                    }
+                    else
+                    {
+                        // add constraint relative to previous vehicle
+                        VehicleSelectionContainer.AddConstraints(new [] 
+                        {
+                            NSLayoutConstraint.Create(vehicleView, NSLayoutAttribute.Left, NSLayoutRelation.Equal, VehicleSelectionContainer.Subviews[i - 1], NSLayoutAttribute.Right, 1f, 0f),
+                            NSLayoutConstraint.Create(vehicleView, NSLayoutAttribute.Width, NSLayoutRelation.Equal, VehicleSelectionContainer.Subviews[i - 1], NSLayoutAttribute.Width, 1f, 0f)
+                        });
+                    }
+
+                    if (i == (Vehicles.Count() - 1))
+                    {
+                        // last vehicle
+                        VehicleSelectionContainer.AddConstraint(NSLayoutConstraint.Create(vehicleView, NSLayoutAttribute.Right, NSLayoutRelation.Equal, VehicleSelectionContainer, NSLayoutAttribute.Right, 1f, -VehicleSelectionPadding));
+                    }
+
 					i++;
-
 				}
-					
-				VehicleSelection.Add (EtaContainer);
-
-				EtaBadge.RemoveFromSuperview ();
-				EtaBadge = new VehicleTypeView (
-                    new RectangleF (4f, (EtaContainerHeight - 40f) / 2, 40f, 40f), // use real size of image
-					etaBadge,
-					true,
-					true);
-				EtaContainer.Add (EtaBadge);
             }
-
-			// Since this control doesn't use constraints:
-			var badgeWidth = ShowEstimate ? EstimateSelectedVehicleType.SizeToFitLabel().Frame.Width : VehicleLeftBadgeWidth;
-			EstimateSelectedVehicleType.SetWidth (badgeWidth);
-			EstimatedFareLabel.SetWidth (this.Frame.Width - badgeWidth - LabelPadding * 2);
-			EtaLabel.SetWidth (this.Frame.Width - badgeWidth - LabelPadding * 2);
-			EtaLabel.SetX (badgeWidth + LabelPadding);
-			EstimatedFareLabel.SetX (badgeWidth + LabelPadding);
-		}
-
-		private void showEtaView(bool showEta)
-		{
-			EtaLabel.RemoveFromSuperview ();
-			VehicleSelection.Hidden = ShowEstimate;
-
-			float etaTop = (!ShowVehicleSelection && !ShowEstimate) ? 0f : VehicleSelectionHeight;
-			float etaHeight = etaTop + ((showEta && !ShowEstimate) ? EtaContainerHeight : 0f);
-			EtaContainer.SetY (etaTop);
-			this.SetHeight (etaHeight);
-			_heightConstraint.Constant = etaHeight;
-
-			if (Superview != null) {
-				((OrderOptionsControl)Superview.Superview).Resize();
-			}
-
-			this.SetRoundedCorners(UIRectCorner.BottomLeft | UIRectCorner.BottomRight, 3f);
-			EtaContainer.SetRoundedCorners(UIRectCorner.BottomLeft | UIRectCorner.BottomRight, 3f);
-
-			if (!ShowEstimate && showEta) 
-			{
-				EtaContainer.Add (EtaLabel);
-                EtaLabel.SetVerticalCenter(EtaContainerHeight / 2);
-			}
-				
-			if (ShowEstimate) {
-				if (showEta) {
-					this.AddSubview (EtaLabel);
-					EstimatedFareLabel.SetHeight(Frame.Height / 2);
-					EstimatedFareLabel.SetVerticalCenter(16f);
-					EstimatedFareLabel.Font = UIFont.FromName (FontName.HelveticaNeueLight, 32 / 2);
-					EtaLabel.SetVerticalCenter(Frame.Height - 16f);
-				} else {
-					EstimatedFareLabel.SetHeight(Frame.Height - 10f);
-					EstimatedFareLabel.SetVerticalCenter(Frame.Height / 2);
-					EstimatedFareLabel.Font = UIFont.FromName (FontName.HelveticaNeueLight, 38 / 2);
-				}
-			}
+                
+            _constraintEstimateVehicleWidth.Constant = EstimateSelectedVehicleType.WidthToFitLabel();
 		}
 
         private NSLayoutConstraint[] _hiddenContraints { get; set; }
@@ -336,8 +335,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                     if (value)
                     {
                         _hiddenContraints = this.Superview.Constraints != null 
-                                            ? this.Superview.Constraints.Where(x => x.FirstItem == this || x.SecondItem == this).ToArray()
-                                            : null;
+                            ? this.Superview.Constraints.Where(x => x.FirstItem == this || x.SecondItem == this).ToArray()
+                            : null;
                         if (_hiddenContraints != null)
                         {
                             this.Superview.RemoveConstraints(_hiddenContraints);

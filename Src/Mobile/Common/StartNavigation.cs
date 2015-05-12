@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Booking.Mobile.ViewModels.Payment;
@@ -13,9 +14,7 @@ using apcurium.MK.Booking.Mobile.AppServices.Social;
 
 namespace apcurium.MK.Booking.Mobile
 {
-    public class StartNavigation:
-            MvxNavigatingObject,
-            IMvxAppStart
+    public class StartNavigation : MvxNavigatingObject, IMvxAppStart
     {
 		public async void Start (object hint)
         {
@@ -23,26 +22,31 @@ namespace apcurium.MK.Booking.Mobile
 
 			JsConfig.DateHandler = JsonDateHandler.ISO8601; //MKTAXI-849 it's here because cache service use servicetacks deserialization so it needs it to correctly deserezialised expiration date...
 
-			await Mvx.Resolve<IAppSettings>().Load();
+		    var appSettings = Mvx.Resolve<IAppSettings>();
+		    var accountService = Mvx.Resolve<IAccountService>();
+		    var facebookService = Mvx.Resolve<IFacebookService>();
 
-			if (Mvx.Resolve<IAppSettings>().Data.FacebookEnabled)
-			{
-				Mvx.Resolve<IFacebookService> ().Init ();
-			}
-			if (Mvx.Resolve<IAppSettings>().Data.FacebookPublishEnabled) 
-			{
-				Mvx.Resolve<IFacebookService>().PublishInstall();
-			}
+            await appSettings.Load();
+
+            if (appSettings.Data.FacebookEnabled)
+            {
+                facebookService.Init();
+            }
+
+            if (appSettings.Data.FacebookPublishEnabled)
+            {
+                facebookService.PublishInstall();
+            }
 
 			Mvx.Resolve<IAnalyticsService>().ReportConversion();
 
-			if (Mvx.Resolve<IAccountService>().CurrentAccount == null 
-				|| (Mvx.Resolve<IAppSettings> ().Data.CreditCardIsMandatory 
-					&& !Mvx.Resolve<IAccountService>().CurrentAccount.DefaultCreditCard.HasValue))
+            if (accountService.CurrentAccount == null
+                || (appSettings.Data.CreditCardIsMandatory
+                    && accountService.CurrentAccount.DefaultCreditCard == null))
 			{
-				if (Mvx.Resolve<IAccountService>().CurrentAccount != null)
+                if (accountService.CurrentAccount != null)
 				{
-					Mvx.Resolve<IAccountService>().SignOut();
+                    accountService.SignOut();
 				}
 
 				ShowViewModel<LoginViewModel>();
@@ -53,45 +57,45 @@ namespace apcurium.MK.Booking.Mobile
                 bool isPairingNotification;
                 bool.TryParse(@params["isPairingNotification"], out isPairingNotification);
 
-				// Make sure to reload notification/payment settings even if the user has killed the app
-				await Mvx.Resolve<IAccountService>().GetNotificationSettings(true, true);
-				await Mvx.Resolve<IPaymentService>().GetPaymentSettings(true);
+				// Make sure to reload notification/payment/network settings even if the user has killed the app
+                await accountService.GetNotificationSettings(true);
+                await accountService.GetUserTaxiHailNetworkSettings(true);
+				await Mvx.Resolve<IPaymentService>().GetPaymentSettings();
                 
-				var orderStatus = await Mvx.Resolve<IBookingService>().GetOrderStatusAsync (orderId);
-				var order = await Mvx.Resolve<IAccountService>().GetHistoryOrderAsync(orderId);
-
-				if (order != null && orderStatus != null) 
+                try
                 {
-                    if (isPairingNotification)
-                    {
-                        ShowViewModel<ConfirmPairViewModel>(new
-                        {
-                            order = order.ToJson(),
-                            orderStatus = orderStatus.ToJson()
-                        }.ToStringDictionary());
-                    }
-                    else
+                    var orderStatus = await Mvx.Resolve<IBookingService>().GetOrderStatusAsync(orderId);
+                    var order = await accountService.GetHistoryOrderAsync(orderId);
+
+                    if (order != null && orderStatus != null)
                     {
                         ShowViewModel<BookingStatusViewModel>(new Dictionary<string, string> {
 						    {"order", order.ToJson()},
-                            {"orderStatus", orderStatus.ToJson()},
+                            {"orderStatus", orderStatus.ToJson()}
                         });
                     }
+                }
+                catch(Exception)
+                {
+                    ShowViewModel<HomeViewModel>(new { locateUser = true });
                 }
             }
             else
             {
-				// Make sure to reload notification/payment settings even if the user has killed the app
-				await Mvx.Resolve<IAccountService>().GetNotificationSettings(true, true);
-				await Mvx.Resolve<IPaymentService>().GetPaymentSettings(true);
+                Task.Run(() =>
+                {
+                    // Make sure to refresh notification/payment settings even if the user has killed the app
+                    accountService.GetNotificationSettings(true);
+                    Mvx.Resolve<IPaymentService>().GetPaymentSettings();
+                });
 
                 // Log user session start
-				Mvx.Resolve<IAccountService>().LogApplicationStartUp();
+                accountService.LogApplicationStartUp();
 
-				ShowViewModel<HomeViewModel>(new { locateUser =  true });
+                ShowViewModel<HomeViewModel>(new { locateUser = true });
             }
 
-			Mvx.Resolve<ILogger>().LogMessage("Startup with server {0}", Mvx.Resolve<IAppSettings>().Data.ServiceUrl);
+            Mvx.Resolve<ILogger>().LogMessage("Startup with server {0}", appSettings.Data.ServiceUrl);
         }
 
         public bool ApplicationCanOpenBookmarks

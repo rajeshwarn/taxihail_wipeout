@@ -16,7 +16,8 @@ namespace CustomerPortal.Web
                 "~/assets/js/jquery.highlight-curly-brackets.js",
                 "~/assets/js/jquery.fetch-version.js",
                 "~/assets/js/tipsy.js",                
-                "~/assets/js/jquery.fetch-status.js"
+                "~/assets/js/jquery.fetch-status.js",
+                "~/Scripts/jquery.cookie.js"
                 ));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
@@ -37,6 +38,7 @@ namespace CustomerPortal.Web
             var lessBundle = new Bundle("~/bundles/bootstrap/less").Include(
                 "~/assets/less/portal.less",
                 "~/assets/css/tipsy.css",
+                "~/assets/css/vehicles.css",
                 "~/assets/jquery-fileupload/css/jquery.fileupload-ui.css");
 
 

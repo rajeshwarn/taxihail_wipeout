@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
+using apcurium.MK.Booking.Api.Contract.Resources.Payments;
+using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
 using MK.Common.Configuration;
 
@@ -34,6 +36,9 @@ namespace apcurium.MK.Booking.Api.Client
 
         Task<NotificationSettings> GetNotificationSettings(Guid accountId);
         Task UpdateNotificationSettings(NotificationSettingsRequest notificationSettingsRequest);
+
+        Task<UserTaxiHailNetworkSettings> GetUserTaxiHailNetworkSettings(Guid accountId);
+        Task UpdateUserTaxiHailNetworkSettings(UserTaxiHailNetworkSettingsRequest userTaxiHailNetworkSettingsRequest);
 
 		Task LogApplicationStartUp(LogApplicationStartUpRequest request);
     }

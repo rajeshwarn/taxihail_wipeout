@@ -36,23 +36,24 @@
             } else {
                 data.applies = "None";
             }
-            
 
             if (data.isActive == true || data.isActive == "true") {
                 data.isActiveText = this.localize("Disable");
             } else {
                 data.isActiveText = this.localize("Enable");
             }
-           // data.isActive == true ? data.isActiveText = this.localize("Disable") : data.isActiveText = this.localize("Enable");
 
             data.daysOfTheWeek = selectedDays.join(' - ');
             data.recurring = +this.model.get('type') === TaxiHail.Tariff.type.recurring;
             data.isDefault = +this.model.get('type') === TaxiHail.Tariff.type['default'];
+            data.isNetworkEnabled = TaxiHail.parameters.isNetworkEnabled == "true" || TaxiHail.parameters.isNetworkEnabled == true;
+
+            if (!this.model.get('market')) {
+                data.isLocalMarket = true;
+            }
 
             this.$el.html(this.renderTemplate(data));
-            //data.isActive == true ? 
-            //data.isActive == true ? this.$('[data-action=enable]').text(this.localize("Disable")) : this.$('[data-action=enable]').text(this.localize("Enable"));
-             
+            
             return this;
         },
 
@@ -85,11 +86,6 @@
                     });
                 }
             });
-
-
-
-    }
-
+        }
     });
-
 }());

@@ -2,6 +2,7 @@ using System;
 using System.Net;
 using System.Threading.Tasks;
 using apcurium.MK.Booking.Api.Client.Extensions;
+using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using MK.Common.Configuration;
@@ -77,7 +78,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             return tcs.Task;
         }
 			
-        public Task<AccountCharge> GetAccountCharge(string accountNumber)
+        public Task<AccountCharge> GetAccountCharge(string accountNumber, string customerNumber)
         {
             var tcs = new TaskCompletionSource<AccountCharge>();
             bool hideAnswers = false;
@@ -86,7 +87,7 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             hideAnswers = true;
             #endif
 
-            string request = string.Format("/admin/accountscharge/{0}/{1}", accountNumber, hideAnswers);
+            string request = string.Format("/admin/accountscharge/{0}/{1}/{2}", accountNumber, customerNumber, hideAnswers);
             Client.GetAsync<AccountCharge>(request,
                 tcs.SetResult,
                 (result, error) => tcs.SetException(ServiceClientBaseExtensions.FixWebServiceException(error)));
@@ -94,9 +95,14 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             return tcs.Task;
         }
 
-        public async Task<NotificationSettings> GetNotificationSettings()
+        public Task<NotificationSettings> GetNotificationSettings()
         {
-            return await Client.GetAsync<NotificationSettings>("/settings/notifications");
+            return Client.GetAsync<NotificationSettings>("/settings/notifications");
+        }
+
+        public Task<ActivePromotion[]> GetActivePromotions()
+        {
+            return Client.GetAsync(new ActivePromotions());
         }
     }
 }

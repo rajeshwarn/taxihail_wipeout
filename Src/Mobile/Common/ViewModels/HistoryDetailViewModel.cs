@@ -11,6 +11,7 @@ using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
 using ServiceStack.Text;
 using System.Threading.Tasks;
+using apcurium.MK.Common;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -73,6 +74,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				RaisePropertyChanged(() => AptRingTxt); 
 				RaisePropertyChanged(() => DestinationTxt); 
 				RaisePropertyChanged(() => PickUpDateTxt); 
+				RaisePropertyChanged(() => PromoCode); 
             }
 		}
 
@@ -255,11 +257,21 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			get
 			{
-				var amount = Order.Fare + Order.Tip + Order.Toll;
+				var amount = Order.Fare + Order.Tip + Order.Tax + Order.Toll;
 
 				return Status.FareAvailable
 					? string.Format ("{0} ({1})", Status.IBSStatusDescription, CultureProvider.FormatCurrency(amount.Value))
 					: Status.IBSStatusDescription;
+			}
+		}
+
+		public string PromoCode
+		{
+			get 
+			{
+				return Order != null 
+					? Order.PromoCode
+					: null;
 			}
 		}
 
@@ -284,7 +296,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			var ratings = await _bookingService.GetOrderRatingAsync(OrderId);
 			HasRated = ratings.RatingScores.Any();
 
-			IsCompleted = _bookingService.IsStatusCompleted(Status.IBSStatusId);
+			IsCompleted = _bookingService.IsStatusCompleted(Status);
 			IsDone = _bookingService.IsStatusDone(Status.IBSStatusId);
             
 			CanCancel = _bookingService.IsOrderCancellable (Status.IBSStatusId);
@@ -350,18 +362,24 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
+		public void NavigateToHistoryList()
+		{
+			ShowViewModel<HistoryListViewModel>();
+		}
+
 		public ICommand RebookOrder
         {
             get
             {
-                return this.GetCommand(() =>
+                return this.GetCommand(async () =>
                 {
 					using(this.Services().Message.ShowProgress())
 					{
-						_orderWorkflowService.Rebook(Order);
-						ShowViewModel<HomeViewModel>(new { 
-							locateUser =  false, 
-							defaultHintZoomLevel = new ZoomToStreetLevelPresentationHint(Order.PickupAddress.Latitude, Order.PickupAddress.Longitude).ToJson()});
+						
+							await _orderWorkflowService.Rebook(Order);
+							GoBackToHomeViewModel(new { 
+								locateUser =  false, 
+								defaultHintZoomLevel = new ZoomToStreetLevelPresentationHint(Order.PickupAddress.Latitude, Order.PickupAddress.Longitude).ToJson()});
 					}
 				});
             }
@@ -389,9 +407,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
+                var confirmationMessage = Settings.WarnForFeesOnCancel
+                    && (VehicleStatuses.CanCancelOrderStatus.Contains(Status.IBSStatusId))
+                        ? string.Format(
+                            this.Services().Localize["StatusConfirmCancelRideAndWarnForCancellationFees"],
+                            Settings.TaxiHail.ApplicationName)
+                        : this.Services().Localize["StatusConfirmCancelRide"]; 
+
                 return this.GetCommand(() => this.Services().Message.ShowMessage(
-					string.Empty, 
-					this.Services().Localize["StatusConfirmCancelRide"], 
+					string.Empty,
+                    confirmationMessage, 
                     this.Services().Localize["YesButton"], 
 					async () =>
 	                	{

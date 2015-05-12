@@ -21,6 +21,7 @@ using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using System.Windows.Input;
+using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {
@@ -34,7 +35,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
     )]   
     public class HomeActivity : BaseBindingFragmentActivity<HomeViewModel>, IChangePresentation
     {
-        private Button _bigButton;        
+        private Button _bigButton;     
         private TouchableMap _touchMap;
         private LinearLayout _mapOverlay;
         private OrderReview _orderReview;
@@ -110,12 +111,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                 {
                     try
                     {
-                        Button child = (Button)_listContainer.GetChildAt(i);
+                        var child = (Button) _listContainer.GetChildAt(i);
                         child.SetTypeface(Typeface.Create("sans-serif-light", TypefaceStyle.Normal), TypefaceStyle.Normal);
                     }
                     catch
                     {
-                    
+                        
                     }
                 }
             }
@@ -202,6 +203,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             SetContentView(Resource.Layout.View_Home);
 
             _bigButton = (Button) FindViewById(Resource.Id.BigButtonTransparent);
+            
             _orderOptions = (OrderOptions) FindViewById(Resource.Id.orderOptions);
             _orderReview = (OrderReview) FindViewById(Resource.Id.orderReview);
             _orderEdit = (OrderEdit) FindViewById(Resource.Id.orderEdit);
@@ -336,12 +338,28 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
             if (requestCode == (int)ActivityEnum.DateTimePicked && resultCode == Result.Ok)
             {             
-                DateTime dt = new DateTime(data.GetLongExtra("DateTimeResult", DateTime.Now.Ticks));
+                var dt = new DateTime(data.GetLongExtra("DateTimeResult", DateTime.Now.Ticks));
                 ViewModel.BottomBar.SetPickupDateAndReviewOrder.ExecuteIfPossible(dt);
+            }
+            else if (requestCode == (int) ActivityEnum.BookATaxi && resultCode == Result.Ok)
+            {
+                var result = (BookATaxiEnum)data.GetIntExtra("BookATaxiResult", (int)BookATaxiEnum.BookCancelled);
+                switch (result)
+                {
+                    case BookATaxiEnum.BookNow:
+                        ViewModel.BottomBar.SetPickupDateAndReviewOrder.ExecuteIfPossible();
+                        break;
+                    case BookATaxiEnum.BookLater:
+                        ViewModel.BottomBar.BookLater.ExecuteIfPossible();
+                        break;
+                    default:
+                        ViewModel.BottomBar.ResetToInitialState.ExecuteIfPossible();
+                        break;
+                }
             }
             else
             {
-                ViewModel.BottomBar.CancelBookLater.ExecuteIfPossible(null);
+                ViewModel.BottomBar.ResetToInitialState.ExecuteIfPossible(null);
             }
         }
 
@@ -394,6 +412,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 
                 var intent = new Intent(this, typeof(DateTimePickerActivity));
                 StartActivityForResult(intent, (int)ActivityEnum.DateTimePicked);
+            }
+            else if (_presentationState == HomeViewModelState.BookATaxi)
+            {
+                SetMapEnabled(false);
+
+                ((LinearLayout.MarginLayoutParams)_orderOptions.LayoutParameters).TopMargin = 0;
+
+                var intent = new Intent(this, typeof (OrderBookingOptionsDialogActivity));
+                StartActivityForResult(intent, (int)ActivityEnum.BookATaxi);
             }
             else if (_presentationState == HomeViewModelState.Review)
             {
@@ -459,8 +486,18 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
             else if (_presentationState == HomeViewModelState.AddressSearch)
             {
                 SetMapEnabled(false);
-                _searchAddress.Open();
-            } 
+                _searchAddress.Open(AddressLocationType.Unspeficied);
+            }
+            else if (_presentationState == HomeViewModelState.AirportSearch)
+            {
+                SetMapEnabled(false);
+                _searchAddress.Open(AddressLocationType.Airport);
+            }
+            else if (_presentationState == HomeViewModelState.TrainStationSearch)
+            {
+                SetMapEnabled(false);
+                _searchAddress.Open(AddressLocationType.Train);
+            }
             else if(_presentationState == HomeViewModelState.Initial)
             {
                 SetMapEnabled(true);
@@ -497,7 +534,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                 }
             }
         }
-
 
         public override bool OnKeyDown(Keycode keyCode, KeyEvent e)
         {

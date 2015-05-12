@@ -10,6 +10,7 @@ using apcurium.MK.Common.Configuration;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using Cirrious.MvvmCross.Binding.Droid.Views;
 using TinyIoC;
+using System.Collections.Generic;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
@@ -25,8 +26,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
         private TextView _lblRingCode;
         private TextView _lblLargeBags;
         private EditTextEntry _editNote;
+        private EditTextEntry _editPromoCode;
+        private Button _btnPromo;
         private LinearLayout _bottomPadding;
-        
+                
         public OrderReview(Context context, IAttributeSet attrs) : base (LayoutHelper.GetLayoutForView(Resource.Layout.SubView_OrderReview, context), context, attrs)
         {
             this.DelayBind (() => 
@@ -41,13 +44,15 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 _lblApt = Content.FindViewById<TextView>(Resource.Id.lblApt);
                 _lblRingCode = Content.FindViewById<TextView>(Resource.Id.lblRingCode);
                 _editNote = FindViewById<EditTextEntry>(Resource.Id.txtNotes);
+                _editPromoCode = FindViewById<EditTextEntry>(Resource.Id.txtPromoCode);
+                _btnPromo = FindViewById<Button>(Resource.Id.btnPromo);
 
                 _editNote.SetClickAnywhereToDismiss();
 
                 // hack for scroll in view when in EditText
                 _bottomPadding = Content.FindViewById<LinearLayout>(Resource.Id.HackBottomPadding);
                 TextFieldInHomeSubviewsBehavior.ApplyTo(
-                    _editNote, 
+                    new List<EditText>() { _editNote, _editPromoCode }, 
                     () => _bottomPadding.Visibility = ViewStates.Visible, 
                     () => _bottomPadding.Visibility = ViewStates.Gone);
 
@@ -101,6 +106,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                 .For(v => v.Text)
                 .To(vm => vm.Note);
 
+            set.Bind(_editPromoCode)
+                .For(v => v.Text)
+                .To(vm => vm.PromoCode);
+
+            set.Bind(_btnPromo)
+                .For("Click")
+                .To(vm => vm.NavigateToPromotions);
+
 			if (!this.Services().Settings.ShowPassengerName)
             {
                 FindViewById<LinearLayout>(Resource.Id.passengerNameLayout).Visibility = ViewStates.Gone;
@@ -131,6 +144,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             if (!this.Services().Settings.ShowPassengerApartment && !this.Services().Settings.ShowRingCodeField)
             {
                 FindViewById<LinearLayout>(Resource.Id.ApartmentInfosLayout).Visibility = ViewStates.Gone;
+            }
+
+            if (!this.Services().Settings.PromotionEnabled)
+            {
+                _btnPromo.Visibility = ViewStates.Gone;
             }
 
             set.Apply();

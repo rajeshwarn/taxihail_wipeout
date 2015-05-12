@@ -38,7 +38,22 @@
         
         save: function (form) {
             var account = this.serializeForm(form);
-            var account = _.extend(this.model.toJSON(), account);
+
+            for (var i = 0; i < 8; i++) {
+                var isRequiredCheckboxName = "questionIsRequiredFields" + i;
+                var isCaseSensitiveCheckboxName = "questionIsCaseSensitiveFields" + i;
+
+                var isRequiredCheckboxControl = $("[name=" + isRequiredCheckboxName + "]")[0];
+                var isCaseSensitiveCheckboxControl = $("[name=" + isCaseSensitiveCheckboxName + "]")[0];
+
+                if (!isRequiredCheckboxControl.checked) {
+                    account[isRequiredCheckboxName] = "off";
+                }
+
+                if (!isCaseSensitiveCheckboxControl.checked) {
+                    account[isCaseSensitiveCheckboxName] = "off";
+                }
+            }
             this.model.save(account, {
                 success: _.bind(function(model){
 

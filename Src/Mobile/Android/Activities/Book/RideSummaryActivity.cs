@@ -9,6 +9,7 @@ using TinyIoC;
 using Cirrious.MvvmCross.Binding.Droid.Views;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using Android.Views;
+using System.Windows.Input;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 {
@@ -45,12 +46,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
 		{
 			if (keyCode == Keycode.Back)
 			{
-                ViewModel.CheckAndSendRatings().Wait();
+				ViewModel.RateOrderAndNavigateToHome.ExecuteIfPossible();
 
-                if (!ViewModel.CanUserLeaveScreen ())
-                {
-                    return false;
-                }
+				return false;
 			}
 
 			return base.OnKeyDown(keyCode, e);

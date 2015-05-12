@@ -48,30 +48,6 @@
                 android:text="@string/StatusCancelButton"
                 local:MvxBind="Click CancelOrder; Visibility IsCancelButtonVisible, Converter=Visibility" />
             <Button
-                android:id="@+id/PayBtn"
-                style="@style/ButtonActionGreenStyle"
-                android:layout_marginTop="13dip"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/HeightButton"
-                android:layout_weight="1"
-                android:layout_marginLeft="8dip"
-                android:layout_marginRight="8dip"
-                android:layout_gravity="center_vertical"
-                android:text="@string/PayNow"
-                local:MvxBind="Click PayForOrderCommand; Visibility IsPayButtonVisible, Converter=Visibility" />
-            <Button
-                android:id="@+id/ResendBtn"
-                style="@style/ButtonActionGreenStyle"
-                android:layout_marginTop="13dip"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/HeightButton"
-                android:layout_weight="1"
-                android:layout_marginLeft="8dip"
-                android:layout_marginRight="8dip"
-                android:layout_gravity="center_vertical"
-                android:text="@string/ReSendConfirmation"
-                local:MvxBind="Click ResendConfirmationToDriver; Visibility IsResendButtonVisible, Converter=Visibility" />
-            <Button
                 android:id="@+id/UnpairBtn"
                 style="@style/ButtonActionRedStyle"
                 android:layout_marginTop="13dip"
@@ -81,11 +57,11 @@
                 android:layout_marginLeft="8dip"
                 android:layout_marginRight="8dip"
                 android:layout_gravity="center_vertical"
-                android:text="@string/CmtRideLinqUnpair"
+                android:text="@string/UnpairPayInCar"
                 local:MvxBind="Click Unpair; Visibility IsUnpairButtonVisible, Converter=Visibility" />
             <Button
                 android:id="@+id/CallBtn"
-                style="@style/ButtonActionBlackStyle"
+                style="@style/ButtonActionGrayStyle"
                 android:layout_marginTop="13dip"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/HeightButton"
@@ -118,7 +94,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     local:MvxBind="Visibility CompanyHidden, Converter=InvertedVisibility">
-                    <apcurium.MK.Booking.Mobile.Client.Controls.Widgets.AutoResizeTextView
+                    <apcurium.mk.booking.mobile.client.controls.widgets.AutoResizeTextView
                         android:id="@+id/companyLabel"
                         style="@style/BlackTextLabel"
                         android:text="@string/DriverInfoCompany"
@@ -144,7 +120,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/companyLayout"
                     local:MvxBind="Visibility VehicleDriverHidden, Converter=InvertedVisibility">
-                    <apcurium.MK.Booking.Mobile.Client.Controls.Widgets.AutoResizeTextView
+                    <apcurium.mk.booking.mobile.client.controls.widgets.AutoResizeTextView
                         android:id="@+id/driverLabel"
                         style="@style/BlackTextLabel"
                         android:text="@string/DriverInfoDriver"
@@ -170,7 +146,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/driverLayout"
                     local:MvxBind="Visibility VehicleLicenceHidden, Converter=InvertedVisibility">
-                    <apcurium.MK.Booking.Mobile.Client.Controls.Widgets.AutoResizeTextView
+                    <apcurium.mk.booking.mobile.client.controls.widgets.AutoResizeTextView
                         android:id="@+id/licenceLabel"
                         style="@style/BlackTextLabel"
                         android:text="@string/DriverInfoLicence"
@@ -193,7 +169,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/licenceLayout"
                     local:MvxBind="Visibility VehicleTypeHidden, Converter=InvertedVisibility">
-                    <apcurium.MK.Booking.Mobile.Client.Controls.Widgets.AutoResizeTextView
+                    <apcurium.mk.booking.mobile.client.controls.widgets.AutoResizeTextView
                         android:id="@+id/taxiTypeLabel"
                         style="@style/BlackTextLabel"
                         android:text="@string/DriverInfoTaxiType"
@@ -216,7 +192,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/taxiTypeLayout"
                     local:MvxBind="Visibility VehicleMakeHidden, Converter=InvertedVisibility">
-                    <apcurium.MK.Booking.Mobile.Client.Controls.Widgets.AutoResizeTextView
+                    <apcurium.mk.booking.mobile.client.controls.widgets.AutoResizeTextView
                         android:id="@+id/makeLabel"
                         style="@style/BlackTextLabel"
                         android:text="@string/DriverInfoMake"
@@ -239,7 +215,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/makeLayout"
                     local:MvxBind="Visibility VehicleModelHidden, Converter=InvertedVisibility">
-                    <apcurium.MK.Booking.Mobile.Client.Controls.Widgets.AutoResizeTextView
+                    <apcurium.mk.booking.mobile.client.controls.widgets.AutoResizeTextView
                         android:id="@+id/modelLabel"
                         style="@style/BlackTextLabel"
                         android:text="@string/DriverInfoModel"
@@ -262,7 +238,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/modelLayout"
                     local:MvxBind="Visibility VehicleColorHidden, Converter=InvertedVisibility">
-                    <apcurium.MK.Booking.Mobile.Client.Controls.Widgets.AutoResizeTextView
+                    <apcurium.mk.booking.mobile.client.controls.widgets.AutoResizeTextView
                         android:id="@+id/ColorLabel"
                         style="@style/BlackTextLabel"
                         android:text="@string/DriverInfoColor"

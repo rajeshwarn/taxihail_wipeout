@@ -11,15 +11,13 @@ namespace apcurium.MK.Booking.IBS
 {
     public interface IBookingWebServiceClient
     {
-        int? CreateOrder(int? providerId, int accountId, string passengerName, string phone, int nbPassengers,
-            int? vehicleTypeId, int? chargeTypeId, string note, DateTime pickupDateTime, IbsAddress pickup,
-            IbsAddress dropoff, Fare fare = default(Fare));
+        int? CreateOrder(int? providerId, int accountId, string passengerName, string phone, int nbPassengers, int? vehicleTypeId, int? chargeTypeId, string note, DateTime pickupDateTime, IbsAddress pickup, IbsAddress dropoff, string accountNumber, int? customerNumber, string[] prompts, int?[] promptsLength, Fare fare = default(Fare));
 
         IbsOrderStatus GetOrderStatus(int orderId, int accountId, string contactPhone);
 
         IbsOrderDetails GetOrderDetails(int orderId, int accountId, string contactPhone);
 
-        IbsFareEstimate GetFareEstimate(double? pickupLat, double? pickupLng, double? dropoffLat, double? dropoffLng);
+        IbsFareEstimate GetFareEstimate(double? pickupLat, double? pickupLng, double? dropoffLat, double? dropoffLng, string pickupZipCode, string dropoffZipCode, string accountNumber, int? customerNumber, int? tripDurationInSeconds, int? providerId, int? vehicleTypeB);
 
         bool CancelOrder(int orderId, int accountId, string contactPhone);
 
@@ -34,6 +32,6 @@ namespace apcurium.MK.Booking.IBS
  
         int? SendAccountInformation(Guid orderId, int ibsOrderId, string type, string cardToken, int accountID, string name, string phone, string email);
 
-        bool UpdateOrderPaymentType(int ibsAccountId, int ibsOrderId, int chargeTypeId);
+        bool UpdateOrderPaymentType(int ibsAccountId, int ibsOrderId, int? chargeTypeId);
    }
 }

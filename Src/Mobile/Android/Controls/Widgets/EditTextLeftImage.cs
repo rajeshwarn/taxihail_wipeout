@@ -35,7 +35,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                 {
                     _text = value;
                     if (_textViewLabel != null)
+                    {
                         _textViewLabel.Text = value;
+                    }
                 }
             }
         }
@@ -52,9 +54,18 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls
                     {
                         var resource = Resources.GetIdentifier(_leftImage.ToLower(), "drawable", Context.PackageName);
                         if (resource != 0)
+                        {
                             _imageLeftView.SetImageResource(resource);
+                            if (this.Services().Localize.IsRightToLeft)
+                            {
+                                _textViewLabel.SetPadding(0, 0, 50.ToPixels(), 0);
+                            }
+                            else
+                            {
+                                _textViewLabel.SetPadding(50.ToPixels(), 0, 0, 0);
+                            }
+                        }
                     }
-                    
                 }
             }
         }

@@ -42,7 +42,7 @@
             TaxiHail.orderService.clearCurrentOrder();
         },
 
-        cancel: function() {
+        cancel: function () {
             return $.post(this.url() + '/cancel', {
                 orderId: this.id
             }, function(){}, 'json');
@@ -65,9 +65,28 @@
 
         isPayingWithAccountCharge: function () {
             var settings = this.get('settings');
+
+            return this.isChargeAccount(settings.chargeTypeId);
+        },
+
+        isChargeAccount: function(chargeType) {
+            return chargeType != null
+                && chargeType != ''
+                && chargeType == 2;
+        },
+
+        isPayingWithPayPal: function () {
+            var settings = this.get('settings');
             return settings.chargeTypeId != null
                 && settings.chargeTypeId != ''
-                && settings.chargeTypeId == 2;
+                && settings.chargeTypeId == 4;
+        },
+
+        isPayingWithCoF: function () {
+            var settings = this.get('settings');
+            return settings.chargeTypeId != null
+                && settings.chargeTypeId != ''
+                && settings.chargeTypeId == 3;
         },
 
         switchOrderToNextDispatchCompany: function () {
@@ -90,8 +109,8 @@
             });
         },
 
-        fetchQuestions: function (accountChargeNumber) {
-            return $.get('api/admin/accountscharge/' + accountChargeNumber + '/true', function () { }, 'json');
+        fetchQuestions: function (accountChargeNumber, customerNumber) {
+            return $.get('api/admin/accountscharge/' + accountChargeNumber + '/' + customerNumber + '/true', function () { }, 'json');
         }
     });
 }());

@@ -7,7 +7,7 @@
         <div class="control-group">
             <label class="control-label">{{localize 'Name'}}</label>
             <div class="controls">
-                <input type="text" id="inputVehicleName" name="name" value="{{name}}" class='input-block-level'>
+                <input type="text" id="inputVehicleName" name="name" value="{{name}}" class='input-block-level' maxlength="50">
             </div>
         </div>
         
@@ -41,7 +41,31 @@
                 {{/each}}
             </select>
         </div>
-        
+
+        {{#ifCond isNetworkEnabled 'true'}}
+        <div class="control-group">
+            <label class="control-label">{{localize 'Network vehicle type'}}</label>
+            <select name="referenceNetworkVehicleTypeId">
+                <option value="">{{localize 'None'}}</option>
+                {{#each networkVehicleTypes}}
+                {{#ifCond this.id ../referenceNetworkVehicleTypeId}}
+                    <option value="{{id}}" selected>{{name}}</option>
+                {{else}}
+                    <option value="{{id}}">{{name}}</option>
+                {{/ifCond}}
+                {{/each}}
+            </select>
+        </div>
+        {{/ifCond}}
+
+        <div class="control-group">
+            <label class="control-label">{{localize 'Max # Passengers'}}</label>
+            <div class="controls">
+                <input type="text" id="inputVehicleCapacity" name="maxNumberPassengers" value="{{maxNumberPassengers}}" class='input-block-level' maxlength="50">
+                <label class="control-label">{{localize '(0 = no limit)'}}</label>
+            </div>            
+        </div>
+
         <div class="control-group btn-right-alignment" >
           <button type='submit' class='btn btn-primary span' data-loading-text="{{localize 'Loading'}}">{{localize "Save"}}</button>
           <a href='#' class='btn  span' data-action='cancel'>{{localize "Cancel"}}</a>

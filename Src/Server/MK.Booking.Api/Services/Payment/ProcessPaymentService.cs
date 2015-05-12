@@ -1,7 +1,12 @@
+using System;
 using apcurium.MK.Booking.Api.Contract.Requests.Payment;
+using apcurium.MK.Booking.Api.Contract.Requests.Payment.PayPal;
 using apcurium.MK.Booking.IBS;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Services;
+using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Configuration.Impl;
+using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Resources;
 using ServiceStack.ServiceInterface;
 
@@ -9,24 +14,41 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 {
     public class ProcessPaymentService : Service
     {
+        private readonly IPayPalServiceFactory _payPalServiceFactory;
         private readonly IPaymentService _paymentService;
+        private readonly IAccountDao _accountDao;
         private readonly IIBSServiceProvider _ibsServiceProvider;
         private readonly IOrderDao _orderDao;
-        private readonly IAccountDao _accountDao;
+        private readonly IServerSettings _serverSettings;
 
-        public ProcessPaymentService(IPaymentService paymentService,
+        public ProcessPaymentService(
+            IPayPalServiceFactory payPalServiceFactory,
+            IPaymentService paymentService,
+            IAccountDao accountDao, 
+            IOrderDao orderDao,
             IIBSServiceProvider ibsServiceProvider,
-            IOrderDao orderDao, IAccountDao accountDao)
+            IServerSettings serverSettings)
         {
+            _payPalServiceFactory = payPalServiceFactory;
+            _paymentService = paymentService;
             _accountDao = accountDao;
             _orderDao = orderDao;
-            _paymentService = paymentService;
             _ibsServiceProvider = ibsServiceProvider;
+            _serverSettings = serverSettings;
         }
 
-        public CommitPreauthorizedPaymentResponse Post(CommitPaymentRequest request)
+        public BasePaymentResponse Post(LinkPayPalAccountRequest request)
         {
-            return _paymentService.CommitPayment(request.Amount, request.MeterAmount, request.TipAmount, request.CardToken, request.OrderId, request.IsNoShowFee);
+            var session = this.GetSession();
+
+            return _payPalServiceFactory.GetInstance().LinkAccount(new Guid(session.UserAuthId), request.AuthCode);
+        }
+
+        public BasePaymentResponse Post(UnlinkPayPalAccountRequest request)
+        {
+            var session = this.GetSession();
+
+            return _payPalServiceFactory.GetInstance().UnlinkAccount(new Guid(session.UserAuthId));
         }
 
         public DeleteTokenizedCreditcardResponse Delete(DeleteTokenizedCreditcardRequest request)
@@ -34,32 +56,31 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             return _paymentService.DeleteTokenizedCreditcard(request.CardToken);
         }
 
-        public PairingResponse Post(PairingForPaymentRequest request)
-        {
-            var response =  _paymentService.Pair(request.OrderId, request.CardToken, request.AutoTipPercentage, request.AutoTipAmount);
-            if ( response.IsSuccessful )
-            {
-                var o = _orderDao.FindById( request.OrderId );
-                var a = _accountDao.FindById( o.AccountId );
-                if (!UpdateOrderPaymentType(a.IBSAccountId.Value, o.IBSOrderId.Value, 7))
-                {
-                    response.IsSuccessful = false;
-                    _paymentService.VoidPreAuthorization(request.OrderId);
-                }
-            }
-            return response;
-
-        }
-
-        private bool UpdateOrderPaymentType(int ibsAccountId, int ibsOrderId, int chargeTypeId, string companyKey = null)
-        {
-            var result = _ibsServiceProvider.Booking(companyKey).UpdateOrderPaymentType( ibsAccountId, ibsOrderId, chargeTypeId );
-            return result;
-        }
-
         public BasePaymentResponse Post(UnpairingForPaymentRequest request)
         {
-            return _paymentService.Unpair(request.OrderId);
+            var order = _orderDao.FindById(request.OrderId);
+            var ibsAccountId = _accountDao.GetIbsAccountId(order.AccountId, null);
+
+            if (UpdateIBSOrderPaymentType(ibsAccountId.Value, order.IBSOrderId.Value))
+            {
+                var response = _paymentService.Unpair(request.OrderId);
+                if (response.IsSuccessful)
+                {
+                    _paymentService.VoidPreAuthorization(request.OrderId);
+                }
+                else
+                {
+                    response.IsSuccessful = false;
+                }
+                return response;
+            }
+            return new BasePaymentResponse { IsSuccessful = false };
+        }
+
+        private bool UpdateIBSOrderPaymentType(int ibsAccountId, int ibsOrderId, string companyKey = null)
+        {
+            // Change payment type to Pay in Car            
+            return _ibsServiceProvider.Booking(companyKey).UpdateOrderPaymentType(ibsAccountId, ibsOrderId, _serverSettings.ServerData.IBS.PaymentTypePaymentInCarId);
         }
     }
 }

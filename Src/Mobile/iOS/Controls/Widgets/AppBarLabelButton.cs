@@ -1,5 +1,5 @@
-using System.Drawing;
-using MonoTouch.UIKit;
+using CoreGraphics;
+using UIKit;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
@@ -14,18 +14,18 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             SetBackgroundImage(UIImage.FromFile("highlight.png"), UIControlState.Highlighted);
         }
 
-        public override void Draw(RectangleF rect)
+        public override void Draw(CGRect rect)
         {
             var insets = new UIEdgeInsets(0, 9, 0, 9);
             base.Draw(insets.InsetRect(rect));
         }
 
-        public override SizeF IntrinsicContentSize
+        public override CGSize IntrinsicContentSize
         {
             get
             {
                 var insets = new UIEdgeInsets(0, 9, 0, 9);
-                return SizeF.Add(base.IntrinsicContentSize, new SizeF(insets.Left + insets.Right, insets.Top + insets.Bottom));
+                return CGSize.Add(base.IntrinsicContentSize, new CGSize(insets.Left + insets.Right, insets.Top + insets.Bottom));
             }
         }
 

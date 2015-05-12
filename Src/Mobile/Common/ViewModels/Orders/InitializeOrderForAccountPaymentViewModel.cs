@@ -33,7 +33,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		public async override void OnViewStarted (bool firstTime)
 		{
 			base.OnViewStarted (firstTime);
-			RaisePropertyChanged ("Questions"); //needed for Android
+			// TODO: This call makes the app crash on Android Nexus 7 - 4.4.2. When is it necessary? (Working on a test device without it.)
+			RaisePropertyChanged (() => Questions); //needed for Android
 		}
 
 		// the use of list is important here for the binding (doesn't seem to work with an array)
@@ -48,7 +49,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			}
 		}
 
-		public ICommand ConfirmOrder
+	    public ICommand ConfirmOrder
 		{
 			get
 			{
@@ -70,7 +71,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
 							var result = await _orderWorkflowService.ConfirmOrder();
 
-								ShowViewModelAndRemoveFromHistory<BookingStatusViewModel>(new
+                            ShowViewModelAndClearHistory<BookingStatusViewModel>(new
 							{
 								order = result.Item1.ToJson(),
 								orderStatus = result.Item2.ToJson()
@@ -95,7 +96,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 						}
 						else
 						{
-							this.Services().Message.ShowMessage(title, e.MessageNoCall);
+							this.Services().Message.ShowMessage(title, e.Message);
 						}
 					}
 					catch(Exception e)

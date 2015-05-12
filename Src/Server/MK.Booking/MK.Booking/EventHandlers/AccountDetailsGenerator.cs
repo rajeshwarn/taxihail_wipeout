@@ -10,6 +10,7 @@ using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
+using Infrastructure.Messaging;
 using Infrastructure.Messaging.Handling;
 
 #endregion
@@ -26,10 +27,16 @@ namespace apcurium.MK.Booking.EventHandlers
         IEventHandler<AccountPasswordUpdated>,
         IEventHandler<RoleAddedToUserAccount>,
         IEventHandler<PaymentProfileUpdated>,
-        IEventHandler<CreditCardAdded>,
+        IEventHandler<CreditCardAddedOrUpdated>,
         IEventHandler<CreditCardRemoved>,
         IEventHandler<AllCreditCardsRemoved>,
-        IEventHandler<AccountLinkedToIbs>
+        IEventHandler<CreditCardDeactivated>,
+        IEventHandler<AccountLinkedToIbs>,
+        IEventHandler<AccountUnlinkedFromIbs>,
+        IEventHandler<PayPalAccountLinked>,
+        IEventHandler<PayPalAccountUnlinked>,
+        IEventHandler<OverduePaymentSettled>,
+        IEventHandler<ChargeAccountPaymentDisabled>
     {
         private readonly IServerSettings _serverSettings;
         private readonly Func<BookingDbContext> _contextFactory;
@@ -112,6 +119,7 @@ namespace apcurium.MK.Booking.EventHandlers
                     NumberOfTaxi = 1,
                     Passengers = _serverSettings.ServerData.DefaultBookingSettings.NbPassenger,
                     Phone = @event.Phone,
+                    PayBack = @event.PayBack
                 };
 
                 context.Save(account);
@@ -177,6 +185,10 @@ namespace apcurium.MK.Booking.EventHandlers
                 settings.Passengers = @event.Passengers;
                 settings.Phone = @event.Phone;
                 settings.AccountNumber = @event.AccountNumber;
+                settings.CustomerNumber = @event.CustomerNumber;
+                settings.PayBack = @event.PayBack;
+
+                account.DefaultTipPercent = @event.DefaultTipPercent;
 
                 account.Settings = settings;
                 context.Save(account);
@@ -187,7 +199,7 @@ namespace apcurium.MK.Booking.EventHandlers
         {
             using (var context = _contextFactory.Invoke())
             {
-                var account = context.Find<AccountDetail>(@event.SourceId);
+                var account = context.Find<AccountDetail>(@event.SourceId);          
                 account.DefaultCreditCard = @event.DefaultCreditCard;
                 account.DefaultTipPercent = @event.DefaultTipPercent;
                 context.Save(account);
@@ -204,17 +216,12 @@ namespace apcurium.MK.Booking.EventHandlers
             }
         }
 
-        private static int? ParseToNullable(string val)
-        {
-            int result;
-            return int.TryParse(val, out result) ? result : default(int?);
-        }
-
-        public void Handle(CreditCardAdded @event)
+        public void Handle(CreditCardAddedOrUpdated @event)
         {
             using (var context = _contextFactory.Invoke())
             {
                 var account = context.Find<AccountDetail>(@event.SourceId);
+                account.DefaultCreditCard = @event.CreditCardId;
                 account.Settings.ChargeTypeId = ChargeTypes.CardOnFile.Id;
                 context.Save(account);
             }
@@ -239,8 +246,26 @@ namespace apcurium.MK.Booking.EventHandlers
             {
                 var account = context.Find<AccountDetail>(@event.SourceId);
                 account.DefaultCreditCard = null;
-                account.Settings.ChargeTypeId = ChargeTypes.PaymentInCar.Id;
+
+                account.Settings.ChargeTypeId = account.IsPayPalAccountLinked
+                    ? ChargeTypes.PayPal.Id
+                    : ChargeTypes.PaymentInCar.Id;
+                
                 context.Save(account);
+            }
+        }
+
+        public void Handle(CreditCardDeactivated @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                if (!_serverSettings.GetPaymentSettings().IsOutOfAppPaymentDisabled)
+                {
+                    // If pay in taxi is not disable, this becomes the default payment method
+                    var account = context.Find<AccountDetail>(@event.SourceId);
+                    account.Settings.ChargeTypeId = ChargeTypes.PaymentInCar.Id;
+                    context.Save(account);
+                }
             }
         }
 
@@ -266,6 +291,94 @@ namespace apcurium.MK.Booking.EventHandlers
                 {
                     var account = context.Find<AccountDetail>(@event.SourceId);
                     account.IBSAccountId = @event.IbsAccountId;
+                    context.Save(account);
+                }
+            }
+        }
+
+        public void Handle(AccountUnlinkedFromIbs @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var account = context.Find<AccountDetail>(@event.SourceId);
+                account.IBSAccountId = null;
+
+                context.RemoveWhere<AccountIbsDetail>(x => x.AccountId == @event.SourceId);
+                context.SaveChanges();
+            }
+        }
+
+        public void Handle(PayPalAccountLinked @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var account = context.Find<AccountDetail>(@event.SourceId);
+                account.IsPayPalAccountLinked = true;
+                account.Settings.ChargeTypeId = ChargeTypes.PayPal.Id;
+
+                var payPalAccountDetails = context.Find<PayPalAccountDetails>(@event.SourceId);
+                if (payPalAccountDetails == null)
+                {
+                    context.Save(new PayPalAccountDetails
+                    {
+                        AccountId = @event.SourceId,
+                        EncryptedRefreshToken = @event.EncryptedRefreshToken
+                    });
+                }
+                else
+                {
+                    payPalAccountDetails.EncryptedRefreshToken = @event.EncryptedRefreshToken;
+                }
+
+                context.SaveChanges();
+            }
+        }
+
+        public void Handle(PayPalAccountUnlinked @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var account = context.Find<AccountDetail>(@event.SourceId);
+                account.IsPayPalAccountLinked = false;
+                context.Save(account);
+
+                context.RemoveWhere<PayPalAccountDetails>(x => x.AccountId == @event.SourceId);
+                context.SaveChanges();
+            }
+        }
+
+        public void Handle(ChargeAccountPaymentDisabled @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var accounts = context.Set<AccountDetail>()
+                    .Where(HasChargeAccount);
+
+                foreach (var account in accounts)
+                {
+                    account.Settings.CustomerNumber = null;
+                    account.Settings.AccountNumber = null;
+                }
+                
+                context.SaveChanges();
+            }
+        }
+
+        private bool HasChargeAccount(AccountDetail accountDetail)
+        {
+            return accountDetail.Settings.AccountNumber.HasValue() ||
+                   accountDetail.Settings.CustomerNumber.HasValue();
+        }
+
+        public void Handle(OverduePaymentSettled @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                if (_serverSettings.GetPaymentSettings().IsPayInTaxiEnabled)
+                {
+                    // Re-enable card on file as the default payment method
+                    var account = context.Find<AccountDetail>(@event.SourceId);
+                    account.Settings.ChargeTypeId = ChargeTypes.CardOnFile.Id;
                     context.Save(account);
                 }
             }

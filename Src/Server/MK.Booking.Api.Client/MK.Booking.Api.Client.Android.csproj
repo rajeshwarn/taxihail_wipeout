@@ -40,6 +40,9 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="BraintreeEncryption.Library.Android">
+      <HintPath>..\..\Mobile\Libraries\Monodroid\BraintreeEncryption.Library.Android.dll</HintPath>
+    </Reference>
     <Reference Include="ServiceStack.Common">
       <HintPath>..\..\Mobile\Libraries\Monodroid\ServiceStack.Common.dll</HintPath>
     </Reference>
@@ -49,16 +52,16 @@
     <Reference Include="ServiceStack.Text">
       <HintPath>..\..\Mobile\Libraries\Monodroid\ServiceStack.Text.dll</HintPath>
     </Reference>
-    <Reference Include="BraintreeEncryption.Library.Android">
-      <HintPath>..\..\Mobile\Libraries\Monodroid\BraintreeEncryption.Library.Android.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IAccountServiceClient.cs" />
     <Compile Include="IAuthServiceClient.cs" />
     <Compile Include="IIbsFareClient.cs" />
+    <Compile Include="IPairingServiceClient.cs" />
     <Compile Include="Payments\CmtPayments\CmtPaymentClient.cs" />
     <Compile Include="Payments\Fake\FakePaymentClient.cs" />
+    <Compile Include="Payments\PairingServiceClient.cs" />
+    <Compile Include="Payments\PayPal\PayPalServiceClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TaxiHail\AccountServiceClient.cs" />
     <Compile Include="TaxiHail\ApplicationInfoServiceClient.cs" />
@@ -66,9 +69,9 @@
     <Compile Include="TaxiHail\BaseServiceClient.cs" />
     <Compile Include="TaxiHail\CompanyServiceClient.cs" />
     <Compile Include="TaxiHail\ConfigurationClientService.cs" />
-    <Compile Include="TaxiHail\DirectionsServiceClient.cs" />
-    <Compile Include="TaxiHail\GeocodingServiceClient.cs" />
+    <Compile Include="TaxiHail\ManualPairingForRideLinqServiceClient.cs" />
     <Compile Include="TaxiHail\NearbyPlacesClient.cs" />
+    <Compile Include="TaxiHail\NetworkRoamingServiceClient.cs" />
     <Compile Include="TaxiHail\OrderServiceClient.cs" />
     <Compile Include="TaxiHail\PlaceDetailServiceClient.cs" />
     <Compile Include="TaxiHail\PopularAddressesServiceClient.cs" />
@@ -80,7 +83,6 @@
     <Compile Include="IVehicleClient.cs" />
     <Compile Include="TaxiHail\PushNotificationRegistrationServiceClient.cs" />
     <Compile Include="IPaymentServiceClient.cs" />
-    <Compile Include="TaxiHail\PayPalServiceClient.cs" />
     <Compile Include="Payments\Braintree\BraintreeServiceClient.cs" />
     <Compile Include="Extensions\ServiceClientBaseExtensions.cs" />
     <Compile Include="Payments\Moneris\MonerisServiceClient.cs" />
@@ -111,4 +113,7 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup />
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
 </Project>

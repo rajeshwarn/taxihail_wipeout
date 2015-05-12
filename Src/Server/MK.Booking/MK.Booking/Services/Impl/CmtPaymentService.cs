@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
-using System.Net;
-using System.Threading;
 using apcurium.MK.Booking.Commands;
-using apcurium.MK.Booking.EventHandlers.Integration;
+using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
@@ -20,6 +17,8 @@ using CMTPayment.Pair;
 using CMTPayment.Reverse;
 using CMTPayment.Tokenize;
 using Infrastructure.Messaging;
+using Newtonsoft.Json;
+using ServiceStack.ServiceClient.Web;
 using ServiceStack.Text;
 
 namespace apcurium.MK.Booking.Services.Impl
@@ -31,40 +30,51 @@ namespace apcurium.MK.Booking.Services.Impl
         private readonly IAccountDao _accountDao;
         private readonly IServerSettings _serverSettings;
         private readonly IPairingService _pairingService;
+        private readonly ICreditCardDao _creditCardDao;
         private readonly ILogger _logger;
-        private readonly IIbsOrderService _ibs;
-        private readonly IOrderPaymentDao _orderPaymentDao;
-        private readonly CmtPaymentServiceClient _cmtPaymentServiceClient;
-        private readonly CmtMobileServiceClient _cmtMobileServiceClient;
+        private readonly IOrderPaymentDao _paymentDao;
+
+        private CmtPaymentServiceClient _cmtPaymentServiceClient;
+        private CmtMobileServiceClient _cmtMobileServiceClient;
+        private CmtTripInfoServiceHelper _cmtTripInfoServiceHelper;
 
         public CmtPaymentService(ICommandBus commandBus, 
             IOrderDao orderDao,
             ILogger logger, 
-            IIbsOrderService ibs,
             IAccountDao accountDao, 
-            IOrderPaymentDao orderPaymentDao,
+            IOrderPaymentDao paymentDao,
             IServerSettings serverSettings,
-            IPairingService pairingService)
+            IPairingService pairingService,
+            ICreditCardDao creditCardDao)
         {
             _commandBus = commandBus;
             _orderDao = orderDao;
             _logger = logger;
-            _ibs = ibs;
             _accountDao = accountDao;
-            _orderPaymentDao = orderPaymentDao;
+            _paymentDao = paymentDao;
             _serverSettings = serverSettings;
             _pairingService = pairingService;
+            _creditCardDao = creditCardDao;
+        }
 
-            _cmtPaymentServiceClient = new CmtPaymentServiceClient(serverSettings.GetPaymentSettings().CmtPaymentSettings, null, null, logger);
-            _cmtMobileServiceClient = new CmtMobileServiceClient(serverSettings.GetPaymentSettings().CmtPaymentSettings, null, null);
+        public PaymentProvider ProviderType(Guid? orderId = null)
+        {
+            return PaymentProvider.Cmt;
+        }
+
+        public bool IsPayPal(Guid? accountId = null, Guid? orderId = null, bool isForPrepaid = false)
+        {
+            return false;
         }
         
-        public PairingResponse Pair(Guid orderId, string cardToken, int? autoTipPercentage, double? autoTipAmount)
+        public PairingResponse Pair(Guid orderId, string cardToken, int? autoTipPercentage)
         {
             try
             {
                 if (_serverSettings.GetPaymentSettings().PaymentMode == PaymentMethod.RideLinqCmt)
                 {
+                    // CMT RideLinq flow
+
                     var orderStatusDetail = _orderDao.FindOrderStatusById(orderId);
                     if (orderStatusDetail == null)
                     {
@@ -76,7 +86,7 @@ namespace apcurium.MK.Booking.Services.Impl
                         throw new Exception("Order has no IBSOrderId");
                     }
 
-                    var response = PairWithVehicleUsingRideLinq(orderStatusDetail, orderId, cardToken, autoTipPercentage, autoTipAmount);
+                    var response = PairWithVehicleUsingRideLinq(orderStatusDetail, cardToken, autoTipPercentage);
 
                     // send a command to save the pairing state for this order
                     _commandBus.Send(new PairForPayment
@@ -87,7 +97,6 @@ namespace apcurium.MK.Booking.Services.Impl
                         PairingToken = response.PairingToken,
                         PairingCode = response.PairingCode,
                         TokenOfCardToBeUsedForPayment = cardToken,
-                        AutoTipAmount = autoTipAmount,
                         AutoTipPercentage = autoTipPercentage
                     });
 
@@ -102,14 +111,17 @@ namespace apcurium.MK.Booking.Services.Impl
                         DriverId = response.DriverId
                     };
                 }
-
-                _pairingService.Pair(orderId, cardToken, autoTipPercentage);
-
-                return new PairingResponse
+                else
                 {
-                    IsSuccessful = true,
-                    Message = "Success"
-                };
+                    // Normal CMT flow
+                    _pairingService.Pair(orderId, cardToken, autoTipPercentage);
+
+                    return new PairingResponse
+                    {
+                        IsSuccessful = true,
+                        Message = "Success"
+                    };
+                }
             }
             catch (Exception e)
             {
@@ -161,9 +173,26 @@ namespace apcurium.MK.Booking.Services.Impl
             }
         }
 
-        public void VoidPreAuthorization(Guid orderId)
+        public void VoidPreAuthorization(Guid orderId, bool isForPrepaid = false)
         {
-            // nothing to do for CMT since there's no notion of preauth
+            // Nothing to do for CMT since there's no notion of preauth
+        }
+
+        public void VoidTransaction(Guid orderId, string transactionId, ref string message)
+        {
+            var orderStatus = _orderDao.FindOrderStatusById(orderId);
+            if (orderStatus == null)
+            {
+                throw new Exception("Order status not found");
+            }
+
+            Void(_serverSettings.GetPaymentSettings().CmtPaymentSettings.FleetToken,
+                orderStatus.VehicleNumber,
+                long.Parse(transactionId),
+                orderStatus.DriverInfos == null 
+                    ? 0 
+                    : orderStatus.DriverInfos.DriverId.To<int>(),
+                orderStatus.IBSOrderId.Value, ref message);
         }
 
         private void Void(string fleetToken, string deviceId, long transactionId, int driverId, int tripId, ref string message)
@@ -177,11 +206,8 @@ namespace apcurium.MK.Booking.Services.Impl
                 TripId = tripId
             };
 
-            var responseReverseTask = _cmtPaymentServiceClient.PostAsync(reverseRequest);
-            responseReverseTask.Wait();
-            var reverseResponse = responseReverseTask.Result;
-            _logger.LogMessage("CMT reverse response : " + reverseResponse.ResponseMessage);
-
+            var reverseResponse = Reverse(reverseRequest);
+            
             if (reverseResponse.ResponseCode != 1)
             {
                 throw new Exception("Cannot cancel cmt transaction");
@@ -189,41 +215,38 @@ namespace apcurium.MK.Booking.Services.Impl
 
             message = message + " The transaction has been cancelled.";
         }
-
+        
         public DeleteTokenizedCreditcardResponse DeleteTokenizedCreditcard(string cardToken)
         {
-            try
+            var request = new TokenizeDeleteRequest
             {
-                var responseTask = _cmtPaymentServiceClient.DeleteAsync(new TokenizeDeleteRequest
-                {
-                    CardToken = cardToken
-                });
-                responseTask.Wait();
-                var response = responseTask.Result;
+                CardToken = cardToken
+            };
+            var response = DeleteCreditCard(request);
 
-                return new DeleteTokenizedCreditcardResponse
-                {
-                    IsSuccessful = response.ResponseCode == 1,
-                    Message = response.ResponseMessage
-                };
-            }
-            catch (AggregateException ex)
+            return new DeleteTokenizedCreditcardResponse
             {
-                ex.Handle(x =>
-                {
-                    _logger.LogError(x);
-                    return true;
-                });
-                return new DeleteTokenizedCreditcardResponse
-                {
-                    IsSuccessful = false,
-                    Message = ex.InnerExceptions.First().Message,
-                };
-            }
+                IsSuccessful = response.ResponseCode == 1,
+                Message = response.ResponseMessage
+            }; 
         }
 
-        public PreAuthorizePaymentResponse PreAuthorize(Guid orderId, string email, string cardToken, decimal amountToPreAuthorize)
+        public PreAuthorizePaymentResponse PreAuthorize(Guid orderId, AccountDetail account, decimal amountToPreAuthorize, bool isReAuth = false, bool isSettlingOverduePayment = false, bool isForPrepaid = false)
         {
+            var paymentId = Guid.NewGuid();
+            var creditCard = _creditCardDao.FindByAccountId(account.Id).First();
+
+            _commandBus.Send(new InitiateCreditCardPayment
+            {
+                PaymentId = paymentId,
+                Amount = 0,
+                TransactionId = string.Empty,
+                OrderId = orderId,
+                CardToken = creditCard.Token,
+                Provider = PaymentProvider.Cmt,
+                IsNoShowFee = false
+            });
+
             return new PreAuthorizePaymentResponse
             {
                 IsSuccessful = true,
@@ -231,19 +254,14 @@ namespace apcurium.MK.Booking.Services.Impl
             };
         }
 
-        public CommitPreauthorizedPaymentResponse CommitPayment(decimal amount, decimal meterAmount, decimal tipAmount, string cardToken, Guid orderId, bool isNoShowFee)
+        public CommitPreauthorizedPaymentResponse CommitPayment(Guid orderId, AccountDetail account, decimal preauthAmount, decimal amount, decimal meterAmount, decimal tipAmount, string transactionId, string reAuthOrderId = null, bool isForPrepaid = false)
         {
-            return PreAuthorizeAndCommitPayment(amount, meterAmount, tipAmount, cardToken, orderId, isNoShowFee);
-        }
+            // No need to use preauthAmount for CMT because we can't preauthorize
 
-        private CommitPreauthorizedPaymentResponse PreAuthorizeAndCommitPayment(decimal amount, decimal meterAmount, decimal tipAmount, string cardToken, Guid orderId, bool isNoShowFee)
-        {
-            string transactionId = null;
             try
             {
-                var isSuccessful = false;
-                var authorizationCode = string.Empty;
-                string message;
+                string authorizationCode = null;
+                string commitTransactionId = transactionId;
 
                 var orderDetail = _orderDao.FindById(orderId);
                 if (orderDetail == null)
@@ -251,32 +269,21 @@ namespace apcurium.MK.Booking.Services.Impl
                     throw new Exception("Order not found");
                 }
 
-                if (orderDetail.IBSOrderId == null)
-                {
-                    throw new Exception("Order has no IBSOrderId");
-                }
-
-                var account = _accountDao.FindById(orderDetail.AccountId);
-
-                //check if already a payment
-                if (_orderPaymentDao.FindNonPayPalByOrderId(orderId) != null)
-                {
-                    return new CommitPreauthorizedPaymentResponse
-                    {
-                        IsSuccessful = false,
-                        Message = "order already paid or payment currently processing"
-                    };
-                }
-
-                var orderStatus = _orderDao.FindOrderStatusById(orderDetail.Id);
+                var orderStatus = _orderDao.FindOrderStatusById(orderId);
                 if (orderStatus == null)
                 {
                     throw new Exception("Order status not found");
                 }
 
+                var orderPayment = _paymentDao.FindByOrderId(orderId);
+                if (orderPayment == null)
+                {
+                    throw new Exception("Order payment not found");
+                }
+
                 var deviceId = orderStatus.VehicleNumber;
                 var driverId = orderStatus.DriverInfos == null ? 0 : orderStatus.DriverInfos.DriverId.To<int>();
-                var employeeId = orderStatus.DriverInfos == null ? "" : orderStatus.DriverInfos.DriverId;
+                var employeeId = orderStatus.DriverInfos == null ? string.Empty : orderStatus.DriverInfos.DriverId;
                 var tripId = orderStatus.IBSOrderId.Value;
                 var fleetToken = _serverSettings.GetPaymentSettings().CmtPaymentSettings.FleetToken;
                 var customerReferenceNumber = orderStatus.ReferenceNumber.HasValue() ?
@@ -288,7 +295,7 @@ namespace apcurium.MK.Booking.Services.Impl
                     FleetToken = fleetToken,
                     DeviceId = deviceId,
                     Amount = (int)(amount * 100),
-                    CardOnFileToken = cardToken,
+                    CardOnFileToken = orderPayment.CardToken,
                     CustomerReferenceNumber = customerReferenceNumber,
                     DriverId = driverId,
                     EmployeeId = employeeId,
@@ -303,229 +310,105 @@ namespace apcurium.MK.Booking.Services.Impl
                     Tolls = 0
                 };
 
-                AuthorizationResponse authResponse = new AuthorizationResponse();
-                try
-                {
-                    var responseTask = _cmtPaymentServiceClient.PostAsync(authRequest);
-                    responseTask.Wait();
-                    authResponse = responseTask.Result;                    
-                }
-                catch
-                {
-                    SendDeclineToIbs(amount, meterAmount, tipAmount, cardToken, orderId, isNoShowFee, transactionId, authorizationCode, orderDetail, account);
-                    throw;
-                }
+                var authResponse = Authorize(authRequest);
 
+                var isSuccessful = authResponse.ResponseCode == 1;
+                var isCardDeclined = authResponse.ResponseCode == 607;
 
-                message = authResponse.ResponseMessage;
-                transactionId = authResponse.TransactionId.ToString(CultureInfo.InvariantCulture);
-                var paymentId = Guid.NewGuid();
-                _commandBus.Send(new InitiateCreditCardPayment
+                if (isSuccessful)
                 {
-                    PaymentId = paymentId,
-                    TransactionId = transactionId,
-                    Amount = 0,
-                    OrderId = orderId,
-                    Tip = 0,
-                    Meter = 0,
-                    CardToken = cardToken,
-                    Provider = PaymentProvider.Cmt,
-                    IsNoShowFee = isNoShowFee
-                });
-                
-                if (authResponse.ResponseCode == 1)
-                {
-                    isSuccessful = true;
-                                        
-                    // wait for OrderPaymentDetail to be created
-                    Thread.Sleep(500);
-
+                    commitTransactionId = authResponse.TransactionId.ToString(CultureInfo.InvariantCulture);
                     authorizationCode = authResponse.AuthorizationCode;
+                }
 
-                    //send information to IBS
-                    if (!isNoShowFee)
-                    { 
-                        try
-                        {
-                            _ibs.ConfirmExternalPayment(orderDetail.Id,
-                                orderDetail.IBSOrderId.Value,
-                                Convert.ToDecimal(amount),
-                                Convert.ToDecimal(tipAmount),
-                                Convert.ToDecimal(meterAmount),
-                                PaymentType.CreditCard.ToString(),
-                                PaymentProvider.Cmt.ToString(),
-                                transactionId,
-                                authorizationCode,
-                                cardToken,
-                                account.IBSAccountId.Value,
-                                orderDetail.Settings.Name,
-                                orderDetail.Settings.Phone,
-                                account.Email,
-                                orderDetail.UserAgent.GetOperatingSystem(),
-                                orderDetail.UserAgent);
-                        }
-                        catch (Exception e)
-                        {
-                            _logger.LogError(e);
-                            message = e.Message;
-                            isSuccessful = false;
-
-                            //cancel CMT transaction
-                            try
-                            {
-                                Void(fleetToken, deviceId, authResponse.TransactionId, driverId, tripId, ref message);
-                            }
-                            catch (Exception ex)
-                            {
-                                _logger.LogMessage("Can't cancel CMT transaction");
-                                _logger.LogError(ex);
-                                message = message + ex.Message;
-                            }
-                        }
-                    }
-
-                    if (isSuccessful)
-                    {
-
-                        //payment completed
-                        _commandBus.Send(new CaptureCreditCardPayment
-                        {
-                            PaymentId = paymentId,
-                            AuthorizationCode = authorizationCode,
-                            Provider = PaymentProvider.Cmt,
-                            Amount = Convert.ToDecimal(amount),
-                            MeterAmount = Convert.ToDecimal(meterAmount),
-                            TipAmount = Convert.ToDecimal(tipAmount),
-                            IsNoShowFee = isNoShowFee
-                        });
-                    }
-                    else
-                    {
-                       
-                        //payment failed
-                        _commandBus.Send(new LogCreditCardError
-                        {
-                            PaymentId = paymentId,
-                            Reason = message
-                        });
-                    }
-                }                
-                
-               
                 return new CommitPreauthorizedPaymentResponse
                 {
                     IsSuccessful = isSuccessful,
-                    TransactionId = transactionId,
-                    Message = message,
                     AuthorizationCode = authorizationCode,
+                    Message = authResponse.ResponseMessage,
+                    TransactionId = commitTransactionId,
+                    IsDeclined = isCardDeclined,
+                    TransactionDate = isSuccessful ? (DateTime?)authResponse.AuthorizationDate : null
                 };
             }
-            catch (AggregateException ex)
+            catch (Exception ex)
             {
-                ex.Handle(x =>
-                {
-                    _logger.LogError(x);
-                    return true;
-                });
                 return new CommitPreauthorizedPaymentResponse
                 {
                     IsSuccessful = false,
                     TransactionId = transactionId,
-                    Message = ex.InnerExceptions.First().Message,
-                };
-            }
-            catch (Exception e)
-            {
-                _logger.LogMessage("Error during payment " + e);
-                _logger.LogError(e);
-                return new CommitPreauthorizedPaymentResponse
-                {
-                    IsSuccessful = false,
-                    TransactionId = transactionId,
-                    Message = e.Message,
+                    Message = ex.Message
                 };
             }
         }
 
-        private void SendDeclineToIbs(decimal amount, decimal meterAmount, decimal tipAmount, string cardToken, Guid orderId, bool isNoShowFee, string transactionId, string authorizationCode, ReadModel.OrderDetail orderDetail, ReadModel.AccountDetail account)
+        public BasePaymentResponse RefundPayment(Guid orderId)
         {
+            throw new NotImplementedException();
+        }
+
+        private CmtPairingResponse PairWithVehicleUsingRideLinq(OrderStatusDetail orderStatusDetail, string cardToken, int? autoTipPercentage)
+        {
+            InitializeServiceClient();
+
             try
             {
-                _logger.LogMessage("Sending invalid payment info with payment type 0");
-                _ibs.ConfirmExternalPayment(orderDetail.Id,
-                           orderDetail.IBSOrderId.Value,
-                           Convert.ToDecimal(amount),
-                           Convert.ToDecimal(tipAmount),
-                           Convert.ToDecimal(meterAmount),
-                           "0",
-                           PaymentProvider.Cmt.ToString(),
-                           transactionId,
-                           authorizationCode,
-                           cardToken,
-                           account.IBSAccountId.Value,
-                           orderDetail.Settings.Name,
-                           orderDetail.Settings.Phone,
-                           account.Email,
-                           orderDetail.UserAgent.GetOperatingSystem(),
-                           orderDetail.UserAgent);
-              
-            }
-            catch
-            {
 
-            }
-        }
+                var accountDetail = _accountDao.FindById(orderStatusDetail.AccountId);
 
-        private CmtPairingResponse PairWithVehicleUsingRideLinq(OrderStatusDetail orderStatusDetail, Guid orderId, string cardToken, int? autoTipPercentage, double? autoTipAmount)
-        {
-            var accountDetail = _accountDao.FindById(orderStatusDetail.AccountId);
-
-            // send pairing request                                
-            var cmtPaymentSettings = _serverSettings.GetPaymentSettings().CmtPaymentSettings;
-            var pairingRequest = new PairingRequest
-            {
-                AutoTipAmount = autoTipAmount,
-                AutoTipPercentage = autoTipPercentage,
-                AutoCompletePayment = true,
-                CallbackUrl = "",
-                CustomerId = orderStatusDetail.IBSOrderId.ToString(),
-                CustomerName = accountDetail.Name,
-                DriverId = orderStatusDetail.DriverInfos.DriverId,
-                Latitude = orderStatusDetail.VehicleLatitude.GetValueOrDefault(),
-                Longitude = orderStatusDetail.VehicleLongitude.GetValueOrDefault(),
-                Medallion = orderStatusDetail.VehicleNumber,
-                CardOnFileId = cardToken,
-                Market = cmtPaymentSettings.Market
-            };
-
-            _logger.LogMessage("Pairing request : " + pairingRequest.ToJson());
-            _logger.LogMessage("PaymentSettings request : " + cmtPaymentSettings.ToJson());
-
-            var response = _cmtMobileServiceClient.Post(pairingRequest);
-
-            _logger.LogMessage("Pairing response : " + response.ToJson());
-
-            // wait for trip to be updated
-            var watch = new Stopwatch();
-            watch.Start();
-            var trip = GetTrip(response.PairingToken);
-            while (trip == null)
-            {
-                Thread.Sleep(2000);
-                trip = GetTrip(response.PairingToken);
-
-                if (watch.Elapsed.TotalSeconds >= response.TimeoutSeconds)
+                // send pairing request                                
+                var cmtPaymentSettings = _serverSettings.GetPaymentSettings().CmtPaymentSettings;
+                var pairingRequest = new PairingRequest
                 {
-                    _logger.LogMessage("Timeout Exception, Could not be paired with vehicle.");
-                    throw new TimeoutException("Could not be paired with vehicle");
-                }
-            }
+                    AutoTipPercentage = autoTipPercentage ?? _serverSettings.ServerData.DefaultTipPercentage,
+                    AutoCompletePayment = true,
+                    CallbackUrl = string.Empty,
+                    CustomerId = orderStatusDetail.IBSOrderId.ToString(),
+                    CustomerName = accountDetail.Name,
+                    DriverId = orderStatusDetail.DriverInfos.DriverId,
+                    Latitude = orderStatusDetail.VehicleLatitude.GetValueOrDefault(),
+                    Longitude = orderStatusDetail.VehicleLongitude.GetValueOrDefault(),
+                    Medallion = orderStatusDetail.VehicleNumber,
+                    CardOnFileId = cardToken,
+                    Market = cmtPaymentSettings.Market
+                };
 
-            return response;
+                _logger.LogMessage("Pairing request : " + pairingRequest.ToJson());
+                _logger.LogMessage("PaymentSettings request : " + cmtPaymentSettings.ToJson());
+
+                var response = _cmtMobileServiceClient.Post(pairingRequest);
+
+                _logger.LogMessage("Pairing response : " + response.ToJson());
+
+                // wait for trip to be updated
+                _cmtTripInfoServiceHelper.WaitForTripInfo(response.PairingToken, response.TimeoutSeconds);
+
+                return response;
+            }
+            catch (Exception ex)
+            {
+                var aggregateException = ex as AggregateException;
+                if (aggregateException == null)
+                {
+                    throw ex;
+                }
+
+                var webServiceException = aggregateException.InnerException as WebServiceException;
+                if (webServiceException == null)
+                {
+                    throw ex;
+                }
+
+                var response = JsonConvert.DeserializeObject<AuthorizationResponse>(webServiceException.ResponseBody);
+
+                return null;
+            }
         }
 
         private void UnpairFromVehicleUsingRideLinq(OrderPairingDetail orderPairingDetail)
         {
+            InitializeServiceClient();
+
             // send unpairing request
             var response = _cmtMobileServiceClient.Delete(new UnpairingRequest
             {
@@ -533,46 +416,117 @@ namespace apcurium.MK.Booking.Services.Impl
             });
 
             // wait for trip to be updated
-            var watch = new Stopwatch();
-            watch.Start();
-            var trip = GetTrip(orderPairingDetail.PairingToken);
-            while (trip != null)
-            {
-                Thread.Sleep(2000);
-                trip = GetTrip(orderPairingDetail.PairingToken);
-
-                if (watch.Elapsed.TotalSeconds >= response.TimeoutSeconds)
-                {
-                    throw new TimeoutException("Could not be unpaired of vehicle");
-                }
-            }
+            _cmtTripInfoServiceHelper.WaitForRideLinqUnpaired(orderPairingDetail.PairingToken, response.TimeoutSeconds);
         }
 
-        private Trip GetTrip(string pairingToken)
+        private AuthorizationResponse Authorize(AuthorizationRequest request)
         {
+            InitializeServiceClient();
+
+            AuthorizationResponse response;
             try
             {
-                var trip = _cmtMobileServiceClient.Get(new TripRequest { Token = pairingToken });
-                if (trip != null)
-                {
-                    //ugly fix for deserilization problem in datetime on the device for IOS
-                    if (trip.StartTime.HasValue)
-                    {
-                        trip.StartTime = DateTime.SpecifyKind(trip.StartTime.Value, DateTimeKind.Local);
-                    }
+                var responseTask = _cmtPaymentServiceClient.PostAsync(request);
+                responseTask.Wait();
+                response = responseTask.Result;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex);
 
-                    if (trip.EndTime.HasValue)
-                    {
-                        trip.EndTime = DateTime.SpecifyKind(trip.EndTime.Value, DateTimeKind.Local);
-                    }
+                var aggregateException = ex as AggregateException;
+                if (aggregateException == null)
+                {
+                    throw ex;
                 }
 
-                return trip;
+                var webServiceException = aggregateException.InnerException as WebServiceException;
+                if (webServiceException == null)
+                {
+                    throw ex;
+                }
+
+                response = JsonConvert.DeserializeObject<AuthorizationResponse>(webServiceException.ResponseBody);
             }
-            catch (Exception)
+
+            return response;
+        }
+
+        private TokenizeDeleteResponse DeleteCreditCard(TokenizeDeleteRequest request)
+        {
+            InitializeServiceClient();
+
+            TokenizeDeleteResponse response;
+
+            try
             {
-                return null;
+                var responseTask = _cmtPaymentServiceClient.DeleteAsync(request);
+                responseTask.Wait();
+                response = responseTask.Result;
             }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex);
+
+                var aggregateException = ex as AggregateException;
+                if (aggregateException == null)
+                {
+                    throw ex;
+                }
+
+                var webServiceException = aggregateException.InnerException as WebServiceException;
+                if (webServiceException == null)
+                {
+                    throw ex;
+                }
+
+                response = JsonConvert.DeserializeObject<TokenizeDeleteResponse>(webServiceException.ResponseBody);
+            }
+            
+            return response;
+        }
+
+        private ReverseResponse Reverse(ReverseRequest request)
+        {
+            InitializeServiceClient();
+
+            ReverseResponse response;
+
+            try
+            {
+                var responseReverseTask = _cmtPaymentServiceClient.PostAsync(request);
+                responseReverseTask.Wait();
+                response = responseReverseTask.Result;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex);
+
+                var aggregateException = ex as AggregateException;
+                if (aggregateException == null)
+                {
+                    throw ex;
+                }
+
+                var webServiceException = aggregateException.InnerException as WebServiceException;
+                if (webServiceException == null)
+                {
+                    throw ex;
+                }
+
+                response = JsonConvert.DeserializeObject<ReverseResponse>(webServiceException.ResponseBody);
+            }
+            
+            _logger.LogMessage("CMT reverse response : " + response.ResponseMessage);
+
+            return response;
+        }
+
+        private void InitializeServiceClient()
+        {
+            _cmtPaymentServiceClient = new CmtPaymentServiceClient(_serverSettings.GetPaymentSettings().CmtPaymentSettings, null, null, _logger);
+            _cmtMobileServiceClient = new CmtMobileServiceClient(_serverSettings.GetPaymentSettings().CmtPaymentSettings, null, null);
+            _cmtTripInfoServiceHelper = new CmtTripInfoServiceHelper(_cmtMobileServiceClient, _logger);
         }
     }
 }

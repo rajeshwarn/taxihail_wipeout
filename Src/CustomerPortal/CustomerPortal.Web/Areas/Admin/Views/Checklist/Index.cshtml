@@ -1,0 +1,89 @@
+﻿@using CustomerPortal.Web.Security
+@using CustomerPortal.Web.Areas.Admin.Models
+@using CustomerPortal.Web.Entities
+@using GridMvc.Html
+@using GridMvc.Sorting
+
+@model  IEnumerable<CustomerPortal.Web.Areas.Admin.Models.ChecklistModel>
+@{
+    ViewBag.Title = "Checklist";
+    Layout = "~/Views/Shared/_SettingsLayout.cshtml";
+}
+<div class='row'>
+    <div id="companiesTable" style="white-space: normal;">
+
+        @Html.Grid(Model).Named("ordersGrid").Columns(column =>
+                {
+                    column.Add(c => c.Company.CompanyName)
+                        .Titled("Company")
+                        .Filterable(true)
+                        .Sortable(true)
+                        .Encoded(false)
+                        .Sanitized(false)
+                        .RenderValueAs(c => Html.ActionLink(c.Company.CompanyName, "../Home/Manage/" + c.Company.CompanyKey));
+                    column.Add(c => c.PONumber)
+                        .Titled("PO#")
+                        .Filterable(true)
+                        .Sortable(true);
+                    column.Add(c => c.Status)
+                        .Titled("Status")
+                        .Filterable(true)
+                        .SetWidth(30)
+                        .Sortable(true);
+                    column.Add(c => c.AppStoreCred)
+                        .Titled("AppStore Credentials")
+                        .Filterable(true)
+                        .SetWidth(90)
+                        .Sortable(true);
+                    column.Add(c => c.UDID)
+                        .Titled("UDID")
+                        .Filterable(true)
+                        .Sortable(true);
+                    column.Add(c => c.PlayStoreCred)
+                        .Titled("Google Play Credentials")
+                        .Filterable(true)
+                        .SetWidth(90)
+                        .Sortable(true);
+                    column.Add(c => c.IBS)
+                        .Titled("IBS")
+                        .Filterable(true)
+                        .Sortable(true);
+                    column.Add(c => c.Graphics)
+                       .Titled("Graphics")
+                       .Filterable(true)
+                       .Sortable(true);
+                    column.Add(c => c.Assets)
+                       .Titled("Assets")
+                       .Filterable(true)
+                       .Sortable(true);
+                    column.Add(c => c.Webthemes)
+                       .Titled("Webthemes")
+                       .Filterable(true)
+                       .Sortable(true);
+                }).Selectable(false)
+    </div>
+</div>
+@section scripts
+{
+    @*<script>
+            function loadVersion() {
+                $(function() {
+                    $('[data-version]').fetchVersion();
+                });
+                $(function() {
+                    $('[data-version-staging]').fetchVersionStaging();
+                });
+            }
+        </script>*@
+
+
+
+    <script type="text/javascript">
+        $(function () {
+            $('[data-status]').tipsy({ html: true, gravity: 'nw' });
+        });
+        $('[data-status]').tipsy({ html: true, gravity: 'nw' });
+
+    </script>
+}
+

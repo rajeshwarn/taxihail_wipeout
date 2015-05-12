@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
 using System.Threading.Tasks;
 using CustomerPortal.Contract.Resources;
 using CustomerPortal.Contract.Response;
@@ -11,7 +13,8 @@ namespace CustomerPortal.Client.Impl
     {
         private readonly IServerSettings _serverSettings;
 
-        public TaxiHailNetworkServiceClient(IServerSettings serverSettings) : base(serverSettings)
+        public TaxiHailNetworkServiceClient(IServerSettings serverSettings)
+            : base(serverSettings)
         {
             _serverSettings = serverSettings;
         }
@@ -22,34 +25,105 @@ namespace CustomerPortal.Client.Impl
                                .Deserialize<List<CompanyPreferenceResponse>>();
         }
 
+        public async Task<Dictionary<string, List<CompanyPreferenceResponse>>> GetRoamingCompanyPreferences(string companyId)
+        {
+            return await Client.Get(string.Format(@"customer/{0}/roaming/networkfleets", companyId))
+                               .Deserialize<Dictionary<string, List<CompanyPreferenceResponse>>>();
+        }
+
         public Task<List<NetworkFleetResponse>> GetNetworkFleetAsync(string companyId, double? latitude = null, double? longitude = null)
         {
             var companyKey = companyId ?? _serverSettings.ServerData.TaxiHail.ApplicationKey;
 
             var @params = new Dictionary<string, string>
                 {
-                    {"latitude", latitude.ToString() },
-                    {"longitude", longitude.ToString() }
+                    { "latitude", latitude.HasValue ? latitude.Value.ToString(CultureInfo.InvariantCulture) : null},
+                    { "longitude", longitude.HasValue ? longitude.Value.ToString(CultureInfo.InvariantCulture) : null }
                 };
 
-            string queryString = BuildQueryString(@params);
+            var queryString = BuildQueryString(@params);
 
             return Client.Get(string.Format("customer/{0}/networkfleet/", companyKey) + queryString)
                          .Deserialize<List<NetworkFleetResponse>>();
         }
 
-
         public List<NetworkFleetResponse> GetNetworkFleet(string companyId, double? latitude = null, double? longitude = null)
         {
-            var response = GetNetworkFleetAsync(companyId, latitude, longitude);
-            response.Wait();
-
-            return response.Result;
+            return GetNetworkFleetAsync(companyId, latitude, longitude).Result;
         }
 
         public Task SetNetworkCompanyPreferences(string companyId, CompanyPreference[] preferences)
         {
             return Client.Post(string.Format(@"customer/{0}/network", companyId), preferences);
+        }
+
+        public string GetCompanyMarket(double latitude, double longitude)
+        {
+            var homeCompanyKey = _serverSettings.ServerData.TaxiHail.ApplicationKey;
+
+            var @params = new Dictionary<string, string>
+            {
+                { "companyId", homeCompanyKey },
+                { "latitude", latitude.ToString(CultureInfo.InvariantCulture) },
+                { "longitude", longitude.ToString(CultureInfo.InvariantCulture) }
+            };
+
+            var queryString = BuildQueryString(@params);
+
+            return Client.Get("customer/roaming/market" + queryString)
+                         .Deserialize<string>()
+                         .Result;
+        }
+
+        public IEnumerable<NetworkFleetResponse> GetMarketFleets(string companyId, string market)
+        {
+            var companyKey = companyId ?? _serverSettings.ServerData.TaxiHail.ApplicationKey;
+
+            return Client.Get(string.Format("customer/{0}/roaming/marketfleets?market={1}", companyKey, market))
+                         .Deserialize<IEnumerable<NetworkFleetResponse>>()
+                         .Result;
+        }
+
+        public NetworkFleetResponse GetMarketFleet(string market, int fleetId)
+        {
+            return Client.Get(string.Format("customer/roaming/marketfleet?market={0}&fleetId={1}", market, fleetId))
+                         .Deserialize<NetworkFleetResponse>()
+                         .Result;
+        }
+
+        public IEnumerable<NetworkVehicleResponse> GetMarketVehicleTypes(string companyId = null, string market = null)
+        {
+            if (companyId == null && market == null)
+            {
+                throw new ArgumentNullException("You must specify at least either the Market or the CompanyId.");
+            } 
+
+           var @params = new Dictionary<string, string>
+                {
+                    { "companyId", companyId },
+                    { "market", market }
+                };
+
+            return Client.Get("customer/marketVehicleTypes" + BuildQueryString(@params))
+                         .Deserialize<IEnumerable<NetworkVehicleResponse>>()
+                         .Result;
+        }
+
+        public NetworkVehicleResponse GetAssociatedMarketVehicleType(string companyId, int networkVehicleId)
+        {
+            return Client.Get(string.Format("customer/{0}/associatedMarketVehicleType?networkVehicleId={1}", companyId, networkVehicleId))
+                         .Deserialize<NetworkVehicleResponse>()
+                         .Result;
+        }
+
+        public Task UpdateMarketVehicleType(string companyId, CompanyVehicleType vehicleType)
+        {
+            return Client.Post(string.Format("customer/{0}/companyVehicles", companyId), vehicleType);
+        }
+
+        public Task DeleteMarketVehicleMapping(string companyId, Guid id)
+        {
+            return Client.DeleteAsync(string.Format("customer/{0}/companyVehicles?vehicleTypeId={1}", companyId, id));
         }
     }
 }

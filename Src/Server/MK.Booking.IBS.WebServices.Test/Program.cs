@@ -43,7 +43,7 @@ namespace MK.Booking.IBS.WebServices.Test
                 double distance;
                 orderService.EstimateFare("taxi", "test", oio, out fare, out toll, out distance);
                 //var vehicles = orderService.GetAvailableVehicles("taxi", "test", 45.3417, -75.9233, 10000, 10000);
-
+                
                 //if (vehicles.Count() == 0)
                 //{
                 //    Console.WriteLine("Call made sucesfully but no vehicle found");

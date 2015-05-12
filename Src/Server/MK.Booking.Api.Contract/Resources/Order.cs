@@ -27,6 +27,8 @@ namespace apcurium.MK.Booking.Api.Contract.Resources
 
         public double? Fare { get; set; }
 
+        public double? Tax { get; set; }
+
         public double? Toll { get; set; }
 
         public double? Tip { get; set; }
@@ -36,5 +38,9 @@ namespace apcurium.MK.Booking.Api.Contract.Resources
         public long TransactionId { get; set; }
 
         public OrderStatus Status { get; set; }
+
+        public string PromoCode { get; set; }
+
+        public bool IsManualRideLinq { get; set; }
     }
 }

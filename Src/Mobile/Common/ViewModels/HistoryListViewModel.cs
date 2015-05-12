@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -10,6 +11,7 @@ using apcurium.MK.Booking.Mobile.Messages;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
 using TinyMessenger;
+using apcurium.MK.Booking.Api.Contract.Resources;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -20,19 +22,22 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		public HistoryListViewModel(IAccountService accountService)
         {
 			_accountService = accountService;
-
-			_orderDeletedToken = this.Services().MessengerHub.Subscribe<OrderDeleted>(c => OnOrderDeleted(c.Content));
-            _orderStatusChangedToken = this.Services().MessengerHub.Subscribe<OrderStatusChanged>(c => OnOrderStatusChanged(c.Content, c.Status));
         }
 
 		private ObservableCollection<OrderViewModel> _orders;
 
-		private readonly TinyMessageSubscriptionToken _orderDeletedToken;
-        private readonly TinyMessageSubscriptionToken _orderStatusChangedToken;
+		private TinyMessageSubscriptionToken _orderDeletedToken;
+        private TinyMessageSubscriptionToken _orderStatusChangedToken;
 
 		public void Init()
 		{
 			HasOrders = true; //Needs to be true otherwise we see the no order for a few seconds 
+
+            var services = this.Services();
+            var msgHub = services.MessengerHub;
+
+            _orderDeletedToken = msgHub.Subscribe<OrderDeleted>(c => OnOrderDeleted(c.Content));
+            _orderStatusChangedToken = msgHub.Subscribe<OrderStatusChanged>(c => OnOrderStatusChanged(c.Content, c.Status));
 		}
 
         public ObservableCollection<OrderViewModel> Orders
@@ -87,7 +92,21 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			using (this.Services().Message.ShowProgress())
 			{
-				var orders = await _accountService.GetHistoryOrders();
+			    IList<Order> orders = new Order[0];
+
+			    try
+			    {
+                    var allOrders = await _accountService.GetHistoryOrders();
+
+                    // Do not display ManualRideLinQ orders yet. This will be done in MKTAXI-2589.
+			        orders = allOrders.Where(o => !o.IsManualRideLinq).ToArray();
+			    }
+			    catch (Exception ex)
+			    {
+                    Logger.LogMessage(ex.Message, ex.ToString());
+                    this.Services().Message.ShowMessage(this.Services().Localize["Error"], this.Services().Localize["HistoryLoadError"]);
+			    }
+
 				if (orders.Any())
 				{
 					var firstId = orders.First().Id;
@@ -125,7 +144,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     new {orderId = vm.Id}));
             }
         }
-
+			
         public override void OnViewUnloaded ()
         {
             base.OnViewUnloaded ();

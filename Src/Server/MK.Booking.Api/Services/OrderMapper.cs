@@ -30,17 +30,21 @@ namespace apcurium.MK.Booking.Api.Services
                     ProviderId = order.Settings.ProviderId,
                     VehicleTypeId = order.Settings.VehicleTypeId,
                     LargeBags = order.Settings.LargeBags,
-                    AccountNumber = order.Settings.AccountNumber
+                    AccountNumber = order.Settings.AccountNumber,
+                    CustomerNumber = order.Settings.CustomerNumber
                 },
                 Fare = order.Fare,
+                Tax = order.Tax,
                 Tip = order.Tip,
                 Toll = order.Toll,
                 Status = (OrderStatus) order.Status,
                 IsRated = order.IsRated,
-                TransactionId = order.TransactionId
+                TransactionId = order.TransactionId,
+                IsManualRideLinq = order.IsManualRideLinq
             };
 
             return resource;
         }
+
     }
 }

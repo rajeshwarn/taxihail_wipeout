@@ -1,7 +1,7 @@
 using CrossUI.Touch.Dialog.Elements;
-using MonoTouch.UIKit;
+using UIKit;
 using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
-using System.Drawing;
+using CoreGraphics;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
@@ -19,12 +19,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			_isPassword = isPassword;
 		}
 
-		protected override UITextField CreateTextField(RectangleF frame)
+		protected override UITextField CreateTextField(CGRect frame)
 		{
 			UITextField textField;
 			if (UIHelper.IsOS7orHigher)
 			{
-                textField  = base.CreateTextField(frame.SetX(Padding).SetWidth(320 - 2*8 - 2*Padding)); // 320 - margin - padding
+                textField  = base.CreateTextField(frame.SetX(Padding).SetWidth(UIScreen.MainScreen.Bounds.Width - 2*8 - 2*Padding)); // screenwidth - margin - padding
 				textField.TintColor = UIColor.Black; // cursor color
 			}
 			else
@@ -37,12 +37,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			textField.VerticalAlignment = UIControlContentVerticalAlignment.Center;
 
 			this.AutocorrectionType = UITextAutocorrectionType.No;
+            textField.AdjustsFontSizeToFitWidth = true;
 
-
-			if (_isPassword) {
+			if (_isPassword) 
+            {
 				this.AutocapitalizationType = UITextAutocapitalizationType.None;
 			}
-			else {
+			else 
+            {
 				this.AutocapitalizationType = _autocapitalizationType;
 			}
 

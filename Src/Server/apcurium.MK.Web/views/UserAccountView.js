@@ -7,7 +7,13 @@
         },
 
         render: function () {
-            this.$el.html(this.renderTemplate(this.model.toJSON()));
+            
+            var data = this.model.toJSON();
+            _.extend(data, {
+                isBraintreePrepaidEnabled: TaxiHail.parameters.isBraintreePrepaidEnabled
+            });
+
+            this.$el.html(this.renderTemplate(data));
             return this;
         },
         
@@ -17,6 +23,32 @@
                     model: this.model
                 }).render();
                 this.$("#user-account-container").html(this._tabView.el);
+            },
+
+            payment: function () {
+                var creditCard = new TaxiHail.CreditCardCollection();
+
+                var container = this.$("#user-account-container");
+                TaxiHail.showSpinner(container);
+
+                creditCard.fetch({
+                    url: 'api/account/creditcards',
+                    success: _.bind(function (model) {
+                        var creditCardInfo = new TaxiHail.CreditCard();
+                        if (model.length > 0) {
+                            // Take only the first credit card since we no longer support multiple cards per account
+                            creditCardInfo = model.models[0];
+                        }
+
+                        this._tabView = new TaxiHail.PaymentView({
+                            model: creditCardInfo,
+                            parent: this
+                        });
+                        this._tabView.render();
+                        this.$("#user-account-container").html(this._tabView.el);
+                    }, this)
+                    
+                });
             },
 
             favorites: function(){
@@ -42,6 +74,7 @@
                     }, this)
                 });
             },
+
             history: function () {
                 var orders = new TaxiHail.OrderCollection();
                 orders.fetch({
@@ -56,10 +89,8 @@
                     }, this)
                     
                 });
-                
-                
-                
             },
+
             password: function () {
                 this._tabView = new TaxiHail.UpdatePasswordView({
                     model: this.model
@@ -75,6 +106,11 @@
             this._tabView && this._tabView.remove();
             this.tab[tabName].apply(this);
 
+        },
+
+        showOnlyActiveTab: function() {
+            this.$('.active').siblings().addClass('hidden');
+            this.$('.active').addClass('hidden');
         },
 
         reloadActiveTab: function (e) {

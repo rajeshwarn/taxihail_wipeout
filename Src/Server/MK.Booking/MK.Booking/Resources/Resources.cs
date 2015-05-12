@@ -83,5 +83,10 @@ namespace apcurium.MK.Booking.Resources
             var currencyPriceFormat = Get("CurrencyPriceFormat", culture);
             return string.Format(new CultureInfo(culture), currencyPriceFormat, price.HasValue ? price.Value : 0);
         }
+
+        public string GetCurrencyCode()
+        {
+            return new RegionInfo(_serverSettings.ServerData.PriceFormat).ISOCurrencySymbol;
+        }
     }
 }

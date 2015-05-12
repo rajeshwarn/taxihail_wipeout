@@ -15,6 +15,7 @@ using apcurium.MK.Booking.Mobile.Client.Extensions;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.ViewModels;
 using apcurium.MK.Booking.Mobile.ViewModels.Orders;
+using apcurium.MK.Common.Entity;
 using Cirrious.MvvmCross.Binding.BindingContext;
 using Cirrious.MvvmCross.Binding.Droid.Views;
 
@@ -173,11 +174,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets.Addresses
             set.Apply();
         }
 
-        public void Open()
-        {        
-            Visibility = ViewStates.Visible;
-            ViewModel.LoadAddresses();
-			FocusOnTextField ();  
+        public async void Open(AddressLocationType filterAddresses)
+        {
+            await ViewModel.LoadAddresses(filterAddresses).HandleErrors();
+			if (filterAddresses == AddressLocationType.Unspeficied || ViewModel.AllAddresses.Count > 1)
+            {
+                Visibility = ViewStates.Visible;
+                FocusOnTextField();
+            }
         } 
 
         public void Close()
