@@ -140,8 +140,10 @@ namespace apcurium.MK.Booking.Api.Jobs
             var orderStatusDetails = orders as OrderStatusDetail[] ?? orders.ToArray();
 
             var manualRideLinqOrders = orderStatusDetails.Where(o => o.IsManualRideLinq);
+
             foreach (var orderStatusDetail in manualRideLinqOrders)
             {
+                Log.InfoFormat("Starting OrderStatusUpdater for order {0} (Paired via Manual RideLinQ code).", orderStatusDetail.OrderId);
                 _orderStatusUpdater.HandleManualRidelinqFlow(orderStatusDetail);
             }
 
@@ -189,12 +191,12 @@ namespace apcurium.MK.Booking.Api.Jobs
         {
 
             if (_serverSettings.ServerData.AvailableVehiclesMode == AvailableVehiclesModes.HoneyBadger
-                && _serverSettings.ServerData.AvailableVehiclesMarket.HasValue())
+                && _serverSettings.ServerData.HoneyBadger.AvailableVehiclesMarket.HasValue())
             {
                 var vehicleMedallions = orderStatuses.Select(x => x.VehicleNumber);
                 var vehicleMarket = !market.HasValue()
-                    ? _serverSettings.ServerData.AvailableVehiclesMarket // Local market
-                    : market;                                            // External market
+                    ? _serverSettings.ServerData.HoneyBadger.AvailableVehiclesMarket // Local market
+                    : market;                                                        // External market
 
                 // Get vehicle statuses/position from HoneyBadger
                 return _honeyBadgerServiceClient.GetVehicleStatus(vehicleMarket, vehicleMedallions);

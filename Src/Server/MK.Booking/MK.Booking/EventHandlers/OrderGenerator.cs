@@ -580,7 +580,8 @@ namespace apcurium.MK.Booking.EventHandlers
         public void Handle(ManualRideLinqTripInfoUpdated @event)
         {
             using (var context = _contextFactory.Invoke())
-            {
+            {   
+                _logger.LogMessage("Trip info updated event received for order {0} (TripId {1}; Pairing token {2}", @event.SourceId, @event.TripId, @event.PairingToken);
                 var order = context.Find<OrderDetail>(@event.SourceId);
                 if (order != null)
                 {
@@ -607,24 +608,27 @@ namespace apcurium.MK.Booking.EventHandlers
                 }
 
                 var rideLinqDetails = context.Find<OrderManualRideLinqDetail>(@event.SourceId);
-                if (rideLinqDetails != null)
+                if (rideLinqDetails == null)
                 {
-                    rideLinqDetails.Distance = @event.Distance;
-                    rideLinqDetails.PairingToken = @event.PairingToken;
-                    rideLinqDetails.EndTime = @event.EndTime;
-                    rideLinqDetails.Extra = @event.Extra;
-                    rideLinqDetails.Fare = @event.Fare;
-                    rideLinqDetails.FareAtAlternateRate = @event.FareAtAlternateRate;
-                    rideLinqDetails.Total = @event.Total;
-                    rideLinqDetails.Toll = @event.Toll;
-                    rideLinqDetails.Tip = @event.Tip;
-                    rideLinqDetails.Tax = @event.Tax;
-                    rideLinqDetails.Surcharge = @event.Surcharge;
-                    rideLinqDetails.RateAtTripStart = @event.RateAtTripStart;
-                    rideLinqDetails.RateAtTripEnd = @event.RateAtTripEnd;
-                    rideLinqDetails.RateChangeTime = @event.RateChangeTime;
-                    context.Save(rideLinqDetails);
+                    _logger.LogMessage("There is no manual RideLinQ details for order {0}", @event.SourceId);
+                    return;
                 }
+
+                rideLinqDetails.Distance = @event.Distance;
+                rideLinqDetails.PairingToken = @event.PairingToken;
+                rideLinqDetails.EndTime = @event.EndTime;
+                rideLinqDetails.Extra = @event.Extra;
+                rideLinqDetails.Fare = @event.Fare;
+                rideLinqDetails.FareAtAlternateRate = @event.FareAtAlternateRate;
+                rideLinqDetails.Total = @event.Total;
+                rideLinqDetails.Toll = @event.Toll;
+                rideLinqDetails.Tip = @event.Tip;
+                rideLinqDetails.Tax = @event.Tax;
+                rideLinqDetails.Surcharge = @event.Surcharge;
+                rideLinqDetails.RateAtTripStart = @event.RateAtTripStart;
+                rideLinqDetails.RateAtTripEnd = @event.RateAtTripEnd;
+                rideLinqDetails.RateChangeTime = @event.RateChangeTime;
+                context.Save(rideLinqDetails);
             }
         }
 

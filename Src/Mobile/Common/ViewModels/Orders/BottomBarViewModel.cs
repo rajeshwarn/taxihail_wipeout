@@ -164,6 +164,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
                         && _orderValidationResult.AppliesToCurrentBooking)
                     {
                         this.Services().Message.ShowMessage(this.Services().Localize["CurrentBookingDisabledTitle"], _orderValidationResult.Message);
+						ResetToInitialState.ExecuteIfPossible();
                         return;
                     }
 
@@ -188,15 +189,19 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
                                 // not really an error, but we stop the command from proceeding at this point
                                 return;
                             case OrderValidationError.PickupAddressRequired:
+								ResetToInitialState.ExecuteIfPossible();
                                 this.Services().Message.ShowMessage(this.Services().Localize["InvalidBookinInfoTitle"], this.Services().Localize["InvalidBookinInfo"]);
                                 return;
                             case OrderValidationError.DestinationAddressRequired:
+								ResetToInitialState.ExecuteIfPossible();
                                 this.Services().Message.ShowMessage(this.Services().Localize["InvalidBookinInfoTitle"], this.Services().Localize["InvalidBookinInfoWhenDestinationIsRequired"]);
                                 return;
                             case OrderValidationError.InvalidPickupDate:
+								ResetToInitialState.ExecuteIfPossible();
                                 this.Services().Message.ShowMessage(this.Services().Localize["InvalidBookinInfoTitle"], this.Services().Localize["BookViewInvalidDate"]);
                                 return;
 							case OrderValidationError.InvalidPassengersNumber:
+								ResetToInitialState.ExecuteIfPossible();
 								this.Services().Message.ShowMessage(this.Services().Localize["InvalidPassengersNumberTitle"], this.Services().Localize["InvalidPassengersNumber"]);
 								return;
                             default:
@@ -204,6 +209,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
                                 return;
                         }
                     }
+					catch(Exception ex)
+					{
+						Logger.LogError(ex);
+						ResetToInitialState.ExecuteIfPossible();
+						return;
+					}
 
                     ReviewOrderDetails();
 				});
@@ -451,13 +462,21 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
                                 // not really an error, but we stop the command from proceeding at this point
                                 return;
                             case OrderValidationError.PickupAddressRequired:
+								ResetToInitialState.ExecuteIfPossible();
                                 this.Services().Message.ShowMessage(this.Services().Localize["InvalidBookinInfoTitle"], this.Services().Localize["InvalidBookinInfo"]);
                                 return;
                             case OrderValidationError.DestinationAddressRequired:
+								ResetToInitialState.ExecuteIfPossible();
                                 this.Services().Message.ShowMessage(this.Services().Localize["InvalidBookinInfoTitle"], this.Services().Localize["InvalidBookinInfoWhenDestinationIsRequired"]);
                                 return;
                         }
                     }
+					catch(Exception e)
+					{
+						Logger.LogError(e);
+						ResetToInitialState.ExecuteIfPossible();
+						return;
+					}
                 });
             }
         }
