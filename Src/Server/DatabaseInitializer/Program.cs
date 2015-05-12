@@ -216,11 +216,7 @@ namespace DatabaseInitializer
                 }
                 else
                 {
-                    var settings = serverSettings.GetSettings();
-
-                    MigrateCompanySettings(settings);
-
-                    appSettings = settings;
+                    appSettings = serverSettings.GetSettings();
                 }
 
                 Console.WriteLine("Checking Rules...");
@@ -855,17 +851,6 @@ namespace DatabaseInitializer
                     TariffId = Guid.NewGuid(),
                 });
             }
-        }
-
-        private static void MigrateCompanySettings(IDictionary<string, string> settings)
-        {
-            var marketSetting = settings.FirstOrDefault(s => s.Key == "AvailableVehiclesMarket");
-            settings.Add(new KeyValuePair<string, string>("HoneyBadger.AvailableVehiclesMarket", marketSetting.Value));
-            settings.Remove(marketSetting);
-
-            var fleetIdSetting = settings.FirstOrDefault(s => s.Key == "AvailableVehiclesFleetId");
-            settings.Add(new KeyValuePair<string, string>("HoneyBadger.AvailableVehiclesFleetId", fleetIdSetting.Value));
-            settings.Remove(fleetIdSetting);
         }
 
         private static void MigratePaymentSettings(IServerSettings serverSettings, ICommandBus commandBus)
