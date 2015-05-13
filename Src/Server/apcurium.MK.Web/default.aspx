@@ -34,7 +34,7 @@
         
 
         <!-- assets -->
-        <script src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
+        <script src="https://maps.googleapis.com/maps/api/js?client=gme-taxihailinc&v=3.19"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
         
          <%: Scripts.Render("~/bundles/assets") %>
