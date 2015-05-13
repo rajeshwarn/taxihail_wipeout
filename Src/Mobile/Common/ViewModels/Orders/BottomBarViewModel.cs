@@ -196,7 +196,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
                                 this.Services().Message.ShowMessage(this.Services().Localize["InvalidBookinInfoTitle"], this.Services().Localize["BookViewInvalidDate"]);
                                 return;
 							case OrderValidationError.InvalidPassengersNumber:
-								ResetToInitialState.ExecuteIfPossible();
 								this.Services().Message.ShowMessage(this.Services().Localize["InvalidPassengersNumberTitle"], this.Services().Localize["InvalidPassengersNumber"]);
 								return;
                             default:
