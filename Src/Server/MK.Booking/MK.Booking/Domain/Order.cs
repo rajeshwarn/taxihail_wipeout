@@ -183,16 +183,16 @@ namespace apcurium.MK.Booking.Domain
             });
         }
 
-        public void UpdatePrepaidOrderPaymentInfo(Guid orderId, decimal amount, decimal meter, decimal tax,
-                decimal tip, string transactionId, PaymentProvider provider, PaymentType type)
+        public void UpdatePrepaidOrderPaymentInfo(Guid orderId, decimal totalAmount, decimal meterAmount, decimal taxAmount,
+                decimal tipAmount, string transactionId, PaymentProvider provider, PaymentType type)
         {
             Update(new PrepaidOrderPaymentInfoUpdated
             {
                 OrderId = orderId,
-                Amount = amount,
-                Meter = meter,
-                Tax = tax,
-                Tip = tip,
+                Amount = totalAmount,
+                Meter = meterAmount,
+                Tax = taxAmount,
+                Tip = tipAmount,
                 TransactionId = transactionId,
                 Provider = provider,
                 Type = type

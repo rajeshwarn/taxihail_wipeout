@@ -21,11 +21,11 @@ namespace apcurium.MK.Booking.Commands
 
         public double? Fare { get; set; }
 
-        public double? Toll { get; set; }
-
         public double? Tip { get; set; }
 
         public double? Tax { get; set; }
+
+        public double? Toll { get; set; }
 
         public double? Surcharge { get; set; }
     }

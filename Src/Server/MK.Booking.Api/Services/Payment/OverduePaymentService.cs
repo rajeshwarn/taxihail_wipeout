@@ -111,7 +111,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                         AccountId = accountDetail.Id,
                         PaymentId = paymentDetail.PaymentId,
                         Provider = _paymentService.ProviderType(overduePayment.OrderId),
-                        TotalOrderAmount = overduePayment.OverdueAmount,
+                        TotalAmount = overduePayment.OverdueAmount,
                         MeterAmount = fareObject.AmountExclTax,
                         TipAmount = tipAmount,
                         TaxAmount = fareObject.TaxAmount,

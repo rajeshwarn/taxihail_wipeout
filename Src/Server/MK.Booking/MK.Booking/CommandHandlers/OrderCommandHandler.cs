@@ -186,8 +186,8 @@ namespace apcurium.MK.Booking.CommandHandlers
 
             var order = _repository.Find(command.OrderId);
 
-            order.UpdatePrepaidOrderPaymentInfo(command.OrderId, command.Amount, command.Meter, command.Tax,
-                command.Tip, command.TransactionId, command.Provider, command.Type);
+            order.UpdatePrepaidOrderPaymentInfo(command.OrderId, command.TotalAmount, command.MeterAmount, command.TaxAmount,
+                command.TipAmount, command.TransactionId, command.Provider, command.Type);
 
             _repository.Save(order, command.Id.ToString());
         }

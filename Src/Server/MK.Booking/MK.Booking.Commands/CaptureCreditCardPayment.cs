@@ -25,7 +25,7 @@ namespace apcurium.MK.Booking.Commands
 
         public PaymentProvider Provider { get; set; }
         
-        public decimal TotalOrderAmount { get; set; }
+        public decimal TotalAmount { get; set; }
 
         public decimal MeterAmount { get; set; }
 

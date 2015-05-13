@@ -431,26 +431,26 @@ namespace apcurium.MK.Booking.Api.Jobs
 
             try
             {
-                var totalOrderAmount = Convert.ToDecimal(ibsOrderInfo.MeterAmount + tipAmount);
+                var totalAmount = Convert.ToDecimal(ibsOrderInfo.MeterAmount + tipAmount);
                 var amountSaved = 0m;
 
                 var promoUsed = _promotionDao.FindByOrderId(orderStatusDetail.OrderId);
                 if (promoUsed != null)
                 {
                     var promoDomainObject = _promoRepository.Get(promoUsed.PromoId);
-                    amountSaved = promoDomainObject.GetAmountSaved(Convert.ToDecimal(ibsOrderInfo.MeterAmount));
-                    totalOrderAmount = totalOrderAmount - amountSaved;
+                    amountSaved = promoDomainObject.GetDiscountAmount(Convert.ToDecimal(ibsOrderInfo.MeterAmount));
+                    totalAmount = totalAmount - amountSaved;
                 }
 
                 var tempPaymentInfo = _orderDao.GetTemporaryPaymentInfo(orderStatusDetail.OrderId);
 
                 // Preautorize
-                var preAuthResponse = PreauthorizePaymentIfNecessary(orderStatusDetail.OrderId, totalOrderAmount, tempPaymentInfo != null ? tempPaymentInfo.Cvv : null);
+                var preAuthResponse = PreauthorizePaymentIfNecessary(orderStatusDetail.OrderId, totalAmount, tempPaymentInfo != null ? tempPaymentInfo.Cvv : null);
                 if (preAuthResponse.IsSuccessful)
                 {
                     // Commit
                     var paymentResult = CommitPayment(
-                        totalOrderAmount,
+                        totalAmount,
                         Convert.ToDecimal(ibsOrderInfo.MeterAmount), 
                         Convert.ToDecimal(tipAmount),
                         Convert.ToDecimal(ibsOrderInfo.Toll),
@@ -508,7 +508,7 @@ namespace apcurium.MK.Booking.Api.Jobs
             orderStatusDetail.Status = OrderStatus.Completed;
         }
 
-        private CommitPreauthorizedPaymentResponse CommitPayment(decimal totalOrderAmount, decimal meterAmount, decimal tipAmount,
+        private CommitPreauthorizedPaymentResponse CommitPayment(decimal totalAmount, decimal meterAmount, decimal tipAmount,
             decimal tollAmount, decimal surchargeAmount, Guid orderId, bool isNoShowFee, Guid? promoUsedId = null, decimal amountSaved = 0)
         {
             var orderDetail = _orderDao.FindById(orderId);
@@ -545,14 +545,14 @@ namespace apcurium.MK.Booking.Api.Jobs
                 }
                 else
                 {
-                    if (totalOrderAmount > 0)
+                    if (totalAmount > 0)
                     {
                         // Commit
                         paymentProviderServiceResponse = _paymentService.CommitPayment(
                             orderId,
                             account,
                             paymentDetail.PreAuthorizedAmount,
-                            totalOrderAmount,
+                            totalAmount,
                             meterAmount,
                             tipAmount,
                             paymentDetail.TransactionId);
@@ -589,7 +589,7 @@ namespace apcurium.MK.Booking.Api.Jobs
 
                         _ibs.ConfirmExternalPayment(orderDetail.Id,
                             orderDetail.IBSOrderId.Value,
-                            totalOrderAmount,
+                            totalAmount,
                             Convert.ToDecimal(tipAmount),
                             Convert.ToDecimal(meterAmount),
                             paymentProviderServiceResponse.IsSuccessful ? PaymentType.CreditCard.ToString() : FailedCode,
@@ -641,7 +641,7 @@ namespace apcurium.MK.Booking.Api.Jobs
                         AccountId = account.Id,
                         PaymentId = paymentDetail.PaymentId,
                         Provider = _paymentService.ProviderType(orderDetail.Id),
-                        TotalOrderAmount = totalOrderAmount,
+                        TotalAmount = totalAmount,
                         MeterAmount = Convert.ToDecimal(fareObject.AmountExclTax),
                         TipAmount = Convert.ToDecimal(tipAmount),
                         TaxAmount = Convert.ToDecimal(fareObject.TaxAmount),
@@ -673,7 +673,7 @@ namespace apcurium.MK.Booking.Api.Jobs
                             AccountId = account.Id,
                             OrderId = orderId,
                             IBSOrderId = orderDetail.IBSOrderId,
-                            OverdueAmount = totalOrderAmount,
+                            OverdueAmount = totalAmount,
                             TransactionId = paymentProviderServiceResponse.TransactionId,
                             TransactionDate = paymentProviderServiceResponse.TransactionDate
                         });

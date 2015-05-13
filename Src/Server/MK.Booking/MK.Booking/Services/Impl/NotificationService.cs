@@ -491,8 +491,8 @@ namespace apcurium.MK.Booking.Services.Impl
 
             string imageLogoUrl = GetRefreshableImageUrl(baseUrls.LogoImg);
 
-            var totalOrderAmount = fare + toll + tip + tax + surcharge - amountSavedByPromotion;
-            var subTotalAmount = totalOrderAmount + amountSavedByPromotion - tip;  // represents everything except tip
+            var subTotalAmount = fare + toll + tax + surcharge;
+            var totalAmount = subTotalAmount + tip - amountSavedByPromotion;
 
             var templateData = new
             {
@@ -516,7 +516,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 Surcharge = _resources.FormatPrice(surcharge),
                 SubTotal = _resources.FormatPrice(subTotalAmount),
                 Tip = _resources.FormatPrice(tip),
-                TotalFare = _resources.FormatPrice(totalOrderAmount),
+                TotalFare = _resources.FormatPrice(totalAmount),
                 Note = _serverSettings.ServerData.Receipt.Note,
                 Tax = _resources.FormatPrice(tax),
                 ShowTax = Math.Abs(tax) >= 0.01,

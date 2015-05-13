@@ -45,6 +45,8 @@ namespace apcurium.MK.Booking.EventHandlers
                 payment.Meter = @event.Meter;
                 payment.Tax = @event.Tax;
                 payment.Tip = @event.Tip;
+                payment.Toll = @event.Toll;
+                payment.Surcharge = @event.Surcharge;
                 payment.IsCancelled = false;
                 payment.Error = null;
 
@@ -82,6 +84,10 @@ namespace apcurium.MK.Booking.EventHandlers
                 if (!order.Tax.HasValue || order.Tax == 0)
                 {
                     order.Tax = Convert.ToDouble(@event.Tax);
+                }
+                if (!order.Toll.HasValue || order.Toll == 0)
+                {
+                    order.Toll = Convert.ToDouble(@event.Toll);
                 }
                 if (!order.Surcharge.HasValue || order.Surcharge == 0)
                 {
