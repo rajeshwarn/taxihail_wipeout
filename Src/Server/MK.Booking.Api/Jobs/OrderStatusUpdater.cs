@@ -34,6 +34,7 @@ using apcurium.MK.Common.Resources;
 using Infrastructure.EventSourcing;
 using Infrastructure.Messaging;
 using System;
+using apcurium.MK.Common.Enumeration.TimeZone;
 using CMTPayment;
 using log4net;
 using ServiceStack.Common.Web;
@@ -137,21 +138,19 @@ namespace apcurium.MK.Booking.Api.Jobs
             _commandBus.Send(changeOrderStatus);
         }
 
-        private DateTime? GetDropOffDateInCompanyTimeZone(OrderStatusDetail orderStatusDetail)
+        private DateTime GetDropOffDateInCompanyTimeZone(OrderStatusDetail orderStatusDetail)
         {
-            // what to do when no setting?? i guess return null to have eventhandler check company setting
-            var timeZoneId = orderStatusDetail.Market.HasValue()
+            var timeZone = orderStatusDetail.Market.HasValue()
                 ? null // call customer portal to get it
-                : _serverSettings.ServerData.CompanyTimeZone;
+                : TimeZoneHelper.GetTimeZoneInfo(_serverSettings.ServerData.CompanyTimeZone);
 
-            var now = DateTime.UtcNow;
-            if (timeZoneId == null)
+            if (timeZone == null)
             {
-                // return a utc date
-                return now;
+                return DateTime.UtcNow;
             }
 
-            return now + TimeZoneInfo.FindSystemTimeZoneById(timeZoneId).GetUtcOffset(now);
+            var now = DateTime.UtcNow;
+            return now + timeZone.GetUtcOffset(now);
         }
 
         public void HandleManualRidelinqFlow(OrderStatusDetail orderstatusDetail)

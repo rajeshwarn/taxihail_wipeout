@@ -209,10 +209,12 @@ namespace DatabaseInitializer
 
                     //Save settings so that next calls to referenceDataService has the IBS Url
                     AddOrUpdateAppSettings(commandBus, appSettings);
-
+                    
                     FetchingIbsDefaults(container, commandBus);
 
                     CreateDefaultAccounts(container, commandBus);
+
+                    // TODO call google to set the timezone of the company using default lat/lng and translating IANA time zone to microsoft
                 }
                 else
                 {

@@ -9,7 +9,6 @@ using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using Infrastructure.Messaging.Handling;
-using ServiceStack.Common.Extensions;
 
 namespace apcurium.MK.Booking.EventHandlers
 {
@@ -335,8 +334,8 @@ namespace apcurium.MK.Booking.EventHandlers
                     if (@event.IsCompleted)
                     {
                         order.DropOffDate = @event.DropOffDate.HasValue 
-                            ? @event.DropOffDate 
-                            : TransformUTCToLocalTime(@event.EventDate);    // for migration 
+                            ? @event.DropOffDate
+                            : @event.EventDate; // continue putting UTC date
                     }
 
                     order.Fare = @event.Fare;
@@ -353,15 +352,6 @@ namespace apcurium.MK.Booking.EventHandlers
 
                 context.SaveChanges();
             }
-        }
-
-        private DateTime TransformUTCToLocalTime(DateTime utcDate)
-        {
-            var test = TimeZoneInfo.GetSystemTimeZones();
-
-            var setting = TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time");
-            var offset = setting.GetUtcOffset(utcDate);
-            return utcDate + offset;
         }
 
         public void Handle(OrderUnpairedForPayment @event)

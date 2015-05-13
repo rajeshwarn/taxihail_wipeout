@@ -4,6 +4,7 @@ using System.Net.Mail;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Attributes;
 using apcurium.MK.Common.Enumeration;
+using apcurium.MK.Common.Enumeration.TimeZone;
 
 namespace MK.Common.Configuration
 {
@@ -93,6 +94,7 @@ namespace MK.Common.Configuration
 
             PayPalConversionRate = 1;
             SendDetailedPaymentInfoToDriver = true;
+            CompanyTimeZone = TimeZones.EasternStandardTime;
         }
 
         public SmtpSettingContainer Smtp { get; protected set; }
@@ -173,6 +175,6 @@ namespace MK.Common.Configuration
 
         [CustomizableByCompany]
         [Display(Name = "Company's time zone", Description = "Used to properly show dates in the correct time zone")]
-        public string CompanyTimeZone { get; protected set; }
+        public TimeZones CompanyTimeZone { get; protected set; }
     }
 }
