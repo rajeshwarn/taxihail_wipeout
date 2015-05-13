@@ -549,6 +549,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities.Book
                     case HomeViewModelState.Review:
                     case HomeViewModelState.PickDate:
                     case HomeViewModelState.AddressSearch:
+                    case HomeViewModelState.AirportSearch:
+                    case HomeViewModelState.TrainStationSearch:
                         ChangePresentation(new HomeViewModelPresentationHint(HomeViewModelState.Initial));
                         return false;
                     case HomeViewModelState.Edit:
