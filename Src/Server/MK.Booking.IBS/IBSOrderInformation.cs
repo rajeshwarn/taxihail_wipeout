@@ -41,6 +41,11 @@ namespace apcurium.MK.Booking.IBS
 
         public DateTime? Eta { get; set; }
 
+        public double MeterAmount
+        {
+            get { return Fare + Toll + VAT + Surcharge; }
+        }
+
         public override string ToString()
         {
             return Status + " " + FirstName;

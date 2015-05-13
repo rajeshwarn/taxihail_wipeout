@@ -1,12 +1,8 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using apcurium.MK.Booking.Events;
-using apcurium.MK.Booking.IBS;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Services;
 using apcurium.MK.Common;
-using apcurium.MK.Common.Configuration;
-using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Enumeration;
 using Infrastructure.Messaging.Handling;
 

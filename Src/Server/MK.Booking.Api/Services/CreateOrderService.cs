@@ -1354,7 +1354,7 @@ namespace apcurium.MK.Booking.Api.Services
                         AccountId = account.Id,
                         PaymentId = paymentDetail.PaymentId,
                         Provider = _paymentService.ProviderType(orderId),
-                        Amount = totalAmount,
+                        TotalOrderAmount = totalAmount,
                         MeterAmount = fareObject.AmountExclTax,
                         TipAmount = tipAmount,
                         TaxAmount = fareObject.TaxAmount,

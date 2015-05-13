@@ -50,6 +50,8 @@ namespace apcurium.MK.Booking.ReadModel
 
         public double? Tax { get; set; }
 
+        public double? Surcharge { get; set; }
+
         public bool IsRemovedFromHistory { get; set; }
 
         public long TransactionId { get; set; }

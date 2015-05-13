@@ -152,8 +152,8 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                         }
 
                         var totalAmountSpent = eligibleOrders.Any(x => x.Id == orderId)
-                            ? eligibleOrders.Sum(x => x.Fare.GetValueOrDefault() + x.Tax.GetValueOrDefault() + x.Toll.GetValueOrDefault())
-                            : eligibleOrders.Sum(x => x.Fare.GetValueOrDefault() + x.Tax.GetValueOrDefault() + x.Toll.GetValueOrDefault()) + value;
+                            ? eligibleOrders.Sum(x => x.Fare.GetValueOrDefault() + x.Tax.GetValueOrDefault() + x.Toll.GetValueOrDefault() + x.Surcharge.GetValueOrDefault())
+                            : eligibleOrders.Sum(x => x.Fare.GetValueOrDefault() + x.Tax.GetValueOrDefault() + x.Toll.GetValueOrDefault() + x.Surcharge.GetValueOrDefault()) + value;
 
                         // To get the current progress of the promo, we need to calculate only from the last time the promo was triggered
                         var amountSpentProgress = totalAmountSpent.GetValueOrDefault() - lastTriggeredAmount;

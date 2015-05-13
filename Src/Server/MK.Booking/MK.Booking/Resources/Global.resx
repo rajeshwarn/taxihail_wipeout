@@ -603,4 +603,7 @@
   <data name="ManualRideLinq_CreditCardDisabled" xml:space="preserve">
     <value>Your current card on file has an overdue payment for a previous ride. This overdue payment is preventing you from pairing with RideLinQ</value>
   </data>
+  <data name="Email_Body_Surcharge" xml:space="preserve">
+    <value>Surcharge</value>
+  </data>
 </root>

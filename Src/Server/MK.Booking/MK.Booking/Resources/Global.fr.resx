@@ -609,4 +609,7 @@
   <data name="ManualRideLinq_CreditCardDisabled" xml:space="preserve">
     <value>Vous avez un paiement en souffrance pour un course précédente et vous ne pouvez donc pas utiliser RideLinQ jusqu'à ce que ce montant soit payé.</value>
   </data>
+  <data name="Email_Body_Surcharge" xml:space="preserve">
+    <value>Surcharge</value>
+  </data>
 </root>

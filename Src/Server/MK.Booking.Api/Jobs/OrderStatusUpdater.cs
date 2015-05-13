@@ -127,7 +127,7 @@ namespace apcurium.MK.Booking.Api.Jobs
                 Toll = orderFromIbs.Toll,
                 Tip = orderFromIbs.Tip,
                 Tax = orderFromIbs.VAT,
-                Surchage = orderFromIbs.Surcharge
+                Surcharge = orderFromIbs.Surcharge
             });
         }
 
@@ -307,7 +307,7 @@ namespace apcurium.MK.Booking.Api.Jobs
                     if (preAuthResponse.IsSuccessful)
                     {
                         // Commit
-                        var paymentResult = CommitPayment(paymentSettings.NoShowFee.Value, paymentSettings.NoShowFee.Value, 0, orderStatusDetail.OrderId, true);
+                        var paymentResult = CommitPayment(paymentSettings.NoShowFee.Value, paymentSettings.NoShowFee.Value, 0, 0, 0, orderStatusDetail.OrderId, true);
                         if (paymentResult.IsSuccessful)
                         {
                             Log.DebugFormat("No show fee of amount {0} was charged for order {1}.", paymentSettings.NoShowFee.Value, ibsOrderInfo.IBSOrderId);
@@ -416,30 +416,29 @@ namespace apcurium.MK.Booking.Api.Jobs
 
             // We received a fare from IBS
             // Send payment for capture, once it's captured, we will set the status to Completed
-            var meterAmount = ibsOrderInfo.Fare + ibsOrderInfo.Toll + ibsOrderInfo.VAT;
             double tipPercentage = pairingInfo.AutoTipPercentage ?? _serverSettings.ServerData.DefaultTipPercentage;
-            var tipAmount = FareHelper.CalculateTipAmount(meterAmount, tipPercentage);
+            var tipAmount = FareHelper.CalculateTipAmount(ibsOrderInfo.MeterAmount, tipPercentage);
 
             Log.DebugFormat(
                     "Order {4}: Received total amount from IBS of {0}, calculated a tip of {1}% (tip amount: {2}), for a total of {3}",
-                    meterAmount, tipPercentage, tipAmount, meterAmount + tipAmount, orderStatusDetail.OrderId);
+                    ibsOrderInfo.MeterAmount, tipPercentage, tipAmount, ibsOrderInfo.MeterAmount + tipAmount, orderStatusDetail.OrderId);
 
             if (!_serverSettings.ServerData.SendDetailedPaymentInfoToDriver)
             {
                 // this is the only payment related message sent to the driver when this setting is false
-                SendMinimalPaymentProcessedMessageToDriver(ibsOrderInfo.VehicleNumber, meterAmount + tipAmount, meterAmount, tipAmount);
+                SendMinimalPaymentProcessedMessageToDriver(ibsOrderInfo.VehicleNumber, ibsOrderInfo.MeterAmount + tipAmount, ibsOrderInfo.MeterAmount, tipAmount);
             }
 
             try
             {
-                var totalOrderAmount = Convert.ToDecimal(meterAmount + tipAmount);
+                var totalOrderAmount = Convert.ToDecimal(ibsOrderInfo.MeterAmount + tipAmount);
                 var amountSaved = 0m;
 
                 var promoUsed = _promotionDao.FindByOrderId(orderStatusDetail.OrderId);
                 if (promoUsed != null)
                 {
                     var promoDomainObject = _promoRepository.Get(promoUsed.PromoId);
-                    amountSaved = promoDomainObject.GetAmountSaved(Convert.ToDecimal(meterAmount));
+                    amountSaved = promoDomainObject.GetAmountSaved(Convert.ToDecimal(ibsOrderInfo.MeterAmount));
                     totalOrderAmount = totalOrderAmount - amountSaved;
                 }
 
@@ -451,9 +450,11 @@ namespace apcurium.MK.Booking.Api.Jobs
                 {
                     // Commit
                     var paymentResult = CommitPayment(
-                        totalOrderAmount, 
-                        Convert.ToDecimal(meterAmount), 
-                        Convert.ToDecimal(tipAmount), 
+                        totalOrderAmount,
+                        Convert.ToDecimal(ibsOrderInfo.MeterAmount), 
+                        Convert.ToDecimal(tipAmount),
+                        Convert.ToDecimal(ibsOrderInfo.Toll),
+                        Convert.ToDecimal(ibsOrderInfo.Surcharge),
                         orderStatusDetail.OrderId, 
                         false,
                         promoUsed != null
@@ -507,7 +508,8 @@ namespace apcurium.MK.Booking.Api.Jobs
             orderStatusDetail.Status = OrderStatus.Completed;
         }
 
-        private CommitPreauthorizedPaymentResponse CommitPayment(decimal totalOrderAmount, decimal meterAmount, decimal tipAmount, Guid orderId, bool isNoShowFee, Guid? promoUsedId = null, decimal amountSaved = 0)
+        private CommitPreauthorizedPaymentResponse CommitPayment(decimal totalOrderAmount, decimal meterAmount, decimal tipAmount,
+            decimal tollAmount, decimal surchargeAmount, Guid orderId, bool isNoShowFee, Guid? promoUsedId = null, decimal amountSaved = 0)
         {
             var orderDetail = _orderDao.FindById(orderId);
             if (orderDetail == null)
@@ -545,7 +547,16 @@ namespace apcurium.MK.Booking.Api.Jobs
                 {
                     if (totalOrderAmount > 0)
                     {
-                        paymentProviderServiceResponse = _paymentService.CommitPayment(orderId, account, paymentDetail.PreAuthorizedAmount, totalOrderAmount, meterAmount, tipAmount, paymentDetail.TransactionId);
+                        // Commit
+                        paymentProviderServiceResponse = _paymentService.CommitPayment(
+                            orderId,
+                            account,
+                            paymentDetail.PreAuthorizedAmount,
+                            totalOrderAmount,
+                            meterAmount,
+                            tipAmount,
+                            paymentDetail.TransactionId);
+
                         message = paymentProviderServiceResponse.Message;
                     }
                     else
@@ -630,10 +641,12 @@ namespace apcurium.MK.Booking.Api.Jobs
                         AccountId = account.Id,
                         PaymentId = paymentDetail.PaymentId,
                         Provider = _paymentService.ProviderType(orderDetail.Id),
-                        Amount = totalOrderAmount,
+                        TotalOrderAmount = totalOrderAmount,
                         MeterAmount = Convert.ToDecimal(fareObject.AmountExclTax),
                         TipAmount = Convert.ToDecimal(tipAmount),
                         TaxAmount = Convert.ToDecimal(fareObject.TaxAmount),
+                        TollAmount = tollAmount,
+                        SurchargeAmount = surchargeAmount,
                         IsNoShowFee = isNoShowFee,
                         AuthorizationCode = paymentProviderServiceResponse.AuthorizationCode,
                         TransactionId = paymentProviderServiceResponse.TransactionId,

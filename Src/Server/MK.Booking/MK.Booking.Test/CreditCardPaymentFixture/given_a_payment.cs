@@ -45,7 +45,7 @@ namespace apcurium.MK.Booking.Test.CreditCardPaymentFixture
             {
                 PaymentId = _paymentId,
                 MeterAmount = 20,
-                Amount = 24,
+                TotalOrderAmount = 24,
                 TipAmount = 2,
                 TaxAmount = 2,
                 AccountId = accountId,

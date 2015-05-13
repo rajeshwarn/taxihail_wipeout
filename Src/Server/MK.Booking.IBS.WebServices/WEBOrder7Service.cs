@@ -29,7 +29,8 @@ using System.Xml.Serialization;
 [System.Xml.Serialization.SoapIncludeAttribute(typeof(TVehiclePosition))]
 [System.Xml.Serialization.SoapIncludeAttribute(typeof(TBannedZone))]
 [System.Xml.Serialization.SoapIncludeAttribute(typeof(TException))]
-public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpClientProtocol {
+public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpClientProtocol
+{
     
     private System.Threading.SendOrPostCallback GetOrderStatusOperationCompleted;
     
@@ -156,8 +157,7 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
     private System.Threading.SendOrPostCallback EstimateFare_9OperationCompleted;
     
     /// <remarks/>
-    public WebOrder7Service()
-    {
+    public WebOrder7Service() {
         this.Url = "http://ukdemo.drivelinq.com:11928/IBSCab2/IBSCab.dll/soap/IWebOrder_7";
     }
     
@@ -5279,18 +5279,11 @@ public partial class TOrderStatus_2 : TOrderStatus {
     private string referenceNumberField;
     
     private string terminalIdField;
-    
+	
 	private double vatField;
 
-	public double VAT { 
-		get { 
-			return this.vatField;
-		} 
-		set { 
-			this.vatField = value; 
-		} 
-	}
-	
+	public double VAT { get { return this.vatField; } set { this.vatField = value; } }
+    
     /// <remarks/>
     public string CallNumber {
         get {
@@ -5387,17 +5380,6 @@ public partial class TBookOrder_7 : TBookOrder_6 {
     
     private double tipsField;
     
-	private double vatField;
-	
-	public double VAT { 
-		get { 
-			return this.vatField;
-		} 
-		set { 
-			this.vatField = value; 
-		} 
-	}
-	
     /// <remarks/>
     public double Tips {
         get {
@@ -5407,6 +5389,10 @@ public partial class TBookOrder_7 : TBookOrder_6 {
             this.tipsField = value;
         }
     }
+	
+	private double vatField;
+
+	public double VAT { get { return this.vatField; } set { this.vatField = value; } }
 }
 
 /// <remarks/>
@@ -6338,6 +6324,8 @@ public partial class TBookOrder_8 : TBookOrder_7 {
         }
     }
 }
+
+
 
 /// <remarks/>
 [System.Xml.Serialization.SoapIncludeAttribute(typeof(TVehiclePosition_2))]
