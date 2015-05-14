@@ -568,7 +568,10 @@
     <value>PayPal</value>
   </data>
   <data name="CannotCreateOrder_CreditCardDeactivated" xml:space="preserve">
-    <value>Your card of file was deactivated because the payment of your last ride was declined. To be able to use it again, go to the Payment screen to settle any overdue payment</value>
+    <value>Your card on file was deactivated because the payment of your last ride was declined. To be able to use it again, go to the Payment screen to settle any overdue payment</value>
+  </data>
+  <data name="CannotCreateOrder_CreditCardExpired" xml:space="preserve">
+    <value>Your card on file has expired. Please update your payment information to continue using it.</value>
   </data>
   <data name="Email_Body_CreditCardDeactivatedLine" xml:space="preserve">
     <value>Your &lt;b&gt;{{ CreditCardCompany }}&lt;/b&gt; credit card ending by &lt;b&gt;{{ Last4Digits }}&lt;/b&gt; has been deactivated because the payment of your last ride was declined. To be able to use it again, open {{ ApplicationName }} on your smart phone and go to the Payment screen to settle any overdue payment.</value>
@@ -590,6 +593,15 @@
   </data>
   <data name="ManualRideLinq_NoCardOnFile" xml:space="preserve">
     <value>You need to have a card on file to pair with RideLinQ</value>
+  </data>
+  <data name="Email_Body_AccountConfirmationRedirectLine1" xml:space="preserve">
+    <value>If your browser does not automatically redirect you after 10 seconds,</value>
+  </data>
+  <data name="Email_Body_AccountConfirmationRedirectLine2" xml:space="preserve">
+    <value>click here.</value>
+  </data>
+  <data name="ManualRideLinq_CreditCardDisabled" xml:space="preserve">
+    <value>Your current card on file has an overdue payment for a previous ride. This overdue payment is preventing you from pairing with RideLinQ</value>
   </data>
   <data name="Email_Body_Extra" xml:space="preserve">
     <value>Extra</value>

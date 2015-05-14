@@ -185,11 +185,10 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
 		public bool IsOrderCancellable(string statusId)
 		{
-			return statusId.IsNullOrEmpty () ||
-				statusId == VehicleStatuses.Common.Assigned ||
-				statusId == VehicleStatuses.Common.Waiting ||
-				statusId == VehicleStatuses.Common.Arrived ||
-				statusId == VehicleStatuses.Common.Scheduled;
+			return statusId == VehicleStatuses.Common.Assigned
+                || statusId == VehicleStatuses.Common.Waiting
+                || statusId == VehicleStatuses.Common.Arrived
+                || statusId == VehicleStatuses.Common.Scheduled;
 		}
 
         public bool IsCallboxStatusActive(string statusId)
@@ -215,7 +214,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 		public async Task<DirectionInfo> GetFareEstimate(CreateOrder order)
         {
             var tarifMode = _appSettings.Data.Direction.TarifMode;
-			
+			var validationResult = await UseServiceClientAsync<OrderServiceClient, OrderValidationResult>(service => service.ValidateOrder(order, null, true));
+						
 			if (order.PickupAddress.HasValidCoordinate() 
 				&& order.DropOffAddress.HasValidCoordinate())
 			{
@@ -245,10 +245,13 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 					directionInfo = await _geolocService.GetDirectionInfo(order.PickupAddress.Latitude, order.PickupAddress.Longitude, order.DropOffAddress.Latitude, order.DropOffAddress.Longitude, order.Settings.VehicleTypeId, order.PickupDate);                    
                 }            
 
-				return directionInfo ?? new DirectionInfo();
+				directionInfo = directionInfo ?? new DirectionInfo();
+				directionInfo.ValidationResult = validationResult;
+
+				return directionInfo;
             }
 
-            return new DirectionInfo();
+			return new DirectionInfo() { ValidationResult = validationResult };
         }
 
 		public string GetFareEstimateDisplay (DirectionInfo direction)

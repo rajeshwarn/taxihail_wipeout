@@ -36,6 +36,7 @@
     "CreateOrder_VehicleType": "Vehicle Type Invalid",
     "CreateOrder_InvalidChargeType": "Invalid Charge Type",
     "CreateOrder_PendingOrder": "You cannot book this ride since an order is already pending. View the order status?",
+    "CreateOrder_PrepaidNoEstimate":  "You need an estimated fare to prepay your ride. Please select a destination address to get one",
     "OrderNotInIbs": "Unkown Order",
     "NearbyPlaces_LocationRequired": "Location required",
     "Search_Locations_NameRequired": "Name required",
@@ -93,5 +94,6 @@
     "RefineAddress": "Refine the address by entering a street number",
     "TokenizeInvalidCardInfos": "The card informations are invalid",
     "TokenizeGenericError": "An unexpected error occured. Please try again.",
-    "error.CreditCardNotDeleted": "Can't delete credit card when an order is in progress."
+    "error.CreditCardNotDeleted": "Can't delete credit card when an order is in progress.",
+    "ExpiredCreditCardError":  "The expiration date is not valid."
 }

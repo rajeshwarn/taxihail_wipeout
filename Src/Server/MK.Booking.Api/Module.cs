@@ -49,7 +49,7 @@ namespace apcurium.MK.Booking.Api
                     var serverSettings = c.Resolve<IServerSettings>();
                     if (serverSettings.ServerData.IBS.FakeOrderStatusUpdate)
                     {
-                        return new UpdateOrderStatusJobStub();
+                        return new UpdateOrderStatusJobStub(c.Resolve<IOrderDao>(), c.Resolve<IOrderStatusUpdateDao>(), c.Resolve<OrderStatusUpdater>() );
                     }
                     
                     return new UpdateOrderStatusJob(c.Resolve<IOrderDao>(), c.Resolve<IIBSServiceProvider>(), c.Resolve<IOrderStatusUpdateDao>(), c.Resolve<OrderStatusUpdater>(), c.Resolve<HoneyBadgerServiceClient>(), c.Resolve<IServerSettings>());
@@ -114,10 +114,6 @@ namespace apcurium.MK.Booking.Api
             Mapper.CreateMap<DefaultFavoriteAddress, AddDefaultFavoriteAddress>();
 
             Mapper.CreateMap<DefaultFavoriteAddress, UpdateDefaultFavoriteAddress>();
-
-            Mapper.CreateMap<AccountDetail, CurrentAccountResponse>()
-                .ForMember(x => x.IsSuperAdmin, opt => opt.ResolveUsing(x => x.RoleNames.Contains(RoleName.SuperAdmin)));
-
 
             Mapper.CreateMap<Tariff, CreateTariff>()
                 .ForMember(p => p.TariffId, opt => opt.ResolveUsing(x => x.Id == Guid.Empty ? Guid.NewGuid() : x.Id))

@@ -165,12 +165,13 @@
 "AppNeedUpdateTitle"="Nouvelle version disponible";
 "StatusEta"="est à {0} et arrive dans {1} {2}";
 "CreditCardExpYear"="Date d'expiration (année)";
+"CreditCardExpiredUpdateNow"="Mettre à jour";
 "PanelMenuViewAboutUsText"="À Propos";
 "HistoryLoadError"="Impossible de charger l'historique. Veuillez réessayer plus tard.";
 "ManualPairingForRideLinQ_InvalidCode_Title"="Code invalide";
 "September"="Septembre (09)";
 "RingCodeTextPlaceholder"="Saisissez un code";
-"UnpairWarningMessage"="Cette action ne peut être annulée";
+"UnpairWarningMessage"="Êtes-vous sûr de ne pas vouloir payer avec votre carte de crédit?";
 "CreditCardErrorInvalid"="La carte ne semble pas être valide";
 "PanelMenuViewCallDispatchText"="Appeler";
 "Tuto07Top"="Sur l'écran de statut, vous verrez un numéro de réservation qui confirme votre commande. Une fois qu'un véhicule sera assigné, vous pouvez suivre sa position jusqu'à ce qu'il arrive à vous.";
@@ -295,6 +296,7 @@
 "BookingService_MobileBookingNote"="Réservé via téléphone mobile";
 "CreditCard"="Carte de paiement";
 "CreateAccountPasswordConfirmationPlaceHolder"="Confirmation du mot de passe";
+"ManualRideLinqCreditCardDisabled"="Vous avez un paiement en souffrance pour un course précédente et vous ne pouvez donc pas utiliser RideLinQ jusqu'à ce que ce montant soit payé.";
 "PanelMenuViewPromotionsText"="Promotions";
 "TaxiHailNetworkTimeOutPopupRefuse"="Ignorer";
 "StatusActionButton"="Appeler/Réserver/Annuler";
@@ -338,6 +340,7 @@
 "PaymentDetails.Optional"="(Facultatif)";
 "PromoProgress"="Progression :";
 "LanguageCode"="fr";
+"CreditCardExpiredTitle"="Carte Expirée";
 "Tuto08Bottom"="Nous espérons que la simplicité et l'efficacité de notre application vous aura convaincue.";
 "RideSettingsChargeType"="Type de facturation";
 "UpdateBookingSettingsInvalidDataTitle"="Détails de la réservation incorrects";
@@ -419,6 +422,7 @@
 "LocationAddFavoriteTitle"="Ajouter une nouvelle adresse";
 "PickupTimeTextPlaceholder"="Heure: maintenant";
 "HistoryViewSendReceiptButton"="Je souhaite recevoir une facture";
+"ManualRideLinqNoCardOnFile"="Vous devez avoir une carte associée à votre compte pour utiliser RideLinQ";
 "Tuto06Top"="L'écran de confirmation vous permet de vérifier que les détails de votre trajet sont corrects. En cas d'erreur, merci d'effectuer les modifications";
 "Tuto04Bottom"="En faisant cela vous aurez une estimation du coût de votre trajet.";
 "Error_AccountPaymentQuestionRequiredMessage"="Vous devez saisir tous les champs pour continuer";
@@ -461,6 +465,7 @@
 "TechSupportEmailTitle"="Support application mobile";
 "YesButton"="Oui";
 "PanelMenuViewTaxiHailNetworkText"="Réseau TaxiHail";
+"AddPaymentMethod"="Ajouter une méthode de paiement";
 "ManualRideLinqStatus_Tax"="Taxes:";
 "BookPickupLabel"="Confirmer votre adresse de départ";
 "VehicleNumberInfo"="Merci de valider l'immatriculation du véhicule avec le chauffeur";
@@ -508,6 +513,7 @@
 "ManualRideLinqSummary_Done"="Ok";
 "PaymentDetails.TipAmountLabel"="Montant du pourboire";
 "LoadingMessage"="Chargement…";
+"CardExpiredNonMandatoryMessage"="Votre carte a expiré. Votre compte est maintenant configuré pour le paiement à bord. Si vous désirez continuer d'utiliser la carte de crédit, vous devrez la mettre à jour.";
 "PaymentDetails.CreditCardLabel"="Cartes de paiement";
 "Tuto08Top"="Vous avez la possibilité de revoir l'historique de vos trajets et donc de renouveler une commande en sélectionnant le trajet souhaité.";
 "UnpairWarningMessageWithPromo"="Si vous décidez de payer dans le taxi, vous ne serez pas éligible à la promotion";
@@ -528,6 +534,7 @@
 "FavoritesButton"="Favoris";
 "NotesToDriveLabel"="Commentaires à destination du chauffeur";
 "CmtRideLinqSaveChanges"="Enregistrer";
+"CurrentBookingDisabledTitle"="Réservation Immédiate Non Disponible";
 "PaymentViewMeterAmountText"="Montant";
 "PanelMenuViewTutorialText"="Aide";
 "ChangeServer"="Changer de serveur";
@@ -567,7 +574,7 @@
 "PromoApply"="Appliquer";
 "Tuto03Top"="Vous pouvez également nous communiquer votre position en saisissant directement une adresse";
 "ConfirmRideInformationTitle"="Information sur le trajet";
-"PromoBookRide"="Utiliser sur la prochaine commande";
+"PromoBookRide"="Utiliser le code promo";
 "StatusActionBookButton"="Réserver un nouveau véhicule";
 "BuildingName"="Nom du bâtiment / commentaires";
 "LocationDetailRingCodeLabel"="Saisissez un code";

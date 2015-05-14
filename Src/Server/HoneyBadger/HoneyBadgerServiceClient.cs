@@ -81,7 +81,7 @@ namespace HoneyBadger
                 _logger.LogMessage("An error occured when trying to contact HoneyBadger");
                 _logger.LogError(ex);
             }
-
+             
             if (response != null && response.Entities != null)
             {
                 var entities = !returnAll ? response.Entities.Take(numberOfVehicles) : response.Entities;

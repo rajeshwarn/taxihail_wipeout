@@ -95,7 +95,7 @@
   <string name="InvalidChargeTypeTitle">Invalid Charge Type</string>
   <string name="AccountDisabled">Su cuenta ha sido deshabilitada, por favor contacte a {0} al {1} para re-activar su cuenta</string>
   <string name="HistoryDetailAuthorizationLabel">Autorización</string>
-  <string name="View_UpdatePassword">Actualizar contraseña</string>
+  <string name="CreditCardExpiredTitle">Card expired</string>
   <string name="Cancel">Cancelar</string>
   <string name="CreateAccountLanguageFrench">Francés</string>
   <string name="View_History">Historia</string>
@@ -168,12 +168,13 @@
   <string name="AppNeedUpdateTitle">Actualización disponible</string>
   <string name="StatusEta">y es {0} y está a {1} {2} de distancia</string>
   <string name="CreditCardExpYear">Mes de expiración</string>
+  <string name="CreditCardExpiredUpdateNow">Update now</string>
   <string name="LinkPayPalCCWarning">Linking your PayPal account will remove your card on file and PayPal will be set as the default payment method. Proceed?</string>
   <string name="PanelMenuViewAboutUsText">Acerca de nosotros</string>
   <string name="HistoryLoadError">Unable to load the history. Please try again later.</string>
   <string name="September">Sep (09)</string>
   <string name="RingCodeTextPlaceholder">Código de entrada</string>
-  <string name="UnpairWarningMessage">This action cannot be undone</string>
+  <string name="UnpairWarningMessage">Are you sure you don’t want to pay with your credit card on file?</string>
   <string name="ConfirmPassengersLabel">Pasajeros:</string>
   <string name="CreditCardErrorInvalid">No podemos validar su tarjeta de crédito</string>
   <string name="PanelMenuViewCallDispatchText">Llamar</string>
@@ -296,6 +297,7 @@
   <string name="BookingService_MobileBookingNote">Reservado en equipo móvil</string>
   <string name="CreditCard">Tarjeta de crédito</string>
   <string name="CreateAccountPasswordConfirmationPlaceHolder">Confirme contraseña</string>
+  <string name="ManualRideLinqCreditCardDisabled">Your current card on file has an overdue payment for a previous ride. This overdue payment is preventing you from pairing with RideLinQ</string>
   <string name="PanelMenuViewPromotionsText">Promotions</string>
   <string name="StatusActionButton">Llamar / Reservar / Cancelar</string>
   <string name="PayPalLinkError">Unable to link your PayPal account</string>
@@ -410,9 +412,11 @@
   <string name="ViewRatingBtn">Ver evaluaciones</string>
   <string name="ChargeTypeCreditCardFile">Tarjeta de crédito guardada</string>
   <string name="InvalidPhoneErrorMessage">The mobile number is invalid. It must contain between 10 and 15 numbers.</string>
+  <string name="CardExpiredMessage">Your credit card is expired. Add a new card to your account or update card informations to continue.</string>
   <string name="LocationAddFavoriteTitle">Agregar lugar</string>
   <string name="NbPassenger">({0} pasajero)</string>
   <string name="HistoryViewSendReceiptButton">Enviar comprobante</string>
+  <string name="ManualRideLinqNoCardOnFile">You need to have a card on file to pair with RideLinQ</string>
   <string name="Tuto06Top">La pantalla de confirmacion le permite verificar los detalles de su reservación y cambiar cualquier preferencia que requiera para este servicio</string>
   <string name="Tuto04Bottom">Haciendo esto se le proveerá un costo estimado para su viaje</string>
   <string name="View_LocationDetail">Detalles de ubicación</string>
@@ -425,7 +429,7 @@
   <string name="mobileKnowledgeUrl">http://www.mobile-knowledge.com/</string>
   <string name="InvalidLocalContactTitle">Contacto inválido</string>
   <string name="RideSettingsPayBack">PayBack</string>
-  <string name="PromoBookRide">Use this promotion on next ride</string>
+  <string name="PromoBookRide">Use this promo code</string>
   <string name="DateTimePickerPickDate">Seleccione la fecha del servicio:</string>
   <string name="Overdue_AddNewCard">Update Credit Card</string>
   <string name="BookDropoffLocationEmptyPlaceholder">Toque para seleccionar lugar de destino</string>
@@ -457,6 +461,7 @@
   <string name="TechSupportEmailTitle">Soporte de applicion móvil</string>
   <string name="YesButton">Si</string>
   <string name="PanelMenuViewTaxiHailNetworkText">TaxiHail Network</string>
+  <string name="AddPaymentMethod">Add payment method</string>
   <string name="ManualRideLinqStatus_Tax">Tax amount:</string>
   <string name="BookPickupLabel">Confirme su ubicación</string>
   <string name="VehicleNumberInfo">Por favor confirme número de taxi con el chofer</string>
@@ -465,6 +470,7 @@
   <string name="CreateAccountTitleMrs">Srta.</string>
   <string name="RideSummaryTitleText">Muchas Gracias</string>
   <string name="app_id">134284363380764</string>
+  <string name="View_UpdatePassword">Actualizar contraseña</string>
   <string name="CmtCarNumber">Número de Taxi:</string>
   <string name="PassengerNameLabel">Nombre</string>
   <string name="WarningPushServiceMessage">Notamos que no tiene las “Notificaciones automáticas” encendidas. Queremos informarle que si las enciende podría obtener mensajes de estado de sus servicios sin tener que abrir la aplicación! Prometemos no le mandaremos información innecesaria</string>
@@ -502,6 +508,7 @@
   <string name="PaymentViewTotalText">Total</string>
   <string name="PaymentDetails.TipAmountLabel">Propina</string>
   <string name="LoadingMessage">Cargando....</string>
+  <string name="CardExpiredNonMandatoryMessage">Your credit card has expired. Your account is now configured to pay in car. If you wish to continue using your card on file, you can click on Update.</string>
   <string name="PaymentDetails.CreditCardLabel">Tarjetas</string>
   <string name="Tuto08Top">Puede revisar su historial de reservaciones en cualquier momento, e incluso reservar el mismo viaje con solo tocar un botón</string>
   <string name="UnpairWarningMessageWithPromo">If you decide to pay in car, you will not be able to use the promotion</string>
@@ -522,6 +529,7 @@
   <string name="FavoritesButton">Favoritos</string>
   <string name="NotesToDriveLabel">Notas al chofer (Nombre de negocio, entrada específica,...)</string>
   <string name="CmtRideLinqSaveChanges">Guardar</string>
+  <string name="CurrentBookingDisabledTitle">Current Booking Disabled</string>
   <string name="PaymentViewMeterAmountText">Monto en Taxímetro</string>
   <string name="PanelMenuViewTutorialText">Ver tutorial</string>
   <string name="ChangeServer">Cambiar Servidor</string>

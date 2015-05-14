@@ -23,6 +23,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
         private readonly IAccountService _accountService;
         private readonly IPaymentService _paymentService;
 
+        private OrderValidationResult _orderValidationResult;
+
         public event EventHandler<HomeViewModelStateRequestedEventArgs> PresentationStateRequested;
 
         public BottomBarViewModel(IOrderWorkflowService orderWorkflowService, IMvxPhoneCallTask phone, IAccountService accountService, IPaymentService paymentService)
@@ -43,12 +45,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
                 Observe(ObserveIsPromoCodeApplied(), isPromoCodeApplied => IsPromoCodeActive = isPromoCodeApplied);
             }
 
-            
-
             Observe(_orderWorkflowService.GetAndObserveOrderValidationResult(), OrderValidated);
         }
 
-        public async void CheckManualRideLinqEnabledAsync(bool hasLastMarket)
+        public async void CheckManualRideLinqEnabledAsync(bool isInMarket)
         {
             try
             {
@@ -56,7 +56,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
                 IsManualRidelinqEnabled = settings.PaymentMode == PaymentMethod.RideLinqCmt
                                            && settings.CmtPaymentSettings.IsManualRidelinqCheckInEnabled
-                                           && !hasLastMarket;
+										   && !isInMarket;
             }
             catch (Exception ex)
             {
@@ -124,9 +124,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
             }
         }
 
-        private void OrderValidated(OrderValidationResult validationResult)
+        private void OrderValidated(OrderValidationResult orderValidationResult)
         {
-            IsFutureBookingDisabled = Settings.DisableFutureBooking || validationResult.DisableFutureBooking;
+            _orderValidationResult = orderValidationResult;
+            IsFutureBookingDisabled = Settings.DisableFutureBooking || orderValidationResult.DisableFutureBooking;
         }
 
         public ICommand ChangeAddressSelectionMode
@@ -154,6 +155,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
             {
                 return this.GetCommand<DateTime?>(async date =>
                 {
+                    if (_orderValidationResult.HasError
+                        && _orderValidationResult.AppliesToCurrentBooking)
+                    {
+                        this.Services().Message.ShowMessage(this.Services().Localize["CurrentBookingDisabledTitle"], _orderValidationResult.Message);
+						ResetToInitialState.ExecuteIfPossible();
+                        return;
+                    }
+
 					// since it can take some time, recalculate estimate for date only if 
 					// last calculated estimate was not for now
 					if(date != null)
@@ -175,12 +184,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
                                 // not really an error, but we stop the command from proceeding at this point
                                 return;
                             case OrderValidationError.PickupAddressRequired:
+								ResetToInitialState.ExecuteIfPossible();
                                 this.Services().Message.ShowMessage(this.Services().Localize["InvalidBookinInfoTitle"], this.Services().Localize["InvalidBookinInfo"]);
                                 return;
                             case OrderValidationError.DestinationAddressRequired:
+								ResetToInitialState.ExecuteIfPossible();
                                 this.Services().Message.ShowMessage(this.Services().Localize["InvalidBookinInfoTitle"], this.Services().Localize["InvalidBookinInfoWhenDestinationIsRequired"]);
                                 return;
                             case OrderValidationError.InvalidPickupDate:
+								ResetToInitialState.ExecuteIfPossible();
                                 this.Services().Message.ShowMessage(this.Services().Localize["InvalidBookinInfoTitle"], this.Services().Localize["BookViewInvalidDate"]);
                                 return;
 							case OrderValidationError.InvalidPassengersNumber:
@@ -191,6 +203,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
                                 return;
                         }
                     }
+					catch(Exception ex)
+					{
+						Logger.LogError(ex);
+						ResetToInitialState.ExecuteIfPossible();
+						return;
+					}
 
                     ReviewOrderDetails();
 				});
@@ -420,13 +438,21 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
                                 // not really an error, but we stop the command from proceeding at this point
                                 return;
                             case OrderValidationError.PickupAddressRequired:
+								ResetToInitialState.ExecuteIfPossible();
                                 this.Services().Message.ShowMessage(this.Services().Localize["InvalidBookinInfoTitle"], this.Services().Localize["InvalidBookinInfo"]);
                                 return;
                             case OrderValidationError.DestinationAddressRequired:
+								ResetToInitialState.ExecuteIfPossible();
                                 this.Services().Message.ShowMessage(this.Services().Localize["InvalidBookinInfoTitle"], this.Services().Localize["InvalidBookinInfoWhenDestinationIsRequired"]);
                                 return;
                         }
                     }
+					catch(Exception e)
+					{
+						Logger.LogError(e);
+						ResetToInitialState.ExecuteIfPossible();
+						return;
+					}
                 });
             }
         }
@@ -523,6 +549,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
             {
                 return this.GetCommand(() =>
                 {
+                    var localize = this.Services().Localize;
+
+                    if (_accountService.CurrentAccount.DefaultCreditCard == null)
+                    {
+                        this.Services().Message.ShowMessage(
+                            localize["ErrorCreatingOrderTitle"],
+                            localize["ManualRideLinqNoCardOnFile"]);
+                        return;
+                    }
+
                     ShowViewModel<ManualPairingForRideLinqViewModel>();
                 });
             }

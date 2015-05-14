@@ -162,11 +162,12 @@
   <string name="AppNeedUpdateTitle">هناك تحديثات متاحة</string>
   <string name="StatusEta">{0} and {1} {2} away</string>
   <string name="CreditCardExpYear">سنة الإنتهاء</string>
+  <string name="CreditCardExpiredUpdateNow">Update now</string>
   <string name="PanelMenuViewAboutUsText">نبذة عنا</string>
   <string name="HistoryLoadError">Unable to load the history. Please try again later.</string>
   <string name="September">سبتمبر (09)</string>
   <string name="RingCodeTextPlaceholder">رمز الدخول</string>
-  <string name="UnpairWarningMessage">This action cannot be undone</string>
+  <string name="UnpairWarningMessage">Are you sure you don’t want to pay with your credit card on file?</string>
   <string name="CreditCardErrorInvalid">Cannot validate the credit card</string>
   <string name="PanelMenuViewCallDispatchText">اتصل</string>
   <string name="Tuto07Top">ستتمكن من رؤية رقم الحجز علی شاشة الحالة. عند إتمام تخصيص السيارة، سيمكنك متابعة مسارها نحو موقعك الحالي.</string>
@@ -286,6 +287,7 @@
   <string name="BookingService_MobileBookingNote">تم الحجز من خلال الهاتف الجوال</string>
   <string name="CreditCard">بطاقة الائتمان</string>
   <string name="CreateAccountPasswordConfirmationPlaceHolder">تأكید كلمة السر</string>
+  <string name="ManualRideLinqCreditCardDisabled">Your current card on file has an overdue payment for a previous ride. This overdue payment is preventing you from pairing with RideLinQ</string>
   <string name="PanelMenuViewPromotionsText">Promotions</string>
   <string name="TaxiHailNetworkTimeOutPopupRefuse">Refuse</string>
   <string name="StatusActionButton">إتصال / حجز/ إلغاء</string>
@@ -328,6 +330,7 @@
   <string name="PaymentDetails.Optional">اختياري</string>
   <string name="PromoProgress">Progress :</string>
   <string name="LanguageCode">ar</string>
+  <string name="CreditCardExpiredTitle">Card expired</string>
   <string name="Tuto08Bottom">نأمل أن تجد الراحة و السهولة عند استخدام هذا التطبيق .</string>
   <string name="RideSettingsChargeType">طريقة الدفع</string>
   <string name="UpdateBookingSettingsInvalidDataTitle">إعدادات بيانات الحجز خاطئة.</string>
@@ -409,6 +412,7 @@
   <string name="LocationAddFavoriteTitle">إضافة موقع جدید</string>
   <string name="PickupTimeTextPlaceholder">الوقت: الآن</string>
   <string name="HistoryViewSendReceiptButton">إرسال إيصال</string>
+  <string name="ManualRideLinqNoCardOnFile">You need to have a card on file to pair with RideLinQ</string>
   <string name="Tuto06Top">تتيح لك شاشة التأكيد مراجعة بيانات مشوارك وتغيير خياراتك لهذه الرحلة تحديدا.</string>
   <string name="Tuto04Bottom">بذلك سيتم تزويدك بسعر تقريبي للرحلة.</string>
   <string name="Error_AccountPaymentQuestionRequiredMessage">يجب الإجابة على جميع الأسئلة للإستمرار</string>
@@ -451,6 +455,7 @@
   <string name="TechSupportEmailTitle">دعم تطبيق الهاتف الجوال</string>
   <string name="YesButton">نعم</string>
   <string name="PanelMenuViewTaxiHailNetworkText">TaxiHail Network</string>
+  <string name="AddPaymentMethod">Add payment method</string>
   <string name="ManualRideLinqStatus_Tax">Tax amount:</string>
   <string name="BookPickupLabel">اكد موقع الإلتقاء المختار</string>
   <string name="VehicleNumberInfo">رجاء تأكيد رقم سيارتك مع السائق</string>
@@ -495,6 +500,7 @@
   <string name="ManualRideLinqSummary_Done">Done</string>
   <string name="PaymentDetails.TipAmountLabel">قيمة الإكرامية</string>
   <string name="LoadingMessage">جار التحميل...</string>
+  <string name="CardExpiredNonMandatoryMessage">Your credit card has expired. Your account is now configured to pay in car. If you wish to continue using your card on file, you can click on Update.</string>
   <string name="PaymentDetails.CreditCardLabel">بطاقات</string>
   <string name="Tuto08Top">يمكنك مراجعة تاريخ طلباتك في أي وقت، وأيضا إعادة حجز رحلة سابقة مجددا بلمسة زر.</string>
   <string name="UnpairWarningMessageWithPromo">If you decide to pay in car, you will not be able to use the promotion</string>
@@ -514,6 +520,7 @@
   <string name="FavoritesButton">المفضلة</string>
   <string name="NotesToDriveLabel">ملاحظات للسائق (اسم العمل، مدخل محدد، ...)</string>
   <string name="CmtRideLinqSaveChanges">حفظ</string>
+  <string name="CurrentBookingDisabledTitle">Current Booking Disabled</string>
   <string name="PaymentViewMeterAmountText">قيمة العداد</string>
   <string name="PanelMenuViewTutorialText">شاهد فيديو تعليمي</string>
   <string name="ChangeServer">تغيير الشبكة</string>
@@ -550,7 +557,7 @@
   <string name="PromoApply">Apply</string>
   <string name="Tuto03Top">يمكنك أيضا إختيار نقطة الإلتقاء بالضغط على عنوان الإلتقاء.</string>
   <string name="ConfirmRideInformationTitle">بيانات المشوار</string>
-  <string name="PromoBookRide">Use this promotion on next ride</string>
+  <string name="PromoBookRide">Use this promo code</string>
   <string name="StatusActionBookButton">احجز سيارة أجرة اخرى</string>
   <string name="BuildingName">إسم المبنى / ملاحظات</string>
   <string name="LocationDetailRingCodeLabel">رمز الدخول</string>

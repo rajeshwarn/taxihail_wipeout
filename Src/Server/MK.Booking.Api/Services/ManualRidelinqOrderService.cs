@@ -14,6 +14,7 @@ using Infrastructure.Messaging;
 using ServiceStack.Common.Web;
 using ServiceStack.ServiceClient.Web;
 using ServiceStack.ServiceInterface;
+using ServiceStack.Text;
 using CmtManualRideLinqPairingRequest = CMTPayment.Pair.ManualRideLinqPairingRequest;
 using ManualRideLinqPairingRequest = apcurium.MK.Booking.Api.Contract.Requests.Payment.ManualRideLinqPairingRequest;
 using CmtManualRideLinqUnpairingRequest = CMTPayment.Pair.ManualRideLinqUnpairingRequest;
@@ -68,6 +69,13 @@ namespace apcurium.MK.Booking.Api.Services
                         _resources.Get("ManualRideLinq_NoCardOnFile", account.Language));
                 }
 
+                if (creditCard.IsDeactivated)
+                {
+                    throw new HttpError(HttpStatusCode.BadRequest,
+                        ErrorCode.ManualRideLinq_CardOnFileDeactivated.ToString(),
+                        _resources.Get("ManualRideLinq_CreditCardDisabled", account.Language));
+                }
+
                 // Send pairing request to CMT API
                 var pairingRequest = new CmtManualRideLinqPairingRequest
                 {
@@ -81,7 +89,11 @@ namespace apcurium.MK.Booking.Api.Services
                     CardOnFileId = creditCard.Token
                 };
 
+                _logger.LogMessage("Pairing for manual RideLinq with Pairing Code {0}", request.PairingCode);
+
                 var response = _cmtMobileServiceClient.Post(pairingRequest);
+
+                _logger.LogMessage("Pairing result: {0}", response.ToJson());
 
                 var trip = _cmtTripInfoServiceHelper.WaitForTripInfo(response.PairingToken, response.TimeoutSeconds);
 

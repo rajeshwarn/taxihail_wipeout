@@ -9,29 +9,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
         }
 
-        public virtual void OnViewStarted(bool firstTime)
-        {
-        }
-
-        public virtual void OnViewStopped()
-        {
-        }
-
         public virtual void OnViewUnloaded()
         {
             Subscriptions.Clear();
         }
 
-		protected virtual void Dispose(bool disposing)
-		{
-			if (disposing) 
-			{
-				Subscriptions.Dispose();
-			}
-		}
-
-		
-		
 		public ICommand CloseCommand
 		{
 			get
@@ -39,8 +21,5 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				return this.GetCommand(() => Close(this));
 			}
 		}
-
     }
-
 }
-

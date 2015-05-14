@@ -1113,6 +1113,18 @@
     <value>Usted seleccionó pagar con la tarjeta de crédito en su archivo, pero no tiene tarjeta registrada por defecto. Agregue una tarjeta a su cuenta o cambie el método de pago para continuar.</value>
     <comment>You chose to pay with a card on file, but you have no default card.  Add a card to your account or change your payment method to continue.</comment>
   </data>
+  <data name="CardExpiredMessage" xml:space="preserve">
+    <value>Your credit card is expired. Add a new card to your account or update card informations to continue.</value>
+  </data>
+  <data name="CreditCardExpiredTitle" xml:space="preserve">
+    <value>Card expired</value>
+  </data>
+  <data name="CardExpiredNonMandatoryMessage" xml:space="preserve">
+    <value>Your credit card has expired. Your account is now configured to pay in car. If you wish to continue using your card on file, you can click on Update.</value>
+  </data>
+  <data name="CreditCardExpiredUpdateNow" xml:space="preserve">
+    <value>Update now</value>
+  </data>
   <data name="NoConnectionMessage" xml:space="preserve">
     <value>El servidor no puede ser contactado, puede estar caído o usted puede haber perdido la conexión a intenet</value>
     <comment>The server cannot be contacted, it might be down temporarily or you may have lost your connection to the Internet.</comment>
@@ -2134,7 +2146,7 @@
     <comment>Promotions</comment>
   </data>
   <data name="UnpairWarningMessage" xml:space="preserve">
-    <value>This action cannot be undone</value>
+    <value>Are you sure you don’t want to pay with your credit card on file?</value>
   </data>
   <data name="UnpairWarningMessageWithPromo" xml:space="preserve">
     <value>If you decide to pay in car, you will not be able to use the promotion</value>
@@ -2155,7 +2167,7 @@
     <value>Expires today!</value>
   </data>
   <data name="PromoBookRide" xml:space="preserve">
-    <value>Use this promotion on next ride</value>
+    <value>Use this promo code</value>
   </data>
   <data name="PromotionViewNoPromotionLabel" xml:space="preserve">
     <value>No promotions available</value>
@@ -2366,5 +2378,17 @@
   </data>
   <data name="InvalidChargeTypeTitle" xml:space="preserve">
     <value>Invalid Charge Type</value>
+  </data>
+  <data name="AddPaymentMethod" xml:space="preserve">
+    <value>Add payment method</value>
+  </data>
+  <data name="CurrentBookingDisabledTitle" xml:space="preserve">
+    <value>Current Booking Disabled</value>
+  </data>
+  <data name="ManualRideLinqNoCardOnFile" xml:space="preserve">
+    <value>You need to have a card on file to pair with RideLinQ</value>
+  </data>
+  <data name="ManualRideLinqCreditCardDisabled" xml:space="preserve">
+    <value>Your current card on file has an overdue payment for a previous ride. This overdue payment is preventing you from pairing with RideLinQ</value>
   </data>
 </root>

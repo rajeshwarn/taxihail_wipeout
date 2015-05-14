@@ -1,15 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Configuration;
-using System.Threading;
 using apcurium.MK.Booking.Api.Client.TaxiHail;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.ReadModel;
-using apcurium.MK.Common.Entity;
 using NUnit.Framework;
 using ServiceStack.ServiceClient.Web;
-using ServiceStack.Text;
 
 namespace apcurium.MK.Web.Tests
 {
@@ -157,6 +153,7 @@ namespace apcurium.MK.Web.Tests
         }
 
         [Test]
+        [Ignore("It now relies on a payment setting which we can't really change here since this is client side and we don't have a service client for server payment settings")]
         public void Update_Booking_Settings_With_Invalid_Charge_Account_Test_Then_Exception_Thrown()
         {
             var settings = new BookingSettingsRequest

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.ReadModel;
+using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using Infrastructure.Messaging.Handling;
@@ -30,7 +31,10 @@ namespace apcurium.MK.Booking.EventHandlers
         IEventHandler<OrderSwitchedToNextDispatchCompany>,
         IEventHandler<OrderTimedOut>,
         IEventHandler<PrepaidOrderPaymentInfoUpdated>,
-        IEventHandler<RefundedOrderUpdated>
+        IEventHandler<RefundedOrderUpdated>,
+        IEventHandler<OrderManuallyPairedForRideLinq>,
+        IEventHandler<OrderUnpairedFromManualRideLinq>,
+        IEventHandler<ManualRideLinqTripInfoUpdated>
     {
         private readonly Func<BookingDbContext> _contextFactory;
 
@@ -381,6 +385,89 @@ namespace apcurium.MK.Booking.EventHandlers
                 var orderReport = context.Find<OrderReportDetail>(@event.SourceId);
                 orderReport.Payment.IsRefunded = @event.IsSuccessful;
                 orderReport.Payment.Error = @event.Message;
+                context.Save(orderReport);
+            }
+        }
+
+        public void Handle(OrderManuallyPairedForRideLinq @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var orderReport = new OrderReportDetail { Id = @event.SourceId };
+
+                var account = context.Find<AccountDetail>(@event.AccountId);
+
+                orderReport.Account = new OrderReportAccount
+                {
+                    AccountId = @event.AccountId,
+                    Name = account.Name,
+                    Phone = account.Settings.Phone,
+                    Email = account.Email,
+                    DefaultCardToken = account.DefaultCreditCard,
+                    PayBack = account.Settings.PayBack
+                };
+
+                orderReport.Order = new OrderReportOrder
+                {
+                    ChargeType = ChargeTypes.CardOnFile.Id.ToString(),
+                    PickupDateTime = @event.PairingDate,
+                    CreateDateTime = @event.PairingDate,
+                    PickupAddress = @event.PickupAddress,
+                };
+                orderReport.Client = new OrderReportClient
+                {
+                    OperatingSystem = @event.UserAgent.GetOperatingSystem(),
+                    UserAgent = @event.UserAgent,
+                    Version = @event.ClientVersion
+                };
+                
+                orderReport.Payment = new OrderReportPayment()
+                {
+                    PairingToken = @event.PairingToken,
+                    IsPaired = true
+                };
+
+                orderReport.OrderStatus = new OrderReportOrderStatus()
+                {
+                    Status = OrderStatus.Created
+                };
+
+                context.Save(orderReport);
+            }
+        }
+
+        public void Handle(OrderUnpairedFromManualRideLinq @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var orderReport = context.Find<OrderReportDetail>(@event.SourceId);
+                orderReport.Payment.IsPaired = false;
+                orderReport.OrderStatus.OrderIsCancelled = true;
+                orderReport.OrderStatus.Status = OrderStatus.Canceled;
+                context.Save(orderReport);
+            }
+        }
+
+        public void Handle(ManualRideLinqTripInfoUpdated @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var orderReport = context.Find<OrderReportDetail>(@event.SourceId);
+
+                orderReport.Payment.MdtFare = @event.Fare;
+                orderReport.Payment.MdtTip = @event.Tip;
+                orderReport.Payment.MdtToll = @event.Toll;
+                orderReport.Payment.TotalAmountCharged = @event.Total.HasValue
+                    ? (decimal?)Math.Round(@event.Total.Value, 2)
+                    : null;
+                
+                if (@event.EndTime.HasValue)
+                {
+                    orderReport.OrderStatus.OrderIsCompleted = true;
+                    orderReport.OrderStatus.Status = OrderStatus.Completed;
+                }
+
+
                 context.Save(orderReport);
             }
         }

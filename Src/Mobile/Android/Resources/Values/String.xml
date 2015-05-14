@@ -97,7 +97,7 @@
   <string name="AccountDisabled">Your account has been disabled, please contact {0} at {1} to activate your account.</string>
   <string name="CreditCardExpYear">Exp. Year</string>
   <string name="HistoryDetailAuthorizationLabel">Authorization:</string>
-  <string name="ManualPairingForRideLinQ_InvalidCode_Message">The pairing code is invalid.</string>
+  <string name="CreditCardExpiredTitle">Card expired</string>
   <string name="Cancel">Cancel</string>
   <string name="CreateAccountLanguageFrench">French</string>
   <string name="Tuto07Bottom">Status updates are provided when the vehicles arrives at the pickup address, when you enter the vehicle, and at the end of the ride.</string>
@@ -164,6 +164,7 @@
   <string name="AppNeedUpdateTitle">Update available</string>
   <string name="StatusEta">and is {0} and {1} {2} away</string>
   <string name="LocationHistoryTitle">Locations history</string>
+  <string name="CreditCardExpiredUpdateNow">Update now</string>
   <string name="PanelMenuViewAboutUsText">About Us</string>
   <string name="HistoryLoadError">Unable to load the history. Please try again later.</string>
   <string name="PaymentDetails.InvalidDataTitle">Invalid payment information</string>
@@ -171,7 +172,7 @@
   <string name="September">Sep (09)</string>
   <string name="SaveAddressEmptyFieldTitle">Friendly name required</string>
   <string name="Politeness">Politeness</string>
-  <string name="UnpairWarningMessage">This action cannot be undone</string>
+  <string name="UnpairWarningMessage">Are you sure you don’t want to pay with your credit card on file?</string>
   <string name="CreditCardErrorInvalid">Cannot validate the credit card</string>
   <string name="PickupViewDestinationLabel">Destination &gt;&gt;</string>
   <string name="PanelMenuViewCallDispatchText">Call</string>
@@ -292,6 +293,7 @@
   <string name="BookingService_MobileBookingNote">Booked mobile device.</string>
   <string name="CreditCard">Credit Card</string>
   <string name="CreateAccountPasswordConfirmationPlaceHolder">Confirm password</string>
+  <string name="ManualRideLinqCreditCardDisabled">Your current card on file has an overdue payment for a previous ride. This overdue payment is preventing you from pairing with RideLinQ</string>
   <string name="CarAssigned">Your taxi {0}</string>
   <string name="TaxiHailNetworkTimeOutPopupRefuse">Ignore</string>
   <string name="PayPalLinkError">Unable to link your PayPal account</string>
@@ -312,7 +314,7 @@
   <string name="NoButton">No</string>
   <string name="PayInCar">Pay Cash/Credit Card in Car</string>
   <string name="CreditCardRequiredFields">All the fields are required</string>
-  <string name="PromoBookRide">Use this promotion on next ride</string>
+  <string name="PromoBookRide">Use this promo code</string>
   <string name="DeleteCreditCardTitle">Delete credit card</string>
   <string name="SettingViewNotSignedIn">Your are currently not signed in. You must be signed in to use this app.</string>
   <string name="AcceptButton">Accept</string>
@@ -369,6 +371,7 @@
   <string name="View_AboutUs">About Us</string>
   <string name="WarningLocationService">Please turn on location services to have your location show up in the map.</string>
   <string name="LoginViewPasswordPlaceHolder">Password</string>
+  <string name="ManualPairingForRideLinQ_InvalidCode_Message">The pairing code is invalid.</string>
   <string name="BookDestinationLabel">Enter your destination</string>
   <string name="AddCoFPayPalWarning">Adding a credit card will unlink your PayPal account and Card on File will be set as the default payment method. Proceed?</string>
   <string name="Error_AccountPaymentQuestionRequiredMessage">You must answer every questions marked as required to continue.</string>
@@ -418,6 +421,7 @@
   <string name="LocationAddFavoriteTitle">Add location</string>
   <string name="PickupTimeTextPlaceholder">Time: Now</string>
   <string name="OrderNumber">Order #</string>
+  <string name="ManualRideLinqNoCardOnFile">You need to have a card on file to pair with RideLinQ</string>
   <string name="Tuto06Top">The confirmation screen allows you to verify your trip details and to change any of your preferences for this specific ride.</string>
   <string name="Tuto04Bottom">Doing so will provide an estimate for the cost for the trip.</string>
   <string name="PaymentViewTotalText">Total</string>
@@ -464,6 +468,7 @@
   <string name="PanelMenuViewTaxiHailNetworkText">TaxiHail Network</string>
   <string name="YesButton">Yes</string>
   <string name="CreateAccountEmptyField">The data is invalid, all the fields are required.</string>
+  <string name="AddPaymentMethod">Add payment method</string>
   <string name="ManualRideLinqStatus_Tax">Tax amount:</string>
   <string name="BookPickupLabel">Confirm your pickup location</string>
   <string name="VehicleNumberInfo">Please confirm your car number with the driver</string>
@@ -517,6 +522,7 @@
   <string name="Tuto08Bottom">We hope you find this application both convenient and intuitive.</string>
   <string name="ManualRideLinqSummary_Done">Done</string>
   <string name="PaymentDetails.TipAmountLabel">Tip Amount</string>
+  <string name="CardExpiredNonMandatoryMessage">Your credit card has expired. Your account is now configured to pay in car. If you wish to continue using your card on file, you can click on Update.</string>
   <string name="Version">v{0}</string>
   <string name="Tuto08Top">You can review your order history at any time, and even rebook a previous trip with the push of a button</string>
   <string name="UnpairWarningMessageWithPromo">If you decide to pay in car, you will not be able to use the promotion</string>
@@ -538,6 +544,7 @@
   <string name="FavoritesButton">Favorites</string>
   <string name="NotesToDriveLabel">Notes to driver (Name of business, specific entrance, ...)</string>
   <string name="CmtRideLinqSaveChanges">Save</string>
+  <string name="CurrentBookingDisabledTitle">Current Booking Disabled</string>
   <string name="PaymentViewMeterAmountText">Meter Amount</string>
   <string name="PanelMenuViewTutorialText">View Tutorial</string>
   <string name="ChangeServer">Change server</string>

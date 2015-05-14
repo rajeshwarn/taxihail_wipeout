@@ -15,6 +15,7 @@ using apcurium.MK.Booking.Mobile.ViewModels.Orders;
 using Cirrious.MvvmCross.Platform;
 using Cirrious.MvvmCross.Plugins.WebBrowser;
 using ServiceStack.Text;
+using apcurium.MK.Booking.Mobile.ViewModels.Payment;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -29,7 +30,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 	    private readonly IMvxLifetime _mvxLifetime;
 		private readonly IAccountService _accountService;
 	    private readonly IBookingService _bookingService;
-	    private readonly IPaymentService _paymentService;
+		private readonly IPaymentService _paymentService;
 
 		private HomeViewModelState _currentState = HomeViewModelState.Initial;
 
@@ -45,7 +46,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			IPaymentService paymentService, 
             IMvxLifetime mvxLifetime,
             IPromotionService promotionService,
-            IPaymentService paymentService1, 
             IBookingService bookingService) : base()
 		{
 			_locationService = locationService;
@@ -55,18 +55,26 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_vehicleService = vehicleService;
 			_termsService = termsService;
 		    _mvxLifetime = mvxLifetime;
-		    _paymentService = paymentService1;
 		    _bookingService = bookingService;
 		    _accountService = accountService;
+			_paymentService = paymentService;
 
             Panel = new PanelMenuViewModel(browserTask, orderWorkflowService, accountService, phoneService, paymentService, promotionService);
 
-            Observe(_vehicleService.GetAndObserveAvailableVehiclesWhenVehicleTypeChanges(), ZoomOnNearbyVehiclesIfPossible);
-            Observe(_orderWorkflowService.GetAndObserveHashedMarket(), MarketChanged);
+			Map = AddChild<MapViewModel>();
+			OrderOptions = AddChild<OrderOptionsViewModel>();
+			OrderReview = AddChild<OrderReviewViewModel>();
+			OrderEdit = AddChild<OrderEditViewModel>();
+			BottomBar = AddChild<BottomBarViewModel>();
+			AddressPicker = AddChild<AddressPickerViewModel>();
+
+			Observe(_vehicleService.GetAndObserveAvailableVehiclesWhenVehicleTypeChanges(), ZoomOnNearbyVehiclesIfPossible);
+			Observe(_orderWorkflowService.GetAndObserveHashedMarket(), MarketChanged);
 		}
 
 	    private string _lastHashedMarket = string.Empty;
 		private bool _isShowingTermsAndConditions;
+		private bool _isShowingCreditCardExpiredPrompt;
 		private bool _locateUser;
 		private ZoomToStreetLevelPresentationHint _defaultHintZoomLevel;
 
@@ -79,14 +87,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		public override void OnViewLoaded ()
 		{
 			base.OnViewLoaded ();
-					            
-			Map = AddChild<MapViewModel>();
-			OrderOptions = AddChild<OrderOptionsViewModel>();
-			OrderReview = AddChild<OrderReviewViewModel>(true);
-			OrderEdit = AddChild<OrderEditViewModel>(true);
-			BottomBar = AddChild<BottomBarViewModel>();
-			AddressPicker = AddChild<AddressPickerViewModel>();
-
+				
 			BottomBar.Save = OrderEdit.Save;
 			BottomBar.CancelEdit = OrderEdit.Cancel;
 		}
@@ -109,6 +110,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				Panel.Start();
 
 				CheckTermsAsync();
+
+				CheckCreditCardExpiration();
 
                 BottomBar.CheckManualRideLinqEnabledAsync(_lastHashedMarket.HasValue());
 
@@ -241,6 +244,54 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					_locateUser, 
 					_defaultHintZoomLevel
 				);
+			}
+		}
+
+		public async void CheckCreditCardExpiration()
+		{
+			if (!_isShowingCreditCardExpiredPrompt)
+			{
+				if (!_accountService.CurrentAccount.IsPayPalAccountLinked
+					&&_accountService.CurrentAccount.DefaultCreditCard != null
+					&& _accountService.CurrentAccount.DefaultCreditCard.IsExpired())
+				{
+					_isShowingCreditCardExpiredPrompt = true;
+
+					// remove card
+					await _accountService.RemoveCreditCard();
+
+					var paymentSettings = await _paymentService.GetPaymentSettings();
+					if (!paymentSettings.IsPayInTaxiEnabled)
+					{
+						// we just remove the card and don't mention it to the user since he can't add one anyway
+						return;
+					}
+
+					var title = this.Services().Localize["CreditCardExpiredTitle"];
+				
+					if (paymentSettings.IsOutOfAppPaymentDisabled)
+					{
+						// pay in car is disabled, user has only one choice and will not be able to leave the AddCreditCardViewModel without entering a valid card
+						this.Services().Message.ShowMessage(title, 
+							this.Services().Localize["CardExpiredMessage"], 
+							() => {
+							_isShowingCreditCardExpiredPrompt = false;
+							ShowViewModelAndClearHistory<CreditCardAddViewModel>(new { isMandatory = this.Services().Settings.CreditCardIsMandatory });
+						});
+					}
+					else
+					{
+						this.Services().Message.ShowMessage(title, 
+							this.Services().Localize["CardExpiredNonMandatoryMessage"],
+							this.Services().Localize["CreditCardExpiredUpdateNow"],
+							() => {
+								_isShowingCreditCardExpiredPrompt = false;
+								ShowViewModel<CreditCardAddViewModel>();
+							},
+							this.Services().Localize["NotNow"],
+							() => { _isShowingCreditCardExpiredPrompt = false; });
+					}
+				}
 			}
 		}
 
@@ -436,9 +487,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
-		protected override TViewModel AddChild<TViewModel>(bool lazyLoad = false)
+		protected override TViewModel AddChild<TViewModel>()
 		{
-            var child = base.AddChild<TViewModel>(lazyLoad);
+            var child = base.AddChild<TViewModel>();
 			var rps = child as IRequestPresentationState<HomeViewModelStateRequestedEventArgs>;
 			if (rps != null)
 			{
@@ -453,20 +504,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			_currentState = e.State;
 
 			this.ChangePresentation(new HomeViewModelPresentationHint(e.State, e.IsNewOrder));
-		    if (e.State == HomeViewModelState.Review)
-		    {
-		        if (OrderReview.IsDeferredLoaded)
-		        {
-                    OrderReview.Init();
-		        }  
-		    }
-            else if (e.State == HomeViewModelState.Edit)
-            {
-                if (OrderEdit.IsDeferredLoaded)
-                {
-                    OrderEdit.Init();
-                } 
-            }
 
             if (e.State == HomeViewModelState.Initial)
             {
@@ -510,6 +547,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 				AutomaticLocateMeAtPickup.ExecuteIfPossible();
                 CheckUnratedRide();
 				CheckTermsAsync();
+				CheckCreditCardExpiration();
 
 				_accountService.LogApplicationStartUp ();
             }
@@ -518,18 +556,20 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         private void MarketChanged(string hashedMarket)
         {
             // Market changed and not home market
-            if (_lastHashedMarket != hashedMarket && hashedMarket.HasValue())
+            if (_lastHashedMarket != hashedMarket
+                && hashedMarket.HasValue()
+                && !Settings.Network.HideMarketChangeWarning)
             {
                 this.Services().Message.ShowMessage(this.Services().Localize["MarketChangedMessageTitle"],
                     this.Services().Localize["MarketChangedMessage"]);
             }
+
             _lastHashedMarket = hashedMarket;
 
             if (BottomBar != null)
             {
                 BottomBar.CheckManualRideLinqEnabledAsync(_lastHashedMarket.HasValue());
             }
-            
         }
     }
 }

@@ -40,6 +40,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 			_accountService = accountService;
 		}
 
+		private bool _isFromPromotions;
+		
 #region Const and ReadOnly
         private const string Visa = "Visa";
         private const string MasterCard = "MasterCard";
@@ -60,15 +62,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
             public static DateTime ExpirationDate = DateTime.Today.AddMonths(3);
         }
 
-		public void Init(bool showInstructions = false, bool isMandatory = false, string paymentToSettle = null)
+		public void Init(bool showInstructions = false, bool isMandatory = false, string paymentToSettle = null, bool isFromPromotions = false)
 		{
 			ShowInstructions = showInstructions;
 			IsMandatory = isMandatory;
+			
+			_isFromPromotions = isFromPromotions;
 
 			if (paymentToSettle != null)
 			{
 				_paymentToSettle = JsonSerializer.DeserializeFromString<OverduePayment>(paymentToSettle);
 			}
+
 		}
 
 		public override void OnViewStarted(bool firstTime)
@@ -561,6 +566,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 					return;
 				}
 
+				if(!HasValidDate(Data.ExpirationMonth, Data.ExpirationYear))
+				{
+					await this.Services().Message.ShowMessage(this.Services().Localize["CreditCardErrorTitle"], this.Services().Localize["CreditCardErrorInvalid"]);
+					return;
+				}
+
 				using (this.Services().Message.ShowProgress())
 				{
 					Data.Last4Digits = new string(Data.CardNumber.Reverse().Take(4).Reverse().ToArray());
@@ -588,8 +599,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
 					    {
                             await this.Services().Message.ShowMessage(string.Empty, this.Services().Localize["CreditCardAdded"]);
 					    }
-
-						ShowViewModelAndClearHistory<HomeViewModel>(new { locateUser = bool.TrueString });
+						
+						if(_isFromPromotions)
+						{
+							// We are from the promotion page, we should return to it.
+							Close(this);
+						}
+						else
+						{
+							ShowViewModelAndClearHistory<HomeViewModel>(new { locateUser = bool.TrueString });
+						}
+						
 					}
 					else
 					{
@@ -652,6 +672,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Payment
             }
             return (sum % 10 == 0);
         }
+
+		private bool HasValidDate(string month, string year)
+		{
+			var creditCard = new CreditCardDetails 
+			{
+				ExpirationMonth = month,
+				ExpirationYear = year
+			};
+
+			return !creditCard.IsExpired();
+		}
 
 		private void DetermineCompany(string cardNumber)
 		{

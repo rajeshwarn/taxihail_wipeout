@@ -35,7 +35,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 {
                     return Address.FriendlyName;
                 }
-				return Address.FullAddress.SplitOnFirst(",")[0];
+				return Address.DisplayAddress.SplitOnFirst(",")[0];
             }
         }
 
@@ -45,9 +45,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 if (Address.AddressType ==  "place" || Address.FriendlyName.HasValue())
                 {
-                    return Address.FullAddress;
+					return Address.DisplayAddress;
                 }
-				return Address.FullAddress.SplitOnFirst(", ")[1].TrimStart();
+				return Address.DisplayAddress.SplitOnFirst(", ")[1].TrimStart();
             }
         }
 

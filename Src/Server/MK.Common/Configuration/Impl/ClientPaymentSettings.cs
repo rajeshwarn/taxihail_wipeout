@@ -34,6 +34,8 @@ namespace apcurium.MK.Common.Configuration.Impl
         [Obsolete("This property is deprecated. It is only kept to support older versions.", false)]
         public bool AutomaticPaymentPairing { get; set; }
 
+        
+
         public CmtPaymentSettings CmtPaymentSettings { get; set; }
         public BraintreeClientSettings BraintreeClientSettings { get; set; }
         public MonerisPaymentSettings MonerisPaymentSettings { get; set; }

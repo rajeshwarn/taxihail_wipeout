@@ -167,12 +167,13 @@
   <string name="AppNeedUpdateTitle">Nouvelle version disponible</string>
   <string name="StatusEta">est à {0} et arrive dans {1} {2}</string>
   <string name="CreditCardExpYear">Date d\'expiration (année)</string>
+  <string name="CreditCardExpiredUpdateNow">Mettre à jour</string>
   <string name="PanelMenuViewAboutUsText">À Propos</string>
   <string name="HistoryLoadError">Impossible de charger l\'historique. Veuillez réessayer plus tard.</string>
   <string name="ManualPairingForRideLinQ_InvalidCode_Title">Code invalide</string>
   <string name="September">Septembre (09)</string>
   <string name="RingCodeTextPlaceholder">Saisissez un code</string>
-  <string name="UnpairWarningMessage">Cette action ne peut être annulée</string>
+  <string name="UnpairWarningMessage">Êtes-vous sûr de ne pas vouloir payer avec votre carte de crédit?</string>
   <string name="CreditCardErrorInvalid">La carte ne semble pas être valide</string>
   <string name="PanelMenuViewCallDispatchText">Appeler</string>
   <string name="Tuto07Top">Sur l\'écran de statut, vous verrez un numéro de réservation qui confirme votre commande. Une fois qu\'un véhicule sera assigné, vous pouvez suivre sa position jusqu\'à ce qu\'il arrive à vous.</string>
@@ -297,6 +298,7 @@
   <string name="BookingService_MobileBookingNote">Réservé via téléphone mobile</string>
   <string name="CreditCard">Carte de paiement</string>
   <string name="CreateAccountPasswordConfirmationPlaceHolder">Confirmation du mot de passe</string>
+  <string name="ManualRideLinqCreditCardDisabled">Vous avez un paiement en souffrance pour un course précédente et vous ne pouvez donc pas utiliser RideLinQ jusqu\'à ce que ce montant soit payé.</string>
   <string name="PanelMenuViewPromotionsText">Promotions</string>
   <string name="TaxiHailNetworkTimeOutPopupRefuse">Ignorer</string>
   <string name="StatusActionButton">Appeler/Réserver/Annuler</string>
@@ -340,6 +342,7 @@
   <string name="PaymentDetails.Optional">(Facultatif)</string>
   <string name="PromoProgress">Progression :</string>
   <string name="LanguageCode">fr</string>
+  <string name="CreditCardExpiredTitle">Carte Expirée</string>
   <string name="Tuto08Bottom">Nous espérons que la simplicité et l\'efficacité de notre application vous aura convaincue.</string>
   <string name="RideSettingsChargeType">Type de facturation</string>
   <string name="UpdateBookingSettingsInvalidDataTitle">Détails de la réservation incorrects</string>
@@ -421,6 +424,7 @@
   <string name="LocationAddFavoriteTitle">Ajouter une nouvelle adresse</string>
   <string name="PickupTimeTextPlaceholder">Heure: maintenant</string>
   <string name="HistoryViewSendReceiptButton">Je souhaite recevoir une facture</string>
+  <string name="ManualRideLinqNoCardOnFile">Vous devez avoir une carte associée à votre compte pour utiliser RideLinQ</string>
   <string name="Tuto06Top">L\'écran de confirmation vous permet de vérifier que les détails de votre trajet sont corrects. En cas d\'erreur, merci d\'effectuer les modifications</string>
   <string name="Tuto04Bottom">En faisant cela vous aurez une estimation du coût de votre trajet.</string>
   <string name="Error_AccountPaymentQuestionRequiredMessage">Vous devez saisir tous les champs pour continuer</string>
@@ -463,6 +467,7 @@
   <string name="TechSupportEmailTitle">Support application mobile</string>
   <string name="YesButton">Oui</string>
   <string name="PanelMenuViewTaxiHailNetworkText">Réseau TaxiHail</string>
+  <string name="AddPaymentMethod">Ajouter une méthode de paiement</string>
   <string name="ManualRideLinqStatus_Tax">Taxes:</string>
   <string name="BookPickupLabel">Confirmer votre adresse de départ</string>
   <string name="VehicleNumberInfo">Merci de valider l\'immatriculation du véhicule avec le chauffeur</string>
@@ -510,6 +515,7 @@
   <string name="ManualRideLinqSummary_Done">Ok</string>
   <string name="PaymentDetails.TipAmountLabel">Montant du pourboire</string>
   <string name="LoadingMessage">Chargement…</string>
+  <string name="CardExpiredNonMandatoryMessage">Votre carte a expiré. Votre compte est maintenant configuré pour le paiement à bord. Si vous désirez continuer d\'utiliser la carte de crédit, vous devrez la mettre à jour.</string>
   <string name="PaymentDetails.CreditCardLabel">Cartes de paiement</string>
   <string name="Tuto08Top">Vous avez la possibilité de revoir l\'historique de vos trajets et donc de renouveler une commande en sélectionnant le trajet souhaité.</string>
   <string name="UnpairWarningMessageWithPromo">Si vous décidez de payer dans le taxi, vous ne serez pas éligible à la promotion</string>
@@ -530,6 +536,7 @@
   <string name="FavoritesButton">Favoris</string>
   <string name="NotesToDriveLabel">Commentaires à destination du chauffeur</string>
   <string name="CmtRideLinqSaveChanges">Enregistrer</string>
+  <string name="CurrentBookingDisabledTitle">Réservation Immédiate Non Disponible</string>
   <string name="PaymentViewMeterAmountText">Montant</string>
   <string name="PanelMenuViewTutorialText">Aide</string>
   <string name="ChangeServer">Changer de serveur</string>
@@ -569,7 +576,7 @@
   <string name="PromoApply">Appliquer</string>
   <string name="Tuto03Top">Vous pouvez également nous communiquer votre position en saisissant directement une adresse</string>
   <string name="ConfirmRideInformationTitle">Information sur le trajet</string>
-  <string name="PromoBookRide">Utiliser sur la prochaine commande</string>
+  <string name="PromoBookRide">Utiliser le code promo</string>
   <string name="StatusActionBookButton">Réserver un nouveau véhicule</string>
   <string name="BuildingName">Nom du bâtiment / commentaires</string>
   <string name="LocationDetailRingCodeLabel">Saisissez un code</string>

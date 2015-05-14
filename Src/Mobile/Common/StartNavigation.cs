@@ -42,7 +42,7 @@ namespace apcurium.MK.Booking.Mobile
 
             if (accountService.CurrentAccount == null
                 || (appSettings.Data.CreditCardIsMandatory
-                    && !accountService.CurrentAccount.DefaultCreditCard.HasValue))
+                    && accountService.CurrentAccount.DefaultCreditCard == null))
 			{
                 if (accountService.CurrentAccount != null)
 				{

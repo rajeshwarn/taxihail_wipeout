@@ -160,11 +160,12 @@
 "AppNeedUpdateTitle"="هناك تحديثات متاحة";
 "StatusEta"="{0} and {1} {2} away";
 "CreditCardExpYear"="سنة الإنتهاء";
+"CreditCardExpiredUpdateNow"="Update now";
 "PanelMenuViewAboutUsText"="نبذة عنا";
 "HistoryLoadError"="Unable to load the history. Please try again later.";
 "September"="سبتمبر (09)";
 "RingCodeTextPlaceholder"="رمز الدخول";
-"UnpairWarningMessage"="This action cannot be undone";
+"UnpairWarningMessage"="Are you sure you don’t want to pay with your credit card on file?";
 "CreditCardErrorInvalid"="Cannot validate the credit card";
 "PanelMenuViewCallDispatchText"="اتصل";
 "Tuto07Top"="ستتمكن من رؤية رقم الحجز علی شاشة الحالة. عند إتمام تخصيص السيارة، سيمكنك متابعة مسارها نحو موقعك الحالي.";
@@ -284,6 +285,7 @@
 "BookingService_MobileBookingNote"="تم الحجز من خلال الهاتف الجوال";
 "CreditCard"="بطاقة الائتمان";
 "CreateAccountPasswordConfirmationPlaceHolder"="تأكید كلمة السر";
+"ManualRideLinqCreditCardDisabled"="Your current card on file has an overdue payment for a previous ride. This overdue payment is preventing you from pairing with RideLinQ";
 "PanelMenuViewPromotionsText"="Promotions";
 "TaxiHailNetworkTimeOutPopupRefuse"="Refuse";
 "StatusActionButton"="إتصال / حجز/ إلغاء";
@@ -326,6 +328,7 @@
 "PaymentDetails.Optional"="اختياري";
 "PromoProgress"="Progress :";
 "LanguageCode"="ar";
+"CreditCardExpiredTitle"="Card expired";
 "Tuto08Bottom"="نأمل أن تجد الراحة و السهولة عند استخدام هذا التطبيق .";
 "RideSettingsChargeType"="طريقة الدفع";
 "UpdateBookingSettingsInvalidDataTitle"="إعدادات بيانات الحجز خاطئة.";
@@ -407,6 +410,7 @@
 "LocationAddFavoriteTitle"="إضافة موقع جدید";
 "PickupTimeTextPlaceholder"="الوقت: الآن";
 "HistoryViewSendReceiptButton"="إرسال إيصال";
+"ManualRideLinqNoCardOnFile"="You need to have a card on file to pair with RideLinQ";
 "Tuto06Top"="تتيح لك شاشة التأكيد مراجعة بيانات مشوارك وتغيير خياراتك لهذه الرحلة تحديدا.";
 "Tuto04Bottom"="بذلك سيتم تزويدك بسعر تقريبي للرحلة.";
 "Error_AccountPaymentQuestionRequiredMessage"="يجب الإجابة على جميع الأسئلة للإستمرار";
@@ -449,6 +453,7 @@
 "TechSupportEmailTitle"="دعم تطبيق الهاتف الجوال";
 "YesButton"="نعم";
 "PanelMenuViewTaxiHailNetworkText"="TaxiHail Network";
+"AddPaymentMethod"="Add payment method";
 "ManualRideLinqStatus_Tax"="Tax amount:";
 "BookPickupLabel"="اكد موقع الإلتقاء المختار";
 "VehicleNumberInfo"="رجاء تأكيد رقم سيارتك مع السائق";
@@ -493,6 +498,7 @@
 "ManualRideLinqSummary_Done"="Done";
 "PaymentDetails.TipAmountLabel"="قيمة الإكرامية";
 "LoadingMessage"="جار التحميل...";
+"CardExpiredNonMandatoryMessage"="Your credit card has expired. Your account is now configured to pay in car. If you wish to continue using your card on file, you can click on Update.";
 "PaymentDetails.CreditCardLabel"="بطاقات";
 "Tuto08Top"="يمكنك مراجعة تاريخ طلباتك في أي وقت، وأيضا إعادة حجز رحلة سابقة مجددا بلمسة زر.";
 "UnpairWarningMessageWithPromo"="If you decide to pay in car, you will not be able to use the promotion";
@@ -512,6 +518,7 @@
 "FavoritesButton"="المفضلة";
 "NotesToDriveLabel"="ملاحظات للسائق (اسم العمل، مدخل محدد، ...)";
 "CmtRideLinqSaveChanges"="حفظ";
+"CurrentBookingDisabledTitle"="Current Booking Disabled";
 "PaymentViewMeterAmountText"="قيمة العداد";
 "PanelMenuViewTutorialText"="شاهد فيديو تعليمي";
 "ChangeServer"="تغيير الشبكة";
@@ -548,7 +555,7 @@
 "PromoApply"="Apply";
 "Tuto03Top"="يمكنك أيضا إختيار نقطة الإلتقاء بالضغط على عنوان الإلتقاء.";
 "ConfirmRideInformationTitle"="بيانات المشوار";
-"PromoBookRide"="Use this promotion on next ride";
+"PromoBookRide"="Use this promo code";
 "StatusActionBookButton"="احجز سيارة أجرة اخرى";
 "BuildingName"="إسم المبنى / ملاحظات";
 "LocationDetailRingCodeLabel"="رمز الدخول";

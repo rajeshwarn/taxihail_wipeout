@@ -70,11 +70,20 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Your card of file was deactivated because the payment of your last ride was declined. To be able to use it again, go to the Payment screen to settle any overdue payment.
+        ///   Looks up a localized string similar to Your card on file was deactivated because the payment of your last ride was declined. To be able to use it again, go to the Payment screen to settle any overdue payment.
         /// </summary>
         public static string CannotCreateOrder_CreditCardDeactivated {
             get {
                 return ResourceManager.GetString("CannotCreateOrder_CreditCardDeactivated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Your card on file has expired. Please update your payment information to continue using it..
+        /// </summary>
+        public static string CannotCreateOrder_CreditCardExpired {
+            get {
+                return ResourceManager.GetString("CannotCreateOrder_CreditCardExpired", resourceCulture);
             }
         }
         
@@ -390,6 +399,24 @@ namespace apcurium.MK.Booking.Resources {
         public static string Email_Body_AccountConfirmationLine1 {
             get {
                 return ResourceManager.GetString("Email_Body_AccountConfirmationLine1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to If your browser does not automatically redirect you after 10 seconds,.
+        /// </summary>
+        public static string Email_Body_AccountConfirmationRedirectLine1 {
+            get {
+                return ResourceManager.GetString("Email_Body_AccountConfirmationRedirectLine1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to click here..
+        /// </summary>
+        public static string Email_Body_AccountConfirmationRedirectLine2 {
+            get {
+                return ResourceManager.GetString("Email_Body_AccountConfirmationRedirectLine2", resourceCulture);
             }
         }
         
@@ -930,6 +957,15 @@ namespace apcurium.MK.Booking.Resources {
         public static string EtaMessageToDriver {
             get {
                 return ResourceManager.GetString("EtaMessageToDriver", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Your current card on file has an overdue payment for a previous ride. This overdue payment is preventing you from pairing with RideLinQ.
+        /// </summary>
+        public static string ManualRideLinq_CreditCardDisabled {
+            get {
+                return ResourceManager.GetString("ManualRideLinq_CreditCardDisabled", resourceCulture);
             }
         }
         
