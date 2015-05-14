@@ -251,8 +251,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			if (!_isShowingCreditCardExpiredPrompt)
 			{
+				var card = await _accountService.GetCreditCard();
+
 				if (!_accountService.CurrentAccount.IsPayPalAccountLinked
-					&&_accountService.CurrentAccount.DefaultCreditCard != null
+					&& _accountService.CurrentAccount.DefaultCreditCard != null
 					&& _accountService.CurrentAccount.DefaultCreditCard.IsExpired())
 				{
 					_isShowingCreditCardExpiredPrompt = true;
@@ -268,13 +270,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					}
 
 					var title = this.Services().Localize["CreditCardExpiredTitle"];
-				
+
 					if (paymentSettings.IsOutOfAppPaymentDisabled)
 					{
 						// pay in car is disabled, user has only one choice and will not be able to leave the AddCreditCardViewModel without entering a valid card
 						this.Services().Message.ShowMessage(title, 
 							this.Services().Localize["CardExpiredMessage"], 
-							() => {
+							() =>
+						{
 							_isShowingCreditCardExpiredPrompt = false;
 							ShowViewModelAndClearHistory<CreditCardAddViewModel>(new { isMandatory = this.Services().Settings.CreditCardIsMandatory });
 						});
@@ -284,12 +287,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 						this.Services().Message.ShowMessage(title, 
 							this.Services().Localize["CardExpiredNonMandatoryMessage"],
 							this.Services().Localize["CreditCardExpiredUpdateNow"],
-							() => {
-								_isShowingCreditCardExpiredPrompt = false;
-								ShowViewModel<CreditCardAddViewModel>();
-							},
+							() =>
+						{
+							_isShowingCreditCardExpiredPrompt = false;
+							ShowViewModel<CreditCardAddViewModel>();
+						},
 							this.Services().Localize["NotNow"],
-							() => { _isShowingCreditCardExpiredPrompt = false; });
+							() =>
+						{
+							_isShowingCreditCardExpiredPrompt = false;
+						});
 					}
 				}
 			}
