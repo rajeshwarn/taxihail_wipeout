@@ -576,7 +576,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 			var creditCard = result.FirstOrDefault();
 
 			// refresh credit card in cache
-			CurrentAccount.DefaultCreditCard = creditCard;
+			UpdateCachedAccount(creditCard, CurrentAccount.Settings.ChargeTypeId, CurrentAccount.IsPayPalAccountLinked);
 
 			return creditCard;
         }
