@@ -32,6 +32,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		private AddressViewModel[] _defaultHistoryAddresses = new AddressViewModel[0];
 		private AddressViewModel[] _defaultFavoriteAddresses = new AddressViewModel[0];
 		private AddressViewModel[] _defaultNearbyPlaces = new AddressViewModel[0];
+        private AddressViewModel[] _filteredPlaces = new AddressViewModel[0];
 
 		private AddressLocationType _currentActiveFilter;
 
@@ -104,13 +105,29 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
             }
 	    }
 
-	    private async Task LoadFilteredAdress(AddressLocationType filter)
+	    public async void RefreshFilteredAddress()
+	    {
+	        try
+	        {
+                var filteredPlaces = await _placesService.GetFilteredPlacesList();
+
+                _filteredPlaces = ConvertToAddressViewModel(filteredPlaces, AddressType.Places);
+	        }
+	        catch (Exception ex)
+	        {
+	            this.Logger.LogError(ex);
+	        }
+	    }
+
+	    private void LoadFilteredAddress(AddressLocationType filter)
 	    {
 			using (this.Services().Message.ShowProgressNonModal())
 			{
 				AllAddresses.Clear();
 
-				var filteredPlaces = await _placesService.GetFilteredPlacesList(filter);
+                var filteredPlaces = _filteredPlaces
+                    .Where(place => place.Address.AddressLocationType == filter)
+                    .ToArray();
 
 				if (!filteredPlaces.Any())
 				{
@@ -119,17 +136,22 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 						localize["FilteredAddresses_Error_Title"],
 						localize["FilteredAddresses_Error_Message"],
 						() => Cancel.ExecuteIfPossible());
-				}
-				else if (filteredPlaces.Length == 1)
-				{ 
-					SelectAddress(filteredPlaces.FirstOrDefault());
-				}
-				else
-				{
-					_defaultNearbyPlaces = ConvertToAddressViewModel(filteredPlaces, AddressType.Places);
 
-					AllAddresses.AddRange(_defaultNearbyPlaces);
+				    return;
 				}
+				
+                if (filteredPlaces.Length == 1)
+				{
+				    var address = filteredPlaces
+                        .Select(place => place.Address)
+                        .FirstOrDefault();
+
+                    SelectAddress(address);
+
+				    return;
+				}
+
+                AllAddresses.AddRange(filteredPlaces);
 			}
 	    }
 
@@ -146,7 +168,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 	            }
 	            else
 	            {
-                    await LoadFilteredAdress(filter);
+                    LoadFilteredAddress(filter);
 	            }
 	        }
 	        catch (Exception e)

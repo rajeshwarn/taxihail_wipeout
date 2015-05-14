@@ -109,6 +109,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			{
 				Panel.Start();
 
+                AddressPicker.RefreshFilteredAddress();
+
 				CheckTermsAsync();
 
 				CheckCreditCardExpiration();
@@ -556,6 +558,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 CheckUnratedRide();
 				CheckTermsAsync();
 				CheckCreditCardExpiration();
+                AddressPicker.RefreshFilteredAddress();
 
 				_accountService.LogApplicationStartUp ();
             }
