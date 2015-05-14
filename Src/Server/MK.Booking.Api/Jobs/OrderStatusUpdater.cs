@@ -113,8 +113,11 @@ namespace apcurium.MK.Booking.Api.Jobs
 
             if (!OrderNeedsUpdate(orderFromIbs, orderStatusDetail))
             {
+                _logger.LogMessage("Skipping order update");
                 return;
             }
+
+            _logger.LogMessage("Running order update" );
 
             PopulateFromIbsOrder(orderStatusDetail, orderFromIbs);
 
@@ -192,6 +195,7 @@ namespace apcurium.MK.Booking.Api.Jobs
             orderStatusDetail.TerminalId =                      ibsOrderInfo.TerminalId.GetValue(orderStatusDetail.TerminalId);
             orderStatusDetail.ReferenceNumber =                 ibsOrderInfo.ReferenceNumber.GetValue(orderStatusDetail.ReferenceNumber);
             orderStatusDetail.Eta =                             ibsOrderInfo.Eta ?? orderStatusDetail.Eta;
+            orderStatusDetail.RideLinqPairingCode =             ibsOrderInfo.PairingCode.GetValue(orderStatusDetail.RideLinqPairingCode);
             
             UpdateStatusIfNecessary(orderStatusDetail, ibsOrderInfo);
 
@@ -231,7 +235,7 @@ namespace apcurium.MK.Booking.Api.Jobs
             }
         }
 
-        private PreAuthorizePaymentResponse PreauthorizePaymentIfNecessary(Guid orderId, decimal amount)
+        private PreAuthorizePaymentResponse PreauthorizePaymentIfNecessary(Guid orderId, decimal amount, string cvv = null)
         {
             // Check payment instead of PreAuth setting, because we do not preauth in the cases of future bookings
             var paymentInfo = _paymentDao.FindByOrderId(orderId);
@@ -253,8 +257,7 @@ namespace apcurium.MK.Booking.Api.Jobs
 
             var account = _accountDao.FindById(orderDetail.AccountId);
 
-            var result = _paymentService.PreAuthorize(orderId, account, amount);
-
+            var result = _paymentService.PreAuthorize(orderId, account, amount, cvv: cvv);
             if (result.IsSuccessful)
             {
                 // Wait for OrderPaymentDetail to be created
@@ -273,7 +276,7 @@ namespace apcurium.MK.Booking.Api.Jobs
                     TransactionDate = result.TransactionDate
                 });
             }
-
+            
             return result;
         }
 
@@ -442,9 +445,11 @@ namespace apcurium.MK.Booking.Api.Jobs
                     amountSaved = promoDomainObject.GetAmountSaved(Convert.ToDecimal(meterAmount));
                     totalOrderAmount = totalOrderAmount - amountSaved;
                 }
-                
+
+                var tempPaymentInfo = _orderDao.GetTemporaryPaymentInfo(orderStatusDetail.OrderId);
+
                 // Preautorize
-                var preAuthResponse = PreauthorizePaymentIfNecessary(orderStatusDetail.OrderId, totalOrderAmount);
+                var preAuthResponse = PreauthorizePaymentIfNecessary(orderStatusDetail.OrderId, totalOrderAmount, tempPaymentInfo != null ? tempPaymentInfo.Cvv : null);
                 if (preAuthResponse.IsSuccessful)
                 {
                     // Commit
@@ -727,9 +732,10 @@ namespace apcurium.MK.Booking.Api.Jobs
             return (ibsOrderInfo.Status.HasValue()                                // ibs status changed
                         && orderStatusDetail.IBSStatusId != ibsOrderInfo.Status) 
                    || (!orderStatusDetail.FareAvailable                           // fare was not available and ibs now has the information
-                        && ibsOrderInfo.Fare > 0) 
+                        && ibsOrderInfo.Fare > 0)
+                   || (ibsOrderInfo.PairingCode != orderStatusDetail.RideLinqPairingCode) // status could be wosAssigned and we would get the pairing code later.
                    || orderStatusDetail.Status == OrderStatus.WaitingForPayment   // special case for pairing
-                   || (orderStatusDetail.Status == OrderStatus.TimedOut           // special case for network
+                   || (orderStatusDetail.Status == OrderStatus.TimedOut           // special case for network                   
                         && _serverSettings.ServerData.Network.Enabled);           
         }
 

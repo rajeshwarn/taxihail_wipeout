@@ -254,7 +254,7 @@ namespace apcurium.MK.Booking.Services.Impl
             }
         }
 
-        public void SendAutomaticPairingPush(Guid orderId, int? autoTipPercentage, bool success)
+        public void SendAutomaticPairingPush(Guid orderId, int autoTipPercentage, bool success)
         {
             using (var context = _contextFactory.Invoke())
             {
@@ -499,8 +499,10 @@ namespace apcurium.MK.Booking.Services.Impl
                 EmailFontColor = _serverSettings.ServerData.TaxiHail.EmailFontColor,
                 ibsOrderId,
                 HasDriverInfo = hasDriverInfo,
+                HasDriverId = hasDriverInfo && driverInfos.DriverId.HasValue(),
                 VehicleNumber = vehicleNumber,
                 DriverInfos = driverInfos,
+                DriverId = driverInfos.DriverId,
                 PickupDate = pickupDate.ToString("D", dateFormat),
                 PickupTime = pickupDate.ToString("t", dateFormat /* Short time pattern */),
                 DropOffDate = dropOffDate.HasValue
@@ -509,7 +511,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 DropOffTime = dropOffTime,
                 ShowDropOffTime = !string.IsNullOrEmpty(dropOffTime),
                 Fare = _resources.FormatPrice(fare),
-                Toll = _resources.FormatPrice(toll),
+                Toll = _resources.FormatPrice(toll),                
                 SubTotal = _resources.FormatPrice(totalFare + amountSavedByPromotion - tip), // represents everything except tip and the promo discount
                 Tip = _resources.FormatPrice(tip),
                 TotalFare = _resources.FormatPrice(totalFare),

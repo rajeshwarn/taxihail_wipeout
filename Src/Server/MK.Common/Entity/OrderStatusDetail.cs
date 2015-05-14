@@ -45,6 +45,8 @@ namespace apcurium.MK.Common.Entity
         public DateTime? NetworkPairingTimeout { get; set; }
 
         public bool IsManualRideLinq { get; set; }
+
+        public string RideLinqPairingCode { get; set; }
         
         public override string ToString()
         {

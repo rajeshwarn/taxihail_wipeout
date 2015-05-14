@@ -21,6 +21,8 @@ namespace CMTPayment.Authorization
 
         public string CustomerReferenceNumber { get; set; }
 
+        public string Cvv2 { get; set; }
+
         public int TripId { get; set; }
 
         public int DriverId { get; set; }

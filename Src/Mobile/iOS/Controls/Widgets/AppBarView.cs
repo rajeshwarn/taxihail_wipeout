@@ -63,9 +63,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
 			var btnEstimate = GenerateEstimateButton();
 
-			var btnBook = GenerateBookButton("HomeView_BookTaxi");
+			var btnBookForManualRideLinq = GenerateBookButton();
+            
 			_imagePromoForManual = GeneratePromoImage();
-			btnBook.AddSubview(_imagePromoForManual);
+			btnBookForManualRideLinq.AddSubview(_imagePromoForManual);
 
 			var btnManual = new FlatButton()
 			{
@@ -74,11 +75,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			FlatButtonStyle.Blue.ApplyTo(btnManual);
 			btnManual.SetTitle(Localize.GetValue("HomeView_ManualPairing"), UIControlState.Normal);
 
-			_manualPairingButtons.AddSubviews(btnEstimate, btnManual, btnBook);
+			_manualPairingButtons.AddSubviews(btnEstimate, btnManual, btnBookForManualRideLinq);
 
 			_manualPairingButtons.AddConstraints(GenerateEstimateButtonConstraints(btnEstimate, _manualPairingButtons));
 
-			btnBook.AddConstraints(GenerateImagePromoConstraints(_imagePromoForManual, btnBook));
+			btnBookForManualRideLinq.AddConstraints(GenerateImagePromoConstraints(_imagePromoForManual, btnBookForManualRideLinq));
 
 			_manualPairingButtons.Superview.AddConstraints(GenerateConstraintsForContainer(_manualPairingButtons));
 
@@ -86,19 +87,19 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			AddConstraints(new []
 			{
 				NSLayoutConstraint.Create(btnManual, NSLayoutAttribute.Leading, NSLayoutRelation.Equal, btnEstimate, NSLayoutAttribute.Trailing, 1, 10f),
-				NSLayoutConstraint.Create(btnBook, NSLayoutAttribute.Leading, NSLayoutRelation.Equal, btnManual, NSLayoutAttribute.Trailing, 1, 10f),
+				NSLayoutConstraint.Create(btnBookForManualRideLinq, NSLayoutAttribute.Leading, NSLayoutRelation.Equal, btnManual, NSLayoutAttribute.Trailing, 1, 10f),
 				NSLayoutConstraint.Create(btnManual, NSLayoutAttribute.CenterY, NSLayoutRelation.Equal, _manualPairingButtons, NSLayoutAttribute.CenterY, 1, 0f),
 				NSLayoutConstraint.Create(btnManual, NSLayoutAttribute.Height, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1, 41f),
-				NSLayoutConstraint.Create(btnManual, NSLayoutAttribute.Width, NSLayoutRelation.Equal, btnBook, NSLayoutAttribute.Width, 1, 0f),
+				NSLayoutConstraint.Create(btnManual, NSLayoutAttribute.Width, NSLayoutRelation.Equal, btnBookForManualRideLinq, NSLayoutAttribute.Width, 1, 0f),
 			});
 
 
 			// Constraints for Book Now button
 			AddConstraints(new []
 			{
-				NSLayoutConstraint.Create(btnBook, NSLayoutAttribute.Trailing, NSLayoutRelation.Equal, _manualPairingButtons, NSLayoutAttribute.Trailing, 1, -10f),
-				NSLayoutConstraint.Create(btnBook, NSLayoutAttribute.CenterY, NSLayoutRelation.Equal, _manualPairingButtons, NSLayoutAttribute.CenterY, 1, 0f),
-				NSLayoutConstraint.Create(btnBook, NSLayoutAttribute.Height, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1, 41f),
+				NSLayoutConstraint.Create(btnBookForManualRideLinq, NSLayoutAttribute.Trailing, NSLayoutRelation.Equal, _manualPairingButtons, NSLayoutAttribute.Trailing, 1, -10f),
+				NSLayoutConstraint.Create(btnBookForManualRideLinq, NSLayoutAttribute.CenterY, NSLayoutRelation.Equal, _manualPairingButtons, NSLayoutAttribute.CenterY, 1, 0f),
+				NSLayoutConstraint.Create(btnBookForManualRideLinq, NSLayoutAttribute.Height, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1, 41f),
 			});
 
 			var set = this.CreateBindingSet<AppBarView, BottomBarViewModel>();
@@ -115,9 +116,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 				.For(v => v.Hidden)
 				.To(vm => vm.Settings.HideDestination);
 
-			set.Bind(btnBook)
+			set.Bind(btnBookForManualRideLinq)
 				.For(v => v.Command)
 				.To(vm => vm.BookATaxi);
+		    set.Bind(btnBookForManualRideLinq)
+		        .For("Title")
+		        .To(vm => vm.BookButtonText);
 
 			set.Bind(_manualPairingButtons)
 				.For(v => v.Hidden)
@@ -144,14 +148,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 			};
 		}
 
-		private FlatButton GenerateBookButton(string titleResource)
+		private FlatButton GenerateBookButton()
 		{
 			var btnBook = new FlatButton()
 			{
 				TranslatesAutoresizingMaskIntoConstraints = false
 			};
 			FlatButtonStyle.Green.ApplyTo(btnBook);
-			btnBook.SetTitle(Localize.GetValue(titleResource), UIControlState.Normal);
+			
 
 			return btnBook;
 		}
@@ -209,7 +213,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
 			var btnEstimate = GenerateEstimateButton();
 
-			var btnBook = GenerateBookButton("BookItButton");
+			var btnBook = GenerateBookButton();
 
 			_imagePromo = GeneratePromoImage();
 			btnBook.AddSubview(_imagePromo);
@@ -262,7 +266,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 
             set.Bind(btnBook)
                 .For(v => v.Command)
-                .To(vm => vm.SetPickupDateAndReviewOrder);
+                .To(vm => vm.Book);
+
+			set.Bind(btnBook)
+				.For("Title")
+				.To(vm => vm.BookButtonText);
 
 			set.Bind(_imagePromo)
 				.For(v => v.Hidden)

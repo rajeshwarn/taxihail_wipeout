@@ -15,6 +15,7 @@ namespace apcurium.MK.Common.Configuration.Impl
             IsChargeAccountPaymentEnabled = false;
             IsPayInTaxiEnabled = false;
             IsOutOfAppPaymentDisabled = false;
+            AskForCVVAtBooking = false;
         }
 
         public PaymentMethod PaymentMode { get; set; }
@@ -34,7 +35,7 @@ namespace apcurium.MK.Common.Configuration.Impl
         [Obsolete("This property is deprecated. It is only kept to support older versions.", false)]
         public bool AutomaticPaymentPairing { get; set; }
 
-        
+        public bool AskForCVVAtBooking { get; set; }
 
         public CmtPaymentSettings CmtPaymentSettings { get; set; }
         public BraintreeClientSettings BraintreeClientSettings { get; set; }
