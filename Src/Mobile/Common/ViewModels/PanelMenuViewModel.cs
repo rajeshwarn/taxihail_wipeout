@@ -65,20 +65,28 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 					IsNotificationsEnabled = notificationSettings.Enabled;
 					IsTaxiHailNetworkEnabled = Settings.Network.Enabled;
-
+					
+					
 					// Display a watermark indicating on which server the application is pointing
 					SetServerWatermarkText();
 
 					// Get the number of active promotions.
 					RefreshPromoCodeCountIfNecessary();
 
-					// N.B.: This setup is for iOS only! For Android see: SubView_MainMenu.xaml
-					InitIOSMenuList();
-
 					_isCreatingMenu = false;
 				});
 
-			RefreshIOSMenu();
+			// N.B.: This setup is for iOS only! For Android see: SubView_MainMenu.xaml
+			InitIOSMenuList();
+
+			if (Settings.PromotionEnabled)
+			{
+				RefreshIOSMenuBadges();
+			}
+			else 
+			{
+				RefreshIOSMenu();
+			}
 		}
 			
 		partial void InitIOSMenuList();
@@ -189,6 +197,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					if (_menuIsOpen && !_isCreatingMenu)
                     {
                         RefreshPromoCodeCountIfNecessary();
+
+						if (Settings.PromotionEnabled)
+						{
+							RefreshIOSMenuBadges();
+						}
                     }
 
 					RaisePropertyChanged ();
@@ -429,8 +442,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					PromoCodeAlert = promoCodes.Any()
 						? (int?)promoCodes.Length
 						: null;
-
-					RefreshIOSMenuBadges();
 				}
 			}
 			catch (Exception ex)
