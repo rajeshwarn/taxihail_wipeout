@@ -10,6 +10,7 @@ using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Enumeration;
 using Infrastructure.Messaging.Handling;
 using apcurium.MK.Common.Diagnostic;
+using RestSharp.Extensions;
 
 namespace apcurium.MK.Booking.EventHandlers.Integration
 {
@@ -54,6 +55,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                     var orderStatus = _orderDao.FindOrderStatusById(@event.SourceId);
 
                     _logger.LogMessage("OrderPairingManager RideLinqPairingCode : " + orderStatus.RideLinqPairingCode ?? "No code");
+
                     if (orderStatus.IsPrepaid)
                     {
                         // No need to pair, order was already paid
@@ -62,14 +64,12 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
 
                     var order = _orderDao.FindById(@event.SourceId);
 
-                    
-
                     if (order.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id
                         || order.Settings.ChargeTypeId == ChargeTypes.PayPal.Id)
                     {
-                        if ( ( _serverSettings.GetPaymentSettings().PaymentMode == PaymentMethod.RideLinqCmt ) &&
-                              _serverSettings.ServerData.UsePairingCodeWhenUsingRideLinqCmtPayment &&
-                              string.IsNullOrWhiteSpace( orderStatus.RideLinqPairingCode ))
+                        if (_serverSettings.GetPaymentSettings().PaymentMode == PaymentMethod.RideLinqCmt
+                            && _serverSettings.ServerData.UsePairingCodeWhenUsingRideLinqCmtPayment 
+                            && !orderStatus.RideLinqPairingCode.HasValue())
                         {
                             return;
                         }
@@ -77,10 +77,11 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                         var account = _accountDao.FindById(@event.Status.AccountId);
                         var creditCard = _creditCardDao.FindByAccountId(account.Id).FirstOrDefault();
                         var cardToken = creditCard != null ? creditCard.Token : null;
+                        var defaultTipPercentage = account.DefaultTipPercent ?? _serverSettings.ServerData.DefaultTipPercentage;
 
-                        var response = _paymentFacadeService.Pair(@event.SourceId, cardToken, account.DefaultTipPercent.HasValue ? account.DefaultTipPercent.Value : _serverSettings.ServerData.DefaultTipPercentage);
-                        
-                        _notificationService.SendAutomaticPairingPush(@event.SourceId, account.DefaultTipPercent, response.IsSuccessful);
+                        var response = _paymentFacadeService.Pair(@event.SourceId, cardToken, defaultTipPercentage);
+
+                        _notificationService.SendAutomaticPairingPush(@event.SourceId, defaultTipPercentage, response.IsSuccessful);
                     } 
                 }
                 break;

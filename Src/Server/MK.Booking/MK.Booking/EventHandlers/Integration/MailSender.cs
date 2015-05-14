@@ -199,11 +199,10 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                         ibsOrderId = manualRideLinqDetail.TripId;
                     }
 
-                    if ( !string.IsNullOrWhiteSpace( driverIdOverride ) )
+                    if (driverIdOverride.HasValue())
                     {
                         orderStatus.DriverInfos.DriverId = driverIdOverride;
                     }
-
 
                     var command = SendReceiptCommandBuilder.GetSendReceiptCommand(
                         order,

@@ -254,7 +254,7 @@ namespace apcurium.MK.Booking.Services.Impl
             }
         }
 
-        public void SendAutomaticPairingPush(Guid orderId, int? autoTipPercentage, bool success)
+        public void SendAutomaticPairingPush(Guid orderId, int autoTipPercentage, bool success)
         {
             using (var context = _contextFactory.Invoke())
             {
@@ -499,7 +499,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 EmailFontColor = _serverSettings.ServerData.TaxiHail.EmailFontColor,
                 ibsOrderId,
                 HasDriverInfo = hasDriverInfo,
-                HasDriverId = hasDriverInfo && !string.IsNullOrWhiteSpace( driverInfos.DriverId) ,
+                HasDriverId = hasDriverInfo && driverInfos.DriverId.HasValue(),
                 VehicleNumber = vehicleNumber,
                 DriverInfos = driverInfos,
                 DriverId = driverInfos.DriverId,
