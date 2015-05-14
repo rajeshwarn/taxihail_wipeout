@@ -68,19 +68,23 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             {
                 if (_badgeAlertText != value)
                 {
+					if (_badgeView != null)
+					{
+						_badgeView.RemoveFromSuperview ();
+						_badgeView = null;
+					}
+
                     if (value.HasValue())
                     {
-                        _badgeView = new CustomBadgeView(value, 120, 10) {
+                        _badgeView = new CustomBadgeView(value, 120, 10)
+						{
                             TextColor = Theme.LabelTextColor,
                             BadgeColor = Theme.CompanyColor
                         };
+
                         AddSubview(_badgeView);
                     }
-                    else
-                    {
-                        _badgeView.RemoveFromSuperview();
-                        _badgeView = null;
-                    }
+
                     _badgeAlertText = value;
                 }
             }
