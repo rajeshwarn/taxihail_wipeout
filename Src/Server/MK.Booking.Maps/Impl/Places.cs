@@ -37,13 +37,11 @@ namespace apcurium.MK.Booking.Maps.Impl
             return result;
         }
 
-        public async Task<Address[]> GetFilteredPlacesList(AddressLocationType locationType)
+        public async Task<Address[]> GetFilteredPlacesList()
         {
 			var filteredAddress = await _popularAddressProvider.GetPopularAddressesAsync();
 
-			return filteredAddress
-				.Where(address => address.AddressLocationType == locationType)
-				.ToArray();
+			return filteredAddress.ToArray();
         }
 
 		public Address[] SearchPlaces(string name, double? latitude, double? longitude, int? radius, string currentLanguage)
