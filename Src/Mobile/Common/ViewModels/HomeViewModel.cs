@@ -16,6 +16,7 @@ using Cirrious.MvvmCross.Platform;
 using Cirrious.MvvmCross.Plugins.WebBrowser;
 using ServiceStack.Text;
 using apcurium.MK.Booking.Mobile.ViewModels.Payment;
+using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -430,14 +431,40 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
+	    private void ProcessSingleOrNoFilteredAddresses(AddressLocationType filter, HomeViewModelState state)
+	    {
+            var filteredAddress = AddressPicker.FilteredPlaces
+                        .Where(address => address.Address.AddressLocationType == filter)
+                        .ToArray();
+
+            if (!filteredAddress.Any())
+            {
+                var localize = this.Services().Localize;
+                this.Services().Message.ShowMessage( localize["FilteredAddresses_Error_Title"], localize["FilteredAddresses_Error_Message"]);
+
+                return;
+            }
+
+            if (filteredAddress.Length == 1)
+            {
+                var address = filteredAddress
+                    .Select(place => place.Address)
+                    .FirstOrDefault();
+
+                AddressPicker.SelectAddress(address);
+
+                return;
+            }
+
+            ChangePresentation(new HomeViewModelPresentationHint(state));
+	    }
+
+
 	    public ICommand AirportSearch
 	    {
 	        get
 	        {
-	            return this.GetCommand(() =>
-	            {
-                    this.ChangePresentation(new HomeViewModelPresentationHint(HomeViewModelState.AirportSearch));
-	            });
+	            return this.GetCommand(() => ProcessSingleOrNoFilteredAddresses(AddressLocationType.Airport, HomeViewModelState.AirportSearch));
 	        }
 	    }
 
@@ -445,10 +472,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 	    {
 	        get
 	        {
-	            return this.GetCommand(() =>
-	            {
-	                this.ChangePresentation(new HomeViewModelPresentationHint(HomeViewModelState.TrainStationSearch));
-	            });
+	            return this.GetCommand(() => ProcessSingleOrNoFilteredAddresses(AddressLocationType.Train, HomeViewModelState.TrainStationSearch));
 	        }
 	    }
 

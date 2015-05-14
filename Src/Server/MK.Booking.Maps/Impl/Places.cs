@@ -41,7 +41,9 @@ namespace apcurium.MK.Booking.Maps.Impl
         {
 			var filteredAddress = await _popularAddressProvider.GetPopularAddressesAsync();
 
-			return filteredAddress.ToArray();
+			return filteredAddress
+                .Where(address => address.AddressLocationType != AddressLocationType.Unspeficied)
+                .ToArray();
         }
 
 		public Address[] SearchPlaces(string name, double? latitude, double? longitude, int? radius, string currentLanguage)
