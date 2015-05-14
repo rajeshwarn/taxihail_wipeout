@@ -197,6 +197,8 @@ namespace DatabaseInitializer.Services
                         message.Payload = message.Payload.Replace("\"Client.", "\"");
                         message.Payload = message.Payload.Replace("\"DistanceFormat\": \"KM\"", "\"DistanceFormat\": \"Km\"");
                         message.Payload = message.Payload.Replace("\"DistanceFormat\":\"KM\"", "\"DistanceFormat\":\"Km\"");
+                        message.Payload = message.Payload.Replace("\"AvailableVehiclesMarket\"", "\"HoneyBadger.AvailableVehiclesMarket\"");
+                        message.Payload = message.Payload.Replace("\"AvailableVehiclesFleetId\"", "\"HoneyBadger.AvailableVehiclesFleetId\"");
                     }
                     context.SaveChanges();
                 }

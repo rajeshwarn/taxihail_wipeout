@@ -546,6 +546,10 @@
   <string name="PayPalErrorTitle">PayPal Error</string>
   <string name="PayPalLinkError">Unable to link your PayPal account</string>
   <string name="PayPalUnlinkError">Unable to unlink your PayPal account</string>
+  <string name="CvvRequiredTitle">CVV Required</string>
+  <string name="CvvRequiredMessage">Please enter the CVV associated with your card on file to continue</string>
+  <string name="Error_InvalidCvvTitle">Invalid CVV</string>
+  <string name="Error_InvalidCvvMessage">The CVV must be a number between 3 and 4 digits</string>
   <string name="LinkPayPalConfirmation">Link</string>
   <string name="PayPalLinked">Your account is now enabled to pay with PayPal by default. You can still choose to pay in the vehicle by selecting \"Pay in Vehicle\" on the confirmation screen</string>
   <string name="PayPalLinkedInfo">Account Linked</string>

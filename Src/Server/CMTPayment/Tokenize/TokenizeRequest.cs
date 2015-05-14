@@ -15,5 +15,7 @@ namespace CMTPayment.Tokenize
         public string ExpiryDate { get; set; }
 
         public bool ValidateAccountInformation { get; set; }
+
+        public string Cvv { get; set; }
     }
 }

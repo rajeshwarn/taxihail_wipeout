@@ -1,0 +1,19 @@
+﻿<div class="row">
+    <div class="span6">
+        <div class="well clearfix">
+            <div class="errors" style="margin-top: 10px;"></div>
+            <form class="form-horizontal clearfix">
+                <div class="control-group">
+                    <label class="control-label" for="inputCVV">{{localize "ConfirmCVVMessage"}}</label>
+                    <div class="controls">
+                        <input type="text" id="inputCVV" name="cvv" value="{{cvv}}" class='input-block-level'>
+                    </div>
+                </div>
+                <div class="control-group btn-right-alignment">
+                    <button type='submit' class='btn btn-primary  span' id="btBook" data-loading-text="{{localize 'Loading'}}">{{localize "Continue"}}</button>
+                    <a href='#' class='btn  span' data-action='cancel'>{{localize "modal.default.cancelButton"}}</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1928,7 +1928,7 @@
     <value>Vous devez avoir une carte associée à votre compte pour utiliser RideLinQ</value>
   </data>
   <data name="CvvRequiredTitle" xml:space="preserve">
-    <value>CVV Requis</value>
+  	<value>CVV Requis</value>
   </data>
   <data name="CvvRequiredMessage" xml:space="preserve">
     <value>Veuillez entrer le code de vérification associé à votre carte de crédit pour continuer</value>

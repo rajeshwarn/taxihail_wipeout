@@ -589,6 +589,10 @@
 "ManualRideLinqStatus_Tax"="Taxes:";
 "ManualRideLinqStatus_Tip"="Pourboire:";
 "ManualRideLinqStatus_Total"="Coût Total:";
+"CvvRequiredTitle"="CVV Requis";
+"CvvRequiredMessage"="Veuillez entrer le code de vérification associé à votre carte de crédit pour continuer";
+"Error_InvalidCvvTitle"="CVV Invalide";
+"Error_InvalidCvvMessage"="Le code de vérification doit être un nombre possédant entre 3 et 4 chiffres";
 "ManualRideLinqStatus_Unpair"="Dissocier";
 "ManualRideLinqSummary_Done"="Ok";
 "ManualUnPairingForRideLinQ_Error_Message"="Une erreur est survenue lors de la dissociation. Veuillez essayer de nouveau.";

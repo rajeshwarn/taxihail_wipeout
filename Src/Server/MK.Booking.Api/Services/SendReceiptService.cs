@@ -97,7 +97,7 @@ namespace apcurium.MK.Booking.Api.Services
                 tollAmount = 0;
                 tipAmount = Convert.ToDouble(orderPayment.Tip);
                 taxAmount = Convert.ToDouble(orderPayment.Tax);
-
+                
                 // promotion can only be used with in app payment
                 promotionUsed = _promotionDao.FindByOrderId(request.OrderId);
 
@@ -113,10 +113,10 @@ namespace apcurium.MK.Booking.Api.Services
                     // this is for CMT RideLinq only, no VAT
 
                     meterAmount = Math.Round(((double)tripInfo.Fare / 100), 2);
-                    tollAmount = Math.Round(((double)tripInfo.Extra / 2), 2);
+                    tollAmount = Math.Round(((double)tripInfo.Extra / 100), 2);
                     tipAmount = Math.Round(((double)tripInfo.Tip / 100), 2);
                     taxAmount = Math.Round(((double)tripInfo.Tax / 100), 2);
-
+                    orderStatus.DriverInfos.DriverId = tripInfo.DriverId.ToString();
                     ibsOrderId = tripInfo.TripId;
                 }
                 else
