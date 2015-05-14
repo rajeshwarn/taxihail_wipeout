@@ -2,7 +2,6 @@ using Cirrious.MvvmCross.Binding.Touch.Views;
 using UIKit;
 using Foundation;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
-using apcurium.MK.Booking.Mobile.Client.Style;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
