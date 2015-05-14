@@ -617,4 +617,10 @@
   <data name="ManualRideLinq_CreditCardDisabled" xml:space="preserve">
     <value>Your current card on file has an overdue payment for a previous ride. This overdue payment is preventing you from pairing with RideLinQ</value>
   </data>
+  <data name="Email_Body_Extra" xml:space="preserve">
+    <value>Extra</value>
+  </data>
+  <data name="Email_Body_DriverId" xml:space="preserve">
+    <value>Driver #</value>
+  </data>
 </root>

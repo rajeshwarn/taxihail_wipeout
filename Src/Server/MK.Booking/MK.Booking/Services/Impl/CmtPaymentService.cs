@@ -67,7 +67,7 @@ namespace apcurium.MK.Booking.Services.Impl
             return false;
         }
         
-        public PairingResponse Pair(Guid orderId, string cardToken, int? autoTipPercentage)
+        public PairingResponse Pair(Guid orderId, string cardToken, int autoTipPercentage)
         {
             try
             {
@@ -360,7 +360,6 @@ namespace apcurium.MK.Booking.Services.Impl
 
             try
             {
-
                 var accountDetail = _accountDao.FindById(orderStatusDetail.AccountId);
 
                 // send pairing request                                
@@ -370,15 +369,23 @@ namespace apcurium.MK.Booking.Services.Impl
                     AutoTipPercentage = autoTipPercentage ?? _serverSettings.ServerData.DefaultTipPercentage,
                     AutoCompletePayment = true,
                     CallbackUrl = string.Empty,
-                    CustomerId = orderStatusDetail.IBSOrderId.ToString(),
+                    CustomerId = orderStatusDetail.AccountId.ToString(),
                     CustomerName = accountDetail.Name,
                     DriverId = orderStatusDetail.DriverInfos.DriverId,
                     Latitude = orderStatusDetail.VehicleLatitude.GetValueOrDefault(),
                     Longitude = orderStatusDetail.VehicleLongitude.GetValueOrDefault(),
-                    Medallion = orderStatusDetail.VehicleNumber,
                     CardOnFileId = cardToken,
                     Market = cmtPaymentSettings.Market
                 };
+
+                if (orderStatusDetail.RideLinqPairingCode.HasValue())
+                {
+                    pairingRequest.PairingCode = orderStatusDetail.RideLinqPairingCode;
+                }
+                else
+                {
+                    pairingRequest.Medallion = orderStatusDetail.VehicleNumber;
+                }
 
                 _logger.LogMessage("Pairing request : " + pairingRequest.ToJson());
                 _logger.LogMessage("PaymentSettings request : " + cmtPaymentSettings.ToJson());

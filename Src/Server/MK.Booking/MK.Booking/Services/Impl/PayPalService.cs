@@ -121,7 +121,7 @@ namespace apcurium.MK.Booking.Services.Impl
             }
         }
 
-        public PairingResponse Pair(Guid orderId, int? autoTipPercentage)
+        public PairingResponse Pair(Guid orderId, int autoTipPercentage)
         {
             try
             {

@@ -90,11 +90,11 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                         if (tripInfo != null && tripInfo.EndTime.HasValue)
                         {
                             var meterAmount = Math.Round(((double)tripInfo.Fare / 100), 2);
-                            var tollAmount = Math.Round(((double)tripInfo.Extra / 2), 2);
+                            var tollAmount = Math.Round(((double)tripInfo.Extra / 100), 2);
                             var tipAmount = Math.Round(((double)tripInfo.Tip / 100), 2);
                             var taxAmount = Math.Round(((double)tripInfo.Tax / 100), 2);
 
-                            SendReceipt(@event.SourceId, Convert.ToDecimal(meterAmount), Convert.ToDecimal(tipAmount), Convert.ToDecimal(taxAmount), toll: Convert.ToDecimal(tollAmount));
+                            SendReceipt(@event.SourceId, Convert.ToDecimal(meterAmount), Convert.ToDecimal(tipAmount), Convert.ToDecimal(taxAmount), toll: Convert.ToDecimal(tollAmount), driverIdOverride: tripInfo.DriverId.ToString());
                         }
                     }
                 } 
@@ -163,7 +163,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             }
         }
 
-        private void SendReceipt(Guid orderId, decimal meter, decimal tip, decimal tax, decimal amountSavedByPromotion = 0m, decimal toll = 0)
+        private void SendReceipt(Guid orderId, decimal meter, decimal tip, decimal tax, decimal amountSavedByPromotion = 0m, decimal toll = 0, string driverIdOverride = null )
         {
             using (var context = _contextFactory.Invoke())
             {
@@ -198,6 +198,12 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                         var manualRideLinqDetail = context.Find<OrderManualRideLinqDetail>(orderStatus.OrderId);
                         ibsOrderId = manualRideLinqDetail.TripId;
                     }
+
+                    if ( !string.IsNullOrWhiteSpace( driverIdOverride ) )
+                    {
+                        orderStatus.DriverInfos.DriverId = driverIdOverride;
+                    }
+
 
                     var command = SendReceiptCommandBuilder.GetSendReceiptCommand(
                         order,

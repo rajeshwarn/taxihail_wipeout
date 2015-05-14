@@ -9,6 +9,7 @@ using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Enumeration;
 using Infrastructure.Messaging.Handling;
+using apcurium.MK.Common.Diagnostic;
 
 namespace apcurium.MK.Booking.EventHandlers.Integration
 {
@@ -20,28 +21,39 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
         private readonly IOrderDao _orderDao;
         private readonly ICreditCardDao _creditCardDao;
         private readonly IAccountDao _accountDao;
+        private readonly ILogger _logger;
         private readonly IPaymentService _paymentFacadeService;
+        private readonly IServerSettings _serverSettings;
 
         public OrderPairingManager(INotificationService notificationService, 
             IOrderDao orderDao,
             ICreditCardDao creditCardDao,
             IAccountDao accountDao,
-            IPaymentService paymentFacadeService)
+            IPaymentService paymentFacadeService,
+            IServerSettings serverSettings,
+            ILogger logger)
         {
             _notificationService = notificationService;
             _orderDao = orderDao;
             _creditCardDao = creditCardDao;
             _accountDao = accountDao;
             _paymentFacadeService = paymentFacadeService;
+            _serverSettings = serverSettings;
+            _logger = logger;
         }
 
         public void Handle(OrderStatusChanged @event)
         {
+
+            _logger.LogMessage("OrderPairingManager Handle : " + @event.Status.IBSStatusId);
+            
             switch (@event.Status.IBSStatusId)
-            {
+            {            
                 case VehicleStatuses.Common.Loaded:
                 {
                     var orderStatus = _orderDao.FindOrderStatusById(@event.SourceId);
+
+                    _logger.LogMessage("OrderPairingManager RideLinqPairingCode : " + orderStatus.RideLinqPairingCode ?? "No code");
                     if (orderStatus.IsPrepaid)
                     {
                         // No need to pair, order was already paid
@@ -50,15 +62,24 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
 
                     var order = _orderDao.FindById(@event.SourceId);
 
+                    
+
                     if (order.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id
                         || order.Settings.ChargeTypeId == ChargeTypes.PayPal.Id)
                     {
+                        if ( ( _serverSettings.GetPaymentSettings().PaymentMode == PaymentMethod.RideLinqCmt ) &&
+                              _serverSettings.ServerData.UsePairingCodeWhenUsingRideLinqCmtPayment &&
+                              string.IsNullOrWhiteSpace( orderStatus.RideLinqPairingCode ))
+                        {
+                            return;
+                        }
+
                         var account = _accountDao.FindById(@event.Status.AccountId);
                         var creditCard = _creditCardDao.FindByAccountId(account.Id).FirstOrDefault();
                         var cardToken = creditCard != null ? creditCard.Token : null;
 
-                        var response = _paymentFacadeService.Pair(@event.SourceId, cardToken, account.DefaultTipPercent);
-
+                        var response = _paymentFacadeService.Pair(@event.SourceId, cardToken, account.DefaultTipPercent.HasValue ? account.DefaultTipPercent.Value : _serverSettings.ServerData.DefaultTipPercentage);
+                        
                         _notificationService.SendAutomaticPairingPush(@event.SourceId, account.DefaultTipPercent, response.IsSuccessful);
                     } 
                 }
