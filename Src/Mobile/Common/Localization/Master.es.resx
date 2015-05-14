@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -2132,10 +2132,13 @@
     <value>Promo code</value>
   </data>
   <data name="PromoMustUseCardOnFileMessage" xml:space="preserve">
-    <value>In order to use a promo code, you need to pay with card on file</value>
+    <value>In order to use a promo code, you need to pay with your configured payment method.</value>
+  </data>
+  <data name="PromoMustHavePaymentMethodSetMessage" xml:space="preserve">
+    <value>In order to use a promo code, you need to have a payment method configured in the app.</value>
   </data>
   <data name="PromoMustUseCardOnFileWarningMessage" xml:space="preserve">
-    <value>Please note that the discount will only be applied if the payment is made using the app</value>
+    <value>Please note that the discount will only be applied if the payment is made using the app.</value>
   </data>
   <data name="WarningPromoCodeDontShow" xml:space="preserve">
     <value>No avisar</value>
@@ -2387,6 +2390,18 @@
   </data>
   <data name="ManualRideLinqNoCardOnFile" xml:space="preserve">
     <value>You need to have a card on file to pair with RideLinQ</value>
+  </data>
+  <data name="CvvRequiredTitle" xml:space="preserve">
+    <value>CVV Required</value>
+  </data>
+  <data name="CvvRequiredMessage" xml:space="preserve">
+    <value>Please enter the CVV associated with your card on file to continue</value>
+  </data>
+  <data name="Error_InvalidCvvTitle" xml:space="preserve">
+    <value>Invalid CVV</value>
+  </data>
+  <data name="Error_InvalidCvvMessage" xml:space="preserve">
+    <value>The CVV must be a number between 3 and 4 digits</value>
   </data>
   <data name="ManualRideLinqCreditCardDisabled" xml:space="preserve">
     <value>Your current card on file has an overdue payment for a previous ride. This overdue payment is preventing you from pairing with RideLinQ</value>
