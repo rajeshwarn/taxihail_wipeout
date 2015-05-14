@@ -35,7 +35,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		readonly IBookingService _bookingService;
 		readonly ICacheService _cacheService;
 		readonly IAccountPaymentService _accountPaymentService;
-	    private readonly INetworkRoamingService _networkRoamingService;
+	    readonly INetworkRoamingService _networkRoamingService;
+		readonly IPaymentService _paymentService;
 
 	    readonly ISubject<Address> _pickupAddressSubject = new BehaviorSubject<Address>(new Address());
 		readonly ISubject<Address> _destinationAddressSubject = new BehaviorSubject<Address>(new Address());
@@ -50,11 +51,11 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 		readonly ISubject<string> _promoCodeSubject = new BehaviorSubject<string>(string.Empty);
 		readonly ISubject<bool> _loadingAddressSubject = new BehaviorSubject<bool>(false);
 		readonly ISubject<AccountChargeQuestion[]> _accountPaymentQuestions = new BehaviorSubject<AccountChargeQuestion[]> (null);
-
 		readonly ISubject<bool> _orderCanBeConfirmed = new BehaviorSubject<bool>(false);
 		readonly ISubject<string> _hashedMarketSubject = new BehaviorSubject<string>(string.Empty);
         readonly ISubject<List<VehicleType>> _networkVehiclesSubject = new BehaviorSubject<List<VehicleType>>(new List<VehicleType>());
 		readonly ISubject<bool> _isDestinationModeOpenedSubject = new BehaviorSubject<bool>(false);
+		readonly ISubject<string> _cvvSubject = new BehaviorSubject<string>(string.Empty);
 
         private bool _isOrderRebooked;
 
@@ -71,7 +72,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			IBookingService bookingService,
 			ICacheService cacheService,
 			IAccountPaymentService accountPaymentService,
-            INetworkRoamingService networkRoamingService)
+            INetworkRoamingService networkRoamingService,
+			IPaymentService paymentService)
 		{
 			_cacheService = cacheService;
 			_appSettings = configurationManager;
@@ -90,6 +92,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			_bookingService = bookingService;
 			_accountPaymentService = accountPaymentService;
 		    _networkRoamingService = networkRoamingService;
+			_paymentService = paymentService;
 
 		    _estimatedFareDisplaySubject = new BehaviorSubject<string>(_localize[_appSettings.Data.DestinationIsRequired ? "NoFareTextIfDestinationIsRequired" : "NoFareText"]);
 		}
@@ -590,6 +593,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 			await SetBookingSettings (_accountService.CurrentAccount.Settings);
 			_estimatedFareDisplaySubject.OnNext(_localize[_appSettings.Data.DestinationIsRequired ? "NoFareTextIfDestinationIsRequired" : "NoFareText"]);
 			_orderCanBeConfirmed.OnNext (false);
+			_cvvSubject.OnNext(string.Empty);
 		}
 
 		public void BeginCreateOrder()
@@ -803,7 +807,9 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
                 ? _locationService.BestPosition.Longitude
                 : (double?)null;
 
-			order.QuestionsAndAnswers = await _accountPaymentQuestions.Take (1).ToTask ();
+			order.QuestionsAndAnswers = await _accountPaymentQuestions.Take(1).ToTask ();
+
+			order.Cvv = await _cvvSubject.Take(1).ToTask();
 
 			return order;
 		}
@@ -912,6 +918,37 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 
             return distanceFromLastMarketRequest > LastMarketDistanceThreshold;
 	    }
+
+		public async Task<bool> ShouldPromptForCvv()
+		{
+			var order = await GetOrder ();
+			if (order.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id)
+			{
+				var paymentSettings = await _paymentService.GetPaymentSettings();
+				return paymentSettings.AskForCVVAtBooking;
+			}
+
+			return false;
+		}
+
+		public bool ValidateAndSetCvv(string cvv)
+		{
+			if (!cvv.HasValue())
+			{
+				return false;
+			}
+
+			var success = cvv.IsDigit()
+				&& cvv.Length >= 3
+				&& cvv.Length <= 4;
+
+			if (success)
+			{
+				_cvvSubject.OnNext(cvv);
+			}
+
+			return success;
+		}
     }
 }
 

@@ -34,7 +34,7 @@
         
 
         <!-- assets -->
-        <script src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
+        <script src="https://maps.googleapis.com/maps/api/js?client=gme-taxihailinc&v=3.19"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
         
          <%: Scripts.Render("~/bundles/assets") %>
@@ -76,6 +76,7 @@
             TaxiHail.parameters.hideMarketChangeWarning = <%: HideMarketChangeWarning ? "true" : "false" %>;
             TaxiHail.parameters.autoConfirmFleetChange = <%: AutoConfirmFleetChange ? "true" : "false" %>;
             TaxiHail.parameters.alwaysDisplayCoFOption = <%: AlwaysDisplayCoFOption ? "true" : "false" %>;
+            TaxiHail.parameters.askForCVVAtBooking = <%: AskForCVVAtBooking ? "true" : "false" %>;
 
             TaxiHail.parameters.isSignupVisible = <%: IsWebSignupVisible  ? "true" : "false"%>;
             TaxiHail.parameters.isSocialMediaVisible = <%: IsWebSocialMediaVisible  ? "true" : "false"%>;

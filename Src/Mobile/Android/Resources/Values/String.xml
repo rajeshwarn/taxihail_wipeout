@@ -546,6 +546,10 @@
   <string name="CmtRideLinqSaveChanges">Save</string>
   <string name="CurrentBookingDisabledTitle">Current Booking Disabled</string>
   <string name="PaymentViewMeterAmountText">Meter Amount</string>
+  <string name="CvvRequiredTitle">CVV Required</string>
+  <string name="CvvRequiredMessage">Please enter the CVV associated with your card on file to continue</string>
+  <string name="Error_InvalidCvvTitle">Invalid CVV</string>
+  <string name="Error_InvalidCvvMessage">The CVV must be a number between 3 and 4 digits</string>
   <string name="PanelMenuViewTutorialText">View Tutorial</string>
   <string name="ChangeServer">Change server</string>
   <string name="WarningEstimateTitle">Warning</string>

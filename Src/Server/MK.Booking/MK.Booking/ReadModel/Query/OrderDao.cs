@@ -145,6 +145,22 @@ namespace apcurium.MK.Booking.ReadModel.Query
             }
         }
 
+        public TemporaryOrderPaymentInfoDetail GetTemporaryPaymentInfo(Guid orderId)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                return context.Query<TemporaryOrderPaymentInfoDetail>().SingleOrDefault(c => c.OrderId == orderId);
+            }
+        }
+
+        public void DeleteTemporaryPaymentInfo(Guid orderId)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                context.RemoveWhere<TemporaryOrderPaymentInfoDetail>(c => c.OrderId == orderId);
+            }
+        }
+
         public OrderManualRideLinqDetail GetManualRideLinqById(Guid orderId)
         {
             using (var context = _contextFactory.Invoke())

@@ -90,11 +90,11 @@ namespace apcurium.MK.Booking.Api.Services
                     && _serverSettings.ServerData.AvailableVehiclesMode == AvailableVehiclesModes.HoneyBadger)
                 {
                     // LOCAL market Honey Badger
-                    availableVehiclesMarket = _serverSettings.ServerData.AvailableVehiclesMarket;
+                    availableVehiclesMarket = _serverSettings.ServerData.HoneyBadger.AvailableVehiclesMarket;
 
-                    if (_serverSettings.ServerData.AvailableVehiclesFleetId.HasValue)
+                    if (_serverSettings.ServerData.HoneyBadger.AvailableVehiclesFleetId.HasValue)
                     {
-                        availableVehiclesFleetIds = new[] { _serverSettings.ServerData.AvailableVehiclesFleetId.Value };
+                        availableVehiclesFleetIds = new[] { _serverSettings.ServerData.HoneyBadger.AvailableVehiclesFleetId.Value };
                     }
                 }
                 else

@@ -544,6 +544,10 @@
 "CmtRideLinqSaveChanges"="Save";
 "CurrentBookingDisabledTitle"="Current Booking Disabled";
 "PaymentViewMeterAmountText"="Meter Amount";
+"CvvRequiredTitle"="CVV Required";
+"CvvRequiredMessage"="Please enter the CVV associated with your card on file to continue";
+"Error_InvalidCvvTitle"="Invalid CVV";
+"Error_InvalidCvvMessage"="The CVV must be a number between 3 and 4 digits";
 "PanelMenuViewTutorialText"="View Tutorial";
 "ChangeServer"="Change server";
 "WarningEstimateTitle"="Warning";

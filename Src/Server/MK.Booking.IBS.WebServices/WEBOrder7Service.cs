@@ -157,7 +157,7 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
     
     /// <remarks/>
     public WebOrder7Service() {
-        this.Url = "http://ehailny.drivelinq.com:46928/IBSCab/IBSCab.dll/soap/IWEBOrder_7";
+        this.Url = "http://apcurium.drivelinq.com:16928/IBSCab/IBSCab.dll/soap/IWebOrder_7";
     }
     
     /// <remarks/>
@@ -5281,18 +5281,7 @@ public partial class TOrderStatus_2 : TOrderStatus {
 	
 	private double vatField;
 
-	/// <remarks/>
-	public double VAT
-	{ 
-		get
-		{ 
-			return this.vatField; 
-		}
-		set 
-		{ 
-			this.vatField = value; 
-		} 
-	}
+	public double VAT { get { return this.vatField; } set { this.vatField = value; } }
     
     /// <remarks/>
     public string CallNumber {
@@ -5402,18 +5391,7 @@ public partial class TBookOrder_7 : TBookOrder_6 {
 	
 	private double vatField;
 
-	/// <remarks/>
-	public double VAT
-	{ 
-		get
-		{ 
-			return this.vatField; 
-		}
-		set 
-		{ 
-			this.vatField = value; 
-		} 
-	}
+	public double VAT { get { return this.vatField; } set { this.vatField = value; } }
 }
 
 /// <remarks/>
@@ -6346,6 +6324,8 @@ public partial class TBookOrder_8 : TBookOrder_7 {
     }
 }
 
+
+
 /// <remarks/>
 [System.Xml.Serialization.SoapIncludeAttribute(typeof(TVehiclePosition_2))]
 [System.Xml.Serialization.SoapIncludeAttribute(typeof(TVehiclePosition_4))]
@@ -6406,7 +6386,6 @@ public partial class TVehiclePosition {
 }
 
 /// <remarks/>
-[System.Xml.Serialization.SoapIncludeAttribute(typeof(TVehiclePosition_4))]
 [System.CodeDom.Compiler.GeneratedCodeAttribute("wsdl", "4.0.30319.18020")]
 [System.SerializableAttribute()]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
@@ -6433,7 +6412,7 @@ public partial class TVehiclePosition_2 : TVehiclePosition {
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.SoapTypeAttribute(Namespace="urn:TypeOrder")]
-public partial class TVehiclePosition_4 : TVehiclePosition_2 {
+public partial class TVehiclePosition_4 : TVehiclePosition {
     
     private TVehicleTypeItem vehicleTypeField;
     

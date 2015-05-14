@@ -604,4 +604,8 @@
   <string name="ManualRideLinqStatus_Driver">Chauffeur #:</string>
   <string name="InvalidAddressTextEdit">Désolé, l\'adresse semble inconnue</string>
   <string name="HistoryDetailPickupDateLabel">Date de départ:</string>
+  <string name="CvvRequiredTitle">CVV Requis</string>
+  <string name="CvvRequiredMessage">Veuillez entrer le code de vérification associé à votre carte de crédit pour continuer</string>
+  <string name="Error_InvalidCvvTitle">CVV Invalide</string>
+  <string name="Error_InvalidCvvMessage">Le code de vérification doit être un nombre possédant entre 3 et 4 chiffres</string>
 </resources>

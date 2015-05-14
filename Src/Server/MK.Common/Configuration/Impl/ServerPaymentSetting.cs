@@ -19,6 +19,7 @@ namespace apcurium.MK.Common.Configuration.Impl
             UnpairingTimeOut = 120;
             IsUnpairingDisabled = false;
             IsPrepaidEnabled = false;
+            AlwaysDisplayCoFOption = false;
         }
 
         [Key]
@@ -38,7 +39,7 @@ namespace apcurium.MK.Common.Configuration.Impl
         public int UnpairingTimeOut { get; protected set; }
 
         public bool IsPrepaidEnabled { get; set; }
-
+        
         public bool AlwaysDisplayCoFOption { get; set; }
     }
 }

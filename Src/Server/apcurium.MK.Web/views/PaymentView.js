@@ -180,6 +180,14 @@
 
                                 if (this.isOnBookingFlow()) {
                                     var currentOrder = TaxiHail.orderService.getCurrentOrder();
+
+                                    if (TaxiHail.parameters.askForCVVAtBooking) {
+                                        currentOrder.set('cvv', cvv);
+                                    }
+
+                                    // Wait for credit card to be added to profile
+                                    setTimeout(function () { }, 1000);
+
                                     currentOrder.save({}, {
                                         success: TaxiHail.postpone(function (model) {
                                             // Wait for response before doing anything
