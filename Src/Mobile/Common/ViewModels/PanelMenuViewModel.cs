@@ -73,9 +73,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					// Get the number of active promotions.
 					RefreshPromoCodeCountIfNecessary();
 
-					// N.B.: This setup is for iOS only! For Android see: SubView_MainMenu.xaml
-					//InitIOSMenuList();
-
 					_isCreatingMenu = false;
 				});
 
