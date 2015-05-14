@@ -2,14 +2,16 @@ using Cirrious.MvvmCross.Binding.Touch.Views;
 using UIKit;
 using Foundation;
 using apcurium.MK.Booking.Mobile.Client.Extensions;
-using CoreGraphics;
 using apcurium.MK.Booking.Mobile.Client.Style;
 using apcurium.MK.Booking.Mobile.Client.Extensions.Helpers;
+using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 {
 	public class PanelMenuCell : MvxStandardTableViewCell
-	{
+    {
+        private CustomBadgeView _badgeView;
+        private string _badgeAlertText;
 		private bool _hideBottomBar;
         private const float LeftPadding = 16f;
         private const float RightPadding = 18f;
@@ -57,6 +59,32 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
 				_hideBottomBar = value;
 			}
 		}
+            
+
+        public string AlertBadgeText
+        {
+            get { return _badgeAlertText; }
+            set
+            {
+                if (_badgeAlertText != value)
+                {
+                    if (value.HasValue())
+                    {
+                        _badgeView = new CustomBadgeView(value, 120, 10) {
+                            TextColor = Theme.LabelTextColor,
+                            BadgeColor = Theme.CompanyColor
+                        };
+                        AddSubview(_badgeView);
+                    }
+                    else
+                    {
+                        _badgeView.RemoveFromSuperview();
+                        _badgeView = null;
+                    }
+                    _badgeAlertText = value;
+                }
+            }
+        }
 
         public override void TouchesBegan (NSSet touches, UIEvent evt)
         {   
