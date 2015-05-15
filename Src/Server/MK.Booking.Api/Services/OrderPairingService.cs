@@ -38,7 +38,7 @@ namespace apcurium.MK.Booking.Api.Services
             var orderPairing = _orderDao.FindOrderPairingById(request.OrderId);
             if (orderPairing == null)
             {
-                throw new HttpException((int) HttpStatusCode.BadRequest, string.Format("No pairing found for order {0}", request.OrderId));
+                return new HttpResult(HttpStatusCode.NotFound);
             }
             
             _commandBus.Send(new UpdateAutoTip

@@ -10,14 +10,13 @@ using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Resources;
 using CMTPayment;
+using CMTPayment.Pair;
 using Infrastructure.Messaging;
 using ServiceStack.Common.Web;
 using ServiceStack.ServiceClient.Web;
 using ServiceStack.ServiceInterface;
 using ServiceStack.Text;
-using CmtManualRideLinqPairingRequest = CMTPayment.Pair.ManualRideLinqPairingRequest;
 using ManualRideLinqPairingRequest = apcurium.MK.Booking.Api.Contract.Requests.Payment.ManualRideLinqPairingRequest;
-using CmtManualRideLinqUnpairingRequest = CMTPayment.Pair.ManualRideLinqUnpairingRequest;
 
 namespace apcurium.MK.Booking.Api.Services
 {
@@ -54,6 +53,17 @@ namespace apcurium.MK.Booking.Api.Services
             _resources = new Resources.Resources(_serverSettings);
         }
 
+        public object Get(ManualRideLinqRequest request)
+        {
+            var order = _orderDao.GetManualRideLinqById(request.OrderId);
+
+            return new ManualRideLinqResponse
+            {
+                Data = order,
+                IsSuccessful = true
+            };
+        }
+
         public object Post(ManualRideLinqPairingRequest request)
         {
             try
@@ -77,7 +87,7 @@ namespace apcurium.MK.Booking.Api.Services
                 }
 
                 // Send pairing request to CMT API
-                var pairingRequest = new CmtManualRideLinqPairingRequest
+                var pairingRequest = new ManualRideLinqCoFPairingRequest
                 {
                     AutoTipPercentage = account.DefaultTipPercent ?? _serverSettings.ServerData.DefaultTipPercentage,
                     CustomerId = accountId.ToString(),
@@ -184,15 +194,43 @@ namespace apcurium.MK.Booking.Api.Services
             }
         }
 
-        public object Get(ManualRideLinqRequest request)
+        public object Post(ManualRideLinqUpdateAutoTipRequest request)
         {
-            var order = _orderDao.GetManualRideLinqById(request.OrderId);
-
-            return new ManualRideLinqResponse
+            var ridelinqOrderDetail = _orderDao.GetManualRideLinqById(request.OrderId);
+            if (ridelinqOrderDetail == null)
             {
-                Data = order,
-                IsSuccessful = true
-            };
+                return new HttpResult(HttpStatusCode.NotFound);
+            }
+
+            try
+            {
+                var accountId = new Guid(this.GetSession().UserAuthId);
+                var account = _accountDao.FindById(accountId);
+                var orderDetail = _orderDao.FindById(request.OrderId);
+
+                var response = _cmtMobileServiceClient.Post(new CMTPayment.Pair.ManualRideLinqPairingRequest
+                {
+                    PairingToken = ridelinqOrderDetail.PairingToken,
+                    AutoTipPercentage = request.AutoTipPercentage,
+                    CustomerId = accountId.ToString(),
+                    CustomerName = account.Name,
+                    Latitude = orderDetail.PickupAddress.Latitude,
+                    Longitude = orderDetail.PickupAddress.Longitude,
+                    AutoCompletePayment = true
+                });
+
+                // Wait for trip to be updated
+                _cmtTripInfoServiceHelper.WaitForRideLinqUnpaired(ridelinqOrderDetail.PairingToken, response.TimeoutSeconds);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogMessage(string.Format("An error occured while trying to update CMT pairing for OrderId: {0} with pairing token: {1}", request.OrderId, ridelinqOrderDetail.PairingToken));
+                _logger.LogError(ex);
+
+                throw new HttpError(HttpStatusCode.InternalServerError, ex.Message);
+            }
+
+            return new HttpResult(HttpStatusCode.OK);
         }
 
         public object Delete(ManualRideLinqRequest request)
@@ -205,7 +243,7 @@ namespace apcurium.MK.Booking.Api.Services
 
             try
             {
-                var response = _cmtMobileServiceClient.Delete(new CmtManualRideLinqUnpairingRequest
+                var response = _cmtMobileServiceClient.Delete(new CMTPayment.Pair.ManualRideLinqPairingRequest
                 {
                     PairingToken = order.PairingToken
                 });

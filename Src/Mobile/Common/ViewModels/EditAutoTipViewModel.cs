@@ -10,11 +10,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
     {
         private readonly IOrderWorkflowService _orderWorkflowService;
         private readonly IPaymentService _paymentService;
+        private readonly IBookingService _bookingService;
 
-        public EditAutoTipViewModel(IOrderWorkflowService orderWorkflowService, IPaymentService paymentService)
+        public EditAutoTipViewModel(IOrderWorkflowService orderWorkflowService,
+            IPaymentService paymentService,
+            IBookingService bookingService)
         {
             _orderWorkflowService = orderWorkflowService;
             _paymentService = paymentService;
+            _bookingService = bookingService;
         }
 
         private PaymentDetailsViewModel _paymentPreferences;
@@ -43,25 +47,26 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                         if (activeOrder != null)
                         {
                             // TODO: Update ride settings?
+                            bool autoTipUpdated;
 
                             if (activeOrder.Item1.IsManualRideLinq)
                             {
-                                // TODO
                                 // Manual ride linq rides
+                                autoTipUpdated = await _bookingService.UpdateAutoTipForManualRideLinq(activeOrder.Item1.Id, PaymentPreferences.Tip);
                             }
                             else
                             {
                                 // Normal rides
+                                autoTipUpdated = await _paymentService.UpdateAutoTip(activeOrder.Item1.Id, PaymentPreferences.Tip);
+                            }
 
-                                var autoTipUpdated = await _paymentService.UpdateAutoTip(activeOrder.Item1.Id, PaymentPreferences.Tip);
-                                if (autoTipUpdated)
-                                {
-                                    Close(this);
-                                }
-                                else
-                                {
-                                    this.Services().Message.ShowMessage(this.Services().Localize["Error_EditAutoTipTitle"], this.Services().Localize["Error_EditAutoTipMessage"]);
-                                }
+                            if (autoTipUpdated)
+                            {
+                                Close(this);
+                            }
+                            else
+                            {
+                                this.Services().Message.ShowMessage(this.Services().Localize["Error_EditAutoTipTitle"], this.Services().Localize["Error_EditAutoTipMessage"]);
                             }
                         }
                     }
