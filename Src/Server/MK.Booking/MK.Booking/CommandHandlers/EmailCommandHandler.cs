@@ -47,7 +47,7 @@ namespace apcurium.MK.Booking.CommandHandlers
         public void Handle(SendReceipt command)
         {
             _notificationService.SendReceiptEmail(command.OrderId, command.IBSOrderId, command.VehicleNumber, command.DriverInfos, command.Fare, command.Toll, command.Tip, 
-                command.Tax, command.TotalFare, command.PaymentInfo, command.PickupAddress, command.DropOffAddress, command.PickupDate, command.DropOffDate, 
+                command.Tax, command.Extra, command.TotalFare, command.PaymentInfo, command.PickupAddress, command.DropOffAddress, command.PickupDate, command.DropOffDate, 
                 command.EmailAddress, command.ClientLanguageCode, command.AmountSavedByPromotion, command.PromoCode);
         }
     }

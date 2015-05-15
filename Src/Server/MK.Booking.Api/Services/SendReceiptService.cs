@@ -97,7 +97,6 @@ namespace apcurium.MK.Booking.Api.Services
             if (orderPayment != null && orderPayment.IsCompleted)
             {
                 meterAmount = Convert.ToDouble(orderPayment.Meter);
-                tollAmount = Convert.ToDouble(orderPayment.Toll);
                 tipAmount = Convert.ToDouble(orderPayment.Tip);
                 taxAmount = Convert.ToDouble(orderPayment.Tax);
                 
