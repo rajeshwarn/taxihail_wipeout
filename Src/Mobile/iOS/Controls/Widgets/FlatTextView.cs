@@ -11,7 +11,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
     {
         private NSMutableParagraphStyle _paragraphStyle;
         private static UIColor DefaultFontColor = UIColor.FromRGB(44, 44, 44);
-        private static UIColor PlaceholderFontColor = UIColor.FromRGB(200, 200, 200);
+        private static UIColor DefaultPlaceholderFontColor = UIColor.FromRGB(200, 200, 200);
+	    private UIColor _defaultPlaceholderFontColor = DefaultPlaceholderFontColor;
         private UILabel _lblPlaceholder;
 
         public FlatTextView (IntPtr handle) : base (handle)
@@ -37,8 +38,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             _paragraphStyle.MaximumLineHeight = 20f;
 
             _lblPlaceholder = new UILabel 
-            { 
-                TextColor = PlaceholderFontColor, 
+            {
+				TextColor = _defaultPlaceholderFontColor, 
                 Lines = 0, 
                 LineBreakMode = UILineBreakMode.WordWrap, 
                 TextAlignment = UITextAlignment.Left,
@@ -112,7 +113,18 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
             }
         }
 
-        public override void LayoutSubviews()
+	    public UIColor PlaceholderColor
+	    {
+		    get { return _defaultPlaceholderFontColor; }
+		    set
+		    {
+			    _defaultPlaceholderFontColor = value;
+			    _lblPlaceholder.TextColor = value;
+				SetNeedsLayout();
+		    }
+	    }
+
+	    public override void LayoutSubviews()
         {
             base.LayoutSubviews();
 
