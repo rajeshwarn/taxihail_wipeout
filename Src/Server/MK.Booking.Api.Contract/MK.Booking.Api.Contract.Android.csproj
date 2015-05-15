@@ -81,6 +81,7 @@
     <Compile Include="Requests\Payment\PayPal\UnlinkPayPalAccountRequest.cs" />
     <Compile Include="Requests\Payment\SettleOverduePaymentRequest.cs" />
     <Compile Include="Requests\Payment\UnpairingForPaymentRequest.cs" />
+    <Compile Include="Requests\Payment\UpdateAutoTipRequest.cs" />
     <Compile Include="Requests\PlaceDetailRequest.cs" />
     <Compile Include="Requests\ReferenceDataRequest.cs" />
     <Compile Include="Requests\RegisterAccount.cs" />

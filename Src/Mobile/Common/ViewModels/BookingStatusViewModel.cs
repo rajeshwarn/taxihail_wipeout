@@ -703,6 +703,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
+	    public ICommand UpdateAutoTip
+	    {
+	        get
+	        {
+	            return this.GetCommand(async () =>
+	            {
+	                // TODO: do stuff
+	            });
+	        }
+	    }
+
 		public ICommand PrepareNewOrder
         {
 			get

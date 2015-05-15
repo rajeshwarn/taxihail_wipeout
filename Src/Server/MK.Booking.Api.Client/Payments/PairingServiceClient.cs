@@ -31,5 +31,25 @@ namespace apcurium.MK.Booking.Api.Client.Payments
                 return new PairingResponse { IsSuccessful = false };
             }
         }
+
+        public async Task<bool> UpdateAutoTip(Guid orderId, int autoTipPercentage)
+        {
+            try
+            {
+                var req = string.Format("/account/orders/{0}/pairing/tip", orderId);
+
+                await Client.PostAsync<string>(req, new UpdateAutoTipRequest
+                {
+                    OrderId = orderId,
+                    AutoTipPercentage = autoTipPercentage
+                });
+
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
     }
 }
