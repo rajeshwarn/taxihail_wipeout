@@ -181,6 +181,11 @@ namespace apcurium.MK.Booking.Api.Jobs
 
         private void PopulateFromIbsOrder(OrderStatusDetail orderStatusDetail, IBSOrderInformation ibsOrderInfo)
         {
+            var ibsStatusId = orderStatusDetail.IBSStatusId;
+            var wasWaitingForDiver = ibsStatusId.SoftEqual(VehicleStatuses.Common.Waiting);
+            // In the case of Driver ETA Notification mode is Once, this next value will indicate if we should send the notification or not.
+            var sendEtaToDriverWhenNotificationModeIsOnce = wasWaitingForDiver && ibsOrderInfo.IsAssigned;
+
             orderStatusDetail.IBSStatusId =                     ibsOrderInfo.Status;
             orderStatusDetail.DriverInfos.FirstName =           ibsOrderInfo.FirstName.GetValue(orderStatusDetail.DriverInfos.FirstName);
             orderStatusDetail.DriverInfos.LastName =            ibsOrderInfo.LastName.GetValue(orderStatusDetail.DriverInfos.LastName);
@@ -199,7 +204,7 @@ namespace apcurium.MK.Booking.Api.Jobs
             
             UpdateStatusIfNecessary(orderStatusDetail, ibsOrderInfo);
 
-            orderStatusDetail.IBSStatusDescription = GetDescription(orderStatusDetail.OrderId, ibsOrderInfo, orderStatusDetail.CompanyName);
+            orderStatusDetail.IBSStatusDescription = GetDescription(orderStatusDetail.OrderId, ibsOrderInfo, orderStatusDetail.CompanyName, sendEtaToDriverWhenNotificationModeIsOnce);
         }
 
         private void UpdateStatusIfNecessary(OrderStatusDetail orderStatusDetail, IBSOrderInformation ibsOrderInfo)
@@ -761,7 +766,21 @@ namespace apcurium.MK.Booking.Api.Jobs
             }
         }
 
-        private string GetDescription(Guid orderId, IBSOrderInformation ibsOrderInfo, string companyName)
+
+        private bool CanSendNotificationToDriver(bool shouldSendEtaToDriver)
+        {
+            switch (_serverSettings.ServerData.DriverEtaNotificationMode)
+            {
+                case DriverEtaNotificationModes.Always:
+                    return true;
+                case DriverEtaNotificationModes.Once:
+                    return shouldSendEtaToDriver;
+                default:
+                    return false;
+            }
+        }
+
+        private string GetDescription(Guid orderId, IBSOrderInformation ibsOrderInfo, string companyName, bool shouldSendEtaToDriver)
         {
             var orderDetail = _orderDao.FindById(orderId);
             _languageCode = orderDetail != null ? orderDetail.ClientLanguageCode : SupportedLanguages.en.ToString();
@@ -780,7 +799,7 @@ namespace apcurium.MK.Booking.Api.Jobs
                 description = string.Format(_resources.Get("OrderStatus_CabDriverNumberAssigned", _languageCode), ibsOrderInfo.VehicleNumber);
                 Log.DebugFormat("Setting Assigned status description: {0}", description);
 
-                if (_serverSettings.ServerData.ShowEta)
+                if (_serverSettings.ServerData.ShowEta && CanSendNotificationToDriver(shouldSendEtaToDriver))
                 {
                     try
                     {
