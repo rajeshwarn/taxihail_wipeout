@@ -449,7 +449,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 var address = filteredAddress
                     .Select(place => place.Address)
-                    .FirstOrDefault();
+                    .First();
 
                 AddressPicker.SelectAddress(address);
 

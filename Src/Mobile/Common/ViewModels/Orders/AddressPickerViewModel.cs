@@ -195,11 +195,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 				RaisePropertyChanged();
 			}
 		}
+	    private bool _isShowingFilteredList;
 
 		void LoadDefaultList()
 		{
 		    if (_isShowingFilteredList)
 		    {
+				//Needed to prevent a race condition where LoadDefaultList would be called right after we set the filtered places list.
 		        _isShowingFilteredList = false;
 		        return;
 		    }
@@ -294,8 +296,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		}
 
 		private string _startingText;
-	    private bool _isShowingFilteredList;
-
 	    public string StartingText
 		{
 			get { return _startingText; }
