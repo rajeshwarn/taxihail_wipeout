@@ -139,6 +139,10 @@ namespace MK.Common.Configuration
         [Display(Name = "Available Vehicles Mode", Description = "Available Vehicles provider")]
         public AvailableVehiclesModes AvailableVehiclesMode { get; protected set; }
 
+        [CustomizableByCompany]
+        [Display(Name = "Driver Eta Notification Mode", Description = "Configures the notification mode to the driver for it's estimated time of arrival to the pickup location.")]
+        public DriverEtaNotificationModes DriverEtaNotificationMode { get; protected set; }
+
         [Hidden]
         [Display(Name = "Settings Available to Admin", Description = "Comma delimited list of settings that are available to admins")]
         public string SettingsAvailableToAdmin { get; private set; }
