@@ -172,6 +172,7 @@
   <ItemGroup>
     <Compile Include="Activities\BaseActivity.cs" />
     <Compile Include="Activities\Book\DateTimePickerActivity.cs" />
+    <Compile Include="Activities\Book\EditAutoTipActivity.cs" />
     <Compile Include="Activities\Book\LocationListener.cs" />
     <Compile Include="Activities\Book\LocationService.cs" />
     <Compile Include="Activities\Book\PromotionActivity.cs" />
@@ -853,6 +854,9 @@
       <SubType>AndroidResource</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\Layout\View_ManualRideLinqStatus.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\Layout\View_EditAutoTip.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
   </ItemGroup>
