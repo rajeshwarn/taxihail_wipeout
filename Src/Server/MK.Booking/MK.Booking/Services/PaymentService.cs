@@ -130,6 +130,17 @@ namespace apcurium.MK.Booking.Services
             return GetInstance().RefundPayment(orderId);
         }
 
+        public BasePaymentResponse UpdateAutoTip(Guid orderId, int autoTipPercentage)
+        {
+            if (IsPayPal(orderId: orderId))
+            {
+                // TODO
+                //return _payPalServiceFactory.GetInstance().RefundWebPayment(orderId);
+            }
+
+            return GetInstance().UpdateAutoTip(orderId, autoTipPercentage);
+        }
+
         public DeleteTokenizedCreditcardResponse DeleteTokenizedCreditcard(string cardToken)
         {
             if (IsPayPal())

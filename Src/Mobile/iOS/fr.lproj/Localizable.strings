@@ -609,3 +609,4 @@
 "PromoMustHavePaymentMethodSetMessage"="Pour utiliser un code promotionnel, vous devez avoir configuré une méthode de paiement.";
 "StatusEditAutoTipButton"="Pourboire";
 "View_EditAutoTip"="Modifier Pourboire";
+"Error_EditAutoTipMessage"="Une erreur est survenue en changeant le pourboire. Veuillez réessayer.";

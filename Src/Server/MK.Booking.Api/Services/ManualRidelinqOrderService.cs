@@ -208,19 +208,24 @@ namespace apcurium.MK.Booking.Api.Services
                 var account = _accountDao.FindById(accountId);
                 var orderDetail = _orderDao.FindById(request.OrderId);
 
-                var response = _cmtMobileServiceClient.Put(new CMTPayment.Pair.ManualRideLinqPairingRequest
-                {
-                    PairingToken = ridelinqOrderDetail.PairingToken,
-                    AutoTipPercentage = request.AutoTipPercentage,
-                    CustomerId = accountId.ToString(),
-                    CustomerName = account.Name,
-                    Latitude = orderDetail.PickupAddress.Latitude,
-                    Longitude = orderDetail.PickupAddress.Longitude,
-                    AutoCompletePayment = true
-                });
+                var response = _cmtMobileServiceClient.Put(string.Format("v1/init/pairing/{0}", ridelinqOrderDetail.PairingToken),
+                    new CMTPayment.Pair.ManualRideLinqPairingRequest
+                    {
+                        AutoTipPercentage = request.AutoTipPercentage,
+                        CustomerId = accountId.ToString(),
+                        CustomerName = account.Name,
+                        Latitude = orderDetail.PickupAddress.Latitude,
+                        Longitude = orderDetail.PickupAddress.Longitude,
+                        AutoCompletePayment = true
+                    });
 
                 // Wait for trip to be updated
-                _cmtTripInfoServiceHelper.WaitForRideLinqUnpaired(ridelinqOrderDetail.PairingToken, response.TimeoutSeconds);
+                _cmtTripInfoServiceHelper.WaitForTipUpdated(ridelinqOrderDetail.PairingToken, request.AutoTipPercentage, response.TimeoutSeconds);
+
+                return new ManualRideLinqResponse
+                {
+                    IsSuccessful = true
+                };
             }
             catch (Exception ex)
             {
@@ -233,8 +238,6 @@ namespace apcurium.MK.Booking.Api.Services
                     Message = ex.Message
                 };
             }
-
-            return new HttpResult(HttpStatusCode.OK);
         }
 
         public object Delete(ManualRideLinqRequest request)
@@ -247,10 +250,7 @@ namespace apcurium.MK.Booking.Api.Services
 
             try
             {
-                var response = _cmtMobileServiceClient.Delete(new CMTPayment.Pair.ManualRideLinqPairingRequest
-                {
-                    PairingToken = order.PairingToken
-                });
+                var response = _cmtMobileServiceClient.Delete<CmtUnpairingResponse>(string.Format("v1/init/pairing/{0}", order.PairingToken));
 
                 // Wait for trip to be updated
                 _cmtTripInfoServiceHelper.WaitForRideLinqUnpaired(order.PairingToken, response.TimeoutSeconds);

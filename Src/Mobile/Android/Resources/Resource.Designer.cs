@@ -5175,6 +5175,12 @@ namespace apcurium.MK.Booking.Mobile.Client
 			// aapt resource value: 0x7f060218
 			public const int Error_AccountPaymentTitle = 2131100184;
 			
+			// aapt resource value: 0x7f0602c8
+			public const int Error_EditAutoTipMessage = 2131100360;
+			
+			// aapt resource value: 0x7f0602c9
+			public const int Error_EditAutoTipTitle = 2131100361;
+			
 			// aapt resource value: 0x7f0602c4
 			public const int Error_InvalidCvvMessage = 2131100356;
 			

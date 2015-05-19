@@ -17,7 +17,8 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
         IEventHandler<OrderCancelled>,
         IEventHandler<OrderSwitchedToNextDispatchCompany>,
         IEventHandler<OrderStatusChanged>,
-        IEventHandler<OrderCancelledBecauseOfError>
+        IEventHandler<OrderCancelledBecauseOfError>,
+        IEventHandler<AutoTipUpdated>
     {
         private readonly IOrderDao _dao;
         private readonly IIbsOrderService _ibs;
@@ -180,6 +181,15 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                     // void the preauthorization to prevent misuse fees
                     _paymentService.VoidPreAuthorization(@event.SourceId);
                 }
+            }
+        }
+
+        public void Handle(AutoTipUpdated @event)
+        {
+            var paymentSettings = _serverSettings.GetPaymentSettings();
+            if (paymentSettings.PaymentMode == PaymentMethod.RideLinqCmt)
+            {
+                _paymentService.UpdateAutoTip(@event.SourceId, @event.AutoTipPercentage);
             }
         }
     }

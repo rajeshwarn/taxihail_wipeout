@@ -5,8 +5,6 @@ namespace CMTPayment.Pair
     [Route("v1/init/pairing/{PairingToken}")]
     public class ManualRideLinqPairingRequest : IReturn<CmtUnpairingResponse>
     {
-        public string PairingToken { get; set; }
-
         public string CustomerId { get; set; }
 
         public string CustomerName { get; set; }

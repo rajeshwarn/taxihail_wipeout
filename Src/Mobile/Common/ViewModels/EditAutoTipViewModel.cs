@@ -1,6 +1,8 @@
+using System.Linq;
 using System.Windows.Input;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Extensions;
+using apcurium.MK.Booking.Mobile.Framework.Extensions;
 using apcurium.MK.Booking.Mobile.ViewModels.Payment;
 using apcurium.MK.Common.Entity;
 
@@ -21,6 +23,18 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             _bookingService = bookingService;
         }
 
+        public void Init(string orderTipPercentage)
+        {
+            if (orderTipPercentage != null)
+            {
+                var selectedTipPercentage = PaymentPreferences.Tips.FirstOrDefault(t => t.Id == int.Parse(orderTipPercentage));
+                if (selectedTipPercentage != null)
+                {
+                    SelectedTipPercentage = selectedTipPercentage;
+                }
+            }
+        }
+
         private PaymentDetailsViewModel _paymentPreferences;
         public PaymentDetailsViewModel PaymentPreferences
         {
@@ -32,6 +46,20 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     _paymentPreferences.Start();
                 }
                 return _paymentPreferences;
+            }
+        }
+
+        private ListItem _selectedTipPercentage;
+        public ListItem SelectedTipPercentage
+        {
+            get { return _selectedTipPercentage; }
+            set
+            {
+                if (_selectedTipPercentage != value)
+                {
+                    _selectedTipPercentage = value;
+                    RaisePropertyChanged();
+                }
             }
         }
 
