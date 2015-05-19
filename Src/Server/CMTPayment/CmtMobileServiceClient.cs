@@ -52,5 +52,10 @@ namespace CMTPayment
         {
             return Client.Post(request);
         }
+
+        public T Put<T>(IReturn<T> request)
+        {
+            return Client.Put(request);
+        }
     }
 }

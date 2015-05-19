@@ -93,6 +93,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			ShowViewModelAndRemoveFromHistory<ManualRideLinqSummaryViewModel>(new {orderManualRideLinqDetail = orderSummary});
 		}
 
+        public ICommand EditAutoTipCommand
+        {
+            get
+            {
+                return this.GetCommand(() =>
+                {
+                    ShowViewModel<EditAutoTipViewModel>();
+                });
+            }
+        }
+
         public ICommand UnpairFromRideLinq
         {
             get

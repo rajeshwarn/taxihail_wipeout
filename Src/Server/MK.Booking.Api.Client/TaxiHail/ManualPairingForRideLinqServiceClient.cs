@@ -28,8 +28,8 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
 
         public Task<ManualRideLinqResponse> UpdateAutoTip(Guid orderId, int autoTipPercentage)
         {
-            var req = string.Format("/account/manualridelinq/{0}/unpair", orderId);
-            return Client.PostAsync<ManualRideLinqResponse>(req, new ManualRideLinqUpdateAutoTipRequest
+            var req = string.Format("/account/manualridelinq/{0}/pairing/tip", orderId);
+            return Client.PutAsync<ManualRideLinqResponse>(req, new ManualRideLinqUpdateAutoTipRequest
             {
                 OrderId = orderId,
                 AutoTipPercentage = autoTipPercentage

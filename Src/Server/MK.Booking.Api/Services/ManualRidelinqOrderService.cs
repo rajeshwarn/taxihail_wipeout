@@ -194,7 +194,7 @@ namespace apcurium.MK.Booking.Api.Services
             }
         }
 
-        public object Post(ManualRideLinqUpdateAutoTipRequest request)
+        public object Put(ManualRideLinqUpdateAutoTipRequest request)
         {
             var ridelinqOrderDetail = _orderDao.GetManualRideLinqById(request.OrderId);
             if (ridelinqOrderDetail == null)
@@ -208,7 +208,7 @@ namespace apcurium.MK.Booking.Api.Services
                 var account = _accountDao.FindById(accountId);
                 var orderDetail = _orderDao.FindById(request.OrderId);
 
-                var response = _cmtMobileServiceClient.Post(new CMTPayment.Pair.ManualRideLinqPairingRequest
+                var response = _cmtMobileServiceClient.Put(new CMTPayment.Pair.ManualRideLinqPairingRequest
                 {
                     PairingToken = ridelinqOrderDetail.PairingToken,
                     AutoTipPercentage = request.AutoTipPercentage,
@@ -227,7 +227,11 @@ namespace apcurium.MK.Booking.Api.Services
                 _logger.LogMessage(string.Format("An error occured while trying to update CMT pairing for OrderId: {0} with pairing token: {1}", request.OrderId, ridelinqOrderDetail.PairingToken));
                 _logger.LogError(ex);
 
-                throw new HttpError(HttpStatusCode.InternalServerError, ex.Message);
+                return new ManualRideLinqResponse
+                {
+                    IsSuccessful = false,
+                    Message = ex.Message
+                };
             }
 
             return new HttpResult(HttpStatusCode.OK);
