@@ -260,7 +260,7 @@
   <string name="NoFareText">Seleccione un destino para proveer estimado de costo</string>
   <string name="NoFareTextIfDestinationIsRequired">Necesita especificar su destino</string>
   <string name="NoMailClient">No hay clientes de correo instalados</string>
-  <string name="NoPhoneNumberMessage">El número de teléfono es inválido para este chofer</string>
+  <string name="NoPhoneNumberMessage">Your phone number or the driver\'s phone number is invalid.</string>
   <string name="NoPhoneNumberTitle">Número de telefóno inválido</string>
   <string name="NoPreference">Sin preferencia</string>
   <string name="NoRingCodeText">Número Código de entrada</string>
@@ -583,10 +583,6 @@
   <string name="ManualRideLinqStatus_Tax">Tax amount:</string>
   <string name="ManualRideLinqStatus_Tip">Tip amount:</string>
   <string name="ManualRideLinqStatus_Total">Total cost:</string>
-  <string name="CvvRequiredTitle">CVV Required</string>
-  <string name="CvvRequiredMessage">Please enter the CVV associated with your card on file to continue</string>
-  <string name="Error_InvalidCvvTitle">Invalid CVV</string>
-  <string name="Error_InvalidCvvMessage">The CVV must be a number between 3 and 4 digits</string>
   <string name="ManualRideLinqStatus_Unpair">Unpair</string>
   <string name="ManualRideLinqSummary_Done">Done</string>
   <string name="ManualUnPairingForRideLinQ_Error_Message">An error occured when trying to unpair. Please try again.</string>
@@ -604,4 +600,7 @@
   <string name="Error_InvalidCvvTitle">Invalid CVV</string>
   <string name="Error_InvalidCvvMessage">The CVV must be a number between 3 and 4 digits</string>
   <string name="ManualRideLinqCreditCardDisabled">Your current card on file has an overdue payment for a previous ride. This overdue payment is preventing you from pairing with RideLinQ</string>
+  <string name="CallDriverUsingProxyMessage">Your driver will call you back in a few minutes</string>
+  <string name="CallDriverUsingProxyErrorMessage">Sorry, we weren\'t able to initiate a call with your driver.</string>
+  <string name="GenericErrorTitle">Error</string>
 </resources>
