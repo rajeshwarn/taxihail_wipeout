@@ -53,13 +53,13 @@ namespace apcurium.MK.Booking.IBS
 
         }
 
-        public IBSOrderInformation(TOrderStatus_3 orderInfoFromIBS)
+        public IBSOrderInformation(TOrderStatus_2 orderInfoFromIBS)
         {
             Status = orderInfoFromIBS.OrderStatus.ToString();
 
             IBSOrderId = orderInfoFromIBS.OrderID;
 
-            VehicleNumber = orderInfoFromIBS.VehicleNumber == null ? VehicleNumber : orderInfoFromIBS.VehicleNumber.Trim(); ;
+            VehicleNumber = orderInfoFromIBS.VehicleNumber == null ? VehicleNumber : orderInfoFromIBS.VehicleNumber.Trim();
             MobilePhone = orderInfoFromIBS.DriverMobilePhone.GetValue(MobilePhone);
             FirstName = orderInfoFromIBS.DriverFirstName.GetValue(FirstName);
             LastName = orderInfoFromIBS.DriverLastName.GetValue(LastName);
@@ -72,7 +72,6 @@ namespace apcurium.MK.Booking.IBS
             VehicleLongitude = orderInfoFromIBS.VehicleCoordinateLong != 0 ? orderInfoFromIBS.VehicleCoordinateLong : VehicleLongitude;
 
             DriverId = orderInfoFromIBS.CallNumber.GetValue(DriverId);
-            PairingCode = orderInfoFromIBS.PairingCode;
 
             ReferenceNumber = orderInfoFromIBS.ReferenceNumber.GetValue(ReferenceNumber);
             TerminalId = orderInfoFromIBS.TerminalId.GetValue(TerminalId);
