@@ -33,6 +33,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			lblTaxLabel.Text = localize["ManualRideLinqStatus_Tax"];
 			lblTipLabel.Text = localize["ManualRideLinqStatus_Tip"];
 			lblDriverId.Text = localize["ManualRideLinqStatus_Driver"];
+			lblExtraLabel.Text = localize["ManualRideLinqStatus_Extra"];
+			lblTollLabel.Text = localize["ManualRideLinqStatus_Toll"];
 
 			lblThanks.Text = String.Format(localize["RideSummarySubTitleText"], this.Services().Settings.TaxiHail.ApplicationName);
 
@@ -60,6 +62,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 			bindingSet.Bind(lblTipText)
 				.To(vm => vm.FormattedTip);
+
+			bindingSet.Bind(lblTollText)
+				.To(vm => vm.FormattedToll);
+			
+			bindingSet.Bind(lblExtraText)
+				.To(vm => vm.FormattedExtra);
 
 			bindingSet.Bind(lblTotalText)
 				.To(vm => vm.FormattedTotal);
