@@ -19,7 +19,7 @@ namespace apcurium.MK.Booking.Services
         
         DeleteTokenizedCreditcardResponse DeleteTokenizedCreditcard(string cardToken);
 
-        PairingResponse Pair(Guid orderId, string cardToken, int? autoTipPercentage);
+        PairingResponse Pair(Guid orderId, string cardToken, int autoTipPercentage);
 
         BasePaymentResponse Unpair(Guid orderId);
 

@@ -3,7 +3,6 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using apcurium.MK.Booking.Mobile.Extensions;
 
-
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
 	// N.B.: This partial class file is for iOS only!
@@ -22,16 +21,26 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		private void InitDefaultIOSMenuList()
 		{
-			ItemMenuList.Clear();
-			ItemMenuList.Add(new ItemMenuModel { ItemMenuId = 0, Text = this.Services().Localize["PanelMenuViewLocationsText"], NavigationCommand = NavigateToMyLocations });
-			ItemMenuList.Add(new ItemMenuModel { ItemMenuId = 1, Text = this.Services().Localize["PanelMenuViewOrderHistoryText"], NavigationCommand = NavigateToOrderHistory });
-			ItemMenuList.Add(new ItemMenuModel { ItemMenuId = 2, Text = this.Services().Localize["PanelMenuViewUpdateProfileText"], NavigationCommand = NavigateToUpdateProfile });
-			ItemMenuList.Add(new ItemMenuModel { ItemMenuId = 9, Text = this.Services().Localize["PanelMenuViewAboutUsText"], NavigationCommand = NavigateToAboutUs });
-			ItemMenuList.Add(new ItemMenuModel { ItemMenuId = 11, Text = this.Services().Localize["PanelMenuViewSignOutText"], NavigationCommand = SignOut });
+			try
+			{
+				ItemMenuList.Clear();
+				ItemMenuList.Add(new ItemMenuModel { ItemMenuId = 0, Text = this.Services().Localize["PanelMenuViewLocationsText"], NavigationCommand = NavigateToMyLocations });
+				ItemMenuList.Add(new ItemMenuModel { ItemMenuId = 1, Text = this.Services().Localize["PanelMenuViewOrderHistoryText"], NavigationCommand = NavigateToOrderHistory });
+				ItemMenuList.Add(new ItemMenuModel { ItemMenuId = 2, Text = this.Services().Localize["PanelMenuViewUpdateProfileText"], NavigationCommand = NavigateToUpdateProfile });
+				ItemMenuList.Add(new ItemMenuModel { ItemMenuId = 9, Text = this.Services().Localize["PanelMenuViewAboutUsText"], NavigationCommand = NavigateToAboutUs });
+				ItemMenuList.Add(new ItemMenuModel { ItemMenuId = 11, Text = this.Services().Localize["PanelMenuViewSignOutText"], NavigationCommand = SignOut });
+			}
+			catch (Exception ex)
+			{
+				Logger.LogMessage("Crash in Init Default IOS Menu");
+				Logger.LogError(ex);
+			}
 		}
 
 		partial void InitIOSMenuList()
 		{
+			try{
+				
 			InitDefaultIOSMenuList();
 
 			if (IsPayInTaxiEnabled)
@@ -70,6 +79,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 
 			RefreshIOSMenu();
+			}
+			catch (Exception ex)
+			{
+				Logger.LogMessage("Crash in Init IOS Menu");
+				Logger.LogError(ex);
+			}
 		}
 
 		partial void RefreshIOSMenuBadges()
@@ -94,15 +109,23 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 		partial void RefreshIOSMenu()
 		{
-			lock(_itemMenuListLock)
+			try
 			{
-				var orderedMenuItems = ItemMenuList.OrderBy(i => i.ItemMenuId).ToList();
-				ItemMenuList.Clear();
-
-				foreach (var item in orderedMenuItems)
+				lock(_itemMenuListLock)
 				{
-					ItemMenuList.Add(item);
+					var orderedMenuItems = ItemMenuList.OrderBy(i => i.ItemMenuId).ToList();
+					ItemMenuList.Clear();
+
+					foreach (var item in orderedMenuItems)
+					{
+						ItemMenuList.Add(item);
+					}
 				}
+			}
+			catch (Exception ex)
+			{
+				Logger.LogMessage("Crash in Refresh IOS Menu");
+				Logger.LogError(ex);
 			}
 		}
 	}

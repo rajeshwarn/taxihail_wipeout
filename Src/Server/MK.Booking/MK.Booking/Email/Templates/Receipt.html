@@ -418,7 +418,7 @@
                                                                         <td>
                                                                             <table>
                                                                                 <tr>
-                                                                                    <td class="route_list_title">{{DropOffDate}}{{#HasDropOffTime}} - {{DropOffTime}}{{/HasDropOffTime}}</td>
+                                                                                    <td class="route_list_title">{{DropOffDate}}{{#ShowDropOffTime}} - {{DropOffTime}}{{/ShowDropOffTime}}</td>
                                                                                 </tr>
                                                                                 <tr>
                                                                                     <td class="route_list_adddress">{{ DropOffAddress }}</td>
@@ -447,8 +447,8 @@
                                                         <tr>
                                                             <td>
                                                                 <table class="yourdriver" cellpadding="0" cellspacing="0">
-                                                                    <tr style="color: { {EmailFontColor}}! important">
-                                                                        <td class="driver_name" rowspan="2">{{ DriverInfos.FullName }}</td>
+                                                                    <tr style="color: {{ EmailFontColor }}! important">
+                                                                        <td class="driver_name" rowspan="3">{{ DriverInfos.FullName }}</td>
                                                                         <td class="driver_list_title">{{ localize "Email_Body_VehicleModel" }}</td>
                                                                         <td class="list_value">{{ DriverInfos.VehicleMake }} {{ DriverInfos.VehicleModel }}</td>
                                                                     </tr>
@@ -456,6 +456,12 @@
                                                                         <td class="driver_list_title">{{ localize "Email_Body_VehicleNumber" }}</td>
                                                                         <td class="list_value">{{ VehicleNumber }}</td>
                                                                     </tr>
+                                                                    {{#HasDriverId}}
+                                                                    <tr>
+                                                                        <td class="driver_list_title">{{ localize "Email_Body_DriverId" }}</td>
+                                                                        <td class="list_value">{{ DriverId }}</td>
+                                                                    </tr>
+                                                                    {{/HasDriverId}}
                                                                 </table>
                                                             </td>
                                                         </tr>
@@ -503,6 +509,10 @@
                                                                     </tr>
                                                                     {{/ShowSurcharge}}
 
+                                                                    <tr class="fare_list_subtotal" style="color: { {EmailFontColor}}! important">
+                                                                        <td class="list_title">{{ localize "Email_Body_Extra" }}</td>
+                                                                        <td class="list_value">{{ Toll }}</td>
+                                                                    </tr>
                                                                     <tr class="fare_list_subtotal" style="color: { {EmailFontColor}}! important">
                                                                         <td class="list_title">{{ localize "Email_Body_SubTotal" }}</td>
                                                                         <td class="list_value">{{ SubTotal }}</td>

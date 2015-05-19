@@ -109,7 +109,8 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                                 Convert.ToDecimal(tipAmount),
                                 Convert.ToDecimal(taxAmount),
                                 toll: Convert.ToDecimal(tollAmount),
-                                surcharge: Convert.ToDecimal(surchargeAmount));
+                                surcharge: Convert.ToDecimal(surchargeAmount),
+                                driverIdOverride: tripInfo.DriverId.ToString());
                         }
                     }
                 } 
@@ -184,7 +185,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             }
         }
 
-        private void SendReceipt(Guid orderId, decimal meter, decimal tip, decimal tax, decimal surcharge, decimal amountSavedByPromotion = 0m, decimal toll = 0)
+        private void SendReceipt(Guid orderId, decimal meter, decimal tip, decimal tax, decimal surcharge, decimal amountSavedByPromotion = 0m, decimal toll = 0, string driverIdOverride = null)
         {
             using (var context = _contextFactory.Invoke())
             {
@@ -218,6 +219,11 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                     {
                         var manualRideLinqDetail = context.Find<OrderManualRideLinqDetail>(orderStatus.OrderId);
                         ibsOrderId = manualRideLinqDetail.TripId;
+                    }
+
+                    if (driverIdOverride.HasValue())
+                    {
+                        orderStatus.DriverInfos.DriverId = driverIdOverride;
                     }
 
                     var command = SendReceiptCommandBuilder.GetSendReceiptCommand(

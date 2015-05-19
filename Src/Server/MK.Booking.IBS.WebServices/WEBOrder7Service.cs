@@ -29,8 +29,7 @@ using System.Xml.Serialization;
 [System.Xml.Serialization.SoapIncludeAttribute(typeof(TVehiclePosition))]
 [System.Xml.Serialization.SoapIncludeAttribute(typeof(TBannedZone))]
 [System.Xml.Serialization.SoapIncludeAttribute(typeof(TException))]
-public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpClientProtocol
-{
+public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpClientProtocol {
     
     private System.Threading.SendOrPostCallback GetOrderStatusOperationCompleted;
     
@@ -158,7 +157,7 @@ public partial class WebOrder7Service : System.Web.Services.Protocols.SoapHttpCl
     
     /// <remarks/>
     public WebOrder7Service() {
-        this.Url = "http://ukdemo.drivelinq.com:11928/IBSCab2/IBSCab.dll/soap/IWebOrder_7";
+        this.Url = "http://apcurium.drivelinq.com:16928/IBSCab/IBSCab.dll/soap/IWebOrder_7";
     }
     
     /// <remarks/>
@@ -5325,6 +5324,8 @@ public partial class TOrderStatus_3 : TOrderStatus_2 {
     
     private string pairingCodeField;
     
+    private double surchargeField;
+    
     /// <remarks/>
     public string PairingCode {
         get {
@@ -5332,6 +5333,16 @@ public partial class TOrderStatus_3 : TOrderStatus_2 {
         }
         set {
             this.pairingCodeField = value;
+        }
+    }
+    
+    /// <remarks/>
+    public double Surcharge {
+        get {
+            return this.surchargeField;
+        }
+        set {
+            this.surchargeField = value;
         }
     }
 }
@@ -6324,8 +6335,6 @@ public partial class TBookOrder_8 : TBookOrder_7 {
         }
     }
 }
-
-
 
 /// <remarks/>
 [System.Xml.Serialization.SoapIncludeAttribute(typeof(TVehiclePosition_2))]

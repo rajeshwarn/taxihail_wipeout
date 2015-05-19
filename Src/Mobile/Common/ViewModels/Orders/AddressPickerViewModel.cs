@@ -32,6 +32,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		private AddressViewModel[] _defaultHistoryAddresses = new AddressViewModel[0];
 		private AddressViewModel[] _defaultFavoriteAddresses = new AddressViewModel[0];
 		private AddressViewModel[] _defaultNearbyPlaces = new AddressViewModel[0];
+        public AddressViewModel[] FilteredPlaces { get; private set; }
 
 		private AddressLocationType _currentActiveFilter;
 
@@ -48,6 +49,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 			_placesService = placesService;
 			_accountService = accountService;
 			_locationService = locationService;
+
+
+            FilteredPlaces = new AddressViewModel[0];
 		}
 
 		public void Init(string searchCriteria)
@@ -104,32 +108,31 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
             }
 	    }
 
-	    private async Task LoadFilteredAdress(AddressLocationType filter)
+	    
+
+	    public async void RefreshFilteredAddress()
+	    {
+	        try
+	        {
+                var filteredPlaces = await _placesService.GetFilteredPlacesList();
+
+                FilteredPlaces = ConvertToAddressViewModel(filteredPlaces, AddressType.Places);
+	        }
+	        catch (Exception ex)
+	        {
+	            this.Logger.LogError(ex);
+	        }
+	    }
+
+	    private void LoadFilteredAddress(AddressLocationType filter)
 	    {
 			using (this.Services().Message.ShowProgressNonModal())
 			{
 				AllAddresses.Clear();
 
-				var filteredPlaces = await _placesService.GetFilteredPlacesList(filter);
+			    _isShowingFilteredList = true;
 
-				if (!filteredPlaces.Any())
-				{
-					var localize = this.Services().Localize;
-					this.Services().Message.ShowMessage(
-						localize["FilteredAddresses_Error_Title"],
-						localize["FilteredAddresses_Error_Message"],
-						() => Cancel.ExecuteIfPossible());
-				}
-				else if (filteredPlaces.Length == 1)
-				{ 
-					SelectAddress(filteredPlaces.FirstOrDefault());
-				}
-				else
-				{
-					_defaultNearbyPlaces = ConvertToAddressViewModel(filteredPlaces, AddressType.Places);
-
-					AllAddresses.AddRange(_defaultNearbyPlaces);
-				}
+                AllAddresses.AddRange(FilteredPlaces.Where(place => place.Address.AddressLocationType == filter));
 			}
 	    }
 
@@ -146,7 +149,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 	            }
 	            else
 	            {
-                    await LoadFilteredAdress(filter);
+                    LoadFilteredAddress(filter);
 	            }
 	        }
 	        catch (Exception e)
@@ -192,9 +195,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 				RaisePropertyChanged();
 			}
 		}
+	    private bool _isShowingFilteredList;
 
 		void LoadDefaultList()
-		{            
+		{
+		    if (_isShowingFilteredList)
+		    {
+				//Needed to prevent a race condition where LoadDefaultList would be called right after we set the filtered places list.
+		        _isShowingFilteredList = false;
+		        return;
+		    }
+
             using (this.Services().Message.ShowProgressNonModal())
 			{
 				AllAddresses.Clear();
@@ -231,12 +242,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 				return this.GetCommand<AddressViewModel>(vm =>
 				{
 				    this.Services().Message.ShowProgressNonModal(false);
-				    SelectAddress(vm.Address);
+				    SelectAddress(vm.Address, true);
 				}); 
 			}
 		}
 
-	    private void SelectAddress(Address address)
+	    public void SelectAddress(Address address, bool returnToHome = false)
 	    {
 	        if (address == null)
 	        {
@@ -248,14 +259,20 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 	        if (_isInLocationDetail)
 	        {
 	            this.ReturnResult(detailedAddress);
+
+	            return;
 	        }
-	        else
+
+            ((HomeViewModel)Parent).LocateMe.Cancel();
+            _orderWorkflowService.SetAddress(detailedAddress);
+
+	        if (returnToHome)
 	        {
-	            ((HomeViewModel) Parent).LocateMe.Cancel();
-	            _orderWorkflowService.SetAddress(detailedAddress);
-	            PresentationStateRequested.Raise(this, new HomeViewModelStateRequestedEventArgs(HomeViewModelState.Initial));
-	            ChangePresentation(new ZoomToStreetLevelPresentationHint(detailedAddress.Latitude, detailedAddress.Longitude));
+                // This needs to be called if we are displaying the AddressPickerViewModel from the home view.
+                PresentationStateRequested.Raise(this, new HomeViewModelStateRequestedEventArgs(HomeViewModelState.Initial));
 	        }
+
+            ChangePresentation(new ZoomToStreetLevelPresentationHint(detailedAddress.Latitude, detailedAddress.Longitude));
 	    }
 
 	    public ICommand Cancel
@@ -279,7 +296,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 		}
 
 		private string _startingText;
-		public string StartingText
+	    public string StartingText
 		{
 			get { return _startingText; }
 			set 

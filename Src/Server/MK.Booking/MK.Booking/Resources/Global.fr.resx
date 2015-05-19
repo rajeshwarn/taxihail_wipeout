@@ -612,4 +612,10 @@
   <data name="Email_Body_Surcharge" xml:space="preserve">
     <value>Surcharge</value>
   </data>
+  <data name="Email_Body_Extra" xml:space="preserve">
+    <value>Extra</value>
+  </data>
+  <data name="Email_Body_DriverId" xml:space="preserve">
+    <value>Driver #</value>
+  </data>
 </root>

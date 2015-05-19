@@ -140,7 +140,7 @@ namespace apcurium.MK.Booking.Services
             return GetInstance().DeleteTokenizedCreditcard(cardToken);
         }
 
-        public PairingResponse Pair(Guid orderId,string cardToken, int? autoTipPercentage)
+        public PairingResponse Pair(Guid orderId,string cardToken, int autoTipPercentage)
         {
             var order = _orderDao.FindById(orderId);
 

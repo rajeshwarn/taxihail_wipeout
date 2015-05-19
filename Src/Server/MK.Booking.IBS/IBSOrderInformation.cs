@@ -25,6 +25,9 @@ namespace apcurium.MK.Booking.IBS
         public double VAT { get; set; }
         public double Surcharge { get; set; }
         public string VehicleNumber { get; set; }
+
+        public string PairingCode { get; set; }
+
         /*DriversInfos*/
         public string VehicleType;
         public string VehicleMake;
@@ -75,6 +78,7 @@ namespace apcurium.MK.Booking.IBS
             VehicleLongitude = orderInfoFromIBS.VehicleCoordinateLong != 0 ? orderInfoFromIBS.VehicleCoordinateLong : VehicleLongitude;
 
             DriverId = orderInfoFromIBS.CallNumber.GetValue(DriverId);
+            PairingCode = orderInfoFromIBS.PairingCode;
 
             ReferenceNumber = orderInfoFromIBS.ReferenceNumber.GetValue(ReferenceNumber);
             TerminalId = orderInfoFromIBS.TerminalId.GetValue(TerminalId);

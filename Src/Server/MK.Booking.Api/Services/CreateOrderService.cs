@@ -1067,11 +1067,14 @@ namespace apcurium.MK.Booking.Api.Services
 
             if (!string.IsNullOrWhiteSpace(noteTemplate))
             {
-                noteTemplate = string.Format("{0}{1}{2}", 
-                    chargeType,
-                    Environment.NewLine,
-                    noteTemplate);
-
+                if (!_serverSettings.ServerData.IBS.HideChargeTypeInUserNote)
+                {
+                    noteTemplate = string.Format("{0}{1}{2}",
+                        chargeType,
+                        Environment.NewLine,
+                        noteTemplate);
+                }
+                
                 var transformedTemplate = noteTemplate
                     .Replace("\\r", "\r")
                     .Replace("\\n", "\n")
