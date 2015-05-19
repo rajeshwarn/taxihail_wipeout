@@ -85,7 +85,7 @@ namespace apcurium.MK.Booking.Api.Services
             var orderStatus = _orderDao.FindOrderStatusById(request.OrderId);
 
             double? meterAmount;
-            double? tollAmount;
+            double? tollAmount = null;
             double? tipAmount;
             double? taxAmount;
             double? extraAmount = null;
