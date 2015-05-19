@@ -182,9 +182,9 @@ namespace apcurium.MK.Booking.Api.Jobs
         private void PopulateFromIbsOrder(OrderStatusDetail orderStatusDetail, IBSOrderInformation ibsOrderInfo)
         {
             var ibsStatusId = orderStatusDetail.IBSStatusId;
-            var wasWaitingForDiver = ibsStatusId.SoftEqual(VehicleStatuses.Common.Waiting);
+            var wasProcessingOrderOrWaitingForDiver = ibsStatusId == null || ibsStatusId.SoftEqual(VehicleStatuses.Common.Waiting);
             // In the case of Driver ETA Notification mode is Once, this next value will indicate if we should send the notification or not.
-            var sendEtaToDriverWhenNotificationModeIsOnce = wasWaitingForDiver && ibsOrderInfo.IsAssigned;
+            var sendEtaToDriverWhenNotificationModeIsOnce = wasProcessingOrderOrWaitingForDiver && ibsOrderInfo.IsAssigned;
 
             orderStatusDetail.IBSStatusId =                     ibsOrderInfo.Status;
             orderStatusDetail.DriverInfos.FirstName =           ibsOrderInfo.FirstName.GetValue(orderStatusDetail.DriverInfos.FirstName);
