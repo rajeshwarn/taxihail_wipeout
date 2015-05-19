@@ -1931,7 +1931,7 @@
   	<value>CVV Requis</value>
   </data>
   <data name="CvvRequiredMessage" xml:space="preserve">
-    <value>Veuillez entrer le code de vérification associé à votre carte de crédit pour continuer</value>
+    <value>Veuillez entrer le code de vérification associé à votre carte de crédit se terminant par {0} pour continuer</value>
   </data>
   <data name="Error_InvalidCvvTitle" xml:space="preserve">
     <value>CVV Invalide</value>

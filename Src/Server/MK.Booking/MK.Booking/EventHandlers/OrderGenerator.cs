@@ -337,9 +337,10 @@ namespace apcurium.MK.Booking.EventHandlers
 
                     if (@event.IsCompleted)
                     {
+                        RemoveTemporaryPaymentInfo(context, @event.SourceId);
+
                         // setting to local time is not a real fix but since only Mears reported 
                         // a bug and they are in the same timezone as the server, it's fine for now
-                        RemoveTemporaryPaymentInfo(context, @event.SourceId);
                         order.DropOffDate = @event.EventDate.ToLocalTime();
                     }
 

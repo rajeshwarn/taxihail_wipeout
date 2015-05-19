@@ -1942,7 +1942,7 @@
   	<value>CVV Required</value>
   </data>
   <data name="CvvRequiredMessage" xml:space="preserve">
-  	<value>Please enter the CVV associated with your card on file to continue</value>
+  	<value>Please enter the CVV associated with your card on file ending with {0} to continue</value>
   </data>
   <data name="Error_InvalidCvvTitle" xml:space="preserve">
   	<value>Invalid CVV</value>
