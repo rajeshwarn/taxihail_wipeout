@@ -109,6 +109,7 @@ namespace apcurium.MK.Booking.Api.Services
                         var toll = 0;
                         var tip = (double)45*((double)15/(double)100);
                         var amountSavedByPromo = 10;
+                        var extra = 0;
                         
                         var driverInfos = new DriverInfos
                         {
@@ -125,7 +126,7 @@ namespace apcurium.MK.Booking.Api.Services
 
                         var fare = Convert.ToDouble(fareObject.AmountExclTax);
                         var tax = Convert.ToDouble(fareObject.TaxAmount);
-                        _notificationService.SendReceiptEmail(Guid.NewGuid(), 12345, "9007", driverInfos, fare, toll, tip, tax, 0,fare + toll + tip + tax - amountSavedByPromo, _payment, _pickupAddress, _dropOffAddress, DateTime.Now.AddMinutes(-15), DateTime.Now, request.EmailAddress, "en", amountSavedByPromo, "PROMO10", true);
+                        _notificationService.SendReceiptEmail(Guid.NewGuid(), 12345, "9007", driverInfos, fare, toll, tip, tax, extra, fare + toll + tip + tax - amountSavedByPromo + extra, _payment, _pickupAddress, _dropOffAddress, DateTime.Now.AddMinutes(-15), DateTime.Now, request.EmailAddress, "en", amountSavedByPromo, "PROMO10", true);
                         break;
                     case NotificationService.EmailConstant.Template.PromotionUnlocked:
                         _notificationService.SendPromotionUnlockedEmail("10% Off your next ride", "PROMO123", DateTime.Now.AddMonths(1), request.EmailAddress, request.Language, true);
