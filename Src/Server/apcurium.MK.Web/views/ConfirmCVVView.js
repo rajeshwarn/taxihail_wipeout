@@ -12,9 +12,18 @@
         },
 
         render: function () {
-            var html = this.renderTemplate(this.model.toJSON());
-            this.$el.html(html);
+            var data = this.model.toJSON();
 
+            var creditCard = TaxiHail.auth.account.get('defaultCreditCard');
+            var message = TaxiHail.localize('ConfirmCVVMessage').format(creditCard.last4Digits);
+
+            _.extend(data, {
+                cvvPromptTitle: message
+            });
+
+            var html = this.renderTemplate(data);
+            this.$el.html(html);
+            
             this.validate({
                 rules: {
                     'cvv': {
