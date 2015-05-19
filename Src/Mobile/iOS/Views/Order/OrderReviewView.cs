@@ -24,6 +24,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views.Order
             txtNote.BackgroundColor = UIColor.FromRGB(242, 242, 242);
             txtNote.Font = UIFont.FromName(FontName.HelveticaNeueLight, 18f);
             txtNote.Placeholder = Localize.GetValue("NotesToDriveLabel");
+	        txtNote.PlaceholderColor = UIColor.FromRGB(75, 75, 75);
             txtNote.ShowCloseButtonOnKeyboard();
 
             FlatButtonStyle.CompanyColor.ApplyTo(btnViewPromo);

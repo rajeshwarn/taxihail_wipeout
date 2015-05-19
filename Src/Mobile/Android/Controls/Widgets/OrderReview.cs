@@ -56,6 +56,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Controls.Widgets
                     () => _bottomPadding.Visibility = ViewStates.Visible, 
                     () => _bottomPadding.Visibility = ViewStates.Gone);
 
+					var hintTextColor = Resources.GetColor(Resource.Color.drivernode_hint_color);
+
+					_editNote.SetHintTextColor(hintTextColor);
                 InitializeBinding();
             });              
         }
