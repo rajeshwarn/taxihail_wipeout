@@ -573,10 +573,6 @@
   <string name="ManualRideLinqStatus_Tax">Tax amount:</string>
   <string name="ManualRideLinqStatus_Tip">Tip amount:</string>
   <string name="ManualRideLinqStatus_Total">Total cost:</string>
-  <string name="CvvRequiredTitle">CVV Required</string>
-  <string name="CvvRequiredMessage">Please enter the CVV associated with your card on file to continue</string>
-  <string name="Error_InvalidCvvTitle">Invalid CVV</string>
-  <string name="Error_InvalidCvvMessage">The CVV must be a number between 3 and 4 digits</string>
   <string name="ManualRideLinqStatus_Unpair">Unpair</string>
   <string name="ManualRideLinqSummary_Done">Done</string>
   <string name="StatusConfirmCancelRideAndWarnForCancellationFees">Are you sure you want to cancel? A vehicle is on its way to pick you up. {0} reserves the right to charge customers a cancellation fee if we feel the user is abusing the service.</string>
@@ -589,7 +585,7 @@
   <string name="CurrentBookingDisabledTitle">Current Booking Disabled</string>
   <string name="ManualRideLinqNoCardOnFile">You need to have a card on file to pair with RideLinQ</string>
   <string name="CvvRequiredTitle">CVV Required</string>
-  <string name="CvvRequiredMessage">Please enter the CVV associated with your card on file to continue</string>
+  <string name="CvvRequiredMessage">Please enter the CVV associated with your card on file ending with {0} to continue</string>
   <string name="Error_InvalidCvvTitle">Invalid CVV</string>
   <string name="Error_InvalidCvvMessage">The CVV must be a number between 3 and 4 digits</string>
   <string name="ManualRideLinqCreditCardDisabled">Your current card on file has an overdue payment for a previous ride. This overdue payment is preventing you from pairing with RideLinQ</string>

@@ -338,6 +338,7 @@ namespace apcurium.MK.Booking.EventHandlers
                     if (@event.IsCompleted)
                     {
                         RemoveTemporaryPaymentInfo(context, @event.SourceId);
+
                         order.DropOffDate = @event.EventDate;
                     }
 
