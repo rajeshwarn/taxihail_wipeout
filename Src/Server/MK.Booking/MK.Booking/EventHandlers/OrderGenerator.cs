@@ -257,6 +257,7 @@ namespace apcurium.MK.Booking.EventHandlers
             {
                 var order = context.Find<OrderDetail>(@event.SourceId);
                 order.IsRemovedFromHistory = true;
+                order.Status = (int)OrderStatus.Removed;
 
                 var details = context.Find<OrderStatusDetail>(@event.SourceId);
                 if (details != null)
