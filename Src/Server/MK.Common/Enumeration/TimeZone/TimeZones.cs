@@ -6,7 +6,7 @@ namespace apcurium.MK.Common.Enumeration.TimeZone
 {
     public static class TimeZoneHelper
     {
-        public static TimeZoneInfo GetTimeZoneInfo(TimeZones value)
+        private static TimeZoneInfo GetTimeZoneInfo(TimeZones value)
         {
             var fieldInfo = value.GetType().GetField(value.ToString());
             var timeZoneId = fieldInfo.GetDisplayShortName();
@@ -21,12 +21,19 @@ namespace apcurium.MK.Common.Enumeration.TimeZone
         public static DateTime TransformToLocalTime(TimeZones timeZoneEnum, DateTime utc)
         {
             var timeZone = GetTimeZoneInfo(timeZoneEnum);
+            if (timeZone == null)
+            {
+                return utc;
+            }
+
             return utc + timeZone.GetUtcOffset(utc);
         }
     }
 
     public enum TimeZones
     {
+        [Display(Name = "NOT SET (will show dates as UTC)")]
+        NotSet,
         [Display(Name = "(UTC-12:00) International Date Line West", ShortName = "Dateline Standard Time")]
         DatelineStandardTime,
         [Display(Name = "(UTC-11:00) Coordinated Universal Time-11", ShortName = "UTC-11")]

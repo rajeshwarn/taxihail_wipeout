@@ -58,7 +58,7 @@ namespace apcurium.MK.Booking.CommandHandlers
         public void Handle(ChangeOrderStatus command)
         {
             var order = _repository.Find(command.Status.OrderId);
-            order.ChangeStatus(command.Status, command.Fare, command.Tip, command.Toll, command.Tax, command.DropOffDate);
+            order.ChangeStatus(command.Status, command.Fare, command.Tip, command.Toll, command.Tax);
 
             _repository.Save(order, command.Id.ToString());
         }

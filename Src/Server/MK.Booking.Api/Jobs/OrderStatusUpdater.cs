@@ -124,36 +124,14 @@ namespace apcurium.MK.Booking.Api.Jobs
 
             CheckForPairingAndHandleIfNecessary(orderStatusDetail, orderFromIbs);
 
-            var changeOrderStatus = new ChangeOrderStatus
+            _commandBus.Send(new ChangeOrderStatus
             {
                 Status = orderStatusDetail,
                 Fare = orderFromIbs.Fare,
                 Toll = orderFromIbs.Toll,
                 Tip = orderFromIbs.Tip,
                 Tax = orderFromIbs.VAT
-            };
-
-            if (orderStatusDetail.Status == OrderStatus.Completed)
-            {
-                changeOrderStatus.DropOffDate = GetDropOffDateInCompanyTimeZone(orderStatusDetail);
-            }
-
-            _commandBus.Send(changeOrderStatus);
-        }
-
-        private DateTime GetDropOffDateInCompanyTimeZone(OrderStatusDetail orderStatusDetail)
-        {
-            var timeZone = orderStatusDetail.Market.HasValue()
-                ? null // call customer portal to get it
-                : TimeZoneHelper.GetTimeZoneInfo(_serverSettings.ServerData.CompanyTimeZone);
-
-            if (timeZone == null)
-            {
-                return DateTime.UtcNow;
-            }
-
-            var now = DateTime.UtcNow;
-            return now + timeZone.GetUtcOffset(now);
+            });
         }
 
         public void HandleManualRidelinqFlow(OrderStatusDetail orderstatusDetail)

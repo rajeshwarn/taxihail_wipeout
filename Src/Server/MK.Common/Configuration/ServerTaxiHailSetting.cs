@@ -1,4 +1,3 @@
-using System;
 using System.ComponentModel.DataAnnotations;
 using System.Net.Mail;
 using apcurium.MK.Common.Configuration;
@@ -99,7 +98,7 @@ namespace MK.Common.Configuration
 
             PayPalConversionRate = 1;
             SendDetailedPaymentInfoToDriver = true;
-            CompanyTimeZone = TimeZones.EasternStandardTime;
+            CompanyTimeZone = TimeZones.NotSet;
         }
 
         public SmtpSettingContainer Smtp { get; protected set; }

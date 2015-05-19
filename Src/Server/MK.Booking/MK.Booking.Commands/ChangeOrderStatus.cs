@@ -15,7 +15,6 @@ namespace apcurium.MK.Booking.Commands
             Id = Guid.NewGuid();
         }
 
-        public DateTime? DropOffDate { get; set; }
         public OrderStatusDetail Status { get; set; }
         public double? Fare { get; set; }
         public double? Toll { get; set; }
