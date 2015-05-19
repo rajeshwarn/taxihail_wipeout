@@ -765,21 +765,7 @@ namespace apcurium.MK.Booking.Api.Jobs
             }
         }
 
-
-        private bool CanSendNotificationToDriver(bool shouldSendEtaToDriver)
-        {
-            switch (_serverSettings.ServerData.DriverEtaNotificationMode)
-            {
-                case DriverEtaNotificationModes.Always:
-                    return true;
-                case DriverEtaNotificationModes.Once:
-                    return shouldSendEtaToDriver;
-                default:
-                    return false;
-            }
-        }
-
-        private string GetDescription(Guid orderId, IBSOrderInformation ibsOrderInfo, string companyName, bool shouldSendEtaToDriver)
+        private string GetDescription(Guid orderId, IBSOrderInformation ibsOrderInfo, string companyName, bool sendEtaToDriverOnNotifyOnce)
         {
             var orderDetail = _orderDao.FindById(orderId);
             _languageCode = orderDetail != null ? orderDetail.ClientLanguageCode : SupportedLanguages.en.ToString();
@@ -799,7 +785,7 @@ namespace apcurium.MK.Booking.Api.Jobs
                 Log.DebugFormat("Setting Assigned status description: {0}", description);
 
                 var sendEtaToDriver = _serverSettings.ServerData.DriverEtaNotificationMode == DriverEtaNotificationModes.Always ||
-                                      (_serverSettings.ServerData.DriverEtaNotificationMode == DriverEtaNotificationModes.Once && shouldSendEtaToDriver);
+                                      (_serverSettings.ServerData.DriverEtaNotificationMode == DriverEtaNotificationModes.Once && sendEtaToDriverOnNotifyOnce);
 
                 if (_serverSettings.ServerData.ShowEta && sendEtaToDriver)
                 {
