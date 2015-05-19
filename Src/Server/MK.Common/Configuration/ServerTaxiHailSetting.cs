@@ -92,6 +92,11 @@ namespace MK.Common.Configuration
                 Enabled = false
             };
 
+            HoneyBadger = new HoneyBadgerSettingContainer
+            {
+                ServiceUrl = "http://insight.cmtapi.com:8081/v1.1/availability?availState=1"
+            };
+
             PayPalConversionRate = 1;
             SendDetailedPaymentInfoToDriver = true;
             CompanyTimeZone = TimeZones.EasternStandardTime;
@@ -106,6 +111,7 @@ namespace MK.Common.Configuration
         public ReceiptSettingContainer Receipt { get; protected set; }
         public CustomerPortalSettingContainer CustomerPortal { get; protected set; }
         public NetworkSettingContainer Network { get; protected set; }
+        public HoneyBadgerSettingContainer HoneyBadger { get; protected set; }
 
         public bool IsWebSignupHidden { get; protected set; }
 
@@ -135,12 +141,6 @@ namespace MK.Common.Configuration
 
         [Display(Name = "Available Vehicles Mode", Description = "Available Vehicles provider")]
         public AvailableVehiclesModes AvailableVehiclesMode { get; protected set; }
-
-        [Display(Name = "Available Vehicles Market", Description = "Market used to find vehicles when Available Vehicles Mode is set to 'HoneyBadger'")]
-        public string AvailableVehiclesMarket { get; protected set; }
-
-        [Display(Name = "Available Vehicles Fleet ID", Description = "Fleet ID used to find vehicles when Available Vehicles Mode is set to 'HoneyBadger'")]
-        public int? AvailableVehiclesFleetId { get; protected set; }
 
         [Hidden]
         [Display(Name = "Settings Available to Admin", Description = "Comma delimited list of settings that are available to admins")]
@@ -173,6 +173,10 @@ namespace MK.Common.Configuration
         [Display(Name = "Validate Admin Rules in Other Markets", Description = "Use the market booking rules defined by this company to validate orders in other markets")]
         public bool ValidateAdminRulesForExternalMarket { get; protected set; }
 
+        [CustomizableByCompany]
+        [Display(Name = "Use Pairing Code When RideLinq Payment", Description = "Use Pairing Code When Using RideLinq Cmt Payment")]
+        public bool UsePairingCodeWhenUsingRideLinqCmtPayment { get; protected set; }        
+        
         [CustomizableByCompany]
         [Display(Name = "Company's time zone", Description = "Used to properly show dates in the correct time zone")]
         public TimeZones CompanyTimeZone { get; protected set; }

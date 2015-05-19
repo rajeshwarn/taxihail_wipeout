@@ -46,6 +46,7 @@
 "InvalidAddressMessage"="La dirección que ha proporcionado es inválida. Por favor vefíquela";
 "CreateAccountErrorTitle"="Error";
 "ViewAll"="Mostrar todos";
+"CvvRequiredTitle"="CVV Required";
 "May"="May (05)";
 "LocalContactCannotBeResolverTitle"="Contacto inválido";
 "CmtRideLinqCancelChanges"="Cancelar";
@@ -173,6 +174,7 @@
 "September"="Sep (09)";
 "RingCodeTextPlaceholder"="Código de entrada";
 "UnpairWarningMessage"="Are you sure you don’t want to pay with your credit card on file?";
+"Error_InvalidCvvMessage"="The CVV must be a number between 3 and 4 digits";
 "ConfirmPassengersLabel"="Pasajeros:";
 "CreditCardErrorInvalid"="No podemos validar su tarjeta de crédito";
 "PanelMenuViewCallDispatchText"="Llamar";
@@ -230,7 +232,7 @@
 "LocationServiceErrorMessage"="Los servicios de localización no estan habilitados";
 "PromoExpiringIn1DayMessage"="Expires in 1 day";
 "Confirm"="Confirmar";
-"PromoMustUseCardOnFileWarningMessage"="Please note that the discount will only be applied if the payment is made using the app";
+"PromoMustUseCardOnFileWarningMessage"="Please note that the discount will only be applied if the payment is made using the app.";
 "CarAssigned"="Su Taxi {0}";
 "TabLocations"="Ubicaciones";
 "GenericTitle"="";
@@ -284,6 +286,7 @@
 "CreditCardExpMonth"="Fecha de expiración";
 "ConfirmCompanyLabel"="Compañía:";
 "BookPickupLocationButtonTitle"="Abordaje";
+"PromoMustHavePaymentMethodSetMessage"="In order to use a promo code, you need to have a payment method configured in the app.";
 "StatusCannotBeDisplayed"="No podemos obtener estato, por favor llame proveedor";
 "ConfirmNameLabel"="Nombre:";
 "View_Promotions"="Promotions";
@@ -320,6 +323,7 @@
 "Notification_BookingConfirmationEmail"="Confirmación de reservación (email)";
 "SignIn"="Entrar";
 "ManualPairingForRideLinQ_Instructions"="Enter the 7-digit code displayed on the taxi touchscreen to auto-pay and get an e-receipt at the end of your ride.";
+"CvvRequiredMessage"="Please enter the CVV associated with your card on file to continue";
 "DateTimePickerPickInvalidDateMessage"="La fecha y hora del servicio deben ser en el futuro";
 "AddressSearchingText"="Buscando...";
 "StatusConfirmCancelRideAndWarnForCancellationFees"="Are you sure you want to cancel? A vehicle is on its way to pick you up. {0} reserves the right to charge customers a cancellation fee if we feel the user is abusing the service.";
@@ -353,6 +357,7 @@
 "View_Payments_CmtRideLinqConfirmPairTitle"="Confirmar información de pago";
 "CreateAccountInvalidDataTitle"="Información de cuenta inválida";
 "Collapse"="Mostrar menos";
+"Error_InvalidCvvTitle"="Invalid CVV";
 "CmtTransactionSuccessMessage"="Confirmación enviada al chofer (Código de autorización: {0})";
 "SendEmail"="Enviar email...";
 "SupportEmail"="techsupport@apcurium.com";
@@ -475,7 +480,7 @@
 "HistoryDetailAptRingCodeLabel"="Depto. / Código de entrada";
 "NoConnectionTitle"="Error en conexión";
 "OrderNoteGPSApproximate"="(Dirección aproximada)";
-"PromoMustUseCardOnFileMessage"="In order to use a promo code, you need to pay with card on file";
+"PromoMustUseCardOnFileMessage"="In order to use a promo code, you need to pay with your configured payment method.";
 "UnpairPayInCar"="Pagar en el vehículo";
 "PromoCodeLabel"="Promo code";
 "ResetPasswordEmailPlaceHolder"="Email";

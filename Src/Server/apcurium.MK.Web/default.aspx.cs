@@ -64,9 +64,8 @@ namespace apcurium.MK.Web
         protected string SocialMediaPinterestURL { get; private set; }
         protected bool HideMarketChangeWarning { get; private set; }
         protected bool AutoConfirmFleetChange { get; private set; }
-
         protected bool AlwaysDisplayCoFOption { get; private set; }
-
+        protected bool AskForCVVAtBooking { get; private set; }
         protected int AvailableVehicleRefreshRate { get; private set; }
         
         protected void Page_Load(object sender, EventArgs e)
@@ -116,6 +115,7 @@ namespace apcurium.MK.Web
             var paymentSettings = config.GetPaymentSettings();
 
             AlwaysDisplayCoFOption = paymentSettings.AlwaysDisplayCoFOption;
+            AskForCVVAtBooking = paymentSettings.AskForCVVAtBooking;
 
             IsBraintreePrepaidEnabled = paymentSettings.PaymentMode == PaymentMethod.Braintree 
                 && paymentSettings.IsPayInTaxiEnabled

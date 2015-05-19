@@ -18,6 +18,7 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		private const string CellBindingText = @"
                    TitleText Text;
                    SelectedCommand NavigationCommand;
+                   AlertBadgeText Alert;
                 ";
         private UIButton _closeMenuButton;
         private PanelMenuSource _source;

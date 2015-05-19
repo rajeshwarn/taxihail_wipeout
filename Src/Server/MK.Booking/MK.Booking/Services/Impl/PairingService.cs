@@ -23,7 +23,7 @@ namespace apcurium.MK.Booking.Services.Impl
             _resources = new Resources.Resources(serverSettings);
         }
 
-        public void Pair(Guid orderId, string cardToken, int? autoTipPercentage)
+        public void Pair(Guid orderId, string cardToken, int autoTipPercentage)
         {
             var orderStatusDetail = _orderDao.FindOrderStatusById(orderId);
             if (orderStatusDetail == null)

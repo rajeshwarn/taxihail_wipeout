@@ -1673,7 +1673,7 @@
     <value>Code promotionnel</value>
   </data>
   <data name="PromoMustUseCardOnFileMessage" xml:space="preserve">
-    <value>Pour utiliser un code promo, vous devez payer avec le paiement in app</value>
+    <value>Pour utiliser un code promotionnel, vous devez payer avec la méthode de paiement configuré à l'intéreur de l'application.</value>
   </data>
   <data name="PromoMustUseCardOnFileWarningMessage" xml:space="preserve">
     <value>Veuillez noter que le rabais ne sera appliqué que si le paiement est effectué en utilisant l'application</value>
@@ -1927,7 +1927,22 @@
   <data name="ManualRideLinqNoCardOnFile" xml:space="preserve">
     <value>Vous devez avoir une carte associée à votre compte pour utiliser RideLinQ</value>
   </data>
+  <data name="CvvRequiredTitle" xml:space="preserve">
+  	<value>CVV Requis</value>
+  </data>
+  <data name="CvvRequiredMessage" xml:space="preserve">
+    <value>Veuillez entrer le code de vérification associé à votre carte de crédit pour continuer</value>
+  </data>
+  <data name="Error_InvalidCvvTitle" xml:space="preserve">
+    <value>CVV Invalide</value>
+  </data>
+  <data name="Error_InvalidCvvMessage" xml:space="preserve">
+    <value>Le code de vérification doit être un nombre possédant entre 3 et 4 chiffres</value>
+  </data>
   <data name="ManualRideLinqCreditCardDisabled" xml:space="preserve">
     <value>Vous avez un paiement en souffrance pour un course précédente et vous ne pouvez donc pas utiliser RideLinQ jusqu'à ce que ce montant soit payé.</value>
+  </data>
+  <data name="PromoMustHavePaymentMethodSetMessage" xml:space="preserve">
+    <value>Pour utiliser un code promotionnel, vous devez avoir configuré une méthode de paiement.</value>
   </data>
 </root>

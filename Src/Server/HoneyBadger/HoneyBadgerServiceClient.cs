@@ -16,6 +16,7 @@ namespace HoneyBadger
         private readonly ILogger _logger;
 
         public HoneyBadgerServiceClient(IServerSettings serverSettings, ILogger logger)
+            : base(serverSettings)
         {
             _serverSettings = serverSettings;
             _logger = logger;
@@ -72,7 +73,7 @@ namespace HoneyBadger
 
             try
             {
-                response = Client.Get("availability" + queryString)
+                response = Client.Get(queryString)
                                  .Deserialize<HoneyBadgerResponse>()
                                  .Result;
             }
@@ -138,7 +139,7 @@ namespace HoneyBadger
 
             try
             {
-                response = Client.Get("availability" + queryString)
+                response = Client.Get(queryString)
                                  .Deserialize<HoneyBadgerResponse>()
                                  .Result;
             }

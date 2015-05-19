@@ -36,7 +36,8 @@ namespace apcurium.MK.Booking.CommandHandlers
         ICommandHandler<UpdateRefundedOrder>,
         ICommandHandler<CreateOrderForManualRideLinqPair>,
         ICommandHandler<UnpairOrderForManualRideLinq>,
-        ICommandHandler<UpdateTripInfoInOrderForManualRideLinq>
+        ICommandHandler<UpdateTripInfoInOrderForManualRideLinq>,
+        ICommandHandler<SaveTemporaryOrderPaymentInfo>
     {
         private readonly IEventSourcedRepository<Order> _repository;
         private readonly Func<BookingDbContext> _contextFactory;
@@ -159,6 +160,18 @@ namespace apcurium.MK.Booking.CommandHandlers
                 {
                     OrderId = command.OrderId,
                     SerializedOrderCreationInfo = command.SerializedOrderCreationInfo
+                });
+            }
+        }
+
+        public void Handle(SaveTemporaryOrderPaymentInfo command)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                context.Save(new TemporaryOrderPaymentInfoDetail
+                {
+                    OrderId = command.OrderId,
+                    Cvv = command.Cvv
                 });
             }
         }

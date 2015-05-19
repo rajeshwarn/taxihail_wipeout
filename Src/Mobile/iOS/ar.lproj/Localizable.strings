@@ -44,6 +44,7 @@
 "InvalidAddressMessage"="العنوان الذي أدخلته غير صحيح. يرجى التأكد من المعلومات";
 "CreateAccountErrorTitle"="خطأ";
 "ViewAll"="عرض الكل";
+"CvvRequiredTitle"="CVV Required";
 "May"="مايو (05)";
 "LocalContactCannotBeResolverTitle"="الإسم غير صحيح";
 "CmtRideLinqCancelChanges"="إلغاء";
@@ -166,6 +167,7 @@
 "September"="سبتمبر (09)";
 "RingCodeTextPlaceholder"="رمز الدخول";
 "UnpairWarningMessage"="Are you sure you don’t want to pay with your credit card on file?";
+"Error_InvalidCvvMessage"="The CVV must be a number between 3 and 4 digits";
 "CreditCardErrorInvalid"="Cannot validate the credit card";
 "PanelMenuViewCallDispatchText"="اتصل";
 "Tuto07Top"="ستتمكن من رؤية رقم الحجز علی شاشة الحالة. عند إتمام تخصيص السيارة، سيمكنك متابعة مسارها نحو موقعك الحالي.";
@@ -223,7 +225,7 @@
 "CreateAccountErrorNotSpecified"="لم يستطع السيرفر تحديد سبب عدم إمكانية إنشاء حساب، إن استمر ظهور هذا الخطأ حاول انشاء الحساب من خلال الموقع الإلكتروني.";
 "LocationServiceErrorMessage"="خدمة تحديد الموقع غير مفعلة";
 "Confirm"="موافق";
-"PromoMustUseCardOnFileWarningMessage"="Please note that the discount will only be applied if the payment is made using the app";
+"PromoMustUseCardOnFileWarningMessage"="Please note that the discount will only be applied if the payment is made using the app.";
 "CarAssigned"="السيارة الخاصة بك {0}";
 "CmtRideLinqConfirmPairViewConfirmPairDetailText"="تأكد من أنك داخل السيارة المشار إليها أعلاه. إن قمت بالتأكيد سيتم خصم قيمة هذه الرحلة تلقائيا باستخدام إعدادات الدفع الخاصة بك.";
 "NoPhoneNumberMessage"="رقم هاتف هذا السائق خاطئ";
@@ -274,6 +276,7 @@
 "CreditCardExpMonth"="شهر الإنتهاء";
 "ConfirmCompanyLabel"="الشركة:";
 "BookPickupLocationButtonTitle"="نقطة الإلتقاء";
+"PromoMustHavePaymentMethodSetMessage"="In order to use a promo code, you need to have a payment method configured in the app.";
 "DeleteCreditCard"="حذف بطاقة الائتمان المسجلة في هذا الحساب؟";
 "ConfirmNameLabel"="الإسم:";
 "View_Promotions"="Promotions";
@@ -313,6 +316,7 @@
 "Notification_BookingConfirmationEmail"="Booking Confirmation (Email)";
 "SignIn"="تسجيل الدخول";
 "ManualPairingForRideLinQ_Instructions"="Enter the 7-digit code displayed on the taxi touchscreen to auto-pay and get an e-receipt at the end of your ride.";
+"CvvRequiredMessage"="Please enter the CVV associated with your card on file to continue";
 "DateTimePickerPickInvalidDateMessage"="يجب أن يكون تاريخ الإلتقاء في المستقبل";
 "AddressSearchingText"="جار البحث";
 "StatusConfirmCancelRideAndWarnForCancellationFees"="Are you sure you want to cancel? A vehicle is on its way to pick you up. {0} reserves the right to charge customers a cancellation fee if we feel the user is abusing the service.";
@@ -349,6 +353,7 @@
 "View_Payments_CmtRideLinqConfirmPairTitle"="تأكيد بيانات الدفع:";
 "CreateAccountInvalidDataTitle"="معلومات الحساب غير صحيحة";
 "Collapse"="تصغير";
+"Error_InvalidCvvTitle"="Invalid CVV";
 "CmtTransactionSuccessMessage"="تم إرسال التاكيد للسائق (رقم الترخيص: {0})";
 "SendEmail"="ارسل رسالة إلكترونية...";
 "SupportEmail"="techsupport@apcurium.com";
@@ -466,7 +471,7 @@
 "HistoryDetailAptRingCodeLabel"="رمز السكن:";
 "NoConnectionTitle"="خطأ في الإتصال";
 "OrderNoteGPSApproximate"="(عنوان تقريبي)";
-"PromoMustUseCardOnFileMessage"="In order to use a promo code, you need to pay with card on file";
+"PromoMustUseCardOnFileMessage"="In order to use a promo code, you need to pay with your configured payment method.";
 "UnpairPayInCar"="Pay in Car";
 "PromoCodeLabel"="Promo code";
 "ResetPasswordEmailPlaceHolder"="البريد الإلكتروني";

@@ -16,6 +16,7 @@ using Cirrious.MvvmCross.Platform;
 using Cirrious.MvvmCross.Plugins.WebBrowser;
 using ServiceStack.Text;
 using apcurium.MK.Booking.Mobile.ViewModels.Payment;
+using apcurium.MK.Common.Entity;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -108,6 +109,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			if (firstTime)
 			{
 				Panel.Start();
+
+                AddressPicker.RefreshFilteredAddress();
 
 				CheckTermsAsync();
 
@@ -251,8 +254,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		{
 			if (!_isShowingCreditCardExpiredPrompt)
 			{
+                // Update cached credit card
+				await _accountService.GetCreditCard();
+
 				if (!_accountService.CurrentAccount.IsPayPalAccountLinked
-					&&_accountService.CurrentAccount.DefaultCreditCard != null
+					&& _accountService.CurrentAccount.DefaultCreditCard != null
 					&& _accountService.CurrentAccount.DefaultCreditCard.IsExpired())
 				{
 					_isShowingCreditCardExpiredPrompt = true;
@@ -268,13 +274,14 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 					}
 
 					var title = this.Services().Localize["CreditCardExpiredTitle"];
-				
+
 					if (paymentSettings.IsOutOfAppPaymentDisabled)
 					{
 						// pay in car is disabled, user has only one choice and will not be able to leave the AddCreditCardViewModel without entering a valid card
 						this.Services().Message.ShowMessage(title, 
 							this.Services().Localize["CardExpiredMessage"], 
-							() => {
+							() =>
+						{
 							_isShowingCreditCardExpiredPrompt = false;
 							ShowViewModelAndClearHistory<CreditCardAddViewModel>(new { isMandatory = this.Services().Settings.CreditCardIsMandatory });
 						});
@@ -284,12 +291,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 						this.Services().Message.ShowMessage(title, 
 							this.Services().Localize["CardExpiredNonMandatoryMessage"],
 							this.Services().Localize["CreditCardExpiredUpdateNow"],
-							() => {
-								_isShowingCreditCardExpiredPrompt = false;
-								ShowViewModel<CreditCardAddViewModel>();
-							},
+							() =>
+						{
+							_isShowingCreditCardExpiredPrompt = false;
+							ShowViewModel<CreditCardAddViewModel>();
+						},
 							this.Services().Localize["NotNow"],
-							() => { _isShowingCreditCardExpiredPrompt = false; });
+							() =>
+						{
+							_isShowingCreditCardExpiredPrompt = false;
+						});
 					}
 				}
 			}
@@ -420,14 +431,40 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
+	    private void ProcessSingleOrNoFilteredAddresses(AddressLocationType filter, HomeViewModelState state)
+	    {
+            var filteredAddress = AddressPicker.FilteredPlaces
+                        .Where(address => address.Address.AddressLocationType == filter)
+                        .ToArray();
+
+            if (!filteredAddress.Any())
+            {
+                var localize = this.Services().Localize;
+                this.Services().Message.ShowMessage( localize["FilteredAddresses_Error_Title"], localize["FilteredAddresses_Error_Message"]);
+
+                return;
+            }
+
+            if (filteredAddress.Length == 1)
+            {
+                var address = filteredAddress
+                    .Select(place => place.Address)
+                    .First();
+
+                AddressPicker.SelectAddress(address);
+
+                return;
+            }
+
+            ChangePresentation(new HomeViewModelPresentationHint(state));
+	    }
+
+
 	    public ICommand AirportSearch
 	    {
 	        get
 	        {
-	            return this.GetCommand(() =>
-	            {
-                    this.ChangePresentation(new HomeViewModelPresentationHint(HomeViewModelState.AirportSearch));
-	            });
+	            return this.GetCommand(() => ProcessSingleOrNoFilteredAddresses(AddressLocationType.Airport, HomeViewModelState.AirportSearch));
 	        }
 	    }
 
@@ -435,10 +472,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 	    {
 	        get
 	        {
-	            return this.GetCommand(() =>
-	            {
-	                this.ChangePresentation(new HomeViewModelPresentationHint(HomeViewModelState.TrainStationSearch));
-	            });
+	            return this.GetCommand(() => ProcessSingleOrNoFilteredAddresses(AddressLocationType.Train, HomeViewModelState.TrainStationSearch));
 	        }
 	    }
 
@@ -548,6 +582,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 CheckUnratedRide();
 				CheckTermsAsync();
 				CheckCreditCardExpiration();
+                AddressPicker.RefreshFilteredAddress();
 
 				_accountService.LogApplicationStartUp ();
             }

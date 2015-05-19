@@ -75,10 +75,21 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			{
 				_hasValidPaymentInformation = value;
 				RaisePropertyChanged();
+                RaisePropertyChanged(() => PromoRequiresPaymentMethodText);
 			}
 		}
-		
-		public ICommand ToPayment
+
+        public string PromoRequiresPaymentMethodText
+        {
+            get
+            {
+                return _hasValidPaymentInformation
+                    ? this.Services().Localize["PromoMustUseCardOnFileWarningMessage"]
+                    : this.Services().Localize["PromoMustHavePaymentMethodSetMessage"];
+            }
+        }
+
+        public ICommand ToPayment
 		{
 			get
 			{

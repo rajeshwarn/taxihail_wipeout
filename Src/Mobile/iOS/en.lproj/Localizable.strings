@@ -46,6 +46,7 @@
 "InvalidAddressMessage"="The address you provided is invalid. Please verify this information";
 "CreateAccountErrorTitle"="Error";
 "ViewAll"="View All";
+"CvvRequiredTitle"="CVV Required";
 "May"="May (05)";
 "LocalContactCannotBeResolverTitle"="Invalid Contact";
 "CmtRideLinqCancelChanges"="Cancel";
@@ -124,6 +125,7 @@
 "GoogleMapKey"="AIzaSyCtazVDlL4prQA5f2OnlWTw4u2X581dkzo";
 "View_BookSettingMenu"="Settings";
 "StatusInvalid"="Status not available";
+"Error_InvalidCvvTitle"="Invalid CVV";
 "StreetNumberLabel"="Refine your address";
 "View_Payments_CmtRideLinqChangePaymentTitle"="Change Payment Info";
 "InvalidLoginMessageTitle"="Login error";
@@ -171,6 +173,7 @@
 "SaveAddressEmptyFieldTitle"="Friendly name required";
 "Politeness"="Politeness";
 "UnpairWarningMessage"="Are you sure you don’t want to pay with your credit card on file?";
+"Error_InvalidCvvMessage"="The CVV must be a number between 3 and 4 digits";
 "CreditCardErrorInvalid"="Cannot validate the credit card";
 "PickupViewDestinationLabel"="Destination &gt;&gt;";
 "PanelMenuViewCallDispatchText"="Call";
@@ -227,7 +230,7 @@
 "CreateAccountErrorNotSpecified"="The server didn't specify why the account could not be created, if the error persist try creating the account from the web site.";
 "LocationServiceErrorMessage"="The location service is not enabled.";
 "Confirm"="Confirm";
-"PromoMustUseCardOnFileWarningMessage"="Please note that the discount will only be applied if the payment is made using the app";
+"PromoMustUseCardOnFileWarningMessage"="Please note that the discount will only be applied if the payment is made using the app.";
 "Tuto02Top"="We should be able to locate you using the GPS receiver in your mobile device.";
 "GenericTitle"="";
 "CmtRideLinqConfirmPairViewConfirmPairDetailText"="Confirm that you are in the vehicle number indicated below.  By Tapping “Confirm”, this ride will automatically be paid by your credit card on file.";
@@ -281,6 +284,7 @@
 "CreditCardExpMonth"="Exp. Month";
 "ConfirmCompanyLabel"="Company:";
 "BookPickupLocationButtonTitle"="Pickup";
+"PromoMustHavePaymentMethodSetMessage"="In order to use a promo code, you need to have a payment method configured in the app.";
 "DeleteCreditCard"="Delete the credit card registered to this account?";
 "ConfirmNameLabel"="Name:";
 "View_Promotions"="Promotions";
@@ -321,6 +325,7 @@
 "View_UpdatePassword"="Update Password";
 "InvalidPayBackErrorMessage"="The PayBack field must be all digits and must not exceed 10 characters in length";
 "PaymentDetails.CreditCardLabel"="Cards";
+"CvvRequiredMessage"="Please enter the CVV associated with your card on file to continue";
 "DateTimePickerPickInvalidDateMessage"="The pickup date must be in the future.";
 "AddressSearchingText"="Searching...";
 "StatusConfirmCancelRideAndWarnForCancellationFees"="Are you sure you want to cancel? A vehicle is on its way to pick you up. {0} reserves the right to charge customers a cancellation fee if we feel the user is abusing the service.";
@@ -483,7 +488,7 @@
 "August"="Aug (08)";
 "NoConnectionTitle"="Connection error";
 "OrderNoteGPSApproximate"=" (approx. address)";
-"PromoMustUseCardOnFileMessage"="In order to use a promo code, you need to pay with card on file";
+"PromoMustUseCardOnFileMessage"="In order to use a promo code, you need to pay with your configured payment method.";
 "UnpairPayInCar"="Pay in Car";
 "PromoCodeLabel"="Promo code";
 "ResetPasswordEmailPlaceHolder"="Email";

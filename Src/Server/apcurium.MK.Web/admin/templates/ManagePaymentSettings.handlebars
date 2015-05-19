@@ -7,6 +7,18 @@
     <option value="{{invertedBool isPrepaidEnabled}}">{{localizeBool isPrepaidEnabled true="No" false="Yes"}}</option>
   </select>
 
+  <label class="control-label settingsLabel">{{{localize "Always Display Card on File on Web"}}}</label>
+  <select name="alwaysDisplayCoFOption" class="settingsBox">
+    <option value="{{alwaysDisplayCoFOption}}" selected>{{localizeBool alwaysDisplayCoFOption true="Yes" false="No"}}</option>
+    <option value="{{invertedBool alwaysDisplayCoFOption}}">{{localizeBool alwaysDisplayCoFOption true="No" false="Yes"}}</option>
+  </select>
+
+  <label class="control-label settingsLabel">{{{localize "Ask for CVV when Booking"}}}</label>
+  <select name="askForCVVAtBooking" class="settingsBox">
+    <option value="{{askForCVVAtBooking}}" selected>{{localizeBool askForCVVAtBooking true="Yes" false="No"}}</option>
+    <option value="{{invertedBool askForCVVAtBooking}}">{{localizeBool askForCVVAtBooking true="No" false="Yes"}}</option>
+  </select>
+
   <label class="control-label settingsLabel">{{{localize "Disable In Car Payment"}}}</label>
   <select name="isOutOfAppPaymentDisabled" class="settingsBox">
     <option value="{{isOutOfAppPaymentDisabled}}" selected="">{{localizeBool isOutOfAppPaymentDisabled true="Yes" false="No"}}</option>
@@ -72,12 +84,6 @@
     <label class="control-label settingsLabel">{{{localize "No Show Fee (Amount)"}}}</label>
     <input type="text" class="input-block-level settingsBox" name="noShowFee" value="{{noShowFee}}" />
   </div>
-
-    <label class="control-label settingsLabel">{{{localize "Always Display Card on File on Web"}}}</label>
-    <select name="alwaysDisplayCoFOption" class="settingsBox">
-        <option value="{{alwaysDisplayCoFOption}}" s selected>{{localizeBool alwaysDisplayCoFOption true="Yes" false="No"}}</option>
-        <option value="{{invertedBool alwaysDisplayCoFOption}}">{{localizeBool alwaysDisplayCoFOption true="No" false="Yes"}}</option>
-    </select>
 
 <!-- BRAINTREE SETTINGS-->
   <div class="control-group" id="braintreeSettingsDiv">

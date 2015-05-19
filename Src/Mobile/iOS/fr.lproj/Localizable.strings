@@ -46,6 +46,7 @@
 "InvalidAddressMessage"="Désolé, l'adresse saisie semble invalide. Merci de saisir de nouveau";
 "CreateAccountErrorTitle"="Erreur";
 "ViewAll"="Voir";
+"CvvRequiredTitle"="CVV Requis";
 "May"="Mai (05)";
 "LocalContactCannotBeResolverTitle"="Informations erronées";
 "CmtRideLinqCancelChanges"="Annuler";
@@ -172,6 +173,7 @@
 "September"="Septembre (09)";
 "RingCodeTextPlaceholder"="Saisissez un code";
 "UnpairWarningMessage"="Êtes-vous sûr de ne pas vouloir payer avec votre carte de crédit?";
+"Error_InvalidCvvMessage"="Le code de vérification doit être un nombre possédant entre 3 et 4 chiffres";
 "CreditCardErrorInvalid"="La carte ne semble pas être valide";
 "PanelMenuViewCallDispatchText"="Appeler";
 "Tuto07Top"="Sur l'écran de statut, vous verrez un numéro de réservation qui confirme votre commande. Une fois qu'un véhicule sera assigné, vous pouvez suivre sa position jusqu'à ce qu'il arrive à vous.";
@@ -285,6 +287,7 @@
 "CreditCardExpMonth"="Date d'expiration (mois)";
 "ConfirmCompanyLabel"="Société: ";
 "BookPickupLocationButtonTitle"="Départ";
+"PromoMustHavePaymentMethodSetMessage"="Pour utiliser un code promotionnel, vous devez avoir configuré une méthode de paiement.";
 "DeleteCreditCard"="Supprimer la carte associée à ce compte?";
 "ConfirmNameLabel"="Nom: ";
 "View_Promotions"="Promotions";
@@ -325,6 +328,7 @@
 "Notification_BookingConfirmationEmail"="Confirmation Commande (Email)";
 "SignIn"="Connexion";
 "ManualPairingForRideLinQ_Instructions"="Entrez le code à 7 chiffres qui se trouve sur l'écran du taxi pour payer automatiquement et recevoir un reçu à la fin de votre course.";
+"CvvRequiredMessage"="Veuillez entrer le code de vérification associé à votre carte de crédit pour continuer";
 "DateTimePickerPickInvalidDateMessage"="La date de départ ne peut pas être antérieure à la date de commande";
 "AddressSearchingText"="Recherche…";
 "StatusConfirmCancelRideAndWarnForCancellationFees"="Êtes-vous certain de vouloir annuler? Un véhicule est en route pour venir vous chercher. {0} se réserve le droit de facturer à ses clients des frais d'annulation si ces derniers abusent du service.";
@@ -361,6 +365,7 @@
 "View_Payments_CmtRideLinqConfirmPairTitle"="Confirmer les informations relatives au paiement";
 "CreateAccountInvalidDataTitle"="Données invalides";
 "Collapse"="Cacher";
+"Error_InvalidCvvTitle"="CVV Invalide";
 "CmtTransactionSuccessMessage"="Confirmation envoyée au chauffeur (code: {0})";
 "SendEmail"="Envoyer un email…";
 "SupportEmail"="techsupport@apcurium.com";
@@ -480,7 +485,7 @@
 "HistoryDetailAptRingCodeLabel"="Apt / digicode:";
 "NoConnectionTitle"="Erreur de connexion";
 "OrderNoteGPSApproximate"="(adresse approximative)";
-"PromoMustUseCardOnFileMessage"="Pour utiliser un code promo, vous devez payer avec le paiement in app";
+"PromoMustUseCardOnFileMessage"="Pour utiliser un code promotionnel, vous devez payer avec la méthode de paiement configuré à l'intéreur de l'application.";
 "UnpairPayInCar"="Payer dans le taxi";
 "PromoCodeLabel"="Code promotionnel";
 "ResetPasswordEmailPlaceHolder"="Email (adresse électronique)";

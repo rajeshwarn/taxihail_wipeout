@@ -67,7 +67,7 @@ namespace apcurium.MK.Booking.Services.Impl
             return false;
         }
         
-        public PairingResponse Pair(Guid orderId, string cardToken, int? autoTipPercentage)
+        public PairingResponse Pair(Guid orderId, string cardToken, int autoTipPercentage)
         {
             try
             {
@@ -231,7 +231,7 @@ namespace apcurium.MK.Booking.Services.Impl
             }; 
         }
 
-        public PreAuthorizePaymentResponse PreAuthorize(Guid orderId, AccountDetail account, decimal amountToPreAuthorize, bool isReAuth = false, bool isSettlingOverduePayment = false, bool isForPrepaid = false)
+        public PreAuthorizePaymentResponse PreAuthorize(Guid orderId, AccountDetail account, decimal amountToPreAuthorize, bool isReAuth = false, bool isSettlingOverduePayment = false, bool isForPrepaid = false, string cvv = null)
         {
             var paymentId = Guid.NewGuid();
             var creditCard = _creditCardDao.FindByAccountId(account.Id).First();
@@ -290,6 +290,9 @@ namespace apcurium.MK.Booking.Services.Impl
                                                     orderStatus.ReferenceNumber :
                                                     orderDetail.IBSOrderId.ToString();
 
+                var tempPaymentInfo = _orderDao.GetTemporaryPaymentInfo(orderId);
+                var cvv = tempPaymentInfo != null ? tempPaymentInfo.Cvv : null;
+
                 var authRequest = new AuthorizationRequest
                 {
                     FleetToken = fleetToken,
@@ -307,8 +310,12 @@ namespace apcurium.MK.Booking.Services.Impl
                     Extras = 0,
                     Surcharge = 0,
                     Tax = 0,
-                    Tolls = 0
+                    Tolls = 0,
+                    Cvv2 = cvv
                 };
+
+                // remove temp payment info
+                _orderDao.DeleteTemporaryPaymentInfo(orderId);
 
                 var authResponse = Authorize(authRequest);
 
@@ -353,7 +360,6 @@ namespace apcurium.MK.Booking.Services.Impl
 
             try
             {
-
                 var accountDetail = _accountDao.FindById(orderStatusDetail.AccountId);
 
                 // send pairing request                                
@@ -363,15 +369,23 @@ namespace apcurium.MK.Booking.Services.Impl
                     AutoTipPercentage = autoTipPercentage ?? _serverSettings.ServerData.DefaultTipPercentage,
                     AutoCompletePayment = true,
                     CallbackUrl = string.Empty,
-                    CustomerId = orderStatusDetail.IBSOrderId.ToString(),
+                    CustomerId = orderStatusDetail.AccountId.ToString(),
                     CustomerName = accountDetail.Name,
                     DriverId = orderStatusDetail.DriverInfos.DriverId,
                     Latitude = orderStatusDetail.VehicleLatitude.GetValueOrDefault(),
                     Longitude = orderStatusDetail.VehicleLongitude.GetValueOrDefault(),
-                    Medallion = orderStatusDetail.VehicleNumber,
                     CardOnFileId = cardToken,
                     Market = cmtPaymentSettings.Market
                 };
+
+                if (orderStatusDetail.RideLinqPairingCode.HasValue())
+                {
+                    pairingRequest.PairingCode = orderStatusDetail.RideLinqPairingCode;
+                }
+                else
+                {
+                    pairingRequest.Medallion = orderStatusDetail.VehicleNumber;
+                }
 
                 _logger.LogMessage("Pairing request : " + pairingRequest.ToJson());
                 _logger.LogMessage("PaymentSettings request : " + cmtPaymentSettings.ToJson());

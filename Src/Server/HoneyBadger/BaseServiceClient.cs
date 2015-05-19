@@ -2,22 +2,21 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using apcurium.MK.Common.Configuration;
 
 namespace HoneyBadger
 {
     public class BaseServiceClient
     {
-        protected BaseServiceClient()
+        protected BaseServiceClient(IServerSettings serverSettings)
         {
-            Client = new HttpClient { BaseAddress = new Uri(GetUrl()) };
+            Client = new HttpClient
+            {
+                BaseAddress = new Uri(serverSettings.ServerData.HoneyBadger.ServiceUrl)
+            };
         }
 
         protected HttpClient Client { get; private set; }
-
-        private string GetUrl()
-        {
-            return "http://insight.cmtapi.com:8081/v1.1/";
-        }
 
         protected static string BuildQueryString(IEnumerable<KeyValuePair<string, string>> @params)
         {
