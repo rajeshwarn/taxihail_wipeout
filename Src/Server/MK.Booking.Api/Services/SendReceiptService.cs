@@ -15,7 +15,6 @@ using ServiceStack.Common.Web;
 using ServiceStack.ServiceInterface;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Diagnostic;
-using AutoMapper.Internal;
 using CMTPayment.Pair;
 using ServiceStack.Common.Utils;
 
@@ -114,10 +113,12 @@ namespace apcurium.MK.Booking.Api.Services
                 {
                     // this is for CMT RideLinq only, no VAT
 
-                    var toll = tripInfo.TollHistory.Safe().Sum(t => t.TollAmount);
+                    var tollHistory = tripInfo.TollHistory != null
+								? tripInfo.TollHistory.Sum(p => p.TollAmount)
+								: 0;;
 
                     meterAmount = Math.Round(((double)tripInfo.Fare / 100), 2);
-                    tollAmount = Math.Round(((double)toll / 100), 2);
+					tollAmount = Math.Round(((double)tollHistory / 100), 2);
                     extraAmount = Math.Round(((double) tripInfo.Extra/100), 2);
                     tipAmount = Math.Round(((double)tripInfo.Tip / 100), 2);
                     taxAmount = Math.Round(((double)tripInfo.Tax / 100), 2);

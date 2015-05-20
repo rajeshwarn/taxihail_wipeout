@@ -89,8 +89,12 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                         var tripInfo = _cmtTripInfoServiceHelper.GetTripInfo(pairingInfo.PairingToken);
                         if (tripInfo != null && tripInfo.EndTime.HasValue)
                         {
+							var tollHistory = tripInfo.TollHistory != null
+								? tripInfo.TollHistory.Sum(p => p.TollAmount)
+								: 0;
+
                             var meterAmount = Math.Round(((double)tripInfo.Fare / 100), 2);
-                            var tollAmount = Math.Round(((double)tripInfo.TollHistory.Sum(p => p.TollAmount) / 100), 2);
+							var tollAmount = Math.Round(((double)tollHistory / 100), 2);
                             var tipAmount = Math.Round(((double)tripInfo.Tip / 100), 2);
                             var taxAmount = Math.Round(((double)tripInfo.Tax / 100), 2);
                             var extra = Math.Round(((double) tripInfo.Extra / 100), 2);

@@ -41,11 +41,6 @@ namespace apcurium.MK.Common.Extensions
             return !items.Any();
         }
 
-        public static IEnumerable<T> Safe<T>(this IEnumerable<T> items)
-        {
-            return items ?? new T[0];
-        }
-
         public static bool None<T>(this IEnumerable<T> items, Func<T, bool> predicate)
         {
             return !items.Any(predicate);
