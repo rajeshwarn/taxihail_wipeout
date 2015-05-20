@@ -292,7 +292,7 @@
 "Register"="Inscription";
 "ReminderDetails"="Rappel: votre taxi arrivera au {0} à {1} le {2}";
 "ReminderTitle"="{0} Enregistré";
-"RemoveCreditCardMessage"="Etes-vous sur de vouloir supprimer cette carte de paiement?";
+"RemoveCreditCardMessage"="Etes-vous sûr de vouloir supprimer cette carte de paiement?";
 "RemoveCreditCardTitle"="Supprimer cette carte de paiement";
 "ReSendConfirmation"="Signaler le paiement";
 "Reset"="Réinitialiser";
@@ -609,3 +609,4 @@
 "ManualRideLinqCreditCardDisabled"="Vous avez un paiement en souffrance pour un course précédente et vous ne pouvez donc pas utiliser RideLinQ jusqu'à ce que ce montant soit payé.";
 "PromoMustHavePaymentMethodSetMessage"="Pour utiliser un code promotionnel, vous devez avoir configuré une méthode de paiement.";
 "GenericErrorTitle"="Erreur";
+"CallDriverUsingProxyPrompt"="Êtes-vous certain de vouloir contacter votre chauffeur?  Après avoir accepter, votre chauffeur vous rappellera aussitôt que possible.";

@@ -601,3 +601,4 @@
 "CallDriverUsingProxyMessage"="Your driver will call you back in a few minutes";
 "CallDriverUsingProxyErrorMessage"="Sorry, we weren't able to initiate a call with your driver.";
 "GenericErrorTitle"="Error";
+"CallDriverUsingProxyPrompt"="Are you sure you want to initiate a call with your driver?  After accepting, the driver will call you back as soon as possible.";

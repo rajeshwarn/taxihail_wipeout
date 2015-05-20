@@ -1000,7 +1000,7 @@
     <value>{0} Enregistré</value>
   </data>
   <data name="RemoveCreditCardMessage" xml:space="preserve">
-    <value>Etes-vous sur de vouloir supprimer cette carte de paiement?</value>
+    <value>Etes-vous sûr de vouloir supprimer cette carte de paiement?</value>
   </data>
   <data name="RemoveCreditCardTitle" xml:space="preserve">
     <value>Supprimer cette carte de paiement</value>
@@ -1950,5 +1950,8 @@
   </data>
   <data name="GenericErrorTitle" xml:space="preserve">
     <value>Erreur</value>
+  </data>
+  <data name="CallDriverUsingProxyPrompt" xml:space="preserve">
+    <value>Êtes-vous certain de vouloir contacter votre chauffeur?  Après avoir accepter, votre chauffeur vous rappellera aussitôt que possible.</value>
   </data>
 </root>

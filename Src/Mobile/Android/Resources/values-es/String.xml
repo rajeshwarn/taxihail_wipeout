@@ -603,4 +603,5 @@
   <string name="CallDriverUsingProxyMessage">Your driver will call you back in a few minutes</string>
   <string name="CallDriverUsingProxyErrorMessage">Sorry, we weren\'t able to initiate a call with your driver.</string>
   <string name="GenericErrorTitle">Error</string>
+  <string name="CallDriverUsingProxyPrompt">Are you sure you want to initiate a call with your driver?  After accepting, the driver will call you back as soon as possible.</string>
 </resources>

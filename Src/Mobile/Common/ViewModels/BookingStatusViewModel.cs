@@ -253,6 +253,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
 				    if (canCallDriver)
 				    {
+				        var shouldInitiateCall = false;
+				        this.Services().Message.ShowMessage(
+                            this.Services().Localize["GenericTitle"], this.Services().Localize["CallDriverUsingProxyPrompt"],
+                            this.Services().Localize["OkButtonText"], () => { shouldInitiateCall = true; },
+                            this.Services().Localize["Cancel"], () => { });
+
+				        if (!shouldInitiateCall)
+				        {
+				            return;
+				        }
+
 				        var success = await _bookingService.InitiateCallToDriver(Order.Id);
                         if (success)
 				        {

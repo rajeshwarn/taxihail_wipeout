@@ -294,7 +294,7 @@
   <string name="Register">Inscription</string>
   <string name="ReminderDetails">Rappel: votre taxi arrivera au {0} à {1} le {2}</string>
   <string name="ReminderTitle">{0} Enregistré</string>
-  <string name="RemoveCreditCardMessage">Etes-vous sur de vouloir supprimer cette carte de paiement?</string>
+  <string name="RemoveCreditCardMessage">Etes-vous sûr de vouloir supprimer cette carte de paiement?</string>
   <string name="RemoveCreditCardTitle">Supprimer cette carte de paiement</string>
   <string name="ReSendConfirmation">Signaler le paiement</string>
   <string name="Reset">Réinitialiser</string>
@@ -611,4 +611,5 @@
   <string name="ManualRideLinqCreditCardDisabled">Vous avez un paiement en souffrance pour un course précédente et vous ne pouvez donc pas utiliser RideLinQ jusqu\'à ce que ce montant soit payé.</string>
   <string name="PromoMustHavePaymentMethodSetMessage">Pour utiliser un code promotionnel, vous devez avoir configuré une méthode de paiement.</string>
   <string name="GenericErrorTitle">Erreur</string>
+  <string name="CallDriverUsingProxyPrompt">Êtes-vous certain de vouloir contacter votre chauffeur?  Après avoir accepter, votre chauffeur vous rappellera aussitôt que possible.</string>
 </resources>

@@ -1894,4 +1894,7 @@
   <data name="GenericErrorTitle" xml:space="preserve">
     <value>Error</value>
   </data>
+  <data name="CallDriverUsingProxyPrompt" xml:space="preserve">
+    <value>Are you sure you want to initiate a call with your driver?  After accepting, the driver will call you back as soon as possible.</value>
+  </data>
 </root>
