@@ -34,7 +34,6 @@ using apcurium.MK.Common.Resources;
 using Infrastructure.EventSourcing;
 using Infrastructure.Messaging;
 using System;
-using apcurium.MK.Common.Enumeration.TimeZone;
 using CMTPayment;
 using log4net;
 using ServiceStack.Common.Web;
