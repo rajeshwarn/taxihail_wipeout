@@ -34,6 +34,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnResend { get; set; }
 
 		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnTip { get; set; }
+
+		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnUnpair { get; set; }
 
 		[Outlet]
@@ -65,6 +68,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 
 		[Outlet]
 		UIKit.UILabel lblTaxiType { get; set; }
+
+		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton lblTip { get; set; }
 
 		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Controls.TouchMap mapStatus { get; set; }
@@ -109,14 +115,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				bottomBar = null;
 			}
 
-			if (txtCompany != null) {
-				txtCompany.Dispose ();
-				txtCompany = null;
-			}
-
-			if (lblCompany != null) {
-				lblCompany.Dispose ();
-				lblCompany = null;
+			if (btnTip != null) {
+				btnTip.Dispose ();
+				btnTip = null;
 			}
 
 			if (btnCall != null) {
@@ -164,6 +165,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				lblColor = null;
 			}
 
+			if (lblCompany != null) {
+				lblCompany.Dispose ();
+				lblCompany = null;
+			}
+
 			if (lblConfirmation != null) {
 				lblConfirmation.Dispose ();
 				lblConfirmation = null;
@@ -199,6 +205,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				lblTaxiType = null;
 			}
 
+			if (lblTip != null) {
+				lblTip.Dispose ();
+				lblTip = null;
+			}
+
 			if (mapStatus != null) {
 				mapStatus.Dispose ();
 				mapStatus = null;
@@ -222,6 +233,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			if (txtColor != null) {
 				txtColor.Dispose ();
 				txtColor = null;
+			}
+
+			if (txtCompany != null) {
+				txtCompany.Dispose ();
+				txtCompany = null;
 			}
 
 			if (txtDriver != null) {

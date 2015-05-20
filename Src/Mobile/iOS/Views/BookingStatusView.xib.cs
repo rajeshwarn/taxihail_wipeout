@@ -21,6 +21,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		private const float DEFAULT_TOP_VISIBLE_STATUS_HEIGHT = 45f;
         private float VisibleStatusHeight = 45f;
 
+		private const float DEFAULT_CALL_BUTTON_WIDTH = 185f;
+		private const float DEFAULT_TIP_BUTTON_WIDTH = 65f;
+		private const float DEFAULT_UNPAIR_BUTTON_WIDTH = 150f;
+		private const float DEFAULT_PADDING = 8f;
+
 		public BookingStatusView () : base("BookingStatusView", null)
         {
         }
@@ -80,9 +85,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 btnCancel.SetTitle(Localize.GetValue("StatusCancelButton"), UIControlState.Normal);
                 btnNewRide.SetTitle(Localize.GetValue("StatusNewRideButton"), UIControlState.Normal);
                 btnUnpair.SetTitle(Localize.GetValue("UnpairPayInCar"), UIControlState.Normal);
+				btnTip.SetTitle(Localize.GetValue("StatusEditAutoTipButton"), UIControlState.Normal);
 
                 FlatButtonStyle.Silver.ApplyTo(btnCallDriver);
                 FlatButtonStyle.Silver.ApplyTo(btnCall);
+				FlatButtonStyle.Silver.ApplyTo(btnTip);
                 FlatButtonStyle.Red.ApplyTo(btnCancel);
                 FlatButtonStyle.Green.ApplyTo(btnNewRide);
                 FlatButtonStyle.Red.ApplyTo(btnUnpair);
@@ -98,22 +105,52 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 					});
 				};
 
+				// So you want to add a new button.... lawl
 				if(!ViewModel.Settings.HideCallDispatchButton)
                 {
-                    btnCancel.SetFrame(8, btnCancel.Frame.Y,  btnCancel.Frame.Width,  btnCancel.Frame.Height );
-                    btnCall.SetFrame( UIScreen.MainScreen.Bounds.Width - 8 - btnCall.Frame.Width ,  btnCall.Frame.Y,  btnCall.Frame.Width,  btnCall.Frame.Height );
-					btnUnpair.SetFrame(btnCancel.Frame.X, btnCancel.Frame.Y, btnUnpair.Frame.Width, btnUnpair.Frame.Height);
+					btnCancel.SetFrame(DEFAULT_PADDING, btnCancel.Frame.Y,  btnCancel.Frame.Width,  btnCancel.Frame.Height);
+					btnCall.SetFrame(UIScreen.MainScreen.Bounds.Width - DEFAULT_PADDING - btnCall.Frame.Width ,  btnCall.Frame.Y,  btnCall.Frame.Width,  btnCall.Frame.Height);
+					btnUnpair.SetFrame(btnCancel.Frame.X, btnCancel.Frame.Y, DEFAULT_UNPAIR_BUTTON_WIDTH, btnUnpair.Frame.Height);
+					btnTip.SetFrame(btnCall.Frame.X - DEFAULT_TIP_BUTTON_WIDTH - DEFAULT_PADDING, btnCancel.Frame.Y, DEFAULT_TIP_BUTTON_WIDTH, btnUnpair.Frame.Height);
 
                     var callFrame = btnCall.Frame;
-                    UpdateCallButtonSize (callFrame);
+					var tipFrame = btnTip.Frame;
+
+					UpdateButtonsSize (callFrame, tipFrame);
+
                     ViewModel.PropertyChanged += (sender, e) => 
                     {
                         InvokeOnMainThread(()=>
                         {
-                            UpdateCallButtonSize (callFrame);
+							UpdateButtonsSize (callFrame, tipFrame);
                         });
                     };
                 }
+				else
+				{
+					ViewModel.PropertyChanged += (sender, e) => 
+					{
+						if (ViewModel.IsUnpairButtonVisible)
+						{
+							var buttonWidth = ((UIScreen.MainScreen.Bounds.Width - (DEFAULT_PADDING * 2)) / 2) - (DEFAULT_PADDING / 2);
+
+							btnUnpair.SetFrame(DEFAULT_PADDING, btnCancel.Frame.Y, buttonWidth, btnUnpair.Frame.Height);
+							btnTip.SetFrame(btnUnpair.Frame.X + buttonWidth + DEFAULT_PADDING, btnCancel.Frame.Y, buttonWidth, btnUnpair.Frame.Height);
+						}
+						else
+						{
+							btnTip.SetFrame((UIScreen.MainScreen.Bounds.Width - btnCancel.Frame.Width) / 2, btnCancel.Frame.Y, btnCancel.Frame.Width, btnUnpair.Frame.Height);
+						}
+
+						var callFrame = btnCall.Frame;
+						var tipFrame = btnTip.Frame;
+
+						InvokeOnMainThread(()=>
+							{
+								UpdateButtonsSize (callFrame, tipFrame);
+							});
+					};
+				}
 
                 textColor = UIColor.FromRGB (50, 50, 50);
 
@@ -287,6 +324,14 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 					.To(vm => vm.IsUnpairButtonVisible)
 					.WithConversion("BoolInverter");
 
+				set.Bind(btnTip)
+					.For("TouchUpInside")
+					.To(vm => vm.EditAutoTipCommand);
+				set.Bind(btnTip)
+					.For(v => v.Hidden)
+					.To(vm => vm.CanEditAutoTip)
+					.WithConversion("BoolInverter");
+
 				set.Apply();
 
                 mapStatus.GetViewForAnnotation = MKMapViewHelper.GetViewForAnnotation;
@@ -313,19 +358,31 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
             }
         }
 
-        void UpdateCallButtonSize (CGRect callFrame)
+		void UpdateButtonsSize (CGRect callFrame, CGRect tipFrame)
         {
             if (ViewModel.IsCancelButtonVisible || ViewModel.IsUnpairButtonVisible)
             {
                 // keep it tight and tidy in the right corner
                 btnCall.SetFrame(callFrame);
+				btnTip.SetFrame (tipFrame);
             }
             else
             {
                 // center it
-                btnCall.SetX ((UIScreen.MainScreen.Bounds.Width - btnCancel.Frame.Width) / 2).SetWidth (btnCancel.Frame.Width);
-                btnCall.SetTitle(Localize.GetValue("StatusCallButton"), UIControlState.Normal);
-                FlatButtonStyle.Silver.ApplyTo(btnCall);
+                //btnCall.SetX ((UIScreen.MainScreen.Bounds.Width - btnCancel.Frame.Width) / 2).SetWidth (btnCancel.Frame.Width);
+
+				var totalButtonsWidth = DEFAULT_TIP_BUTTON_WIDTH + DEFAULT_CALL_BUTTON_WIDTH + DEFAULT_PADDING;
+				var unusedWidth = UIScreen.MainScreen.Bounds.Width - totalButtonsWidth;
+
+				btnTip.SetWidth(DEFAULT_TIP_BUTTON_WIDTH).SetX(unusedWidth / 2);
+				//btnTip.SetWidth(DEFAULT_TIP_BUTTON_WIDTH).SetX(btnCall.Frame.X - btnTip.Frame.Width - 8);
+				btnTip.SetTitle(Localize.GetValue("StatusEditAutoTipButton"), UIControlState.Normal);
+				FlatButtonStyle.Silver.ApplyTo(btnTip);
+
+				btnCall.SetX(btnTip.Frame.X + btnTip.Frame.Width + DEFAULT_PADDING).SetWidth(DEFAULT_CALL_BUTTON_WIDTH);
+				//btnCall.SetX(UIScreen.MainScreen.Bounds.Width - btnCancel.Frame.Width - 8).SetWidth(DEFAULT_CALL_BUTTON_WIDTH);
+				btnCall.SetTitle(Localize.GetValue("StatusCallButton"), UIControlState.Normal);
+				FlatButtonStyle.Silver.ApplyTo(btnCall);
             }
         }
             

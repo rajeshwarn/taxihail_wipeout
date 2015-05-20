@@ -37,7 +37,8 @@ namespace apcurium.MK.Booking.CommandHandlers
         ICommandHandler<CreateOrderForManualRideLinqPair>,
         ICommandHandler<UnpairOrderForManualRideLinq>,
         ICommandHandler<UpdateTripInfoInOrderForManualRideLinq>,
-        ICommandHandler<SaveTemporaryOrderPaymentInfo>
+        ICommandHandler<SaveTemporaryOrderPaymentInfo>,
+        ICommandHandler<UpdateAutoTip>
     {
         private readonly IEventSourcedRepository<Order> _repository;
         private readonly Func<BookingDbContext> _contextFactory;
@@ -222,6 +223,14 @@ namespace apcurium.MK.Booking.CommandHandlers
             order.UpdateRideLinqTripInfo(command.Distance,command.Total, command.Fare, command.FareAtAlternateRate, command.Tax,
                 command.Tip, command.Toll, command.Extra,command.Surcharge,command.RateAtTripStart, command.RateAtTripEnd, 
                 command.RateChangeTime ,command.EndTime, command.PairingToken, command.Medallion, command.TripId, command.DriverId);
+
+            _repository.Save(order, command.Id.ToString());
+        }
+
+        public void Handle(UpdateAutoTip command)
+        {
+            var order = _repository.Get(command.OrderId);
+            order.UpdateAutoTip(command.AutoTipPercentage);
 
             _repository.Save(order, command.Id.ToString());
         }

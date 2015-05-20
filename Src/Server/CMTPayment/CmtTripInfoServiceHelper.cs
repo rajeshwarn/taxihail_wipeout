@@ -111,5 +111,23 @@ namespace CMTPayment
                 }
             }
         }
+
+        public void WaitForTipUpdated(string pairingToken, int updatedTipPercentage, long timeoutSeconds)
+        {
+            var watch = new Stopwatch();
+            watch.Start();
+            var trip = GetTripInfo(pairingToken);
+
+            while (trip.AutoTipPercentage != updatedTipPercentage)
+            {
+                Thread.Sleep(2000);
+                trip = GetTripInfo(pairingToken);
+
+                if (watch.Elapsed.TotalSeconds >= timeoutSeconds)
+                {
+                    throw new TimeoutException("Could not update tip");
+                }
+            }
+        }
     }
 }
