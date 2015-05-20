@@ -167,6 +167,7 @@
     <Compile Include="Enumeration\ChargeTypes.cs" />
     <Compile Include="Enumeration\DeploymentTargets.cs" />
     <Compile Include="Enumeration\DistanceFormat.cs" />
+    <Compile Include="Enumeration\DriverEtaNotificationModes.cs" />
     <Compile Include="Enumeration\PaymentProvider.cs" />
     <Compile Include="Enumeration\PaymentType.cs" />
     <Compile Include="Enumeration\PayPal\AuthorizationStates.cs" />
