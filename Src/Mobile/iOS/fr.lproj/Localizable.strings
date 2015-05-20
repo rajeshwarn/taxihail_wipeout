@@ -608,4 +608,7 @@
 "ManualRideLinqCreditCardDisabled"="Vous avez un paiement en souffrance pour un course précédente et vous ne pouvez donc pas utiliser RideLinQ jusqu'à ce que ce montant soit payé.";
 "PromoMustHavePaymentMethodSetMessage"="Pour utiliser un code promotionnel, vous devez avoir configuré une méthode de paiement.";
 "ManualRideLinqStatus_Extra"="Extra:";
+"StatusEditAutoTipButton"="Pourboire";
 "ManualRideLinqStatus_Toll"="Péage:";
+"View_EditAutoTip"="Modifier Pourboire";
+"Error_EditAutoTipMessage"="Une erreur est survenue en changeant le pourboire. Veuillez réessayer.";

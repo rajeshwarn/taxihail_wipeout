@@ -27,7 +27,8 @@ namespace apcurium.MK.Booking.EventHandlers
         IEventHandler<OrderCancelledBecauseOfError>,
         IEventHandler<OrderManuallyPairedForRideLinq>,
         IEventHandler<OrderUnpairedFromManualRideLinq>,
-        IEventHandler<ManualRideLinqTripInfoUpdated>
+        IEventHandler<ManualRideLinqTripInfoUpdated>,
+        IEventHandler<AutoTipUpdated>
     {
         private readonly Func<BookingDbContext> _contextFactory;
         private readonly ILogger _logger;
@@ -632,6 +633,22 @@ namespace apcurium.MK.Booking.EventHandlers
                 rideLinqDetails.RateAtTripEnd = @event.RateAtTripEnd;
                 rideLinqDetails.RateChangeTime = @event.RateChangeTime;
                 context.Save(rideLinqDetails);
+            }
+        }
+
+        public void Handle(AutoTipUpdated @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var orderPairing = context.Find<OrderPairingDetail>(@event.SourceId);
+                if (orderPairing == null)
+                {
+                    _logger.LogMessage("No Pairing found for Order : " + @event.SourceId);
+                    return;
+                }
+
+                orderPairing.AutoTipPercentage = @event.AutoTipPercentage;
+                context.Save(orderPairing);
             }
         }
 

@@ -610,5 +610,8 @@
   <string name="ManualRideLinqCreditCardDisabled">Vous avez un paiement en souffrance pour un course précédente et vous ne pouvez donc pas utiliser RideLinQ jusqu\'à ce que ce montant soit payé.</string>
   <string name="PromoMustHavePaymentMethodSetMessage">Pour utiliser un code promotionnel, vous devez avoir configuré une méthode de paiement.</string>
   <string name="ManualRideLinqStatus_Extra">Extra:</string>
+  <string name="StatusEditAutoTipButton">Pourboire</string>
   <string name="ManualRideLinqStatus_Toll">Péage:</string>
+  <string name="View_EditAutoTip">Modifier Pourboire</string>
+  <string name="Error_EditAutoTipMessage">Une erreur est survenue en changeant le pourboire. Veuillez réessayer.</string>
 </resources>

@@ -51,6 +51,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -71,8 +72,8 @@
     <Compile Include="OAuthAuthorizer.cs" />
     <Compile Include="Pair\CmtPairingResponse.cs" />
     <Compile Include="Pair\CmtUnpairingResponse.cs" />
+    <Compile Include="Pair\ManualRideLinqCoFPairingRequest.cs" />
     <Compile Include="Pair\ManualRidelinqPairingRequest.cs" />
-    <Compile Include="Pair\ManualRideLinqUnpairingRequest.cs" />
     <Compile Include="Pair\PairingRequest.cs" />
     <Compile Include="Pair\Trip.cs" />
     <Compile Include="Pair\TripRequest.cs" />

@@ -590,5 +590,8 @@
   <string name="Error_InvalidCvvMessage">The CVV must be a number between 3 and 4 digits</string>
   <string name="ManualRideLinqCreditCardDisabled">Your current card on file has an overdue payment for a previous ride. This overdue payment is preventing you from pairing with RideLinQ</string>
   <string name="ManualRideLinqStatus_Extra">Extra:</string>
+  <string name="StatusEditAutoTipButton">Tip</string>
   <string name="ManualRideLinqStatus_Toll">Toll:</string>
+  <string name="View_EditAutoTip">Edit Tip</string>
+  <string name="Error_EditAutoTipMessage">An error occurred while trying to update the tip. Please try again.</string>
 </resources>

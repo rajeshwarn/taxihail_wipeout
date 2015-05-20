@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7702" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7701"/>
         <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ManualRideLinqStatusView">
             <connections>
+                <outlet property="btnTip" destination="znK-wP-Oab" id="Q10-oz-fRy"/>
                 <outlet property="btnUnpair" destination="3Ts-zN-ahv" id="cSl-Cb-A8W"/>
                 <outlet property="lblDriverId" destination="lYH-KK-iQs" id="eoY-Kw-gbw"/>
                 <outlet property="lblDriverIdText" destination="raj-hF-F7Y" id="GWU-G3-EJN"/>
@@ -53,15 +54,27 @@
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                 </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="znK-wP-Oab" customClass="FlatButton">
+                    <rect key="frame" x="10" y="464" width="300" height="42"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="42" id="vQm-3d-MX8"/>
+                    </constraints>
+                    <state key="normal" title="Button">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                </button>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="3Ts-zN-ahv" secondAttribute="trailing" constant="10" id="676-bu-QSm"/>
                 <constraint firstAttribute="centerX" secondItem="Jvn-Jk-kwM" secondAttribute="leading" constant="-3" id="836-kk-thB"/>
+                <constraint firstItem="znK-wP-Oab" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="10" id="8Kj-3Q-yE1"/>
                 <constraint firstAttribute="bottom" secondItem="3Ts-zN-ahv" secondAttribute="bottom" constant="10" id="CjA-94-mrg"/>
+                <constraint firstAttribute="trailing" secondItem="znK-wP-Oab" secondAttribute="trailing" constant="10" id="SxF-7T-xnf"/>
                 <constraint firstAttribute="centerX" secondItem="lYH-KK-iQs" secondAttribute="trailing" constant="3" id="TIW-7e-vnj"/>
                 <constraint firstAttribute="centerX" secondItem="Rz7-tH-zX9" secondAttribute="trailing" constant="3" id="adT-ee-Al4"/>
                 <constraint firstAttribute="centerX" secondItem="raj-hF-F7Y" secondAttribute="leading" constant="-3" id="bPc-xu-WRT"/>
+                <constraint firstItem="3Ts-zN-ahv" firstAttribute="top" secondItem="znK-wP-Oab" secondAttribute="bottom" constant="10" id="bxQ-MF-130"/>
                 <constraint firstItem="Jvn-Jk-kwM" firstAttribute="top" secondItem="raj-hF-F7Y" secondAttribute="bottom" constant="20" id="gOD-BF-JKj"/>
                 <constraint firstItem="3Ts-zN-ahv" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="10" id="hHR-TP-ouF"/>
                 <constraint firstItem="lYH-KK-iQs" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="40" id="oQ2-8d-YQQ"/>

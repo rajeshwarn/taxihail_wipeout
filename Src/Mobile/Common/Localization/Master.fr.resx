@@ -1948,7 +1948,17 @@
   <data name="ManualRideLinqStatus_Extra" xml:space="preserve">
     <value>Extra:</value>
   </data>
+  <data name="StatusEditAutoTipButton" xml:space="preserve">
+    <value>Pourboire</value>
+  </data>
   <data name="ManualRideLinqStatus_Toll" xml:space="preserve">
     <value>Péage:</value>
+  </data>
+  <data name="View_EditAutoTip" xml:space="preserve">
+    <value>Modifier Pourboire</value>
+  </data>
+  <data name="Error_EditAutoTipMessage" xml:space="preserve">
+    <value>Une erreur est survenue en changeant le pourboire. Veuillez réessayer.</value>
+    <comment>An error occurred while trying to update the tip. Please try again.</comment>
   </data>
 </root>

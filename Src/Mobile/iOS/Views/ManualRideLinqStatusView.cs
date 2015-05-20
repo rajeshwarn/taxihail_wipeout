@@ -18,6 +18,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 	        base.ViewWillAppear(animated);
 
             NavigationController.NavigationBar.Hidden = false;
+
+			ChangeThemeOfBarStyle();
 	    }
 
 	    public override void ViewDidLoad()
@@ -31,7 +33,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			lblDriverId.Text = localize["ManualRideLinqStatus_Driver"];
 			lblPairingCode.Text = localize["ManualRideLinqStatus_PairingCode"];
 			btnUnpair.SetTitle(localize["ManualRideLinqStatus_Unpair"], UIControlState.Normal);
+			btnTip.SetTitle(localize ["StatusEditAutoTipButton"], UIControlState.Normal);
 
+			FlatButtonStyle.Silver.ApplyTo(btnTip);
 			FlatButtonStyle.Red.ApplyTo(btnUnpair);
 
 			var bindingSet = this.CreateBindingSet<ManualRideLinqStatusView, ManualRideLinqStatusViewModel>();
@@ -45,6 +49,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			bindingSet.Bind(btnUnpair)
 				.For(v => v.Command)
 				.To(vm => vm.UnpairFromRideLinq);
+
+			bindingSet.Bind (btnTip)
+				.For(v => v.Command)
+				.To(vm => vm.EditAutoTipCommand);
 
 			bindingSet.Apply();
 		}
