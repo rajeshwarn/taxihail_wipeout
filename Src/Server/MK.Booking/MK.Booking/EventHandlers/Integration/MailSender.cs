@@ -127,7 +127,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                 return;
             }
 
-            SendReceipt(@event.OrderId, @event.Meter, @event.Tip, @event.Tax, @event.Toll, @event.Surcharge, @event.AmountSavedByPromotion);
+            SendReceipt(@event.OrderId, @event.Meter, @event.Tip, @event.Tax, @event.Surcharge, @event.AmountSavedByPromotion, @event.Toll);
         }
 
         public void Handle(ManualRideLinqTripInfoUpdated @event)
