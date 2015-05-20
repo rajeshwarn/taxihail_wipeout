@@ -23,18 +23,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             _bookingService = bookingService;
         }
 
-        public void Init(string orderTipPercentage)
-        {
-            if (orderTipPercentage != null)
-            {
-                var selectedTipPercentage = PaymentPreferences.Tips.FirstOrDefault(t => t.Id == int.Parse(orderTipPercentage));
-                if (selectedTipPercentage != null)
-                {
-                    SelectedTipPercentage = selectedTipPercentage;
-                }
-            }
-        }
-
         private PaymentDetailsViewModel _paymentPreferences;
         public PaymentDetailsViewModel PaymentPreferences
         {
@@ -49,20 +37,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        private ListItem _selectedTipPercentage;
-        public ListItem SelectedTipPercentage
-        {
-            get { return _selectedTipPercentage; }
-            set
-            {
-                if (_selectedTipPercentage != value)
-                {
-                    _selectedTipPercentage = value;
-                    RaisePropertyChanged();
-                }
-            }
-        }
-
         public ICommand SaveAutoTipChangeCommand
         {
             get
@@ -74,7 +48,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                         var activeOrder = await _orderWorkflowService.GetLastActiveOrder();
                         if (activeOrder != null)
                         {
-                            // TODO: Update ride settings?
                             bool autoTipUpdated;
 
                             if (activeOrder.Item1.IsManualRideLinq)
