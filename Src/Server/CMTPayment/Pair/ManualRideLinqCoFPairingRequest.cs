@@ -2,9 +2,11 @@
 
 namespace CMTPayment.Pair
 {
-    [Route("v1/init/pairing/{PairingToken}")]
-    public class ManualRideLinqPairingRequest : IReturn<CmtUnpairingResponse>
+    [Route("v1/init/pairing/external/cof")]
+    public class ManualRideLinqCoFPairingRequest : IReturn<CmtPairingResponse>
     {
+        public string PairingCode { get; set; }
+
         public string CustomerId { get; set; }
 
         public string CustomerName { get; set; }
@@ -13,8 +15,10 @@ namespace CMTPayment.Pair
 
         public double Longitude { get; set; }
 
+        public int AutoTipPercentage { get; set; }
+
         public bool AutoCompletePayment { get; set; }
 
-        public int AutoTipPercentage { get; set; }
+        public string CardOnFileId { get; set; }
     }
 }

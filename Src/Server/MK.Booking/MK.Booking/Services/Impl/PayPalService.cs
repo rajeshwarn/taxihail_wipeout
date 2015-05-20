@@ -668,6 +668,11 @@ namespace apcurium.MK.Booking.Services.Impl
             Void(orderId, transactionId, ref message);
         }
 
+        public BasePaymentResponse UpdateAutoTip(Guid orderId, int autoTipPercentage)
+        {
+            throw new NotImplementedException("Method only implemented for CMT RideLinQ");
+        }
+
         private void Void(Guid orderId, string transactionId, ref string message)
         {
             try

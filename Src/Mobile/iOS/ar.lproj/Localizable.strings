@@ -63,6 +63,7 @@
 "TaxiHailNetworkTimeOutPopupAccept"="Accept";
 "ReSendConfirmation"="بلغ السائق بالدفع";
 "CreateAccountPhonePlaceHolder"="الجوال";
+"Error_EditAutoTipMessage"="An error occurred while trying to update the tip. Please try again.";
 "ReminderTitle"="تم الحجز {0}";
 "March"="مارس (03)";
 "LoginViewEmailPlaceHolder"="البريد الإلكترونيي";
@@ -153,6 +154,7 @@
 "PromotionButton"="Tap to Enter or View Promo Code";
 "BookRatingErrorMessage"="قم بتقييم مشوارك";
 "DriverInfoModel"="الموديل:";
+"StatusEditAutoTipButton"="Tip";
 "RideSettingsCustomerNumber"="Account Rider Number";
 "PaymentLoadError"="Unable to load the payment details. Please try again later.";
 "Overdue_Amount"="Amount due:";
@@ -571,6 +573,7 @@
 "UpdateBookingSettingsInvalidCoF"="You must have a card on file to use this account";
 "WarningLocationServiceDontShow"="لا تحذر";
 "Overdue_Failed_Title"="Payment Failed";
+"View_EditAutoTip"="Edit Tip";
 "StatusConfirmNewBooking"="في حالة حجز سيارة أجرة اخرى فإن هذا الطلب سيظل ساري، هل ترغب في الاستمرار ؟";
 "InvalidPassengersNumber"="The vehicle type that you selected does not have enough seats to accommodate your number of passengers. Please change your selection or book more than one car to accommodate your party size.";
 "RideHistoryButton"="حجوزات سابقة";

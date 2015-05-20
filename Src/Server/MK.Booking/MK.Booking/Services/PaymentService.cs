@@ -130,6 +130,16 @@ namespace apcurium.MK.Booking.Services
             return GetInstance().RefundPayment(orderId);
         }
 
+        public BasePaymentResponse UpdateAutoTip(Guid orderId, int autoTipPercentage)
+        {
+            if (IsPayPal(orderId: orderId))
+            {
+                throw new NotImplementedException("Method only implemented for CMT RideLinQ");
+            }
+
+            return GetInstance().UpdateAutoTip(orderId, autoTipPercentage);
+        }
+
         public DeleteTokenizedCreditcardResponse DeleteTokenizedCreditcard(string cardToken)
         {
             if (IsPayPal())

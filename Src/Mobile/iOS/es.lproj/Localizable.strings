@@ -65,6 +65,7 @@
 "FilteredAddresses_Error_Title"="Error";
 "November"="Nov (11)";
 "CreateAccountPhonePlaceHolder"="Celular";
+"Error_EditAutoTipMessage"="An error occurred while trying to update the tip. Please try again.";
 "ReminderTitle"="{0} Reservado";
 "March"="Mar (03)";
 "LoginViewEmailPlaceHolder"="Email";
@@ -459,6 +460,7 @@
 "Toggle_On"="Encendido";
 "GooglePlayServicesNotAvailableMessage"="Usted necesita actualizar los servicios de “Google play” para poder utilizar esta aplicación";
 "LocationViewTitle"="Mis lugares";
+"StatusEditAutoTipButton"="Tip";
 "DriverInfoDriver"="Chofer:";
 "SettingsViewTitle"="Ajustes";
 "TechSupportEmailTitle"="Soporte de applicion móvil";
@@ -582,6 +584,7 @@
 "WarningLocationServiceDontShow"="No avisar";
 "Overdue_Failed_Title"="Payment Failed";
 "TAXI"="TAXI";
+"View_EditAutoTip"="Edit Tip";
 "StatusConfirmNewBooking"="Reservar un nuevo taxi mantendrá esta reservación activa, desea continuar?";
 "InvalidPassengersNumber"="The vehicle type that you selected does not have enough seats to accommodate your number of passengers. Please change your selection or book more than one car to accommodate your party size.";
 "DeleteCreditCard"="¿Desea eliminar la tarjeta de crédito asociada con esta cuenta?";

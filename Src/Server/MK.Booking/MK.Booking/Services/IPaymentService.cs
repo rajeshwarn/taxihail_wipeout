@@ -16,6 +16,8 @@ namespace apcurium.MK.Booking.Services
         CommitPreauthorizedPaymentResponse CommitPayment(Guid orderId, AccountDetail account, decimal preauthAmount, decimal amount, decimal meterAmount, decimal tipAmount, string transactionId, string reAuthOrderId = null, bool isForPrepaid = false);
 
         BasePaymentResponse RefundPayment(Guid orderId);
+
+        BasePaymentResponse UpdateAutoTip(Guid orderId, int autoTipPercentage);
         
         DeleteTokenizedCreditcardResponse DeleteTokenizedCreditcard(string cardToken);
 
