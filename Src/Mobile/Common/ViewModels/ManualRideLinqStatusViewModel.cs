@@ -15,13 +15,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
     public class ManualRideLinqStatusViewModel : PageViewModel
     {
         private readonly IBookingService _bookingService;
+		private readonly IAccountService _accountService;
 
 		// In seconds
         private int _refreshInterval = 5;
+		private int _selectedAutoTipPercentage;
 
-        public ManualRideLinqStatusViewModel(IBookingService bookingService)
+		public ManualRideLinqStatusViewModel(IBookingService bookingService, IAccountService accountService)
         {
             _bookingService = bookingService;
+			_accountService = accountService;
         }
 
         public void Init(string orderManualRideLinqDetail)
@@ -31,6 +34,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			DriverId = orderManualRideLinq.DriverId.ToString();
 			PairingCode = orderManualRideLinq.PairingCode;
 			OrderId = orderManualRideLinq.OrderId;
+
+			_selectedAutoTipPercentage = _accountService.CurrentAccount.DefaultTipPercent ?? 15;
 		}
 
 		public override void Start()
@@ -99,7 +104,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 return this.GetCommand(() =>
                 {
-                    ShowViewModel<EditAutoTipViewModel>();
+					ShowViewModel<EditAutoTipViewModel>();
                 });
             }
         }

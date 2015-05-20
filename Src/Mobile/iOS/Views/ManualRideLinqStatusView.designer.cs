@@ -13,6 +13,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 	partial class ManualRideLinqStatusView
 	{
 		[Outlet]
+		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnTip { get; set; }
+
+		[Outlet]
 		apcurium.MK.Booking.Mobile.Client.Controls.Widgets.FlatButton btnUnpair { get; set; }
 
 		[Outlet]
@@ -35,6 +38,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		
 		void ReleaseDesignerOutlets ()
 		{
+			if (btnTip != null) {
+				btnTip.Dispose ();
+				btnTip = null;
+			}
+
 			if (btnUnpair != null) {
 				btnUnpair.Dispose ();
 				btnUnpair = null;
