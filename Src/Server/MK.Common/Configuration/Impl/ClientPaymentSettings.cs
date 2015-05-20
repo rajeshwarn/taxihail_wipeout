@@ -41,5 +41,36 @@ namespace apcurium.MK.Common.Configuration.Impl
         public BraintreeClientSettings BraintreeClientSettings { get; set; }
         public MonerisPaymentSettings MonerisPaymentSettings { get; set; }
         public PayPalClientSettings PayPalClientSettings { get; set; }
+
+        public SupportedPaymentMethod SupportedPaymentMethod
+        {
+            get
+            {
+                if (PayPalClientSettings.IsEnabled && IsPayInTaxiEnabled)
+                {
+                    return SupportedPaymentMethod.Multiple;
+                }
+
+                if (PayPalClientSettings.IsEnabled)
+                {
+                    return SupportedPaymentMethod.PayPalOnly;
+                }
+
+                if (IsPayInTaxiEnabled)
+                {
+                    return SupportedPaymentMethod.CreditCardOnly;
+                }
+
+                return SupportedPaymentMethod.None;
+            }
+        }
+    }
+
+    public enum SupportedPaymentMethod
+    {
+        None,
+        CreditCardOnly,
+        PayPalOnly,
+        Multiple
     }
 }
