@@ -213,8 +213,6 @@ namespace DatabaseInitializer
                     FetchingIbsDefaults(container, commandBus);
 
                     CreateDefaultAccounts(container, commandBus);
-
-                    // TODO call google to set the timezone of the company using default lat/lng and translating IANA time zone to microsoft
                 }
                 else
                 {
