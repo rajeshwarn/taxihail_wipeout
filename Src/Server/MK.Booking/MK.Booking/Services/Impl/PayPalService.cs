@@ -567,9 +567,6 @@ namespace apcurium.MK.Booking.Services.Impl
         public CommitPreauthorizedPaymentResponse CommitPayment(Guid orderId, decimal preauthAmount, decimal amount, decimal meterAmount, decimal tipAmount, string transactionId)
         {
             var order = _orderDao.FindById(orderId);
-            var accessToken = GetAccessToken(order.AccountId);
-            var apiContext = GetAPIContext(accessToken, orderId);
-
             var updatedTransactionId = transactionId;
 
             try
@@ -590,6 +587,9 @@ namespace apcurium.MK.Booking.Services.Impl
                 {
                     updatedTransactionId = authResponse.TransactionId;
                 }
+
+                var accessToken = GetAccessToken(order.AccountId);
+                var apiContext = GetAPIContext(accessToken, orderId);
 
                 var authorization = Authorization.Get(apiContext, updatedTransactionId);
 

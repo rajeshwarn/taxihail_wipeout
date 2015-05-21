@@ -307,7 +307,7 @@ namespace apcurium.MK.Booking.Services.Impl
                     return new CommitPreauthorizedPaymentResponse
                     {
                         IsSuccessful = false,
-                        IsDeclined = true,
+                        IsDeclined = authResponse.IsDeclined,
                         TransactionId = commitTransactionId,
                         TransactionDate = authResponse.TransactionDate,
                         Message = string.Format("Moneris Re-Auth of amount {0} failed.", amount)
