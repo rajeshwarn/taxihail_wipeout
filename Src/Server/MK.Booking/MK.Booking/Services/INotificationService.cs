@@ -18,7 +18,7 @@ namespace apcurium.MK.Booking.Services
         void SendPaymentCapturePush(Guid orderId, decimal amount);
         void SendTaxiNearbyPush(Guid orderId, string ibsStatus, double? newLatitude, double? newLongitude);
         void SendUnpairingReminderPush(Guid orderId);
-        void SendAutomaticPairingPush(Guid orderId, int autoTipPercentage, bool success);
+        void SendAutomaticPairingPush(Guid orderId, CreditCardDetails creditCard, int autoTipPercentage, bool success);
         void SendOrderCreationErrorPush(Guid orderId, string errorDescription);
 
         void SendAccountConfirmationSMS(string phoneNumber, string code, string clientLanguageCode);
