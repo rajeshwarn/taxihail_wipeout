@@ -342,8 +342,14 @@
   <data name="PushNotification_OrderPairingSuccessful" xml:space="preserve">
     <value>La course #{0} sera payée automatiquement à la fin du voyage en utilisant votre carte de crédit se terminant par {1} et en utilisant votre pourboire par défaut de {2}%</value>
   </data>
+  <data name="PushNotification_OrderPairingSuccessfulUnpair" xml:space="preserve">
+    <value>La course #{0} sera payée à la fin du voyage en utilisant votre carte de crédit se terminant par {1}. Si vous n'êtes pas dans le bon véhicule, choisissez payer dans le taxi</value>
+  </data>
   <data name="PushNotification_OrderPairingSuccessfulPayPal" xml:space="preserve">
-    <value>La course #{0} sera payée automatiquement à la fin du voyage en utilisant votre compte PayPal associé et en utilisant votre pourboire par défaut de {2}%</value>
+    <value>La course #{0} sera payée automatiquement à la fin du voyage en utilisant votre compte PayPal associé et en utilisant votre pourboire par défaut de {1}%</value>
+  </data>
+  <data name="PushNotification_OrderPairingSuccessfulPayPalUnpair" xml:space="preserve">
+    <value>La course #{0} sera payée à la fin du voyage en utilisant votre compte PayPal. Si vous n'êtes pas dans le bon véhicule, choisissez payer dans le taxi</value>
   </data>
   <data name="PushNotification_OrderPairingFailed" xml:space="preserve">
     <value>La course #{0} n'a pas pu être associée automatiquement pour le paiement</value>
@@ -560,12 +566,6 @@
   </data>
   <data name="PayPalWebPaymentDescription" xml:space="preserve">
     <value>Course d'un montant de {0}</value>
-  </data>
-  <data name="PushNotification_OrderPairingSuccessfulPayPalUnpair" xml:space="preserve">
-    <value>La course #{0} sera payée à la fin du voyage en utilisant votre compte PayPal. Si vous n'êtes pas dans le bon véhicule, choisissez payer dans le taxi</value>
-  </data>
-  <data name="PushNotification_OrderPairingSuccessfulUnpair" xml:space="preserve">
-    <value>La course #{0} sera payée à la fin du voyage en utilisant votre carte de crédit. Si vous n'êtes pas dans le bon véhicule, choisissez payer dans le taxi</value>
   </data>
   <data name="PushNotification_OrderUnpairingTimeOutWarning" xml:space="preserve">
     <value>Rappel: Si vous n'êtes pas dans le bon véhicule, choisissez payer dans le taxi pour ne pas être débité du montant de la course</value>
