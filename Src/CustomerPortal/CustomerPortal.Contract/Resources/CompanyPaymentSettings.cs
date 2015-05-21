@@ -1,16 +1,11 @@
-﻿
+﻿using apcurium.MK.Common.Configuration.Impl;
 using CustomerPortal.Contract.Resources.Payment;
 
 namespace CustomerPortal.Contract.Resources
 {
     public class CompanyPaymentSettings
     {
-        public CompanyPaymentSettings()
-        {
-            CmtPaymentSettings = new CmtPaymentSettings();
-            BraintreePaymentSettings = new BraintreePaymentSettings();
-            MonerisPaymentSettings = new MonerisPaymentSettings();
-        }
+        public PaymentMethod PaymentMode { get; set; }
 
         public CmtPaymentSettings CmtPaymentSettings { get; set; }
 

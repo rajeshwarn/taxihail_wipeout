@@ -3,7 +3,6 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Data.Odbc;
 using System.Linq;
 using CustomerPortal.Web.Entities.Network;
 using CustomerPortal.Web.Properties;

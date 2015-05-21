@@ -126,9 +126,16 @@ namespace CustomerPortal.Client.Impl
             return Client.DeleteAsync(string.Format("customer/{0}/companyVehicles?vehicleTypeId={1}", companyId, id));
         }
 
-        public Task UpdatePaymentSettings(string companyId /* TODO */)
+        public CompanyPaymentSettings GetPaymentSettings(string companyId)
         {
-            return Client.Post(string.Format("customer/{0}/paymentSettings", companyId), "TODO");
+            return Client.Get(string.Format("customer/{0}/paymentSettings", companyId))
+                         .Deserialize<CompanyPaymentSettings>()
+                         .Result;
+        }
+
+        public Task UpdatePaymentSettings(string companyId, CompanyPaymentSettings paymentSettings)
+        {
+            return Client.Post(string.Format("customer/{0}/paymentSettings", companyId), paymentSettings);
         }
     }
 }
