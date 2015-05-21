@@ -72,7 +72,8 @@ namespace apcurium.MK.Booking.IBS
             VehicleLongitude = orderInfoFromIBS.VehicleCoordinateLong != 0 ? orderInfoFromIBS.VehicleCoordinateLong : VehicleLongitude;
 
             DriverId = orderInfoFromIBS.CallNumber.GetValue(DriverId);
-            PairingCode = orderInfoFromIBS.PairingCode;
+            // should always be null if not set because we compare it to OrderStatusDetail.RideLinqPairingCode
+            PairingCode = orderInfoFromIBS.PairingCode.HasValue() ? orderInfoFromIBS.PairingCode : null; 
 
             ReferenceNumber = orderInfoFromIBS.ReferenceNumber.GetValue(ReferenceNumber);
             TerminalId = orderInfoFromIBS.TerminalId.GetValue(TerminalId);
