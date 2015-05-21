@@ -41,7 +41,6 @@ namespace apcurium.MK.Booking.Services.Impl
         private readonly IConfigurationDao _configurationDao;
         private readonly IOrderDao _orderDao;
         private readonly IAccountDao _accountDao;
-        private readonly ICreditCardDao _creditCardDao;
         private readonly IStaticMap _staticMap;
         private readonly ISmsService _smsService;
         private readonly IGeocoding _geocoding;
@@ -59,7 +58,6 @@ namespace apcurium.MK.Booking.Services.Impl
             IConfigurationDao configurationDao,
             IOrderDao orderDao,
             IAccountDao accountDao,
-            ICreditCardDao creditCardDao,
             IStaticMap staticMap,
             ISmsService smsService,
             IGeocoding geocoding,
@@ -73,7 +71,6 @@ namespace apcurium.MK.Booking.Services.Impl
             _configurationDao = configurationDao;
             _orderDao = orderDao;
             _accountDao = accountDao;
-            _creditCardDao = creditCardDao;
             _staticMap = staticMap;
             _smsService = smsService;
             _geocoding = geocoding;
@@ -258,7 +255,7 @@ namespace apcurium.MK.Booking.Services.Impl
             }
         }
 
-        public void SendAutomaticPairingPush(Guid orderId, int autoTipPercentage, bool success)
+        public void SendAutomaticPairingPush(Guid orderId, CreditCardDetails creditCard, int autoTipPercentage, bool success)
         {
             using (var context = _contextFactory.Invoke())
             {
@@ -279,14 +276,12 @@ namespace apcurium.MK.Booking.Services.Impl
                 }
                 else
                 {
-                    var card = _creditCardDao.FindByAccountId(order.AccountId).First();
-                    var last4Digits = card.Last4Digits;
                     successMessage = string.Format(
                         isAutomaticPairingEnabled
                             ? _resources.Get("PushNotification_OrderPairingSuccessfulUnpair", order.ClientLanguageCode)
                             : _resources.Get("PushNotification_OrderPairingSuccessful", order.ClientLanguageCode),
                         order.IBSOrderId,
-                        last4Digits,
+                        creditCard != null ? creditCard.Last4Digits : "",
                         autoTipPercentage);
                 }
                 
