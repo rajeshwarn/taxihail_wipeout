@@ -145,7 +145,7 @@ namespace apcurium.MK.Booking.Api.Services
                 bestAvailableCompany = FindBestAvailableCompany(market, request.PickupAddress.Latitude, request.PickupAddress.Longitude);
             }
 
-            if (market.HasValue() && bestAvailableCompany.CompanyKey == null)
+            if (market.HasValue() && !bestAvailableCompany.CompanyKey.HasValue())
             {
                 // No companies available that are desserving this region for the company
                 throw new HttpError(HttpStatusCode.BadRequest, ErrorCode.CreateOrder_RuleDisable.ToString(),

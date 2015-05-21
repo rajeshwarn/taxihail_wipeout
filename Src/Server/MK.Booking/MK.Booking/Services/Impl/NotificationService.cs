@@ -505,7 +505,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 HasDriverId = hasDriverInfo && driverInfos.DriverId.HasValue(),
                 VehicleNumber = vehicleNumber,
                 DriverInfos = driverInfos,
-                DriverId = driverInfos.DriverId,
+                DriverId = hasDriverInfo ? driverInfos.DriverId : "",
                 PickupDate = pickupDate.ToString("D", dateFormat),
                 PickupTime = pickupDate.ToString("t", dateFormat /* Short time pattern */),
                 DropOffDate = nullSafeDropOffDate.ToString("D", dateFormat),
