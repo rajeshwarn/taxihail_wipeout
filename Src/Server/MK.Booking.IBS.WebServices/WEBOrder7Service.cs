@@ -5324,6 +5324,8 @@ public partial class TOrderStatus_3 : TOrderStatus_2 {
     
     private string pairingCodeField;
     
+    private double surchargeField;
+    
     /// <remarks/>
     public string PairingCode {
         get {
@@ -5331,6 +5333,16 @@ public partial class TOrderStatus_3 : TOrderStatus_2 {
         }
         set {
             this.pairingCodeField = value;
+        }
+    }
+    
+    /// <remarks/>
+    public double Surcharge {
+        get {
+            return this.surchargeField;
+        }
+        set {
+            this.surchargeField = value;
         }
     }
 }
@@ -6323,8 +6335,6 @@ public partial class TBookOrder_8 : TBookOrder_7 {
         }
     }
 }
-
-
 
 /// <remarks/>
 [System.Xml.Serialization.SoapIncludeAttribute(typeof(TVehiclePosition_2))]

@@ -209,7 +209,7 @@ namespace DatabaseInitializer
 
                     //Save settings so that next calls to referenceDataService has the IBS Url
                     AddOrUpdateAppSettings(commandBus, appSettings);
-
+                    
                     FetchingIbsDefaults(container, commandBus);
 
                     CreateDefaultAccounts(container, commandBus);
