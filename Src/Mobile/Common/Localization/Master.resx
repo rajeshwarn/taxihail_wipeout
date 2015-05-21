@@ -1942,16 +1942,16 @@
     <value>You need to have a card on file to pair with RideLinQ</value>
   </data>
   <data name="CvvRequiredTitle" xml:space="preserve">
-  	<value>CVV Required</value>
+    <value>CVV Required</value>
   </data>
   <data name="CvvRequiredMessage" xml:space="preserve">
-  	<value>Please enter the CVV associated with your card on file to continue</value>
+  	<value>Please enter the CVV associated with your card on file ending with {0} to continue</value>
   </data>
   <data name="Error_InvalidCvvTitle" xml:space="preserve">
-  	<value>Invalid CVV</value>
+    <value>Invalid CVV</value>
   </data>
   <data name="Error_InvalidCvvMessage" xml:space="preserve">
-  	<value>The CVV must be a number between 3 and 4 digits</value>
+    <value>The CVV must be a number between 3 and 4 digits</value>
   </data>
   <data name="ManualRideLinqCreditCardDisabled" xml:space="preserve">
     <value>Your current card on file has an overdue payment for a previous ride. This overdue payment is preventing you from pairing with RideLinQ</value>
@@ -1961,5 +1961,17 @@
   </data>
   <data name="CallDriverUsingProxyPrompt" xml:space="preserve">
     <value>Are you sure you want to initiate a call with your driver?  After accepting, the driver will call you back as soon as possible.</value>
+  </data>
+  <data name="StatusEditAutoTipButton" xml:space="preserve">
+    <value>Tip</value>
+  </data>
+  <data name="View_EditAutoTip" xml:space="preserve">
+    <value>Edit Tip</value>
+  </data>
+  <data name="Error_EditAutoTipMessage" xml:space="preserve">
+    <value>An error occurred while trying to update the tip. Please try again.</value>
+  </data>
+  <data name="Error_EditAutoTipTitle" xml:space="preserve">
+    <value>Error</value>
   </data>
 </root>

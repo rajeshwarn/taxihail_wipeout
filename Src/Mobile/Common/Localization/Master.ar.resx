@@ -1874,7 +1874,7 @@
     <value>CVV Required</value>
   </data>
   <data name="CvvRequiredMessage" xml:space="preserve">
-    <value>Please enter the CVV associated with your card on file to continue</value>
+    <value>Please enter the CVV associated with your card on file ending with {0} to continue</value>
   </data>
   <data name="Error_InvalidCvvTitle" xml:space="preserve">
     <value>Invalid CVV</value>
@@ -1896,5 +1896,14 @@
   </data>
   <data name="CallDriverUsingProxyPrompt" xml:space="preserve">
     <value>Are you sure you want to initiate a call with your driver?  After accepting, the driver will call you back as soon as possible.</value>
+  </data>
+  <data name="StatusEditAutoTipButton" xml:space="preserve">
+    <value>Tip</value>
+  </data>
+  <data name="View_EditAutoTip" xml:space="preserve">
+    <value>Edit Tip</value>
+  </data>
+  <data name="Error_EditAutoTipMessage" xml:space="preserve">
+    <value>An error occurred while trying to update the tip. Please try again.</value>
   </data>
 </root>

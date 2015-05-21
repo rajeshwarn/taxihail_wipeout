@@ -96,6 +96,7 @@
     "TokenizeGenericError": "An unexpected error occured. Please try again.",
     "error.CreditCardNotDeleted": "Can't delete credit card when an order is in progress.",
     "ExpiredCreditCardError":  "The expiration date is not valid.",
+    "ConfirmCVVMessage" : "Please enter the CVV associated with your card on file ending with {0} to continue",
     "Call Driver":  "Call Driver",
     "modal.callDriver.message":  "Are you sure you want to initiate a call with your driver?  After accepting, the driver will call you back as soon as possible.",
     "modal.callDriver.cancelButton":  "Cancel",

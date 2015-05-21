@@ -26,6 +26,16 @@ namespace apcurium.MK.Booking.Api.Client.TaxiHail
             return Client.DeleteAsync<string>(req);
         }
 
+        public Task<ManualRideLinqResponse> UpdateAutoTip(Guid orderId, int autoTipPercentage)
+        {
+            var req = string.Format("/account/manualridelinq/{0}/pairing/tip", orderId);
+            return Client.PutAsync<ManualRideLinqResponse>(req, new ManualRideLinqUpdateAutoTipRequest
+            {
+                OrderId = orderId,
+                AutoTipPercentage = autoTipPercentage
+            });
+        }
+
         public Task<ManualRideLinqResponse> GetUpdatedTrip(Guid orderId)
         {
             var req = string.Format("/account/manualridelinq/{0}/status", orderId);

@@ -605,11 +605,14 @@
   <string name="CurrentBookingDisabledTitle">Réservation Immédiate Non Disponible</string>
   <string name="ManualRideLinqNoCardOnFile">Vous devez avoir une carte associée à votre compte pour utiliser RideLinQ</string>
   <string name="CvvRequiredTitle">CVV Requis</string>
-  <string name="CvvRequiredMessage">Veuillez entrer le code de vérification associé à votre carte de crédit pour continuer</string>
+  <string name="CvvRequiredMessage">Veuillez entrer le code de vérification associé à votre carte de crédit se terminant par {0} pour continuer</string>
   <string name="Error_InvalidCvvTitle">CVV Invalide</string>
   <string name="Error_InvalidCvvMessage">Le code de vérification doit être un nombre possédant entre 3 et 4 chiffres</string>
   <string name="ManualRideLinqCreditCardDisabled">Vous avez un paiement en souffrance pour un course précédente et vous ne pouvez donc pas utiliser RideLinQ jusqu\'à ce que ce montant soit payé.</string>
   <string name="PromoMustHavePaymentMethodSetMessage">Pour utiliser un code promotionnel, vous devez avoir configuré une méthode de paiement.</string>
   <string name="GenericErrorTitle">Erreur</string>
   <string name="CallDriverUsingProxyPrompt">Êtes-vous certain de vouloir contacter votre chauffeur?  Après avoir accepter, votre chauffeur vous rappellera aussitôt que possible.</string>
+  <string name="StatusEditAutoTipButton">Pourboire</string>
+  <string name="View_EditAutoTip">Modifier Pourboire</string>
+  <string name="Error_EditAutoTipMessage">Une erreur est survenue en changeant le pourboire. Veuillez réessayer.</string>
 </resources>

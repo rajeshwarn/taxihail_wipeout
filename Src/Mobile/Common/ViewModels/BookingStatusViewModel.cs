@@ -521,11 +521,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             var isUnPairPossible = DateTime.UtcNow <= OrderStatusDetail.UnpairingTimeOut;
 		    
             if (arePassengersOnBoard
-                && isUnPairPossible
                 && (Order.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id
                 || Order.Settings.ChargeTypeId == ChargeTypes.PayPal.Id)) 
 			{
-				IsUnpairButtonVisible = await _bookingService.IsPaired(Order.Id);
+                var isPaired = await _bookingService.IsPaired(Order.Id);
+
+                CanEditAutoTip = isPaired;
+			    IsUnpairButtonVisible = isPaired && isUnPairPossible;
 			} 
 			else
 			{
@@ -710,6 +712,17 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 			}
 		}
 
+        public ICommand EditAutoTipCommand
+        {
+            get
+            {
+                return this.GetCommand(() =>
+                {
+                    ShowViewModel<EditAutoTipViewModel>();
+                });
+            }
+        }
+
 		public ICommand PrepareNewOrder
         {
 			get
@@ -733,6 +746,20 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             {
                 _isUnpairButtonVisible = value;
 				RaisePropertyChanged();
+            }
+        }
+
+        private bool _canEditAutoTip;
+        public bool CanEditAutoTip
+        {
+            get { return _canEditAutoTip; }
+            set
+            {
+                if (_canEditAutoTip != value)
+                {
+                    _canEditAutoTip = value;
+                    RaisePropertyChanged();
+                }
             }
         }
 

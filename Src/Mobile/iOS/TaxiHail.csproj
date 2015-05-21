@@ -594,6 +594,10 @@
     <Compile Include="Views\Order\OrderBookingOptions.designer.cs">
       <DependentUpon>OrderBookingOptions.cs</DependentUpon>
     </Compile>
+    <Compile Include="Views\EditAutoTipView.cs" />
+    <Compile Include="Views\EditAutoTipView.designer.cs">
+      <DependentUpon>EditAutoTipView.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>
@@ -646,6 +650,7 @@
     <InterfaceDefinition Include="Views\ManualRideLinqSummaryView.xib" />
     <InterfaceDefinition Include="Views\ManualRideLinqStatusView.xib" />
     <InterfaceDefinition Include="Views\Order\OrderBookingOptions.xib" />
+    <InterfaceDefinition Include="Views\EditAutoTipView.xib" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="en.lproj\Localizable.strings" />

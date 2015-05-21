@@ -378,6 +378,11 @@ namespace apcurium.MK.Booking.Services.Impl
             }
         }
 
+        public BasePaymentResponse UpdateAutoTip(Guid orderId, int autoTipPercentage)
+        {
+            throw new NotImplementedException("Method only implemented for CMT RideLinQ");
+        }
+
         private void AddCvvInfo(TransactionRequest transactionRequest, string cvv)
         {
             if (_serverSettings.GetPaymentSettings().AskForCVVAtBooking)
