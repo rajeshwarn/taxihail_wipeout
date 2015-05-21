@@ -125,5 +125,10 @@ namespace CustomerPortal.Client.Impl
         {
             return Client.DeleteAsync(string.Format("customer/{0}/companyVehicles?vehicleTypeId={1}", companyId, id));
         }
+
+        public Task UpdatePaymentSettings(string companyId /* TODO */)
+        {
+            return Client.Post(string.Format("customer/{0}/paymentSettings", companyId), "TODO");
+        }
     }
 }
