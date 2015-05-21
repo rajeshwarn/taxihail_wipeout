@@ -2,6 +2,6 @@
 {
     public static class Provider
     {
-        public const int MobileKnowledgeProviderId = 2;
+        public const int ApcuriumIbsProviderId = 1;
     }
 }
