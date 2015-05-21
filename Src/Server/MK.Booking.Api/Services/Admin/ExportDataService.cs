@@ -8,6 +8,7 @@ using System.Net;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Enumeration.TimeZone;
 using apcurium.MK.Common.Extensions;
 using ServiceStack.Common.Web;
 using ServiceStack.ServiceInterface;
@@ -53,8 +54,8 @@ namespace apcurium.MK.Booking.Api.Services.Admin
                             {
                                 a.Id,
                                 a.IBSAccountId,
-                                CreateDate = a.CreationDate.ToLocalTime().ToString("d", CultureInfo.InvariantCulture),
-                                CreateTime = a.CreationDate.ToLocalTime().ToString("t", CultureInfo.InvariantCulture),
+                                CreateDate = TimeZoneHelper.TransformToLocalTime(_serverSettings.ServerData.CompanyTimeZone, a.CreationDate).ToString("d", CultureInfo.InvariantCulture),
+                                CreateTime = TimeZoneHelper.TransformToLocalTime(_serverSettings.ServerData.CompanyTimeZone, a.CreationDate).ToString("t", CultureInfo.InvariantCulture),
                                 a.Settings.Name,
                                 a.Settings.Phone,
                                 a.Email,
@@ -67,7 +68,7 @@ namespace apcurium.MK.Booking.Api.Services.Admin
                                 a.IsConfirmed,
                                 a.DisabledByAdmin,
                                 a.Settings.PayBack,
-                                LastLaunch = (m == null ? null : m.DateOccured.ToLocalTime().ToString(CultureInfo.InvariantCulture)),
+                                LastLaunch = (m == null ? null : TimeZoneHelper.TransformToLocalTime(_serverSettings.ServerData.CompanyTimeZone, m.DateOccured).ToString(CultureInfo.InvariantCulture)),
                                 Platform = (m == null ? null : m.Platform),
                                 PlatformDetails = (m == null ? null : m.PlatformDetails),
                                 ApplicationVersion = (m == null ? null : m.ApplicationVersion),

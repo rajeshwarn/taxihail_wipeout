@@ -178,6 +178,7 @@
     <Compile Include="Enumeration\PromotionTriggerTypes.cs" />
     <Compile Include="Enumeration\PushNotificationServicePlatform.cs" />
     <Compile Include="Enumeration\SupportedLanguages.cs" />
+    <Compile Include="Enumeration\TimeZone\TimeZones.cs" />
     <Compile Include="Extensions\ActionExtension.cs" />
     <Compile Include="Extensions\AssemblyExtensions.cs" />
     <Compile Include="Extensions\CollectionExtensions.cs" />
