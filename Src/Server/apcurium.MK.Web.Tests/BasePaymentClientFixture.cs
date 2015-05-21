@@ -13,6 +13,7 @@ using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
+using apcurium.MK.Common.Extensions;
 using Microsoft.Practices.Unity;
 using NUnit.Framework;
 using ServiceStack.ServiceClient.Web;
@@ -83,6 +84,9 @@ namespace apcurium.MK.Web.Tests
             {
                 var testAccount = context.Set<AccountDetail>().First(a => a.Id == TestAccount.Id);
                 testAccount.DefaultCreditCard = creditCardId;
+
+                context.RemoveAll<Booking.ReadModel.CreditCardDetails>();
+                context.SaveChanges();
 
                 context.Set<Booking.ReadModel.CreditCardDetails>().Add(new Booking.ReadModel.CreditCardDetails
                 {
@@ -218,6 +222,9 @@ namespace apcurium.MK.Web.Tests
             {
                 var testAccount = context.Set<AccountDetail>().First(a => a.Id == TestAccount.Id);
                 testAccount.DefaultCreditCard = creditCardId;
+
+                context.RemoveAll<Booking.ReadModel.CreditCardDetails>();
+                context.SaveChanges();
 
                 context.Set<Booking.ReadModel.CreditCardDetails>().Add(new Booking.ReadModel.CreditCardDetails
                 {
