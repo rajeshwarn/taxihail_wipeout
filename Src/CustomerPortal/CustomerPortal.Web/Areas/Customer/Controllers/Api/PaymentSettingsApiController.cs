@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web;
 using System.Web.Http;
 using CustomerPortal.Contract.Resources;
 using CustomerPortal.Web.Entities;
-using CustomerPortal.Web.Entities.Network;
 using MongoRepository;
 using Newtonsoft.Json;
 

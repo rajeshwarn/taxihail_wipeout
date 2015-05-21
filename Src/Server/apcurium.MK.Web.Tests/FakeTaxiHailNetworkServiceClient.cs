@@ -84,5 +84,15 @@ namespace apcurium.MK.Web.Tests
         {
             throw new NotImplementedException();
         }
+
+        public CompanyPaymentSettings GetPaymentSettings(string companyId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task UpdatePaymentSettings(string companyId, CompanyPaymentSettings companyPaymentSettings)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
