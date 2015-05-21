@@ -109,7 +109,7 @@ namespace apcurium.MK.Web.Tests
                 {
                     ChargeTypeId = ChargeTypes.CardOnFile.Id,
                     VehicleTypeId = 1,
-                    ProviderId = Provider.MobileKnowledgeProviderId,
+                    ProviderId = Provider.ApcuriumIbsProviderId,
                     Phone = "514-555-12129",
                     Passengers = 6,
                     NumberOfTaxi = 1,
@@ -244,7 +244,7 @@ namespace apcurium.MK.Web.Tests
                 {
                     ChargeTypeId = ChargeTypes.CardOnFile.Id,
                     VehicleTypeId = 1,
-                    ProviderId = Provider.MobileKnowledgeProviderId,
+                    ProviderId = Provider.ApcuriumIbsProviderId,
                     Phone = "514-555-12129",
                     Passengers = 6,
                     NumberOfTaxi = 1,
