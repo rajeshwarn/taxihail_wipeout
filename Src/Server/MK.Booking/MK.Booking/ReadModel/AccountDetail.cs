@@ -52,6 +52,9 @@ namespace apcurium.MK.Booking.ReadModel
 
         public bool IsPayPalAccountLinked { get; set; }
 
+        /// <summary>
+        /// This date is saved in UTC
+        /// </summary>
         public DateTime CreationDate { get; set; }
 
         public bool IsAdmin

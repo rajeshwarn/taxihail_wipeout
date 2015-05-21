@@ -8,6 +8,9 @@ namespace apcurium.MK.Booking.ReadModel
         [Key]
         public Guid UserId { get; set; }
 
+        /// <summary>
+        /// This date is saved in UTC
+        /// </summary>
         public DateTime DateOccured { get; set; }
 
         public string ApplicationVersion { get; set; }
