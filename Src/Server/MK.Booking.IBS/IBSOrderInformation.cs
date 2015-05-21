@@ -87,8 +87,7 @@ namespace apcurium.MK.Booking.IBS
             Tip = orderInfoFromIBS.Tips;
             Toll = orderInfoFromIBS.Tolls;
             VAT = orderInfoFromIBS.VAT;
-            // TODO
-            //Surcharge = orderInfoFromIBS.Surcharge;
+            Surcharge = orderInfoFromIBS.Surcharge;
 
             Eta = orderInfoFromIBS.ETATime.ToDateTime();
         }
