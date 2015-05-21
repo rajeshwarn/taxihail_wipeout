@@ -362,6 +362,14 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             return UseServiceClientAsync<ManualPairingForRideLinqServiceClient>(service => service.Unpair(orderId));
         }
 
+        public async Task<bool> UpdateAutoTipForManualRideLinq(Guid orderId, int autoTipPercentage)
+        {
+            var response = await UseServiceClientAsync<ManualPairingForRideLinqServiceClient, ManualRideLinqResponse>(service => 
+                service.UpdateAutoTip(orderId, autoTipPercentage));
+
+            return response.IsSuccessful;
+        }
+
         public async Task<OrderManualRideLinqDetail> GetTripInfoFromManualRideLinq(Guid orderId)
         {
             var response = await UseServiceClientAsync<ManualPairingForRideLinqServiceClient, ManualRideLinqResponse>(service => service.GetUpdatedTrip(orderId));

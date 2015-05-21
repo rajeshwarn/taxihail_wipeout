@@ -1,5 +1,6 @@
 ﻿#region
 
+using System;
 using apcurium.MK.Common.Entity;
 using Infrastructure.EventSourcing;
 

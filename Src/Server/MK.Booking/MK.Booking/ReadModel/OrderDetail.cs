@@ -26,6 +26,9 @@ namespace apcurium.MK.Booking.ReadModel
 
         public DateTime PickupDate { get; set; }
 
+        /// <summary>
+        /// This date is saved in UTC
+        /// </summary>
         public DateTime? DropOffDate { get; set; }
 
         public DateTime CreatedDate { get; set; }

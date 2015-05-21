@@ -166,6 +166,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 						constraintOrderOptionsTopSpace.Constant = 22;
 						constraintOrderEditTrailingSpace.Constant = UIScreen.MainScreen.Bounds.Width;       
 
+						_datePicker.Hide();
+
 						homeView.LayoutIfNeeded();
 					},
 					RedrawSubViews);

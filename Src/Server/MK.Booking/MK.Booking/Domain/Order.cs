@@ -45,6 +45,7 @@ namespace apcurium.MK.Booking.Domain
             Handles<OrderManuallyPairedForRideLinq>(NoAction);
             Handles<OrderUnpairedFromManualRideLinq>(NoAction);
             Handles<ManualRideLinqTripInfoUpdated>(NoAction);
+            Handles<AutoTipUpdated>(NoAction);
         }
 
 
@@ -317,6 +318,14 @@ namespace apcurium.MK.Booking.Domain
             {
                 IsSuccessful = isSuccessful,
                 Message = message
+            });
+        }
+
+        public void UpdateAutoTip(int autoTipPercentage)
+        {
+            Update(new AutoTipUpdated
+            {
+                AutoTipPercentage = autoTipPercentage
             });
         }
 

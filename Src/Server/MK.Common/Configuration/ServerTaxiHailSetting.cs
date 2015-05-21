@@ -3,6 +3,7 @@ using System.Net.Mail;
 using apcurium.MK.Common.Configuration;
 using apcurium.MK.Common.Configuration.Attributes;
 using apcurium.MK.Common.Enumeration;
+using apcurium.MK.Common.Enumeration.TimeZone;
 
 namespace MK.Common.Configuration
 {
@@ -97,6 +98,7 @@ namespace MK.Common.Configuration
 
             PayPalConversionRate = 1;
             SendDetailedPaymentInfoToDriver = true;
+            CompanyTimeZone = TimeZones.NotSet;
         }
 
         public SmtpSettingContainer Smtp { get; protected set; }
@@ -139,6 +141,10 @@ namespace MK.Common.Configuration
         [Display(Name = "Available Vehicles Mode", Description = "Available Vehicles provider")]
         public AvailableVehiclesModes AvailableVehiclesMode { get; protected set; }
 
+        [CustomizableByCompany]
+        [Display(Name = "Driver Eta Notification Mode", Description = "Configures the notification mode to the driver for it's estimated time of arrival to the pickup location.")]
+        public DriverEtaNotificationModes DriverEtaNotificationMode { get; protected set; }
+
         [Hidden]
         [Display(Name = "Settings Available to Admin", Description = "Comma delimited list of settings that are available to admins")]
         public string SettingsAvailableToAdmin { get; private set; }
@@ -173,5 +179,9 @@ namespace MK.Common.Configuration
         [CustomizableByCompany]
         [Display(Name = "Use Pairing Code When RideLinq Payment", Description = "Use Pairing Code When Using RideLinq Cmt Payment")]
         public bool UsePairingCodeWhenUsingRideLinqCmtPayment { get; protected set; }        
+        
+        [CustomizableByCompany]
+        [Display(Name = "Company's time zone", Description = "Used to properly show dates in the correct time zone")]
+        public TimeZones CompanyTimeZone { get; protected set; }
     }
 }

@@ -27,7 +27,8 @@ namespace apcurium.MK.Booking.EventHandlers
         IEventHandler<OrderCancelledBecauseOfError>,
         IEventHandler<OrderManuallyPairedForRideLinq>,
         IEventHandler<OrderUnpairedFromManualRideLinq>,
-        IEventHandler<ManualRideLinqTripInfoUpdated>
+        IEventHandler<ManualRideLinqTripInfoUpdated>,
+        IEventHandler<AutoTipUpdated>
     {
         private readonly Func<BookingDbContext> _contextFactory;
         private readonly ILogger _logger;
@@ -257,6 +258,7 @@ namespace apcurium.MK.Booking.EventHandlers
             {
                 var order = context.Find<OrderDetail>(@event.SourceId);
                 order.IsRemovedFromHistory = true;
+                order.Status = (int)OrderStatus.Removed;
 
                 var details = context.Find<OrderStatusDetail>(@event.SourceId);
                 if (details != null)
@@ -337,10 +339,9 @@ namespace apcurium.MK.Booking.EventHandlers
 
                     if (@event.IsCompleted)
                     {
-                        // setting to local time is not a real fix but since only Mears reported 
-                        // a bug and they are in the same timezone as the server, it's fine for now
                         RemoveTemporaryPaymentInfo(context, @event.SourceId);
-                        order.DropOffDate = @event.EventDate.ToLocalTime();
+
+                        order.DropOffDate = @event.EventDate;
                     }
 
                     order.Fare = @event.Fare;
@@ -633,6 +634,22 @@ namespace apcurium.MK.Booking.EventHandlers
                 rideLinqDetails.RateAtTripEnd = @event.RateAtTripEnd;
                 rideLinqDetails.RateChangeTime = @event.RateChangeTime;
                 context.Save(rideLinqDetails);
+            }
+        }
+
+        public void Handle(AutoTipUpdated @event)
+        {
+            using (var context = _contextFactory.Invoke())
+            {
+                var orderPairing = context.Find<OrderPairingDetail>(@event.SourceId);
+                if (orderPairing == null)
+                {
+                    _logger.LogMessage("No Pairing found for Order : " + @event.SourceId);
+                    return;
+                }
+
+                orderPairing.AutoTipPercentage = @event.AutoTipPercentage;
+                context.Save(orderPairing);
             }
         }
 

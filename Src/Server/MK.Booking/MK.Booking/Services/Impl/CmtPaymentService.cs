@@ -354,6 +354,57 @@ namespace apcurium.MK.Booking.Services.Impl
             throw new NotImplementedException();
         }
 
+        public BasePaymentResponse UpdateAutoTip(Guid orderId, int autoTipPercentage)
+        {
+            var paymentSettings = _serverSettings.GetPaymentSettings();
+            if (paymentSettings.PaymentMode != PaymentMethod.RideLinqCmt)
+            {
+                throw new Exception("This method can only be used with CMTRideLinQ as a payment provider.");
+            }
+
+            InitializeServiceClient();
+
+            try
+            {
+                var orderDetail = _orderDao.FindById(orderId);
+                var accountDetail = _accountDao.FindById(orderDetail.AccountId);
+                var ridelinqOrderDetail = _orderDao.GetManualRideLinqById(orderId);
+
+                var request = new ManualRideLinqPairingRequest
+                {
+                    AutoTipPercentage = autoTipPercentage,
+                    CustomerId = accountDetail.Id.ToString(),
+                    CustomerName = accountDetail.Name,
+                    Latitude = orderDetail.PickupAddress.Latitude,
+                    Longitude = orderDetail.PickupAddress.Longitude,
+                    AutoCompletePayment = true
+                };
+
+                _logger.LogMessage("Updating CMT RideLinq auto tip. Request: {0}", request.ToJson());
+
+                var response = _cmtMobileServiceClient.Put(string.Format("v1/init/pairing/{0}", ridelinqOrderDetail.PairingToken), request);
+
+                // Wait for trip to be updated
+                _cmtTripInfoServiceHelper.WaitForTipUpdated(ridelinqOrderDetail.PairingToken, autoTipPercentage, response.TimeoutSeconds);
+
+                return new BasePaymentResponse
+                {
+                    IsSuccessful = true
+                };
+            }
+            catch (Exception ex)
+            {
+                _logger.LogMessage("Error when trying to update CMT RideLinq auto tip");
+                _logger.LogError(ex);
+
+                return new BasePaymentResponse
+                {
+                    IsSuccessful = false,
+                    Message = ex.Message
+                };
+            }
+        }
+
         private CmtPairingResponse PairWithVehicleUsingRideLinq(OrderStatusDetail orderStatusDetail, string cardToken, int? autoTipPercentage)
         {
             InitializeServiceClient();
