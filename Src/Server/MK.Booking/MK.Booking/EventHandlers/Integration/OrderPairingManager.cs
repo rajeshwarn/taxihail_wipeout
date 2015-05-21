@@ -81,7 +81,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
 
                         var response = _paymentFacadeService.Pair(@event.SourceId, cardToken, defaultTipPercentage);
 
-                        _notificationService.SendAutomaticPairingPush(@event.SourceId, defaultTipPercentage, response.IsSuccessful);
+                        _notificationService.SendAutomaticPairingPush(@event.SourceId, creditCard, defaultTipPercentage, response.IsSuccessful);
                     } 
                 }
                 break;

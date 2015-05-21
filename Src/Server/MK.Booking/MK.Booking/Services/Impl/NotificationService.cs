@@ -255,7 +255,7 @@ namespace apcurium.MK.Booking.Services.Impl
             }
         }
 
-        public void SendAutomaticPairingPush(Guid orderId, int autoTipPercentage, bool success)
+        public void SendAutomaticPairingPush(Guid orderId, CreditCardDetails creditCard, int autoTipPercentage, bool success)
         {
             using (var context = _contextFactory.Invoke())
             {
@@ -281,6 +281,7 @@ namespace apcurium.MK.Booking.Services.Impl
                             ? _resources.Get("PushNotification_OrderPairingSuccessfulUnpair", order.ClientLanguageCode)
                             : _resources.Get("PushNotification_OrderPairingSuccessful", order.ClientLanguageCode),
                         order.IBSOrderId,
+                        creditCard != null ? creditCard.Last4Digits : "",
                         autoTipPercentage);
                 }
                 
