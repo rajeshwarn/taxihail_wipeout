@@ -55,7 +55,7 @@ namespace HoneyBadger
 
             foreach (var vertex in vertices)
             {
-                var point = string.Format("'{0},{1}'", vertex.Item1, vertex.Item2);
+                var point = string.Format("{0},{1}", vertex.Item1, vertex.Item2);
                 @params.Add(new KeyValuePair<string, string>("poly", point));
             }
 
