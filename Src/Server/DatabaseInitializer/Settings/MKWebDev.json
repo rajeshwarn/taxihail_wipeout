@@ -37,5 +37,6 @@
    "VehicleTypeSelectionEnabled": "true",
    "CustomerPortal.Url": "http://test.taxihail.biz:8181/CustomerPortal/api/",
    "IsTaxiHailPro": "true",
-   "AllowSimultaneousAppOrders": "true"
+   "AllowSimultaneousAppOrders": "true",
+   "CompanyTimeZone": "Eastern Standard Time"
 }

@@ -23,6 +23,7 @@ using apcurium.MK.Common.Cryptography;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
+using apcurium.MK.Common.Enumeration.TimeZone;
 using apcurium.MK.Common.Extensions;
 using MK.Common.Configuration;
 
@@ -417,7 +418,7 @@ namespace apcurium.MK.Booking.Services.Impl
 
         public void SendReceiptEmail(Guid orderId, int ibsOrderId, string vehicleNumber, DriverInfos driverInfos, double fare, double toll, double tip,
             double tax, double extra, double totalFare, SendReceipt.Payment paymentInfo, Address pickupAddress, Address dropOffAddress,
-            DateTime pickupDate, DateTime? dropOffDate, string clientEmailAddress, string clientLanguageCode, double amountSavedByPromotion, string promoCode, 
+            DateTime pickupDate, DateTime? dropOffDateInUtc, string clientEmailAddress, string clientLanguageCode, double amountSavedByPromotion, string promoCode, 
             bool bypassNotificationSetting = false)
         {
             if (!bypassNotificationSetting)
@@ -484,12 +485,14 @@ namespace apcurium.MK.Booking.Services.Impl
                     300, 300, 1)
                 : string.Empty;
 
-            var dropOffTime = dropOffDate.HasValue
-                ? dropOffDate.Value.ToString("t" /* Short time pattern */)
+            var timeZoneOfTheOrder = TryToGetOrderTimeZone(orderId);
+            var nullSafeDropOffDate = GetNullSafeDropOffDate(timeZoneOfTheOrder, dropOffDateInUtc, pickupDate);
+            var dropOffTime = dropOffDateInUtc.HasValue
+                ? nullSafeDropOffDate.ToString("t" /* Short time pattern */)
                 : string.Empty;
-            var baseUrls = GetBaseUrls();
 
-            string imageLogoUrl = GetRefreshableImageUrl(baseUrls.LogoImg);
+            var baseUrls = GetBaseUrls();
+            var imageLogoUrl = GetRefreshableImageUrl(baseUrls.LogoImg);
 
             var templateData = new
             {
@@ -505,11 +508,10 @@ namespace apcurium.MK.Booking.Services.Impl
                 DriverId = driverInfos.DriverId,
                 PickupDate = pickupDate.ToString("D", dateFormat),
                 PickupTime = pickupDate.ToString("t", dateFormat /* Short time pattern */),
-                DropOffDate = dropOffDate.HasValue
-                    ? dropOffDate.Value.ToString("D", dateFormat)
-                    : pickupDate.ToString("D", dateFormat), // assume it ends on the same day...
+                DropOffDate = nullSafeDropOffDate.ToString("D", dateFormat),
                 DropOffTime = dropOffTime,
-                ShowDropOffTime = !string.IsNullOrEmpty(dropOffTime),
+                ShowDropOffTime = dropOffTime.HasValue(),
+                ShowUTCWarning = timeZoneOfTheOrder == TimeZones.NotSet,
                 Fare = _resources.FormatPrice(fare),
                 Toll = _resources.FormatPrice(toll),        
                 Extra = _resources.FormatPrice(extra),
@@ -625,6 +627,30 @@ namespace apcurium.MK.Booking.Services.Impl
                 clientLanguageCode).FirstOrDefault();
 
             return exactDropOffAddress ?? dropOffAddress;
+        }
+
+        private TimeZones TryToGetOrderTimeZone(Guid orderId)
+        {
+            var order = _orderDao.FindById(orderId);
+            if (order != null
+                && order.Market.HasValue())
+            {
+                // order is in another market, show the date as UTC
+                return TimeZones.NotSet;
+            }
+
+            return _serverSettings.ServerData.CompanyTimeZone;
+        }
+
+        private DateTime GetNullSafeDropOffDate(TimeZones timeZoneOfTheOrder, DateTime? dropOffDateInUtc, DateTime pickupDate)
+        {
+            if (!dropOffDateInUtc.HasValue)
+            {
+                // assume it ends on the same day...
+                return pickupDate;
+            }
+
+            return TimeZoneHelper.TransformToLocalTime(timeZoneOfTheOrder, dropOffDateInUtc.Value);
         }
 
         private Position? TryToGetPositionOfDropOffAddress(Guid orderId, Address dropOffAddress)

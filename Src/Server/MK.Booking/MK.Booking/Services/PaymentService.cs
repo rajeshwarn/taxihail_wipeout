@@ -134,8 +134,7 @@ namespace apcurium.MK.Booking.Services
         {
             if (IsPayPal(orderId: orderId))
             {
-                // TODO
-                //return _payPalServiceFactory.GetInstance().RefundWebPayment(orderId);
+                throw new NotImplementedException("Method only implemented for CMT RideLinQ");
             }
 
             return GetInstance().UpdateAutoTip(orderId, autoTipPercentage);
