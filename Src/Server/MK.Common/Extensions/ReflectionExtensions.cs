@@ -93,11 +93,11 @@ namespace apcurium.MK.Common.Extensions
         }
 
         /// <summary>
-        /// Extension method that returns the display name attibute value of a property.
+        /// Extension method that returns the display name attibute value of a property or it's native name.
         /// </summary>
         /// <param name="propertyInfo">The property to return the display name from.</param>
         /// <returns>The display name of the property or the native name if no Display attribute exists.</returns>
-        public static string GetDisplayName(this PropertyInfo propertyInfo)
+        public static string GetDisplayName(this MemberInfo propertyInfo)
         {
             var attr = (DisplayAttribute)Attribute.GetCustomAttribute(propertyInfo, typeof(DisplayAttribute));
             if (attr != null)
@@ -108,10 +108,25 @@ namespace apcurium.MK.Common.Extensions
         }
 
         /// <summary>
+        /// Extension method that returns the display short name attibute value of a property.
+        /// </summary>
+        /// <param name="fieldInfo">The property to return the display short name from.</param>
+        /// <returns>The display short name of the property or null.</returns>
+        public static string GetDisplayShortName(this MemberInfo fieldInfo)
+        {
+            var attr = (DisplayAttribute)Attribute.GetCustomAttribute(fieldInfo, typeof(DisplayAttribute));
+            if (attr != null)
+            {
+                return attr.ShortName;
+            }
+            return null;
+        }
+
+        /// <summary>
         /// Extension method that returns the display description attibute value of a property.
         /// </summary>
         /// <param name="propertyInfo">The property to return the display description from.</param>
-        /// <returns>The display name of the property or the native name if no Display attribute exists.</returns>
+        /// <returns>The display name of the property or null.</returns>
         public static string GetDisplayDescription(this PropertyInfo propertyInfo)
         {
             var attr = (DisplayAttribute)Attribute.GetCustomAttribute(propertyInfo, typeof(DisplayAttribute));

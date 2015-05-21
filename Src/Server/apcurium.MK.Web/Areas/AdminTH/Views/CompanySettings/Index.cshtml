@@ -109,9 +109,11 @@
                         var enumValues = Enum.GetValues(settingType);
                         foreach (var enumValue in enumValues)
                         {
+                            var fieldInfo = enumValue.GetType().GetField(enumValue.ToString());
+
                             enumListItems.Add(new SelectListItem
                             {
-                                Text = enumValue.ToString(),
+                                Text = fieldInfo.GetDisplayName(),
                                 Value = enumValue.ToString(),
                                 Selected = settingValue.ToString() == enumValue.ToString()
                             });
@@ -122,7 +124,6 @@
                     else
                     {
                         @Html.TextBox(setting.Key, settingValue, new { @class = "input-block-level", @style = "width:250px; margin-right:15px" })
-
                     }
                 </div>
             </div>
