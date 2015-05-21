@@ -215,10 +215,19 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                     var promoUsed = _promotionDao.FindByOrderId(orderId);
                     var ibsOrderId = order.IBSOrderId;
 
+
+                    decimal fare;
                     if (order.IsManualRideLinq)
                     {
                         var manualRideLinqDetail = context.Find<OrderManualRideLinqDetail>(orderStatus.OrderId);
                         ibsOrderId = manualRideLinqDetail.TripId;
+
+                        fare = meter;
+                    }
+                    else
+                    {
+                        // Meter also contains toll and surcharge, to send an accurate receipt, we need to remove both toll and surcharge.
+                        fare = orderPayment.SelectOrDefault(payment => payment.Meter - payment.Toll - surcharge, meter - toll - surcharge);
                     }
 
                     if (driverIdOverride.HasValue())
@@ -232,7 +241,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                         ibsOrderId,
                         orderStatus.VehicleNumber,
                         orderStatus.DriverInfos,
-                        orderPayment.SelectOrDefault(payment => Convert.ToDouble(payment.Meter), Convert.ToDouble(meter)),
+                        Convert.ToDouble(fare),
                         Convert.ToDouble(toll),
                         orderPayment.SelectOrDefault(payment => Convert.ToDouble(payment.Tip), Convert.ToDouble(tip)),
                         Convert.ToDouble(tax),
