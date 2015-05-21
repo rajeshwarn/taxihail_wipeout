@@ -129,7 +129,7 @@ namespace apcurium.MK.Booking.Api.Jobs
                 Fare = orderFromIbs.Fare,
                 Toll = orderFromIbs.Toll,
                 Tip = orderFromIbs.Tip,
-                Tax = orderFromIbs.VAT,
+                Tax = orderFromIbs.VAT
             });
         }
 
