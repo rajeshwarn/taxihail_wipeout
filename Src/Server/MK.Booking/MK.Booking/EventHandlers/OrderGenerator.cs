@@ -64,7 +64,7 @@ namespace apcurium.MK.Booking.EventHandlers
                     context.Save(details);
                 }
 
-                RemoveTemporaryPaymentInfo(context, @event.SourceId);
+                RemoveTemporaryCvv(context, @event.SourceId);
             }
         }
 
@@ -88,7 +88,7 @@ namespace apcurium.MK.Booking.EventHandlers
                     context.Save(details);
                 }
 
-                RemoveTemporaryPaymentInfo(context, @event.SourceId);
+                RemoveTemporaryCvv(context, @event.SourceId);
             }
         }
 
