@@ -104,7 +104,7 @@ namespace apcurium.MK.Booking.Services
                 serverSettings.GetPaymentSettings().PaymentMode != PaymentMethod.RideLinqCmt)
             {
                 // delete the cvv stored in database once preauth is done, doesn't fail if it doesn't exist
-                _orderDao.RemoveTemporaryCvv(orderId);
+                _orderDao.DeleteTemporaryPaymentInfo(orderId);
             }
             
             return response;

@@ -149,16 +149,15 @@ namespace apcurium.MK.Booking.ReadModel.Query
         {
             using (var context = _contextFactory.Invoke())
             {
-                return context.Find<TemporaryOrderPaymentInfoDetail>(orderId);
+                return context.Query<TemporaryOrderPaymentInfoDetail>().SingleOrDefault(c => c.OrderId == orderId);
             }
         }
 
-        public void RemoveTemporaryCvv(Guid orderId)
+        public void DeleteTemporaryPaymentInfo(Guid orderId)
         {
             using (var context = _contextFactory.Invoke())
             {
-                var tempPaymentInfo = context.Find<TemporaryOrderPaymentInfoDetail>(orderId);
-                tempPaymentInfo.Cvv = null;
+                context.RemoveWhere<TemporaryOrderPaymentInfoDetail>(c => c.OrderId == orderId);
                 context.SaveChanges();
             }
         }

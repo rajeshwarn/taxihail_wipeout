@@ -22,7 +22,7 @@ namespace apcurium.MK.Booking.ReadModel.Query.Contract
         IEnumerable<Position> GetVehiclePositions(Guid orderId);
         TemporaryOrderCreationInfoDetail GetTemporaryInfo(Guid orderId);
         TemporaryOrderPaymentInfoDetail GetTemporaryPaymentInfo(Guid orderId);
-        void RemoveTemporaryCvv(Guid orderId);
+        void DeleteTemporaryPaymentInfo(Guid orderId);
         OrderManualRideLinqDetail GetManualRideLinqById(Guid orderId);
     }
 }

@@ -64,7 +64,7 @@ namespace apcurium.MK.Booking.EventHandlers
                     context.Save(details);
                 }
 
-                RemoveTemporaryCvv(context, @event.SourceId);
+                RemoveTemporaryPaymentInfo(context, @event.SourceId);
             }
         }
 
@@ -88,7 +88,7 @@ namespace apcurium.MK.Booking.EventHandlers
                     context.Save(details);
                 }
 
-                RemoveTemporaryCvv(context, @event.SourceId);
+                RemoveTemporaryPaymentInfo(context, @event.SourceId);
             }
         }
 
@@ -339,7 +339,7 @@ namespace apcurium.MK.Booking.EventHandlers
 
                     if (@event.IsCompleted)
                     {
-                        RemoveTemporaryCvv(context, @event.SourceId);
+                        RemoveTemporaryPaymentInfo(context, @event.SourceId);
 
                         order.DropOffDate = @event.EventDate;
                     }
@@ -376,7 +376,7 @@ namespace apcurium.MK.Booking.EventHandlers
                 orderDetail.Settings.ChargeType = ChargeTypes.PaymentInCar.Display;
                 context.Save(orderDetail);
 
-                RemoveTemporaryCvv(context, @event.SourceId);
+                RemoveTemporaryPaymentInfo(context, @event.SourceId);
             }
         }
 
@@ -432,7 +432,7 @@ namespace apcurium.MK.Booking.EventHandlers
 
                 context.SaveChanges();
 
-                RemoveTemporaryCvv(context, @event.SourceId);
+                RemoveTemporaryPaymentInfo(context, @event.SourceId);
             }
         }
 
@@ -653,10 +653,9 @@ namespace apcurium.MK.Booking.EventHandlers
         }
 
         // TODO remove this once CMT has real preauth
-        private void RemoveTemporaryCvv(BookingDbContext context, Guid orderId)
+        private void RemoveTemporaryPaymentInfo(BookingDbContext context, Guid orderId)
         {
-            var tempPaymentInfo = context.Find<TemporaryOrderPaymentInfoDetail>(orderId);
-            tempPaymentInfo.Cvv = null;
+            context.RemoveWhere<TemporaryOrderPaymentInfoDetail>(c => c.OrderId == orderId);
             context.SaveChanges();
         }
     }

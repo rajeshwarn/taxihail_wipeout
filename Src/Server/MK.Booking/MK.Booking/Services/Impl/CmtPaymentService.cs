@@ -314,7 +314,8 @@ namespace apcurium.MK.Booking.Services.Impl
                     Cvv2 = cvv
                 };
 
-                _orderDao.RemoveTemporaryCvv(orderId);
+                // remove temp payment info
+                _orderDao.DeleteTemporaryPaymentInfo(orderId);
 
                 var authResponse = Authorize(authRequest);
 
