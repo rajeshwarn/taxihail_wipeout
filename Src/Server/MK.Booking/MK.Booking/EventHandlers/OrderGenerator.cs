@@ -340,7 +340,7 @@ namespace apcurium.MK.Booking.EventHandlers
                     {
                         // setting to local time is not a real fix but since only Mears reported 
                         // a bug and they are in the same timezone as the server, it's fine for now
-                        RemoveTemporaryPaymentInfo(context, @event.SourceId);
+                        RemoveTemporaryCvv(context, @event.SourceId);
                         order.DropOffDate = @event.EventDate.ToLocalTime();
                     }
 
@@ -376,7 +376,7 @@ namespace apcurium.MK.Booking.EventHandlers
                 orderDetail.Settings.ChargeType = ChargeTypes.PaymentInCar.Display;
                 context.Save(orderDetail);
 
-                RemoveTemporaryPaymentInfo(context, @event.SourceId);
+                RemoveTemporaryCvv(context, @event.SourceId);
             }
         }
 
@@ -432,7 +432,7 @@ namespace apcurium.MK.Booking.EventHandlers
 
                 context.SaveChanges();
 
-                RemoveTemporaryPaymentInfo(context, @event.SourceId);
+                RemoveTemporaryCvv(context, @event.SourceId);
             }
         }
 
@@ -653,9 +653,10 @@ namespace apcurium.MK.Booking.EventHandlers
         }
 
         // TODO remove this once CMT has real preauth
-        private void RemoveTemporaryPaymentInfo(BookingDbContext context, Guid orderId)
+        private void RemoveTemporaryCvv(BookingDbContext context, Guid orderId)
         {
-            context.RemoveWhere<TemporaryOrderPaymentInfoDetail>(c => c.OrderId == orderId);
+            var tempPaymentInfo = context.Find<TemporaryOrderPaymentInfoDetail>(orderId);
+            tempPaymentInfo.Cvv = null;
             context.SaveChanges();
         }
     }

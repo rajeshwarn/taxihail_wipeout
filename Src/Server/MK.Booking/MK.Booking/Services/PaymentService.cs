@@ -104,7 +104,7 @@ namespace apcurium.MK.Booking.Services
                 serverSettings.GetPaymentSettings().PaymentMode != PaymentMethod.RideLinqCmt)
             {
                 // delete the cvv stored in database once preauth is done, doesn't fail if it doesn't exist
-                _orderDao.DeleteTemporaryPaymentInfo(orderId);
+                _orderDao.RemoveTemporaryCvv(orderId);
             }
             
             return response;
@@ -201,7 +201,7 @@ namespace apcurium.MK.Booking.Services
             }
         }
 
-        private IPaymentService GetInstance()
+        private IPaymentService GetInstance(Guid orderId)
         {
             var serverSettings = _container.Resolve<IServerSettings>();
             switch (serverSettings.GetPaymentSettings().PaymentMode)
