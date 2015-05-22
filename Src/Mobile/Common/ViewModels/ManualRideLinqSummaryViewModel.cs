@@ -63,6 +63,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             get { return CultureProvider.FormatCurrency(_orderManualRideLinqDetail.Total ?? 0); }
         }
 
+	    public string FormattedExtra
+	    {
+            get { return CultureProvider.FormatCurrency(_orderManualRideLinqDetail.Extra ?? 0); }
+	    }
+
+        public string FormattedToll
+        {
+            get { return CultureProvider.FormatCurrency(_orderManualRideLinqDetail.Toll ?? 0); }
+        }
+
 		public ICommand GoToHome
 		{
 			get

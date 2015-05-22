@@ -89,12 +89,17 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                         var tripInfo = _cmtTripInfoServiceHelper.GetTripInfo(pairingInfo.PairingToken);
                         if (tripInfo != null && tripInfo.EndTime.HasValue)
                         {
+							var tollHistory = tripInfo.TollHistory != null
+								? tripInfo.TollHistory.Sum(p => p.TollAmount)
+								: 0;
+
                             var meterAmount = Math.Round(((double)tripInfo.Fare / 100), 2);
-                            var tollAmount = Math.Round(((double)tripInfo.Extra / 100), 2);
+							var tollAmount = Math.Round(((double)tollHistory / 100), 2);
                             var tipAmount = Math.Round(((double)tripInfo.Tip / 100), 2);
                             var taxAmount = Math.Round(((double)tripInfo.Tax / 100), 2);
+                            var extra = Math.Round(((double) tripInfo.Extra / 100), 2);
 
-                            SendReceipt(@event.SourceId, Convert.ToDecimal(meterAmount), Convert.ToDecimal(tipAmount), Convert.ToDecimal(taxAmount), toll: Convert.ToDecimal(tollAmount), driverIdOverride: tripInfo.DriverId.ToString());
+                            SendReceipt(@event.SourceId, Convert.ToDecimal(meterAmount), Convert.ToDecimal(tipAmount), Convert.ToDecimal(taxAmount), Convert.ToDecimal(extra), toll: Convert.ToDecimal(tollAmount), driverIdOverride: tripInfo.DriverId.ToString());
                         }
                     }
                 } 
@@ -127,8 +132,9 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                     order.Tip = @event.Tip;
                     order.Tax = @event.Tax;
                     order.Toll = @event.Toll;
+                    
    
-                    SendReceipt(@event.SourceId, Convert.ToDecimal(@event.Fare), Convert.ToDecimal(@event.Tip), Convert.ToDecimal(@event.Tax), toll: Convert.ToDecimal(@event.Toll));
+                    SendReceipt(@event.SourceId, Convert.ToDecimal(@event.Fare), Convert.ToDecimal(@event.Tip), Convert.ToDecimal(@event.Tax), Convert.ToDecimal(@event.Extra),toll: Convert.ToDecimal(@event.Toll));
                 }
             }
         }
@@ -163,7 +169,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             }
         }
 
-        private void SendReceipt(Guid orderId, decimal meter, decimal tip, decimal tax, decimal amountSavedByPromotion = 0m, decimal toll = 0, string driverIdOverride = null )
+        private void SendReceipt(Guid orderId, decimal meter, decimal tip, decimal tax, decimal extra = 0,decimal amountSavedByPromotion = 0m, decimal toll = 0, string driverIdOverride = null )
         {
             using (var context = _contextFactory.Invoke())
             {
@@ -212,6 +218,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                         orderStatus.DriverInfos,
                         orderPayment.SelectOrDefault(payment => Convert.ToDouble(payment.Meter), Convert.ToDouble(meter)),
                         Convert.ToDouble(toll),
+                        Convert.ToDouble(extra),
                         orderPayment.SelectOrDefault(payment => Convert.ToDouble(payment.Tip), Convert.ToDouble(tip)),
                         Convert.ToDouble(tax),
                         orderPayment,

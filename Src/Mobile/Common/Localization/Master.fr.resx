@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -1957,8 +1957,14 @@
   <data name="PromoMustHavePaymentMethodSetMessage_CreditCard" xml:space="preserve">
     <value>Pour utiliser un code promotionnel, vous devez avoir ajouté une carte de crédit à votre compte.</value>
   </data>
+  <data name="ManualRideLinqStatus_Extra" xml:space="preserve">
+    <value>Extra:</value>
+  </data>
   <data name="StatusEditAutoTipButton" xml:space="preserve">
     <value>Pourboire</value>
+  </data>
+  <data name="ManualRideLinqStatus_Toll" xml:space="preserve">
+    <value>Péage:</value>
   </data>
   <data name="View_EditAutoTip" xml:space="preserve">
     <value>Modifier Pourboire</value>

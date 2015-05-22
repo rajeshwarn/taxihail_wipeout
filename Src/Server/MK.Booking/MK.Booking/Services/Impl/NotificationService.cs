@@ -418,7 +418,7 @@ namespace apcurium.MK.Booking.Services.Impl
         }
 
         public void SendReceiptEmail(Guid orderId, int ibsOrderId, string vehicleNumber, DriverInfos driverInfos, double fare, double toll, double tip,
-            double tax, double totalFare, SendReceipt.Payment paymentInfo, Address pickupAddress, Address dropOffAddress,
+            double tax, double extra, double totalFare, SendReceipt.Payment paymentInfo, Address pickupAddress, Address dropOffAddress,
             DateTime pickupDate, DateTime? dropOffDateInUtc, string clientEmailAddress, string clientLanguageCode, double amountSavedByPromotion, string promoCode, 
             bool bypassNotificationSetting = false)
         {
@@ -514,7 +514,8 @@ namespace apcurium.MK.Booking.Services.Impl
                 ShowDropOffTime = dropOffTime.HasValue(),
                 ShowUTCWarning = timeZoneOfTheOrder == TimeZones.NotSet,
                 Fare = _resources.FormatPrice(fare),
-                Toll = _resources.FormatPrice(toll),                
+                Toll = _resources.FormatPrice(toll),        
+                Extra = _resources.FormatPrice(extra),
                 SubTotal = _resources.FormatPrice(totalFare + amountSavedByPromotion - tip), // represents everything except tip and the promo discount
                 Tip = _resources.FormatPrice(tip),
                 TotalFare = _resources.FormatPrice(totalFare),

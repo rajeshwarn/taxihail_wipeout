@@ -610,7 +610,7 @@
 "CurrentBookingDisabledTitle"="Current Booking Disabled";
 "ManualRideLinqNoCardOnFile"="You need to have a card on file to pair with RideLinQ";
 "CvvRequiredTitle"="CVV Required";
-"CvvRequiredMessage"="Please enter the CVV associated with your card on file ending with {0} to continue";
+"CvvRequiredMessage"="Please enter the CVV associated with your card on file to continue";
 "Error_InvalidCvvTitle"="Invalid CVV";
 "Error_InvalidCvvMessage"="The CVV must be a number between 3 and 4 digits";
 "ManualRideLinqCreditCardDisabled"="Your current card on file has an overdue payment for a previous ride. This overdue payment is preventing you from pairing with RideLinQ";
@@ -618,3 +618,5 @@
 "View_EditAutoTip"="Edit Tip";
 "Error_EditAutoTipMessage"="An error occurred while trying to update the tip. Please try again.";
 "Error_EditAutoTipTitle"="Error";
+"ManualRideLinqStatus_Extra"="Extra:";
+"ManualRideLinqStatus_Toll"="Toll:";
