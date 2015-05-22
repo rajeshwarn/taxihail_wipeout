@@ -10,6 +10,7 @@ using apcurium.MK.Common.Resources;
 using Infrastructure.Messaging;
 using Microsoft.Practices.Unity;
 using apcurium.MK.Common.Diagnostic;
+using CustomerPortal.Contract.Resources;
 
 namespace apcurium.MK.Booking.Services
 {
@@ -204,6 +205,10 @@ namespace apcurium.MK.Booking.Services
         private IPaymentService GetInstance(/*Guid orderId*/)
         {
             var serverSettings = _container.Resolve<IServerSettings>();
+
+            // TODO
+            //var paymentSettings = JsonSerializer.DeserializeFromString<CompanyPaymentSettings>(temporaryInfo.SerializedOrderCreationInfo);
+
             switch (serverSettings.GetPaymentSettings().PaymentMode)
             {
                 case PaymentMethod.Braintree:

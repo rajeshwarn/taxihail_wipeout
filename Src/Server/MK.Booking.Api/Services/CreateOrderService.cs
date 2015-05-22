@@ -153,6 +153,7 @@ namespace apcurium.MK.Booking.Api.Services
             }
 
             UpdateVehicleTypeFromMarketData(request.Settings, bestAvailableCompany.CompanyKey);
+            FetchCompanyPaymentSettings(bestAvailableCompany.CompanyKey);
 
             var account = _accountDao.FindById(new Guid(this.GetSession().UserAuthId));
             account.IBSAccountId = CreateIbsAccountIfNeeded(account, bestAvailableCompany.CompanyKey);
@@ -1254,6 +1255,25 @@ namespace apcurium.MK.Booking.Api.Services
             }
         }
 
+        private void FetchCompanyPaymentSettings(string companyKey)
+        {
+            try
+            {
+                var paymentSettings = _taxiHailNetworkServiceClient.GetPaymentSettings(companyKey);
+
+                _commandBus.Send(new SaveCompanyPaymentSettings
+                {
+                    SerializedCompanyPaymentSettings = paymentSettings.ToJson()
+                });
+
+            }
+            catch (Exception ex)
+            {
+                Log.Info(string.Format("An error occurred when trying to get PaymentSettings for company {0}", companyKey));
+                Log.Error(ex);
+            }
+        }
+
         private ApplyPromotion ValidateAndApplyPromotion(string promoCode, int? chargeTypeId, Guid accountId, Guid orderId, DateTime pickupDate, bool isFutureBooking, string clientLanguageCode)
         {
             if (!promoCode.HasValue())
@@ -1411,6 +1431,11 @@ namespace apcurium.MK.Booking.Api.Services
             public int?[] PromptsLength { get; set; } 
             public BestAvailableCompany BestAvailableCompany { get; set; }
             public ApplyPromotion ApplyPromoCommand { get; set; }
+        }
+
+        private class CompanyPaymentSettings
+        {
+            
         }
     }
 }

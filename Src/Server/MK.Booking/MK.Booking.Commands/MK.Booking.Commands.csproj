@@ -58,6 +58,7 @@
     <Compile Include="AddUserToPromotionWhiteList.cs" />
     <Compile Include="CancelOrderBecauseOfError.cs" />
     <Compile Include="CreateOrderForManualRideLinqPair.cs" />
+    <Compile Include="SaveCompanyPaymentSettings.cs" />
     <Compile Include="SaveTemporaryOrderPaymentInfo.cs" />
     <Compile Include="UnapplyPromotion.cs" />
     <Compile Include="UnpairOrderForManualRideLinq.cs" />

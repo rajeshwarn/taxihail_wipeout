@@ -405,7 +405,7 @@ namespace apcurium.MK.Booking.Services.Impl
             }
         }
 
-        private CmtPairingResponse PairWithVehicleUsingRideLinq(OrderStatusDetail orderStatusDetail, string cardToken, int? autoTipPercentage)
+        private CmtPairingResponse PairWithVehicleUsingRideLinq(OrderStatusDetail orderStatusDetail, string cardToken, int autoTipPercentage)
         {
             InitializeServiceClient();
 
@@ -417,7 +417,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 var cmtPaymentSettings = _serverSettings.GetPaymentSettings().CmtPaymentSettings;
                 var pairingRequest = new PairingRequest
                 {
-                    AutoTipPercentage = autoTipPercentage ?? _serverSettings.ServerData.DefaultTipPercentage,
+                    AutoTipPercentage = autoTipPercentage,
                     AutoCompletePayment = true,
                     CallbackUrl = string.Empty,
                     CustomerId = orderStatusDetail.AccountId.ToString(),
