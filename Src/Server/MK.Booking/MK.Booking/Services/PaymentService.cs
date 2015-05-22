@@ -201,7 +201,7 @@ namespace apcurium.MK.Booking.Services
             }
         }
 
-        private IPaymentService GetInstance(Guid orderId)
+        private IPaymentService GetInstance(/*Guid orderId*/)
         {
             var serverSettings = _container.Resolve<IServerSettings>();
             switch (serverSettings.GetPaymentSettings().PaymentMode)
