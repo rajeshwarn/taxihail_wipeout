@@ -87,7 +87,9 @@ namespace HoneyBadger
              
             if (response != null && response.Entities != null)
             {
-                var entities = !returnAll ? response.Entities.Take(numberOfVehicles) : response.Entities;
+                var orderedVehicleList = response.Entities.OrderBy(v => v.Medallion);
+                var entities = !returnAll ? orderedVehicleList.Take(numberOfVehicles) : orderedVehicleList;
+                
                 return entities.Select(e => new VehicleResponse
                                 {
                                     Timestamp = e.TimeStamp,
