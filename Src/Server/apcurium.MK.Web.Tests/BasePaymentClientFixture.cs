@@ -13,6 +13,7 @@ using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
+using apcurium.MK.Common.Extensions;
 using Microsoft.Practices.Unity;
 using NUnit.Framework;
 using ServiceStack.ServiceClient.Web;
@@ -84,6 +85,9 @@ namespace apcurium.MK.Web.Tests
                 var testAccount = context.Set<AccountDetail>().First(a => a.Id == TestAccount.Id);
                 testAccount.DefaultCreditCard = creditCardId;
 
+                context.RemoveAll<Booking.ReadModel.CreditCardDetails>();
+                context.SaveChanges();
+
                 context.Set<Booking.ReadModel.CreditCardDetails>().Add(new Booking.ReadModel.CreditCardDetails
                 {
                     CreditCardId = creditCardId,
@@ -109,7 +113,7 @@ namespace apcurium.MK.Web.Tests
                 {
                     ChargeTypeId = ChargeTypes.CardOnFile.Id,
                     VehicleTypeId = 1,
-                    ProviderId = Provider.MobileKnowledgeProviderId,
+                    ProviderId = Provider.ApcuriumIbsProviderId,
                     Phone = "514-555-12129",
                     Passengers = 6,
                     NumberOfTaxi = 1,
@@ -219,6 +223,9 @@ namespace apcurium.MK.Web.Tests
                 var testAccount = context.Set<AccountDetail>().First(a => a.Id == TestAccount.Id);
                 testAccount.DefaultCreditCard = creditCardId;
 
+                context.RemoveAll<Booking.ReadModel.CreditCardDetails>();
+                context.SaveChanges();
+
                 context.Set<Booking.ReadModel.CreditCardDetails>().Add(new Booking.ReadModel.CreditCardDetails
                 {
                     CreditCardId = creditCardId,
@@ -244,7 +251,7 @@ namespace apcurium.MK.Web.Tests
                 {
                     ChargeTypeId = ChargeTypes.CardOnFile.Id,
                     VehicleTypeId = 1,
-                    ProviderId = Provider.MobileKnowledgeProviderId,
+                    ProviderId = Provider.ApcuriumIbsProviderId,
                     Phone = "514-555-12129",
                     Passengers = 6,
                     NumberOfTaxi = 1,

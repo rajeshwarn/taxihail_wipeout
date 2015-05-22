@@ -45,7 +45,6 @@
             style="@style/ButtonActionGrayStyle"
             android:layout_width="fill_parent"
             android:layout_height="@dimen/HeightButton"
-            android:text="@string/AddPaymentMethod"
             android:layout_gravity="center_horizontal"
             android:paddingLeft="30dip"
             android:paddingRight="30dip"
@@ -53,7 +52,7 @@
             android:layout_marginRight="15dip"
             android:layout_marginTop="5dip"
             android:layout_marginBottom="5dip"
-            local:MvxBind="Click ToPayment; Visibility HasValidPaymentInformation, Converter=InvertedVisibility" />
+            local:MvxBind="Text AddPaymentMethodButtonTitle; Click ToPayment; Visibility HasValidPaymentInformation, Converter=InvertedVisibility" />
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"

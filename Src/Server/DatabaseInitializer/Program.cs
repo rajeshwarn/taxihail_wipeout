@@ -68,6 +68,7 @@ namespace DatabaseInitializer
             try
             {
                 Console.WriteLine("Creating/updating database for version {0}", CurrentVersion);
+                Console.WriteLine("Started at: {0}", DateTime.Now);
 
                 Console.WriteLine("Initializing...");
                 var param = GetParamsFromArgs(args);

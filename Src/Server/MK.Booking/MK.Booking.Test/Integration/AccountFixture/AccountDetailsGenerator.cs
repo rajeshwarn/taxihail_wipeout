@@ -264,7 +264,7 @@ namespace apcurium.MK.Booking.Test.Integration.AccountFixture
                     NumberOfTaxi = 3,
                     Phone = "123",
                     Passengers = 3,
-                    ProviderId = 13,
+                    ProviderId = 1,
                     VehicleTypeId = 1,
                     AccountNumber = "1234",
                     CustomerNumber = "0"

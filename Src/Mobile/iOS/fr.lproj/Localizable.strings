@@ -598,7 +598,9 @@
 "InvalidChargeType"="Vous devez sélectionner un type de paiement avant de pouvoir confirmer votre commande";
 "BookATaxi_Message"="Quand voulez-vous commander votre taxi?";
 "InvalidChargeTypeTitle"="Type de paiement invalide";
-"AddPaymentMethod"="Ajouter une méthode de paiement";
+"AddPaymentMethod_Multiple"="Ajouter une méthode de paiement";
+"AddPaymentMethod_CreditCard"="Ajouter une carte de crédit";
+"AddPaymentMethod_PayPal"="Associer un compte PayPal";
 "CurrentBookingDisabledTitle"="Réservation Immédiate Non Disponible";
 "ManualRideLinqNoCardOnFile"="Vous devez avoir une carte associée à votre compte pour utiliser RideLinQ";
 "CvvRequiredTitle"="CVV Requis";
@@ -606,8 +608,10 @@
 "Error_InvalidCvvTitle"="CVV Invalide";
 "Error_InvalidCvvMessage"="Le code de vérification doit être un nombre possédant entre 3 et 4 chiffres";
 "ManualRideLinqCreditCardDisabled"="Vous avez un paiement en souffrance pour un course précédente et vous ne pouvez donc pas utiliser RideLinQ jusqu'à ce que ce montant soit payé.";
-"PromoMustHavePaymentMethodSetMessage"="Pour utiliser un code promotionnel, vous devez avoir configuré une méthode de paiement.";
+"PromoMustHavePaymentMethodSetMessage_Multiple"="Pour utiliser un code promotionnel, vous devez avoir configuré une méthode de paiement.";
 "ManualRideLinqStatus_Extra"="Extra:";
+"PromoMustHavePaymentMethodSetMessage_PayPal"="Pour utiliser un code promotionnel, vous devez avoir un compte PayPal associé à votre compte.";
+"PromoMustHavePaymentMethodSetMessage_CreditCard"="Pour utiliser un code promotionnel, vous devez avoir ajouté une carte de crédit à votre compte.";
 "StatusEditAutoTipButton"="Pourboire";
 "ManualRideLinqStatus_Toll"="Péage:";
 "View_EditAutoTip"="Modifier Pourboire";
