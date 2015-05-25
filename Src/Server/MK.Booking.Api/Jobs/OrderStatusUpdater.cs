@@ -205,14 +205,22 @@ namespace apcurium.MK.Booking.Api.Jobs
                 // Ride was assigned while waiting for user input on whether or not to switch company
                 orderStatusDetail.Status = OrderStatus.Created;
             }
-            
+
+            if (ibsOrderInfo.IsAssigned)
+            {
+                orderStatusDetail.TaxiAssignedDate = DateTime.UtcNow;
+            }
+
             if (ibsOrderInfo.IsCanceled)
             {
                 orderStatusDetail.Status = OrderStatus.Canceled;
 
                 try
                 {
-                    _feeService.ChargeNoShowFeeIfNecessary(ibsOrderInfo, orderStatusDetail);
+                    if (ibsOrderInfo.Status == VehicleStatuses.Common.NoShow)
+                    {
+                        _feeService.ChargeNoShowFeeIfNecessary(orderStatusDetail);
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -400,8 +408,7 @@ namespace apcurium.MK.Booking.Api.Jobs
                         totalOrderAmount, 
                         Convert.ToDecimal(meterAmount), 
                         Convert.ToDecimal(tipAmount), 
-                        orderStatusDetail.OrderId, 
-                        false,
+                        orderStatusDetail.OrderId,
                         promoUsed != null
                             ? promoUsed.PromoId
                             : (Guid?) null,
@@ -453,7 +460,7 @@ namespace apcurium.MK.Booking.Api.Jobs
             orderStatusDetail.Status = OrderStatus.Completed;
         }
 
-        private CommitPreauthorizedPaymentResponse CommitPayment(decimal totalOrderAmount, decimal meterAmount, decimal tipAmount, Guid orderId, bool isNoShowFee, Guid? promoUsedId = null, decimal amountSaved = 0)
+        private CommitPreauthorizedPaymentResponse CommitPayment(decimal totalOrderAmount, decimal meterAmount, decimal tipAmount, Guid orderId, Guid? promoUsedId = null, decimal amountSaved = 0)
         {
             var orderDetail = _orderDao.FindById(orderId);
             if (orderDetail == null)
@@ -504,64 +511,61 @@ namespace apcurium.MK.Booking.Api.Jobs
                     }
                 }
 
-                if (!isNoShowFee)
+                //send information to IBS
+                try
                 {
-                    //send information to IBS
+                    var providerType = _paymentService.ProviderType(orderDetail.Id);
+
+                    string cardToken;
+                    if (providerType == PaymentProvider.PayPal)
+                    {
+                        cardToken = "PayPal";
+                    }
+                    else
+                    {
+                        var card = _creditCardDao.FindByAccountId(orderDetail.AccountId).First();
+                        cardToken = card.Token;
+                    }
+
+                    _ibs.ConfirmExternalPayment(orderDetail.Id,
+                        orderDetail.IBSOrderId.Value,
+                        totalOrderAmount,
+                        Convert.ToDecimal(tipAmount),
+                        Convert.ToDecimal(meterAmount),
+                        paymentProviderServiceResponse.IsSuccessful ? PaymentType.CreditCard.ToString() : FailedCode,
+                        providerType.ToString(),
+                        paymentProviderServiceResponse.TransactionId,
+                        paymentProviderServiceResponse.AuthorizationCode,
+                        cardToken,
+                        account.IBSAccountId.Value,
+                        orderDetail.Settings.Name,
+                        orderDetail.Settings.Phone,
+                        account.Email,
+                        orderDetail.UserAgent.GetOperatingSystem(),
+                        orderDetail.UserAgent);
+                }
+                catch (Exception e)
+                {
+                    _logger.LogError(e);
+                    message = e.Message;
+
                     try
                     {
-                        var providerType = _paymentService.ProviderType(orderDetail.Id);
-
-                        string cardToken;
-                        if (providerType == PaymentProvider.PayPal)
+                        if (paymentProviderServiceResponse.IsSuccessful)
                         {
-                            cardToken = "PayPal";
+                            _paymentService.VoidTransaction(orderId, paymentProviderServiceResponse.TransactionId, ref message);
                         }
-                        else
-                        {
-                            var card = _creditCardDao.FindByAccountId(orderDetail.AccountId).First();
-                            cardToken = card.Token;
-                        }
-
-                        _ibs.ConfirmExternalPayment(orderDetail.Id,
-                            orderDetail.IBSOrderId.Value,
-                            totalOrderAmount,
-                            Convert.ToDecimal(tipAmount),
-                            Convert.ToDecimal(meterAmount),
-                            paymentProviderServiceResponse.IsSuccessful ? PaymentType.CreditCard.ToString() : FailedCode,
-                            providerType.ToString(),
-                            paymentProviderServiceResponse.TransactionId,
-                            paymentProviderServiceResponse.AuthorizationCode,
-                            cardToken,
-                            account.IBSAccountId.Value,
-                            orderDetail.Settings.Name,
-                            orderDetail.Settings.Phone,
-                            account.Email,
-                            orderDetail.UserAgent.GetOperatingSystem(),
-                            orderDetail.UserAgent);
                     }
-                    catch (Exception e)
+                    catch (Exception ex)
                     {
-                        _logger.LogError(e);
-                        message = e.Message;
-
-                        try
-                        {
-                            if (paymentProviderServiceResponse.IsSuccessful)
-                            {
-                                _paymentService.VoidTransaction(orderId, paymentProviderServiceResponse.TransactionId, ref message);
-                            }
-                        }
-                        catch (Exception ex)
-                        {
-                            _logger.LogMessage("Can't cancel transaction");
-                            _logger.LogError(ex);
-                            message = message + ex.Message;
-                            //can't cancel transaction, send a command to log later
-                        }
-                        finally
-                        {
-                            paymentProviderServiceResponse.IsSuccessful = false;
-                        }
+                        _logger.LogMessage("Can't cancel transaction");
+                        _logger.LogError(ex);
+                        message = message + ex.Message;
+                        //can't cancel transaction, send a command to log later
+                    }
+                    finally
+                    {
+                        paymentProviderServiceResponse.IsSuccessful = false;
                     }
                 }
 
@@ -580,7 +584,6 @@ namespace apcurium.MK.Booking.Api.Jobs
                         MeterAmount = Convert.ToDecimal(fareObject.AmountExclTax),
                         TipAmount = Convert.ToDecimal(tipAmount),
                         TaxAmount = Convert.ToDecimal(fareObject.TaxAmount),
-                        IsNoShowFee = isNoShowFee,
                         AuthorizationCode = paymentProviderServiceResponse.AuthorizationCode,
                         TransactionId = paymentProviderServiceResponse.TransactionId,
                         PromotionUsed = promoUsedId,

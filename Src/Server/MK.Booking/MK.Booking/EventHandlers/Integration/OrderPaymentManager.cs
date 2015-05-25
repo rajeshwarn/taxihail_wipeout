@@ -23,6 +23,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
         private readonly IIbsOrderService _ibs;
         private readonly IServerSettings _serverSettings;
         private readonly IPaymentService _paymentService;
+        private readonly IFeeService _feeService;
         private readonly IOrderPaymentDao _paymentDao;
         private readonly ICreditCardDao _creditCardDao;
         private readonly IAccountDao _accountDao;
@@ -30,7 +31,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
         private readonly ICommandBus _commandBus;
 
         public OrderPaymentManager(IOrderDao dao, IOrderPaymentDao paymentDao, IAccountDao accountDao, IOrderDao orderDao, ICommandBus commandBus,
-            ICreditCardDao creditCardDao, IIbsOrderService ibs, IServerSettings serverSettings, IPaymentService paymentService)
+            ICreditCardDao creditCardDao, IIbsOrderService ibs, IServerSettings serverSettings, IPaymentService paymentService, IFeeService feeService)
         {
             _accountDao = accountDao;
             _orderDao = orderDao;
@@ -41,6 +42,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             _ibs = ibs;
             _serverSettings = serverSettings;
             _paymentService = paymentService;
+            _feeService = feeService;
         }
 
         public void Handle(CreditCardPaymentCaptured_V2 @event)
@@ -118,8 +120,12 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             }
             else
             {
-                // void the preauthorization to prevent misuse fees
-                _paymentService.VoidPreAuthorization(@event.SourceId);
+                var feeCharged = _feeService.ChargeCancellationFeeIfNecessary(orderDetail);
+                if (!feeCharged)
+                {
+                    // void the preauthorization to prevent misuse fees
+                    _paymentService.VoidPreAuthorization(@event.SourceId);
+                }
             }
         }
 
