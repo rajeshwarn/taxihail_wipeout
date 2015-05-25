@@ -45,7 +45,8 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
 
         public void Handle(CreditCardPaymentCaptured_V2 @event)
         {
-            if (@event.IsNoShowFee)
+            if (@event.IsNoShowFee
+                || @event.IsCancellationFee)
             {
                 // Don't message driver
                 return;

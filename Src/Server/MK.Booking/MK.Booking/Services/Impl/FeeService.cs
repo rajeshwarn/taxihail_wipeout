@@ -84,7 +84,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 if (preAuthResponse.IsSuccessful)
                 {
                     // Commit
-                    var paymentResult = CommitPayment(noShowFee, orderStatusDetail.OrderId);
+                    var paymentResult = CommitPayment(noShowFee, orderStatusDetail.OrderId, true, false);
                     if (paymentResult.IsSuccessful)
                     {
                         Log.DebugFormat("No show fee of amount {0} was charged for order {1}.", noShowFee, ibsOrderInfo.IBSOrderId);
@@ -151,7 +151,7 @@ namespace apcurium.MK.Booking.Services.Impl
             return result;
         }
 
-        private CommitPreauthorizedPaymentResponse CommitPayment(decimal feeAmount, Guid orderId)
+        private CommitPreauthorizedPaymentResponse CommitPayment(decimal feeAmount, Guid orderId, bool isNoShowFee, bool isCancellationFee)
         {
             var orderDetail = _orderDao.FindById(orderId);
             if (orderDetail == null)
@@ -216,7 +216,8 @@ namespace apcurium.MK.Booking.Services.Impl
                         MeterAmount = Convert.ToDecimal(fareObject.AmountExclTax),
                         TipAmount = Convert.ToDecimal(0),
                         TaxAmount = Convert.ToDecimal(fareObject.TaxAmount),
-                        IsNoShowFee = true,
+                        IsNoShowFee = isNoShowFee,
+                        IsCancellationFee = isCancellationFee,
                         AuthorizationCode = paymentProviderServiceResponse.AuthorizationCode,
                         TransactionId = paymentProviderServiceResponse.TransactionId
                     });

@@ -46,6 +46,8 @@ namespace apcurium.MK.Booking.EventHandlers
                 payment.Tax = @event.Tax;
                 payment.Tip = @event.Tip;
                 payment.IsCancelled = false;
+                payment.IsNoShowFee = @event.IsNoShowFee;
+                payment.IsCancellationFee = @event.IsCancellationFee;
                 payment.Error = null;
 
                 // Update payment details after settling an overdue payment
