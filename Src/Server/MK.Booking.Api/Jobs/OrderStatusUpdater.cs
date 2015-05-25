@@ -1,27 +1,13 @@
-﻿#region
-
-using System.Collections.Generic;
-using System.Configuration;
+﻿using System;
 using System.Globalization;
 using System.Linq;
-using System.Net;
 using System.Threading;
-using apcurium.MK.Booking.Api.Contract.Requests.Payment;
-using apcurium.MK.Booking.Api.Contract.Resources;
-using apcurium.MK.Booking.Api.Helpers;
-using apcurium.MK.Booking.Api.Services;
-using apcurium.MK.Booking.Api.Services.Payment;
 using apcurium.MK.Booking.Commands;
-using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Domain;
 using apcurium.MK.Booking.EventHandlers.Integration;
 using apcurium.MK.Booking.IBS;
 using apcurium.MK.Booking.Maps;
-using apcurium.MK.Booking.Maps.Geo;
-using apcurium.MK.Booking.PushNotifications;
-using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
-using apcurium.MK.Booking.Resources;
 using apcurium.MK.Booking.Services;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
@@ -31,14 +17,10 @@ using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common.Resources;
+using CMTPayment;
 using Infrastructure.EventSourcing;
 using Infrastructure.Messaging;
-using System;
-using CMTPayment;
 using log4net;
-using ServiceStack.Common.Web;
-
-#endregion
 
 namespace apcurium.MK.Booking.Api.Jobs
 {
@@ -59,6 +41,7 @@ namespace apcurium.MK.Booking.Api.Jobs
         private readonly IEventSourcedRepository<Promotion> _promoRepository;
         private readonly IPaymentService _paymentService;
         private readonly ICreditCardDao _creditCardDao;
+        private readonly IFeeService _feeService;
         private readonly ILogger _logger;
         private readonly Resources.Resources _resources;
 
@@ -81,6 +64,7 @@ namespace apcurium.MK.Booking.Api.Jobs
             IEventSourcedRepository<Promotion> promoRepository,
             IPaymentService paymentService,
             ICreditCardDao creditCardDao,
+            IFeeService feeService,
             ILogger logger)
         {
             _orderDao = orderDao;
@@ -94,6 +78,7 @@ namespace apcurium.MK.Booking.Api.Jobs
             _promoRepository = promoRepository;
             _paymentService = paymentService;
             _creditCardDao = creditCardDao;
+            _feeService = feeService;
             _logger = logger;
             _commandBus = commandBus;
             _paymentDao = paymentDao;
@@ -224,7 +209,16 @@ namespace apcurium.MK.Booking.Api.Jobs
             if (ibsOrderInfo.IsCanceled)
             {
                 orderStatusDetail.Status = OrderStatus.Canceled;
-                ChargeNoShowFeeIfNecessary(ibsOrderInfo, orderStatusDetail);
+
+                try
+                {
+                    _feeService.ChargeNoShowFeeIfNecessary(ibsOrderInfo, orderStatusDetail);
+                }
+                catch (Exception ex)
+                {
+                    orderStatusDetail.PairingError = ex.Message;
+                }
+                
                 Log.DebugFormat("Order {1}: Status updated to: {0}", orderStatusDetail.Status, orderStatusDetail.OrderId);
             }
             else if (ibsOrderInfo.IsTimedOut)
@@ -282,61 +276,6 @@ namespace apcurium.MK.Booking.Api.Jobs
             }
             
             return result;
-        }
-
-        private void ChargeNoShowFeeIfNecessary(IBSOrderInformation ibsOrderInfo, OrderStatusDetail orderStatusDetail)
-        {
-            if (ibsOrderInfo.Status != VehicleStatuses.Common.NoShow)
-            {
-                return;
-            }
-
-            // Order is prepaid, if the user prepaid and decided not to show up, the fee is his fare already charged
-            if (orderStatusDetail.IsPrepaid)
-            {
-                return;
-            }
-
-            Log.DebugFormat("No show fee will be charged for order {0}.", ibsOrderInfo.IBSOrderId);
-
-            var paymentSettings = _serverSettings.GetPaymentSettings();
-            var account = _accountDao.FindById(orderStatusDetail.AccountId);
-
-            if (paymentSettings.NoShowFee.HasValue
-                && paymentSettings.NoShowFee.Value > 0
-                && (account.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id
-                    || account.Settings.ChargeTypeId == ChargeTypes.PayPal.Id))
-            {
-                try
-                {
-                    // PreAuthorization
-                    var preAuthResponse = PreauthorizePaymentIfNecessary(orderStatusDetail.OrderId, paymentSettings.NoShowFee.Value);
-                    if (preAuthResponse.IsSuccessful)
-                    {
-                        // Commit
-                        var paymentResult = CommitPayment(paymentSettings.NoShowFee.Value, paymentSettings.NoShowFee.Value, 0, orderStatusDetail.OrderId, true);
-                        if (paymentResult.IsSuccessful)
-                        {
-                            Log.DebugFormat("No show fee of amount {0} was charged for order {1}.", paymentSettings.NoShowFee.Value, ibsOrderInfo.IBSOrderId);
-                        }
-                        else
-                        {
-                            orderStatusDetail.PairingError = paymentResult.Message;
-                            Log.DebugFormat("Could not process no show fee for order {0}: {1}.", ibsOrderInfo.IBSOrderId, paymentResult.Message);
-                        }
-                    }
-                    else
-                    {
-                        orderStatusDetail.PairingError = preAuthResponse.Message;
-                        Log.DebugFormat("Could not process no show fee for order {0}: {1}.", ibsOrderInfo.IBSOrderId, preAuthResponse.Message);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    orderStatusDetail.PairingError = ex.Message;
-                    Log.DebugFormat("Could not process no show fee for order {0}: {1}.", ibsOrderInfo.IBSOrderId, ex.Message);
-                }
-            }
         }
 
         private void UpdateVehiclePositionAndSendNearbyNotificationIfNecessary(IBSOrderInformation ibsOrderInfo, OrderStatusDetail orderStatus)

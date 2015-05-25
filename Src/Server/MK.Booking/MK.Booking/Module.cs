@@ -86,6 +86,8 @@ namespace apcurium.MK.Booking
 
             container.RegisterType<IPayPalServiceFactory, PayPalServiceFactory>();
             container.RegisterType<IPaymentService, PaymentService>();
+
+            container.RegisterType<IFeeService, FeeService>();
         }
 
         public void RegisterMaps()

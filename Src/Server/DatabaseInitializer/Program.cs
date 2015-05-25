@@ -875,7 +875,6 @@ namespace DatabaseInitializer
                     {
                         new Fees
                         {
-                            Market = string.Empty,
                             NoShow = noShowFee
                         }
                     }
