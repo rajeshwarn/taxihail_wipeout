@@ -25,6 +25,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		UIKit.UILabel lblDriverIdText { get; set; }
 
 		[Outlet]
+		UIKit.UILabel lblExtraLabel { get; set; }
+
+		[Outlet]
+		UIKit.UILabel lblExtraText { get; set; }
+
+		[Outlet]
 		UIKit.UILabel lblFareLabel { get; set; }
 
 		[Outlet]
@@ -58,6 +64,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 		UIKit.UILabel lblTipText { get; set; }
 
 		[Outlet]
+		UIKit.UILabel lblTollLabel { get; set; }
+
+		[Outlet]
+		UIKit.UILabel lblTollText { get; set; }
+
+		[Outlet]
 		UIKit.UILabel lblTotalLabel { get; set; }
 
 		[Outlet]
@@ -68,11 +80,6 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			if (lblDistanceLabel != null) {
 				lblDistanceLabel.Dispose ();
 				lblDistanceLabel = null;
-			}
-
-			if (lblThanks != null) {
-				lblThanks.Dispose ();
-				lblThanks = null;
 			}
 
 			if (lblDistanceText != null) {
@@ -130,6 +137,11 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 				lblTaxText = null;
 			}
 
+			if (lblThanks != null) {
+				lblThanks.Dispose ();
+				lblThanks = null;
+			}
+
 			if (lblTipLabel != null) {
 				lblTipLabel.Dispose ();
 				lblTipLabel = null;
@@ -148,6 +160,26 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
 			if (lblTotalText != null) {
 				lblTotalText.Dispose ();
 				lblTotalText = null;
+			}
+
+			if (lblTollLabel != null) {
+				lblTollLabel.Dispose ();
+				lblTollLabel = null;
+			}
+
+			if (lblTollText != null) {
+				lblTollText.Dispose ();
+				lblTollText = null;
+			}
+
+			if (lblExtraLabel != null) {
+				lblExtraLabel.Dispose ();
+				lblExtraLabel = null;
+			}
+
+			if (lblExtraText != null) {
+				lblExtraText.Dispose ();
+				lblExtraText = null;
 			}
 		}
 	}
