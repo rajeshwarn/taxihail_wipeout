@@ -147,7 +147,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 if (preAuthResponse.IsSuccessful)
                 {
                     // Commit
-                    var paymentResult = CommitPayment(cancellationFee, orderStatusDetail.OrderId);
+                    var paymentResult = CommitPayment(cancellationFee, orderStatusDetail.OrderId, false, true);
                     if (paymentResult.IsSuccessful)
                     {
                         _logger.LogMessage("Cancellation fee of amount {0} was charged for order {1}.", cancellationFee, orderStatusDetail.IBSOrderId);
