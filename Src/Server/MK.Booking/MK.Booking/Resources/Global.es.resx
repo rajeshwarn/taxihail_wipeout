@@ -745,4 +745,7 @@
   <data name="Email_Body_DriverId" xml:space="preserve">
     <value>Driver #</value>
   </data>
+  <data name="PayPalWebBookingFeeItemDescription" xml:space="preserve">
+    <value>Booking Fees</value>
+  </data>
 </root>
