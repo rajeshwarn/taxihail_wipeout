@@ -13,5 +13,7 @@ namespace apcurium.MK.Booking.Events
         public bool IsSettlingOverduePayment { get; set; }
 
         public bool IsForPrepaidOrder { get; set; }
+
+        public bool IsCancellationFee { get; set; }
     }
 }
