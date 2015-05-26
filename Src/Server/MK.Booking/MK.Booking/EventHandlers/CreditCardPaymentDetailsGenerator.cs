@@ -47,6 +47,7 @@ namespace apcurium.MK.Booking.EventHandlers
                 payment.Tip = @event.Tip;
                 payment.Toll = @event.Toll;
                 payment.Surcharge = @event.Surcharge;
+                payment.BookingFees = @event.BookingFees;
                 payment.IsCancelled = false;
                 payment.IsNoShowFee = @event.IsNoShowFee;
                 payment.IsCancellationFee = @event.IsCancellationFee;
