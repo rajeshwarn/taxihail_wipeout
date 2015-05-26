@@ -448,37 +448,43 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
             {
                 return this.GetCommand(async () =>
                 {
-                    try
-                    {
-                        await _orderWorkflowService.ValidatePickupAndDestination();
-                        PresentationStateRequested.Raise(this, new HomeViewModelStateRequestedEventArgs(HomeViewModelState.PickDate));
-                    }
-                    catch (OrderValidationException e)
-                    {
-                        switch (e.Error)
-                        {
-                            case OrderValidationError.OpenDestinationSelection:
-                                // not really an error, but we stop the command from proceeding at this point
-                                return;
-                            case OrderValidationError.PickupAddressRequired:
-								ResetToInitialState.ExecuteIfPossible();
-                                this.Services().Message.ShowMessage(this.Services().Localize["InvalidBookinInfoTitle"], this.Services().Localize["InvalidBookinInfo"]);
-                                return;
-                            case OrderValidationError.DestinationAddressRequired:
-								ResetToInitialState.ExecuteIfPossible();
-                                this.Services().Message.ShowMessage(this.Services().Localize["InvalidBookinInfoTitle"], this.Services().Localize["InvalidBookinInfoWhenDestinationIsRequired"]);
-                                return;
-                        }
-                    }
-					catch(Exception e)
-					{
-						Logger.LogError(e);
-						ResetToInitialState.ExecuteIfPossible();
-						return;
-					}
+					Action onValidated = () => PresentationStateRequested.Raise(this, new HomeViewModelStateRequestedEventArgs(HomeViewModelState.PickDate));
+					await PrevalidatePickupAndDestinationRequired(onValidated);
                 });
             }
         }
+
+		private async Task PrevalidatePickupAndDestinationRequired(Action onValidated)
+		{
+			try
+			{
+				await _orderWorkflowService.ValidatePickupAndDestination();
+				onValidated.Invoke();
+			}
+			catch (OrderValidationException e)
+			{
+				switch (e.Error)
+				{
+					case OrderValidationError.OpenDestinationSelection:
+						// not really an error, but we stop the command from proceeding at this point
+						return;
+					case OrderValidationError.PickupAddressRequired:
+						ResetToInitialState.ExecuteIfPossible();
+						this.Services().Message.ShowMessage(this.Services().Localize["InvalidBookinInfoTitle"], this.Services().Localize["InvalidBookinInfo"]);
+						return;
+					case OrderValidationError.DestinationAddressRequired:
+						ResetToInitialState.ExecuteIfPossible();
+						this.Services().Message.ShowMessage(this.Services().Localize["InvalidBookinInfoTitle"], this.Services().Localize["InvalidBookinInfoWhenDestinationIsRequired"]);
+						return;
+				}
+			}
+			catch(Exception e)
+			{
+				Logger.LogError(e);
+				ResetToInitialState.ExecuteIfPossible();
+				return;
+			}
+		}
 
         public ICommand Edit
         {
@@ -560,12 +566,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
         {
             get
             {
-                return this.GetCommand(() =>
+                return this.GetCommand(async () =>
                 {
                     if (Settings.UseSingleButtonForNowAndLaterBooking && !Settings.DisableFutureBooking)
                     {
                         //We need to show the Book A Taxi popup.
-                        PresentationStateRequested.Raise(this, new HomeViewModelStateRequestedEventArgs(HomeViewModelState.BookATaxi));
+						Action onValidated = () => PresentationStateRequested.Raise(this, new HomeViewModelStateRequestedEventArgs(HomeViewModelState.BookATaxi));
+						await PrevalidatePickupAndDestinationRequired(onValidated);
                     }
                     else
                     {
@@ -576,8 +583,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
             }
         }
             
-
-        public ICommand BookATaxi
+		public ICommand BookATaxi
         {
             get
             {

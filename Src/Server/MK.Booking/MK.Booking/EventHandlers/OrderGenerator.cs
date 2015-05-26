@@ -348,6 +348,7 @@ namespace apcurium.MK.Booking.EventHandlers
                     order.Tip = @event.Tip;
                     order.Toll = @event.Toll;
                     order.Tax = @event.Tax;
+                    order.Surcharge = @event.Surcharge;
 
                     context.Save(order);
                 }

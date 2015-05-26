@@ -16,8 +16,6 @@
    "TaxiHail.AccentColor" : "#0057a3",
    "TaxiHail.EmailFontColor" : "#000",
    "TaxiHail.SiteName": "Dev",
-   "apcuriumibs_DefaultBookingSettings.ProviderId" : "18",
-   "apcuriumibs_IBS.WebServicesUrl": "http://apcuriumibs:6928/XDS_IASPI.DLL/soap/",
    "DefaultBookingSettings.ProviderId" : "1",
    "IBS.WebServicesUrl" : "http://apcurium.drivelinq.com:16928/IBSCab/IBSCab.dll/soap/",
    "IBS.RestApiUrl" : "http://cabmatedemo.drivelinq.com:8889/",

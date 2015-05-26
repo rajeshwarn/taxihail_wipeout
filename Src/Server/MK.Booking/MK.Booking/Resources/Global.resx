@@ -351,8 +351,14 @@
   <data name="PushNotification_OrderPairingSuccessful" xml:space="preserve">
     <value>The ride #{0} will be paid automatically at the end of the trip using your credit card ending with {1} and using your default tip of {2}%</value>
   </data>
+  <data name="PushNotification_OrderPairingSuccessfulUnpair" xml:space="preserve">
+    <value>The ride #{0} will be paid at the end of the trip using your credit card on file ending with {1}. If you're in the wrong car, choose the Pay in Car option below to ensure you are not charged for the ride.</value>
+  </data>
   <data name="PushNotification_OrderPairingSuccessfulPayPal" xml:space="preserve">
-    <value>The ride #{0} will be paid automatically at the end of the trip using your linked PayPal account and using your default tip of {2}%</value>
+    <value>The ride #{0} will be paid automatically at the end of the trip using your linked PayPal account and using your default tip of {1}%</value>
+  </data>
+  <data name="PushNotification_OrderPairingSuccessfulPayPalUnpair" xml:space="preserve">
+    <value>The ride #{0} will be paid at the end of the trip using your PayPal account. If you're in the wrong car, choose the Pay in Car option below to ensure you are not charged for the ride.</value>
   </data>
   <data name="PushNotification_OrderPairingFailed" xml:space="preserve">
     <value>The ride #{0} could not be automatically paired</value>
@@ -561,12 +567,6 @@
   <data name="PayPalWebPaymentDescription" xml:space="preserve">
     <value>Taxi ride of amount {0}</value>
   </data>
-  <data name="PushNotification_OrderPairingSuccessfulPayPalUnpair" xml:space="preserve">
-    <value>The ride #{0} will be paid at the end of the trip using your PayPal account. If you're in the wrong car, choose the Pay in Car option below to ensure you are not charged for the ride.</value>
-  </data>
-  <data name="PushNotification_OrderPairingSuccessfulUnpair" xml:space="preserve">
-    <value>The ride #{0} will be paid at the end of the trip using your credit card on file. If you're in the wrong car, choose the Pay in Car option below to ensure you are not charged for the ride. </value>
-  </data>
   <data name="PushNotification_OrderUnpairingTimeOutWarning" xml:space="preserve">
     <value>Reminder: If you're in the wrong car, choose the Pay in Car option below to ensure you are not charged for the ride.</value>
   </data>
@@ -611,6 +611,9 @@
   </data>
   <data name="ManualRideLinq_CreditCardDisabled" xml:space="preserve">
     <value>Your current card on file has an overdue payment for a previous ride. This overdue payment is preventing you from pairing with RideLinQ</value>
+  </data>
+  <data name="Email_Body_Surcharge" xml:space="preserve">
+    <value>Surcharge</value>
   </data>
   <data name="Email_Body_Extra" xml:space="preserve">
     <value>Extra</value>

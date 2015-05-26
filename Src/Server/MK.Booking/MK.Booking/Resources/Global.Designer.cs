@@ -763,6 +763,15 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Surcharge.
+        /// </summary>
+        public static string Email_Body_Surcharge {
+            get {
+                return ResourceManager.GetString("Email_Body_Surcharge", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Tax.
         /// </summary>
         public static string Email_Body_Tax {
@@ -1294,7 +1303,7 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The ride #{0} will be paid automatically at the end of the trip using your linked PayPal account and using your default tip of {2}%.
+        ///   Looks up a localized string similar to The ride #{0} will be paid automatically at the end of the trip using your linked PayPal account and using your default tip of {1}%.
         /// </summary>
         public static string PushNotification_OrderPairingSuccessfulPayPal {
             get {
@@ -1312,7 +1321,7 @@ namespace apcurium.MK.Booking.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The ride #{0} will be paid at the end of the trip using your credit card on file. If you&apos;re in the wrong car, choose the Pay in Car option below to ensure you are not charged for the ride. .
+        ///   Looks up a localized string similar to The ride #{0} will be paid at the end of the trip using your credit card on file ending with {1}. If you&apos;re in the wrong car, choose the Pay in Car option below to ensure you are not charged for the ride..
         /// </summary>
         public static string PushNotification_OrderPairingSuccessfulUnpair {
             get {

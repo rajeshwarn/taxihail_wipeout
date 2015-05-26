@@ -18,7 +18,7 @@ namespace apcurium.MK.Booking.Services
         void SendPaymentCapturePush(Guid orderId, decimal amount);
         void SendTaxiNearbyPush(Guid orderId, string ibsStatus, double? newLatitude, double? newLongitude);
         void SendUnpairingReminderPush(Guid orderId);
-        void SendAutomaticPairingPush(Guid orderId, int autoTipPercentage, bool success);
+        void SendAutomaticPairingPush(Guid orderId, CreditCardDetails creditCard, int autoTipPercentage, bool success);
         void SendOrderCreationErrorPush(Guid orderId, string errorDescription);
 
         void SendAccountConfirmationSMS(string phoneNumber, string code, string clientLanguageCode);
@@ -33,7 +33,7 @@ namespace apcurium.MK.Booking.Services
         void SendNoShowFeesReceiptEmail(int ibsOrderId, double feeAmount, Address pickUpAddress, string last4Digits, string clientEmailAddress, string clientLanguageCode, bool bypassNotificationSetting = false);
 
         void SendReceiptEmail(Guid orderId, int ibsOrderId, string vehicleNumber, DriverInfos driverInfos, double fare, double toll, double tip,
-            double tax, double totalFare, SendReceipt.Payment paymentInfo, Address pickupAddress, Address dropOffAddress,
+            double tax, double extra, double surcharge, double totalFare, SendReceipt.Payment paymentInfo, Address pickupAddress, Address dropOffAddress,
             DateTime pickupDate, DateTime? dropOffDateInUtc, string clientEmailAddress, string clientLanguageCode, double amountSavedByPromotion, string promoCode, 
             bool bypassNotificationSetting = false);
         void SendPromotionUnlockedEmail(string name, string code, DateTime? expirationDate, string clientEmailAddress, string clientLanguageCode, bool bypassNotificationSettings = false);

@@ -45,9 +45,11 @@ namespace apcurium.MK.Booking.Test.CreditCardPaymentFixture
             {
                 PaymentId = _paymentId,
                 MeterAmount = 20,
-                Amount = 24,
+                TotalAmount = 24,
                 TipAmount = 2,
                 TaxAmount = 2,
+                TollAmount = 2.4m,
+                SurchargeAmount = 1,
                 AccountId = accountId,
                 TransactionId = "123",
                 IsForPrepaidOrder = true,
@@ -61,6 +63,8 @@ namespace apcurium.MK.Booking.Test.CreditCardPaymentFixture
             Assert.AreEqual(20, @event.Meter);
             Assert.AreEqual(2, @event.Tip);
             Assert.AreEqual(2, @event.Tax);
+            Assert.AreEqual(2.4, @event.Toll);
+            Assert.AreEqual(1, @event.Surcharge);
             Assert.AreEqual(_orderId, @event.OrderId);
             Assert.AreEqual(accountId, @event.AccountId);
             Assert.AreEqual("fjff", @event.NewCardToken);

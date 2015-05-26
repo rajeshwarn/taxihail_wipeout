@@ -385,10 +385,10 @@ namespace apcurium.MK.Booking.Api.Services
                     _commandBus.Send(new MarkPrepaidOrderAsSuccessful
                     {
                         OrderId = request.OrderId,
-                        Amount = fareObject.AmountInclTax + tipAmount,
-                        Meter = fareObject.AmountExclTax,
-                        Tax = fareObject.TaxAmount,
-                        Tip = tipAmount,
+                        TotalAmount = fareObject.AmountInclTax + tipAmount,
+                        MeterAmount = fareObject.AmountExclTax,
+                        TaxAmount = fareObject.TaxAmount,
+                        TipAmount = tipAmount,
                         TransactionId = response.TransactionId,
                         Provider = PaymentProvider.PayPal,
                         Type = PaymentType.PayPal
@@ -1367,7 +1367,7 @@ namespace apcurium.MK.Booking.Api.Services
                         AccountId = account.Id,
                         PaymentId = paymentDetail.PaymentId,
                         Provider = _paymentService.ProviderType(orderId),
-                        Amount = totalAmount,
+                        TotalAmount = totalAmount,
                         MeterAmount = fareObject.AmountExclTax,
                         TipAmount = tipAmount,
                         TaxAmount = fareObject.TaxAmount,

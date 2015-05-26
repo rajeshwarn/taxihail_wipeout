@@ -276,7 +276,7 @@ namespace apcurium.MK.Booking.Services.Impl
                         AccountId = account.Id,
                         PaymentId = paymentDetail.PaymentId,
                         Provider = _paymentService.ProviderType(orderDetail.Id),
-                        Amount = feeAmount,
+                        TotalAmount = feeAmount,
                         MeterAmount = Convert.ToDecimal(fareObject.AmountExclTax),
                         TipAmount = Convert.ToDecimal(0),
                         TaxAmount = Convert.ToDecimal(fareObject.TaxAmount),

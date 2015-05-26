@@ -188,6 +188,7 @@ namespace apcurium.MK.Booking.Test.Integration.OrderFixture
                 Toll = 2,
                 Tip = 5,
                 Tax = 12,
+                Surcharge = 1,
                 IsCompleted = true
             };
             Sut.Handle(orderCompleted);
@@ -201,6 +202,7 @@ namespace apcurium.MK.Booking.Test.Integration.OrderFixture
                 Assert.AreEqual(orderCompleted.Toll, dto.Toll);
                 Assert.AreEqual(orderCompleted.Tip, dto.Tip);
                 Assert.AreEqual(orderCompleted.Tax, dto.Tax);
+                Assert.AreEqual(orderCompleted.Surcharge, dto.Surcharge);
             }
         }
 

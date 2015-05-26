@@ -102,6 +102,8 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                             ? _serverSettings.ServerData.VATPercentage
                             : 0);
 
+                    var orderDetail = _orderDao.FindById(overduePayment.OrderId);
+
                     _commandBus.Send(new CaptureCreditCardPayment
                     {
                         IsSettlingOverduePayment = true,
@@ -109,10 +111,12 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                         AccountId = accountDetail.Id,
                         PaymentId = paymentDetail.PaymentId,
                         Provider = _paymentService.ProviderType(overduePayment.OrderId),
-                        Amount = overduePayment.OverdueAmount,
+                        TotalAmount = overduePayment.OverdueAmount,
                         MeterAmount = fareObject.AmountExclTax,
                         TipAmount = tipAmount,
                         TaxAmount = fareObject.TaxAmount,
+                        TollAmount = Convert.ToDecimal(orderDetail.Toll ?? 0),
+                        SurchargeAmount = Convert.ToDecimal(orderDetail.Surcharge ?? 0),
                         AuthorizationCode = commitResponse.AuthorizationCode,
                         TransactionId = commitResponse.TransactionId,
                         PromotionUsed = promotion != null ? promotion.PromoId : default(Guid?),

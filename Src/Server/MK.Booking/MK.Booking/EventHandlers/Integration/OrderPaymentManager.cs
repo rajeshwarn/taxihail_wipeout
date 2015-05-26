@@ -54,12 +54,15 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                 return;
             }
 
+            var taxedMeterAmount = @event.Meter + @event.Tax;
+
             if (_serverSettings.ServerData.SendDetailedPaymentInfoToDriver
                 && !@event.IsSettlingOverduePayment) // Don't send notification to driver when user settles overdue payment
             {
                 // To prevent driver confusion we will not send the discounted total amount for the fare.
+                var totalAmountBeforePromotion = @event.Amount + @event.AmountSavedByPromotion;
                 // We will also not send booking fee since it could be from a market company and the driver would not know where it's coming from
-                SendPaymentConfirmationToDriver(@event.OrderId, @event.Amount + @event.AmountSavedByPromotion, @event.Meter + @event.Tax, @event.Tip, @event.Provider.ToString(), @event.AuthorizationCode);
+                SendPaymentConfirmationToDriver(@event.OrderId, totalAmountBeforePromotion, taxedMeterAmount, @event.Tip, @event.Provider.ToString(), @event.AuthorizationCode);
             }
 
             if (@event.PromotionUsed.HasValue)
@@ -68,15 +71,16 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                 {
                     OrderId = @event.OrderId,
                     PromoId = @event.PromotionUsed.Value,
-                    TotalAmountOfOrder = @event.Meter + @event.Tax // MK: Booking fees don't count towards promo rebate (2015/05/25)
+                    TaxedMeterAmount = taxedMeterAmount // MK: Booking fees don't count towards promo rebate (2015/05/25)
                 };
-                var envelope = (Envelope<ICommand>) redeemPromotion;
+
+                var envelope = (Envelope<ICommand>)redeemPromotion;
 
                 _commandBus.Send(envelope);
             }
         }
 
-        private void SendPaymentConfirmationToDriver(Guid orderId, decimal amount, decimal meter, decimal tip, string provider,  string authorizationCode)
+        private void SendPaymentConfirmationToDriver(Guid orderId, decimal totalAmountBeforePromotion, decimal taxedMeterAmount, decimal tipAmount, string provider,  string authorizationCode)
         {
             // Send message to driver
             var orderStatusDetail = _dao.FindOrderStatusById(orderId);
@@ -99,7 +103,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                 if (card == null) throw new InvalidOperationException("Credit card not found");
             }
 
-            _ibs.SendPaymentNotification((double)amount, (double)meter, (double)tip, authorizationCode, orderStatusDetail.VehicleNumber);
+            _ibs.SendPaymentNotification((double)totalAmountBeforePromotion, (double)taxedMeterAmount, (double)tipAmount, authorizationCode, orderStatusDetail.VehicleNumber);
         }
 
         public void Handle(OrderCancelled @event)

@@ -5,6 +5,7 @@ using apcurium.MK.Booking.Api.Contract.Resources;
 using apcurium.MK.Booking.Mobile.AppServices;
 using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.ViewModels.Payment;
+using apcurium.MK.Common.Configuration.Impl;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels
 {
@@ -13,12 +14,16 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         private readonly IOrderWorkflowService _orderWorkflowService;
         private readonly IPromotionService _promotionService;
 		private readonly IAccountService _accountService;
+		private readonly IPaymentService _paymentService;
 
-        public PromotionViewModel(IOrderWorkflowService orderWorkflowService, IPromotionService promotionService, IAccountService accountService)
+		private ClientPaymentSettings _paymentSettings;
+
+		public PromotionViewModel(IOrderWorkflowService orderWorkflowService, IPromotionService promotionService, IAccountService accountService, IPaymentService paymentService)
         {
             _orderWorkflowService = orderWorkflowService;
             _promotionService = promotionService;
 			_accountService = accountService;
+			_paymentService = paymentService;
 
             ActivePromotions = new ObservableCollection<PromotionItemViewModel>();
         }
@@ -26,8 +31,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         public override void OnViewLoaded()
         {
             base.OnViewLoaded();
+			FetchPaymentSettings();
             LoadActivePromotions();
-			
         }
 
         public override void OnViewStarted(bool firstTime)
@@ -53,24 +58,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 
         public ObservableCollection<PromotionItemViewModel> ActivePromotions { get; set; }
 
-        public ICommand ApplyPromotion
-        {
-            get
-            {
-                return this.GetCommand(() =>
-                {
-                    _orderWorkflowService.SetPromoCode(PromotionCode);
-                    Close(this);
-                });
-            }
-        }
-
-		private bool _hasValidPaymentInformation;
-		public bool HasValidPaymentInformation {
-			get 
-			{
-				return _hasValidPaymentInformation;
-			}
+        private bool _hasValidPaymentInformation;
+		public bool HasValidPaymentInformation 
+		{
+			get { return _hasValidPaymentInformation; }
 			set 
 			{
 				_hasValidPaymentInformation = value;
@@ -83,9 +74,12 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                return _hasValidPaymentInformation
-                    ? this.Services().Localize["PromoMustUseCardOnFileWarningMessage"]
-                    : this.Services().Localize["PromoMustHavePaymentMethodSetMessage"];
+				if (HasValidPaymentInformation)
+				{
+					return this.Services().Localize["PromoMustUseCardOnFileWarningMessage"];
+				}
+
+				return GetNoValidPaymentInformationMessage();
             }
         }
 
@@ -104,13 +98,67 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         {
             get
             {
-                return this.GetCommand<ActivePromotion>(activePromotion =>
-                {
-                    _orderWorkflowService.SetPromoCode(activePromotion.Code);
-                    Close(this);
-                });
+				return this.GetCommand<ActivePromotion>(activePromotion => SetPromoCodeAndClose(activePromotion.Code));
             }
         }
+
+		public ICommand ApplyPromotion
+		{
+			get
+			{
+				return this.GetCommand(() => SetPromoCodeAndClose(PromotionCode));
+			}
+		}
+
+		private string GetNoValidPaymentInformationMessage()
+		{
+			switch (_paymentSettings.SupportedPaymentMethod)
+			{
+				case SupportedPaymentMethod.Multiple:
+					return this.Services().Localize["PromoMustHavePaymentMethodSetMessage_Multiple"];
+				case SupportedPaymentMethod.PayPalOnly:
+					return this.Services().Localize["PromoMustHavePaymentMethodSetMessage_PayPal"];
+				default:
+					return this.Services().Localize["PromoMustHavePaymentMethodSetMessage_CreditCard"];
+			}
+		}
+
+		private void SetPromoCodeAndClose(string promoCode)
+		{
+			if (!HasValidPaymentInformation)
+			{
+				this.Services().Message.ShowMessage(
+					this.Services().Localize["Error"],
+					GetNoValidPaymentInformationMessage());
+
+				return;
+			}
+
+			_orderWorkflowService.SetPromoCode(promoCode);
+			Close(this);
+		}
+
+		public string AddPaymentMethodButtonTitle
+		{
+			get
+			{
+				switch (_paymentSettings.SupportedPaymentMethod)
+				{
+					case SupportedPaymentMethod.Multiple:
+						return this.Services().Localize["AddPaymentMethod_Multiple"];
+					case SupportedPaymentMethod.PayPalOnly:
+						return this.Services().Localize["AddPaymentMethod_PayPal"];
+					default:
+						return this.Services().Localize["AddPaymentMethod_CreditCard"];
+				}
+			}
+		}
+
+		private async void FetchPaymentSettings()
+		{
+			_paymentSettings = await _paymentService.GetPaymentSettings();
+			RaisePropertyChanged(() => AddPaymentMethodButtonTitle);
+		}
 
         private async void LoadActivePromotions()
         {

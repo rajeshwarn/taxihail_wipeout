@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Net;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Contract.Resources;
@@ -83,9 +84,11 @@ namespace apcurium.MK.Booking.Api.Services
             var orderStatus = _orderDao.FindOrderStatusById(request.OrderId);
 
             double? fareAmount;
-            double? tollAmount;
+            double? tollAmount = null;
             double? tipAmount;
             double? taxAmount;
+            double? surcharge;
+            double? extraAmount = null;
             PromotionUsageDetail promotionUsed = null;
             ReadModel.CreditCardDetails creditCard = null;
 
@@ -94,9 +97,9 @@ namespace apcurium.MK.Booking.Api.Services
             if (orderPayment != null && orderPayment.IsCompleted)
             {
                 fareAmount = Convert.ToDouble(orderPayment.Meter);
-                tollAmount = 0;
                 tipAmount = Convert.ToDouble(orderPayment.Tip);
                 taxAmount = Convert.ToDouble(orderPayment.Tax);
+                surcharge = Convert.ToDouble(orderPayment.Surcharge);
                 
                 // promotion can only be used with in app payment
                 promotionUsed = _promotionDao.FindByOrderId(request.OrderId);
@@ -113,9 +116,15 @@ namespace apcurium.MK.Booking.Api.Services
                     // this is for CMT RideLinq only, no VAT
 
                     fareAmount = Math.Round(((double)tripInfo.Fare / 100), 2);
-                    tollAmount = Math.Round(((double)tripInfo.Extra / 100), 2);
+                    var tollHistory = tripInfo.TollHistory != null
+                           ? tripInfo.TollHistory.Sum(p => p.TollAmount)
+                           : 0;
+
+                    tollAmount = Math.Round(((double)tollHistory / 100), 2);
+                    extraAmount = Math.Round(((double) tripInfo.Extra / 100), 2);
                     tipAmount = Math.Round(((double)tripInfo.Tip / 100), 2);
                     taxAmount = Math.Round(((double)tripInfo.Tax / 100), 2);
+                    surcharge = Math.Round(((double) tripInfo.Surcharge / 100), 2);
                     orderStatus.DriverInfos.DriverId = tripInfo.DriverId.ToString();
                     ibsOrderId = tripInfo.TripId;
                 }
@@ -125,6 +134,7 @@ namespace apcurium.MK.Booking.Api.Services
                     tollAmount = ibsOrder.Toll;
                     tipAmount = FareHelper.CalculateTipAmount(ibsOrder.Fare.GetValueOrDefault(0), pairingInfo.AutoTipPercentage.Value);
                     taxAmount = ibsOrder.VAT;
+                    surcharge = order.Surcharge;
                 }
 
                 orderPayment = null;
@@ -138,13 +148,21 @@ namespace apcurium.MK.Booking.Api.Services
                 tollAmount = ibsOrder.Toll;
                 tipAmount = ibsOrder.Tip;
                 taxAmount = ibsOrder.VAT;
+                surcharge = order.Surcharge;
 
                 orderPayment = null;
             }
 
-            _commandBus.Send(SendReceiptCommandBuilder.GetSendReceiptCommand(order, account, ibsOrderId, ibsOrder.VehicleNumber, orderStatus.DriverInfos,
+            _commandBus.Send(SendReceiptCommandBuilder.GetSendReceiptCommand(
+                    order, 
+                    account, 
+                    ibsOrderId, 
+                    ibsOrder.VehicleNumber, 
+                    orderStatus.DriverInfos,
                     fareAmount,
                     tollAmount,
+                    extraAmount,
+                    surcharge,
                     tipAmount,
                     taxAmount,
                     orderPayment,
