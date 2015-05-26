@@ -60,9 +60,9 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                 && !@event.IsSettlingOverduePayment) // Don't send notification to driver when user settles overdue payment
             {
                 // To prevent driver confusion we will not send the discounted total amount for the fare.
-                var totalAmountBeforePromotion = @event.Amount + @event.AmountSavedByPromotion;
-                // We will also not send booking fee since it could be from a market company and the driver would not know where it's coming from
-                SendPaymentConfirmationToDriver(@event.OrderId, totalAmountBeforePromotion, taxedMeterAmount, @event.Tip, @event.Provider.ToString(), @event.AuthorizationCode);
+                // We will also not send booking fee since it could be from a market company and the driver would not know where it's coming from.
+                var totalAmountBeforePromotionAndBookingFees = @event.Amount + @event.AmountSavedByPromotion - @event.BookingFees;
+                SendPaymentConfirmationToDriver(@event.OrderId, totalAmountBeforePromotionAndBookingFees, taxedMeterAmount, @event.Tip, @event.Provider.ToString(), @event.AuthorizationCode);
             }
 
             if (@event.PromotionUsed.HasValue)
