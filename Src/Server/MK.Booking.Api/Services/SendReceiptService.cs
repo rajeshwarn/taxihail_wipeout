@@ -101,7 +101,8 @@ namespace apcurium.MK.Booking.Api.Services
                 tipAmount = Convert.ToDouble(orderPayment.Tip);
                 taxAmount = Convert.ToDouble(orderPayment.Tax);
                 surcharge = Convert.ToDouble(orderPayment.Surcharge);
-                
+                bookingFees = Convert.ToDouble(orderPayment.BookingFees);
+
                 // promotion can only be used with in app payment
                 promotionUsed = _promotionDao.FindByOrderId(request.OrderId);
 

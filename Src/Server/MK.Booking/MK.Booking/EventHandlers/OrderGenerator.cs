@@ -115,7 +115,8 @@ namespace apcurium.MK.Booking.EventHandlers
                     ClientVersion = @event.ClientVersion,
                     CompanyKey = @event.CompanyKey,
                     CompanyName = @event.CompanyName,
-                    Market = @event.Market
+                    Market = @event.Market,
+                    BookingFees = @event.BookingFees
                 };
 
                 if (@event.IsPrepaid)
@@ -145,6 +146,7 @@ namespace apcurium.MK.Booking.EventHandlers
                         order.CompanyKey = @event.CompanyKey;
                         order.CompanyName = @event.CompanyName;
                         order.Market = @event.Market;
+                        order.BookingFees = @event.BookingFees;
 
                         context.SaveChanges();
                     }

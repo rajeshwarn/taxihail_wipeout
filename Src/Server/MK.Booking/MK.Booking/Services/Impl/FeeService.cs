@@ -49,10 +49,11 @@ namespace apcurium.MK.Booking.Services.Impl
                 // Order is prepaid, if the user prepaid and decided not to show up, the fee is his fare already charged
                 return false;
             }
-            
+
+            var bookingFees = _orderDao.FindById(orderStatusDetail.OrderId).BookingFees;
             var feesForMarket = _feesDao.GetMarketFees(orderStatusDetail.Market);
             var noShowFee = feesForMarket != null
-                ? feesForMarket.NoShow + feesForMarket.Booking
+                ? feesForMarket.NoShow + bookingFees
                 : 0;
 
             if (noShowFee <= 0)
@@ -82,7 +83,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 if (preAuthResponse.IsSuccessful)
                 {
                     // Commit
-                    var paymentResult = CommitPayment(noShowFee, feesForMarket.Booking, orderStatusDetail.OrderId, true, false);
+                    var paymentResult = CommitPayment(noShowFee, bookingFees, orderStatusDetail.OrderId, true, false);
                     if (paymentResult.IsSuccessful)
                     {
                         _logger.LogMessage("No show fee of amount {0} was charged for order {1}.", noShowFee, orderStatusDetail.IBSOrderId);
@@ -111,9 +112,10 @@ namespace apcurium.MK.Booking.Services.Impl
             var isPastNoFeeCancellationWindow = orderStatusDetail.TaxiAssignedDate.HasValue
                 && orderStatusDetail.TaxiAssignedDate.Value.AddMinutes(_serverSettings.ServerData.CancellationFeesWindow) < DateTime.UtcNow;
 
+            var bookingFees = _orderDao.FindById(orderStatusDetail.OrderId).BookingFees;
             var feesForMarket = _feesDao.GetMarketFees(orderStatusDetail.Market);
             var cancellationFee = feesForMarket != null
-                ? feesForMarket.Cancellation + feesForMarket.Booking
+                ? feesForMarket.Cancellation + bookingFees
                 : 0;
 
             if (cancellationFee <= 0 || !isPastNoFeeCancellationWindow)
@@ -143,7 +145,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 if (preAuthResponse.IsSuccessful)
                 {
                     // Commit
-                    var paymentResult = CommitPayment(cancellationFee, feesForMarket.Booking, orderStatusDetail.OrderId, false, true);
+                    var paymentResult = CommitPayment(cancellationFee, bookingFees, orderStatusDetail.OrderId, false, true);
                     if (paymentResult.IsSuccessful)
                     {
                         _logger.LogMessage("Cancellation fee of amount {0} was charged for order {1}.", cancellationFee, orderStatusDetail.IBSOrderId);

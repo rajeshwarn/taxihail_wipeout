@@ -374,9 +374,12 @@ namespace apcurium.MK.Booking.Api.Jobs
             double tipPercentage = pairingInfo.AutoTipPercentage ?? _serverSettings.ServerData.DefaultTipPercentage;
             var tipAmount = FareHelper.CalculateTipAmount(ibsOrderInfo.MeterAmount, tipPercentage);
 
+            var bookingFees = _orderDao.FindById(orderStatusDetail.OrderId).BookingFees;
+            var total = ibsOrderInfo.MeterAmount + tipAmount + Convert.ToDouble(bookingFees);
+
             Log.DebugFormat(
-                    "Order {4}: Received total amount from IBS of {0}, calculated a tip of {1}% (tip amount: {2}), for a total of {3}",
-                    ibsOrderInfo.MeterAmount, tipPercentage, tipAmount, ibsOrderInfo.MeterAmount + tipAmount, orderStatusDetail.OrderId);
+                    "Order {4}: Received total amount from IBS of {0}, calculated a tip of {1}% (tip amount: {2}), adding booking fees of {5} for a total of {3}",
+                    ibsOrderInfo.MeterAmount, tipPercentage, tipAmount, total, orderStatusDetail.OrderId, bookingFees);
 
             if (!_serverSettings.ServerData.SendDetailedPaymentInfoToDriver)
             {
@@ -386,8 +389,7 @@ namespace apcurium.MK.Booking.Api.Jobs
 
             try
             {
-                // TODO add booking fees
-                var totalOrderAmount = Convert.ToDecimal(ibsOrderInfo.MeterAmount + tipAmount);
+                var totalOrderAmount = Convert.ToDecimal(total);
                 var amountSaved = 0m;
 
                 var promoUsed = _promotionDao.FindByOrderId(orderStatusDetail.OrderId);
@@ -411,6 +413,7 @@ namespace apcurium.MK.Booking.Api.Jobs
                         Convert.ToDecimal(tipAmount),
                         Convert.ToDecimal(ibsOrderInfo.Toll),
                         Convert.ToDecimal(ibsOrderInfo.Surcharge),
+                        bookingFees,
                         orderStatusDetail.OrderId,
                         promoUsed != null
                             ? promoUsed.PromoId
@@ -464,7 +467,7 @@ namespace apcurium.MK.Booking.Api.Jobs
         }
 
         private CommitPreauthorizedPaymentResponse CommitPayment(decimal totalOrderAmount, decimal meterAmount, decimal tipAmount, 
-            decimal tollAmount, decimal surchargeAmount, Guid orderId, Guid? promoUsedId = null, decimal amountSaved = 0)
+            decimal tollAmount, decimal surchargeAmount, decimal bookingFees, Guid orderId, Guid? promoUsedId = null, decimal amountSaved = 0)
         {
             var orderDetail = _orderDao.FindById(orderId);
             if (orderDetail == null)
@@ -602,7 +605,8 @@ namespace apcurium.MK.Booking.Api.Jobs
                         AuthorizationCode = paymentProviderServiceResponse.AuthorizationCode,
                         TransactionId = paymentProviderServiceResponse.TransactionId,
                         PromotionUsed = promoUsedId,
-                        AmountSavedByPromotion = amountSaved
+                        AmountSavedByPromotion = amountSaved,
+                        BookingFees = bookingFees
                     });
                 }
                 else

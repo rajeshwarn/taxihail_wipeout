@@ -250,23 +250,23 @@ namespace apcurium.MK.Booking.Api.Services
             var orderCommand = Mapper.Map<Commands.CreateOrder>(request);
 
             var marketFees = _feesDao.GetMarketFees(market);
-            var bookingFees = marketFees != null ? marketFees.Booking : 0;
+            orderCommand.BookingFees = marketFees != null ? marketFees.Booking : 0;
 
             // Promo code validation
             var applyPromoCommand = ValidateAndApplyPromotion(request.PromoCode, request.Settings.ChargeTypeId, account.Id, orderCommand.OrderId, pickupDate, isFutureBooking, request.ClientLanguageCode);
 
             // Charge account validation
-            var accountValidationResult = ValidateChargeAccountIfNecessary(request, orderCommand.OrderId, account, isFutureBooking, market, isFromWebApp, bookingFees);
+            var accountValidationResult = ValidateChargeAccountIfNecessary(request, orderCommand.OrderId, account, isFutureBooking, market, isFromWebApp, orderCommand.BookingFees);
 
             // if ChargeAccount uses payment with card on file, payment validation was already done
             if (!accountValidationResult.IsChargeAccountPaymentWithCardOnFile)
             {
                 // Payment method validation
-                ValidatePayment(request, orderCommand.OrderId, account, isFutureBooking, request.Estimate.Price, bookingFees, isPrepaid);
+                ValidatePayment(request, orderCommand.OrderId, account, isFutureBooking, request.Estimate.Price, orderCommand.BookingFees, isPrepaid);
             }
             
             // Initialize PayPal if user is using PayPal web
-            var  paypalWebPaymentResponse = InitializePayPalCheckoutIfNecessary(account.Id, isPrepaid, orderCommand.OrderId, request, bookingFees);
+            var  paypalWebPaymentResponse = InitializePayPalCheckoutIfNecessary(account.Id, isPrepaid, orderCommand.OrderId, request, orderCommand.BookingFees);
 
             var chargeTypeIbs = string.Empty;
             var chargeTypeEmail = string.Empty;
@@ -1341,7 +1341,6 @@ namespace apcurium.MK.Booking.Api.Services
                 // Wait for payment to be created
                 Thread.Sleep(500);
 
-                // TODO maybe pass bookingFees here
                 var commitResponse = _paymentService.CommitPayment(
                     orderId,
                     account,
