@@ -563,7 +563,6 @@ namespace apcurium.MK.Booking.Services.Impl
 
             var templateData = new
             {
-                // template is missing the toll, if we decide to add it, we need to make sure we hide it if it's empty
                 ApplicationName = _serverSettings.ServerData.TaxiHail.ApplicationName,
                 AccentColor = _serverSettings.ServerData.TaxiHail.AccentColor,
                 EmailFontColor = _serverSettings.ServerData.TaxiHail.EmailFontColor,

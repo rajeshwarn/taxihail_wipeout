@@ -378,8 +378,8 @@ namespace apcurium.MK.Booking.Api.Jobs
             var total = ibsOrderInfo.MeterAmount + tipAmount + Convert.ToDouble(bookingFees);
 
             Log.DebugFormat(
-                    "Order {4}: Received total amount from IBS of {0}, calculated a tip of {1}% (tip amount: {2}), adding booking fees of {5} for a total of {3}",
-                    ibsOrderInfo.MeterAmount, tipPercentage, tipAmount, total, orderStatusDetail.OrderId, bookingFees);
+                    "Order {0}: Received total amount from IBS of {1}, calculated a tip of {2}% (tip amount: {3}), adding booking fees of {4} for a total of {5}",
+                    orderStatusDetail.OrderId, ibsOrderInfo.MeterAmount, tipPercentage, tipAmount, bookingFees, total);
 
             if (!_serverSettings.ServerData.SendDetailedPaymentInfoToDriver)
             {

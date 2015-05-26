@@ -74,13 +74,23 @@ namespace apcurium.MK.Booking.Test.Integration.OrderFixture
                     Passengers = 95,
                     Phone = "94",
                     Name = "93",
-                    LargeBags = 92
+                    LargeBags = 92,
+                    AccountNumber = "account",
+                    CustomerNumber = "customer",
+                    PayBack = "123"
                 },
                 CreatedDate = createdDate,
                 ClientLanguageCode = "fr",
                 UserAgent = "TestUserAgent",
                 ClientVersion = "1.0.0",
-                UserNote = "une note"
+                UserNote = "une note",
+                BookingFees = 5m,
+                Market = "MTL",
+                CompanyKey = "Kramerica",
+                CompanyName = "Kramerica Industries",
+                EstimatedFare = 50.5,
+                IsChargeAccountPaymentWithCardOnFile = true,
+                IsPrepaid = true
             });
 
             using (var context = new BookingDbContext(DbName))
@@ -102,6 +112,11 @@ namespace apcurium.MK.Booking.Test.Integration.OrderFixture
                 Assert.AreEqual("TestUserAgent", dto.UserAgent);
                 Assert.AreEqual("1.0.0", dto.ClientVersion);
                 Assert.AreEqual("une note", dto.UserNote);
+                Assert.AreEqual(5, dto.BookingFees);
+                Assert.AreEqual("MTL", dto.Market);
+                Assert.AreEqual("Kramerica", dto.CompanyKey);
+                Assert.AreEqual("Kramerica Industries", dto.CompanyName);
+                Assert.AreEqual(50.5, dto.EstimatedFare);
 
                 //Settings
                 Assert.AreEqual(99, dto.Settings.ChargeTypeId);
@@ -112,6 +127,9 @@ namespace apcurium.MK.Booking.Test.Integration.OrderFixture
                 Assert.AreEqual("94", dto.Settings.Phone);
                 Assert.AreEqual("93", dto.Settings.Name);
                 Assert.AreEqual(92, dto.Settings.LargeBags);
+                Assert.AreEqual("account", dto.Settings.AccountNumber);
+                Assert.AreEqual("customer", dto.Settings.CustomerNumber);
+                Assert.AreEqual("123", dto.Settings.PayBack);
             }
         }
     }
