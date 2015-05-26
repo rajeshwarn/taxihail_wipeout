@@ -102,6 +102,12 @@ namespace apcurium.MK.Booking.Api.Services
                     case NotificationService.EmailConstant.Template.PasswordReset:
                         _notificationService.SendPasswordResetEmail("N3wp@s5w0rd", request.EmailAddress, request.Language);
                         break;
+                    case NotificationService.EmailConstant.Template.CancellationFeesReceipt:
+                        _notificationService.SendCancellationFeesReceiptEmail(1234, 24.42, "1111", request.EmailAddress, request.Language);
+                        break;
+                    case NotificationService.EmailConstant.Template.NoShowFeesReceipt:
+                        _notificationService.SendNoShowFeesReceiptEmail(1234, 10.00, _pickupAddress, "1111", request.EmailAddress, request.Language);
+                        break;
                     case NotificationService.EmailConstant.Template.Receipt:
                         var fareObject = _serverSettings.ServerData.VATIsEnabled
                             ? FareHelper.GetFareFromAmountInclTax(45m, _serverSettings.ServerData.VATPercentage)

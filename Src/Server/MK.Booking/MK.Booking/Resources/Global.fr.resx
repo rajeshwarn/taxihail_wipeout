@@ -618,4 +618,19 @@
   <data name="PayPalWebBookingFeeItemDescription" xml:space="preserve">
     <value>Frais de réservation</value>
   </data>
+  <data name="Email_Subject_CancellationFeesReceipt" xml:space="preserve">
+    <value>{{ ApplicationName }} - Frais d'annulation</value>
+  </data>
+  <data name="Email_Subject_NoShowFeesReceipt" xml:space="preserve">
+    <value>{{ ApplicationName }} - Frais de non présence</value>
+  </data>
+  <data name="Email_Body_CancellationFee" xml:space="preserve">
+    <value>Vous avez été facturé des frais d'un montant de {{FeeAmount}} pour la course #{{IbsOrderId}}, car cette dernière a été annulée.</value>
+  </data>
+  <data name="Email_Body_NoShowFee" xml:space="preserve">
+    <value>Vous avez été facturé des frais d'un montant de {{FeeAmount}} pour la course #{{IbsOrderId}}, car vous n'étiez pas présent lorsque chauffeur a tenté de vous ramassé à {{PickUpAddress}}.</value>
+  </data>
+  <data name="Email_Body_Fee_Conclusion" xml:space="preserve">
+    <value>Ce montant sera automatiquement débité de votre carte de crédit se terminant par {{Last4Digits}}.</value>
+  </data>
 </root>
