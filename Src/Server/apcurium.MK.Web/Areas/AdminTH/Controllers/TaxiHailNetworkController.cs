@@ -141,11 +141,8 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                     NoShow = f.NoShow
                 }));
 
-            var roamingCompaniesPreferences = await _taxiHailNetworkService.GetRoamingCompanyPreferences(_serverSettings.ServerData.TaxiHail.ApplicationKey);
-
             // Fetch only market fees for markets that are available to the company
-            var marketFees = fees.Where(f => f.Market.HasValue()
-                && roamingCompaniesPreferences.ContainsKey(f.Market));
+            var roamingCompaniesPreferences = await _taxiHailNetworkService.GetRoamingCompanyPreferences(_serverSettings.ServerData.TaxiHail.ApplicationKey);
 
             var availableMarkets = roamingCompaniesPreferences.Keys;
 
@@ -172,16 +169,6 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                     });
                 }
             }
-
-            //foreach (var marketFee in marketFees)
-            //{
-            //    feesPreferences.Fees.Add(marketFee.Market, new FeeStructure
-            //    {
-            //        Booking = marketFee.Booking,
-            //        Cancellation = marketFee.Cancellation,
-            //        NoShow = marketFee.NoShow
-            //    });
-            //}
 
             return View(feesPreferences);
         }
