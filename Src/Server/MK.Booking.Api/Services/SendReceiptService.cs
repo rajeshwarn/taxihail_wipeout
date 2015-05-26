@@ -82,7 +82,7 @@ namespace apcurium.MK.Booking.Api.Services
             var pairingInfo = _orderDao.FindOrderPairingById(order.Id);
             var orderStatus = _orderDao.FindOrderStatusById(request.OrderId);
 
-            double? meterAmount;
+            double? fareAmount;
             double? tollAmount;
             double? tipAmount;
             double? taxAmount;
@@ -93,7 +93,7 @@ namespace apcurium.MK.Booking.Api.Services
 
             if (orderPayment != null && orderPayment.IsCompleted)
             {
-                meterAmount = Convert.ToDouble(orderPayment.Meter);
+                fareAmount = Convert.ToDouble(orderPayment.Meter);
                 tollAmount = 0;
                 tipAmount = Convert.ToDouble(orderPayment.Tip);
                 taxAmount = Convert.ToDouble(orderPayment.Tax);
@@ -112,7 +112,7 @@ namespace apcurium.MK.Booking.Api.Services
                 {
                     // this is for CMT RideLinq only, no VAT
 
-                    meterAmount = Math.Round(((double)tripInfo.Fare / 100), 2);
+                    fareAmount = Math.Round(((double)tripInfo.Fare / 100), 2);
                     tollAmount = Math.Round(((double)tripInfo.Extra / 100), 2);
                     tipAmount = Math.Round(((double)tripInfo.Tip / 100), 2);
                     taxAmount = Math.Round(((double)tripInfo.Tax / 100), 2);
@@ -121,7 +121,7 @@ namespace apcurium.MK.Booking.Api.Services
                 }
                 else
                 {
-                    meterAmount = ibsOrder.Fare;
+                    fareAmount = ibsOrder.Fare;
                     tollAmount = ibsOrder.Toll;
                     tipAmount = FareHelper.CalculateTipAmount(ibsOrder.Fare.GetValueOrDefault(0), pairingInfo.AutoTipPercentage.Value);
                     taxAmount = ibsOrder.VAT;
@@ -134,7 +134,7 @@ namespace apcurium.MK.Booking.Api.Services
             }
             else
             {
-                meterAmount = ibsOrder.Fare;
+                fareAmount = ibsOrder.Fare;
                 tollAmount = ibsOrder.Toll;
                 tipAmount = ibsOrder.Tip;
                 taxAmount = ibsOrder.VAT;
@@ -143,7 +143,7 @@ namespace apcurium.MK.Booking.Api.Services
             }
 
             _commandBus.Send(SendReceiptCommandBuilder.GetSendReceiptCommand(order, account, ibsOrderId, ibsOrder.VehicleNumber, orderStatus.DriverInfos,
-                    meterAmount,
+                    fareAmount,
                     tollAmount,
                     tipAmount,
                     taxAmount,

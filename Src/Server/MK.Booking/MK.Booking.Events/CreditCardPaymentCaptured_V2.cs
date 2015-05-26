@@ -15,5 +15,7 @@ namespace apcurium.MK.Booking.Events
         public bool IsForPrepaidOrder { get; set; }
 
         public bool IsCancellationFee { get; set; }
+
+        public decimal BookingFees { get; set; }
     }
 }

@@ -58,6 +58,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                 && !@event.IsSettlingOverduePayment) // Don't send notification to driver when user settles overdue payment
             {
                 // To prevent driver confusion we will not send the discounted total amount for the fare.
+                // We will also not send booking fee since it could be from a market company and the driver would not know where it's coming from
                 SendPaymentConfirmationToDriver(@event.OrderId, @event.Amount + @event.AmountSavedByPromotion, @event.Meter + @event.Tax, @event.Tip, @event.Provider.ToString(), @event.AuthorizationCode);
             }
 
@@ -67,7 +68,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                 {
                     OrderId = @event.OrderId,
                     PromoId = @event.PromotionUsed.Value,
-                    TotalAmountOfOrder = @event.Meter + @event.Tax
+                    TotalAmountOfOrder = @event.Meter + @event.Tax // MK: Booking fees don't count towards promo rebate (2015/05/25)
                 };
                 var envelope = (Envelope<ICommand>) redeemPromotion;
 

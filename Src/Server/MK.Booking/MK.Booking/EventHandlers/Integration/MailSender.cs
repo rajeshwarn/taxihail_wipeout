@@ -112,7 +112,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                 return;
             }
 
-            SendReceipt(@event.OrderId, @event.Meter, @event.Tip, @event.Tax, @event.AmountSavedByPromotion);
+            SendReceipt(@event.OrderId, @event.Meter, @event.Tip, @event.Tax, amountSavedByPromotion: @event.AmountSavedByPromotion);
         }
 
         public void Handle(ManualRideLinqTripInfoUpdated @event)
@@ -164,7 +164,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             }
         }
 
-        private void SendReceipt(Guid orderId, decimal meter, decimal tip, decimal tax, decimal amountSavedByPromotion = 0m, decimal toll = 0, string driverIdOverride = null )
+        private void SendReceipt(Guid orderId, decimal meter, decimal tip, decimal tax, decimal amountSavedByPromotion = 0m, decimal toll = 0, string driverIdOverride = null)
         {
             using (var context = _contextFactory.Invoke())
             {

@@ -47,6 +47,8 @@ namespace apcurium.MK.Booking.Commands
 
         public bool IsForPrepaidOrder { get; set; }
 
+        public decimal BookingFees { get; set; }
+
         public Guid Id { get; private set; }
     }
 }

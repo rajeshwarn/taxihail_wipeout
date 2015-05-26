@@ -386,6 +386,7 @@ namespace apcurium.MK.Booking.Api.Jobs
 
             try
             {
+                // TODO add booking fees
                 var totalOrderAmount = Convert.ToDecimal(meterAmount + tipAmount);
                 var amountSaved = 0m;
 
