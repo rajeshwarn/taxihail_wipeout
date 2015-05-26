@@ -636,4 +636,7 @@
   <data name="Email_Body_Fee_Conclusion" xml:space="preserve">
     <value>Ce montant sera automatiquement débité de votre carte de crédit se terminant par {{Last4Digits}}.</value>
   </data>
+  <data name="Email_Body_BookingFees" xml:space="preserve">
+    <value>Frais de réservation</value>
+  </data>
 </root>

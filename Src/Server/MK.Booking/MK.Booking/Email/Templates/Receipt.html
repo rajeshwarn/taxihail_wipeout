@@ -500,6 +500,15 @@
                                                                     </tr>
                                                                     {{/ShowToll}}
 
+                                                                    {{#ShowBookingFees}}
+                                                                    <tr>
+                                                                        <td class="list_title">
+                                                                            {{ localize "Email_Body_BookingFees"}}
+                                                                        </td>
+                                                                        <td class="list_value">{{ BookingFees }}</td>
+                                                                    </tr>
+                                                                    {{/ShowBookingFees}}
+
                                                                     {{#ShowSurcharge}}
                                                                     <tr>
                                                                         <td class="list_title">
@@ -509,7 +518,7 @@
                                                                     </tr>
                                                                     {{/ShowSurcharge}}
 
-                                                                    <tr class="fare_list_subtotal" style="color: { {EmailFontColor}}! important">
+                                                                    <tr class="fare_list_subtotal" style="color: {{EmailFontColor}}! important">
                                                                         <td class="list_title">{{ localize "Email_Body_Toll" }}</td>
                                                                         <td class="list_value">{{ Toll }}</td>
                                                                     </tr>
