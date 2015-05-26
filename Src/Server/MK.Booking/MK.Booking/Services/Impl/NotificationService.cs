@@ -481,7 +481,7 @@ namespace apcurium.MK.Booking.Services.Impl
         }
 
         public void SendReceiptEmail(Guid orderId, int ibsOrderId, string vehicleNumber, DriverInfos driverInfos, double fare, double toll, double tip,
-            double tax, double extra, double surcharge, double totalFare, SendReceipt.Payment paymentInfo, Address pickupAddress, Address dropOffAddress,
+            double tax, double extra, double surcharge, double bookingFees, double totalFare, SendReceipt.Payment paymentInfo, Address pickupAddress, Address dropOffAddress,
             DateTime pickupDate, DateTime? dropOffDateInUtc, string clientEmailAddress, string clientLanguageCode, double amountSavedByPromotion, string promoCode, 
             bool bypassNotificationSetting = false)
         {
@@ -558,7 +558,7 @@ namespace apcurium.MK.Booking.Services.Impl
             var baseUrls = GetBaseUrls();
             var imageLogoUrl = GetRefreshableImageUrl(baseUrls.LogoImg);
 
-            var subTotalAmount = fare + toll + tax + surcharge;
+            var subTotalAmount = fare + toll + tax + surcharge + bookingFees;
             var totalAmount = subTotalAmount + tip - amountSavedByPromotion;
 
             var templateData = new
@@ -582,6 +582,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 Fare = _resources.FormatPrice(fare),
                 Toll = _resources.FormatPrice(toll),        
                 Surcharge = _resources.FormatPrice(surcharge),
+                BookingFees = _resources.FormatPrice(bookingFees),
                 Extra = _resources.FormatPrice(extra),
                 SubTotal = _resources.FormatPrice(subTotalAmount),
                 Tip = _resources.FormatPrice(tip),
@@ -591,6 +592,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 ShowTax = Math.Abs(tax) >= 0.01,
                 ShowToll = Math.Abs(toll) >= 0.01,
                 ShowSurcharge = Math.Abs(surcharge) >= 0.01,
+                ShowBookingFees = Math.Abs(bookingFees) >= 0.01,
                 vatIsEnabled,
                 HasPaymentInfo = hasPaymentInfo,
                 PaymentAmount = paymentAmount,

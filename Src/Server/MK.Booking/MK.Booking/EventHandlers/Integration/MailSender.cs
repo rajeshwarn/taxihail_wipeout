@@ -137,7 +137,15 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             }
             else
             {
-                SendTripReceipt(@event.OrderId, @event.Meter, @event.Tip, @event.Tax, toll: @event.Toll, surcharge: @event.Surcharge, amountSavedByPromotion: @event.AmountSavedByPromotion);
+                SendTripReceipt(
+                    @event.OrderId, 
+                    @event.Meter,
+                    @event.Tip,
+                    @event.Tax,
+                    toll: @event.Toll,
+                    surcharge: @event.Surcharge,
+                    bookingFees: @event.BookingFees,
+                    amountSavedByPromotion: @event.AmountSavedByPromotion);
             }
         }
 
@@ -213,7 +221,8 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             }
         }
 
-        private void SendTripReceipt(Guid orderId, decimal meter, decimal tip, decimal tax, decimal amountSavedByPromotion = 0m, decimal toll = 0m, decimal extra = 0m, decimal surcharge = 0m, string driverIdOverride = null )
+        private void SendTripReceipt(Guid orderId, decimal meter, decimal tip, decimal tax, decimal amountSavedByPromotion = 0m,
+            decimal toll = 0m, decimal extra = 0m, decimal surcharge = 0m, decimal bookingFees = 0m, string driverIdOverride = null )
         {
             using (var context = _contextFactory.Invoke())
             {
@@ -273,6 +282,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                         Convert.ToDouble(toll),
                         Convert.ToDouble(extra),
                         Convert.ToDouble(surcharge),
+                        Convert.ToDouble(bookingFees),
                         orderPayment.SelectOrDefault(payment => Convert.ToDouble(payment.Tip), Convert.ToDouble(tip)),
                         Convert.ToDouble(tax),
                         orderPayment,

@@ -30,6 +30,7 @@ namespace apcurium.MK.Booking.Commands
         public double Tax { get; set; }
         public double Surcharge { get; set; }
         public double Extra { get; set; }
+        public double BookingFees { get; set; }
         public double AmountSavedByPromotion { get; set; }
         public string PromoCode { get; set; }
         public PromoDiscountType PromoDiscountType { get; set; }

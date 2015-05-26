@@ -630,4 +630,7 @@
   <data name="Email_Body_Fee_Conclusion" xml:space="preserve">
     <value>This amount will be automatically debited from your credit card ending with {{Last4Digits}}.</value>
   </data>
+  <data name="Email_Body_BookingFees" xml:space="preserve">
+    <value>Booking Fees</value>
+  </data>
 </root>

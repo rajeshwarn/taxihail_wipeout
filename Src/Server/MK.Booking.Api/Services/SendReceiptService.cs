@@ -88,6 +88,7 @@ namespace apcurium.MK.Booking.Api.Services
             double? tipAmount;
             double? taxAmount;
             double? surcharge;
+            double? bookingFees = null;
             double? extraAmount = null;
             PromotionUsageDetail promotionUsed = null;
             ReadModel.CreditCardDetails creditCard = null;
@@ -163,6 +164,7 @@ namespace apcurium.MK.Booking.Api.Services
                     tollAmount,
                     extraAmount,
                     surcharge,
+                    bookingFees,
                     tipAmount,
                     taxAmount,
                     orderPayment,
