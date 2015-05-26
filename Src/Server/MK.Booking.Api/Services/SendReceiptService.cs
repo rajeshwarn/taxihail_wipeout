@@ -87,6 +87,7 @@ namespace apcurium.MK.Booking.Api.Services
             double? tollAmount = null;
             double? tipAmount;
             double? taxAmount;
+            double? surcharge;
             double? extraAmount = null;
             PromotionUsageDetail promotionUsed = null;
             ReadModel.CreditCardDetails creditCard = null;
@@ -98,6 +99,7 @@ namespace apcurium.MK.Booking.Api.Services
                 meterAmount = Convert.ToDouble(orderPayment.Meter);
                 tipAmount = Convert.ToDouble(orderPayment.Tip);
                 taxAmount = Convert.ToDouble(orderPayment.Tax);
+                surcharge = Convert.ToDouble(orderPayment.Surcharge);
                 
                 // promotion can only be used with in app payment
                 promotionUsed = _promotionDao.FindByOrderId(request.OrderId);
@@ -122,6 +124,7 @@ namespace apcurium.MK.Booking.Api.Services
                     extraAmount = Math.Round(((double) tripInfo.Extra/100), 2);
                     tipAmount = Math.Round(((double)tripInfo.Tip / 100), 2);
                     taxAmount = Math.Round(((double)tripInfo.Tax / 100), 2);
+                    surcharge = Math.Round(((double) tripInfo.Tax/100), 2);
                     orderStatus.DriverInfos.DriverId = tripInfo.DriverId.ToString();
                     ibsOrderId = tripInfo.TripId;
                 }
@@ -131,6 +134,7 @@ namespace apcurium.MK.Booking.Api.Services
                     tollAmount = ibsOrder.Toll;
                     tipAmount = FareHelper.CalculateTipAmount(ibsOrder.Fare.GetValueOrDefault(0), pairingInfo.AutoTipPercentage.Value);
                     taxAmount = ibsOrder.VAT;
+                    surcharge = order.Surcharge;
                 }
 
                 orderPayment = null;
@@ -144,19 +148,21 @@ namespace apcurium.MK.Booking.Api.Services
                 tollAmount = ibsOrder.Toll;
                 tipAmount = ibsOrder.Tip;
                 taxAmount = ibsOrder.VAT;
+                surcharge = order.Surcharge;
 
                 orderPayment = null;
             }
 
             _commandBus.Send(SendReceiptCommandBuilder.GetSendReceiptCommand(
-                    order,
+                    order, 
                     account, 
-                    ibsOrderId,
-                    ibsOrder.VehicleNumber,
+                    ibsOrderId, 
+                    ibsOrder.VehicleNumber, 
                     orderStatus.DriverInfos,
                     meterAmount,
                     tollAmount,
                     extraAmount,
+                    surcharge,
                     tipAmount,
                     taxAmount,
                     orderPayment,

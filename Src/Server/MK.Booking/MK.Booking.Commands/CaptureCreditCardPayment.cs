@@ -25,13 +25,17 @@ namespace apcurium.MK.Booking.Commands
 
         public PaymentProvider Provider { get; set; }
         
-        public decimal Amount { get; set; }
+        public decimal TotalAmount { get; set; }
 
         public decimal MeterAmount { get; set; }
 
         public decimal TipAmount { get; set; }
 
         public decimal TaxAmount { get; set; }
+
+        public decimal TollAmount { get; set; }
+
+        public decimal SurchargeAmount { get; set; }
 
         public bool IsNoShowFee { get; set; }
 

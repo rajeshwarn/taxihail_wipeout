@@ -490,6 +490,25 @@
                                                                             <td class="list_value">{{ Tax }}</td>
                                                                         </tr>
                                                                     {{/ShowTax}}
+
+                                                                    {{#ShowToll}}
+                                                                    <tr>
+                                                                        <td class="list_title">
+                                                                            {{ localize "Email_Body_Toll"}}
+                                                                        </td>
+                                                                        <td class="list_value">{{ Toll }}</td>
+                                                                    </tr>
+                                                                    {{/ShowToll}}
+
+                                                                    {{#ShowSurcharge}}
+                                                                    <tr>
+                                                                        <td class="list_title">
+                                                                            {{ localize "Email_Body_Surcharge"}}
+                                                                        </td>
+                                                                        <td class="list_value">{{ Surcharge }}</td>
+                                                                    </tr>
+                                                                    {{/ShowSurcharge}}
+
                                                                     <tr class="fare_list_subtotal" style="color: { {EmailFontColor}}! important">
                                                                         <td class="list_title">{{ localize "Email_Body_Toll" }}</td>
                                                                         <td class="list_value">{{ Toll }}</td>

@@ -69,7 +69,11 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                 if (@event.Status.IsPrepaid)
                 {
                     // Send receipt for PrePaid
-                    SendReceipt(@event.SourceId, Convert.ToDecimal(@event.Fare ?? 0), Convert.ToDecimal(@event.Tip ?? 0), Convert.ToDecimal(@event.Tax ?? 0));
+                    SendReceipt(@event.SourceId,
+                        Convert.ToDecimal(@event.Fare ?? 0),
+                        Convert.ToDecimal(@event.Tip ?? 0),
+                        Convert.ToDecimal(@event.Tax ?? 0),
+                        0); // No tolls and surcharge for prepaid orders
                 }
                 else
                 {
@@ -79,7 +83,12 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                     if (order.Settings.ChargeTypeId == ChargeTypes.PaymentInCar.Id)
                     {
                         // Send receipt for Pay in Car
-                        SendReceipt(@event.SourceId, Convert.ToDecimal(@event.Fare), Convert.ToDecimal(@event.Tip), Convert.ToDecimal(@event.Tax));
+                        SendReceipt(@event.SourceId,
+                            Convert.ToDecimal(@event.Fare ?? 0),
+                            Convert.ToDecimal(@event.Tip ?? 0),
+                            Convert.ToDecimal(@event.Tax ?? 0),
+                            Convert.ToDecimal(@event.Toll ?? 0),
+                            Convert.ToDecimal(@event.Surcharge ?? 0));
                     }
                     else if (pairingInfo != null && pairingInfo.DriverId.HasValue() && pairingInfo.Medallion.HasValue() && pairingInfo.PairingToken.HasValue())
                     {
@@ -94,12 +103,20 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
 								: 0;
 
                             var meterAmount = Math.Round(((double)tripInfo.Fare / 100), 2);
-							var tollAmount = Math.Round(((double)tollHistory / 100), 2);
+                            var tollAmount = Math.Round(((double)tollHistory / 100), 2);
                             var tipAmount = Math.Round(((double)tripInfo.Tip / 100), 2);
                             var taxAmount = Math.Round(((double)tripInfo.Tax / 100), 2);
-                            var extra = Math.Round(((double) tripInfo.Extra / 100), 2);
+                            var surchargeAmount = Math.Round(((double)tripInfo.Surcharge / 100), 2);
+                            var extraAmount = Math.Round(((double) tripInfo.Extra / 100), 2);
 
-                            SendReceipt(@event.SourceId, Convert.ToDecimal(meterAmount), Convert.ToDecimal(tipAmount), Convert.ToDecimal(taxAmount), Convert.ToDecimal(extra), toll: Convert.ToDecimal(tollAmount), driverIdOverride: tripInfo.DriverId.ToString());
+                            SendReceipt(@event.SourceId,
+                                Convert.ToDecimal(meterAmount),
+                                Convert.ToDecimal(tipAmount),
+                                Convert.ToDecimal(taxAmount),
+                                extra: Convert.ToDecimal(extraAmount),
+                                toll: Convert.ToDecimal(tollAmount),
+                                surcharge: Convert.ToDecimal(surchargeAmount),
+                                driverIdOverride: tripInfo.DriverId.ToString());
                         }
                     }
                 } 
@@ -116,7 +133,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                 return;
             }
 
-            SendReceipt(@event.OrderId, @event.Meter, @event.Tip, @event.Tax, @event.AmountSavedByPromotion);
+            SendReceipt(@event.OrderId, @event.Meter, @event.Tip, @event.Tax, @event.Surcharge, @event.AmountSavedByPromotion, @event.Toll);
         }
 
         public void Handle(ManualRideLinqTripInfoUpdated @event)
@@ -132,9 +149,15 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                     order.Tip = @event.Tip;
                     order.Tax = @event.Tax;
                     order.Toll = @event.Toll;
+                    order.Surcharge = @event.Surcharge;
                     
-   
-                    SendReceipt(@event.SourceId, Convert.ToDecimal(@event.Fare), Convert.ToDecimal(@event.Tip), Convert.ToDecimal(@event.Tax), Convert.ToDecimal(@event.Extra),toll: Convert.ToDecimal(@event.Toll));
+                    SendReceipt(@event.SourceId,
+                        Convert.ToDecimal(@event.Fare ?? 0),
+                        Convert.ToDecimal(@event.Tip ?? 0),
+                        Convert.ToDecimal(@event.Tax ?? 0),
+                        extra: Convert.ToDecimal(@event.Extra ?? 0),
+                        toll: Convert.ToDecimal(@event.Toll ?? 0),
+                        surcharge: Convert.ToDecimal(@event.Surcharge ?? 0));
                 }
             }
         }
@@ -169,7 +192,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             }
         }
 
-        private void SendReceipt(Guid orderId, decimal meter, decimal tip, decimal tax, decimal extra = 0,decimal amountSavedByPromotion = 0m, decimal toll = 0, string driverIdOverride = null )
+        private void SendReceipt(Guid orderId, decimal meter, decimal tip, decimal tax, decimal extra = 0m, decimal surcharge = 0m, decimal amountSavedByPromotion = 0m, decimal toll = 0, string driverIdOverride = null)
         {
             using (var context = _contextFactory.Invoke())
             {
@@ -199,10 +222,19 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                     var promoUsed = _promotionDao.FindByOrderId(orderId);
                     var ibsOrderId = order.IBSOrderId;
 
+
+                    decimal fare;
                     if (order.IsManualRideLinq)
                     {
                         var manualRideLinqDetail = context.Find<OrderManualRideLinqDetail>(orderStatus.OrderId);
                         ibsOrderId = manualRideLinqDetail.TripId;
+
+                        fare = meter;
+                    }
+                    else
+                    {
+                        // Meter also contains toll and surcharge, to send an accurate receipt, we need to remove both toll and surcharge.
+                        fare = orderPayment.SelectOrDefault(payment => payment.Meter - payment.Toll - surcharge, meter - toll - surcharge);
                     }
 
                     if (driverIdOverride.HasValue())
@@ -216,9 +248,10 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                         ibsOrderId,
                         orderStatus.VehicleNumber,
                         orderStatus.DriverInfos,
-                        orderPayment.SelectOrDefault(payment => Convert.ToDouble(payment.Meter), Convert.ToDouble(meter)),
+                        Convert.ToDouble(fare),
                         Convert.ToDouble(toll),
                         Convert.ToDouble(extra),
+                        Convert.ToDouble(surcharge),
                         orderPayment.SelectOrDefault(payment => Convert.ToDouble(payment.Tip), Convert.ToDouble(tip)),
                         Convert.ToDouble(tax),
                         orderPayment,

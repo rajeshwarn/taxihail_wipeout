@@ -196,7 +196,6 @@ namespace apcurium.MK.Booking.IBS.Impl
                 foreach (var orderInfoFromIbs in status)
                 {
                     var statusInfos = new IBSOrderInformation(orderInfoFromIbs);
-
                     result.Add(statusInfos);
                 }
             });

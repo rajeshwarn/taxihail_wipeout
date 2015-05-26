@@ -80,7 +80,8 @@ namespace apcurium.MK.Booking.Test.OrderFixture
                 Fare = 23,
                 Toll = 2,
                 Tip = 5,
-                Tax = 3
+                Tax = 3,
+                Surcharge = 1
             };
             _sut.When(completeOrder);
 
@@ -90,6 +91,7 @@ namespace apcurium.MK.Booking.Test.OrderFixture
             Assert.AreEqual(completeOrder.Toll, @event.Toll);
             Assert.AreEqual(completeOrder.Tip, @event.Tip);
             Assert.AreEqual(completeOrder.Tax, @event.Tax);
+            Assert.AreEqual(completeOrder.Surcharge, @event.Surcharge);
             Assert.AreEqual(true, @event.IsCompleted);
         }
 

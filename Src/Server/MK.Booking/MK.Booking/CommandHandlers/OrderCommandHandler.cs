@@ -59,7 +59,7 @@ namespace apcurium.MK.Booking.CommandHandlers
         public void Handle(ChangeOrderStatus command)
         {
             var order = _repository.Find(command.Status.OrderId);
-            order.ChangeStatus(command.Status, command.Fare, command.Tip, command.Toll, command.Tax);
+            order.ChangeStatus(command.Status, command.Fare, command.Tip, command.Toll, command.Tax, command.Surcharge);
 
             _repository.Save(order, command.Id.ToString());
         }
@@ -187,8 +187,8 @@ namespace apcurium.MK.Booking.CommandHandlers
 
             var order = _repository.Find(command.OrderId);
 
-            order.UpdatePrepaidOrderPaymentInfo(command.OrderId, command.Amount, command.Meter, command.Tax,
-                command.Tip, command.TransactionId, command.Provider, command.Type);
+            order.UpdatePrepaidOrderPaymentInfo(command.OrderId, command.TotalAmount, command.MeterAmount, command.TaxAmount,
+                command.TipAmount, command.TransactionId, command.Provider, command.Type);
 
             _repository.Save(order, command.Id.ToString());
         }

@@ -244,31 +244,31 @@ namespace apcurium.MK.Booking.Domain
             });
         }
 
-        public decimal GetAmountSaved(decimal totalAmountOfOrder)
+        public decimal GetDiscountAmount(decimal taxedMeterAmount)
         {
             if (_discountType == PromoDiscountType.Cash)
             {
                 // return smallest value to make sure we don't credit user
-                return Math.Min(totalAmountOfOrder, _discountValue);
+                return Math.Min(taxedMeterAmount, _discountValue);
             }
 
             if (_discountType == PromoDiscountType.Percentage)
             {
-                var amountSaved = totalAmountOfOrder * (_discountValue / 100);
+                var amountSaved = taxedMeterAmount * (_discountValue / 100);
                 return Math.Round(amountSaved, 2);
             }
 
             return 0;
         }
 
-        public void Redeem(Guid orderId, decimal totalAmountOfOrder)
+        public void Redeem(Guid orderId, decimal taxedMeterAmount)
         {
             if (!_orderIds.Contains(orderId))
             {
                 throw new InvalidOperationException("Promotion must be applied to an order before being redeemed");
             }
 
-            var amountSaved = GetAmountSaved(totalAmountOfOrder);
+            var amountSaved = GetDiscountAmount(taxedMeterAmount);
 
             Update(new PromotionRedeemed
             {
