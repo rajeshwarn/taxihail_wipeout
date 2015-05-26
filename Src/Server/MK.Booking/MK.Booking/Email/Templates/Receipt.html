@@ -493,12 +493,26 @@
 
                                                                     {{#ShowToll}}
                                                                     <tr>
-                                                                        <td class="list_title">
-                                                                            {{ localize "Email_Body_Toll"}}
-                                                                        </td>
+                                                                        <td class="list_title">{{ localize "Email_Body_Toll" }}</td>
                                                                         <td class="list_value">{{ Toll }}</td>
                                                                     </tr>
                                                                     {{/ShowToll}}
+
+                                                                    {{#ShowExtra}}
+                                                                    <tr>
+                                                                        <td class="list_title">{{ localize "Email_Body_Extra" }}</td>
+                                                                        <td class="list_value">{{ Extra }}</td>
+                                                                    </tr>
+                                                                    {{/ShowExtra}}
+
+                                                                    <tr class="fare_list_subtotal">
+                                                                        <td class="list_title">{{ localize "Email_Body_SubTotal" }}</td>
+                                                                        <td class="list_value">{{ SubTotal }}</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class="list_title">{{ localize "Email_Body_Tip"}}</td>
+                                                                        <td class="list_value">{{ Tip }}</td>
+                                                                    </tr>
 
                                                                     {{#ShowBookingFees}}
                                                                     <tr>
@@ -518,29 +532,13 @@
                                                                     </tr>
                                                                     {{/ShowSurcharge}}
 
-                                                                    <tr class="fare_list_subtotal" style="color: {{EmailFontColor}}! important">
-                                                                        <td class="list_title">{{ localize "Email_Body_Toll" }}</td>
-                                                                        <td class="list_value">{{ Toll }}</td>
-                                                                    </tr>
-                                                                    <tr class="fare_list_subtotal" style="color: { {EmailFontColor}}! important">
-                                                                        <td class="list_title">{{ localize "Email_Body_Extra" }}</td>
-                                                                        <td class="list_value">{{ Extra }}</td>
-                                                                    </tr>
-                                                                    <tr class="fare_list_subtotal" style="color: { {EmailFontColor}}! important">
-                                                                        <td class="list_title">{{ localize "Email_Body_SubTotal" }}</td>
-                                                                        <td class="list_value">{{ SubTotal }}</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td class="list_title">{{ localize "Email_Body_Tip"}}</td>
-                                                                        <td class="list_value">{{ Tip }}</td>
-                                                                    </tr>
                                                                     {{#PromotionWasUsed}}
                                                                     <tr>
                                                                         <td class="list_title">{{ localize "Email_Body_Promo" }} ({{ PromoCode }})</td>
                                                                         <td class="list_value">({{ AmountSavedByPromotion }})</td>
                                                                     </tr>
                                                                     {{/PromotionWasUsed}}
-                                                                    <tr class="fare_list_charged" style="color: { {EmailFontColor}}! important">
+                                                                    <tr class="fare_list_charged" style="color: {{EmailFontColor}}! important">
                                                                         <td class="list_title">{{ localize "Email_Body_TotalFare"}}</td>
                                                                         <td class="list_value">{{ TotalFare }}</td>
                                                                     </tr>

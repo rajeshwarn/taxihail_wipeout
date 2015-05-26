@@ -480,7 +480,7 @@ namespace apcurium.MK.Booking.Services.Impl
             SendEmail(clientEmailAddress, EmailConstant.Template.NoShowFeesReceipt, EmailConstant.Subject.NoShowFeesReceipt, templateData, clientLanguageCode);
         }
 
-        public void SendReceiptEmail(Guid orderId, int ibsOrderId, string vehicleNumber, DriverInfos driverInfos, double fare, double toll, double tip,
+        public void SendTripReceiptEmail(Guid orderId, int ibsOrderId, string vehicleNumber, DriverInfos driverInfos, double fare, double toll, double tip,
             double tax, double extra, double surcharge, double bookingFees, double totalFare, SendReceipt.Payment paymentInfo, Address pickupAddress, Address dropOffAddress,
             DateTime pickupDate, DateTime? dropOffDateInUtc, string clientEmailAddress, string clientLanguageCode, double amountSavedByPromotion, string promoCode, 
             bool bypassNotificationSetting = false)
@@ -558,8 +558,8 @@ namespace apcurium.MK.Booking.Services.Impl
             var baseUrls = GetBaseUrls();
             var imageLogoUrl = GetRefreshableImageUrl(baseUrls.LogoImg);
 
-            var subTotalAmount = fare + toll + tax + surcharge + bookingFees;
-            var totalAmount = subTotalAmount + tip - amountSavedByPromotion;
+            var subTotalAmount = fare + toll + tax;
+            var totalAmount = subTotalAmount + tip + bookingFees + surcharge - amountSavedByPromotion;
 
             var templateData = new
             {
@@ -593,6 +593,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 ShowToll = Math.Abs(toll) >= 0.01,
                 ShowSurcharge = Math.Abs(surcharge) >= 0.01,
                 ShowBookingFees = Math.Abs(bookingFees) >= 0.01,
+                ShowExtra = Math.Abs(extra) >= 0.01,
                 vatIsEnabled,
                 HasPaymentInfo = hasPaymentInfo,
                 PaymentAmount = paymentAmount,

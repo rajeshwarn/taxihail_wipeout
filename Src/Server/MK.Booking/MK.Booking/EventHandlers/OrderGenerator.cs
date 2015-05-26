@@ -309,6 +309,7 @@ namespace apcurium.MK.Booking.EventHandlers
                         details.PairingTimeOut = @event.Status.PairingTimeOut;
                         details.PairingError = @event.Status.PairingError;
                         details.RideLinqPairingCode = @event.Status.RideLinqPairingCode;
+                        details.TaxiAssignedDate = @event.Status.TaxiAssignedDate;
                     }
                     else
                     {

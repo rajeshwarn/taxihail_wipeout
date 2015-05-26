@@ -110,7 +110,7 @@ namespace apcurium.MK.Booking.Services.Impl
             }
 
             var isPastNoFeeCancellationWindow = orderStatusDetail.TaxiAssignedDate.HasValue
-                && orderStatusDetail.TaxiAssignedDate.Value.AddMinutes(_serverSettings.ServerData.CancellationFeesWindow) < DateTime.UtcNow;
+                && orderStatusDetail.TaxiAssignedDate.Value.AddSeconds(_serverSettings.ServerData.CancellationFeesWindow) < DateTime.UtcNow;
 
             var bookingFees = _orderDao.FindById(orderStatusDetail.OrderId).BookingFees;
             var feesForMarket = _feesDao.GetMarketFees(orderStatusDetail.Market);
