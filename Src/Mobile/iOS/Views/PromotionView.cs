@@ -65,6 +65,10 @@ namespace apcurium.MK.Booking.Mobile.Client.Views
                 .To(vm => vm.ActivePromotions)
                 .WithConversion("Visibility");
 
+            set.Bind(btnAddPayment)
+                .For("Title")
+                .To(vm => vm.AddPaymentMethodButtonTitle);
+
 			set.Bind(btnAddPayment)
 				.For("TouchUpInside")
 				.To(vm => vm.ToPayment);

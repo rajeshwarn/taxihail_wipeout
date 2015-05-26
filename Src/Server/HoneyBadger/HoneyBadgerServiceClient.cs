@@ -67,7 +67,9 @@ namespace HoneyBadger
                 }
             }
 
-            var queryString = BuildQueryString(@params);
+            var appendToExistingParams = _serverSettings.ServerData.HoneyBadger.ServiceUrl.Contains("?");
+
+            var queryString = BuildQueryString(@params, appendToExistingParams);
 
             HoneyBadgerResponse response = null;
 
@@ -85,7 +87,9 @@ namespace HoneyBadger
              
             if (response != null && response.Entities != null)
             {
-                var entities = !returnAll ? response.Entities.Take(numberOfVehicles) : response.Entities;
+                var orderedVehicleList = response.Entities.OrderBy(v => v.Medallion);
+                var entities = !returnAll ? orderedVehicleList.Take(numberOfVehicles) : orderedVehicleList;
+                
                 return entities.Select(e => new VehicleResponse
                                 {
                                     Timestamp = e.TimeStamp,
@@ -133,7 +137,9 @@ namespace HoneyBadger
                 }
             }
 
-            var queryString = BuildQueryString(@params);
+            var appendToExistingParams = _serverSettings.ServerData.HoneyBadger.ServiceUrl.Contains("?");
+
+            var queryString = BuildQueryString(@params, appendToExistingParams);
 
             HoneyBadgerResponse response = null;
 

@@ -58,7 +58,7 @@ namespace apcurium.MK.Web.Tests
                             {
                                 ChargeTypeId = ChargeTypes.PaymentInCar.Id,
                                 VehicleTypeId = 1,
-                                ProviderId = Provider.MobileKnowledgeProviderId,
+                                ProviderId = Provider.ApcuriumIbsProviderId,
                                 Phone = "514-555-1212",
                                 Passengers = 6,
                                 NumberOfTaxi = 1,

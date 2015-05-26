@@ -14,7 +14,7 @@ namespace apcurium.MK.Booking.CommandBuilder
     public static class SendReceiptCommandBuilder
     {
         public static SendReceipt GetSendReceiptCommand(OrderDetail order, AccountDetail account, int? orderId, string vehicleNumber, DriverInfos driverInfos,
-            double? fare, double? toll, double? tip, double? tax, double? surcharge, OrderPaymentDetail orderPayment = null, double? amountSavedByPromotion = null,
+            double? fare, double? toll, double? extra, double? surcharge, double? tip, double? tax, OrderPaymentDetail orderPayment = null, double? amountSavedByPromotion = null,
             PromotionUsageDetail promotionUsed = null, CreditCardDetails creditCard = null)
         {
             var command = new SendReceipt
@@ -28,6 +28,7 @@ namespace apcurium.MK.Booking.CommandBuilder
                 VehicleNumber = vehicleNumber,
                 DriverInfos = driverInfos,
                 Fare = fare.GetValueOrDefault(),
+                Extra = extra.GetValueOrDefault(),
                 Tip = tip.GetValueOrDefault(),
                 Tax = tax.GetValueOrDefault(),
                 Toll = toll.GetValueOrDefault(),

@@ -255,7 +255,7 @@ namespace apcurium.MK.Booking.Services.Impl
             }
         }
 
-        public void SendAutomaticPairingPush(Guid orderId, int autoTipPercentage, bool success)
+        public void SendAutomaticPairingPush(Guid orderId, CreditCardDetails creditCard, int autoTipPercentage, bool success)
         {
             using (var context = _contextFactory.Invoke())
             {
@@ -281,6 +281,7 @@ namespace apcurium.MK.Booking.Services.Impl
                             ? _resources.Get("PushNotification_OrderPairingSuccessfulUnpair", order.ClientLanguageCode)
                             : _resources.Get("PushNotification_OrderPairingSuccessful", order.ClientLanguageCode),
                         order.IBSOrderId,
+                        creditCard != null ? creditCard.Last4Digits : "",
                         autoTipPercentage);
                 }
                 
@@ -417,7 +418,7 @@ namespace apcurium.MK.Booking.Services.Impl
         }
 
         public void SendReceiptEmail(Guid orderId, int ibsOrderId, string vehicleNumber, DriverInfos driverInfos, double fare, double toll, double tip,
-            double tax, double surcharge, SendReceipt.Payment paymentInfo, Address pickupAddress, Address dropOffAddress,
+            double tax, double extra, double surcharge, double totalFare, SendReceipt.Payment paymentInfo, Address pickupAddress, Address dropOffAddress,
             DateTime pickupDate, DateTime? dropOffDateInUtc, string clientEmailAddress, string clientLanguageCode, double amountSavedByPromotion, string promoCode, 
             bool bypassNotificationSetting = false)
         {
@@ -508,7 +509,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 HasDriverId = hasDriverInfo && driverInfos.DriverId.HasValue(),
                 VehicleNumber = vehicleNumber,
                 DriverInfos = driverInfos,
-                DriverId = driverInfos.DriverId,
+                DriverId = hasDriverInfo ? driverInfos.DriverId : "",
                 PickupDate = pickupDate.ToString("D", dateFormat),
                 PickupTime = pickupDate.ToString("t", dateFormat /* Short time pattern */),
                 DropOffDate = nullSafeDropOffDate.ToString("D", dateFormat),
@@ -516,8 +517,9 @@ namespace apcurium.MK.Booking.Services.Impl
                 ShowDropOffTime = dropOffTime.HasValue(),
                 ShowUTCWarning = timeZoneOfTheOrder == TimeZones.NotSet,
                 Fare = _resources.FormatPrice(fare),
-                Toll = _resources.FormatPrice(toll),                
+                Toll = _resources.FormatPrice(toll),        
                 Surcharge = _resources.FormatPrice(surcharge),
+                Extra = _resources.FormatPrice(extra),
                 SubTotal = _resources.FormatPrice(subTotalAmount),
                 Tip = _resources.FormatPrice(tip),
                 TotalFare = _resources.FormatPrice(totalAmount),

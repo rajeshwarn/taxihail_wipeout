@@ -473,9 +473,14 @@
     <value>Su reservación#{0} sera cargada automáticamente al final del servicio usando su tarjeta con terminación en {1} y usando su propina especificada por defecto de {2}%</value>
     <comment>The ride #{0} will be paid automatically at the end of the trip using your credit card ending with {1} and using your default tip of {2}%</comment>
   </data>
+  <data name="PushNotification_OrderPairingSuccessfulUnpair" xml:space="preserve">
+    <value>The ride #{0} will be paid at the end of the trip using your credit card on file ending with {1}. If you're in the wrong car, choose the Pay in Car option below to ensure you are not charged for the ride.</value>
+  </data>
   <data name="PushNotification_OrderPairingSuccessfulPayPal" xml:space="preserve">
-    <value>The ride #{0} will be paid automatically at the end of the trip using your linked PayPal account and using your default tip of {2}%</value>
-    <comment>The ride #{0} will be paid automatically at the end of the trip using your linked PayPal account and using your default tip of {2}%</comment>
+    <value>The ride #{0} will be paid automatically at the end of the trip using your linked PayPal account and using your default tip of {1}%</value>
+  </data>
+  <data name="PushNotification_OrderPairingSuccessfulPayPalUnpair" xml:space="preserve">
+    <value>The ride #{0} will be paid at the end of the trip using your PayPal account. If you're in the wrong car, choose the Pay in Car option below to ensure you are not charged for the ride.</value>
   </data>
   <data name="PushNotification_PaymentReceived" xml:space="preserve">
     <value>Su tarjeta de crédito ha sido cargada por un total de {0}. Este monto incluye tanto su servicio como su propina.</value>
@@ -690,12 +695,6 @@
   </data>
   <data name="PayPalWebPaymentDescription" xml:space="preserve">
     <value>Taxi ride of amount {0}</value>
-  </data>
-  <data name="PushNotification_OrderPairingSuccessfulPayPalUnpair" xml:space="preserve">
-    <value>The ride #{0} will be paid at the end of the trip using your PayPal account. If you're in the wrong car, choose the Pay in Car option below to ensure you are not charged for the ride.</value>
-  </data>
-  <data name="PushNotification_OrderPairingSuccessfulUnpair" xml:space="preserve">
-    <value>The ride #{0} will be paid at the end of the trip using your credit card on file. If you're in the wrong car, choose the Pay in Car option below to ensure you are not charged for the ride. </value>
   </data>
   <data name="PushNotification_OrderUnpairingTimeOutWarning" xml:space="preserve">
     <value>Reminder: If you're in the wrong car, choose the Pay in Car option below to ensure you are not charged for the ride.</value>

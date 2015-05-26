@@ -29,6 +29,7 @@ namespace apcurium.MK.Booking.Commands
         public double Toll { get; set; }
         public double Tax { get; set; }
         public double Surcharge { get; set; }
+        public double Extra { get; set; }
         public double AmountSavedByPromotion { get; set; }
         public string PromoCode { get; set; }
         public PromoDiscountType PromoDiscountType { get; set; }
@@ -41,6 +42,10 @@ namespace apcurium.MK.Booking.Commands
 
         public Payment PaymentInfo { get; set; } // OPTIONAL Null if not needed
 
+        public double TotalFare
+        {
+            get { return Fare + Toll + Tip + Tax + Extra + Surcharge - AmountSavedByPromotion; }
+        }
         public Guid Id { get; set; }
 
         public class Payment
