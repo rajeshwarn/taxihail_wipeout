@@ -69,18 +69,24 @@
 
             var data = this.model.toJSON();
 
-            var chargeTypes = TaxiHail.referenceData.paymentsList;
+            var chargeTypes = [];
+            var refDataChargeTypes = TaxiHail.referenceData.paymentsList;
+
             if (this.model.get('market')) {
-                // PayInCar is the only charge type when in external market
-                for (var i = 0; i < chargeTypes.length; i++) {
-                    if (chargeTypes[i].id === 1) {
-                        chargeTypes = [chargeTypes[i]];
-                        break;
-                    } else {
-                        // PayInCar charge type not found
-                        chargeTypes = [];
+                // PayInCar and CoF are the only charge type when in external market
+
+                for (var i = 0; i < refDataChargeTypes.length; i++) {
+                    if (refDataChargeTypes[i].id === 1) {
+                        // Pay in Card
+                        chargeTypes.push(refDataChargeTypes[i]);
+                    } else if (refDataChargeTypes[i].id === 3) {
+                        // Card on File
+                        chargeTypes.push(refDataChargeTypes[i]);
                     }
                 }
+            } else {
+                // All available charge types
+                chargeTypes = TaxiHail.referenceData.paymentsList;
             }
 
             // Remove CoF option since there's no card in the user profile
