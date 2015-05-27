@@ -1,7 +1,9 @@
 ﻿#region
 
 using System;
+using System.ComponentModel.Design;
 using apcurium.MK.Booking.Events;
+using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Extensions;
 using Infrastructure.Messaging.Handling;
@@ -10,8 +12,8 @@ using Infrastructure.Messaging.Handling;
 
 namespace apcurium.MK.Booking.EventHandlers
 {
-    public class PaymentSettingGenerator :
-        IEventHandler<PaymentSettingUpdated>
+    public class PaymentSettingGenerator
+        : IEventHandler<PaymentSettingUpdated>
     {
         private readonly Func<ConfigurationDbContext> _contextFactory;
 
@@ -30,7 +32,15 @@ namespace apcurium.MK.Booking.EventHandlers
 
             using (var context = _contextFactory.Invoke())
             {
-                context.RemoveAll<ServerPaymentSettings>();
+                if (@event.ServerPaymentSettings.CompanyKey.HasValue())
+                {
+                    context.RemoveWhere<ServerPaymentSettings>(x => x.CompanyKey == @event.ServerPaymentSettings.CompanyKey);
+                }
+                else
+                {
+                    context.RemoveWhere<ServerPaymentSettings>(x => x.Id == AppConstants.CompanyId);
+                }
+
                 context.ServerPaymentSettings.Add(@event.ServerPaymentSettings);
                 context.SaveChanges();
             }

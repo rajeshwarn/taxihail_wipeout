@@ -145,7 +145,6 @@ namespace apcurium.MK.Booking.Api.Services
             if (market.HasValue())
             {
                 var isConfiguredForCmtPayment = FetchCompanyPaymentSettings(bestAvailableCompany.CompanyKey);
-
                 if (!isConfiguredForCmtPayment)
                 {
                     // Only companies configured for CMT payment can support CoF orders outside of home market
@@ -1274,9 +1273,9 @@ namespace apcurium.MK.Booking.Api.Services
                 // Save/update company settings
                 _commandBus.Send(new UpdatePaymentSettings
                 {
-                    CompanyId = Guid.NewGuid(),
                     ServerPaymentSettings = new ServerPaymentSettings
                     {
+                        Id = Guid.NewGuid(),
                         CompanyKey = companyKey,
                         PaymentMode = paymentSettings.PaymentMode,
                         BraintreeServerSettings = new BraintreeServerSettings
@@ -1315,7 +1314,8 @@ namespace apcurium.MK.Booking.Api.Services
                     }
                 });
 
-                return paymentSettings.CmtPaymentSettings != null;
+                return paymentSettings.PaymentMode == PaymentMethod.Cmt
+                    || paymentSettings.PaymentMode == PaymentMethod.RideLinqCmt;
             }
             catch (Exception ex)
             {

@@ -206,9 +206,6 @@ namespace apcurium.MK.Booking.Services
         {
             var serverSettings = _container.Resolve<IServerSettings>();
 
-            // TODO
-            //var paymentSettings = JsonSerializer.DeserializeFromString<CompanyPaymentSettings>(temporaryInfo.SerializedOrderCreationInfo);
-
             switch (serverSettings.GetPaymentSettings().PaymentMode)
             {
                 case PaymentMethod.Braintree:
