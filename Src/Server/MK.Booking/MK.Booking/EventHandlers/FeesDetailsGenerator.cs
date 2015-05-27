@@ -4,6 +4,7 @@ using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Events;
 using apcurium.MK.Booking.ReadModel;
 using Infrastructure.Messaging.Handling;
+using RestSharp.Extensions;
 
 namespace apcurium.MK.Booking.EventHandlers
 {
@@ -24,6 +25,11 @@ namespace apcurium.MK.Booking.EventHandlers
                 var existingFeesByMarket = context.Query<FeesDetail>().ToList();
                 foreach (var newFees in @event.Fees)
                 {
+                    if (!newFees.Market.HasValue())
+                    {
+                        newFees.Market = null;
+                    }
+
                     var feesToUpdate = existingFeesByMarket.SingleOrDefault(x => x.Market == newFees.Market) 
                                        ?? new FeesDetail { Id = Guid.NewGuid(), Market = newFees.Market };
 
