@@ -102,6 +102,12 @@ namespace apcurium.MK.Booking.Api.Services
                     case NotificationService.EmailConstant.Template.PasswordReset:
                         _notificationService.SendPasswordResetEmail("N3wp@s5w0rd", request.EmailAddress, request.Language);
                         break;
+                    case NotificationService.EmailConstant.Template.CancellationFeesReceipt:
+                        _notificationService.SendCancellationFeesReceiptEmail(1234, 24.42, "1111", request.EmailAddress, request.Language);
+                        break;
+                    case NotificationService.EmailConstant.Template.NoShowFeesReceipt:
+                        _notificationService.SendNoShowFeesReceiptEmail(1234, 10.00, _pickupAddress, "1111", request.EmailAddress, request.Language);
+                        break;
                     case NotificationService.EmailConstant.Template.Receipt:
                         var fareObject = _serverSettings.ServerData.VATIsEnabled
                             ? FareHelper.GetFareFromAmountInclTax(45m, _serverSettings.ServerData.VATPercentage)
@@ -111,6 +117,7 @@ namespace apcurium.MK.Booking.Api.Services
                         var amountSavedByPromo = 10;
                         var extra = 2;
                         var surcharge = 5;
+                        var bookingFees = 7;
                         
                         var driverInfos = new DriverInfos
                         {
@@ -127,7 +134,7 @@ namespace apcurium.MK.Booking.Api.Services
 
                         var fare = Convert.ToDouble(fareObject.AmountExclTax);
                         var tax = Convert.ToDouble(fareObject.TaxAmount);
-                        _notificationService.SendReceiptEmail(Guid.NewGuid(), 12345, "9007", driverInfos, fare, toll, tip, tax, extra, surcharge, fare + toll + tip + tax - amountSavedByPromo + extra, _payment, _pickupAddress, _dropOffAddress, DateTime.Now.AddMinutes(-15), DateTime.UtcNow, request.EmailAddress, "en", amountSavedByPromo, "PROMO10", true);
+                        _notificationService.SendTripReceiptEmail(Guid.NewGuid(), 12345, "9007", driverInfos, fare, toll, tip, tax, extra, surcharge, bookingFees, fare + toll + tip + tax + bookingFees + extra - amountSavedByPromo, _payment, _pickupAddress, _dropOffAddress, DateTime.Now.AddMinutes(-15), DateTime.UtcNow, request.EmailAddress, "en", amountSavedByPromo, "PROMO10", true);
                         break;
                     case NotificationService.EmailConstant.Template.PromotionUnlocked:
                         _notificationService.SendPromotionUnlockedEmail("10% Off your next ride", "PROMO123", DateTime.Now.AddMonths(1), request.EmailAddress, request.Language, true);

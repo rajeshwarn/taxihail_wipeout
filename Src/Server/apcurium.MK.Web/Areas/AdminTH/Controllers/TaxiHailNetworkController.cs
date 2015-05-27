@@ -4,12 +4,19 @@ using System.Threading.Tasks;
 using System.Web.Mvc;
 using apcurium.MK.Booking.Api.Contract.Requests;
 using apcurium.MK.Booking.Api.Services;
+using apcurium.MK.Booking.Commands;
+using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Security;
+using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Entity;
+using apcurium.MK.Common.Extensions;
+using apcurium.MK.Web.Areas.AdminTH.Models;
 using apcurium.MK.Web.Attributes;
 using CustomerPortal.Client;
 using CustomerPortal.Contract.Resources;
 using CustomerPortal.Contract.Response;
+using Infrastructure.Messaging;
 using ServiceStack.CacheAccess;
 
 namespace apcurium.MK.Web.Areas.AdminTH.Controllers
@@ -20,14 +27,23 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
         private readonly IServerSettings _serverSettings;
         private readonly ITaxiHailNetworkServiceClient _taxiHailNetworkService;
         private readonly ConfigurationsService _configurationsService;
+        private readonly IFeesDao _feesDao;
+        private readonly ICommandBus _commandBus;
 
         // GET: AdminTH/TaxiHailNetwork
-        public TaxiHailNetworkController(ICacheClient cache, IServerSettings serverSettings, ITaxiHailNetworkServiceClient taxiHailNetworkService, ConfigurationsService configurationsService) 
+        public TaxiHailNetworkController(ICacheClient cache,
+            IServerSettings serverSettings,
+            ITaxiHailNetworkServiceClient taxiHailNetworkService,
+            ConfigurationsService configurationsService,
+            IFeesDao feesDao,
+            ICommandBus commandBus) 
             : base(cache, serverSettings)
         {
             _serverSettings = serverSettings;
             _taxiHailNetworkService = taxiHailNetworkService;
             _configurationsService = configurationsService;
+            _feesDao = feesDao;
+            _commandBus = commandBus;
         }
 
         public async Task<ActionResult> Index()
@@ -109,6 +125,75 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
             }
 
             return Json(new { Success = false, Message = "All fields are required" });
+        }
+
+        public async Task<ActionResult> Fees()
+        {
+            var fees = _feesDao.GetAll();
+
+            var feesPreferences = new MarketFees();
+            feesPreferences.Fees.Add("Local", 
+                fees.FirstOrDefault(f => !f.Market.HasValue())
+                .SelectOrDefault(f => new FeeStructure
+                {
+                    Booking = f.Booking,
+                    Cancellation = f.Cancellation,
+                    NoShow = f.NoShow
+                }));
+
+            // Fetch only market fees for markets that are available to the company
+            var roamingCompaniesPreferences = await _taxiHailNetworkService.GetRoamingCompanyPreferences(_serverSettings.ServerData.TaxiHail.ApplicationKey);
+
+            var availableMarkets = roamingCompaniesPreferences.Keys;
+
+            foreach (var market in availableMarkets)
+            {
+                var marketFee = fees.FirstOrDefault(f => f.Market == market);
+                if (marketFee == null)
+                {
+                    // Create empty entry
+                    feesPreferences.Fees.Add(market, new FeeStructure
+                    {
+                        Booking = 0.00m,
+                        Cancellation = 0.00m,
+                        NoShow = 0.00m
+                    });
+                }
+                else
+                {
+                    feesPreferences.Fees.Add(market, new FeeStructure
+                    {
+                        Booking = marketFee.Booking,
+                        Cancellation = marketFee.Cancellation,
+                        NoShow = marketFee.NoShow
+                    });
+                }
+            }
+
+            return View(feesPreferences);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> Fees(MarketFees marketFees)
+        {
+            _commandBus.Send(new UpdateFees
+            {
+                CompanyId = AppConstants.CompanyId,
+                Fees = marketFees.Fees.Select(f => new Fees
+                {
+                    Market = f.Key == "Local" ? null : f.Key,
+                    Booking = f.Value.Booking,
+                    Cancellation = f.Value.Cancellation,
+                    NoShow = f.Value.NoShow
+                }).ToList()
+            });
+
+            TempData["Info"] = "Fees updated";
+
+            // Wait for fees to be updated before reloading the page
+            await Task.Delay(2000);
+
+            return RedirectToAction("Fees");
         }
 
         private  void SaveNetworkSettingsIfNecessary()

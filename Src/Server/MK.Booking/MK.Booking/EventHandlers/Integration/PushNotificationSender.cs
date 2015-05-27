@@ -80,6 +80,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             try
             {
                 if (@event.IsNoShowFee
+                    || @event.IsCancellationFee
                     || @event.IsForPrepaidOrder)
                 {
                     // Don't message user for now

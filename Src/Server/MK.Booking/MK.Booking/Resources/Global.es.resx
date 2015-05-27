@@ -747,4 +747,25 @@
   <data name="Email_Body_DriverId" xml:space="preserve">
     <value>Driver #</value>
   </data>
+  <data name="PayPalWebBookingFeeItemDescription" xml:space="preserve">
+    <value>Booking Fees</value>
+  </data>
+  <data name="Email_Subject_CancellationFeesReceipt" xml:space="preserve">
+    <value>{{ ApplicationName }} - Cancellation Fees</value>
+  </data>
+  <data name="Email_Subject_NoShowFeesReceipt" xml:space="preserve">
+    <value>{{ ApplicationName }} - No Show Fees</value>
+  </data>
+  <data name="Email_Body_CancellationFee" xml:space="preserve">
+    <value>You have been charged a fee of {{FeeAmount}} for the ride #{{IbsOrderId}} because it was cancelled.</value>
+  </data>
+  <data name="Email_Body_NoShowFee" xml:space="preserve">
+    <value>You have been charged a fee of {{FeeAmount}} for the ride #{{IbsOrderId}} because you were absent when the driver tried to pick you up at {{PickUpAddress}}.</value>
+  </data>
+  <data name="Email_Body_Fee_Conclusion" xml:space="preserve">
+    <value>This amount will be automatically debited from your credit card ending with {{Last4Digits}}.</value>
+  </data>
+  <data name="Email_Body_BookingFees" xml:space="preserve">
+    <value>Booking Fees</value>
+  </data>
 </root>

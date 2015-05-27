@@ -21,6 +21,7 @@ namespace apcurium.MK.Booking.ReadModel
         public decimal Tax { get; set; }
         public decimal Toll { get; set; }
         public decimal Surcharge { get; set; }
+        public decimal BookingFees { get; set; }
 
         public string CardToken { get; set; }
         public string PayPalToken { get; set; }
@@ -36,6 +37,9 @@ namespace apcurium.MK.Booking.ReadModel
         public bool IsCancelled { get; set; }
         public bool IsCompleted { get; set; }
         public bool IsRefunded { get; set; }
+        public bool IsNoShowFee { get; set; }
+        public bool IsCancellationFee { get; set; }
+
         public string Error { get; set; }
     }
 }

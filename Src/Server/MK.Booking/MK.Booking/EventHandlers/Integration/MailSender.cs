@@ -69,11 +69,11 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                 if (@event.Status.IsPrepaid)
                 {
                     // Send receipt for PrePaid
-                    SendReceipt(@event.SourceId,
+                    // No tolls and surcharge for prepaid orders
+                    SendTripReceipt(@event.SourceId, 
                         Convert.ToDecimal(@event.Fare ?? 0),
                         Convert.ToDecimal(@event.Tip ?? 0),
-                        Convert.ToDecimal(@event.Tax ?? 0),
-                        0); // No tolls and surcharge for prepaid orders
+                        Convert.ToDecimal(@event.Tax ?? 0)); 
                 }
                 else
                 {
@@ -83,12 +83,12 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                     if (order.Settings.ChargeTypeId == ChargeTypes.PaymentInCar.Id)
                     {
                         // Send receipt for Pay in Car
-                        SendReceipt(@event.SourceId,
+                        SendTripReceipt(@event.SourceId,
                             Convert.ToDecimal(@event.Fare ?? 0),
                             Convert.ToDecimal(@event.Tip ?? 0),
                             Convert.ToDecimal(@event.Tax ?? 0),
-                            Convert.ToDecimal(@event.Toll ?? 0),
-                            Convert.ToDecimal(@event.Surcharge ?? 0));
+                            toll: Convert.ToDecimal(@event.Toll ?? 0),
+                            surcharge: Convert.ToDecimal(@event.Surcharge ?? 0));
                     }
                     else if (pairingInfo != null && pairingInfo.DriverId.HasValue() && pairingInfo.Medallion.HasValue() && pairingInfo.PairingToken.HasValue())
                     {
@@ -107,9 +107,9 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                             var tipAmount = Math.Round(((double)tripInfo.Tip / 100), 2);
                             var taxAmount = Math.Round(((double)tripInfo.Tax / 100), 2);
                             var surchargeAmount = Math.Round(((double)tripInfo.Surcharge / 100), 2);
-                            var extraAmount = Math.Round(((double) tripInfo.Extra / 100), 2);
+                            var extraAmount = Math.Round(((double)tripInfo.Extra / 100), 2);
 
-                            SendReceipt(@event.SourceId,
+                            SendTripReceipt(@event.SourceId, 
                                 Convert.ToDecimal(meterAmount),
                                 Convert.ToDecimal(tipAmount),
                                 Convert.ToDecimal(taxAmount),
@@ -125,15 +125,28 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
 
         public void Handle(CreditCardPaymentCaptured_V2 @event)
         {
-            if (@event.IsNoShowFee
-                || @event.IsForPrepaidOrder)
+            if (@event.IsForPrepaidOrder)
             {
-                // Don't message user
-                // In the case of Prepaid order, he will be notified at the end of the ride
+                // Don't message user, he will be notified at the end of the ride
                 return;
             }
 
-            SendReceipt(@event.OrderId, @event.Meter, @event.Tip, @event.Tax, @event.Surcharge, @event.AmountSavedByPromotion, @event.Toll);
+            if (@event.IsCancellationFee || @event.IsNoShowFee)
+            {
+                SendFeesReceipt(@event.OrderId, @event.Meter, @event.IsCancellationFee, @event.IsNoShowFee);
+            }
+            else
+            {
+                SendTripReceipt(
+                    @event.OrderId, 
+                    @event.Meter,
+                    @event.Tip,
+                    @event.Tax,
+                    toll: @event.Toll,
+                    surcharge: @event.Surcharge,
+                    bookingFees: @event.BookingFees,
+                    amountSavedByPromotion: @event.AmountSavedByPromotion);
+            }
         }
 
         public void Handle(ManualRideLinqTripInfoUpdated @event)
@@ -151,7 +164,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                     order.Toll = @event.Toll;
                     order.Surcharge = @event.Surcharge;
                     
-                    SendReceipt(@event.SourceId,
+                    SendTripReceipt(@event.SourceId, 
                         Convert.ToDecimal(@event.Fare ?? 0),
                         Convert.ToDecimal(@event.Tip ?? 0),
                         Convert.ToDecimal(@event.Tax ?? 0),
@@ -192,7 +205,24 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             }
         }
 
-        private void SendReceipt(Guid orderId, decimal meter, decimal tip, decimal tax, decimal extra = 0m, decimal surcharge = 0m, decimal amountSavedByPromotion = 0m, decimal toll = 0, string driverIdOverride = null)
+        private void SendFeesReceipt(Guid orderId, decimal feeAmount, bool isCancellationFee, bool isNoShowFee)
+        {
+            var order = _orderDao.FindById(orderId);
+            var account = _accountDao.FindById(order.AccountId);
+            var creditCard = _creditCardDao.FindByAccountId(order.AccountId).First();
+
+            if (isCancellationFee)
+            {
+                _notificationService.SendCancellationFeesReceiptEmail(order.IBSOrderId ?? 0, Convert.ToDouble(feeAmount), creditCard.Last4Digits, account.Email, account.Language);
+            }
+            else if (isNoShowFee)
+            {
+                _notificationService.SendNoShowFeesReceiptEmail(order.IBSOrderId ?? 0, Convert.ToDouble(feeAmount), order.PickupAddress, creditCard.Last4Digits, account.Email, account.Language);
+            }
+        }
+
+        private void SendTripReceipt(Guid orderId, decimal meter, decimal tip, decimal tax, decimal amountSavedByPromotion = 0m,
+            decimal toll = 0m, decimal extra = 0m, decimal surcharge = 0m, decimal bookingFees = 0m, string driverIdOverride = null )
         {
             using (var context = _contextFactory.Invoke())
             {
@@ -252,6 +282,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                         Convert.ToDouble(toll),
                         Convert.ToDouble(extra),
                         Convert.ToDouble(surcharge),
+                        Convert.ToDouble(bookingFees),
                         orderPayment.SelectOrDefault(payment => Convert.ToDouble(payment.Tip), Convert.ToDouble(tip)),
                         Convert.ToDouble(tax),
                         orderPayment,

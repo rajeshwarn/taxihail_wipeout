@@ -23,6 +23,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
         private readonly IIbsOrderService _ibs;
         private readonly IServerSettings _serverSettings;
         private readonly IPaymentService _paymentService;
+        private readonly IFeeService _feeService;
         private readonly IOrderPaymentDao _paymentDao;
         private readonly ICreditCardDao _creditCardDao;
         private readonly IAccountDao _accountDao;
@@ -30,7 +31,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
         private readonly ICommandBus _commandBus;
 
         public OrderPaymentManager(IOrderDao dao, IOrderPaymentDao paymentDao, IAccountDao accountDao, IOrderDao orderDao, ICommandBus commandBus,
-            ICreditCardDao creditCardDao, IIbsOrderService ibs, IServerSettings serverSettings, IPaymentService paymentService)
+            ICreditCardDao creditCardDao, IIbsOrderService ibs, IServerSettings serverSettings, IPaymentService paymentService, IFeeService feeService)
         {
             _accountDao = accountDao;
             _orderDao = orderDao;
@@ -41,24 +42,27 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             _ibs = ibs;
             _serverSettings = serverSettings;
             _paymentService = paymentService;
+            _feeService = feeService;
         }
 
         public void Handle(CreditCardPaymentCaptured_V2 @event)
         {
-            if (@event.IsNoShowFee)
+            if (@event.IsNoShowFee
+                || @event.IsCancellationFee)
             {
                 // Don't message driver
                 return;
             }
 
+            var taxedMeterAmount = @event.Meter + @event.Tax;
+
             if (_serverSettings.ServerData.SendDetailedPaymentInfoToDriver
                 && !@event.IsSettlingOverduePayment) // Don't send notification to driver when user settles overdue payment
             {
                 // To prevent driver confusion we will not send the discounted total amount for the fare.
-                var totalAmountBeforePromotion = @event.Amount + @event.AmountSavedByPromotion;
-                var taxedMeterAmount = @event.Meter + @event.Tax;
-
-                SendPaymentConfirmationToDriver(@event.OrderId, totalAmountBeforePromotion, taxedMeterAmount, @event.Tip, @event.Provider.ToString(), @event.AuthorizationCode);
+                // We will also not send booking fee since it could be from a market company and the driver would not know where it's coming from.
+                var totalAmountBeforePromotionAndBookingFees = @event.Amount + @event.AmountSavedByPromotion - @event.BookingFees;
+                SendPaymentConfirmationToDriver(@event.OrderId, totalAmountBeforePromotionAndBookingFees, taxedMeterAmount, @event.Tip, @event.Provider.ToString(), @event.AuthorizationCode);
             }
 
             if (@event.PromotionUsed.HasValue)
@@ -67,7 +71,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                 {
                     OrderId = @event.OrderId,
                     PromoId = @event.PromotionUsed.Value,
-                    TaxedMeterAmount = @event.Meter + @event.Tax
+                    TaxedMeterAmount = taxedMeterAmount // MK: Booking fees don't count towards promo rebate (2015/05/25)
                 };
 
                 var envelope = (Envelope<ICommand>)redeemPromotion;
@@ -121,8 +125,12 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             }
             else
             {
-                // void the preauthorization to prevent misuse fees
-                _paymentService.VoidPreAuthorization(@event.SourceId);
+                var feeCharged = _feeService.ChargeCancellationFeeIfNecessary(orderDetail);
+                if (!feeCharged)
+                {
+                    // void the preauthorization to prevent misuse fees
+                    _paymentService.VoidPreAuthorization(@event.SourceId);
+                }
             }
         }
 

@@ -39,6 +39,8 @@ namespace apcurium.MK.Booking.Commands
 
         public bool IsNoShowFee { get; set; }
 
+        public bool IsCancellationFee { get; set; }
+
         public bool IsSettlingOverduePayment { get; set; }
 
         public Guid? PromotionUsed { get; set; }
@@ -48,6 +50,8 @@ namespace apcurium.MK.Booking.Commands
         public string NewCardToken { get; set; }
 
         public bool IsForPrepaidOrder { get; set; }
+
+        public decimal BookingFees { get; set; }
 
         public Guid Id { get; private set; }
     }
