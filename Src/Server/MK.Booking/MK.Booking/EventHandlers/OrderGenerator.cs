@@ -212,11 +212,12 @@ namespace apcurium.MK.Booking.EventHandlers
                         AutoTipPercentage = @event.AutoTipPercentage
                     });
 
-                    var paymentSettings = _serverSettings.GetPaymentSettings();
+                    var orderStatus = context.Find<OrderStatusDetail>(@event.SourceId);
+
+                    var paymentSettings = _serverSettings.GetPaymentSettings(orderStatus.CompanyKey);
                     if (!paymentSettings.IsUnpairingDisabled)
                     {
                         // Unpair only available if automatic pairing is disabled
-                        var orderStatus = context.Find<OrderStatusDetail>(@event.SourceId);
                         orderStatus.UnpairingTimeOut = @event.EventDate.AddSeconds(paymentSettings.UnpairingTimeOut);
                         context.Save(orderStatus);
                     }

@@ -179,14 +179,13 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
         {
             if (@event.IsCompleted)
             {
-                var paymentSettings = _serverSettings.GetPaymentSettings();
                 var order = _orderDao.FindById(@event.SourceId);
                 var orderStatus = _orderDao.FindOrderStatusById(@event.SourceId);
                 var pairingInfo = _orderDao.FindOrderPairingById(@event.SourceId);
 
                 // If the user has decided not to pair (paying the ride in car instead),
                 // we have to void the amount that was preauthorized
-                if (paymentSettings.PaymentMode != PaymentMethod.RideLinqCmt
+                if (_serverSettings.GetPaymentSettings(order.CompanyKey).PaymentMode != PaymentMethod.RideLinqCmt
                     && (order.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id
                         || order.Settings.ChargeTypeId == ChargeTypes.PayPal.Id)
                     && pairingInfo == null

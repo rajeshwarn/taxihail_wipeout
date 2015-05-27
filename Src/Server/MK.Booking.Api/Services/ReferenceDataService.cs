@@ -51,7 +51,7 @@ namespace apcurium.MK.Booking.Api.Services
                 result.CompaniesList = FilterReferenceData(result.CompaniesList, _serverSettings.ServerData.IBS.ExcludedProviderId);
             }
 
-            var paymentSettings = _serverSettings.GetPaymentSettings();
+            var paymentSettings = _serverSettings.GetPaymentSettings(request.CompanyKey);
 
             var isChargeAccountPaymentEnabled = paymentSettings.IsChargeAccountPaymentEnabled;
             var isPayPalEnabled = paymentSettings.PayPalClientSettings.IsEnabled;

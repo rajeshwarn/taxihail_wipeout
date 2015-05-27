@@ -131,6 +131,8 @@ namespace apcurium.MK.Booking.Api.Jobs
 
             InitializeCmtServiceClient();
 
+            // TODO anything to do for manual ridelinq?  when we create an order we have no idea which company we are dispatched to
+
             var tripInfo = _cmtTripInfoServiceHelper.GetTripInfo(rideLinqDetails.PairingToken);
             if (tripInfo == null)
             {
@@ -301,7 +303,7 @@ namespace apcurium.MK.Booking.Api.Jobs
 
         private void SendUnpairWarningNotificationIfNecessary(OrderStatusDetail orderStatus)
         {
-            var paymentSettings = _serverSettings.GetPaymentSettings();
+            var paymentSettings = _serverSettings.GetPaymentSettings(orderStatus.CompanyKey);
             if (!paymentSettings.IsUnpairingDisabled && orderStatus.UnpairingTimeOut.HasValue)
             {
                 var halfwayUnpairTimeout = orderStatus.UnpairingTimeOut.Value.AddSeconds(-0.5 * paymentSettings.UnpairingTimeOut);
@@ -672,7 +674,7 @@ namespace apcurium.MK.Booking.Api.Jobs
                 return;
             }
 
-            var paymentMode = _serverSettings.GetPaymentSettings().PaymentMode;
+            var paymentMode = _serverSettings.GetPaymentSettings(orderStatusDetail.CompanyKey).PaymentMode;
             var isPayPal = _paymentService.IsPayPal(null, orderStatusDetail.OrderId);
             
             if (!isPayPal && paymentMode == PaymentMethod.RideLinqCmt)
@@ -775,7 +777,7 @@ namespace apcurium.MK.Booking.Api.Jobs
             else if (ibsOrderInfo.IsLoaded)
             {
                 if (orderDetail != null 
-                    && _serverSettings.GetPaymentSettings().IsUnpairingDisabled
+                    && _serverSettings.GetPaymentSettings(orderDetail.CompanyKey).IsUnpairingDisabled
                     && (orderDetail.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id
                         || orderDetail.Settings.ChargeTypeId == ChargeTypes.PayPal.Id))
                 {
@@ -813,6 +815,7 @@ namespace apcurium.MK.Booking.Api.Jobs
 
         private void InitializeCmtServiceClient()
         {
+            // TODO anything to do for manual ridelinq?  when we create an order we have no idea which company we are dispatched to
             var cmtMobileServiceClient = new CmtMobileServiceClient(_serverSettings.GetPaymentSettings().CmtPaymentSettings, null, null);
             _cmtTripInfoServiceHelper = new CmtTripInfoServiceHelper(cmtMobileServiceClient, _logger);
         }
