@@ -22,6 +22,7 @@ namespace apcurium.MK.Booking.Services.Impl
     public class PayPalService : BasePayPalService
     {
         private readonly IServerSettings _serverSettings;
+        private readonly ServerPaymentSettings _serverPaymentSettings;
         private readonly ICommandBus _commandBus;
         private readonly IAccountDao _accountDao;
         private readonly IOrderDao _orderDao;
@@ -31,14 +32,16 @@ namespace apcurium.MK.Booking.Services.Impl
         private readonly Resources.Resources _resources;
 
         public PayPalService(IServerSettings serverSettings,
+            ServerPaymentSettings serverPaymentSettings,
             ICommandBus commandBus,
             IAccountDao accountDao,
             IOrderDao orderDao,
             ILogger logger,
             IPairingService pairingService,
-            IOrderPaymentDao paymentDao) : base(serverSettings, accountDao)
+            IOrderPaymentDao paymentDao) : base(serverPaymentSettings, accountDao)
         {
             _serverSettings = serverSettings;
+            _serverPaymentSettings = serverPaymentSettings;
             _commandBus = commandBus;
             _accountDao = accountDao;
             _orderDao = orderDao;
@@ -267,7 +270,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 name = Guid.NewGuid().ToString(),
                 flow_config = new FlowConfig
                 {
-                    landing_page_type  = _serverSettings.GetPaymentSettings().PayPalServerSettings.LandingPageType.ToString()
+                    landing_page_type  = _serverPaymentSettings.PayPalServerSettings.LandingPageType.ToString()
                 }
             };
 

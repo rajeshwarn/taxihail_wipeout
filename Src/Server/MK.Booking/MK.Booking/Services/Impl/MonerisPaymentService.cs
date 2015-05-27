@@ -7,6 +7,7 @@ using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
@@ -20,9 +21,10 @@ namespace apcurium.MK.Booking.Services.Impl
     {
         private readonly ICommandBus _commandBus;
         private readonly ILogger _logger;
-        private readonly IServerSettings _serverSettings;
+        private readonly ServerPaymentSettings _serverPaymentSettings;
         private readonly IPairingService _pairingService;
         private readonly IOrderPaymentDao _paymentDao;
+        private readonly IServerSettings _serverSettings;
         private readonly ICreditCardDao _creditCardDao;
         private readonly IOrderDao _orderDao;
 
@@ -31,7 +33,8 @@ namespace apcurium.MK.Booking.Services.Impl
         public MonerisPaymentService(ICommandBus commandBus,
             ILogger logger,
             IOrderPaymentDao paymentDao,
-            IServerSettings serverSettings, 
+            IServerSettings serverSettings,
+            ServerPaymentSettings serverPaymentSettings, 
             IPairingService pairingService,
             ICreditCardDao creditCardDao,
             IOrderDao orderDao)
@@ -40,6 +43,7 @@ namespace apcurium.MK.Booking.Services.Impl
             _logger = logger;
             _paymentDao = paymentDao;
             _serverSettings = serverSettings;
+            _serverPaymentSettings = serverPaymentSettings;
             _pairingService = pairingService;
             _creditCardDao = creditCardDao;
             _orderDao = orderDao;
@@ -102,7 +106,7 @@ namespace apcurium.MK.Booking.Services.Impl
                     return;
                 }
                 
-                var monerisSettings = _serverSettings.GetPaymentSettings().MonerisPaymentSettings;
+                var monerisSettings = _serverPaymentSettings.MonerisPaymentSettings;
 
                 var completionCommand = new Completion(orderId.ToString(), 0.ToString("F"), paymentDetail.TransactionId, CryptType_SSLEnabledMerchant);
                 var commitRequest = new HttpsPostRequest(monerisSettings.Host, monerisSettings.StoreId, monerisSettings.ApiToken, completionCommand);
@@ -130,7 +134,7 @@ namespace apcurium.MK.Booking.Services.Impl
 
         private void Void(Guid orderId, string transactionId, ref string message)
         {
-            var monerisSettings = _serverSettings.GetPaymentSettings().MonerisPaymentSettings;
+            var monerisSettings = _serverPaymentSettings.MonerisPaymentSettings;
 
             var correctionCommand = new PurchaseCorrection(orderId.ToString(), transactionId, CryptType_SSLEnabledMerchant);
             var correctionRequest = new HttpsPostRequest(monerisSettings.Host, monerisSettings.StoreId, monerisSettings.ApiToken, correctionCommand);
@@ -150,7 +154,7 @@ namespace apcurium.MK.Booking.Services.Impl
 
         public DeleteTokenizedCreditcardResponse DeleteTokenizedCreditcard(string cardToken)
         {
-            var monerisSettings = _serverSettings.GetPaymentSettings().MonerisPaymentSettings;
+            var monerisSettings = _serverPaymentSettings.MonerisPaymentSettings;
 
             try
             {
@@ -215,7 +219,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 if (amountToPreAuthorize > 0)
                 {
                     // PreAuthorize transaction
-                    var monerisSettings = _serverSettings.GetPaymentSettings().MonerisPaymentSettings;
+                    var monerisSettings = _serverPaymentSettings.MonerisPaymentSettings;
 
                     var preAuthorizeCommand = new ResPreauthCC(creditCard.Token, orderIdentifier, amountToPreAuthorize.ToString("F"), CryptType_SSLEnabledMerchant);
                     AddCvvInfo(preAuthorizeCommand, cvv);
@@ -336,7 +340,7 @@ namespace apcurium.MK.Booking.Services.Impl
                     orderIdentifier = orderId.ToString();
                 }
 
-                var monerisSettings = _serverSettings.GetPaymentSettings().MonerisPaymentSettings;
+                var monerisSettings = _serverPaymentSettings.MonerisPaymentSettings;
                 var completionCommand = new Completion(orderIdentifier, amount.ToString("F"), commitTransactionId, CryptType_SSLEnabledMerchant);
 
                 var orderStatus = _orderDao.FindOrderStatusById(orderId);

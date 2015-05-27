@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Security;
-using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Extensions;
 using PayPal.Api;
 
@@ -10,12 +10,12 @@ namespace apcurium.MK.Booking.Services.Impl
 {
     public class BasePayPalService
     {
-        private readonly IServerSettings _serverSettings;
+        private readonly ServerPaymentSettings _serverPaymentSettings;
         private readonly IAccountDao _accountDao;
 
-        public BasePayPalService(IServerSettings serverSettings, IAccountDao accountDao)
+        public BasePayPalService(ServerPaymentSettings serverPaymentSettings, IAccountDao accountDao)
         {
-            _serverSettings = serverSettings;
+            _serverPaymentSettings = serverPaymentSettings;
             _accountDao = accountDao;
         }
 
@@ -47,25 +47,21 @@ namespace apcurium.MK.Booking.Services.Impl
 
         protected string GetClientId()
         {
-            var paymentSettings = _serverSettings.GetPaymentSettings();
-
-            return paymentSettings.PayPalClientSettings.IsSandbox
-                    ? paymentSettings.PayPalClientSettings.SandboxCredentials.ClientId
-                    : paymentSettings.PayPalClientSettings.Credentials.ClientId;
+            return _serverPaymentSettings.PayPalClientSettings.IsSandbox
+                    ? _serverPaymentSettings.PayPalClientSettings.SandboxCredentials.ClientId
+                    : _serverPaymentSettings.PayPalClientSettings.Credentials.ClientId;
         }
 
         protected string GetSecret()
         {
-            var paymentSettings = _serverSettings.GetPaymentSettings();
-
-            return paymentSettings.PayPalClientSettings.IsSandbox
-                ? paymentSettings.PayPalServerSettings.SandboxCredentials.Secret
-                : paymentSettings.PayPalServerSettings.Credentials.Secret;
+            return _serverPaymentSettings.PayPalClientSettings.IsSandbox
+                ? _serverPaymentSettings.PayPalServerSettings.SandboxCredentials.Secret
+                : _serverPaymentSettings.PayPalServerSettings.Credentials.Secret;
         }
 
         protected string GetMode()
         {
-            return _serverSettings.GetPaymentSettings().PayPalClientSettings.IsSandbox
+            return _serverPaymentSettings.PayPalClientSettings.IsSandbox
                 ? BaseConstants.SandboxMode
                 : BaseConstants.LiveMode;
         }

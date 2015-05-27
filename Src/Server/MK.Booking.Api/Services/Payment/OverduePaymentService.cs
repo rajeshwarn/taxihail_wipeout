@@ -71,13 +71,16 @@ namespace apcurium.MK.Booking.Api.Services.Payment
             var payment = _orderPaymentDao.FindByOrderId(overduePayment.OrderId);
             var reAuth = payment != null;
 
-            var preAuthResponse = _paymentService.PreAuthorize(overduePayment.OrderId, accountDetail, overduePayment.OverdueAmount, reAuth, true);
+            var order = _orderDao.FindById(overduePayment.OrderId);
+
+            var preAuthResponse = _paymentService.PreAuthorize(order.CompanyKey, overduePayment.OrderId, accountDetail, overduePayment.OverdueAmount, reAuth, true);
             if (preAuthResponse.IsSuccessful)
             {
                 // Wait for payment to be created
                 Thread.Sleep(500);
 
                 var commitResponse = _paymentService.CommitPayment(
+                    order.CompanyKey,
                     overduePayment.OrderId,
                     accountDetail,
                     overduePayment.OverdueAmount,
@@ -110,7 +113,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                         NewCardToken = paymentDetail.CardToken,
                         AccountId = accountDetail.Id,
                         PaymentId = paymentDetail.PaymentId,
-                        Provider = _paymentService.ProviderType(overduePayment.OrderId),
+                        Provider = _paymentService.ProviderType(order.CompanyKey, overduePayment.OrderId),
                         TotalAmount = overduePayment.OverdueAmount,
                         MeterAmount = fareObject.AmountExclTax,
                         TipAmount = tipAmount,
@@ -136,7 +139,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                 }
 
                 // Payment failed, void preauth
-                _paymentService.VoidPreAuthorization(overduePayment.OrderId);
+                _paymentService.VoidPreAuthorization(order.CompanyKey, overduePayment.OrderId);
             }
 
             return new SettleOverduePaymentResponse

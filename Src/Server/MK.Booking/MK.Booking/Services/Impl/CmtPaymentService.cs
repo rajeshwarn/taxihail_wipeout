@@ -28,7 +28,7 @@ namespace apcurium.MK.Booking.Services.Impl
         private readonly ICommandBus _commandBus;
         private readonly IOrderDao _orderDao;
         private readonly IAccountDao _accountDao;
-        private readonly IServerSettings _serverSettings;
+        private readonly ServerPaymentSettings _serverPaymentSettings;
         private readonly IPairingService _pairingService;
         private readonly ICreditCardDao _creditCardDao;
         private readonly ILogger _logger;
@@ -43,7 +43,7 @@ namespace apcurium.MK.Booking.Services.Impl
             ILogger logger, 
             IAccountDao accountDao, 
             IOrderPaymentDao paymentDao,
-            IServerSettings serverSettings,
+            ServerPaymentSettings serverPaymentSettings,
             IPairingService pairingService,
             ICreditCardDao creditCardDao)
         {
@@ -52,7 +52,7 @@ namespace apcurium.MK.Booking.Services.Impl
             _logger = logger;
             _accountDao = accountDao;
             _paymentDao = paymentDao;
-            _serverSettings = serverSettings;
+            _serverPaymentSettings = serverPaymentSettings;
             _pairingService = pairingService;
             _creditCardDao = creditCardDao;
         }
@@ -71,7 +71,7 @@ namespace apcurium.MK.Booking.Services.Impl
         {
             try
             {
-                if (_serverSettings.GetPaymentSettings().PaymentMode == PaymentMethod.RideLinqCmt)
+                if (_serverPaymentSettings.PaymentMode == PaymentMethod.RideLinqCmt)
                 {
                     // CMT RideLinq flow
 
@@ -138,7 +138,7 @@ namespace apcurium.MK.Booking.Services.Impl
         {
             try
             {
-                if (_serverSettings.GetPaymentSettings().PaymentMode == PaymentMethod.RideLinqCmt)
+                if (_serverPaymentSettings.PaymentMode == PaymentMethod.RideLinqCmt)
                 {
                     var orderPairingDetail = _orderDao.FindOrderPairingById(orderId);
                     if (orderPairingDetail == null)
@@ -186,7 +186,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 throw new Exception("Order status not found");
             }
 
-            Void(_serverSettings.GetPaymentSettings().CmtPaymentSettings.FleetToken,
+            Void(_serverPaymentSettings.CmtPaymentSettings.FleetToken,
                 orderStatus.VehicleNumber,
                 long.Parse(transactionId),
                 orderStatus.DriverInfos == null 
@@ -285,7 +285,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 var driverId = orderStatus.DriverInfos == null ? 0 : orderStatus.DriverInfos.DriverId.To<int>();
                 var employeeId = orderStatus.DriverInfos == null ? string.Empty : orderStatus.DriverInfos.DriverId;
                 var tripId = orderStatus.IBSOrderId.Value;
-                var fleetToken = _serverSettings.GetPaymentSettings().CmtPaymentSettings.FleetToken;
+                var fleetToken = _serverPaymentSettings.CmtPaymentSettings.FleetToken;
                 var customerReferenceNumber = orderStatus.ReferenceNumber.HasValue() ?
                                                     orderStatus.ReferenceNumber :
                                                     orderDetail.IBSOrderId.ToString();
@@ -356,8 +356,7 @@ namespace apcurium.MK.Booking.Services.Impl
 
         public BasePaymentResponse UpdateAutoTip(Guid orderId, int autoTipPercentage)
         {
-            var paymentSettings = _serverSettings.GetPaymentSettings();
-            if (paymentSettings.PaymentMode != PaymentMethod.RideLinqCmt)
+            if (_serverPaymentSettings.PaymentMode != PaymentMethod.RideLinqCmt)
             {
                 throw new Exception("This method can only be used with CMTRideLinQ as a payment provider.");
             }
@@ -414,7 +413,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 var accountDetail = _accountDao.FindById(orderStatusDetail.AccountId);
 
                 // send pairing request                                
-                var cmtPaymentSettings = _serverSettings.GetPaymentSettings().CmtPaymentSettings;
+                var cmtPaymentSettings = _serverPaymentSettings.CmtPaymentSettings;
                 var pairingRequest = new PairingRequest
                 {
                     AutoTipPercentage = autoTipPercentage,
@@ -589,8 +588,8 @@ namespace apcurium.MK.Booking.Services.Impl
 
         private void InitializeServiceClient()
         {
-            _cmtPaymentServiceClient = new CmtPaymentServiceClient(_serverSettings.GetPaymentSettings().CmtPaymentSettings, null, null, _logger);
-            _cmtMobileServiceClient = new CmtMobileServiceClient(_serverSettings.GetPaymentSettings().CmtPaymentSettings, null, null);
+            _cmtPaymentServiceClient = new CmtPaymentServiceClient(_serverPaymentSettings.CmtPaymentSettings, null, null, _logger);
+            _cmtMobileServiceClient = new CmtMobileServiceClient(_serverPaymentSettings.CmtPaymentSettings, null, null);
             _cmtTripInfoServiceHelper = new CmtTripInfoServiceHelper(_cmtMobileServiceClient, _logger);
         }
     }

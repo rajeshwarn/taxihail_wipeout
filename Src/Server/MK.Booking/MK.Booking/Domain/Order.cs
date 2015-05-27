@@ -297,14 +297,15 @@ namespace apcurium.MK.Booking.Domain
             });
         }
 
-        public void SwitchOrderToNextDispatchCompany(int ibsOrderId, string companyKey, string companyName, string market)
+        public void SwitchOrderToNextDispatchCompany(int ibsOrderId, string companyKey, string companyName, string market, bool hasChangedBackToPaymentInCar)
         {
             Update(new OrderSwitchedToNextDispatchCompany
             {
                 IBSOrderId = ibsOrderId,
                 CompanyKey = companyKey,
                 CompanyName = companyName,
-                Market = market
+                Market = market,
+                HasChangedBackToPaymentInCar = hasChangedBackToPaymentInCar
             });
         }
 

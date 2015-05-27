@@ -268,7 +268,7 @@ namespace apcurium.MK.Booking.Api.Services
             }
             
             // Initialize PayPal if user is using PayPal web
-            var  paypalWebPaymentResponse = InitializePayPalCheckoutIfNecessary(account.Id, isPrepaid, orderCommand.OrderId, request, orderCommand.BookingFees);
+            var  paypalWebPaymentResponse = InitializePayPalCheckoutIfNecessary(account.Id, isPrepaid, orderCommand.OrderId, request, orderCommand.BookingFees, bestAvailableCompany.CompanyKey);
 
             var chargeTypeIbs = string.Empty;
             var chargeTypeEmail = string.Empty;
@@ -372,7 +372,7 @@ namespace apcurium.MK.Booking.Api.Services
             else
             {
                 // Execute PayPal payment
-                var response = _payPalServiceFactory.GetInstance().ExecuteWebPayment(request.PayerId, request.PaymentId);
+                var response = _payPalServiceFactory.GetInstance(orderInfo.BestAvailableCompany.CompanyKey).ExecuteWebPayment(request.PayerId, request.PaymentId);
 
                 if (response.IsSuccessful)
                 {
@@ -527,7 +527,8 @@ namespace apcurium.MK.Booking.Api.Services
                 IBSOrderId = newIbsOrderId.Value,
                 CompanyKey = request.NextDispatchCompanyKey,
                 CompanyName = request.NextDispatchCompanyName,
-                Market = order.Market
+                Market = order.Market,
+                HasChangedBackToPaymentInCar = newOrderRequest.Settings.ChargeTypeId == ChargeTypes.PaymentInCar.Id
             });
 
             return new OrderStatusDetail
@@ -622,12 +623,12 @@ namespace apcurium.MK.Booking.Api.Services
             };
         }
 
-        private InitializePayPalCheckoutResponse InitializePayPalCheckoutIfNecessary(Guid accountId, bool isPrepaid, Guid orderId, CreateOrder request, decimal bookingFees)
+        private InitializePayPalCheckoutResponse InitializePayPalCheckoutIfNecessary(Guid accountId, bool isPrepaid, Guid orderId, CreateOrder request, decimal bookingFees, string companyKey)
         {
             if (isPrepaid
                 && request.Settings.ChargeTypeId == ChargeTypes.PayPal.Id)
             {
-                var paypalWebPaymentResponse = _payPalServiceFactory.GetInstance().InitializeWebPayment(accountId, orderId, Request.AbsoluteUri, request.Estimate.Price, bookingFees, request.ClientLanguageCode);
+                var paypalWebPaymentResponse = _payPalServiceFactory.GetInstance(companyKey).InitializeWebPayment(accountId, orderId, Request.AbsoluteUri, request.Estimate.Price, bookingFees, request.ClientLanguageCode);
 
                 if (paypalWebPaymentResponse.IsSuccessful)
                 {

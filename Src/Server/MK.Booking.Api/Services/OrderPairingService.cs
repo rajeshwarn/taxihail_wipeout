@@ -47,10 +47,12 @@ namespace apcurium.MK.Booking.Api.Services
                 return new HttpResult(HttpStatusCode.NotFound);
             }
 
-            var paymentSettings = _serverSettings.GetPaymentSettings();
+            var order = _orderDao.FindById(request.OrderId);
+
+            var paymentSettings = _serverSettings.GetPaymentSettings(order.CompanyKey);
             if (paymentSettings.PaymentMode == PaymentMethod.RideLinqCmt)
             {
-                var result = _paymentService.UpdateAutoTip(request.OrderId, request.AutoTipPercentage);
+                var result = _paymentService.UpdateAutoTip(order.CompanyKey, request.OrderId, request.AutoTipPercentage);
                 if (!result.IsSuccessful)
                 {
                     return new HttpResult(HttpStatusCode.InternalServerError, result.Message);

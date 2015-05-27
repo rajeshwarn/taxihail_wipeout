@@ -50,7 +50,7 @@ namespace apcurium.MK.Web.Tests
             var serverSettings = UnityServiceLocator.Instance.Resolve<IServerSettings>();
             var pairingService = UnityServiceLocator.Instance.Resolve<IPairingService>();
             var creditCardDao = UnityServiceLocator.Instance.Resolve<ICreditCardDao>();
-            return new BraintreePaymentService(commandBus, logger, orderPaymentDao, serverSettings, pairingService, creditCardDao);
+            return new BraintreePaymentService(commandBus, logger, orderPaymentDao, serverSettings, serverSettings.GetPaymentSettings(), pairingService, creditCardDao);
         }
     }
 }

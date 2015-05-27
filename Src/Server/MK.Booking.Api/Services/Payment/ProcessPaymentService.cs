@@ -41,14 +41,14 @@ namespace apcurium.MK.Booking.Api.Services.Payment
         {
             var session = this.GetSession();
 
-            return _payPalServiceFactory.GetInstance().LinkAccount(new Guid(session.UserAuthId), request.AuthCode);
+            return _payPalServiceFactory.GetInstance(null).LinkAccount(new Guid(session.UserAuthId), request.AuthCode);
         }
 
         public BasePaymentResponse Post(UnlinkPayPalAccountRequest request)
         {
             var session = this.GetSession();
 
-            return _payPalServiceFactory.GetInstance().UnlinkAccount(new Guid(session.UserAuthId));
+            return _payPalServiceFactory.GetInstance(null).UnlinkAccount(new Guid(session.UserAuthId));
         }
 
         public DeleteTokenizedCreditcardResponse Delete(DeleteTokenizedCreditcardRequest request)
@@ -63,10 +63,10 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 
             if (UpdateIBSOrderPaymentType(ibsAccountId.Value, order.IBSOrderId.Value))
             {
-                var response = _paymentService.Unpair(request.OrderId);
+                var response = _paymentService.Unpair(order.CompanyKey, request.OrderId);
                 if (response.IsSuccessful)
                 {
-                    _paymentService.VoidPreAuthorization(request.OrderId);
+                    _paymentService.VoidPreAuthorization(order.CompanyKey, request.OrderId);
                 }
                 else
                 {

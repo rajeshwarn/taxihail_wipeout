@@ -184,7 +184,7 @@ namespace apcurium.MK.Booking.Services.Impl
 
             var account = _accountDao.FindById(orderDetail.AccountId);
 
-            var result = _paymentService.PreAuthorize(orderId, account, totalFeeAmount, cvv: cvv);
+            var result = _paymentService.PreAuthorize(orderDetail.CompanyKey, orderId, account, totalFeeAmount, cvv: cvv);
             if (result.IsSuccessful)
             {
                 // Wait for OrderPaymentDetail to be created
@@ -245,13 +245,13 @@ namespace apcurium.MK.Booking.Services.Impl
                 {
                     if (totalFeeAmount > 0)
                     {
-                        paymentProviderServiceResponse = _paymentService.CommitPayment(orderId, account, paymentDetail.PreAuthorizedAmount, totalFeeAmount, totalFeeAmount, 0, paymentDetail.TransactionId);
+                        paymentProviderServiceResponse = _paymentService.CommitPayment(orderDetail.CompanyKey, orderId, account, paymentDetail.PreAuthorizedAmount, totalFeeAmount, totalFeeAmount, 0, paymentDetail.TransactionId);
                         message = paymentProviderServiceResponse.Message;
                     }
                     else
                     {
                         // void preauth if it exists
-                        _paymentService.VoidPreAuthorization(orderId);
+                        _paymentService.VoidPreAuthorization(orderDetail.CompanyKey, orderId);
 
                         paymentProviderServiceResponse.IsSuccessful = true;
                     }
@@ -267,7 +267,7 @@ namespace apcurium.MK.Booking.Services.Impl
                     {
                         AccountId = account.Id,
                         PaymentId = paymentDetail.PaymentId,
-                        Provider = _paymentService.ProviderType(orderDetail.Id),
+                        Provider = _paymentService.ProviderType(orderDetail.CompanyKey, orderDetail.Id),
                         TotalAmount = totalFeeAmount,
                         MeterAmount = Convert.ToDecimal(fareObject.AmountExclTax),
                         TipAmount = Convert.ToDecimal(0),
@@ -282,7 +282,7 @@ namespace apcurium.MK.Booking.Services.Impl
                 else
                 {
                     // Void PreAuth because commit failed
-                    _paymentService.VoidPreAuthorization(orderId);
+                    _paymentService.VoidPreAuthorization(orderDetail.CompanyKey, orderId);
 
                     // Payment error
                     _commandBus.Send(new LogCreditCardError

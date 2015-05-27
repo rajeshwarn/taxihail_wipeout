@@ -30,6 +30,7 @@ namespace apcurium.MK.Booking.Services.Impl
             ILogger logger,
             IOrderPaymentDao paymentDao,
             IServerSettings serverSettings,
+            ServerPaymentSettings serverPaymentSettings,
             IPairingService pairingService,
             ICreditCardDao creditCardDao)
         {
@@ -40,7 +41,7 @@ namespace apcurium.MK.Booking.Services.Impl
             _pairingService = pairingService;
             _creditCardDao = creditCardDao;
 
-            BraintreeGateway = GetBraintreeGateway(serverSettings.GetPaymentSettings().BraintreeServerSettings);
+            BraintreeGateway = GetBraintreeGateway(serverPaymentSettings.BraintreeServerSettings);
         }
 
         public PaymentProvider ProviderType(Guid? orderId = null)

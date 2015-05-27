@@ -118,7 +118,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 
             try
             {
-                if (_paylServiceFactory.GetInstance().TestCredentials(request.ClientCredentials, request.ServerCredentials, false))
+                if (_paylServiceFactory.GetInstance(null).TestCredentials(request.ClientCredentials, request.ServerCredentials, false))
                 {
                     return new TestServerPaymentSettingsResponse
                     {
@@ -144,7 +144,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
 
             try
             {
-                if (_paylServiceFactory.GetInstance().TestCredentials(request.ClientCredentials, request.ServerCredentials, true))
+                if (_paylServiceFactory.GetInstance(null).TestCredentials(request.ClientCredentials, request.ServerCredentials, true))
                 {
                     return new TestServerPaymentSettingsResponse
                     {

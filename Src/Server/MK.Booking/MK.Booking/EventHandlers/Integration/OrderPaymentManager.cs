@@ -111,7 +111,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             var orderDetail = _orderDao.FindOrderStatusById(@event.SourceId);
             if (orderDetail.IsPrepaid)
             {
-                var response = _paymentService.RefundPayment(@event.SourceId);
+                var response = _paymentService.RefundPayment(orderDetail.CompanyKey, @event.SourceId);
 
                 if (response.IsSuccessful)
                 {
@@ -129,22 +129,25 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                 if (!feeCharged)
                 {
                     // void the preauthorization to prevent misuse fees
-                    _paymentService.VoidPreAuthorization(@event.SourceId);
+                    _paymentService.VoidPreAuthorization(orderDetail.CompanyKey, @event.SourceId);
                 }
             }
         }
 
         public void Handle(OrderSwitchedToNextDispatchCompany @event)
         {
-            var orderStatus = _orderDao.FindOrderStatusById(@event.SourceId);
-            if (orderStatus.IsPrepaid)
+            if (@event.HasChangedBackToPaymentInCar)
             {
-                _paymentService.RefundPayment(@event.SourceId);
-            }
-            else
-            {
-                // void the preauthorization to prevent misuse fees
-                _paymentService.VoidPreAuthorization(@event.SourceId);
+                var orderStatus = _orderDao.FindOrderStatusById(@event.SourceId);
+                if (orderStatus.IsPrepaid)
+                {
+                    _paymentService.RefundPayment(orderStatus.CompanyKey, @event.SourceId);
+                }
+                else
+                {
+                    // void the preauthorization to prevent misuse fees
+                    _paymentService.VoidPreAuthorization(orderStatus.CompanyKey, @event.SourceId);
+                }
             }
         }
 
@@ -153,7 +156,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             var orderDetail = _orderDao.FindOrderStatusById(@event.SourceId);
             if (orderDetail.IsPrepaid)
             {
-                var response = _paymentService.RefundPayment(@event.SourceId);
+                var response = _paymentService.RefundPayment(orderDetail.CompanyKey, @event.SourceId);
 
                 if (response.IsSuccessful)
                 {
@@ -168,7 +171,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             else
             {
                 // void the preauthorization to prevent misuse fees
-                _paymentService.VoidPreAuthorization(@event.SourceId);
+                _paymentService.VoidPreAuthorization(orderDetail.CompanyKey, @event.SourceId);
             }
         }
 
@@ -190,7 +193,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
                     && !orderStatus.IsPrepaid) //prepaid order will never have a pairing info
                 {
                     // void the preauthorization to prevent misuse fees
-                    _paymentService.VoidPreAuthorization(@event.SourceId);
+                    _paymentService.VoidPreAuthorization(order.CompanyKey, @event.SourceId);
                 }
             }
         }
