@@ -19,6 +19,7 @@ using apcurium.MK.Booking.Mobile.AppServices.Social;
 using apcurium.MK.Booking.Mobile.Data;
 using apcurium.MK.Booking.Mobile.Infrastructure;
 using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
@@ -47,14 +48,17 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 		private readonly ITwitterService _twitterService;
 		private readonly ILocalization _localize;
 		private readonly ILocationService _locationService;
+        private readonly IPaymentService _paymentService;
 
         public AccountService(IAppSettings appSettings,
 			IFacebookService facebookService,
 			ITwitterService twitterService,
 			ILocalization localize,
-			ILocationService locationService)
+			ILocationService locationService,
+            IPaymentService paymentService)
 		{
 			_locationService = locationService;
+            _paymentService = paymentService;
             _localize = localize;
 		    _twitterService = twitterService;
 			_facebookService = facebookService;
@@ -553,6 +557,8 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 refData.PaymentsList.Remove(i => i.Id == ChargeTypes.PayPal.Id);
 		    }
 
+            Logger.LogMessage("Market value: {0}", hashedMarket);
+
 			var creditCard = await GetCreditCard();
             if (creditCard == null
                 || CurrentAccount.IsPayPalAccountLinked
@@ -563,7 +569,25 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
 
 		    if (hashedMarket.HasValue())
 		    {
-                refData.PaymentsList.Remove(i => i.Id != ChargeTypes.PaymentInCar.Id);
+                Logger.LogMessage("Market has value");
+                var paymentSettings = await _paymentService.GetPaymentSettings();
+
+                Logger.LogMessage("Payment mode is {0}", paymentSettings.PaymentMode);
+
+		        if (paymentSettings.PaymentMode == PaymentMethod.Cmt
+		            || paymentSettings.PaymentMode == PaymentMethod.RideLinqCmt)
+                {
+                    Logger.LogMessage("Removing all but pay in car et CoF");
+
+                    // CoF payment option in external markets is only available with CMT payment
+                    refData.PaymentsList.Remove(i => i.Id != ChargeTypes.PaymentInCar.Id && i.Id != ChargeTypes.CardOnFile.Id);
+		        }
+		        else
+		        {
+                    Logger.LogMessage("Removing all but pay in car");
+                    // Only Pay in Car payment available in external markets for other payment providers
+                    refData.PaymentsList.Remove(i => i.Id != ChargeTypes.PaymentInCar.Id);
+		        }
 		    }
 
             return refData.PaymentsList;

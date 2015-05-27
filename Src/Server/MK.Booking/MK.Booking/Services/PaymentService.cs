@@ -208,7 +208,6 @@ namespace apcurium.MK.Booking.Services
         {
             var serverSettings = _container.Resolve<IServerSettings>();
             var paymentSettings = GetPaymentSettings(companyKey);
-
             switch (paymentSettings.PaymentMode)
             {
                 case PaymentMethod.Braintree:
