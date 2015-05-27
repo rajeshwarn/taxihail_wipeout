@@ -117,7 +117,6 @@ namespace apcurium.MK.Booking.Test.OrderFixture
             Assert.AreEqual(50.5, orderCreated.EstimatedFare);
             Assert.AreEqual(true, orderCreated.IsChargeAccountPaymentWithCardOnFile);
             Assert.AreEqual(true, orderCreated.IsPrepaid);
-            Assert.IsTrue(orderCreated.SourceId != Guid.Empty);
         }
 
         [Test]
