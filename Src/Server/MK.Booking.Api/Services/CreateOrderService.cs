@@ -20,6 +20,7 @@ using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Services;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
@@ -118,21 +119,7 @@ namespace apcurium.MK.Booking.Api.Services
 
             // Find market
             var market = _taxiHailNetworkServiceClient.GetCompanyMarket(request.PickupAddress.Latitude, request.PickupAddress.Longitude);
-
-            if (market.HasValue())
-            {
-                // Only pay in car charge type supported for orders outside home market
-                request.Settings.ChargeTypeId = ChargeTypes.PaymentInCar.Id;
-            }
-            else
-            {
-                // Ensure that the market is not an empty string
-                market = null;
-            }
-
-            var isPrepaid = isFromWebApp
-                && (request.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id
-                    || request.Settings.ChargeTypeId == ChargeTypes.PayPal.Id);
+            market = market.HasValue() ? market : null;
 
             BestAvailableCompany bestAvailableCompany;
 
@@ -154,7 +141,21 @@ namespace apcurium.MK.Booking.Api.Services
             }
 
             UpdateVehicleTypeFromMarketData(request.Settings, bestAvailableCompany.CompanyKey);
-            FetchCompanyPaymentSettings(bestAvailableCompany.CompanyKey);
+
+            if (market.HasValue())
+            {
+                var isConfiguredForCmtPayment = FetchCompanyPaymentSettings(bestAvailableCompany.CompanyKey);
+
+                if (!isConfiguredForCmtPayment)
+                {
+                    // Only companies configured for CMT payment can support CoF orders outside of home market
+                    request.Settings.ChargeTypeId = ChargeTypes.PaymentInCar.Id;
+                }
+            }
+
+            var isPrepaid = isFromWebApp
+                && (request.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id
+                    || request.Settings.ChargeTypeId == ChargeTypes.PayPal.Id);
 
             var account = _accountDao.FindById(new Guid(this.GetSession().UserAuthId));
             account.IBSAccountId = CreateIbsAccountIfNeeded(account, bestAvailableCompany.CompanyKey);
@@ -1264,22 +1265,64 @@ namespace apcurium.MK.Booking.Api.Services
             }
         }
 
-        private void FetchCompanyPaymentSettings(string companyKey)
+        private bool FetchCompanyPaymentSettings(string companyKey)
         {
             try
             {
                 var paymentSettings = _taxiHailNetworkServiceClient.GetPaymentSettings(companyKey);
 
-                _commandBus.Send(new SaveCompanyPaymentSettings
+                // Save/update company settings
+                _commandBus.Send(new UpdatePaymentSettings
                 {
-                    SerializedCompanyPaymentSettings = paymentSettings.ToJson()
+                    CompanyId = Guid.NewGuid(),
+                    ServerPaymentSettings = new ServerPaymentSettings
+                    {
+                        CompanyKey = companyKey,
+                        PaymentMode = paymentSettings.PaymentMode,
+                        BraintreeServerSettings = new BraintreeServerSettings
+                        {
+                            IsSandbox = paymentSettings.BraintreePaymentSettings.IsSandbox,
+                            MerchantId = paymentSettings.BraintreePaymentSettings.MerchantId,
+                            PrivateKey = paymentSettings.BraintreePaymentSettings.PrivateKey,
+                            PublicKey = paymentSettings.BraintreePaymentSettings.PublicKey
+                        },
+                        BraintreeClientSettings = new BraintreeClientSettings
+                        {
+                            ClientKey = paymentSettings.BraintreePaymentSettings.ClientKey
+                        },
+                        MonerisPaymentSettings = new MonerisPaymentSettings
+                        {
+                            IsSandbox = paymentSettings.MonerisPaymentSettings.IsSandbox,
+                            ApiToken = paymentSettings.MonerisPaymentSettings.ApiToken,
+                            BaseHost = paymentSettings.MonerisPaymentSettings.BaseHost,
+                            SandboxHost = paymentSettings.MonerisPaymentSettings.SandboxHost,
+                            StoreId = paymentSettings.MonerisPaymentSettings.StoreId
+                        },
+                        CmtPaymentSettings = new CmtPaymentSettings
+                        {
+                            BaseUrl = paymentSettings.CmtPaymentSettings.BaseUrl,
+                            ConsumerKey = paymentSettings.CmtPaymentSettings.ConsumerKey,
+                            ConsumerSecretKey = paymentSettings.CmtPaymentSettings.ConsumerSecretKey,
+                            CurrencyCode = paymentSettings.CmtPaymentSettings.CurrencyCode,
+                            FleetToken = paymentSettings.CmtPaymentSettings.FleetToken,
+                            IsManualRidelinqCheckInEnabled = paymentSettings.CmtPaymentSettings.IsManualRidelinqCheckInEnabled,
+                            IsSandbox = paymentSettings.CmtPaymentSettings.IsSandbox,
+                            Market = paymentSettings.CmtPaymentSettings.Market,
+                            MobileBaseUrl = paymentSettings.CmtPaymentSettings.MobileBaseUrl,
+                            SandboxBaseUrl = paymentSettings.CmtPaymentSettings.SandboxBaseUrl,
+                            SandboxMobileBaseUrl = paymentSettings.CmtPaymentSettings.SandboxMobileBaseUrl
+                        }
+                    }
                 });
 
+                return paymentSettings.CmtPaymentSettings != null;
             }
             catch (Exception ex)
             {
                 Log.Info(string.Format("An error occurred when trying to get PaymentSettings for company {0}", companyKey));
                 Log.Error(ex);
+
+                return false;
             }
         }
 
