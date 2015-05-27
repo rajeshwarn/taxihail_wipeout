@@ -1,27 +1,13 @@
-﻿#region
-
-using System.Collections.Generic;
-using System.Configuration;
+﻿using System;
 using System.Globalization;
 using System.Linq;
-using System.Net;
 using System.Threading;
-using apcurium.MK.Booking.Api.Contract.Requests.Payment;
-using apcurium.MK.Booking.Api.Contract.Resources;
-using apcurium.MK.Booking.Api.Helpers;
-using apcurium.MK.Booking.Api.Services;
-using apcurium.MK.Booking.Api.Services.Payment;
 using apcurium.MK.Booking.Commands;
-using apcurium.MK.Booking.Database;
 using apcurium.MK.Booking.Domain;
 using apcurium.MK.Booking.EventHandlers.Integration;
 using apcurium.MK.Booking.IBS;
 using apcurium.MK.Booking.Maps;
-using apcurium.MK.Booking.Maps.Geo;
-using apcurium.MK.Booking.PushNotifications;
-using apcurium.MK.Booking.ReadModel;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
-using apcurium.MK.Booking.Resources;
 using apcurium.MK.Booking.Services;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
@@ -31,14 +17,10 @@ using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Enumeration;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Common.Resources;
+using CMTPayment;
 using Infrastructure.EventSourcing;
 using Infrastructure.Messaging;
-using System;
-using CMTPayment;
 using log4net;
-using ServiceStack.Common.Web;
-
-#endregion
 
 namespace apcurium.MK.Booking.Api.Jobs
 {
@@ -59,6 +41,7 @@ namespace apcurium.MK.Booking.Api.Jobs
         private readonly IEventSourcedRepository<Promotion> _promoRepository;
         private readonly IPaymentService _paymentService;
         private readonly ICreditCardDao _creditCardDao;
+        private readonly IFeeService _feeService;
         private readonly ILogger _logger;
         private readonly Resources.Resources _resources;
 
@@ -81,6 +64,7 @@ namespace apcurium.MK.Booking.Api.Jobs
             IEventSourcedRepository<Promotion> promoRepository,
             IPaymentService paymentService,
             ICreditCardDao creditCardDao,
+            IFeeService feeService,
             ILogger logger)
         {
             _orderDao = orderDao;
@@ -94,6 +78,7 @@ namespace apcurium.MK.Booking.Api.Jobs
             _promoRepository = promoRepository;
             _paymentService = paymentService;
             _creditCardDao = creditCardDao;
+            _feeService = feeService;
             _logger = logger;
             _commandBus = commandBus;
             _paymentDao = paymentDao;
@@ -129,7 +114,8 @@ namespace apcurium.MK.Booking.Api.Jobs
                 Fare = orderFromIbs.Fare,
                 Toll = orderFromIbs.Toll,
                 Tip = orderFromIbs.Tip,
-                Tax = orderFromIbs.VAT
+                Tax = orderFromIbs.VAT,
+                Surcharge = orderFromIbs.Surcharge
             });
         }
 
@@ -220,11 +206,28 @@ namespace apcurium.MK.Booking.Api.Jobs
                 // Ride was assigned while waiting for user input on whether or not to switch company
                 orderStatusDetail.Status = OrderStatus.Created;
             }
-            
+
+            if (ibsOrderInfo.IsAssigned && orderStatusDetail.TaxiAssignedDate == null)
+            {
+                orderStatusDetail.TaxiAssignedDate = DateTime.UtcNow;
+            }
+
             if (ibsOrderInfo.IsCanceled)
             {
                 orderStatusDetail.Status = OrderStatus.Canceled;
-                ChargeNoShowFeeIfNecessary(ibsOrderInfo, orderStatusDetail);
+
+                try
+                {
+                    if (ibsOrderInfo.Status == VehicleStatuses.Common.NoShow)
+                    {
+                        _feeService.ChargeNoShowFeeIfNecessary(orderStatusDetail);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    orderStatusDetail.PairingError = ex.Message;
+                }
+                
                 Log.DebugFormat("Order {1}: Status updated to: {0}", orderStatusDetail.Status, orderStatusDetail.OrderId);
             }
             else if (ibsOrderInfo.IsTimedOut)
@@ -282,61 +285,6 @@ namespace apcurium.MK.Booking.Api.Jobs
             }
             
             return result;
-        }
-
-        private void ChargeNoShowFeeIfNecessary(IBSOrderInformation ibsOrderInfo, OrderStatusDetail orderStatusDetail)
-        {
-            if (ibsOrderInfo.Status != VehicleStatuses.Common.NoShow)
-            {
-                return;
-            }
-
-            // Order is prepaid, if the user prepaid and decided not to show up, the fee is his fare already charged
-            if (orderStatusDetail.IsPrepaid)
-            {
-                return;
-            }
-
-            Log.DebugFormat("No show fee will be charged for order {0}.", ibsOrderInfo.IBSOrderId);
-
-            var paymentSettings = _serverSettings.GetPaymentSettings();
-            var account = _accountDao.FindById(orderStatusDetail.AccountId);
-
-            if (paymentSettings.NoShowFee.HasValue
-                && paymentSettings.NoShowFee.Value > 0
-                && (account.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id
-                    || account.Settings.ChargeTypeId == ChargeTypes.PayPal.Id))
-            {
-                try
-                {
-                    // PreAuthorization
-                    var preAuthResponse = PreauthorizePaymentIfNecessary(orderStatusDetail.OrderId, paymentSettings.NoShowFee.Value);
-                    if (preAuthResponse.IsSuccessful)
-                    {
-                        // Commit
-                        var paymentResult = CommitPayment(paymentSettings.NoShowFee.Value, paymentSettings.NoShowFee.Value, 0, orderStatusDetail.OrderId, true);
-                        if (paymentResult.IsSuccessful)
-                        {
-                            Log.DebugFormat("No show fee of amount {0} was charged for order {1}.", paymentSettings.NoShowFee.Value, ibsOrderInfo.IBSOrderId);
-                        }
-                        else
-                        {
-                            orderStatusDetail.PairingError = paymentResult.Message;
-                            Log.DebugFormat("Could not process no show fee for order {0}: {1}.", ibsOrderInfo.IBSOrderId, paymentResult.Message);
-                        }
-                    }
-                    else
-                    {
-                        orderStatusDetail.PairingError = preAuthResponse.Message;
-                        Log.DebugFormat("Could not process no show fee for order {0}: {1}.", ibsOrderInfo.IBSOrderId, preAuthResponse.Message);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    orderStatusDetail.PairingError = ex.Message;
-                    Log.DebugFormat("Could not process no show fee for order {0}: {1}.", ibsOrderInfo.IBSOrderId, ex.Message);
-                }
-            }
         }
 
         private void UpdateVehiclePositionAndSendNearbyNotificationIfNecessary(IBSOrderInformation ibsOrderInfo, OrderStatusDetail orderStatus)
@@ -423,30 +371,32 @@ namespace apcurium.MK.Booking.Api.Jobs
 
             // We received a fare from IBS
             // Send payment for capture, once it's captured, we will set the status to Completed
-            var meterAmount = ibsOrderInfo.Fare + ibsOrderInfo.Toll + ibsOrderInfo.VAT;
             double tipPercentage = pairingInfo.AutoTipPercentage ?? _serverSettings.ServerData.DefaultTipPercentage;
-            var tipAmount = FareHelper.CalculateTipAmount(meterAmount, tipPercentage);
+            var tipAmount = FareHelper.CalculateTipAmount(ibsOrderInfo.MeterAmount, tipPercentage);
+
+            var bookingFees = _orderDao.FindById(orderStatusDetail.OrderId).BookingFees;
+            var total = ibsOrderInfo.MeterAmount + tipAmount + Convert.ToDouble(bookingFees);
 
             Log.DebugFormat(
-                    "Order {4}: Received total amount from IBS of {0}, calculated a tip of {1}% (tip amount: {2}), for a total of {3}",
-                    meterAmount, tipPercentage, tipAmount, meterAmount + tipAmount, orderStatusDetail.OrderId);
+                    "Order {0}: Received total amount from IBS of {1}, calculated a tip of {2}% (tip amount: {3}), adding booking fees of {4} for a total of {5}",
+                    orderStatusDetail.OrderId, ibsOrderInfo.MeterAmount, tipPercentage, tipAmount, bookingFees, total);
 
             if (!_serverSettings.ServerData.SendDetailedPaymentInfoToDriver)
             {
                 // this is the only payment related message sent to the driver when this setting is false
-                SendMinimalPaymentProcessedMessageToDriver(ibsOrderInfo.VehicleNumber, meterAmount + tipAmount, meterAmount, tipAmount);
+                SendMinimalPaymentProcessedMessageToDriver(ibsOrderInfo.VehicleNumber, ibsOrderInfo.MeterAmount + tipAmount, ibsOrderInfo.MeterAmount, tipAmount);
             }
 
             try
             {
-                var totalOrderAmount = Convert.ToDecimal(meterAmount + tipAmount);
+                var totalOrderAmount = Convert.ToDecimal(total);
                 var amountSaved = 0m;
 
                 var promoUsed = _promotionDao.FindByOrderId(orderStatusDetail.OrderId);
                 if (promoUsed != null)
                 {
                     var promoDomainObject = _promoRepository.Get(promoUsed.PromoId);
-                    amountSaved = promoDomainObject.GetAmountSaved(Convert.ToDecimal(meterAmount));
+                    amountSaved = promoDomainObject.GetDiscountAmount(Convert.ToDecimal(ibsOrderInfo.MeterAmount));
                     totalOrderAmount = totalOrderAmount - amountSaved;
                 }
 
@@ -458,11 +408,13 @@ namespace apcurium.MK.Booking.Api.Jobs
                 {
                     // Commit
                     var paymentResult = CommitPayment(
-                        totalOrderAmount, 
-                        Convert.ToDecimal(meterAmount), 
-                        Convert.ToDecimal(tipAmount), 
-                        orderStatusDetail.OrderId, 
-                        false,
+                        totalOrderAmount,
+                        Convert.ToDecimal(ibsOrderInfo.MeterAmount), 
+                        Convert.ToDecimal(tipAmount),
+                        Convert.ToDecimal(ibsOrderInfo.Toll),
+                        Convert.ToDecimal(ibsOrderInfo.Surcharge),
+                        bookingFees,
+                        orderStatusDetail.OrderId,
                         promoUsed != null
                             ? promoUsed.PromoId
                             : (Guid?) null,
@@ -514,7 +466,8 @@ namespace apcurium.MK.Booking.Api.Jobs
             orderStatusDetail.Status = OrderStatus.Completed;
         }
 
-        private CommitPreauthorizedPaymentResponse CommitPayment(decimal totalOrderAmount, decimal meterAmount, decimal tipAmount, Guid orderId, bool isNoShowFee, Guid? promoUsedId = null, decimal amountSaved = 0)
+        private CommitPreauthorizedPaymentResponse CommitPayment(decimal totalOrderAmount, decimal meterAmount, decimal tipAmount, 
+            decimal tollAmount, decimal surchargeAmount, decimal bookingFees, Guid orderId, Guid? promoUsedId = null, decimal amountSaved = 0)
         {
             var orderDetail = _orderDao.FindById(orderId);
             if (orderDetail == null)
@@ -552,7 +505,16 @@ namespace apcurium.MK.Booking.Api.Jobs
                 {
                     if (totalOrderAmount > 0)
                     {
-                        paymentProviderServiceResponse = _paymentService.CommitPayment(orderId, account, paymentDetail.PreAuthorizedAmount, totalOrderAmount, meterAmount, tipAmount, paymentDetail.TransactionId);
+                        // Commit
+                        paymentProviderServiceResponse = _paymentService.CommitPayment(
+                            orderId,
+                            account,
+                            paymentDetail.PreAuthorizedAmount,
+                            totalOrderAmount,
+                            meterAmount,
+                            tipAmount,
+                            paymentDetail.TransactionId);
+
                         message = paymentProviderServiceResponse.Message;
                     }
                     else
@@ -565,64 +527,61 @@ namespace apcurium.MK.Booking.Api.Jobs
                     }
                 }
 
-                if (!isNoShowFee)
+                //send information to IBS
+                try
                 {
-                    //send information to IBS
+                    var providerType = _paymentService.ProviderType(orderDetail.Id);
+
+                    string cardToken;
+                    if (providerType == PaymentProvider.PayPal)
+                    {
+                        cardToken = "PayPal";
+                    }
+                    else
+                    {
+                        var card = _creditCardDao.FindByAccountId(orderDetail.AccountId).First();
+                        cardToken = card.Token;
+                    }
+
+                    _ibs.ConfirmExternalPayment(orderDetail.Id,
+                        orderDetail.IBSOrderId.Value,
+                        totalOrderAmount,
+                        Convert.ToDecimal(tipAmount),
+                        Convert.ToDecimal(meterAmount),
+                        paymentProviderServiceResponse.IsSuccessful ? PaymentType.CreditCard.ToString() : FailedCode,
+                        providerType.ToString(),
+                        paymentProviderServiceResponse.TransactionId,
+                        paymentProviderServiceResponse.AuthorizationCode,
+                        cardToken,
+                        account.IBSAccountId.Value,
+                        orderDetail.Settings.Name,
+                        orderDetail.Settings.Phone,
+                        account.Email,
+                        orderDetail.UserAgent.GetOperatingSystem(),
+                        orderDetail.UserAgent);
+                }
+                catch (Exception e)
+                {
+                    _logger.LogError(e);
+                    message = e.Message;
+
                     try
                     {
-                        var providerType = _paymentService.ProviderType(orderDetail.Id);
-
-                        string cardToken;
-                        if (providerType == PaymentProvider.PayPal)
+                        if (paymentProviderServiceResponse.IsSuccessful)
                         {
-                            cardToken = "PayPal";
+                            _paymentService.VoidTransaction(orderId, paymentProviderServiceResponse.TransactionId, ref message);
                         }
-                        else
-                        {
-                            var card = _creditCardDao.FindByAccountId(orderDetail.AccountId).First();
-                            cardToken = card.Token;
-                        }
-
-                        _ibs.ConfirmExternalPayment(orderDetail.Id,
-                            orderDetail.IBSOrderId.Value,
-                            totalOrderAmount,
-                            Convert.ToDecimal(tipAmount),
-                            Convert.ToDecimal(meterAmount),
-                            paymentProviderServiceResponse.IsSuccessful ? PaymentType.CreditCard.ToString() : FailedCode,
-                            providerType.ToString(),
-                            paymentProviderServiceResponse.TransactionId,
-                            paymentProviderServiceResponse.AuthorizationCode,
-                            cardToken,
-                            account.IBSAccountId.Value,
-                            orderDetail.Settings.Name,
-                            orderDetail.Settings.Phone,
-                            account.Email,
-                            orderDetail.UserAgent.GetOperatingSystem(),
-                            orderDetail.UserAgent);
                     }
-                    catch (Exception e)
+                    catch (Exception ex)
                     {
-                        _logger.LogError(e);
-                        message = e.Message;
-
-                        try
-                        {
-                            if (paymentProviderServiceResponse.IsSuccessful)
-                            {
-                                _paymentService.VoidTransaction(orderId, paymentProviderServiceResponse.TransactionId, ref message);
-                            }
-                        }
-                        catch (Exception ex)
-                        {
-                            _logger.LogMessage("Can't cancel transaction");
-                            _logger.LogError(ex);
-                            message = message + ex.Message;
-                            //can't cancel transaction, send a command to log later
-                        }
-                        finally
-                        {
-                            paymentProviderServiceResponse.IsSuccessful = false;
-                        }
+                        _logger.LogMessage("Can't cancel transaction");
+                        _logger.LogError(ex);
+                        message = message + ex.Message;
+                        //can't cancel transaction, send a command to log later
+                    }
+                    finally
+                    {
+                        paymentProviderServiceResponse.IsSuccessful = false;
                     }
                 }
 
@@ -637,15 +596,17 @@ namespace apcurium.MK.Booking.Api.Jobs
                         AccountId = account.Id,
                         PaymentId = paymentDetail.PaymentId,
                         Provider = _paymentService.ProviderType(orderDetail.Id),
-                        Amount = totalOrderAmount,
+                        TotalAmount = totalOrderAmount,
                         MeterAmount = Convert.ToDecimal(fareObject.AmountExclTax),
                         TipAmount = Convert.ToDecimal(tipAmount),
                         TaxAmount = Convert.ToDecimal(fareObject.TaxAmount),
-                        IsNoShowFee = isNoShowFee,
+                        TollAmount = tollAmount,
+                        SurchargeAmount = surchargeAmount,
                         AuthorizationCode = paymentProviderServiceResponse.AuthorizationCode,
                         TransactionId = paymentProviderServiceResponse.TransactionId,
                         PromotionUsed = promoUsedId,
-                        AmountSavedByPromotion = amountSaved
+                        AmountSavedByPromotion = amountSaved,
+                        BookingFees = bookingFees
                     });
                 }
                 else

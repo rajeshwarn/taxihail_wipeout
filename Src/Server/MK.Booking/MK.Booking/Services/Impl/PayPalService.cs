@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Security;
@@ -155,7 +156,7 @@ namespace apcurium.MK.Booking.Services.Impl
             };
         }
 
-        public InitializePayPalCheckoutResponse InitializeWebPayment(Guid accountId, Guid orderId, string baseUri, double? estimatedFare, string clientLanguageCode)
+        public InitializePayPalCheckoutResponse InitializeWebPayment(Guid accountId, Guid orderId, string baseUri, double? estimatedFare, decimal bookingFees, string clientLanguageCode)
         {
             if (!estimatedFare.HasValue)
             {
@@ -188,8 +189,11 @@ namespace apcurium.MK.Booking.Services.Impl
             var tipPercentage = defaultTipPercentage ?? _serverSettings.ServerData.DefaultTipPercentage;
             var tipAmount = FareHelper.CalculateTipAmount(fareObject.AmountInclTax, tipPercentage);
 
-            // Fare amount with tip
-            var totalAmount = fareAmount + tipAmount;
+            // Booking Fees with conversion rate if necessary
+            var bookingFeesAmount = Math.Round(bookingFees * conversionRate, 2);
+
+            // Fare amount with tip and booking fee
+            var totalAmount = fareAmount + tipAmount + bookingFeesAmount;
 
             var redirectUrl = baseUri + string.Format("/{0}/proceed", orderId);
 
@@ -243,6 +247,19 @@ namespace apcurium.MK.Booking.Services.Impl
                     }
                 }
             };
+
+            if (bookingFeesAmount > 0)
+            {
+                transactionList.First().item_list.items.Add(new Item
+                {
+                    name = _resources.Get("PayPalWebBookingFeeItemDescription", regionName.HasValue()
+                                        ? SupportedLanguages.en.ToString()
+                                        : clientLanguageCode),
+                    currency = currency,
+                    price = bookingFeesAmount.ToString("N", CultureInfo.InvariantCulture),
+                    quantity = "1"
+                });
+            }
 
             // Create web experience profile
             var profile = new WebProfile
@@ -370,24 +387,15 @@ namespace apcurium.MK.Booking.Services.Impl
 
             try
             {
-                var conversionRate = _serverSettings.ServerData.PayPalConversionRate;
-
-                _logger.LogMessage("PayPal Conversion Rate: {0}", conversionRate);
-
                 // Get captured payment
                 var payment = Payment.Get(GetAPIContext(GetAccessToken()), paymentDetail.TransactionId);
-
-                var amount = Math.Round(Convert.ToDecimal(payment.transactions[0].amount.total) * conversionRate, 2);
-                var currency = conversionRate != 1
-                    ? CurrencyCodes.Main.UnitedStatesDollar
-                    : _resources.GetCurrencyCode();
 
                 var refund = new Refund
                 {
                     amount = new Amount
                     {
-                        currency = currency,
-                        total = amount.ToString("N", CultureInfo.InvariantCulture)
+                        currency = payment.transactions[0].amount.currency,
+                        total = payment.transactions[0].amount.total
                     }
                 };
 

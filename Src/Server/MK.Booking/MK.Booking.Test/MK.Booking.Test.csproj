@@ -115,6 +115,7 @@
     <Compile Include="Integration\AddressListFixture\AddressListGenerator.cs" />
     <Compile Include="Integration\CompanyFixture\CompanyDetailsGenerator.cs" />
     <Compile Include="Integration\CompanyFixture\AccountChargeDetailGenerator.cs" />
+    <Compile Include="Integration\CompanyFixture\FeesDetailsGenerator.cs" />
     <Compile Include="Integration\CompanyFixture\VehicleTypeDetailGenerator.cs" />
     <Compile Include="Integration\CompanyFixture\RatingTypeDetailsGenerator.cs" />
     <Compile Include="Integration\CompanyFixture\TariffDetailsGenerator.cs" />

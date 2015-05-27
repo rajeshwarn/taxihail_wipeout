@@ -94,7 +94,7 @@ namespace apcurium.MK.Booking.Domain
 
         public Order(Guid id, Guid accountId, DateTime pickupDate, Address pickupAddress, Address dropOffAddress, BookingSettings settings,
             double? estimatedFare, string userAgent, string clientLanguageCode, double? userLatitude, double? userLongitude, string userNote, string clientVersion,
-            bool isChargeAccountPaymentWithCardOnFile, string companyKey, string companyName, string market, bool isPrepaid)
+            bool isChargeAccountPaymentWithCardOnFile, string companyKey, string companyName, string market, bool isPrepaid, decimal bookingFees)
             : this(id)
         {
             if ((settings == null) || pickupAddress == null || 
@@ -122,7 +122,8 @@ namespace apcurium.MK.Booking.Domain
                 CompanyKey = companyKey,
                 CompanyName = companyName,
                 Market = market,
-                IsPrepaid = isPrepaid
+                IsPrepaid = isPrepaid,
+                BookingFees = bookingFees
             });
         }
 
@@ -184,16 +185,16 @@ namespace apcurium.MK.Booking.Domain
             });
         }
 
-        public void UpdatePrepaidOrderPaymentInfo(Guid orderId, decimal amount, decimal meter, decimal tax,
-                decimal tip, string transactionId, PaymentProvider provider, PaymentType type)
+        public void UpdatePrepaidOrderPaymentInfo(Guid orderId, decimal totalAmount, decimal meterAmount, decimal taxAmount,
+                decimal tipAmount, string transactionId, PaymentProvider provider, PaymentType type)
         {
             Update(new PrepaidOrderPaymentInfoUpdated
             {
                 OrderId = orderId,
-                Amount = amount,
-                Meter = meter,
-                Tax = tax,
-                Tip = tip,
+                Amount = totalAmount,
+                Meter = meterAmount,
+                Tax = taxAmount,
+                Tip = tipAmount,
                 TransactionId = transactionId,
                 Provider = provider,
                 Type = type
@@ -232,7 +233,7 @@ namespace apcurium.MK.Booking.Domain
             }
         }
 
-        public void ChangeStatus(OrderStatusDetail status, double? fare, double? tip, double? toll, double? tax)
+        public void ChangeStatus(OrderStatusDetail status, double? fare, double? tip, double? toll, double? tax, double? surcharge)
         {
             if (status == null) throw new InvalidOperationException();
 
@@ -245,6 +246,7 @@ namespace apcurium.MK.Booking.Domain
                     Tip = tip,
                     Toll = toll,
                     Tax = tax,
+                    Surcharge = surcharge,
                     IsCompleted = status.Status == OrderStatus.Completed
                 });
             }

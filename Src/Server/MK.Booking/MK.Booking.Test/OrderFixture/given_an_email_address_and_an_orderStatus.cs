@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Web.Routing;
 using apcurium.MK.Booking.CommandHandlers;
 using apcurium.MK.Booking.Commands;
@@ -11,6 +12,7 @@ using apcurium.MK.Booking.ReadModel.Query;
 using apcurium.MK.Booking.Services.Impl;
 using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Entity;
+using apcurium.MK.Common.Enumeration;
 using Moq;
 using NUnit.Framework;
 
@@ -52,6 +54,104 @@ namespace apcurium.MK.Booking.Test.OrderFixture
         }
 
         [Test]
+        public void when_sending_receipt_template_should_have_good_values()
+        {
+            var orderId = Guid.NewGuid();
+
+            var pickupDate = DateTime.Now;
+
+            using (var context = new BookingDbContext(DbName))
+            {
+                context.Save(new OrderStatusDetail
+                {
+                    OrderId = orderId,
+                    PickupDate = pickupDate
+                });
+            }
+
+            Sut.When(new SendReceipt
+            {
+                OrderId = orderId,
+                EmailAddress = "test2@example.net",
+                PickupAddress = new Address
+                {
+                    FullAddress = "5250, rue Ferrier, Montreal, H1P 4L4",
+                    Latitude = 1.23456,
+                    Longitude = 7.890123
+                },
+                ClientLanguageCode = "fr",
+                BookingFees = 5,
+                AmountSavedByPromotion = 2,
+                IBSOrderId = 123,
+                DriverInfos = new DriverInfos
+                {
+                    DriverId = "1",
+                    FirstName = "Cosmo",
+                    LastName = "Kramer",
+                    MobilePhone = "5551231234",
+                    VehicleColor = "Red",
+                    VehicleMake = "Porsche",
+                    VehicleModel = "Carrera",
+                    VehicleRegistration = "GIDDYUP",
+                    VehicleType = "Sport"
+                },
+                Extra = 1,
+                Fare = 2,
+                PromoCode = "promo",
+                PromoDiscountType = PromoDiscountType.Cash,
+                PromoDiscountValue = 2,
+                PickupDate = DateTime.Now,
+                Surcharge = 3,
+                Tax = 1,
+                Tip = 2,
+                Toll = 4,
+                VehicleNumber = "123"
+            });
+
+            var dateFormat = CultureInfo.GetCultureInfo("fr");
+
+            AssertTemplateValueEquals("DropOffAddress", "-");
+            AssertTemplateValueEquals("StaticMapUri", string.Empty);
+            AssertTemplateValueEquals("ibsOrderId", "123");
+            AssertTemplateValueEquals("HasDriverInfo", "True");
+            AssertTemplateValueEquals("HasDriverId", "True");
+            AssertTemplateValueEquals("VehicleNumber", "123");
+            AssertTemplateValueEquals("DriverId", "1");
+            AssertTemplateValueEquals("PickupDate", pickupDate.ToString("D", dateFormat));
+            AssertTemplateValueEquals("PickupTime", pickupDate.ToString("t", dateFormat));
+            AssertTemplateValueEquals("DropOffDate", pickupDate.ToString("D", dateFormat));
+            AssertTemplateValueEquals("DropOffTime", string.Empty);
+            AssertTemplateValueEquals("ShowDropOffTime", "False");
+            AssertTemplateValueEquals("ShowUTCWarning", "True");
+            AssertTemplateValueEquals("Fare", "$2.00");
+            AssertTemplateValueEquals("Toll", "$4.00");
+            AssertTemplateValueEquals("Surcharge", "$3.00");
+            AssertTemplateValueEquals("BookingFees", "$5.00");
+            AssertTemplateValueEquals("Extra", "$1.00");
+            AssertTemplateValueEquals("SubTotal", "$7.00");
+            AssertTemplateValueEquals("Tip", "$2.00");
+            AssertTemplateValueEquals("TotalFare", "$15.00");
+            AssertTemplateValueEquals("Tax", "$1.00");
+            AssertTemplateValueEquals("ShowTax", "True");
+            AssertTemplateValueEquals("ShowToll", "True");
+            AssertTemplateValueEquals("ShowSurcharge", "True");
+            AssertTemplateValueEquals("ShowBookingFees", "True");
+            AssertTemplateValueEquals("vatIsEnabled", "False");
+            AssertTemplateValueEquals("HasPaymentInfo", "False");
+            AssertTemplateValueEquals("PaymentAmount", string.Empty);
+            AssertTemplateValueEquals("PaymentMethod", string.Empty);
+            AssertTemplateValueEquals("ShowFareAndPaymentDetails", "True");
+            AssertTemplateValueEquals("PaymentTransactionId", string.Empty);
+            AssertTemplateValueEquals("PaymentAuthorizationCode", string.Empty);
+            AssertTemplateValueEquals("ShowPaymentAuthorizationCode", "False");
+            AssertTemplateValueEquals("PickupAddress", "5250, rue Ferrier, Montreal, H1P 4L4");
+            AssertTemplateValueEquals("ShowStaticMap", "False");
+            AssertTemplateValueEquals("PromotionWasUsed", "True");
+            AssertTemplateValueEquals("promoCode", "promo");
+            AssertTemplateValueEquals("AmountSavedByPromotion", "$2.00");
+        }
+        
+        [Test]
         public void when_sending_receipt_with_no_dropoff_should_geocode_vehicle_position()
         {
             var orderId = Guid.NewGuid();
@@ -90,11 +190,11 @@ namespace apcurium.MK.Booking.Test.OrderFixture
             _geocodingMock.Verify(g => g.Search(It.IsAny<double>(), It.IsAny<double>(), It.IsAny<string>(), It.IsAny<GeoResult>(), false), Times.Once);
 
             // verify templateData (2 times for subject + body)
-            TemplateServiceMock.Verify(x => x.Render(It.IsAny<string>(), It.Is<object>(o => ObjectPropertyEquals(o, "DropOffAddress", "full dropoff"))), Times.Exactly(2));
-            TemplateServiceMock.Verify(x => x.Render(It.IsAny<string>(), It.Is<object>(o => ObjectPropertyContains(o, "StaticMapUri", "?markers=color:0x1EC022%7Csize:medium%7C1.23456,7.890123&markers=color:0xFF0000%7Csize:medium%7C45,-73"))), Times.Exactly(2));
+            AssertTemplateValueEquals("DropOffAddress", "full dropoff");
+            AssertTemplateValueContains("StaticMapUri", "?markers=color:0x1EC022%7Csize:medium%7C1.23456,7.890123&markers=color:0xFF0000%7Csize:medium%7C45,-73");
 
             // this is not the full encoded path since there's a problem with unit test ran on server (works locally but not on server)
-            TemplateServiceMock.Verify(x => x.Render(It.IsAny<string>(), It.Is<object>(o => ObjectPropertyContains(o, "StaticMapUri", "&path=enc:ukutGhbq%60MgAoBt@qC??fBoBvB%7BDoJyNkBuHeEmB%5CmPiMcKeNiOyEp@??qEj@sJNJ%7DEoAiCkEyC%7DHmAaD%7DEyHiCoClLeKs@yH_d@mJaa@yT%7DLq"))), Times.Exactly(2));
+            AssertTemplateValueContains("StaticMapUri", "&path=enc:ukutGhbq%60MgAoBt@qC??fBoBvB%7BDoJyNkBuHeEmB%5CmPiMcKeNiOyEp@??qEj@sJNJ%7DEoAiCkEyC%7DHmAaD%7DEyHiCoClLeKs@yH_d@mJaa@yT%7DLq");
         }
 
         [Test]
@@ -128,8 +228,8 @@ namespace apcurium.MK.Booking.Test.OrderFixture
             _geocodingMock.Verify(g => g.Search(It.IsAny<double>(), It.IsAny<double>(), It.IsAny<string>(), It.IsAny<GeoResult>(), false), Times.Never);
 
             // verify templateData (2 times for subject + body)
-            TemplateServiceMock.Verify(x => x.Render(It.IsAny<string>(), It.Is<object>(o => ObjectPropertyEquals(o, "DropOffAddress", "-"))), Times.Exactly(2));
-            TemplateServiceMock.Verify(x => x.Render(It.IsAny<string>(), It.Is<object>(o => ObjectPropertyEquals(o, "StaticMapUri", string.Empty))), Times.Exactly(2));
+            AssertTemplateValueEquals("DropOffAddress", "-");
+            AssertTemplateValueEquals("StaticMapUri", string.Empty);
         }
 
         [Test]
@@ -169,8 +269,8 @@ namespace apcurium.MK.Booking.Test.OrderFixture
             _geocodingMock.Verify(g => g.Search(It.IsAny<double>(), It.IsAny<double>(), It.IsAny<string>(), It.IsAny<GeoResult>(), false), Times.Never);
 
             // verify templateData (2 times for subject + body)
-            TemplateServiceMock.Verify(x => x.Render(It.IsAny<string>(), It.Is<object>(o => ObjectPropertyEquals(o, "DropOffAddress", "hardcoded dropoff"))), Times.Exactly(2));
-            TemplateServiceMock.Verify(x => x.Render(It.IsAny<string>(), It.Is<object>(o => ObjectPropertyContains(o, "StaticMapUri", "?markers=color:0x1EC022%7Csize:medium%7C1.23456,7.890123&markers=color:0xFF0000%7Csize:medium%7C9.123,6.124"))), Times.Exactly(2));
+            AssertTemplateValueEquals("DropOffAddress", "hardcoded dropoff");
+            AssertTemplateValueContains("StaticMapUri", "?markers=color:0x1EC022%7Csize:medium%7C1.23456,7.890123&markers=color:0xFF0000%7Csize:medium%7C9.123,6.124");
         }
 
         [Test]
@@ -212,8 +312,20 @@ namespace apcurium.MK.Booking.Test.OrderFixture
             _geocodingMock.Verify(g => g.Search(It.IsAny<double>(), It.IsAny<double>(), It.IsAny<string>(), It.IsAny<GeoResult>(), false), Times.Once);
 
             // verify templateData (2 times for subject + body)
-            TemplateServiceMock.Verify(x => x.Render(It.IsAny<string>(), It.Is<object>(o => ObjectPropertyEquals(o, "DropOffAddress", "full dropoff"))), Times.Exactly(2));
-            TemplateServiceMock.Verify(x => x.Render(It.IsAny<string>(), It.Is<object>(o => ObjectPropertyContains(o, "StaticMapUri", "?markers=color:0x1EC022%7Csize:medium%7C1.23456,7.890123&markers=color:0xFF0000%7Csize:medium%7C45,-73"))), Times.Exactly(2));
+            AssertTemplateValueEquals("DropOffAddress", "full dropoff");
+            AssertTemplateValueContains("StaticMapUri", "?markers=color:0x1EC022%7Csize:medium%7C1.23456,7.890123&markers=color:0xFF0000%7Csize:medium%7C45,-73");
+        }
+
+        private void AssertTemplateValueEquals(string key, string expectedValue)
+        {
+            // verify templateData (2 times for subject + body)
+            TemplateServiceMock.Verify(x => x.Render(It.IsAny<string>(), It.Is<object>(o => ObjectPropertyEquals(o, key, expectedValue))), Times.Exactly(2));
+        }
+
+        private void AssertTemplateValueContains(string key, string expectedValue)
+        {
+            // verify templateData (2 times for subject + body)
+            TemplateServiceMock.Verify(x => x.Render(It.IsAny<string>(), It.Is<object>(o => ObjectPropertyContains(o, key, expectedValue))), Times.Exactly(2));
         }
 
         private List<OrderVehiclePositionDetail> GetPathPoints(Guid orderId)

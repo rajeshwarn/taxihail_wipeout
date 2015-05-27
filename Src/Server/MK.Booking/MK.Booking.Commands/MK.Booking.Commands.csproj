@@ -63,6 +63,7 @@
     <Compile Include="UnapplyPromotion.cs" />
     <Compile Include="UnpairOrderForManualRideLinq.cs" />
     <Compile Include="UpdateAutoTip.cs" />
+    <Compile Include="UpdateFees.cs" />
     <Compile Include="UpdateTripInfoInOrderForManualRideLinq.cs" />
     <Compile Include="UpdateRefundedOrder.cs" />
     <Compile Include="ReactToPaymentFailure.cs" />

@@ -183,5 +183,9 @@ namespace MK.Common.Configuration
         [CustomizableByCompany]
         [Display(Name = "Company's time zone", Description = "Used to properly show dates in the correct time zone")]
         public TimeZones CompanyTimeZone { get; protected set; }
+
+        [CustomizableByCompany]
+        [Display(Name = "Cancellation Fees Window", Description = "Window (in seconds) where the user can cancel an order without being charged cancellation fees. Window starts when taxi gets assigned.")]
+        public int CancellationFeesWindow { get; protected set; }
     }
 }

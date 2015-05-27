@@ -171,6 +171,9 @@ namespace apcurium.MK.Booking.EventHandlers
                 orderReport.Payment.TotalAmountCharged = @event.Amount;
                 orderReport.Payment.IsCompleted = true;
                 orderReport.Payment.TransactionId = @event.TransactionId.ToSafeString().IsNullOrEmpty() ? "" : "Auth: " + @event.TransactionId;
+                orderReport.Payment.IsNoShowFee = @event.IsNoShowFee;
+                orderReport.Payment.BookingFees = @event.BookingFees;
+                orderReport.Payment.IsCancellationFee = @event.IsCancellationFee;
                 context.Save(orderReport);
             }
         }

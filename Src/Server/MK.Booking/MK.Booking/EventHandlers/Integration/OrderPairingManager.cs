@@ -8,7 +8,7 @@ using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Enumeration;
 using Infrastructure.Messaging.Handling;
 using apcurium.MK.Common.Diagnostic;
-using RestSharp.Extensions;
+using apcurium.MK.Common.Extensions;
 
 namespace apcurium.MK.Booking.EventHandlers.Integration
 {
@@ -79,7 +79,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
 
                         var response = _paymentFacadeService.Pair(@event.SourceId, cardToken, defaultTipPercentage);
 
-                        _notificationService.SendAutomaticPairingPush(@event.SourceId, defaultTipPercentage, response.IsSuccessful);
+                        _notificationService.SendAutomaticPairingPush(@event.SourceId, creditCard, defaultTipPercentage, response.IsSuccessful);
                     } 
                 }
                 break;

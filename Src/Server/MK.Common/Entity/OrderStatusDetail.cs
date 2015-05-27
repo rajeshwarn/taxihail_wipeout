@@ -34,6 +34,8 @@ namespace apcurium.MK.Common.Entity
         public DateTime? PairingTimeOut { get; set; }
         public DateTime? UnpairingTimeOut { get; set; }
         public string PairingError { get; set; }
+
+        public DateTime? TaxiAssignedDate { get; set; }
         
         // network stuff
         public string Market { get; set; }

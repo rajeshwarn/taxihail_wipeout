@@ -166,7 +166,7 @@ namespace apcurium.MK.Booking.Test.PromotionFixture
             {
                 PromoId = _promoId,
                 OrderId = orderId,
-                TotalAmountOfOrder = 44.12m
+                TaxedMeterAmount = 44.12m
             }));
             Assert.AreEqual("Promotion must be applied to an order before being redeemed", ex.Message);
         }
@@ -209,7 +209,7 @@ namespace apcurium.MK.Booking.Test.PromotionFixture
             {
                 PromoId = _promoId,
                 OrderId = orderId,
-                TotalAmountOfOrder = 44.12m
+                TaxedMeterAmount = 44.12m
             });
 
             var @event = _sut.ThenHasSingle<PromotionRedeemed>();
@@ -256,7 +256,7 @@ namespace apcurium.MK.Booking.Test.PromotionFixture
             {
                 PromoId = _promoId,
                 OrderId = orderId,
-                TotalAmountOfOrder = 12.44m
+                TaxedMeterAmount = 12.44m
             });
 
             var @event = _sut.ThenHasSingle<PromotionRedeemed>();
@@ -303,7 +303,7 @@ namespace apcurium.MK.Booking.Test.PromotionFixture
             {
                 PromoId = _promoId,
                 OrderId = orderId,
-                TotalAmountOfOrder = 44.12m
+                TaxedMeterAmount = 44.12m
             });
 
             var expectedAmountSaved = 44.12 * 50/100;

@@ -61,7 +61,8 @@ namespace apcurium.MK.Booking
                 new InjectionFactory(c => new PairingService(c.Resolve<ICommandBus>(), c.Resolve<IIbsOrderService>(), c.Resolve<IOrderDao>(), c.Resolve<IServerSettings>())));
 
             container.RegisterInstance<IAddressDao>(new AddressDao(() => container.Resolve<BookingDbContext>()));
-            container.RegisterInstance<IAccountDao>(new AccountDao(() => container.Resolve<BookingDbContext>()));        
+            container.RegisterInstance<IAccountDao>(new AccountDao(() => container.Resolve<BookingDbContext>()));
+            container.RegisterInstance<IFeesDao>(new FeesDao(() => container.Resolve<BookingDbContext>()));
             container.RegisterInstance<IOrderStatusUpdateDao>(new OrderStatusUpdateDao(() => container.Resolve<BookingDbContext>()));
             container.RegisterInstance<IDefaultAddressDao>(new DefaultAddressDao(() => container.Resolve<BookingDbContext>()));
             container.RegisterInstance<ITariffDao>(new TariffDao(() => container.Resolve<BookingDbContext>()));
@@ -86,6 +87,8 @@ namespace apcurium.MK.Booking
 
             container.RegisterType<IPayPalServiceFactory, PayPalServiceFactory>();
             container.RegisterType<IPaymentService, PaymentService>();
+
+            container.RegisterType<IFeeService, FeeService>();
         }
 
         public void RegisterMaps()
@@ -137,6 +140,7 @@ namespace apcurium.MK.Booking
             container.RegisterType<IEventHandler, PromotionDetailGenerator>("PromotionDetailGenerator");
             container.RegisterType<IEventHandler, PromotionTriggerGenerator>("PromotionTriggerGenerator");
             container.RegisterType<IEventHandler, OverduePaymentDetailGenerator>("OverduePaymentDetailGenerator");
+            container.RegisterType<IEventHandler, FeesDetailsGenerator>("FeesDetailsGenerator");
 
             // Integration event handlers
             container.RegisterType<IEventHandler, PushNotificationSender>("PushNotificationSender");
