@@ -16,15 +16,15 @@ namespace apcurium.MK.Web.Areas.AdminTH.Models
     public class FeeStructure
     {
         [Display(Name = "Booking")]
-        [Range(0, double.MaxValue, ErrorMessage = "The value must be a positive integer")]
+        [Range(0, double.MaxValue, ErrorMessage = "The value must be a positive decimal number")]
         public decimal Booking { get; set; }
 
         [Display(Name = "Cancellation")]
-        [Range(0, double.MaxValue, ErrorMessage = "The value must be a positive integer")]
+        [Range(0, double.MaxValue, ErrorMessage = "The value must be a positive decimal number")]
         public decimal Cancellation { get; set; }
 
         [Display(Name = "No Show")]
-        [Range(0, double.MaxValue, ErrorMessage = "The value must be a positive integer")]
+        [Range(0, double.MaxValue, ErrorMessage = "The value must be a positive decimal number")]
         public decimal NoShow { get; set; }
     }
 }

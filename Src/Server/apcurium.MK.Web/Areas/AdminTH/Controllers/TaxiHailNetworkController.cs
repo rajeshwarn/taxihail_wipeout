@@ -130,43 +130,57 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
         public async Task<ActionResult> Fees()
         {
             var fees = _feesDao.GetAll();
-
             var feesPreferences = new MarketFees();
-            feesPreferences.Fees.Add("Local", 
-                fees.FirstOrDefault(f => !f.Market.HasValue())
-                .SelectOrDefault(f => new FeeStructure
-                {
-                    Booking = f.Booking,
-                    Cancellation = f.Cancellation,
-                    NoShow = f.NoShow
-                }));
 
-            // Fetch only market fees for markets that are available to the company
-            var roamingCompaniesPreferences = await _taxiHailNetworkService.GetRoamingCompanyPreferences(_serverSettings.ServerData.TaxiHail.ApplicationKey);
-
-            var availableMarkets = roamingCompaniesPreferences.Keys;
-
-            foreach (var market in availableMarkets)
+            var localFees = fees.FirstOrDefault(f => !f.Market.HasValue());
+            if (localFees == null)
             {
-                var marketFee = fees.FirstOrDefault(f => f.Market == market);
-                if (marketFee == null)
-                {
-                    // Create empty entry
-                    feesPreferences.Fees.Add(market, new FeeStructure
+                // Create empty entry
+                feesPreferences.Fees.Add("Local",
+                    new FeeStructure
                     {
                         Booking = 0.00m,
                         Cancellation = 0.00m,
                         NoShow = 0.00m
                     });
+            }
+            else
+            {
+                feesPreferences.Fees.Add("Local", localFees.SelectOrDefault(f =>
+                    new FeeStructure
+                    {
+                        Booking = f.Booking,
+                        Cancellation = f.Cancellation,
+                        NoShow = f.NoShow
+                    }));
+            }
+
+            // Fetch only market fees for markets that are available to the company
+            var roamingCompaniesPreferences = await _taxiHailNetworkService.GetRoamingCompanyPreferences(_serverSettings.ServerData.TaxiHail.ApplicationKey);
+
+            foreach (var market in roamingCompaniesPreferences.Keys)
+            {
+                var marketFee = fees.FirstOrDefault(f => f.Market == market);
+                if (marketFee == null)
+                {
+                    // Create empty entry
+                    feesPreferences.Fees.Add(market,
+                        new FeeStructure
+                        {
+                            Booking = 0.00m,
+                            Cancellation = 0.00m,
+                            NoShow = 0.00m
+                        });
                 }
                 else
                 {
-                    feesPreferences.Fees.Add(market, new FeeStructure
-                    {
-                        Booking = marketFee.Booking,
-                        Cancellation = marketFee.Cancellation,
-                        NoShow = marketFee.NoShow
-                    });
+                    feesPreferences.Fees.Add(market,
+                        new FeeStructure
+                        {
+                            Booking = marketFee.Booking,
+                            Cancellation = marketFee.Cancellation,
+                            NoShow = marketFee.NoShow
+                        });
                 }
             }
 
