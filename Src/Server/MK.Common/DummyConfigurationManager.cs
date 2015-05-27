@@ -38,7 +38,7 @@ namespace apcurium.MK.Common
             return AppSettings;
         }
 
-        public ServerPaymentSettings GetPaymentSettings()
+        public ServerPaymentSettings GetPaymentSettings(string companyKey = null)
         {
             throw new NotImplementedException();
         }
