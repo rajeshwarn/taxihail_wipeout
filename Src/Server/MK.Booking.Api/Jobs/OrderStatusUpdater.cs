@@ -207,7 +207,7 @@ namespace apcurium.MK.Booking.Api.Jobs
                 orderStatusDetail.Status = OrderStatus.Created;
             }
 
-            if (ibsOrderInfo.IsAssigned)
+            if (ibsOrderInfo.IsAssigned && orderStatusDetail.TaxiAssignedDate == null)
             {
                 orderStatusDetail.TaxiAssignedDate = DateTime.UtcNow;
             }

@@ -54,13 +54,10 @@
                             {
                                 <li class="nav-header">TaxiHail Network</li>
                                 <li>@Html.MenuLink("Configure", "Index", "TaxiHailNetwork")</li>
-                                <li>@Html.MenuLink("Fees", "Fees", "TaxiHailNetwork")</li>
                             }
-                            else
-                            {
-                                <li>@Html.MenuLink("Fees", "Fees", "TaxiHailNetwork")</li>
-                            }
-
+                            
+                            <li>@Html.MenuLink("Fees", "Fees", "TaxiHailNetwork")</li>
+                            
                             @if (Convert.ToBoolean(ViewData["IsTaxiHailPro"]))
                             {
                                 <li class="nav-header">Promo Codes</li>
