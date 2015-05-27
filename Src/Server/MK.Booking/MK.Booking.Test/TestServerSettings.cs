@@ -57,15 +57,14 @@ namespace apcurium.MK.Booking.Test
             }
         }
 
+        public ServerPaymentSettings GetPaymentSettings(string companyKey = null)
+        {
+            return new ServerPaymentSettings();
+        }
+
         public IDictionary<string, string> GetSettings()
         {
             return _config;
-        }
-
-        public ServerPaymentSettings GetPaymentSettings()
-        {
-            //throw new NotImplementedException();
-            return new ServerPaymentSettings();
         }
 
         public void Reload()

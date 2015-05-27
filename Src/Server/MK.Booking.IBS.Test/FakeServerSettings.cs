@@ -33,14 +33,14 @@ namespace MK.Booking.IBS.Test
             SettingsLoader.InitializeDataObjects(ServerData, GetSettings(), null);
         }
 
+        public ServerPaymentSettings GetPaymentSettings(string companyKey = null)
+        {
+            throw new NotImplementedException();
+        }
+
         public IDictionary<string, string> GetSettings()
         {
             return _settings;
-        }
-
-        public ServerPaymentSettings GetPaymentSettings()
-        {
-            throw new NotImplementedException();
         }
 
         public void Reload()

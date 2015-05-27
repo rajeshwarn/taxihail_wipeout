@@ -453,6 +453,16 @@ namespace apcurium.MK.Booking.Api.Services
 
             var market = _taxiHailNetworkServiceClient.GetCompanyMarket(order.PickupAddress.Latitude, order.PickupAddress.Longitude);
 
+            var isConfiguredForCmtPayment = FetchCompanyPaymentSettings(request.NextDispatchCompanyKey);
+            var chargeTypeId = order.Settings.ChargeTypeId;
+            var chargeTypeDisplay = order.Settings.ChargeType;
+            if (!isConfiguredForCmtPayment)
+            {
+                // Only companies configured for CMT payment can support CoF orders outside of home market
+                chargeTypeId = ChargeTypes.PaymentInCar.Id;
+                chargeTypeDisplay = ChargeTypes.PaymentInCar.Display;
+            }
+
             var newOrderRequest = new CreateOrder
             {
                 PickupDate = GetCurrentOffsetedTime(request.NextDispatchCompanyKey),
@@ -467,9 +477,8 @@ namespace apcurium.MK.Booking.Api.Services
                     Phone = order.Settings.Phone,
                     ProviderId = null,
 
-                    // Payment in app is not supported for now when we use another IBS
-                    ChargeType = ChargeTypes.PaymentInCar.Display,
-                    ChargeTypeId = ChargeTypes.PaymentInCar.Id,
+                    ChargeType = chargeTypeDisplay,
+                    ChargeTypeId = chargeTypeId,
 
                     // Reset vehicle type
                     VehicleType = null,
@@ -483,7 +492,7 @@ namespace apcurium.MK.Booking.Api.Services
 
             // This must be localized with the priceformat to be localized in the language of the company
             // because it is sent to the driver
-            var chargeTypeIbs = _resources.Get(ChargeTypes.PaymentInCar.Display, _serverSettings.ServerData.PriceFormat);
+            var chargeTypeIbs = _resources.Get(chargeTypeDisplay, _serverSettings.ServerData.PriceFormat);
 
             var networkErrorMessage = string.Format(_resources.Get("Network_CannotCreateOrder", order.ClientLanguageCode), request.NextDispatchCompanyName);
 
@@ -963,6 +972,8 @@ namespace apcurium.MK.Booking.Api.Services
             Debug.Assert(request.PickupDate != null, "request.PickupDate != null");
 
             // This needs to be null if not set or the payment in car payment type id of ibs
+            // It might not always be the correct value since when we're dispatching to another company,
+            // we're passing the same ibs charge type id.  Since it's been this way for long, we assume it's working
             int? ibsChargeTypeId;
             if (request.Settings.ChargeTypeId == ChargeTypes.CardOnFile.Id
                 || request.Settings.ChargeTypeId == ChargeTypes.PayPal.Id)
