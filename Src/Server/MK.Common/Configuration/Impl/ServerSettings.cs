@@ -39,12 +39,15 @@ namespace apcurium.MK.Common.Configuration.Impl
             }
         }
 
-        public ServerPaymentSettings GetPaymentSettings()
+        public ServerPaymentSettings GetPaymentSettings(string companyKey = null)
         {
             using (var context = _contextFactory.Invoke())
             {
-                var settings = context.Set<ServerPaymentSettings>().Find(AppConstants.CompanyId);
-                return settings ?? new ServerPaymentSettings();
+                var paymentSettings = companyKey.HasValue()
+                    ? context.Set<ServerPaymentSettings>().FirstOrDefault(p => p.CompanyKey == companyKey)
+                    : context.Set<ServerPaymentSettings>().Find(AppConstants.CompanyId);
+
+                return paymentSettings ?? new ServerPaymentSettings();
             }
         }
 
