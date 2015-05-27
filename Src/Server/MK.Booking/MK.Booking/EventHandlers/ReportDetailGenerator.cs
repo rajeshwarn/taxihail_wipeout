@@ -294,7 +294,10 @@ namespace apcurium.MK.Booking.EventHandlers
 
                 foreach (var ratingScore in @event.RatingScores)
                 {
-                    rating.Add(ratingScore.Name, ratingScore.Score.ToString());
+                    if (!rating.ContainsKey(ratingScore.Name))
+                    {
+                        rating.Add(ratingScore.Name, ratingScore.Score.ToString());
+                    }
                 }
 
                 orderReport.Rating = JsonSerializer.SerializeToString(rating);
