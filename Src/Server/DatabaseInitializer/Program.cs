@@ -68,6 +68,7 @@ namespace DatabaseInitializer
             try
             {
                 Console.WriteLine("Creating/updating database for version {0}", CurrentVersion);
+                Console.WriteLine("Started at: {0}", DateTime.Now);
 
                 Console.WriteLine("Initializing...");
                 var param = GetParamsFromArgs(args);
@@ -890,18 +891,42 @@ namespace DatabaseInitializer
         private static void MigratePaymentSettings(IServerSettings serverSettings, ICommandBus commandBus)
         {
             var paymentSettings = serverSettings.GetPaymentSettings();
+            var needsUpdate = false;
 
             if (paymentSettings.AutomaticPaymentPairing)
             {
                 paymentSettings.IsUnpairingDisabled = true;
                 paymentSettings.AutomaticPaymentPairing = false;
+                needsUpdate = true;
             }
 
-            commandBus.Send(new UpdatePaymentSettings
+            if (paymentSettings.NoShowFee.HasValue)
             {
-                CompanyId = AppConstants.CompanyId,
-                ServerPaymentSettings = paymentSettings
-            });
+                var noShowFee = paymentSettings.NoShowFee.Value;
+                commandBus.Send(new UpdateFees
+                {
+                    CompanyId = AppConstants.CompanyId,
+                    Fees = new List<Fees>
+                    {
+                        new Fees
+                        {
+                            NoShow = noShowFee
+                        }
+                    }
+                });
+
+                paymentSettings.NoShowFee = null;
+                needsUpdate = true;
+            }
+
+            if (needsUpdate)
+            {
+                commandBus.Send(new UpdatePaymentSettings
+                {
+                    CompanyId = AppConstants.CompanyId,
+                    ServerPaymentSettings = paymentSettings
+                });
+            }
         }
 
         private static void CreateDefaultVehicleTypes(UnityContainer container, ICommandBus commandBus)

@@ -25,7 +25,6 @@ namespace DatabaseInitializer.Services
 
         public EventsMigrator(Func<EventStoreDbContext> contextFactory, IServerSettings serverSettings)
         {
-            
             _contextFactory = contextFactory;
             _serverSettings = serverSettings; // server settings comes from latest settings on old database
             //deserailize without type
@@ -53,7 +52,6 @@ namespace DatabaseInitializer.Services
                         .Take(pageSize)
                         .ToList();
                 
-
                     hasMore = events.Count == pageSize;
                     Console.WriteLine("Number of events migrated: " + (hasMore ? skip : (skip + events.Count)));
                     skip += pageSize;
@@ -62,13 +60,11 @@ namespace DatabaseInitializer.Services
                     {
                         // fix BraintreeClientSettings namespace problem
                         message.Payload =
-                            message.Payload.Replace("apcurium.MK.Common.Configuration.BraintreeClientSettings",
-                                "apcurium.MK.Common.Configuration.Impl.BraintreeClientSettings");
+                            message.Payload.Replace("apcurium.MK.Common.Configuration.BraintreeClientSettings", "apcurium.MK.Common.Configuration.Impl.BraintreeClientSettings");
 
                         // fix PaymentSettingsUpdated events containing old PayPalCredentials
                         message.Payload =
-                            message.Payload.Replace("apcurium.MK.Common.Configuration.Impl.PayPalCredentials",
-                                "apcurium.MK.Common.Configuration.Impl.PayPalServerCredentials");
+                            message.Payload.Replace("apcurium.MK.Common.Configuration.Impl.PayPalCredentials", "apcurium.MK.Common.Configuration.Impl.PayPalServerCredentials");
                     }
                     context.SaveChanges();
   
@@ -77,25 +73,18 @@ namespace DatabaseInitializer.Services
                                     x.EventType.Contains("OrderPairedForRideLinqCmtPayment") ||
                                     x.EventType.Contains("OrderUnpairedForRideLinqCmtPayment")))
                     {
-                        message.Payload = message.Payload.Replace("OrderPairedForRideLinqCmtPayment",
-                            "OrderPairedForPayment");
-                        message.Payload = message.Payload.Replace("OrderUnpairedForRideLinqCmtPayment",
-                            "OrderUnpairedForPayment");
-                        message.EventType = message.EventType.Replace("OrderPairedForRideLinqCmtPayment",
-                            "OrderPairedForPayment");
-                        message.EventType = message.EventType.Replace("OrderUnpairedForRideLinqCmtPayment",
-                            "OrderUnpairedForPayment");
+                        message.Payload = message.Payload.Replace("OrderPairedForRideLinqCmtPayment", "OrderPairedForPayment");
+                        message.Payload = message.Payload.Replace("OrderUnpairedForRideLinqCmtPayment", "OrderUnpairedForPayment");
+                        message.EventType = message.EventType.Replace("OrderPairedForRideLinqCmtPayment", "OrderPairedForPayment");
+                        message.EventType = message.EventType.Replace("OrderUnpairedForRideLinqCmtPayment", "OrderUnpairedForPayment");
                     }
                     context.SaveChanges();
 
                     // rename OrderCancelledBecauseOfIbsError events
-                    foreach (var message in events.Where(x =>
-                                    x.EventType.Contains("OrderCancelledBecauseOfIbsError")))
+                    foreach (var message in events.Where(x => x.EventType.Equals("apcurium.MK.Booking.Events.OrderCancelledBecauseOfIbsError")))
                     {
-                        message.Payload = message.Payload.Replace("OrderCancelledBecauseOfIbsError",
-                            "OrderCancelledBecauseOfError");
-                        message.EventType = message.EventType.Replace("OrderCancelledBecauseOfIbsError",
-                            "OrderCancelledBecauseOfError");
+                        message.Payload = message.Payload.Replace("OrderCancelledBecauseOfIbsError", "OrderCancelledBecauseOfError");
+                        message.EventType = message.EventType.Replace("OrderCancelledBecauseOfIbsError", "OrderCancelledBecauseOfError");
                     }
                     context.SaveChanges();
 
@@ -104,14 +93,10 @@ namespace DatabaseInitializer.Services
                                     x.EventType.Equals("apcurium.MK.Booking.Events.CreditCardAdded") ||
                                     x.EventType.Equals("apcurium.MK.Booking.Events.CreditCardUpdated")))
                     {
-                        message.Payload = message.Payload.Replace("CreditCardAdded",
-                            "CreditCardAddedOrUpdated");
-                        message.Payload = message.Payload.Replace("CreditCardUpdated",
-                            "CreditCardAddedOrUpdated");
-                        message.EventType = message.EventType.Replace("CreditCardAdded",
-                            "CreditCardAddedOrUpdated");
-                        message.EventType = message.EventType.Replace("CreditCardUpdated",
-                            "CreditCardAddedOrUpdated");
+                        message.Payload = message.Payload.Replace("CreditCardAdded", "CreditCardAddedOrUpdated");
+                        message.Payload = message.Payload.Replace("CreditCardUpdated", "CreditCardAddedOrUpdated");
+                        message.EventType = message.EventType.Replace("CreditCardAdded", "CreditCardAddedOrUpdated");
+                        message.EventType = message.EventType.Replace("CreditCardUpdated", "CreditCardAddedOrUpdated");
                     }
                     context.SaveChanges();
 
@@ -177,8 +162,8 @@ namespace DatabaseInitializer.Services
                     context.SaveChanges();
 
                     // update OrderStatusChanged containing a Status with an invalid pickup date
-                    foreach (var message in events.Where(x => x.EventType.Contains("OrderStatusChanged") 
-                                                        && !x.Payload.Contains("\"Status\":null"))
+                    foreach (var message in events.Where(x => x.EventType.Equals("apcurium.MK.Booking.Events.OrderStatusChanged") 
+                                                            && !x.Payload.Contains("\"Status\":null"))
                                                         .ToList())
                     {
                         var @event = Deserialize<OrderStatusChanged>(message.Payload);
@@ -192,7 +177,7 @@ namespace DatabaseInitializer.Services
                     context.SaveChanges();
 
                     // update AppSettings
-                    foreach (var message in events.Where(x => x.EventType.Contains("AppSettingsAddedOrUpdated")))
+                    foreach (var message in events.Where(x => x.EventType.Equals("apcurium.MK.Booking.Events.AppSettingsAddedOrUpdated")))
                     {
                         message.Payload = message.Payload.Replace("\"Client.", "\"");
                         message.Payload = message.Payload.Replace("\"DistanceFormat\": \"KM\"", "\"DistanceFormat\": \"Km\"");

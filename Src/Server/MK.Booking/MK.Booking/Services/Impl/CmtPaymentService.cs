@@ -368,7 +368,7 @@ namespace apcurium.MK.Booking.Services.Impl
             {
                 var orderDetail = _orderDao.FindById(orderId);
                 var accountDetail = _accountDao.FindById(orderDetail.AccountId);
-                var ridelinqOrderDetail = _orderDao.GetManualRideLinqById(orderId);
+                var orderPairing = _orderDao.FindOrderPairingById(orderId);
 
                 var request = new ManualRideLinqPairingRequest
                 {
@@ -382,10 +382,10 @@ namespace apcurium.MK.Booking.Services.Impl
 
                 _logger.LogMessage("Updating CMT RideLinq auto tip. Request: {0}", request.ToJson());
 
-                var response = _cmtMobileServiceClient.Put(string.Format("v1/init/pairing/{0}", ridelinqOrderDetail.PairingToken), request);
+                var response = _cmtMobileServiceClient.Put(string.Format("v1/init/pairing/{0}", orderPairing.PairingToken), request);
 
                 // Wait for trip to be updated
-                _cmtTripInfoServiceHelper.WaitForTipUpdated(ridelinqOrderDetail.PairingToken, autoTipPercentage, response.TimeoutSeconds);
+                _cmtTripInfoServiceHelper.WaitForTipUpdated(orderPairing.PairingToken, autoTipPercentage, response.TimeoutSeconds);
 
                 return new BasePaymentResponse
                 {

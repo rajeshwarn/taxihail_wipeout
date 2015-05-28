@@ -31,10 +31,10 @@ namespace apcurium.MK.Booking.Api.Payment
             }
         }
 
-        public void SendPaymentNotification(double totalAmount, double meterAmount, double tipAmount, string authorizationCode, string vehicleNumber)
+        public void SendPaymentNotification(double totalAmount, double taxedMeterAmount, double tipAmount, string authorizationCode, string vehicleNumber)
         {
             var amountString = _resources.FormatPrice(totalAmount);
-            var meterString = _resources.FormatPrice(meterAmount);
+            var meterString = _resources.FormatPrice(taxedMeterAmount);
             var tipString = _resources.FormatPrice(tipAmount);
 
             // Padded with 32 char because the MDT displays line of 32 char.  This will cause to write each string on a new line

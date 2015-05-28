@@ -255,7 +255,7 @@ namespace apcurium.MK.Booking.Services.Impl
             }
         }
 
-        public void SendAutomaticPairingPush(Guid orderId, int autoTipPercentage, bool success)
+        public void SendAutomaticPairingPush(Guid orderId, CreditCardDetails creditCard, int autoTipPercentage, bool success)
         {
             using (var context = _contextFactory.Invoke())
             {
@@ -281,6 +281,7 @@ namespace apcurium.MK.Booking.Services.Impl
                             ? _resources.Get("PushNotification_OrderPairingSuccessfulUnpair", order.ClientLanguageCode)
                             : _resources.Get("PushNotification_OrderPairingSuccessful", order.ClientLanguageCode),
                         order.IBSOrderId,
+                        creditCard != null ? creditCard.Last4Digits : "",
                         autoTipPercentage);
                 }
                 
@@ -416,8 +417,71 @@ namespace apcurium.MK.Booking.Services.Impl
             SendEmail(clientEmailAddress, EmailConstant.Template.PasswordReset, EmailConstant.Subject.PasswordReset, templateData, clientLanguageCode);
         }
 
-        public void SendReceiptEmail(Guid orderId, int ibsOrderId, string vehicleNumber, DriverInfos driverInfos, double fare, double toll, double tip,
-            double tax, double totalFare, SendReceipt.Payment paymentInfo, Address pickupAddress, Address dropOffAddress,
+        public void SendCancellationFeesReceiptEmail(int ibsOrderId, double feeAmount, string last4Digits,
+            string clientEmailAddress, string clientLanguageCode, bool bypassNotificationSetting = false)
+        {
+            if (!bypassNotificationSetting)
+            {
+                using (var context = _contextFactory.Invoke())
+                {
+                    var account = context.Query<AccountDetail>().SingleOrDefault(c => c.Email.ToLower() == clientEmailAddress.ToLower());
+                    if (account == null || !ShouldSendNotification(account.Id, x => x.ReceiptEmail))
+                    {
+                        return;
+                    }
+                }
+            }
+            
+            var imageLogoUrl = GetRefreshableImageUrl(GetBaseUrls().LogoImg);
+
+            var templateData = new
+            {
+                ApplicationName = _serverSettings.ServerData.TaxiHail.ApplicationName,
+                AccentColor = _serverSettings.ServerData.TaxiHail.AccentColor,
+                EmailFontColor = _serverSettings.ServerData.TaxiHail.EmailFontColor,
+                LogoImg = imageLogoUrl,
+                IbsOrderId = ibsOrderId,
+                FeeAmount = _resources.FormatPrice(feeAmount),
+                Last4Digits = last4Digits
+            };
+
+            SendEmail(clientEmailAddress, EmailConstant.Template.CancellationFeesReceipt, EmailConstant.Subject.CancellationFeesReceipt, templateData, clientLanguageCode);
+        }
+
+        public void SendNoShowFeesReceiptEmail(int ibsOrderId, double feeAmount, Address pickUpAddress, string last4Digits,
+            string clientEmailAddress, string clientLanguageCode, bool bypassNotificationSetting = false)
+        {
+            if (!bypassNotificationSetting)
+            {
+                using (var context = _contextFactory.Invoke())
+                {
+                    var account = context.Query<AccountDetail>().SingleOrDefault(c => c.Email.ToLower() == clientEmailAddress.ToLower());
+                    if (account == null || !ShouldSendNotification(account.Id, x => x.ReceiptEmail))
+                    {
+                        return;
+                    }
+                }
+            }
+
+            var imageLogoUrl = GetRefreshableImageUrl(GetBaseUrls().LogoImg);
+
+            var templateData = new
+            {
+                ApplicationName = _serverSettings.ServerData.TaxiHail.ApplicationName,
+                AccentColor = _serverSettings.ServerData.TaxiHail.AccentColor,
+                EmailFontColor = _serverSettings.ServerData.TaxiHail.EmailFontColor,
+                LogoImg = imageLogoUrl,
+                IbsOrderId = ibsOrderId,
+                FeeAmount = _resources.FormatPrice(feeAmount),
+                Last4Digits = last4Digits,
+                PickUpAddress = pickUpAddress.DisplayAddress
+            };
+
+            SendEmail(clientEmailAddress, EmailConstant.Template.NoShowFeesReceipt, EmailConstant.Subject.NoShowFeesReceipt, templateData, clientLanguageCode);
+        }
+
+        public void SendTripReceiptEmail(Guid orderId, int ibsOrderId, string vehicleNumber, DriverInfos driverInfos, double fare, double toll, double tip,
+            double tax, double extra, double surcharge, double bookingFees, double totalFare, SendReceipt.Payment paymentInfo, Address pickupAddress, Address dropOffAddress,
             DateTime pickupDate, DateTime? dropOffDateInUtc, string clientEmailAddress, string clientLanguageCode, double amountSavedByPromotion, string promoCode, 
             bool bypassNotificationSetting = false)
         {
@@ -494,9 +558,11 @@ namespace apcurium.MK.Booking.Services.Impl
             var baseUrls = GetBaseUrls();
             var imageLogoUrl = GetRefreshableImageUrl(baseUrls.LogoImg);
 
+            var subTotalAmount = fare + toll + tax;
+            var totalAmount = subTotalAmount + tip + bookingFees + surcharge - amountSavedByPromotion;
+
             var templateData = new
             {
-                // template is missing the toll, if we decide to add it, we need to make sure we hide it if it's empty
                 ApplicationName = _serverSettings.ServerData.TaxiHail.ApplicationName,
                 AccentColor = _serverSettings.ServerData.TaxiHail.AccentColor,
                 EmailFontColor = _serverSettings.ServerData.TaxiHail.EmailFontColor,
@@ -513,13 +579,20 @@ namespace apcurium.MK.Booking.Services.Impl
                 ShowDropOffTime = dropOffTime.HasValue(),
                 ShowUTCWarning = timeZoneOfTheOrder == TimeZones.NotSet,
                 Fare = _resources.FormatPrice(fare),
-                Toll = _resources.FormatPrice(toll),                
-                SubTotal = _resources.FormatPrice(totalFare + amountSavedByPromotion - tip), // represents everything except tip and the promo discount
+                Toll = _resources.FormatPrice(toll),        
+                Surcharge = _resources.FormatPrice(surcharge),
+                BookingFees = _resources.FormatPrice(bookingFees),
+                Extra = _resources.FormatPrice(extra),
+                SubTotal = _resources.FormatPrice(subTotalAmount),
                 Tip = _resources.FormatPrice(tip),
-                TotalFare = _resources.FormatPrice(totalFare),
+                TotalFare = _resources.FormatPrice(totalAmount),
                 Note = _serverSettings.ServerData.Receipt.Note,
                 Tax = _resources.FormatPrice(tax),
                 ShowTax = Math.Abs(tax) >= 0.01,
+                ShowToll = Math.Abs(toll) >= 0.01,
+                ShowSurcharge = Math.Abs(surcharge) >= 0.01,
+                ShowBookingFees = Math.Abs(bookingFees) >= 0.01,
+                ShowExtra = Math.Abs(extra) >= 0.01,
                 vatIsEnabled,
                 HasPaymentInfo = hasPaymentInfo,
                 PaymentAmount = paymentAmount,
@@ -839,6 +912,8 @@ namespace apcurium.MK.Booking.Services.Impl
                 public const string BookingConfirmation = "Email_Subject_BookingConfirmation";
                 public const string PromotionUnlocked = "Email_Subject_PromotionUnlocked";
                 public const string CreditCardDeactivated = "Email_Subject_CreditCardDeactivated";
+                public const string CancellationFeesReceipt = "Email_Subject_CancellationFeesReceipt";
+                public const string NoShowFeesReceipt = "Email_Subject_NoShowFeesReceipt";
             }
 
             public static class Template
@@ -849,6 +924,8 @@ namespace apcurium.MK.Booking.Services.Impl
                 public const string BookingConfirmation = "BookingConfirmation";
                 public const string PromotionUnlocked = "PromotionUnlocked";
                 public const string CreditCardDeactivated = "CreditCardDeactivated";
+                public const string CancellationFeesReceipt = "CancellationFeesReceipt";
+                public const string NoShowFeesReceipt = "NoShowFeesReceipt";
             }
         }
 

@@ -27,8 +27,7 @@ namespace apcurium.MK.Booking.Domain
             LoadFrom(history);
         }
 
-        public CreditCardPayment(Guid id, Guid orderId, string transactionId, decimal amount, decimal meter, decimal tip, 
-            string cardToken, PaymentProvider provider)
+        public CreditCardPayment(Guid id, Guid orderId, string transactionId, decimal totalAmount, decimal meterAmount, decimal tipAmount, string cardToken, PaymentProvider provider)
             : this(id)
         {
             if (transactionId == null) throw new InvalidOperationException("transactionId cannot be null");
@@ -37,15 +36,17 @@ namespace apcurium.MK.Booking.Domain
             {
                 OrderId = orderId,
                 TransactionId = transactionId,
-                Amount = amount,
-                Meter = meter,
-                Tip = tip,
+                Amount = totalAmount,
+                Meter = meterAmount,
+                Tip = tipAmount,
                 CardToken = cardToken,
                 Provider = provider
             });
         }
 
-        public void Capture(PaymentProvider provider, decimal amount, decimal meterAmount, decimal tipAmount, decimal taxAmount, string authorizationCode, string transactionId, bool isNoShowFee, Guid? promotionUsed, decimal amountSavedByPromotion, string newCardToken, Guid accountId, bool isSettlingOverduePayment, bool isForPrepaidOrder)
+        public void Capture(PaymentProvider provider, decimal totalAmount, decimal meterAmount, decimal tipAmount, decimal taxAmount,
+            decimal tollAmount, decimal surchargeAmount, string authorizationCode, string transactionId, bool isNoShowFee, bool isCancellationFee, Guid? promotionUsed,
+            decimal amountSavedByPromotion, string newCardToken, Guid accountId, bool isSettlingOverduePayment, bool isForPrepaidOrder, decimal bookingFees)
         {
             if (_isCaptured)
             {
@@ -57,18 +58,22 @@ namespace apcurium.MK.Booking.Domain
                 OrderId = _orderId,
                 TransactionId = transactionId.HasValue() ? transactionId : _transactionId,
                 AuthorizationCode = authorizationCode,
-                Amount = amount,
+                Amount = totalAmount,
                 Meter = meterAmount,
                 Tip = tipAmount,
                 Tax = taxAmount,
+                Toll = tollAmount,
+                Surcharge = surchargeAmount,
                 Provider = provider,
                 IsNoShowFee = isNoShowFee,
+                IsCancellationFee = isCancellationFee,
                 IsSettlingOverduePayment = isSettlingOverduePayment,
                 PromotionUsed = promotionUsed,
                 AmountSavedByPromotion = amountSavedByPromotion,
                 AccountId = accountId,
                 NewCardToken = newCardToken,
-                IsForPrepaidOrder = isForPrepaidOrder
+                IsForPrepaidOrder = isForPrepaidOrder,
+                BookingFees = bookingFees
             });
         }
 

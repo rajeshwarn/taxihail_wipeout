@@ -438,6 +438,7 @@
     <Content Include="Areas\AdminTH\Views\PromoCode\Unlock.cshtml" />
     <Content Include="localization\Sherbet-en.json" />
     <Content Include="localization\BlackCabNow-en.json" />
+    <Content Include="Areas\AdminTH\Views\TaxiHailNetwork\Fees.cshtml" />
     <None Include="Scripts\jquery-1.8.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.8.2.js" />
     <Content Include="Scripts\jquery-1.8.2.min.js" />
@@ -658,6 +659,7 @@
     <Compile Include="Areas\AdminTH\Controllers\PromoCodeController.cs" />
     <Compile Include="Areas\AdminTH\Controllers\TaxiHailNetworkController.cs" />
     <Compile Include="Areas\AdminTH\Models\CompanySettings.cs" />
+    <Compile Include="Areas\AdminTH\Models\MarketFees.cs" />
     <Compile Include="Areas\AdminTH\Models\OrderDebug.cs" />
     <Compile Include="Areas\AdminTH\Models\PromoCode.cs" />
     <Compile Include="Areas\AdminTH\Models\PromoStats.cs" />

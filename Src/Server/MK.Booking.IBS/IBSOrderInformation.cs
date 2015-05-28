@@ -23,6 +23,7 @@ namespace apcurium.MK.Booking.IBS
         public double Fare { get; set; }
         public double Tip { get; set; }
         public double VAT { get; set; }
+        public double Surcharge { get; set; }
         public string VehicleNumber { get; set; }
 
         public string PairingCode { get; set; }
@@ -42,6 +43,11 @@ namespace apcurium.MK.Booking.IBS
         public string DriverId { get; set; }
 
         public DateTime? Eta { get; set; }
+
+        public double MeterAmount
+        {
+            get { return Fare + Toll + VAT + Surcharge; }
+        }
 
         public override string ToString()
         {
@@ -82,6 +88,7 @@ namespace apcurium.MK.Booking.IBS
             Tip = orderInfoFromIBS.Tips;
             Toll = orderInfoFromIBS.Tolls;
             VAT = orderInfoFromIBS.VAT;
+            Surcharge = orderInfoFromIBS.Surcharge;
 
             Eta = orderInfoFromIBS.ETATime.ToDateTime();
         }

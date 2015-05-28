@@ -1977,4 +1977,10 @@
   <data name="Error_EditAutoTipTitle" xml:space="preserve">
     <value>Error</value>
   </data>
+  <data name="ManualRideLinqStatus_Extra" xml:space="preserve">
+    <value>Extra:</value>
+  </data>
+  <data name="ManualRideLinqStatus_Toll" xml:space="preserve">
+    <value>Toll:</value>
+  </data>
 </root>
