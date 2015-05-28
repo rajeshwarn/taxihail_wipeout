@@ -22,6 +22,7 @@ using apcurium.MK.Common.Extensions;
 using ServiceStack.ServiceClient.Web;
 using ServiceStack.ServiceInterface.ServiceModel;
 using ServiceStack.Text;
+using apcurium.MK.Common.Configuration.Impl;
 
 namespace apcurium.MK.Booking.Mobile.AppServices.Orders
 {
@@ -315,7 +316,13 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Orders
                 var hashedMarket = await _hashedMarketSubject.Take(1).ToTask();
 		        if (hashedMarket.HasValue())
 		        {
-		            bookingSettings.ChargeTypeId = ChargeTypes.PaymentInCar.Id;
+					var paymentSettings = await _paymentService.GetPaymentSettings();
+
+					if (paymentSettings.PaymentMode != PaymentMethod.Cmt
+						&& paymentSettings.PaymentMode != PaymentMethod.RideLinqCmt)
+					{
+						bookingSettings.ChargeTypeId = ChargeTypes.PaymentInCar.Id;
+					}
 		        }
 		    }
 

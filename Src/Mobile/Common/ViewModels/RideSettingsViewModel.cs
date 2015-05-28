@@ -25,8 +25,6 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
         private BookingSettings _bookingSettings;
 	    private ClientPaymentSettings _paymentSettings;
 
-	    private string _hashedMarket;
-
 		public RideSettingsViewModel(IAccountService accountService, 
 			IPaymentService paymentService,
             IAccountPaymentService accountPaymentService,
@@ -37,7 +35,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
 		    _accountPaymentService = accountPaymentService;
 		    _accountService = accountService;
 
-            Observe(_orderWorkflowService.GetAndObserveHashedMarket(), hashedMarket => _hashedMarket = hashedMarket);
+
 		}
 
 		public async void Init(string bookingSettings)
@@ -49,8 +47,9 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                     _bookingSettings = bookingSettings.FromJson<BookingSettings>();
                     _paymentSettings = await _paymentService.GetPaymentSettings();
 
-                    var p = await _accountService.GetPaymentsList(_hashedMarket);
-                    _payments = p == null ? new ListItem[0] : p.Select(x => new ListItem { Id = x.Id, Display = this.Services().Localize[x.Display] }).ToArray();
+                    var p = await _accountService.GetPaymentsList();
+
+					_payments = p == null ? new ListItem[0] : p.Select(x => new ListItem { Id = x.Id, Display = this.Services().Localize[x.Display] }).ToArray();
 
                     RaisePropertyChanged(() => Payments);
                     RaisePropertyChanged(() => ChargeTypeId);
@@ -129,7 +128,7 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
             }
         }
 
-        private ListItem[] _payments;
+		private ListItem[] _payments;
         public ListItem[] Payments
         {
             get
@@ -171,8 +170,10 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 }
 
                 var vehicle = Vehicles.FirstOrDefault(x => x.Id == VehicleTypeId);
-                if (vehicle == null)
-                    return null;
+				if (vehicle == null)
+				{
+					vehicle = Vehicles.FirstOrDefault();
+				}
                 return vehicle.Display;
             }
         }
@@ -209,8 +210,11 @@ namespace apcurium.MK.Booking.Mobile.ViewModels
                 }
                                 
                 var chargeType = Payments.FirstOrDefault(x => x.Id == ChargeTypeId);
-                if (chargeType == null)
-                    return null;
+				if (chargeType == null)
+				{
+					chargeType = Payments.FirstOrDefault();
+				}
+
 				return this.Services().Localize[chargeType.Display]; 
             }
         }

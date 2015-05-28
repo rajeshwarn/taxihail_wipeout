@@ -11,6 +11,8 @@ using apcurium.MK.Booking.Mobile.Extensions;
 using apcurium.MK.Booking.Mobile.ViewModels.Payment;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Helpers;
+using apcurium.MK.Common.Extensions;
+using apcurium.MK.Common.Configuration.Impl;
 
 namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 {
@@ -18,13 +20,15 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 	{
 		private readonly IOrderWorkflowService _orderWorkflowService;
 		private readonly IAccountService _accountService;
+		private readonly IPaymentService _paymentService;
 
         public event EventHandler<HomeViewModelStateRequestedEventArgs> PresentationStateRequested;
 
-		public OrderEditViewModel(IOrderWorkflowService orderWorkflowService, IAccountService accountService)
+		public OrderEditViewModel(IOrderWorkflowService orderWorkflowService, IAccountService accountService, IPaymentService paymentService)
 		{
 			_orderWorkflowService = orderWorkflowService;
 			_accountService = accountService;
+			_paymentService = paymentService;
 
 			Observe(_orderWorkflowService.GetAndObserveBookingSettings(), bookingSettings => BookingSettings = bookingSettings.Copy());
 			Observe(_orderWorkflowService.GetAndObservePickupAddress(), address => PickupAddress = address.Copy());
@@ -40,12 +44,31 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 
 	    private async Task MarketUpdated(string hashedMarket)
 	    {
-            ChargeTypes = (await _accountService.GetPaymentsList(hashedMarket))
-                .Select(x => new ListItem
-                {
-                    Id = x.Id,
-                    Display = this.Services().Localize[x.Display]
-                }).ToArray();
+			var paymentList = await _accountService.GetPaymentsList();
+
+			if (hashedMarket.HasValue())
+			{
+				var paymentSettings = await _paymentService.GetPaymentSettings();
+				if (paymentSettings.PaymentMode == PaymentMethod.Cmt
+					|| paymentSettings.PaymentMode == PaymentMethod.RideLinqCmt)
+				{
+					// CoF payment option in external markets is only available with CMT payment
+					paymentList.Remove(i => i.Id != apcurium.MK.Common.Enumeration.ChargeTypes.PaymentInCar.Id
+						&& i.Id != apcurium.MK.Common.Enumeration.ChargeTypes.CardOnFile.Id);
+				}
+				else
+				{
+					// Only Pay in Car payment available in external markets for other payment providers
+					paymentList.Remove(i => i.Id != apcurium.MK.Common.Enumeration.ChargeTypes.PaymentInCar.Id);
+				}
+			}
+
+			ChargeTypes = paymentList
+				.Select(x => new ListItem
+					{
+						Id = x.Id,
+						Display = this.Services().Localize[x.Display]
+					}).ToArray();
 	    }
 
 	    public bool IsChargeTypesEnabled

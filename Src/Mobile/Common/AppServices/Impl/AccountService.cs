@@ -548,7 +548,7 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
             }
         }
 
-		public async Task<IList<ListItem>> GetPaymentsList (string hashedMarket = null)
+		public async Task<IList<ListItem>> GetPaymentsList()
         {
 			var refData = await GetReferenceData();
 
@@ -557,37 +557,12 @@ namespace apcurium.MK.Booking.Mobile.AppServices.Impl
                 refData.PaymentsList.Remove(i => i.Id == ChargeTypes.PayPal.Id);
 		    }
 
-            Logger.LogMessage("Market value: {0}", hashedMarket);
-
 			var creditCard = await GetCreditCard();
             if (creditCard == null
                 || CurrentAccount.IsPayPalAccountLinked
                 || creditCard.IsDeactivated)
 		    {
 		        refData.PaymentsList.Remove(i => i.Id == ChargeTypes.CardOnFile.Id);
-		    }
-
-		    if (hashedMarket.HasValue())
-		    {
-                Logger.LogMessage("Market has value");
-                var paymentSettings = await _paymentService.GetPaymentSettings();
-
-                Logger.LogMessage("Payment mode is {0}", paymentSettings.PaymentMode);
-
-		        if (paymentSettings.PaymentMode == PaymentMethod.Cmt
-		            || paymentSettings.PaymentMode == PaymentMethod.RideLinqCmt)
-                {
-                    Logger.LogMessage("Removing all but pay in car et CoF");
-
-                    // CoF payment option in external markets is only available with CMT payment
-                    refData.PaymentsList.Remove(i => i.Id != ChargeTypes.PaymentInCar.Id && i.Id != ChargeTypes.CardOnFile.Id);
-		        }
-		        else
-		        {
-                    Logger.LogMessage("Removing all but pay in car");
-                    // Only Pay in Car payment available in external markets for other payment providers
-                    refData.PaymentsList.Remove(i => i.Id != ChargeTypes.PaymentInCar.Id);
-		        }
 		    }
 
             return refData.PaymentsList;
