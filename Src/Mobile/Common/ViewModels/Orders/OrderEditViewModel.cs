@@ -53,13 +53,13 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 					|| paymentSettings.PaymentMode == PaymentMethod.RideLinqCmt)
 				{
 					// CoF payment option in external markets is only available with CMT payment
-					paymentList.Remove(i => i.Id != apcurium.MK.Common.Enumeration.ChargeTypes.PaymentInCar.Id
-						&& i.Id != apcurium.MK.Common.Enumeration.ChargeTypes.CardOnFile.Id);
+					paymentList.Remove(i => i.Id != Common.Enumeration.ChargeTypes.PaymentInCar.Id
+						&& i.Id != Common.Enumeration.ChargeTypes.CardOnFile.Id);
 				}
 				else
 				{
 					// Only Pay in Car payment available in external markets for other payment providers
-					paymentList.Remove(i => i.Id != apcurium.MK.Common.Enumeration.ChargeTypes.PaymentInCar.Id);
+					paymentList.Remove(i => i.Id != Common.Enumeration.ChargeTypes.PaymentInCar.Id);
 				}
 			}
 

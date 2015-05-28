@@ -1273,54 +1273,55 @@ namespace apcurium.MK.Booking.Api.Services
         {
             try
             {
-                var paymentSettings = _taxiHailNetworkServiceClient.GetPaymentSettings(companyKey);
+                var paymentSettings = _serverSettings.GetPaymentSettings();
+                var companyPaymentSettings = _taxiHailNetworkServiceClient.GetPaymentSettings(companyKey);
+
+                // Mobile will always keep local settings. The only values that needs to be overridden are the payment providers settings.
+                paymentSettings.Id = Guid.NewGuid();
+                paymentSettings.CompanyKey = companyKey;
+                paymentSettings.PaymentMode = companyPaymentSettings.PaymentMode;
+                paymentSettings.BraintreeServerSettings = new BraintreeServerSettings
+                {
+                    IsSandbox = companyPaymentSettings.BraintreePaymentSettings.IsSandbox,
+                    MerchantId = companyPaymentSettings.BraintreePaymentSettings.MerchantId,
+                    PrivateKey = companyPaymentSettings.BraintreePaymentSettings.PrivateKey,
+                    PublicKey = companyPaymentSettings.BraintreePaymentSettings.PublicKey
+                };
+                paymentSettings.BraintreeClientSettings = new BraintreeClientSettings
+                {
+                    ClientKey = companyPaymentSettings.BraintreePaymentSettings.ClientKey
+                };
+                paymentSettings.MonerisPaymentSettings = new MonerisPaymentSettings
+                {
+                    IsSandbox = companyPaymentSettings.MonerisPaymentSettings.IsSandbox,
+                    ApiToken = companyPaymentSettings.MonerisPaymentSettings.ApiToken,
+                    BaseHost = companyPaymentSettings.MonerisPaymentSettings.BaseHost,
+                    SandboxHost = companyPaymentSettings.MonerisPaymentSettings.SandboxHost,
+                    StoreId = companyPaymentSettings.MonerisPaymentSettings.StoreId
+                };
+                paymentSettings.CmtPaymentSettings = new CmtPaymentSettings
+                {
+                    BaseUrl = companyPaymentSettings.CmtPaymentSettings.BaseUrl,
+                    ConsumerKey = companyPaymentSettings.CmtPaymentSettings.ConsumerKey,
+                    ConsumerSecretKey = companyPaymentSettings.CmtPaymentSettings.ConsumerSecretKey,
+                    CurrencyCode = companyPaymentSettings.CmtPaymentSettings.CurrencyCode,
+                    FleetToken = companyPaymentSettings.CmtPaymentSettings.FleetToken,
+                    IsManualRidelinqCheckInEnabled = companyPaymentSettings.CmtPaymentSettings.IsManualRidelinqCheckInEnabled,
+                    IsSandbox = companyPaymentSettings.CmtPaymentSettings.IsSandbox,
+                    Market = companyPaymentSettings.CmtPaymentSettings.Market,
+                    MobileBaseUrl = companyPaymentSettings.CmtPaymentSettings.MobileBaseUrl,
+                    SandboxBaseUrl = companyPaymentSettings.CmtPaymentSettings.SandboxBaseUrl,
+                    SandboxMobileBaseUrl = companyPaymentSettings.CmtPaymentSettings.SandboxMobileBaseUrl
+                };
 
                 // Save/update company settings
                 _commandBus.Send(new UpdatePaymentSettings
                 {
-                    ServerPaymentSettings = new ServerPaymentSettings
-                    {
-                        Id = Guid.NewGuid(),
-                        CompanyKey = companyKey,
-                        PaymentMode = paymentSettings.PaymentMode,
-                        BraintreeServerSettings = new BraintreeServerSettings
-                        {
-                            IsSandbox = paymentSettings.BraintreePaymentSettings.IsSandbox,
-                            MerchantId = paymentSettings.BraintreePaymentSettings.MerchantId,
-                            PrivateKey = paymentSettings.BraintreePaymentSettings.PrivateKey,
-                            PublicKey = paymentSettings.BraintreePaymentSettings.PublicKey
-                        },
-                        BraintreeClientSettings = new BraintreeClientSettings
-                        {
-                            ClientKey = paymentSettings.BraintreePaymentSettings.ClientKey
-                        },
-                        MonerisPaymentSettings = new MonerisPaymentSettings
-                        {
-                            IsSandbox = paymentSettings.MonerisPaymentSettings.IsSandbox,
-                            ApiToken = paymentSettings.MonerisPaymentSettings.ApiToken,
-                            BaseHost = paymentSettings.MonerisPaymentSettings.BaseHost,
-                            SandboxHost = paymentSettings.MonerisPaymentSettings.SandboxHost,
-                            StoreId = paymentSettings.MonerisPaymentSettings.StoreId
-                        },
-                        CmtPaymentSettings = new CmtPaymentSettings
-                        {
-                            BaseUrl = paymentSettings.CmtPaymentSettings.BaseUrl,
-                            ConsumerKey = paymentSettings.CmtPaymentSettings.ConsumerKey,
-                            ConsumerSecretKey = paymentSettings.CmtPaymentSettings.ConsumerSecretKey,
-                            CurrencyCode = paymentSettings.CmtPaymentSettings.CurrencyCode,
-                            FleetToken = paymentSettings.CmtPaymentSettings.FleetToken,
-                            IsManualRidelinqCheckInEnabled = paymentSettings.CmtPaymentSettings.IsManualRidelinqCheckInEnabled,
-                            IsSandbox = paymentSettings.CmtPaymentSettings.IsSandbox,
-                            Market = paymentSettings.CmtPaymentSettings.Market,
-                            MobileBaseUrl = paymentSettings.CmtPaymentSettings.MobileBaseUrl,
-                            SandboxBaseUrl = paymentSettings.CmtPaymentSettings.SandboxBaseUrl,
-                            SandboxMobileBaseUrl = paymentSettings.CmtPaymentSettings.SandboxMobileBaseUrl
-                        }
-                    }
+                    ServerPaymentSettings = paymentSettings
                 });
 
-                return paymentSettings.PaymentMode == PaymentMethod.Cmt
-                    || paymentSettings.PaymentMode == PaymentMethod.RideLinqCmt;
+                return companyPaymentSettings.PaymentMode == PaymentMethod.Cmt
+                    || companyPaymentSettings.PaymentMode == PaymentMethod.RideLinqCmt;
             }
             catch (Exception ex)
             {
@@ -1490,11 +1491,6 @@ namespace apcurium.MK.Booking.Api.Services
             public int?[] PromptsLength { get; set; } 
             public BestAvailableCompany BestAvailableCompany { get; set; }
             public ApplyPromotion ApplyPromoCommand { get; set; }
-        }
-
-        private class CompanyPaymentSettings
-        {
-            
         }
     }
 }

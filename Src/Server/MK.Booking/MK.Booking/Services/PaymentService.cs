@@ -84,6 +84,10 @@ namespace apcurium.MK.Booking.Services
             return GetInstance(companyKey).ProviderType(companyKey, orderId);
         }
 
+        /// <summary>
+        /// TODO: If we ever need to support fees or CoF network payment with other providers than CMT/RideLinq,
+        /// we'll need to keep track of on which company the pre-auth has been made and handle it properly because, as of today, orderPaymentDetail is unique by order.
+        /// </summary>
         public PreAuthorizePaymentResponse PreAuthorize(string companyKey, Guid orderId, AccountDetail account, decimal amountToPreAuthorize, bool isReAuth = false, bool isSettlingOverduePayment = false, bool isForPrepaid = false, string cvv = null)
         {
             // we pass the orderId just in case it might exist but most of the time it won't since preauth is done before order creation

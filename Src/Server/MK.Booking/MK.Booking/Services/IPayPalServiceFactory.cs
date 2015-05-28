@@ -4,6 +4,6 @@ namespace apcurium.MK.Booking.Services
 {
     public interface IPayPalServiceFactory
     {
-        PayPalService GetInstance(string companyKey);
+        PayPalService GetInstance(string companyKey = null);
     }
 }
