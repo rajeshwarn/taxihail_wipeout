@@ -4,6 +4,7 @@ using apcurium.MK.Booking.Commands;
 using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Diagnostic;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Resources;
@@ -44,9 +45,13 @@ namespace apcurium.MK.Booking.Services.Impl
 
         public bool ChargeNoShowFeeIfNecessary(OrderStatusDetail orderStatusDetail)
         {
-            if (orderStatusDetail.IsPrepaid)
+            var paymentSettings = _serverSettings.GetPaymentSettings();
+            
+            if (orderStatusDetail.IsPrepaid
+                || (paymentSettings.PaymentMode != PaymentMethod.Cmt &&
+                    paymentSettings.PaymentMode != PaymentMethod.RideLinqCmt))
             {
-                // Order is prepaid, if the user prepaid and decided not to show up, the fee is his fare already charged
+                // If order is prepaid, if the user prepaid and decided not to show up, the fee is his fare already charged
                 return false;
             }
 
@@ -104,7 +109,11 @@ namespace apcurium.MK.Booking.Services.Impl
 
         public bool ChargeCancellationFeeIfNecessary(OrderStatusDetail orderStatusDetail)
         {
-            if (orderStatusDetail.IsPrepaid)
+            var paymentSettings = _serverSettings.GetPaymentSettings();
+
+            if (orderStatusDetail.IsPrepaid
+                || (paymentSettings.PaymentMode != PaymentMethod.Cmt &&
+                    paymentSettings.PaymentMode != PaymentMethod.RideLinqCmt))
             {
                 return false;
             }

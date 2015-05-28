@@ -9,6 +9,7 @@ using apcurium.MK.Booking.ReadModel.Query.Contract;
 using apcurium.MK.Booking.Security;
 using apcurium.MK.Common;
 using apcurium.MK.Common.Configuration;
+using apcurium.MK.Common.Configuration.Impl;
 using apcurium.MK.Common.Entity;
 using apcurium.MK.Common.Extensions;
 using apcurium.MK.Web.Areas.AdminTH.Models;
@@ -182,6 +183,13 @@ namespace apcurium.MK.Web.Areas.AdminTH.Controllers
                             NoShow = marketFee.NoShow
                         });
                 }
+            }
+
+            var paymentSettings = _serverSettings.GetPaymentSettings();
+            if (paymentSettings.PaymentMode != PaymentMethod.Cmt
+                && paymentSettings.PaymentMode != PaymentMethod.RideLinqCmt)
+            {
+                TempData["Info"] = "Fees will only be processed if payment is configured for CMT or CMT RideLinQ";
             }
 
             return View(feesPreferences);
