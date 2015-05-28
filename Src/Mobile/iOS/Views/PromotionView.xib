@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7702" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7701"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PromotionView">
@@ -21,9 +21,10 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qmH-Fh-zfI" customClass="FlatButton">
-                    <rect key="frame" x="15" y="45" width="297" height="41"/>
+                    <rect key="frame" x="12" y="45" width="304" height="41"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="41" id="SFf-zP-nKQ"/>
+                        <constraint firstAttribute="width" constant="304" id="gnv-Dn-X4c"/>
                     </constraints>
                     <state key="normal" title="Button">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -71,13 +72,12 @@
                 <constraint firstItem="EfD-f9-lKd" firstAttribute="top" secondItem="Utw-Tv-s75" secondAttribute="bottom" priority="500" constant="27" id="CTE-V4-TVY"/>
                 <constraint firstItem="qmH-Fh-zfI" firstAttribute="top" secondItem="Utw-Tv-s75" secondAttribute="bottom" constant="8" id="EBK-1a-kRm"/>
                 <constraint firstItem="8pr-uT-4sr" firstAttribute="top" secondItem="EfD-f9-lKd" secondAttribute="bottom" constant="15" id="EvE-wm-8ib"/>
-                <constraint firstAttribute="trailing" secondItem="qmH-Fh-zfI" secondAttribute="trailing" constant="8" id="F5n-kd-7oI"/>
                 <constraint firstAttribute="trailing" secondItem="Utw-Tv-s75" secondAttribute="trailing" constant="15" id="Gfu-ub-A80"/>
-                <constraint firstItem="qmH-Fh-zfI" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="15" id="GkJ-qZ-XGj"/>
                 <constraint firstAttribute="trailing" secondItem="31X-y0-CaF" secondAttribute="trailing" constant="15" id="Hm8-oz-Nx5"/>
                 <constraint firstItem="was-2h-vhd" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" priority="60" constant="136" id="Iav-y3-YuM"/>
                 <constraint firstItem="EfD-f9-lKd" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" priority="300" constant="57" id="aXk-qf-BSK"/>
                 <constraint firstItem="31X-y0-CaF" firstAttribute="leading" secondItem="EfD-f9-lKd" secondAttribute="trailing" constant="8" id="bY7-jP-4Ln"/>
+                <constraint firstAttribute="centerX" secondItem="qmH-Fh-zfI" secondAttribute="centerX" constant="-3.5" id="h2p-eV-S7Z"/>
                 <constraint firstItem="was-2h-vhd" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="hNE-3e-PiM"/>
                 <constraint firstItem="31X-y0-CaF" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" priority="300" constant="74" id="ing-9H-sSW"/>
                 <constraint firstItem="31X-y0-CaF" firstAttribute="top" secondItem="EfD-f9-lKd" secondAttribute="top" id="k91-aC-xmO"/>
