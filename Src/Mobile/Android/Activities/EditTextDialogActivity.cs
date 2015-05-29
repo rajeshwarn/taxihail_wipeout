@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using TinyIoC;
 using TinyMessenger;
 using apcurium.MK.Booking.Mobile.Client.Messages;
+using Android.Text;
 using Android.Views;
 
 namespace apcurium.MK.Booking.Mobile.Client.Activities
@@ -16,6 +17,8 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
 		protected string _title;
 		protected string _message;
 		protected string _ownerId;
+
+	    protected bool _isNumericOnly;
 
 		protected string _positiveButtonTitle;
 		protected string _negativeButtonTitle;
@@ -29,6 +32,9 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
 			_ownerId = Intent.GetStringExtra("OwnerId");
 			_positiveButtonTitle = Intent.GetStringExtra("PositiveButtonTitle");
 			_negativeButtonTitle = Intent.GetStringExtra("NegativeButtonTitle");
+
+
+            _isNumericOnly = Intent.GetBooleanExtra("isNumeric", false);
 		}
 
 		protected override void OnStart()
@@ -46,8 +52,12 @@ namespace apcurium.MK.Booking.Mobile.Client.Activities
 			alert.SetTitle(_title);
 			alert.SetMessage(_message);
 
-			var input = new EditText(this);
-			alert.SetView(input);
+		    var input = new EditText(this)
+		    {
+		        InputType = _isNumericOnly ? InputTypes.ClassNumber : InputTypes.ClassText
+		    };
+
+		    alert.SetView(input);
 
 			alert.SetPositiveButton(_positiveButtonTitle, (s, e) => SendMessage(input.Text));
 			alert.SetNegativeButton(_negativeButtonTitle, (s, e) => SendMessage(null));

@@ -314,7 +314,8 @@ namespace apcurium.MK.Booking.Mobile.ViewModels.Orders
 							var cvv = await this.Services().Message.ShowPromptDialog(
 								this.Services().Localize["CvvRequiredTitle"],
                                 string.Format(this.Services().Localize["CvvRequiredMessage"], _accountService.CurrentAccount.DefaultCreditCard.Last4Digits),
-								() => { return; });
+								() => { return; },
+                                true );
 
 							// validate that it's a numeric value with 3 or 4 digits
 							var cvvSetCorrectly = _orderWorkflowService.ValidateAndSetCvv(cvv);

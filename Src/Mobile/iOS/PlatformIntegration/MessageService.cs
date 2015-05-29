@@ -121,9 +121,9 @@ namespace apcurium.MK.Booking.Mobile.Client.PlatformIntegration
             });     
         }		
 
-		public Task<string> ShowPromptDialog(string title, string message, Action cancelAction)
+		public Task<string> ShowPromptDialog(string title, string message, Action cancelAction, bool isNumericOnly = false)
         {
-			return MessageHelper.Prompt (title, message, cancelAction);
+			return MessageHelper.Prompt (title, message, cancelAction, isNumericOnly);
         }
 	}
 }
