@@ -244,7 +244,8 @@ namespace apcurium.MK.Booking.Services.Impl
                 OrderId = orderId,
                 CardToken = creditCard.Token,
                 Provider = PaymentProvider.Cmt,
-                IsNoShowFee = false
+                IsNoShowFee = false,
+                CompanyKey = companyKey
             });
 
             return new PreAuthorizePaymentResponse
@@ -275,7 +276,7 @@ namespace apcurium.MK.Booking.Services.Impl
                     throw new Exception("Order status not found");
                 }
 
-                var orderPayment = _paymentDao.FindByOrderId(orderId);
+                var orderPayment = _paymentDao.FindByOrderId(orderId, companyKey);
                 if (orderPayment == null)
                 {
                     throw new Exception("Order payment not found");

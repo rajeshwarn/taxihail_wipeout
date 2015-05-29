@@ -23,5 +23,11 @@ namespace apcurium.MK.Booking.Commands
         public string TransactionId { get; set; }
 
         public DateTime? TransactionDate { get; set; }
+
+        public bool IsBookingFee { get; set; }
+
+        public bool IsCancellation { get; set; }
+
+        public bool IsNoShowFee { get; set; }
     }
 }

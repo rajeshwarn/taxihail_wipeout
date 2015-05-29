@@ -30,5 +30,7 @@ namespace apcurium.MK.Booking.Commands
         public Guid Id { get; private set; }
 
         public bool IsNoShowFee { get; set; }
+
+        public string CompanyKey { get; set; }
     }
 }

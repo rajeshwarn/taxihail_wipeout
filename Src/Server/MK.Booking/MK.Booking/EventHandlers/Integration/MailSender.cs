@@ -125,7 +125,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
 
         public void Handle(CreditCardPaymentCaptured_V2 @event)
         {
-            if (@event.IsForPrepaidOrder)
+            if (@event.IsForPrepaidOrder || @event.IsBookingFee)
             {
                 // Don't message user, he will be notified at the end of the ride
                 return;

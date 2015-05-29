@@ -1424,7 +1424,7 @@ namespace apcurium.MK.Booking.Api.Services
 
                 if (commitResponse.IsSuccessful)
                 {
-                    var paymentDetail = _orderPaymentDao.FindByOrderId(orderId);
+                    var paymentDetail = _orderPaymentDao.FindByOrderId(orderId, companyKey);
 
                     var fareObject = FareHelper.GetFareFromAmountInclTax(meterAmount,
                         _serverSettings.ServerData.VATIsEnabled

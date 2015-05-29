@@ -244,10 +244,10 @@ namespace apcurium.MK.Booking.Api.Jobs
             }
         }
 
-        private PreAuthorizePaymentResponse PreauthorizePaymentIfNecessary(Guid orderId, decimal amount, string cvv = null)
+        private PreAuthorizePaymentResponse PreauthorizePaymentIfNecessary(string companyKey, Guid orderId, decimal amount, string cvv = null)
         {
             // Check payment instead of PreAuth setting, because we do not preauth in the cases of future bookings
-            var paymentInfo = _paymentDao.FindByOrderId(orderId);
+            var paymentInfo = _paymentDao.FindByOrderId(orderId, companyKey);
             if (paymentInfo != null)
             {
                 // Already preauthorized on create order, do nothing
@@ -333,7 +333,7 @@ namespace apcurium.MK.Booking.Api.Jobs
 
         private void HandlePairingForStandardPairing(OrderStatusDetail orderStatusDetail, OrderPairingDetail pairingInfo, IBSOrderInformation ibsOrderInfo)
         {
-            var orderPayment = _paymentDao.FindByOrderId(orderStatusDetail.OrderId);
+            var orderPayment = _paymentDao.FindByOrderId(orderStatusDetail.OrderId, orderStatusDetail.CompanyKey);
             if (orderPayment != null && (orderPayment.IsCompleted || orderPayment.IsCancelled))
             {
                 // Payment was already processed
@@ -376,12 +376,34 @@ namespace apcurium.MK.Booking.Api.Jobs
             double tipPercentage = pairingInfo.AutoTipPercentage ?? _serverSettings.ServerData.DefaultTipPercentage;
             var tipAmount = FareHelper.CalculateTipAmount(ibsOrderInfo.MeterAmount, tipPercentage);
 
-            var bookingFees = _orderDao.FindById(orderStatusDetail.OrderId).BookingFees;
-            var total = ibsOrderInfo.MeterAmount + tipAmount + Convert.ToDouble(bookingFees);
+            var bookingFees = 0m;
+            var total = ibsOrderInfo.MeterAmount + tipAmount;
 
-            Log.DebugFormat(
+            if (orderStatusDetail.CompanyKey.HasValue())
+            {
+                // Booking fees will be received by the local company
+                var feesCharged = _feeService.ChargeBookingFeesIfNecessary(orderStatusDetail);
+                if (feesCharged.HasValue)
+                {
+                    bookingFees = feesCharged.Value;
+                    Log.DebugFormat(
+                        "Order {0}: Booking fees of {1} charged to local company", orderStatusDetail.OrderId, feesCharged);
+
+                    Log.DebugFormat(
+                        "Order {0}: Received total amount from IBS of {1}, calculated a tip of {2}% (tip amount: {3}), for a total of {4}",
+                            orderStatusDetail.OrderId, ibsOrderInfo.MeterAmount, tipPercentage, tipAmount, total);
+                }
+            }
+            else
+            {
+                // Already in local company, include booking fees in trip
+                bookingFees = _orderDao.FindById(orderStatusDetail.OrderId).BookingFees;
+                total += Convert.ToDouble(bookingFees);
+
+                Log.DebugFormat(
                     "Order {0}: Received total amount from IBS of {1}, calculated a tip of {2}% (tip amount: {3}), adding booking fees of {4} for a total of {5}",
-                    orderStatusDetail.OrderId, ibsOrderInfo.MeterAmount, tipPercentage, tipAmount, bookingFees, total);
+                        orderStatusDetail.OrderId, ibsOrderInfo.MeterAmount, tipPercentage, tipAmount, bookingFees, total);
+            }
 
             if (!_serverSettings.ServerData.SendDetailedPaymentInfoToDriver)
             {
@@ -405,7 +427,7 @@ namespace apcurium.MK.Booking.Api.Jobs
                 var tempPaymentInfo = _orderDao.GetTemporaryPaymentInfo(orderStatusDetail.OrderId);
 
                 // Preautorize
-                var preAuthResponse = PreauthorizePaymentIfNecessary(orderStatusDetail.OrderId, totalOrderAmount, tempPaymentInfo != null ? tempPaymentInfo.Cvv : null);
+                var preAuthResponse = PreauthorizePaymentIfNecessary(orderStatusDetail.CompanyKey, orderStatusDetail.OrderId, totalOrderAmount, tempPaymentInfo != null ? tempPaymentInfo.Cvv : null);
                 if (preAuthResponse.IsSuccessful)
                 {
                     // Commit
@@ -484,7 +506,7 @@ namespace apcurium.MK.Booking.Api.Jobs
 
             var account = _accountDao.FindById(orderDetail.AccountId);
 
-            var paymentDetail = _paymentDao.FindByOrderId(orderId);
+            var paymentDetail = _paymentDao.FindByOrderId(orderId, orderDetail.CompanyKey);
             if (paymentDetail == null)
             {
                 throw new Exception("Payment not found");
@@ -633,7 +655,8 @@ namespace apcurium.MK.Booking.Api.Jobs
                             IBSOrderId = orderDetail.IBSOrderId,
                             OverdueAmount = totalOrderAmount,
                             TransactionId = paymentProviderServiceResponse.TransactionId,
-                            TransactionDate = paymentProviderServiceResponse.TransactionDate
+                            TransactionDate = paymentProviderServiceResponse.TransactionDate,
+                            IsBookingFee = false
                         });
                     }
                 }

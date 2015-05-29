@@ -20,6 +20,8 @@ namespace apcurium.MK.Booking.Events
 
         public bool IsCancellationFee { get; set; }
 
+        public bool IsBookingFee { get; set; }
+
         public decimal BookingFees { get; set; }
     }
 }

@@ -41,6 +41,8 @@ namespace apcurium.MK.Booking.Commands
 
         public bool IsCancellationFee { get; set; }
 
+        public bool IsBookingFee { get; set; }
+
         public bool IsSettlingOverduePayment { get; set; }
 
         public Guid? PromotionUsed { get; set; }

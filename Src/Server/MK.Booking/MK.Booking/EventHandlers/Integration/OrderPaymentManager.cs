@@ -48,7 +48,8 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
         public void Handle(CreditCardPaymentCaptured_V2 @event)
         {
             if (@event.IsNoShowFee
-                || @event.IsCancellationFee)
+                || @event.IsCancellationFee
+                || @event.IsBookingFee)
             {
                 // Don't message driver
                 return;
@@ -91,7 +92,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             if (orderDetail == null) throw new InvalidOperationException("Order not found");
             if (orderDetail.IBSOrderId == null) throw new InvalidOperationException("IBSOrderId should not be null");
 
-            var payment = _paymentDao.FindByOrderId(orderId);
+            var payment = _paymentDao.FindByOrderId(orderId, orderDetail.CompanyKey);
             if (payment == null) throw new InvalidOperationException("Payment info not found");
 
             var account = _accountDao.FindById(orderDetail.AccountId);
@@ -126,7 +127,7 @@ namespace apcurium.MK.Booking.EventHandlers.Integration
             else
             {
                 var feeCharged = _feeService.ChargeCancellationFeeIfNecessary(orderDetail);
-                if (!feeCharged)
+                if (!feeCharged.HasValue)
                 {
                     // void the preauthorization to prevent misuse fees
                     _paymentService.VoidPreAuthorization(orderDetail.CompanyKey, @event.SourceId);

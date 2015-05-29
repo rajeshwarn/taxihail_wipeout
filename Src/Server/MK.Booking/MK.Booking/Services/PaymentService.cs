@@ -115,7 +115,7 @@ namespace apcurium.MK.Booking.Services
         {
             if (IsPayPal(orderId: orderId, isForPrepaid: isForPrepaid))
             {
-                return _payPalServiceFactory.GetInstance(companyKey).CommitPayment(orderId, preauthAmount, amount, meterAmount, tipAmount, transactionId);
+                return _payPalServiceFactory.GetInstance(companyKey).CommitPayment(companyKey, orderId, preauthAmount, amount, meterAmount, tipAmount, transactionId);
             }
 
             return GetInstance(companyKey).CommitPayment(companyKey, orderId, account, preauthAmount, amount, meterAmount, tipAmount, transactionId, reAuthOrderId);
@@ -125,7 +125,7 @@ namespace apcurium.MK.Booking.Services
         {
             if (IsPayPal(orderId: orderId))
             {
-                return _payPalServiceFactory.GetInstance(companyKey).RefundWebPayment(orderId);
+                return _payPalServiceFactory.GetInstance(companyKey).RefundWebPayment(companyKey, orderId);
             }
 
             return GetInstance(companyKey).RefundPayment(companyKey, orderId);
@@ -178,7 +178,7 @@ namespace apcurium.MK.Booking.Services
         {
             if (IsPayPal(orderId: orderId, isForPrepaid: isForPrepaid))
             {
-                _payPalServiceFactory.GetInstance(companyKey).VoidPreAuthorization(orderId);
+                _payPalServiceFactory.GetInstance(companyKey).VoidPreAuthorization(companyKey, orderId);
             }
             else
             {
@@ -194,7 +194,7 @@ namespace apcurium.MK.Booking.Services
         {
             if (IsPayPal(orderId: orderId))
             {
-                _payPalServiceFactory.GetInstance(companyKey).VoidTransaction(orderId, transactionId, ref message);
+                _payPalServiceFactory.GetInstance(companyKey).VoidTransaction(companyKey, orderId, transactionId, ref message);
             }
             else
             {

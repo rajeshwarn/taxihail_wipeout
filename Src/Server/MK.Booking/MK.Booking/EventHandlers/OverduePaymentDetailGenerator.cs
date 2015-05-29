@@ -42,8 +42,25 @@ namespace apcurium.MK.Booking.EventHandlers
                         AccountId = @event.SourceId,
                         OverdueAmount = @event.Amount,
                         TransactionId = @event.TransactionId,
-                        TransactionDate = transactionDate
+                        TransactionDate = transactionDate,
+                        ContainFees = @event.IsFee
                     });
+                }
+                else
+                {
+                    if (!@event.IsFee)
+                    {
+                        overduePayment.TransactionId = @event.TransactionId;
+                    }
+
+                    if (@event.IBSOrderId.HasValue)
+                    {
+                        overduePayment.IBSOrderId = @event.IBSOrderId;
+                    }
+
+                    overduePayment.ContainFees = overduePayment.ContainFees || @event.IsFee;
+                    overduePayment.OverdueAmount += @event.Amount;
+                    context.Save(overduePayment);
                 }
             }
         }

@@ -93,7 +93,7 @@ namespace apcurium.MK.Booking.Services.Impl
             var message = string.Empty;
             try
             {
-                var paymentDetail = _paymentDao.FindByOrderId(orderId);
+                var paymentDetail = _paymentDao.FindByOrderId(orderId, companyKey);
                 if (paymentDetail == null)
                 {
                     // nothing to void
@@ -234,7 +234,8 @@ namespace apcurium.MK.Booking.Services.Impl
                         OrderId = orderId,
                         CardToken = creditCard.Token,
                         Provider = PaymentProvider.Braintree,
-                        IsNoShowFee = false
+                        IsNoShowFee = false,
+                        CompanyKey = companyKey
                     });
                 }
 
@@ -343,7 +344,7 @@ namespace apcurium.MK.Booking.Services.Impl
 
         public BasePaymentResponse RefundPayment(string companyKey, Guid orderId)
         {
-            var paymentDetail = _paymentDao.FindByOrderId(orderId);
+            var paymentDetail = _paymentDao.FindByOrderId(orderId, companyKey);
             if (paymentDetail == null)
             {
                 // No payment to refund

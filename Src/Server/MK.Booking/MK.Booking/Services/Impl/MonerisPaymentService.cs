@@ -99,7 +99,7 @@ namespace apcurium.MK.Booking.Services.Impl
             try
             {
                 // we must do a completion with $0 (see eSELECTplus_DotNet_IG.pdf, Process Flow for PreAuth / Capture Transactions)
-                var paymentDetail = _paymentDao.FindByOrderId(orderId);
+                var paymentDetail = _paymentDao.FindByOrderId(orderId, companyKey);
                 if (paymentDetail == null)
                 {
                     // nothing to void
@@ -250,7 +250,8 @@ namespace apcurium.MK.Booking.Services.Impl
                         OrderId = orderId,
                         CardToken = creditCard.Token,
                         Provider = PaymentProvider.Moneris,
-                        IsNoShowFee = false
+                        IsNoShowFee = false,
+                        CompanyKey = companyKey
                     });
                 }
 

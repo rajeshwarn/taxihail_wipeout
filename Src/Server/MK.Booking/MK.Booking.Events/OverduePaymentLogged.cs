@@ -14,5 +14,7 @@ namespace apcurium.MK.Booking.Events
         public string TransactionId { get; set; }
 
         public DateTime? TransactionDate { get; set; }
+
+        public bool IsFee { get; set; }
     }
 }

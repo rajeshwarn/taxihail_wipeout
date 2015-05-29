@@ -19,5 +19,7 @@ namespace apcurium.MK.Booking.ReadModel
         public DateTime? TransactionDate { get; set; }
 
         public bool IsPaid { get; set; }
+
+        public bool ContainFees { get; set; }
     }
 }

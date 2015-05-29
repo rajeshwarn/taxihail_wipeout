@@ -165,15 +165,27 @@ namespace apcurium.MK.Booking.EventHandlers
             using (var context = _contextFactory.Invoke())
             {
                 var orderReport = context.Find<OrderReportDetail>(@event.OrderId);
-                orderReport.Payment.AuthorizationCode = @event.AuthorizationCode;
-                orderReport.Payment.MeterAmount = @event.Meter;
-                orderReport.Payment.TipAmount = @event.Tip;
-                orderReport.Payment.TotalAmountCharged = @event.Amount;
+
+                if (@event.IsBookingFee || @event.IsCancellationFee || @event.IsNoShowFee)
+                {
+                    orderReport.Payment.TotalAmountCharged += @event.Amount;
+                }
+                else
+                {
+                    orderReport.Payment.MeterAmount = @event.Meter;
+                    orderReport.Payment.TipAmount = @event.Tip;
+                    orderReport.Payment.AuthorizationCode = @event.AuthorizationCode;
+                    orderReport.Payment.TransactionId = @event.TransactionId.ToSafeString().IsNullOrEmpty() ? string.Empty : "Auth: " + @event.TransactionId;
+                    orderReport.Payment.BookingFees = @event.BookingFees;
+                }
+
+                orderReport.Payment.TotalAmountCharged += @event.Amount;
                 orderReport.Payment.IsCompleted = true;
-                orderReport.Payment.TransactionId = @event.TransactionId.ToSafeString().IsNullOrEmpty() ? "" : "Auth: " + @event.TransactionId;
-                orderReport.Payment.IsNoShowFee = @event.IsNoShowFee;
-                orderReport.Payment.BookingFees = @event.BookingFees;
-                orderReport.Payment.IsCancellationFee = @event.IsCancellationFee;
+                
+                orderReport.Payment.WasChargedNoShowFee = @event.IsNoShowFee;
+                orderReport.Payment.WasChargedCancellationFee = @event.IsCancellationFee;
+                orderReport.Payment.WasChargedBookingFee = orderReport.Payment.BookingFees > 0;
+                
                 context.Save(orderReport);
             }
         }

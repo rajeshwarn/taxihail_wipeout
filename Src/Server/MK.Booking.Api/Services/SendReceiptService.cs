@@ -79,7 +79,7 @@ namespace apcurium.MK.Booking.Api.Services
 
             var ibsOrder = _ibsServiceProvider.Booking(order.CompanyKey).GetOrderDetails(order.IBSOrderId.Value, ibsAccountId.Value, order.Settings.Phone);
 
-            var orderPayment = _orderPaymentDao.FindByOrderId(order.Id);
+            var orderPayment = _orderPaymentDao.FindByOrderId(order.Id, order.CompanyKey);
             var pairingInfo = _orderDao.FindOrderPairingById(order.Id);
             var orderStatus = _orderDao.FindOrderStatusById(request.OrderId);
 
