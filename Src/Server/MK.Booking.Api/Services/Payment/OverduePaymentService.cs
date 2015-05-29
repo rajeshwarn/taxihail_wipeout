@@ -85,7 +85,7 @@ namespace apcurium.MK.Booking.Api.Services.Payment
                 bookingFees = order.BookingFees;
                 if (bookingFees > 0)
                 {
-                    var feesSettled = SettleOverduePayment(order.Id, accountDetail, bookingFees, order.CompanyKey, false);
+                    var feesSettled = SettleOverduePayment(order.Id, accountDetail, bookingFees, null, false);
                     if (!feesSettled)
                     {
                         return new SettleOverduePaymentResponse
